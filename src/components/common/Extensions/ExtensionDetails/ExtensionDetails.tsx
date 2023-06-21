@@ -40,7 +40,9 @@ const ExtensionDetails = () => {
   const { extensionId } = useParams();
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const { extensionData, loading } = useExtensionData(extensionId ?? '');
+  const { extensionData, loading, ...pollingControls } = useExtensionData(
+    extensionId ?? '',
+  );
   const { pathname } = useLocation();
 
   if (loading) {
@@ -127,6 +129,7 @@ const ExtensionDetails = () => {
         extensionData={extensionData}
         canBeDeprecated={canExtensionBeDeprecated}
         canBeUninstalled={canExtensionBeUninstalled}
+        pollingControls={pollingControls}
       />
     </div>
   );
