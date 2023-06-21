@@ -46,7 +46,7 @@
           "Fn::Sub": "/amplify/cdapp/${env}/reputation_endpoint"
         },
         "Type": "String",
-        "Value": "http://qa-cdapp.colony.io/reputation/",
+        "Value": "https://qa-xdai.colony.io/reputation/xdai",
         "Description": "Reputation endpoint"
       }
     },
