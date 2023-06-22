@@ -113,7 +113,7 @@ const ManageReputationDialogForm = ({
   isForce,
   setIsForce,
 }: Props) => {
-  const { watch, trigger } = useFormContext();
+  const { watch, trigger, setValue } = useFormContext();
   const { domainId, motionDomainId, user: selectedUser, forceAction } = watch();
 
   useEffect(() => {
@@ -168,6 +168,12 @@ const ManageReputationDialogForm = ({
 
   const selectedDomain = findDomainByNativeId(domainId, colony);
   const domainName = selectedDomain?.metadata?.name;
+
+  const handleDomainChange = (selectedDomainId: string) => {
+    if (isSmiteAction) {
+      setValue('motionDomainId', selectedDomainId);
+    }
+  };
 
   const renderActiveOption = (option) => {
     const value = option ? option.value : undefined;
@@ -270,6 +276,7 @@ const ManageReputationDialogForm = ({
               appearance={{ theme: 'grey', width: 'fluid' }}
               renderActiveOption={renderActiveOption}
               disabled={canOnlyForceAction}
+              onChange={handleDomainChange}
             />
           </div>
         </div>
