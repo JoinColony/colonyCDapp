@@ -10,7 +10,7 @@ import Icon from '~shared/Icon';
 
 const displayName = 'v5.Button.PendingButton';
 
-const Button: FC<PropsWithChildren<PendingButtonProps>> = ({
+const PendingButton: FC<PropsWithChildren<PendingButtonProps>> = ({
   children,
   disabled = false,
   loading = false,
@@ -76,6 +76,6 @@ const Button: FC<PropsWithChildren<PendingButtonProps>> = ({
   );
 };
 
-Button.displayName = displayName;
+PendingButton.displayName = displayName;
 
-export default Button;
+export default PendingButton;
