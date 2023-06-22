@@ -1,11 +1,11 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import EmptyContentBox from '~v5/common/EmptyContentBox';
+import EmptyContent from '~v5/common/EmptyContent';
 
-const meta: Meta<typeof EmptyContentBox> = {
+const meta: Meta<typeof EmptyContent> = {
   title: 'Common/Empty Content',
-  component: EmptyContentBox,
+  component: EmptyContent,
   decorators: [
     (Story) => (
       <div className="max-w-[41.75rem] mx-auto">
@@ -48,7 +48,7 @@ const meta: Meta<typeof EmptyContentBox> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof EmptyContentBox>;
+type Story = StoryObj<typeof EmptyContent>;
 
 export const Base: Story = {
   args: {
@@ -70,5 +70,14 @@ export const WithButton: Story = {
     buttonText: 'Invite a user',
     withButtonIcon: true,
     onClick: () => alert('Clicked'),
+  },
+};
+
+export const WithoutBorder: Story = {
+  args: {
+    title: 'No results available',
+    description:
+      'There are no users in the Colony that match your search. Try searching again',
+    icon: 'smiley-meh',
   },
 };

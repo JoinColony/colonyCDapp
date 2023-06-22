@@ -66,7 +66,11 @@ const TransactionsTab: FC<TransactionsProps> = ({
       <p className="heading-5 mb-4">{formatMessage({ id: 'transactions' })}</p>
       <div>
         {isEmpty ? (
-          <EmptyContent contentName="transactions" />
+          <EmptyContent
+            title={{ id: 'empty.content.title.transactions' }}
+            description={{ id: 'empty.content.subtitle.transactions' }}
+            icon="binoculars"
+          />
         ) : (
           renderTransactions()
         )}
