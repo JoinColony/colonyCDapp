@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import Icon from '~shared/Icon';
 import styles from './EmptyContent.module.css';
 import { EmptyContentProps } from './types';
+import Button from '~v5/shared/Button';
 
 const displayName = 'v5.common.EmptyContent';
 
@@ -14,7 +15,6 @@ const EmptyContent: FC<EmptyContentProps> = ({
   description,
   onClick,
   buttonText,
-  withButtonIcon,
   withBorder,
 }) => {
   const { formatMessage } = useIntl();
@@ -39,12 +39,15 @@ const EmptyContent: FC<EmptyContentProps> = ({
         <p className="mt-2 text-sm text-gray-600">{descriptionText}</p>
         {onClick && (
           // @TODO: Change to Button component
-          <button type="button" className="mt-4" onClick={onClick}>
-            {withButtonIcon && (
-              <Icon name="share-network" appearance={{ size: 'normal' }} />
-            )}
+          <Button
+            mode="primaryOutline"
+            className="mt-4"
+            size="small"
+            iconName="share-network"
+            onClick={onClick}
+          >
             {buttonText}
-          </button>
+          </Button>
         )}
       </div>
     </div>

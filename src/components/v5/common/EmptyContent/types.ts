@@ -7,5 +7,4 @@ export interface EmptyContentProps {
   withBorder?: boolean;
   onClick?: () => void;
   buttonText?: string;
-  withButtonIcon?: boolean;
 }

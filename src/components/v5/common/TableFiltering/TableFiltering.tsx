@@ -2,7 +2,7 @@ import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 
 import { TableFilteringProps } from './types';
-import Icon from '~shared/Icon/Icon';
+import Icon from '~shared/Icon';
 
 const displayName = 'v5.common.TableFiltering';
 
