@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 
 import { RadioListProps } from './types';
 import RadioBase from './RadioBase';
-import FormError from '~shared/Extensions/FormError';
+import FormError from '~v5/shared/FormError';
 
 const displayName = 'Extensions.Fields.RadioList';
 

@@ -7,7 +7,7 @@ import { useIntl } from 'react-intl';
 
 import SpecialInput from '~common/Extensions/SpecialInput';
 import { FormPercentageInput } from '~common/Extensions/SpecialInput/types';
-import FormError from '~shared/Extensions/FormError';
+import FormError from '~v5/shared/FormError';
 
 const meta: Meta<typeof SpecialInput> = {
   title: 'Common/Special Percentage Input',
