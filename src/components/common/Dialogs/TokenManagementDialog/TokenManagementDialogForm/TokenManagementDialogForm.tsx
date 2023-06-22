@@ -185,8 +185,8 @@ const TokenManagementDialogForm = ({
         </DialogSection>
       )}
       {canOnlyForceAction && (
-        <DialogSection>
-          <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
+          <NotEnoughReputation includeForceCopy={userHasPermission} />
         </DialogSection>
       )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>

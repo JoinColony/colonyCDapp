@@ -240,8 +240,8 @@ const PermissionManagementForm = ({
       {canOnlyForceAction && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NotEnoughReputation
-            appearance={{ marginTop: 'negative' }}
             domainId={selectedDomainId}
+            includeForceCopy={userHasPermission}
           />
         </DialogSection>
       )}

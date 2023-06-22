@@ -303,10 +303,11 @@ const ManageReputationDialogForm = ({
       )}
 
       {canOnlyForceAction && (
-        <DialogSection>
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NotEnoughReputation
             appearance={{ marginTop: 'negative' }}
             domainId={Number(motionDomainId)}
+            includeForceCopy={userHasPermission}
           />
         </DialogSection>
       )}

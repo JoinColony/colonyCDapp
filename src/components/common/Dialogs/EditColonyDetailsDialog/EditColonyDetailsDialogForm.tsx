@@ -140,8 +140,11 @@ const EditColonyDetailsDialogForm = ({
         </DialogSection>
       )}
       {canOnlyForceAction && (
-        <DialogSection>
-          <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
+          <NotEnoughReputation
+            appearance={{ marginTop: 'negative' }}
+            includeForceCopy={userHasPermission}
+          />
         </DialogSection>
       )}
       {!hasMotionCompatibleVersion && (

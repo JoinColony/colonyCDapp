@@ -206,6 +206,7 @@ Props) => {
           <NotEnoughReputation
             appearance={{ marginTop: 'negative' }}
             domainId={fromDomainId}
+            includeForceCopy={userHasPermission}
           />
         </DialogSection>
       )}

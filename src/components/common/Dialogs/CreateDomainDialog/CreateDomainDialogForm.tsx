@@ -125,7 +125,10 @@ const CreateDomainDialogForm = ({
       )}
       {canOnlyForceAction && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
+          <NotEnoughReputation
+            appearance={{ marginTop: 'negative' }}
+            includeForceCopy={userHasPermission}
+          />
         </DialogSection>
       )}
       {!hasMotionCompatibleVersion && (

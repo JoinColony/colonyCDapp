@@ -156,7 +156,7 @@ const UnlockTokenForm = ({
       )}
       {canOnlyForceAction && ( // && isNativeTokenLocked
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <NotEnoughReputation />
+          <NotEnoughReputation includeForceCopy={userHasPermission} />
         </DialogSection>
       )}
       {!hasMotionCompatibleVersion && (

@@ -191,6 +191,7 @@ const EditDomainDialogForm = ({
           <NotEnoughReputation
             appearance={{ marginTop: 'negative' }}
             domainId={domainId}
+            includeForceCopy={userHasPermission}
           />
         </DialogSection>
       )}

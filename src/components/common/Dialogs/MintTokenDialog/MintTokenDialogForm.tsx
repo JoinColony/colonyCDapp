@@ -159,7 +159,7 @@ const MintTokenDialogForm = ({
       )}
       {canOnlyForceAction && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <NotEnoughReputation />
+          <NotEnoughReputation includeForceCopy={userHasPermission} />
         </DialogSection>
       )}
       {!hasMotionCompatibleVersion && (
