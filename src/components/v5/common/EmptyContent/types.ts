@@ -1,3 +1,11 @@
+import { MessageDescriptor } from 'react-intl';
+
 export interface EmptyContentProps {
-  contentName: string;
+  title: MessageDescriptor | string;
+  description: MessageDescriptor | string;
+  icon: string;
+  withBorder?: boolean;
+  onClick?: () => void;
+  buttonText?: string;
+  withButtonIcon?: boolean;
 }

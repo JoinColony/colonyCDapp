@@ -76,7 +76,11 @@ const StakesTab = () => {
                   />
                 ))
               ) : (
-                <EmptyContent contentName="stakes" />
+                <EmptyContent
+                  title={{ id: 'empty.content.title.stakes' }}
+                  description={{ id: 'empty.content.subtitle.stakes' }}
+                  icon="binoculars"
+                />
               )}
             </motion.div>
           </AnimatePresence>
