@@ -63,7 +63,7 @@ const SubMenu: FC<SubMenuProps> = ({ items }) => {
           <div className="mb-6 md:mr-2 md:mb-0">
             <Button
               text="Create new action"
-              mode="secondaryOutline"
+              mode="quinary"
               isFullSize={isMobile}
             />
           </div>

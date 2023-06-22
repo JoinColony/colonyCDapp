@@ -45,7 +45,7 @@ const CalamityBanner: FC<PropsWithChildren<CalamityBannerProps>> = ({
               <Button
                 type="button"
                 className="md:mr-[1.6875rem] ml-4"
-                mode="primaryOutline"
+                mode="primaryOutlineFulled"
                 disabled={isButtonDisabled}
                 onClick={onUpgrade}
               >

@@ -40,11 +40,7 @@ const ManageDropdown: FC<PropsWithChildren> = () => {
         />
       </ul>
       <div className={styles.buttonWrapper}>
-        <Button
-          text={MSG.buttonTextManage}
-          mode="secondaryOutline"
-          isFullSize
-        />
+        <Button text={MSG.buttonTextManage} mode="quinary" isFullSize />
       </div>
       <div className={styles.infoWrapper}>
         <LearnMore

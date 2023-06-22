@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import { TableFilteringProps } from './types';
 import Icon from '~shared/Icon/Icon';
 
-const displayName = 'common.Extensions.TableFiltering';
+const displayName = 'v5.common.TableFiltering';
 
 const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
   filterType,

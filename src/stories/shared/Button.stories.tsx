@@ -8,14 +8,13 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     mode: {
       name: 'Mode',
-      options: [
-        'primarySolid',
-        'primaryOutline',
-        'secondarySolid',
-        'secondaryOutline',
-        'textButton',
-        'pending',
-      ],
+      table: {
+        disable: true,
+      },
+    },
+    size: {
+      name: 'Size',
+      options: ['default', 'small'],
       control: {
         type: 'select',
       },
@@ -44,12 +43,33 @@ const meta: Meta<typeof Button> = {
         type: 'boolean',
       },
     },
+    isPending: {
+      table: {
+        disable: true,
+      },
+    },
+    iconName: {
+      name: 'Icon',
+      options: ['copy-simple', 'trash', 'share-network', 'caret-down', 'user'],
+      control: {
+        type: 'select',
+      },
+    },
+    isIconRight: {
+      name: 'Is icon right? (works with Icon)',
+      control: {
+        type: 'boolean',
+      },
+    },
   },
   args: {
     text: 'New action',
+    size: 'default',
     disabled: false,
     isFullSize: false,
     isPending: false,
+    isFullRounded: false,
+    isIconRight: false,
   },
 };
 
@@ -68,6 +88,12 @@ export const PrimaryOutline: Story = {
   },
 };
 
+export const PrimaryOutlineFulled: Story = {
+  args: {
+    mode: 'primaryOutlineFulled',
+  },
+};
+
 export const SecondarySolid: Story = {
   args: {
     mode: 'secondarySolid',
@@ -80,15 +106,15 @@ export const SecondaryOutline: Story = {
   },
 };
 
-export const TertiaryOutline: Story = {
+export const Tertiary: Story = {
   args: {
-    mode: 'tertiaryOutline',
+    mode: 'tertiary',
   },
 };
 
-export const QuaternaryOutline: Story = {
+export const Quinary: Story = {
   args: {
-    mode: 'quaternaryOutline',
+    mode: 'quinary',
   },
 };
 
@@ -98,9 +124,124 @@ export const TextButton: Story = {
   },
 };
 
+TextButton.argTypes = {
+  size: {
+    table: {
+      disable: true,
+    },
+  },
+  isFullRounded: {
+    table: {
+      disable: true,
+    },
+  },
+};
+
+export const TextButtonUnderlined: Story = {
+  args: {
+    mode: 'textButtonUnderlined',
+    text: 'View objective',
+  },
+};
+
+TextButtonUnderlined.argTypes = {
+  size: {
+    table: {
+      disable: true,
+    },
+  },
+  isFullRounded: {
+    table: {
+      disable: true,
+    },
+  },
+};
+
 export const Pending: Story = {
   args: {
     mode: 'pending',
     isPending: true,
+  },
+};
+
+Pending.argTypes = {
+  size: {
+    table: {
+      disable: true,
+    },
+  },
+  isFullRounded: {
+    table: {
+      disable: true,
+    },
+  },
+  disabled: {
+    table: {
+      disable: true,
+    },
+  },
+};
+
+export const Completed: Story = {
+  args: {
+    mode: 'completed',
+    text: 'Address copied',
+  },
+};
+
+Completed.argTypes = {
+  disabled: {
+    table: {
+      disable: true,
+    },
+  },
+  isIconRight: {
+    table: {
+      disable: true,
+    },
+  },
+};
+
+export const PrimaryOutlineFulledWithIcon: Story = {
+  args: {
+    mode: 'primaryOutlineFulled',
+    iconName: 'copy-simple',
+    text: 'Copy address',
+  },
+};
+
+export const SecondaryOutlineWithIcon: Story = {
+  args: {
+    mode: 'secondaryOutline',
+    iconName: 'trash',
+    text: 'Delete account',
+  },
+};
+
+export const PrimaryOutlineSmallWithIcon: Story = {
+  args: {
+    mode: 'primaryOutline',
+    iconName: 'share-network',
+    text: 'Button CTA',
+    size: 'small',
+  },
+};
+
+export const PrimarySolidSmallWithIcon: Story = {
+  args: {
+    mode: 'primarySolid',
+    iconName: 'user',
+    text: 'Button CTA',
+    size: 'small',
+  },
+};
+
+export const PrimarySolidSmallWithIconRight: Story = {
+  args: {
+    mode: 'primarySolid',
+    iconName: 'caret-down',
+    text: 'Button CTA',
+    size: 'small',
+    isIconRight: true,
   },
 };

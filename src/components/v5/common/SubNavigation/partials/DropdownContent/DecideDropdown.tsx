@@ -32,11 +32,7 @@ const DecideDropdown: FC<PropsWithChildren> = () => {
         />
       </ul>
       <div className={styles.buttonWrapper}>
-        <Button
-          text={MSG.buttonTextDecide}
-          mode="secondaryOutline"
-          isFullSize
-        />
+        <Button text={MSG.buttonTextDecide} mode="quinary" isFullSize />
       </div>
       <div className={styles.infoWrapper}>
         <LearnMore

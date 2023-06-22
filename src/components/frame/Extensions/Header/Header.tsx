@@ -14,7 +14,6 @@ import MainNavigation from '~common/Extensions/MainNavigation';
 import Button from '~v5/shared/Button';
 import styles from './Header.module.css';
 import { useHeader } from './hooks';
-import { useExtensionsContext } from '~context/ExtensionsContext';
 import NavigationTools from '~common/Extensions/NavigationTools/NavigationTools';
 
 const displayName = 'frame.Extensions.Header';
@@ -39,8 +38,6 @@ const Header = () => {
     setTriggerRef,
     visible,
   } = useHeader();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { isExtensionInstalling } = useExtensionsContext();
 
   const { profile } = user || {};
   const { colonyAddress, nativeToken } = colony || {};
@@ -60,9 +57,9 @@ const Header = () => {
           <div className="mr-5 sm:mr-10">
             <div className="flex justify-between relative">
               <button
-                aria-label="Open dropdown"
+                aria-label={formatMessage({ id: 'ariaLabel.openDropdown' })}
                 ref={setTriggerRef}
-                className="flex items-center justify-between transition-all duration-normal hover:text-gray-600"
+                className="flex items-center justify-between hover:text-gray-600"
                 type="button"
               >
                 <ColonyAvatarWrapper
@@ -150,7 +147,9 @@ const Header = () => {
               aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
             >
               <Icon name="list" appearance={{ size: 'tiny' }} />
-              <p className="text-3 ml-1.5">{formatMessage({ id: 'menu' })}</p>
+              <span className="text-3 ml-1.5">
+                {formatMessage({ id: 'menu' })}
+              </span>
             </button>
             <MainNavigation
               setTooltipRef={mainMenuSetTooltipRef}
@@ -160,9 +159,11 @@ const Header = () => {
             <div className="block ml-auto">
               {isCloseButtonVisible ? (
                 <Button
-                  className="md:border-gray-200 md:hover:border-blue-400 px-4 py-2.5 border-base-white"
-                  mode="quinary"
+                  mode="tertiary"
                   isFullRounded
+                  className={clsx({
+                    '!border-base-white': isMobile,
+                  })}
                 >
                   <Icon name="close" appearance={{ size: 'tiny' }} />
                 </Button>

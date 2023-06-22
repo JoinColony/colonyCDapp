@@ -58,7 +58,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
         {(closeMessage || confirmMessage) && (
           <div className="flex flex-wrap gap-3 mt-8">
             {closeMessage && (
-              <Button mode="primaryOutline" isFullSize onClick={onClose}>
+              <Button mode="primaryOutlineFulled" isFullSize onClick={onClose}>
                 {closeMessage}
               </Button>
             )}

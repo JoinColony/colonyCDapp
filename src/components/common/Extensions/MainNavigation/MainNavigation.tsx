@@ -66,7 +66,7 @@ const MainNavigation: FC<MainNavigationProps> = ({
               <div className="my-6 w-full">
                 <Button
                   text="Create new action"
-                  mode="secondaryOutline"
+                  mode="quinary"
                   isFullSize={isMobile}
                 />
               </div>

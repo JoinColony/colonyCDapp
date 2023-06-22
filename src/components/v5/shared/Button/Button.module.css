@@ -1,35 +1,45 @@
 .primarySolid {
-  @apply text-md h-[2.5rem] px-4 py-2.5 bg-blue-400 text-base-white hover:bg-blue-300 disabled:bg-gray-300;
+  @apply bg-blue-400 text-base-white hover:bg-blue-300 disabled:bg-gray-300;
 }
 
 .primaryOutline {
-  @apply text-md h-[2.5rem] px-4 py-2.5 bg-base-white text-gray-700 border border-gray-300 hover:bg-blue-400 hover:border-blue-400 hover:text-base-white disabled:text-gray-300;
+  @apply bg-base-white text-gray-700 border border-gray-300 hover:text-blue-400 hover:border-blue-400 hover:bg-base-white disabled:text-gray-300;
+}
+
+.primaryOutlineFulled {
+  @apply bg-base-white text-gray-700 border border-gray-300 hover:bg-blue-400 hover:border-blue-400 hover:text-base-white disabled:text-gray-300;
 }
 
 .secondarySolid {
-  @apply text-md h-[2.5rem] px-4 py-2.5 bg-negative-400 text-base-white hover:bg-negative-300 disabled:bg-gray-300;
+  @apply bg-negative-400 text-base-white hover:bg-negative-300 disabled:bg-gray-300;
 }
 
 .secondaryOutline {
-  @apply text-md rounded-lg h-[2.5rem] px-4 py-2.5 bg-base-white text-blue-400 border border-blue-400 hover:bg-blue-400 hover:border-blue-400 hover:text-base-white disabled:text-gray-300;
+  @apply bg-base-white text-negative-400 border border-negative-400 hover:bg-negative-400 hover:text-base-white disabled:text-gray-300 disabled:border-gray-300;
 }
 
-.tertiaryOutline {
-  @apply text-md h-[2.5rem] px-4 py-2.5 bg-base-white text-gray-700 border border-gray-200 hover:border-blue-400 disabled:text-gray-300;
-}
-
-.quaternaryOutline {
-  @apply text-md h-[2.5rem] px-4 py-2.5 bg-base-white text-blue-400 border border-blue-400 hover:bg-blue-400 hover:text-base-white disabled:text-gray-300;
+.tertiary {
+  @apply bg-base-white text-gray-700 border border-gray-200 hover:border-blue-400 disabled:text-gray-300;
 }
 
 .quinary {
-  @apply text-md h-[2.5rem] px-4 py-2.5 bg-base-white text-gray-700 border disabled:text-gray-300;
+  @apply bg-base-white text-blue-400 border border-blue-400 hover:bg-blue-400 hover:border-blue-400 hover:text-base-white disabled:text-gray-300 disabled:border-gray-300;
 }
 
-.textButton {
-  @apply text-sm rounded-none hover:text-blue-400 disabled:text-gray-400;
+/* State button */
+.completed {
+  @apply bg-success-400 text-base-white;
 }
 
 .pending {
-  @apply text-sm rounded-[6.25rem] h-[2.375rem] min-w-[6.25rem] px-[0.875rem] py-2.5 bg-blue-400 text-base-white hover:bg-blue-300;
+  @apply text-sm rounded-full h-[2.375rem] min-w-[6.25rem] px-3.5 py-2.5 bg-blue-400 text-base-white hover:bg-blue-300;
+}
+
+/* Text buttons */
+.textButton {
+  @apply text-sm hover:text-blue-400 disabled:text-gray-400;
+}
+
+.textButtonUnderlined {
+  @apply text-xs text-gray-700 underline hover:text-blue-400 disabled:text-gray-400;
 }

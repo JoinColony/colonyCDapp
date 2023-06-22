@@ -27,14 +27,14 @@ const MemberReputation: FC<MemberReputationProps> = ({
       })}
     >
       <Icon name="star" appearance={{ size: 'tiny' }} />
-      <p className="text-3 ml-1">
+      <span className="text-3 ml-1">
         {!percentageReputation && '— %'}
         {percentageReputation === ZeroValue.NearZero && percentageReputation}
         {percentageReputation &&
           percentageReputation !== ZeroValue.NearZero && (
             <Numeral value={percentageReputation} suffix="%" />
           )}
-      </p>
+      </span>
     </div>
   );
 };

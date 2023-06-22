@@ -5,13 +5,17 @@ import { SimpleMessageValues } from '~types';
 export type ButtonMode =
   | 'primarySolid'
   | 'primaryOutline'
+  | 'primaryOutlineFulled'
   | 'secondarySolid'
   | 'secondaryOutline'
-  | 'tertiaryOutline'
+  | 'tertiary'
   | 'quinary'
-  | 'quaternaryOutline'
   | 'textButton'
-  | 'pending';
+  | 'textButtonUnderlined'
+  | 'pending'
+  | 'completed';
+
+export type ButtonSize = 'default' | 'small';
 
 export interface ButtonProps
   extends Omit<
@@ -19,6 +23,7 @@ export interface ButtonProps
     'title' | 'aria-label'
   > {
   mode?: ButtonMode;
+  size?: ButtonSize;
   disabled?: boolean;
   type?: 'submit' | 'reset' | 'button';
   loading?: boolean;
@@ -30,4 +35,7 @@ export interface ButtonProps
   isPending?: boolean;
   isFullRounded?: boolean;
   setTriggerRef?: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+  iconName?: string;
+  iconSize?: 'extraTiny' | 'tiny';
+  isIconRight?: boolean;
 }
