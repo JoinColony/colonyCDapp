@@ -30,16 +30,3 @@
 .completed {
   @apply bg-success-400 text-base-white;
 }
-
-.pending {
-  @apply text-sm rounded-full h-[2.375rem] min-w-[6.25rem] px-3.5 py-2.5 bg-blue-400 text-base-white hover:bg-blue-300;
-}
-
-/* Text buttons */
-.textButton {
-  @apply text-sm hover:text-blue-400 disabled:text-gray-400;
-}
-
-.textButtonUnderlined {
-  @apply text-xs text-gray-700 underline hover:text-blue-400 disabled:text-gray-400;
-}

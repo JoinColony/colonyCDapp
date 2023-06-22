@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import Button from '~v5/shared/Button';
 
 const meta: Meta<typeof Button> = {
-  title: 'Shared/Button',
+  title: 'Shared/Buttons/Button',
   component: Button,
   argTypes: {
     mode: {
@@ -43,11 +43,6 @@ const meta: Meta<typeof Button> = {
         type: 'boolean',
       },
     },
-    isPending: {
-      table: {
-        disable: true,
-      },
-    },
     iconName: {
       name: 'Icon',
       options: ['copy-simple', 'trash', 'share-network', 'caret-down', 'user'],
@@ -67,7 +62,6 @@ const meta: Meta<typeof Button> = {
     size: 'default',
     disabled: false,
     isFullSize: false,
-    isPending: false,
     isFullRounded: false,
     isIconRight: false,
   },
@@ -115,70 +109,6 @@ export const Tertiary: Story = {
 export const Quinary: Story = {
   args: {
     mode: 'quinary',
-  },
-};
-
-export const TextButton: Story = {
-  args: {
-    mode: 'textButton',
-  },
-};
-
-TextButton.argTypes = {
-  size: {
-    table: {
-      disable: true,
-    },
-  },
-  isFullRounded: {
-    table: {
-      disable: true,
-    },
-  },
-};
-
-export const TextButtonUnderlined: Story = {
-  args: {
-    mode: 'textButtonUnderlined',
-    text: 'View objective',
-  },
-};
-
-TextButtonUnderlined.argTypes = {
-  size: {
-    table: {
-      disable: true,
-    },
-  },
-  isFullRounded: {
-    table: {
-      disable: true,
-    },
-  },
-};
-
-export const Pending: Story = {
-  args: {
-    mode: 'pending',
-    isPending: true,
-  },
-};
-
-Pending.argTypes = {
-  size: {
-    table: {
-      disable: true,
-    },
-  },
-  isFullRounded: {
-    table: {
-      disable: true,
-    },
-  },
-  disabled: {
-    table: {
-      disable: true,
-    },
   },
 };
 
@@ -240,6 +170,7 @@ export const PrimarySolidSmallWithIconRight: Story = {
   args: {
     mode: 'primarySolid',
     iconName: 'caret-down',
+    iconSize: 'extraTiny',
     text: 'Button CTA',
     size: 'small',
     isIconRight: true,

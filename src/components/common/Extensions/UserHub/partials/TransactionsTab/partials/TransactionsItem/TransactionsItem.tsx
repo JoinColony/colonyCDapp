@@ -68,67 +68,77 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
               transition={{ duration: 0.4, ease: 'easeOut' }}
               className="overflow-hidden text-gray-600 text-md mt-2"
             >
-              {content.map((item, index) => (
-                <div
-                  key={item.key}
-                  className={clsx(styles.listItem, {
-                    'font-semibold': item.isCurrentAction,
-                    'before:bg-success-400':
-                      item.isCurrentAction &&
-                      (item.status === TRANSACTION_STATUSES.READY ||
-                        item.status === TRANSACTION_STATUSES.SUCCEEDED),
-                    'before:bg-negative-400':
-                      item.isCurrentAction &&
-                      item.status === TRANSACTION_STATUSES.FAILED,
-                    'before:!bg-blue-400':
-                      item.isCurrentAction && item.isPending,
-                  })}
-                >
-                  <div className="flex justify-between items-center">
-                    <h4>
-                      {index + 1}. {item.title}
-                    </h4>
-                    {item.status && !item.isPending && (
-                      <div
-                        className={clsx('flex ml-2', {
-                          'text-success-400':
-                            item.status === TRANSACTION_STATUSES.READY ||
-                            item.status === TRANSACTION_STATUSES.SUCCEEDED,
-                          'text-negative-400': TRANSACTION_STATUSES.FAILED,
-                        })}
-                      >
+              {content.map(
+                (
+                  {
+                    key,
+                    isCurrentAction,
+                    status: statusContent,
+                    isPending,
+                    notificationInfo,
+                  },
+                  index,
+                ) => (
+                  <div
+                    key={key}
+                    className={clsx(styles.listItem, {
+                      'font-semibold': isCurrentAction,
+                      'before:bg-success-400':
+                        isCurrentAction &&
+                        (statusContent === TRANSACTION_STATUSES.READY ||
+                          statusContent === TRANSACTION_STATUSES.SUCCEEDED),
+                      'before:bg-negative-400':
+                        isCurrentAction &&
+                        status === TRANSACTION_STATUSES.FAILED,
+                      'before:!bg-blue-400': isCurrentAction && isPending,
+                    })}
+                  >
+                    <div className="flex justify-between items-center">
+                      <h4>
+                        {index + 1}. {title}
+                      </h4>
+                      {statusContent && !isPending && (
+                        <div
+                          className={clsx('flex ml-2', {
+                            'text-success-400':
+                              statusContent === TRANSACTION_STATUSES.READY ||
+                              statusContent === TRANSACTION_STATUSES.SUCCEEDED,
+                            'text-negative-400': TRANSACTION_STATUSES.FAILED,
+                          })}
+                        >
+                          <Icon
+                            name={
+                              statusContent === TRANSACTION_STATUSES.READY ||
+                              statusContent === TRANSACTION_STATUSES.SUCCEEDED
+                                ? 'check-circle'
+                                : 'warning-circle'
+                            }
+                            appearance={{ size: 'tiny' }}
+                          />
+                        </div>
+                      )}
+                      {isPending && (
                         <Icon
-                          name={
-                            item.status === TRANSACTION_STATUSES.READY ||
-                            item.status === TRANSACTION_STATUSES.SUCCEEDED
-                              ? 'check-circle'
-                              : 'warning-circle'
-                          }
+                          name="spinner-gap"
+                          className="ml-[0.59375rem] w-[0.8125rem] h-[0.8125rem] animate-spin text-blue-400"
                           appearance={{ size: 'tiny' }}
+                        />
+                      )}
+                    </div>
+                    {notificationInfo && (
+                      <div className="mt-2">
+                        <NotificationBanner
+                          status="error"
+                          title={notificationInfo}
+                          actionText={formatMessage({ id: 'retry' })}
+                          actionType="redirect"
+                          isAlt
                         />
                       </div>
                     )}
-                    {item.isPending && (
-                      <Icon
-                        name="spinner-gap"
-                        className="ml-[0.59375rem] w-[0.8125rem] h-[0.8125rem] animate-spin text-blue-400"
-                        appearance={{ size: 'tiny' }}
-                      />
-                    )}
                   </div>
-                  {item.notificationInfo && (
-                    <div className="mt-2">
-                      <NotificationBanner
-                        status="error"
-                        title={item.notificationInfo}
-                        actionText={formatMessage({ id: 'retry' })}
-                        actionType="redirect"
-                        isAlt
-                      />
-                    </div>
-                  )}
-                </div>
-              ))}
+                ),
+              )}
             </motion.div>
           )}
         </AnimatePresence>

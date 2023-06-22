@@ -1,0 +1,7 @@
+.textButton {
+  @apply text-sm hover:text-blue-400 disabled:text-gray-400;
+}
+
+.underlined {
+  @apply text-xs text-gray-700 underline hover:text-blue-400 disabled:text-gray-400;
+}

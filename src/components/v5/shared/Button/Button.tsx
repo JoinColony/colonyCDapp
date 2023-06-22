@@ -1,5 +1,4 @@
 /* eslint-disable react/button-has-type */
-
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
@@ -26,7 +25,6 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
   ariaLabel,
   isFullSize,
   setTriggerRef,
-  isPending,
   iconName,
   iconSize = 'tiny',
   isIconRight,
@@ -50,18 +48,11 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
       ) : (
         <button
           className={clsx(
+            className,
             'flex items-center justify-center font-medium transition-all duration-normal',
             {
-              'text-md min-h-[2.5rem] px-4 py-2.5':
-                size === 'default' &&
-                mode !== 'textButton' &&
-                mode !== 'textButtonUnderlined' &&
-                mode !== 'pending',
-              'text-sm min-h-[2.125rem] px-3 py-2':
-                size === 'small' &&
-                mode !== 'textButton' &&
-                mode !== 'textButtonUnderlined' &&
-                mode !== 'pending',
+              'text-md min-h-[2.5rem] px-4 py-2.5': size === 'default',
+              'text-sm min-h-[2.125rem] px-3 py-2': size === 'small',
               [styles.primarySolid]: mode === 'primarySolid',
               [styles.primaryOutline]: mode === 'primaryOutline',
               [styles.primaryOutlineFulled]: mode === 'primaryOutlineFulled',
@@ -69,9 +60,6 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
               [styles.secondaryOutline]: mode === 'secondaryOutline',
               [styles.quinary]: mode === 'quinary',
               [styles.tertiary]: mode === 'tertiary',
-              [styles.textButton]: mode === 'textButton',
-              [styles.textButtonUnderlined]: mode === 'textButtonUnderlined',
-              [styles.pending]: mode === 'pending',
               [styles.completed]: mode === 'completed',
               'pointer-events-none': disabled,
               'w-full': isFullSize,
@@ -114,17 +102,6 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
           {iconName && isIconRight && (
             <span className="flex shrink-0">
               <Icon name={iconName} appearance={{ size: iconSize }} />
-            </span>
-          )}
-          {mode === 'pending' && isPending && (
-            <span className="flex shrink-0 ml-1.5">
-              <Icon
-                name="spinner-gap"
-                className={`w-[0.8125rem] h-[0.8125rem] ${
-                  isPending ? 'animate-spin' : 'animate-none'
-                }`}
-                appearance={{ size: 'tiny' }}
-              />
             </span>
           )}
         </button>

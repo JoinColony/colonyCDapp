@@ -2,8 +2,8 @@ import React, { useLayoutEffect } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useAppContext } from '~hooks';
-import Button from '~v5/shared/Button';
 import { getLastWallet } from '~utils/autoLogin';
+import PendingButton from '~v5/shared/Button/PendingButton';
 
 const displayName = 'Extensions.ConnectingWalletButton';
 
@@ -20,14 +20,13 @@ const ConnectingWalletButton = () => {
   return (
     <>
       {walletConnecting && (
-        <Button
+        <PendingButton
           isPending={walletConnecting}
-          mode="pending"
           title="pending"
           onClick={connectWallet}
         >
           {formatMessage({ id: 'pending' })}
-        </Button>
+        </PendingButton>
       )}
     </>
   );
