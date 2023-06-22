@@ -52,7 +52,7 @@ const Textarea: FC<TextareaProps> = ({
       )}
       <div
         className={clsx(
-          'bg-base-white w-full md:min-w-[32rem] min-h-[4.75rem] rounded border py-3 px-3.5',
+          'bg-base-white w-full md:min-w-[32rem] min-h-[5.75rem] rounded border py-3 px-3.5',
           {
             'border-gray-300': !isTyping,
             'border-blue-200 shadow-[0_0_3px_3px_#EFF8FF]': isTyping,
