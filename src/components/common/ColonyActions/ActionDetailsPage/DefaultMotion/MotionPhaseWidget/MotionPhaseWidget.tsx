@@ -93,10 +93,10 @@ const MotionPhaseWidget = ({
       }
 
       return (
-        <div>
+        <>
           <ClaimMotionStakes motionData={motionData} {...rest} />
           <VoteOutcome actionData={actionData} />
-        </div>
+        </>
       );
     }
 
