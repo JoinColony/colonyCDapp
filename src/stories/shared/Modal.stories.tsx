@@ -51,7 +51,7 @@ const ModalWithState = (args) => {
   return (
     <>
       <Button
-        mode="primaryOutline"
+        mode="primaryOutlineFull"
         aria-label="Open modal"
         text="Trigger button"
         onClick={onOpenModal}

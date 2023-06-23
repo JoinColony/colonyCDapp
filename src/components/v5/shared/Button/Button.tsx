@@ -1,5 +1,4 @@
 /* eslint-disable react/button-has-type */
-
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
@@ -13,6 +12,7 @@ const displayName = 'v5.Button';
 
 const Button: FC<PropsWithChildren<ButtonProps>> = ({
   mode = 'primarySolid',
+  size = 'default',
   children,
   disabled = false,
   loading = false,
@@ -25,7 +25,9 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
   ariaLabel,
   isFullSize,
   setTriggerRef,
-  isPending,
+  iconName,
+  iconSize = 'tiny',
+  isIconRight,
   ...rest
 }) => {
   const { formatMessage } = useIntl();
@@ -46,23 +48,26 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
       ) : (
         <button
           className={clsx(
+            className,
             'flex items-center justify-center font-medium transition-all duration-normal',
             {
+              'text-md min-h-[2.5rem] px-4 py-2.5': size === 'default',
+              'text-sm min-h-[2.125rem] px-3 py-2': size === 'small',
               [styles.primarySolid]: mode === 'primarySolid',
               [styles.primaryOutline]: mode === 'primaryOutline',
+              [styles.primaryOutlineFull]: mode === 'primaryOutlineFull',
               [styles.secondarySolid]: mode === 'secondarySolid',
               [styles.secondaryOutline]: mode === 'secondaryOutline',
-              [styles.tertiaryOutline]: mode === 'tertiaryOutline',
-              [styles.quaternaryOutline]: mode === 'quaternaryOutline',
               [styles.quinary]: mode === 'quinary',
-              [styles.textButton]: mode === 'textButton',
-              [styles.pending]: mode === 'pending',
+              [styles.tertiary]: mode === 'tertiary',
+              [styles.completed]: mode === 'completed',
               'pointer-events-none': disabled,
               'w-full': isFullSize,
               'rounded-full': isFullRounded,
               'rounded-lg': !isFullRounded,
+              'border border-gray-300 !text-gray-300 !bg-base-white':
+                disabled && isIconRight,
             },
-            className,
           )}
           disabled={disabled || loading}
           aria-label={ariaLabelText}
@@ -72,14 +77,31 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
           ref={setTriggerRef}
           {...rest}
         >
-          {buttonText || children}
-          {mode === 'pending' && isPending && (
-            <Icon
-              name="spinner-gap"
-              className={`ml-[0.625rem] w-[0.8125rem] h-[0.8125rem] ${
-                isPending ? 'animate-spin' : 'animate-none'
-              }`}
-            />
+          {mode === 'completed' && (
+            <span className="flex shrink-0 mr-2">
+              <Icon name="check" appearance={{ size: 'extraTiny' }} />
+            </span>
+          )}
+          {iconName && !isIconRight && (
+            <span className="flex shrink-0">
+              <Icon name={iconName} appearance={{ size: iconSize }} />
+            </span>
+          )}
+          {(buttonText || children) && (
+            <>
+              {iconName ? (
+                <span className={isIconRight ? 'mr-2' : 'ml-2'}>
+                  {buttonText || children}
+                </span>
+              ) : (
+                buttonText || children
+              )}
+            </>
+          )}
+          {iconName && isIconRight && (
+            <span className="flex shrink-0">
+              <Icon name={iconName} appearance={{ size: iconSize }} />
+            </span>
           )}
         </button>
       )}

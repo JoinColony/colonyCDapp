@@ -42,7 +42,7 @@ const PayDropdown: FC<PropsWithChildren> = () => {
         />
       </ul>
       <div className={styles.buttonWrapper}>
-        <Button text={MSG.buttonTextPay} mode="secondaryOutline" isFullSize />
+        <Button text={MSG.buttonTextPay} mode="quinary" isFullSize />
       </div>
       <div className={styles.infoWrapper}>
         <LearnMore

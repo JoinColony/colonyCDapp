@@ -17,7 +17,6 @@ import WalletPopover from '~common/Extensions/UserNavigation/partials/WalletPopo
 import { useMobile } from '~hooks';
 import Button from '~v5/shared/Button';
 import UserAvatar from '~v5/shared/UserAvatar';
-import Icon from '~shared/Icon';
 import { formatMessage } from '~utils/yup/tests/helpers';
 
 const meta: Meta<typeof UserMenu> = {
@@ -99,6 +98,7 @@ const UserNavigationMenuNotConnected = () => {
               mode="quinary"
               isFullRounded
               setTriggerRef={setWalletTriggerRef}
+              iconName={isWalletVisible && isMobile ? 'close' : 'cardholder'}
               onClick={() =>
                 isMobile && setIsWalletButtonVisible((prevState) => !prevState)
               }
@@ -107,15 +107,7 @@ const UserNavigationMenuNotConnected = () => {
                 'p-0': !isWalletVisible && isMobile,
               })}
             >
-              <Icon
-                name={isWalletVisible && isMobile ? 'close' : 'cardholder'}
-                appearance={{ size: 'tiny' }}
-              />
-              {isWalletButtonVisible && (
-                <p className="text-3 ml-1">
-                  {formatMessage({ id: 'connectWallet' })}
-                </p>
-              )}
+              {isWalletButtonVisible && formatMessage({ id: 'connectWallet' })}
             </Button>
           )}
           {isWalletVisible && (
@@ -134,17 +126,13 @@ const UserNavigationMenuNotConnected = () => {
                   'p-0': !visible && isMobile,
                 })}
                 mode="quinary"
+                iconName={visible && isMobile ? 'close' : 'list'}
                 isFullRounded
                 setTriggerRef={setTriggerRef}
                 onClick={() =>
                   isMobile && setIsButtonVisible((prevState) => !prevState)
                 }
-              >
-                <Icon
-                  name={visible && isMobile ? 'close' : 'list'}
-                  appearance={{ size: 'tiny' }}
-                />
-              </Button>
+              />
             )}
             <div className="w-full h-auto top-[6.5rem] md:top-[2.3rem]">
               {visible && (
@@ -196,7 +184,7 @@ const UserNavigationMenuConnected = () => {
           {isButtonVisible && (
             <div className="flex items-center w-full justify-end gap-1">
               {mockNativeToken && <Token nativeToken={mockNativeToken} />}
-              <Button mode="tertiaryOutline" isFullRounded>
+              <Button mode="tertiary" isFullRounded>
                 <div className="flex items-center gap-3">
                   <UserAvatar userName="panda" size="xxs" />
                   <MemberReputation
@@ -216,15 +204,11 @@ const UserNavigationMenuConnected = () => {
               mode="quinary"
               isFullRounded
               setTriggerRef={setTriggerRef}
+              iconName={visible && isMobile ? 'close' : 'list'}
               onClick={() =>
                 isMobile && setIsButtonVisible((prevState) => !prevState)
               }
-            >
-              <Icon
-                name={visible && isMobile ? 'close' : 'list'}
-                appearance={{ size: 'tiny' }}
-              />
-            </Button>
+            />
             <div className="w-full h-auto top-[6.5rem] md:top-[2.3rem]">
               {visible && (
                 <UserMenu

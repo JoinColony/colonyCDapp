@@ -94,7 +94,7 @@ const UserReputation: FC<UserReputationProps> = ({
   return (
     <div ref={ref}>
       <Button
-        mode="tertiaryOutline"
+        mode="tertiary"
         isFullRounded
         setTriggerRef={setTriggerRef}
         // onClick={() => isMobile && setIsButtonVisible((prevState) => !prevState)}

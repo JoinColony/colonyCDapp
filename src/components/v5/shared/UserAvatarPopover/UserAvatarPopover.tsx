@@ -43,16 +43,19 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
     });
 
   const button = (
-    <button
-      onClick={isMobile ? onOpenModal : noop}
-      onMouseEnter={isMobile ? noop : () => onOpenModal()}
-      onMouseLeave={isMobile ? noop : () => onCloseModal()}
-      type="button"
-      ref={setTriggerRef}
-      className="inline-flex transition-all duration-normal hover:text-blue-400"
-    >
-      <UserAvatar size="xs" userName={userName} user={user} />
-    </button>
+    <>
+      {/* @TODO button */}
+      <button
+        onClick={isMobile ? onOpenModal : noop}
+        onMouseEnter={isMobile ? noop : () => onOpenModal()}
+        onMouseLeave={isMobile ? noop : () => onCloseModal()}
+        type="button"
+        ref={setTriggerRef}
+        className="inline-flex transition-all duration-normal hover:text-blue-400"
+      >
+        <UserAvatar size="xs" userName={userName} user={user} />
+      </button>
+    </>
   );
 
   const content = (

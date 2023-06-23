@@ -90,23 +90,27 @@ const UserMenu: FC<UserMenuProps> = ({
         {!isWalletConnected && (
           <>
             <div className={styles.mobileButtons}>
-              <Button mode="tertiaryOutline" isFullRounded>
-                <Icon name="cardholder" appearance={{ size: 'tiny' }} />
-                <span className="text-3 ml-1.5">
-                  {formatMessage({ id: 'connectWallet' })}
-                </span>
+              <Button
+                mode="tertiary"
+                size="small"
+                isFullRounded
+                iconName="cardholder"
+                iconSize="extraTiny"
+              >
+                {formatMessage({ id: 'connectWallet' })}
               </Button>
-              <Button mode="tertiaryOutline" isFullRounded>
-                <Icon name="list" appearance={{ size: 'extraTiny' }} />
-                <p className="text-3 ml-1">{formatMessage({ id: 'help' })}</p>
+              <Button
+                mode="tertiary"
+                size="small"
+                isFullRounded
+                iconName="list"
+                iconSize="extraTiny"
+              >
+                {formatMessage({ id: 'help' })}
               </Button>
             </div>
             <div className="w-full pb-6 mb-6 border-b border-b-gray-200 sm:pb-5 sm:mb-5">
-              <Button
-                mode="quaternaryOutline"
-                isFullSize
-                onClick={connectWallet}
-              >
+              <Button mode="quinary" isFullSize onClick={connectWallet}>
                 {formatMessage({ id: 'connectWallet' })}
               </Button>
             </div>

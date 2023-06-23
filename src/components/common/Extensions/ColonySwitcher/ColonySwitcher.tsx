@@ -62,12 +62,9 @@ const ColonySwitcher = () => {
     <div className="flex justify-between relative" ref={ref}>
       <button
         aria-label={formatMessage({ id: 'ariaLabel.openDropdown' })}
-        className={clsx(
-          'flex items-center transition-all duration-normal hover:text-gray-500',
-          {
-            'w-[3.5rem]': !isMobile,
-          },
-        )}
+        className={clsx('flex items-center hover:text-gray-600', {
+          'w-[3.5rem]': !isMobile,
+        })}
         onClick={() => setIsOpen((prevState) => !prevState)}
         type="button"
       >
@@ -117,12 +114,18 @@ const ColonySwitcher = () => {
           )}
         </div>
       )}
+      {/* @TODO button */}
       {isMobile && isOpen && (
         <button
           type="button"
           aria-label={formatMessage({ id: 'ariaLabel.closeDropdown' })}
           onClick={() => setIsOpen(false)}
-          className="text-gray-400 sm:pr-4"
+          className={clsx(
+            'flex items-center transition-all duration-normal hover:text-gray-500',
+            {
+              'w-[3.5rem]': !isMobile,
+            },
+          )}
         >
           <Icon name="close" appearance={{ size: 'extraTiny' }} />
         </button>

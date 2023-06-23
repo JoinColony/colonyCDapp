@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import Button from '~v5/shared/Button';
-import Icon from '~shared/Icon';
 import UserAvatar from '~v5/shared/UserAvatar';
 import { NavigationToolsProps } from './types';
 import Token from '~common/Extensions/UserNavigation/partials/Token';
@@ -26,7 +25,7 @@ const NavigationTools: FC<NavigationToolsProps> = ({
   return (
     <>
       {nativeToken && <Token nativeToken={nativeToken} />}
-      <Button mode="tertiaryOutline" isFullRounded>
+      <Button mode="tertiary" isFullRounded>
         <div className="flex items-center gap-3">
           <UserAvatar userName={userName} size="xxs" user={user} />
           <MemberReputation
@@ -36,11 +35,8 @@ const NavigationTools: FC<NavigationToolsProps> = ({
           />
         </div>
       </Button>
-      <Button mode="tertiaryOutline" isFullRounded>
-        <Icon name="list" appearance={{ size: 'extraTiny' }} />
-        {buttonLabel && (
-          <span className="text-3 ml-1.5">{buttonLabelText}</span>
-        )}
+      <Button mode="tertiary" isFullRounded iconName="list">
+        {buttonLabelText}
       </Button>
     </>
   );

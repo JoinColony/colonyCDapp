@@ -33,7 +33,6 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
           <Icon name="gnosis" />
         </div>
       </div>
-
       {isMobile && colonyToDisplay && (
         <div className="text-2 ml-2 shrink-0">
           {colonyToDisplay?.metadata?.displayName ||
@@ -43,12 +42,9 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
       )}
       {isArrowVisible && (
         <span
-          className={clsx(
-            'text-base-black transition-transform duration-normal ml-2',
-            {
-              'rotate-180': isOpen,
-            },
-          )}
+          className={clsx('transition-transform duration-normal ml-2', {
+            'rotate-180': isOpen,
+          })}
           ref={setTriggerRef}
         >
           <Icon name="caret-up" appearance={{ size: 'extraTiny' }} />

@@ -1,12 +1,10 @@
 import React, { FC, useLayoutEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
-import clsx from 'clsx';
 
 import { useSelector } from 'react-redux';
 import { useAppContext, useColonyContext, useMobile } from '~hooks';
-import Button from '~v5/shared/Button';
-import Icon from '~shared/Icon';
+import Button, { Hamburger } from '~v5/shared/Button';
 import Token from './partials/Token';
 import UserMenu from './partials/UserMenu';
 import { getLastWallet } from '~utils/autoLogin';
@@ -103,46 +101,26 @@ const UserNavigation: FC = () => {
       )}
       {isButtonVisible && !isWalletConnected && (
         <Button
-          mode="quinary"
+          mode="tertiary"
           isFullRounded
           setTriggerRef={setWalletTriggerRef}
           onClick={connectWallet}
-          className={clsx('md:border-gray-200 md:hover:border-blue-400', {
-            'px-4 py-2.5 border-base-white text-gray-400':
-              isWalletVisible && isMobile,
-            'p-0': !isWalletVisible && isMobile,
-          })}
+          iconName={isWalletVisible && isMobile ? 'close' : 'cardholder'}
+          className="text-sm"
         >
-          <Icon
-            name={isWalletVisible && isMobile ? 'close' : 'cardholder'}
-            appearance={{ size: 'tiny' }}
-          />
-          {isWalletButtonVisible && (
-            <span className="text-3 ml-1">
-              {formatMessage({ id: 'connectWallet' })}
-            </span>
-          )}
+          {isWalletButtonVisible && formatMessage({ id: 'connectWallet' })}
         </Button>
       )}
       <div>
         {isWalletButtonVisible && (
-          <Button
-            className={clsx('md:border-gray-200 md:hover:border-blue-400', {
-              'px-4 py-2.5 border-base-white': visible && isMobile,
-              'p-0': !visible && isMobile,
-            })}
-            mode="quinary"
-            isFullRounded
+          <Hamburger
+            isOpened={visible && isMobile}
+            iconName={visible && isMobile ? 'close' : 'list'}
             setTriggerRef={setTriggerRef}
             onClick={() =>
               isMobile && setIsButtonVisible((prevState) => !prevState)
             }
-          >
-            <Icon
-              name={visible && isMobile ? 'close' : 'list'}
-              appearance={{ size: 'tiny' }}
-            />
-          </Button>
+          />
         )}
         <div className="w-full h-auto">
           {visible && (

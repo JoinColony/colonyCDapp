@@ -38,12 +38,6 @@ const meta: Meta<typeof EmptyContent> = {
         type: 'boolean',
       },
     },
-    withButtonIcon: {
-      name: 'With button icon',
-      control: {
-        type: 'boolean',
-      },
-    },
   },
 };
 
@@ -67,8 +61,7 @@ export const WithButton: Story = {
       'There are no users in the Colony that match your search. Try searching again',
     icon: 'smiley-meh',
     withBorder: true,
-    buttonText: 'Invite a user',
-    withButtonIcon: true,
+    buttonText: 'Invite members',
     onClick: () => alert('Clicked'),
   },
 };
@@ -79,5 +72,6 @@ export const WithoutBorder: Story = {
     description:
       'There are no users in the Colony that match your search. Try searching again',
     icon: 'smiley-meh',
+    withBorder: false,
   },
 };

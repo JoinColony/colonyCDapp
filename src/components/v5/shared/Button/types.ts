@@ -5,20 +5,22 @@ import { SimpleMessageValues } from '~types';
 export type ButtonMode =
   | 'primarySolid'
   | 'primaryOutline'
+  | 'primaryOutlineFull'
   | 'secondarySolid'
   | 'secondaryOutline'
-  | 'tertiaryOutline'
+  | 'tertiary'
   | 'quinary'
-  | 'quaternaryOutline'
-  | 'textButton'
-  | 'pending';
+  | 'completed';
 
-export interface ButtonProps
+export type ButtonSize = 'default' | 'small';
+
+export type TextButtonMode = 'defalt' | 'underlined';
+
+export interface CommonButtonProps
   extends Omit<
     ButtonHTMLAttributes<HTMLButtonElement>,
     'title' | 'aria-label'
   > {
-  mode?: ButtonMode;
   disabled?: boolean;
   type?: 'submit' | 'reset' | 'button';
   loading?: boolean;
@@ -26,8 +28,32 @@ export interface ButtonProps
   text?: MessageDescriptor | string;
   textValues?: SimpleMessageValues;
   ariaLabel?: MessageDescriptor | string;
-  isFullSize?: boolean;
-  isPending?: boolean;
-  isFullRounded?: boolean;
   setTriggerRef?: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+}
+
+export type IconSize = 'extraTiny' | 'tiny';
+
+export interface ButtonProps extends CommonButtonProps {
+  mode?: ButtonMode;
+  size?: ButtonSize;
+  isFullSize?: boolean;
+  isFullRounded?: boolean;
+  iconName?: string;
+  iconSize?: IconSize;
+  isIconRight?: boolean;
+  className?: string;
+}
+
+export interface TextButtonProps extends CommonButtonProps {
+  mode?: TextButtonMode;
+}
+
+export interface PendingButtonProps extends CommonButtonProps {
+  isPending?: boolean;
+}
+
+export interface HamburgerProps extends CommonButtonProps {
+  iconName?: string;
+  iconSize?: IconSize;
+  isOpened?: boolean;
 }

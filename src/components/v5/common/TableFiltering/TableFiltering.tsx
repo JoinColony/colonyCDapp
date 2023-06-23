@@ -2,9 +2,9 @@ import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 
 import { TableFilteringProps } from './types';
-import Icon from '~shared/Icon/Icon';
+import Icon from '~shared/Icon';
 
-const displayName = 'common.Extensions.TableFiltering';
+const displayName = 'v5.common.TableFiltering';
 
 const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
   filterType,
@@ -28,6 +28,7 @@ const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
       ) : (
         <p className="text-blue-400 text-4 capitalize">{filterOptions}</p>
       )}
+      {/* @TODO button */}
       <button
         type="button"
         aria-label={formatMessage({ id: 'ariaLabel.closeFilter' })}
