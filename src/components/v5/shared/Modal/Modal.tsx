@@ -2,7 +2,7 @@ import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
-import Button from '~v5/shared/Button';
+import Button, { CloseButton } from '~v5/shared/Button';
 import Icon from '~shared/Icon';
 import { ModalProps } from './types';
 import ModalBase from './ModalBase';
@@ -38,20 +38,12 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
           <Icon appearance={{ size: 'small' }} name={icon} />
         </span>
       )}
-      {/* @TODO button */}
-      <button
+      <CloseButton
         aria-label={formatMessage({ id: 'ariaLabel.closeModal' })}
-        type="button"
-        className={styles.closeIcon}
+        title={formatMessage({ id: 'button.cancel' })}
         onClick={onClose}
-      >
-        <Icon
-          appearance={{ size: 'extraTiny' }}
-          name="close"
-          title={formatMessage({ id: 'button.cancel' })}
-        />
-      </button>
-
+        className={styles.closeIcon}
+      />
       <div className={styles.inner}>
         {title && <h4 className="heading-5 mb-2">{title}</h4>}
         {subTitle && <p className="text-gray-600 text-md">{subTitle}</p>}

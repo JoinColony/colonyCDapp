@@ -102,11 +102,3 @@ export const WithWarning: Story = {
   },
   render: (args) => <ModalWithState {...args} />,
 };
-
-export const WithAvatar: Story = {
-  args: {
-    icon: '',
-    isFullOnMobile: true,
-  },
-  render: (args) => <ModalWithState {...args} />,
-};
