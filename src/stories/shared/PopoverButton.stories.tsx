@@ -18,8 +18,8 @@ const meta: Meta<typeof PopoverButton> = {
         type: 'boolean',
       },
     },
-    isFullWidth: {
-      name: 'isFullWidth',
+    isFullSize: {
+      name: 'Is full size?',
       control: {
         type: 'boolean',
       },
@@ -28,6 +28,7 @@ const meta: Meta<typeof PopoverButton> = {
   args: {
     type: 'deposit',
     isDisabled: false,
+    isFullSize: false,
   },
 };
 
