@@ -3,7 +3,9 @@ const {
   getColonyNetworkClient,
   Network,
   Extension,
+  MotionState,
 } = require('@colony/colony-js');
+
 const { default: fetch, Request } = require('node-fetch');
 
 const {
