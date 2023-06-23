@@ -1,4 +1,4 @@
-import { ExtensionStatusBadgeProps } from '~v5/common/Pills/ExtensionStatusBadge/types';
+import { ExtensionStatusBadgeProps } from '~v5/common/Pills/types';
 
 export interface SubMenuItem {
   label: string;
