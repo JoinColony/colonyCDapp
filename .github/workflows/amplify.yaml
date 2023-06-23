@@ -49,8 +49,8 @@ jobs:
         run: npm install -g @aws-amplify/cli
 
       - name: Pull existing AWS Amplify env
+        working-directory: .github/workflows/scripts
         run: |
-          cd .github/workflows/scripts
           chmod +x amplify_script.sh
           ./amplify_script.sh
       
