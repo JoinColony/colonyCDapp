@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 import SpecialInput from '~common/Extensions/SpecialInput';
-import FormError from '~shared/Extensions/FormError';
+import FormError from '~v5/shared/FormError';
 import { SpecialInputProps } from '../types';
 import ConnectForm from './ConnectForm';
 
