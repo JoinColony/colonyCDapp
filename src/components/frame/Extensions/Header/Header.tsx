@@ -156,6 +156,7 @@ const Header = () => {
               tooltipProps={mainMenuGetTooltipProps}
               isMenuOpen={isMainMenuVisible}
             />
+            {/* @TODO button */}
             <div className="block ml-auto">
               {isCloseButtonVisible ? (
                 <Button

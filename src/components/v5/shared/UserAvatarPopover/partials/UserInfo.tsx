@@ -46,6 +46,7 @@ const UserInfo: FC<UserInfoProps> = ({
               </span>
             )}
           </div>
+          {/* @TODO button */}
           {isCopied ? (
             <button
               onClick={handleClipboardCopy}

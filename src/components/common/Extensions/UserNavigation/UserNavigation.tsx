@@ -1,11 +1,10 @@
 import React, { FC, useLayoutEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
-import clsx from 'clsx';
 
 import { useSelector } from 'react-redux';
 import { useAppContext, useColonyContext, useMobile } from '~hooks';
-import Button from '~v5/shared/Button';
+import Button, { Hamburger } from '~v5/shared/Button';
 import Token from './partials/Token';
 import UserMenu from './partials/UserMenu';
 import { getLastWallet } from '~utils/autoLogin';
@@ -107,22 +106,16 @@ const UserNavigation: FC = () => {
           setTriggerRef={setWalletTriggerRef}
           onClick={connectWallet}
           iconName={isWalletVisible && isMobile ? 'close' : 'cardholder'}
-          className={clsx({
-            '!border-base-white': isWalletVisible && isMobile,
-          })}
+          className="text-sm"
         >
           {isWalletButtonVisible && formatMessage({ id: 'connectWallet' })}
         </Button>
       )}
       <div>
         {isWalletButtonVisible && (
-          <Button
-            className={clsx({
-              '!border-base-white': visible && isMobile,
-            })}
-            mode="tertiary"
+          <Hamburger
+            isOpened={visible && isMobile}
             iconName={visible && isMobile ? 'close' : 'list'}
-            isFullRounded
             setTriggerRef={setTriggerRef}
             onClick={() =>
               isMobile && setIsButtonVisible((prevState) => !prevState)

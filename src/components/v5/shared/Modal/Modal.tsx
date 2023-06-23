@@ -38,6 +38,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
           <Icon appearance={{ size: 'small' }} name={icon} />
         </span>
       )}
+      {/* @TODO button */}
       <button
         aria-label={formatMessage({ id: 'ariaLabel.closeModal' })}
         type="button"
@@ -58,7 +59,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
         {(closeMessage || confirmMessage) && (
           <div className="flex flex-wrap gap-3 mt-8">
             {closeMessage && (
-              <Button mode="primaryOutlineFulled" isFullSize onClick={onClose}>
+              <Button mode="primaryOutlineFull" isFullSize onClick={onClose}>
                 {closeMessage}
               </Button>
             )}

@@ -6,7 +6,7 @@
   @apply bg-base-white text-gray-700 border border-gray-300 hover:text-blue-400 hover:border-blue-400 hover:bg-base-white disabled:text-gray-300;
 }
 
-.primaryOutlineFulled {
+.primaryOutlineFull {
   @apply bg-base-white text-gray-700 border border-gray-300 hover:bg-blue-400 hover:border-blue-400 hover:text-base-white disabled:text-gray-300;
 }
 

@@ -37,7 +37,7 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
       {canExtensionBeDeprecated && (
         <div className="mt-6">
           <Button
-            mode="primaryOutlineFulled"
+            mode="primaryOutlineFull"
             isFullSize
             onClick={() => setIsDeprecateModalOpen(true)}
           >
@@ -68,7 +68,7 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
         <div className="mt-6 flex flex-col gap-4">
           <div>
             <Button
-              mode="primaryOutlineFulled"
+              mode="primaryOutlineFull"
               isFullSize
               onClick={() => setIsReEnableModalOpen(true)}
             >
@@ -90,7 +90,7 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
           </div>
           <div>
             <Button
-              mode="primaryOutlineFulled"
+              mode="primaryOutlineFull"
               isFullSize
               onClick={() => setIsUninstallModalOpen(true)}
             >

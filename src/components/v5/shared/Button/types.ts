@@ -5,7 +5,7 @@ import { SimpleMessageValues } from '~types';
 export type ButtonMode =
   | 'primarySolid'
   | 'primaryOutline'
-  | 'primaryOutlineFulled'
+  | 'primaryOutlineFull'
   | 'secondarySolid'
   | 'secondaryOutline'
   | 'tertiary'
@@ -28,17 +28,20 @@ export interface CommonButtonProps
   text?: MessageDescriptor | string;
   textValues?: SimpleMessageValues;
   ariaLabel?: MessageDescriptor | string;
-  className?: string;
   setTriggerRef?: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
 }
+
+export type IconSize = 'extraTiny' | 'tiny';
+
 export interface ButtonProps extends CommonButtonProps {
   mode?: ButtonMode;
   size?: ButtonSize;
   isFullSize?: boolean;
   isFullRounded?: boolean;
   iconName?: string;
-  iconSize?: 'extraTiny' | 'tiny';
+  iconSize?: IconSize;
   isIconRight?: boolean;
+  className?: string;
 }
 
 export interface TextButtonProps extends CommonButtonProps {
@@ -47,4 +50,10 @@ export interface TextButtonProps extends CommonButtonProps {
 
 export interface PendingButtonProps extends CommonButtonProps {
   isPending?: boolean;
+}
+
+export interface HamburgerProps extends CommonButtonProps {
+  iconName?: string;
+  iconSize?: IconSize;
+  isOpened?: boolean;
 }

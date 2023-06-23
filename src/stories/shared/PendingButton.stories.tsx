@@ -35,4 +35,4 @@ const meta: Meta<typeof PendingButton> = {
 export default meta;
 type Story = StoryObj<typeof PendingButton>;
 
-export const Pending: Story = {};
+export const Base: Story = {};

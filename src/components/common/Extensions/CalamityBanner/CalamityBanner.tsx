@@ -35,22 +35,22 @@ const CalamityBanner: FC<PropsWithChildren<CalamityBannerProps>> = ({
                 <Icon name="close" appearance={{ size: 'extraTiny' }} />
               </button>
             </div>
-            <div className="flex items-center justify-betweenmd:justify-normal w-full md:w-auto mt-2 md:mt-0">
+            <div className="flex items-center justify-between md:justify-normal w-full md:w-auto mt-2 md:mt-0">
               <Link
                 to="https://docs.colony.io/use/advanced-features/upgrade-colony-and-extensions"
-                className="font-semibold text-sm text-base-white underline hover:text-base-white hover:no-underline"
+                className="text-2 text-base-white underline hover:text-base-white hover:no-underline"
               >
                 {formatMessage({ id: linkName })}
               </Link>
               <Button
-                type="button"
-                className="md:mr-[1.6875rem] ml-4"
-                mode="primaryOutlineFulled"
+                className="md:mr-7 ml-4"
+                mode="primaryOutlineFull"
                 disabled={isButtonDisabled}
                 onClick={onUpgrade}
               >
                 {formatMessage({ id: buttonName })}
               </Button>
+              {/* @TODO button */}
               <button
                 type="button"
                 className="text-base-white transition-all duration-normal hidden md:flex hover:text-gray-300"

@@ -3,14 +3,14 @@ import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
-import { TextButtonProps } from './types';
+import { HamburgerProps } from './types';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
-import styles from './TextButton.module.css';
+import styles from './Hamburger.module.css';
+import Icon from '~shared/Icon';
 
-const displayName = 'v5.Button.TextButton';
+const displayName = 'v5.Button.Hamburger';
 
-const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
-  mode = 'defalt',
+const Hamburger: FC<PropsWithChildren<HamburgerProps>> = ({
   children,
   disabled = false,
   loading = false,
@@ -19,7 +19,10 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
   textValues,
   type = 'button',
   ariaLabel,
+  iconName,
+  iconSize = 'tiny',
   setTriggerRef,
+  isOpened,
   ...rest
 }) => {
   const { formatMessage } = useIntl();
@@ -40,10 +43,13 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
       ) : (
         <button
           className={clsx(
-            [styles.textButton],
-            'font-medium transition-all duration-normal',
+            styles.hamburger,
+            `${
+              isOpened
+                ? 'border-base-white hover:border-base-white'
+                : 'border-gray-200 hover:border-blue-400'
+            }`,
             {
-              [styles.underlined]: mode === 'underlined',
               'pointer-events-none': disabled,
             },
           )}
@@ -55,13 +61,22 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
           ref={setTriggerRef}
           {...rest}
         >
-          {buttonText || children}
+          {iconName && <Icon name={iconName} appearance={{ size: iconSize }} />}
+          {(buttonText || children) && (
+            <>
+              {iconName ? (
+                <span className="ml-2">{buttonText || children}</span>
+              ) : (
+                buttonText || children
+              )}
+            </>
+          )}
         </button>
       )}
     </>
   );
 };
 
-TextButton.displayName = displayName;
+Hamburger.displayName = displayName;
 
-export default TextButton;
+export default Hamburger;

@@ -28,6 +28,7 @@ const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
       ) : (
         <p className="text-blue-400 text-4 capitalize">{filterOptions}</p>
       )}
+      {/* @TODO button */}
       <button
         type="button"
         aria-label={formatMessage({ id: 'ariaLabel.closeFilter' })}

@@ -55,7 +55,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
               'text-sm min-h-[2.125rem] px-3 py-2': size === 'small',
               [styles.primarySolid]: mode === 'primarySolid',
               [styles.primaryOutline]: mode === 'primaryOutline',
-              [styles.primaryOutlineFulled]: mode === 'primaryOutlineFulled',
+              [styles.primaryOutlineFull]: mode === 'primaryOutlineFull',
               [styles.secondarySolid]: mode === 'secondarySolid',
               [styles.secondaryOutline]: mode === 'secondaryOutline',
               [styles.quinary]: mode === 'quinary',
@@ -68,7 +68,6 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
               'border border-gray-300 !text-gray-300 !bg-base-white':
                 disabled && isIconRight,
             },
-            className,
           )}
           disabled={disabled || loading}
           aria-label={ariaLabelText}

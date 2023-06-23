@@ -82,9 +82,9 @@ export const PrimaryOutline: Story = {
   },
 };
 
-export const PrimaryOutlineFulled: Story = {
+export const PrimaryOutlineFull: Story = {
   args: {
-    mode: 'primaryOutlineFulled',
+    mode: 'primaryOutlineFull',
   },
 };
 
@@ -132,9 +132,9 @@ Completed.argTypes = {
   },
 };
 
-export const PrimaryOutlineFulledWithIcon: Story = {
+export const primaryOutlineFullWithIcon: Story = {
   args: {
-    mode: 'primaryOutlineFulled',
+    mode: 'primaryOutlineFull',
     iconName: 'copy-simple',
     text: 'Copy address',
   },
