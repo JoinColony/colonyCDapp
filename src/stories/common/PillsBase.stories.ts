@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import PillsBase from '~v5/common/Pills/PillsBase';
 
 const meta: Meta<typeof PillsBase> = {
-  title: 'Common/Pills Base',
+  title: 'Common/Pills/Pills Base',
   component: PillsBase,
   argTypes: {
     mode: {
@@ -139,6 +139,15 @@ export const Team: Story = {
   args: {
     mode: 'team',
     text: 'Team',
+    pillSize: 'medium',
+  },
+};
+
+export const DedicatedCrown: Story = {
+  args: {
+    mode: 'top',
+    iconName: 'crown-simple',
+    text: 'Dedicated',
     pillSize: 'medium',
   },
 };
