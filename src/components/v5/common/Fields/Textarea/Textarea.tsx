@@ -4,17 +4,15 @@ import clsx from 'clsx';
 import debounce from 'lodash.debounce';
 
 import FormError from '~v5/shared/FormError';
-
 import { TextareaProps } from './types';
+import { DEFAULT_MAX_CHAR_NUMBER } from './consts';
 
 const displayName = 'v5.common.Textarea';
 
-const DEFAULT_MAX_CHAR_NUMBER = 90;
-
 const Textarea: FC<TextareaProps> = ({
-  textareaTitle = '',
+  textareaTitle,
   maxCharNumber = DEFAULT_MAX_CHAR_NUMBER,
-  placeholder = '',
+  placeholder,
   showFieldLimit,
 }) => {
   const { formatMessage } = useIntl();
@@ -46,7 +44,7 @@ const Textarea: FC<TextareaProps> = ({
   return (
     <div className="flex flex-col gap-1">
       {textareaTitle && (
-        <label htmlFor="message" className="text-gray-700 text-md font-medium">
+        <label htmlFor="message" className="text-gray-700 text-1">
           {textareaTitle}
         </label>
       )}
@@ -55,7 +53,7 @@ const Textarea: FC<TextareaProps> = ({
           'bg-base-white w-full md:min-w-[32rem] min-h-[5.75rem] rounded border py-3 px-3.5',
           {
             'border-gray-300': !isTyping,
-            'border-blue-200 shadow-[0_0_3px_3px_#EFF8FF]': isTyping,
+            'border-blue-200 shadow-lightBlue': isTyping,
             'border-red-400': isError,
           },
         )}
@@ -76,7 +74,6 @@ const Textarea: FC<TextareaProps> = ({
           </div>
         )}
       </div>
-
       {showFieldLimit && (
         <span className="flex justify-end text-gray-600 text-xs">
           {formatMessage({ id: 'characters.remaining' }, { maxCharNumber })}
