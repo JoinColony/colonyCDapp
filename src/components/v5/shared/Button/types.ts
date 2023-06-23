@@ -12,7 +12,7 @@ export type ButtonMode =
   | 'quinary'
   | 'completed';
 
-export type ButtonSize = 'default' | 'small';
+export type ButtonSize = 'default' | 'extraSmall' | 'small';
 
 export type TextButtonMode = 'defalt' | 'underlined';
 
@@ -25,8 +25,6 @@ export interface CommonButtonProps
   type?: 'submit' | 'reset' | 'button';
   loading?: boolean;
   title?: MessageDescriptor | string;
-  text?: MessageDescriptor | string;
-  textValues?: SimpleMessageValues;
   ariaLabel?: MessageDescriptor | string;
   setTriggerRef?: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
 }
@@ -42,18 +40,29 @@ export interface ButtonProps extends CommonButtonProps {
   iconSize?: IconSize;
   isIconRight?: boolean;
   className?: string;
+  text?: MessageDescriptor | string;
+  textValues?: SimpleMessageValues;
 }
 
 export interface TextButtonProps extends CommonButtonProps {
   mode?: TextButtonMode;
+  text?: MessageDescriptor | string;
+  textValues?: SimpleMessageValues;
 }
 
 export interface PendingButtonProps extends CommonButtonProps {
   isPending?: boolean;
+  text?: MessageDescriptor | string;
+  textValues?: SimpleMessageValues;
 }
 
 export interface HamburgerProps extends CommonButtonProps {
   iconName?: string;
   iconSize?: IconSize;
   isOpened?: boolean;
+}
+
+export interface CloseButtonProps extends CommonButtonProps {
+  iconSize?: IconSize;
+  className?: string;
 }

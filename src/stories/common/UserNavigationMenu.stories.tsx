@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import clsx from 'clsx';
 import React, { useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -15,7 +14,7 @@ import Token from '~common/Extensions/UserNavigation/partials/Token';
 import UserMenu from '~common/Extensions/UserNavigation/partials/UserMenu';
 import WalletPopover from '~common/Extensions/UserNavigation/partials/WalletPopover';
 import { useMobile } from '~hooks';
-import Button from '~v5/shared/Button';
+import Button, { Hamburger } from '~v5/shared/Button';
 import UserAvatar from '~v5/shared/UserAvatar';
 import { formatMessage } from '~utils/yup/tests/helpers';
 
@@ -92,20 +91,17 @@ const UserNavigationMenuNotConnected = () => {
   return (
     <Router>
       <div className="w-full flex justify-end relative">
-        <div className="flex items-center gap-1">
+        <div className="flex gap-1">
           {isButtonVisible && (
             <Button
-              mode="quinary"
+              mode="tertiary"
+              size="small"
               isFullRounded
               setTriggerRef={setWalletTriggerRef}
               iconName={isWalletVisible && isMobile ? 'close' : 'cardholder'}
               onClick={() =>
                 isMobile && setIsWalletButtonVisible((prevState) => !prevState)
               }
-              className={clsx('md:border-gray-200 md:hover:border-blue-400', {
-                'px-4 py-2.5 border-base-white': isWalletVisible && isMobile,
-                'p-0': !isWalletVisible && isMobile,
-              })}
             >
               {isWalletButtonVisible && formatMessage({ id: 'connectWallet' })}
             </Button>
@@ -120,14 +116,9 @@ const UserNavigationMenuNotConnected = () => {
           )}
           <div>
             {isWalletButtonVisible && (
-              <Button
-                className={clsx('md:border-gray-200 md:hover:border-blue-400', {
-                  'px-4 py-2.5 border-base-white': visible && isMobile,
-                  'p-0': !visible && isMobile,
-                })}
-                mode="quinary"
+              <Hamburger
+                isOpened={visible && isMobile}
                 iconName={visible && isMobile ? 'close' : 'list'}
-                isFullRounded
                 setTriggerRef={setTriggerRef}
                 onClick={() =>
                   isMobile && setIsButtonVisible((prevState) => !prevState)
@@ -180,7 +171,7 @@ const UserNavigationMenuConnected = () => {
   return (
     <Router>
       <div className="w-full flex justify-end relative">
-        <div className="flex items-center gap-1">
+        <div className="flex gap-1">
           {isButtonVisible && (
             <div className="flex items-center w-full justify-end gap-1">
               {mockNativeToken && <Token nativeToken={mockNativeToken} />}
@@ -196,15 +187,10 @@ const UserNavigationMenuConnected = () => {
             </div>
           )}
           <div>
-            <Button
-              className={clsx('md:border-gray-200 md:hover:border-blue-400', {
-                'px-4 py-2.5 border-base-white': visible && isMobile,
-                'p-0': !visible && isMobile,
-              })}
-              mode="quinary"
-              isFullRounded
-              setTriggerRef={setTriggerRef}
+            <Hamburger
+              isOpened={visible && isMobile}
               iconName={visible && isMobile ? 'close' : 'list'}
+              setTriggerRef={setTriggerRef}
               onClick={() =>
                 isMobile && setIsButtonVisible((prevState) => !prevState)
               }

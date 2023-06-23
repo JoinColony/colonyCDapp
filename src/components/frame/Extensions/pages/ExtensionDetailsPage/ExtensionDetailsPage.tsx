@@ -108,23 +108,25 @@ const ExtensionDetailsPage: FC = () => {
                   {activeTab === 0 && TabContent(extensionData)}
                   {activeTab === 1 && (
                     <li>
-                      {mockedExtensionSettings.map((item) => (
-                        <div
-                          key={item.title}
-                          className="border-b border-gray-200 py-4 last:border-none"
-                        >
-                          <div className="flex items-center justify-between text-1">
-                            <p>{item.title}</p>
-                            <div>
-                              -{' '}
-                              {item.complementaryLabel === 'percent'
-                                ? '%'
-                                : 'Hours'}
+                      {mockedExtensionSettings.map(
+                        ({ title, complementaryLabel, description }) => (
+                          <div
+                            key={title}
+                            className="border-b border-gray-200 py-4 last:border-none"
+                          >
+                            <div className="flex items-center justify-between text-1">
+                              <p>{title}</p>
+                              <div>
+                                -{' '}
+                                {complementaryLabel === 'percent'
+                                  ? '%'
+                                  : 'Hours'}
+                              </div>
                             </div>
+                            <p className="text-sm">{description}</p>
                           </div>
-                          <p className="text-sm">{item.description}</p>
-                        </div>
-                      ))}
+                        ),
+                      )}
                     </li>
                   )}
                 </motion.div>

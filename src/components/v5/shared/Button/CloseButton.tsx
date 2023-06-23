@@ -3,30 +3,28 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
-import { HamburgerProps } from './types';
+import { CloseButtonProps } from './types';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
-import styles from './Hamburger.module.css';
+import styles from './CloseButton.module.css';
 import Icon from '~shared/Icon';
 
-const displayName = 'v5.Button.Hamburger';
+const displayName = 'v5.Button.CloseButton';
 
-const Hamburger: FC<HamburgerProps> = ({
+const CloseButton: FC<CloseButtonProps> = ({
   disabled = false,
   loading = false,
   title,
   type = 'button',
   ariaLabel,
-  iconName = 'list',
-  iconSize = 'tiny',
+  iconSize = 'extraTiny',
   setTriggerRef,
-  isOpened,
+  className,
   ...rest
 }) => {
   const { formatMessage } = useIntl();
 
   const titleText =
     typeof title === 'string' ? title : title && formatMessage(title);
-
   const ariaLabelText =
     typeof ariaLabel === 'string'
       ? ariaLabel
@@ -38,17 +36,9 @@ const Hamburger: FC<HamburgerProps> = ({
         <SpinnerLoader appearance={{ size: 'medium' }} />
       ) : (
         <button
-          className={clsx(
-            styles.hamburger,
-            `${
-              isOpened
-                ? 'border-base-white hover:border-base-white'
-                : 'border-gray-200 hover:border-blue-400'
-            }`,
-            {
-              'pointer-events-none': disabled,
-            },
-          )}
+          className={clsx(styles.closeButton, className, {
+            'pointer-events-none': disabled,
+          })}
           disabled={disabled || loading}
           aria-label={ariaLabelText}
           aria-busy={loading}
@@ -57,13 +47,13 @@ const Hamburger: FC<HamburgerProps> = ({
           ref={setTriggerRef}
           {...rest}
         >
-          {iconName && <Icon name={iconName} appearance={{ size: iconSize }} />}
+          <Icon name="close" appearance={{ size: iconSize }} />
         </button>
       )}
     </>
   );
 };
 
-Hamburger.displayName = displayName;
+CloseButton.displayName = displayName;
 
-export default Hamburger;
+export default CloseButton;

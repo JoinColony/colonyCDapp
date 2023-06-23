@@ -5,12 +5,12 @@ import { useIntl } from 'react-intl';
 
 import { useDetectClickOutside, useAppContext, useMobile } from '~hooks';
 import ColoniesDropdown from './partials/ColoniesDropdown';
-import Icon from '~shared/Icon';
 import { useSelectedColony } from './hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
 import ColonyAvatarWrapper from './partials/ColonyAvatarWrapper';
 import ColonyDropdownMobile from './partials/ColonyDropdownMobile';
 import styles from './ColonySwitcher.module.css';
+import { CloseButton } from '~v5/shared/Button';
 
 const displayName = 'common.Extensions.ColonySwitcher';
 
@@ -114,21 +114,14 @@ const ColonySwitcher = () => {
           )}
         </div>
       )}
-      {/* @TODO button */}
       {isMobile && isOpen && (
-        <button
-          type="button"
+        <CloseButton
           aria-label={formatMessage({ id: 'ariaLabel.closeDropdown' })}
           onClick={() => setIsOpen(false)}
-          className={clsx(
-            'flex items-center transition-all duration-normal hover:text-gray-500',
-            {
-              'w-[3.5rem]': !isMobile,
-            },
-          )}
-        >
-          <Icon name="close" appearance={{ size: 'extraTiny' }} />
-        </button>
+          className={clsx({
+            'w-[3.5rem]': !isMobile,
+          })}
+        />
       )}
     </div>
   );

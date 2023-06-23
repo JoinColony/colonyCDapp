@@ -73,8 +73,8 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
           </div>
           {isMobile && (
             <div className="flex gap-2 w-full mt-3">
-              <PopoverButton type="deposit" isFullWidth />
-              <PopoverButton type="withdraw" isFullWidth />
+              <PopoverButton type="deposit" isFullSize />
+              <PopoverButton type="withdraw" isFullSize />
             </div>
           )}
         </div>
@@ -98,7 +98,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
           </div>
           {isMobile && (
             <div className="mt-3">
-              <PopoverButton type="view" isFullWidth />
+              <PopoverButton type="view" isFullSize />
             </div>
           )}
         </div>
