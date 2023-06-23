@@ -2,10 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 
 import { tabList } from '~common/Extensions/UserHub/consts';
-import Select from '~v5/shared/Select';
+import Select from '~v5/common/Fields/Select';
 
 const meta: Meta<typeof Select> = {
-  title: 'Shared/Fields/Select',
+  title: 'Common/Fields/Select',
   component: Select,
 };
 
