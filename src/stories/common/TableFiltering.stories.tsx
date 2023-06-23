@@ -21,5 +21,7 @@ export const WithFilterArrayOptions: Story = {
   args: {
     filterType: 'team',
     filterOptions: ['administration', 'dedicated'],
+    // @ts-ignore
+    onClick: () => alert('Close'),
   },
 };

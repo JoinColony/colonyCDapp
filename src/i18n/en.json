@@ -523,5 +523,8 @@
   "empty.content.title.transactions": "There is no transactions to display",
   "empty.content.subtitle.transactions": "New transactions will display here",
   "handle.unselect.transaction": "handle unselect transaction",
-  "missing.colonies": "You don't have created colonies"
+  "missing.colonies": "You don't have created colonies",
+  "user.typing": "The user is actively typing....",
+  "characters.remaining": "{maxCharNumber} characters remaining",
+  "too.many.characters": "Too many characters"
 }
