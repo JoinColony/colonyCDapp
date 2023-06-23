@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
-import ExtensionsStatusBadge from '~common/Extensions/ExtensionStatusBadge';
-import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge/types';
+import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
+import { ExtensionStatusBadgeMode } from '~v5/common/Pills/ExtensionStatusBadge/types';
 import { StakesProps } from '../types';
 
 const displayName =

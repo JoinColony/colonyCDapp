@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 
 import { MAX_INSTALLED_NUMBER } from '~constants';
 import { ActiveInstallsProps } from './types';
-import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
+import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import { SpinnerLoader } from '~shared/Preloaders';
 
 const displayName = 'frame.Extensions.pages.partials.ActiveInstalls';

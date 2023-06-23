@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge/types';
+import { ExtensionStatusBadgeMode } from '~v5/common/Pills/ExtensionStatusBadge/types';
 import { isInstalledExtensionData } from '~utils/extensions';
 
 export const useExtensionsBadge = (extensionData) => {

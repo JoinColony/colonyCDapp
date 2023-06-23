@@ -1,5 +1,5 @@
 import { MessageDescriptor } from 'react-intl';
-import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge/types';
+import { ExtensionStatusBadgeMode } from '~v5/common/Pills/ExtensionStatusBadge/types';
 
 import { AnyExtensionData } from '~types';
 

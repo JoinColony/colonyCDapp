@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { ExtensionItemProps } from './types';
-import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
+import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';
 import { useExtensionItem } from './hooks';
