@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import Textarea from '~v5/common/Fields/Textarea';
 
 const meta: Meta<typeof Textarea> = {
-  title: 'Common/Textarea',
+  title: 'Common/Fields/Textarea',
   component: Textarea,
 };
 
