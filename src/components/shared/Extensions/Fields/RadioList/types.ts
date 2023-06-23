@@ -1,5 +1,5 @@
 import { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form';
-import { ExtensionStatusBadgeProps } from '~v5/common/Pills/types';
+import { PillsProps } from '~v5/common/Pills/types';
 import { TooltipProps } from '~shared/Extensions/Tooltip/types';
 
 export interface RadioItemProps {
@@ -7,7 +7,7 @@ export interface RadioItemProps {
   label: string;
   description?: string;
   disabled?: boolean;
-  badge?: ExtensionStatusBadgeProps;
+  badge?: PillsProps;
   tooltip?: TooltipProps;
 }
 
