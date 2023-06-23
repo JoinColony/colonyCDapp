@@ -116,10 +116,11 @@ const PermissionManagementForm = ({
 
   const {
     userHasPermission,
-    canCreateMotion,
     disabledInput,
     disabledSubmit,
     canOnlyForceAction,
+    hasMotionCompatibleVersion,
+    showPermissionErrors,
   } = usePermissionManagementDialogStatus(
     colony,
     requiredRoles,
@@ -165,7 +166,7 @@ const PermissionManagementForm = ({
           selectedDomainId={selectedDomainId}
         />
       </DialogSection>
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection>
           <PermissionRequiredInfo requiredRoles={requiredRoles} />
         </DialogSection>
@@ -224,12 +225,12 @@ const PermissionManagementForm = ({
           dataTest="permissionAnnotation"
         />
       </DialogSection>
-      {!canCreateMotion && (
+      {!hasMotionCompatibleVersion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
         </DialogSection>
       )}
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage
             requiredPermissions={[ColonyRole.Architecture]}
@@ -239,8 +240,8 @@ const PermissionManagementForm = ({
       {canOnlyForceAction && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NotEnoughReputation
-            appearance={{ marginTop: 'negative' }}
             domainId={selectedDomainId}
+            includeForceCopy={userHasPermission}
           />
         </DialogSection>
       )}

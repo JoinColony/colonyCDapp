@@ -95,9 +95,10 @@ Props) => {
     userHasPermission,
     disabledSubmit,
     disabledInput,
-    canCreateMotion,
     canCreatePayment,
     canOnlyForceAction,
+    hasMotionCompatibleVersion,
+    showPermissionErrors,
   } = useCreatePaymentDialogStatus(colony, requiredRoles, enabledExtensionData);
 
   const formattedData = verifiedUsers.map((user) => ({
@@ -124,7 +125,7 @@ Props) => {
           selectedDomainId={fromDomainId}
         />
       </DialogSection>
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection>
           <PermissionRequiredInfo requiredRoles={requiredRoles} />
         </DialogSection>
@@ -188,7 +189,7 @@ Props) => {
           dataTest="paymentAnnotation"
         />
       </DialogSection>
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection>
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
@@ -205,10 +206,11 @@ Props) => {
           <NotEnoughReputation
             appearance={{ marginTop: 'negative' }}
             domainId={fromDomainId}
+            includeForceCopy={userHasPermission}
           />
         </DialogSection>
       )}
-      {!canCreateMotion && (
+      {!hasMotionCompatibleVersion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
         </DialogSection>

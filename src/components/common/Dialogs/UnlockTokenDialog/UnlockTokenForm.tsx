@@ -78,8 +78,9 @@ const UnlockTokenForm = ({
     userHasPermission,
     disabledInput,
     disabledSubmit,
-    canCreateMotion,
     canOnlyForceAction,
+    hasMotionCompatibleVersion,
+    showPermissionErrors,
   } = useActionDialogStatus(
     colony,
     requiredRoles,
@@ -109,7 +110,7 @@ const UnlockTokenForm = ({
           isRootMotion
         />
       </DialogSection>
-      {!userHasPermission && ( // && isNativeTokenLocked
+      {showPermissionErrors && ( // && isNativeTokenLocked
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <div className={styles.wrapper}>
             <PermissionRequiredInfo requiredRoles={[ColonyRole.Root]} />
@@ -148,17 +149,17 @@ const UnlockTokenForm = ({
           </DialogSection>
         </>
       )}
-      {!userHasPermission && ( // && isNativeTokenLocked
+      {showPermissionErrors && ( // && isNativeTokenLocked
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
       )}
       {canOnlyForceAction && ( // && isNativeTokenLocked
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <NotEnoughReputation />
+          <NotEnoughReputation includeForceCopy={userHasPermission} />
         </DialogSection>
       )}
-      {!canCreateMotion && (
+      {!hasMotionCompatibleVersion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
         </DialogSection>

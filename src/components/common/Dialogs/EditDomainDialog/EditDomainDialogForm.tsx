@@ -77,8 +77,9 @@ const EditDomainDialogForm = ({
     userHasPermission,
     disabledSubmit,
     disabledInput,
-    canCreateMotion,
     canOnlyForceAction,
+    hasMotionCompatibleVersion,
+    showPermissionErrors,
   } = useEditDomainDialogStatus(
     colony,
     requiredRoles,
@@ -135,7 +136,7 @@ const EditDomainDialogForm = ({
           selectedDomainId={domainId}
         />
       </DialogSection>
-      {domainOptions.length > 0 && !userHasPermission && (
+      {domainOptions.length > 0 && showPermissionErrors && (
         <DialogSection>
           <PermissionRequiredInfo requiredRoles={requiredRoles} />
         </DialogSection>
@@ -177,7 +178,7 @@ const EditDomainDialogForm = ({
           dataTest="editDomainAnnotation"
         />
       </DialogSection>
-      {domainOptions.length > 0 && !userHasPermission && (
+      {domainOptions.length > 0 && showPermissionErrors && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage
             requiredPermissions={[ColonyRole.Architecture]}
@@ -190,10 +191,11 @@ const EditDomainDialogForm = ({
           <NotEnoughReputation
             appearance={{ marginTop: 'negative' }}
             domainId={domainId}
+            includeForceCopy={userHasPermission}
           />
         </DialogSection>
       )}
-      {!canCreateMotion && (
+      {!hasMotionCompatibleVersion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
         </DialogSection>

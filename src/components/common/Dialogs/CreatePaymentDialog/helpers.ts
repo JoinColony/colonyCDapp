@@ -62,27 +62,19 @@ export const useCreatePaymentDialogStatus = (
   const { watch } = useFormContext();
   const { fromDomainId, motionDomainId } = watch();
   const { isOneTxPaymentEnabled } = enabledExtensionData;
-  const {
-    userHasPermission,
-    disabledSubmit,
-    disabledInput: defaultDisabledInput,
-    canCreateMotion,
-    canOnlyForceAction,
-  } = useActionDialogStatus(
-    colony,
-    requiredRoles,
-    [fromDomainId],
-    enabledExtensionData,
-    motionDomainId,
-  );
+  const { disabledInput: defaultDisabledInput, ...rest } =
+    useActionDialogStatus(
+      colony,
+      requiredRoles,
+      [fromDomainId],
+      enabledExtensionData,
+      motionDomainId,
+    );
   const disabledInput = defaultDisabledInput || !isOneTxPaymentEnabled;
 
   return {
-    userHasPermission,
+    ...rest,
     disabledInput,
-    disabledSubmit,
-    canCreateMotion,
     canCreatePayment: isOneTxPaymentEnabled,
-    canOnlyForceAction,
   };
 };

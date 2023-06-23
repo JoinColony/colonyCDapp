@@ -35,6 +35,10 @@
   border-bottom: 1px solid color-mod(var(--grey-purple) alpha(15%));
 }
 
+.item:last-child {
+  border-bottom: none;
+}
+
 .tooltip {
   width: 220px;
 }

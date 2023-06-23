@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
+
 import { useAppContext } from '~hooks';
 import { SetStateFn } from '~types';
 
 import {
+  SLIDER_AMOUNT_KEY,
   StakingSliderDescription,
   StakingSliderLabel,
   StakingValidationMessage,
@@ -38,10 +41,21 @@ const StakingSlider = ({
     enoughReputationToStakeMinimum,
     userMaxStake,
   } = useStakingSlider(isObjection);
+  const { watch, setValue } = useFormContext();
 
   const displayErrMsg =
     !!user && !isLoadingData && totalPercentageStaked !== 200;
   const displayLabel = displayErrMsg && enoughReputationToStakeMinimum;
+
+  useEffect(() => {
+    const amount = watch(SLIDER_AMOUNT_KEY);
+    const userStakeLimitPercentage = userStakeLimitDecimal.times(100);
+
+    if (userStakeLimitPercentage.lessThan(amount)) {
+      setLimitExceeded(true);
+      setValue(SLIDER_AMOUNT_KEY, userStakeLimitPercentage.toString());
+    }
+  }, [userStakeLimitDecimal, watch, setLimitExceeded, setValue]);
 
   return (
     <>

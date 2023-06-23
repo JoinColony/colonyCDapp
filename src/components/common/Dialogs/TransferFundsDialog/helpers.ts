@@ -61,13 +61,7 @@ export const useTransferFundsDialogStatus = (
     wallet?.address ?? '',
     fromDomainId,
   ]);
-  const {
-    userHasPermission,
-    disabledSubmit,
-    disabledInput,
-    canCreateMotion,
-    canOnlyForceAction,
-  } = useActionDialogStatus(
+  const actionDialogStatus = useActionDialogStatus(
     colony,
     requiredRoles,
     [fromDomainId, toDomainId],
@@ -77,11 +71,7 @@ export const useTransferFundsDialogStatus = (
   const hasRoleInFromDomain = userHasRole(fromDomainRoles, ColonyRole.Funding);
 
   return {
-    userHasPermission,
-    disabledInput,
-    disabledSubmit,
-    canCreateMotion,
-    canOnlyForceAction,
+    ...actionDialogStatus,
     hasRoleInFromDomain,
   };
 };

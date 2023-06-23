@@ -16,7 +16,10 @@
   display: flex;
   flex-direction: column;
   grid-area: details;
-  row-gap: 100px;
+}
+
+.widgets > div:last-child {
+  margin-top: 100px;
 }
 
 @media screen and query700 {

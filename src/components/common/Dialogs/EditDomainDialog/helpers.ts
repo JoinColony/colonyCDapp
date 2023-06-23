@@ -29,11 +29,9 @@ export const useEditDomainDialogStatus = (
   } = useFormContext();
   const { domainId, motionDomainId } = watch();
   const {
-    userHasPermission,
     disabledSubmit: defaultDisabledSubmit,
     disabledInput: defaultDisabledInput,
-    canCreateMotion,
-    canOnlyForceAction,
+    ...rest
   } = useActionDialogStatus(
     colony,
     requiredRoles,
@@ -50,11 +48,9 @@ export const useEditDomainDialogStatus = (
   const disabledInput = defaultDisabledInput || domainOptions.length === 0;
 
   return {
-    userHasPermission,
+    ...rest,
     disabledInput,
     disabledSubmit,
-    canCreateMotion,
-    canOnlyForceAction,
   };
 };
 
