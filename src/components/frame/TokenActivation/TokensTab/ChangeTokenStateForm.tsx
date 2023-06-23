@@ -130,7 +130,7 @@ const ChangeTokenStateForm = ({
         actionType={actionType}
         validationSchema={validationSchema}
         transform={transform}
-        onSuccess={(_, __, { reset }) => {
+        onSuccess={(_, { reset }) => {
           pollTokenBalance();
           reset();
         }}
