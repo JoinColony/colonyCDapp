@@ -261,12 +261,13 @@ type Query {
   getMembersForColony(input: MembersForColonyInput): MembersForColonyReturn
     @function(name: "getMembersForColony-${env}")
   getMotionState(input: GetMotionStateInput): Int!
-    @function(name: "fetchMotionState")
+    @function(name: "fetchMotionState-${env}")
   getVoterRewards(input: GetVoterRewardsInput): VoterRewardsReturn
-    @function(name: "fetchVoterRewards")
+    @function(name: "fetchVoterRewards-${env}")
   getMotionTimeoutPeriods(
     input: GetMotionTimeoutPeriodsInput
-  ): GetMotionTimeoutPeriodsReturn @function(name: "fetchMotionTimeoutPeriods")
+  ): GetMotionTimeoutPeriodsReturn
+    @function(name: "fetchMotionTimeoutPeriods-${env}")
 }
 
 type Mutation {
@@ -353,7 +354,8 @@ type ColonyID {
 type Colony @model {
   id: ID! @index(name: "byAddress", queryField: "getColonyByAddress") # colony contract address
   name: String! @index(name: "byName", queryField: "getColonyByName")
-  nativeTokenId: ID! @index(name: "byNativeTokenId", queryField: "getColoniesByNativeTokenId")
+  nativeTokenId: ID!
+    @index(name: "byNativeTokenId", queryField: "getColoniesByNativeTokenId")
   nativeToken: Token! @hasOne(fields: ["nativeTokenId"])
   tokens: [Token] @manyToMany(relationName: "ColonyTokens")
   status: ColonyStatus
