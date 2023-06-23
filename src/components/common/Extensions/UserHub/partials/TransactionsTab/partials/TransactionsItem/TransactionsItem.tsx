@@ -89,7 +89,7 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
                           statusContent === TRANSACTION_STATUSES.SUCCEEDED),
                       'before:bg-negative-400':
                         isCurrentAction &&
-                        status === TRANSACTION_STATUSES.FAILED,
+                        statusContent === TRANSACTION_STATUSES.FAILED,
                       'before:!bg-blue-400': isCurrentAction && isPending,
                     })}
                   >
@@ -120,7 +120,7 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
                       {isPending && (
                         <Icon
                           name="spinner-gap"
-                          className="ml-[0.59375rem] w-[0.8125rem] h-[0.8125rem] animate-spin text-blue-400"
+                          className="ml-2.5 w-[0.8125rem] h-[0.8125rem] animate-spin text-blue-400"
                           appearance={{ size: 'tiny' }}
                         />
                       )}

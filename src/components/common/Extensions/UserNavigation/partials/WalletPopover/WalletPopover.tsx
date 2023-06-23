@@ -34,7 +34,6 @@ const WalletPopover: FC<WalletPopoverProps> = ({
           isFullRounded
           onClick={connectWallet}
           iconName="cardholder"
-          iconSize="tiny"
         >
           {formatMessage({ id: 'connectWallet' })}
         </Button>

@@ -29,7 +29,7 @@ const TransactionStatus: FC<TransactionStatusProps> = ({ status, date }) => {
       {pending ? (
         <Icon
           name="spinner-gap"
-          className="ml-[0.59375rem] w-[0.8125rem] h-[0.8125rem] animate-spin text-blue-400"
+          className="ml-2.5 w-[0.8125rem] h-[0.8125rem] animate-spin text-blue-400"
           appearance={{ size: 'tiny' }}
         />
       ) : (
