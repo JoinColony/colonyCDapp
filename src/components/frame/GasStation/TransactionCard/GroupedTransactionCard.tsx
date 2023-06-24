@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import { Tooltip } from '~shared/Popover';
 // import { useDialog } from '~shared/Dialog';
-// import ExternalLink from '~shared/ExternalLink';
+// import ExternalLink from '~shared/Extensions/ExternalLink';
 
 // import TransactionAlertDialog from '~dialogs/TransactionAlertDialog';
 

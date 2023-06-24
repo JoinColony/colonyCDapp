@@ -453,6 +453,7 @@
   "ariaLabel.openDropdown": "Open dropdown",
   "ariaLabel.backToMainMenu": "Back to main menu",
   "ariaLabel.closeDropdown": "Close dropdown",
+  "ariaLabel.closeFilter": "Close filter",
   "userInfo.about.section": "about",
   "userInfo.colonyReputation.section": "Colony reputation",
   "userInfo.permissions.section": "Permissions",
@@ -566,8 +567,13 @@
   "createNewDecisions": "CREATE NEW DECISIONS",
   "manageColony": "MANAGE COLONY",
   "createNewPayments": "CREATE NEW PAYMENTS",
-  "empty.content.title": "There is no {contentName} to display",
-  "empty.content.subtitle": "New {contentName} will display here",
+  "empty.content.title.stakes": "There is no stakes to display",
+  "empty.content.subtitle.stakes": "New stakes will display here",
+  "empty.content.title.transactions": "There is no transactions to display",
+  "empty.content.subtitle.transactions": "New transactions will display here",
   "handle.unselect.transaction": "handle unselect transaction",
-  "missing.colonies": "You don't have created colonies"
+  "missing.colonies": "You don't have created colonies",
+  "user.typing": "The user is actively typing....",
+  "characters.remaining": "{maxCharNumber} characters remaining",
+  "too.many.characters": "Too many characters"
 }

@@ -10,8 +10,8 @@ import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberR
 import Token from '~common/Extensions/UserNavigation/partials/Token';
 import { ContextModule, getContext } from '~context';
 import { useDetectClickOutside, useMobile } from '~hooks';
-import Button from '~shared/Extensions/Button';
-import UserAvatar from '~shared/Extensions/UserAvatar';
+import Button from '~v5/shared/Button';
+import UserAvatar from '~v5/shared/UserAvatar';
 import Icon from '~shared/Icon';
 
 const meta: Meta<typeof UserNavigation> = {
@@ -69,7 +69,7 @@ const UserNavigationWithData = () => {
           {nativeToken && <Token nativeToken={nativeToken} />}
 
           <Button
-            mode="tertiaryOutline"
+            mode="tertiary"
             isFullRounded
             onClick={() => setIsOpen(!isOpen)}
           >
@@ -81,9 +81,7 @@ const UserNavigationWithData = () => {
               />
             </div>
           </Button>
-          <Button mode="tertiaryOutline" isFullRounded>
-            <Icon name="list" appearance={{ size: 'tiny' }} />
-          </Button>
+          <Button mode="tertiary" isFullRounded iconName="list" />
         </div>
         {!isMobile && isOpen && (
           <div
@@ -104,13 +102,10 @@ const UserNavigationWithData = () => {
 
 const UserNavigationNotConnected = () => (
   <div className="flex items-center w-full justify-end gap-1">
-    <Button mode="tertiaryOutline" isFullRounded>
-      <Icon name="cardholder" appearance={{ size: 'tiny' }} />
-      <p className="text-3 ml-1">Connect wallet</p>
+    <Button mode="tertiary" isFullRounded iconName="cardholder">
+      Connect wallet
     </Button>
-    <Button mode="tertiaryOutline" isFullRounded>
-      <Icon name="list" appearance={{ size: 'tiny' }} />
-    </Button>
+    <Button mode="tertiary" isFullRounded iconName="list" />
   </div>
 );
 

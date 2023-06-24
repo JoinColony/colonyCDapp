@@ -5,7 +5,3 @@
 .wrapper {
   @apply flex border-r border-gray-100 flex-col justify-between sm:w-[13.75rem] sm:min-h-[27.75rem] shrink-0;
 }
-
-.emptyContent {
-  @apply flex items-center justify-center w-[2.375rem] h-[2.375rem] rounded-full bg-gray-200 border-[0.375rem] border-gray-50 shrink-0;
-}

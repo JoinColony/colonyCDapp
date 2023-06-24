@@ -7,7 +7,7 @@ import SpecialHourInput from './SpecialHourInput';
 
 const displayName = 'Extensions.Accordion.partials.AccordionContent';
 
-const AccordionContent: FC<AccordionItemProps> = ({ content }) => (
+const AccordionContent: FC<AccordionItemProps> = ({ content, errors }) => (
   <div className="relative">
     {content?.map((item) => (
       <div key={item.id}>
@@ -20,7 +20,7 @@ const AccordionContent: FC<AccordionItemProps> = ({ content }) => (
                 minValue={item.inputData.minValue}
                 maxValue={item.inputData.maxValue}
                 register={item.inputData.register}
-                errors={item.inputData.errors}
+                errors={errors}
               />
             ) : (
               <SpecialHourInput
@@ -28,7 +28,7 @@ const AccordionContent: FC<AccordionItemProps> = ({ content }) => (
                 minValue={item.inputData.minValue}
                 maxValue={item.inputData.maxValue}
                 register={item.inputData.register}
-                errors={item.inputData.errors}
+                errors={errors}
               />
             )}
           </div>

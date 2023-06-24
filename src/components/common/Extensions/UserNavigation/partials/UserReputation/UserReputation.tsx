@@ -12,9 +12,9 @@ import {
 } from '~hooks';
 
 import UserHub from '~common/Extensions/UserHub';
-import Button from '~shared/Extensions/Button';
-import PopoverBase from '~shared/Extensions/PopoverBase';
-import UserAvatar from '~shared/Extensions/UserAvatar';
+import Button from '~v5/shared/Button';
+import PopoverBase from '~v5/shared/PopoverBase';
+import UserAvatar from '~v5/shared/UserAvatar';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
 import { UserReputationProps } from '../../types';
 import { transactionCount } from '~frame/GasStation/transactionGroup';
@@ -84,6 +84,7 @@ const UserReputation: FC<UserReputationProps> = ({
   const prevTxCount: number | void = usePrevious(txCount);
 
   useEffect(() => {
+    // this confition always will be false until we will be able to trigger transactions in Extension page
     if (prevTxCount != null && txCount > prevTxCount) {
       setOpen(true);
       setTxNeedsSigning(true);

@@ -1,6 +1,7 @@
 import { MessageDescriptor } from 'react-intl';
-import { ColonyReputationItem } from '~shared/Extensions/UserAvatarPopover/types';
+
 import { AnyExtensionData } from '~types';
+import { ColonyReputationItem } from '~v5/shared/UserAvatarPopover/types';
 
 export interface PermissionsProps {
   data: {

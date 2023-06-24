@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import ThreeColumns from '~frame/Extensions/ThreeColumns';
+import ThreeColumns from '~v5/frame/ThreeColumns';
 
 const meta: Meta<typeof ThreeColumns> = {
   title: 'Frame/Three Columns',

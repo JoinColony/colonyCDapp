@@ -2,7 +2,7 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 
 import styles from '../ReputationTab.module.css';
-import TitleLabel from '~shared/Extensions/TitleLabel';
+import TitleLabel from '~v5/shared/TitleLabel';
 
 const displayName =
   'common.Extensions.UserHub.partials.ReputationTab.partials.PendingReputation';

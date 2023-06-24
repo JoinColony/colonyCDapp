@@ -9,7 +9,7 @@ import {
 } from '~common/Extensions/UserHub/partials/StakesTab/consts';
 import Tabs from '~shared/Extensions/Tabs';
 import { useMobile } from '~hooks';
-import EmptyContent from '../EmptyContent';
+import EmptyContent from '~v5/common/EmptyContent';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 
@@ -76,7 +76,11 @@ const StakesTab = () => {
                   />
                 ))
               ) : (
-                <EmptyContent contentName="stakes" />
+                <EmptyContent
+                  title={{ id: 'empty.content.title.stakes' }}
+                  description={{ id: 'empty.content.subtitle.stakes' }}
+                  icon="binoculars"
+                />
               )}
             </motion.div>
           </AnimatePresence>

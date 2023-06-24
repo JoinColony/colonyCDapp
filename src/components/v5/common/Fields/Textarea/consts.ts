@@ -1,0 +1,1 @@
+export const DEFAULT_MAX_CHAR_NUMBER = 90;

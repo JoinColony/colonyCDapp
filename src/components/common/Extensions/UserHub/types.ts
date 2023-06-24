@@ -17,7 +17,3 @@ export interface UserHubProps {
   setAutoOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
   isTransactionTabVisible: boolean;
 }
-
-export interface EmptyContentProps {
-  contentName: string;
-}

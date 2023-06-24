@@ -2,14 +2,14 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { WalletPopoverProps } from './types';
-import PopoverBase from '~shared/Extensions/PopoverBase';
 import Icon from '~shared/Icon';
-import Link from '~shared/Extensions/Link';
+import Link from '~v5/shared/Link';
 import styles from './WalletPopover.module.css';
 import WalletPopoverOption from '../WalletPopoverOption';
-import Button from '~shared/Extensions/Button';
+import Button from '~v5/shared/Button';
 import { useAppContext, useMobile } from '~hooks';
 import TitledContent from '~common/Extensions/TitledContent';
+import PopoverBase from '~v5/shared/PopoverBase';
 
 const displayName = 'common.Extensions.UserNavigation.partials.WalletPopover';
 

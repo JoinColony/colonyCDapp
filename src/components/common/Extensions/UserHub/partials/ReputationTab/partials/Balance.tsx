@@ -8,7 +8,7 @@ import styles from '../ReputationTab.module.css';
 import { BalanceProps } from '../types';
 import PopoverButton from '~shared/Extensions/PopoverButton';
 import { useMobile } from '~hooks';
-import TitleLabel from '~shared/Extensions/TitleLabel';
+import TitleLabel from '~v5/shared/TitleLabel';
 
 const displayName =
   'common.Extensions.UserHub.partials.ReputationTab.partials.Balance';

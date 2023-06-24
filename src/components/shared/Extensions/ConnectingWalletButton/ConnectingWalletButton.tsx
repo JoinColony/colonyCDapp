@@ -2,7 +2,7 @@ import React, { useLayoutEffect } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useAppContext } from '~hooks';
-import Button from '~shared/Extensions/Button';
+import Button from '~v5/shared/Button';
 import { getLastWallet } from '~utils/autoLogin';
 
 const displayName = 'Extensions.ConnectingWalletButton';

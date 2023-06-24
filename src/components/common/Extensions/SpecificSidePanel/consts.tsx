@@ -1,10 +1,10 @@
 import React from 'react';
 
-import UserAvatarPopover from '~shared/Extensions/UserAvatarPopover';
 import {
   colonyReputationItems,
   permissionsItems,
-} from '~shared/Extensions/UserAvatarPopover/partials/consts';
+} from '~v5/shared/UserAvatarPopover/partials/consts';
+import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
 
 export const sidePanelData = [
   {

@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import Button from '~shared/Extensions/Button';
+import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
-import UserAvatar from '~shared/Extensions/UserAvatar';
+import UserAvatar from '~v5/shared/UserAvatar';
 import { NavigationToolsProps } from './types';
 import Token from '~common/Extensions/UserNavigation/partials/Token';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';

@@ -33,8 +33,7 @@ const fileReaderFactory = (options?: Partial<FileReaderOptions>) => {
         if (!evt || !evt.target || !evt.target.result) {
           reject(
             new Error(
-              'An unexpected error occurred while trying to read the file ' +
-                'sent.',
+              'An unexpected error occurred while trying to read the file sent.',
             ),
           );
         }
