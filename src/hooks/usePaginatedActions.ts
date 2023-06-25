@@ -31,13 +31,17 @@ export const usePaginatedActions = (): UsePaginatedActionsReturn => {
       colonyAddress: colony?.colonyAddress ?? '',
       limit: ITEMS_PER_PAGE,
       sortDirection,
+      filter: { showInActionsList: { eq: true } },
     },
     skip: !colony,
     fetchPolicy: 'network-only',
   });
   const { items, nextToken } = data?.getActionsByColony || {};
+  const [visibleActionsCount, setVisibleActionsCount] =
+    useState(ITEMS_PER_PAGE);
+
   const actions = items?.filter(notNull) || [];
-  const hasMoreActions = !!nextToken;
+  const hasMoreActions = visibleActionsCount < actions.length || !!nextToken;
 
   const handleSortDirectionChange: SortDirectionChangeHandler = (
     newSortDirection,
@@ -45,19 +49,24 @@ export const usePaginatedActions = (): UsePaginatedActionsReturn => {
     setSortDirection(newSortDirection);
   };
 
-  const loadMoreActions = () => {
+  const fetchMoreActions = nextToken && actions.length < visibleActionsCount;
+  if (fetchMoreActions) {
     fetchMore({
       variables: {
         nextToken,
       },
     });
+  }
+
+  const loadMoreActions = () => {
+    setVisibleActionsCount((count) => count + ITEMS_PER_PAGE);
   };
 
   return {
     loading,
     sortDirection,
     onSortDirectionChange: handleSortDirectionChange,
-    actions,
+    actions: actions.slice(0, visibleActionsCount),
     hasMoreActions,
     loadMoreActions,
   };
