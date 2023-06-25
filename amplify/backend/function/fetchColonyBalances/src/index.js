@@ -8,44 +8,54 @@ const {
 const { graphqlRequest } = require('./utils');
 const { getColony } = require('./queries');
 
-let networkAddress;
-try {
-  const artifacts = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
-  networkAddress = artifacts.etherRouterAddress;
-} catch (error) {
-  // silent error
-  // means we're in a production environment without access to the contract build artifacts
-}
-
 Logger.setLogLevel(Logger.levels.ERROR);
 
-const API_KEY = process.env.APPSYNC_API_KEY || 'da2-fakeApiId123456';
-const GRAPHQL_URI =
-  process.env.AWS_APPSYNC_GRAPHQL_URL || 'http://localhost:20002/graphql';
-const RPC_URL =
-  process.env.CHAIN_RPC_ENDPOINT || 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
-const NETWORK = process.env.CHAIN_RPC_ENDPOINT || Network.Custom;
-const NETWORK_ADDRESS = process.env.CHAIN_NETWORK_CONTRACT || networkAddress;
+let apiKey = 'da2-fakeApiId123456';
+let graphqlURL = 'http://localhost:20002/graphql';
+let rpcURL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let network = Network.Custom;
+let networkAddress;
 
-const provider = new providers.JsonRpcProvider(RPC_URL);
+const setEnvVariables = async () => {
+  const ENV = process.env.ENV;
+  if (ENV === 'qa') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [networkAddress, apiKey, graphqlURL, rpcURL, network] = await getParams([
+      'networkContractAddress',
+      'appsyncApiKey',
+      'graphqlUrl',
+      'chainRpcEndpoint',
+      'chainNetwork',
+    ]);
+  } else {
+    const {
+      etherRouterAddress,
+    } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+    networkAddress = etherRouterAddress;
+  }
+};
 
 exports.handler = async ({ source: { id: colonyAddress } }) => {
+  try {
+    await setEnvVariables();
+
   const balances = [];
 
   const response = await graphqlRequest(
     getColony,
     { address: colonyAddress },
-    GRAPHQL_URI,
-    API_KEY,
+      graphqlURL,
+      apiKey,
   );
   const { getColony: colony } = response?.data || {};
 
   if (!colony) {
-    return null;
+      return { items: [] };
   }
 
-  const networkClient = await getColonyNetworkClient(NETWORK, provider, {
-    networkAddress: NETWORK_ADDRESS,
+    const provider = new providers.JsonRpcProvider(rpcURL);
+    const networkClient = await getColonyNetworkClient(network, provider, {
+      networkAddress,
   });
 
   const colonyClient = await networkClient.getColonyClient(colonyAddress);
@@ -107,4 +117,7 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
   return {
     items: await Promise.all(balances.map(async (resolve) => resolve())),
   };
+  } catch (e) {
+    return { items: [] };
+  }
 };

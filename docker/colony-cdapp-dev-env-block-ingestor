@@ -12,7 +12,7 @@ ADD docker/files/block-ingestor/run.sh.base /colonyCDappBackend/run.sh
 
 WORKDIR /colonyCDappBackend
 
-#
+
 # Block Ingestor
 #
 

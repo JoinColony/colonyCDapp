@@ -9,21 +9,30 @@ const { Decimal } = require('decimal.js');
 
 Logger.setLogLevel(Logger.levels.ERROR);
 
+let rpcURL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let reputationOracleEndpoint =
+  'http://reputation-monitor.docker:3001/reputation/local';
+let network = Network.Custom;
 let networkAddress;
-try {
-  const artifacts = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
-  networkAddress = artifacts.etherRouterAddress;
-} catch (error) {
-  // silent error
-  // means we're in a production environment without access to the contract build artifacts
-}
 
-const RPC_URL =
-  process.env.CHAIN_RPC_ENDPOINT || 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
-const REPUTATION_ENDPOINT =
-  process.env.REPUTATION_ENDPOINT || 'http://network-contracts:3002';
-const NETWORK = process.env.CHAIN_RPC_ENDPOINT || Network.Custom;
-const NETWORK_ADDRESS = process.env.CHAIN_NETWORK_CONTRACT || networkAddress;
+const setEnvVariables = async () => {
+  const ENV = process.env.ENV;
+  if (ENV === 'qa') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [rpcURL, networkAddress, reputationOracleEndpoint, network] =
+      await getParams([
+        'chainRpcEndpoint',
+        'networkContractAddress',
+        'reputationEndpoint',
+        'chainNetwork',
+      ]);
+  } else {
+    const {
+      etherRouterAddress,
+    } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+    networkAddress = etherRouterAddress;
+}
+};
 
 const ZeroValue = {
   Zero: '0',
@@ -66,14 +75,20 @@ const calculatePercentageReputation = (
  * @type {import('aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
+  try {
+    await setEnvVariables();
+  } catch (e) {
+    throw new Error('Unable to set env variables. Reason:', e);
+  }
+
   const { colonyAddress, walletAddress, rootHash } =
     event.arguments?.input || {};
 
-  const provider = new providers.JsonRpcProvider(RPC_URL);
+  const provider = new providers.JsonRpcProvider(rpcURL);
 
-  const networkClient = getColonyNetworkClient(NETWORK, provider, {
-    networkAddress: NETWORK_ADDRESS,
-    reputationOracleEndpoint: REPUTATION_ENDPOINT,
+  const networkClient = getColonyNetworkClient(network, provider, {
+    networkAddress,
+    reputationOracleEndpoint,
   });
 
   const colonyClient = await networkClient.getColonyClient(colonyAddress);

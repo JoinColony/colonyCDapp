@@ -9,11 +9,24 @@ const { graphqlRequest } = require('./utils');
  */
 const { getColony, createColony, getTokenByAddress } = require('./graphql');
 
-const API_KEY = process.env.APPSYNC_API_KEY || 'da2-fakeApiId123456';
-const GRAPHQL_URI =
-  process.env.AWS_APPSYNC_GRAPHQL_URL || 'http://localhost:20002/graphql';
+let apiKey = 'da2-fakeApiId123456';
+let graphqlURL = 'http://localhost:20002/graphql';
+
+const setEnvVariables = async () => {
+  const ENV = process.env.ENV;
+  if (ENV === 'qa') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [apiKey, graphqlURL] = await getParams(['appsyncApiKey', 'graphqlUrl']);
+  }
+};
 
 exports.handler = async (event) => {
+  try {
+    await setEnvVariables();
+  } catch (e) {
+    throw new Error('Unable to set environment variables. Reason:', e);
+  }
+
   const {
     id: colonyAddress,
     name,
@@ -57,8 +70,8 @@ exports.handler = async (event) => {
   const colonyQuery = await graphqlRequest(
     getColony,
     { id: checksummedAddress, name },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   if (colonyQuery.errors || !colonyQuery.data) {
@@ -99,8 +112,8 @@ exports.handler = async (event) => {
   const tokenQuery = await graphqlRequest(
     getTokenByAddress,
     { id: checksummedToken },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   if (tokenQuery.errors || !tokenQuery.data) {
@@ -135,8 +148,8 @@ exports.handler = async (event) => {
         status,
       },
     },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   if (mutation.errors || !mutation.data) {
