@@ -56,17 +56,24 @@ const MSG = defineMessages({
   },
 });
 
-interface Props {
+interface PollingControls {
+  startPolling: (interval: number) => void;
+  stopPolling: () => void;
+}
+
+export interface ExtensionDetailsAsideProps {
   extensionData: AnyExtensionData;
   canBeDeprecated: boolean;
   canBeUninstalled: boolean;
+  pollingControls: PollingControls;
 }
 
 const ExtensionDetailsAside = ({
   extensionData,
   canBeDeprecated,
   canBeUninstalled,
-}: Props) => {
+  pollingControls,
+}: ExtensionDetailsAsideProps) => {
   const { colony } = useColonyContext();
 
   if (!colony) {
@@ -79,7 +86,10 @@ const ExtensionDetailsAside = ({
   return (
     <aside>
       <div className={styles.buttonWrapper}>
-        <ExtensionActionButton extensionData={extensionData} />
+        <ExtensionActionButton
+          extensionData={extensionData}
+          pollingControls={pollingControls}
+        />
         <ExtensionUpgradeButton
           extensionData={extensionData as InstalledExtensionData}
         />

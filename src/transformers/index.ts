@@ -70,17 +70,15 @@ export const getUserRolesForDomain = (
       domainRole?.targetAddress === userAddress,
   );
 
-  if (excludeInherited) {
-    return userRolesInRootDomain
-      ? convertRolesToArray(userRolesInRootDomain)
-      : [];
+  if (excludeInherited && userRolesInAnyDomain) {
+    return convertRolesToArray(userRolesInAnyDomain);
   }
 
-  if (!excludeInherited) {
+  if (!excludeInherited && (userRolesInAnyDomain || userRolesInRootDomain)) {
     return Array.from(
       new Set([
-        ...(convertRolesToArray(userRolesInAnyDomain) || []),
-        ...(convertRolesToArray(userRolesInRootDomain) || []),
+        ...convertRolesToArray(userRolesInAnyDomain),
+        ...convertRolesToArray(userRolesInRootDomain),
       ]),
     );
   }

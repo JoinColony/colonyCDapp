@@ -2,6 +2,8 @@ import { Channel } from 'redux-saga';
 import { all, call, put } from 'redux-saga/effects';
 import { getExtensionHash, Extension, ClientType, Id } from '@colony/colony-js';
 import { poll } from 'ethers/lib/utils';
+import { utils } from 'ethers';
+import { Network as EthersNetwork } from '@ethersproject/networks';
 
 import {
   CreateColonyMetadataDocument,
@@ -75,7 +77,7 @@ function* colonyCreate({
 }: Action<ActionTypes.CREATE>) {
   const apolloClient = getContext(ContextModule.ApolloClient);
   const wallet = getContext(ContextModule.Wallet);
-  const walletAddress = wallet?.address;
+  const walletAddress = utils.getAddress(wallet.address);
   const colonyManager: ColonyManager = yield getColonyManager();
   const { networkClient } = colonyManager;
   const channelNames: string[] = [];
@@ -298,6 +300,12 @@ function* colonyCreate({
           meta,
         );
       }
+      const network: EthersNetwork = yield colonyManager.provider.getNetwork();
+      const colonyClient = yield colonyManager.getClient(
+        ClientType.ColonyClient,
+        colonyAddress,
+      );
+      const isTokenLocked = yield colonyClient.tokenClient.locked();
 
       /*
        * Create colony in db
@@ -313,6 +321,16 @@ function* colonyCreate({
             name: givenColonyName,
             colonyNativeTokenId: tokenAddress,
             version: toNumber(currentColonyVersion),
+            chainMetadata: {
+              chainId: network.chainId,
+            },
+            status: {
+              nativeToken: {
+                unlockable: tokenChoice === 'create',
+                unlocked: !isTokenLocked,
+                mintable: tokenChoice === 'create',
+              },
+            },
           },
         },
       });
@@ -387,10 +405,6 @@ function* colonyCreate({
        * Create root domain in the database
        * @NOTE: This is a temporary solution and this mutation should be called by block-ingestor on ColonyAdded event
        */
-      const colonyClient = yield colonyManager.getClient(
-        ClientType.ColonyClient,
-        colonyAddress,
-      );
       const [skillId, fundingPotId] = yield colonyClient.getDomain(
         Id.RootDomain,
       );

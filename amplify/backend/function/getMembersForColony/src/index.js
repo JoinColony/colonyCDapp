@@ -9,7 +9,7 @@ const {
   providers,
   utils: { Logger },
 } = require('ethers');
-const { getColonyNetworkClient, Network } = require('@colony/colony-js');
+const { getColonyNetworkClient, Network, Id } = require('@colony/colony-js');
 
 Logger.setLogLevel(Logger.levels.ERROR);
 
@@ -17,15 +17,13 @@ const { calculatePercentageReputation } = require('./reputation');
 const { graphqlRequest } = require('./utils');
 const { getWatchersInColony } = require('./graphql');
 
-/*
- * @TODO These values need to be imported properly, and differentiate based on environment
- */
-const API_KEY = 'da2-fakeApiId123456';
-const GRAPHQL_URI = 'http://localhost:20002/graphql';
-
-const ROOT_DOMAIN_ID = 1; // this used to be exported from @colony/colony-js but isn't anymore
-const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
-const REPUTATION_ENDPOINT = 'http://network-contracts:3002';
+let apiKey = 'da2-fakeApiId123456';
+let graphqlURL = 'http://localhost:20002/graphql';
+let rpcURL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let reputationOracleEndpoint =
+  'http://reputation-monitor.docker:3001/reputation/local';
+let network = Network.Custom;
+let networkAddress;
 
 const SortingMethod = {
   BY_HIGHEST_REP: 'BY_HIGHEST_REP',
@@ -35,27 +33,55 @@ const SortingMethod = {
   // BY_LESS_PERMISSIONS,
 };
 
+const setEnvVariables = async () => {
+  const ENV = process.env.ENV;
+  if (ENV === 'qa') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [
+      apiKey,
+      graphqlURL,
+      rpcURL,
+      networkAddress,
+      reputationOracleEndpoint,
+      network,
+    ] = await getParams([
+      'appsyncApiKey',
+      'graphqlUrl',
+      'chainRpcEndpoint',
+      'networkContractAddress',
+      'reputationEndpoint',
+      'chainNetwork',
+    ]);
+  } else {
+    const {
+      etherRouterAddress,
+    } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+    networkAddress = etherRouterAddress;
+  }
+};
+
 exports.handler = async (event) => {
+  try {
+    await setEnvVariables();
+  } catch (e) {
+    throw new Error('Unable to set env variables. Reason:', e);
+  }
+
   const {
     colonyAddress,
     rootHash,
-    domainId = ROOT_DOMAIN_ID,
+    domainId = Id.RootDomain,
     sortingMethod = SortingMethod.BY_HIGHEST_REP,
   } = event?.arguments?.input || {};
-  const provider = new providers.JsonRpcProvider(RPC_URL);
+  const provider = new providers.JsonRpcProvider(rpcURL);
 
-  const {
-    etherRouterAddress: networkAddress,
-    // eslint-disable-next-line global-require
-  } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
-
-  const networkClient = getColonyNetworkClient(Network.Custom, provider, {
+  const networkClient = getColonyNetworkClient(network, provider, {
     networkAddress,
-    reputationOracleEndpoint: REPUTATION_ENDPOINT,
+    reputationOracleEndpoint,
   });
 
   const colonyClient = await networkClient.getColonyClient(colonyAddress);
-  const { skillId } = await colonyClient.getDomain(domainId || ROOT_DOMAIN_ID);
+  const { skillId } = await colonyClient.getDomain(domainId || Id.RootDomain);
   let addressesWithReputation;
   try {
     const { addresses } = await colonyClient.getMembersReputation(skillId);
@@ -84,8 +110,8 @@ exports.handler = async (event) => {
   const { data, errors } = await graphqlRequest(
     getWatchersInColony,
     { id: checksummedAddress },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   if (errors || !data) {
@@ -101,9 +127,14 @@ exports.handler = async (event) => {
     return {
       contributors: [],
       watchers:
-        domainId > ROOT_DOMAIN_ID
+        domainId > Id.RootDomain
           ? [] // There will be no Watchers outside of the root domain
-          : data?.getColonyByAddress?.items[0]?.watchers.items,
+          : data?.getColonyByAddress?.items[0]?.watchers.items.map(
+              ({ user }) => ({
+                address: user.id,
+                user,
+              }),
+            ),
     };
   }
 
@@ -114,14 +145,20 @@ exports.handler = async (event) => {
         (address) => address.toLowerCase() === item.user.id.toLowerCase(),
       )
     ) {
-      contributors.push(item);
+      contributors.push({
+        address: item.user.id,
+        user: item.user,
+      });
     } else {
-      watchers.push(item);
+      watchers.push({
+        address: item.user.id,
+        user: item.user,
+      });
     }
   });
 
   // There will be no Watchers outside of the root domain
-  if (domainId > ROOT_DOMAIN_ID) {
+  if (domainId > Id.RootDomain) {
     watchers.length = 0;
   }
 
@@ -136,9 +173,7 @@ exports.handler = async (event) => {
 
     missingAddresses?.forEach((address) => {
       contributors?.push({
-        user: {
-          id: address,
-        },
+        address,
       });
     });
   }
@@ -159,7 +194,9 @@ exports.handler = async (event) => {
   // get reputation for each address
   const contributorsWithReputation = await Promise.all(
     contributors.map(async (contributor) => {
-      const address = contributor.user?.id;
+      const address = contributor.user
+        ? contributor.user?.id
+        : contributor.address;
       try {
         const userReputationForAllDomains =
           await colonyClient.getReputationAcrossDomains(address, rootHash);
@@ -193,6 +230,7 @@ exports.handler = async (event) => {
         );
 
         return {
+          address: contributor.address,
           user: contributor.user,
           reputationPercentage:
             formattedUserReputations[0]?.reputationPercentage,

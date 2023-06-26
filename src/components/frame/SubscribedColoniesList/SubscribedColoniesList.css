@@ -34,7 +34,8 @@
   border-radius: 50%;
 }
 
-.activeColony {
+.activeColony,
+a.itemLink:global(.active) {
   border-color: var(--primary);
 }
 

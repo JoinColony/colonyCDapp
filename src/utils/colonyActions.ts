@@ -517,6 +517,9 @@ export const normalizeRolesForAction = (
   ];
   return extractedRoles.filter(
     ({ setTo }) => setTo !== null && setTo !== undefined,
+    /*
+     * Have to force cast it, since TS doesn't pick up the above filter
+     */
   ) as ActionUserRoles[];
 };
 
@@ -575,28 +578,6 @@ export const formatRolesTitle = (roles?: ColonyActionRoles | null) => {
   };
 };
 
-export const getColonyRoleSetTitleValues = (
-  encodedEvents: string | null = '[]',
-  eventId?: string,
-) => {
-  const role = JSON.parse(encodedEvents as string)?.find(
-    ({ id }) => id === eventId,
-  );
-  if (role) {
-    const { role: roleId, setTo } = role;
-    return {
-      role: formatText({ id: `role.${roleId}` }),
-      roleSetAction: formatText({ id: `role.${setTo ? 'assign' : 'remove'}` }),
-      roleSetDirection: formatText({ id: `role.${setTo ? 'to' : 'from'}` }),
-    };
-  }
-  return {
-    role: '',
-    roleSetAction: '',
-    roleSetDirection: '',
-  };
-};
-
 const getChangelogItem = (
   {
     isMotion: actionIsMotion,
@@ -639,3 +620,25 @@ export const getExtendedActionType = (
 
 export const formatActionType = (actionType: AnyActionType) =>
   formatText({ id: 'action.type' }, { actionType });
+
+export const getColonyRoleSetTitleValues = (
+  encodedEvents?: string | null,
+  eventId?: string,
+) => {
+  const role = JSON.parse(encodedEvents ?? '[]')?.find(
+    ({ id }) => id === eventId,
+  );
+  if (role) {
+    const { role: roleId, setTo } = role;
+    return {
+      role: formatText({ id: `role.${roleId}` }),
+      roleSetAction: formatText({ id: `role.${setTo ? 'assign' : 'remove'}` }),
+      roleSetDirection: formatText({ id: `role.${setTo ? 'to' : 'from'}` }),
+    };
+  }
+  return {
+    role: '',
+    roleSetAction: '',
+    roleSetDirection: '',
+  };
+};

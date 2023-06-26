@@ -9,21 +9,46 @@ const { default: fetch, Request } = require('node-fetch');
 /*
  * @TODO These values need to be imported properly, and differentiate based on environment
  */
-const API_KEY = 'da2-fakeApiId123456';
-const GRAPHQL_URI = 'http://localhost:20002/graphql';
-const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let apiKey = 'da2-fakeApiId123456';
+let graphqlURL = 'http://localhost:20002/graphql';
+let rpcURL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let networkAddress;
+let network = Network.Custom;
+let reputationOracleEndpoint =
+  'http://reputation-monitor.docker:3001/reputation/local';
 
-const {
-  etherRouterAddress: networkAddress,
-} = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+const setEnvVariables = async () => {
+  const ENV = process.env.ENV;
+  if (ENV === 'qa') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [
+      apiKey,
+      graphqlURL,
+      rpcURL,
+      networkAddress,
+      reputationOracleEndpoint,
+      network,
+    ] = await getParams([
+      'appsyncApiKey',
+      'graphqlUrl',
+      'chainRpcEndpoint',
+      'networkContractAddress',
+      'reputationEndpoint',
+      'chainNetwork',
+    ]);
+  } else {
+    const {
+      etherRouterAddress,
+    } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+    networkAddress = etherRouterAddress;
+  }
+};
 
 const getNetworkClient = () => {
-  const provider = new providers.JsonRpcProvider(RPC_URL);
-
-  const networkClient = getColonyNetworkClient(Network.Custom, provider, {
+  const provider = new providers.JsonRpcProvider(rpcURL);
+  const networkClient = getColonyNetworkClient(network, provider, {
     networkAddress,
-    reputationOracleEndpoint:
-      'http://reputation-monitor.docker:3001/reputation/local',
+    reputationOracleEndpoint,
   });
 
   return networkClient;
@@ -71,7 +96,7 @@ const graphqlRequest = async (queryOrMutation, variables) => {
   const options = {
     method: 'POST',
     headers: {
-      'x-api-key': API_KEY,
+      'x-api-key': apiKey,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -80,7 +105,7 @@ const graphqlRequest = async (queryOrMutation, variables) => {
     }),
   };
 
-  const request = new Request(GRAPHQL_URI, options);
+  const request = new Request(graphqlURL, options);
 
   let body;
   let response;
@@ -102,4 +127,5 @@ module.exports = {
   graphqlRequest,
   getVoterRewardRange,
   getVoterReward,
+  setEnvVariables,
 };

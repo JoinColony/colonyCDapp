@@ -1,6 +1,6 @@
 const webpack = require('webpack');
-const path = require('path');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const Dotenv = require('dotenv-webpack');
 
 const webpackBaseConfig = require('./webpack.base').config;
 
@@ -32,7 +32,7 @@ module.exports = () => ({
             loader: 'ts-loader',
             options: {
               transpileOnly: true,
-              configFile: 'tsconfig.dev.json'
+              configFile: 'tsconfig.dev.json',
             },
           },
         ],
@@ -44,15 +44,19 @@ module.exports = () => ({
     /*
      * Add the rest of the DEVELOPMENT environment required plugins here
      */
+    new Dotenv({
+      systemvars: !!process.env.CI || !!process.env.DEV,
+    }),
     new webpack.WatchIgnorePlugin({
-      paths: [
-        /css\.d\.ts$/
-      ],
+      paths: [/css\.d\.ts$/],
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       openAnalyzer: false,
-      excludeAssets: /dev-vendors|dev-node|dev-main/
+      excludeAssets: /dev-vendors|dev-node|dev-main/,
+    }),
+    new webpack.DefinePlugin({
+      WEBPACK_IS_PRODUCTION: JSON.stringify(false),
     }),
   ],
 });

@@ -2,6 +2,7 @@ const {
   graphqlRequest,
   getVoterRewardRange,
   getVoterReward,
+  setEnvVariables,
 } = require('./utils');
 const { getUserReputation } = require('./graphql');
 
@@ -9,6 +10,12 @@ const { getUserReputation } = require('./graphql');
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
+  try {
+    await setEnvVariables();
+  } catch (e) {
+    throw new Error('Unable to set env variables. Reason:', e);
+  }
+
   const { voterAddress, colonyAddress, motionDomainId, motionId, rootHash } =
     event?.arguments?.input || {};
 

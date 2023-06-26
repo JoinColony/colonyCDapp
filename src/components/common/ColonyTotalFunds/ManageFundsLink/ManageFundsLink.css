@@ -4,6 +4,18 @@
   color: var(--colony-blue);
 }
 
+.manageFundsLink:hover {
+  color: var(--grey);
+}
+
+.manageFundsLink svg {
+  fill: var(--colony-blue);
+}
+
+.manageFundsLink:hover svg {
+  fill: var(--grey);
+}
+
 .rightArrowDisplay {
   display: inline-block;
   margin: 0 7px 1px 15px;
@@ -11,7 +23,6 @@
   width: 15px;
   vertical-align: bottom;
   font-weight: var(--weight-bold);
-  color: var(--colony-blue);
 }
 
 @media screen and query700 {

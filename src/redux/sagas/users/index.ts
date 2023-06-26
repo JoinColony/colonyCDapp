@@ -1,5 +1,6 @@
 import { call, fork, put, takeLatest } from 'redux-saga/effects';
 import { BigNumber, utils } from 'ethers';
+// import { BigNumber } from 'ethers';
 import { QueryOptions } from '@apollo/client';
 import { ClientType, TokenLockingClient } from '@colony/colony-js';
 
@@ -17,7 +18,6 @@ import { transactionReady } from '~redux/actionCreators';
 import { ActionTypes } from '../../actionTypes';
 import { Action, AllActions } from '../../types/actions';
 import { getColonyManager, putError, takeFrom } from '../utils';
-import { getWallet } from '../wallet';
 import {
   createTransaction,
   createTransactionChannels,
@@ -90,8 +90,8 @@ function* usernameCreate({
   meta,
   payload: { username, email, emailPermissions },
 }: Action<ActionTypes.USERNAME_CREATE>) {
-  const wallet = yield call(getWallet);
-  const walletAddress = utils.getAddress(wallet?.address);
+  const wallet = getContext(ContextModule.Wallet);
+  const walletAddress = utils.getAddress(wallet.address);
 
   const apolloClient = getContext(ContextModule.ApolloClient);
 
@@ -148,12 +148,18 @@ function* usernameCreate({
   return null;
 }
 
+export const disconnectWallet = (walletLabel: string) => {
+  const onboard = getContext(ContextModule.Onboard);
+  onboard.disconnectWallet({ label: walletLabel });
+  removeContext(ContextModule.Wallet);
+  clearLastWallet();
+};
+
 function* userLogout() {
   try {
     removeContext(ContextModule.ColonyManager);
-    removeContext(ContextModule.Wallet);
-    clearLastWallet();
-
+    const wallet = getContext(ContextModule.Wallet);
+    disconnectWallet(wallet.label);
     yield put<AllActions>({
       type: ActionTypes.USER_LOGOUT_SUCCESS,
     });

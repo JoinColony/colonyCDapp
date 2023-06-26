@@ -5,11 +5,14 @@ import { putError } from '../utils';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions } from '../../types/actions';
 import { ContextModule, getContext } from '~context';
+import { isFullWallet } from '~types';
 
 export function* signMessage(purpose, message) {
   const wallet = getContext(ContextModule.Wallet);
 
-  if (!wallet) throw new Error('Could not get wallet');
+  if (!isFullWallet(wallet)) {
+    throw new Error('Background login not yet completed.');
+  }
 
   const messageId = `${nanoid(10)}-signMessage`;
   /*

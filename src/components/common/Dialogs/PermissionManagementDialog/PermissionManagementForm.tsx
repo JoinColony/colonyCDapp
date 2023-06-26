@@ -19,8 +19,7 @@ import SingleUserPicker, {
 } from '~shared/SingleUserPicker';
 import { ItemDataType } from '~shared/OmniPicker';
 import UserAvatar from '~shared/UserAvatar';
-
-import { User, SetStateFn } from '~types';
+import { MemberUser, User, SetStateFn } from '~types';
 import { notNull } from '~utils/arrays';
 import { getDomainOptions } from '~utils/domains';
 
@@ -73,7 +72,7 @@ const MSG = defineMessages({
 });
 
 interface Props extends ActionDialogProps {
-  users?: User[];
+  users?: MemberUser[];
   handleIsForceChange: SetStateFn;
   isForce: boolean;
 }
@@ -231,7 +230,7 @@ const PermissionManagementForm = ({
         </DialogSection>
       )}
       {showPermissionErrors && (
-        <DialogSection appearance={{ theme: 'sidePadding' }}>
+        <DialogSection>
           <NoPermissionMessage
             requiredPermissions={[ColonyRole.Architecture]}
           />

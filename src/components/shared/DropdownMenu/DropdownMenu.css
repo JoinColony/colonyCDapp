@@ -6,6 +6,21 @@
   display: block;
 }
 
+.baseStyles > ul > li > button {
+  /* Reset button styles to look like a link in here */
+  display: block;
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  text-align: inherit;
+  line-height: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
 /* themes */
 .main {
   composes: baseStyles;

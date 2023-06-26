@@ -1,8 +1,8 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { useColonyContext } from '~hooks';
-import Link from '~shared/Link';
+// import { useColonyContext } from '~hooks';
+// import Link from '~shared/Link';
 import SortControls from '~shared/SortControls';
 import { SetStateFn, SortDirection } from '~types';
 
@@ -30,20 +30,20 @@ const ActionsListHeading = ({
   sortDirection,
   onSortChange,
 }: ActionsListHeadingProps) => {
-  const { colony } = useColonyContext();
+  // const { colony } = useColonyContext();
   return (
     <div className={styles.bar}>
       <div className={styles.title}>
         <FormattedMessage {...MSG.actionsTitle} />
       </div>
       <SortControls sortDirection={sortDirection} onChange={onSortChange} />
-      <Link
+      {/* <Link
         className={styles.link}
         to={`/colony/${colony?.name}/events`}
         data-test="transactionsLog"
       >
         <FormattedMessage {...MSG.transactionsLogLink} />
-      </Link>
+      </Link> */}
     </div>
   );
 };

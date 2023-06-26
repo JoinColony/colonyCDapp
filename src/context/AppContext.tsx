@@ -1,9 +1,11 @@
+import { utils } from 'ethers';
 import React, {
   createContext,
   useState,
   useMemo,
   ReactNode,
   useCallback,
+  useEffect,
 } from 'react';
 
 import { ActionTypes } from '~redux';
@@ -12,13 +14,13 @@ import {
   GetUserByAddressQuery,
   GetUserByAddressQueryVariables,
 } from '~gql';
-import { Wallet, User } from '~types';
+import { Address, ColonyWallet, User } from '~types';
 import { useAsyncFunction } from '~hooks';
 
 import { getContext, ContextModule } from './index';
 
 export interface AppContextValues {
-  wallet?: Wallet;
+  wallet?: ColonyWallet | null;
   walletConnecting?: boolean;
   setWalletConnecting?: React.Dispatch<React.SetStateAction<boolean>>;
   user?: User | null;
@@ -34,7 +36,7 @@ export interface AppContextValues {
 export const AppContext = createContext<AppContextValues>({});
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
-  let initialWallet;
+  let initialWallet: ColonyWallet | undefined;
 
   /*
    * Wallet
@@ -46,7 +48,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     // It means that it was not set in context yet
   }
 
-  const [wallet, setWallet] = useState(initialWallet);
+  const [wallet, setWallet] =
+    useState<AppContextValues['wallet']>(initialWallet);
   const [user, setUser] = useState<User | null | undefined>();
   const [userLoading, setUserLoading] = useState(false);
   const [walletConnecting, setWalletConnecting] = useState(false);
@@ -64,7 +67,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
             GetUserByAddressQueryVariables
           >({
             query: GetUserByAddressDocument,
-            variables: { address },
+            variables: { address: utils.getAddress(address) },
             fetchPolicy: 'network-only',
           });
           const [currentUser] = data?.getUserByAddress?.items || [];
@@ -86,10 +89,11 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const updateWallet = useCallback((): void => {
     try {
       const updatedWallet = getContext(ContextModule.Wallet);
+      updatedWallet.address = utils.getAddress(updatedWallet.address);
       setWallet(updatedWallet);
       // Update the user as soon as the wallet address changes
-      if (updatedWallet?.address !== wallet?.address) {
-        updateUser(updatedWallet?.address);
+      if (updatedWallet.address !== wallet?.address) {
+        updateUser(updatedWallet.address);
       }
     } catch (error) {
       if (wallet) {
@@ -101,7 +105,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [updateUser, wallet]);
 
-  const asyncFunction = useAsyncFunction({
+  const setupUserContext = useAsyncFunction({
     submit: ActionTypes.WALLET_OPEN,
     error: ActionTypes.WALLET_OPEN_ERROR,
     success: ActionTypes.WALLET_OPEN_SUCCESS,
@@ -111,19 +115,32 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
    * Handle wallet connection
    */
   const connectWallet = useCallback(async () => {
-    setWalletConnecting?.(true);
-    let walletConnectSuccess = false;
+    setWalletConnecting(true);
     try {
-      await asyncFunction(undefined);
-      walletConnectSuccess = true;
+      await setupUserContext(undefined);
+      updateWallet();
     } catch (error) {
       console.error('Could not connect wallet', error);
+    } finally {
+      setWalletConnecting(false);
     }
-    if (updateWallet && walletConnectSuccess) {
-      updateWallet();
+  }, [setupUserContext, updateWallet, setWalletConnecting]);
+
+  /*
+   * When the user switches account in Metamask, re-initiate the wallet connect flow
+   * so as to update their wallet details in the app's memory.
+   */
+  useEffect(() => {
+    if (window.ethereum) {
+      // @ts-ignore
+      window.ethereum.on('accountsChanged', (accounts: Address[]) => {
+        const loggedInAccount = accounts[0];
+        if (loggedInAccount) {
+          connectWallet();
+        }
+      });
     }
-    setWalletConnecting?.(false);
-  }, [asyncFunction, updateWallet, setWalletConnecting]);
+  }, [connectWallet]);
 
   const appContext = useMemo<AppContextValues>(
     () => ({

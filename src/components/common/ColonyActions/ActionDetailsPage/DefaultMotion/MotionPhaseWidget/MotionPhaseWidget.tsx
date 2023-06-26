@@ -71,7 +71,9 @@ const MotionPhaseWidget = ({
               requiresDomainFunds={
                 !!fromDomain &&
                 !!amount &&
-                type !== ColonyActionType.MintTokensMotion
+                type !== ColonyActionType.MintTokensMotion &&
+                type !== ColonyActionType.EmitDomainReputationPenaltyMotion &&
+                type !== ColonyActionType.EmitDomainReputationRewardMotion
               }
               {...rest}
             />
