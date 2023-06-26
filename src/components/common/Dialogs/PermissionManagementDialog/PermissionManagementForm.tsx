@@ -207,7 +207,10 @@ const PermissionManagementForm = ({
             return (
               <PermissionManagementCheckbox
                 key={role}
-                readOnly={(inheritedRole && !directRole) || !canRoleBeSet(role)}
+                readOnly={
+                  (inheritedRole && !directRole) ||
+                  (!canRoleBeSet(role) && showPermissionErrors)
+                }
                 disabled={disabledInput || !selectedUser}
                 role={role}
                 asterisk={inheritedRole}
@@ -231,9 +234,7 @@ const PermissionManagementForm = ({
       )}
       {showPermissionErrors && (
         <DialogSection>
-          <NoPermissionMessage
-            requiredPermissions={[ColonyRole.Architecture]}
-          />
+          <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
       )}
       {canOnlyForceAction && (
