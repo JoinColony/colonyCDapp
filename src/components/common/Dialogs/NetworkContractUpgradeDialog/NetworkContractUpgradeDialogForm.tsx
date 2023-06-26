@@ -130,7 +130,7 @@ const NetworkContractUpgradeDialogForm = ({
           disabled={disabledInput}
         />
       </DialogSection>
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection>
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>

@@ -179,7 +179,7 @@ const TokenManagementDialogForm = ({
           />
         </div>
       </DialogSection>
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection>
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>

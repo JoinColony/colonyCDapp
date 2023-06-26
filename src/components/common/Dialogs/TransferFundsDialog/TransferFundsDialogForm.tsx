@@ -116,7 +116,7 @@ const TransferFundsDialogForm = ({
           dataTest="transferFundsAnnotation"
         />
       </DialogSection>
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection>
           <NoPermissionMessage
             requiredPermissions={requiredRoles}
