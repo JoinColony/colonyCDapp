@@ -20,25 +20,17 @@ export const useUnlockTokenDialogStatus = (
   requiredRoles: ColonyRole[],
   enabledExtensionData: EnabledExtensionData,
 ) => {
-  const {
-    userHasPermission,
-    disabledInput,
-    disabledSubmit: defaultDisabledSubmit,
-    canCreateMotion,
-    canOnlyForceAction,
-  } = useActionDialogStatus(
-    colony,
-    requiredRoles,
-    [Id.RootDomain],
-    enabledExtensionData,
-  );
+  const { disabledSubmit: defaultDisabledSubmit, ...rest } =
+    useActionDialogStatus(
+      colony,
+      requiredRoles,
+      [Id.RootDomain],
+      enabledExtensionData,
+    );
   const isNativeTokenUnlocked = !!colony?.status?.nativeToken?.unlocked;
   return {
-    userHasPermission,
-    disabledInput,
+    ...rest,
     disabledSubmit: defaultDisabledSubmit || isNativeTokenUnlocked,
-    canCreateMotion,
     isNativeTokenUnlocked,
-    canOnlyForceAction,
   };
 };

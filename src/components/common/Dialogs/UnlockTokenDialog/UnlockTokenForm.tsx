@@ -77,7 +77,7 @@ const UnlockTokenForm = ({
     userHasPermission,
     disabledInput,
     disabledSubmit,
-    canCreateMotion,
+    hasMotionCompatibleVersion,
     isNativeTokenUnlocked,
     canOnlyForceAction,
   } = useUnlockTokenDialogStatus(colony, requiredRoles, enabledExtensionData);
@@ -149,7 +149,7 @@ const UnlockTokenForm = ({
           <NotEnoughReputation includeForceCopy={userHasPermission} />
         </DialogSection>
       )}
-      {!canCreateMotion && (
+      {!hasMotionCompatibleVersion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
         </DialogSection>
