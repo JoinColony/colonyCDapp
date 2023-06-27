@@ -174,20 +174,16 @@ export const useCanRoleBeSet = (colony: Colony) => {
    */
   const canRoleBeSet = (role: ColonyRole) => {
     switch (role) {
-      case ColonyRole.Arbitration:
-        return canAssignRole;
-
       // Can only be set by root and in root domain (and only unset if other root accounts exist)
       case ColonyRole.Root:
       case ColonyRole.Recovery:
         return hasUltimateRoot;
 
+      // Can be set if the user has root OR has architecture
+      case ColonyRole.Arbitration:
+      case ColonyRole.Architecture:
       case ColonyRole.Administration:
       case ColonyRole.Funding:
-        return canAssignRole;
-
-      // Can be set if root domain and has root OR has architecture in parent
-      case ColonyRole.Architecture:
         return canAssignRole;
 
       default:
