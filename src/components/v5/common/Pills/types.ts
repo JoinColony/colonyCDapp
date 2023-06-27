@@ -31,15 +31,11 @@ export type IconSize = 'extraTiny' | 'tiny';
 export type PillSize = 'medium' | 'small';
 
 export type PillsProps = {
-  mode?: PillMode;
+  mode?: PillMode | ExtensionStatusBadgeMode;
   text?: MessageDescriptor | string;
   textValues?: SimpleMessageValues;
   iconName?: string;
   iconSize?: IconSize;
   pillSize?: PillSize;
   className?: string;
-};
-
-export type ExtensionStatusBadgeProps = Omit<PillsProps, 'mode'> & {
-  mode?: ExtensionStatusBadgeMode;
 };

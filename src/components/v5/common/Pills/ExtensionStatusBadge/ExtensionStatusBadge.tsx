@@ -3,13 +3,17 @@ import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import PillsBase from '../PillsBase';
-import { ExtensionStatusBadgeProps } from '../types';
+import { PillsProps } from '../types';
 
 const displayName = 'v5.common.Pills.ExtensionStatusBadge';
 
-const ExtensionStatusBadge: FC<
-  PropsWithChildren<ExtensionStatusBadgeProps>
-> = ({ mode = 'coming-soon', children, text, textValues, ...rest }) => {
+const ExtensionStatusBadge: FC<PropsWithChildren<PillsProps>> = ({
+  mode = 'coming-soon',
+  children,
+  text,
+  textValues,
+  ...rest
+}) => {
   const { formatMessage } = useIntl();
 
   const extensionStatusBadgeText =
@@ -21,7 +25,6 @@ const ExtensionStatusBadge: FC<
         'text-indigo-400 bg-indigo-100': mode === 'coming-soon',
         'text-blue-400 bg-blue-100':
           mode === 'not-installed' || mode === 'finalizable',
-        'text-green-400 bg-green-100': mode === 'new',
         'text-red-400 bg-red-100': mode === 'disabled',
         'text-purple-400 bg-purple-100': mode === 'deprecated',
         'text-gray-900 bg-base-white border border-gray-200':
