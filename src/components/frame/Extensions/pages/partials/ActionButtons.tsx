@@ -8,7 +8,7 @@ import { isInstalledExtensionData } from '~utils/extensions';
 import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
 import { ActionButtonProps } from './types';
 import HeadingIcon from './HeadingIcon';
-import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
+import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import ActiveInstalls from './ActiveInstalls';
 
 const displayName = 'frame.Extensions.pages.partials.ActionButtons';
