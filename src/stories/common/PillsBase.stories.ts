@@ -10,13 +10,13 @@ const meta: Meta<typeof PillsBase> = {
       name: 'Mode',
       options: [
         'dedicated',
-        'dedicatedFilled',
+        'dedicated-filled',
         'active',
-        'activeFilled',
+        'active-filled',
         'new',
-        'activeNew',
+        'active-new',
         'top',
-        'topFilled',
+        'top-filled',
         'banned',
         'team',
       ],
@@ -66,7 +66,7 @@ export const Dedicated: Story = {
 
 export const DedicatedFilled: Story = {
   args: {
-    mode: 'dedicatedFilled',
+    mode: 'dedicated-filled',
     iconName: 'medal-bold',
     text: 'Dedicated',
     pillSize: 'medium',
@@ -84,7 +84,7 @@ export const Active: Story = {
 
 export const ActiveFilled: Story = {
   args: {
-    mode: 'activeFilled',
+    mode: 'active-filled',
     iconName: 'shooting-star-bold',
     text: 'Active',
     pillSize: 'medium',
@@ -102,7 +102,7 @@ export const New: Story = {
 
 export const ActiveNew: Story = {
   args: {
-    mode: 'activeNew',
+    mode: 'active-new',
     iconName: 'hand-heart',
     text: 'Active',
     pillSize: 'medium',
@@ -120,7 +120,7 @@ export const Top: Story = {
 
 export const TopFilled: Story = {
   args: {
-    mode: 'topFilled',
+    mode: 'top-filled',
     iconName: 'crown-simple',
     text: 'Top',
     pillSize: 'medium',
