@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 import styles from './RadioList.module.css';
 import { RadioBaseProps, RadioItemProps } from './types';
 import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
-import Tooltip from '~shared/Extensions/Tooltip/Tooltip';
+import Tooltip from '~shared/Extensions/Tooltip';
 import Icon from '~shared/Icon';
 
 const displayName = 'Extensions.Fields.RadioBase';
