@@ -47,10 +47,6 @@ const MainNavigation: FC<MainNavigationProps> = ({
         >
           <div className={styles.mobileButtons}>
             <NavigationTools
-              // @TODO Help and account label
-              // buttonLabel={formatMessage({
-              //   id: 'helpAndAccount',
-              // })}
               nativeToken={nativeToken}
               totalReputation={totalReputation}
               userName={profile?.displayName || user?.name || ''}

@@ -1,14 +1,13 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
-import clsx from 'clsx';
 
 import { UserInfoProps } from '../types';
 import Avatar from '~v5/shared/Avatar';
 import Icon from '~shared/Icon';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import { useMobile } from '~hooks';
 import UserPermissionsBadge from '~common/Extensions/UserPermissionsBadge';
 import TitledContent from '~common/Extensions/TitledContent';
+import CopyWalletAddressButton from '~v5/shared/CopyWalletAddressButton';
 
 const displayName = 'v5.UserAvatarPopover.partials.UserInfo';
 
@@ -22,7 +21,6 @@ const UserInfo: FC<UserInfoProps> = ({
   avatar,
 }) => {
   const { formatMessage } = useIntl();
-  const isMobile = useMobile();
 
   const aboutDescriptionText =
     typeof aboutDescription === 'string'
@@ -46,44 +44,11 @@ const UserInfo: FC<UserInfoProps> = ({
               </span>
             )}
           </div>
-          {/* @TODO button */}
-          {isCopied ? (
-            <button
-              onClick={handleClipboardCopy}
-              onKeyDown={handleClipboardCopy}
-              type="button"
-              aria-label={formatMessage({ id: 'copyWalletAddress' })}
-              className={clsx(
-                'flex items-center transition-all duration-normal hover:text-blue-400',
-                isMobile
-                  ? `border border-gray-100 rounded-[0.1875rem] w-full px-1.5 py-1 justify-center text-gray-700 text-xs mt-1.5`
-                  : 'text-sm text-gray-600',
-              )}
-            >
-              <span
-                className={clsx(
-                  'flex items-center',
-                  isMobile ? 'flex-row-reverse' : 'flex',
-                )}
-              >
-                <span>
-                  {isMobile
-                    ? formatMessage({ id: 'copyWalletAddress' })
-                    : walletAddress}
-                </span>
-                <span
-                  className={clsx(
-                    'flex shrink-0',
-                    isMobile ? 'mr-1.5' : 'ml-1.5',
-                  )}
-                >
-                  <Icon name="copy-simple" appearance={{ size: 'extraTiny' }} />
-                </span>
-              </span>
-            </button>
-          ) : (
-            <p className="text-sm">{walletAddress}</p>
-          )}
+          <CopyWalletAddressButton
+            isCopied={!isCopied}
+            handleClipboardCopy={handleClipboardCopy}
+            walletAddress={walletAddress || ''}
+          />
         </div>
       </div>
       <TitledContent className="mt-2" title={{ id: 'userInfo.about.section' }}>

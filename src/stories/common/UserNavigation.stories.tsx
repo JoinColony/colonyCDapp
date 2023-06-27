@@ -10,7 +10,7 @@ import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberR
 import Token from '~common/Extensions/UserNavigation/partials/Token';
 import { ContextModule, getContext } from '~context';
 import { useDetectClickOutside, useMobile } from '~hooks';
-import Button from '~v5/shared/Button';
+import Button, { Hamburger } from '~v5/shared/Button';
 import UserAvatar from '~v5/shared/UserAvatar';
 import Icon from '~shared/Icon';
 
@@ -65,9 +65,8 @@ const UserNavigationWithData = () => {
             </button>
           </div>
         )}
-        <div className="flex items-center w-full justify-end gap-1">
+        <div className="flex w-full justify-end gap-1">
           {nativeToken && <Token nativeToken={nativeToken} />}
-
           <Button
             mode="tertiary"
             isFullRounded
@@ -100,14 +99,18 @@ const UserNavigationWithData = () => {
   );
 };
 
-const UserNavigationNotConnected = () => (
-  <div className="flex items-center w-full justify-end gap-1">
-    <Button mode="tertiary" isFullRounded iconName="cardholder">
-      Connect wallet
-    </Button>
-    <Button mode="tertiary" isFullRounded iconName="list" />
-  </div>
-);
+const UserNavigationNotConnected = () => {
+  const { formatMessage } = useIntl();
+
+  return (
+    <div className="flex w-full justify-end gap-1">
+      <Button mode="tertiary" iconName="cardholder" isFullRounded size="small">
+        {formatMessage({ id: 'connectWallet' })}
+      </Button>
+      <Hamburger />
+    </div>
+  );
+};
 
 export const WalletConnected: Story = {
   render: () => <UserNavigationWithData />,

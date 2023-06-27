@@ -14,7 +14,6 @@ const SubNavigationItemMobile: FC<
   PropsWithChildren<SubNavigationItemProps>
 > = ({ label, content, isOpen, setOpen, icon }) => (
   <li>
-    {/* @TODO button */}
     <button
       type="button"
       onClick={setOpen}
