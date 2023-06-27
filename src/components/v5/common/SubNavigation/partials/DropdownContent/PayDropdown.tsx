@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 
 import Button from '~v5/shared/Button';
 import { LEARN_MORE_PAYMENTS } from '~constants';
-import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
+import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import LinkItem from '../LinkItem';
 import styles from './DropdownContent.module.css';
 import { MSG } from './consts';
