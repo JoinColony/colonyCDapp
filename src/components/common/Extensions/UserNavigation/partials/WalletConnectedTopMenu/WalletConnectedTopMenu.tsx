@@ -1,16 +1,13 @@
 import React, { FC } from 'react';
-import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 
-import styles from './WalletConnectedTopMenu.module.css';
 import Link from '~v5/shared/Link';
 import Icon from '~shared/Icon';
 import Avatar from '~v5/shared/Avatar';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import { WalletConnectedTopMenuProps } from './types';
-import { useMobile } from '~hooks';
-import { splitWalletAddress } from '~utils/splitWalletAddress';
 import NavigationTools from '~common/Extensions/NavigationTools';
+import CopyWalletAddressButton from '~v5/shared/CopyWalletAddressButton';
 
 const displayName =
   'common.Extensions.UserNavigation.partials.WalletConnectedTopMenu';
@@ -25,18 +22,13 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
   avatar,
   user,
 }) => {
-  const isMobile = useMobile();
   const { handleClipboardCopy } = useCopyToClipboard(walletAddress || '');
   const { formatMessage } = useIntl();
 
   return (
     <>
-      <div className={styles.mobileButtons}>
+      <div className="w-full pb-6 mb-6 border-b border-b-gray-200 flex sm:hidden items-center gap-1 md:pb-5 md:mb-5">
         <NavigationTools
-          // @TODO Help and account label
-          // buttonLabel={formatMessage({
-          //   id: 'helpAndAccount',
-          // })}
           nativeToken={nativeToken}
           totalReputation={totalReputation}
           userName={userName}
@@ -56,39 +48,10 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
                 </span>
               )}
             </div>
-            <button
-              onClick={handleClipboardCopy}
-              onKeyDown={handleClipboardCopy}
-              type="button"
-              aria-label={formatMessage({ id: 'copyWalletAddress' })}
-              className={clsx(
-                'flex items-center transition-all duration-normal hover:text-blue-400',
-                isMobile
-                  ? `border border-gray-100 rounded-[0.1875rem] w-full px-1.5 py-1 justify-center text-gray-700 text-xs mt-1.5`
-                  : 'text-sm text-gray-600',
-              )}
-            >
-              <span
-                className={clsx(
-                  'flex items-center',
-                  isMobile ? 'flex-row-reverse' : 'flex',
-                )}
-              >
-                <span>
-                  {isMobile
-                    ? formatMessage({ id: 'copyWalletAddress' })
-                    : splitWalletAddress(walletAddress || '')}
-                </span>
-                <span
-                  className={clsx(
-                    'flex shrink-0',
-                    isMobile ? 'mr-1.5' : 'ml-1.5',
-                  )}
-                >
-                  <Icon name="copy-simple" appearance={{ size: 'extraTiny' }} />
-                </span>
-              </span>
-            </button>
+            <CopyWalletAddressButton
+              handleClipboardCopy={handleClipboardCopy}
+              walletAddress={walletAddress || ''}
+            />
           </div>
         </div>
         <Link to="/" className="flex items-center">

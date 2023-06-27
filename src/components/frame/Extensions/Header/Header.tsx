@@ -11,7 +11,7 @@ import ColonyDropdownMobile from '~common/Extensions/ColonySwitcher/partials/Col
 import Icon from '~shared/Icon';
 import UserNavigation from '~common/Extensions/UserNavigation';
 import MainNavigation from '~common/Extensions/MainNavigation';
-import Button from '~v5/shared/Button';
+import { CloseButton } from '~v5/shared/Button';
 import styles from './Header.module.css';
 import { useHeader } from './hooks';
 import NavigationTools from '~common/Extensions/NavigationTools/NavigationTools';
@@ -56,6 +56,7 @@ const Header = () => {
         <div className="flex items-center justify-between max-w-[90rem] w-full">
           <div className="mr-5 sm:mr-10">
             <div className="flex justify-between relative">
+              {/* @TODO It should be placed i a separate component Colony Switcher */}
               <button
                 aria-label={formatMessage({ id: 'ariaLabel.openDropdown' })}
                 ref={setTriggerRef}
@@ -70,7 +71,7 @@ const Header = () => {
                 />
               </button>
               {visible && (
-                <div className="h-auto absolute top-[3.5rem] sm:top-[2.3rem]">
+                <div className="h-auto absolute top-[3.5rem] sm:top-[2.25rem]">
                   {!isMobile && (
                     <div
                       ref={setTooltipRef}
@@ -108,10 +109,6 @@ const Header = () => {
                       >
                         <div className={styles.mobileButtons}>
                           <NavigationTools
-                            // @TODO Help and account label
-                            // buttonLabel={formatMessage({
-                            //   id: 'helpAndAccount',
-                            // })}
                             nativeToken={nativeToken}
                             totalReputation={totalReputation}
                             userName={profile?.displayName || user?.name || ''}
@@ -156,18 +153,9 @@ const Header = () => {
               tooltipProps={mainMenuGetTooltipProps}
               isMenuOpen={isMainMenuVisible}
             />
-            {/* @TODO button */}
             <div className="block ml-auto">
               {isCloseButtonVisible ? (
-                <Button
-                  mode="tertiary"
-                  isFullRounded
-                  className={clsx({
-                    '!border-base-white': isMobile,
-                  })}
-                >
-                  <Icon name="close" appearance={{ size: 'tiny' }} />
-                </Button>
+                <CloseButton iconSize="tiny" />
               ) : (
                 <UserNavigation />
               )}

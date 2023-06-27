@@ -16,7 +16,7 @@ const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
 
   return (
     <div
-      className={`${className} bg-blue-100 py-2 px-3 rounded-lg flex items-center gap-1`}
+      className={`${className} bg-blue-100 py-2 px-3 rounded-lg inline-flex items-center gap-1`}
     >
       <div className="text-blue-400 font-semibold text-xs capitalize">
         {filterType}:
@@ -28,14 +28,13 @@ const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
       ) : (
         <p className="text-blue-400 text-4 capitalize">{filterOptions}</p>
       )}
-      {/* @TODO button */}
       <button
         type="button"
         aria-label={formatMessage({ id: 'ariaLabel.closeFilter' })}
         onClick={onClick}
-        className="ml-auto text-blue-400"
+        className="flex shrink-0 ml-2 text-blue-400 transition-all duration-normal hover:text-gray-900"
       >
-        <Icon name="x" appearance={{ size: 'extraTiny' }} />
+        <Icon name="x" appearance={{ size: 'extraExtraTiny' }} />
       </button>
     </div>
   );

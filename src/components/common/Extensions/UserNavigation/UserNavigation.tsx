@@ -88,7 +88,7 @@ const UserNavigation: FC = () => {
   }, [connectWallet, wallet]);
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex gap-1">
       {isWalletConnected && isButtonVisible && (
         <>
           {nativeToken && <Token nativeToken={nativeToken} />}
@@ -106,7 +106,7 @@ const UserNavigation: FC = () => {
           setTriggerRef={setWalletTriggerRef}
           onClick={connectWallet}
           iconName={isWalletVisible && isMobile ? 'close' : 'cardholder'}
-          className="text-sm"
+          size="small"
         >
           {isWalletButtonVisible && formatMessage({ id: 'connectWallet' })}
         </Button>
@@ -122,8 +122,8 @@ const UserNavigation: FC = () => {
             }
           />
         )}
-        <div className="w-full h-auto">
-          {visible && (
+        {visible && (
+          <div className="w-full h-auto">
             <UserMenu
               tooltipProps={getTooltipProps}
               setTooltipRef={setTooltipRef}
@@ -132,8 +132,8 @@ const UserNavigation: FC = () => {
               walletAddress={user?.walletAddress}
               nativeToken={nativeToken}
             />
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

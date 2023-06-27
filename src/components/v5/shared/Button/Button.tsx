@@ -48,10 +48,12 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
       ) : (
         <button
           className={clsx(
-            className,
             'flex items-center justify-center font-medium transition-all duration-normal',
+            `${isFullRounded ? 'rounded-full' : 'rounded-lg'}`,
             {
               'text-md min-h-[2.5rem] px-4 py-2.5': size === 'default',
+              '!rounded-[0.1875rem] capitalize text-4 px-2 py-1':
+                size === 'extraSmall',
               'text-sm min-h-[2.125rem] px-3 py-2': size === 'small',
               [styles.primarySolid]: mode === 'primarySolid',
               [styles.primaryOutline]: mode === 'primaryOutline',
@@ -63,11 +65,10 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
               [styles.completed]: mode === 'completed',
               'pointer-events-none': disabled,
               'w-full': isFullSize,
-              'rounded-full': isFullRounded,
-              'rounded-lg': !isFullRounded,
               'border border-gray-300 !text-gray-300 !bg-base-white':
                 disabled && isIconRight,
             },
+            className,
           )}
           disabled={disabled || loading}
           aria-label={ariaLabelText}

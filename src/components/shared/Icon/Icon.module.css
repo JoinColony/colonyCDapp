@@ -6,6 +6,10 @@
   @apply cursor-pointer active:outline-none hover:outline-none;
 }
 
+.sizeExtraExtraTiny {
+  @apply w-[0.625rem] h-[0.625rem];
+}
+
 .sizeExtraTiny {
   @apply w-[0.75rem] h-[0.75rem];
 }

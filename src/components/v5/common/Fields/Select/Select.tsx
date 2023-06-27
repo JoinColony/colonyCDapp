@@ -65,7 +65,6 @@ const Select = <T extends any[]>({
 
   return (
     <div className={styles.container}>
-      {/* @TODO button */}
       <button
         type="button"
         onClick={toggleOptions}

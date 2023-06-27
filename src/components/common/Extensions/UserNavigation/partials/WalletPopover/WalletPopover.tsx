@@ -27,18 +27,20 @@ const WalletPopover: FC<WalletPopoverProps> = ({
       classNames={styles.walletPopover}
       withTooltipStyles={false}
     >
-      {/* @TODO button */}
       <div className={styles.mobileButtons}>
         <Button
           mode="tertiary"
+          size="small"
           isFullRounded
           onClick={connectWallet}
           iconName="cardholder"
+          iconSize="extraTiny"
         >
           {formatMessage({ id: 'connectWallet' })}
         </Button>
         <Button
           mode="tertiary"
+          size="small"
           isFullRounded
           iconName="list"
           iconSize="extraTiny"
