@@ -11,5 +11,5 @@
 }
 
 .dropdownContent {
-  @apply border border-gray-200 rounded-md bg-base-white mx-6 mb-3 sm:mx-0 sm:mb-0;
+  @apply border border-gray-200 rounded-md bg-base-white mb-3 sm:mb-0;
 }
