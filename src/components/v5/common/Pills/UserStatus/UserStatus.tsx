@@ -8,7 +8,7 @@ import { PillsProps } from '../types';
 const displayName = 'v5.common.Pills.UserStatus';
 
 const UserStatus: FC<PropsWithChildren<PillsProps>> = ({
-  mode = 'dedicated',
+  mode,
   children,
   text,
   textValues,
