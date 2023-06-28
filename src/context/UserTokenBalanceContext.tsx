@@ -10,10 +10,12 @@ import { useAppContext, useColonyContext } from '~hooks';
 
 export const UserTokenBalanceContext = createContext<{
   tokenBalanceData: GetUserTokenBalanceReturn | null | undefined;
-  pollTokenBalance: () => void;
+  pollActiveTokenBalance: () => void;
+  pollLockedTokenBalance: () => void;
 }>({
   tokenBalanceData: null,
-  pollTokenBalance: () => {},
+  pollActiveTokenBalance: () => {},
+  pollLockedTokenBalance: () => {},
 });
 
 export const UserTokenBalanceProvider = ({
@@ -25,11 +27,7 @@ export const UserTokenBalanceProvider = ({
   const { colony } = useColonyContext();
   const { colonyAddress, nativeToken } = colony || {};
 
-  const {
-    data: tokenBalanceQueryData,
-    startPolling,
-    stopPolling,
-  } = useGetUserTokenBalanceQuery({
+  const { data: tokenBalanceQueryData, refetch } = useGetUserTokenBalanceQuery({
     variables: {
       input: {
         walletAddress: wallet?.address ?? '',
@@ -42,17 +40,41 @@ export const UserTokenBalanceProvider = ({
 
   const tokenBalanceData = tokenBalanceQueryData?.getUserTokenBalance;
 
-  const pollTokenBalance = useCallback(() => {
-    startPolling(1000);
-    setTimeout(stopPolling, 10_000);
-  }, [startPolling, stopPolling]);
+  const pollActiveTokenBalance = useCallback(() => {
+    let interval;
+
+    const fetchActiveBalance = async () => {
+      const { data } = await refetch();
+      const activeBalance = data.getUserTokenBalance?.activeBalance;
+      if (activeBalance !== tokenBalanceData?.activeBalance) {
+        clearInterval(interval);
+      }
+    };
+
+    interval = setInterval(fetchActiveBalance, 3_000);
+  }, [tokenBalanceData, refetch]);
+
+  const pollLockedTokenBalance = useCallback(async () => {
+    let interval;
+
+    const fetchLockedBalance = async () => {
+      const { data } = await refetch();
+      const lockedBalance = data.getUserTokenBalance?.lockedBalance;
+      if (lockedBalance !== tokenBalanceData?.lockedBalance) {
+        clearInterval(interval);
+      }
+    };
+
+    interval = setInterval(fetchLockedBalance, 3_000);
+  }, [tokenBalanceData, refetch]);
 
   const value = useMemo(
     () => ({
       tokenBalanceData,
-      pollTokenBalance,
+      pollActiveTokenBalance,
+      pollLockedTokenBalance,
     }),
-    [tokenBalanceData, pollTokenBalance],
+    [tokenBalanceData, pollActiveTokenBalance, pollLockedTokenBalance],
   );
 
   return (

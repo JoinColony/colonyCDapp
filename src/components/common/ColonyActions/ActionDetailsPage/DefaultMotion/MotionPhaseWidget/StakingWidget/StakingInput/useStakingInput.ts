@@ -8,7 +8,7 @@ import { getHandleStakeSuccessFn, getStakingTransformFn } from './helpers';
 export const useStakingInput = () => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
-  const { pollTokenBalance } = useUserTokenBalanceContext();
+  const { pollLockedTokenBalance } = useUserTokenBalanceContext();
 
   const {
     isObjection,
@@ -33,7 +33,7 @@ export const useStakingInput = () => {
   const handleSuccess = getHandleStakeSuccessFn(
     setIsRefetching,
     startPollingAction,
-    pollTokenBalance,
+    pollLockedTokenBalance,
   );
 
   return {
