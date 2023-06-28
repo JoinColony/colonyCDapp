@@ -1,5 +1,6 @@
 import { Address } from '~types';
 import { ADDRESS_ZERO, isDev } from '~constants';
+import { createAddress } from '~utils/web3';
 
 export enum SlotKey {
   Metatransactions = 'metatransactions',
@@ -34,7 +35,7 @@ class UserSettings {
   currentSettings: UserSettingsSlot;
 
   constructor(userAddress?: Address) {
-    this.slot = (userAddress || ADDRESS_ZERO).replace('0x', '');
+    this.slot = createAddress(userAddress || ADDRESS_ZERO).replace('0x', '');
     this.currentSettings = this.getStorageSlot() as UserSettingsSlot;
     if (!this.currentSettings) {
       this.currentSettings = defaultSlotValues;

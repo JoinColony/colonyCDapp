@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 
 import ColonyActions from '~common/ColonyActions';
+// import ColonyEvents from '~dashboard/ColonyEvents';
 
 import {
   COLONY_EVENTS_ROUTE,
@@ -14,11 +15,11 @@ import {
   COLONY_EXTENSION_DETAILS_ROUTE,
 } from '~routes/index';
 import NotFoundRoute from '~routes/NotFoundRoute';
+import ColonyExtensions from '~common/ColonyExtensions';
+import ExtensionDetails from '~common/Extensions/ExtensionDetails';
 import { useColonyContext } from '~hooks';
 
 import ColonyHomeLayout from './ColonyHomeLayout';
-import ColonyExtensions from '~common/ColonyExtensions';
-import ExtensionDetails from '~common/Extensions/ExtensionDetails';
 
 const displayName = 'common.ColonyHome';
 
@@ -68,6 +69,7 @@ const ColonyHome = () => {
               element={<ExtensionDetails />}
             />
           </Route>
+
           <Route path="*" element={<NotFoundRoute />} />
         </RoutesSwitch>
       );

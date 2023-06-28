@@ -10,14 +10,13 @@ import {
   multiColorIcons as multiColorIconNames,
 } from '~images/icons.json';
 
-import styles from './Icon.module.css';
+import styles from './Icon.css';
 
 const displayName = 'Icon';
 
 type Appearance = {
   theme?: 'primary' | 'invert';
   size?:
-    | 'extraExtraTiny'
     | 'extraTiny'
     | 'tiny'
     | 'small'

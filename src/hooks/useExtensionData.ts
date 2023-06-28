@@ -17,6 +17,8 @@ import useColonyContext from './useColonyContext';
 interface UseExtensionDataReturn {
   extensionData: AnyExtensionData | null;
   loading: boolean;
+  startPolling: (interval: number) => void;
+  stopPolling: () => void;
 }
 
 /**
@@ -28,7 +30,12 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
 
   const extensionHash = getExtensionHash(extensionId);
 
-  const { data, loading: extensionLoading } = useGetColonyExtensionQuery({
+  const {
+    data,
+    loading: extensionLoading,
+    startPolling,
+    stopPolling,
+  } = useGetColonyExtensionQuery({
     variables: {
       colonyAddress: colony?.colonyAddress ?? '',
       extensionHash,
@@ -70,6 +77,8 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
   return {
     extensionData,
     loading: extensionLoading || versionLoading,
+    startPolling,
+    stopPolling,
   };
 };
 

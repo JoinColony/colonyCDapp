@@ -1,6 +1,7 @@
 declare namespace UserAvatarCssNamespace {
   export interface IUserAvatarCss {
     main: string;
+    stateShowOnClick: string;
   }
 }
 

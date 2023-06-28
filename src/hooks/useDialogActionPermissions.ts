@@ -6,14 +6,12 @@ import { getUserRolesForDomain } from '~transformers';
 import { Colony } from '~types';
 import { userHasRole } from '~utils/checks';
 
-import useColonyReputation from './useColonyReputation';
-
 const useDialogActionPermissions = (
   colony: Colony,
   isVotingExtensionEnabled: boolean,
   requiredRoles: ColonyRole[],
   requiredRolesDomains: number[],
-  requiredRepDomain?: number,
+  hasReputation: boolean,
 ): [boolean, boolean] => {
   const { wallet } = useAppContext();
   const { watch } = useFormContext();
@@ -29,18 +27,10 @@ const useDialogActionPermissions = (
     return requiredRoles.every((role) => userHasRole(userDomainRoles, role));
   });
 
-  const hasReputation = useColonyReputation(
-    colony.colonyAddress,
-    requiredRepDomain,
-  );
-
   const onlyForceAction =
     isVotingExtensionEnabled && !hasReputation && !forceAction;
 
-  const userHasPermission =
-    hasRoles || (isVotingExtensionEnabled && hasReputation);
-
-  return [userHasPermission, onlyForceAction];
+  return [hasRoles, onlyForceAction];
 };
 
 export default useDialogActionPermissions;

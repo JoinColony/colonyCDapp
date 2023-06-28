@@ -40,7 +40,7 @@ input ProfileMetadataInput {
 
 input ChainMetadataInput {
   network: Network
-  chainId: Int
+  chainId: Int!
   transactionHash: String
   logIndex: Int
   blockNumber: Int
@@ -63,7 +63,7 @@ input CreateUniqueColonyInput {
   colonyNativeTokenId: ID!
   type: ColonyType
   status: ColonyStatusInput
-  chainMetadata: ChainMetadataInput
+  chainMetadata: ChainMetadataInput!
   version: Int!
 }
 
@@ -288,6 +288,8 @@ type Query {
   listColonyRoles(filter: ModelColonyRoleFilterInput, limit: Int, nextToken: String): ModelColonyRoleConnection
   getColonyHistoricRole(id: ID!): ColonyHistoricRole
   listColonyHistoricRoles(filter: ModelColonyHistoricRoleFilterInput, limit: Int, nextToken: String): ModelColonyHistoricRoleConnection
+  getIngestorStats(id: ID!): IngestorStats
+  listIngestorStats(filter: ModelIngestorStatsFilterInput, limit: Int, nextToken: String): ModelIngestorStatsConnection
   getColonyTokens(id: ID!): ColonyTokens
   listColonyTokens(filter: ModelColonyTokensFilterInput, limit: Int, nextToken: String): ModelColonyTokensConnection
   getUserTokens(id: ID!): UserTokens
@@ -299,11 +301,13 @@ type Query {
   getTokensByType(type: TokenType!, sortDirection: ModelSortDirection, filter: ModelTokenFilterInput, limit: Int, nextToken: String): ModelTokenConnection
   getColonyByAddress(id: ID!, sortDirection: ModelSortDirection, filter: ModelColonyFilterInput, limit: Int, nextToken: String): ModelColonyConnection
   getColonyByName(name: String!, sortDirection: ModelSortDirection, filter: ModelColonyFilterInput, limit: Int, nextToken: String): ModelColonyConnection
+  getColoniesByNativeTokenId(nativeTokenId: ID!, sortDirection: ModelSortDirection, filter: ModelColonyFilterInput, limit: Int, nextToken: String): ModelColonyConnection
   getColonyByType(type: ColonyType!, sortDirection: ModelSortDirection, filter: ModelColonyFilterInput, limit: Int, nextToken: String): ModelColonyConnection
   getUserByAddress(id: ID!, sortDirection: ModelSortDirection, filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
   getUserByName(name: String!, sortDirection: ModelSortDirection, filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
   getMotionMessageByMotionId(motionId: ID!, createdAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelMotionMessageFilterInput, limit: Int, nextToken: String): ModelMotionMessageConnection
   getExtensionByColonyAndHash(colonyId: ID!, hash: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelColonyExtensionFilterInput, limit: Int, nextToken: String): ModelColonyExtensionConnection
+  getExtensionsByHash(hash: String!, sortDirection: ModelSortDirection, filter: ModelColonyExtensionFilterInput, limit: Int, nextToken: String): ModelColonyExtensionConnection
   getCurrentVersionByKey(key: String!, sortDirection: ModelSortDirection, filter: ModelCurrentVersionFilterInput, limit: Int, nextToken: String): ModelCurrentVersionConnection
   getActionsByColony(colonyId: ID!, createdAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelColonyActionFilterInput, limit: Int, nextToken: String): ModelColonyActionConnection
   getColonyActionByMotionId(motionId: ID!, sortDirection: ModelSortDirection, filter: ModelColonyActionFilterInput, limit: Int, nextToken: String): ModelColonyActionConnection
@@ -366,6 +370,9 @@ type Mutation {
   createColonyHistoricRole(input: CreateColonyHistoricRoleInput!, condition: ModelColonyHistoricRoleConditionInput): ColonyHistoricRole
   updateColonyHistoricRole(input: UpdateColonyHistoricRoleInput!, condition: ModelColonyHistoricRoleConditionInput): ColonyHistoricRole
   deleteColonyHistoricRole(input: DeleteColonyHistoricRoleInput!, condition: ModelColonyHistoricRoleConditionInput): ColonyHistoricRole
+  createIngestorStats(input: CreateIngestorStatsInput!, condition: ModelIngestorStatsConditionInput): IngestorStats
+  updateIngestorStats(input: UpdateIngestorStatsInput!, condition: ModelIngestorStatsConditionInput): IngestorStats
+  deleteIngestorStats(input: DeleteIngestorStatsInput!, condition: ModelIngestorStatsConditionInput): IngestorStats
   createColonyTokens(input: CreateColonyTokensInput!, condition: ModelColonyTokensConditionInput): ColonyTokens
   updateColonyTokens(input: UpdateColonyTokensInput!, condition: ModelColonyTokensConditionInput): ColonyTokens
   deleteColonyTokens(input: DeleteColonyTokensInput!, condition: ModelColonyTokensConditionInput): ColonyTokens
@@ -404,7 +411,7 @@ type ColonyStatus {
 
 type ChainMetadata {
   network: Network
-  chainId: Int
+  chainId: Int!
   transactionHash: String
   logIndex: Int
   blockNumber: Int
@@ -415,12 +422,14 @@ type ProfileMetadata {
 }
 
 type Contributor {
+  address: String!
   user: User
   reputationPercentage: String
   reputationAmount: String
 }
 
 type Watcher {
+  address: String!
   user: User
 }
 
@@ -434,7 +443,7 @@ type Token {
   users(filter: ModelUserTokensFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserTokensConnection
   avatar: String
   thumbnail: String
-  chainMetadata: ChainMetadata
+  chainMetadata: ChainMetadata!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -446,6 +455,7 @@ type ColonyID {
 type Colony {
   id: ID!
   name: String!
+  nativeTokenId: ID!
   nativeToken: Token!
   tokens(filter: ModelColonyTokensFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelColonyTokensConnection
   status: ColonyStatus
@@ -455,7 +465,7 @@ type Colony {
   chainFundsClaim: ColonyChainFundsClaim
   type: ColonyType
   balances: ColonyBalances
-  chainMetadata: ChainMetadata
+  chainMetadata: ChainMetadata!
   extensions(hash: ModelStringKeyConditionInput, filter: ModelColonyExtensionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelColonyExtensionConnection
   version: Int!
   actions(filter: ModelColonyActionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelColonyActionConnection
@@ -464,7 +474,6 @@ type Colony {
   roles(filter: ModelColonyRoleFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelColonyRoleConnection
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
-  colonyNativeTokenId: ID!
 }
 
 type ColonyUnclaimedStake {
@@ -856,6 +865,13 @@ type ColonyHistoricRole {
   updatedAt: AWSDateTime!
 }
 
+type IngestorStats {
+  id: ID!
+  value: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
 type ColonyTokens {
   id: ID!
   tokenID: ID!
@@ -1161,6 +1177,9 @@ type Subscription {
   onCreateColonyHistoricRole(filter: ModelSubscriptionColonyHistoricRoleFilterInput): ColonyHistoricRole
   onUpdateColonyHistoricRole(filter: ModelSubscriptionColonyHistoricRoleFilterInput): ColonyHistoricRole
   onDeleteColonyHistoricRole(filter: ModelSubscriptionColonyHistoricRoleFilterInput): ColonyHistoricRole
+  onCreateIngestorStats(filter: ModelSubscriptionIngestorStatsFilterInput): IngestorStats
+  onUpdateIngestorStats(filter: ModelSubscriptionIngestorStatsFilterInput): IngestorStats
+  onDeleteIngestorStats(filter: ModelSubscriptionIngestorStatsFilterInput): IngestorStats
   onCreateColonyTokens(filter: ModelSubscriptionColonyTokensFilterInput): ColonyTokens
   onUpdateColonyTokens(filter: ModelSubscriptionColonyTokensFilterInput): ColonyTokens
   onDeleteColonyTokens(filter: ModelSubscriptionColonyTokensFilterInput): ColonyTokens
@@ -1217,7 +1236,7 @@ input CreateTokenInput {
   type: TokenType
   avatar: String
   thumbnail: String
-  chainMetadata: ChainMetadataInput
+  chainMetadata: ChainMetadataInput!
   createdAt: AWSDateTime
 }
 
@@ -1287,40 +1306,41 @@ input ModelColonyTypeInput {
 input ModelColonyFilterInput {
   id: ModelIDInput
   name: ModelStringInput
+  nativeTokenId: ModelIDInput
   type: ModelColonyTypeInput
   version: ModelIntInput
   and: [ModelColonyFilterInput]
   or: [ModelColonyFilterInput]
   not: ModelColonyFilterInput
-  colonyNativeTokenId: ModelIDInput
 }
 
 input ModelColonyConditionInput {
   name: ModelStringInput
+  nativeTokenId: ModelIDInput
   type: ModelColonyTypeInput
   version: ModelIntInput
   and: [ModelColonyConditionInput]
   or: [ModelColonyConditionInput]
   not: ModelColonyConditionInput
-  colonyNativeTokenId: ModelIDInput
 }
 
 input CreateColonyInput {
   id: ID
   name: String!
+  nativeTokenId: ID!
   status: ColonyStatusInput
   chainFundsClaim: ColonyChainFundsClaimInput
   type: ColonyType
   balances: ColonyBalancesInput
-  chainMetadata: ChainMetadataInput
+  chainMetadata: ChainMetadataInput!
   version: Int!
   motionsWithUnclaimedStakes: [ColonyUnclaimedStakeInput!]
-  colonyNativeTokenId: ID!
 }
 
 input UpdateColonyInput {
   id: ID!
   name: String
+  nativeTokenId: ID
   status: ColonyStatusInput
   chainFundsClaim: ColonyChainFundsClaimInput
   type: ColonyType
@@ -1328,7 +1348,6 @@ input UpdateColonyInput {
   chainMetadata: ChainMetadataInput
   version: Int
   motionsWithUnclaimedStakes: [ColonyUnclaimedStakeInput!]
-  colonyNativeTokenId: ID
 }
 
 input DeleteColonyInput {
@@ -1338,6 +1357,7 @@ input DeleteColonyInput {
 input ModelSubscriptionColonyFilterInput {
   id: ModelSubscriptionIDInput
   name: ModelSubscriptionStringInput
+  nativeTokenId: ModelSubscriptionIDInput
   type: ModelSubscriptionStringInput
   version: ModelSubscriptionIntInput
   and: [ModelSubscriptionColonyFilterInput]
@@ -2418,6 +2438,47 @@ input ModelSubscriptionColonyHistoricRoleFilterInput {
   createdAt: ModelSubscriptionStringInput
   and: [ModelSubscriptionColonyHistoricRoleFilterInput]
   or: [ModelSubscriptionColonyHistoricRoleFilterInput]
+}
+
+type ModelIngestorStatsConnection {
+  items: [IngestorStats]!
+  nextToken: String
+}
+
+input ModelIngestorStatsFilterInput {
+  id: ModelIDInput
+  value: ModelStringInput
+  and: [ModelIngestorStatsFilterInput]
+  or: [ModelIngestorStatsFilterInput]
+  not: ModelIngestorStatsFilterInput
+}
+
+input ModelIngestorStatsConditionInput {
+  value: ModelStringInput
+  and: [ModelIngestorStatsConditionInput]
+  or: [ModelIngestorStatsConditionInput]
+  not: ModelIngestorStatsConditionInput
+}
+
+input CreateIngestorStatsInput {
+  id: ID
+  value: String!
+}
+
+input UpdateIngestorStatsInput {
+  id: ID!
+  value: String
+}
+
+input DeleteIngestorStatsInput {
+  id: ID!
+}
+
+input ModelSubscriptionIngestorStatsFilterInput {
+  id: ModelSubscriptionIDInput
+  value: ModelSubscriptionStringInput
+  and: [ModelSubscriptionIngestorStatsFilterInput]
+  or: [ModelSubscriptionIngestorStatsFilterInput]
 }
 
 type ModelColonyTokensConnection {

@@ -2,8 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import ColonyGrid from '~shared/ColonyGrid';
-import Link from '~v5/shared/Link';
-import { SpinnerLoader } from '~shared/Preloaders';
+import Link from '~shared/Link';
 
 import { CREATE_COLONY_ROUTE } from '~routes/index';
 import { User } from '~types';
@@ -40,19 +39,8 @@ const MSG = defineMessages({
 const UserColonies = ({
   user: { walletAddress, watchlist, name, profile },
 }: Props) => {
-  const { user: currentUser, walletConnecting } = useAppContext();
+  const { user: currentUser } = useAppContext();
   const isCurrentUser = currentUser?.walletAddress === walletAddress;
-
-  if (walletConnecting) {
-    return (
-      <div className={styles.loader}>
-        <SpinnerLoader
-          appearance={{ theme: 'primary', size: 'huge' }}
-          loadingText={MSG.loadingColonies}
-        />
-      </div>
-    );
-  }
 
   return (
     <ColonyGrid
@@ -74,7 +62,7 @@ const UserColonies = ({
           : {
               friendlyUsername: (
                 <span
-                  title={profile?.displayName || name}
+                  title={profile?.displayName ?? name ?? ''}
                   className={styles.userHighlight}
                 >
                   {profile?.displayName || name}

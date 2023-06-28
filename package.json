@@ -213,7 +213,5 @@
     "scroll-into-view-if-needed": "^2.2.16",
     "use-local-storage": "^3.0.0",
     "yup": "^0.30.0"
-  },
-  "readme": "ERROR: No README data found!",
-  "_id": "colony-cdapp@5.0.0-alpha.0"
+  }
 }

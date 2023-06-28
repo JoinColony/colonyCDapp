@@ -10,9 +10,9 @@ import {
   TransactionNotFound,
   ActionDetailsPageLayout as Layout,
   DefaultAction,
+  DefaultMotion,
+  useGetColonyAction,
 } from '.';
-import { useGetColonyAction } from './useGetColonyAction';
-import DefaultMotion from './DefaultMotion';
 
 const displayName = 'common.ColonyActions.ActionDetailsPage';
 

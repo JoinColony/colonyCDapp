@@ -34,6 +34,7 @@ const useExtensionsData = (): UseExtensionsDataReturn => {
     skip: !colony,
     fetchPolicy: 'cache-and-network',
   });
+
   const colonyExtensions = data?.getColony?.extensions?.items?.filter(notNull);
 
   const { data: versionsData, loading: versionsLoading } =

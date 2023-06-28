@@ -1,7 +1,7 @@
 import { MessageDescriptor } from 'react-intl';
 import React from 'react';
 
-import ExternalLink from '~shared/Extensions/ExternalLink';
+import ExternalLink from '~shared/ExternalLink';
 import { SimpleMessageValues } from '~types';
 import { getBlockExplorerLink } from '~utils/external';
 

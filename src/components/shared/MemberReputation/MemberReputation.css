@@ -41,7 +41,7 @@
   stroke: var(--golden);
 }
 
-@media screen and query850 {
+@media screen and query700 {
   .reputationWrapper {
     display: flex;
     align-items: center;

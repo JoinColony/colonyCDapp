@@ -71,7 +71,9 @@ const MotionPhaseWidget = ({
               requiresDomainFunds={
                 !!fromDomain &&
                 !!amount &&
-                type !== ColonyActionType.MintTokensMotion
+                type !== ColonyActionType.MintTokensMotion &&
+                type !== ColonyActionType.EmitDomainReputationPenaltyMotion &&
+                type !== ColonyActionType.EmitDomainReputationRewardMotion
               }
               {...rest}
             />
@@ -93,10 +95,10 @@ const MotionPhaseWidget = ({
       }
 
       return (
-        <div>
+        <>
           <ClaimMotionStakes motionData={motionData} {...rest} />
           <VoteOutcome actionData={actionData} />
-        </div>
+        </>
       );
     }
 

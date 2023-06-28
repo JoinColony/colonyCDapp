@@ -109,20 +109,16 @@ export const usePermissionManagementDialogStatus = (
   enabledExtensionData: EnabledExtensionData,
 ) => {
   const { watch } = useFormContext();
-  const { domainId, roles, user: selectedUser } = watch();
+  const { domainId, roles, user: selectedUser, motionDomainId } = watch();
 
-  const {
-    userHasPermission,
-    disabledSubmit: defaultDisabledSubmit,
-    disabledInput,
-    canCreateMotion,
-    canOnlyForceAction,
-  } = useActionDialogStatus(
-    colony,
-    requiredRoles,
-    [domainId],
-    enabledExtensionData,
-  );
+  const { disabledSubmit: defaultDisabledSubmit, ...rest } =
+    useActionDialogStatus(
+      colony,
+      requiredRoles,
+      [domainId],
+      enabledExtensionData,
+      motionDomainId,
+    );
 
   const userDirectAndInheritedRoles = getUserRolesForDomain(
     colony,
@@ -131,16 +127,13 @@ export const usePermissionManagementDialogStatus = (
   );
 
   return {
-    userHasPermission,
-    disabledInput,
+    ...rest,
     disabledSubmit:
       defaultDisabledSubmit ||
       isEqual(
         sortBy(roles),
         sortBy(userDirectAndInheritedRoles.map((role) => role.toString())),
       ),
-    canCreateMotion,
-    canOnlyForceAction,
   };
 };
 

@@ -3,7 +3,7 @@ declare namespace ManageFundsLinkCssNamespace {
     manageFundsLink: string;
     mappings: string;
     names: string;
-    query850: string;
+    query700: string;
     rightArrowDisplay: string;
     sourceRoot: string;
     sources: string;

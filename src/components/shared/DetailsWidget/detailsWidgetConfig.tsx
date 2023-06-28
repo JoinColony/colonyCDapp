@@ -125,7 +125,6 @@ const getDetailItemsMap = (
   } = actionData;
 
   const shortenedHash = getShortenedHash(transactionHash || '');
-
   const normalizedRoles = roles ? normalizeRolesForAction(roles) : [];
 
   const isSmiteAction = type.includes(

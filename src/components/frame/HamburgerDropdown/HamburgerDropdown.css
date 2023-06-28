@@ -1,10 +1,10 @@
-@value query850 from "~styles/queries.css";
+@value query700 from "~styles/queries.css";
 
 .hamburgerButton {
   display: none;
 }
 
-@media screen and query850 {
+@media screen and query700 {
   .hamburgerButton {
     display: block;
     padding: 0;
@@ -15,5 +15,10 @@
 
   .activeDropdown {
     background-color: var(--grey-purple);
+  }
+
+  li > a {
+    font-size: inherit;
+    font-weight: inherit;
   }
 }

@@ -37,6 +37,7 @@ const displayName = 'common.ColonyHome.ColonyHomeLayout';
 const ColonyHomeLayout = ({
   filteredDomainId,
   children,
+
   onDomainChange = () => null,
 }: Props) => {
   const { colony } = useColonyContext();

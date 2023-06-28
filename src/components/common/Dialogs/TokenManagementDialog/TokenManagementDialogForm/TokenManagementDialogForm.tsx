@@ -1,233 +1,211 @@
 import React, { useEffect } from 'react';
-import { defineMessages } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
+import { defineMessages, FormattedMessage } from 'react-intl';
+import { AddressZero } from '@ethersproject/constants';
 import { useFormContext } from 'react-hook-form';
 
 import {
-  InputLabel,
-  HookFormSelect as Select,
-  Annotations,
-} from '~shared/Fields';
-import {
   ActionDialogProps,
-  DialogControls,
+  DialogHeading,
   DialogSection,
+  DialogControls,
 } from '~shared/Dialog';
-import SingleUserPicker, {
-  filterUserSelection,
-} from '~shared/SingleUserPicker';
-import { ItemDataType } from '~shared/OmniPicker';
-import UserAvatar from '~shared/UserAvatar';
+import { Annotations } from '~shared/Fields';
+import { Heading4 } from '~shared/Heading';
+import Paragraph from '~shared/Paragraph';
 
-import { User } from '~types';
-import { notNull } from '~utils/arrays';
-import { getDomainOptions } from '~utils/domains';
+import { useActionDialogStatus } from '~hooks';
+import { isEqual } from '~utils/lodash';
+import TokenSelector from '~shared/TokenSelector';
+import { SetStateFn } from '~types';
 
-import styles from './TokenManagementDialogForm.css';
-import {
-  useSelectedUserRoles,
-  formatRolesForForm,
-  useCanRoleBeSet,
-  usePermissionManagementDialogStatus,
-} from '~common/Dialogs/PermissionManagementDialog/helpers';
-import { availableRoles } from '~common/Dialogs/PermissionManagementDialog';
 import {
   NoPermissionMessage,
+  NotEnoughReputation,
   PermissionRequiredInfo,
-} from '~common/Dialogs/Messages';
-import PermissionManagementCheckbox from '~common/Dialogs/PermissionManagementDialog/PermissionManagementCheckbox';
+} from '../../Messages';
+import { FormValues } from '../validation';
+import TokenItem from './TokenItem';
+import getTokenList from './getTokenList';
 
-const displayName = `common.PermissionManagementDialog.PermissionManagementForm`;
+import styles from './TokenManagementDialogForm.css';
+
+const displayName = 'common.TokenManagementDialog.TokenManagementDialogForm';
 
 const MSG = defineMessages({
   title: {
     id: `${displayName}.title`,
-    defaultMessage: 'Permissions',
+    defaultMessage: 'Manage tokens',
   },
-  domain: {
-    id: `${displayName}.domain`,
-    defaultMessage: 'Team',
+  fieldLabel: {
+    id: `${displayName}.fieldLabel`,
+    defaultMessage: 'Contract address',
   },
-  permissionsLabel: {
-    id: `${displayName}.permissionsLabel`,
-    defaultMessage: 'Permissions',
-  },
-  annotation: {
-    id: `${displayName}.annotation`,
+  textareaLabel: {
+    id: `${displayName}.textareaLabel`,
     defaultMessage: `Explain why you're making these changes (optional)`,
   },
-  selectUser: {
-    id: `${displayName}.selectUser`,
-    defaultMessage: 'Member',
+  noTokensText: {
+    id: `${displayName}.noTokensText`,
+    defaultMessage: `It looks no tokens have been added yet. Get started using the form above.`,
   },
-  userPickerPlaceholder: {
-    id: `${displayName}.userPickerPlaceholder`,
-    defaultMessage: 'Search for a user or paste wallet address',
+  notListedToken: {
+    id: `${displayName}.notListedToken`,
+    defaultMessage: `If token is not listed above, please add any ERC20 compatible token contract address below.`,
+  },
+  noPermission: {
+    id: `${displayName}.noPermission`,
+    defaultMessage: `You do not have the {roleRequired} permission required
+      to take this action.`,
   },
 });
 
 interface Props extends ActionDialogProps {
   close: (val: any) => void;
-  users?: User[];
+  isForce: boolean;
+  setIsForce: SetStateFn;
 }
 
-const supRenderAvatar = (item: ItemDataType<User>) => (
-  <UserAvatar user={item} size="xs" />
-);
+const requiredRoles: ColonyRole[] = [ColonyRole.Root];
 
-const PermissionManagementForm = ({
-  colony: { domains },
-  colony,
-  back,
+const TokenManagementDialogForm = ({
   close,
+  colony,
+  colony: { tokens, nativeToken },
+  back,
   enabledExtensionData,
-  users,
+  isForce,
+  setIsForce,
 }: Props) => {
-  const { watch, setValue } = useFormContext();
-  const {
-    domainId: selectedDomainId,
-    user: selectedUser,
-    motionDomainId,
-  } = watch();
-
-  const colonyDomains = domains?.items.filter(notNull) || [];
-  // const domain = findDomainByNativeId(selectedDomainId, colony);
-
-  const userRoles = useSelectedUserRoles(colony, selectedUser?.walletAddress);
-
-  useEffect(() => {
-    setValue('roles', formatRolesForForm(userRoles, selectedDomainId));
-  }, [selectedDomainId, setValue, userRoles]);
-
-  const requiredRoles =
-    selectedDomainId === Id.RootDomain
-      ? [ColonyRole.Root, ColonyRole.Architecture]
-      : [ColonyRole.Architecture];
-
-  const canRoleBeSet = useCanRoleBeSet(colony);
+  const { watch } = useFormContext<FormValues>();
+  const values = watch();
 
   const {
     userHasPermission,
-    // canCreateMotion,
     disabledInput,
     disabledSubmit,
-  } = usePermissionManagementDialogStatus(
+    canOnlyForceAction,
+    showPermissionErrors,
+  } = useActionDialogStatus(
     colony,
     requiredRoles,
+    [Id.RootDomain],
     enabledExtensionData,
   );
 
-  const domainSelectOptions = getDomainOptions(colonyDomains);
-
-  const handleDomainChange = (domainValue: number) => {
-    setValue('domainId', domainValue);
-    if (motionDomainId !== domainValue) {
-      setValue('motionDomainId', domainValue);
+  useEffect(() => {
+    if (values.forceAction !== isForce) {
+      setIsForce(values.forceAction);
     }
-  };
+  }, [isForce, setIsForce, values.forceAction]);
 
-  const filteredRoles =
-    selectedDomainId !== Id.RootDomain
-      ? availableRoles.filter(
-          /*
-           * Can't set recovery and root on a subdomain
-           * They can only be inherited in subdomains
-           */
-          (role) => role !== ColonyRole.Root && role !== ColonyRole.Recovery,
-        )
-      : availableRoles;
+  const tokenList = getTokenList();
+  const colonyTokens = tokens?.items || [];
+  const colonyTokenAddresses = colonyTokens.map(
+    (colonyToken) => colonyToken?.token.tokenAddress,
+  );
+
+  const hasTokensListChanged = ({
+    selectedTokenAddresses,
+    tokenAddress,
+  }: FormValues) =>
+    !!tokenAddress ||
+    !isEqual([...colonyTokenAddresses].sort(), selectedTokenAddresses?.sort());
+
+  const allTokens = [...colonyTokens, ...(userHasPermission ? tokenList : [])]
+    .map((token) => token?.token)
+    .filter(
+      (firstToken, index, mergedTokens) =>
+        mergedTokens.findIndex(
+          (secondToken) =>
+            secondToken?.tokenAddress === firstToken?.tokenAddress,
+        ) === index,
+    );
 
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        {/* <DialogHeading title={MSG.title} titleValues={{ domain: domain?.metadata?.name }} /> */}
+        <DialogHeading
+          title={MSG.title}
+          userHasPermission={userHasPermission}
+          colony={colony}
+          isRootMotion
+          isVotingExtensionEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
+        />
       </DialogSection>
-      {!userHasPermission && (
-        <DialogSection>
+      {showPermissionErrors && (
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
           <PermissionRequiredInfo requiredRoles={requiredRoles} />
         </DialogSection>
       )}
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <div className={styles.singleUserContainer}>
-          <SingleUserPicker
-            data={users || []}
-            label={MSG.selectUser}
-            name="user"
-            filter={filterUserSelection}
-            renderAvatar={supRenderAvatar}
-            disabled={disabledInput}
-            placeholder={MSG.userPickerPlaceholder}
-            dataTest="permissionUserSelector"
-            itemDataTest="permissionUserSelectorItem"
-          />
-        </div>
+        {allTokens.length > 0 ? (
+          <div className={styles.tokenChoiceContainer}>
+            {allTokens.map(
+              (token) =>
+                token && (
+                  <TokenItem
+                    key={token.tokenAddress}
+                    token={token}
+                    disabled={
+                      disabledInput ||
+                      token.tokenAddress === nativeToken.tokenAddress ||
+                      token.tokenAddress === AddressZero
+                    }
+                  />
+                ),
+            )}
+          </div>
+        ) : (
+          <Heading4 text={MSG.noTokensText} />
+        )}
       </DialogSection>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <div className={styles.domainSelectContainer}>
-          <Select
-            options={domainSelectOptions}
-            label={MSG.domain}
-            name="domainId"
-            appearance={{ theme: 'grey' }}
-            onChange={handleDomainChange}
-          />
-        </div>
-        <InputLabel
-          label={MSG.permissionsLabel}
-          appearance={{ colorSchema: 'grey' }}
-        />
-        <div className={styles.permissionChoiceContainer}>
-          {filteredRoles.map((role) => {
-            const directRole = userRoles?.direct?.[selectedDomainId]?.[role];
-            const inheritedRole =
-              userRoles?.inherited?.[selectedDomainId]?.[role];
-            return (
-              <PermissionManagementCheckbox
-                key={role}
-                readOnly={(inheritedRole && !directRole) || !canRoleBeSet(role)}
-                disabled={disabledInput || !selectedUser}
-                role={role}
-                asterisk={inheritedRole}
-                domainId={selectedDomainId}
-                dataTest="permission"
-              />
-            );
-          })}
-        </div>
-        <Annotations
-          label={MSG.annotation}
-          name="annotationMessage"
+        <Paragraph className={styles.description}>
+          <FormattedMessage {...MSG.notListedToken} />
+        </Paragraph>
+        <TokenSelector
+          label={MSG.fieldLabel}
+          appearance={{ colorSchema: 'grey', theme: 'fat' }}
           disabled={disabledInput}
-          dataTest="permissionAnnotation"
         />
-      </DialogSection>
-      {/* {!canCreateMotion && (
-        <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <CannotCreateMotionMessage />
-        </DialogSection>
-      )} */}
-      {!userHasPermission && (
-        <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <NoPermissionMessage
-            requiredPermissions={[ColonyRole.Architecture]}
+        <div className={styles.textarea}>
+          <Annotations
+            label={MSG.textareaLabel}
+            name="annotationMessage"
+            disabled={disabledInput}
           />
+        </div>
+      </DialogSection>
+      {showPermissionErrors && (
+        <DialogSection>
+          <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
       )}
-      {/* {onlyForceAction && (
-        <NotEnoughReputation domainId={Number(domainId)} />
-      )} */}
+      {canOnlyForceAction && (
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
+          <NotEnoughReputation includeForceCopy={userHasPermission} />
+        </DialogSection>
+      )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
-          disabled={disabledSubmit}
-          dataTest="permissionConfirmButton"
-          onSecondaryButtonClick={back ?? close}
+          onSecondaryButtonClick={back === undefined ? close : back}
           secondaryButtonText={{
-            id: back ? 'button.back' : 'button.cancel',
+            id: back === undefined ? 'button.cancel' : 'button.back',
           }}
+          disabled={disabledSubmit || !hasTokensListChanged(values)}
+          dataTest="confirm"
+          isVotingReputationEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
         />
       </DialogSection>
     </>
   );
 };
 
-export default PermissionManagementForm;
+TokenManagementDialogForm.displayName = displayName;
+
+export default TokenManagementDialogForm;

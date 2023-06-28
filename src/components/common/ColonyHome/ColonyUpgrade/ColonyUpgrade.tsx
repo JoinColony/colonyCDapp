@@ -5,7 +5,7 @@ import { useDialog } from '~shared/Dialog';
 import { NetworkContractUpgradeDialog } from '~common/Dialogs';
 import Alert from '~shared/Alert';
 import Button from '~shared/Button';
-import ExternalLink from '~shared/Extensions/ExternalLink';
+import ExternalLink from '~shared/ExternalLink';
 import {
   useTransformer,
   useAppContext,
@@ -22,7 +22,6 @@ import {
 import { getAllUserRoles } from '~transformers';
 
 import styles from './ColonyUpgrade.css';
-import { ColonyFragment } from '~gql';
 
 const displayName = 'common.ColonyHome.ColonyUpgrade';
 
@@ -52,7 +51,7 @@ const ColonyUpgrade = () => {
     });
 
   const allUserRoles = useTransformer(getAllUserRoles, [
-    colony as ColonyFragment,
+    colony,
     wallet?.address ?? '',
   ]);
 

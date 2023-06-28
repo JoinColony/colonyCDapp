@@ -17,6 +17,7 @@ interface ColonyContextValue {
   refetchColony: (() => null) | ObservableQuery['refetch'];
   startPolling: (pollInterval: number) => void;
   stopPolling: () => void;
+  isSupportedColonyVersion: boolean;
 }
 
 const ColonyContext = createContext<ColonyContextValue>({
@@ -25,6 +26,7 @@ const ColonyContext = createContext<ColonyContextValue>({
   refetchColony: () => null,
   startPolling: () => undefined,
   stopPolling: () => undefined,
+  isSupportedColonyVersion: false,
 });
 
 const displayName = 'ColonyContextProvider';
@@ -35,6 +37,8 @@ const MSG = defineMessages({
     defaultMessage: 'Loading Colony',
   },
 });
+
+const MIN_SUPPORTED_COLONY_VERSION = 5;
 
 export const ColonyContextProvider = ({
   children,
@@ -72,6 +76,8 @@ export const ColonyContextProvider = ({
   }
 
   const canInteractWithColony = useCanInteractWithColony(colony);
+  const isSupportedColonyVersion =
+    (colony?.version ?? 0) >= MIN_SUPPORTED_COLONY_VERSION;
 
   const colonyContext = useMemo<ColonyContextValue>(
     () => ({
@@ -81,6 +87,7 @@ export const ColonyContextProvider = ({
       refetchColony,
       startPolling,
       stopPolling,
+      isSupportedColonyVersion,
     }),
     [
       colony,
@@ -89,6 +96,7 @@ export const ColonyContextProvider = ({
       refetchColony,
       startPolling,
       stopPolling,
+      isSupportedColonyVersion,
     ],
   );
 

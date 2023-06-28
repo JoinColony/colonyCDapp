@@ -14,7 +14,7 @@ import {
 } from '../OmniPicker';
 import { Props as WithOmnipickerInProps } from '../OmniPicker/withOmniPicker';
 import { InputLabel, HookFormInputStatus as InputStatus } from '../Fields';
-import Icon from '~shared/Icon';
+import Icon from '../Icon';
 import Button from '../Button';
 import ItemDefault from './ItemDefault';
 
@@ -215,7 +215,7 @@ const SingleUserPicker = ({
                   disabled={disabled}
                   data-test={valueDataTest}
                 >
-                  {value.profile.displayName ||
+                  {value.profile?.displayName ||
                     value.name ||
                     value.walletAddress}
                 </button>

@@ -7,6 +7,7 @@ import React, {
   useMemo,
 } from 'react';
 import { nanoid } from 'nanoid';
+
 import { DialogType } from './types';
 
 export const DialogContext = createContext<{

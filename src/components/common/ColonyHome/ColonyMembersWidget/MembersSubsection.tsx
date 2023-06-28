@@ -8,6 +8,7 @@ import ClickableHeading from '~shared/ClickableHeading';
 import InviteLinkButton from '~shared/Button/InviteLinkButton';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { Colony, Member } from '~types';
+import { notNull } from '~utils/arrays';
 // import Icon from '~shared/Icon';
 import {
   calculateLastSliceIndex,
@@ -150,13 +151,15 @@ const MembersSubsection = ({
       <ul className={styles.userAvatars}>
         {members
           .slice(0, calculateLastSliceIndex(maxAvatars, members, false))
+          .filter(notNull)
           .map((member) => (
-            <li className={styles.userAvatar} key={member?.user?.walletAddress}>
+            <li className={styles.userAvatar} key={member.address}>
               <UserAvatar
                 size="xs"
                 // banned={canAdministerComments && banned}
                 showInfo
-                user={member?.user}
+                user={member.user}
+                address={member.address}
                 popperOptions={{
                   placement: 'bottom',
                   showArrow: false,

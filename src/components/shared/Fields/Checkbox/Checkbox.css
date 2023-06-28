@@ -1,4 +1,4 @@
-@value query850 from '~styles/queries.css';
+@value query700 from '~styles/queries.css';
 
 .main {
   display: block;
@@ -95,7 +95,7 @@
   background-color: var(--text-disabled);
 }
 
-@media screen and query850 {
+@media screen and query700 {
   .main {
     display: flex;
     align-items: center;

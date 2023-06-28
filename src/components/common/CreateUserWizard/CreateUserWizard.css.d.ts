@@ -6,7 +6,7 @@ declare namespace CreateUserWizardCssNamespace {
     nameForm: string;
     names: string;
     paragraph: string;
-    query850: string;
+    query700: string;
     reminder: string;
     sourceRoot: string;
     sources: string;

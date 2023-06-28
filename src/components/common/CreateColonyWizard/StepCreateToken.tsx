@@ -68,11 +68,6 @@ const StepCreateToken = ({
             loading={isSubmitting}
             dataTest="definedTokenConfirm"
           />
-          <SubmitFormButton
-            disabled={!isValid || isSubmitting}
-            loading={isSubmitting}
-            dataTest="definedTokenConfirm"
-          />
         </section>
       )}
     </Form>

@@ -27,6 +27,4 @@ export interface ActionDialogProps {
   colony: Colony;
   enabledExtensionData: EnabledExtensionData;
   back?: () => void;
-  isForce?: boolean;
-  setIsForce?: (isForce: boolean) => void;
 }

@@ -86,13 +86,17 @@ const ManageWhitelistDialogForm = ({
     reset: resetForm,
   } = useFormContext();
   const isWhitelistActivated = watch('isWhitelistActivated');
-  const { userHasPermission, disabledSubmit, disabledInput } =
-    useActionDialogStatus(
-      colony,
-      requiredRoles,
-      [Id.RootDomain],
-      enabledExtensionData,
-    );
+  const {
+    userHasPermission,
+    disabledSubmit,
+    disabledInput,
+    showPermissionErrors,
+  } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [Id.RootDomain],
+    enabledExtensionData,
+  );
 
   return (
     <>
@@ -167,8 +171,8 @@ const ManageWhitelistDialogForm = ({
           </TabPanel>
         </Tabs>
       </DialogSection>
-      {!userHasPermission && (
-        <DialogSection appearance={{ theme: 'sidePadding' }}>
+      {showPermissionErrors && (
+        <DialogSection>
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
       )}
@@ -182,9 +186,7 @@ const ManageWhitelistDialogForm = ({
             theme: tabIndex === TABS.ADD_ADDRESS ? 'primary' : 'pink',
             size: 'large',
           }}
-          isVotingReputationEnabled={
-            enabledExtensionData.isVotingReputationEnabled
-          }
+          isVotingReputationEnabled={false} // We always want this to show "Confirm" since you can't create a motion
         />
       </DialogSection>
     </>

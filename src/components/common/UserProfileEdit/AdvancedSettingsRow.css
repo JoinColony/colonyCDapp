@@ -1,4 +1,4 @@
-@value query850 from '~styles/queries.css';
+@value query700 from '~styles/queries.css';
 
 .main {
   padding-bottom: 20px;
@@ -47,7 +47,7 @@
   margin-top: 8px;
 }
 
-@media screen and query850 {
+@media screen and query700 {
   .toggleContainer {
     justify-content: space-between;
   }

@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage, MessageDescriptor } from 'react-intl';
 
 import Button, { Props as ButtonProps } from './Button';
-import Icon from '~shared/Icon';
+import Icon from '../Icon';
 
 import styles from './DottedAddButton.css';
 import { SimpleMessageValues } from '~types';

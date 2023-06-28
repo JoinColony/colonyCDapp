@@ -12,7 +12,7 @@ import {
   DialogSection,
 } from '~shared/Dialog';
 import { HookFormSelect as Select, Annotations } from '~shared/Fields';
-import ExternalLink from '~shared/Extensions/ExternalLink';
+import ExternalLink from '~shared/ExternalLink';
 import SingleUserPicker, {
   filterUserSelection,
 } from '~shared/SingleUserPicker';
@@ -113,7 +113,7 @@ const ManageReputationDialogForm = ({
   isForce,
   setIsForce,
 }: Props) => {
-  const { watch, trigger } = useFormContext();
+  const { watch, trigger, setValue } = useFormContext();
   const { domainId, motionDomainId, user: selectedUser, forceAction } = watch();
 
   useEffect(() => {
@@ -130,8 +130,9 @@ const ManageReputationDialogForm = ({
     userHasPermission,
     disabledInput,
     disabledSubmit,
-    canCreateMotion,
     canOnlyForceAction,
+    hasMotionCompatibleVersion,
+    showPermissionErrors,
   } = useActionDialogStatus(
     colony,
     requiredRoles,
@@ -167,6 +168,12 @@ const ManageReputationDialogForm = ({
 
   const selectedDomain = findDomainByNativeId(domainId, colony);
   const domainName = selectedDomain?.metadata?.name;
+
+  const handleDomainChange = (selectedDomainId: string) => {
+    if (isSmiteAction) {
+      setValue('motionDomainId', selectedDomainId);
+    }
+  };
 
   const renderActiveOption = (option) => {
     const value = option ? option.value : undefined;
@@ -234,7 +241,7 @@ const ManageReputationDialogForm = ({
         </DialogHeading>
       </DialogSection>
       {!isSmiteAction && <hr className={styles.divider} />}
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection>
           <PermissionRequiredInfo requiredRoles={requiredRoles} />
         </DialogSection>
@@ -268,7 +275,8 @@ const ManageReputationDialogForm = ({
               name="domainId"
               appearance={{ theme: 'grey', width: 'fluid' }}
               renderActiveOption={renderActiveOption}
-              disabled={!userHasPermission || canOnlyForceAction}
+              disabled={canOnlyForceAction}
+              onChange={handleDomainChange}
             />
           </div>
         </div>
@@ -292,7 +300,7 @@ const ManageReputationDialogForm = ({
           dataTest="reputationAnnotation"
         />
       </DialogSection>
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection>
           <NoPermissionMessage
             requiredPermissions={requiredRoles}
@@ -302,14 +310,15 @@ const ManageReputationDialogForm = ({
       )}
 
       {canOnlyForceAction && (
-        <DialogSection>
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NotEnoughReputation
             appearance={{ marginTop: 'negative' }}
             domainId={Number(motionDomainId)}
+            includeForceCopy={userHasPermission}
           />
         </DialogSection>
       )}
-      {!canCreateMotion && (
+      {!hasMotionCompatibleVersion && (
         <DialogSection>
           <CannotCreateMotionMessage />
         </DialogSection>

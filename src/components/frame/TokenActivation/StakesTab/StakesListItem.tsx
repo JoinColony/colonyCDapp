@@ -1,7 +1,8 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
+import { useLocation } from 'react-router-dom';
 
-import Link from '~v5/shared/Link';
+import Link from '~shared/Link';
 import Numeral from '~shared/Numeral';
 import { useTokenActivationContext } from '~hooks';
 import { useGetMotionTransactionHashQuery } from '~gql';
@@ -38,9 +39,15 @@ const StakesListItem = ({
   });
 
   const txHash = data?.getColonyActionByMotionId?.items[0]?.id ?? '';
+  const location = useLocation();
+  const isMotionPage = location.pathname.indexOf('/tx') !== -1;
+
   return (
     <li className={styles.stakesListItem}>
-      <Link to={txHash ? `/colony/${colonyName}/tx/${txHash}` : ''}>
+      <Link
+        replace={isMotionPage}
+        to={txHash ? `/colony/${colonyName}/tx/${txHash}` : ''}
+      >
         <div
           role="button"
           onClick={() => setIsOpen(false)}

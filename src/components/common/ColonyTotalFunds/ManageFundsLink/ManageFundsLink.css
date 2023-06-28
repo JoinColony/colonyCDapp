@@ -1,7 +1,19 @@
-@value query850 from "~styles/queries.css";
+@value query700 from "~styles/queries.css";
 
 .manageFundsLink {
   color: var(--colony-blue);
+}
+
+.manageFundsLink:hover {
+  color: var(--grey);
+}
+
+.manageFundsLink svg {
+  fill: var(--colony-blue);
+}
+
+.manageFundsLink:hover svg {
+  fill: var(--grey);
 }
 
 .rightArrowDisplay {
@@ -11,10 +23,9 @@
   width: 15px;
   vertical-align: bottom;
   font-weight: var(--weight-bold);
-  color: var(--colony-blue);
 }
 
-@media screen and query850 {
+@media screen and query700 {
   .manageFundsLink {
     display: flex;
     align-items: center;

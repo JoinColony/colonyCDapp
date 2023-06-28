@@ -7,10 +7,11 @@ import {
   DialogSection,
   ActionDialogProps,
   DialogControls,
+  DialogHeading,
 } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
 import PermissionsLabel from '~shared/PermissionsLabel';
-import ExternalLink from '~shared/Extensions/ExternalLink';
+import ExternalLink from '~shared/ExternalLink';
 
 import { useAppContext, useTransformer } from '~hooks';
 import { getAllUserRoles } from '~transformers';
@@ -55,14 +56,15 @@ const HelpLink = (chunks: React.ReactNode[]) => (
 const RecoveryModeDialogForm = ({
   back,
   colony,
-}: Omit<ActionDialogProps, 'enabledExtensionData'>) => {
+  enabledExtensionData,
+}: ActionDialogProps) => {
   const { user } = useAppContext();
   const {
     formState: { isSubmitting },
   } = useFormContext();
   const allUserRoles = useTransformer(getAllUserRoles, [
     colony,
-    user?.walletAddress ?? '',
+    user?.walletAddress,
   ]);
 
   const hasRegisteredProfile = !!user?.name && !!user?.walletAddress;
@@ -73,7 +75,14 @@ const RecoveryModeDialogForm = ({
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        {/* <DialogHeading title={MSG.title} /> */}
+        <DialogHeading
+          title={MSG.title}
+          colony={colony}
+          isVotingExtensionEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
+          userHasPermission={userHasPermission}
+        />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>

@@ -36,9 +36,7 @@ const UserCheckbox = ({
     setTooltipRef,
     setTriggerRef,
     visible,
-  } = usePopperTooltip({
-    placement: 'right',
-  }) as any;
+  } = usePopperTooltip({ placement: 'right' }) as any;
 
   const { profile } = user || {};
   const { displayName = walletAddress } = profile || {};
