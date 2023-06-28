@@ -63,8 +63,8 @@ const MSG = defineMessages({
     defaultMessage:
       'New colony network version available? Get your colony’s swole on here.',
   },
-  upgradePermissionsList: {
-    id: `${displayName}.upgradePermissionsList`,
+  rootActionsPermission: {
+    id: `${displayName}.rootActionsPermission`,
     defaultMessage: 'root',
   },
   editColonyDetailsTitle: {
@@ -84,6 +84,15 @@ const MSG = defineMessages({
     defaultMessage:
       'Want to interact with DeFi, or govern an external smart contract?',
   },
+  manageSafeTitle: {
+    id: 'dashboard.AdvancedDialog.manageSafeTitle',
+    defaultMessage: 'Safe (multi-sig) Control',
+  },
+  manageSafeDescription: {
+    id: 'dashboard.AdvancedDialog.manageSafeDescription',
+    defaultMessage:
+      'Control a Safe (multi-sig) on another chain with your colony',
+  },
 });
 
 interface CustomWizardDialogProps extends ActionDialogProps {
@@ -91,6 +100,7 @@ interface CustomWizardDialogProps extends ActionDialogProps {
   nextStepRecovery: string;
   nextStepEditDetails: string;
   nextStepVersionUpgrade: string;
+  nextStepManageSafe: string;
   prevStep: string;
 }
 
@@ -105,6 +115,7 @@ const AdvancedDialog = ({
   nextStepRecovery,
   nextStepEditDetails,
   nextStepVersionUpgrade,
+  nextStepManageSafe,
   colony,
   enabledExtensionData: { isVotingReputationEnabled },
 }: Props) => {
@@ -164,7 +175,7 @@ const AdvancedDialog = ({
       permissionRequired: !(hasRootPermission || isVotingReputationEnabled),
       permissionInfoText: MSG.permissionsText,
       permissionInfoTextValues: {
-        permissionsList: <FormattedMessage {...MSG.upgradePermissionsList} />,
+        permissionsList: <FormattedMessage {...MSG.rootActionsPermission} />,
       },
       onClick: () => callStep(nextStepVersionUpgrade),
     },
@@ -175,10 +186,22 @@ const AdvancedDialog = ({
       permissionRequired: !(hasRootPermission || isVotingReputationEnabled),
       permissionInfoText: MSG.permissionsText,
       permissionInfoTextValues: {
-        permissionsList: <FormattedMessage {...MSG.upgradePermissionsList} />,
+        permissionsList: <FormattedMessage {...MSG.rootActionsPermission} />,
       },
       onClick: () => callStep(nextStepEditDetails),
       dataTest: 'updateColonyDialogIndexItem',
+    },
+    {
+      title: MSG.manageSafeTitle,
+      description: MSG.manageSafeDescription,
+      icon: 'safe-logo',
+      dataTest: 'manageSafeItem',
+      onClick: () => callStep(nextStepManageSafe),
+      permissionRequired: !(hasRootPermission || isVotingReputationEnabled),
+      permissionInfoText: MSG.permissionsText,
+      permissionInfoTextValues: {
+        permission: <FormattedMessage {...MSG.rootActionsPermission} />,
+      },
     },
     {
       title: MSG.makeArbitraryTransactionTitle,

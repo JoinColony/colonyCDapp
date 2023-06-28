@@ -16,9 +16,7 @@ export { default as NetworkContractUpgradeDialog } from './NetworkContractUpgrad
 export { default as EditColonyDetailsDialog } from './EditColonyDetailsDialog';
 export { default as ManageReputationDialog } from './ManageReputationDialog';
 export { default as RaiseObjectionDialog } from './RaiseObjectionDialog';
-// export { default as NetworkContractUpgradeDialog } from './NetworkContractUpgradeDialog';
-// export { default as EditColonyDetailsDialog } from './EditColonyDetailsDialog';
-// export { default as ManageReputationDialog } from './ManageReputationDialog';
+export { default as ManageSafeDialog } from './ManageSafeDialog';
 export {
   default as TokenManagementDialog,
   FormValues as TokenManagementDialogFormValues,
