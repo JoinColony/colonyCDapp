@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import PillsBase from '~v5/common/Pills/PillsBase';
+import UserStatus from '~v5/common/Pills/UserStatus';
 
-const meta: Meta<typeof PillsBase> = {
-  title: 'Common/Pills/Pills Base',
-  component: PillsBase,
+const meta: Meta<typeof UserStatus> = {
+  title: 'Common/Pills/User Status',
+  component: UserStatus,
   argTypes: {
     mode: {
       name: 'Mode',
@@ -53,7 +53,7 @@ const meta: Meta<typeof PillsBase> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof PillsBase>;
+type Story = StoryObj<typeof UserStatus>;
 
 export const Dedicated: Story = {
   args: {

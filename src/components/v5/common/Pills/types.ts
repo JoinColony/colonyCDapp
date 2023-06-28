@@ -14,7 +14,7 @@ export type ExtensionStatusBadgeMode =
   | 'claimed'
   | 'payments';
 
-export type PillMode =
+export type UserStatusMode =
   | 'dedicated'
   | 'dedicated-filled'
   | 'active'
@@ -31,7 +31,7 @@ export type IconSize = 'extraTiny' | 'tiny';
 export type PillSize = 'medium' | 'small';
 
 export type PillsProps = {
-  mode?: PillMode | ExtensionStatusBadgeMode;
+  mode?: ExtensionStatusBadgeMode | UserStatusMode;
   text?: MessageDescriptor | string;
   textValues?: SimpleMessageValues;
   iconName?: string;
