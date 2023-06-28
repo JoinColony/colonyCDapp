@@ -42,3 +42,8 @@ export const REPUTATION_LEARN_MORE = `https://docs.colony.io/use/reputation/awar
  * Metatransactions
  */
 export const METATRANSACTIONS_LEARN_MORE = `https://docs.colony.io/use/advanced-features/gasless-transactions`;
+
+/*
+ * Safe Control
+ */
+export const ADD_SAFE_INSTRUCTIONS = `https://docs.colony.io/use/managing-funds/gnosis-safe-control/adding-a-safe`;
