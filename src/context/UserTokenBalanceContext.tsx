@@ -1,15 +1,19 @@
-import React, { ReactNode, createContext, useContext, useMemo } from 'react';
+import React, {
+  ReactNode,
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+} from 'react';
 import { GetUserTokenBalanceReturn, useGetUserTokenBalanceQuery } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
 
 export const UserTokenBalanceContext = createContext<{
   tokenBalanceData: GetUserTokenBalanceReturn | null | undefined;
-  startPollingTokenBalance: (interval: number) => void;
-  stopPollingTokenBalance: () => void;
+  pollTokenBalance: () => void;
 }>({
   tokenBalanceData: null,
-  startPollingTokenBalance: () => {},
-  stopPollingTokenBalance: () => {},
+  pollTokenBalance: () => {},
 });
 
 export const UserTokenBalanceProvider = ({
@@ -38,13 +42,17 @@ export const UserTokenBalanceProvider = ({
 
   const tokenBalanceData = tokenBalanceQueryData?.getUserTokenBalance;
 
+  const pollTokenBalance = useCallback(() => {
+    startPolling(1000);
+    setTimeout(stopPolling, 10_000);
+  }, [startPolling, stopPolling]);
+
   const value = useMemo(
     () => ({
       tokenBalanceData,
-      startPollingTokenBalance: startPolling,
-      stopPollingTokenBalance: stopPolling,
+      pollTokenBalance,
     }),
-    [tokenBalanceData, startPolling, stopPolling],
+    [tokenBalanceData, pollTokenBalance],
   );
 
   return (
