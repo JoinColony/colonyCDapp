@@ -6,7 +6,7 @@ import styles from './Select.module.css';
 import Icon from '~shared/Icon';
 import NavLink from '~v5/shared/NavLink';
 
-const displayName = 'v5.Select';
+const displayName = 'v5.common.Fields.Select';
 
 const Select = <T extends any[]>({
   list,
