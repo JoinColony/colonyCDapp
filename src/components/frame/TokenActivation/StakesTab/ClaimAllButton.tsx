@@ -4,6 +4,7 @@ import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux/actionTypes';
 import { Address, UnclaimedStakes } from '~types/index';
 import { useColonyContext, useTokenActivationContext } from '~hooks';
+import { useUserTokenBalanceContext } from '~context';
 
 const displayName = 'frame.TokenActivation.StakesTab.ClaimAllButton';
 
@@ -19,6 +20,7 @@ const ClaimAllButton = ({
   colonyAddress,
 }: Props) => {
   const { startPolling, stopPolling } = useColonyContext();
+  const { pollTokenBalance } = useUserTokenBalanceContext();
   const { setIsOpen } = useTokenActivationContext();
   return (
     <ActionButton
@@ -35,6 +37,7 @@ const ClaimAllButton = ({
         setIsOpen(false);
         startPolling(1000);
         setTimeout(stopPolling, 10_000);
+        pollTokenBalance();
       }}
     />
   );
