@@ -30,6 +30,7 @@ const useStakingControls = (limitExceeded: boolean) => {
   } = useEnoughTokensForStaking(
     colony?.nativeToken.tokenAddress ?? '',
     user?.walletAddress ?? '',
+    colony?.colonyAddress ?? '',
     userMinStake,
   );
 
