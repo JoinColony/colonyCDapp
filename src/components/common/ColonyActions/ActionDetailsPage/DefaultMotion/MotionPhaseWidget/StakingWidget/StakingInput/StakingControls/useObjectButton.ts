@@ -13,7 +13,7 @@ import { SLIDER_AMOUNT_KEY } from '../StakingInput';
 const useObjectButton = () => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
-  const { pollTokenBalance } = useUserTokenBalanceContext();
+  const { pollLockedTokenBalance } = useUserTokenBalanceContext();
 
   const { getValues } = useFormContext();
   const openRaiseObjectionDialog = useDialog(RaiseObjectionDialog);
@@ -38,7 +38,7 @@ const useObjectButton = () => {
   const handleStakeSuccess = getHandleStakeSuccessFn(
     setIsRefetching,
     startPollingAction,
-    pollTokenBalance,
+    pollLockedTokenBalance,
   );
 
   const handleObjection = () =>

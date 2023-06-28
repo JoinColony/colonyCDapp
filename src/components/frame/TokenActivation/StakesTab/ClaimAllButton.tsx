@@ -20,7 +20,7 @@ const ClaimAllButton = ({
   colonyAddress,
 }: Props) => {
   const { startPolling, stopPolling } = useColonyContext();
-  const { pollTokenBalance } = useUserTokenBalanceContext();
+  const { pollLockedTokenBalance } = useUserTokenBalanceContext();
   const { setIsOpen } = useTokenActivationContext();
   return (
     <ActionButton
@@ -37,7 +37,7 @@ const ClaimAllButton = ({
         setIsOpen(false);
         startPolling(1000);
         setTimeout(stopPolling, 10_000);
-        pollTokenBalance();
+        pollLockedTokenBalance();
       }}
     />
   );

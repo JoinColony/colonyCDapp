@@ -32,7 +32,7 @@ const useClaimWidgetConfig = (
 ) => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
-  const { pollTokenBalance } = useUserTokenBalanceContext();
+  const { pollLockedTokenBalance } = useUserTokenBalanceContext();
 
   const location = useLocation();
   const [isClaimed, setIsClaimed] = useState(false);
@@ -104,7 +104,7 @@ const useClaimWidgetConfig = (
   const handleClaimSuccess = () => {
     setIsClaimed(true);
     startPollingAction(1000);
-    pollTokenBalance();
+    pollLockedTokenBalance();
   };
 
   const claimPayload = {

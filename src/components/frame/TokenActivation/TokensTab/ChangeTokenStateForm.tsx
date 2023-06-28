@@ -75,7 +75,7 @@ const ChangeTokenStateForm = ({
   hasLockedTokens,
 }: ChangeTokenStateFormProps) => {
   const { colony } = useColonyContext();
-  const { pollTokenBalance } = useUserTokenBalanceContext();
+  const { pollActiveTokenBalance } = useUserTokenBalanceContext();
 
   const [isActivate, setIsActive] = useState(true);
 
@@ -131,7 +131,7 @@ const ChangeTokenStateForm = ({
         validationSchema={validationSchema}
         transform={transform}
         onSuccess={(_, { reset }) => {
-          pollTokenBalance();
+          pollActiveTokenBalance();
           reset();
         }}
       >
