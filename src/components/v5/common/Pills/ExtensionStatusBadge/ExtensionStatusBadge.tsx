@@ -30,7 +30,7 @@ const ExtensionStatusBadge: FC<PropsWithChildren<PillsProps>> = ({
         'text-gray-900 bg-base-white border border-gray-200':
           mode === 'governance' || mode === 'payments',
         'text-success-400 bg-success-100':
-          mode === 'staking' || mode === 'enabled',
+          mode === 'staking' || mode === 'enabled' || mode === 'new',
         'text-gray-500 bg-gray-100': mode === 'claimed',
       })}
       {...rest}
