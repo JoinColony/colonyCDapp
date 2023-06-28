@@ -58,6 +58,7 @@ const UserNavigation = () => {
       input: {
         walletAddress: wallet?.address ?? '',
         tokenAddress: nativeToken?.tokenAddress ?? '',
+        colonyAddress: colonyAddress ?? '',
       },
     },
     skip: !wallet?.address || !nativeToken?.tokenAddress,
