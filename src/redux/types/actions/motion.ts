@@ -2,7 +2,9 @@ import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
 import { Address, Colony, Domain, DomainColor } from '~types';
+
 import { ActionTypes } from '../../actionTypes';
+
 import {
   ErrorActionType,
   UniqueActionType,
@@ -202,10 +204,10 @@ export type MotionActionTypes =
         domainId: number;
         userAddress: Address;
         roles: Record<ColonyRole, boolean>;
-        annotationMessage?: string;
         motionDomainId: string;
+        annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.MOTION_USER_ROLES_SET_ERROR, object>
   | ActionTypeWithMeta<

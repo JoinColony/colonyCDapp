@@ -3,33 +3,60 @@ const {
   getColonyNetworkClient,
   Network,
   Extension,
+  MotionState,
 } = require('@colony/colony-js');
+
 const { default: fetch, Request } = require('node-fetch');
 
 const {
   getColonyMotion,
   updateColonyMotion,
   createMotionMessage,
-  getColonyAction,
-  updateColonyAction,
   getColony,
   updateColony,
 } = require('./graphql.js');
 
-const API_KEY = 'da2-fakeApiId123456';
-const GRAPHQL_URI = 'http://localhost:20002/graphql';
-const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
-const {
-  etherRouterAddress: networkAddress,
-} = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+let apiKey = 'da2-fakeApiId123456';
+let graphqlURL = 'http://localhost:20002/graphql';
+let rpcURL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let reputationOracleEndpoint =
+  'http://reputation-monitor.docker:3001/reputation/local';
+let networkAddress;
+let network = Network.Custom;
+
+const setEnvVariables = async () => {
+  const ENV = process.env.ENV;
+  if (ENV === 'qa') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [
+      apiKey,
+      graphqlURL,
+      rpcURL,
+      networkAddress,
+      reputationOracleEndpoint,
+      network,
+    ] = await getParams([
+      'appsyncApiKey',
+      'graphqlUrl',
+      'chainRpcEndpoint',
+      'networkContractAddress',
+      'reputationEndpoint',
+      'chainNetwork',
+    ]);
+  } else {
+    const {
+      etherRouterAddress,
+    } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+    networkAddress = etherRouterAddress;
+  }
+};
 
 const getNetworkClient = () => {
-  const provider = new providers.JsonRpcProvider(RPC_URL);
+  const provider = new providers.JsonRpcProvider(rpcURL);
 
-  const networkClient = getColonyNetworkClient(Network.Custom, provider, {
+  const networkClient = getColonyNetworkClient(network, provider, {
     networkAddress,
-    reputationOracleEndpoint:
-      'http://reputation-monitor.docker:3001/reputation/local',
+    reputationOracleEndpoint,
   });
 
   return networkClient;
@@ -62,7 +89,7 @@ const graphqlRequest = async (queryOrMutation, variables) => {
   const options = {
     method: 'POST',
     headers: {
-      'x-api-key': API_KEY,
+      'x-api-key': apiKey,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -71,7 +98,7 @@ const graphqlRequest = async (queryOrMutation, variables) => {
     }),
   };
 
-  const request = new Request(GRAPHQL_URI, options);
+  const request = new Request(graphqlURL, options);
 
   let body;
   let response;
@@ -194,9 +221,11 @@ const updateColonyUnclaimedStakes = async (
     ({ motionId }) => motionId === databaseMotionId,
   );
 
-  const unclaimedRewards = updatedStakerRewards.filter(
-    ({ isClaimed }) => !isClaimed,
-  );
+  const unclaimedRewards = updatedStakerRewards
+    .filter(({ isClaimed }) => !isClaimed)
+    .filter(
+      (stakerReward) => stakerReward.yay !== '0' || stakerReward.nay !== '0',
+    );
 
   if (!motionWithUnclaimedStake && unclaimedRewards.length) {
     motionsWithUnclaimedStakes.push({
@@ -224,7 +253,7 @@ const updateStakerRewardsInDB = async (colonyAddress, motionData) => {
 
   const updatedStakerRewards = await Promise.all(
     // For every user who staked
-    usersStakes.map(async ({ address: stakerAddress }) => {
+    usersStakes.map(({ address: stakerAddress }) => {
       // Check if they have already had their reward calculated
       const existingStakerReward = stakerRewards.find(
         ({ address }) => address === stakerAddress,
@@ -291,4 +320,5 @@ module.exports = {
   updateStakerRewardsInDB,
   getMotionData,
   updateMotionMessagesInDB,
+  setEnvVariables,
 };

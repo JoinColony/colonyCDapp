@@ -7,16 +7,27 @@
 const { graphqlRequest } = require('./utils');
 const { getExtension, updateExtension, createExtension } = require('./graphql');
 
-/*
- * @TODO These values need to be imported properly, and differentiate based on environment
- */
-const API_KEY = 'da2-fakeApiId123456';
-const GRAPHQL_URI = 'http://localhost:20002/graphql';
+let apiKey = 'da2-fakeApiId123456';
+let graphqlURL = 'http://localhost:20002/graphql';
+
+const setEnvVariables = async () => {
+  const ENV = process.env.ENV;
+  if (ENV === 'qa') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [apiKey, graphqlURL] = await getParams(['appsyncApiKey', 'graphqlUrl']);
+  }
+};
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
+  try {
+    await setEnvVariables();
+  } catch (e) {
+    throw new Error('Unable to set env variables. Reason: ', e);
+  }
+
   const {
     colonyId,
     hash,
@@ -34,8 +45,8 @@ exports.handler = async (event) => {
       colonyId,
       hash,
     },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   const extension =
@@ -57,8 +68,8 @@ exports.handler = async (event) => {
           version,
         },
       },
-      GRAPHQL_URI,
-      API_KEY,
+      graphqlURL,
+      apiKey,
     );
 
     return createExtensionData?.data?.createColonyExtension;
@@ -76,8 +87,8 @@ exports.handler = async (event) => {
         version,
       },
     },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   return updateExtensionData?.data?.updateColonyExtension;

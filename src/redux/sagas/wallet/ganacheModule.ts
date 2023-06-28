@@ -11,7 +11,7 @@ type CustomJsonRpcProvider = providers.JsonRpcProvider & {
   request: (args) => void;
 };
 
-const ganacheWalletModule = (privateKey, optionalAccountIndex = 1) => {
+const ganacheWalletModule = (privateKey: string, optionalAccountIndex = 1) => {
   const initWallet = () => {
     return {
       label: `Dev Wallet ${optionalAccountIndex}`,

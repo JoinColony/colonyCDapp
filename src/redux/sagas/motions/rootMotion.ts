@@ -135,8 +135,7 @@ function* createRootMotionSaga({
 
     if (annotationMessage) {
       yield put(transactionPending(annotateRootMotion.id));
-      // eslint-disable-next-line no-warning-comments
-      // TODO: handle uploading annotation msg to db in saga
+      // @TODO: handle uploading annotation msg to db in saga
       yield put(transactionAddParams(annotateRootMotion.id, [txHash, '']));
 
       yield put(transactionReady(annotateRootMotion.id));

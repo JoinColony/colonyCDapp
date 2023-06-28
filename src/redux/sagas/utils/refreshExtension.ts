@@ -1,13 +1,12 @@
 import { getExtensionHash } from '@colony/colony-js';
 
-import { ADDRESS_ZERO } from '~constants';
 import { ContextModule, getContext } from '~context';
 import {
   GetColonyExtensionDocument,
   GetColonyExtensionQuery,
   GetColonyExtensionQueryVariables,
 } from '~gql';
-import { ColonyExtension, InstallableExtensionData } from '~types';
+import { ColonyExtension } from '~types';
 
 const getExistingExtension = (colonyAddress: string, extensionId: string) => {
   const apolloClient = getContext(ContextModule.ApolloClient);
@@ -66,29 +65,6 @@ const removeExtensionFromCache = (
       },
     },
   });
-};
-
-export const refreshInstalledExtension = (
-  colonyAddress: string,
-  { extensionId, availableVersion }: InstallableExtensionData,
-) => {
-  const wallet = getContext(ContextModule.Wallet);
-
-  const modifiedExtension: ColonyExtension = {
-    __typename: 'ColonyExtension',
-    address: ADDRESS_ZERO,
-    colonyAddress,
-    hash: getExtensionHash(extensionId),
-    installedAt: Math.floor(Date.now() / 1000),
-    installedBy: wallet.address,
-    currentVersion: availableVersion,
-    isDeleted: false,
-    isDeprecated: false,
-    isInitialized: false,
-    params: null,
-  };
-
-  saveExtensionInCache(modifiedExtension);
 };
 
 export const refreshDeprecatedExtension = (

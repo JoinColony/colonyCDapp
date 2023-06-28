@@ -9,19 +9,32 @@ const { graphqlRequest } = require('./utils');
  */
 const { getColony, createColony, getTokenByAddress } = require('./graphql');
 
-/*
- * @TODO These values need to be imported properly, and differentiate based on environment
- */
-const API_KEY = 'da2-fakeApiId123456';
-const GRAPHQL_URI = 'http://localhost:20002/graphql';
+let apiKey = 'da2-fakeApiId123456';
+let graphqlURL = 'http://localhost:20002/graphql';
+
+const setEnvVariables = async () => {
+  const ENV = process.env.ENV;
+  if (ENV === 'qa') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [apiKey, graphqlURL] = await getParams(['appsyncApiKey', 'graphqlUrl']);
+  }
+};
 
 exports.handler = async (event) => {
+  try {
+    await setEnvVariables();
+  } catch (e) {
+    throw new Error('Unable to set environment variables. Reason:', e);
+  }
+
   const {
     id: colonyAddress,
     name,
     colonyNativeTokenId,
     type = 'COLONY',
     version,
+    chainMetadata,
+    status,
   } = event.arguments?.input || {};
 
   /*
@@ -57,8 +70,8 @@ exports.handler = async (event) => {
   const colonyQuery = await graphqlRequest(
     getColony,
     { id: checksummedAddress, name },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   if (colonyQuery.errors || !colonyQuery.data) {
@@ -99,8 +112,8 @@ exports.handler = async (event) => {
   const tokenQuery = await graphqlRequest(
     getTokenByAddress,
     { id: checksummedToken },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   if (tokenQuery.errors || !tokenQuery.data) {
@@ -127,22 +140,16 @@ exports.handler = async (event) => {
     {
       input: {
         id: checksummedAddress,
-        colonyNativeTokenId: checksummedToken,
+        nativeTokenId: checksummedToken,
         name,
         type,
-        /*
-         * @TODO These need to be properly added once Lambda Functions
-         * have the concept of chains
-         */
-        chainMetadata: {
-          chainId: 2656691,
-          network: 'GANACHE',
-        },
+        chainMetadata,
         version,
+        status,
       },
     },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   if (mutation.errors || !mutation.data) {

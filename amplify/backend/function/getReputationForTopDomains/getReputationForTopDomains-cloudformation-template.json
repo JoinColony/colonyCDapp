@@ -1,11 +1,11 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Lambda Function resource stack creation using Amplify CLI",
+  "Description": "{\"createdOn\":\"Linux\",\"createdBy\":\"Amplify\",\"createdWith\":\"11.1.1\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
-            "Default" : "NONE",
-            "Description" : " Schedule Expression"
+      "Default": "NONE",
+      "Description": " Schedule Expression"
     },
     "deploymentBucketName": {
       "Type": "String"
@@ -15,9 +15,11 @@
     },
     "s3Key": {
       "Type": "String"
+    },
+    "functioncolonycdappSSMAccessArn": {
+      "Type": "String",
+      "Default": "functioncolonycdappSSMAccessArn"
     }
-        
-    
   },
   "Conditions": {
     "ShouldNotCreateEnvResources": {
@@ -51,7 +53,6 @@
             "ShouldNotCreateEnvResources",
             "getReputationForTopDomains",
             {
-
               "Fn::Join": [
                 "",
                 [
@@ -66,11 +67,32 @@
           ]
         },
         "Environment": {
-                "Variables" : {"ENV":{"Ref":"env"},"REGION":{"Ref":"AWS::Region"}}
+          "Variables": {
+            "ENV": {
+              "Ref": "env"
             },
-            "Role": { "Fn::GetAtt": ["LambdaExecutionRole", "Arn"] },
+            "REGION": {
+              "Ref": "AWS::Region"
+            },
+            "REPUTATION_ENDPOINT": "http://qa-cdapp.colony.io/reputation/",
+            "CHAIN_NETWORK": "gnosis",
+            "CHAIN_RPC_ENDPOINT": "http://qa-cdapp.colony.io/rpc/",
+            "CHAIN_NETWORK_CONTRACT": "0x6a05DD32860C1b5351B97b4eCAAbFbc60edb102f"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaExecutionRole",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs14.x",
-        "Layers": [],
+        "Layers": [
+          {
+            "Ref": "functioncolonycdappSSMAccessArn"
+          },
+          "arn:aws:lambda:eu-west-2:133256977650:layer:AWS-Parameters-and-Secrets-Lambda-Extension:4"
+        ],
         "Timeout": 25
       }
     },
@@ -82,7 +104,6 @@
             "ShouldNotCreateEnvResources",
             "colonycdappLambdaRolea691e188",
             {
-
               "Fn::Join": [
                 "",
                 [
@@ -113,29 +134,70 @@
           ]
         }
       }
-        }
-        ,"lambdaexecutionpolicy": {
-            "DependsOn": ["LambdaExecutionRole"],
+    },
+    "lambdaexecutionpolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyName": "lambda-execution-policy",
-                "Roles": [{ "Ref": "LambdaExecutionRole" }],
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
         "PolicyDocument": {
           "Version": "2012-10-17",
           "Statement": [
             {
               "Effect": "Allow",
-                            "Action": ["logs:CreateLogGroup",
+              "Action": [
+                "logs:CreateLogGroup",
                 "logs:CreateLogStream",
-                            "logs:PutLogEvents"],
-                            "Resource": { "Fn::Sub": [ "arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*", { "region": {"Ref": "AWS::Region"}, "account": {"Ref": "AWS::AccountId"}, "lambda": {"Ref": "LambdaFunction"}} ]}
+                "logs:PutLogEvents"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*",
+                  {
+                    "region": {
+                      "Ref": "AWS::Region"
+                    },
+                    "account": {
+                      "Ref": "AWS::AccountId"
+                    },
+                    "lambda": {
+                      "Ref": "LambdaFunction"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                  "ssm:GetParameter",
+                  "kms:Decrypt"
+              ],
+              "Resource": {
+                  "Fn::Sub": [
+                  "arn:aws:ssm:${region}:${account}:parameter/*",
+                  {
+                      "region": {
+                      "Ref": "AWS::Region"
+                      },
+                      "account": {
+                      "Ref": "AWS::AccountId"
+                      }
+                  }
+                  ]
+              }
             }
           ]
         }
       }
     }
-        
-        
   },
   "Outputs": {
     "Name": {
@@ -144,7 +206,12 @@
       }
     },
     "Arn": {
-            "Value": {"Fn::GetAtt": ["LambdaFunction", "Arn"]}
+      "Value": {
+        "Fn::GetAtt": [
+          "LambdaFunction",
+          "Arn"
+        ]
+      }
     },
     "Region": {
       "Value": {
@@ -155,7 +222,14 @@
       "Value": {
         "Ref": "LambdaExecutionRole"
       }
+    },
+    "LambdaExecutionRoleArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "LambdaExecutionRole",
+          "Arn"
+        ]
       }
-        
     }
   }
+}

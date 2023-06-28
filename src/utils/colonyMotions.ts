@@ -127,7 +127,7 @@ export const getEarlierEventTimestamp = (
   return currentTimestamp - subTime;
 };
 
-export const shouldDisplayMotion = (
+export const shouldDisplayMotionInActionsList = (
   currentStake: string,
   requiredStake: string,
 ): boolean => {

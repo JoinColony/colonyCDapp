@@ -1,5 +1,10 @@
 import { ActionTypes } from '~redux';
-import { Address, InstallableExtensionData, WithKey } from '~types';
+import {
+  Address,
+  InstallableExtensionData,
+  InstalledExtensionData,
+  WithKey,
+} from '~types';
 import { ActionType, ErrorActionType, UniqueActionType } from './index';
 
 export type ColonyActionTypes =
@@ -41,7 +46,14 @@ export type ColonyActionTypes =
     >
   | UniqueActionType<ActionTypes.EXTENSION_INSTALL_SUCCESS, object, object>
   | ErrorActionType<ActionTypes.EXTENSION_INSTALL_ERROR, object>
-  | UniqueActionType<ActionTypes.EXTENSION_ENABLE, any, WithKey>
+  | UniqueActionType<
+      ActionTypes.EXTENSION_ENABLE,
+      {
+        colonyAddress: Address;
+        extensionData: InstalledExtensionData;
+      },
+      WithKey
+    >
   | UniqueActionType<ActionTypes.EXTENSION_ENABLE_SUCCESS, object, object>
   | ErrorActionType<ActionTypes.EXTENSION_ENABLE_ERROR, object>
   | UniqueActionType<
