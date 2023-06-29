@@ -186,14 +186,14 @@ export const useMapMotionEventToExpectedFormat = (
   motionMessageData: MotionMessage,
   actionData: ColonyAction,
 ) => {
-  const { colonyAddress, fromDomain, motionData, pendingColonyMetadata } =
-    actionData;
+  const { colonyAddress, motionData, pendingColonyMetadata } = actionData;
+  const { nativeMotionDomainId } = motionData || {};
   const { colony } = useColonyContext();
 
   const initiatorUserReputation = useUserReputation(
     colonyAddress,
     motionMessageData.initiatorAddress,
-    fromDomain?.nativeId,
+    Number(nativeMotionDomainId),
     motionData?.rootHash,
   );
 
