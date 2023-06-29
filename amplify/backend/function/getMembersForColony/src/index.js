@@ -244,33 +244,54 @@ exports.handler = async (event) => {
     }),
   );
 
-  const sortedContributors = (() => {
-    return contributorsWithReputation.sort((contributor1, contributor2) => {
-      if (sortingMethod === SortingMethod.BY_HIGHEST_REP) {
-        return new Decimal(contributor2?.reputationPercentage)
-          .sub(contributor1.reputationPercentage)
-          .toNumber();
-      }
-      if (sortingMethod === SortingMethod.BY_LOWEST_REP) {
-        return new Decimal(contributor1.reputationPercentage)
-          .sub(contributor2.reputationPercentage)
-          .toNumber();
-      }
+  contributorsWithReputation.sort((contributor1, contributor2) => {
+    const comparePercentage =
+      contributor1.reputationPercentage !== null &&
+      contributor1.reputationPercentage !== undefined &&
+      contributor2.reputationPercentage !== null &&
+      contributor2.reputationPercentage !== undefined;
 
-      // @NOTE - this might be useful in the future
-      // if (sortingMethod === SortingMethod.BY_MORE_PERMISSIONS) {
-      //   return user2.roles.length - user1.roles.length;
-      // }
-      // if (sortingMethod === SortingMethod.BY_LESS_PERMISSIONS) {
-      //   return user1.roles.length - user2.roles.length;
-      // }
+    const compareAmount =
+      contributor1.reputationAmount !== undefined &&
+      contributor2.reputationAmount !== undefined;
 
+    let comparisonKey;
+
+    if (comparePercentage) {
+      comparisonKey = 'reputationPercentage';
+    } else if (compareAmount) {
+      comparisonKey = 'reputationAmount';
+    }
+
+    if (!comparisonKey) {
       return 0;
-    });
-  })();
+    }
+
+    if (sortingMethod === SortingMethod.BY_HIGHEST_REP) {
+      return new Decimal(contributor2[comparisonKey])
+        .sub(contributor1[comparisonKey])
+        .toNumber();
+    }
+
+    if (sortingMethod === SortingMethod.BY_LOWEST_REP) {
+      return new Decimal(contributor1[comparisonKey])
+        .sub(contributor2[comparisonKey])
+        .toNumber();
+    }
+
+    // @NOTE - this might be useful in the future
+    // if (sortingMethod === SortingMethod.BY_MORE_PERMISSIONS) {
+    //   return user2.roles.length - user1.roles.length;
+    // }
+    // if (sortingMethod === SortingMethod.BY_LESS_PERMISSIONS) {
+    //   return user1.roles.length - user2.roles.length;
+    // }
+
+    return 0;
+  });
 
   return {
-    contributors: sortedContributors,
+    contributors: contributorsWithReputation,
     watchers,
   };
 };
