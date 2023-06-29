@@ -6,7 +6,8 @@ import Heading from '~shared/Heading';
 import NavLink from '~shared/NavLink';
 import Numeral from '~shared/Numeral';
 import { Tooltip } from '~shared/Popover';
-import Link from '~v5/shared/Link';
+import Link from '~shared/Link';
+
 import { ActionTypes } from '~redux';
 import { useColonyContext, useColonyFundsClaims } from '~hooks';
 import { mergePayload } from '~utils/actions';

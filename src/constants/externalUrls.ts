@@ -41,7 +41,7 @@ export const REPUTATION_LEARN_MORE = `https://docs.colony.io/use/reputation/awar
 /*
  * Metatransactions
  */
-export const METATRANSACTIONS_LEARN_MORE = `https://colony.gitbook.io/colony/announcements/metatransactions`;
+export const METATRANSACTIONS_LEARN_MORE = `https://docs.colony.io/use/advanced-features/gasless-transactions`;
 
 /*
  *  Supporting documents

@@ -11,7 +11,6 @@ import { AnyExtensionData } from '~types';
 import { ActionTypes } from '~redux/index';
 import { mapPayload } from '~utils/actions';
 import { useAppContext, useColonyContext } from '~hooks';
-import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
 import { isInstalledExtensionData } from '~utils/extensions';
 
 interface Props {
@@ -19,7 +18,7 @@ interface Props {
 }
 
 const ExtensionUpgradeButton = ({ extensionData }: Props) => {
-  const { colony } = useColonyContext();
+  const { colony, isSupportedColonyVersion } = useColonyContext();
   const { user } = useAppContext();
 
   if (
@@ -38,9 +37,6 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
   if (!user?.profile || !colony) {
     return null;
   }
-
-  const isSupportedColonyVersion =
-    colony.version >= MIN_SUPPORTED_COLONY_VERSION;
 
   const extensionCompatible = isExtensionCompatible(
     Extension[extensionData.extensionId],
