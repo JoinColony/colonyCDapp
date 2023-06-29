@@ -616,6 +616,8 @@ type ColonyMotion @model {
   userMinStake: String!
   requiredStake: String!
   rootHash: String! # For calculating user's max stake in client
+  motionDomainId: ID! # domain db id
+  motionDomain: Domain! @hasOne(fields: ["motionDomainId"])
   nativeMotionDomainId: String! # native domain id
   isFinalized: Boolean!
   createdBy: String! # voting rep extn address. Useful to check if we're viewing a "read-only" motion
