@@ -8,6 +8,10 @@ export const getStakeFromSlider = (
   remainingToStake: string,
   userMinStake: string,
 ) => {
+  if (sliderAmount === 100) {
+    return BigNumber.from(remainingToStake);
+  }
+
   const exactStake = new Decimal(sliderAmount)
     .mul(BigNumber.from(remainingToStake).sub(userMinStake).toString())
     .div(100)
