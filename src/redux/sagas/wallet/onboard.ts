@@ -1,7 +1,7 @@
 import Onboard, { InitOptions } from '@web3-onboard/core';
 import injectedWallets from '@web3-onboard/injected-wallets';
 
-import colonyIcon from '~images/icons/colony-logo.svg';
+import colonyIcon from '~images/icons/colony-logo-wallet.svg';
 import {
   TERMS_AND_CONDITIONS,
   CDAPP_VERSION,
@@ -16,8 +16,9 @@ import { Network } from '~types';
 import ganacheModule from './ganacheModule';
 
 const { formatMessage } = intl({
-  'metadata.name': 'ColonyCDapp',
-  'metadata.description': `An iteration of the Colony Dapp sporting both a fully decentralized operating mode, as well as a mode enhanced by a metadata caching layer`,
+  'metadata.name': 'Colony App',
+  'metadata.description': `Logging into your Colony is done using your wallet. You’ll be able to perform actions, contribute, and make use of any earned reputation.`,
+  'info.text': 'Connect your wallet to log in',
 });
 
 const getDevelopmentWallets = async () => {
@@ -72,18 +73,30 @@ const onboardConfig: InitOptions = {
     desktop: { enabled: false },
     mobile: { enabled: false },
   },
-  connect: {
-    showSidebar: false,
-  },
   notify: {
     desktop: { enabled: false, transactionHandler: () => {} },
     mobile: { enabled: false, transactionHandler: () => {} },
   },
   appMetadata: {
-    name: formatMessage({ id: 'metadata.name' }),
+    name: formatMessage({ id: 'info.text' }),
     icon: colonyIcon.content.replace('symbol', 'svg'),
     description: formatMessage({ id: 'metadata.description' }),
     agreement: { termsUrl: TERMS_AND_CONDITIONS, version: CDAPP_VERSION },
+  },
+  i18n: {
+    en: {
+      connect: {
+        // @ts-ignore
+        selectingWallet: {
+          header: formatMessage({ id: 'metadata.name' }),
+          sidebar: {
+            heading: '',
+            subheading: '',
+            paragraph: formatMessage({ id: 'metadata.description' }),
+          },
+        },
+      },
+    },
   },
 };
 
