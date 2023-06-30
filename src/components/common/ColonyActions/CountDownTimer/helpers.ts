@@ -1,5 +1,4 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import {
   GetMotionTimeoutPeriodsReturn,
@@ -66,7 +65,6 @@ export const useMotionCountdown = (
 ) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const dispatch = useDispatch();
   const { percentage: percentageStaked } = motionStakes;
   const isAnySideFullyStaked =
     percentageStaked.nay === '100' || percentageStaked.yay === '100';
@@ -160,7 +158,6 @@ export const useMotionCountdown = (
   }, [
     timeLeft,
     currentStatePeriodInMs,
-    dispatch,
     colony,
     motionId,
     user,
