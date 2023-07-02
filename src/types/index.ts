@@ -3,7 +3,6 @@ import { MessageDescriptor } from 'react-intl';
 
 export * from './keyboard';
 export * from './actions';
-export * from './motions';
 export * from './extensions';
 export * from './transactions';
 export * from './wallet';

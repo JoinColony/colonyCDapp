@@ -14,7 +14,7 @@ declare namespace SubscribedColoniesListCssNamespace {
     names: string;
     newColonyIcon: string;
     newColonyItem: string;
-    query850: string;
+    query700: string;
     scrollableContainer: string;
     sourceRoot: string;
     sources: string;

@@ -23,14 +23,15 @@ import styles from './UserInfoPopover.css';
 interface Props {
   user?: User | MemberUser | null;
   banned?: boolean;
+  address?: string;
 }
 
 const displayName = 'UserInfoPopover';
 
-const UserInfoPopover = ({ user, banned = false }: Props) => {
+const UserInfoPopover = ({ user, banned = false, address }: Props) => {
   const { colony } = useColonyContext();
   const { wallet } = useAppContext();
-  const { walletAddress } = user || {};
+  const walletAddress = user?.walletAddress || address;
 
   // const { data: nativeTokenAddressData, loading: loadingNativeTokenAddress } =
   //   useColonyNativeTokenQuery({

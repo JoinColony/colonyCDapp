@@ -7,7 +7,7 @@ declare namespace ProfileTemplateCssNamespace {
     mappings: string;
     names: string;
     paddingHorizontal: string;
-    query850: string;
+    query700: string;
     sidebar: string;
     sidebarWidth: string;
     sourceRoot: string;

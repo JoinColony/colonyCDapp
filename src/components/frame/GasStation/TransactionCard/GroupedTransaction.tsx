@@ -30,7 +30,7 @@ const GroupedTransaction = ({
   selectedTransactionIdx,
   transactionGroup,
 }: Props) => {
-  // const { interactive } = appearance;
+  const { interactive } = appearance;
   const groupKey = getGroupKey(transactionGroup);
   const status = getGroupStatus(transactionGroup);
   const values = getGroupValues<TransactionType>(transactionGroup);
@@ -52,33 +52,33 @@ const GroupedTransaction = ({
 
   return (
     <Card className={styles.main}>
-      {/* {interactive && ( */}
-      <div className={styles.summary}>
-        <div className={styles.description}>
-          <Heading
-            appearance={{ theme: 'dark', size: 'normal', margin: 'none' }}
-            text={{
-              ...defaultTransactionGroupMessageDescriptorTitleId,
-              ...values.group?.title,
-            }}
-            textValues={
-              values.group?.titleValues || arrayToObject(values.params)
-            }
-          />
-          <FormattedMessage
-            {...defaultTransactionGroupMessageDescriptorDescriptionId}
-            {...values.group?.description}
-            values={
-              values.group?.descriptionValues || arrayToObject(values.params)
-            }
+      {interactive && (
+        <div className={styles.summary}>
+          <div className={styles.description}>
+            <Heading
+              appearance={{ theme: 'dark', size: 'normal', margin: 'none' }}
+              text={{
+                ...defaultTransactionGroupMessageDescriptorTitleId,
+                ...values.group?.title,
+              }}
+              textValues={
+                values.group?.titleValues || arrayToObject(values.params)
+              }
+            />
+            <FormattedMessage
+              {...defaultTransactionGroupMessageDescriptorDescriptionId}
+              {...values.group?.description}
+              values={
+                values.group?.descriptionValues || arrayToObject(values.params)
+              }
+            />
+          </div>
+          <TransactionStatus
+            groupCount={transactionGroup.length}
+            status={status}
           />
         </div>
-        <TransactionStatus
-          groupCount={transactionGroup.length}
-          status={status}
-        />
-      </div>
-      {/* )} */}
+      )}
       <ul
         className={styles.transactionList}
         data-test="gasStationGroupedTransaction"

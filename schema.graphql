@@ -1,0 +1,2673 @@
+directive @aws_api_key on FIELD_DEFINITION | OBJECT
+
+directive @aws_iam on FIELD_DEFINITION | OBJECT
+
+directive @aws_oidc on FIELD_DEFINITION | OBJECT
+
+directive @aws_lambda on FIELD_DEFINITION | OBJECT
+
+directive @aws_cognito_user_pools(cognito_groups: [String!]) on FIELD_DEFINITION | OBJECT
+
+directive @aws_auth(cognito_groups: [String!]!) on FIELD_DEFINITION
+
+directive @aws_subscribe(mutations: [String!]) on FIELD_DEFINITION
+
+input TokenFromEverywhereArguments {
+  tokenAddress: String!
+}
+
+input MembersForColonyInput {
+  colonyAddress: String!
+  rootHash: String
+  domainId: Int
+  sortingMethod: SortingMethod
+}
+
+input CreateUniqueUserInput {
+  id: ID!
+  name: String!
+  profile: ProfileInput
+}
+
+enum EmailPermissions {
+  sendNotifications
+  isHuman
+}
+
+input ProfileMetadataInput {
+  emailPermissions: [String!]!
+}
+
+input ChainMetadataInput {
+  network: Network
+  chainId: Int!
+  transactionHash: String
+  logIndex: Int
+  blockNumber: Int
+}
+
+input NativeTokenStatusInput {
+  unlocked: Boolean
+  mintable: Boolean
+  unlockable: Boolean
+}
+
+input ColonyStatusInput {
+  nativeToken: NativeTokenStatusInput
+  recovery: Boolean
+}
+
+input CreateUniqueColonyInput {
+  id: ID!
+  name: String!
+  colonyNativeTokenId: ID!
+  type: ColonyType
+  status: ColonyStatusInput
+  chainMetadata: ChainMetadataInput!
+  version: Int!
+}
+
+input ProfileInput {
+  id: ID
+  avatar: String
+  thumbnail: String
+  displayName: String
+  bio: String
+  location: String
+  website: AWSURL
+  email: AWSEmail
+  meta: ProfileMetadataInput
+}
+
+input GetUserReputationInput {
+  walletAddress: String!
+  colonyAddress: String!
+  domainId: Int
+  rootHash: String
+}
+
+input UpdateExtensionByColonyAndHashInput {
+  colonyId: ID!
+  hash: String!
+  isDeprecated: Boolean
+  isDeleted: Boolean
+  isInitialized: Boolean
+  version: Int
+  installedBy: String
+  installedAt: AWSTimestamp
+}
+
+input SetCurrentVersionInput {
+  key: String!
+  version: Int!
+}
+
+type TokenFromEverywhereReturn {
+  items: [Token]
+}
+
+input GetReputationForTopDomainsInput {
+  walletAddress: String!
+  colonyAddress: String!
+  rootHash: String
+}
+
+input GetUserTokenBalanceInput {
+  walletAddress: String!
+  tokenAddress: String!
+}
+
+input GetMotionStateInput {
+  colonyAddress: String!
+  databaseMotionId: String!
+  transactionHash: String!
+}
+
+input GetVoterRewardsInput {
+  voterAddress: String!
+  colonyAddress: String!
+  nativeMotionDomainId: String!
+  motionId: String!
+  rootHash: String!
+}
+
+input GetMotionTimeoutPeriodsInput {
+  motionId: String!
+  colonyAddress: String!
+}
+
+type UserDomainReputation {
+  domainId: Int!
+  reputationPercentage: String!
+}
+
+type GetReputationForTopDomainsReturn {
+  items: [UserDomainReputation!]
+}
+
+type GetUserTokenBalanceReturn {
+  balance: String
+  inactiveBalance: String
+  lockedBalance: String
+  activeBalance: String
+  pendingBalance: String
+}
+
+type GetMotionTimeoutPeriodsReturn {
+  timeLeftToStake: String!
+  timeLeftToVote: String!
+  timeLeftToReveal: String!
+  timeLeftToEscalate: String!
+}
+
+type MembersForColonyReturn {
+  contributors: [Contributor!]
+  watchers: [Watcher!]
+}
+
+type VoterRewardsReturn {
+  min: String!
+  max: String!
+  reward: String!
+}
+
+enum TokenType {
+  COLONY
+  ERC20
+  CHAIN_NATIVE
+}
+
+enum Network {
+  GANACHE
+  MAINNET
+  GOERLI
+  GNOSIS
+  GNOSISFORK
+}
+
+enum DomainColor {
+  LIGHT_PINK
+  PINK
+  BLACK
+  EMERALD_GREEN
+  BLUE
+  YELLOW
+  RED
+  GREEN
+  PERIWINKLE
+  GOLD
+  AQUA
+  BLUE_GREY
+  PURPLE
+  ORANGE
+  MAGENTA
+  PURPLE_GREY
+}
+
+enum ColonyType {
+  COLONY
+  METACOLONY
+}
+
+enum ColonyActionType {
+  GENERIC
+  NULL_MOTION
+  WRONG_COLONY
+  PAYMENT
+  PAYMENT_MOTION
+  RECOVERY
+  MOVE_FUNDS
+  MOVE_FUNDS_MOTION
+  UNLOCK_TOKEN
+  UNLOCK_TOKEN_MOTION
+  MINT_TOKENS
+  MINT_TOKENS_MOTION
+  CREATE_DOMAIN
+  CREATE_DOMAIN_MOTION
+  VERSION_UPGRADE
+  VERSION_UPGRADE_MOTION
+  COLONY_EDIT
+  COLONY_EDIT_MOTION
+  EDIT_DOMAIN
+  EDIT_DOMAIN_MOTION
+  SET_USER_ROLES
+  SET_USER_ROLES_MOTION
+  EMIT_DOMAIN_REPUTATION_PENALTY
+  EMIT_DOMAIN_REPUTATION_PENALTY_MOTION
+  EMIT_DOMAIN_REPUTATION_REWARD
+  EMIT_DOMAIN_REPUTATION_REWARD_MOTION
+}
+
+enum SortingMethod {
+  BY_HIGHEST_REP
+  BY_LOWEST_REP
+  BY_MORE_PERMISSIONS
+  BY_LESS_PERMISSIONS
+}
+
+type Query {
+  getTokenFromEverywhere(input: TokenFromEverywhereArguments): TokenFromEverywhereReturn
+  getReputationForTopDomains(input: GetReputationForTopDomainsInput): GetReputationForTopDomainsReturn
+  getUserReputation(input: GetUserReputationInput): String
+  getUserTokenBalance(input: GetUserTokenBalanceInput): GetUserTokenBalanceReturn
+  getMembersForColony(input: MembersForColonyInput): MembersForColonyReturn
+  getMotionState(input: GetMotionStateInput): Int!
+  getVoterRewards(input: GetVoterRewardsInput): VoterRewardsReturn
+  getMotionTimeoutPeriods(input: GetMotionTimeoutPeriodsInput): GetMotionTimeoutPeriodsReturn
+  getProfile(id: ID!): Profile
+  listProfiles(filter: ModelProfileFilterInput, limit: Int, nextToken: String): ModelProfileConnection
+  getToken(id: ID!): Token
+  listTokens(filter: ModelTokenFilterInput, limit: Int, nextToken: String): ModelTokenConnection
+  getColony(id: ID!): Colony
+  listColonies(filter: ModelColonyFilterInput, limit: Int, nextToken: String): ModelColonyConnection
+  getColonyMetadata(id: ID!): ColonyMetadata
+  listColonyMetadata(filter: ModelColonyMetadataFilterInput, limit: Int, nextToken: String): ModelColonyMetadataConnection
+  getUser(id: ID!): User
+  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
+  getDomain(id: ID!): Domain
+  listDomains(filter: ModelDomainFilterInput, limit: Int, nextToken: String): ModelDomainConnection
+  getDomainMetadata(id: ID!): DomainMetadata
+  listDomainMetadata(filter: ModelDomainMetadataFilterInput, limit: Int, nextToken: String): ModelDomainMetadataConnection
+  getColonyFundsClaim(id: ID!): ColonyFundsClaim
+  listColonyFundsClaims(filter: ModelColonyFundsClaimFilterInput, limit: Int, nextToken: String): ModelColonyFundsClaimConnection
+  getMotionMessage(id: ID!): MotionMessage
+  listMotionMessages(filter: ModelMotionMessageFilterInput, limit: Int, nextToken: String): ModelMotionMessageConnection
+  getColonyMotion(id: ID!): ColonyMotion
+  listColonyMotions(filter: ModelColonyMotionFilterInput, limit: Int, nextToken: String): ModelColonyMotionConnection
+  getContractEvent(id: ID!): ContractEvent
+  listContractEvents(filter: ModelContractEventFilterInput, limit: Int, nextToken: String): ModelContractEventConnection
+  getColonyExtension(id: ID!): ColonyExtension
+  listColonyExtensions(filter: ModelColonyExtensionFilterInput, limit: Int, nextToken: String): ModelColonyExtensionConnection
+  getCurrentVersion(id: ID!): CurrentVersion
+  listCurrentVersions(filter: ModelCurrentVersionFilterInput, limit: Int, nextToken: String): ModelCurrentVersionConnection
+  getCurrentNetworkInverseFee(id: ID!): CurrentNetworkInverseFee
+  listCurrentNetworkInverseFees(filter: ModelCurrentNetworkInverseFeeFilterInput, limit: Int, nextToken: String): ModelCurrentNetworkInverseFeeConnection
+  getColonyAction(id: ID!): ColonyAction
+  listColonyActions(filter: ModelColonyActionFilterInput, limit: Int, nextToken: String): ModelColonyActionConnection
+  getColonyRole(id: ID!): ColonyRole
+  listColonyRoles(filter: ModelColonyRoleFilterInput, limit: Int, nextToken: String): ModelColonyRoleConnection
+  getColonyHistoricRole(id: ID!): ColonyHistoricRole
+  listColonyHistoricRoles(filter: ModelColonyHistoricRoleFilterInput, limit: Int, nextToken: String): ModelColonyHistoricRoleConnection
+  getIngestorStats(id: ID!): IngestorStats
+  listIngestorStats(filter: ModelIngestorStatsFilterInput, limit: Int, nextToken: String): ModelIngestorStatsConnection
+  getColonyTokens(id: ID!): ColonyTokens
+  listColonyTokens(filter: ModelColonyTokensFilterInput, limit: Int, nextToken: String): ModelColonyTokensConnection
+  getUserTokens(id: ID!): UserTokens
+  listUserTokens(filter: ModelUserTokensFilterInput, limit: Int, nextToken: String): ModelUserTokensConnection
+  getWatchedColonies(id: ID!): WatchedColonies
+  listWatchedColonies(filter: ModelWatchedColoniesFilterInput, limit: Int, nextToken: String): ModelWatchedColoniesConnection
+  getProfileByEmail(email: AWSEmail!, sortDirection: ModelSortDirection, filter: ModelProfileFilterInput, limit: Int, nextToken: String): ModelProfileConnection
+  getTokenByAddress(id: ID!, sortDirection: ModelSortDirection, filter: ModelTokenFilterInput, limit: Int, nextToken: String): ModelTokenConnection
+  getTokensByType(type: TokenType!, sortDirection: ModelSortDirection, filter: ModelTokenFilterInput, limit: Int, nextToken: String): ModelTokenConnection
+  getColonyByAddress(id: ID!, sortDirection: ModelSortDirection, filter: ModelColonyFilterInput, limit: Int, nextToken: String): ModelColonyConnection
+  getColonyByName(name: String!, sortDirection: ModelSortDirection, filter: ModelColonyFilterInput, limit: Int, nextToken: String): ModelColonyConnection
+  getColoniesByNativeTokenId(nativeTokenId: ID!, sortDirection: ModelSortDirection, filter: ModelColonyFilterInput, limit: Int, nextToken: String): ModelColonyConnection
+  getColonyByType(type: ColonyType!, sortDirection: ModelSortDirection, filter: ModelColonyFilterInput, limit: Int, nextToken: String): ModelColonyConnection
+  getUserByAddress(id: ID!, sortDirection: ModelSortDirection, filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
+  getUserByName(name: String!, sortDirection: ModelSortDirection, filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
+  getMotionMessageByMotionId(motionId: ID!, createdAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelMotionMessageFilterInput, limit: Int, nextToken: String): ModelMotionMessageConnection
+  getExtensionByColonyAndHash(colonyId: ID!, hash: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelColonyExtensionFilterInput, limit: Int, nextToken: String): ModelColonyExtensionConnection
+  getExtensionsByHash(hash: String!, sortDirection: ModelSortDirection, filter: ModelColonyExtensionFilterInput, limit: Int, nextToken: String): ModelColonyExtensionConnection
+  getCurrentVersionByKey(key: String!, sortDirection: ModelSortDirection, filter: ModelCurrentVersionFilterInput, limit: Int, nextToken: String): ModelCurrentVersionConnection
+  getActionsByColony(colonyId: ID!, createdAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelColonyActionFilterInput, limit: Int, nextToken: String): ModelColonyActionConnection
+  getColonyActionByMotionId(motionId: ID!, sortDirection: ModelSortDirection, filter: ModelColonyActionFilterInput, limit: Int, nextToken: String): ModelColonyActionConnection
+  getColonyHistoricRoleByDate(type: String!, createdAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelColonyHistoricRoleFilterInput, limit: Int, nextToken: String): ModelColonyHistoricRoleConnection
+}
+
+type Mutation {
+  createUniqueUser(input: CreateUniqueUserInput): User
+  createUniqueColony(input: CreateUniqueColonyInput): Colony
+  setCurrentVersion(input: SetCurrentVersionInput): Boolean
+  updateExtensionByColonyAndHash(input: UpdateExtensionByColonyAndHashInput): ColonyExtension
+  createProfile(input: CreateProfileInput!, condition: ModelProfileConditionInput): Profile
+  updateProfile(input: UpdateProfileInput!, condition: ModelProfileConditionInput): Profile
+  deleteProfile(input: DeleteProfileInput!, condition: ModelProfileConditionInput): Profile
+  createToken(input: CreateTokenInput!, condition: ModelTokenConditionInput): Token
+  updateToken(input: UpdateTokenInput!, condition: ModelTokenConditionInput): Token
+  deleteToken(input: DeleteTokenInput!, condition: ModelTokenConditionInput): Token
+  createColony(input: CreateColonyInput!, condition: ModelColonyConditionInput): Colony
+  updateColony(input: UpdateColonyInput!, condition: ModelColonyConditionInput): Colony
+  deleteColony(input: DeleteColonyInput!, condition: ModelColonyConditionInput): Colony
+  createColonyMetadata(input: CreateColonyMetadataInput!, condition: ModelColonyMetadataConditionInput): ColonyMetadata
+  updateColonyMetadata(input: UpdateColonyMetadataInput!, condition: ModelColonyMetadataConditionInput): ColonyMetadata
+  deleteColonyMetadata(input: DeleteColonyMetadataInput!, condition: ModelColonyMetadataConditionInput): ColonyMetadata
+  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User
+  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
+  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
+  createDomain(input: CreateDomainInput!, condition: ModelDomainConditionInput): Domain
+  updateDomain(input: UpdateDomainInput!, condition: ModelDomainConditionInput): Domain
+  deleteDomain(input: DeleteDomainInput!, condition: ModelDomainConditionInput): Domain
+  createDomainMetadata(input: CreateDomainMetadataInput!, condition: ModelDomainMetadataConditionInput): DomainMetadata
+  updateDomainMetadata(input: UpdateDomainMetadataInput!, condition: ModelDomainMetadataConditionInput): DomainMetadata
+  deleteDomainMetadata(input: DeleteDomainMetadataInput!, condition: ModelDomainMetadataConditionInput): DomainMetadata
+  createColonyFundsClaim(input: CreateColonyFundsClaimInput!, condition: ModelColonyFundsClaimConditionInput): ColonyFundsClaim
+  updateColonyFundsClaim(input: UpdateColonyFundsClaimInput!, condition: ModelColonyFundsClaimConditionInput): ColonyFundsClaim
+  deleteColonyFundsClaim(input: DeleteColonyFundsClaimInput!, condition: ModelColonyFundsClaimConditionInput): ColonyFundsClaim
+  createMotionMessage(input: CreateMotionMessageInput!, condition: ModelMotionMessageConditionInput): MotionMessage
+  updateMotionMessage(input: UpdateMotionMessageInput!, condition: ModelMotionMessageConditionInput): MotionMessage
+  deleteMotionMessage(input: DeleteMotionMessageInput!, condition: ModelMotionMessageConditionInput): MotionMessage
+  createColonyMotion(input: CreateColonyMotionInput!, condition: ModelColonyMotionConditionInput): ColonyMotion
+  updateColonyMotion(input: UpdateColonyMotionInput!, condition: ModelColonyMotionConditionInput): ColonyMotion
+  deleteColonyMotion(input: DeleteColonyMotionInput!, condition: ModelColonyMotionConditionInput): ColonyMotion
+  createContractEvent(input: CreateContractEventInput!, condition: ModelContractEventConditionInput): ContractEvent
+  updateContractEvent(input: UpdateContractEventInput!, condition: ModelContractEventConditionInput): ContractEvent
+  deleteContractEvent(input: DeleteContractEventInput!, condition: ModelContractEventConditionInput): ContractEvent
+  createColonyExtension(input: CreateColonyExtensionInput!, condition: ModelColonyExtensionConditionInput): ColonyExtension
+  updateColonyExtension(input: UpdateColonyExtensionInput!, condition: ModelColonyExtensionConditionInput): ColonyExtension
+  deleteColonyExtension(input: DeleteColonyExtensionInput!, condition: ModelColonyExtensionConditionInput): ColonyExtension
+  createCurrentVersion(input: CreateCurrentVersionInput!, condition: ModelCurrentVersionConditionInput): CurrentVersion
+  updateCurrentVersion(input: UpdateCurrentVersionInput!, condition: ModelCurrentVersionConditionInput): CurrentVersion
+  deleteCurrentVersion(input: DeleteCurrentVersionInput!, condition: ModelCurrentVersionConditionInput): CurrentVersion
+  createCurrentNetworkInverseFee(input: CreateCurrentNetworkInverseFeeInput!, condition: ModelCurrentNetworkInverseFeeConditionInput): CurrentNetworkInverseFee
+  updateCurrentNetworkInverseFee(input: UpdateCurrentNetworkInverseFeeInput!, condition: ModelCurrentNetworkInverseFeeConditionInput): CurrentNetworkInverseFee
+  deleteCurrentNetworkInverseFee(input: DeleteCurrentNetworkInverseFeeInput!, condition: ModelCurrentNetworkInverseFeeConditionInput): CurrentNetworkInverseFee
+  createColonyAction(input: CreateColonyActionInput!, condition: ModelColonyActionConditionInput): ColonyAction
+  updateColonyAction(input: UpdateColonyActionInput!, condition: ModelColonyActionConditionInput): ColonyAction
+  deleteColonyAction(input: DeleteColonyActionInput!, condition: ModelColonyActionConditionInput): ColonyAction
+  createColonyRole(input: CreateColonyRoleInput!, condition: ModelColonyRoleConditionInput): ColonyRole
+  updateColonyRole(input: UpdateColonyRoleInput!, condition: ModelColonyRoleConditionInput): ColonyRole
+  deleteColonyRole(input: DeleteColonyRoleInput!, condition: ModelColonyRoleConditionInput): ColonyRole
+  createColonyHistoricRole(input: CreateColonyHistoricRoleInput!, condition: ModelColonyHistoricRoleConditionInput): ColonyHistoricRole
+  updateColonyHistoricRole(input: UpdateColonyHistoricRoleInput!, condition: ModelColonyHistoricRoleConditionInput): ColonyHistoricRole
+  deleteColonyHistoricRole(input: DeleteColonyHistoricRoleInput!, condition: ModelColonyHistoricRoleConditionInput): ColonyHistoricRole
+  createIngestorStats(input: CreateIngestorStatsInput!, condition: ModelIngestorStatsConditionInput): IngestorStats
+  updateIngestorStats(input: UpdateIngestorStatsInput!, condition: ModelIngestorStatsConditionInput): IngestorStats
+  deleteIngestorStats(input: DeleteIngestorStatsInput!, condition: ModelIngestorStatsConditionInput): IngestorStats
+  createColonyTokens(input: CreateColonyTokensInput!, condition: ModelColonyTokensConditionInput): ColonyTokens
+  updateColonyTokens(input: UpdateColonyTokensInput!, condition: ModelColonyTokensConditionInput): ColonyTokens
+  deleteColonyTokens(input: DeleteColonyTokensInput!, condition: ModelColonyTokensConditionInput): ColonyTokens
+  createUserTokens(input: CreateUserTokensInput!, condition: ModelUserTokensConditionInput): UserTokens
+  updateUserTokens(input: UpdateUserTokensInput!, condition: ModelUserTokensConditionInput): UserTokens
+  deleteUserTokens(input: DeleteUserTokensInput!, condition: ModelUserTokensConditionInput): UserTokens
+  createWatchedColonies(input: CreateWatchedColoniesInput!, condition: ModelWatchedColoniesConditionInput): WatchedColonies
+  updateWatchedColonies(input: UpdateWatchedColoniesInput!, condition: ModelWatchedColoniesConditionInput): WatchedColonies
+  deleteWatchedColonies(input: DeleteWatchedColoniesInput!, condition: ModelWatchedColoniesConditionInput): WatchedColonies
+}
+
+type Profile {
+  id: ID!
+  avatar: String
+  thumbnail: String
+  displayName: String
+  bio: String
+  location: String
+  website: AWSURL
+  email: AWSEmail
+  meta: ProfileMetadata
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type NativeTokenStatus {
+  unlocked: Boolean
+  mintable: Boolean
+  unlockable: Boolean
+}
+
+type ColonyStatus {
+  nativeToken: NativeTokenStatus
+  recovery: Boolean
+}
+
+type ChainMetadata {
+  network: Network
+  chainId: Int!
+  transactionHash: String
+  logIndex: Int
+  blockNumber: Int
+}
+
+type ProfileMetadata {
+  emailPermissions: [String!]!
+}
+
+type Contributor {
+  address: String!
+  user: User
+  reputationPercentage: String
+  reputationAmount: String
+}
+
+type Watcher {
+  address: String!
+  user: User
+}
+
+type Token {
+  id: ID!
+  name: String!
+  symbol: String!
+  decimals: Int!
+  type: TokenType
+  colonies(filter: ModelColonyTokensFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelColonyTokensConnection
+  users(filter: ModelUserTokensFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserTokensConnection
+  avatar: String
+  thumbnail: String
+  chainMetadata: ChainMetadata!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type ColonyID {
+  id: ID!
+}
+
+type Colony {
+  id: ID!
+  name: String!
+  nativeTokenId: ID!
+  nativeToken: Token!
+  tokens(filter: ModelColonyTokensFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelColonyTokensConnection
+  status: ColonyStatus
+  domains(filter: ModelDomainFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelDomainConnection
+  watchers(filter: ModelWatchedColoniesFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelWatchedColoniesConnection
+  fundsClaims(filter: ModelColonyFundsClaimFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelColonyFundsClaimConnection
+  chainFundsClaim: ColonyChainFundsClaim
+  type: ColonyType
+  balances: ColonyBalances
+  chainMetadata: ChainMetadata!
+  extensions(hash: ModelStringKeyConditionInput, filter: ModelColonyExtensionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelColonyExtensionConnection
+  version: Int!
+  actions(filter: ModelColonyActionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelColonyActionConnection
+  motionsWithUnclaimedStakes: [ColonyUnclaimedStake!]
+  metadata: ColonyMetadata
+  roles(filter: ModelColonyRoleFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelColonyRoleConnection
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type ColonyUnclaimedStake {
+  motionId: String!
+  unclaimedRewards: [StakerRewards!]!
+}
+
+type PendingModifiedTokenAddresses {
+  added: [String!]
+  removed: [String!]
+}
+
+type ColonyMetadata {
+  id: ID!
+  displayName: String!
+  avatar: String
+  thumbnail: String
+  changelog: [ColonyMetadataChangelog!]
+  isWhitelistActivated: Boolean
+  whitelistedAddresses: [String!]
+  modifiedTokenAddresses: PendingModifiedTokenAddresses
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type ColonyMetadataChangelog {
+  transactionHash: String!
+  oldDisplayName: String!
+  newDisplayName: String!
+  hasAvatarChanged: Boolean!
+  hasWhitelistChanged: Boolean!
+  haveTokensChanged: Boolean!
+}
+
+type User {
+  id: ID!
+  name: String!
+  tokens(filter: ModelUserTokensFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserTokensConnection
+  profileId: ID
+  profile: Profile
+  watchlist(filter: ModelWatchedColoniesFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelWatchedColoniesConnection
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Domain {
+  id: ID!
+  colonyId: ID!
+  colony: Colony!
+  nativeId: Int!
+  nativeFundingPotId: Int!
+  nativeSkillId: Int!
+  isRoot: Boolean!
+  metadata: DomainMetadata
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type DomainMetadata {
+  id: ID!
+  name: String!
+  description: String!
+  color: DomainColor!
+  changelog: [DomainMetadataChangelog!]
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type DomainMetadataChangelog {
+  transactionHash: String!
+  oldName: String!
+  newName: String!
+  oldColor: DomainColor!
+  newColor: DomainColor!
+  oldDescription: String!
+  newDescription: String!
+}
+
+type ColonyFundsClaim {
+  id: ID!
+  token: Token!
+  createdAtBlock: Int!
+  createdAt: AWSDateTime!
+  amount: String!
+  updatedAt: AWSDateTime!
+  colonyFundsClaimsId: ID
+  colonyFundsClaimTokenId: ID!
+}
+
+type ColonyChainFundsClaim {
+  id: ID!
+  createdAtBlock: Int!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  amount: String!
+}
+
+type ColonyBalance {
+  id: ID!
+  balance: String!
+  domain: Domain
+  token: Token!
+}
+
+type ColonyBalances {
+  items: [ColonyBalance]
+}
+
+input DomainInput {
+  id: ID!
+}
+
+input TokenInput {
+  id: ID!
+}
+
+input MotionStakeValuesInput {
+  yay: String!
+  nay: String!
+}
+
+type MotionStakeValues {
+  yay: String!
+  nay: String!
+}
+
+input MotionStakesInput {
+  raw: MotionStakeValuesInput!
+  percentage: MotionStakeValuesInput!
+}
+
+type MotionStakes {
+  raw: MotionStakeValues!
+  percentage: MotionStakeValues!
+}
+
+input UserStakesInput {
+  address: String!
+  stakes: MotionStakesInput!
+}
+
+type UserStakes {
+  address: String!
+  stakes: MotionStakes!
+}
+
+input StakerRewardsInput {
+  address: String!
+  rewards: MotionStakeValuesInput!
+  isClaimed: Boolean!
+}
+
+type StakerRewards {
+  address: String!
+  rewards: MotionStakeValues!
+  isClaimed: Boolean!
+}
+
+input VoterRecordInput {
+  address: String!
+  voteCount: String!
+  vote: Int
+}
+
+type VoterRecord {
+  address: String!
+  voteCount: String!
+  vote: Int
+}
+
+input MotionMessageInput {
+  initiatorAddress: String!
+  name: String!
+  messageKey: String!
+  vote: String
+  amount: String
+}
+
+type MotionMessage {
+  initiatorAddress: ID!
+  name: String!
+  messageKey: String!
+  motionId: ID!
+  initiatorUser: User
+  vote: String
+  amount: String
+  createdAt: AWSDateTime!
+  id: ID!
+  updatedAt: AWSDateTime!
+}
+
+input MotionStateHistoryInput {
+  hasVoted: Boolean!
+  hasPassed: Boolean!
+  hasFailed: Boolean!
+  hasFailedNotFinalizable: Boolean!
+  inRevealPhase: Boolean!
+}
+
+type MotionStateHistory {
+  hasVoted: Boolean!
+  hasPassed: Boolean!
+  hasFailed: Boolean!
+  hasFailedNotFinalizable: Boolean!
+  inRevealPhase: Boolean!
+}
+
+type ColonyMotion {
+  id: ID!
+  nativeMotionId: String!
+  usersStakes: [UserStakes!]!
+  stakerRewards: [StakerRewards!]!
+  motionStakes: MotionStakes!
+  remainingStakes: [String!]!
+  userMinStake: String!
+  requiredStake: String!
+  rootHash: String!
+  nativeMotionDomainId: String!
+  isFinalized: Boolean!
+  createdBy: String!
+  voterRecord: [VoterRecord!]!
+  revealedVotes: MotionStakes!
+  repSubmitted: String!
+  skillRep: String!
+  hasObjection: Boolean!
+  motionStateHistory: MotionStateHistory!
+  messages(createdAt: ModelStringKeyConditionInput, filter: ModelMotionMessageFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelMotionMessageConnection
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type ContractEvent {
+  id: ID!
+  name: String!
+  signature: String!
+  chainMetadata: ChainMetadata!
+  colony: Colony
+  token: Token
+  domain: Domain
+  user: User
+  agent: String!
+  target: String!
+  encodedArguments: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  contractEventColonyId: ID
+  contractEventTokenId: ID
+  contractEventDomainId: ID
+  contractEventUserId: ID
+}
+
+type VotingReputationParams {
+  totalStakeFraction: String!
+  voterRewardFraction: String!
+  userMinStakeFraction: String!
+  maxVoteFraction: String!
+  stakePeriod: String!
+  submitPeriod: String!
+  revealPeriod: String!
+  escalationPeriod: String!
+}
+
+type ExtensionParams {
+  votingReputation: VotingReputationParams
+}
+
+type ColonyExtension {
+  id: ID!
+  colonyId: ID!
+  colony: Colony!
+  hash: String!
+  installedBy: String!
+  installedAt: AWSTimestamp!
+  isDeprecated: Boolean!
+  isDeleted: Boolean!
+  isInitialized: Boolean!
+  version: Int!
+  params: ExtensionParams
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type CurrentVersion {
+  id: ID!
+  key: String!
+  version: Int!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type CurrentNetworkInverseFee {
+  id: ID!
+  inverseFee: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type ColonyAction {
+  id: ID!
+  colonyId: ID!
+  colony: Colony!
+  type: ColonyActionType!
+  blockNumber: Int!
+  isMotion: Boolean
+  motionId: ID
+  motionData: ColonyMotion
+  showInActionsList: Boolean!
+  createdAt: AWSDateTime!
+  initiatorAddress: ID!
+  initiatorUser: User
+  initiatorExtension: ColonyExtension
+  initiatorColony: Colony
+  initiatorToken: Token
+  recipientAddress: ID
+  recipientUser: User
+  recipientColony: Colony
+  recipientExtension: ColonyExtension
+  recipientToken: Token
+  amount: String
+  tokenAddress: ID
+  token: Token
+  fromDomainId: ID
+  fromDomain: Domain
+  toDomainId: ID
+  toDomain: Domain
+  fundamentalChainId: Int
+  newColonyVersion: Int
+  pendingDomainMetadataId: ID
+  pendingDomainMetadata: DomainMetadata
+  pendingColonyMetadataId: ID
+  pendingColonyMetadata: ColonyMetadata
+  motionDomainId: Int
+  roles: ColonyActionRoles
+  individualEvents: String
+  updatedAt: AWSDateTime!
+  colonyActionsId: ID
+}
+
+type ColonyActionRoles {
+  role_0: Boolean
+  role_1: Boolean
+  role_2: Boolean
+  role_3: Boolean
+  role_5: Boolean
+  role_6: Boolean
+}
+
+type ColonyRole {
+  id: ID!
+  domainId: ID!
+  domain: Domain!
+  targetAddress: ID
+  targetUser: User
+  targetColony: Colony
+  targetExtension: ColonyExtension
+  targetToken: Token
+  latestBlock: Int!
+  role_0: Boolean
+  role_1: Boolean
+  role_2: Boolean
+  role_3: Boolean
+  role_5: Boolean
+  role_6: Boolean
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  colonyRolesId: ID
+}
+
+type ColonyHistoricRole {
+  id: ID!
+  type: String!
+  domainId: ID!
+  domain: Domain!
+  colonyId: ID!
+  colony: Colony!
+  targetAddress: ID
+  targetUser: User
+  targetColony: Colony
+  targetExtension: ColonyExtension
+  targetToken: Token
+  blockNumber: Int!
+  role_0: Boolean
+  role_1: Boolean
+  role_2: Boolean
+  role_3: Boolean
+  role_5: Boolean
+  role_6: Boolean
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type IngestorStats {
+  id: ID!
+  value: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type ColonyTokens {
+  id: ID!
+  tokenID: ID!
+  colonyID: ID!
+  token: Token!
+  colony: Colony!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type UserTokens {
+  id: ID!
+  tokenID: ID!
+  userID: ID!
+  token: Token!
+  user: User!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type WatchedColonies {
+  id: ID!
+  colonyID: ID!
+  userID: ID!
+  colony: Colony!
+  user: User!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelSubscriptionStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  in: [String]
+  notIn: [String]
+}
+
+input ModelSubscriptionIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  in: [Int]
+  notIn: [Int]
+}
+
+input ModelSubscriptionFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  in: [Float]
+  notIn: [Float]
+}
+
+input ModelSubscriptionBooleanInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelSubscriptionIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  in: [ID]
+  notIn: [ID]
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelProfileConnection {
+  items: [Profile]!
+  nextToken: String
+}
+
+input ModelProfileFilterInput {
+  id: ModelIDInput
+  avatar: ModelStringInput
+  thumbnail: ModelStringInput
+  displayName: ModelStringInput
+  bio: ModelStringInput
+  location: ModelStringInput
+  website: ModelStringInput
+  email: ModelStringInput
+  and: [ModelProfileFilterInput]
+  or: [ModelProfileFilterInput]
+  not: ModelProfileFilterInput
+}
+
+input ModelProfileConditionInput {
+  avatar: ModelStringInput
+  thumbnail: ModelStringInput
+  displayName: ModelStringInput
+  bio: ModelStringInput
+  location: ModelStringInput
+  website: ModelStringInput
+  email: ModelStringInput
+  and: [ModelProfileConditionInput]
+  or: [ModelProfileConditionInput]
+  not: ModelProfileConditionInput
+}
+
+input CreateProfileInput {
+  id: ID
+  avatar: String
+  thumbnail: String
+  displayName: String
+  bio: String
+  location: String
+  website: AWSURL
+  email: AWSEmail
+  meta: ProfileMetadataInput
+}
+
+input UpdateProfileInput {
+  id: ID!
+  avatar: String
+  thumbnail: String
+  displayName: String
+  bio: String
+  location: String
+  website: AWSURL
+  email: AWSEmail
+  meta: ProfileMetadataInput
+}
+
+input DeleteProfileInput {
+  id: ID!
+}
+
+input ModelSubscriptionProfileFilterInput {
+  id: ModelSubscriptionIDInput
+  avatar: ModelSubscriptionStringInput
+  thumbnail: ModelSubscriptionStringInput
+  displayName: ModelSubscriptionStringInput
+  bio: ModelSubscriptionStringInput
+  location: ModelSubscriptionStringInput
+  website: ModelSubscriptionStringInput
+  email: ModelSubscriptionStringInput
+  and: [ModelSubscriptionProfileFilterInput]
+  or: [ModelSubscriptionProfileFilterInput]
+}
+
+type Subscription {
+  onCreateProfile(filter: ModelSubscriptionProfileFilterInput): Profile
+  onUpdateProfile(filter: ModelSubscriptionProfileFilterInput): Profile
+  onDeleteProfile(filter: ModelSubscriptionProfileFilterInput): Profile
+  onCreateToken(filter: ModelSubscriptionTokenFilterInput): Token
+  onUpdateToken(filter: ModelSubscriptionTokenFilterInput): Token
+  onDeleteToken(filter: ModelSubscriptionTokenFilterInput): Token
+  onCreateColony(filter: ModelSubscriptionColonyFilterInput): Colony
+  onUpdateColony(filter: ModelSubscriptionColonyFilterInput): Colony
+  onDeleteColony(filter: ModelSubscriptionColonyFilterInput): Colony
+  onCreateColonyMetadata(filter: ModelSubscriptionColonyMetadataFilterInput): ColonyMetadata
+  onUpdateColonyMetadata(filter: ModelSubscriptionColonyMetadataFilterInput): ColonyMetadata
+  onDeleteColonyMetadata(filter: ModelSubscriptionColonyMetadataFilterInput): ColonyMetadata
+  onCreateUser(filter: ModelSubscriptionUserFilterInput): User
+  onUpdateUser(filter: ModelSubscriptionUserFilterInput): User
+  onDeleteUser(filter: ModelSubscriptionUserFilterInput): User
+  onCreateDomain(filter: ModelSubscriptionDomainFilterInput): Domain
+  onUpdateDomain(filter: ModelSubscriptionDomainFilterInput): Domain
+  onDeleteDomain(filter: ModelSubscriptionDomainFilterInput): Domain
+  onCreateDomainMetadata(filter: ModelSubscriptionDomainMetadataFilterInput): DomainMetadata
+  onUpdateDomainMetadata(filter: ModelSubscriptionDomainMetadataFilterInput): DomainMetadata
+  onDeleteDomainMetadata(filter: ModelSubscriptionDomainMetadataFilterInput): DomainMetadata
+  onCreateColonyFundsClaim(filter: ModelSubscriptionColonyFundsClaimFilterInput): ColonyFundsClaim
+  onUpdateColonyFundsClaim(filter: ModelSubscriptionColonyFundsClaimFilterInput): ColonyFundsClaim
+  onDeleteColonyFundsClaim(filter: ModelSubscriptionColonyFundsClaimFilterInput): ColonyFundsClaim
+  onCreateMotionMessage(filter: ModelSubscriptionMotionMessageFilterInput): MotionMessage
+  onUpdateMotionMessage(filter: ModelSubscriptionMotionMessageFilterInput): MotionMessage
+  onDeleteMotionMessage(filter: ModelSubscriptionMotionMessageFilterInput): MotionMessage
+  onCreateColonyMotion(filter: ModelSubscriptionColonyMotionFilterInput): ColonyMotion
+  onUpdateColonyMotion(filter: ModelSubscriptionColonyMotionFilterInput): ColonyMotion
+  onDeleteColonyMotion(filter: ModelSubscriptionColonyMotionFilterInput): ColonyMotion
+  onCreateContractEvent(filter: ModelSubscriptionContractEventFilterInput): ContractEvent
+  onUpdateContractEvent(filter: ModelSubscriptionContractEventFilterInput): ContractEvent
+  onDeleteContractEvent(filter: ModelSubscriptionContractEventFilterInput): ContractEvent
+  onCreateColonyExtension(filter: ModelSubscriptionColonyExtensionFilterInput): ColonyExtension
+  onUpdateColonyExtension(filter: ModelSubscriptionColonyExtensionFilterInput): ColonyExtension
+  onDeleteColonyExtension(filter: ModelSubscriptionColonyExtensionFilterInput): ColonyExtension
+  onCreateCurrentVersion(filter: ModelSubscriptionCurrentVersionFilterInput): CurrentVersion
+  onUpdateCurrentVersion(filter: ModelSubscriptionCurrentVersionFilterInput): CurrentVersion
+  onDeleteCurrentVersion(filter: ModelSubscriptionCurrentVersionFilterInput): CurrentVersion
+  onCreateCurrentNetworkInverseFee(filter: ModelSubscriptionCurrentNetworkInverseFeeFilterInput): CurrentNetworkInverseFee
+  onUpdateCurrentNetworkInverseFee(filter: ModelSubscriptionCurrentNetworkInverseFeeFilterInput): CurrentNetworkInverseFee
+  onDeleteCurrentNetworkInverseFee(filter: ModelSubscriptionCurrentNetworkInverseFeeFilterInput): CurrentNetworkInverseFee
+  onCreateColonyAction(filter: ModelSubscriptionColonyActionFilterInput): ColonyAction
+  onUpdateColonyAction(filter: ModelSubscriptionColonyActionFilterInput): ColonyAction
+  onDeleteColonyAction(filter: ModelSubscriptionColonyActionFilterInput): ColonyAction
+  onCreateColonyRole(filter: ModelSubscriptionColonyRoleFilterInput): ColonyRole
+  onUpdateColonyRole(filter: ModelSubscriptionColonyRoleFilterInput): ColonyRole
+  onDeleteColonyRole(filter: ModelSubscriptionColonyRoleFilterInput): ColonyRole
+  onCreateColonyHistoricRole(filter: ModelSubscriptionColonyHistoricRoleFilterInput): ColonyHistoricRole
+  onUpdateColonyHistoricRole(filter: ModelSubscriptionColonyHistoricRoleFilterInput): ColonyHistoricRole
+  onDeleteColonyHistoricRole(filter: ModelSubscriptionColonyHistoricRoleFilterInput): ColonyHistoricRole
+  onCreateIngestorStats(filter: ModelSubscriptionIngestorStatsFilterInput): IngestorStats
+  onUpdateIngestorStats(filter: ModelSubscriptionIngestorStatsFilterInput): IngestorStats
+  onDeleteIngestorStats(filter: ModelSubscriptionIngestorStatsFilterInput): IngestorStats
+  onCreateColonyTokens(filter: ModelSubscriptionColonyTokensFilterInput): ColonyTokens
+  onUpdateColonyTokens(filter: ModelSubscriptionColonyTokensFilterInput): ColonyTokens
+  onDeleteColonyTokens(filter: ModelSubscriptionColonyTokensFilterInput): ColonyTokens
+  onCreateUserTokens(filter: ModelSubscriptionUserTokensFilterInput): UserTokens
+  onUpdateUserTokens(filter: ModelSubscriptionUserTokensFilterInput): UserTokens
+  onDeleteUserTokens(filter: ModelSubscriptionUserTokensFilterInput): UserTokens
+  onCreateWatchedColonies(filter: ModelSubscriptionWatchedColoniesFilterInput): WatchedColonies
+  onUpdateWatchedColonies(filter: ModelSubscriptionWatchedColoniesFilterInput): WatchedColonies
+  onDeleteWatchedColonies(filter: ModelSubscriptionWatchedColoniesFilterInput): WatchedColonies
+}
+
+type ModelTokenConnection {
+  items: [Token]!
+  nextToken: String
+}
+
+input ModelTokenTypeInput {
+  eq: TokenType
+  ne: TokenType
+}
+
+input ModelTokenFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  symbol: ModelStringInput
+  decimals: ModelIntInput
+  type: ModelTokenTypeInput
+  avatar: ModelStringInput
+  thumbnail: ModelStringInput
+  createdAt: ModelStringInput
+  and: [ModelTokenFilterInput]
+  or: [ModelTokenFilterInput]
+  not: ModelTokenFilterInput
+}
+
+input ModelTokenConditionInput {
+  name: ModelStringInput
+  symbol: ModelStringInput
+  decimals: ModelIntInput
+  type: ModelTokenTypeInput
+  avatar: ModelStringInput
+  thumbnail: ModelStringInput
+  createdAt: ModelStringInput
+  and: [ModelTokenConditionInput]
+  or: [ModelTokenConditionInput]
+  not: ModelTokenConditionInput
+}
+
+input CreateTokenInput {
+  id: ID
+  name: String!
+  symbol: String!
+  decimals: Int!
+  type: TokenType
+  avatar: String
+  thumbnail: String
+  chainMetadata: ChainMetadataInput!
+  createdAt: AWSDateTime
+}
+
+input UpdateTokenInput {
+  id: ID!
+  name: String
+  symbol: String
+  decimals: Int
+  type: TokenType
+  avatar: String
+  thumbnail: String
+  chainMetadata: ChainMetadataInput
+  createdAt: AWSDateTime
+}
+
+input DeleteTokenInput {
+  id: ID!
+}
+
+input ModelSubscriptionTokenFilterInput {
+  id: ModelSubscriptionIDInput
+  name: ModelSubscriptionStringInput
+  symbol: ModelSubscriptionStringInput
+  decimals: ModelSubscriptionIntInput
+  type: ModelSubscriptionStringInput
+  avatar: ModelSubscriptionStringInput
+  thumbnail: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionTokenFilterInput]
+  or: [ModelSubscriptionTokenFilterInput]
+}
+
+input ColonyChainFundsClaimInput {
+  id: ID
+  createdAtBlock: Int!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  amount: String!
+}
+
+input ColonyBalancesInput {
+  items: [ColonyBalanceInput]
+}
+
+input ColonyBalanceInput {
+  id: ID
+  balance: String!
+  domain: DomainInput
+  token: TokenInput!
+}
+
+input ColonyUnclaimedStakeInput {
+  motionId: String!
+  unclaimedRewards: [StakerRewardsInput!]!
+}
+
+type ModelColonyConnection {
+  items: [Colony]!
+  nextToken: String
+}
+
+input ModelColonyTypeInput {
+  eq: ColonyType
+  ne: ColonyType
+}
+
+input ModelColonyFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  nativeTokenId: ModelIDInput
+  type: ModelColonyTypeInput
+  version: ModelIntInput
+  and: [ModelColonyFilterInput]
+  or: [ModelColonyFilterInput]
+  not: ModelColonyFilterInput
+}
+
+input ModelColonyConditionInput {
+  name: ModelStringInput
+  nativeTokenId: ModelIDInput
+  type: ModelColonyTypeInput
+  version: ModelIntInput
+  and: [ModelColonyConditionInput]
+  or: [ModelColonyConditionInput]
+  not: ModelColonyConditionInput
+}
+
+input CreateColonyInput {
+  id: ID
+  name: String!
+  nativeTokenId: ID!
+  status: ColonyStatusInput
+  chainFundsClaim: ColonyChainFundsClaimInput
+  type: ColonyType
+  balances: ColonyBalancesInput
+  chainMetadata: ChainMetadataInput!
+  version: Int!
+  motionsWithUnclaimedStakes: [ColonyUnclaimedStakeInput!]
+}
+
+input UpdateColonyInput {
+  id: ID!
+  name: String
+  nativeTokenId: ID
+  status: ColonyStatusInput
+  chainFundsClaim: ColonyChainFundsClaimInput
+  type: ColonyType
+  balances: ColonyBalancesInput
+  chainMetadata: ChainMetadataInput
+  version: Int
+  motionsWithUnclaimedStakes: [ColonyUnclaimedStakeInput!]
+}
+
+input DeleteColonyInput {
+  id: ID!
+}
+
+input ModelSubscriptionColonyFilterInput {
+  id: ModelSubscriptionIDInput
+  name: ModelSubscriptionStringInput
+  nativeTokenId: ModelSubscriptionIDInput
+  type: ModelSubscriptionStringInput
+  version: ModelSubscriptionIntInput
+  and: [ModelSubscriptionColonyFilterInput]
+  or: [ModelSubscriptionColonyFilterInput]
+}
+
+input ColonyMetadataChangelogInput {
+  transactionHash: String!
+  oldDisplayName: String!
+  newDisplayName: String!
+  hasAvatarChanged: Boolean!
+  hasWhitelistChanged: Boolean!
+  haveTokensChanged: Boolean!
+}
+
+input PendingModifiedTokenAddressesInput {
+  added: [String!]
+  removed: [String!]
+}
+
+type ModelColonyMetadataConnection {
+  items: [ColonyMetadata]!
+  nextToken: String
+}
+
+input ModelColonyMetadataFilterInput {
+  id: ModelIDInput
+  displayName: ModelStringInput
+  avatar: ModelStringInput
+  thumbnail: ModelStringInput
+  isWhitelistActivated: ModelBooleanInput
+  whitelistedAddresses: ModelStringInput
+  and: [ModelColonyMetadataFilterInput]
+  or: [ModelColonyMetadataFilterInput]
+  not: ModelColonyMetadataFilterInput
+}
+
+input ModelColonyMetadataConditionInput {
+  displayName: ModelStringInput
+  avatar: ModelStringInput
+  thumbnail: ModelStringInput
+  isWhitelistActivated: ModelBooleanInput
+  whitelistedAddresses: ModelStringInput
+  and: [ModelColonyMetadataConditionInput]
+  or: [ModelColonyMetadataConditionInput]
+  not: ModelColonyMetadataConditionInput
+}
+
+input CreateColonyMetadataInput {
+  id: ID
+  displayName: String!
+  avatar: String
+  thumbnail: String
+  changelog: [ColonyMetadataChangelogInput!]
+  isWhitelistActivated: Boolean
+  whitelistedAddresses: [String!]
+  modifiedTokenAddresses: PendingModifiedTokenAddressesInput
+}
+
+input UpdateColonyMetadataInput {
+  id: ID!
+  displayName: String
+  avatar: String
+  thumbnail: String
+  changelog: [ColonyMetadataChangelogInput!]
+  isWhitelistActivated: Boolean
+  whitelistedAddresses: [String!]
+  modifiedTokenAddresses: PendingModifiedTokenAddressesInput
+}
+
+input DeleteColonyMetadataInput {
+  id: ID!
+}
+
+input ModelSubscriptionColonyMetadataFilterInput {
+  id: ModelSubscriptionIDInput
+  displayName: ModelSubscriptionStringInput
+  avatar: ModelSubscriptionStringInput
+  thumbnail: ModelSubscriptionStringInput
+  isWhitelistActivated: ModelSubscriptionBooleanInput
+  whitelistedAddresses: ModelSubscriptionStringInput
+  and: [ModelSubscriptionColonyMetadataFilterInput]
+  or: [ModelSubscriptionColonyMetadataFilterInput]
+}
+
+type ModelUserConnection {
+  items: [User]!
+  nextToken: String
+}
+
+input ModelUserFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  profileId: ModelIDInput
+  and: [ModelUserFilterInput]
+  or: [ModelUserFilterInput]
+  not: ModelUserFilterInput
+}
+
+input ModelUserConditionInput {
+  name: ModelStringInput
+  profileId: ModelIDInput
+  and: [ModelUserConditionInput]
+  or: [ModelUserConditionInput]
+  not: ModelUserConditionInput
+}
+
+input CreateUserInput {
+  id: ID
+  name: String!
+  profileId: ID
+}
+
+input UpdateUserInput {
+  id: ID!
+  name: String
+  profileId: ID
+}
+
+input DeleteUserInput {
+  id: ID!
+}
+
+input ModelSubscriptionUserFilterInput {
+  id: ModelSubscriptionIDInput
+  name: ModelSubscriptionStringInput
+  profileId: ModelSubscriptionIDInput
+  and: [ModelSubscriptionUserFilterInput]
+  or: [ModelSubscriptionUserFilterInput]
+}
+
+type ModelDomainConnection {
+  items: [Domain]!
+  nextToken: String
+}
+
+input ModelDomainFilterInput {
+  id: ModelIDInput
+  colonyId: ModelIDInput
+  nativeId: ModelIntInput
+  nativeFundingPotId: ModelIntInput
+  nativeSkillId: ModelIntInput
+  isRoot: ModelBooleanInput
+  and: [ModelDomainFilterInput]
+  or: [ModelDomainFilterInput]
+  not: ModelDomainFilterInput
+}
+
+input ModelDomainConditionInput {
+  colonyId: ModelIDInput
+  nativeId: ModelIntInput
+  nativeFundingPotId: ModelIntInput
+  nativeSkillId: ModelIntInput
+  isRoot: ModelBooleanInput
+  and: [ModelDomainConditionInput]
+  or: [ModelDomainConditionInput]
+  not: ModelDomainConditionInput
+}
+
+input CreateDomainInput {
+  id: ID
+  colonyId: ID!
+  nativeId: Int!
+  nativeFundingPotId: Int!
+  nativeSkillId: Int!
+  isRoot: Boolean!
+}
+
+input UpdateDomainInput {
+  id: ID!
+  colonyId: ID
+  nativeId: Int
+  nativeFundingPotId: Int
+  nativeSkillId: Int
+  isRoot: Boolean
+}
+
+input DeleteDomainInput {
+  id: ID!
+}
+
+input ModelSubscriptionDomainFilterInput {
+  id: ModelSubscriptionIDInput
+  colonyId: ModelSubscriptionIDInput
+  nativeId: ModelSubscriptionIntInput
+  nativeFundingPotId: ModelSubscriptionIntInput
+  nativeSkillId: ModelSubscriptionIntInput
+  isRoot: ModelSubscriptionBooleanInput
+  and: [ModelSubscriptionDomainFilterInput]
+  or: [ModelSubscriptionDomainFilterInput]
+}
+
+input DomainMetadataChangelogInput {
+  transactionHash: String!
+  oldName: String!
+  newName: String!
+  oldColor: DomainColor!
+  newColor: DomainColor!
+  oldDescription: String!
+  newDescription: String!
+}
+
+type ModelDomainMetadataConnection {
+  items: [DomainMetadata]!
+  nextToken: String
+}
+
+input ModelDomainColorInput {
+  eq: DomainColor
+  ne: DomainColor
+}
+
+input ModelDomainMetadataFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  description: ModelStringInput
+  color: ModelDomainColorInput
+  and: [ModelDomainMetadataFilterInput]
+  or: [ModelDomainMetadataFilterInput]
+  not: ModelDomainMetadataFilterInput
+}
+
+input ModelDomainMetadataConditionInput {
+  name: ModelStringInput
+  description: ModelStringInput
+  color: ModelDomainColorInput
+  and: [ModelDomainMetadataConditionInput]
+  or: [ModelDomainMetadataConditionInput]
+  not: ModelDomainMetadataConditionInput
+}
+
+input CreateDomainMetadataInput {
+  id: ID
+  name: String!
+  description: String!
+  color: DomainColor!
+  changelog: [DomainMetadataChangelogInput!]
+}
+
+input UpdateDomainMetadataInput {
+  id: ID!
+  name: String
+  description: String
+  color: DomainColor
+  changelog: [DomainMetadataChangelogInput!]
+}
+
+input DeleteDomainMetadataInput {
+  id: ID!
+}
+
+input ModelSubscriptionDomainMetadataFilterInput {
+  id: ModelSubscriptionIDInput
+  name: ModelSubscriptionStringInput
+  description: ModelSubscriptionStringInput
+  color: ModelSubscriptionStringInput
+  and: [ModelSubscriptionDomainMetadataFilterInput]
+  or: [ModelSubscriptionDomainMetadataFilterInput]
+}
+
+type ModelColonyFundsClaimConnection {
+  items: [ColonyFundsClaim]!
+  nextToken: String
+}
+
+input ModelColonyFundsClaimFilterInput {
+  id: ModelIDInput
+  createdAtBlock: ModelIntInput
+  createdAt: ModelStringInput
+  amount: ModelStringInput
+  and: [ModelColonyFundsClaimFilterInput]
+  or: [ModelColonyFundsClaimFilterInput]
+  not: ModelColonyFundsClaimFilterInput
+  colonyFundsClaimsId: ModelIDInput
+  colonyFundsClaimTokenId: ModelIDInput
+}
+
+input ModelColonyFundsClaimConditionInput {
+  createdAtBlock: ModelIntInput
+  createdAt: ModelStringInput
+  amount: ModelStringInput
+  and: [ModelColonyFundsClaimConditionInput]
+  or: [ModelColonyFundsClaimConditionInput]
+  not: ModelColonyFundsClaimConditionInput
+  colonyFundsClaimsId: ModelIDInput
+  colonyFundsClaimTokenId: ModelIDInput
+}
+
+input CreateColonyFundsClaimInput {
+  id: ID
+  createdAtBlock: Int!
+  createdAt: AWSDateTime
+  amount: String!
+  colonyFundsClaimsId: ID
+  colonyFundsClaimTokenId: ID!
+}
+
+input UpdateColonyFundsClaimInput {
+  id: ID!
+  createdAtBlock: Int
+  createdAt: AWSDateTime
+  amount: String
+  colonyFundsClaimsId: ID
+  colonyFundsClaimTokenId: ID
+}
+
+input DeleteColonyFundsClaimInput {
+  id: ID!
+}
+
+input ModelSubscriptionColonyFundsClaimFilterInput {
+  id: ModelSubscriptionIDInput
+  createdAtBlock: ModelSubscriptionIntInput
+  createdAt: ModelSubscriptionStringInput
+  amount: ModelSubscriptionStringInput
+  and: [ModelSubscriptionColonyFundsClaimFilterInput]
+  or: [ModelSubscriptionColonyFundsClaimFilterInput]
+}
+
+type ModelMotionMessageConnection {
+  items: [MotionMessage]!
+  nextToken: String
+}
+
+input ModelMotionMessageFilterInput {
+  initiatorAddress: ModelIDInput
+  name: ModelStringInput
+  messageKey: ModelStringInput
+  motionId: ModelIDInput
+  vote: ModelStringInput
+  amount: ModelStringInput
+  createdAt: ModelStringInput
+  and: [ModelMotionMessageFilterInput]
+  or: [ModelMotionMessageFilterInput]
+  not: ModelMotionMessageFilterInput
+}
+
+input ModelMotionMessageConditionInput {
+  initiatorAddress: ModelIDInput
+  name: ModelStringInput
+  messageKey: ModelStringInput
+  motionId: ModelIDInput
+  vote: ModelStringInput
+  amount: ModelStringInput
+  createdAt: ModelStringInput
+  and: [ModelMotionMessageConditionInput]
+  or: [ModelMotionMessageConditionInput]
+  not: ModelMotionMessageConditionInput
+}
+
+input CreateMotionMessageInput {
+  initiatorAddress: ID!
+  name: String!
+  messageKey: String!
+  motionId: ID!
+  vote: String
+  amount: String
+  createdAt: AWSDateTime
+  id: ID
+}
+
+input UpdateMotionMessageInput {
+  initiatorAddress: ID
+  name: String
+  messageKey: String
+  motionId: ID
+  vote: String
+  amount: String
+  createdAt: AWSDateTime
+  id: ID!
+}
+
+input DeleteMotionMessageInput {
+  id: ID!
+}
+
+input ModelSubscriptionMotionMessageFilterInput {
+  initiatorAddress: ModelSubscriptionIDInput
+  name: ModelSubscriptionStringInput
+  messageKey: ModelSubscriptionStringInput
+  motionId: ModelSubscriptionIDInput
+  vote: ModelSubscriptionStringInput
+  amount: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionMotionMessageFilterInput]
+  or: [ModelSubscriptionMotionMessageFilterInput]
+}
+
+type ModelColonyMotionConnection {
+  items: [ColonyMotion]!
+  nextToken: String
+}
+
+input ModelColonyMotionFilterInput {
+  id: ModelIDInput
+  nativeMotionId: ModelStringInput
+  remainingStakes: ModelStringInput
+  userMinStake: ModelStringInput
+  requiredStake: ModelStringInput
+  rootHash: ModelStringInput
+  nativeMotionDomainId: ModelStringInput
+  isFinalized: ModelBooleanInput
+  createdBy: ModelStringInput
+  repSubmitted: ModelStringInput
+  skillRep: ModelStringInput
+  hasObjection: ModelBooleanInput
+  and: [ModelColonyMotionFilterInput]
+  or: [ModelColonyMotionFilterInput]
+  not: ModelColonyMotionFilterInput
+}
+
+input ModelColonyMotionConditionInput {
+  nativeMotionId: ModelStringInput
+  remainingStakes: ModelStringInput
+  userMinStake: ModelStringInput
+  requiredStake: ModelStringInput
+  rootHash: ModelStringInput
+  nativeMotionDomainId: ModelStringInput
+  isFinalized: ModelBooleanInput
+  createdBy: ModelStringInput
+  repSubmitted: ModelStringInput
+  skillRep: ModelStringInput
+  hasObjection: ModelBooleanInput
+  and: [ModelColonyMotionConditionInput]
+  or: [ModelColonyMotionConditionInput]
+  not: ModelColonyMotionConditionInput
+}
+
+input CreateColonyMotionInput {
+  id: ID
+  nativeMotionId: String!
+  usersStakes: [UserStakesInput!]!
+  stakerRewards: [StakerRewardsInput!]!
+  motionStakes: MotionStakesInput!
+  remainingStakes: [String!]!
+  userMinStake: String!
+  requiredStake: String!
+  rootHash: String!
+  nativeMotionDomainId: String!
+  isFinalized: Boolean!
+  createdBy: String!
+  voterRecord: [VoterRecordInput!]!
+  revealedVotes: MotionStakesInput!
+  repSubmitted: String!
+  skillRep: String!
+  hasObjection: Boolean!
+  motionStateHistory: MotionStateHistoryInput!
+}
+
+input UpdateColonyMotionInput {
+  id: ID!
+  nativeMotionId: String
+  usersStakes: [UserStakesInput!]
+  stakerRewards: [StakerRewardsInput!]
+  motionStakes: MotionStakesInput
+  remainingStakes: [String!]
+  userMinStake: String
+  requiredStake: String
+  rootHash: String
+  nativeMotionDomainId: String
+  isFinalized: Boolean
+  createdBy: String
+  voterRecord: [VoterRecordInput!]
+  revealedVotes: MotionStakesInput
+  repSubmitted: String
+  skillRep: String
+  hasObjection: Boolean
+  motionStateHistory: MotionStateHistoryInput
+}
+
+input DeleteColonyMotionInput {
+  id: ID!
+}
+
+input ModelSubscriptionColonyMotionFilterInput {
+  id: ModelSubscriptionIDInput
+  nativeMotionId: ModelSubscriptionStringInput
+  remainingStakes: ModelSubscriptionStringInput
+  userMinStake: ModelSubscriptionStringInput
+  requiredStake: ModelSubscriptionStringInput
+  rootHash: ModelSubscriptionStringInput
+  nativeMotionDomainId: ModelSubscriptionStringInput
+  isFinalized: ModelSubscriptionBooleanInput
+  createdBy: ModelSubscriptionStringInput
+  repSubmitted: ModelSubscriptionStringInput
+  skillRep: ModelSubscriptionStringInput
+  hasObjection: ModelSubscriptionBooleanInput
+  and: [ModelSubscriptionColonyMotionFilterInput]
+  or: [ModelSubscriptionColonyMotionFilterInput]
+}
+
+type ModelContractEventConnection {
+  items: [ContractEvent]!
+  nextToken: String
+}
+
+input ModelContractEventFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  signature: ModelStringInput
+  agent: ModelStringInput
+  target: ModelStringInput
+  encodedArguments: ModelStringInput
+  and: [ModelContractEventFilterInput]
+  or: [ModelContractEventFilterInput]
+  not: ModelContractEventFilterInput
+  contractEventColonyId: ModelIDInput
+  contractEventTokenId: ModelIDInput
+  contractEventDomainId: ModelIDInput
+  contractEventUserId: ModelIDInput
+}
+
+input ModelContractEventConditionInput {
+  name: ModelStringInput
+  signature: ModelStringInput
+  agent: ModelStringInput
+  target: ModelStringInput
+  encodedArguments: ModelStringInput
+  and: [ModelContractEventConditionInput]
+  or: [ModelContractEventConditionInput]
+  not: ModelContractEventConditionInput
+  contractEventColonyId: ModelIDInput
+  contractEventTokenId: ModelIDInput
+  contractEventDomainId: ModelIDInput
+  contractEventUserId: ModelIDInput
+}
+
+input CreateContractEventInput {
+  id: ID
+  name: String!
+  signature: String!
+  chainMetadata: ChainMetadataInput!
+  agent: String!
+  target: String!
+  encodedArguments: String
+  contractEventColonyId: ID
+  contractEventTokenId: ID
+  contractEventDomainId: ID
+  contractEventUserId: ID
+}
+
+input UpdateContractEventInput {
+  id: ID!
+  name: String
+  signature: String
+  chainMetadata: ChainMetadataInput
+  agent: String
+  target: String
+  encodedArguments: String
+  contractEventColonyId: ID
+  contractEventTokenId: ID
+  contractEventDomainId: ID
+  contractEventUserId: ID
+}
+
+input DeleteContractEventInput {
+  id: ID!
+}
+
+input ModelSubscriptionContractEventFilterInput {
+  id: ModelSubscriptionIDInput
+  name: ModelSubscriptionStringInput
+  signature: ModelSubscriptionStringInput
+  agent: ModelSubscriptionStringInput
+  target: ModelSubscriptionStringInput
+  encodedArguments: ModelSubscriptionStringInput
+  and: [ModelSubscriptionContractEventFilterInput]
+  or: [ModelSubscriptionContractEventFilterInput]
+}
+
+input ExtensionParamsInput {
+  votingReputation: VotingReputationParamsInput
+}
+
+input VotingReputationParamsInput {
+  totalStakeFraction: String!
+  voterRewardFraction: String!
+  userMinStakeFraction: String!
+  maxVoteFraction: String!
+  stakePeriod: String!
+  submitPeriod: String!
+  revealPeriod: String!
+  escalationPeriod: String!
+}
+
+type ModelColonyExtensionConnection {
+  items: [ColonyExtension]!
+  nextToken: String
+}
+
+input ModelColonyExtensionFilterInput {
+  id: ModelIDInput
+  colonyId: ModelIDInput
+  hash: ModelStringInput
+  installedBy: ModelStringInput
+  installedAt: ModelIntInput
+  isDeprecated: ModelBooleanInput
+  isDeleted: ModelBooleanInput
+  isInitialized: ModelBooleanInput
+  version: ModelIntInput
+  and: [ModelColonyExtensionFilterInput]
+  or: [ModelColonyExtensionFilterInput]
+  not: ModelColonyExtensionFilterInput
+}
+
+input ModelColonyExtensionConditionInput {
+  colonyId: ModelIDInput
+  hash: ModelStringInput
+  installedBy: ModelStringInput
+  installedAt: ModelIntInput
+  isDeprecated: ModelBooleanInput
+  isDeleted: ModelBooleanInput
+  isInitialized: ModelBooleanInput
+  version: ModelIntInput
+  and: [ModelColonyExtensionConditionInput]
+  or: [ModelColonyExtensionConditionInput]
+  not: ModelColonyExtensionConditionInput
+}
+
+input CreateColonyExtensionInput {
+  id: ID
+  colonyId: ID!
+  hash: String!
+  installedBy: String!
+  installedAt: AWSTimestamp!
+  isDeprecated: Boolean!
+  isDeleted: Boolean!
+  isInitialized: Boolean!
+  version: Int!
+  params: ExtensionParamsInput
+}
+
+input UpdateColonyExtensionInput {
+  id: ID!
+  colonyId: ID
+  hash: String
+  installedBy: String
+  installedAt: AWSTimestamp
+  isDeprecated: Boolean
+  isDeleted: Boolean
+  isInitialized: Boolean
+  version: Int
+  params: ExtensionParamsInput
+}
+
+input DeleteColonyExtensionInput {
+  id: ID!
+}
+
+input ModelSubscriptionColonyExtensionFilterInput {
+  id: ModelSubscriptionIDInput
+  colonyId: ModelSubscriptionIDInput
+  hash: ModelSubscriptionStringInput
+  installedBy: ModelSubscriptionStringInput
+  installedAt: ModelSubscriptionIntInput
+  isDeprecated: ModelSubscriptionBooleanInput
+  isDeleted: ModelSubscriptionBooleanInput
+  isInitialized: ModelSubscriptionBooleanInput
+  version: ModelSubscriptionIntInput
+  and: [ModelSubscriptionColonyExtensionFilterInput]
+  or: [ModelSubscriptionColonyExtensionFilterInput]
+}
+
+type ModelCurrentVersionConnection {
+  items: [CurrentVersion]!
+  nextToken: String
+}
+
+input ModelCurrentVersionFilterInput {
+  id: ModelIDInput
+  key: ModelStringInput
+  version: ModelIntInput
+  and: [ModelCurrentVersionFilterInput]
+  or: [ModelCurrentVersionFilterInput]
+  not: ModelCurrentVersionFilterInput
+}
+
+input ModelCurrentVersionConditionInput {
+  key: ModelStringInput
+  version: ModelIntInput
+  and: [ModelCurrentVersionConditionInput]
+  or: [ModelCurrentVersionConditionInput]
+  not: ModelCurrentVersionConditionInput
+}
+
+input CreateCurrentVersionInput {
+  id: ID
+  key: String!
+  version: Int!
+}
+
+input UpdateCurrentVersionInput {
+  id: ID!
+  key: String
+  version: Int
+}
+
+input DeleteCurrentVersionInput {
+  id: ID!
+}
+
+input ModelSubscriptionCurrentVersionFilterInput {
+  id: ModelSubscriptionIDInput
+  key: ModelSubscriptionStringInput
+  version: ModelSubscriptionIntInput
+  and: [ModelSubscriptionCurrentVersionFilterInput]
+  or: [ModelSubscriptionCurrentVersionFilterInput]
+}
+
+type ModelCurrentNetworkInverseFeeConnection {
+  items: [CurrentNetworkInverseFee]!
+  nextToken: String
+}
+
+input ModelCurrentNetworkInverseFeeFilterInput {
+  id: ModelIDInput
+  inverseFee: ModelStringInput
+  and: [ModelCurrentNetworkInverseFeeFilterInput]
+  or: [ModelCurrentNetworkInverseFeeFilterInput]
+  not: ModelCurrentNetworkInverseFeeFilterInput
+}
+
+input ModelCurrentNetworkInverseFeeConditionInput {
+  inverseFee: ModelStringInput
+  and: [ModelCurrentNetworkInverseFeeConditionInput]
+  or: [ModelCurrentNetworkInverseFeeConditionInput]
+  not: ModelCurrentNetworkInverseFeeConditionInput
+}
+
+input CreateCurrentNetworkInverseFeeInput {
+  id: ID
+  inverseFee: String!
+}
+
+input UpdateCurrentNetworkInverseFeeInput {
+  id: ID!
+  inverseFee: String
+}
+
+input DeleteCurrentNetworkInverseFeeInput {
+  id: ID!
+}
+
+input ModelSubscriptionCurrentNetworkInverseFeeFilterInput {
+  id: ModelSubscriptionIDInput
+  inverseFee: ModelSubscriptionStringInput
+  and: [ModelSubscriptionCurrentNetworkInverseFeeFilterInput]
+  or: [ModelSubscriptionCurrentNetworkInverseFeeFilterInput]
+}
+
+input ColonyActionRolesInput {
+  role_0: Boolean
+  role_1: Boolean
+  role_2: Boolean
+  role_3: Boolean
+  role_5: Boolean
+  role_6: Boolean
+}
+
+type ModelColonyActionConnection {
+  items: [ColonyAction]!
+  nextToken: String
+}
+
+input ModelColonyActionTypeInput {
+  eq: ColonyActionType
+  ne: ColonyActionType
+}
+
+input ModelColonyActionFilterInput {
+  id: ModelIDInput
+  colonyId: ModelIDInput
+  type: ModelColonyActionTypeInput
+  blockNumber: ModelIntInput
+  isMotion: ModelBooleanInput
+  motionId: ModelIDInput
+  showInActionsList: ModelBooleanInput
+  createdAt: ModelStringInput
+  initiatorAddress: ModelIDInput
+  recipientAddress: ModelIDInput
+  amount: ModelStringInput
+  tokenAddress: ModelIDInput
+  fromDomainId: ModelIDInput
+  toDomainId: ModelIDInput
+  fundamentalChainId: ModelIntInput
+  newColonyVersion: ModelIntInput
+  pendingDomainMetadataId: ModelIDInput
+  pendingColonyMetadataId: ModelIDInput
+  motionDomainId: ModelIntInput
+  individualEvents: ModelStringInput
+  and: [ModelColonyActionFilterInput]
+  or: [ModelColonyActionFilterInput]
+  not: ModelColonyActionFilterInput
+  colonyActionsId: ModelIDInput
+}
+
+input ModelColonyActionConditionInput {
+  colonyId: ModelIDInput
+  type: ModelColonyActionTypeInput
+  blockNumber: ModelIntInput
+  isMotion: ModelBooleanInput
+  motionId: ModelIDInput
+  showInActionsList: ModelBooleanInput
+  createdAt: ModelStringInput
+  initiatorAddress: ModelIDInput
+  recipientAddress: ModelIDInput
+  amount: ModelStringInput
+  tokenAddress: ModelIDInput
+  fromDomainId: ModelIDInput
+  toDomainId: ModelIDInput
+  fundamentalChainId: ModelIntInput
+  newColonyVersion: ModelIntInput
+  pendingDomainMetadataId: ModelIDInput
+  pendingColonyMetadataId: ModelIDInput
+  motionDomainId: ModelIntInput
+  individualEvents: ModelStringInput
+  and: [ModelColonyActionConditionInput]
+  or: [ModelColonyActionConditionInput]
+  not: ModelColonyActionConditionInput
+  colonyActionsId: ModelIDInput
+}
+
+input CreateColonyActionInput {
+  id: ID
+  colonyId: ID!
+  type: ColonyActionType!
+  blockNumber: Int!
+  isMotion: Boolean
+  motionId: ID
+  showInActionsList: Boolean!
+  createdAt: AWSDateTime
+  initiatorAddress: ID!
+  recipientAddress: ID
+  amount: String
+  tokenAddress: ID
+  fromDomainId: ID
+  toDomainId: ID
+  fundamentalChainId: Int
+  newColonyVersion: Int
+  pendingDomainMetadataId: ID
+  pendingColonyMetadataId: ID
+  motionDomainId: Int
+  roles: ColonyActionRolesInput
+  individualEvents: String
+  colonyActionsId: ID
+}
+
+input UpdateColonyActionInput {
+  id: ID!
+  colonyId: ID
+  type: ColonyActionType
+  blockNumber: Int
+  isMotion: Boolean
+  motionId: ID
+  showInActionsList: Boolean
+  createdAt: AWSDateTime
+  initiatorAddress: ID
+  recipientAddress: ID
+  amount: String
+  tokenAddress: ID
+  fromDomainId: ID
+  toDomainId: ID
+  fundamentalChainId: Int
+  newColonyVersion: Int
+  pendingDomainMetadataId: ID
+  pendingColonyMetadataId: ID
+  motionDomainId: Int
+  roles: ColonyActionRolesInput
+  individualEvents: String
+  colonyActionsId: ID
+}
+
+input DeleteColonyActionInput {
+  id: ID!
+}
+
+input ModelSubscriptionColonyActionFilterInput {
+  id: ModelSubscriptionIDInput
+  colonyId: ModelSubscriptionIDInput
+  type: ModelSubscriptionStringInput
+  blockNumber: ModelSubscriptionIntInput
+  isMotion: ModelSubscriptionBooleanInput
+  motionId: ModelSubscriptionIDInput
+  showInActionsList: ModelSubscriptionBooleanInput
+  createdAt: ModelSubscriptionStringInput
+  initiatorAddress: ModelSubscriptionIDInput
+  recipientAddress: ModelSubscriptionIDInput
+  amount: ModelSubscriptionStringInput
+  tokenAddress: ModelSubscriptionIDInput
+  fromDomainId: ModelSubscriptionIDInput
+  toDomainId: ModelSubscriptionIDInput
+  fundamentalChainId: ModelSubscriptionIntInput
+  newColonyVersion: ModelSubscriptionIntInput
+  pendingDomainMetadataId: ModelSubscriptionIDInput
+  pendingColonyMetadataId: ModelSubscriptionIDInput
+  motionDomainId: ModelSubscriptionIntInput
+  individualEvents: ModelSubscriptionStringInput
+  and: [ModelSubscriptionColonyActionFilterInput]
+  or: [ModelSubscriptionColonyActionFilterInput]
+}
+
+type ModelColonyRoleConnection {
+  items: [ColonyRole]!
+  nextToken: String
+}
+
+input ModelColonyRoleFilterInput {
+  id: ModelIDInput
+  domainId: ModelIDInput
+  targetAddress: ModelIDInput
+  latestBlock: ModelIntInput
+  role_0: ModelBooleanInput
+  role_1: ModelBooleanInput
+  role_2: ModelBooleanInput
+  role_3: ModelBooleanInput
+  role_5: ModelBooleanInput
+  role_6: ModelBooleanInput
+  and: [ModelColonyRoleFilterInput]
+  or: [ModelColonyRoleFilterInput]
+  not: ModelColonyRoleFilterInput
+  colonyRolesId: ModelIDInput
+}
+
+input ModelColonyRoleConditionInput {
+  domainId: ModelIDInput
+  targetAddress: ModelIDInput
+  latestBlock: ModelIntInput
+  role_0: ModelBooleanInput
+  role_1: ModelBooleanInput
+  role_2: ModelBooleanInput
+  role_3: ModelBooleanInput
+  role_5: ModelBooleanInput
+  role_6: ModelBooleanInput
+  and: [ModelColonyRoleConditionInput]
+  or: [ModelColonyRoleConditionInput]
+  not: ModelColonyRoleConditionInput
+  colonyRolesId: ModelIDInput
+}
+
+input CreateColonyRoleInput {
+  id: ID
+  domainId: ID!
+  targetAddress: ID
+  latestBlock: Int!
+  role_0: Boolean
+  role_1: Boolean
+  role_2: Boolean
+  role_3: Boolean
+  role_5: Boolean
+  role_6: Boolean
+  colonyRolesId: ID
+}
+
+input UpdateColonyRoleInput {
+  id: ID!
+  domainId: ID
+  targetAddress: ID
+  latestBlock: Int
+  role_0: Boolean
+  role_1: Boolean
+  role_2: Boolean
+  role_3: Boolean
+  role_5: Boolean
+  role_6: Boolean
+  colonyRolesId: ID
+}
+
+input DeleteColonyRoleInput {
+  id: ID!
+}
+
+input ModelSubscriptionColonyRoleFilterInput {
+  id: ModelSubscriptionIDInput
+  domainId: ModelSubscriptionIDInput
+  targetAddress: ModelSubscriptionIDInput
+  latestBlock: ModelSubscriptionIntInput
+  role_0: ModelSubscriptionBooleanInput
+  role_1: ModelSubscriptionBooleanInput
+  role_2: ModelSubscriptionBooleanInput
+  role_3: ModelSubscriptionBooleanInput
+  role_5: ModelSubscriptionBooleanInput
+  role_6: ModelSubscriptionBooleanInput
+  and: [ModelSubscriptionColonyRoleFilterInput]
+  or: [ModelSubscriptionColonyRoleFilterInput]
+}
+
+type ModelColonyHistoricRoleConnection {
+  items: [ColonyHistoricRole]!
+  nextToken: String
+}
+
+input ModelColonyHistoricRoleFilterInput {
+  id: ModelIDInput
+  type: ModelStringInput
+  domainId: ModelIDInput
+  colonyId: ModelIDInput
+  targetAddress: ModelIDInput
+  blockNumber: ModelIntInput
+  role_0: ModelBooleanInput
+  role_1: ModelBooleanInput
+  role_2: ModelBooleanInput
+  role_3: ModelBooleanInput
+  role_5: ModelBooleanInput
+  role_6: ModelBooleanInput
+  createdAt: ModelStringInput
+  and: [ModelColonyHistoricRoleFilterInput]
+  or: [ModelColonyHistoricRoleFilterInput]
+  not: ModelColonyHistoricRoleFilterInput
+}
+
+input ModelColonyHistoricRoleConditionInput {
+  type: ModelStringInput
+  domainId: ModelIDInput
+  colonyId: ModelIDInput
+  targetAddress: ModelIDInput
+  blockNumber: ModelIntInput
+  role_0: ModelBooleanInput
+  role_1: ModelBooleanInput
+  role_2: ModelBooleanInput
+  role_3: ModelBooleanInput
+  role_5: ModelBooleanInput
+  role_6: ModelBooleanInput
+  createdAt: ModelStringInput
+  and: [ModelColonyHistoricRoleConditionInput]
+  or: [ModelColonyHistoricRoleConditionInput]
+  not: ModelColonyHistoricRoleConditionInput
+}
+
+input CreateColonyHistoricRoleInput {
+  id: ID
+  type: String!
+  domainId: ID!
+  colonyId: ID!
+  targetAddress: ID
+  blockNumber: Int!
+  role_0: Boolean
+  role_1: Boolean
+  role_2: Boolean
+  role_3: Boolean
+  role_5: Boolean
+  role_6: Boolean
+  createdAt: AWSDateTime
+}
+
+input UpdateColonyHistoricRoleInput {
+  id: ID!
+  type: String
+  domainId: ID
+  colonyId: ID
+  targetAddress: ID
+  blockNumber: Int
+  role_0: Boolean
+  role_1: Boolean
+  role_2: Boolean
+  role_3: Boolean
+  role_5: Boolean
+  role_6: Boolean
+  createdAt: AWSDateTime
+}
+
+input DeleteColonyHistoricRoleInput {
+  id: ID!
+}
+
+input ModelSubscriptionColonyHistoricRoleFilterInput {
+  id: ModelSubscriptionIDInput
+  type: ModelSubscriptionStringInput
+  domainId: ModelSubscriptionIDInput
+  colonyId: ModelSubscriptionIDInput
+  targetAddress: ModelSubscriptionIDInput
+  blockNumber: ModelSubscriptionIntInput
+  role_0: ModelSubscriptionBooleanInput
+  role_1: ModelSubscriptionBooleanInput
+  role_2: ModelSubscriptionBooleanInput
+  role_3: ModelSubscriptionBooleanInput
+  role_5: ModelSubscriptionBooleanInput
+  role_6: ModelSubscriptionBooleanInput
+  createdAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionColonyHistoricRoleFilterInput]
+  or: [ModelSubscriptionColonyHistoricRoleFilterInput]
+}
+
+type ModelIngestorStatsConnection {
+  items: [IngestorStats]!
+  nextToken: String
+}
+
+input ModelIngestorStatsFilterInput {
+  id: ModelIDInput
+  value: ModelStringInput
+  and: [ModelIngestorStatsFilterInput]
+  or: [ModelIngestorStatsFilterInput]
+  not: ModelIngestorStatsFilterInput
+}
+
+input ModelIngestorStatsConditionInput {
+  value: ModelStringInput
+  and: [ModelIngestorStatsConditionInput]
+  or: [ModelIngestorStatsConditionInput]
+  not: ModelIngestorStatsConditionInput
+}
+
+input CreateIngestorStatsInput {
+  id: ID
+  value: String!
+}
+
+input UpdateIngestorStatsInput {
+  id: ID!
+  value: String
+}
+
+input DeleteIngestorStatsInput {
+  id: ID!
+}
+
+input ModelSubscriptionIngestorStatsFilterInput {
+  id: ModelSubscriptionIDInput
+  value: ModelSubscriptionStringInput
+  and: [ModelSubscriptionIngestorStatsFilterInput]
+  or: [ModelSubscriptionIngestorStatsFilterInput]
+}
+
+type ModelColonyTokensConnection {
+  items: [ColonyTokens]!
+  nextToken: String
+}
+
+input ModelColonyTokensFilterInput {
+  id: ModelIDInput
+  tokenID: ModelIDInput
+  colonyID: ModelIDInput
+  and: [ModelColonyTokensFilterInput]
+  or: [ModelColonyTokensFilterInput]
+  not: ModelColonyTokensFilterInput
+}
+
+input ModelColonyTokensConditionInput {
+  tokenID: ModelIDInput
+  colonyID: ModelIDInput
+  and: [ModelColonyTokensConditionInput]
+  or: [ModelColonyTokensConditionInput]
+  not: ModelColonyTokensConditionInput
+}
+
+input CreateColonyTokensInput {
+  id: ID
+  tokenID: ID!
+  colonyID: ID!
+}
+
+input UpdateColonyTokensInput {
+  id: ID!
+  tokenID: ID
+  colonyID: ID
+}
+
+input DeleteColonyTokensInput {
+  id: ID!
+}
+
+input ModelSubscriptionColonyTokensFilterInput {
+  id: ModelSubscriptionIDInput
+  tokenID: ModelSubscriptionIDInput
+  colonyID: ModelSubscriptionIDInput
+  and: [ModelSubscriptionColonyTokensFilterInput]
+  or: [ModelSubscriptionColonyTokensFilterInput]
+}
+
+type ModelUserTokensConnection {
+  items: [UserTokens]!
+  nextToken: String
+}
+
+input ModelUserTokensFilterInput {
+  id: ModelIDInput
+  tokenID: ModelIDInput
+  userID: ModelIDInput
+  and: [ModelUserTokensFilterInput]
+  or: [ModelUserTokensFilterInput]
+  not: ModelUserTokensFilterInput
+}
+
+input ModelUserTokensConditionInput {
+  tokenID: ModelIDInput
+  userID: ModelIDInput
+  and: [ModelUserTokensConditionInput]
+  or: [ModelUserTokensConditionInput]
+  not: ModelUserTokensConditionInput
+}
+
+input CreateUserTokensInput {
+  id: ID
+  tokenID: ID!
+  userID: ID!
+}
+
+input UpdateUserTokensInput {
+  id: ID!
+  tokenID: ID
+  userID: ID
+}
+
+input DeleteUserTokensInput {
+  id: ID!
+}
+
+input ModelSubscriptionUserTokensFilterInput {
+  id: ModelSubscriptionIDInput
+  tokenID: ModelSubscriptionIDInput
+  userID: ModelSubscriptionIDInput
+  and: [ModelSubscriptionUserTokensFilterInput]
+  or: [ModelSubscriptionUserTokensFilterInput]
+}
+
+type ModelWatchedColoniesConnection {
+  items: [WatchedColonies]!
+  nextToken: String
+}
+
+input ModelWatchedColoniesFilterInput {
+  id: ModelIDInput
+  colonyID: ModelIDInput
+  userID: ModelIDInput
+  and: [ModelWatchedColoniesFilterInput]
+  or: [ModelWatchedColoniesFilterInput]
+  not: ModelWatchedColoniesFilterInput
+}
+
+input ModelWatchedColoniesConditionInput {
+  colonyID: ModelIDInput
+  userID: ModelIDInput
+  and: [ModelWatchedColoniesConditionInput]
+  or: [ModelWatchedColoniesConditionInput]
+  not: ModelWatchedColoniesConditionInput
+}
+
+input CreateWatchedColoniesInput {
+  id: ID
+  colonyID: ID!
+  userID: ID!
+}
+
+input UpdateWatchedColoniesInput {
+  id: ID!
+  colonyID: ID
+  userID: ID
+}
+
+input DeleteWatchedColoniesInput {
+  id: ID!
+}
+
+input ModelSubscriptionWatchedColoniesFilterInput {
+  id: ModelSubscriptionIDInput
+  colonyID: ModelSubscriptionIDInput
+  userID: ModelSubscriptionIDInput
+  and: [ModelSubscriptionWatchedColoniesFilterInput]
+  or: [ModelSubscriptionWatchedColoniesFilterInput]
+}
+
+input ModelStringKeyConditionInput {
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  between: [String]
+  beginsWith: String
+}
+
+"""
+The AWSJSON scalar type represents a valid json object serialized as a string.
+"""
+scalar AWSJSON
+
+"""
+A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar AWSDate
+
+"""
+A time string at UTC, such as 10:15:30Z, compliant with the `full-time` format outlined in section 5.6 of the RFC 3339profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar AWSTime
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar AWSDateTime
+
+"""AWSPhone"""
+scalar AWSPhone
+
+"""
+A field whose value conforms to the standard internet email address format as specified in RFC822: https://www.w3.org/Protocols/rfc822/.
+"""
+scalar AWSEmail
+
+"""
+A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
+"""
+scalar AWSURL
+
+"""
+The AWSTimestamp scalar type represents the number of seconds that have elapsed since 1970-01-01T00:00Z. Timestamps are serialized and deserialized as numbers. Negative values are also accepted and these represent the number of seconds till 1970-01-01T00:00Z.
+"""
+scalar AWSTimestamp
+
+"""
+The AWSIPAddress scalar type represents a valid IPv4 or IPv6 address string.
+"""
+scalar AWSIPAddress

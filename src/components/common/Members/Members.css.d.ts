@@ -4,7 +4,7 @@ declare namespace MembersCssNamespace {
     mappings: string;
     names: string;
     noResults: string;
-    query850: string;
+    query700: string;
     sourceRoot: string;
     sources: string;
     sourcesContent: string;

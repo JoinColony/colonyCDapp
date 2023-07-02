@@ -36,7 +36,7 @@
   width: 100%;
 }
 
-@media screen and query850 {
+@media screen and query700 {
   .tokenAmountContainer {
     margin-top: 0px;
     padding-top: 10px;

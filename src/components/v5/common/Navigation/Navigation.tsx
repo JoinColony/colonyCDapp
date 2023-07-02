@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 
 import { useCurrentPage, useMobile, useSideNavigation } from '~hooks';
 import NavItem from './partials/NavItem';
-import Select from '~v5/shared/Select';
+import Select from '~v5/common/Fields/Select';
 
 const displayName = 'v5.common.Navigation';
 

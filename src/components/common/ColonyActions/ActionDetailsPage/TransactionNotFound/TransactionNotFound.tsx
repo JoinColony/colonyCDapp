@@ -46,33 +46,33 @@ const TransactionNotFound = ({
 }: TransactionNotFoundProps) => {
   const { transactionHash } = useParams<ActionDetailsPageParams>();
   return (
-  <div className={styles.notFoundContainer}>
-    <NakedMoleImage />
-    <Heading3
-      text={isUnknownTx ? MSG.unknownTransaction : MSG.transactionNotFound}
-      appearance={{
-        weight: 'medium',
-        theme: 'dark',
-      }}
-    />
-    <Button
-      title={MSG.returnToColony}
-      text={MSG.returnToColony}
-      linkTo={`/colony/${colonyName}`}
-      appearance={{
-        theme: 'primary',
-        size: 'large',
-      }}
-    />
-    <div className={styles.divider} />
-    <TransactionHash
-      showMeta={isUnknownTx}
-      transactionHash={transactionHash}
-      createdAt={createdAt}
-      status={isUnknownTx ? STATUS_MAP[status ?? ''] : undefined}
-    />
-  </div>
-);
+    <div className={styles.notFoundContainer}>
+      <NakedMoleImage />
+      <Heading3
+        text={isUnknownTx ? MSG.unknownTransaction : MSG.transactionNotFound}
+        appearance={{
+          weight: 'medium',
+          theme: 'dark',
+        }}
+      />
+      <Button
+        title={MSG.returnToColony}
+        text={MSG.returnToColony}
+        linkTo={`/colony/${colonyName}`}
+        appearance={{
+          theme: 'primary',
+          size: 'large',
+        }}
+      />
+      <div className={styles.divider} />
+      <TransactionHash
+        showMeta={isUnknownTx}
+        transactionHash={transactionHash}
+        createdAt={createdAt}
+        status={isUnknownTx ? STATUS_MAP[status ?? ''] : undefined}
+      />
+    </div>
+  );
 };
 
 TransactionNotFound.displayName = displayName;

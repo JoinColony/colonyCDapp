@@ -39,11 +39,11 @@ const ActionEventData = ({
       }
       details={
         <>
-        <ActionRoles actionType={type} eventName={eventName} />
-        <TransactionMeta
-          transactionHash={transactionHash}
-          createdAt={createdAt}
-        />
+          <ActionRoles actionType={type} eventName={eventName} />
+          <TransactionMeta
+            transactionHash={transactionHash}
+            createdAt={createdAt}
+          />
         </>
       }
     />

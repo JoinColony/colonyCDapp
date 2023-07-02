@@ -90,23 +90,27 @@ const UserMenu: FC<UserMenuProps> = ({
         {!isWalletConnected && (
           <>
             <div className={styles.mobileButtons}>
-              <Button mode="tertiaryOutline" isFullRounded>
-                <Icon name="cardholder" appearance={{ size: 'tiny' }} />
-                <span className="text-3 ml-1.5">
-                  {formatMessage({ id: 'connectWallet' })}
-                </span>
+              <Button
+                mode="tertiary"
+                size="small"
+                isFullRounded
+                iconName="cardholder"
+                iconSize="extraTiny"
+              >
+                {formatMessage({ id: 'connectWallet' })}
               </Button>
-              <Button mode="tertiaryOutline" isFullRounded>
-                <Icon name="list" appearance={{ size: 'extraTiny' }} />
-                <p className="text-3 ml-1">{formatMessage({ id: 'help' })}</p>
+              <Button
+                mode="tertiary"
+                size="small"
+                isFullRounded
+                iconName="list"
+                iconSize="extraTiny"
+              >
+                {formatMessage({ id: 'help' })}
               </Button>
             </div>
             <div className="w-full pb-6 mb-6 border-b border-b-gray-200 sm:pb-5 sm:mb-5">
-              <Button
-                mode="quaternaryOutline"
-                isFullSize
-                onClick={connectWallet}
-              >
+              <Button mode="quinary" isFullSize onClick={connectWallet}>
                 {formatMessage({ id: 'connectWallet' })}
               </Button>
             </div>
@@ -115,31 +119,28 @@ const UserMenu: FC<UserMenuProps> = ({
         <div className="w-full pb-6 mb-6 border-b border-b-gray-200 sm:pb-5 sm:mb-5">
           <TitledContent title={{ id: 'userMenu.optionsTitle' }}>
             <ul className="text-lg font-semibold sm:font-normal sm:text-md text-left">
-              {userMenuItems.map((item) => (
-                <li className="mb-4 last:mb-0" key={item.id}>
-                  {item.link ? (
+              {userMenuItems.map(({ id, link, icon, name: userName }) => (
+                <li className="mb-4 last:mb-0" key={id}>
+                  {link ? (
                     <Link
-                      to={item.link}
+                      to={link}
                       className="flex items-center transition-all duration-normal text-gray-700 hover:text-blue-400"
                     >
-                      <Icon name={item.icon} appearance={{ size: iconSize }} />
-                      <p className="ml-2">{formatMessage({ id: item.name })}</p>
+                      <Icon name={icon} appearance={{ size: iconSize }} />
+                      <p className="ml-2">{formatMessage({ id: userName })}</p>
                     </Link>
                   ) : (
                     <button
                       type="button"
                       className={styles.button}
-                      onClick={() => setActiveSubmenu(item.name)}
-                      aria-expanded={activeSubmenu === item.name}
+                      onClick={() => setActiveSubmenu(userName)}
+                      aria-expanded={activeSubmenu === userName}
                       aria-controls="actionsWithVisibility"
                     >
                       <span className="flex items-center shrink-0">
-                        <Icon
-                          name={item.icon}
-                          appearance={{ size: iconSize }}
-                        />
+                        <Icon name={icon} appearance={{ size: iconSize }} />
                         <p className="ml-2">
-                          {formatMessage({ id: item.name })}
+                          {formatMessage({ id: userName })}
                         </p>
                       </span>
                       <Icon

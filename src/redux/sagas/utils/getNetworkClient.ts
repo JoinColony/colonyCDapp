@@ -8,7 +8,7 @@ import { providers } from 'ethers';
 
 import { DEFAULT_NETWORK } from '~constants';
 import { ContextModule, getContext } from '~context';
-import { ColonyJSNetworkMapping, isFullWallet } from '~types';
+import { ColonyJSNetworkMapping, Network, isFullWallet } from '~types';
 
 /*
  * Return an initialized ColonyNetworkClient instance.
@@ -26,19 +26,22 @@ export default function* getNetworkClient() {
 
   const signer = walletProvider.getSigner();
 
-  const reputationOracleUrl = new URL(`/reputation`, window.location.origin);
+  const reputationOracleUrl = process.env.REPUTATION_ORACLE_ENDPOINT
+    ? new URL(process.env.REPUTATION_ORACLE_ENDPOINT)
+    : new URL(`/reputation`, window.location.origin);
 
-  // if (network === Network.Ganache) {
-  //   reputationOracleUrl = new URL(`/reputation`, 'http://localhost:3001');
-  //   const {
-  //     etherRouterAddress: networkAddress,
-  //     // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
-  //   } = require('../../../../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
-  //   return yield call(getColonyNetworkClient, ColonyJSNetwork.Custom, signer, {
-  //     networkAddress,
-  //     reputationOracleEndpoint: reputationOracleUrl.href,
-  //   });
-  // }
+  // @ts-ignore
+  if (!WEBPACK_IS_PRODUCTION && process.env.NETWORK === Network.Ganache) {
+    const localOracle = new URL(`/reputation/local`, 'http://localhost:3001');
+    const {
+      etherRouterAddress: networkAddress,
+      // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
+    } = require('../../../../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+    return yield call(getColonyNetworkClient, ColonyJSNetwork.Custom, signer, {
+      networkAddress,
+      reputationOracleEndpoint: localOracle.href,
+    });
+  }
 
   return yield call(
     getColonyNetworkClient,

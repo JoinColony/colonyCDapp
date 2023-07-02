@@ -1,6 +1,7 @@
 declare namespace IconModuleCssNamespace {
   export interface IIconModuleCss {
     main: string;
+    sizeExtraExtraTiny: string;
     sizeExtraTiny: string;
     sizeHuge: string;
     sizeLarge: string;

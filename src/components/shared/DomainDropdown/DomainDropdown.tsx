@@ -110,7 +110,7 @@ const DomainDropdown = ({
         />
       ),
       label: { id: 'domain.all' },
-      value: '0',
+      value: 0,
     };
     const showAllDomainsOption = showAllDomains ? [allDomainsOption] : [];
     if (!colony) {
@@ -138,7 +138,7 @@ const DomainDropdown = ({
               />
             ),
             label: domainName || `Domain #${nativeId}`,
-            value: `${nativeId}`,
+            value: nativeId,
           };
         }),
     ];

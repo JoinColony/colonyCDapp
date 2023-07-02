@@ -11,10 +11,9 @@ import ColonyDropdownMobile from '~common/Extensions/ColonySwitcher/partials/Col
 import Icon from '~shared/Icon';
 import UserNavigation from '~common/Extensions/UserNavigation';
 import MainNavigation from '~common/Extensions/MainNavigation';
-import Button from '~v5/shared/Button';
+import { CloseButton } from '~v5/shared/Button';
 import styles from './Header.module.css';
 import { useHeader } from './hooks';
-import { useExtensionsContext } from '~context/ExtensionsContext';
 import NavigationTools from '~common/Extensions/NavigationTools/NavigationTools';
 
 const displayName = 'frame.Extensions.Header';
@@ -39,8 +38,6 @@ const Header = () => {
     setTriggerRef,
     visible,
   } = useHeader();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { isExtensionInstalling } = useExtensionsContext();
 
   const { profile } = user || {};
   const { colonyAddress, nativeToken } = colony || {};
@@ -59,10 +56,11 @@ const Header = () => {
         <div className="flex items-center justify-between max-w-[90rem] w-full">
           <div className="mr-5 sm:mr-10">
             <div className="flex justify-between relative">
+              {/* @TODO It should be placed i a separate component Colony Switcher */}
               <button
-                aria-label="Open dropdown"
+                aria-label={formatMessage({ id: 'ariaLabel.openDropdown' })}
                 ref={setTriggerRef}
-                className="flex items-center justify-between transition-all duration-normal hover:text-gray-600"
+                className="flex items-center justify-between hover:text-gray-600"
                 type="button"
               >
                 <ColonyAvatarWrapper
@@ -73,7 +71,7 @@ const Header = () => {
                 />
               </button>
               {visible && (
-                <div className="h-auto absolute top-[3.5rem] sm:top-[2.3rem]">
+                <div className="h-auto absolute top-[3.5rem] sm:top-[2.25rem]">
                   {!isMobile && (
                     <div
                       ref={setTooltipRef}
@@ -111,10 +109,6 @@ const Header = () => {
                       >
                         <div className={styles.mobileButtons}>
                           <NavigationTools
-                            // @TODO Help and account label
-                            // buttonLabel={formatMessage({
-                            //   id: 'helpAndAccount',
-                            // })}
                             nativeToken={nativeToken}
                             totalReputation={totalReputation}
                             userName={profile?.displayName || user?.name || ''}
@@ -150,7 +144,9 @@ const Header = () => {
               aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
             >
               <Icon name="list" appearance={{ size: 'tiny' }} />
-              <p className="text-3 ml-1.5">{formatMessage({ id: 'menu' })}</p>
+              <span className="text-3 ml-1.5">
+                {formatMessage({ id: 'menu' })}
+              </span>
             </button>
             <MainNavigation
               setTooltipRef={mainMenuSetTooltipRef}
@@ -159,13 +155,7 @@ const Header = () => {
             />
             <div className="block ml-auto">
               {isCloseButtonVisible ? (
-                <Button
-                  className="md:border-gray-200 md:hover:border-blue-400 px-4 py-2.5 border-base-white"
-                  mode="quinary"
-                  isFullRounded
-                >
-                  <Icon name="close" appearance={{ size: 'tiny' }} />
-                </Button>
+                <CloseButton iconSize="tiny" />
               ) : (
                 <UserNavigation />
               )}

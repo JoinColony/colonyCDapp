@@ -109,20 +109,16 @@ export const usePermissionManagementDialogStatus = (
   enabledExtensionData: EnabledExtensionData,
 ) => {
   const { watch } = useFormContext();
-  const { domainId, roles, user: selectedUser } = watch();
+  const { domainId, roles, user: selectedUser, motionDomainId } = watch();
 
-  const {
-    userHasPermission,
-    disabledSubmit: defaultDisabledSubmit,
-    disabledInput,
-    canCreateMotion,
-    canOnlyForceAction,
-  } = useActionDialogStatus(
-    colony,
-    requiredRoles,
-    [domainId],
-    enabledExtensionData,
-  );
+  const { disabledSubmit: defaultDisabledSubmit, ...rest } =
+    useActionDialogStatus(
+      colony,
+      requiredRoles,
+      [domainId],
+      enabledExtensionData,
+      motionDomainId,
+    );
 
   const userDirectAndInheritedRoles = getUserRolesForDomain(
     colony,
@@ -131,16 +127,13 @@ export const usePermissionManagementDialogStatus = (
   );
 
   return {
-    userHasPermission,
-    disabledInput,
+    ...rest,
     disabledSubmit:
       defaultDisabledSubmit ||
       isEqual(
         sortBy(roles),
         sortBy(userDirectAndInheritedRoles.map((role) => role.toString())),
       ),
-    canCreateMotion,
-    canOnlyForceAction,
   };
 };
 
@@ -181,20 +174,16 @@ export const useCanRoleBeSet = (colony: Colony) => {
    */
   const canRoleBeSet = (role: ColonyRole) => {
     switch (role) {
-      case ColonyRole.Arbitration:
-        return canAssignRole;
-
       // Can only be set by root and in root domain (and only unset if other root accounts exist)
       case ColonyRole.Root:
       case ColonyRole.Recovery:
         return hasUltimateRoot;
 
+      // Can be set if the user has root OR has architecture
+      case ColonyRole.Arbitration:
+      case ColonyRole.Architecture:
       case ColonyRole.Administration:
       case ColonyRole.Funding:
-        return canAssignRole;
-
-      // Can be set if root domain and has root OR has architecture in parent
-      case ColonyRole.Architecture:
         return canAssignRole;
 
       default:

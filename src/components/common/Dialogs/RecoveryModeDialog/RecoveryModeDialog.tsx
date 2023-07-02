@@ -32,6 +32,7 @@ const RecoveryModeDialog = ({
   callStep,
   prevStep,
   colony,
+  enabledExtensionData,
 }: Props) => {
   const { user } = useAppContext();
   const navigate = useNavigate();
@@ -59,6 +60,7 @@ const RecoveryModeDialog = ({
             {...formState}
             colony={colony}
             back={() => callStep(prevStep)}
+            enabledExtensionData={enabledExtensionData}
           />
         )}
       </Form>

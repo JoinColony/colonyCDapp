@@ -5,7 +5,7 @@ declare namespace AvatarDropdownCssNamespace {
     horizontalOffset: string;
     mappings: string;
     names: string;
-    query850: string;
+    query700: string;
     refWidth: string;
     sourceRoot: string;
     sources: string;

@@ -155,8 +155,8 @@ export const GANACHE_LOCAL_RPC_URL = 'http://localhost:8545';
 
 export const isDev = process.env.NETWORK === 'ganache';
 
+export const CDAPP_VERSION = version;
+
 export const MAX_INSTALLED_NUMBER = 39;
 
 export const STAKING_THRESHOLD = 10;
-
-export const CDAPP_VERSION = version;

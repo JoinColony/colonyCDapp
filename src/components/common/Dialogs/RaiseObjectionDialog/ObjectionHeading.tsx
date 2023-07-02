@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { DialogSection } from '~shared/Dialog';
-import ExternalLink from '~shared/Extensions/ExternalLink';
+import ExternalLink from '~shared/ExternalLink';
 import { Heading3 } from '~shared/Heading';
 import { MD_OBJECTIONS_HELP } from '~constants';
 

@@ -14,7 +14,7 @@ const meta: Meta<typeof Button> = {
     },
     size: {
       name: 'Size',
-      options: ['default', 'small'],
+      options: ['default', 'extraSmall', 'small'],
       control: {
         type: 'select',
       },

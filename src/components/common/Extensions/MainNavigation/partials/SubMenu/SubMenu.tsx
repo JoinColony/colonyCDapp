@@ -7,7 +7,7 @@ import LearnMore from '~shared/Extensions/LearnMore';
 import { LEARN_MORE_PAYMENTS } from '~constants';
 import Card from '~v5/shared/Card';
 import Button from '~v5/shared/Button';
-import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
+import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import { useMobile } from '~hooks';
 import styles from './SubMenu.module.css';
 
@@ -63,7 +63,7 @@ const SubMenu: FC<SubMenuProps> = ({ items }) => {
           <div className="mb-6 md:mr-2 md:mb-0">
             <Button
               text="Create new action"
-              mode="secondaryOutline"
+              mode="quinary"
               isFullSize={isMobile}
             />
           </div>

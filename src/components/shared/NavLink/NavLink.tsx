@@ -4,6 +4,8 @@ import { NavLink as NavLinkComponent, NavLinkProps } from 'react-router-dom';
 
 import { SimpleMessageValues } from '~types';
 
+import styles from './NavLink.css';
+
 interface Props extends Omit<NavLinkProps, 'title'> {
   /** className to add to the existing classNames when `to` matches the current route (react-router's "activeClassName") */
   activeClassName?: string;
@@ -28,7 +30,7 @@ interface Props extends Omit<NavLinkProps, 'title'> {
 }
 
 const NavLink = ({
-  activeClassName = 'text-blue-400',
+  activeClassName = styles.active,
   children,
   text,
   textValues,

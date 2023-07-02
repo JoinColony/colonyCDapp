@@ -17,6 +17,7 @@ const displayName = 'Icon';
 type Appearance = {
   theme?: 'primary' | 'invert';
   size?:
+    | 'extraExtraTiny'
     | 'extraTiny'
     | 'tiny'
     | 'small'

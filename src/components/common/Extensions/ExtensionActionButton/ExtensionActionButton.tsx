@@ -1,50 +1,31 @@
 import React from 'react';
-import { defineMessages } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
 import { ColonyRole, Id } from '@colony/colony-js';
 
 import { useAppContext, useColonyContext } from '~hooks';
-import { ActionTypes } from '~redux';
-import Button, { ActionButton, IconButton } from '~shared/Button';
-import { AnyExtensionData } from '~types';
 import { isInstalledExtensionData } from '~utils/extensions';
-import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
 import { getUserRolesForDomain } from '~transformers';
+
+import { ExtensionDetailsAsideProps } from '../ExtensionDetails';
+import InstallButton from './ExtensionInstallButton';
+import EnableButton from './ExtensionEnableButton';
 
 const displayName = 'common.Extensions.ExtensionActionButton';
 
-const MSG = defineMessages({
-  install: {
-    id: `${displayName}.install`,
-    defaultMessage: 'Install',
-  },
-  enable: {
-    id: `${displayName}.enable`,
-    defaultMessage: 'Enable',
-  },
-});
+type Props = Pick<
+  ExtensionDetailsAsideProps,
+  'extensionData' | 'pollingControls'
+>;
 
-interface Props {
-  extensionData: AnyExtensionData;
-}
-
-const ExtensionActionButton = ({ extensionData }: Props) => {
-  const navigate = useNavigate();
-  const { colony } = useColonyContext();
+const ExtensionActionButton = ({
+  extensionData,
+  pollingControls: { startPolling, stopPolling },
+}: Props) => {
+  const { colony, isSupportedColonyVersion } = useColonyContext();
   const { user, wallet } = useAppContext();
 
   if (!colony || !user) {
     return null;
   }
-
-  const handleEnableClick = () => {
-    navigate(
-      `/colony/${colony.name}/extensions/${extensionData.extensionId}/setup`,
-    );
-  };
-
-  const isSupportedColonyVersion =
-    colony.version >= MIN_SUPPORTED_COLONY_VERSION;
 
   const userDomainRoles = getUserRolesForDomain(
     colony,
@@ -57,15 +38,10 @@ const ExtensionActionButton = ({ extensionData }: Props) => {
 
   if (!isInstalledExtensionData(extensionData)) {
     return (
-      <ActionButton
-        button={IconButton}
-        actionType={ActionTypes.EXTENSION_INSTALL}
-        values={{
-          colonyAddress: colony.colonyAddress,
-          extensionData,
-        }}
-        text={MSG.install}
-        disabled={inputDisabled}
+      <InstallButton
+        extensionData={extensionData}
+        inputDisabled={inputDisabled}
+        startPolling={startPolling}
       />
     );
   }
@@ -76,11 +52,10 @@ const ExtensionActionButton = ({ extensionData }: Props) => {
 
   if (!extensionData.isInitialized) {
     return (
-      <Button
-        appearance={{ theme: 'primary', size: 'medium' }}
-        onClick={handleEnableClick}
-        text={MSG.enable}
-        disabled={inputDisabled}
+      <EnableButton
+        extensionData={extensionData}
+        inputDisabled={inputDisabled}
+        stopPolling={stopPolling}
       />
     );
   }

@@ -1,11 +1,11 @@
 @value queries: "~styles/queries.css";
-@value query850 from queries;
+@value query700 from queries;
 
 .externalLink {
   color: var(--grey-4);
 }
 
-@media screen and query850 {
+@media screen and query700 {
   .externalLink {
     font-size: inherit;
     font-weight: inherit;

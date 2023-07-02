@@ -7,6 +7,11 @@ import { ExtensionConfig, ExtensionParamType } from '~types';
 
 export const MIN_SUPPORTED_COLONY_VERSION = 5;
 
+export enum ExtensionCategory {
+  Payments = 'Payments',
+  DecisionMethods = 'Decision Methods',
+}
+
 const oneTransactionPaymentName = 'extensions.OneTxPayment';
 const votingReputationName = 'extensions.votingReputation';
 

@@ -5,7 +5,7 @@ declare namespace MembersTitleCssNamespace {
     input: string;
     mappings: string;
     names: string;
-    query850: string;
+    query700: string;
     searchContainer: string;
     sourceRoot: string;
     sources: string;

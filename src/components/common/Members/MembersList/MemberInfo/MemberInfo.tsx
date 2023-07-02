@@ -6,7 +6,7 @@ import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 import MaskedAddress from '~shared/MaskedAddress';
 import IconTooltip from '~shared/IconTooltip';
 
-import { User } from '~types';
+import { Member } from '~types';
 
 import styles from './MemberInfo.css';
 
@@ -14,7 +14,7 @@ const componentDisplayName = 'MembersList.MembersListItem';
 
 interface Props {
   isWhitelisted: boolean;
-  user?: User | null;
+  member?: Member | null;
 }
 
 const MSG = defineMessages({
@@ -24,8 +24,9 @@ const MSG = defineMessages({
   },
 });
 
-const MemberInfo = ({ isWhitelisted, user }: Props) => {
-  const { profile, walletAddress } = user || {};
+const MemberInfo = ({ isWhitelisted, member }: Props) => {
+  const { user, address: walletAddress } = member || {};
+  const { profile } = user || {};
   const { displayName } = profile || {};
 
   return (

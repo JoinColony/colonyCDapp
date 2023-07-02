@@ -54,7 +54,6 @@ const Numeral = ({
   }
 
   const formattedValue = getFormattedNumeralValue(convertedValue, value);
-
   return (
     <span
       className={classNames(getMainClasses(appearance, styles), className)}

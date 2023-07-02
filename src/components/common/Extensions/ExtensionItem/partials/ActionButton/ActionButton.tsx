@@ -17,18 +17,19 @@ const ActionButton: FC<ActionButtonProps> = ({
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
 
+  const handleClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    handleInstallClick();
+  };
+
   return (
     <>
       {isExtensionInstalled ? (
-        <Link to={extensionUrl} className={styles.button}>
+        <Link to={extensionUrl} className={styles.button} onClick={handleClick}>
           {formatMessage({ id: 'button.manage' })}
         </Link>
       ) : (
-        <Button
-          mode="primarySolid"
-          isFullSize={isMobile}
-          onClick={handleInstallClick}
-        >
+        <Button mode="primarySolid" isFullSize={isMobile} onClick={handleClick}>
           {formatMessage({ id: 'button.install' })}
         </Button>
       )}

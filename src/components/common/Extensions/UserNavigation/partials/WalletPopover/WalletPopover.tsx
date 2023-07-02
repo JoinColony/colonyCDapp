@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { WalletPopoverProps } from './types';
-import Icon from '~shared/Icon';
 import Link from '~v5/shared/Link';
 import styles from './WalletPopover.module.css';
 import WalletPopoverOption from '../WalletPopoverOption';
@@ -29,15 +28,24 @@ const WalletPopover: FC<WalletPopoverProps> = ({
       withTooltipStyles={false}
     >
       <div className={styles.mobileButtons}>
-        <Button mode="tertiaryOutline" isFullRounded onClick={connectWallet}>
-          <Icon name="cardholder" appearance={{ size: 'tiny' }} />
-          <span className="text-3 ml-1.5">
-            {formatMessage({ id: 'connectWallet' })}
-          </span>
+        <Button
+          mode="tertiary"
+          size="small"
+          isFullRounded
+          onClick={connectWallet}
+          iconName="cardholder"
+          iconSize="extraTiny"
+        >
+          {formatMessage({ id: 'connectWallet' })}
         </Button>
-        <Button mode="tertiaryOutline" isFullRounded>
-          <Icon name="list" appearance={{ size: 'extraTiny' }} />
-          <p className="text-3 ml-1">{formatMessage({ id: 'help' })}</p>
+        <Button
+          mode="tertiary"
+          size="small"
+          isFullRounded
+          iconName="list"
+          iconSize="extraTiny"
+        >
+          {formatMessage({ id: 'help' })}
         </Button>
       </div>
       <div className="flex flex-col md:flex-row h-full">

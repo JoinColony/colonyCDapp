@@ -91,7 +91,7 @@ const UserHub: FC<UserHubProps> = ({
         )}
         {!isMobile && (
           <div className="mt-2">
-            <Button mode="secondaryOutline" isFullSize>
+            <Button mode="quinary" isFullSize>
               {formatMessage({ id: 'your.dashboard' })}
             </Button>
           </div>
@@ -121,7 +121,7 @@ const UserHub: FC<UserHubProps> = ({
         </AnimatePresence>
         {isMobile && (
           <div className="mt-6 mb-6 w-full">
-            <Button mode="secondaryOutline" isFullSize>
+            <Button mode="quinary" isFullSize>
               {formatMessage({ id: 'your.dashboard' })}
             </Button>
           </div>

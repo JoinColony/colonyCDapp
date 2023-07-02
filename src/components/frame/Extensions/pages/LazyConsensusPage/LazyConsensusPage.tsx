@@ -18,7 +18,8 @@ import { isInstalledExtensionData } from '~utils/extensions';
 import { useMobile } from '~hooks';
 
 const LazyConsensusPage: FC = () => {
-  const { openIndex, onOpenIndexChange } = useAccordion();
+  const { openIndex, onOpenIndexChange, isAccordionOpen, manualOpen } =
+    useAccordion();
   const {
     extensionData,
     extensionContent,
@@ -26,7 +27,7 @@ const LazyConsensusPage: FC = () => {
     handleSubmit,
     onSubmit,
     onChangeGovernance,
-  } = useLazyConsensusPage(onOpenIndexChange, openIndex);
+  } = useLazyConsensusPage(onOpenIndexChange, manualOpen);
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
 
@@ -100,7 +101,7 @@ const LazyConsensusPage: FC = () => {
               </div>
               <div className="mt-6">
                 <Accordion
-                  openIndex={openIndex}
+                  openIndex={isAccordionOpen ? openIndex : -1}
                   items={extensionContent || []}
                   onOpenIndexChange={onOpenIndexChange}
                   errors={methods.formState.errors}

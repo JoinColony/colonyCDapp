@@ -157,6 +157,7 @@ export const disconnectWallet = (walletLabel: string) => {
 
 function* userLogout() {
   try {
+    removeContext(ContextModule.ColonyManager);
     const wallet = getContext(ContextModule.Wallet);
     disconnectWallet(wallet.label);
     yield put<AllActions>({

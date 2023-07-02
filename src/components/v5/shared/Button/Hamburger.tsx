@@ -1,5 +1,5 @@
 /* eslint-disable react/button-has-type */
-import React, { FC, PropsWithChildren } from 'react';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
@@ -10,16 +10,13 @@ import Icon from '~shared/Icon';
 
 const displayName = 'v5.Button.Hamburger';
 
-const Hamburger: FC<PropsWithChildren<HamburgerProps>> = ({
-  children,
+const Hamburger: FC<HamburgerProps> = ({
   disabled = false,
   loading = false,
   title,
-  text,
-  textValues,
   type = 'button',
   ariaLabel,
-  iconName,
+  iconName = 'list',
   iconSize = 'tiny',
   setTriggerRef,
   isOpened,
@@ -29,8 +26,7 @@ const Hamburger: FC<PropsWithChildren<HamburgerProps>> = ({
 
   const titleText =
     typeof title === 'string' ? title : title && formatMessage(title);
-  const buttonText =
-    typeof text === 'string' ? text : text && formatMessage(text, textValues);
+
   const ariaLabelText =
     typeof ariaLabel === 'string'
       ? ariaLabel
@@ -62,15 +58,6 @@ const Hamburger: FC<PropsWithChildren<HamburgerProps>> = ({
           {...rest}
         >
           {iconName && <Icon name={iconName} appearance={{ size: iconSize }} />}
-          {(buttonText || children) && (
-            <>
-              {iconName ? (
-                <span className="ml-2">{buttonText || children}</span>
-              ) : (
-                buttonText || children
-              )}
-            </>
-          )}
         </button>
       )}
     </>

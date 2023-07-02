@@ -1,7 +1,7 @@
 import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
-import { useDialogActionPermissions } from '~hooks';
+import { useColonyHasReputation, useDialogActionPermissions } from '~hooks';
 import { Colony } from '~types';
 import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 
@@ -23,19 +23,29 @@ const useActionDialogStatus = (
   const { isVotingReputationEnabled, votingReputationVersion } =
     enabledExtensionData;
 
+  const hasReputation = useColonyHasReputation(
+    colony.colonyAddress,
+    requiredRepDomain,
+  );
+
   const [userHasPermission, canOnlyForceAction] = useDialogActionPermissions(
     colony,
     isVotingReputationEnabled,
     requiredRoles,
     requiredRolesDomains,
-    requiredRepDomain,
+    hasReputation,
   );
-  const disabledInput =
-    !userHasPermission || canOnlyForceAction || isSubmitting;
-  const disabledSubmit = disabledInput || !isValid;
 
-  const canCreateMotion =
+  const canCreateMotion = isVotingReputationEnabled && hasReputation;
+  const hasMotionCompatibleVersion =
     votingReputationVersion !== noMotionsVotingReputationVersion || forceAction;
+
+  const disabledInput =
+    (!userHasPermission && !canCreateMotion) ||
+    canOnlyForceAction ||
+    isSubmitting;
+  const disabledSubmit = disabledInput || !isValid;
+  const showPermissionErrors = !userHasPermission && !isVotingReputationEnabled;
 
   return {
     userHasPermission,
@@ -43,6 +53,8 @@ const useActionDialogStatus = (
     disabledSubmit,
     canCreateMotion,
     canOnlyForceAction,
+    hasMotionCompatibleVersion,
+    showPermissionErrors,
   };
 };
 
