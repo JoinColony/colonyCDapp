@@ -31,11 +31,9 @@ export const useNetworkContractUpgradeDialogStatus = (
   const { colonyContractVersion } = useColonyContractVersion();
 
   const {
-    userHasPermission,
     disabledSubmit: defaultDisabledSubmit,
     disabledInput: defaultDisabledInput,
-    canCreateMotion,
-    canOnlyForceAction,
+    ...rest
   } = useActionDialogStatus(
     colony,
     requiredRoles,
@@ -60,12 +58,10 @@ export const useNetworkContractUpgradeDialogStatus = (
   //   ? data?.legacyNumberOfRecoveryRoles > 1
   //   : false;
   return {
-    userHasPermission,
+    ...rest,
     disabledInput: defaultDisabledInput || !canUpgradeVersion,
     disabledSubmit:
       defaultDisabledSubmit || hasLegacyRecoveryRole || !canUpgradeVersion,
-    canCreateMotion,
-    canOnlyForceAction,
     hasLegacyRecoveryRole,
     isLoadingLegacyRecoveryRole,
   };

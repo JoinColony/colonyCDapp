@@ -31,7 +31,9 @@ const validationSchema = object()
     forceAction: boolean().defined(),
     colonyAvatarImage: string().nullable().defined(),
     colonyThumbnail: string().nullable().defined(),
-    colonyDisplayName: string().required(() => MSG.requiredFieldError),
+    colonyDisplayName: string()
+      .trim()
+      .required(() => MSG.requiredFieldError),
     annotationMessage: string().max(4000).defined(),
   })
   .defined();

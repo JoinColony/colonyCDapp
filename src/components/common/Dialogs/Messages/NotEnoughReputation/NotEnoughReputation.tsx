@@ -3,9 +3,10 @@ import React from 'react';
 import { defineMessage, FormattedMessage } from 'react-intl';
 
 import { getMainClasses } from '~utils/css';
+import ExternalLink from '~shared/ExternalLink';
 import { MD_REPUTATION_INFO } from '~constants/externalUrls';
+
 import styles from './NotEnoughReputation.css';
-import ExternalLink from '~shared/Extensions/ExternalLink';
 
 interface Appearance {
   marginTop?: 'negative';

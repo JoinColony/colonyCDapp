@@ -6,7 +6,7 @@ declare namespace ColonyMembersCssNamespace {
     mainContentGrid: string;
     mappings: string;
     names: string;
-    query850: string;
+    query700: string;
     rightAside: string;
     sourceRoot: string;
     sources: string;

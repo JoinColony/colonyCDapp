@@ -82,8 +82,8 @@
     margin: 0px;
     width: 100%;
     grid-template:
-      "joinColony" auto
-      "main" auto
+      'joinColony' auto
+      'main' auto
       / 1fr;
   }
 

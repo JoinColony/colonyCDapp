@@ -1,26 +1,19 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
-// import {
-//   ColonyRole,
-//   ROOT_DOMAIN_ID,
-//   ColonyVersion,
-//   Extension,
-// } from '@colony/colony-js';
+import { ColonyRole, Id } from '@colony/colony-js';
 
 import Button from '~shared/Button';
-// import { useDialog } from '~core/Dialog';
-// import TransferFundsDialog from '~dialogs/TransferFundsDialog';
-// import ColonyTokenManagementDialog from '~dialogs/ColonyTokenManagementDialog';
-// import TokenMintDialog from '~dialogs/TokenMintDialog';
-// import WrongNetworkDialog from '~dialogs/WrongNetworkDialog';
-
-// import { useEnabledExtensions } from '~utils/hooks/useEnabledExtensions';
-// import { useTransformer } from '~utils/hooks';
-// import { getUserRolesForDomain } from '~modules/transformers';
-// import { userHasRole } from '~modules/users/checks';
-// import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
 import { SimpleMessageValues } from '~types/index';
-import { useColonyContext } from '~hooks';
+import { useAppContext, useColonyContext, useEnabledExtensions } from '~hooks';
+
+import { getUserRolesForDomain } from '~transformers';
+import { useDialog } from '~shared/Dialog';
+import {
+  MintTokenDialog,
+  TokenManagementDialog,
+  TransferFundsDialog,
+} from '~common/Dialogs';
+import { userHasRole } from '~utils/checks';
 
 import styles from './ColonyFundingMenu.css';
 
@@ -41,128 +34,115 @@ const MSG = defineMessages({
   },
 });
 
-// interface Props {
-// colony: Colony;
-// selectedDomainId: number;
-// }
+interface FundingItemProps {
+  text: SimpleMessageValues;
+  handleClick: () => void;
+  disabled: boolean;
+}
 
-const ColonyFundingMenu = () =>
-  // {
-  // colony: { version, isDeploymentFinished, colonyAddress },
-  // colony,
-  // selectedDomainId,
-  // }: Props
-  {
-    const { canInteractWithColony } = useColonyContext();
+const FundingItem = ({ text, handleClick, disabled }: FundingItemProps) => (
+  <li>
+    <Button
+      text={text}
+      appearance={{ theme: 'blue' }}
+      onClick={handleClick}
+      disabled={disabled}
+    />
+  </li>
+);
 
-    // const { isVotingExtensionEnabled } = useEnabledExtensions({ colonyAddress });
-    // const { data } = useColonyExtensionsQuery({
-    //   variables: { address: colonyAddress },
-    // });
+interface ColonyFundingMenuProps {
+  filteredDomainId: number;
+}
 
-    // const openTokenManagementDialog = useDialog(ColonyTokenManagementDialog);
-    // const openTokenMintDialog = useDialog(TokenMintDialog);
-    // const openTokensMoveDialog = useDialog(TransferFundsDialog);
+const ColonyFundingMenu = ({ filteredDomainId }: ColonyFundingMenuProps) => {
+  const { colony, canInteractWithColony, isSupportedColonyVersion } =
+    useColonyContext();
+  const { user } = useAppContext();
 
-    // const rootRoles = useTransformer(getUserRolesForDomain, [
-    //   colony,
-    //   walletAddress,
-    //   ROOT_DOMAIN_ID,
-    // ]);
+  const enabledExtensionData = useEnabledExtensions();
 
-    // const handleEditTokens = useCallback(
-    //   () =>
-    //     openTokenManagementDialog({
-    //       colony,
-    //     }),
-    //   [openTokenManagementDialog, colony],
-    // );
-    // const handleMintTokens = useCallback(() => {
-    //   openTokenMintDialog({
-    //     colony,
-    //   });
-    // }, [colony, openTokenMintDialog]);
-    // const handleMoveTokens = useCallback(
-    //   () =>
-    //     openTokensMoveDialog({
-    //       colony,
-    //       ethDomainId: selectedDomainId,
-    //     }),
-    //   [colony, openTokensMoveDialog, selectedDomainId],
-    // );
+  const openTokenManagementDialog = useDialog(TokenManagementDialog);
+  const openMintTokenDialog = useDialog(MintTokenDialog);
+  const openTransferFundsDialog = useDialog(TransferFundsDialog);
 
-    // const oneTxPaymentExtension = data?.processedColony?.installedExtensions.find(
-    //   ({ details, extensionId: extensionName }) =>
-    //     details?.initialized &&
-    //     !details?.missingPermissions.length &&
-    //     extensionName === Extension.OneTxPayment,
-    // );
-    // const mustUpgradeOneTx = oneTxMustBeUpgraded(oneTxPaymentExtension);
+  if (!colony) {
+    return null;
+  }
 
-    // const canEdit =
-    //   isVotingExtensionEnabled || userHasRole(rootRoles, ColonyRole.Root);
-    // const canMoveTokens =
-    //   isVotingExtensionEnabled || userHasRole(rootRoles, ColonyRole.Funding);
-    // const canUserMintNativeToken = isVotingExtensionEnabled
-    //   ? colony.canColonyMintNativeToken
-    //   : userHasRole(rootRoles, ColonyRole.Root) &&
-    //     colony.canColonyMintNativeToken;
+  const rootRoles = getUserRolesForDomain(
+    colony,
+    user?.walletAddress ?? '',
+    Id.RootDomain,
+  );
 
-    // const isSupportedColonyVersion =
-    //   parseInt(version, 10) >= ColonyVersion.LightweightSpaceship;
+  const handleManageTokens = () =>
+    openTokenManagementDialog({
+      colony,
+      enabledExtensionData,
+    });
 
-    /*
-     * @TODO All these should be integrated into the colony context / canInteractWithColony
-     * and used at a top level
-     */
-    const isSupportedColonyVersion = true;
+  const handleMintTokens = () =>
+    openMintTokenDialog({
+      colony,
+      enabledExtensionData,
+    });
 
-    interface FIProps {
-      text: SimpleMessageValues;
-      handleClick: () => void;
-      disabled: boolean;
-    }
-
-    // eslint-disable-next-line react/no-unstable-nested-components
-    const FundingItem = ({ text, handleClick, disabled }: FIProps) => (
-      <li>
-        <Button
-          text={text}
-          appearance={{ theme: 'blue' }}
-          onClick={handleClick}
-          disabled={
-            !canInteractWithColony || !isSupportedColonyVersion || disabled
-          }
-        />
-      </li>
-    );
-
-    return (
-      <ul className={styles.main}>
-        <FundingItem
-          text={MSG.navItemMoveTokens}
-          handleClick={() => {}}
-          // handleClick={handleMoveTokens}
-          // disabled={!canMoveTokens}
-          disabled
-        />
-        <FundingItem
-          text={MSG.navItemMintNewTokens}
-          handleClick={() => {}}
-          // handleClick={handleMintTokens}
-          // disabled={!canUserMintNativeToken}
-          disabled
-        />
-        <FundingItem
-          text={MSG.navItemManageTokens}
-          handleClick={() => {}}
-          // handleClick={handleEditTokens}
-          // disabled={!canEdit}
-          disabled
-        />
-      </ul>
-    );
+  const handleTransferFunds = () => {
+    openTransferFundsDialog({
+      colony,
+      enabledExtensionData,
+      filteredDomainId,
+    });
   };
+
+  const { isVotingReputationEnabled } = enabledExtensionData;
+
+  // const oneTxPaymentExtension = data?.processedColony?.installedExtensions.find(
+  //   ({ details, extensionId: extensionName }) =>
+  //     details?.initialized &&
+  //     !details?.missingPermissions.length &&
+  //     extensionName === Extension.OneTxPayment,
+  // );
+  // const mustUpgradeOneTx = oneTxMustBeUpgraded(oneTxPaymentExtension);
+
+  const canEdit =
+    isVotingReputationEnabled || userHasRole(rootRoles, ColonyRole.Root);
+  const canMoveTokens =
+    isVotingReputationEnabled || userHasRole(rootRoles, ColonyRole.Funding);
+  const canUserMintNativeToken = isVotingReputationEnabled
+    ? colony.status?.nativeToken?.mintable
+    : userHasRole(rootRoles, ColonyRole.Root) &&
+      colony.status?.nativeToken?.mintable;
+
+  return (
+    <ul className={styles.main}>
+      <FundingItem
+        text={MSG.navItemMoveTokens}
+        handleClick={handleTransferFunds}
+        disabled={
+          !canInteractWithColony || !isSupportedColonyVersion || !canMoveTokens
+        }
+      />
+      <FundingItem
+        text={MSG.navItemMintNewTokens}
+        handleClick={handleMintTokens}
+        disabled={
+          !canInteractWithColony ||
+          !isSupportedColonyVersion ||
+          !canUserMintNativeToken
+        }
+      />
+      <FundingItem
+        text={MSG.navItemManageTokens}
+        handleClick={handleManageTokens}
+        disabled={
+          !canInteractWithColony || !isSupportedColonyVersion || !canEdit
+        }
+      />
+    </ul>
+  );
+};
 
 ColonyFundingMenu.displayName = displayName;
 

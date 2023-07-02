@@ -4,7 +4,11 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
-import { WizardDialogType, useTransformer, useAppContext } from '~hooks';
+import {
+  WizardDialogType,
+  useAppContext,
+  useUserAccountRegistered,
+} from '~hooks';
 import { getAllUserRoles } from '~transformers';
 import { canAdminister, canFund } from '~utils/checks';
 
@@ -72,19 +76,16 @@ const ManageExpenditureDialog = ({
   nextStep,
   enabledExtensionData,
 }: Props) => {
-  const { wallet, user } = useAppContext();
+  const { wallet } = useAppContext();
   const { isVotingReputationEnabled, isOneTxPaymentEnabled } =
     enabledExtensionData;
 
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
-    wallet?.address,
-  ]);
+  const userHasAccountRegistered = useUserAccountRegistered();
 
-  const username = user?.profile?.displayName || user?.name || '';
-  const hasRegisteredProfile = !!username && !!wallet?.address;
+  const allUserRoles = getAllUserRoles(colony, wallet?.address || '');
+
   const canCreatePayment =
-    hasRegisteredProfile &&
+    userHasAccountRegistered &&
     ((canAdminister(allUserRoles) && canFund(allUserRoles)) ||
       isVotingReputationEnabled);
 
@@ -93,7 +94,7 @@ const ManageExpenditureDialog = ({
       title: MSG.paymentTitle,
       description: MSG.paymentDescription,
       icon: 'emoji-dollar-stack',
-      permissionRequired: !(canCreatePayment || isOneTxPaymentEnabled),
+      permissionRequired: !canCreatePayment || !isOneTxPaymentEnabled,
       permissionInfoText: !canCreatePayment
         ? MSG.paymentPermissionsText
         : MSG.noOneTxExtension,

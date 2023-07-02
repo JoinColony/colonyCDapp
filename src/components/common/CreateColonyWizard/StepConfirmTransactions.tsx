@@ -120,13 +120,16 @@ const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
     [dispatch],
   );
 
+  // @TODO: Move the following to the colonyCreate saga
   // Redirect to the colony if a successful creteColony tx group is found
   if (
     getGroupStatus(newestGroup) === TRANSACTION_STATUSES.SUCCEEDED &&
     getGroupKey(newestGroup) === 'group.createColony'
   ) {
     updateUser?.(user?.walletAddress, true);
-    return <Navigate to={`/colony/${colonyName}`} />;
+    return (
+      <Navigate to={`/colony/${colonyName}`} state={{ isRedirect: true }} />
+    );
   }
 
   const createColonyTxGroup = findTransactionGroupByKey(

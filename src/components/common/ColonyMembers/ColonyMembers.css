@@ -1,4 +1,4 @@
-@value query850 from '~styles/queries.css';
+@value query700 from '~styles/queries.css';
 
 .main {
   composes: stretchHorizontal from '~styles/layout.css';
@@ -29,7 +29,7 @@
   position: relative;
 }
 
-@media screen and query850 {
+@media screen and query700 {
   .main {
     height: 100%;
     min-height: 715px;

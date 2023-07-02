@@ -1,61 +1,30 @@
 import React, { useState } from 'react';
-import { string, object, number, boolean, InferType } from 'yup';
 import { Id } from '@colony/colony-js';
 import { useNavigate } from 'react-router-dom';
-import { defineMessages } from 'react-intl';
-import Decimal from 'decimal.js';
 
 import Dialog from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
-import { useGetMembersForColonyQuery } from '~gql';
 import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
-// import { useSelectedUser } from '~hooks';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { useSelectedUser } from '~hooks';
 
-import { extractUsersFromColonyMemberData } from '../../helpers';
 import DialogForm from '../ManageReputationDialogForm';
 import { AwardAndSmiteDialogProps } from '../types';
 
-import { getManageReputationDialogPayload } from './helpers';
+import {
+  getManageReputationDialogPayload,
+  useGetColonyMembers,
+} from './helpers';
+
+import {
+  FormValues,
+  defaultValidationSchema,
+  getAmountValidationSchema,
+} from './validation';
 
 const displayName = 'common.ManageReputationContainer';
-
-const MSG = defineMessages({
-  amountZero: {
-    id: `${displayName}.amountZero`,
-    defaultMessage: 'Amount must be greater than zero',
-  },
-  maxAmount: {
-    id: `${displayName}.maxAmount`,
-    defaultMessage: "Amount must be less than the user's reputation",
-  },
-});
-
-const defaultValidationSchema = object()
-  .shape({
-    domainId: number().required(),
-    user: object().shape({
-      walletAddress: string().address().required(),
-    }),
-    amount: string()
-      .required()
-      .test(
-        'more-than-zero',
-        () => MSG.amountZero,
-        (value) => {
-          const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
-          return !new Decimal(numberWithoutCommas).isZero();
-        },
-      ),
-    annotation: string().max(4000),
-    forceAction: boolean(),
-    motionDomainId: number(),
-  })
-  .defined();
-
-type FormValues = InferType<typeof defaultValidationSchema>;
 
 const ManageReputationContainer = ({
   colony: { nativeToken },
@@ -71,24 +40,7 @@ const ManageReputationContainer = ({
   const [isForce, setIsForce] = useState(false);
   const [schemaUserReputation, setSchemaUserReputation] = useState(0);
   const navigate = useNavigate();
-
-  const { data } = useGetMembersForColonyQuery({
-    skip: !colony?.colonyAddress,
-    variables: {
-      input: {
-        colonyAddress: colony?.colonyAddress ?? '',
-      },
-    },
-    fetchPolicy: 'cache-and-network',
-  });
-
-  const colonyContributors = extractUsersFromColonyMemberData(
-    data?.getMembersForColony?.contributors,
-  );
-  const colonyWatchers = extractUsersFromColonyMemberData(
-    data?.getMembersForColony?.watchers,
-  );
-  const colonyMembers = colonyContributors.concat(colonyWatchers);
+  const allColonyMembers = useGetColonyMembers(colony.colonyAddress);
 
   // const verifiedUsers = useMemo(() => {
   //   return getVerifiedUsers(colony.whitelistedAddresses, colonyWatchers) || [];
@@ -104,30 +56,8 @@ const ManageReputationContainer = ({
   let smiteValidationSchema;
 
   if (isSmiteAction) {
-    const amountValidationSchema = object()
-      .shape({
-        amount: string()
-          .required()
-          .test(
-            'more-than-zero',
-            () => MSG.amountZero,
-            (value) => {
-              const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
-              return !new Decimal(numberWithoutCommas).isZero();
-            },
-          )
-          .test(
-            'less-than-user-reputation',
-            () => MSG.maxAmount,
-            (value) => {
-              const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
-              return !new Decimal(numberWithoutCommas).greaterThan(
-                schemaUserReputation,
-              );
-            },
-          ),
-      })
-      .required();
+    const amountValidationSchema =
+      getAmountValidationSchema(schemaUserReputation);
     smiteValidationSchema = defaultValidationSchema.concat(
       amountValidationSchema,
     );
@@ -150,19 +80,17 @@ const ManageReputationContainer = ({
   );
 
   // const { isWhitelistActivated } = colony;
-  // const selectedUser = useSelectedUser(
+  const selectedUser = useSelectedUser(allColonyMembers);
   //   isWhitelistActivated ? verifiedUsers : colonyWatchers,
-  // );
-
   return (
     <Dialog cancel={cancel}>
       <Form<FormValues>
         defaultValues={{
           forceAction: false,
           domainId: filteredDomainId || Id.RootDomain,
-          user: undefined,
+          user: selectedUser,
           motionDomainId: Id.RootDomain,
-          amount: '',
+          amount: 0,
           annotation: '',
         }}
         actionType={actionType}
@@ -170,29 +98,22 @@ const ManageReputationContainer = ({
         onSuccess={close}
         transform={transform}
       >
-        {({ watch }) => {
-          const forceAction = watch('forceAction');
-          if (forceAction !== isForce) {
-            setIsForce(forceAction);
+        <DialogForm
+          colony={colony}
+          nativeTokenDecimals={nativeTokenDecimals}
+          back={() => callStep(prevStep)}
+          users={
+            allColonyMembers // isWhitelistActivated ? verifiedUsers : colonyWatchers
           }
-
-          return (
-            <DialogForm
-              colony={colony}
-              nativeTokenDecimals={nativeTokenDecimals}
-              back={() => callStep(prevStep)}
-              verifiedUsers={
-                colonyMembers // isWhitelistActivated ? verifiedUsers : colonyMembers
-              }
-              updateSchemaUserReputation={
-                isSmiteAction ? setSchemaUserReputation : undefined
-              }
-              schemaUserReputation={schemaUserReputation}
-              isSmiteAction={isSmiteAction}
-              enabledExtensionData={enabledExtensionData}
-            />
-          );
-        }}
+          updateSchemaUserReputation={
+            isSmiteAction ? setSchemaUserReputation : undefined
+          }
+          schemaUserReputation={schemaUserReputation}
+          isSmiteAction={isSmiteAction}
+          enabledExtensionData={enabledExtensionData}
+          isForce={isForce}
+          setIsForce={setIsForce}
+        />
       </Form>
     </Dialog>
   );
