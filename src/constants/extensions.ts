@@ -7,6 +7,11 @@ import { ExtensionConfig, ExtensionParamType } from '~types';
 
 export const MIN_SUPPORTED_COLONY_VERSION = 5;
 
+export enum ExtensionCategory {
+  Payments = 'Payments',
+  DecisionMethods = 'Decision Methods',
+}
+
 const oneTransactionPaymentName = 'extensions.OneTxPayment';
 const votingReputationName = 'extensions.votingReputation';
 
@@ -30,7 +35,7 @@ const oneTransactionPaymentMessages = {
 const votingReputationMessages = {
   votingReputationName: {
     id: `${votingReputationName}.name`,
-    defaultMessage: 'Lazy Consensus (Reputation Weighted)',
+    defaultMessage: 'Reputation Weighted (Lazy Consensus method)',
   },
   votingReputationDescriptionShort: {
     id: `${votingReputationName}.description`,
@@ -170,6 +175,7 @@ const MSG = defineMessages({
 export const supportedExtensionsConfig: ExtensionConfig[] = [
   {
     extensionId: Extension.OneTxPayment,
+    category: ExtensionCategory.Payments,
     name: MSG.oneTxPaymentName,
     descriptionShort: MSG.oneTxPaymentDescriptionShort,
     descriptionLong: MSG.oneTxPaymentDescriptionLong,
@@ -210,6 +216,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
   },
   {
     extensionId: Extension.VotingReputation,
+    category: ExtensionCategory.DecisionMethods,
     name: MSG.votingReputationName,
     descriptionShort: MSG.votingReputationDescriptionShort,
     descriptionLong: MSG.votingReputationDescriptionLong,

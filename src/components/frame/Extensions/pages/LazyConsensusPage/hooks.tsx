@@ -23,8 +23,8 @@ import Toast from '~shared/Extensions/Toast';
 import { ExtensionInitParam } from '~types';
 
 export const useLazyConsensusPage = (
-  onOpenIndexChange?: (index: number) => void,
-  openIndex?: number,
+  onOpenIndexChange: (index: number) => void,
+  manualOpen: boolean,
 ) => {
   const { formatMessage } = useIntl();
   const { extensionId } = useParams();
@@ -34,6 +34,7 @@ export const useLazyConsensusPage = (
   const { status, badgeMessage } = useExtensionsBadge(extensionData);
   const [extensionContentParameters, setExtensionContentParameters] =
     useState<AccordionContent[]>();
+  const [openedByLastRadio, setOpenedByLastRadio] = useState(false);
 
   const getMaxInputValues = useMemo(
     () => extensionContentParameters?.[0].content,
@@ -216,13 +217,7 @@ export const useLazyConsensusPage = (
         }),
       },
     ],
-    [
-      extensionData?.initializationParams,
-      methods.formState.errors,
-      methods.register,
-      methods.unregister,
-      methods.watch,
-    ],
+    [methods.register, methods.unregister, methods.watch, formatMessage],
   );
 
   const updateGovernanceFormFields = (data) =>
@@ -233,50 +228,58 @@ export const useLazyConsensusPage = (
       );
     });
 
+  const setSelectedContentAndFormFields = (governanceValue) => {
+    let selectedContent;
+    let selectedFormFields;
+
+    if (governanceValue === 'radio-button-1') {
+      selectedContent = extensionContentSpeedOverSecurity;
+      selectedFormFields = extensionContentSpeedOverSecurity;
+    } else if (governanceValue === 'radio-button-2') {
+      selectedContent = extensionContentSecurityOverSpeed;
+      selectedFormFields = extensionContentSecurityOverSpeed;
+    } else if (governanceValue === 'radio-button-3') {
+      selectedContent = extensionContentTestingGovernance;
+      selectedFormFields = extensionContentTestingGovernance;
+    } else {
+      selectedContent = extensionData?.initializationParams;
+      selectedFormFields = extensionData?.initializationParams;
+    }
+
+    return [selectedContent, selectedFormFields];
+  };
+
+  const updateAccordionState = (governanceValue) => {
+    if (governanceValue === 'radio-button-4') {
+      onOpenIndexChange(0); // open the accordion
+      setOpenedByLastRadio(true);
+    } else {
+      if (openedByLastRadio && !manualOpen) {
+        onOpenIndexChange(-1); // close the accordion only if it wasn't manually opened
+      }
+      setOpenedByLastRadio(false);
+    }
+  };
+
   const onChangeGovernance = useCallback(
     (selectedOption: string) => {
-      onOpenIndexChange?.(-1);
       methods.setValue('governance', selectedOption);
-
       methods.clearErrors('governance');
-      switch (methods.getValues('governance')) {
-        case 'radio-button-1':
-          setExtensionContentParameters(
-            extensionContent(
-              extensionContentSpeedOverSecurity,
-            ) as AccordionContent[],
-          );
-          updateGovernanceFormFields(extensionContentSpeedOverSecurity);
-          break;
-        case 'radio-button-2':
-          setExtensionContentParameters(
-            extensionContent(
-              extensionContentSecurityOverSpeed,
-            ) as AccordionContent[],
-          );
-          updateGovernanceFormFields(extensionContentSecurityOverSpeed);
-          break;
-        case 'radio-button-3':
-          setExtensionContentParameters(
-            extensionContent(
-              extensionContentTestingGovernance,
-            ) as AccordionContent[],
-          );
-          updateGovernanceFormFields(extensionContentTestingGovernance);
-          break;
-        default:
-          setExtensionContentParameters(
-            extensionContent(
-              extensionData?.initializationParams,
-            ) as AccordionContent[],
-          );
-          updateGovernanceFormFields(extensionData?.initializationParams);
-          onOpenIndexChange?.(0);
-          break;
-      }
+
+      const governanceValue = methods.getValues('governance');
+
+      const [selectedContent, selectedFormFields] =
+        setSelectedContentAndFormFields(governanceValue);
+
+      setExtensionContentParameters(
+        extensionContent(selectedContent) as AccordionContent[],
+      );
+      updateGovernanceFormFields(selectedFormFields);
+
+      updateAccordionState(governanceValue);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [extensionContent, openIndex, extensionData],
+    [extensionContent, extensionData],
   );
 
   useLayoutEffect(() => {
