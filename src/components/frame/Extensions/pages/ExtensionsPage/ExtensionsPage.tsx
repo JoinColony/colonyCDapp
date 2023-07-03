@@ -40,11 +40,11 @@ const ExtensionsPage: FC = () => {
           {formatMessage({ id: 'extensionsPage.availableExtensions' })}
         </h4>
         {Object.entries(categorizedExtensions).map(([category, extensions]) => (
-          <div key={category}>
+          <div key={category} className="pb-12">
             <h5 className="text-2 mb-4">{category}</h5>
-            <ul className="flex flex-col gap-y-6 border-b border-gray-100 pb-12">
+            <ul className="flex flex-col gap-y-6 border-b border-gray-100 pb-6">
               {extensions.map((extension) => (
-                <li key={extension.extensionId}>
+                <li key={extension.extensionId} className="pb-2">
                   <ExtensionItem
                     title={extension.name}
                     description={extension.descriptionShort}
