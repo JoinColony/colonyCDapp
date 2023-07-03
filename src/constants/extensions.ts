@@ -35,7 +35,7 @@ const oneTransactionPaymentMessages = {
 const votingReputationMessages = {
   votingReputationName: {
     id: `${votingReputationName}.name`,
-    defaultMessage: 'Lazy Consensus (Reputation Weighted)',
+    defaultMessage: 'Reputation Weighted (Lazy Consensus method)',
   },
   votingReputationDescriptionShort: {
     id: `${votingReputationName}.description`,
@@ -175,6 +175,7 @@ const MSG = defineMessages({
 export const supportedExtensionsConfig: ExtensionConfig[] = [
   {
     extensionId: Extension.OneTxPayment,
+    category: ExtensionCategory.Payments,
     name: MSG.oneTxPaymentName,
     descriptionShort: MSG.oneTxPaymentDescriptionShort,
     descriptionLong: MSG.oneTxPaymentDescriptionLong,
@@ -215,6 +216,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
   },
   {
     extensionId: Extension.VotingReputation,
+    category: ExtensionCategory.DecisionMethods,
     name: MSG.votingReputationName,
     descriptionShort: MSG.votingReputationDescriptionShort,
     descriptionLong: MSG.votingReputationDescriptionLong,
