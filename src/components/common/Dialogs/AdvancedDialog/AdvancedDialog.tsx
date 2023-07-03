@@ -22,7 +22,7 @@ const MSG = defineMessages({
   },
   permissionsText: {
     id: `${displayName}.permissionsText`,
-    defaultMessage: `You must have the {permissionsList} permissions in the
+    defaultMessage: `You must have the {permission} permission in the
       relevant teams, in order to take this action`,
   },
   managePermissionsTitle: {
@@ -146,7 +146,7 @@ const AdvancedDialog = ({
       ),
       permissionInfoText: MSG.permissionsText,
       permissionInfoTextValues: {
-        permissionsList: (
+        permission: (
           <FormattedMessage {...MSG.managePermissionsPermissionList} />
         ),
       },
@@ -162,7 +162,7 @@ const AdvancedDialog = ({
       permissionRequired: !canEnterRecovery,
       permissionInfoText: MSG.permissionsText,
       permissionInfoTextValues: {
-        permissionsList: <FormattedMessage {...MSG.recoveryPermissionsList} />,
+        permission: <FormattedMessage {...MSG.recoveryPermissionsList} />,
       },
       disabled: true, // !isSupportedColonyVersion, @TODO: disabled for now as we don't have the recovery mode implemented
       dataTest: 'recoveryDialogIndexItem',
@@ -175,7 +175,7 @@ const AdvancedDialog = ({
       permissionRequired: !(hasRootPermission || isVotingReputationEnabled),
       permissionInfoText: MSG.permissionsText,
       permissionInfoTextValues: {
-        permissionsList: <FormattedMessage {...MSG.rootActionsPermission} />,
+        permission: <FormattedMessage {...MSG.rootActionsPermission} />,
       },
       onClick: () => callStep(nextStepVersionUpgrade),
     },
@@ -186,7 +186,7 @@ const AdvancedDialog = ({
       permissionRequired: !(hasRootPermission || isVotingReputationEnabled),
       permissionInfoText: MSG.permissionsText,
       permissionInfoTextValues: {
-        permissionsList: <FormattedMessage {...MSG.rootActionsPermission} />,
+        permission: <FormattedMessage {...MSG.rootActionsPermission} />,
       },
       onClick: () => callStep(nextStepEditDetails),
       dataTest: 'updateColonyDialogIndexItem',
