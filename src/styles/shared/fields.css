@@ -1,7 +1,3 @@
-form .field:not(:last-child) {
-  margin-bottom: 15px;
-}
-
 .field > .field {
   margin-bottom: 0;
 }
