@@ -1,0 +1,72 @@
+import { Extension, getExtensionHash } from '@colony/colony-js';
+import { FriendlyNameProps } from './FriendlyName';
+
+export const getAddressFromAgent = (
+  agent: FriendlyNameProps['agent'],
+): string | undefined => {
+  if (!agent) {
+    return undefined;
+  }
+
+  // eslint-disable-next-line no-underscore-dangle
+  switch (agent.__typename) {
+    case 'Colony': {
+      return agent.colonyAddress;
+    }
+
+    case 'ColonyExtension': {
+      return agent.address;
+    }
+
+    case 'Token': {
+      return agent.tokenAddress;
+    }
+
+    case 'User': {
+      return agent.walletAddress;
+    }
+
+    default: {
+      return undefined;
+    }
+  }
+};
+
+export const getDisplayNameFromAgent = (
+  agent: FriendlyNameProps['agent'],
+): string | undefined => {
+  if (!agent) {
+    return undefined;
+  }
+
+  // eslint-disable-next-line no-underscore-dangle
+  switch (agent.__typename) {
+    case 'Colony': {
+      return agent.metadata?.displayName || agent.name;
+    }
+
+    case 'ColonyExtension': {
+      if (getExtensionHash(Extension.OneTxPayment) === agent.hash) {
+        return 'One Transaction Payment';
+      }
+
+      if (getExtensionHash(Extension.VotingReputation) === agent.hash) {
+        return 'Governance (Reputation Weighted)';
+      }
+
+      return undefined;
+    }
+
+    case 'Token': {
+      return agent.name;
+    }
+
+    case 'User': {
+      return agent.name;
+    }
+
+    default: {
+      return undefined;
+    }
+  }
+};
