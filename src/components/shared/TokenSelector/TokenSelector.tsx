@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
 import { Input, InputProps } from '~shared/Fields';
-import { isAddress } from '~utils/web3';
+import { createAddress, isAddress } from '~utils/web3';
 import { formatText } from '~utils/intl';
 import { connectionIs4G } from '~utils/network';
 import { useGetTokenFromEverywhereQuery } from '~gql';
@@ -81,7 +81,10 @@ const TokenSelector = ({
     setValue,
     clearErrors,
   } = useFormContext();
-  const tokenAddress = watch(addressFieldName);
+  const tokenAddressField = watch(addressFieldName);
+  const tokenAddress = isAddress(tokenAddressField)
+    ? createAddress(tokenAddressField)
+    : tokenAddressField;
 
   const {
     data,
