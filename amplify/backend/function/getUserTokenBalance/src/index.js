@@ -3,26 +3,33 @@ const {
   getColonyNetworkClient,
   Network,
 } = require('@colony/colony-js');
+
 const {
   providers,
   utils: { Logger },
   constants,
 } = require('ethers');
 
+const { getStakedTokens } = require('./utils');
+
 Logger.setLogLevel(Logger.levels.ERROR);
 
 let rpcURL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
 let network = Network.Custom;
 let networkAddress;
+let apiKey = 'da2-fakeApiId123456';
+let graphqlURL = 'http://localhost:20002/graphql';
 
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;
   if (ENV === 'qa') {
     const { getParams } = require('/opt/nodejs/getParams');
-    [rpcURL, networkAddress, network] = await getParams([
+    [rpcURL, networkAddress, network, apiKey, graphqlURL] = await getParams([
       'chainRpcEndpoint',
       'networkContractAddress',
       'chainNetwork',
+      'appsyncApiKey',
+      'graphqlUrl',
     ]);
   } else {
     const {
@@ -43,7 +50,8 @@ const setEnvVariables = async () => {
       throw new Error('Unable to set env variables. Reason:', e);
     }
 
-    const { walletAddress, tokenAddress } = event.arguments?.input || {};
+    const { walletAddress, tokenAddress, colonyAddress } =
+      event.arguments?.input || {};
     const provider = new providers.JsonRpcProvider(rpcURL);
 
     if (tokenAddress === constants.AddressZero) {
@@ -73,8 +81,13 @@ const setEnvVariables = async () => {
         walletAddress,
       );
 
-      /** @TODO Get staked tokens from voting rep client */
-      const stakedTokens = 0;
+      const stakedTokens = await getStakedTokens(
+        walletAddress,
+        colonyAddress,
+        apiKey,
+        graphqlURL,
+      );
+
       const totalObligation = await tokenLockingClient.getTotalObligation(
         walletAddress,
         tokenAddress,

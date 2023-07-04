@@ -110,6 +110,7 @@ input GetReputationForTopDomainsInput {
 
 input GetUserTokenBalanceInput {
   walletAddress: String!
+  colonyAddress: String!
   tokenAddress: String!
 }
 
@@ -422,6 +423,21 @@ type User @model {
   profileId: ID
   profile: Profile @hasOne(fields: ["profileId"])
   watchlist: [Colony] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
+  stakes: [ColonyStake!]! @hasMany(indexName: "byUserAddress", fields: ["id"])
+}
+
+# Keeps track of the current amount a user has staked in a colony
+# When a user stakes, totalAmount increases. When a user reclaims their stake, totalAmount decreases.
+type ColonyStake @model {
+  id: ID! # <userId>_<colonyId>
+  userId: ID!
+    @index(
+      name: "byUserAddress"
+      queryField: "getColonyStakeByUserAddress"
+      sortKeyFields: ["colonyId"]
+    )
+  colonyId: ID!
+  totalAmount: String!
 }
 
 type Domain @model {
