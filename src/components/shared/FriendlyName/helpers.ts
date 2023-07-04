@@ -47,11 +47,11 @@ export const getDisplayNameFromAgent = (
 
     case 'ColonyExtension': {
       if (getExtensionHash(Extension.OneTxPayment) === agent.hash) {
-        return 'One Transaction Payment';
+        return 'One Transaction Payment Extension';
       }
 
       if (getExtensionHash(Extension.VotingReputation) === agent.hash) {
-        return 'Governance (Reputation Weighted)';
+        return 'Governance (Reputation Weighted) Extension';
       }
 
       return undefined;
@@ -62,7 +62,7 @@ export const getDisplayNameFromAgent = (
     }
 
     case 'User': {
-      return agent.name;
+      return agent.profile?.displayName || agent.name;
     }
 
     default: {
