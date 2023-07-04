@@ -8,6 +8,7 @@ import { Colony } from '~types';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import NotFoundRoute from '~routes/NotFoundRoute';
 import { useCanInteractWithColony } from '~hooks';
+import { UserTokenBalanceProvider } from './UserTokenBalanceContext';
 
 interface ColonyContextValue {
   colony?: Colony;
@@ -113,7 +114,7 @@ export const ColonyContextProvider = ({
 
   return (
     <ColonyContext.Provider value={colonyContext}>
-      {children}
+      <UserTokenBalanceProvider>{children}</UserTokenBalanceProvider>
     </ColonyContext.Provider>
   );
 };

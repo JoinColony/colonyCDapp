@@ -23,7 +23,7 @@ const MSG = defineMessages({
   },
 });
 
-const TokenActivationContent = ({ ...otherProps }: TokensTabProps) => {
+const TokenActivationContent = ({ tokenBalanceData }: TokensTabProps) => {
   const [tabIndex, setTabIndex] = useState<number>(0);
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -67,13 +67,10 @@ const TokenActivationContent = ({ ...otherProps }: TokensTabProps) => {
           </Tab>
         </TabList>
         <TabPanel className={styles.tabContainer}>
-          <TokensTab {...otherProps} />
+          <TokensTab tokenBalanceData={tokenBalanceData} />
         </TabPanel>
         <TabPanel className={styles.tabContainer}>
-          <StakesTab
-            {...otherProps}
-            currentUserClaims={currentUserClaims ?? []}
-          />
+          <StakesTab currentUserClaims={currentUserClaims ?? []} />
         </TabPanel>
       </Tabs>
     </div>

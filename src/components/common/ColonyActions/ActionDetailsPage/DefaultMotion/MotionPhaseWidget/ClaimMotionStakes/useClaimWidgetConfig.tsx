@@ -12,6 +12,7 @@ import { DetailItemProps } from '~shared/DetailsWidget';
 import { getTransactionHashFromPathName } from '~utils/urls';
 import { ColonyMotion } from '~types';
 import { RefetchAction } from '~common/ColonyActions/ActionDetailsPage/useGetColonyAction';
+import { useUserTokenBalanceContext } from '~context';
 
 import { ClaimMotionStakesStyles } from './ClaimMotionStakes';
 
@@ -31,6 +32,8 @@ const useClaimWidgetConfig = (
 ) => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
+  const { pollLockedTokenBalance } = useUserTokenBalanceContext();
+
   const location = useLocation();
   const [isClaimed, setIsClaimed] = useState(false);
 
@@ -101,6 +104,7 @@ const useClaimWidgetConfig = (
   const handleClaimSuccess = () => {
     setIsClaimed(true);
     startPollingAction(1000);
+    pollLockedTokenBalance();
   };
 
   const claimPayload = {

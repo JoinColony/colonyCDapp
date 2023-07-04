@@ -16,7 +16,6 @@ interface Props {
   preventTransactions?: boolean;
   spinnerMsg: SimpleMessageValues;
   tokenBalanceData?: UserTokenBalanceData;
-  pollTokenBalance: () => void;
 }
 
 const displayName = 'frame.AvatarDropdown';
@@ -27,7 +26,6 @@ const AvatarDropdown = ({
   preventTransactions = false,
   spinnerMsg,
   tokenBalanceData,
-  pollTokenBalance,
 }: Props) => {
   const isMobile = useMobile();
   const { wallet, user } = useAppContext();
@@ -61,7 +59,6 @@ const AvatarDropdown = ({
             {...{
               spinnerMsg,
               tokenBalanceData,
-              pollTokenBalance,
             }}
           />
         )

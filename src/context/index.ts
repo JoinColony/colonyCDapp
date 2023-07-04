@@ -13,6 +13,11 @@ export { UserSettingsClass as UserSettings };
 export { AppContext, AppContextProvider } from './AppContext';
 export { ColonyManagerClass as ColonyManager };
 export { ColonyContext, ColonyContextProvider } from './ColonyContext';
+export {
+  UserTokenBalanceContext,
+  UserTokenBalanceProvider,
+  useUserTokenBalanceContext,
+} from './UserTokenBalanceContext';
 
 export enum ContextModule {
   Wallet = 'wallet',

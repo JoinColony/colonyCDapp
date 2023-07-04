@@ -22,7 +22,6 @@ const MSG = defineMessages({
 interface Props {
   dataTest: string;
   tokenBalanceData: UserTokenBalanceData;
-  pollTokenBalance: () => void;
   nativeToken: Token;
 }
 
@@ -30,13 +29,9 @@ const UserTokenActivationButton = ({
   dataTest,
   nativeToken,
   tokenBalanceData,
-  pollTokenBalance,
 }: Props) => {
   return (
-    <TokenActivationPopover
-      tokenBalanceData={tokenBalanceData}
-      pollTokenBalance={pollTokenBalance}
-    >
+    <TokenActivationPopover tokenBalanceData={tokenBalanceData}>
       {({ isOpen, toggle, ref }) => (
         <button
           type="button"
