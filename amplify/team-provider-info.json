@@ -1,35 +1,4 @@
 {
-  "dev": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-colonycdapp-dev-123456-authRole",
-      "UnauthRoleArn": "arn:aws:iam::123456789:role/amplify-colonycdapp-dev-123456-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::123456789:role/amplify-colonycdapp-dev-123456-authRole",
-      "Region": "eu-central-1",
-      "DeploymentBucketName": "amplify-colonycdapp-dev-123456-deployment",
-      "UnauthRoleName": "amplify-colonycdapp-dev-123456-unauthRole",
-      "StackName": "amplify-colonycdapp-dev-123456",
-      "StackId": "arn:aws:cloudformation:eu-central-1:123456789:stack/amplify-colonycdapp-dev-123456/fake-stack-id",
-      "AmplifyAppId": "fakeAppId"
-    },
-    "categories": {
-      "function": {
-        "fetchTokenFromChain": {},
-        "createUniqueUser": {},
-        "createUniqueColony": {},
-        "getUserReputation": {},
-        "getReputationForTopDomains": {},
-        "fetchColonyNativeFundsClaim": {},
-        "fetchColonyBalances": {},
-        "updateExtensionByColonyAndHash": {},
-        "setCurrentVersion": {},
-        "getUserTokenBalance": {},
-        "fetchMotionState": {},
-        "fetchVoterRewards": {},
-        "fetchMotionTimeoutPeriods": {},
-        "qaSSMtest": {}
-      }
-    }
-  },
   "qa": {
     "awscloudformation": {
       "AuthRoleName": "amplify-colonycdapp-qa-113801-authRole",
@@ -44,51 +13,70 @@
     },
     "categories": {
       "function": {
+        "colonycdappSSMAccess": {
+          "deploymentBucketName": "amplify-colonycdapp-qa-113801-deployment",
+          "s3Key": "amplify-builds/colonycdappSSMAccess-LambdaLayerVersion4a8f3832-build.zip"
+        },
         "createUniqueColony": {
           "deploymentBucketName": "amplify-colonycdapp-qa-113801-deployment",
-          "s3Key": "amplify-builds/createUniqueColony-4e72684653333173774d-build.zip"
+          "s3Key": "amplify-builds/createUniqueColony-526a51744c627a793336-build.zip"
         },
         "createUniqueUser": {
           "deploymentBucketName": "amplify-colonycdapp-qa-113801-deployment",
-          "s3Key": "amplify-builds/createUniqueUser-363852674b6f2b703758-build.zip"
+          "s3Key": "amplify-builds/createUniqueUser-52427261336b566e4846-build.zip"
         },
         "fetchColonyBalances": {
           "deploymentBucketName": "amplify-colonycdapp-qa-113801-deployment",
-          "s3Key": "amplify-builds/fetchColonyBalances-4a58596b2f644f754668-build.zip"
+          "s3Key": "amplify-builds/fetchColonyBalances-4e3551632f4f4f343431-build.zip"
         },
         "fetchColonyNativeFundsClaim": {
           "deploymentBucketName": "amplify-colonycdapp-qa-113801-deployment",
-          "s3Key": "amplify-builds/fetchColonyNativeFundsClaim-51684e4c475232796972-build.zip"
+          "s3Key": "amplify-builds/fetchColonyNativeFundsClaim-74306c392f725431425a-build.zip"
+        },
+        "fetchMotionState": {
+          "deploymentBucketName": "amplify-colonycdapp-qa-113801-deployment",
+          "s3Key": "amplify-builds/fetchMotionState-35354e692b5745724837-build.zip"
+        },
+        "fetchMotionTimeoutPeriods": {
+          "deploymentBucketName": "amplify-colonycdapp-qa-113801-deployment",
+          "s3Key": "amplify-builds/fetchMotionTimeoutPeriods-72354373384a7a2b672f-build.zip"
         },
         "fetchTokenFromChain": {
           "deploymentBucketName": "amplify-colonycdapp-qa-113801-deployment",
-          "s3Key": "amplify-builds/fetchTokenFromChain-316d53696f4f6b755a47-build.zip"
+          "s3Key": "amplify-builds/fetchTokenFromChain-6668417446674661312b-build.zip"
+        },
+        "fetchVoterRewards": {
+          "deploymentBucketName": "amplify-colonycdapp-qa-113801-deployment",
+          "s3Key": "amplify-builds/fetchVoterRewards-744546686e4837536354-build.zip"
         },
         "getMembersForColony": {
           "deploymentBucketName": "amplify-colonycdapp-qa-113801-deployment",
-          "s3Key": "amplify-builds/getMembersForColony-37536c734e5970396a2b-build.zip"
+          "s3Key": "amplify-builds/getMembersForColony-38522b6a4c754c4d367a-build.zip"
         },
         "getReputationForTopDomains": {
           "deploymentBucketName": "amplify-colonycdapp-qa-113801-deployment",
-          "s3Key": "amplify-builds/getReputationForTopDomains-6d4d66347964676a5242-build.zip"
+          "s3Key": "amplify-builds/getReputationForTopDomains-6671346c563232366e59-build.zip"
         },
         "getUserReputation": {
           "deploymentBucketName": "amplify-colonycdapp-qa-113801-deployment",
-          "s3Key": "amplify-builds/getUserReputation-31692b6b5853636f334d-build.zip"
+          "s3Key": "amplify-builds/getUserReputation-684b426a524257565974-build.zip"
         },
         "getUserTokenBalance": {
           "deploymentBucketName": "amplify-colonycdapp-qa-113801-deployment",
-          "s3Key": "amplify-builds/getUserTokenBalance-55396a6d7a4254524932-build.zip"
+          "s3Key": "amplify-builds/getUserTokenBalance-4a39395a4847504b4977-build.zip"
+        },
+        "qaSSMtest": {
+          "deploymentBucketName": "amplify-colonycdapp-qa-113801-deployment",
+          "s3Key": "amplify-builds/qaSSMtest-306c4e51336b7346492b-build.zip"
         },
         "setCurrentVersion": {
           "deploymentBucketName": "amplify-colonycdapp-qa-113801-deployment",
-          "s3Key": "amplify-builds/setCurrentVersion-4a5a673464733456585a-build.zip"
+          "s3Key": "amplify-builds/setCurrentVersion-4f575649357a5a454d2b-build.zip"
         },
         "updateExtensionByColonyAndHash": {
           "deploymentBucketName": "amplify-colonycdapp-qa-113801-deployment",
-          "s3Key": "amplify-builds/updateExtensionByColonyAndHash-41304e526a323367736e-build.zip"
-        },
-        "qaSSMtest": {}
+          "s3Key": "amplify-builds/updateExtensionByColonyAndHash-44564773753344627a4f-build.zip"
+        }
       },
       "api": {
         "colonycdapp": {}

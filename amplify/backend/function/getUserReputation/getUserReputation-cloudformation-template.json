@@ -73,11 +73,7 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
-            },
-            "REPUTATION_ENDPOINT": "https://qa-cdapp.colony.io/reputation/",
-            "CHAIN_NETWORK": "gnosis",
-            "CHAIN_RPC_ENDPOINT": "https://qa-cdapp.colony.io/rpc/",
-            "CHAIN_NETWORK_CONTRACT": "0x6a05DD32860C1b5351B97b4eCAAbFbc60edb102f"
+            }
           }
         },
         "Role": {
@@ -177,21 +173,21 @@
             {
               "Effect": "Allow",
               "Action": [
-                  "ssm:GetParameter",
-                  "kms:Decrypt"
+                "ssm:GetParameter",
+                "kms:Decrypt"
               ],
               "Resource": {
-                  "Fn::Sub": [
+                "Fn::Sub": [
                   "arn:aws:ssm:${region}:${account}:parameter/*",
                   {
-                      "region": {
+                    "region": {
                       "Ref": "AWS::Region"
-                      },
-                      "account": {
+                    },
+                    "account": {
                       "Ref": "AWS::AccountId"
-                      }
+                    }
                   }
-                  ]
+                ]
               }
             }
           ]

@@ -73,12 +73,7 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
-            },
-            "CHAIN_RPC_ENDPOINT": "http://qa-cdapp.colony.io/rpc/",
-            "APPSYNC_API_KEY": {
-              "Fn::ImportValue": "amplify-colonycdapp-qa-113801-apicolonycdapp-1E5THNV10BXQV:GraphQLApiKey"
-            },
-            "AWS_APPSYNC_GRAPHQL_URL": "https://4wbzavolujffngfax5dalwsywi.appsync-api.eu-west-2.amazonaws.com/graphql"
+            }
           }
         },
         "Role": {
@@ -178,21 +173,21 @@
             {
               "Effect": "Allow",
               "Action": [
-                  "ssm:GetParameter",
-                  "kms:Decrypt"
+                "ssm:GetParameter",
+                "kms:Decrypt"
               ],
               "Resource": {
-                  "Fn::Sub": [
+                "Fn::Sub": [
                   "arn:aws:ssm:${region}:${account}:parameter/*",
                   {
-                      "region": {
+                    "region": {
                       "Ref": "AWS::Region"
-                      },
-                      "account": {
+                    },
+                    "account": {
                       "Ref": "AWS::AccountId"
-                      }
+                    }
                   }
-                  ]
+                ]
               }
             }
           ]
