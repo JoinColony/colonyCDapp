@@ -35,7 +35,7 @@ const ExtensionsPage: FC = () => {
 
   return (
     <Spinner loadingText={{ id: 'loading.extensionsPage' }}>
-      <TwoColumns aside={<Navigation />}>
+      <TwoColumns aside={<Navigation pageName="extensions" />}>
         <h4 className="heading-4 mb-6">
           {formatMessage({ id: 'extensionsPage.availableExtensions' })}
         </h4>

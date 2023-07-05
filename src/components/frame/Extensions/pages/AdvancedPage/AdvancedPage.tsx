@@ -8,7 +8,9 @@ const displayName = 'frame.Extensions.pages.AdvancedPage';
 
 const AdvancedPage: FC = () => (
   <Spinner loadingText={{ id: 'loading.advancedPage' }}>
-    <TwoColumns aside={<Navigation />}>Advanced page</TwoColumns>
+    <TwoColumns aside={<Navigation pageName="extensions" />}>
+      Advanced page
+    </TwoColumns>
   </Spinner>
 );
 

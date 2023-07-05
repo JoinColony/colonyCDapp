@@ -8,7 +8,9 @@ const displayName = 'frame.Extensions.pages.ReputationPage';
 
 const ReputationPage: FC = () => (
   <Spinner loadingText={{ id: 'loading.reputationPage' }}>
-    <TwoColumns aside={<Navigation />}>Reputation page</TwoColumns>
+    <TwoColumns aside={<Navigation pageName="extensions" />}>
+      Reputation page
+    </TwoColumns>
   </Spinner>
 );
 

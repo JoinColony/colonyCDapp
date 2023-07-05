@@ -27,10 +27,16 @@ import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
 import styles from '~shared/Extensions/Toast/Toast.module.css';
 import { getAllUserRoles } from '~transformers';
 import { ColonyFragment } from '~gql';
+import { PageLayoutProps } from './types';
 
-const displayName = 'frame.Extensions.layouts.ExtensionsLayout';
+const displayName = 'frame.Extensions.layouts.PageLayout';
 
-const ExtensionsLayout: FC<PropsWithChildren> = ({ children }) => {
+const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
+  children,
+  title,
+  description,
+  loadingText,
+}) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { colony } = useColonyContext();
@@ -58,8 +64,11 @@ const ExtensionsLayout: FC<PropsWithChildren> = ({ children }) => {
     applyTheme(isDarkMode ? Theme.dark : Theme.light);
   }, [isDarkMode]);
 
+  // @TODO: Handle other pages when needed or handle navigation in the page itself
+  const pageName = loadingText === 'extensionPage' ? 'extensions' : 'members';
+
   return (
-    <Spinner loadingText="extensionsPage">
+    <Spinner loadingText={loadingText}>
       {canUpgrade && (
         <CalamityBanner
           buttonName="button.upgrade"
@@ -87,11 +96,11 @@ const ExtensionsLayout: FC<PropsWithChildren> = ({ children }) => {
       </div>
       <main className="mt-9 pb-24">
         <div className="inner">
-          {isMobile && <Navigation />}
+          {isMobile && <Navigation pageName={pageName} />}
           <div className="mt-9 sm:mt-6">
             <PageTitle
-              title={formatMessage({ id: 'extensionsPage.title' })}
-              subtitle={formatMessage({ id: 'extensionsPage.description' })}
+              title={formatMessage(title)}
+              subtitle={formatMessage(description)}
             />
           </div>
           <div className="mt-9 sm:mt-10">{children}</div>
@@ -101,6 +110,6 @@ const ExtensionsLayout: FC<PropsWithChildren> = ({ children }) => {
   );
 };
 
-ExtensionsLayout.displayName = displayName;
+PageLayout.displayName = displayName;
 
-export default ExtensionsLayout;
+export default PageLayout;
