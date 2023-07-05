@@ -41,7 +41,12 @@ const MSG = defineMessages({
 });
 
 const ColonyUnclaimedTransfers = () => {
-  const { colony, canInteractWithColony } = useColonyContext();
+  const {
+    colony,
+    canInteractWithColony,
+    startPolling: startPollingColony,
+    stopPolling: stopPollingColony,
+  } = useColonyContext();
   const claims = useColonyFundsClaims();
 
   const firstItem = claims[0];
@@ -58,6 +63,11 @@ const ColonyUnclaimedTransfers = () => {
    * Token of the first claim (to be displayed)
    */
   const token = firstItem?.token;
+
+  const handleClaimSuccess = () => {
+    startPollingColony(1_000);
+    setTimeout(stopPollingColony, 10_000);
+  };
 
   return claimsLength ? (
     <div className={styles.main}>
@@ -106,6 +116,7 @@ const ColonyUnclaimedTransfers = () => {
               text={MSG.claimButton}
               className={styles.button}
               actionType={ActionTypes.CLAIM_TOKEN}
+              onSuccess={handleClaimSuccess}
               transform={transform}
               disabled={!canInteractWithColony}
             />
