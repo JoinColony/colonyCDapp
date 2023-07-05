@@ -180,7 +180,8 @@
     "extension-incorporation",
     "extension-lazy-consensus",
     "extension-advanced-payments",
-    "extension-one-transaction-payment"
+    "extension-one-transaction-payment",
+    "star-not-filled"
   ],
   "multiColorIcons": [
     "circle-check-primary",

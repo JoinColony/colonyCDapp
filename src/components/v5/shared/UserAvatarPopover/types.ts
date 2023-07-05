@@ -2,7 +2,8 @@ import { MessageDescriptor } from 'react-intl';
 import { PopperOptions } from 'react-popper-tooltip';
 
 import { UserPermissionsBadgeProps } from '~common/Extensions/UserPermissionsBadge/types';
-import { AvatarProps } from '~v5/shared/Avatar/types';
+import { UserStatusMode } from '~v5/common/Pills/types';
+import { AvatarProps, AvatarSize } from '~v5/shared/Avatar/types';
 import { UserAvatarProps } from '~v5/shared/UserAvatar/types';
 
 export interface ColonyReputationItem {
@@ -29,4 +30,6 @@ export interface UserAvatarPopoverProps
   extends Omit<UserAvatarProps, 'isLink'>,
     Omit<UserInfoProps, 'size'> {
   popperOptions?: PopperOptions;
+  userStatus?: UserStatusMode;
+  avatarSize?: AvatarSize;
 }
