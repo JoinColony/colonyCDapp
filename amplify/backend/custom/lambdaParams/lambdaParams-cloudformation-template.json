@@ -74,7 +74,7 @@
           "Fn::If": [
             "IsQaEnv",
             "https://4wbzavolujffngfax5dalwsywi.appsync-api.eu-west-2.amazonaws.com/graphql",
-            "Test"
+            "https://ti5jbmzg65agjjm3fb2ukcj7jy.appsync-api.eu-west-2.amazonaws.com/graphql"
           ]
         },
         "Description": "App Sync Graphql Url endpoint"
