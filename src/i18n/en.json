@@ -60,8 +60,8 @@
   "button.upgrade": "Upgrade",
   "button.vote": "Vote",
   "button.manage": "Manage",
-  "button.install": "Install",
   "button.updateVersion": "Update version",
+  "button.createATeam": "Create a team",
   "input.resetText": "Cancel",
   "label.amount": "Amount",
   "label.name": "Name",
@@ -73,6 +73,7 @@
   "label.banned": "Banned",
   "label.loading": "Loading",
   "label.waiting": "Waiting",
+  "label.pointsPerTeam": "Points per team",
   "placeholder.email": "handle@domain.com",
   "placeholder.password": "Password",
 
@@ -568,5 +569,9 @@
   "missing.colonies": "You don't have created colonies",
   "user.typing": "The user is actively typing....",
   "characters.remaining": "{maxCharNumber} characters remaining",
-  "too.many.characters": "Too many characters"
+  "too.many.characters": "Too many characters",
+
+  "teamReputation.reputationPoints.label": "All Teams Reputation Points",
+  "teamReputation.noTeams": "No teams have been created",
+  "label.allOther": "All other"
 }

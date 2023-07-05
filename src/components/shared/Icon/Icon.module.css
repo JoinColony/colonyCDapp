@@ -30,6 +30,10 @@
   @apply w-[1.75rem] h-[1.75rem];
 }
 
+.sizeBig {
+  @apply w-[2rem] h-[2rem];
+}
+
 .sizeLarge {
   @apply w-[2.625rem] h-[2.625rem];
 }
