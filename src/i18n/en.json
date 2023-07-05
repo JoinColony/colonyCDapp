@@ -578,5 +578,7 @@
   "missing.colonies": "You don't have created colonies",
   "user.typing": "The user is actively typing....",
   "characters.remaining": "{maxCharNumber} characters remaining",
-  "too.many.characters": "Too many characters"
+  "too.many.characters": "Too many characters",
+  "filter.button": "Filter button",
+  "filter": "Filter"
 }

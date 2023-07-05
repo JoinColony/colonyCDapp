@@ -35,7 +35,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
   const { colonyReputationItems } = installedByData || {};
 
   return (
-    <div className="max-w-[322px] max-h-[148px] rounded-lg border border-gray-200 bg-gray-25 p-5">
+    <div className="max-w-[20.125rem] max-h-[9.25rem] rounded-lg border border-gray-200 bg-gray-25 p-5">
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
