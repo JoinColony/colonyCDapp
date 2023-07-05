@@ -5,6 +5,18 @@
       "Type": "String"
     }
   },
+
+  "Conditions": {
+    "IsQaEnv": {
+      "Fn::Equals": [
+        {
+          "Ref": "env"
+        },
+        "qa"
+      ]
+    }
+  },
+
   "Resources": {
     "chainNetworkSSM": {
       "Type": "AWS::SSM::Parameter",
@@ -13,6 +25,7 @@
           "Fn::Sub": "/amplify/cdapp/${env}/chain_network"
         },
         "Type": "String",
+        
         "Value": "gnosis",
         "Description": "The name of the network"
       }
@@ -57,40 +70,14 @@
           "Fn::Sub": "/amplify/cdapp/${env}/aws_appsync_graphql_url"
         },
         "Type": "String",
-        "Value": "https://4wbzavolujffngfax5dalwsywi.appsync-api.eu-west-2.amazonaws.com/graphql",
+        "Value": {
+          "Fn::If": [
+            "IsQaEnv",
+            "https://4wbzavolujffngfax5dalwsywi.appsync-api.eu-west-2.amazonaws.com/graphql",
+            "Test"
+          ]
+        },
         "Description": "App Sync Graphql Url endpoint"
-      }
-    }
-  },
-  "Outputs": {
-    "chainNetworkSSM": {
-      "Value": { "Ref": "chainNetworkSSM" },
-      "Export": {
-        "Name": "chainNetworkSSM"
-      }
-    },
-    "chainRpcEndpointSSM": {
-      "Value": { "Ref": "chainRpcEndpointSSM" },
-      "Export": {
-        "Name": "chainRpcEndpointSSM"
-      }
-    },
-    "chainNetworkContractSSM": {
-      "Value": { "Ref": "chainNetworkContractSSM" },
-      "Export": {
-        "Name": "chainNetworkContractSSM"
-      }
-    },
-    "reputationEndpointSSM": {
-      "Value": { "Ref": "reputationEndpointSSM" },
-      "Export": {
-        "Name": "reputationEndpointSSM"
-      }
-    },
-    "awsAppSyncGraphqlUrlSSM": {
-      "Value": { "Ref": "awsAppSyncGraphqlUrlSSM" },
-      "Export": {
-        "Name": "awsAppSyncGraphqlUrlSSM"
       }
     }
   },

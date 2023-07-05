@@ -6,16 +6,10 @@ export type AmplifyDependentResourcesAttributes = {
       "GraphQLAPIKeyOutput": "string"
     }
   },
-  "custom": {
-    "lambdaParams": {
-      "awsAppSyncGraphqlUrlSSM": "string",
-      "chainNetworkContractSSM": "string",
-      "chainNetworkSSM": "string",
-      "chainRpcEndpointSSM": "string",
-      "reputationEndpointSSM": "string"
-    }
-  },
   "function": {
+    "colonycdappSSMAccess": {
+      "Arn": "string"
+    },
     "createUniqueColony": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
@@ -44,7 +38,28 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "fetchMotionState": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "fetchMotionTimeoutPeriods": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "fetchTokenFromChain": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "fetchVoterRewards": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
@@ -73,6 +88,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string"
     },
     "getUserTokenBalance": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "qaSSMtest": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
