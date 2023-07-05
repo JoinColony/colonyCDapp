@@ -8,7 +8,7 @@ import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import Tooltip from '~shared/Extensions/Tooltip';
 import Icon from '~shared/Icon';
 
-const displayName = 'Extensions.Fields.RadioBase';
+const displayName = 'common.Extensions.Fields.RadioBase';
 
 const RadioBase: FC<RadioBaseProps> = ({
   item,
