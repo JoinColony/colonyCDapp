@@ -242,6 +242,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_colonycdappSSMAccess_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "colonycdappSSMAccess"
+        }
+      ]
+    },
+    "AMPLIFY_function_colonycdappSSMAccess_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "colonycdappSSMAccess"
+        }
+      ]
+    },
     "AMPLIFY_function_createUniqueColony_deploymentBucketName": {
       "usedBy": [
         {
@@ -306,6 +322,38 @@
         }
       ]
     },
+    "AMPLIFY_function_fetchMotionState_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchMotionState"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchMotionState_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchMotionState"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchMotionTimeoutPeriods_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchMotionTimeoutPeriods"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchMotionTimeoutPeriods_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchMotionTimeoutPeriods"
+        }
+      ]
+    },
     "AMPLIFY_function_fetchTokenFromChain_deploymentBucketName": {
       "usedBy": [
         {
@@ -319,6 +367,22 @@
         {
           "category": "function",
           "resourceName": "fetchTokenFromChain"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchVoterRewards_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchVoterRewards"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchVoterRewards_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchVoterRewards"
         }
       ]
     },
@@ -383,6 +447,22 @@
         {
           "category": "function",
           "resourceName": "getUserTokenBalance"
+        }
+      ]
+    },
+    "AMPLIFY_function_qaSSMtest_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "qaSSMtest"
+        }
+      ]
+    },
+    "AMPLIFY_function_qaSSMtest_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "qaSSMtest"
         }
       ]
     },
