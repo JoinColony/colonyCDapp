@@ -51,7 +51,7 @@ const ExtensionDetailsPage: FC = () => {
   return (
     <Spinner loadingText={{ id: 'loading.colonyDetailsPage' }}>
       <ThreeColumns
-        leftAside={<Navigation />}
+        leftAside={<Navigation pageName="extensions" />}
         topRow={
           <>
             {showEnableBanner && (
