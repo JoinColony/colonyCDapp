@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Routes, useLocation, useParams } from 'react-router-dom';
 import { defineMessages, FormattedMessage } from 'react-intl';
+import { Extension } from '@colony/colony-js';
 
 import { useColonyContext, useExtensionData, useAppContext } from '~hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
@@ -80,6 +81,7 @@ const ExtensionDetails = () => {
     extensionData.isDeprecated
   );
   const canExtensionBeDeprecated =
+    extensionId !== Extension.OneTxPayment &&
     hasRegisteredProfile &&
     isInstalledExtensionData(extensionData) &&
     extensionData.uninstallable &&
