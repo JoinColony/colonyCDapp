@@ -5,7 +5,7 @@ import { TeamReputationSummaryProps } from './types';
 import Card from '~v5/shared/Card';
 import Icon from '~shared/Icon';
 import { TextButton } from '~v5/shared/Button';
-import TitleLabel from '~v5/shared/TitleLabel/TitleLabel';
+import TitleLabel from '~v5/shared/TitleLabel';
 import { setTeamColor } from './utils';
 
 const displayName = 'v5.common.TeamReputationSummary';
