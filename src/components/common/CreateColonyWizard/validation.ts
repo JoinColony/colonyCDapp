@@ -1,6 +1,10 @@
 import { string, object } from 'yup';
 
-import { ADDRESS_ZERO, DEFAULT_NETWORK_TOKEN } from '~constants';
+import {
+  ADDRESS_ZERO,
+  DEFAULT_NETWORK_TOKEN,
+  MAX_COLONY_DISPLAY_NAME,
+} from '~constants';
 import { GetFullColonyByNameDocument } from '~gql';
 import { intl } from '~utils/intl';
 import { createYupTestFromQuery } from '~utils/yup/tests';
@@ -44,7 +48,7 @@ const { formatMessage } = intl({
 export const colonyNameValidationSchema = object({
   displayName: string()
     .trim()
-    .max(20)
+    .max(MAX_COLONY_DISPLAY_NAME)
     .required(formatMessage({ id: 'error.colonyNameRequired' })),
   colonyName: string()
     .required(formatMessage({ id: 'error.colonyURLRequired' }))
