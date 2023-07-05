@@ -14,6 +14,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
   preferThumbnail = true,
   userName,
   size = 'xxs',
+  userStatus,
   ...rest
 }) => {
   const address = user?.walletAddress;
@@ -22,16 +23,28 @@ const UserAvatar: FC<UserAvatarProps> = ({
 
   const avatar = (
     <span
-      className={clsx(styles.main, 'inline-flex items-center text-current')}
+      className={clsx(
+        styles.main,
+        `inline-flex ${userStatus && 'gap-2'} items-center text-current`,
+      )}
     >
-      <Avatar
-        size={size}
-        avatar={imageString}
-        placeholderIcon="circle-person"
-        seed={address && address.toLowerCase()}
-        title={profile?.displayName || user?.name || address || ''}
-        {...rest}
-      />
+      <span
+        className={clsx('flex rounded-full', {
+          'border-2 border-blue-400 ': userStatus === 'dedicated',
+          'border-2 border-warning-400': userStatus === 'active',
+          'border-2 border-green-400': userStatus === 'new',
+          'border-2 border-purple-400': userStatus === 'top',
+        })}
+      >
+        <Avatar
+          size={size}
+          avatar={imageString}
+          placeholderIcon="circle-person"
+          seed={address && address.toLowerCase()}
+          title={profile?.displayName || user?.name || address || ''}
+          {...rest}
+        />
+      </span>
       {userName && (
         <span
           className={clsx('block font-medium', {

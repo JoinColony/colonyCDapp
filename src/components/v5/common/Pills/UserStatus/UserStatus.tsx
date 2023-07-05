@@ -19,6 +19,13 @@ const UserStatus: FC<PropsWithChildren<PillsProps>> = ({
   const userStatusText =
     typeof text == 'string' ? text : text && formatMessage(text, textValues);
 
+  const iconName =
+    (mode === 'dedicated' && 'medal-bold') ||
+    (mode === 'top' && 'crown-simple') ||
+    (mode === 'new' && 'hand-heart') ||
+    (mode === 'active' && 'shooting-star-bold') ||
+    '';
+
   return (
     <PillsBase
       className={clsx({
@@ -33,6 +40,7 @@ const UserStatus: FC<PropsWithChildren<PillsProps>> = ({
           mode === 'top-filled' || mode === 'team',
         'text-negative-400 bg-negative-100': mode === 'banned',
       })}
+      iconName={iconName}
       {...rest}
     >
       {userStatusText || children}

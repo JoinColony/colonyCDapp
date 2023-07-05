@@ -19,6 +19,8 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
   colonyReputation,
   permissions,
   user,
+  userStatus,
+  avatarSize,
 }) => {
   const isMobile = useMobile();
   const [isOpen, setIsOpen] = useState(false);
@@ -51,7 +53,12 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
       ref={setTriggerRef}
       className="inline-flex transition-all duration-normal hover:text-blue-400"
     >
-      <UserAvatar size="xs" userName={userName} user={user} />
+      <UserAvatar
+        size={avatarSize || 'xs'}
+        userName={userName}
+        user={user}
+        userStatus={userStatus}
+      />
     </button>
   );
 

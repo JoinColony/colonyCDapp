@@ -4,6 +4,8 @@ export interface AvatarProps {
   className?: string;
   notSet?: boolean;
   placeholderIcon?: string;
-  size?: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
+  size?: AvatarSize;
   title?: string;
 }
+
+export type AvatarSize = 'xxs' | 'xs' | 'sm' | 's' | 'm' | 'l' | 'xl';
