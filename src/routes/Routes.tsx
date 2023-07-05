@@ -63,7 +63,7 @@ import CreateColonyWizard from '~common/CreateColonyWizard';
 import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
 import PageLayout from '~frame/Extensions/layouts/PageLayout';
 import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage';
-import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage/ColonyDetailsPage';
+import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage';
 import ReputationPage from '~frame/Extensions/pages/ReputationPage';
 import ExtensionsPage from '~frame/Extensions/pages/ExtensionsPage';
 import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage';
