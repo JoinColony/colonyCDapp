@@ -12,6 +12,8 @@ import { ActionTypes } from '~redux/index';
 import { mapPayload } from '~utils/actions';
 import { useAppContext, useColonyContext } from '~hooks';
 import { isInstalledExtensionData } from '~utils/extensions';
+import { hasRoot } from '~utils/checks';
+import { getAllUserRoles } from '~transformers';
 
 interface Props {
   extensionData: AnyExtensionData;
@@ -47,8 +49,7 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
   if (!user || extensionData.isDeprecated || !extensionData.isInitialized) {
     return null;
   }
-  // @TODO check user permissions for canUpgrade - hasRoot(allUserRoles)
-  const canUpgrade = true;
+  const canUpgrade = hasRoot(getAllUserRoles(colony, user.walletAddress));
 
   return (
     <ActionButton
