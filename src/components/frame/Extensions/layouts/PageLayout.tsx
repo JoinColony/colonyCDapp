@@ -98,10 +98,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
         <div className="inner">
           {isMobile && <Navigation pageName={pageName} />}
           <div className="mt-9 sm:mt-6">
-            <PageTitle
-              title={formatMessage(title)}
-              subtitle={formatMessage(description)}
-            />
+            <PageTitle title={title} subtitle={description} />
           </div>
           <div className="mt-9 sm:mt-10">{children}</div>
         </div>

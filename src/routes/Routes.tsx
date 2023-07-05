@@ -72,11 +72,11 @@ import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
 import PermissionsPage from '~frame/Extensions/pages/PermissionsPage';
 import LazyConsensusPage from '~frame/Extensions/pages/LazyConsensusPage';
 import { ExtensionsContextProvider } from '~context/ExtensionsContext';
-import MembersPage from '~frame/v5/pages/MembersPage/MembersPage';
-import ContributorsPage from '~frame/v5/pages/ContributorsPage/ContributorsPage';
-import FollowersPage from '~frame/v5/pages/FollowersPage/FollowersPage';
-import VerifiedPage from '~frame/v5/pages/VerifiedPage/VerifiedPage';
-import TeamsPage from '~frame/v5/pages/TeamsPage/TeamsPage';
+import MembersPage from '~frame/v5/pages/MembersPage';
+import ContributorsPage from '~frame/v5/pages/ContributorsPage';
+import FollowersPage from '~frame/v5/pages/FollowersPage';
+import VerifiedPage from '~frame/v5/pages/VerifiedPage';
+import TeamsPage from '~frame/v5/pages/TeamsPage';
 
 // import useTitle from '~hooks/useTitle';
 
