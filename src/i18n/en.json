@@ -580,5 +580,11 @@
   "characters.remaining": "{maxCharNumber} characters remaining",
   "too.many.characters": "Too many characters",
   "filter.button": "Filter button",
-  "filter": "Filter"
+  "filter": "Filter",
+  "filters": "Filters",
+  "filter.teams": "Teams",
+  "filter.contributor.type": "Contributor type",
+  "filter.user.status": "User status",
+  "filter.reputation": "Reputation",
+  "filter.permissions": "Permissions"
 }
