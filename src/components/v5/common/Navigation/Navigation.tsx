@@ -3,12 +3,13 @@ import React, { FC, useState } from 'react';
 import { useCurrentPage, useMobile, useSideNavigation } from '~hooks';
 import NavItem from './partials/NavItem';
 import Select from '~v5/common/Fields/Select';
+import { Navigationprops } from './types';
 
 const displayName = 'v5.common.Navigation';
 
-const Navigation: FC = () => {
+const Navigation: FC<Navigationprops> = ({ pageName }) => {
   const isMobile = useMobile();
-  const navigationItems = useSideNavigation();
+  const navigationItems = useSideNavigation(pageName);
   const navId = useCurrentPage(navigationItems);
 
   const [selectedElement, setSelectedElement] = useState(navId);

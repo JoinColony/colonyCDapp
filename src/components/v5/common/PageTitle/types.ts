@@ -1,4 +1,6 @@
+import { MessageDescriptor } from 'react-intl';
+
 export interface PageTitleProps {
-  title: string;
-  subtitle?: string;
+  title: MessageDescriptor;
+  subtitle?: MessageDescriptor;
 }

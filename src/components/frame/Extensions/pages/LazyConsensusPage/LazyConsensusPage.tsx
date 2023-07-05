@@ -50,7 +50,7 @@ const LazyConsensusPage: FC = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Spinner loadingText={{ id: 'loading.extensionsPage' }}>
           <ThreeColumns
-            leftAside={<Navigation />}
+            leftAside={<Navigation pageName="extensions" />}
             topRow={
               <div className="flex justify-between flex-col flex-wrap sm:items-center sm:flex-row sm:gap-6">
                 <div className="flex flex-wrap gap-4 flex-col w-full sm:flex-row sm:items-center md:gap-8">

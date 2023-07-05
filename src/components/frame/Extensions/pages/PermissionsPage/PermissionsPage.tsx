@@ -8,7 +8,9 @@ const displayName = 'frame.Extensions.pages.PermissionsPage';
 
 const PermissionsPage: FC = () => (
   <Spinner loadingText={{ id: 'loading.permissionsPage' }}>
-    <TwoColumns aside={<Navigation />}>Permissions page</TwoColumns>
+    <TwoColumns aside={<Navigation pageName="extensions" />}>
+      Permissions page
+    </TwoColumns>
   </Spinner>
 );
 

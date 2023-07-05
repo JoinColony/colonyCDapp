@@ -10,7 +10,6 @@ import { defineMessages } from 'react-intl';
 import CreateUserWizard from '~common/CreateUserWizard';
 import ColonyHome from '~common/ColonyHome';
 import ColonyFunding from '~common/ColonyFunding';
-import ColonyMembers from '~common/ColonyMembers';
 import FourOFour from '~frame/FourOFour';
 import UserProfile from '~common/UserProfile';
 import UserProfileEdit from '~common/UserProfileEdit';
@@ -50,6 +49,10 @@ import {
   COLONY_INCORPORATION_ROUTE,
   COLONY_ADVANCED_ROUTE,
   COLONY_EXTENSION_DETAILS_SETUP_ROUTE,
+  COLONY_CONTRIBUTORS_ROUTE,
+  COLONY_FOLLOWERS_ROUTE,
+  COLONY_VERIFIED_ROUTE,
+  COLONY_TEAMS_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -58,9 +61,9 @@ import NotFoundRoute from './NotFoundRoute';
 import { ColonyContextProvider } from '~context/ColonyContext';
 import CreateColonyWizard from '~common/CreateColonyWizard';
 import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
-import ExtensionsLayout from '~frame/Extensions/layouts/ExtensionsLayout';
+import PageLayout from '~frame/Extensions/layouts/PageLayout';
 import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage';
-import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage/ColonyDetailsPage';
+import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage';
 import ReputationPage from '~frame/Extensions/pages/ReputationPage';
 import ExtensionsPage from '~frame/Extensions/pages/ExtensionsPage';
 import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage';
@@ -69,6 +72,11 @@ import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
 import PermissionsPage from '~frame/Extensions/pages/PermissionsPage';
 import LazyConsensusPage from '~frame/Extensions/pages/LazyConsensusPage';
 import { ExtensionsContextProvider } from '~context/ExtensionsContext';
+import MembersPage from '~frame/v5/pages/MembersPage';
+import ContributorsPage from '~frame/v5/pages/ContributorsPage';
+import FollowersPage from '~frame/v5/pages/FollowersPage';
+import VerifiedPage from '~frame/v5/pages/VerifiedPage';
+import TeamsPage from '~frame/v5/pages/TeamsPage';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -146,12 +154,92 @@ const Routes = () => {
           }
         >
           <Route path={COLONY_FUNDING_ROUTE} element={<ColonyFunding />} />
-          {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map(
-            (path) => (
-              <Route key={path} path={path} element={<ColonyMembers />} />
-            ),
-          )}
         </Route>
+        {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map(
+          (path) => (
+            <Route
+              key={path}
+              path={path}
+              element={
+                <ColonyContextProvider>
+                  <ExtensionsContextProvider>
+                    <PageLayout
+                      loadingText="members"
+                      title={{ id: 'membersPage.title' }}
+                      description={{ id: 'membersPage.description' }}
+                    >
+                      <MembersPage />
+                    </PageLayout>
+                  </ExtensionsContextProvider>
+                </ColonyContextProvider>
+              }
+            />
+          ),
+        )}
+        <Route
+          path={COLONY_CONTRIBUTORS_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsContextProvider>
+                <PageLayout
+                  loadingText="contributors"
+                  title={{ id: 'contributorsPage.title' }}
+                  description={{ id: 'contributorsPage.description' }}
+                >
+                  <ContributorsPage />
+                </PageLayout>
+              </ExtensionsContextProvider>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_FOLLOWERS_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsContextProvider>
+                <PageLayout
+                  loadingText="followers"
+                  title={{ id: 'followersPage.title' }}
+                  description={{ id: 'followersPage.description' }}
+                >
+                  <FollowersPage />
+                </PageLayout>
+              </ExtensionsContextProvider>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_VERIFIED_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsContextProvider>
+                <PageLayout
+                  loadingText="verified"
+                  title={{ id: 'verifiedPage.title' }}
+                  description={{ id: 'verifiedPage.description' }}
+                >
+                  <VerifiedPage />
+                </PageLayout>
+              </ExtensionsContextProvider>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_TEAMS_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsContextProvider>
+                <PageLayout
+                  loadingText="teams"
+                  title={{ id: 'teamsPage.title' }}
+                  description={{ id: 'teamsPage.description' }}
+                >
+                  <TeamsPage />
+                </PageLayout>
+              </ExtensionsContextProvider>
+            </ColonyContextProvider>
+          }
+        />
         <Route
           path={COLONY_HOME_ROUTE}
           element={
@@ -167,9 +255,13 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <ExtensionsLayout>
+                <PageLayout
+                  loadingText="extensionsPage"
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                >
                   <ExtensionDetailsPage />
-                </ExtensionsLayout>
+                </PageLayout>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
@@ -179,9 +271,13 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <ExtensionsLayout>
+                <PageLayout
+                  loadingText="extensionsPage"
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                >
                   <LazyConsensusPage />
-                </ExtensionsLayout>
+                </PageLayout>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
@@ -203,9 +299,13 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <ExtensionsLayout>
+                <PageLayout
+                  loadingText="extensionsPage"
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                >
                   <ColonyDetailsPage />
-                </ExtensionsLayout>
+                </PageLayout>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
@@ -215,9 +315,13 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <ExtensionsLayout>
+                <PageLayout
+                  loadingText="extensionsPage"
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                >
                   <ReputationPage />
-                </ExtensionsLayout>
+                </PageLayout>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
@@ -227,9 +331,13 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <ExtensionsLayout>
+                <PageLayout
+                  loadingText="extensionsPage"
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                >
                   <PermissionsPage />
-                </ExtensionsLayout>
+                </PageLayout>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
@@ -239,9 +347,13 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <ExtensionsLayout>
+                <PageLayout
+                  loadingText="extensionsPage"
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                >
                   <ExtensionsPage />
-                </ExtensionsLayout>
+                </PageLayout>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
@@ -251,9 +363,13 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <ExtensionsLayout>
+                <PageLayout
+                  loadingText="extensionsPage"
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                >
                   <IntegrationsPage />
-                </ExtensionsLayout>
+                </PageLayout>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
@@ -262,11 +378,15 @@ const Routes = () => {
           path={COLONY_INCORPORATION_ROUTE}
           element={
             <ColonyContextProvider>
-              <ExtensionsLayout>
+              <PageLayout
+                loadingText="extensionsPage"
+                title={{ id: 'extensionsPage.title' }}
+                description={{ id: 'extensionsPage.description' }}
+              >
                 <ExtensionsContextProvider>
                   <IncorporationPage />
                 </ExtensionsContextProvider>
-              </ExtensionsLayout>
+              </PageLayout>
             </ColonyContextProvider>
           }
         />
@@ -275,9 +395,13 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <ExtensionsLayout>
+                <PageLayout
+                  loadingText="extensionsPage"
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                >
                   <AdvancedPage />
-                </ExtensionsLayout>
+                </PageLayout>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }

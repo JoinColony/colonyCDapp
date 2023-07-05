@@ -8,7 +8,9 @@ const displayName = 'frame.Extensions.pages.ColonyDetailsPage';
 
 const ColonyDetailsPage: FC = () => (
   <Spinner loadingText={{ id: 'loading.colonyDetailsPage' }}>
-    <TwoColumns aside={<Navigation />}>Colony Details page</TwoColumns>
+    <TwoColumns aside={<Navigation pageName="extensions" />}>
+      Colony Details page
+    </TwoColumns>
   </Spinner>
 );
 

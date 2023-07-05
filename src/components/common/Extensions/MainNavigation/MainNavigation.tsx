@@ -8,7 +8,7 @@ import {
 } from '~hooks';
 import { LEARN_MORE_PAYMENTS } from '~constants';
 import Nav from './partials/Nav';
-import { navMenuItems } from './partials/consts';
+import { useGetNavItems } from './partials/hooks';
 import { SubNavigationMobile } from '~v5/common/SubNavigation';
 import LearnMore from '~shared/Extensions/LearnMore';
 import Button from '~v5/shared/Button';
@@ -25,6 +25,7 @@ const MainNavigation: FC<MainNavigationProps> = ({
   isMenuOpen,
 }) => {
   const { colony } = useColonyContext();
+  const { name } = colony || {};
   const isMobile = useMobile();
   const { user, wallet } = useAppContext();
   const { profile } = user || {};
@@ -34,10 +35,12 @@ const MainNavigation: FC<MainNavigationProps> = ({
     wallet?.address,
   );
 
+  const navItems = useGetNavItems(name);
+
   return (
     <div className="py-6 sm:py-0">
       <div className="hidden sm:block">
-        <Nav items={navMenuItems} />
+        <Nav items={navItems} />
       </div>
       {isMobile && isMenuOpen && (
         <PopoverBase
@@ -55,7 +58,7 @@ const MainNavigation: FC<MainNavigationProps> = ({
             />
           </div>
           <div className="px-6">
-            <Nav items={navMenuItems} />
+            <Nav items={navItems} />
             <div className="border-t border-gray-200 mb-3" />
             <SubNavigationMobile />
             <div className="flex flex-col items-center justify-between border-t border-gray-200 mt-4">

@@ -8,7 +8,9 @@ const displayName = 'frame.Extensions.pages.IntegrationsPage';
 
 const IntegrationsPage: FC = () => (
   <Spinner loadingText={{ id: 'loading.integrationsPage' }}>
-    <TwoColumns aside={<Navigation />}>Integrations page</TwoColumns>
+    <TwoColumns aside={<Navigation pageName="extensions" />}>
+      Integrations page
+    </TwoColumns>
   </Spinner>
 );
 
