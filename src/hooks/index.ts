@@ -62,6 +62,7 @@ export { default as useUserByNameOrAddress } from './useUserByNameOrAddress';
 export { default as useGetColonyMembers } from './useGetColonyMembers';
 export { default as useEnoughTokensForStaking } from './useEnoughTokensForStaking';
 export { default as useCurrentBlockTime } from './useCurrentBlockTime';
+export { default as useClipboardCopy } from './useClipboardCopy';
 
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously
