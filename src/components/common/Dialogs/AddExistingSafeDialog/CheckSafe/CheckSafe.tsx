@@ -8,11 +8,12 @@ import { DialogSection } from '~shared/Dialog';
 import { HookFormSelect as Select, SelectOption } from '~shared/Fields';
 import { isAddress } from '~utils/web3';
 
-import { AddExistingSafeProps } from './index';
-import SetupSafeCallout from './SetupSafeCallout';
-import SafeContractAddressInput from './SafeContractAddressInput';
+import { AddExistingSafeProps } from '../types';
+import SetupSafeCallout from '../SetupSafeCallout';
+import SafeContractAddressInput from '../SafeContractAddressInput';
 
-import styles from './AddExistingSafeDialogForm.css';
+import defaultStyles from '../AddExistingSafeDialogForm.css';
+import styles from './CheckSafe.css';
 
 const displayName =
   'common.AddExistingSafeDialog.AddExistingSafeDialogForm.CheckSafe';
@@ -91,7 +92,9 @@ const CheckSafe = ({
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <div className={classnames(styles.subtitle, styles.step1Subtitle)}>
+        <div
+          className={classnames(defaultStyles.subtitle, styles.step1Subtitle)}
+        >
           <FormattedMessage {...MSG.subtitle} />
         </div>
       </DialogSection>
@@ -129,10 +132,10 @@ const CheckSafe = ({
           disabled={
             !isCheckSafeValid ||
             isSubmitting ||
-            !dirtyFields.contra ||
+            !dirtyFields.contractAddress ||
             isLoadingSafe
           }
-          style={{ width: styles.wideButton }}
+          style={{ width: defaultStyles.wideButton }}
         />
       </DialogSection>
     </>
