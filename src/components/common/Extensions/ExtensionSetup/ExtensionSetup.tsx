@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 import { useColonyContext } from '~hooks';
-import { ActionForm } from '~shared/Fields';
+import { ActionHookForm as ActionForm } from '~shared/Fields';
 import Heading from '~shared/Heading';
 import { InstalledExtensionData } from '~types';
 import { mapPayload, mergePayload, pipe } from '~utils/actions';
@@ -75,18 +75,16 @@ const ExtensionSetup = ({
   }
 
   return (
-    <ActionForm
-      initialValues={initialValues}
+    <ActionForm<any>
+      defaultValues={initialValues}
       validationSchema={createExtensionSetupValidationSchema(
         initializationParams,
       )}
-      submit={ActionTypes.EXTENSION_ENABLE}
-      error={ActionTypes.EXTENSION_ENABLE_ERROR}
-      success={ActionTypes.EXTENSION_ENABLE_SUCCESS}
+      actionType={ActionTypes.EXTENSION_ENABLE}
       onSuccess={handleFormSuccess}
       transform={transform}
     >
-      {({ isSubmitting, isValid, status }) => {
+      {({ formState: { isValid, isSubmitting } }) => {
         return (
           <div>
             <Heading
@@ -104,11 +102,7 @@ const ExtensionSetup = ({
               appearance={{ theme: 'primary', size: 'large' }}
               text={{ id: 'button.confirm' }}
               loading={isSubmitting}
-              disabled={
-                !isValid ||
-                Object.values(status || {}).some((value) => !!value) ||
-                isSubmitting
-              }
+              disabled={!isValid || isSubmitting}
             />
           </div>
         );
