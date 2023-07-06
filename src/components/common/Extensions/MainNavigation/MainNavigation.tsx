@@ -61,7 +61,7 @@ const MainNavigation: FC<MainNavigationProps> = ({
             <Nav items={navItems} />
             <div className="border-t border-gray-200 mb-3" />
             <SubNavigationMobile />
-            <div className="flex flex-col items-center justify-between border-t border-gray-200 mt-4">
+            <div className="flex flex-col items-center justify-between border-t border-gray-200 mt-3">
               <div className="my-6 w-full">
                 <Button
                   text="Create new action"

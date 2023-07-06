@@ -18,10 +18,12 @@ const NavigationTools: FC<NavigationToolsProps> = ({
   buttonLabel,
 }) => {
   const { formatMessage } = useIntl();
+
   const buttonLabelText =
     typeof buttonLabel === 'string'
       ? buttonLabel
       : buttonLabel && formatMessage(buttonLabel);
+
   return (
     <>
       {nativeToken && <Token nativeToken={nativeToken} />}
@@ -35,8 +37,19 @@ const NavigationTools: FC<NavigationToolsProps> = ({
           />
         </div>
       </Button>
-      <Button mode="tertiary" isFullRounded iconName="list">
-        {buttonLabelText}
+      <Button
+        mode="tertiary"
+        isFullRounded
+        iconName="list"
+        iconSize="extraTiny"
+      >
+        {buttonLabelText ? (
+          <span className="text-gray-700 text-3">{buttonLabelText}</span>
+        ) : (
+          <span className="text-gray-700 text-3">
+            {formatMessage({ id: 'helpAndAccount' })}
+          </span>
+        )}
       </Button>
     </>
   );
