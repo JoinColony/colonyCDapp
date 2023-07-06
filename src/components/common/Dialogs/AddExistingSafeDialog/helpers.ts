@@ -39,17 +39,3 @@ export const getTxServiceBaseUrl = (selectedChain: string) => {
 
   return selectedNetwork.safeTxService;
 };
-
-export interface NetworkOption {
-  label: string;
-  value: number;
-}
-
-export interface SafeContract {
-  address: string;
-  name: string;
-  displayName: string;
-  logoUri: string;
-  contractAbi: any;
-  trustedForDelegateCall: boolean;
-}
