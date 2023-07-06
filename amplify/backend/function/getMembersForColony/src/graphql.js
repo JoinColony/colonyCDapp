@@ -1,5 +1,5 @@
 module.exports = {
-  getUser: /* GraphQL */ `
+  getUserByAddress: /* GraphQL */ `
     query GetUser($id: ID!) {
       getUserByAddress(id: $id) {
         items {
