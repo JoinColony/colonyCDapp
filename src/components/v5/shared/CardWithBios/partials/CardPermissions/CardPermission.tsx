@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 
-import Icon from '~shared/Icon/Icon';
+import Icon from '~shared/Icon';
 import Tooltip from '~shared/Extensions/Tooltip';
 import { CardPermissionProps } from '../../types';
 
-const displayName = 'v5.shared.CardWithBios.partials.CardPermission';
+const displayName = 'v5.CardWithBios.partials.CardPermission';
 
 const CardPermission: FC<CardPermissionProps> = ({ text, type }) => (
   <Tooltip tooltipContent={<span>{text}</span>}>
