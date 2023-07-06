@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import Navigation from '~v5/common/Navigation';
 import TwoColumns from '~v5/frame/TwoColumns';
 import BurgerMenu from '~v5/shared/BurgerMenu';
-import PopoverBase from '~v5/shared/PopoverBase/PopoverBase';
+import PopoverBase from '~v5/shared/PopoverBase';
 import SubNavigation from './partials/SubNavigation';
 import { useMembersPage } from './hooks';
 
