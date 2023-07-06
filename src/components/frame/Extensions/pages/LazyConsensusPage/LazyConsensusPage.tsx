@@ -4,7 +4,7 @@ import { Extension } from '@colony/colony-js';
 import { FormProvider } from 'react-hook-form';
 
 import { useLazyConsensusPage } from './hooks';
-import RadioList from '~shared/Extensions/Fields/RadioList';
+import RadioList from '~common/Extensions/Fields/RadioList';
 import Accordion from '~shared/Extensions/Accordion';
 import { mockedGovernance } from './consts';
 import { useAccordion } from '~shared/Extensions/Accordion/hooks';

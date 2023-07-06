@@ -59,21 +59,24 @@ const SubMenu: FC<SubMenuProps> = ({ items }) => {
         ))}
       </ul>
       {!isMobile && (
-        <div className="flex flex-col items-center justify-between px-3 pt-6 border-t border-gray-200 md:flex-row">
-          <div className="mb-6 md:mr-2 md:mb-0">
-            <Button
-              text="Create new action"
-              mode="quinary"
-              isFullSize={isMobile}
+        <div className="px-3">
+          <span className="block w-full h-px bg-gray-200 mb-6" />
+          <div className="flex flex-col items-center justify-between md:flex-row">
+            <div className="mb-6 md:mr-2 md:mb-0">
+              <Button
+                text="Create new action"
+                mode="quinary"
+                isFullSize={isMobile}
+              />
+            </div>
+            <LearnMore
+              message={{
+                id: `${displayName}.helpText`,
+                defaultMessage: 'Need help and guidance? <a>Visit our docs</a>',
+              }}
+              href={LEARN_MORE_PAYMENTS}
             />
           </div>
-          <LearnMore
-            message={{
-              id: `${displayName}.helpText`,
-              defaultMessage: 'Need help and guidance? <a>Visit our docs</a>',
-            }}
-            href={LEARN_MORE_PAYMENTS}
-          />
         </div>
       )}
     </Wrapper>

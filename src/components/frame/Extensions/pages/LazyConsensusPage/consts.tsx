@@ -1,5 +1,5 @@
 import { AccordionContent } from '~shared/Extensions/Accordion/types';
-import { RadioItemProps } from '~shared/Extensions/Fields/RadioList/types';
+import { RadioItemProps } from '~common/Extensions/Fields/RadioList/types';
 
 export const mockedGovernance: RadioItemProps[] = [
   {

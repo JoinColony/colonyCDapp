@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
-
 import { useIntl } from 'react-intl';
+
 import Link from '~v5/shared/Link';
 import { ToastProps } from './types';
 import Icon from '~shared/Icon';
@@ -24,7 +24,7 @@ const Toast: FC<ToastProps> = ({
       : description && formatMessage(description);
 
   return (
-    <div className="flex bg-base-white relative">
+    <div className="flex bg-base-white font-inter relative">
       <div
         className={clsx({
           'text-success-400': type === 'success',
@@ -42,11 +42,9 @@ const Toast: FC<ToastProps> = ({
         />
       </div>
       <div className="flex flex-col ml-[1.125rem] max-w-[90%]">
-        {title && <span className="text-2">{titleText}</span>}
+        {title && <span className="text-2 text-gray-900">{titleText}</span>}
         {description && (
-          <span className="text-md text-gray-600 font-normal mt-1">
-            {descriptionText}
-          </span>
+          <span className="text-md text-gray-600 mt-1">{descriptionText}</span>
         )}
         {linkName && url && (
           <div className="mt-1">

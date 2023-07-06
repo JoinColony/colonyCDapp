@@ -7,7 +7,7 @@ import {
 } from '~v5/shared/CardWithBios/partials/CardPermissions/consts';
 
 const meta: Meta<typeof CardWithBios> = {
-  title: 'Shared/CardWithBios',
+  title: 'Shared/Card With Bios',
   component: CardWithBios,
   argTypes: {
     description: {

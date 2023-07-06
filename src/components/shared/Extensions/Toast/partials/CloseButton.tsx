@@ -1,19 +1,22 @@
 import React, { FC } from 'react';
+import { useIntl } from 'react-intl';
 import { CloseButtonProps } from 'react-toastify';
-import Icon from '~shared/Icon';
+
+import { CloseButton as CloseButtonComponent } from '~v5/shared/Button';
 
 const displayName = 'Extensions.Toast.partials.CloseButton';
 
-const CloseButton: FC<CloseButtonProps> = ({ closeToast }) => (
-  <button
-    type="button"
-    aria-label="Close toast"
-    className="absolute right-6 top-6 flex text-gray-400 transition-all duration-normal hover:text-gray-300"
-    onClick={closeToast}
-  >
-    <Icon appearance={{ size: 'tiny' }} name="close" />
-  </button>
-);
+const CloseButton: FC<CloseButtonProps> = ({ closeToast }) => {
+  const { formatMessage } = useIntl();
+
+  return (
+    <CloseButtonComponent
+      aria-label={formatMessage({ id: 'ariaLabel.closeToast' })}
+      className="absolute right-2 top-2"
+      onClick={closeToast}
+    />
+  );
+};
 
 CloseButton.displayName = displayName;
 
