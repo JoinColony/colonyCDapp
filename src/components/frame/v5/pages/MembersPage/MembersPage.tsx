@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useIntl } from 'react-intl';
 
 import Navigation from '~v5/common/Navigation';
 import TwoColumns from '~v5/frame/TwoColumns';
@@ -10,12 +11,15 @@ import { useMembersPage } from './hooks';
 const MembersPage: FC = () => {
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     useMembersPage();
+  const { formatMessage } = useIntl();
 
   return (
     <TwoColumns aside={<Navigation pageName="members" />}>
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <h4 className="heading-4 mr-2">All members</h4>
+          <h4 className="heading-4 mr-2">
+            {formatMessage({ id: 'members.allMembers' })}
+          </h4>
           <BurgerMenu isVertical setTriggerRef={setTriggerRef} />
           {visible && (
             <PopoverBase
