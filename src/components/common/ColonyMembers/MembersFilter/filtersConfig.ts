@@ -67,6 +67,12 @@ const memberTypes = [
   { label: MSG.watchers, value: MemberType.Watchers },
 ];
 
+const verificationTypes = [
+  { label: MSG.any, value: VerificationType.All },
+  { label: MSG.verified, value: VerificationType.Verified },
+  { label: MSG.unverified, value: VerificationType.Unverified },
+];
+
 export type filterItem = {
   appearance?: Appearance;
   name: string;
@@ -83,11 +89,11 @@ export const filterItems: filterItem[] = [
     label: MSG.memberType,
     isRootRequired: true,
   },
-  // {
-  //   appearance: { theme: 'grey' },
-  //   name: 'verificationType',
-  //   options: verificationTypes,
-  //   label: MSG.verificationType,
-  //   isRootRequired: false,
-  // },
+  {
+    appearance: { theme: 'grey' },
+    name: 'verificationType',
+    options: verificationTypes,
+    label: MSG.verificationType,
+    isRootRequired: false,
+  },
 ];

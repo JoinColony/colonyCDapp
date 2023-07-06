@@ -185,6 +185,7 @@ const ManageWhitelistDialogForm = ({
           secondaryButtonText={backButtonText}
           onSecondaryButtonClick={back}
           disabled={
+            /* disable the form if it isn't dirty, except for when there's an address already populated in the address field. */
             (!isDirty && !whitelistAddress) ||
             (tabIndex === TABS.WHITELISTED && !whitelistedAddresses.length) ||
             disabledSubmit

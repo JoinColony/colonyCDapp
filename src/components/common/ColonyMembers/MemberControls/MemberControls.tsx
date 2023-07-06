@@ -48,7 +48,7 @@ const MemberControls = ({ isRootOrAllDomains }: Props) => {
   const enabledExtensionData = useEnabledExtensions();
   const { extensionData } = useExtensionData(Extension.OneTxPayment);
 
-  const canManangePermissions =
+  const canManagePermissions =
     (user && canArchitect(currentUserRoles)) || hasRoot(currentUserRoles);
   const canManageWhitelist = user && hasRoot(currentUserRoles);
 
@@ -94,7 +94,7 @@ const MemberControls = ({ isRootOrAllDomains }: Props) => {
               />
             </li>
           )}
-          {canManangePermissions && (
+          {canManagePermissions && (
             <li>
               <Button
                 appearance={{ theme: 'blue' }}
