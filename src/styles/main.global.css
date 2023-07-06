@@ -80,6 +80,10 @@
   .text-4 {
     @apply text-xs font-medium;
   }
+
+  .text-5 {
+    @apply text-xs font-semibold;
+  }
 }
 
 @layer components {

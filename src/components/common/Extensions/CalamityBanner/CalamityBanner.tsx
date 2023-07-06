@@ -21,6 +21,12 @@ const CalamityBanner: FC<PropsWithChildren<CalamityBannerProps>> = ({
   const { showBanner, setShowBanner } = useCalamityBanner();
   const isTablet = useTablet();
 
+  const CloseButtonComponent = (
+    <CloseButton
+      className="text-base-white hover:text-gray-300 -mr-4"
+      onClick={() => setShowBanner(false)}
+    />
+  );
   return (
     <>
       {showBanner && (
@@ -28,12 +34,7 @@ const CalamityBanner: FC<PropsWithChildren<CalamityBannerProps>> = ({
           <div className={styles.calamityBannerInner}>
             <div className="flex justify-between w-full md:w-auto md:justify-normal items-start">
               <div className="text-base-white text-1">{children}</div>
-              {isTablet && (
-                <CloseButton
-                  className="text-base-white -mr-4"
-                  onClick={() => setShowBanner(false)}
-                />
-              )}
+              {isTablet && CloseButtonComponent}
             </div>
             <div className="flex items-center justify-between md:justify-normal w-full md:w-auto mt-2 md:mt-0">
               <Link
@@ -50,12 +51,7 @@ const CalamityBanner: FC<PropsWithChildren<CalamityBannerProps>> = ({
               >
                 {formatMessage({ id: buttonName })}
               </Button>
-              {!isTablet && (
-                <CloseButton
-                  className="text-base-white -mr-4"
-                  onClick={() => setShowBanner(false)}
-                />
-              )}
+              {!isTablet && CloseButtonComponent}
             </div>
           </div>
         </div>
