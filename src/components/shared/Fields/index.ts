@@ -8,7 +8,7 @@ export {
 } from './Form';
 export { default as FormStatus } from './FormStatus';
 export { default as FieldSet } from './FieldSet';
-export { default as Input, InputComponentAppearance } from './Input';
+export { InputComponentAppearance } from './Input';
 export {
   Input as HookFormInput,
   InputComponent as HookFormInputComponent,
@@ -39,5 +39,3 @@ export { default as Annotations } from './Annotations';
 export { default as Toggle, HookFormToggle } from './Toggle';
 
 export { default as asFieldArray } from './asFieldArray';
-
-export { SingleLineEdit, MultiLineEdit } from './InlineEdit';
