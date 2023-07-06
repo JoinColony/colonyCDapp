@@ -126,6 +126,10 @@ button[disabled].rts___btn {
   @apply text-gray-900;
 }
 
+body.ReactModal__Body--open > #root {
+  @apply blur-[0.125rem];
+}
+
 :root {
   --onboard-connect-sidebar-background: var(--color-gray-200);
   --onboard-connect-sidebar-color: var(--color-gray-900);
