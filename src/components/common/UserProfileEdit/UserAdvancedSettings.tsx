@@ -6,12 +6,11 @@ import { Form } from '~shared/Fields';
 import { Heading3 } from '~shared/Heading';
 import ExternalLink from '~shared/ExternalLink';
 import { ADVANCED_SETTINGS } from '~constants';
-import useUserSettings, {
-  SlotKey,
-  UserSettingsHook,
-} from '~hooks/useUserSettings';
 import { canUseMetatransactions } from '~utils/checks';
 import { yupDebounce } from '~utils/yup/tests';
+import { useAppContext } from '~hooks';
+import { useUpdateUserProfileMutation } from '~gql';
+import { User } from '~types';
 
 import AdvancedSettingsRow, {
   getAdvancedSettingsRows,
@@ -39,11 +38,11 @@ const MSG = defineMessages({
 });
 
 const validationSchema = object({
-  [SlotKey.Metatransactions]: bool<boolean>(),
-  [SlotKey.DecentralizedMode]: bool<boolean>(),
-  [SlotKey.CustomRPC]: string()
+  metatransactions: bool<boolean>(),
+  decentralizedModeEnabled: bool<boolean>(),
+  customRpc: string()
     .defined()
-    .when(`${SlotKey.DecentralizedMode}`, {
+    .when('decentralizedModeEnabled', {
       is: true,
       then: string()
         .required(() => MSG.invalidURLError)
@@ -61,15 +60,6 @@ const validationSchema = object({
 
 export type FormValues = InferType<typeof validationSchema>;
 
-const setFormValuesToLocalStorage = (
-  values: FormValues,
-  setSettingsKey: UserSettingsHook['setSettingsKey'],
-) => {
-  Object.entries(values).forEach(([key, value]: [SlotKey, string | boolean]) =>
-    setSettingsKey(key, value),
-  );
-};
-
 const metatransactionsAvailable = canUseMetatransactions();
 const advancedSettingsRows = getAdvancedSettingsRows(metatransactionsAvailable);
 const headingTextValues = {
@@ -83,23 +73,39 @@ const headingTextValues = {
   ),
 };
 
-const UserAdvancedSettings = () => {
+interface Props {
+  user: User;
+}
+
+const UserAdvancedSettings = ({ user: { walletAddress, profile } }: Props) => {
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
-  const {
-    settings: {
-      metatransactions: metatransactionsSetting,
-      decentralizedModeEnabled,
-      customRpc,
-    },
-    setSettingsKey,
-  } = useUserSettings();
+  const { updateUser } = useAppContext();
+  const [editUser, { error }] = useUpdateUserProfileMutation();
 
   const metatransasctionsDefault = metatransactionsAvailable
-    ? metatransactionsSetting
+    ? profile?.advanced?.metatransactions || false
     : false;
 
-  const handleSubmit = (values: FormValues) => {
-    setFormValuesToLocalStorage(values, setSettingsKey);
+  const defaultValues = {
+    metatransactions: metatransasctionsDefault,
+    decentralizedModeEnabled:
+      profile?.advanced?.decentralizedModeEnabled || false,
+    customRpc: profile?.advanced?.customRpc || '',
+  };
+
+  const handleSubmit = async (updatedAdvanced: FormValues) => {
+    await editUser({
+      variables: {
+        input: {
+          id: walletAddress,
+          advanced: {
+            ...updatedAdvanced,
+          },
+        },
+      },
+    });
+
+    updateUser?.(walletAddress, true);
   };
 
   return (
@@ -110,11 +116,7 @@ const UserAdvancedSettings = () => {
         textValues={headingTextValues}
       />
       <Form<FormValues>
-        defaultValues={{
-          [SlotKey.Metatransactions]: metatransasctionsDefault,
-          [SlotKey.DecentralizedMode]: decentralizedModeEnabled,
-          [SlotKey.CustomRPC]: customRpc,
-        }}
+        defaultValues={defaultValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
         resetOnSubmit
@@ -140,6 +142,7 @@ const UserAdvancedSettings = () => {
                 !isDirty ||
                 isValidating
               }
+              error={error}
               setShowSnackbar={setShowSnackbar}
               showSnackbar={showSnackbar}
             />

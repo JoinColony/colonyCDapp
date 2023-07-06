@@ -9,7 +9,6 @@ import { useFormContext } from 'react-hook-form';
 import { Toggle } from '~shared/Fields';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 import { UniversalMessageValues } from '~types';
-import { SlotKey } from '~hooks';
 
 import CustomEndpointInput from './CustomEndpointInput';
 
@@ -80,7 +79,7 @@ export const getAdvancedSettingsRows = (
   metatransactionsAvailable: boolean,
 ): Omit<SettingsRowProps, 'toggleDisabled'>[] => [
   {
-    name: SlotKey.Metatransactions,
+    name: 'metatransactions',
     paragraphText: MSG.metaDescription,
     toggleLabel: MSG.labelMetaTx,
     tooltipText: MSG.metaTooltip,
@@ -92,15 +91,15 @@ export const getAdvancedSettingsRows = (
     ),
   },
   {
-    name: SlotKey.DecentralizedMode,
+    name: 'decentralizedModeEnabled',
     paragraphText: MSG.endpointsDescription,
     toggleLabel: MSG.customEndpoints,
     tooltipText: MSG.RPCTooltip,
     extra: (
       <CustomEndpointInput
         label={MSG.labelRPC}
-        inputName={SlotKey.CustomRPC}
-        toggleName={SlotKey.DecentralizedMode}
+        inputName="customRpc"
+        toggleName="decentralizedModeEnabled"
       />
     ),
   },
