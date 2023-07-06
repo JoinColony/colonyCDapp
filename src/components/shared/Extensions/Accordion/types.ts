@@ -1,13 +1,17 @@
+import { ReactNode } from 'react';
 import { FieldErrorsImpl, UseFormRegister } from 'react-hook-form';
 import { MessageDescriptor } from 'react-intl';
+
 import {
   ComponentType,
   FormPercentageInput,
 } from '~common/Extensions/SpecialInput/types';
 import { FormRadioButton } from '../Fields/RadioList/types';
 
+type AccordionMode = 'primary' | 'secondary';
+
 export interface AccordionProps {
-  items: AccordionContent[];
+  items: any[];
   openIndex: number;
   onOpenIndexChange: (newOpenIndex: number | undefined) => void;
   errors?: Partial<
@@ -15,6 +19,7 @@ export interface AccordionProps {
       [x: string]: any;
     }>
   >;
+  mode?: AccordionMode;
 }
 
 export interface ContentTypeProps {
@@ -61,7 +66,7 @@ export interface AccordionMocksItemProps {
   content: JSX.Element;
 }
 export interface AccordionItemProps {
-  title?: string | React.ReactNode;
+  title?: ReactNode | string;
   content?: AccordionContentDetails[];
   isOpen?: boolean;
   onClick?: () => void;
@@ -70,6 +75,7 @@ export interface AccordionItemProps {
       [x: string]: any;
     }>
   >;
+  mode?: AccordionMode;
 }
 
 export interface AccordionContentItemProps {

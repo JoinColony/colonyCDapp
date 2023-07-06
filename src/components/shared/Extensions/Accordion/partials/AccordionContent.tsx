@@ -13,25 +13,27 @@ const AccordionContent: FC<AccordionItemProps> = ({ content, errors }) => (
       <div key={item.id}>
         <div className="flex justify-between mt-4 items-center">
           {item.textItem && item.textItem}
-          <div className="ml-6">
-            {item.inputData.inputType === 'percent' ? (
-              <SpecialPercentageInput
-                name={item.inputData.name}
-                minValue={item.inputData.minValue}
-                maxValue={item.inputData.maxValue}
-                register={item.inputData.register}
-                errors={errors}
-              />
-            ) : (
-              <SpecialHourInput
-                name={item.inputData.name}
-                minValue={item.inputData.minValue}
-                maxValue={item.inputData.maxValue}
-                register={item.inputData.register}
-                errors={errors}
-              />
-            )}
-          </div>
+          {item.inputData?.inputType && (
+            <div className="ml-6">
+              {item.inputData.inputType === 'percent' ? (
+                <SpecialPercentageInput
+                  name={item.inputData.name}
+                  minValue={item.inputData.minValue}
+                  maxValue={item.inputData.maxValue}
+                  register={item.inputData.register}
+                  errors={errors}
+                />
+              ) : (
+                <SpecialHourInput
+                  name={item.inputData.name}
+                  minValue={item.inputData.minValue}
+                  maxValue={item.inputData.maxValue}
+                  register={item.inputData.register}
+                  errors={errors}
+                />
+              )}
+            </div>
+          )}
         </div>
 
         {item?.accordionItem &&

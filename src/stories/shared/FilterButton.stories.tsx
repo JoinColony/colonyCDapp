@@ -10,4 +10,8 @@ const meta: Meta<typeof FilterButton> = {
 export default meta;
 type Story = StoryObj<typeof FilterButton>;
 
-export const Base: Story = {};
+export const Base: Story = {
+  args: {
+    selectedFilterNumber: 2,
+  },
+};

@@ -1,43 +1,51 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+import clsx from 'clsx';
+import { useMobile } from '~hooks';
 
 import Icon from '~shared/Icon';
 import styles from './FilterOptions.module.css';
+import Accordion from '~shared/Extensions/Accordion';
+import { useAccordion } from '~shared/Extensions/Accordion/hooks';
+import { FilterOptionsProps } from '../types';
 
 const displayName = 'v5.common.Filter.partials.FilterOptions';
 
-const FilterOptions: FC = () => {
+const FilterOptions: FC<FilterOptionsProps> = ({ options }) => {
   const { formatMessage } = useIntl();
+  const isMobile = useMobile();
+  const { openIndex, onOpenIndexChange } = useAccordion();
   // @TODO: add conditions when filters should be visible / not visible
   // @TODO: add submenu
 
   return (
     <div>
-      <span className="text-xs font-medium text-gray-400 mb-1 ml-[1.2rem] uppercase">
+      <span
+        className={clsx('flex text-xs font-medium text-gray-400 uppercase', {
+          'ml-5 mb-1': !isMobile,
+          'mb-4': isMobile,
+        })}
+      >
         {formatMessage({ id: 'filters' })}
       </span>
-      <ul className="flex flex-col">
-        <li className={styles.li}>
-          <Icon name="users-three" appearance={{ size: 'tiny' }} />
-          {formatMessage({ id: 'filter.teams' })}
-        </li>
-        <li className={styles.li}>
-          <Icon name="user" appearance={{ size: 'tiny' }} />
-          {formatMessage({ id: 'filter.contributor.type' })}
-        </li>
-        <li className={styles.li}>
-          <Icon name="flag" appearance={{ size: 'tiny' }} />
-          {formatMessage({ id: 'filter.user.status' })}
-        </li>
-        <li className={styles.li}>
-          <Icon name="star-not-filled" appearance={{ size: 'tiny' }} />
-          {formatMessage({ id: 'filter.reputation' })}
-        </li>
-        <li className={styles.li}>
-          <Icon name="lock-key" appearance={{ size: 'tiny' }} />
-          {formatMessage({ id: 'filter.permissions' })}
-        </li>
-      </ul>
+      {isMobile ? (
+        <Accordion
+          items={options}
+          openIndex={openIndex}
+          onOpenIndexChange={onOpenIndexChange}
+          mode="secondary"
+        />
+      ) : (
+        <ul className="flex flex-col">
+          {options?.map((item) => (
+            <li className={styles.li}>
+              <Icon name={item.iconName} appearance={{ size: 'tiny' }} />
+
+              {formatMessage({ id: item.title })}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
