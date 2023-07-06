@@ -27,7 +27,7 @@ const MembersPage: FC = () => {
                 hasShadow: true,
                 className: 'py-4 px-2',
               }}
-              classNames="w-full max-w-[17.375rem]"
+              classNames="w-full sm:max-w-[17.375rem]"
             >
               <SubNavigation />
             </PopoverBase>
