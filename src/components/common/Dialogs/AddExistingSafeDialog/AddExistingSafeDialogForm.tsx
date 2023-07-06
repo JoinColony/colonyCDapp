@@ -5,23 +5,12 @@ import { useFormContext } from 'react-hook-form';
 import { DialogSection } from '~shared/Dialog';
 import Heading from '~shared/Heading';
 // import { ColonySafe } from '~data/index';
-import { Address } from '~types';
 
-import { NetworkOption, SafeContract } from './helpers';
-import {
-  CheckSafe,
-  // ConnectSafe,
-  // ConfirmSafe,
-} from './index';
+import ConnectSafe from './ConnectSafe';
+import CheckSafe from './CheckSafe';
+import { AddExistingSafeProps, NetworkOption } from './types';
 
 import styles from './AddExistingSafeDialogForm.css';
-
-export type SafeData =
-  | SafeContract
-  | undefined
-  | null
-  | Record<string, never>
-  | 'alreadyExists';
 
 const displayName = 'common.AddExistingSafeDialog.AddExistingSafeDialogForm';
 
@@ -31,17 +20,6 @@ const MSG = defineMessages({
     defaultMessage: 'Adding a Safe',
   },
 });
-
-export interface AddExistingSafeProps {
-  back: () => void;
-  networkOptions: NetworkOption[];
-  colonySafes: Array<any>; // ColonySafe[];
-  colonyAddress: Address;
-  loadingModuleState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-  loadingSafeState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-  stepIndex: number;
-  setStepIndex: React.Dispatch<React.SetStateAction<number>>;
-}
 
 const AddExistingSafeDialogForm = ({
   networkOptions,
@@ -73,16 +51,14 @@ const AddExistingSafeDialogForm = ({
             setSelectedChain={setSelectedChain}
           />
         );
-      // case 2:
-      //   return (
-      //     <ConnectSafe
-      //       {...props}
-      //       values={values}
-      //       setStepIndex={setStepIndex}
-      //       safeAddress={contractAddress}
-      //       loadingState={loadingState[1]}
-      //     />
-      //   );
+      case 2:
+        return (
+          <ConnectSafe
+            {...props}
+            setStepIndex={setStepIndex}
+            loadingModuleState={loadingModuleState}
+          />
+        );
       // case 3:
       //   return (
       //     <ConfirmSafe {...props} values={values} setStepIndex={setStepIndex} />
