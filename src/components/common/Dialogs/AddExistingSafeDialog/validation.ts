@@ -207,8 +207,7 @@ export const getValidationSchema = (
             }
 
             const fetchModule = async (): Promise<ValidationError | true> => {
-              const selectedChain: string =
-                SAFE_NAMES_MAP[Number(this.parent.chainId)];
+              const selectedChain: string = SAFE_NAMES_MAP[this.parent.chainId];
               const baseURL = getTxServiceBaseUrl(selectedChain);
               try {
                 const response = await fetch(
