@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import { useColonyContext } from '~hooks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 
