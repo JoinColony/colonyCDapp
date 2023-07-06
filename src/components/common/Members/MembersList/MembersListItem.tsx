@@ -8,6 +8,7 @@ import { Contributor, Member, MemberUser } from '~types';
 import { getMainClasses } from '~utils/css';
 import { useColonyContext, useMobile } from '~hooks';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import { isUserVerified } from '~utils/verifiedUsers';
 
 import MemberActions from './Actions';
 import MemberInfo from './MemberInfo';
@@ -40,8 +41,10 @@ const MembersListItem = ({
   );
 
   const isMobile = useMobile();
-  // Temp hardcoded values until the features are implemented
-  const isWhitelisted = false;
+  const isWhitelisted = isUserVerified(
+    walletAddress,
+    colony?.metadata?.whitelistedAddresses ?? [],
+  );
 
   return (
     <ListGroupItem>
