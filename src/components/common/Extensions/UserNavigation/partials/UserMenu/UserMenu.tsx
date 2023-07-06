@@ -59,7 +59,7 @@ const UserMenu: FC<UserMenuProps> = ({
           className={clsx(styles.buttonBack, 'group text-4')}
           onClick={() => setActiveSubmenu(null)}
         >
-          <Icon name="caret-left" appearance={{ size: 'extraTiny' }} />
+          <Icon name="caret-left" appearance={{ size: 'extraExtraTiny' }} />
           {activeSubmenu && (
             <TitleLabel
               className="ml-2"
