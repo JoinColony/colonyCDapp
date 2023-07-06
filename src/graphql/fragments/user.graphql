@@ -33,6 +33,11 @@ fragment Profile on Profile {
   location
   thumbnail
   website
+  advanced {
+    metatransactions
+    decentralizedModeEnabled
+    customRpc
+  }
 }
 
 fragment MemberUser on User {

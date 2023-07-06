@@ -178,6 +178,12 @@ input CreateUniqueColonyInput {
   version: Int!
 }
 
+input ProfileAdvancedInput {
+  metatransactions: Boolean
+  decentralizedModeEnabled: Boolean
+  customRpc: String
+}
+
 """
 Input data to use when creating or changing a user profile
 """
@@ -218,6 +224,7 @@ input ProfileInput {
   Any additional metadata or settings related to the user profile
   """
   meta: ProfileMetadataInput
+  advanced: ProfileAdvancedInput
 }
 
 """
@@ -909,6 +916,7 @@ type Profile @model {
   Metadata associated with the user's profile
   """
   meta: ProfileMetadata
+  advanced: ProfileAdvanced
 }
 
 """
@@ -982,6 +990,12 @@ type ProfileMetadata {
   List of email permissions for the user
   """
   emailPermissions: [String!]!
+}
+
+type ProfileAdvanced {
+  metatransactions: Boolean
+  decentralizedModeEnabled: Boolean
+  customRpc: String
 }
 
 """
