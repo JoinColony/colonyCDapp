@@ -47,3 +47,20 @@ export const METATRANSACTIONS_LEARN_MORE = `https://docs.colony.io/use/advanced-
  * Safe Control
  */
 export const ADD_SAFE_INSTRUCTIONS = `https://docs.colony.io/use/managing-funds/gnosis-safe-control/adding-a-safe`;
+
+export const CONNECT_SAFE_INSTRUCTIONS = `https://docs.colony.io/use/managing-funds/gnosis-safe-control/adding-a-safe#step-2-connect-the-safe`;
+
+const SAFE_APP = `https://app.safe.global`;
+
+export const getSafeLink = (chainShortName: string, safeAddress: string) =>
+  `${SAFE_APP}/${chainShortName}:${safeAddress}`;
+
+export const getModuleLink = (chainShortName: string, safeAddress: string) =>
+  `${getSafeLink(
+    chainShortName,
+    safeAddress,
+  )}/apps?appUrl=https%3A%2F%2Fzodiac.gnosisguild.org%2F`;
+
+export const MODULE_ADDRESS_INSTRUCTIONS = `https://docs.colony.io/use/managing-funds/gnosis-safe-control/adding-a-safe#finding-the-module-contract-address`;
+
+export const SAFE_CONTROL_LEARN_MORE = `https://docs.colony.io/use/managing-funds/gnosis-safe-control/#how-it-all-works`;
