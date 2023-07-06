@@ -3,7 +3,7 @@
 }
 
 .button {
-  @apply w-full px-4 py-3 rounded bg-base-white flex justify-between items-center text-md font-normal transition-all duration-normal;
+  @apply w-full pl-3.5 pr-4 py-3 rounded bg-base-white flex justify-between items-center text-md font-normal transition-all duration-normal;
 }
 
 .options {
@@ -15,9 +15,5 @@
 }
 
 .li {
-  @apply flex items-center justify-between font-normal text-md leading-5 rounded cursor-pointer transition-all duration-normal hover:text-blue-400;
-}
-
-.icon {
-  @apply w-[0.8125rem];
+  @apply flex items-center justify-between text-md;
 }

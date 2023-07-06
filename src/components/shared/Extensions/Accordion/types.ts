@@ -1,10 +1,11 @@
 import { FieldErrorsImpl, UseFormRegister } from 'react-hook-form';
 import { MessageDescriptor } from 'react-intl';
+
+import { FormRadioButton } from '~common/Extensions/Fields/RadioList/types';
 import {
   ComponentType,
   FormPercentageInput,
 } from '~common/Extensions/SpecialInput/types';
-import { FormRadioButton } from '../Fields/RadioList/types';
 
 export interface AccordionProps {
   items: AccordionContent[];

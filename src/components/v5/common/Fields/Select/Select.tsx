@@ -1,5 +1,6 @@
 import React, { useState, KeyboardEvent } from 'react';
 import clsx from 'clsx';
+import { useIntl } from 'react-intl';
 
 import { SelectProps } from './types';
 import styles from './Select.module.css';
@@ -13,6 +14,7 @@ const Select = <T extends any[]>({
   selectedElement,
   handleChange,
 }: SelectProps<T>) => {
+  const { formatMessage } = useIntl();
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const toggleOptions = () => {
     setIsOptionsOpen(!isOptionsOpen);
@@ -72,18 +74,24 @@ const Select = <T extends any[]>({
           'border border-blue-400': isOptionsOpen,
           'border border-gray-300 ': !isOptionsOpen,
         })}
+        aria-label={formatMessage({
+          id: isOptionsOpen
+            ? 'ariaLabel.closeDropdown'
+            : 'ariaLabel.openDropdown',
+        })}
       >
         {selectedItem?.label}
-        <Icon
-          name="caret-down"
+        <span
           className={clsx(
-            `${styles.icon} transition-transform duration-normal`,
+            'flex shrink-0 text-gray-400 transition-transform duration-normal',
             {
               'rotate-180': isOptionsOpen,
               'rotate-0': !isOptionsOpen,
             },
           )}
-        />
+        >
+          <Icon name="caret-down" appearance={{ size: 'extraTiny' }} />
+        </span>
       </button>
       <ul
         className={`${styles.options} ${isOptionsOpen ? styles.show : ''}`}
