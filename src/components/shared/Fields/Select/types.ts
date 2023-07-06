@@ -3,8 +3,6 @@ import { MessageDescriptor } from 'react-intl';
 
 import { SimpleMessageValues } from '~types';
 
-export { Props as SelectProps } from './Select';
-
 export interface Appearance {
   alignOptions?: 'left' | 'center' | 'right';
   borderedOptions?: 'true' | 'false';
