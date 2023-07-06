@@ -23,6 +23,7 @@ type Appearance = {
     | 'small'
     | 'normal'
     | 'medium'
+    | 'big'
     | 'large'
     | 'huge';
 };
