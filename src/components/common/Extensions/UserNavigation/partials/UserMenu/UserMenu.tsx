@@ -119,7 +119,7 @@ const UserMenu: FC<UserMenuProps> = ({
         <div className="w-full pb-6 mb-6 border-b border-b-gray-200 sm:pb-5 sm:mb-5">
           <TitledContent title={{ id: 'userMenu.optionsTitle' }}>
             <ul className="text-lg font-semibold sm:font-normal sm:text-md text-left">
-              {userMenuItems.map(({ id, link, icon, name: userName }) => (
+              {userMenuItems.map(({ id, link, icon, name: itemName }) => (
                 <li className="mb-4 last:mb-0" key={id}>
                   {link ? (
                     <Link
@@ -127,20 +127,20 @@ const UserMenu: FC<UserMenuProps> = ({
                       className="flex items-center transition-all duration-normal text-gray-700 hover:text-blue-400"
                     >
                       <Icon name={icon} appearance={{ size: iconSize }} />
-                      <p className="ml-2">{formatMessage({ id: userName })}</p>
+                      <p className="ml-2">{formatMessage({ id: itemName })}</p>
                     </Link>
                   ) : (
                     <button
                       type="button"
                       className={styles.button}
-                      onClick={() => setActiveSubmenu(userName)}
-                      aria-expanded={activeSubmenu === userName}
+                      onClick={() => setActiveSubmenu(itemName)}
+                      aria-expanded={activeSubmenu === itemName}
                       aria-controls="actionsWithVisibility"
                     >
                       <span className="flex items-center shrink-0">
                         <Icon name={icon} appearance={{ size: iconSize }} />
                         <p className="ml-2">
-                          {formatMessage({ id: userName })}
+                          {formatMessage({ id: itemName })}
                         </p>
                       </span>
                       <Icon
