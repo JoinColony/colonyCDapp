@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { FC, PropsWithChildren, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
 import { TeamReputationSummaryProps } from './types';
@@ -6,7 +6,7 @@ import Card from '~v5/shared/Card';
 import Icon from '~shared/Icon';
 import { TextButton } from '~v5/shared/Button';
 import TitleLabel from '~v5/shared/TitleLabel';
-import { setTeamColor } from './utils';
+import TeamReputationSummaryRow from './partials/TeamReputationSummaryRow';
 
 const displayName = 'v5.common.TeamReputationSummary';
 
@@ -15,16 +15,24 @@ const TeamReputationSummary: FC<
 > = ({ teams }) => {
   const { formatMessage } = useIntl();
 
-  const totalPoints = teams.reduce((acc, object) => {
-    return acc + object.points;
-  }, 0);
+  const totalPoints = useMemo(
+    () =>
+      teams.reduce((acc, object) => {
+        return acc + object.points;
+      }, 0),
+    [teams],
+  );
 
-  const summedOtherPoints = teams.reduce((acc, object, index) => {
-    if (index >= 5) {
-      return acc + object.points;
-    }
-    return acc;
-  }, 0);
+  const summedOtherPoints = useMemo(
+    () =>
+      teams.reduce((acc, object, index) => {
+        if (index >= 5) {
+          return acc + object.points;
+        }
+        return acc;
+      }, 0),
+    [teams],
+  );
 
   return (
     <Card>
@@ -51,15 +59,11 @@ const TeamReputationSummary: FC<
               ({ id, color, name, points }, index) =>
                 index < 5 && (
                   <li key={id} className="flex items-center text-sm mb-3">
-                    <span className="flex items-center flex-grow">
-                      <span
-                        className={`flex rounded-full w-[0.625rem] h-[0.625rem] mr-2 ${setTeamColor(
-                          color,
-                        )}`}
-                      />
-                      {name}
-                    </span>
-                    <span className="font-medium">{points}</span>
+                    <TeamReputationSummaryRow
+                      color={color}
+                      name={name}
+                      points={points}
+                    />
                   </li>
                 ),
             )}
