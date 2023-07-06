@@ -24,7 +24,7 @@ import { isAddress } from '~utils/web3';
 
 import { StatusText, AddExistingSafeProps } from '../types';
 
-import CopyableData from './CopyableData';
+import CopyableData from './CopyableData/CopyableData';
 
 import defaultStyles from '../AddExistingSafeDialogForm.css';
 import styles from './ConnectSafe.css';
