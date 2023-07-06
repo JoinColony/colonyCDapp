@@ -117,19 +117,19 @@ const ConnectSafe = ({
 >) => {
   const {
     watch,
-    formState: { isSubmitting, errors, touchedFields },
-    setError,
+    formState: { isSubmitting, errors, dirtyFields },
+    clearErrors,
   } = useFormContext();
   const { chainId, contractAddress, moduleContractAddress } = watch();
   const [isLoadingModule, setIsLoadingModule] = loadingModuleState;
   const { moduleContractAddress: moduleContractAddressError } = errors;
-  const { moduleContractAddress: moduleContractAddressTouched } = touchedFields;
+  const { moduleContractAddress: moduleContractAddressDirtied } = dirtyFields;
 
   useEffect(() => {
     if (isLoadingModule && moduleContractAddressError) {
-      setError('moduleContractAddress', { message: '' });
+      clearErrors('moduleContractAddress');
     }
-  }, [isLoadingModule, moduleContractAddressError, setError]);
+  }, [isLoadingModule, moduleContractAddressError, clearErrors]);
 
   const selectedChain = SUPPORTED_SAFE_NETWORKS.find(
     (network) => network.chainId === Number(chainId),
@@ -144,7 +144,7 @@ const ConnectSafe = ({
   const getStatusText = (): StatusText | Record<string, never> => {
     const isValidAddress =
       !moduleContractAddressError &&
-      moduleContractAddressTouched &&
+      moduleContractAddressDirtied &&
       isAddress(moduleContractAddress);
 
     if (isLoadingModule) {
@@ -242,7 +242,7 @@ const ConnectSafe = ({
               }
             }}
             onBlur={(e) => {
-              if (!moduleContractAddressTouched && isAddress(e.target.value)) {
+              if (!moduleContractAddressDirtied && isAddress(e.target.value)) {
                 setIsLoadingModule(true);
               }
             }}
@@ -262,7 +262,11 @@ const ConnectSafe = ({
           text={{ id: 'button.continue' }}
           type="submit"
           loading={isSubmitting}
-          disabled={!!errors.moduleContractAddress || isLoadingModule}
+          disabled={
+            !!errors.moduleContractAddress ||
+            !moduleContractAddressDirtied ||
+            isLoadingModule
+          }
           style={{ width: defaultStyles.wideButton }}
         />
       </DialogSection>
