@@ -45,5 +45,3 @@ jobs:
     - run: npm run stylelint:ci
     - run: npm run test:ci
     - run: npm run webpack:build:prod
-      env:
-        CI: true
