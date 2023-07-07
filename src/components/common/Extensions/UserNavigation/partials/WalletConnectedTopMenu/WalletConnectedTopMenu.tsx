@@ -3,11 +3,10 @@ import { useIntl } from 'react-intl';
 
 import Link from '~v5/shared/Link';
 import Icon from '~shared/Icon';
-import Avatar from '~v5/shared/Avatar';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import { WalletConnectedTopMenuProps } from './types';
 import NavigationTools from '~common/Extensions/NavigationTools';
-import CopyWalletAddressButton from '~v5/shared/CopyWalletAddressButton';
+import { useMobile } from '~hooks';
+import UserAvatarDetails from '~v5/shared/UserAvatarDetails';
 
 const displayName =
   'common.Extensions.UserNavigation.partials.WalletConnectedTopMenu';
@@ -22,8 +21,10 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
   avatar,
   user,
 }) => {
-  const { handleClipboardCopy } = useCopyToClipboard(walletAddress || '');
   const { formatMessage } = useIntl();
+  const isMobile = useMobile();
+
+  const iconSize = isMobile ? 'small' : 'extraTiny';
 
   return (
     <>
@@ -36,27 +37,18 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
           user={user}
         />
       </div>
-      <div className="w-full pb-6 mb-6 border-b border-b-gray-200 sm:pb-5 sm:mb-5">
-        <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center mb-6">
-          <Avatar size="m" title={userName} avatar={avatar} />
-          <div>
-            <div className="flex items-center mb-0.5">
-              <p className="heading-4">{userName}</p>
-              {isVerified && (
-                <span className="ml-2 flex shrink-0 text-blue-400">
-                  <Icon name="verified" appearance={{ size: 'tiny' }} />
-                </span>
-              )}
-            </div>
-            <CopyWalletAddressButton
-              handleClipboardCopy={handleClipboardCopy}
-              walletAddress={walletAddress || ''}
-            />
-          </div>
+      <div className="w-full pb-4 mb-6 border-b border-b-gray-200 sm:pb-3 sm:mb-5">
+        <div className="mb-4 sm:mb-2">
+          <UserAvatarDetails
+            userName={userName}
+            walletAddress={walletAddress}
+            avatar={avatar}
+            isVerified={isVerified}
+          />
         </div>
-        <Link to="/" className="flex items-center">
-          <Icon name="user-circle-gear" appearance={{ size: 'tiny' }} />
-          <p className="ml-2 heading-5 sm:font-normal sm:text-md">
+        <Link to="/" className="navigation-link">
+          <Icon name="user-circle-gear" appearance={{ size: iconSize }} />
+          <p className="ml-2">
             {formatMessage({ id: 'userMenu.menageTitle' })}
           </p>
         </Link>

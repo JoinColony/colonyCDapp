@@ -9,7 +9,6 @@ import Icon from '~shared/Icon';
 import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
 import styles from './UserMenu.module.css';
 import PopoverBase from '~v5/shared/PopoverBase';
-import TitledContent from '~common/Extensions/TitledContent';
 import WalletConnectedTopMenu from '../WalletConnectedTopMenu';
 import Link from '~v5/shared/Link';
 import UserSubmenu from '../UserSubmenu';
@@ -35,7 +34,7 @@ const UserMenu: FC<UserMenuProps> = ({
   const { name, profile } = user || {};
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 
-  const iconSize = isMobile ? 'small' : 'extraTiny';
+  const iconName = isMobile ? 'caret-down' : 'caret-right';
 
   return (
     <PopoverBase
@@ -109,61 +108,51 @@ const UserMenu: FC<UserMenuProps> = ({
                 {formatMessage({ id: 'help' })}
               </Button>
             </div>
-            <div className="w-full pb-6 mb-6 border-b border-b-gray-200 sm:pb-5 sm:mb-5">
+            <div className="w-full pb-4 mb-6 border-b border-b-gray-200 sm:pb-3 sm:mb-5">
               <Button mode="quinary" isFullSize onClick={connectWallet}>
                 {formatMessage({ id: 'connectWallet' })}
               </Button>
             </div>
           </>
         )}
-        <div className="w-full pb-6 mb-6 border-b border-b-gray-200 sm:pb-5 sm:mb-5">
-          <TitledContent title={{ id: 'userMenu.optionsTitle' }}>
-            <ul className="text-lg font-semibold sm:font-normal sm:text-md text-left">
-              {userMenuItems.map(({ id, link, icon, name: itemName }) => (
-                <li className="mb-4 last:mb-0" key={id}>
-                  {link ? (
-                    <Link
-                      to={link}
-                      className="flex items-center transition-all duration-normal text-gray-700 hover:text-blue-400"
-                    >
-                      <Icon name={icon} appearance={{ size: iconSize }} />
+        <div className="w-full pb-4 mb-6 border-b border-b-gray-200 sm:pb-3">
+          <TitleLabel text={formatMessage({ id: 'userMenu.optionsTitle' })} />
+          <ul className="text-left">
+            {userMenuItems.map(({ id, link, icon, name: itemName }) => (
+              <li key={id} className="mb-2 last:mb-0 sm:mb-0">
+                {link ? (
+                  <Link to={link} className="navigation-link">
+                    <Icon name={icon} appearance={{ size: 'tiny' }} />
+                    <p className="ml-2">{formatMessage({ id: itemName })}</p>
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    className="navigation-link"
+                    onClick={() => setActiveSubmenu(itemName)}
+                    aria-expanded={activeSubmenu === itemName}
+                    aria-controls="actionsWithVisibility"
+                  >
+                    <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
+                      <Icon name={icon} appearance={{ size: 'tiny' }} />
                       <p className="ml-2">{formatMessage({ id: itemName })}</p>
-                    </Link>
-                  ) : (
-                    <button
-                      type="button"
-                      className={styles.button}
-                      onClick={() => setActiveSubmenu(itemName)}
-                      aria-expanded={activeSubmenu === itemName}
-                      aria-controls="actionsWithVisibility"
-                    >
-                      <span className="flex items-center shrink-0">
-                        <Icon name={icon} appearance={{ size: iconSize }} />
-                        <p className="ml-2">
-                          {formatMessage({ id: itemName })}
-                        </p>
-                      </span>
-                      <Icon
-                        name="caret-right"
-                        appearance={{ size: 'extraTiny' }}
-                      />
-                    </button>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </TitledContent>
+                    </span>
+                    <Icon name={iconName} appearance={{ size: 'extraTiny' }} />
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
         {isWalletConnected && (
-          <div className="w-full mb-6 sm:mb-5">
-            <TitledContent title={{ id: 'userMenu.other' }}>
-              <Link to="/" className={clsx(styles.link, 'heading-5')}>
-                <Icon name="plugs" appearance={{ size: iconSize }} />
-                <p className="ml-2">
-                  {formatMessage({ id: 'userMenu.disconnectWalletTitle' })}
-                </p>
-              </Link>
-            </TitledContent>
+          <div className="w-full mb-4 sm:mb-3">
+            <TitleLabel text={formatMessage({ id: 'userMenu.other' })} />
+            <Link to="/" className="navigation-link">
+              <Icon name="plugs" appearance={{ size: 'tiny' }} />
+              <p className="ml-2">
+                {formatMessage({ id: 'userMenu.disconnectWalletTitle' })}
+              </p>
+            </Link>
           </div>
         )}
         <ThemeSwitcher />

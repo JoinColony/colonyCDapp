@@ -86,6 +86,10 @@
   .inner {
     @apply px-6 w-full max-w-[77.375rem] mx-auto;
   }
+
+  .navigation-link {
+    @apply text-gray-700 w-full flex items-center transition-all duration-normal py-2 heading-5 hover:text-blue-400 sm:font-normal sm:text-md sm:text-gray-900;
+  }
 }
 
 .rts___tabs {
