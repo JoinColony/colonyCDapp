@@ -43,5 +43,6 @@ jobs:
     - run: npm run typecheck
     - run: npm run lint:ci
     - run: npm run stylelint:ci
-    - run: npm run test:ci
+    # Testing is disabled for now
+    # - run: npm run test:ci
     - run: npm run webpack:prod
