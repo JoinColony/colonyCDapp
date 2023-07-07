@@ -11,7 +11,7 @@ const displayName = 'v5.shared.Filter.FilterButton';
 const FilterButton: FC<FilterButtonProps> = ({
   isOpen,
   selectedFilterNumber,
-  ref,
+  setTriggerRef,
   onClick,
 }) => {
   const { formatMessage } = useIntl();
@@ -23,7 +23,7 @@ const FilterButton: FC<FilterButtonProps> = ({
       className={clsx(styles.filterButton, {
         'border border-blue-400 text-blue-400': isOpen,
       })}
-      ref={ref}
+      ref={setTriggerRef}
       onClick={onClick}
     >
       <Icon name="funnel-simple" appearance={{ size: 'tiny' }} />

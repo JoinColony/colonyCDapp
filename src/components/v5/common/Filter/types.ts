@@ -1,8 +1,3 @@
-export type FilterProps = {
-  isOpen: boolean;
-  setOpen: () => void;
-};
-
 export type FilterOptionsProps = {
   options: FilterOption[];
 };
