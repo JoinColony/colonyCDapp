@@ -27,7 +27,7 @@
 }
 
 .senary {
-  @apply w-full flex items-center justify-start py-2 px-4 hover:bg-gray-50 hover:font-medium transition-all duration-normal rounded;
+  @apply w-full justify-start py-2 px-4 hover:bg-gray-50 hover:font-medium rounded text-md;
 }
 
 /* State button */
