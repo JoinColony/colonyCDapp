@@ -6,6 +6,7 @@ import { SelectProps } from './types';
 import styles from './Select.module.css';
 import Icon from '~shared/Icon';
 import NavLink from '~v5/shared/NavLink';
+import Avatar from '~v5/shared/Avatar';
 
 const displayName = 'v5.common.Fields.Select';
 
@@ -13,9 +14,14 @@ const Select = <T extends any[]>({
   list,
   selectedElement,
   handleChange,
+  placeholderText,
+  isLoading,
+  isListRelative,
+  showAvatar,
 }: SelectProps<T>) => {
   const { formatMessage } = useIntl();
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
+  const [isPlaceholder, setIsPlaceholder] = useState(!!placeholderText);
   const toggleOptions = () => {
     setIsOptionsOpen(!isOptionsOpen);
   };
@@ -47,23 +53,36 @@ const Select = <T extends any[]>({
         break;
       case 'ArrowUp':
         event.preventDefault();
-        handleChange(
-          selectedElement - 1 >= 0 ? selectedElement - 1 : list.length - 1,
-        );
+        if (selectedElement) {
+          handleChange(
+            selectedElement - 1 >= 0 ? selectedElement - 1 : list.length - 1,
+          );
+        }
         break;
       case 'ArrowDown':
         event.preventDefault();
-        handleChange(
-          selectedElement === list.length - 1 ? 0 : selectedElement + 1,
-        );
+        if (selectedElement) {
+          handleChange(
+            selectedElement === list.length - 1 ? 0 : selectedElement + 1,
+          );
+        }
         break;
       default:
         break;
     }
   };
 
-  const selectedItem = list.find((item) => item.id === selectedElement);
-  const filteredList = list.filter((item) => item.value !== selectedItem.value);
+  const selectedItem =
+    !isLoading && list.find((item) => item.id === selectedElement);
+  const filteredList =
+    !isLoading &&
+    selectedItem &&
+    list.filter((item) => item.value !== selectedItem.value);
+  const optionsList = isPlaceholder ? list : filteredList;
+
+  const labelText = isPlaceholder
+    ? placeholderText && formatMessage(placeholderText)
+    : selectedItem?.label;
 
   return (
     <div className={styles.container}>
@@ -80,7 +99,17 @@ const Select = <T extends any[]>({
             : 'ariaLabel.openDropdown',
         })}
       >
-        {selectedItem?.label}
+        <div className="flex items-center">
+          {!isLoading && showAvatar && !isPlaceholder && (
+            <div className="mr-2 flex">
+              <Avatar
+                avatar={selectedItem?.avatar || ''}
+                placeholderIcon="circle-person"
+              />
+            </div>
+          )}
+          {isLoading ? formatMessage({ id: 'loading.data' }) : labelText}
+        </div>
         <span
           className={clsx(
             'flex shrink-0 text-gray-400 transition-transform duration-normal',
@@ -93,43 +122,61 @@ const Select = <T extends any[]>({
           <Icon name="caret-down" appearance={{ size: 'extraTiny' }} />
         </span>
       </button>
-      <ul
-        className={`${styles.options} ${isOptionsOpen ? styles.show : ''}`}
-        tabIndex={-1}
-        role="listbox"
-        aria-activedescendant={list[selectedElement].id.toString()}
-        onKeyDown={(event) => handleListKeyDown(event)}
-      >
-        {filteredList?.map((option) => (
-          <li
-            key={option.id}
-            className={clsx(styles.li, {
-              'text-blue-400 font-medium': selectedElement === option.id,
-              'text-gray-900': selectedElement !== option.id,
-            })}
-            id={option.id.toString()}
-            role="option"
-            aria-selected={selectedElement === option.id}
-            tabIndex={0}
-            onKeyDown={handleKeyDown(option.id)}
-            onClick={() => {
-              handleChange(option.id);
-              setIsOptionsOpen(false);
-            }}
-          >
-            {option.linkTo ? (
-              <NavLink
-                className="flex items-center w-full text-inherit py-2"
-                to={option.linkTo}
+      {!isLoading && (
+        <ul
+          className={`${isListRelative && 'relative'} ${styles.options} ${
+            isOptionsOpen ? styles.show : ''
+          }`}
+          tabIndex={-1}
+          role="listbox"
+          aria-activedescendant={
+            selectedElement && list[selectedElement].id.toString()
+          }
+          onKeyDown={(event) => handleListKeyDown(event)}
+        >
+          {optionsList &&
+            optionsList.map((option) => (
+              <li
+                key={option.id}
+                className={clsx(styles.li, {
+                  'text-blue-400 font-medium': selectedElement === option.id,
+                  'text-gray-900': selectedElement !== option.id,
+                })}
+                id={option.id.toString()}
+                role="option"
+                aria-selected={selectedElement === option.id}
+                tabIndex={0}
+                onKeyDown={handleKeyDown(option.id)}
+                onClick={() => {
+                  handleChange(option.id);
+                  setIsOptionsOpen(false);
+                  setIsPlaceholder(false);
+                }}
               >
-                {option.label}
-              </NavLink>
-            ) : (
-              <span className="py-2">{option.label}</span>
-            )}
-          </li>
-        ))}
-      </ul>
+                {option.linkTo ? (
+                  <NavLink
+                    className="flex items-center w-full text-inherit py-2"
+                    to={option.linkTo}
+                  >
+                    {option.label}
+                  </NavLink>
+                ) : (
+                  <div className="py-2 flex items-center">
+                    {showAvatar && (
+                      <div className="mr-2 flex">
+                        <Avatar
+                          avatar={option?.avatar || ''}
+                          placeholderIcon="circle-person"
+                        />
+                      </div>
+                    )}
+                    {option.label}
+                  </div>
+                )}
+              </li>
+            ))}
+        </ul>
+      )}
     </div>
   );
 };

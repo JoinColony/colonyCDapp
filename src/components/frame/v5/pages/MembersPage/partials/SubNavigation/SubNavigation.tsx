@@ -5,10 +5,11 @@ import Tooltip from '~shared/Extensions/Tooltip';
 import Icon from '~shared/Icon';
 import { useMembersSubNavigation } from './hooks';
 import styles from './SubNavigation.module.css';
+import { SubNavigationProps } from './types';
 
 const displayName = 'pages.MembersPage.partials.SubNavigation';
 
-const SubNavigation: FC = () => {
+const SubNavigation: FC<SubNavigationProps> = ({ onManageMembersClick }) => {
   const { handleClick, isCopyTriggered } = useMembersSubNavigation();
   const { formatMessage } = useIntl();
 
@@ -46,7 +47,11 @@ const SubNavigation: FC = () => {
         </button>
       </li>
       <li>
-        <button type="button" className={styles.navigationButton}>
+        <button
+          type="button"
+          className={styles.navigationButton}
+          onClick={onManageMembersClick}
+        >
           <Icon name="pencil" appearance={{ size: 'small' }} />
           <span className="text-md ml-2">
             {formatMessage({ id: 'members.subnav.manage' })}
