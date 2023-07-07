@@ -61,6 +61,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
               [styles.secondarySolid]: mode === 'secondarySolid',
               [styles.secondaryOutline]: mode === 'secondaryOutline',
               [styles.quinary]: mode === 'quinary',
+              [styles.senary]: mode === 'senary',
               [styles.tertiary]: mode === 'tertiary',
               [styles.completed]: mode === 'completed',
               'pointer-events-none': disabled,

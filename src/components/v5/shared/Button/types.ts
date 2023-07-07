@@ -10,6 +10,7 @@ export type ButtonMode =
   | 'secondaryOutline'
   | 'tertiary'
   | 'quinary'
+  | 'senary'
   | 'completed';
 
 export type ButtonSize = 'default' | 'extraSmall' | 'small';
@@ -29,7 +30,7 @@ export interface CommonButtonProps
   setTriggerRef?: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
 }
 
-export type IconSize = 'extraTiny' | 'tiny';
+export type IconSize = 'extraTiny' | 'tiny' | 'small';
 
 export interface ButtonProps extends CommonButtonProps {
   mode?: ButtonMode;
