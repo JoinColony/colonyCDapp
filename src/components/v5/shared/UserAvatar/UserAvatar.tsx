@@ -47,7 +47,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
       </span>
       {userName && (
         <span
-          className={clsx('block font-medium', {
+          className={clsx('block font-medium ml-2.5', {
             'text-sm ml-1': size === 'xxs',
             'text-md ml-2': size === 'xs',
           })}

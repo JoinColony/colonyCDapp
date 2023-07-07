@@ -6,5 +6,5 @@ export interface EmptyContentProps {
   icon: string;
   withBorder?: boolean;
   onClick?: () => void;
-  buttonText?: string;
+  buttonText?: MessageDescriptor | string;
 }
