@@ -22,10 +22,10 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
     <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center">
       <Avatar size="m" title={userName} avatar={avatar} />
       <div>
-        <div className="flex items-center mb-0.5">
-          <p className="heading-4">{userName}</p>
+        <div className="grid grid-cols-[auto,1fr] gap-x-2 items-center mb-0.5">
+          <p className="heading-4 truncate">{userName}</p>
           {isVerified && (
-            <span className="ml-2 flex shrink-0 text-blue-400">
+            <span className="flex shrink-0 text-blue-400">
               <Icon name="verified" appearance={{ size: 'tiny' }} />
             </span>
           )}

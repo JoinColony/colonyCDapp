@@ -25,7 +25,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
     <span
       className={clsx(
         styles.main,
-        `inline-flex ${userStatus && 'gap-2'} items-center text-current`,
+        `${userStatus ? 'gap-2' : ''} items-center text-current`,
       )}
     >
       <span
@@ -46,14 +46,14 @@ const UserAvatar: FC<UserAvatarProps> = ({
         />
       </span>
       {userName && (
-        <span
-          className={clsx('block font-medium', {
+        <p
+          className={clsx('font-medium truncate', {
             'text-sm ml-1': size === 'xxs',
             'text-md ml-2': size === 'xs',
           })}
         >
           {userName}
-        </span>
+        </p>
       )}
     </span>
   );
