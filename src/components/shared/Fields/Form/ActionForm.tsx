@@ -5,13 +5,13 @@ import { ActionTypes, ActionTypeString } from '~redux';
 import { ActionTransformFnType, getFormAction } from '~utils/actions';
 import { useAsyncFunction } from '~hooks';
 
-import HookForm, {
+import Form, {
   CustomSubmitErrorHandler,
   CustomSubmitHandler,
   HookFormProps,
-} from './HookForm';
+} from './Form';
 
-const displayName = 'Form.ActionHookForm';
+const displayName = 'Form.ActionForm';
 
 export type OnSuccess<V extends FieldValues> = (
   values: V,
@@ -46,7 +46,7 @@ interface Props<V extends Record<string, any>>
   transform?: ActionTransformFnType;
 }
 
-const ActionHookForm = <V extends Record<string, any>>({
+const ActionForm = <V extends Record<string, any>>({
   onSuccess,
   onError,
   onSubmitError,
@@ -73,11 +73,9 @@ const ActionHookForm = <V extends Record<string, any>>({
     }
   };
 
-  return (
-    <HookForm {...props} onSubmit={handleSubmit} onError={onSubmitError} />
-  );
+  return <Form {...props} onSubmit={handleSubmit} onError={onSubmitError} />;
 };
 
-ActionHookForm.displayName = displayName;
+ActionForm.displayName = displayName;
 
-export default ActionHookForm;
+export default ActionForm;

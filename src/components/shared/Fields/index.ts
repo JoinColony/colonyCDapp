@@ -1,5 +1,5 @@
 export { HookFormCheckbox } from './Checkbox';
-export { HookForm, ActionHookForm, OnSuccess } from './Form';
+export { Form, ActionForm, OnSuccess } from './Form';
 export { default as FormStatus } from './FormStatus';
 export { default as FieldSet } from './FieldSet';
 export { InputComponentAppearance } from './Input';

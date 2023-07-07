@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
-import { ActionHookForm as Form } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 
 import { ActionTypes } from '~redux';
 import { useAppContext, WizardDialogType } from '~hooks';
@@ -47,7 +47,7 @@ const RecoveryModeDialog = ({
 
   return (
     <Dialog cancel={cancel}>
-      <Form<FormValues>
+      <ActionForm<FormValues>
         defaultValues={{
           annotation: '',
         }}
@@ -64,7 +64,7 @@ const RecoveryModeDialog = ({
             enabledExtensionData={enabledExtensionData}
           />
         )}
-      </Form>
+      </ActionForm>
     </Dialog>
   );
 };

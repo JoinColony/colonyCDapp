@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import Button from '~shared/Button';
-import { HookForm as Form } from '~shared/Fields';
+import { Form } from '~shared/Fields';
 
 import Filter from './Filter';
 import { filterItems, MemberType, VerificationType } from './filtersConfig';

@@ -15,7 +15,7 @@ import { ActionTypes } from '~redux';
 import { WizardDialogType, useAppContext } from '~hooks';
 import { useGetMembersForColonyQuery } from '~gql';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
-import { ActionHookForm as Form } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 
 import PermissionManagementForm from './PermissionManagementForm';
 import { getPermissionManagementDialogPayload } from './helpers';
@@ -117,7 +117,7 @@ const PermissionManagementDialog = ({
 
   return (
     <Dialog cancel={cancel}>
-      <Form<FormValues>
+      <ActionForm<FormValues>
         defaultValues={{
           forceAction: false,
           user: defaultUser,
@@ -139,7 +139,7 @@ const PermissionManagementDialog = ({
           handleIsForceChange={setIsForce}
           isForce={isForce}
         />
-      </Form>
+      </ActionForm>
     </Dialog>
   );
 };

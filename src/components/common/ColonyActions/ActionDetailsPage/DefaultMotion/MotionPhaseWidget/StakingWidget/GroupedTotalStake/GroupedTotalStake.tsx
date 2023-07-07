@@ -1,7 +1,7 @@
 import React from 'react';
 import { object, string, InferType } from 'yup';
 
-import { HookForm as Form } from '~shared/Fields';
+import { Form } from '~shared/Fields';
 import { StakeSide } from '~types/motions';
 
 import { useStakingWidgetContext } from '../StakingWidgetProvider';

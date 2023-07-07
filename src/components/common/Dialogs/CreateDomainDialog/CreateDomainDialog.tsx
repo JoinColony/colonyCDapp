@@ -6,7 +6,7 @@ import { defineMessages } from 'react-intl';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
-import { ActionHookForm as Form } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 
 import { DomainColor } from '~types';
 import { ActionTypes } from '~redux/index';
@@ -70,7 +70,7 @@ const CreateDomainDialog = ({
 
   return (
     <Dialog cancel={cancel}>
-      <Form<FormValues>
+      <ActionForm<FormValues>
         defaultValues={{
           forceAction: false,
           teamName: '',
@@ -91,7 +91,7 @@ const CreateDomainDialog = ({
           handleIsForceChange={setIsForce}
           isForce={isForce}
         />
-      </Form>
+      </ActionForm>
     </Dialog>
   );
 };

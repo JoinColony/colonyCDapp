@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { WizardStepProps } from '~shared/Wizard';
-import HookForm from '~shared/Fields/Form/HookForm';
+import Form from '~shared/Fields/Form/Form';
 
 import {
   FormValues,
@@ -34,7 +34,7 @@ const StepUserEmail = ({
   wizardForm: { initialValues: defaultValues },
 }: Props) => {
   return (
-    <HookForm<UserWizardStep1>
+    <Form<UserWizardStep1>
       validationSchema={validationSchema}
       defaultValues={defaultValues}
       onSubmit={nextStep}
@@ -55,7 +55,7 @@ const StepUserEmail = ({
           />
         );
       }}
-    </HookForm>
+    </Form>
   );
 };
 StepUserEmail.displayName = displayName;

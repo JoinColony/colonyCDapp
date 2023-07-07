@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { object, number, InferType } from 'yup';
 import { BigNumber } from 'ethers';
 
-import { ActionHookForm as ActionForm, OnSuccess } from '~shared/Fields';
+import { ActionForm, OnSuccess } from '~shared/Fields';
 import { ActionTypes } from '~redux';
 
 import { MotionState } from '~utils/colonyMotions';

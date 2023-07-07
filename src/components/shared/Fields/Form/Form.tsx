@@ -10,7 +10,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Schema } from 'yup';
 
-const displayName = 'HookForm';
+const displayName = 'Form';
 
 export type CustomSubmitHandler<FormData extends FieldValues> = (
   data: FormData,
@@ -37,7 +37,7 @@ export interface HookFormProps<FormData extends FieldValues> {
   resetOnSubmit?: boolean;
 }
 
-const HookForm = <FormData extends FieldValues>({
+const Form = <FormData extends FieldValues>({
   children,
   defaultValues,
   mode = 'onTouched',
@@ -86,5 +86,5 @@ const HookForm = <FormData extends FieldValues>({
   );
 };
 
-HookForm.displayName = displayName;
-export default HookForm;
+Form.displayName = displayName;
+export default Form;

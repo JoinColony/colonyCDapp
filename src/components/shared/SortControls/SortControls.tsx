@@ -1,7 +1,7 @@
 import { defineMessages } from '@formatjs/intl';
 import React from 'react';
 
-import { HookForm as Form, HookFormSelect as Select } from '~shared/Fields';
+import { Form, HookFormSelect as Select } from '~shared/Fields';
 import { SortDirection } from '~types';
 
 import { SortSelectOptions } from './sortControlsConfig';

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { object, string, InferType } from 'yup';
 
 import { IconButton } from '~shared/Button';
-import { ActionHookForm as ActionForm } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 
 import { getMainClasses } from '~utils/css';
 import { withId } from '~utils/actions';

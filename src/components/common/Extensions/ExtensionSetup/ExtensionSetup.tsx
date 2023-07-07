@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 import { useColonyContext } from '~hooks';
-import { ActionHookForm as ActionForm } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 import Heading from '~shared/Heading';
 import { InstalledExtensionData } from '~types';
 import { mapPayload, mergePayload, pipe } from '~utils/actions';

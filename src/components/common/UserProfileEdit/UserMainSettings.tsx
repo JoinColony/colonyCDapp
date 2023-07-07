@@ -4,7 +4,7 @@ import { string, object, InferType } from 'yup';
 
 import {
   FieldSet,
-  HookForm as Form,
+  Form,
   HookFormInput as Input,
   HookFormTextArea as Textarea,
 } from '~shared/Fields';

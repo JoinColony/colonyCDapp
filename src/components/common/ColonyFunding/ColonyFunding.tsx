@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { HookForm as Form, HookFormSelect as Select } from '~shared/Fields';
+import { Form, HookFormSelect as Select } from '~shared/Fields';
 import Heading from '~shared/Heading';
 import ColonyFundingBanner from '~common/ColonyFundingBanner';
 import ColonyFundingMenu from '~common/ColonyFundingMenu';
