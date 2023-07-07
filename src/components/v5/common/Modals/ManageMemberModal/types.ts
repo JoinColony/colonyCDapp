@@ -5,3 +5,9 @@ export interface ManageMemberModalProps {
   onClose: () => void;
   user?: User;
 }
+
+export interface ManageMemberListProps {
+  id: number;
+  label: string;
+  value: string;
+}

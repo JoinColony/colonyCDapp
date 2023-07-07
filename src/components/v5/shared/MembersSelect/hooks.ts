@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useGetMembersForColonyQuery } from '~gql';
 import { Address, Member, MemberUser } from '~types';
 import { notMaybe } from '~utils/arrays';
@@ -12,18 +13,24 @@ export const useGetColonyMembers = (colonyAddress?: Address | null) => {
     },
   });
 
-  const watchers = data?.getMembersForColony?.watchers ?? [];
-  const contributors = data?.getMembersForColony?.contributors ?? [];
-  const allMembers: Member[] = [...watchers, ...contributors];
-  const members = allMembers
-    .map(({ user }) => user)
-    .filter<MemberUser>(notMaybe)
-    .map(({ name, profile }, index) => ({
-      value: name,
-      label: name,
-      avatar: profile?.avatar,
-      id: index,
-    }));
+  const members = useMemo(() => {
+    const watchers = data?.getMembersForColony?.watchers ?? [];
+    const contributors = data?.getMembersForColony?.contributors ?? [];
+    const allMembers: Member[] = [...watchers, ...contributors];
+
+    return allMembers
+      .map(({ user }) => user)
+      .filter<MemberUser>(notMaybe)
+      .map(({ name, profile }, index) => ({
+        value: name,
+        label: name,
+        avatar: profile?.avatar,
+        id: index,
+      }));
+  }, [
+    data?.getMembersForColony?.contributors,
+    data?.getMembersForColony?.watchers,
+  ]);
 
   return {
     members,

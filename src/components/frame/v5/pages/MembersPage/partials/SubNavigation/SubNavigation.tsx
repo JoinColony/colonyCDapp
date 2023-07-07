@@ -6,7 +6,7 @@ import { useMembersSubNavigation } from './hooks';
 import { SubNavigationProps } from './types';
 import Button from '~v5/shared/Button';
 
-const displayName = 'pages.MembersPage.partials.SubNavigation';
+const displayName = 'v5.pages.MembersPage.partials.SubNavigation';
 
 const SubNavigation: FC<SubNavigationProps> = ({ onManageMembersClick }) => {
   const { handleClick, isCopyTriggered } = useMembersSubNavigation();

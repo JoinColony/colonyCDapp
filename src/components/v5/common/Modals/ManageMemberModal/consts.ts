@@ -1,4 +1,6 @@
-export const manageMemberActions = [
+import { ManageMemberListProps } from './types';
+
+export const manageMemberActions: ManageMemberListProps[] = [
   {
     id: 0,
     label: 'Ban this member from chat access',
