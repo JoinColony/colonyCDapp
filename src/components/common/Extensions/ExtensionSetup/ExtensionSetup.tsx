@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { InferType } from 'yup';
 
 import { useColonyContext } from '~hooks';
 import { ActionForm } from '~shared/Fields';
@@ -74,12 +75,13 @@ const ExtensionSetup = ({
     return <Navigate to={`/colony/${colony.name}/extensions/${extensionId}`} />;
   }
 
+  const schema = createExtensionSetupValidationSchema(initializationParams);
+  type FormValues = InferType<typeof schema>;
+
   return (
-    <ActionForm<any>
+    <ActionForm<FormValues>
       defaultValues={initialValues}
-      validationSchema={createExtensionSetupValidationSchema(
-        initializationParams,
-      )}
+      validationSchema={schema}
       actionType={ActionTypes.EXTENSION_ENABLE}
       onSuccess={handleFormSuccess}
       transform={transform}

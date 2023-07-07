@@ -24,7 +24,7 @@ export const createExtensionSetupValidationSchema = (
       [param.paramName]: param.validation,
     };
   }, {});
-  return object().shape(validationFields);
+  return object().shape(validationFields).defined();
 };
 
 export const mapExtensionActionPayload = (
