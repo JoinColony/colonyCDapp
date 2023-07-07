@@ -39,7 +39,7 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
             <div>
               <div className="flex items-center justify-between sm:justify-start">
                 <h5 className="flex items-center text-1 mr-4 content-end">
-                  {formatMessage(title)}{' '}
+                  {formatMessage(title)}
                   <span className="block text-xs text-gray-600 ml-2">
                     v{version}
                   </span>

@@ -18,7 +18,7 @@ const UserSubmenu: FC<UserSubmenuProps> = ({ submenuId }) => (
               appearance={{ size: 'small' }}
               className="navigation-link"
             />
-            <p className="ml-2 ">{label}</p>{' '}
+            <p className="ml-2 ">{label}</p>
           </span>
         </NavLink>
       </li>
