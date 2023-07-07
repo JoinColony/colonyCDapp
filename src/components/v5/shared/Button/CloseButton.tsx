@@ -18,7 +18,7 @@ const CloseButton: FC<CloseButtonProps> = ({
   ariaLabel,
   iconSize = 'extraTiny',
   setTriggerRef,
-  className = 'text-gray-400',
+  className = 'text-gray-400 hover:text-gray-600',
   ...rest
 }) => {
   const { formatMessage } = useIntl();
