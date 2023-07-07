@@ -42,36 +42,14 @@ const UserMenu: FC<UserMenuProps> = ({
       tooltipProps={tooltipProps}
       withTooltipStyles
       classNames={clsx(styles.userMenuPopup, 'shadow-default', {
-        'w-full border-none shadow-none': isMobile,
-        'w-[20.125rem]': !isMobile,
+        'border-none shadow-none': isMobile,
+        'max-w-[20.125rem]': !isMobile,
       })}
     >
       <div
-        className={clsx('absolute inset-0 p-6 transition-transform', {
-          'translate-x-0': activeSubmenu,
-          'translate-x-full': !activeSubmenu,
-        })}
-      >
-        <button
-          type="button"
-          aria-label={formatMessage({ id: 'ariaLabel.backToMainMenu' })}
-          className={clsx(styles.buttonBack, 'group text-4')}
-          onClick={() => setActiveSubmenu(null)}
-        >
-          <Icon name="caret-left" appearance={{ size: 'extraExtraTiny' }} />
-          {activeSubmenu && (
-            <TitleLabel
-              className="ml-2"
-              text={formatMessage({ id: activeSubmenu })}
-            />
-          )}
-        </button>
-        {activeSubmenu && <UserSubmenu submenuId={activeSubmenu} />}
-      </div>
-      <div
         className={clsx('transition-transform', {
           '-translate-x-0': !activeSubmenu,
-          '-translate-x-[100vw]': activeSubmenu,
+          '-translate-x-[100vw] absolute': activeSubmenu,
         })}
       >
         {isWalletConnected && (
@@ -156,6 +134,31 @@ const UserMenu: FC<UserMenuProps> = ({
           </div>
         )}
         <ThemeSwitcher />
+      </div>
+      <div
+        className={clsx('transition-transform', {
+          'translate-x-0': activeSubmenu,
+          'translate-x-full': !activeSubmenu,
+        })}
+      >
+        {activeSubmenu && (
+          <>
+            <button
+              type="button"
+              aria-label={formatMessage({ id: 'ariaLabel.backToMainMenu' })}
+              className={clsx(styles.buttonBack, 'group text-4')}
+              onClick={() => setActiveSubmenu(null)}
+            >
+              <Icon name="caret-left" appearance={{ size: 'extraExtraTiny' }} />
+
+              <TitleLabel
+                className="ml-2"
+                text={formatMessage({ id: activeSubmenu })}
+              />
+            </button>
+            <UserSubmenu submenuId={activeSubmenu} />
+          </>
+        )}
       </div>
     </PopoverBase>
   );
