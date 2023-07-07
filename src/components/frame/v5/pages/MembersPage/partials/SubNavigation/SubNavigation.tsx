@@ -10,6 +10,7 @@ const SubNavigation: FC = () => (
       iconName="share-network"
       title="members.subnav.invite"
       shouldBeTooltipVisible
+      tooltipText={['copiedColony', 'copyColony']}
     />
     <SubNavigationItem iconName="lock-key" title="members.subnav.permissions" />
     <SubNavigationItem iconName="pencil" title="members.subnav.manage" />

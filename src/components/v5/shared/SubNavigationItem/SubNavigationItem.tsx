@@ -13,6 +13,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
   iconName,
   title,
   shouldBeTooltipVisible = false,
+  tooltipText = [],
 }) => {
   const { formatMessage } = useIntl();
   const { handleClick, isCopyTriggered } = useMembersSubNavigation();
@@ -32,7 +33,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
             tooltipContent={
               <span className="text-3 underline w-full">
                 {formatMessage({
-                  id: isCopyTriggered ? 'copiedColony' : 'copyColony',
+                  id: isCopyTriggered ? tooltipText[0] : tooltipText[1],
                 })}
               </span>
             }

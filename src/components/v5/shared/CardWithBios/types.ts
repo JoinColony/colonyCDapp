@@ -18,11 +18,11 @@ export type CardWithBiosProps = {
   description?: string;
   extensionData: AnyExtensionData;
   percentage?: number;
-  shouldStatusBeVisible: boolean;
+  shouldStatusBeVisible?: boolean;
   userStatus?: UserStatusMode;
   permissions?: Permissions[];
   userStatusTooltipDetails: UserStatusTooltipDetailsProps;
-  shouldBeMenuVisible: boolean;
+  shouldBeMenuVisible?: boolean;
   isVerified?: boolean;
 };
 
@@ -46,4 +46,8 @@ export type CardPermissionsProps = {
 export type CardPermissionProps = {
   text: string;
   type: PermissionType;
+};
+
+export type SubNavigationProps = {
+  shouldPermissionsCanBeChanged?: boolean;
 };

@@ -3,4 +3,5 @@ export type SubNavigationItemProps = {
   title: string;
   shouldBeTooltipVisible?: boolean;
   onClick?: () => void;
+  tooltipText?: string[];
 };
