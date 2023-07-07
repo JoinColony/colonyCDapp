@@ -73,11 +73,11 @@ const Select = <T extends any[]>({
   };
 
   const selectedItem =
-    !isLoading && list.find((item) => item.id === selectedElement);
+    !isLoading && list.find(({ id }) => id === selectedElement);
   const filteredList =
     !isLoading &&
     selectedItem &&
-    list.filter((item) => item.value !== selectedItem.value);
+    list.filter(({ value }) => value !== selectedItem.value);
   const optionsList = isPlaceholder ? list : filteredList;
 
   const labelText = isPlaceholder
@@ -135,42 +135,42 @@ const Select = <T extends any[]>({
           onKeyDown={(event) => handleListKeyDown(event)}
         >
           {optionsList &&
-            optionsList.map((option) => (
+            optionsList.map(({ id, linkTo, label, avatar }) => (
               <li
-                key={option.id}
+                key={id}
                 className={clsx(styles.li, {
-                  'text-blue-400 font-medium': selectedElement === option.id,
-                  'text-gray-900': selectedElement !== option.id,
+                  'text-blue-400 font-medium': selectedElement === id,
+                  'text-gray-900': selectedElement !== id,
                 })}
-                id={option.id.toString()}
+                id={id.toString()}
                 role="option"
-                aria-selected={selectedElement === option.id}
+                aria-selected={selectedElement === id}
                 tabIndex={0}
-                onKeyDown={handleKeyDown(option.id)}
+                onKeyDown={handleKeyDown(id)}
                 onClick={() => {
-                  handleChange(option.id);
+                  handleChange(id);
                   setIsOptionsOpen(false);
                   setIsPlaceholder(false);
                 }}
               >
-                {option.linkTo ? (
+                {linkTo ? (
                   <NavLink
                     className="flex items-center w-full text-inherit py-2"
-                    to={option.linkTo}
+                    to={linkTo}
                   >
-                    {option.label}
+                    {label}
                   </NavLink>
                 ) : (
                   <div className="py-2 flex items-center">
                     {showAvatar && (
                       <div className="mr-2 flex">
                         <Avatar
-                          avatar={option?.avatar || ''}
+                          avatar={avatar || ''}
                           placeholderIcon="circle-person"
                         />
                       </div>
                     )}
-                    {option.label}
+                    {label}
                   </div>
                 )}
               </li>

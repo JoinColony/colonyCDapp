@@ -16,12 +16,12 @@ export const useGetColonyMembers = (colonyAddress?: Address | null) => {
   const contributors = data?.getMembersForColony?.contributors ?? [];
   const allMembers: Member[] = [...watchers, ...contributors];
   const members = allMembers
-    .map((member) => member.user)
+    .map(({ user }) => user)
     .filter<MemberUser>(notMaybe)
-    .map((member, index) => ({
-      value: member.name,
-      label: member.name,
-      avatar: member.profile?.avatar,
+    .map(({ name, profile }, index) => ({
+      value: name,
+      label: name,
+      avatar: profile?.avatar,
       id: index,
     }));
 

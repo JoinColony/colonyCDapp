@@ -7,7 +7,7 @@ import Select from '~v5/common/Fields/Select';
 import { manageMemberActions } from './consts';
 import { ManageMemberModalProps } from './types';
 
-const displayName = 'v5.Modals.ManageMemberModal';
+const displayName = 'v5.common.Modals.ManageMemberModal';
 
 const ManageMemberModal: FC<ManageMemberModalProps> = ({
   isOpen,
@@ -25,7 +25,7 @@ const ManageMemberModal: FC<ManageMemberModalProps> = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} icon="folder-user">
-      <h4 className="heading-5 mb-[0.375rem]">
+      <h4 className="heading-5 mb-1.5">
         {formatMessage({ id: 'members.modal.title' })}
       </h4>
       <p className="text-md text-gray-600 mb-6">
