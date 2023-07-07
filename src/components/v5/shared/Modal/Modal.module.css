@@ -17,5 +17,5 @@
 }
 
 .closeIcon {
-  @apply absolute top-4 right-4;
+  @apply text-gray-400 hover:text-gray-600 absolute top-4 right-4;
 }

@@ -29,7 +29,7 @@ export interface CommonButtonProps
   setTriggerRef?: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
 }
 
-export type IconSize = 'extraTiny' | 'tiny';
+export type IconSize = 'extraExtraTiny' | 'extraTiny' | 'tiny';
 
 export interface ButtonProps extends CommonButtonProps {
   mode?: ButtonMode;
