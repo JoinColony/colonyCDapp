@@ -1,0 +1,3 @@
+.token {
+  @apply flex items-center justify-center min-w-[2.625rem] min-h-[2.5rem] p-2.5 bg-base-white border rounded-full border-gray-200;
+}
