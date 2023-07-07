@@ -35,7 +35,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
             'border-red-200 text-red-400': isWarning,
           })}
         >
-          <Icon appearance={{ size: 'small' }} name={icon} />
+          <Icon appearance={{ size: 'extraSmall' }} name={icon} />
         </span>
       )}
       <CloseButton

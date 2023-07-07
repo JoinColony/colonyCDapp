@@ -30,7 +30,7 @@ const SubNavigation: FC = () => {
             }
             isSuccess={isCopyTriggered}
           >
-            <Icon name="share-network" appearance={{ size: 'small' }} />
+            <Icon name="share-network" appearance={{ size: 'extraSmall' }} />
             <span className="text-md ml-2">
               {formatMessage({ id: 'members.subnav.invite' })}
             </span>
@@ -39,7 +39,7 @@ const SubNavigation: FC = () => {
       </li>
       <li>
         <button type="button" className={styles.navigationButton}>
-          <Icon name="lock-key" appearance={{ size: 'small' }} />
+          <Icon name="lock-key" appearance={{ size: 'extraSmall' }} />
           <span className="text-md ml-2">
             {formatMessage({ id: 'members.subnav.permissions' })}
           </span>
@@ -47,7 +47,7 @@ const SubNavigation: FC = () => {
       </li>
       <li>
         <button type="button" className={styles.navigationButton}>
-          <Icon name="pencil" appearance={{ size: 'small' }} />
+          <Icon name="pencil" appearance={{ size: 'extraSmall' }} />
           <span className="text-md ml-2">
             {formatMessage({ id: 'members.subnav.manage' })}
           </span>
@@ -55,7 +55,7 @@ const SubNavigation: FC = () => {
       </li>
       <li>
         <button type="button" className={styles.navigationButton}>
-          <Icon name="address-book" appearance={{ size: 'small' }} />
+          <Icon name="address-book" appearance={{ size: 'extraSmall' }} />
           <span className="text-md ml-2">
             {formatMessage({ id: 'members.subnav.verified' })}
           </span>

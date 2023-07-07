@@ -28,7 +28,7 @@ const ManageFundsLink = () => {
       <Icon
         className={styles.rightArrowDisplay}
         name="arrow-right"
-        appearance={{ size: 'small' }}
+        appearance={{ size: 'extraSmall' }}
         title={MSG.manageFundsLink}
       />
       <FormattedMessage {...MSG.manageFundsLink} />
