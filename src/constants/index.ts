@@ -160,3 +160,5 @@ export const CDAPP_VERSION = version;
 export const STAKING_THRESHOLD = 10;
 
 export const MAX_COLONY_DISPLAY_NAME = 20;
+
+export const MAX_ANNOTATION_LENGTH = 4000;
