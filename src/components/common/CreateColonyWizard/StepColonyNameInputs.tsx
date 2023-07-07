@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 import { HookFormInput as Input } from '~shared/Fields';
-import { DEFAULT_NETWORK_INFO } from '~constants';
+import { DEFAULT_NETWORK_INFO, MAX_COLONY_DISPLAY_NAME } from '~constants';
 
 import styles from './StepColonyName.css';
 
@@ -54,6 +54,7 @@ const StepColonyNameInputs = ({
       data-test="claimColonyDisplayNameInput"
       label={MSG.colonyName}
       disabled={disabled}
+      maxLength={MAX_COLONY_DISPLAY_NAME}
     />
     <Input
       appearance={{ theme: 'fat' }}
