@@ -19,7 +19,7 @@ const ActionTypeDetail = ({ actionType }: ActionTypeDetailProps) => (
     <Icon
       title={{ id: 'action.type' }}
       titleValues={{ actionType }}
-      appearance={{ size: 'small' }}
+      appearance={{ size: 'extraSmall' }}
       name={ACTION_TYPES_ICONS_MAP[actionType] ?? ''}
     />
     <div className={styles.text}>

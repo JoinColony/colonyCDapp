@@ -7,6 +7,7 @@ import BurgerMenu from '~v5/shared/BurgerMenu';
 import PopoverBase from '~v5/shared/PopoverBase';
 import SubNavigation from './partials/SubNavigation';
 import { useMembersPage } from './hooks';
+import Filter from '~v5/common/Filter';
 
 const MembersPage: FC = () => {
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
@@ -37,7 +38,7 @@ const MembersPage: FC = () => {
             </PopoverBase>
           )}
         </div>
-        {/* @TODO add filters */}
+        <Filter />
       </div>
     </TwoColumns>
   );

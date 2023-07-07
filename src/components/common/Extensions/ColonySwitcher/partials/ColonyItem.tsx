@@ -27,9 +27,7 @@ const ColonyItem: FC<ColonyItemProps> = ({ colony, chainName }) => (
             {colony?.metadata?.displayName || colony?.name}
           </div>
         </div>
-        <div className="[&>i>svg]:w-[1.125rem] [&>i>svg]:h-[1.125rem] text-base-white [&>i]:flex">
-          <Icon name={chainName} />
-        </div>
+        {chainName && <Icon name={chainName} appearance={{ size: 'small' }} />}
       </div>
     </NavLink>
   </div>
