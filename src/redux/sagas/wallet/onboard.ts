@@ -26,11 +26,13 @@ const getDevelopmentWallets = async () => {
   // if we're using the webpack.dev config, include dev wallets
   if (!WEBPACK_IS_PRODUCTION) {
     const { private_keys: ganachePrivateKeys } = await import(
+      // @ts-ignore
       '../../../../amplify/mock-data/colonyNetworkArtifacts/ganache-accounts.json'
     );
 
     return (
       Object.values(ganachePrivateKeys)
+        // @ts-ignore
         .map((privateKey, index) => ganacheModule(privateKey, index + 1))
         /*
          * Remove the wallets used by the reputation miner and the block ingestor
