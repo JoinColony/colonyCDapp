@@ -16,16 +16,13 @@ import { defineMessages, useIntl, MessageDescriptor } from 'react-intl';
 import {
   CREATE_COLONY_ROUTE,
   CREATE_USER_ROUTE,
-  INBOX_ROUTE,
   USER_EDIT_ROUTE,
-  WALLET_ROUTE,
   NOT_FOUND_ROUTE,
   LANDING_PAGE_ROUTE,
   COLONY_HOME_ROUTE,
   COLONY_EVENTS_ROUTE,
   ACTIONS_PAGE_ROUTE,
   USER_ROUTE,
-  MEMBERS_ROUTE,
   COLONY_EXTENSION_SETUP_ROUTE,
   COLONY_EXTENSION_DETAILS_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
@@ -45,19 +42,9 @@ const MSG = defineMessages({
     defaultMessage: `Create User | Colony`,
   },
 
-  inbox: {
-    id: 'utils.hooks.useTitle.inbox',
-    defaultMessage: `Inbox | Colony`,
-  },
-
   editProfile: {
     id: 'utils.hooks.useTitle.editProfile',
     defaultMessage: `Edit Profile | Colony`,
-  },
-
-  wallet: {
-    id: 'utils.hooks.useTitle.wallet',
-    defaultMessage: `Wallet | Colony`,
   },
 
   notFound: {
@@ -108,11 +95,6 @@ const MSG = defineMessages({
       } > Setup | Colony - {colonyName}`,
   },
 
-  colonyMembers: {
-    id: 'utils.hooks.useTitle.colonyMembers',
-    defaultMessage: `Members | Colony - {colonyName}`,
-  },
-
   userProfile: {
     id: 'utils.hooks.useTitle.userProfile',
     defaultMessage: `Users > {username} | Colony`,
@@ -140,9 +122,7 @@ interface MessageWithValues {
 const routeMessages: Record<string, MessageDescriptor> = {
   [CREATE_COLONY_ROUTE]: MSG.createColony,
   [CREATE_USER_ROUTE]: MSG.createUser,
-  [INBOX_ROUTE]: MSG.inbox,
   [USER_EDIT_ROUTE]: MSG.editProfile,
-  [WALLET_ROUTE]: MSG.wallet,
   [NOT_FOUND_ROUTE]: MSG.notFound,
   [LANDING_PAGE_ROUTE]: MSG.landing,
   [COLONY_HOME_ROUTE]: MSG.colonyHome,
@@ -151,7 +131,6 @@ const routeMessages: Record<string, MessageDescriptor> = {
   [COLONY_EXTENSIONS_ROUTE]: MSG.colonyExtensions,
   [COLONY_EXTENSION_DETAILS_ROUTE]: MSG.colonyExtensionDetails,
   [COLONY_EXTENSION_SETUP_ROUTE]: MSG.colonyExtensionSetup,
-  [MEMBERS_ROUTE]: MSG.colonyMembers,
   [USER_ROUTE]: MSG.userProfile,
   [ACTIONS_PAGE_ROUTE]: MSG.transactionDetails,
   '/': MSG.fallbackTitle,
