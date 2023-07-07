@@ -34,7 +34,7 @@ fragment Profile on Profile {
   thumbnail
   website
   advanced {
-    metatransactions
+    metatransactionsEnabled
     decentralizedModeEnabled
     customRpc
   }

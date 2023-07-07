@@ -38,7 +38,7 @@ const MSG = defineMessages({
 });
 
 const validationSchema = object({
-  metatransactions: bool<boolean>(),
+  metatransactionsEnabled: bool<boolean>(),
   decentralizedModeEnabled: bool<boolean>(),
   customRpc: string()
     .defined()
@@ -83,11 +83,11 @@ const UserAdvancedSettings = ({ user: { walletAddress, profile } }: Props) => {
   const [editUser, { error }] = useUpdateUserProfileMutation();
 
   const metatransasctionsDefault = metatransactionsAvailable
-    ? profile?.advanced?.metatransactions || false
+    ? profile?.advanced?.metatransactionsEnabled || false
     : false;
 
   const defaultValues = {
-    metatransactions: metatransasctionsDefault,
+    metatransactionsEnabled: metatransasctionsDefault,
     decentralizedModeEnabled:
       profile?.advanced?.decentralizedModeEnabled || false,
     customRpc: profile?.advanced?.customRpc || '',

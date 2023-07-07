@@ -79,7 +79,7 @@ export const getAdvancedSettingsRows = (
   metatransactionsAvailable: boolean,
 ): Omit<SettingsRowProps, 'toggleDisabled'>[] => [
   {
-    name: 'metatransactions',
+    name: 'metatransactionsEnabled',
     paragraphText: MSG.metaDescription,
     toggleLabel: MSG.labelMetaTx,
     tooltipText: MSG.metaTooltip,

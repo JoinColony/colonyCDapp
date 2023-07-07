@@ -179,7 +179,7 @@ input CreateUniqueColonyInput {
 }
 
 input ProfileAdvancedInput {
-  metatransactions: Boolean
+  metatransactionsEnabled: Boolean
   decentralizedModeEnabled: Boolean
   customRpc: String
 }
@@ -993,7 +993,7 @@ type ProfileMetadata {
 }
 
 type ProfileAdvanced {
-  metatransactions: Boolean
+  metatransactionsEnabled: Boolean
   decentralizedModeEnabled: Boolean
   customRpc: String
 }
