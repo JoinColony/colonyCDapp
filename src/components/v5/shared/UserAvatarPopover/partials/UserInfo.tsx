@@ -2,12 +2,10 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { UserInfoProps } from '../types';
-import Avatar from '~v5/shared/Avatar';
 import Icon from '~shared/Icon';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import UserPermissionsBadge from '~common/Extensions/UserPermissionsBadge';
-import TitledContent from '~common/Extensions/TitledContent';
-import CopyWalletAddressButton from '~v5/shared/CopyWalletAddressButton';
+import TitleLabel from '~v5/shared/TitleLabel';
+import UserAvatarDetails from '~v5/shared/UserAvatarDetails';
 
 const displayName = 'v5.UserAvatarPopover.partials.UserInfo';
 
@@ -27,38 +25,27 @@ const UserInfo: FC<UserInfoProps> = ({
       ? aboutDescription
       : aboutDescription && formatMessage(aboutDescription);
 
-  const { handleClipboardCopy, isCopied } = useCopyToClipboard(
-    walletAddress || '',
-  );
-
   return (
-    <div>
-      <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center">
-        <Avatar size="m" title={userName} avatar={avatar} />
-        <div>
-          <div className="flex items-center mb-0.5">
-            <p className="heading-4">{userName}</p>
-            {isVerified && (
-              <span className="ml-2 flex shrink-0 text-blue-400">
-                <Icon name="verified" appearance={{ size: 'tiny' }} />
-              </span>
-            )}
-          </div>
-          <CopyWalletAddressButton
-            isCopied={!isCopied}
-            handleClipboardCopy={handleClipboardCopy}
-            walletAddress={walletAddress || ''}
-          />
-        </div>
+    <div className="sm:min-w-[17rem]">
+      <div className="mb-6">
+        <UserAvatarDetails
+          userName={userName}
+          walletAddress={walletAddress}
+          avatar={avatar}
+          isVerified={isVerified}
+        />
       </div>
-      <TitledContent className="mt-2" title={{ id: 'userInfo.about.section' }}>
-        <p className="text-md text-gray-600">{aboutDescriptionText}</p>
-      </TitledContent>
+      <TitleLabel
+        className="mt-2 mb-2"
+        text={formatMessage({ id: 'userInfo.about.section' })}
+      />
+      <p className="text-md text-gray-600">{aboutDescriptionText}</p>
       {colonyReputation && colonyReputation.length ? (
-        <TitledContent
-          title={{ id: 'userInfo.colonyReputation.section' }}
-          className="pt-6 mt-6 border-t border-gray-200"
-        >
+        <>
+          <TitleLabel
+            className="pt-6 mt-6 border-t border-gray-200 mb-2"
+            text={formatMessage({ id: 'userInfo.colonyReputation.section' })}
+          />
           <ul className="flex flex-col gap-2">
             {colonyReputation?.map(({ key, title, percentage, points }) => {
               const titleText =
@@ -83,14 +70,14 @@ const UserInfo: FC<UserInfoProps> = ({
               );
             })}
           </ul>
-        </TitledContent>
+        </>
       ) : undefined}
-
       {permissions && permissions.length && (
-        <TitledContent
-          title={{ id: 'userInfo.permissions.section' }}
-          className="pt-6 mt-6 border-t border-gray-200"
-        >
+        <>
+          <TitleLabel
+            className="pt-6 mt-6 border-t border-gray-200 mb-2"
+            text={formatMessage({ id: 'userInfo.permissions.section' })}
+          />
           <ul className="inline-flex flex-wrap gap-x-1 gap-y-2">
             {permissions.map(({ key, text, description, name }) => (
               <li key={key}>
@@ -102,7 +89,7 @@ const UserInfo: FC<UserInfoProps> = ({
               </li>
             ))}
           </ul>
-        </TitledContent>
+        </>
       )}
     </div>
   );

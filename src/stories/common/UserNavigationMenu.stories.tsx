@@ -12,7 +12,6 @@ import {
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
 import Token from '~common/Extensions/UserNavigation/partials/Token';
 import UserMenu from '~common/Extensions/UserNavigation/partials/UserMenu';
-import WalletPopover from '~common/Extensions/UserNavigation/partials/WalletPopover';
 import { useMobile } from '~hooks';
 import Button, { Hamburger } from '~v5/shared/Button';
 import UserAvatar from '~v5/shared/UserAvatar';
@@ -57,34 +56,30 @@ const UserNavigationMenuNotConnected = () => {
         ],
       },
     );
-  const {
-    getTooltipProps: getWalletTooltipProps,
-    setTooltipRef: setWalletTooltipRef,
-    setTriggerRef: setWalletTriggerRef,
-    visible: isWalletVisible,
-  } = usePopperTooltip(
-    {
-      delayHide: 200,
-      placement: 'bottom-end',
-      trigger: 'click',
-      interactive: true,
-      onVisibleChange: (newVisible) => {
-        if (!newVisible && isMobile) {
-          setIsWalletButtonVisible(true);
-        }
-      },
-    },
-    {
-      modifiers: [
-        {
-          name: 'offset',
-          options: {
-            offset: popperTooltipOffset,
-          },
+  const { setTriggerRef: setWalletTriggerRef, visible: isWalletVisible } =
+    usePopperTooltip(
+      {
+        delayHide: 200,
+        placement: 'bottom-end',
+        trigger: 'click',
+        interactive: true,
+        onVisibleChange: (newVisible) => {
+          if (!newVisible && isMobile) {
+            setIsWalletButtonVisible(true);
+          }
         },
-      ],
-    },
-  );
+      },
+      {
+        modifiers: [
+          {
+            name: 'offset',
+            options: {
+              offset: popperTooltipOffset,
+            },
+          },
+        ],
+      },
+    );
 
   const isWalletConnected = false;
 
@@ -105,14 +100,6 @@ const UserNavigationMenuNotConnected = () => {
             >
               {isWalletButtonVisible && formatMessage({ id: 'connectWallet' })}
             </Button>
-          )}
-          {isWalletVisible && (
-            <div className="w-full h-auto absolute top-[6.5rem] md:top-[2.3rem]">
-              <WalletPopover
-                setTooltipRef={setWalletTooltipRef}
-                tooltipProps={getWalletTooltipProps}
-              />
-            </div>
           )}
           <div>
             {isWalletButtonVisible && (

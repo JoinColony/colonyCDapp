@@ -24,7 +24,7 @@ const ModalBase: FC<ModalBaseProps> = ({
       `${
         isFullOnMobile
           ? 'w-[100vw] h-[100vh]'
-          : `w-[calc(100vw-3rem)] max-h-[calc(100vh-4rem)] border border-gray-200 rounded-xl shadow-default`
+          : '!w-[calc(100vw-3rem)] max-h-[calc(100vh-4rem)] border border-gray-200 rounded-xl shadow-default'
       }`,
       {
         base: 'z-[4] outline-0',
