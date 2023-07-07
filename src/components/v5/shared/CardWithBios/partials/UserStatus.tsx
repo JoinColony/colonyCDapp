@@ -5,7 +5,7 @@ import UserStatus from '~v5/common/Pills/UserStatus';
 import Tooltip from '~shared/Extensions/Tooltip';
 import { UserStatusComponentProps } from '../types';
 
-const displayName = 'v5.shared.CardWithBios.partials.UserStatusComponent';
+const displayName = 'v5.CardWithBios.partials.UserStatusComponent';
 
 const UserStatusComponent: FC<UserStatusComponentProps> = ({
   userStatus,
