@@ -11,8 +11,17 @@ import { formatText } from '~utils/intl';
 import InputLabel from '../../InputLabel';
 import InputStatus from '../../InputStatus';
 
-import { Appearance } from '../Textarea';
 import styles from '../Textarea.css';
+
+export interface Appearance {
+  theme?: 'fat';
+  align?: 'right';
+  layout?: 'inline';
+  resizable?: 'both' | 'horizontal' | 'vertical';
+  direction?: 'horizontal';
+  colorSchema?: 'dark' | 'transparent' | 'grey';
+  size?: 'small';
+}
 
 export interface Props
   extends CoreInputProps,

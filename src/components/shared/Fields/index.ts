@@ -23,7 +23,7 @@ export { Appearance, SelectOption } from './Select';
 export { default as HookFormSelect } from './Select/HookForm';
 
 export { default as TokenSymbolSelector } from './TokenSymbolSelector';
-export { default as Textarea, HookFormTextArea } from './Textarea';
+export { HookFormTextArea } from './Textarea';
 export { CustomRadio, CustomRadioProps } from './Radio';
 export { default as RadioGroup, CustomRadioGroup } from './RadioGroup';
 export { default as Annotations } from './Annotations';
