@@ -30,6 +30,7 @@ import {
   COLONY_FUNDING_ROUTE,
 } from '~routes/routeConstants';
 import { SimpleMessageValues } from '~types/index';
+import { notNull } from '~utils/arrays';
 
 import useColonyContext from './useColonyContext';
 
@@ -121,6 +122,8 @@ interface MessageWithValues {
   values?: SimpleMessageValues;
 }
 
+const COLONY_HOME_ROUTE_WITHOUT_WILDCARD = COLONY_HOME_ROUTE.slice(0, -2);
+
 const routeMessages: Record<string, MessageDescriptor> = {
   [CREATE_COLONY_ROUTE]: MSG.createColony,
   [CREATE_USER_ROUTE]: MSG.createUser,
@@ -130,9 +133,12 @@ const routeMessages: Record<string, MessageDescriptor> = {
   [COLONY_HOME_ROUTE]: MSG.colonyHome,
   [COLONY_EVENTS_ROUTE]: MSG.colonyEvents,
   [COLONY_FUNDING_ROUTE]: MSG.colonyFunds,
-  [COLONY_EXTENSIONS_ROUTE]: MSG.colonyExtensions,
-  [COLONY_EXTENSION_DETAILS_ROUTE]: MSG.colonyExtensionDetails,
-  [COLONY_EXTENSION_SETUP_ROUTE]: MSG.colonyExtensionSetup,
+  [`${COLONY_HOME_ROUTE_WITHOUT_WILDCARD}${COLONY_EXTENSIONS_ROUTE}`]:
+    MSG.colonyExtensions,
+  [`${COLONY_HOME_ROUTE_WITHOUT_WILDCARD}${COLONY_EXTENSION_DETAILS_ROUTE}`]:
+    MSG.colonyExtensionDetails,
+  [`${COLONY_HOME_ROUTE_WITHOUT_WILDCARD}${COLONY_EXTENSION_SETUP_ROUTE}`]:
+    MSG.colonyExtensionSetup,
   [USER_ROUTE]: MSG.userProfile,
   [ACTIONS_PAGE_ROUTE]: MSG.transactionDetails,
   '/': MSG.fallbackTitle,
@@ -142,17 +148,14 @@ const allRoutes = Object.keys(routeMessages);
 
 const getMessageAndValues = (locationPath: string): MessageWithValues => {
   const filteredRoutes = allRoutes.filter((routePattern) =>
-    matchPath(locationPath, { path: routePattern, exact: true }),
+    notNull(matchPath(routePattern, locationPath)),
   );
 
   // Fallback when no route matches
   // For example before an invalid route get redirected to 404
-  const matchedRoute = filteredRoutes.length > 0 ? filteredRoutes[0] : '/';
+  const matchedRoute = filteredRoutes.at(-1) || '/';
 
-  const values = matchPath(locationPath, {
-    path: matchedRoute,
-    exact: true,
-  })?.params; // this can be empty {}
+  const values = matchPath(matchedRoute, locationPath)?.params; // this can be empty {}
 
   return { msg: routeMessages[matchedRoute], values };
 };
@@ -163,10 +166,7 @@ export const useTitle = (title?: string) => {
   const { formatMessage } = useIntl();
   const { msg, values } = getMessageAndValues(location);
 
-  const colonyENSName = (values?.colonyName as string) ?? ''; // HACK as we cannot call the below hook conditionally
-
-  const colonyDisplayName =
-    colony?.metadata?.displayName || colony?.name || colonyENSName;
+  const colonyDisplayName = colony?.metadata?.displayName || colony?.name;
 
   return useEffect(() => {
     const titleToSet =
