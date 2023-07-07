@@ -35,16 +35,21 @@ const MembersList: FC<MembersListProps> = ({
       {!isLoading && (
         <ul>
           {listLength ? (
-            list.map(({ user, ...item }) => (
-              <li key={user?.name}>
-                <CardWithBios
-                  userData={item}
-                  description={user?.profile?.bio || ''}
-                  shouldStatusBeVisible
-                  shouldBeMenuVisible
-                />
-              </li>
-            ))
+            list.map((item) => {
+              const { user } = item;
+              const { name, profile } = user || {};
+
+              return (
+                <li key={name}>
+                  <CardWithBios
+                    userData={item}
+                    description={profile?.bio || ''}
+                    shouldStatusBeVisible
+                    shouldBeMenuVisible
+                  />
+                </li>
+              );
+            })
           ) : (
             <EmptyContent
               icon="smiley-meh"
