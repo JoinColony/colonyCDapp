@@ -37,11 +37,12 @@ const FilterOptions: FC<FilterOptionsProps> = ({ options }) => {
         />
       ) : (
         <ul className="flex flex-col">
-          {options?.map((item) => (
-            <li className={styles.li}>
-              <Icon name={item.iconName} appearance={{ size: 'tiny' }} />
-
-              {formatMessage({ id: item.title })}
+          {options?.map(({ id, iconName, title }) => (
+            <li key={id} className={styles.li}>
+              <span className="flex ml-3">
+                <Icon name={iconName} appearance={{ size: 'tiny' }} />
+              </span>
+              {formatMessage({ id: title })}
             </li>
           ))}
         </ul>

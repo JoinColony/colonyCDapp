@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import { DesktopFilterProps } from '../types';
+import { FilterPopoverProps } from '../types';
 import FilterButton from '~v5/shared/Filter/FilterButton';
 import FilterOptions from './FilterOptions';
 import { filterOptions } from '../consts';
 
-const displayName = 'v5.common.Filter.partials.DesktopFilter';
+const displayName = 'v5.common.Filter.partials.FilterPopoverProps';
 
-const DesktopFilter: FC<DesktopFilterProps> = ({ isOpened, setOpened }) => {
+const FilterPopover: FC<FilterPopoverProps> = ({ isOpened, setOpened }) => {
   const { setTooltipRef, setTriggerRef, visible } = usePopperTooltip(
     {
       delayShow: 200,
@@ -55,6 +55,6 @@ const DesktopFilter: FC<DesktopFilterProps> = ({ isOpened, setOpened }) => {
   );
 };
 
-DesktopFilter.displayName = displayName;
+FilterPopover.displayName = displayName;
 
-export default DesktopFilter;
+export default FilterPopover;

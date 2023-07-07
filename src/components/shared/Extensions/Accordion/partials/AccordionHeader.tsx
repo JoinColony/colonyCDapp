@@ -24,13 +24,15 @@ const AccordionHeader: FC<AccordionItemProps> = ({
         })}
       >
         {text}
-        <Icon
-          appearance={{ size: 'extraTiny' }}
-          name={isOpen ? 'caret-up' : 'caret-down'}
-          title={{ id: 'file-text' }}
-        />
+        <span className={clsx({ 'rotate-180': isOpen })}>
+          <Icon
+            appearance={{ size: 'extraTiny' }}
+            name="caret-down"
+            title={{ id: 'file-text' }}
+          />
+        </span>
       </div>
-      {mode === 'primary' && <div className="w-full bg-gray-200 h-[1px]" />}
+      {mode === 'primary' && <div className="w-full bg-gray-200 h-1" />}
     </>
   );
 };

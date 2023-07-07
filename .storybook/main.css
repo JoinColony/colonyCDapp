@@ -76,6 +76,10 @@
   .text-4 {
     @apply text-xs font-medium;
   }
+  
+  .text-5 {
+    @apply text-blue-400 font-bold text-xs;
+  }
 };
 
 @layer components {

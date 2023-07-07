@@ -11,7 +11,7 @@ import {
 type AccordionMode = 'primary' | 'secondary';
 
 export interface AccordionProps {
-  items: any[];
+  items: AccordionContent[] | unknown[];
   openIndex: number;
   onOpenIndexChange: (newOpenIndex: number | undefined) => void;
   errors?: Partial<

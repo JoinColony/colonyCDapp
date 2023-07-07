@@ -6,7 +6,7 @@ import FilterButton from '~v5/shared/Filter/FilterButton';
 import FilterOptions from './partials/FilterOptions';
 import Modal from '~v5/shared/Modal';
 import { filterOptions } from './consts';
-import DesktopFilter from './partials/DesktopFilter';
+import FilterPopover from './partials/FilterPopover';
 
 const displayName = 'v5.common.Filter';
 
@@ -36,7 +36,7 @@ const Filter: FC<FilterProps> = () => {
         </>
       ) : (
         <div ref={ref}>
-          <DesktopFilter isOpened={isOpened} setOpened={setOpened} />
+          <FilterPopover isOpened={isOpened} setOpened={setOpened} />
         </div>
       )}
     </>

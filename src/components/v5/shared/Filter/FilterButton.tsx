@@ -30,7 +30,7 @@ const FilterButton: FC<FilterButtonProps> = ({
       {formatMessage({ id: 'filter' })}
 
       {!!selectedFilterNumber && (
-        <span className="bg-blue-100 p-1 rounded-sm text-blue-400 font-bold text-xs h-[0.813rem] flex items-center">
+        <span className="bg-blue-100 p-1 rounded-sm text-5 h-3 flex items-center">
           {selectedFilterNumber}
         </span>
       )}

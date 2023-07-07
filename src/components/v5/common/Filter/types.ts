@@ -12,10 +12,10 @@ export type FilterOption = {
   title: string;
   option: string;
   iconName: string;
-  content: any;
+  content: unknown[];
 };
 
-export type DesktopFilterProps = {
+export type FilterPopoverProps = {
   isOpened: boolean;
   setOpened: React.Dispatch<React.SetStateAction<boolean>>;
 };
