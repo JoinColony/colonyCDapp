@@ -18,8 +18,12 @@
   @apply w-[0.875rem] h-[0.875rem];
 }
 
-.sizeSmall {
+.sizeExtraSmall {
   @apply w-[1rem] h-[1rem];
+}
+
+.sizeSmall {
+  @apply w-[1.125rem] h-[1.125rem];
 }
 
 .sizeNormal {

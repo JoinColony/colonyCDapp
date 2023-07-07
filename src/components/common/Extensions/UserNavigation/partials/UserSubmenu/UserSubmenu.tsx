@@ -9,13 +9,11 @@ const displayName = 'common.Extensions.UserNavigation.partials.UserSubmenu';
 
 const UserSubmenu: FC<UserSubmenuProps> = ({ submenuId }) => (
   <ul className="mt-2">
-    {userSubmenuItems[submenuId].map((item) => (
-      <li key={item.id} className="mb-4 last:mb-0">
-        <NavLink to={item.url} className="flex items-center">
-          <Icon name={item.icon} appearance={{ size: 'small' }} />{' '}
-          <p className="ml-2 heading-5 sm:font-normal sm:text-md">
-            {item.label}
-          </p>
+    {userSubmenuItems[submenuId].map(({ id, url, icon, label }) => (
+      <li key={id} className="mb-4 last:mb-0">
+        <NavLink to={url} className="flex items-center">
+          <Icon name={icon} appearance={{ size: 'extraSmall' }} />
+          <p className="ml-2 heading-5 sm:font-normal sm:text-md">{label}</p>
         </NavLink>
       </li>
     ))}

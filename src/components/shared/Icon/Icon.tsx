@@ -20,6 +20,7 @@ type Appearance = {
     | 'extraExtraTiny'
     | 'extraTiny'
     | 'tiny'
+    | 'extraSmall'
     | 'small'
     | 'normal'
     | 'medium'

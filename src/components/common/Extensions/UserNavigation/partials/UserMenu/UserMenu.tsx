@@ -35,7 +35,7 @@ const UserMenu: FC<UserMenuProps> = ({
   const { name, profile } = user || {};
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 
-  const iconSize = isMobile ? 'small' : 'extraTiny';
+  const iconSize = isMobile ? 'extraSmall' : 'extraTiny';
 
   return (
     <PopoverBase
