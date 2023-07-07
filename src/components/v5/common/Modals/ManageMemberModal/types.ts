@@ -9,5 +9,14 @@ export interface ManageMemberModalProps {
 export interface ManageMemberListProps {
   id: number;
   label: string;
-  value: string;
+  value: MemberActionType;
 }
+
+export type MemberActionType =
+  | 'ban'
+  | 'unban'
+  | 'reduceReputation'
+  | 'awardReputation'
+  | 'addVerifiedMember'
+  | 'removeVerifiedMember'
+  | 'editPermissions';

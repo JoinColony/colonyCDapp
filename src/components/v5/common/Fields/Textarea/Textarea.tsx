@@ -10,18 +10,19 @@ import { DEFAULT_MAX_CHAR_NUMBER } from './consts';
 const displayName = 'v5.common.Textarea';
 
 const Textarea: FC<TextareaProps> = ({
-  textareaTitle,
+  textareaTitle = '',
   maxCharNumber = DEFAULT_MAX_CHAR_NUMBER,
   placeholder,
-  showFieldLimit,
+  showFieldLimit = false,
+  shouldNumberOfCharsBeVisible = false,
 }) => {
   const { formatMessage } = useIntl();
   const [currentCharNumber, setCurrentCharNumber] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
 
   const isError = useMemo(
-    () => currentCharNumber > maxCharNumber,
-    [currentCharNumber, maxCharNumber],
+    () => currentCharNumber > maxCharNumber && showFieldLimit,
+    [currentCharNumber, maxCharNumber, showFieldLimit],
   );
 
   const onChangeTyping = useCallback(() => setIsTyping(false), []);
@@ -41,16 +42,21 @@ const Textarea: FC<TextareaProps> = ({
     [debounced],
   );
 
+  const label =
+    typeof textareaTitle === 'string'
+      ? textareaTitle
+      : formatMessage(textareaTitle);
+
   return (
     <div className="flex flex-col gap-1">
       {textareaTitle && (
         <label htmlFor="message" className="text-gray-700 text-1">
-          {textareaTitle}
+          {label}
         </label>
       )}
       <div
         className={clsx(
-          'bg-base-white w-full md:min-w-[32rem] min-h-[5.75rem] rounded border py-3 px-3.5',
+          'bg-base-white w-full min-h-[5.75rem] rounded border py-3 px-3.5',
           {
             'border-gray-300': !isTyping,
             'border-blue-200 shadow-lightBlue': isTyping,
@@ -61,10 +67,10 @@ const Textarea: FC<TextareaProps> = ({
         <textarea
           id="message"
           placeholder={placeholder}
-          className="resize-none w-full md:min-w-[32rem] text-gray-900 text-md outline-0 placeholder:text-gray-500"
+          className="resize-none w-full text-gray-900 text-md outline-0 placeholder:text-gray-500"
           onChange={onChange}
         />
-        {!!currentCharNumber && (
+        {!!currentCharNumber && shouldNumberOfCharsBeVisible && (
           <div
             className={clsx('text-4 flex justify-end', {
               'text-red-400': isError,
