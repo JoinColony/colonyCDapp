@@ -9,6 +9,7 @@ import { ManageMemberModalProps } from './types';
 import Textarea from '~v5/common/Fields/Textarea';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
+import Switch from '~v5/common/Fields/Switch';
 
 const displayName = 'v5.common.Modals.ManageMemberModal';
 
@@ -69,11 +70,14 @@ const ManageMemberModal: FC<ManageMemberModalProps> = ({
             </span>
           </div>
 
-          <div className="text-gray-700 text-1 flex items-center gap-2 my-4">
-            {formatMessage({ id: 'members.ban.notify' })}
-            <span className="text-gray-400 flex">
-              <Icon name="info" appearance={{ size: 'extraTiny' }} />
-            </span>
+          <div className="text-gray-700 text-1 flex justify-between my-4">
+            <div className="flex items-center gap-2">
+              {formatMessage({ id: 'members.ban.notify' })}
+              <span className="text-gray-400 flex">
+                <Icon name="info" appearance={{ size: 'extraTiny' }} />
+              </span>
+            </div>
+            <Switch />
           </div>
 
           <Textarea textareaTitle={{ id: 'members.ban.textarea.label' }} />
