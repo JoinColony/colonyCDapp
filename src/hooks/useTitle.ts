@@ -13,6 +13,7 @@
 import { useLocation, matchPath } from 'react-router-dom';
 import { useEffect } from 'react';
 import { defineMessages, useIntl, MessageDescriptor } from 'react-intl';
+
 import {
   CREATE_COLONY_ROUTE,
   CREATE_USER_ROUTE,
@@ -29,7 +30,8 @@ import {
   COLONY_FUNDING_ROUTE,
 } from '~routes/routeConstants';
 import { SimpleMessageValues } from '~types/index';
-import { useColonyFromNameQuery } from '~data/index';
+
+import useColonyContext from './useColonyContext';
 
 const MSG = defineMessages({
   createColony: {
@@ -156,22 +158,15 @@ const getMessageAndValues = (locationPath: string): MessageWithValues => {
 };
 
 export const useTitle = (title?: string) => {
+  const { colony } = useColonyContext();
   const location = useLocation().pathname;
   const { formatMessage } = useIntl();
   const { msg, values } = getMessageAndValues(location);
 
   const colonyENSName = (values?.colonyName as string) ?? ''; // HACK as we cannot call the below hook conditionally
 
-  const { data, error } = useColonyFromNameQuery({
-    // We have to define an empty address here for type safety, will be replaced by the query
-    fetchPolicy: 'cache-first',
-    variables: { name: colonyENSName, address: '' },
-  });
-
-  if (error) console.error(error);
-  const colonyDisplayName = data?.processedColony?.displayName
-    ? data.processedColony.displayName
-    : colonyENSName;
+  const colonyDisplayName =
+    colony?.metadata?.displayName || colony?.name || colonyENSName;
 
   return useEffect(() => {
     const titleToSet =
