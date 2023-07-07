@@ -8,6 +8,7 @@ import PopoverBase from '~v5/shared/PopoverBase';
 import SubNavigation from './partials/SubNavigation';
 import { useMembersPage } from './hooks';
 import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
+import Filter from '~v5/common/Filter';
 
 const MembersPage: FC = () => {
   const [isManageMembersOpen, setIsManageMembersOpen] = useState(false);
@@ -41,7 +42,7 @@ const MembersPage: FC = () => {
             </PopoverBase>
           )}
         </div>
-        {/* @TODO add filters */}
+        <Filter />
       </div>
       <ManageMemberModal
         isOpen={isManageMembersOpen}

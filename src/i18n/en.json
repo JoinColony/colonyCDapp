@@ -594,7 +594,14 @@
   "user.typing": "The user is actively typing....",
   "characters.remaining": "{maxCharNumber} characters remaining",
   "too.many.characters": "Too many characters",
-
+  "filter.button": "Filter button",
+  "filter": "Filter",
+  "filters": "Filters",
+  "filter.teams": "Teams",
+  "filter.contributor.type": "Contributor type",
+  "filter.user.status": "User status",
+  "filter.reputation": "Reputation",
+  "filter.permissions": "Permissions",
   "teamReputation.reputationPoints.label": "All Teams Reputation Points",
   "teamReputation.noTeams": "No teams have been created",
   "label.allOther": "All other"

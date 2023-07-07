@@ -2,8 +2,7 @@ import React, { FC } from 'react';
 
 import { useUserByNameOrAddress } from '~hooks';
 import { AnyExtensionData, InstalledExtensionData } from '~types';
-
-import UserAvatarPopover from '../UserAvatarPopover/UserAvatarPopover';
+import UserAvatarPopover from '../UserAvatarPopover';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
 import { useGetInstalledByData } from '~common/Extensions/SpecificSidePanel/partials/hooks';
 import Icon from '~shared/Icon';
@@ -12,7 +11,7 @@ import CardPermissions from './partials';
 import UserStatusComponent from './partials/UserStatus';
 import { CardWithBiosProps } from './types';
 
-const displayName = 'v5.shared.CardWithBios';
+const displayName = 'v5.CardWithBios';
 
 const CardWithBios: FC<CardWithBiosProps> = ({
   description,
@@ -35,7 +34,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
   const { colonyReputationItems } = installedByData || {};
 
   return (
-    <div className="max-w-[322px] max-h-[148px] rounded-lg border border-gray-200 bg-gray-25 p-5">
+    <div className="max-w-[20.125rem] max-h-[9.25rem] rounded-lg border border-gray-200 bg-gray-25 p-5">
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -69,9 +68,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
           </div>
         </div>
 
-        {description && (
-          <div className="text-gray-600 text-sm">{description}</div>
-        )}
+        {description && <p className="text-gray-600 text-sm">{description}</p>}
 
         <div className="flex justify-between items-center">
           {!!percentage && (

@@ -51,7 +51,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
             'flex items-center justify-center font-medium transition-all duration-normal',
             `${isFullRounded ? 'rounded-full' : 'rounded-lg'}`,
             {
-              'text-md min-h-[2.5rem] px-4 py-2.5': size === 'default',
+              'text-md min-h-[2.5rem] px-4 py-2': size === 'default',
               '!rounded-[0.1875rem] capitalize text-4 px-2 py-1':
                 size === 'extraSmall',
               'text-sm min-h-[2.125rem] px-3 py-2': size === 'small',

@@ -77,7 +77,7 @@ const NavItem: FC<NavItemProps> = ({ item }) => {
 };
 
 const Nav: FC<NavProps> = ({ items }) => (
-  <ul className="flex flex-col text-gray-700 sm:flex-row sm:gap-x-1">
+  <ul className="flex flex-col text-gray-700 mb-3 sm:mb-0 sm:flex-row sm:gap-x-1">
     {items.map((item) => (
       <li key={item.key} className={item.subMenu && 'relative group'}>
         <NavItem {...{ item }} />

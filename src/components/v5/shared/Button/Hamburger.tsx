@@ -17,7 +17,7 @@ const Hamburger: FC<HamburgerProps> = ({
   type = 'button',
   ariaLabel,
   iconName = 'list',
-  iconSize = 'tiny',
+  iconSize = 'extraTiny',
   setTriggerRef,
   isOpened,
   ...rest
@@ -40,10 +40,11 @@ const Hamburger: FC<HamburgerProps> = ({
         <button
           className={clsx(
             styles.hamburger,
+            'text-1',
             `${
               isOpened
-                ? 'border-base-white hover:border-base-white'
-                : 'border-gray-200 hover:border-blue-400'
+                ? 'border-base-white hover:border-base-white text-gray-400'
+                : 'border-gray-200 hover:border-blue-400 text-gray-700'
             }`,
             {
               'pointer-events-none': disabled,

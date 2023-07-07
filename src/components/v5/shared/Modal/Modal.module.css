@@ -3,11 +3,11 @@
 }
 
 .modal {
-  @apply relative outline-0 overflow-hidden bg-base-white pt-6 pl-6 md:h-auto md:max-h-[calc(100vh-4rem)] md:w-[30.3125rem] md:border md:border-gray-200 md:rounded-xl shadow-default;
+  @apply relative outline-0 overflow-hidden bg-base-white pt-6 pl-6 md:h-auto md:max-h-[calc(100vh-4rem)] md:w-[30.3125rem] md:border md:border-gray-200 md:rounded-xl shadow-default flex flex-col w-full;
 }
 
 .inner {
-  @apply w-full overflow-y-auto pr-6 max-h-[calc(100vh-4rem-1rem)] md:max-h-[calc(100vh-4rem-4rem-1rem)] pb-6;
+  @apply flex flex-col w-full flex-grow overflow-y-auto pr-6 max-h-[calc(100vh-4rem-1rem)] md:max-h-[calc(100vh-4rem-4rem-1rem)] pb-6;
 
   -webkit-overflow-scrolling: touch;
 }
@@ -17,5 +17,5 @@
 }
 
 .closeIcon {
-  @apply absolute top-4 right-4;
+  @apply text-gray-400 hover:text-gray-600 absolute top-4 right-4;
 }

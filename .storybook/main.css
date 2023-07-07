@@ -76,6 +76,14 @@
   .text-4 {
     @apply text-xs font-medium;
   }
+
+  .text-5 {
+    @apply text-xs font-semibold;
+  }
+
+  .text-6 {
+    @apply font-bold text-xs;
+  }
 };
 
 @layer components {
@@ -112,4 +120,8 @@ button[disabled].rts___btn {
 
 .rts___nav___btn:hover > svg {
   @apply stroke-none;
+}
+
+body.ReactModal__Body--open > #root {
+  @apply blur-[0.125rem];
 }

@@ -17,7 +17,7 @@ const ModalBase: FC<ModalBaseProps> = ({
     overlayClassName={{
       base: styles.overlay,
       afterOpen: '',
-      beforeClose: '',
+      beforeClose: 'blur-none',
     }}
     className={clsx(
       styles.modal,

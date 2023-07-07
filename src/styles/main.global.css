@@ -80,6 +80,14 @@
   .text-4 {
     @apply text-xs font-medium;
   }
+
+  .text-5 {
+    @apply text-xs font-semibold;
+  }
+
+  .text-6 {
+    @apply font-bold text-xs;
+  }
 }
 
 @layer components {
@@ -120,6 +128,10 @@ button[disabled].rts___btn {
 
 .tooltip-container {
   @apply text-gray-900;
+}
+
+body.ReactModal__Body--open > #root {
+  @apply blur-[0.125rem];
 }
 
 :root {

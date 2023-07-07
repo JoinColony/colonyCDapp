@@ -3,6 +3,7 @@ import { useIntl } from 'react-intl';
 
 import LinkWrapper from './LinkWrapper';
 import { SupportingDocumentsProps } from './types';
+import TitleLabel from '~v5/shared/TitleLabel';
 
 const displayName = 'common.Extensions.SupportingDocuments';
 
@@ -13,9 +14,10 @@ const SupportingDocuments: FC<SupportingDocumentsProps> = ({
 
   return (
     <div>
-      <p className="uppercase text-4 text-blue-400">
-        {formatMessage({ id: 'supporting.documents.title' })}
-      </p>
+      <TitleLabel
+        className="!text-blue-400"
+        text={formatMessage({ id: 'supporting.documents.title' })}
+      />
       <p className="text-2">
         {formatMessage({ id: 'supporting.documents.subtitle' })}
       </p>
