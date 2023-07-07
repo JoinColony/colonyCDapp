@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { string, object, array, boolean, InferType } from 'yup';
 import { useNavigate } from 'react-router-dom';
 
+import { MAX_ANNOTATION_LENGTH } from '~constants';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
@@ -26,7 +27,7 @@ type Props = Required<DialogProps> &
 const displayName = 'common.ManageWhitelistDialog';
 
 const validationSchema = object({
-  annotation: string().max(4000).defined(),
+  annotation: string().max(MAX_ANNOTATION_LENGTH).defined(),
   isWhitelistActivated: boolean().defined(),
 }).defined();
 

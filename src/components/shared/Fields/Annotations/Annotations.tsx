@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { MAX_ANNOTATION_LENGTH } from '~constants';
+
 import {
   HookFormTextArea as Textarea,
   HookFormTextareaComponentProps as TextareaComponentProps,
@@ -9,7 +11,7 @@ import styles from './Annotations.css';
 
 const Annotations = ({
   appearance = { colorSchema: 'grey', resizable: 'vertical' },
-  maxLength = 4000,
+  maxLength = MAX_ANNOTATION_LENGTH,
   ...props
 }: TextareaComponentProps) => {
   const textAreaProps: TextareaComponentProps = {

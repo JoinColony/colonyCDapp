@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { string, object, boolean, InferType } from 'yup';
 import { useNavigate } from 'react-router-dom';
 
+import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
@@ -21,7 +22,7 @@ const displayName = 'common.NetworkContractUpgradeDialog';
 const validationSchema = object()
   .shape({
     forceAction: boolean().defined(),
-    annotation: string().max(4000).defined(),
+    annotation: string().max(MAX_ANNOTATION_LENGTH).defined(),
   })
   .defined();
 

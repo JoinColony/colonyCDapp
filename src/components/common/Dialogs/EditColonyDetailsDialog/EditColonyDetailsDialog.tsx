@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { string, object, boolean, InferType } from 'yup';
 import { defineMessages } from 'react-intl';
 
+import { MAX_ANNOTATION_LENGTH } from '~constants';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
@@ -34,7 +35,7 @@ const validationSchema = object()
     colonyDisplayName: string()
       .trim()
       .required(() => MSG.requiredFieldError),
-    annotationMessage: string().max(4000).defined(),
+    annotationMessage: string().max(MAX_ANNOTATION_LENGTH).defined(),
   })
   .defined();
 
