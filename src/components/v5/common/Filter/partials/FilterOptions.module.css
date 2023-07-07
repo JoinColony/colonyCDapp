@@ -1,3 +1,0 @@
-.li {
-  @apply flex items-center gap-3 transition-all duration-normal text-md mr-2 hover:bg-gray-50 hover:font-medium cursor-pointer rounded p-2;
-}

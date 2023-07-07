@@ -1,69 +1,24 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
 
-import Tooltip from '~shared/Extensions/Tooltip';
-import Icon from '~shared/Icon';
-import { useMembersSubNavigation } from './hooks';
-import styles from './SubNavigation.module.css';
+import SubNavigationItem from '~v5/shared/SubNavigationItem';
 
 const displayName = 'pages.MembersPage.partials.SubNavigation';
 
-const SubNavigation: FC = () => {
-  const { handleClick, isCopyTriggered } = useMembersSubNavigation();
-  const { formatMessage } = useIntl();
-
-  return (
-    <ul>
-      <li>
-        <button
-          type="button"
-          onClick={handleClick}
-          className={styles.navigationButton}
-        >
-          <Tooltip
-            tooltipContent={
-              <span className="text-3 underline">
-                {formatMessage({
-                  id: isCopyTriggered ? 'copiedColony' : 'copyColony',
-                })}
-              </span>
-            }
-            isSuccess={isCopyTriggered}
-          >
-            <Icon name="share-network" appearance={{ size: 'extraSmall' }} />
-            <span className="text-md ml-2">
-              {formatMessage({ id: 'members.subnav.invite' })}
-            </span>
-          </Tooltip>
-        </button>
-      </li>
-      <li>
-        <button type="button" className={styles.navigationButton}>
-          <Icon name="lock-key" appearance={{ size: 'extraSmall' }} />
-          <span className="text-md ml-2">
-            {formatMessage({ id: 'members.subnav.permissions' })}
-          </span>
-        </button>
-      </li>
-      <li>
-        <button type="button" className={styles.navigationButton}>
-          <Icon name="pencil" appearance={{ size: 'extraSmall' }} />
-          <span className="text-md ml-2">
-            {formatMessage({ id: 'members.subnav.manage' })}
-          </span>
-        </button>
-      </li>
-      <li>
-        <button type="button" className={styles.navigationButton}>
-          <Icon name="address-book" appearance={{ size: 'extraSmall' }} />
-          <span className="text-md ml-2">
-            {formatMessage({ id: 'members.subnav.verified' })}
-          </span>
-        </button>
-      </li>
-    </ul>
-  );
-};
+const SubNavigation: FC = () => (
+  <ul>
+    <SubNavigationItem
+      iconName="share-network"
+      title="members.subnav.invite"
+      shouldBeTooltipVisible
+    />
+    <SubNavigationItem iconName="lock-key" title="members.subnav.permissions" />
+    <SubNavigationItem iconName="pencil" title="members.subnav.manage" />
+    <SubNavigationItem
+      iconName="address-book"
+      title="members.subnav.verified"
+    />
+  </ul>
+);
 
 SubNavigation.displayName = displayName;
 
