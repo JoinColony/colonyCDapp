@@ -1,4 +1,6 @@
-export const filterOptions = [
+import { FilterOption } from './types';
+
+export const filterOptions: FilterOption[] = [
   {
     id: 0,
     title: 'filter.teams',

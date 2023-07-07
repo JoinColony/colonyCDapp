@@ -21,7 +21,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
     <div
       className={clsx({
         'w-full text-2': mode === 'primary',
-        'flex text-xs font-medium text-gray-400 uppercase justify-between w-full':
+        'flex text-4 text-gray-400 uppercase justify-between w-full':
           mode === 'secondary',
       })}
       onClick={onClick}

@@ -82,7 +82,7 @@
   }
 
   .text-5 {
-    @apply text-blue-400 font-bold text-xs;
+    @apply font-bold text-xs;
   }
 }
 

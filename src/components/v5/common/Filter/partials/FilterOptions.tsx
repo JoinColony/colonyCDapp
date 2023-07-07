@@ -21,7 +21,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({ options }) => {
   return (
     <div>
       <span
-        className={clsx('flex text-xs font-medium text-gray-400 uppercase', {
+        className={clsx('flex text-4 text-gray-400 uppercase', {
           'ml-5 mb-1': !isMobile,
           'mb-4': isMobile,
         })}

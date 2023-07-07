@@ -20,11 +20,16 @@ const AccordionHeader: FC<AccordionItemProps> = ({
       <div
         className={clsx('flex justify-between items-center pb-2 pt-4 w-full', {
           'text-gray-700': mode === 'primary',
-          'text-gray-400 [&>i>svg]:text-gray-700': mode === 'secondary',
+          'text-gray-400': mode === 'secondary',
         })}
       >
         {text}
-        <span className={clsx({ 'rotate-180': isOpen })}>
+        <span
+          className={clsx({
+            'rotate-180': isOpen,
+            'text-gray-700': mode === 'secondary',
+          })}
+        >
           <Icon
             appearance={{ size: 'extraTiny' }}
             name="caret-down"
