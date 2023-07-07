@@ -53,7 +53,7 @@ const Header = () => {
   return (
     <header>
       <div className="bg-base-white w-full flex min-h-[5rem] sm:min-h-[6rem] justify-center px-6">
-        <div className="flex items-center justify-between max-w-[90rem] w-full">
+        <div className="flex items-center justify-between sm:max-w-[90rem] w-full">
           <div className="mr-5 sm:mr-10">
             <div className="flex justify-between relative">
               {/* @TODO It should be placed i a separate component Colony Switcher */}
@@ -144,7 +144,7 @@ const Header = () => {
               aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
             >
               <Icon name="list" appearance={{ size: 'tiny' }} />
-              <span className="text-3 ml-1.5">
+              <span className="text-2 ml-1.5">
                 {formatMessage({ id: 'menu' })}
               </span>
             </button>
