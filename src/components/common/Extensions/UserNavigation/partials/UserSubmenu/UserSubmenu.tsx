@@ -12,8 +12,14 @@ const UserSubmenu: FC<UserSubmenuProps> = ({ submenuId }) => (
     {userSubmenuItems[submenuId].map(({ id, url, icon, label }) => (
       <li key={id} className="mb-4 last:mb-0">
         <NavLink to={url} className="flex items-center">
-          <Icon name={icon} appearance={{ size: 'extraSmall' }} />
-          <p className="ml-2 heading-5 sm:font-normal sm:text-md">{label}</p>
+          <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
+            <Icon
+              name={icon}
+              appearance={{ size: 'small' }}
+              className="navigation-link"
+            />
+            <p className="ml-2 ">{label}</p>
+          </span>
         </NavLink>
       </li>
     ))}
