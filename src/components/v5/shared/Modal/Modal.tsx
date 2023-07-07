@@ -45,11 +45,13 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
         className={styles.closeIcon}
       />
       <div className={styles.inner}>
-        {title && <h4 className="heading-5 mb-2">{title}</h4>}
-        {subTitle && <p className="text-gray-600 text-md">{subTitle}</p>}
-        {children}
+        <div className="flex-grow">
+          {title && <h4 className="heading-5 mb-2">{title}</h4>}
+          {subTitle && <p className="text-gray-600 text-md">{subTitle}</p>}
+          {children}
+        </div>
         {(closeMessage || confirmMessage) && (
-          <div className="flex flex-wrap gap-3 mt-8 sm:flex-nowrap">
+          <div className="flex flex-col-reverse gap-3 mt-8 sm:flex-row">
             {closeMessage && (
               <Button mode="primaryOutlineFull" isFullSize onClick={onClose}>
                 {closeMessage}
