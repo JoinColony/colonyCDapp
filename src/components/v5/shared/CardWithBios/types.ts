@@ -22,7 +22,7 @@ export type CardWithBiosProps = {
   userStatusTooltipDetails?: UserStatusTooltipDetailsProps;
   shouldBeMenuVisible: boolean;
   isVerified?: boolean;
-  userData?: Member | undefined;
+  userData?: Member;
 };
 
 export type UserStatusComponentProps = {

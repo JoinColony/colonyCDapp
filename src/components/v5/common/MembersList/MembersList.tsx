@@ -34,12 +34,12 @@ const MembersList: FC<MembersListProps> = ({
       <p className="mb-6">{formatMessage(description)}</p>
       {!isLoading && (
         <ul>
-          {listLength > 0 ? (
-            list.map((item) => (
-              <li key={item.user?.name}>
+          {listLength ? (
+            list.map(({ user, ...item }) => (
+              <li key={user?.name}>
                 <CardWithBios
                   userData={item}
-                  description={item.user?.profile?.bio || ''}
+                  description={user?.profile?.bio || ''}
                   shouldStatusBeVisible
                   shouldBeMenuVisible
                 />
@@ -57,8 +57,8 @@ const MembersList: FC<MembersListProps> = ({
           )}
         </ul>
       )}
-      {listLength > 0 && (
-        <div className="w-full flex justify-center">
+      {listLength > 8 && (
+        <div className="w-full flex justify-center mt-6">
           <Link className="text-3" to={viewMoreUrl}>
             {formatMessage({ id: 'viewMore' })}
           </Link>
