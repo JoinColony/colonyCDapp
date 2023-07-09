@@ -600,5 +600,8 @@
   "filter.permissions": "Permissions",
   "teamReputation.reputationPoints.label": "All Teams Reputation Points",
   "teamReputation.noTeams": "No teams have been created",
-  "label.allOther": "All other"
+  "label.allOther": "All other",
+  "new": "New",
+  "top": "Top",
+  "dedicated": "Dedicated"
 }

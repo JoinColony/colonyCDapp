@@ -22,6 +22,7 @@ export interface UserInfoProps extends AvatarProps, UserAvatarDetailsProps {
   aboutDescription: MessageDescriptor | string;
   colonyReputation?: ColonyReputationItem[];
   permissions?: PermissionsItem[];
+  userStatus?: UserStatusMode;
 }
 
 export interface UserAvatarPopoverProps

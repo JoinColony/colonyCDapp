@@ -24,7 +24,9 @@ export type UserStatusMode =
   | 'top'
   | 'top-filled'
   | 'banned'
-  | 'team';
+  | 'team'
+  | 'verified'
+  | 'general';
 
 export type IconSize = 'extraTiny' | 'tiny';
 

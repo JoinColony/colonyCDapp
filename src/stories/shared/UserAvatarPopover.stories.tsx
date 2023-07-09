@@ -22,12 +22,6 @@ const meta: Meta<typeof UserAvatarPopover> = {
         type: 'text',
       },
     },
-    isVerified: {
-      name: 'Is verified?',
-      control: {
-        type: 'boolean',
-      },
-    },
     aboutDescription: {
       name: 'About description',
       control: {
@@ -38,7 +32,6 @@ const meta: Meta<typeof UserAvatarPopover> = {
   args: {
     userName: 'Panda',
     walletAddress: '0x155....1051',
-    isVerified: true,
     aboutDescription: `Passionate about sustainability and living a zero-waste lifestyle. Lover of all things vintage and retro. High-tops are my everything.`,
     colonyReputation: colonyReputationItems,
     permissions: permissionsItems,
@@ -49,3 +42,33 @@ export default meta;
 type Story = StoryObj<typeof UserAvatarPopover>;
 
 export const Base: Story = {};
+
+export const Verified: Story = {
+  args: {
+    userStatus: 'verified',
+  },
+};
+
+export const New: Story = {
+  args: {
+    userStatus: 'new',
+  },
+};
+
+export const Active: Story = {
+  args: {
+    userStatus: 'active',
+  },
+};
+
+export const Dedicated: Story = {
+  args: {
+    userStatus: 'dedicated',
+  },
+};
+
+export const Top: Story = {
+  args: {
+    userStatus: 'top',
+  },
+};

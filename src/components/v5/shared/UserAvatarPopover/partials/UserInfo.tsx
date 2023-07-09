@@ -12,11 +12,11 @@ const displayName = 'v5.UserAvatarPopover.partials.UserInfo';
 const UserInfo: FC<UserInfoProps> = ({
   userName,
   walletAddress,
-  isVerified,
   aboutDescription,
   colonyReputation,
   permissions,
   avatar,
+  userStatus,
 }) => {
   const { formatMessage } = useIntl();
 
@@ -32,7 +32,7 @@ const UserInfo: FC<UserInfoProps> = ({
           userName={userName}
           walletAddress={walletAddress}
           avatar={avatar}
-          isVerified={isVerified}
+          userStatus={userStatus}
         />
       </div>
       <TitleLabel

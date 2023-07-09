@@ -72,6 +72,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
       colonyReputation={colonyReputation}
       permissions={permissions}
       avatar={thumbnail || avatar || ''}
+      userStatus={userStatus}
     />
   );
 
