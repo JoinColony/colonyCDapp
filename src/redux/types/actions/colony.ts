@@ -5,7 +5,12 @@ import {
   InstalledExtensionData,
   WithKey,
 } from '~types';
-import { ActionType, ErrorActionType, UniqueActionType } from './index';
+import {
+  ActionType,
+  ErrorActionType,
+  MetaWithNavigate,
+  UniqueActionType,
+} from './index';
 
 export type ColonyActionTypes =
   | UniqueActionType<
@@ -32,7 +37,7 @@ export type ColonyActionTypes =
         tokenSymbol: string;
         username: string;
       },
-      object
+      MetaWithNavigate<object>
     >
   | ActionType<typeof ActionTypes.CREATE_CANCEL>
   | ErrorActionType<ActionTypes.CREATE_ERROR, object>

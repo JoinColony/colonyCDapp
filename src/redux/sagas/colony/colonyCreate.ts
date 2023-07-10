@@ -74,6 +74,7 @@ function* colonyCreate({
     tokenName,
     tokenSymbol,
   },
+  meta: { navigate },
 }: Action<ActionTypes.CREATE>) {
   const apolloClient = getContext(ContextModule.ApolloClient);
   const wallet = getContext(ContextModule.Wallet);
@@ -579,6 +580,13 @@ function* colonyCreate({
         setOneTxRoleFunding.channel,
         ActionTypes.TRANSACTION_SUCCEEDED,
       );
+    }
+
+    // Redirect to new colony page
+    if (givenColonyName) {
+      navigate(`/colony/${givenColonyName}`, {
+        state: { isRedirect: true },
+      });
     }
 
     return null;
