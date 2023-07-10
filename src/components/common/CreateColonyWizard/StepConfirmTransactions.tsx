@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useSelector, useDispatch } from 'react-redux';
-import { Navigate } from 'react-router-dom';
 
 import { WizardStepProps } from '~shared/Wizard';
 import NavLink from '~shared/NavLink';
@@ -127,9 +126,6 @@ const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
     getGroupKey(newestGroup) === 'group.createColony'
   ) {
     updateUser?.(user?.walletAddress, true);
-    return (
-      <Navigate to={`/colony/${colonyName}`} state={{ isRedirect: true }} />
-    );
   }
 
   const createColonyTxGroup = findTransactionGroupByKey(
