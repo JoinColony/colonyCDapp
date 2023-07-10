@@ -3,7 +3,7 @@
 }
 
 .modal {
-  @apply relative outline-0 overflow-hidden bg-base-white md:h-auto md:max-h-[calc(100vh-4rem)] md:w-[30.3125rem] md:border md:border-gray-200 md:rounded-xl shadow-default flex flex-col w-full;
+  @apply relative outline-0 overflow-hidden bg-base-white md:max-h-[calc(100vh-4rem)] md:w-[30.3125rem] md:border md:border-gray-200 md:rounded-xl shadow-default flex flex-col w-full;
 }
 
 .inner {

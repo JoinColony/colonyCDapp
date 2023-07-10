@@ -3,5 +3,5 @@ export interface CardProps {
   rounded?: 's' | 'm';
   className?: string;
   children?: React.ReactNode;
-  isTopSectionWithBackground?: boolean;
+  withPaddings?: boolean;
 }
