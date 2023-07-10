@@ -186,7 +186,7 @@ const ConnectSafe = ({
         </span>
       </DialogSection>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <div className={styles.instructions}>
+        <div className={defaultStyles.instructions}>
           <FormattedMessage
             {...MSG.instructions}
             values={{
@@ -196,7 +196,9 @@ const ConnectSafe = ({
         </div>
       </DialogSection>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <div className={`${styles.instructions} ${styles.moduleLinkSection}`}>
+        <div
+          className={`${defaultStyles.instructions} ${styles.moduleLinkSection}`}
+        >
           <span className={defaultStyles.subtitle}>
             <FormattedMessage {...MSG.moduleSubtitle} />
           </span>
