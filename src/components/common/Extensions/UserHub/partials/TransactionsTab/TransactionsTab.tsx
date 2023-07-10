@@ -63,7 +63,9 @@ const TransactionsTab: FC<TransactionsProps> = ({
 
   return (
     <>
-      <p className="heading-5 mb-4">{formatMessage({ id: 'transactions' })}</p>
+      <p className="heading-5 mb-2.5 sm:mb-0.5">
+        {formatMessage({ id: 'transactions' })}
+      </p>
       <div>
         {isEmpty ? (
           <EmptyContent

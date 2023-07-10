@@ -1,8 +1,10 @@
 import React, { FC } from 'react';
+import clsx from 'clsx';
 
 import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types';
 import { StakesProps } from '../types';
+import styles from './StakesTabItem.module.css';
 
 const displayName =
   'common.Extensions.UserHub.partials.StakesTab.partials.StakesItems';
@@ -15,10 +17,15 @@ const StakesItems: FC<StakesProps> = ({
   status,
 }) => {
   return (
-    <li className="flex flex-col py-4 border-b-[0.0625rem] border-gray-100">
+    <li
+      className={clsx(
+        styles.stakesItem,
+        'first:pt-2 last:pb-6 sm:first:pt-0 sm:last:pb-1.5',
+      )}
+    >
       <div className="relative w-full">
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-1 mr-2">
+          <div className="flex items-center mr-2 flex-grow">
             <p className="text-1 mr-2">{title}</p>
             <span className="text-gray-400 text-xs">{date}</span>
           </div>

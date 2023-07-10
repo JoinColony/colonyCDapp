@@ -51,5 +51,5 @@ export const stakesMock = [
 export const tabsItems: TabItem[] = [
   { id: 0, title: 'All' },
   { id: 1, title: 'Finalized' },
-  { id: 2, title: 'Claimable', notificationNumber: 15 },
+  { id: 2, title: 'Claimable' },
 ];

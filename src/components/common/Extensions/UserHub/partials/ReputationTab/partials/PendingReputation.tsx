@@ -11,10 +11,9 @@ const PendingReputation = () => {
   const { formatMessage } = useIntl();
 
   return (
-    <div className="pt-6">
+    <div className="pt-6 border-b border-gray-200 pb-6 sm:border-none sm:pb-0">
       <TitleLabel text={formatMessage({ id: 'pending.reputation' })} />
-
-      <div className="flex flex-col gap-4 pt-2 pb-6">
+      <div className="flex flex-col gap-4 pt-2">
         <div className={styles.row}>
           <p className={styles.rowName}>
             {formatMessage({ id: 'next.update' })}

@@ -1,0 +1,3 @@
+.stakesItem {
+  @apply flex flex-col py-3.5 border-b border-gray-100 md:last:border-none;
+}
