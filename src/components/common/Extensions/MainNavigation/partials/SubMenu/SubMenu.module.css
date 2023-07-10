@@ -3,5 +3,5 @@
 }
 
 .linkItem {
-  @apply block transition-all duration-normal rounded-lg px-6 py-2 hover:bg-gray-50 sm:px-3 sm:py-2;
+  @apply block rounded-lg px-6 py-2 hover:bg-gray-50 sm:px-3 sm:py-2;
 }

@@ -10,6 +10,7 @@ import Button from '~v5/shared/Button';
 import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import { useMobile } from '~hooks';
 import styles from './SubMenu.module.css';
+import Link from '~v5/shared/Link';
 
 const displayName = 'common.Extensions.MainNavigation.partials.SubMenu';
 
@@ -28,9 +29,8 @@ const SubMenu: FC<SubMenuProps> = ({ items }) => {
       >
         {items.map(({ label, href, description, status }) => (
           <li key={label}>
-            {/* <Link to="/"> */}
-            <a
-              {...{ href }}
+            <Link
+              to={href}
               className={clsx(styles.linkItem, 'sm:w-[11.25rem]')}
             >
               <span className="flex justify-between font-semibold min-h-[1.625rem] mb-1">
@@ -53,8 +53,7 @@ const SubMenu: FC<SubMenuProps> = ({ items }) => {
                   defaultMessage: `${description}`,
                 })}
               </p>
-            </a>
-            {/* </Link> */}
+            </Link>
           </li>
         ))}
       </ul>

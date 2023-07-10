@@ -11,5 +11,5 @@
 }
 
 .link {
-  @apply flex flex-col w-full px-6 py-2 hover:bg-gray-50 transition-all duration-normal sm:px-4 sm:mx-2 sm:w-[calc(100%-1rem)] sm:rounded;
+  @apply flex flex-col w-full px-6 py-2 hover:bg-gray-50 sm:px-4 sm:mx-2 sm:w-[calc(100%-1rem)] sm:rounded;
 }

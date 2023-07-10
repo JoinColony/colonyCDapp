@@ -6,6 +6,7 @@ import UserAvatar from '~v5/shared/UserAvatar';
 import { NavigationToolsProps } from './types';
 import Token from '~common/Extensions/UserNavigation/partials/Token';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
+import { useMobile } from '~hooks';
 
 const displayName = 'common.Extensions.NavigationTools';
 
@@ -18,6 +19,7 @@ const NavigationTools: FC<NavigationToolsProps> = ({
   buttonLabel,
 }) => {
   const { formatMessage } = useIntl();
+  const isMobile = useMobile();
 
   const buttonLabelText =
     typeof buttonLabel === 'string'
@@ -46,9 +48,11 @@ const NavigationTools: FC<NavigationToolsProps> = ({
         {buttonLabelText ? (
           <span className="text-gray-700 text-3">{buttonLabelText}</span>
         ) : (
-          <span className="text-gray-700 text-3">
-            {formatMessage({ id: 'helpAndAccount' })}
-          </span>
+          !isMobile && (
+            <span className="text-gray-700 text-3">
+              {formatMessage({ id: 'helpAndAccount' })}
+            </span>
+          )
         )}
       </Button>
     </>
