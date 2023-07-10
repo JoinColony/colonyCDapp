@@ -613,7 +613,7 @@
   "filter.user.status": "User status",
   "filter.reputation": "Reputation",
   "filter.permissions": "Permissions",
-  "filter.option.top": "Contributor type",
+  "filter.option.top": "Top contributors",
   "filter.option.dedicated": "Dedicated contributors",
   "filter.option.active": "Active contributors",
   "filter.option.new": "New contributors",

@@ -13,6 +13,7 @@ const NestedOptions: FC<NestedOptionsProps> = ({
   onChange,
 }) => {
   const { formatMessage } = useIntl();
+
   return (
     <>
       <Header title={{ id: 'contributor.type' }} />
