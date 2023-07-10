@@ -24,7 +24,7 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
 
-  const iconSize = isMobile ? 'small' : 'extraTiny';
+  const iconSize = isMobile ? 'small' : 'extraSmall';
 
   return (
     <>
