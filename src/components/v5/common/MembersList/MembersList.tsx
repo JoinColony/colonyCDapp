@@ -32,36 +32,36 @@ const MembersList: FC<MembersListProps> = ({
         </span>
       </div>
       <p className="mb-6">{formatMessage(description)}</p>
-      {!isLoading && (
-        <ul>
-          {listLength ? (
-            list.map((item) => {
-              const { user } = item;
-              const { name, profile } = user || {};
+      {/* @TODO: Add loading state */}
+      {!isLoading && listLength ? (
+        <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-4">
+          {list.map((item) => {
+            const { user } = item;
+            const { name, profile } = user || {};
 
-              return (
-                <li key={name}>
-                  <CardWithBios
-                    userData={item}
-                    description={profile?.bio || ''}
-                    shouldStatusBeVisible
-                    shouldBeMenuVisible
-                  />
-                </li>
-              );
-            })
-          ) : (
-            <EmptyContent
-              icon="smiley-meh"
-              title={emptyTitle}
-              description={emptyDescription}
-              withBorder
-              buttonText={{ id: 'members.subnav.invite' }}
-              onClick={handleClipboardCopy}
-            />
-          )}
+            return (
+              <li key={name}>
+                <CardWithBios
+                  userData={item}
+                  description={profile?.bio || ''}
+                  shouldStatusBeVisible
+                  shouldBeMenuVisible
+                />
+              </li>
+            );
+          })}
         </ul>
-      )}
+      ) : undefined}
+      {!isLoading && !listLength ? (
+        <EmptyContent
+          icon="smiley-meh"
+          title={emptyTitle}
+          description={emptyDescription}
+          withBorder
+          buttonText={{ id: 'members.subnav.invite' }}
+          onClick={handleClipboardCopy}
+        />
+      ) : undefined}
       {listLength > 8 && (
         <div className="w-full flex justify-center mt-6">
           <Link className="text-3" to={viewMoreUrl}>
