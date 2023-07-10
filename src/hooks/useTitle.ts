@@ -28,6 +28,7 @@ import {
   COLONY_EXTENSION_DETAILS_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
   COLONY_FUNDING_ROUTE,
+  COLONY_MEMBERS_ROUTE,
 } from '~routes/routeConstants';
 import { SimpleMessageValues } from '~types/index';
 import { notNull } from '~utils/arrays';
@@ -98,6 +99,11 @@ const MSG = defineMessages({
       } > Setup | Colony - {colonyName}`,
   },
 
+  colonyMembers: {
+    id: 'utils.hooks.useTitle.colonyMembers',
+    defaultMessage: `Members | Colony - {colonyName}`,
+  },
+
   userProfile: {
     id: 'utils.hooks.useTitle.userProfile',
     defaultMessage: `Users > {username} | Colony`,
@@ -141,6 +147,7 @@ const routeMessages: Record<string, MessageDescriptor> = {
     MSG.colonyExtensionSetup,
   [USER_ROUTE]: MSG.userProfile,
   [ACTIONS_PAGE_ROUTE]: MSG.transactionDetails,
+  [COLONY_MEMBERS_ROUTE]: MSG.colonyMembers,
   '/': MSG.fallbackTitle,
 };
 
