@@ -130,51 +130,50 @@ const Select = <T extends any[]>({
           tabIndex={-1}
           role="listbox"
           aria-activedescendant={
-            selectedElement && list[selectedElement].id.toString()
+            selectedElement && list[selectedElement]?.id.toString()
           }
           onKeyDown={(event) => handleListKeyDown(event)}
         >
-          {optionsList &&
-            optionsList.map(({ id, linkTo, label, avatar }) => (
-              <li
-                key={id}
-                className={clsx(styles.li, {
-                  'text-blue-400 font-medium': selectedElement === id,
-                  'text-gray-900': selectedElement !== id,
-                })}
-                id={id.toString()}
-                role="option"
-                aria-selected={selectedElement === id}
-                tabIndex={0}
-                onKeyDown={handleKeyDown(id)}
-                onClick={() => {
-                  handleChange(id);
-                  setIsOptionsOpen(false);
-                  setIsPlaceholder(false);
-                }}
-              >
-                {linkTo ? (
-                  <NavLink
-                    className="flex items-center w-full text-inherit py-2"
-                    to={linkTo}
-                  >
-                    {label}
-                  </NavLink>
-                ) : (
-                  <div className="py-2 flex items-center">
-                    {showAvatar && (
-                      <div className="mr-2 flex">
-                        <Avatar
-                          avatar={avatar || ''}
-                          placeholderIcon="circle-person"
-                        />
-                      </div>
-                    )}
-                    {label}
-                  </div>
-                )}
-              </li>
-            ))}
+          {optionsList?.map(({ id, linkTo, label, avatar }) => (
+            <li
+              key={id}
+              className={clsx(styles.li, {
+                'text-blue-400 font-medium': selectedElement === id,
+                'text-gray-900': selectedElement !== id,
+              })}
+              id={id.toString()}
+              role="option"
+              aria-selected={selectedElement === id}
+              tabIndex={0}
+              onKeyDown={handleKeyDown(id)}
+              onClick={() => {
+                handleChange(id);
+                setIsOptionsOpen(false);
+                setIsPlaceholder(false);
+              }}
+            >
+              {linkTo ? (
+                <NavLink
+                  className="flex items-center w-full text-inherit py-2"
+                  to={linkTo}
+                >
+                  {label}
+                </NavLink>
+              ) : (
+                <div className="py-2 flex items-center">
+                  {showAvatar && (
+                    <div className="mr-2 flex">
+                      <Avatar
+                        avatar={avatar || ''}
+                        placeholderIcon="circle-person"
+                      />
+                    </div>
+                  )}
+                  {label}
+                </div>
+              )}
+            </li>
+          ))}
         </ul>
       )}
     </div>
