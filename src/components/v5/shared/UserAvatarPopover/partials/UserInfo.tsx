@@ -48,9 +48,10 @@ const UserInfo: FC<UserInfoProps> = ({
         </div>
         {isTopContributorType && (
           <>
-            <div className="uppercase text-4 mb-2">
-              {formatMessage({ id: 'userInfo.top.contributor.in' })}
-            </div>
+            <TitleLabel
+              className="mb-2"
+              text={formatMessage({ id: 'userInfo.top.contributor.in' })}
+            />
             <div className="flex gap-1">
               {Array.isArray(teams) ? (
                 teams?.map((item) => (
