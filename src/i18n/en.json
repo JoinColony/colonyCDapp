@@ -613,6 +613,12 @@
   "filter.user.status": "User status",
   "filter.reputation": "Reputation",
   "filter.permissions": "Permissions",
+  "filter.option.top": "Contributor type",
+  "filter.option.dedicated": "Dedicated contributors",
+  "filter.option.active": "Active contributors",
+  "filter.option.new": "New contributors",
+  "filter.option.verified": "Verified contributors",
+  "filter.option.general": "General contributors",
   "viewMore": "View more",
   "teamReputation.reputationPoints.label": "All Teams Reputation Points",
   "teamReputation.noTeams": "No teams have been created",
@@ -624,5 +630,8 @@
   "members.ban.info": "This action only prevents this member from commenting in this Colony. They will still be able to interact with any smart contracts they have permission to use.",
   "members.ban.textarea.label": "Decision reason (Optional)",
   "members.ban.notify": "Notify member of decision",
-  "members.unban.info": "This action gives the member permissions to chat again within this Colony."
+  "members.unban.info": "This action gives the member permissions to chat again within this Colony.",
+  "contributor.type": "Contributor type",
+  "checkbox.select.filter": "Checkbox select filter",
+  "select.filter.menu.item": "Select filter menu item"
 }

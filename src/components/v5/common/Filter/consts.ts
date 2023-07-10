@@ -4,7 +4,7 @@ export const filterOptions: FilterOption[] = [
   {
     id: 0,
     title: 'filter.teams',
-    option: 'teams',
+    option: 'team',
     iconName: 'users-three',
     content: [
       {
@@ -28,7 +28,7 @@ export const filterOptions: FilterOption[] = [
   {
     id: 2,
     title: 'filter.user.status',
-    option: 'status',
+    option: 'statuses',
     iconName: 'flag',
     content: [
       {

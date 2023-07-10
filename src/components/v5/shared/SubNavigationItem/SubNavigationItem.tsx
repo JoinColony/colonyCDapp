@@ -1,22 +1,39 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useIntl } from 'react-intl';
+import { noop } from 'lodash';
+import { usePopperTooltip } from 'react-popper-tooltip';
 
-import styles from './SubNavigationItem.module.css';
 import Icon from '~shared/Icon';
 import { SubNavigationItemProps } from './types';
 import Tooltip from '~shared/Extensions/Tooltip';
+import { useMobile } from '~hooks';
+import PopoverBase from '../PopoverBase';
+import NestedOptions from './partials/NestedOptions';
 
 const displayName = 'v5.SubNavigationItem';
 
 const SubNavigationItem: FC<SubNavigationItemProps> = ({
   iconName,
   title,
+  options,
+  option,
   shouldBeTooltipVisible = false,
   tooltipText = [],
   isCopyTriggered,
   onClick,
+  handleClick,
+  shouldBeActionOnHover = true,
+  onSelectNestedOption,
 }) => {
   const { formatMessage } = useIntl();
+  const isMobile = useMobile();
+  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+    usePopperTooltip({
+      delayShow: 200,
+      delayHide: 200,
+      placement: 'left-start',
+      interactive: true,
+    });
 
   const content = (
     <>
@@ -25,27 +42,66 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
     </>
   );
 
+  const handleSelectElement = () => {
+    onClick?.();
+    handleClick?.(option);
+  };
+
+  const isOptionSelected = useMemo(
+    () => options?.some((item) => item.option === option),
+    [options, option],
+  );
+
   return (
-    <li>
-      <button type="button" onClick={onClick} className={styles.button}>
-        {shouldBeTooltipVisible ? (
-          <Tooltip
-            tooltipContent={
-              <span className="text-3 underline w-full">
-                {formatMessage({
-                  id: isCopyTriggered ? tooltipText[0] : tooltipText[1],
-                })}
-              </span>
-            }
-            isSuccess={isCopyTriggered}
-          >
-            {content}
-          </Tooltip>
-        ) : (
-          content
-        )}
-      </button>
-    </li>
+    <>
+      <li>
+        <button
+          type="button"
+          aria-label={formatMessage({ id: 'select.filter.menu.item' })}
+          onClick={handleSelectElement}
+          onMouseEnter={
+            isMobile || shouldBeActionOnHover ? noop : handleSelectElement
+          }
+          className="subnav-button"
+          ref={setTriggerRef}
+        >
+          {shouldBeTooltipVisible ? (
+            <Tooltip
+              tooltipContent={
+                <span className="text-3 underline w-full">
+                  {formatMessage({
+                    id: isCopyTriggered ? tooltipText[0] : tooltipText[1],
+                  })}
+                </span>
+              }
+              isSuccess={isCopyTriggered}
+            >
+              {content}
+            </Tooltip>
+          ) : (
+            content
+          )}
+        </button>
+      </li>
+      {visible && isOptionSelected && (
+        <PopoverBase
+          setTooltipRef={setTooltipRef}
+          tooltipProps={getTooltipProps}
+          withTooltipStyles={false}
+          cardProps={{
+            rounded: 's',
+            hasShadow: true,
+            className: 'py-4 px-2',
+          }}
+          classNames="w-full sm:max-w-[17.375rem]"
+        >
+          <NestedOptions
+            selectedOption={option}
+            onChange={onSelectNestedOption}
+          />
+        </PopoverBase>
+      )}
+    </>
   );
 };
 

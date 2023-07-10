@@ -1,32 +1,30 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
-import clsx from 'clsx';
 import { useMobile } from '~hooks';
 
 import Accordion from '~shared/Extensions/Accordion';
 import { useAccordion } from '~shared/Extensions/Accordion/hooks';
 import { FilterOptionsProps } from '../types';
 import SubNavigationItem from '~v5/shared/SubNavigationItem';
+import Header from '~v5/shared/SubNavigationItem/partials/Header';
 
 const displayName = 'v5.common.Filter.partials.FilterOptions';
 
 const FilterOptions: FC<FilterOptionsProps> = ({ options }) => {
-  const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { openIndex, onOpenIndexChange } = useAccordion();
   // @TODO: add conditions when filters should be visible / not visible
-  // @TODO: add submenu
+
+  const handleClick = () => {
+    // @TODO: id of selected parent filter element
+  };
+
+  const onSelectNestedOption = () => {
+    // @TODO: id of selected child filter option
+  };
 
   return (
     <div>
-      <span
-        className={clsx('flex text-4 text-gray-400 uppercase', {
-          'ml-5 mb-1': !isMobile,
-          'mb-4': isMobile,
-        })}
-      >
-        {formatMessage({ id: 'filters' })}
-      </span>
+      <Header title={{ id: 'filters' }} />
       {isMobile ? (
         <Accordion
           items={options}
@@ -36,8 +34,17 @@ const FilterOptions: FC<FilterOptionsProps> = ({ options }) => {
         />
       ) : (
         <ul className="flex flex-col">
-          {options?.map(({ id, iconName, title }) => (
-            <SubNavigationItem key={id} iconName={iconName} title={title} />
+          {options?.map(({ id, iconName, title, option }) => (
+            <SubNavigationItem
+              key={id}
+              iconName={iconName}
+              title={title}
+              option={option}
+              options={options}
+              handleClick={handleClick}
+              shouldBeActionOnHover={false}
+              onSelectNestedOption={onSelectNestedOption}
+            />
           ))}
         </ul>
       )}
