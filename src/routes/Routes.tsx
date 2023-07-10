@@ -256,7 +256,7 @@ const Routes = () => {
             <ColonyContextProvider>
               <ExtensionsContextProvider>
                 <PageLayout
-                  loadingText="extensionsPage"
+                  loadingText={{ id: 'loading.extensionsPage' }}
                   title={{ id: 'extensionsPage.title' }}
                   description={{ id: 'extensionsPage.description' }}
                 >
@@ -272,7 +272,7 @@ const Routes = () => {
             <ColonyContextProvider>
               <ExtensionsContextProvider>
                 <PageLayout
-                  loadingText="extensionsPage"
+                  loadingText={{ id: 'loading.extensionsPage' }}
                   title={{ id: 'extensionsPage.title' }}
                   description={{ id: 'extensionsPage.description' }}
                 >
@@ -300,7 +300,7 @@ const Routes = () => {
             <ColonyContextProvider>
               <ExtensionsContextProvider>
                 <PageLayout
-                  loadingText="extensionsPage"
+                  loadingText={{ id: 'loading.extensionsPage' }}
                   title={{ id: 'extensionsPage.title' }}
                   description={{ id: 'extensionsPage.description' }}
                 >
@@ -316,7 +316,7 @@ const Routes = () => {
             <ColonyContextProvider>
               <ExtensionsContextProvider>
                 <PageLayout
-                  loadingText="extensionsPage"
+                  loadingText={{ id: 'loading.extensionsPage' }}
                   title={{ id: 'extensionsPage.title' }}
                   description={{ id: 'extensionsPage.description' }}
                 >
@@ -332,7 +332,7 @@ const Routes = () => {
             <ColonyContextProvider>
               <ExtensionsContextProvider>
                 <PageLayout
-                  loadingText="extensionsPage"
+                  loadingText={{ id: 'loading.extensionsPage' }}
                   title={{ id: 'extensionsPage.title' }}
                   description={{ id: 'extensionsPage.description' }}
                 >
@@ -348,7 +348,7 @@ const Routes = () => {
             <ColonyContextProvider>
               <ExtensionsContextProvider>
                 <PageLayout
-                  loadingText="extensionsPage"
+                  loadingText={{ id: 'loading.extensionsPage' }}
                   title={{ id: 'extensionsPage.title' }}
                   description={{ id: 'extensionsPage.description' }}
                 >
@@ -364,7 +364,7 @@ const Routes = () => {
             <ColonyContextProvider>
               <ExtensionsContextProvider>
                 <PageLayout
-                  loadingText="extensionsPage"
+                  loadingText={{ id: 'loading.extensionsPage' }}
                   title={{ id: 'extensionsPage.title' }}
                   description={{ id: 'extensionsPage.description' }}
                 >
@@ -379,7 +379,7 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <PageLayout
-                loadingText="extensionsPage"
+                loadingText={{ id: 'loading.extensionsPage' }}
                 title={{ id: 'extensionsPage.title' }}
                 description={{ id: 'extensionsPage.description' }}
               >
@@ -396,7 +396,7 @@ const Routes = () => {
             <ColonyContextProvider>
               <ExtensionsContextProvider>
                 <PageLayout
-                  loadingText="extensionsPage"
+                  loadingText={{ id: 'loading.extensionsPage' }}
                   title={{ id: 'extensionsPage.title' }}
                   description={{ id: 'extensionsPage.description' }}
                 >

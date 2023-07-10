@@ -3,9 +3,9 @@
 }
 
 .userMenuPopup {
-  @apply p-6 rounded-lg flex border-gray-200 justify-start z-[9999] overflow-hidden bg-base-white;
+  @apply w-full p-6 rounded-lg flex border-gray-200 justify-start z-[9999] overflow-hidden bg-base-white;
 }
 
 .buttonBack {
-  @apply flex w-full items-center text-gray-400 mb-4 transition-all duration-normal hover:text-blue-400;
+  @apply flex w-full items-center text-gray-400 transition-all duration-normal hover:text-blue-400;
 }
