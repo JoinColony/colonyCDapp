@@ -28,12 +28,6 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
     (userStatus === 'top' && 'top-filled') ||
     'general';
 
-  const text =
-    (userStatus === 'new' && 'new') ||
-    (userStatus === 'active' && 'active') ||
-    (userStatus === 'dedicated' && 'dedicated') ||
-    (userStatus === 'top' && 'top');
-
   return (
     <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center">
       {!!userStatus && userStatus === 'verified' ? (
@@ -52,7 +46,7 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
           </div>
           {!!userStatus && (
             <span className="absolute bottom-[-0.938rem]">
-              <UserStatus mode={mode} text={{ id: text || '' }} />
+              <UserStatus mode={mode} text={{ id: userStatus }} />
             </span>
           )}
         </div>

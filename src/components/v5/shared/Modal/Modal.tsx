@@ -23,7 +23,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
   closeMessage,
   disabled,
   buttonMode = 'secondarySolid',
-  isTopContributorType,
+  isTopSectionWithBackground,
   ...props
 }) => {
   const { formatMessage } = useIntl();
@@ -32,7 +32,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
     <ModalBase
       onRequestClose={onClose}
       {...{ isFullOnMobile, ...props }}
-      isTopSectionWithBackground={isTopContributorType}
+      isTopSectionWithBackground={isTopSectionWithBackground}
     >
       {icon && (
         <span
@@ -51,7 +51,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
       />
       <div
         className={clsx(styles.inner, {
-          'pb-6 pr-6': !isTopContributorType,
+          'pb-6 pr-6': !isTopSectionWithBackground,
         })}
       >
         <div className="flex-grow">

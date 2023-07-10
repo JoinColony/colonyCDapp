@@ -87,7 +87,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
             isFullOnMobile={false}
             onClose={onCloseModal}
             isOpen={isOpen}
-            isTopContributorType={userStatus === 'top'}
+            isTopSectionWithBackground={userStatus === 'top'}
           >
             {content}
           </Modal>

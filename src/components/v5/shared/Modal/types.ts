@@ -18,5 +18,5 @@ export interface ModalProps extends ModalBaseProps {
   closeMessage?: React.ReactNode;
   disabled?: boolean;
   buttonMode?: ButtonMode;
-  isTopContributorType?: boolean;
+  isTopSectionWithBackground?: boolean;
 }
