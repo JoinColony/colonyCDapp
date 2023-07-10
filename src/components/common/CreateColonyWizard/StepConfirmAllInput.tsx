@@ -1,10 +1,11 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
 
 import { WizardStepProps } from '~shared/Wizard';
 import { ActionForm } from '~shared/Fields';
 
-import { mergePayload } from '~utils/actions';
+import { mergePayload, pipe, withMeta } from '~utils/actions';
 import { ActionTypes } from '~redux/index';
 
 import { FormValues } from '../CreateColonyWizard';
@@ -57,17 +58,19 @@ const options: Row[] = [
 type Props = Pick<WizardStepProps<FormValues>, 'nextStep' | 'wizardValues'>;
 
 const StepConfirmAllInput = ({ nextStep, wizardValues }: Props) => {
-  const updatedWizardValues = {
-    ...wizardValues,
-    /**
-     * Use tokenName/tokenSymbol if creating a new token,
-     * or get the values from token object if using an existing one
-     */
-    tokenName: wizardValues.tokenName || wizardValues.token?.name,
-    tokenSymbol: wizardValues.tokenSymbol || wizardValues.token?.symbol,
-  };
-
-  const transform = mergePayload(updatedWizardValues);
+  const navigate = useNavigate();
+  const transform = pipe(
+    mergePayload({
+      ...wizardValues,
+      /**
+       * Use tokenName/tokenSymbol if creating a new token,
+       * or get the values from token object if using an existing one
+       */
+      tokenName: wizardValues.tokenName ?? wizardValues.token?.name,
+      tokenSymbol: wizardValues.tokenSymbol ?? wizardValues.token?.symbol,
+    }),
+    withMeta({ navigate }),
+  );
 
   return (
     <ActionForm
