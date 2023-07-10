@@ -46,3 +46,7 @@ export type CardPermissionProps = {
   text: string;
   type: PermissionType;
 };
+
+export type SubNavigationProps = {
+  shouldPermissionsCanBeChanged?: boolean;
+};

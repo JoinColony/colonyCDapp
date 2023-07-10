@@ -3,10 +3,12 @@ import React, { FC } from 'react';
 import UserAvatarPopover from '../UserAvatarPopover';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
 import Icon from '~shared/Icon';
-import BurgerMenu from '../BurgerMenu/BurgerMenu';
-import CardPermissions from './partials';
+import BurgerMenu from '../BurgerMenu';
+import CardPermissions, { SubNavigation } from './partials';
 import UserStatusComponent from './partials/UserStatus';
 import { CardWithBiosProps } from './types';
+import { useMembersPage } from '~frame/v5/pages/MembersPage/hooks';
+import PopoverBase from '../PopoverBase';
 import { Contributor } from '~types';
 
 const displayName = 'v5.CardWithBios';
@@ -23,6 +25,8 @@ const CardWithBios: FC<CardWithBiosProps> = ({
   const { user, reputationPercentage } = (userData as Contributor) || {};
   const { name, walletAddress, profile } = user || {};
   const { bio } = profile || {};
+  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+    useMembersPage();
 
   return (
     <div className="max-w-[20.125rem] max-h-[9.25rem] rounded-lg border border-gray-200 bg-gray-25 p-5">
@@ -55,8 +59,26 @@ const CardWithBios: FC<CardWithBiosProps> = ({
                 userStatusTooltipDetails={userStatusTooltipDetails}
               />
             )}
-            {/* @TODO: add dropdown component */}
-            {shouldBeMenuVisible && <BurgerMenu isVertical />}
+            {shouldBeMenuVisible && (
+              <>
+                <BurgerMenu isVertical setTriggerRef={setTriggerRef} />
+                {visible && (
+                  <PopoverBase
+                    setTooltipRef={setTooltipRef}
+                    tooltipProps={getTooltipProps}
+                    withTooltipStyles={false}
+                    cardProps={{
+                      rounded: 's',
+                      hasShadow: true,
+                      className: 'py-4 px-2',
+                    }}
+                    classNames="w-full sm:max-w-[17.375rem]"
+                  >
+                    <SubNavigation />
+                  </PopoverBase>
+                )}
+              </>
+            )}
           </div>
         </div>
 

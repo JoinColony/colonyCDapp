@@ -3,11 +3,10 @@ import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 import { useMobile } from '~hooks';
 
-import Icon from '~shared/Icon';
-import styles from './FilterOptions.module.css';
 import Accordion from '~shared/Extensions/Accordion';
 import { useAccordion } from '~shared/Extensions/Accordion/hooks';
 import { FilterOptionsProps } from '../types';
+import SubNavigationItem from '~v5/shared/SubNavigationItem';
 
 const displayName = 'v5.common.Filter.partials.FilterOptions';
 
@@ -38,12 +37,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({ options }) => {
       ) : (
         <ul className="flex flex-col">
           {options?.map(({ id, iconName, title }) => (
-            <li key={id} className={styles.li}>
-              <span className="flex ml-3">
-                <Icon name={iconName} appearance={{ size: 'tiny' }} />
-              </span>
-              {formatMessage({ id: title })}
-            </li>
+            <SubNavigationItem key={id} iconName={iconName} title={title} />
           ))}
         </ul>
       )}

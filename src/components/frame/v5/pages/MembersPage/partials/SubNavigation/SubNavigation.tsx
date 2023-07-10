@@ -1,68 +1,37 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
 
-import Tooltip from '~shared/Extensions/Tooltip';
-import { useMembersSubNavigation } from './hooks';
+import SubNavigationItem from '~v5/shared/SubNavigationItem';
 import { SubNavigationProps } from './types';
-import Button from '~v5/shared/Button';
+import { useMembersSubNavigation } from '~v5/shared/SubNavigationItem/hooks';
 
 const displayName = 'v5.pages.MembersPage.partials.SubNavigation';
 
 const SubNavigation: FC<SubNavigationProps> = ({ onManageMembersClick }) => {
   const { handleClick, isCopyTriggered } = useMembersSubNavigation();
-  const { formatMessage } = useIntl();
 
   return (
     <ul>
-      <li>
-        <Button
-          mode="senary"
-          iconName="share-network"
-          iconSize="small"
-          onClick={handleClick}
-        >
-          <Tooltip
-            tooltipContent={
-              <span className="text-3 underline">
-                {formatMessage({
-                  id: isCopyTriggered ? 'copiedColony' : 'copyColony',
-                })}
-              </span>
-            }
-            isSuccess={isCopyTriggered}
-          >
-            <span className="text-md">
-              {formatMessage({ id: 'members.subnav.invite' })}
-            </span>
-          </Tooltip>
-        </Button>
-      </li>
-      <li>
-        <Button mode="senary" iconName="lock-key" iconSize="small">
-          <span className="text-md">
-            {formatMessage({ id: 'members.subnav.permissions' })}
-          </span>
-        </Button>
-      </li>
-      <li>
-        <Button
-          mode="senary"
-          onClick={onManageMembersClick}
-          iconName="pencil"
-          iconSize="small"
-        >
-          <span className="text-md">
-            {formatMessage({ id: 'members.subnav.manage' })}
-          </span>
-        </Button>
-      </li>
-      <li>
-        <Button mode="senary" iconName="address-book" iconSize="small">
-          <span className="text-md">
-            {formatMessage({ id: 'members.subnav.verified' })}
-          </span>
-        </Button>
-      </li>
+      <SubNavigationItem
+        iconName="share-network"
+        title="members.subnav.invite"
+        shouldBeTooltipVisible
+        tooltipText={['copiedColony', 'copyColony']}
+        onClick={handleClick}
+        isCopyTriggered={isCopyTriggered}
+      />
+      <SubNavigationItem
+        iconName="lock-key"
+        title="members.subnav.permissions"
+      />
+      <SubNavigationItem
+        iconName="pencil"
+        title="members.subnav.manage"
+        onClick={onManageMembersClick}
+      />
+      <SubNavigationItem
+        iconName="address-book"
+        title="members.subnav.verified"
+      />
     </ul>
   );
 };

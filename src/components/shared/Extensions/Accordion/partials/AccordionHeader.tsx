@@ -37,7 +37,7 @@ const AccordionHeader: FC<AccordionItemProps> = ({
           />
         </span>
       </div>
-      {mode === 'primary' && <div className="w-full bg-gray-200 h-1" />}
+      {mode === 'primary' && <div className="w-full bg-gray-200 h-px" />}
     </>
   );
 };
