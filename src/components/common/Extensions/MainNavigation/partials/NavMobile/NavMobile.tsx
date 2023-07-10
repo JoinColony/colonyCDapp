@@ -57,7 +57,7 @@ const NavMobile: FC<NavItemMobileProps> = ({ item, isOpen, toggleItem }) => {
                 animate="visible"
                 variants={accordionAnimation}
                 transition={{ duration: 0.4, ease: 'easeOut' }}
-                className="overflow-hidden"
+                className="overflow-hidden mb-3"
               >
                 <SubMenu items={item.subMenu} />
               </motion.div>

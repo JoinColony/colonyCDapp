@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-
 import clsx from 'clsx';
+
 import styles from './Switch.module.css';
 import { SwitchProps } from './types';
 
