@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import clsx from 'clsx';
 
 import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types';
@@ -17,12 +16,7 @@ const StakesItems: FC<StakesProps> = ({
   status,
 }) => {
   return (
-    <li
-      className={clsx(
-        styles.stakesItem,
-        'first:pt-2 last:pb-6 sm:first:pt-0 sm:last:pb-1.5',
-      )}
-    >
+    <li className={styles.stakesItem}>
       <div className="relative w-full">
         <div className="flex justify-between items-center">
           <div className="flex items-center mr-2 flex-grow">
