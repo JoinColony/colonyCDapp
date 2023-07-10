@@ -21,6 +21,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
   user,
   userStatus,
   avatarSize,
+  teams,
 }) => {
   const isMobile = useMobile();
   const [isOpen, setIsOpen] = useState(false);
@@ -73,6 +74,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
       permissions={permissions}
       avatar={thumbnail || avatar || ''}
       userStatus={userStatus}
+      teams={teams}
     />
   );
 
@@ -95,6 +97,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
               classNames="max-w-[20rem] shadow-default"
               withTooltipStyles={false}
               cardProps={{ rounded: 's' }}
+              isTopContributorType={userStatus === 'top'}
             >
               {content}
             </PopoverBase>

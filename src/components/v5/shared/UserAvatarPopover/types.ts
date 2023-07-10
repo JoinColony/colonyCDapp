@@ -23,6 +23,7 @@ export interface UserInfoProps extends AvatarProps, UserAvatarDetailsProps {
   colonyReputation?: ColonyReputationItem[];
   permissions?: PermissionsItem[];
   userStatus?: UserStatusMode;
+  teams?: Teams[];
 }
 
 export interface UserAvatarPopoverProps
@@ -31,4 +32,13 @@ export interface UserAvatarPopoverProps
   popperOptions?: PopperOptions;
   userStatus?: UserStatusMode;
   avatarSize?: AvatarSize;
+  teams?: Teams[];
 }
+
+export type Teams =
+  | 'businnes'
+  | 'product'
+  | 'development'
+  | 'design'
+  | 'devops'
+  | 'root';

@@ -70,5 +70,6 @@ export const Dedicated: Story = {
 export const Top: Story = {
   args: {
     userStatus: 'top',
+    teams: ['businnes', 'product', 'design'],
   },
 };

@@ -1,11 +1,13 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+import clsx from 'clsx';
 
 import { UserInfoProps } from '../types';
 import Icon from '~shared/Icon';
 import UserPermissionsBadge from '~common/Extensions/UserPermissionsBadge';
 import TitleLabel from '~v5/shared/TitleLabel';
 import UserAvatarDetails from '~v5/shared/UserAvatarDetails';
+import UserStatus from '~v5/common/Pills/UserStatus';
 
 const displayName = 'v5.UserAvatarPopover.partials.UserInfo';
 
@@ -17,6 +19,7 @@ const UserInfo: FC<UserInfoProps> = ({
   permissions,
   avatar,
   userStatus,
+  teams,
 }) => {
   const { formatMessage } = useIntl();
 
@@ -25,28 +28,67 @@ const UserInfo: FC<UserInfoProps> = ({
       ? aboutDescription
       : aboutDescription && formatMessage(aboutDescription);
 
+  const isTopContributorType = userStatus === 'top';
+
   return (
     <div className="sm:min-w-[17rem]">
-      <div className="mb-6">
-        <UserAvatarDetails
-          userName={userName}
-          walletAddress={walletAddress}
-          avatar={avatar}
-          userStatus={userStatus}
-        />
+      <div
+        className={clsx({
+          'bg-purple-100 p-6': isTopContributorType,
+          'bg-base-white': !isTopContributorType,
+        })}
+      >
+        <div className="mb-6">
+          <UserAvatarDetails
+            userName={userName}
+            walletAddress={walletAddress}
+            avatar={avatar}
+            userStatus={userStatus}
+          />
+        </div>
+        {isTopContributorType && (
+          <>
+            <div className="uppercase text-4 mb-2">
+              {formatMessage({ id: 'userInfo.top.contributor.in' })}
+            </div>
+            <div className="flex gap-1">
+              {Array.isArray(teams) ? (
+                teams?.map((item) => (
+                  <UserStatus mode="team" text={{ id: item }} />
+                ))
+              ) : (
+                <UserStatus mode="team" text={{ id: teams }} />
+              )}
+            </div>
+          </>
+        )}
       </div>
       <TitleLabel
-        className="mt-2 mb-2"
+        className={clsx('mt-2 mb-2', {
+          'px-6': isTopContributorType,
+        })}
         text={formatMessage({ id: 'userInfo.about.section' })}
       />
-      <p className="text-md text-gray-600">{aboutDescriptionText}</p>
+      <p
+        className={clsx('text-md text-gray-600', {
+          'px-6': isTopContributorType,
+        })}
+      >
+        {aboutDescriptionText}
+      </p>
       {colonyReputation && colonyReputation.length ? (
         <>
           <TitleLabel
-            className="pt-6 mt-6 border-t border-gray-200 mb-2"
+            className={clsx('pt-6 mt-6 border-t border-gray-200 mb-2', {
+              'px-6': isTopContributorType,
+            })}
             text={formatMessage({ id: 'userInfo.colonyReputation.section' })}
           />
-          <ul className="flex flex-col gap-2">
+          <ul
+            className={clsx('flex flex-col gap-2', {
+              'px-6': isTopContributorType,
+            })}
+          >
             {colonyReputation?.map(({ key, title, percentage, points }) => {
               const titleText =
                 typeof title === 'string'
@@ -75,10 +117,16 @@ const UserInfo: FC<UserInfoProps> = ({
       {permissions && permissions.length && (
         <>
           <TitleLabel
-            className="pt-6 mt-6 border-t border-gray-200 mb-2"
+            className={clsx('pt-6 mt-6 border-t border-gray-200 mb-2', {
+              'px-6': isTopContributorType,
+            })}
             text={formatMessage({ id: 'userInfo.permissions.section' })}
           />
-          <ul className="inline-flex flex-wrap gap-x-1 gap-y-2">
+          <ul
+            className={clsx('inline-flex flex-wrap gap-x-1 gap-y-2', {
+              'px-6 pb-6': isTopContributorType,
+            })}
+          >
             {permissions.map(({ key, text, description, name }) => (
               <li key={key}>
                 <UserPermissionsBadge
