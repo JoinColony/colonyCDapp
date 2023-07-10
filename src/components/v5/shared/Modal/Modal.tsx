@@ -23,12 +23,17 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
   closeMessage,
   disabled,
   buttonMode = 'secondarySolid',
+  isTopSectionWithBackground,
   ...props
 }) => {
   const { formatMessage } = useIntl();
 
   return (
-    <ModalBase onRequestClose={onClose} {...{ isFullOnMobile, ...props }}>
+    <ModalBase
+      onRequestClose={onClose}
+      {...{ isFullOnMobile, ...props }}
+      isTopSectionWithBackground={isTopSectionWithBackground}
+    >
       {icon && (
         <span
           className={clsx(styles.icon, 'border-gray-200', {
@@ -44,7 +49,11 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
         onClick={onClose}
         className={styles.closeIcon}
       />
-      <div className={styles.inner}>
+      <div
+        className={clsx(styles.inner, {
+          'pb-6 pr-6': !isTopSectionWithBackground,
+        })}
+      >
         <div className="flex-grow">
           {title && <h4 className="heading-5 mb-2">{title}</h4>}
           {subTitle && <p className="text-gray-600 text-md">{subTitle}</p>}

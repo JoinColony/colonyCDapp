@@ -10,6 +10,7 @@ const displayName = 'v5.ModalBase';
 const ModalBase: FC<ModalBaseProps> = ({
   role = 'dialog',
   isFullOnMobile,
+  isTopSectionWithBackground,
   ...props
 }) => (
   <ReactModal
@@ -28,6 +29,8 @@ const ModalBase: FC<ModalBaseProps> = ({
       }`,
       {
         base: 'z-[4] outline-0',
+        'pt-6 pl-6': !isTopSectionWithBackground,
+        'pt-0 pl-0': isTopSectionWithBackground,
       },
     )}
     shouldFocusAfterRender

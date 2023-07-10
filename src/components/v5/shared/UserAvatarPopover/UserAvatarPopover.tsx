@@ -21,6 +21,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
   user,
   userStatus,
   avatarSize,
+  teams,
 }) => {
   const isMobile = useMobile();
   const [isOpen, setIsOpen] = useState(false);
@@ -72,6 +73,8 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
       colonyReputation={colonyReputation}
       permissions={permissions}
       avatar={thumbnail || avatar || ''}
+      userStatus={userStatus}
+      teams={teams}
     />
   );
 
@@ -80,7 +83,12 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
       {isMobile ? (
         <>
           {button}
-          <Modal isFullOnMobile={false} onClose={onCloseModal} isOpen={isOpen}>
+          <Modal
+            isFullOnMobile={false}
+            onClose={onCloseModal}
+            isOpen={isOpen}
+            isTopSectionWithBackground={userStatus === 'top'}
+          >
             {content}
           </Modal>
         </>
@@ -94,6 +102,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
               classNames="max-w-[20rem] shadow-default"
               withTooltipStyles={false}
               cardProps={{ rounded: 's' }}
+              isTopSectionWithBackground={userStatus === 'top'}
             >
               {content}
             </PopoverBase>
