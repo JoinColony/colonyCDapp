@@ -19,6 +19,10 @@ const EmptyContent: FC<EmptyContentProps> = ({
 }) => {
   const { formatMessage } = useIntl();
   const titleText = typeof title === 'string' ? title : formatMessage(title);
+  const buttonTextFormatted =
+    typeof buttonText === 'string'
+      ? buttonText
+      : buttonText && formatMessage(buttonText);
   const descriptionText =
     typeof description === 'string' ? description : formatMessage(description);
 
@@ -46,7 +50,7 @@ const EmptyContent: FC<EmptyContentProps> = ({
             iconName="share-network"
             onClick={onClick}
           >
-            {buttonText}
+            {buttonTextFormatted}
           </Button>
         )}
       </div>

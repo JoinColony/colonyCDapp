@@ -1,37 +1,28 @@
 import React, { FC } from 'react';
 
-import { useUserByNameOrAddress } from '~hooks';
-import { AnyExtensionData, InstalledExtensionData } from '~types';
 import UserAvatarPopover from '../UserAvatarPopover';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
-import { useGetInstalledByData } from '~common/Extensions/SpecificSidePanel/partials/hooks';
 import Icon from '~shared/Icon';
 import BurgerMenu from '../BurgerMenu/BurgerMenu';
 import CardPermissions from './partials';
 import UserStatusComponent from './partials/UserStatus';
 import { CardWithBiosProps } from './types';
+import { Contributor } from '~types';
 
 const displayName = 'v5.CardWithBios';
 
 const CardWithBios: FC<CardWithBiosProps> = ({
+  userData,
   description,
-  extensionData,
-  percentage,
   userStatus,
   shouldBeMenuVisible = true,
   permissions,
   userStatusTooltipDetails,
   isVerified,
 }) => {
-  const { user } = useUserByNameOrAddress(
-    (extensionData as InstalledExtensionData)?.installedBy,
-  );
-  const { bio } = user?.profile || {};
-  const username = user?.name;
-  const installedByData = useGetInstalledByData(
-    extensionData as AnyExtensionData,
-  );
-  const { colonyReputationItems } = installedByData || {};
+  const { user, reputationPercentage } = (userData as Contributor) || {};
+  const { name, walletAddress, profile } = user || {};
+  const { bio } = profile || {};
 
   return (
     <div className="max-w-[20.125rem] max-h-[9.25rem] rounded-lg border border-gray-200 bg-gray-25 p-5">
@@ -39,11 +30,12 @@ const CardWithBios: FC<CardWithBiosProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <UserAvatarPopover
-              userName={username || 'panda'}
-              walletAddress={splitWalletAddress(user?.walletAddress || '')}
+              userName={name}
+              walletAddress={splitWalletAddress(walletAddress || '')}
               isVerified={isVerified}
               aboutDescription={bio || ''}
-              colonyReputation={colonyReputationItems}
+              // @TODO: add colonyReputationItems
+              // colonyReputation={colonyReputationItems}
               user={user}
               userStatus={userStatus}
               avatarSize="sm"
@@ -57,7 +49,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
           </div>
 
           <div className="flex gap-2">
-            {userStatus && (
+            {userStatus && userStatusTooltipDetails && (
               <UserStatusComponent
                 userStatus={userStatus}
                 userStatusTooltipDetails={userStatusTooltipDetails}
@@ -71,10 +63,12 @@ const CardWithBios: FC<CardWithBiosProps> = ({
         {description && <p className="text-gray-600 text-sm">{description}</p>}
 
         <div className="flex justify-between items-center">
-          {!!percentage && (
+          {!!reputationPercentage && (
             <span className="flex items-center text-gray-600 text-3">
               <Icon name="star-not-filled" appearance={{ size: 'extraTiny' }} />
-              <span className="inline-block ml-1 mr-2">{percentage}%</span>
+              <span className="inline-block ml-1 mr-2">
+                {reputationPercentage}%
+              </span>
             </span>
           )}
 
