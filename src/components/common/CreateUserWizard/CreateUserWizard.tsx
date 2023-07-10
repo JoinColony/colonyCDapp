@@ -15,6 +15,7 @@ import {
 } from '../CreateUserWizard';
 
 import styles from './CreateUserWizard.css';
+import { useTitle } from '~hooks';
 
 const steps = [StepUserEmail, StepUserName];
 
@@ -37,20 +38,24 @@ export const UserStepTemplate = ({
   descriptionValues,
   input,
   button,
-}: UserStepTemplateProps) => (
-  <section className={styles.main}>
-    <div>
-      <Heading appearance={{ size: 'medium' }} text={heading} />
-      <p className={styles.paragraph}>
-        <FormattedMessage {...description} values={descriptionValues} />
-      </p>
-      <div className={styles.nameForm}>
-        {input}
-        <div className={styles.buttons}>{button}</div>
+}: UserStepTemplateProps) => {
+  useTitle();
+
+  return (
+    <section className={styles.main}>
+      <div>
+        <Heading appearance={{ size: 'medium' }} text={heading} />
+        <p className={styles.paragraph}>
+          <FormattedMessage {...description} values={descriptionValues} />
+        </p>
+        <div className={styles.nameForm}>
+          {input}
+          <div className={styles.buttons}>{button}</div>
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 interface ContinueWizardProps {
   disabled: boolean;

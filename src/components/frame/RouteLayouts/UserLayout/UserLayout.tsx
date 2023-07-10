@@ -3,7 +3,7 @@ import React from 'react';
 import { RouteComponentProps } from '~frame/RouteLayouts';
 import SubscribedColoniesList from '~frame/SubscribedColoniesList';
 
-import { useMobile } from '~hooks';
+import { useMobile, useTitle } from '~hooks';
 
 import UserNavigation from '../UserNavigation';
 import SimpleNav from '../SimpleNav';
@@ -23,6 +23,7 @@ const UserLayout = ({
   routeProps: { hasSubscribedColonies = true } = {},
 }: Props) => {
   const isMobile = useMobile();
+  useTitle();
 
   return (
     <SimpleNav>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
+import { useTitle } from '~hooks';
 
 import Logo from '~images/logo.svg';
 import NakedMole from '~images/naked-mole-404.svg';
@@ -26,31 +27,35 @@ const MSG = defineMessages({
   },
 });
 
-const FourOFour = () => (
-  <main className={styles.layoutMain}>
-    <header className={styles.header}>
-      <figure className={styles.logo} role="presentation">
-        <Link to="/">
-          <Logo />
-        </Link>
-      </figure>
-    </header>
-    <div className={styles.herowrapper}>
-      <div className={styles.title}>
-        <Heading
-          appearance={{ size: 'medium', weight: 'medium', margin: 'none' }}
-          text={MSG.fourOFour}
-        />
+const FourOFour = () => {
+  useTitle();
+
+  return (
+    <main className={styles.layoutMain}>
+      <header className={styles.header}>
+        <figure className={styles.logo} role="presentation">
+          <Link to="/">
+            <Logo />
+          </Link>
+        </figure>
+      </header>
+      <div className={styles.herowrapper}>
+        <div className={styles.title}>
+          <Heading
+            appearance={{ size: 'medium', weight: 'medium', margin: 'none' }}
+            text={MSG.fourOFour}
+          />
+        </div>
+        <p className={styles.description}>
+          <FormattedMessage {...MSG.message} />
+        </p>
+        <div className={styles.hero}>
+          <NakedMole />
+        </div>
       </div>
-      <p className={styles.description}>
-        <FormattedMessage {...MSG.message} />
-      </p>
-      <div className={styles.hero}>
-        <NakedMole />
-      </div>
-    </div>
-  </main>
-);
+    </main>
+  );
+};
 
 FourOFour.displayName = displayName;
 

@@ -50,8 +50,6 @@ import { ColonyContextProvider } from '~context/ColonyContext';
 import CreateColonyWizard from '~common/CreateColonyWizard';
 import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
 
-// import useTitle from '~hooks/useTitle';
-
 const displayName = 'routes.Routes';
 
 const MSG = defineMessages({
@@ -75,8 +73,6 @@ const Routes = () => {
   const isConnected = wallet?.address;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const didClaimProfile = user?.name;
-
-  // useTitle();
 
   /**
    * @NOTE Memoized Switch

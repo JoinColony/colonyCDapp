@@ -1,7 +1,7 @@
 import React, { ComponentType, useState } from 'react';
 
 import { AppContextValues } from '~context/AppContext';
-import { useAppContext } from '~hooks';
+import { useAppContext, useTitle } from '~hooks';
 
 import {
   InitialValuesProp,
@@ -54,6 +54,7 @@ const withWizard =
     const Wizard = () => {
       const { user } = useAppContext();
       const [step, setStep] = useState(0);
+      useTitle();
 
       const [stepsValues, setStepsValues] = useState<StepsValues<T>>([]);
       const mergedValues = all(stepsValues) as T;

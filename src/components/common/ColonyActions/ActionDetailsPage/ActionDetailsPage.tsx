@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
-import { useColonyContext } from '~hooks';
+import { useColonyContext, useTitle } from '~hooks';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import { MotionAction } from '~types/motions';
 
@@ -45,6 +45,8 @@ const ActionDetailsPage = () => {
     stopPollingForAction,
     refetchAction,
   } = useGetColonyAction();
+
+  useTitle();
 
   if (!colony) {
     return null;
