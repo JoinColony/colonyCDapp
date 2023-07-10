@@ -1,4 +1,4 @@
-import { AnyExtensionData } from '~types';
+import { Member } from '~types';
 import { UserStatusMode } from '~v5/common/Pills/types';
 
 export type Permissions = {
@@ -16,14 +16,13 @@ export type PermissionType =
 
 export type CardWithBiosProps = {
   description?: string;
-  extensionData: AnyExtensionData;
-  percentage?: number;
-  shouldStatusBeVisible?: boolean;
+  shouldStatusBeVisible: boolean;
   userStatus?: UserStatusMode;
   permissions?: Permissions[];
-  userStatusTooltipDetails: UserStatusTooltipDetailsProps;
-  shouldBeMenuVisible?: boolean;
+  userStatusTooltipDetails?: UserStatusTooltipDetailsProps;
+  shouldBeMenuVisible: boolean;
   isVerified?: boolean;
+  userData?: Member;
 };
 
 export type UserStatusComponentProps = {

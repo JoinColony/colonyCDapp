@@ -47,7 +47,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
       </span>
       {userName && (
         <p
-          className={clsx('font-medium truncate', {
+          className={clsx('font-medium truncate ml-2.5', {
             'text-sm ml-1': size === 'xxs',
             'text-md ml-2': size === 'xs',
           })}
