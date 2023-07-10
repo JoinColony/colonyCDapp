@@ -23,6 +23,7 @@
   "button.activate": "Activate",
   "button.approve": "Approve",
   "button.cancel": "Cancel",
+  "button.confirm.action": "Confirm action",
   "button.choose": "Choose",
   "button.claim": "Claim",
   "button.claimAll": "Claim All",
@@ -459,6 +460,7 @@
   "userInfo.colonyReputation.business": "Business",
   "userInfo.colonyReputation.development": "Development",
   "userInfo.colonyReputation.product": "Product",
+  "userInfo.top.contributor.in": "Top contributor in:",
   "userMenu.optionsTitle": "options",
   "userMenu.getStartedTitle": "Get started",
   "userMenu.contactAndSupportTitle": "Contact and support",
@@ -614,5 +616,13 @@
   "viewMore": "View more",
   "teamReputation.reputationPoints.label": "All Teams Reputation Points",
   "teamReputation.noTeams": "No teams have been created",
-  "label.allOther": "All other"
+  "label.allOther": "All other",
+  "new": "New",
+  "top": "Top",
+  "dedicated": "Dedicated",
+  "note": "Note",
+  "members.ban.info": "This action only prevents this member from commenting in this Colony. They will still be able to interact with any smart contracts they have permission to use.",
+  "members.ban.textarea.label": "Decision reason (Optional)",
+  "members.ban.notify": "Notify member of decision",
+  "members.unban.info": "This action gives the member permissions to chat again within this Colony."
 }

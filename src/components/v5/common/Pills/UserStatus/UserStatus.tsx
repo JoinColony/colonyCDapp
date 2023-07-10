@@ -20,10 +20,10 @@ const UserStatus: FC<PropsWithChildren<PillsProps>> = ({
     typeof text == 'string' ? text : text && formatMessage(text, textValues);
 
   const iconName =
-    (mode === 'dedicated' && 'medal-bold') ||
-    (mode === 'top' && 'crown-simple') ||
-    (mode === 'new' && 'hand-heart') ||
-    (mode === 'active' && 'shooting-star-bold') ||
+    ((mode === 'dedicated' || mode === 'dedicated-filled') && 'medal-bold') ||
+    ((mode === 'top' || mode === 'top-filled') && 'crown-simple') ||
+    ((mode === 'new' || mode === 'active-new') && 'hand-heart') ||
+    ((mode === 'active' || mode === 'active-filled') && 'shooting-star-bold') ||
     '';
 
   return (

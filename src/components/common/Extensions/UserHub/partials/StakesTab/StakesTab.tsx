@@ -54,7 +54,7 @@ const StakesTab = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-6 md:mb-4">
         <p className="heading-5">{formatMessage({ id: 'stakes' })}</p>
         {!isMobile && (
           <button

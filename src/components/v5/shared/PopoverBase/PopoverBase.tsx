@@ -13,6 +13,7 @@ const PopoverBase: FC<PropsWithChildren<PopoverBaseProps>> = ({
   children,
   cardProps,
   withTooltipStyles = true,
+  isTopSectionWithBackground,
 }) => (
   <div
     ref={setTooltipRef}
@@ -22,7 +23,13 @@ const PopoverBase: FC<PropsWithChildren<PopoverBaseProps>> = ({
       }),
     })}
   >
-    {cardProps ? <Card {...cardProps}>{children}</Card> : children}
+    {cardProps ? (
+      <Card {...cardProps} withPaddings={isTopSectionWithBackground}>
+        {children}
+      </Card>
+    ) : (
+      children
+    )}
   </div>
 );
 PopoverBase.displayName = displayName;
