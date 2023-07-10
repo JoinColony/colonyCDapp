@@ -10,6 +10,8 @@ import { useMembersPage } from './hooks';
 import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
 import Filter from '~v5/common/Filter';
 import MembersList from '~v5/common/MembersList';
+import TeamReputationSummary from '~v5/common/TeamReputationSummary';
+import { teamsWithSummedUpData } from '~v5/common/TeamReputationSummary/consts';
 
 const MembersPage: FC = () => {
   const [isManageMembersOpen, setIsManageMembersOpen] = useState(false);
@@ -54,25 +56,37 @@ const MembersPage: FC = () => {
         </div>
         <Filter />
       </div>
-      <MembersList
-        title={{ id: 'membersPage.contributors.title' }}
-        description={{ id: 'membersPage.contributors.description' }}
-        emptyTitle={{ id: 'membersPage.contributors.emptyTitle' }}
-        emptyDescription={{ id: 'membersPage.contributors.emptyDescription' }}
-        list={contributors}
-        isLoading={loading}
-        viewMoreUrl={followersURL}
-      />
-      <div className="mt-12">
-        <MembersList
-          title={{ id: 'membersPage.followers.title' }}
-          description={{ id: 'membersPage.followers.description' }}
-          emptyTitle={{ id: 'membersPage.followers.emptyTitle' }}
-          emptyDescription={{ id: 'membersPage.contributors.emptyDescription' }}
-          list={followers}
-          isLoading={loading}
-          viewMoreUrl={contributorsURL}
-        />
+      <div className="flex justify-between mt-6 gap-6 flex-col-reverse sm:flex-row md:gap-12">
+        <div className="w-full">
+          <MembersList
+            title={{ id: 'membersPage.contributors.title' }}
+            description={{ id: 'membersPage.contributors.description' }}
+            emptyTitle={{ id: 'membersPage.contributors.emptyTitle' }}
+            emptyDescription={{
+              id: 'membersPage.contributors.emptyDescription',
+            }}
+            list={contributors}
+            isLoading={loading}
+            viewMoreUrl={followersURL}
+          />
+          <div className="mt-12">
+            <MembersList
+              title={{ id: 'membersPage.followers.title' }}
+              description={{ id: 'membersPage.followers.description' }}
+              emptyTitle={{ id: 'membersPage.followers.emptyTitle' }}
+              emptyDescription={{
+                id: 'membersPage.contributors.emptyDescription',
+              }}
+              list={followers}
+              isLoading={loading}
+              viewMoreUrl={contributorsURL}
+            />
+          </div>
+        </div>
+        {/* @TODO: Add real data */}
+        <div className="sm:max-w-[14.375rem] w-full">
+          <TeamReputationSummary teams={teamsWithSummedUpData} />
+        </div>
       </div>
       <ManageMemberModal
         isOpen={isManageMembersOpen}
