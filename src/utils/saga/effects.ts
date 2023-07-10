@@ -1,5 +1,4 @@
 import { ActionPattern } from '@redux-saga/types';
-import { NavigateFunction, NavigateOptions } from 'react-router-dom';
 import { Channel } from 'redux-saga';
 import {
   all,
@@ -106,14 +105,3 @@ export const takeLatestCancellable = (
     }),
   ]);
 };
-
-export function* routeRedirect(
-  route: string,
-  navigateFunction: NavigateFunction,
-  navigateOptions?: NavigateOptions,
-) {
-  if (route && navigateFunction) {
-    // @ts-ignore TS only considering last overload as correct fn signature
-    yield call<NavigateFunction>(navigateFunction, route, navigateOptions);
-  }
-}
