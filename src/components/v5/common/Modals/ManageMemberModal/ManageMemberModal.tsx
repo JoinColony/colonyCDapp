@@ -82,7 +82,7 @@ const ManageMemberModal: FC<ManageMemberModalProps> = ({
 
           <Textarea textareaTitle={{ id: 'members.ban.textarea.label' }} />
 
-          <div className="flex mt-8 gap-2">
+          <div className="flex flex-col-reverse gap-3 mt-8 sm:flex-row">
             <Button mode="primaryOutline" isFullSize>
               {formatMessage({ id: 'button.cancel' })}
             </Button>

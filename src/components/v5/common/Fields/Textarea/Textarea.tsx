@@ -67,7 +67,7 @@ const Textarea: FC<TextareaProps> = ({
         <textarea
           id="message"
           placeholder={placeholder}
-          className="resize-none w-full text-gray-900 text-md outline-0 placeholder:text-gray-500"
+          className="resize-none w-full text-md outline-0 placeholder:text-gray-500"
           onChange={onChange}
         />
         {!!currentCharNumber && shouldNumberOfCharsBeVisible && (

@@ -10,13 +10,16 @@ const Switch: FC<SwitchProps> = ({ id = 'switch-id', isDisabled }) => (
   <label
     htmlFor={id}
     className={clsx('relative', {
-      'cursor-not-allowed': isDisabled,
+      'pointer-events-none': isDisabled,
       'cursor-pointer': !isDisabled,
     })}
   >
     <input type="checkbox" id={id} className="sr-only" disabled={isDisabled} />
     <div
-      className={`${styles.toggle} bg-gray-200 border-2 border-gray-200 h-5 w-9 rounded-full`}
+      className={clsx(
+        styles.toggle,
+        'bg-gray-200 border-2 border-gray-200 h-5 w-9 rounded-full',
+      )}
     />
   </label>
 );
