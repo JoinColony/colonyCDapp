@@ -8,6 +8,7 @@ import Heading from '~shared/Heading';
 
 import ConnectSafe from './ConnectSafe';
 import CheckSafe from './CheckSafe';
+import ConfirmSafe from './ConfirmSafe';
 import { AddExistingSafeProps, NetworkOption } from './types';
 
 import styles from './AddExistingSafeDialogForm.css';
@@ -59,10 +60,8 @@ const AddExistingSafeDialogForm = ({
             loadingModuleState={loadingModuleState}
           />
         );
-      // case 3:
-      //   return (
-      //     <ConfirmSafe {...props} values={values} setStepIndex={setStepIndex} />
-      //   );
+      case 3:
+        return <ConfirmSafe setStepIndex={setStepIndex} />;
       default:
         return null;
     }
