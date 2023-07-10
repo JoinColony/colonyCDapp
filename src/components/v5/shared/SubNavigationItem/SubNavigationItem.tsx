@@ -5,7 +5,6 @@ import styles from './SubNavigationItem.module.css';
 import Icon from '~shared/Icon';
 import { SubNavigationItemProps } from './types';
 import Tooltip from '~shared/Extensions/Tooltip';
-import { useMembersSubNavigation } from './hooks';
 
 const displayName = 'v5.SubNavigationItem';
 
@@ -14,9 +13,10 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
   title,
   shouldBeTooltipVisible = false,
   tooltipText = [],
+  isCopyTriggered,
+  onClick,
 }) => {
   const { formatMessage } = useIntl();
-  const { handleClick, isCopyTriggered } = useMembersSubNavigation();
 
   const content = (
     <>
@@ -27,7 +27,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
 
   return (
     <li>
-      <button type="button" onClick={handleClick} className={styles.button}>
+      <button type="button" onClick={onClick} className={styles.button}>
         {shouldBeTooltipVisible ? (
           <Tooltip
             tooltipContent={

@@ -3,5 +3,6 @@ export type SubNavigationItemProps = {
   title: string;
   shouldBeTooltipVisible?: boolean;
   onClick?: () => void;
+  isCopyTriggered?: boolean;
   tooltipText?: string[];
 };
