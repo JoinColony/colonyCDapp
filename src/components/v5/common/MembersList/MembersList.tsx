@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { MembersListProps } from './types';
-import CardWithBios from '~v5/shared/CardWithBios/CardWithBios';
+import CardWithBios from '~v5/shared/CardWithBios';
 import EmptyContent from '../EmptyContent';
-import { useMembersList } from './hooks';
 import Link from '~v5/shared/Link';
+import { MembersListProps } from './types';
+import { useMembersList } from './hooks';
 
 const displayName = 'v5.common.MembersList';
 

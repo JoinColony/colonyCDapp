@@ -1,5 +1,6 @@
 import { usePopperTooltip } from 'react-popper-tooltip';
 import { useGetMembersForColonyQuery } from '~gql';
+
 import { useColonyContext } from '~hooks';
 
 export const useMembersPage = () => {
