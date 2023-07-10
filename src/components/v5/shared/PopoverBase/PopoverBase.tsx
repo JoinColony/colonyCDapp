@@ -13,7 +13,7 @@ const PopoverBase: FC<PropsWithChildren<PopoverBaseProps>> = ({
   children,
   cardProps,
   withTooltipStyles = true,
-  isTopContributorType,
+  isTopSectionWithBackground,
 }) => (
   <div
     ref={setTooltipRef}
@@ -24,7 +24,10 @@ const PopoverBase: FC<PropsWithChildren<PopoverBaseProps>> = ({
     })}
   >
     {cardProps ? (
-      <Card {...cardProps} isTopContributorType={isTopContributorType}>
+      <Card
+        {...cardProps}
+        isTopSectionWithBackground={isTopSectionWithBackground}
+      >
         {children}
       </Card>
     ) : (

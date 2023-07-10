@@ -12,7 +12,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       rounded = 's',
       children,
       className,
-      isTopContributorType,
+      isTopSectionWithBackground,
       ...props
     },
     ref,
@@ -25,7 +25,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
           'rounded-lg': rounded === 's',
           'rounded-xl': rounded === 'm',
           'shadow-default': hasShadow,
-          'p-6': !isTopContributorType,
+          'p-6': !isTopSectionWithBackground,
         },
       )}
       {...{ rounded, ref, ...props }}

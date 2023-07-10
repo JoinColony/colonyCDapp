@@ -83,7 +83,12 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
       {isMobile ? (
         <>
           {button}
-          <Modal isFullOnMobile={false} onClose={onCloseModal} isOpen={isOpen}>
+          <Modal
+            isFullOnMobile={false}
+            onClose={onCloseModal}
+            isOpen={isOpen}
+            isTopContributorType={userStatus === 'top'}
+          >
             {content}
           </Modal>
         </>
@@ -97,7 +102,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
               classNames="max-w-[20rem] shadow-default"
               withTooltipStyles={false}
               cardProps={{ rounded: 's' }}
-              isTopContributorType={userStatus === 'top'}
+              isTopSectionWithBackground={userStatus === 'top'}
             >
               {content}
             </PopoverBase>

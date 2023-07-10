@@ -80,7 +80,7 @@ const UserInfo: FC<UserInfoProps> = ({
         <>
           <TitleLabel
             className={clsx('pt-6 mt-6 border-t border-gray-200 mb-2', {
-              'px-6': isTopContributorType,
+              'mx-6': isTopContributorType,
             })}
             text={formatMessage({ id: 'userInfo.colonyReputation.section' })}
           />
@@ -118,7 +118,7 @@ const UserInfo: FC<UserInfoProps> = ({
         <>
           <TitleLabel
             className={clsx('pt-6 mt-6 border-t border-gray-200 mb-2', {
-              'px-6': isTopContributorType,
+              'mx-6': isTopContributorType,
             })}
             text={formatMessage({ id: 'userInfo.permissions.section' })}
           />
