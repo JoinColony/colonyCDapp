@@ -1,8 +1,10 @@
 import { HTMLAttributes } from 'react';
+import { MessageDescriptor } from 'react-intl';
 
 export type TextareaProps = HTMLAttributes<HTMLTextAreaElement> & {
-  textareaTitle?: string;
+  textareaTitle?: MessageDescriptor | string;
   maxCharNumber?: number;
   placeholder?: string;
   showFieldLimit?: boolean;
+  shouldNumberOfCharsBeVisible?: boolean;
 };

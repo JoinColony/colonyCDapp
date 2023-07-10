@@ -33,5 +33,6 @@ export const WithShowedFieldLimit: Story = {
     placeholder: 'This is the placeholder content',
     maxCharNumber: 90,
     showFieldLimit: true,
+    shouldNumberOfCharsBeVisible: true,
   },
 };

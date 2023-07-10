@@ -23,12 +23,6 @@ const meta: Meta<typeof CardWithBios> = {
         type: 'select',
       },
     },
-    percentage: {
-      name: 'percentage',
-      control: {
-        type: 'text',
-      },
-    },
     isVerified: {
       name: 'is verified',
       control: {
@@ -48,7 +42,6 @@ export const Base: Story = {
     userStatus: 'dedicated',
     permissions,
     userStatusTooltipDetails: userStatustooltipDetails[3],
-    percentage: 20,
     isVerified: true,
   },
 };

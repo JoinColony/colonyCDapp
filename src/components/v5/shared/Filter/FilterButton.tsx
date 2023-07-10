@@ -20,7 +20,7 @@ const FilterButton: FC<FilterButtonProps> = ({
     <button
       type="button"
       aria-label={formatMessage({ id: 'filter.button' })}
-      className={clsx(styles.filterButton, {
+      className={clsx(`text-3 ${styles.filterButton}`, {
         'border border-blue-400 text-blue-400': isOpen,
       })}
       ref={setTriggerRef}

@@ -1,37 +1,32 @@
 import React, { FC } from 'react';
 
-import { useUserByNameOrAddress } from '~hooks';
-import { AnyExtensionData, InstalledExtensionData } from '~types';
 import UserAvatarPopover from '../UserAvatarPopover';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
-import { useGetInstalledByData } from '~common/Extensions/SpecificSidePanel/partials/hooks';
 import Icon from '~shared/Icon';
-import BurgerMenu from '../BurgerMenu/BurgerMenu';
-import CardPermissions from './partials';
+import BurgerMenu from '../BurgerMenu';
+import CardPermissions, { SubNavigation } from './partials';
 import UserStatusComponent from './partials/UserStatus';
 import { CardWithBiosProps } from './types';
+import { useMembersPage } from '~frame/v5/pages/MembersPage/hooks';
+import PopoverBase from '../PopoverBase';
+import { Contributor } from '~types';
 
 const displayName = 'v5.CardWithBios';
 
 const CardWithBios: FC<CardWithBiosProps> = ({
+  userData,
   description,
-  extensionData,
-  percentage,
   userStatus,
   shouldBeMenuVisible = true,
   permissions,
   userStatusTooltipDetails,
   isVerified,
 }) => {
-  const { user } = useUserByNameOrAddress(
-    (extensionData as InstalledExtensionData)?.installedBy,
-  );
-  const { bio } = user?.profile || {};
-  const username = user?.name;
-  const installedByData = useGetInstalledByData(
-    extensionData as AnyExtensionData,
-  );
-  const { colonyReputationItems } = installedByData || {};
+  const { user, reputationPercentage } = (userData as Contributor) || {};
+  const { name, walletAddress, profile } = user || {};
+  const { bio } = profile || {};
+  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+    useMembersPage();
 
   return (
     <div className="max-w-[20.125rem] max-h-[9.25rem] rounded-lg border border-gray-200 bg-gray-25 p-5">
@@ -39,11 +34,12 @@ const CardWithBios: FC<CardWithBiosProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <UserAvatarPopover
-              userName={username || 'panda'}
-              walletAddress={splitWalletAddress(user?.walletAddress || '')}
+              userName={name}
+              walletAddress={splitWalletAddress(walletAddress || '')}
               isVerified={isVerified}
               aboutDescription={bio || ''}
-              colonyReputation={colonyReputationItems}
+              // @TODO: add colonyReputationItems
+              // colonyReputation={colonyReputationItems}
               user={user}
               userStatus={userStatus}
               avatarSize="sm"
@@ -57,24 +53,44 @@ const CardWithBios: FC<CardWithBiosProps> = ({
           </div>
 
           <div className="flex gap-2">
-            {userStatus && (
+            {userStatus && userStatusTooltipDetails && (
               <UserStatusComponent
                 userStatus={userStatus}
                 userStatusTooltipDetails={userStatusTooltipDetails}
               />
             )}
-            {/* @TODO: add dropdown component */}
-            {shouldBeMenuVisible && <BurgerMenu isVertical />}
+            {shouldBeMenuVisible && (
+              <>
+                <BurgerMenu isVertical setTriggerRef={setTriggerRef} />
+                {visible && (
+                  <PopoverBase
+                    setTooltipRef={setTooltipRef}
+                    tooltipProps={getTooltipProps}
+                    withTooltipStyles={false}
+                    cardProps={{
+                      rounded: 's',
+                      hasShadow: true,
+                      className: 'py-4 px-2',
+                    }}
+                    classNames="w-full sm:max-w-[17.375rem]"
+                  >
+                    <SubNavigation />
+                  </PopoverBase>
+                )}
+              </>
+            )}
           </div>
         </div>
 
         {description && <p className="text-gray-600 text-sm">{description}</p>}
 
         <div className="flex justify-between items-center">
-          {!!percentage && (
+          {!!reputationPercentage && (
             <span className="flex items-center text-gray-600 text-3">
               <Icon name="star-not-filled" appearance={{ size: 'extraTiny' }} />
-              <span className="inline-block ml-1 mr-2">{percentage}%</span>
+              <span className="inline-block ml-1 mr-2">
+                {reputationPercentage}%
+              </span>
             </span>
           )}
 
