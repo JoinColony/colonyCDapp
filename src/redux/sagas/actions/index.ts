@@ -12,6 +12,7 @@ import unlockTokenActionSaga from './unlockToken';
 // import enterRecoveryActionSaga from './enterRecovery';
 import manageReputationActionSaga from './manageReputation';
 import manageVerifiedRecipientsSaga from './manageVerifiedRecipients';
+import manageExistingSafesActionSaga from './manageExistingSafes';
 
 export default function* actionsSagas() {
   yield all([
@@ -27,5 +28,6 @@ export default function* actionsSagas() {
     // call(enterRecoveryActionSaga),
     call(manageReputationActionSaga),
     call(manageVerifiedRecipientsSaga),
+    call(manageExistingSafesActionSaga),
   ]);
 }
