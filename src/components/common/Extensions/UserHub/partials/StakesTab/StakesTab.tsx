@@ -43,7 +43,7 @@ const StakesTab = () => {
   const updatedTabsItems = useMemo(
     () =>
       tabsItems.map((item) => {
-        return item.title === 'Claimable'
+        return item.type === 'claimable'
           ? Object.assign(item, {
               notificationNumber: claimedNotificationNumber,
             })

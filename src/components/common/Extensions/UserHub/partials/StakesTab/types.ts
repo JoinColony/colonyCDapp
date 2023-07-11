@@ -1,3 +1,4 @@
+import { TabItem } from '~shared/Extensions/Tabs/types';
 import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types';
 
 export interface StakesProps {
@@ -10,4 +11,8 @@ export interface StakesProps {
     ExtensionStatusBadgeMode,
     'staking' | 'finalizable' | 'claimed'
   >;
+}
+
+export interface StakesTabItem extends Omit<TabItem, 'type'> {
+  type: 'all' | 'finalized' | 'claimable';
 }
