@@ -140,7 +140,7 @@ jobs:
 
   deployProd:
 
-    needs: buildAndPush
+    needs: deployQA
 
     environment: prod
 
