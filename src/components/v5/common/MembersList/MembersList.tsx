@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import CardWithBios from '~v5/shared/CardWithBios';
@@ -6,6 +6,9 @@ import EmptyContent from '../EmptyContent';
 import Link from '~v5/shared/Link';
 import { MembersListProps } from './types';
 import { useMembersList } from './hooks';
+import { useSearchContext } from '~context/SearchContext';
+import { TextButton } from '~v5/shared/Button';
+import { Member } from '~types';
 
 const displayName = 'v5.common.MembersList';
 
@@ -17,11 +20,30 @@ const MembersList: FC<MembersListProps> = ({
   emptyTitle,
   emptyDescription,
   viewMoreUrl,
+  isHomePage,
 }) => {
   const { formatMessage } = useIntl();
   const { handleClipboardCopy } = useMembersList();
+  const { searchValue } = useSearchContext();
+  const [startIndex, setStartIndex] = useState(0);
+  const [visibleMembers, setVisibleMembers] = useState<Member[]>([]);
 
   const listLength = list.length;
+  const loadSize = isHomePage ? 8 : 12;
+  const endIndex = Math.min(startIndex + loadSize, listLength);
+
+  const showMembers = useCallback(() => {
+    setVisibleMembers(list.slice(startIndex, endIndex));
+  }, [list, startIndex, endIndex]);
+
+  const loadMoreMembers = () => {
+    showMembers();
+    setStartIndex(endIndex);
+  };
+
+  useEffect(() => {
+    showMembers();
+  }, [list, showMembers]);
 
   return (
     <div>
@@ -35,7 +57,7 @@ const MembersList: FC<MembersListProps> = ({
       {/* @TODO: Add loading state */}
       {!isLoading && listLength ? (
         <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-4">
-          {list.map((item) => {
+          {visibleMembers.map((item) => {
             const { user } = item;
             const { name, profile } = user || {};
 
@@ -62,13 +84,18 @@ const MembersList: FC<MembersListProps> = ({
           onClick={handleClipboardCopy}
         />
       ) : undefined}
-      {listLength > 8 && (
-        <div className="w-full flex justify-center mt-6">
+      <div className="w-full flex justify-center mt-6">
+        {listLength > 8 && !searchValue && (
           <Link className="text-3" to={viewMoreUrl}>
             {formatMessage({ id: 'viewMore' })}
           </Link>
-        </div>
-      )}
+        )}
+        {listLength > 8 && searchValue && (
+          <TextButton onClick={loadMoreMembers}>
+            {formatMessage({ id: 'loadMore' })}
+          </TextButton>
+        )}
+      </div>
     </div>
   );
 };
