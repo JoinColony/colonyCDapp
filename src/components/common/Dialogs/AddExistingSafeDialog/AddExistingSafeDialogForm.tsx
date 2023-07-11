@@ -4,7 +4,6 @@ import { useFormContext } from 'react-hook-form';
 
 import { DialogSection } from '~shared/Dialog';
 import Heading from '~shared/Heading';
-// import { ColonySafe } from '~data/index';
 
 import ConnectSafe from './ConnectSafe';
 import CheckSafe from './CheckSafe';

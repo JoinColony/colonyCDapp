@@ -13,6 +13,7 @@ export const getColonyMetadataChangesValue = (
     hasAvatarChanged,
     hasWhitelistChanged,
     haveTokensChanged,
+    haveSafesChanged,
   } =
     colony?.metadata?.changelog?.find(
       (item) => item.transactionHash === transactionHash,
@@ -25,7 +26,8 @@ export const getColonyMetadataChangesValue = (
     !hasNameChanged &&
     !hasAvatarChanged &&
     !hasWhitelistChanged &&
-    !haveTokensChanged;
+    !haveTokensChanged &&
+    !haveSafesChanged;
 
   if (!colony || hasNoChanges) {
     return formatText({

@@ -64,6 +64,15 @@ enum EmailPermissions {
 input ProfileMetadataInput {
   """List of email permissions for the user"""
   emailPermissions: [String!]!
+
+  """A flag to indicate whether the user has enabled metatransactions"""
+  metatransactionsEnabled: Boolean
+
+  """A flag to indicate whether the user has enabled the decentralized mode"""
+  decentralizedModeEnabled: Boolean
+
+  """The URL of the user's custom RPC node"""
+  customRpc: String
 }
 
 """Input data for relevant chain metadata of a Colony (if applicable)"""
@@ -691,6 +700,8 @@ type Query {
   listCurrentNetworkInverseFees(filter: ModelCurrentNetworkInverseFeeFilterInput, limit: Int, nextToken: String): ModelCurrentNetworkInverseFeeConnection
   getColonyAction(id: ID!): ColonyAction
   listColonyActions(filter: ModelColonyActionFilterInput, limit: Int, nextToken: String): ModelColonyActionConnection
+  getColonyDecision(id: ID!): ColonyDecision
+  listColonyDecisions(filter: ModelColonyDecisionFilterInput, limit: Int, nextToken: String): ModelColonyDecisionConnection
   getColonyRole(id: ID!): ColonyRole
   listColonyRoles(filter: ModelColonyRoleFilterInput, limit: Int, nextToken: String): ModelColonyRoleConnection
   getColonyHistoricRole(id: ID!): ColonyHistoricRole
@@ -699,6 +710,8 @@ type Query {
   listIngestorStats(filter: ModelIngestorStatsFilterInput, limit: Int, nextToken: String): ModelIngestorStatsConnection
   getExpenditure(id: ID!): Expenditure
   listExpenditures(filter: ModelExpenditureFilterInput, limit: Int, nextToken: String): ModelExpenditureConnection
+  getAnnotation(id: ID!): Annotation
+  listAnnotations(filter: ModelAnnotationFilterInput, limit: Int, nextToken: String): ModelAnnotationConnection
   getColonyTokens(id: ID!): ColonyTokens
   listColonyTokens(filter: ModelColonyTokensFilterInput, limit: Int, nextToken: String): ModelColonyTokensConnection
   getUserTokens(id: ID!): UserTokens
@@ -721,6 +734,8 @@ type Query {
   getCurrentVersionByKey(key: String!, sortDirection: ModelSortDirection, filter: ModelCurrentVersionFilterInput, limit: Int, nextToken: String): ModelCurrentVersionConnection
   getActionsByColony(colonyId: ID!, createdAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelColonyActionFilterInput, limit: Int, nextToken: String): ModelColonyActionConnection
   getColonyActionByMotionId(motionId: ID!, sortDirection: ModelSortDirection, filter: ModelColonyActionFilterInput, limit: Int, nextToken: String): ModelColonyActionConnection
+  getColonyDecisionByActionId(actionId: ID!, sortDirection: ModelSortDirection, filter: ModelColonyDecisionFilterInput, limit: Int, nextToken: String): ModelColonyDecisionConnection
+  getColonyDecisionByColonyAddress(colonyAddress: String!, createdAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelColonyDecisionFilterInput, limit: Int, nextToken: String): ModelColonyDecisionConnection
   getColonyHistoricRoleByDate(type: String!, createdAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelColonyHistoricRoleFilterInput, limit: Int, nextToken: String): ModelColonyHistoricRoleConnection
   getExpendituresByColony(colonyId: ID!, createdAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelExpenditureFilterInput, limit: Int, nextToken: String): ModelExpenditureConnection
 }
@@ -788,6 +803,9 @@ type Mutation {
   createColonyAction(input: CreateColonyActionInput!, condition: ModelColonyActionConditionInput): ColonyAction
   updateColonyAction(input: UpdateColonyActionInput!, condition: ModelColonyActionConditionInput): ColonyAction
   deleteColonyAction(input: DeleteColonyActionInput!, condition: ModelColonyActionConditionInput): ColonyAction
+  createColonyDecision(input: CreateColonyDecisionInput!, condition: ModelColonyDecisionConditionInput): ColonyDecision
+  updateColonyDecision(input: UpdateColonyDecisionInput!, condition: ModelColonyDecisionConditionInput): ColonyDecision
+  deleteColonyDecision(input: DeleteColonyDecisionInput!, condition: ModelColonyDecisionConditionInput): ColonyDecision
   createColonyRole(input: CreateColonyRoleInput!, condition: ModelColonyRoleConditionInput): ColonyRole
   updateColonyRole(input: UpdateColonyRoleInput!, condition: ModelColonyRoleConditionInput): ColonyRole
   deleteColonyRole(input: DeleteColonyRoleInput!, condition: ModelColonyRoleConditionInput): ColonyRole
@@ -800,6 +818,9 @@ type Mutation {
   createExpenditure(input: CreateExpenditureInput!, condition: ModelExpenditureConditionInput): Expenditure
   updateExpenditure(input: UpdateExpenditureInput!, condition: ModelExpenditureConditionInput): Expenditure
   deleteExpenditure(input: DeleteExpenditureInput!, condition: ModelExpenditureConditionInput): Expenditure
+  createAnnotation(input: CreateAnnotationInput!, condition: ModelAnnotationConditionInput): Annotation
+  updateAnnotation(input: UpdateAnnotationInput!, condition: ModelAnnotationConditionInput): Annotation
+  deleteAnnotation(input: DeleteAnnotationInput!, condition: ModelAnnotationConditionInput): Annotation
   createColonyTokens(input: CreateColonyTokensInput!, condition: ModelColonyTokensConditionInput): ColonyTokens
   updateColonyTokens(input: UpdateColonyTokensInput!, condition: ModelColonyTokensConditionInput): ColonyTokens
   deleteColonyTokens(input: DeleteColonyTokensInput!, condition: ModelColonyTokensConditionInput): ColonyTokens
@@ -899,6 +920,15 @@ Represents metadata for a user's profile. Mostly user specific settings
 type ProfileMetadata {
   """List of email permissions for the user"""
   emailPermissions: [String!]!
+
+  """A flag to indicate whether the user has enabled metatransactions"""
+  metatransactionsEnabled: Boolean
+
+  """A flag to indicate whether the user has enabled the decentralized mode"""
+  decentralizedModeEnabled: Boolean
+
+  """The URL of the user's custom RPC node"""
+  customRpc: String
 }
 
 """
@@ -1072,6 +1102,9 @@ type ColonyMetadata {
   Only present on pendingColonyMetadata for consumption in block ingestor
   """
   modifiedTokenAddresses: PendingModifiedTokenAddresses
+
+  """List of safes that are used within the Colony"""
+  safes: [Safe!]
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -1098,6 +1131,12 @@ type ColonyMetadataChangelog {
 
   """Whether tokens have been added or removed from the Colony's token list"""
   haveTokensChanged: Boolean!
+
+  """
+  "
+  Whether safes have been added or removed from the Colony's safe list
+  """
+  haveSafesChanged: Boolean!
 }
 
 """Represents a User within the Colony Network"""
@@ -1602,6 +1641,17 @@ type ColonyMotion {
   """
   motionStateHistory: MotionStateHistory!
   messages(createdAt: ModelStringKeyConditionInput, filter: ModelMotionMessageFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelMotionMessageConnection
+
+  """Id of the associated objection annotation, if any"""
+  objectionAnnotationId: ID
+
+  """
+  The annotation object associated with the objection to the motion, if any
+  """
+  objectionAnnotation: Annotation
+
+  """Whether the motion is a Simple Decision"""
+  isDecision: Boolean!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -1779,6 +1829,8 @@ type ColonyAction {
 
   """The block number where the action was recorded"""
   blockNumber: Int!
+
+  """Will be true if the action is a motion"""
   isMotion: Boolean
 
   """The internal database id of the motion"""
@@ -1879,8 +1931,22 @@ type ColonyAction {
   """
   pendingColonyMetadata: ColonyMetadata
 
+  """The id of the associated annotation, if there is one"""
+  annotationId: ID
+
+  """The annotation associated with the action, if there is one"""
+  annotation: Annotation
+
   """Corresponding domainId of the motion"""
   motionDomainId: Int
+
+  """
+  If the action is a Simple Decision, it will have an id that corresponds to a ColonyDecision entry in the database.
+  """
+  colonyDecisionId: ID
+
+  """Corresponding Decision data, if action is a Simple Decision"""
+  decisionData: ColonyDecision
 
   """Colony roles that are associated with the action"""
   roles: ColonyActionRoles
@@ -1889,6 +1955,20 @@ type ColonyAction {
   individualEvents: String
   updatedAt: AWSDateTime!
   colonyActionsId: ID
+}
+
+type ColonyDecision {
+  id: ID!
+  actionId: ID!
+  action: ColonyAction
+  title: String!
+  colonyAddress: String!
+  createdAt: AWSDateTime!
+  description: String!
+  motionDomainId: Int!
+  walletAddress: String!
+  showInDecisionsList: Boolean!
+  updatedAt: AWSDateTime!
 }
 
 """Colony Roles that can be involved in an action"""
@@ -1974,10 +2054,7 @@ type ColonyRole {
   colonyRolesId: ID
 }
 
-"""
-"
-Snapshot of the user's full roles/permissions at a specific block
-"""
+"""Snapshot of the user's full roles/permissions at a specific block"""
 type ColonyHistoricRole {
   """
   Unique identifier for the role snapshot
@@ -2081,6 +2158,30 @@ type ExpenditureSlot {
 type ExpenditurePayout {
   tokenAddress: ID!
   amount: String!
+}
+
+"""Defines an annotation for actions, motions and decisions"""
+type Annotation {
+  """The id of the annotation."""
+  id: ID!
+
+  """The id of the action it annotates"""
+  actionId: ID!
+
+  """The actual annotation message"""
+  message: String!
+
+  """The IPFS hash, if the annotation was also uploaded to IPFS"""
+  ipfsHash: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Safe {
+  name: String!
+  address: String!
+  chainId: Int!
+  moduleContractAddress: String!
 }
 
 type ColonyTokens {
@@ -2385,6 +2486,9 @@ type Subscription {
   onCreateColonyAction(filter: ModelSubscriptionColonyActionFilterInput): ColonyAction
   onUpdateColonyAction(filter: ModelSubscriptionColonyActionFilterInput): ColonyAction
   onDeleteColonyAction(filter: ModelSubscriptionColonyActionFilterInput): ColonyAction
+  onCreateColonyDecision(filter: ModelSubscriptionColonyDecisionFilterInput): ColonyDecision
+  onUpdateColonyDecision(filter: ModelSubscriptionColonyDecisionFilterInput): ColonyDecision
+  onDeleteColonyDecision(filter: ModelSubscriptionColonyDecisionFilterInput): ColonyDecision
   onCreateColonyRole(filter: ModelSubscriptionColonyRoleFilterInput): ColonyRole
   onUpdateColonyRole(filter: ModelSubscriptionColonyRoleFilterInput): ColonyRole
   onDeleteColonyRole(filter: ModelSubscriptionColonyRoleFilterInput): ColonyRole
@@ -2397,6 +2501,9 @@ type Subscription {
   onCreateExpenditure(filter: ModelSubscriptionExpenditureFilterInput): Expenditure
   onUpdateExpenditure(filter: ModelSubscriptionExpenditureFilterInput): Expenditure
   onDeleteExpenditure(filter: ModelSubscriptionExpenditureFilterInput): Expenditure
+  onCreateAnnotation(filter: ModelSubscriptionAnnotationFilterInput): Annotation
+  onUpdateAnnotation(filter: ModelSubscriptionAnnotationFilterInput): Annotation
+  onDeleteAnnotation(filter: ModelSubscriptionAnnotationFilterInput): Annotation
   onCreateColonyTokens(filter: ModelSubscriptionColonyTokensFilterInput): ColonyTokens
   onUpdateColonyTokens(filter: ModelSubscriptionColonyTokensFilterInput): ColonyTokens
   onDeleteColonyTokens(filter: ModelSubscriptionColonyTokensFilterInput): ColonyTokens
@@ -2593,11 +2700,19 @@ input ColonyMetadataChangelogInput {
   hasAvatarChanged: Boolean!
   hasWhitelistChanged: Boolean!
   haveTokensChanged: Boolean!
+  haveSafesChanged: Boolean!
 }
 
 input PendingModifiedTokenAddressesInput {
   added: [String!]
   removed: [String!]
+}
+
+input SafeInput {
+  name: String!
+  address: String!
+  chainId: Int!
+  moduleContractAddress: String!
 }
 
 type ModelColonyMetadataConnection {
@@ -2637,6 +2752,7 @@ input CreateColonyMetadataInput {
   isWhitelistActivated: Boolean
   whitelistedAddresses: [String!]
   modifiedTokenAddresses: PendingModifiedTokenAddressesInput
+  safes: [SafeInput!]
 }
 
 input UpdateColonyMetadataInput {
@@ -2648,6 +2764,7 @@ input UpdateColonyMetadataInput {
   isWhitelistActivated: Boolean
   whitelistedAddresses: [String!]
   modifiedTokenAddresses: PendingModifiedTokenAddressesInput
+  safes: [SafeInput!]
 }
 
 input DeleteColonyMetadataInput {
@@ -3038,6 +3155,8 @@ input ModelColonyMotionFilterInput {
   repSubmitted: ModelStringInput
   skillRep: ModelStringInput
   hasObjection: ModelBooleanInput
+  objectionAnnotationId: ModelIDInput
+  isDecision: ModelBooleanInput
   and: [ModelColonyMotionFilterInput]
   or: [ModelColonyMotionFilterInput]
   not: ModelColonyMotionFilterInput
@@ -3056,6 +3175,8 @@ input ModelColonyMotionConditionInput {
   repSubmitted: ModelStringInput
   skillRep: ModelStringInput
   hasObjection: ModelBooleanInput
+  objectionAnnotationId: ModelIDInput
+  isDecision: ModelBooleanInput
   and: [ModelColonyMotionConditionInput]
   or: [ModelColonyMotionConditionInput]
   not: ModelColonyMotionConditionInput
@@ -3081,6 +3202,8 @@ input CreateColonyMotionInput {
   skillRep: String!
   hasObjection: Boolean!
   motionStateHistory: MotionStateHistoryInput!
+  objectionAnnotationId: ID
+  isDecision: Boolean!
 }
 
 input UpdateColonyMotionInput {
@@ -3103,6 +3226,8 @@ input UpdateColonyMotionInput {
   skillRep: String
   hasObjection: Boolean
   motionStateHistory: MotionStateHistoryInput
+  objectionAnnotationId: ID
+  isDecision: Boolean
 }
 
 input DeleteColonyMotionInput {
@@ -3123,6 +3248,8 @@ input ModelSubscriptionColonyMotionFilterInput {
   repSubmitted: ModelSubscriptionStringInput
   skillRep: ModelSubscriptionStringInput
   hasObjection: ModelSubscriptionBooleanInput
+  objectionAnnotationId: ModelSubscriptionIDInput
+  isDecision: ModelSubscriptionBooleanInput
   and: [ModelSubscriptionColonyMotionFilterInput]
   or: [ModelSubscriptionColonyMotionFilterInput]
 }
@@ -3424,7 +3551,9 @@ input ModelColonyActionFilterInput {
   newColonyVersion: ModelIntInput
   pendingDomainMetadataId: ModelIDInput
   pendingColonyMetadataId: ModelIDInput
+  annotationId: ModelIDInput
   motionDomainId: ModelIntInput
+  colonyDecisionId: ModelIDInput
   individualEvents: ModelStringInput
   and: [ModelColonyActionFilterInput]
   or: [ModelColonyActionFilterInput]
@@ -3450,7 +3579,9 @@ input ModelColonyActionConditionInput {
   newColonyVersion: ModelIntInput
   pendingDomainMetadataId: ModelIDInput
   pendingColonyMetadataId: ModelIDInput
+  annotationId: ModelIDInput
   motionDomainId: ModelIntInput
+  colonyDecisionId: ModelIDInput
   individualEvents: ModelStringInput
   and: [ModelColonyActionConditionInput]
   or: [ModelColonyActionConditionInput]
@@ -3477,7 +3608,9 @@ input CreateColonyActionInput {
   newColonyVersion: Int
   pendingDomainMetadataId: ID
   pendingColonyMetadataId: ID
+  annotationId: ID
   motionDomainId: Int
+  colonyDecisionId: ID
   roles: ColonyActionRolesInput
   individualEvents: String
   colonyActionsId: ID
@@ -3502,7 +3635,9 @@ input UpdateColonyActionInput {
   newColonyVersion: Int
   pendingDomainMetadataId: ID
   pendingColonyMetadataId: ID
+  annotationId: ID
   motionDomainId: Int
+  colonyDecisionId: ID
   roles: ColonyActionRolesInput
   individualEvents: String
   colonyActionsId: ID
@@ -3531,10 +3666,88 @@ input ModelSubscriptionColonyActionFilterInput {
   newColonyVersion: ModelSubscriptionIntInput
   pendingDomainMetadataId: ModelSubscriptionIDInput
   pendingColonyMetadataId: ModelSubscriptionIDInput
+  annotationId: ModelSubscriptionIDInput
   motionDomainId: ModelSubscriptionIntInput
+  colonyDecisionId: ModelSubscriptionIDInput
   individualEvents: ModelSubscriptionStringInput
   and: [ModelSubscriptionColonyActionFilterInput]
   or: [ModelSubscriptionColonyActionFilterInput]
+}
+
+type ModelColonyDecisionConnection {
+  items: [ColonyDecision]!
+  nextToken: String
+}
+
+input ModelColonyDecisionFilterInput {
+  id: ModelIDInput
+  actionId: ModelIDInput
+  title: ModelStringInput
+  colonyAddress: ModelStringInput
+  createdAt: ModelStringInput
+  description: ModelStringInput
+  motionDomainId: ModelIntInput
+  walletAddress: ModelStringInput
+  showInDecisionsList: ModelBooleanInput
+  and: [ModelColonyDecisionFilterInput]
+  or: [ModelColonyDecisionFilterInput]
+  not: ModelColonyDecisionFilterInput
+}
+
+input ModelColonyDecisionConditionInput {
+  actionId: ModelIDInput
+  title: ModelStringInput
+  colonyAddress: ModelStringInput
+  createdAt: ModelStringInput
+  description: ModelStringInput
+  motionDomainId: ModelIntInput
+  walletAddress: ModelStringInput
+  showInDecisionsList: ModelBooleanInput
+  and: [ModelColonyDecisionConditionInput]
+  or: [ModelColonyDecisionConditionInput]
+  not: ModelColonyDecisionConditionInput
+}
+
+input CreateColonyDecisionInput {
+  id: ID
+  actionId: ID!
+  title: String!
+  colonyAddress: String!
+  createdAt: AWSDateTime
+  description: String!
+  motionDomainId: Int!
+  walletAddress: String!
+  showInDecisionsList: Boolean!
+}
+
+input UpdateColonyDecisionInput {
+  id: ID!
+  actionId: ID
+  title: String
+  colonyAddress: String
+  createdAt: AWSDateTime
+  description: String
+  motionDomainId: Int
+  walletAddress: String
+  showInDecisionsList: Boolean
+}
+
+input DeleteColonyDecisionInput {
+  id: ID!
+}
+
+input ModelSubscriptionColonyDecisionFilterInput {
+  id: ModelSubscriptionIDInput
+  actionId: ModelSubscriptionIDInput
+  title: ModelSubscriptionStringInput
+  colonyAddress: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  description: ModelSubscriptionStringInput
+  motionDomainId: ModelSubscriptionIntInput
+  walletAddress: ModelSubscriptionStringInput
+  showInDecisionsList: ModelSubscriptionBooleanInput
+  and: [ModelSubscriptionColonyDecisionFilterInput]
+  or: [ModelSubscriptionColonyDecisionFilterInput]
 }
 
 type ModelColonyRoleConnection {
@@ -3837,6 +4050,57 @@ input ModelSubscriptionExpenditureFilterInput {
   status: ModelSubscriptionStringInput
   and: [ModelSubscriptionExpenditureFilterInput]
   or: [ModelSubscriptionExpenditureFilterInput]
+}
+
+type ModelAnnotationConnection {
+  items: [Annotation]!
+  nextToken: String
+}
+
+input ModelAnnotationFilterInput {
+  id: ModelIDInput
+  actionId: ModelIDInput
+  message: ModelStringInput
+  ipfsHash: ModelStringInput
+  and: [ModelAnnotationFilterInput]
+  or: [ModelAnnotationFilterInput]
+  not: ModelAnnotationFilterInput
+}
+
+input ModelAnnotationConditionInput {
+  actionId: ModelIDInput
+  message: ModelStringInput
+  ipfsHash: ModelStringInput
+  and: [ModelAnnotationConditionInput]
+  or: [ModelAnnotationConditionInput]
+  not: ModelAnnotationConditionInput
+}
+
+input CreateAnnotationInput {
+  id: ID
+  actionId: ID!
+  message: String!
+  ipfsHash: String
+}
+
+input UpdateAnnotationInput {
+  id: ID!
+  actionId: ID
+  message: String
+  ipfsHash: String
+}
+
+input DeleteAnnotationInput {
+  id: ID!
+}
+
+input ModelSubscriptionAnnotationFilterInput {
+  id: ModelSubscriptionIDInput
+  actionId: ModelSubscriptionIDInput
+  message: ModelSubscriptionStringInput
+  ipfsHash: ModelSubscriptionStringInput
+  and: [ModelSubscriptionAnnotationFilterInput]
+  or: [ModelSubscriptionAnnotationFilterInput]
 }
 
 type ModelColonyTokensConnection {

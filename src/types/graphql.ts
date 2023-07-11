@@ -31,6 +31,7 @@ import {
   ExpenditureFragment,
   ExpenditureSlotFragment,
   ExpenditurePayoutFragment,
+  SafeFragment,
 } from '~gql';
 
 export type AnnotationType = AnnotationFragment;
@@ -118,3 +119,5 @@ export type Expenditure = ExpenditureFragment;
 export type ExpenditureSlot = ExpenditureSlotFragment;
 
 export type ExpenditurePayout = ExpenditurePayoutFragment;
+
+export type Safe = SafeFragment;

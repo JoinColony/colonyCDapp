@@ -1269,7 +1269,11 @@ type ColonyMetadata @model {
   Token addresses that were modified in a previous action (motion)
   Only present on pendingColonyMetadata for consumption in block ingestor
   """
-  modifiedTokenAddresses: PendingModifiedTokenAddresses #
+  modifiedTokenAddresses: PendingModifiedTokenAddresses
+  """
+  List of safes that are used within the Colony
+  """
+  safes: [Safe!]
 }
 
 """
@@ -1301,6 +1305,10 @@ type ColonyMetadataChangelog {
   Whether tokens have been added or removed from the Colony's token list
   """
   haveTokensChanged: Boolean!
+  """"
+  Whether safes have been added or removed from the Colony's safe list
+  """ 
+  haveSafesChanged: Boolean!
 }
 
 """
@@ -2713,4 +2721,11 @@ type ExpenditureStage {
   slotId: Int!
   name: String!
   isReleased: Boolean!
+}
+
+type Safe {
+  name: String!
+  address: String!
+  chainId: Int!
+  moduleContractAddress: String!
 }
