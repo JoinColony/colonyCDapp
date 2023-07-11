@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { HOMEPAGE_MEMBERS_LIST_LIMIT, MEMBERS_LIST_LIMIT } from '~constants';
 import { useColonyContext } from '~hooks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import { Member } from '~types';
@@ -14,8 +15,13 @@ export const useMembersList = ({ list, isHomePage }) => {
   const [visibleMembers, setVisibleMembers] = useState<Member[]>([]);
 
   const listLength = list.length;
-  const membersLimit = isHomePage ? 8 : 12;
-  const endIndex = Math.min(startIndex + membersLimit, listLength);
+  const membersLimit = isHomePage
+    ? HOMEPAGE_MEMBERS_LIST_LIMIT
+    : MEMBERS_LIST_LIMIT;
+  const endIndex = useMemo(
+    () => Math.min(startIndex + membersLimit, listLength),
+    [listLength, membersLimit, startIndex],
+  );
 
   const showMembers = useCallback(() => {
     setVisibleMembers(list.slice(startIndex, endIndex));

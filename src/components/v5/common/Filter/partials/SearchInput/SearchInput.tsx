@@ -13,7 +13,7 @@ const displayName = 'v5.common.Filter.partials.SearchInput';
 const SearchInput: FC<SearchInputProps> = ({ onSearchButtonClick }) => {
   const { formatMessage } = useIntl();
   const { setSearchValue } = useSearchContext();
-  const [text, setText] = useState('');
+  const [value, setValue] = useState('');
   const isMobile = useMobile();
 
   const debounced = useMemo(
@@ -22,15 +22,15 @@ const SearchInput: FC<SearchInputProps> = ({ onSearchButtonClick }) => {
   );
 
   const onInput: React.ChangeEventHandler<HTMLInputElement> = useCallback(
-    (e) => {
-      const { value } = e.target;
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { value: inputValue } = e.target;
 
       if (!isMobile) {
-        debounced(value);
+        debounced(inputValue);
 
         return;
       }
-      setText(value);
+      setValue(inputValue);
     },
     [debounced, isMobile],
   );
@@ -46,13 +46,13 @@ const SearchInput: FC<SearchInputProps> = ({ onSearchButtonClick }) => {
         onInput={onInput}
         placeholder={formatMessage({ id: 'filter.input.placeholder' })}
       />
-      {isMobile && text && (
+      {isMobile && value && (
         <button
           type="button"
           className={styles.searchButton}
           aria-label={formatMessage({ id: 'ariaLabel.search' })}
           onClick={() => {
-            setSearchValue(text);
+            setSearchValue(value);
             onSearchButtonClick();
           }}
         >

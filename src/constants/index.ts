@@ -160,3 +160,6 @@ export const CDAPP_VERSION = version;
 export const MAX_INSTALLED_NUMBER = 39;
 
 export const STAKING_THRESHOLD = 10;
+
+export const HOMEPAGE_MEMBERS_LIST_LIMIT = 8;
+export const MEMBERS_LIST_LIMIT = 12;
