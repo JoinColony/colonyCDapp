@@ -19,6 +19,7 @@ export { default as RaiseObjectionDialog } from './RaiseObjectionDialog';
 export { default as ManageSafeDialog } from './ManageSafeDialog';
 export { default as AddExistingSafeDialog } from './AddExistingSafeDialog';
 export { default as RemoveSafeDialog } from './RemoveSafeDialog';
+export { default as ControlSafeDialog } from './ControlSafeDialog';
 export {
   default as TokenManagementDialog,
   FormValues as TokenManagementDialogFormValues,
