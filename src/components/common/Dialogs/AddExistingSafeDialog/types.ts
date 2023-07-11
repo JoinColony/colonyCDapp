@@ -1,11 +1,11 @@
 import { MessageDescriptor } from 'react-intl';
 
-import { Address, SimpleMessageValues } from '~types';
+import { Address, Safe, SimpleMessageValues } from '~types';
 
 export interface AddExistingSafeProps {
   back: () => void;
   networkOptions: NetworkOption[];
-  colonySafes: Array<any>; // ColonySafe[];
+  colonySafes: Safe[];
   colonyAddress: Address;
   loadingModuleState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
   loadingSafeState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];

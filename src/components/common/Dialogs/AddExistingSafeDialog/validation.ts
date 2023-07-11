@@ -1,10 +1,9 @@
 import { defineMessages } from 'react-intl';
 import { ValidationError, object, string, number } from 'yup';
 
-import { Address } from '~types';
+import { Address, Safe } from '~types';
 import { isAddress } from '~utils/web3';
 import { FETCH_ABORTED, SAFE_NAMES_MAP } from '~constants';
-// import { ColonySafe } from '~data/generated';
 import { intl } from '~utils/intl';
 
 import { getTxServiceBaseUrl } from './helpers';
@@ -92,7 +91,7 @@ function getFetchErrorMsg(
 export const getValidationSchema = (
   stepIndex: number,
   abortControllerState: AbortControllerState,
-  safes: Array<any>, // ColonySafe[],
+  safes: Safe[],
   loadingSafeState: LoadingState,
   loadingModuleState: LoadingState,
 ) => {
@@ -136,7 +135,7 @@ export const getValidationSchema = (
               const isSafeAlreadyAdded = safes.find(
                 (safe) =>
                   safe?.chainId === this.parent.chainId &&
-                  safe?.contractAddress === contractAddress,
+                  safe?.address === contractAddress,
               );
 
               if (isSafeAlreadyAdded) {

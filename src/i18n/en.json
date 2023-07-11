@@ -250,6 +250,11 @@
   "transaction.VestingSimpleClient.claimGrant.title": "Claim Colony Grant",
   "transaction.VestingSimpleClient.claimGrant.description": "Claim Colony Grant",
 
+  "transaction.group.addExistingSafe.title": "Add Existing Safe",
+  "transaction.group.addExistingSafe.description": "Add an existing Safe to this Colony",
+  "transaction.ColonyClient.addExistingSafe.title": "Add Existing Safe",
+  "transaction.ColonyClient.addExistingSafe.description": "Add an existing Safe to this Colony",
+
   "metatransaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
   "metatransaction.group.deposit.title": "Activate tokens",
   "metatransaction.group.deposit.description": "Activate tokens",
