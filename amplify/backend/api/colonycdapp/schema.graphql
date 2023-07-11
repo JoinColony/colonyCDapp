@@ -1159,6 +1159,7 @@ type Colony @model {
   # It should be retrieved on demand at the earliest occasion it's needed
   # ie: when opening a UAC modal
   roles: [ColonyRole] @hasMany
+  expenditures: [Expenditure] @hasMany
 }
 
 """
@@ -2514,4 +2515,17 @@ type IngestorStats @model {
   JSON string to pass custom, dynamic values
   """
   value: String!
+}
+
+type Expenditure @model {
+  id: ID!
+  createdAt: AWSDateTime!
+  colonyId: ID!
+    @index(
+      name: "byColony"
+      queryField: "getExpendituresByColony"
+      sortKeyFields: ["createdAt"]
+    )
+  colony: Colony! @belongsTo(fields: ["colonyId"])
+  ownerAddress: ID!
 }
