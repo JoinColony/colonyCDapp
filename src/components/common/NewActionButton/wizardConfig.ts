@@ -23,6 +23,7 @@ import {
   AwardDialog,
   ManageSafeDialog,
   AddExistingSafeDialog,
+  ControlSafeDialog,
 } from '../Dialogs';
 
 export const getWizardFlowConfig = (
@@ -228,6 +229,13 @@ export const getWizardFlowConfig = (
     component: AddExistingSafeDialog,
     props: {
       prevStep: 'common.ManageSafeDialog',
+      colony,
+    },
+  },
+  {
+    component: ControlSafeDialog,
+    props: {
+      prevStep: 'common.ControlSafeDialog',
       colony,
     },
   },
