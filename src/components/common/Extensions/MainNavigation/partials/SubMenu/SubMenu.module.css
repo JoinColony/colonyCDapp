@@ -1,5 +1,5 @@
 .subMenuList {
-  @apply grid gap-x-6 mb-6 text-gray-900 py-4 rounded-lg border border-gray-200 sm:border-none sm:rounded-none sm:py-0 sm:gap-y-3;
+  @apply grid gap-x-6 text-gray-900 py-4 rounded-lg border border-gray-200 sm:border-none sm:rounded-none sm:py-0 sm:gap-y-3 sm:mb-6;
 }
 
 .linkItem {
