@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 
@@ -19,6 +19,13 @@ const Checkbox: FC<CheckboxProps> = ({
 }) => {
   const { formatMessage } = useIntl();
 
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      onChange?.(event);
+    },
+    [onChange],
+  );
+
   return (
     <div
       className={clsx(classNames, {
@@ -35,8 +42,8 @@ const Checkbox: FC<CheckboxProps> = ({
           name={name}
           id={id}
           disabled={disabled}
-          onChange={onChange}
           className="peer absolute top-0 left-0 overflow-hidden w-0 h-0 opacity-0"
+          onChange={(event) => handleChange(event)}
         />
         <span
           className={clsx(

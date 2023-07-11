@@ -13,8 +13,17 @@ export type FilterType =
   | 'contributor'
   | 'permissions';
 
+export type ContributorType =
+  | 'top'
+  | 'dedicated'
+  | 'active'
+  | 'verified'
+  | 'general';
+
 // @TODO: add more filter options and move it to global types
 export type FilterOption =
+  | ContributorType
+  | ContributorType[]
   | 'businnes'
   | 'development'
   | 'high to low'

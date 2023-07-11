@@ -4,7 +4,7 @@ import { MessageDescriptor } from 'react-intl';
 export interface CheckboxProps {
   label: MessageDescriptor;
   register?: UseFormRegister<FieldValues>;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   name: string;
   id: string;
   disabled?: boolean;

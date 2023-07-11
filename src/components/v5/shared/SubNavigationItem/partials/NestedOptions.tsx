@@ -26,12 +26,7 @@ const NestedOptions: FC<NestedOptionsProps> = ({
                 type="button"
                 aria-label={formatMessage({ id: 'checkbox.select.filter' })}
               >
-                <Checkbox
-                  id={id}
-                  name={id}
-                  label={title}
-                  onChange={() => onChange?.(id)}
-                />
+                <Checkbox id={id} name={id} label={title} onChange={onChange} />
               </button>
             </li>
           ))}

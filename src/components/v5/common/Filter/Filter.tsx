@@ -7,6 +7,8 @@ import Modal from '~v5/shared/Modal';
 import { filterOptions } from './consts';
 import PopoverBase from '~v5/shared/PopoverBase';
 import { useMembersPage } from '~frame/v5/pages/MembersPage/hooks';
+import TableFiltering from '../TableFiltering';
+import { useFilter } from './hooks';
 
 const displayName = 'v5.common.Filter';
 
@@ -15,6 +17,8 @@ const Filter: FC = () => {
   const isMobile = useMobile();
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     useMembersPage();
+  const { selectedFilters, onSaveSelectedFilters, onClearFilters } =
+    useFilter();
 
   return (
     <>
@@ -29,12 +33,24 @@ const Filter: FC = () => {
             onClose={() => setOpened(false)}
             isOpen={isOpened}
           >
-            <FilterOptions options={filterOptions} />
+            <FilterOptions
+              options={filterOptions}
+              onSaveSelectedFilters={onSaveSelectedFilters}
+            />
           </Modal>
         </>
       ) : (
         <>
-          <FilterButton isOpen={visible} setTriggerRef={setTriggerRef} />
+          <div className="flex flex-row gap-2">
+            {!!selectedFilters?.length && (
+              <TableFiltering
+                filterType="contributor"
+                filterOptions={selectedFilters}
+                onClick={() => onClearFilters()}
+              />
+            )}
+            <FilterButton isOpen={visible} setTriggerRef={setTriggerRef} />
+          </div>
           {visible && (
             <PopoverBase
               setTooltipRef={setTooltipRef}
@@ -47,7 +63,10 @@ const Filter: FC = () => {
               }}
               classNames="w-full sm:max-w-[17.375rem]"
             >
-              <FilterOptions options={filterOptions} />
+              <FilterOptions
+                options={filterOptions}
+                onSaveSelectedFilters={onSaveSelectedFilters}
+              />
             </PopoverBase>
           )}
         </>

@@ -1,9 +1,10 @@
 import { MessageDescriptor } from 'react-intl';
-import { UserStatusMode } from '../Pills/types';
-import { FilterType } from '../TableFiltering/types';
+
+import { ContributorType, FilterType } from '../TableFiltering/types';
 
 export type FilterOptionsProps = {
   options: FilterOption[];
+  onSaveSelectedFilters: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export type FilterOption = {
@@ -20,6 +21,6 @@ export type FilterPopoverProps = {
 };
 
 export type ContributorTypesProps = {
-  id: UserStatusMode;
+  id: ContributorType;
   title: MessageDescriptor;
 };

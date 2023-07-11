@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { useMobile } from '~hooks';
 
 import Accordion from '~shared/Extensions/Accordion';
@@ -9,18 +9,23 @@ import Header from '~v5/shared/SubNavigationItem/partials/Header';
 
 const displayName = 'v5.common.Filter.partials.FilterOptions';
 
-const FilterOptions: FC<FilterOptionsProps> = ({ options }) => {
+const FilterOptions: FC<FilterOptionsProps> = ({
+  options,
+  onSaveSelectedFilters,
+}) => {
   const isMobile = useMobile();
   const { openIndex, onOpenIndexChange } = useAccordion();
-  // @TODO: add conditions when filters should be visible / not visible
 
   const handleClick = () => {
     // @TODO: id of selected parent filter element
   };
 
-  const onSelectNestedOption = () => {
-    // @TODO: id of selected child filter option
-  };
+  const onSelectNestedOption = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      onSaveSelectedFilters(event);
+    },
+    [onSaveSelectedFilters],
+  );
 
   return (
     <div>

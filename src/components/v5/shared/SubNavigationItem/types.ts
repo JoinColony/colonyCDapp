@@ -13,12 +13,12 @@ export type SubNavigationItemProps = {
   tooltipText?: string[];
   handleClick?: (option?: string) => void;
   shouldBeActionOnHover?: boolean;
-  onSelectNestedOption?: (id: string) => void;
+  onSelectNestedOption?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export type NestedOptionsProps = {
   selectedOption?: FilterType;
-  onChange?: (id: string) => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export type HeaderProps = {
