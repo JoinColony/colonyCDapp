@@ -59,20 +59,16 @@ const UserHub: FC<UserHubProps> = ({
                   onKeyDown={() => setSelectedTab(id)}
                 >
                   <div
-                    className={`flex items-center mr-2 ${
+                    className={`flex items-center flex-grow mr-2 ${
                       selectedTab === id ? 'font-medium' : ''
                     }`}
                   >
-                    <span className="flex shrink-0 mr-1.5">
+                    <span className="flex shrink-0 mr-2">
                       <Icon name={icon} appearance={{ size: 'tiny' }} />
                     </span>
                     {label}
                   </div>
-                  <span
-                    className={`flex shrink-0 transition-transform duration-normal ${
-                      selectedTab === id ? 'rotate-90' : 'rotate-0'
-                    }`}
-                  >
+                  <span className="flex shrink-0 transition-transform duration-normal">
                     <Icon
                       name="caret-right"
                       appearance={{ size: 'extraTiny' }}

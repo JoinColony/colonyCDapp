@@ -2,6 +2,7 @@ import { MessageDescriptor } from 'react-intl';
 
 export interface TabItem {
   id: number;
+  type?: string;
   title: MessageDescriptor | string;
   content?: React.ReactNode;
   notificationNumber?: number;

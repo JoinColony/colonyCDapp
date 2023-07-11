@@ -63,7 +63,7 @@ const TransactionsTab: FC<TransactionsProps> = ({
 
   return (
     <>
-      <p className="heading-5 mb-6 md:mb-4">
+      <p className="heading-5 mb-2.5 sm:mb-0.5">
         {formatMessage({ id: 'transactions' })}
       </p>
       <div>

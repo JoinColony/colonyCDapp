@@ -1,6 +1,7 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { Tabs as ReactTabs, Tab, TabScreen } from 'react-tabs-scrollable';
 import { useIntl } from 'react-intl';
+import { clsx } from 'clsx';
 
 import { TabsProps } from './types';
 import styles from './Tabs.module.css';
@@ -49,7 +50,7 @@ const Tabs: FC<PropsWithChildren<TabsProps>> = ({
       </ReactTabs>
       {items.map(({ id, content }) => (
         <TabScreen
-          className={`${className} styles.panel`}
+          className={clsx('pt-4', className)}
           key={id}
           activeTab={activeTab}
           index={id}

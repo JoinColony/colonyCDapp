@@ -35,6 +35,7 @@ const UserMenu: FC<UserMenuProps> = ({
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 
   const iconName = isMobile ? 'caret-down' : 'caret-right';
+  const iconSize = isMobile ? 'small' : 'extraSmall';
 
   return (
     <PopoverBase
@@ -100,7 +101,7 @@ const UserMenu: FC<UserMenuProps> = ({
               <li key={id} className="mb-2 last:mb-0 sm:mb-0">
                 {link ? (
                   <Link to={link} className="navigation-link">
-                    <Icon name={icon} appearance={{ size: 'tiny' }} />
+                    <Icon name={icon} appearance={{ size: iconSize }} />
                     <p className="ml-2">{formatMessage({ id: itemName })}</p>
                   </Link>
                 ) : (
@@ -112,7 +113,7 @@ const UserMenu: FC<UserMenuProps> = ({
                     aria-controls="actionsWithVisibility"
                   >
                     <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
-                      <Icon name={icon} appearance={{ size: 'tiny' }} />
+                      <Icon name={icon} appearance={{ size: iconSize }} />
                       <p className="ml-2">{formatMessage({ id: itemName })}</p>
                     </span>
                     <Icon name={iconName} appearance={{ size: 'extraTiny' }} />
@@ -126,7 +127,7 @@ const UserMenu: FC<UserMenuProps> = ({
           <div className="w-full mb-4 sm:mb-3">
             <TitleLabel text={formatMessage({ id: 'userMenu.other' })} />
             <Link to="/" className="navigation-link">
-              <Icon name="plugs" appearance={{ size: 'tiny' }} />
+              <Icon name="plugs" appearance={{ size: iconSize }} />
               <p className="ml-2">
                 {formatMessage({ id: 'userMenu.disconnectWalletTitle' })}
               </p>
