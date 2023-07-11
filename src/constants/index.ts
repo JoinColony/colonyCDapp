@@ -110,6 +110,12 @@ export const GANACHE_NETWORK: NetworkInfo = {
   contractAddressLink: 'http://localhost',
 };
 
+export const SAFE_NETWORKS: NetworkInfo[] = [
+  GNOSIS_NETWORK,
+  ETHEREUM_NETWORK,
+  GOERLI_NETWORK,
+];
+
 export const NETWORK_DATA: { [key: string]: NetworkInfo } = {
   [Network.Ganache]: GANACHE_NETWORK,
   [Network.Gnosis]: GNOSIS_NETWORK,
