@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import CardWithBios from '~v5/shared/CardWithBios';
@@ -8,7 +8,6 @@ import { MembersListProps } from './types';
 import { useMembersList } from './hooks';
 import { useSearchContext } from '~context/SearchContext';
 import { TextButton } from '~v5/shared/Button';
-import { Member } from '~types';
 
 const displayName = 'v5.common.MembersList';
 
@@ -23,27 +22,9 @@ const MembersList: FC<MembersListProps> = ({
   isHomePage,
 }) => {
   const { formatMessage } = useIntl();
-  const { handleClipboardCopy } = useMembersList();
+  const { handleClipboardCopy, listLength, loadMoreMembers, visibleMembers } =
+    useMembersList({ list, isHomePage });
   const { searchValue } = useSearchContext();
-  const [startIndex, setStartIndex] = useState(0);
-  const [visibleMembers, setVisibleMembers] = useState<Member[]>([]);
-
-  const listLength = list.length;
-  const loadSize = isHomePage ? 8 : 12;
-  const endIndex = Math.min(startIndex + loadSize, listLength);
-
-  const showMembers = useCallback(() => {
-    setVisibleMembers(list.slice(startIndex, endIndex));
-  }, [list, startIndex, endIndex]);
-
-  const loadMoreMembers = () => {
-    showMembers();
-    setStartIndex(endIndex);
-  };
-
-  useEffect(() => {
-    showMembers();
-  }, [list, showMembers]);
 
   return (
     <div>
