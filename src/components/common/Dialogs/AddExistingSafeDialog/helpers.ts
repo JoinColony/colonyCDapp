@@ -14,13 +14,12 @@ export const getAddExistingSafeDialogPayload = (
   } = payload;
 
   return {
-    colonyName: colony.name,
-    colonyAddress: colony.colonyAddress,
+    colony,
     safeList: [
       {
         chainId,
-        safeName,
-        contractAddress,
+        name: safeName,
+        address: contractAddress,
         moduleContractAddress,
       },
     ],

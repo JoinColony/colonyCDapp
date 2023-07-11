@@ -21,7 +21,7 @@ type Props = Required<DialogProps> &
 export const displayName = 'common.AddExistingSafeDialog';
 
 const AddExistingSafeDialog = ({
-  colony: { colonyAddress }, // safes
+  colony: { colonyAddress, metadata },
   colony,
   callStep,
   prevStep,
@@ -37,7 +37,7 @@ const AddExistingSafeDialog = ({
   const validationSchema = getValidationSchema(
     stepIndex,
     abortControllerState,
-    [], // safes,
+    metadata?.safes || [],
     loadingSafeState,
     loadingModuleState,
   );

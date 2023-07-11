@@ -404,6 +404,7 @@ type ColonyMetadata @model {
   isWhitelistActivated: Boolean
   whitelistedAddresses: [String!]
   modifiedTokenAddresses: PendingModifiedTokenAddresses # only present on pendingColonyMetadata for consumption in block ingestor
+  safes: [Safe!]
 }
 
 type ColonyMetadataChangelog {
@@ -413,6 +414,7 @@ type ColonyMetadataChangelog {
   hasAvatarChanged: Boolean!
   hasWhitelistChanged: Boolean!
   haveTokensChanged: Boolean!
+  haveSafesChanged: Boolean!
 }
 
 type User @model {
@@ -832,4 +834,11 @@ type ColonyHistoricRole @model {
 type IngestorStats @model {
   id: ID!
   value: String!
+}
+
+type Safe {
+  name: String!
+  address: String!
+  chainId: Int!
+  moduleContractAddress: String!
 }
