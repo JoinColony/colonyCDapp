@@ -22,6 +22,7 @@ import {
   SmiteDialog,
   AwardDialog,
   ManageSafeDialog,
+  RemoveSafeDialog,
 } from '../Dialogs';
 
 export const getWizardFlowConfig = (
@@ -221,6 +222,13 @@ export const getWizardFlowConfig = (
       prevStep: 'common.AdvancedDialog',
       colony,
       enabledExtensionData,
+    },
+  },
+  {
+    component: RemoveSafeDialog,
+    props: {
+      prevStep: 'common.ManageSafeDialog',
+      colony,
     },
   },
 ];
