@@ -15,6 +15,7 @@ import ColonyUpgrade from './ColonyUpgrade';
 import OneTxPaymentUpgrade from './OneTxPaymentUpgrade';
 // import ExtensionUpgrade from './ExtensionUpgrade';
 import ColonyHomeInfo from './ColonyHomeInfo';
+import ColonySafes from './ColonySafes';
 
 import styles from './ColonyHomeLayout.css';
 
@@ -77,6 +78,7 @@ const ColonyHomeLayout = ({
             <ColonyDomainDescription currentDomainId={filteredDomainId} />
             <ColonyUnclaimedTransfers />
             <ColonyFundingWidget currentDomainId={filteredDomainId} />
+            <ColonySafes colony={colony} />
             <ColonyMembersWidget currentDomainId={filteredDomainId} />
             <ColonyExtensions />
           </aside>
