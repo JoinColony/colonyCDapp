@@ -1,5 +1,6 @@
 declare namespace ImageCarouselModuleCssNamespace {
   export interface IImageCarouselModuleCss {
+    bullet: string;
     carouselWrapper: string;
   }
 }

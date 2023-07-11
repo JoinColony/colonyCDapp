@@ -14,7 +14,7 @@ const ImageCarousel: FC<ImageCarouselProps> = ({
 }) => {
   const windowSize = useWindowSize();
   const width = windowSize?.width ?? 0;
-  const setSlidePercentage = (width >= 1440 && 89) || (width >= 850 && 60);
+  const setSlidePercentage = (width >= 1440 && 89.1625) || (width >= 850 && 60);
 
   return (
     <div className={styles.carouselWrapper}>
@@ -31,8 +31,8 @@ const ImageCarousel: FC<ImageCarouselProps> = ({
         renderIndicator={(onClickHandler, isSelected, index, label) => (
           <li>
             <div
-              className={`opacity-100 w-2 h-2 cursor-pointer rounded-full mx-2 transition-all hover:bg-blue-400 ${
-                isSelected ? 'bg-gray-500' : 'bg-gray-200'
+              className={`${styles.bullet} ${
+                isSelected ? 'bg-gray-900' : 'bg-gray-200'
               }`}
               onClick={onClickHandler}
               onKeyDown={onClickHandler}
