@@ -6,6 +6,8 @@ import EmptyContent from '../EmptyContent';
 import Link from '~v5/shared/Link';
 import { MembersListProps } from './types';
 import { useMembersList } from './hooks';
+import { useSearchContext } from '~context/SearchContext';
+import { TextButton } from '~v5/shared/Button';
 
 const displayName = 'v5.common.MembersList';
 
@@ -17,11 +19,17 @@ const MembersList: FC<MembersListProps> = ({
   emptyTitle,
   emptyDescription,
   viewMoreUrl,
+  isHomePage,
 }) => {
   const { formatMessage } = useIntl();
-  const { handleClipboardCopy } = useMembersList();
-
-  const listLength = list.length;
+  const {
+    handleClipboardCopy,
+    listLength,
+    loadMoreMembers,
+    visibleMembers,
+    membersLimit,
+  } = useMembersList({ list, isHomePage });
+  const { searchValue } = useSearchContext();
 
   return (
     <div>
@@ -35,7 +43,7 @@ const MembersList: FC<MembersListProps> = ({
       {/* @TODO: Add loading state */}
       {!isLoading && listLength ? (
         <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-4">
-          {list.map((item) => {
+          {visibleMembers.map((item) => {
             const { user } = item;
             const { name, profile } = user || {};
 
@@ -62,13 +70,18 @@ const MembersList: FC<MembersListProps> = ({
           onClick={handleClipboardCopy}
         />
       ) : undefined}
-      {listLength > 8 && (
-        <div className="w-full flex justify-center mt-6">
+      <div className="w-full flex justify-center mt-6">
+        {listLength > membersLimit && !searchValue && (
           <Link className="text-3" to={viewMoreUrl}>
             {formatMessage({ id: 'viewMore' })}
           </Link>
-        </div>
-      )}
+        )}
+        {listLength > membersLimit && searchValue && (
+          <TextButton onClick={loadMoreMembers}>
+            {formatMessage({ id: 'loadMore' })}
+          </TextButton>
+        )}
+      </div>
     </div>
   );
 };

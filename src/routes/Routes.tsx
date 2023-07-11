@@ -77,6 +77,7 @@ import ContributorsPage from '~frame/v5/pages/ContributorsPage';
 import FollowersPage from '~frame/v5/pages/FollowersPage';
 import VerifiedPage from '~frame/v5/pages/VerifiedPage';
 import TeamsPage from '~frame/v5/pages/TeamsPage';
+import { SearchContextProvider } from '~context/SearchContext';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -163,13 +164,15 @@ const Routes = () => {
               element={
                 <ColonyContextProvider>
                   <ExtensionsContextProvider>
-                    <PageLayout
-                      loadingText="members"
-                      title={{ id: 'membersPage.title' }}
-                      description={{ id: 'membersPage.description' }}
-                    >
-                      <MembersPage />
-                    </PageLayout>
+                    <SearchContextProvider>
+                      <PageLayout
+                        loadingText="members"
+                        title={{ id: 'membersPage.title' }}
+                        description={{ id: 'membersPage.description' }}
+                      >
+                        <MembersPage />
+                      </PageLayout>
+                    </SearchContextProvider>
                   </ExtensionsContextProvider>
                 </ColonyContextProvider>
               }
