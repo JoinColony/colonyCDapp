@@ -7,5 +7,5 @@
 }
 
 .subMenuMobile {
-  @apply bg-base-white px-6;
+  @apply bg-base-white shadow-content sm:shadow-none sm:px-6;
 }
