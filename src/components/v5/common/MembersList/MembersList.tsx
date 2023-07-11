@@ -22,8 +22,13 @@ const MembersList: FC<MembersListProps> = ({
   isHomePage,
 }) => {
   const { formatMessage } = useIntl();
-  const { handleClipboardCopy, listLength, loadMoreMembers, visibleMembers } =
-    useMembersList({ list, isHomePage });
+  const {
+    handleClipboardCopy,
+    listLength,
+    loadMoreMembers,
+    visibleMembers,
+    membersLimit,
+  } = useMembersList({ list, isHomePage });
   const { searchValue } = useSearchContext();
 
   return (
@@ -66,12 +71,12 @@ const MembersList: FC<MembersListProps> = ({
         />
       ) : undefined}
       <div className="w-full flex justify-center mt-6">
-        {listLength > 8 && !searchValue && (
+        {listLength > membersLimit && !searchValue && (
           <Link className="text-3" to={viewMoreUrl}>
             {formatMessage({ id: 'viewMore' })}
           </Link>
         )}
-        {listLength > 8 && searchValue && (
+        {listLength > membersLimit && searchValue && (
           <TextButton onClick={loadMoreMembers}>
             {formatMessage({ id: 'loadMore' })}
           </TextButton>

@@ -6,8 +6,9 @@ import Icon from '~shared/Icon';
 import styles from './SearchInput.module.css';
 import { useSearchContext } from '~context/SearchContext';
 import { useMobile } from '~hooks';
-
 import { SearchInputProps } from './types';
+
+const displayName = 'v5.common.Filter.partials.SearchInput';
 
 const SearchInput: FC<SearchInputProps> = ({ onSearchButtonClick }) => {
   const { formatMessage } = useIntl();
@@ -61,5 +62,7 @@ const SearchInput: FC<SearchInputProps> = ({ onSearchButtonClick }) => {
     </div>
   );
 };
+
+SearchInput.displayName = displayName;
 
 export default SearchInput;

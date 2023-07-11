@@ -14,8 +14,8 @@ export const useMembersList = ({ list, isHomePage }) => {
   const [visibleMembers, setVisibleMembers] = useState<Member[]>([]);
 
   const listLength = list.length;
-  const loadSize = isHomePage ? 8 : 12;
-  const endIndex = Math.min(startIndex + loadSize, listLength);
+  const membersLimit = isHomePage ? 8 : 12;
+  const endIndex = Math.min(startIndex + membersLimit, listLength);
 
   const showMembers = useCallback(() => {
     setVisibleMembers(list.slice(startIndex, endIndex));
@@ -35,5 +35,6 @@ export const useMembersList = ({ list, isHomePage }) => {
     loadMoreMembers,
     visibleMembers,
     listLength,
+    membersLimit,
   };
 };

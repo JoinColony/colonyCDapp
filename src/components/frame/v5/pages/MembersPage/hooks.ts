@@ -29,12 +29,10 @@ export const useMembersPage = (searchValue?: string) => {
   });
 
   const searchMembers = (members: Member[]) =>
-    members.filter((member) => {
+    members.filter(({ user }) => {
       return (
-        member?.user?.name
-          .toLowerCase()
-          .startsWith(searchValue?.toLowerCase() ?? '') ||
-        member?.user?.walletAddress
+        user?.name.toLowerCase().startsWith(searchValue?.toLowerCase() ?? '') ||
+        user?.walletAddress
           .toLowerCase()
           .startsWith(searchValue?.toLowerCase() ?? '')
       );
