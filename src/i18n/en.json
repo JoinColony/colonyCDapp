@@ -482,6 +482,7 @@
   "membersPage.followers.title": "Followers",
   "membersPage.followers.description": "Followers are members who don't have any reputation within the Colony",
   "membersPage.followers.allMembers": "All followers",
+  "membersPage.followers.emptyDescription": "Invite members to join, follow and contribute to the Colony",
   "members.allMembers": "All members",
   "members.subnav.invite": "Invite members",
   "members.subnav.permissions": "Edit permissions",
