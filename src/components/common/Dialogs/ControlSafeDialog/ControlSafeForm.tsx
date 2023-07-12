@@ -306,6 +306,32 @@ const ControlSafeForm = ({
           />
         </div>
       </DialogSection>
+      <DialogSection appearance={{ theme: 'sidePadding' }}>
+        <div className={styles.transactionTypeSelectContainer}>
+          <Select
+            options={transactionOptions}
+            label={MSG.transactionLabel}
+            name="transactions.transactionType"
+            onChange={() =>
+              /* type */
+              {
+                /* removeSelectedContractMethod(index);
+              handleTransactionTypeChange(type, index); */
+              }
+            }
+            appearance={{ theme: 'grey', width: 'fluid' }}
+            placeholder={MSG.transactionPlaceholder}
+            disabled={false}
+          />
+        </div>
+      </DialogSection>
+      {isEmpty(selectedSafe) && dirtyFields ? (
+        <ErrorMessage error={MSG.invalidSafeError} />
+      ) : (
+        {
+          /* renderTransactionSection(transaction, index) */
+        }
+      )}
       <DialogSection>
         <div className={styles.addTransaction}>
           <AddItemButton
