@@ -16,14 +16,19 @@ export const useContributorsPage = (searchValue?: string) => {
     },
   });
 
+  const followers = data?.getMembersForColony?.watchers ?? [];
   const contributors = data?.getMembersForColony?.contributors ?? [];
 
+  const searchedFollowers = searchValue
+    ? searchMembers(followers, searchValue)
+    : followers;
   const searchedContributors = searchValue
     ? searchMembers(contributors, searchValue)
     : contributors;
 
   return {
     contributors: searchedContributors,
+    followers: searchedFollowers,
     loading,
   };
 };

@@ -6,28 +6,31 @@ import MembersList from '~v5/common/MembersList';
 import TeamReputationSummary from '~v5/common/TeamReputationSummary';
 import { teamsWithSummedUpData } from '~v5/common/TeamReputationSummary/consts';
 import { useSearchContext } from '~context/SearchContext';
-import { useMembersPage } from '../MembersPage/hooks';
 import Header from '~frame/v5/Header';
 import Spinner from '~v5/shared/Spinner';
+import { ColonyUsersPageProps } from './types';
+import { useContributorsPage } from './hooks';
 
-const FollowersPage: FC = () => {
+const displayName = 'v5.pages.ColonyUsersPage';
+
+const ColonyUsersPage: FC<ColonyUsersPageProps> = ({ pageName }) => {
   const { searchValue } = useSearchContext();
-  const { followers, loading } = useMembersPage(searchValue);
+  const { contributors, followers, loading } = useContributorsPage(searchValue);
 
   return (
-    <Spinner loadingText={{ id: 'loading.followersPage' }}>
+    <Spinner loadingText={{ id: `loading.${pageName}Page` }}>
       <TwoColumns aside={<Navigation pageName="members" />}>
-        <Header title={{ id: 'membersPage.followers.allMembers' }} />
+        <Header title={{ id: `membersPage.${pageName}.allMembers` }} />
         <div className="flex justify-between mt-6 gap-6 flex-col-reverse sm:flex-row md:gap-12">
           <div className="w-full">
             <MembersList
-              title={{ id: 'membersPage.followers.title' }}
-              description={{ id: 'membersPage.followers.description' }}
-              emptyTitle={{ id: 'membersPage.followers.emptyTitle' }}
+              title={{ id: `membersPage.${pageName}.title` }}
+              description={{ id: `membersPage.${pageName}.description` }}
+              emptyTitle={{ id: `membersPage.${pageName}.emptyTitle` }}
               emptyDescription={{
-                id: 'membersPage.followers.emptyDescription',
+                id: `membersPage.${pageName}.emptyDescription`,
               }}
-              list={followers}
+              list={pageName === 'contributors' ? contributors : followers}
               isLoading={loading}
               isHomePage={false}
             />
@@ -42,4 +45,6 @@ const FollowersPage: FC = () => {
   );
 };
 
-export default FollowersPage;
+ColonyUsersPage.displayName = displayName;
+
+export default ColonyUsersPage;

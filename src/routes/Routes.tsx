@@ -73,11 +73,11 @@ import PermissionsPage from '~frame/Extensions/pages/PermissionsPage';
 import LazyConsensusPage from '~frame/Extensions/pages/LazyConsensusPage';
 import { ExtensionsContextProvider } from '~context/ExtensionsContext';
 import MembersPage from '~frame/v5/pages/MembersPage';
-import ContributorsPage from '~frame/v5/pages/ContributorsPage';
-import FollowersPage from '~frame/v5/pages/FollowersPage';
+import ColonyUsersPage from '~frame/v5/pages/ColonyUsersPage';
 import VerifiedPage from '~frame/v5/pages/VerifiedPage';
 import TeamsPage from '~frame/v5/pages/TeamsPage';
 import { SearchContextProvider } from '~context/SearchContext';
+import { ColonyUsersPageType } from '~frame/v5/pages/ColonyUsersPage/types';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -179,42 +179,31 @@ const Routes = () => {
             />
           ),
         )}
-        <Route
-          path={COLONY_CONTRIBUTORS_ROUTE}
-          element={
-            <ColonyContextProvider>
-              <ExtensionsContextProvider>
-                <SearchContextProvider>
-                  <PageLayout
-                    loadingText="contributors"
-                    title={{ id: 'contributorsPage.title' }}
-                    description={{ id: 'contributorsPage.description' }}
-                  >
-                    <ContributorsPage />
-                  </PageLayout>
-                </SearchContextProvider>
-              </ExtensionsContextProvider>
-            </ColonyContextProvider>
-          }
-        />
-        <Route
-          path={COLONY_FOLLOWERS_ROUTE}
-          element={
-            <ColonyContextProvider>
-              <ExtensionsContextProvider>
-                <SearchContextProvider>
-                  <PageLayout
-                    loadingText="followers"
-                    title={{ id: 'followersPage.title' }}
-                    description={{ id: 'followersPage.description' }}
-                  >
-                    <FollowersPage />
-                  </PageLayout>
-                </SearchContextProvider>
-              </ExtensionsContextProvider>
-            </ColonyContextProvider>
-          }
-        />
+        {[COLONY_CONTRIBUTORS_ROUTE, COLONY_FOLLOWERS_ROUTE].map((path) => {
+          const pageName = path.split('/')[2] as ColonyUsersPageType;
+
+          return (
+            <Route
+              key={path}
+              path={path}
+              element={
+                <ColonyContextProvider>
+                  <ExtensionsContextProvider>
+                    <SearchContextProvider>
+                      <PageLayout
+                        loadingText={pageName}
+                        title={{ id: `${pageName}Page.title` }}
+                        description={{ id: `${pageName}Page.description` }}
+                      >
+                        <ColonyUsersPage pageName={pageName} />
+                      </PageLayout>
+                    </SearchContextProvider>
+                  </ExtensionsContextProvider>
+                </ColonyContextProvider>
+              }
+            />
+          );
+        })}
         <Route
           path={COLONY_VERIFIED_ROUTE}
           element={
