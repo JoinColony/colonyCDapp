@@ -39,16 +39,13 @@ import { isEmpty } from '~utils/lodash';
  *   UpdatedMethods,
  * } from './ControlSafeDialog'; */
 import {
-  /* TransferNFTSection,
-   * TransferFundsSection,
-   * RawTransactionSection,
-   * ContractInteractionSection, */
+  TransferNFTSection,
+  TransferFundsSection,
+  RawTransactionSection,
+  ContractInteractionSection,
   ErrorMessage,
 } from './TransactionTypesSection';
-import {
-  /* TransactionTypes, */
-  transactionOptions,
-} from './constants';
+import { TransactionTypes, transactionOptions } from './constants';
 import { ControlSafeProps } from './types';
 
 import styles from './ControlSafeForm.css';
@@ -179,6 +176,7 @@ ControlSafeProps) => {
     watch,
   } = useFormContext();
   const selectedSafe = watch('safe');
+  const transactionType = watch('transactions.transactionType');
 
   const { userHasPermission } = useActionDialogStatus(
     colony,
@@ -186,42 +184,6 @@ ControlSafeProps) => {
     [Id.RootDomain],
     enabledExtensionData,
   );
-
-  /* const handleValidation = useCallback(() => {
-   *   // setTimeout ensures form state is latest. Related: https://github.com/jaredpalmer/formik/issues/529
-   *   setTimeout(validateForm, 0);
-   * }, [validateForm]); */
-
-  /* const handleSelectedContractMethods = useCallback(
-*   (contractMethods: UpdatedMethods, index: number) => {
-*     // eslint-disable-next-line max-len
-       // ++
-*     const functionParamTypes: SafeTransaction['functionParamTypes'] =
-\*       contractMethods[index]?.inputs?.map((input) => ({
-*         name: input.name,
-*         type: input.type,
-*       }));
-
-*     setSelectedContractMethods(contractMethods);
-*     setFieldValue(
-*       `transactions.${index}.functionParamTypes`,
-*       functionParamTypes,
-*     );
-*   },
-*   [setFieldValue, setSelectedContractMethods],
-* ); */
-
-  /* const getTransactionTypeLabel = useCallback(
-   *   (transactionTypeValue: string) => {
-   *     const transactionType = transactionOptions.find(
-   *       (transaction) => transaction.value === transactionTypeValue,
-   *     );
-   *     return transactionType ? (
-   *       <FormattedMessage {...transactionType.label} key={nanoid()} />
-   *     ) : null;
-   *   },
-   *   [],
-   * ); */
 
   const submitButtonText = (() => {
     return { id: 'button.confirm' };
@@ -232,21 +194,20 @@ ControlSafeProps) => {
   const disabledInputs =
     !userHasPermission || isSubmitting || !isSupportedColonyVersion;
 
-  /* const renderTransactionSection = (transaction: SafeTransaction) => {
-   *   const { transactionType } = transaction;
-   *   switch (transactionType) {
-   *     case TransactionTypes.TRANSFER_FUNDS:
-   *       return <TransferFundsSection />;
-   *     case TransactionTypes.RAW_TRANSACTION:
-   *       return <RawTransactionSection />;
-   *     case TransactionTypes.CONTRACT_INTERACTION:
-   *       return <ContractInteractionSection />;
-   *     case TransactionTypes.TRANSFER_NFT:
-   *       return <TransferNFTSection />;
-   *     default:
-   *       return null;
-   *   }
-   * }; */
+  const renderTransactionSection = () => {
+    switch (transactionType) {
+      case TransactionTypes.TRANSFER_FUNDS:
+        return <TransferFundsSection />;
+      case TransactionTypes.RAW_TRANSACTION:
+        return <RawTransactionSection />;
+      case TransactionTypes.CONTRACT_INTERACTION:
+        return <ContractInteractionSection />;
+      case TransactionTypes.TRANSFER_NFT:
+        return <TransferNFTSection />;
+      default:
+        return null;
+    }
+  };
 
   const safes = metadata?.safes || [];
 
@@ -324,9 +285,7 @@ ControlSafeProps) => {
       {isEmpty(selectedSafe) && dirtyFields ? (
         <ErrorMessage error={MSG.invalidSafeError} />
       ) : (
-        {
-          /* renderTransactionSection(transaction, index) */
-        }
+        renderTransactionSection()
       )}
       <DialogSection>
         <div className={styles.addTransaction}>
