@@ -1,18 +1,6 @@
 declare namespace TransactionTypesSectionCssNamespace {
   export interface ITransactionTypesSectionCss {
-    abiContainer: string;
-    attributionMessage: string;
-    contractFunctionSelectorContainer: string;
     error: string;
-    fetchFailedErrorContainer: string;
-    inputParamContainer: string;
-    labelDescription: string;
-    noUsefulMethods: string;
-    singleUserPickerContainer: string;
-    spinner: string;
-    warningContainer: string;
-    warningIcon: string;
-    warningSafeChainName: string;
   }
 }
 
