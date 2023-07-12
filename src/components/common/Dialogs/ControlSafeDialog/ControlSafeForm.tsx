@@ -7,10 +7,10 @@ import { ColonyRole, Id } from '@colony/colony-js';
 
 import Avatar from '~shared/Avatar';
 import { DialogSection } from '~shared/Dialog';
-/* import { Select } from '~shared/Fields'; */
+import { HookFormSelect as Select } from '~shared/Fields';
 import Heading from '~shared/Heading';
 import ExternalLink from '~shared/ExternalLink';
-import Button, { AddItemButton } from /* AddItemButton */ '~shared/Button';
+import Button, { AddItemButton } from '~shared/Button';
 import Icon from '~shared/Icon';
 import {
   SingleSafePicker,
@@ -29,7 +29,7 @@ import { useActionDialogStatus } from '~hooks';
 /* import { useDialogActionPermissions } from '~utils/hooks/useDialogActionPermissions'; */
 /* import { PrimitiveType } from '~types/index'; */
 /* import { SelectedSafe } from '~modules/dashboard/sagas/utils/safeHelpers'; */
-/* import { debounce, isEmpty, isEqual, omit } from '~utils/lodash'; */
+import { isEmpty } from '~utils/lodash';
 /* import NotEnoughReputation from '~dashboard/NotEnoughReputation'; */
 
 /* import SafeTransactionPreview from './SafeTransactionPreview'; */
@@ -38,13 +38,17 @@ import { useActionDialogStatus } from '~hooks';
  *   FormValues,
  *   UpdatedMethods,
  * } from './ControlSafeDialog'; */
-/* import {
- *   TransferNFTSection,
- *   TransferFundsSection,
- *   RawTransactionSection,
- *   ContractInteractionSection,
- * } from './TransactionTypesSection'; */
-/* import { TransactionTypes, transactionOptions } from './constants'; */
+import {
+  /* TransferNFTSection,
+   * TransferFundsSection,
+   * RawTransactionSection,
+   * ContractInteractionSection, */
+  ErrorMessage,
+} from './TransactionTypesSection';
+import {
+  /* TransactionTypes, */
+  transactionOptions,
+} from './constants';
 import { ControlSafeProps } from './types';
 
 import styles from './ControlSafeForm.css';
@@ -139,7 +143,7 @@ const renderAvatar = (item) => (
   />
 );
 
-const ReadMore = (chunks: React.ReactNode[]) => (
+const ReadMoreLink = (chunks: React.ReactNode[]) => (
   <ExternalLink href={SAFE_INTEGRATION_LEARN_MORE}>{chunks}</ExternalLink>
 );
 
@@ -171,8 +175,10 @@ ControlSafeProps) => {
   /* const [transactionTabStatus, setTransactionTabStatus] = useState([true]);
    * const [prevSafeAddress, setPrevSafeAddress] = useState<string>(''); */
   const {
-    formState: { isSubmitting },
+    formState: { isSubmitting, dirtyFields },
+    watch,
   } = useFormContext();
+  const selectedSafe = watch('safe');
 
   const { userHasPermission } = useActionDialogStatus(
     colony,
@@ -226,10 +232,7 @@ ControlSafeProps) => {
   const disabledInputs =
     !userHasPermission || isSubmitting || !isSupportedColonyVersion;
 
-  /* const renderTransactionSection = (
-   *   transaction: SafeTransaction,
-   *   index: number,
-   * ) => {
+  /* const renderTransactionSection = (transaction: SafeTransaction) => {
    *   const { transactionType } = transaction;
    *   switch (transactionType) {
    *     case TransactionTypes.TRANSFER_FUNDS:
@@ -261,7 +264,7 @@ ControlSafeProps) => {
         <FormattedMessage
           {...MSG.description}
           values={{
-            a: ReadMore,
+            a: ReadMoreLink,
           }}
         />
       </DialogSection>
@@ -299,6 +302,32 @@ ControlSafeProps) => {
           />
         </div>
       </DialogSection>
+      <DialogSection appearance={{ theme: 'sidePadding' }}>
+        <div className={styles.transactionTypeSelectContainer}>
+          <Select
+            options={transactionOptions}
+            label={MSG.transactionLabel}
+            name="transactions.transactionType"
+            onChange={() =>
+              /* type */
+              {
+                /* removeSelectedContractMethod(index);
+              handleTransactionTypeChange(type, index); */
+              }
+            }
+            appearance={{ theme: 'grey', width: 'fluid' }}
+            placeholder={MSG.transactionPlaceholder}
+            disabled={false}
+          />
+        </div>
+      </DialogSection>
+      {isEmpty(selectedSafe) && dirtyFields ? (
+        <ErrorMessage error={MSG.invalidSafeError} />
+      ) : (
+        {
+          /* renderTransactionSection(transaction, index) */
+        }
+      )}
       <DialogSection>
         <div className={styles.addTransaction}>
           <AddItemButton
