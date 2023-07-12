@@ -306,6 +306,15 @@ const ControlSafeForm = ({
           />
         </div>
       </DialogSection>
+      <DialogSection>
+        <div className={styles.addTransaction}>
+          <AddItemButton
+            text={MSG.buttonTransaction}
+            disabled
+            handleClick={() => {}}
+          />
+        </div>
+      </DialogSection>
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <Button
           appearance={{ theme: 'secondary', size: 'large' }}
