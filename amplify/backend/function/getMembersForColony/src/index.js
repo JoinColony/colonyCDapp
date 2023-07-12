@@ -1,7 +1,3 @@
-/**
- * @type {import('aws-lambda').APIGatewayProxyHandler}
- */
-
 const { Decimal } = require('decimal.js');
 const {
   constants,
@@ -60,6 +56,9 @@ const setEnvVariables = async () => {
   }
 };
 
+/**
+ * @type {import('aws-lambda').APIGatewayProxyHandler}
+ */
 exports.handler = async (event) => {
   try {
     await setEnvVariables();
@@ -68,9 +67,9 @@ exports.handler = async (event) => {
   }
 
   const {
-    colonyAddress,
+    colonyAddress: address,
     rootHash,
-    domainId = Id.RootDomain,
+    domainId: nativeDomainId = Id.RootDomain,
     sortingMethod = SortingMethod.BY_HIGHEST_REP,
   } = event?.arguments?.input || {};
   const provider = new providers.JsonRpcProvider(rpcURL);
@@ -78,9 +77,9 @@ exports.handler = async (event) => {
   /*
    * Validate Colony addresses
    */
-  let checksummedAddress;
+  let colonyAddress;
   try {
-    checksummedAddress = utils.getAddress(colonyAddress);
+    colonyAddress = utils.getAddress(address);
   } catch (error) {
     throw new Error(
       `Colony address "${colonyAddress}" is not valid (after checksum)`,
@@ -93,13 +92,13 @@ exports.handler = async (event) => {
   });
 
   const colonyClient = await networkClient.getColonyClient(colonyAddress);
-  const { skillId } = await colonyClient.getDomain(domainId || Id.RootDomain);
+  const { skillId } = await colonyClient.getDomain(nativeDomainId);
   let contributorAddresses = new Set();
 
   try {
     const { addresses } = await colonyClient.getMembersReputation(skillId);
     contributorAddresses = new Set(
-      addresses.map((address) => address.toLowerCase()),
+      addresses.map((contributorAddress) => contributorAddress.toLowerCase()),
     );
   } catch (error) {
     // @NOTE Not throwing an error here, because it's possbile that the colony
@@ -107,12 +106,14 @@ exports.handler = async (event) => {
   }
 
   // get list of watchers for colony
-  const { data, errors } = await graphqlRequest(
+  const allWatchersResponse = await graphqlRequest(
     getWatchersInColony,
-    { id: checksummedAddress },
+    { id: colonyAddress, domainId: `${colonyAddress}_${nativeDomainId}` },
     graphqlURL,
     apiKey,
   );
+
+  const { data, errors } = allWatchersResponse ?? {};
 
   if (errors || !data) {
     const [error] = errors;
@@ -122,25 +123,6 @@ exports.handler = async (event) => {
   }
 
   const allColonyWatchers = data?.getColonyByAddress?.items[0]?.watchers.items;
-
-  // Incase there are members but no reputation on the colony,
-  // we can stop here and return the list of watchers
-  if (!contributorAddresses.size) {
-    if (domainId > Id.RootDomain) {
-      return {
-        contributors: [],
-        watchers: [], // You can only "watch" the root domain.
-      };
-    }
-
-    return {
-      contributors: [],
-      watchers: allColonyWatchers.map(({ user }) => ({
-        address: user.id,
-        user,
-      })),
-    };
-  }
 
   // Get total reputation for colony
   let reputationInDomain;
@@ -152,53 +134,61 @@ exports.handler = async (event) => {
     );
     reputationInDomain = reputationAmount;
   } catch (error) {
-    // If domain has no reputation, either it's the root domain, in which case we've already returned early above
-    // Or it's a subdomain, in which case we can return two empty arrays since you can't watch a subdomain
-    return {
-      contributors: [],
-      watchers: [],
-    };
+    // Silent error in case there's no reputation in the domain
   }
 
   /*
-   * A "watcher" (for ui purposes) is an address with 0 reputation in a colony && that is subscribed to/watching/joined to that colony.
+   * A "watcher" (for ui purposes) is an address with 0 reputation in a colony, has no permissions and that is subscribed to that colony.
    * Watchers belong exclusively to the root domain. There are no watchers of subdomains.
    *
    * Note: the terminology we use internally is inconsistent in this respect. For instance, the "watchers" field
    * on the Colony model refers to all addresses that are joined to the colony, not just those that are joined and
-   * have 0 reputation.
+   * have 0 reputation, and have no permissions assigned.
    */
 
-  // Get addresses subscribed to the colony that don't have reputation
-  const watchersWithoutRep = allColonyWatchers.reduce((watchers, watcher) => {
-    if (watcher) {
-      const userAddress = watcher.user.id.toLowerCase();
-      if (!contributorAddresses.has(userAddress)) {
-        watchers.push({
-          ...watcher,
-          address: userAddress,
-        });
-      }
-    }
-    return watchers;
-  }, []);
-
-  const contributors = await Promise.all(
-    [...contributorAddresses].map(async (address) => {
-      try {
-        const { data: query } = await graphqlRequest(
-          getUserByAddress,
-          { id: utils.getAddress(address) },
-          graphqlURL,
-          apiKey,
+  // Get addresses subscribed to the colony that don't have reputation or permissions
+  // And add addresses with permissions to the contributors set
+  const watchersWithoutRepOrPermissions = allColonyWatchers.reduce(
+    (watchers, watcher) => {
+      if (watcher) {
+        const userAddress = watcher.user.id.toLowerCase();
+        const permissions = watcher.user.roles?.items[0] ?? {}; // query is filtered by domainId
+        const hasPermissions = Object.keys(permissions).some(
+          (permissionKey) => permissions[permissionKey],
         );
 
-        const user = query?.getUserByAddress?.items[0];
+        if (!contributorAddresses.has(userAddress)) {
+          if (!hasPermissions) {
+            watchers.push({
+              ...watcher,
+              address: userAddress,
+            });
+          } else {
+            // A user can also become a contributor if they are assigned any permissions
+            contributorAddresses.add(userAddress);
+          }
+        }
+      }
+      return watchers;
+    },
+    [],
+  );
 
+  const contributors = await Promise.all(
+    [...contributorAddresses].map(async (contributorAddress) => {
+      const response = await graphqlRequest(
+        getUserByAddress,
+        { id: utils.getAddress(contributorAddress) },
+        graphqlURL,
+        apiKey,
+      );
+
+      const user = response?.data?.getUserByAddress?.items[0];
+      try {
         const { reputationAmount } =
           await colonyClient.getReputationWithoutProofs(
             skillId,
-            address,
+            contributorAddress,
             rootHash,
           );
 
@@ -208,16 +198,19 @@ exports.handler = async (event) => {
         );
 
         return {
-          address,
+          address: contributorAddress,
           user: user ?? null,
           reputationAmount: reputationAmount.toString(),
           reputationPercentage:
             repPercentage === null ? repPercentage : repPercentage.toString(),
         };
       } catch (e) {
-        throw new Error(
-          `Error trying to get reputation for contributor ${address} at skillId ${skillId}: ${e?.message}`,
-        );
+        return {
+          address: contributorAddress,
+          user: user ?? null,
+          reputationAmount: '0',
+          reputationPercentage: '0',
+        };
       }
     }),
   );
@@ -255,8 +248,15 @@ exports.handler = async (event) => {
   //   return user1.roles.length - user2.roles.length;
   // }
 
+  if (nativeDomainId > Id.RootDomain) {
+    return {
+      contributors,
+      watchers: [], // You can only "watch" the root domain.
+    };
+  }
+
   return {
     contributors,
-    watchers: watchersWithoutRep,
+    watchers: watchersWithoutRepOrPermissions,
   };
 };
