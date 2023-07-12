@@ -13,10 +13,11 @@ const Accordion: FC<AccordionProps> = ({
 }) => (
   <div>
     <ul className="flex flex-col gap-4">
-      {items.map((item) => (
+      {items.map(({ id, title, option }) => (
         <AccordionItem
-          key={item.id}
-          item={item}
+          key={id}
+          title={title}
+          option={option}
           onSelectParentFilter={onSelectParentFilter}
           onSelectNestedOption={onSelectNestedOption}
           selectedChildOption={selectedChildOption}

@@ -9,13 +9,11 @@ const ContributorTypeOptions: FC = () => {
   const { formatMessage } = useIntl();
 
   return (
-    <div>
-      <ul>
-        {contributorTypes.map(({ id, title }) => (
-          <li key={id}>{formatMessage(title)}</li>
-        ))}
-      </ul>
-    </div>
+    <ul>
+      {contributorTypes.map(({ id, title }) => (
+        <li key={id}>{formatMessage(title)}</li>
+      ))}
+    </ul>
   );
 };
 

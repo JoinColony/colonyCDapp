@@ -11,15 +11,14 @@ import { AccordionItemProps } from '../types';
 const displayName = 'v5.common.Filter.partials.AccordionItem';
 
 const AccordionItem: FC<AccordionItemProps> = ({
-  item,
+  title,
+  option,
   onSelectNestedOption,
   onSelectParentFilter,
   selectedChildOption,
 }) => {
   const [clicked, setClicked] = useState(false);
   const { formatMessage } = useIntl();
-
-  const { title, option } = item;
 
   const handleToggle = () => {
     setClicked((prev) => !prev);

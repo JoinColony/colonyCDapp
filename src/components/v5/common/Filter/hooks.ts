@@ -39,6 +39,7 @@ export const useFilter = () => {
 
   const onClearFilters = useCallback(() => {
     setSelectedFilters([]);
+    setSelectedOption(undefined);
   }, []);
 
   const onSelectParentFilter = useCallback(() => {
@@ -54,10 +55,10 @@ export const useFilter = () => {
 
   // @TODO: check other filter types
   const isContributorTypeSelected = contributorTypes.some(
-    (item) => item.id === selectedChildOption,
+    ({ id }) => id === selectedChildOption,
   );
   const isStatusTypeSelected = statusTypes.some(
-    (item) => item.id === selectedChildOption,
+    ({ id }) => id === selectedChildOption,
   );
 
   // @TODO: add other filter types

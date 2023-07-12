@@ -39,5 +39,6 @@ export type AccordionProps = Omit<FilterOptionsProps, 'options'> & {
 };
 
 export type AccordionItemProps = Omit<AccordionProps, 'items'> & {
-  item: ParentFilterOption;
+  title: string;
+  option: FilterType;
 };
