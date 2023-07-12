@@ -2528,11 +2528,17 @@ type Expenditure @model {
     )
   colony: Colony! @belongsTo(fields: ["colonyId"])
   ownerAddress: ID!
-  recipients: [ExpenditureRecipient!]!
+  slots: [ExpenditureSlot!]!
 }
 
 # Each expenditure recipient is assigned to a particular integer slot
-type ExpenditureRecipient {
-  slot: Int!
-  address: String!
+type ExpenditureSlot {
+  id: Int!
+  recipientAddress: String
+  payouts: [ExpenditurePayout!]
+}
+
+type ExpenditurePayout {
+  tokenAddress: ID!
+  amount: String!
 }
