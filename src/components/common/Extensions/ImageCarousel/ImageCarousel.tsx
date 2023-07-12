@@ -1,10 +1,11 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
-import useEmblaCarousel, { EmblaCarouselType } from 'embla-carousel-react';
+import React, { FC } from 'react';
+import clsx from 'clsx';
 
 import { ImageCarouselProps } from './types';
 import { images } from './consts';
 import DotButton from './partials/DotButton';
 import styles from './ImageCarousel.module.css';
+import { useEmblaCarouselSettings } from './hooks';
 
 const displayName = 'common.Extensions.ImageCarousel';
 
@@ -12,32 +13,8 @@ const ImageCarousel: FC<ImageCarouselProps> = ({
   slideUrls = images,
   options = { loop: true, align: 'start' },
 }) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel(options);
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
-
-  const scrollTo = useCallback(
-    (index: number) => emblaApi && emblaApi.scrollTo(index),
-    [emblaApi],
-  );
-
-  const onInit = useCallback((embla: EmblaCarouselType) => {
-    setScrollSnaps(embla.scrollSnapList());
-  }, []);
-
-  const onSelect = useCallback((embla: EmblaCarouselType) => {
-    setSelectedIndex(embla.selectedScrollSnap());
-  }, []);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-
-    onInit(emblaApi);
-    onSelect(emblaApi);
-    emblaApi.on('reInit', onInit);
-    emblaApi.on('reInit', onSelect);
-    emblaApi.on('select', onSelect);
-  }, [emblaApi, onInit, onSelect]);
+  const { scrollSnaps, emblaRef, scrollTo, selectedIndex } =
+    useEmblaCarouselSettings(options);
 
   return (
     <div className={styles.container}>
@@ -58,9 +35,9 @@ const ImageCarousel: FC<ImageCarouselProps> = ({
             // eslint-disable-next-line react/no-array-index-key
             key={index}
             onClick={() => scrollTo(index)}
-            className={`${styles.dot}`.concat(
-              index === selectedIndex ? ` ${styles.dotSelected}` : '',
-            )}
+            className={clsx(styles.dot, {
+              [styles.dotSelected]: index === selectedIndex,
+            })}
           />
         ))}
       </div>
