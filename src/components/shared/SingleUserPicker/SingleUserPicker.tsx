@@ -3,7 +3,7 @@ import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
 import classnames from 'classnames';
 import { useFormContext } from 'react-hook-form';
 
-import { Safe, SimpleMessageValues, User } from '~types';
+import { SimpleMessageValues, User } from '~types';
 import { getMainClasses } from '~utils/css';
 import UserAvatar from '~shared/UserAvatar';
 
@@ -17,6 +17,7 @@ import { InputLabel, InputStatus } from '../Fields';
 import Icon from '../Icon';
 import Button from '../Button';
 import ItemDefault from './ItemDefault';
+import { AvatarRenderFn } from './utils';
 
 import styles from './SingleUserPicker.css';
 
