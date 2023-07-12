@@ -328,9 +328,7 @@ const ControlSafeForm = ({
       {isEmpty(selectedSafe) && dirtyFields ? (
         <ErrorMessage error={MSG.invalidSafeError} />
       ) : (
-        {
-          /* renderTransactionSection(transaction, index) */
-        }
+        renderTransactionSection()
       )}
       <DialogSection>
         <div className={styles.addTransaction}>
