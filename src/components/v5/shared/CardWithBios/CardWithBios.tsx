@@ -82,7 +82,9 @@ const CardWithBios: FC<CardWithBiosProps> = ({
           </div>
         </div>
 
-        {description && <p className="text-gray-600 text-sm">{description}</p>}
+        {description && (
+          <p className="text-gray-600 text-sm line-clamp-2">{description}</p>
+        )}
 
         <div className="flex justify-between items-center">
           {!!reputationPercentage && (

@@ -1,23 +1,11 @@
-import { usePopperTooltip } from 'react-popper-tooltip';
 import { useGetMembersForColonyQuery } from '~gql';
 
 import { useColonyContext } from '~hooks';
 import { searchMembers } from '~utils/members';
 
-export const useMembersPage = (searchValue?: string) => {
+export const useContributorsPage = (searchValue?: string) => {
   const { colony } = useColonyContext();
-  const { colonyAddress, name } = colony || {};
-  const followersURL = `/colony/${name}/followers`;
-  const contributorsURL = `/colony/${name}/contributors`;
-
-  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
-    usePopperTooltip({
-      delayShow: 200,
-      delayHide: 200,
-      placement: 'bottom-start',
-      trigger: 'click',
-      interactive: true,
-    });
+  const { colonyAddress } = colony || {};
 
   const { data, loading } = useGetMembersForColonyQuery({
     skip: !colonyAddress,
@@ -39,14 +27,8 @@ export const useMembersPage = (searchValue?: string) => {
     : contributors;
 
   return {
-    getTooltipProps,
-    setTooltipRef,
-    setTriggerRef,
-    visible,
-    followers: searchedFollowers,
     contributors: searchedContributors,
+    followers: searchedFollowers,
     loading,
-    followersURL,
-    contributorsURL,
   };
 };
