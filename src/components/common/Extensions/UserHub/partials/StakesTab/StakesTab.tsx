@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -35,6 +35,23 @@ const StakesTab = () => {
     [stakes],
   );
 
+  const claimedNotificationNumber = useMemo(
+    () => stakes.filter(({ status }) => status === 'claimed').length,
+    [stakes],
+  );
+
+  const updatedTabsItems = useMemo(
+    () =>
+      tabsItems.map((item) => {
+        return item.type === 'claimable'
+          ? Object.assign(item, {
+              notificationNumber: claimedNotificationNumber,
+            })
+          : item;
+      }),
+    [claimedNotificationNumber],
+  );
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
@@ -50,8 +67,7 @@ const StakesTab = () => {
         )}
       </div>
       <Tabs
-        items={tabsItems}
-        className="pt-0"
+        items={updatedTabsItems}
         activeTab={activeTab}
         onTabClick={handleOnTabClick}
       >

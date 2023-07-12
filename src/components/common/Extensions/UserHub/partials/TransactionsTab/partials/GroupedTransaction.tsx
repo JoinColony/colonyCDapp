@@ -96,7 +96,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
             exit="hidden"
             variants={accordionAnimation}
             transition={{ duration: 0.4, ease: 'easeOut' }}
-            className="overflow-hidden text-gray-600 text-md mt-2"
+            className="overflow-hidden text-gray-600 text-md -mt-1.5"
           >
             <ul>
               {transactionGroup.map((transaction, idx) => (

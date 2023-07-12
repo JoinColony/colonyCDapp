@@ -1,5 +1,5 @@
 .tooltipContainer {
-  @apply bg-base-white p-[1.2rem] shadow-default border border-gray-200 rounded-lg;
+  @apply bg-base-white p-6 shadow-default border border-gray-200 rounded-lg;
 }
 
 .avatar {

@@ -1,4 +1,4 @@
-import { TabItem } from '~shared/Extensions/Tabs/types';
+import { StakesTabItem } from './types';
 
 export const stakesMock = [
   {
@@ -48,8 +48,8 @@ export const stakesMock = [
   },
 ];
 
-export const tabsItems: TabItem[] = [
-  { id: 0, title: 'All' },
-  { id: 1, title: 'Finalized' },
-  { id: 2, title: 'Claimable', notificationNumber: 15 },
+export const tabsItems: StakesTabItem[] = [
+  { id: 0, type: 'all', title: 'All' },
+  { id: 1, type: 'finalized', title: 'Finalized' },
+  { id: 2, type: 'claimable', title: 'Claimable' },
 ];

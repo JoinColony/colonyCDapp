@@ -49,7 +49,7 @@ const SubNavigationItem: FC<PropsWithChildren<SubNavigationItemProps>> = ({
           [styles.activeButton]: isOpen,
         })}
       >
-        <Icon name={icon} appearance={{ size: 'extraSmall' }} />
+        <Icon name={icon} appearance={{ size: 'small' }} />
         <span className="flex ml-2" ref={setTriggerRef}>
           {label}
         </span>

@@ -9,4 +9,5 @@ export interface MembersListProps {
   emptyTitle: MessageDescriptor;
   emptyDescription: MessageDescriptor;
   viewMoreUrl: string;
+  isHomePage: boolean;
 }

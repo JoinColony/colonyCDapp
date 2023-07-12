@@ -17,7 +17,9 @@ const ReputationTab = () => {
   // @TODO: handle empty state <EmptyContent />
   return (
     <div>
-      <p className="heading-5 mb-4">{formatMessage({ id: 'reputation' })}</p>
+      <p className="heading-5 mb-6 md:mb-4">
+        {formatMessage({ id: 'reputation' })}
+      </p>
       <Balance nativeToken={nativeToken} wallet={wallet} />
       <TotalReputation colonyAddress={colonyAddress} wallet={wallet} />
       <PendingReputation />

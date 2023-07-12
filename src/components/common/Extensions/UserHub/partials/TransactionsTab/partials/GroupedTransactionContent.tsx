@@ -73,11 +73,11 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
         'before:bg-success-400': ready || succeeded,
         'before:bg-negative-400': failed,
         'before:bg-blue-400': pending,
-        'font-bold': selected,
+        'font-semibold': selected,
       })}
     >
       <div className="flex justify-between items-center">
-        <h4>
+        <h4 className="text-gray-900">
           {`${(group?.index || idx) + 1}. `}{' '}
           <FormattedMessage
             {...defaultTransactionMessageDescriptorId}
