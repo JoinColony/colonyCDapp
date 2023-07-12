@@ -21,8 +21,8 @@ export const displayName = 'common.ControlSafeDialog';
 
 const ControlSafeDialog = ({
   /* colony: { colonyAddress }, // safes */
-  /* colony,
-   */
+  colony,
+  enabledExtensionData,
   prevStep,
   callStep,
   cancel,
@@ -71,7 +71,8 @@ const ControlSafeDialog = ({
       >
         <ControlSafeForm
           back={() => callStep(prevStep)}
-          safes={[]}
+          colony={colony}
+          enabledExtensionData={enabledExtensionData}
           /* networkOptions={networkOptions}
           colonyAddress={colonyAddress}
           loadingState={[loadingSafeState, loadingModuleState]}
