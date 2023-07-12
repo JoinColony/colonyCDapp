@@ -1,35 +1,64 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+import clsx from 'clsx';
 
-import { contributorTypes } from '~v5/common/Filter/partials/consts';
+import { useMobile } from '~hooks';
+import {
+  contributorTypes,
+  statusTypes,
+} from '~v5/common/Filter/partials/consts';
 import Checkbox from '~v5/common/Checkbox';
 import { NestedOptionsProps } from '../types';
 import Header from './Header';
 
-const displayName = 'v5.SubNavigationItem';
+const displayName = 'v5.SubNavigationItem.partials.NestedOptions';
 
 const NestedOptions: FC<NestedOptionsProps> = ({
-  selectedOption,
+  selectedParentOption,
+  selectedChildOption,
   onChange,
 }) => {
   const { formatMessage } = useIntl();
+  const isMobile = useMobile();
+
+  // @TODO: add other filters
+  const preparedFilterOptions =
+    (selectedParentOption === 'contributor' && contributorTypes) ||
+    (selectedParentOption === 'statuses' && statusTypes) ||
+    [];
 
   return (
     <>
-      <Header title={{ id: 'contributor.type' }} />
-      <ul className="flex flex-col">
-        {selectedOption === 'contributor' &&
-          contributorTypes.map(({ id, title }) => (
+      {!isMobile && <Header title={{ id: 'contributor.type' }} />}
+      <ul
+        className={clsx('flex flex-col', {
+          'mt-1': isMobile,
+        })}
+      >
+        {(preparedFilterOptions || []).map(({ id, title }, index) => {
+          return (
             <li key={id}>
               <button
-                className="subnav-button"
+                className={clsx('subnav-button', {
+                  'px-0': isMobile,
+                })}
                 type="button"
                 aria-label={formatMessage({ id: 'checkbox.select.filter' })}
               >
-                <Checkbox id={id} name={id} label={title} onChange={onChange} />
+                <Checkbox
+                  id={id}
+                  name={id}
+                  label={title}
+                  onChange={onChange}
+                  isChecked={
+                    preparedFilterOptions[index].id === id &&
+                    preparedFilterOptions[index].id === selectedChildOption
+                  }
+                />
               </button>
             </li>
-          ))}
+          );
+        })}
       </ul>
     </>
   );

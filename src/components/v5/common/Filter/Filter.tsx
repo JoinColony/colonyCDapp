@@ -17,8 +17,14 @@ const Filter: FC = () => {
   const isMobile = useMobile();
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     useMembersPage();
-  const { selectedFilters, onSaveSelectedFilters, onClearFilters } =
-    useFilter();
+  const {
+    selectedFilters,
+    onSelectParentFilter,
+    onSelectNestedOption,
+    onClearFilters,
+    selectedChildOption,
+    numberSelectedFilters,
+  } = useFilter();
 
   return (
     <>
@@ -27,6 +33,7 @@ const Filter: FC = () => {
           <FilterButton
             isOpen={isOpened}
             onClick={() => setOpened(!isOpened)}
+            numberSelectedFilters={numberSelectedFilters}
           />
           <Modal
             isFullOnMobile={false}
@@ -35,7 +42,9 @@ const Filter: FC = () => {
           >
             <FilterOptions
               options={filterOptions}
-              onSaveSelectedFilters={onSaveSelectedFilters}
+              onSelectParentFilter={onSelectParentFilter}
+              onSelectNestedOption={onSelectNestedOption}
+              selectedChildOption={selectedChildOption}
             />
           </Modal>
         </>
@@ -65,7 +74,9 @@ const Filter: FC = () => {
             >
               <FilterOptions
                 options={filterOptions}
-                onSaveSelectedFilters={onSaveSelectedFilters}
+                onSelectParentFilter={onSelectParentFilter}
+                onSelectNestedOption={onSelectNestedOption}
+                selectedChildOption={selectedChildOption}
               />
             </PopoverBase>
           )}

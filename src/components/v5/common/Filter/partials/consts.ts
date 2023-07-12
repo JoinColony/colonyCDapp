@@ -1,6 +1,6 @@
-import { ContributorTypesProps } from '../types';
+import { FilterOptionProps } from '../types';
 
-export const contributorTypes: ContributorTypesProps[] = [
+export const contributorTypes: FilterOptionProps[] = [
   {
     id: 'top',
     title: { id: 'filter.option.top' },
@@ -20,5 +20,16 @@ export const contributorTypes: ContributorTypesProps[] = [
   {
     id: 'general',
     title: { id: 'filter.option.general' },
+  },
+];
+
+export const statusTypes: FilterOptionProps[] = [
+  {
+    id: 'banned',
+    title: { id: 'filter.option.banned' },
+  },
+  {
+    id: 'notBanned',
+    title: { id: 'filter.option.notBanned' },
   },
 ];

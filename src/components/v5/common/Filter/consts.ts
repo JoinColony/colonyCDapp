@@ -1,3 +1,4 @@
+import { contributorTypes, statusTypes } from './partials/consts';
 import { FilterOption } from './types';
 
 export const filterOptions: FilterOption[] = [
@@ -6,59 +7,34 @@ export const filterOptions: FilterOption[] = [
     title: 'filter.teams',
     option: 'team',
     iconName: 'users-three',
-    content: [
-      {
-        id: 1,
-        textItem: 'content',
-      },
-    ],
+    content: 'content',
   },
   {
     id: 1,
     title: 'filter.contributor.type',
     option: 'contributor',
     iconName: 'user',
-    content: [
-      {
-        id: 1,
-        textItem: 'content',
-      },
-    ],
+    content: contributorTypes,
   },
   {
     id: 2,
     title: 'filter.user.status',
     option: 'statuses',
     iconName: 'flag',
-    content: [
-      {
-        id: 1,
-        textItem: 'content',
-      },
-    ],
+    content: statusTypes,
   },
   {
     id: 3,
     title: 'filter.reputation',
     option: 'reputation',
     iconName: 'star-not-filled',
-    content: [
-      {
-        id: 1,
-        textItem: 'content',
-      },
-    ],
+    content: 'content',
   },
   {
     id: 4,
     title: 'filter.permissions',
     option: 'permissions',
     iconName: 'lock-key',
-    content: [
-      {
-        id: 1,
-        textItem: 'content',
-      },
-    ],
+    content: 'content',
   },
 ];

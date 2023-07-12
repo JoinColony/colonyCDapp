@@ -1,31 +1,20 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC } from 'react';
 import { useMobile } from '~hooks';
 
-import Accordion from '~shared/Extensions/Accordion';
-import { useAccordion } from '~shared/Extensions/Accordion/hooks';
 import { FilterOptionsProps } from '../types';
 import SubNavigationItem from '~v5/shared/SubNavigationItem';
 import Header from '~v5/shared/SubNavigationItem/partials/Header';
+import Accordion from './Accordion';
 
 const displayName = 'v5.common.Filter.partials.FilterOptions';
 
 const FilterOptions: FC<FilterOptionsProps> = ({
   options,
-  onSaveSelectedFilters,
+  onSelectNestedOption,
+  onSelectParentFilter,
+  selectedChildOption,
 }) => {
   const isMobile = useMobile();
-  const { openIndex, onOpenIndexChange } = useAccordion();
-
-  const handleClick = () => {
-    // @TODO: id of selected parent filter element
-  };
-
-  const onSelectNestedOption = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      onSaveSelectedFilters(event);
-    },
-    [onSaveSelectedFilters],
-  );
 
   return (
     <div>
@@ -33,9 +22,9 @@ const FilterOptions: FC<FilterOptionsProps> = ({
       {isMobile ? (
         <Accordion
           items={options}
-          openIndex={openIndex}
-          onOpenIndexChange={onOpenIndexChange}
-          mode="secondary"
+          onSelectParentFilter={onSelectParentFilter}
+          onSelectNestedOption={onSelectNestedOption}
+          selectedChildOption={selectedChildOption}
         />
       ) : (
         <ul className="flex flex-col">
@@ -46,9 +35,10 @@ const FilterOptions: FC<FilterOptionsProps> = ({
               title={title}
               option={option}
               options={options}
-              handleClick={handleClick}
-              shouldBeActionOnHover={false}
+              onSelectParentFilter={onSelectParentFilter}
               onSelectNestedOption={onSelectNestedOption}
+              shouldBeActionOnHover={false}
+              selectedChildOption={selectedChildOption}
             />
           ))}
         </ul>

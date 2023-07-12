@@ -8,8 +8,6 @@ import {
   FormPercentageInput,
 } from '~common/Extensions/SpecialInput/types';
 
-type AccordionMode = 'primary' | 'secondary';
-
 export interface AccordionProps {
   items: AccordionContent[] | unknown[];
   openIndex: number;
@@ -19,7 +17,6 @@ export interface AccordionProps {
       [x: string]: any;
     }>
   >;
-  mode?: AccordionMode;
 }
 
 export interface ContentTypeProps {
@@ -75,7 +72,6 @@ export interface AccordionItemProps {
       [x: string]: any;
     }>
   >;
-  mode?: AccordionMode;
 }
 
 export interface AccordionContentItemProps {

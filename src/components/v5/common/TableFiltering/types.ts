@@ -20,10 +20,14 @@ export type ContributorType =
   | 'verified'
   | 'general';
 
+export type StatusType = 'banned' | 'notBanned';
+
 // @TODO: add more filter options and move it to global types
 export type FilterOption =
   | ContributorType
   | ContributorType[]
+  | StatusType
+  | StatusType[]
   | 'businnes'
   | 'development'
   | 'high to low'

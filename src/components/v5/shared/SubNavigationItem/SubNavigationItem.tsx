@@ -20,10 +20,10 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
   shouldBeTooltipVisible = false,
   tooltipText = [],
   isCopyTriggered,
-  onClick,
-  handleClick,
+  onSelectParentFilter,
   shouldBeActionOnHover = true,
   onSelectNestedOption,
+  selectedChildOption,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
@@ -43,8 +43,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
   );
 
   const handleSelectElement = () => {
-    onClick?.();
-    handleClick?.(option);
+    onSelectParentFilter?.(option);
   };
 
   const isOptionSelected = useMemo(
@@ -96,7 +95,8 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
           classNames="w-full sm:max-w-[17.375rem]"
         >
           <NestedOptions
-            selectedOption={option}
+            selectedParentOption={option}
+            selectedChildOption={selectedChildOption}
             onChange={onSelectNestedOption}
           />
         </PopoverBase>

@@ -1,23 +1,26 @@
 import { MessageDescriptor } from 'react-intl';
-import { FilterOption } from '~v5/common/Filter/types';
-import { FilterType } from '~v5/common/TableFiltering/types';
+
+import { ParentFilterOption } from '~v5/common/Filter/types';
+import { FilterType, FilterOption } from '~v5/common/TableFiltering/types';
 
 export type SubNavigationItemProps = {
   iconName: string;
   title: string;
-  options?: FilterOption[];
+  options?: ParentFilterOption[];
   option?: FilterType;
   shouldBeTooltipVisible?: boolean;
   onClick?: () => void;
   isCopyTriggered?: boolean;
   tooltipText?: string[];
-  handleClick?: (option?: string) => void;
+  onSelectParentFilter?: (option?: string) => void;
   shouldBeActionOnHover?: boolean;
   onSelectNestedOption?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  selectedChildOption?: FilterOption;
 };
 
 export type NestedOptionsProps = {
-  selectedOption?: FilterType;
+  selectedParentOption?: FilterType;
+  selectedChildOption?: FilterOption;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 

@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React, { FC, useCallback } from 'react';
-import clsx from 'clsx';
 import { useIntl } from 'react-intl';
+import clsx from 'clsx';
 
 import { CheckboxProps } from './types';
 import styles from './Checkbox.module.css';
@@ -16,6 +16,7 @@ const Checkbox: FC<CheckboxProps> = ({
   label,
   onChange,
   classNames,
+  isChecked,
 }) => {
   const { formatMessage } = useIntl();
 
@@ -41,6 +42,7 @@ const Checkbox: FC<CheckboxProps> = ({
           {...register?.(name)}
           name={name}
           id={id}
+          checked={isChecked}
           disabled={disabled}
           className="peer absolute top-0 left-0 overflow-hidden w-0 h-0 opacity-0"
           onChange={(event) => handleChange(event)}
