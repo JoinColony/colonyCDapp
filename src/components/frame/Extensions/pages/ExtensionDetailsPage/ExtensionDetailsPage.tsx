@@ -17,6 +17,7 @@ import NotificationBanner from '~common/Extensions/NotificationBanner';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { accordionAnimation } from '~constants/accordionAnimation';
 import TabContent from './partials/TabContent';
+import styles from '../Pages.module.css';
 
 const displayName = 'frame.Extensions.pages.ExtensionDetailsPage';
 
@@ -74,7 +75,7 @@ const ExtensionDetailsPage: FC = () => {
               </div>
             )}
             <div className="flex justify-between flex-col flex-wrap sm:items-center sm:flex-row sm:gap-6">
-              <div className="flex flex-wrap gap-4 flex-col w-full sm:flex-row sm:items-center md:gap-8">
+              <div className={styles.topContainer}>
                 <ActionButtons
                   extensionData={extensionData}
                   extensionStatusMode="payments"

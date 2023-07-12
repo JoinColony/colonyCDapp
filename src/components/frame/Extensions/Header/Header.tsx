@@ -153,7 +153,7 @@ const Header = () => {
               tooltipProps={mainMenuGetTooltipProps}
               isMenuOpen={isMainMenuVisible}
             />
-            <div className="block ml-auto">
+            <div>
               {isCloseButtonVisible ? (
                 <CloseButton iconSize="tiny" />
               ) : (
