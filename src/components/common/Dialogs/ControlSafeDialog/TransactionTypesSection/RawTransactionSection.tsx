@@ -1,9 +1,15 @@
 import React from 'react';
 
+import { DialogSection } from '~shared/Dialog';
+
 const displayName = `dashboard.ControlSafeDialog.RawTransactionSection`;
 
 const RawTransactionSection = () => {
-  return <h2>TODO</h2>;
+  return (
+    <DialogSection>
+      <h2>TODO</h2>
+    </DialogSection>
+  );
 };
 
 RawTransactionSection.displayName = displayName;
