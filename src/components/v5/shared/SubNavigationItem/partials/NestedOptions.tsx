@@ -27,9 +27,14 @@ const NestedOptions: FC<NestedOptionsProps> = ({
     (selectedParentOption === 'statuses' && statusTypes) ||
     [];
 
+  const filterTitle =
+    (selectedParentOption === 'contributor' && 'contributor.type') ||
+    (selectedParentOption === 'statuses' && 'status.type') ||
+    'contributor.type';
+
   return (
     <>
-      {!isMobile && <Header title={{ id: 'contributor.type' }} />}
+      {!isMobile && <Header title={{ id: filterTitle }} />}
       <ul
         className={clsx('flex flex-col', {
           'mt-1': isMobile,

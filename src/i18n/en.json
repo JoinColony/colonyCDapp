@@ -615,6 +615,7 @@
   "members.ban.notify": "Notify member of decision",
   "members.unban.info": "This action gives the member permissions to chat again within this Colony.",
   "contributor.type": "Contributor type",
+  "status.type": "User status",
   "checkbox.select.filter": "Checkbox select filter",
   "select.filter.menu.item": "Select filter menu item"
 }
