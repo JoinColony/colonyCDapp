@@ -12,9 +12,11 @@ import Filter from '~v5/common/Filter';
 import MembersList from '~v5/common/MembersList';
 import TeamReputationSummary from '~v5/common/TeamReputationSummary';
 import { teamsWithSummedUpData } from '~v5/common/TeamReputationSummary/consts';
+import { useSearchContext } from '~context/SearchContext';
 
 const MembersPage: FC = () => {
   const [isManageMembersOpen, setIsManageMembersOpen] = useState(false);
+  const { searchValue } = useSearchContext();
   const {
     getTooltipProps,
     setTooltipRef,
@@ -25,7 +27,7 @@ const MembersPage: FC = () => {
     loading,
     followersURL,
     contributorsURL,
-  } = useMembersPage();
+  } = useMembersPage(searchValue);
   const { formatMessage } = useIntl();
 
   return (
@@ -67,7 +69,8 @@ const MembersPage: FC = () => {
             }}
             list={contributors}
             isLoading={loading}
-            viewMoreUrl={followersURL}
+            viewMoreUrl={contributorsURL}
+            isHomePage
           />
           <div className="mt-12">
             <MembersList
@@ -79,7 +82,8 @@ const MembersPage: FC = () => {
               }}
               list={followers}
               isLoading={loading}
-              viewMoreUrl={contributorsURL}
+              viewMoreUrl={followersURL}
+              isHomePage
             />
           </div>
         </div>

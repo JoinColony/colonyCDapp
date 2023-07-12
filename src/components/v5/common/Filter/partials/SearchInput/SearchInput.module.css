@@ -1,0 +1,7 @@
+.searchInput {
+  @apply pr-3 pl-9 py-2.5 text-3 w-full border rounded-lg bg-base-white border-gray-300 hover:border-blue-200 focus:outline-blue-200 focus-visible:outline-blue-200 placeholder:text-gray-900;
+}
+
+.searchButton {
+  @apply flex items-center justify-center h-full absolute top-0 right-0 px-4 bg-blue-400 rounded-lg text-base-white;
+}
