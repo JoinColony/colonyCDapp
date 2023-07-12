@@ -453,13 +453,13 @@ export type ColonyHistoricRole = {
   __typename?: 'ColonyHistoricRole';
   /** Block at which the snapshot was taken */
   blockNumber: Scalars['Int'];
-  /** Expaneded `Colony` model, based on the `colonyId` given */
+  /** Expanded `Colony` model, based on the `colonyId` given */
   colony: Colony;
   /** Unique identifier of the Colony */
   colonyId: Scalars['ID'];
   /** Timestamp at which the database entry was created */
   createdAt: Scalars['AWSDateTime'];
-  /** Expaneded `Domain` model, based on the `domainId` given */
+  /** Expanded `Domain` model, based on the `domainId` given */
   domain: Domain;
   /** Unique identifier of the domain */
   domainId: Scalars['ID'];

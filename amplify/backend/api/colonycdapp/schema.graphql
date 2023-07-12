@@ -1562,11 +1562,11 @@ type ColonyHistoricRole @model {
 
   """Unique identifier of the domain"""
   domainId: ID!
-  """Expaneded `Domain` model, based on the `domainId` given"""
+  """Expanded `Domain` model, based on the `domainId` given"""
   domain: Domain! @hasOne(fields: ["domainId"])
   """Unique identifier of the Colony"""
   colonyId: ID!
-  """Expaneded `Colony` model, based on the `colonyId` given"""
+  """Expanded `Colony` model, based on the `colonyId` given"""
   colony: Colony! @hasOne(fields: ["colonyId"])
 
   # Amplify will automatically populate one of the following fields with related model if it finds one
