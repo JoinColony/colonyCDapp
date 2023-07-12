@@ -1,7 +1,7 @@
 import { contributorTypes, statusTypes } from './partials/consts';
-import { FilterOption } from './types';
+import { ParentFilterOption } from './types';
 
-export const filterOptions: FilterOption[] = [
+export const filterOptions: ParentFilterOption[] = [
   {
     id: 0,
     title: 'filter.teams',
