@@ -31,7 +31,11 @@ const SingleSafePicker = ({ data, ...props }: Props) => {
   );
 
   return (
-    <SingleUserPicker {...props} data={formattedData} placeholder="safe-logo" />
+    <SingleUserPicker
+      {...props}
+      data={formattedData}
+      placeholderIconName="safe-logo"
+    />
   );
 };
 

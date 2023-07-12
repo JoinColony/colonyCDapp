@@ -235,7 +235,7 @@ export const getWizardFlowConfig = (
   {
     component: ControlSafeDialog,
     props: {
-      prevStep: 'common.ControlSafeDialog',
+      prevStep: 'common.ManageSafeDialog',
       colony,
     },
   },

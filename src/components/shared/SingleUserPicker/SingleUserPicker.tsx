@@ -3,7 +3,7 @@ import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
 import classnames from 'classnames';
 import { useFormContext } from 'react-hook-form';
 
-import { Safe, SimpleMessageValues, User } from '~types';
+import { SimpleMessageValues, User } from '~types';
 import { getMainClasses } from '~utils/css';
 import UserAvatar from '~shared/UserAvatar';
 
@@ -17,10 +17,9 @@ import { InputLabel, HookFormInputStatus as InputStatus } from '../Fields';
 import Icon from '../Icon';
 import Button from '../Button';
 import ItemDefault from './ItemDefault';
+import { AvatarRenderFn } from './utils';
 
 import styles from './SingleUserPicker.css';
-
-type AvatarRenderFn = (item?: ItemDataType<User | Safe>) => ReactNode;
 
 const displayName = 'SingleUserPicker';
 
@@ -83,6 +82,9 @@ interface Props extends WithOmnipickerInProps {
   /** Status text */
   placeholder?: string | MessageDescriptor;
 
+  /** icon name for the avatar placeholder */
+  placeholderIconName?: string;
+
   /** Override avatar rendering */
   renderAvatar: AvatarRenderFn;
 
@@ -121,6 +123,7 @@ const SingleUserPicker = ({
   onSelected,
   openOmniPicker,
   placeholder,
+  placeholderIconName = 'filled-circle-person',
   registerInputNode,
   renderAvatar = (item?: ItemDataType<User>) => (
     <UserAvatar user={item} size="xs" />
@@ -198,7 +201,7 @@ const SingleUserPicker = ({
           ) : (
             <Icon
               className={omniPickerIsOpen ? styles.focusIcon : styles.icon}
-              name="filled-circle-person"
+              name={placeholderIconName}
               title={MSG.selectMember}
             />
           )}
