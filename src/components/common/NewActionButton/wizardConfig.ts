@@ -238,6 +238,7 @@ export const getWizardFlowConfig = (
     props: {
       prevStep: 'common.ManageSafeDialog',
       colony,
+      enabledExtensionData,
     },
   },
   {

@@ -1,8 +1,11 @@
-import { Safe } from '~types';
+import { Colony } from '~types';
+import { EnabledExtensionData } from '~hooks';
 
 export interface ControlSafeProps {
   back: () => void;
-  safes: Safe[];
+  colony: Colony;
+  enabledExtensionData: EnabledExtensionData;
+
   // networkOptions: NetworkOption[];
   // colonySafes: Array<any>; // ColonySafe[];
   // colonyAddress: Address;

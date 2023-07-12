@@ -1,9 +1,7 @@
 import React /* { useCallback, useEffect, useMemo, useState } */ from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-/* import {
- *   VotingReputationExtensionVersion,
- *   ColonyVersion,
- * } from '@colony/colony-js'; */
+import { useFormContext } from 'react-hook-form';
+import { ColonyRole, Id } from '@colony/colony-js';
 /* import classnames from 'classnames';
  * import { nanoid } from 'nanoid'; */
 
@@ -21,6 +19,7 @@ import {
 /* import IconTooltip from '~shared/IconTooltip'; */
 
 import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
+import { useActionDialogStatus } from '~hooks';
 /* import {
  *   Colony,
  *   ColonySafe,
@@ -31,9 +30,6 @@ import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
 /* import { PrimitiveType } from '~types/index'; */
 /* import { SelectedSafe } from '~modules/dashboard/sagas/utils/safeHelpers'; */
 /* import { debounce, isEmpty, isEqual, omit } from '~utils/lodash'; */
-/* import { hasRoot } from '~modules/users/checks'; */
-/* import { getAllUserRoles } from '~modules/transformers'; */
-/* import { useTransformer } from '~utils/hooks'; */
 /* import NotEnoughReputation from '~dashboard/NotEnoughReputation'; */
 
 /* import SafeTransactionPreview from './SafeTransactionPreview'; */
@@ -52,7 +48,6 @@ import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
 import { ControlSafeProps } from './types';
 
 import styles from './ControlSafeForm.css';
-/* import { useActionDialogStatus } from '~hooks'; */
 
 const MSG = defineMessages({
   title: {
@@ -122,20 +117,6 @@ const MSG = defineMessages({
 export const { invalidSafeError } = MSG;
 const displayName = 'dashboard.ControlSafeDialog.ControlSafeForm';
 
-/* export interface FormProps {
- *   colony: Colony;
- *   safes: ColonySafe[];
- *   back?: () => void;
- *   showPreview: boolean;
- *   setShowPreview: (showPreview: boolean) => void;
- *   selectedContractMethods?: UpdatedMethods;
- *   setSelectedContractMethods: React.Dispatch<
- *     React.SetStateAction<UpdatedMethods>
- *   >;
- *   isVotingExtensionEnabled: boolean;
- *   votingExtensionVersion: number | null;
- * } */
-
 /* export interface TransactionSectionProps extends Pick<FormProps, 'colony'> {
  *   disabledInput: boolean;
  *   transactionFormIndex: number;
@@ -166,14 +147,15 @@ const UpgradeWarning = (chunks: React.ReactNode[]) => (
   <span className={styles.upgradePath}>{chunks}</span>
 );
 
+const requiredRoles: ColonyRole[] = [ColonyRole.Root];
+
 const ControlSafeForm = ({
   back,
-  safes,
-}: /* colony,
- * colony: { colonyAddress, version },
+  colony,
+  colony: { version, metadata },
+  enabledExtensionData,
+}: /* ,
  * handleSubmit,
- * safes,
- * isSubmitting,
  * isValid,
  * values,
  * setFieldValue,
@@ -184,37 +166,20 @@ const ControlSafeForm = ({
  * selectedContractMethods,
  * setFieldTouched,
  * setSelectedContractMethods,
- * isVotingExtensionEnabled,
- * votingExtensionVersion, */
+ */
 ControlSafeProps) => {
   /* const [transactionTabStatus, setTransactionTabStatus] = useState([true]);
    * const [prevSafeAddress, setPrevSafeAddress] = useState<string>(''); */
-  /* const { walletAddress } = useLoggedInUser();
-   * const allUserRoles = useTransformer(getAllUserRoles, [
-   *   colony,
-   *   walletAddress,
-   * ]);
-   * const canManageAndControlSafes = hasRoot(allUserRoles); */
+  const {
+    formState: { isSubmitting },
+  } = useFormContext();
 
-  /* const {
-   *   userHasPermission,
-   *   disabledInput,
-   *   disabledSubmit,
-   *   canOnlyForceAction,
-   *   showPermissionErrors,
-   * } = useActionDialogStatus(
-   *   colony,
-   *   requiredRoles,
-   *   [Id.RootDomain],
-   *   enabledExtensionData,
-   * ); */
-
-  /* const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-   *   colony.colonyAddress,
-   *   canManageAndControlSafes,
-   *   isVotingExtensionEnabled,
-   *   values.forceAction,
-   * ); */
+  const { userHasPermission } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [Id.RootDomain],
+    enabledExtensionData,
+  );
 
   /* const handleValidation = useCallback(() => {
    *   // setTimeout ensures form state is latest. Related: https://github.com/jaredpalmer/formik/issues/529
@@ -256,34 +221,31 @@ ControlSafeProps) => {
     return { id: 'button.confirm' };
   })();
 
-  const isSupportedColonyVersion = true;
-  const disabledInputs = true;
-  /* contained here !userHasPermission || isSubmitting || !isSupportedColonyVersion; */
-  /* const savedNFTState = useState({});
-* const savedTokenState = useState({});
-* const isSupportedColonyVersion =
-*   parseInt(version, 10) >= ColonyVersion.GreenLightweightSpaceshipThree;
-* const disabledInputs =
-*   !userHasPermission || isSubmitting || !isSupportedColonyVersion;
+  const isSupportedColonyVersion = version >= 12;
 
-* const renderTransactionSection = (
-*   transaction: SafeTransaction,
-*   index: number,
-* ) => {
-*   const { transactionType } = transaction;
-*   switch (transactionType) {
-*     case TransactionTypes.TRANSFER_FUNDS:
-*       return <TransferFundsSection />;
-*     case TransactionTypes.RAW_TRANSACTION:
-*       return <RawTransactionSection />;
-*     case TransactionTypes.CONTRACT_INTERACTION:
-*       return <ContractInteractionSection />;
-*     case TransactionTypes.TRANSFER_NFT:
-*       return <TransferNFTSection />;
-*     default:
-*       return null;
-*   }
-* }; */
+  const disabledInputs =
+    !userHasPermission || isSubmitting || !isSupportedColonyVersion;
+
+  /* const renderTransactionSection = (
+   *   transaction: SafeTransaction,
+   *   index: number,
+   * ) => {
+   *   const { transactionType } = transaction;
+   *   switch (transactionType) {
+   *     case TransactionTypes.TRANSFER_FUNDS:
+   *       return <TransferFundsSection />;
+   *     case TransactionTypes.RAW_TRANSACTION:
+   *       return <RawTransactionSection />;
+   *     case TransactionTypes.CONTRACT_INTERACTION:
+   *       return <ContractInteractionSection />;
+   *     case TransactionTypes.TRANSFER_NFT:
+   *       return <TransferNFTSection />;
+   *     default:
+   *       return null;
+   *   }
+   * }; */
+
+  const safes = metadata?.safes || [];
 
   return (
     <>
