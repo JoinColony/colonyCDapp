@@ -1,56 +1,69 @@
-import React, { FC } from 'react';
-import { Carousel } from 'react-responsive-carousel';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+import useEmblaCarousel, { EmblaCarouselType } from 'embla-carousel-react';
 
-import styles from './ImageCarousel.module.css';
 import { ImageCarouselProps } from './types';
 import { images } from './consts';
-import { useWindowSize } from '~hooks';
+import DotButton from './partials/DotButton';
+import styles from './ImageCarousel.module.css';
 
 const displayName = 'common.Extensions.ImageCarousel';
 
 const ImageCarousel: FC<ImageCarouselProps> = ({
-  transitionTime = 300,
   slideUrls = images,
+  options = { loop: true, align: 'start' },
 }) => {
-  const windowSize = useWindowSize();
-  const width = windowSize?.width ?? 0;
-  const setSlidePercentage = (width >= 1440 && 89.1625) || (width >= 850 && 60);
+  const [emblaRef, emblaApi] = useEmblaCarousel(options);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  const scrollTo = useCallback(
+    (index: number) => emblaApi && emblaApi.scrollTo(index),
+    [emblaApi],
+  );
+
+  const onInit = useCallback((embla: EmblaCarouselType) => {
+    setScrollSnaps(embla.scrollSnapList());
+  }, []);
+
+  const onSelect = useCallback((embla: EmblaCarouselType) => {
+    setSelectedIndex(embla.selectedScrollSnap());
+  }, []);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    onInit(emblaApi);
+    onSelect(emblaApi);
+    emblaApi.on('reInit', onInit);
+    emblaApi.on('reInit', onSelect);
+    emblaApi.on('select', onSelect);
+  }, [emblaApi, onInit, onSelect]);
 
   return (
-    <div className={styles.carouselWrapper}>
-      <Carousel
-        showArrows={false}
-        showThumbs={false}
-        showStatus={false}
-        swipeable
-        useKeyboardArrows
-        emulateTouch
-        centerSlidePercentage={setSlidePercentage || 100}
-        centerMode
-        transitionTime={transitionTime}
-        renderIndicator={(onClickHandler, isSelected, index, label) => (
-          <li>
-            <div
-              className={`${styles.bullet} ${
-                isSelected ? 'bg-gray-900' : 'bg-gray-200'
-              }`}
-              onClick={onClickHandler}
-              onKeyDown={onClickHandler}
-              onKeyPress={onClickHandler}
-              key={index}
-              role="button"
-              tabIndex={0}
-              aria-label={`${label} ${index + 1}`}
-            />
-          </li>
-        )}
-      >
-        {slideUrls.map((url) => (
-          <div className="slide" key={url}>
-            <img alt="file" src={url} />
+    <div className={styles.container}>
+      <div className={styles.embla}>
+        <div ref={emblaRef}>
+          <div className={styles.emblaContainer}>
+            {slideUrls.map((url) => (
+              <div className={styles.emblaSlide} key={url}>
+                <img alt="file" src={url} className={styles.image} />
+              </div>
+            ))}
           </div>
+        </div>
+      </div>
+      <div className={styles.dots}>
+        {scrollSnaps.map((_, index) => (
+          <DotButton
+            // eslint-disable-next-line react/no-array-index-key
+            key={index}
+            onClick={() => scrollTo(index)}
+            className={`${styles.dot}`.concat(
+              index === selectedIndex ? ` ${styles.dotSelected}` : '',
+            )}
+          />
         ))}
-      </Carousel>
+      </div>
     </div>
   );
 };
