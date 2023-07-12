@@ -25,6 +25,7 @@ type Appearance = {
     | 'normal'
     | 'medium'
     | 'big'
+    | 'extraBig'
     | 'large'
     | 'huge';
 };

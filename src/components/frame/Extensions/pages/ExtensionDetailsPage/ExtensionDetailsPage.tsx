@@ -135,7 +135,7 @@ const ExtensionDetailsPage: FC = () => {
             </ul>
           </Tabs>
         ) : (
-          TabContent(extensionData)
+          <div>{TabContent(extensionData)}</div>
         )}
       </ThreeColumns>
     </Spinner>

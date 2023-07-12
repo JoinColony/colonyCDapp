@@ -7,5 +7,5 @@
 }
 
 .subMenuMobile {
-  @apply bg-base-white shadow-content sm:shadow-none sm:px-6;
+  @apply bg-base-white rounded-lg shadow-content sm:rounded-none sm:shadow-none sm:px-6;
 }
