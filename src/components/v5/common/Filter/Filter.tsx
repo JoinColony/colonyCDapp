@@ -96,14 +96,14 @@ const Filter: FC = () => {
               }}
               classNames="w-full sm:max-w-[17.375rem]"
             >
+              <SearchInput
+                onSearchButtonClick={() => setIsSearchOpened(false)}
+              />
               <FilterOptions
                 options={filterOptions}
                 onSelectParentFilter={onSelectParentFilter}
                 onSelectNestedOption={onSelectNestedOption}
                 selectedChildOption={selectedChildOption}
-              />
-              <SearchInput
-                onSearchButtonClick={() => setIsSearchOpened(false)}
               />
             </PopoverBase>
           )}
