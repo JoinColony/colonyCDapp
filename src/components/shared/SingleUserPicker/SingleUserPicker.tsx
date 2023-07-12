@@ -3,7 +3,7 @@ import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
 import classnames from 'classnames';
 import { useFormContext } from 'react-hook-form';
 
-import { SimpleMessageValues, User } from '~types';
+import { Safe, SimpleMessageValues, User } from '~types';
 import { getMainClasses } from '~utils/css';
 import UserAvatar from '~shared/UserAvatar';
 
@@ -20,7 +20,7 @@ import ItemDefault from './ItemDefault';
 
 import styles from './SingleUserPicker.css';
 
-type AvatarRenderFn = (user?: ItemDataType<User>) => ReactNode;
+type AvatarRenderFn = (item?: ItemDataType<User | Safe>) => ReactNode;
 
 const displayName = 'SingleUserPicker';
 
