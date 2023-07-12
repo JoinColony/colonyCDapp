@@ -4,7 +4,7 @@ import React, { ReactNode, useState } from 'react';
 import Numeral from '~shared/Numeral';
 // import { MiniSpinnerLoader } from '~shared/Preloaders';
 // import { Colony, useTokenBalancesForDomainsQuery } from '~data/index';
-import { Address } from '~types/index';
+import { Address } from '~types';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 // import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useColonyContext } from '~hooks';

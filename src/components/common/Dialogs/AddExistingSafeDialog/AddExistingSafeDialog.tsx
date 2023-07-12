@@ -76,7 +76,8 @@ const AddExistingSafeDialog = ({
           colonySafes={[]} // safes
           back={() => callStep(prevStep)}
           colonyAddress={colonyAddress}
-          loadingState={[loadingSafeState, loadingModuleState]}
+          loadingSafeState={loadingSafeState}
+          loadingModuleState={loadingModuleState}
           stepIndex={stepIndex}
           setStepIndex={setStepIndex}
         />

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux/actionTypes';
-import { Address, UnclaimedStakes } from '~types/index';
+import { Address, UnclaimedStakes } from '~types';
 import { useColonyContext, useTokenActivationContext } from '~hooks';
 import { useUserTokenBalanceContext } from '~context';
 

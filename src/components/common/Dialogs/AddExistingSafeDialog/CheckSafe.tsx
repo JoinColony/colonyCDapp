@@ -39,7 +39,8 @@ const CheckSafe = ({
   setStepIndex,
   selectedChain,
   setSelectedChain,
-  loadingState,
+  loadingModuleState,
+  loadingSafeState,
 }: CheckSafeProps) => {
   const {
     watch,
@@ -51,8 +52,8 @@ const CheckSafe = ({
   const contractAddressError = errors.contractAddress;
   const contractAddressDirtied = dirtyFields.contractAddress;
 
-  const [[isLoadingSafe, setIsLoadingSafe], [, setIsLoadingModule]] =
-    loadingState;
+  const [isLoadingSafe, setIsLoadingSafe] = loadingSafeState;
+  const [, setIsLoadingModule] = loadingModuleState;
 
   const handleNetworkChange = (fromNetworkValue: number) => {
     const selectedNetwork = networkOptions.find(
@@ -110,7 +111,7 @@ const CheckSafe = ({
         </div>
         <SafeContractAddressInput
           selectedChain={selectedChain}
-          loadingSafeState={loadingState[0]}
+          loadingSafeState={loadingSafeState}
         />
       </DialogSection>
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>

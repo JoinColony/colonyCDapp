@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import { DialogSection } from '~shared/Dialog';
 import Heading from '~shared/Heading';
 // import { ColonySafe } from '~data/index';
-import { Address } from '~types/index';
+import { Address } from '~types';
 
 import { NetworkOption, SafeContract } from './helpers';
 import {
@@ -37,14 +37,16 @@ export interface AddExistingSafeProps {
   networkOptions: NetworkOption[];
   colonySafes: Array<any>; // ColonySafe[];
   colonyAddress: Address;
-  loadingState: [boolean, React.Dispatch<React.SetStateAction<boolean>>][];
+  loadingModuleState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+  loadingSafeState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
   stepIndex: number;
   setStepIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const AddExistingSafeDialogForm = ({
   networkOptions,
-  loadingState,
+  loadingModuleState,
+  loadingSafeState,
   stepIndex,
   setStepIndex,
   ...props
@@ -65,7 +67,8 @@ const AddExistingSafeDialogForm = ({
             {...props}
             networkOptions={networkOptions}
             setStepIndex={setStepIndex}
-            loadingState={loadingState}
+            loadingModuleState={loadingModuleState}
+            loadingSafeState={loadingSafeState}
             selectedChain={selectedChain}
             setSelectedChain={setSelectedChain}
           />
