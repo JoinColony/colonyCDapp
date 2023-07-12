@@ -2518,7 +2518,7 @@ type IngestorStats @model {
 }
 
 type Expenditure @model {
-  id: ID!
+  id: ID! # Self-managed, formatted as colonyId_nativeExpenditureId
   createdAt: AWSDateTime!
   colonyId: ID!
     @index(
@@ -2528,4 +2528,11 @@ type Expenditure @model {
     )
   colony: Colony! @belongsTo(fields: ["colonyId"])
   ownerAddress: ID!
+  recipients: [ExpenditureRecipient!]!
+}
+
+# Each expenditure recipient is assigned to a particular integer slot
+type ExpenditureRecipient {
+  slot: Int!
+  address: String!
 }
