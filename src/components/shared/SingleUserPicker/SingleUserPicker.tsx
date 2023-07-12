@@ -3,7 +3,7 @@ import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
 import classnames from 'classnames';
 import { useFormContext } from 'react-hook-form';
 
-import { SimpleMessageValues, User } from '~types';
+import { Safe, SimpleMessageValues, User } from '~types';
 import { getMainClasses } from '~utils/css';
 import UserAvatar from '~shared/UserAvatar';
 
