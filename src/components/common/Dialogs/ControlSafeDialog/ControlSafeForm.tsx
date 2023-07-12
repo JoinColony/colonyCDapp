@@ -12,7 +12,7 @@ import { DialogSection } from '~shared/Dialog';
 /* import { Select } from '~shared/Fields'; */
 import Heading from '~shared/Heading';
 import ExternalLink from '~shared/ExternalLink';
-import Button from /* AddItemButton */ '~shared/Button';
+import Button, { AddItemButton } from /* AddItemButton */ '~shared/Button';
 import Icon from '~shared/Icon';
 import {
   SingleSafePicker,
@@ -334,6 +334,15 @@ ControlSafeProps) => {
             renderAvatar={renderAvatar}
             disabled={disabledInputs}
             /* onSelected={handleSafeChange} */
+          />
+        </div>
+      </DialogSection>
+      <DialogSection>
+        <div className={styles.addTransaction}>
+          <AddItemButton
+            text={MSG.buttonTransaction}
+            disabled
+            handleClick={() => {}}
           />
         </div>
       </DialogSection>
