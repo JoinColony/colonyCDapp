@@ -32,7 +32,7 @@ const hardcodedSafes = [
   {
     name: 'test3',
     safeName: 'test3',
-    contractAddress: '0x3F107AFF0342Cfb5519A68B3241565F6FC9BAC1e',
+    contractAddress: '0x3F107AFF0342Cfb5519A68B3241565F6FC9BAC2e',
     chainId: 5,
   },
 ];

@@ -32,13 +32,12 @@ const SafeListItem = ({ safe, isChecked }: Props) => {
   const safeNetwork = SAFE_NETWORKS.find(
     (network) => network.chainId === Number(safe.chainId),
   );
-
   return (
     <div className={`${styles.main} ${isChecked && styles.checked}`}>
       <Checkbox
         name="safeList"
         appearance={{ theme: 'pink', direction: 'vertical' }}
-        value={safe}
+        value={JSON.stringify(safe)}
         disabled={false}
         className={styles.checkbox}
       />

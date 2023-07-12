@@ -39,7 +39,6 @@ const RemoveSafeDialogForm = ({ back, safeList }: RemoveSafeProps) => {
   } = useFormContext();
 
   const { safeList: safes } = watch();
-
   return (
     <>
       <DialogSection appearance={{ theme: 'heading' }}>
@@ -70,9 +69,12 @@ const RemoveSafeDialogForm = ({ back, safeList }: RemoveSafeProps) => {
                   safe={item}
                   isChecked={
                     !!safes?.find(
-                      (safe) =>
-                        item.contractAddress === safe.contractAddress &&
-                        item.chainId === safe.chainId,
+                      (safe) => {
+                        const {contractAddress, chainId} = JSON.parse(safe);
+                        return item.contractAddress === contractAddress &&
+                        item.chainId === chainId
+                      }
+                        ,
                     )
                   }
                 />
