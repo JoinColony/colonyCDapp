@@ -5,8 +5,7 @@ import Popover from '~shared/Popover';
 import UserAvatar from '~shared/UserAvatar';
 import { useAppContext, useColonyContext, useMobile } from '~hooks';
 import { removeValueUnits } from '~utils/css';
-import { SimpleMessageValues } from '~types/index';
-import { UserTokenBalanceData } from '~types';
+import { UserTokenBalanceData, SimpleMessageValues } from '~types';
 import AvatarDropdownPopover from './AvatarDropdownPopover';
 import AvatarDropdownPopoverMobile from './AvatarDropdownPopoverMobile';
 
