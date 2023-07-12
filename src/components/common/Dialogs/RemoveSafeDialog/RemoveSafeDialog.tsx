@@ -16,6 +16,27 @@ type Props = Required<DialogProps> &
   WizardDialogType<object> &
   ActionDialogProps;
 
+const hardcodedSafes = [
+  {
+    name: 'test',
+    safeName: 'test',
+    chainId: 56,
+    contractAddress: '0xe759f388c97674D5B8a60406b254aB59f194163d',
+  },
+  {
+    name: 'test2',
+    safeName: 'test2',
+    chainId: 1,
+    contractAddress: '0x3F107AFF0342Cfb5519A68B3241565F6FC9BAC1e',
+  },
+  {
+    name: 'test3',
+    safeName: 'test3',
+    contractAddress: '0x3F107AFF0342Cfb5519A68B3241565F6FC9BAC1e',
+    chainId: 5,
+  },
+];
+
 const RemoveSafeDialog = ({
   cancel,
   close,
@@ -49,7 +70,7 @@ const RemoveSafeDialog = ({
       transform={transform}
     >
       <Dialog cancel={cancel}>
-        <DialogForm back={() => callStep(prevStep)} safeList={[]} />
+        <DialogForm back={() => callStep(prevStep)} safeList={hardcodedSafes} />
       </Dialog>
     </Form>
   );
