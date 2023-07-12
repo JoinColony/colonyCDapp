@@ -71,7 +71,7 @@ const MembersList: FC<MembersListProps> = ({
         />
       ) : undefined}
       <div className="w-full flex justify-center mt-6">
-        {listLength > membersLimit && !searchValue && (
+        {listLength > membersLimit && !searchValue && viewMoreUrl && (
           <Link className="text-3" to={viewMoreUrl}>
             {formatMessage({ id: 'viewMore' })}
           </Link>

@@ -8,6 +8,6 @@ export interface MembersListProps {
   isLoading: boolean;
   emptyTitle: MessageDescriptor;
   emptyDescription: MessageDescriptor;
-  viewMoreUrl: string;
+  viewMoreUrl?: string;
   isHomePage: boolean;
 }

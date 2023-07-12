@@ -184,13 +184,15 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <PageLayout
-                  loadingText="contributors"
-                  title={{ id: 'contributorsPage.title' }}
-                  description={{ id: 'contributorsPage.description' }}
-                >
-                  <ContributorsPage />
-                </PageLayout>
+                <SearchContextProvider>
+                  <PageLayout
+                    loadingText="contributors"
+                    title={{ id: 'contributorsPage.title' }}
+                    description={{ id: 'contributorsPage.description' }}
+                  >
+                    <ContributorsPage />
+                  </PageLayout>
+                </SearchContextProvider>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
@@ -200,13 +202,15 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <PageLayout
-                  loadingText="followers"
-                  title={{ id: 'followersPage.title' }}
-                  description={{ id: 'followersPage.description' }}
-                >
-                  <FollowersPage />
-                </PageLayout>
+                <SearchContextProvider>
+                  <PageLayout
+                    loadingText="followers"
+                    title={{ id: 'followersPage.title' }}
+                    description={{ id: 'followersPage.description' }}
+                  >
+                    <FollowersPage />
+                  </PageLayout>
+                </SearchContextProvider>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }

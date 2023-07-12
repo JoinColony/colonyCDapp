@@ -2,7 +2,7 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 import { useGetMembersForColonyQuery } from '~gql';
 
 import { useColonyContext } from '~hooks';
-import { Member } from '~types';
+import { searchMembers } from '~utils/members';
 
 export const useMembersPage = (searchValue?: string) => {
   const { colony } = useColonyContext();
@@ -28,22 +28,14 @@ export const useMembersPage = (searchValue?: string) => {
     },
   });
 
-  const searchMembers = (members: Member[]) =>
-    members.filter(({ user }) => {
-      return (
-        user?.name.toLowerCase().startsWith(searchValue?.toLowerCase() ?? '') ||
-        user?.walletAddress
-          .toLowerCase()
-          .startsWith(searchValue?.toLowerCase() ?? '')
-      );
-    });
-
   const followers = data?.getMembersForColony?.watchers ?? [];
   const contributors = data?.getMembersForColony?.contributors ?? [];
 
-  const searchedFollowers = searchValue ? searchMembers(followers) : followers;
+  const searchedFollowers = searchValue
+    ? searchMembers(followers, searchValue)
+    : followers;
   const searchedContributors = searchValue
-    ? searchMembers(contributors)
+    ? searchMembers(contributors, searchValue)
     : contributors;
 
   return {
