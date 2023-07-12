@@ -9,9 +9,9 @@ import { ActionTypes } from '~redux/index';
 /* import { pipe, withMeta, mapPayload } from '~utils/actions'; */
 import { WizardDialogType } from '~hooks';
 
-/* import ControlSafeForm from './ControlSafeForm';
- * import { getValidationSchema } from './validation';
- * import { getControlSafeDialogPayload, NetworkOption } from './helpers'; */
+import ControlSafeForm from './ControlSafeForm';
+/* import { getValidationSchema } from './validation'; */
+/* import { getControlSafeDialogPayload, NetworkOption } from './helpers'; */
 
 type Props = Required<DialogProps> &
   WizardDialogType<object> &
@@ -22,8 +22,9 @@ export const displayName = 'common.ControlSafeDialog';
 const ControlSafeDialog = ({
   /* colony: { colonyAddress }, // safes */
   /* colony,
-   * callStep,
-   * prevStep, */
+   */
+  prevStep,
+  callStep,
   cancel,
   close,
 }: Props) => {
@@ -33,13 +34,7 @@ const ControlSafeDialog = ({
    * const [stepIndex, setStepIndex] = useState<number>(1);
    * const abortControllerState = useState<AbortController | undefined>(undefined); */
 
-  /* const validationSchema = getValidationSchema(
-   *   stepIndex,
-   *   abortControllerState,
-   *   [], // safes,
-   *   loadingSafeState,
-   *   // loadingModuleState,
-   * ); */
+  /* const validationSchema = getValidationSchema(); */
 
   /* type FormValues = InferType<typeof validationSchema>; */
   type FormValues = Record<string, any>;
@@ -74,16 +69,15 @@ const ControlSafeDialog = ({
         /* transform={transform} */
         onSuccess={close}
       >
-        <p>test</p>
-        {/* <ControlSafeForm
-                  networkOptions={networkOptions}
-                  colonySafes={[]} // safes
-                  back={() => callStep(prevStep)}
-                  colonyAddress={colonyAddress}
-                  loadingState={[loadingSafeState, loadingModuleState]}
-                  stepIndex={stepIndex}
-                  setStepIndex={setStepIndex}
-              /> */}
+        <ControlSafeForm
+          back={() => callStep(prevStep)}
+          safes={[]}
+          /* networkOptions={networkOptions}
+          colonyAddress={colonyAddress}
+          loadingState={[loadingSafeState, loadingModuleState]}
+          stepIndex={stepIndex}
+          setStepIndex={setStepIndex} */
+        />
       </Form>
     </Dialog>
   );
