@@ -17,21 +17,23 @@ const LinkWrapper: FC<LinkWrapperProps> = ({ isDoubleLinkVisible }) => {
 
   return (
     <>
-      {links.map((item) => (
-        <Link
-          key={item.url}
-          to={item.url}
-          className="flex items-center text-sm text-gray-600"
-        >
-          <span className="flex items-center shrink-0 mr-1">
-            <Icon
-              appearance={{ size: 'tiny' }}
-              name="file-text"
-              title={{ id: 'file-text' }}
-            />
-          </span>
-          {formatMessage({ id: item.text })}
-        </Link>
+      {links.map(({ url, text }) => (
+        <li key={text} className="mb-2 last:mb-0">
+          <Link
+            key={url}
+            to={url}
+            className="flex items-center text-md text-gray-600"
+          >
+            <span className="flex items-center shrink-0 mr-1">
+              <Icon
+                appearance={{ size: 'tiny' }}
+                name="file-text"
+                title={{ id: 'file-text' }}
+              />
+            </span>
+            {formatMessage({ id: text })}
+          </Link>
+        </li>
       ))}
     </>
   );

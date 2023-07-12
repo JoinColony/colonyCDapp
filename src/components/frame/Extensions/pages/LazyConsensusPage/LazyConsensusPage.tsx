@@ -16,6 +16,7 @@ import ActionButtons from '../partials/ActionButtons';
 import Button from '~v5/shared/Button';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { useMobile } from '~hooks';
+import styles from '../Pages.module.css';
 
 const LazyConsensusPage: FC = () => {
   const { openIndex, onOpenIndexChange, isAccordionOpen, manualOpen } =
@@ -53,7 +54,7 @@ const LazyConsensusPage: FC = () => {
             leftAside={<Navigation pageName="extensions" />}
             topRow={
               <div className="flex justify-between flex-col flex-wrap sm:items-center sm:flex-row sm:gap-6">
-                <div className="flex flex-wrap gap-4 flex-col w-full sm:flex-row sm:items-center md:gap-8">
+                <div className={styles.topContainer}>
                   <ActionButtons
                     extensionData={extensionData}
                     extensionStatusMode="governance"
@@ -61,7 +62,6 @@ const LazyConsensusPage: FC = () => {
                       id: 'status.governance',
                     })}
                   />
-
                   <div className="flex gap-6 items-center justify-end min-h-[2rem]">
                     {isEnableButtonVisible && (
                       <Button

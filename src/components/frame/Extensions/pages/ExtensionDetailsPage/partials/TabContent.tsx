@@ -20,7 +20,7 @@ const TabContent: FC<AnyExtensionData> = (extensionData: AnyExtensionData) => {
         'mt-4': isEnabled && uninstallable,
       })}
     >
-      <div className="mt-[2.25rem] md:mt-0 text-md text-gray-600">
+      <div className="mt-3 sm:mt-0 text-md text-gray-600">
         <FormattedMessage
           {...descriptionLong}
           values={{
