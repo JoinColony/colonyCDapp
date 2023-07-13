@@ -1,7 +1,13 @@
 import { useCallback, useState } from 'react';
 
 import { FilterOption, FilterType } from '../TableFiltering/types';
-import { contributorTypes, statusTypes } from './partials/consts';
+import {
+  contributorTypes,
+  permissionsTypes,
+  reputationType,
+  statusTypes,
+  teamTypes,
+} from './partials/consts';
 
 export const useFilter = () => {
   const [selectedFilters, setSelectedFilters] = useState<FilterOption[]>([]);
@@ -47,7 +53,6 @@ export const useFilter = () => {
 
   const onSelectParentFilter = useCallback((id: FilterType) => {
     setSelectedParentFilter(id);
-    // @TODO: id of selected parent filter element
   }, []);
 
   const onSelectNestedOption = useCallback(
@@ -57,7 +62,6 @@ export const useFilter = () => {
     [onSaveSelectedFilters],
   );
 
-  // @TODO: check other filter types
   const isContributorTypeSelected = contributorTypes.some(
     ({ id }) => id === selectedChildOption,
   );
@@ -65,10 +69,24 @@ export const useFilter = () => {
     ({ id }) => id === selectedChildOption,
   );
 
-  // @TODO: add other filter types
+  const isTeamTypeSelected = teamTypes.some(
+    ({ id }) => id === selectedChildOption,
+  );
+
+  const isPermissionsTypeSelected = permissionsTypes.some(
+    ({ id }) => id === selectedChildOption,
+  );
+
+  const isReputationTypeSelected = reputationType.some(
+    ({ id }) => id === selectedChildOption,
+  );
+
   const numberSelectedFilters = [
+    isTeamTypeSelected,
     isContributorTypeSelected,
     isStatusTypeSelected,
+    isReputationTypeSelected,
+    isPermissionsTypeSelected,
   ].filter(Boolean).length;
 
   return {
