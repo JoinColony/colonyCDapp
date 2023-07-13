@@ -1,6 +1,6 @@
 import { MessageDescriptor } from 'react-intl';
 
-import { ParentFilterOption } from '~v5/common/Filter/types';
+import { FilterOptionProps, ParentFilterOption } from '~v5/common/Filter/types';
 import { FilterType, FilterOption } from '~v5/common/TableFiltering/types';
 
 export type SubNavigationItemProps = {
@@ -17,6 +17,7 @@ export type SubNavigationItemProps = {
   onSelectNestedOption?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   selectedChildOption?: FilterOption;
   checkedItems?: Map<string, boolean>;
+  nestedFilters?: FilterOptionProps[];
 };
 
 export type NestedOptionsProps = {
@@ -24,6 +25,7 @@ export type NestedOptionsProps = {
   selectedChildOption?: FilterOption;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   checkedItems?: Map<string, boolean>;
+  nestedFilters?: FilterOptionProps[];
 };
 
 export type HeaderProps = {

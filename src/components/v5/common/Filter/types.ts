@@ -24,7 +24,7 @@ export type ParentFilterOption = {
   title: string;
   option: FilterType;
   iconName: string;
-  content: string | unknown[];
+  content: FilterOptionProps[];
 };
 
 export type FilterPopoverProps = {
@@ -50,4 +50,5 @@ export type AccordionProps = Omit<FilterOptionsProps, 'options'> & {
 export type AccordionItemProps = Omit<AccordionProps, 'items'> & {
   title: string;
   option: FilterType;
+  nestedFilters?: FilterOptionProps[];
 };

@@ -3,13 +3,6 @@ import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import { useMobile } from '~hooks';
-import {
-  contributorTypes,
-  permissionsTypes,
-  reputationType,
-  statusTypes,
-  teamTypes,
-} from '~v5/common/Filter/partials/consts';
 import Checkbox from '~v5/common/Checkbox';
 import { NestedOptionsProps } from '../types';
 import Header from './Header';
@@ -21,17 +14,10 @@ const NestedOptions: FC<NestedOptionsProps> = ({
   selectedParentOption,
   onChange,
   checkedItems,
+  nestedFilters,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
-
-  const preparedFilterOptions =
-    (selectedParentOption === 'contributor' && contributorTypes) ||
-    (selectedParentOption === 'status' && statusTypes) ||
-    (selectedParentOption === 'team' && teamTypes) ||
-    (selectedParentOption === 'reputation' && reputationType) ||
-    (selectedParentOption === 'permissions' && permissionsTypes) ||
-    [];
 
   const filterTitle =
     (selectedParentOption === 'contributor' && 'contributor.type') ||
@@ -48,7 +34,7 @@ const NestedOptions: FC<NestedOptionsProps> = ({
           'mt-1': isMobile,
         })}
       >
-        {(preparedFilterOptions || []).map(({ id, title }) => {
+        {(nestedFilters || []).map(({ id, title }) => {
           return (
             <li key={id}>
               <button

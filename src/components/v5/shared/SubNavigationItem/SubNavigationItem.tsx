@@ -25,13 +25,14 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
   onSelectNestedOption,
   selectedChildOption,
   checkedItems,
+  nestedFilters,
 }) => {
   const { formatMessage } = useIntl();
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     useMembersSubNavigation();
   const isMobile = useMobile();
 
-  const content = (
+  const tooltipContent = (
     <>
       <Icon name={iconName} appearance={{ size: 'extraSmall' }} />
       <span className="ml-2">{formatMessage({ id: title })}</span>
@@ -71,10 +72,10 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
               }
               isSuccess={isCopyTriggered}
             >
-              {content}
+              {tooltipContent}
             </Tooltip>
           ) : (
-            content
+            tooltipContent
           )}
         </button>
       </li>
@@ -95,6 +96,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
             selectedChildOption={selectedChildOption}
             onChange={onSelectNestedOption}
             checkedItems={checkedItems}
+            nestedFilters={nestedFilters}
           />
         </PopoverBase>
       )}

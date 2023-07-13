@@ -1,4 +1,10 @@
-import { contributorTypes, statusTypes } from './partials/consts';
+import {
+  contributorTypes,
+  permissionsTypes,
+  reputationType,
+  statusTypes,
+  teamTypes,
+} from './partials/consts';
 import { ParentFilterOption } from './types';
 
 export const filterOptions: ParentFilterOption[] = [
@@ -7,7 +13,7 @@ export const filterOptions: ParentFilterOption[] = [
     title: 'filter.teams',
     option: 'team',
     iconName: 'users-three',
-    content: 'content',
+    content: teamTypes,
   },
   {
     id: 1,
@@ -28,13 +34,13 @@ export const filterOptions: ParentFilterOption[] = [
     title: 'filter.reputation',
     option: 'reputation',
     iconName: 'star-not-filled',
-    content: 'content',
+    content: reputationType,
   },
   {
     id: 4,
     title: 'filter.permissions',
     option: 'permissions',
     iconName: 'lock-key',
-    content: 'content',
+    content: permissionsTypes,
   },
 ];

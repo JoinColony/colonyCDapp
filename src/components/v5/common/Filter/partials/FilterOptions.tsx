@@ -30,13 +30,14 @@ const FilterOptions: FC<FilterOptionsProps> = ({
         />
       ) : (
         <ul className="flex flex-col">
-          {options?.map(({ id, iconName, title, option }) => (
+          {options?.map(({ id, iconName, title, option, content }) => (
             <SubNavigationItem
               key={id}
               iconName={iconName}
               title={title}
               option={option}
               options={options}
+              nestedFilters={content}
               onSelectParentFilter={onSelectParentFilter}
               onSelectNestedOption={onSelectNestedOption}
               shouldBeActionOnHover={false}
