@@ -39,7 +39,12 @@ interface Props {
 }
 
 const UnclaimedTransfersItem = ({ claim }: Props) => {
-  const { colony, canInteractWithColony } = useColonyContext();
+  const {
+    colony,
+    canInteractWithColony,
+    startPolling: startPollingColony,
+    stopPolling: stopPollingColony,
+  } = useColonyContext();
   const [isClaimed, setIsClaimed] = useState(false);
 
   const token = claim?.token;
@@ -48,6 +53,12 @@ const UnclaimedTransfersItem = ({ claim }: Props) => {
     colonyAddress: colony?.colonyAddress,
     tokenAddress: token?.tokenAddress,
   });
+
+  const handleClaimSuccess = () => {
+    setIsClaimed(true);
+    startPollingColony(1_000);
+    setTimeout(stopPollingColony, 10_000);
+  };
 
   return (
     <li>
@@ -80,7 +91,7 @@ const UnclaimedTransfersItem = ({ claim }: Props) => {
             className={styles.button}
             actionType={ActionTypes.CLAIM_TOKEN}
             transform={transform}
-            onSuccess={() => setIsClaimed(true)}
+            onSuccess={handleClaimSuccess}
             disabled={!canInteractWithColony || isClaimed}
             dataTest="claimForColonyButton"
           />

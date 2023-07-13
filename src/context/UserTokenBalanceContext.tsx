@@ -40,6 +40,11 @@ export const UserTokenBalanceProvider = ({
 
   const tokenBalanceData = tokenBalanceQueryData?.getUserTokenBalance;
 
+  /*
+   * Custom polling functions ensure that they don't interfere with one another.
+   * If you used startPoll & stopPoll, a call to stopPoll would cancel all polling, so if you were polling
+   * more than one balance simultaneously, you'd not see the updates in the UI you'd be expecting.
+   */
   const pollActiveTokenBalance = useCallback(() => {
     let interval;
 
