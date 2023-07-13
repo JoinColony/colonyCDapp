@@ -12,9 +12,9 @@ import {
 export const useFilter = () => {
   const [selectedFilters, setSelectedFilters] = useState<FilterOption[]>([]);
   const [selectedChildOption, setSelectedOption] = useState<FilterOption>();
-  const [selectedParentFilter, setSelectedParentFilter] = useState<
+  const [selectedParentFilters, setSelectedParentFilter] = useState<
     FilterType | FilterType[]
-  >();
+  >([]);
   const [checkedItems, setCheckedItems] = useState<Map<string, boolean>>(
     new Map(),
   );
@@ -45,9 +45,12 @@ export const useFilter = () => {
     setSelectedOption(undefined);
   }, []);
 
-  const onSelectParentFilter = useCallback((id: FilterType) => {
-    setSelectedParentFilter(id);
-  }, []);
+  const onSelectParentFilter = useCallback(
+    (id: FilterType) => {
+      setSelectedParentFilter((prev: FilterType[]) => [...prev, id]);
+    },
+    [selectedParentFilters],
+  );
 
   const onSelectNestedOption = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,7 +93,7 @@ export const useFilter = () => {
     onClearFilters,
     selectedChildOption,
     numberSelectedFilters,
-    selectedParentFilter,
+    selectedParentFilters: [...new Set(selectedParentFilters)],
     checkedItems,
   };
 };

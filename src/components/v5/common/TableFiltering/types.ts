@@ -1,5 +1,5 @@
 export type TableFilteringProps = {
-  filterType?: FilterType | FilterType[];
+  selectedParentFilters?: FilterType | FilterType[];
   filterOptions: FilterOption | FilterOption[];
   onClick: () => void;
   className?: string;
