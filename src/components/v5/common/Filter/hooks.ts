@@ -1,11 +1,14 @@
 import { useCallback, useState } from 'react';
 
-import { FilterOption } from '../TableFiltering/types';
+import { FilterOption, FilterType } from '../TableFiltering/types';
 import { contributorTypes, statusTypes } from './partials/consts';
 
 export const useFilter = () => {
   const [selectedFilters, setSelectedFilters] = useState<FilterOption[]>([]);
   const [selectedChildOption, setSelectedOption] = useState<FilterOption>();
+  const [selectedParentFilter, setSelectedParentFilter] = useState<
+    FilterType | FilterType[]
+  >();
 
   // useEffect(() => {
   // 	setCheckedState(new Array(selectedFilters.length).fill(false))
@@ -42,7 +45,8 @@ export const useFilter = () => {
     setSelectedOption(undefined);
   }, []);
 
-  const onSelectParentFilter = useCallback(() => {
+  const onSelectParentFilter = useCallback((id: FilterType) => {
+    setSelectedParentFilter(id);
     // @TODO: id of selected parent filter element
   }, []);
 
@@ -74,5 +78,6 @@ export const useFilter = () => {
     onClearFilters,
     selectedChildOption,
     numberSelectedFilters,
+    selectedParentFilter,
   };
 };

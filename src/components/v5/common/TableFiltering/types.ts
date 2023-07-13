@@ -1,5 +1,5 @@
 export type TableFilteringProps = {
-  filterType: FilterType;
+  filterType?: FilterType | FilterType[];
   filterOptions: FilterOption | FilterOption[];
   onClick: () => void;
   className?: string;
@@ -9,7 +9,7 @@ export type FilterType =
   | 'team'
   | 'reputation'
   | 'latest'
-  | 'statuses'
+  | 'status'
   | 'contributor'
   | 'permissions';
 

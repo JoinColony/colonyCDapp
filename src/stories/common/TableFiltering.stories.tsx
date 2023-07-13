@@ -12,7 +12,7 @@ type Story = StoryObj<typeof TableFiltering>;
 
 export const SingleFilterOption: Story = {
   args: {
-    filterType: 'statuses',
+    filterType: 'status',
     filterOptions: ['banned'],
   },
 };

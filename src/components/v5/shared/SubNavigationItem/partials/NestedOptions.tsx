@@ -24,12 +24,12 @@ const NestedOptions: FC<NestedOptionsProps> = ({
   // @TODO: add other filters
   const preparedFilterOptions =
     (selectedParentOption === 'contributor' && contributorTypes) ||
-    (selectedParentOption === 'statuses' && statusTypes) ||
+    (selectedParentOption === 'status' && statusTypes) ||
     [];
 
   const filterTitle =
     (selectedParentOption === 'contributor' && 'contributor.type') ||
-    (selectedParentOption === 'statuses' && 'status.type') ||
+    (selectedParentOption === 'status' && 'status.type') ||
     'contributor.type';
 
   return (

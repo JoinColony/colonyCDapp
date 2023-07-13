@@ -30,6 +30,7 @@ const Filter: FC = () => {
     onClearFilters,
     selectedChildOption,
     numberSelectedFilters,
+    selectedParentFilter,
   } = useFilter();
 
   return (
@@ -77,7 +78,7 @@ const Filter: FC = () => {
           <div className="flex flex-row gap-2">
             {!!selectedFilters?.length && (
               <TableFiltering
-                filterType="contributor"
+                filterType={selectedParentFilter}
                 filterOptions={selectedFilters}
                 onClick={() => onClearFilters()}
               />

@@ -19,7 +19,7 @@ export const filterOptions: ParentFilterOption[] = [
   {
     id: 2,
     title: 'filter.user.status',
-    option: 'statuses',
+    option: 'status',
     iconName: 'flag',
     content: statusTypes,
   },
