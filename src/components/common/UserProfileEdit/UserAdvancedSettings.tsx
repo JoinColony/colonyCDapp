@@ -83,23 +83,23 @@ const UserAdvancedSettings = ({ user: { walletAddress, profile } }: Props) => {
   const [editUser, { error }] = useUpdateUserProfileMutation();
 
   const metatransasctionsDefault = metatransactionsAvailable
-    ? profile?.advanced?.metatransactionsEnabled || false
+    ? profile?.advancedSettings?.metatransactionsEnabled || false
     : false;
 
   const defaultValues = {
     metatransactionsEnabled: metatransasctionsDefault,
     decentralizedModeEnabled:
-      profile?.advanced?.decentralizedModeEnabled || false,
-    customRpc: profile?.advanced?.customRpc || '',
+      profile?.advancedSettings?.decentralizedModeEnabled || false,
+    customRpc: profile?.advancedSettings?.customRpc || '',
   };
 
-  const handleSubmit = async (updatedAdvanced: FormValues) => {
+  const handleSubmit = async (updatedAdvancedSettings: FormValues) => {
     await editUser({
       variables: {
         input: {
           id: walletAddress,
-          advanced: {
-            ...updatedAdvanced,
+          advancedSettings: {
+            ...updatedAdvancedSettings,
           },
         },
       },

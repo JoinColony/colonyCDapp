@@ -33,7 +33,7 @@ fragment Profile on Profile {
   location
   thumbnail
   website
-  advanced {
+  advancedSettings {
     metatransactionsEnabled
     decentralizedModeEnabled
     customRpc

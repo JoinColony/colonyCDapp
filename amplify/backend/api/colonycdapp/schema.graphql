@@ -178,7 +178,7 @@ input CreateUniqueColonyInput {
   version: Int!
 }
 
-input ProfileAdvancedInput {
+input ProfileAdvancedSettingsInput {
   metatransactionsEnabled: Boolean
   decentralizedModeEnabled: Boolean
   customRpc: String
@@ -224,7 +224,7 @@ input ProfileInput {
   Any additional metadata or settings related to the user profile
   """
   meta: ProfileMetadataInput
-  advanced: ProfileAdvancedInput
+  advancedSettings: ProfileAdvancedSettingsInput
 }
 
 """
@@ -916,7 +916,7 @@ type Profile @model {
   Metadata associated with the user's profile
   """
   meta: ProfileMetadata
-  advanced: ProfileAdvanced
+  advancedSettings: ProfileAdvancedSettings
 }
 
 """
@@ -992,7 +992,7 @@ type ProfileMetadata {
   emailPermissions: [String!]!
 }
 
-type ProfileAdvanced {
+type ProfileAdvancedSettings {
   metatransactionsEnabled: Boolean!
   decentralizedModeEnabled: Boolean!
   customRpc: String!
