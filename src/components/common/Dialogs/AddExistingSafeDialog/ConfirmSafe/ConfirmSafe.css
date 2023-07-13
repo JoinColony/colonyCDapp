@@ -1,0 +1,43 @@
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-top: 1px solid color-mod(var(--grey-purple) alpha(15%));
+  font-size: var(--size-smallish);
+  color: color-mod(var(--grey-purple) alpha(85%));
+}
+
+.summaryRow span {
+  line-height: unset;
+}
+
+.summaryRow:last-child {
+  border-bottom: 1px solid color-mod(var(--grey-purple) alpha(15%));
+}
+
+.summaryRow:last-child span {
+  transform: translateY(2px);
+}
+
+.step3Instructions {
+  margin-bottom: -20px;
+  padding-bottom: 0;
+  border: none;
+}
+
+.chainName {
+  color: color-mod(var(--dark) alpha(85%));
+}
+
+.safe {
+  display: flex;
+  align-items: center;
+  column-gap: 9px;
+}
+
+.safeNameContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

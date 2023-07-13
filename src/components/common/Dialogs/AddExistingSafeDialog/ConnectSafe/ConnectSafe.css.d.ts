@@ -1,7 +1,6 @@
 declare namespace ConnectSafeCssNamespace {
   export interface IConnectSafeCss {
     info: string;
-    instructions: string;
     learnMoreLink: string;
     moduleAddressSubtitle: string;
     moduleContractAddressContainer: string;

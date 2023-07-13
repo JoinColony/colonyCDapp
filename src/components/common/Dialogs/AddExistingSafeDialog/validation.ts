@@ -184,6 +184,7 @@ export const getValidationSchema = (
       safeName: string()
         .required(() => MSG.safeNameError)
         .max(20),
+      annotation: string().max(4000),
       moduleContractAddress: string()
         .address()
         .required(() => MSG.moduleAddressError)
