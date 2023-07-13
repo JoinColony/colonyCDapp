@@ -6,7 +6,7 @@ import {
   FieldSet,
   Form,
   HookFormInput as Input,
-  HookFormTextArea as Textarea,
+  Textarea,
 } from '~shared/Fields';
 
 import { useUpdateUserProfileMutation } from '~gql';

@@ -1,11 +1,7 @@
 import React from 'react';
 
+import { Textarea, TextareaComponentProps } from '../Textarea';
 import { MAX_ANNOTATION_LENGTH } from '~constants';
-
-import {
-  HookFormTextArea as Textarea,
-  HookFormTextareaComponentProps as TextareaComponentProps,
-} from '../Textarea';
 
 import styles from './Annotations.css';
 

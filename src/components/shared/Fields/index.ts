@@ -16,7 +16,7 @@ export { Appearance, SelectOption, SelectProps } from './Select';
 export { Select } from './Select';
 
 export { default as TokenSymbolSelector } from './TokenSymbolSelector';
-export { HookFormTextArea } from './Textarea';
+export { Textarea } from './Textarea';
 export { CustomRadio, CustomRadioProps } from './Radio';
 export { CustomRadioGroup } from './RadioGroup';
 export { default as Annotations } from './Annotations';

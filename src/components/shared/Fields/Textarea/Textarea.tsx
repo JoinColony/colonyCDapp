@@ -8,10 +8,10 @@ import { CoreInputProps } from '~shared/Fields/Input/HookForm';
 import { getMainClasses } from '~utils/css';
 import { formatText } from '~utils/intl';
 
-import InputLabel from '../../InputLabel';
-import InputStatus from '../../InputStatus';
+import InputLabel from '../InputLabel';
+import InputStatus from '../InputStatus';
 
-import styles from '../Textarea.css';
+import styles from './Textarea.css';
 
 export interface Appearance {
   theme?: 'fat';
@@ -30,7 +30,7 @@ export interface Props
   appearance?: Appearance;
 }
 
-const displayName = 'HookFormTextarea';
+const displayName = 'Textarea';
 
 const Textarea = ({
   appearance = {},
