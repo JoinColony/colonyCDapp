@@ -13,6 +13,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({
   onSelectNestedOption,
   onSelectParentFilter,
   selectedChildOption,
+  checkedItems,
 }) => {
   const isMobile = useMobile();
 
@@ -25,6 +26,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({
           onSelectParentFilter={onSelectParentFilter}
           onSelectNestedOption={onSelectNestedOption}
           selectedChildOption={selectedChildOption}
+          checkedItems={checkedItems}
         />
       ) : (
         <ul className="flex flex-col">
@@ -39,6 +41,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({
               onSelectNestedOption={onSelectNestedOption}
               shouldBeActionOnHover={false}
               selectedChildOption={selectedChildOption}
+              checkedItems={checkedItems}
             />
           ))}
         </ul>

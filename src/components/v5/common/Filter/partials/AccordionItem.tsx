@@ -16,6 +16,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
   onSelectNestedOption,
   onSelectParentFilter,
   selectedChildOption,
+  checkedItems,
 }) => {
   const [clicked, setClicked] = useState(false);
   const { formatMessage } = useIntl();
@@ -62,6 +63,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
               selectedParentOption={option}
               selectedChildOption={selectedChildOption}
               onChange={onSelectNestedOption}
+              checkedItems={checkedItems}
             />
           </motion.div>
         )}

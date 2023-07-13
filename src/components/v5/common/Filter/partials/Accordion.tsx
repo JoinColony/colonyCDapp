@@ -10,6 +10,7 @@ const Accordion: FC<AccordionProps> = ({
   onSelectParentFilter,
   onSelectNestedOption,
   selectedChildOption,
+  checkedItems,
 }) => (
   <div>
     <ul className="flex flex-col gap-4">
@@ -21,6 +22,7 @@ const Accordion: FC<AccordionProps> = ({
           onSelectParentFilter={onSelectParentFilter}
           onSelectNestedOption={onSelectNestedOption}
           selectedChildOption={selectedChildOption}
+          checkedItems={checkedItems}
         />
       ))}
     </ul>

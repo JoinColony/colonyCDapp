@@ -15,26 +15,20 @@ export const useFilter = () => {
   const [selectedParentFilter, setSelectedParentFilter] = useState<
     FilterType | FilterType[]
   >();
-
-  // useEffect(() => {
-  // 	setCheckedState(new Array(selectedFilters.length).fill(false))
-  // }, [selectedFilters, setCheckedState])
+  const [checkedItems, setCheckedItems] = useState<Map<string, boolean>>(
+    new Map(),
+  );
 
   const onSaveSelectedFilters = useCallback(
     (event) => {
       let array: FilterOption[] = [...selectedFilters];
 
-      // const updatedCheckedState = checkedState.map((item, index) =>
-      // 	{
-      // 		console.log(index, event.target?.name, item);
-      // 		return index === event.target?.name ? !item : item
-      // 	}
-      // );
+      const item = event.target.id;
+      const isChecked = event.target.checked;
 
-      // setCheckedState(updatedCheckedState);
-      // console.log(event);
+      setCheckedItems((prevState) => new Map(prevState).set(item, isChecked));
 
-      if (event.target?.checked) {
+      if (isChecked) {
         array = [...selectedFilters, event.target?.name];
         setSelectedOption(event.target?.name);
       } else {
@@ -97,5 +91,6 @@ export const useFilter = () => {
     selectedChildOption,
     numberSelectedFilters,
     selectedParentFilter,
+    checkedItems,
   };
 };

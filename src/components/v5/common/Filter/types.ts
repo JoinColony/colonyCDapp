@@ -16,6 +16,7 @@ export type FilterOptionsProps = {
   selectedChildOption?: FilterOption;
   onSelectParentFilter?: (option?: string) => void;
   onSelectNestedOption?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  checkedItems: Map<string, boolean>;
 };
 
 export type ParentFilterOption = {

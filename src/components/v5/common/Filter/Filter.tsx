@@ -31,6 +31,7 @@ const Filter: FC = () => {
     selectedChildOption,
     numberSelectedFilters,
     selectedParentFilter,
+    checkedItems,
   } = useFilter();
 
   return (
@@ -60,6 +61,7 @@ const Filter: FC = () => {
               onSelectParentFilter={onSelectParentFilter}
               onSelectNestedOption={onSelectNestedOption}
               selectedChildOption={selectedChildOption}
+              checkedItems={checkedItems}
             />
           </Modal>
           <Modal
@@ -105,6 +107,7 @@ const Filter: FC = () => {
                 onSelectParentFilter={onSelectParentFilter}
                 onSelectNestedOption={onSelectNestedOption}
                 selectedChildOption={selectedChildOption}
+                checkedItems={checkedItems}
               />
             </PopoverBase>
           )}

@@ -24,6 +24,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
   shouldBeActionOnHover = true,
   onSelectNestedOption,
   selectedChildOption,
+  checkedItems,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
@@ -98,6 +99,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
             selectedParentOption={option}
             selectedChildOption={selectedChildOption}
             onChange={onSelectNestedOption}
+            checkedItems={checkedItems}
           />
         </PopoverBase>
       )}

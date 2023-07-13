@@ -19,8 +19,8 @@ const displayName = 'v5.SubNavigationItem.partials.NestedOptions';
 
 const NestedOptions: FC<NestedOptionsProps> = ({
   selectedParentOption,
-  selectedChildOption,
   onChange,
+  checkedItems,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
@@ -48,7 +48,7 @@ const NestedOptions: FC<NestedOptionsProps> = ({
           'mt-1': isMobile,
         })}
       >
-        {(preparedFilterOptions || []).map(({ id, title }, index) => {
+        {(preparedFilterOptions || []).map(({ id, title }) => {
           return (
             <li key={id}>
               <button
@@ -63,10 +63,7 @@ const NestedOptions: FC<NestedOptionsProps> = ({
                   name={id}
                   label={title}
                   onChange={onChange}
-                  isChecked={
-                    preparedFilterOptions[index].id === id &&
-                    preparedFilterOptions[index].id === selectedChildOption
-                  }
+                  isChecked={checkedItems.get(id)}
                 >
                   {selectedParentOption === 'team' && (
                     <span
