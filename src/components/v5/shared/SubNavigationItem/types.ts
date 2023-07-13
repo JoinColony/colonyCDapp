@@ -16,14 +16,14 @@ export type SubNavigationItemProps = {
   shouldBeActionOnHover?: boolean;
   onSelectNestedOption?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   selectedChildOption?: FilterOption;
-  checkedItems: Map<string, boolean>;
+  checkedItems?: Map<string, boolean>;
 };
 
 export type NestedOptionsProps = {
   selectedParentOption?: FilterType;
   selectedChildOption?: FilterOption;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  checkedItems: Map<string, boolean>;
+  checkedItems?: Map<string, boolean>;
 };
 
 export type HeaderProps = {

@@ -1,7 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { noop } from 'lodash';
-import { usePopperTooltip } from 'react-popper-tooltip';
 
 import Icon from '~shared/Icon';
 import { SubNavigationItemProps } from './types';
@@ -9,6 +8,7 @@ import Tooltip from '~shared/Extensions/Tooltip';
 import { useMobile } from '~hooks';
 import PopoverBase from '../PopoverBase';
 import NestedOptions from './partials/NestedOptions';
+import { useMembersSubNavigation } from './hooks';
 
 const displayName = 'v5.SubNavigationItem';
 
@@ -27,14 +27,9 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
   checkedItems,
 }) => {
   const { formatMessage } = useIntl();
-  const isMobile = useMobile();
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
-    usePopperTooltip({
-      delayShow: 200,
-      delayHide: 200,
-      placement: 'left-start',
-      interactive: true,
-    });
+    useMembersSubNavigation();
+  const isMobile = useMobile();
 
   const content = (
     <>

@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import Icon from '~shared/Icon/Icon';
+import Icon from '~shared/Icon';
 import { accordionAnimation } from '~constants/accordionAnimation';
 import NestedOptions from '~v5/shared/SubNavigationItem/partials/NestedOptions';
 import { AccordionItemProps } from '../types';
