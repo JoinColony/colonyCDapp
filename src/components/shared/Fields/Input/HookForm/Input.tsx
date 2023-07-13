@@ -10,7 +10,7 @@ import ConfusableWarning from '~shared/ConfusableWarning';
 import { Message } from '~types';
 
 import InputLabel from '../../InputLabel';
-import InputStatus from '../../InputStatus/HookForm';
+import InputStatus from '../../InputStatus';
 import { InputComponentAppearance } from '../../Input';
 import InputComponent from './InputComponent';
 import { CoreInputProps, MaxButtonParams } from './types';

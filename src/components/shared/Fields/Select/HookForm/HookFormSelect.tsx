@@ -11,7 +11,7 @@ import { defineMessages } from 'react-intl';
 import { nanoid } from 'nanoid';
 import { useFormContext } from 'react-hook-form';
 
-import { InputLabel, HookFormInputStatus as InputStatus } from '~shared/Fields';
+import { InputLabel, InputStatus } from '~shared/Fields';
 import Icon from '~shared/Icon';
 import { DOWN, ENTER, ESC, Message, SPACE, UP } from '~types';
 import { getMainClasses } from '~utils/css';

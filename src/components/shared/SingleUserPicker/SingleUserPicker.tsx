@@ -13,7 +13,7 @@ import {
   WrappedComponentProps,
 } from '../OmniPicker';
 import { Props as WithOmnipickerInProps } from '../OmniPicker/withOmniPicker';
-import { InputLabel, HookFormInputStatus as InputStatus } from '../Fields';
+import { InputLabel, InputStatus } from '../Fields';
 import Icon from '../Icon';
 import Button from '../Button';
 import ItemDefault from './ItemDefault';

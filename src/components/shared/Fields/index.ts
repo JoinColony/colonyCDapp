@@ -10,7 +10,6 @@ export {
   HookFormInputProps,
   CoreInputProps,
 } from './Input/HookForm';
-export { default as HookFormInputStatus } from './InputStatus/HookForm';
 export { default as InputLabel } from './InputLabel';
 export { default as InputStatus } from './InputStatus';
 export { Appearance, SelectOption, SelectProps } from './Select';
