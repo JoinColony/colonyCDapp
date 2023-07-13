@@ -167,9 +167,9 @@ const getMessageAndValues = (locationPath: string): MessageWithValues => {
 
 export const useTitle = (title?: string) => {
   const { colony } = useColonyContext();
-  const location = useLocation().pathname;
+  const { pathname } = useLocation();
   const { formatMessage } = useIntl();
-  const { msg, values } = getMessageAndValues(location);
+  const { msg, values } = getMessageAndValues(pathname);
 
   const colonyDisplayName = colony?.metadata?.displayName || colony?.name;
 
