@@ -10,7 +10,7 @@ import { getMainClasses } from '~utils/css';
 import { Message, UniversalMessageValues } from '~types';
 import { formatText } from '~utils/intl';
 
-import { CoreInputProps } from '../../Input/HookForm';
+import { CoreInputProps } from '../Input/HookForm';
 
 import styles from './Checkbox.css';
 
@@ -31,9 +31,9 @@ export interface Props
   tooltipPopperOptions?: PopperOptions;
 }
 
-const displayName = 'HookFormCheckbox';
+const displayName = 'Checkbox';
 
-const HookFormCheckbox = ({
+const Checkbox = ({
   appearance,
   children,
   className,
@@ -114,6 +114,6 @@ const HookFormCheckbox = ({
   );
 };
 
-HookFormCheckbox.displayName = displayName;
+Checkbox.displayName = displayName;
 
-export default HookFormCheckbox;
+export default Checkbox;

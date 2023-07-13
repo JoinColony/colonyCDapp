@@ -1,4 +1,4 @@
-export { HookFormCheckbox } from './Checkbox';
+export { Checkbox } from './Checkbox';
 export { Form, ActionForm, OnSuccess } from './Form';
 export { default as FormStatus } from './FormStatus';
 export { default as FieldSet } from './FieldSet';
