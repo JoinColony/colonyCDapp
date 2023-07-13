@@ -1,5 +1,6 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
+import classnames from 'classnames';
 
 import { SAFE_NETWORKS } from '~constants';
 import Avatar from '~shared/Avatar';
@@ -33,7 +34,7 @@ const SafeListItem = ({ safe, isChecked }: Props) => {
     (network) => network.chainId === Number(safe.chainId),
   );
   return (
-    <div className={`${styles.main} ${isChecked && styles.checked}`}>
+    <div className={classnames(styles.main, { [styles.checked]: isChecked })}>
       <Checkbox
         name="safeList"
         appearance={{ theme: 'pink', direction: 'vertical' }}
@@ -49,7 +50,11 @@ const SafeListItem = ({ safe, isChecked }: Props) => {
         className={styles.avatar}
       />
 
-      <span className={`${isChecked ? styles.selectedLabel : styles.label}`}>
+      <span
+        className={classnames(styles.label, {
+          [styles.selectedLabel]: isChecked,
+        })}
+      >
         {`${safe.safeName} (${
           safeNetwork?.name || formatMessage(MSG.safeNamePlaceholder)
         })`}
