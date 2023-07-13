@@ -158,3 +158,5 @@ export const isDev = process.env.NETWORK === 'ganache';
 export const CDAPP_VERSION = version;
 
 export const STAKING_THRESHOLD = 10;
+
+export const MAX_COLONY_DISPLAY_NAME = 20;

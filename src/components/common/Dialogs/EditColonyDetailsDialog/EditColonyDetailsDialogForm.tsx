@@ -13,6 +13,7 @@ import { Annotations, HookFormInput as Input } from '~shared/Fields';
 import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
 import { useActionDialogStatus } from '~hooks';
 import { SetStateFn } from '~types';
+import { MAX_COLONY_DISPLAY_NAME } from '~constants';
 
 import {
   CannotCreateMotionMessage,
@@ -123,7 +124,7 @@ const EditColonyDetailsDialogForm = ({
           name="colonyDisplayName"
           appearance={{ colorSchema: 'grey', theme: 'fat' }}
           disabled={disabledInput}
-          maxLength={20}
+          maxLength={MAX_COLONY_DISPLAY_NAME}
           value={colonyDisplayName}
         />
       </DialogSection>
