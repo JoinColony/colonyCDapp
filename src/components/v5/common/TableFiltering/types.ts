@@ -20,7 +20,25 @@ export type ContributorType =
   | 'verified'
   | 'general';
 
+export type TeamType =
+  | 'root'
+  | 'business'
+  | 'product'
+  | 'development'
+  | 'productDesign'
+  | 'devops';
+
 export type StatusType = 'banned' | 'notBanned';
+
+export type ReputationType = 'highestToLowest' | 'lowestToHighest';
+
+export type PermissionsType =
+  | 'root'
+  | 'administration'
+  | 'arbitration'
+  | 'architecture'
+  | 'funding'
+  | 'recovery';
 
 // @TODO: add more filter options and move it to global types
 export type FilterOption =
@@ -28,6 +46,12 @@ export type FilterOption =
   | ContributorType[]
   | StatusType
   | StatusType[]
+  | TeamType
+  | TeamType[]
+  | ReputationType
+  | ReputationType[]
+  | PermissionsType
+  | PermissionsType[]
   | 'businnes'
   | 'development'
   | 'high to low'

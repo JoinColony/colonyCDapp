@@ -5,6 +5,9 @@ import {
   FilterType,
   StatusType,
   FilterOption,
+  TeamType,
+  ReputationType,
+  PermissionsType,
 } from '../TableFiltering/types';
 
 export type FilterOptionsProps = {
@@ -29,7 +32,12 @@ export type FilterPopoverProps = {
 };
 
 export type FilterOptionProps = {
-  id: ContributorType | StatusType;
+  id:
+    | ContributorType
+    | StatusType
+    | TeamType
+    | ReputationType
+    | PermissionsType;
   title: MessageDescriptor;
 };
 

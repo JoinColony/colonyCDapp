@@ -5,7 +5,10 @@ import clsx from 'clsx';
 import { useMobile } from '~hooks';
 import {
   contributorTypes,
+  permissionsTypes,
+  reputationType,
   statusTypes,
+  teamTypes,
 } from '~v5/common/Filter/partials/consts';
 import Checkbox from '~v5/common/Checkbox';
 import { NestedOptionsProps } from '../types';
@@ -21,15 +24,20 @@ const NestedOptions: FC<NestedOptionsProps> = ({
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
 
-  // @TODO: add other filters
   const preparedFilterOptions =
     (selectedParentOption === 'contributor' && contributorTypes) ||
     (selectedParentOption === 'status' && statusTypes) ||
+    (selectedParentOption === 'team' && teamTypes) ||
+    (selectedParentOption === 'reputation' && reputationType) ||
+    (selectedParentOption === 'permissions' && permissionsTypes) ||
     [];
 
   const filterTitle =
     (selectedParentOption === 'contributor' && 'contributor.type') ||
     (selectedParentOption === 'status' && 'status.type') ||
+    (selectedParentOption === 'team' && 'team.type') ||
+    (selectedParentOption === 'reputation' && 'reputation.type') ||
+    (selectedParentOption === 'permissions' && 'permissions.type') ||
     'contributor.type';
 
   return (
