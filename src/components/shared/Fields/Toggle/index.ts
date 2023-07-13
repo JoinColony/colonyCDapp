@@ -1,1 +1,1 @@
-export { default as HookFormToggle } from './HookForm/Toggle';
+export { default as Toggle } from './Toggle';

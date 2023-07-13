@@ -6,10 +6,10 @@ import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 
 import { getMainClasses } from '~utils/css';
 
-import styles from '../Toggle.css';
+import styles from './Toggle.css';
 import { CheckboxProps } from '~shared/Fields/Checkbox';
 
-const displayName = 'HookFormToggle';
+const displayName = 'Toggle';
 
 interface Appearance {
   theme?: 'primary' | 'danger';
@@ -20,7 +20,7 @@ interface Props extends Omit<CheckboxProps, 'appearance'> {
   tooltipClassName?: string;
 }
 
-const HookFormToggle = ({
+const Toggle = ({
   appearance,
   name,
   label,
@@ -92,6 +92,6 @@ const HookFormToggle = ({
   );
 };
 
-HookFormToggle.displayName = displayName;
+Toggle.displayName = displayName;
 
-export default HookFormToggle;
+export default Toggle;

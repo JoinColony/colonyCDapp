@@ -6,7 +6,7 @@ import {
 } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
-import { HookFormToggle as Toggle } from '~shared/Fields';
+import { Toggle } from '~shared/Fields';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 import { UniversalMessageValues } from '~types';
 import { SlotKey } from '~hooks';

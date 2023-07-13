@@ -20,4 +20,4 @@ export { Textarea } from './Textarea';
 export { CustomRadio, CustomRadioProps } from './Radio';
 export { CustomRadioGroup } from './RadioGroup';
 export { default as Annotations } from './Annotations';
-export { HookFormToggle } from './Toggle';
+export { Toggle } from './Toggle';
