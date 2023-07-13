@@ -8,7 +8,7 @@ import { useAsyncFunction } from '~hooks';
 import Form, {
   CustomSubmitErrorHandler,
   CustomSubmitHandler,
-  HookFormProps,
+  FormProps,
 } from './Form';
 
 const displayName = 'Form.ActionForm';
@@ -20,7 +20,7 @@ export type OnSuccess<V extends FieldValues> = (
 ) => void;
 
 interface Props<V extends Record<string, any>>
-  extends Omit<HookFormProps<V>, 'onError' | 'onSubmit'> {
+  extends Omit<FormProps<V>, 'onError' | 'onSubmit'> {
   /** Redux action type to dispatch on submit (e.g. CREATE_XXX) */
   actionType: ActionTypes;
 

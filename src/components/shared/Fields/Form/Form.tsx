@@ -23,7 +23,7 @@ export type CustomSubmitErrorHandler<FormData extends FieldValues> = (
   event?: React.BaseSyntheticEvent,
 ) => any | Promise<any>;
 
-export interface HookFormProps<FormData extends FieldValues> {
+export interface FormProps<FormData extends FieldValues> {
   children:
     | ((props: UseFormReturn<FormData>) => React.ReactNode)
     | React.ReactNode;
@@ -46,7 +46,7 @@ const Form = <FormData extends FieldValues>({
   options,
   resetOnSubmit = false,
   validationSchema,
-}: HookFormProps<FormData>) => {
+}: FormProps<FormData>) => {
   const formHelpers = useForm({
     resolver: validationSchema ? yupResolver(validationSchema) : undefined,
     defaultValues,
