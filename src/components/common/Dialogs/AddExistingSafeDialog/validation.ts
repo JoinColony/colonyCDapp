@@ -1,6 +1,7 @@
 import { defineMessages } from 'react-intl';
-import * as yup from 'yup';
+import { ValidationError, object, string, number } from 'yup';
 
+import { Address } from '~types';
 import { isAddress } from '~utils/web3';
 import { FETCH_ABORTED, SAFE_NAMES_MAP } from '~constants';
 // import { ColonySafe } from '~data/generated';
@@ -31,6 +32,18 @@ const MSG = defineMessages({
     id: `${displayName}.safeNameError`,
     defaultMessage: 'Please enter a safe name',
   },
+  moduleAddressError: {
+    id: `${displayName}.moduleAddressError`,
+    defaultMessage: 'Please enter a module address',
+  },
+  moduleNotConnectedError: {
+    id: `${displayName}.moduleNotConnectedError`,
+    defaultMessage: `Module not connected to Safe on {selectedChain}`,
+  },
+  moduleNotFoundError: {
+    id: `${displayName}.moduleNotFoundError`,
+    defaultMessage: `Module not found on {selectedChain}`,
+  },
 });
 
 type LoadingState = [boolean, React.Dispatch<React.SetStateAction<boolean>>];
@@ -40,9 +53,9 @@ type AbortControllerState = [
 ];
 
 const handleTestCompletion = (
-  result: true | yup.ValidationError,
+  result: true | ValidationError,
   loadingState: LoadingState,
-): Promise<true | yup.ValidationError> => {
+): Promise<true | ValidationError> => {
   const isFetchAborted = result !== true && result.message === FETCH_ABORTED;
   const [, setIsLoadingState] = loadingState;
 
@@ -62,7 +75,7 @@ const handleTestCompletion = (
 function getFetchErrorMsg(
   error: Error,
   type: 'Safe' | 'Module',
-): yup.ValidationError {
+): ValidationError {
   // If fetch was aborted
   if (error instanceof DOMException && error.message.includes('abort')) {
     return this.createError({
@@ -81,16 +94,14 @@ export const getValidationSchema = (
   abortControllerState: AbortControllerState,
   safes: Array<any>, // ColonySafe[],
   loadingSafeState: LoadingState,
-  // loadingModuleState: LoadingState,
+  loadingModuleState: LoadingState,
 ) => {
   const [abortController, setAbortController] = abortControllerState;
 
-  return yup
-    .object()
+  return object()
     .shape({
-      chainId: yup.number().required(),
-      contractAddress: yup
-        .string()
+      chainId: number().required(),
+      contractAddress: string()
         .address()
         .required(() => MSG.contractAddressError)
         .test(
@@ -139,7 +150,7 @@ export const getValidationSchema = (
 
               const getSafeData = async (
                 url: string,
-              ): Promise<yup.ValidationError | true> => {
+              ): Promise<ValidationError | true> => {
                 try {
                   // Check if safe exists
                   const response = await fetch(url, {
@@ -170,10 +181,66 @@ export const getValidationSchema = (
             });
           },
         ),
-      safeName: yup
-        .string()
+      safeName: string()
         .required(() => MSG.safeNameError)
         .max(20),
+      moduleContractAddress: string()
+        .address()
+        .required(() => MSG.moduleAddressError)
+        .test(
+          'does-module-exist',
+          'Invalid Module Error',
+          async function moduleAddressTest(moduleAddress) {
+            if (!moduleAddress || !isAddress(moduleAddress)) {
+              return false;
+            }
+
+            // Don't run if we're on the "Check safe" page.
+            if (stepIndex === 1) {
+              return true;
+            }
+
+            const controller = new AbortController();
+            setAbortController(controller);
+            if (abortController) {
+              abortController.abort();
+            }
+
+            const fetchModule = async (): Promise<ValidationError | true> => {
+              const selectedChain: string = SAFE_NAMES_MAP[this.parent.chainId];
+              const baseURL = getTxServiceBaseUrl(selectedChain);
+              try {
+                const response = await fetch(
+                  `${baseURL}/v1/modules/${moduleAddress}/safes`,
+                  { signal: controller.signal },
+                );
+                if (response.status === 200) {
+                  const { safes: connectedSafes }: { safes: Address[] } =
+                    await response.json();
+                  if (connectedSafes.includes(this.parent.contractAddress)) {
+                    return true;
+                  }
+                  return this.createError({
+                    message: formatMessage(MSG.moduleNotConnectedError, {
+                      selectedChain,
+                    }),
+                  });
+                }
+                return this.createError({
+                  message: formatMessage(MSG.moduleNotFoundError, {
+                    selectedChain,
+                  }),
+                });
+              } catch (e) {
+                return getFetchErrorMsg.call(this, e, 'Module');
+              }
+            };
+
+            return fetchModule().then((result) => {
+              return handleTestCompletion(result, loadingModuleState);
+            });
+          },
+        ),
     })
     .defined();
 };

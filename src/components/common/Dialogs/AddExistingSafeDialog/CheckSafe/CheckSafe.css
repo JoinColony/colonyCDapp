@@ -1,0 +1,12 @@
+.step1Subtitle {
+  margin-top: 13px;
+}
+
+.chainSelect {
+  margin-bottom: 12px;
+}
+
+.chainSelect label {
+  font-size: var(--size-smallish);
+  color: var(--dark);
+}

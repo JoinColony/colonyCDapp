@@ -11,7 +11,8 @@ import { WizardDialogType } from '~hooks';
 
 import AddExistingSafeDialogForm from './AddExistingSafeDialogForm';
 import { getValidationSchema } from './validation';
-import { getAddExistingSafeDialogPayload, NetworkOption } from './helpers';
+import { getAddExistingSafeDialogPayload } from './helpers';
+import { NetworkOption } from './types';
 
 type Props = Required<DialogProps> &
   WizardDialogType<object> &
@@ -38,7 +39,7 @@ const AddExistingSafeDialog = ({
     abortControllerState,
     [], // safes,
     loadingSafeState,
-    // loadingModuleState,
+    loadingModuleState,
   );
 
   type FormValues = InferType<typeof validationSchema>;

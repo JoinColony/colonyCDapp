@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
 import {
@@ -9,9 +9,11 @@ import {
   InputLabel,
 } from '~shared/Fields';
 import { FETCH_ABORTED } from '~constants';
-import { Message, SimpleMessageValues } from '~types';
+import { Message } from '~types';
 import Avatar from '~shared/Avatar';
 import { isAddress } from '~utils/web3';
+
+import { StatusText } from '../types';
 
 import styles from './SafeContractAddressInput.css';
 
@@ -40,11 +42,6 @@ const MSG = defineMessages({
 interface Props {
   selectedChain: SelectOption;
   loadingSafeState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-}
-
-interface StatusText {
-  status: MessageDescriptor;
-  statusValues?: SimpleMessageValues;
 }
 
 const SafeContractAddressInput = ({
