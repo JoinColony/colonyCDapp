@@ -17,11 +17,11 @@ export type ContributorType =
   | 'top'
   | 'dedicated'
   | 'active'
-  | 'verified'
+  | 'contributorVerified'
   | 'general';
 
 export type TeamType =
-  | 'root'
+  | 'teamRoot'
   | 'business'
   | 'product'
   | 'development'
@@ -33,7 +33,7 @@ export type StatusType = 'banned' | 'notBanned';
 export type ReputationType = 'highestToLowest' | 'lowestToHighest';
 
 export type PermissionsType =
-  | 'root'
+  | 'permissionRoot'
   | 'administration'
   | 'arbitration'
   | 'architecture'

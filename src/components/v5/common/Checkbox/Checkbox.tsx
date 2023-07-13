@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
@@ -8,7 +8,7 @@ import styles from './Checkbox.module.css';
 
 const displayName = 'v5.common.Checkbox';
 
-const Checkbox: FC<CheckboxProps> = ({
+const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
   name,
   disabled,
   id,
@@ -17,6 +17,7 @@ const Checkbox: FC<CheckboxProps> = ({
   onChange,
   classNames,
   isChecked,
+  children,
 }) => {
   const { formatMessage } = useIntl();
 
@@ -53,7 +54,10 @@ const Checkbox: FC<CheckboxProps> = ({
             'peer-checked:bg-blue-400 peer-checked:border-blue-400 peer-disabled:bg-gray-40 peer-disabled:border-gray-40 peer-checked:after:border-l peer-checked:after:border-b',
           )}
         />
-        {formatMessage(label)}
+        <div className="flex items-center gap-2">
+          {children}
+          {formatMessage(label)}
+        </div>
       </label>
     </div>
   );

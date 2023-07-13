@@ -14,7 +14,7 @@ export const contributorTypes: FilterOptionProps[] = [
     title: { id: 'filter.option.active' },
   },
   {
-    id: 'verified',
+    id: 'contributorVerified',
     title: { id: 'filter.option.verified' },
   },
   {
@@ -36,7 +36,7 @@ export const statusTypes: FilterOptionProps[] = [
 
 export const teamTypes: FilterOptionProps[] = [
   {
-    id: 'root',
+    id: 'teamRoot',
     title: { id: 'filter.option.root' },
   },
   {
@@ -74,7 +74,7 @@ export const reputationType: FilterOptionProps[] = [
 
 export const permissionsTypes: FilterOptionProps[] = [
   {
-    id: 'root',
+    id: 'permissionRoot',
     title: { id: 'filter.option.root' },
   },
   {
