@@ -40,73 +40,52 @@ export interface SelectedSafe {
   };
 }
 
+const displayName = 'dashboard.ControlSafeDialog.ControlSafeForm';
+
 const MSG = defineMessages({
   title: {
-    id: 'dashboard.ControlSafeDialog.ControlSafeForm.title',
-    defaultMessage: 'Control Safe',
+    id: `${displayName}.title`,
+    defaultMessage: `Control Safe`,
   },
   description: {
-    id: 'dashboard.ControlSafeDialog.ControlSafeForm.description',
+    id: `${displayName}.description`,
     defaultMessage: `You can use Control Safe to interact with other third party smart contracts. Be careful. <a>Learn more</a>`,
   },
   selectSafe: {
-    id: 'dashboard.ControlSafeDialog.ControlSafeForm.selectSafe',
-    defaultMessage: 'Select Safe',
+    id: `${displayName}.selectSafe`,
+    defaultMessage: `Select Safe`,
   },
   safePickerPlaceholder: {
-    id: `dashboard.ControlSafeDialog.ControlSafeForm.safePickerPlaceholder`,
-    defaultMessage: 'Select Safe to control',
+    id: `${displayName}.safePickerPlaceholder`,
+    defaultMessage: `Select Safe to control`,
   },
   transactionLabel: {
-    id: `dashboard.ControlSafeDialog.ControlSafeForm.transactionLabel`,
-    defaultMessage: 'Select transaction type',
+    id: `${displayName}.transactionLabel`,
+    defaultMessage: `Select transaction type`,
   },
   transactionPlaceholder: {
-    id: `dashboard.ControlSafeDialog.ControlSafeForm.transactionPlaceholder`,
-    defaultMessage: 'Select transaction',
+    id: `${displayName}.transactionPlaceholder`,
+    defaultMessage: `Select transaction`,
   },
   buttonTransaction: {
-    id: `dashboard.ControlSafeDialog.ControlSafeForm.buttonTransaction`,
-    defaultMessage: 'Add another transaction',
-  },
-  buttonCreateTransaction: {
-    id: `dashboard.ControlSafeDialog.ControlSafeForm.buttonCreateTransaction`,
-    defaultMessage: 'Create transaction',
-  },
-  transactionTitle: {
-    id: `dashboard.ControlSafeDialog.ControlSafeForm.transactionTitle`,
-    defaultMessage: `Transaction #{transactionNumber} {transactionType, select, undefined {} other {({transactionType})}}`,
-  },
-  toggleTransaction: {
-    id: `dashboard.ControlSafeDialog.ControlSafeForm.toggleTransaction`,
-    defaultMessage:
-      '{tabToggleStatus, select, true {Expand} false {Close}} transaction',
-  },
-  deleteTransaction: {
-    id: `dashboard.ControlSafeDialog.ControlSafeForm.deleteTransaction`,
-    defaultMessage: 'Delete transaction',
-  },
-  deleteTransactionTooltipText: {
-    id: `dashboard.ControlSafeDialog.ControlSafeForm.deleteTransactionTooltipText`,
-    defaultMessage: `Delete transaction.\nBe careful, data can be lost.`,
+    id: `${displayName}.buttonTransaction`,
+    defaultMessage: `Add another transaction`,
   },
   invalidSafeError: {
-    id: `dashboard.ControlSafeDialog.ControlSafeForm.invalidSafeError`,
-    defaultMessage:
-      'Select a safe from the menu or add a new one via Safe Control',
+    id: `${displayName}.invalidSafeError`,
+    defaultMessage: `Select a safe from the menu or add a new one via Safe Control`,
   },
   warningIconTitle: {
-    id: 'dashboard.ControlSafeDialog.ControlSafeForm.warningIconTitle',
+    id: `${displayName}.warningIconTitle`,
     defaultMessage: `Warning!`,
   },
   upgradeWarning: {
-    id: 'dashboard.ControlSafeDialog.ControlSafeForm.upgradeWarning',
+    id: `${displayName}.upgradeWarning`,
     defaultMessage: `Controlling a Safe is not supported on your current Colony version. Please upgrade Colony to at least version 12.{break}You can do this via <span>New Action > Advanced > Upgrade</span>`,
   },
 });
 
 export const { invalidSafeError } = MSG;
-const displayName = 'dashboard.ControlSafeDialog.ControlSafeForm';
 
 const ReadMoreLink = (chunks: React.ReactNode[]) => (
   <ExternalLink href={SAFE_INTEGRATION_LEARN_MORE}>{chunks}</ExternalLink>
