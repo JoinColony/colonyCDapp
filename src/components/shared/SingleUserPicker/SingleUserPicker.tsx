@@ -17,7 +17,6 @@ import { InputLabel, HookFormInputStatus as InputStatus } from '../Fields';
 import Icon from '../Icon';
 import Button from '../Button';
 import ItemDefault from './ItemDefault';
-import { AvatarRenderFn } from './utils';
 
 import styles from './SingleUserPicker.css';
 
