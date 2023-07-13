@@ -993,9 +993,9 @@ type ProfileMetadata {
 }
 
 type ProfileAdvanced {
-  metatransactionsEnabled: Boolean
-  decentralizedModeEnabled: Boolean
-  customRpc: String
+  metatransactionsEnabled: Boolean!
+  decentralizedModeEnabled: Boolean!
+  customRpc: String!
 }
 
 """
