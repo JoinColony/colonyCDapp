@@ -1,9 +1,7 @@
-import React /* { useCallback, useEffect, useMemo, useState } */ from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { ColonyRole, Id } from '@colony/colony-js';
-/* import classnames from 'classnames';
- * import { nanoid } from 'nanoid'; */
 
 import Avatar from '~shared/Avatar';
 import { DialogSection } from '~shared/Dialog';
@@ -16,23 +14,12 @@ import {
   SingleSafePicker,
   filterUserSelection,
 } from '~shared/SingleUserPicker';
-/* import IconTooltip from '~shared/IconTooltip'; */
+import { Safe } from '~types';
 
 import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
 import { useActionDialogStatus } from '~hooks';
-/* import {
- *   Colony,
- *   ColonySafe,
- *   SafeTransaction,
- *   useLoggedInUser,
- * } from '~data/index'; */
-/* import { useDialogActionPermissions } from '~utils/hooks/useDialogActionPermissions'; */
-/* import { PrimitiveType } from '~types/index'; */
-/* import { SelectedSafe } from '~modules/dashboard/sagas/utils/safeHelpers'; */
 import { isEmpty } from '~utils/lodash';
-/* import NotEnoughReputation from '~dashboard/NotEnoughReputation'; */
 
-/* import SafeTransactionPreview from './SafeTransactionPreview'; */
 /* import {
  *   defaultTransaction,
  *   FormValues,
@@ -118,18 +105,6 @@ const MSG = defineMessages({
 export const { invalidSafeError } = MSG;
 const displayName = 'dashboard.ControlSafeDialog.ControlSafeForm';
 
-/* export interface TransactionSectionProps extends Pick<FormProps, 'colony'> {
- *   disabledInput: boolean;
- *   transactionFormIndex: number;
- *   handleInputChange: () => void;
- *   handleValidation: () => void;
- * } */
-
-/* enum ContractFunctions {
- *   TRANSFER_FUNDS = 'transfer',
- *   TRANSFER_NFT = 'safeTransferFrom',
- * } */
-
 const renderAvatar = (item) => (
   <Avatar
     seed={item.address.toLocaleLowerCase()}
@@ -150,27 +125,33 @@ const UpgradeWarning = (chunks: React.ReactNode[]) => (
 
 const requiredRoles: ColonyRole[] = [ColonyRole.Root];
 
+const hardcodedSafes: Safe[] = [
+  {
+    name: 'test',
+    chainId: 56,
+    address: '0xe759f388c97674D5B8a60406b254aB59f194163d',
+    moduleContractAddress: '0xe759f388c97674D5B8a60406b254aB59f194163d',
+  },
+  {
+    name: 'test2',
+    chainId: 1,
+    address: '0x3F107AFF0342Cfb5519A68B3241565F6FC9BAC1e',
+    moduleContractAddress: '0xe759f388c97674D5B8a60406b254aB59f194163w',
+  },
+  {
+    name: 'test3',
+    chainId: 5,
+    address: '0x3F107AFF0342Cfb5519A68B3241565F6FC9BAC2e',
+    moduleContractAddress: '0xe759f388c97674D5B8a60406b254aB59f194163e',
+  },
+];
+
 const ControlSafeForm = ({
   back,
   colony,
   colony: { version, metadata },
   enabledExtensionData,
-}: /* ,
- * handleSubmit,
- * isValid,
- * values,
- * setFieldValue,
- * showPreview,
- * setShowPreview,
- * validateForm,
- * dirty,
- * selectedContractMethods,
- * setFieldTouched,
- * setSelectedContractMethods,
- */
-ControlSafeProps) => {
-  /* const [transactionTabStatus, setTransactionTabStatus] = useState([true]);
-   * const [prevSafeAddress, setPrevSafeAddress] = useState<string>(''); */
+}: ControlSafeProps) => {
   const {
     formState: { isSubmitting, dirtyFields },
     watch,
@@ -209,7 +190,20 @@ ControlSafeProps) => {
     }
   };
 
-  const safes = metadata?.safes || [];
+  /* const handleSafeChange = (selectedSafe: SelectedSafe) => {
+   *   const safeAddress = selectedSafe.profile.walletAddress;
+   *   if (safeAddress !== prevSafeAddress) {
+   *     setPrevSafeAddress(safeAddress);
+   *     values.transactions.forEach((tx, i) => {
+   *       if (tx.transactionType === TransactionTypes.TRANSFER_NFT) {
+   *         setFieldValue(`transactions.${i}.nft`, null);
+   *         setFieldValue(`transactions.${i}.nftData`, null);
+   *       }
+   *     });
+   *   }
+   * }; */
+
+  const safes = metadata?.safes || hardcodedSafes;
 
   return (
     <>
