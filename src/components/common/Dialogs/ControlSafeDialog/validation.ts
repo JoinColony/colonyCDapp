@@ -1,5 +1,5 @@
 import { defineMessages } from 'react-intl';
-import * as yup from 'yup';
+import { object, string } from 'yup';
 
 const MSG = defineMessages({
   requiredFieldError: {
@@ -8,22 +8,18 @@ const MSG = defineMessages({
   },
 });
 
-export const getValidationSchema = () =>
-  yup.object().shape({
-    safe: yup.object().shape({
-      id: yup.string().address().required(),
-      profile: yup
-        .object()
-        .shape({
-          displayName: yup.string().required(),
-          walletAddress: yup.string().address().required(),
-        })
-        .required(() => MSG.requiredFieldError),
-    }),
-    transactions: yup.array(
-      yup.object().shape({
-        transactionType: yup.string().required(() => MSG.requiredFieldError),
-        recipient: yup.object(),
+export const getValidationSchema = () => {
+  return object()
+    .shape({
+      safe: object().shape({
+        id: string().address().required(),
+        profile: object()
+          .shape({
+            displayName: string().required(),
+            walletAddress: string().address().required(),
+          })
+          .required(() => MSG.requiredFieldError),
       }),
-    ),
-  });
+    })
+    .defined();
+};
