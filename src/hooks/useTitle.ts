@@ -35,54 +35,56 @@ import { notNull } from '~utils/arrays';
 
 import useColonyContext from './useColonyContext';
 
+const displayName = 'utils.hooks';
+
 const MSG = defineMessages({
   createColony: {
-    id: 'utils.hooks.useTitle.creatColony',
+    id: `${displayName}.useTitle.creatColony`,
     defaultMessage: `Create Colony | Colony`,
   },
 
   createUser: {
-    id: 'utils.hooks.useTitle.creatUser',
+    id: `${displayName}.useTitle.creatUser`,
     defaultMessage: `Create User | Colony`,
   },
 
   editProfile: {
-    id: 'utils.hooks.useTitle.editProfile',
+    id: `${displayName}.useTitle.editProfile`,
     defaultMessage: `Edit Profile | Colony`,
   },
 
   notFound: {
-    id: 'utils.hooks.useTitle.notFound',
+    id: `${displayName}.useTitle.notFound`,
     defaultMessage: `404 - Not Found | Colony`,
   },
 
   landing: {
-    id: 'utils.hooks.useTitle.landing',
+    id: `${displayName}.useTitle.landing`,
     defaultMessage: `Welcome to Colony`,
   },
 
   colonyHome: {
-    id: 'utils.hooks.useTitle.colonyHome',
+    id: `${displayName}.useTitle.colonyHome`,
     defaultMessage: `Actions | Colony - {colonyName}`,
   },
 
   colonyEvents: {
-    id: 'utils.hooks.useTitle.colonyEvents',
+    id: `${displayName}.useTitle.colonyEvents`,
     defaultMessage: `Transactions Log | Colony - {colonyName}`,
   },
 
   colonyFunds: {
-    id: 'utils.hooks.useTitle.colonyFunds',
+    id: `${displayName}.useTitle.colonyFunds`,
     defaultMessage: `Funds | Colony - {colonyName}`,
   },
 
   colonyExtensions: {
-    id: 'utils.hooks.useTitle.colonyExtensions',
+    id: `${displayName}.useTitle.colonyExtensions`,
     defaultMessage: `Extensions | Colony - {colonyName}`,
   },
 
   colonyExtensionDetails: {
-    id: 'utils.hooks.useTitle.colonyExtensionDetails',
+    id: `${displayName}.useTitle.colonyExtensionDetails`,
     defaultMessage: `Extensions > {extensionId, select,
       VotingReputation {Governance}
       OneTxPayment {One Transaction Payment}
@@ -91,7 +93,7 @@ const MSG = defineMessages({
   },
 
   colonyExtensionSetup: {
-    id: 'utils.hooks.useTitle.colonyExtensionSetup',
+    id: `${displayName}.useTitle.colonyExtensionSetup`,
     defaultMessage: `Extensions > {extensionId, select,
       VotingReputation {Governance}
       OneTxPayment {One Transaction Payment}
@@ -100,25 +102,25 @@ const MSG = defineMessages({
   },
 
   colonyMembers: {
-    id: 'utils.hooks.useTitle.colonyMembers',
+    id: `${displayName}.useTitle.colonyMembers`,
     defaultMessage: `Members | Colony - {colonyName}`,
   },
 
   userProfile: {
-    id: 'utils.hooks.useTitle.userProfile',
+    id: `${displayName}.useTitle.userProfile`,
     defaultMessage: `Users > {username} | Colony`,
   },
 
   transactionDetails: {
-    id: 'utils.hooks.useTitle.transactionDetails',
+    id: `${displayName}.useTitle.transactionDetails`,
     defaultMessage: `Transaction - {transactionHash} | Colony - {colonyName}`,
   },
   buyTokens: {
-    id: 'utils.hooks.useTitle.buyTokens',
+    id: `${displayName}.useTitle.buyTokens`,
     defaultMessage: `Buy Tokens | Colony - {colonyName}`,
   },
   fallbackTitle: {
-    id: 'utils.hooks.useTitle.fallbackTitle',
+    id: `${displayName}.useTitle.fallbackTitle`,
     defaultMessage: `Colony`,
   },
 });
