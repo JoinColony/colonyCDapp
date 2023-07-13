@@ -1,14 +1,17 @@
-import React, { ComponentProps, useMemo } from 'react';
+import React, { ComponentProps, useMemo, ReactNode } from 'react';
 
 import { SUPPORTED_SAFE_NETWORKS } from '~constants';
 import { Safe } from '~types';
 import Avatar from '~shared/Avatar';
 import { SelectedSafe } from '~common/Dialogs/ControlSafeDialog/ControlSafeForm';
 
+import { ItemDataType } from '../OmniPicker';
 import SingleUserPicker, {
   AvatarRenderFn,
   OnSelectedFn,
 } from './SingleUserPicker';
+
+type SafeRenderFn = (user?: ItemDataType<SelectedSafe>) => ReactNode;
 
 /* SingleSafePicker is a wrapper around SingleUserPicker component */
 interface Props
@@ -17,12 +20,13 @@ interface Props
     'renderAvatar' | 'onSelected'
   > {
   data: Safe[];
+  renderSafe?: SafeRenderFn;
   onSelected?: (safe: SelectedSafe) => void;
 }
 
 const displayName = 'SingleUserPicker.SingleSafePicker';
 
-const renderSafe = (item: SelectedSafe) => (
+const defaultRenderSafeFn = (item: SelectedSafe) => (
   <Avatar
     seed={item.id.toLowerCase()}
     size="xs"
@@ -32,7 +36,12 @@ const renderSafe = (item: SelectedSafe) => (
   />
 );
 
-const SingleSafePicker = ({ data, onSelected, ...props }: Props) => {
+const SingleSafePicker = ({
+  data,
+  onSelected,
+  renderSafe = defaultRenderSafeFn,
+  ...props
+}: Props) => {
   const formattedData = useMemo(
     () =>
       data.map((item) => {
