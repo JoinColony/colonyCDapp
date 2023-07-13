@@ -17,9 +17,11 @@ import { InputLabel, HookFormInputStatus as InputStatus } from '../Fields';
 import Icon from '../Icon';
 import Button from '../Button';
 import ItemDefault from './ItemDefault';
-import { AvatarRenderFn } from './utils';
 
 import styles from './SingleUserPicker.css';
+
+export type AvatarRenderFn = (user?: ItemDataType<User>) => ReactNode;
+export type OnSelectedFn = (user: User) => void;
 
 const displayName = 'SingleUserPicker';
 
@@ -92,7 +94,7 @@ interface Props extends WithOmnipickerInProps {
   renderItem?: (user: ItemDataType<User>, selected?: boolean) => ReactNode;
 
   /** Callback for things that happend after selection  */
-  onSelected?: (user: User) => void;
+  onSelected?: OnSelectedFn;
 
   value?: User;
 
