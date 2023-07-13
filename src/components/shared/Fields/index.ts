@@ -4,12 +4,12 @@ export { default as FormStatus } from './FormStatus';
 export { default as FieldSet } from './FieldSet';
 export { InputComponentAppearance } from './Input';
 export {
-  Input as HookFormInput,
-  InputComponent as HookFormInputComponent,
-  FormattedInput as HookFormFormattedInput,
-  HookFormInputProps,
+  Input,
+  InputComponent,
+  FormattedInput,
+  InputProps,
   CoreInputProps,
-} from './Input/HookForm';
+} from './Input';
 export { default as InputLabel } from './InputLabel';
 export { default as InputStatus } from './InputStatus';
 export { Appearance, SelectOption, SelectProps } from './Select';

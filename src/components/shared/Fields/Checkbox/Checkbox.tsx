@@ -10,7 +10,7 @@ import { getMainClasses } from '~utils/css';
 import { Message, UniversalMessageValues } from '~types';
 import { formatText } from '~utils/intl';
 
-import { CoreInputProps } from '../Input/HookForm';
+import { CoreInputProps } from '../Input';
 
 import styles from './Checkbox.css';
 

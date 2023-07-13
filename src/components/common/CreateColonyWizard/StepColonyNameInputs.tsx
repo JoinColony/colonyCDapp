@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
-import { HookFormInput as Input } from '~shared/Fields';
+import { Input } from '~shared/Fields';
 import { DEFAULT_NETWORK_INFO, MAX_COLONY_DISPLAY_NAME } from '~constants';
 
 import styles from './StepColonyName.css';

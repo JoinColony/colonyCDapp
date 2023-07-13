@@ -6,7 +6,7 @@ import { number, object, InferType } from 'yup';
 
 import { toFinite } from '~utils/lodash';
 import Button from '~shared/Button';
-import { ActionForm, HookFormInput as Input } from '~shared/Fields';
+import { ActionForm, Input } from '~shared/Fields';
 import Numeral from '~shared/Numeral';
 import { Tooltip } from '~shared/Popover';
 import { ActionTypes } from '~redux';

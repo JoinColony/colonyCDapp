@@ -9,7 +9,7 @@ import {
   DialogHeading,
   DialogSection,
 } from '~shared/Dialog';
-import { Annotations, HookFormInput as Input } from '~shared/Fields';
+import { Annotations, Input } from '~shared/Fields';
 import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
 import { useActionDialogStatus } from '~hooks';
 import { SetStateFn } from '~types';

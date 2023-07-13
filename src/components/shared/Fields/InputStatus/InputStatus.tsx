@@ -3,14 +3,14 @@ import React from 'react';
 
 import { getMainClasses } from '~utils/css';
 import { formatText } from '~utils/intl';
-import { HookFormInputProps } from '~shared/Fields/Input/HookForm';
+import { InputProps } from '~shared/Fields/Input';
 import { UniversalMessageValues, Message } from '~types';
 
 import styles from './InputStatus.css';
 
 interface InputStatusProps
   extends Pick<
-    HookFormInputProps,
+    InputProps,
     'appearance' | 'status' | 'statusValues' | 'isLoading' | 'loadingAnnotation'
   > {
   /** Error text (if applicable) */

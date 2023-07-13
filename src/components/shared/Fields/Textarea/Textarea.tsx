@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { nanoid } from 'nanoid';
 import { useFormContext } from 'react-hook-form';
 
-import { CoreInputProps } from '~shared/Fields/Input/HookForm';
+import { CoreInputProps } from '~shared/Fields/Input';
 
 import { getMainClasses } from '~utils/css';
 import { formatText } from '~utils/intl';

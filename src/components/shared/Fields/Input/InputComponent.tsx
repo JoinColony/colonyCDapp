@@ -3,10 +3,10 @@ import { useFormContext } from 'react-hook-form';
 
 import { getMainClasses } from '~utils/css';
 
-import { HookFormInputProps as InputProps } from './Input';
+import { InputProps } from './Input';
 import FormattedInput from './FormattedInputComponent';
 
-import styles from '../InputComponent.css';
+import styles from './InputComponent.css';
 
 interface LengthWidgetProps {
   length: number;
@@ -19,18 +19,17 @@ const LengthWidget = ({ length, maxLength }: LengthWidgetProps) => (
   </span>
 );
 
-export interface HookFormInputComponentProps
-  extends Omit<InputProps, 'placeholder'> {
+export interface InputComponentProps extends Omit<InputProps, 'placeholder'> {
   placeholder?: string;
   inputValueLength: number;
 }
 
-const displayName = 'HookFormInputComponent';
+const displayName = 'InputComponent';
 
 const getAppearanceObject = (
-  maxLength: HookFormInputComponentProps['maxLength'],
-  maxButtonParams: HookFormInputComponentProps['maxButtonParams'],
-  appearance: HookFormInputComponentProps['appearance'],
+  maxLength: InputComponentProps['maxLength'],
+  maxButtonParams: InputComponentProps['maxButtonParams'],
+  appearance: InputComponentProps['appearance'],
 ) => {
   let classes: any = {
     ...appearance,
@@ -52,7 +51,7 @@ const getAppearanceObject = (
   return classes;
 };
 
-const HookFormInputComponent = ({
+const InputComponent = ({
   appearance,
   dataTest,
   formattingOptions,
@@ -63,7 +62,7 @@ const HookFormInputComponent = ({
   onChange,
   onBlur,
   ...restInputProps
-}: HookFormInputComponentProps) => {
+}: InputComponentProps) => {
   const { register } = useFormContext();
   const {
     onChange: hookFormOnChange,
@@ -111,6 +110,6 @@ const HookFormInputComponent = ({
   );
 };
 
-HookFormInputComponent.displayName = displayName;
+InputComponent.displayName = displayName;
 
-export default HookFormInputComponent;
+export default InputComponent;

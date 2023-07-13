@@ -9,15 +9,15 @@ import { formatText } from '~utils/intl';
 import ConfusableWarning from '~shared/ConfusableWarning';
 import { Message } from '~types';
 
-import InputLabel from '../../InputLabel';
-import InputStatus from '../../InputStatus';
-import { InputComponentAppearance } from '../../Input';
+import InputLabel from '../InputLabel';
+import InputStatus from '../InputStatus';
+import { InputComponentAppearance } from '../Input';
 import InputComponent from './InputComponent';
 import { CoreInputProps, MaxButtonParams } from './types';
 
-import styles from '../Input.css';
+import styles from './Input.css';
 
-export interface HookFormInputProps
+export interface InputProps
   extends CoreInputProps,
     Omit<InputHTMLAttributes<HTMLInputElement>, 'placeholder' | 'name'> {
   /** Appearance object */
@@ -36,9 +36,9 @@ export interface HookFormInputProps
   showConfusable?: boolean;
 }
 
-const displayName = 'HookFormInput';
+const displayName = 'Input';
 
-const HookFormInput = ({
+const Input = ({
   appearance = {},
   elementOnly,
   extensionString,
@@ -57,7 +57,7 @@ const HookFormInput = ({
   status,
   statusValues,
   ...restInputProps
-}: HookFormInputProps) => {
+}: InputProps) => {
   const [id] = useState(idProp || nanoid());
   const {
     formState: { errors, touchedFields, isValid },
@@ -121,6 +121,6 @@ const HookFormInput = ({
   );
 };
 
-HookFormInput.displayName = displayName;
+Input.displayName = displayName;
 
-export default HookFormInput;
+export default Input;

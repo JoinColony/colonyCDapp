@@ -9,9 +9,9 @@ import Decimal from 'decimal.js';
 import { useFormContext } from 'react-hook-form';
 
 import Button from '~shared/Button';
-import { HookFormInputProps as InputProps } from './Input';
+import { InputProps } from './Input';
 
-import styles from '../InputComponent.css';
+import styles from './InputComponent.css';
 
 type CleaveChangeEvent = React.ChangeEvent<
   HTMLInputElement & { rawValue: string }
@@ -32,7 +32,7 @@ const setCleaveRawValue = (
   }
 };
 
-const displayName = 'HookFormFormattedInputComponent';
+const displayName = 'FormattedInputComponent';
 
 const MSG = defineMessages({
   max: {
@@ -56,13 +56,13 @@ export const MaxButton = ({ handleClick, disabled }: MaxButtonProps) => (
   />
 );
 
-interface HookFormFormattedInputComponentProps
+interface FormattedInputComponentProps
   extends Omit<InputProps, 'placeholder' | 'formattingOptions'>,
     Omit<CleaveProps, 'onChange' | 'name'> {
   placeholder?: string;
 }
 
-const HookFormFormattedInputComponent = ({
+const FormattedInputComponent = ({
   options: formattingOptions,
   maxButtonParams,
   name,
@@ -70,7 +70,7 @@ const HookFormFormattedInputComponent = ({
   onChange,
   disabled,
   ...restInputProps
-}: HookFormFormattedInputComponentProps) => {
+}: FormattedInputComponentProps) => {
   const { setValue } = useFormContext();
   const [cleave, setCleave] = useState<ReactInstanceWithCleave | null>(null);
 
@@ -88,7 +88,7 @@ const HookFormFormattedInputComponent = ({
       maxAmount,
       options,
       customOnClickFn,
-    }: NonNullable<HookFormFormattedInputComponentProps['maxButtonParams']>,
+    }: NonNullable<FormattedInputComponentProps['maxButtonParams']>,
   ) => {
     setValue(name, maxAmount, options);
     customOnClickFn?.(e);
@@ -140,6 +140,6 @@ const HookFormFormattedInputComponent = ({
   );
 };
 
-HookFormFormattedInputComponent.displayName = displayName;
+FormattedInputComponent.displayName = displayName;
 
-export default HookFormFormattedInputComponent;
+export default FormattedInputComponent;

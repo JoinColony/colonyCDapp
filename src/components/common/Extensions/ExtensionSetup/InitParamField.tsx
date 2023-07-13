@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { HookFormInput as Input } from '~shared/Fields';
+import { Input } from '~shared/Fields';
 import { ExtensionInitParam, ExtensionParamType } from '~types';
 
 import styles from './ExtensionSetup.css';
