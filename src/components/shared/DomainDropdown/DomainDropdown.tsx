@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback, useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { HookFormSelect as Select, SelectOption } from '~shared/Fields';
+import { Select, SelectOption } from '~shared/Fields';
 import { Colony, DomainColor } from '~types';
 import { notNull } from '~utils/arrays';
 

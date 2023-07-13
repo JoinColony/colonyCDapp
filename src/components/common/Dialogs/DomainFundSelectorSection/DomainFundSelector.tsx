@@ -2,7 +2,7 @@ import React from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
-import { HookFormSelect as Select } from '~shared/Fields';
+import { Select } from '~shared/Fields';
 import { Colony } from '~types';
 
 import { notNull } from '~utils/arrays';

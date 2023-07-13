@@ -17,12 +17,12 @@ import { DOWN, ENTER, ESC, Message, SPACE, UP } from '~types';
 import { getMainClasses } from '~utils/css';
 import { formatText } from '~utils/intl';
 
-import SelectListBox from '../SelectListBox';
-import { Appearance, SelectProps } from '../types';
+import SelectListBox from './SelectListBox';
+import { Appearance, SelectProps } from './types';
 
-import styles from '../Select.css';
+import styles from './Select.css';
 
-const displayName = 'Select.HookFormSelect';
+const displayName = 'Select';
 
 const MSG = defineMessages({
   expandIconHTMLTitle: {
@@ -31,7 +31,7 @@ const MSG = defineMessages({
   },
 });
 
-const HookFormSelect = ({
+const Select = ({
   appearance,
   disabled,
   elementOnly,
@@ -295,11 +295,11 @@ const HookFormSelect = ({
   );
 };
 
-HookFormSelect.displayName = displayName;
+Select.displayName = displayName;
 
-HookFormSelect.defaultProps = {
+Select.defaultProps = {
   appearance: { alignOptions: 'left', theme: 'default' } as Appearance,
   options: [],
 };
 
-export default HookFormSelect;
+export default Select;

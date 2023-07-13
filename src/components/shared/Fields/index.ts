@@ -13,7 +13,7 @@ export {
 export { default as InputLabel } from './InputLabel';
 export { default as InputStatus } from './InputStatus';
 export { Appearance, SelectOption, SelectProps } from './Select';
-export { default as HookFormSelect } from './Select/HookForm';
+export { Select } from './Select';
 
 export { default as TokenSymbolSelector } from './TokenSymbolSelector';
 export { HookFormTextArea } from './Textarea';
