@@ -8,15 +8,12 @@ import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 import { getVerifiedUsers } from '~utils/verifiedUsers';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { useSelectedUser } from '~hooks';
+import { useSelectedUser, useGetColonyMembers } from '~hooks';
 
 import DialogForm from '../ManageReputationDialogForm';
 import { AwardAndSmiteDialogProps } from '../types';
 
-import {
-  getManageReputationDialogPayload,
-  useGetColonyMembers,
-} from './helpers';
+import { getManageReputationDialogPayload } from './helpers';
 
 import {
   FormValues,

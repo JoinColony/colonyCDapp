@@ -9,9 +9,12 @@ import { ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 import { getVerifiedUsers } from '~utils/verifiedUsers';
-import { WizardDialogType, useNetworkInverseFee } from '~hooks';
+import {
+  WizardDialogType,
+  useNetworkInverseFee,
+  useGetColonyMembers,
+} from '~hooks';
 
-import { useGetColonyMembers } from '../AwardAndSmiteDialogs/ManageReputationContainer/helpers';
 import DialogForm from './CreatePaymentDialogForm';
 import { getCreatePaymentDialogPayload } from './helpers';
 import getValidationSchema from './validation';
