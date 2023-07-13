@@ -8,6 +8,8 @@ import { ActionTypes } from '~redux';
 import { WizardDialogType } from '~hooks';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 
+import { getRemoveSafeDialogPayload } from './helpers';
+
 import DialogForm from './RemoveSafeDialogForm';
 
 const displayName = 'common.RemoveSafeDialog';
@@ -42,23 +44,15 @@ const RemoveSafeDialog = ({
   close,
   callStep,
   prevStep,
-  colony: { colonyAddress },
   colony,
 }: Props) => {
   const navigate = useNavigate();
 
   const transform = pipe(
-    mapPayload(({ safeList, annotation: annotationMessage }) => {
-      return {
-        colonyName: colony.name,
-        colonyAddress,
-        safeList,
-        annotationMessage,
-        isRemovingSafes: true,
-      };
-    }),
+    mapPayload((payload) => getRemoveSafeDialogPayload(colony, payload)),
     withMeta({ navigate }),
   );
+
 
   return (
     <Form
