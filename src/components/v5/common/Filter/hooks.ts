@@ -93,7 +93,9 @@ export const useFilter = () => {
     onClearFilters,
     selectedChildOption,
     numberSelectedFilters,
-    selectedParentFilters: [...new Set(selectedParentFilters)],
+    selectedParentFilters: [...new Set(selectedParentFilters)] as
+      | FilterType[]
+      | FilterType,
     checkedItems,
   };
 };
