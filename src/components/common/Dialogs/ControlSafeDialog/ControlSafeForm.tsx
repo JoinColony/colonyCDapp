@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { ColonyRole, Id } from '@colony/colony-js';
@@ -20,11 +20,6 @@ import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
 import { useActionDialogStatus } from '~hooks';
 import { isEmpty } from '~utils/lodash';
 
-/* import {
- *   defaultTransaction,
- *   FormValues,
- *   UpdatedMethods,
- * } from './ControlSafeDialog'; */
 import {
   TransferNFTSection,
   TransferFundsSection,
@@ -36,6 +31,15 @@ import { TransactionTypes, transactionOptions } from './constants';
 import { ControlSafeProps } from './types';
 
 import styles from './ControlSafeForm.css';
+
+/* NOTE: this will be removed when the original is ported to the saga helpers */
+export interface SelectedSafe {
+  id: string; // Making explicit that this is the module address
+  walletAddress: string; // And this is the safe address
+  profile: {
+    displayName: string;
+  };
+}
 
 const MSG = defineMessages({
   title: {
@@ -152,6 +156,8 @@ const ControlSafeForm = ({
   colony: { version, metadata },
   enabledExtensionData,
 }: ControlSafeProps) => {
+  const [prevSafeAddress, setPrevSafeAddress] = useState<string>('');
+
   const {
     formState: { isSubmitting, dirtyFields },
     watch,
@@ -190,18 +196,18 @@ const ControlSafeForm = ({
     }
   };
 
-  /* const handleSafeChange = (selectedSafe: SelectedSafe) => {
-   *   const safeAddress = selectedSafe.profile.walletAddress;
-   *   if (safeAddress !== prevSafeAddress) {
-   *     setPrevSafeAddress(safeAddress);
-   *     values.transactions.forEach((tx, i) => {
-   *       if (tx.transactionType === TransactionTypes.TRANSFER_NFT) {
-   *         setFieldValue(`transactions.${i}.nft`, null);
-   *         setFieldValue(`transactions.${i}.nftData`, null);
-   *       }
-   *     });
-   *   }
-   * }; */
+  const handleSafeChange = (newSafe: SelectedSafe) => {
+    const safeAddress = newSafe?.walletAddress;
+    if (safeAddress !== prevSafeAddress) {
+      setPrevSafeAddress(safeAddress);
+      /* values.transactions.forEach((tx, i) => {
+       *   if (tx.transactionType === TransactionTypes.TRANSFER_NFT) {
+       *     setFieldValue(`transactions.${i}.nft`, null);
+       *     setFieldValue(`transactions.${i}.nftData`, null);
+       *   }
+       * }); */
+    }
+  };
 
   const safes = metadata?.safes || hardcodedSafes;
 
@@ -253,7 +259,7 @@ const ControlSafeForm = ({
             filter={filterUserSelection}
             renderAvatar={renderAvatar}
             disabled={disabledInputs}
-            /* onSelected={handleSafeChange} */
+            onSelected={handleSafeChange}
           />
         </div>
       </DialogSection>
