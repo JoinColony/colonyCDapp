@@ -37,8 +37,6 @@ import styles from './ControlSafeForm.css';
 
 const displayName = 'common.ControlSafeDialog.ControlSafeForm';
 
-const displayName = 'dashboard.ControlSafeDialog.ControlSafeForm';
-
 const MSG = defineMessages({
   title: {
     id: `${displayName}.title`,

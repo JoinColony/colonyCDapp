@@ -3,7 +3,7 @@ import React, { ComponentProps, useMemo } from 'react';
 import { SUPPORTED_SAFE_NETWORKS } from '~constants';
 import { Safe } from '~types';
 import Avatar from '~shared/Avatar';
-import { SelectedSafe } from '~common/Dialogs/ControlSafeDialog/ControlSafeForm';
+import { SelectedSafe } from '~common/Dialogs/ControlSafeDialog/types';
 
 import SingleUserPicker, {
   AvatarRenderFn,
