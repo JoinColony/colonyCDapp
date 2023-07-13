@@ -321,7 +321,7 @@ const ControlSafeForm = ({
             }
             appearance={{ theme: 'grey', width: 'fluid' }}
             placeholder={MSG.transactionPlaceholder}
-            disabled={false}
+            disabled={disabledInputs}
           />
         </div>
       </DialogSection>
