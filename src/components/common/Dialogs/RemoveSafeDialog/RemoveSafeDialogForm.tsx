@@ -3,7 +3,7 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
 import Button from '~shared/Button';
-import DialogSection from '~shared/Dialog/DialogSection';
+import { DialogSection } from '~shared/Dialog';
 import Heading from '~shared/Heading';
 
 import SafeListItem from './SafeListItem';
