@@ -2,17 +2,37 @@ import React, { ComponentProps, useMemo } from 'react';
 
 import { SUPPORTED_SAFE_NETWORKS } from '~constants';
 import { Safe } from '~types';
+import Avatar from '~shared/Avatar';
+import { SelectedSafe } from '~common/Dialogs/ControlSafeDialog/ControlSafeForm';
 
-import SingleUserPicker from './SingleUserPicker';
+import SingleUserPicker, {
+  AvatarRenderFn,
+  OnSelectedFn,
+} from './SingleUserPicker';
 
 /* SingleSafePicker is a wrapper around SingleUserPicker component */
-interface Props extends ComponentProps<typeof SingleUserPicker> {
+interface Props
+  extends Omit<
+    ComponentProps<typeof SingleUserPicker>,
+    'renderAvatar' | 'onSelected'
+  > {
   data: Safe[];
+  onSelected?: (safe: SelectedSafe) => void;
 }
 
 const displayName = 'SingleUserPicker.SingleSafePicker';
 
-const SingleSafePicker = ({ data, ...props }: Props) => {
+const renderSafe = (item: SelectedSafe) => (
+  <Avatar
+    seed={item.id.toLowerCase()}
+    size="xs"
+    notSet={false}
+    title={item.profile.displayName}
+    placeholderIcon="at-sign-circle"
+  />
+);
+
+const SingleSafePicker = ({ data, onSelected, ...props }: Props) => {
   const formattedData = useMemo(
     () =>
       data.map((item) => {
@@ -35,6 +55,8 @@ const SingleSafePicker = ({ data, ...props }: Props) => {
       {...props}
       data={formattedData}
       placeholderIconName="safe-logo"
+      renderAvatar={renderSafe as AvatarRenderFn}
+      onSelected={onSelected as unknown as OnSelectedFn}
     />
   );
 };
