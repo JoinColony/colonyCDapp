@@ -4783,6 +4783,7 @@ export type User = {
   profile?: Maybe<Profile>;
   /** Profile ID associated with the user */
   profileId?: Maybe<Scalars['ID']>;
+  roles?: Maybe<ModelColonyRoleConnection>;
   stakes?: Maybe<ModelColonyStakeConnection>;
   tokens?: Maybe<ModelUserTokensConnection>;
   updatedAt: Scalars['AWSDateTime'];
@@ -4791,6 +4792,14 @@ export type User = {
 
 
 /** Represents a User within the Colony Network */
+export type UserRolesArgs = {
+  filter?: InputMaybe<ModelColonyRoleFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
 export type UserStakesArgs = {
   colonyId?: InputMaybe<ModelIdKeyConditionInput>;
   filter?: InputMaybe<ModelColonyStakeFilterInput>;

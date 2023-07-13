@@ -1,7 +1,3 @@
-/**
- * @type {import('aws-lambda').APIGatewayProxyHandler}
- */
-
 const { Decimal } = require('decimal.js');
 const {
   constants,
@@ -15,7 +11,7 @@ Logger.setLogLevel(Logger.levels.ERROR);
 
 const { calculatePercentageReputation } = require('./reputation');
 const { graphqlRequest } = require('./utils');
-const { getWatchersInColony } = require('./graphql');
+const { getWatchersInColony, getUserByAddress } = require('./graphql');
 
 let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
@@ -60,6 +56,9 @@ const setEnvVariables = async () => {
   }
 };
 
+/**
+ * @type {import('aws-lambda').APIGatewayProxyHandler}
+ */
 exports.handler = async (event) => {
   try {
     await setEnvVariables();
@@ -68,12 +67,24 @@ exports.handler = async (event) => {
   }
 
   const {
-    colonyAddress,
+    colonyAddress: address,
     rootHash,
-    domainId = Id.RootDomain,
+    domainId: nativeDomainId = Id.RootDomain,
     sortingMethod = SortingMethod.BY_HIGHEST_REP,
   } = event?.arguments?.input || {};
   const provider = new providers.JsonRpcProvider(rpcURL);
+
+  /*
+   * Validate Colony addresses
+   */
+  let colonyAddress;
+  try {
+    colonyAddress = utils.getAddress(address);
+  } catch (error) {
+    throw new Error(
+      `Colony address "${colonyAddress}" is not valid (after checksum)`,
+    );
+  }
 
   const networkClient = getColonyNetworkClient(network, provider, {
     networkAddress,
@@ -81,38 +92,28 @@ exports.handler = async (event) => {
   });
 
   const colonyClient = await networkClient.getColonyClient(colonyAddress);
-  const { skillId } = await colonyClient.getDomain(domainId || Id.RootDomain);
-  let addressesWithReputation;
+  const { skillId } = await colonyClient.getDomain(nativeDomainId);
+  let contributorAddresses = new Set();
+
   try {
     const { addresses } = await colonyClient.getMembersReputation(skillId);
-    addressesWithReputation = addresses;
+    contributorAddresses = new Set(
+      addresses.map((contributorAddress) => contributorAddress.toLowerCase()),
+    );
   } catch (error) {
-    // @NOTE Not throwing an error here, because its possbile that the colony
+    // @NOTE Not throwing an error here, because it's possbile that the colony
     // doesn't have any reputation yet.
   }
 
-  const watchers = [];
-  const contributors = [];
-
-  /*
-   * Validate Colony addresses
-   */
-  let checksummedAddress;
-  try {
-    checksummedAddress = utils.getAddress(colonyAddress);
-  } catch (error) {
-    throw new Error(
-      `Colony address "${colonyAddress}" is not valid (after checksum)`,
-    );
-  }
-
   // get list of watchers for colony
-  const { data, errors } = await graphqlRequest(
+  const allWatchersResponse = await graphqlRequest(
     getWatchersInColony,
-    { id: checksummedAddress },
+    { id: colonyAddress, domainId: `${colonyAddress}_${nativeDomainId}` },
     graphqlURL,
     apiKey,
   );
+
+  const { data, errors } = allWatchersResponse ?? {};
 
   if (errors || !data) {
     const [error] = errors;
@@ -121,177 +122,141 @@ exports.handler = async (event) => {
     );
   }
 
-  // Incase there are members but no reputation on the colony,
-  // we can stop here and return the list of watchers
-  if (!addressesWithReputation?.length) {
-    return {
-      contributors: [],
-      watchers:
-        domainId > Id.RootDomain
-          ? [] // There will be no Watchers outside of the root domain
-          : data?.getColonyByAddress?.items[0]?.watchers.items.map(
-              ({ user }) => ({
-                address: user.id,
-                user,
-              }),
-            ),
-    };
-  }
-
-  // Identify watchers & contributors
-  data?.getColonyByAddress?.items[0]?.watchers.items.forEach((item) => {
-    if (
-      addressesWithReputation?.some(
-        (address) => address.toLowerCase() === item.user.id.toLowerCase(),
-      )
-    ) {
-      contributors.push({
-        address: item.user.id,
-        user: item.user,
-      });
-    } else {
-      watchers.push({
-        address: item.user.id,
-        user: item.user,
-      });
-    }
-  });
-
-  // There will be no Watchers outside of the root domain
-  if (domainId > Id.RootDomain) {
-    watchers.length = 0;
-  }
-
-  // now catch addresses that have reputation but are not in the watchers list
-  // i.e. address that was awarded reputation but has not joined the colony
-  if (addressesWithReputation?.length !== contributors?.length) {
-    const missingAddresses = addressesWithReputation?.filter((address) =>
-      contributors?.every(
-        (item) => item.user.id.toLowerCase() !== address.toLowerCase(),
-      ),
-    );
-
-    missingAddresses?.forEach((address) => {
-      contributors?.push({
-        address,
-      });
-    });
-  }
+  const allColonyWatchers = data?.getColonyByAddress?.items[0]?.watchers.items;
 
   // Get total reputation for colony
-  let totalColonyReputation;
+  let reputationInDomain;
   try {
-    totalColonyReputation = await colonyClient.getReputationWithoutProofs(
+    const { reputationAmount } = await colonyClient.getReputationWithoutProofs(
       skillId,
       constants.AddressZero,
       rootHash,
     );
+    reputationInDomain = reputationAmount;
   } catch (error) {
-    // Not throwing anything, as its possible that the domain does not have
-    // any reputation, and we don't want to break the whole query
+    // Silent error in case there's no reputation in the domain
   }
 
-  // get reputation for each address
-  const contributorsWithReputation = await Promise.all(
-    contributors.map(async (contributor) => {
-      const address = contributor.user
-        ? contributor.user?.id
-        : contributor.address;
-      try {
-        const userReputationForAllDomains =
-          await colonyClient.getReputationAcrossDomains(address, rootHash);
+  /*
+   * A "watcher" (for ui purposes) is an address with 0 reputation in a colony, has no permissions and that is subscribed to that colony.
+   * Watchers belong exclusively to the root domain. There are no watchers of subdomains.
+   *
+   * Note: the terminology we use internally is inconsistent in this respect. For instance, the "watchers" field
+   * on the Colony model refers to all addresses that are joined to the colony, not just those that are joined and
+   * have 0 reputation, and have no permissions assigned.
+   */
 
-        // Filter based on domainId if provided
-        const filteredReputationForAllDomains =
-          userReputationForAllDomains.filter(
-            (userReputation) =>
-              userReputation.reputationAmount &&
-              !userReputation.reputationAmount.isZero(),
+  // Get addresses subscribed to the colony that don't have reputation or permissions
+  // And add addresses with permissions to the contributors set
+  const watchersWithoutRepOrPermissions = allColonyWatchers.reduce(
+    (watchers, watcher) => {
+      if (watcher) {
+        const userAddress = watcher.user.id.toLowerCase();
+        const permissions = watcher.user.roles?.items[0] ?? {}; // query is filtered by domainId
+        const hasPermissions = Object.keys(permissions).some(
+          (permissionKey) => permissions[permissionKey],
+        );
+
+        if (!contributorAddresses.has(userAddress)) {
+          if (!hasPermissions) {
+            watchers.push({
+              ...watcher,
+              address: userAddress,
+            });
+          } else {
+            // A user can also become a contributor if they are assigned any permissions
+            contributorAddresses.add(userAddress);
+          }
+        }
+      }
+      return watchers;
+    },
+    [],
+  );
+
+  const contributors = await Promise.all(
+    [...contributorAddresses].map(async (contributorAddress) => {
+      const response = await graphqlRequest(
+        getUserByAddress,
+        { id: utils.getAddress(contributorAddress) },
+        graphqlURL,
+        apiKey,
+      );
+
+      const user = response?.data?.getUserByAddress?.items[0];
+      try {
+        const { reputationAmount } =
+          await colonyClient.getReputationWithoutProofs(
+            skillId,
+            contributorAddress,
+            rootHash,
           );
 
-        // Extract only the relevant data and
-        // transform the user reputation amount on each domain to percentage
-        const formattedUserReputations = filteredReputationForAllDomains.map(
-          (userReputation) => {
-            if (!userReputation?.reputationAmount) {
-              return {};
-            }
-
-            const reputationPercentage = calculatePercentageReputation(
-              userReputation.reputationAmount?.toString(),
-              totalColonyReputation.reputationAmount?.toString(),
-            );
-
-            return {
-              reputationPercentage,
-              reputationAmount: userReputation.reputationAmount?.toString(),
-            };
-          },
+        const repPercentage = calculatePercentageReputation(
+          reputationAmount,
+          reputationInDomain,
         );
 
         return {
-          address: contributor.address,
-          user: contributor.user,
+          address: contributorAddress,
+          user: user ?? null,
+          reputationAmount: reputationAmount.toString(),
           reputationPercentage:
-            formattedUserReputations[0]?.reputationPercentage,
-          reputationAmount: formattedUserReputations[0]?.reputationAmount,
+            repPercentage === null ? repPercentage : repPercentage.toString(),
         };
-      } catch (error) {
-        throw Error(
-          `Error trying to calculate reputation for user ${address}: ${error.message}`,
-        );
+      } catch (e) {
+        return {
+          address: contributorAddress,
+          user: user ?? null,
+          reputationAmount: '0',
+          reputationPercentage: '0',
+        };
       }
     }),
   );
 
-  contributorsWithReputation.sort((contributor1, contributor2) => {
-    const comparePercentage =
-      contributor1.reputationPercentage !== null &&
-      contributor1.reputationPercentage !== undefined &&
-      contributor2.reputationPercentage !== null &&
-      contributor2.reputationPercentage !== undefined;
-
-    const compareAmount =
-      contributor1.reputationAmount !== undefined &&
-      contributor2.reputationAmount !== undefined;
-
-    let comparisonKey;
-
-    if (comparePercentage) {
-      comparisonKey = 'reputationPercentage';
-    } else if (compareAmount) {
-      comparisonKey = 'reputationAmount';
+  // sort contributors by method provided to lambda
+  switch (sortingMethod) {
+    case SortingMethod.BY_HIGHEST_REP: {
+      contributors.sort((contributor1, contributor2) => {
+        return new Decimal(contributor2.reputationAmount)
+          .sub(contributor1.reputationAmount)
+          .toNumber();
+      });
+      break;
     }
 
-    if (!comparisonKey) {
-      return 0;
+    case SortingMethod.BY_LOWEST_REP: {
+      contributors.sort((contributor1, contributor2) => {
+        return new Decimal(contributor1.reputationAmount)
+          .sub(contributor2.reputationAmount)
+          .toNumber();
+      });
+      break;
     }
 
-    if (sortingMethod === SortingMethod.BY_HIGHEST_REP) {
-      return new Decimal(contributor2[comparisonKey])
-        .sub(contributor1[comparisonKey])
-        .toNumber();
+    default: {
+      break;
     }
+  }
 
-    if (sortingMethod === SortingMethod.BY_LOWEST_REP) {
-      return new Decimal(contributor1[comparisonKey])
-        .sub(contributor2[comparisonKey])
-        .toNumber();
-    }
+  // @NOTE - this might be useful in the future
+  // if (sortingMethod === SortingMethod.BY_MORE_PERMISSIONS) {
+  //   return user2.roles.length - user1.roles.length;
+  // }
+  // if (sortingMethod === SortingMethod.BY_LESS_PERMISSIONS) {
+  //   return user1.roles.length - user2.roles.length;
+  // }
 
-    // @NOTE - this might be useful in the future
-    // if (sortingMethod === SortingMethod.BY_MORE_PERMISSIONS) {
-    //   return user2.roles.length - user1.roles.length;
-    // }
-    // if (sortingMethod === SortingMethod.BY_LESS_PERMISSIONS) {
-    //   return user1.roles.length - user2.roles.length;
-    // }
-
-    return 0;
-  });
+  if (nativeDomainId > Id.RootDomain) {
+    return {
+      contributors,
+      watchers: [], // You can only "watch" the root domain.
+    };
+  }
 
   return {
-    contributors: contributorsWithReputation,
-    watchers,
+    contributors,
+    watchers: watchersWithoutRepOrPermissions,
   };
 };
