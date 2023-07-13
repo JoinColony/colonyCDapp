@@ -27,18 +27,9 @@ import {
   ErrorMessage,
 } from './TransactionTypesSection';
 import { TransactionTypes, transactionOptions } from './constants';
-import { ControlSafeProps } from './types';
+import { ControlSafeProps, SelectedSafe } from './types';
 
 import styles from './ControlSafeForm.css';
-
-/* NOTE: this will be removed when the original is ported to the saga helpers */
-export interface SelectedSafe {
-  id: string; // Making explicit that this is the module address
-  walletAddress: string; // And this is the safe address
-  profile: {
-    displayName: string;
-  };
-}
 
 const displayName = 'dashboard.ControlSafeDialog.ControlSafeForm';
 
