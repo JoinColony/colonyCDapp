@@ -3,7 +3,6 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { ColonyRole, Id } from '@colony/colony-js';
 
-import Avatar from '~shared/Avatar';
 import { DialogSection } from '~shared/Dialog';
 import { HookFormSelect as Select } from '~shared/Fields';
 import Heading from '~shared/Heading';
@@ -108,16 +107,6 @@ const MSG = defineMessages({
 
 export const { invalidSafeError } = MSG;
 const displayName = 'dashboard.ControlSafeDialog.ControlSafeForm';
-
-const renderAvatar = (item) => (
-  <Avatar
-    seed={item.id.toLowerCase()}
-    size="xs"
-    notSet={false}
-    title={item.profile.displayName}
-    placeholderIcon="at-sign-circle"
-  />
-);
 
 const ReadMoreLink = (chunks: React.ReactNode[]) => (
   <ExternalLink href={SAFE_INTEGRATION_LEARN_MORE}>{chunks}</ExternalLink>
@@ -257,7 +246,6 @@ const ControlSafeForm = ({
             data={safes}
             placeholder={MSG.safePickerPlaceholder}
             filter={filterUserSelection}
-            renderAvatar={renderAvatar}
             disabled={disabledInputs}
             onSelected={handleSafeChange}
           />
