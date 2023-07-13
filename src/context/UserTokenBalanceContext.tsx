@@ -12,8 +12,10 @@ export const UserTokenBalanceContext = createContext<{
   tokenBalanceData: GetUserTokenBalanceReturn | null | undefined;
   pollActiveTokenBalance: () => void;
   pollLockedTokenBalance: () => void;
+  refetchTokenBalances: () => void;
 }>({
   tokenBalanceData: null,
+  refetchTokenBalances: () => {},
   pollActiveTokenBalance: () => {},
   pollLockedTokenBalance: () => {},
 });
@@ -76,10 +78,11 @@ export const UserTokenBalanceProvider = ({
   const value = useMemo(
     () => ({
       tokenBalanceData,
+      refetchTokenBalances: refetch,
       pollActiveTokenBalance,
       pollLockedTokenBalance,
     }),
-    [tokenBalanceData, pollActiveTokenBalance, pollLockedTokenBalance],
+    [tokenBalanceData, refetch, pollActiveTokenBalance, pollLockedTokenBalance],
   );
 
   return (
