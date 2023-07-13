@@ -107,10 +107,10 @@ const displayName = 'dashboard.ControlSafeDialog.ControlSafeForm';
 
 const renderAvatar = (item) => (
   <Avatar
-    seed={item.address.toLocaleLowerCase()}
+    seed={item.id.toLowerCase()}
     size="xs"
     notSet={false}
-    title={item.name}
+    title={item.profile.displayName}
     placeholderIcon="at-sign-circle"
   />
 );
