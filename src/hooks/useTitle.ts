@@ -6,10 +6,6 @@
 // remains same (for example, when multiple dialogue boxes can
 // be present on the same route.)
 
-/*
- * @TODO This needs to be addressed and either refactored or removed
- */
-
 import { useLocation, matchPath } from 'react-router-dom';
 import { useEffect } from 'react';
 import { defineMessages, useIntl, MessageDescriptor } from 'react-intl';
