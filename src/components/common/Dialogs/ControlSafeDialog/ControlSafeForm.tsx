@@ -167,8 +167,12 @@ const ControlSafeForm = ({
 
   const isSupportedColonyVersion = version >= 12;
 
-  const disabledInputs =
-    !userHasPermission || isSubmitting || !isSupportedColonyVersion;
+  /* invert this only for testing! */
+  const disabledInputs = !(
+    !userHasPermission ||
+    isSubmitting ||
+    !isSupportedColonyVersion
+  );
 
   const renderTransactionSection = () => {
     switch (transactionType) {
@@ -266,7 +270,7 @@ const ControlSafeForm = ({
             }
             appearance={{ theme: 'grey', width: 'fluid' }}
             placeholder={MSG.transactionPlaceholder}
-            disabled={false}
+            disabled={disabledInputs}
           />
         </div>
       </DialogSection>
