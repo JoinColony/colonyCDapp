@@ -68,14 +68,13 @@ const RemoveSafeDialogForm = ({ back, safeList }: RemoveSafeProps) => {
                   key={`${item.chainId}-${item.contractAddress}`}
                   safe={item}
                   isChecked={
-                    !!safes?.find(
-                      (safe) => {
-                        const {contractAddress, chainId} = JSON.parse(safe);
-                        return item.contractAddress === contractAddress &&
+                    !!safes?.find((safe) => {
+                      const { contractAddress, chainId } = JSON.parse(safe);
+                      return (
+                        item.contractAddress === contractAddress &&
                         item.chainId === chainId
-                      }
-                        ,
-                    )
+                      );
+                    })
                   }
                 />
               ))}
