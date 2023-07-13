@@ -45,9 +45,9 @@ const ControlSafeDialog = ({
           safe: preselectedSafe
             ? {
                 id: preselectedSafe.moduleContractAddress,
+                walletAddress: preselectedSafe.address,
                 profile: {
                   displayName: `${preselectedSafe.name} (${preselectedSafeChain?.name})`,
-                  walletAddress: preselectedSafe.address,
                 },
               }
             : undefined,
