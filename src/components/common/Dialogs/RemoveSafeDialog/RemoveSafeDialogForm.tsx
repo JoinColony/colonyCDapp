@@ -34,7 +34,7 @@ interface RemoveSafeProps {
 
 const RemoveSafeDialogForm = ({ back, safeList }: RemoveSafeProps) => {
   const {
-    formState: { isSubmitting, isValid },
+    formState: { isSubmitting, isValid, isDirty },
     watch,
   } = useFormContext();
 
@@ -93,7 +93,7 @@ const RemoveSafeDialogForm = ({ back, safeList }: RemoveSafeProps) => {
           appearance={{ theme: 'pink', size: 'large' }}
           text={{ id: 'button.confirm' }}
           loading={isSubmitting}
-          disabled={!isValid || isSubmitting}
+          disabled={!isValid || isSubmitting || !isDirty}
         />
       </DialogSection>
     </>
