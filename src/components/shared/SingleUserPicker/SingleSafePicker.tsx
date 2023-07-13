@@ -21,9 +21,9 @@ const SingleSafePicker = ({ data, ...props }: Props) => {
         );
         return {
           id: item.moduleContractAddress,
+          walletAddress: item.address,
           profile: {
             displayName: `${item.name} (${safeNetwork?.name})`,
-            walletAddress: item.address,
           },
         };
       }),

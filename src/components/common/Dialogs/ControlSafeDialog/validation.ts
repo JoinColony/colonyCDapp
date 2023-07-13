@@ -13,10 +13,10 @@ export const getValidationSchema = () => {
     .shape({
       safe: object().shape({
         id: string().address().required(),
+        walletAddress: string().address().required(),
         profile: object()
           .shape({
             displayName: string().required(),
-            walletAddress: string().address().required(),
           })
           .required(() => MSG.requiredFieldError),
       }),
