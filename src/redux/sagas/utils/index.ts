@@ -11,6 +11,7 @@ export * from './refreshExtension';
 export * from './metadataChangelog';
 export * from './ipfs';
 export * from './annotations';
+export * from './safeHelpers';
 
 // export * from './updateColonyDisplayCache';
 // export { updateMotionValues } from './updateMotionValues';
