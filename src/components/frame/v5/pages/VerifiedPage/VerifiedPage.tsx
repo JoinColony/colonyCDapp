@@ -16,7 +16,7 @@ const VerifiedPage: FC = () => {
       <TwoColumns aside={<Navigation pageName="members" />}>
         <div className="flex justify-between mt-6">
           <div className="w-full">
-            <Table list={searchedVerified} />
+            <Table list={searchedVerified} onReputationSortClick={() => {}} />
           </div>
         </div>
       </TwoColumns>
