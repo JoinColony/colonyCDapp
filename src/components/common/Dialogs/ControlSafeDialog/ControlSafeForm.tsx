@@ -106,6 +106,7 @@ const ControlSafeForm = ({
 }: ControlSafeProps) => {
   const [prevSafeAddress, setPrevSafeAddress] = useState<string>('');
   const [transactionTabStatus, setTransactionTabStatus] = useState([true]);
+  const savedTokenState = useState({});
 
   const {
     formState: { isSubmitting, dirtyFields },
@@ -158,7 +159,16 @@ const ControlSafeForm = ({
 
     switch (transactionType) {
       case TransactionTypes.TRANSFER_FUNDS:
-        return <TransferFundsSection />;
+        return (
+          <TransferFundsSection
+            colony={colony}
+            disabledInput={disabledInputs}
+            transactionFormIndex={0}
+            savedTokenState={savedTokenState}
+            /* handleInputChange={handleInputChange}
+             * handleValidation={handleValidation} */
+          />
+        );
       case TransactionTypes.RAW_TRANSACTION:
         return (
           <RawTransactionSection
