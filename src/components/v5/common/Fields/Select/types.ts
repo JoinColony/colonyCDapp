@@ -5,7 +5,7 @@ export interface SelectProps<T> {
   handleChange: (id: number) => void;
   list: T;
   isLoading?: boolean;
-  placeholderText?: MessageDescriptor;
+  placeholderText?: MessageDescriptor | string;
   isListRelative?: boolean;
   showAvatar?: boolean;
 }

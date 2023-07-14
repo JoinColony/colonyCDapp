@@ -79,10 +79,12 @@ const Select = <T extends any[]>({
     selectedItem &&
     list.filter(({ value }) => value !== selectedItem.value);
   const optionsList = isPlaceholder ? list : filteredList;
+  const placeholder =
+    typeof placeholderText === 'string'
+      ? placeholderText
+      : placeholderText && formatMessage(placeholderText);
 
-  const labelText = isPlaceholder
-    ? placeholderText && formatMessage(placeholderText)
-    : selectedItem?.label;
+  const labelText = isPlaceholder ? placeholder : selectedItem?.label;
 
   return (
     <div className={styles.container}>

@@ -78,6 +78,7 @@ import VerifiedPage from '~frame/v5/pages/VerifiedPage';
 import TeamsPage from '~frame/v5/pages/TeamsPage';
 import { SearchContextProvider } from '~context/SearchContext';
 import { ColonyUsersPageType } from '~frame/v5/pages/ColonyUsersPage/types';
+import { MemberContextProvider } from '~context/MemberContext';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -165,13 +166,15 @@ const Routes = () => {
                 <ColonyContextProvider>
                   <ExtensionsContextProvider>
                     <SearchContextProvider>
-                      <PageLayout
-                        loadingText="members"
-                        title={{ id: 'membersPage.title' }}
-                        description={{ id: 'membersPage.description' }}
-                      >
-                        <MembersPage />
-                      </PageLayout>
+                      <MemberContextProvider>
+                        <PageLayout
+                          loadingText="members"
+                          title={{ id: 'membersPage.title' }}
+                          description={{ id: 'membersPage.description' }}
+                        >
+                          <MembersPage />
+                        </PageLayout>
+                      </MemberContextProvider>
                     </SearchContextProvider>
                   </ExtensionsContextProvider>
                 </ColonyContextProvider>
@@ -190,13 +193,15 @@ const Routes = () => {
                 <ColonyContextProvider>
                   <ExtensionsContextProvider>
                     <SearchContextProvider>
-                      <PageLayout
-                        loadingText={pageName}
-                        title={{ id: `${pageName}Page.title` }}
-                        description={{ id: `${pageName}Page.description` }}
-                      >
-                        <ColonyUsersPage pageName={pageName} />
-                      </PageLayout>
+                      <MemberContextProvider>
+                        <PageLayout
+                          loadingText={pageName}
+                          title={{ id: `${pageName}Page.title` }}
+                          description={{ id: `${pageName}Page.description` }}
+                        >
+                          <ColonyUsersPage pageName={pageName} />
+                        </PageLayout>
+                      </MemberContextProvider>
                     </SearchContextProvider>
                   </ExtensionsContextProvider>
                 </ColonyContextProvider>
@@ -209,13 +214,15 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <PageLayout
-                  loadingText="verified"
-                  title={{ id: 'verifiedPage.title' }}
-                  description={{ id: 'verifiedPage.description' }}
-                >
-                  <VerifiedPage />
-                </PageLayout>
+                <MemberContextProvider>
+                  <PageLayout
+                    loadingText="verified"
+                    title={{ id: 'verifiedPage.title' }}
+                    description={{ id: 'verifiedPage.description' }}
+                  >
+                    <VerifiedPage />
+                  </PageLayout>
+                </MemberContextProvider>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }

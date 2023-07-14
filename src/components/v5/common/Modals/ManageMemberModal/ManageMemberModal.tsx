@@ -34,7 +34,14 @@ const ManageMemberModal: FC<ManageMemberModalProps> = ({
     manageMemberActions[selectedAction]?.value === 'unban';
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} icon="folder-user">
+    <Modal
+      isOpen={isOpen}
+      onClose={() => {
+        onClose();
+        setSelectedAction(-1);
+      }}
+      icon="folder-user"
+    >
       <h4 className="heading-5 mb-1.5">
         {formatMessage({ id: 'members.modal.title' })}
       </h4>
