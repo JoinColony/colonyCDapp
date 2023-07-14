@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import clsx from 'clsx';
 
 import AccordionHeader from './AccordionHeader';
 import AccordionContent from './AccordionContent';
@@ -15,21 +14,16 @@ const AccordionItem: FC<AccordionItemProps> = ({
   isOpen,
   onClick,
   errors,
-  mode = 'primary',
 }) => (
   <>
     <div
-      className={clsx({
-        'w-full text-2': mode === 'primary',
-        'flex text-4 text-gray-400 uppercase justify-between w-full':
-          mode === 'secondary',
-      })}
+      className="w-full text-2"
       onClick={onClick}
       onKeyUp={onClick}
       role="button"
       tabIndex={0}
     >
-      <AccordionHeader title={title} isOpen={isOpen} mode={mode} />
+      <AccordionHeader title={title} isOpen={isOpen} />
     </div>
     <div className="relative">
       <AnimatePresence>

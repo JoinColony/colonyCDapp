@@ -97,6 +97,10 @@
   .navigation-link {
     @apply text-gray-700 w-full flex items-center transition-all duration-normal py-2 heading-5 hover:text-blue-400 sm:font-normal sm:text-md sm:text-gray-900;
   }
+
+  .subnav-button {
+    @apply flex w-full items-center transition-all duration-normal text-md hover:bg-gray-50 hover:font-medium rounded py-2 px-4;
+  }
 }
 
 .rts___tabs {

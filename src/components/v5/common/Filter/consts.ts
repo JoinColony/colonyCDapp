@@ -1,64 +1,46 @@
-import { FilterOption } from './types';
+import {
+  contributorTypes,
+  permissionsTypes,
+  reputationType,
+  statusTypes,
+  teamTypes,
+} from './partials/consts';
+import { ParentFilterOption } from './types';
 
-export const filterOptions: FilterOption[] = [
+export const filterOptions: ParentFilterOption[] = [
   {
     id: 0,
     title: 'filter.teams',
-    option: 'teams',
+    option: 'team',
     iconName: 'users-three',
-    content: [
-      {
-        id: 1,
-        textItem: 'content',
-      },
-    ],
+    content: teamTypes,
   },
   {
     id: 1,
     title: 'filter.contributor.type',
     option: 'contributor',
     iconName: 'user',
-    content: [
-      {
-        id: 1,
-        textItem: 'content',
-      },
-    ],
+    content: contributorTypes,
   },
   {
     id: 2,
     title: 'filter.user.status',
     option: 'status',
     iconName: 'flag',
-    content: [
-      {
-        id: 1,
-        textItem: 'content',
-      },
-    ],
+    content: statusTypes,
   },
   {
     id: 3,
     title: 'filter.reputation',
     option: 'reputation',
     iconName: 'star-not-filled',
-    content: [
-      {
-        id: 1,
-        textItem: 'content',
-      },
-    ],
+    content: reputationType,
   },
   {
     id: 4,
     title: 'filter.permissions',
     option: 'permissions',
     iconName: 'lock-key',
-    content: [
-      {
-        id: 1,
-        textItem: 'content',
-      },
-    ],
+    content: permissionsTypes,
   },
 ];

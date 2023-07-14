@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import SubNavigationItem from '~v5/shared/SubNavigationItem';
 import { SubNavigationProps } from '../types';
 import { useMemberContext } from '~context/MemberContext';
+import { useMembersSubNavigation } from '~v5/shared/SubNavigationItem/hooks';
 
 const displayName = 'v5.CardWithBios.partials.SubNavigation';
 
@@ -11,6 +12,7 @@ const SubNavigation: FC<SubNavigationProps> = ({
   user,
 }) => {
   const { setIsMemberModalOpen, setUser } = useMemberContext();
+  const { handleClick, isCopyTriggered } = useMembersSubNavigation();
 
   return (
     <ul>
@@ -46,6 +48,8 @@ const SubNavigation: FC<SubNavigationProps> = ({
         title="members.subnav.copy.wallet.address"
         shouldBeTooltipVisible
         tooltipText={['copied', 'copy']}
+        isCopyTriggered={isCopyTriggered}
+        onClick={handleClick}
       />
     </ul>
   );

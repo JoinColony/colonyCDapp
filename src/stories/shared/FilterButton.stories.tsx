@@ -12,6 +12,6 @@ type Story = StoryObj<typeof FilterButton>;
 
 export const Base: Story = {
   args: {
-    selectedFilterNumber: 2,
+    numberSelectedFilters: 2,
   },
 };
