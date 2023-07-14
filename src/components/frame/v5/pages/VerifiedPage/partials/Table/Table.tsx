@@ -36,7 +36,7 @@ const Table: FC<TableProps> = ({ list, onReputationSortClick }) => {
             </span>
           </div>
           <div className="flex items-center mt-2.5 sm:mt-0">
-            {selectedMembers.length ? (
+            {!!selectedMembers.length && (
               <Button
                 mode="secondaryOutline"
                 iconName="trash"
@@ -45,8 +45,8 @@ const Table: FC<TableProps> = ({ list, onReputationSortClick }) => {
               >
                 {formatMessage({ id: 'verifiedPage.table.remove' })}
               </Button>
-            ) : undefined}
-            {!listLength && !searchValue ? undefined : <Filter />}
+            )}
+            {(!!listLength || !!searchValue) && <Filter />}
             <Button
               mode="primarySolid"
               className="ml-2"
