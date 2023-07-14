@@ -53,7 +53,7 @@
   }
 
   .heading-3 {
-    @apply text-xl font-semibold md:text-2xl;
+    @apply font-semibold text-2xl;
   }
 
   .heading-4 {

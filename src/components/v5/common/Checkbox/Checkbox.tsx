@@ -44,7 +44,7 @@ const Checkbox: FC<CheckboxProps> = ({
             'peer-checked:bg-blue-400 peer-checked:border-blue-400 peer-disabled:bg-gray-40 peer-disabled:border-gray-40 peer-checked:after:border-l peer-checked:after:border-b',
           )}
         />
-        {formatMessage(label)}
+        {label && formatMessage(label)}
       </label>
     </div>
   );

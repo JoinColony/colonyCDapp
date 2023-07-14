@@ -209,13 +209,15 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <PageLayout
-                  loadingText="verified"
-                  title={{ id: 'verifiedPage.title' }}
-                  description={{ id: 'verifiedPage.description' }}
-                >
-                  <VerifiedPage />
-                </PageLayout>
+                <SearchContextProvider>
+                  <PageLayout
+                    loadingText="verified"
+                    title={{ id: 'verifiedPage.title' }}
+                    description={{ id: 'verifiedPage.description' }}
+                  >
+                    <VerifiedPage />
+                  </PageLayout>
+                </SearchContextProvider>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }

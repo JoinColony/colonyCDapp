@@ -16,6 +16,7 @@ const EmptyContent: FC<EmptyContentProps> = ({
   onClick,
   buttonText,
   withBorder,
+  withoutButtonIcon = false,
 }) => {
   const { formatMessage } = useIntl();
   const titleText = typeof title === 'string' ? title : formatMessage(title);
@@ -42,12 +43,11 @@ const EmptyContent: FC<EmptyContentProps> = ({
         <h5 className="text-1 mt-3">{titleText}</h5>
         <p className="mt-2 text-sm text-gray-600">{descriptionText}</p>
         {onClick && (
-          // @TODO: Change to Button component
           <Button
             mode="primaryOutline"
             className="mt-4"
             size="small"
-            iconName="share-network"
+            iconName={withoutButtonIcon ? '' : 'share-network'}
             onClick={onClick}
           >
             {buttonTextFormatted}

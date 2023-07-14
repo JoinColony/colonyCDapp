@@ -7,4 +7,5 @@ export interface EmptyContentProps {
   withBorder?: boolean;
   onClick?: () => void;
   buttonText?: MessageDescriptor | string;
+  withoutButtonIcon?: boolean;
 }
