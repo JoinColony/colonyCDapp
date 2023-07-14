@@ -27,9 +27,10 @@ import {
   ErrorMessage,
 } from './TransactionTypesSection';
 import { TransactionTypes, transactionOptions } from './constants';
-import { ControlSafeProps, SelectedSafe } from './types';
+import { ControlSafeProps } from './types';
 
 import styles from './ControlSafeForm.css';
+import { SelectedSafe } from '~types/safes';
 
 const displayName = 'common.ControlSafeDialog.ControlSafeForm';
 
@@ -160,7 +161,7 @@ const ControlSafeForm = ({
   };
 
   const handleSafeChange = (newSafe: SelectedSafe) => {
-    const safeAddress = newSafe?.walletAddress;
+    const safeAddress = newSafe?.profile?.walletAddress;
     if (safeAddress !== prevSafeAddress) {
       setPrevSafeAddress(safeAddress);
       /* values.transactions.forEach((tx, i) => {
