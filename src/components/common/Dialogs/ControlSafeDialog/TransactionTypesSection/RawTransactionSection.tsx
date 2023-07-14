@@ -2,7 +2,7 @@ import React from 'react';
 
 import { DialogSection } from '~shared/Dialog';
 
-const displayName = `dashboard.ControlSafeDialog.RawTransactionSection`;
+const displayName = `common.ControlSafeDialog.RawTransactionSection`;
 
 const RawTransactionSection = () => {
   return (

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { DialogSection } from '~shared/Dialog';
 
-const displayName = `dashboard.ControlSafeDialog.TransferNFTSection`;
+const displayName = `common.ControlSafeDialog.TransferNFTSection`;
 
 const TransferNFTSection = () => {
   return (

@@ -12,7 +12,7 @@ import { ADDRESS_ZERO } from '~constants';
 import { TransactionTypes } from './constants';
 import { SafeBalance } from './types';
 
-const displayName = 'dashboard.ControlSafeDialog.validation';
+const displayName = 'common.ControlSafeDialog.validation';
 const requiredFieldError = 'Please enter a value';
 
 const { formatMessage } = intl({
