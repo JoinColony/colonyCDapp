@@ -7,27 +7,17 @@ import Icon from '~shared/Icon';
 
 const displayName = 'Extensions.Accordion.partials.AccordionHeader';
 
-const AccordionHeader: FC<AccordionItemProps> = ({
-  title = '',
-  isOpen,
-  mode = 'primary',
-}) => {
+const AccordionHeader: FC<AccordionItemProps> = ({ title = '', isOpen }) => {
   const { formatMessage } = useIntl();
   const text = typeof title === 'string' ? formatMessage({ id: title }) : title;
 
   return (
     <>
-      <div
-        className={clsx('flex justify-between items-center pb-2 pt-4 w-full', {
-          'text-gray-700': mode === 'primary',
-          'text-gray-400': mode === 'secondary',
-        })}
-      >
+      <div className="flex justify-between items-center pb-2 pt-4 w-full text-gray-700">
         {text}
         <span
           className={clsx({
             'rotate-180': isOpen,
-            'text-gray-700': mode === 'secondary',
           })}
         >
           <Icon
@@ -37,7 +27,7 @@ const AccordionHeader: FC<AccordionItemProps> = ({
           />
         </span>
       </div>
-      {mode === 'primary' && <div className="w-full bg-gray-200 h-px" />}
+      <div className="w-full bg-gray-200 h-px" />
     </>
   );
 };

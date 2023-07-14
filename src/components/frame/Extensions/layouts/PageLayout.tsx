@@ -28,6 +28,8 @@ import styles from '~shared/Extensions/Toast/Toast.module.css';
 import { getAllUserRoles } from '~transformers';
 import { ColonyFragment } from '~gql';
 import { PageLayoutProps } from './types';
+import ManageMemberModal from '~v5/common/Modals/ManageMemberModal/ManageMemberModal';
+import { useMemberContext } from '~context/MemberContext';
 
 const displayName = 'frame.Extensions.layouts.PageLayout';
 
@@ -49,6 +51,11 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
   const openUpgradeColonyDialog = useDialog(NetworkContractUpgradeDialog);
   const enabledExtensionData = useEnabledExtensions();
   const { isDarkMode } = usePageThemeContext();
+  const {
+    isMemberModalOpen,
+    setIsMemberModalOpen,
+    user: modalUser,
+  } = useMemberContext();
 
   const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);
   const canUpgradeColony = user?.name && hasRoot(allUserRoles);
@@ -103,6 +110,11 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
           <div className="mt-9">{children}</div>
         </div>
       </main>
+      <ManageMemberModal
+        isOpen={isMemberModalOpen}
+        onClose={() => setIsMemberModalOpen(false)}
+        user={modalUser}
+      />
     </Spinner>
   );
 };

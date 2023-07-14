@@ -1,4 +1,4 @@
-import { Member } from '~types';
+import { Member, User } from '~types';
 import { UserStatusMode } from '~v5/common/Pills/types';
 
 export type Permissions = {
@@ -49,4 +49,5 @@ export type CardPermissionProps = {
 
 export type SubNavigationProps = {
   shouldPermissionsCanBeChanged?: boolean;
+  user?: User | null;
 };

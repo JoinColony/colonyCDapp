@@ -3,26 +3,31 @@ import { useIntl } from 'react-intl';
 
 import { TableFilteringProps } from './types';
 import { CloseButton } from '~v5/shared/Button';
+import styles from './TableFiltering.module.css';
 
 const displayName = 'v5.common.TableFiltering';
 
 const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
-  filterType,
+  selectedParentFilters,
   filterOptions,
   className,
   onClick,
 }) => {
   const { formatMessage } = useIntl();
 
-  return (
-    <div
-      className={`${className} bg-blue-100 py-2 px-3 rounded-lg inline-flex items-center gap-1 text-blue-400`}
-    >
-      <div className="text-5 capitalize">{filterType}:</div>
+  const lastIndex = filterOptions[filterOptions.length - 1];
+
+  const content = (
+    <>
       {Array.isArray(filterOptions) ? (
-        filterOptions.map((name) => <p className="text-4 capitalize">{name}</p>)
+        filterOptions.map((name) => (
+          <p key={name} className="text-sm capitalize min-w-fit">
+            {formatMessage({ id: `filter.pill.${name}` })}
+            {lastIndex !== name ? ',' : ''}
+          </p>
+        ))
       ) : (
-        <p className="text-4 capitalize">{filterOptions}</p>
+        <p className="text-sm capitalize">{filterOptions}</p>
       )}
       <CloseButton
         aria-label={formatMessage({ id: 'ariaLabel.closeFilter' })}
@@ -30,7 +35,25 @@ const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
         onClick={onClick}
         iconSize="extraTiny"
       />
-    </div>
+    </>
+  );
+
+  return (
+    <>
+      {Array.isArray(selectedParentFilters) ? (
+        selectedParentFilters.map((name) => (
+          <div key={name} className={`${className} ${styles.pill}`}>
+            <div className={styles.pillName}>{name}:</div>
+            {content}
+          </div>
+        ))
+      ) : (
+        <div className={`${className} ${styles.pill}`}>
+          <div className={styles.pillName}>{selectedParentFilters}:</div>
+          {content}
+        </div>
+      )}
+    </>
   );
 };
 

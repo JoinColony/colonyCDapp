@@ -47,7 +47,9 @@ const CloseButton: FC<CloseButtonProps> = ({
           ref={setTriggerRef}
           {...rest}
         >
-          <Icon name="close" appearance={{ size: iconSize }} />
+          <span className="flex text-sm">
+            <Icon name="close" appearance={{ size: iconSize }} />
+          </span>
         </button>
       )}
     </>

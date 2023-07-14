@@ -1,14 +1,14 @@
 /* eslint-disable max-len */
-import React, { FC } from 'react';
-import clsx from 'clsx';
+import React, { FC, useCallback, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
+import clsx from 'clsx';
 
 import { CheckboxProps } from './types';
 import styles from './Checkbox.module.css';
 
 const displayName = 'v5.common.Checkbox';
 
-const Checkbox: FC<CheckboxProps> = ({
+const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
   name,
   disabled,
   id,
@@ -16,8 +16,17 @@ const Checkbox: FC<CheckboxProps> = ({
   label,
   onChange,
   classNames,
+  isChecked,
+  children,
 }) => {
   const { formatMessage } = useIntl();
+
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      onChange?.(event);
+    },
+    [onChange],
+  );
 
   return (
     <div
@@ -34,9 +43,10 @@ const Checkbox: FC<CheckboxProps> = ({
           {...register?.(name)}
           name={name}
           id={id}
+          checked={isChecked}
           disabled={disabled}
-          onChange={onChange}
           className="peer absolute top-0 left-0 overflow-hidden w-0 h-0 opacity-0"
+          onChange={(event) => handleChange(event)}
         />
         <span
           className={clsx(
@@ -44,7 +54,10 @@ const Checkbox: FC<CheckboxProps> = ({
             'peer-checked:bg-blue-400 peer-checked:border-blue-400 peer-disabled:bg-gray-40 peer-disabled:border-gray-40 peer-checked:after:border-l peer-checked:after:border-b',
           )}
         />
-        {label && formatMessage(label)}
+        <div className="flex items-center gap-2">
+          {children}
+          {label && formatMessage(label)}
+        </div>
       </label>
     </div>
   );

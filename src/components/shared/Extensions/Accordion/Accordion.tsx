@@ -10,7 +10,6 @@ const Accordion: FC<AccordionProps> = ({
   openIndex,
   onOpenIndexChange,
   errors,
-  mode,
 }) => {
   const onClick = (index: number) => {
     if (!onOpenIndexChange) return;
@@ -33,7 +32,6 @@ const Accordion: FC<AccordionProps> = ({
           isOpen={openIndex === index}
           onClick={() => onClick(index)}
           errors={errors}
-          mode={mode}
         />
       ))}
     </div>

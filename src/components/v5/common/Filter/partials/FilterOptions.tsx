@@ -1,43 +1,49 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
-import clsx from 'clsx';
 import { useMobile } from '~hooks';
 
-import Accordion from '~shared/Extensions/Accordion';
-import { useAccordion } from '~shared/Extensions/Accordion/hooks';
 import { FilterOptionsProps } from '../types';
 import SubNavigationItem from '~v5/shared/SubNavigationItem';
+import Header from '~v5/shared/SubNavigationItem/partials/Header';
+import Accordion from './Accordion';
 
 const displayName = 'v5.common.Filter.partials.FilterOptions';
 
-const FilterOptions: FC<FilterOptionsProps> = ({ options }) => {
-  const { formatMessage } = useIntl();
+const FilterOptions: FC<FilterOptionsProps> = ({
+  options,
+  onSelectNestedOption,
+  onSelectParentFilter,
+  selectedChildOption,
+  checkedItems,
+}) => {
   const isMobile = useMobile();
-  const { openIndex, onOpenIndexChange } = useAccordion();
-  // @TODO: add conditions when filters should be visible / not visible
-  // @TODO: add submenu
 
   return (
     <div>
-      <span
-        className={clsx('flex text-4 text-gray-400 uppercase', {
-          'ml-5 mb-1': !isMobile,
-          'mb-4': isMobile,
-        })}
-      >
-        {formatMessage({ id: 'filters' })}
-      </span>
+      <Header title={{ id: 'filters' }} />
       {isMobile ? (
         <Accordion
           items={options}
-          openIndex={openIndex}
-          onOpenIndexChange={onOpenIndexChange}
-          mode="secondary"
+          onSelectParentFilter={onSelectParentFilter}
+          onSelectNestedOption={onSelectNestedOption}
+          selectedChildOption={selectedChildOption}
+          checkedItems={checkedItems}
         />
       ) : (
         <ul className="flex flex-col">
-          {options?.map(({ id, iconName, title }) => (
-            <SubNavigationItem key={id} iconName={iconName} title={title} />
+          {options?.map(({ id, iconName, title, option, content }) => (
+            <SubNavigationItem
+              key={id}
+              iconName={iconName}
+              title={title}
+              option={option}
+              options={options}
+              nestedFilters={content}
+              onSelectParentFilter={onSelectParentFilter}
+              onSelectNestedOption={onSelectNestedOption}
+              shouldBeActionOnHover={false}
+              selectedChildOption={selectedChildOption}
+              checkedItems={checkedItems}
+            />
           ))}
         </ul>
       )}

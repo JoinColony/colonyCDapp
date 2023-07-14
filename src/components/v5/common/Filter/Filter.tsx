@@ -7,6 +7,8 @@ import FilterOptions from './partials/FilterOptions';
 import Modal from '~v5/shared/Modal';
 import PopoverBase from '~v5/shared/PopoverBase';
 import { useMembersPage } from '~frame/v5/pages/MembersPage/hooks';
+import TableFiltering from '../TableFiltering';
+import { useFilter } from './hooks';
 import SearchInput from './partials/SearchInput';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
@@ -21,6 +23,16 @@ const Filter: FC = () => {
   const isMobile = useMobile();
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     useMembersPage();
+  const {
+    selectedFilters,
+    onSelectParentFilter,
+    onSelectNestedOption,
+    onClearFilters,
+    selectedChildOption,
+    numberSelectedFilters,
+    selectedParentFilters,
+    checkedItems,
+  } = useFilter();
 
   return (
     <>
@@ -29,6 +41,7 @@ const Filter: FC = () => {
           <FilterButton
             isOpen={isOpened}
             onClick={() => setOpened(!isOpened)}
+            numberSelectedFilters={numberSelectedFilters}
           />
           <Button
             mode="primaryOutline"
@@ -44,7 +57,13 @@ const Filter: FC = () => {
             onClose={() => setOpened(false)}
             isOpen={isOpened}
           >
-            <FilterOptions options={filterOptions} />
+            <FilterOptions
+              options={filterOptions}
+              onSelectParentFilter={onSelectParentFilter}
+              onSelectNestedOption={onSelectNestedOption}
+              selectedChildOption={selectedChildOption}
+              checkedItems={checkedItems}
+            />
           </Modal>
           <Modal
             isFullOnMobile={false}
@@ -59,7 +78,16 @@ const Filter: FC = () => {
         </div>
       ) : (
         <>
-          <FilterButton isOpen={visible} setTriggerRef={setTriggerRef} />
+          <div className="flex flex-row gap-2">
+            {!!selectedFilters?.length && (
+              <TableFiltering
+                selectedParentFilters={selectedParentFilters}
+                filterOptions={selectedFilters}
+                onClick={() => onClearFilters()}
+              />
+            )}
+            <FilterButton isOpen={visible} setTriggerRef={setTriggerRef} />
+          </div>
           {visible && (
             <PopoverBase
               setTooltipRef={setTooltipRef}
@@ -75,7 +103,13 @@ const Filter: FC = () => {
               <SearchInput
                 onSearchButtonClick={() => setIsSearchOpened(false)}
               />
-              <FilterOptions options={filterOptions} />
+              <FilterOptions
+                options={filterOptions}
+                onSelectParentFilter={onSelectParentFilter}
+                onSelectNestedOption={onSelectNestedOption}
+                selectedChildOption={selectedChildOption}
+                checkedItems={checkedItems}
+              />
             </PopoverBase>
           )}
         </>
