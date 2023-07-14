@@ -2,7 +2,7 @@ import React from 'react';
 
 import { DialogSection } from '~shared/Dialog';
 
-const displayName = `dashboard.ControlSafeDialog.TransferFundsSection`;
+const displayName = `common.ControlSafeDialog.TransferFundsSection`;
 
 const TransferFundsSection = () => {
   return (
