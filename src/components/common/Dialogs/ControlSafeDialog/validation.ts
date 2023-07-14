@@ -5,12 +5,11 @@ import { object, string, array, number } from 'yup';
 import moveDecimal from 'move-decimal-point';
 
 import { toFinite } from 'lodash';
-import { Address } from '~types';
 import { intl } from '~utils/intl';
-import { ADDRESS_ZERO } from '~constants';
 
 import { TransactionTypes } from './constants';
-import { SafeBalance } from './types';
+import { SafeBalance } from '~types/safes';
+import { getSelectedSafeBalance } from '~utils/safes';
 
 const displayName = 'common.ControlSafeDialog.validation';
 const requiredFieldError = 'Please enter a value';
@@ -43,16 +42,6 @@ const MSG = defineMessages({
 });
 
 // placeholder
-export const getSelectedSafeBalance = (
-  safeBalances?: SafeBalance[] | null,
-  selectedTokenAddress?: Address,
-) =>
-  safeBalances?.find(
-    (balance) =>
-      balance.tokenAddress === selectedTokenAddress ||
-      (!balance.tokenAddress && selectedTokenAddress === ADDRESS_ZERO),
-  );
-
 export const isAbiItem = (value: unknown): value is any[] => {
   return (
     Array.isArray(value) &&
