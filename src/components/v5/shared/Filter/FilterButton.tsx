@@ -10,7 +10,7 @@ const displayName = 'v5.shared.Filter.FilterButton';
 
 const FilterButton: FC<FilterButtonProps> = ({
   isOpen,
-  selectedFilterNumber,
+  numberSelectedFilters,
   setTriggerRef,
   onClick,
 }) => {
@@ -29,9 +29,9 @@ const FilterButton: FC<FilterButtonProps> = ({
       <Icon name="funnel-simple" appearance={{ size: 'tiny' }} />
       {formatMessage({ id: 'filter' })}
 
-      {!!selectedFilterNumber && (
+      {!!numberSelectedFilters && (
         <span className="bg-blue-100 p-1 rounded-sm text-blue-400 text-6 h-3 flex items-center">
-          {selectedFilterNumber}
+          {numberSelectedFilters}
         </span>
       )}
     </button>

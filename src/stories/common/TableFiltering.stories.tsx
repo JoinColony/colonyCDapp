@@ -12,13 +12,15 @@ type Story = StoryObj<typeof TableFiltering>;
 
 export const SingleFilterOption: Story = {
   args: {
-    filterType: 'statuses',
+    // @ts-ignore
+    filterType: 'status',
     filterOptions: ['banned'],
   },
 };
 
 export const WithFilterArrayOptions: Story = {
   args: {
+    // @ts-ignore
     filterType: 'team',
     filterOptions: ['administration', 'dedicated'],
     // @ts-ignore
