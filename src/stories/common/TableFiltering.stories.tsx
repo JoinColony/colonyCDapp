@@ -15,6 +15,7 @@ export const SingleFilterOption: Story = {
     // @ts-ignore
     filterType: 'status',
     filterOptions: ['banned'],
+    selectedParentFilters: 'status',
   },
 };
 
@@ -23,6 +24,7 @@ export const WithFilterArrayOptions: Story = {
     // @ts-ignore
     filterType: 'team',
     filterOptions: ['administration', 'dedicated'],
+    selectedParentFilters: 'permissions',
     // @ts-ignore
     onClick: () => alert('Close'),
   },
