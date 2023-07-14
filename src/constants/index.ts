@@ -251,3 +251,9 @@ export const GNOSIS_AMB_BRIDGES: { [x: number]: AmbBridge } = {
 };
 
 export const FETCH_ABORTED = 'fetchAborted';
+
+export const SAFE_NETWORKS: NetworkInfo[] = [
+  GNOSIS_NETWORK,
+  ETHEREUM_NETWORK,
+  GOERLI_NETWORK,
+];
