@@ -5,7 +5,7 @@ import { pipe, withMeta, mapPayload } from '~utils/actions';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
-import { ActionTypes } from '~redux/index';
+import { ActionTypes } from '~redux';
 import { WizardDialogType } from '~hooks';
 import { Safe } from '~types';
 import { SUPPORTED_SAFE_NETWORKS } from '~constants';
