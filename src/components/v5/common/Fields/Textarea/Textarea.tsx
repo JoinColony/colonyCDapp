@@ -60,20 +60,21 @@ const Textarea: FC<TextareaProps> = ({
           {
             'border-gray-300': !isTyping,
             'border-blue-200 shadow-lightBlue': isTyping,
-            'border-red-400': isError,
+            'border-negative-400': isError,
           },
         )}
       >
         <textarea
           id="message"
           placeholder={placeholder}
-          className="resize-none w-full text-md outline-0 placeholder:text-gray-500"
+          className="resize-none w-full text-gray-900 text-md outline-0 placeholder:text-gray-500 outline-none"
           onChange={onChange}
         />
         {!!currentCharNumber && shouldNumberOfCharsBeVisible && (
           <div
             className={clsx('text-4 flex justify-end', {
-              'text-red-400': isError,
+              'text-negative-400': isError,
+              'text-gray-500': !isError,
             })}
           >
             {currentCharNumber}/{maxCharNumber}
