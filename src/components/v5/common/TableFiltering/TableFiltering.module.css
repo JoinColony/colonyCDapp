@@ -3,5 +3,5 @@
 }
 
 .pillName {
-  @apply text-5 capitalize container;
+  @apply text-sm font-semibold capitalize container;
 }

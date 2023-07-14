@@ -21,13 +21,13 @@ const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
     <>
       {Array.isArray(filterOptions) ? (
         filterOptions.map((name) => (
-          <p key={name} className="text-4 capitalize min-w-fit">
+          <p key={name} className="text-sm capitalize min-w-fit">
             {formatMessage({ id: `filter.pill.${name}` })}
             {lastIndex !== name ? ',' : ''}
           </p>
         ))
       ) : (
-        <p className="text-4 capitalize">{filterOptions}</p>
+        <p className="text-sm capitalize">{filterOptions}</p>
       )}
       <CloseButton
         aria-label={formatMessage({ id: 'ariaLabel.closeFilter' })}
