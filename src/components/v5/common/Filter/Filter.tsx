@@ -46,6 +46,7 @@ const Filter: FC = () => {
           <Button
             mode="primaryOutline"
             className="sm:hidden flex min-h-[2.25rem]"
+            size="small"
             aria-label={formatMessage({ id: 'ariaLabel.openSearchModal' })}
             onClick={() => setIsSearchOpened(true)}
           >

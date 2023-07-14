@@ -56,7 +56,7 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
         />
         <div className="flex items-center gap-2">
           {children}
-          {formatMessage(label)}
+          {label && formatMessage(label)}
         </div>
       </label>
     </div>

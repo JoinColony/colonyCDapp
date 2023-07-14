@@ -214,15 +214,17 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <MemberContextProvider>
-                  <PageLayout
-                    loadingText="verified"
-                    title={{ id: 'verifiedPage.title' }}
-                    description={{ id: 'verifiedPage.description' }}
-                  >
-                    <VerifiedPage />
-                  </PageLayout>
-                </MemberContextProvider>
+                <SearchContextProvider>
+                  <MemberContextProvider>
+                    <PageLayout
+                      loadingText="verified"
+                      title={{ id: 'verifiedPage.title' }}
+                      description={{ id: 'verifiedPage.description' }}
+                    >
+                      <VerifiedPage />
+                    </PageLayout>
+                  </MemberContextProvider>
+                </SearchContextProvider>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
