@@ -26,6 +26,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
   selectedChildOption,
   checkedItems,
   nestedFilters,
+  onClick,
 }) => {
   const { formatMessage } = useIntl();
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
@@ -40,6 +41,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
   );
 
   const handleSelectElement = () => {
+    onClick?.();
     onSelectParentFilter?.(option);
   };
 
