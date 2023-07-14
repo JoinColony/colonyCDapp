@@ -8,11 +8,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 /* import moveDecimal from 'move-decimal-point'; */
 
-import { useGetMembersForColonyQuery } from '~gql';
 /* import { DEFAULT_TOKEN_DECIMALS } from '~constants'; */
-import SingleUserPicker, {
-  filterUserSelection,
-} from '~shared/SingleUserPicker';
 import { DialogSection } from '~shared/Dialog';
 /* import { getSafe, getSelectedSafeBalance } from '~utils/safes'; */
 /* import { log } from '~utils/debug'; */
@@ -24,7 +20,7 @@ import {
 } from '~redux/sagas/utils/safeHelpers';
 
 /* import AmountBalances from '../AmountBalances'; */
-import { ErrorMessage as Error, Loading, AvatarXS } from './shared';
+import { ErrorMessage as Error, Loading, RecipientPicker } from './shared';
 import styles from './TransactionTypesSection.css';
 import { TransactionSectionProps } from '../types';
 
@@ -94,27 +90,6 @@ const TransferFundsSection = ({
   const setSafeBalances = (value) => setValue('safeBalances', value);
 
   /* const safes = metadata?.safes || []; */
-
-  const { data: members } = useGetMembersForColonyQuery({
-    skip: !colony?.colonyAddress,
-    variables: {
-      input: {
-        colonyAddress: colony?.colonyAddress ?? '',
-      },
-    },
-    fetchPolicy: 'cache-and-network',
-  });
-
-  const users = [
-    ...(members?.getMembersForColony?.contributors || []),
-    ...(members?.getMembersForColony?.watchers || []),
-  ].map(({ user }) => ({
-    walletAddress: '',
-    name: '',
-    ...user,
-    // Needed to satisfy Omnipicker's key
-    id: user?.walletAddress,
-  }));
 
   const safeAddress = safe?.profile.walletAddress;
 
@@ -233,20 +208,13 @@ const TransferFundsSection = ({
         </div>
       </DialogSection>
       <DialogSection>
-        <div className={styles.singleUserPickerContainer}>
-          <SingleUserPicker
-            data={users}
-            label={MSG.recipient}
-            name={`transactions.${transactionFormIndex}.recipient`}
-            filter={filterUserSelection}
-            renderAvatar={AvatarXS}
-            disabled={disabledInput}
-            placeholder={MSG.userPickerPlaceholder}
-            dataTest="paymentRecipientPicker"
-            itemDataTest="paymentRecipientItem"
-            valueDataTest="paymentRecipientName"
-          />
-        </div>
+        <RecipientPicker
+          colony={colony}
+          transactionFormIndex={transactionFormIndex}
+          recipientMSG={MSG.recipient}
+          userPickerPlaceholderMSG={MSG.userPickerPlaceholder}
+          disabledInput={disabledInput}
+        />
       </DialogSection>
     </>
   );
