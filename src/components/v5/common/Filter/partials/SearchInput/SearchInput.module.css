@@ -1,5 +1,5 @@
 .searchInput {
-  @apply pr-3 pl-9 py-2.5 text-3 w-full border rounded-lg bg-base-white border-gray-300 hover:border-blue-200 focus:outline-blue-200 focus-visible:outline-blue-200 placeholder:text-gray-900;
+  @apply pr-3 pl-9 py-2.5 text-3 w-full border rounded-lg bg-base-white border-gray-300 hover:border-blue-200 focus:outline-blue-200 focus-visible:outline-blue-200 placeholder:text-gray-500;
 }
 
 .searchButton {
