@@ -31,7 +31,7 @@ function* manageExistingSafesAction({
   payload: {
     colony: { colonyAddress, name: colonyName },
     colony,
-    safeList,
+    safes,
     // annotationMessage,
     isRemovingSafes,
   },
@@ -137,7 +137,7 @@ function* manageExistingSafesAction({
     //     ? { ...parsedColonyMetadata }
     //     : parsedColonyMetadata.data;
 
-    let safes: Safe[];
+    let updatedSafes: Safe[];
 
     const currentColonySafes =
       colony.metadata?.safes
@@ -146,14 +146,14 @@ function* manageExistingSafesAction({
         .map(({ __typename, ...rest }) => rest) || [];
 
     if (!isRemovingSafes) {
-      safes = [...currentColonySafes, ...safeList];
+      updatedSafes = [...currentColonySafes, ...safes];
     } else {
-      safes = currentColonySafes.filter(
+      updatedSafes = currentColonySafes.filter(
         (safe) =>
-          !safeList.some(
+          !safes.some(
             (removedSafe) =>
               removedSafe.address === safe.address &&
-              removedSafe.chainId === safe.chainId,
+              Number(removedSafe.chainId) === safe.chainId,
           ),
       );
     }
@@ -226,7 +226,7 @@ function* manageExistingSafesAction({
         variables: {
           input: {
             id: colonyAddress,
-            safes,
+            safes: updatedSafes,
             changelog: getUpdatedColonyMetadataChangelog(
               txHash,
               colony.metadata,

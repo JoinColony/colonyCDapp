@@ -7,6 +7,7 @@ import Avatar from '~shared/Avatar';
 import { HookFormCheckbox as Checkbox } from '~shared/Fields';
 import MaskedAddress from '~shared/MaskedAddress';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
+import { Safe } from '~types';
 
 import styles from './SafeListItem.css';
 
@@ -24,19 +25,19 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  safe: any;
+  safe: Safe;
   isChecked: boolean;
 }
 
 const SafeListItem = ({ safe, isChecked }: Props) => {
   const { formatMessage } = useIntl();
   const safeNetwork = SAFE_NETWORKS.find(
-    (network) => network.chainId === Number(safe.chainId),
+    (network) => network.chainId === safe.chainId,
   );
   return (
     <div className={classnames(styles.main, { [styles.checked]: isChecked })}>
       <Checkbox
-        name="safeList"
+        name="safes"
         appearance={{ theme: 'pink', direction: 'vertical' }}
         value={JSON.stringify(safe)}
         disabled={false}
@@ -44,8 +45,8 @@ const SafeListItem = ({ safe, isChecked }: Props) => {
       />
       <Avatar
         placeholderIcon="circle-close"
-        seed={safe.contractAddress.toLowerCase()}
-        title={safe.safeName || safe.contractAddress}
+        seed={safe.address.toLowerCase()}
+        title={safe.name || safe.address}
         size="xs"
         className={styles.avatar}
       />
@@ -55,17 +56,17 @@ const SafeListItem = ({ safe, isChecked }: Props) => {
           [styles.selectedLabel]: isChecked,
         })}
       >
-        {`${safe.safeName} (${
+        {`${safe.name} (${
           safeNetwork?.name || formatMessage(MSG.safeNamePlaceholder)
         })`}
       </span>
 
       <InvisibleCopyableAddress
-        address={safe.contractAddress}
+        address={safe.address}
         copyMessage={MSG.copyMessage}
       >
         <div className={styles.address}>
-          <MaskedAddress address={safe.contractAddress} />
+          <MaskedAddress address={safe.address} />
         </div>
       </InvisibleCopyableAddress>
     </div>
