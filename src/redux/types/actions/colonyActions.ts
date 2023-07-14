@@ -274,7 +274,7 @@ export type ColonyActionsActionTypes =
       ActionTypes.ACTION_MANAGE_EXISTING_SAFES,
       {
         colony: Colony;
-        safeList: Safe[];
+        safes: Safe[];
         annotationMessage?: string;
         isRemovingSafes?: boolean;
       },

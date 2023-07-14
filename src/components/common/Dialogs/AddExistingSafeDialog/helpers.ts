@@ -15,7 +15,7 @@ export const getAddExistingSafeDialogPayload = (
 
   return {
     colony,
-    safeList: [
+    safes: [
       {
         chainId,
         name: safeName,

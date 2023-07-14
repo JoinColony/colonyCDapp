@@ -288,6 +288,10 @@
   "transaction.group.addExistingSafe.description": "Add an existing Safe to this Colony",
   "transaction.ColonyClient.addExistingSafe.title": "Add Existing Safe",
   "transaction.ColonyClient.addExistingSafe.description": "Add an existing Safe to this Colony",
+  "transaction.group.removeExistingSafes.title": "Remove Existing Safes",
+  "transaction.group.removeExistingSafes.description": "Remove existing Safes from this Colony",
+  "transaction.ColonyClient.removeExistingSafes.title": "Remove Existing Safes",
+  "transaction.ColonyClient.removeExistingSafes.description": "Remove existing Safes from this Colony",
 
   "metatransaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
   "metatransaction.group.deposit.title": "Activate tokens",
