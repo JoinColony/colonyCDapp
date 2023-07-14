@@ -23,15 +23,15 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
   const {
     badgeMessage,
     extensionUrl,
-    handleInstallClick,
     isExtensionInstalled,
     status,
+    handeNavigateToExtensionDetails,
   } = useExtensionItem(extensionId);
 
   const button = (
     <ActionButton
       isExtensionInstalled={!!isExtensionInstalled}
-      handleInstallClick={handleInstallClick}
+      handeNavigateToExtensionDetails={handeNavigateToExtensionDetails}
       extensionUrl={extensionUrl}
     />
   );

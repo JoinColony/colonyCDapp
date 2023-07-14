@@ -12,14 +12,14 @@ const displayName = 'common.Extensions.ExtensionItem.partials.ActionButton';
 const ActionButton: FC<ActionButtonProps> = ({
   isExtensionInstalled,
   extensionUrl,
-  handleInstallClick,
+  handeNavigateToExtensionDetails,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
 
   const handleClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    handleInstallClick();
+    handeNavigateToExtensionDetails();
   };
 
   return (
