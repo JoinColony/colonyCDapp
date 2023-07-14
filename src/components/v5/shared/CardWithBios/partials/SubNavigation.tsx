@@ -2,18 +2,28 @@ import React, { FC } from 'react';
 
 import SubNavigationItem from '~v5/shared/SubNavigationItem';
 import { SubNavigationProps } from '../types';
+import { useMemberContext } from '~context/MemberContext';
 import { useMembersSubNavigation } from '~v5/shared/SubNavigationItem/hooks';
 
 const displayName = 'v5.CardWithBios.partials.SubNavigation';
 
 const SubNavigation: FC<SubNavigationProps> = ({
   shouldPermissionsCanBeChanged = false,
+  user,
 }) => {
+  const { setIsMemberModalOpen, setUser } = useMemberContext();
   const { handleClick, isCopyTriggered } = useMembersSubNavigation();
 
   return (
     <ul>
-      <SubNavigationItem iconName="pencil" title="members.subnav.manage" />
+      <SubNavigationItem
+        iconName="pencil"
+        title="members.subnav.manage"
+        onClick={() => {
+          setIsMemberModalOpen(true);
+          setUser(user);
+        }}
+      />
       <SubNavigationItem
         iconName="eye"
         title="members.subnav.members.profile"

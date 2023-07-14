@@ -29,7 +29,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
     useMembersPage();
 
   return (
-    <div className="max-w-[20.125rem] max-h-[9.25rem] rounded-lg border border-gray-200 bg-gray-25 p-5">
+    <div className="sm:max-w-[20.125rem] max-h-[9.25rem] rounded-lg border border-gray-200 bg-gray-25 p-5 relative">
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -74,7 +74,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
                     }}
                     classNames="w-full sm:max-w-[17.375rem]"
                   >
-                    <SubNavigation />
+                    <SubNavigation user={user} />
                   </PopoverBase>
                 )}
               </>

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useColonyContext } from '~hooks';
 
 import Select from '~v5/common/Fields/Select';
@@ -14,10 +14,18 @@ const MembersSelect: FC<MemberSelectProps> = ({ user }) => {
     undefined,
   );
 
-  // @TODO: If used in card select user as default
   const handleChange = (selectedOption: number | undefined) => {
     setSelectedMember(selectedOption);
   };
+
+  useEffect(() => {
+    if (members && user) {
+      const index = members.findIndex(({ walletAddress }) => {
+        return walletAddress === user.walletAddress;
+      });
+      setSelectedMember(index);
+    }
+  }, [members, user]);
 
   return (
     <Select
