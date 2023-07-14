@@ -99,7 +99,7 @@
   }
 
   .subnav-button {
-    @apply flex w-full items-center transition-all duration-normal text-md hover:bg-gray-50 hover:font-medium rounded py-2 px-[1.2rem];
+    @apply flex w-full items-center text-md hover:bg-gray-50 hover:font-medium rounded py-2 px-[1.2rem];
   }
 }
 
