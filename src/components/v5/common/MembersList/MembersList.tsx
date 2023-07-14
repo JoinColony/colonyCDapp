@@ -42,13 +42,14 @@ const MembersList: FC<MembersListProps> = ({
       <p className="mb-6">{formatMessage(description)}</p>
       {/* @TODO: Add loading state */}
       {!isLoading && listLength ? (
-        <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-4">
+        // <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-4">
+        <ul className="sm:columns-2">
           {visibleMembers.map((item) => {
             const { user } = item;
             const { name, profile } = user || {};
 
             return (
-              <li key={name}>
+              <li key={name} className="pb-4 break-inside-avoid-column">
                 <CardWithBios
                   userData={item}
                   description={profile?.bio || ''}
@@ -70,7 +71,7 @@ const MembersList: FC<MembersListProps> = ({
           onClick={handleClipboardCopy}
         />
       ) : undefined}
-      <div className="w-full flex justify-center mt-6">
+      <div className="w-full flex justify-center mt-2">
         {listLength > membersLimit && !searchValue && viewMoreUrl && (
           <Link className="text-3" to={viewMoreUrl}>
             {formatMessage({ id: 'viewMore' })}
