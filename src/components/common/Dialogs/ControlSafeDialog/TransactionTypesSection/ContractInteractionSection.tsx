@@ -2,7 +2,7 @@ import React from 'react';
 
 import { DialogSection } from '~shared/Dialog';
 
-const displayName = `dashboard.ControlSafeDialog.ContractInteractionSection`;
+const displayName = `common.ControlSafeDialog.ContractInteractionSection`;
 
 const ContractInteractionSection = () => {
   return (

@@ -31,7 +31,7 @@ import { ControlSafeProps, SelectedSafe } from './types';
 
 import styles from './ControlSafeForm.css';
 
-const displayName = 'dashboard.ControlSafeDialog.ControlSafeForm';
+const displayName = 'common.ControlSafeDialog.ControlSafeForm';
 
 const MSG = defineMessages({
   title: {
