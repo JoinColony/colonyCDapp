@@ -7,6 +7,8 @@ import Spinner from '~v5/shared/Spinner';
 import Table from './partials/Table';
 import { useVerifiedPage } from './hooks';
 
+const displayName = 'v5.pages.VerifiedPage';
+
 const VerifiedPage: FC = () => {
   const { searchValue } = useSearchContext();
   const { searchedVerified } = useVerifiedPage(searchValue);
@@ -16,6 +18,7 @@ const VerifiedPage: FC = () => {
       <TwoColumns aside={<Navigation pageName="members" />}>
         <div className="flex justify-between mt-6">
           <div className="w-full">
+            {/* @TODO: Handle sort when API will be ready */}
             <Table list={searchedVerified} onReputationSortClick={() => {}} />
           </div>
         </div>
@@ -23,5 +26,7 @@ const VerifiedPage: FC = () => {
     </Spinner>
   );
 };
+
+VerifiedPage.displayName = displayName;
 
 export default VerifiedPage;

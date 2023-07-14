@@ -8,6 +8,9 @@ import Icon from '~shared/Icon';
 import { calculatePercentageReputation } from '~utils/reputation';
 import styles from './TableItem.module.css';
 import Checkbox from '~v5/common/Checkbox';
+import { formatMessage } from '~utils/yup/tests/helpers';
+
+const displayName = 'v5.pages.VerifiedPage.partials.TableItem';
 
 const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
   const { colony } = useColonyContext();
@@ -62,6 +65,7 @@ const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
         <button
           type="button"
           className="ml-auto flex items-center hover:text-negative-400 transition-colors duration-normal"
+          aria-label={formatMessage({ id: 'ariaLabel.deleteMember' })}
           onClick={onDeleteClick}
         >
           <Icon name="trash" appearance={{ size: 'small' }} />
@@ -70,5 +74,7 @@ const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
     </div>
   );
 };
+
+TableItem.displayName = displayName;
 
 export default TableItem;

@@ -6,10 +6,12 @@ import Button from '~v5/shared/Button';
 import { TableProps } from './types';
 import styles from './Table.module.css';
 import TableItem from '../TableItem';
+import TableHead from '../TableHead';
 import EmptyContent from '~v5/common/EmptyContent';
 import { useSearchContext } from '~context/SearchContext';
 import { useVerifiedTable } from './hooks';
-import Icon from '~shared/Icon';
+
+const displayName = 'v5.pages.VerifiedPage.partials.Table';
 
 const Table: FC<TableProps> = ({ list, onReputationSortClick }) => {
   // @TODO: Add action for adding new member, removing user from whitelist, handle pagination and sorting
@@ -41,7 +43,7 @@ const Table: FC<TableProps> = ({ list, onReputationSortClick }) => {
                 size="small"
                 className="mr-2"
               >
-                Remove members
+                {formatMessage({ id: 'verifiedPage.table.remove' })}
               </Button>
             ) : undefined}
             {!listLength && !searchValue ? undefined : <Filter />}
@@ -56,33 +58,7 @@ const Table: FC<TableProps> = ({ list, onReputationSortClick }) => {
           </div>
         </div>
       </div>
-      <div className={styles.tableHead}>
-        <div>{formatMessage({ id: 'verifiedPage.table.member' })}</div>
-        <div className="hidden sm:block">
-          {formatMessage({ id: 'verifiedPage.table.status' })}
-        </div>
-        <button
-          className="hidden sm:flex items-center"
-          type="button"
-          onClick={onReputationSortClick}
-        >
-          <span className="mr-1">
-            {formatMessage({ id: 'verifiedPage.table.reputation' })}
-          </span>
-          <Icon name="arrow-down" appearance={{ size: 'extraTiny' }} />
-        </button>
-        <button
-          className="hidden sm:flex items-center"
-          type="button"
-          onClick={onReputationSortClick}
-        >
-          <span className="mr-1">
-            {formatMessage({ id: 'verifiedPage.table.permission' })}
-          </span>
-          <Icon name="arrow-down" appearance={{ size: 'extraTiny' }} />
-        </button>
-        <div />
-      </div>
+      <TableHead onClick={onReputationSortClick} />
       <div className={styles.tableBody}>
         {listLength ? (
           list.map((item) => (
@@ -107,5 +83,7 @@ const Table: FC<TableProps> = ({ list, onReputationSortClick }) => {
     </>
   );
 };
+
+Table.displayName = displayName;
 
 export default Table;

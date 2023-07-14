@@ -10,6 +10,8 @@ import { useSearchContext } from '~context/SearchContext';
 import Header from '~frame/v5/Header';
 import Spinner from '~v5/shared/Spinner';
 
+const displayName = 'v5.pages.MembersPage';
+
 const MembersPage: FC = () => {
   const { searchValue } = useSearchContext();
   const { contributors, followers, loading, followersURL, contributorsURL } =
@@ -57,5 +59,7 @@ const MembersPage: FC = () => {
     </Spinner>
   );
 };
+
+MembersPage.displayName = displayName;
 
 export default MembersPage;
