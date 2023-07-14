@@ -34,6 +34,7 @@ import SingleSafePicker from './SingleSafePicker';
 import TransactionHeader from './TransactionHeader';
 
 import styles from './ControlSafeForm.css';
+import { SelectedSafe } from '~types/safes';
 
 const displayName = 'common.ControlSafeDialog.ControlSafeForm';
 
