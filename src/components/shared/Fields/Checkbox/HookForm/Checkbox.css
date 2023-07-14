@@ -47,6 +47,24 @@
   background-color: var(--dark-grey);
 }
 
+.themePink:not(.stateIsChecked) .checkbox {
+  border: 1px solid var(--grey-blue);
+  box-shadow: 0 0 0 3px  color-mod(var(--grey-blue) alpha(25%));
+}
+
+.themePink.delegate:not(:focus) + .checkbox {
+  box-shadow: 0 0 0 3px color-mod(var(--grey-blue) alpha(25%));
+}
+
+.themePink.stateIsChecked .checkbox {
+  border: 1px solid var(--pink);
+  box-shadow: 0 0 0 3px color-mod(var(--pink) alpha(25%));
+}
+
+.themePink.delegate:focus + .checkbox {
+  box-shadow: 0 0 0 3px color-mod(var(--pink) alpha(25%));
+}
+
 /* Direction */
 
 .directionHorizontal {
@@ -72,4 +90,12 @@
   .checkbox:checked::before {
     bottom: 5px;
   }
+}
+
+.themePink.stateIsChecked .checkbox .checkmark::before {
+  background-color: var(--pink);
+}
+
+.themePink.stateIsChecked .checkbox .checkmark::after {
+  background-color: var(--pink);
 }
