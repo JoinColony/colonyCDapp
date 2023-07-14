@@ -13,6 +13,8 @@
     "docker:compose": "docker compose --file docker/colony-cdapp-dev-env-orchestration.yaml",
     "dev": "npm run docker:build && npm run docker:compose up -- --force-recreate -V",
     "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
+    "lint:ci": "eslint 'src/**/*.{ts,tsx}'",
+    "stylelint:ci": "stylelint --allow-empty-input \"src/**/*.css\"",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "webpack": "webpack serve --config webpack.dev.js --port 9091",
     "webpack:prod": "NODE_ENV=production webpack-cli --config webpack.prod.js",
