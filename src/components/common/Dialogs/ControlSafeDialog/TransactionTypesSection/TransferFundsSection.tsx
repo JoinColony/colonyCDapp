@@ -74,7 +74,7 @@ const TransferFundsSection = ({
   colony,
   /* colony: { metadata }, */
   disabledInput,
-  transactionFormIndex = 0,
+  transactionFormIndex,
   /* handleInputChange,
    * handleValidation, */
   savedTokenState,
@@ -211,8 +211,6 @@ const TransferFundsSection = ({
         <RecipientPicker
           colony={colony}
           transactionFormIndex={transactionFormIndex}
-          recipientMSG={MSG.recipient}
-          userPickerPlaceholderMSG={MSG.userPickerPlaceholder}
           disabledInput={disabledInput}
         />
       </DialogSection>
