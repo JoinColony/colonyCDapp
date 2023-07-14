@@ -1,4 +1,6 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import MainNavigation from '~common/Extensions/MainNavigation';
 
@@ -13,4 +15,12 @@ const meta: Meta<typeof MainNavigation> = {
 export default meta;
 type Story = StoryObj<typeof MainNavigation>;
 
-export const Base: Story = {};
+export const Base: Story = {
+  decorators: [
+    (Story) => (
+      <Router>
+        <Story />
+      </Router>
+    ),
+  ],
+};
