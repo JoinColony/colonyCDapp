@@ -676,5 +676,8 @@
   "filter.pill.recovery": "Recovery",
   "team.type": "Team",
   "reputation.type": "Reputation",
-  "permissions.type": "Permissions types"
+  "permissions.type": "Permissions types",
+  "current.version": "Current version",
+  "last.version": "Last version",
+  "button.upgrade.colony": "Upgrade now"
 }

@@ -1,0 +1,85 @@
+import React, { FC } from 'react';
+import { useIntl } from 'react-intl';
+import clsx from 'clsx';
+
+import Icon from '~shared/Icon';
+import { ColonyVersionWidgetProps } from './types';
+import Button from '~v5/shared/Button';
+import { useMobile } from '~hooks';
+import styles from './ColonyVersionWidget.module.css';
+
+const displayName = 'v5.ColonyVersionWidget';
+
+const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
+  status,
+  lastVersion,
+  currentVersion,
+}) => {
+  const { formatMessage } = useIntl();
+  const isMobile = useMobile();
+
+  return (
+    <div
+      className={clsx(
+        'flex rounded border border-gray-200 bg-base-white px-5 py-[1.125rem]',
+        {
+          'flex-col': isMobile,
+        },
+      )}
+    >
+      <div
+        className={clsx('flex items-center gap-6 w-full', {
+          'flex-col mb-6': isMobile,
+          'flex-row mr-6': !isMobile,
+        })}
+      >
+        <div className={styles.wrapper}>
+          {formatMessage({ id: 'current.version' })}
+          <div className={styles.text}>
+            <span
+              className={clsx({
+                'text-success-400': status === 'success',
+                'text-warning-400': status === 'error',
+              })}
+            >
+              <Icon
+                appearance={{ size: 'extraTiny' }}
+                name={status === 'success' ? 'check-circle' : 'warning-circle'}
+              />
+            </span>
+            <span className={styles.value}>{currentVersion}</span>
+          </div>
+        </div>
+
+        {isMobile ? (
+          <div className="w-full bg-gray-200 h-px" />
+        ) : (
+          <div className="bg-gray-200 h-full w-px" />
+        )}
+
+        <div className={`${styles.wrapper} flex flex-col justify-center`}>
+          {formatMessage({ id: 'last.version' })}
+          <div className={styles.text}>
+            <span className="text-success-400">
+              <Icon appearance={{ size: 'extraTiny' }} name="check-circle" />
+            </span>
+            <span className={styles.value}>{lastVersion}</span>
+          </div>
+        </div>
+      </div>
+      <Button
+        type="button"
+        disabled={status === 'success'}
+        mode="primarySolid"
+        isFullSize={isMobile}
+        className="min-w-[7.625rem]"
+      >
+        {formatMessage({ id: 'button.upgrade.colony' })}
+      </Button>
+    </div>
+  );
+};
+
+ColonyVersionWidget.displayName = displayName;
+
+export default ColonyVersionWidget;
