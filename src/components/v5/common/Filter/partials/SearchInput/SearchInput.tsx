@@ -12,7 +12,7 @@ const displayName = 'v5.common.Filter.partials.SearchInput';
 
 const SearchInput: FC<SearchInputProps> = ({ onSearchButtonClick }) => {
   const { formatMessage } = useIntl();
-  const { setSearchValue } = useSearchContext();
+  const { setSearchValue, searchValue } = useSearchContext();
   const [value, setValue] = useState('');
   const isMobile = useMobile();
 
@@ -45,6 +45,7 @@ const SearchInput: FC<SearchInputProps> = ({ onSearchButtonClick }) => {
         type="text"
         onInput={onInput}
         placeholder={formatMessage({ id: 'filter.input.placeholder' })}
+        defaultValue={searchValue}
       />
       {isMobile && value && (
         <button
