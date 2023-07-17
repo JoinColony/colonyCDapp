@@ -30,7 +30,7 @@ const MSG = defineMessages({
 
 interface RemoveSafeProps {
   back: () => void;
-  colonySafes: Array<Safe>;
+  colonySafes: Safe[];
 }
 
 const RemoveSafeDialogForm = ({ back, colonySafes }: RemoveSafeProps) => {

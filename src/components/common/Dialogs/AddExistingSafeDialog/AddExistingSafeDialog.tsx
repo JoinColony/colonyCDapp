@@ -74,7 +74,6 @@ const AddExistingSafeDialog = ({
       >
         <AddExistingSafeDialogForm
           networkOptions={networkOptions}
-          colonySafes={colony.metadata?.safes || []}
           back={() => callStep(prevStep)}
           colonyAddress={colonyAddress}
           loadingSafeState={loadingSafeState}
