@@ -8,6 +8,7 @@ import { MembersListProps } from './types';
 import { useMembersList } from './hooks';
 import { useSearchContext } from '~context/SearchContext';
 import { TextButton } from '~v5/shared/Button';
+import { SpinnerLoader } from '~shared/Preloaders';
 
 const displayName = 'v5.common.MembersList';
 
@@ -20,6 +21,7 @@ const MembersList: FC<MembersListProps> = ({
   emptyDescription,
   viewMoreUrl,
   isHomePage,
+  isContributorsList,
 }) => {
   const { formatMessage } = useIntl();
   const {
@@ -38,6 +40,11 @@ const MembersList: FC<MembersListProps> = ({
 
   return (
     <div>
+      {isLoading && (
+        <div className="flex justify-center">
+          <SpinnerLoader appearance={{ size: 'medium' }} />
+        </div>
+      )}
       <div className="flex items-center mb-2">
         <h3 className="heading-5 mr-3">{formatMessage(title)}</h3>
         <span className="text-md text-blue-400">
@@ -53,17 +60,17 @@ const MembersList: FC<MembersListProps> = ({
             const { name, profile } = user || {};
             const membersLength = visibleMembers.length;
 
-            const incrementIndex = index + 1;
+            const incrementedIndex = index + 1;
             const top = Math.floor(membersLength * 0.2);
             const dedicated = Math.floor(membersLength * 0.4);
             const active = Math.floor(membersLength * 0.6);
 
-            const isTopStatus = incrementIndex <= top;
+            const isTopStatus = incrementedIndex <= top;
             const isDedicatedStatus =
-              incrementIndex <= dedicated && incrementIndex > top;
+              incrementedIndex <= dedicated && incrementedIndex > top;
             const isActiveStatus =
-              incrementIndex <= active && incrementIndex > dedicated;
-            // @TODO: implement NEW status
+              incrementedIndex <= active && incrementedIndex > dedicated;
+            // @TODO: implement NEW status when API will be ready
 
             return (
               <li key={name} className="pb-4 break-inside-avoid-column">
@@ -78,6 +85,7 @@ const MembersList: FC<MembersListProps> = ({
                     (isActiveStatus && 'active') ||
                     'general'
                   }
+                  isContributorsList={isContributorsList}
                 />
               </li>
             );

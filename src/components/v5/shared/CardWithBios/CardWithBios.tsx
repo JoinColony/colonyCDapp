@@ -20,6 +20,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
   shouldBeMenuVisible = true,
   permissions,
   isVerified,
+  isContributorsList,
 }) => {
   const { user, reputationPercentage } = (userData as Contributor) || {};
   const { name, walletAddress, profile } = user || {};
@@ -42,6 +43,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
               user={user}
               userStatus={userStatus}
               avatarSize="sm"
+              isContributorsList={isContributorsList}
               // permissions={permissionsItems}
             />
             {isVerified && (
@@ -52,7 +54,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
           </div>
 
           <div className="flex gap-2">
-            {userStatus && userStatus !== 'general' && (
+            {userStatus && userStatus !== 'general' && isContributorsList && (
               <UserStatusComponent userStatus={userStatus} />
             )}
             {shouldBeMenuVisible && (

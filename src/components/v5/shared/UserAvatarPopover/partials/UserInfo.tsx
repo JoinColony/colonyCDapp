@@ -20,6 +20,7 @@ const UserInfo: FC<UserInfoProps> = ({
   avatar,
   userStatus,
   teams,
+  isContributorsList,
 }) => {
   const { formatMessage } = useIntl();
 
@@ -28,7 +29,7 @@ const UserInfo: FC<UserInfoProps> = ({
       ? aboutDescription
       : aboutDescription && formatMessage(aboutDescription);
 
-  const isTopContributorType = userStatus === 'top';
+  const isTopContributorType = userStatus === 'top' && isContributorsList;
 
   return (
     <div className="sm:min-w-[17rem]">
@@ -44,6 +45,7 @@ const UserInfo: FC<UserInfoProps> = ({
             walletAddress={walletAddress}
             avatar={avatar}
             userStatus={userStatus}
+            isContributorsList={isContributorsList}
           />
         </div>
         {isTopContributorType && teams && (

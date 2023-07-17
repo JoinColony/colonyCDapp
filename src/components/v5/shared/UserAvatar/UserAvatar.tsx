@@ -15,6 +15,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
   userName,
   size = 'xxs',
   userStatus,
+  isContributorsList,
   ...rest
 }) => {
   const address = user?.walletAddress;
@@ -25,15 +26,21 @@ const UserAvatar: FC<UserAvatarProps> = ({
     <span
       className={clsx(
         styles.main,
-        `${userStatus ? 'gap-2' : ''} items-center text-current`,
+        `${
+          userStatus && isContributorsList ? 'gap-2' : ''
+        } items-center text-current`,
       )}
     >
       <span
         className={clsx('flex rounded-full', {
-          'border-2 border-blue-400 ': userStatus === 'dedicated',
-          'border-2 border-warning-400': userStatus === 'active',
-          'border-2 border-green-400': userStatus === 'new',
-          'border-2 border-purple-400': userStatus === 'top',
+          'border-2 border-blue-400 ':
+            userStatus === 'dedicated' && isContributorsList,
+          'border-2 border-warning-400':
+            userStatus === 'active' && isContributorsList,
+          'border-2 border-green-400':
+            userStatus === 'new' && isContributorsList,
+          'border-2 border-purple-400':
+            userStatus === 'top' && isContributorsList,
         })}
       >
         <Avatar

@@ -22,6 +22,7 @@ export type CardWithBiosProps = {
   shouldBeMenuVisible: boolean;
   isVerified?: boolean;
   userData?: Member;
+  isContributorsList?: boolean;
 };
 
 export type UserStatusComponentProps = {
