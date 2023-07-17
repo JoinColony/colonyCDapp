@@ -43,6 +43,7 @@
   ); /* Used for the wallet connect button in the user navigation */
 
   --grey-blue: rgb(188, 197, 216);
+  --temp-grey-blue-7: rgb(118, 116, 139);
   --light-grey: rgb(213, 213, 213);
   --light-grey-beige: rgb(227, 224, 227); /* Used for separator background */
 
