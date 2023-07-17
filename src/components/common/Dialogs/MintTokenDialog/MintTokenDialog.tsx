@@ -3,6 +3,7 @@ import { defineMessages } from 'react-intl';
 import { string, object, bool, InferType, number } from 'yup';
 import { useNavigate } from 'react-router-dom';
 
+import { MAX_ANNOTATION_LENGTH } from '~constants';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 import { ActionTypes } from '~redux';
@@ -33,7 +34,7 @@ type Props = DialogProps &
 const validationSchema = object()
   .shape({
     forceAction: bool().defined(),
-    annotation: string().max(4000).defined(),
+    annotation: string().max(MAX_ANNOTATION_LENGTH).defined(),
     mintAmount: number()
       .required(() => MSG.errorAmountRequired)
       .transform((value) => toFinite(value))

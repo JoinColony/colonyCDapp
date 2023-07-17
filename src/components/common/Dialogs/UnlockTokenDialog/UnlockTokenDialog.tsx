@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { string, object, boolean, InferType } from 'yup';
 
+import { MAX_ANNOTATION_LENGTH } from '~constants';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
@@ -20,7 +21,7 @@ const displayName = 'common.UnlockTokenDialog';
 const validationSchema = object()
   .shape({
     forceAction: boolean().defined(),
-    annotationMessage: string().max(4000).defined(),
+    annotationMessage: string().max(MAX_ANNOTATION_LENGTH).defined(),
   })
   .defined();
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { object, string, InferType } from 'yup';
 import { useNavigate } from 'react-router-dom';
 
+import { MAX_ANNOTATION_LENGTH } from '~constants';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
@@ -20,7 +21,7 @@ const displayName = 'common.RecoveryModeDialog';
 
 const validationSchema = object()
   .shape({
-    annotation: string().max(4000).defined(),
+    annotation: string().max(MAX_ANNOTATION_LENGTH).defined(),
   })
   .defined();
 
