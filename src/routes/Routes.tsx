@@ -5,14 +5,12 @@ import {
   Navigate,
   Outlet,
 } from 'react-router-dom';
-import { defineMessages } from 'react-intl';
 
 import CreateUserWizard from '~common/CreateUserWizard';
 import ColonyHome from '~common/ColonyHome';
 import ColonyFunding from '~common/ColonyFunding';
 import FourOFour from '~frame/FourOFour';
 import UserProfile from '~common/UserProfile';
-import UserProfileEdit from '~common/UserProfileEdit';
 import {
   // NavBar, Plain, SimpleNav,
   Default,
@@ -26,7 +24,7 @@ import LandingPage from '~frame/LandingPage';
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 
 // import appLoadingContext from '~context/appLoadingState';
-import { useAppContext, useMobile } from '~hooks';
+import { useAppContext } from '~hooks';
 
 import {
   COLONY_FUNDING_ROUTE,
@@ -53,6 +51,8 @@ import {
   COLONY_FOLLOWERS_ROUTE,
   COLONY_VERIFIED_ROUTE,
   COLONY_TEAMS_ROUTE,
+  USER_PREFERENCES_ROUTE,
+  USER_ADVANCED_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -79,25 +79,16 @@ import TeamsPage from '~frame/v5/pages/TeamsPage';
 import { SearchContextProvider } from '~context/SearchContext';
 import { ColonyUsersPageType } from '~frame/v5/pages/ColonyUsersPage/types';
 import { MemberContextProvider } from '~context/MemberContext';
+import UserProfilePage from '~frame/v5/pages/UserProfilePage';
+import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
+import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
 
 // import useTitle from '~hooks/useTitle';
 
 const displayName = 'routes.Routes';
 
-const MSG = defineMessages({
-  userProfileEditBack: {
-    id: `${displayName}.userProfileEditBack`,
-    defaultMessage: 'Go to profile',
-  },
-  // loadingAppMessage: {
-  //   id: 'routes.Routes.loadingAppMessage',
-  //   defaultMessage: 'Loading App',
-  // },
-});
-
 const Routes = () => {
   const { user, wallet } = useAppContext();
-  const isMobile = useMobile();
   // const isAppLoading = appLoadingContext.getIsLoading();
 
   // disabling rules to silence eslint warnings
@@ -171,6 +162,7 @@ const Routes = () => {
                           loadingText="members"
                           title={{ id: 'membersPage.title' }}
                           description={{ id: 'membersPage.description' }}
+                          pageName="members"
                         >
                           <MembersPage />
                         </PageLayout>
@@ -198,6 +190,7 @@ const Routes = () => {
                           loadingText={pageName}
                           title={{ id: `${pageName}Page.title` }}
                           description={{ id: `${pageName}Page.description` }}
+                          pageName="members"
                         >
                           <ColonyUsersPage pageName={pageName} />
                         </PageLayout>
@@ -220,6 +213,7 @@ const Routes = () => {
                       loadingText="verified"
                       title={{ id: 'verifiedPage.title' }}
                       description={{ id: 'verifiedPage.description' }}
+                      pageName="members"
                     >
                       <VerifiedPage />
                     </PageLayout>
@@ -238,6 +232,7 @@ const Routes = () => {
                   loadingText="teams"
                   title={{ id: 'teamsPage.title' }}
                   description={{ id: 'teamsPage.description' }}
+                  pageName="members"
                 >
                   <TeamsPage />
                 </PageLayout>
@@ -264,6 +259,7 @@ const Routes = () => {
                   loadingText={{ id: 'loading.extensionsPage' }}
                   title={{ id: 'extensionsPage.title' }}
                   description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
                 >
                   <ExtensionDetailsPage />
                 </PageLayout>
@@ -280,6 +276,7 @@ const Routes = () => {
                   loadingText={{ id: 'loading.extensionsPage' }}
                   title={{ id: 'extensionsPage.title' }}
                   description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
                 >
                   <LazyConsensusPage />
                 </PageLayout>
@@ -308,6 +305,7 @@ const Routes = () => {
                   loadingText={{ id: 'loading.extensionsPage' }}
                   title={{ id: 'extensionsPage.title' }}
                   description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
                 >
                   <ColonyDetailsPage />
                 </PageLayout>
@@ -324,6 +322,7 @@ const Routes = () => {
                   loadingText={{ id: 'loading.extensionsPage' }}
                   title={{ id: 'extensionsPage.title' }}
                   description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
                 >
                   <ReputationPage />
                 </PageLayout>
@@ -340,6 +339,7 @@ const Routes = () => {
                   loadingText={{ id: 'loading.extensionsPage' }}
                   title={{ id: 'extensionsPage.title' }}
                   description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
                 >
                   <PermissionsPage />
                 </PageLayout>
@@ -356,6 +356,7 @@ const Routes = () => {
                   loadingText={{ id: 'loading.extensionsPage' }}
                   title={{ id: 'extensionsPage.title' }}
                   description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
                 >
                   <ExtensionsPage />
                 </PageLayout>
@@ -372,6 +373,7 @@ const Routes = () => {
                   loadingText={{ id: 'loading.extensionsPage' }}
                   title={{ id: 'extensionsPage.title' }}
                   description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
                 >
                   <IntegrationsPage />
                 </PageLayout>
@@ -387,6 +389,7 @@ const Routes = () => {
                 loadingText={{ id: 'loading.extensionsPage' }}
                 title={{ id: 'extensionsPage.title' }}
                 description={{ id: 'extensionsPage.description' }}
+                pageName="extensions"
               >
                 <ExtensionsContextProvider>
                   <IncorporationPage />
@@ -404,6 +407,7 @@ const Routes = () => {
                   loadingText={{ id: 'loading.extensionsPage' }}
                   title={{ id: 'extensionsPage.title' }}
                   description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
                 >
                   <AdvancedPage />
                 </PageLayout>
@@ -422,16 +426,40 @@ const Routes = () => {
         <Route
           path={USER_EDIT_ROUTE}
           element={
-            <Default
-              routeProps={{
-                hasBackLink: true,
-                hasSubscribedColonies: isMobile,
-                backText: MSG.userProfileEditBack,
-                backRoute: `/user/${user?.name}`,
-              }}
+            <PageLayout
+              loadingText={{ id: 'loading.userProfilePage' }}
+              title={{ id: 'userProfilePage.title' }}
+              description={{ id: 'userProfilePage.description' }}
+              pageName="profile"
             >
-              <UserProfileEdit />
-            </Default>
+              <UserProfilePage />
+            </PageLayout>
+          }
+        />
+        <Route
+          path={USER_PREFERENCES_ROUTE}
+          element={
+            <PageLayout
+              loadingText={{ id: 'loading.userPreferencesPage' }}
+              title={{ id: 'userAdvancedPage.title' }}
+              description={{ id: 'userAdvancedPage.description' }}
+              pageName="profile"
+            >
+              <UserPreferencesPage />
+            </PageLayout>
+          }
+        />
+        <Route
+          path={USER_ADVANCED_ROUTE}
+          element={
+            <PageLayout
+              loadingText={{ id: 'loading.userAdvancedPage' }}
+              title={{ id: 'userAdvancedPage.title' }}
+              description={{ id: 'userAdvancedPage.description' }}
+              pageName="profile"
+            >
+              <UserAdvancedPage />
+            </PageLayout>
           }
         />
         {/* <WalletRequiredRoute
@@ -502,7 +530,7 @@ const Routes = () => {
         <Route path="*" element={<NotFoundRoute />} />
       </RoutesSwitch>
     ),
-    [user, isMobile],
+    [],
   );
 
   // if (isAppLoading) {

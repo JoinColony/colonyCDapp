@@ -38,6 +38,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
   title,
   description,
   loadingText,
+  pageName,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
@@ -70,9 +71,6 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
   useEffect(() => {
     applyTheme(isDarkMode ? Theme.dark : Theme.light);
   }, [isDarkMode]);
-
-  // @TODO: Handle other pages when needed or handle navigation in the page itself
-  const pageName = loadingText === 'extensionPage' ? 'extensions' : 'members';
 
   return (
     <Spinner loadingText={loadingText}>

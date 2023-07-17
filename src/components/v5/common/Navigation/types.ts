@@ -7,5 +7,5 @@ export interface NavItemProps {
 }
 
 export interface Navigationprops {
-  pageName: 'members' | 'extensions';
+  pageName: 'members' | 'extensions' | 'profile';
 }
