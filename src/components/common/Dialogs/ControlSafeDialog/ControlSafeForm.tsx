@@ -131,7 +131,7 @@ const ControlSafeForm = ({
     setValue,
   } = useFormContext();
   const selectedSafe = watch('safe');
-  const transactionType = watch('transactions.transactionType');
+  const transactionType = watch(`transactions.${tmpIndex}.transactionType`);
 
   const { userHasPermission } = useActionDialogStatus(
     colony,
@@ -255,7 +255,7 @@ const ControlSafeForm = ({
           <Select
             options={transactionOptions}
             label={MSG.transactionLabel}
-            name="transactions.transactionType"
+            name={`transactions.${tmpIndex}.transactionType`}
             onChange={(type) => {
               /* removeSelectedContractMethod(index); */
               handleTransactionTypeChange(type as string, tmpIndex);
