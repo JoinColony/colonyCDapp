@@ -28,8 +28,13 @@ const MembersList: FC<MembersListProps> = ({
     loadMoreMembers,
     visibleMembers,
     membersLimit,
+    canLoadMore,
   } = useMembersList({ list, isHomePage });
   const { searchValue } = useSearchContext();
+
+  const showLoadMoreButton = isHomePage
+    ? searchValue && canLoadMore
+    : canLoadMore;
 
   return (
     <div>
@@ -42,7 +47,6 @@ const MembersList: FC<MembersListProps> = ({
       <p className="mb-6">{formatMessage(description)}</p>
       {/* @TODO: Add loading state */}
       {!isLoading && listLength ? (
-        // <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-4">
         <ul className="sm:columns-2">
           {visibleMembers.map((item) => {
             const { user } = item;
@@ -77,7 +81,7 @@ const MembersList: FC<MembersListProps> = ({
             {formatMessage({ id: 'viewMore' })}
           </Link>
         )}
-        {listLength > membersLimit && searchValue && (
+        {showLoadMoreButton && (
           <TextButton onClick={loadMoreMembers}>
             {formatMessage({ id: 'loadMore' })}
           </TextButton>

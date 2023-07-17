@@ -1,15 +1,24 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { FC } from 'react';
+import Decimal from 'decimal.js';
+
 import { setTeamColor } from '../utils';
 import { TeamPointsRowProps } from '../types';
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import Numeral from '~shared/Numeral';
+import { useTeamReputationSummaryRow } from './hooks';
+import { useColonyContext } from '~hooks';
 
 const displayName =
   'v5.common.TeamReputationSummary.partials.TeamReputationSummaryRow';
 
-const TeamReputationSummaryRow: FC<PropsWithChildren<TeamPointsRowProps>> = ({
+const TeamReputationSummaryRow: FC<TeamPointsRowProps> = ({
+  id,
   color,
   name,
-  points,
 }) => {
+  const { colony } = useColonyContext();
+  const { totalReputation } = useTeamReputationSummaryRow(id);
+
   return (
     <>
       <span className="flex items-center flex-grow">
@@ -20,7 +29,14 @@ const TeamReputationSummaryRow: FC<PropsWithChildren<TeamPointsRowProps>> = ({
         />
         {name}
       </span>
-      <span className="font-medium">{points}</span>
+      <span className="font-medium">
+        <Numeral
+          value={new Decimal(totalReputation?.getUserReputation || '0')
+            .abs()
+            .toString()}
+          decimals={colony?.nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS}
+        />
+      </span>
     </>
   );
 };

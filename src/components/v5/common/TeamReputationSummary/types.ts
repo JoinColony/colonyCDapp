@@ -1,13 +1,7 @@
+import { DomainColor } from '~gql';
+
 export interface TeamPointsRowProps {
-  color: string;
-  name: string;
-  points: number;
-}
-
-export interface TeamPointsProps extends TeamPointsRowProps {
-  id: string;
-}
-
-export interface TeamReputationSummaryProps {
-  teams: TeamPointsProps[];
+  color?: DomainColor;
+  name?: string;
+  id: number;
 }
