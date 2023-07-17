@@ -16,10 +16,9 @@ const displayName = 'v5.CardWithBios';
 const CardWithBios: FC<CardWithBiosProps> = ({
   userData,
   description,
-  userStatus,
+  userStatus = 'general',
   shouldBeMenuVisible = true,
   permissions,
-  userStatusTooltipDetails,
   isVerified,
 }) => {
   const { user, reputationPercentage } = (userData as Contributor) || {};
@@ -53,11 +52,8 @@ const CardWithBios: FC<CardWithBiosProps> = ({
           </div>
 
           <div className="flex gap-2">
-            {userStatus && userStatusTooltipDetails && (
-              <UserStatusComponent
-                userStatus={userStatus}
-                userStatusTooltipDetails={userStatusTooltipDetails}
-              />
+            {userStatus && userStatus !== 'general' && (
+              <UserStatusComponent userStatus={userStatus} />
             )}
             {shouldBeMenuVisible && (
               <>

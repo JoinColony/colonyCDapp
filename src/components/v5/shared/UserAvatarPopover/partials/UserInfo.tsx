@@ -46,7 +46,7 @@ const UserInfo: FC<UserInfoProps> = ({
             userStatus={userStatus}
           />
         </div>
-        {isTopContributorType && (
+        {isTopContributorType && teams && (
           <>
             <TitleLabel
               className="mb-2"

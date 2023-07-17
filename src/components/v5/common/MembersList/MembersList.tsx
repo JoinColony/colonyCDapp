@@ -44,9 +44,18 @@ const MembersList: FC<MembersListProps> = ({
       {!isLoading && listLength ? (
         // <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-4">
         <ul className="sm:columns-2">
-          {visibleMembers.map((item) => {
+          {visibleMembers.map((item, index) => {
             const { user } = item;
             const { name, profile } = user || {};
+            const membersLength = visibleMembers.length;
+
+            const top = Math.floor(membersLength * 0.2);
+            const dedicated = Math.floor(membersLength * 0.4);
+            const active = Math.floor(membersLength * 0.6);
+
+            const isTopLevel = index <= top;
+            const isDedicatedLevel = index <= dedicated && index > top;
+            const isActiveLevel = index <= active && index > dedicated;
 
             return (
               <li key={name} className="pb-4 break-inside-avoid-column">
@@ -55,6 +64,12 @@ const MembersList: FC<MembersListProps> = ({
                   description={profile?.bio || ''}
                   shouldStatusBeVisible
                   shouldBeMenuVisible
+                  userStatus={
+                    (isTopLevel && 'top') ||
+                    (isDedicatedLevel && 'dedicated') ||
+                    (isActiveLevel && 'active') ||
+                    'general'
+                  }
                 />
               </li>
             );

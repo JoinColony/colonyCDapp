@@ -19,7 +19,6 @@ export type CardWithBiosProps = {
   shouldStatusBeVisible: boolean;
   userStatus?: UserStatusMode;
   permissions?: Permissions[];
-  userStatusTooltipDetails?: UserStatusTooltipDetailsProps;
   shouldBeMenuVisible: boolean;
   isVerified?: boolean;
   userData?: Member;
@@ -27,7 +26,6 @@ export type CardWithBiosProps = {
 
 export type UserStatusComponentProps = {
   userStatus?: UserStatusMode;
-  userStatusTooltipDetails: UserStatusTooltipDetailsProps;
 };
 
 export type UserStatusTooltipDetailsProps = {

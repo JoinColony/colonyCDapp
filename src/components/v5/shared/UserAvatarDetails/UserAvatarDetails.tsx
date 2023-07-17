@@ -44,7 +44,7 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
           >
             <Avatar size="m" title={userName} avatar={avatar} />
           </div>
-          {!!userStatus && (
+          {!!userStatus && userStatus !== 'general' && (
             <span className="absolute bottom-[-0.9375rem]">
               <UserStatus mode={mode} text={{ id: userStatus }} />
             </span>

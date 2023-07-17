@@ -4,13 +4,14 @@ import clsx from 'clsx';
 
 import PillsBase from '../PillsBase';
 import { PillsProps } from '../types';
+import { getIconName } from '~v5/shared/CardWithBios/partials/consts';
 
 const displayName = 'v5.common.Pills.UserStatus';
 
 const UserStatus: FC<PropsWithChildren<PillsProps>> = ({
   mode,
   children,
-  text,
+  text = '',
   textValues,
   ...rest
 }) => {
@@ -18,13 +19,6 @@ const UserStatus: FC<PropsWithChildren<PillsProps>> = ({
 
   const userStatusText =
     typeof text == 'string' ? text : text && formatMessage(text, textValues);
-
-  const iconName =
-    ((mode === 'dedicated' || mode === 'dedicated-filled') && 'medal-bold') ||
-    ((mode === 'top' || mode === 'top-filled') && 'crown-simple') ||
-    ((mode === 'new' || mode === 'active-new') && 'hand-heart') ||
-    ((mode === 'active' || mode === 'active-filled') && 'shooting-star-bold') ||
-    '';
 
   return (
     <PillsBase
@@ -40,7 +34,7 @@ const UserStatus: FC<PropsWithChildren<PillsProps>> = ({
           mode === 'top-filled' || mode === 'team',
         'text-negative-400 bg-negative-100': mode === 'banned',
       })}
-      iconName={iconName}
+      iconName={getIconName(mode)}
       {...rest}
     >
       {userStatusText || children}
