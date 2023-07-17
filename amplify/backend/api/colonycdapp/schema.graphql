@@ -782,6 +782,13 @@ enum SortingMethod {
   BY_LESS_PERMISSIONS
 }
 
+enum ExpenditureStatus {
+  DRAFT
+  LOCKED
+  FINALIZED
+  CANCELLED
+}
+
 """
 Root query type
 """
@@ -1458,9 +1465,8 @@ type ColonyFundsClaim @model {
 """
 Represents a native Colony Chain Funds Claim
 E.g., Token 0x0000...0000: ETH, xDAI, etc
-"""
-type # This is really not elegant, but there's no other proper solution, as you can't
-# return the Token @hadOne relationship from the lambda function
+""" # This is really not elegant, but there's no other proper solution, as you can't
+type # return the Token @hadOne relationship from the lambda function
 # Note that we don't need token details for the values that we're fetching (since
 # it's implied), but it would have been nice not to have to basically repeat the type
 ColonyChainFundsClaim {
@@ -1488,9 +1494,8 @@ ColonyChainFundsClaim {
 
 """
 Represents a Colony balance for a specific domain and token
-"""
-type # This is not a @model since it will only be returned by a lambda function
-# so don't need to create tables for them
+""" # This is not a @model since it will only be returned by a lambda function
+type # so don't need to create tables for them
 # Note that we also need input types since it treats the `balances` as available
 # to "write" to at creation time, even though, even if you were to write to
 # you'd never actually be able to read that data since the return is overwritten
@@ -1922,9 +1927,8 @@ type ColonyMotion @model {
 
 """
 Represents an event triggered by a smart contract within the Colony Network
-"""
-type # This will store the relevant events we care about for a particular colony
-# Altough it might also hold events emmited by other clients (eg: network or token)
+""" # This will store the relevant events we care about for a particular colony
+type # Altough it might also hold events emmited by other clients (eg: network or token)
 # but are event pertaining to a colony
 # Generally you'd want to use this from a block ingenstor, after you've processed
 # data from an event, also save that even for future use
@@ -2299,9 +2303,8 @@ type ColonyAction @model {
 
 """
 Colony Roles that can be involved in an action
-"""
-type # Roles have been set as role_<number> so we can more easily map them to their
-# actual contract counterpart on the client and block ingestor side(s)
+""" # Roles have been set as role_<number> so we can more easily map them to their
+type # actual contract counterpart on the client and block ingestor side(s)
 ColonyActionRoles {
   """
   Recovery role
@@ -2402,9 +2405,8 @@ type ColonyRole @model {
 """
 "
 Snapshot of the user's full roles/permissions at a specific block
-"""
-type # it's a model, not a type since this is designed to work outside of the main
-# colony model, or colony role model, as, by design it should be only used
+""" # it's a model, not a type since this is designed to work outside of the main
+type # colony model, or colony role model, as, by design it should be only used
 # in very specific cases
 ColonyHistoricRole @model {
   """
@@ -2528,6 +2530,7 @@ type Expenditure @model {
     )
   colony: Colony! @belongsTo(fields: ["colonyId"])
   ownerAddress: ID!
+  status: ExpenditureStatus!
   slots: [ExpenditureSlot!]!
 }
 
