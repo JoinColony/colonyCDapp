@@ -53,13 +53,17 @@ const MembersList: FC<MembersListProps> = ({
             const { name, profile } = user || {};
             const membersLength = visibleMembers.length;
 
+            const incrementIndex = index + 1;
             const top = Math.floor(membersLength * 0.2);
             const dedicated = Math.floor(membersLength * 0.4);
             const active = Math.floor(membersLength * 0.6);
 
-            const isTopLevel = index <= top;
-            const isDedicatedLevel = index <= dedicated && index > top;
-            const isActiveLevel = index <= active && index > dedicated;
+            const isTopStatus = incrementIndex <= top;
+            const isDedicatedStatus =
+              incrementIndex <= dedicated && incrementIndex > top;
+            const isActiveStatus =
+              incrementIndex <= active && incrementIndex > dedicated;
+            // @TODO: implement NEW status
 
             return (
               <li key={name} className="pb-4 break-inside-avoid-column">
@@ -69,9 +73,9 @@ const MembersList: FC<MembersListProps> = ({
                   shouldStatusBeVisible
                   shouldBeMenuVisible
                   userStatus={
-                    (isTopLevel && 'top') ||
-                    (isDedicatedLevel && 'dedicated') ||
-                    (isActiveLevel && 'active') ||
+                    (isTopStatus && 'top') ||
+                    (isDedicatedStatus && 'dedicated') ||
+                    (isActiveStatus && 'active') ||
                     'general'
                   }
                 />
