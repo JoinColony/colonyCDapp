@@ -18,6 +18,7 @@ import { Safe } from '~types';
 import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
 import { useActionDialogStatus } from '~hooks';
 import { isEmpty } from '~utils/lodash';
+import { SelectedSafe } from '~types/safes';
 
 import {
   TransferNFTSection,
@@ -30,7 +31,6 @@ import { TransactionTypes, transactionOptions } from './constants';
 import { ControlSafeProps } from './types';
 
 import styles from './ControlSafeForm.css';
-import { SelectedSafe } from '~types/safes';
 
 const displayName = 'common.ControlSafeDialog.ControlSafeForm';
 
@@ -110,6 +110,13 @@ const hardcodedSafes: Safe[] = [
   },
 ];
 
+enum ContractFunctions {
+  TRANSFER_FUNDS = 'transfer',
+  TRANSFER_NFT = 'safeTransferFrom',
+}
+
+const tmpIndex = 0;
+
 const ControlSafeForm = ({
   back,
   colony,
@@ -121,6 +128,7 @@ const ControlSafeForm = ({
   const {
     formState: { isSubmitting, dirtyFields },
     watch,
+    setValue,
   } = useFormContext();
   const selectedSafe = watch('safe');
   const transactionType = watch('transactions.transactionType');
@@ -170,6 +178,22 @@ const ControlSafeForm = ({
        *     setFieldValue(`transactions.${i}.nftData`, null);
        *   }
        * }); */
+    }
+  };
+
+  const handleTransactionTypeChange = (type: string, index: number) => {
+    const setContractFunction = (contractFunction: string) =>
+      setValue(`transactions.${index}.contractFunction`, contractFunction);
+    switch (type) {
+      case TransactionTypes.TRANSFER_FUNDS:
+        setContractFunction(ContractFunctions.TRANSFER_FUNDS);
+        break;
+      case TransactionTypes.TRANSFER_NFT:
+        setContractFunction(ContractFunctions.TRANSFER_NFT);
+        break;
+      default:
+        setContractFunction('');
+        break;
     }
   };
 
@@ -232,13 +256,10 @@ const ControlSafeForm = ({
             options={transactionOptions}
             label={MSG.transactionLabel}
             name="transactions.transactionType"
-            onChange={() =>
-              /* type */
-              {
-                /* removeSelectedContractMethod(index);
-              handleTransactionTypeChange(type, index); */
-              }
-            }
+            onChange={(type) => {
+              /* removeSelectedContractMethod(index); */
+              handleTransactionTypeChange(type as string, tmpIndex);
+            }}
             appearance={{ theme: 'grey', width: 'fluid' }}
             placeholder={MSG.transactionPlaceholder}
             disabled={disabledInputs}
