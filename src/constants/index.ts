@@ -125,7 +125,7 @@ export const GANACHE_NETWORK: NetworkInfo = {
   contractAddressLink: 'http://localhost',
 };
 
-const BINANCE_NETWORK: NetworkInfo = {
+export const BINANCE_NETWORK: NetworkInfo = {
   name: 'Binance Smart Chain',
   chainId: 56,
   shortName: 'BNB',
