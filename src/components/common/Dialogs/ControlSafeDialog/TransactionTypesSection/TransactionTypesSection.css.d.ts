@@ -1,13 +1,16 @@
-export const singleUserPickerContainer: string;
-export const contractFunctionSelectorContainer: string;
-export const labelDescription: string;
-export const inputParamContainer: string;
-export const spinner: string;
-export const error: string;
-export const noUsefulMethods: string;
-export const warningContainer: string;
-export const warningSafeChainName: string;
-export const warningIcon: string;
-export const abiContainer: string;
-export const attributionMessage: string;
-export const fetchFailedErrorContainer: string;
+declare namespace TransactionTypesSectionCssNamespace {
+  export interface ITransactionTypesSectionCss {
+    contractFunctionSelectorContainer: string;
+    error: string;
+    labelDescription: string;
+    singleUserPickerContainer: string;
+    spinner: string;
+  }
+}
+
+declare const TransactionTypesSectionCssModule: TransactionTypesSectionCssNamespace.ITransactionTypesSectionCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: TransactionTypesSectionCssNamespace.ITransactionTypesSectionCss;
+};
+
+export = TransactionTypesSectionCssModule;

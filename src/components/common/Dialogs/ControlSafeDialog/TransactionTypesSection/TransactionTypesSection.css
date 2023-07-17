@@ -4,3 +4,36 @@
   text-align: center;
   color: var(--pink);
 }
+
+.labelDescription {
+  color: var(--temp-grey-blue-7);
+}
+
+.singleUserPickerContainer div + i {
+  right: 3px;
+  left: inherit;
+}
+
+.singleUserPickerContainer input,
+.singleUserPickerContainer button {
+  margin-left: 0px;
+  max-width: none;
+}
+
+.singleUserPickerContainer > div {
+  padding-left: 0;
+}
+
+.singleUserPickerContainer label,
+.contractFunctionSelectorContainer label {
+  color: var(--dark);
+}
+
+.singleUserPickerContainer div[class*="inputContainer"] {
+  column-gap: 10px;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+}
