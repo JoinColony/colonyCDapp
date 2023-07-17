@@ -137,18 +137,18 @@ function* manageExistingSafesAction({
     //     ? { ...parsedColonyMetadata }
     //     : parsedColonyMetadata.data;
 
-    let updatedSafes: Safe[];
+    let updatedColonySafes: Safe[];
 
-    const currentColonySafes =
+    const colonySafes =
       colony.metadata?.safes
         ?.filter(notNull)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .map(({ __typename, ...rest }) => rest) || [];
 
     if (!isRemovingSafes) {
-      updatedSafes = [...currentColonySafes, ...safes];
+      updatedColonySafes = [...colonySafes, ...safes];
     } else {
-      updatedSafes = currentColonySafes.filter(
+      updatedColonySafes = colonySafes.filter(
         (safe) =>
           !safes.some(
             (removedSafe) =>
@@ -226,7 +226,7 @@ function* manageExistingSafesAction({
         variables: {
           input: {
             id: colonyAddress,
-            safes: updatedSafes,
+            safes: updatedColonySafes,
             changelog: getUpdatedColonyMetadataChangelog(
               txHash,
               colony.metadata,
