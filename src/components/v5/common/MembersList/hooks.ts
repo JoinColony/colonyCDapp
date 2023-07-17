@@ -22,10 +22,11 @@ export const useMembersList = ({ list, isHomePage }) => {
     () => Math.min(startIndex + membersLimit, listLength),
     [listLength, membersLimit, startIndex],
   );
+  const canLoadMore = listLength > membersLimit && endIndex < listLength;
 
   const showMembers = useCallback(() => {
-    setVisibleMembers(list.slice(startIndex, endIndex));
-  }, [list, startIndex, endIndex]);
+    setVisibleMembers(list.slice(0, endIndex));
+  }, [list, endIndex]);
 
   const loadMoreMembers = () => {
     showMembers();
@@ -42,5 +43,6 @@ export const useMembersList = ({ list, isHomePage }) => {
     visibleMembers,
     listLength,
     membersLimit,
+    canLoadMore,
   };
 };

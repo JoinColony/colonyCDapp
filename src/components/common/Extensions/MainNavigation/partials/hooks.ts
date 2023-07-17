@@ -43,7 +43,7 @@ export const useGetNavItems = (name: string | undefined): NavItem[] =>
           },
           {
             label: 'Members',
-            href: '/members',
+            href: `/colony/${name}/members`,
             description:
               'View and manage contributors and followers in this colony.',
           },
