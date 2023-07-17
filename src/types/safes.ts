@@ -1,4 +1,4 @@
-import { Address } from '~types';
+import { Address, Token } from '~types';
 
 export type ModuleAddress = Address;
 
@@ -61,6 +61,5 @@ export type SafeTransaction = {
 
 export interface SafeBalance {
   balance: number;
-  tokenAddress: string | null;
-  token: SafeBalanceToken | null;
+  token: Token;
 }
