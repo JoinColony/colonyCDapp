@@ -9,10 +9,7 @@ import Heading from '~shared/Heading';
 import ExternalLink from '~shared/ExternalLink';
 import Button from '~shared/Button';
 import Icon from '~shared/Icon';
-import {
-  SingleSafePicker,
-  filterUserSelection,
-} from '~shared/SingleUserPicker';
+import { filterUserSelection } from '~shared/SingleUserPicker';
 import { SelectedSafe } from '~types';
 import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
 import { useActionDialogStatus } from '~hooks';
@@ -28,6 +25,7 @@ import {
 import { TransactionTypes, transactionOptions } from './constants';
 import { ControlSafeProps } from './types';
 import AddItemButton from './AddItemButton';
+import SingleSafePicker from './SingleSafePicker';
 import styles from './ControlSafeForm.css';
 
 const displayName = 'common.ControlSafeDialog.ControlSafeForm';
