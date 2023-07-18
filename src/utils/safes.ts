@@ -1,4 +1,4 @@
-import { ADDRESS_ZERO } from '~constants';
+import { ADDRESS_ZERO, SAFE_NETWORKS } from '~constants';
 import { Safe } from '~gql';
 import { Address, SafeBalance, SelectedSafe } from '~types';
 
@@ -21,3 +21,19 @@ export const getSelectedSafeBalance = (
       balance.token.tokenAddress === selectedTokenAddress ||
       (!balance.token.tokenAddress && selectedTokenAddress === ADDRESS_ZERO),
   );
+
+export const getChainNameFromSafe = (safeDisplayName: string) => {
+  return safeDisplayName.match(/\(([^()]*)\)$/)?.pop() || '';
+};
+
+export const getTxServiceBaseUrl = (selectedChain: string) => {
+  const selectedNetwork = SAFE_NETWORKS.find(
+    (network) => network.name === selectedChain,
+  );
+
+  if (!selectedNetwork || !selectedNetwork.safeTxService) {
+    throw new Error(`Selected chain ${selectedChain} not currently supported.`);
+  }
+
+  return selectedNetwork.safeTxService;
+};
