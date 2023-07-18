@@ -12,7 +12,6 @@ export * from './metadataChangelog';
 export * from './ipfs';
 export * from './annotations';
 export * from './expenditures';
-export * from './safeHelpers';
 
 // export * from './updateColonyDisplayCache';
 // export { updateMotionValues } from './updateMotionValues';
