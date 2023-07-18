@@ -15,6 +15,7 @@ const displayName = 'v5.pages.ColonyUsersPage';
 const ColonyUsersPage: FC<ColonyUsersPageProps> = ({ pageName }) => {
   const { searchValue } = useSearchContext();
   const { contributors, followers, loading } = useContributorsPage(searchValue);
+  const isContributorsPage = pageName === 'contributors';
 
   return (
     <Spinner loadingText={{ id: `loading.${pageName}Page` }}>
@@ -29,7 +30,8 @@ const ColonyUsersPage: FC<ColonyUsersPageProps> = ({ pageName }) => {
               emptyDescription={{
                 id: `membersPage.${pageName}.emptyDescription`,
               }}
-              list={pageName === 'contributors' ? contributors : followers}
+              list={isContributorsPage ? contributors : followers}
+              isContributorsList={isContributorsPage}
               isLoading={loading}
               isHomePage={false}
             />

@@ -9,4 +9,5 @@ export interface UserAvatarProps {
   isLink?: boolean;
   size?: AvatarSize;
   userStatus?: UserStatusMode;
+  isContributorsList?: boolean;
 }

@@ -16,11 +16,11 @@ const displayName = 'v5.CardWithBios';
 const CardWithBios: FC<CardWithBiosProps> = ({
   userData,
   description,
-  userStatus,
+  userStatus = 'general',
   shouldBeMenuVisible = true,
   permissions,
-  userStatusTooltipDetails,
   isVerified,
+  isContributorsList,
 }) => {
   const { user, reputationPercentage } = (userData as Contributor) || {};
   const { name, walletAddress, profile } = user || {};
@@ -43,6 +43,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
               user={user}
               userStatus={userStatus}
               avatarSize="sm"
+              isContributorsList={isContributorsList}
               // permissions={permissionsItems}
             />
             {isVerified && (
@@ -53,11 +54,8 @@ const CardWithBios: FC<CardWithBiosProps> = ({
           </div>
 
           <div className="flex gap-2">
-            {userStatus && userStatusTooltipDetails && (
-              <UserStatusComponent
-                userStatus={userStatus}
-                userStatusTooltipDetails={userStatusTooltipDetails}
-              />
+            {userStatus && userStatus !== 'general' && isContributorsList && (
+              <UserStatusComponent userStatus={userStatus} />
             )}
             {shouldBeMenuVisible && (
               <>

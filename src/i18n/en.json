@@ -685,5 +685,6 @@
   "filter.pill.recovery": "Recovery",
   "team.type": "Team",
   "reputation.type": "Reputation",
-  "permissions.type": "Permissions types"
+  "permissions.type": "Permissions types",
+  "user.status.tooltip.desc": "This user is in the top {percentNum}% of contributors within this Colony." 
 }
