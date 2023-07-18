@@ -2539,6 +2539,7 @@ type Expenditure @model {
 type ExpenditureSlot {
   id: Int!
   recipientAddress: String
+  claimDelay: Int
   payouts: [ExpenditurePayout!]
 }
 
