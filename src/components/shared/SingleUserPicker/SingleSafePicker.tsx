@@ -1,9 +1,8 @@
 import React, { ComponentProps, useMemo, ReactNode } from 'react';
 
 import { SUPPORTED_SAFE_NETWORKS } from '~constants';
-import { Safe } from '~types';
+import { Safe, SelectedSafe } from '~types';
 import Avatar from '~shared/Avatar';
-import { SelectedSafe } from '~types/safes';
 
 import { ItemDataType } from '../OmniPicker';
 import SingleUserPicker, {

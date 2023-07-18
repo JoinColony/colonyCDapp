@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { useGetMembersForColonyQuery } from '~gql';
 
+import { useGetMembersForColonyQuery } from '~gql';
 import { DialogSection } from '~shared/Dialog';
 import { ItemDataType } from '~shared/OmniPicker';
 import { SpinnerLoader } from '~shared/Preloaders';
