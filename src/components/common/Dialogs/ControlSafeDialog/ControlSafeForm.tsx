@@ -13,7 +13,7 @@ import {
   SingleSafePicker,
   filterUserSelection,
 } from '~shared/SingleUserPicker';
-import { Safe, SelectedSafe } from '~types';
+import { SelectedSafe } from '~types';
 import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
 import { useActionDialogStatus } from '~hooks';
 import { isEmpty } from '~utils/lodash';
@@ -86,27 +86,6 @@ const UpgradeWarning = (chunks: React.ReactNode[]) => (
 );
 
 const requiredRoles: ColonyRole[] = [ColonyRole.Root];
-
-const hardcodedSafes: Safe[] = [
-  {
-    name: 'test',
-    chainId: 56,
-    address: '0xe759f388c97674D5B8a60406b254aB59f194163d',
-    moduleContractAddress: '0xe759f388c97674D5B8a60406b254aB59f194163d',
-  },
-  {
-    name: 'test2',
-    chainId: 1,
-    address: '0x3F107AFF0342Cfb5519A68B3241565F6FC9BAC1e',
-    moduleContractAddress: '0xe759f388c97674D5B8a60406b254aB59f194163w',
-  },
-  {
-    name: 'test3',
-    chainId: 5,
-    address: '0x3F107AFF0342Cfb5519A68B3241565F6FC9BAC2e',
-    moduleContractAddress: '0xe759f388c97674D5B8a60406b254aB59f194163e',
-  },
-];
 
 enum ContractFunctions {
   TRANSFER_FUNDS = 'transfer',
@@ -195,7 +174,7 @@ const ControlSafeForm = ({
     }
   };
 
-  const safes = metadata?.safes || hardcodedSafes;
+  const safes = metadata?.safes || [];
 
   return (
     <>
