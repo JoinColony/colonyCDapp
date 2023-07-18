@@ -8,6 +8,6 @@ export interface NavItemProps {
 
 export type NavigationName = 'members' | 'extensions' | 'profile';
 
-export interface Navigationprops {
+export interface NavigationProps {
   pageName: NavigationName;
 }
