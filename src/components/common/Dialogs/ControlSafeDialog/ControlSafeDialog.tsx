@@ -1,8 +1,8 @@
 import React from 'react';
 import { InferType } from 'yup';
 import { useNavigate } from 'react-router-dom';
-import { pipe, withMeta, mapPayload } from '~utils/actions';
 
+import { pipe, withMeta, mapPayload } from '~utils/actions';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 import { ActionTypes } from '~redux';

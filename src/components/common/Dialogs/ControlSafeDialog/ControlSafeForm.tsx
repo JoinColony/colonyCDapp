@@ -13,12 +13,10 @@ import {
   SingleSafePicker,
   filterUserSelection,
 } from '~shared/SingleUserPicker';
-import { Safe } from '~types';
-
+import { Safe, SelectedSafe } from '~types';
 import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
 import { useActionDialogStatus } from '~hooks';
 import { isEmpty } from '~utils/lodash';
-import { SelectedSafe } from '~types/safes';
 
 import {
   TransferNFTSection,

@@ -1,7 +1,6 @@
 import { ADDRESS_ZERO } from '~constants';
 import { Safe } from '~gql';
-import { Address } from '~types';
-import { SafeBalance, SelectedSafe } from '~types/safes';
+import { Address, SafeBalance, SelectedSafe } from '~types';
 
 export const getSafe = (safes: Safe[], selectedSafe: SelectedSafe | null) => {
   if (!selectedSafe) return undefined;
