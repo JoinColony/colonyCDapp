@@ -31,7 +31,7 @@ const ThreeColumns: FC<PropsWithChildren<ThreeColumnsProps>> = ({
     <div
       className={
         withSlider
-          ? 'row-start-4 sm:row-start-auto sm:col-start-2'
+          ? 'mt-3 row-start-4 sm:row-start-auto sm:col-start-2 sm:mt-0'
           : 'sm:row-start-2 sm:col-start-2'
       }
     >
