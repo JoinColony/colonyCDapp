@@ -8,4 +8,5 @@ export interface NavigationToolsProps
     Pick<UserAvatarProps, 'userName' | 'user'> {
   buttonLabel?: string | MessageDescriptor;
   nativeToken?: Token;
+  hideColonies?: boolean;
 }

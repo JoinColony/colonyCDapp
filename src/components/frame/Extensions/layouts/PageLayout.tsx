@@ -39,6 +39,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
   description,
   loadingText,
   pageName,
+  hideColonies,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
@@ -94,7 +95,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
         pauseOnHover
         closeButton={CloseButton}
       />
-      <Header />
+      <Header hideColonies={hideColonies} />
       {/* @TODO: Remove wallet component when we have a proper wallet */}
       <div className="hidden">
         <Wallet />
@@ -103,7 +104,11 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
         <div className="inner">
           {isMobile && <Navigation pageName={pageName} />}
           <div className="mt-9 sm:mt-6">
-            <PageTitle title={title} subtitle={description} />
+            <PageTitle
+              title={title}
+              subtitle={description}
+              hideColonies={hideColonies}
+            />
           </div>
           <div className="mt-9">{children}</div>
         </div>

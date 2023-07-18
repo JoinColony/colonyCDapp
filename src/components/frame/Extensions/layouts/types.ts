@@ -5,4 +5,5 @@ export interface PageLayoutProps {
   description: MessageDescriptor;
   loadingText: MessageDescriptor | string;
   pageName: 'members' | 'extensions' | 'profile';
+  hideColonies?: boolean;
 }

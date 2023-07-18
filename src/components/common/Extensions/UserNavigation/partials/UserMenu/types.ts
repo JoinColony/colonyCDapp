@@ -15,4 +15,5 @@ export interface UserMenuProps {
   userReputation?: string;
   totalReputation?: string;
   nativeToken?: Token;
+  hideColonies?: boolean;
 }

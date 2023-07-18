@@ -20,6 +20,7 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
   walletAddress,
   avatar,
   user,
+  hideColonies,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
@@ -35,6 +36,7 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
           userName={userName}
           userReputation={userReputation}
           user={user}
+          hideColonies={hideColonies}
         />
       </div>
       <div className="w-full pb-4 mb-6 border-b border-b-gray-200 sm:pb-3 sm:mb-5">

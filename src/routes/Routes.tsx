@@ -431,6 +431,7 @@ const Routes = () => {
               title={{ id: 'userProfilePage.title' }}
               description={{ id: 'userProfilePage.description' }}
               pageName="profile"
+              hideColonies
             >
               <UserProfilePage />
             </PageLayout>
@@ -444,6 +445,7 @@ const Routes = () => {
               title={{ id: 'userAdvancedPage.title' }}
               description={{ id: 'userAdvancedPage.description' }}
               pageName="profile"
+              hideColonies
             >
               <UserPreferencesPage />
             </PageLayout>
@@ -457,6 +459,7 @@ const Routes = () => {
               title={{ id: 'userAdvancedPage.title' }}
               description={{ id: 'userAdvancedPage.description' }}
               pageName="profile"
+              hideColonies
             >
               <UserAdvancedPage />
             </PageLayout>
