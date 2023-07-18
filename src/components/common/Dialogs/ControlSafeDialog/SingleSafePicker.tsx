@@ -3,12 +3,11 @@ import React, { ComponentProps, useMemo, ReactNode } from 'react';
 import { SUPPORTED_SAFE_NETWORKS } from '~constants';
 import { Safe, SelectedSafe } from '~types';
 import Avatar from '~shared/Avatar';
-
-import { ItemDataType } from '../OmniPicker';
+import { ItemDataType } from '~shared/OmniPicker';
 import SingleUserPicker, {
   AvatarRenderFn,
   OnSelectedFn,
-} from './SingleUserPicker';
+} from '~shared/SingleUserPicker';
 
 type SafeRenderFn = (user?: ItemDataType<SelectedSafe>) => ReactNode;
 
