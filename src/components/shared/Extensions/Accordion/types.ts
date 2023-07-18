@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import { FieldErrorsImpl, UseFormRegister } from 'react-hook-form';
 import { MessageDescriptor } from 'react-intl';
 
@@ -63,7 +62,7 @@ export interface AccordionMocksItemProps {
   content: JSX.Element;
 }
 export interface AccordionItemProps {
-  title?: ReactNode | string;
+  title?: MessageDescriptor | string;
   content?: AccordionContentDetails[];
   isOpen?: boolean;
   onClick?: () => void;

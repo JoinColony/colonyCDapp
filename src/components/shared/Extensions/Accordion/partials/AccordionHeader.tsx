@@ -7,9 +7,10 @@ import Icon from '~shared/Icon';
 
 const displayName = 'Extensions.Accordion.partials.AccordionHeader';
 
-const AccordionHeader: FC<AccordionItemProps> = ({ title = '', isOpen }) => {
+const AccordionHeader: FC<AccordionItemProps> = ({ title, isOpen }) => {
   const { formatMessage } = useIntl();
-  const text = typeof title === 'string' ? formatMessage({ id: title }) : title;
+  const text =
+    typeof title === 'string' ? title : title && formatMessage(title);
 
   return (
     <>

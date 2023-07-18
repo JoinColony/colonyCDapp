@@ -24,7 +24,10 @@ const AccordionContentItem: FC<AccordionContentItemProps> = ({
         role="button"
         tabIndex={0}
       >
-        <AccordionHeader title={accordionItem?.header} isOpen={visibility} />
+        <AccordionHeader
+          title={accordionItem?.header.toString()}
+          isOpen={visibility}
+        />
         <AnimatePresence>
           {visibility && (
             <motion.div
