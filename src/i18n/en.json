@@ -432,6 +432,7 @@
   "ariaLabel.changeSlide": "Change slide",
   "ariaLabel.search": "Search",
   "ariaLabel.openAccordion": "Open accordion",
+  "ariaLabel.closeAccordion": "Close accordion",
   "ariaLabel.openSearchModal": "Open search modal",
   "ariaLabel.sortReputation": "Sort by reputation",
   "ariaLabel.sortPermission": "Sort by permission",

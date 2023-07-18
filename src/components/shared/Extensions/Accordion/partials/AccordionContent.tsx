@@ -9,42 +9,57 @@ const displayName = 'Extensions.Accordion.partials.AccordionContent';
 
 const AccordionContent: FC<AccordionItemProps> = ({ content, errors }) => (
   <div className="relative">
-    {content?.map((item) => (
-      <div key={item.id}>
-        <div className="flex justify-between mt-4 items-center">
-          {item.textItem && item.textItem}
-          {item.inputData?.inputType && (
-            <div className="ml-6">
-              {item.inputData.inputType === 'percent' ? (
-                <SpecialPercentageInput
-                  name={item.inputData.name}
-                  minValue={item.inputData.minValue}
-                  maxValue={item.inputData.maxValue}
-                  register={item.inputData.register}
-                  errors={errors}
+    {content?.map(
+      ({
+        id,
+        textItem,
+        inputData: { inputType, name, minValue, maxValue, register },
+        accordionItem,
+      }) => (
+        <div key={id}>
+          <div className="flex justify-between mt-6 items-center">
+            {textItem && (
+              <div>
+                <p
+                  className="text-1 mb-0.5"
+                  dangerouslySetInnerHTML={{ __html: textItem?.props.title }}
                 />
-              ) : (
-                <SpecialHourInput
-                  name={item.inputData.name}
-                  minValue={item.inputData.minValue}
-                  maxValue={item.inputData.maxValue}
-                  register={item.inputData.register}
-                  errors={errors}
+                <p
+                  className="text-sm text-gray-600"
+                  dangerouslySetInnerHTML={{ __html: textItem?.props.subTitle }}
                 />
-              )}
-            </div>
-          )}
-        </div>
+              </div>
+            )}
 
-        {item?.accordionItem &&
-          item?.accordionItem.map((accordionItem) => (
-            <AccordionContentItem
-              key={accordionItem.id}
-              accordionItem={accordionItem}
-            />
-          ))}
-      </div>
-    ))}
+            {inputType && (
+              <div className="ml-6">
+                {inputType === 'percent' ? (
+                  <SpecialPercentageInput
+                    name={name}
+                    minValue={minValue}
+                    maxValue={maxValue}
+                    register={register}
+                    errors={errors}
+                  />
+                ) : (
+                  <SpecialHourInput
+                    name={name}
+                    minValue={minValue}
+                    maxValue={maxValue}
+                    register={register}
+                    errors={errors}
+                  />
+                )}
+              </div>
+            )}
+          </div>
+          {accordionItem &&
+            accordionItem.map((item) => (
+              <AccordionContentItem key={item.id} accordionItem={item} />
+            ))}
+        </div>
+      ),
+    )}
   </div>
 );
 

@@ -16,14 +16,19 @@ const AccordionHeader: FC<AccordionItemProps> = ({ title, isOpen }) => {
     <>
       <button
         type="button"
-        className="flex justify-between items-center py-2 w-full"
-        aria-label={formatMessage({ id: 'ariaLabel.openAccordion' })}
+        className="flex justify-between items-center py-2 w-full group"
+        aria-label={formatMessage({
+          id: isOpen ? 'ariaLabel.closeAccordion' : 'ariaLabel.openAccordion',
+        })}
       >
         {text}
         <span
-          className={clsx('flex shrink-0 text-gray-400', {
-            'rotate-180': isOpen,
-          })}
+          className={clsx(
+            'flex shrink-0 text-gray-400 transition-all duration-normal group-hover:text-blue-400',
+            {
+              'rotate-180': isOpen,
+            },
+          )}
         >
           <Icon appearance={{ size: 'extraTiny' }} name="caret-down" />
         </span>

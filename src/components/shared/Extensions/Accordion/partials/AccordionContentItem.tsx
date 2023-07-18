@@ -8,7 +8,7 @@ import { accordionAnimation } from '~constants/accordionAnimation';
 const displayName = 'Extensions.Accordion.partials.AccordionContentItem';
 
 const AccordionContentItem: FC<AccordionContentItemProps> = ({
-  accordionItem,
+  accordionItem: { header, content },
 }) => {
   const [visibility, setVisibility] = useState(false);
 
@@ -24,10 +24,7 @@ const AccordionContentItem: FC<AccordionContentItemProps> = ({
         role="button"
         tabIndex={0}
       >
-        <AccordionHeader
-          title={accordionItem?.header.toString()}
-          isOpen={visibility}
-        />
+        <AccordionHeader title={header.toString()} isOpen={visibility} />
         <AnimatePresence>
           {visibility && (
             <motion.div
@@ -39,7 +36,7 @@ const AccordionContentItem: FC<AccordionContentItemProps> = ({
               transition={{ duration: 0.4, ease: 'easeOut' }}
               className="overflow-hidden"
             >
-              <div>{accordionItem?.content}</div>
+              <div>{content}</div>
             </motion.div>
           )}
         </AnimatePresence>
