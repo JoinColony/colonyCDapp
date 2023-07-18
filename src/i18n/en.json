@@ -589,7 +589,7 @@
   "extensionUpgrade.toast.description.error": "Due to a transaction error, the extension did not upgrade.",
   "extensions.lazy.consensus.description": "These parameters cannot be changed without reinstalling the extension.",
   "choose.governanceStyle": "Choose your governance style:",
-  "custom.extension.parameters": "Extension parameters",
+  "custom.extension.parameters": "Custom extension parameters",
   "deprecate.extension": "Deprecate extension",
   "permissions.list.title": " Permissions the extension needs in the colony:",
   "active.installs": "Active Installs",
@@ -686,5 +686,5 @@
   "team.type": "Team",
   "reputation.type": "Reputation",
   "permissions.type": "Permissions types",
-  "user.status.tooltip.desc": "This user is in the top {percentNum}% of contributors within this Colony." 
+  "user.status.tooltip.desc": "This user is in the top {percentNum}% of contributors within this Colony."
 }
