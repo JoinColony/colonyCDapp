@@ -462,6 +462,7 @@ const Routes = () => {
               hideColonies
             >
               <UserAdvancedPage />
+              {/* <UserProfileEdit /> */}
             </PageLayout>
           }
         />
