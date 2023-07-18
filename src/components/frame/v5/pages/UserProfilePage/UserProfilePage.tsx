@@ -11,7 +11,7 @@ import styles from './UserProfilePage.module.css';
 import Textarea from '~v5/common/Fields/Textarea';
 import Button from '~v5/shared/Button';
 import { useUserProfile } from './hooks';
-import FormError from '~v5/shared/FormError';
+import { MAX_BIO_CHARS, MAX_DISPLAYNAME_CHARS } from './consts';
 
 const displayName = 'v5.pages.UserProfilePage';
 
@@ -35,10 +35,12 @@ const UserProfilePage: FC = () => {
               />
               <div className="w-full">
                 <Input
-                  maxCharNumber={30}
+                  maxCharNumber={MAX_DISPLAYNAME_CHARS}
                   shouldNumberOfCharsBeVisible
                   name="displayName"
                   register={register}
+                  isError={!!errors.displayName?.message}
+                  customErrorMessage="errors.displayName.message"
                 />
               </div>
             </div>
@@ -56,13 +58,13 @@ const UserProfilePage: FC = () => {
                 fieldTitle={{ id: 'field.website' }}
                 fieldDecription={{ id: 'description.website' }}
               />
-              <div className="flex w-full flex-col">
-                <Input name="website" register={register} />
-                {errors.website && (
-                  <FormError isFullSize alignment="left">
-                    {errors.website.message}
-                  </FormError>
-                )}
+              <div className="w-full">
+                <Input
+                  name="website"
+                  register={register}
+                  isError={!!errors.website?.message}
+                  customErrorMessage="errors.website.message"
+                />
               </div>
             </div>
 
@@ -75,10 +77,11 @@ const UserProfilePage: FC = () => {
               />
               <div className="w-full">
                 <Textarea
-                  maxCharNumber={200}
+                  maxCharNumber={MAX_BIO_CHARS}
                   shouldNumberOfCharsBeVisible
                   name="bio"
                   register={register}
+                  isError={!!errors.bio?.message}
                 />
               </div>
             </div>

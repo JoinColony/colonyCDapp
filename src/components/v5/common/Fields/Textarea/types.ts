@@ -10,4 +10,5 @@ export type TextareaProps = HTMLAttributes<HTMLTextAreaElement> & {
   shouldNumberOfCharsBeVisible?: boolean;
   name?: string;
   register?: UseFormRegister<FieldValues>;
+  isError?: boolean;
 };

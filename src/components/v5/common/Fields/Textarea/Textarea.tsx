@@ -17,6 +17,7 @@ const Textarea: FC<TextareaProps> = ({
   shouldNumberOfCharsBeVisible = false,
   name = '',
   register,
+  isError,
 }) => {
   const { formatMessage } = useIntl();
   const { isTyping, isCharLenghtError, currentCharNumber, onChange } =
@@ -26,6 +27,8 @@ const Textarea: FC<TextareaProps> = ({
     typeof textareaTitle === 'string'
       ? textareaTitle
       : formatMessage(textareaTitle);
+
+  const isErrorStatus = isCharLenghtError || isError;
 
   return (
     <div className="flex flex-col gap-1">
@@ -38,7 +41,7 @@ const Textarea: FC<TextareaProps> = ({
         className={clsx('w-full min-h-[5.75rem] input-round', {
           'border-gray-300': !isTyping,
           'border-blue-200 shadow-lightBlue': isTyping,
-          'border-negative-400': isCharLenghtError,
+          'border-negative-400': isErrorStatus,
         })}
       >
         <textarea
@@ -52,8 +55,8 @@ const Textarea: FC<TextareaProps> = ({
         {!!currentCharNumber && shouldNumberOfCharsBeVisible && (
           <div
             className={clsx('text-4 flex justify-end', {
-              'text-negative-400': isCharLenghtError,
-              'text-gray-500': !isCharLenghtError,
+              'text-negative-400': isErrorStatus,
+              'text-gray-500': !isErrorStatus,
             })}
           >
             {currentCharNumber}/{maxCharNumber}
@@ -61,7 +64,7 @@ const Textarea: FC<TextareaProps> = ({
         )}
       </div>
       <div className="flex items-center justify-between w-full">
-        {isCharLenghtError && (
+        {isErrorStatus && (
           <span>
             <FormError isFullSize alignment="left">
               {formatMessage({ id: 'too.many.characters' })}

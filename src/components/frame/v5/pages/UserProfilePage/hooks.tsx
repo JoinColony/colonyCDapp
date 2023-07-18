@@ -9,6 +9,7 @@ import { useAppContext, useCanEditProfile } from '~hooks';
 import { useUpdateUserProfileMutation } from '~gql';
 import { UserProfileFormProps } from './types';
 import Toast from '~shared/Extensions/Toast';
+import { MAX_BIO_CHARS, MAX_DISPLAYNAME_CHARS } from './consts';
 
 export const useUserProfile = () => {
   const { updateUser } = useAppContext();
@@ -17,11 +18,15 @@ export const useUserProfile = () => {
   const { formatMessage } = useIntl();
 
   const validationSchema = yup.object<UserProfileFormProps>({
-    displayName: yup.string(),
-    bio: yup.string(),
-    website: yup.string().url(formatMessage({ id: 'website.error.message' })),
+    displayName: yup
+      .string()
+      .max(MAX_DISPLAYNAME_CHARS, formatMessage({ id: 'too.many.characters' }))
+      .required(formatMessage({ id: 'error.displayName.message' })),
+    bio: yup
+      .string()
+      .max(MAX_BIO_CHARS, formatMessage({ id: 'too.many.characters' })),
+    website: yup.string().url(formatMessage({ id: 'errors.website.message' })),
     location: yup.string(),
-    email: yup.string(),
   });
 
   const {
@@ -35,10 +40,10 @@ export const useUserProfile = () => {
 
   useEffect(() => {
     reset({
-      bio: user?.profile?.bio,
-      displayName: user?.name,
-      location: user?.profile?.location,
-      website: user?.profile?.website,
+      bio: user?.profile?.bio || '',
+      displayName: user?.profile?.displayName || '',
+      location: user?.profile?.location || '',
+      website: user?.profile?.website || '',
     });
   }, [user, reset]);
 
