@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useColonyContext, useMobile, useUserReputation } from '~hooks';
@@ -15,10 +15,11 @@ import { CloseButton } from '~v5/shared/Button';
 import styles from './Header.module.css';
 import { useHeader } from './hooks';
 import NavigationTools from '~common/Extensions/NavigationTools/NavigationTools';
+import { HeaderProps } from './types';
 
 const displayName = 'frame.Extensions.Header';
 
-const Header = () => {
+const Header: FC<HeaderProps> = ({ hideColonies = false }) => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
   const { colony } = useColonyContext();
@@ -133,31 +134,40 @@ const Header = () => {
               )}
             </div>
           </div>
-          <div className="flex justify-between w-full items-center">
-            <button
-              type="button"
-              className={clsx('flex items-center sm:hidden', {
-                'opacity-100 visible': !isMainMenuVisible,
-                'opacity-0 invisible': isMainMenuVisible,
-              })}
-              ref={mainMenuSetTriggerRef}
-              aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
-            >
-              <Icon name="list" appearance={{ size: 'tiny' }} />
-              <span className="text-2 ml-1.5">
-                {formatMessage({ id: 'menu' })}
-              </span>
-            </button>
-            <MainNavigation
-              setTooltipRef={mainMenuSetTooltipRef}
-              tooltipProps={mainMenuGetTooltipProps}
-              isMenuOpen={isMainMenuVisible}
-            />
+          <div
+            className={clsx('flex w-full items-center', {
+              'justify-end': hideColonies,
+              'justify-between': !hideColonies,
+            })}
+          >
+            {!hideColonies && (
+              <>
+                <button
+                  type="button"
+                  className={clsx('flex items-center sm:hidden', {
+                    'opacity-100 visible': !isMainMenuVisible,
+                    'opacity-0 invisible': isMainMenuVisible,
+                  })}
+                  ref={mainMenuSetTriggerRef}
+                  aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
+                >
+                  <Icon name="list" appearance={{ size: 'tiny' }} />
+                  <span className="text-2 ml-1.5">
+                    {formatMessage({ id: 'menu' })}
+                  </span>
+                </button>
+                <MainNavigation
+                  setTooltipRef={mainMenuSetTooltipRef}
+                  tooltipProps={mainMenuGetTooltipProps}
+                  isMenuOpen={isMainMenuVisible}
+                />
+              </>
+            )}
             <div>
               {isCloseButtonVisible ? (
                 <CloseButton iconSize="tiny" />
               ) : (
-                <UserNavigation />
+                <UserNavigation hideColonies={hideColonies} />
               )}
             </div>
           </div>

@@ -7,7 +7,7 @@ import SubNavigation from '~v5/common/SubNavigation';
 
 const displayName = 'v5.common.PageTitle';
 
-const PageTitle: FC<PageTitleProps> = ({ title, subtitle }) => {
+const PageTitle: FC<PageTitleProps> = ({ title, subtitle, hideColonies }) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -21,9 +21,11 @@ const PageTitle: FC<PageTitleProps> = ({ title, subtitle }) => {
             </h2>
           )}
         </div>
-        <div className="hidden md:block">
-          <SubNavigation />
-        </div>
+        {!hideColonies && (
+          <div className="hidden md:block">
+            <SubNavigation />
+          </div>
+        )}
       </div>
     </div>
   );

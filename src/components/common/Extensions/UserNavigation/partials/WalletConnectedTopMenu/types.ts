@@ -7,4 +7,5 @@ export interface WalletConnectedTopMenuProps extends UserAvatarDetailsProps {
   totalReputation?: string;
   nativeToken?: Token;
   user?: UserFragment | null;
+  hideColonies?: boolean;
 }

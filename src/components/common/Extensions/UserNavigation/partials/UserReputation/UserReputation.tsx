@@ -25,6 +25,7 @@ export const displayName =
 
 const UserReputation: FC<UserReputationProps> = ({
   transactionAndMessageGroups,
+  hideColonies,
 }) => {
   const { colony } = useColonyContext();
   const { wallet, user } = useAppContext();
@@ -105,10 +106,12 @@ const UserReputation: FC<UserReputationProps> = ({
             userName={profile?.displayName || user?.name}
             size="xxs"
           />
-          <MemberReputation
-            userReputation={userReputation}
-            totalReputation={totalReputation}
-          />
+          {!hideColonies && (
+            <MemberReputation
+              userReputation={userReputation}
+              totalReputation={totalReputation}
+            />
+          )}
         </div>
       </Button>
       {(visible || (isOpen && txNeedsSigning)) && (

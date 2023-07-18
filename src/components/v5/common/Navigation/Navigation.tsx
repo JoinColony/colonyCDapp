@@ -3,11 +3,11 @@ import React, { FC, useState } from 'react';
 import { useCurrentPage, useMobile, useSideNavigation } from '~hooks';
 import NavItem from './partials/NavItem';
 import Select from '~v5/common/Fields/Select';
-import { Navigationprops } from './types';
+import { NavigationProps } from './types';
 
 const displayName = 'v5.common.Navigation';
 
-const Navigation: FC<Navigationprops> = ({ pageName }) => {
+const Navigation: FC<NavigationProps> = ({ pageName }) => {
   const isMobile = useMobile();
   const navigationItems = useSideNavigation(pageName);
   const navId = useCurrentPage(navigationItems);

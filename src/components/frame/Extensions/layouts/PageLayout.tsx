@@ -38,6 +38,8 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
   title,
   description,
   loadingText,
+  pageName,
+  hideColonies,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
@@ -71,9 +73,6 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
     applyTheme(isDarkMode ? Theme.dark : Theme.light);
   }, [isDarkMode]);
 
-  // @TODO: Handle other pages when needed or handle navigation in the page itself
-  const pageName = loadingText === 'extensionPage' ? 'extensions' : 'members';
-
   return (
     <Spinner loadingText={loadingText}>
       {canUpgrade && (
@@ -96,7 +95,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
         pauseOnHover
         closeButton={CloseButton}
       />
-      <Header />
+      <Header hideColonies={hideColonies} />
       {/* @TODO: Remove wallet component when we have a proper wallet */}
       <div className="hidden">
         <Wallet />
@@ -105,7 +104,11 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
         <div className="inner">
           {isMobile && <Navigation pageName={pageName} />}
           <div className="mt-9 sm:mt-6">
-            <PageTitle title={title} subtitle={description} />
+            <PageTitle
+              title={title}
+              subtitle={description}
+              hideColonies={hideColonies}
+            />
           </div>
           <div className="mt-9">{children}</div>
         </div>

@@ -17,6 +17,7 @@ const NavigationTools: FC<NavigationToolsProps> = ({
   userReputation,
   user,
   buttonLabel,
+  hideColonies,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
@@ -29,16 +30,18 @@ const NavigationTools: FC<NavigationToolsProps> = ({
   return (
     <>
       {nativeToken && <Token nativeToken={nativeToken} />}
-      <Button mode="tertiary" isFullRounded>
-        <div className="flex items-center gap-3">
-          <UserAvatar userName={userName} size="xxs" user={user} />
-          <MemberReputation
-            userReputation={userReputation}
-            totalReputation={totalReputation}
-            hideOnMobile={false}
-          />
-        </div>
-      </Button>
+      {!hideColonies && (
+        <Button mode="tertiary" isFullRounded>
+          <div className="flex items-center gap-3">
+            <UserAvatar userName={userName} size="xxs" user={user} />
+            <MemberReputation
+              userReputation={userReputation}
+              totalReputation={totalReputation}
+              hideOnMobile={false}
+            />
+          </div>
+        </Button>
+      )}
       <Button
         mode="tertiary"
         isFullRounded
