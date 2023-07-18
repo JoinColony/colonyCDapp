@@ -6,6 +6,8 @@ export interface NavItemProps {
   label: MessageDescriptor | string;
 }
 
+export type NavigationName = 'members' | 'extensions' | 'profile';
+
 export interface Navigationprops {
-  pageName: 'members' | 'extensions' | 'profile';
+  pageName: NavigationName;
 }

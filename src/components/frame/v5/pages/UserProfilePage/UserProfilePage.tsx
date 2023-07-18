@@ -5,6 +5,8 @@ import Navigation from '~v5/common/Navigation';
 import TwoColumns from '~v5/frame/TwoColumns';
 import Spinner from '~v5/shared/Spinner';
 
+const displayName = 'v5.pages.UserProfilePage';
+
 const UserProfilePage = () => {
   const { user } = useCanEditProfile();
 
@@ -18,5 +20,7 @@ const UserProfilePage = () => {
     </Spinner>
   );
 };
+
+UserProfilePage.displayName = displayName;
 
 export default UserProfilePage;

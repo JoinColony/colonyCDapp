@@ -5,6 +5,8 @@ import Navigation from '~v5/common/Navigation';
 import TwoColumns from '~v5/frame/TwoColumns';
 import Spinner from '~v5/shared/Spinner';
 
+const displayName = 'v5.pages.UserAdvancedPage';
+
 const UserAdvancedPage = () => {
   const { user } = useCanEditProfile();
 
@@ -20,5 +22,7 @@ const UserAdvancedPage = () => {
     </Spinner>
   );
 };
+
+UserAdvancedPage.displayName = displayName;
 
 export default UserAdvancedPage;
