@@ -4,14 +4,15 @@ import { defineMessages } from 'react-intl';
 import { object, string, array, number } from 'yup';
 import moveDecimal from 'move-decimal-point';
 
-import { toFinite } from 'lodash';
+import { SafeBalance } from '~types';
 import { intl } from '~utils/intl';
-
-import { TransactionTypes } from './constants';
-import { SafeBalance } from '~types/safes';
+import { toFinite } from '~utils/lodash';
 import { getSelectedSafeBalance } from '~utils/safes';
 
+import { TransactionTypes } from './constants';
+
 const displayName = 'common.ControlSafeDialog.validation';
+
 const requiredFieldError = 'Please enter a value';
 
 const { formatMessage } = intl({
