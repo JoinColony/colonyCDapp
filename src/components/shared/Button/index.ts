@@ -6,4 +6,3 @@ export { default as DialogActionButton } from './DialogActionButton';
 export { default as IconButton } from './IconButton';
 export { default as InviteLinkButton } from './InviteLinkButton';
 export { default as ThreeDotsButton } from './ThreeDotsButton';
-export { default as AddItemButton } from './AddItemButton';

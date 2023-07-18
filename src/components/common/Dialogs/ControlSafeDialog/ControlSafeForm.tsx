@@ -7,7 +7,7 @@ import { DialogSection } from '~shared/Dialog';
 import { HookFormSelect as Select } from '~shared/Fields';
 import Heading from '~shared/Heading';
 import ExternalLink from '~shared/ExternalLink';
-import Button, { AddItemButton } from '~shared/Button';
+import Button from '~shared/Button';
 import Icon from '~shared/Icon';
 import {
   SingleSafePicker,
@@ -27,7 +27,7 @@ import {
 } from './TransactionTypesSection';
 import { TransactionTypes, transactionOptions } from './constants';
 import { ControlSafeProps } from './types';
-
+import AddItemButton from './AddItemButton';
 import styles from './ControlSafeForm.css';
 
 const displayName = 'common.ControlSafeDialog.ControlSafeForm';

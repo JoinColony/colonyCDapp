@@ -1,7 +1,8 @@
 import React from 'react';
 import { FormattedMessage, MessageDescriptor } from 'react-intl';
 
-import Icon from '../Icon';
+import Icon from '~shared/Icon';
+
 import styles from './AddItemButton.css';
 
 interface Props {
