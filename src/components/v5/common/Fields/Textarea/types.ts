@@ -8,6 +8,6 @@ export type TextareaProps = HTMLAttributes<HTMLTextAreaElement> & {
   placeholder?: string;
   showFieldLimit?: boolean;
   shouldNumberOfCharsBeVisible?: boolean;
-  name: string;
+  name?: string;
   register?: UseFormRegister<FieldValues>;
 };

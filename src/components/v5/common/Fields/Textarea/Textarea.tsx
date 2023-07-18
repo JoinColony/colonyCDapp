@@ -15,7 +15,7 @@ const Textarea: FC<TextareaProps> = ({
   placeholder,
   showFieldLimit = false,
   shouldNumberOfCharsBeVisible = false,
-  name,
+  name = '',
   register,
 }) => {
   const { formatMessage } = useIntl();
