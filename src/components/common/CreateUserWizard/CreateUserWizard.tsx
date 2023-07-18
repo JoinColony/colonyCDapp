@@ -6,6 +6,7 @@ import Heading from '~shared/Heading';
 import ColonyButton from '~shared/Button';
 import WizardTemplate from '~frame/WizardTemplateColony';
 import withWizard from '~shared/Wizard/withWizard';
+import { useTitle } from '~hooks';
 
 import {
   FormValues,
@@ -15,7 +16,6 @@ import {
 } from '../CreateUserWizard';
 
 import styles from './CreateUserWizard.css';
-import { useTitle } from '~hooks';
 
 const steps = [StepUserEmail, StepUserName];
 

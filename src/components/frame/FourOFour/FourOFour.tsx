@@ -1,8 +1,8 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
-import { useTitle } from '~hooks';
 
+import { useTitle } from '~hooks';
 import Logo from '~images/logo.svg';
 import NakedMole from '~images/naked-mole-404.svg';
 import Heading from '~shared/Heading';

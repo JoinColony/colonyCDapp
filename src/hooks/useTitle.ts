@@ -26,7 +26,7 @@ import {
   COLONY_FUNDING_ROUTE,
   COLONY_MEMBERS_ROUTE,
 } from '~routes/routeConstants';
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import { notNull } from '~utils/arrays';
 
 import useColonyContext from './useColonyContext';
