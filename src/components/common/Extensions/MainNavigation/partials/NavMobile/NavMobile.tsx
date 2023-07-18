@@ -39,7 +39,9 @@ const NavMobile: FC<NavItemMobileProps> = ({ item, isOpen, toggleItem }) => {
             <span
               className={clsx(
                 'flex ml-2.5 transition-transform duration-normal',
-                { 'rotate-180': isOpen },
+                {
+                  'rotate-180': isOpen,
+                },
               )}
             >
               <Icon name="caret-down" appearance={{ size: 'extraTiny' }} />

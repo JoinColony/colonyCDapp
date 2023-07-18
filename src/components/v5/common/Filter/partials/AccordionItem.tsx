@@ -33,19 +33,15 @@ const AccordionItem: FC<AccordionItemProps> = ({
         className="flex justify-between items-center text-4 text-gray-400 uppercase w-full"
         onClick={handleToggle}
         type="button"
-        aria-label={formatMessage({ id: 'select.filter.menu.item' })}
+        aria-label={formatMessage({ id: 'ariaLabel.openAccordion' })}
       >
         {formatMessage({ id: title })}
         <span
-          className={clsx('text-gray-700', {
+          className={clsx('flex shrink-0 text-gray-400', {
             'rotate-180': clicked,
           })}
         >
-          <Icon
-            appearance={{ size: 'extraTiny' }}
-            name="caret-down"
-            title={{ id: 'file-text' }}
-          />
+          <Icon appearance={{ size: 'extraTiny' }} name="caret-down" />
         </span>
       </button>
 

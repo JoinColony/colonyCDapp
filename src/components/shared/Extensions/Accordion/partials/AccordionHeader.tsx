@@ -13,20 +13,20 @@ const AccordionHeader: FC<AccordionItemProps> = ({ title = '', isOpen }) => {
 
   return (
     <>
-      <div className="flex justify-between items-center pb-2 pt-4 w-full text-gray-700">
+      <button
+        type="button"
+        className="flex justify-between items-center py-2 w-full"
+        aria-label={formatMessage({ id: 'ariaLabel.openAccordion' })}
+      >
         {text}
         <span
-          className={clsx({
+          className={clsx('flex shrink-0 text-gray-400', {
             'rotate-180': isOpen,
           })}
         >
-          <Icon
-            appearance={{ size: 'extraTiny' }}
-            name="caret-down"
-            title={{ id: 'file-text' }}
-          />
+          <Icon appearance={{ size: 'extraTiny' }} name="caret-down" />
         </span>
-      </div>
+      </button>
       <div className="w-full bg-gray-200 h-px" />
     </>
   );

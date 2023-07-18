@@ -431,6 +431,7 @@
   "ariaLabel.closeToast": "Close a toast",
   "ariaLabel.changeSlide": "Change slide",
   "ariaLabel.search": "Search",
+  "ariaLabel.openAccordion": "Open accordion",
   "ariaLabel.openSearchModal": "Open search modal",
   "ariaLabel.sortReputation": "Sort by reputation",
   "ariaLabel.sortPermission": "Sort by permission",
@@ -686,5 +687,5 @@
   "team.type": "Team",
   "reputation.type": "Reputation",
   "permissions.type": "Permissions types",
-  "user.status.tooltip.desc": "This user is in the top {percentNum}% of contributors within this Colony." 
+  "user.status.tooltip.desc": "This user is in the top {percentNum}% of contributors within this Colony."
 }
