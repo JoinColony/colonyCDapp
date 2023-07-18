@@ -35,12 +35,12 @@ const displayName = 'utils.hooks';
 
 const MSG = defineMessages({
   createColony: {
-    id: `${displayName}.useTitle.creatColony`,
+    id: `${displayName}.useTitle.createColony`,
     defaultMessage: `Create Colony | Colony`,
   },
 
   createUser: {
-    id: `${displayName}.useTitle.creatUser`,
+    id: `${displayName}.useTitle.createUser`,
     defaultMessage: `Create User | Colony`,
   },
 
