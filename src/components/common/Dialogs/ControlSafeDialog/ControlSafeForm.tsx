@@ -34,7 +34,6 @@ import SingleSafePicker from './SingleSafePicker';
 import TransactionHeader from './TransactionHeader';
 
 import styles from './ControlSafeForm.css';
-import { SelectedSafe } from '~types/safes';
 
 const displayName = 'common.ControlSafeDialog.ControlSafeForm';
 
@@ -314,39 +313,6 @@ const ControlSafeForm = ({
             text={MSG.buttonTransaction}
             disabled={isSubmitting}
             handleClick={() => handleNewTab()}
-          />
-        </div>
-      </DialogSection>
-      <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <div className={styles.transactionTypeSelectContainer}>
-          <Select
-            options={transactionOptions}
-            label={MSG.transactionLabel}
-            name="transactions.transactionType"
-            onChange={() =>
-              /* type */
-              {
-                /* removeSelectedContractMethod(index);
-              handleTransactionTypeChange(type, index); */
-              }
-            }
-            appearance={{ theme: 'grey', width: 'fluid' }}
-            placeholder={MSG.transactionPlaceholder}
-            disabled={disabledInputs}
-          />
-        </div>
-      </DialogSection>
-      {isEmpty(selectedSafe) && dirtyFields ? (
-        <ErrorMessage error={MSG.invalidSafeError} />
-      ) : (
-        renderTransactionSection()
-      )}
-      <DialogSection>
-        <div className={styles.addTransaction}>
-          <AddItemButton
-            text={MSG.buttonTransaction}
-            disabled
-            handleClick={() => {}}
           />
         </div>
       </DialogSection>
