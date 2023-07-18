@@ -173,7 +173,7 @@ export const useTitle = (title?: string) => {
 
   const colonyDisplayName = colony?.metadata?.displayName || colony?.name;
 
-  return useEffect(() => {
+  useEffect(() => {
     const titleToSet =
       title ||
       formatMessage(msg, {
