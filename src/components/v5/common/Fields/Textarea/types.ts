@@ -1,4 +1,5 @@
 import { HTMLAttributes } from 'react';
+import { UseFormRegister, FieldValues } from 'react-hook-form';
 import { MessageDescriptor } from 'react-intl';
 
 export type TextareaProps = HTMLAttributes<HTMLTextAreaElement> & {
@@ -7,4 +8,6 @@ export type TextareaProps = HTMLAttributes<HTMLTextAreaElement> & {
   placeholder?: string;
   showFieldLimit?: boolean;
   shouldNumberOfCharsBeVisible?: boolean;
+  name: string;
+  register?: UseFormRegister<FieldValues>;
 };

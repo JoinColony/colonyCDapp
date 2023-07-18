@@ -1,11 +1,11 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
-import debounce from 'lodash.debounce';
 
 import FormError from '~v5/shared/FormError';
 import { TextareaProps } from './types';
 import { DEFAULT_MAX_CHAR_NUMBER } from './consts';
+import { useInput } from '../hooks';
 
 const displayName = 'v5.common.Textarea';
 
@@ -15,32 +15,12 @@ const Textarea: FC<TextareaProps> = ({
   placeholder,
   showFieldLimit = false,
   shouldNumberOfCharsBeVisible = false,
+  name,
+  register,
 }) => {
   const { formatMessage } = useIntl();
-  const [currentCharNumber, setCurrentCharNumber] = useState(0);
-  const [isTyping, setIsTyping] = useState(false);
-
-  const isError = useMemo(
-    () => currentCharNumber > maxCharNumber && showFieldLimit,
-    [currentCharNumber, maxCharNumber, showFieldLimit],
-  );
-
-  const onChangeTyping = useCallback(() => setIsTyping(false), []);
-
-  const debounced = useMemo(
-    () => debounce(onChangeTyping, 1000),
-    [onChangeTyping],
-  );
-
-  const onChange: React.ChangeEventHandler<HTMLTextAreaElement> = useCallback(
-    (e) => {
-      setIsTyping(true);
-      const { value } = e.target;
-      setCurrentCharNumber(value.length);
-      debounced(value);
-    },
-    [debounced],
-  );
+  const { isTyping, isCharLenghtError, currentCharNumber, onChange } =
+    useInput(maxCharNumber);
 
   const label =
     typeof textareaTitle === 'string'
@@ -55,42 +35,45 @@ const Textarea: FC<TextareaProps> = ({
         </label>
       )}
       <div
-        className={clsx(
-          'bg-base-white w-full min-h-[5.75rem] rounded border py-3 px-3.5',
-          {
-            'border-gray-300': !isTyping,
-            'border-blue-200 shadow-lightBlue': isTyping,
-            'border-negative-400': isError,
-          },
-        )}
+        className={clsx('w-full min-h-[5.75rem] input-round', {
+          'border-gray-300': !isTyping,
+          'border-blue-200 shadow-lightBlue': isTyping,
+          'border-negative-400': isCharLenghtError,
+        })}
       >
         <textarea
           id="message"
+          {...register?.(name)}
+          name={name}
           placeholder={placeholder}
-          className="resize-none w-full text-gray-900 text-md outline-0 placeholder:text-gray-500 outline-none"
+          className="resize-none input"
           onChange={onChange}
         />
         {!!currentCharNumber && shouldNumberOfCharsBeVisible && (
           <div
             className={clsx('text-4 flex justify-end', {
-              'text-negative-400': isError,
-              'text-gray-500': !isError,
+              'text-negative-400': isCharLenghtError,
+              'text-gray-500': !isCharLenghtError,
             })}
           >
             {currentCharNumber}/{maxCharNumber}
           </div>
         )}
       </div>
-      {showFieldLimit && (
-        <span className="flex justify-end text-gray-600 text-xs">
-          {formatMessage({ id: 'characters.remaining' }, { maxCharNumber })}
-        </span>
-      )}
-      {isError && (
-        <FormError isFullSize alignment="left">
-          {formatMessage({ id: 'too.many.characters' })}
-        </FormError>
-      )}
+      <div className="flex items-center justify-between w-full">
+        {isCharLenghtError && (
+          <span>
+            <FormError isFullSize alignment="left">
+              {formatMessage({ id: 'too.many.characters' })}
+            </FormError>
+          </span>
+        )}
+        {showFieldLimit && (
+          <div className="flex justify-end text-gray-600 text-xs ml-auto">
+            {formatMessage({ id: 'characters.remaining' }, { maxCharNumber })}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

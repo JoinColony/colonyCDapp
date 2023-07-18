@@ -101,6 +101,14 @@
   .subnav-button {
     @apply flex w-full items-center text-md hover:bg-gray-50 hover:font-medium rounded py-2 px-[1.2rem];
   }
+
+  .input-round {
+    @apply bg-base-white rounded border py-3 px-3.5;
+  }
+
+  .input {
+    @apply w-full text-gray-900 text-md outline-0 placeholder:text-gray-500 outline-none;
+  }
 }
 
 .rts___tabs {
