@@ -20,9 +20,10 @@ import {
 } from '~redux/sagas/utils/safeHelpers';
 
 /* import AmountBalances from '../AmountBalances'; */
+import { TransactionSectionProps } from '../types';
+
 import { ErrorMessage as Error, Loading, RecipientPicker } from './shared';
 import styles from './TransactionTypesSection.css';
-import { TransactionSectionProps } from '../types';
 
 const displayName = `common.ControlSafeDialog.TransferFundsSection`;
 
@@ -74,7 +75,7 @@ const TransferFundsSection = ({
   colony,
   /* colony: { metadata }, */
   disabledInput,
-  transactionFormIndex,
+  transactionFormIndex = 0,
   /* handleInputChange,
    * handleValidation, */
   savedTokenState,
