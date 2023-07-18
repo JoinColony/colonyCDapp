@@ -1167,6 +1167,7 @@ type Colony @model {
   # ie: when opening a UAC modal
   roles: [ColonyRole] @hasMany
   expenditures: [Expenditure] @hasMany
+  expendituresGlobalClaimDelay: Int
 }
 
 """
