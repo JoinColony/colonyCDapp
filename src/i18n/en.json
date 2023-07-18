@@ -518,7 +518,7 @@
   "advancedSettings.rpc.title": "Custom RPC Endpoints",
   "advancedSettings.rpc.description": "If you prefer maximum decentralization, you may use your own custom endpoints for Colony",
   "advancedSettings.rpc.subtitle": "Gnosis Chain Custom RPC",
-  "advancedSettings.rpc.tooltip": "You will be able to toggle the Gnosis Chain RPC on once you have successfully validated that the endpoint works.",
+  "advancedSettings.rpc.tooltip": "You will be able to toggle the Gnosis Chain RPC on once you have successfully validated that the endpoint works.",
   "advancedSettings.account.title": "Account data",
   "advancedSettings.account.description": "Download your Colony data in a .csv file format",
   "advancedSettings.account.button": "Download",
