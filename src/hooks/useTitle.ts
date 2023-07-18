@@ -111,10 +111,12 @@ const MSG = defineMessages({
     id: `${displayName}.useTitle.transactionDetails`,
     defaultMessage: `Transaction - {transactionHash} | Colony - {colonyName}`,
   },
+
   buyTokens: {
     id: `${displayName}.useTitle.buyTokens`,
     defaultMessage: `Buy Tokens | Colony - {colonyName}`,
   },
+
   fallbackTitle: {
     id: `${displayName}.useTitle.fallbackTitle`,
     defaultMessage: `Colony`,
