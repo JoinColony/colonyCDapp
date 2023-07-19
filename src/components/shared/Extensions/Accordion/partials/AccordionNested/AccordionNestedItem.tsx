@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useState } from 'react';
-
 import { useIntl } from 'react-intl';
+
 import { AccordionNestedItemProps } from '../../types';
 import { accordionAnimation } from '~constants/accordionAnimation';
 import AccordionHeaderItem from './AccordionNestedHeader';
