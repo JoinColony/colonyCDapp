@@ -20,8 +20,8 @@ export interface AccordionProps {
 }
 
 export interface ContentTypeProps {
-  title?: string | MessageDescriptor;
-  subTitle?: string | MessageDescriptor;
+  title: string | MessageDescriptor;
+  subTitle: string | MessageDescriptor;
 }
 
 export interface AccordionContent extends ContentTypeProps {
