@@ -3,29 +3,32 @@ import { string, bool, object } from 'yup';
 import { SlotKey, UserSettingsHook } from '~hooks/useUserSettings';
 import { yupDebounce } from '~utils/yup/tests';
 
-import { isValidURL, validateCustomGnosisRPC } from './validation';
+import { isValidURL, validateCustomGnosisRPC } from '../../validation';
 import { FormValues } from './types';
 
 export const useUserAdvancedPage = () => {
-  const validationSchema = object({
-    [SlotKey.Metatransactions]: bool<boolean>(),
+  const rpcValidationSchema = object({
     [SlotKey.DecentralizedMode]: bool<boolean>(),
     [SlotKey.CustomRPC]: string()
       .defined()
       .when(`${SlotKey.DecentralizedMode}`, {
         is: true,
         then: string()
-          .required(() => 'qwe')
-          .url(() => 'qwe')
+          .required(() => 'advancedSettings.rpc.errorEmpty')
+          .url(() => 'advancedSettings.rpc.error')
           .test(
             'gnosisRpc',
-            () => 'qwe',
+            () => 'advancedSettings.rpc.errorUnable',
             yupDebounce(validateCustomGnosisRPC, 200, {
               isOptional: false,
               circuitBreaker: isValidURL,
             }),
           ),
       }),
+  }).defined();
+
+  const metatransactionsValidationSchema = object({
+    [SlotKey.Metatransactions]: bool<boolean>(),
   }).defined();
 
   const setFormValuesToLocalStorage = (
@@ -39,6 +42,7 @@ export const useUserAdvancedPage = () => {
 
   return {
     setFormValuesToLocalStorage,
-    validationSchema,
+    rpcValidationSchema,
+    metatransactionsValidationSchema,
   };
 };
