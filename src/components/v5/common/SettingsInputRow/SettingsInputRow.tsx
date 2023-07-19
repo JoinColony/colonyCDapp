@@ -38,6 +38,20 @@ const SettingsInputRow: FC<SettingsInputRowProps> = ({
     }
   }, [resetField, isOpen, customRpcValue.length, setIsInputVisible]);
 
+  const handleClick = () => {
+    handleSubmit({ [SlotKey.CustomRPC]: rpcValue });
+    setIsInputVisible(false);
+    toast.success(
+      <Toast
+        type="success"
+        title={{ id: 'advancedSettings.fees.toast.title' }}
+        description={{
+          id: 'advancedSettings.rpc.toast.description',
+        }}
+      />,
+    );
+  };
+
   return (
     <>
       {isOpen && (
@@ -77,19 +91,7 @@ const SettingsInputRow: FC<SettingsInputRowProps> = ({
                 mode="primarySolid"
                 className="mt-6 ml-auto"
                 disabled={!isValid || !rpcValue || !!error || !isDirty}
-                onClick={() => {
-                  handleSubmit({ [SlotKey.CustomRPC]: rpcValue });
-                  setIsInputVisible(false);
-                  toast.success(
-                    <Toast
-                      type="success"
-                      title={{ id: 'advancedSettings.fees.toast.title' }}
-                      description={{
-                        id: 'advancedSettings.rpc.toast.description',
-                      }}
-                    />,
-                  );
-                }}
+                onClick={handleClick}
               >
                 {formatMessage({
                   id: 'button.saveEndpoint',

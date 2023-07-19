@@ -1,20 +1,16 @@
 import { string, bool, object } from 'yup';
-
 import { useState } from 'react';
-import useUserSettings, {
-  SlotKey,
-  UserSettingsHook,
-} from '~hooks/useUserSettings';
-import { yupDebounce } from '~utils/yup/tests';
 
-import { AdvancedSettingsFields } from './types';
-import { canUseMetatransactions } from '~utils/checks';
+import useUserSettings, { SlotKey } from '~hooks/useUserSettings';
+import { yupDebounce } from '~utils/yup/tests';
 import {
   isValidURL,
   validateCustomGnosisRPC,
 } from '~common/UserProfileEdit/validation';
+import { UserSettingsSlot } from '~context/userSettings';
+import { setFormValuesToLocalStorage } from '../../utils';
 
-export const useUserAdvancedPage = () => {
+export const useRpcForm = () => {
   const rpcValidationSchema = object({
     [SlotKey.DecentralizedMode]: bool<boolean>(),
     [SlotKey.CustomRPC]: string()
@@ -35,47 +31,38 @@ export const useUserAdvancedPage = () => {
       }),
   }).defined();
 
-  const metatransactionsValidationSchema = object({
-    [SlotKey.Metatransactions]: bool<boolean>(),
-  }).defined();
-
-  const setFormValuesToLocalStorage = (
-    values: Partial<AdvancedSettingsFields>,
-    setSettingsKey: UserSettingsHook['setSettingsKey'],
-  ) => {
-    Object.entries(values).forEach(
-      ([key, value]: [SlotKey, string | boolean]) => setSettingsKey(key, value),
-    );
-  };
-
-  const metatransactionsAvailable = canUseMetatransactions();
   const {
-    settings: {
-      metatransactions: metatransactionsSetting,
-      decentralizedModeEnabled,
-      customRpc,
-    },
+    settings: { decentralizedModeEnabled, customRpc },
     setSettingsKey,
   } = useUserSettings();
+
   const [isInputVisible, setIsInputVisible] = useState(
     decentralizedModeEnabled,
   );
-  const metatransasctionsDefault = metatransactionsAvailable
-    ? metatransactionsSetting
-    : false;
 
-  const handleSubmit = (values: Partial<AdvancedSettingsFields>) => {
+  const handleSubmit = (values: Partial<UserSettingsSlot>) => {
     setFormValuesToLocalStorage(values, setSettingsKey);
+  };
+
+  const handleDecentarlizedOnChange = (value: boolean) => {
+    setIsInputVisible(value);
+    handleSubmit(
+      value
+        ? { [SlotKey.DecentralizedMode]: value }
+        : {
+            [SlotKey.DecentralizedMode]: value,
+            [SlotKey.CustomRPC]: '',
+          },
+    );
   };
 
   return {
     rpcValidationSchema,
-    metatransactionsValidationSchema,
-    metatransasctionsDefault,
     isInputVisible,
     setIsInputVisible,
     customRpc,
     handleSubmit,
     decentralizedModeEnabled,
+    handleDecentarlizedOnChange,
   };
 };

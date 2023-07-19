@@ -76,7 +76,7 @@ const HookForm = <FormData extends FieldValues>({
     <FormProvider {...formHelpers}>
       <form
         onSubmit={handleSubmit(
-          (data, e) => onSubmit && onSubmit(data, formHelpers, e),
+          (data, e) => onSubmit?.(data, formHelpers, e),
           (errors, e) => onError && onError(errors, formHelpers, e),
         )}
       >
