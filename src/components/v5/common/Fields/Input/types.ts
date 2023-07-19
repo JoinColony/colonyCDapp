@@ -10,4 +10,7 @@ export type InputProps = {
   name: string;
   register: UseFormRegister<FieldValues>;
   isDisabled?: boolean;
+  isErrorPillVisible?: boolean;
+  customSuccessMessage?: string;
+  isFormEdited?: boolean;
 };
