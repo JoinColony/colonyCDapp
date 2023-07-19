@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { defineMessages } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 import { nanoid } from 'nanoid';
 import { useFormContext } from 'react-hook-form';
 
@@ -50,7 +50,7 @@ const Select = <V,>({
   statusValues,
   dataTest,
   itemDataTest,
-}: SelectProps<V>) => {
+}: SelectProps) => {
   const [id] = useState<string>(idProp || nanoid());
   const {
     formState: { errors, touchedFields },
@@ -61,6 +61,8 @@ const Select = <V,>({
   const error = errors[name]?.message as Message | undefined;
   const touched = touchedFields[name];
   const value = watch(name);
+
+  const { formatMessage } = useIntl();
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -210,7 +212,7 @@ const Select = <V,>({
      * @NOTE If the active option is removed by something (ie: filtered out),
      * fall back to the last entry in the options array
      */
-    const activeOption = options[checkedOption] || options[options.length - 1];
+    const activeOption = options[checkedOption];
     let activeOptionLabel;
     if (activeOption) {
       if (typeof activeOption.label === 'object') {
@@ -224,12 +226,22 @@ const Select = <V,>({
         activeOptionLabel = activeOption.label;
       }
     }
-    const activeOptionLabelText = activeOptionLabel || placeholder;
+
+    let placeholderText = '';
+    if (placeholder) {
+      if (typeof placeholder === 'string') {
+        placeholderText = placeholder;
+      } else {
+        placeholderText = formatMessage(placeholder);
+      }
+    }
+    const activeOptionLabelText = activeOptionLabel || placeholderText;
+
     if (renderActiveOption) {
       return renderActiveOption(activeOption, activeOptionLabelText);
     }
     return <span>{activeOptionLabelText}</span>;
-  }, [checkedOption, options, placeholder, renderActiveOption]);
+  }, [checkedOption, options, placeholder, renderActiveOption, formatMessage]);
 
   const listboxId = `select-listbox-${id}`;
 
