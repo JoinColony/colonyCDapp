@@ -161,6 +161,7 @@
     "nanoid": "^3.1.31",
     "node-fetch": "^2.6.7",
     "numbro": "^2.3.6",
+    "omit-deep-lodash": "^1.1.7",
     "papaparse": "^5.3.1",
     "qrcode": "^1.4.4",
     "query-string": "^6.11.1",

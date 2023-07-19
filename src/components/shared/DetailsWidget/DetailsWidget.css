@@ -7,3 +7,21 @@
   text-decoration: underline;
   color: var(--sky-blue);
 }
+
+.value {
+  composes: inlineEllipsis from '~styles/text.css';
+  display: flex;
+  align-items: center;
+  max-width: 200px;
+  line-height: 18px;
+  color: color-mod(var(--dark) alpha(85%));
+}
+
+.address {
+  composes: inlineEllipsis from '~styles/text.css';
+  font-size: var(--size-smallish);
+  font-weight: var(--weight-bold);
+  line-height: 1;
+  color: var(--grey-purple);
+  cursor: pointer;
+}

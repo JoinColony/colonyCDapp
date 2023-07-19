@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 import { ReactNode } from 'react';
 
-import { isEmpty } from '~utils/lodash';
+import { isEmpty, isEqual } from '~utils/lodash';
 import {
   Address,
   Token,
@@ -32,6 +32,11 @@ export enum ActionPageDetails {
   Author = 'Author',
   Generic = 'Generic',
   Motion = 'Motion',
+  Safe = 'Safe',
+  SafeName = 'SafeName',
+  ChainName = 'ChainName',
+  SafeAddress = 'SafeAddress',
+  ModuleAddress = 'ModuleAddress',
 }
 
 type DetailsValuesMap = Partial<Record<ActionPageDetails, boolean>>;
@@ -119,6 +124,18 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
         ActionPageDetails.ToRecipient,
         ActionPageDetails.Domain,
         ActionPageDetails.ReputationChange,
+      ];
+    }
+    case actionType.includes(ExtendedColonyActionType.RemoveSafe): {
+      return [ActionPageDetails.Safe];
+    }
+    case actionType.includes(ExtendedColonyActionType.AddSafe): {
+      return [
+        ActionPageDetails.Type,
+        ActionPageDetails.ChainName,
+        ActionPageDetails.SafeName,
+        ActionPageDetails.SafeAddress,
+        ActionPageDetails.ModuleAddress,
       ];
     }
     // case actionType.includes(ColonyMotions.CreateDecisionMotion): {
@@ -613,7 +630,15 @@ export const getExtendedActionType = (
     return ExtendedColonyActionType.UpdateAddressBook;
   }
 
-  // logic for Safe control actions can be added here
+  if (!isEqual(changelogItem?.newSafes, changelogItem?.oldSafes)) {
+    if (
+      (changelogItem?.newSafes?.length || 0) >
+      (changelogItem?.oldSafes?.length || 0)
+    ) {
+      return ExtendedColonyActionType.AddSafe;
+    }
+    return ExtendedColonyActionType.RemoveSafe;
+  }
 
   return type;
 };

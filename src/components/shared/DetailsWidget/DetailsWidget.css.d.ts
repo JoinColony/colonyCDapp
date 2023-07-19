@@ -1,6 +1,8 @@
 declare namespace DetailsWidgetCssNamespace {
   export interface IDetailsWidgetCss {
+    address: string;
     transactionHashLink: string;
+    value: string;
   }
 }
 

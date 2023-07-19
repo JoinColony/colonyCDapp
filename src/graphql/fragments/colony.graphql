@@ -110,7 +110,12 @@ fragment ColonyMetadata on ColonyMetadata {
     hasAvatarChanged
     hasWhitelistChanged
     haveTokensChanged
-    haveSafesChanged
+    newSafes {
+      ...Safe
+    }
+    oldSafes {
+      ...Safe
+    }
   }
   safes {
     ...Safe
