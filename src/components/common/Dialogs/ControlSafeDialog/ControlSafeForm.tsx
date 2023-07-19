@@ -22,7 +22,7 @@ import {
   ContractInteractionSection,
   ErrorMessage,
 } from './TransactionTypesSection';
-import { TransactionTypes, transactionOptions } from './constants';
+import { TransactionTypes, transactionOptions } from './helpers';
 import { ControlSafeProps } from './types';
 import AddItemButton from './AddItemButton';
 import SingleSafePicker from './SingleSafePicker';

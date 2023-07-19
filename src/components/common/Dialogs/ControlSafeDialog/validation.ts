@@ -9,7 +9,7 @@ import { intl } from '~utils/intl';
 import { toFinite } from '~utils/lodash';
 import { getSelectedSafeBalance } from '~utils/safes';
 
-import { TransactionTypes } from './constants';
+import { TransactionTypes } from './helpers';
 
 const displayName = 'common.ControlSafeDialog.validation';
 
