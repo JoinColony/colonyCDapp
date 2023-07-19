@@ -7,7 +7,7 @@ import { InputProps } from './types';
 import { useInput } from '../hooks';
 import { DEFAULT_MAX_CHAR_NUMBER } from './consts';
 
-const displayName = 'v5.common.Textarea';
+const displayName = 'v5.common.Fields.Input';
 
 // @TODO: add custom input status pills
 

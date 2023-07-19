@@ -701,5 +701,8 @@
   "button.save.user.profile": "Save changes",
   "user.profile.toast.title.success": "Action completed successfully",
   "user.profile.toast.description.success": "User profile has been updated",
-  "website.error.message": "Please enter valid website"
+  "error.displayName.valid.message": "This is not a valid colony username",
+  "errors.displayName.message": "Please enter a username",
+  "errors.website.message": "Website format is incorrect, please try again",
+  "error.message": "Something went wrong"
 }

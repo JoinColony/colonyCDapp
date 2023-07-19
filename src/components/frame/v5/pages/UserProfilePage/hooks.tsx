@@ -10,6 +10,7 @@ import { useUpdateUserProfileMutation } from '~gql';
 import { UserProfileFormProps } from './types';
 import Toast from '~shared/Extensions/Toast';
 import { MAX_BIO_CHARS, MAX_DISPLAYNAME_CHARS } from './consts';
+import { USERNAME_REGEX } from '~common/CreateUserWizard/validation';
 
 export const useUserProfile = () => {
   const { updateUser } = useAppContext();
@@ -21,7 +22,16 @@ export const useUserProfile = () => {
     displayName: yup
       .string()
       .max(MAX_DISPLAYNAME_CHARS, formatMessage({ id: 'too.many.characters' }))
-      .required(formatMessage({ id: 'error.displayName.message' })),
+      .matches(
+        USERNAME_REGEX,
+        formatMessage({ id: 'error.displayName.valid.message' }),
+      )
+      .required(formatMessage({ id: 'errors.displayName.message' })),
+    // .test(
+    //   'isUsernameTaken',
+    //   formatMessage({ id: 'error.usernameTaken' }),
+    //   isUsernameTaken,
+    // ),
     bio: yup
       .string()
       .max(MAX_BIO_CHARS, formatMessage({ id: 'too.many.characters' })),
@@ -75,7 +85,11 @@ export const useUserProfile = () => {
       );
     } catch (err) {
       toast.error(
-        <Toast type="error" title="Error" description="Something went wrong" />,
+        <Toast
+          type="error"
+          title="Error"
+          description={formatMessage({ id: 'error.message' })}
+        />,
       );
       console.error(err);
     }

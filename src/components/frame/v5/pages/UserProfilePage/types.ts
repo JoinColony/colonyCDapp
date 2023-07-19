@@ -8,6 +8,7 @@ export type LeftColumnProps = {
 export type UserProfileFormProps = {
   email?: string | null;
   bio?: string | null;
+  username?: string | null;
   displayName?: string | null;
   location?: string | null;
   website?: string | null;

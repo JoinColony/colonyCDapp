@@ -40,7 +40,7 @@ const UserProfilePage: FC = () => {
                   name="displayName"
                   register={register}
                   isError={!!errors.displayName?.message}
-                  customErrorMessage="errors.displayName.message"
+                  customErrorMessage={errors.displayName?.message}
                 />
               </div>
             </div>
