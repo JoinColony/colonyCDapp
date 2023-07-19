@@ -23,7 +23,7 @@ const SettingsInputRow: FC<SettingsInputRowProps> = ({
     resetField,
   } = useFormContext();
   const error = errors[SlotKey.CustomRPC]?.message as string | undefined;
-  const { [SlotKey.CustomRPC]: customRpcValue } = defaultValues;
+  const customRpcValue = defaultValues?.[SlotKey.CustomRPC];
   const rpcValue = watch(SlotKey.CustomRPC);
   const [isInputVisible, setIsInputVisible] = useState(false);
 
