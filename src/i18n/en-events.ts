@@ -30,6 +30,8 @@ const eventsMessageDescriptors = {
         other {reward}
       }}
       other {{eventNameDecorated} emitted by {clientOrExtensionType}}
+      ${ColonyAndExtensionsEvents.SafeRemoved} {{initiator} removed {removedSafes} using the Root permission.}
+      ${ColonyAndExtensionsEvents.SafeAdded} {{initiator} added the Safe {safeAddress} from {chainName} using the Root permission.}
     }`,
   'eventList.event': `{eventName, select,
       ${ColonyAndExtensionsEvents.DomainAdded} {{agent} added Team: {domain}}

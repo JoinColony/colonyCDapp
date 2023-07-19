@@ -3,9 +3,11 @@ import {
   Colony,
   ColonyAction,
   ColonyAndExtensionsEvents,
+  ExtendedColonyActionType,
   MotionMessage,
   SystemMessages,
 } from '~types';
+import { getExtendedActionType } from '~utils/colonyActions';
 
 import {
   mapActionEventToExpectedFormat,
@@ -44,6 +46,9 @@ enum EventTitleMessageKeys {
   FailedTag = 'failedTag',
   RevealTag = 'revealTag',
   PassedTag = 'passedTag',
+  ChainName = 'chainName',
+  SafeAddress = 'safeAddress',
+  RemovedSafes = 'removedSafes',
 }
 
 /* Maps eventType to message values as found in en-events.ts */
@@ -137,6 +142,15 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
     EventTitleMessageKeys.ReputationChangeNumeral,
     EventTitleMessageKeys.Recipient,
   ],
+  [ColonyAndExtensionsEvents.SafeAdded]: [
+    EventTitleMessageKeys.Initiator,
+    EventTitleMessageKeys.SafeAddress,
+    EventTitleMessageKeys.ChainName,
+  ],
+  [ColonyAndExtensionsEvents.SafeRemoved]: [
+    EventTitleMessageKeys.Initiator,
+    EventTitleMessageKeys.RemovedSafes,
+  ],
   [SystemMessages.ObjectionFullyStaked]: [
     EventTitleMessageKeys.ObjectionTag,
     EventTitleMessageKeys.MotionTag,
@@ -176,7 +190,6 @@ const DEFAULT_KEYS = [
   EventTitleMessageKeys.ClientOrExtensionType,
 ];
 
-/* Filters the item by keys provided */
 export const generateMessageValues = (
   item: Record<string, any>,
   keys: string[],
@@ -189,6 +202,27 @@ export const generateMessageValues = (
     }),
     initialEntry,
   );
+
+const getExtendedEventName = (
+  eventName: ColonyAndExtensionsEvents,
+  actionData: ColonyAction,
+) => {
+  const { isMotion, pendingColonyMetadata, colony } = actionData;
+  const actionType = getExtendedActionType(
+    actionData,
+    isMotion ? pendingColonyMetadata : colony.metadata,
+  );
+
+  if (actionType === ExtendedColonyActionType.AddSafe) {
+    return ColonyAndExtensionsEvents.SafeAdded;
+  }
+
+  if (actionType === ExtendedColonyActionType.RemoveSafe) {
+    return ColonyAndExtensionsEvents.SafeRemoved;
+  }
+
+  return eventName;
+};
 
 /* Returns the correct message values for Actions according to the event type. */
 export const getActionEventTitleValues = (
@@ -203,9 +237,10 @@ export const getActionEventTitleValues = (
     eventId,
     colony,
   );
-  const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[eventName] ?? DEFAULT_KEYS;
+  const extendedEventName = getExtendedEventName(eventName, actionData);
+  const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[extendedEventName] ?? DEFAULT_KEYS;
   return generateMessageValues(updatedItem, keys, {
-    eventName,
+    eventName: extendedEventName,
   });
 };
 

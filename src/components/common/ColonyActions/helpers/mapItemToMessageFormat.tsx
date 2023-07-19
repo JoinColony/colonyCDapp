@@ -38,6 +38,7 @@ import { VoteResults } from '~common/ColonyActions/ActionDetailsPage/DefaultMoti
 import { VotingWidgetHeading } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
 import MemberReputation from '~shared/MemberReputation';
 import MaskedAddress from '~shared/MaskedAddress';
+import { getAddedSafe, getAddedSafeChainName } from '~utils/safes';
 
 import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
 import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
@@ -120,6 +121,12 @@ const getInitiator = (actionData: ColonyAction) => {
   );
 };
 
+const getSafeAddress = (actionData: ColonyAction) => {
+  const addedSafe = getAddedSafe(actionData);
+
+  return addedSafe ? <MaskedAddress address={addedSafe.address} /> : null;
+};
+
 export const mapColonyActionToExpectedFormat = (
   actionData: ColonyAction,
   colony?: Colony,
@@ -161,6 +168,7 @@ export const mapColonyActionToExpectedFormat = (
       ),
     rolesChanged: formattedRolesTitle.roleTitle,
     newVersion: actionData.newColonyVersion,
+    chainName: getAddedSafeChainName(actionData),
   };
 };
 
@@ -210,6 +218,8 @@ export const mapActionEventToExpectedFormat = (
         decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)}
       />
     ),
+    chainName: getAddedSafeChainName(actionData),
+    safeAddress: getSafeAddress(actionData),
   };
 };
 

@@ -37,4 +37,6 @@ export const ACTION_TYPES_ICONS_MAP: Record<AnyActionType, string> = {
   [ColonyActionType.Generic]: 'circle-check-primary',
   [ExtendedColonyActionType.UpdateAddressBook]: 'emoji-edit-tools',
   [ExtendedColonyActionType.UpdateTokens]: 'emoji-edit-tools',
+  [ExtendedColonyActionType.AddSafe]: 'safe-logo',
+  [ExtendedColonyActionType.RemoveSafe]: 'safe-logo',
 };
