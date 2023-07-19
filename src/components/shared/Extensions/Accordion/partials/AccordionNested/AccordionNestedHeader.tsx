@@ -25,9 +25,7 @@ const AccordionNestedHeader: FC<AccordionHeaderProps> = ({
       onKeyUp={onKeyUp}
       type="button"
       className="flex justify-between items-center w-full group text-3"
-      aria-label={formatMessage({
-        id: isOpen ? 'ariaLabel.closeAccordion' : 'ariaLabel.openAccordion',
-      })}
+      aria-expanded={isOpen}
     >
       {titleText}
       <span

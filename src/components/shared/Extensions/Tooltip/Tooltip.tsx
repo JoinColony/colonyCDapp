@@ -1,5 +1,6 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
+import clsx from 'clsx';
 
 import Icon from '~shared/Icon';
 import styles from './Tooltip.module.css';
@@ -18,6 +19,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   trigger = 'hover',
   isOpen,
   isSuccess = false,
+  isFullWidthContent,
 }) => {
   const {
     getArrowProps,
@@ -40,7 +42,12 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
 
   return (
     <>
-      <div className="flex cursor-pointer" ref={setTriggerRef}>
+      <div
+        className={clsx('flex cursor-pointer', {
+          'w-full': isFullWidthContent,
+        })}
+        ref={setTriggerRef}
+      >
         {children}
       </div>
       {visible && (

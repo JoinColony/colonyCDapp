@@ -42,10 +42,7 @@ const AccordionNestedItem: FC<AccordionNestedItemProps> = ({
             transition={{ duration: 0.4, ease: 'easeOut' }}
             className="overflow-hidden"
           >
-            <div
-              className="mt-1 text-sm text-gray-600"
-              dangerouslySetInnerHTML={{ __html: contentText }}
-            />
+            <div className="mt-1 text-sm text-gray-600">{contentText}</div>
           </motion.div>
         )}
       </AnimatePresence>
