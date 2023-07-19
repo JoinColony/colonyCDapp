@@ -3,8 +3,7 @@ import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
 import { ActionTypes } from '~redux';
-import { Address, WithKey, DomainColor, Domain, Colony } from '~types';
-import { Safe } from '~gql';
+import { Address, WithKey, DomainColor, Domain, Colony, Safe } from '~types';
 
 import {
   ErrorActionType,

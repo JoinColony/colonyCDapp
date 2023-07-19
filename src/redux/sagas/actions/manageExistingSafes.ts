@@ -17,6 +17,7 @@ import { Action, ActionTypes, AllActions } from '~redux';
 import { putError, takeFrom } from '~utils/saga/effects';
 import { transactionReady, transactionPending } from '~redux/actionCreators';
 import { notNull } from '~utils/arrays';
+import { excludeTypenameKey } from '~utils/objects';
 
 import {
   createTransaction,
@@ -140,10 +141,7 @@ function* manageExistingSafesAction({
     let updatedColonySafes: Safe[];
 
     const colonySafes =
-      colony.metadata?.safes
-        ?.filter(notNull)
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        .map(({ __typename, ...rest }) => rest) || [];
+      colony.metadata?.safes?.filter(notNull).map(excludeTypenameKey) || [];
 
     if (!isRemovingSafes) {
       updatedColonySafes = [...colonySafes, ...safes];
