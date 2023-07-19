@@ -9,4 +9,5 @@ export type InputProps = {
   defaultValue?: string;
   name: string;
   register: UseFormRegister<FieldValues>;
+  isDisabled?: boolean;
 };

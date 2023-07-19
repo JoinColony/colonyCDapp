@@ -41,3 +41,11 @@ export const WithCustomErrorMessage: Story = {
       'Please select a governance style option before enabling',
   },
 };
+
+export const WithDisableInput: Story = {
+  args: {
+    placeholder: 'This is the placeholder content',
+    shouldNumberOfCharsBeVisible: false,
+    isDisabled: true,
+  },
+};

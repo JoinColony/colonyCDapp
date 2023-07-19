@@ -20,6 +20,8 @@ const UserProfilePage: FC = () => {
   const { formatMessage } = useIntl();
   const { register, handleSubmit, onSubmit, errors } = useUserProfile();
 
+  // @TODO: when API will be ready add logic to disabling displayName input
+
   return (
     <Spinner loadingText={{ id: 'loading.userProfilePage' }}>
       <TwoColumns aside={<Navigation pageName="profile" />}>

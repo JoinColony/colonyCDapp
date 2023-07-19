@@ -12,4 +12,5 @@ export interface TooltipProps {
   showArrow?: boolean;
   isOpen?: boolean;
   isSuccess?: boolean;
+  isFullWidthContent?: boolean;
 }
