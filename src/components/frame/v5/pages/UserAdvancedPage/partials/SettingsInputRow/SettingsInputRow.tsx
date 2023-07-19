@@ -1,6 +1,5 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useIntl } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import { SettingsInputRowProps } from './types';
@@ -8,6 +7,7 @@ import { SlotKey } from '~hooks';
 import Button from '~v5/shared/Button';
 import Input from '~v5/common/Fields/Input';
 import Toast from '~shared/Extensions/Toast';
+import { useSettingsInputRow } from './hooks';
 
 const displayName = 'v5.pages.UserAdvancedPage.partials.SettingsInputRow';
 
@@ -17,15 +17,16 @@ const SettingsInputRow: FC<SettingsInputRowProps> = ({
 }) => {
   const { formatMessage } = useIntl();
   const {
+    customRpcValue,
+    error,
+    isDirty,
+    isInputVisible,
+    isValid,
     register,
-    watch,
-    formState: { errors, defaultValues, isValid, isDirty },
     resetField,
-  } = useFormContext();
-  const error = errors[SlotKey.CustomRPC]?.message as string | undefined;
-  const customRpcValue = defaultValues?.[SlotKey.CustomRPC];
-  const rpcValue = watch(SlotKey.CustomRPC);
-  const [isInputVisible, setIsInputVisible] = useState(false);
+    rpcValue,
+    setIsInputVisible,
+  } = useSettingsInputRow();
 
   useEffect(() => {
     if (!isOpen) {
@@ -35,7 +36,7 @@ const SettingsInputRow: FC<SettingsInputRowProps> = ({
     if (isOpen && customRpcValue.length === 0) {
       setIsInputVisible(true);
     }
-  }, [resetField, isOpen, customRpcValue.length]);
+  }, [resetField, isOpen, customRpcValue.length, setIsInputVisible]);
 
   return (
     <>

@@ -1,10 +1,15 @@
 import { string, bool, object } from 'yup';
 
-import { SlotKey, UserSettingsHook } from '~hooks/useUserSettings';
+import { useState } from 'react';
+import useUserSettings, {
+  SlotKey,
+  UserSettingsHook,
+} from '~hooks/useUserSettings';
 import { yupDebounce } from '~utils/yup/tests';
 
 import { isValidURL, validateCustomGnosisRPC } from '../../validation';
 import { AdvancedSettingsFields } from './types';
+import { canUseMetatransactions } from '~utils/checks';
 
 export const useUserAdvancedPage = () => {
   const rpcValidationSchema = object({
@@ -40,9 +45,34 @@ export const useUserAdvancedPage = () => {
     );
   };
 
+  const metatransactionsAvailable = canUseMetatransactions();
+  const {
+    settings: {
+      metatransactions: metatransactionsSetting,
+      decentralizedModeEnabled,
+      customRpc,
+    },
+    setSettingsKey,
+  } = useUserSettings();
+  const [isInputVisible, setIsInputVisible] = useState(
+    decentralizedModeEnabled,
+  );
+  const metatransasctionsDefault = metatransactionsAvailable
+    ? metatransactionsSetting
+    : false;
+
+  const handleSubmit = (values: Partial<AdvancedSettingsFields>) => {
+    setFormValuesToLocalStorage(values, setSettingsKey);
+  };
+
   return {
-    setFormValuesToLocalStorage,
     rpcValidationSchema,
     metatransactionsValidationSchema,
+    metatransasctionsDefault,
+    isInputVisible,
+    setIsInputVisible,
+    customRpc,
+    handleSubmit,
+    decentralizedModeEnabled,
   };
 };

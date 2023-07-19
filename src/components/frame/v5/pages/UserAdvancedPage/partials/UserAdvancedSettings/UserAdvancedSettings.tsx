@@ -1,48 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useIntl } from 'react-intl';
-
 import { toast } from 'react-toastify';
-import { SlotKey, useUserSettings } from '~hooks';
+
+import { SlotKey } from '~hooks';
 import Navigation from '~v5/common/Navigation';
 import TwoColumns from '~v5/frame/TwoColumns';
 import Spinner from '~v5/shared/Spinner';
 import { useUserAdvancedPage } from './hooks';
 import { HookForm } from '~shared/Fields';
-import { canUseMetatransactions } from '~utils/checks';
 import Toast from '~shared/Extensions/Toast';
 import SettingsRow from '../SettingsRow/SettingsRow';
 import SettingsInputRow from '../SettingsInputRow';
-import { AdvancedSettingsFields } from './types';
 
 const displayName = 'v5.pages.UserAdvancedPage.partials.UserAdvancedSettings';
 
 const UserAdvancedSettings = () => {
   const { formatMessage } = useIntl();
   const {
-    setFormValuesToLocalStorage,
+    handleSubmit,
+    isInputVisible,
+    setIsInputVisible,
+    customRpc,
+    metatransasctionsDefault,
     rpcValidationSchema,
     metatransactionsValidationSchema,
-  } = useUserAdvancedPage();
-
-  const metatransactionsAvailable = canUseMetatransactions();
-  const {
-    settings: {
-      metatransactions: metatransactionsSetting,
-      decentralizedModeEnabled,
-      customRpc,
-    },
-    setSettingsKey,
-  } = useUserSettings();
-  const [isInputVisible, setIsInputVisible] = useState(
     decentralizedModeEnabled,
-  );
-  const metatransasctionsDefault = metatransactionsAvailable
-    ? metatransactionsSetting
-    : false;
-
-  const handleSubmit = (values: Partial<AdvancedSettingsFields>) => {
-    setFormValuesToLocalStorage(values, setSettingsKey);
-  };
+  } = useUserAdvancedPage();
 
   return (
     <Spinner loadingText={{ id: 'loading.userAdvancedPage' }}>
