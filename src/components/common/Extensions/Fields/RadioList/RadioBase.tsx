@@ -30,7 +30,7 @@ const RadioBase: FC<RadioBaseProps> = ({
       : description && formatMessage(description);
 
   return (
-    <div className="relative w-full">
+    <div className={styles.wrapper}>
       <input
         type="radio"
         {...register(name)}
