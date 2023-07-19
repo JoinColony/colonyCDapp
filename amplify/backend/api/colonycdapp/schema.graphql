@@ -1307,8 +1307,9 @@ type ColonyMetadataChangelog {
   haveTokensChanged: Boolean!
   """"
   Whether safes have been added or removed from the Colony's safe list
-  """ 
-  haveSafesChanged: Boolean!
+  """
+  newSafes: [Safe!]
+  oldSafes: [Safe!]
 }
 
 """

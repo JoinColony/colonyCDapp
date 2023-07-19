@@ -30,6 +30,8 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.SetUserRolesMotion} {{rolesChanged} in {fromDomain} {direction} {recipient}}
       ${ExtendedColonyActionType.UpdateAddressBook} {Address book was updated}
       ${ExtendedColonyActionType.UpdateTokens} {Colony tokens were updated}    
+      ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
+      ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,
@@ -60,6 +62,8 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.CreateDecisionMotion} {Decision}
       ${ExtendedColonyActionType.UpdateAddressBook} {Update Address Book}
       ${ExtendedColonyActionType.UpdateTokens} {Update Tokens}
+      ${ExtendedColonyActionType.AddSafe} {Add Safe}
+      ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       other {Generic}
     }`,
 };

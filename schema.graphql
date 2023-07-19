@@ -1136,7 +1136,8 @@ type ColonyMetadataChangelog {
   "
   Whether safes have been added or removed from the Colony's safe list
   """
-  haveSafesChanged: Boolean!
+  newSafes: [Safe!]
+  oldSafes: [Safe!]
 }
 
 """Represents a User within the Colony Network"""
@@ -2700,7 +2701,8 @@ input ColonyMetadataChangelogInput {
   hasAvatarChanged: Boolean!
   hasWhitelistChanged: Boolean!
   haveTokensChanged: Boolean!
-  haveSafesChanged: Boolean!
+  newSafes: [SafeInput!]
+  oldSafes: [SafeInput!]
 }
 
 input PendingModifiedTokenAddressesInput {

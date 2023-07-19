@@ -1,6 +1,5 @@
 declare namespace UserDetailCssNamespace {
   export interface IUserDetailCss {
-    address: string;
     main: string;
     textContainer: string;
     username: string;
