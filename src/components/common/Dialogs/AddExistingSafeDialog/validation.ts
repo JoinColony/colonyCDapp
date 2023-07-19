@@ -5,8 +5,8 @@ import { Address, Safe } from '~types';
 import { isAddress } from '~utils/web3';
 import { FETCH_ABORTED, SAFE_NAMES_MAP } from '~constants';
 import { intl } from '~utils/intl';
+import { getTxServiceBaseUrl } from '~utils/safes';
 
-import { getTxServiceBaseUrl } from './helpers';
 import { displayName } from './AddExistingSafeDialog';
 
 const { formatMessage } = intl({

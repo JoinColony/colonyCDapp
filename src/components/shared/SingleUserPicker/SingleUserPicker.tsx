@@ -20,7 +20,8 @@ import ItemDefault from './ItemDefault';
 
 import styles from './SingleUserPicker.css';
 
-type AvatarRenderFn = (user?: ItemDataType<User>) => ReactNode;
+export type AvatarRenderFn = (user?: ItemDataType<User>) => ReactNode;
+export type OnSelectedFn = (user: User) => void;
 
 const displayName = 'SingleUserPicker';
 
@@ -83,6 +84,9 @@ interface Props extends WithOmnipickerInProps {
   /** Status text */
   placeholder?: string | MessageDescriptor;
 
+  /** icon name for the avatar placeholder */
+  placeholderIconName?: string;
+
   /** Override avatar rendering */
   renderAvatar: AvatarRenderFn;
 
@@ -90,7 +94,7 @@ interface Props extends WithOmnipickerInProps {
   renderItem?: (user: ItemDataType<User>, selected?: boolean) => ReactNode;
 
   /** Callback for things that happend after selection  */
-  onSelected?: (user: User) => void;
+  onSelected?: OnSelectedFn;
 
   value?: User;
 
@@ -121,6 +125,7 @@ const SingleUserPicker = ({
   onSelected,
   openOmniPicker,
   placeholder,
+  placeholderIconName = 'filled-circle-person',
   registerInputNode,
   renderAvatar = (item?: ItemDataType<User>) => (
     <UserAvatar user={item} size="xs" />
@@ -198,7 +203,7 @@ const SingleUserPicker = ({
           ) : (
             <Icon
               className={omniPickerIsOpen ? styles.focusIcon : styles.icon}
-              name="filled-circle-person"
+              name={placeholderIconName}
               title={MSG.selectMember}
             />
           )}
