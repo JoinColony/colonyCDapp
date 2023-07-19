@@ -10,4 +10,5 @@ export type InputProps = {
   name: string;
   register: UseFormRegister<FieldValues>;
   isDisabled?: boolean;
+  isVisibleCustomInputStatus?: boolean;
 };

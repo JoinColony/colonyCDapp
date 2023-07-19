@@ -43,6 +43,9 @@ const UserProfilePage: FC = () => {
                   register={register}
                   isError={!!errors.displayName?.message}
                   customErrorMessage={errors.displayName?.message}
+                  isVisibleCustomInputStatus={
+                    errors.displayName?.type === 'isUsernameTaken'
+                  }
                 />
               </div>
             </div>

@@ -21,7 +21,8 @@ const Input: FC<InputProps> = ({
   defaultValue,
   name,
   register,
-  isDisabled,
+  isDisabled = false,
+  isVisibleCustomInputStatus,
 }) => {
   const { formatMessage } = useIntl();
   const { isTyping, isCharLenghtError, currentCharNumber, onChange } = useInput(
@@ -48,6 +49,9 @@ const Input: FC<InputProps> = ({
         onChange={onChange}
         disabled={isDisabled}
       />
+
+      {/* @TODO: add custom error message component */}
+      {isVisibleCustomInputStatus && <span>*{customErrorMessage}</span>}
     </div>
   );
 
@@ -82,7 +86,7 @@ const Input: FC<InputProps> = ({
           </div>
         )}
       </div>
-      {isErrorStatus && (
+      {isErrorStatus && !isVisibleCustomInputStatus && (
         <FormError isFullSize alignment="left">
           {formatMessage({ id: customErrorMessage || 'too.many.characters' })}
         </FormError>
