@@ -2,10 +2,10 @@ import React, { FC } from 'react';
 
 import SpecialInput from '~common/Extensions/SpecialInput';
 import FormError from '~v5/shared/FormError';
+import ConnectForm from '../ConnectForm';
 import { SpecialInputProps } from '../types';
-import ConnectForm from './ConnectForm';
 
-const displayName = 'Extensions.SpecialHourInput';
+const displayName = 'Extensions.ConnectForm.partials.SpecialHourInput';
 
 const SpecialHourInput: FC<SpecialInputProps> = ({
   defaultValue,

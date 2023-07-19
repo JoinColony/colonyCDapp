@@ -3,9 +3,9 @@ import React, { FC } from 'react';
 import SpecialInput from '~common/Extensions/SpecialInput';
 import FormError from '~v5/shared/FormError';
 import { SpecialInputProps } from '../types';
-import ConnectForm from './ConnectForm';
+import ConnectForm from '../ConnectForm';
 
-const displayName = 'Extensions.SpecialPercentageInput';
+const displayName = 'Extensions.ConnectForm.partials.SpecialPercentageInput';
 
 const SpecialPercentageInput: FC<SpecialInputProps> = ({
   defaultValue,

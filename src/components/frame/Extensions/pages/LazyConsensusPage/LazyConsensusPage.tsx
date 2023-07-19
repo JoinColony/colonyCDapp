@@ -23,6 +23,7 @@ const LazyConsensusPage: FC = () => {
     useAccordion();
   const {
     extensionData,
+    initialExtensionContent,
     extensionContent,
     methods,
     handleSubmit,
@@ -99,10 +100,10 @@ const LazyConsensusPage: FC = () => {
                   name="governance"
                 />
               </div>
-              <div className="mt-4">
+              <div className="mt-6">
                 <Accordion
                   openIndex={isAccordionOpen ? openIndex : -1}
-                  items={extensionContent || []}
+                  items={extensionContent || initialExtensionContent}
                   onOpenIndexChange={onOpenIndexChange}
                   errors={methods.formState.errors}
                 />

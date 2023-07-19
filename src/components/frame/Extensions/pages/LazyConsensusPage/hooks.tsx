@@ -230,9 +230,110 @@ export const useLazyConsensusPage = (
     extensionData?.initializationParams?.forEach((param) => {
       return methods.setValue(
         param.paramName,
-        data.find((item) => item.paramName === param.paramName)?.defaultValue,
+        data.find(({ paramName }) => paramName === param.paramName)
+          ?.defaultValue,
       );
     });
+
+  const initialExtensionContent = useMemo(
+    () => [
+      {
+        id: 'step-0',
+        title: { id: 'custom.extension.parameters' },
+        content: [
+          {
+            id: 'totalStakeFraction',
+            textItem: <ContentTypeText title="Required Stake" />,
+            inputData: {
+              inputType: 'percent',
+              register: methods.register,
+              unregister: methods.unregister,
+              watch: methods.watch,
+              name: 'totalStakeFraction',
+            },
+          },
+          {
+            id: 'voterRewardFraction',
+            textItem: <ContentTypeText title="Voter Reward" />,
+            inputData: {
+              inputType: 'percent',
+              register: methods.register,
+              unregister: methods.unregister,
+              watch: methods.watch,
+              name: 'voterRewardFraction',
+            },
+          },
+          {
+            id: 'userMinStakeFraction',
+            textItem: <ContentTypeText title="Minimum Stake" />,
+            inputData: {
+              inputType: 'percent',
+              register: methods.register,
+              unregister: methods.unregister,
+              watch: methods.watch,
+              name: 'userMinStakeFraction',
+            },
+          },
+          {
+            id: 'maxVoteFraction',
+            textItem: <ContentTypeText title="End Vote Threshold" />,
+            inputData: {
+              inputType: 'percent',
+              register: methods.register,
+              unregister: methods.unregister,
+              watch: methods.watch,
+              name: 'maxVoteFraction',
+            },
+          },
+          {
+            id: 'stakePeriod',
+            textItem: <ContentTypeText title="Staking Phase Duration" />,
+            inputData: {
+              inputType: 'percent',
+              register: methods.register,
+              unregister: methods.unregister,
+              watch: methods.watch,
+              name: 'stakePeriod',
+            },
+          },
+          {
+            id: 'submitPeriod',
+            textItem: <ContentTypeText title="Voting Phase Duration" />,
+            inputData: {
+              inputType: 'percent',
+              register: methods.register,
+              unregister: methods.unregister,
+              watch: methods.watch,
+              name: 'submitPeriod',
+            },
+          },
+          {
+            id: 'revealPeriod',
+            textItem: <ContentTypeText title="Reveal Phase Duration" />,
+            inputData: {
+              inputType: 'percent',
+              register: methods.register,
+              unregister: methods.unregister,
+              watch: methods.watch,
+              name: 'revealPeriod',
+            },
+          },
+          {
+            id: 'escalationPeriod',
+            textItem: <ContentTypeText title="Escalation Phase Duration" />,
+            inputData: {
+              inputType: 'percent',
+              register: methods.register,
+              unregister: methods.unregister,
+              watch: methods.watch,
+              name: 'escalationPeriod',
+            },
+          },
+        ],
+      },
+    ],
+    [methods.register, methods.unregister, methods.watch],
+  );
 
   const setSelectedContentAndFormFields = (governanceValue) => {
     let selectedContent;
@@ -266,6 +367,8 @@ export const useLazyConsensusPage = (
       setOpenedByLastRadio(false);
     }
   };
+
+  // const initSelectFields = useCallback(() => {}, []);
 
   const onChangeGovernance = useCallback(
     (selectedOption: string) => {
@@ -356,6 +459,7 @@ export const useLazyConsensusPage = (
     extensionData,
     status,
     badgeMessage,
+    initialExtensionContent,
     extensionContent: extensionContentParameters,
     onSubmit,
     handleSubmit: methods.handleSubmit,

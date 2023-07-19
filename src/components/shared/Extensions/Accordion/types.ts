@@ -1,3 +1,4 @@
+import { ButtonHTMLAttributes } from 'react';
 import { FieldErrorsImpl, UseFormRegister } from 'react-hook-form';
 import { MessageDescriptor } from 'react-intl';
 
@@ -19,9 +20,8 @@ export interface AccordionProps {
 }
 
 export interface ContentTypeProps {
-  title?: string | React.ReactNode;
-  subTitle?: string | React.ReactNode;
-  details?: string;
+  title?: string | MessageDescriptor;
+  subTitle?: string | MessageDescriptor;
 }
 
 export interface AccordionContent extends ContentTypeProps {
@@ -58,9 +58,16 @@ export interface AccordionContentDetails {
 
 export interface AccordionMocksItemProps {
   id: string;
-  header: JSX.Element;
-  content: JSX.Element;
+  header: string;
+  content: string | MessageDescriptor;
 }
+
+export interface AccordionHeaderProps
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'title'> {
+  title?: MessageDescriptor | string;
+  isOpen?: boolean;
+}
+
 export interface AccordionItemProps {
   title?: MessageDescriptor | string;
   content?: AccordionContentDetails[];
@@ -73,23 +80,6 @@ export interface AccordionItemProps {
   >;
 }
 
-export interface AccordionContentItemProps {
+export interface AccordionNestedItemProps {
   accordionItem: AccordionMocksItemProps;
-  isOpen?: boolean;
-  onClick?: () => void;
-}
-
-export interface SpecialInputProps {
-  defaultValue?: number | string;
-  maxValue?: number;
-  minValue?: number;
-  name?: string;
-  register?: UseFormRegister<FormRadioButton | FormPercentageInput>;
-  errors?: Partial<
-    | FieldErrorsImpl<{
-        percent: number;
-        hours: number;
-      }>
-    | undefined
-  >;
 }
