@@ -7,9 +7,12 @@ import useUserSettings, {
 } from '~hooks/useUserSettings';
 import { yupDebounce } from '~utils/yup/tests';
 
-import { isValidURL, validateCustomGnosisRPC } from '../../validation';
 import { AdvancedSettingsFields } from './types';
 import { canUseMetatransactions } from '~utils/checks';
+import {
+  isValidURL,
+  validateCustomGnosisRPC,
+} from '~common/UserProfileEdit/validation';
 
 export const useUserAdvancedPage = () => {
   const rpcValidationSchema = object({

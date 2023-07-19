@@ -50,9 +50,12 @@ const SettingsRow: FC<SettingsRowProps> = ({
         />
       )}
       {onClick && buttonLabel && (
-        <Button mode={buttonMode} onClick={onClick} iconName={buttonIcon}>
-          {formatMessage(buttonLabel)}
-        </Button>
+        <Button
+          mode={buttonMode}
+          onClick={onClick}
+          iconName={buttonIcon}
+          text={buttonLabel}
+        />
       )}
     </div>
   );

@@ -52,7 +52,9 @@ const SettingsInputRow: FC<SettingsInputRowProps> = ({
                 mode="primarySolid"
                 onClick={() => setIsInputVisible(true)}
               >
-                {formatMessage({ id: 'advancedSettings.rpc.buttonUpdate' })}
+                {formatMessage({
+                  id: 'button.updateEndpoint',
+                })}
               </Button>
             </div>
           )}
@@ -89,7 +91,9 @@ const SettingsInputRow: FC<SettingsInputRowProps> = ({
                   );
                 }}
               >
-                {formatMessage({ id: 'advancedSettings.rpc.buttonSave' })}
+                {formatMessage({
+                  id: 'button.saveEndpoint',
+                })}
               </Button>
             </div>
           )}

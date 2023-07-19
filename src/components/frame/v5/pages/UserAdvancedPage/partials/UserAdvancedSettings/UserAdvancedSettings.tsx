@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
 
@@ -9,12 +9,12 @@ import Spinner from '~v5/shared/Spinner';
 import { useUserAdvancedPage } from './hooks';
 import { HookForm } from '~shared/Fields';
 import Toast from '~shared/Extensions/Toast';
-import SettingsRow from '../SettingsRow/SettingsRow';
-import SettingsInputRow from '../SettingsInputRow';
+import SettingsRow from '~v5/common/SettingsRow';
+import SettingsInputRow from '~v5/common/SettingsInputRow';
 
 const displayName = 'v5.pages.UserAdvancedPage.partials.UserAdvancedSettings';
 
-const UserAdvancedSettings = () => {
+const UserAdvancedSettings: FC = () => {
   const { formatMessage } = useIntl();
   const {
     handleSubmit,
@@ -100,7 +100,7 @@ const UserAdvancedSettings = () => {
             description={{ id: 'advancedSettings.account.description' }}
             // @TODO: Add functionality to download user data
             onClick={() => {}}
-            buttonLabel={{ id: 'advancedSettings.account.button' }}
+            buttonLabel={{ id: 'button.download' }}
             buttonIcon="file-arrow-down"
             buttonMode="primaryOutline"
           />
@@ -110,7 +110,7 @@ const UserAdvancedSettings = () => {
           description={{ id: 'advancedSettings.delete.description' }}
           // @TODO: Add functionality to delete account
           onClick={() => {}}
-          buttonLabel={{ id: 'advancedSettings.delete.button' }}
+          buttonLabel={{ id: 'button.deleteAccount' }}
           buttonIcon="trash"
           buttonMode="secondaryOutline"
         />

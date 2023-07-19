@@ -1,4 +1,5 @@
 import { MessageDescriptor } from 'react-intl';
+
 import { ButtonMode } from '~v5/shared/Button/types';
 
 export interface SettingsRowProps {
