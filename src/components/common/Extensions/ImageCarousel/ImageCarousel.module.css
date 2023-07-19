@@ -1,5 +1,5 @@
 .container {
-  @apply relative pb-9;
+  @apply relative pb-[1.75rem];
 }
 
 .embla {
@@ -15,7 +15,7 @@
 }
 
 .image {
-  @apply w-full aspect-[510/248] object-cover;
+  @apply aspect-[380/248] w-full sm:aspect-[510/248] object-cover;
 }
 
 .dots {

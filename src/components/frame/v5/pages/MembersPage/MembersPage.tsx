@@ -32,6 +32,7 @@ const MembersPage: FC = () => {
               list={contributors}
               isLoading={loading}
               viewMoreUrl={contributorsURL}
+              isContributorsList
               isHomePage
             />
             <div className="mt-12">

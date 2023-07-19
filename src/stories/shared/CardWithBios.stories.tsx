@@ -1,10 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import CardWithBios from '~v5/shared/CardWithBios';
-import {
-  permissions,
-  userStatustooltipDetails,
-} from '~v5/shared/CardWithBios/partials/CardPermissions/consts';
+import { permissions } from '~v5/shared/CardWithBios/partials/CardPermissions/consts';
 
 const meta: Meta<typeof CardWithBios> = {
   title: 'Shared/Card With Bios',
@@ -41,7 +38,6 @@ export const Base: Story = {
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidide...',
     userStatus: 'dedicated',
     permissions,
-    userStatusTooltipDetails: userStatustooltipDetails[3],
     isVerified: true,
   },
 };

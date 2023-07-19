@@ -12,4 +12,5 @@ export type InputProps = {
   className?: string;
   decoratedError?: boolean;
   successfulMessage?: string;
+  isDisabled?: boolean;
 };

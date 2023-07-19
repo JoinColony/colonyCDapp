@@ -10,4 +10,5 @@ export interface MembersListProps {
   emptyDescription: MessageDescriptor;
   viewMoreUrl?: string;
   isHomePage: boolean;
+  isContributorsList?: boolean;
 }

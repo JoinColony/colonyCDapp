@@ -33,6 +33,7 @@ export interface UserAvatarPopoverProps
   userStatus?: UserStatusMode;
   avatarSize?: AvatarSize;
   teams?: Teams[];
+  isContributorsList?: boolean;
 }
 
 export type Teams =

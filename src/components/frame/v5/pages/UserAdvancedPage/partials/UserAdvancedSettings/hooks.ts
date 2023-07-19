@@ -4,7 +4,7 @@ import { SlotKey, UserSettingsHook } from '~hooks/useUserSettings';
 import { yupDebounce } from '~utils/yup/tests';
 
 import { isValidURL, validateCustomGnosisRPC } from '../../validation';
-import { FormValues } from './types';
+import { AdvancedSettingsFields } from './types';
 
 export const useUserAdvancedPage = () => {
   const rpcValidationSchema = object({
@@ -32,7 +32,7 @@ export const useUserAdvancedPage = () => {
   }).defined();
 
   const setFormValuesToLocalStorage = (
-    values: FormValues,
+    values: Partial<AdvancedSettingsFields>,
     setSettingsKey: UserSettingsHook['setSettingsKey'],
   ) => {
     Object.entries(values).forEach(

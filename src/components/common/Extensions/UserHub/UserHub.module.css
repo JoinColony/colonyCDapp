@@ -1,5 +1,5 @@
 .li {
-  @apply flex items-center justify-between text-gray-900 font-normal text-md leading-5 rounded px-4 cursor-pointer transition-all hover:bg-gray-50 p-1 py-2;
+  @apply flex items-center justify-between text-gray-900 font-normal text-md leading-5 rounded pl-4 pr-[1.125rem] cursor-pointer transition-all hover:bg-gray-50 p-1 py-2;
 }
 
 .wrapper {
