@@ -5,6 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import Button from '~shared/Button';
 import { DialogSection } from '~shared/Dialog';
 import Heading from '~shared/Heading';
+import { Safe } from '~types';
 
 import SafeListItem from './SafeListItem';
 
@@ -29,16 +30,16 @@ const MSG = defineMessages({
 
 interface RemoveSafeProps {
   back: () => void;
-  safeList: Array<any>;
+  colonySafes: Safe[];
 }
 
-const RemoveSafeDialogForm = ({ back, safeList }: RemoveSafeProps) => {
+const RemoveSafeDialogForm = ({ back, colonySafes }: RemoveSafeProps) => {
   const {
     formState: { isSubmitting, isValid, isDirty },
     watch,
   } = useFormContext();
+  const { safes } = watch();
 
-  const { safeList: safes } = watch();
   return (
     <>
       <DialogSection appearance={{ theme: 'heading' }}>
@@ -48,7 +49,7 @@ const RemoveSafeDialogForm = ({ back, safeList }: RemoveSafeProps) => {
           className={styles.title}
         />
       </DialogSection>
-      {!safeList.length ? (
+      {!colonySafes.length ? (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <div className={styles.emptySafeList}>
             <FormattedMessage {...MSG.emptySafeMsg} />
@@ -63,15 +64,15 @@ const RemoveSafeDialogForm = ({ back, safeList }: RemoveSafeProps) => {
           </DialogSection>
           <DialogSection appearance={{ theme: 'sidePadding' }}>
             <div className={styles.content}>
-              {safeList.map((item) => (
+              {colonySafes.map((item) => (
                 <SafeListItem
-                  key={`${item.chainId}-${item.contractAddress}`}
+                  key={`${item.chainId}-${item.address}`}
                   safe={item}
                   isChecked={
                     !!safes?.find((safe) => {
                       const { contractAddress, chainId } = JSON.parse(safe);
                       return (
-                        item.contractAddress === contractAddress &&
+                        item.address === contractAddress &&
                         item.chainId === chainId
                       );
                     })
@@ -89,6 +90,7 @@ const RemoveSafeDialogForm = ({ back, safeList }: RemoveSafeProps) => {
           text={{ id: 'button.back' }}
         />
         <Button
+          type="submit"
           appearance={{ theme: 'pink', size: 'large' }}
           text={{ id: 'button.confirm' }}
           loading={isSubmitting}

@@ -1,12 +1,11 @@
 import { Colony } from '~types';
 
 export const getRemoveSafeDialogPayload = (colony: Colony, payload: any) => {
-  const { safeList, annotation: annotationMessage } = payload;
+  const { safes, annotation: annotationMessage } = payload;
 
   return {
-    colonyName: colony.name,
-    colonyAddress: colony.colonyAddress,
-    safeList,
+    colony,
+    safes: safes.map((safe: string) => JSON.parse(safe)),
     annotationMessage,
     isRemovingSafes: true,
   };

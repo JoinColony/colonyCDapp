@@ -3,7 +3,7 @@ import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
 import { ActionTypes } from '~redux';
-import { Address, WithKey, DomainColor, Domain, Colony } from '~types';
+import { Address, WithKey, DomainColor, Domain, Colony, Safe } from '~types';
 
 import {
   ErrorActionType,
@@ -268,4 +268,19 @@ export type ColonyActionsActionTypes =
       ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_SUCCESS,
       object,
       object
+    >
+  | UniqueActionType<
+      ActionTypes.ACTION_MANAGE_EXISTING_SAFES,
+      {
+        colony: Colony;
+        safes: Safe[];
+        annotationMessage?: string;
+        isRemovingSafes?: boolean;
+      },
+      MetaWithNavigate<object>
+    >
+  | ErrorActionType<ActionTypes.ACTION_MANAGE_EXISTING_SAFES_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.ACTION_MANAGE_EXISTING_SAFES_SUCCESS,
+      MetaWithNavigate<object>
     >;
