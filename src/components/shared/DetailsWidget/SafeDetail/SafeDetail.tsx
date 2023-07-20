@@ -11,33 +11,29 @@ import styles from './SafeDetail.css';
 const displayName = 'DetailsWidget.SafeDetail';
 
 interface Props {
-  removedSafes: Safe[];
+  removedSafe: Safe;
 }
 
-const SafeDetail = ({ removedSafes }: Props) => {
+const SafeDetail = ({ removedSafe }: Props) => {
   return (
-    <>
-      {removedSafes.map((safe) => (
-        <div className={styles.main} key={`${safe.chainId}-${safe.address}`}>
-          <Avatar
-            seed={safe.address.toLowerCase()}
-            size="xs"
-            title="avatar"
-            placeholderIcon="safe-logo"
-          />
-          <div className={styles.textContainer}>
-            <div className={styles.displayName}>{`${safe.name} (${
-              SAFE_NAMES_MAP[safe.chainId]
-            })`}</div>
-            <InvisibleCopyableAddress address={safe.address}>
-              <div className={styles.address}>
-                <MaskedAddress address={safe.address} />
-              </div>
-            </InvisibleCopyableAddress>
+    <div className={styles.main}>
+      <Avatar
+        seed={removedSafe.address.toLowerCase()}
+        size="xs"
+        title="avatar"
+        placeholderIcon="safe-logo"
+      />
+      <div className={styles.textContainer}>
+        <div className={styles.displayName}>{`${removedSafe.name} (${
+          SAFE_NAMES_MAP[removedSafe.chainId]
+        })`}</div>
+        <InvisibleCopyableAddress address={removedSafe.address}>
+          <div className={styles.address}>
+            <MaskedAddress address={removedSafe.address} />
           </div>
-        </div>
-      ))}
-    </>
+        </InvisibleCopyableAddress>
+      </div>
+    </div>
   );
 };
 

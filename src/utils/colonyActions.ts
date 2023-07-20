@@ -127,7 +127,7 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
       ];
     }
     case actionType.includes(ExtendedColonyActionType.RemoveSafe): {
-      return [ActionPageDetails.Safe];
+      return [ActionPageDetails.Type, ActionPageDetails.Safe];
     }
     case actionType.includes(ExtendedColonyActionType.AddSafe): {
       return [
