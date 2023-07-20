@@ -43,7 +43,7 @@ const Table: FC<TableProps> = ({ list, onReputationSortClick }) => {
                 size="small"
                 className="mr-2"
               >
-                {formatMessage({ id: 'verifiedPage.table.remove' })}
+                {formatMessage({ id: 'button.removeMembers' })}
               </Button>
             )}
             {(!!listLength || !!searchValue) && <Filter />}
@@ -53,7 +53,7 @@ const Table: FC<TableProps> = ({ list, onReputationSortClick }) => {
               onClick={onAddClick}
               size="small"
             >
-              {formatMessage({ id: 'verifiedPage.table.button' })}
+              {formatMessage({ id: 'button.addNewMember' })}
             </Button>
           </div>
         </div>
@@ -74,7 +74,7 @@ const Table: FC<TableProps> = ({ list, onReputationSortClick }) => {
             icon="binoculars"
             title={{ id: 'verifiedPage.table.emptyTitle' }}
             description={{ id: 'verifiedPage.table.emptyDescription' }}
-            buttonText={{ id: 'verifiedPage.table.button' }}
+            buttonText={{ id: 'button.addNewMember' }}
             onClick={onAddClick}
             withoutButtonIcon
           />

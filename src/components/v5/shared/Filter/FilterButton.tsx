@@ -19,7 +19,7 @@ const FilterButton: FC<FilterButtonProps> = ({
   return (
     <button
       type="button"
-      aria-label={formatMessage({ id: 'filter.button' })}
+      aria-label={formatMessage({ id: 'ariaLabel.filter' })}
       className={clsx(`text-3 ${styles.filterButton}`, {
         'border border-blue-400 text-blue-400': isOpen,
       })}
