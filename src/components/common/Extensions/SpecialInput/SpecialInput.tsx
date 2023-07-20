@@ -21,7 +21,11 @@ const SpecialInput: FC<SpecialInputProps> = ({
   const { formatMessage } = useIntl();
 
   return (
-    <div className={clsx(styles.wrapper, 'group')}>
+    <div
+      className={clsx(styles.wrapper, 'group focus-within:border-blue-100', {
+        'border-none': isError,
+      })}
+    >
       <input
         defaultValue={defaultValue}
         name={name}
@@ -29,7 +33,7 @@ const SpecialInput: FC<SpecialInputProps> = ({
         type="number"
         className={`${
           styles.input
-        } group-hover:border-blue-200 group-focus-within:border-blue-200 ${
+        } focus:outline-none group-hover:border-blue-200 group-focus-within:border-blue-200 ${
           isError ? 'border-negative-400' : 'border-gray-300'
         } ${
           disabled &&

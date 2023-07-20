@@ -1,5 +1,5 @@
 .wrapper {
-  @apply flex justify-end font-normal text-gray-900 text-md transition-all duration-normal border-[0.1875rem] border-transparent rounded hover:border-blue-100;
+  @apply flex justify-end text-gray-900 text-md transition-all duration-normal border-[0.1875rem] border-transparent rounded hover:border-blue-100;
 }
 
 .field {
@@ -7,5 +7,5 @@
 }
 
 .input {
-  @apply bg-base-white px-3.5 py-3 transition-all duration-normal w-[3.75rem] rounded-l border rounded-r-none shrink-0 -mr-px;
+  @apply bg-base-white px-3.5 py-3 transition-colors duration-normal w-[3.75rem] rounded-l border rounded-r-none shrink-0 -mr-px;
 }
