@@ -6,7 +6,7 @@ export const getSafe = (safes: Safe[], selectedSafe: SelectedSafe | null) => {
 
   return safes.find(
     (safe) =>
-      safe.address === selectedSafe.profile.walletAddress &&
+      safe.address === selectedSafe.walletAddress &&
       safe.moduleContractAddress === selectedSafe.id,
   );
 };
@@ -17,8 +17,8 @@ export const getSelectedSafeBalance = (
 ) =>
   safeBalances?.find(
     (balance) =>
-      balance.token.tokenAddress === selectedTokenAddress ||
-      (!balance.token.tokenAddress && selectedTokenAddress === ADDRESS_ZERO),
+      balance.tokenAddress === selectedTokenAddress ||
+      (!balance.tokenAddress && selectedTokenAddress === ADDRESS_ZERO),
   );
 
 export const getChainNameFromSafe = (safeDisplayName: string) => {
