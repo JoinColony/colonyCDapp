@@ -2,7 +2,7 @@ import { MessageDescriptor } from 'react-intl';
 
 export type LeftColumnProps = {
   fieldTitle: MessageDescriptor;
-  fieldDecription: MessageDescriptor;
+  fieldDescription: MessageDescriptor;
 };
 
 export type UserProfileFormProps = {

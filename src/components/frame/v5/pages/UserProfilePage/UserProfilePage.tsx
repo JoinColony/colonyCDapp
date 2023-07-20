@@ -34,7 +34,7 @@ const UserProfilePage: FC = () => {
             <div className={styles.row}>
               <LeftColumn
                 fieldTitle={{ id: 'field.username' }}
-                fieldDecription={{ id: 'description.username' }}
+                fieldDescription={{ id: 'description.username' }}
               />
               <div className="w-full">
                 <Input
@@ -57,7 +57,7 @@ const UserProfilePage: FC = () => {
             <div className={styles.row}>
               <LeftColumn
                 fieldTitle={{ id: 'field.avatar' }}
-                fieldDecription={{ id: 'description.avatar' }}
+                fieldDescription={{ id: 'description.avatar' }}
               />
             </div>
 
@@ -66,7 +66,7 @@ const UserProfilePage: FC = () => {
             <div className={styles.row}>
               <LeftColumn
                 fieldTitle={{ id: 'field.website' }}
-                fieldDecription={{ id: 'description.website' }}
+                fieldDescription={{ id: 'description.website' }}
               />
               <div className="w-full">
                 <Input
@@ -83,7 +83,7 @@ const UserProfilePage: FC = () => {
             <div className={styles.row}>
               <LeftColumn
                 fieldTitle={{ id: 'field.bio' }}
-                fieldDecription={{ id: 'description.bio' }}
+                fieldDescription={{ id: 'description.bio' }}
               />
               <div className="w-full">
                 <Textarea
@@ -101,7 +101,7 @@ const UserProfilePage: FC = () => {
             <div className={styles.row}>
               <LeftColumn
                 fieldTitle={{ id: 'field.location' }}
-                fieldDecription={{ id: 'description.location' }}
+                fieldDescription={{ id: 'description.location' }}
               />
               <div className="w-full">
                 <Input name="location" register={register} />
@@ -109,7 +109,7 @@ const UserProfilePage: FC = () => {
             </div>
             <div className="flex justify-end">
               <Button type="submit" isFullSize={isMobile} mode="primarySolid">
-                {formatMessage({ id: 'button.save.user.profile' })}
+                {formatMessage({ id: 'button.saveUserProfile' })}
               </Button>
             </div>
           </div>
