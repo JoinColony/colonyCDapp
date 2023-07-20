@@ -24,6 +24,7 @@ const SpecialInput: FC<SpecialInputProps> = ({
     <div
       className={clsx(styles.wrapper, 'group focus-within:border-blue-100', {
         'border-none': isError,
+        'pointer-events-none opacity-50': disabled,
       })}
     >
       <input
@@ -35,9 +36,6 @@ const SpecialInput: FC<SpecialInputProps> = ({
           styles.input
         } focus:outline-none group-hover:border-blue-200 group-focus-within:border-blue-200 ${
           isError ? 'border-negative-400' : 'border-gray-300'
-        } ${
-          disabled &&
-          'pointer-events-none opacity-50 group-hover:border-gray-300'
         }`}
         id={id}
         placeholder={placeholder}
@@ -50,9 +48,6 @@ const SpecialInput: FC<SpecialInputProps> = ({
           styles.field
         } group-focus-within:border-blue-200 group-hover:border-blue-200 ${
           isError ? 'border-negative-400' : 'border-gray-300'
-        } ${
-          disabled &&
-          'pointer-events-none opacity-50 group-hover:border-gray-300'
         }`}
       >
         {type === 'hours' ? formatMessage({ id: 'hours' }) : '%'}

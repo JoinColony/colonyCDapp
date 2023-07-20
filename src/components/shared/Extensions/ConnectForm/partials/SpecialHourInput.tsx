@@ -2,15 +2,14 @@ import React, { FC } from 'react';
 
 import SpecialInput from '~common/Extensions/SpecialInput';
 import FormError from '~v5/shared/FormError';
+import ConnectForm from '../ConnectForm';
 import { SpecialInputProps } from '../types';
-import ConnectForm from './ConnectForm';
 
-const displayName = 'Extensions.SpecialPercentageInput';
+const displayName = 'Extensions.ConnectForm.partials.SpecialHourInput';
 
-const SpecialPercentageInput: FC<SpecialInputProps> = ({
+const SpecialHourInput: FC<SpecialInputProps> = ({
   defaultValue,
   maxValue,
-  minValue,
   errors,
   name = '',
 }) => (
@@ -23,9 +22,9 @@ const SpecialPercentageInput: FC<SpecialInputProps> = ({
             register={register}
             isError={!!errors?.[name]?.message}
             name={name}
-            min={minValue}
+            type="hours"
+            min={1}
             max={maxValue}
-            type="percent"
             placeholder="1"
           />
           {errors?.[name] && <FormError>{errors?.[name]?.message}</FormError>}
@@ -35,6 +34,6 @@ const SpecialPercentageInput: FC<SpecialInputProps> = ({
   </ConnectForm>
 );
 
-SpecialPercentageInput.displayName = displayName;
+SpecialHourInput.displayName = displayName;
 
-export default SpecialPercentageInput;
+export default SpecialHourInput;

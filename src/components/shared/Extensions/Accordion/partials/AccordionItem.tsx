@@ -15,16 +15,15 @@ const AccordionItem: FC<AccordionItemProps> = ({
   onClick,
   errors,
 }) => (
-  <>
-    <div
-      className="w-full text-2"
+  <div className="w-full mb-4 last:mb-0">
+    <AccordionHeader
       onClick={onClick}
       onKeyUp={onClick}
       role="button"
       tabIndex={0}
-    >
-      <AccordionHeader title={title} isOpen={isOpen} />
-    </div>
+      title={title}
+      isOpen={isOpen}
+    />
     <div className="relative">
       <AnimatePresence>
         {isOpen && (
@@ -42,7 +41,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
         )}
       </AnimatePresence>
     </div>
-  </>
+  </div>
 );
 
 AccordionItem.displayName = displayName;
