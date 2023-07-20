@@ -79,7 +79,7 @@ const SettingsInputRow: FC<SettingsInputRowProps> = ({
                 register={register}
                 isError={!!error}
                 customErrorMessage={error}
-                decoratedError={error === 'advancedSettings.rpc.errorUnable'}
+                isDecoratedError={error === 'advancedSettings.rpc.errorUnable'}
                 className="text-md border-gray-300"
                 successfulMessage={
                   isValid && rpcValue

@@ -8,7 +8,7 @@ import { PillProps } from '../types';
 
 const displayName = 'v5.common.Fields.partials.Pill';
 
-const Pill: FC<PillProps> = ({ message, status }) => {
+const InputPills: FC<PillProps> = ({ message, status }) => {
   const { formatMessage } = useIntl();
 
   const iconType =
@@ -18,7 +18,7 @@ const Pill: FC<PillProps> = ({ message, status }) => {
 
   return (
     <div
-      className={clsx(styles.inputMessage, {
+      className={clsx(`${styles.inputMessage} absolute top-[3.2rem]`, {
         'border-negative-200 text-negative-400': status === 'error',
         'border-success-200 text-success-400': status === 'success',
         'border-warning-400 text-warning-400': status === 'warning',
@@ -34,6 +34,6 @@ const Pill: FC<PillProps> = ({ message, status }) => {
   );
 };
 
-Pill.displayName = displayName;
+InputPills.displayName = displayName;
 
-export default Pill;
+export default InputPills;

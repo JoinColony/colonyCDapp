@@ -56,13 +56,3 @@ export const WithDecoratedSuccessfulMessage: Story = {
     successfulMessage: 'Username avaliable',
   },
 };
-
-export const WithDecoratedErrorMessage: Story = {
-  args: {
-    placeholder: 'This is the placeholder content',
-    decoratedError: true,
-    isErrorPillVisible: true,
-    isErrorStatus: true,
-    successfulMessage: 'Username not avaliable',
-  },
-};

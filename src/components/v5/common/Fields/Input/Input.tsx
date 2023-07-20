@@ -7,7 +7,7 @@ import { InputProps } from './types';
 import { useInput } from '../hooks';
 import { DEFAULT_MAX_CHAR_NUMBER } from './consts';
 import Tooltip from '~shared/Extensions/Tooltip';
-import Pill from './partials/Pill';
+import InputPills from './partials/InputPills';
 import CharacterNumbers from './partials/CharacterNumbers';
 
 const displayName = 'v5.common.Fields.Input';
@@ -22,12 +22,9 @@ const Input: FC<InputProps> = ({
   name,
   register,
   className,
-  decoratedError,
+  isDecoratedError,
   successfulMessage,
   isDisabled,
-  isErrorPillVisible,
-  customSuccessMessage,
-  isFormEdited,
 }) => {
   const { formatMessage } = useIntl();
   const { isTyping, isCharLenghtError, currentCharNumber, onChange } = useInput(
@@ -54,51 +51,44 @@ const Input: FC<InputProps> = ({
         onChange={onChange}
         disabled={isDisabled}
       />
-
-      {isFormEdited && isErrorPillVisible && !isTyping && (
-        <Pill message={customErrorMessage} status="error" />
-      )}
-      {isFormEdited && !isErrorPillVisible && !isTyping && !isError && (
-        <Pill message={customSuccessMessage} status="success" />
-      )}
     </div>
   );
 
   return (
-    <div className="flex flex-col gap-1">
-      <div className="flex relative">
-        {isDisabled ? (
-          <Tooltip
-            isFullWidthContent
-            tooltipContent={
-              <span className="text-3 w-full">
-                {formatMessage({
-                  id: 'displayName.input.disabled',
-                })}
-              </span>
-            }
-          >
-            {input}
-          </Tooltip>
-        ) : (
-          input
-        )}
-
-        {!!currentCharNumber && shouldNumberOfCharsBeVisible && (
-          <CharacterNumbers
-            isError={isError}
-            isCharLenghtError={isCharLenghtError}
-            currentCharNumber={currentCharNumber}
-          />
-        )}
-      </div>
-      {successfulMessage && (
-        <Pill message={successfulMessage} status="success" />
+    <div className="flex relative flex-col gap-1">
+      {isDisabled ? (
+        <Tooltip
+          isFullWidthContent
+          tooltipContent={
+            <span className="text-3 w-full">
+              {formatMessage({
+                id: 'displayName.input.disabled',
+              })}
+            </span>
+          }
+        >
+          {input}
+        </Tooltip>
+      ) : (
+        input
       )}
-      {isErrorStatus && !isErrorPillVisible && (
+
+      {shouldNumberOfCharsBeVisible && isTyping && (
+        <CharacterNumbers
+          isError={isErrorStatus}
+          currentCharNumber={currentCharNumber}
+          maxCharNumber={maxCharNumber}
+        />
+      )}
+
+      {!isTyping && !isError && successfulMessage && (
+        <InputPills message={successfulMessage} status="success" />
+      )}
+
+      {isErrorStatus && (
         <>
-          {decoratedError ? (
-            <Pill message={customErrorMessage} status="error" />
+          {isDecoratedError && !isTyping ? (
+            <InputPills message={customErrorMessage} status="error" />
           ) : (
             <FormError isFullSize alignment="left">
               {customErrorMessage ||

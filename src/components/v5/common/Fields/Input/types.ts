@@ -11,12 +11,9 @@ export type InputProps = {
   name: string;
   register: UseFormRegister<FieldValues>;
   className?: string;
-  decoratedError?: boolean;
+  isDecoratedError?: boolean;
   successfulMessage?: string;
   isDisabled?: boolean;
-  isErrorPillVisible?: boolean;
-  customSuccessMessage?: string;
-  isFormEdited?: boolean;
 };
 
 export type PillProps = {
