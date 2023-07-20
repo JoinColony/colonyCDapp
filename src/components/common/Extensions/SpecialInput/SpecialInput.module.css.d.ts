@@ -2,6 +2,7 @@ declare namespace SpecialInputModuleCssNamespace {
   export interface ISpecialInputModuleCss {
     field: string;
     input: string;
+    wrapper: string;
   }
 }
 
