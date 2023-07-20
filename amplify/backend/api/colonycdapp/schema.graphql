@@ -2540,6 +2540,7 @@ type ExpenditureSlot {
   id: Int!
   recipientAddress: String
   claimDelay: Int
+  payoutModifier: Int
   payouts: [ExpenditurePayout!]
 }
 
