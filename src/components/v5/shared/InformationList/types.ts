@@ -1,11 +1,11 @@
 import { MessageDescriptor } from 'react-intl';
 
-export interface InformationListItem {
+export interface InformationListItemProps {
   title: MessageDescriptor;
   id: string;
 }
 
 export interface InformationListProps {
-  items: InformationListItem[];
+  items: InformationListItemProps[];
   className?: string;
 }

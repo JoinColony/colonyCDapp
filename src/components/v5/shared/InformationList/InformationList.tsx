@@ -13,7 +13,7 @@ const InformationList: FC<InformationListProps> = ({ items, className }) => {
     <div
       className={clsx(
         className,
-        'rounded-[0.25rem] border bg-negative-100 border-negative-400 p-[1.125rem] text-negative-400',
+        'rounded border bg-negative-100 border-negative-400 p-[1.125rem] text-negative-400',
       )}
     >
       <ul className="text-sm list-disc pl-4">

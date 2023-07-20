@@ -1,6 +1,6 @@
-import { InformationListItem } from '~v5/shared/InformationList/types';
+import { InformationListItemProps } from '~v5/shared/InformationList/types';
 
-export const modalInformations: InformationListItem[] = [
+export const modalInformations: InformationListItemProps[] = [
   {
     title: { id: 'advancedSettings.delete.modal.info1' },
     id: 'advancedSettings.delete.modal.info1',

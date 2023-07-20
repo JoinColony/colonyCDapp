@@ -8,10 +8,10 @@ import SettingsRow from '~v5/common/SettingsRow';
 import FeesForm from '../FeesForm';
 import RpcForm from '../RpcForm/RpcForm';
 import Modal from '~v5/shared/Modal';
-import InformationList from '~v5/shared/InformationList/InformationList';
+import InformationList from '~v5/shared/InformationList';
 import { modalInformations } from './consts';
 import Textarea from '~v5/common/Fields/Textarea';
-import Checkbox from '~v5/common/Checkbox/Checkbox';
+import Checkbox from '~v5/common/Checkbox';
 
 const displayName = 'v5.pages.UserAdvancedPage.partials.UserAdvancedSettings';
 
