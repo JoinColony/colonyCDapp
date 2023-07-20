@@ -6,7 +6,7 @@ import Icon from '~shared/Icon';
 import styles from '../Input.module.css';
 import { PillProps } from '../types';
 
-const displayName = 'v5.common.Fields.partials.Pill';
+const displayName = 'v5.common.Fields.Input.partials.InputPills';
 
 const InputPills: FC<PillProps> = ({ message, status }) => {
   const { formatMessage } = useIntl();
