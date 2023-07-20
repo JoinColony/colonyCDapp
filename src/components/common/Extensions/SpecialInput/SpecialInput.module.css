@@ -1,5 +1,5 @@
 .wrapper {
-  @apply flex justify-end text-gray-900 text-md transition-all duration-normal border-[0.1875rem] border-transparent rounded hover:border-blue-100;
+  @apply flex justify-end text-md transition-all duration-normal border-[0.1875rem] border-transparent rounded hover:border-blue-100;
 }
 
 .field {
