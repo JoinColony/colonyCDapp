@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+import clsx from 'clsx';
 
 import styles from './SpecialInput.module.css';
 import { SpecialInputProps } from './types';
@@ -20,7 +21,14 @@ const SpecialInput: FC<SpecialInputProps> = ({
   const { formatMessage } = useIntl();
 
   return (
-    <div className="flex group justify-end font-normal text-gray-900 text-md">
+    <div
+      className={clsx(
+        'flex group justify-end font-normal text-gray-900 text-md',
+        {
+          'pointer-events-none opacity-50': disabled,
+        },
+      )}
+    >
       <input
         defaultValue={defaultValue}
         name={name}
@@ -30,9 +38,6 @@ const SpecialInput: FC<SpecialInputProps> = ({
           styles.input
         } group-hover:border-blue-200 group-focus-within:border-blue-200 ${
           isError ? 'border-negative-400' : 'border-gray-300'
-        } ${
-          disabled &&
-          'pointer-events-none opacity-50 group-hover:border-gray-300'
         }`}
         id={id}
         placeholder={placeholder}
@@ -45,9 +50,6 @@ const SpecialInput: FC<SpecialInputProps> = ({
           styles.field
         } group-focus-within:border-blue-200 group-hover:border-blue-200 ${
           isError ? 'border-negative-400' : 'border-gray-300'
-        } ${
-          disabled &&
-          'pointer-events-none opacity-50 group-hover:border-gray-300'
         }`}
       >
         {type === 'hours' ? formatMessage({ id: 'hours' }) : '%'}

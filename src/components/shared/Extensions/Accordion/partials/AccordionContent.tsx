@@ -14,10 +14,10 @@ const AccordionContent: FC<AccordionItemProps> = ({ content, errors }) => (
         key={id}
         className="border-b border-gray-200 mt-6 pb-6 last:border-none last:pb-0"
       >
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between">
           {textItem}
           {inputData?.inputType && (
-            <div className="ml-6">
+            <div className="ml-6 shrink-0">
               {inputData.inputType === 'percent' ? (
                 <SpecialPercentageInput
                   name={inputData.name}
