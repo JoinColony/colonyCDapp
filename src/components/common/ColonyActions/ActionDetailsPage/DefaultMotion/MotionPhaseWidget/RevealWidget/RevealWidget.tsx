@@ -4,7 +4,7 @@ import { BigNumber } from 'ethers';
 import { MotionState } from '~utils/colonyMotions';
 import { ColonyMotion } from '~types';
 import { useAppContext, useColonyContext } from '~hooks';
-import { ActionHookForm as ActionForm, OnSuccess } from '~shared/Fields';
+import { ActionForm, OnSuccess } from '~shared/Fields';
 import { ActionTypes } from '~redux';
 import { mapPayload } from '~utils/actions';
 import { RevealMotionPayload } from '~redux/sagas/motions/revealVoteMotion';

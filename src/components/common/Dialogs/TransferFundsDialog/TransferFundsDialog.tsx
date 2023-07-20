@@ -8,7 +8,7 @@ import { notNull } from '~utils/arrays';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
 import { ActionTypes } from '~redux/index';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
-import { ActionHookForm as Form } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 import { WizardDialogType } from '~hooks';
 
 import TransferFundsDialogForm from './TransferFundsDialogForm';
@@ -63,7 +63,7 @@ const TransferFundsDialog = ({
 
   return (
     <Dialog cancel={cancel}>
-      <Form<FormValues>
+      <ActionForm<FormValues>
         defaultValues={{
           forceAction: false,
           fromDomainId: defaultFromDomainId,
@@ -89,7 +89,7 @@ const TransferFundsDialog = ({
           handleIsForceChange={setIsForce}
           isForce={isForce}
         />
-      </Form>
+      </ActionForm>
     </Dialog>
   );
 };

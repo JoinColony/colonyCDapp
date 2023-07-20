@@ -9,11 +9,7 @@ import {
   DialogHeading,
   DialogSection,
 } from '~shared/Dialog';
-import {
-  HookFormInput as Input,
-  Annotations,
-  SelectOption,
-} from '~shared/Fields';
+import { Input, Annotations, SelectOption } from '~shared/Fields';
 
 import { DomainColor } from '~gql';
 import { findDomainByNativeId } from '~utils/domains';

@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
-import { ActionHookForm as Form } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
 import { WizardDialogType } from '~hooks';
@@ -59,7 +59,7 @@ const TokenManagementDialog = ({
 
   return (
     <Dialog cancel={cancel}>
-      <Form<FormValues>
+      <ActionForm<FormValues>
         actionType={actionType}
         defaultValues={{
           forceAction: false,
@@ -87,7 +87,7 @@ const TokenManagementDialog = ({
           isForce={isForce}
           setIsForce={setIsForce}
         />
-      </Form>
+      </ActionForm>
     </Dialog>
   );
 };

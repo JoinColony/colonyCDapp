@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { WizardStepProps } from '~shared/Wizard';
-import { ActionHookForm as ActionForm } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 
 import { mergePayload } from '~utils/actions';
 import { ActionTypes } from '~redux/index';

@@ -92,7 +92,7 @@ const ColonyFunding = () => {
               />
             ) : (
               <Form
-                initialValues={{
+                defaultValues={{
                   selectDomain: COLONY_TOTAL_BALANCE_DOMAIN_ID.toString(),
                 }}
                 onSubmit={() => {}}

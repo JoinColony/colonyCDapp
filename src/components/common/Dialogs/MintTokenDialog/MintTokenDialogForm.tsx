@@ -9,7 +9,7 @@ import {
   DialogHeading,
   DialogSection,
 } from '~shared/Dialog';
-import { HookFormInput as Input, Annotations } from '~shared/Fields';
+import { Input, Annotations } from '~shared/Fields';
 import {
   useActionDialogStatus,
   // useTransformer,

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
-import { ActionHookForm as Form } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 
 import { ActionTypes } from '~redux';
 import { WizardDialogType } from '~hooks';
@@ -54,7 +54,7 @@ const NetworkContractUpgradeDialog = ({
 
   return (
     <Dialog cancel={cancel}>
-      <Form<FormValues>
+      <ActionForm<FormValues>
         defaultValues={{
           forceAction: false,
           annotation: '',
@@ -76,7 +76,7 @@ const NetworkContractUpgradeDialog = ({
           handleIsForceChange={setIsForce}
           isForce={isForce}
         />
-      </Form>
+      </ActionForm>
     </Dialog>
   );
 };

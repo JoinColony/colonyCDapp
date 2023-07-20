@@ -3,7 +3,7 @@ import { Id } from '@colony/colony-js';
 
 import { useDialog } from '~shared/Dialog';
 import ColorTag from '~shared/ColorTag';
-import { HookForm as Form, SelectOption } from '~shared/Fields';
+import { Form, SelectOption } from '~shared/Fields';
 import DomainDropdown from '~shared/DomainDropdown';
 import { EditDomainDialog } from '~common/Dialogs';
 

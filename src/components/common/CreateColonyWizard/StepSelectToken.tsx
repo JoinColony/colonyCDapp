@@ -6,7 +6,7 @@ import {
 } from 'react-intl';
 
 import { WizardStepProps } from '~shared/Wizard';
-import { HookForm as Form } from '~shared/Fields';
+import { Form } from '~shared/Fields';
 import { Heading3 } from '~shared/Heading';
 import TokenSelector from '~shared/TokenSelector';
 

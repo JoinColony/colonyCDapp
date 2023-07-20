@@ -1,4 +1,4 @@
-import { useFormikContext } from 'formik';
+import { useFormContext } from 'react-hook-form';
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
@@ -40,9 +40,12 @@ const InitParamField = ({
     description,
     complementaryLabel,
     formattingOptions,
+    defaultValue,
   },
 }: Props) => {
-  const { isSubmitting } = useFormikContext();
+  const {
+    formState: { isSubmitting },
+  } = useFormContext();
 
   if (type === ExtensionParamType.Input) {
     return (
@@ -53,6 +56,7 @@ const InitParamField = ({
           name={paramName}
           disabled={isSubmitting}
           formattingOptions={formattingOptions}
+          value={defaultValue}
         />
         <p className={styles.inputsDescription}>
           <FormattedMessage

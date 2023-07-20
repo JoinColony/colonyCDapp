@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
-import { ActionHookForm as Form } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 
 import { ActionTypes } from '~redux/index';
 import { WizardDialogType } from '~hooks';
@@ -86,7 +86,7 @@ const ManageWhitelistDialog = ({
 
   return (
     <Dialog cancel={cancel}>
-      <Form<FormValues>
+      <ActionForm<FormValues>
         defaultValues={{
           annotation: '',
           isWhitelistActivated: colony.metadata?.isWhitelistActivated,
@@ -117,7 +117,7 @@ const ManageWhitelistDialog = ({
           backButtonText={{ id: !prevStep ? 'button.cancel' : 'button.back' }}
           enabledExtensionData={enabledExtensionData}
         />
-      </Form>
+      </ActionForm>
     </Dialog>
   );
 };

@@ -3,7 +3,7 @@ import { Id } from '@colony/colony-js';
 import { useNavigate } from 'react-router-dom';
 
 import Dialog from '~shared/Dialog';
-import { ActionHookForm as Form } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
@@ -84,7 +84,7 @@ const ManageReputationContainer = ({
   //   isWhitelistActivated ? verifiedUsers : colonyWatchers,
   return (
     <Dialog cancel={cancel}>
-      <Form<FormValues>
+      <ActionForm<FormValues>
         defaultValues={{
           forceAction: false,
           domainId: filteredDomainId || Id.RootDomain,
@@ -114,7 +114,7 @@ const ManageReputationContainer = ({
           isForce={isForce}
           setIsForce={setIsForce}
         />
-      </Form>
+      </ActionForm>
     </Dialog>
   );
 };

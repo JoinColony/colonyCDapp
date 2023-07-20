@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { HookFormSelect as Select, SelectProps } from '~shared/Fields';
+import { Select, SelectProps } from '~shared/Fields';
 import TokenIcon from '~shared/TokenIcon';
 import { Token } from '~types';
 

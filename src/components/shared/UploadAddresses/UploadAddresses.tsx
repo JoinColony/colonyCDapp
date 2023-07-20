@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
-import { InputLabel, HookFormInput as Input } from '../Fields';
+import { InputLabel, Input } from '../Fields';
 import Button from '../Button';
 import CSVUploader from '../CSVUploader';
 

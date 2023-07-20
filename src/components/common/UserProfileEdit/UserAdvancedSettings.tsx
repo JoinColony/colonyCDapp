@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { string, bool, object, InferType } from 'yup';
 
-import { HookForm as Form } from '~shared/Fields';
+import { Form } from '~shared/Fields';
 import { Heading3 } from '~shared/Heading';
 import ExternalLink from '~shared/ExternalLink';
 import { ADVANCED_SETTINGS } from '~constants';
