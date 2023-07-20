@@ -1,6 +1,5 @@
 import { ADDRESS_ZERO, SAFE_NAMES_MAP, SAFE_NETWORKS } from '~constants';
 import { Address, ColonyAction, SafeBalance, SelectedSafe, Safe } from '~types';
-import { get } from '~utils/lodash';
 
 export const getSafe = (safes: Safe[], selectedSafe: SelectedSafe | null) => {
   if (!selectedSafe) return undefined;
@@ -39,16 +38,11 @@ export const getTxServiceBaseUrl = (selectedChain: string) => {
 };
 
 export const getAddedSafe = (actionData: ColonyAction) => {
-  const newSafes: Safe[] = get(
-    actionData,
-    'colony.metadata.changelog[0].newSafes',
-    [],
+  const actionChangelog = actionData.colony.metadata?.changelog?.find(
+    (changelog) => changelog.transactionHash === actionData.transactionHash,
   );
-  const oldSafes: Safe[] = get(
-    actionData,
-    'colony.metadata.changelog[0].oldSafes',
-    [],
-  );
+  const newSafes: Safe[] = actionChangelog?.newSafes || [];
+  const oldSafes: Safe[] = actionChangelog?.oldSafes || [];
 
   if (newSafes.length > oldSafes.length) {
     const addedSafe = newSafes[newSafes.length - 1];
@@ -69,16 +63,11 @@ export const getAddedSafeChainName = (actionData: ColonyAction) => {
 };
 
 export const getRemovedSafes = (actionData: ColonyAction) => {
-  const newSafes: Safe[] = get(
-    actionData,
-    'colony.metadata.changelog[0].newSafes',
-    [],
+  const actionChangelog = actionData.colony.metadata?.changelog?.find(
+    (changelog) => changelog.transactionHash === actionData.transactionHash,
   );
-  const oldSafes: Safe[] = get(
-    actionData,
-    'colony.metadata.changelog[0].oldSafes',
-    [],
-  );
+  const newSafes: Safe[] = actionChangelog?.newSafes || [];
+  const oldSafes: Safe[] = actionChangelog?.oldSafes || [];
 
   if (newSafes.length < oldSafes.length) {
     const removedSafes = oldSafes.filter(
