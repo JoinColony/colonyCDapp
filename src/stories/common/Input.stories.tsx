@@ -49,3 +49,20 @@ export const WithDisableInput: Story = {
     isDisabled: true,
   },
 };
+
+export const WithDecoratedSuccessfulMessage: Story = {
+  args: {
+    placeholder: 'This is the placeholder content',
+    successfulMessage: 'Username avaliable',
+  },
+};
+
+export const WithDecoratedErrorMessage: Story = {
+  args: {
+    placeholder: 'This is the placeholder content',
+    decoratedError: true,
+    isErrorPillVisible: true,
+    isErrorStatus: true,
+    successfulMessage: 'Username not avaliable',
+  },
+};

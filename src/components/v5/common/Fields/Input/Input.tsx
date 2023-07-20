@@ -6,13 +6,11 @@ import FormError from '~v5/shared/FormError';
 import { InputProps } from './types';
 import { useInput } from '../hooks';
 import { DEFAULT_MAX_CHAR_NUMBER } from './consts';
-import Icon from '~shared/Icon';
 import Tooltip from '~shared/Extensions/Tooltip';
-import styles from './Input.module.css';
+import Pill from './partials/Pill';
+import CharacterNumbers from './partials/CharacterNumbers';
 
 const displayName = 'v5.common.Fields.Input';
-
-// @TODO: add custom input status pills
 
 const Input: FC<InputProps> = ({
   maxCharNumber = DEFAULT_MAX_CHAR_NUMBER,
@@ -58,10 +56,10 @@ const Input: FC<InputProps> = ({
       />
 
       {isFormEdited && isErrorPillVisible && !isTyping && (
-        <span>{customErrorMessage}</span>
+        <Pill message={customErrorMessage} status="error" />
       )}
       {isFormEdited && !isErrorPillVisible && !isTyping && !isError && (
-        <span>{customSuccessMessage}</span>
+        <Pill message={customSuccessMessage} status="success" />
       )}
     </div>
   );
@@ -87,47 +85,20 @@ const Input: FC<InputProps> = ({
         )}
 
         {!!currentCharNumber && shouldNumberOfCharsBeVisible && (
-          <div
-            className={clsx('text-4 flex absolute right-3 top-4', {
-              'text-negative-400': isErrorStatus,
-              'text-gray-500': !isErrorStatus,
-            })}
-          >
-            {currentCharNumber}/{maxCharNumber}
-          </div>
+          <CharacterNumbers
+            isError={isError}
+            isCharLenghtError={isCharLenghtError}
+            currentCharNumber={currentCharNumber}
+          />
         )}
       </div>
       {successfulMessage && (
-        <div
-          className={clsx(
-            styles.inputMessage,
-            'border-success-200 text-success-400',
-          )}
-        >
-          <Icon name="check-circle" appearance={{ size: 'small' }} />
-          <span className="ml-1">
-            {formatMessage({
-              id: successfulMessage,
-            })}
-          </span>
-        </div>
+        <Pill message={successfulMessage} status="success" />
       )}
       {isErrorStatus && !isErrorPillVisible && (
         <>
           {decoratedError ? (
-            <div
-              className={clsx(
-                styles.inputMessage,
-                'border-negative-200 text-negative-400',
-              )}
-            >
-              <Icon name="x-circle" appearance={{ size: 'small' }} />
-              <span className="ml-1">
-                {formatMessage({
-                  id: customErrorMessage || 'too.many.characters',
-                })}
-              </span>
-            </div>
+            <Pill message={customErrorMessage} status="error" />
           ) : (
             <FormError isFullSize alignment="left">
               {customErrorMessage ||
