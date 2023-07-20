@@ -1,4 +1,4 @@
-import { Address } from '~types';
+import { Address, Token } from '~types';
 
 export type ModuleAddress = Address;
 
@@ -27,28 +27,14 @@ export type FunctionParamType = {
   type: string;
 };
 
-export type SafeBalanceToken = Erc20Token | SafeNativeToken;
-
-export type Erc20Token = {
-  name: string;
-  decimals: number;
-  symbol: string;
-  logoUri: string;
-  address: string;
-};
-
-export type SafeNativeToken = {
-  name: string;
-  decimals: number;
-  symbol: string;
-  address: string;
-  networkName: string;
-};
+export interface SafeToken extends Token {
+  logoUri?: string;
+}
 
 export type SafeTransaction = {
   transactionType: string;
   tokenAddress?: string;
-  tokenData?: SafeBalanceToken;
+  tokenData?: SafeToken;
   amount?: string;
   rawAmount?: string;
   recipient?: SimpleUser;
@@ -62,5 +48,5 @@ export type SafeTransaction = {
 export interface SafeBalance {
   balance: number;
   tokenAddress: string | null;
-  token: SafeBalanceToken;
+  token: SafeToken | null;
 }
