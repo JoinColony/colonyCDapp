@@ -16,7 +16,7 @@ import { useColonyContext, useUserReputation } from '~hooks';
 import { MotionVote } from '~utils/colonyMotions';
 import { intl } from '~utils/intl';
 import { formatReputationChange } from '~utils/reputation';
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import { DEFAULT_TOKEN_DECIMALS, SAFE_NAMES_MAP } from '~constants';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import {
   formatRolesTitle,
@@ -35,7 +35,11 @@ import { VoteResults } from '~common/ColonyActions/ActionDetailsPage/DefaultMoti
 import { VotingWidgetHeading } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
 import MemberReputation from '~shared/MemberReputation';
 import MaskedAddress from '~shared/MaskedAddress';
-import { getAddedSafe, getAddedSafeChainName } from '~utils/safes';
+import {
+  getAddedSafe,
+  getAddedSafeChainName,
+  getRemovedSafes,
+} from '~utils/safes';
 
 import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
 import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
@@ -68,6 +72,38 @@ const getSafeAddress = (actionData: ColonyAction) => {
   const addedSafe = getAddedSafe(actionData);
 
   return addedSafe ? <MaskedAddress address={addedSafe.address} /> : null;
+};
+
+const getRemovedSafesString = (actionData: ColonyAction) => {
+  const removedSafes = getRemovedSafes(actionData);
+  let removedSafeFullMessage: JSX.Element | null = null;
+
+  removedSafes?.forEach((safe, index) => {
+    const removedSafe = (
+      <>
+        <span>{`${safe.name} (${SAFE_NAMES_MAP[safe.chainId]}) `}</span>
+        <MaskedAddress address={safe.address} />
+      </>
+    );
+
+    if (index === 0) {
+      removedSafeFullMessage = removedSafe;
+    } else if (index === removedSafes.length - 1) {
+      removedSafeFullMessage = (
+        <>
+          {removedSafeFullMessage} and {removedSafe}
+        </>
+      );
+    } else {
+      removedSafeFullMessage = (
+        <>
+          {removedSafeFullMessage}, {removedSafe}
+        </>
+      );
+    }
+  });
+
+  return removedSafeFullMessage;
 };
 
 export const mapColonyActionToExpectedFormat = (
@@ -189,6 +225,7 @@ export const mapActionEventToExpectedFormat = (
     ),
     chainName: getAddedSafeChainName(actionData),
     safeAddress: getSafeAddress(actionData),
+    removedSafes: getRemovedSafesString(actionData),
   };
 };
 
