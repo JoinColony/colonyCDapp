@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { FormattedMessage, useIntl, defineMessages } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import Navigation from '~v5/common/Navigation';
 import TwoColumns from '~v5/frame/TwoColumns';
@@ -14,16 +14,6 @@ import Textarea from '~v5/common/Fields/Textarea';
 import Checkbox from '~v5/common/Checkbox';
 
 const displayName = 'v5.pages.UserAdvancedPage.partials.UserAdvancedSettings';
-
-const MSG = defineMessages({
-  modalDescription: {
-    id: 'advancedSettings.delete.modal.description',
-    defaultMessage: `Deleting your account means you could potentially lose funds and
-       access to the following areas and account information on Colony.
-      {br} {br} While you can delete your Colony account, you are not able to delete content on chain.
-      {br} {br} Deleting your Colony account is irreversible and you will need to recreate another Colony account.`,
-  },
-});
 
 const UserAdvancedSettings: FC = () => {
   const [isChecked, setIsChecked] = useState(false);
@@ -73,12 +63,10 @@ const UserAdvancedSettings: FC = () => {
             {formatMessage({ id: 'advancedSettings.delete.modal.title' })}
           </h5>
           <p className="text-md text-gray-600 mb-6">
-            <FormattedMessage
-              {...MSG.modalDescription}
-              values={{
-                br: <br />,
-              }}
-            />
+            {formatMessage(
+              { id: 'advancedSettings.delete.modal.description' },
+              { br: <br /> },
+            )}
           </p>
           <InformationList items={modalInformations} className="mb-4" />
           <div className="mb-4">

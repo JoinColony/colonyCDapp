@@ -529,6 +529,7 @@
   "advancedSettings.delete.title": "Account deletion",
   "advancedSettings.delete.description": "This permanently deletes your account",
   "advancedSettings.delete.modal.title": "We're sorry to see you go",
+  "advancedSettings.delete.modal.description": "Deleting your account means you could potentially lose funds and access to the following areas and account information on Colony. {br} {br} While you can delete your Colony account, you are not able to delete  content on chain. {br} {br} Deleting your Colony account is irreversible and you will need to recreate another Colony account.",
   "advancedSettings.delete.modal.info1": "You could potentially lose funds",
   "advancedSettings.delete.modal.info2": "You will lose your account settings",
   "advancedSettings.delete.modal.info3": "You will lose all of your Colony DAO subscriptions",
