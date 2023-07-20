@@ -2,12 +2,13 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 
-import { AccordionHeaderProps } from '../types';
 import Icon from '~shared/Icon';
+import { AccordionHeaderProps } from '../../types';
 
-const displayName = 'Extensions.Accordion.partials.AccordionHeader';
+const displayName =
+  'Extensions.Accordion.partials.AccordionNested.AccordionNestedHeader';
 
-const AccordionHeader: FC<AccordionHeaderProps> = ({
+const AccordionNestedHeader: FC<AccordionHeaderProps> = ({
   title,
   isOpen,
   onClick,
@@ -23,7 +24,7 @@ const AccordionHeader: FC<AccordionHeaderProps> = ({
       onClick={onClick}
       onKeyUp={onKeyUp}
       type="button"
-      className="flex justify-between items-center py-2 w-full group border-b border-gray-200 text-1"
+      className="flex justify-between items-center w-full group text-3"
       aria-expanded={isOpen}
     >
       {titleText}
@@ -41,6 +42,6 @@ const AccordionHeader: FC<AccordionHeaderProps> = ({
   );
 };
 
-AccordionHeader.displayName = displayName;
+AccordionNestedHeader.displayName = displayName;
 
-export default AccordionHeader;
+export default AccordionNestedHeader;

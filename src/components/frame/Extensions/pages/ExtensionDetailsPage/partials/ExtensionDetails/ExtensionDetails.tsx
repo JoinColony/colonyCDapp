@@ -38,10 +38,11 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
         <div className="mt-6">
           <Button
             mode="primaryOutlineFull"
+            size="small"
             isFullSize
             onClick={() => setIsDeprecateModalOpen(true)}
           >
-            {formatMessage({ id: 'extensionDetailsPage.deprecate' })}
+            {formatMessage({ id: 'button.deprecateExtension' })}
           </Button>
           <Modal
             isOpen={isDeprecateModalOpen}
@@ -53,7 +54,7 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
             })}
             onConfirm={handleDeprecate}
             confirmMessage={formatMessage({
-              id: 'extensionDetailsPage.deprecate',
+              id: 'button.deprecateExtension',
             })}
             closeMessage={formatMessage({ id: 'button.cancel' })}
             buttonMode="primarySolid"
@@ -69,10 +70,11 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
           <div>
             <Button
               mode="primaryOutlineFull"
+              size="small"
               isFullSize
               onClick={() => setIsReEnableModalOpen(true)}
             >
-              {formatMessage({ id: 'extensionReEnable.title' })}
+              {formatMessage({ id: 'button.reEnable' })}
             </Button>
             <Modal
               title={formatMessage({ id: 'extensionReEnable.modal.title' })}
@@ -91,10 +93,11 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
           <div>
             <Button
               mode="primaryOutlineFull"
+              size="small"
               isFullSize
               onClick={() => setIsUninstallModalOpen(true)}
             >
-              {formatMessage({ id: 'extensionDetailsPage.uninstall' })}
+              {formatMessage({ id: 'button.uninstallExtension' })}
             </Button>
             <Modal
               isOpen={isUninstallModalOpen}
@@ -109,10 +112,10 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
                 id: 'extensionDetailsPage.uninstallDescription',
               })}
               confirmMessage={formatMessage({
-                id: 'extensionDetailsPage.confirmUninstall',
+                id: 'button.confirmUninstall',
               })}
               closeMessage={formatMessage({
-                id: 'extensionDetailsPage.cancelUninstall',
+                id: 'button.cancelUninstall',
               })}
               disabled={!isCheckboxChecked}
             >

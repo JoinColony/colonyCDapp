@@ -49,3 +49,10 @@ export const WithDisableInput: Story = {
     isDisabled: true,
   },
 };
+
+export const WithDecoratedSuccessfulMessage: Story = {
+  args: {
+    placeholder: 'This is the placeholder content',
+    successfulMessage: 'Username avaliable',
+  },
+};

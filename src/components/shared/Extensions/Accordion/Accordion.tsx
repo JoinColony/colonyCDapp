@@ -24,7 +24,7 @@ const Accordion: FC<AccordionProps> = ({
   };
 
   return (
-    <div className="bg-base-white">
+    <div>
       {items?.map((item, index) => (
         <AccordionItem
           {...item}

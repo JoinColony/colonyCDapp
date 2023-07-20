@@ -21,7 +21,11 @@ const SpecialInput: FC<SpecialInputProps> = ({
   const { formatMessage } = useIntl();
 
   return (
-    <div className={clsx(styles.wrapper, 'group')}>
+    <div
+      className={clsx(styles.wrapper, 'group', {
+        'pointer-events-none opacity-50': disabled,
+      })}
+    >
       <input
         defaultValue={defaultValue}
         name={name}
@@ -31,9 +35,6 @@ const SpecialInput: FC<SpecialInputProps> = ({
           styles.input
         } group-hover:border-blue-200 group-focus-within:border-blue-200 ${
           isError ? 'border-negative-400' : 'border-gray-300'
-        } ${
-          disabled &&
-          'pointer-events-none opacity-50 group-hover:border-gray-300'
         }`}
         id={id}
         placeholder={placeholder}
@@ -46,9 +47,6 @@ const SpecialInput: FC<SpecialInputProps> = ({
           styles.field
         } group-focus-within:border-blue-200 group-hover:border-blue-200 ${
           isError ? 'border-negative-400' : 'border-gray-300'
-        } ${
-          disabled &&
-          'pointer-events-none opacity-50 group-hover:border-gray-300'
         }`}
       >
         {type === 'hours' ? formatMessage({ id: 'hours' }) : '%'}
