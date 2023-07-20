@@ -51,11 +51,12 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
           </div>
         </div>
 
-        {isMobile ? (
-          <div className="w-full bg-gray-200 h-px" />
-        ) : (
-          <div className="bg-gray-200 h-full w-px" />
-        )}
+        <div
+          className={clsx('bg-gray-200', {
+            'w-full h-px': isMobile,
+            'h-full w-px': !isMobile,
+          })}
+        />
 
         <div className={styles.wrapper}>
           {formatMessage({ id: 'last.version' })}

@@ -3,7 +3,7 @@
 }
 
 .value {
-  @apply text-gray-900 heading-5;
+  @apply heading-5;
 }
 
 .wrapper {
