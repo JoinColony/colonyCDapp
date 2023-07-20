@@ -6,7 +6,9 @@ import FormError from '~v5/shared/FormError';
 import { InputProps } from './types';
 import { useInput } from '../hooks';
 import { DEFAULT_MAX_CHAR_NUMBER } from './consts';
+import Icon from '~shared/Icon';
 import Tooltip from '~shared/Extensions/Tooltip';
+import styles from './Input.module.css';
 
 const displayName = 'v5.common.Fields.Input';
 
@@ -21,6 +23,9 @@ const Input: FC<InputProps> = ({
   defaultValue,
   name,
   register,
+  className,
+  decoratedError,
+  successfulMessage,
   isDisabled,
 }) => {
   const { formatMessage } = useIntl();
@@ -38,7 +43,7 @@ const Input: FC<InputProps> = ({
         {...register?.(name)}
         name={name}
         placeholder={placeholder}
-        className={clsx('input-round input', {
+        className={clsx(className, 'input-round input', {
           'border-gray-300': !isTyping,
           'border-blue-200 shadow-lightBlue': isTyping,
           'border-negative-400': isErrorStatus,
@@ -82,10 +87,45 @@ const Input: FC<InputProps> = ({
           </div>
         )}
       </div>
+      {successfulMessage && (
+        <div
+          className={clsx(
+            styles.inputMessage,
+            'border-success-200 text-success-400',
+          )}
+        >
+          <Icon name="check-circle" appearance={{ size: 'small' }} />
+          <span className="ml-1">
+            {formatMessage({
+              id: successfulMessage,
+            })}
+          </span>
+        </div>
+      )}
       {isErrorStatus && (
-        <FormError isFullSize alignment="left">
-          {formatMessage({ id: customErrorMessage || 'too.many.characters' })}
-        </FormError>
+        <>
+          {decoratedError ? (
+            <div
+              className={clsx(
+                styles.inputMessage,
+                'border-negative-200 text-negative-400',
+              )}
+            >
+              <Icon name="x-circle" appearance={{ size: 'small' }} />
+              <span className="ml-1">
+                {formatMessage({
+                  id: customErrorMessage || 'too.many.characters',
+                })}
+              </span>
+            </div>
+          ) : (
+            <FormError isFullSize alignment="left">
+              {formatMessage({
+                id: customErrorMessage || 'too.many.characters',
+              })}
+            </FormError>
+          )}
+        </>
       )}
     </div>
   );

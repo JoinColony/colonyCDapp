@@ -27,7 +27,7 @@ export interface HookFormProps<FormData extends FieldValues> {
   children:
     | ((props: UseFormReturn<FormData>) => React.ReactNode)
     | React.ReactNode;
-  onSubmit: CustomSubmitHandler<FormData>;
+  onSubmit?: CustomSubmitHandler<FormData>;
   onError?: CustomSubmitErrorHandler<FormData>;
   validationSchema?: Schema<FormData>;
   defaultValues?: UseFormProps<FormData>['defaultValues'];
@@ -76,7 +76,7 @@ const HookForm = <FormData extends FieldValues>({
     <FormProvider {...formHelpers}>
       <form
         onSubmit={handleSubmit(
-          (data, e) => onSubmit(data, formHelpers, e),
+          (data, e) => onSubmit?.(data, formHelpers, e),
           (errors, e) => onError && onError(errors, formHelpers, e),
         )}
       >
