@@ -9,7 +9,7 @@ import Input from '~v5/common/Fields/Input';
 import Toast from '~shared/Extensions/Toast';
 import { useSettingsInputRow } from './hooks';
 
-const displayName = 'v5.pages.UserAdvancedPage.partials.SettingsInputRow';
+const displayName = 'v5.common.SettingsInputRow';
 
 const SettingsInputRow: FC<SettingsInputRowProps> = ({
   isOpen,

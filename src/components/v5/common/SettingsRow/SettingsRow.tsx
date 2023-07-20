@@ -7,7 +7,7 @@ import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
 import Tooltip from '~shared/Extensions/Tooltip';
 
-const displayName = 'v5.pages.UserAdvancedPage.partials.SettingsRow';
+const displayName = 'v5.common.SettingsRow';
 
 const SettingsRow: FC<SettingsRowProps> = ({
   description,
