@@ -6,7 +6,7 @@ import styles from './FilterButton.module.css';
 import Icon from '~shared/Icon';
 import { FilterButtonProps } from './types';
 
-const displayName = 'v5.shared.Filter.FilterButton';
+const displayName = 'v5.Filter.FilterButton';
 
 const FilterButton: FC<FilterButtonProps> = ({
   isOpen,
