@@ -27,6 +27,9 @@ const Input: FC<InputProps> = ({
   decoratedError,
   successfulMessage,
   isDisabled,
+  isErrorPillVisible,
+  customSuccessMessage,
+  isFormEdited,
 }) => {
   const { formatMessage } = useIntl();
   const { isTyping, isCharLenghtError, currentCharNumber, onChange } = useInput(
@@ -53,6 +56,13 @@ const Input: FC<InputProps> = ({
         onChange={onChange}
         disabled={isDisabled}
       />
+
+      {isFormEdited && isErrorPillVisible && !isTyping && (
+        <span>{customErrorMessage}</span>
+      )}
+      {isFormEdited && !isErrorPillVisible && !isTyping && !isError && (
+        <span>{customSuccessMessage}</span>
+      )}
     </div>
   );
 
@@ -102,7 +112,7 @@ const Input: FC<InputProps> = ({
           </span>
         </div>
       )}
-      {isErrorStatus && (
+      {isErrorStatus && !isErrorPillVisible && (
         <>
           {decoratedError ? (
             <div
@@ -120,9 +130,8 @@ const Input: FC<InputProps> = ({
             </div>
           ) : (
             <FormError isFullSize alignment="left">
-              {formatMessage({
-                id: customErrorMessage || 'too.many.characters',
-              })}
+              {customErrorMessage ||
+                formatMessage({ id: 'too.many.characters' })}
             </FormError>
           )}
         </>

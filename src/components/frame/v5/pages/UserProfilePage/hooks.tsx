@@ -6,17 +6,27 @@ import * as yup from 'yup';
 import { useIntl } from 'react-intl';
 
 import { useAppContext, useCanEditProfile } from '~hooks';
-import { useUpdateUserProfileMutation } from '~gql';
+import { GetUserByNameDocument, useUpdateUserProfileMutation } from '~gql';
 import { UserProfileFormProps } from './types';
 import Toast from '~shared/Extensions/Toast';
 import { MAX_BIO_CHARS, MAX_DISPLAYNAME_CHARS } from './consts';
 import { USERNAME_REGEX } from '~common/CreateUserWizard/validation';
+import { createYupTestFromQuery } from '~utils/yup/tests';
 
 export const useUserProfile = () => {
   const { updateUser } = useAppContext();
   const [editUser] = useUpdateUserProfileMutation();
   const { user } = useCanEditProfile();
   const { formatMessage } = useIntl();
+
+  const isValidUsername = (username: string) => {
+    return username ? new RegExp(USERNAME_REGEX).test(username) : false;
+  };
+
+  const isUsernameTaken = createYupTestFromQuery({
+    query: GetUserByNameDocument,
+    circuitBreaker: isValidUsername,
+  });
 
   const validationSchema = yup.object<UserProfileFormProps>({
     displayName: yup
@@ -26,12 +36,12 @@ export const useUserProfile = () => {
         USERNAME_REGEX,
         formatMessage({ id: 'error.displayName.valid.message' }),
       )
-      .required(formatMessage({ id: 'errors.displayName.message' })),
-    // .test(
-    //   'isUsernameTaken',
-    //   formatMessage({ id: 'error.usernameTaken' }),
-    //   isUsernameTaken,
-    // ),
+      .required(formatMessage({ id: 'errors.displayName.message' }))
+      .test(
+        'isUsernameTaken',
+        formatMessage({ id: 'error.usernameTaken' }),
+        isUsernameTaken,
+      ),
     bio: yup
       .string()
       .max(MAX_BIO_CHARS, formatMessage({ id: 'too.many.characters' })),
@@ -43,8 +53,9 @@ export const useUserProfile = () => {
     register,
     reset,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<UserProfileFormProps>({
+    mode: 'all',
     resolver: yupResolver(validationSchema),
   });
 
@@ -100,5 +111,6 @@ export const useUserProfile = () => {
     handleSubmit,
     onSubmit,
     errors,
+    isFormEdited: isDirty,
   };
 };

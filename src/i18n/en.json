@@ -728,5 +728,7 @@
   "errors.displayName.message": "Please enter a username",
   "errors.website.message": "Website format is incorrect, please try again",
   "error.message": "Something went wrong",
-  "displayName.input.disabled": "You can change your username again in 15 days"
+  "displayName.input.disabled": "You can change your username again in 15 days",
+  "error.usernameTaken": "Username not available",
+  "success.userName": "Username available"
 }

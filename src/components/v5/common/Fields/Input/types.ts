@@ -13,4 +13,7 @@ export type InputProps = {
   decoratedError?: boolean;
   successfulMessage?: string;
   isDisabled?: boolean;
+  isErrorPillVisible?: boolean;
+  customSuccessMessage?: string;
+  isFormEdited?: boolean;
 };

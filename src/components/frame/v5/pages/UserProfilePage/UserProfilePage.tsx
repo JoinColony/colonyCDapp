@@ -18,7 +18,8 @@ const displayName = 'v5.pages.UserProfilePage';
 const UserProfilePage: FC = () => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
-  const { register, handleSubmit, onSubmit, errors } = useUserProfile();
+  const { register, handleSubmit, onSubmit, errors, isFormEdited } =
+    useUserProfile();
 
   // @TODO: when API will be ready add logic to disabling displayName input
 
@@ -43,6 +44,13 @@ const UserProfilePage: FC = () => {
                   register={register}
                   isError={!!errors.displayName?.message}
                   customErrorMessage={errors.displayName?.message}
+                  customSuccessMessage={formatMessage({
+                    id: 'success.userName',
+                  })}
+                  isErrorPillVisible={
+                    errors.displayName?.type === 'isUsernameTaken'
+                  }
+                  isFormEdited={isFormEdited}
                 />
               </div>
             </div>
