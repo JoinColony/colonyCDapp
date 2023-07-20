@@ -64,9 +64,3 @@ export type SafeTransaction = {
   contractFunction: string;
   functionParamTypes?: FunctionParamType[];
 };
-
-export interface SafeBalance {
-  balance: number;
-  tokenAddress: string | null;
-  token: SafeBalanceToken | null;
-}
