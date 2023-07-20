@@ -368,8 +368,6 @@ export const useLazyConsensusPage = (
     }
   };
 
-  // const initSelectFields = useCallback(() => {}, []);
-
   const onChangeGovernance = useCallback(
     (selectedOption: string) => {
       methods.setValue('governance', selectedOption);
