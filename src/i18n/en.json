@@ -537,6 +537,7 @@
   "advancedSettings.delete.modal.info5": "You will lose access to your username",
   "advancedSettings.delete.modal.textarea.label": "Help us improve Colony (Optional)",
   "advancedSettings.delete.modal.checkbox.label": "I understand that deleted accounts aren't recoverable",
+  "extensionsPage.title": "Extensions",
   "extensionsPage.description": "Extend the functionality of your Colony",
   "extensionsPage.availableExtensions": "Available Extensions",
   "status.payments": "Payments",
