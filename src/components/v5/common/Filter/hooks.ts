@@ -43,14 +43,12 @@ export const useFilter = () => {
   const onClearFilters = useCallback(() => {
     setSelectedFilters([]);
     setSelectedOption(undefined);
+    setCheckedItems(new Map());
   }, []);
 
-  const onSelectParentFilter = useCallback(
-    (id: FilterType) => {
-      setSelectedParentFilter((prev: FilterType[]) => [...prev, id]);
-    },
-    [selectedParentFilters],
-  );
+  const onSelectParentFilter = useCallback((id: FilterType) => {
+    setSelectedParentFilter((prev: FilterType[]) => [...prev, id]);
+  }, []);
 
   const onSelectNestedOption = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,12 +57,16 @@ export const useFilter = () => {
     [onSaveSelectedFilters],
   );
 
+  const array: boolean[] = [];
   const isContributorTypeSelected = contributorTypes.some(
     ({ id }) => id === selectedChildOption,
   );
+  array.push(isContributorTypeSelected);
+
   const isStatusTypeSelected = statusTypes.some(
     ({ id }) => id === selectedChildOption,
   );
+  array.push(isStatusTypeSelected);
 
   const isTeamTypeSelected = teamTypes.some(
     ({ id }) => id === selectedChildOption,
@@ -85,6 +87,11 @@ export const useFilter = () => {
     isReputationTypeSelected,
     isPermissionsTypeSelected,
   ].filter(Boolean).length;
+
+  // console.log(array);
+  // console.log({isTeamTypeSelected});
+  // console.log({isContributorTypeSelected});
+  // console.log({checkedItems});
 
   return {
     selectedFilters: [...new Set(selectedFilters)],

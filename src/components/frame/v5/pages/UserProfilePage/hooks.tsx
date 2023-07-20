@@ -112,5 +112,6 @@ export const useUserProfile = () => {
     onSubmit,
     errors,
     isFormEdited: isDirty,
+    user,
   };
 };
