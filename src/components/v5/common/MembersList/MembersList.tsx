@@ -57,7 +57,7 @@ const MembersList: FC<MembersListProps> = ({
           {visibleMembers.map((item, index) => {
             const { user } = item;
             const { name, profile } = user || {};
-            const membersLength = visibleMembers.length;
+            const membersLength = list.length;
 
             const incrementedIndex = index + 1;
             const top = Math.floor(membersLength * 0.2);
