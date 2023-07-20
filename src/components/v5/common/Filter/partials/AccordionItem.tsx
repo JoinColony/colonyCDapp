@@ -33,9 +33,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
         className="flex justify-between items-center text-4 text-gray-400 uppercase w-full group"
         onClick={handleToggle}
         type="button"
-        aria-label={formatMessage({
-          id: isOpened ? 'ariaLabel.closeAccordion' : 'ariaLabel.openAccordion',
-        })}
+        aria-expanded={isOpened}
       >
         {formatMessage({ id: title })}
         <span
@@ -46,7 +44,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
             },
           )}
         >
-          <Icon appearance={{ size: 'extraTiny' }} name="caret-down" />
+          <Icon appearance={{ size: 'extraExtraTiny' }} name="caret-down" />
         </span>
       </button>
 

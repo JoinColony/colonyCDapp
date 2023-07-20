@@ -36,7 +36,7 @@ const AccordionNestedHeader: FC<AccordionHeaderProps> = ({
           },
         )}
       >
-        <Icon appearance={{ size: 'extraTiny' }} name="caret-down" />
+        <Icon appearance={{ size: 'extraExtraTiny' }} name="caret-down" />
       </span>
     </button>
   );
