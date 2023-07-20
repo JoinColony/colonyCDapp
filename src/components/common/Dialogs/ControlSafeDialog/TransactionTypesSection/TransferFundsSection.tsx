@@ -1,25 +1,20 @@
-import React, {
-  useCallback,
-  useEffect,
-  /* useMemo, */
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
-/* import moveDecimal from 'move-decimal-point'; */
+import moveDecimal from 'move-decimal-point';
 
-/* import { DEFAULT_TOKEN_DECIMALS } from '~constants'; */
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { DialogSection } from '~shared/Dialog';
-/* import { getSafe, getSelectedSafeBalance } from '~utils/safes'; */
+import { getSafe, getSelectedSafeBalance } from '~utils/safes';
 /* import { log } from '~utils/debug'; */
-import { Message } from '~types/index';
+import { Message, SelectedSafe as FormSafe, SafeBalance } from '~types';
 import Icon from '~shared/Icon';
 import {
   getTxServiceBaseUrl,
   getChainNameFromSafe,
 } from '~redux/sagas/utils/safeHelpers';
 
-/* import AmountBalances from '../AmountBalances'; */
+import AmountBalances from '../AmountBalances';
 import { TransactionSectionProps } from '../types';
 
 import { ErrorMessage as Error, Loading, RecipientPicker } from './shared';
@@ -73,7 +68,7 @@ export interface TransferFundsProps extends TransactionSectionProps {
 
 const TransferFundsSection = ({
   colony,
-  /* colony: { metadata }, */
+  colony: { metadata },
   disabledInput,
   transactionFormIndex = 0,
   /* handleInputChange,
@@ -85,14 +80,16 @@ const TransferFundsSection = ({
   const [savedTokens, setSavedTokens] = savedTokenState;
 
   const { watch, setValue } = useFormContext();
-  const safe = watch('safe');
-  /* const transactions = watch('transactions');
-   * const safeBalances = watch('safeBalances'); */
+  const safe: FormSafe = watch('safe');
+  const transactions = watch('transactions');
+  const safeBalances: SafeBalance[] = watch('safeBalances');
   const setSafeBalances = (value) => setValue('safeBalances', value);
 
-  /* const safes = metadata?.safes || []; */
+  const safeAddress = safe?.walletAddress;
 
-  const safeAddress = safe?.profile.walletAddress;
+  const safes = metadata?.safes || [];
+
+  const selectedSafe = getSafe(safes, safe);
 
   const getSafeBalance = useCallback(async () => {
     setBalanceError('');
@@ -123,22 +120,20 @@ const TransferFundsSection = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [safe, safeAddress, setSavedTokens]);
 
-  /* const selectedTokenAddress =
-   *   transactions[transactionFormIndex].tokenData?.address; */
+  const selectedTokenAddress =
+    transactions[transactionFormIndex].tokenData?.address;
 
-  /* const selectedBalance = useMemo(
-   *   () => getSelectedSafeBalance(safeBalances, selectedTokenAddress),
-   *   [safeBalances, selectedTokenAddress],
-   * ); */
-
-  /* const selectedSafe = getSafe(safes, safe); */
+  const selectedBalance = useMemo(
+    () => getSelectedSafeBalance(safeBalances, selectedTokenAddress),
+    [safeBalances, selectedTokenAddress],
+  );
 
   useEffect(() => {
     if (safeAddress) {
       const savedTokenData = savedTokens[safeAddress];
       if (savedTokenData) {
         setSafeBalances(savedTokenData);
-        setBalanceError('');
+        /* setBalanceError(''); */
       } else {
         getSafeBalance();
       }
@@ -147,10 +142,10 @@ const TransferFundsSection = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [safeAddress, getSafeBalance, savedTokens]);
 
-  /* const formattedSafeBalance = moveDecimal(
-   *   selectedBalance?.balance || 0,
-   *   -(selectedBalance?.token?.decimals || DEFAULT_TOKEN_DECIMALS),
-   * ); */
+  const formattedSafeBalance = moveDecimal(
+    selectedBalance?.balance || 0,
+    -(selectedBalance?.token?.decimals || DEFAULT_TOKEN_DECIMALS),
+  );
 
   if (isLoadingBalances) {
     return <Loading message={MSG.balancesLoading} />;
@@ -163,16 +158,17 @@ const TransferFundsSection = ({
   return (
     <>
       <DialogSection>
-        {/* <AmountBalances
+        <AmountBalances
           selectedSafe={selectedSafe}
           safeBalances={safeBalances}
           disabledInput={disabledInput}
-          handleChange={handleInputChange}
+          transactionFormIndex={transactionFormIndex}
+          /* handleValidation={handleValidation} */
+          /* handleChange={handleInputChange} */
           maxButtonParams={{
-            fieldName: `transactions.${transactionFormIndex}.amount`,
             maxAmount: `${formattedSafeBalance}`,
-            setFieldValue,
-            customOnClickFn() {
+            options: {},
+            /* customOnClickFn?:  () => {
               handleValidation();
               setTimeout(
                 () =>
@@ -183,11 +179,9 @@ const TransferFundsSection = ({
                   ),
                 0,
               );
-            },
+            }, */
           }}
-          transactionFormIndex={transactionFormIndex}
-          handleValidation={handleValidation}
-        /> */}
+        />
       </DialogSection>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
         <div className={styles.warningContainer}>
