@@ -1,12 +1,12 @@
-import { Address, Token } from '~types';
+import { Address } from '~types';
 
 export type ModuleAddress = Address;
 
 export interface SelectedSafe {
   id: ModuleAddress; // Making explicit that this is the module address
+  walletAddress: Address; // And this is the safe address
   profile: {
     displayName: string;
-    walletAddress: Address; // And this is the safe address
   };
 }
 
@@ -61,5 +61,6 @@ export type SafeTransaction = {
 
 export interface SafeBalance {
   balance: number;
-  token: Token;
+  tokenAddress: string | null;
+  token: SafeBalanceToken;
 }
