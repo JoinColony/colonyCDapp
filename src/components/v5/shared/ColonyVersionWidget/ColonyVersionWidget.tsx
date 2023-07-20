@@ -30,7 +30,7 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
       <div
         className={clsx('flex items-center gap-6 w-full', {
           'flex-col mb-6': isMobile,
-          'flex-row mr-6': !isMobile,
+          'mr-6': !isMobile,
         })}
       >
         <div className={styles.wrapper}>
@@ -57,7 +57,7 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
           <div className="bg-gray-200 h-full w-px" />
         )}
 
-        <div className={`${styles.wrapper} flex flex-col justify-center`}>
+        <div className={styles.wrapper}>
           {formatMessage({ id: 'last.version' })}
           <div className={styles.text}>
             <span className="text-success-400">
