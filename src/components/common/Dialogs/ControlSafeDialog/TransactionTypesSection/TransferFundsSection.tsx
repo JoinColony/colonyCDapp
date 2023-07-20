@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import moveDecimal from 'move-decimal-point';
@@ -7,7 +7,12 @@ import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { DialogSection } from '~shared/Dialog';
 import { getSafe, getSelectedSafeBalance } from '~utils/safes';
 /* import { log } from '~utils/debug'; */
-import { Message, SelectedSafe as FormSafe, SafeBalance } from '~types';
+import {
+  Message,
+  SelectedSafe as FormSafe,
+  SafeBalance,
+  SafeTransaction,
+} from '~types';
 import Icon from '~shared/Icon';
 import {
   getTxServiceBaseUrl,
@@ -59,10 +64,9 @@ const ChainWarning = (chunks: React.ReactNode[]) => (
 );
 
 export interface TransferFundsProps extends TransactionSectionProps {
-  /* can we do better with the types here? */
   savedTokenState: [
-    Record<string, unknown>,
-    React.Dispatch<React.SetStateAction<Record<string, unknown>>>,
+    Record<string, SafeBalance[]>,
+    React.Dispatch<React.SetStateAction<Record<string, SafeBalance[]>>>,
   ];
 }
 
@@ -81,9 +85,10 @@ const TransferFundsSection = ({
 
   const { watch, setValue } = useFormContext();
   const safe: FormSafe = watch('safe');
-  const transactions = watch('transactions');
+  const transactions: SafeTransaction[] = watch('transactions');
   const safeBalances: SafeBalance[] = watch('safeBalances');
-  const setSafeBalances = (value) => setValue('safeBalances', value);
+  const setSafeBalances = (value: SafeBalance[]) =>
+    setValue('safeBalances', value);
 
   const safeAddress = safe?.walletAddress;
 
@@ -102,7 +107,7 @@ const TransferFundsSection = ({
           `${baseUrl}/v1/safes/${safeAddress}/balances/`,
         );
         if (response.status === 200) {
-          const data = await response.json();
+          const data = (await response.json()) as SafeBalance[];
           setSavedTokens((tokens) => ({
             ...tokens,
             [safeAddress as string]: data,
@@ -121,11 +126,11 @@ const TransferFundsSection = ({
   }, [safe, safeAddress, setSavedTokens]);
 
   const selectedTokenAddress =
-    transactions[transactionFormIndex].tokenData?.address;
+    transactions[transactionFormIndex].tokenData?.tokenAddress;
 
-  const selectedBalance = useMemo(
-    () => getSelectedSafeBalance(safeBalances, selectedTokenAddress),
-    [safeBalances, selectedTokenAddress],
+  const selectedBalance = getSelectedSafeBalance(
+    safeBalances,
+    selectedTokenAddress,
   );
 
   useEffect(() => {

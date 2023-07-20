@@ -10,7 +10,7 @@ export * from './extensions';
 export type TokenInfo = {
   name: string;
   symbol: string;
-  decimals?: number;
+  decimals: number;
 };
 
 export type NetworkInfo = {
