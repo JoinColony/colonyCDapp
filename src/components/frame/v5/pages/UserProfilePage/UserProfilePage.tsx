@@ -51,6 +51,7 @@ const UserProfilePage: FC = () => {
       await updateAvatar({
         variables: {
           input: {
+            // @ts-ignore
             id: user?.walletAddress,
             avatar: updatedAvatar,
             thumbnail,
