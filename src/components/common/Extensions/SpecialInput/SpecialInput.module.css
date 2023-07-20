@@ -3,7 +3,7 @@
 }
 
 .field {
-  @apply bg-base-white px-3.5 py-3 transition-all duration-normal min-w-[2.375rem] rounded-r border rounded-l-none text-center;
+  @apply bg-base-white px-3.5 py-3 transition-all duration-normal min-w-[2.375rem] rounded-r border rounded-l-none text-center text-gray-600;
 }
 
 .input {
