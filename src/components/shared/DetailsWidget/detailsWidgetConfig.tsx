@@ -93,7 +93,7 @@ const MSG = defineMessages({
   },
   safe: {
     id: `${displayName}.safe`,
-    defaultMessage: 'Safe',
+    defaultMessage: '{removedSafeCount, plural, one {Safe} other {Safes}}',
   },
   chain: {
     id: `${displayName}.chain`,
@@ -126,8 +126,9 @@ const getShortenedHash = (transactionHash: string) => {
 
 interface DetailItemConfig {
   label: MessageDescriptor;
-  labelValues?: UniversalMessageValues;
   item: ReactNode;
+  isListItem?: boolean;
+  labelValues?: UniversalMessageValues;
 }
 
 const getDetailItemsMap = (
@@ -291,8 +292,18 @@ const getDetailItemsMap = (
     },
     [ActionPageDetails.Safe]: {
       label: MSG.safe,
-      labelValues: undefined,
-      item: !!removedSafes && <SafeDetail removedSafes={removedSafes} />,
+      labelValues: {
+        removedSafeCount: removedSafes?.length,
+      },
+      item:
+        !!removedSafes &&
+        removedSafes.map((safe) => (
+          <SafeDetail
+            key={`${safe.chainId}-${safe.address}`}
+            removedSafe={safe}
+          />
+        )),
+      isListItem: true,
     },
   };
 };
