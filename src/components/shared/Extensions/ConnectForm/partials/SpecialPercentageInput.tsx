@@ -17,7 +17,7 @@ const SpecialPercentageInput: FC<SpecialInputProps> = ({
   <ConnectForm>
     {({ register }) => (
       <div className="text-right">
-        <div className="flex justify-end flex-col w-full md:max-w-[8.75rem]">
+        <div className="flex items-end justify-end flex-col w-full md:max-w-[8.75rem]">
           <SpecialInput
             defaultValue={defaultValue as number}
             register={register}

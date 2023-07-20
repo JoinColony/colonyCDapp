@@ -9,5 +9,11 @@ export type InputProps = {
   defaultValue?: string;
   name: string;
   register: UseFormRegister<FieldValues>;
+  className?: string;
+  decoratedError?: boolean;
+  successfulMessage?: string;
   isDisabled?: boolean;
+  isErrorPillVisible?: boolean;
+  customSuccessMessage?: string;
+  isFormEdited?: boolean;
 };
