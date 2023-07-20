@@ -5,7 +5,6 @@ import TwoColumns from '~v5/frame/TwoColumns';
 import { useMembersPage } from './hooks';
 import MembersList from '~v5/common/MembersList';
 import TeamReputationSummary from '~v5/common/TeamReputationSummary';
-import { teamsWithSummedUpData } from '~v5/common/TeamReputationSummary/consts';
 import { useSearchContext } from '~context/SearchContext';
 import Header from '~frame/v5/Header';
 import Spinner from '~v5/shared/Spinner';
@@ -33,6 +32,7 @@ const MembersPage: FC = () => {
               list={contributors}
               isLoading={loading}
               viewMoreUrl={contributorsURL}
+              isContributorsList
               isHomePage
             />
             <div className="mt-12">
@@ -52,7 +52,7 @@ const MembersPage: FC = () => {
           </div>
           {/* @TODO: Add real data */}
           <div className="sm:max-w-[14.375rem] w-full">
-            <TeamReputationSummary teams={teamsWithSummedUpData} />
+            <TeamReputationSummary />
           </div>
         </div>
       </TwoColumns>

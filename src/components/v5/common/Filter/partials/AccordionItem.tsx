@@ -19,38 +19,37 @@ const AccordionItem: FC<AccordionItemProps> = ({
   checkedItems,
   nestedFilters,
 }) => {
-  const [clicked, setClicked] = useState(false);
+  const [isOpened, setOpen] = useState(false);
   const { formatMessage } = useIntl();
 
   const handleToggle = () => {
-    setClicked((prev) => !prev);
+    setOpen((prev) => !prev);
     onSelectParentFilter?.(option);
   };
 
   return (
     <li>
       <button
-        className="flex justify-between items-center text-4 text-gray-400 uppercase w-full"
+        className="flex justify-between items-center text-4 text-gray-400 uppercase w-full group"
         onClick={handleToggle}
         type="button"
-        aria-label={formatMessage({ id: 'select.filter.menu.item' })}
+        aria-expanded={isOpened}
       >
         {formatMessage({ id: title })}
         <span
-          className={clsx('text-gray-700', {
-            'rotate-180': clicked,
-          })}
+          className={clsx(
+            'flex shrink-0 text-gray-400 transition-all duration-normal group-hover:text-blue-400',
+            {
+              'rotate-180': isOpened,
+            },
+          )}
         >
-          <Icon
-            appearance={{ size: 'extraTiny' }}
-            name="caret-down"
-            title={{ id: 'file-text' }}
-          />
+          <Icon appearance={{ size: 'extraExtraTiny' }} name="caret-down" />
         </span>
       </button>
 
       <AnimatePresence>
-        {clicked && (
+        {isOpened && (
           <motion.div
             key="accordion-content"
             initial="hidden"

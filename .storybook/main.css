@@ -93,6 +93,18 @@
   .navigation-link {
     @apply text-gray-700 w-full flex items-center transition-all duration-normal py-2 heading-5 hover:text-blue-400 sm:font-normal sm:text-md sm:text-gray-900;
   }
+
+  .subnav-button {
+    @apply flex w-full items-center text-md hover:bg-gray-50 hover:font-medium rounded py-2 px-[1.1875rem];
+  }
+
+  .input-round {
+    @apply bg-base-white rounded border py-3 px-3.5;
+  }
+
+  .input {
+    @apply w-full text-gray-900 text-md outline-0 placeholder:text-gray-500 outline-none;
+  }
 }
 
 .rts___tabs {

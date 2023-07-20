@@ -1,48 +1,50 @@
 import React, { FC } from 'react';
 
 import { AccordionItemProps } from '../types';
-import AccordionContentItem from './AccordionContentItem';
-import SpecialPercentageInput from './SpecialPercentageInput';
-import SpecialHourInput from './SpecialHourInput';
+import AccordionNestedItem from './AccordionNested/AccordionNestedItem';
+import SpecialPercentageInput from '~shared/Extensions/ConnectForm/partials/SpecialPercentageInput';
+import SpecialHourInput from '~shared/Extensions/ConnectForm/partials/SpecialHourInput';
 
 const displayName = 'Extensions.Accordion.partials.AccordionContent';
 
 const AccordionContent: FC<AccordionItemProps> = ({ content, errors }) => (
-  <div className="relative">
-    {content?.map((item) => (
-      <div key={item.id}>
-        <div className="flex justify-between mt-4 items-center">
-          {item.textItem && item.textItem}
-          {item.inputData?.inputType && (
-            <div className="ml-6">
-              {item.inputData.inputType === 'percent' ? (
+  <div className="mt-6">
+    {content?.map(({ id, textItem, inputData, accordionItem }) => (
+      <div
+        key={id}
+        className="border-b border-gray-200 mt-6 pb-6 last:border-none last:pb-0"
+      >
+        <div className="flex justify-between">
+          {textItem}
+          {inputData?.inputType && (
+            <div className="ml-6 shrink-0">
+              {inputData.inputType === 'percent' ? (
                 <SpecialPercentageInput
-                  name={item.inputData.name}
-                  minValue={item.inputData.minValue}
-                  maxValue={item.inputData.maxValue}
-                  register={item.inputData.register}
+                  name={inputData.name}
+                  minValue={inputData.minValue}
+                  maxValue={inputData.maxValue}
+                  register={inputData.register}
                   errors={errors}
                 />
               ) : (
                 <SpecialHourInput
-                  name={item.inputData.name}
-                  minValue={item.inputData.minValue}
-                  maxValue={item.inputData.maxValue}
-                  register={item.inputData.register}
+                  name={inputData.name}
+                  minValue={inputData.minValue}
+                  maxValue={inputData.maxValue}
+                  register={inputData.register}
                   errors={errors}
                 />
               )}
             </div>
           )}
         </div>
-
-        {item?.accordionItem &&
-          item?.accordionItem.map((accordionItem) => (
-            <AccordionContentItem
-              key={accordionItem.id}
-              accordionItem={accordionItem}
-            />
-          ))}
+        {accordionItem && (
+          <div className="mt-6">
+            {accordionItem.map((item) => (
+              <AccordionNestedItem key={item.id} accordionItem={item} />
+            ))}
+          </div>
+        )}
       </div>
     ))}
   </div>

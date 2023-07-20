@@ -27,6 +27,7 @@ const UserMenu: FC<UserMenuProps> = ({
   userReputation,
   totalReputation,
   nativeToken,
+  hideColonies,
 }) => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
@@ -63,6 +64,7 @@ const UserMenu: FC<UserMenuProps> = ({
             nativeToken={nativeToken}
             avatar={profile?.thumbnail || profile?.avatar || ''}
             user={user}
+            hideColonies={hideColonies}
           />
         )}
         {!isWalletConnected && (

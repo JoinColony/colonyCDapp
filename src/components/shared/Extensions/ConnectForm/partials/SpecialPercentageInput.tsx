@@ -3,9 +3,9 @@ import React, { FC } from 'react';
 import SpecialInput from '~common/Extensions/SpecialInput';
 import FormError from '~v5/shared/FormError';
 import { SpecialInputProps } from '../types';
-import ConnectForm from './ConnectForm';
+import ConnectForm from '../ConnectForm';
 
-const displayName = 'Extensions.SpecialPercentageInput';
+const displayName = 'Extensions.ConnectForm.partials.SpecialPercentageInput';
 
 const SpecialPercentageInput: FC<SpecialInputProps> = ({
   defaultValue,
@@ -17,7 +17,7 @@ const SpecialPercentageInput: FC<SpecialInputProps> = ({
   <ConnectForm>
     {({ register }) => (
       <div className="text-right">
-        <div className="flex justify-end flex-col w-full md:max-w-[8.75rem]">
+        <div className="flex items-end justify-end flex-col w-full md:max-w-[8.75rem]">
           <SpecialInput
             defaultValue={defaultValue as number}
             register={register}

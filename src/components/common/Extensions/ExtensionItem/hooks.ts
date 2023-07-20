@@ -17,7 +17,7 @@ export const useExtensionItem = (extensionId: string) => {
 
   const extensionUrl = `/colony/${colony?.name}/extensions/${extensionId}`;
 
-  const handeNavigateToExtensionDetails = useCallback(() => {
+  const handleNavigateToExtensionDetails = useCallback(() => {
     navigate(extensionUrl);
   }, [navigate, extensionUrl]);
 
@@ -26,6 +26,6 @@ export const useExtensionItem = (extensionId: string) => {
     isExtensionInstalled,
     status,
     badgeMessage,
-    handeNavigateToExtensionDetails,
+    handleNavigateToExtensionDetails,
   };
 };

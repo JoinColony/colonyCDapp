@@ -11,11 +11,12 @@ import { getLastWallet } from '~utils/autoLogin';
 import { groupedTransactionsAndMessages } from '~redux/selectors';
 import { TransactionOrMessageGroups } from '~frame/GasStation/transactionGroup';
 import UserReputation from './partials/UserReputation';
+import { UserNavigationProps } from './types';
 
 export const displayName = 'common.Extensions.UserNavigation';
 
 // @TODO: change name to Wallet
-const UserNavigation: FC = () => {
+const UserNavigation: FC<UserNavigationProps> = ({ hideColonies }) => {
   const { colony } = useColonyContext();
   const { wallet, user, connectWallet } = useAppContext();
   const { formatMessage } = useIntl();
@@ -93,6 +94,7 @@ const UserNavigation: FC = () => {
         <>
           {nativeToken && <Token nativeToken={nativeToken} />}
           <UserReputation
+            hideColonies={hideColonies}
             transactionAndMessageGroups={
               transactionAndMessageGroups as unknown as TransactionOrMessageGroups
             }
@@ -131,6 +133,7 @@ const UserNavigation: FC = () => {
               user={user}
               walletAddress={user?.walletAddress}
               nativeToken={nativeToken}
+              hideColonies={hideColonies}
             />
           </div>
         )}

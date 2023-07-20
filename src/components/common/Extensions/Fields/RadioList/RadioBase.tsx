@@ -30,7 +30,7 @@ const RadioBase: FC<RadioBaseProps> = ({
       : description && formatMessage(description);
 
   return (
-    <div className="relative w-full">
+    <div className={styles.wrapper}>
       <input
         type="radio"
         {...register(name)}
@@ -47,7 +47,7 @@ const RadioBase: FC<RadioBaseProps> = ({
         htmlFor={label}
         className={clsx(
           styles.radioButtonLabel,
-          `border-gray-300 peer-checked/radio:border-blue-400 peer-checked/radio:before:border-blue-400 peer-checked/radio:after:opacity-100 peer-focus/radio:border-blue-200 peer-focus/radio:before:bg-gray-25 before:top-[0.8125rem] after:top-[0.8125rem]`,
+          `border-gray-300 peer-checked/radio:border-blue-400 peer-checked/radio:before:border-blue-400 peer-checked/radio:after:opacity-100 peer-focus/radio:border-blue-200 peer-focus/radio:before:bg-gray-25 before:top-[0.875rem] after:top-[0.875rem]`,
           {
             'before:top-4 after:top-4': !!badge,
             'border-negative-400': isError,

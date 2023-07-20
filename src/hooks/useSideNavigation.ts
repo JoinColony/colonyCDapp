@@ -85,6 +85,28 @@ const useSideNavigation = (pageName: string) => {
         },
       ];
     }
+    case 'profile': {
+      return [
+        {
+          id: 0,
+          linkTo: '/edit-profile',
+          label: 'Profile',
+          value: 'profile',
+        },
+        {
+          id: 1,
+          linkTo: '/profile-preferences',
+          label: 'Preferences',
+          value: 'preferences',
+        },
+        {
+          id: 2,
+          linkTo: '/profile-advanced',
+          label: 'Advanced',
+          value: 'advanced',
+        },
+      ];
+    }
     default: {
       return [];
     }

@@ -16,6 +16,7 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
   walletAddress,
   userStatus,
   avatar,
+  isContributorsList,
 }) => {
   const { handleClipboardCopy, isCopied } = useCopyToClipboard(
     walletAddress || '',
@@ -36,15 +37,17 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
         <div className="flex relative justify-center">
           <div
             className={clsx('border-2 rounded-full [&>figure]:flex', {
-              'border-success-400': userStatus === 'new',
-              'border-warning-400': userStatus === 'active',
-              'border-blue-400': userStatus === 'dedicated',
-              'border-purple-400': userStatus === 'top',
+              'border-success-400': userStatus === 'new' && isContributorsList,
+              'border-warning-400':
+                userStatus === 'active' && isContributorsList,
+              'border-blue-400':
+                userStatus === 'dedicated' && isContributorsList,
+              'border-purple-400': userStatus === 'top' && isContributorsList,
             })}
           >
             <Avatar size="m" title={userName} avatar={avatar} />
           </div>
-          {!!userStatus && (
+          {!!userStatus && userStatus !== 'general' && isContributorsList && (
             <span className="absolute bottom-[-0.9375rem]">
               <UserStatus mode={mode} text={{ id: userStatus }} />
             </span>

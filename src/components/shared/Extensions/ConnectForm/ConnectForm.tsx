@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form';
 
-const displayName = 'Extensions.Accordion.partials.ConnectForm';
+const displayName = 'Extensions.ConnectForm';
 
 const ConnectForm = ({ children }) => {
   const methods = useFormContext();

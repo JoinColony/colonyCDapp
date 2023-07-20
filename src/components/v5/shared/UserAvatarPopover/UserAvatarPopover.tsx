@@ -22,6 +22,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
   userStatus,
   avatarSize,
   teams,
+  isContributorsList,
 }) => {
   const isMobile = useMobile();
   const [isOpen, setIsOpen] = useState(false);
@@ -59,6 +60,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
         userName={userName}
         user={user}
         userStatus={userStatus}
+        isContributorsList={isContributorsList}
       />
     </button>
   );
@@ -75,6 +77,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
       avatar={thumbnail || avatar || ''}
       userStatus={userStatus}
       teams={teams}
+      isContributorsList={isContributorsList}
     />
   );
 
@@ -87,7 +90,9 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
             isFullOnMobile={false}
             onClose={onCloseModal}
             isOpen={isOpen}
-            isTopSectionWithBackground={userStatus === 'top'}
+            isTopSectionWithBackground={
+              userStatus === 'top' && isContributorsList
+            }
           >
             {content}
           </Modal>
@@ -102,7 +107,9 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
               classNames="max-w-[20rem] shadow-default"
               withTooltipStyles={false}
               cardProps={{ rounded: 's' }}
-              isTopSectionWithBackground={userStatus === 'top'}
+              isTopSectionWithBackground={
+                userStatus === 'top' && isContributorsList
+              }
             >
               {content}
             </PopoverBase>

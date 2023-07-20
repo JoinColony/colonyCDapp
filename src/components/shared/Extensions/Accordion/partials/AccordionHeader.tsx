@@ -2,33 +2,42 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 
-import { AccordionItemProps } from '../types';
+import { AccordionHeaderProps } from '../types';
 import Icon from '~shared/Icon';
 
 const displayName = 'Extensions.Accordion.partials.AccordionHeader';
 
-const AccordionHeader: FC<AccordionItemProps> = ({ title = '', isOpen }) => {
+const AccordionHeader: FC<AccordionHeaderProps> = ({
+  title,
+  isOpen,
+  onClick,
+  onKeyUp,
+}) => {
   const { formatMessage } = useIntl();
-  const text = typeof title === 'string' ? formatMessage({ id: title }) : title;
+
+  const titleText =
+    typeof title === 'string' ? title : title && formatMessage(title);
 
   return (
-    <>
-      <div className="flex justify-between items-center pb-2 pt-4 w-full text-gray-700">
-        {text}
-        <span
-          className={clsx({
+    <button
+      onClick={onClick}
+      onKeyUp={onKeyUp}
+      type="button"
+      className="flex justify-between items-center py-2 w-full group border-b border-gray-200 text-1"
+      aria-expanded={isOpen}
+    >
+      {titleText}
+      <span
+        className={clsx(
+          'flex shrink-0 text-gray-400 transition-all duration-normal group-hover:text-blue-400',
+          {
             'rotate-180': isOpen,
-          })}
-        >
-          <Icon
-            appearance={{ size: 'extraTiny' }}
-            name="caret-down"
-            title={{ id: 'file-text' }}
-          />
-        </span>
-      </div>
-      <div className="w-full bg-gray-200 h-px" />
-    </>
+          },
+        )}
+      >
+        <Icon appearance={{ size: 'extraExtraTiny' }} name="caret-down" />
+      </span>
+    </button>
   );
 };
 

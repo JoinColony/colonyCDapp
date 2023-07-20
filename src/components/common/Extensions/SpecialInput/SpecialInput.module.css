@@ -1,5 +1,9 @@
+.wrapper {
+  @apply flex justify-end font-normal text-gray-900 text-md transition-all duration-normal border-[0.1875rem] border-transparent rounded hover:border-blue-100;
+}
+
 .field {
-  @apply bg-base-white px-3.5 py-3 transition-all duration-normal min-w-[2.375rem] rounded-r border rounded-l-none text-center;
+  @apply bg-base-white px-3.5 py-3 transition-all duration-normal min-w-[2.375rem] text-gray-600 rounded-r border rounded-l-none text-center;
 }
 
 .input {
