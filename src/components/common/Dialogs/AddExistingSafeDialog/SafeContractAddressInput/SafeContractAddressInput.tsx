@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
@@ -66,15 +66,15 @@ const SafeContractAddressInput = ({
     }
   }, [isLoadingSafe, trigger, contractAddressDirtied]);
 
-  const getStatusText = (): StatusText | Record<string, never> => {
+  const statusText = useMemo(() => {
+    if (isLoadingSafe) {
+      return { status: MSG.safeLoading };
+    }
+
     const isValidAddress =
       !contractAddressError &&
       contractAddressDirtied &&
       isAddress(contractAddress);
-
-    if (isLoadingSafe) {
-      return { status: MSG.safeLoading };
-    }
 
     if (!isValidAddress || isValidating) {
       return {};
@@ -86,7 +86,14 @@ const SafeContractAddressInput = ({
         selectedChain: selectedChain.label.toString(),
       },
     };
-  };
+  }, [
+    isLoadingSafe,
+    contractAddressError,
+    contractAddress,
+    contractAddressDirtied,
+    isValidating,
+    selectedChain,
+  ]);
 
   return (
     <div className={styles.contractAddressContainer}>
@@ -118,7 +125,7 @@ const SafeContractAddressInput = ({
             ? (contractAddressError?.message as Message | undefined)
             : undefined
         }
-        {...getStatusText()}
+        {...statusText}
       />
       <Avatar
         seed={contractAddress}
