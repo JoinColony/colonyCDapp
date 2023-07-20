@@ -167,7 +167,7 @@ export const useLazyConsensusPage = (
     resolver: yupResolver(validationSchema),
   });
 
-  const isCustemExtentionErrorExist = [
+  const isCustomExtensionErrorExist = [
     'totalStakeFraction',
     'voterRewardFraction',
     'userMinStakeFraction',
@@ -179,8 +179,8 @@ export const useLazyConsensusPage = (
   ].some((item) => Object.keys(methods.formState.errors).includes(item));
 
   const shouldBeRadioButtonChangeToCustom = useMemo(
-    () => methods.formState.isDirty && isCustemExtentionErrorExist,
-    [methods.formState, isCustemExtentionErrorExist],
+    () => methods.formState.isDirty && isCustomExtensionErrorExist,
+    [methods.formState, isCustomExtensionErrorExist],
   );
 
   const extensionContent = useCallback(
@@ -188,33 +188,39 @@ export const useLazyConsensusPage = (
       {
         id: 'step-0',
         title: formatMessage({ id: 'custom.extension.parameters' }),
-        content: data?.map((item) => {
-          return {
-            id: item?.paramName,
-            textItem: (
-              <ContentTypeText
-                title={item?.title?.defaultMessage || item?.title}
-                subTitle={
-                  item?.description?.defaultMessage || item?.description
-                }
-              />
-            ),
-            inputData: {
-              inputType:
-                item.complementaryLabel === 'percent' ? 'percent' : 'hours',
-              // @ts-ignore
-              maxValue: item?.validation?.tests[2].OPTIONS.params.max,
-              // @ts-ignore
-              minValue: item?.validation?.tests[0].OPTIONS.params.more,
-              register: methods.register,
-              unregister: methods.unregister,
-              watch: methods.watch,
-              name: item.paramName,
-            },
-            maxValue:
-              item.maxValue || item?.validation?.tests[2].OPTIONS.params.max,
-          };
-        }),
+        content: data?.map(
+          ({
+            paramName,
+            title,
+            description,
+            complementaryLabel,
+            maxValue,
+            validation,
+          }) => {
+            return {
+              id: paramName,
+              textItem: (
+                <ContentTypeText
+                  title={title?.defaultMessage || title}
+                  subTitle={description?.defaultMessage || description}
+                />
+              ),
+              inputData: {
+                inputType:
+                  complementaryLabel === 'percent' ? 'percent' : 'hours',
+                // @ts-ignore
+                maxValue: validation?.tests[2].OPTIONS.params.max,
+                // @ts-ignore
+                minValue: validation?.tests[0].OPTIONS.params.more,
+                register: methods.register,
+                unregister: methods.unregister,
+                watch: methods.watch,
+                name: paramName,
+              },
+              maxValue: maxValue || validation?.tests[2].OPTIONS.params.max,
+            };
+          },
+        ),
       },
     ],
     [methods.register, methods.unregister, methods.watch, formatMessage],
@@ -224,9 +230,110 @@ export const useLazyConsensusPage = (
     extensionData?.initializationParams?.forEach((param) => {
       return methods.setValue(
         param.paramName,
-        data.find((item) => item.paramName === param.paramName)?.defaultValue,
+        data.find(({ paramName }) => paramName === param.paramName)
+          ?.defaultValue,
       );
     });
+
+  const initialExtensionContent = useMemo(
+    () => [
+      {
+        id: 'step-0',
+        title: { id: 'custom.extension.parameters' },
+        content: [
+          {
+            id: 'totalStakeFraction',
+            textItem: <ContentTypeText title="Required Stake" />,
+            inputData: {
+              inputType: 'percent',
+              register: methods.register,
+              unregister: methods.unregister,
+              watch: methods.watch,
+              name: 'totalStakeFraction',
+            },
+          },
+          {
+            id: 'voterRewardFraction',
+            textItem: <ContentTypeText title="Voter Reward" />,
+            inputData: {
+              inputType: 'percent',
+              register: methods.register,
+              unregister: methods.unregister,
+              watch: methods.watch,
+              name: 'voterRewardFraction',
+            },
+          },
+          {
+            id: 'userMinStakeFraction',
+            textItem: <ContentTypeText title="Minimum Stake" />,
+            inputData: {
+              inputType: 'percent',
+              register: methods.register,
+              unregister: methods.unregister,
+              watch: methods.watch,
+              name: 'userMinStakeFraction',
+            },
+          },
+          {
+            id: 'maxVoteFraction',
+            textItem: <ContentTypeText title="End Vote Threshold" />,
+            inputData: {
+              inputType: 'percent',
+              register: methods.register,
+              unregister: methods.unregister,
+              watch: methods.watch,
+              name: 'maxVoteFraction',
+            },
+          },
+          {
+            id: 'stakePeriod',
+            textItem: <ContentTypeText title="Staking Phase Duration" />,
+            inputData: {
+              inputType: 'percent',
+              register: methods.register,
+              unregister: methods.unregister,
+              watch: methods.watch,
+              name: 'stakePeriod',
+            },
+          },
+          {
+            id: 'submitPeriod',
+            textItem: <ContentTypeText title="Voting Phase Duration" />,
+            inputData: {
+              inputType: 'percent',
+              register: methods.register,
+              unregister: methods.unregister,
+              watch: methods.watch,
+              name: 'submitPeriod',
+            },
+          },
+          {
+            id: 'revealPeriod',
+            textItem: <ContentTypeText title="Reveal Phase Duration" />,
+            inputData: {
+              inputType: 'percent',
+              register: methods.register,
+              unregister: methods.unregister,
+              watch: methods.watch,
+              name: 'revealPeriod',
+            },
+          },
+          {
+            id: 'escalationPeriod',
+            textItem: <ContentTypeText title="Escalation Phase Duration" />,
+            inputData: {
+              inputType: 'percent',
+              register: methods.register,
+              unregister: methods.unregister,
+              watch: methods.watch,
+              name: 'escalationPeriod',
+            },
+          },
+        ],
+      },
+    ],
+    [methods.register, methods.unregister, methods.watch],
+  );
 
   const setSelectedContentAndFormFields = (governanceValue) => {
     let selectedContent;
@@ -350,6 +457,7 @@ export const useLazyConsensusPage = (
     extensionData,
     status,
     badgeMessage,
+    initialExtensionContent,
     extensionContent: extensionContentParameters,
     onSubmit,
     handleSubmit: methods.handleSubmit,

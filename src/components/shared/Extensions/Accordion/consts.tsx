@@ -1,10 +1,8 @@
 import React from 'react';
 
-import ContentTypeAccordionContent from './partials/ContentTypeAccordionContent';
-import ContentTypeAccordionHeader from './partials/ContentTypeAccordionHeader';
 import ContentTypeText from './partials/ContentTypeText';
-import SpecialHourInput from './partials/SpecialHourInput';
-import SpecialPercentageInput from './partials/SpecialPercentageInput';
+import SpecialHourInput from '../ConnectForm/partials/SpecialHourInput';
+import SpecialPercentageInput from '../ConnectForm/partials/SpecialPercentageInput';
 
 /*
  * @TODO: display data from API, update components
@@ -13,41 +11,24 @@ import SpecialPercentageInput from './partials/SpecialPercentageInput';
 export const accordionMocksContent = [
   {
     id: 'step-0',
-    title: 'Show extension parameters',
+    title: { id: 'show.extension.parameters' },
     content: [
       {
         id: 0,
         textItem: (
           <ContentTypeText
             title="Required Stake"
-            subTitle="What percentage of the team’s reputation, 
+            subTitle="What percentage of the team’s reputation,
             in token terms, should need to stake on each side of a motion?"
           />
         ),
         inputItem: <SpecialHourInput maxValue={8766} />,
-        accordionItem: [
-          {
-            id: 'step-0-0',
-            header: (
-              <ContentTypeAccordionHeader>
-                Example scenario
-              </ContentTypeAccordionHeader>
-            ),
-            content: (
-              <ContentTypeAccordionContent>
-                If a team has 100 reputation points between them, and the
-                Required Stake is 5%, then 5 tokens would need to be staked to
-                either support or object to a motion.
-              </ContentTypeAccordionContent>
-            ),
-          },
-        ],
       },
     ],
   },
   {
     id: 'step-1',
-    title: 'Show extension parameters 2',
+    title: { id: 'show.extension.parameters' },
     content: [
       {
         id: 1,
@@ -61,42 +42,18 @@ export const accordionMocksContent = [
         accordionItem: [
           {
             id: 'step-1-0',
-            header: (
-              <ContentTypeAccordionHeader>
-                Example scenario 1
-              </ContentTypeAccordionHeader>
-            ),
-            content: (
-              <ContentTypeAccordionContent>
-                content 1
-              </ContentTypeAccordionContent>
-            ),
+            header: 'Example scenario 1',
+            content: 'content 1',
           },
           {
             id: 'step-1-1',
-            header: (
-              <ContentTypeAccordionHeader>
-                Example scenario 2
-              </ContentTypeAccordionHeader>
-            ),
-            content: (
-              <ContentTypeAccordionContent>
-                content 2
-              </ContentTypeAccordionContent>
-            ),
+            header: 'Example scenario 2',
+            content: 'content 2',
           },
           {
             id: 'step-1-2',
-            header: (
-              <ContentTypeAccordionHeader>
-                Example scenario 3
-              </ContentTypeAccordionHeader>
-            ),
-            content: (
-              <ContentTypeAccordionContent>
-                content 3
-              </ContentTypeAccordionContent>
-            ),
+            header: 'Example scenario 3',
+            content: 'content 3',
           },
         ],
       },
@@ -104,7 +61,7 @@ export const accordionMocksContent = [
   },
   {
     id: 'step-2',
-    title: 'Show extension parameters 3',
+    title: { id: 'show.extension.parameters' },
     content: [
       {
         id: 1,
@@ -115,6 +72,43 @@ export const accordionMocksContent = [
           />
         ),
         inputItem: <SpecialPercentageInput maxValue={100} />,
+      },
+      {
+        id: 2,
+        textItem: (
+          <ContentTypeText
+            title="Minimum Stake"
+            subTitle="Minimum percentage of the total stake that each staker should have to provide"
+          />
+        ),
+        accordionItem: [
+          {
+            id: 'step-2-0',
+            header: 'Example scenario',
+            content: `If a team has 100 reputation points between them, and the Required Stake is 5%, then 5 tokens would need to be staked to either support or object to a motion.`,
+          },
+        ],
+      },
+      {
+        id: 3,
+        textItem: (
+          <ContentTypeText
+            title="End Vote Threshold"
+            subTitle="At what threshold of reputation having voted should the voting period to end?"
+          />
+        ),
+        accordionItem: [
+          {
+            id: 'step-3-0',
+            header: 'Example scenario',
+            content: `If a team has 100 reputation points between them, and the Required Stake is 5%, then 5 tokens would need to be staked to either support or object to a motion.`,
+          },
+          {
+            id: 'step-3-1',
+            header: 'Example scenario 2',
+            content: `If a team has 100 reputation points between them, and the Required Stake is 5%, then 5 tokens would need to be staked to either support or object to a motion.`,
+          },
+        ],
       },
     ],
   },
