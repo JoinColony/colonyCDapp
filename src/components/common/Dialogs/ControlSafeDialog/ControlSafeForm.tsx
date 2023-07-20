@@ -189,7 +189,7 @@ const ControlSafeForm = ({
   };
 
   const handleSafeChange = (newSafe: SelectedSafe) => {
-    const safeAddress = newSafe?.profile?.walletAddress;
+    const safeAddress = newSafe?.walletAddress;
     if (safeAddress !== prevSafeAddress) {
       setPrevSafeAddress(safeAddress);
       /* values.transactions.forEach((tx, i) => {
