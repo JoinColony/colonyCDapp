@@ -5,19 +5,22 @@ import moveDecimal from 'move-decimal-point';
 
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { DialogSection } from '~shared/Dialog';
-import { getSafe, getSelectedSafeBalance } from '~utils/safes';
-/* import { log } from '~utils/debug'; */
+import {
+  getSafe,
+  getSelectedSafeBalance,
+  getTxServiceBaseUrl,
+  getChainNameFromSafe,
+} from '~utils/safes';
 import {
   Message,
   SelectedSafe as FormSafe,
   SafeBalance,
+  SafeBalanceApiData,
   SafeTransaction,
 } from '~types';
 import Icon from '~shared/Icon';
-import {
-  getTxServiceBaseUrl,
-  getChainNameFromSafe,
-} from '~redux/sagas/utils/safeHelpers';
+import { TokenType } from '~gql';
+/* import { log } from '~utils/debug'; */
 
 import AmountBalances from '../AmountBalances';
 import { TransactionSectionProps } from '../types';
@@ -107,12 +110,28 @@ const TransferFundsSection = ({
           `${baseUrl}/v1/safes/${safeAddress}/balances/`,
         );
         if (response.status === 200) {
-          const data = (await response.json()) as SafeBalance[];
+          const data = (await response.json()) as SafeBalanceApiData[];
+          const formattedSafeBalances: SafeBalance[] = data.map(
+            (balanceData) => ({
+              balance: balanceData.balance,
+              token:
+                balanceData.tokenAddress && balanceData.token
+                  ? {
+                      tokenAddress: balanceData.tokenAddress,
+                      name: balanceData.token.name,
+                      symbol: balanceData.token.symbol,
+                      decimals: balanceData.token.decimals,
+                      thumbnail: balanceData.token.logoUri,
+                      type: TokenType.Erc20,
+                    }
+                  : null,
+            }),
+          );
           setSavedTokens((tokens) => ({
             ...tokens,
-            [safeAddress as string]: data,
+            [safeAddress as string]: formattedSafeBalances,
           }));
-          setSafeBalances(data);
+          setSafeBalances(formattedSafeBalances);
         }
       } catch (e) {
         setBalanceError(MSG.balancesError);
@@ -124,14 +143,6 @@ const TransferFundsSection = ({
     // setSafeBalances causes infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [safe, safeAddress, setSavedTokens]);
-
-  const selectedTokenAddress =
-    transactions[transactionFormIndex].tokenData?.tokenAddress;
-
-  const selectedBalance = getSelectedSafeBalance(
-    safeBalances,
-    selectedTokenAddress,
-  );
 
   useEffect(() => {
     if (safeAddress) {
@@ -146,6 +157,14 @@ const TransferFundsSection = ({
     // setSafeBalances causes infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [safeAddress, getSafeBalance, savedTokens]);
+
+  const selectedTokenAddress =
+    transactions[transactionFormIndex].tokenData?.tokenAddress;
+
+  const selectedBalance = getSelectedSafeBalance(
+    safeBalances,
+    selectedTokenAddress,
+  );
 
   const formattedSafeBalance = moveDecimal(
     selectedBalance?.balance || 0,
