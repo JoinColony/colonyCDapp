@@ -65,7 +65,7 @@ const ColonyDetailsPage: FC = () => {
             styles.box,
           )}
         >
-          <div className="w-full sm:max-w-[32.875rem] ">
+          <div className="w-full sm:max-w-[32.875rem]">
             <h3 className="heading-4 mb-4">
               {formatMessage({ id: 'colonyDetailsPage.objectiveTitle' })}
             </h3>
