@@ -22,6 +22,10 @@
   @apply inline-block relative w-[4.375rem] h-[4.375rem];
 }
 
+.xm {
+  @apply inline-block relative w-[5.625rem] h-[5.625rem];
+}
+
 .l {
   @apply inline-block relative w-[7.5rem] h-[7.5rem];
 }
