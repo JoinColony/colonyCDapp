@@ -414,7 +414,8 @@ type ColonyMetadataChangelog {
   hasAvatarChanged: Boolean!
   hasWhitelistChanged: Boolean!
   haveTokensChanged: Boolean!
-  haveSafesChanged: Boolean!
+  newSafes: [Safe!]
+  oldSafes: [Safe!]
 }
 
 type User @model {

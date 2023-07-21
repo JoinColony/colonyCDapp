@@ -4,10 +4,13 @@
   max-width: 100%;
 }
 
+.main > figure > div {
+  width: 26px;
+}
+
 .textContainer {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
   flex-direction: column;
   margin-left: 12px;
   width: 100%;
@@ -18,7 +21,16 @@
   max-width: 100%;
 }
 
-.username {
+.address {
+  composes: inlineEllipsis from '~styles/text.css';
+  font-size: var(--size-smallish);
+  font-weight: var(--weight-bold);
+  line-height: 1;
+  color: var(--temp-grey-blue-7);
+  cursor: pointer;
+}
+
+.displayName {
   composes: inlineEllipsis from '~styles/text.css';
   margin-top: -3px;
   font-size: var(--size-normal);

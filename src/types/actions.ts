@@ -108,6 +108,11 @@ export enum ColonyAndExtensionsEvents {
    */
   UserApproved = 'UserApproved',
   AgreementSigned = 'AgreementSigned',
+  /*
+   * Safe events
+   */
+  SafeAdded = 'SafeAdded',
+  SafeRemoved = 'SafeRemoved',
 }
 
 export type ActionUserRoles = {
@@ -151,6 +156,8 @@ export interface FormattedEvent {
 export enum ExtendedColonyActionType {
   UpdateAddressBook = 'UPDATE_ADDRESS_BOOK',
   UpdateTokens = 'UPDATE_TOKENS',
+  RemoveSafe = 'REMOVE_SAFE',
+  AddSafe = 'ADD_SAFE',
 }
 
 /**

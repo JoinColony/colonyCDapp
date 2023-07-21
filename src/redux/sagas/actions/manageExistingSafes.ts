@@ -232,7 +232,7 @@ function* manageExistingSafesAction({
               undefined,
               false,
               false,
-              true,
+              updatedColonySafes,
             ),
           },
         },

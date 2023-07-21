@@ -6,3 +6,4 @@ export { default as isEmpty } from 'lodash/isEmpty';
 export { default as toFinite } from 'lodash/toFinite';
 export { default as isEqual } from 'lodash/isEqual';
 export { default as xor } from 'lodash/xor';
+export { default as isArray } from 'lodash/isArray';
