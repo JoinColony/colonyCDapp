@@ -1,12 +1,14 @@
 import { BigNumber } from 'ethers';
 import { isAddress, isHexString } from 'ethers/lib/utils';
-import { defineMessages } from 'react-intl';
+import { defineMessages, MessageDescriptor } from 'react-intl';
 import { object, string, array, number } from 'yup';
 import moveDecimal from 'move-decimal-point';
 
 import { SafeBalance } from '~types';
 import { intl } from '~utils/intl';
-import { getSelectedSafeBalance } from '~utils/safes';
+import { toFinite } from '~utils/lodash';
+import { getSelectedSafeBalance, isAbiItem } from '~utils/safes';
+import { validateType } from '~utils/safes/contractParserValidation';
 
 import { TransactionTypes } from './helpers';
 
@@ -39,18 +41,36 @@ const MSG = defineMessages({
     id: `${displayName}.notIntegerError`,
     defaultMessage: 'Amount must be an integer',
   },
+  invalidArrayError: {
+    id: `${displayName}.invalidArrayError`,
+    defaultMessage: `Value is not a valid array`,
+  },
+  invalidAtIndexError: {
+    id: `${displayName}.invalidAtIndexError`,
+    defaultMessage: `Item {idx} is not a valid {type}`,
+  },
+  notSafeIntegerError: {
+    id: `${displayName}.notSafeIntegerError`,
+    defaultMessage: `Amount must be a safe integer`,
+  },
+  notAddressError: {
+    id: `${displayName}.notAddressError`,
+    defaultMessage: `Address must be formatted correctly`,
+  },
+  notBooleanError: {
+    id: `${displayName}.notBooleanError`,
+    defaultMessage: `Value must be a valid boolean`,
+  },
+  notSafeHexError: {
+    id: `${displayName}.notSafeHexError`,
+    defaultMessage: `Hex string must be correct length and begin with 0x`,
+  },
 });
 
-// placeholder
-export const isAbiItem = (value: unknown): value is any[] => {
-  return (
-    Array.isArray(value) &&
-    value.every((element) => typeof element === 'object')
-  );
-};
-
-export const getValidationSchema = () => {
-  return object()
+export const getValidationSchema = (
+  expandedValidationSchema: Record<string, any>,
+) =>
+  object()
     .shape({
       safe: object().shape({
         id: string().address().required(),
@@ -265,4 +285,76 @@ export const getValidationSchema = () => {
       ),
     })
     .defined();
+
+export const getMethodInputValidation = (
+  type: string,
+  functionName: string,
+) => {
+  const getContractFunctionSchema = (
+    testName: string,
+    defaultMessage: MessageDescriptor | string,
+  ) => {
+    // yup.string() to facilitate custom testing.
+    return string().when('contractFunction', {
+      is: functionName,
+      then: string()
+        .required(() => MSG.requiredFieldError)
+        .test(
+          testName,
+          () => defaultMessage,
+          function validateFunctionInput(value) {
+            if (!value) {
+              return false;
+            }
+            const result = validateType(type, value);
+            if (result === -1) {
+              return this.createError({
+                message: formatMessage(MSG.invalidArrayError),
+              });
+            }
+            if (typeof result === 'number') {
+              return this.createError({
+                message: formatMessage(MSG.invalidAtIndexError, {
+                  idx: result,
+                  type,
+                }),
+              });
+            }
+            return result;
+          },
+        ),
+      otherwise: false,
+    });
+  };
+
+  if (type.includes('int')) {
+    return getContractFunctionSchema(
+      'is-integer-correct',
+      MSG.notSafeIntegerError,
+    );
+  }
+  if (type.includes('address')) {
+    return getContractFunctionSchema('is-address-correct', MSG.notAddressError);
+  }
+  if (type.includes('byte')) {
+    return getContractFunctionSchema(
+      'is-valid-byte-array',
+      MSG.notSafeHexError,
+    );
+  }
+  if (type.includes('bool')) {
+    return getContractFunctionSchema('is-bool', MSG.notBooleanError);
+  }
+  if (type.includes('string')) {
+    return getContractFunctionSchema(
+      'is-string',
+      '', // will never not be a valid string. But might not be a valid string array.
+    );
+  }
+  // Minimal validation for less common types
+  return string().when('contractFunction', {
+    is: functionName,
+    then: string().required(() => MSG.requiredFieldError),
+    otherwise: false,
+  });
 };

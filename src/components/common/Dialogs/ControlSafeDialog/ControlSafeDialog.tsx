@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { InferType } from 'yup';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,9 +9,10 @@ import { ActionTypes } from '~redux';
 import { WizardDialogType } from '~hooks';
 import { Safe } from '~types';
 import { SUPPORTED_SAFE_NETWORKS } from '~constants';
+import { AbiItemExtended } from '~utils/safes';
 
 import ControlSafeForm from './ControlSafeForm';
-import { getValidationSchema } from './validation';
+import { getMethodInputValidation, getValidationSchema } from './validation';
 import { defaultTransaction, getManageSafeDialogPayload } from './helpers';
 
 interface CustomWizardDialogProps extends ActionDialogProps {
@@ -21,6 +22,10 @@ interface CustomWizardDialogProps extends ActionDialogProps {
 type Props = Required<DialogProps> &
   WizardDialogType<object> &
   CustomWizardDialogProps;
+
+export type UpdatedMethods = {
+  [key: number]: AbiItemExtended | undefined;
+};
 
 export const displayName = 'common.ControlSafeDialog';
 
@@ -33,9 +38,15 @@ const ControlSafeDialog = ({
   cancel,
   close,
 }: Props) => {
+  const [selectedContractMethods, setSelectedContractMethods] =
+    useState<UpdatedMethods>();
+  const [expandedValidationSchema, setExpandedValidationSchema] = useState<
+    Record<string, any>
+  >({});
+
   const navigate = useNavigate();
 
-  const validationSchema = getValidationSchema();
+  const validationSchema = getValidationSchema(expandedValidationSchema);
 
   type FormValues = InferType<typeof validationSchema>;
 
@@ -47,6 +58,24 @@ const ControlSafeDialog = ({
     mapPayload((payload) => getManageSafeDialogPayload(colony, payload)),
     withMeta({ navigate }),
   );
+
+  useEffect(() => {
+    if (selectedContractMethods) {
+      const updatedExpandedValidationSchema = {};
+
+      Object.values(selectedContractMethods).forEach((method) => {
+        method?.inputs?.forEach((input) => {
+          const inputName = `${input.name}-${method.name}`;
+          if (!updatedExpandedValidationSchema[inputName]) {
+            updatedExpandedValidationSchema[inputName] =
+              getMethodInputValidation(input?.type || '', method.name);
+          }
+        });
+      });
+
+      setExpandedValidationSchema(updatedExpandedValidationSchema);
+    }
+  }, [selectedContractMethods]);
 
   return (
     <Dialog cancel={cancel}>
@@ -72,6 +101,8 @@ const ControlSafeDialog = ({
           back={() => callStep(prevStep)}
           colony={colony}
           enabledExtensionData={enabledExtensionData}
+          selectedContractMethods={selectedContractMethods}
+          setSelectedContractMethods={setSelectedContractMethods}
         />
       </Form>
     </Dialog>

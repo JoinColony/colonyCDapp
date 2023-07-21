@@ -8,6 +8,14 @@ import {
   NFTData,
 } from '~types';
 
+export {
+  getContractUsefulMethods,
+  AbiItemExtended,
+  fetchContractABI,
+  isAbiItem,
+  fetchContractName,
+} from './getContractUsefulMethods';
+
 export const getSafe = (
   safes: Safe[],
   selectedSafe: SelectedPickerItem | null,
