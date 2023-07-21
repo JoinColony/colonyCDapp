@@ -24,16 +24,22 @@ const RpcForm = () => {
         [SlotKey.CustomRPC]: customRpc,
       }}
     >
-      <div className="border-b border-gray-200">
-        <SettingsRow
-          title={{ id: 'advancedSettings.rpc.title' }}
-          description={{ id: 'advancedSettings.rpc.description' }}
-          tooltipMessage={{ id: 'advancedSettings.rpc.tooltip' }}
-          id={SlotKey.DecentralizedMode}
-          onChange={handleDecentarlizedOnChange}
-        />
-        <SettingsInputRow isOpen={isInputVisible} handleSubmit={handleSubmit} />
-      </div>
+      {({ register }) => (
+        <div className="border-b border-gray-200">
+          <SettingsRow
+            title={{ id: 'advancedSettings.rpc.title' }}
+            description={{ id: 'advancedSettings.rpc.description' }}
+            tooltipMessage={{ id: 'advancedSettings.rpc.tooltip' }}
+            id={SlotKey.DecentralizedMode}
+            onChange={handleDecentarlizedOnChange}
+            register={register[SlotKey.DecentralizedMode]}
+          />
+          <SettingsInputRow
+            isOpen={isInputVisible}
+            handleSubmit={handleSubmit}
+          />
+        </div>
+      )}
     </HookForm>
   );
 };
