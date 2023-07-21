@@ -28,18 +28,18 @@ interface Props {
   /* handleChange: () => void; */
 }
 
+const displayName = 'common.ControlSafeDialog.AmountBalances';
+
 const MSG = defineMessages({
   amount: {
-    id: 'dashboard.ControlSafeDialog.AmountBalances.amount',
-    defaultMessage: 'Amount',
+    id: `${displayName}.amount`,
+    defaultMessage: `Amount`,
   },
   token: {
-    id: 'dashboard.ControlSafeDialog.AmountBalances.address',
-    defaultMessage: 'Token',
+    id: `${displayName}.address`,
+    defaultMessage: `Token`,
   },
 });
-
-const displayName = 'dashboard.ControlSafeDialog.AmountBalances';
 
 const AmountBalances = ({
   selectedSafe,
