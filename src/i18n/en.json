@@ -737,7 +737,7 @@
   "avatar.uploader.info": "Must be .PNG, .JPG or .SVG, at least 250x250px in size and can not exceed 1MB.",
   "avatar.uploader.text": ".PNG, .JPG or .SVG, 250x250px and max file size 1MB",
   "button.change.avatar": "Change avatar",
-  "button.delete.avatar": "Remove profile",
+  "button.delete.avatar": "Remove",
   "button.try.again": "Try again",
   "click.to.upload": "Click to upload",
   "drag.and.drop": "or drag and drop",
