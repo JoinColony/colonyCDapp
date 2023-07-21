@@ -241,7 +241,7 @@ const HookFormSelect = ({
       return renderActiveOption(activeOption, activeOptionLabelText);
     }
     return <span>{activeOptionLabelText}</span>;
-  }, [checkedOption, options, placeholder, renderActiveOption]);
+  }, [checkedOption, options, placeholder, renderActiveOption, formatMessage]);
 
   const listboxId = `select-listbox-${id}`;
 

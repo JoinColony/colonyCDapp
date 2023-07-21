@@ -12,7 +12,7 @@ import { SUPPORTED_SAFE_NETWORKS } from '~constants';
 
 import ControlSafeForm from './ControlSafeForm';
 import { getValidationSchema } from './validation';
-import { getManageSafeDialogPayload } from './helpers';
+import { defaultTransaction, getManageSafeDialogPayload } from './helpers';
 
 interface CustomWizardDialogProps extends ActionDialogProps {
   preselectedSafe?: Safe;
@@ -40,7 +40,7 @@ const ControlSafeDialog = ({
   type FormValues = InferType<typeof validationSchema>;
 
   const preselectedSafeChain = SUPPORTED_SAFE_NETWORKS.find(
-    (network) => network.chainId === Number(preselectedSafe?.chainId || '0'),
+    (network) => network.chainId === preselectedSafe?.chainId || 0,
   );
 
   const transform = pipe(
@@ -61,6 +61,7 @@ const ControlSafeDialog = ({
                 },
               }
             : undefined,
+          transactions: [defaultTransaction],
         }}
         validationSchema={validationSchema}
         actionType={ActionTypes.ACTION_MANAGE_EXISTING_SAFES}
