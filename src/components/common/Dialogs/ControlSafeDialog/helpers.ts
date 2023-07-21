@@ -78,3 +78,8 @@ export const defaultTransaction = {
   nftData: null,
   functionParamTypes: null,
 };
+
+export enum ContractFunctions {
+  TRANSFER_FUNDS = 'transfer',
+  TRANSFER_NFT = 'safeTransferFrom',
+}

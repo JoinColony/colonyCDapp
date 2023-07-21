@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { ColonyRole, Id } from '@colony/colony-js';
@@ -11,10 +11,10 @@ import ExternalLink from '~shared/ExternalLink';
 import Button from '~shared/Button';
 import Icon from '~shared/Icon';
 import { filterUserSelection } from '~shared/SingleUserPicker';
-import { SelectedPickerItem } from '~types';
+import { SelectedPickerItem, SafeTransaction, SelectedSafe } from '~types';
 import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
 import { useActionDialogStatus } from '~hooks';
-import { isEmpty } from '~utils/lodash';
+import { isEmpty, isEqual, omit } from '~utils/lodash';
 
 import {
   TransferNFTSection,
@@ -27,8 +27,9 @@ import {
   TransactionTypes,
   defaultTransaction,
   transactionOptions,
+  ContractFunctions,
 } from './helpers';
-import { ControlSafeProps } from './types';
+import { ControlSafeProps, UpdatedMethods } from './types';
 import AddItemButton from './AddItemButton';
 import SingleSafePicker from './SingleSafePicker';
 import TransactionHeader from './TransactionHeader';
@@ -102,6 +103,8 @@ const ControlSafeForm = ({
   colony,
   colony: { version, metadata },
   enabledExtensionData,
+  selectedContractMethods,
+  setSelectedContractMethods,
 }: ControlSafeProps) => {
   const [prevSafeAddress, setPrevSafeAddress] = useState<string>('');
   const [transactionTabStatus, setTransactionTabStatus] = useState([true]);
@@ -116,6 +119,7 @@ const ControlSafeForm = ({
   } = useFormContext();
 
   const selectedSafe: SelectedPickerItem = watch('safe');
+  const safes = metadata?.safes || [];
 
   const {
     fields,
@@ -141,6 +145,42 @@ const ControlSafeForm = ({
     ]);
     trigger();
   };
+
+  const handleSelectedContractMethods = useCallback(
+    (contractMethods: UpdatedMethods, transactionFormIndex: number) => {
+      // eslint-disable-next-line max-len
+      const functionParamTypes: SafeTransaction['functionParamTypes'] =
+        contractMethods[transactionFormIndex]?.inputs?.map((input) => ({
+          name: input.name,
+          type: input.type,
+        }));
+
+      setSelectedContractMethods(contractMethods);
+      setValue(
+        `transactions.${transactionFormIndex}.functionParamTypes`,
+        functionParamTypes,
+      );
+    },
+    [setValue, setSelectedContractMethods],
+  );
+
+  const removeSelectedContractMethod = useCallback(
+    (transactionFormIndex: number) => {
+      const updatedSelectedContractMethods = omit(
+        selectedContractMethods,
+        transactionFormIndex,
+      );
+
+      if (!isEqual(updatedSelectedContractMethods, selectedContractMethods)) {
+        handleSelectedContractMethods(
+          updatedSelectedContractMethods,
+          transactionFormIndex,
+        );
+        setValue(`transactions.${transactionFormIndex}.contractFunction`, '');
+      }
+    },
+    [selectedContractMethods, handleSelectedContractMethods, setValue],
+  );
 
   const submitButtonText = (() => {
     return { id: 'button.confirm' };
@@ -176,7 +216,19 @@ const ControlSafeForm = ({
           />
         );
       case TransactionTypes.CONTRACT_INTERACTION:
-        return <ContractInteractionSection />;
+        return (
+          <ContractInteractionSection
+            safes={safes}
+            disabledInput={disabledInputs}
+            transactionFormIndex={tmpIndex}
+            selectedContractMethods={selectedContractMethods}
+            handleSelectedContractMethods={handleSelectedContractMethods}
+            removeSelectedContractMethod={removeSelectedContractMethod}
+            /* handleValidation={handleValidation} */
+            /* handleInputChange={handleInputChange} */
+            /* isValid={isValid} */
+          />
+        );
       case TransactionTypes.TRANSFER_NFT:
         return (
           <TransferNFTSection
@@ -213,8 +265,6 @@ const ControlSafeForm = ({
         break;
     }
   };
-
-  const safes = metadata?.safes || [];
 
   useEffect(() => {
     if (!selectedSafe) {

@@ -1,20 +1,18 @@
-import { Token, Address } from '~types';
+import { Address, Token, User } from '~types';
 
-export type SimpleUserProfile = {
-  avatarHash?: string;
-  displayName?: string;
-  username?: string;
-  walletAddress: string;
-};
+export type ModuleAddress = Address;
 
-export type SimpleUser = {
-  id: string;
-  profile: SimpleUserProfile;
-};
+export interface SelectedSafe {
+  id: ModuleAddress; // Making explicit that this is the module address
+  walletAddress: Address; // And this is the safe address
+  profile: {
+    displayName: string;
+  };
+}
 
 export type FunctionParamType = {
-  name: string;
-  type: string;
+  name?: string;
+  type?: string;
 };
 
 export type SafeTransaction = {
@@ -22,9 +20,9 @@ export type SafeTransaction = {
   tokenData?: Token;
   amount?: string;
   rawAmount?: string;
-  recipient?: SimpleUser;
+  recipient?: User;
   data: string;
-  contract?: SimpleUser;
+  contract?: User;
   abi: string;
   contractFunction: string;
   functionParamTypes?: FunctionParamType[];
