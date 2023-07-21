@@ -59,7 +59,7 @@ const SubMenu: FC<SubMenuProps> = ({ items }) => {
       </ul>
       {!isMobile && (
         <div className="px-3">
-          <span className="block w-full h-px bg-gray-200 mb-6" />
+          <span className="divider mb-6" />
           <div className="flex flex-col items-center justify-between md:flex-row">
             <div className="mb-6 md:mr-2 md:mb-0">
               <Button

@@ -39,7 +39,7 @@ const UserHub: FC<UserHubProps> = ({
 
   return (
     <div className={clsx('flex', { 'flex-col': isMobile })}>
-      <div className={`${styles.wrapper} ${isMobile ? 'px-0 pt-6' : 'p-6'}`}>
+      <div className={`${styles.wrapper} ${isMobile ? 'px-0 pt-4' : 'p-6'}`}>
         {!isMobile ? (
           <div>
             <TitleLabel
@@ -93,7 +93,7 @@ const UserHub: FC<UserHubProps> = ({
           </div>
         )}
       </div>
-      {isMobile && <div className="h-px w-full bg-gray-200 my-6" />}
+      {isMobile && <span className="h-px w-full bg-gray-200 my-6" />}
       <div className={`${isMobile ? 'min-w-full' : 'w-full p-6 relative'}`}>
         <AnimatePresence>
           <motion.div

@@ -100,16 +100,18 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
       <div className="hidden">
         <Wallet />
       </div>
-      <main className="mt-9 pb-24">
+      <main className="mt-5 mb-24">
         <div className="inner">
-          {isMobile && <Navigation pageName={pageName} />}
-          <div className="mt-9 sm:mt-6">
-            <PageTitle
-              title={title}
-              subtitle={description}
-              hideColonies={hideColonies}
-            />
-          </div>
+          {isMobile && (
+            <div className="mb-9">
+              <Navigation pageName={pageName} />
+            </div>
+          )}
+          <PageTitle
+            title={title}
+            subtitle={description}
+            hideColonies={hideColonies}
+          />
           <div className="mt-9">{children}</div>
         </div>
       </main>

@@ -109,6 +109,10 @@
   .input {
     @apply w-full text-gray-900 text-md outline-0 placeholder:text-gray-500 outline-none;
   }
+
+  .divider {
+    @apply w-full h-px bg-gray-200;
+  }
 }
 
 .rts___tabs {
