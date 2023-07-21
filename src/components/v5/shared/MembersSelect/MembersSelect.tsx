@@ -35,6 +35,7 @@ const MembersSelect: FC<MemberSelectProps> = ({ user }) => {
       list={members}
       placeholderText={user ? undefined : { id: 'members.modal.selectMember' }}
       showAvatar
+      openButtonClass="selectButton"
     />
   );
 };

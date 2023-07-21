@@ -20,7 +20,9 @@ const ColonyUsersPage: FC<ColonyUsersPageProps> = ({ pageName }) => {
   return (
     <Spinner loadingText={{ id: `loading.${pageName}Page` }}>
       <TwoColumns aside={<Navigation pageName="members" />}>
-        <Header title={{ id: `membersPage.${pageName}.allMembers` }} />
+        <div className="relative">
+          <Header title={{ id: `membersPage.${pageName}.allMembers` }} />
+        </div>
         <div className="flex justify-between mt-6 gap-6 flex-col-reverse sm:flex-row md:gap-12">
           <div className="w-full">
             <MembersList
