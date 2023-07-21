@@ -10,7 +10,7 @@ import { useColonyContext, useMobile } from '~hooks';
 import Avatar from '~v5/shared/Avatar';
 import Icon from '~shared/Icon';
 import Button from '~v5/shared/Button';
-import ObjectiveBox from '~v5/common/ObjectiveBox/ObjectiveBox';
+import ObjectiveBox from '~v5/common/ObjectiveBox';
 
 const displayName = 'frame.Extensions.pages.ColonyDetailsPage';
 

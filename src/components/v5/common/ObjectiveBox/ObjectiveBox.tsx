@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+
 import { ObjectiveBoxProps } from './types';
 
 const displayName = 'v5.common.ObjectiveBox';
