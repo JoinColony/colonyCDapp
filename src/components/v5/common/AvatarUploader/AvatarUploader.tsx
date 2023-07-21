@@ -1,21 +1,24 @@
 import React, { FC, useRef, ReactElement } from 'react';
 
-import FileUpload from './FileUpload';
+import FileUpload from './partials/FileUpload';
 import { SpinnerLoader } from '~shared/Preloaders';
-import { AvatarUploaderProps } from '../types';
+import { useAvatarUpload } from './hooks';
+import { AvatarUploaderProps } from './types';
 
 const displayName = 'v5.pages.UserProfilePage.partials.AvatarUploader';
 
 const AvatarUploader: FC<AvatarUploaderProps> = ({
   avatarPlaceholder,
   disabled = false,
-  handleFileAccept,
-  handleFileReject,
-  handleFileRemove,
-  errorCode,
-  isLoading = false,
-  user,
 }) => {
+  const {
+    user,
+    uploadAvatarError,
+    isLoading,
+    handleFileReject,
+    handleFileRemove,
+    handleFileUpload,
+  } = useAvatarUpload();
   const dropzoneRef = useRef<{ open: () => void }>();
 
   const getPlaceholder = (
@@ -37,12 +40,12 @@ const AvatarUploader: FC<AvatarUploaderProps> = ({
       dropzoneOptions={{
         disabled,
       }}
-      handleFileAccept={handleFileAccept}
+      handleFileAccept={handleFileUpload}
       handleFileReject={handleFileReject}
       handleFileRemove={handleFileRemove}
       placeholder={getPlaceholder(isLoading, avatarPlaceholder)}
       forwardedRef={dropzoneRef}
-      errorCode={errorCode}
+      errorCode={uploadAvatarError}
       isAvatarUploaded={user?.profile?.avatar !== null}
     />
   );

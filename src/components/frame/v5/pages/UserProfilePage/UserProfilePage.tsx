@@ -12,7 +12,7 @@ import Textarea from '~v5/common/Fields/Textarea';
 import Button from '~v5/shared/Button';
 import { useUserProfile } from './hooks';
 import { MAX_BIO_CHARS, MAX_DISPLAYNAME_CHARS } from './consts';
-import AvatarUploader from './partials/AvatarUploader';
+import AvatarUploader from '~v5/common/AvatarUploader';
 import UserAvatar from '~shared/UserAvatar';
 
 const displayName = 'v5.pages.UserProfilePage';
@@ -20,19 +20,8 @@ const displayName = 'v5.pages.UserProfilePage';
 const UserProfilePage: FC = () => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
-  const {
-    register,
-    handleSubmit,
-    onSubmit,
-    errors,
-    user,
-    isFormEdited,
-    loading,
-    uploadAvatarError,
-    handleFileReject,
-    handleFileRemove,
-    handleFileUpload,
-  } = useUserProfile();
+  const { register, handleSubmit, onSubmit, errors, user, isFormEdited } =
+    useUserProfile();
 
   return (
     <Spinner loadingText={{ id: 'loading.userProfilePage' }}>
@@ -75,12 +64,6 @@ const UserProfilePage: FC = () => {
                   avatarPlaceholder={
                     <UserAvatar user={user} size="m" preferThumbnail={false} />
                   }
-                  handleFileAccept={handleFileUpload}
-                  handleFileRemove={handleFileRemove}
-                  handleFileReject={handleFileReject}
-                  isLoading={loading}
-                  errorCode={uploadAvatarError}
-                  user={user}
                 />
               </div>
             </div>

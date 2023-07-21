@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import Icon from '~shared/Icon';
 import styles from './AvatarUploader.module.css';
 
-const displayName = 'v5.pages.UserProfilePage.partials.SuccessContent';
+const displayName = 'v5.common.AvatarUploader.partials.SuccessContent';
 
 const DefaultContent: FC<PropsWithChildren> = ({ children }) => {
   const { formatMessage } = useIntl();

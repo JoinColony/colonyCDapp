@@ -5,10 +5,10 @@ import clsx from 'clsx';
 import Icon from '~shared/Icon';
 import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
 import { TextButton } from '~v5/shared/Button';
-import { ErrorContentProps } from '../types';
 import styles from './AvatarUploader.module.css';
+import { ErrorContentProps } from '../types';
 
-const displayName = 'v5.pages.UserProfilePage.partials.ErrorContent';
+const displayName = 'v5.common.AvatarUploader.partials.ErrorContent';
 
 const ErrorContent: FC<ErrorContentProps> = ({
   errorCode,

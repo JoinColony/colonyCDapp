@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import Button from '~v5/shared/Button';
 import { SuccessContentProps } from '../types';
 
-const displayName = 'v5.pages.UserProfilePage.partials.SuccessContent';
+const displayName = 'v5.common.AvatarUploader.partials.SuccessContent';
 
 const SuccessContent: FC<SuccessContentProps> = ({
   open,

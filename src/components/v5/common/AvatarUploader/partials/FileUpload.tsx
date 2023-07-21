@@ -9,7 +9,7 @@ import ErrorContent from './ErrorContent';
 import DefaultContent from './DefaultContent';
 import { FileUploadProps } from '../types';
 
-const displayName = 'v5.pages.UserProfilePage.partials.FileUpload';
+const displayName = 'v5.common.AvatarUploader.partials.partials.FileUpload';
 
 const FileUpload: FC<FileUploadProps> = ({
   dropzoneOptions,
