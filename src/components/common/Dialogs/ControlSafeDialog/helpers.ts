@@ -62,3 +62,19 @@ export const transactionOptions = [
     label: MSG[TransactionTypes.RAW_TRANSACTION],
   },
 ];
+
+export const defaultTransaction = {
+  // type SafeTransaction
+  transactionType: '',
+  tokenData: null,
+  amount: null,
+  rawAmount: null,
+  recipient: null,
+  data: '',
+  contract: null,
+  abi: '',
+  contractFunction: '',
+  nft: null,
+  nftData: null,
+  functionParamTypes: null,
+};
