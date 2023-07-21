@@ -116,6 +116,7 @@ export const useLazyConsensusPage = (
       .number()
       .positive('')
       .required('')
+      .typeError(formatMessage({ id: 'special.hour.input.error.min.value' }))
       .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
       .max(
         getMaxInputValues?.[4]?.maxValue,
@@ -128,6 +129,7 @@ export const useLazyConsensusPage = (
       .number()
       .positive('')
       .required('')
+      .typeError(formatMessage({ id: 'special.hour.input.error.min.value' }))
       .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
       .max(
         getMaxInputValues?.[5]?.maxValue,
@@ -140,6 +142,7 @@ export const useLazyConsensusPage = (
       .number()
       .positive('')
       .required('')
+      .typeError(formatMessage({ id: 'special.hour.input.error.min.value' }))
       .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
       .max(
         getMaxInputValues?.[6]?.maxValue,
@@ -152,6 +155,7 @@ export const useLazyConsensusPage = (
       .number()
       .positive('')
       .required('')
+      .typeError(formatMessage({ id: 'special.hour.input.error.min.value' }))
       .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
       .max(
         getMaxInputValues?.[7]?.maxValue,
