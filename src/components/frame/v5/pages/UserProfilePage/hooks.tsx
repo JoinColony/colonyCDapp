@@ -21,7 +21,6 @@ export const useUserProfile = () => {
   const { updateUser } = useAppContext();
   const [editUser] = useUpdateUserProfileMutation();
   const { user } = useCanEditProfile();
-
   const { formatMessage } = useIntl();
 
   const isValidUsername = (username: string) => {
