@@ -109,6 +109,10 @@
   .input {
     @apply w-full text-gray-900 text-md outline-0 placeholder:text-gray-500 outline-none;
   }
+
+  .selectButton {
+    @apply outline-blue-100 outline outline-[0.1875rem] border-blue-200;
+  }
 }
 
 .rts___tabs {

@@ -35,7 +35,7 @@ const MembersSelect: FC<MemberSelectProps> = ({ user }) => {
       list={members}
       placeholderText={user ? undefined : { id: 'members.modal.selectMember' }}
       showAvatar
-      openButtonClass="outline-blue-100 outline !outline-[0.1875rem] border-blue-200"
+      openButtonClass="selectButton"
     />
   );
 };
