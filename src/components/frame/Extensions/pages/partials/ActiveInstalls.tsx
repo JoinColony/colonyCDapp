@@ -12,7 +12,7 @@ const ActiveInstalls: FC<ActiveInstallsProps> = ({ activeInstalls }) => {
   const { formatMessage } = useIntl();
 
   return (
-    <>
+    <div className="sm:hidden md:block">
       {activeInstalls ? (
         <>
           {activeInstalls < MAX_INSTALLED_NUMBER ? (
@@ -27,7 +27,7 @@ const ActiveInstalls: FC<ActiveInstallsProps> = ({ activeInstalls }) => {
       ) : (
         <SpinnerLoader />
       )}
-    </>
+    </div>
   );
 };
 
