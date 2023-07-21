@@ -49,6 +49,7 @@ export interface TextButtonProps extends CommonButtonProps {
   mode?: TextButtonMode;
   text?: MessageDescriptor | string;
   textValues?: SimpleMessageValues;
+  isErrorColor?: boolean;
 }
 
 export interface PendingButtonProps extends CommonButtonProps {

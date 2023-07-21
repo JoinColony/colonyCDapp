@@ -1,4 +1,4 @@
-import React, { FC, useImperativeHandle } from 'react';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
@@ -13,7 +13,6 @@ const displayName = 'v5.pages.UserProfilePage.partials.FileUpload';
 
 const FileUpload: FC<FileUploadProps> = ({
   dropzoneOptions,
-  forwardedRef,
   placeholder,
   handleFileAccept,
   handleFileReject,
@@ -32,10 +31,6 @@ const FileUpload: FC<FileUploadProps> = ({
       handleFileAccept,
       handleFileReject,
     });
-
-  useImperativeHandle(forwardedRef, () => ({
-    open,
-  }));
 
   return (
     <div className="flex gap-2">
