@@ -9,7 +9,6 @@ export * from './effects';
 export * from './enableExtensionHelpers';
 export * from './refreshExtension';
 export * from './metadataChangelog';
-export * from './safeHelpers';
 
 // export * from './updateColonyDisplayCache';
 // export { updateMotionValues } from './updateMotionValues';
