@@ -93,7 +93,7 @@ const UserHub: FC<UserHubProps> = ({
           </div>
         )}
       </div>
-      {isMobile && <span className="h-px w-full bg-gray-200 my-6" />}
+      {isMobile && <span className="divider my-6" />}
       <div className={`${isMobile ? 'min-w-full' : 'w-full p-6 relative'}`}>
         <AnimatePresence>
           <motion.div
