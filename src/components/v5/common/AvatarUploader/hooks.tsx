@@ -11,7 +11,7 @@ import {
 } from '~images/optimisation';
 import { useUpdateUserProfileMutation } from '~gql';
 
-export const useAvatarUpload = () => {
+export const useAvatarUploader = () => {
   const { updateUser } = useAppContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [uploadAvatarError, setUploadAvatarError] = useState<DropzoneErrors>();

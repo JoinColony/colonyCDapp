@@ -2,10 +2,10 @@ import React, { FC, useRef, ReactElement } from 'react';
 
 import FileUpload from './partials/FileUpload';
 import { SpinnerLoader } from '~shared/Preloaders';
-import { useAvatarUpload } from './hooks';
+import { useAvatarUploader } from './hooks';
 import { AvatarUploaderProps } from './types';
 
-const displayName = 'v5.pages.UserProfilePage.partials.AvatarUploader';
+const displayName = 'v5.common.UserProfilePage.partials.AvatarUploader';
 
 const AvatarUploader: FC<AvatarUploaderProps> = ({
   avatarPlaceholder,
@@ -18,7 +18,7 @@ const AvatarUploader: FC<AvatarUploaderProps> = ({
     handleFileReject,
     handleFileRemove,
     handleFileUpload,
-  } = useAvatarUpload();
+  } = useAvatarUploader();
   const dropzoneRef = useRef<{ open: () => void }>();
 
   const getPlaceholder = (

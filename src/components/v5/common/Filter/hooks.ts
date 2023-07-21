@@ -60,7 +60,6 @@ export const useFilter = () => {
   const isContributorTypeSelected = contributorTypes.some(
     ({ id }) => id === selectedChildOption,
   );
-
   const isStatusTypeSelected = statusTypes.some(
     ({ id }) => id === selectedChildOption,
   );
