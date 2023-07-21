@@ -1,0 +1,11 @@
+.text {
+  @apply text-gray-600 text-sm;
+}
+
+.wrapper {
+  @apply flex flex-col w-[31.25rem] cursor-pointer;
+}
+
+.contentWrapper {
+  @apply flex px-6 py-4 rounded border;
+}

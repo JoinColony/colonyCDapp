@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useIntl } from 'react-intl';
 
+import { FileRejection } from 'react-dropzone';
 import { useAppContext, useCanEditProfile } from '~hooks';
 import { GetUserByNameDocument, useUpdateUserProfileMutation } from '~gql';
 import { UserProfileFormProps } from './types';
@@ -16,11 +17,22 @@ import {
 } from './consts';
 import { USERNAME_REGEX } from '~common/CreateUserWizard/validation';
 import { createYupTestFromQuery } from '~utils/yup/tests';
+import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
+import { getFileRejectionErrors } from '~shared/FileUpload/utils';
+import { FileReaderFile } from '~utils/fileReader/types';
+import {
+  getOptimisedAvatarUnder300KB,
+  getOptimisedThumbnail,
+} from '~images/optimisation';
 
 export const useUserProfile = () => {
   const { updateUser } = useAppContext();
   const [editUser] = useUpdateUserProfileMutation();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [uploadAvatarError, setUploadAvatarError] = useState<DropzoneErrors>();
+  const [updateAvatar] = useUpdateUserProfileMutation();
   const { user } = useCanEditProfile();
+
   const { formatMessage } = useIntl();
 
   const isValidUsername = (username: string) => {
@@ -112,6 +124,51 @@ export const useUserProfile = () => {
     }
   };
 
+  const handleFileUpload = async (avatarFile: FileReaderFile | null) => {
+    if (avatarFile) {
+      setUploadAvatarError(undefined);
+      setLoading(true);
+    }
+
+    try {
+      const updatedAvatar = await getOptimisedAvatarUnder300KB(
+        avatarFile?.file,
+      );
+      const thumbnail = await getOptimisedThumbnail(avatarFile?.file);
+
+      await updateAvatar({
+        variables: {
+          input: {
+            // @ts-ignore
+            id: user?.walletAddress,
+            avatar: updatedAvatar,
+            thumbnail,
+          },
+        },
+      });
+
+      await updateUser?.(user?.walletAddress, true);
+    } catch (e) {
+      if (e.message.includes('exceeded the maximum')) {
+        setUploadAvatarError(DropzoneErrors.TOO_LARGE);
+      } else {
+        setUploadAvatarError(DropzoneErrors.DEFAULT);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleFileRemove = async () => {
+    await handleFileUpload(null);
+    setUploadAvatarError(undefined);
+  };
+
+  const handleFileReject = (rejectedFiles: FileRejection[]) => {
+    const fileError = getFileRejectionErrors(rejectedFiles)[0][0];
+    setUploadAvatarError(fileError.code as DropzoneErrors);
+  };
+
   return {
     register,
     handleSubmit,
@@ -119,5 +176,10 @@ export const useUserProfile = () => {
     errors,
     isFormEdited: isDirty,
     user,
+    uploadAvatarError,
+    loading,
+    handleFileReject,
+    handleFileRemove,
+    handleFileUpload,
   };
 };

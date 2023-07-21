@@ -733,5 +733,15 @@
   "error.message": "Something went wrong",
   "displayName.input.disabled": "You can change your username again in 15 days",
   "error.usernameTaken": "Username not available",
-  "success.userName": "Username available"
+  "success.userName": "Username available",
+  "avatar.uploader.info": "Must be .PNG, .JPG or .SVG, at least 250x250px in size and can not exceed 1MB.",
+  "avatar.uploader.text": ".PNG, .JPG or .SVG, 250x250px and max file size 1MB",
+  "button.change.avatar": "Change avatar",
+  "button.delete.avatar": "Remove profile",
+  "button.try.again": "Try again",
+  "click.to.upload": "Click to upload",
+  "drag.and.drop": "or drag and drop",
+  "too.large.file.error": "File size is too large, it should not exceed 1MB",
+  "invalid.type.error": "Incorrect file format, must be .PNG, .JPG, or .SVG",
+  "upload.failed": "Upload failed, please try again"
 }

@@ -1,185 +1,50 @@
-import React, { useRef } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
+import React, { FC, useRef, ReactElement } from 'react';
 
-import {
-  CoreInputProps,
-  InputLabel,
-  HookFormInputStatus as InputStatus,
-  InputComponentAppearance as Appearance,
-} from '~shared/Fields';
-import { SingleFileUploadProps } from '~shared/FileUpload';
-import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
-import { Message } from '~types';
+import FileUpload from './FileUpload';
+import { SpinnerLoader } from '~shared/Preloaders';
+import { AvatarUploaderProps } from '../types';
 
-// import styles from './AvatarUploader.css';
-import {
-  DropzoneErrors,
-  getErrorMessage,
-} from '~shared/AvatarUploader/helpers';
-import UploadControls from '~shared/AvatarUploader/UploadControls';
-import FileUploader from './FileUploader';
+const displayName = 'v5.pages.UserProfilePage.partials.AvatarUploader';
 
-const displayName = 'AvatarUploader';
-
-const MSG = defineMessages({
-  dropNow: {
-    id: `${displayName}.dropNow`,
-    defaultMessage: 'Drop now!',
-  },
-});
-
-export interface Props
-  extends Pick<SingleFileUploadProps, 'handleFileAccept' | 'handleFileReject'>,
-    Omit<
-      CoreInputProps,
-      'name' | 'placeholder' | 'placeholderValues' | 'dataTest'
-    > {
-  /** Appearance object for both label and status */
-  appearance?: Appearance;
-  /** Avatar to be wrapped by File uploader */
-  avatarPlaceholder: React.ReactElement;
-  /** Disable the remove avatar button */
-  disableRemove?: boolean;
-  /** An error message */
-  errorCode?: DropzoneErrors;
-  /** An object in the format: { "message": string} for display a custom error message */
-  customError?: Record<'message', string>;
-  /** Function to handle the removal of the avatar */
-  handleFileRemove?: (...args: any[]) => Promise<any>;
-  /** If true, will display loading spinner */
-  isLoading?: boolean;
-  /** Display choose / remove buttons beneath Avatar */
-  showButtons?: boolean;
-  /** The touched flag can control the visibility of the status / error message (i.e. will be hidden if not touched) */
-  touched?: boolean;
-}
-
-const DropNowOverlay = () => (
-  <div>
-    <FormattedMessage {...MSG.dropNow} />
-  </div>
-);
-
-interface FileErrorProps {
-  error: Message;
-}
-
-const FileError = ({ error }: FileErrorProps) => (
-  <div>
-    <Icon
-      name="file"
-      appearance={{ size: 'large' }}
-      title={formatText(error)}
-    />
-  </div>
-);
-
-const LoadingOverlay = () => (
-  <div>
-    <div />
-  </div>
-);
-
-const getPlaceholder = (
-  isLoading: boolean,
-  avatarPlaceholder: Props['avatarPlaceholder'],
-  error?: Message,
-) => {
-  if (error) {
-    return <FileError error={error} />;
-  }
-
-  if (isLoading) {
-    return <LoadingOverlay />;
-  }
-
-  return avatarPlaceholder;
-};
-
-const AvatarUploader = ({
-  appearance,
+const AvatarUploader: FC<AvatarUploaderProps> = ({
   avatarPlaceholder,
   disabled = false,
-  disableRemove,
-  elementOnly,
-  extra,
   handleFileAccept,
   handleFileReject,
   handleFileRemove,
   errorCode,
-  customError,
-  help,
-  helpValues,
   isLoading = false,
-  label,
-  labelValues,
-  showButtons = true,
-  status,
-  statusValues,
-  touched,
-}: Props) => {
+  user,
+}) => {
   const dropzoneRef = useRef<{ open: () => void }>();
 
-  const open = () => {
-    // will be null if dropzone is disabled
-    if (typeof dropzoneRef.current?.open === 'function') {
-      dropzoneRef.current.open();
+  const getPlaceholder = (
+    loading: boolean,
+    avatar: ReactElement<
+      unknown,
+      string | React.JSXElementConstructor<unknown>
+    >,
+  ) => {
+    if (loading) {
+      return <SpinnerLoader appearance={{ size: 'medium' }} />;
     }
+
+    return avatar;
   };
 
-  //   const noButtonStyles = {
-  //     ...styles,
-  //     dropzone: styles.dropzoneNoButtonsVariant,
-  //   };
-
   return (
-    <>
-      {!elementOnly && label && (
-        <InputLabel
-          appearance={appearance}
-          label={label}
-          labelValues={labelValues}
-          help={help}
-          helpValues={helpValues}
-          extra={extra}
-        />
-      )}
-      <FileUploader
-        // @ts-ignore
-        dropzoneRootStyles={showButtons && ''}
-        dropzoneOptions={{
-          disabled,
-        }}
-        handleFileAccept={handleFileAccept}
-        handleFileReject={handleFileReject}
-        placeholder={getPlaceholder(isLoading, avatarPlaceholder, errorCode)}
-        ref={dropzoneRef}
-        dataTest="avatarUploaderDrop"
-      >
-        <DropNowOverlay />
-      </FileUploader>
-      {showButtons && (
-        <UploadControls
-          handleFileRemove={handleFileRemove}
-          disableRemove={disableRemove || disabled}
-          disableChoose={disabled}
-          open={open}
-        />
-      )}
-      {errorCode && (
-        <div>
-          <InputStatus
-            appearance={appearance}
-            status={status}
-            statusValues={statusValues}
-            error={getErrorMessage(errorCode)}
-            errorValues={customError}
-            touched={touched ?? !!errorCode}
-          />
-        </div>
-      )}
-    </>
+    <FileUpload
+      dropzoneOptions={{
+        disabled,
+      }}
+      handleFileAccept={handleFileAccept}
+      handleFileReject={handleFileReject}
+      handleFileRemove={handleFileRemove}
+      placeholder={getPlaceholder(isLoading, avatarPlaceholder)}
+      forwardedRef={dropzoneRef}
+      errorCode={errorCode}
+      isAvatarUploaded={user?.profile?.avatar !== null}
+    />
   );
 };
 
