@@ -27,14 +27,9 @@ export type FunctionParamType = {
   type: string;
 };
 
-export interface SafeToken extends Token {
-  logoUri?: string;
-}
-
 export type SafeTransaction = {
   transactionType: string;
-  tokenAddress?: string;
-  tokenData?: SafeToken;
+  tokenData?: Token;
   amount?: string;
   rawAmount?: string;
   recipient?: SimpleUser;
@@ -47,6 +42,16 @@ export type SafeTransaction = {
 
 export interface SafeBalance {
   balance: number;
-  tokenAddress: string | null;
-  token: SafeToken | null;
+  token: Token | null;
+}
+
+export interface SafeBalanceApiData {
+  balance: number;
+  tokenAddress: Address | null;
+  token: {
+    name: string;
+    symbol: string;
+    decimals: number;
+    logoUri: string;
+  } | null;
 }

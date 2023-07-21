@@ -17,8 +17,8 @@ export const getSelectedSafeBalance = (
 ) =>
   safeBalances?.find(
     (balance) =>
-      balance?.tokenAddress === selectedTokenAddress ||
-      (!balance?.tokenAddress && selectedTokenAddress === ADDRESS_ZERO),
+      balance?.token?.tokenAddress === selectedTokenAddress ||
+      (!balance?.token?.tokenAddress && selectedTokenAddress === ADDRESS_ZERO),
   );
 
 export const getChainNameFromSafe = (safeDisplayName: string) => {
