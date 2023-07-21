@@ -12,7 +12,7 @@ const displayName =
 const AccordionNestedItem: FC<AccordionNestedItemProps> = ({
   accordionItem: { header, content },
 }) => {
-  const [visibility, setVisibility] = useState(false);
+  const [visibility, setVisibility] = useState(true);
   const { formatMessage } = useIntl();
   const onOpenIndexChange = () => {
     setVisibility(!visibility);

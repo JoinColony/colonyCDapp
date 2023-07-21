@@ -217,6 +217,13 @@ export const useLazyConsensusPage = (
                 watch: methods.watch,
                 name: paramName,
               },
+              accordionItem: [
+                {
+                  id: 'step-0-1',
+                  header: 'Example scenario',
+                  content: `If a team has 100 reputation points between them, and the Required Stake is 5%, then 5 tokens would need to be staked to either support or object to a motion.`,
+                },
+              ],
               maxValue: maxValue || validation?.tests[2].OPTIONS.params.max,
             };
           },
