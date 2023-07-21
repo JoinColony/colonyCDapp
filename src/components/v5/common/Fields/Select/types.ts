@@ -8,4 +8,5 @@ export interface SelectProps<T> {
   placeholderText?: MessageDescriptor | string;
   isListRelative?: boolean;
   showAvatar?: boolean;
+  openButtonClass?: string;
 }

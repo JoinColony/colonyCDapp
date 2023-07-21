@@ -3,7 +3,7 @@
 }
 
 .button {
-  @apply w-full pl-3.5 pr-4 py-3 rounded bg-base-white flex justify-between items-center text-md font-normal transition-all duration-normal;
+  @apply w-full pl-3.5 pr-4 py-3 rounded bg-base-white flex justify-between items-center text-md font-normal transition-all duration-normal border;
 }
 
 .options {
@@ -11,9 +11,9 @@
 }
 
 .show {
-  @apply flex flex-col py-2 px-3.5 border border-gray-300 rounded relative left-0 z-[1] bg-base-white w-full mt-1 max-h-[12.5rem] overflow-x-scroll;
+  @apply flex flex-col py-2 px-2 border border-gray-300 rounded relative left-0 z-[1] bg-base-white w-full mt-1 max-h-[12.5rem] overflow-x-auto;
 }
 
 .li {
-  @apply flex items-center justify-between text-md cursor-pointer;
+  @apply flex items-center justify-between text-md cursor-pointer px-1.5 rounded hover:bg-gray-50;
 }

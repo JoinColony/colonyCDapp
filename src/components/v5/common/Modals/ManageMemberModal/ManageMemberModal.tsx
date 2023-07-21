@@ -60,6 +60,7 @@ const ManageMemberModal: FC<ManageMemberModalProps> = ({
         list={manageMemberActions}
         placeholderText={{ id: 'members.modal.selectActions' }}
         isListRelative
+        openButtonClass="outline-blue-100 outline !outline-[0.1875rem] border-blue-200"
       />
 
       {(isBanOptionSelected || isUnbanOptionSelected) && (

@@ -19,7 +19,9 @@ const MembersPage: FC = () => {
   return (
     <Spinner loadingText={{ id: 'loading.membersPage' }}>
       <TwoColumns aside={<Navigation pageName="members" />}>
-        <Header title={{ id: 'members.allMembers' }} />
+        <div className="relative">
+          <Header title={{ id: 'members.allMembers' }} />
+        </div>
         <div className="flex justify-between mt-6 gap-6 flex-col-reverse sm:flex-row md:gap-12">
           <div className="w-full">
             <MembersList
@@ -50,7 +52,6 @@ const MembersPage: FC = () => {
               />
             </div>
           </div>
-          {/* @TODO: Add real data */}
           <div className="sm:max-w-[14.375rem] w-full">
             <TeamReputationSummary />
           </div>

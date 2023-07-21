@@ -18,6 +18,7 @@ const Select = <T extends any[]>({
   isLoading,
   isListRelative,
   showAvatar,
+  openButtonClass,
 }: SelectProps<T>) => {
   const { formatMessage } = useIntl();
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
@@ -91,9 +92,9 @@ const Select = <T extends any[]>({
       <button
         type="button"
         onClick={toggleOptions}
-        className={clsx(styles.button, {
-          'border border-blue-400': isOptionsOpen,
-          'border border-gray-300 ': !isOptionsOpen,
+        className={clsx(styles.button, isOptionsOpen && openButtonClass, {
+          'border-blue-400': isOptionsOpen && !openButtonClass,
+          'border-gray-300 ': !isOptionsOpen,
         })}
         aria-label={formatMessage({
           id: isOptionsOpen

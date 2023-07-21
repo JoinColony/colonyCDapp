@@ -51,7 +51,7 @@ const MembersList: FC<MembersListProps> = ({
           {listLength} {formatMessage(title)}
         </span>
       </div>
-      <p className="mb-6">{formatMessage(description)}</p>
+      <p className="mb-6 text-md text-gray-600">{formatMessage(description)}</p>
       {!isLoading && listLength ? (
         <ul className="sm:columns-2">
           {visibleMembers.map((item, index) => {
