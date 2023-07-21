@@ -5,7 +5,6 @@ import moveDecimal from 'move-decimal-point';
 
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { DialogSection } from '~shared/Dialog';
-import { getSafe, getSelectedSafeBalance } from '~utils/safes';
 /* import { log } from '~utils/debug'; */
 import {
   Message,
@@ -17,7 +16,9 @@ import Icon from '~shared/Icon';
 import {
   getTxServiceBaseUrl,
   getChainNameFromSafe,
-} from '~redux/sagas/utils/safeHelpers';
+  getSafe,
+  getSelectedSafeBalance,
+} from '~utils/safes';
 
 import AmountBalances from '../AmountBalances';
 import { TransactionSectionProps } from '../types';
