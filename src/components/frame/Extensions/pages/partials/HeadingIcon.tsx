@@ -12,7 +12,7 @@ const HeadingIcon: FC<HeadingIconProps> = ({ icon, name }) => {
   const title = typeof name === 'string' ? name : name && formatMessage(name);
 
   return (
-    <div className="flex items-center shrink-0">
+    <div className="flex items-center">
       <span className="flex shrink-0">
         <Icon name={icon} appearance={{ size: 'extraBig' }} />
       </span>
