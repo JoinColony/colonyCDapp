@@ -12,7 +12,8 @@ import {
   SAFE_NETWORKS,
 } from '~constants';
 import { MaxButtonParams } from '~shared/Fields/Input/HookForm';
-import { Safe, SafeBalance, SafeToken, Token } from '~types';
+import { Safe, SafeBalance, Token } from '~types';
+import { TokenType } from '~gql';
 
 import styles from './AmountTokens.css';
 /* import { TransferFundsProps } from '../TransactionTypesSection/TransferFundsSection'; */
@@ -51,21 +52,16 @@ const AmountBalances = ({
 }: Props) => {
   const { watch, setValue } = useFormContext();
 
-  const selectedTokenData: SafeToken = watch(
+  const selectedTokenData: Token = watch(
     `transactions.${transactionFormIndex}.tokenData`,
   );
-  const setSelectedTokenData = (value: SafeToken) =>
+  const setSelectedTokenData = (value: Token) =>
     setValue(`transactions.${transactionFormIndex}.tokenData`, value);
 
   const tokens: Token[] = (safeBalances || []).map((balance) => {
     // If selected safe balance uses an ERC20 token
-    if (balance.token && balance.tokenAddress) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { logoUri, ...token } = balance.token;
-      return {
-        ...token,
-        tokenAddress: balance.tokenAddress,
-      };
+    if (balance?.token?.type === TokenType.Erc20) {
+      return balance.token;
     }
     // Otherwise retrieve the safe chain's native token
     const safeNetworkData = SAFE_NETWORKS.find(
@@ -90,12 +86,7 @@ const AmountBalances = ({
 
   // Set token data in form state on initialisation. Ensures native token is always preselected
   useEffect(() => {
-    const isTokenInBalances = safeBalances?.some(
-      (b) => b.tokenAddress === selectedTokenData?.tokenAddress,
-    );
-    if (!isTokenInBalances) {
-      setSelectedTokenData(tokens[0]);
-    }
+    setSelectedTokenData(tokens[0]);
 
     // selectedTokenData and setSelectedTokenData cause infinite loop.
     // eslint-disable-next-line react-hooks/exhaustive-deps
