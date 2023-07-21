@@ -59,7 +59,7 @@ const UserProfilePage: FC = () => {
               />
             </div>
 
-            <div className="w-full h-px bg-gray-200" />
+            <span className="divider" />
 
             <div className={styles.row}>
               <LeftColumn
@@ -76,7 +76,7 @@ const UserProfilePage: FC = () => {
               </div>
             </div>
 
-            <div className="w-full h-px bg-gray-200" />
+            <span className="divider" />
 
             <div className={styles.row}>
               <LeftColumn
@@ -94,7 +94,7 @@ const UserProfilePage: FC = () => {
               </div>
             </div>
 
-            <div className="w-full h-px bg-gray-200" />
+            <span className="divider" />
 
             <div className={styles.row}>
               <LeftColumn

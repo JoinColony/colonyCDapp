@@ -127,9 +127,10 @@ const Select = <T extends any[]>({
       </button>
       {!isLoading && (
         <ul
-          className={`${isListRelative && 'relative'} ${styles.options} ${
-            isOptionsOpen ? styles.show : ''
-          }`}
+          className={clsx(styles.options, {
+            relative: isListRelative,
+            [styles.show]: isOptionsOpen,
+          })}
           tabIndex={-1}
           role="listbox"
           aria-activedescendant={

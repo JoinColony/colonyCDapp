@@ -38,7 +38,7 @@ const MainNavigation: FC<MainNavigationProps> = ({
   const navItems = useGetNavItems(name);
 
   return (
-    <div className="py-6 sm:py-0">
+    <div>
       <div className="hidden sm:block">
         <Nav items={navItems} />
       </div>

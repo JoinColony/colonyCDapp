@@ -486,7 +486,7 @@
   "members.subnav.make.payment": "Make payment",
   "members.subnav.gnosis.scan": "View on Gnosis Scan",
   "members.subnav.copy.wallet.address": "Copy wallet address",
-  "members.subnav.members.persmissions": "Change members permissions",
+  "members.subnav.members.permissions": "Change members permissions",
   "members.modal.title": "Managing a Colony member",
   "members.modal.description": "Select the action you’d like to take to this members account.",
   "members.modal.member": "Member:",

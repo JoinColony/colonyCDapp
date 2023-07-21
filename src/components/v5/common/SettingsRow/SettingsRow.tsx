@@ -19,6 +19,7 @@ const SettingsRow: FC<SettingsRowProps> = ({
   onChange,
   onClick,
   id,
+  register,
 }) => {
   const { formatMessage } = useIntl();
 
@@ -44,6 +45,7 @@ const SettingsRow: FC<SettingsRowProps> = ({
       {onChange && (
         <Switch
           id={id}
+          register={register}
           onChange={({ target }) => {
             onChange(target.checked);
           }}

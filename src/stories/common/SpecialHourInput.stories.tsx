@@ -48,7 +48,7 @@ const SpecialHourInputWithHooks = (args) => {
 
   return (
     <div className="text-right">
-      <form className="flex justify-end flex-col w-[8.875rem]">
+      <form className="flex items-end justify-end flex-col w-[8.875rem]">
         <SpecialInput
           {...args}
           register={register}

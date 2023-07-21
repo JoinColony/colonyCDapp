@@ -31,7 +31,7 @@ const SubNavigation: FC<SubNavigationProps> = ({
       {shouldPermissionsCanBeChanged && (
         <SubNavigationItem
           iconName="lock-key"
-          title="members.subnav.members.persmissions"
+          title="members.subnav.members.permissions"
         />
       )}
       <SubNavigationItem
@@ -42,7 +42,7 @@ const SubNavigation: FC<SubNavigationProps> = ({
         iconName="arrow-square-out"
         title="members.subnav.gnosis.scan"
       />
-      <span className="block h-px bg-gray-200 m-2" />
+      <span className="divider m-2" />
       <SubNavigationItem
         iconName="copy-simple"
         title="members.subnav.copy.wallet.address"
