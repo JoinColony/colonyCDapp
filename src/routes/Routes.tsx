@@ -49,6 +49,7 @@ import NotFoundRoute from './NotFoundRoute';
 import { ColonyContextProvider } from '~context/ColonyContext';
 import CreateColonyWizard from '~common/CreateColonyWizard';
 import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
+import ExpendituresPage from '~common/Expenditures/ExpendituresPage';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -177,6 +178,7 @@ const Routes = () => {
             </Default>
           }
         />
+        <Route path="/expenditures" element={<ExpendituresPage />} />
         {/* <WalletRequiredRoute
           isConnected={isConnected}
           didClaimProfile={didClaimProfile}

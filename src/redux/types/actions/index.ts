@@ -9,6 +9,7 @@ import { MessageActionTypes } from './message';
 import { UserActionTypes } from './user';
 import { MetacolonyVestingTypes } from './vesting';
 import { WalletActionTypes } from './wallet';
+import { ExpendituresActionTypes } from './expenditures';
 
 export { RootMotionMethodNames } from './motion';
 
@@ -100,7 +101,8 @@ export type AllActions =
   | UserActionTypes
   | MotionActionTypes
   | MetacolonyVestingTypes
-  | WalletActionTypes;
+  | WalletActionTypes
+  | ExpendituresActionTypes;
 
 export type Action<T extends AllActions['type']> = Extract<
   AllActions,
