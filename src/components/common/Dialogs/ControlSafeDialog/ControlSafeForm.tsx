@@ -115,7 +115,11 @@ const ControlSafeForm = ({
   } = useFormContext();
   const selectedSafe = watch('safe');
 
-  const { fields, append } = useFieldArray({
+  const {
+    fields,
+    append,
+    remove: removeTab,
+  } = useFieldArray({
     control,
     name: 'transactions',
   });
@@ -257,6 +261,7 @@ const ControlSafeForm = ({
               transactionIndex={index}
               transactionTabStatus={transactionTabStatus}
               handleTransactionTabStatus={setTransactionTabStatus}
+              removeTab={removeTab}
             />
           )}
           <div
