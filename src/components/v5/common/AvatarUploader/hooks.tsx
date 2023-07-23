@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { FileRejection } from 'react-dropzone';
+import { toast } from 'react-toastify';
 
 import { useAppContext, useCanEditProfile } from '~hooks';
 import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
@@ -10,6 +11,7 @@ import {
   getOptimisedThumbnail,
 } from '~images/optimisation';
 import { useUpdateUserProfileMutation } from '~gql';
+import Toast from '~shared/Extensions/Toast';
 
 export const useAvatarUploader = () => {
   const { updateUser } = useAppContext();
@@ -42,6 +44,16 @@ export const useAvatarUploader = () => {
       });
 
       await updateUser?.(user?.walletAddress, true);
+
+      toast.success(
+        <Toast
+          type="success"
+          title={{ id: 'upload.avatar.successfully.toast.title' }}
+          description={{
+            id: 'upload.avatar.successfully.toast.description',
+          }}
+        />,
+      );
     } catch (e) {
       if (e.message.includes('exceeded the maximum')) {
         setUploadAvatarError(DropzoneErrors.TOO_LARGE);

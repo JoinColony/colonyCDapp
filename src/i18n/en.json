@@ -744,5 +744,7 @@
   "too.large.file.error": "File size is too large, it should not exceed 1MB",
   "invalid.type.error": "Incorrect file format, must be .PNG, .JPG, or .SVG",
   "upload.failed": "Upload failed, please try again",
-  "tap.to.upload": "Tap to upload"
+  "tap.to.upload": "Tap to upload",
+  "upload.avatar.successfully.toast.title": "Profile image changed successfully",
+  "upload.avatar.successfully.toast.description": "You can update this again at any time"
 }
