@@ -22,6 +22,8 @@ export const useUserProfile = () => {
   const [editUser] = useUpdateUserProfileMutation();
   const { user } = useCanEditProfile();
   const { formatMessage } = useIntl();
+  const { profile } = user || {};
+  const avatarUrl = profile?.avatar || profile?.thumbnail;
 
   const isValidUsername = (username: string) => {
     return username ? new RegExp(USERNAME_REGEX).test(username) : false;
@@ -118,6 +120,6 @@ export const useUserProfile = () => {
     onSubmit,
     errors,
     isFormEdited: isDirty,
-    user,
+    avatarUrl,
   };
 };

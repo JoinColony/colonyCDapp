@@ -13,14 +13,14 @@ import Button from '~v5/shared/Button';
 import { useUserProfile } from './hooks';
 import { MAX_BIO_CHARS, MAX_DISPLAYNAME_CHARS } from './consts';
 import AvatarUploader from '~v5/common/AvatarUploader';
-import UserAvatar from '~shared/UserAvatar';
+import Avatar from '~v5/shared/Avatar';
 
 const displayName = 'v5.pages.UserProfilePage';
 
 const UserProfilePage: FC = () => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
-  const { register, handleSubmit, onSubmit, errors, user, isFormEdited } =
+  const { register, handleSubmit, onSubmit, errors, avatarUrl, isFormEdited } =
     useUserProfile();
 
   return (
@@ -61,9 +61,7 @@ const UserProfilePage: FC = () => {
               />
               <div className="w-full">
                 <AvatarUploader
-                  avatarPlaceholder={
-                    <UserAvatar user={user} size="m" preferThumbnail={false} />
-                  }
+                  avatarPlaceholder={<Avatar size="m" avatar={avatarUrl} />}
                 />
               </div>
             </div>

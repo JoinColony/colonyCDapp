@@ -34,7 +34,7 @@ const FileUpload: FC<FileUploadProps> = ({
 
   return (
     <div className="flex gap-2">
-      <div className="w-16">{placeholder}</div>
+      <div className="w-16 mr-4">{placeholder}</div>
       <div>
         <span className={styles.text}>
           {formatMessage({ id: 'avatar.uploader.info' })}
@@ -43,6 +43,7 @@ const FileUpload: FC<FileUploadProps> = ({
           className={clsx(styles.wrapper)}
           {...getRootProps({ 'aria-invalid': isDragReject })}
         >
+          <input {...getInputProps()} />
           {!!errorCode && (
             <ErrorContent
               errorCode={errorCode}
@@ -52,14 +53,10 @@ const FileUpload: FC<FileUploadProps> = ({
               fileRejections={fileRejections?.[0]?.file?.name}
             />
           )}
-          {isAvatarUploaded && (
+          {isAvatarUploaded && !errorCode && (
             <SuccessContent open={open} handleFileRemove={handleFileRemove} />
           )}
-          {!isAvatarUploaded && !errorCode && (
-            <DefaultContent>
-              <input {...getInputProps()} />
-            </DefaultContent>
-          )}
+          {!isAvatarUploaded && !errorCode && <DefaultContent open={open} />}
         </div>
       </div>
     </div>

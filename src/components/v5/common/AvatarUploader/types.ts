@@ -41,3 +41,5 @@ export type AvatarUploaderProps = {
   avatarPlaceholder: React.ReactElement;
   disabled?: boolean;
 };
+
+export type DefaultContentProps = Pick<ErrorContentProps, 'open'>;

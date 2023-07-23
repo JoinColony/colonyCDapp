@@ -1,13 +1,14 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import Icon from '~shared/Icon';
 import styles from './AvatarUploader.module.css';
+import { DefaultContentProps } from '../types';
 
 const displayName = 'v5.common.AvatarUploader.partials.SuccessContent';
 
-const DefaultContent: FC<PropsWithChildren> = ({ children }) => {
+const DefaultContent: FC<DefaultContentProps> = ({ open }) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -24,12 +25,17 @@ const DefaultContent: FC<PropsWithChildren> = ({ children }) => {
           </div>
         </div>
       </div>
-      {children}
       <div className="mb-[0.3rem] text-blue-400 text-2">
-        {formatMessage({ id: 'click.to.upload' })}{' '}
-        <span className="text-gray-600 text-1">
-          {formatMessage({ id: 'drag.and.drop' })}
-        </span>
+        <button
+          aria-label={formatMessage({ id: 'click.to.upload' })}
+          type="button"
+          onClick={open}
+        >
+          {formatMessage({ id: 'click.to.upload' })}{' '}
+          <span className="text-gray-600 text-1">
+            {formatMessage({ id: 'drag.and.drop' })}
+          </span>
+        </button>
       </div>
       <span className={styles.text}>
         {formatMessage({ id: 'avatar.uploader.text' })}
