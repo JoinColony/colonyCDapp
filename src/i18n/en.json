@@ -743,5 +743,6 @@
   "drag.and.drop": "or drag and drop",
   "too.large.file.error": "File size is too large, it should not exceed 1MB",
   "invalid.type.error": "Incorrect file format, must be .PNG, .JPG, or .SVG",
-  "upload.failed": "Upload failed, please try again"
+  "upload.failed": "Upload failed, please try again",
+  "tap.to.upload": "Tap to upload"
 }

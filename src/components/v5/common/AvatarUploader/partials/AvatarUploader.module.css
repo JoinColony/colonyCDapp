@@ -3,9 +3,13 @@
 }
 
 .wrapper {
-  @apply flex flex-col w-[31.25rem] cursor-pointer;
+  @apply flex md:flex-col w-full;
 }
 
 .contentWrapper {
-  @apply flex px-6 py-4 rounded border;
+  @apply flex px-6 py-4 rounded border w-full;
+}
+
+.flexCol {
+  @apply flex flex-col gap-2 w-full;
 }

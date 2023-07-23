@@ -5,11 +5,13 @@ import clsx from 'clsx';
 import Icon from '~shared/Icon';
 import styles from './AvatarUploader.module.css';
 import { DefaultContentProps } from '../types';
+import { useMobile } from '~hooks';
 
 const displayName = 'v5.common.AvatarUploader.partials.SuccessContent';
 
 const DefaultContent: FC<DefaultContentProps> = ({ open }) => {
   const { formatMessage } = useIntl();
+  const isMobile = useMobile();
 
   return (
     <div
@@ -27,14 +29,22 @@ const DefaultContent: FC<DefaultContentProps> = ({ open }) => {
       </div>
       <div className="mb-[0.3rem] text-blue-400 text-2">
         <button
-          aria-label={formatMessage({ id: 'click.to.upload' })}
+          aria-label={formatMessage({
+            id: isMobile ? 'tap.to.upload' : 'click.to.upload',
+          })}
           type="button"
           onClick={open}
         >
-          {formatMessage({ id: 'click.to.upload' })}{' '}
-          <span className="text-gray-600 text-1">
-            {formatMessage({ id: 'drag.and.drop' })}
-          </span>
+          {isMobile ? (
+            <span>{formatMessage({ id: 'tap.to.upload' })}</span>
+          ) : (
+            <>
+              {formatMessage({ id: 'click.to.upload' })}{' '}
+              <span className="text-gray-600 text-1">
+                {formatMessage({ id: 'drag.and.drop' })}
+              </span>
+            </>
+          )}
         </button>
       </div>
       <span className={styles.text}>
