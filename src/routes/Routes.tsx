@@ -22,7 +22,6 @@ import { Default, NavBar, UserLayout } from '~frame/RouteLayouts';
 import ColonyBackText from '~frame/ColonyBackText';
 import LandingPage from '~frame/LandingPage';
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
-import ExpendituresPage from '~common/Expenditures/ExpendituresPage';
 import { useAppContext, useMobile, useTitle } from '~hooks';
 
 import {
@@ -158,7 +157,6 @@ const Routes = () => {
           </Default>
         }
       />
-      <Route path="/expenditures" element={<ExpendituresPage />} />
 
       {/*
       <AlwaysAccesibleRoute
