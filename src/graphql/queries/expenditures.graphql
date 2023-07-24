@@ -1,0 +1,21 @@
+query GetColonyExpenditures($colonyAddress: ID!) {
+  getColony(id: $colonyAddress) {
+    expenditures {
+      items {
+        id
+        ownerAddress
+        status
+        slots {
+          id
+          recipientAddress
+          claimDelay
+          payoutModifier
+          payouts {
+            tokenAddress
+            amount
+          }
+        }
+      }
+    }
+  }
+}

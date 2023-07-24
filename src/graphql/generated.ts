@@ -5764,6 +5764,13 @@ export type GetColonyDecisionsQueryVariables = Exact<{
 
 export type GetColonyDecisionsQuery = { __typename?: 'Query', getColonyDecisionByColonyAddress?: { __typename?: 'ModelColonyDecisionConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyDecision', title: string, description: string, motionDomainId: number, walletAddress: string, createdAt: string, actionId: string, colonyAddress: string } | null> } | null };
 
+export type GetColonyExpendituresQueryVariables = Exact<{
+  colonyAddress: Scalars['ID'];
+}>;
+
+
+export type GetColonyExpendituresQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', expenditures?: { __typename?: 'ModelExpenditureConnection', items: Array<{ __typename?: 'Expenditure', id: string, ownerAddress: string, status: ExpenditureStatus, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string }> | null }> } | null> } | null } | null };
+
 export type GetMotionStateQueryVariables = Exact<{
   input: GetMotionStateInput;
 }>;
@@ -7415,6 +7422,57 @@ export function useGetColonyDecisionsLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetColonyDecisionsQueryHookResult = ReturnType<typeof useGetColonyDecisionsQuery>;
 export type GetColonyDecisionsLazyQueryHookResult = ReturnType<typeof useGetColonyDecisionsLazyQuery>;
 export type GetColonyDecisionsQueryResult = Apollo.QueryResult<GetColonyDecisionsQuery, GetColonyDecisionsQueryVariables>;
+export const GetColonyExpendituresDocument = gql`
+    query GetColonyExpenditures($colonyAddress: ID!) {
+  getColony(id: $colonyAddress) {
+    expenditures {
+      items {
+        id
+        ownerAddress
+        status
+        slots {
+          id
+          recipientAddress
+          claimDelay
+          payoutModifier
+          payouts {
+            tokenAddress
+            amount
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetColonyExpendituresQuery__
+ *
+ * To run a query within a React component, call `useGetColonyExpendituresQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetColonyExpendituresQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetColonyExpendituresQuery({
+ *   variables: {
+ *      colonyAddress: // value for 'colonyAddress'
+ *   },
+ * });
+ */
+export function useGetColonyExpendituresQuery(baseOptions: Apollo.QueryHookOptions<GetColonyExpendituresQuery, GetColonyExpendituresQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetColonyExpendituresQuery, GetColonyExpendituresQueryVariables>(GetColonyExpendituresDocument, options);
+      }
+export function useGetColonyExpendituresLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyExpendituresQuery, GetColonyExpendituresQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetColonyExpendituresQuery, GetColonyExpendituresQueryVariables>(GetColonyExpendituresDocument, options);
+        }
+export type GetColonyExpendituresQueryHookResult = ReturnType<typeof useGetColonyExpendituresQuery>;
+export type GetColonyExpendituresLazyQueryHookResult = ReturnType<typeof useGetColonyExpendituresLazyQuery>;
+export type GetColonyExpendituresQueryResult = Apollo.QueryResult<GetColonyExpendituresQuery, GetColonyExpendituresQueryVariables>;
 export const GetMotionStateDocument = gql`
     query GetMotionState($input: GetMotionStateInput!) {
   getMotionState(input: $input)
