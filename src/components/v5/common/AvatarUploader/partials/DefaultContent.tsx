@@ -21,8 +21,10 @@ const DefaultContent: FC<DefaultContentProps> = ({ open }) => {
       )}
     >
       <div className={styles.iconWrapper}>
-        <div className={`bg-gray-50 ${styles.iconCircle}`}>
-          <div className={`bg-gray-200 text-gray-600 ${styles.iconCircle}`}>
+        <div className={`bg-gray-50 w-9 h-9 ${styles.iconCircle}`}>
+          <div
+            className={`bg-gray-200 text-gray-600 w-7 h-7 ${styles.iconCircle}`}
+          >
             <Icon name="cloud-arrow-up" appearance={{ size: 'small' }} />
           </div>
         </div>
