@@ -162,11 +162,3 @@ export function* updateColonyTokens(
     }),
   );
 }
-
-export const getColonyMetadataDatabaseId = (
-  colonyAddress: string,
-  txHash: number,
-) => {
-  // Temp id we use to match metadata object with colony in block ingestor.
-  return `${colonyAddress}_motion-${txHash}`;
-};
