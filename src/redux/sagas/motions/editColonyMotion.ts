@@ -11,7 +11,8 @@ import {
   CreateColonyMetadataMutation,
   CreateColonyMetadataMutationVariables,
 } from '~gql';
-import { getMetadataDatabaseId } from '~utils/domains';
+import { getPendingMetadataDatabaseId } from '~utils/databaseId';
+
 import { getColonyManager, putError, takeFrom } from '../utils';
 import {
   createTransaction,
@@ -190,7 +191,7 @@ function* editColonyMotion({
         mutation: CreateColonyMetadataDocument,
         variables: {
           input: {
-            id: getMetadataDatabaseId(colonyAddress, txHash),
+            id: getPendingMetadataDatabaseId(colonyAddress, txHash),
             displayName: colonyDisplayName ?? colony.metadata.displayName,
             avatar: colonyAvatarImage,
             thumbnail: colonyThumbnail,
