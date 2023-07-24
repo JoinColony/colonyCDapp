@@ -3,25 +3,75 @@ import { takeEvery, fork, call, put } from 'redux-saga/effects';
 import { BigNumber } from 'ethers';
 
 import { Action, ActionTypes, AllActions } from '~redux';
+import { ColonyManager } from '~context';
 
-import { createTransaction, getTxChannel } from '../transactions';
-import { putError, takeFrom } from '../utils';
+import {
+  createTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
+import { getColonyManager, putError, takeFrom } from '../utils';
 
 export function* createExpenditure({
   meta,
-  payload: { colonyAddress },
+  payload: { colonyAddress, recipientAddress, tokenAddress, amount },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
+  const colonyManager: ColonyManager = yield getColonyManager();
+  const colonyClient = yield colonyManager.getClient(
+    ClientType.ColonyClient,
+    colonyAddress,
+  );
+
   const txChannel = yield call(getTxChannel, meta.id);
+  const batchKey = 'createExpenditure';
 
   try {
-    yield fork(createTransaction, meta.id, {
+    const { makeExpenditure, setRecipient, setPayout } =
+      yield createTransactionChannels(meta.id, [
+        'makeExpenditure',
+        'setRecipient',
+        'setPayout',
+      ]);
+
+    yield fork(createTransaction, makeExpenditure.id, {
       context: ClientType.ColonyClient,
       methodName: 'makeExpenditure',
       identifier: colonyAddress,
       params: [1, BigNumber.from(2).pow(256).sub(1), 1],
+      group: {
+        key: batchKey,
+        id: meta.id,
+        index: 0,
+      },
     });
 
-    yield takeFrom(txChannel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    const expenditureId = yield call(colonyClient.getExpenditureCount);
+
+    yield fork(createTransaction, setRecipient.id, {
+      context: ClientType.ColonyClient,
+      methodName: 'setExpenditureRecipient',
+      identifier: colonyAddress,
+      params: [expenditureId, 1, recipientAddress],
+      group: {
+        key: batchKey,
+        id: meta.id,
+        index: 1,
+      },
+    });
+
+    yield fork(createTransaction, setPayout.id, {
+      context: ClientType.ColonyClient,
+      methodName: 'setExpenditurePayout(uint256,uint256,address,uint256)',
+      identifier: colonyAddress,
+      params: [expenditureId, 1, tokenAddress, amount],
+      group: {
+        key: batchKey,
+        id: meta.id,
+        index: 2,
+      },
+    });
 
     yield put<AllActions>({
       type: ActionTypes.EXPENDITURE_CREATE_SUCCESS,
