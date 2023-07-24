@@ -13,6 +13,7 @@ import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import Switch from '~v5/common/Fields/Switch';
+import { multiLineTextEllipsis } from '~utils/strings';
 
 const displayName = 'v5.pages.UserPreferencesPage';
 
@@ -79,10 +80,12 @@ const UserPreferencesPage = () => {
             <span className="divider" />
             <div className={styles.row}>
               <div className="flex md:flex-row flex-col items-center justify-between p-3 bg-gray-50 rounded-lg w-full">
-                <div className="flex items-center">
+                <div className="flex items-center mb-3 md:mb-0">
                   <Icon name="cardholder" appearance={{ size: 'small' }} />
                   <span className="text-md ml-2 truncate block w-full">
-                    {user.walletAddress}
+                    {isMobile
+                      ? multiLineTextEllipsis(user.walletAddress, 20)
+                      : user.walletAddress}
                   </span>
                 </div>
                 <Button

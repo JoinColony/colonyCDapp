@@ -3,5 +3,5 @@
 }
 
 .switchRow {
-  @apply flex md:justify-between md:gap-[6.5rem];
+  @apply flex justify-between md:gap-[6.5rem];
 }
