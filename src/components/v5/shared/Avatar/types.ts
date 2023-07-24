@@ -8,4 +8,4 @@ export interface AvatarProps {
   title?: string;
 }
 
-export type AvatarSize = 'xxs' | 'xs' | 'sm' | 's' | 'm' | 'xm' | 'l' | 'xl';
+export type AvatarSize = 'xxs' | 'xs' | 'sm' | 's' | 'm' | 'md' | 'l' | 'xl';

@@ -7,7 +7,7 @@ import styles from './AvatarUploader.module.css';
 import { DefaultContentProps } from '../types';
 import { useMobile } from '~hooks';
 
-const displayName = 'v5.common.AvatarUploader.partials.SuccessContent';
+const displayName = 'v5.common.AvatarUploader.partials.DefaultContent';
 
 const DefaultContent: FC<DefaultContentProps> = ({ open }) => {
   const { formatMessage } = useIntl();
@@ -20,7 +20,7 @@ const DefaultContent: FC<DefaultContentProps> = ({ open }) => {
         styles.contentWrapper,
       )}
     >
-      <div className="w-[2.55rem] mb-[0.5rem]">
+      <div className="w-10 mb-2">
         <div className="bg-gray-50 p-[0.4rem] rounded-full flex items-start justify-center">
           <div className="p-[0.3rem] bg-gray-200 rounded-full flex justify-center text-gray-600">
             <Icon name="cloud-arrow-up" appearance={{ size: 'small' }} />

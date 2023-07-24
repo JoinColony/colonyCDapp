@@ -5,7 +5,7 @@ import { SpinnerLoader } from '~shared/Preloaders';
 import { useAvatarUploader } from './hooks';
 import { AvatarUploaderProps } from './types';
 
-const displayName = 'v5.common.UserProfilePage.partials.AvatarUploader';
+const displayName = 'v5.common.AvatarUploader';
 
 const AvatarUploader: FC<AvatarUploaderProps> = ({
   avatarPlaceholder,

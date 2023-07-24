@@ -61,7 +61,7 @@ const UserProfilePage: FC = () => {
               />
               <div className="w-full">
                 <AvatarUploader
-                  avatarPlaceholder={<Avatar size="xm" avatar={avatarUrl} />}
+                  avatarPlaceholder={<Avatar size="md" avatar={avatarUrl} />}
                 />
               </div>
             </div>
