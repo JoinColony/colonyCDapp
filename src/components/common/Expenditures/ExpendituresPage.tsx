@@ -1,24 +1,14 @@
 import React from 'react';
-import { useColonyContext } from '~hooks';
-import { ActionTypes } from '~redux';
-import { ActionButton } from '~shared/Button';
+import { Route, Routes } from 'react-router-dom';
+
+import ExpendituresList from './ExpendituresList';
 
 const ExpendituresPage = () => {
-  const { colony } = useColonyContext();
   return (
-    <div>
-      Expenditures
-      <div>
-        <ActionButton
-          actionType={ActionTypes.EXPENDITURE_CREATE}
-          values={{
-            colonyAddress: colony?.colonyAddress ?? '',
-          }}
-        >
-          Create expenditure
-        </ActionButton>
-      </div>
-    </div>
+    <Routes>
+      <Route path="/" element={<ExpendituresList />} />
+      <Route path="/:extensionId" element={<>Expenditure details page</>} />
+    </Routes>
   );
 };
 

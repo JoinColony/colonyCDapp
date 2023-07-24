@@ -18,6 +18,7 @@ import NotFoundRoute from '~routes/NotFoundRoute';
 import ColonyExtensions from '~common/ColonyExtensions';
 import ExtensionDetails from '~common/Extensions/ExtensionDetails';
 import { useColonyContext } from '~hooks';
+import ExpendituresPage from '~common/Expenditures';
 
 import ColonyHomeLayout from './ColonyHomeLayout';
 
@@ -68,6 +69,7 @@ const ColonyHome = () => {
               path={COLONY_EXTENSION_DETAILS_ROUTE}
               element={<ExtensionDetails />}
             />
+            <Route path="/expenditures/*" element={<ExpendituresPage />} />
           </Route>
 
           <Route path="*" element={<NotFoundRoute />} />
