@@ -19,5 +19,5 @@
 }
 
 .iconCircle {
-  @apply p-[0.35rem] rounded-full flex items-start justify-center;
+  @apply p-[0.25rem] rounded-full flex items-start justify-center;
 }
