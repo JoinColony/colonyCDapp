@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { ColonyRole, Id } from '@colony/colony-js';
@@ -166,9 +166,7 @@ const ControlSafeForm = ({
           <RawTransactionSection
             colony={colony}
             disabledInput={disabledInputs}
-            transactionFormIndex={0}
-            handleInputChange={() => console.log('todo')}
-            handleValidation={() => console.log('todo')}
+            transactionIndex={transactionIndex}
           />
         );
       case TransactionTypes.CONTRACT_INTERACTION:
