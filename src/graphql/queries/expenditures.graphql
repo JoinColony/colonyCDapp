@@ -3,20 +3,14 @@ query GetColonyExpenditures($colonyAddress: ID!) {
     id
     expenditures {
       items {
-        id
-        ownerAddress
-        status
-        slots {
-          id
-          recipientAddress
-          claimDelay
-          payoutModifier
-          payouts {
-            tokenAddress
-            amount
-          }
-        }
+        ...Expenditure
       }
     }
+  }
+}
+
+query GetExpenditure($expenditureId: ID!) {
+  getExpenditure(id: $expenditureId) {
+    ...Expenditure
   }
 }

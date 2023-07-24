@@ -5545,6 +5545,8 @@ export type DomainFragment = { __typename?: 'Domain', id: string, nativeId: numb
 
 export type DomainMetadataFragment = { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null };
 
+export type ExpenditureFragment = { __typename?: 'Expenditure', id: string, ownerAddress: string, status: ExpenditureStatus, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string }> | null }> };
+
 export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number, params?: { __typename?: 'ExtensionParams', votingReputation?: { __typename?: 'VotingReputationParams', maxVoteFraction: string } | null } | null };
 
 export type ExtensionDisplayFragmentFragment = { __typename?: 'ColonyExtension', hash: string, address: string };
@@ -5766,6 +5768,13 @@ export type GetColonyExpendituresQueryVariables = Exact<{
 
 
 export type GetColonyExpendituresQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, expenditures?: { __typename?: 'ModelExpenditureConnection', items: Array<{ __typename?: 'Expenditure', id: string, ownerAddress: string, status: ExpenditureStatus, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string }> | null }> } | null> } | null } | null };
+
+export type GetExpenditureQueryVariables = Exact<{
+  expenditureId: Scalars['ID'];
+}>;
+
+
+export type GetExpenditureQuery = { __typename?: 'Query', getExpenditure?: { __typename?: 'Expenditure', id: string, ownerAddress: string, status: ExpenditureStatus, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string }> | null }> } | null };
 
 export type GetMotionStateQueryVariables = Exact<{
   input: GetMotionStateInput;
@@ -6409,6 +6418,23 @@ export const WatchListItemFragmentDoc = gql`
   createdAt
 }
     ${WatchedColonyFragmentDoc}`;
+export const ExpenditureFragmentDoc = gql`
+    fragment Expenditure on Expenditure {
+  id
+  ownerAddress
+  status
+  slots {
+    id
+    recipientAddress
+    claimDelay
+    payoutModifier
+    payouts {
+      tokenAddress
+      amount
+    }
+  }
+}
+    `;
 export const UserTokenBalanceDataFragmentDoc = gql`
     fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
   balance
@@ -7425,24 +7451,12 @@ export const GetColonyExpendituresDocument = gql`
     id
     expenditures {
       items {
-        id
-        ownerAddress
-        status
-        slots {
-          id
-          recipientAddress
-          claimDelay
-          payoutModifier
-          payouts {
-            tokenAddress
-            amount
-          }
-        }
+        ...Expenditure
       }
     }
   }
 }
-    `;
+    ${ExpenditureFragmentDoc}`;
 
 /**
  * __useGetColonyExpendituresQuery__
@@ -7471,6 +7485,41 @@ export function useGetColonyExpendituresLazyQuery(baseOptions?: Apollo.LazyQuery
 export type GetColonyExpendituresQueryHookResult = ReturnType<typeof useGetColonyExpendituresQuery>;
 export type GetColonyExpendituresLazyQueryHookResult = ReturnType<typeof useGetColonyExpendituresLazyQuery>;
 export type GetColonyExpendituresQueryResult = Apollo.QueryResult<GetColonyExpendituresQuery, GetColonyExpendituresQueryVariables>;
+export const GetExpenditureDocument = gql`
+    query GetExpenditure($expenditureId: ID!) {
+  getExpenditure(id: $expenditureId) {
+    ...Expenditure
+  }
+}
+    ${ExpenditureFragmentDoc}`;
+
+/**
+ * __useGetExpenditureQuery__
+ *
+ * To run a query within a React component, call `useGetExpenditureQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetExpenditureQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetExpenditureQuery({
+ *   variables: {
+ *      expenditureId: // value for 'expenditureId'
+ *   },
+ * });
+ */
+export function useGetExpenditureQuery(baseOptions: Apollo.QueryHookOptions<GetExpenditureQuery, GetExpenditureQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetExpenditureQuery, GetExpenditureQueryVariables>(GetExpenditureDocument, options);
+      }
+export function useGetExpenditureLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetExpenditureQuery, GetExpenditureQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetExpenditureQuery, GetExpenditureQueryVariables>(GetExpenditureDocument, options);
+        }
+export type GetExpenditureQueryHookResult = ReturnType<typeof useGetExpenditureQuery>;
+export type GetExpenditureLazyQueryHookResult = ReturnType<typeof useGetExpenditureLazyQuery>;
+export type GetExpenditureQueryResult = Apollo.QueryResult<GetExpenditureQuery, GetExpenditureQueryVariables>;
 export const GetMotionStateDocument = gql`
     query GetMotionState($input: GetMotionStateInput!) {
   getMotionState(input: $input)

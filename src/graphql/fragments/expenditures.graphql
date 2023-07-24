@@ -1,0 +1,15 @@
+fragment Expenditure on Expenditure {
+  id
+  ownerAddress
+  status
+  slots {
+    id
+    recipientAddress
+    claimDelay
+    payoutModifier
+    payouts {
+      tokenAddress
+      amount
+    }
+  }
+}
