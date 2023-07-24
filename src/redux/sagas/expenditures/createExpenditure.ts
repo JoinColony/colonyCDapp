@@ -13,8 +13,15 @@ import {
 import { getColonyManager, putError, takeFrom } from '../utils';
 
 export function* createExpenditure({
+  meta: { id: metaId, navigate },
   meta,
-  payload: { colonyAddress, recipientAddress, tokenAddress, amount },
+  payload: {
+    colonyName,
+    colonyAddress,
+    recipientAddress,
+    tokenAddress,
+    amount,
+  },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
   const colonyClient = yield colonyManager.getClient(
@@ -22,12 +29,12 @@ export function* createExpenditure({
     colonyAddress,
   );
 
-  const txChannel = yield call(getTxChannel, meta.id);
+  const txChannel = yield call(getTxChannel, metaId);
   const batchKey = 'createExpenditure';
 
   try {
     const { makeExpenditure, setRecipient, setPayout } =
-      yield createTransactionChannels(meta.id, [
+      yield createTransactionChannels(metaId, [
         'makeExpenditure',
         'setRecipient',
         'setPayout',
@@ -56,7 +63,7 @@ export function* createExpenditure({
       params: [expenditureId, 1, recipientAddress],
       group: {
         key: batchKey,
-        id: meta.id,
+        id: metaId,
         index: 1,
       },
     });
@@ -68,7 +75,7 @@ export function* createExpenditure({
       params: [expenditureId, 1, tokenAddress, amount],
       group: {
         key: batchKey,
-        id: meta.id,
+        id: metaId,
         index: 2,
       },
     });
@@ -78,6 +85,8 @@ export function* createExpenditure({
       payload: {},
       meta,
     });
+
+    navigate(`/colony/${colonyName}/expenditures/${expenditureId}`);
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   } finally {

@@ -1,14 +1,13 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import ExpendituresPage from './ExpendituresPage';
-import ExpenditureDetailsPage from './ExpenditureDetailsPage';
+import ExpendituresPage from './ExpendituresPage/ExpendituresPage';
 
 const Expenditures = () => {
   return (
     <Routes>
       <Route path="/" element={<ExpendituresPage />} />
-      <Route path="/:extensionId" element={<ExpenditureDetailsPage />} />
+      <Route path="/:extensionId" element={<>Expenditure details page</>} />
     </Routes>
   );
 };

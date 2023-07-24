@@ -3,8 +3,9 @@ import React from 'react';
 import { useColonyContext } from '~hooks';
 import { Form, Input } from '~shared/Fields';
 
-import styles from './ExpendituresPage.module.css';
 import ExpenditureActionButton from './ExpenditureActionButton';
+
+import styles from './ExpendituresPage/ExpendituresPage.module.css';
 
 interface FormValues {
   recipientAddress: string;

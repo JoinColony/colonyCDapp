@@ -5733,7 +5733,7 @@ export type GetColonyExtensionsQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyExtensionsQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number, params?: { __typename?: 'ExtensionParams', votingReputation?: { __typename?: 'VotingReputationParams', maxVoteFraction: string } | null } | null } | null> } | null } | null };
+export type GetColonyExtensionsQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number, params?: { __typename?: 'ExtensionParams', votingReputation?: { __typename?: 'VotingReputationParams', maxVoteFraction: string } | null } | null } | null> } | null } | null };
 
 export type GetColonyExtensionQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -5765,7 +5765,7 @@ export type GetColonyExpendituresQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyExpendituresQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', expenditures?: { __typename?: 'ModelExpenditureConnection', items: Array<{ __typename?: 'Expenditure', id: string, ownerAddress: string, status: ExpenditureStatus, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string }> | null }> } | null> } | null } | null };
+export type GetColonyExpendituresQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, expenditures?: { __typename?: 'ModelExpenditureConnection', items: Array<{ __typename?: 'Expenditure', id: string, ownerAddress: string, status: ExpenditureStatus, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string }> | null }> } | null> } | null } | null };
 
 export type GetMotionStateQueryVariables = Exact<{
   input: GetMotionStateInput;
@@ -7253,6 +7253,7 @@ export type GetMetacolonyQueryResult = Apollo.QueryResult<GetMetacolonyQuery, Ge
 export const GetColonyExtensionsDocument = gql`
     query GetColonyExtensions($colonyAddress: ID!) {
   getColony(id: $colonyAddress) {
+    id
     extensions(filter: {isDeleted: {eq: false}}) {
       items {
         ...Extension
@@ -7421,6 +7422,7 @@ export type GetColonyDecisionsQueryResult = Apollo.QueryResult<GetColonyDecision
 export const GetColonyExpendituresDocument = gql`
     query GetColonyExpenditures($colonyAddress: ID!) {
   getColony(id: $colonyAddress) {
+    id
     expenditures {
       items {
         id
