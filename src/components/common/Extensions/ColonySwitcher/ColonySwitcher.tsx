@@ -1,90 +1,73 @@
-import React, { useState } from 'react';
-import { usePopperTooltip } from 'react-popper-tooltip';
+import React, { FC } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 
-import { useDetectClickOutside, useAppContext, useMobile } from '~hooks';
 import ColoniesDropdown from './partials/ColoniesDropdown';
-import { useSelectedColony } from './hooks';
-import { SpinnerLoader } from '~shared/Preloaders';
 import ColonyAvatarWrapper from './partials/ColonyAvatarWrapper';
 import ColonyDropdownMobile from './partials/ColonyDropdownMobile';
 import styles from './ColonySwitcher.module.css';
-import { CloseButton } from '~v5/shared/Button';
+import { useColonyContext, useMobile, useUserReputation } from '~hooks';
+import { useHeader } from '~frame/Extensions/Header/hooks';
+import NavigationTools from '../NavigationTools';
 
 const displayName = 'common.Extensions.ColonySwitcher';
 
-const ColonySwitcher = () => {
-  const { user, userLoading } = useAppContext();
-  const [isOpen, setIsOpen] = useState<boolean>();
+const ColonySwitcher: FC = () => {
+  const isMobile = useMobile();
+  const { formatMessage } = useIntl();
+
+  const { colony } = useColonyContext();
+  const {
+    colonyToDisplayAddress,
+    colonyToDisplay,
+    sortByDate,
+    userLoading,
+    user,
+    wallet,
+    getTooltipProps,
+    setTooltipRef,
+    isMainMenuVisible,
+    setTriggerRef,
+    visible,
+  } = useHeader();
+
+  const { profile } = user || {};
+  const { colonyAddress, nativeToken } = colony || {};
+  const { userReputation, totalReputation } = useUserReputation(
+    colonyAddress,
+    wallet?.address,
+  );
 
   const { items: watchlist = [] } = user?.watchlist || {};
 
-  const { formatMessage } = useIntl();
-  const { colonyToDisplay, colonyToDisplayAddress } =
-    useSelectedColony(watchlist);
-  const isMobile = useMobile();
-  const popperTooltipOffset = !isMobile ? [120, 8] : [0, 8];
-
-  const sortByDate = (firstWatchEntry, secondWatchEntry) => {
-    const firstWatchTime = new Date(firstWatchEntry?.createdAt || 1).getTime();
-    const secondWatchTime = new Date(
-      secondWatchEntry?.createdAt || 1,
-    ).getTime();
-    return firstWatchTime - secondWatchTime;
-  };
-
-  const ref = useDetectClickOutside({ onTriggered: () => setIsOpen(false) });
-  const { getTooltipProps, setTooltipRef, setTriggerRef } = usePopperTooltip(
-    {
-      delayShow: 200,
-      delayHide: 200,
-      placement: 'bottom',
-      trigger: 'click',
-      visible: isOpen,
-      interactive: true,
-    },
-    {
-      modifiers: [
-        {
-          name: 'offset',
-          options: {
-            offset: popperTooltipOffset,
-          },
-        },
-      ],
-    },
-  );
-
-  const watchlistSorted = [...watchlist].sort(sortByDate);
+  const isCloseButtonVisible = (isMainMenuVisible || visible) && isMobile;
 
   return (
-    <div className="flex justify-between relative" ref={ref}>
+    <div className="flex justify-between relative">
+      {/* @TODO It should be placed i a separate component Colony Switcher */}
       <button
-        aria-label={formatMessage({ id: 'ariaLabel.openDropdown' })}
-        className={clsx('flex items-center hover:text-gray-600', {
-          'w-[3.5rem]': !isMobile,
+        aria-label={formatMessage({
+          id: visible ? 'ariaLabel.closeDropdown' : 'ariaLabel.openDropdown',
         })}
-        onClick={() => setIsOpen((prevState) => !prevState)}
+        ref={setTriggerRef}
+        className="flex items-center justify-between transition-colors duration-normal hover:text-blue-400"
         type="button"
       >
         <ColonyAvatarWrapper
-          isOpen={isOpen}
+          isOpen={visible || isMainMenuVisible}
           isMobile={isMobile}
-          colonyToDisplay={colonyToDisplay}
           colonyToDisplayAddress={colonyToDisplayAddress}
-          setTriggerRef={setTriggerRef}
+          colonyToDisplay={isCloseButtonVisible && colonyToDisplay}
         />
       </button>
-      {/* @TODO: add wallet buttons */}
-      {isOpen && (
-        <div className="h-auto absolute top-[8.1rem] sm:top-[2.3rem]">
+      {visible && (
+        <div className="h-auto absolute top-[3.5rem] sm:top-[2.25rem]">
           {!isMobile && (
             <div
               ref={setTooltipRef}
               {...getTooltipProps({
                 className: clsx(
-                  `${styles.tooltipContainer} h-[24.75rem] p-1 flex justify-center z-[9999] tooltip-container`,
+                  `${styles.tooltipContainer} p-1 flex justify-start z-[9999] tooltip-container`,
                   {
                     'w-[26.75rem] border-none shadow-none': isMobile,
                     'w-[15.1875rem]': !isMobile,
@@ -92,36 +75,46 @@ const ColonySwitcher = () => {
                 ),
               })}
             >
-              {userLoading && (
-                <div className="h-[24.75rem] p-1 flex justify-center">
-                  <SpinnerLoader appearance={{ size: 'medium' }} />
-                </div>
-              )}
-              {!!watchlist.length && !userLoading && (
-                <ColoniesDropdown watchlist={watchlistSorted} />
+              {!!watchlist.length && !userLoading ? (
+                <ColoniesDropdown watchlist={[...watchlist].sort(sortByDate)} />
+              ) : (
+                <p className="text-sm">
+                  {formatMessage({ id: 'missing.colonies' })}
+                </p>
               )}
             </div>
           )}
           {isMobile && (
-            <ColonyDropdownMobile isOpen={isOpen} userLoading={userLoading}>
-              {!!watchlist.length && !userLoading && (
-                <ColoniesDropdown
-                  watchlist={watchlistSorted}
-                  isMobile={isMobile}
-                />
-              )}
-            </ColonyDropdownMobile>
+            <div
+              ref={setTooltipRef}
+              {...getTooltipProps({
+                className: clsx(`flex justify-start z-[9999]`),
+              })}
+            >
+              <ColonyDropdownMobile isOpen={visible} userLoading={userLoading}>
+                <div className={styles.mobileButtons}>
+                  <NavigationTools
+                    nativeToken={nativeToken}
+                    totalReputation={totalReputation}
+                    userName={profile?.displayName || user?.name || ''}
+                    userReputation={userReputation}
+                    user={user}
+                  />
+                </div>
+                {watchlist.length ? (
+                  <ColoniesDropdown
+                    watchlist={[...watchlist].sort(sortByDate)}
+                    isMobile={isMobile}
+                  />
+                ) : (
+                  <p className="text-sm px-6">
+                    {formatMessage({ id: 'missing.colonies' })}
+                  </p>
+                )}
+              </ColonyDropdownMobile>
+            </div>
           )}
         </div>
-      )}
-      {isMobile && isOpen && (
-        <CloseButton
-          aria-label={formatMessage({ id: 'ariaLabel.closeDropdown' })}
-          onClick={() => setIsOpen(false)}
-          className={clsx({
-            'w-[3.5rem]': !isMobile,
-          })}
-        />
       )}
     </div>
   );

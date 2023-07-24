@@ -1,9 +1,5 @@
 import { Colony, WatchListItem } from '~types';
 
-export interface ColonySwitcherProps {
-  watchListMock?: (WatchListItem | null)[];
-}
-
 export interface ColoniesDropdownProps {
   watchlist: (WatchListItem | null)[];
   isMobile?: boolean;
