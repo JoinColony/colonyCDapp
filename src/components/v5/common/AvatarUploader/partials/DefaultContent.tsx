@@ -20,14 +20,14 @@ const DefaultContent: FC<DefaultContentProps> = ({ open }) => {
         styles.contentWrapper,
       )}
     >
-      <div className="w-10 mb-2">
-        <div className="bg-gray-50 p-[0.4rem] rounded-full flex items-start justify-center">
-          <div className="p-[0.3rem] bg-gray-200 rounded-full flex justify-center text-gray-600">
+      <div className={styles.iconWrapper}>
+        <div className={`bg-gray-50 ${styles.iconCircle}`}>
+          <div className={`bg-gray-200 text-gray-600 ${styles.iconCircle}`}>
             <Icon name="cloud-arrow-up" appearance={{ size: 'small' }} />
           </div>
         </div>
       </div>
-      <div className="mb-[0.3rem] text-blue-400 text-2">
+      <div className="mb-1 text-blue-400 text-2">
         <button
           aria-label={formatMessage({
             id: isMobile ? 'tap.to.upload' : 'click.to.upload',

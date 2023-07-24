@@ -31,9 +31,11 @@ const ErrorContent: FC<ErrorContentProps> = ({
         styles.contentWrapper,
       )}
     >
-      <div className="w-10 mb-2">
-        <div className="bg-negative-100 p-[0.4rem] rounded-full flex items-start justify-center">
-          <div className="p-[0.3rem] bg-negative-200 rounded-full flex justify-center text-negative-400">
+      <div className={styles.iconWrapper}>
+        <div className={`bg-negative-100 ${styles.iconCircle}`}>
+          <div
+            className={`bg-negative-200 text-negative-400 ${styles.iconCircle}`}
+          >
             <Icon name="cloud-arrow-up" appearance={{ size: 'small' }} />
           </div>
         </div>

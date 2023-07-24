@@ -13,3 +13,11 @@
 .flexCol {
   @apply flex flex-col gap-2 w-full;
 }
+
+.iconWrapper {
+  @apply w-10 mb-2;
+}
+
+.iconCircle {
+  @apply p-[0.35rem] rounded-full flex items-start justify-center;
+}
