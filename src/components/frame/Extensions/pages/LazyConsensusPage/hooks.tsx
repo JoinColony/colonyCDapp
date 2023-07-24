@@ -116,6 +116,7 @@ export const useLazyConsensusPage = (
       .number()
       .positive('')
       .required('')
+      .typeError(formatMessage({ id: 'special.hour.input.error.min.value' }))
       .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
       .max(
         getMaxInputValues?.[4]?.maxValue,
@@ -128,6 +129,7 @@ export const useLazyConsensusPage = (
       .number()
       .positive('')
       .required('')
+      .typeError(formatMessage({ id: 'special.hour.input.error.min.value' }))
       .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
       .max(
         getMaxInputValues?.[5]?.maxValue,
@@ -140,6 +142,7 @@ export const useLazyConsensusPage = (
       .number()
       .positive('')
       .required('')
+      .typeError(formatMessage({ id: 'special.hour.input.error.min.value' }))
       .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
       .max(
         getMaxInputValues?.[6]?.maxValue,
@@ -152,6 +155,7 @@ export const useLazyConsensusPage = (
       .number()
       .positive('')
       .required('')
+      .typeError(formatMessage({ id: 'special.hour.input.error.min.value' }))
       .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
       .max(
         getMaxInputValues?.[7]?.maxValue,
@@ -217,6 +221,13 @@ export const useLazyConsensusPage = (
                 watch: methods.watch,
                 name: paramName,
               },
+              accordionItem: [
+                {
+                  id: 'step-0-1',
+                  header: 'Example scenario',
+                  content: `If a team has 100 reputation points between them, and the Required Stake is 5%, then 5 tokens would need to be staked to either support or object to a motion.`,
+                },
+              ],
               maxValue: maxValue || validation?.tests[2].OPTIONS.params.max,
             };
           },

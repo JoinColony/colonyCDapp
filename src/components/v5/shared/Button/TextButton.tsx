@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { TextButtonProps } from './types';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
 import styles from './TextButton.module.css';
+import Icon from '~shared/Icon';
 
 const displayName = 'v5.Button.TextButton';
 
@@ -18,6 +19,8 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
   text,
   textValues,
   type = 'button',
+  iconName,
+  iconSize,
   ariaLabel,
   setTriggerRef,
   isErrorColor,
@@ -42,7 +45,13 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
         <button
           className={clsx(
             [styles.textButton],
-            'font-medium transition-all duration-normal',
+            'font-medium transition-all flex items-center duration-normal',
+            {
+              'text-sm': mode === 'default',
+            },
+            {
+              'text-md': mode === 'medium',
+            },
             {
               [styles.underlined]: mode === 'underlined',
               'pointer-events-none': disabled,
@@ -58,6 +67,11 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
           ref={setTriggerRef}
           {...rest}
         >
+          {iconName && (
+            <span className="flex shrink-0 mr-2">
+              <Icon name={iconName} appearance={{ size: iconSize }} />
+            </span>
+          )}
           {buttonText || children}
         </button>
       )}

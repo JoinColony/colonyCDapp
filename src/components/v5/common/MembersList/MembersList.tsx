@@ -51,13 +51,13 @@ const MembersList: FC<MembersListProps> = ({
           {listLength} {formatMessage(title)}
         </span>
       </div>
-      <p className="mb-6">{formatMessage(description)}</p>
+      <p className="mb-6 text-md text-gray-600">{formatMessage(description)}</p>
       {!isLoading && listLength ? (
         <ul className="sm:columns-2">
           {visibleMembers.map((item, index) => {
             const { user } = item;
             const { name, profile } = user || {};
-            const membersLength = visibleMembers.length;
+            const membersLength = list.length;
 
             const incrementedIndex = index + 1;
             const top = Math.floor(membersLength * 0.2);

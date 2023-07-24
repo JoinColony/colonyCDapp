@@ -44,7 +44,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
             },
           )}
         >
-          <Icon appearance={{ size: 'extraExtraTiny' }} name="caret-down" />
+          <Icon appearance={{ size: 'extraExtraTiny' }} name="caret-up" />
         </span>
       </button>
 

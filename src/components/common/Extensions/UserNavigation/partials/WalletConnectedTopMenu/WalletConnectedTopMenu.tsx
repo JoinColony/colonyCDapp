@@ -7,6 +7,7 @@ import { WalletConnectedTopMenuProps } from './types';
 import NavigationTools from '~common/Extensions/NavigationTools';
 import { useMobile } from '~hooks';
 import UserAvatarDetails from '~v5/shared/UserAvatarDetails';
+import { USER_EDIT_ROUTE } from '~routes';
 
 const displayName =
   'common.Extensions.UserNavigation.partials.WalletConnectedTopMenu';
@@ -48,7 +49,7 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
             isVerified={isVerified}
           />
         </div>
-        <Link to="/" className="navigation-link">
+        <Link to={USER_EDIT_ROUTE} className="navigation-link">
           <Icon name="user-circle-gear" appearance={{ size: iconSize }} />
           <p className="ml-2">
             {formatMessage({ id: 'userMenu.menageTitle' })}

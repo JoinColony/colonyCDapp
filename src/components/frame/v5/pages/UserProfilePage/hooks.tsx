@@ -61,7 +61,7 @@ export const useUserProfile = () => {
     register,
     reset,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors },
   } = useForm<UserProfileFormProps>({
     mode: 'all',
     resolver: yupResolver(validationSchema),
@@ -119,7 +119,6 @@ export const useUserProfile = () => {
     handleSubmit,
     onSubmit,
     errors,
-    isFormEdited: isDirty,
     avatarUrl,
   };
 };

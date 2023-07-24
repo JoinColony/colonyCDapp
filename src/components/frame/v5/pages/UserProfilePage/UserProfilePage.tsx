@@ -20,7 +20,7 @@ const displayName = 'v5.pages.UserProfilePage';
 const UserProfilePage: FC = () => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
-  const { register, handleSubmit, onSubmit, errors, avatarUrl, isFormEdited } =
+  const { register, handleSubmit, onSubmit, errors, avatarUrl } =
     useUserProfile();
 
   return (
@@ -31,10 +31,10 @@ const UserProfilePage: FC = () => {
         </h4>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-6">
-            <div className={styles.row}>
+            <div className={`${styles.row} mb-3`}>
               <LeftColumn
                 fieldTitle={{ id: 'field.username' }}
-                fieldDecription={{ id: 'description.username' }}
+                fieldDescription={{ id: 'description.username' }}
               />
               <div className="w-full">
                 <Input
@@ -44,34 +44,33 @@ const UserProfilePage: FC = () => {
                   register={register}
                   isError={!!errors.displayName?.message}
                   customErrorMessage={errors.displayName?.message}
-                  customSuccessMessage={formatMessage({
+                  successfulMessage={formatMessage({
                     id: 'success.userName',
                   })}
-                  isErrorPillVisible={
+                  isDecoratedError={
                     errors.displayName?.type === 'isUsernameTaken'
                   }
-                  isFormEdited={isFormEdited}
                 />
               </div>
             </div>
             <div className={styles.row}>
               <LeftColumn
                 fieldTitle={{ id: 'field.avatar' }}
-                fieldDecription={{ id: 'description.avatar' }}
+                fieldDescription={{ id: 'description.avatar' }}
               />
               <div className="w-full">
                 <AvatarUploader
-                  avatarPlaceholder={<Avatar size="md" avatar={avatarUrl} />}
+                  avatarPlaceholder={<Avatar size="xm" avatar={avatarUrl} />}
                 />
               </div>
             </div>
 
-            <div className="w-full h-px bg-gray-200" />
+            <span className="divider" />
 
             <div className={styles.row}>
               <LeftColumn
                 fieldTitle={{ id: 'field.website' }}
-                fieldDecription={{ id: 'description.website' }}
+                fieldDescription={{ id: 'description.website' }}
               />
               <div className="w-full">
                 <Input
@@ -83,12 +82,12 @@ const UserProfilePage: FC = () => {
               </div>
             </div>
 
-            <div className="w-full h-px bg-gray-200" />
+            <span className="divider" />
 
             <div className={styles.row}>
               <LeftColumn
                 fieldTitle={{ id: 'field.bio' }}
-                fieldDecription={{ id: 'description.bio' }}
+                fieldDescription={{ id: 'description.bio' }}
               />
               <div className="w-full">
                 <Textarea
@@ -101,12 +100,12 @@ const UserProfilePage: FC = () => {
               </div>
             </div>
 
-            <div className="w-full h-px bg-gray-200" />
+            <span className="divider" />
 
             <div className={styles.row}>
               <LeftColumn
                 fieldTitle={{ id: 'field.location' }}
-                fieldDecription={{ id: 'description.location' }}
+                fieldDescription={{ id: 'description.location' }}
               />
               <div className="w-full">
                 <Input name="location" register={register} />
@@ -114,7 +113,7 @@ const UserProfilePage: FC = () => {
             </div>
             <div className="flex justify-end">
               <Button type="submit" isFullSize={isMobile} mode="primarySolid">
-                {formatMessage({ id: 'button.save.user.profile' })}
+                {formatMessage({ id: 'button.saveUserProfile' })}
               </Button>
             </div>
           </div>

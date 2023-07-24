@@ -3,7 +3,7 @@
 }
 
 .userMenuPopup {
-  @apply w-full p-6 rounded-lg flex border-gray-200 justify-start z-[9999] overflow-hidden bg-base-white;
+  @apply w-full px-6 pt-4 pb-6 rounded-lg flex border-gray-200 justify-start z-[9999] overflow-hidden bg-base-white;
 }
 
 .buttonBack {
