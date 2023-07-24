@@ -6,7 +6,6 @@ import moveDecimal from 'move-decimal-point';
 
 import { SafeBalance } from '~types';
 import { intl } from '~utils/intl';
-import { toFinite } from '~utils/lodash';
 import { getSelectedSafeBalance } from '~utils/safes';
 
 import { TransactionTypes } from './helpers';
@@ -91,11 +90,13 @@ export const getValidationSchema = () => {
                       return false;
                     },
                   ),
-                profile: object().shape({
-                  walletAddress: string()
-                    .address()
-                    .required(() => MSG.requiredFieldError),
-                }),
+                profile: object()
+                  .shape({
+                    displayName: string().nullable(),
+                  })
+                  .defined()
+                  .nullable(),
+                walletAddress: string().address().required(),
               }),
               otherwise: object().nullable(),
             })
@@ -167,7 +168,7 @@ export const getValidationSchema = () => {
             .when('transactionType', {
               is: TransactionTypes.RAW_TRANSACTION,
               then: number()
-                .transform((value) => toFinite(value))
+                .transform((value) => (Number.isNaN(value) ? null : value))
                 .required(() => MSG.requiredFieldError)
                 .integer(() => MSG.notIntegerError),
               otherwise: number().nullable(),

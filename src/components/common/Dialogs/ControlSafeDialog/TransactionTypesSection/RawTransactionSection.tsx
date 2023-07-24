@@ -1,15 +1,16 @@
 import React, { ReactNode } from 'react';
 import { defineMessages } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
 
 import { DialogSection } from '~shared/Dialog';
 import { HookFormInput as Input } from '~shared/Fields';
-import { RecipientPicker } from './shared';
+
 import { TransactionSectionProps } from '../types';
+
+import { RecipientPicker } from './shared';
 
 import styles from './TransactionTypesSection.css';
 
-const displayName = `common.ControlSafeDialog.RawTransactionSection`;
+const displayName = `common.ControlSafeDialog.ControlSafeDialogForm.RawTransactionSection`;
 
 const MSG = defineMessages({
   valueLabel: {
@@ -29,57 +30,45 @@ const labelValues = (chunks: ReactNode) => (
 const RawTransactionSection = ({
   colony,
   disabledInput,
-  transactionFormIndex,
-}: TransactionSectionProps) => {
-  const { trigger } = useFormContext();
-
-  return (
-    <>
-      <DialogSection>
-        <RecipientPicker
-          colony={colony}
-          disabledInput={disabledInput}
-          transactionFormIndex={0}
-        />
-      </DialogSection>
-      <DialogSection>
-        <Input
-          label={MSG.valueLabel}
-          name={`transactions.${transactionFormIndex}.rawAmount`}
-          // onChange={handleInputChange}
-          onChange={() => {
-            trigger(`transactions.${transactionFormIndex}.rawAmount`);
-          }}
-          appearance={{ colorSchema: 'grey', theme: 'fat' }}
-          disabled={disabledInput}
-          labelValues={{
-            span: labelValues,
-          }}
-          formattingOptions={{
-            numeral: true,
-            numeralPositiveOnly: true,
-            numeralDecimalScale: 0,
-          }}
-        />
-      </DialogSection>
-      <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <Input
-          label={MSG.dataLabel}
-          name={`transactions.${transactionFormIndex}.data`}
-          onChange={() => {
-            trigger(`transactions.${transactionFormIndex}.data`);
-          }}
-          // onChange={handleInputChange}
-          appearance={{ colorSchema: 'grey', theme: 'fat' }}
-          disabled={disabledInput}
-          labelValues={{
-            span: labelValues,
-          }}
-        />
-      </DialogSection>
-    </>
-  );
-};
+  transactionIndex,
+}: TransactionSectionProps) => (
+  <>
+    <DialogSection>
+      <RecipientPicker
+        colony={colony}
+        disabledInput={disabledInput}
+        transactionIndex={transactionIndex}
+      />
+    </DialogSection>
+    <DialogSection>
+      <Input
+        label={MSG.valueLabel}
+        name={`transactions.${transactionIndex}.rawAmount`}
+        appearance={{ colorSchema: 'grey', theme: 'fat' }}
+        disabled={disabledInput}
+        labelValues={{
+          span: labelValues,
+        }}
+        formattingOptions={{
+          numeral: true,
+          numeralPositiveOnly: true,
+          numeralDecimalScale: 0,
+        }}
+      />
+    </DialogSection>
+    <DialogSection appearance={{ theme: 'sidePadding' }}>
+      <Input
+        label={MSG.dataLabel}
+        name={`transactions.${transactionIndex}.data`}
+        appearance={{ colorSchema: 'grey', theme: 'fat' }}
+        disabled={disabledInput}
+        labelValues={{
+          span: labelValues,
+        }}
+      />
+    </DialogSection>
+  </>
+);
 
 RawTransactionSection.displayName = displayName;
 
