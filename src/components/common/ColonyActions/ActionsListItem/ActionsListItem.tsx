@@ -50,15 +50,6 @@ const ActionsListItem = ({
   const { colony } = useColonyContext();
   const navigate = useNavigate();
 
-  if (!colony) {
-    return null;
-  }
-
-  const handleActionRedirect = () =>
-    navigate(`/colony/${colony?.name}/tx/${transactionHash}`);
-
-  const status = ListItemStatus.Defused;
-
   const { motionState, refetchMotionState } = useColonyMotionState(
     isMotion,
     motionData,
@@ -68,6 +59,15 @@ const ActionsListItem = ({
   const MotionTag = useMotionTag(isMotion, motionState);
   const showMotionCountdownTimer =
     useShouldDisplayMotionCountdownTime(motionState);
+
+  if (!colony) {
+    return null;
+  }
+
+  const handleActionRedirect = () =>
+    navigate(`/colony/${colony.name}/tx/${transactionHash}`);
+
+  const status = ListItemStatus.Defused;
 
   return (
     <ListItem

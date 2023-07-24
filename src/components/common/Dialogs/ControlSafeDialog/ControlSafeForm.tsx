@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 import { ColonyRole, Id } from '@colony/colony-js';
+import classnames from 'classnames';
 
 import { DialogSection } from '~shared/Dialog';
 import { HookFormSelect as Select } from '~shared/Fields';
@@ -22,10 +23,16 @@ import {
   ContractInteractionSection,
   ErrorMessage,
 } from './TransactionTypesSection';
-import { TransactionTypes, transactionOptions } from './helpers';
+import {
+  TransactionTypes,
+  defaultTransaction,
+  transactionOptions,
+} from './helpers';
 import { ControlSafeProps } from './types';
 import AddItemButton from './AddItemButton';
 import SingleSafePicker from './SingleSafePicker';
+import TransactionHeader from './TransactionHeader';
+
 import styles from './ControlSafeForm.css';
 
 const displayName = 'common.ControlSafeDialog.ControlSafeForm';
@@ -90,8 +97,6 @@ enum ContractFunctions {
   TRANSFER_NFT = 'safeTransferFrom',
 }
 
-const tmpIndex = 0;
-
 const ControlSafeForm = ({
   back,
   colony,
@@ -99,14 +104,25 @@ const ControlSafeForm = ({
   enabledExtensionData,
 }: ControlSafeProps) => {
   const [prevSafeAddress, setPrevSafeAddress] = useState<string>('');
+  const [transactionTabStatus, setTransactionTabStatus] = useState([true]);
 
   const {
     formState: { isSubmitting, dirtyFields },
     watch,
     setValue,
+    trigger,
+    control,
   } = useFormContext();
   const selectedSafe = watch('safe');
-  const transactionType = watch(`transactions.${tmpIndex}.transactionType`);
+
+  const {
+    fields,
+    append,
+    remove: removeTab,
+  } = useFieldArray({
+    control,
+    name: 'transactions',
+  });
 
   const { userHasPermission } = useActionDialogStatus(
     colony,
@@ -114,6 +130,15 @@ const ControlSafeForm = ({
     [Id.RootDomain],
     enabledExtensionData,
   );
+
+  const handleNewTab = () => {
+    append(defaultTransaction);
+    setTransactionTabStatus([
+      ...Array(transactionTabStatus.length).fill(false),
+      true,
+    ]);
+    trigger();
+  };
 
   const submitButtonText = (() => {
     return { id: 'button.confirm' };
@@ -128,7 +153,11 @@ const ControlSafeForm = ({
     !isSupportedColonyVersion
   );
 
-  const renderTransactionSection = () => {
+  const renderTransactionSection = (transactionIndex: number) => {
+    const transactionType = watch(
+      `transactions.${transactionIndex}.transactionType`,
+    );
+
     switch (transactionType) {
       case TransactionTypes.TRANSFER_FUNDS:
         return <TransferFundsSection />;
@@ -225,33 +254,52 @@ const ControlSafeForm = ({
           />
         </div>
       </DialogSection>
-      <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <div className={styles.transactionTypeSelectContainer}>
-          <Select
-            options={transactionOptions}
-            label={MSG.transactionLabel}
-            name={`transactions.${tmpIndex}.transactionType`}
-            onChange={(type) => {
-              /* removeSelectedContractMethod(index); */
-              handleTransactionTypeChange(type as string, tmpIndex);
-            }}
-            appearance={{ theme: 'grey', width: 'fluid' }}
-            placeholder={MSG.transactionPlaceholder}
-            disabled={disabledInputs}
-          />
+      {fields.map((transaction, index) => (
+        <div key={transaction.id}>
+          {fields.length > 1 && (
+            <TransactionHeader
+              transactionIndex={index}
+              transactionTabStatus={transactionTabStatus}
+              handleTransactionTabStatus={setTransactionTabStatus}
+              removeTab={removeTab}
+            />
+          )}
+          <div
+            className={classnames({
+              [styles.tabContentClosed]:
+                fields.length > 1 && !transactionTabStatus[index],
+            })}
+          >
+            <DialogSection appearance={{ theme: 'sidePadding' }}>
+              <div className={styles.transactionTypeSelectContainer}>
+                <Select
+                  options={transactionOptions}
+                  label={MSG.transactionLabel}
+                  name={`transactions[${index}].transactionType`}
+                  onChange={(type) => {
+                    /* removeSelectedContractMethod(index); */
+                    handleTransactionTypeChange(type as string, index);
+                  }}
+                  appearance={{ theme: 'grey', width: 'fluid' }}
+                  placeholder={MSG.transactionPlaceholder}
+                  disabled={disabledInputs}
+                />
+              </div>
+            </DialogSection>
+            {isEmpty(selectedSafe) && !isEmpty(dirtyFields) ? (
+              <ErrorMessage error={MSG.invalidSafeError} />
+            ) : (
+              renderTransactionSection(index)
+            )}
+          </div>
         </div>
-      </DialogSection>
-      {isEmpty(selectedSafe) && dirtyFields ? (
-        <ErrorMessage error={MSG.invalidSafeError} />
-      ) : (
-        renderTransactionSection()
-      )}
+      ))}
       <DialogSection>
         <div className={styles.addTransaction}>
           <AddItemButton
             text={MSG.buttonTransaction}
-            disabled
-            handleClick={() => {}}
+            disabled={isSubmitting}
+            handleClick={() => handleNewTab()}
           />
         </div>
       </DialogSection>
