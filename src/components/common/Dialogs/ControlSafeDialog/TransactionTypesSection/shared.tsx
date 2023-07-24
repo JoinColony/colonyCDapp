@@ -60,13 +60,13 @@ export const Loading = ({ message }: LoadingProps) => (
 
 interface RecipientPickerProps {
   colony: Colony;
-  transactionFormIndex: number;
+  transactionIndex: number;
   disabledInput: boolean;
 }
 
 export const RecipientPicker = ({
   colony,
-  transactionFormIndex = 0,
+  transactionIndex,
   disabledInput,
 }: RecipientPickerProps) => {
   const { data: members } = useGetMembersForColonyQuery({
@@ -95,7 +95,7 @@ export const RecipientPicker = ({
       <SingleUserPicker
         data={users}
         label={MSG.recipient}
-        name={`transactions.${transactionFormIndex}.recipient`}
+        name={`transactions.${transactionIndex}.recipient`}
         filter={filterUserSelection}
         renderAvatar={AvatarXS}
         disabled={disabledInput}
