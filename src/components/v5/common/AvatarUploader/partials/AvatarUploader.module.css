@@ -1,0 +1,23 @@
+.text {
+  @apply text-gray-600 text-sm;
+}
+
+.wrapper {
+  @apply flex md:flex-col w-full;
+}
+
+.contentWrapper {
+  @apply flex px-6 py-4 rounded border w-full;
+}
+
+.flexCol {
+  @apply flex flex-col gap-2 w-full;
+}
+
+.iconWrapper {
+  @apply w-10 mb-2;
+}
+
+.iconCircle {
+  @apply p-[0.25rem] rounded-full flex items-start justify-center;
+}

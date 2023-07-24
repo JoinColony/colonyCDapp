@@ -43,14 +43,12 @@ export const useFilter = () => {
   const onClearFilters = useCallback(() => {
     setSelectedFilters([]);
     setSelectedOption(undefined);
+    setCheckedItems(new Map());
   }, []);
 
-  const onSelectParentFilter = useCallback(
-    (id: FilterType) => {
-      setSelectedParentFilter((prev: FilterType[]) => [...prev, id]);
-    },
-    [selectedParentFilters],
-  );
+  const onSelectParentFilter = useCallback((id: FilterType) => {
+    setSelectedParentFilter((prev: FilterType[]) => [...prev, id]);
+  }, []);
 
   const onSelectNestedOption = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
