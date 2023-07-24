@@ -9,7 +9,7 @@ const {
 } = require('graphql');
 const fetch = require('node-fetch');
 
-const SCHEMA_LOCATION = './schema.graphql';
+const SCHEMA_LOCATION = './tmp-schema.graphql';
 
 const fetchSchema = async () => {
   const response = await fetch('http://localhost:20002/graphql', {
