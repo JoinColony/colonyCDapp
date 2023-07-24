@@ -8,8 +8,7 @@ import Spinner from '~v5/shared/Spinner';
 import styles from './ColonyDetailsPage.module.css';
 import { useColonyContext, useMobile } from '~hooks';
 import Avatar from '~v5/shared/Avatar';
-import Icon from '~shared/Icon';
-import Button from '~v5/shared/Button';
+import Button, { TextButton } from '~v5/shared/Button';
 import ObjectiveBox from '~v5/common/ObjectiveBox';
 
 const displayName = 'frame.Extensions.pages.ColonyDetailsPage';
@@ -28,28 +27,24 @@ const ColonyDetailsPage: FC = () => {
       <TwoColumns aside={<Navigation pageName="extensions" />}>
         <div className={clsx('pt-[4.375rem] px-6 pb-6 mt-10', styles.box)}>
           <div className="absolute left-6 -top-11 rounded-full border-4 border-gray-100 flex">
-            <Avatar size="xm" avatar={avatar || thumbnail || ''} />
+            <Avatar size="md" avatar={avatar || thumbnail || ''} />
           </div>
           <h2 className="heading-2 mb-1">{name}</h2>
           {/* @TODO: Add description when it will be in API */}
           <p className="text-md text-gray-600 mb-5">
-            SatelliteDAO is a decentralised community that focuses on supporting
-            the launch satellites and space exploration initiatives.
+            {formatMessage({ id: 'colonyDetailsPage.tempDescription' })}
           </p>
           <div className="mb-6">
             {/* @TODO: Add functionality to add and display social links */}
             {socialLinks.length ? (
               <div />
             ) : (
-              <button
-                type="button"
-                className="flex items-center text-md transition-colors hover:text-blue-400"
-              >
-                <Icon name="plus" appearance={{ size: 'tiny' }} />
-                <span className="ml-2">
-                  {formatMessage({ id: 'button.socialLinks' })}
-                </span>
-              </button>
+              <TextButton
+                iconName="plus"
+                iconSize="tiny"
+                text={{ id: 'button.socialLinks' }}
+                mode="medium"
+              />
             )}
           </div>
           {/* @TODO: Add functionality to edit colony details */}

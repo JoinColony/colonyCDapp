@@ -38,7 +38,7 @@ export const useGetNavItems = (name: string | undefined): NavItem[] =>
           },
           {
             label: 'Admin',
-            href: '/admin',
+            href: `/colony/${name}/details`,
             description: 'View and manage how this Colony works and operates.',
           },
           {

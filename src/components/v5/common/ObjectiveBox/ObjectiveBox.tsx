@@ -25,9 +25,7 @@ const ObjectiveBox: FC<ObjectiveBoxProps> = ({
           description || { id: 'colonyDetailsPage.noObjectiveBoxDescription' },
         )}
       </p>
-      <div>
-        <ProgressBar progress={progress} />
-      </div>
+      <ProgressBar progress={progress} />
     </div>
   );
 };
