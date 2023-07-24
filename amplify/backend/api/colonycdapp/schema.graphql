@@ -1187,7 +1187,7 @@ type Colony @model {
   # It should be retrieved on demand at the earliest occasion it's needed
   # ie: when opening a UAC modal
   roles: [ColonyRole] @hasMany
-  expenditures: [Expenditure] @hasMany
+  expenditures: [Expenditure] @hasMany(indexName: "byColony", fields: ["id"])
   expendituresGlobalClaimDelay: Int
 }
 

@@ -142,6 +142,7 @@ export type ColonyDomainsArgs = {
 
 /** Represents a Colony within the Colony Network */
 export type ColonyExpendituresArgs = {
+  createdAt?: InputMaybe<ModelStringKeyConditionInput>;
   filter?: InputMaybe<ModelExpenditureFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
@@ -1048,7 +1049,6 @@ export type CreateDomainMetadataInput = {
 };
 
 export type CreateExpenditureInput = {
-  colonyExpendituresId?: InputMaybe<Scalars['ID']>;
   colonyId: Scalars['ID'];
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   id?: InputMaybe<Scalars['ID']>;
@@ -1408,7 +1408,6 @@ export enum EmailPermissions {
 export type Expenditure = {
   __typename?: 'Expenditure';
   colony: Colony;
-  colonyExpendituresId?: Maybe<Scalars['ID']>;
   colonyId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
   id: Scalars['ID'];
@@ -2214,7 +2213,6 @@ export type ModelDomainMetadataFilterInput = {
 
 export type ModelExpenditureConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelExpenditureConditionInput>>>;
-  colonyExpendituresId?: InputMaybe<ModelIdInput>;
   colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelExpenditureConditionInput>;
@@ -2231,7 +2229,6 @@ export type ModelExpenditureConnection = {
 
 export type ModelExpenditureFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelExpenditureFilterInput>>>;
-  colonyExpendituresId?: InputMaybe<ModelIdInput>;
   colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   id?: InputMaybe<ModelIdInput>;
@@ -5216,7 +5213,6 @@ export type UpdateDomainMetadataInput = {
 };
 
 export type UpdateExpenditureInput = {
-  colonyExpendituresId?: InputMaybe<Scalars['ID']>;
   colonyId?: InputMaybe<Scalars['ID']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   id: Scalars['ID'];
