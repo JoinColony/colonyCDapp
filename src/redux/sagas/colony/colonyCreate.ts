@@ -37,7 +37,7 @@ import { DEFAULT_TOKEN_DECIMALS, isDev } from '~constants';
 import { ActionTypes, Action, AllActions } from '~redux/index';
 import { createAddress } from '~utils/web3';
 import { toNumber } from '~utils/numbers';
-import { getDomainDatabaseId } from '~utils/domains';
+import { getDomainDatabaseId } from '~utils/databaseId';
 
 import {
   transactionAddParams,
