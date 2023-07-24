@@ -6,7 +6,6 @@ export type LeftColumnProps = {
 };
 
 export type UserProfileFormProps = {
-  email?: string | null;
   bio?: string | null;
   username?: string | null;
   displayName?: string | null;
