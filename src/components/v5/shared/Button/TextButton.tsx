@@ -23,6 +23,7 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
   iconSize,
   ariaLabel,
   setTriggerRef,
+  isErrorColor,
   ...rest
 }) => {
   const { formatMessage } = useIntl();
@@ -54,6 +55,8 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
             {
               [styles.underlined]: mode === 'underlined',
               'pointer-events-none': disabled,
+              'text-gray-700 disabled:text-gray-400': !isErrorColor,
+              'text-negative-400': isErrorColor,
             },
           )}
           disabled={disabled || loading}

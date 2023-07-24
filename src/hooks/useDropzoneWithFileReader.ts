@@ -42,6 +42,8 @@ const useDropzoneWithFileReader = ({
     onDropAccepted,
     onDropRejected: handleFileReject,
     multiple: maxFiles > 1,
+    noClick: true,
+    noKeyboard: true,
     ...restDropzoneOptions,
   });
 
