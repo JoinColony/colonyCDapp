@@ -15,7 +15,7 @@ export const useMembersPage = (searchValue?: string) => {
       delayShow: 200,
       delayHide: 200,
       placement: 'bottom-start',
-      trigger: 'click',
+      trigger: ['click', 'hover'],
       interactive: true,
     });
 
