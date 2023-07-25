@@ -258,6 +258,8 @@
   "transaction.ColonyClient.setExpenditureRecipient.description": "Set Expenditure Recipient",
   "transaction.ColonyClient.setExpenditurePayout(uint256,uint256,address,uint256).title": "Set Expenditure Payout",
   "transaction.ColonyClient.setExpenditurePayout(uint256,uint256,address,uint256)transaction.group.createExpenditure.title.description": "Set Expenditure Payout",
+  "transaction.ColonyClient.lockExpenditure.title": "Lock Expenditure",
+  "transaction.ColonyClient.lockExpenditure.description": "Lock Expenditure",
 
   "metatransaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
   "metatransaction.group.deposit.title": "Activate tokens",

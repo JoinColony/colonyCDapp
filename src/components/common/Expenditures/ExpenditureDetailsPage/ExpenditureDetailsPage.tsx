@@ -1,9 +1,11 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useGetExpenditureQuery } from '~gql';
+import { ExpenditureStatus, useGetExpenditureQuery } from '~gql';
 import { useColonyContext } from '~hooks';
+import { ActionTypes } from '~redux';
 import NotFoundRoute from '~routes/NotFoundRoute';
+import { ActionButton } from '~shared/Button';
 import { Heading3 } from '~shared/Heading';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
 
@@ -22,7 +24,7 @@ const ExpenditureDetailsPage = () => {
     skip: !expenditureId,
   });
 
-  if (!data) {
+  if (!colony || !data) {
     return null;
   }
 
@@ -35,6 +37,18 @@ const ExpenditureDetailsPage = () => {
     <div>
       <Heading3>Expenditure {data.getExpenditure?.id}</Heading3>
       <div>Status: {data.getExpenditure?.status}</div>
+
+      {expenditure.status === ExpenditureStatus.Draft && (
+        <ActionButton
+          actionType={ActionTypes.EXPENDITURE_LOCK}
+          values={{
+            colonyAddress: colony.colonyAddress,
+            nativeExpenditureId: expenditure.nativeId,
+          }}
+        >
+          Lock expenditure
+        </ActionButton>
+      )}
     </div>
   );
 };
