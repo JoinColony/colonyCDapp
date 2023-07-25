@@ -18,12 +18,15 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   actionText,
   actionType,
   isAlt = false,
+  redirectUrl,
   onClick,
 }) => {
   const { formatMessage } = useIntl();
   const titleText = typeof title === 'string' ? title : formatMessage(title);
   const actionMessage =
-    typeof actionText === 'string' ? actionText : formatMessage(actionText);
+    typeof actionText === 'string'
+      ? actionText
+      : actionText && formatMessage(actionText);
   // @TODO: handle actionType 'call-to-action'
   return (
     <div
@@ -38,6 +41,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
           'bg-success-100 border-success-200': status === 'success',
           'bg-warning-100 border-warning-200': status === 'warning',
           'bg-negative-100 border-negative-200': status === 'error',
+          'bg-gray-50 border-gray-200 text-gray-600 text-sm': status === 'info',
           'text-success-400': isAlt && status === 'success',
           'text-warning-400': isAlt && status === 'warning',
           'text-negative-400': isAlt && status === 'error',
@@ -83,14 +87,20 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
           'ml-6 md:ml-2': !isAlt,
         })}
       >
-        {actionType === 'copy-url' && <CopyUrl actionText={actionMessage} />}
-        {actionType === 'redirect' && (
-          <Link to="https://external-url.pl">{actionMessage}</Link>
-        )}
-        {actionType === 'call-to-action' && (
-          <button type="button" onClick={onClick}>
-            {actionMessage}
-          </button>
+        {actionType && actionText && actionMessage && (
+          <>
+            {actionType === 'copy-url' && (
+              <CopyUrl actionText={actionMessage} />
+            )}
+            {actionType === 'redirect' && redirectUrl && (
+              <Link to={redirectUrl}>{actionMessage}</Link>
+            )}
+            {actionType === 'call-to-action' && (
+              <button type="button" onClick={onClick}>
+                {actionMessage}
+              </button>
+            )}
+          </>
         )}
       </div>
     </div>
