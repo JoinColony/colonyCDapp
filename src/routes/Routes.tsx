@@ -446,8 +446,8 @@ const Routes = () => {
           element={
             <PageLayout
               loadingText={{ id: 'loading.userPreferencesPage' }}
-              title={{ id: 'userAdvancedPage.title' }}
-              description={{ id: 'userAdvancedPage.description' }}
+              title={{ id: 'userPreferencesPage.title' }}
+              description={{ id: 'userPreferencesPage.description' }}
               pageName="profile"
               hideColonies
             >

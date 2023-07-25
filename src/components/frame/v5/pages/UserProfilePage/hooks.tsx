@@ -85,7 +85,6 @@ export const useUserProfile = () => {
           input: {
             id: user?.walletAddress || '',
             ...updatedProfile,
-            email: updatedProfile.email || null,
             website: updatedProfile.website || null,
           },
         },
