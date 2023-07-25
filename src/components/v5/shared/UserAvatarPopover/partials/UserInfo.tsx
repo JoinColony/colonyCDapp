@@ -19,7 +19,7 @@ const UserInfo: FC<UserInfoProps> = ({
   permissions,
   avatar,
   userStatus,
-  teams,
+  teams = ['businnes', 'product', 'design'], // @TODO: fix that when API will return teams
   isContributorsList,
 }) => {
   const { formatMessage } = useIntl();
@@ -51,7 +51,7 @@ const UserInfo: FC<UserInfoProps> = ({
         {isTopContributorType && teams && (
           <>
             <TitleLabel
-              className="mb-2"
+              className="mb-2 text-gray-900"
               text={formatMessage({ id: 'userInfo.top.contributor.in' })}
             />
             <div className="flex gap-1">
