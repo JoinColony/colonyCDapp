@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
@@ -14,6 +14,7 @@ import { tabList } from './consts';
 import UserHubMobile from './UserHubMobile';
 import { UserHubProps } from './types';
 import TitleLabel from '~v5/shared/TitleLabel';
+import { stakesMock } from './partials/StakesTab/consts';
 
 export const displayName = 'common.Extensions.UserHub.partials.UserHub';
 
@@ -26,6 +27,11 @@ const UserHub: FC<UserHubProps> = ({
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
   const [selectedTab, setSelectedTab] = useState(0);
+
+  const claimedNotificationNumber = useMemo(
+    () => stakesMock.filter(({ status }) => status === 'claimed').length,
+    [],
+  );
 
   const handleChange = (selectedOption: number) => {
     setSelectedTab(selectedOption);
@@ -104,7 +110,11 @@ const UserHub: FC<UserHubProps> = ({
             transition={{ duration: 0.15 }}
           >
             {selectedTab === 0 && <ReputationTab />}
-            {selectedTab === 1 && <StakesTab />}
+            {selectedTab === 1 && (
+              <StakesTab
+                claimedNotificationNumber={claimedNotificationNumber}
+              />
+            )}
             {selectedTab === 2 && (
               <TransactionsTab
                 transactionAndMessageGroups={transactionAndMessageGroups}

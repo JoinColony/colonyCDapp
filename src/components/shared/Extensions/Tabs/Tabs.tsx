@@ -40,11 +40,11 @@ const Tabs: FC<PropsWithChildren<TabsProps>> = ({
         {items.map(({ id, title, notificationNumber }) => (
           <Tab key={id}>
             {formatMessage({ id: `tabs.${id}`, defaultMessage: `${title}` })}
-            {notificationNumber && (
+            {notificationNumber ? (
               <span className={styles.notificationNumber}>
                 <span>{notificationNumber}</span>
               </span>
-            )}
+            ) : undefined}
           </Tab>
         ))}
       </ReactTabs>
