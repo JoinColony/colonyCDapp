@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -10,10 +10,11 @@ import {
 import Tabs from '~shared/Extensions/Tabs';
 import { useMobile } from '~hooks';
 import EmptyContent from '~v5/common/EmptyContent';
+import { StakesTabProps } from './types';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 
-const StakesTab = () => {
+const StakesTab: FC<StakesTabProps> = ({ claimedNotificationNumber }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [stakes, setStakesMock] = useState(stakesMock);
   const { formatMessage } = useIntl();
@@ -35,20 +36,15 @@ const StakesTab = () => {
     [stakes],
   );
 
-  const claimedNotificationNumber = useMemo(
-    () => stakes.filter(({ status }) => status === 'claimed').length,
-    [stakes],
-  );
-
   const updatedTabsItems = useMemo(
     () =>
-      tabsItems.map((item) => {
-        return item.type === 'claimable'
+      tabsItems.map((item) =>
+        item.type === 'claimable'
           ? Object.assign(item, {
               notificationNumber: claimedNotificationNumber,
             })
-          : item;
-      }),
+          : item,
+      ),
     [claimedNotificationNumber],
   );
 
@@ -62,6 +58,7 @@ const StakesTab = () => {
             className="text-blue-400 text-4 hover:text-gray-900 transition-all duration-normal"
             aria-label={formatMessage({ id: 'claimStakes' })}
           >
+            {/* @TODO handle action here */}
             {formatMessage({ id: 'claimStakes' })}
           </button>
         )}
