@@ -278,9 +278,6 @@ export const useLazyConsensusPage = (
             ),
             inputData: {
               inputType: 'percent',
-              register: methods.register,
-              unregister: methods.unregister,
-              watch: methods.watch,
               name: 'totalStakeFraction',
             },
             accordionItem: [
@@ -301,9 +298,6 @@ export const useLazyConsensusPage = (
             ),
             inputData: {
               inputType: 'percent',
-              register: methods.register,
-              unregister: methods.unregister,
-              watch: methods.watch,
               name: 'voterRewardFraction',
             },
             accordionItem: [
@@ -505,7 +499,6 @@ export const useLazyConsensusPage = (
         extensionContent(selectedContent) as AccordionContent[],
       );
       updateGovernanceFormFields(selectedFormFields);
-
       updateAccordionState(governanceValue);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -23,6 +23,7 @@ const SpecialInput: FC<SpecialInputProps> = ({
   return (
     <div
       className={clsx(styles.wrapper, 'group focus-within:border-blue-100', {
+        'hover:after:border-blue-100': !isError,
         'border-none': isError,
         'pointer-events-none opacity-50': disabled,
       })}
