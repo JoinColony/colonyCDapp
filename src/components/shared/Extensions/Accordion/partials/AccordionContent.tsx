@@ -18,23 +18,25 @@ const AccordionContent: FC<AccordionItemProps> = ({ content, errors }) => (
           {textItem}
           {inputData?.inputType && (
             <div className="ml-6 shrink-0">
-              {inputData.inputType === 'percent' ? (
-                <SpecialPercentageInput
-                  name={inputData.name}
-                  minValue={inputData.minValue}
-                  maxValue={inputData.maxValue}
-                  register={inputData.register}
-                  errors={errors}
-                />
-              ) : (
-                <SpecialHourInput
-                  name={inputData.name}
-                  minValue={inputData.minValue}
-                  maxValue={inputData.maxValue}
-                  register={inputData.register}
-                  errors={errors}
-                />
-              )}
+              <div className="mr-[0.1875rem]">
+                {inputData.inputType === 'percent' ? (
+                  <SpecialPercentageInput
+                    name={inputData.name}
+                    minValue={inputData.minValue}
+                    maxValue={inputData.maxValue}
+                    register={inputData.register}
+                    errors={errors}
+                  />
+                ) : (
+                  <SpecialHourInput
+                    name={inputData.name}
+                    minValue={inputData.minValue}
+                    maxValue={inputData.maxValue}
+                    register={inputData.register}
+                    errors={errors}
+                  />
+                )}
+              </div>
             </div>
           )}
         </div>

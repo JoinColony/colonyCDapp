@@ -1,19 +1,25 @@
+import {
+  SPEED_OVER_SECURITY,
+  SECURITY_OVER_SPEED,
+  TESTING_GOVERNANCE,
+  CUSTOM,
+} from '~redux/constants';
 import { RadioItemProps } from './types';
 
 export const radioItems: RadioItemProps[] = [
   {
-    value: 'radio-button-1',
+    value: SPEED_OVER_SECURITY,
     label: 'High trust team',
   },
   {
-    value: 'radio-button-2',
+    value: SECURITY_OVER_SPEED,
     label: 'Second field',
     tooltip: {
       tooltipContent: 'Some content here',
     },
   },
   {
-    value: 'radio-button-3',
+    value: TESTING_GOVERNANCE,
     label: 'Third field',
     badge: {
       mode: 'coming-soon',
@@ -21,7 +27,7 @@ export const radioItems: RadioItemProps[] = [
     },
   },
   {
-    value: 'radio-button-4',
+    value: CUSTOM,
     label: 'Fully open organization',
     description: 'We won’t know everyone, so we prefer higher security.',
     tooltip: {
