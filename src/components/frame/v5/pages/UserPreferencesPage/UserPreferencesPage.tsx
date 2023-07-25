@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useCanEditProfile, useMobile } from '~hooks';
@@ -14,18 +14,27 @@ import Icon from '~shared/Icon';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import Switch from '~v5/common/Fields/Switch';
 import { multiLineTextEllipsis } from '~utils/strings';
+import { UserPreferencesPageProps } from './types';
 
 const displayName = 'v5.pages.UserPreferencesPage';
 
-const UserPreferencesPage = () => {
+const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
+  truncateLimit = 20,
+}) => {
   const { user } = useCanEditProfile();
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
-  const [isEmailInputVisible, setIsEmailInputVisible] = useState(false);
   const { handleClipboardCopy } = useCopyToClipboard(user?.walletAddress || '');
 
-  const { errors, handleSubmit, onSubmit, register, getValues } =
-    useUserPreferencesPage();
+  const {
+    errors,
+    handleSubmit,
+    onSubmit,
+    register,
+    getValues,
+    isEmailInputVisible,
+    setIsEmailInputVisible,
+  } = useUserPreferencesPage();
 
   if (!user) {
     return null;
@@ -57,24 +66,24 @@ const UserPreferencesPage = () => {
                     />
                   </div>
                 )}
-                {!emailValue || isEmailInputVisible ? (
-                  <>
-                    <Input
-                      name="email"
-                      register={register}
-                      isError={!!errors.email?.message}
-                      customErrorMessage={errors.email?.message}
-                    />
-                    <div className="ml-auto mt-2">
-                      <Button
-                        mode="primarySolid"
-                        text={{ id: 'button.saveEmail' }}
-                        type="submit"
-                        onClick={() => setIsEmailInputVisible(false)}
+                {!emailValue ||
+                  (isEmailInputVisible && (
+                    <>
+                      <Input
+                        name="email"
+                        register={register}
+                        isError={!!errors.email?.message}
+                        customErrorMessage={errors.email?.message}
                       />
-                    </div>
-                  </>
-                ) : undefined}
+                      <div className="ml-auto mt-2">
+                        <Button
+                          mode="primarySolid"
+                          text={{ id: 'button.saveEmail' }}
+                          type="submit"
+                        />
+                      </div>
+                    </>
+                  ))}
               </div>
             </div>
             <span className="divider" />
@@ -84,7 +93,7 @@ const UserPreferencesPage = () => {
                   <Icon name="cardholder" appearance={{ size: 'small' }} />
                   <span className="text-md ml-2 truncate block w-full">
                     {isMobile
-                      ? multiLineTextEllipsis(user.walletAddress, 20)
+                      ? multiLineTextEllipsis(user.walletAddress, truncateLimit)
                       : user.walletAddress}
                   </span>
                 </div>

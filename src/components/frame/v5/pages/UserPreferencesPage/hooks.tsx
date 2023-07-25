@@ -1,31 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
-import { createYupTestFromQuery } from '~utils/yup/tests';
 
-import { GetProfileByEmailDocument, useUpdateUserProfileMutation } from '~gql';
+import { useUpdateUserProfileMutation } from '~gql';
 import { UserPreferencesFormProps } from './types';
 import { useAppContext, useCanEditProfile } from '~hooks';
 import Toast from '~shared/Extensions/Toast';
+import { isEmailAlreadyRegistered } from '~common/CreateUserWizard/validation';
 
 export const useUserPreferencesPage = () => {
   const { formatMessage } = useIntl();
   const { updateUser } = useAppContext();
   const [editUser] = useUpdateUserProfileMutation();
   const { user } = useCanEditProfile();
-
-  const EMAIL_REGEX = /^[\w-.]+@([\w-]+\.)+[\w-]+$/;
-  const isValidEmail = (email: string) => {
-    return email ? new RegExp(EMAIL_REGEX).test(email) : false;
-  };
-  const isEmailAlreadyRegistered = createYupTestFromQuery({
-    query: GetProfileByEmailDocument,
-    isOptional: true,
-    circuitBreaker: isValidEmail,
-  });
+  const [isEmailInputVisible, setIsEmailInputVisible] = useState(false);
 
   const validationSchema = yup.object<UserPreferencesFormProps>({
     email: yup
@@ -70,6 +61,17 @@ export const useUserPreferencesPage = () => {
       });
 
       updateUser?.(user?.walletAddress, true);
+
+      toast.success(
+        <Toast
+          type="success"
+          title={{ id: 'user.profile.toast.title.success' }}
+          description={{
+            id: 'user.profile.toast.description.success',
+          }}
+        />,
+      );
+      setIsEmailInputVisible(false);
     } catch (err) {
       toast.error(
         <Toast
@@ -87,6 +89,8 @@ export const useUserPreferencesPage = () => {
     register,
     handleSubmit,
     getValues,
+    isEmailInputVisible,
+    setIsEmailInputVisible,
     errors,
   };
 };
