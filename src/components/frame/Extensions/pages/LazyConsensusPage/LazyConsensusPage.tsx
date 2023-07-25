@@ -100,7 +100,7 @@ const LazyConsensusPage: FC = () => {
                   name="governance"
                 />
               </div>
-              <div className="mt-6">
+              <div className="mt-4">
                 <Accordion
                   openIndex={isAccordionOpen ? openIndex : -1}
                   items={extensionContent || initialExtensionContent}

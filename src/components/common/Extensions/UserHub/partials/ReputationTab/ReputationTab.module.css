@@ -15,5 +15,5 @@
 }
 
 .reputationValue {
-  @apply text-blue-400;
+  @apply text-blue-400 mt-px;
 }

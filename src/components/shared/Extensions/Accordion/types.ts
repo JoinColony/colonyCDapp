@@ -32,6 +32,7 @@ export interface AccordionContent extends ContentTypeProps {
   defaultValue: number;
   maxValue: number;
   content?: AccordionContentDetails[];
+  accordionItemDescription?: string | MessageDescriptor;
 }
 
 export interface AccordionContentDetails {
