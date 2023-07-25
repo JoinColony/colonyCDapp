@@ -4,6 +4,7 @@ import { Heading3 } from '~shared/Heading';
 import { useGetColonyExpendituresQuery } from '~gql';
 import { useColonyContext } from '~hooks';
 import { notNull } from '~utils/arrays';
+import Link from '~shared/Link';
 
 import ExpenditureForm from '../ExpenditureForm';
 
@@ -17,13 +18,23 @@ const ExpendituresPage = () => {
     skip: !colony,
   });
 
+  if (!colony) {
+    return null;
+  }
+
   return (
     <div>
       <ul>
         {data?.getColony?.expenditures?.items
           .filter(notNull)
           .map((expenditure) => (
-            <li key={expenditure.id}>{expenditure.id}</li>
+            <li key={expenditure.id}>
+              <Link
+                to={`/colony/${colony.name}/expenditures/${expenditure.nativeId}`}
+              >
+                Expenditure ID: {expenditure.nativeId}
+              </Link>
+            </li>
           ))}
       </ul>
 

@@ -12,7 +12,7 @@ import {
 } from '../transactions';
 import { getColonyManager, putError, takeFrom } from '../utils';
 
-export function* createExpenditure({
+function* createExpenditure({
   meta: { id: metaId, navigate },
   meta,
   payload: {
@@ -80,6 +80,8 @@ export function* createExpenditure({
       },
     });
 
+    // Wait for tx success here?
+
     yield put<AllActions>({
       type: ActionTypes.EXPENDITURE_CREATE_SUCCESS,
       payload: {},
@@ -89,9 +91,9 @@ export function* createExpenditure({
     navigate(`/colony/${colonyName}/expenditures/${expenditureId}`);
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
-  } finally {
-    txChannel.close();
   }
+
+  txChannel.close();
 
   return null;
 }
