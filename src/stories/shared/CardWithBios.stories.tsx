@@ -36,8 +36,31 @@ export const Base: Story = {
   args: {
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidide...',
-    userStatus: 'dedicated',
+    userStatus: 'general',
     permissions,
     isVerified: true,
+    isContributorsList: true,
+  },
+};
+
+export const Dedicated: Story = {
+  args: {
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidide...',
+    userStatus: 'dedicated',
+    permissions,
+    isVerified: false,
+    isContributorsList: true,
+  },
+};
+
+export const Banned: Story = {
+  args: {
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidide...',
+    userStatus: 'banned',
+    permissions,
+    isVerified: false,
+    isContributorsList: true,
   },
 };
