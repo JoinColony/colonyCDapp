@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+
 import NotificationBanner from '~common/Extensions/NotificationBanner';
 import { useColonyContext, useColonyContractVersion, useMobile } from '~hooks';
 import { canColonyBeUpgraded } from '~utils/checks';
-
 import Navigation from '~v5/common/Navigation';
 import TwoColumns from '~v5/frame/TwoColumns';
 import Button from '~v5/shared/Button';
