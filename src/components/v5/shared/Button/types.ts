@@ -49,6 +49,7 @@ export interface TextButtonProps extends CommonButtonProps {
   mode?: TextButtonMode;
   text?: MessageDescriptor | string;
   textValues?: SimpleMessageValues;
+  isErrorColor?: boolean;
   iconName?: string;
   iconSize?: IconSize;
 }
