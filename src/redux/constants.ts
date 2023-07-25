@@ -7,3 +7,8 @@ export const CORE_GAS_PRICES = 'gasPrices';
  */
 export const CORE_MESSAGES = 'messages';
 export const CORE_MESSAGES_LIST = 'list';
+
+export const SPEED_OVER_SECURITY = 'speed-over-security';
+export const SECURITY_OVER_SPEED = 'security-over-speed';
+export const TESTING_GOVERNANCE = 'testing-governance';
+export const CUSTOM = 'custom';

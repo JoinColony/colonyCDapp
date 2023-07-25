@@ -21,6 +21,12 @@ import {
 } from './consts';
 import Toast from '~shared/Extensions/Toast';
 import { ExtensionInitParam } from '~types';
+import {
+  CUSTOM,
+  SECURITY_OVER_SPEED,
+  SPEED_OVER_SECURITY,
+  TESTING_GOVERNANCE,
+} from '~redux/constants';
 
 export const useLazyConsensusPage = (
   onOpenIndexChange: (index: number) => void,
@@ -206,7 +212,7 @@ export const useLazyConsensusPage = (
               ? description.defaultMessage.split('\n')[0]
               : description;
 
-            let descriptionText;
+            let descriptionText: any;
 
             if (description.defaultMessage) {
               descriptionText = description.defaultMessage
@@ -252,14 +258,17 @@ export const useLazyConsensusPage = (
     [methods.register, methods.unregister, methods.watch, formatMessage],
   );
 
-  const updateGovernanceFormFields = (data) =>
-    extensionData?.initializationParams?.forEach((param) => {
-      return methods.setValue(
-        param.paramName,
-        data.find(({ paramName }) => paramName === param.paramName)
-          ?.defaultValue,
-      );
-    });
+  const updateGovernanceFormFields = useCallback(
+    (data) =>
+      extensionData?.initializationParams?.forEach((param) => {
+        return methods.setValue(
+          param.paramName,
+          data.find(({ paramName }) => paramName === param.paramName)
+            ?.defaultValue,
+        );
+      }),
+    [extensionData?.initializationParams, methods],
+  );
 
   const initialExtensionContent = useMemo(
     () => [
@@ -453,37 +462,44 @@ export const useLazyConsensusPage = (
     [methods.register, methods.unregister, methods.watch],
   );
 
-  const setSelectedContentAndFormFields = (governanceValue) => {
-    let selectedContent;
-    let selectedFormFields;
+  const setSelectedContentAndFormFields = useCallback(
+    (governanceValue: string) => {
+      let selectedContent;
+      let selectedFormFields;
 
-    if (governanceValue === 'radio-button-1') {
-      selectedContent = extensionContentSpeedOverSecurity;
-      selectedFormFields = extensionContentSpeedOverSecurity;
-    } else if (governanceValue === 'radio-button-2') {
-      selectedContent = extensionContentSecurityOverSpeed;
-      selectedFormFields = extensionContentSecurityOverSpeed;
-    } else if (governanceValue === 'radio-button-3') {
-      selectedContent = extensionContentTestingGovernance;
-      selectedFormFields = extensionContentTestingGovernance;
-    } else {
-      selectedContent = extensionData?.initializationParams;
-      selectedFormFields = extensionData?.initializationParams;
-    }
-
-    return [selectedContent, selectedFormFields];
-  };
-  const updateAccordionState = (governanceValue) => {
-    if (governanceValue === 'radio-button-4') {
-      onOpenIndexChange(0); // open the accordion
-      setOpenedByLastRadio(true);
-    } else {
-      if (openedByLastRadio && !manualOpen) {
-        onOpenIndexChange(-1); // close the accordion only if it wasn't manually opened
+      if (governanceValue === SPEED_OVER_SECURITY) {
+        selectedContent = extensionContentSpeedOverSecurity;
+        selectedFormFields = extensionContentSpeedOverSecurity;
+      } else if (governanceValue === SECURITY_OVER_SPEED) {
+        selectedContent = extensionContentSecurityOverSpeed;
+        selectedFormFields = extensionContentSecurityOverSpeed;
+      } else if (governanceValue === TESTING_GOVERNANCE) {
+        selectedContent = extensionContentTestingGovernance;
+        selectedFormFields = extensionContentTestingGovernance;
+      } else {
+        selectedContent = extensionData?.initializationParams;
+        selectedFormFields = extensionData?.initializationParams;
       }
-      setOpenedByLastRadio(false);
-    }
-  };
+
+      return [selectedContent, selectedFormFields];
+    },
+    [extensionData?.initializationParams],
+  );
+
+  const updateAccordionState = useCallback(
+    (governanceValue: string) => {
+      if (governanceValue === CUSTOM) {
+        onOpenIndexChange(0); // open the accordion
+        setOpenedByLastRadio(true);
+      } else {
+        if (openedByLastRadio && !manualOpen) {
+          onOpenIndexChange(-1); // close the accordion only if it wasn't manually opened
+        }
+        setOpenedByLastRadio(false);
+      }
+    },
+    [manualOpen, onOpenIndexChange, openedByLastRadio],
+  );
 
   const onChangeGovernance = useCallback(
     (selectedOption: string) => {
@@ -498,11 +514,18 @@ export const useLazyConsensusPage = (
       setExtensionContentParameters(
         extensionContent(selectedContent) as AccordionContent[],
       );
+
       updateGovernanceFormFields(selectedFormFields);
       updateAccordionState(governanceValue);
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [extensionContent, extensionData],
+
+    [
+      extensionContent,
+      methods,
+      setSelectedContentAndFormFields,
+      updateAccordionState,
+      updateGovernanceFormFields,
+    ],
   );
 
   useLayoutEffect(() => {
@@ -542,7 +565,7 @@ export const useLazyConsensusPage = (
     transform,
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values: unknown) => {
     onOpenIndexChange?.(-1);
     try {
       methods.clearErrors();

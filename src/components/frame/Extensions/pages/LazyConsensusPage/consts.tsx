@@ -1,24 +1,30 @@
 import { AccordionContent } from '~shared/Extensions/Accordion/types';
 import { RadioItemProps } from '~common/Extensions/Fields/RadioList/types';
+import {
+  CUSTOM,
+  SECURITY_OVER_SPEED,
+  SPEED_OVER_SECURITY,
+  TESTING_GOVERNANCE,
+} from '~redux/constants';
 
 export const mockedGovernance: RadioItemProps[] = [
   {
-    value: 'radio-button-1',
+    value: SPEED_OVER_SECURITY,
     label: 'Speed over security',
     description: '3-day staking and voting periods, 60% quorum.',
   },
   {
-    value: 'radio-button-2',
+    value: SECURITY_OVER_SPEED,
     label: 'Security over speed',
     description: '5-day staking and voting periods, 80% quorum.',
   },
   {
-    value: 'radio-button-3',
+    value: TESTING_GOVERNANCE,
     label: 'Testing governance',
     description: 'Do everything fast to figure out how things work.',
   },
   {
-    value: 'radio-button-4',
+    value: CUSTOM,
     label: 'Custom (Advanced)',
     description: 'I know what I’m doing and want to configure it myself.',
   },
@@ -51,7 +57,7 @@ export const extensionContentSpeedOverSecurity: AccordionContent[] = [
     title: 'Minimum Stake',
     defaultValue: 1,
     maxValue: 100,
-    description: `If a team has 100 reputation points between them, and the Required Stake is 5%, then 5 tokens would need to be staked to either support or object to a motion.`,
+    description: `What is the minimum percentage of the total stake that each staker should have to provide?`,
     accordionItemDescription:
       '10% means anybody who wishes to stake must provide at least 10% of the Required Stake.',
   },
