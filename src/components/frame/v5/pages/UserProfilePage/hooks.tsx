@@ -9,7 +9,11 @@ import { useAppContext, useCanEditProfile } from '~hooks';
 import { GetUserByNameDocument, useUpdateUserProfileMutation } from '~gql';
 import { UserProfileFormProps } from './types';
 import Toast from '~shared/Extensions/Toast';
-import { MAX_BIO_CHARS, MAX_DISPLAYNAME_CHARS } from './consts';
+import {
+  MAX_BIO_CHARS,
+  MAX_DISPLAYNAME_CHARS,
+  MAX_LOCATION_CHARS,
+} from './consts';
 import { USERNAME_REGEX } from '~common/CreateUserWizard/validation';
 import { createYupTestFromQuery } from '~utils/yup/tests';
 
@@ -18,6 +22,8 @@ export const useUserProfile = () => {
   const [editUser] = useUpdateUserProfileMutation();
   const { user } = useCanEditProfile();
   const { formatMessage } = useIntl();
+  const { profile } = user || {};
+  const avatarUrl = profile?.avatar || profile?.thumbnail;
 
   const isValidUsername = (username: string) => {
     return username ? new RegExp(USERNAME_REGEX).test(username) : false;
@@ -46,7 +52,9 @@ export const useUserProfile = () => {
       .string()
       .max(MAX_BIO_CHARS, formatMessage({ id: 'too.many.characters' })),
     website: yup.string().url(formatMessage({ id: 'errors.website.message' })),
-    location: yup.string(),
+    location: yup
+      .string()
+      .max(MAX_LOCATION_CHARS, formatMessage({ id: 'too.many.characters' })),
   });
 
   const {
@@ -77,7 +85,6 @@ export const useUserProfile = () => {
           input: {
             id: user?.walletAddress || '',
             ...updatedProfile,
-            email: updatedProfile.email || null,
             website: updatedProfile.website || null,
           },
         },
@@ -111,5 +118,6 @@ export const useUserProfile = () => {
     handleSubmit,
     onSubmit,
     errors,
+    avatarUrl,
   };
 };

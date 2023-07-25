@@ -53,6 +53,7 @@ import {
   COLONY_TEAMS_ROUTE,
   USER_PREFERENCES_ROUTE,
   USER_ADVANCED_ROUTE,
+  COLONY_ADMIN_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -296,23 +297,26 @@ const Routes = () => {
         />
         <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyWizard />} />
         <Route path={CREATE_USER_ROUTE} element={<CreateUserWizard />} />
-        <Route
-          path={COLONY_DETAILS_ROUTE}
-          element={
-            <ColonyContextProvider>
-              <ExtensionsContextProvider>
-                <PageLayout
-                  loadingText={{ id: 'loading.extensionsPage' }}
-                  title={{ id: 'extensionsPage.title' }}
-                  description={{ id: 'extensionsPage.description' }}
-                  pageName="extensions"
-                >
-                  <ColonyDetailsPage />
-                </PageLayout>
-              </ExtensionsContextProvider>
-            </ColonyContextProvider>
-          }
-        />
+        {[COLONY_ADMIN_ROUTE, COLONY_DETAILS_ROUTE].map((path) => (
+          <Route
+            path={path}
+            key={path}
+            element={
+              <ColonyContextProvider>
+                <ExtensionsContextProvider>
+                  <PageLayout
+                    loadingText={{ id: 'loading.extensionsPage' }}
+                    title={{ id: 'colonyDetailsPage.title' }}
+                    description={{ id: 'colonyDetailsPage.description' }}
+                    pageName="extensions"
+                  >
+                    <ColonyDetailsPage />
+                  </PageLayout>
+                </ExtensionsContextProvider>
+              </ColonyContextProvider>
+            }
+          />
+        ))}
         <Route
           path={COLONY_REPUTATION_ROUTE}
           element={
@@ -442,8 +446,8 @@ const Routes = () => {
           element={
             <PageLayout
               loadingText={{ id: 'loading.userPreferencesPage' }}
-              title={{ id: 'userAdvancedPage.title' }}
-              description={{ id: 'userAdvancedPage.description' }}
+              title={{ id: 'userPreferencesPage.title' }}
+              description={{ id: 'userPreferencesPage.description' }}
               pageName="profile"
               hideColonies
             >

@@ -100,7 +100,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
       <div className="hidden">
         <Wallet />
       </div>
-      <main className="mt-5 mb-24">
+      <main className="mt-5 pb-24">
         <div className="inner">
           {isMobile && (
             <div className="mb-9">

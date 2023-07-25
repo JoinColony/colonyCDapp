@@ -12,15 +12,16 @@ import Textarea from '~v5/common/Fields/Textarea';
 import Button from '~v5/shared/Button';
 import { useUserProfile } from './hooks';
 import { MAX_BIO_CHARS, MAX_DISPLAYNAME_CHARS } from './consts';
+import AvatarUploader from '~v5/common/AvatarUploader';
+import Avatar from '~v5/shared/Avatar';
 
 const displayName = 'v5.pages.UserProfilePage';
 
 const UserProfilePage: FC = () => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
-  const { register, handleSubmit, onSubmit, errors } = useUserProfile();
-
-  // @TODO: when API will be ready add logic to disabling displayName input
+  const { register, handleSubmit, onSubmit, errors, avatarUrl } =
+    useUserProfile();
 
   return (
     <Spinner loadingText={{ id: 'loading.userProfilePage' }}>
@@ -30,7 +31,7 @@ const UserProfilePage: FC = () => {
         </h4>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-6">
-            <div className={styles.row}>
+            <div className={`${styles.row} mb-3`}>
               <LeftColumn
                 fieldTitle={{ id: 'field.username' }}
                 fieldDescription={{ id: 'description.username' }}
@@ -57,6 +58,11 @@ const UserProfilePage: FC = () => {
                 fieldTitle={{ id: 'field.avatar' }}
                 fieldDescription={{ id: 'description.avatar' }}
               />
+              <div className="w-full">
+                <AvatarUploader
+                  avatarPlaceholder={<Avatar size="xm" avatar={avatarUrl} />}
+                />
+              </div>
             </div>
 
             <span className="divider" />

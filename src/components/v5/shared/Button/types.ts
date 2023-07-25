@@ -15,7 +15,7 @@ export type ButtonMode =
 
 export type ButtonSize = 'default' | 'extraSmall' | 'small';
 
-export type TextButtonMode = 'defalt' | 'underlined';
+export type TextButtonMode = 'default' | 'medium' | 'underlined';
 
 export interface CommonButtonProps
   extends Omit<
@@ -49,6 +49,9 @@ export interface TextButtonProps extends CommonButtonProps {
   mode?: TextButtonMode;
   text?: MessageDescriptor | string;
   textValues?: SimpleMessageValues;
+  isErrorColor?: boolean;
+  iconName?: string;
+  iconSize?: IconSize;
 }
 
 export interface PendingButtonProps extends CommonButtonProps {

@@ -115,7 +115,7 @@
   }
 
   .divider {
-    @apply w-full h-px bg-gray-200;
+    @apply w-full h-px bg-gray-200 block;
   }
 }
 
