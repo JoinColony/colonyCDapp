@@ -49,6 +49,18 @@ const ExpenditureDetailsPage = () => {
           Lock expenditure
         </ActionButton>
       )}
+
+      {expenditure.status === ExpenditureStatus.Locked && (
+        <ActionButton
+          actionType={ActionTypes.EXPENDITURE_FINALIZE}
+          values={{
+            colonyAddress: colony.colonyAddress,
+            nativeExpenditureId: expenditure.nativeId,
+          }}
+        >
+          Finalize expenditure
+        </ActionButton>
+      )}
     </div>
   );
 };
