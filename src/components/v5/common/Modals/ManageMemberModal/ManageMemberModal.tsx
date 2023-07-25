@@ -10,6 +10,7 @@ import Textarea from '~v5/common/Fields/Textarea';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
 import Switch from '~v5/common/Fields/Switch';
+import Tooltip from '~shared/Extensions/Tooltip';
 
 const displayName = 'v5.common.Modals.ManageMemberModal';
 
@@ -80,10 +81,20 @@ const ManageMemberModal: FC<ManageMemberModalProps> = ({
 
           <div className="text-gray-700 text-1 flex justify-between my-4">
             <div className="flex items-center gap-2">
-              {formatMessage({ id: 'members.ban.notify' })}
-              <span className="text-gray-400 flex">
-                <Icon name="info" appearance={{ size: 'extraTiny' }} />
-              </span>
+              {formatMessage({
+                id: isBanOptionSelected
+                  ? 'members.ban.notify'
+                  : 'members.unban.notify',
+              })}
+              <Tooltip
+                tooltipContent={
+                  <span>{formatMessage({ id: 'members.ban.tooltip' })}</span>
+                }
+              >
+                <span className="text-gray-400 flex">
+                  <Icon name="info" appearance={{ size: 'extraTiny' }} />
+                </span>
+              </Tooltip>
             </div>
             <Switch />
           </div>
