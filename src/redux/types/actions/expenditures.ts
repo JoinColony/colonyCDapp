@@ -24,7 +24,18 @@ export type ExpendituresActionTypes =
         colonyAddress: Address;
         nativeExpenditureId: string;
       },
-      MetaWithNavigate<object>
+      object
     >
   | ErrorActionType<ActionTypes.EXPENDITURE_LOCK_ERROR, object>
-  | UniqueActionType<ActionTypes.EXPENDITURE_LOCK_SUCCESS, object, object>;
+  | UniqueActionType<ActionTypes.EXPENDITURE_LOCK_SUCCESS, object, object>
+  | UniqueActionType<
+      ActionTypes.EXPENDITURE_FINALIZE,
+      {
+        colonyName: string;
+        colonyAddress: Address;
+        nativeExpenditureId: string;
+      },
+      object
+    >
+  | ErrorActionType<ActionTypes.EXPENDITURE_FINALIZE_ERROR, object>
+  | UniqueActionType<ActionTypes.EXPENDITURE_FINALIZE_SUCCESS, object, object>;
