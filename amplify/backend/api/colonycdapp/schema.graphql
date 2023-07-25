@@ -2596,6 +2596,7 @@ type IngestorStats @model {
 
 type Expenditure @model {
   id: ID! # Self-managed, formatted as colonyId_nativeExpenditureId
+  nativeId: Int!
   createdAt: AWSDateTime!
   colonyId: ID!
     @index(

@@ -1,5 +1,6 @@
 fragment Expenditure on Expenditure {
   id
+  nativeId
   ownerAddress
   status
   slots {
