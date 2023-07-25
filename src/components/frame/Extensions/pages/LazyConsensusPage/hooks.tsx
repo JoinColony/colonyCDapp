@@ -212,7 +212,7 @@ export const useLazyConsensusPage = (
               ? description.defaultMessage.split('\n')[0]
               : description;
 
-            let descriptionText: any;
+            let descriptionText;
 
             if (description.defaultMessage) {
               descriptionText = description.defaultMessage
