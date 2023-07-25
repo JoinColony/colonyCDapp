@@ -121,7 +121,7 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
                 mode="tertiary"
                 iconName="discord-logo"
                 iconSize="small"
-                text={{ id: 'button.connect.discord' }}
+                text={{ id: 'button.connectDiscord' }}
               />
             </div>
             <div className={styles.switchRow}>
