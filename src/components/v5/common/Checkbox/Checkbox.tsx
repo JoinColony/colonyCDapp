@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import { CheckboxProps } from './types';
 import styles from './Checkbox.module.css';
+import Icon from '~shared/Icon';
 
 const displayName = 'v5.common.Checkbox';
 
@@ -18,6 +19,7 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
   classNames,
   isChecked,
   children,
+  mode = 'primary',
 }) => {
   const { formatMessage } = useIntl();
 
@@ -49,11 +51,21 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
           onChange={(event) => handleChange(event)}
         />
         <span
-          className={clsx(
-            styles.checkboxBox,
-            'peer-checked:bg-blue-400 peer-checked:border-blue-400 peer-disabled:bg-gray-40 peer-disabled:border-gray-40 peer-checked:after:border-l peer-checked:after:border-b',
+          className={clsx(styles.checkboxBox, {
+            'border-blue-400 text-base-white bg-blue-400':
+              isChecked && mode === 'primary',
+            'border-blue-400 text-blue-400 bg-base-white':
+              isChecked && mode === 'secondary',
+            'border-gray-200 bg-base-white': !isChecked,
+          })}
+        >
+          {isChecked && (
+            <span className="absolute">
+              <Icon name="check" appearance={{ size: 'extraExtraTiny' }} />
+            </span>
           )}
-        />
+        </span>
+
         <div className="flex items-center gap-2">
           {children}
           {label && formatMessage(label)}

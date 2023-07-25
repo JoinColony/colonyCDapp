@@ -50,6 +50,7 @@ const NestedOptions: FC<NestedOptionsProps> = ({
                   label={title}
                   onChange={onChange}
                   isChecked={checkedItems?.get(id)}
+                  mode="secondary"
                 >
                   {selectedParentOption === 'team' && (
                     <span
