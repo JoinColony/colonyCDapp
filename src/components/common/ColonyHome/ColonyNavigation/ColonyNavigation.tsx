@@ -34,6 +34,10 @@ const MSG = defineMessages({
     id: `${displayName}.comingSoonMessage`,
     defaultMessage: 'Coming Soon',
   },
+  linkTextExpenditures: {
+    id: `${displayName}.linkTextExpenditures`,
+    defaultMessage: 'Expenditures',
+  },
 });
 
 const ColonyNavigation = () => {
@@ -68,6 +72,11 @@ const ColonyNavigation = () => {
         showDot: hasNewExtensions,
         text: MSG.linkTextExtensions,
         dataTest: 'extensionsNavigationButton',
+      },
+      {
+        linkTo: `/colony/${name}/expenditures`,
+        text: MSG.linkTextExpenditures,
+        dataTest: 'expendituresNavigationButton',
       },
     ];
 
