@@ -12,7 +12,7 @@ import { useFilter } from './hooks';
 import SearchInput from './partials/SearchInput';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
-import { filterOptions } from './consts';
+import { filterOptions, followersFilterOptions } from './consts';
 
 const displayName = 'v5.common.Filter';
 
@@ -32,6 +32,7 @@ const Filter: FC = () => {
     numberSelectedFilters,
     selectedParentFilters,
     checkedItems,
+    isFollowersPage,
   } = useFilter();
 
   return (
@@ -104,7 +105,9 @@ const Filter: FC = () => {
                 onSearchButtonClick={() => setIsSearchOpened(false)}
               />
               <FilterOptions
-                options={filterOptions}
+                options={
+                  isFollowersPage ? followersFilterOptions : filterOptions
+                }
                 onSelectParentFilter={onSelectParentFilter}
                 onSelectNestedOption={onSelectNestedOption}
                 selectedChildOption={selectedChildOption}
