@@ -122,11 +122,8 @@ const ControlSafeForm = ({
   const isSupportedColonyVersion = version >= 12;
 
   /* invert this only for testing! */
-  const disabledInputs = !(
-    !userHasPermission ||
-    isSubmitting ||
-    !isSupportedColonyVersion
-  );
+  const disabledInputs =
+    !userHasPermission || isSubmitting || !isSupportedColonyVersion;
 
   const renderTransactionSection = () => {
     switch (transactionType) {
