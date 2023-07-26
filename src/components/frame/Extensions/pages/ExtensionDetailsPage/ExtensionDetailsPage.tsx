@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -31,15 +31,6 @@ const ExtensionDetailsPage: FC = () => {
   // @TODO: Change extension missing permissions functionality
   const [isPermissionEnabled, setIsPermissionEnabled] = useState(false);
 
-  const extensionStatusPill = useMemo(
-    () =>
-      extensionData && extensionData.extensionId === Extension.VotingReputation
-        ? { mode: GOVERNANCE_BADGE, text: 'status.governance' }
-        : { mode: PAYMENTS_BADGE, text: 'status.payments' },
-
-    [extensionData],
-  );
-
   if (!colony || !extensionData) {
     return null;
   }
@@ -59,6 +50,9 @@ const ExtensionDetailsPage: FC = () => {
   const showEnableBanner =
     extensionData.extensionId !== 'VotingReputation' &&
     !isInstalledExtensionData(extensionData);
+
+  const isVotingReputationExtension =
+    extensionData.extensionId === Extension.VotingReputation;
 
   return (
     <Spinner loadingText={{ id: 'loading.colonyDetailsPage' }}>
@@ -89,9 +83,15 @@ const ExtensionDetailsPage: FC = () => {
               <div className={styles.topContainer}>
                 <ActionButtons
                   extensionData={extensionData}
-                  extensionStatusMode={extensionStatusPill.mode}
+                  extensionStatusMode={
+                    isVotingReputationExtension
+                      ? GOVERNANCE_BADGE
+                      : PAYMENTS_BADGE
+                  }
                   extensionStatusText={formatMessage({
-                    id: extensionStatusPill.text,
+                    id: isVotingReputationExtension
+                      ? 'status.governance'
+                      : 'status.payments',
                   })}
                 />
               </div>
