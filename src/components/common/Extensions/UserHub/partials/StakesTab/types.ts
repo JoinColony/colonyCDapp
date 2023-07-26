@@ -16,3 +16,7 @@ export interface StakesProps {
 export interface StakesTabItem extends Omit<TabItem, 'type'> {
   type: 'all' | 'finalized' | 'claimable';
 }
+
+export interface StakesTabProps {
+  claimedNotificationNumber?: number;
+}

@@ -42,7 +42,11 @@ const AccordionNestedItem: FC<AccordionNestedItemProps> = ({
             transition={{ duration: 0.4, ease: 'easeOut' }}
             className="overflow-hidden"
           >
-            <div className="mt-1 text-sm text-gray-600">{contentText}</div>
+            <div
+              className="mt-1 text-sm text-gray-600 first-letter:uppercase"
+              // eslint-disable-next-line react/no-danger
+              dangerouslySetInnerHTML={{ __html: contentText }}
+            />
           </motion.div>
         )}
       </AnimatePresence>

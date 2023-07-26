@@ -409,8 +409,8 @@ const Routes = () => {
               <ExtensionsContextProvider>
                 <PageLayout
                   loadingText={{ id: 'loading.extensionsPage' }}
-                  title={{ id: 'extensionsPage.title' }}
-                  description={{ id: 'extensionsPage.description' }}
+                  title={{ id: 'advancedPage.title' }}
+                  description={{ id: 'advancedPage.description' }}
                   pageName="extensions"
                 >
                   <AdvancedPage />
