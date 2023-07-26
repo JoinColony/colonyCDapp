@@ -8,7 +8,7 @@ import { useCalamityBanner } from './hooks';
 import styles from './CalamityBanner.module.css';
 import Button, { CloseButton } from '~v5/shared/Button';
 import { useTablet } from '~hooks';
-import Icon from '~shared/Icon/Icon';
+import Icon from '~shared/Icon';
 
 const displayName = 'common.Extensions.CalamityBanner';
 
