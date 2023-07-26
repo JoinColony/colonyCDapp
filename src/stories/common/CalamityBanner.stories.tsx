@@ -2,8 +2,8 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import CalamityBanner from '~common/Extensions/CalamityBanner';
-import { CalamityBannerItemProps } from '~common/Extensions/CalamityBanner/types';
+import CalamityBanner from '~v5/shared/CalamityBanner';
+import { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
 
 const meta: Meta<typeof CalamityBanner> = {
   title: 'Common/Calamity Banner',

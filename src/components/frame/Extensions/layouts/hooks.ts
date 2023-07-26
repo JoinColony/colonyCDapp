@@ -1,5 +1,6 @@
+import { useCallback } from 'react';
 import { NetworkContractUpgradeDialog } from '~common/Dialogs';
-import { CalamityBannerItemProps } from '~common/Extensions/CalamityBanner/types';
+import { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
 import { ColonyFragment } from '~gql';
 import {
   useAppContext,
@@ -24,12 +25,15 @@ export const usePageLayout = () => {
   const enabledExtensionData = useEnabledExtensions();
   const canUpgradeColony = user?.name && hasRoot(allUserRoles);
 
-  const handleUpgradeColony = () =>
-    colony &&
-    openUpgradeColonyDialog({
-      colony,
-      enabledExtensionData,
-    });
+  const handleUpgradeColony = useCallback(
+    () =>
+      colony &&
+      openUpgradeColonyDialog({
+        colony,
+        enabledExtensionData,
+      }),
+    [colony, enabledExtensionData, openUpgradeColonyDialog],
+  );
 
   const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);
 

@@ -6,7 +6,7 @@ import Wallet from '~frame/RouteLayouts/UserNavigation/Wallet';
 import Navigation from '~v5/common/Navigation';
 import PageTitle from '~v5/common/PageTitle';
 import { useMobile } from '~hooks';
-import CalamityBanner from '~common/Extensions/CalamityBanner';
+import CalamityBanner from '~v5/shared/CalamityBanner';
 import Spinner from '~v5/shared/Spinner';
 import { applyTheme } from '../themes/utils';
 import { Theme } from '../themes/enum';

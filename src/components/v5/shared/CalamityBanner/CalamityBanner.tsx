@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
@@ -25,13 +25,13 @@ const CalamityBanner: FC<CalamityBannerProps> = ({ items }) => {
     />
   );
 
-  const handleBannerChange = () => {
+  const handleBannerChange = useCallback(() => {
     if (activeElement === items.length - 1) {
       setActiveElement(0);
     } else {
       setActiveElement(activeElement + 1);
     }
-  };
+  }, [activeElement, items.length]);
 
   useEffect(() => {
     items.forEach(({ mode }, index) => {
