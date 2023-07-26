@@ -1,8 +1,5 @@
+import { PropsGetterArgs } from 'react-popper-tooltip';
 import { Colony, WatchListItem } from '~types';
-
-export interface ColonySwitcherProps {
-  watchListMock?: (WatchListItem | null)[];
-}
 
 export interface ColoniesDropdownProps {
   watchlist: (WatchListItem | null)[];
@@ -25,4 +22,16 @@ export interface ColonyAvatarProps {
 export interface ColonyDropdownMobileProps {
   isOpen: boolean;
   userLoading?: boolean;
+}
+
+export interface ColonySwitcherProps {
+  isCloseButtonVisible?: boolean;
+  visible?: boolean;
+  isMainMenuVisible?: boolean;
+  setTooltipRef: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+  setTriggerRef: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+  getTooltipProps: (args?: PropsGetterArgs | undefined) => {
+    'data-popper-interactive': boolean | undefined;
+    style: React.CSSProperties;
+  };
 }
