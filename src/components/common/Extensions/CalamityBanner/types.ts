@@ -1,8 +1,18 @@
-import { DialogType } from '~shared/Dialog';
+import { MessageDescriptor } from 'react-intl';
 
 export interface CalamityBannerProps {
+  items: CalamityBannerItemProps[];
+}
+
+export type CalamityBannerMode = 'error' | 'info';
+
+export interface CalamityBannerItemProps {
   linkName: string;
+  linkUrl: string;
   buttonName: string;
   isButtonDisabled?: boolean;
-  onUpgrade: () => DialogType<object> | undefined;
+  onClick: () => void;
+  mode: CalamityBannerMode;
+  title: MessageDescriptor;
+  id: string;
 }
