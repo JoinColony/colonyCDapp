@@ -7,7 +7,7 @@ import { accordionAnimation } from '~constants/accordionAnimation';
 import Icon from '~shared/Icon';
 import SubMenu from '../SubMenu';
 import { NavItemMobileProps } from '../types';
-import styles from '../Nav.module.css';
+import styles from './NavMobile.module.css';
 
 const displayName = 'common.Extensions.MainNavigation.partials.NavMobile';
 
@@ -50,7 +50,7 @@ const NavMobile: FC<NavItemMobileProps> = ({ item, isOpen, toggleItem }) => {
         </button>
       )}
       {item.subMenu && (
-        <div className={styles.subMenuMobile}>
+        <div className="bg-base-white rounded-lg shadow-content sm:rounded-none sm:shadow-none sm:px-6">
           <AnimatePresence>
             {isOpen && (
               <motion.div

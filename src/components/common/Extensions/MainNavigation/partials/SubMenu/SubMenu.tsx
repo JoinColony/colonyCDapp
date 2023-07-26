@@ -21,12 +21,7 @@ const SubMenu: FC<SubMenuProps> = ({ items }) => {
 
   return (
     <Wrapper hasShadow={!isMobile}>
-      <ul
-        className={clsx(
-          styles.subMenuList,
-          'sm:grid-cols-[repeat(2,1fr)] md:grid-cols-[repeat(3,1fr)]',
-        )}
-      >
+      <ul className={clsx(styles.subMenuList, 'grid-cols-[repeat(3,1fr)]')}>
         {items.map(({ label, href, description, status }) => (
           <li key={label}>
             <Link
@@ -60,8 +55,8 @@ const SubMenu: FC<SubMenuProps> = ({ items }) => {
       {!isMobile && (
         <div className="px-3">
           <span className="divider mb-6" />
-          <div className="flex flex-col items-center justify-between md:flex-row">
-            <div className="mb-6 md:mr-2 md:mb-0">
+          <div className="flex flex-col items-center justify-between sm:flex-row">
+            <div className="mb-6 sm:mr-2 sm:mb-0">
               <Button
                 text="Create new action"
                 mode="quinary"
