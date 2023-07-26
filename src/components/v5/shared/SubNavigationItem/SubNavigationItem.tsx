@@ -91,7 +91,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
             hasShadow: true,
             className: 'py-4 px-2',
           }}
-          classNames="w-full sm:max-w-[17.375rem]"
+          classNames="w-full sm:max-w-[17.375rem] mr-2"
         >
           <NestedOptions
             selectedParentOption={option}

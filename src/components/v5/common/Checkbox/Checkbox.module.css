@@ -1,3 +1,3 @@
 .checkboxBox {
-  @apply flex relative mt-[0.125rem] shrink-0 mr-2 transition-all duration-normal border h-[1rem] w-[1rem] rounded-[0.25rem] bg-base-white text-base-white after:content-[''] after:absolute after:-rotate-45 after:-translate-x-1/2 after:top-[20%] after:left-1/2 after:w-[60%] after:h-[30%];
+  @apply flex items-center justify-center relative mt-[0.125rem] shrink-0 mr-2 transition-all duration-normal border h-4 w-4 rounded;
 }
