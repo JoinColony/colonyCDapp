@@ -14,7 +14,7 @@ import { usePageThemeContext } from '~context/PageThemeContext';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
 import styles from '~shared/Extensions/Toast/Toast.module.css';
 import { PageLayoutProps } from './types';
-import ManageMemberModal from '~v5/common/Modals/ManageMemberModal/ManageMemberModal';
+import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
 import { useMemberContext } from '~context/MemberContext';
 import { usePageLayout } from './hooks';
 

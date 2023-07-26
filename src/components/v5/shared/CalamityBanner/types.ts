@@ -16,3 +16,11 @@ export interface CalamityBannerItemProps {
   title: MessageDescriptor;
   id: string;
 }
+
+export interface CalamityBannerContentProps extends CalamityBannerItemProps {
+  index: number;
+  activeElement: number;
+  handleBannerChange: () => void;
+  setShowBanner: React.Dispatch<React.SetStateAction<boolean>>;
+  itemsLength: number;
+}
