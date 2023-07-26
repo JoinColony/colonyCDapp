@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { Colony, WatchListItem } from '~types';
+import { Colony } from '~types';
 import ColonyItem from './ColonyItem';
 import ColonyAvatar from '~shared/ColonyAvatar';
 import { ColoniesDropdownProps } from '../types';
@@ -14,19 +14,8 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({
   watchlist = [],
   isMobile,
 }) => {
-  const { colonyToDisplay, colonyToDisplayAddress } =
+  const { colonyToDisplay, colonyToDisplayAddress, coloniesGroupByCategory } =
     useSelectedColony(watchlist);
-
-  const groupByCategory = (watchlist as WatchListItem[]).reduce(
-    (group, item) => {
-      const network = (item && item.colony.chainMetadata?.network) || '';
-      // eslint-disable-next-line no-param-reassign
-      group[network] = group[network] ?? [];
-      group[network].push(item);
-      return group;
-    },
-    {},
-  );
 
   return (
     <div className="w-full bg-base-white z-50 relative flex flex-col mb-4 sm:-mb-2">
@@ -47,10 +36,11 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({
           )}
         </div>
       )}
-      {Object.keys(groupByCategory).map((key) => (
+
+      {Object.keys(coloniesGroupByCategory).map((key) => (
         <div className="px-6 sm:px-0 sm:mt-5 mb-4 last:mb-0" key={key}>
-          {!!key && <TitleLabel text={key} />}
-          {groupByCategory[key].map(({ colony }) => (
+          {key && <TitleLabel text={key} />}
+          {coloniesGroupByCategory[key].map(({ colony }) => (
             <ColonyItem
               colony={colony as Colony}
               key={colony?.colonyAddress}

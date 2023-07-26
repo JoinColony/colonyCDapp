@@ -3,5 +3,5 @@
 }
 
 .subMenu {
-  @apply absolute top-full left-0 opacity-0 overflow-hidden max-h-0 pointer-events-none transition-all duration-normal;
+  @apply transition-all duration-normal pointer-events-none absolute top-full left-0 pt-2.5 sm:translate-x-[calc(-50%+2.5rem)] lg:translate-x-0;
 }

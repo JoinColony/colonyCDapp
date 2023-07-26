@@ -10,4 +10,7 @@ export interface CheckboxProps {
   disabled?: boolean;
   classNames?: string;
   isChecked?: boolean;
+  mode?: CheckboxMode;
 }
+
+type CheckboxMode = 'primary' | 'secondary';

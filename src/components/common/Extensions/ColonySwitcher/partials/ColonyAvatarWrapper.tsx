@@ -47,7 +47,7 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
           })}
           ref={setTriggerRef}
         >
-          <Icon name="caret-up" appearance={{ size: 'extraTiny' }} />
+          <Icon name="caret-up" appearance={{ size: 'extraExtraTiny' }} />
         </span>
       )}
     </>

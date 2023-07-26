@@ -23,14 +23,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
   const imageString = preferThumbnail ? profile?.thumbnail : profile?.avatar;
 
   const avatar = (
-    <span
-      className={clsx(
-        styles.main,
-        `${
-          userStatus && isContributorsList ? 'gap-2' : ''
-        } items-center text-current`,
-      )}
-    >
+    <span className={clsx(styles.main, 'items-center text-current')}>
       <span
         className={clsx('flex rounded-full', {
           'border-2 border-blue-400 ':
@@ -56,7 +49,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
         <p
           className={clsx('font-medium truncate', {
             'text-sm ml-1': size === 'xxs',
-            'text-md ml-2': size === 'xs',
+            'text-md ml-2': size === 'xs' || size === 'sm',
           })}
         >
           {userName}

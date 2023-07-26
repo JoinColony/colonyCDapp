@@ -7,12 +7,12 @@ import FilterOptions from './partials/FilterOptions';
 import Modal from '~v5/shared/Modal';
 import PopoverBase from '~v5/shared/PopoverBase';
 import { useMembersPage } from '~frame/v5/pages/MembersPage/hooks';
-import TableFiltering from '../TableFiltering';
+// import TableFiltering from '../TableFiltering';
 import { useFilter } from './hooks';
 import SearchInput from './partials/SearchInput';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
-import { filterOptions } from './consts';
+import { filterOptions, followersFilterOptions } from './consts';
 
 const displayName = 'v5.common.Filter';
 
@@ -24,14 +24,15 @@ const Filter: FC = () => {
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     useMembersPage();
   const {
-    selectedFilters,
+    // selectedFilters,
     onSelectParentFilter,
     onSelectNestedOption,
-    onClearFilters,
+    // onClearFilters,
     selectedChildOption,
     numberSelectedFilters,
-    selectedParentFilters,
+    // selectedParentFilters,
     checkedItems,
+    isFollowersPage,
   } = useFilter();
 
   return (
@@ -79,13 +80,14 @@ const Filter: FC = () => {
       ) : (
         <>
           <div className="flex flex-row gap-2">
-            {!!selectedFilters?.length && (
+            {/* @TODO: uncomment that after API for filtering will be ready */}
+            {/* {!!selectedFilters?.length && (
               <TableFiltering
                 selectedParentFilters={selectedParentFilters}
                 filterOptions={selectedFilters}
                 onClick={() => onClearFilters()}
               />
-            )}
+            )} */}
             <FilterButton isOpen={visible} setTriggerRef={setTriggerRef} />
           </div>
           {visible && (
@@ -104,7 +106,9 @@ const Filter: FC = () => {
                 onSearchButtonClick={() => setIsSearchOpened(false)}
               />
               <FilterOptions
-                options={filterOptions}
+                options={
+                  isFollowersPage ? followersFilterOptions : filterOptions
+                }
                 onSelectParentFilter={onSelectParentFilter}
                 onSelectNestedOption={onSelectNestedOption}
                 selectedChildOption={selectedChildOption}
