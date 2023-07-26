@@ -10,7 +10,7 @@ import Button, { CloseButton } from '~v5/shared/Button';
 import { useTablet } from '~hooks';
 import Icon from '~shared/Icon';
 
-const displayName = 'v5.common.Extensions.CalamityBanner';
+const displayName = 'v5.CalamityBanner';
 
 const CalamityBanner: FC<CalamityBannerProps> = ({ items }) => {
   const { formatMessage } = useIntl();
