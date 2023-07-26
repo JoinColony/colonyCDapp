@@ -2,7 +2,8 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import CalamityBanner from '~common/Extensions/CalamityBanner';
+import CalamityBanner from '~v5/shared/CalamityBanner';
+import { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
 
 const meta: Meta<typeof CalamityBanner> = {
   title: 'Common/Calamity Banner',
@@ -12,11 +13,34 @@ const meta: Meta<typeof CalamityBanner> = {
 export default meta;
 type Story = StoryObj<typeof CalamityBanner>;
 
-export const Base: Story = {
-  args: {
+const calamityBannerItems: CalamityBannerItemProps[] = [
+  {
+    id: '1',
+    linkUrl:
+      'https://docs.colony.io/use/advanced-features/upgrade-colony-and-extensions',
     buttonName: 'button.upgrade',
     linkName: 'learn.more',
-    children: 'A new version of the Colony Network is available!',
+    isButtonDisabled: false,
+    mode: 'info',
+    onClick: () => {},
+    title: { id: 'calamityBanner.available' },
+  },
+  {
+    id: '2',
+    linkUrl:
+      'https://docs.colony.io/use/advanced-features/upgrade-colony-and-extensions',
+    buttonName: 'button.exitRecovery',
+    linkName: 'learn.more',
+    isButtonDisabled: false,
+    mode: 'error',
+    onClick: () => {},
+    title: { id: 'calamityBanner.recoveryMode' },
+  },
+];
+
+export const Base: Story = {
+  args: {
+    items: calamityBannerItems,
   },
   decorators: [
     (Story) => (
