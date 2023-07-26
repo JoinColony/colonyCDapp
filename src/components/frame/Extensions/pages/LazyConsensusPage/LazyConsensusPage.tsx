@@ -17,6 +17,7 @@ import Button from '~v5/shared/Button';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { useMobile } from '~hooks';
 import styles from '../Pages.module.css';
+import { GOVERNANCE_BADGE } from '~redux/constants';
 
 const LazyConsensusPage: FC = () => {
   const { openIndex, onOpenIndexChange, isAccordionOpen, manualOpen } =
@@ -58,7 +59,7 @@ const LazyConsensusPage: FC = () => {
                 <div className={styles.topContainer}>
                   <ActionButtons
                     extensionData={extensionData}
-                    extensionStatusMode="governance"
+                    extensionStatusMode={GOVERNANCE_BADGE}
                     extensionStatusText={formatMessage({
                       id: 'status.governance',
                     })}

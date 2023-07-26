@@ -12,3 +12,6 @@ export const SPEED_OVER_SECURITY = 'speed-over-security';
 export const SECURITY_OVER_SPEED = 'security-over-speed';
 export const TESTING_GOVERNANCE = 'testing-governance';
 export const CUSTOM = 'custom';
+
+export const PAYMENTS_BADGE = 'payments';
+export const GOVERNANCE_BADGE = 'governance';

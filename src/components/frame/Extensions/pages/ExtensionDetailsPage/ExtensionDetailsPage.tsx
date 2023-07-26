@@ -18,6 +18,7 @@ import { isInstalledExtensionData } from '~utils/extensions';
 import { accordionAnimation } from '~constants/accordionAnimation';
 import TabContent from './partials/TabContent';
 import styles from '../Pages.module.css';
+import { GOVERNANCE_BADGE, PAYMENTS_BADGE } from '~redux/constants';
 
 const displayName = 'frame.Extensions.pages.ExtensionDetailsPage';
 
@@ -45,9 +46,13 @@ const ExtensionDetailsPage: FC = () => {
   const handleOnTabClick = (_, id) => {
     setActiveTab(id);
   };
+
   const showEnableBanner =
     extensionData.extensionId !== 'VotingReputation' &&
     !isInstalledExtensionData(extensionData);
+
+  const isVotingReputationExtension =
+    extensionData.extensionId === Extension.VotingReputation;
 
   return (
     <Spinner loadingText={{ id: 'loading.colonyDetailsPage' }}>
@@ -78,8 +83,16 @@ const ExtensionDetailsPage: FC = () => {
               <div className={styles.topContainer}>
                 <ActionButtons
                   extensionData={extensionData}
-                  extensionStatusMode="payments"
-                  extensionStatusText={formatMessage({ id: 'status.payments' })}
+                  extensionStatusMode={
+                    isVotingReputationExtension
+                      ? GOVERNANCE_BADGE
+                      : PAYMENTS_BADGE
+                  }
+                  extensionStatusText={formatMessage({
+                    id: isVotingReputationExtension
+                      ? 'status.governance'
+                      : 'status.payments',
+                  })}
                 />
               </div>
             </div>
