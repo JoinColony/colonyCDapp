@@ -11,7 +11,6 @@ import { useTablet } from '~hooks';
 
 const CalamityBannerContent: FC<CalamityBannerContentProps> = ({
   buttonName,
-  id,
   linkName,
   linkUrl,
   mode,
@@ -36,7 +35,6 @@ const CalamityBannerContent: FC<CalamityBannerContentProps> = ({
 
   return (
     <div
-      key={id}
       className={clsx(
         'relative sm:absolute inset-0 w-full px-6 py-4 transition-all duration-normal',
         {

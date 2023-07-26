@@ -17,7 +17,8 @@ export interface CalamityBannerItemProps {
   id: string;
 }
 
-export interface CalamityBannerContentProps extends CalamityBannerItemProps {
+export interface CalamityBannerContentProps
+  extends Omit<CalamityBannerItemProps, 'id'> {
   index: number;
   activeElement: number;
   handleBannerChange: () => void;

@@ -14,10 +14,11 @@ const CalamityBanner: FC<CalamityBannerProps> = ({ items }) => {
     <>
       {showBanner && (
         <div className="overflow-hidden relative min-h-[7.25rem] md:min-h-[4.25rem]">
-          {items.map((item, index) => (
+          {items.map(({ id, ...item }, index) => (
             <CalamityBannerContent
               {...{ ...item }}
               index={index}
+              key={id}
               activeElement={activeElement}
               handleBannerChange={handleBannerChange}
               setShowBanner={setShowBanner}
