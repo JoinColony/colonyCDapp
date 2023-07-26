@@ -1,11 +1,9 @@
 import { MessageDescriptor } from 'react-intl';
-import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types';
-
 import { AnyExtensionData } from '~types';
 
 export interface ActionButtonProps {
   extensionData: AnyExtensionData;
-  extensionStatusMode?: ExtensionStatusBadgeMode;
+  extensionStatusMode?: string;
   extensionStatusText?: MessageDescriptor | string;
 }
 

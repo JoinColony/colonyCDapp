@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -18,6 +18,7 @@ import { isInstalledExtensionData } from '~utils/extensions';
 import { accordionAnimation } from '~constants/accordionAnimation';
 import TabContent from './partials/TabContent';
 import styles from '../Pages.module.css';
+import { GOVERNANCE_BADGE, PAYMENTS_BADGE } from '~redux/constants';
 
 const displayName = 'frame.Extensions.pages.ExtensionDetailsPage';
 
@@ -29,6 +30,15 @@ const ExtensionDetailsPage: FC = () => {
   const [activeTab, setActiveTab] = useState(0);
   // @TODO: Change extension missing permissions functionality
   const [isPermissionEnabled, setIsPermissionEnabled] = useState(false);
+
+  const extensionStatusPill = useMemo(
+    () =>
+      extensionData && extensionData.extensionId === Extension.VotingReputation
+        ? { mode: GOVERNANCE_BADGE, text: 'status.governance' }
+        : { mode: PAYMENTS_BADGE, text: 'status.payments' },
+
+    [extensionData],
+  );
 
   if (!colony || !extensionData) {
     return null;
@@ -45,6 +55,7 @@ const ExtensionDetailsPage: FC = () => {
   const handleOnTabClick = (_, id) => {
     setActiveTab(id);
   };
+
   const showEnableBanner =
     extensionData.extensionId !== 'VotingReputation' &&
     !isInstalledExtensionData(extensionData);
@@ -78,8 +89,10 @@ const ExtensionDetailsPage: FC = () => {
               <div className={styles.topContainer}>
                 <ActionButtons
                   extensionData={extensionData}
-                  extensionStatusMode="payments"
-                  extensionStatusText={formatMessage({ id: 'status.payments' })}
+                  extensionStatusMode={extensionStatusPill.mode}
+                  extensionStatusText={formatMessage({
+                    id: extensionStatusPill.text,
+                  })}
                 />
               </div>
             </div>
