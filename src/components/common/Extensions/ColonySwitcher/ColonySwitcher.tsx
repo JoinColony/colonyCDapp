@@ -7,16 +7,23 @@ import ColonyAvatarWrapper from './partials/ColonyAvatarWrapper';
 import ColonyDropdownMobile from './partials/ColonyDropdownMobile';
 import styles from './ColonySwitcher.module.css';
 import { useColonyContext, useMobile, useUserReputation } from '~hooks';
+import { ColonySwitcherProps } from './types';
 import { useHeader } from '~frame/Extensions/Header/hooks';
 import NavigationTools from '../NavigationTools';
 
 const displayName = 'common.Extensions.ColonySwitcher';
 
-const ColonySwitcher: FC = () => {
+const ColonySwitcher: FC<ColonySwitcherProps> = ({
+  isCloseButtonVisible,
+  visible,
+  isMainMenuVisible,
+  setTooltipRef,
+  setTriggerRef,
+  getTooltipProps,
+}) => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
 
-  const { colony } = useColonyContext();
   const {
     colonyToDisplayAddress,
     colonyToDisplay,
@@ -24,13 +31,9 @@ const ColonySwitcher: FC = () => {
     userLoading,
     user,
     wallet,
-    getTooltipProps,
-    setTooltipRef,
-    isMainMenuVisible,
-    setTriggerRef,
-    visible,
   } = useHeader();
 
+  const { colony } = useColonyContext();
   const { profile } = user || {};
   const { colonyAddress, nativeToken } = colony || {};
   const { userReputation, totalReputation } = useUserReputation(
@@ -40,11 +43,8 @@ const ColonySwitcher: FC = () => {
 
   const { items: watchlist = [] } = user?.watchlist || {};
 
-  const isCloseButtonVisible = (isMainMenuVisible || visible) && isMobile;
-
   return (
     <div className="flex justify-between relative">
-      {/* @TODO It should be placed i a separate component Colony Switcher */}
       <button
         aria-label={formatMessage({
           id: visible ? 'ariaLabel.closeDropdown' : 'ariaLabel.openDropdown',
@@ -62,29 +62,7 @@ const ColonySwitcher: FC = () => {
       </button>
       {visible && (
         <div className="h-auto absolute top-[3.5rem] sm:top-[2.25rem]">
-          {!isMobile && (
-            <div
-              ref={setTooltipRef}
-              {...getTooltipProps({
-                className: clsx(
-                  `${styles.tooltipContainer} p-1 flex justify-start z-[9999] tooltip-container`,
-                  {
-                    'w-[26.75rem] border-none shadow-none': isMobile,
-                    'w-[15.1875rem]': !isMobile,
-                  },
-                ),
-              })}
-            >
-              {!!watchlist.length && !userLoading ? (
-                <ColoniesDropdown watchlist={[...watchlist].sort(sortByDate)} />
-              ) : (
-                <p className="text-sm">
-                  {formatMessage({ id: 'missing.colonies' })}
-                </p>
-              )}
-            </div>
-          )}
-          {isMobile && (
+          {isMobile ? (
             <div
               ref={setTooltipRef}
               {...getTooltipProps({
@@ -112,6 +90,27 @@ const ColonySwitcher: FC = () => {
                   </p>
                 )}
               </ColonyDropdownMobile>
+            </div>
+          ) : (
+            <div
+              ref={setTooltipRef}
+              {...getTooltipProps({
+                className: clsx(
+                  `${styles.tooltipContainer} p-1 flex justify-start z-[9999] tooltip-container`,
+                  {
+                    'w-[26.75rem] border-none shadow-none': isMobile,
+                    'w-[15.1875rem]': !isMobile,
+                  },
+                ),
+              })}
+            >
+              {!!watchlist.length && !userLoading ? (
+                <ColoniesDropdown watchlist={[...watchlist].sort(sortByDate)} />
+              ) : (
+                <p className="text-sm">
+                  {formatMessage({ id: 'missing.colonies' })}
+                </p>
+              )}
             </div>
           )}
         </div>

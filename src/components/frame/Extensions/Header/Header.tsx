@@ -16,11 +16,13 @@ const displayName = 'frame.Extensions.Header';
 const Header: FC<HeaderProps> = ({ hideColonies = false }) => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
-
   const {
     mainMenuGetTooltipProps,
     mainMenuSetTooltipRef,
     mainMenuSetTriggerRef,
+    setTooltipRef,
+    setTriggerRef,
+    getTooltipProps,
     isMainMenuVisible,
     visible,
   } = useHeader();
@@ -32,7 +34,13 @@ const Header: FC<HeaderProps> = ({ hideColonies = false }) => {
       <div className="bg-base-white w-full flex min-h-[6.375rem] justify-center px-6">
         <div className="flex items-center justify-between sm:max-w-[90rem] w-full">
           <div className="mr-5 sm:mr-10">
-            <ColonySwitcher />
+            <ColonySwitcher
+              getTooltipProps={getTooltipProps}
+              setTooltipRef={setTooltipRef}
+              setTriggerRef={setTriggerRef}
+              visible={visible}
+              isMainMenuVisible={isMainMenuVisible}
+            />
           </div>
           <div
             className={clsx('flex w-full items-center', {
