@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { FilterOption, FilterType } from '../TableFiltering/types';
 import {
@@ -18,6 +19,8 @@ export const useFilter = () => {
   const [checkedItems, setCheckedItems] = useState<Map<string, boolean>>(
     new Map(),
   );
+  const location = useLocation();
+  const isFollowersPage = location.pathname.includes('followers');
 
   const onSaveSelectedFilters = useCallback(
     (event) => {
@@ -95,5 +98,6 @@ export const useFilter = () => {
       | FilterType[]
       | FilterType,
     checkedItems,
+    isFollowersPage,
   };
 };
