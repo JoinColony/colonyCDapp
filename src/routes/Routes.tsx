@@ -83,6 +83,7 @@ import { MemberContextProvider } from '~context/MemberContext';
 import UserProfilePage from '~frame/v5/pages/UserProfilePage';
 import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
 import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
+import { PageThemeContextProvider } from '~context/PageThemeContext';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -430,43 +431,49 @@ const Routes = () => {
         <Route
           path={USER_EDIT_ROUTE}
           element={
-            <PageLayout
-              loadingText={{ id: 'loading.userProfilePage' }}
-              title={{ id: 'userProfilePage.title' }}
-              description={{ id: 'userProfilePage.description' }}
-              pageName="profile"
-              hideColonies
-            >
-              <UserProfilePage />
-            </PageLayout>
+            <PageThemeContextProvider>
+              <PageLayout
+                loadingText={{ id: 'loading.userProfilePage' }}
+                title={{ id: 'userProfilePage.title' }}
+                description={{ id: 'userProfilePage.description' }}
+                pageName="profile"
+                hideColonies
+              >
+                <UserProfilePage />
+              </PageLayout>
+            </PageThemeContextProvider>
           }
         />
         <Route
           path={USER_PREFERENCES_ROUTE}
           element={
-            <PageLayout
-              loadingText={{ id: 'loading.userPreferencesPage' }}
-              title={{ id: 'userPreferencesPage.title' }}
-              description={{ id: 'userPreferencesPage.description' }}
-              pageName="profile"
-              hideColonies
-            >
-              <UserPreferencesPage />
-            </PageLayout>
+            <PageThemeContextProvider>
+              <PageLayout
+                loadingText={{ id: 'loading.userPreferencesPage' }}
+                title={{ id: 'userPreferencesPage.title' }}
+                description={{ id: 'userPreferencesPage.description' }}
+                pageName="profile"
+                hideColonies
+              >
+                <UserPreferencesPage />
+              </PageLayout>
+            </PageThemeContextProvider>
           }
         />
         <Route
           path={USER_ADVANCED_ROUTE}
           element={
-            <PageLayout
-              loadingText={{ id: 'loading.userAdvancedPage' }}
-              title={{ id: 'userAdvancedPage.title' }}
-              description={{ id: 'userAdvancedPage.description' }}
-              pageName="profile"
-              hideColonies
-            >
-              <UserAdvancedPage />
-            </PageLayout>
+            <PageThemeContextProvider>
+              <PageLayout
+                loadingText={{ id: 'loading.userAdvancedPage' }}
+                title={{ id: 'userAdvancedPage.title' }}
+                description={{ id: 'userAdvancedPage.description' }}
+                pageName="profile"
+                hideColonies
+              >
+                <UserAdvancedPage />
+              </PageLayout>
+            </PageThemeContextProvider>
           }
         />
         {/* <WalletRequiredRoute

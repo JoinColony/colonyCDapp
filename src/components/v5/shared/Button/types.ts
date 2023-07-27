@@ -11,6 +11,7 @@ export type ButtonMode =
   | 'tertiary'
   | 'quinary'
   | 'senary'
+  | 'septenary'
   | 'completed';
 
 export type ButtonSize = 'default' | 'extraSmall' | 'small';
