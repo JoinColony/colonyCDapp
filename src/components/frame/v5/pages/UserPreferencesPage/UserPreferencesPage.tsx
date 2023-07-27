@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useCanEditProfile, useMobile } from '~hooks';
@@ -23,17 +23,11 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
 }) => {
   const { user } = useCanEditProfile();
   const isMobile = useMobile();
-  const [isCopied, setIsCopied] = useState(false);
   const { formatMessage } = useIntl();
-  const { handleClipboardCopy } = useCopyToClipboard(user?.walletAddress || '');
-
-  useEffect(() => {
-    if (isCopied) {
-      setTimeout(() => {
-        setIsCopied(false);
-      }, 5000);
-    }
-  }, [isCopied]);
+  const { handleClipboardCopy, isCopied } = useCopyToClipboard(
+    user?.walletAddress || '',
+    5000,
+  );
 
   const {
     errors,
@@ -110,10 +104,7 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
                   mode={isCopied ? 'completed' : 'septenary'}
                   iconName={isCopied ? '' : 'copy-simple'}
                   isFullSize={isMobile}
-                  onClick={() => {
-                    setIsCopied(true);
-                    handleClipboardCopy();
-                  }}
+                  onClick={handleClipboardCopy}
                   text={{
                     id: isCopied ? 'copy.addressCopied' : 'copy.address',
                   }}
