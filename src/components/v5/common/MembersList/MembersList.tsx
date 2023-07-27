@@ -54,10 +54,7 @@ const MembersList: FC<MembersListProps> = ({
       </div>
       <p className="mb-6 text-md text-gray-600">{formatMessage(description)}</p>
       {!isLoading && listLength ? (
-        <ResponsiveMasonry
-          columnsCountBreakPoints={{ 250: 1, 950: 2 }}
-          gutter="1rem"
-        >
+        <ResponsiveMasonry columnsCountBreakPoints={{ 250: 1, 950: 2 }}>
           <Masonry gutter="1rem">
             {visibleMembers.map((item, index) => {
               const { user } = item;
