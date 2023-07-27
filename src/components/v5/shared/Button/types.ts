@@ -11,6 +11,7 @@ export type ButtonMode =
   | 'tertiary'
   | 'quinary'
   | 'senary'
+  | 'septenary'
   | 'completed';
 
 export type ButtonSize = 'default' | 'extraSmall' | 'small';
@@ -69,10 +70,4 @@ export interface HamburgerProps extends CommonButtonProps {
 export interface CloseButtonProps extends CommonButtonProps {
   iconSize?: IconSize;
   className?: string;
-}
-
-export interface CopyButtonProps {
-  copyText: string;
-  label: MessageDescriptor;
-  copiedLabel: MessageDescriptor;
 }

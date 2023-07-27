@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useCanEditProfile, useMobile } from '~hooks';
@@ -11,10 +11,10 @@ import Input from '~v5/common/Fields/Input';
 import styles from './UserPreferencesPage.module.css';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
+import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import Switch from '~v5/common/Fields/Switch';
 import { multiLineTextEllipsis } from '~utils/strings';
 import { UserPreferencesPageProps } from './types';
-import CopyButton from '~v5/shared/Button/CopyButton';
 
 const displayName = 'v5.pages.UserPreferencesPage';
 
@@ -23,7 +23,17 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
 }) => {
   const { user } = useCanEditProfile();
   const isMobile = useMobile();
+  const [isCopied, setIsCopied] = useState(false);
   const { formatMessage } = useIntl();
+  const { handleClipboardCopy } = useCopyToClipboard(user?.walletAddress || '');
+
+  useEffect(() => {
+    if (isCopied) {
+      setTimeout(() => {
+        setIsCopied(false);
+      }, 5000);
+    }
+  }, [isCopied]);
 
   const {
     errors,
@@ -96,10 +106,17 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
                       : user.walletAddress}
                   </span>
                 </div>
-                <CopyButton
-                  label={{ id: 'copy.address' }}
-                  copiedLabel={{ id: 'copy.addressCopied' }}
-                  copyText={user.walletAddress}
+                <Button
+                  mode={isCopied ? 'completed' : 'septenary'}
+                  iconName={isCopied ? '' : 'copy-simple'}
+                  isFullSize={isMobile}
+                  onClick={() => {
+                    setIsCopied(true);
+                    handleClipboardCopy();
+                  }}
+                  text={{
+                    id: isCopied ? 'copy.addressCopied' : 'copy.address',
+                  }}
                 />
               </div>
             </div>
