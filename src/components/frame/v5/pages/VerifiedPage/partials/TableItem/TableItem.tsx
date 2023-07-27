@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 
 import { TableItemProps } from './types';
 import { useColonyContext, useUserReputation } from '~hooks';
@@ -29,10 +29,13 @@ const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
   );
   const [isChecked, setIsChecked] = useState<boolean>();
 
-  const handleChange = (e) => {
-    setIsChecked(e.target.checked);
-    onChange(e);
-  };
+  const handleChange = useCallback(
+    (e) => {
+      setIsChecked(e.target.checked);
+      onChange(e);
+    },
+    [setIsChecked, onChange],
+  );
 
   return (
     <div className={styles.tableItem}>
