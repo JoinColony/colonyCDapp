@@ -137,6 +137,7 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
                 name="uninstall"
                 id="uninstall"
                 label={{ id: 'extensionDetailsPage.uninstallConfirmation' }}
+                isChecked={isCheckboxChecked}
                 onChange={() => setIsCheckboxChecked((prevState) => !prevState)}
                 classNames="mt-5"
               />

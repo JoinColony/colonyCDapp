@@ -79,6 +79,7 @@ const UserAdvancedSettings: FC = () => {
           <Checkbox
             id="delete-account"
             name="delete-account"
+            isChecked={isChecked}
             onChange={() => {
               setIsChecked(!isChecked);
             }}
