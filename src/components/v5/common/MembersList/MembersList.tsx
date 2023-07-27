@@ -41,11 +41,6 @@ const MembersList: FC<MembersListProps> = ({
 
   return (
     <div>
-      {isLoading && (
-        <div className="flex justify-center">
-          <SpinnerLoader appearance={{ size: 'medium' }} />
-        </div>
-      )}
       <div className="flex items-center mb-2">
         <h3 className="heading-5 mr-3">{formatMessage(title)}</h3>
         <span className="text-md text-blue-400">
@@ -53,6 +48,11 @@ const MembersList: FC<MembersListProps> = ({
         </span>
       </div>
       <p className="mb-6 text-md text-gray-600">{formatMessage(description)}</p>
+      {isLoading && (
+        <div className="flex justify-center">
+          <SpinnerLoader appearance={{ size: 'medium' }} />
+        </div>
+      )}
       {!isLoading && listLength ? (
         <ResponsiveMasonry columnsCountBreakPoints={{ 250: 1, 950: 2 }}>
           <Masonry gutter="1rem">

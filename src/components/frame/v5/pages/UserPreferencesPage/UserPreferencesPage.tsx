@@ -11,10 +11,10 @@ import Input from '~v5/common/Fields/Input';
 import styles from './UserPreferencesPage.module.css';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import Switch from '~v5/common/Fields/Switch';
 import { multiLineTextEllipsis } from '~utils/strings';
 import { UserPreferencesPageProps } from './types';
+import CopyButton from '~v5/shared/Button/CopyButton';
 
 const displayName = 'v5.pages.UserPreferencesPage';
 
@@ -24,7 +24,6 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
   const { user } = useCanEditProfile();
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
-  const { handleClipboardCopy } = useCopyToClipboard(user?.walletAddress || '');
 
   const {
     errors,
@@ -97,12 +96,10 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
                       : user.walletAddress}
                   </span>
                 </div>
-                <Button
-                  mode="tertiary"
-                  iconName="copy-simple"
-                  isFullSize={isMobile}
-                  onClick={handleClipboardCopy}
-                  text={{ id: 'copy.address' }}
+                <CopyButton
+                  label={{ id: 'copy.address' }}
+                  copiedLabel={{ id: 'copy.addressCopied' }}
+                  copyText={user.walletAddress}
                 />
               </div>
             </div>

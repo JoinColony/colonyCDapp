@@ -1,0 +1,7 @@
+.copyButton {
+  @apply flex items-center text-md min-h-[2.5rem] px-4 py-2 rounded-lg transition-all bg-base-white text-gray-700 border border-gray-200 hover:bg-blue-400 hover:text-base-white hover:border-blue-400 disabled:text-gray-300;
+}
+
+.copied {
+  @apply bg-success-400 border-success-400 text-base-white hover:bg-success-400 hover:text-base-white hover:border-success-400;
+}

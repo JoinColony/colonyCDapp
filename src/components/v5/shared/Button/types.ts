@@ -70,3 +70,9 @@ export interface CloseButtonProps extends CommonButtonProps {
   iconSize?: IconSize;
   className?: string;
 }
+
+export interface CopyButtonProps {
+  copyText: string;
+  label: MessageDescriptor;
+  copiedLabel: MessageDescriptor;
+}
