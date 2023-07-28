@@ -101,9 +101,11 @@ const UserHub: FC<UserHubProps> = ({
       </div>
       {isMobile && <span className="divider my-6" />}
       <div
-        className={`${
-          isMobile ? 'min-w-full' : 'w-full py-6 pl-6 pr-2 relative'
-        }`}
+        className={clsx({
+          'min-w-full': isMobile,
+          'w-full py-6 pl-6 pr-2 relative': !isMobile && selectedTab === 2,
+          'w-full p-6 relative': !isMobile && selectedTab !== 2,
+        })}
       >
         <AnimatePresence>
           <motion.div
