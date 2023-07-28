@@ -20,7 +20,7 @@ const CheckboxWithHooks = (args) => {
 
   return (
     <form>
-      <Checkbox {...args} register={register} />
+      <Checkbox {...args} register={register} isChecked />
     </form>
   );
 };

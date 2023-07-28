@@ -624,6 +624,7 @@
   "connectWallet": "Connect wallet",
   "copyWalletAddress": "Copy wallet address",
   "copy.address": "Copy address",
+  "copy.addressCopied": "Address copied",
   "copied": "Copied",
   "copy": "Copy",
   "pending": "Pending",

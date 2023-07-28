@@ -1,7 +1,7 @@
 import copyToClipboard from 'copy-to-clipboard';
 import { useEffect, useState } from 'react';
 
-export const useCopyToClipboard = (dataToCopy: string) => {
+export const useCopyToClipboard = (dataToCopy: string, copyTimeOut = 2000) => {
   const [isCopied, setCopied] = useState(false);
 
   const handleClipboardCopy = () => {
@@ -12,12 +12,12 @@ export const useCopyToClipboard = (dataToCopy: string) => {
   useEffect(() => {
     let timeout;
     if (isCopied) {
-      timeout = setTimeout(() => setCopied(false), 2000);
+      timeout = setTimeout(() => setCopied(false), copyTimeOut);
     }
     return () => {
       clearTimeout(timeout);
     };
-  }, [isCopied]);
+  }, [copyTimeOut, isCopied]);
 
   return {
     isCopied,

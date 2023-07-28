@@ -24,7 +24,10 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
   const { user } = useCanEditProfile();
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
-  const { handleClipboardCopy } = useCopyToClipboard(user?.walletAddress || '');
+  const { handleClipboardCopy, isCopied } = useCopyToClipboard(
+    user?.walletAddress || '',
+    5000,
+  );
 
   const {
     errors,
@@ -98,11 +101,13 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
                   </span>
                 </div>
                 <Button
-                  mode="tertiary"
-                  iconName="copy-simple"
+                  mode={isCopied ? 'completed' : 'septenary'}
+                  iconName={isCopied ? '' : 'copy-simple'}
                   isFullSize={isMobile}
                   onClick={handleClipboardCopy}
-                  text={{ id: 'copy.address' }}
+                  text={{
+                    id: isCopied ? 'copy.addressCopied' : 'copy.address',
+                  }}
                 />
               </div>
             </div>

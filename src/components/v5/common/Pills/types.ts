@@ -12,6 +12,7 @@ export type ExtensionStatusBadgeMode =
   | 'staking'
   | 'finalizable'
   | 'claimed'
+  | 'extension'
   | 'payments';
 
 export type UserStatusMode =
