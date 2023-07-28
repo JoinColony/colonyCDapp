@@ -14,11 +14,9 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
   colonyToDisplay,
   colonyToDisplayAddress,
   isMobile,
-  isOpen,
+  isArrowVisible,
   setTriggerRef,
 }) => {
-  const isArrowVisible = !isMobile || (isMobile && isOpen);
-
   return (
     <>
       <div className="relative">
@@ -40,16 +38,14 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
             'Colony name'}
         </div>
       )}
-      {isArrowVisible && (
-        <span
-          className={clsx('transition-transform duration-normal ml-2', {
-            'rotate-180': isOpen,
-          })}
-          ref={setTriggerRef}
-        >
-          <Icon name="caret-up" appearance={{ size: 'extraExtraTiny' }} />
-        </span>
-      )}
+      <span
+        className={clsx('ml-2', {
+          'opacity-0 pointer-events-none': !isArrowVisible,
+        })}
+        ref={setTriggerRef}
+      >
+        <Icon name="caret-down" appearance={{ size: 'extraExtraTiny' }} />
+      </span>
     </>
   );
 };

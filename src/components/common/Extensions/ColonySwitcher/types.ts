@@ -15,7 +15,7 @@ export interface ColonyAvatarProps {
   colonyToDisplay?: Colony;
   colonyToDisplayAddress?: string;
   isMobile: boolean;
-  isOpen?: boolean;
+  isArrowVisible?: boolean;
   setTriggerRef?: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
 }
 
@@ -26,8 +26,8 @@ export interface ColonyDropdownMobileProps {
 
 export interface ColonySwitcherProps {
   isCloseButtonVisible?: boolean;
-  visible?: boolean;
-  isMainMenuVisible?: boolean;
+  isColonyDropdownOpen?: boolean;
+  isArrowVisible?: boolean;
   setTooltipRef: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
   setTriggerRef: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
   getTooltipProps: (args?: PropsGetterArgs | undefined) => {

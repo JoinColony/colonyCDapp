@@ -14,6 +14,7 @@ import Link from '~v5/shared/Link';
 import UserSubmenu from '../UserSubmenu';
 import { userMenuItems } from './consts';
 import TitleLabel from '~v5/shared/TitleLabel';
+import NavigationTools from '~common/Extensions/NavigationTools';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserMenu';
 
@@ -24,8 +25,6 @@ const UserMenu: FC<UserMenuProps> = ({
   user,
   isVerified,
   walletAddress,
-  userReputation,
-  totalReputation,
   nativeToken,
   hideColonies,
 }) => {
@@ -49,26 +48,30 @@ const UserMenu: FC<UserMenuProps> = ({
       })}
     >
       <div
-        className={clsx('transition-transform', {
+        className={clsx('transition-transform pt-[4.1625rem] sm:pt-0', {
           '-translate-x-0': !activeSubmenu,
           '-translate-x-[100vw] absolute': activeSubmenu,
         })}
       >
-        {isWalletConnected && (
-          <WalletConnectedTopMenu
-            userName={profile?.displayName || name || ''}
-            isVerified={isVerified}
-            walletAddress={walletAddress}
-            userReputation={userReputation}
-            totalReputation={totalReputation}
-            nativeToken={nativeToken}
-            avatar={profile?.thumbnail || profile?.avatar || ''}
-            user={user}
-            hideColonies={hideColonies}
-          />
+        {isMobile && (
+          <div>
+            <NavigationTools nativeToken={nativeToken} />
+            <span className="divider mb-6" />
+          </div>
         )}
-        {!isWalletConnected && (
-          <>
+        {isWalletConnected ? (
+          <div className="px-6">
+            <WalletConnectedTopMenu
+              userName={profile?.displayName || name || ''}
+              isVerified={isVerified}
+              walletAddress={walletAddress}
+              nativeToken={nativeToken}
+              avatar={profile?.thumbnail || profile?.avatar || ''}
+              hideColonies={hideColonies}
+            />
+          </div>
+        ) : (
+          <div className="px-6">
             <div className={styles.mobileButtons}>
               <Button
                 mode="tertiary"
@@ -94,9 +97,9 @@ const UserMenu: FC<UserMenuProps> = ({
                 {formatMessage({ id: 'connectWallet' })}
               </Button>
             </div>
-          </>
+          </div>
         )}
-        <div className="w-full pb-4 mb-6 border-b border-b-gray-200 sm:pb-3">
+        <div className="w-full px-6 pb-4 mb-6 border-b border-b-gray-200 sm:pb-3">
           <TitleLabel text={formatMessage({ id: 'userMenu.optionsTitle' })} />
           <ul className="text-left">
             {userMenuItems.map(({ id, link, icon, name: itemName }) => (
@@ -125,27 +128,29 @@ const UserMenu: FC<UserMenuProps> = ({
             ))}
           </ul>
         </div>
-        {isWalletConnected && (
-          <div className="w-full mb-4 sm:mb-3">
-            <TitleLabel text={formatMessage({ id: 'userMenu.other' })} />
-            <Link to="/" className="navigation-link">
-              <Icon name="plugs" appearance={{ size: iconSize }} />
-              <p className="ml-2">
-                {formatMessage({ id: 'userMenu.disconnectWalletTitle' })}
-              </p>
-            </Link>
-          </div>
-        )}
-        <ThemeSwitcher />
+        <div className="px-6">
+          {isWalletConnected && (
+            <div className="w-full mb-4 sm:mb-3">
+              <TitleLabel text={formatMessage({ id: 'userMenu.other' })} />
+              <Link to="/" className="navigation-link">
+                <Icon name="plugs" appearance={{ size: iconSize }} />
+                <p className="ml-2">
+                  {formatMessage({ id: 'userMenu.disconnectWalletTitle' })}
+                </p>
+              </Link>
+            </div>
+          )}
+          <ThemeSwitcher />
+        </div>
       </div>
       <div
-        className={clsx('transition-transform', {
+        className={clsx('transition-transform rm pt-[4.1625rem] sm:pt-0', {
           'translate-x-0': activeSubmenu,
           'translate-x-full': !activeSubmenu,
         })}
       >
         {activeSubmenu && (
-          <>
+          <div className="px-6">
             <button
               type="button"
               aria-label={formatMessage({ id: 'ariaLabel.backToMainMenu' })}
@@ -160,7 +165,7 @@ const UserMenu: FC<UserMenuProps> = ({
               />
             </button>
             <UserSubmenu submenuId={activeSubmenu} />
-          </>
+          </div>
         )}
       </div>
     </PopoverBase>

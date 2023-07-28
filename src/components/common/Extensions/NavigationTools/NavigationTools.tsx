@@ -1,23 +1,22 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+import { useSelector } from 'react-redux';
 
 import Button from '~v5/shared/Button';
-import UserAvatar from '~v5/shared/UserAvatar';
 import { NavigationToolsProps } from './types';
 import Token from '~common/Extensions/UserNavigation/partials/Token';
-import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
 import { useMobile } from '~hooks';
+import UserReputation from '../UserNavigation/partials/UserReputation';
+import { groupedTransactionsAndMessages } from '~redux/selectors';
+import { TransactionOrMessageGroups } from '~frame/GasStation/transactionGroup';
 
 const displayName = 'common.Extensions.NavigationTools';
 
 const NavigationTools: FC<NavigationToolsProps> = ({
   nativeToken,
-  totalReputation,
-  userName,
-  userReputation,
-  user,
   buttonLabel,
   hideColonies,
+  hideMemberReputationOnMobile = false,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
@@ -27,38 +26,41 @@ const NavigationTools: FC<NavigationToolsProps> = ({
       ? buttonLabel
       : buttonLabel && formatMessage(buttonLabel);
 
+  const transactionAndMessageGroups = useSelector(
+    groupedTransactionsAndMessages,
+  );
+
   return (
-    <>
-      {nativeToken && <Token nativeToken={nativeToken} />}
-      {!hideColonies && (
-        <Button mode="tertiary" isFullRounded>
-          <div className="flex items-center gap-3">
-            <UserAvatar userName={userName} size="xxs" user={user} />
-            <MemberReputation
-              userReputation={userReputation}
-              totalReputation={totalReputation}
-              hideOnMobile={false}
-            />
-          </div>
-        </Button>
-      )}
-      <Button
-        mode="tertiary"
-        isFullRounded
-        iconName="list"
-        iconSize="extraTiny"
-      >
-        {buttonLabelText ? (
-          <span className="text-gray-700 text-3">{buttonLabelText}</span>
-        ) : (
-          !isMobile && (
-            <span className="text-gray-700 text-3">
-              {formatMessage({ id: 'helpAndAccount' })}
-            </span>
-          )
+    <div className="px-6 pb-6">
+      <div className="flex items-center gap-1">
+        {nativeToken && <Token nativeToken={nativeToken} />}
+        {!hideColonies && (
+          <UserReputation
+            hideColonies={hideColonies}
+            transactionAndMessageGroups={
+              transactionAndMessageGroups as unknown as TransactionOrMessageGroups
+            }
+            hideMemberReputationOnMobile={hideMemberReputationOnMobile}
+          />
         )}
-      </Button>
-    </>
+        <Button
+          mode="tertiary"
+          isFullRounded
+          iconName="list"
+          iconSize="extraTiny"
+        >
+          {buttonLabelText ? (
+            <span className="text-gray-700 text-3">{buttonLabelText}</span>
+          ) : (
+            !isMobile && (
+              <span className="text-gray-700 text-3">
+                {formatMessage({ id: 'helpAndAccount' })}
+              </span>
+            )
+          )}
+        </Button>
+      </div>
+    </div>
   );
 };
 

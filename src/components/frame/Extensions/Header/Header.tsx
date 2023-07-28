@@ -20,30 +20,46 @@ const Header: FC<HeaderProps> = ({ hideColonies = false }) => {
     mainMenuGetTooltipProps,
     mainMenuSetTooltipRef,
     mainMenuSetTriggerRef,
-    setTooltipRef,
-    setTriggerRef,
-    getTooltipProps,
-    isMainMenuVisible,
-    visible,
+    colonySwitcherGetTooltipProps,
+    colonySwitcherSetTooltipRef,
+    colonySwitcherSetTriggerRef,
+    userMenuGetTooltipProps,
+    userMenuSetTooltipRef,
+    userMenuSetTriggerRef,
+    setWalletTriggerRef,
+    isWalletButtonVisible,
+    isMainMenuOpen,
+    isColonySwitcherOpen,
+    isUserMenuOpen,
+    isWalletOpen,
   } = useHeader();
 
-  const isCloseButtonVisible = (isMainMenuVisible || visible) && isMobile;
+  const isCloseButtonVisible =
+    (isMainMenuOpen || isColonySwitcherOpen) && isMobile;
+
+  const isArrowVisible =
+    !isMobile ||
+    (isMobile &&
+      (isColonySwitcherOpen ||
+        isMainMenuOpen ||
+        isUserMenuOpen ||
+        isWalletOpen));
 
   return (
-    <header>
+    <header className="relative">
       <div className="bg-base-white w-full flex min-h-[6.375rem] justify-center px-6">
         <div className="flex items-center justify-between sm:max-w-[90rem] w-full">
-          <div className="mr-5 sm:mr-10">
+          <div className="mr-1.5 sm:mr-10">
             <ColonySwitcher
-              getTooltipProps={getTooltipProps}
-              setTooltipRef={setTooltipRef}
-              setTriggerRef={setTriggerRef}
-              visible={visible}
-              isMainMenuVisible={isMainMenuVisible}
+              getTooltipProps={colonySwitcherGetTooltipProps}
+              setTooltipRef={colonySwitcherSetTooltipRef}
+              setTriggerRef={colonySwitcherSetTriggerRef}
+              isColonyDropdownOpen={isColonySwitcherOpen}
+              isArrowVisible={isArrowVisible}
             />
           </div>
           <div
-            className={clsx('flex w-full items-center', {
+            className={clsx('flex w-full items-center gap-x-2', {
               'justify-end': hideColonies,
               'justify-between': !hideColonies,
             })}
@@ -53,8 +69,11 @@ const Header: FC<HeaderProps> = ({ hideColonies = false }) => {
                 <button
                   type="button"
                   className={clsx('flex items-center sm:hidden', {
-                    'opacity-100 visible': !isMainMenuVisible,
-                    'opacity-0 invisible': isMainMenuVisible,
+                    hidden:
+                      isMainMenuOpen ||
+                      isColonySwitcherOpen ||
+                      isUserMenuOpen ||
+                      isWalletOpen,
                   })}
                   ref={mainMenuSetTriggerRef}
                   aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
@@ -67,15 +86,28 @@ const Header: FC<HeaderProps> = ({ hideColonies = false }) => {
                 <MainNavigation
                   setTooltipRef={mainMenuSetTooltipRef}
                   tooltipProps={mainMenuGetTooltipProps}
-                  isMenuOpen={isMainMenuVisible}
+                  isMenuOpen={isMainMenuOpen}
                 />
               </>
             )}
             <div>
               {isCloseButtonVisible ? (
-                <CloseButton iconSize="tiny" />
+                <div className="relative z-[51] p-1.5 border border-transparent">
+                  {/* This close button is a fallback that doesn't handle any action. The popover is closing when we click outside them 
+                  and this is part of the header with a high z-index */}
+                  <CloseButton iconSize="extraTiny" />
+                </div>
               ) : (
-                <UserNavigation hideColonies={hideColonies} />
+                <UserNavigation
+                  isWalletButtonVisible={isWalletButtonVisible}
+                  userMenuGetTooltipProps={userMenuGetTooltipProps}
+                  userMenuSetTooltipRef={userMenuSetTooltipRef}
+                  userMenuSetTriggerRef={userMenuSetTriggerRef}
+                  setWalletTriggerRef={setWalletTriggerRef}
+                  isUserMenuOpen={isUserMenuOpen}
+                  isWalletOpen={isWalletOpen}
+                  hideColonies={hideColonies}
+                />
               )}
             </div>
           </div>

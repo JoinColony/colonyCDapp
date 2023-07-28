@@ -45,62 +45,64 @@ const UserHub: FC<UserHubProps> = ({
 
   return (
     <div className={clsx('flex', { 'flex-col': isMobile })}>
-      <div className={`${styles.wrapper} ${isMobile ? 'px-0 pt-4' : 'p-6'}`}>
-        {!isMobile ? (
-          <div>
-            <TitleLabel
-              className="pb-5"
-              text={formatMessage({ id: 'your.colony.overview' })}
-            />
-            <ul className="-ml-4 -mr-4 flex flex-col">
-              {tabList.map(({ value, id, icon, label }) => (
-                <li
-                  className={`${styles.li} ${
-                    selectedTab === id ? 'bg-gray-50' : ''
-                  }`}
-                  key={value}
-                  onClick={() => setSelectedTab(id)}
-                  aria-selected={selectedTab === id}
-                  role="option"
-                  onKeyDown={() => setSelectedTab(id)}
-                >
-                  <div
-                    className={`flex items-center flex-grow mr-2 ${
-                      selectedTab === id ? 'font-medium' : ''
-                    }`}
-                  >
-                    <span className="flex shrink-0 mr-2">
-                      <Icon name={icon} appearance={{ size: 'tiny' }} />
-                    </span>
-                    {label}
-                  </div>
-                  <span className="flex shrink-0 transition-transform duration-normal">
-                    <Icon
-                      name="caret-right"
-                      appearance={{ size: 'extraTiny' }}
-                    />
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : (
+      <div className={`${styles.wrapper} ${isMobile ? 'px-6' : 'p-6'}`}>
+        {isMobile ? (
           <UserHubMobile
             selectedTab={selectedTab}
             handleChange={handleChange}
             tabList={tabList}
           />
-        )}
-        {!isMobile && (
-          <div className="mt-2">
-            <Button mode="quinary" isFullSize>
-              {formatMessage({ id: 'your.dashboard' })}
-            </Button>
-          </div>
+        ) : (
+          <>
+            <div>
+              <TitleLabel
+                className="pb-5"
+                text={formatMessage({ id: 'your.colony.overview' })}
+              />
+              <ul className="-ml-4 -mr-4 flex flex-col">
+                {tabList.map(({ value, id, icon, label }) => (
+                  <li
+                    className={`${styles.li} ${
+                      selectedTab === id ? 'bg-gray-50' : ''
+                    }`}
+                    key={value}
+                    onClick={() => setSelectedTab(id)}
+                    aria-selected={selectedTab === id}
+                    role="option"
+                    onKeyDown={() => setSelectedTab(id)}
+                  >
+                    <div
+                      className={`flex items-center flex-grow mr-2 ${
+                        selectedTab === id ? 'font-medium' : ''
+                      }`}
+                    >
+                      <span className="flex shrink-0 mr-2">
+                        <Icon name={icon} appearance={{ size: 'tiny' }} />
+                      </span>
+                      {label}
+                    </div>
+                    <span className="flex shrink-0 transition-transform duration-normal">
+                      <Icon
+                        name="caret-right"
+                        appearance={{ size: 'extraTiny' }}
+                      />
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="mt-2">
+              <Button mode="quinary" isFullSize>
+                {formatMessage({ id: 'your.dashboard' })}
+              </Button>
+            </div>
+          </>
         )}
       </div>
       {isMobile && <span className="divider my-6" />}
-      <div className={`${isMobile ? 'min-w-full' : 'w-full p-6 relative'}`}>
+      <div
+        className={`${isMobile ? 'px-6 min-w-full' : 'w-full p-6 relative'}`}
+      >
         <AnimatePresence>
           <motion.div
             key="stakes-tab"
