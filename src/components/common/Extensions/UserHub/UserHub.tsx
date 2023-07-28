@@ -100,7 +100,11 @@ const UserHub: FC<UserHubProps> = ({
         )}
       </div>
       {isMobile && <span className="divider my-6" />}
-      <div className={`${isMobile ? 'min-w-full' : 'w-full p-6 relative'}`}>
+      <div
+        className={`${
+          isMobile ? 'min-w-full' : 'w-full py-6 pl-6 pr-2 relative'
+        }`}
+      >
         <AnimatePresence>
           <motion.div
             key="stakes-tab"
