@@ -24,7 +24,9 @@ const ExtensionStatusBadge: FC<PropsWithChildren<PillsProps>> = ({
       className={clsx({
         'text-indigo-400 bg-indigo-100': mode === 'coming-soon',
         'text-blue-400 bg-blue-100':
-          mode === 'not-installed' || mode === 'finalizable',
+          mode === 'not-installed' ||
+          mode === 'finalizable' ||
+          mode === 'extension',
         'text-red-400 bg-red-100': mode === 'disabled',
         'text-purple-400 bg-purple-100': mode === 'deprecated',
         'text-gray-900 bg-base-white border border-gray-200':

@@ -14,6 +14,7 @@ const meta: Meta<typeof ExtensionsStatusBadge> = {
         'enabled',
         'disabled',
         'deprecated',
+        'extension',
         'governance',
         'new',
       ],
