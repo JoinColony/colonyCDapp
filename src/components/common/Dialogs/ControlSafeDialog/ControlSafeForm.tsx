@@ -142,17 +142,17 @@ const ControlSafeForm = ({
   };
 
   const handleSelectedContractMethods = useCallback(
-    (contractMethods: UpdatedMethods, transactionFormIndex: number) => {
+    (contractMethods: UpdatedMethods, transactionIndex: number) => {
       // eslint-disable-next-line max-len
       const functionParamTypes: SafeTransaction['functionParamTypes'] =
-        contractMethods[transactionFormIndex]?.inputs?.map((input) => ({
+        contractMethods[transactionIndex]?.inputs?.map((input) => ({
           name: input.name,
           type: input.type,
         }));
 
       setSelectedContractMethods(contractMethods);
       setValue(
-        `transactions.${transactionFormIndex}.functionParamTypes`,
+        `transactions.${transactionIndex}.functionParamTypes`,
         functionParamTypes,
       );
     },
@@ -160,18 +160,18 @@ const ControlSafeForm = ({
   );
 
   const removeSelectedContractMethod = useCallback(
-    (transactionFormIndex: number) => {
+    (transactionIndex: number) => {
       const updatedSelectedContractMethods = omit(
         selectedContractMethods,
-        transactionFormIndex,
+        transactionIndex,
       );
 
       if (!isEqual(updatedSelectedContractMethods, selectedContractMethods)) {
         handleSelectedContractMethods(
           updatedSelectedContractMethods,
-          transactionFormIndex,
+          transactionIndex,
         );
-        setValue(`transactions.${transactionFormIndex}.contractFunction`, '');
+        setValue(`transactions.${transactionIndex}.contractFunction`, '');
       }
     },
     [selectedContractMethods, handleSelectedContractMethods, setValue],
@@ -215,7 +215,7 @@ const ControlSafeForm = ({
           <ContractInteractionSection
             safes={safes}
             disabledInput={disabledInputs}
-            transactionFormIndex={transactionIndex}
+            transactionIndex={transactionIndex}
             selectedContractMethods={selectedContractMethods}
             handleSelectedContractMethods={handleSelectedContractMethods}
             removeSelectedContractMethod={removeSelectedContractMethod}
