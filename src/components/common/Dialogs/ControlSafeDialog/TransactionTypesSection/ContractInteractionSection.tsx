@@ -115,7 +115,7 @@ const getAttributionMessage = (chainId: string | undefined) => {
 const ContractInteractionSection = ({
   safes,
   disabledInput,
-  transactionFormIndex,
+  transactionIndex,
   selectedContractMethods = {},
   handleSelectedContractMethods,
   removeSelectedContractMethod,
@@ -136,16 +136,16 @@ const ContractInteractionSection = ({
   } = useFormContext();
   const safe = watch('safe');
   const transactions: SafeTransaction[] = watch(`transactions`);
-  const transactionValues = transactions[transactionFormIndex];
+  const transactionValues = transactions[transactionIndex];
   const selectedSafe = getSafe(safes, safe);
 
-  /* const { contract: selectedContract } = transactions[transactionFormIndex];
+  /* const { contract: selectedContract } = transactions[transactionIndex];
    * console.log(selectedContract); */
 
   const onContractABIChange = useCallback(
     (abiResponse: ABIResponse) => {
       const setTransactionAbi = (value) =>
-        setValue(`transactions.${transactionFormIndex}.abi`, value);
+        setValue(`transactions.${transactionIndex}.abi`, value);
 
       if (abiResponse.status === '0') {
         setFetchABIError(
@@ -160,11 +160,11 @@ const ContractInteractionSection = ({
         abiResponse.result !== transactionValues.abi
       ) {
         setTransactionAbi(abiResponse.result);
-        removeSelectedContractMethod(transactionFormIndex);
+        removeSelectedContractMethod(transactionIndex);
       }
     },
     [
-      transactionFormIndex,
+      transactionIndex,
       safe,
       setValue,
       transactionValues.abi,
@@ -177,7 +177,7 @@ const ContractInteractionSection = ({
     async (contract: User) => {
       const setTransactionDisplayName = (value) =>
         setValue(
-          `transactions.${transactionFormIndex}.contract.profile.displayName`,
+          `transactions.${transactionIndex}.contract.profile.displayName`,
           value,
         );
 
@@ -220,7 +220,7 @@ const ContractInteractionSection = ({
       onContractABIChange,
       formatMessage,
       setValue,
-      transactionFormIndex,
+      transactionIndex,
     ],
   );
 
@@ -282,7 +282,7 @@ const ContractInteractionSection = ({
     fetchABIError,
     transactionValues.abi,
     usefulMethods,
-    transactionFormIndex,
+    transactionIndex,
     formattedMethodOptions,
   ]);
 
@@ -291,16 +291,16 @@ const ContractInteractionSection = ({
       (isEmpty(usefulMethods) ||
         !usefulMethods?.find(
           (method) =>
-            method.name === selectedContractMethods[transactionFormIndex]?.name,
+            method.name === selectedContractMethods[transactionIndex]?.name,
         )) &&
-      !isEmpty(selectedContractMethods[transactionFormIndex])
+      !isEmpty(selectedContractMethods[transactionIndex])
     ) {
-      removeSelectedContractMethod(transactionFormIndex);
+      removeSelectedContractMethod(transactionIndex);
     }
   }, [
     selectedContractMethods,
     usefulMethods,
-    transactionFormIndex,
+    transactionIndex,
     removeSelectedContractMethod,
   ]);
 
@@ -316,7 +316,7 @@ const ContractInteractionSection = ({
           <SingleUserPicker
             data={[]}
             label={MSG.contractLabel}
-            name={`transactions.${transactionFormIndex}.contract`}
+            name={`transactions.${transactionIndex}.contract`}
             filter={filterUserSelection}
             renderAvatar={AvatarXS}
             disabled={disabledInput}
@@ -335,7 +335,7 @@ const ContractInteractionSection = ({
             <div className={styles.abiContainer}>
               <Textarea
                 label={MSG.abiLabel}
-                name={`transactions.${transactionFormIndex}.abi`}
+                name={`transactions.${transactionIndex}.abi`}
                 appearance={{ colorSchema: 'grey', resizable: 'vertical' }}
                 disabled={disabledInput}
               />
@@ -364,7 +364,7 @@ const ContractInteractionSection = ({
               ) : (
                 <Select
                   label={MSG.functionLabel}
-                  name={`transactions.${transactionFormIndex}.contractFunction`}
+                  name={`transactions.${transactionIndex}.contractFunction`}
                   appearance={{ theme: 'grey', width: 'fluid' }}
                   placeholder={MSG.functionPlaceholder}
                   disabled={disabledInput}
@@ -372,49 +372,47 @@ const ContractInteractionSection = ({
                   onChange={(value) => {
                     const updatedSelectedContractMethods = {
                       ...selectedContractMethods,
-                      [transactionFormIndex]: usefulMethods.find(
+                      [transactionIndex]: usefulMethods.find(
                         (method) => method.name === value,
                       ),
                     };
                     handleSelectedContractMethods(
                       updatedSelectedContractMethods,
-                      transactionFormIndex,
+                      transactionIndex,
                     );
                   }}
                 />
               )}
             </div>
           </DialogSection>
-          {selectedContractMethods[transactionFormIndex]?.inputs?.map(
-            (input) => (
-              <DialogSection
-                key={`${input.name}-${input.type}`}
-                appearance={{ theme: 'sidePadding' }}
-              >
-                <div className={styles.inputParamContainer}>
-                  <Input
-                    label={`${input.name} (${input.type})`}
-                    // eslint-disable-next-line max-len
-                    name={`transactions.${transactionFormIndex}.${input.name}-${selectedContractMethods[transactionFormIndex]?.name}`}
-                    appearance={{ colorSchema: 'grey', theme: 'fat' }}
-                    disabled={disabledInput}
-                    placeholder={`${input.name} (${input.type})`}
-                    formattingOptions={
-                      input?.type?.includes('int') &&
-                      input.type.substring(input.type.length - 2) !== '[]'
-                        ? {
-                            numeral: true,
-                            numeralPositiveOnly:
-                              input.type.substring(0, 4) === 'uint',
-                            numeralDecimalScale: 0,
-                          }
-                        : undefined
-                    }
-                  />
-                </div>
-              </DialogSection>
-            ),
-          )}
+          {selectedContractMethods[transactionIndex]?.inputs?.map((input) => (
+            <DialogSection
+              key={`${input.name}-${input.type}`}
+              appearance={{ theme: 'sidePadding' }}
+            >
+              <div className={styles.inputParamContainer}>
+                <Input
+                  label={`${input.name} (${input.type})`}
+                  // eslint-disable-next-line max-len
+                  name={`transactions.${transactionIndex}.${input.name}-${selectedContractMethods[transactionIndex]?.name}`}
+                  appearance={{ colorSchema: 'grey', theme: 'fat' }}
+                  disabled={disabledInput}
+                  placeholder={`${input.name} (${input.type})`}
+                  formattingOptions={
+                    input?.type?.includes('int') &&
+                    input.type.substring(input.type.length - 2) !== '[]'
+                      ? {
+                          numeral: true,
+                          numeralPositiveOnly:
+                            input.type.substring(0, 4) === 'uint',
+                          numeralDecimalScale: 0,
+                        }
+                      : undefined
+                  }
+                />
+              </div>
+            </DialogSection>
+          ))}
         </>
       )}
     </>
