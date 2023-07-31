@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+import clsx from 'clsx';
 
 import { useMobile } from '~hooks';
 import Input from '~v5/common/Fields/Input';
@@ -20,8 +21,11 @@ const displayName = 'v5.pages.UserProfilePage';
 const UserProfilePage: FC = () => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
-  const { register, handleSubmit, onSubmit, errors, avatarUrl } =
+  const { register, handleSubmit, onSubmit, errors, avatarUrl, dirtyFields } =
     useUserProfile();
+
+  const showNameMessage =
+    dirtyFields.displayName && !errors.displayName?.message;
 
   return (
     <Spinner loadingText={{ id: 'loading.userProfilePage' }}>
@@ -36,7 +40,11 @@ const UserProfilePage: FC = () => {
                 fieldTitle={{ id: 'field.username' }}
                 fieldDescription={{ id: 'description.username' }}
               />
-              <div className="w-full">
+              <div
+                className={clsx('w-full', {
+                  'mb-6': showNameMessage,
+                })}
+              >
                 <Input
                   maxCharNumber={MAX_DISPLAYNAME_CHARS}
                   shouldNumberOfCharsBeVisible
@@ -44,9 +52,13 @@ const UserProfilePage: FC = () => {
                   register={register}
                   isError={!!errors.displayName?.message}
                   customErrorMessage={errors.displayName?.message}
-                  successfulMessage={formatMessage({
-                    id: 'success.userName',
-                  })}
+                  successfulMessage={
+                    showNameMessage
+                      ? formatMessage({
+                          id: 'success.userName',
+                        })
+                      : undefined
+                  }
                   isDecoratedError={
                     errors.displayName?.type === 'isUsernameTaken'
                   }

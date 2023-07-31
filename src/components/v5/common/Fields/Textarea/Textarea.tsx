@@ -38,26 +38,32 @@ const Textarea: FC<TextareaProps> = ({
         </label>
       )}
       <div
-        className={clsx('w-full min-h-[5.75rem] input-round', {
-          'border-gray-300': !isTyping,
-          'border-blue-200 shadow-lightBlue': isTyping,
-          'border-negative-400': isErrorStatus,
-        })}
+        className={clsx(
+          'w-full min-h-[5.75rem] bg-base-white rounded border relative',
+          {
+            'border-gray-300': !isTyping,
+            'border-blue-200 shadow-lightBlue': isTyping,
+            'border-negative-400': isErrorStatus,
+          },
+        )}
       >
         <textarea
           id="message"
           {...register?.(name)}
           name={name}
           placeholder={placeholder}
-          className="resize-none input"
+          className="resize-none bg-base-white input rounded py-3 px-3.5 absolute inset-0"
           onChange={onChange}
         />
         {!!currentCharNumber && shouldNumberOfCharsBeVisible && (
           <div
-            className={clsx('text-4 flex justify-end', {
-              'text-negative-400': isErrorStatus,
-              'text-gray-500': !isErrorStatus,
-            })}
+            className={clsx(
+              'text-4 flex justify-end absolute bottom-3 right-3.5',
+              {
+                'text-negative-400': isErrorStatus,
+                'text-gray-500': !isErrorStatus,
+              },
+            )}
           >
             {currentCharNumber}/{maxCharNumber}
           </div>

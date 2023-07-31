@@ -1,4 +1,4 @@
-import { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form';
+import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
 
 import { PillsProps } from '~v5/common/Pills/types';
 import { TooltipProps } from '~shared/Extensions/Tooltip/types';
@@ -23,11 +23,7 @@ export interface RadioBaseProps {
 export interface RadioListProps extends RadioBaseProps {
   title: string;
   items: RadioItemProps[];
-  errors: Partial<
-    FieldErrorsImpl<{
-      governance: string;
-    }>
-  >;
+  errors: FieldErrors<FieldValues>;
   onChange?: (e: string) => void;
 }
 
