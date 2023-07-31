@@ -13,7 +13,7 @@ import {
   useMobile,
   useCanInteractWithNetwork,
 } from '~hooks';
-import { useGetUserTokenBalanceQuery } from '~gql';
+import { useUserTokenBalanceContext } from '~context';
 
 import Wallet from './Wallet';
 
@@ -38,37 +38,17 @@ const MSG = defineMessages({
 const UserNavigation = () => {
   const { colony } = useColonyContext();
   const { wallet } = useAppContext();
+  const { tokenBalanceData } = useUserTokenBalanceContext();
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const canInteractWithNetwork = useCanInteractWithNetwork();
 
-  const { colonyAddress, nativeToken } = colony || {};
+  const { colonyAddress } = colony || {};
 
   const { userReputation, totalReputation } = useUserReputation(
     colonyAddress,
     wallet?.address,
   );
-
-  const {
-    data: tokenBalanceQueryData,
-    startPolling,
-    stopPolling,
-  } = useGetUserTokenBalanceQuery({
-    variables: {
-      input: {
-        walletAddress: wallet?.address ?? '',
-        tokenAddress: nativeToken?.tokenAddress ?? '',
-      },
-    },
-    skip: !wallet?.address || !nativeToken?.tokenAddress,
-  });
-
-  const startShortPollForUserTokenBalance = () => {
-    startPolling(1000);
-    setTimeout(stopPolling, 10_000);
-  };
-
-  const tokenBalanceData = tokenBalanceQueryData?.getUserTokenBalance;
 
   return (
     <div className={styles.main}>
@@ -101,7 +81,6 @@ const UserNavigation = () => {
           <UserTokenActivationButton
             nativeToken={colony.nativeToken}
             tokenBalanceData={tokenBalanceData}
-            pollTokenBalance={startShortPollForUserTokenBalance}
             dataTest="tokenActivationButton"
           />
         </div>
@@ -110,7 +89,6 @@ const UserNavigation = () => {
       <AvatarDropdown
         spinnerMsg={MSG.walletAutologin}
         tokenBalanceData={tokenBalanceData ?? undefined}
-        pollTokenBalance={startShortPollForUserTokenBalance}
       />
       <HamburgerDropdown />
     </div>

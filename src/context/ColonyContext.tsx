@@ -1,4 +1,10 @@
-import React, { createContext, useMemo, ReactNode, useState } from 'react';
+import React, {
+  createContext,
+  useMemo,
+  ReactNode,
+  useState,
+  useEffect,
+} from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 import { ObservableQuery } from '@apollo/client';
@@ -9,6 +15,7 @@ import LoadingTemplate from '~frame/LoadingTemplate';
 import NotFoundRoute from '~routes/NotFoundRoute';
 import { useCanInteractWithColony } from '~hooks';
 import { PageThemeContextProvider } from './PageThemeContext';
+import { UserTokenBalanceProvider } from './UserTokenBalanceContext';
 
 interface ColonyContextValue {
   colony?: Colony;
@@ -46,8 +53,18 @@ export const ColonyContextProvider = ({
   children: ReactNode;
 }) => {
   const { colonyName } = useParams<{ colonyName: string }>();
+  const [prevColonyName, setPrevColonyName] = useState<string>();
+
   const { state: locationState } = useLocation();
   const [isPolling, setIsPolling] = useState(!!colonyName);
+
+  /* Update polling state when routing between colonies */
+  useEffect(() => {
+    if (colonyName && colonyName !== prevColonyName) {
+      setPrevColonyName(colonyName);
+      setIsPolling(true);
+    }
+  }, [colonyName, prevColonyName]);
 
   const {
     data,
@@ -114,7 +131,9 @@ export const ColonyContextProvider = ({
 
   return (
     <ColonyContext.Provider value={colonyContext}>
-      <PageThemeContextProvider>{children}</PageThemeContextProvider>
+      <UserTokenBalanceProvider>
+        <PageThemeContextProvider>{children}</PageThemeContextProvider>
+      </UserTokenBalanceProvider>
     </ColonyContext.Provider>
   );
 };

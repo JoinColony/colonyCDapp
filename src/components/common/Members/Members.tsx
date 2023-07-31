@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { ColonyRole } from '@colony/colony-js';
+import { ColonyRole, Id } from '@colony/colony-js';
 import { sortBy } from '~utils/lodash';
 
 import { SpinnerLoader } from '~shared/Preloaders';
@@ -86,7 +86,7 @@ const Members = ({
     variables: {
       input: {
         colonyAddress: colony?.colonyAddress ?? '',
-        domainId: selectedDomain || COLONY_TOTAL_BALANCE_DOMAIN_ID,
+        domainId: selectedDomain || Id.RootDomain,
         sortingMethod,
       },
     },

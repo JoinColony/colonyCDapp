@@ -1,6 +1,7 @@
 import { string, object, number, boolean } from 'yup';
 import { defineMessages } from 'react-intl';
 
+import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { toFinite } from '~utils/lodash';
 import { Colony } from '~types';
 import { getHasEnoughBalanceTestFn } from '~utils/yup/tests';
@@ -45,7 +46,7 @@ const getValidationSchema = (
           getHasEnoughBalanceTestFn(colony, networkInverseFee),
         ),
       tokenAddress: string().address().required(),
-      annotation: string().max(4000).defined(),
+      annotation: string().max(MAX_ANNOTATION_LENGTH).defined(),
       forceAction: boolean().defined(),
       motionDomainId: number().defined(),
     })

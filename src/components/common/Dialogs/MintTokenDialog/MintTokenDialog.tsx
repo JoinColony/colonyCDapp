@@ -3,8 +3,9 @@ import { defineMessages } from 'react-intl';
 import { string, object, bool, InferType, number } from 'yup';
 import { useNavigate } from 'react-router-dom';
 
+import { MAX_ANNOTATION_LENGTH } from '~constants';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
-import { ActionHookForm as Form } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
 import { WizardDialogType } from '~hooks';
@@ -33,7 +34,7 @@ type Props = DialogProps &
 const validationSchema = object()
   .shape({
     forceAction: bool().defined(),
-    annotation: string().max(4000).defined(),
+    annotation: string().max(MAX_ANNOTATION_LENGTH).defined(),
     mintAmount: number()
       .required(() => MSG.errorAmountRequired)
       .transform((value) => toFinite(value))
@@ -68,7 +69,7 @@ const MintTokenDialog = ({
 
   return (
     <Dialog cancel={cancel}>
-      <Form<FormValues>
+      <ActionForm<FormValues>
         defaultValues={{
           forceAction: false,
           annotation: '',
@@ -91,7 +92,7 @@ const MintTokenDialog = ({
           handleIsForceChange={setIsForce}
           isForce={isForce}
         />
-      </Form>
+      </ActionForm>
     </Dialog>
   );
 };

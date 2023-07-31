@@ -15,7 +15,7 @@ interface Props extends TokensTabProps {
 
 const { verticalOffset } = styles;
 
-const TokenActivationPopover = ({ children, ...otherProps }: Props) => {
+const TokenActivationPopover = ({ children, tokenBalanceData }: Props) => {
   const { isOpen, setIsOpen } = useTokenActivationContext();
 
   /*
@@ -43,7 +43,9 @@ const TokenActivationPopover = ({ children, ...otherProps }: Props) => {
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       onClose={() => setIsOpen(false)}
-      renderContent={() => <TokenActivationContent {...otherProps} />}
+      renderContent={() => (
+        <TokenActivationContent tokenBalanceData={tokenBalanceData} />
+      )}
       popperOptions={{
         modifiers: [
           {

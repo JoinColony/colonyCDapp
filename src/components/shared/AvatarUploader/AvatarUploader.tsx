@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import {
   CoreInputProps,
   InputLabel,
-  HookFormInputStatus as InputStatus,
+  InputStatus,
   InputComponentAppearance as Appearance,
 } from '~shared/Fields';
 import { SingleFileUpload, SingleFileUploadProps } from '~shared/FileUpload';

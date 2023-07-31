@@ -7,13 +7,14 @@ import Numeral from '~shared/Numeral';
 import styles from '../ReputationTab.module.css';
 import { BalanceProps } from '../types';
 import PopoverButton from '~shared/Extensions/PopoverButton';
-import { useMobile } from '~hooks';
+import { useColonyContext, useMobile } from '~hooks';
 import TitleLabel from '~v5/shared/TitleLabel';
 
 const displayName =
   'common.Extensions.UserHub.partials.ReputationTab.partials.Balance';
 
 const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
+  const { colony } = useColonyContext();
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
 
@@ -22,6 +23,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
       input: {
         walletAddress: wallet?.address ?? '',
         tokenAddress: nativeToken?.tokenAddress ?? '',
+        colonyAddress: colony?.colonyAddress ?? '',
       },
     },
     skip: !wallet?.address || !nativeToken?.tokenAddress,

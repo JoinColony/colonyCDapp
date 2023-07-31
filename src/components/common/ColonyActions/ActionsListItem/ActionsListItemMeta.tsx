@@ -1,30 +1,19 @@
 import React from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
-
-import { Domain } from '~types';
 
 import styles from './ActionsListItemMeta.css';
 
 const displayName = 'common.ColonyActions.ActionsListItemMeta';
 
-const MSG = defineMessages({
-  domain: {
-    id: `${displayName}.domain`,
-    defaultMessage: 'Team {domainId}',
-  },
-  // titleCommentCount: {
-  //   id: `${displayName}.titleCommentCount`,
-  //   defaultMessage: `{formattedCommentCount} {commentCount, plural,
-  //       one {comment}
-  //       other {comments}
-  //     }`,
-  // },
-});
+// const MSG = defineMessages({
 
-const getDomainName = (fromDomain: Domain) =>
-  fromDomain.metadata?.name ?? (
-    <FormattedMessage {...MSG.domain} values={{ domainId: fromDomain.id }} />
-  );
+// titleCommentCount: {
+//   id: `${displayName}.titleCommentCount`,
+//   defaultMessage: `{formattedCommentCount} {commentCount, plural,
+//       one {comment}
+//       other {comments}
+//     }`,
+// },
+// });
 
 // interface CommentCountProps {
 //   commentCount: number;
@@ -51,18 +40,16 @@ const getDomainName = (fromDomain: Domain) =>
 
 interface ActionsListItemMetaProps {
   // commentCount: number;
-  fromDomain?: Domain;
+  domainName: string;
 }
 
 const ActionsListItemMeta = ({
   // commentCount,
-  fromDomain,
+  domainName,
 }: ActionsListItemMetaProps) => {
   return (
     <div>
-      {fromDomain && (
-        <span className={styles.domain}>{getDomainName(fromDomain)}</span>
-      )}
+      <span className={styles.domain}>{domainName}</span>
       {/* {!!commentCount && <CommentCount commentCount={commentCount} />} */}
     </div>
   );

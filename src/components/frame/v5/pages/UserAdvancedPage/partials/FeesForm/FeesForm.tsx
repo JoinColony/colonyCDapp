@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { HookForm } from '~shared/Fields';
+import { Form } from '~shared/Fields';
 import SettingsRow from '~v5/common/SettingsRow';
 import { SlotKey } from '~hooks';
 import { useFeesForm } from './hooks';
@@ -16,7 +16,7 @@ const FeesForm = () => {
   } = useFeesForm();
 
   return (
-    <HookForm
+    <Form
       validationSchema={metatransactionsValidationSchema}
       defaultValues={{
         [SlotKey.Metatransactions]: metatransasctionsDefault,
@@ -40,7 +40,7 @@ const FeesForm = () => {
           </div>
         </>
       )}
-    </HookForm>
+    </Form>
   );
 };
 

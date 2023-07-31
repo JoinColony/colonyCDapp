@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { HookFormSelect as Select, HookForm as Form } from '~shared/Fields';
+import { Select, Form } from '~shared/Fields';
 
 import { SelectOption } from '~shared/Fields/Select';
 

@@ -42,9 +42,9 @@ const { formatMessage } = intl({
 });
 
 export const colonyNameValidationSchema = object({
-  displayName: string().required(
-    formatMessage({ id: 'error.colonyNameRequired' }),
-  ),
+  displayName: string()
+    .trim()
+    .required(formatMessage({ id: 'error.colonyNameRequired' })),
   colonyName: string()
     .required(formatMessage({ id: 'error.colonyURLRequired' }))
     .test('isValidName', formatMessage({ id: 'error.colonyURL' }), isValidName)

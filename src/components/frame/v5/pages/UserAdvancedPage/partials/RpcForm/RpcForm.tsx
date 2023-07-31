@@ -1,7 +1,7 @@
 import React from 'react';
 import { SlotKey } from '~hooks';
 
-import { HookForm } from '~shared/Fields';
+import { Form } from '~shared/Fields';
 import SettingsInputRow from '~v5/common/SettingsInputRow';
 import SettingsRow from '~v5/common/SettingsRow';
 import { useRpcForm } from './hooks';
@@ -17,12 +17,13 @@ const RpcForm = () => {
   } = useRpcForm();
 
   return (
-    <HookForm
+    <Form
       validationSchema={rpcValidationSchema}
       defaultValues={{
         [SlotKey.DecentralizedMode]: decentralizedModeEnabled,
         [SlotKey.CustomRPC]: customRpc,
       }}
+      onSubmit={() => {}}
     >
       {({ register }) => (
         <div className="border-b border-gray-200">
@@ -40,7 +41,7 @@ const RpcForm = () => {
           />
         </div>
       )}
-    </HookForm>
+    </Form>
   );
 };
 
