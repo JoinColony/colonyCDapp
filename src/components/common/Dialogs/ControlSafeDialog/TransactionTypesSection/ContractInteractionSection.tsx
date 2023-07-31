@@ -97,7 +97,6 @@ const MSG = defineMessages({
 
 interface Props extends Omit<TransactionSectionProps, 'colony'> {
   safes: Safe[];
-  isValid: boolean;
   selectedContractMethods?: UpdatedMethods;
   removeSelectedContractMethod: (index: number) => void;
   handleSelectedContractMethods: (
@@ -119,7 +118,6 @@ const ContractInteractionSection = ({
   transactionFormIndex,
   selectedContractMethods = {},
   handleSelectedContractMethods,
-  isValid = true,
   removeSelectedContractMethod,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -131,7 +129,11 @@ const ContractInteractionSection = ({
   const [isLoadingABI, setIsLoadingABI] = useState<boolean>(false);
   const [fetchABIError, setFetchABIError] = useState<Message>('');
 
-  const { watch, setValue } = useFormContext();
+  const {
+    watch,
+    setValue,
+    formState: { isValid },
+  } = useFormContext();
   const safe = watch('safe');
   const transactions: SafeTransaction[] = watch(`transactions`);
   const transactionValues = transactions[transactionFormIndex];
