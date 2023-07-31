@@ -34,7 +34,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <UserAvatarPopover
-              userName={name}
+              userName={profile?.displayName || name}
               walletAddress={splitWalletAddress(walletAddress || '')}
               isVerified={isVerified}
               aboutDescription={bio || ''}

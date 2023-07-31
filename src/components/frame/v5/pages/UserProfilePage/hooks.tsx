@@ -61,9 +61,9 @@ export const useUserProfile = () => {
     register,
     reset,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = useForm<UserProfileFormProps>({
-    mode: 'all',
+    mode: 'onChange',
     resolver: yupResolver(validationSchema),
   });
 
@@ -116,6 +116,7 @@ export const useUserProfile = () => {
   return {
     register,
     handleSubmit,
+    dirtyFields,
     onSubmit,
     errors,
     avatarUrl,
