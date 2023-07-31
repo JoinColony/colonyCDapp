@@ -114,10 +114,8 @@ const ControlSafeForm = ({
     trigger,
     control,
   } = useFormContext();
+
   const selectedSafe: SelectedSafe = watch('safe');
-  const transactionType: TransactionTypes = watch(
-    `transactions.${tmpIndex}.transactionType`,
-  );
 
   const {
     fields,
@@ -165,7 +163,7 @@ const ControlSafeForm = ({
           <TransferFundsSection
             colony={colony}
             disabledInput={disabledInputs}
-            transactionFormIndex={tmpIndex}
+            transactionFormIndex={transactionIndex}
             /* handleInputChange={handleInputChange} */
             /* handleValidation={handleValidation} */
             savedTokenState={savedTokenState}
