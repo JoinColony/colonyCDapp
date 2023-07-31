@@ -83,3 +83,37 @@ export const getRemovedSafes = (actionData: ColonyAction) => {
 
   return null;
 };
+
+// in the event the token id is also appended to the token name
+export const extractTokenName = (tokenName: string) => {
+  const chunks = tokenName.trim().split(' ');
+  // using 'starts with #' to identify a token id
+  if (chunks[chunks.length - 1].startsWith('#')) {
+    return chunks.slice(0, chunks.length - 1).join(' ');
+  }
+
+  return tokenName;
+};
+
+const getTokenIdFromNFTId = (nftId: string) => {
+  const chunks = nftId.split(' ');
+  return chunks[chunks.length - 1];
+};
+
+export const getSelectedNFTData = (selectedNFT, availableNFTs) =>
+  availableNFTs.find((nft) => {
+    const tokenId = getTokenIdFromNFTId(selectedNFT.id);
+    return (
+      nft.address === selectedNFT.profile.walletAddress && nft.id === tokenId
+    );
+  });
+
+export const nftNameContainsTokenId = (tokenName: string): boolean => {
+  const chunks = tokenName.trim().split(' ');
+  // using 'starts with #' to identify a token id
+  if (chunks[chunks.length - 1].startsWith('#')) {
+    return true;
+  }
+
+  return false;
+};
