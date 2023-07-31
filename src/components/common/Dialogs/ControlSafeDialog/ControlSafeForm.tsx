@@ -220,7 +220,7 @@ const ControlSafeForm = ({
           <ContractInteractionSection
             safes={safes}
             disabledInput={disabledInputs}
-            transactionFormIndex={tmpIndex}
+            transactionFormIndex={transactionIndex}
             selectedContractMethods={selectedContractMethods}
             handleSelectedContractMethods={handleSelectedContractMethods}
             removeSelectedContractMethod={removeSelectedContractMethod}
