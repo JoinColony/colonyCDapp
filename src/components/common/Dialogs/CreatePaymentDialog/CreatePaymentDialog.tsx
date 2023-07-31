@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { InferType } from 'yup';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
-import { ActionHookForm as Form } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 
 import { ActionTypes } from '~redux/index';
 // import {
@@ -107,7 +107,7 @@ const CreatePaymentDialog = ({
 
   return (
     <Dialog cancel={cancel}>
-      <Form<FormValues>
+      <ActionForm<FormValues>
         defaultValues={{
           forceAction: false,
           fromDomainId: filteredDomainId || Id.RootDomain,
@@ -135,7 +135,7 @@ const CreatePaymentDialog = ({
           handleIsForceChange={setIsForce}
           isForce={isForce}
         />
-      </Form>
+      </ActionForm>
     </Dialog>
   );
 };

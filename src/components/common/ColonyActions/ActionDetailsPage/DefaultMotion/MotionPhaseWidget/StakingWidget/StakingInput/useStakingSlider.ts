@@ -50,6 +50,7 @@ export const useStakingSlider = (isObjection: boolean) => {
   );
 
   const { nativeTokenDecimals, nativeTokenSymbol, tokenAddress } = nativeToken;
+  const colonyAddress = actionData.getColonyAction?.colonyAddress ?? '';
 
   const {
     enoughTokensToStakeMinimum,
@@ -58,13 +59,14 @@ export const useStakingSlider = (isObjection: boolean) => {
   } = useEnoughTokensForStaking(
     tokenAddress,
     user?.walletAddress ?? '',
+    colonyAddress,
     userMinStake,
   );
 
   const { data, loading: loadingReputation } = useGetUserReputationQuery({
     variables: {
       input: {
-        colonyAddress: actionData.getColonyAction?.colonyAddress ?? '',
+        colonyAddress,
         walletAddress: user?.walletAddress ?? '',
         domainId: Number(nativeMotionDomainId),
         rootHash,

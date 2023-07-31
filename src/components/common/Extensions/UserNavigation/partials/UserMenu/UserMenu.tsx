@@ -144,7 +144,7 @@ const UserMenu: FC<UserMenuProps> = ({
         </div>
       </div>
       <div
-        className={clsx('transition-transform rm pt-[4.1625rem] sm:pt-0', {
+        className={clsx('transition-transform pt-[4.1625rem] sm:pt-0', {
           'translate-x-0': activeSubmenu,
           'translate-x-full': !activeSubmenu,
         })}

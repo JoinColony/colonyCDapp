@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 
 import { WizardStepProps } from '~shared/Wizard';
 import DecisionHub from '~shared/DecisionHub';
-import { HookForm as Form } from '~shared/Fields';
+import { Form } from '~shared/Fields';
 import { Heading3, Heading4, Heading6 } from '~shared/Heading';
 import { SELECT_NATIVE_TOKEN_INFO as LEARN_MORE_URL } from '~constants';
 import ExternalLink from '~shared/ExternalLink';

@@ -14,6 +14,8 @@
     "dev": "npm run docker:build && npm run docker:compose up -- --force-recreate -V",
     "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
     "stylelint": "stylelint --fix 'src/**/*.css'",
+    "lint:ci": "eslint 'src/**/*.{ts,tsx}'",
+    "stylelint:ci": "stylelint --allow-empty-input \"src/**/*.css\"",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "webpack": "webpack serve --config webpack.dev.js --port 9091",
     "webpack:prod": "NODE_ENV=production webpack-cli --config webpack.prod.js",
@@ -24,7 +26,8 @@
     "codegen": "node codegen",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "npx chromatic --project-token=f08326e25dbf"
+    "chromatic": "npx chromatic --project-token=f08326e25dbf",
+    "postinstall": "./scripts/lambda-functions-dependencies.sh"
   },
   "repository": {
     "type": "git",
@@ -147,7 +150,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
-    "@colony/colony-js": "^6.3.6",
+    "@colony/colony-js": "^6.4.0",
     "@colony/redux-promise-listener": "^1.2.0",
     "@colony/unicode-confusables-noascii": "^0.1.2",
     "@formatjs/intl-pluralrules": "^5.0.2",
@@ -201,6 +204,7 @@
     "react-responsive": "^9.0.0",
     "react-responsive-masonry": "^2.1.7",
     "react-router-dom": "^6.4.2",
+    "react-scrollbars-custom": "^4.1.1",
     "react-tabs": "^5.1.0",
     "react-tabs-scrollable": "^2.0.0-alpha",
     "react-textarea-autosize": "^8.3.4",

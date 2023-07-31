@@ -59,7 +59,7 @@ const UserHub: FC<UserHubProps> = ({
                 className="pb-5"
                 text={formatMessage({ id: 'your.colony.overview' })}
               />
-              <ul className="-ml-4 -mr-4 flex flex-col">
+              <ul className="-ml-x flex flex-col">
                 {tabList.map(({ value, id, icon, label }) => (
                   <li
                     className={`${styles.li} ${
@@ -101,7 +101,11 @@ const UserHub: FC<UserHubProps> = ({
       </div>
       {isMobile && <span className="divider my-6" />}
       <div
-        className={`${isMobile ? 'px-6 min-w-full' : 'w-full p-6 relative'}`}
+        className={clsx({
+          'min-w-full px-6': isMobile,
+          'w-full py-6 pl-6 pr-2 relative': !isMobile && selectedTab === 2,
+          'w-full p-6 relative': !isMobile && selectedTab !== 2,
+        })}
       >
         <AnimatePresence>
           <motion.div

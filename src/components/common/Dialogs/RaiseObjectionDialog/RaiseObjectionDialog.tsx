@@ -2,7 +2,7 @@ import React from 'react';
 import { object, number, InferType, string } from 'yup';
 
 import Dialog, { DialogProps } from '~shared/Dialog';
-import { ActionHookForm as ActionForm, OnSuccess } from '~shared/Fields';
+import { ActionForm, OnSuccess } from '~shared/Fields';
 import { ActionTypes } from '~redux';
 import { mapPayload } from '~utils/actions';
 

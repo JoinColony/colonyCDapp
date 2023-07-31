@@ -2,10 +2,7 @@ import React, { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
-import {
-  HookFormInput as Input,
-  HookFormInputProps as InputProps,
-} from '~shared/Fields';
+import { Input, InputProps } from '~shared/Fields';
 import { isAddress } from '~utils/web3';
 import { formatText } from '~utils/intl';
 import { connectionIs4G } from '~utils/network';

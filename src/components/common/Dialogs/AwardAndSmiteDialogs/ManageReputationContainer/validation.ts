@@ -1,5 +1,7 @@
 import { InferType, boolean, number, object, string } from 'yup';
 
+import { MAX_ANNOTATION_LENGTH } from '~constants';
+
 const amountValidation = number().required().moreThan(0);
 
 export const defaultValidationSchema = object()
@@ -9,7 +11,7 @@ export const defaultValidationSchema = object()
       walletAddress: string().address().required(),
     }),
     amount: amountValidation,
-    annotation: string().max(4000),
+    annotation: string().max(MAX_ANNOTATION_LENGTH),
     forceAction: boolean().defined(),
     motionDomainId: number().defined(),
   })

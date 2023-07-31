@@ -4,8 +4,9 @@ import { Id } from '@colony/colony-js';
 import { string, object, boolean, InferType, number } from 'yup';
 import { defineMessages } from 'react-intl';
 
+import { MAX_ANNOTATION_LENGTH } from '~constants';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
-import { ActionHookForm as Form } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 
 import { DomainColor } from '~types';
 import { ActionTypes } from '~redux/index';
@@ -37,7 +38,7 @@ const validationSchema = object()
       .required(() => MSG.requiredFieldError),
     domainColor: string().notRequired(),
     domainPurpose: string().trim().max(90).notRequired(),
-    annotationMessage: string().max(4000).notRequired(),
+    annotationMessage: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
     motionDomainId: number().defined(),
   })
   .defined();
@@ -69,7 +70,7 @@ const CreateDomainDialog = ({
 
   return (
     <Dialog cancel={cancel}>
-      <Form<FormValues>
+      <ActionForm<FormValues>
         defaultValues={{
           forceAction: false,
           teamName: '',
@@ -90,7 +91,7 @@ const CreateDomainDialog = ({
           handleIsForceChange={setIsForce}
           isForce={isForce}
         />
-      </Form>
+      </ActionForm>
     </Dialog>
   );
 };

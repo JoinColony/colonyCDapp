@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { MessageDescriptor } from 'react-intl';
 
-import { HookFormSelect as Select } from '~shared/Fields';
+import { Select } from '~shared/Fields';
 import { SelectOption } from '~shared/Fields/Select';
 
 import { Appearance } from './types';

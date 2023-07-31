@@ -4,11 +4,7 @@ import { useFormContext } from 'react-hook-form';
 
 import ColorSelect from '~shared/ColorSelect';
 
-import {
-  HookFormInput as Input,
-  HookFormSelect as Select,
-  SelectOption,
-} from '~shared/Fields';
+import { Input, Select, SelectOption } from '~shared/Fields';
 
 import styles from './DomainNameAndColorInputGroup.css';
 

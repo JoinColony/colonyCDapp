@@ -6,10 +6,7 @@ import { number, object, InferType } from 'yup';
 
 import { toFinite } from '~utils/lodash';
 import Button from '~shared/Button';
-import {
-  ActionHookForm as ActionForm,
-  HookFormInput as Input,
-} from '~shared/Fields';
+import { ActionForm, Input } from '~shared/Fields';
 import Numeral from '~shared/Numeral';
 import { Tooltip } from '~shared/Popover';
 import { ActionTypes } from '~redux';
@@ -17,6 +14,7 @@ import { pipe, mapPayload } from '~utils/actions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { useColonyContext } from '~hooks';
 import { UserTokenBalanceData } from '~types';
+import { useUserTokenBalanceContext } from '~context';
 
 import styles from './TokensTab.css';
 
@@ -67,15 +65,14 @@ type FormValues = InferType<typeof validationSchema>;
 export interface ChangeTokenStateFormProps {
   tokenBalanceData: UserTokenBalanceData;
   hasLockedTokens: boolean;
-  pollTokenBalance: () => void;
 }
 
 const ChangeTokenStateForm = ({
   tokenBalanceData: { inactiveBalance, activeBalance, lockedBalance },
   hasLockedTokens,
-  pollTokenBalance,
 }: ChangeTokenStateFormProps) => {
   const { colony } = useColonyContext();
+  const { pollActiveTokenBalance } = useUserTokenBalanceContext();
 
   const [isActivate, setIsActive] = useState(true);
 
@@ -131,7 +128,7 @@ const ChangeTokenStateForm = ({
         validationSchema={validationSchema}
         transform={transform}
         onSuccess={(_, { reset }) => {
-          pollTokenBalance();
+          pollActiveTokenBalance();
           reset();
         }}
       >

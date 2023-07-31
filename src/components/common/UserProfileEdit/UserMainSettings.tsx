@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { string, object, InferType } from 'yup';
 
-import {
-  FieldSet,
-  HookForm as Form,
-  HookFormInput as Input,
-  HookFormTextArea as Textarea,
-} from '~shared/Fields';
+import { FieldSet, Form, Input, Textarea } from '~shared/Fields';
 
 import { useUpdateUserProfileMutation } from '~gql';
 import { User } from '~types';

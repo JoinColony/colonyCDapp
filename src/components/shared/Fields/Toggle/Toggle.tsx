@@ -1,33 +1,23 @@
-import React, { useCallback } from 'react';
-import { useField } from 'formik';
-import { PopperOptions } from 'react-popper-tooltip';
-import { MessageDescriptor } from 'react-intl';
+import React from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import InputLabel from '~shared/Fields/InputLabel';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 
-import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import styles from './Toggle.css';
+import { CheckboxProps } from '~shared/Fields/Checkbox';
 
 const displayName = 'Toggle';
 
 interface Appearance {
   theme?: 'primary' | 'danger';
 }
-interface Props {
+
+interface Props extends Omit<CheckboxProps, 'appearance'> {
   appearance?: Appearance;
-  name: string;
-  label?: string | MessageDescriptor;
-  labelValues?: SimpleMessageValues;
-  disabled?: boolean;
-  tooltipText?: string | MessageDescriptor;
-  tooltipTextValues?: SimpleMessageValues;
-  elementOnly?: boolean;
-  /** Options to pass to the underlying PopperJS element. See here for more: https://popper.js.org/docs/v2/constructors/#options. */
-  tooltipPopperOptions?: PopperOptions;
-  onChange?: (value: boolean) => any;
+  tooltipClassName?: string;
 }
 
 const Toggle = ({
@@ -37,8 +27,10 @@ const Toggle = ({
   labelValues,
   disabled = false,
   elementOnly = false,
+  onChange,
   tooltipTextValues,
   tooltipText,
+  tooltipClassName,
   tooltipPopperOptions = {
     placement: 'right-start',
     modifiers: [
@@ -50,22 +42,19 @@ const Toggle = ({
       },
     ],
   },
-  onChange: onChangeCallback,
+  ...toggleProps
 }: Props) => {
-  const [{ onChange, value }] = useField(name);
+  const { register, watch } = useFormContext();
+  const { onChange: hookFormOnChange, ...hookFormHelpers } = register(name);
+
+  const value = watch(name);
 
   const mainClasses = getMainClasses(appearance, styles);
 
-  const handleOnChange = useCallback(
-    (event) => {
-      onChange(event);
-      if (onChangeCallback) {
-        onChangeCallback(value);
-      }
-    },
-    [onChange, onChangeCallback, value],
-  );
-
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    hookFormOnChange(e);
+    onChange?.(e);
+  };
   return (
     <div className={styles.container}>
       {!elementOnly && label && (
@@ -75,16 +64,16 @@ const Toggle = ({
           appearance={{ colorSchema: 'grey' }}
         />
       )}
-      <div>
+      <div className={styles.checkboxContainer}>
         <input
-          name={name}
+          {...hookFormHelpers}
           type="checkbox"
           disabled={disabled}
-          checked={value}
           aria-checked={value}
           aria-disabled={disabled}
           className={styles.delegate}
-          onChange={handleOnChange}
+          onChange={handleChange}
+          {...toggleProps}
         />
         <span className={disabled ? styles.toggleDisabled : styles.toggle}>
           <span className={value ? mainClasses : styles.toggleSwitch} />
@@ -95,6 +84,7 @@ const Toggle = ({
           className={styles.icon}
           tooltipText={tooltipText}
           tooltipPopperOptions={tooltipPopperOptions}
+          tooltipClassName={tooltipClassName}
           tooltipTextValues={tooltipTextValues}
         />
       )}

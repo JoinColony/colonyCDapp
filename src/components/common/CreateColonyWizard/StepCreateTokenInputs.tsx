@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { HookFormInput as Input } from '~shared/Fields';
+import { Input } from '~shared/Fields';
 
 import styles from './StepCreateToken.css';
 

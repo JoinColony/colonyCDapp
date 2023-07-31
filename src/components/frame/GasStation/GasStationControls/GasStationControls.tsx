@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useContext } from 'react';
 import { useDispatch } from 'react-redux';
-import * as yup from 'yup';
+import { object, string, InferType } from 'yup';
 
 import { IconButton } from '~shared/Button';
 import { ActionForm } from '~shared/Fields';
@@ -19,13 +19,9 @@ interface Props {
   transaction: TransactionType;
 }
 
-type FormValues = {
-  id: string;
-};
+const validationSchema = object().shape({ id: string() }).defined();
 
-const validationSchema = yup.object().shape({
-  transactionId: yup.string(),
-});
+type FormValues = InferType<typeof validationSchema>;
 
 const displayName = 'frame.GasStation.GasStationControls';
 
@@ -65,12 +61,10 @@ const GasStationControls = ({
 
   return (
     <div className={getMainClasses({}, styles)}>
-      <ActionForm
-        submit={ActionTypes.TRANSACTION_RETRY}
-        success={ActionTypes.TRANSACTION_SENT}
-        error={ActionTypes.TRANSACTION_ERROR}
+      <ActionForm<FormValues>
+        actionType={ActionTypes.TRANSACTION_RETRY}
         validationSchema={validationSchema}
-        initialValues={initialFormValues}
+        defaultValues={initialFormValues}
         transform={transform}
       >
         {error && (

@@ -2,9 +2,14 @@ import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
 import { failedLoadingDuration as pollingTimeout } from '~frame/LoadingTemplate';
-import { useGetColonyActionQuery, useGetMotionStateQuery } from '~gql';
+import {
+  ColonyActionType,
+  useGetColonyActionQuery,
+  useGetMotionStateQuery,
+} from '~gql';
 import { isTransactionFormat } from '~utils/web3';
 import { useColonyContext } from '~hooks';
+import { useUserTokenBalanceContext } from '~context';
 
 import { ActionDetailsPageParams } from './ActionDetailsPage';
 
@@ -18,6 +23,7 @@ export type RefetchAction = ReturnType<
 
 export const useGetColonyAction = () => {
   const { colony, refetchColony } = useColonyContext();
+  const { refetchTokenBalances } = useUserTokenBalanceContext();
   const { transactionHash } = useParams<ActionDetailsPageParams>();
   const isValidTx = isTransactionFormat(transactionHash);
   const skipQuery = !colony || !isValidTx;
@@ -48,6 +54,8 @@ export const useGetColonyAction = () => {
     };
   }, [stopPollingForAction]);
 
+  const { state: locationState } = useLocation();
+  const isRedirect = locationState?.isRedirect;
   /** Refetch colony when the action loads to update
    * any fields that might have been modified by the action
    */
@@ -56,12 +64,15 @@ export const useGetColonyAction = () => {
       return;
     }
 
-    refetchColony();
-  }, [actionData, refetchColony]);
+    if (isRedirect) {
+      if (actionData.getColonyAction.type === ColonyActionType.Payment) {
+        refetchTokenBalances();
+      }
+      refetchColony();
+    }
+  }, [actionData, refetchColony, refetchTokenBalances, isRedirect]);
 
-  const { state: locationState } = useLocation();
   /* Don't poll if we've not been redirected from the saga */
-  const isRedirect = locationState?.isRedirect;
   const action = actionData?.getColonyAction;
   const shouldStopPolling = (!isRedirect && isPolling) || (action && isPolling);
 

@@ -122,6 +122,9 @@ fragment ColonyMotion on ColonyMotion {
   userMinStake
   requiredStake
   rootHash
+  motionDomain {
+    ...Domain
+  }
   nativeMotionDomainId
   stakerRewards {
     address

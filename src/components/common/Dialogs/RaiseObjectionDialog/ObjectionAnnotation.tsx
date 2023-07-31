@@ -1,6 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { DialogSection } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
 
@@ -22,7 +23,7 @@ const ObjectionAnnotation = ({ disabled }: ObjectionAnnotationProps) => (
     <Annotations
       label={MSG.annotation}
       name="annotation"
-      maxLength={4000}
+      maxLength={MAX_ANNOTATION_LENGTH}
       disabled={disabled}
     />
   </DialogSection>

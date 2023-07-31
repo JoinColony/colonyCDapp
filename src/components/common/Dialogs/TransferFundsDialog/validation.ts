@@ -1,6 +1,7 @@
 import { defineMessages } from 'react-intl';
 import { boolean, number, object, string } from 'yup';
 
+import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { Colony } from '~types';
 import { toFinite } from '~utils/lodash';
 import { getHasEnoughBalanceTestFn } from '~utils/yup/tests';
@@ -42,7 +43,7 @@ export const getValidationSchema = (colony: Colony) => {
           getHasEnoughBalanceTestFn(colony),
         ),
       tokenAddress: string().address().required(),
-      annotation: string().max(4000).defined(),
+      annotation: string().max(MAX_ANNOTATION_LENGTH).defined(),
     })
     .defined();
 };

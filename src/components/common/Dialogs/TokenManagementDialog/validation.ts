@@ -1,9 +1,11 @@
 import { defineMessages } from 'react-intl';
 import { InferType, array, boolean, object, string } from 'yup';
+
 import { Colony, Token } from '~types';
 import { notNull } from '~utils/arrays';
 import { formatText } from '~utils/intl';
 import { createAddress, isAddress } from '~utils/web3';
+import { MAX_ANNOTATION_LENGTH } from '~constants';
 
 const displayName = 'common.TokenManagementDialog';
 
@@ -70,7 +72,7 @@ export const getValidationSchema = (colony: Colony) =>
     selectedTokenAddresses: array()
       .of(string().address().defined())
       .notRequired(),
-    annotationMessage: string().max(4000).notRequired(),
+    annotationMessage: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
   }).defined();
 
 export type FormValues = InferType<ReturnType<typeof getValidationSchema>>;

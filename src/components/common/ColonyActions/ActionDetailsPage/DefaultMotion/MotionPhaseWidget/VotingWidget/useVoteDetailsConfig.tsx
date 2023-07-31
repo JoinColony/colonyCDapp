@@ -42,6 +42,7 @@ export const useVoteDetailsConfig = ({
     colony?.colonyAddress ?? '',
     user?.walletAddress ?? '',
     Number(nativeMotionDomainId),
+    rootHash,
   );
 
   const { data } = useGetVoterRewardsQuery({
