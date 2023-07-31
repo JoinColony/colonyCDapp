@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 
 import { SpinnerLoader } from '~shared/Preloaders';
-import { useAppContext } from '~hooks';
+import { useAppContext, useEnabledExtensions } from '~hooks';
 import { getDecisionFromStore } from '~utils/decisions';
 
 // import { SortOptions } from './constants';
@@ -49,6 +49,8 @@ const MSG = defineMessages({
 const ColonyDecisions = () => {
   // const { colonyName } = useParams();
   // const [dataPage, setDataPage] = useState<number>(1);
+  const { isVotingReputationEnabled, loading: isLoadingExtensions } =
+    useEnabledExtensions();
   const { walletConnecting, userLoading, user } = useAppContext();
   const decision = useSelector(getDecisionFromStore(user?.walletAddress || ''));
 
@@ -136,13 +138,13 @@ const ColonyDecisions = () => {
     );
   }
 
-  //   if (!isVotingExtensionEnabled && !isLoadingExtensions) {
-  //     return (
-  //       <div className={styles.installExtension}>
-  //         <FormattedMessage {...MSG.installExtension} />
-  //       </div>
-  //     );
-  //   }
+  if (!isVotingReputationEnabled && !isLoadingExtensions) {
+    return (
+      <div className={styles.installExtension}>
+        <FormattedMessage {...MSG.installExtension} />
+      </div>
+    );
+  }
 
   return (
     <div>

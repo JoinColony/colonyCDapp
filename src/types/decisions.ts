@@ -1,4 +1,4 @@
-export interface Decision {
+export interface ColonyDecision {
   title: string;
   description: string;
   motionDomainId: number;

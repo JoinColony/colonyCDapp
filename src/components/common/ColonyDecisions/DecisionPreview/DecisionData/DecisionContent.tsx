@@ -5,8 +5,6 @@ import UserAvatar from '~shared/UserAvatar';
 import { Heading3 } from '~shared/Heading';
 import { userDetailPopoverOptions } from '~shared/DetailsWidget';
 
-import { useColonyContext } from '~hooks';
-
 import { DecisionDataProps } from './DecisionData';
 
 import styles from './DecisionContent.css';
@@ -19,17 +17,10 @@ type DecisionContentProps = {
 };
 
 const DecisionContent = ({ decision, user }: DecisionContentProps) => {
-  const { colony } = useColonyContext();
-
-  if (!colony) {
-    return null;
-  }
-
   return (
     <div className={styles.decisionContent}>
       <span className={styles.userinfo}>
         <UserAvatar
-          colony={colony}
           size="s"
           notSet={false}
           user={user}

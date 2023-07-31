@@ -4,14 +4,14 @@ import { Placement } from '@popperjs/core';
 
 import ListItem, { ListItemStatus } from '~shared/ListItem';
 import UserAvatar from '~shared/UserAvatar';
-import { Decision } from '~types';
-import { MotionState } from '~utils/colonyMotions';
-import { useAppContext, useColonyContext } from '~hooks';
+import { ColonyDecision } from '~types';
+import { useAppContext } from '~hooks';
 import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
 
 import DraftDecisionActions from './DraftDecisionActions';
 
 import styles from './DraftDecisionItem.css';
+import { Draft as DraftTag } from '~shared/Tag';
 
 const displayName = 'common.ColonyDecisions.DraftDecisionItem';
 
@@ -29,12 +29,11 @@ const avatarPopoverOptions = {
 };
 
 export interface DraftDecisionItemProps {
-  decision: Decision;
+  decision: ColonyDecision;
 }
 
 const DraftDecisionItem = ({ decision }: DraftDecisionItemProps) => {
   const navigate = useNavigate();
-  const { colony } = useColonyContext();
   const { pathname } = useLocation();
   const { user } = useAppContext();
   const walletAddress = user?.walletAddress || '';
@@ -48,10 +47,9 @@ const DraftDecisionItem = ({ decision }: DraftDecisionItemProps) => {
   return (
     <div className={styles.draftDecision}>
       <ListItem
-        actions={<DraftDecisionActions decision={decision} />}
+        extra={<DraftDecisionActions decision={decision} />}
         avatar={
           <UserAvatar
-            colony={colony}
             size="s"
             address={walletAddress}
             user={user}
@@ -61,7 +59,7 @@ const DraftDecisionItem = ({ decision }: DraftDecisionItemProps) => {
           />
         }
         onClick={redirectToPreview}
-        tag={MotionState.Draft}
+        tag={<DraftTag />}
         title={decision.title}
         status={ListItemStatus.Draft}
       />

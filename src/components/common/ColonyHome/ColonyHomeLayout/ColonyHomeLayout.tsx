@@ -21,7 +21,7 @@ const isExtensionsRoute = (pathname: string) => {
   return pathname.includes('extensions');
 };
 
-type ColonyHomeLayoutProps = {
+export type ColonyHomeLayoutProps = {
   filteredDomainId: number;
   onDomainChange?: (domainId: number) => void;
   /*

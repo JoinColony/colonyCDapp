@@ -55,7 +55,7 @@ interface ListItemProps {
   /** A title */
   title: Message;
   /** Values for the react-intl interpolation */
-  titleValues: UniversalMessageValues;
+  titleValues?: UniversalMessageValues;
 }
 
 const ListItem = ({

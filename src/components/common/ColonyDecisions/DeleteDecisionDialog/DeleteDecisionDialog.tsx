@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Button from '~shared/Button';
 import Dialog, { DialogSection } from '~shared/Dialog';
 import { Heading3 } from '~shared/Heading';
-import { Decision } from '~types';
+import { ColonyDecision } from '~types';
 import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
 import { removeDecisionAction } from '~redux/actionCreators';
 
@@ -28,7 +28,7 @@ const MSG = defineMessage({
 interface DeleteDecisionDialogProps {
   cancel: () => void;
   close: () => void;
-  decision: Decision;
+  decision: ColonyDecision;
 }
 
 const DeleteDecisionDialog = ({

@@ -1,14 +1,15 @@
 import React from 'react';
+import { Id } from '@colony/colony-js';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { string, object, number, InferType } from 'yup';
 
 import Dialog, { DialogProps } from '~shared/Dialog';
-import { HookForm as Form } from '~shared/Fields';
+import { Form } from '~shared/Fields';
 import { useAppContext, useRichTextEditor } from '~hooks';
-import { getDomainId } from '~utils/domains';
-import { Decision } from '~types';
+
+import { ColonyDecision } from '~types';
 import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
 import { createDecisionAction } from '~redux/actionCreators';
 
@@ -50,22 +51,23 @@ const validationSchema = object()
 export type DecisionDialogValues = InferType<typeof validationSchema>;
 
 export interface DecisionDialogProps extends DialogProps {
-  decision?: Decision;
-  ethDomainId?: number;
+  decision?: ColonyDecision;
+  nativeDomainId?: number;
 }
 
 const DecisionDialog = ({
   cancel,
   close,
   decision,
-  ethDomainId,
+  nativeDomainId,
 }: DecisionDialogProps) => {
   const { user } = useAppContext();
   const { pathname } = useLocation();
   const { editor } = useRichTextEditor();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const domainId = getDomainId(ethDomainId);
+
+  const domainId = nativeDomainId || Id.RootDomain;
   const walletAddress = user?.walletAddress || '';
   const content = decision?.description;
 

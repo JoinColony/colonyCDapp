@@ -27,7 +27,7 @@ const getStep = <T,>(
   steps: Steps,
   step: number,
   values: T,
-  loggedInUser?: User,
+  loggedInUser?: User | null,
 ) =>
   typeof steps === 'function' ? steps(step, values, loggedInUser) : steps[step];
 

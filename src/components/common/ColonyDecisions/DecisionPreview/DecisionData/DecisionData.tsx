@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { Decision, User } from '~types';
+import { ColonyDecision, User } from '~types';
 
 import { DecisionContent, DecisionNotFound } from '../DecisionData';
 
 const displayName = 'common.ColonyDecisions.DecisionPreview.DecisionData';
 
 export interface DecisionDataProps {
-  decision?: Decision;
-  user: User;
+  decision?: ColonyDecision;
+  user?: User | null;
 }
 
 const DecisionData = ({ decision, user }: DecisionDataProps) => {

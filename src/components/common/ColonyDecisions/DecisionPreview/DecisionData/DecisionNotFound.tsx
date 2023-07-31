@@ -32,7 +32,7 @@ const DecisionNotFound = () => {
         appearance={{ theme: 'blue' }}
         onClick={() => {
           openDecisionDialog({
-            ethDomainId: Id.RootDomain,
+            nativeDomainId: Id.RootDomain,
           });
         }}
       />

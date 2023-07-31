@@ -38,7 +38,7 @@ const DecisionPreviewControls = ({
             appearance={{ theme: 'blue', size: 'large' }}
             onClick={() =>
               openDecisionDialog({
-                ethDomainId: decision.motionDomainId,
+                nativeDomainId: decision.motionDomainId,
                 decision,
               })
             }
@@ -47,9 +47,7 @@ const DecisionPreviewControls = ({
         </>
       )}
       <ActionButton
-        submit={ActionTypes.MOTION_CREATE_DECISION}
-        error={ActionTypes.MOTION_CREATE_DECISION_ERROR}
-        success={ActionTypes.MOTION_CREATE_DECISION_SUCCESS}
+        actionType={ActionTypes.MOTION_CREATE_DECISION}
         values={{
           colonyAddress,
           colonyName: colony?.name,

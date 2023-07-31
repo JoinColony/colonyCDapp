@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
 import { DialogSection } from '~shared/Dialog';
-import { HookFormInput as Input, InputLabel } from '~shared/Fields';
+import { Input, InputLabel } from '~shared/Fields';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 
 import styles from './DecisionTitle.css';

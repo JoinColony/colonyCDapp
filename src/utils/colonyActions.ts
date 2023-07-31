@@ -126,6 +126,13 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
     case actionType.includes(ColonyActionType.Generic): {
       return [ActionPageDetails.Type, ActionPageDetails.Generic];
     }
+    case actionType.includes(ColonyActionType.CreateDecisionMotion): {
+      return [
+        ActionPageDetails.Type,
+        ActionPageDetails.Motion,
+        ActionPageDetails.Author,
+      ];
+    }
     default:
       return [];
   }

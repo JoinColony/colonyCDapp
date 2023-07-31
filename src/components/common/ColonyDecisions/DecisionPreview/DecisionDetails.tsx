@@ -1,35 +1,32 @@
 import React from 'react';
 
 import DetailsWidget from '~shared/DetailsWidget';
-import { ColonyMotions, Decision } from '~types';
-import { useColonyContext } from '~hooks';
-import { getDomain } from '~utils/domains';
+import { ColonyAction, ColonyActionType, ColonyDecision } from '~types';
+import { useAppContext, useColonyContext } from '~hooks';
 
 const displayName = 'common.ColonyDecisions.DecisionPreview.DecisionDetails';
 
 interface DecisionDetailsProps {
-  decision: Decision;
+  decision: ColonyDecision;
 }
 
 const DecisionDetails = ({ decision }: DecisionDetailsProps) => {
   const { colony } = useColonyContext();
+  const { user } = useAppContext();
 
   if (!colony) {
     return null;
   }
 
   const widgetValues = {
-    actionType: ColonyMotions.CreateDecisionMotion,
-    motionDomain: getDomain(colony, decision.motionDomainId),
-  };
+    type: ColonyActionType.CreateDecisionMotion,
+    motionData: {
+      nativeMotionDomainId: String(decision.motionDomainId),
+    },
+    recipientAddress: user?.walletAddress,
+  } as ColonyAction; // @TODO: Remove casting
 
-  return (
-    <DetailsWidget
-      recipientAddress={decision.walletAddress}
-      colony={colony}
-      values={widgetValues}
-    />
-  );
+  return <DetailsWidget colony={colony} actionData={widgetValues} />;
 };
 
 DecisionDetails.displayName = displayName;

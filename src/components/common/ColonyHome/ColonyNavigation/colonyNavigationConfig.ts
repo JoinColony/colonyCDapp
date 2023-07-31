@@ -1,6 +1,8 @@
 import { defineMessages } from 'react-intl';
 
 import { NavItemProps as NavigationItem } from './NavItem';
+import { useEnabledExtensions } from '~hooks';
+import { MIN_VOTING_REPUTATION_VERSION_FOR_DECISIONS } from '~constants';
 
 export const displayName = 'common.ColonyHome.ColonyNavigation';
 
@@ -19,7 +21,10 @@ const MSG = defineMessages({
   },
 });
 
-const getNavigationItems = (colonyName?: string) => {
+const useGetNavigationItems = (colonyName?: string) => {
+  const { isVotingReputationEnabled, votingReputationVersion } =
+    useEnabledExtensions();
+
   if (!colonyName) {
     return [];
   }
@@ -35,6 +40,7 @@ const getNavigationItems = (colonyName?: string) => {
    */
   const hasNewActions = false;
   const hasNewExtensions = false;
+  const hasNewDecisions = false;
 
   const navigationItems: NavigationItem[] = [
     {
@@ -50,23 +56,21 @@ const getNavigationItems = (colonyName?: string) => {
     },
   ];
 
-  // @TODO -> Requires extensions
-  /* const decisionsSupported =   
-      isVotingExtensionEnabled &&
-      votingExtensionVersion &&
-      votingExtensionVersion >= VotingReputationExtensionVersion.GreenLightweightSpaceship;
-  */
+  const decisionsSupported =
+    isVotingReputationEnabled &&
+    (votingReputationVersion ?? 0) >=
+      MIN_VOTING_REPUTATION_VERSION_FOR_DECISIONS;
 
-  // if (decisionsSupported) {
-  navigationItems.splice(1, 0, {
-    linkTo: `/colony/${colonyName}/decisions`,
-    // showDot: hasNewDecisions,
-    text: MSG.linkTextDecisions,
-    dataTest: 'decisionsNavigationButton',
-  });
-  // }
+  if (decisionsSupported) {
+    navigationItems.splice(1, 0, {
+      linkTo: `/colony/${colonyName}/decisions`,
+      showDot: hasNewDecisions,
+      text: MSG.linkTextDecisions,
+      dataTest: 'decisionsNavigationButton',
+    });
+  }
 
   return navigationItems;
 };
 
-export default getNavigationItems;
+export default useGetNavigationItems;

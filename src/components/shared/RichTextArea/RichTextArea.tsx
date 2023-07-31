@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 
 import {
   CoreInputProps,
-  HookFormInputProps,
+  InputProps,
   InputLabel,
   InputStatus,
 } from '~shared/Fields';
@@ -14,7 +14,7 @@ type RichTextAreaProps = Omit<
   CoreInputProps,
   'placeholder' | 'placeholderValues' | 'name' | 'disabled'
 > &
-  Pick<HookFormInputProps, 'appearance'> &
+  Pick<InputProps, 'appearance'> &
   RichTextEditorProps;
 
 const displayName = 'RichTextArea';

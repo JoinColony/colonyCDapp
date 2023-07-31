@@ -1,7 +1,11 @@
 import { Record } from 'immutable';
 import { Id } from '@colony/colony-js';
 
-import { Decision as DecisionProps, DefaultValues, RecordToJS } from '~types';
+import {
+  ColonyDecision as DecisionProps,
+  DefaultValues,
+  RecordToJS,
+} from '~types';
 
 const defaultValues: DefaultValues<DecisionProps> = {
   description: undefined,

@@ -9,7 +9,11 @@ import {
 } from '~common/ColonyDecisions';
 import { ColonyHomeLayoutProps } from '~common/ColonyHome/ColonyHomeLayout';
 import { getDecisionFromStore } from '~utils/decisions';
-import { useAppContext } from '~hooks';
+import {
+  useAppContext,
+  useCanInteractWithNetwork,
+  useEnabledExtensions,
+} from '~hooks';
 
 const displayName = 'common.ColonyDecisions.NewDecisionButton';
 
@@ -19,6 +23,8 @@ const NewDecisionButton = ({
   filteredDomainId: ethDomainId,
 }: NewDecisionButtonProps) => {
   const { user } = useAppContext();
+  const { isVotingReputationEnabled } = useEnabledExtensions();
+  const canInteractWithNetwork = useCanInteractWithNetwork();
   const decision = useSelector(getDecisionFromStore(user?.walletAddress || ''));
 
   //   const { isVotingExtensionEnabled, isLoadingExtensions } =
@@ -53,7 +59,7 @@ const NewDecisionButton = ({
         openDecisionDialog,
       });
     } else {
-      openDecisionDialog({ ethDomainId, decision });
+      openDecisionDialog({ nativeDomainId: ethDomainId, decision });
     }
   };
 
@@ -62,12 +68,9 @@ const NewDecisionButton = ({
       loading={false /* isLoadingData */}
       text={{ id: 'button.newDecision' }}
       handleClick={handleClick}
-      disabled={!user}
+      disabled={!user || !isVotingReputationEnabled || !canInteractWithNetwork}
       //     mustUpgrade ||
-      //     !isNetworkAllowed ||
-      //     !hasRegisteredProfile ||
       //     !colony?.isDeploymentFinished ||
-      //     !isVotingExtensionEnabled
       //   }
       dataTest="newDecisionButton"
     />

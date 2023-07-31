@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-interface Brand {
-  brand: string;
-  version: string;
+interface Window {
+  ethereum: object | undefined;
 }
 
 interface Navigator {
@@ -11,4 +10,9 @@ interface Navigator {
     mobile: boolean;
     brands: Brand[];
   };
+}
+
+interface Brand {
+  brand: string;
+  version: string;
 }

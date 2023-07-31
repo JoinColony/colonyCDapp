@@ -1,6 +1,6 @@
 .banner {
   height: 100%;
-  border-bottom: 1px solid rgba(var(--grey-purple-1), 0.15);
+  border-bottom: 1px solid color-mod(var(--grey-purple) alpha(15%));
   grid-area: banner;
 }
 

@@ -5,9 +5,9 @@ import NewActionButton from '~common/NewActionButton';
 import NewDecisionButton from '~common/ColonyDecisions/NewDecisionButton';
 
 import ColonyDomainSelector from '../ColonyDomainSelector';
-import { ColonyHomeLayoutProps } from './ColonyHomeLayout';
 
 import styles from './ColonyHomeLayout.css';
+import { ColonyHomeLayoutProps } from './ColonyHomeLayout';
 
 const isDecisionsRoute = (params: Params) => {
   return params['*'] === 'decisions';
