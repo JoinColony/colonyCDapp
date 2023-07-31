@@ -134,12 +134,11 @@ const ContractInteractionSection = ({
   const { watch, setValue } = useFormContext();
   const safe = watch('safe');
   const transactions: SafeTransaction[] = watch(`transactions`);
-
   const transactionValues = transactions[transactionFormIndex];
-
   const selectedSafe = getSafe(safes, safe);
 
-  /* const { contract: selectedContract } = transactions[transactionFormIndex]; */
+  /* const { contract: selectedContract } = transactions[transactionFormIndex];
+   * console.log(selectedContract); */
 
   const onContractABIChange = useCallback(
     (abiResponse: ABIResponse) => {
@@ -209,9 +208,8 @@ const ContractInteractionSection = ({
           ? MSG.invalidAddressError
           : invalidSafeError;
         setFetchABIError(error);
-        setTransactionDisplayName(
-          `transactions.${transactionFormIndex}.contract.profile.displayName`,
-        );
+
+        setTransactionDisplayName(formatMessage(MSG.unknownContract));
         setIsLoadingABI(false);
       }
     },
