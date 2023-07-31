@@ -13,7 +13,7 @@ const Header: FC<HeaderProps> = ({ title }) => {
   return (
     <TitleLabel
       className={clsx({
-        'ml-5 mb-1': !isMobile,
+        'ml-3.5': !isMobile,
         'mb-4': isMobile,
       })}
       text={title}

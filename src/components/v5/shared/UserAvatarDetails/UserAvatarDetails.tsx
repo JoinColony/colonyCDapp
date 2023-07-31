@@ -17,6 +17,7 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
   userStatus,
   avatar,
   isContributorsList,
+  isBordered = false,
 }) => {
   const { handleClipboardCopy, isCopied } = useCopyToClipboard(
     walletAddress || '',
@@ -36,7 +37,8 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
       ) : (
         <div className="flex relative justify-center">
           <div
-            className={clsx('border-2 rounded-full [&>figure]:flex', {
+            className={clsx('rounded-full flex', {
+              'border-2': isBordered,
               'border-success-400': userStatus === 'new' && isContributorsList,
               'border-warning-400':
                 userStatus === 'active' && isContributorsList,
