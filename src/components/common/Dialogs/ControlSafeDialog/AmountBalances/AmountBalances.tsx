@@ -16,16 +16,13 @@ import { Safe, SafeBalance, Token } from '~types';
 import { TokenType } from '~gql';
 
 import styles from './AmountTokens.css';
-/* import { TransferFundsProps } from '../TransactionTypesSection/TransferFundsSection'; */
 
-/* interface Props extends Pick<TransferFundsProps, 'handleValidation'> { */
 interface Props {
   safeBalances: SafeBalance[];
   disabledInput: boolean;
   selectedSafe: Safe | undefined;
   transactionFormIndex: number;
   maxButtonParams: MaxButtonParams;
-  /* handleChange: () => void; */
 }
 
 const displayName = 'common.ControlSafeDialog.ControlSafeForm.AmountBalances';
@@ -46,8 +43,6 @@ const AmountBalances = ({
   safeBalances,
   disabledInput,
   transactionFormIndex,
-  /* handleValidation, */
-  /* handleChange, */
   maxButtonParams,
 }: Props) => {
   const { watch, setValue } = useFormContext();
@@ -92,12 +87,6 @@ const AmountBalances = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [safeBalances]);
 
-  /* useEffect(() => {
-   *   if (selectedSafe) {
-   *     handleValidation();
-   *   }
-   * }, [selectedSafe, handleValidation]); */
-
   return (
     <div className={styles.tokenAmount}>
       <div
@@ -112,7 +101,6 @@ const AmountBalances = ({
             theme: 'minimal',
             align: 'right',
           }}
-          /* onChange={handleChange} */
           formattingOptions={{
             delimiter: ',',
             numeral: true,
@@ -140,7 +128,6 @@ const AmountBalances = ({
               // can only select a token from "tokens"
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               setSelectedTokenData(selectedToken!);
-              /* handleValidation(); */
             }}
           />
         </div>
