@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ActionUserRoles } from '~utils/colonyActions';
+import { ActionUserRoles } from '~types';
 
 import RolesDetailItem from './RolesDetailItem';
 

@@ -1,26 +1,24 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, Id } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  updateMotionValues,
-  getColonyManager,
-} from '../utils';
+import { putError, takeFrom, getColonyManager } from '../utils';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
 import { transactionReady } from '../../actionCreators';
 
+export type EscalateMotionPayload =
+  Action<ActionTypes.MOTION_ESCALATE>['payload'];
+
 function* escalateMotion({
   meta,
-  payload: { userAddress, colonyAddress, motionId },
+  payload: { colonyAddress, motionId },
 }: Action<ActionTypes.MOTION_ESCALATE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
@@ -48,17 +46,7 @@ function* escalateMotion({
 
     const batchKey = 'escalateMotion';
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: meta.id,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(escalateMotionTransaction, {
+    yield createGroupTransaction(escalateMotionTransaction, batchKey, meta, {
       context: ClientType.VotingReputationClient,
       methodName: 'escalateMotionWithProofs',
       identifier: colonyAddress,
@@ -88,11 +76,6 @@ function* escalateMotion({
       escalateMotionTransaction.channel,
       ActionTypes.TRANSACTION_SUCCEEDED,
     );
-
-    /*
-     * Update motion page values
-     */
-    yield fork(updateMotionValues, colonyAddress, userAddress, motionId);
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_ESCALATE_SUCCESS,

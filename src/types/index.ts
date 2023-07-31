@@ -1,9 +1,8 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { MessageDescriptor } from 'react-intl';
 
 export * from './keyboard';
 export * from './actions';
-export * from './motions';
 export * from './extensions';
 export * from './transactions';
 export * from './wallet';
@@ -18,7 +17,6 @@ export type WithKey = {
   key: any;
 };
 
-export type Values<T> = T[keyof T];
 export type ExcludesNull = <T>(x: T | null) => x is T;
 export type RequireProps<T, K extends keyof T> = Omit<T, K> &
   Required<Pick<T, K>>;
@@ -61,7 +59,12 @@ export type ComplexMessageValues = Record<string, ReactNode>;
 /**
  * For messages that contain both JSX and Primitive values
  */
-export type UniversalMessageValues = SimpleMessageValues | ComplexMessageValues;
+export type AnyMessageValues = Record<string, PrimitiveType | ReactNode>;
+
+export type UniversalMessageValues =
+  | SimpleMessageValues
+  | ComplexMessageValues
+  | AnyMessageValues;
 
 export type Message = MessageDescriptor | string;
 
@@ -73,3 +76,7 @@ export type DefaultValues<V> = Record<keyof V, any>;
 export interface RecordToJS<T> {
   toJS: (props: T) => void;
 }
+
+export type SetStateFn<T = any> = ReturnType<typeof useState<T>>[1];
+
+export type Falsy = undefined | null | false;

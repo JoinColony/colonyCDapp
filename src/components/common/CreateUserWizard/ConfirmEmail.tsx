@@ -3,10 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { EmailPermissions } from '~gql';
-import {
-  HookFormCheckbox as Checkbox,
-  HookFormInput as Input,
-} from '~shared/Fields';
+import { Checkbox, Input } from '~shared/Fields';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 import { Message } from '~types';
 import { setFieldTouched } from '~utils/hookForm';

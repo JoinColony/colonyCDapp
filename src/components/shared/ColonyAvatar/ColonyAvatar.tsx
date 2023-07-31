@@ -28,14 +28,14 @@ const ColonyAvatar = ({
   preferThumbnail = true,
   ...avatarProps
 }: Props) => {
-  const { profile, name } = colony || {};
-  const imageString = preferThumbnail ? profile?.thumbnail : profile?.avatar;
+  const { metadata, name } = colony || {};
+  const imageString = preferThumbnail ? metadata?.thumbnail : metadata?.avatar;
   const colonyAvatar = (
     <Avatar
       avatar={imageString}
       placeholderIcon="at-sign-circle"
       seed={colonyAddress && colonyAddress.toLowerCase()}
-      title={profile?.displayName || name || colonyAddress}
+      title={metadata?.displayName || name || colonyAddress}
       {...avatarProps}
     />
   );

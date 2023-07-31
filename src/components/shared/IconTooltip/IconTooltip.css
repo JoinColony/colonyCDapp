@@ -19,32 +19,38 @@
   text-align: left;
 }
 
-.main.sizeTiny, .main.sizeTiny .icon {
+.main.sizeTiny,
+.main.sizeTiny .icon {
   height: tinyIcon;
   width: tinyIcon;
 }
 
-.main.sizeSmall, .main.sizeSmall .icon {
+.main.sizeSmall,
+.main.sizeSmall .icon {
   height: smallIcon;
   width: smallIcon;
 }
 
-.main.sizeMedium, .main.sizeMedium .icon {
+.main.sizeMedium,
+.main.sizeMedium .icon {
   height: mediumIcon;
   width: mediumIcon;
 }
 
-.main.sizeLarge, .main.sizeLarge .icon {
+.main.sizeLarge,
+.main.sizeLarge .icon {
   height: largeIcon;
   width: largeIcon;
 }
 
-.main.sizeHuge, .main.sizeHuge .icon {
+.main.sizeHuge,
+.main.sizeHuge .icon {
   height: hugeIcon;
   width: hugeIcon;
 }
 
-.main.sizeMassive, .main.sizeMassive .icon {
+.main.sizeMassive,
+.main.sizeMassive .icon {
   height: massiveeIcon;
   width: massiveeIcon;
 }

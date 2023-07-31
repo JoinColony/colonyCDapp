@@ -1,0 +1,5 @@
+.loadingInfo {
+  padding: 20px;
+  border-radius: var(--radius-normal);
+  background-color: color-mod(var(--primary) alpha(6%));
+}

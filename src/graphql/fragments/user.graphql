@@ -1,21 +1,60 @@
 fragment User on User {
   profile {
-    avatar
-    bio
-    displayName
-    email
-    location
-    thumbnail
-    website
+    ...Profile
   }
   walletAddress: id
   name
   watchlist {
     items {
+      id
       colony {
         ...WatchedColony
       }
       createdAt
     }
+  }
+}
+
+fragment UserDisplay on User {
+  walletAddress: id
+  name
+  profile {
+    displayName
+    avatar
+    thumbnail
+  }
+}
+
+fragment Profile on Profile {
+  avatar
+  bio
+  displayName
+  email
+  location
+  thumbnail
+  website
+}
+
+fragment MemberUser on User {
+  walletAddress: id
+  name
+  profile {
+    ...Profile
+  }
+}
+
+fragment Contributor on Contributor {
+  address
+  user {
+    ...MemberUser
+  }
+  reputationPercentage
+  reputationAmount
+}
+
+fragment Watcher on Watcher {
+  address
+  user {
+    ...MemberUser
   }
 }

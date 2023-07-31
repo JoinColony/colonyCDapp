@@ -2,26 +2,22 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, Id, getChildIndex } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
+import { ColonyManager } from '~context';
+
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import {
-  putError,
-  takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
-  getColonyManager,
-} from '../utils';
+  transactionAddParams,
+  transactionPending,
+  transactionReady,
+} from '../../actionCreators';
 
+import { putError, takeFrom, getColonyManager } from '../utils';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
 
 function* createRootMotionSaga({
   payload: {
@@ -31,7 +27,7 @@ function* createRootMotionSaga({
     motionParams,
     annotationMessage,
   },
-  meta: { id: metaId, history },
+  meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.ROOT_MOTION>) {
   let txChannel;
@@ -40,7 +36,8 @@ function* createRootMotionSaga({
       throw new Error('Parameters not set for rootMotion transaction');
     }
 
-    const colonyManager = yield getColonyManager();
+    const colonyManager: ColonyManager = yield getColonyManager();
+
     const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
@@ -138,12 +135,8 @@ function* createRootMotionSaga({
 
     if (annotationMessage) {
       yield put(transactionPending(annotateRootMotion.id));
-
-      const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
-
-      yield put(
-        transactionAddParams(annotateRootMotion.id, [txHash, ipfsHash]),
-      );
+      // @TODO: handle uploading annotation msg to db in saga
+      yield put(transactionAddParams(annotateRootMotion.id, [txHash, '']));
 
       yield put(transactionReady(annotateRootMotion.id));
 
@@ -158,7 +151,9 @@ function* createRootMotionSaga({
     });
 
     if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (caughtError) {
     putError(ActionTypes.ROOT_MOTION_ERROR, caughtError, meta);

@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+
+const { writeFileSync } = require('fs');
 const { generate } = require('@graphql-codegen/cli');
 const {
   buildClientSchema,
@@ -6,6 +8,8 @@ const {
   printSchema,
 } = require('graphql');
 const fetch = require('node-fetch');
+
+const SCHEMA_LOCATION = './schema.graphql';
 
 const fetchSchema = async () => {
   const response = await fetch('http://localhost:20002/graphql', {
@@ -19,17 +23,17 @@ const fetchSchema = async () => {
   const data = await response.json();
   const schema = buildClientSchema(data.data);
 
-  return printSchema(schema);
+  writeFileSync(SCHEMA_LOCATION, printSchema(schema));
 };
 
 const codegen = async () => {
   try {
-    const schema = await fetchSchema();
+    await fetchSchema();
 
     const graphqlFiles = './src/graphql/**/*.graphql';
 
     generate({
-      schema,
+      schema: SCHEMA_LOCATION,
       documents: graphqlFiles,
       generates: {
         './src/graphql/generated.ts': {
@@ -38,6 +42,13 @@ const codegen = async () => {
             'typescript-operations',
             'typescript-react-apollo',
           ],
+        },
+      },
+      config: {
+        scalars: {
+          AWSDateTime: 'string',
+          AWSEmail: 'string',
+          AWSURL: 'string',
         },
       },
       watch: graphqlFiles,

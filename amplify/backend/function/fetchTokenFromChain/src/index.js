@@ -10,12 +10,9 @@ const { graphqlRequest, getTokenType } = require('./utils');
  */
 const { createToken, getTokenByAddress } = require('./graphql');
 
-/*
- * @TODO These values need to be imported properly, and differentiate based on environment
- */
-const API_KEY = 'da2-fakeApiId123456';
-const GRAPHQL_URI = 'http://localhost:20002/graphql';
-const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let apiKey = 'da2-fakeApiId123456';
+let graphqlURL = 'http://localhost:20002/graphql';
+let rpcURL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
 
 const baseToken = {
   __typename: 'Token',
@@ -27,7 +24,25 @@ const baseToken = {
   colonies: null,
 };
 
+const setEnvVariables = async () => {
+  const ENV = process.env.ENV;
+  if (ENV === 'qa') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [apiKey, graphqlURL, rpcURL] = await getParams([
+      'appsyncApiKey',
+      'graphqlUrl',
+      'chainRpcEndpoint',
+    ]);
+  }
+};
+
 exports.handler = async (event) => {
+  try {
+    await setEnvVariables();
+  } catch (e) {
+    throw new Error('Unable to set env variables. Reason:', e);
+  }
+
   const { tokenAddress = constants.AddressZero } =
     // eslint-disable-next-line no-unsafe-optional-chaining
     event?.arguments?.input;
@@ -35,8 +50,8 @@ exports.handler = async (event) => {
   const tokenQuery = await graphqlRequest(
     getTokenByAddress,
     { id: tokenAddress },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   // eslint-disable-next-line no-unsafe-optional-chaining
@@ -59,7 +74,7 @@ exports.handler = async (event) => {
        * Attempt to fetch it from the chain
        */
       const checksummedAddress = utils.getAddress(tokenAddress);
-      const provider = new providers.JsonRpcProvider(RPC_URL);
+      const provider = new providers.JsonRpcProvider(rpcURL);
       const tokenFromChain = new Contract(
         checksummedAddress,
         basicTokenAbi,
@@ -87,14 +102,13 @@ exports.handler = async (event) => {
              * @TODO These need to be properly added once Lambda Functions
              * have the concept of chains
              */
-            meta: {
-              chainId: 2656691,
-              network: 'GANACHE',
+            chainMetadata: {
+              chainId: (await provider.getNetwork()).chainId,
             },
           },
         },
-        GRAPHQL_URI,
-        API_KEY,
+        graphqlURL,
+        apiKey,
       );
 
       const { createdAt = new Date(), updatedAt = new Date() } =

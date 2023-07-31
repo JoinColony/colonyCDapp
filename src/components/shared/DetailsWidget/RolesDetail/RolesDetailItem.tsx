@@ -1,7 +1,7 @@
 import React from 'react';
 
 import PermissionsLabel from '~shared/PermissionsLabel';
-import { ActionUserRoles } from '~utils/colonyActions';
+import { ActionUserRoles } from '~types';
 import { formatText } from '~utils/intl';
 
 import styles from './RolesDetail.css';

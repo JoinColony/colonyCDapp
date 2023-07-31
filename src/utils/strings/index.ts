@@ -57,9 +57,21 @@ export const humanReadableFileSize = (size: number) => {
  * @param {string} word The word / string to capitalize
  * @return {string} The capitalized string
  */
-export const capitalize = (word: string): string =>
+export const capitalizeFirstLetter = (word: string): string =>
   word && word.charAt(0).toUpperCase() + word.slice(1);
 
+/**
+ * Capitalize a word (converts the word to lower case, except for the first letter)
+ *
+ * @method convertToCapitalized
+ *
+ * @param {string} word The word / string to capitalize
+ * @return {string} The capitalized string
+ */
+export const capitalizeWord = (word: string): string => {
+  const lower = word.toLowerCase();
+  return capitalizeFirstLetter(lower);
+};
 /**
  * Strip the normal and secure website protocol from the start of a string.
  * If will only check for the specific 'http' and 'https' strings and strip them out,

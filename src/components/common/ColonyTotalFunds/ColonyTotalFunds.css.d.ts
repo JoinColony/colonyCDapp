@@ -1,16 +1,14 @@
 declare namespace ColonyTotalFundsCssNamespace {
   export interface IColonyTotalFundsCss {
-    caretIcon: string;
     main: string;
-    manageFundsLink: string;
-    rightArrowDisplay: string;
-    selectedToken: string;
-    selectedTokenAmount: string;
-    selectedTokenSymbol: string;
-    tokenDisplayFontWeight: string;
-    tokenDisplaySymbolFontSize: string;
-    tokenLockWrapper: string;
+    mappings: string;
+    names: string;
+    query700: string;
+    sourceRoot: string;
+    sources: string;
+    sourcesContent: string;
     totalBalanceCopy: string;
+    version: string;
   }
 }
 

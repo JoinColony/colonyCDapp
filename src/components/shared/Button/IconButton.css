@@ -6,7 +6,8 @@
 /*
  * Themes
  */
-.themePrimary, .themeDanger {
+.themePrimary,
+.themeDanger {
   composes: main;
 
   & svg {

@@ -13,3 +13,9 @@ query GetTokenFromEverywhere($input: TokenFromEverywhereArguments!) {
     }
   }
 }
+
+query GetUserTokenBalance($input: GetUserTokenBalanceInput!) {
+  getUserTokenBalance(input: $input) {
+    ...UserTokenBalanceData
+  }
+}

@@ -7,7 +7,6 @@ declare namespace ColonySubscriptionCssNamespace {
     main: string;
     menuActive: string;
     menuIconContainer: string;
-    spinnerContainer: string;
   }
 }
 

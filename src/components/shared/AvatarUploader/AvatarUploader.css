@@ -31,11 +31,11 @@
   margin-right: 20px;
 }
 
-.dropzoneNoButtonsVariant > button:visited[aria-busy="false"] {
+.dropzoneNoButtonsVariant > button:visited[aria-busy='false'] {
   outline: none;
 }
 
-.dropzoneNoButtonsVariant > button:disabled[aria-busy="false"] {
+.dropzoneNoButtonsVariant > button:disabled[aria-busy='false'] {
   color: var(--grey);
 }
 

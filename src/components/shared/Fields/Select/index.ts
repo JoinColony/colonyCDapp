@@ -1,3 +1,3 @@
-export { default } from './Select';
 export { default as SelectListBox } from './SelectListBox';
-export { Appearance, SelectOption } from './types';
+export { default as Select } from './Select';
+export { Appearance, SelectOption, SelectProps } from './types';

@@ -1,3 +1,11 @@
+query GetFullColonyByAddress($address: ID!) {
+  getColonyByAddress(id: $address) {
+    items {
+      ...Colony
+    }
+  }
+}
+
 query GetFullColonyByName($name: String!) {
   getColonyByName(name: $name) {
     items {
@@ -10,6 +18,39 @@ query GetMetacolony {
   getColonyByType(type: METACOLONY) {
     items {
       ...Colony
+    }
+  }
+}
+
+query GetColonyExtensions($colonyAddress: ID!) {
+  getColony(id: $colonyAddress) {
+    extensions(filter: { isDeleted: { eq: false } }) {
+      items {
+        ...Extension
+      }
+    }
+  }
+}
+
+query GetColonyExtension($colonyAddress: ID!, $extensionHash: String!) {
+  getExtensionByColonyAndHash(
+    colonyId: $colonyAddress
+    hash: { eq: $extensionHash }
+    filter: { isDeleted: { eq: false } }
+  ) {
+    items {
+      ...Extension
+    }
+  }
+}
+
+query GetMembersForColony($input: MembersForColonyInput!) {
+  getMembersForColony(input: $input) {
+    contributors {
+      ...Contributor
+    }
+    watchers {
+      ...Watcher
     }
   }
 }

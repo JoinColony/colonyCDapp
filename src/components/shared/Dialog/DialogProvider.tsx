@@ -4,6 +4,7 @@ import React, {
   ReactNode,
   useCallback,
   useState,
+  useMemo,
 } from 'react';
 import { nanoid } from 'nanoid';
 
@@ -67,11 +68,16 @@ const DialogProvider = ({ children }: Props) => {
     [closeDialog],
   );
 
+  const value = useMemo(
+    () => ({
+      openDialog: pushDialog,
+    }),
+    [pushDialog],
+  );
+
   return (
     <>
-      <DialogContext.Provider value={{ openDialog: pushDialog }}>
-        {children}
-      </DialogContext.Provider>
+      <DialogContext.Provider value={value}>{children}</DialogContext.Provider>
       {openDialogs.map(({ Dialog, props, ...dialogProps }) => (
         <Dialog {...dialogProps} {...props} />
       ))}

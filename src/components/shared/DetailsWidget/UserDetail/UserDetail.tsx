@@ -1,11 +1,10 @@
 import React from 'react';
 import { Placement } from '@popperjs/core';
 
-import MaskedAddress from '~shared/MaskedAddress';
-import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
+import Address from '~shared/Address';
 import UserAvatar from '~shared/UserAvatar';
-import { useAppContext } from '~hooks';
-import { Address, Colony } from '~types';
+import { Address as AddressType } from '~types';
+import { useUserByAddress } from '~hooks';
 
 import styles from './UserDetail.css';
 
@@ -25,23 +24,20 @@ export const userDetailPopoverOptions = {
 };
 
 interface Props {
-  colony?: Colony;
-  walletAddress: Address;
+  walletAddress: AddressType;
 }
 
-const UserDetail = ({ colony, walletAddress }: Props) => {
-  const { user } = useAppContext();
+const UserDetail = ({ walletAddress }: Props) => {
+  const { user } = useUserByAddress(walletAddress);
   const userDisplayName = user?.profile?.displayName;
   const username = user?.name;
 
   return (
     <div className={styles.main}>
       <UserAvatar
-        colony={colony}
         size="s"
         notSet={false}
         user={user}
-        address={walletAddress || ''}
         showInfo
         popperOptions={userDetailPopoverOptions}
       />
@@ -51,11 +47,7 @@ const UserDetail = ({ colony, walletAddress }: Props) => {
             {userDisplayName || `@${username}`}
           </div>
         )}
-        <InvisibleCopyableAddress address={walletAddress}>
-          <div className={styles.address}>
-            <MaskedAddress address={walletAddress} />
-          </div>
-        </InvisibleCopyableAddress>
+        <Address address={walletAddress} maskedAddressStyles={styles.address} />
       </div>
     </div>
   );

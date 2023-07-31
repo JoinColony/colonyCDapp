@@ -1,8 +1,11 @@
 import { constants as ethersContants } from 'ethers';
 
-import { Network, Color } from '~types';
+import { version } from '../../package.json';
+
+import { Network } from '~types';
 
 export * from './externalUrls';
+export * from './extensions';
 
 export type TokenInfo = {
   name: string;
@@ -68,7 +71,7 @@ export const GNOSIS_NETWORK: NetworkInfo = {
   chainId: 100,
   shortName: 'xDai',
   displayENSDomain: 'joincolony.colonyxdai',
-  blockExplorerName: 'Blockscout',
+  blockExplorerName: 'Gnosisscan',
   blockExplorerUrl: 'https://blockscout.com/poa/xdai',
   tokenExplorerLink: 'https://blockscout.com/poa/xdai/tokens',
   contractAddressLink: 'https://blockscout.com/poa/xdai/address',
@@ -137,15 +140,6 @@ export const DEFAULT_NETWORK_TOKEN = TOKEN_DATA[DEFAULT_NETWORK];
 
 export const DEFAULT_NETWORK_INFO = NETWORK_DATA[DEFAULT_NETWORK];
 
-export const ALLDOMAINS_DOMAIN_SELECTION = {
-  id: String(COLONY_TOTAL_BALANCE_DOMAIN_ID),
-  color: Color.Yellow,
-  ethDomainId: COLONY_TOTAL_BALANCE_DOMAIN_ID,
-  name: 'All Teams',
-  ethParentDomainId: null,
-  description: '',
-};
-
 /*
  * List all networks that curently support metatransactions
  */
@@ -155,12 +149,16 @@ export const NETWORKS_WITH_METATRANSACTIONS = [
   Network.GnosisFork,
 ];
 
-export const SMALL_TOKEN_AMOUNT_FORMAT = '0.00000...';
-
 export const ADDRESS_ZERO = ethersContants.AddressZero;
 
 export const GANACHE_LOCAL_RPC_URL = 'http://localhost:8545';
 
-export const isDev = process.env.NODE_ENV === 'development';
+export const isDev = process.env.NETWORK === 'ganache';
 
-export const LATEST_ONE_TX_PAYMENT_VERSION = 3; // @TODO: get progamatically instead of hard-coding
+export const CDAPP_VERSION = version;
+
+export const STAKING_THRESHOLD = 10;
+
+export const MAX_COLONY_DISPLAY_NAME = 20;
+
+export const MAX_ANNOTATION_LENGTH = 4000;

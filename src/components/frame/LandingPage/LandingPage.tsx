@@ -41,10 +41,12 @@ const MSG = defineMessages({
 interface LandingItemProps {
   to: string;
   message: MessageDescriptor;
+  onClick?: () => void;
 }
-const LandingItem = ({ to, message }: LandingItemProps) => (
+
+const LandingItem = ({ to, message, onClick }: LandingItemProps) => (
   <li className={styles.item}>
-    <NavLink to={to} className={styles.itemLink}>
+    <NavLink to={to} onClick={onClick} className={styles.itemLink}>
       <Icon className={styles.itemIcon} name="circle-plus" title={message} />
       <span className={styles.itemTitle}>
         <FormattedMessage {...message} />
@@ -67,7 +69,7 @@ const LandingPage = () => {
   /* Ensures username is up-to-date post create user flow. */
   useEffect(() => {
     if (updateUser) {
-      updateUser(wallet?.address);
+      updateUser(wallet?.address, true);
     }
   }, [wallet, updateUser]);
 
@@ -109,7 +111,7 @@ const LandingPage = () => {
                     {...MSG.exploreColony}
                     values={{
                       colonyName:
-                        metacolony?.profile?.displayName || metacolony.name,
+                        metacolony.metadata?.displayName || metacolony.name,
                     }}
                   />
                 </span>

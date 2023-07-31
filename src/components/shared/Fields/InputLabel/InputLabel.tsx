@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
-import { MessageDescriptor, useIntl } from 'react-intl';
 
-import { Message, SimpleMessageValues } from '~types';
+import { Message, UniversalMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
+import { formatText } from '~utils/intl';
 
 import { InputComponentAppearance as Appearance } from '../Input';
 import styles from './InputLabel.css';
@@ -17,10 +17,10 @@ interface Props {
   extra?: ReactNode;
 
   /** Help text (will appear next to label text) */
-  help?: string | MessageDescriptor;
+  help?: Message;
 
   /** Values for help text (react-intl interpolation) */
-  helpValues?: SimpleMessageValues;
+  helpValues?: UniversalMessageValues;
 
   /** `id` attribute value of accompanied input field */
   inputId?: string;
@@ -29,7 +29,7 @@ interface Props {
   label: Message;
 
   /** Values for label text (react-intl interpolation) */
-  labelValues?: SimpleMessageValues;
+  labelValues?: UniversalMessageValues;
 
   /** Should only be visible for screenreaders, but not for display users */
   screenReaderOnly?: boolean;
@@ -45,14 +45,8 @@ const InputLabel = ({
   labelValues,
   screenReaderOnly = false,
 }: Props) => {
-  const { formatMessage } = useIntl();
-
-  const helpText =
-    typeof help === 'object' ? formatMessage(help, helpValues) : help;
-  const labelText =
-    typeof inputLabel === 'object'
-      ? formatMessage(inputLabel, labelValues)
-      : inputLabel;
+  const helpText = formatText(help, helpValues);
+  const labelText = formatText(inputLabel, labelValues);
 
   return (
     <label

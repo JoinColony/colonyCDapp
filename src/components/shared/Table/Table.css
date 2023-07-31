@@ -91,7 +91,7 @@
   border-style: solid;
 }
 
-.separatorsRows tbody tr:nth-child(n+2),
+.separatorsRows tbody tr:nth-child(n + 2),
 .separatorsRows thead + tbody tr:first-child {
   border-width: 1px;
   border-style: solid;

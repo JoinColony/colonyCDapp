@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { HookFormInput as Input, ActionHookForm } from '~shared/Fields';
+import { Input, ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 import { WizardStepProps } from '~shared/Wizard';
 import { mergePayload } from '~utils/actions';
@@ -63,10 +63,8 @@ const StepUserName = ({
   const handleSuccess = () => navigate(LANDING_PAGE_ROUTE, { replace: true });
 
   return (
-    <ActionHookForm<UserWizardStep2>
-      submit={ActionTypes.USERNAME_CREATE}
-      success={ActionTypes.USERNAME_CREATE_SUCCESS}
-      error={ActionTypes.USERNAME_CREATE_ERROR}
+    <ActionForm<UserWizardStep2>
+      actionType={ActionTypes.USERNAME_CREATE}
       onSuccess={handleSuccess}
       transform={transform}
       validationSchema={validationSchema}
@@ -87,7 +85,7 @@ const StepUserName = ({
           }
         />
       )}
-    </ActionHookForm>
+    </ActionForm>
   );
 };
 

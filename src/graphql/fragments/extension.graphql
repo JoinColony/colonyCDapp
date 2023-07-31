@@ -1,0 +1,21 @@
+fragment Extension on ColonyExtension {
+  address: id
+  colonyAddress: colonyId
+  hash
+  currentVersion: version
+  installedBy
+  installedAt
+  isDeprecated
+  isDeleted
+  isInitialized
+  params {
+    votingReputation {
+      maxVoteFraction
+    }
+  }
+}
+
+fragment ExtensionDisplayFragment on ColonyExtension {
+  address: id
+  hash
+}

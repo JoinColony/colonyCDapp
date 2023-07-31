@@ -1,56 +1,30 @@
-// import { Extension } from '@colony/colony-js';
-// import { useColonyExtensionsQuery } from '~data/index';
-// import { Address } from '~types/index';
+import { Extension } from '@colony/colony-js';
 
-// interface Props {
-//   colonyAddress?: Address;
-// }
+import useExtensionsData from './useExtensionsData';
 
-/*
- * @TODO This needs to be addressed and either refactored or removed
- */
+export interface EnabledExtensionData {
+  loading: boolean;
+  isOneTxPaymentEnabled: boolean;
+  isVotingReputationEnabled: boolean;
+  votingReputationVersion: number | undefined;
+}
 
-// export const useEnabledExtensions = ({ colonyAddress }: Props) => {
-//   const { data: colonyExtensionsData, loading } = useColonyExtensionsQuery({
-//     variables: { address: colonyAddress || '' },
-//   });
-//   const installedExtensions =
-//     colonyExtensionsData?.processedColony?.installedExtensions || [];
+const useEnabledExtensions = (): EnabledExtensionData => {
+  const { installedExtensionsData, loading } = useExtensionsData();
 
-//   const installedVotingExtension = installedExtensions.find(
-//     ({ extensionId }) => extensionId === Extension.VotingReputation,
-//   );
-//   const installedOneTxPaymentExtension = installedExtensions.find(
-//     ({ extensionId }) => extensionId === Extension.OneTxPayment,
-//   );
+  const oneTxPaymentExtension = installedExtensionsData.find(
+    (extension) => extension.extensionId === Extension.OneTxPayment,
+  );
+  const votingReputationExtension = installedExtensionsData.find(
+    (extension) => extension.extensionId === Extension.VotingReputation,
+  );
 
-//   const isVotingExtensionEnabled = !!(
-//     installedVotingExtension &&
-//     installedVotingExtension.details?.initialized &&
-//     !installedVotingExtension.details?.deprecated
-//   );
-//   const isOneTxPaymentExtensionEnabled = !!(
-//     installedOneTxPaymentExtension &&
-//     installedOneTxPaymentExtension.details?.initialized &&
-//     !installedOneTxPaymentExtension.details?.deprecated
-//   );
-
-//   const installedExtensionsAddresses = installedExtensions.map((extension) =>
-//     extension.address?.toLowerCase(),
-//   );
-
-//   return {
-//     isVotingExtensionEnabled,
-//     votingExtensionVersion: installedVotingExtension
-//       ? installedVotingExtension?.details?.version
-//       : null,
-//     isOneTxPaymentExtensionEnabled,
-//     installedExtensionsAddresses,
-//     isLoadingExtensions: loading,
-//   };
-// };
-//
-
-const useEnabledExtensions = (...args) => args;
+  return {
+    loading,
+    isOneTxPaymentEnabled: !!oneTxPaymentExtension?.isEnabled,
+    isVotingReputationEnabled: !!votingReputationExtension?.isEnabled,
+    votingReputationVersion: votingReputationExtension?.currentVersion,
+  };
+};
 
 export default useEnabledExtensions;

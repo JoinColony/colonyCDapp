@@ -1,0 +1,56 @@
+@value lineHeight from '../ColonyExtensions.css';
+
+.main {
+  display: block;
+  height: 220px;
+  width: 220px;
+}
+
+.card {
+  display: block;
+  padding: 26px 20px 20px;
+  height: 100%;
+  background-color: white;
+  line-height: lineHeight;
+  color: var(--dark);
+  letter-spacing: 0.1px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.header h4 {
+  line-height: lineHeight;
+  letter-spacing: var(--spacing-normal);
+}
+
+.headerIcon {
+  flex: 0 0 33px;
+  align-self: start;
+  padding-top: 2px;
+}
+
+.version {
+  display: block;
+  font-size: var(--size-tiny);
+  color: color-mod(var(--dark) alpha(50%));
+}
+
+.addButton {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+}
+
+.cardDescription {
+  composes: multiLineEllipsis from '~styles/text.css';
+}
+
+.status {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+}

@@ -1,16 +1,43 @@
-import { Id } from '@colony/colony-js';
+import { Colony, Domain } from '~types';
 
-import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { Colony } from '~types';
-
+import { sortBy } from './lodash';
 import { notNull } from './arrays';
 
-export const getDomainId = (ethDomainId?: number) =>
-  ethDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID || ethDomainId === undefined
-    ? Id.RootDomain
-    : ethDomainId;
-
-export const getDomain = (colony: Colony, domainId: number) =>
-  colony?.domains?.items
+export const findDomainByNativeId = (
+  domainNativeId: number | null | undefined,
+  colony: Colony,
+) => {
+  const domains = colony.domains?.items;
+  if (!domains) {
+    return undefined;
+  }
+  return domains
     .filter(notNull)
-    .find(({ nativeId }) => nativeId === domainId);
+    .find(({ nativeId }) => nativeId === domainNativeId);
+};
+
+/**
+ * As we have to self-manage the database IDs of the domains, this helper function generates it for us
+ */
+export const getDomainDatabaseId = (
+  colonyAddress: string,
+  nativeDomainId: number,
+) => {
+  return `${colonyAddress}_${nativeDomainId}`;
+};
+
+export const getMetadataDatabaseId = (
+  colonyAddress: string,
+  txHash: string,
+) => {
+  return `${colonyAddress}_motion-${txHash}`;
+};
+
+export const getDomainOptions = (colonyDomains: Domain[]) =>
+  sortBy(
+    colonyDomains.map((domain) => ({
+      value: domain?.nativeId || '',
+      label: domain?.metadata?.name || `Domain #${domain?.nativeId}`,
+    })) || [],
+    ['value'],
+  );

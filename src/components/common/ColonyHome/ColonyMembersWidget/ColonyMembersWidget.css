@@ -10,7 +10,8 @@
   letter-spacing: var(--spacing-medium);
 }
 
-.main a h4:hover, .main a h4:active {
+.main a h4:hover,
+.main a h4:active {
   text-decoration: underline;
   color: var(--colony-blue);
 }
@@ -25,11 +26,13 @@
   border-radius: 50px;
 }
 
-.userAvatar:nth-child(3n+0) {
+.userAvatar:nth-child(3n + 0) {
   margin-right: 0px;
 }
 
-.userAvatar:nth-child(13), .userAvatar:nth-child(14), .userAvatar:nth-child(15) {
+.userAvatar:nth-child(13),
+.userAvatar:nth-child(14),
+.userAvatar:nth-child(15) {
   margin-bottom: 0px;
 }
 

@@ -22,14 +22,30 @@ const createOptimisedImage = async (file: File, max: number) => {
 
 const getOptimisedImage = async (file: File | undefined, max: number) => {
   if (file) {
-    return (await createOptimisedImage(file, max)).data;
+    return createOptimisedImage(file, max);
   }
 
   return null;
 };
 
-export const getOptimisedThumbnail = (file: File | undefined) =>
-  getOptimisedImage(file, DEFAULT_THUMBNAIL_MAX_DIMENSION);
+export const getOptimisedThumbnail = async (file: File | undefined) =>
+  (await getOptimisedImage(file, DEFAULT_THUMBNAIL_MAX_DIMENSION))?.data ??
+  null;
 
-export const getOptimisedAvatar = (file: File | undefined) =>
-  getOptimisedImage(file, DEFAULT_USER_AVATAR_MAX_DIMENSION);
+export const getOptimisedAvatarUnder300KB = async (file: File | undefined) => {
+  let img = await getOptimisedImage(file, DEFAULT_USER_AVATAR_MAX_DIMENSION);
+  let maxDimension = DEFAULT_USER_AVATAR_MAX_DIMENSION;
+  // dynamo db limit is 400kb, therefore ensure img is under 300kb just to be sure we don't exceed it
+  while (maxDimension > 0 && img && img.size > 300_000) {
+    maxDimension -= 100;
+    // eslint-disable-next-line no-await-in-loop
+    img = await getOptimisedImage(file, maxDimension);
+  }
+
+  if (!img || img.size > 300_000) {
+    console.error('Image could not be compressed under 300kb');
+    return null;
+  }
+
+  return img.data;
+};

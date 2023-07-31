@@ -38,7 +38,7 @@ const OmniPickerItem = ({
 
   return (
     <li
-      id={`omnipicker-item-${idx}`}
+      id={`omnipicker-item-${itemData.id}`}
       role="option"
       aria-selected={selected}
       onMouseEnter={select}

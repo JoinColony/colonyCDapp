@@ -6,29 +6,20 @@ import {
   getChildIndex,
   ColonyRole,
 } from '@colony/colony-js';
-import { AddressZero } from '@ethersproject/constants';
 import { hexlify, hexZeroPad } from 'ethers/lib/utils';
 
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
-  getColonyManager,
-} from '../utils';
+import { ADDRESS_ZERO } from '~constants';
+import { Action, ActionTypes, AllActions } from '~redux/index';
+import { putError, takeFrom } from '~utils/saga/effects';
 
+import { transactionReady } from '../../actionCreators';
+
+import { getColonyManager } from '../utils';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
 
 function* managePermissionsMotion({
   payload: {
@@ -37,35 +28,20 @@ function* managePermissionsMotion({
     userAddress,
     roles,
     colonyName,
-    annotationMessage,
+    // annotationMessage,
     motionDomainId,
   },
-  meta: { id: metaId, history },
+  meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.MOTION_USER_ROLES_SET>) {
   let txChannel;
   try {
-    /*
-     * Validate the required values
-     */
-    if (!userAddress) {
-      throw new Error('User address not set for setUserRole transaction');
-    }
-
-    if (!domainId) {
-      throw new Error('Domain id not set for setUserRole transaction');
-    }
-
-    if (!roles) {
-      throw new Error('Roles not set for setUserRole transaction');
-    }
-
-    const context = yield getColonyManager();
-    const colonyClient = yield context.getClient(
+    const colonyManager = yield getColonyManager();
+    const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );
-    const votingReputationClient = yield context.getClient(
+    const votingReputationClient = yield colonyManager.getClient(
       ClientType.VotingReputationClient,
       colonyAddress,
     );
@@ -93,7 +69,7 @@ function* managePermissionsMotion({
     const { key, value, branchMask, siblings } = yield call(
       colonyClient.getReputation,
       skillId,
-      AddressZero,
+      ADDRESS_ZERO,
     );
 
     txChannel = yield call(getTxChannel, metaId);
@@ -101,11 +77,13 @@ function* managePermissionsMotion({
     // setup batch ids and channels
     const batchKey = 'createMotion';
 
-    const { createMotion, annotateSetUserRolesMotion } =
-      yield createTransactionChannels(metaId, [
-        'createMotion',
-        'annotateSetUserRolesMotion',
-      ]);
+    const {
+      createMotion,
+      // annotateSetUserRolesMotion,
+    } = yield createTransactionChannels(metaId, [
+      'createMotion',
+      // 'annotateSetUserRolesMotion',
+    ]);
 
     const roleArray = Object.values(roles).reverse();
     roleArray.splice(2, 0, false);
@@ -138,7 +116,7 @@ function* managePermissionsMotion({
       params: [
         motionDomainId,
         motionChildSkillIndex,
-        AddressZero,
+        ADDRESS_ZERO,
         encodedAction,
         key,
         value,
@@ -153,28 +131,29 @@ function* managePermissionsMotion({
       ready: false,
     });
 
-    if (annotationMessage) {
-      yield fork(createTransaction, annotateSetUserRolesMotion.id, {
-        context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
-        identifier: colonyAddress,
-        params: [],
-        group: {
-          key: batchKey,
-          id: metaId,
-          index: 1,
-        },
-        ready: false,
-      });
-    }
+    // if (annotationMessage) {
+    //   yield fork(createTransaction, annotateSetUserRolesMotion.id, {
+    //     context: ClientType.ColonyClient,
+    //     methodName: 'annotateTransaction',
+    //     identifier: colonyAddress,
+    //     params: [],
+    //     group: {
+    //       key: batchKey,
+    //       id: metaId,
+    //       index: 1,
+    //     },
+    //     ready: false,
+    //   });
+    // }
 
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
-    if (annotationMessage) {
-      yield takeFrom(
-        annotateSetUserRolesMotion.channel,
-        ActionTypes.TRANSACTION_CREATED,
-      );
-    }
+
+    // if (annotationMessage) {
+    //   yield takeFrom(
+    //     annotateSetUserRolesMotion.channel,
+    //     ActionTypes.TRANSACTION_CREATED,
+    //   );
+    // }
 
     yield put(transactionReady(createMotion.id));
 
@@ -186,28 +165,31 @@ function* managePermissionsMotion({
     );
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    if (annotationMessage) {
-      const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
-      yield put(transactionPending(annotateSetUserRolesMotion.id));
+    // if (annotationMessage) {
+    //   const ipfsHash = yield call(ipfsUploadAnnotation, annotationMessage);
+    //   yield put(transactionPending(annotateSetUserRolesMotion.id));
 
-      yield put(
-        transactionAddParams(annotateSetUserRolesMotion.id, [txHash, ipfsHash]),
-      );
+    //   yield put(
+    //     transactionAddParams(annotateSetUserRolesMotion.id, [txHash, ipfsHash]),
+    //   );
 
-      yield put(transactionReady(annotateSetUserRolesMotion.id));
+    //   yield put(transactionReady(annotateSetUserRolesMotion.id));
 
-      yield takeFrom(
-        annotateSetUserRolesMotion.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
-    }
+    //   yield takeFrom(
+    //     annotateSetUserRolesMotion.channel,
+    //     ActionTypes.TRANSACTION_SUCCEEDED,
+    //   );
+    // }
+
     yield put<AllActions>({
       type: ActionTypes.MOTION_USER_ROLES_SET_SUCCESS,
       meta,
     });
 
     if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (caughtError) {
     putError(ActionTypes.MOTION_USER_ROLES_SET_ERROR, caughtError, meta);

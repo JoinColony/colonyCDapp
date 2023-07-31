@@ -1,40 +1,38 @@
-import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, getChildIndex, Id } from '@colony/colony-js';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import {
+  ClientType,
+  ColonyRole,
+  Extension,
+  getChildIndex,
+  getPermissionProofs,
+  Id,
+} from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
+import { constants } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
-  getColonyManager,
-} from '../utils';
+import { putError, takeFrom, getColonyManager } from '../utils';
 
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+import { transactionReady } from '../../actionCreators';
 
 function* moveFundsMotion({
   payload: {
     colonyAddress,
     colonyName,
-    version,
-    fromDomainId,
-    toDomainId,
+    colonyVersion,
+    fromDomain,
+    toDomain,
     amount,
     tokenAddress,
     annotationMessage,
   },
-  meta: { id: metaId, history },
+  meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.MOTION_MOVE_FUNDS>) {
   let txChannel;
@@ -42,12 +40,12 @@ function* moveFundsMotion({
     /*
      * Validate the required values
      */
-    if (!fromDomainId) {
+    if (!fromDomain) {
       throw new Error(
-        'Source domain not set for oveFundsBetweenPots transaction',
+        'Source domain not set for MoveFundsBetweenPots transaction',
       );
     }
-    if (!toDomainId) {
+    if (!toDomain) {
       throw new Error(
         'Recipient domain not set for MoveFundsBetweenPots transaction',
       );
@@ -63,16 +61,17 @@ function* moveFundsMotion({
       );
     }
 
-    const context = yield getColonyManager();
-    const colonyClient = yield context.getClient(
+    const colonyManager = yield getColonyManager();
+    const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );
+    const votingReputationClient = yield colonyClient.getExtensionClient(
+      Extension.VotingReputation,
+    );
 
-    const [{ fundingPotId: fromPot }, { fundingPotId: toPot }] = yield all([
-      call([colonyClient, colonyClient.getDomain], fromDomainId),
-      call([colonyClient, colonyClient.getDomain], toDomainId),
-    ]);
+    const { nativeFundingPotId: fromPot } = fromDomain;
+    const { nativeFundingPotId: toPot } = toDomain;
 
     const motionChildSkillIndex = yield call(
       getChildIndex,
@@ -103,12 +102,39 @@ function* moveFundsMotion({
         'annotateMoveFundsMotion',
       ]);
 
-    const isOldVersion = parseInt(version, 10) <= 6;
+    const [fromPermissionDomainId, fromChildSkillIndex] = yield call(
+      getPermissionProofs,
+      colonyClient,
+      fromDomain.nativeId,
+      [ColonyRole.Funding],
+      votingReputationClient.address,
+    );
+
+    const [, toChildSkillIndex] = yield call(
+      getPermissionProofs,
+      colonyClient,
+      toDomain.nativeId,
+      [ColonyRole.Funding],
+      votingReputationClient.address,
+    );
+
+    const isOldVersion = colonyVersion <= 6;
+    const contractMethod = isOldVersion
+      ? `moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)`
+      : 'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)';
+
     const encodedAction = colonyClient.interface.encodeFunctionData(
-      isOldVersion
-        ? `moveFundsBetweenPotsWithProofs(uint256,uint256,uint256,address)`
-        : 'moveFundsBetweenPotsWithProofs',
-      [fromPot, toPot, amount, tokenAddress],
+      contractMethod,
+      [
+        ...(isOldVersion ? [] : [fromPermissionDomainId, constants.MaxUint256]),
+        fromPermissionDomainId,
+        fromChildSkillIndex,
+        toChildSkillIndex,
+        fromPot,
+        toPot,
+        amount,
+        tokenAddress,
+      ],
     );
 
     // create transactions
@@ -167,28 +193,30 @@ function* moveFundsMotion({
     );
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    if (annotationMessage) {
-      const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
-      yield put(transactionPending(annotateMoveFundsMotion.id));
+    // if (annotationMessage) {
+    //   const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
+    //   yield put(transactionPending(annotateMoveFundsMotion.id));
 
-      yield put(
-        transactionAddParams(annotateMoveFundsMotion.id, [txHash, ipfsHash]),
-      );
+    //   yield put(
+    //     transactionAddParams(annotateMoveFundsMotion.id, [txHash, ipfsHash]),
+    //   );
 
-      yield put(transactionReady(annotateMoveFundsMotion.id));
+    //   yield put(transactionReady(annotateMoveFundsMotion.id));
 
-      yield takeFrom(
-        annotateMoveFundsMotion.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
-    }
+    //   yield takeFrom(
+    //     annotateMoveFundsMotion.channel,
+    //     ActionTypes.TRANSACTION_SUCCEEDED,
+    //   );
+    // }
     yield put<AllActions>({
       type: ActionTypes.MOTION_MOVE_FUNDS_SUCCESS,
       meta,
     });
 
     if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (caughtError) {
     putError(ActionTypes.MOTION_MOVE_FUNDS_ERROR, caughtError, meta);

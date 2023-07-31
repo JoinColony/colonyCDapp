@@ -1,0 +1,29 @@
+@value query700 from '~styles/queries.css';
+
+.main {
+  margin-top: 20px;
+  min-width: 618px;
+}
+
+.main table .tableBody {
+  overflow-y: auto;
+  overflow-x: none;
+}
+
+.main table .tableBody tr {
+  overflow-x: auto;
+}
+
+.noResults {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+@media screen and query700 {
+  .main {
+    margin: 0;
+    min-width: 0;
+  }
+}

@@ -1,7 +1,7 @@
 import React from 'react';
-import { defineMessages } from 'react-intl';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
-// import Button from '~shared/Button';
+import Button from '~shared/Button';
 import DropdownMenu, {
   DropdownMenuSection,
   DropdownMenuItem,
@@ -12,16 +12,16 @@ import {
   useAppContext,
   useColonyContext,
   useUserReputation,
-  // useCanInteractWithNetwork,
+  useCanInteractWithNetwork,
 } from '~hooks';
 import { SimpleMessageValues } from '~types/index';
-// import { UserTokenBalanceData } from '~types/tokens';
+import { UserTokenBalanceData } from '~types';
+import UserTokenActivationDisplay from '~frame/UserTokenActivationButton/UserTokenActivationDisplay';
 
-// import UserTokenActivationDisplay from '../UserTokenActivationButton/UserTokenActivationDisplay';
-// import { TokenActivationPopover } from '../TokenActivation';
+import { TokenActivationPopover } from '../TokenActivation';
 import ItemContainer from './ItemContainer';
 
-// import styles from './AvatarDropdownPopoverMobile.css';
+import styles from './AvatarDropdownPopoverMobile.css';
 
 const displayName = 'frame.AvatarDropdown.AvatarDropdownPopoverMobile';
 
@@ -46,30 +46,23 @@ const MSG = defineMessages({
 
 interface Props {
   spinnerMsg: SimpleMessageValues;
-  // tokenBalanceData: UserTokenBalanceData;
+  tokenBalanceData?: UserTokenBalanceData;
 }
 
 const AvatarDropdownPopoverMobile = ({
   spinnerMsg,
-}: // tokenBalanceData,
-Props) => {
-  // const {
-  //   nativeToken,
-  //   activeBalance,
-  //   inactiveBalance,
-  //   totalBalance,
-  //   lockedBalance,
-  //   isPendingBalanceZero,
-  // } = tokenBalanceData;
-
+  tokenBalanceData,
+}: Props) => {
   const { colony } = useColonyContext();
   const { wallet } = useAppContext();
+  const canInteractWithNetwork = useCanInteractWithNetwork();
+
+  const { colonyAddress, nativeToken } = colony || {};
+
   const { userReputation, totalReputation } = useUserReputation(
-    colony?.colonyAddress,
+    colonyAddress,
     wallet?.address,
   );
-  const colonyAddress = colony?.colonyAddress;
-  // const canInteractWithNetwork = useCanInteractWithNetwork();
 
   return (
     <DropdownMenu>
@@ -79,15 +72,16 @@ Props) => {
             {wallet?.address && <MaskedAddress address={wallet.address} />}
           </ItemContainer>
         </DropdownMenuItem>
-        {/* <DropdownMenuItem>
-          <ItemContainer message={MSG.balance}>
-            {canInteractWithNetwork && nativeToken && (
+        <DropdownMenuItem>
+          <ItemContainer message={MSG.balance} spinnerMsg={spinnerMsg}>
+            {canInteractWithNetwork && nativeToken && tokenBalanceData && (
               <UserTokenActivationDisplay
-                {...{ nativeToken, inactiveBalance, totalBalance }}
+                nativeToken={nativeToken}
+                tokenBalanceData={tokenBalanceData}
               />
             )}
           </ItemContainer>
-        </DropdownMenuItem> */}
+        </DropdownMenuItem>
         <DropdownMenuItem>
           <ItemContainer message={MSG.reputation} spinnerMsg={spinnerMsg}>
             {colonyAddress && (
@@ -99,20 +93,16 @@ Props) => {
             )}
           </ItemContainer>
         </DropdownMenuItem>
-        {/* <DropdownMenuItem>
+        <DropdownMenuItem>
           <div className={styles.buttonContainer}>
-            {nativeToken && (
-              <TokenActivationPopover
-                activeTokens={activeBalance}
-                inactiveTokens={inactiveBalance}
-                totalTokens={totalBalance}
-                lockedTokens={lockedBalance}
-                token={nativeToken}
-                {...{ colony, walletAddress, isPendingBalanceZero }}
-              >
+            {nativeToken && tokenBalanceData && (
+              <TokenActivationPopover tokenBalanceData={tokenBalanceData}>
                 {({ toggle, ref }) => (
                   <Button
-                    appearance={{ theme: 'primary', size: 'medium' }}
+                    appearance={{
+                      theme: 'primary',
+                      size: 'medium',
+                    }}
                     onClick={toggle}
                     innerRef={ref}
                     data-test="manageTokensButton"
@@ -123,7 +113,7 @@ Props) => {
               </TokenActivationPopover>
             )}
           </div>
-        </DropdownMenuItem> */}
+        </DropdownMenuItem>
       </DropdownMenuSection>
     </DropdownMenu>
   );

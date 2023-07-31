@@ -1,0 +1,34 @@
+@value query700 from "~styles/queries.css";
+
+.manageFundsLink {
+  color: var(--colony-blue);
+}
+
+.manageFundsLink:hover {
+  color: var(--grey);
+}
+
+.manageFundsLink svg {
+  fill: var(--colony-blue);
+}
+
+.manageFundsLink:hover svg {
+  fill: var(--grey);
+}
+
+.rightArrowDisplay {
+  display: inline-block;
+  margin: 0 7px 1px 15px;
+  height: 15px;
+  width: 15px;
+  vertical-align: bottom;
+  font-weight: var(--weight-bold);
+}
+
+@media screen and query700 {
+  .manageFundsLink {
+    display: flex;
+    align-items: center;
+    font-size: var(--size-smallish);
+  }
+}

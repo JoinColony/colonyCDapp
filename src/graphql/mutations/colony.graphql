@@ -10,8 +10,20 @@ mutation CreateWatchedColonies($input: CreateWatchedColoniesInput!) {
   }
 }
 
-mutation CreateUniqueDomain($input: CreateUniqueDomainInput!) {
-  createUniqueDomain(input: $input) {
+mutation CreateColonyMetadata($input: CreateColonyMetadataInput!) {
+  createColonyMetadata(input: $input) {
+    id
+  }
+}
+
+mutation UpdateColonyMetadata($input: UpdateColonyMetadataInput!) {
+  updateColonyMetadata(input: $input) {
+    id
+  }
+}
+
+mutation DeleteWatchedColonies($input: DeleteWatchedColoniesInput!) {
+  deleteWatchedColonies(input: $input) {
     id
   }
 }

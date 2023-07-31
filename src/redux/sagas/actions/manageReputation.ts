@@ -1,27 +1,16 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
+import { Action, ActionTypes, AllActions } from '~redux';
+
+import { putError, takeFrom } from '../utils';
 
 import {
-  putError,
-  takeFrom,
-  routeRedirect,
-  updateDomainReputation,
-} from '../utils';
-
-import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { ipfsUpload } from '../ipfs';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+import { transactionReady } from '~redux/actionCreators';
 
 function* manageReputationAction({
   payload: {
@@ -31,9 +20,9 @@ function* manageReputationAction({
     userAddress,
     amount,
     isSmitingReputation,
-    annotationMessage,
+    /* annotationMessage */
   },
-  meta: { id: metaId, history },
+  meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.ACTION_MANAGE_REPUTATION>) {
   let txChannel;
@@ -56,23 +45,13 @@ function* manageReputationAction({
 
     txChannel = yield call(getTxChannel, metaId);
 
-    const { manageReputation, annotateManageReputation } =
+    const { manageReputation /* annotateManageReputation */ } =
       yield createTransactionChannels(metaId, [
         'manageReputation',
-        'annotateManageReputation',
+        // 'annotateManageReputation',
       ]);
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(manageReputation, {
+    yield createGroupTransaction(manageReputation, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: isSmitingReputation
         ? 'emitDomainReputationPenaltyWithProofs'
@@ -82,23 +61,23 @@ function* manageReputationAction({
       ready: false,
     });
 
-    if (annotationMessage) {
-      yield createGroupTransaction(annotateManageReputation, {
-        context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
-        identifier: colonyAddress,
-        params: [],
-        ready: false,
-      });
-    }
+    // if (annotationMessage) {
+    //   yield createGroupTransaction(annotateManageReputation, {
+    //     context: ClientType.ColonyClient,
+    //     methodName: 'annotateTransaction',
+    //     identifier: colonyAddress,
+    //     params: [],
+    //     ready: false,
+    //   });
+    // }
 
     yield takeFrom(manageReputation.channel, ActionTypes.TRANSACTION_CREATED);
-    if (annotationMessage) {
-      yield takeFrom(
-        annotateManageReputation.channel,
-        ActionTypes.TRANSACTION_CREATED,
-      );
-    }
+    // if (annotationMessage) {
+    //   yield takeFrom(
+    //     annotateManageReputation.channel,
+    //     ActionTypes.TRANSACTION_CREATED,
+    //   );
+    // }
 
     yield put(transactionReady(manageReputation.id));
 
@@ -111,36 +90,31 @@ function* manageReputationAction({
 
     yield takeFrom(manageReputation.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    if (annotationMessage) {
-      yield put(transactionPending(annotateManageReputation.id));
+    // if (annotationMessage) {
+    //   yield put(transactionPending(annotateManageReputation.id));
 
-      let annotationMessageIpfsHash = null;
-      annotationMessageIpfsHash = yield call(
-        ipfsUpload,
-        JSON.stringify({
-          annotationMessage,
-        }),
-      );
+    //   let annotationMessageIpfsHash = null;
+    //   annotationMessageIpfsHash = yield call(
+    //     ipfsUpload,
+    //     JSON.stringify({
+    //       annotationMessage,
+    //     }),
+    //   );
 
-      yield put(
-        transactionAddParams(annotateManageReputation.id, [
-          txHash,
-          annotationMessageIpfsHash,
-        ]),
-      );
+    //   yield put(
+    //     transactionAddParams(annotateManageReputation.id, [
+    //       txHash,
+    //       annotationMessageIpfsHash,
+    //     ]),
+    //   );
 
-      yield put(transactionReady(annotateManageReputation.id));
+    //   yield put(transactionReady(annotateManageReputation.id));
 
-      yield takeFrom(
-        annotateManageReputation.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
-    }
-
-    /*
-     * Refesh the user & colony reputation
-     */
-    yield fork(updateDomainReputation, colonyAddress, userAddress, domainId);
+    //   yield takeFrom(
+    //     annotateManageReputation.channel,
+    //     ActionTypes.TRANSACTION_SUCCEEDED,
+    //   );
+    // }
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_MANAGE_REPUTATION_SUCCESS,
@@ -148,7 +122,9 @@ function* manageReputationAction({
     });
 
     if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (error) {
     return yield putError(

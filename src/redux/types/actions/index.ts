@@ -1,3 +1,5 @@
+import { NavigateFunction } from 'react-router-dom';
+
 import { ColonyActionTypes } from './colony';
 import { ColonyActionsActionTypes } from './colonyActions';
 import { MotionActionTypes } from './motion';
@@ -9,7 +11,7 @@ import { MetacolonyVestingTypes } from './vesting';
 import { WalletActionTypes } from './wallet';
 import { DecisionActionTypes } from './decisions';
 
-export { RootMotionOperationNames } from './motion';
+export { RootMotionMethodNames } from './motion';
 
 /*
  * Type that represents an action (bare minimum).
@@ -51,11 +53,8 @@ export interface ActionTypeWithMeta<
  * P: the action payload, e.g. `{| tokenAddress: string |}`
  * M: any additional `meta` properties, e.g. `key: *`
  */
-export interface ActionTypeWithPayloadAndMeta<
-  T extends string,
-  P,
-  M extends Record<string, unknown>,
-> extends ActionType<T> {
+export interface ActionTypeWithPayloadAndMeta<T extends string, P, M>
+  extends ActionType<T> {
   type: T;
   meta: M;
   payload: P;
@@ -85,7 +84,7 @@ export interface UniqueActionTypeWithoutPayload<T extends string, M> {
 /*
  * Type that represents an error action.
  */
-export interface ErrorActionType<T extends string, M>
+export interface ErrorActionType<T extends string, M extends object>
   extends ActionTypeWithPayloadAndMeta<T, Error, M> {
   error: true;
 }
@@ -114,8 +113,13 @@ export type ActionTypeString = AllActions['type'];
 
 export type TakeFilter = (action: AllActions) => boolean;
 
+// To be replaced with MetaWithNavigate and deleted
 export type MetaWithHistory<M> = {
   history?: {
     push: <A>(route: A) => void;
   };
+} & M;
+
+export type MetaWithNavigate<M> = {
+  navigate: NavigateFunction;
 } & M;

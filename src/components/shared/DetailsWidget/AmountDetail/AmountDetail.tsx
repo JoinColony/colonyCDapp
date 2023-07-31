@@ -9,8 +9,8 @@ const displayName = 'DetailsWidget.AmountDetail';
 
 interface AmountDetailProps {
   amount: ReactNode; // Numeral component
-  symbol: ReactNode; // span
-  token?: Token;
+  symbol?: string;
+  token?: Token | null;
 }
 
 const AmountDetail = ({ amount, symbol, token }: AmountDetailProps) => (

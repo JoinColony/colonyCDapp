@@ -51,10 +51,10 @@ const formatColonyName = (values: FormValues, { valueKey }: GenericRow) => {
 const formatToken = (values: FormValues, { valueKey }: TokenRow) => (
   <>
     <span title={values[valueKey[0]]} className={styles.tokenSymbol}>
-      {values[valueKey[0]]}
+      {values[valueKey[0]] ?? values.token?.symbol}
     </span>
     <span title={`(${values[valueKey[1]]})`} className={styles.tokenName}>
-      {`(${values[valueKey[1]]})`}
+      {`(${values[valueKey[1]] ?? values.token?.name})`}
     </span>
   </>
 );

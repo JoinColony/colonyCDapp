@@ -1,0 +1,26 @@
+@value query700 from '~styles/queries.css';
+
+.nameAndColorContainer {
+  display: flex;
+  align-items: center;
+}
+
+.domainName {
+  margin-right: 18px;
+  width: 100%;
+}
+
+.domainName label {
+  color: var(--dark);
+}
+
+@media screen and query700 {
+  .domainName > div:first-child {
+    min-height: 85px;
+  }
+
+  .nameAndColorContainer > div:nth-child(2) {
+    align-self: flex-end;
+    padding-bottom: 5px;
+  }
+}

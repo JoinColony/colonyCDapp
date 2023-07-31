@@ -6,14 +6,14 @@ import { getMainClasses } from '~utils/css';
 
 import styles from './Alert.css';
 
-interface Appearance {
+export interface Appearance {
   borderRadius?: 'small' | 'medium' | 'large' | 'round' | 'none';
   theme?: 'primary' | 'info' | 'danger' | 'pinky';
   size?: 'small';
   margin?: 'none' | 'default';
 }
 
-type childrenFn = (handleDismissed: any) => void;
+type childrenFn = (handleDismissed: any) => JSX.Element;
 
 interface Props {
   /** Appearance object */

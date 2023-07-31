@@ -32,7 +32,7 @@ interface Props {
   name?: MessageDescriptor | string;
 
   /** Optional info message about permission being inherited. */
-  infoMessage?: MessageDescriptor | string;
+  infoMessage?: MessageDescriptor;
 
   /** Optional info message about permission being inherited. */
   infoMessageValues?: UniversalMessageValues;

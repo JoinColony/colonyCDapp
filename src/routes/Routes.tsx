@@ -41,6 +41,7 @@ import {
   LANDING_PAGE_ROUTE,
   NOT_FOUND_ROUTE,
   COLONY_DECISIONS_PREVIEW_ROUTE,
+  ACTIONS_PAGE_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -49,6 +50,7 @@ import NotFoundRoute from './NotFoundRoute';
 import { ColonyContextProvider } from '~context/ColonyContext';
 import CreateColonyWizard from '~common/CreateColonyWizard';
 import DecisionPreview from '~common/ColonyDecisions/DecisionPreview';
+import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -147,6 +149,16 @@ const Routes = () => {
               <Default routeProps={{ hasBackLink: false }}>
                 <ColonyHome />
               </Default>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={ACTIONS_PAGE_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <NavBar>
+                <ActionDetailsPage />
+              </NavBar>
             </ColonyContextProvider>
           }
         />

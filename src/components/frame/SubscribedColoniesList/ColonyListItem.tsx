@@ -31,7 +31,7 @@ const ColonyListItem = ({ colony }: Props) => {
               size="xs"
             />
           </div>
-          <div>{colony.profile?.displayName || colony.name}</div>
+          <div>{colony.metadata?.displayName || colony.name}</div>
         </div>
       </NavLink>
     </DropdownMenuItem>

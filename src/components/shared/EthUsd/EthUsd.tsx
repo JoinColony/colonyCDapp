@@ -47,6 +47,10 @@ const EthUsd = ({
   const suffixText = formatMessage(MSG.usdAbbreviation);
 
   useEffect(() => {
+    if (!value) {
+      return () => {};
+    }
+
     let didCancel = false;
 
     setIsLoading(true);

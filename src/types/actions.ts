@@ -1,28 +1,8 @@
 import { ColonyRole } from '@colony/colony-js';
 
-import { ItemStatus } from '~core/ActionsList';
-import { MotionTimeoutPeriods } from '~data/generated';
-import { MotionState } from '~utils/colonyMotions';
+import { ListItemStatus } from '~shared/ListItem';
 
-import { Address, ActionUserRoles } from './index';
-import { ColonyMotions } from './motions';
-
-export enum ColonyActions {
-  Generic = 'Generic',
-  WrongColony = 'WrongColony',
-  Payment = 'Payment',
-  Recovery = 'Recovery',
-  MoveFunds = 'MoveFunds',
-  UnlockToken = 'UnlockToken',
-  MintTokens = 'MintTokens',
-  CreateDomain = 'CreateDomain',
-  VersionUpgrade = 'VersionUpgrade',
-  ColonyEdit = 'ColonyEdit',
-  EditDomain = 'EditDomain',
-  SetUserRoles = 'SetUserRoles',
-  EmitDomainReputationPenalty = 'EmitDomainReputationPenalty',
-  EmitDomainReputationReward = 'EmitDomainReputationReward',
-}
+import { Address, ColonyActionType } from './index';
 
 export enum ColonyAndExtensionsEvents {
   Generic = 'Generic',
@@ -36,6 +16,7 @@ export enum ColonyAndExtensionsEvents {
   TokenUnlocked = 'TokenUnlocked',
   TokensMinted = 'TokensMinted',
   SkillAdded = 'SkillAdded',
+  DecisionCreated = 'DecisionCreated',
   DomainAdded = 'DomainAdded',
   DomainMetadata = 'DomainMetadata',
   PaymentPayoutSet = 'PaymentPayoutSet',
@@ -129,38 +110,14 @@ export enum ColonyAndExtensionsEvents {
   AgreementSigned = 'AgreementSigned',
 }
 
-export interface FormattedAction {
-  id: string;
-  status?: ItemStatus;
-  actionType: ColonyActions | ColonyMotions;
-  initiator: Address;
-  recipient: Address;
-  amount: string;
-  tokenAddress: Address;
-  transactionTokenAddress?: Address;
-  symbol: string;
-  decimals: string;
-  fromDomain: string;
-  toDomain: string;
-  transactionHash: string;
-  createdAt: Date;
-  commentCount: number;
-  metadata?: string;
-  roles: ActionUserRoles[];
-  oldVersion?: string;
-  newVersion?: string;
-  motionState?: MotionState;
-  motionId?: string;
-  timeoutPeriods: MotionTimeoutPeriods;
-  blockNumber: number;
-  totalNayStake?: string;
-  requiredStake?: string;
-  reputationChange?: string;
-}
+export type ActionUserRoles = {
+  id: ColonyRole;
+  setTo: boolean;
+};
 
 export interface FormattedEvent {
   id: string;
-  status?: ItemStatus;
+  status?: ListItemStatus;
   eventName: ColonyAndExtensionsEvents;
   colonyAddress: Address;
   agent: Address | null;
@@ -191,10 +148,20 @@ export interface FormattedEvent {
   currentPeriod?: string;
 }
 
+export enum ExtendedColonyActionType {
+  UpdateAddressBook = 'UPDATE_ADDRESS_BOOK',
+  UpdateTokens = 'UPDATE_TOKENS',
+}
+
+/**
+ * Union covering all contract-recognised and extended actions and motions types
+ */
+export type AnyActionType = ColonyActionType | ExtendedColonyActionType;
+
 /*
  * This list will get longer once we add more system events to the dapp
  */
-export enum SystemMessagesName {
+export enum SystemMessages {
   EnoughExitRecoveryApprovals = 'EnoughExitRecoveryApprovals',
   MotionHasPassed = 'MotionHasPassed',
   MotionHasFailedNotFinalizable = 'MotionHasFailedNotFinalizable',

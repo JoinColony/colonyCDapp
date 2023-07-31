@@ -43,11 +43,6 @@
   color: var(--dark);
 }
 
-.validateButtonContainer {
-  display: flex;
-  justify-content: flex-end;
-}
-
 .settingsRowExtra {
   margin-top: 8px;
 }

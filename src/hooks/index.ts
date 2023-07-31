@@ -21,15 +21,16 @@ export type Given = (
 export {
   default as useNaiveBranchingDialogWizard,
   WizardDialogType,
-} from './naiveBranchingDialogWizardHook';
+} from './useNaiveBranchingDialogWizard';
 
-export { default as useAvatarDisplayCounter } from './useAvatarDisplayCounter';
-export { default as useColonyReputation } from './useColonyReputation';
+export { default as useColonyHasReputation } from './useColonyHasReputation';
 export { default as useDialogActionPermissions } from './useDialogActionPermissions';
-export { default as useEnabledExtensions } from './useEnabledExtensions';
-export { default as useFormatRolesTitle } from './useFormatRolesTitle';
+export { default as useActionDialogStatus } from './useActionDialogStatus';
+export {
+  default as useEnabledExtensions,
+  EnabledExtensionData,
+} from './useEnabledExtensions';
 export { default as useSelectedUser } from './useSelectedUser';
-export { default as useSplitTime } from './useSplitTime';
 export { default as useTitle } from './useTitle';
 export { default as useTokenInfo, TokenInfoProvider } from './useTokenInfo';
 export { default as useUserAvatarImageFromIPFS } from './useUserAvatarImageFromIPFS';
@@ -39,14 +40,26 @@ export { default as useWindowSize } from './useWindowSize';
 export { default as useAppContext } from './useAppContext';
 export { default as useUserReputation } from './useUserReputation';
 export { default as useMobile } from './useMobile';
+export { default as useSortedContributors } from './useSortedContributors';
 export {
   default as useUserReputationForTopDomains,
   UserDomainReputation,
 } from './useUserReputationForTopDomains';
 export { default as useColonyContext } from './useColonyContext';
-export { default as useUserByNameOrAddress } from './useUserByNameOrAddress';
 export { default as useRichTextEditor } from './useRichTextEditor';
+export { default as useExtensionData } from './useExtensionData';
+export { default as useExtensionsData } from './useExtensionsData';
+export { default as usePaginatedActions } from './usePaginatedActions';
+export { default as useTokenActivationContext } from './useTokenActivationContext';
 export * from './useCanInteractWithColony';
+export { default as useColonyFundsClaims } from './useColonyFundsClaims';
+export { default as useCurrentSelectedToken } from './useCurrentSelectedToken';
+export { default as useTokenTotalBalance } from './useTokenTotalBalance';
+export { default as useColonyContractVersion } from './useColonyContractVersion';
+export { default as useNetworkInverseFee } from './useNetworkInverseFee';
+export { default as useUserByAddress } from './useUserByAddress';
+export { default as useUserByName } from './useUserByName';
+export { default as useUserByNameOrAddress } from './useUserByNameOrAddress';
 
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously

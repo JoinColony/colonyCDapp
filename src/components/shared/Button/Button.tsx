@@ -4,7 +4,7 @@ import React, { ReactNode, ButtonHTMLAttributes } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 
-import { SimpleMessageValues } from '~types';
+import { UniversalMessageValues } from '~types';
 import { useMainClasses } from '~hooks';
 
 import styles from './Button.css';
@@ -44,7 +44,9 @@ export interface Props
   disabled?: boolean;
 
   /** Pass a ref to the `<button>` element */
-  innerRef?: (ref: HTMLElement | null) => void;
+  innerRef?:
+    | ((ref: HTMLElement | null) => void)
+    | React.MutableRefObject<HTMLButtonElement | null>;
 
   /** Use a link instead of a button. Like ReactRouter's `to` property */
   linkTo?: NavLinkProps['to'];
@@ -62,7 +64,7 @@ export interface Props
   text?: MessageDescriptor | string;
 
   /** Values for loading text (react-intl interpolation) */
-  textValues?: SimpleMessageValues;
+  textValues?: UniversalMessageValues;
   /** Testing */
   dataTest?: string;
 }
@@ -106,7 +108,11 @@ const Button = ({
 
   if (linkTo) {
     return (
-      <NavLink className={classNames} to={linkTo} {...(props as NavLinkProps)}>
+      <NavLink
+        className={classNames}
+        to={linkTo}
+        {...(props as Omit<NavLinkProps, 'to'>)}
+      >
         {buttonText || children}
       </NavLink>
     );

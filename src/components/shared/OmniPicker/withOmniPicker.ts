@@ -295,7 +295,7 @@ const getClass = (WrappedComponent) => {
   return OmniPickerBase;
 };
 
-const withOmniPicker = () => (WrappedComponent: ComponentType<any>) =>
+const withOmniPicker = (WrappedComponent: ComponentType<any>) =>
   getClass(WrappedComponent);
 
 export default withOmniPicker;

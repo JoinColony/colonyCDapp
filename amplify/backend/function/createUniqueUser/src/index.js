@@ -10,13 +10,24 @@ const { graphqlRequest } = require('./utils');
  */
 const { getUser, createUser, createProfile } = require('./graphql');
 
-/*
- * @TODO These values need to be imported properly, and differentiate based on environment
- */
-const API_KEY = 'da2-fakeApiId123456';
-const GRAPHQL_URI = 'http://localhost:20002/graphql';
+let apiKey = 'da2-fakeApiId123456';
+let graphqlURL = 'http://localhost:20002/graphql';
+
+const setEnvVariables = async () => {
+  const ENV = process.env.ENV;
+  if (ENV === 'qa') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [apiKey, graphqlURL] = await getParams(['appsyncApiKey', 'graphqlUrl']);
+  }
+};
 
 exports.handler = async (event) => {
+  try {
+    await setEnvVariables();
+  } catch (e) {
+    throw new Error('Unable to set environment variables. Reason:', e);
+  }
+
   const { id: walletAddress, name, profile } = event.arguments?.input || {};
 
   let checksummedWalletAddress;
@@ -29,8 +40,8 @@ exports.handler = async (event) => {
   const query = await graphqlRequest(
     getUser,
     { id: checksummedWalletAddress, name },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   if (query.errors || !query.data) {
@@ -66,8 +77,8 @@ exports.handler = async (event) => {
         ...profile,
       },
     },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   /*
@@ -82,8 +93,8 @@ exports.handler = async (event) => {
         profileId: checksummedWalletAddress,
       },
     },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   if (mutation.errors || !mutation.data) {

@@ -3,13 +3,14 @@ import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
 import { ActionTypes } from '~redux';
-import { Address, WithKey, Color } from '~types';
+import { Address, WithKey, DomainColor, Domain, Colony } from '~types';
 
 import {
   ErrorActionType,
   UniqueActionType,
   ActionTypeWithMeta,
   MetaWithHistory,
+  MetaWithNavigate,
 } from './index';
 
 /*
@@ -21,37 +22,37 @@ export type ColonyActionsActionTypes =
       ActionTypes.ACTION_DOMAIN_CREATE,
       {
         colonyAddress: Address;
-        colonyName?: string;
+        colonyName: string;
         domainName: string;
-        domainColor?: Color;
-        domainPurpose?: string;
+        domainColor: DomainColor;
+        domainPurpose: string;
         annotationMessage?: string;
         parentId?: number;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_DOMAIN_CREATE_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_DOMAIN_CREATE_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_DOMAIN_EDIT,
       {
         colonyAddress: Address;
         colonyName?: string;
-        domainName: string;
-        domainColor?: Color;
+        domain: Domain;
+        domainName?: string;
+        domainColor?: DomainColor;
         domainPurpose?: string;
         annotationMessage?: string;
-        domainId: number;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_DOMAIN_EDIT_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_DOMAIN_EDIT_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_EXPENDITURE_PAYMENT,
@@ -66,35 +67,31 @@ export type ColonyActionsActionTypes =
           decimals: number;
         };
         annotationMessage?: string;
+        walletAddress: Address;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_EXPENDITURE_PAYMENT_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_EXPENDITURE_PAYMENT_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_EDIT_COLONY,
       {
-        colonyAddress: Address;
-        colonyName: string;
-        colonyDisplayName: string;
+        colony: Colony;
+        colonyDisplayName?: string;
         colonyAvatarImage?: string;
-        colonyAvatarHash?: string;
-        hasAvatarChanged?: boolean;
-        colonyTokens?: Address[];
+        colonyThumbnail?: string;
+        tokenAddresses?: Address[];
         annotationMessage?: string;
-        /*
-         * @TODO I think this will also store the subscribed-to tokens list
-         */
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_EDIT_COLONY_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_EDIT_COLONY_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_MOVE_FUNDS,
@@ -102,17 +99,17 @@ export type ColonyActionsActionTypes =
         colonyAddress: Address;
         colonyName?: string;
         tokenAddress: Address;
-        fromDomainId: number;
-        toDomainId: number;
+        fromDomain: Domain;
+        toDomain: Domain;
         amount: BigNumber;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_MOVE_FUNDS_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_MOVE_FUNDS_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_MINT_TOKENS,
@@ -123,12 +120,12 @@ export type ColonyActionsActionTypes =
         amount: BigNumber;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_MINT_TOKENS_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_MINT_TOKENS_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_VERSION_UPGRADE,
@@ -138,11 +135,11 @@ export type ColonyActionsActionTypes =
         colonyName?: string;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ActionTypeWithMeta<
       ActionTypes.ACTION_VERSION_UPGRADE_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_VERSION_UPGRADE_ERROR, object>
   | UniqueActionType<
@@ -155,7 +152,7 @@ export type ColonyActionsActionTypes =
         roles: Record<ColonyRole, boolean>;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_USER_ROLES_SET_ERROR, object>
   | ActionTypeWithMeta<
@@ -169,11 +166,11 @@ export type ColonyActionsActionTypes =
         colonyName: string;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ActionTypeWithMeta<
       ActionTypes.ACTION_UNLOCK_TOKEN_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_UNLOCK_TOKEN_ERROR, object>
   | UniqueActionType<
@@ -247,10 +244,28 @@ export type ColonyActionsActionTypes =
         isSmitingReputation?: boolean;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_MANAGE_REPUTATION_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_MANAGE_REPUTATION_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
+    >
+  | UniqueActionType<
+      ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE,
+      {
+        colony: Colony;
+        colonyDisplayName: string;
+        verifiedAddresses: Address[];
+        colonyTokenAddresses: Address[];
+        annotationMessage?: string;
+        isWhitelistActivated: boolean;
+      },
+      MetaWithNavigate<object>
+    >
+  | ErrorActionType<ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_SUCCESS,
+      object,
+      object
     >;

@@ -1,0 +1,5 @@
+.main {
+  display: flex;
+  align-items: baseline;
+  column-gap: 3px;
+}

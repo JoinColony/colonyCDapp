@@ -1,0 +1,29 @@
+@value query700 from '~styles/queries.css';
+
+.contractVersionLine {
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+  padding: 15px 80px;
+  font-size: var(--size-smallish);
+  font-weight: var(--weight-bold);
+}
+
+.contractVersionNumber {
+  color: var(--dark);
+}
+
+.divider {
+  margin: 0 80px;
+  background-color: color-mod(var(--grey-purple) alpha(15%));
+}
+
+@media screen and query700 {
+  .contractVersionLine {
+    padding: 15px 0;
+  }
+
+  .divider {
+    margin: 0px;
+  }
+}

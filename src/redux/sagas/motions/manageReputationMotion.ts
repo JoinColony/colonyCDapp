@@ -4,6 +4,7 @@ import {
   getChildIndex,
   getPermissionProofs,
   ColonyRole,
+  Id,
 } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
@@ -12,7 +13,6 @@ import { AllActions, Action } from '../../types/actions';
 import {
   putError,
   takeFrom,
-  routeRedirect,
   updateDomainReputation,
   getColonyManager,
 } from '../utils';
@@ -22,12 +22,10 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { ipfsUpload } from '../ipfs';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+import { transactionReady } from '../../actionCreators';
+
+export type ManageReputationMotionPayload =
+  Action<ActionTypes.MOTION_MANAGE_REPUTATION>['payload'];
 
 function* manageReputationMotion({
   payload: {
@@ -40,7 +38,7 @@ function* manageReputationMotion({
     motionDomainId,
     isSmitingReputation,
   },
-  meta: { id: metaId, history },
+  meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.MOTION_MANAGE_REPUTATION>) {
   let txChannel;
@@ -87,7 +85,7 @@ function* manageReputationMotion({
       getChildIndex,
       colonyClient,
       motionDomainId,
-      domainId,
+      isSmitingReputation ? domainId : Id.RootDomain,
     );
 
     const { skillId } = yield call(
@@ -165,20 +163,20 @@ function* manageReputationMotion({
     }
 
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
-    if (annotationMessage) {
-      yield takeFrom(
-        annotateManageReputationMotion.channel,
-        ActionTypes.TRANSACTION_CREATED,
-      );
-    }
+    // if (annotationMessage) {
+    //   yield takeFrom(
+    //     annotateManageReputationMotion.channel,
+    //     ActionTypes.TRANSACTION_CREATED,
+    //   );
+    // }
 
-    let ipfsHash = null;
-    ipfsHash = yield call(
-      ipfsUpload,
-      JSON.stringify({
-        annotationMessage,
-      }),
-    );
+    // let ipfsHash = null;
+    // ipfsHash = yield call(
+    //   ipfsUpload,
+    //   JSON.stringify({
+    //     annotationMessage,
+    //   }),
+    // );
 
     yield put(transactionReady(createMotion.id));
 
@@ -190,23 +188,23 @@ function* manageReputationMotion({
     );
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    if (annotationMessage) {
-      yield put(transactionPending(annotateManageReputationMotion.id));
+    // if (annotationMessage) {
+    //   yield put(transactionPending(annotateManageReputationMotion.id));
 
-      yield put(
-        transactionAddParams(annotateManageReputationMotion.id, [
-          txHash,
-          ipfsHash,
-        ]),
-      );
+    //   yield put(
+    //     transactionAddParams(annotateManageReputationMotion.id, [
+    //       txHash,
+    //       ipfsHash,
+    //     ]),
+    //   );
 
-      yield put(transactionReady(annotateManageReputationMotion.id));
+    //   yield put(transactionReady(annotateManageReputationMotion.id));
 
-      yield takeFrom(
-        annotateManageReputationMotion.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
-    }
+    //   yield takeFrom(
+    //     annotateManageReputationMotion.channel,
+    //     ActionTypes.TRANSACTION_SUCCEEDED,
+    //   );
+    // }
 
     /*
      * Refesh the user & colony reputation
@@ -219,7 +217,9 @@ function* manageReputationMotion({
     });
 
     if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (error) {
     putError(ActionTypes.MOTION_MANAGE_REPUTATION_ERROR, error, meta);

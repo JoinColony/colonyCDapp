@@ -84,6 +84,7 @@
 }
 
 .meta {
+  display: flex;
   margin-top: 3px;
   font-size: var(--size-small);
   font-weight: var(--weight-normal);

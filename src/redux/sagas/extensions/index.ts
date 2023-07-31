@@ -1,17 +1,17 @@
 import { call, all } from 'redux-saga/effects';
 
-import colonyExtensionInstallSaga from './colonyExtensionInstall';
-import colonyExtensionEnableSaga from './colonyExtensionEnable';
-import colonyExtensionDeprecateSaga from './colonyExtensionDeprecate';
-import colonyExtensionUninstallSaga from './colonyExtensionUninstall';
-import colonyExtensionUpgradeSaga from './colonyExtensionUpgrade';
+import extensionInstallSaga from './extensionInstall';
+import extensionEnableSaga from './extensionEnable';
+import extensionDeprecateSaga from './extensionDeprecate';
+import extensionUninstallSaga from './extensionUninstall';
+import extensionUpgradeSaga from './extensionUpgrade';
 
 export default function* extensionsSagas() {
   yield all([
-    call(colonyExtensionUpgradeSaga),
-    call(colonyExtensionUninstallSaga),
-    call(colonyExtensionInstallSaga),
-    call(colonyExtensionEnableSaga),
-    call(colonyExtensionDeprecateSaga),
+    call(extensionUpgradeSaga),
+    call(extensionUninstallSaga),
+    call(extensionInstallSaga),
+    call(extensionEnableSaga),
+    call(extensionDeprecateSaga),
   ]);
 }

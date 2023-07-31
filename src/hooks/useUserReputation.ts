@@ -5,47 +5,51 @@ import { ADDRESS_ZERO } from '~constants';
 import { useGetUserReputationQuery } from '~gql';
 
 interface UseUserReputationHook {
-  userReputation?: string;
-  totalReputation?: string;
+  userReputation: string | undefined;
+  totalReputation: string | undefined;
+  loading: boolean;
 }
 
 const useUserReputation = (
-  colonyAddress?: Address,
-  walletAddress?: Address,
+  colonyAddress: Address | null | undefined,
+  walletAddress: Address | null | undefined,
   domainId = Id.RootDomain,
   rootHash?: string,
 ): UseUserReputationHook => {
-  const { data: userReputationData } = useGetUserReputationQuery({
-    variables: {
-      input: {
-        colonyAddress: colonyAddress ?? '',
-        walletAddress: walletAddress ?? '',
-        domainId,
-        rootHash,
+  const { data: userReputationData, loading: loadingUserReputation } =
+    useGetUserReputationQuery({
+      variables: {
+        input: {
+          colonyAddress: colonyAddress ?? '',
+          walletAddress: walletAddress ?? '',
+          domainId,
+          rootHash,
+        },
       },
-    },
-    fetchPolicy: 'cache-and-network',
-    skip: !colonyAddress || !walletAddress,
-  });
+      fetchPolicy: 'cache-and-network',
+      skip: !colonyAddress || !walletAddress,
+    });
   const userReputation = userReputationData?.getUserReputation ?? undefined;
 
-  const { data: totalReputationData } = useGetUserReputationQuery({
-    variables: {
-      input: {
-        colonyAddress: colonyAddress ?? '',
-        walletAddress: ADDRESS_ZERO,
-        domainId,
-        rootHash,
+  const { data: totalReputationData, loading: loadingTotalReputation } =
+    useGetUserReputationQuery({
+      variables: {
+        input: {
+          colonyAddress: colonyAddress ?? '',
+          walletAddress: ADDRESS_ZERO,
+          domainId,
+          rootHash,
+        },
       },
-    },
-    fetchPolicy: 'cache-and-network',
-    skip: !colonyAddress,
-  });
+      fetchPolicy: 'cache-and-network',
+      skip: !colonyAddress,
+    });
   const totalReputation = totalReputationData?.getUserReputation ?? undefined;
 
   return {
     userReputation,
     totalReputation,
+    loading: loadingUserReputation || loadingTotalReputation,
   };
 };
 

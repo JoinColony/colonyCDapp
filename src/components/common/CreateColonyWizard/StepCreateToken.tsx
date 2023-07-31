@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { WizardStepProps } from '~shared/Wizard';
-import { HookForm as Form } from '~shared/Fields';
+import { Form } from '~shared/Fields';
 import { Heading3 } from '~shared/Heading';
 
 import {
@@ -58,7 +58,7 @@ const StepCreateToken = ({
           <Heading3 text={MSG.heading} textValues={headingText} />
           <TokenInputs
             disabled={isSubmitting}
-            cleaveDefaultValue={defaultValues.tokenSymbol}
+            cleaveDefaultValue={defaultValues.tokenSymbol ?? ''}
             extra={
               <LinkToOtherStep onClick={goToSelectToken} linkText={MSG.link} />
             }

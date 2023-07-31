@@ -1,9 +1,20 @@
-export const title: string;
-export const description: string;
-export const main: string;
-export const stateDisabled: string;
-export const iconCaret: string;
-export const iconTitle: string;
-export const coming: string;
-export const iconWarning: string;
-export const tooltip: string;
+declare namespace IndexModalItemCssNamespace {
+  export interface IIndexModalItemCss {
+    coming: string;
+    description: string;
+    iconCaret: string;
+    iconTitle: string;
+    iconWarning: string;
+    main: string;
+    stateDisabled: string;
+    title: string;
+    tooltip: string;
+  }
+}
+
+declare const IndexModalItemCssModule: IndexModalItemCssNamespace.IIndexModalItemCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: IndexModalItemCssNamespace.IIndexModalItemCss;
+};
+
+export = IndexModalItemCssModule;

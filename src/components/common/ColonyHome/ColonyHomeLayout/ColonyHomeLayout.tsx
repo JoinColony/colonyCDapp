@@ -1,24 +1,27 @@
 import React, { ReactNode } from 'react';
-import { Params, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import ColonyTotalFunds from '~common/ColonyTotalFunds';
 import { useColonyContext } from '~hooks';
 
-import ColonyFundingWidget from '../ColonyFundingWidget';
-// import ColonyUnclaimedTransfers from './ColonyUnclaimedTransfers';
-import ColonyTitle from '../ColonyTitle';
-import ColonyNavigation from '../ColonyNavigation';
-import ColonyMembersWidget from '../ColonyMembersWidget';
-// import ColonyExtensions from '../ColonyExtensions';
-import ColonyDomainDescription from '../ColonyDomainDescription';
-// import ColonyUpgrade from '../ColonyUpgrade';
-// import ExtensionUpgrade from '../ExtensionUpgrade';
-
 import ActionsPanel from './ActionsPanel';
+
+import ColonyHomeInfo from '../ColonyHomeInfo';
+import ColonyDomainDescription from '../ColonyDomainDescription';
+import ColonyExtensions from '../ColonyExtensionsWidget';
+import ColonyFundingWidget from '../ColonyFundingWidget';
+import ColonyMembersWidget from '../ColonyMembersWidget';
+import ColonyUnclaimedTransfers from '../ColonyUnclaimedTransfers';
+import ColonyUpgrade from '../ColonyUpgrade';
+import OneTxPaymentUpgrade from '../OneTxPaymentUpgrade';
 
 import styles from './ColonyHomeLayout.css';
 
-export type ColonyHomeLayoutProps = {
+const isExtensionsRoute = (pathname: string) => {
+  return pathname.includes('extensions');
+};
+
+type ColonyHomeLayoutProps = {
   filteredDomainId: number;
   onDomainChange?: (domainId: number) => void;
   /*
@@ -30,33 +33,26 @@ export type ColonyHomeLayoutProps = {
 
 const displayName = 'common.ColonyHome.ColonyHomeLayout';
 
-const isExtensionsRoute = (params: Params) => {
-  return params['*'] === 'extensions';
-};
-
 const ColonyHomeLayout = ({
   children,
   filteredDomainId,
   onDomainChange = () => null,
 }: ColonyHomeLayoutProps) => {
   const { colony } = useColonyContext();
-  const params = useParams();
+  const { pathname } = useLocation();
 
   if (!colony) {
     return null;
   }
 
-  const isExtensions = isExtensionsRoute(params);
+  const isExtensions = isExtensionsRoute(pathname);
 
   return (
     <div className={styles.main}>
       <div
-        className={!isExtensions ? styles.mainContentGrid : styles.minimalGrid}
+        className={isExtensions ? styles.mainContentGrid : styles.minimalGrid}
       >
-        <aside className={styles.leftAside}>
-          <ColonyTitle />
-          <ColonyNavigation />
-        </aside>
+        <ColonyHomeInfo />
         <div className={styles.mainContent}>
           {!isExtensions && (
             <>
@@ -72,17 +68,15 @@ const ColonyHomeLayout = ({
         {!isExtensions && (
           <aside className={styles.rightAside}>
             <ColonyDomainDescription currentDomainId={filteredDomainId} />
-            {/* <ColonyUnclaimedTransfers /> */}
-            <ColonyFundingWidget
-            // currentDomainId={filteredDomainId}
-            />
+            <ColonyUnclaimedTransfers />
+            <ColonyFundingWidget currentDomainId={filteredDomainId} />
             <ColonyMembersWidget currentDomainId={filteredDomainId} />
-            {/* <ColonyExtensions /> */}
+            <ColonyExtensions />
           </aside>
         )}
       </div>
-      {/* <ColonyUpgrade colony={colony} />
-      <ExtensionUpgrade colony={colony} /> */}
+      <ColonyUpgrade />
+      <OneTxPaymentUpgrade />
     </div>
   );
 };

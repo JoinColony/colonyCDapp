@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { WizardStepProps } from '~shared/Wizard';
-import { HookForm as Form } from '~shared/Fields';
+import { Form } from '~shared/Fields';
 import { useAppContext, useMobile } from '~hooks';
 
 import {

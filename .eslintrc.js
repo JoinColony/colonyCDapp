@@ -16,6 +16,7 @@ module.exports = {
     'eslint-config-airbnb/rules/react-a11y',
     'plugin:@typescript-eslint/recommended',
     '@colony/eslint-config-colony',
+    'prettier',
   ],
   plugins: ['@typescript-eslint', 'react', 'jsx-a11y', 'jsdoc', 'react-hooks'],
   overrides: [
@@ -122,5 +123,12 @@ module.exports = {
     ],
     'react/function-component-definition': 'off',
     'react/jsx-no-useless-fragment': ['error', { allowExpressions: true }],
+    // Allow for-of loops
+    'no-restricted-syntax': [
+      'error',
+      'ForInStatement',
+      'LabeledStatement',
+      'WithStatement',
+    ],
   },
 };

@@ -13,7 +13,6 @@ declare namespace AdvancedSettingsRowCssNamespace {
     toggleContainer: string;
     tooltipContainer: string;
     tooltipContent: string;
-    validateButtonContainer: string;
     version: string;
   }
 }

@@ -1,25 +1,30 @@
 import React, { useState, ElementType } from 'react';
 import { MessageDescriptor } from 'react-intl';
 
-import { ActionTransformFnType } from '~utils/actions';
+import { ActionTransformFnType, getFormAction } from '~utils/actions';
 import { useAsyncFunction, useMounted } from '~hooks';
 import DefaultButton from '~shared/Button';
+import { ActionTypes } from '~redux';
+
 import { Props as DefaultButtonProps } from './Button';
 
 interface Props extends DefaultButtonProps {
+  /** The base (i.e. submit) redux action type */
+  actionType: ActionTypes;
   button?: ElementType;
   confirmText?: any;
-  error: string;
+  error?: string;
   onConfirmToggled?: (...args: any[]) => void;
   onSuccess?: (result: any) => void;
-  submit: string;
-  success: string;
+  submit?: string;
+  success?: string;
   text?: MessageDescriptor | string;
   transform?: ActionTransformFnType;
   values?: any | (() => any | Promise<any>);
 }
 
 const ActionButton = ({
+  actionType,
   button,
   error,
   submit,
@@ -30,9 +35,17 @@ const ActionButton = ({
   transform,
   ...props
 }: Props) => {
+  const submitAction = submit || actionType;
+  const errorAction = error || getFormAction(actionType, 'ERROR');
+  const successAction = success || getFormAction(actionType, 'SUCCESS');
   const isMountedRef = useMounted();
   const [loading, setLoading] = useState(false);
-  const asyncFunction = useAsyncFunction({ submit, error, success, transform });
+  const asyncFunction = useAsyncFunction({
+    submit: submitAction,
+    error: errorAction,
+    success: successAction,
+    transform,
+  });
 
   const handleClick = async () => {
     let result;

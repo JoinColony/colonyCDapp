@@ -1,0 +1,35 @@
+@value bannerHeight from './StakeRequiredBanner/StakeRequiredBanner.css';
+@value DefaultAction: '../DefaultAction/DefaultAction.css';
+@value query700 from '~styles/queries.css';
+@value query400 from '~styles/queries.css';
+
+.main {
+  composes: main from DefaultAction;
+  padding-top: bannerHeight;
+}
+
+.container {
+  composes: container from DefaultAction;
+}
+
+.widgets {
+  display: flex;
+  flex-direction: column;
+  grid-area: details;
+}
+
+.widgets > div:last-child {
+  margin-top: 100px;
+}
+
+@media screen and query700 {
+  .main {
+    padding-top: 65px;
+  }
+}
+
+@media screen and query400 {
+  .main {
+    padding-top: 85px;
+  }
+}

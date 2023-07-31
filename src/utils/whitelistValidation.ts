@@ -1,8 +1,9 @@
-import * as yup from 'yup';
 import { defineMessages } from 'react-intl';
 import isEmpty from 'lodash/isEmpty';
+import { string, object, array, ObjectSchema } from 'yup';
 
 import { isAddress } from '~utils/web3';
+import { formatText } from '~utils/intl';
 
 const MSG = defineMessages({
   requiredField: {
@@ -23,39 +24,36 @@ const MSG = defineMessages({
   },
 });
 
-export const validationSchemaInput = yup.object({
-  whitelistAddress: yup
-    .string()
+export const validationSchemaInput = object({
+  whitelistAddress: string()
     .required(() => MSG.requiredField)
     .address(),
-});
+}).defined();
 
-export const validationSchemaFile = yup.object({
-  whitelistCSVUploader: yup
-    .array()
+export const validationSchemaFile = object({
+  whitelistCSVUploader: object()
+    .defined()
     .required()
-    .of(
-      yup.object().shape({
-        parsedData: yup
-          .array()
-          .of(yup.string())
-          .min(1, () => MSG.badFileError)
-          .max(1000, () => MSG.uploadError)
-          .test(
-            'valid-wallet-addresses',
-            () => MSG.invalidAddressError,
-            (value) =>
-              isEmpty(
-                value?.filter(
-                  (potentialAddress: string) => !isAddress(potentialAddress),
-                ),
+    .shape({
+      parsedData: array()
+        .of(string().address().defined())
+        .min(1, () => formatText(MSG.badFileError))
+        .max(1000, () => formatText(MSG.uploadError))
+        .test(
+          'valid-wallet-addresses',
+          () => formatText(MSG.invalidAddressError),
+          (value) =>
+            isEmpty(
+              value?.filter(
+                (potentialAddress: string) => !isAddress(potentialAddress),
               ),
-          ),
-      }),
-    ),
-});
+            ),
+        )
+        .defined(),
+    }),
+}).defined();
 
-export const mergeSchemas = (...schemas: yup.ObjectSchema[]) => {
+export const mergeSchemas = (...schemas: ObjectSchema<object>[]) => {
   const [first, ...rest] = schemas;
   const merged = rest.reduce(
     (mergedSchemas, schema) => mergedSchemas.concat(schema),

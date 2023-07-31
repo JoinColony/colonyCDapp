@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
+import React, { ReactElement } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import Popover from '~shared/Popover';
+import Popover, { PopoverChildFn } from '~shared/Popover';
 import Button from '~shared/Button';
 import MaskedAddress from '~shared/MaskedAddress';
 import ColonyAvatar from '~shared/ColonyAvatar';
@@ -23,8 +23,11 @@ const MSG = defineMessages({
 });
 
 interface Props {
+  /** Handle method on unsubscribing */
   onUnsubscribe?: () => void;
-  children?: ReactNode;
+  /** Children elements or components to wrap the tooltip around */
+  children?: ReactElement | PopoverChildFn;
+  /** Passes in the state of the users subscription and if they can unsubscribe */
   canUnsubscribe?: boolean;
 }
 
@@ -39,7 +42,7 @@ const ColonySubscriptionInfoPopover = ({
     return null;
   }
 
-  const { colonyAddress, name, profile, nativeToken } = colony;
+  const { colonyAddress, name, nativeToken, metadata } = colony;
   const { tokenAddress } = nativeToken;
 
   return (
@@ -56,7 +59,7 @@ const ColonySubscriptionInfoPopover = ({
             </div>
             <div className={styles.colonyInfo}>
               <span className={styles.colonyInfoTitle}>
-                {profile?.displayName || name}
+                {metadata?.displayName || name}
               </span>
               <span className={styles.colonyInfoEns}>@{name}</span>
               <span className={styles.colonyInfoAddress}>
@@ -88,20 +91,17 @@ const ColonySubscriptionInfoPopover = ({
       }
       trigger="click"
       showArrow={false}
-      placement="right"
+      placement="top-start"
       popperOptions={{
         modifiers: [
           {
             name: 'offset',
             options: {
               /*
-               * @NOTE Values are set manual, exactly as the ones provided in the figma spec.
-               *
-               * There's no logic to how they are calculated, so next time you need
-               * to change them you'll either have to go by exact specs, or change
-               * them until it "feels right" :)
+               * @NOTE Values are set using measurements pulled
+               * from the positioning used in the spec.
                */
-              offset: [100, -10],
+              offset: [-3, 15],
             },
           },
         ],

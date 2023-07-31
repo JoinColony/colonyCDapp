@@ -3,11 +3,13 @@ import { ClientType } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom } from '../utils';
+import { putError } from '../utils';
 
-import { ContextModule, getContext } from '~context';
-
-import { createTransaction, getTxChannel } from '../transactions';
+import {
+  createTransaction,
+  getTxChannel,
+  waitForTxResult,
+} from '../transactions';
 
 export { default as colonyCreateSaga } from './colonyCreate';
 
@@ -17,8 +19,6 @@ function* colonyClaimToken({
 }: Action<ActionTypes.CLAIM_TOKEN>) {
   let txChannel;
   try {
-    const apolloClient = getContext(ContextModule.ApolloClient);
-
     txChannel = yield call(getTxChannel, meta.id);
     yield fork(createTransaction, meta.id, {
       context: ClientType.ColonyClient,
@@ -27,34 +27,17 @@ function* colonyClaimToken({
       params: [tokenAddress],
     });
 
-    const { payload } = yield takeFrom(
-      txChannel,
-      ActionTypes.TRANSACTION_SUCCEEDED,
-    );
+    const { payload, type } = yield waitForTxResult(txChannel);
 
-    yield put<AllActions>({
-      type: ActionTypes.CLAIM_TOKEN_SUCCESS,
-      payload,
-      meta,
-    });
-
-    // Refresh relevant values
-    yield apolloClient.query<
-      ColonyTransfersQuery,
-      ColonyTransfersQueryVariables
-    >({
-      query: ColonyTransfersDocument,
-      variables: { address: colonyAddress },
-      fetchPolicy: 'network-only',
-    });
-    yield apolloClient.query<
-      TokenBalancesForDomainsQuery,
-      TokenBalancesForDomainsQueryVariables
-    >({
-      query: TokenBalancesForDomainsDocument,
-      variables: { colonyAddress, tokenAddresses: [tokenAddress] },
-      fetchPolicy: 'network-only',
-    });
+    if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
+      yield put<AllActions>({
+        type: ActionTypes.CLAIM_TOKEN_SUCCESS,
+        payload,
+        meta,
+      });
+    } else {
+      throw new Error('Transaction cancelled.');
+    }
   } catch (error) {
     return yield putError(ActionTypes.CLAIM_TOKEN_ERROR, error, meta);
   } finally {

@@ -1,54 +1,43 @@
+import { Id, getChildIndex, ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, Id, getChildIndex } from '@colony/colony-js';
-import { AddressZero } from '@ethersproject/constants';
 
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
+import { ActionTypes } from '~redux/actionTypes';
+import { transactionReady } from '~redux/actionCreators';
+import { Action, AllActions } from '~redux/types';
+import { ADDRESS_ZERO } from '~constants';
+import { ContextModule, getContext } from '~context';
 import {
-  putError,
-  takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
-  getColonyManager,
-} from '../utils';
-
+  CreateColonyMetadataDocument,
+  CreateColonyMetadataMutation,
+  CreateColonyMetadataMutationVariables,
+} from '~gql';
+import { getMetadataDatabaseId } from '~utils/domains';
+import { getColonyManager, putError, takeFrom } from '../utils';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { ipfsUpload } from '../ipfs';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+import { getPendingModifiedTokenAddresses } from '../utils/updateColonyTokens';
 
 function* editColonyMotion({
   payload: {
-    colonyAddress,
-    colonyName,
+    colony: { colonyAddress, name: colonyName },
+    colony,
     colonyDisplayName,
     colonyAvatarImage,
-    colonyAvatarHash,
-    hasAvatarChanged,
-    colonyTokens = [],
-    annotationMessage,
+    colonyThumbnail,
+    tokenAddresses,
   },
-  meta: { id: metaId, history },
+  meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.MOTION_EDIT_COLONY>) {
   let txChannel;
   try {
-    /*
-     * Validate the required values
-     */
-    if (!colonyDisplayName && colonyDisplayName !== null) {
-      throw new Error('A colony name is required in order to edit the colony');
-    }
+    const apolloClient = getContext(ContextModule.ApolloClient);
+    const colonyManager = yield getColonyManager();
 
-    const context = yield getColonyManager();
-    const colonyClient = yield context.getClient(
+    const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );
@@ -68,7 +57,7 @@ function* editColonyMotion({
     const { key, value, branchMask, siblings } = yield call(
       colonyClient.getReputation,
       skillId,
-      AddressZero,
+      ADDRESS_ZERO,
     );
 
     txChannel = yield call(getTxChannel, metaId);
@@ -76,10 +65,10 @@ function* editColonyMotion({
     // setup batch ids and channels
     const batchKey = 'createMotion';
 
-    const { createMotion, annotateEditColonyMotion } =
+    const { createMotion /* annotateEditColonyMotion */ } =
       yield createTransactionChannels(metaId, [
         'createMotion',
-        'annotateEditColonyMotion',
+        // 'annotateEditColonyMotion',
       ]);
 
     /*
@@ -90,37 +79,41 @@ function* editColonyMotion({
      * This cuts down on some transaction signing wait time, since IPFS uplaods
      * tend to be on the slower side :(
      */
-    let colonyAvatarIpfsHash = null;
-    if (colonyAvatarImage && hasAvatarChanged) {
-      colonyAvatarIpfsHash = yield call(
-        ipfsUpload,
-        JSON.stringify({
-          image: colonyAvatarImage,
-        }),
-      );
-    }
+    // let colonyAvatarIpfsHash = null;
+    // if (colonyAvatarImage && hasAvatarChanged) {
+    //   colonyAvatarIpfsHash = yield call(
+    //     ipfsUploadWithFallback,
+    //     getStringForColonyAvatarImage(colonyAvatarImage),
+    //   );
+    // }
 
     /*
      * Upload colony metadata to IPFS
      */
-    let colonyMetadataIpfsHash = null;
-    colonyMetadataIpfsHash = yield call(
-      ipfsUpload,
-      JSON.stringify({
-        colonyDisplayName,
-        colonyAvatarHash: hasAvatarChanged
-          ? colonyAvatarIpfsHash
-          : colonyAvatarHash,
-        colonyTokens,
-      }),
-    );
+    // let colonyMetadataIpfsHash = null;
+    // colonyMetadataIpfsHash = yield call(
+    //   ipfsUploadWithFallback,
+    //   getStringForMetadataColony({
+    //     colonyDisplayName,
+    //     colonyAvatarHash: hasAvatarChanged
+    //       ? colonyAvatarIpfsHash
+    //       : colonyAvatarHash,
+    //     colonyTokens,
+    //   }),
+    // );
+
+    /**
+     * @NOTE: In order for the ColonyMetadata event (which is the only event associated with Colony Edit action) to be emitted,
+     * the second parameter must be non-empty.
+     * It will be replaced with the IPFS hash in due course.
+     */
 
     const encodedAction = colonyClient.interface.encodeFunctionData(
-      'editColony',
-      [colonyMetadataIpfsHash],
+      'editColony(string)',
+      ['.'],
     );
 
-    // create transactions
+    // create transaction
     yield fork(createTransaction, createMotion.id, {
       context: ClientType.VotingReputationClient,
       methodName: 'createMotion',
@@ -128,7 +121,7 @@ function* editColonyMotion({
       params: [
         Id.RootDomain,
         childSkillIndex,
-        AddressZero,
+        ADDRESS_ZERO,
         encodedAction,
         key,
         value,
@@ -143,28 +136,28 @@ function* editColonyMotion({
       ready: false,
     });
 
-    if (annotationMessage) {
-      yield fork(createTransaction, annotateEditColonyMotion.id, {
-        context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
-        identifier: colonyAddress,
-        params: [],
-        group: {
-          key: batchKey,
-          id: metaId,
-          index: 1,
-        },
-        ready: false,
-      });
-    }
+    // if (annotationMessage) {
+    //   yield fork(createTransaction, annotateEditColonyMotion.id, {
+    //     context: ClientType.ColonyClient,
+    //     methodName: 'annotateTransaction',
+    //     identifier: colonyAddress,
+    //     params: [],
+    //     group: {
+    //       key: batchKey,
+    //       id: metaId,
+    //       index: 1,
+    //     },
+    //     ready: false,
+    //   });
+    // }
 
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
-    if (annotationMessage) {
-      yield takeFrom(
-        annotateEditColonyMotion.channel,
-        ActionTypes.TRANSACTION_CREATED,
-      );
-    }
+    // if (annotationMessage) {
+    //   yield takeFrom(
+    //     annotateEditColonyMotion.channel,
+    //     ActionTypes.TRANSACTION_CREATED,
+    //   );
+    // }
 
     yield put(transactionReady(createMotion.id));
 
@@ -176,28 +169,80 @@ function* editColonyMotion({
     );
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    if (annotationMessage) {
-      const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
-      yield put(transactionPending(annotateEditColonyMotion.id));
+    const modifiedTokenAddresses = getPendingModifiedTokenAddresses(
+      colony,
+      tokenAddresses,
+    );
 
-      yield put(
-        transactionAddParams(annotateEditColonyMotion.id, [txHash, ipfsHash]),
-      );
+    const haveTokensChanged = !!(
+      modifiedTokenAddresses.added.length ||
+      modifiedTokenAddresses.removed.length
+    );
 
-      yield put(transactionReady(annotateEditColonyMotion.id));
-
-      yield takeFrom(
-        annotateEditColonyMotion.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
+    /*
+     * Save the pending colony metadata in the database
+     */
+    if (colony.metadata) {
+      yield apolloClient.mutate<
+        CreateColonyMetadataMutation,
+        CreateColonyMetadataMutationVariables
+      >({
+        mutation: CreateColonyMetadataDocument,
+        variables: {
+          input: {
+            id: getMetadataDatabaseId(colonyAddress, txHash),
+            displayName: colonyDisplayName ?? colony.metadata.displayName,
+            avatar: colonyAvatarImage,
+            thumbnail: colonyThumbnail,
+            isWhitelistActivated: colony.metadata.isWhitelistActivated,
+            whitelistedAddresses: colony.metadata.whitelistedAddresses,
+            // We only need a single entry here, as we'll be appending it to the colony's metadata
+            // changelog if the motion succeeds.
+            changelog: [
+              {
+                transactionHash: txHash,
+                newDisplayName:
+                  colonyDisplayName ?? colony.metadata.displayName,
+                oldDisplayName: colony.metadata.displayName,
+                hasAvatarChanged:
+                  colonyAvatarImage === undefined
+                    ? false
+                    : colonyAvatarImage !== colony.metadata.avatar,
+                hasWhitelistChanged: false,
+                haveTokensChanged,
+              },
+            ],
+            modifiedTokenAddresses,
+          },
+        },
+      });
     }
+
+    // if (annotationMessage) {
+    //   const ipfsHash = yield call(ipfsUploadAnnotation, annotationMessage);
+    //   yield put(transactionPending(annotateEditColonyMotion.id));
+
+    //   yield put(
+    //     transactionAddParams(annotateEditColonyMotion.id, [txHash, ipfsHash]),
+    //   );
+
+    //   yield put(transactionReady(annotateEditColonyMotion.id));
+
+    //   yield takeFrom(
+    //     annotateEditColonyMotion.channel,
+    //     ActionTypes.TRANSACTION_SUCCEEDED,
+    //   );
+    // }
+
     yield put<AllActions>({
       type: ActionTypes.MOTION_EDIT_COLONY_SUCCESS,
       meta,
     });
 
     if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (caughtError) {
     putError(ActionTypes.MOTION_EDIT_COLONY_ERROR, caughtError, meta);

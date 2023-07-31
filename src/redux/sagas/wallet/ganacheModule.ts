@@ -11,7 +11,7 @@ type CustomJsonRpcProvider = providers.JsonRpcProvider & {
   request: (args) => void;
 };
 
-const ganacheWalletModule = (privateKey, optionalAccountIndex = 1) => {
+const ganacheWalletModule = (privateKey: string, optionalAccountIndex = 1) => {
   const initWallet = () => {
     return {
       label: `Dev Wallet ${optionalAccountIndex}`,
@@ -37,11 +37,15 @@ const ganacheWalletModule = (privateKey, optionalAccountIndex = 1) => {
           [RpcMethods.RequestAccounts]: async () => {
             return [currentWalletAddress];
           },
-          [RpcMethods.GetBalance]: async () => {
-            const balance = await ganacheProvider.getBalance(
-              currentWalletAddress,
-              'latest',
-            );
+          [RpcMethods.GetBalance]: async ({
+            /*
+             * @NOTE For some reason, the EIP1193Provider eth_getBalance method
+             * isn't properly typed
+             */
+            // @ts-ignore
+            params: [address = currentWalletAddress, block = 'latest'],
+          }) => {
+            const balance = await ganacheProvider.getBalance(address, block);
             return balance.toString();
           },
           [RpcMethods.PersonalSign]: async ({ params: [message] }) =>

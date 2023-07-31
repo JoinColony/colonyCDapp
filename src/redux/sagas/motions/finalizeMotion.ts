@@ -1,27 +1,22 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { AnyVotingReputationClient, ClientType } from '@colony/colony-js';
-import { AddressZero } from '@ethersproject/constants';
 import { BigNumber } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  updateMotionValues,
-  getColonyManager,
-} from '../utils';
+import { getColonyManager, putError, takeFrom } from '../utils';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
 import { transactionReady, transactionUpdateGas } from '../../actionCreators';
+import { ADDRESS_ZERO } from '~constants';
 
 function* finalizeMotion({
   meta,
-  payload: { userAddress, colonyAddress, motionId },
+  payload: { /* userAddress */ colonyAddress, motionId },
 }: Action<ActionTypes.MOTION_FINALIZE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
@@ -44,12 +39,11 @@ function* finalizeMotion({
         /*
          * If the motion target is 0x000... then we pass in the colony's address
          */
-        motion.altTarget === AddressZero
+        motion.altTarget === ADDRESS_ZERO
           ? colonyClient.address
           : motion.altTarget,
       data: motion.action,
     });
-
     /*
      * Increase the estimate by 100k WEI. This is a flat increase for all networks
      *
@@ -68,17 +62,7 @@ function* finalizeMotion({
 
     const batchKey = 'finalizeMotion';
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: meta.id,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(finalizeMotionTransaction, {
+    yield createGroupTransaction(finalizeMotionTransaction, batchKey, meta, {
       context: ClientType.VotingReputationClient,
       methodName: 'finalizeMotion',
       identifier: colonyAddress,
@@ -103,11 +87,6 @@ function* finalizeMotion({
       finalizeMotionTransaction.channel,
       ActionTypes.TRANSACTION_SUCCEEDED,
     );
-
-    /*
-     * Update motion page values
-     */
-    yield fork(updateMotionValues, colonyAddress, userAddress, motionId);
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_FINALIZE_SUCCESS,

@@ -1,0 +1,8 @@
+.networkFee {
+  position: relative;
+  bottom: 14px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  text-align: left;
+  color: var(--temp-grey-blue-7);
+}
