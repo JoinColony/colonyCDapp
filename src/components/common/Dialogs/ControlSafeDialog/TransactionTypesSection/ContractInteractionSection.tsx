@@ -97,8 +97,7 @@ const MSG = defineMessages({
 
 interface Props extends Omit<TransactionSectionProps, 'colony'> {
   safes: Safe[];
-  // temporarily optional
-  isValid?: boolean;
+  isValid: boolean;
   selectedContractMethods?: UpdatedMethods;
   removeSelectedContractMethod: (index: number) => void;
   handleSelectedContractMethods: (
