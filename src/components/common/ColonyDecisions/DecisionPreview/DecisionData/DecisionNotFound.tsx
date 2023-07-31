@@ -7,6 +7,7 @@ import { useDialog } from '~shared/Dialog';
 import { DecisionDialog } from '~common/ColonyDecisions';
 
 import styles from './DecisionNotFound.css';
+import { useColonyContext } from '~hooks';
 
 const displayName = 'common.ColonyDecisions.DecisionPreview.DecisionNotFound';
 
@@ -23,6 +24,7 @@ const MSG = defineMessages({
 
 const DecisionNotFound = () => {
   const openDecisionDialog = useDialog(DecisionDialog);
+  const { colony } = useColonyContext();
 
   return (
     <div className={styles.noContent}>
@@ -33,6 +35,7 @@ const DecisionNotFound = () => {
         onClick={() => {
           openDecisionDialog({
             nativeDomainId: Id.RootDomain,
+            colonyAddress: colony?.colonyAddress ?? '',
           });
         }}
       />

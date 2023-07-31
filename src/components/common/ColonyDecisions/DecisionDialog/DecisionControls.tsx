@@ -10,16 +10,14 @@ const displayName = 'common.ColonyDecisions.DecisionDialog.DecisionControls';
 
 interface DecisionControlsProps {
   cancel: DialogProps['cancel'];
+  disabled: boolean;
 }
 
-const DecisionControls = ({ cancel }: DecisionControlsProps) => {
+const DecisionControls = ({ cancel, disabled }: DecisionControlsProps) => {
   const {
     formState: { isSubmitting, defaultValues, isValid, isDirty },
   } = useFormContext();
-  // const hasReputation = useColonyReputation(
-  //   colonyAddress,
-  //   values.motionDomainId,
-  // );
+
   return (
     <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
       <div className={styles.main}>
@@ -35,9 +33,7 @@ const DecisionControls = ({ cancel }: DecisionControlsProps) => {
             id: defaultValues?.title ? 'button.update' : 'button.preview',
           }}
           loading={isSubmitting}
-          disabled={
-            !isValid || isSubmitting || !isDirty /* || !hasReputation */
-          }
+          disabled={!isValid || isSubmitting || !isDirty || disabled}
         />
       </div>
     </DialogSection>

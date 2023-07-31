@@ -5,9 +5,13 @@ import { defineMessages } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { string, object, number, InferType } from 'yup';
 
-import Dialog, { DialogProps } from '~shared/Dialog';
+import Dialog, { DialogProps, DialogSection } from '~shared/Dialog';
 import { Form } from '~shared/Fields';
-import { useAppContext, useRichTextEditor } from '~hooks';
+import {
+  useAppContext,
+  useColonyHasReputation,
+  useRichTextEditor,
+} from '~hooks';
 
 import { ColonyDecision } from '~types';
 import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
@@ -21,6 +25,7 @@ import {
 } from '../DecisionDialog';
 
 import styles from './DecisionDialog.css';
+import { NotEnoughReputation } from '~common/Dialogs/Messages';
 
 const displayName = 'common.ColonyDecisions.DecisionDialog';
 
@@ -53,11 +58,13 @@ export type DecisionDialogValues = InferType<typeof validationSchema>;
 export interface DecisionDialogProps extends DialogProps {
   decision?: ColonyDecision;
   nativeDomainId?: number;
+  colonyAddress: string;
 }
 
 const DecisionDialog = ({
   cancel,
   close,
+  colonyAddress,
   decision,
   nativeDomainId,
 }: DecisionDialogProps) => {
@@ -67,7 +74,8 @@ const DecisionDialog = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const domainId = nativeDomainId || Id.RootDomain;
+  const motionDomainId =
+    decision?.motionDomainId ?? (nativeDomainId || Id.RootDomain);
   const walletAddress = user?.walletAddress || '';
   const content = decision?.description;
 
@@ -79,6 +87,8 @@ const DecisionDialog = ({
     close();
   };
 
+  const hasReputation = useColonyHasReputation(colonyAddress, motionDomainId);
+
   if (!editor) {
     return null;
   }
@@ -87,7 +97,7 @@ const DecisionDialog = ({
     <Dialog cancel={cancel}>
       <Form<DecisionDialogValues>
         defaultValues={{
-          motionDomainId: decision?.motionDomainId ?? domainId,
+          motionDomainId,
           title: decision?.title,
           description: decision?.description || '<p></p>',
           walletAddress,
@@ -97,15 +107,21 @@ const DecisionDialog = ({
       >
         <div className={styles.main}>
           <DialogHeading />
-          <DecisionTitle />
-          <DecisionBody content={content} editor={editor} />
-          <DecisionControls cancel={cancel} />
-          {/* {!hasReputation && (
-        <NotEnoughReputation
-          domainId={values.motionDomainId}
-          includeForceCopy={false}
-        />
-      )} */}
+          <DecisionTitle disabled={!hasReputation} />
+          <DecisionBody
+            content={content}
+            editor={editor}
+            disabled={!hasReputation}
+          />
+          {!hasReputation && (
+            <DialogSection>
+              <NotEnoughReputation
+                domainId={motionDomainId}
+                includeForceCopy={false}
+              />
+            </DialogSection>
+          )}
+          <DecisionControls cancel={cancel} disabled={!hasReputation} />
         </div>
       </Form>
     </Dialog>

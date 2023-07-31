@@ -7,12 +7,14 @@ import { DecisionDialog, DeleteDecisionDialog } from '~common/ColonyDecisions';
 import { DraftDecisionItemProps } from './DraftDecisionItem';
 
 import styles from './DraftDecisionActions.css';
+import { useColonyContext } from '~hooks';
 
 const displayName = 'common.ColonyDecisions.DraftDecisionActions';
 
 type DraftDecisionActionsProps = DraftDecisionItemProps;
 
 const DraftDecisionActions = ({ decision }: DraftDecisionActionsProps) => {
+  const { colony } = useColonyContext();
   const openDeleteDecisionDialog = useDialog(DeleteDecisionDialog);
   const openDecisionDialog = useDialog(DecisionDialog);
 
@@ -31,7 +33,10 @@ const DraftDecisionActions = ({ decision }: DraftDecisionActionsProps) => {
         text={{ id: 'button.edit' }}
         onClick={(e) => {
           e.stopPropagation();
-          openDecisionDialog({ decision });
+          openDecisionDialog({
+            decision,
+            colonyAddress: colony?.colonyAddress ?? '',
+          });
         }}
       />
     </div>

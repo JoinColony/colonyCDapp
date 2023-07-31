@@ -12,6 +12,7 @@ import { getDecisionFromStore } from '~utils/decisions';
 import {
   useAppContext,
   useCanInteractWithNetwork,
+  useColonyContext,
   useEnabledExtensions,
 } from '~hooks';
 
@@ -23,6 +24,7 @@ const NewDecisionButton = ({
   filteredDomainId: ethDomainId,
 }: NewDecisionButtonProps) => {
   const { user } = useAppContext();
+  const { colony } = useColonyContext();
   const { isVotingReputationEnabled } = useEnabledExtensions();
   const canInteractWithNetwork = useCanInteractWithNetwork();
   const decision = useSelector(getDecisionFromStore(user?.walletAddress || ''));
@@ -59,7 +61,11 @@ const NewDecisionButton = ({
         openDecisionDialog,
       });
     } else {
-      openDecisionDialog({ nativeDomainId: ethDomainId, decision });
+      openDecisionDialog({
+        nativeDomainId: ethDomainId,
+        decision,
+        colonyAddress: colony?.colonyAddress ?? '',
+      });
     }
   };
 

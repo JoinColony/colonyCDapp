@@ -1,6 +1,7 @@
 import React from 'react';
 // import { defineMessages } from 'react-intl';
 
+import { useNavigate } from 'react-router-dom';
 import { DecisionDialog, DeleteDecisionDialog } from '~common/ColonyDecisions';
 import { useDialog } from '~shared/Dialog';
 import Button, { ActionButton } from '~shared/Button';
@@ -8,6 +9,8 @@ import { useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 
 import { DecisionDataProps } from '../DecisionData';
+
+import { withMeta } from '~utils/actions';
 
 import styles from './DecisionPreviewControls.css';
 
@@ -20,11 +23,11 @@ const DecisionPreviewControls = ({
   decision,
 }: DecisionPreviewControlsProps) => {
   const { colony } = useColonyContext();
-  const colonyAddress = colony?.colonyAddress;
+  const colonyAddress = colony?.colonyAddress ?? '';
 
   const openConfirmDeleteDialog = useDialog(DeleteDecisionDialog);
   const openDecisionDialog = useDialog(DecisionDialog);
-
+  const navigate = useNavigate();
   return (
     <div className={styles.buttonContainer}>
       {decision && (
@@ -40,6 +43,7 @@ const DecisionPreviewControls = ({
               openDecisionDialog({
                 nativeDomainId: decision.motionDomainId,
                 decision,
+                colonyAddress,
               })
             }
             text={{ id: 'button.edit' }}
@@ -55,6 +59,7 @@ const DecisionPreviewControls = ({
           decisionDescription: decision?.description,
           motionDomainId: decision?.motionDomainId,
         }}
+        transform={withMeta({ navigate })}
         appearance={{ theme: 'primary', size: 'large' }}
         text={{ id: 'button.publish' }}
         disabled={!decision}

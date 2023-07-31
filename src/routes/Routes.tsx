@@ -40,6 +40,7 @@ import {
   USER_ROUTE,
   LANDING_PAGE_ROUTE,
   NOT_FOUND_ROUTE,
+  DECISIONS_PAGE_ROUTE,
   COLONY_DECISIONS_PREVIEW_ROUTE,
   ACTIONS_PAGE_ROUTE,
   // ACTIONS_PAGE_ROUTE,
@@ -152,16 +153,19 @@ const Routes = () => {
             </ColonyContextProvider>
           }
         />
-        <Route
-          path={ACTIONS_PAGE_ROUTE}
-          element={
-            <ColonyContextProvider>
-              <NavBar>
-                <ActionDetailsPage />
-              </NavBar>
-            </ColonyContextProvider>
-          }
-        />
+        {[ACTIONS_PAGE_ROUTE, DECISIONS_PAGE_ROUTE].map((path) => (
+          <Route
+            path={path}
+            element={
+              <ColonyContextProvider>
+                <NavBar>
+                  <ActionDetailsPage />
+                </NavBar>
+              </ColonyContextProvider>
+            }
+            key={path}
+          />
+        ))}
         <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyWizard />} />
         <Route path={CREATE_USER_ROUTE} element={<CreateUserWizard />} />
         <Route

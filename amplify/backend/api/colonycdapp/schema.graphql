@@ -2322,6 +2322,14 @@ type ColonyAction @model {
   """
   motionDomainId: Int
   """
+  If the action is a Simple Decision, it will have an id that corresponds to a ColonyDecision entry in the database.
+  """
+  colonyDecisionId: ID
+  """
+  Corresponding Decision data, if action is a Simple Decision
+  """
+  decisionData: ColonyDecision @hasOne(fields: ["colonyDecisionId"])
+  """
   Colony roles that are associated with the action
   """
   roles: ColonyActionRoles
@@ -2348,6 +2356,14 @@ type ColonyAction @model {
   JSON string to pass custom, dynamic event data
   """
   individualEvents: String
+}
+
+type ColonyDecision @model {
+  id: ID!
+  title: String!
+  description: String!
+  motionDomainId: Int!
+  walletAddress: String!
 }
 
 """

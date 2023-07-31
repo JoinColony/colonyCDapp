@@ -7,7 +7,7 @@ import {
   RecordToJS,
 } from '~types';
 
-const defaultValues: DefaultValues<DecisionProps> = {
+const defaultValues: DefaultValues<Omit<DecisionProps, '__typename'>> = {
   description: undefined,
   walletAddress: undefined,
   motionDomainId: Id.RootDomain,

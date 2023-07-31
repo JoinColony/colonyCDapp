@@ -17,13 +17,10 @@ const MSG = defineMessages({
 interface DecisionBodyProps {
   content?: string;
   editor: Editor;
+  disabled: boolean;
 }
 
-// const hasReputation = useColonyReputation(
-//   colonyAddress,
-//   values.motionDomainId,
-// );
-const DecisionBody = ({ content, editor }: DecisionBodyProps) => (
+const DecisionBody = ({ content, editor, disabled }: DecisionBodyProps) => (
   <DialogSection>
     <RichTextArea
       name="description"
@@ -31,7 +28,7 @@ const DecisionBody = ({ content, editor }: DecisionBodyProps) => (
       appearance={{ colorSchema: 'grey' }}
       content={content}
       editor={editor}
-      // disabled={!hasReputation}
+      disabled={disabled}
     />
   </DialogSection>
 );

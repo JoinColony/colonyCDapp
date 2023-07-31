@@ -27,15 +27,15 @@ const MSG = defineMessages({
   },
 });
 
-const DecisionTitle = () => {
+interface DecisionTitleProps {
+  disabled: boolean;
+}
+
+const DecisionTitle = ({ disabled }: DecisionTitleProps) => {
   const {
     formState: { isSubmitting },
   } = useFormContext();
 
-  // const hasReputation = useColonyReputation(
-  //   colonyAddress,
-  //   values.motionDomainId,
-  // );
   return (
     <DialogSection>
       <div className={styles.main}>
@@ -55,7 +55,7 @@ const DecisionTitle = () => {
         <Input
           appearance={{ colorSchema: 'grey', theme: 'fat' }}
           name="title"
-          disabled={isSubmitting /* || !hasReputation */}
+          disabled={isSubmitting || disabled}
           maxLength={MAX_TITLE_LENGTH}
           placeholder={MSG.titlePlaceholder}
         />
