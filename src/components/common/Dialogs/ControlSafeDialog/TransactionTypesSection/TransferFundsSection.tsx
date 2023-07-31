@@ -191,19 +191,7 @@ const TransferFundsSection = ({
           /* handleChange={handleInputChange} */
           maxButtonParams={{
             maxAmount: `${formattedSafeBalance}`,
-            options: {},
-            /* customOnClickFn?:  () => {
-              handleValidation();
-              setTimeout(
-                () =>
-                  setFieldTouched(
-                    `transactions.${transactionFormIndex}.amount`,
-                    true,
-                    false,
-                  ),
-                0,
-              );
-            }, */
+            options: { shouldTouch: true, shouldValidate: true },
           }}
         />
       </DialogSection>
