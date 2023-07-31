@@ -8,11 +8,11 @@ import Modal from '~v5/shared/Modal';
 import PopoverBase from '~v5/shared/PopoverBase';
 import { useMembersPage } from '~frame/v5/pages/MembersPage/hooks';
 // import TableFiltering from '../TableFiltering';
-import { useFilter } from './hooks';
 import SearchInput from './partials/SearchInput';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
 import { filterOptions, followersFilterOptions } from './consts';
+import { useFilterContext } from '~context/FilterContext';
 
 const displayName = 'v5.common.Filter';
 
@@ -21,8 +21,6 @@ const Filter: FC = () => {
   const [isOpened, setOpened] = useState(false);
   const [isSearchOpened, setIsSearchOpened] = useState(false);
   const isMobile = useMobile();
-  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
-    useMembersPage();
   const {
     // selectedFilters,
     onSelectParentFilter,
@@ -33,7 +31,9 @@ const Filter: FC = () => {
     // selectedParentFilters,
     checkedItems,
     isFollowersPage,
-  } = useFilter();
+  } = useFilterContext();
+  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+    useMembersPage();
 
   return (
     <>

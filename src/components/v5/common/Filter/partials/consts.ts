@@ -36,27 +36,27 @@ export const statusTypes: FilterOptionProps[] = [
 
 export const teamTypes: FilterOptionProps[] = [
   {
-    id: 'teamRoot',
+    id: 'Root',
     title: { id: 'filter.option.root' },
   },
   {
-    id: 'business',
+    id: 'Business',
     title: { id: 'filter.option.business' },
   },
   {
-    id: 'product',
+    id: 'Product',
     title: { id: 'filter.option.product' },
   },
   {
-    id: 'development',
+    id: 'Development',
     title: { id: 'filter.option.development' },
   },
   {
-    id: 'productDesign',
+    id: 'Design',
     title: { id: 'filter.option.productDesign' },
   },
   {
-    id: 'devops',
+    id: 'Devops',
     title: { id: 'filter.option.devops' },
   },
 ];

@@ -55,12 +55,12 @@ const NestedOptions: FC<NestedOptionsProps> = ({
                   {selectedParentOption === 'team' && (
                     <span
                       className={clsx('h-[1rem] w-[1rem] rounded-[0.25rem]', {
-                        'bg-blue-400': id === 'teamRoot',
-                        'bg-teams-purple-500': id === 'business',
-                        'bg-teams-yellow-500': id === 'product',
-                        'bg-teams-purple-400': id === 'development',
-                        'bg-teams-pink-400': id === 'productDesign',
-                        'bg-teams-green-500': id === 'devops',
+                        'bg-blue-400': id === 'Root',
+                        'bg-teams-purple-500': id === 'Business',
+                        'bg-teams-yellow-500': id === 'Product',
+                        'bg-teams-purple-400': id === 'Development',
+                        'bg-teams-pink-400': id === 'Design',
+                        'bg-teams-green-500': id === 'Devops',
                       })}
                     />
                   )}

@@ -84,6 +84,7 @@ import UserProfilePage from '~frame/v5/pages/UserProfilePage';
 import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
 import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
 import { PageThemeContextProvider } from '~context/PageThemeContext';
+import { FilterContextProvider } from '~context/FilterContext';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -158,18 +159,20 @@ const Routes = () => {
               element={
                 <ColonyContextProvider>
                   <ExtensionsContextProvider>
-                    <SearchContextProvider>
-                      <MemberContextProvider>
-                        <PageLayout
-                          loadingText="members"
-                          title={{ id: 'membersPage.title' }}
-                          description={{ id: 'membersPage.description' }}
-                          pageName="members"
-                        >
-                          <MembersPage />
-                        </PageLayout>
-                      </MemberContextProvider>
-                    </SearchContextProvider>
+                    <FilterContextProvider>
+                      <SearchContextProvider>
+                        <MemberContextProvider>
+                          <PageLayout
+                            loadingText="members"
+                            title={{ id: 'membersPage.title' }}
+                            description={{ id: 'membersPage.description' }}
+                            pageName="members"
+                          >
+                            <MembersPage />
+                          </PageLayout>
+                        </MemberContextProvider>
+                      </SearchContextProvider>
+                    </FilterContextProvider>
                   </ExtensionsContextProvider>
                 </ColonyContextProvider>
               }
@@ -186,18 +189,20 @@ const Routes = () => {
               element={
                 <ColonyContextProvider>
                   <ExtensionsContextProvider>
-                    <SearchContextProvider>
-                      <MemberContextProvider>
-                        <PageLayout
-                          loadingText={pageName}
-                          title={{ id: `${pageName}Page.title` }}
-                          description={{ id: `${pageName}Page.description` }}
-                          pageName="members"
-                        >
-                          <ColonyUsersPage pageName={pageName} />
-                        </PageLayout>
-                      </MemberContextProvider>
-                    </SearchContextProvider>
+                    <FilterContextProvider>
+                      <SearchContextProvider>
+                        <MemberContextProvider>
+                          <PageLayout
+                            loadingText={pageName}
+                            title={{ id: `${pageName}Page.title` }}
+                            description={{ id: `${pageName}Page.description` }}
+                            pageName="members"
+                          >
+                            <ColonyUsersPage pageName={pageName} />
+                          </PageLayout>
+                        </MemberContextProvider>
+                      </SearchContextProvider>
+                    </FilterContextProvider>
                   </ExtensionsContextProvider>
                 </ColonyContextProvider>
               }
@@ -209,18 +214,20 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <SearchContextProvider>
-                  <MemberContextProvider>
-                    <PageLayout
-                      loadingText="verified"
-                      title={{ id: 'verifiedPage.title' }}
-                      description={{ id: 'verifiedPage.description' }}
-                      pageName="members"
-                    >
-                      <VerifiedPage />
-                    </PageLayout>
-                  </MemberContextProvider>
-                </SearchContextProvider>
+                <FilterContextProvider>
+                  <SearchContextProvider>
+                    <MemberContextProvider>
+                      <PageLayout
+                        loadingText="verified"
+                        title={{ id: 'verifiedPage.title' }}
+                        description={{ id: 'verifiedPage.description' }}
+                        pageName="members"
+                      >
+                        <VerifiedPage />
+                      </PageLayout>
+                    </MemberContextProvider>
+                  </SearchContextProvider>
+                </FilterContextProvider>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }

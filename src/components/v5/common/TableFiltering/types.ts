@@ -21,12 +21,12 @@ export type ContributorType =
   | 'general';
 
 export type TeamType =
-  | 'teamRoot'
-  | 'business'
-  | 'product'
-  | 'development'
-  | 'productDesign'
-  | 'devops';
+  | 'Root'
+  | 'Business'
+  | 'Product'
+  | 'Development'
+  | 'Design'
+  | 'Devops';
 
 export type StatusType = 'banned' | 'notBanned';
 
