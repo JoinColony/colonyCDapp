@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
-
 import clsx from 'clsx';
+
 import { useMobile } from '~hooks';
 import Input from '~v5/common/Fields/Input';
 import Navigation from '~v5/common/Navigation';
