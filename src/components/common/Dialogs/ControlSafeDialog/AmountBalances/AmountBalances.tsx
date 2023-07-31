@@ -28,7 +28,7 @@ interface Props {
   /* handleChange: () => void; */
 }
 
-const displayName = 'common.ControlSafeDialog.AmountBalances';
+const displayName = 'common.ControlSafeDialog.ControlSafeForm.AmountBalances';
 
 const MSG = defineMessages({
   amount: {
