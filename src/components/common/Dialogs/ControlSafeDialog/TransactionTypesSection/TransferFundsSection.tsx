@@ -78,8 +78,6 @@ const TransferFundsSection = ({
   colony: { metadata },
   disabledInput,
   transactionFormIndex = 0,
-  /* handleInputChange,
-   * handleValidation, */
   savedTokenState,
 }: TransferFundsProps) => {
   const [isLoadingBalances, setIsLoadingBalances] = useState<boolean>(false);
@@ -187,8 +185,6 @@ const TransferFundsSection = ({
           safeBalances={safeBalances}
           disabledInput={disabledInput}
           transactionFormIndex={transactionFormIndex}
-          /* handleValidation={handleValidation} */
-          /* handleChange={handleInputChange} */
           maxButtonParams={{
             maxAmount: `${formattedSafeBalance}`,
             options: { shouldTouch: true, shouldValidate: true },
