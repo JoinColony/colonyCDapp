@@ -95,10 +95,6 @@ const MSG = defineMessages({
   },
 });
 
-/* interface Props
- *   extends Pick<FormProps, 'safes' | 'selectedContractMethods'>,
- *     Pick<FormikProps<FormValues>, 'setFieldValue' | 'values' | 'isValid'>,
- *     Omit<TransactionSectionProps, 'colony'> { */
 interface Props extends Omit<TransactionSectionProps, 'colony'> {
   safes: Safe[];
   // temporarily optional
@@ -124,8 +120,6 @@ const ContractInteractionSection = ({
   transactionFormIndex,
   selectedContractMethods = {},
   handleSelectedContractMethods,
-  /* handleValidation, */
-  /* handleInputChange, */
   isValid = true,
   removeSelectedContractMethod,
 }: Props) => {
@@ -148,12 +142,6 @@ const ContractInteractionSection = ({
 
   /* const { contract: selectedContract } = transactions[transactionFormIndex]; */
 
-  /* useEffect(() => {
-   *   if (!selectedContract) {
-   *     handleValidation();
-   *   }
-   * }, [selectedContract, handleValidation]); */
-
   const onContractABIChange = useCallback(
     (abiResponse: ABIResponse) => {
       const setTransactionAbi = (value) =>
@@ -174,8 +162,6 @@ const ContractInteractionSection = ({
         setTransactionAbi(abiResponse.result);
         removeSelectedContractMethod(transactionFormIndex);
       }
-
-      /* handleValidation(); */
     },
     [
       transactionFormIndex,
@@ -183,14 +169,12 @@ const ContractInteractionSection = ({
       setValue,
       transactionValues.abi,
       removeSelectedContractMethod,
-      /* handleValidation, */
       formatMessage,
     ],
   );
 
   const onContractChange = useCallback(
     async (contract: User) => {
-      /* debugger; */
       const setTransactionDisplayName = (value) =>
         setValue(
           `transactions.${transactionFormIndex}.contract.profile.displayName`,
@@ -313,14 +297,12 @@ const ContractInteractionSection = ({
       !isEmpty(selectedContractMethods[transactionFormIndex])
     ) {
       removeSelectedContractMethod(transactionFormIndex);
-      /* handleValidation(); */
     }
   }, [
     selectedContractMethods,
     usefulMethods,
     transactionFormIndex,
     removeSelectedContractMethod,
-    /* handleValidation, */
   ]);
 
   // Ensures spinner doesn't show up when returning back from Preview
@@ -341,9 +323,6 @@ const ContractInteractionSection = ({
             disabled={disabledInput}
             placeholder={MSG.userPickerPlaceholder}
             onSelected={onContractChange}
-            // handled instead in effect
-            /* validateOnChange={false} */
-            /* showMaskedAddress */
           />
         </div>
       </DialogSection>
@@ -384,11 +363,6 @@ const ContractInteractionSection = ({
                   <Error error={fetchABIError} />
                 </div>
               ) : (
-                /*
-                 * This is the component we don't want to let Formik validate immediately on change.
-                 * Validation happens before the form state updates, which causes the form to be valid when
-                 * it shouldn't be.
-                 */
                 <Select
                   label={MSG.functionLabel}
                   name={`transactions.${transactionFormIndex}.contractFunction`}
@@ -407,7 +381,6 @@ const ContractInteractionSection = ({
                       updatedSelectedContractMethods,
                       transactionFormIndex,
                     );
-                    /* handleValidation(); */
                   }}
                 />
               )}
@@ -426,7 +399,6 @@ const ContractInteractionSection = ({
                     name={`transactions.${transactionFormIndex}.${input.name}-${selectedContractMethods[transactionFormIndex]?.name}`}
                     appearance={{ colorSchema: 'grey', theme: 'fat' }}
                     disabled={disabledInput}
-                    /* onChange={handleInputChange} */
                     placeholder={`${input.name} (${input.type})`}
                     formattingOptions={
                       input?.type?.includes('int') &&
