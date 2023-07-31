@@ -38,7 +38,7 @@ const RadioList: FC<RadioListProps> = ({
     </ul>
     {errors?.governance && (
       <FormError isFullSize alignment="left">
-        {errors?.governance?.message}
+        {errors?.root?.message}
       </FormError>
     )}
   </>
