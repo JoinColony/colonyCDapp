@@ -2,19 +2,18 @@ import React, { useRef, useEffect } from 'react';
 import { AddressZero } from '@ethersproject/constants';
 
 import MaskedAddress from '~shared/MaskedAddress';
-import { isEmpty } from '~utils/lodash';
 import { removeValueUnits } from '~utils/css';
 
-import { User } from '~types';
-import { useColonyContext } from '~hooks';
+import { Colony, ColonyExtension, Token, User } from '~types';
 
 import styles from './FriendlyName.css';
+import { getAddressFromAgent, getDisplayNameFromAgent } from './helpers';
 
 const displayName = 'FriendlyName';
 
-interface Props {
+export interface FriendlyNameProps {
   /**  The user object to display */
-  user?: User | null;
+  agent?: User | Colony | ColonyExtension | Token | null;
   /** Whether to show a masked address or a full one */
   maskedAddress?: boolean;
   /** Whether to apply the "shrink tech font by 1px" logic */
@@ -22,18 +21,12 @@ interface Props {
 }
 
 const FriendlyName = ({
-  user,
+  agent,
   maskedAddress = true,
   autoShrinkAddress = false,
-}: Props) => {
-  const { colony } = useColonyContext();
+}: FriendlyNameProps) => {
   const addressRef = useRef<HTMLElement>(null);
-  const colonyDisplayName = colony?.metadata?.displayName || colony?.name;
-  const colonyDisplayAddress =
-    colony?.colonyAddress !== AddressZero ? colony?.colonyAddress : '';
-  const walletAddress = user?.walletAddress;
-  const userDisplayName = user?.profile?.displayName || user?.name;
-  const userDisplayAddress = walletAddress !== AddressZero ? walletAddress : '';
+  const agentDisplayName = getDisplayNameFromAgent(agent);
 
   /*
    * We always make (for this component only), the address
@@ -49,16 +42,12 @@ const FriendlyName = ({
     }
   }, [addressRef, autoShrinkAddress]);
 
-  const isColony =
-    walletAddress === colony?.colonyAddress ||
-    (isEmpty(user) && !isEmpty(colony));
-
   return (
     <div className={styles.main}>
       <div className={styles.name}>
-        {userDisplayName || (isColony && colonyDisplayName) || (
+        {agentDisplayName || (
           <MaskedAddress
-            address={userDisplayAddress || colonyDisplayAddress || AddressZero}
+            address={getAddressFromAgent(agent) ?? AddressZero}
             full={!maskedAddress}
             ref={addressRef}
           />
