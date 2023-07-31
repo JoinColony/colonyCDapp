@@ -25,8 +25,12 @@ const CardWithBios: FC<CardWithBiosProps> = ({
   const { user, reputationPercentage } = (userData as Contributor) || {};
   const { name, walletAddress, profile } = user || {};
   const { bio } = profile || {};
-  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
-    useMembersPage();
+  const {
+    getTooltipProps,
+    setTooltipRef,
+    setTriggerRef,
+    visible: isUserDetailsOpen,
+  } = useMembersPage();
 
   return (
     <div className="max-h-[9.25rem] rounded-lg border border-gray-200 bg-gray-25 p-5 relative">
@@ -60,7 +64,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
             {shouldBeMenuVisible && (
               <>
                 <BurgerMenu isVertical setTriggerRef={setTriggerRef} />
-                {visible && (
+                {isUserDetailsOpen && (
                   <PopoverBase
                     setTooltipRef={setTooltipRef}
                     tooltipProps={getTooltipProps}

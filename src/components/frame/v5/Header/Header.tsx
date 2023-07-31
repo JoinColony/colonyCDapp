@@ -30,7 +30,7 @@ const Header: FC<HeaderProps> = ({ title }) => {
             cardProps={{
               rounded: 's',
               hasShadow: true,
-              className: 'py-4 px-2',
+              className: 'py-4 px-2.5',
             }}
             classNames="w-full sm:max-w-[17.375rem]"
           >
