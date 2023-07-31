@@ -178,7 +178,13 @@ const ControlSafeForm = ({
       case TransactionTypes.CONTRACT_INTERACTION:
         return <ContractInteractionSection />;
       case TransactionTypes.TRANSFER_NFT:
-        return <TransferNFTSection />;
+        return (
+          <TransferNFTSection
+            colony={colony}
+            disabledInput={disabledInputs}
+            transactionIndex={transactionIndex}
+          />
+        );
       default:
         return null;
     }
