@@ -25,11 +25,11 @@ const ThemeSwitcher: FC = () => {
           'bg-base-white translate-x-0': !isDarkMode,
         })}
       />
-      <span className="w-1/2 flex items-center justify-center z-10">
+      <span className="w-1/2 flex items-center justify-center z-[1]">
         <Icon name="sun" appearance={{ size: 'tiny' }} />
         <p className="text-1 ml-2">{formatMessage({ id: 'lightMode' })}</p>
       </span>
-      <span className="w-1/2 flex items-center justify-center z-10 transition-colors transition-normal">
+      <span className="w-1/2 flex items-center justify-center transition-colors transition-normal z-[1]">
         <Icon name="moon-stars" appearance={{ size: 'tiny' }} />
         <p className="text-1 ml-2">{formatMessage({ id: 'darkMode' })}</p>
       </span>

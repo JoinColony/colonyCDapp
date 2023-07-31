@@ -12,8 +12,6 @@ export interface UserMenuProps {
   user?: UserFragment | null;
   isVerified?: boolean;
   walletAddress?: string;
-  userReputation?: string;
-  totalReputation?: string;
   nativeToken?: Token;
   hideColonies?: boolean;
 }

@@ -1,7 +1,6 @@
 declare namespace ColonySwitcherModuleCssNamespace {
   export interface IColonySwitcherModuleCss {
     avatar: string;
-    mobileButtons: string;
     tooltipContainer: string;
   }
 }

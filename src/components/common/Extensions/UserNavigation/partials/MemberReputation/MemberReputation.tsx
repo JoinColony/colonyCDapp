@@ -21,9 +21,9 @@ const MemberReputation: FC<MemberReputationProps> = ({
 
   return (
     <div
-      className={clsx('items-center', {
-        'hidden md:flex': hideOnMobile,
-        flex: !hideOnMobile,
+      className={clsx({
+        'hidden md:flex md:items-center': hideOnMobile,
+        'flex items-center': !hideOnMobile,
       })}
     >
       <Icon name="star" appearance={{ size: 'tiny' }} />

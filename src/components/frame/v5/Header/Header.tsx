@@ -13,8 +13,12 @@ const displayName = 'v5.frame.Header';
 
 const Header: FC<HeaderProps> = ({ title }) => {
   const { formatMessage } = useIntl();
-  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
-    useHeader();
+  const {
+    getTooltipProps,
+    setTooltipRef,
+    setTriggerRef,
+    visible: isSubNavigationOpen,
+  } = useHeader();
   const { setIsMemberModalOpen } = useMemberContext();
 
   return (
@@ -22,7 +26,7 @@ const Header: FC<HeaderProps> = ({ title }) => {
       <div className="flex items-center">
         <h4 className="heading-4 mr-2">{formatMessage(title)}</h4>
         <BurgerMenu isVertical setTriggerRef={setTriggerRef} />
-        {visible && (
+        {isSubNavigationOpen && (
           <PopoverBase
             setTooltipRef={setTooltipRef}
             tooltipProps={getTooltipProps}

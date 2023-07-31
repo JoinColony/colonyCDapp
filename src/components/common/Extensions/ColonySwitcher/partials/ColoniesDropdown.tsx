@@ -18,7 +18,7 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({
     useSelectedColony(watchlist);
 
   return (
-    <div className="w-full bg-base-white z-50 relative flex flex-col mb-4 sm:-mb-2">
+    <div className="w-full bg-base-white relative flex flex-col mb-4 sm:-mb-2">
       {!isMobile && (
         <div className="flex items-center pb-3.5 border-b border-gray-200">
           <div className="flex mr-2 shrink-0">
@@ -36,7 +36,6 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({
           )}
         </div>
       )}
-
       {Object.keys(coloniesGroupByCategory).map((key) => (
         <div className="px-6 sm:px-0 sm:mt-5 mb-4 last:mb-0" key={key}>
           {key && <TitleLabel text={key} />}
