@@ -32,7 +32,12 @@ export const fetchContractName = async (
   const currentNetworkData = getCurrentNetworkData(safeChainId)!;
 
   const apiKey = getApiKey(currentNetworkData.chainId);
-  const apiUri = `${currentNetworkData.apiUri}?apiKey=${apiKey}&module=contract&action=getsourcecode&address=${contractAddress}`;
+  const apiUri =
+    `${currentNetworkData.apiUri}` +
+    `?apiKey=${apiKey}` +
+    `&module=contract` +
+    `&action=getsourcecode` +
+    `&address=${contractAddress}`;
 
   try {
     const response = await fetch(apiUri);
@@ -57,11 +62,15 @@ export const fetchContractABI = async (
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const currentNetworkData = getCurrentNetworkData(safeChainId)!;
 
-    const getApiUri = () => {
-      const apiUri = `${currentNetworkData.apiUri}?module=contract&action=getabi&address=${contractAddress}`;
-      return `${apiUri}&apiKey=${getApiKey(currentNetworkData.chainId)}`;
-    };
-    const response = await fetch(getApiUri());
+    const apiKey = getApiKey(currentNetworkData.chainId);
+    const apiUri =
+      `${currentNetworkData.apiUri}` +
+      `?apiKey=${apiKey}` +
+      `&module=contract` +
+      `&action=getabi` +
+      `&address=${contractAddress}`;
+
+    const response = await fetch(apiUri);
 
     if (!response.ok) {
       return [];
