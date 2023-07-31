@@ -149,7 +149,7 @@ const TransferFundsSection = ({
       const savedTokenData = savedTokens[safeAddress];
       if (savedTokenData) {
         setSafeBalances(savedTokenData);
-        /* setBalanceError(''); */
+        setBalanceError('');
       } else {
         getSafeBalance();
       }
