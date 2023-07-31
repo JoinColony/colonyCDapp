@@ -69,7 +69,7 @@ const ColonyMembers = () => {
           <TotalReputation selectedDomainId={selectedDomainId} />
           <MemberControls isRootOrAllDomains={isRootOrAllDomains} />
           <MembersFilter
-            handleFilterChange={handleFilterChange}
+            onFilterChange={handleFilterChange}
             isRootOrAllDomains={isRootOrAllDomains}
           />
         </aside>
