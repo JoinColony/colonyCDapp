@@ -93,11 +93,6 @@ const UpgradeWarning = (chunks: React.ReactNode[]) => (
 
 const requiredRoles: ColonyRole[] = [ColonyRole.Root];
 
-enum ContractFunctions {
-  TRANSFER_FUNDS = 'transfer',
-  TRANSFER_NFT = 'safeTransferFrom',
-}
-
 const ControlSafeForm = ({
   back,
   colony,
