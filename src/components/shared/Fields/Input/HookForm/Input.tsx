@@ -60,15 +60,15 @@ const HookFormInput = ({
 }: HookFormInputProps) => {
   const [id] = useState(idProp || nanoid());
   const {
-    formState: { errors, touchedFields, isValid },
+    formState: { isValid },
     watch,
+    getFieldState,
   } = useFormContext();
 
   const inputValue = watch(name);
-  const error = errors[name]?.message as string | undefined;
-  const touched = touchedFields[name] as boolean | undefined;
-
+  const { error, isTouched: touched } = getFieldState(name);
   const extensionStringText = formatText(extensionString);
+  const errorMessage = error?.message;
 
   const containerClasses = classnames(styles.container, {
     [styles.containerHorizontal]: appearance.direction === 'horizontal',
@@ -108,7 +108,7 @@ const HookFormInput = ({
       {!elementOnly && (
         <InputStatus
           appearance={appearance}
-          error={error}
+          error={errorMessage}
           isLoading={isLoading}
           loadingAnnotation={loadingAnnotation}
           status={status}

@@ -23,7 +23,7 @@
 }
 
 .labelDescription {
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
 }
 
 /*
@@ -32,7 +32,7 @@
 */
 .inputParamContainer label span,
 .inputParamContainer input::placeholder {
-  color: var(--temp-grey-blue-7) !important;
+  color: var(--grey-purple) !important;
 }
 
 .inputParamContainer p {

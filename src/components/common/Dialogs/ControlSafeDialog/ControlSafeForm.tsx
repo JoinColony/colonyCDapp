@@ -159,7 +159,13 @@ const ControlSafeForm = ({
       case TransactionTypes.TRANSFER_FUNDS:
         return <TransferFundsSection />;
       case TransactionTypes.RAW_TRANSACTION:
-        return <RawTransactionSection />;
+        return (
+          <RawTransactionSection
+            colony={colony}
+            disabledInput={disabledInputs}
+            transactionIndex={transactionIndex}
+          />
+        );
       case TransactionTypes.CONTRACT_INTERACTION:
         return <ContractInteractionSection />;
       case TransactionTypes.TRANSFER_NFT:

@@ -59,7 +59,10 @@ export type ComplexMessageValues = Record<string, ReactNode>;
 /**
  * For messages that contain both JSX and Primitive values
  */
-export type AnyMessageValues = Record<string, PrimitiveType | ReactNode>;
+export type AnyMessageValues = Record<
+  string,
+  PrimitiveType | ReactNode | ((chunks: string[]) => JSX.Element)
+>;
 
 export type UniversalMessageValues =
   | SimpleMessageValues

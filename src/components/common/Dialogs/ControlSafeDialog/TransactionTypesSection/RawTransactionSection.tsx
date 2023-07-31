@@ -1,16 +1,74 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
+import { defineMessages } from 'react-intl';
 
 import { DialogSection } from '~shared/Dialog';
+import { HookFormInput as Input } from '~shared/Fields';
 
-const displayName = `common.ControlSafeDialog.RawTransactionSection`;
+import { TransactionSectionProps } from '../types';
 
-const RawTransactionSection = () => {
-  return (
+import { RecipientPicker } from './shared';
+
+import styles from './TransactionTypesSection.css';
+
+const displayName = `common.ControlSafeDialog.ControlSafeDialogForm.RawTransactionSection`;
+
+const MSG = defineMessages({
+  valueLabel: {
+    id: `${displayName}.valueLabel`,
+    defaultMessage: `Value <span>wei</span>`,
+  },
+  dataLabel: {
+    id: `${displayName}.dataLabel`,
+    defaultMessage: `Data <span>bytes</span>`,
+  },
+});
+
+const labelValues = (chunks: ReactNode) => (
+  <span className={styles.labelDescription}>{chunks}</span>
+);
+
+const RawTransactionSection = ({
+  colony,
+  disabledInput,
+  transactionIndex,
+}: TransactionSectionProps) => (
+  <>
     <DialogSection>
-      <h2>TODO</h2>
+      <RecipientPicker
+        colony={colony}
+        disabledInput={disabledInput}
+        transactionIndex={transactionIndex}
+      />
     </DialogSection>
-  );
-};
+    <DialogSection>
+      <Input
+        label={MSG.valueLabel}
+        name={`transactions.${transactionIndex}.rawAmount`}
+        appearance={{ colorSchema: 'grey', theme: 'fat' }}
+        disabled={disabledInput}
+        labelValues={{
+          span: labelValues,
+        }}
+        formattingOptions={{
+          numeral: true,
+          numeralPositiveOnly: true,
+          numeralDecimalScale: 0,
+        }}
+      />
+    </DialogSection>
+    <DialogSection appearance={{ theme: 'sidePadding' }}>
+      <Input
+        label={MSG.dataLabel}
+        name={`transactions.${transactionIndex}.data`}
+        appearance={{ colorSchema: 'grey', theme: 'fat' }}
+        disabled={disabledInput}
+        labelValues={{
+          span: labelValues,
+        }}
+      />
+    </DialogSection>
+  </>
+);
 
 RawTransactionSection.displayName = displayName;
 
