@@ -37,14 +37,6 @@ const MSG = defineMessages({
     id: `${displayName}.NFTPickerPlaceholder`,
     defaultMessage: 'Select NFT to transfer',
   },
-  selectRecipient: {
-    id: `${displayName}.selectRecipient`,
-    defaultMessage: 'Select Recipient',
-  },
-  userPickerPlaceholder: {
-    id: `${displayName}.userPickerPlaceholder`,
-    defaultMessage: 'Search for a user or paste wallet address',
-  },
   contract: {
     id: `${displayName}.contract`,
     defaultMessage: 'Contract',
@@ -77,7 +69,8 @@ const TransferNFTSection = ({
   transactionIndex,
 }: TransactionSectionProps) => {
   const { watch, trigger, setValue } = useFormContext();
-  const selectedNFTData = watch('nftData');
+  const currentNFT = watch(`transactions.${transactionIndex}.nft`);
+  const currentNFTData = watch(`transactions.${transactionIndex}.nftData`);
   const safe = watch('safe');
   const [savedNFTs, setSavedNFTs] = useState({});
   const [availableNFTs, setAvailableNFTs] = useState<any[]>();
@@ -88,7 +81,7 @@ const TransferNFTSection = ({
    * So the form shows loading spinner immediately when entering from main menu
    * but not when clicking "back" from preview
    */
-  const isFirstFetch = !availableNFTs && !nftError && !selectedNFTData;
+  const isFirstFetch = !availableNFTs && !nftError && !currentNFTData;
 
   useEffect(() => {
     const getNFTs = async (): Promise<void> => {
@@ -126,6 +119,12 @@ const TransferNFTSection = ({
     }
   }, [safe, savedNFTs, setSavedNFTs, trigger]);
 
+  useEffect(() => {
+    if (!currentNFT && currentNFTData) {
+      setValue(`transactions.${transactionIndex}.nftData`, null);
+    }
+  }, [currentNFT, setValue, currentNFTData, transactionIndex]);
+
   if (isLoadingNFTData || isFirstFetch) {
     return <Loading message={MSG.nftLoading} />;
   }
@@ -140,7 +139,6 @@ const TransferNFTSection = ({
 
   return (
     <>
-      {/* select NFT */}
       <DialogSection appearance={{ theme: 'sidePadding' }}>
         <div className={styles.nftPicker}>
           <SingleNFTPicker
@@ -157,15 +155,13 @@ const TransferNFTSection = ({
                 selectedNFT,
                 availableNFTs || [],
               );
-
               // selectedNFT comes from availableNFTs, so getSelectedNFTData won't return undefined (it's using .find())
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              setValue('nftData', nftData);
+              setValue(`transactions.${transactionIndex}.nftData`, nftData);
             }}
           />
         </div>
       </DialogSection>
-      {/* NFT details */}
       <DialogSection appearance={{ theme: 'sidePadding' }}>
         <div className={styles.nftDetailsContainer}>
           <div className={styles.nftImageContainer}>
@@ -174,9 +170,9 @@ const TransferNFTSection = ({
             </div>
             <div className={styles.nftImage}>
               <Avatar
-                avatar={selectedNFTData?.imageUri || undefined}
-                notSet={!selectedNFTData?.imageUri}
-                seed={selectedNFTData?.address?.toLocaleLowerCase()}
+                avatar={currentNFTData?.imageUri || undefined}
+                notSet={!currentNFTData?.imageUri}
+                seed={currentNFTData?.address?.toLocaleLowerCase()}
                 placeholderIcon="nft-icon"
                 title="nftImage"
                 size="l"
@@ -188,11 +184,11 @@ const TransferNFTSection = ({
               <div className={styles.nftContentLabel}>
                 <FormattedMessage {...MSG.contract} />
               </div>
-              {selectedNFTData && (
+              {currentNFTData && (
                 <div className={styles.nftContractContent}>
                   <Avatar
-                    avatar={selectedNFTData.imageUri || undefined}
-                    notSet={!selectedNFTData.imageUri}
+                    avatar={currentNFTData.imageUri || undefined}
+                    notSet={!currentNFTData.imageUri}
                     placeholderIcon="nft-icon"
                     title="NFT"
                     size="xs"
@@ -200,7 +196,7 @@ const TransferNFTSection = ({
                   />
                   <div className={styles.nftName}>
                     {extractTokenName(
-                      selectedNFTData.name || selectedNFTData.tokenName,
+                      currentNFTData.name || currentNFTData.tokenName,
                     )}
                   </div>
                 </div>
@@ -210,9 +206,9 @@ const TransferNFTSection = ({
               <div className={styles.nftContentLabel}>
                 <FormattedMessage {...MSG.idLabel} />
               </div>
-              {selectedNFTData && (
+              {currentNFTData && (
                 <div className={styles.nftContentValue}>
-                  {selectedNFTData.id}
+                  {currentNFTData.id}
                 </div>
               )}
             </div>
