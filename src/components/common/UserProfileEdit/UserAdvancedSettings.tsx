@@ -82,9 +82,9 @@ const UserAdvancedSettings = ({ user: { walletAddress, profile } }: Props) => {
   const { updateUser } = useAppContext();
   const [editUser, { error }] = useUpdateUserProfileMutation();
 
-  const metatransasctionsDefault = metatransactionsAvailable
-    ? profile?.advancedSettings?.metatransactionsEnabled || false
-    : false;
+  const metatransasctionsDefault = Boolean(
+    profile?.advancedSettings?.metatransactionsEnabled,
+  );
 
   const defaultValues = {
     metatransactionsEnabled: metatransasctionsDefault,
