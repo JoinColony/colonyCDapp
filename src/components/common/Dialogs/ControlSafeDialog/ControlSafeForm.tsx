@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { ColonyRole, Id } from '@colony/colony-js';
@@ -192,14 +192,9 @@ const ControlSafeForm = ({
 
   const handleSafeChange = (newSafe: SelectedSafe) => {
     const safeAddress = newSafe?.walletAddress;
+
     if (safeAddress !== prevSafeAddress) {
       setPrevSafeAddress(safeAddress);
-      /* values.transactions.forEach((tx, i) => {
-       *   if (tx.transactionType === TransactionTypes.TRANSFER_NFT) {
-       *     setFieldValue(`transactions.${i}.nft`, null);
-       *     setFieldValue(`transactions.${i}.nftData`, null);
-       *   }
-       * }); */
     }
   };
 
@@ -220,6 +215,19 @@ const ControlSafeForm = ({
   };
 
   const safes = metadata?.safes || [];
+
+  useEffect(() => {
+    if (!selectedSafe) {
+      for (let i = 0; i < fields.length; i += 1) {
+        const transactionType = watch(`transactions.${i}.transactionType`);
+
+        if (transactionType === TransactionTypes.TRANSFER_NFT) {
+          setValue(`transactions.${i}.nft`, null);
+          setValue(`transactions.${i}.nftData`, null);
+        }
+      }
+    }
+  }, [fields, watch, setValue, selectedSafe]);
 
   return (
     <>

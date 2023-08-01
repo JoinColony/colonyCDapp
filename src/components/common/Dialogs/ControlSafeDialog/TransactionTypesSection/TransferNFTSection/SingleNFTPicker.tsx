@@ -36,8 +36,8 @@ const SingleNFTPicker = ({ data, ...props }: Props) => {
           id: `${item.address} ${item.id}`,
           profile: {
             displayName: nftDisplayName,
-            walletAddress: item.address,
           },
+          walletAddress: item.address,
         };
       }),
     [data],

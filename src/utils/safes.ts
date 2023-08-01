@@ -103,9 +103,7 @@ const getTokenIdFromNFTId = (nftId: string) => {
 export const getSelectedNFTData = (selectedNFT, availableNFTs) =>
   availableNFTs.find((nft) => {
     const tokenId = getTokenIdFromNFTId(selectedNFT.id);
-    return (
-      nft.address === selectedNFT.profile.walletAddress && nft.id === tokenId
-    );
+    return nft.address === selectedNFT.walletAddress && nft.id === tokenId;
   });
 
 export const nftNameContainsTokenId = (tokenName: string): boolean => {
