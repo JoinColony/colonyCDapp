@@ -8,6 +8,9 @@ import NotFoundRoute from '~routes/NotFoundRoute';
 import { ActionButton } from '~shared/Button';
 import { Heading3 } from '~shared/Heading';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
+import MaskedAddress from '~shared/MaskedAddress';
+
+import styles from './ExpenditureDetailsPage.module.css';
 
 const ExpenditureDetailsPage = () => {
   const { expenditureId } = useParams();
@@ -35,8 +38,43 @@ const ExpenditureDetailsPage = () => {
 
   return (
     <div>
-      <Heading3>Expenditure {data.getExpenditure?.id}</Heading3>
-      <div>Status: {data.getExpenditure?.status}</div>
+      <Heading3>Expenditure {expenditure.id}</Heading3>
+      <div>Status: {expenditure.status}</div>
+
+      <ul className={styles.recipients}>
+        {expenditure.slots.map((slot) => (
+          <li key={slot.id} className={styles.recipient}>
+            <div>
+              <div>Recipient address</div>
+              <MaskedAddress address={slot.recipientAddress ?? ''} />
+            </div>
+
+            <div>
+              <div>Token address</div>
+              {slot.payouts?.map((payout) => (
+                <MaskedAddress
+                  key={payout.tokenAddress}
+                  address={payout.tokenAddress}
+                />
+              ))}
+            </div>
+
+            <div>
+              <div>Amount</div>
+              {slot.payouts?.map((payout) => (
+                <div key={payout.tokenAddress}>{payout.amount}</div>
+              ))}
+            </div>
+
+            <div>
+              <div>Claim delay</div>
+              <div>
+                {slot.claimDelay ? `${slot.claimDelay} seconds` : 'None'}
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
 
       {expenditure.status === ExpenditureStatus.Draft && (
         <ActionButton
