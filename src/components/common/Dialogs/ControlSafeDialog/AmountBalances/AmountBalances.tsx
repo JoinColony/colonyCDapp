@@ -45,7 +45,7 @@ const AmountBalances = ({
   transactionIndex,
   maxButtonParams,
 }: Props) => {
-  const { watch, setValue } = useFormContext();
+  const { watch, setValue, trigger } = useFormContext();
 
   const selectedTokenData: Token = watch(
     `transactions.${transactionIndex}.tokenData`,
@@ -128,6 +128,7 @@ const AmountBalances = ({
               // can only select a token from "tokens"
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               setSelectedTokenData(selectedToken!);
+              trigger(`transactions.${transactionIndex}.amount`);
             }}
           />
         </div>
