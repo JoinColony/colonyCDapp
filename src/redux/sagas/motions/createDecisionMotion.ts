@@ -5,7 +5,6 @@ import { Action, ActionTypes, AllActions } from '~redux/index';
 import { putError, takeFrom } from '~utils/saga/effects';
 import { ACTION_DECISION_MOTION_CODE, ADDRESS_ZERO } from '~constants';
 import { transactionReady } from '~redux/actionCreators';
-import { TransactionChannel } from '~redux/types/actions/transaction';
 import {
   createTransaction,
   createTransactionChannels,
@@ -29,7 +28,7 @@ function* createDecisionMotion({
   meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.MOTION_CREATE_DECISION>) {
-  const txChannel: TransactionChannel = yield call(getTxChannel, metaId);
+  const txChannel = yield call(getTxChannel, metaId);
   const apolloClient = getContext(ContextModule.ApolloClient);
 
   try {

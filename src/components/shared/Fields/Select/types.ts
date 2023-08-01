@@ -43,7 +43,7 @@ export interface SelectProps<V = string | number> {
   onChange?: (value: SelectOption<V>['value']) => void;
 
   /** Available `option`s for the select */
-  options: SelectOption[];
+  options: SelectOption<V>[];
 
   /** Render at the bottom of the select list box */
   optionsFooter?: ReactNode;
@@ -53,7 +53,7 @@ export interface SelectProps<V = string | number> {
 
   /** Render the actively selected option */
   renderActiveOption?: (
-    activeOption: SelectOption | undefined,
+    activeOption: SelectOption<V> | undefined,
     activeOptionLabel: string,
   ) => ReactNode;
 

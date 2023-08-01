@@ -12,6 +12,7 @@ import { DecisionDataProps } from '../DecisionData';
 import { withMeta } from '~utils/actions';
 
 import styles from './DecisionPreviewControls.css';
+import { DecisionDraft } from '~utils/decisions';
 
 type DecisionPreviewControlsProps = Omit<DecisionDataProps, 'user'>;
 
