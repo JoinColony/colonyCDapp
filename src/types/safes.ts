@@ -8,6 +8,7 @@ export interface SelectedSafe {
   profile: {
     displayName: string;
   };
+  walletAddress: Address; // And this is the safe address
 }
 
 export type SimpleUserProfile = {
