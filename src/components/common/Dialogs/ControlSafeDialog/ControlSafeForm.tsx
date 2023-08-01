@@ -164,8 +164,6 @@ const ControlSafeForm = ({
             colony={colony}
             disabledInput={disabledInputs}
             transactionFormIndex={transactionIndex}
-            /* handleInputChange={handleInputChange} */
-            /* handleValidation={handleValidation} */
             savedTokenState={savedTokenState}
           />
         );
