@@ -6,7 +6,6 @@ import moveDecimal from 'move-decimal-point';
 
 import { SafeBalance } from '~types';
 import { intl } from '~utils/intl';
-import { toFinite } from '~utils/lodash';
 import { getSelectedSafeBalance, isAbiItem } from '~utils/safes';
 import { validateType } from '~utils/safes/contractParserValidation';
 
@@ -281,6 +280,7 @@ export const getValidationSchema = (
               otherwise: object().nullable(),
             })
             .nullable(),
+          ...expandedValidationSchema,
         }),
       ),
     })
