@@ -163,7 +163,7 @@ const ControlSafeForm = ({
           <TransferFundsSection
             colony={colony}
             disabledInput={disabledInputs}
-            transactionFormIndex={transactionIndex}
+            transactionIndex={transactionIndex}
             savedTokenState={savedTokenState}
           />
         );

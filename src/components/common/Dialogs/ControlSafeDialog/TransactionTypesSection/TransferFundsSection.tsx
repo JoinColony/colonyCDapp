@@ -76,7 +76,7 @@ const TransferFundsSection = ({
   colony,
   colony: { metadata },
   disabledInput,
-  transactionFormIndex = 0,
+  transactionIndex,
   savedTokenState,
 }: TransferFundsProps) => {
   const [isLoadingBalances, setIsLoadingBalances] = useState<boolean>(false);
@@ -155,7 +155,7 @@ const TransferFundsSection = ({
   }, [safeAddress, getSafeBalance, savedTokens]);
 
   const selectedTokenAddress =
-    transactions[transactionFormIndex].tokenData?.tokenAddress;
+    transactions[transactionIndex].tokenData?.tokenAddress;
 
   const selectedBalance = getSelectedSafeBalance(
     safeBalances,
@@ -182,7 +182,7 @@ const TransferFundsSection = ({
           selectedSafe={selectedSafe}
           safeBalances={safeBalances}
           disabledInput={disabledInput}
-          transactionFormIndex={transactionFormIndex}
+          transactionIndex={transactionIndex}
           maxButtonParams={{
             maxAmount: `${formattedSafeBalance}`,
             options: { shouldTouch: true, shouldValidate: true },
@@ -211,7 +211,7 @@ const TransferFundsSection = ({
       <DialogSection>
         <RecipientPicker
           colony={colony}
-          transactionFormIndex={transactionFormIndex}
+          transactionIndex={transactionIndex}
           disabledInput={disabledInput}
         />
       </DialogSection>
