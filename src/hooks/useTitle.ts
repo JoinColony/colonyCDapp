@@ -7,7 +7,6 @@
 // be present on the same route.)
 
 import { useLocation, matchPath } from 'react-router-dom';
-import { useEffect } from 'react';
 import { defineMessages, useIntl, MessageDescriptor } from 'react-intl';
 
 import {
@@ -28,8 +27,7 @@ import {
 } from '~routes/routeConstants';
 import { SimpleMessageValues } from '~types';
 import { notNull } from '~utils/arrays';
-
-import useColonyContext from './useColonyContext';
+import { useGetFullColonyByNameQuery } from '~gql';
 
 const displayName = 'utils.hooks';
 
@@ -168,23 +166,34 @@ const getMessageAndValues = (locationPath: string): MessageWithValues => {
 };
 
 export const useTitle = (title?: string) => {
-  const { colony } = useColonyContext();
   const { pathname } = useLocation();
   const { formatMessage } = useIntl();
   const { msg, values } = getMessageAndValues(pathname);
 
-  const colonyDisplayName = colony?.metadata?.displayName || colony?.name;
+  const colonyENSName = (values?.colonyName as string) ?? 'hack'; // HACK as we cannot call the below hook conditionally
+  // HACK as we cannot query using an empty string
+  const isHack = colonyENSName === 'hack';
 
-  useEffect(() => {
-    const titleToSet =
-      title ||
-      formatMessage(msg, {
-        ...values,
-        colonyName: colonyDisplayName,
-      });
-
-    document.title = titleToSet;
+  const { data, error } = useGetFullColonyByNameQuery({
+    fetchPolicy: 'cache-first',
+    variables: { name: colonyENSName },
   });
+
+  if (error) console.error(error);
+
+  const queryDisplayName =
+    data?.getColonyByName?.items?.[0]?.metadata?.displayName;
+
+  const colonyDisplayName = isHack ? '' : queryDisplayName;
+
+  const titleToSet =
+    title ||
+    formatMessage(msg, {
+      ...values,
+      colonyName: colonyDisplayName,
+    });
+
+  document.title = titleToSet;
 };
 
 export default useTitle;
