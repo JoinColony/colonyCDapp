@@ -38,24 +38,20 @@ export const UserStepTemplate = ({
   descriptionValues,
   input,
   button,
-}: UserStepTemplateProps) => {
-  useTitle();
-
-  return (
-    <section className={styles.main}>
-      <div>
-        <Heading appearance={{ size: 'medium' }} text={heading} />
-        <p className={styles.paragraph}>
-          <FormattedMessage {...description} values={descriptionValues} />
-        </p>
-        <div className={styles.nameForm}>
-          {input}
-          <div className={styles.buttons}>{button}</div>
-        </div>
+}: UserStepTemplateProps) => (
+  <section className={styles.main}>
+    <div>
+      <Heading appearance={{ size: 'medium' }} text={heading} />
+      <p className={styles.paragraph}>
+        <FormattedMessage {...description} values={descriptionValues} />
+      </p>
+      <div className={styles.nameForm}>
+        {input}
+        <div className={styles.buttons}>{button}</div>
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
 
 interface ContinueWizardProps {
   disabled: boolean;

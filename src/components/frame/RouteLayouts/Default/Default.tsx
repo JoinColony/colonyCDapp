@@ -3,7 +3,7 @@ import { useLocation, useParams } from 'react-router-dom';
 
 import { RouteComponentProps } from '~frame/RouteLayouts';
 import SubscribedColoniesList from '~frame/SubscribedColoniesList';
-import { useMobile, useTitle } from '~hooks';
+import { useMobile } from '~hooks';
 
 import SimpleNav from '../SimpleNav';
 import HistoryNavigation from '../HistoryNavigation';
@@ -39,7 +39,6 @@ const Default = ({
   const resolvedBackRoute =
     typeof backRoute === 'function' ? backRoute(params) : backRoute;
   const isMobile = useMobile();
-  useTitle();
 
   return (
     <div className={styles.main}>

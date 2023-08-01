@@ -27,35 +27,31 @@ const MSG = defineMessages({
   },
 });
 
-const FourOFour = () => {
-  useTitle();
-
-  return (
-    <main className={styles.layoutMain}>
-      <header className={styles.header}>
-        <figure className={styles.logo} role="presentation">
-          <Link to="/">
-            <Logo />
-          </Link>
-        </figure>
-      </header>
-      <div className={styles.herowrapper}>
-        <div className={styles.title}>
-          <Heading
-            appearance={{ size: 'medium', weight: 'medium', margin: 'none' }}
-            text={MSG.fourOFour}
-          />
-        </div>
-        <p className={styles.description}>
-          <FormattedMessage {...MSG.message} />
-        </p>
-        <div className={styles.hero}>
-          <NakedMole />
-        </div>
+const FourOFour = () => (
+  <main className={styles.layoutMain}>
+    <header className={styles.header}>
+      <figure className={styles.logo} role="presentation">
+        <Link to="/">
+          <Logo />
+        </Link>
+      </figure>
+    </header>
+    <div className={styles.herowrapper}>
+      <div className={styles.title}>
+        <Heading
+          appearance={{ size: 'medium', weight: 'medium', margin: 'none' }}
+          text={MSG.fourOFour}
+        />
       </div>
-    </main>
-  );
-};
+      <p className={styles.description}>
+        <FormattedMessage {...MSG.message} />
+      </p>
+      <div className={styles.hero}>
+        <NakedMole />
+      </div>
+    </div>
+  </main>
+);
 
 FourOFour.displayName = displayName;
 
