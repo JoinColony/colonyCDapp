@@ -21,13 +21,15 @@ const MSG = defineMessages({
 });
 
 interface RemoveExistingDecisionDialogProps extends DialogProps {
-  openDecisionDialog: () => void;
+  onClick: () => void;
+  colonyAddress: string;
 }
 
 const RemoveExistingDecisionDialog = ({
   close,
   cancel,
-  openDecisionDialog,
+  onClick,
+  colonyAddress,
 }: RemoveExistingDecisionDialogProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -41,8 +43,8 @@ const RemoveExistingDecisionDialog = ({
   };
 
   const handleRemoveDecision = () => {
-    dispatch(removeDecisionAction(walletAddress));
-    openDecisionDialog();
+    dispatch(removeDecisionAction(walletAddress, colonyAddress));
+    onClick();
     close();
   };
 

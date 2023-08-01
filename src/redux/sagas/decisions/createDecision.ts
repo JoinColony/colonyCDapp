@@ -2,12 +2,17 @@ import { call, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '~redux/actionTypes';
 import { Action } from '~redux/types';
-import { setDecisionToLocalStorage } from '~utils/decisions';
+import { setDraftDecisionToLocalStorage } from '~utils/decisions';
 
 function* createDecision({
   payload: decision,
 }: Action<ActionTypes.DECISION_DRAFT_CREATED>) {
-  yield call(setDecisionToLocalStorage, decision, decision.walletAddress);
+  yield call(
+    setDraftDecisionToLocalStorage,
+    decision,
+    decision.walletAddress,
+    decision.colonyAddress,
+  );
 }
 
 export default function* createDecisionSaga() {

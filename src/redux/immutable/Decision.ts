@@ -1,16 +1,17 @@
 import { Record } from 'immutable';
 import { Id } from '@colony/colony-js';
 
-import { ColonyDecision, DefaultValues, RecordToJS } from '~types';
+import { DefaultValues, RecordToJS } from '~types';
+import { DecisionDialogValues as DecisionProps } from '~common/ColonyDecisions/DecisionDialog';
 
-type DecisionProps = Omit<ColonyDecision, '__typename' | 'createdAt'>;
-
-const defaultValues: DefaultValues<DecisionProps> = {
-  description: undefined,
-  walletAddress: undefined,
-  motionDomainId: Id.RootDomain,
-  title: undefined,
-};
+const defaultValues: DefaultValues<DecisionProps & { colonyAddress: string }> =
+  {
+    description: undefined,
+    walletAddress: undefined,
+    motionDomainId: Id.RootDomain,
+    title: undefined,
+    colonyAddress: undefined,
+  };
 
 export class DecisionRecord
   extends Record<DecisionProps>(defaultValues)

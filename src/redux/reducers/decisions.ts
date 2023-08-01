@@ -10,13 +10,21 @@ const coreDecisionsReducer: ReducerType<CoreDecisionsRecord> = (
   action,
 ) => {
   switch (action.type) {
-    case ActionTypes.DECISION_DRAFT_CREATED:
+    case ActionTypes.DECISION_DRAFT_CREATED: {
       return state.setIn(
-        [CORE_DECISIONS_LIST, action.payload.walletAddress],
+        [
+          CORE_DECISIONS_LIST,
+          `${action.payload.walletAddress}_${action.payload.colonyAddress}`,
+        ],
         Decision(action.payload),
       );
-    case ActionTypes.DECISION_DRAFT_REMOVED:
-      return state.deleteIn([CORE_DECISIONS_LIST, action.payload]);
+    }
+    case ActionTypes.DECISION_DRAFT_REMOVED: {
+      return state.deleteIn([
+        CORE_DECISIONS_LIST,
+        `${action.payload.walletAddress}_${action.payload.colonyAddress}`,
+      ]);
+    }
     default:
       return state;
   }
