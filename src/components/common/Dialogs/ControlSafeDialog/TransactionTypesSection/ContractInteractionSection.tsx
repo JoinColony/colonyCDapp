@@ -132,6 +132,7 @@ const ContractInteractionSection = ({
   const {
     watch,
     setValue,
+    resetField,
     formState: { isValid },
   } = useFormContext();
   const safe = watch('safe');
@@ -379,6 +380,12 @@ const ContractInteractionSection = ({
                     handleSelectedContractMethods(
                       updatedSelectedContractMethods,
                       transactionIndex,
+                    );
+
+                    updatedSelectedContractMethods[0]?.inputs?.map((input) =>
+                      resetField(
+                        `transactions.${transactionIndex}.${input.name}-${selectedContractMethods[transactionIndex]?.name}`,
+                      ),
                     );
                   }}
                 />
