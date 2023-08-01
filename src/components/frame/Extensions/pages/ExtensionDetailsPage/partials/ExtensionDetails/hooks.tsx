@@ -71,16 +71,15 @@ export const useExtensionDetails = (extensionData: AnyExtensionData) => {
 
   const handleUninstall = useCallback(async () => {
     try {
-      await uninstallAsyncFunction(uninstallExtensionValues).then(() =>
-        toast.success(
-          <Toast
-            type="success"
-            title={{ id: 'extensionDetailsPage.uninstallSuccessTitle' }}
-            description={{
-              id: 'extensionDetailsPage.uninstallSuccessDescription',
-            }}
-          />,
-        ),
+      await uninstallAsyncFunction(uninstallExtensionValues);
+      toast.success(
+        <Toast
+          type="success"
+          title={{ id: 'extensionDetailsPage.uninstallSuccessTitle' }}
+          description={{
+            id: 'extensionDetailsPage.uninstallSuccessDescription',
+          }}
+        />,
       );
     } catch (err) {
       console.error(err);

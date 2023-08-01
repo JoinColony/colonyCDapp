@@ -1,7 +1,7 @@
-import { Token } from '~types';
+import { NetworkInfo } from '~constants';
 import { UserAvatarDetailsProps } from '~v5/shared/UserAvatarDetails/types';
 
 export interface WalletConnectedTopMenuProps extends UserAvatarDetailsProps {
-  nativeToken?: Token;
+  nativeToken?: NetworkInfo;
   hideColonies?: boolean;
 }

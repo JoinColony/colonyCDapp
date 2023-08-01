@@ -6,11 +6,12 @@ import ColoniesDropdown from './partials/ColoniesDropdown';
 import ColonyAvatarWrapper from './partials/ColonyAvatarWrapper';
 import ColonyDropdownMobile from './partials/ColonyDropdownMobile';
 import styles from './ColonySwitcher.module.css';
-import { useColonyContext, useMobile } from '~hooks';
+import { useMobile } from '~hooks';
 import { ColonySwitcherProps } from './types';
 import { useHeader } from '~frame/Extensions/Header/hooks';
 import NavigationTools from '../NavigationTools';
 import PopoverBase from '~v5/shared/PopoverBase';
+import { useGetNetworkToken } from '~hooks/useGetNetworkToken';
 
 const displayName = 'common.Extensions.ColonySwitcher';
 
@@ -24,8 +25,7 @@ const ColonySwitcher: FC<ColonySwitcherProps> = ({
 }) => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
-  const { colony } = useColonyContext();
-  const { nativeToken } = colony || {};
+  const nativeToken = useGetNetworkToken();
   const {
     colonyToDisplayAddress,
     colonyToDisplay,
