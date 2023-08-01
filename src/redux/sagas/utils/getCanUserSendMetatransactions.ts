@@ -24,7 +24,7 @@ export function* getCanUserSendMetatransactions() {
   });
 
   const userHasMetatransactionEnabled =
-    data.getUserByAddress?.items[0]?.profile?.advanced?.metatransactions ||
+    data.getUserByAddress?.items[0]?.profile?.meta?.metatransactionsEnabled ||
     false;
 
   const metatransactionsAvailable = canUseMetatransactions();

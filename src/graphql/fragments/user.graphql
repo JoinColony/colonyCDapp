@@ -33,7 +33,8 @@ fragment Profile on Profile {
   location
   thumbnail
   website
-  advancedSettings {
+  meta {
+    emailPermissions
     metatransactionsEnabled
     decentralizedModeEnabled
     customRpc
