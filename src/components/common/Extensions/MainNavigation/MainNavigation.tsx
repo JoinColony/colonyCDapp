@@ -10,6 +10,7 @@ import Button from '~v5/shared/Button';
 import { MainNavigationProps } from './types';
 import PopoverBase from '~v5/shared/PopoverBase';
 import NavigationTools from '../NavigationTools';
+import { useGetNetworkToken } from '~hooks/useGetNetworkToken';
 
 const displayName = 'common.Extensions.MainNavigation';
 
@@ -19,9 +20,10 @@ const MainNavigation: FC<MainNavigationProps> = ({
   isMenuOpen,
 }) => {
   const { colony } = useColonyContext();
-  const { name, nativeToken } = colony || {};
+  const { name } = colony || {};
   const isMobile = useMobile();
   const navItems = useGetNavItems(name);
+  const nativeToken = useGetNetworkToken();
 
   return (
     <div>
