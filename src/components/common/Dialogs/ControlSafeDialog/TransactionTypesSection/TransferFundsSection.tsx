@@ -29,7 +29,7 @@ import styles from './TransactionTypesSection.css';
 
 const displayName = `common.ControlSafeDialog.TransferFundsSection`;
 
-export const MSG = defineMessages({
+const MSG = defineMessages({
   amount: {
     id: `${displayName}.amount`,
     defaultMessage: 'Amount',
@@ -65,7 +65,7 @@ const ChainWarning = (chunks: React.ReactNode[]) => (
   <span className={styles.warningSafeChainName}>{chunks}</span>
 );
 
-export interface TransferFundsProps extends TransactionSectionProps {
+interface TransferFundsProps extends TransactionSectionProps {
   savedTokenState: [
     Record<string, SafeBalance[]>,
     React.Dispatch<React.SetStateAction<Record<string, SafeBalance[]>>>,
