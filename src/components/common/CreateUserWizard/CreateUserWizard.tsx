@@ -6,7 +6,6 @@ import Heading from '~shared/Heading';
 import ColonyButton from '~shared/Button';
 import WizardTemplate from '~frame/WizardTemplateColony';
 import withWizard from '~shared/Wizard/withWizard';
-import { useTitle } from '~hooks';
 
 import {
   FormValues,
