@@ -8,6 +8,8 @@ import Link from '~shared/Link';
 
 import ExpenditureForm from '../ExpenditureForm';
 
+import styles from './ExpendituresPage.module.css';
+
 const ExpendituresPage = () => {
   const { colony } = useColonyContext();
 
@@ -23,7 +25,7 @@ const ExpendituresPage = () => {
   }
 
   return (
-    <div>
+    <div className={styles.pageWrapper}>
       <ul>
         {data?.getColony?.expenditures?.items
           .filter(notNull)
