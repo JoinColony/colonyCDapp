@@ -58,9 +58,9 @@ function* createExpenditure({
 
     yield fork(createTransaction, setRecipient.id, {
       context: ClientType.ColonyClient,
-      methodName: 'setExpenditureRecipient',
+      methodName: 'setExpenditureRecipients',
       identifier: colonyAddress,
-      params: [expenditureId, 1, recipientAddress],
+      params: [expenditureId, [1], [recipientAddress]],
       group: {
         key: batchKey,
         id: metaId,
@@ -70,9 +70,9 @@ function* createExpenditure({
 
     yield fork(createTransaction, setPayout.id, {
       context: ClientType.ColonyClient,
-      methodName: 'setExpenditurePayout(uint256,uint256,address,uint256)',
+      methodName: 'setExpenditurePayouts',
       identifier: colonyAddress,
-      params: [expenditureId, 1, tokenAddress, amount],
+      params: [expenditureId, [1], tokenAddress, [amount]],
       group: {
         key: batchKey,
         id: metaId,
@@ -80,7 +80,7 @@ function* createExpenditure({
       },
     });
 
-    // Wait for tx success here?
+    yield takeFrom(setPayout.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     yield put<AllActions>({
       type: ActionTypes.EXPENDITURE_CREATE_SUCCESS,
