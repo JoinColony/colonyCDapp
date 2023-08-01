@@ -62,6 +62,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
               [styles.secondaryOutline]: mode === 'secondaryOutline',
               [styles.quinary]: mode === 'quinary',
               [styles.senary]: mode === 'senary',
+              [styles.quaternary]: mode === 'quaternary',
               [styles.tertiary]: mode === 'tertiary',
               [styles.septenary]: mode === 'septenary',
               [styles.completed]: mode === 'completed',

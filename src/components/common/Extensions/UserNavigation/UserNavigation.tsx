@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import { useSelector } from 'react-redux';
-import { useAppContext, useColonyContext, useMobile } from '~hooks';
+import { useAppContext, useMobile } from '~hooks';
 import Button, { Hamburger } from '~v5/shared/Button';
 import Token from './partials/Token';
 import UserMenu from './partials/UserMenu';
@@ -12,6 +12,7 @@ import { groupedTransactionsAndMessages } from '~redux/selectors';
 import { TransactionOrMessageGroups } from '~frame/GasStation/transactionGroup';
 import UserReputation from './partials/UserReputation';
 import { UserNavigationProps } from './types';
+import { useGetNetworkToken } from '~hooks/useGetNetworkToken';
 
 export const displayName = 'common.Extensions.UserNavigation';
 
@@ -19,7 +20,6 @@ export const displayName = 'common.Extensions.UserNavigation';
 const UserNavigation: FC<UserNavigationProps> = ({
   hideColonies,
   isWalletButtonVisible,
-
   userMenuGetTooltipProps,
   userMenuSetTooltipRef,
   userMenuSetTriggerRef,
@@ -27,7 +27,6 @@ const UserNavigation: FC<UserNavigationProps> = ({
   isUserMenuOpen,
   isWalletOpen,
 }) => {
-  const { colony } = useColonyContext();
   const { wallet, user, connectWallet } = useAppContext();
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
@@ -35,7 +34,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
     useState(true);
 
   const isWalletConnected = !!wallet?.address;
-  const { nativeToken } = colony || {};
+  const nativeToken = useGetNetworkToken();
 
   const transactionAndMessageGroups = useSelector(
     groupedTransactionsAndMessages,

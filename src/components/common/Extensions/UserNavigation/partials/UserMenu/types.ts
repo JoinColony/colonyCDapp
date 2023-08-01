@@ -1,6 +1,6 @@
 import { PropsGetterArgs } from 'react-popper-tooltip';
+import { NetworkInfo } from '~constants';
 import { UserFragment } from '~gql';
-import { Token } from '~types';
 
 export interface UserMenuProps {
   tooltipProps: (args?: PropsGetterArgs) => {
@@ -12,6 +12,6 @@ export interface UserMenuProps {
   user?: UserFragment | null;
   isVerified?: boolean;
   walletAddress?: string;
-  nativeToken?: Token;
+  nativeToken?: NetworkInfo;
   hideColonies?: boolean;
 }

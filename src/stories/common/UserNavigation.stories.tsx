@@ -30,10 +30,15 @@ const UserNavigationWithData = () => {
   const ref = useDetectClickOutside({ onTriggered: () => setIsOpen(false) });
 
   const nativeToken = {
-    decimals: 18,
-    name: 'Gnosis',
-    symbol: 'TKN',
-    tokenAddress: '0x123',
+    name: 'Gnosis Chain',
+    chainId: 100,
+    shortName: 'xDai',
+    displayENSDomain: 'joincolony.colonyxdai',
+    blockExplorerName: 'Gnosisscan',
+    blockExplorerUrl: 'https://blockscout.com/poa/xdai',
+    tokenExplorerLink: 'https://blockscout.com/poa/xdai/tokens',
+    contractAddressLink: 'https://blockscout.com/poa/xdai/address',
+    iconName: 'gnosis',
   };
 
   const userReputation = '100';

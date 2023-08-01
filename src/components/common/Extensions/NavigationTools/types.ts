@@ -1,9 +1,9 @@
 import { MessageDescriptor } from 'react-intl';
-import { Token } from '~types';
+import { NetworkInfo } from '~constants';
 
 export interface NavigationToolsProps {
   buttonLabel?: string | MessageDescriptor;
-  nativeToken?: Token;
+  nativeToken?: NetworkInfo;
   hideColonies?: boolean;
   hideMemberReputationOnMobile?: boolean;
 }

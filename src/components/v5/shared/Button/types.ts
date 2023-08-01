@@ -9,6 +9,7 @@ export type ButtonMode =
   | 'secondarySolid'
   | 'secondaryOutline'
   | 'tertiary'
+  | 'quaternary'
   | 'quinary'
   | 'senary'
   | 'septenary'
