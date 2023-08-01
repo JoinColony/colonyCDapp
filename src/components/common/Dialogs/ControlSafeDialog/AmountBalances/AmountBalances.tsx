@@ -21,7 +21,7 @@ interface Props {
   safeBalances: SafeBalance[];
   disabledInput: boolean;
   selectedSafe: Safe | undefined;
-  transactionFormIndex: number;
+  transactionIndex: number;
   maxButtonParams: MaxButtonParams;
 }
 
@@ -42,16 +42,16 @@ const AmountBalances = ({
   selectedSafe,
   safeBalances,
   disabledInput,
-  transactionFormIndex,
+  transactionIndex,
   maxButtonParams,
 }: Props) => {
   const { watch, setValue } = useFormContext();
 
   const selectedTokenData: Token = watch(
-    `transactions.${transactionFormIndex}.tokenData`,
+    `transactions.${transactionIndex}.tokenData`,
   );
   const setSelectedTokenData = (value: Token) =>
-    setValue(`transactions.${transactionFormIndex}.tokenData`, value);
+    setValue(`transactions.${transactionIndex}.tokenData`, value);
 
   const tokens: Token[] = (safeBalances || []).map((balance) => {
     // If selected safe balance uses an ERC20 token
@@ -96,7 +96,7 @@ const AmountBalances = ({
       >
         <Input
           label={MSG.amount}
-          name={`transactions.${transactionFormIndex}.amount`}
+          name={`transactions.${transactionIndex}.amount`}
           appearance={{
             theme: 'minimal',
             align: 'right',
@@ -117,7 +117,7 @@ const AmountBalances = ({
           <TokenSymbolSelector
             label={MSG.token}
             tokens={tokens}
-            name={`transactions.${transactionFormIndex}.tokenData.tokenAddress`}
+            name={`transactions.${transactionIndex}.tokenData.tokenAddress`}
             elementOnly
             appearance={{ alignOptions: 'right', theme: 'grey' }}
             disabled={disabledInput}
