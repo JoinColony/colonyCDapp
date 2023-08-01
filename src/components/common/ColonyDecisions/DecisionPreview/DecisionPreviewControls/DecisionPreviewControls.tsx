@@ -1,5 +1,4 @@
 import React from 'react';
-// import { defineMessages } from 'react-intl';
 
 import { useNavigate } from 'react-router-dom';
 import { DecisionDialog, DeleteDecisionDialog } from '~common/ColonyDecisions';
@@ -20,7 +19,7 @@ const displayName =
   'common.ColonyDecisions.DecisionPreview.DecisionPreviewControls';
 
 const DecisionPreviewControls = ({
-  decision,
+  draftDecision,
 }: DecisionPreviewControlsProps) => {
   const { colony } = useColonyContext();
   const colonyAddress = colony?.colonyAddress ?? '';
@@ -30,19 +29,19 @@ const DecisionPreviewControls = ({
   const navigate = useNavigate();
   return (
     <div className={styles.buttonContainer}>
-      {decision && (
+      {draftDecision && (
         <>
           <Button
             appearance={{ theme: 'blue', size: 'large' }}
-            onClick={() => openConfirmDeleteDialog({ decision })}
+            onClick={() => openConfirmDeleteDialog({ draftDecision })}
             text={{ id: 'button.delete' }}
           />
           <Button
             appearance={{ theme: 'blue', size: 'large' }}
             onClick={() =>
               openDecisionDialog({
-                nativeDomainId: decision.motionDomainId,
-                decision,
+                nativeDomainId: draftDecision.motionDomainId,
+                draftDecision,
                 colonyAddress,
               })
             }
@@ -55,14 +54,13 @@ const DecisionPreviewControls = ({
         values={{
           colonyAddress,
           colonyName: colony?.name,
-          decisionTitle: decision?.title,
-          decisionDescription: decision?.description,
-          motionDomainId: decision?.motionDomainId,
+          // btn disabled if decision is undefined
+          draftDecision: draftDecision as DecisionDraft,
         }}
         transform={withMeta({ navigate })}
         appearance={{ theme: 'primary', size: 'large' }}
         text={{ id: 'button.publish' }}
-        disabled={!decision}
+        disabled={!draftDecision}
       />
     </div>
   );

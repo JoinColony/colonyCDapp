@@ -1,25 +1,21 @@
 import React from 'react';
 
-import { ColonyDecision, User } from '~types';
+import { DecisionDraft } from '~utils/decisions';
 
 import { DecisionContent, DecisionNotFound } from '../DecisionData';
 
 const displayName = 'common.ColonyDecisions.DecisionPreview.DecisionData';
 
 export interface DecisionDataProps {
-  decision?: ColonyDecision;
-  user?: User | null;
+  draftDecision?: DecisionDraft;
 }
 
-const DecisionData = ({ decision, user }: DecisionDataProps) => {
-  const decisionNotFound =
-    !decision || decision.walletAddress !== user?.walletAddress;
-
-  if (decisionNotFound) {
+const DecisionData = ({ draftDecision }: DecisionDataProps) => {
+  if (!draftDecision) {
     return <DecisionNotFound />;
   }
 
-  return <DecisionContent decision={decision} user={user} />;
+  return <DecisionContent draftDecision={draftDecision} />;
 };
 
 DecisionData.displayName = displayName;

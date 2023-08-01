@@ -4,19 +4,19 @@ import parse from 'html-react-parser';
 import UserAvatar from '~shared/UserAvatar';
 import { Heading3 } from '~shared/Heading';
 import { userDetailPopoverOptions } from '~shared/DetailsWidget';
-
-import { DecisionDataProps } from './DecisionData';
+import { DecisionDraft } from '~utils/decisions';
+import { useAppContext } from '~hooks';
 
 import styles from './DecisionContent.css';
 
 const displayName = 'common.ColonyDecisions.DecisionPreview.DecisionContent';
 
-type SelectedProps = Omit<DecisionDataProps, 'setDecision'>;
-type DecisionContentProps = {
-  [k in keyof SelectedProps]-?: SelectedProps[k];
-};
+interface DecisionContentProps {
+  draftDecision: DecisionDraft;
+}
 
-const DecisionContent = ({ decision, user }: DecisionContentProps) => {
+const DecisionContent = ({ draftDecision }: DecisionContentProps) => {
+  const { user } = useAppContext();
   return (
     <div className={styles.decisionContent}>
       <span className={styles.userinfo}>
@@ -32,10 +32,10 @@ const DecisionContent = ({ decision, user }: DecisionContentProps) => {
       </span>
       <Heading3
         appearance={{ margin: 'none', theme: 'dark' }}
-        text={decision.title}
+        text={draftDecision.title}
       />
       <div className={styles.descriptionContainer}>
-        {parse(decision.description)}
+        {parse(draftDecision.description)}
       </div>
     </div>
   );
