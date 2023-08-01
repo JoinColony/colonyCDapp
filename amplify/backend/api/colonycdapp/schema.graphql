@@ -80,6 +80,18 @@ input ProfileMetadataInput {
   List of email permissions for the user
   """
   emailPermissions: [String!]!
+  """
+  A flag to indicate whether the user has enabled metatransactions
+  """
+  metatransactionsEnabled: Boolean
+  """
+  A flag to indicate whether the user has enabled the decentralized mode
+  """
+  decentralizedModeEnabled: Boolean
+  """
+  The URL of the user's custom RPC node
+  """
+  customRpc: String
 }
 
 """
@@ -982,6 +994,18 @@ type ProfileMetadata {
   List of email permissions for the user
   """
   emailPermissions: [String!]!
+  """
+  A flag to indicate whether the user has enabled metatransactions
+  """
+  metatransactionsEnabled: Boolean
+  """
+  A flag to indicate whether the user has enabled the decentralized mode
+  """
+  decentralizedModeEnabled: Boolean
+  """
+  The URL of the user's custom RPC node
+  """
+  customRpc: String
 }
 
 """

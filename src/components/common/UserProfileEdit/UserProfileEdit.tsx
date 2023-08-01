@@ -57,7 +57,7 @@ const UserProfileEdit = () => {
           <UserMainSettings user={user} />
         </TabPanel>
         <TabPanel>
-          <UserAdvancedSettings />
+          <UserAdvancedSettings user={user} />
         </TabPanel>
       </Tabs>
     </ProfileTemplate>
