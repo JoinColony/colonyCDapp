@@ -20,7 +20,6 @@ import {
 } from '~types';
 import Icon from '~shared/Icon';
 import { TokenType } from '~gql';
-/* import { log } from '~utils/debug'; */
 
 import AmountBalances from '../AmountBalances';
 import { TransactionSectionProps } from '../types';
@@ -133,7 +132,6 @@ const TransferFundsSection = ({
         }
       } catch (e) {
         setBalanceError(MSG.balancesError);
-        /* log.error(e); */
       } finally {
         setIsLoadingBalances(false);
       }
