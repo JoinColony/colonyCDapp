@@ -98,57 +98,54 @@ const TransferFundsSection = ({
 
   const getSafeBalance = useCallback(async () => {
     setBalanceError('');
-    if (safe) {
-      setIsLoadingBalances(true);
-      try {
-        const chainName = getChainNameFromSafe(safe.profile.displayName);
-        const baseUrl = getTxServiceBaseUrl(chainName);
-        const response = await fetch(
-          `${baseUrl}/v1/safes/${safeAddress}/balances/`,
+
+    setIsLoadingBalances(true);
+    try {
+      const chainName = getChainNameFromSafe(safe.profile.displayName);
+      const baseUrl = getTxServiceBaseUrl(chainName);
+      const response = await fetch(
+        `${baseUrl}/v1/safes/${safeAddress}/balances/`,
+      );
+      if (response.status === 200) {
+        const data = (await response.json()) as SafeBalanceApiData[];
+        const formattedSafeBalances: SafeBalance[] = data.map(
+          (balanceData) => ({
+            balance: balanceData.balance,
+            token:
+              balanceData.tokenAddress && balanceData.token
+                ? {
+                    tokenAddress: balanceData.tokenAddress,
+                    name: balanceData.token.name,
+                    symbol: balanceData.token.symbol,
+                    decimals: balanceData.token.decimals,
+                    thumbnail: balanceData.token.logoUri,
+                    type: TokenType.Erc20,
+                  }
+                : null,
+          }),
         );
-        if (response.status === 200) {
-          const data = (await response.json()) as SafeBalanceApiData[];
-          const formattedSafeBalances: SafeBalance[] = data.map(
-            (balanceData) => ({
-              balance: balanceData.balance,
-              token:
-                balanceData.tokenAddress && balanceData.token
-                  ? {
-                      tokenAddress: balanceData.tokenAddress,
-                      name: balanceData.token.name,
-                      symbol: balanceData.token.symbol,
-                      decimals: balanceData.token.decimals,
-                      thumbnail: balanceData.token.logoUri,
-                      type: TokenType.Erc20,
-                    }
-                  : null,
-            }),
-          );
-          setSavedTokens((tokens) => ({
-            ...tokens,
-            [safeAddress as string]: formattedSafeBalances,
-          }));
-          setSafeBalances(formattedSafeBalances);
-        }
-      } catch (e) {
-        setBalanceError(MSG.balancesError);
-      } finally {
-        setIsLoadingBalances(false);
+        setSavedTokens((tokens) => ({
+          ...tokens,
+          [safeAddress as string]: formattedSafeBalances,
+        }));
+        setSafeBalances(formattedSafeBalances);
       }
+    } catch (e) {
+      setBalanceError(MSG.balancesError);
+    } finally {
+      setIsLoadingBalances(false);
     }
     // setSafeBalances causes infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [safe, safeAddress, setSavedTokens]);
 
   useEffect(() => {
-    if (safeAddress) {
-      const savedTokenData = savedTokens[safeAddress];
-      if (savedTokenData) {
-        setSafeBalances(savedTokenData);
-        setBalanceError('');
-      } else {
-        getSafeBalance();
-      }
+    const savedTokenData = savedTokens[safeAddress];
+    if (savedTokenData) {
+      setSafeBalances(savedTokenData);
+      setBalanceError('');
+    } else {
+      getSafeBalance();
     }
     // setSafeBalances causes infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
