@@ -8,6 +8,7 @@ import {
   ActionDetailsPageFeed,
   MotionDetailsPageFeed,
 } from '../ActionDetailsPageFeed';
+import Decision from '../Decision';
 
 import ActionAnnotation from './ActionAnnotation';
 
@@ -22,29 +23,35 @@ interface DefaultActionContentProps {
 }
 
 const DefaultActionContent = ({
-  actionData: { annotation, motionData },
+  actionData: { annotation, motionData, isMotion, decisionData },
   actionData,
   colony,
 }: DefaultActionContentProps) => {
   const { objectionAnnotation } = motionData ?? {};
   return (
     <div className={styles.content}>
-      <Heading3
-        className={styles.heading}
-        data-test="actionHeading"
-        text={{ id: 'action.title' }}
-        textValues={getActionTitleValues(actionData, colony)}
-      />
-      <div className={styles.annotations}>
-        {annotation && <ActionAnnotation annotation={annotation} />}
-        {objectionAnnotation && (
-          <ActionAnnotation annotation={objectionAnnotation} isObjection />
-        )}
-      </div>
-      {actionData.isMotion ? (
-        <MotionDetailsPageFeed actionData={actionData} />
+      {decisionData ? (
+        <Decision decisionData={decisionData} />
       ) : (
-        <ActionDetailsPageFeed actionData={actionData} />
+        <div>
+          <Heading3
+            className={styles.heading}
+            data-test="actionHeading"
+            text={{ id: 'action.title' }}
+            textValues={getActionTitleValues(actionData, colony)}
+          />
+          <div className={styles.annotations}>
+            {annotation && <ActionAnnotation annotation={annotation} />}
+            {objectionAnnotation && (
+              <ActionAnnotation annotation={objectionAnnotation} isObjection />
+            )}
+          </div>
+          {isMotion ? (
+            <MotionDetailsPageFeed actionData={actionData} />
+          ) : (
+            <ActionDetailsPageFeed actionData={actionData} />
+          )}
+        </div>
       )}
     </div>
   );

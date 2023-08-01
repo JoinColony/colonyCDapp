@@ -314,6 +314,42 @@ const updateMotionMessagesInDB = async (motionData, motionMessages, flag) => {
   });
 };
 
+const updateMotionFinalizedMessages = async (
+  motionData,
+  motionStateHistory,
+  isDecision = false,
+) => {
+  const didPass = didMotionPass(motionData);
+
+  // Check if the motion passed and the messages have not already been stored in the db
+  if (didPass && !motionStateHistory.hasPassed) {
+    const newMessages = [];
+
+    // only display voting results if a vote has occurred
+    if (motionStateHistory.hasVoted) {
+      newMessages.push('MotionRevealResultMotionWon');
+    }
+
+    if (!isDecision) {
+      newMessages.push('MotionHasPassed');
+    }
+
+    await updateMotionMessagesInDB(motionData, newMessages, 'hasPassed');
+  }
+
+  if (!didPass && !motionStateHistory.hasFailed) {
+    const newMessages = [];
+
+    // only display voting results if a vote has occurred
+    if (motionStateHistory.hasVoted) {
+      newMessages.push('MotionRevealResultObjectionWon');
+    }
+    newMessages.push('MotionHasFailedFinalizable');
+
+    await updateMotionMessagesInDB(motionData, newMessages, 'hasFailed');
+  }
+};
+
 module.exports = {
   getLatestMotionState,
   didMotionPass,
@@ -321,4 +357,5 @@ module.exports = {
   getMotionData,
   updateMotionMessagesInDB,
   setEnvVariables,
+  updateMotionFinalizedMessages,
 };

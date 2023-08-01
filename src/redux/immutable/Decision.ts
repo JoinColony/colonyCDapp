@@ -1,13 +1,11 @@
 import { Record } from 'immutable';
 import { Id } from '@colony/colony-js';
 
-import {
-  ColonyDecision as DecisionProps,
-  DefaultValues,
-  RecordToJS,
-} from '~types';
+import { ColonyDecision, DefaultValues, RecordToJS } from '~types';
 
-const defaultValues: DefaultValues<Omit<DecisionProps, '__typename'>> = {
+type DecisionProps = Omit<ColonyDecision, '__typename' | 'createdAt'>;
+
+const defaultValues: DefaultValues<DecisionProps> = {
   description: undefined,
   walletAddress: undefined,
   motionDomainId: Id.RootDomain,

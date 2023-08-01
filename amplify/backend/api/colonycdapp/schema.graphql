@@ -1962,6 +1962,10 @@ type ColonyMotion @model {
   The annotation object associated with the objection to the motion, if any
   """
   objectionAnnotation: Annotation @hasOne(fields: ["objectionAnnotationId"])
+  """
+  Whether the motion is a Simple Decision
+  """
+  isDecision: Boolean!
 }
 
 """
@@ -2189,6 +2193,9 @@ type ColonyAction @model {
   The block number where the action was recorded
   """
   blockNumber: Int!
+  """
+  Will be true if the action is a motion
+  """
   isMotion: Boolean
   """
   The internal database id of the motion

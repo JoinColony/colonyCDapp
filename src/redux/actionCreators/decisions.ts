@@ -1,7 +1,9 @@
 import { ActionTypes } from '~redux/actionTypes';
 import { Address, ColonyDecision } from '~types';
 
-export const createDecisionAction = (decision: ColonyDecision) => ({
+export const createDecisionAction = (
+  decision: Omit<ColonyDecision, 'createdAt'>,
+) => ({
   type: ActionTypes.DECISION_DRAFT_CREATED,
   payload: decision,
 });

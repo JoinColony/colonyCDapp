@@ -177,6 +177,7 @@ fragment ColonyMotion on ColonyMotion {
   objectionAnnotation {
     ...Annotation
   }
+  isDecision
 }
 
 fragment MotionMessage on MotionMessage {
@@ -210,4 +211,5 @@ fragment ColonyDecision on ColonyDecision {
   description
   motionDomainId
   walletAddress
+  createdAt
 }

@@ -87,6 +87,7 @@ module.exports = {
             ...MotionMessage
           }
         }
+        isDecision
       }
     }
   `,
