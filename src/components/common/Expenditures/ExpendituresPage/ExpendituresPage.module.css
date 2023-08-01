@@ -1,4 +1,9 @@
+.pageWrapper {
+  padding-top: 20px;
+}
+
 .form {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  column-gap: 10px;
 }
