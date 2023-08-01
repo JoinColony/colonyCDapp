@@ -73,11 +73,7 @@ const ColonyHome = () => {
             />
             <Route
               path={COLONY_DECISIONS_ROUTE}
-              element={
-                <ColonyDecisions
-                /* ethDomainId={filteredDomainId} */
-                />
-              }
+              element={<ColonyDecisions domainId={domainIdFilter} />}
             />
           </Route>
 

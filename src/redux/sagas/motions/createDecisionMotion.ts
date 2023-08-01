@@ -6,7 +6,6 @@ import { putError, takeFrom } from '~utils/saga/effects';
 import { ACTION_DECISION_MOTION_CODE, ADDRESS_ZERO } from '~constants';
 import { transactionReady } from '~redux/actionCreators';
 import { TransactionChannel } from '~redux/types/actions/transaction';
-import { removeDecisionFromLocalStorage } from '~utils/decisions';
 import {
   createTransaction,
   createTransactionChannels,
@@ -19,14 +18,13 @@ import {
   CreateColonyDecisionMutationVariables,
 } from '~gql';
 import { ContextModule, getContext } from '~context';
-import { getColonyDecisionId } from '../utils/createDecisionMotion';
+import { getColonyDecisionId } from '../utils/decisionMotion';
 
 function* createDecisionMotion({
   payload: {
     colonyName,
     colonyAddress,
-    decision,
-    decision: { motionDomainId, title, description, walletAddress },
+    draftDecision: { motionDomainId, title, description, walletAddress },
   },
   meta: { id: metaId, navigate },
   meta,
@@ -138,10 +136,13 @@ function* createDecisionMotion({
       variables: {
         input: {
           id: getColonyDecisionId(colonyAddress, txHash),
+          actionId: txHash,
+          colonyAddress,
           description,
           title,
           motionDomainId,
           walletAddress,
+          showInDecisionsList: false,
         },
       },
     });
@@ -172,10 +173,8 @@ function* createDecisionMotion({
 
     yield put({
       type: ActionTypes.DECISION_DRAFT_REMOVED,
-      payload: decision.walletAddress,
+      payload: { walletAddress, colonyAddress },
     });
-
-    removeDecisionFromLocalStorage(decision.walletAddress);
   } catch (caughtError) {
     putError(ActionTypes.MOTION_CREATE_DECISION_ERROR, caughtError, meta);
   } finally {

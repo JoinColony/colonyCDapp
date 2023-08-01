@@ -11,7 +11,7 @@ export interface Appearance {
   width?: 'content' | 'fluid' | 'strict';
 }
 
-export interface SelectProps {
+export interface SelectProps<V = string | number> {
   /** Appearance object */
   appearance?: Appearance;
 
@@ -40,7 +40,7 @@ export interface SelectProps {
   name: string;
 
   /** Callback function, called after value is changed */
-  onChange?: (value: SelectOption['value']) => void;
+  onChange?: (value: SelectOption<V>['value']) => void;
 
   /** Available `option`s for the select */
   options: SelectOption[];
@@ -70,12 +70,12 @@ export interface SelectProps {
   itemDataTest?: string;
 }
 
-export interface SelectOption {
+export interface SelectOption<V = string | number> {
   // Will override `label` for display - `label` still required for a11y
   children?: ReactNode;
   disabled?: boolean;
   label: MessageDescriptor | string;
-  value: string | number;
+  value: V;
   labelValues?: SimpleMessageValues;
   labelElement?: ReactNode;
 }

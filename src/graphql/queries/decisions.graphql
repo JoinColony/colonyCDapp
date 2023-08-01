@@ -1,0 +1,21 @@
+query getColonyDecisions(
+  $colonyAddress: String!
+  $sortDirection: ModelSortDirection = ASC
+  $domainId: Int = 1
+  $limit: Int = 10
+) {
+  getColonyDecisionByColonyAddress(
+    colonyAddress: $colonyAddress
+    filter: {
+      showInDecisionsList: { eq: true }
+      and: { motionDomainId: { eq: $domainId } }
+    }
+    sortDirection: $sortDirection
+    limit: $limit
+  ) {
+    items {
+      ...ColonyDecision
+    }
+    nextToken
+  }
+}

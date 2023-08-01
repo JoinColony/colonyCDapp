@@ -212,4 +212,6 @@ fragment ColonyDecision on ColonyDecision {
   motionDomainId
   walletAddress
   createdAt
+  actionId
+  colonyAddress
 }
