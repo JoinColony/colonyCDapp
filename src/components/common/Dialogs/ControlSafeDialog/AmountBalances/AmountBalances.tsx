@@ -62,20 +62,10 @@ const AmountBalances = ({
     const safeNetworkData = SAFE_NETWORKS.find(
       (network) => Number(selectedSafe?.chainId) === network.chainId,
     );
-    /* const getNetworkName = () => {
-     *   if (safeNetworkData?.chainId === BINANCE_NETWORK.chainId) {
-     *     return 'binance';
-     *   }
-     *   return (
-     *     safeNetworkData?.name.toLowerCase() ||
-     *     ETHEREUM_NETWORK.name.toLowerCase()
-     *   );
-     * }; */
 
     return {
       ...(safeNetworkData?.nativeToken || ETHEREUM_NETWORK.nativeToken)!,
       tokenAddress: ADDRESS_ZERO,
-      /* networkName: getNetworkName(), */
     };
   });
 
