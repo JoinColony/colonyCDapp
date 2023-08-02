@@ -27,7 +27,7 @@ import {
 } from '~routes/routeConstants';
 import { SimpleMessageValues } from '~types';
 import { notNull } from '~utils/arrays';
-import { useGetFullColonyByNameQuery } from '~gql';
+import { useGetDisplayNameByColonyNameQuery } from '~gql';
 
 const displayName = 'utils.hooks';
 
@@ -165,21 +165,16 @@ const getMessageAndValues = (locationPath: string): MessageWithValues => {
   return { msg: routeMessages[matchedRoute], values };
 };
 
-// HACK hopefully no colony ever chooses this string as their unique url
-const randomString = 'RtjqEr3KXxO5SDez1vDZkKFK7ZakY5VN';
-
 export const useTitle = (title?: string) => {
   const { pathname } = useLocation();
   const { formatMessage } = useIntl();
   const { msg, values } = getMessageAndValues(pathname);
 
-  // HACK as we cannot call the below hook conditionally and we cannot query using an empty string
-  const colonyENSName = (values?.colonyName as string) ?? randomString;
-  const isHack = colonyENSName === randomString;
+  const colonyENSName = (values?.colonyName as string) ?? '';
 
-  const { data, error } = useGetFullColonyByNameQuery({
-    fetchPolicy: 'cache-first',
+  const { data, error } = useGetDisplayNameByColonyNameQuery({
     variables: { name: colonyENSName },
+    skip: colonyENSName === '',
   });
 
   if (error) console.error(error);
@@ -187,7 +182,7 @@ export const useTitle = (title?: string) => {
   const queryDisplayName =
     data?.getColonyByName?.items?.[0]?.metadata?.displayName;
 
-  const colonyDisplayName = isHack ? '' : queryDisplayName;
+  const colonyDisplayName = queryDisplayName || colonyENSName;
 
   const titleToSet =
     title ||
