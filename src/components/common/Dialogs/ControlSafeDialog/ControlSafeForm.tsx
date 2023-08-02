@@ -196,7 +196,6 @@ const ControlSafeForm = ({
 
   const isSupportedColonyVersion = version >= 12;
 
-  /* invert this only for testing! */
   const disabledInputs =
     !userHasPermission || isSubmitting || !isSupportedColonyVersion;
 
@@ -286,7 +285,6 @@ const ControlSafeForm = ({
 
   const handleShowPreview = (isPreview: boolean) => {
     setShowPreview(!isPreview);
-    /* handleValidation(); */
   };
 
   // tmp
@@ -370,7 +368,7 @@ const ControlSafeForm = ({
                       label={MSG.transactionLabel}
                       name={`transactions[${index}].transactionType`}
                       onChange={(type) => {
-                        /* removeSelectedContractMethod(index); */
+                        removeSelectedContractMethod(index);
                         handleTransactionTypeChange(type as string, index);
                       }}
                       appearance={{ theme: 'grey', width: 'fluid' }}
@@ -400,7 +398,6 @@ const ControlSafeForm = ({
       ) : (
         <SafeTransactionPreview
           colony={colony}
-          // isSubmitting={isSubmitting}
           selectedContractMethods={selectedContractMethods}
           isVotingExtensionEnabled={
             enabledExtensionData.isVotingReputationEnabled
