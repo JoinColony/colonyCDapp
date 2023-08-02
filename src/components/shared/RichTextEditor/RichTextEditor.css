@@ -30,8 +30,8 @@
 
 .characterCount {
   position: absolute;
-  top: 285px;
   right: 20px;
+  bottom: 5px;
   font-size: var(--size-tiny);
   line-height: 18px;
   color: var(--grey-purple);

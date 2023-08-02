@@ -1,0 +1,3 @@
+.editor div[class*='ProseMirror'] {
+  height: 100px;
+}

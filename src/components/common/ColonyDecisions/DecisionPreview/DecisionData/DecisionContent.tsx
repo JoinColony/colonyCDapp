@@ -6,9 +6,9 @@ import { Heading3 } from '~shared/Heading';
 import { userDetailPopoverOptions } from '~shared/DetailsWidget';
 import { DecisionDraft } from '~utils/decisions';
 import { useAppContext } from '~hooks';
+import { ColonyDecision } from '~types';
 
 import styles from './DecisionContent.css';
-import { ColonyDecision } from '~types';
 
 const displayName = 'common.ColonyDecisions.DecisionPreview.DecisionContent';
 
