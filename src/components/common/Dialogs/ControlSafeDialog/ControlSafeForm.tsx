@@ -11,7 +11,7 @@ import ExternalLink from '~shared/ExternalLink';
 import Button from '~shared/Button';
 import Icon from '~shared/Icon';
 import { filterUserSelection } from '~shared/SingleUserPicker';
-import { SelectedSafe } from '~types';
+import { SelectedPickerItem } from '~types';
 import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
 import { useActionDialogStatus } from '~hooks';
 import { isEmpty } from '~utils/lodash';
@@ -190,7 +190,7 @@ const ControlSafeForm = ({
     }
   };
 
-  const handleSafeChange = (newSafe: SelectedSafe) => {
+  const handleSafeChange = (newSafe: SelectedPickerItem) => {
     const safeAddress = newSafe?.walletAddress;
 
     if (safeAddress !== prevSafeAddress) {

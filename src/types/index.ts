@@ -83,3 +83,11 @@ export interface RecordToJS<T> {
 export type SetStateFn<T = any> = ReturnType<typeof useState<T>>[1];
 
 export type Falsy = undefined | null | false;
+
+export interface SelectedPickerItem {
+  id: Address;
+  profile: {
+    displayName: string;
+  };
+  walletAddress: Address;
+}
