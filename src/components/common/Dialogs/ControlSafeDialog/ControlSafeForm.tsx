@@ -213,7 +213,7 @@ const ControlSafeForm = ({
       case TransactionTypes.CONTRACT_INTERACTION:
         return (
           <ContractInteractionSection
-            safes={safes}
+            colony={colony}
             disabledInput={disabledInputs}
             transactionIndex={transactionIndex}
             selectedContractMethods={selectedContractMethods}
