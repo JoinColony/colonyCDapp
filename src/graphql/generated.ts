@@ -1052,6 +1052,7 @@ export type CreateExpenditureInput = {
   colonyId: Scalars['ID'];
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   id?: InputMaybe<Scalars['ID']>;
+  nativeFundingPotId: Scalars['Int'];
   nativeId: Scalars['Int'];
   ownerAddress: Scalars['ID'];
   slots: Array<ExpenditureSlotInput>;
@@ -1412,6 +1413,7 @@ export type Expenditure = {
   colonyId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
   id: Scalars['ID'];
+  nativeFundingPotId: Scalars['Int'];
   nativeId: Scalars['Int'];
   ownerAddress: Scalars['ID'];
   slots: Array<ExpenditureSlot>;
@@ -2217,6 +2219,7 @@ export type ModelExpenditureConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelExpenditureConditionInput>>>;
   colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
+  nativeFundingPotId?: InputMaybe<ModelIntInput>;
   nativeId?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelExpenditureConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelExpenditureConditionInput>>>;
@@ -2235,6 +2238,7 @@ export type ModelExpenditureFilterInput = {
   colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   id?: InputMaybe<ModelIdInput>;
+  nativeFundingPotId?: InputMaybe<ModelIntInput>;
   nativeId?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelExpenditureFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelExpenditureFilterInput>>>;
@@ -2645,6 +2649,7 @@ export type ModelSubscriptionExpenditureFilterInput = {
   colonyId?: InputMaybe<ModelSubscriptionIdInput>;
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
+  nativeFundingPotId?: InputMaybe<ModelSubscriptionIntInput>;
   nativeId?: InputMaybe<ModelSubscriptionIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionExpenditureFilterInput>>>;
   ownerAddress?: InputMaybe<ModelSubscriptionIdInput>;
@@ -5221,6 +5226,7 @@ export type UpdateExpenditureInput = {
   colonyId?: InputMaybe<Scalars['ID']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   id: Scalars['ID'];
+  nativeFundingPotId?: InputMaybe<Scalars['Int']>;
   nativeId?: InputMaybe<Scalars['Int']>;
   ownerAddress?: InputMaybe<Scalars['ID']>;
   slots?: InputMaybe<Array<ExpenditureSlotInput>>;

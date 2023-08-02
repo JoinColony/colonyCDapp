@@ -2608,6 +2608,7 @@ type Expenditure @model {
   ownerAddress: ID!
   status: ExpenditureStatus!
   slots: [ExpenditureSlot!]!
+  nativeFundingPotId: Int!
 }
 
 # Each expenditure recipient is assigned to a particular integer slot
