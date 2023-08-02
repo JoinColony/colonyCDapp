@@ -11,6 +11,11 @@ import {
   getTxChannel,
 } from '../transactions';
 import { getColonyManager, putError, takeFrom } from '../utils';
+import {
+  transactionAddParams,
+  transactionPending,
+  transactionReady,
+} from '~redux/actionCreators';
 
 function* createExpenditure({
   meta: { id: metaId, navigate },
@@ -33,11 +38,11 @@ function* createExpenditure({
   const batchKey = 'createExpenditure';
 
   try {
-    const { makeExpenditure, setRecipient, setPayout } =
+    const { makeExpenditure, setRecipients, setPayouts } =
       yield createTransactionChannels(metaId, [
         'makeExpenditure',
-        'setRecipient',
-        'setPayout',
+        'setRecipients',
+        'setPayouts',
       ]);
 
     yield fork(createTransaction, makeExpenditure.id, {
@@ -50,37 +55,63 @@ function* createExpenditure({
         id: meta.id,
         index: 0,
       },
+      ready: false,
     });
 
-    yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_SUCCEEDED);
-
-    const expenditureId = yield call(colonyClient.getExpenditureCount);
-
-    yield fork(createTransaction, setRecipient.id, {
+    yield fork(createTransaction, setRecipients.id, {
       context: ClientType.ColonyClient,
       methodName: 'setExpenditureRecipients',
       identifier: colonyAddress,
-      params: [expenditureId, [1], [recipientAddress]],
       group: {
         key: batchKey,
         id: metaId,
         index: 1,
       },
+      ready: false,
     });
 
-    yield fork(createTransaction, setPayout.id, {
+    yield fork(createTransaction, setPayouts.id, {
       context: ClientType.ColonyClient,
       methodName: 'setExpenditurePayouts',
       identifier: colonyAddress,
-      params: [expenditureId, [1], tokenAddress, [amount]],
       group: {
         key: batchKey,
         id: metaId,
         index: 2,
       },
+      ready: false,
     });
 
-    yield takeFrom(setPayout.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield put(transactionPending(makeExpenditure.id));
+    yield put(transactionReady(makeExpenditure.id));
+    yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    const expenditureId = yield call(colonyClient.getExpenditureCount);
+
+    yield put(transactionPending(setRecipients.id));
+    yield put(
+      transactionAddParams(setRecipients.id, [
+        expenditureId,
+        [1],
+        [recipientAddress],
+      ]),
+    );
+    yield put(transactionReady(setRecipients.id));
+
+    yield takeFrom(setRecipients.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    yield put(transactionPending(setPayouts.id));
+    yield put(
+      transactionAddParams(setPayouts.id, [
+        expenditureId,
+        [1],
+        tokenAddress,
+        [amount],
+      ]),
+    );
+    yield put(transactionReady(setPayouts.id));
+
+    yield takeFrom(setPayouts.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     yield put<AllActions>({
       type: ActionTypes.EXPENDITURE_CREATE_SUCCESS,
