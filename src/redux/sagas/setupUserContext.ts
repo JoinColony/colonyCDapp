@@ -2,7 +2,7 @@ import { all, call, fork, put } from 'redux-saga/effects';
 // import { formatEther } from 'ethers/lib/utils';
 
 import motionSagas from './motions';
-import { setContext, ContextModule, UserSettings } from '~context';
+import { setContext, ContextModule } from '~context';
 import { ColonyWallet, isFullWallet } from '~types';
 
 import actionsSagas from './actions';
@@ -66,19 +66,6 @@ export default function* setupUserContext() {
     yield put<AllActions>({
       type: ActionTypes.WALLET_OPEN_SUCCESS,
     });
-
-    /*
-     * Get user settings and hydrate them in the context
-     *
-     * In case the user is just browsing and didn't log in (ethereal wallet),
-     * don't pass the address to the settings context, so as to not pollute
-     * the local storage namespace.
-     * This way it will save, and override all settings in the 000000... slot key
-     */
-    if (wallet?.address) {
-      const userSettings = new UserSettings(wallet.address);
-      setContext(ContextModule.UserSettings, userSettings);
-    }
 
     if (isFullWallet(wallet)) {
       yield call(getGasPrices);

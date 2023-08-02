@@ -3,9 +3,8 @@ import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
 import { Input, InputProps } from '~shared/Fields';
-import { isAddress } from '~utils/web3';
+import { createAddress, isAddress } from '~utils/web3';
 import { formatText } from '~utils/intl';
-import { connectionIs4G } from '~utils/network';
 import { useGetTokenFromEverywhereQuery } from '~gql';
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { Token } from '~types';
@@ -63,10 +62,6 @@ const getStatusText = ({ hasError, token, isDirty }: StatusTextProps) => {
   };
 };
 
-const getLoadingState = (isLoading: boolean) =>
-  // Don't show loading state if connection is 4G or unknown
-  connectionIs4G() !== false ? false : isLoading;
-
 const TokenSelector = ({
   extra,
   label,
@@ -81,7 +76,10 @@ const TokenSelector = ({
     setValue,
     clearErrors,
   } = useFormContext();
-  const tokenAddress = watch(addressFieldName);
+  const tokenAddressField = watch(addressFieldName);
+  const tokenAddress = isAddress(tokenAddressField)
+    ? createAddress(tokenAddressField)
+    : tokenAddressField;
 
   const {
     data,
@@ -122,7 +120,7 @@ const TokenSelector = ({
           hasError: !isValid || !!fetchingTokenError,
           token,
         })}
-        isLoading={getLoadingState(displayLoading)}
+        isLoading={displayLoading}
         appearance={appearance}
         disabled={disabled}
         dataTest="tokenSelectorInput"

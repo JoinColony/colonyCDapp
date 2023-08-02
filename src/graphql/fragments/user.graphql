@@ -33,6 +33,12 @@ fragment Profile on Profile {
   location
   thumbnail
   website
+  meta {
+    emailPermissions
+    metatransactionsEnabled
+    decentralizedModeEnabled
+    customRpc
+  }
 }
 
 fragment MemberUser on User {

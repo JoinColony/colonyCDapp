@@ -113,7 +113,7 @@ const balancesFieldCache = {
               domain: null,
               id: `${colonyChainId}_${colonyAddress}_${COLONY_TOTAL_BALANCE_DOMAIN_ID}_${token.id}_balance`,
               token,
-              balance: totalTokenBalances[token.id].toString(),
+              balance: totalTokenBalances[token.id]?.toString(),
             }),
           ),
         ],
