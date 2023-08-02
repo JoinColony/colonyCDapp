@@ -4,6 +4,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { ColonyRole, Id } from '@colony/colony-js';
 import classnames from 'classnames';
 
+import { useAppContext, useActionDialogStatus } from '~hooks';
 import { DialogSection } from '~shared/Dialog';
 import { HookFormSelect as Select } from '~shared/Fields';
 import Heading from '~shared/Heading';
@@ -13,8 +14,8 @@ import Icon from '~shared/Icon';
 import { filterUserSelection } from '~shared/SingleUserPicker';
 import { SelectedPickerItem, SafeTransaction } from '~types';
 import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
-import { useActionDialogStatus } from '~hooks';
 import { isEmpty, isEqual, omit } from '~utils/lodash';
+import { hasRoot } from '~utils/checks';
 
 import {
   TransferNFTSection,
@@ -33,8 +34,11 @@ import { ControlSafeProps, UpdatedMethods } from './types';
 import AddItemButton from './AddItemButton';
 import SingleSafePicker from './SingleSafePicker';
 import TransactionHeader from './TransactionHeader';
+import SafeTransactionPreview from './SafeTransactionPreview';
 
 import styles from './ControlSafeForm.css';
+import { getAllUserRoles } from '~transformers';
+import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 
 const displayName = 'common.ControlSafeDialog.ControlSafeForm';
 
@@ -100,13 +104,19 @@ const ControlSafeForm = ({
   enabledExtensionData,
   selectedContractMethods,
   setSelectedContractMethods,
+  showPreview,
+  setShowPreview,
 }: ControlSafeProps) => {
+  const { wallet } = useAppContext();
+  const allUserRoles = getAllUserRoles(colony, wallet?.address || '');
+  const canManageAndControlSafes = hasRoot(allUserRoles);
+
   const [prevSafeAddress, setPrevSafeAddress] = useState<string>('');
   const [transactionTabStatus, setTransactionTabStatus] = useState([true]);
   const savedTokenState = useState({});
 
   const {
-    formState: { isSubmitting, dirtyFields },
+    formState: { isSubmitting, dirtyFields, isValid, isDirty },
     watch,
     setValue,
     trigger,
@@ -115,6 +125,7 @@ const ControlSafeForm = ({
 
   const selectedSafe: SelectedPickerItem = watch('safe');
   const safes = metadata?.safes || [];
+  /* const forceAction: boolean = watch('forceAction'); */
 
   const {
     fields,
@@ -131,6 +142,8 @@ const ControlSafeForm = ({
     [Id.RootDomain],
     enabledExtensionData,
   );
+
+  const { votingReputationVersion } = enabledExtensionData;
 
   const handleNewTab = () => {
     append(defaultTransaction);
@@ -270,119 +283,154 @@ const ControlSafeForm = ({
     }
   }, [fields, watch, setValue, selectedSafe]);
 
+  const handleShowPreview = (isPreview: boolean) => {
+    setShowPreview(!isPreview);
+    /* handleValidation(); */
+  };
+
+  // tmp
+  const handleSubmit = () => {
+    console.warn('submitting');
+  };
+
   return (
     <>
-      <DialogSection>
-        <div className={styles.heading}>
-          <Heading
-            appearance={{ size: 'medium', margin: 'none', theme: 'dark' }}
-            text={MSG.title}
-          />
-        </div>
-      </DialogSection>
-      <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <FormattedMessage
-          {...MSG.description}
-          values={{
-            a: ReadMoreLink,
-          }}
-        />
-      </DialogSection>
-      {!isSupportedColonyVersion && (
-        <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.upgradeWarning}>
-            <Icon
-              name="triangle-warning"
-              className={styles.warningIcon}
-              title={MSG.warningIconTitle}
-            />
-            <div>
-              <FormattedMessage
-                {...MSG.upgradeWarning}
-                values={{
-                  span: UpgradeWarning,
-                  break: <br />,
-                }}
+      {!showPreview ? (
+        <>
+          <DialogSection>
+            <div className={styles.heading}>
+              <Heading
+                appearance={{ size: 'medium', margin: 'none', theme: 'dark' }}
+                text={MSG.title}
               />
             </div>
-          </div>
-        </DialogSection>
-      )}
-      <DialogSection>
-        <div className={styles.safePicker}>
-          <SingleSafePicker
-            label={MSG.selectSafe}
-            name="safe"
-            data={safes}
-            placeholder={MSG.safePickerPlaceholder}
-            filter={filterUserSelection}
-            disabled={disabledInputs}
-            onSelected={handleSafeChange}
-          />
-        </div>
-      </DialogSection>
-      {fields.map((transaction, index) => (
-        <div key={transaction.id}>
-          {fields.length > 1 && (
-            <TransactionHeader
-              transactionIndex={index}
-              transactionTabStatus={transactionTabStatus}
-              handleTransactionTabStatus={setTransactionTabStatus}
-              selectedContractMethods={selectedContractMethods}
-              handleSelectedContractMethods={handleSelectedContractMethods}
-              removeTab={removeTab}
+          </DialogSection>
+          <DialogSection appearance={{ theme: 'sidePadding' }}>
+            <FormattedMessage
+              {...MSG.description}
+              values={{
+                a: ReadMoreLink,
+              }}
             />
-          )}
-          <div
-            className={classnames({
-              [styles.tabContentClosed]:
-                fields.length > 1 && !transactionTabStatus[index],
-            })}
-          >
+          </DialogSection>
+          {!isSupportedColonyVersion && (
             <DialogSection appearance={{ theme: 'sidePadding' }}>
-              <div className={styles.transactionTypeSelectContainer}>
-                <Select
-                  options={transactionOptions}
-                  label={MSG.transactionLabel}
-                  name={`transactions[${index}].transactionType`}
-                  onChange={(type) => {
-                    removeSelectedContractMethod(index);
-                    handleTransactionTypeChange(type as string, index);
-                  }}
-                  appearance={{ theme: 'grey', width: 'fluid' }}
-                  placeholder={MSG.transactionPlaceholder}
-                  disabled={disabledInputs}
+              <div className={styles.upgradeWarning}>
+                <Icon
+                  name="triangle-warning"
+                  className={styles.warningIcon}
+                  title={MSG.warningIconTitle}
                 />
+                <div>
+                  <FormattedMessage
+                    {...MSG.upgradeWarning}
+                    values={{
+                      span: UpgradeWarning,
+                      break: <br />,
+                    }}
+                  />
+                </div>
               </div>
             </DialogSection>
-            {isEmpty(selectedSafe) && !isEmpty(dirtyFields) ? (
-              <ErrorMessage error={MSG.invalidSafeError} />
-            ) : (
-              renderTransactionSection(index)
-            )}
-          </div>
-        </div>
-      ))}
-      <DialogSection>
-        <div className={styles.addTransaction}>
-          <AddItemButton
-            text={MSG.buttonTransaction}
-            disabled={isSubmitting}
-            handleClick={() => handleNewTab()}
-          />
-        </div>
-      </DialogSection>
-      <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
-        <Button
-          appearance={{ theme: 'secondary', size: 'large' }}
-          onClick={back}
-          text={{ id: 'button.back' }}
+          )}
+          <DialogSection>
+            <div className={styles.safePicker}>
+              <SingleSafePicker
+                label={MSG.selectSafe}
+                name="safe"
+                data={safes}
+                placeholder={MSG.safePickerPlaceholder}
+                filter={filterUserSelection}
+                disabled={disabledInputs}
+                onSelected={handleSafeChange}
+              />
+            </div>
+          </DialogSection>
+          {fields.map((transaction, index) => (
+            <div key={transaction.id}>
+              {fields.length > 1 && (
+                <TransactionHeader
+                  transactionIndex={index}
+                  transactionTabStatus={transactionTabStatus}
+                  handleTransactionTabStatus={setTransactionTabStatus}
+                  removeTab={removeTab}
+                />
+              )}
+              <div
+                className={classnames({
+                  [styles.tabContentClosed]:
+                    fields.length > 1 && !transactionTabStatus[index],
+                })}
+              >
+                <DialogSection appearance={{ theme: 'sidePadding' }}>
+                  <div className={styles.transactionTypeSelectContainer}>
+                    <Select
+                      options={transactionOptions}
+                      label={MSG.transactionLabel}
+                      name={`transactions[${index}].transactionType`}
+                      onChange={(type) => {
+                        /* removeSelectedContractMethod(index); */
+                        handleTransactionTypeChange(type as string, index);
+                      }}
+                      appearance={{ theme: 'grey', width: 'fluid' }}
+                      placeholder={MSG.transactionPlaceholder}
+                      disabled={disabledInputs}
+                    />
+                  </div>
+                </DialogSection>
+                {isEmpty(selectedSafe) && !isEmpty(dirtyFields) ? (
+                  <ErrorMessage error={MSG.invalidSafeError} />
+                ) : (
+                  renderTransactionSection(index)
+                )}
+              </div>
+            </div>
+          ))}
+          <DialogSection>
+            <div className={styles.addTransaction}>
+              <AddItemButton
+                text={MSG.buttonTransaction}
+                disabled={isSubmitting}
+                handleClick={() => handleNewTab()}
+              />
+            </div>
+          </DialogSection>
+        </>
+      ) : (
+        <SafeTransactionPreview
+          colony={colony}
+          // isSubmitting={isSubmitting}
+          selectedContractMethods={selectedContractMethods}
+          isVotingExtensionEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
+          canManageAndControlSafes={canManageAndControlSafes}
+          // onlyForceAction={onlyForceAction}
         />
+      )}
+      <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
+        {(back || showPreview) && (
+          <Button
+            appearance={{ theme: 'secondary', size: 'large' }}
+            onClick={showPreview ? () => handleShowPreview(showPreview) : back}
+            text={{ id: 'button.back' }}
+          />
+        )}
         <Button
           appearance={{ theme: 'primary', size: 'large' }}
-          onClick={() => {}}
+          onClick={() =>
+            showPreview ? handleSubmit() : handleShowPreview(showPreview)
+          }
           text={submitButtonText}
-          disabled
+          loading={isSubmitting}
+          disabled={
+            !isValid ||
+            isSubmitting ||
+            !isDirty ||
+            (showPreview &&
+              votingReputationVersion === noMotionsVotingReputationVersion)
+            /* && !forceAction) */
+          }
           style={{ width: styles.wideButton }}
         />
       </DialogSection>

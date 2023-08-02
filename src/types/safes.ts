@@ -15,6 +15,28 @@ export type FunctionParamType = {
   type?: string;
 };
 
+export type NftProfile = {
+  displayName: string;
+  walletAddress: string;
+};
+
+export type Nft = {
+  id: string;
+  profile: NftProfile;
+};
+
+export type NftData = {
+  address: string;
+  description?: string;
+  id: string;
+  imageUri?: string;
+  logoUri: string;
+  name?: string;
+  tokenName: string;
+  tokenSymbol: string;
+  uri: string;
+};
+
 export type SafeTransaction = {
   transactionType: string;
   tokenData?: Token;
@@ -26,6 +48,8 @@ export type SafeTransaction = {
   abi: string;
   contractFunction: string;
   functionParamTypes?: FunctionParamType[];
+  nft?: Nft;
+  nftData?: NftData;
 };
 
 export interface SafeBalance {
