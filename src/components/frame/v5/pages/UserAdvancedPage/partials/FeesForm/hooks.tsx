@@ -2,33 +2,42 @@ import { bool, object } from 'yup';
 import { toast } from 'react-toastify';
 import React from 'react';
 
-import useUserSettings, { SlotKey } from '~hooks/useUserSettings';
 import Toast from '~shared/Extensions/Toast';
 import { canUseMetatransactions } from '~utils/checks';
-import { UserSettingsSlot } from '~context/userSettings';
-import { setFormValuesToLocalStorage } from '../../utils';
+import { useUpdateUserProfileMutation } from '~gql';
+import { useAppContext } from '~hooks';
 
 export const useFeesForm = () => {
   const metatransactionsValidationSchema = object({
-    [SlotKey.Metatransactions]: bool<boolean>(),
+    metatransactions: bool<boolean>(),
   }).defined();
 
   const metatransactionsAvailable = canUseMetatransactions();
-  const {
-    settings: { metatransactions: metatransactionsSetting },
-    setSettingsKey,
-  } = useUserSettings();
+
+  const { user } = useAppContext();
+  const existingUserSettings = user?.profile?.meta;
+  const [editUser] = useUpdateUserProfileMutation();
 
   const metatransasctionsDefault = metatransactionsAvailable
-    ? metatransactionsSetting
+    ? existingUserSettings?.metatransactionsEnabled
     : false;
 
-  const handleSubmit = (values: Partial<UserSettingsSlot>) => {
-    setFormValuesToLocalStorage(values, setSettingsKey);
+  const handleSubmit = async (values) => {
+    await editUser({
+      variables: {
+        input: {
+          id: user?.walletAddress ?? '',
+          meta: {
+            ...existingUserSettings,
+            ...values,
+          },
+        },
+      },
+    });
   };
 
   const handleFeesOnChange = (value: boolean) => {
-    handleSubmit({ [SlotKey.Metatransactions]: value });
+    handleSubmit({ metatransactions: value });
     toast.success(
       <Toast
         type="success"

@@ -3,7 +3,6 @@ import { useIntl } from 'react-intl';
 
 import { Form } from '~shared/Fields';
 import SettingsRow from '~v5/common/SettingsRow';
-import { SlotKey } from '~hooks';
 import { useFeesForm } from './hooks';
 
 const FeesForm = () => {
@@ -19,7 +18,7 @@ const FeesForm = () => {
     <Form
       validationSchema={metatransactionsValidationSchema}
       defaultValues={{
-        [SlotKey.Metatransactions]: metatransasctionsDefault,
+        metatransactions: metatransasctionsDefault,
       }}
       onSubmit={handleSubmit}
     >
@@ -33,7 +32,7 @@ const FeesForm = () => {
               title={{ id: 'advancedSettings.fees.title' }}
               description={{ id: 'advancedSettings.fees.description' }}
               tooltipMessage={{ id: 'advancedSettings.fees.tooltip' }}
-              id={SlotKey.Metatransactions}
+              id="metatransactions"
               onChange={handleFeesOnChange}
               register={register}
             />

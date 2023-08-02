@@ -1,5 +1,4 @@
 import React from 'react';
-import { SlotKey } from '~hooks';
 
 import { Form } from '~shared/Fields';
 import SettingsInputRow from '~v5/common/SettingsInputRow';
@@ -20,8 +19,8 @@ const RpcForm = () => {
     <Form
       validationSchema={rpcValidationSchema}
       defaultValues={{
-        [SlotKey.DecentralizedMode]: decentralizedModeEnabled,
-        [SlotKey.CustomRPC]: customRpc,
+        decentralizedModeEnabled,
+        customRpc,
       }}
       onSubmit={() => {}}
     >
@@ -31,9 +30,9 @@ const RpcForm = () => {
             title={{ id: 'advancedSettings.rpc.title' }}
             description={{ id: 'advancedSettings.rpc.description' }}
             tooltipMessage={{ id: 'advancedSettings.rpc.tooltip' }}
-            id={SlotKey.DecentralizedMode}
+            id="decentralizedModeEnabled"
             onChange={handleDecentarlizedOnChange}
-            register={register[SlotKey.DecentralizedMode]}
+            register={register.decentralizedModeEnabled}
           />
           <SettingsInputRow
             isOpen={isInputVisible}
