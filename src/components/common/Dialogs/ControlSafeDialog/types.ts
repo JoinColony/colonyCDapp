@@ -10,6 +10,8 @@ export interface ControlSafeProps {
   setSelectedContractMethods: React.Dispatch<
     React.SetStateAction<UpdatedMethods | undefined>
   >;
+  showPreview: boolean;
+  setShowPreview: (showPreview: boolean) => void;
   // loadingState: [boolean, React.Dispatch<React.SetStateAction<boolean>>][];
   // stepIndex: number;
   // setStepIndex: React.Dispatch<React.SetStateAction<number>>;

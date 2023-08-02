@@ -43,7 +43,7 @@ const ControlSafeDialog = ({
   const [expandedValidationSchema, setExpandedValidationSchema] = useState<
     Record<string, any>
   >({});
-
+  const [showPreview, setShowPreview] = useState(false);
   const navigate = useNavigate();
 
   const validationSchema = getValidationSchema(expandedValidationSchema);
@@ -103,6 +103,8 @@ const ControlSafeDialog = ({
           enabledExtensionData={enabledExtensionData}
           selectedContractMethods={selectedContractMethods}
           setSelectedContractMethods={setSelectedContractMethods}
+          showPreview={showPreview}
+          setShowPreview={setShowPreview}
         />
       </Form>
     </Dialog>
