@@ -27,7 +27,7 @@ import {
   getChainNameFromSafe,
 } from '~utils/safes';
 import { isEmpty, isEqual, isNil } from '~utils/lodash';
-import { Message, Safe, SafeTransaction, User } from '~types';
+import { Message, SafeTransaction, User } from '~types';
 import { isMessageDescriptor } from '~utils/intl';
 import { BINANCE_NETWORK } from '~constants';
 
@@ -95,8 +95,7 @@ const MSG = defineMessages({
   },
 });
 
-interface Props extends Omit<TransactionSectionProps, 'colony'> {
-  safes: Safe[];
+interface Props extends TransactionSectionProps {
   selectedContractMethods?: UpdatedMethods;
   removeSelectedContractMethod: (index: number) => void;
   handleSelectedContractMethods: (
@@ -113,7 +112,7 @@ const getAttributionMessage = (chainId: string | undefined) => {
 };
 
 const ContractInteractionSection = ({
-  safes,
+  colony: { metadata },
   disabledInput,
   transactionIndex,
   selectedContractMethods = {},
@@ -121,6 +120,8 @@ const ContractInteractionSection = ({
   removeSelectedContractMethod,
 }: Props) => {
   const { formatMessage } = useIntl();
+
+  const safes = metadata?.safes || [];
 
   const [formattedMethodOptions, setFormattedMethodOptions] = useState<
     SelectOption[]
