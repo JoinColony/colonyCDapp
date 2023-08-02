@@ -26,7 +26,10 @@ import {
   MotionStakesFragment,
   VoterRecordFragment,
   UnclaimedStakesFragment,
+  AnnotationFragment,
 } from '~gql';
+
+export type AnnotationType = AnnotationFragment;
 
 export type User = UserFragment;
 

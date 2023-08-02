@@ -1,4 +1,5 @@
 import { useFormContext } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 
 import { RaiseObjectionDialog } from '~common/Dialogs';
 import { useAppContext, useColonyContext } from '~hooks';
@@ -14,6 +15,7 @@ const useObjectButton = () => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
   const { pollLockedTokenBalance } = useUserTokenBalanceContext();
+  const { transactionHash } = useParams();
 
   const { getValues } = useFormContext();
   const openRaiseObjectionDialog = useDialog(RaiseObjectionDialog);
@@ -33,6 +35,7 @@ const useObjectButton = () => {
     colony?.colonyAddress ?? '',
     motionId,
     MotionVote.Nay,
+    transactionHash,
   );
 
   const handleStakeSuccess = getHandleStakeSuccessFn(

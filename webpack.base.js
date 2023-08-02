@@ -48,6 +48,8 @@ const config = {
         process: 'process/browser',
         stream: 'stream-browserify',
         util: 'util',
+        path: 'path-browserify',
+        constants: 'constants-browserify',
       },
     ),
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
