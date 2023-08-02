@@ -7,7 +7,16 @@ import UserAvatar from '~shared/UserAvatar';
 import { ColonyDecision } from '~types';
 import { useUserByAddress } from '~hooks';
 
-import { ListItemProps } from '~shared/ListItem/ListItem';
+import { useGetColonyActionQuery } from '~gql';
+import {
+  useColonyMotionState,
+  useMotionTag,
+} from '~common/ColonyActions/ActionsListItem/helpers';
+import CountDownTimer from '~common/ColonyActions/CountDownTimer/CountDownTimer';
+import {
+  MotionState,
+  useShouldDisplayMotionCountdownTime,
+} from '~utils/colonyMotions';
 
 const displayName = 'common.ColonyDecisions.DecisionItem';
 
@@ -24,18 +33,34 @@ const avatarPopoverOptions = {
   ],
 };
 
-interface DecisionItemProps extends Pick<ListItemProps, 'tag' | 'status'> {
+interface DecisionItemProps {
   decision: ColonyDecision;
 }
 
 const DecisionItem = ({
   decision: { actionId, walletAddress, title, createdAt },
-  tag,
-  status = ListItemStatus.Defused,
 }: DecisionItemProps) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { user } = useUserByAddress(walletAddress);
+
+  const { data } = useGetColonyActionQuery({
+    skip: !actionId,
+    variables: { transactionHash: actionId },
+  });
+
+  const motionData = data?.getColonyAction?.motionData;
+
+  const { motionState, refetchMotionState } = useColonyMotionState(
+    true,
+    motionData,
+    actionId,
+  );
+
+  const showMotionCountdownTimer =
+    useShouldDisplayMotionCountdownTime(motionState);
+
+  const MotionTag = useMotionTag(true, motionState);
   return (
     <ListItem
       avatar={
@@ -49,10 +74,21 @@ const DecisionItem = ({
         />
       }
       createdAt={createdAt}
+      extra={
+        showMotionCountdownTimer &&
+        motionData && (
+          <CountDownTimer
+            motionState={motionState as MotionState} // safe casting: if motionState is null, showMotionCountdownTimer will be false.
+            refetchMotionState={refetchMotionState}
+            motionId={motionData.motionId}
+            motionStakes={motionData.motionStakes}
+          />
+        )
+      }
       onClick={() => navigate(`${pathname}/tx/${actionId}`)}
-      tag={tag}
+      tag={<MotionTag />}
       title={title}
-      status={status}
+      status={ListItemStatus.Defused}
     />
   );
 };
