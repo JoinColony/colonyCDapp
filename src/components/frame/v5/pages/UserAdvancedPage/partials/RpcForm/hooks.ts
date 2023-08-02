@@ -1,21 +1,20 @@
 import { string, bool, object } from 'yup';
 import { useState } from 'react';
 
-import useUserSettings, { SlotKey } from '~hooks/useUserSettings';
 import { yupDebounce } from '~utils/yup/tests';
 import {
   isValidURL,
   validateCustomGnosisRPC,
 } from '~common/UserProfileEdit/validation';
-import { UserSettingsSlot } from '~context/userSettings';
-import { setFormValuesToLocalStorage } from '../../utils';
+import { useUpdateUserProfileMutation } from '~gql';
+import { useAppContext } from '~hooks';
 
 export const useRpcForm = () => {
   const rpcValidationSchema = object({
-    [SlotKey.DecentralizedMode]: bool<boolean>(),
-    [SlotKey.CustomRPC]: string()
+    decentralizedModeEnabled: bool<boolean>(),
+    customRpc: string()
       .defined()
-      .when(`${SlotKey.DecentralizedMode}`, {
+      .when('decentralizedModeEnabled', {
         is: true,
         then: string()
           .required(() => 'advancedSettings.rpc.errorEmpty')
@@ -31,27 +30,47 @@ export const useRpcForm = () => {
       }),
   }).defined();
 
+  const { user } = useAppContext();
   const {
-    settings: { decentralizedModeEnabled, customRpc },
-    setSettingsKey,
-  } = useUserSettings();
+    metatransactionsEnabled,
+    emailPermissions,
+    customRpc,
+    decentralizedModeEnabled,
+  } = user?.profile?.meta ?? { emailPermissions: [] };
 
   const [isInputVisible, setIsInputVisible] = useState(
-    decentralizedModeEnabled,
+    !!decentralizedModeEnabled,
   );
 
-  const handleSubmit = (values: Partial<UserSettingsSlot>) => {
-    setFormValuesToLocalStorage(values, setSettingsKey);
+  const [editUser] = useUpdateUserProfileMutation();
+
+  const handleSubmit = async (values: {
+    decentralizedModeEnabled: boolean;
+    customRpc?: string;
+  }) => {
+    await editUser({
+      variables: {
+        input: {
+          id: user?.walletAddress ?? '',
+          meta: {
+            metatransactionsEnabled,
+            emailPermissions,
+            customRpc,
+            ...values,
+          },
+        },
+      },
+    });
   };
 
   const handleDecentarlizedOnChange = (value: boolean) => {
     setIsInputVisible(value);
     handleSubmit(
       value
-        ? { [SlotKey.DecentralizedMode]: value }
+        ? { decentralizedModeEnabled: value }
         : {
-            [SlotKey.DecentralizedMode]: value,
-            [SlotKey.CustomRPC]: '',
+            decentralizedModeEnabled: value,
+            customRpc: '',
           },
     );
   };
