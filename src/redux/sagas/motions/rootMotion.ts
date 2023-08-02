@@ -12,7 +12,13 @@ import {
   transactionReady,
 } from '../../actionCreators';
 
-import { putError, takeFrom, getColonyManager } from '../utils';
+import {
+  putError,
+  takeFrom,
+  getColonyManager,
+  ipfsUploadAnnotation,
+  uploadAnnotationToDb,
+} from '../utils';
 import {
   createTransaction,
   createTransactionChannels,
@@ -131,12 +137,23 @@ function* createRootMotionSaga({
       createMotion.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
       yield put(transactionPending(annotateRootMotion.id));
-      // @TODO: handle uploading annotation msg to db in saga
-      yield put(transactionAddParams(annotateRootMotion.id, [txHash, '']));
+
+      const ipfsHash = yield call(ipfsUploadAnnotation, annotationMessage);
+
+      yield uploadAnnotationToDb({
+        message: annotationMessage,
+        txHash,
+        ipfsHash,
+      });
+
+      yield put(
+        transactionAddParams(annotateRootMotion.id, [txHash, ipfsHash]),
+      );
 
       yield put(transactionReady(annotateRootMotion.id));
 

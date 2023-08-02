@@ -3,7 +3,12 @@ import { ClientType } from '@colony/colony-js';
 
 import { ActionTypes, AllActions, Action } from '~redux';
 
-import { putError, takeFrom, ipfsUploadAnnotation } from '../utils';
+import {
+  putError,
+  takeFrom,
+  ipfsUploadAnnotation,
+  uploadAnnotationToDb,
+} from '../utils';
 import {
   createTransaction,
   createTransactionChannels,
@@ -14,12 +19,6 @@ import {
   transactionPending,
   transactionReady,
 } from '../../actionCreators';
-import { ContextModule, getContext } from '~context';
-import {
-  CreateAnnotationDocument,
-  CreateAnnotationMutation,
-  CreateAnnotationMutationVariables,
-} from '~gql';
 
 function* createMintTokensAction({
   payload: {
@@ -34,8 +33,6 @@ function* createMintTokensAction({
 }: Action<ActionTypes.ACTION_MINT_TOKENS>) {
   let txChannel;
   try {
-    const apolloClient = getContext(ContextModule.ApolloClient);
-
     if (!amount) {
       throw new Error('Amount to mint not set for mintTokens transaction');
     }
@@ -121,18 +118,10 @@ function* createMintTokensAction({
 
       const ipfsHash = yield call(ipfsUploadAnnotation, annotationMessage);
 
-      yield apolloClient.mutate<
-        CreateAnnotationMutation,
-        CreateAnnotationMutationVariables
-      >({
-        mutation: CreateAnnotationDocument,
-        variables: {
-          input: {
-            message: annotationMessage,
-            id: txHash,
-            ipfsHash,
-          },
-        },
+      yield uploadAnnotationToDb({
+        message: annotationMessage,
+        txHash,
+        ipfsHash,
       });
 
       yield put(
