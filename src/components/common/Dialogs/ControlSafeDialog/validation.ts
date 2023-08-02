@@ -102,7 +102,7 @@ export const getValidationSchema = (
                          * May occur in raw transaction section.
                          */
                         if (value === 'filterValue') {
-                          return isAddress(this.parent.profile.walletAddress);
+                          return isAddress(this.parent.walletAddress);
                         }
                         return isAddress(value);
                       }
@@ -210,11 +210,9 @@ export const getValidationSchema = (
             .when('transactionType', {
               is: TransactionTypes.CONTRACT_INTERACTION,
               then: object().shape({
-                profile: object().shape({
-                  walletAddress: string()
-                    .address()
-                    .required(() => MSG.requiredFieldError),
-                }),
+                walletAddress: string()
+                  .address()
+                  .required(() => MSG.requiredFieldError),
               }),
               otherwise: object().nullable(),
             })
@@ -252,11 +250,9 @@ export const getValidationSchema = (
             .when('transactionType', {
               is: TransactionTypes.TRANSFER_NFT,
               then: object().shape({
+                walletAddress: string().required(() => MSG.requiredFieldError),
                 profile: object().shape({
                   displayName: string().required(() => MSG.requiredFieldError),
-                  walletAddress: string().required(
-                    () => MSG.requiredFieldError,
-                  ),
                 }),
               }),
               otherwise: object().nullable(),
