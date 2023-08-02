@@ -140,7 +140,7 @@ const transactionTypeFieldsMap = {
       value: (nftData: NftData) => (
         <div className={styles.nftContainer}>
           <Avatar
-            /* avatarURL={nftData.imageUri || undefined} */
+            avatar={nftData.imageUri || ''}
             placeholderIcon="nft-icon"
             seed={nftData.address.toLocaleLowerCase()}
             title=""
