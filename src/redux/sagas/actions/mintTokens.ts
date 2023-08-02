@@ -2,7 +2,6 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 
 import { ActionTypes, AllActions, Action } from '~redux';
-// import { ContextModule, getContext } from '~context';
 
 import {
   putError,
@@ -15,10 +14,17 @@ import {
   getTxChannel,
 } from '../transactions';
 import {
+  transactionAddParams,
+  transactionPending,
   transactionReady,
-  // transactionPending,
-  // transactionAddParams,
 } from '../../actionCreators';
+import { ContextModule, getContext } from '~context';
+import {
+  AnnotationType,
+  CreateAnnotationDocument,
+  CreateAnnotationMutation,
+  CreateAnnotationMutationVariables,
+} from '~gql';
 
 function* createMintTokensAction({
   payload: {
@@ -26,14 +32,14 @@ function* createMintTokensAction({
     colonyName,
     nativeTokenAddress,
     amount,
-    // annotationMessage,
+    annotationMessage,
   },
   meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.ACTION_MINT_TOKENS>) {
   let txChannel;
   try {
-    // const apolloClient = getContext(ContextModule.ApolloClient);
+    const apolloClient = getContext(ContextModule.ApolloClient);
 
     if (!amount) {
       throw new Error('Amount to mint not set for mintTokens transaction');
@@ -44,11 +50,11 @@ function* createMintTokensAction({
     // setup batch ids and channels
     const batchKey = 'mintTokens';
 
-    const { mintTokens, claimColonyFunds /* annotateMintTokens */ } =
+    const { mintTokens, claimColonyFunds, annotateMintTokens } =
       yield createTransactionChannels(metaId, [
         'mintTokens',
         'claimColonyFunds',
-        // 'annotateMintTokens',
+        'annotateMintTokens',
       ]);
 
     // create transactions
@@ -64,6 +70,7 @@ function* createMintTokensAction({
       },
       ready: false,
     });
+
     yield fork(createTransaction, claimColonyFunds.id, {
       context: ClientType.ColonyClient,
       methodName: 'claimColonyFunds',
@@ -77,29 +84,30 @@ function* createMintTokensAction({
       ready: false,
     });
 
-    // if (annotationMessage) {
-    //   yield fork(createTransaction, annotateMintTokens.id, {
-    //     context: ClientType.ColonyClient,
-    //     methodName: 'annotateTransaction',
-    //     identifier: colonyAddress,
-    //     params: [],
-    //     group: {
-    //       key: batchKey,
-    //       id: metaId,
-    //       index: 2,
-    //     },
-    //     ready: false,
-    //   });
-    // }
+    if (annotationMessage) {
+      yield fork(createTransaction, annotateMintTokens.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        params: [],
+        group: {
+          key: batchKey,
+          id: metaId,
+          index: 2,
+        },
+        ready: false,
+      });
+    }
 
     yield takeFrom(mintTokens.channel, ActionTypes.TRANSACTION_CREATED);
     yield takeFrom(claimColonyFunds.channel, ActionTypes.TRANSACTION_CREATED);
-    // if (annotationMessage) {
-    //   yield takeFrom(
-    //     annotateMintTokens.channel,
-    //     ActionTypes.TRANSACTION_CREATED,
-    //   );
-    // }
+
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateMintTokens.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
 
     yield put(transactionReady(mintTokens.id));
 
@@ -113,21 +121,40 @@ function* createMintTokensAction({
     yield put(transactionReady(claimColonyFunds.id));
     yield takeFrom(claimColonyFunds.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    // if (annotationMessage) {
-    //   yield put(transactionPending(annotateMintTokens.id));
+    if (annotationMessage) {
+      yield put(transactionPending(annotateMintTokens.id));
 
-    // const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
-    // yield put(
-    //   transactionAddParams(annotateMintTokens.id, [txHash, ipfsHash]),
-    // );
+      // const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
 
-    //   yield put(transactionReady(annotateMintTokens.id));
+      yield apolloClient.mutate<
+        CreateAnnotationMutation,
+        CreateAnnotationMutationVariables
+      >({
+        mutation: CreateAnnotationDocument,
+        variables: {
+          input: {
+            message: annotationMessage,
+            id: txHash,
+            ipfsHash: '0x123',
+            type: AnnotationType.Plain,
+          },
+        },
+      });
 
-    //   yield takeFrom(
-    //     annotateMintTokens.channel,
-    //     ActionTypes.TRANSACTION_SUCCEEDED,
-    //   );
-    // }
+      yield put(
+        transactionAddParams(annotateMintTokens.id, [
+          txHash,
+          '0x123' /* ipfsHash */,
+        ]),
+      );
+
+      yield put(transactionReady(annotateMintTokens.id));
+
+      yield takeFrom(
+        annotateMintTokens.channel,
+        ActionTypes.TRANSACTION_SUCCEEDED,
+      );
+    }
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_MINT_TOKENS_SUCCESS,
