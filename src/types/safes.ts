@@ -4,9 +4,9 @@ export type ModuleAddress = Address;
 
 export interface SelectedSafe {
   id: ModuleAddress; // Making explicit that this is the module address
+  walletAddress: Address; // And this is the safe address
   profile: {
     displayName: string;
-    walletAddress: Address; // And this is the safe address
   };
 }
 
@@ -27,28 +27,9 @@ export type FunctionParamType = {
   type: string;
 };
 
-export type SafeBalanceToken = Erc20Token | SafeNativeToken;
-
-export type Erc20Token = {
-  name: string;
-  decimals: number;
-  symbol: string;
-  logoUri: string;
-  address: string;
-};
-
-export type SafeNativeToken = {
-  name: string;
-  decimals: number;
-  symbol: string;
-  address: string;
-  networkName: string;
-};
-
 export type SafeTransaction = {
   transactionType: string;
-  tokenAddress?: string;
-  tokenData?: SafeBalanceToken;
+  tokenData?: Token;
   amount?: string;
   rawAmount?: string;
   recipient?: SimpleUser;
@@ -61,5 +42,16 @@ export type SafeTransaction = {
 
 export interface SafeBalance {
   balance: number;
-  token: Token;
+  token: Token | null;
+}
+
+export interface SafeBalanceApiData {
+  balance: number;
+  tokenAddress: Address | null;
+  token: {
+    name: string;
+    symbol: string;
+    decimals: number;
+    logoUri: string;
+  } | null;
 }

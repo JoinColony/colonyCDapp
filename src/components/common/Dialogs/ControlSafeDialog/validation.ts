@@ -124,7 +124,7 @@ export const getValidationSchema = () => {
                         }),
                       });
                     }
-                    const selectedToken = this.parent.tokenData?.address;
+                    const selectedToken = this.parent.tokenData?.tokenAddress;
                     const selectedTokenDecimals =
                       this.parent.tokenData?.decimals;
 

@@ -105,6 +105,7 @@ const ControlSafeForm = ({
 }: ControlSafeProps) => {
   const [prevSafeAddress, setPrevSafeAddress] = useState<string>('');
   const [transactionTabStatus, setTransactionTabStatus] = useState([true]);
+  const savedTokenState = useState({});
 
   const {
     formState: { isSubmitting, dirtyFields },
@@ -113,7 +114,8 @@ const ControlSafeForm = ({
     trigger,
     control,
   } = useFormContext();
-  const selectedSafe = watch('safe');
+
+  const selectedSafe: SelectedSafe = watch('safe');
 
   const {
     fields,
@@ -157,7 +159,14 @@ const ControlSafeForm = ({
 
     switch (transactionType) {
       case TransactionTypes.TRANSFER_FUNDS:
-        return <TransferFundsSection />;
+        return (
+          <TransferFundsSection
+            colony={colony}
+            disabledInput={disabledInputs}
+            transactionIndex={transactionIndex}
+            savedTokenState={savedTokenState}
+          />
+        );
       case TransactionTypes.RAW_TRANSACTION:
         return (
           <RawTransactionSection
@@ -176,7 +185,7 @@ const ControlSafeForm = ({
   };
 
   const handleSafeChange = (newSafe: SelectedSafe) => {
-    const safeAddress = newSafe?.profile?.walletAddress;
+    const safeAddress = newSafe?.walletAddress;
     if (safeAddress !== prevSafeAddress) {
       setPrevSafeAddress(safeAddress);
       /* values.transactions.forEach((tx, i) => {
