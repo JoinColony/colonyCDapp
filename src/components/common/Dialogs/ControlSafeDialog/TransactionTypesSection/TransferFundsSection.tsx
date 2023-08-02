@@ -13,10 +13,10 @@ import {
 } from '~utils/safes';
 import {
   Message,
-  SelectedSafe as FormSafe,
   SafeBalance,
   SafeBalanceApiData,
   SafeTransaction,
+  SelectedPickerItem,
 } from '~types';
 import Icon from '~shared/Icon';
 import { TokenType } from '~gql';
@@ -84,7 +84,7 @@ const TransferFundsSection = ({
   const [savedTokens, setSavedTokens] = savedTokenState;
 
   const { watch, setValue } = useFormContext();
-  const safe: FormSafe = watch('safe');
+  const safe: SelectedPickerItem = watch('safe');
   const transactions: SafeTransaction[] = watch('transactions');
   const safeBalances: SafeBalance[] = watch('safeBalances');
   const setSafeBalances = (value: SafeBalance[]) =>

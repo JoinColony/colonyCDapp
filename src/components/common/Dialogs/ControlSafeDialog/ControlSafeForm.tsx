@@ -115,7 +115,7 @@ const ControlSafeForm = ({
     control,
   } = useFormContext();
 
-  const selectedSafe: SelectedSafe = watch('safe');
+  const selectedSafe: SelectedPickerItem = watch('safe');
 
   const {
     fields,
