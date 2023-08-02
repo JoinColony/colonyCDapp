@@ -5,6 +5,8 @@ import { Safe } from '~types';
 import { SAFE_NAMES_MAP } from '~constants';
 import { InvisibleCopyableMaskedAddress } from '~shared/InvisibleCopyableAddress';
 
+import { InvisibleCopyableMaskedAddress } from '../SafeTransactionDetail/components/InvisibleCopyableMaskedAddress';
+
 import styles from './SafeDetail.css';
 
 const displayName = 'DetailsWidget.SafeDetail';

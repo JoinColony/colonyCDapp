@@ -217,7 +217,11 @@ const SafeTransactionPreview = ({
   isVotingExtensionEnabled,
   userHasPermission,
 }: Props) => {
-  const { watch, setValue } = useFormContext();
+  const {
+    watch,
+    setValue,
+    formState: { isSubmitting },
+  } = useFormContext();
 
   const safe = watch('safe');
   const transactions: SafeTransaction[] = watch(`transactions`);

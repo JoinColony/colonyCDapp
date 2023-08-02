@@ -2705,16 +2705,16 @@ input ColonyMetadataChangelogInput {
   oldSafes: [SafeInput!]
 }
 
-input PendingModifiedTokenAddressesInput {
-  added: [String!]
-  removed: [String!]
-}
-
 input SafeInput {
   name: String!
   address: String!
   chainId: Int!
   moduleContractAddress: String!
+}
+
+input PendingModifiedTokenAddressesInput {
+  added: [String!]
+  removed: [String!]
 }
 
 type ModelColonyMetadataConnection {
