@@ -14,7 +14,7 @@ interface ToolbarProps {
 const Toolbar = ({ editor }: ToolbarProps) => (
   <div className={styles.main}>
     {getToolbarItems(editor).map(
-      ({ onClick, icon, keyboardShortcut, annotation }) => (
+      ({ onClick, icon, keyboardShortcut, annotation, style }) => (
         <ToolbarItem
           onClick={onClick}
           icon={icon}
@@ -22,6 +22,7 @@ const Toolbar = ({ editor }: ToolbarProps) => (
           annotation={annotation}
           editor={editor}
           key={icon}
+          style={style}
         />
       ),
     )}
