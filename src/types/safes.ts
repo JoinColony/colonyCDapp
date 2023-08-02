@@ -1,14 +1,4 @@
-import { Address, Token } from '~types';
-
-export type ModuleAddress = Address;
-
-export interface SelectedSafe {
-  id: ModuleAddress; // Making explicit that this is the module address
-  walletAddress: Address; // And this is the safe address
-  profile: {
-    displayName: string;
-  };
-}
+import { Token, Address } from '~types';
 
 export type SimpleUserProfile = {
   avatarHash?: string;
@@ -54,4 +44,16 @@ export interface SafeBalanceApiData {
     decimals: number;
     logoUri: string;
   } | null;
+}
+
+export interface NFTData {
+  address: string;
+  id: string;
+  logoUri: string;
+  tokenName: string;
+  tokenSymbol: string;
+  uri: string;
+  description?: string | null;
+  imageUri?: string | null;
+  name?: string | null;
 }

@@ -3,7 +3,7 @@ import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
 import classnames from 'classnames';
 import { useFormContext } from 'react-hook-form';
 
-import { SimpleMessageValues, User } from '~types';
+import { SelectedPickerItem, SimpleMessageValues, User } from '~types';
 import { getMainClasses } from '~utils/css';
 import UserAvatar from '~shared/UserAvatar';
 
@@ -21,7 +21,7 @@ import ItemDefault from './ItemDefault';
 import styles from './SingleUserPicker.css';
 
 export type AvatarRenderFn = (user?: ItemDataType<User>) => ReactNode;
-export type OnSelectedFn = (user: User) => void;
+export type OnSelectedFn = (user: SelectedPickerItem) => void;
 
 const displayName = 'SingleUserPicker';
 
@@ -150,7 +150,7 @@ const SingleUserPicker = ({
     }
   }, [disabled, openOmniPicker, setValue, name]);
   const handlePick = useCallback(
-    (user: User) => {
+    (user: SelectedPickerItem) => {
       setValue(name, user, { shouldValidate: true });
       if (onSelected) onSelected(user);
     },
