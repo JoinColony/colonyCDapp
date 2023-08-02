@@ -16,6 +16,8 @@ export {
   fetchContractName,
 } from './getContractUsefulMethods';
 
+export { getArrayFromString } from './contractParserValidation';
+
 export const getSafe = (
   safes: Safe[],
   selectedSafe: SelectedPickerItem | null,

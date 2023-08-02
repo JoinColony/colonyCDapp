@@ -9,3 +9,4 @@ export { default as TeamDetail } from './TeamDetail';
 export { default as UserDetail, userDetailPopoverOptions } from './UserDetail';
 export { default as SafeDetail } from './SafeDetail';
 export { default as SafeNameDetail } from './SafeValueDetail';
+export { default as SafeTransactionDetail } from './SafeTransactionDetail';

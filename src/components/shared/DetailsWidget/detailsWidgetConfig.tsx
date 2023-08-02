@@ -39,7 +39,7 @@ import styles from './DetailsWidget.css';
 
 const displayName = 'DetailsWidget';
 
-const MSG = defineMessages({
+export const MSG = defineMessages({
   actionType: {
     id: `${displayName}.actionType`,
     defaultMessage: 'Action Type',
