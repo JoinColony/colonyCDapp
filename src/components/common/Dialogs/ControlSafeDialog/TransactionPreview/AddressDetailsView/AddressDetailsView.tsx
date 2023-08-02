@@ -22,7 +22,7 @@ const AddressDetailsView = ({ item, isSafeItem, isCopyable }: Props) => {
        */
       'Address'
     : item.profile?.displayName;
-  const username = item.profile?.displayName;
+  const username = item.name;
 
   const Address = isCopyable ? InvisibleCopyableMaskedAddress : MaskedAddress;
   return (
@@ -30,7 +30,6 @@ const AddressDetailsView = ({ item, isSafeItem, isCopyable }: Props) => {
       <Avatar
         seed={item.walletAddress.toLowerCase()}
         size="xs"
-        /* avatarURL={item.profile?.avatarHash || ''} */
         title="avatar"
         placeholderIcon={isSafeItem ? 'safe-logo' : 'circle-person'}
         className={styles.avatar}
