@@ -94,6 +94,14 @@ fragment ColonyAction on ColonyAction {
   pendingColonyMetadata {
     ...ColonyMetadata
   }
+  annotation {
+    ...Annotation
+  }
+}
+
+fragment Annotation on Annotation {
+  createdAt
+  message
 }
 
 fragment MotionStakeValues on MotionStakeValues {

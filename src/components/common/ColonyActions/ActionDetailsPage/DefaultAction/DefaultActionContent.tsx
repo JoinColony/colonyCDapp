@@ -9,6 +9,8 @@ import {
   MotionDetailsPageFeed,
 } from '../ActionDetailsPageFeed';
 
+import ActionAnnotation from './ActionAnnotation';
+
 import styles from './DefaultAction.css';
 
 const displayName =
@@ -20,6 +22,7 @@ interface DefaultActionContentProps {
 }
 
 const DefaultActionContent = ({
+  actionData: { annotation },
   actionData,
   colony,
 }: DefaultActionContentProps) => (
@@ -30,6 +33,7 @@ const DefaultActionContent = ({
       text={{ id: 'action.title' }}
       textValues={getActionTitleValues(actionData, colony)}
     />
+    {annotation && <ActionAnnotation annotation={annotation} />}
     {actionData.isMotion ? (
       <MotionDetailsPageFeed actionData={actionData} />
     ) : (
