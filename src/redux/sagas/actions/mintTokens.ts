@@ -3,11 +3,7 @@ import { ClientType } from '@colony/colony-js';
 
 import { ActionTypes, AllActions, Action } from '~redux';
 
-import {
-  putError,
-  takeFrom,
-  // uploadIfpsAnnotation,
-} from '../utils';
+import { putError, takeFrom, ipfsUploadAnnotation } from '../utils';
 import {
   createTransaction,
   createTransactionChannels,
@@ -123,7 +119,7 @@ function* createMintTokensAction({
     if (annotationMessage) {
       yield put(transactionPending(annotateMintTokens.id));
 
-      // const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
+      const ipfsHash = yield call(ipfsUploadAnnotation, annotationMessage);
 
       yield apolloClient.mutate<
         CreateAnnotationMutation,
@@ -134,16 +130,13 @@ function* createMintTokensAction({
           input: {
             message: annotationMessage,
             id: txHash,
-            ipfsHash: '0x123',
+            ipfsHash,
           },
         },
       });
 
       yield put(
-        transactionAddParams(annotateMintTokens.id, [
-          txHash,
-          '0x123' /* ipfsHash */,
-        ]),
+        transactionAddParams(annotateMintTokens.id, [txHash, ipfsHash]),
       );
 
       yield put(transactionReady(annotateMintTokens.id));
