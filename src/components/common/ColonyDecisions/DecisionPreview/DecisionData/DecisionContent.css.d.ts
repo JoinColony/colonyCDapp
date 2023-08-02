@@ -2,6 +2,7 @@ declare namespace DecisionContentCssNamespace {
   export interface IDecisionContentCss {
     decisionContent: string;
     descriptionContainer: string;
+    nameAndTime: string;
     noContent: string;
     userName: string;
     userinfo: string;

@@ -25,6 +25,10 @@
   row-gap: 5px;
 }
 
+.time {
+  color: color-mod(var(--dark) alpha(65%));
+}
+
 @media screen and query700 {
   .content {
     width: 100%;

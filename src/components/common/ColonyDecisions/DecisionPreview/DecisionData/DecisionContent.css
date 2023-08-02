@@ -12,6 +12,14 @@
   margin-left: 5px;
 }
 
+.nameAndTime {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  line-height: 18px;
+}
+
 .userinfo {
   composes: inlineEllipsis from '~styles/text.css';
   display: flex;

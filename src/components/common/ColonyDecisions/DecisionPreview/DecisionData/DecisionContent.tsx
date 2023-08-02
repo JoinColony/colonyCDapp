@@ -8,14 +8,19 @@ import { DecisionDraft } from '~utils/decisions';
 import { useAppContext } from '~hooks';
 
 import styles from './DecisionContent.css';
+import { ColonyDecision } from '~types';
 
 const displayName = 'common.ColonyDecisions.DecisionPreview.DecisionContent';
 
 interface DecisionContentProps {
-  draftDecision: DecisionDraft;
+  decisionData: DecisionDraft | ColonyDecision;
+  time?: React.ReactNode;
 }
 
-const DecisionContent = ({ draftDecision }: DecisionContentProps) => {
+const DecisionContent = ({
+  decisionData,
+  time = null,
+}: DecisionContentProps) => {
   const { user } = useAppContext();
   return (
     <div className={styles.decisionContent}>
@@ -28,14 +33,17 @@ const DecisionContent = ({ draftDecision }: DecisionContentProps) => {
           showInfo
           popperOptions={userDetailPopoverOptions}
         />
-        <span className={styles.userName}>{`@${user?.name}`}</span>
+        <div className={styles.nameAndTime}>
+          <span className={styles.userName}>{`@${user?.name}`}</span>
+          {time}
+        </div>
       </span>
       <Heading3
         appearance={{ margin: 'none', theme: 'dark' }}
-        text={draftDecision.title}
+        text={decisionData.title}
       />
       <div className={styles.descriptionContainer}>
-        {parse(draftDecision.description)}
+        {parse(decisionData.description)}
       </div>
     </div>
   );

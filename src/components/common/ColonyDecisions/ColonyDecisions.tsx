@@ -46,7 +46,7 @@ interface ColonyDecisionsProps {
 const ColonyDecisions = ({ domainId }: ColonyDecisionsProps) => {
   const { colony } = useColonyContext();
   const [sortDirection, setSortDirection] = useState<ModelSortDirection>(
-    ModelSortDirection.Asc,
+    ModelSortDirection.Desc,
   );
   const [page, setPage] = useState<number>(1);
 
@@ -67,6 +67,7 @@ const ColonyDecisions = ({ domainId }: ColonyDecisionsProps) => {
       domainId: domainId || Id.RootDomain,
       limit: page * ITEMS_PER_PAGE,
     },
+    fetchPolicy: 'cache-and-network',
   });
 
   const decisions =

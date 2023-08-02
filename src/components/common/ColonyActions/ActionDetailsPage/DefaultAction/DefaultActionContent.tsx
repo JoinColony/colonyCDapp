@@ -8,7 +8,9 @@ import {
   ActionDetailsPageFeed,
   MotionDetailsPageFeed,
 } from '../ActionDetailsPageFeed';
-import Decision from '../Decision';
+
+import { DecisionContent } from '~common/ColonyDecisions/DecisionPreview/DecisionData';
+import TimeRelative from '~shared/TimeRelative/TimeRelative';
 
 import ActionAnnotation from './ActionAnnotation';
 
@@ -28,12 +30,20 @@ const DefaultActionContent = ({
   colony,
 }: DefaultActionContentProps) => {
   const { objectionAnnotation } = motionData ?? {};
+
   return (
     <div className={styles.content}>
       {decisionData ? (
-        <Decision decisionData={decisionData} />
+        <DecisionContent
+          decisionData={decisionData}
+          time={
+            <span className={styles.time}>
+              <TimeRelative value={new Date(decisionData.createdAt)} />
+            </span>
+          }
+        />
       ) : (
-        <div>
+        <>
           <Heading3
             className={styles.heading}
             data-test="actionHeading"
@@ -46,12 +56,12 @@ const DefaultActionContent = ({
               <ActionAnnotation annotation={objectionAnnotation} isObjection />
             )}
           </div>
-          {isMotion ? (
-            <MotionDetailsPageFeed actionData={actionData} />
-          ) : (
-            <ActionDetailsPageFeed actionData={actionData} />
-          )}
-        </div>
+        </>
+      )}
+      {isMotion ? (
+        <MotionDetailsPageFeed actionData={actionData} />
+      ) : (
+        <ActionDetailsPageFeed actionData={actionData} />
       )}
     </div>
   );
