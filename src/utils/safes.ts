@@ -1,7 +1,17 @@
 import { ADDRESS_ZERO, SAFE_NAMES_MAP, SAFE_NETWORKS } from '~constants';
-import { Address, ColonyAction, SafeBalance, SelectedSafe, Safe } from '~types';
+import {
+  Address,
+  ColonyAction,
+  SafeBalance,
+  SelectedPickerItem,
+  Safe,
+  NFTData,
+} from '~types';
 
-export const getSafe = (safes: Safe[], selectedSafe: SelectedSafe | null) => {
+export const getSafe = (
+  safes: Safe[],
+  selectedSafe: SelectedPickerItem | null,
+) => {
   if (!selectedSafe) return undefined;
 
   return safes.find(
@@ -100,7 +110,10 @@ const getTokenIdFromNFTId = (nftId: string) => {
   return chunks[chunks.length - 1];
 };
 
-export const getSelectedNFTData = (selectedNFT, availableNFTs) =>
+export const getSelectedNFTData = (
+  selectedNFT: SelectedPickerItem,
+  availableNFTs: NFTData[],
+) =>
   availableNFTs.find((nft) => {
     const tokenId = getTokenIdFromNFTId(selectedNFT.id);
     return nft.address === selectedNFT.walletAddress && nft.id === tokenId;
