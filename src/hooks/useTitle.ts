@@ -165,14 +165,17 @@ const getMessageAndValues = (locationPath: string): MessageWithValues => {
   return { msg: routeMessages[matchedRoute], values };
 };
 
+// HACK hopefully no colony ever chooses this string as their unique url
+const randomString = 'RtjqEr3KXxO5SDez1vDZkKFK7ZakY5VN';
+
 export const useTitle = (title?: string) => {
   const { pathname } = useLocation();
   const { formatMessage } = useIntl();
   const { msg, values } = getMessageAndValues(pathname);
 
-  const colonyENSName = (values?.colonyName as string) ?? 'hack'; // HACK as we cannot call the below hook conditionally
-  // HACK as we cannot query using an empty string
-  const isHack = colonyENSName === 'hack';
+  // HACK as we cannot call the below hook conditionally and we cannot query using an empty string
+  const colonyENSName = (values?.colonyName as string) ?? randomString;
+  const isHack = colonyENSName === randomString;
 
   const { data, error } = useGetFullColonyByNameQuery({
     fetchPolicy: 'cache-first',
