@@ -52,7 +52,7 @@ const InvisibleCopyableAddress = ({
   };
 
   useEffect(() => {
-    let timeout;
+    let timeout: NodeJS.Timeout;
     if (copied) {
       timeout = setTimeout(() => setCopied(false), 2000);
     }
