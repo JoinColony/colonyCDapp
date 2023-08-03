@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Id } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
 
 import { ExpenditureStatus, useGetExpenditureQuery } from '~gql';
 import { useColonyContext } from '~hooks';
@@ -10,10 +11,23 @@ import { ActionButton } from '~shared/Button';
 import { Heading3 } from '~shared/Heading';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
 import MaskedAddress from '~shared/MaskedAddress';
+import { Expenditure } from '~types';
 
-import styles from './ExpenditureDetailsPage.module.css';
 import Numeral from '~shared/Numeral';
 import { findDomainByNativeId } from '~utils/domains';
+
+import styles from './ExpenditureDetailsPage.module.css';
+
+const getExpenditurePayoutsTotal = (expenditure: Expenditure) => {
+  return expenditure.slots.reduce((total, slot) => {
+    return total.add(
+      slot.payouts?.reduce(
+        (slotTotal, payout) => slotTotal.add(payout.amount),
+        BigNumber.from(0),
+      ) ?? 0,
+    );
+  }, BigNumber.from(0));
+};
 
 const ExpenditureDetailsPage = () => {
   const { expenditureId } = useParams();
@@ -49,6 +63,22 @@ const ExpenditureDetailsPage = () => {
       <Heading3>Expenditure {expenditure.id}</Heading3>
       <div>Status: {expenditure.status}</div>
       <div>Team: {expenditureDomain?.metadata?.name ?? 'Unknown team'}</div>
+      <div>
+        Balance:{' '}
+        <ActionButton
+          actionType={ActionTypes.EXPENDITURE_FUND}
+          values={{
+            colonyAddress: colony.colonyAddress,
+            expenditureFundingPotId: expenditure.nativeFundingPotId,
+            fromDomainFundingPotId:
+              expenditureDomain?.nativeFundingPotId ?? Id.RootPot,
+            amount: getExpenditurePayoutsTotal(expenditure).toString(),
+            tokenAddress: colony.nativeToken.tokenAddress,
+          }}
+        >
+          Fund expenditure
+        </ActionButton>
+      </div>
 
       <ul className={styles.recipients}>
         {expenditure.slots.map((slot) => (
