@@ -1,5 +1,5 @@
-declare namespace AnnotationCssNamespace {
-  export interface IAnnotationCss {
+declare namespace ActionAnnotationCssNamespace {
+  export interface IActionAnnotationCss {
     avatar: string;
     content: string;
     details: string;
@@ -10,9 +10,9 @@ declare namespace AnnotationCssNamespace {
   }
 }
 
-declare const AnnotationCssModule: AnnotationCssNamespace.IAnnotationCss & {
+declare const ActionAnnotationCssModule: ActionAnnotationCssNamespace.IActionAnnotationCss & {
   /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
-  locals: AnnotationCssNamespace.IAnnotationCss;
+  locals: ActionAnnotationCssNamespace.IActionAnnotationCss;
 };
 
-export = AnnotationCssModule;
+export = ActionAnnotationCssModule;
