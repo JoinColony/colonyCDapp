@@ -19,7 +19,7 @@ const SubMenu: FC<SubMenuProps> = ({ items }) => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
   const Wrapper = isMobile ? 'div' : Card;
-  const { setisActionSidebarOpen } = useActionSidebarContext();
+  const { toggleActionBar } = useActionSidebarContext();
 
   return (
     <Wrapper hasShadow={!isMobile}>
@@ -62,7 +62,7 @@ const SubMenu: FC<SubMenuProps> = ({ items }) => {
               <Button
                 text="Create new action"
                 mode="quinary"
-                onClick={() => setisActionSidebarOpen(true)}
+                onClick={toggleActionBar}
                 isFullSize={isMobile}
               />
             </div>

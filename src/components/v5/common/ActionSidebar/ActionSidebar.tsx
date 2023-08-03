@@ -15,9 +15,9 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
   const [isSidebarFullscreen, setIsSidebarFullscreen] = useState(false);
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
-  const { setisActionSidebarOpen } = useActionSidebarContext();
+  const { toggleActionSidebarOff } = useActionSidebarContext();
 
-  useOnClickOutside(ref, () => setisActionSidebarOpen(false));
+  useOnClickOutside(ref, () => toggleActionSidebarOff());
 
   return (
     <div
@@ -32,7 +32,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
           <button
             type="button"
             className={styles.button}
-            onClick={() => setisActionSidebarOpen(false)}
+            onClick={toggleActionSidebarOff}
             aria-label={formatMessage({ id: 'ariaLabel.closeModal' })}
           >
             <Icon name="close" appearance={{ size: 'tiny' }} />
@@ -121,7 +121,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
           <Button
             mode="primaryOutline"
             text={{ id: 'button.cancel' }}
-            onClick={() => setisActionSidebarOpen(false)}
+            onClick={toggleActionSidebarOff}
           />
           <Button
             mode="primarySolid"

@@ -4,27 +4,32 @@ import React, {
   PropsWithChildren,
   useContext,
   useMemo,
-  useState,
 } from 'react';
+import useToggle from '~hooks/useToggle';
 
 import noop from '~utils/noop';
 
 export const ActionSidebarContext = createContext<{
   isActionSidebarOpen: boolean;
-  setisActionSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleActionBar: () => void;
+  toggleActionSidebarOff: () => void;
 }>({
   isActionSidebarOpen: false,
-  setisActionSidebarOpen: noop,
+  toggleActionBar: noop,
+  toggleActionSidebarOff: noop,
 });
 
 export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
-  const [isActionSidebarOpen, setisActionSidebarOpen] = useState(false);
+  const [
+    isActionSidebarOpen,
+    { toggle: toggleActionBar, toggleOff: toggleActionSidebarOff },
+  ] = useToggle({ defaultToggleState: false });
 
   const value = useMemo(
-    () => ({ isActionSidebarOpen, setisActionSidebarOpen }),
-    [isActionSidebarOpen],
+    () => ({ isActionSidebarOpen, toggleActionBar, toggleActionSidebarOff }),
+    [isActionSidebarOpen, toggleActionBar, toggleActionSidebarOff],
   );
 
   return (

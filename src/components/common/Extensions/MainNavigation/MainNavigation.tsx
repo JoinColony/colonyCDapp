@@ -25,7 +25,7 @@ const MainNavigation: FC<MainNavigationProps> = ({
   const isMobile = useMobile();
   const navItems = useGetNavItems(name);
   const nativeToken = useGetNetworkToken();
-  const { setisActionSidebarOpen } = useActionSidebarContext();
+  const { toggleActionBar } = useActionSidebarContext();
 
   return (
     <div>
@@ -49,7 +49,7 @@ const MainNavigation: FC<MainNavigationProps> = ({
                     text="Create new action"
                     mode="quinary"
                     isFullSize={isMobile}
-                    onClick={() => setisActionSidebarOpen(true)}
+                    onClick={toggleActionBar}
                   />
                 </div>
                 <LearnMore
