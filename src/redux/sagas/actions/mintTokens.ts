@@ -3,22 +3,13 @@ import { ClientType } from '@colony/colony-js';
 
 import { ActionTypes, AllActions, Action } from '~redux';
 
-import {
-  putError,
-  takeFrom,
-  ipfsUploadAnnotation,
-  uploadAnnotationToDb,
-} from '../utils';
+import { putError, takeFrom, uploadAnnotation } from '../utils';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import {
-  transactionAddParams,
-  transactionPending,
-  transactionReady,
-} from '../../actionCreators';
+import { transactionReady } from '../../actionCreators';
 
 function* createMintTokensAction({
   payload: {
@@ -114,26 +105,11 @@ function* createMintTokensAction({
     yield takeFrom(claimColonyFunds.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
-      yield put(transactionPending(annotateMintTokens.id));
-
-      const ipfsHash = yield call(ipfsUploadAnnotation, annotationMessage);
-
-      yield uploadAnnotationToDb({
+      yield uploadAnnotation({
+        txChannel: annotateMintTokens,
         message: annotationMessage,
         txHash,
-        ipfsHash,
       });
-
-      yield put(
-        transactionAddParams(annotateMintTokens.id, [txHash, ipfsHash]),
-      );
-
-      yield put(transactionReady(annotateMintTokens.id));
-
-      yield takeFrom(
-        annotateMintTokens.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
     }
 
     yield put<AllActions>({
