@@ -30,7 +30,7 @@ import { ControlSafeProps } from './types';
 
 import styles from './SafeTransactionPreview.css';
 
-const displayName = `common.ControlSafeForm.ControlSafeDialog.SafeTransactionPreview`;
+const displayName = `common.ControlSafeDialog.ControlSafeForm.SafeTransactionPreview`;
 
 const MSG = defineMessages({
   previewTitle: {
