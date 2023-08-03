@@ -83,43 +83,41 @@ export const getValidationSchema = (
       transactions: array(
         object().shape({
           transactionType: string().required(() => MSG.requiredFieldError),
-          recipient: object()
-            .when('transactionType', {
-              is: (transactionType) =>
-                transactionType === TransactionTypes.TRANSFER_FUNDS ||
-                transactionType === TransactionTypes.RAW_TRANSACTION ||
-                transactionType === TransactionTypes.TRANSFER_NFT,
-              then: object().shape({
-                id: string()
-                  .required()
-                  .test(
-                    'is-valid-id',
-                    formatMessage({ id: `${displayName}.notAddressError` }),
-                    function validateId(value) {
-                      if (value) {
-                        /*
-                         * id may be 'filterValue' if a contract address is manually entered.
-                         * May occur in raw transaction section.
-                         */
-                        if (value === 'filterValue') {
-                          return isAddress(this.parent.walletAddress);
-                        }
-                        return isAddress(value);
+          recipient: object().when('transactionType', {
+            is: (transactionType) =>
+              transactionType === TransactionTypes.TRANSFER_FUNDS ||
+              transactionType === TransactionTypes.RAW_TRANSACTION ||
+              transactionType === TransactionTypes.TRANSFER_NFT,
+            then: object().shape({
+              id: string()
+                .required()
+                .test(
+                  'is-valid-id',
+                  formatMessage({ id: `${displayName}.notAddressError` }),
+                  function validateId(value) {
+                    if (value) {
+                      /*
+                       * id may be 'filterValue' if a contract address is manually entered.
+                       * May occur in raw transaction section.
+                       */
+                      if (value === 'filterValue') {
+                        return isAddress(this.parent.walletAddress);
                       }
-                      return false;
-                    },
-                  ),
-                profile: object()
-                  .shape({
-                    displayName: string().nullable(),
-                  })
-                  .defined()
-                  .nullable(),
-                walletAddress: string().address().required(),
-              }),
-              otherwise: object().nullable(),
-            })
-            .nullable(),
+                      return isAddress(value);
+                    }
+                    return false;
+                  },
+                ),
+              profile: object()
+                .shape({
+                  displayName: string().nullable(),
+                })
+                .defined()
+                .nullable(),
+              walletAddress: string().address().required(),
+            }),
+            otherwise: object().nullable(),
+          }),
           amount: string()
             .when('transactionType', {
               is: TransactionTypes.TRANSFER_FUNDS,

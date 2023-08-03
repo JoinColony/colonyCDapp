@@ -69,7 +69,7 @@ export const defaultTransaction = {
   tokenData: null,
   amount: null,
   rawAmount: null,
-  recipient: null,
+  recipient: undefined,
   data: '',
   contract: null,
   abi: '',
