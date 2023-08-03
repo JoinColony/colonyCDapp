@@ -107,7 +107,7 @@ const MSG = defineMessages({
   },
   toggleTransaction: {
     id: `${displayName}.toggleTransaction`,
-    defaultMessage: `{tabToggleStatus, select, true {Expand} false {Close}} transaction`,
+    defaultMessage: `{tabToggleStatus, select, other {Expand} true {Close}} transaction`,
   },
   contractMethodInputLabel: {
     id: `${displayName}.contractMethodInputLabel`,
