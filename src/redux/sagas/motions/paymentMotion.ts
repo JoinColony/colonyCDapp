@@ -11,7 +11,12 @@ import moveDecimal from 'move-decimal-point';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom, getColonyManager } from '../utils';
+import {
+  putError,
+  takeFrom,
+  getColonyManager,
+  uploadAnnotation,
+} from '../utils';
 
 import {
   createTransaction,
@@ -199,22 +204,13 @@ function* createPaymentMotion({
     );
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    // if (annotationMessage) {
-    //   yield put(transactionPending(annotatePaymentMotion.id));
-
-    //   const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
-
-    //   yield put(
-    //     transactionAddParams(annotatePaymentMotion.id, [txHash, ipfsHash]),
-    //   );
-
-    //   yield put(transactionReady(annotatePaymentMotion.id));
-
-    //   yield takeFrom(
-    //     annotatePaymentMotion.channel,
-    //     ActionTypes.TRANSACTION_SUCCEEDED,
-    //   );
-    // }
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotatePaymentMotion,
+        message: annotationMessage,
+        txHash,
+      });
+    }
     yield put<AllActions>({
       type: ActionTypes.MOTION_EXPENDITURE_PAYMENT_SUCCESS,
       meta,

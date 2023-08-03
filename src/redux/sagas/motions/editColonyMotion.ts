@@ -12,7 +12,12 @@ import {
   CreateColonyMetadataMutationVariables,
 } from '~gql';
 import { getMetadataDatabaseId } from '~utils/domains';
-import { getColonyManager, putError, takeFrom } from '../utils';
+import {
+  getColonyManager,
+  putError,
+  takeFrom,
+  uploadAnnotation,
+} from '../utils';
 import {
   createTransaction,
   createTransactionChannels,
@@ -28,6 +33,7 @@ function* editColonyMotion({
     colonyAvatarImage,
     colonyThumbnail,
     tokenAddresses,
+    annotationMessage,
   },
   meta: { id: metaId, navigate },
   meta,
@@ -65,10 +71,10 @@ function* editColonyMotion({
     // setup batch ids and channels
     const batchKey = 'createMotion';
 
-    const { createMotion /* annotateEditColonyMotion */ } =
+    const { createMotion, annotateEditColonyMotion } =
       yield createTransactionChannels(metaId, [
         'createMotion',
-        // 'annotateEditColonyMotion',
+        'annotateEditColonyMotion',
       ]);
 
     /*
@@ -136,28 +142,29 @@ function* editColonyMotion({
       ready: false,
     });
 
-    // if (annotationMessage) {
-    //   yield fork(createTransaction, annotateEditColonyMotion.id, {
-    //     context: ClientType.ColonyClient,
-    //     methodName: 'annotateTransaction',
-    //     identifier: colonyAddress,
-    //     params: [],
-    //     group: {
-    //       key: batchKey,
-    //       id: metaId,
-    //       index: 1,
-    //     },
-    //     ready: false,
-    //   });
-    // }
+    if (annotationMessage) {
+      yield fork(createTransaction, annotateEditColonyMotion.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        params: [],
+        group: {
+          key: batchKey,
+          id: metaId,
+          index: 1,
+        },
+        ready: false,
+      });
+    }
 
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
-    // if (annotationMessage) {
-    //   yield takeFrom(
-    //     annotateEditColonyMotion.channel,
-    //     ActionTypes.TRANSACTION_CREATED,
-    //   );
-    // }
+
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateEditColonyMotion.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
 
     yield put(transactionReady(createMotion.id));
 
@@ -218,21 +225,13 @@ function* editColonyMotion({
       });
     }
 
-    // if (annotationMessage) {
-    //   const ipfsHash = yield call(ipfsUploadAnnotation, annotationMessage);
-    //   yield put(transactionPending(annotateEditColonyMotion.id));
-
-    //   yield put(
-    //     transactionAddParams(annotateEditColonyMotion.id, [txHash, ipfsHash]),
-    //   );
-
-    //   yield put(transactionReady(annotateEditColonyMotion.id));
-
-    //   yield takeFrom(
-    //     annotateEditColonyMotion.channel,
-    //     ActionTypes.TRANSACTION_SUCCEEDED,
-    //   );
-    // }
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateEditColonyMotion,
+        message: annotationMessage,
+        txHash,
+      });
+    }
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_EDIT_COLONY_SUCCESS,

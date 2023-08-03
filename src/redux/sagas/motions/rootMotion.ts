@@ -6,18 +6,13 @@ import { ColonyManager } from '~context';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  transactionAddParams,
-  transactionPending,
-  transactionReady,
-} from '../../actionCreators';
+import { transactionReady } from '../../actionCreators';
 
 import {
   putError,
   takeFrom,
   getColonyManager,
-  ipfsUploadAnnotation,
-  uploadAnnotationToDb,
+  uploadAnnotation,
 } from '../utils';
 import {
   createTransaction,
@@ -141,27 +136,13 @@ function* createRootMotionSaga({
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
-      yield put(transactionPending(annotateRootMotion.id));
-
-      const ipfsHash = yield call(ipfsUploadAnnotation, annotationMessage);
-
-      yield uploadAnnotationToDb({
+      yield uploadAnnotation({
+        txChannel: annotateRootMotion,
         message: annotationMessage,
         txHash,
-        ipfsHash,
       });
-
-      yield put(
-        transactionAddParams(annotateRootMotion.id, [txHash, ipfsHash]),
-      );
-
-      yield put(transactionReady(annotateRootMotion.id));
-
-      yield takeFrom(
-        annotateRootMotion.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
     }
+
     yield put<AllActions>({
       type: ActionTypes.ROOT_MOTION_SUCCESS,
       meta,
