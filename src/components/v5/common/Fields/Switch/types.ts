@@ -4,7 +4,7 @@ export type SwitchProps<
   TFieldValues extends FieldValues,
   TFieldName extends FieldPath<TFieldValues>,
 > = {
-  id: TFieldName;
+  id?: TFieldName;
   isDisabled?: boolean;
   isChecked?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;

@@ -15,6 +15,6 @@ export interface SettingsRowProps<
   buttonLabel?: MessageDescriptor;
   buttonIcon?: string;
   buttonMode?: ButtonMode;
-  id: TFieldName;
+  id?: TFieldName;
   register?: UseFormRegister<TFieldValues>;
 }

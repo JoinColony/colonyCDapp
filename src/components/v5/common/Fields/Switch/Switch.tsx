@@ -23,15 +23,26 @@ const Switch = <
       'cursor-pointer': !isDisabled,
     })}
   >
-    <input
-      type="checkbox"
-      {...register?.(id)}
-      id={id}
-      className="sr-only"
-      disabled={isDisabled}
-      checked={isChecked}
-      onChange={onChange}
-    />
+    {id ? (
+      <input
+        type="checkbox"
+        {...register?.(id)}
+        id={id}
+        className="sr-only"
+        disabled={isDisabled}
+        checked={isChecked}
+        onChange={onChange}
+      />
+    ) : (
+      <input
+        type="checkbox"
+        id={id}
+        className="sr-only"
+        disabled={isDisabled}
+        checked={isChecked}
+        onChange={onChange}
+      />
+    )}
     <div
       className={clsx(
         styles.toggle,
