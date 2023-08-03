@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { Id } from '@colony/colony-js';
 
 import { ExpenditureStatus, useGetExpenditureQuery } from '~gql';
 import { useColonyContext } from '~hooks';
@@ -12,6 +13,7 @@ import MaskedAddress from '~shared/MaskedAddress';
 
 import styles from './ExpenditureDetailsPage.module.css';
 import Numeral from '~shared/Numeral';
+import { findDomainByNativeId } from '~utils/domains';
 
 const ExpenditureDetailsPage = () => {
   const { expenditureId } = useParams();
@@ -37,10 +39,16 @@ const ExpenditureDetailsPage = () => {
     return <NotFoundRoute />;
   }
 
+  const expenditureDomain = findDomainByNativeId(
+    expenditure.metadata?.nativeDomainId ?? Id.RootDomain,
+    colony,
+  );
+
   return (
     <div>
       <Heading3>Expenditure {expenditure.id}</Heading3>
       <div>Status: {expenditure.status}</div>
+      <div>Team: {expenditureDomain?.metadata?.name ?? 'Unknown team'}</div>
 
       <ul className={styles.recipients}>
         {expenditure.slots.map((slot) => (
