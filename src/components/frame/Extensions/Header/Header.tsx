@@ -10,6 +10,8 @@ import MainNavigation from '~common/Extensions/MainNavigation';
 import { CloseButton } from '~v5/shared/Button';
 import { useHeader } from './hooks';
 import { HeaderProps } from './types';
+import ActionSidebar from '~v5/common/ActionSidebar/ActionSidebar';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
 
 const displayName = 'frame.Extensions.Header';
 
@@ -33,9 +35,12 @@ const Header: FC<HeaderProps> = ({ hideColonies = false }) => {
     isUserMenuOpen,
     isWalletOpen,
   } = useHeader();
+  const { isActionSidebarOpen } = useActionSidebarContext();
 
   const isCloseButtonVisible =
-    (isMainMenuOpen || isColonySwitcherOpen) && isMobile;
+    (isMainMenuOpen || isColonySwitcherOpen) &&
+    isMobile &&
+    !isActionSidebarOpen;
 
   const isArrowVisible =
     !isMobile ||
@@ -44,6 +49,32 @@ const Header: FC<HeaderProps> = ({ hideColonies = false }) => {
         isMainMenuOpen ||
         isUserMenuOpen ||
         isWalletOpen));
+
+  const userMenuComponent = isActionSidebarOpen ? (
+    <ActionSidebar>
+      <UserNavigation
+        isWalletButtonVisible={isWalletButtonVisible}
+        userMenuGetTooltipProps={userMenuGetTooltipProps}
+        userMenuSetTooltipRef={userMenuSetTooltipRef}
+        userMenuSetTriggerRef={userMenuSetTriggerRef}
+        setWalletTriggerRef={setWalletTriggerRef}
+        isUserMenuOpen={isUserMenuOpen}
+        isWalletOpen={isWalletOpen}
+        hideColonies={hideColonies}
+      />
+    </ActionSidebar>
+  ) : (
+    <UserNavigation
+      isWalletButtonVisible={isWalletButtonVisible}
+      userMenuGetTooltipProps={userMenuGetTooltipProps}
+      userMenuSetTooltipRef={userMenuSetTooltipRef}
+      userMenuSetTriggerRef={userMenuSetTriggerRef}
+      setWalletTriggerRef={setWalletTriggerRef}
+      isUserMenuOpen={isUserMenuOpen}
+      isWalletOpen={isWalletOpen}
+      hideColonies={hideColonies}
+    />
+  );
 
   return (
     <header className="relative">
@@ -98,16 +129,7 @@ const Header: FC<HeaderProps> = ({ hideColonies = false }) => {
                   <CloseButton iconSize="extraTiny" />
                 </div>
               ) : (
-                <UserNavigation
-                  isWalletButtonVisible={isWalletButtonVisible}
-                  userMenuGetTooltipProps={userMenuGetTooltipProps}
-                  userMenuSetTooltipRef={userMenuSetTooltipRef}
-                  userMenuSetTriggerRef={userMenuSetTriggerRef}
-                  setWalletTriggerRef={setWalletTriggerRef}
-                  isUserMenuOpen={isUserMenuOpen}
-                  isWalletOpen={isWalletOpen}
-                  hideColonies={hideColonies}
-                />
+                userMenuComponent
               )}
             </div>
           </div>

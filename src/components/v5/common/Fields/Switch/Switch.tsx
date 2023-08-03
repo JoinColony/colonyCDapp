@@ -1,17 +1,21 @@
-import React, { FC } from 'react';
+import React from 'react';
 import clsx from 'clsx';
+import { FieldPath, FieldValues } from 'react-hook-form';
 import styles from './Switch.module.css';
 import { SwitchProps } from './types';
 
 const displayName = 'v5.common.Fields.Switch';
 
-const Switch: FC<SwitchProps> = ({
-  id = 'switch-id',
+const Switch = <
+  TFieldValues extends FieldValues,
+  TFieldName extends FieldPath<TFieldValues>,
+>({
+  id,
   isDisabled,
   isChecked,
   onChange,
   register,
-}) => (
+}: SwitchProps<TFieldValues, TFieldName>) => (
   <label
     htmlFor={id}
     className={clsx('relative', {
@@ -21,7 +25,7 @@ const Switch: FC<SwitchProps> = ({
   >
     <input
       type="checkbox"
-      {...register?.(id)}
+      {...(id && register?.(id))}
       id={id}
       className="sr-only"
       disabled={isDisabled}

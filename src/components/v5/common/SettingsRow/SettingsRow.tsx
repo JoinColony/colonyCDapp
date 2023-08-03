@@ -1,6 +1,7 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useIntl } from 'react-intl';
 
+import { FieldPath, FieldValues } from 'react-hook-form';
 import { SettingsRowProps } from './types';
 import Switch from '~v5/common/Fields/Switch';
 import Button from '~v5/shared/Button';
@@ -9,7 +10,10 @@ import Tooltip from '~shared/Extensions/Tooltip';
 
 const displayName = 'v5.common.SettingsRow';
 
-const SettingsRow: FC<SettingsRowProps> = ({
+const SettingsRow = <
+  TFieldValues extends FieldValues,
+  TFieldName extends FieldPath<TFieldValues>,
+>({
   description,
   title,
   tooltipMessage,
@@ -20,7 +24,7 @@ const SettingsRow: FC<SettingsRowProps> = ({
   onClick,
   id,
   register,
-}) => {
+}: SettingsRowProps<TFieldValues, TFieldName>) => {
   const { formatMessage } = useIntl();
 
   return (

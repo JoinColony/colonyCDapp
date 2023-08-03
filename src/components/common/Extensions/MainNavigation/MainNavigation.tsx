@@ -11,6 +11,7 @@ import { MainNavigationProps } from './types';
 import PopoverBase from '~v5/shared/PopoverBase';
 import NavigationTools from '../NavigationTools';
 import { useGetNetworkToken } from '~hooks/useGetNetworkToken';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
 
 const displayName = 'common.Extensions.MainNavigation';
 
@@ -24,6 +25,7 @@ const MainNavigation: FC<MainNavigationProps> = ({
   const isMobile = useMobile();
   const navItems = useGetNavItems(name);
   const nativeToken = useGetNetworkToken();
+  const { toggleActionBar } = useActionSidebarContext();
 
   return (
     <div>
@@ -47,6 +49,7 @@ const MainNavigation: FC<MainNavigationProps> = ({
                     text="Create new action"
                     mode="quinary"
                     isFullSize={isMobile}
+                    onClick={toggleActionBar}
                   />
                 </div>
                 <LearnMore

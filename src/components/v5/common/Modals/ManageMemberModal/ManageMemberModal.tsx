@@ -96,7 +96,7 @@ const ManageMemberModal: FC<ManageMemberModalProps> = ({
                 </span>
               </Tooltip>
             </div>
-            <Switch />
+            <Switch id="ban" />
           </div>
 
           <Textarea textareaTitle={{ id: 'members.ban.textarea.label' }} />
