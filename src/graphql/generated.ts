@@ -45,18 +45,8 @@ export type Annotation = {
   ipfsHash?: Maybe<Scalars['String']>;
   /** The actual annotation message */
   message: Scalars['String'];
-  /** The type of annotation, i.e. whether it's following a particular format (e.g. HTML) */
-  type: AnnotationType;
   updatedAt: Scalars['AWSDateTime'];
 };
-
-/** Specifies the type of annotation */
-export enum AnnotationType {
-  /** Annotation is an HTML string */
-  Html = 'html',
-  /** Annotation is a plain string */
-  Plain = 'plain'
-}
 
 /**
  * Represents metadata related to a blockchain event
@@ -839,7 +829,6 @@ export type CreateAnnotationInput = {
   id?: InputMaybe<Scalars['ID']>;
   ipfsHash?: InputMaybe<Scalars['String']>;
   message: Scalars['String'];
-  type: AnnotationType;
 };
 
 export type CreateColonyActionInput = {
@@ -1599,7 +1588,6 @@ export type ModelAnnotationConditionInput = {
   message?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelAnnotationConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelAnnotationConditionInput>>>;
-  type?: InputMaybe<ModelAnnotationTypeInput>;
 };
 
 export type ModelAnnotationConnection = {
@@ -1616,12 +1604,6 @@ export type ModelAnnotationFilterInput = {
   message?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelAnnotationFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelAnnotationFilterInput>>>;
-  type?: InputMaybe<ModelAnnotationTypeInput>;
-};
-
-export type ModelAnnotationTypeInput = {
-  eq?: InputMaybe<AnnotationType>;
-  ne?: InputMaybe<AnnotationType>;
 };
 
 export enum ModelAttributeTypes {
@@ -2370,7 +2352,6 @@ export type ModelSubscriptionAnnotationFilterInput = {
   ipfsHash?: InputMaybe<ModelSubscriptionStringInput>;
   message?: InputMaybe<ModelSubscriptionStringInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionAnnotationFilterInput>>>;
-  type?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
 export type ModelSubscriptionBooleanInput = {
@@ -4873,7 +4854,6 @@ export type UpdateAnnotationInput = {
   id: Scalars['ID'];
   ipfsHash?: InputMaybe<Scalars['String']>;
   message?: InputMaybe<Scalars['String']>;
-  type?: InputMaybe<AnnotationType>;
 };
 
 export type UpdateColonyActionInput = {
