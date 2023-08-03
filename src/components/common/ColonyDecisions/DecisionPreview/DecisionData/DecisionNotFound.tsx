@@ -13,11 +13,8 @@ const displayName = 'common.ColonyDecisions.DecisionPreview.DecisionNotFound';
 const MSG = defineMessages({
   noDecisionText: {
     id: `${displayName}.noDecisionText`,
-    defaultMessage: 'No draft Decision found. ',
-  },
-  createDecision: {
-    id: `${displayName}.createDecision`,
-    defaultMessage: 'Create a new Decision',
+    defaultMessage:
+      'No draft Decision found. <button>Create a new Decision</button>',
   },
   installExtension: {
     id: `${displayName}.installExtension`,
@@ -25,29 +22,37 @@ const MSG = defineMessages({
   },
 });
 
+const createNewDecisionMsgValues = (handleClick: () => void) => ({
+  button: (...chunks: any[]) => (
+    <Button
+      text={chunks.join('')}
+      appearance={{ theme: 'blue' }}
+      onClick={handleClick}
+    />
+  ),
+});
+
 const DecisionNotFound = () => {
   const openDecisionDialog = useDialog(DecisionDialog);
   const { colony } = useColonyContext();
   const { isVotingReputationEnabled } = useEnabledExtensions();
 
-  if (!isVotingReputationEnabled) {
-    return <FormattedMessage {...MSG.installExtension} />;
-  }
+  const handleClick = () => {
+    openDecisionDialog({
+      nativeDomainId: Id.RootDomain,
+      colonyAddress: colony?.colonyAddress ?? '',
+    });
+  };
 
-  return (
-    <>
-      <FormattedMessage {...MSG.noDecisionText} />
-      <Button
-        text={MSG.createDecision}
-        appearance={{ theme: 'blue' }}
-        onClick={() => {
-          openDecisionDialog({
-            nativeDomainId: Id.RootDomain,
-            colonyAddress: colony?.colonyAddress ?? '',
-          });
-        }}
+  return isVotingReputationEnabled ? (
+    <div>
+      <FormattedMessage
+        {...MSG.noDecisionText}
+        values={createNewDecisionMsgValues(handleClick)}
       />
-    </>
+    </div>
+  ) : (
+    <FormattedMessage {...MSG.installExtension} />
   );
 };
 

@@ -54,9 +54,11 @@ const DefaultActionContent = ({
             }
           />
         )}
+        <MotionDetailsPageFeed actionData={actionData} />
       </div>
     );
   }
+
   return (
     <div className={styles.content}>
       <Heading3

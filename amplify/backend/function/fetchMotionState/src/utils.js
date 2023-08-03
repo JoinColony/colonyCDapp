@@ -344,7 +344,10 @@ const updateMotionFinalizedMessages = async (
     if (motionStateHistory.hasVoted) {
       newMessages.push('MotionRevealResultObjectionWon');
     }
-    newMessages.push('MotionHasFailedFinalizable');
+
+    if (!isDecision) {
+      newMessages.push('MotionHasFailedFinalizable');
+    }
 
     await updateMotionMessagesInDB(motionData, newMessages, 'hasFailed');
   }
