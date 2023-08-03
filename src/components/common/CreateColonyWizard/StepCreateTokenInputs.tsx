@@ -37,13 +37,11 @@ const formatting = {
 interface StepCreateTokenInputsProps {
   disabled: boolean;
   extra: JSX.Element;
-  cleaveDefaultValue: string;
 }
 
 const StepCreateTokenInputs = ({
   disabled,
   extra,
-  cleaveDefaultValue,
 }: StepCreateTokenInputsProps) => (
   <div className={styles.inputFields}>
     <div className={styles.inputFieldWrapper}>
@@ -60,7 +58,6 @@ const StepCreateTokenInputs = ({
     <div className={styles.inputFieldWrapper}>
       <Input
         name="tokenSymbol"
-        value={cleaveDefaultValue}
         appearance={{ theme: 'fat' }}
         maxLength={5}
         data-test="defineTokenSymbol"

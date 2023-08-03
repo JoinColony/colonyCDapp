@@ -71,8 +71,7 @@ const EditDomainDialogForm = ({
   isForce,
 }: Props) => {
   const { watch, reset: resetForm } = useFormContext();
-  const { domainName, domainPurpose, forceAction, domainId, motionDomainId } =
-    watch();
+  const { domainName, forceAction, domainId, motionDomainId } = watch();
   const {
     userHasPermission,
     disabledSubmit,
@@ -152,7 +151,6 @@ const EditDomainDialogForm = ({
         <Input
           label={MSG.name}
           name="domainName"
-          value={domainName || ''}
           appearance={{ colorSchema: 'grey', theme: 'fat' }}
           disabled={disabledInput}
           maxLength={20}
@@ -163,7 +161,6 @@ const EditDomainDialogForm = ({
         <Input
           label={MSG.purpose}
           name="domainPurpose"
-          value={domainPurpose || ''}
           appearance={{ colorSchema: 'grey', theme: 'fat' }}
           disabled={disabledInput}
           maxLength={90}
