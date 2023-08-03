@@ -5761,7 +5761,7 @@ export type GetMembersForColonyQuery = { __typename?: 'Query', getMembersForColo
 export type GetColonyDecisionsQueryVariables = Exact<{
   colonyAddress: Scalars['String'];
   sortDirection?: InputMaybe<ModelSortDirection>;
-  domainId?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<ModelColonyDecisionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
 }>;
 
@@ -7335,10 +7335,10 @@ export type GetMembersForColonyQueryHookResult = ReturnType<typeof useGetMembers
 export type GetMembersForColonyLazyQueryHookResult = ReturnType<typeof useGetMembersForColonyLazyQuery>;
 export type GetMembersForColonyQueryResult = Apollo.QueryResult<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>;
 export const GetColonyDecisionsDocument = gql`
-    query getColonyDecisions($colonyAddress: String!, $sortDirection: ModelSortDirection = ASC, $domainId: Int = 1, $limit: Int = 10) {
+    query getColonyDecisions($colonyAddress: String!, $sortDirection: ModelSortDirection = ASC, $filter: ModelColonyDecisionFilterInput, $limit: Int = 10) {
   getColonyDecisionByColonyAddress(
     colonyAddress: $colonyAddress
-    filter: {showInDecisionsList: {eq: true}, and: {motionDomainId: {eq: $domainId}}}
+    filter: $filter
     sortDirection: $sortDirection
     limit: $limit
   ) {
@@ -7364,7 +7364,7 @@ export const GetColonyDecisionsDocument = gql`
  *   variables: {
  *      colonyAddress: // value for 'colonyAddress'
  *      sortDirection: // value for 'sortDirection'
- *      domainId: // value for 'domainId'
+ *      filter: // value for 'filter'
  *      limit: // value for 'limit'
  *   },
  * });
