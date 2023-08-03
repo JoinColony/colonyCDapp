@@ -8,6 +8,10 @@
   word-break: break-word;
 }
 
+.stateIsObjection {
+  background-color: color-mod(var(--pink) alpha(6%));
+}
+
 .avatar {
   display: flex;
   justify-content: center;

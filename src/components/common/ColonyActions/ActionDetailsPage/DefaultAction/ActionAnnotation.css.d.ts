@@ -4,6 +4,7 @@ declare namespace AnnotationCssNamespace {
     content: string;
     details: string;
     main: string;
+    stateIsObjection: string;
     text: string;
     username: string;
   }
