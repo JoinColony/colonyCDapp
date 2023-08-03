@@ -68,7 +68,7 @@ const TransferNFTSection = ({
   disabledInput,
   transactionIndex,
 }: TransactionSectionProps) => {
-  const { watch, trigger, setValue } = useFormContext();
+  const { watch, setValue } = useFormContext();
   const currentNFT = watch(`transactions.${transactionIndex}.nft`);
   const currentNFTData = watch(`transactions.${transactionIndex}.nftData`);
   const safe = watch('safe');
@@ -117,7 +117,7 @@ const TransferNFTSection = ({
     } else {
       getNFTs();
     }
-  }, [safe, savedNFTs, setSavedNFTs, trigger]);
+  }, [safe, savedNFTs, setSavedNFTs]);
 
   useEffect(() => {
     if (!currentNFT && currentNFTData) {
