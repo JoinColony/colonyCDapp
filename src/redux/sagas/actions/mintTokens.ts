@@ -20,7 +20,6 @@ import {
 } from '../../actionCreators';
 import { ContextModule, getContext } from '~context';
 import {
-  AnnotationType,
   CreateAnnotationDocument,
   CreateAnnotationMutation,
   CreateAnnotationMutationVariables,
@@ -136,7 +135,6 @@ function* createMintTokensAction({
             message: annotationMessage,
             id: txHash,
             ipfsHash: '0x123',
-            type: AnnotationType.Plain,
           },
         },
       });

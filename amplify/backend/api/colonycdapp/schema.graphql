@@ -2567,20 +2567,6 @@ type ExpenditurePayout {
 }
 
 """
-Specifies the type of annotation
-"""
-enum AnnotationType {
-  """
-  Annotation is a plain string
-  """
-  plain
-  """
-  Annotation is an HTML string
-  """
-  html
-}
-
-"""
 Defines an annotation for actions, motions and decisions
 """
 type Annotation @model {
@@ -2592,10 +2578,6 @@ type Annotation @model {
   The actual annotation message
   """
   message: String!
-  """
-  The type of annotation, i.e. whether it's following a particular format (e.g. HTML)
-  """
-  type: AnnotationType!
   """
   The IPFS hash, if the annotation was also uploaded to IPFS
   """
