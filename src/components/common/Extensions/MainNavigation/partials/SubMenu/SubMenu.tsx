@@ -11,6 +11,7 @@ import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import { useMobile } from '~hooks';
 import styles from './SubMenu.module.css';
 import Link from '~v5/shared/Link';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
 
 const displayName = 'common.Extensions.MainNavigation.partials.SubMenu';
 
@@ -18,6 +19,7 @@ const SubMenu: FC<SubMenuProps> = ({ items }) => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
   const Wrapper = isMobile ? 'div' : Card;
+  const { setisActionSidebarOpen } = useActionSidebarContext();
 
   return (
     <Wrapper hasShadow={!isMobile}>
@@ -60,6 +62,7 @@ const SubMenu: FC<SubMenuProps> = ({ items }) => {
               <Button
                 text="Create new action"
                 mode="quinary"
+                onClick={() => setisActionSidebarOpen(true)}
                 isFullSize={isMobile}
               />
             </div>
