@@ -141,9 +141,6 @@ const ContractInteractionSection = ({
   const transactionValues = transactions[transactionIndex];
   const selectedSafe = getSafe(safes, safe);
 
-  /* const { contract: selectedContract } = transactions[transactionIndex];
-   * console.log(selectedContract); */
-
   const onContractABIChange = useCallback(
     (abiResponse: ABIResponse) => {
       const setTransactionAbi = (value) =>

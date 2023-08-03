@@ -1,6 +1,3 @@
 export { default } from './ControlSafeDialog';
 
-export {
-  // FormProps,
-  invalidSafeError,
-} from './ControlSafeForm';
+export { invalidSafeError } from './ControlSafeForm';
