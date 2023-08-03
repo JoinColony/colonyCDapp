@@ -34,7 +34,7 @@ const displayName = `common.ControlSafeDialog.ControlSafeForm.SafeTransactionPre
 
 const MSG = defineMessages({
   previewTitle: {
-    id: `${displayName}Title`,
+    id: `${displayName}.previewTitle`,
     defaultMessage: `Confirm transaction details`,
   },
   transactionsTitle: {
