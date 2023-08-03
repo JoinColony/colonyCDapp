@@ -6,9 +6,9 @@ import { ActionTransformFnType } from '~utils/actions';
 import { ActionTypes } from '~redux';
 
 import { Appearance } from './Button';
-import ActionButton from './ActionButton';
+import ActionButton, { ActionButtonProps } from './ActionButton';
 
-interface Props<D extends ComponentType<any>> {
+interface Props<D extends ComponentType<any>> extends ActionButtonProps {
   actionType: ActionTypes;
   appearance?: Appearance;
   className?: string;

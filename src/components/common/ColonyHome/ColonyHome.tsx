@@ -23,6 +23,7 @@ import ExtensionDetails from '~common/Extensions/ExtensionDetails';
 import { useColonyContext } from '~hooks';
 
 import ColonyHomeLayout from './ColonyHomeLayout';
+import { ColonyHomeProvider } from '~context/ColonyHomeContext';
 
 const displayName = 'common.ColonyHome';
 
@@ -54,12 +55,14 @@ const ColonyHome = () => {
           />
           <Route
             element={
-              <ColonyHomeLayout
-                filteredDomainId={domainIdFilter}
-                onDomainChange={setDomainIdFilter}
-              >
-                <Outlet />
-              </ColonyHomeLayout>
+              <ColonyHomeProvider>
+                <ColonyHomeLayout
+                  filteredDomainId={domainIdFilter}
+                  onDomainChange={setDomainIdFilter}
+                >
+                  <Outlet />
+                </ColonyHomeLayout>
+              </ColonyHomeProvider>
             }
           >
             <Route path="/" element={<ColonyActions />} />
