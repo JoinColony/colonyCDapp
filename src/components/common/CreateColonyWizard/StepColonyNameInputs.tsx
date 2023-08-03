@@ -39,13 +39,11 @@ const formatting = {
 interface StepColonyNameInputsProps {
   disabled: boolean;
   isMobile: boolean;
-  cleaveDefaultValue: string;
 }
 
 const StepColonyNameInputs = ({
   disabled,
   isMobile,
-  cleaveDefaultValue,
 }: StepColonyNameInputsProps) => (
   <>
     <Input
@@ -62,7 +60,6 @@ const StepColonyNameInputs = ({
       data-test="claimColonyNameInput"
       label={MSG.colonyUniqueURL}
       formattingOptions={formatting.colonyName}
-      value={cleaveDefaultValue}
       disabled={disabled}
       extra={
         <QuestionMarkTooltip
