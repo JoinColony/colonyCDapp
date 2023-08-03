@@ -3,7 +3,7 @@ import { takeEvery, fork, call, put } from 'redux-saga/effects';
 import { BigNumber } from 'ethers';
 
 import { Action, ActionTypes, AllActions } from '~redux';
-import { ColonyManager } from '~context';
+import { ColonyManager, ContextModule, getContext } from '~context';
 
 import {
   createTransaction,
@@ -16,6 +16,13 @@ import {
   transactionPending,
   transactionReady,
 } from '~redux/actionCreators';
+import {
+  CreateExpenditureMetadataDocument,
+  CreateExpenditureMetadataMutation,
+  CreateExpenditureMetadataMutationVariables,
+} from '~gql';
+import { getExpenditureDatabaseId } from '~utils/databaseId';
+import { toNumber } from '~utils/numbers';
 
 function* createExpenditure({
   meta: { id: metaId, navigate },
@@ -26,6 +33,7 @@ function* createExpenditure({
     recipientAddress,
     tokenAddress,
     amount,
+    domainId,
   },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -33,6 +41,7 @@ function* createExpenditure({
     ClientType.ColonyClient,
     colonyAddress,
   );
+  const apolloClient = getContext(ContextModule.ApolloClient);
 
   const txChannel = yield call(getTxChannel, metaId);
   const batchKey = 'createExpenditure';
@@ -112,6 +121,19 @@ function* createExpenditure({
     yield put(transactionReady(setPayouts.id));
 
     yield takeFrom(setPayouts.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    yield apolloClient.mutate<
+      CreateExpenditureMetadataMutation,
+      CreateExpenditureMetadataMutationVariables
+    >({
+      mutation: CreateExpenditureMetadataDocument,
+      variables: {
+        input: {
+          id: getExpenditureDatabaseId(colonyAddress, toNumber(expenditureId)),
+          nativeDomainId: domainId,
+        },
+      },
+    });
 
     yield put<AllActions>({
       type: ActionTypes.EXPENDITURE_CREATE_SUCCESS,
