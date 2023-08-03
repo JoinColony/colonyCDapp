@@ -434,8 +434,7 @@ const SafeTransactionPreview = ({
             appearance={{ colorSchema: 'grey', theme: 'fat' }}
             label={MSG.transactionsTitle}
             name="transactionsTitle"
-            /* disabled={onlyForceAction}
-                       onChange={handleValidation} */
+            /* disabled={onlyForceAction} */
           />
         </DialogSection>
         <DialogSection>
