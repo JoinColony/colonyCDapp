@@ -12,7 +12,7 @@ import ExternalLink from '~shared/ExternalLink';
 import Button from '~shared/Button';
 import Icon from '~shared/Icon';
 import { filterUserSelection } from '~shared/SingleUserPicker';
-import { SelectedPickerItem, SafeTransaction, SelectedSafe } from '~types';
+import { SelectedPickerItem, SafeTransaction } from '~types';
 import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
 import { isEmpty, isEqual, omit } from '~utils/lodash';
 import { hasRoot } from '~utils/checks';
