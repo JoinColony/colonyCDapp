@@ -38,7 +38,7 @@ import { ErrorMessage as Error, Loading, AvatarXS } from './shared';
 
 import styles from './TransactionTypesSection.css';
 
-const displayName = `common.ControlSafeForm.ControlSafeDialog.ContractInteractionSection`;
+const displayName = `common.ControlSafeDialog.ControlSafeForm.ContractInteractionSection`;
 
 const MSG = defineMessages({
   abiLabel: {
