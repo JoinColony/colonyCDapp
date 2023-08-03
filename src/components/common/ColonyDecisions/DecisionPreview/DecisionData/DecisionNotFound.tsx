@@ -6,8 +6,7 @@ import Button from '~shared/Button';
 import { useDialog } from '~shared/Dialog';
 import { DecisionDialog } from '~common/ColonyDecisions';
 
-import styles from './DecisionNotFound.css';
-import { useColonyContext } from '~hooks';
+import { useColonyContext, useEnabledExtensions } from '~hooks';
 
 const displayName = 'common.ColonyDecisions.DecisionPreview.DecisionNotFound';
 
@@ -20,14 +19,23 @@ const MSG = defineMessages({
     id: `${displayName}.createDecision`,
     defaultMessage: 'Create a new Decision',
   },
+  installExtension: {
+    id: `${displayName}.installExtension`,
+    defaultMessage: `You need to install the Governance extension to use the Decisions feature.`,
+  },
 });
 
 const DecisionNotFound = () => {
   const openDecisionDialog = useDialog(DecisionDialog);
   const { colony } = useColonyContext();
+  const { isVotingReputationEnabled } = useEnabledExtensions();
+
+  if (!isVotingReputationEnabled) {
+    return <FormattedMessage {...MSG.installExtension} />;
+  }
 
   return (
-    <div className={styles.noContent}>
+    <>
       <FormattedMessage {...MSG.noDecisionText} />
       <Button
         text={MSG.createDecision}
@@ -39,7 +47,7 @@ const DecisionNotFound = () => {
           });
         }}
       />
-    </div>
+    </>
   );
 };
 

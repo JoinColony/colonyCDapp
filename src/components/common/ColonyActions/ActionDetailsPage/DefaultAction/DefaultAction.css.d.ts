@@ -8,7 +8,6 @@ declare namespace DefaultActionCssNamespace {
     sourceRoot: string;
     sources: string;
     sourcesContent: string;
-    time: string;
     version: string;
   }
 }
