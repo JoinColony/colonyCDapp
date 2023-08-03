@@ -177,7 +177,9 @@ export const useTitle = (title?: string) => {
     skip: colonyENSName === '',
   });
 
-  if (error) console.error(error);
+  if (error) {
+    console.error(error);
+  }
 
   const queryDisplayName =
     data?.getColonyByName?.items?.[0]?.metadata?.displayName;
