@@ -1,5 +1,6 @@
 declare namespace ExpendituresPageModuleCssNamespace {
   export interface IExpendituresPageModuleCss {
+    amountField: string;
     form: string;
     pageWrapper: string;
   }

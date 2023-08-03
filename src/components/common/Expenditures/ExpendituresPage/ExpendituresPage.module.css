@@ -7,3 +7,9 @@
   grid-template-columns: repeat(3, 1fr);
   column-gap: 10px;
 }
+
+.amountField {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
