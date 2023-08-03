@@ -12,6 +12,7 @@ export type ExpendituresActionTypes =
         recipientAddress: Address;
         tokenAddress: Address;
         amount: string;
+        domainId: number;
       },
       MetaWithNavigate<object>
     >

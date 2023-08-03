@@ -5407,6 +5407,13 @@ export type CreateDomainMutationVariables = Exact<{
 
 export type CreateDomainMutation = { __typename?: 'Mutation', createDomain?: { __typename?: 'Domain', id: string } | null };
 
+export type CreateExpenditureMetadataMutationVariables = Exact<{
+  input: CreateExpenditureMetadataInput;
+}>;
+
+
+export type CreateExpenditureMetadataMutation = { __typename?: 'Mutation', createExpenditureMetadata?: { __typename?: 'ExpenditureMetadata', id: string } | null };
+
 export type CreateColonyTokensMutationVariables = Exact<{
   input: CreateColonyTokensInput;
 }>;
@@ -6453,6 +6460,39 @@ export function useCreateDomainMutation(baseOptions?: Apollo.MutationHookOptions
 export type CreateDomainMutationHookResult = ReturnType<typeof useCreateDomainMutation>;
 export type CreateDomainMutationResult = Apollo.MutationResult<CreateDomainMutation>;
 export type CreateDomainMutationOptions = Apollo.BaseMutationOptions<CreateDomainMutation, CreateDomainMutationVariables>;
+export const CreateExpenditureMetadataDocument = gql`
+    mutation CreateExpenditureMetadata($input: CreateExpenditureMetadataInput!) {
+  createExpenditureMetadata(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateExpenditureMetadataMutationFn = Apollo.MutationFunction<CreateExpenditureMetadataMutation, CreateExpenditureMetadataMutationVariables>;
+
+/**
+ * __useCreateExpenditureMetadataMutation__
+ *
+ * To run a mutation, you first call `useCreateExpenditureMetadataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateExpenditureMetadataMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createExpenditureMetadataMutation, { data, loading, error }] = useCreateExpenditureMetadataMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateExpenditureMetadataMutation(baseOptions?: Apollo.MutationHookOptions<CreateExpenditureMetadataMutation, CreateExpenditureMetadataMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateExpenditureMetadataMutation, CreateExpenditureMetadataMutationVariables>(CreateExpenditureMetadataDocument, options);
+      }
+export type CreateExpenditureMetadataMutationHookResult = ReturnType<typeof useCreateExpenditureMetadataMutation>;
+export type CreateExpenditureMetadataMutationResult = Apollo.MutationResult<CreateExpenditureMetadataMutation>;
+export type CreateExpenditureMetadataMutationOptions = Apollo.BaseMutationOptions<CreateExpenditureMetadataMutation, CreateExpenditureMetadataMutationVariables>;
 export const CreateColonyTokensDocument = gql`
     mutation CreateColonyTokens($input: CreateColonyTokensInput!) {
   createColonyTokens(input: $input) {
