@@ -30,7 +30,7 @@ const MSG = defineMessages({
   },
   annotation: {
     id: `${displayName}.annotation`,
-    defaultMessage: 'Explain why you’re making these changes (optional)',
+    defaultMessage: "Explain why you're making these changes (optional)",
   },
   addAddress: {
     id: `${displayName}.addAddress`,
@@ -85,7 +85,11 @@ const ManageWhitelistDialogForm = ({
     formState: { errors, isDirty },
     reset: resetForm,
   } = useFormContext();
-  const isWhitelistActivated = watch('isWhitelistActivated');
+  const [isWhitelistActivated, whitelistAddress] = watch([
+    'isWhitelistActivated',
+    'whitelistAddress',
+  ]);
+
   const {
     userHasPermission,
     disabledSubmit,
@@ -180,7 +184,12 @@ const ManageWhitelistDialogForm = ({
         <DialogControls
           secondaryButtonText={backButtonText}
           onSecondaryButtonClick={back}
-          disabled={!isDirty || disabledSubmit}
+          disabled={
+            /* disable the form if it isn't dirty, except for when there's an address already populated in the address field. */
+            (!isDirty && !whitelistAddress) ||
+            (tabIndex === TABS.WHITELISTED && !whitelistedAddresses.length) ||
+            disabledSubmit
+          }
           dataTest="whitelistConfirmButton"
           submitButtonAppearance={{
             theme: tabIndex === TABS.ADD_ADDRESS ? 'primary' : 'pink',

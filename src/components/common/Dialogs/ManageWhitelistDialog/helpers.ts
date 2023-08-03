@@ -1,6 +1,7 @@
 import { Action, ActionTypes } from '~redux';
 import { Address, Colony } from '~types';
 import { notNull } from '~utils/arrays';
+import { createAddress } from '~utils/web3';
 
 export enum TABS {
   ADD_ADDRESS = 0,
@@ -30,7 +31,12 @@ export const getManageWhitelistDialogPayload = (
   } else {
     verifiedAddresses =
       whitelistAddress !== undefined
-        ? [...new Set([...whitelistedAddresses, whitelistAddress])]
+        ? [
+            ...new Set([
+              ...whitelistedAddresses,
+              createAddress(whitelistAddress),
+            ]),
+          ]
         : [
             ...new Set([
               ...whitelistedAddresses,

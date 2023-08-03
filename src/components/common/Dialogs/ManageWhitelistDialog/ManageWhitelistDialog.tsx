@@ -13,13 +13,13 @@ import {
   mergeSchemas,
   validationSchemaFile,
   validationSchemaInput,
-} from '~utils/whitelistValidation';
+} from './whitelistValidation';
 
 import ManageWhitelistDialogForm from './ManageWhitelistDialogForm';
 import { getManageWhitelistDialogPayload, TABS } from './helpers';
 
-type Props = Required<DialogProps> &
-  WizardDialogType<object> &
+type Props = DialogProps &
+  Partial<WizardDialogType<object>> &
   ActionDialogProps & {
     userAddress?: string;
   };

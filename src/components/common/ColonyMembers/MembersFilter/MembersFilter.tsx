@@ -86,7 +86,7 @@ const MembersFilter = ({ onFilterChange, isRootOrAllDomains }: Props) => {
                         name={name}
                         options={options}
                         label={label}
-                        handleFilterChange={onFilterChange}
+                        onFilterChange={onFilterChange}
                       />
                     )
                   );

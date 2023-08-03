@@ -44,7 +44,6 @@ const ColonyMembersWidget = ({
     },
     fetchPolicy: 'cache-and-network',
   });
-
   if (!colony) return null;
 
   const contributors = data?.getMembersForColony?.contributors;
