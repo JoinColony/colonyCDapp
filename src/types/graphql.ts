@@ -28,6 +28,7 @@ import {
   UnclaimedStakesFragment,
   AnnotationFragment,
   ColonyDecisionFragment,
+  ExpenditureFragment,
 } from '~gql';
 
 export type AnnotationType = AnnotationFragment;
@@ -109,3 +110,5 @@ export type MotionStakes = MotionStakesFragment;
 export type VoterRecord = VoterRecordFragment;
 
 export type UnclaimedStakes = UnclaimedStakesFragment;
+
+export type Expenditure = ExpenditureFragment;
