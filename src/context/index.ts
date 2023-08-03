@@ -6,9 +6,8 @@ import { ColonyWallet } from '~types';
 import ColonyManagerClass from './ColonyManager';
 
 import apolloClient from './apolloClient';
-import UserSettingsClass from './userSettings';
-
-export { UserSettingsClass as UserSettings };
+import ipfsWithFallback from './ipfs/ipfsWithFallbackContext';
+import { IPFSWithTimeout } from './ipfs/getIpfsWithFallback';
 
 export { AppContext, AppContextProvider } from './AppContext';
 export { ColonyManagerClass as ColonyManager };
@@ -23,24 +22,24 @@ export enum ContextModule {
   Wallet = 'wallet',
   ColonyManager = 'colonyManager',
   ApolloClient = 'apolloClient',
-  UserSettings = 'userSettings',
   Onboard = 'onboard',
+  IPFSWithFallback = 'ipfsWithFallback',
 }
 
 export interface Context {
   [ContextModule.Wallet]?: ColonyWallet;
   [ContextModule.ColonyManager]?: ColonyManagerClass;
   [ContextModule.ApolloClient]?: ApolloClientClass<object>;
-  [ContextModule.UserSettings]?: UserSettingsClass;
   [ContextModule.Onboard]?: OnboardAPI;
+  [ContextModule.IPFSWithFallback]?: IPFSWithTimeout | null;
 }
 
 const context: Context = {
   [ContextModule.ApolloClient]: apolloClient,
   [ContextModule.ColonyManager]: undefined,
   [ContextModule.Wallet]: undefined,
-  [ContextModule.UserSettings]: undefined,
   [ContextModule.Onboard]: undefined,
+  [ContextModule.IPFSWithFallback]: ipfsWithFallback,
 };
 
 export const setContext = <K extends keyof Context>(

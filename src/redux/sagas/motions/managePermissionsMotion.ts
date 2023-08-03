@@ -14,7 +14,7 @@ import { putError, takeFrom } from '~utils/saga/effects';
 
 import { transactionReady } from '../../actionCreators';
 
-import { getColonyManager } from '../utils';
+import { getColonyManager, uploadAnnotation } from '../utils';
 import {
   createTransaction,
   createTransactionChannels,
@@ -28,7 +28,7 @@ function* managePermissionsMotion({
     userAddress,
     roles,
     colonyName,
-    // annotationMessage,
+    annotationMessage,
     motionDomainId,
   },
   meta: { id: metaId, navigate },
@@ -77,13 +77,11 @@ function* managePermissionsMotion({
     // setup batch ids and channels
     const batchKey = 'createMotion';
 
-    const {
-      createMotion,
-      // annotateSetUserRolesMotion,
-    } = yield createTransactionChannels(metaId, [
-      'createMotion',
-      // 'annotateSetUserRolesMotion',
-    ]);
+    const { createMotion, annotateSetUserRolesMotion } =
+      yield createTransactionChannels(metaId, [
+        'createMotion',
+        'annotateSetUserRolesMotion',
+      ]);
 
     const roleArray = Object.values(roles).reverse();
     roleArray.splice(2, 0, false);
@@ -131,29 +129,29 @@ function* managePermissionsMotion({
       ready: false,
     });
 
-    // if (annotationMessage) {
-    //   yield fork(createTransaction, annotateSetUserRolesMotion.id, {
-    //     context: ClientType.ColonyClient,
-    //     methodName: 'annotateTransaction',
-    //     identifier: colonyAddress,
-    //     params: [],
-    //     group: {
-    //       key: batchKey,
-    //       id: metaId,
-    //       index: 1,
-    //     },
-    //     ready: false,
-    //   });
-    // }
+    if (annotationMessage) {
+      yield fork(createTransaction, annotateSetUserRolesMotion.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        params: [],
+        group: {
+          key: batchKey,
+          id: metaId,
+          index: 1,
+        },
+        ready: false,
+      });
+    }
 
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
 
-    // if (annotationMessage) {
-    //   yield takeFrom(
-    //     annotateSetUserRolesMotion.channel,
-    //     ActionTypes.TRANSACTION_CREATED,
-    //   );
-    // }
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateSetUserRolesMotion.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
 
     yield put(transactionReady(createMotion.id));
 
@@ -165,21 +163,13 @@ function* managePermissionsMotion({
     );
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    // if (annotationMessage) {
-    //   const ipfsHash = yield call(ipfsUploadAnnotation, annotationMessage);
-    //   yield put(transactionPending(annotateSetUserRolesMotion.id));
-
-    //   yield put(
-    //     transactionAddParams(annotateSetUserRolesMotion.id, [txHash, ipfsHash]),
-    //   );
-
-    //   yield put(transactionReady(annotateSetUserRolesMotion.id));
-
-    //   yield takeFrom(
-    //     annotateSetUserRolesMotion.channel,
-    //     ActionTypes.TRANSACTION_SUCCEEDED,
-    //   );
-    // }
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateSetUserRolesMotion,
+        message: annotationMessage,
+        txHash,
+      });
+    }
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_USER_ROLES_SET_SUCCESS,

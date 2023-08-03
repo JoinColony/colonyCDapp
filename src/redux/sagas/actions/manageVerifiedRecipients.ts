@@ -1,5 +1,5 @@
 import { ClientType } from '@colony/colony-js';
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { Action, AllActions, ActionTypes } from '~redux';
 import { ContextModule, getContext } from '~context';
@@ -12,7 +12,7 @@ import {
 } from '~gql';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
@@ -20,6 +20,7 @@ import {
   getUpdatedColonyMetadataChangelog,
   putError,
   takeFrom,
+  uploadAnnotation,
 } from '../utils';
 
 function* manageVerifiedRecipients({
@@ -30,7 +31,7 @@ function* manageVerifiedRecipients({
     // colonyAvatarHash,
     verifiedAddresses = [],
     // colonyTokens = [],
-    // annotationMessage,
+    annotationMessage,
     isWhitelistActivated,
     // colonySafes = [],
   },
@@ -55,23 +56,13 @@ function* manageVerifiedRecipients({
     const batchKey = 'editColonyAction';
     const {
       editColonyAction: editColony,
-      // annotateEditColonyAction: annotateEditColony,
+      annotateEditColonyAction: annotateEditColony,
     } = yield createTransactionChannels(metaId, [
       'editColonyAction',
-      // 'annotateEditColonyAction',
+      'annotateEditColonyAction',
     ]);
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(editColony, {
+    yield createGroupTransaction(editColony, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: 'editColony',
       identifier: colonyAddress,
@@ -79,24 +70,24 @@ function* manageVerifiedRecipients({
       ready: false,
     });
 
-    // if (annotationMessage) {
-    //   yield createGroupTransaction(annotateEditColony, {
-    //     context: ClientType.ColonyClient,
-    //     methodName: 'annotateTransaction',
-    //     identifier: colonyAddress,
-    //     params: [],
-    //     ready: false,
-    //   });
-    // }
+    if (annotationMessage) {
+      yield createGroupTransaction(annotateEditColony, batchKey, meta, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        params: [],
+        ready: false,
+      });
+    }
 
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_CREATED);
 
-    // if (annotationMessage) {
-    //   yield takeFrom(
-    //     annotateEditColony.channel,
-    //     ActionTypes.TRANSACTION_CREATED,
-    //   );
-    // }
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateEditColony.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
 
     yield put(transactionPending(editColony.id));
 
@@ -133,31 +124,13 @@ function* manageVerifiedRecipients({
     );
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    // if (annotationMessage) {
-    //   yield put(transactionPending(annotateEditColony.id));
-
-    //   /*
-    //    * Upload annotation metadata to IPFS
-    //    */
-    //   const annotationMessageIpfsHash = yield call(
-    //     ipfsUploadAnnotation,
-    //     annotationMessage,
-    //   );
-
-    //   yield put(
-    //     transactionAddParams(annotateEditColony.id, [
-    //       txHash,
-    //       annotationMessageIpfsHash,
-    //     ]),
-    //   );
-
-    //   yield put(transactionReady(annotateEditColony.id));
-
-    //   yield takeFrom(
-    //     annotateEditColony.channel,
-    //     ActionTypes.TRANSACTION_SUCCEEDED,
-    //   );
-    // }
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateEditColony,
+        message: annotationMessage,
+        txHash,
+      });
+    }
 
     /**
      * Update colony metadata in the db

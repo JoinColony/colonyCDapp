@@ -132,6 +132,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
+    "@colony/colony-event-metadata-parser": "^2.0.2",
     "@colony/colony-js": "^6.4.0",
     "@colony/redux-promise-listener": "^1.2.0",
     "@colony/unicode-confusables-noascii": "^0.1.2",
@@ -154,6 +155,7 @@
     "camelcase": "^6.0.0",
     "classnames": "^2.2.6",
     "cleave.js": "1.4.10",
+    "constants-browserify": "^1.0.0",
     "copy-to-clipboard": "^3.0.8",
     "decimal.js": "^10.2.1",
     "draft-js": "^0.11.4",
@@ -172,6 +174,7 @@
     "node-fetch": "^2.6.7",
     "numbro": "^2.3.6",
     "papaparse": "^5.3.1",
+    "path-browserify": "^1.0.1",
     "qrcode": "^1.4.4",
     "query-string": "^6.11.1",
     "rc-slider": "^9.7.1",

@@ -21,7 +21,7 @@ import { setupUsersSagas } from './users';
 import { ActionTypes } from '../actionTypes';
 import { AllActions } from '../types/actions';
 
-import { setContext, ContextModule, UserSettings } from '~context';
+import { setContext, ContextModule } from '~context';
 import { getDecisionFromLocalStorage } from '~utils/decisions';
 
 // import setupResolvers from '~context/setupResolvers';
@@ -82,19 +82,6 @@ export default function* setupUserContext() {
         type: ActionTypes.DECISION_DRAFT_CREATED,
         payload: decision,
       });
-    }
-
-    /*
-     * Get user settings and hydrate them in the context
-     *
-     * In case the user is just browsing and didn't log in (ethereal wallet),
-     * don't pass the address to the settings context, so as to not pollute
-     * the local storage namespace.
-     * This way it will save, and override all settings in the 000000... slot key
-     */
-    if (wallet?.address) {
-      const userSettings = new UserSettings(wallet.address);
-      setContext(ContextModule.UserSettings, userSettings);
     }
 
     if (isFullWallet(wallet)) {
