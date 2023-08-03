@@ -32,7 +32,7 @@ const RpcForm = () => {
             tooltipMessage={{ id: 'advancedSettings.rpc.tooltip' }}
             id="decentralizedModeEnabled"
             onChange={handleDecentarlizedOnChange}
-            register={register.decentralizedModeEnabled}
+            register={register}
           />
           <SettingsInputRow
             isOpen={isInputVisible}

@@ -9,7 +9,7 @@ export const useSettingsInputRow = () => {
     resetField,
   } = useFormContext();
   const error = errors.customRpc?.message as string | undefined;
-  const customRpcValue = defaultValues?.customRpc;
+  const customRpcValue = defaultValues?.customRpc ?? '';
   const rpcValue = watch('customRpc');
   const [isInputVisible, setIsInputVisible] = useState(false);
 

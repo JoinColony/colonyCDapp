@@ -18,7 +18,7 @@ const FeesForm = () => {
     <Form
       validationSchema={metatransactionsValidationSchema}
       defaultValues={{
-        metatransactions: metatransasctionsDefault,
+        metatransactionsEnabled: !!metatransasctionsDefault,
       }}
       onSubmit={handleSubmit}
     >
@@ -32,7 +32,7 @@ const FeesForm = () => {
               title={{ id: 'advancedSettings.fees.title' }}
               description={{ id: 'advancedSettings.fees.description' }}
               tooltipMessage={{ id: 'advancedSettings.fees.tooltip' }}
-              id="metatransactions"
+              id="metatransactionsEnabled"
               onChange={handleFeesOnChange}
               register={register}
             />

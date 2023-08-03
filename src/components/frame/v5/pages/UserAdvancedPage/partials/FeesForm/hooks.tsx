@@ -9,26 +9,34 @@ import { useAppContext } from '~hooks';
 
 export const useFeesForm = () => {
   const metatransactionsValidationSchema = object({
-    metatransactions: bool<boolean>(),
+    metatransactionsEnabled: bool<boolean>(),
   }).defined();
 
   const metatransactionsAvailable = canUseMetatransactions();
 
   const { user } = useAppContext();
-  const existingUserSettings = user?.profile?.meta;
+  const {
+    metatransactionsEnabled,
+    emailPermissions,
+    customRpc,
+    decentralizedModeEnabled,
+  } = user?.profile?.meta ?? { emailPermissions: [] };
+
   const [editUser] = useUpdateUserProfileMutation();
 
   const metatransasctionsDefault = metatransactionsAvailable
-    ? existingUserSettings?.metatransactionsEnabled
+    ? metatransactionsEnabled
     : false;
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values: { metatransactionsEnabled: boolean }) => {
     await editUser({
       variables: {
         input: {
           id: user?.walletAddress ?? '',
           meta: {
-            ...existingUserSettings,
+            emailPermissions,
+            customRpc,
+            decentralizedModeEnabled,
             ...values,
           },
         },
@@ -37,7 +45,7 @@ export const useFeesForm = () => {
   };
 
   const handleFeesOnChange = (value: boolean) => {
-    handleSubmit({ metatransactions: value });
+    handleSubmit({ metatransactionsEnabled: value });
     toast.success(
       <Toast
         type="success"

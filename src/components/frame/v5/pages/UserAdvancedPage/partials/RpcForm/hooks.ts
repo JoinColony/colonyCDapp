@@ -31,23 +31,31 @@ export const useRpcForm = () => {
   }).defined();
 
   const { user } = useAppContext();
-  const existingUserSettings = user?.profile?.meta;
-  const decentralizedModeEnabled =
-    !!existingUserSettings?.decentralizedModeEnabled;
-  const customRpc = user?.profile?.meta?.customRpc ?? '';
-  const [isInputVisible, setIsInputVisible] = useState(
+  const {
+    metatransactionsEnabled,
+    emailPermissions,
+    customRpc,
     decentralizedModeEnabled,
+  } = user?.profile?.meta ?? { emailPermissions: [] };
+
+  const [isInputVisible, setIsInputVisible] = useState(
+    !!decentralizedModeEnabled,
   );
 
   const [editUser] = useUpdateUserProfileMutation();
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values: {
+    decentralizedModeEnabled: boolean;
+    customRpc?: string;
+  }) => {
     await editUser({
       variables: {
         input: {
           id: user?.walletAddress ?? '',
           meta: {
-            ...existingUserSettings,
+            metatransactionsEnabled,
+            emailPermissions,
+            customRpc,
             ...values,
           },
         },
