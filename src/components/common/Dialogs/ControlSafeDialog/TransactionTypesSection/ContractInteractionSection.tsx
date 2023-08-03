@@ -133,7 +133,7 @@ const ContractInteractionSection = ({
   const {
     watch,
     setValue,
-    resetField,
+    trigger,
     formState: { isValid },
   } = useFormContext();
   const safe = watch('safe');
@@ -384,9 +384,15 @@ const ContractInteractionSection = ({
                     );
 
                     updatedSelectedContractMethods[0]?.inputs?.map((input) =>
-                      resetField(
+                      setValue(
                         `transactions.${transactionIndex}.${input.name}-${selectedContractMethods[transactionIndex]?.name}`,
+                        '',
                       ),
+                    );
+
+                    setTimeout(
+                      () => trigger(`transactions.${transactionIndex}`),
+                      1,
                     );
                   }}
                 />
