@@ -14,6 +14,16 @@ query GetFullColonyByName($name: String!) {
   }
 }
 
+query GetDisplayNameByColonyName($name: String!) {
+  getColonyByName(name: $name) {
+    items {
+      metadata {
+        displayName
+      }
+    }
+  }
+}
+
 query GetMetacolony {
   getColonyByType(type: METACOLONY) {
     items {
