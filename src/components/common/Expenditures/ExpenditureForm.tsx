@@ -28,7 +28,10 @@ const ExpenditureForm = () => {
       <div className={styles.form}>
         <Input name="recipientAddress" label="Recipient address" />
         <Input name="tokenAddress" label="Token address" />
-        <Input name="amount" label="Amount" />
+        <div className={styles.amountField}>
+          <Input name="amount" label="Amount" />
+          <div>{colony?.nativeToken.symbol}</div>
+        </div>
       </div>
 
       <ExpenditureActionButton />

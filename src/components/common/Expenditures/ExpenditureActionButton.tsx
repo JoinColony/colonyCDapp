@@ -1,3 +1,4 @@
+import { BigNumber } from 'ethers';
 import React from 'react';
 import { useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -24,7 +25,7 @@ const ExpenditureActionButton = () => {
       colonyAddress: colony.colonyAddress,
       recipientAddress,
       tokenAddress,
-      amount,
+      amount: BigNumber.from(amount).mul(10).pow(colony.nativeToken.decimals),
     })),
     withMeta({ navigate }),
   );

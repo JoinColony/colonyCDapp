@@ -11,6 +11,7 @@ import { getExpenditureDatabaseId } from '~utils/databaseId';
 import MaskedAddress from '~shared/MaskedAddress';
 
 import styles from './ExpenditureDetailsPage.module.css';
+import Numeral from '~shared/Numeral';
 
 const ExpenditureDetailsPage = () => {
   const { expenditureId } = useParams();
@@ -62,7 +63,13 @@ const ExpenditureDetailsPage = () => {
             <div>
               <div>Amount</div>
               {slot.payouts?.map((payout) => (
-                <div key={payout.tokenAddress}>{payout.amount}</div>
+                <div key={payout.tokenAddress}>
+                  <Numeral
+                    value={payout.amount}
+                    decimals={colony.nativeToken.decimals}
+                    suffix={colony.nativeToken.symbol}
+                  />
+                </div>
               ))}
             </div>
 
