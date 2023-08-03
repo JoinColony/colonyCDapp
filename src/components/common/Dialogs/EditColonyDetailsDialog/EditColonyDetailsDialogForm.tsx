@@ -124,7 +124,6 @@ const EditColonyDetailsDialogForm = ({
           appearance={{ colorSchema: 'grey', theme: 'fat' }}
           disabled={disabledInput}
           maxLength={20}
-          value={colonyDisplayName}
         />
       </DialogSection>
       <DialogSection>

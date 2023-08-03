@@ -116,7 +116,6 @@ const UserMainSettings = ({
                 name="email"
                 dataTest="userSettingsEmail"
                 formattingOptions={noSpaces}
-                value={defaultValues.email}
               />
               <Input
                 label={MSG.labelName}
@@ -135,7 +134,6 @@ const UserMainSettings = ({
                 name="website"
                 dataTest="userSettingsWebsite"
                 formattingOptions={noSpaces}
-                value={defaultValues.website}
               />
               <Input
                 label={MSG.labelLocation}
