@@ -13,4 +13,7 @@ fragment Expenditure on Expenditure {
       amount
     }
   }
+  metadata {
+    nativeDomainId
+  }
 }
