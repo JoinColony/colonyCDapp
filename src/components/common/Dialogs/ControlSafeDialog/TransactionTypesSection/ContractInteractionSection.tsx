@@ -27,7 +27,7 @@ import {
   getChainNameFromSafe,
 } from '~utils/safes';
 import { isEmpty, isEqual, isNil } from '~utils/lodash';
-import { Message, SafeTransaction, User } from '~types';
+import { Message, SafeTransaction } from '~types';
 import { isMessageDescriptor } from '~utils/intl';
 import { BINANCE_NETWORK } from '~constants';
 
@@ -176,7 +176,7 @@ const ContractInteractionSection = ({
   );
 
   const onContractChange = useCallback(
-    async (contract: User) => {
+    async (contract) => {
       const setTransactionDisplayName = (value) =>
         setValue(
           `transactions.${transactionIndex}.contract.profile.displayName`,
