@@ -85,5 +85,12 @@
         "lambdaParams": {}
       }
     }
+  },
+  "dev": {
+    "categories": {
+      "function": {
+        "fetchExpenditureBalances": {}
+      }
+    }
   }
 }
