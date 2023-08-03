@@ -66,17 +66,16 @@ export const transactionOptions = [
 export const defaultTransaction = {
   // type SafeTransaction
   transactionType: '',
-  tokenData: null,
-  amount: null,
-  rawAmount: null,
-  recipient: null,
+  tokenData: undefined,
+  amount: undefined,
+  rawAmount: undefined,
   data: '',
-  contract: null,
+  contract: undefined,
   abi: '',
   contractFunction: '',
-  nft: null,
-  nftData: null,
-  functionParamTypes: null,
+  nft: undefined,
+  nftData: undefined,
+  functionParamTypes: undefined,
 };
 
 export enum ContractFunctions {
