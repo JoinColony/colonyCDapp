@@ -23,7 +23,6 @@ const CustomEndpointInput = ({
   const { watch } = useFormContext();
 
   const toggleOn: boolean = watch(toggleName);
-  const inputValue: string = watch(inputName);
 
   return (
     <div className={styles.main}>
@@ -33,7 +32,6 @@ const CustomEndpointInput = ({
         name={inputName}
         disabled={!toggleOn}
         formattingOptions={noSpaces}
-        value={inputValue}
       />
     </div>
   );
