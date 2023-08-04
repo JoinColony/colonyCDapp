@@ -30,19 +30,22 @@ export function* ipfsUpload(data: string) {
 }
 
 export function* ipfsUploadWithFallback(payload: string) {
-  let ipfsHash: string | null = null;
+  let ipfsHash = '';
   try {
     ipfsHash = yield call(ipfsUpload, payload);
   } catch (error) {
-    console.error('Could not upload the colony metadata IPFS. Retrying...');
+    console.error('Could not upload the colony metadata to IPFS. Retrying...');
   }
 
   /* If the ipfs upload failed we try again, then if it fails again we just assign
       an empty string so that the `transactionAddParams` won't fail */
   if (!ipfsHash) {
-    ipfsHash = yield call(ipfsUpload, payload);
-    if (!ipfsHash) {
-      ipfsHash = '';
+    try {
+      ipfsHash = yield call(ipfsUpload, payload);
+    } catch {
+      console.error(
+        'Could not upload the colony metadata to IPFS a second time. Not retrying.',
+      );
     }
   }
 
