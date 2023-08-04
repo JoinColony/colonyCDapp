@@ -1361,11 +1361,13 @@ export type Expenditure = {
 export type ExpenditureBalance = {
   __typename?: 'ExpenditureBalance';
   amount: Scalars['String'];
+  requiredAmount: Scalars['String'];
   tokenAddress: Scalars['ID'];
 };
 
 export type ExpenditureBalanceInput = {
   amount: Scalars['String'];
+  requiredAmount: Scalars['String'];
   tokenAddress: Scalars['ID'];
 };
 

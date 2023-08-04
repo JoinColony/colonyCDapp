@@ -2,6 +2,7 @@ const { getColonyNetworkClient, Network } = require('@colony/colony-js');
 const {
   providers,
   utils: { Logger },
+  BigNumber,
 } = require('ethers');
 
 Logger.setLogLevel(Logger.levels.ERROR);
@@ -43,27 +44,34 @@ exports.handler = async (event) => {
     expenditure.colonyId,
   );
 
-  // Get all the token addresses that are used in the expenditure
-  const tokenAddresses = expenditure.slots
-    .map((slot) => slot.payouts?.map((payout) => payout.tokenAddress) ?? [])
-    .flat();
-
-  // Remove duplicates
-  const uniqueTokenAddresses = [...new Set(tokenAddresses)];
+  // Create a map between token addresses and payout amounts
+  const tokenRequiredAmounts = new Map();
+  expenditure.slots.forEach((slot) => {
+    slot.payouts?.forEach(({ tokenAddress, amount }) => {
+      const currentAmount = tokenRequiredAmounts.get(tokenAddress) ?? 0;
+      tokenRequiredAmounts.set(
+        tokenAddress,
+        BigNumber.from(amount).add(currentAmount).toString(),
+      );
+    });
+  });
 
   // Get the balances for each token address
   const balances = await Promise.all(
-    uniqueTokenAddresses.map(async (tokenAddress) => {
-      const tokenBalance = await colonyClient.getFundingPotBalance(
-        expenditure.nativeFundingPotId,
-        tokenAddress,
-      );
+    [...tokenRequiredAmounts.entries()].map(
+      async ([tokenAddress, requiredAmount]) => {
+        const tokenBalance = await colonyClient.getFundingPotBalance(
+          expenditure.nativeFundingPotId,
+          tokenAddress,
+        );
 
-      return {
-        tokenAddress,
-        amount: tokenBalance.toString(),
-      };
-    }),
+        return {
+          tokenAddress,
+          amount: tokenBalance.toString(),
+          requiredAmount,
+        };
+      },
+    ),
   );
 
   return balances;
