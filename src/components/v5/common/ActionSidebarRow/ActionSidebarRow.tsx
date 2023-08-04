@@ -12,7 +12,7 @@ const ActionSidebarRow: FC<PropsWithChildren<ActionSidebarRowProps>> = ({
   const { formatMessage } = useIntl();
 
   return (
-    <div className="flex items-center gap-28">
+    <div className="flex items-center gap-28 relative">
       <div className="flex items-center text-gray-600">
         <Icon name={iconName} appearance={{ size: 'extraTiny' }} />
         <span className="text-md ml-2">{formatMessage(title)}</span>

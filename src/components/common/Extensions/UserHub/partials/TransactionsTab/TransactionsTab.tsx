@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Scrollbar } from 'react-scrollbars-custom';
 
 import { TransactionsProps } from './types';
 import { isTxGroup } from '~frame/GasStation/transactionGroup';
@@ -9,7 +8,7 @@ import TransactionDetails from './partials/TransactionDetails';
 import EmptyContent from '~v5/common/EmptyContent';
 import MessageCardDetails from '~frame/GasStation/MessageCardDetails';
 import TransactionList from './partials/TransactionList';
-import { useMobile } from '~hooks';
+import CustomScrollbar from '~v5/shared/CustomScrollbar';
 
 export const displayName = 'common.Extensions.UserHub.partials.TransactionsTab';
 
@@ -19,7 +18,6 @@ const TransactionsTab: FC<TransactionsProps> = ({
   setAutoOpenTransaction = () => {},
   appearance: { interactive },
 }) => {
-  const isMobile = useMobile();
   const { formatMessage } = useIntl();
   const [selectedGroupIdx, setSelectedGroupIdx] = useState<number>(
     autoOpenTransaction ? 0 : -1,
@@ -69,29 +67,7 @@ const TransactionsTab: FC<TransactionsProps> = ({
       <p className="heading-5 mb-2.5 sm:mb-0.5">
         {formatMessage({ id: 'transactions' })}
       </p>
-      <Scrollbar
-        style={{ width: '100%', height: isMobile ? '60vh' : 356 }}
-        trackYProps={{
-          renderer: (props) => {
-            const { elementRef, ...restProps } = props;
-            return (
-              <span
-                {...restProps}
-                ref={elementRef}
-                className="!bg-transparent !w-[0.3125rem]"
-              />
-            );
-          },
-        }}
-        thumbYProps={{
-          renderer: (props) => {
-            const { elementRef, ...restProps } = props;
-            return (
-              <div {...restProps} ref={elementRef} className="!bg-gray-100" />
-            );
-          },
-        }}
-      >
+      <CustomScrollbar height={356} mobileHeight="60vh">
         {isEmpty ? (
           <EmptyContent
             title={{ id: 'empty.content.title.transactions' }}
@@ -101,7 +77,7 @@ const TransactionsTab: FC<TransactionsProps> = ({
         ) : (
           renderTransactions()
         )}
-      </Scrollbar>
+      </CustomScrollbar>
     </div>
   );
 };

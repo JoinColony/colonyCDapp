@@ -9,15 +9,23 @@ import { useMobile } from '~hooks';
 import Button, { TextButton } from '~v5/shared/Button';
 import ActionSidebarRow from '../ActionSidebarRow';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import SearchSelect from '~v5/shared/SearchSelect';
+import { useActionSidebar, useActionsList } from './hooks';
+import { translateAction } from './utils';
+import { Actions } from '~constants/actions';
 
 const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
   const ref = useRef(null);
   const [isSidebarFullscreen, setIsSidebarFullscreen] = useState(false);
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
-  const { toggleActionSidebarOff } = useActionSidebarContext();
+  const { toggleActionSidebarOff, selectedAction, setSelectedAction } =
+    useActionSidebarContext();
+  const { isSelectVisible, toggleSelect, toggleSelectOff } = useActionSidebar();
 
-  useOnClickOutside(ref, () => toggleActionSidebarOff());
+  const actionsList = useActionsList();
+
+  useOnClickOutside(ref, () => !isMobile && toggleActionSidebarOff());
 
   return (
     <div
@@ -64,12 +72,31 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
           iconName="file-plus"
           title={{ id: 'actionSidebar.actionType' }}
         >
-          <button
-            type="button"
-            className="flex text-md text-gray-600 transition-colors hover:text-blue-400"
-          >
-            {formatMessage({ id: 'actionSidebar.chooseActionType' })}
-          </button>
+          <>
+            {!selectedAction && (
+              <>
+                <button
+                  type="button"
+                  className="flex text-md text-gray-600 transition-colors hover:text-blue-400"
+                  onClick={toggleSelect}
+                >
+                  {formatMessage({ id: 'actionSidebar.chooseActionType' })}
+                </button>
+                {isSelectVisible && (
+                  <SearchSelect
+                    onToggle={toggleSelectOff}
+                    items={actionsList}
+                    isOpen={isSelectVisible}
+                  />
+                )}
+              </>
+            )}
+            {selectedAction && (
+              <span className="text-md">
+                {formatMessage({ id: translateAction(selectedAction) })}
+              </span>
+            )}
+          </>
         </ActionSidebarRow>
       </div>
       <div className="mt-auto">
@@ -86,6 +113,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
                 iconSize="extraSmall"
                 mode="medium"
                 className="text-gray-600 font-normal"
+                onClick={() => setSelectedAction(Actions.SIMPLE_PAYMENT)}
               />
             </li>
             <li className="flex items-center mb-4">
@@ -104,6 +132,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
                 iconSize="extraSmall"
                 mode="medium"
                 className="text-gray-600 font-normal"
+                onClick={() => setSelectedAction(Actions.TRANSFER_FUNDS)}
               />
             </li>
             <li className="flex items-center">
@@ -113,6 +142,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
                 iconSize="extraSmall"
                 mode="medium"
                 className="text-gray-600 font-normal"
+                onClick={() => setSelectedAction(Actions.ADVANCED_PAYMENT)}
               />
             </li>
           </ul>

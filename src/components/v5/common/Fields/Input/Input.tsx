@@ -31,7 +31,7 @@ const Input: FC<InputProps> = ({
     maxCharNumber,
     defaultValue,
   );
-  const registerField = register(name);
+  const registerField = register && register(name);
 
   const isErrorStatus = isCharLenghtError || isError;
 
@@ -51,7 +51,7 @@ const Input: FC<InputProps> = ({
         defaultValue={defaultValue}
         onChange={(e) => {
           onChange(e);
-          registerField.onChange(e);
+          registerField?.onChange(e);
         }}
         disabled={isDisabled}
       />
