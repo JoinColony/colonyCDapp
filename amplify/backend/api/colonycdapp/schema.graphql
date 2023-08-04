@@ -2645,4 +2645,5 @@ type Annotation @model {
 type ExpenditureBalance {
   tokenAddress: ID!
   amount: String!
+  requiredAmount: String! # Total amount required to cover all payouts for the given token
 }
