@@ -7,7 +7,7 @@ import Avatar from '~shared/Avatar';
 import widgetStyles from '../../DetailsWidget.css';
 import styles from '../SafeTransactionDetail.css';
 
-const displayName = 'DetailsWidget.SafeTransactionDetail';
+const displayName = 'DetailsWidget.SafeTransactionDetail.ContractName';
 
 const MSG = defineMessages({
   contractName: {
