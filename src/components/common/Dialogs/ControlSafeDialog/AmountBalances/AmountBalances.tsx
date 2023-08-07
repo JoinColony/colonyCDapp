@@ -71,7 +71,18 @@ const AmountBalances = ({
 
   // Set token data in form state on initialisation. Ensures native token is always preselected
   useEffect(() => {
-    setSelectedTokenData(tokens[0]);
+    // Check if the selected token is present in the balances
+    const isTokenInBalances = safeBalances?.some(
+      (b) =>
+        b.token?.tokenAddress && // Check if the token address is defined
+        selectedTokenData?.tokenAddress && // Check if the selected token address is defined
+        b.token.tokenAddress === selectedTokenData.tokenAddress, // Compare the token addresses
+    );
+
+    // If the token is not in balances or is undefined, select the first token from the list
+    if (!isTokenInBalances) {
+      setSelectedTokenData(tokens[0]); // Set the selected token data to the native token
+    }
 
     // selectedTokenData and setSelectedTokenData cause infinite loop.
     // eslint-disable-next-line react-hooks/exhaustive-deps
