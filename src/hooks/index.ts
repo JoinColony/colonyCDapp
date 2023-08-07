@@ -64,6 +64,7 @@ export { default as useSideNavigation } from './useSideNavigation';
 export { default as useCurrentPage } from './useCurrentPage';
 export { default as useFetchActiveInstallsExtension } from './useFetchActiveInstallsExtension';
 export { default as useActiveInstalls } from './useActiveInstalls';
+export { default as useGetColonyMembers } from './useGetColonyMembers';
 
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously

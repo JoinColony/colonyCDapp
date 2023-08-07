@@ -86,7 +86,7 @@ import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
 import { PageThemeContextProvider } from '~context/PageThemeContext';
 import { ActionSidebarContextProvider } from '~context/ActionSidebarContext';
 
-// import useTitle from '~hooks/useTitle';
+import useTitle from '~hooks/useTitle';
 
 const displayName = 'routes.Routes';
 
@@ -100,7 +100,7 @@ const Routes = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const didClaimProfile = user?.name;
 
-  // useTitle();
+  useTitle();
 
   /**
    * @NOTE Memoized Switch

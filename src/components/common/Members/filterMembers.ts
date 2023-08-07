@@ -1,55 +1,60 @@
 import { FormValues } from '~common/ColonyMembers/MembersFilter';
 import { VerificationType } from '~common/ColonyMembers/MembersFilter/filtersConfig';
 
-import { Contributor, Watcher } from '~types';
+import { Address, Member } from '~types';
+import { isUserVerified } from '~utils/verifiedUsers';
 
-const filterMemberBySearchTerm = (
-  member: Contributor | Watcher,
-  searchTerm?: string,
-) => {
+const filterMemberBySearchTerm = (member: Member, searchTerm: string) => {
   return (
-    searchTerm &&
-    (member?.user?.profile?.displayName
+    member?.user?.profile?.displayName
       ?.toLowerCase()
       .includes(searchTerm.toLowerCase()) ||
-      member?.user?.walletAddress
-        ?.toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
-      member?.user?.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    member?.address?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    member?.user?.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 };
 
 const filterMemberByVerificationStatus = (
-  member: Contributor | Watcher,
+  member: Member,
+  whitelistedAddresses: Address[],
   verificationType?: VerificationType,
 ) => {
+  const isVerified = isUserVerified(member.address, whitelistedAddresses);
+
   if (verificationType === VerificationType.Verified) {
-    return true;
-    // return member.isWhitelisted;
+    return isVerified;
   }
 
   if (verificationType === VerificationType.Unverified) {
-    return true;
-    // return !member.isWhitelisted;
+    return !isVerified;
   }
 
   return true;
-  // return !member.isWhitelisted;
 };
 
-export const filterMembers = <M extends Contributor | Watcher>(
+export const filterMembers = <M extends Member>(
   members: M[],
+  whitelistedAddresses: Address[],
   searchTerm?: string,
   filters?: FormValues,
 ): M[] => {
-  /* No filters */
-  if (!searchTerm && filters?.verificationType === VerificationType.All) {
-    return members;
+  let filtered = members;
+
+  if (filters?.verificationType !== VerificationType.All) {
+    filtered = members.filter((member) =>
+      filterMemberByVerificationStatus(
+        member,
+        whitelistedAddresses,
+        filters?.verificationType,
+      ),
+    );
   }
 
-  return members.filter(
-    (member) =>
-      filterMemberBySearchTerm(member, searchTerm) &&
-      filterMemberByVerificationStatus(member, filters?.verificationType),
-  );
+  if (searchTerm) {
+    return filtered.filter((member) =>
+      filterMemberBySearchTerm(member, searchTerm),
+    );
+  }
+
+  return filtered;
 };

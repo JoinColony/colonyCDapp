@@ -1,5 +1,5 @@
 import React from 'react';
-import { defineMessages } from 'react-intl';
+import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { getBlockscoutUserURL } from '~constants';
 import DropdownMenu, {
@@ -10,6 +10,10 @@ import Button from '~shared/Button';
 import ExternalLink from '~shared/ExternalLink';
 
 import styles from './MemberActionsPopover.css';
+import { isUserVerified } from '~utils/verifiedUsers';
+import { useDialog } from '~shared/Dialog';
+import { ManageWhitelistDialog } from '~common/Dialogs';
+import { useColonyContext, useEnabledExtensions } from '~hooks';
 
 const displayName = 'MembersList.Actions.MemberActionsPopover';
 
@@ -17,6 +21,10 @@ const MSG = defineMessages({
   viewOnBlockscout: {
     id: `${displayName}.viewOnBlockscout`,
     defaultMessage: 'View on Blockscout',
+  },
+  addToAddressBook: {
+    id: `${displayName}.addToAddressBook`,
+    defaultMessage: `Add to address book`,
   },
 });
 
@@ -26,6 +34,28 @@ interface Props {
 }
 
 const MemberActionsPopover = ({ closePopover, userAddress }: Props) => {
+  const { colony } = useColonyContext();
+
+  const isWhitelisted = isUserVerified(
+    userAddress,
+    colony?.metadata?.whitelistedAddresses ?? [],
+  );
+  const enabledExtensionData = useEnabledExtensions();
+
+  const openManageWhitelistDialog = useDialog(ManageWhitelistDialog);
+
+  if (!colony) {
+    return null;
+  }
+
+  const handleManageWhitelist = () => {
+    openManageWhitelistDialog({
+      userAddress,
+      colony,
+      enabledExtensionData,
+    });
+  };
+
   return (
     <DropdownMenu onClick={closePopover}>
       <DropdownMenuSection>
@@ -38,6 +68,18 @@ const MemberActionsPopover = ({ closePopover, userAddress }: Props) => {
             />
           </Button>
         </DropdownMenuItem>
+        {!isWhitelisted && (
+          <DropdownMenuItem>
+            <Button
+              appearance={{ theme: 'no-style' }}
+              onClick={handleManageWhitelist}
+            >
+              <div className={styles.actionButton}>
+                <FormattedMessage {...MSG.addToAddressBook} />
+              </div>
+            </Button>
+          </DropdownMenuItem>
+        )}
       </DropdownMenuSection>
     </DropdownMenu>
   );

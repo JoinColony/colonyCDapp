@@ -103,12 +103,14 @@ const Members = ({
 
   const filteredContributors = filterMembers<Contributor>(
     data?.getMembersForColony?.contributors || [],
+    colony?.metadata?.whitelistedAddresses ?? [],
     searchValue,
     filters,
   );
 
   const filteredWatchers = filterMembers<Watcher>(
     data?.getMembersForColony?.watchers || [],
+    colony?.metadata?.whitelistedAddresses ?? [],
     searchValue,
     filters,
   );
