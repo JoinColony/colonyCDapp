@@ -143,7 +143,7 @@ const ContractInteractionSection = ({
 
   const onContractABIChange = useCallback(
     (abiResponse: ABIResponse) => {
-      const setTransactionAbi = (value) =>
+      const setTransactionAbi = (value: string) =>
         setValue(`transactions.${transactionIndex}.abi`, value);
 
       if (abiResponse.status === '0') {
@@ -173,8 +173,8 @@ const ContractInteractionSection = ({
   );
 
   const onContractChange = useCallback(
-    async (contract) => {
-      const setTransactionDisplayName = (value) =>
+    async <T extends { walletAddress: string }>(contract: T) => {
+      const setTransactionDisplayName = (value: string) =>
         setValue(
           `transactions.${transactionIndex}.contract.profile.displayName`,
           value,
