@@ -22,8 +22,7 @@ const ExpenditureActionButton = () => {
 
   const transform = pipe(
     mapPayload(() => ({
-      colonyName: colony.name,
-      colonyAddress: colony.colonyAddress,
+      colony,
       slots,
       // @TODO: This should come from the form values
       domainId: Id.RootDomain,
