@@ -15,7 +15,7 @@ import Icon from '~shared/Icon';
 import Avatar from '~shared/Avatar';
 import { NftData, SafeTransaction, Token, User } from '~types';
 import { omit } from '~utils/lodash';
-import { extractTokenName } from '~utils/safes';
+import { defaultTransaction, extractTokenName } from '~utils/safes';
 import { formatArgument } from '~shared/DetailsWidget/SafeTransactionDetail/components/FunctionsSection';
 
 import AddressDetailsView from './TransactionPreview/AddressDetailsView';
@@ -23,7 +23,6 @@ import {
   TransactionTypes,
   transactionOptions,
   MSG as ConstantsMSG,
-  defaultTransaction,
 } from './helpers';
 import DetailsItem from './DetailsItem';
 import { ControlSafeProps } from './types';
