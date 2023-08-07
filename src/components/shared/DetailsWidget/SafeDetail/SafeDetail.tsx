@@ -3,8 +3,7 @@ import React from 'react';
 import Avatar from '~shared/Avatar';
 import { Safe } from '~types';
 import { SAFE_NAMES_MAP } from '~constants';
-
-import { InvisibleCopyableMaskedAddress } from '../SafeTransactionDetail/components/InvisibleCopyableMaskedAddress';
+import { InvisibleCopyableMaskedAddress } from '~shared/InvisibleCopyableAddress';
 
 import styles from './SafeDetail.css';
 
