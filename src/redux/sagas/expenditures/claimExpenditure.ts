@@ -60,7 +60,7 @@ function* claimExpenditure({
     );
 
     yield put<AllActions>({
-      type: ActionTypes.EXPENDITURE_CREATE_SUCCESS,
+      type: ActionTypes.EXPENDITURE_CLAIM_SUCCESS,
       payload: {},
       meta,
     });
