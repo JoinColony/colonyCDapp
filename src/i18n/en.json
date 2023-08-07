@@ -658,6 +658,7 @@
   "actions.enterRecoveryMode": "Enter recovery mode",
   "actions.createNewIntegration": "Create new integration",
   "actions.manageColonyObjective": "Manage Colony objective",
+  "actions.userPermissions": "User permissions",
   "connectWallet": "Connect wallet",
   "copyWalletAddress": "Copy wallet address",
   "copy.address": "Copy address",

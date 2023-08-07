@@ -20,4 +20,5 @@ export enum Actions {
   ENTER_RECOVERY_MODE = 'enter-recovery-mode',
   CREATE_NEW_INTEGRATION = 'create-new-integration',
   MANAGE_COLONY_OBJECTIVES = 'manage-colony-objectives',
+  USER_PERMISSIONS = 'user-permissions',
 }
