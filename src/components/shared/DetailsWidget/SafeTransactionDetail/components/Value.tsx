@@ -23,7 +23,7 @@ const renderTokenIcon = (tokenData: Token) => {
     return (
       <Avatar
         className={styles.tokenAvatar}
-        /* avatarURL={''} */
+        avatar={tokenData.thumbnail}
         notSet={!tokenData.thumbnail}
         title={`${tokenData.name} token logo`}
         placeholderIcon="circle-close"
