@@ -5,6 +5,7 @@ import { Expenditure } from '~types';
 
 import styles from './ExpenditureBalances.module.css';
 import MaskedAddress from '~shared/MaskedAddress/MaskedAddress';
+import { isExpenditureFunded } from '~utils/expenditures';
 
 interface ExpenditureBalancesProps {
   expenditure: Expenditure;
@@ -29,6 +30,9 @@ const ExpenditureBalances = ({ expenditure }: ExpenditureBalancesProps) => {
             </div>
           </div>
         ))}
+      </div>
+      <div>
+        Is fully funded: {isExpenditureFunded(expenditure) ? 'Yes' : 'No'}
       </div>
     </div>
   );

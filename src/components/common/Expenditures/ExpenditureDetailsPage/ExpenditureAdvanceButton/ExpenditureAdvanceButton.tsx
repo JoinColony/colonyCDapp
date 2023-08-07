@@ -6,19 +6,12 @@ import { ExpenditureStatus } from '~gql';
 import { ActionTypes } from '~redux';
 import { ActionButton } from '~shared/Button';
 import { Colony, Expenditure } from '~types';
+import { isExpenditureFunded } from '~utils/expenditures';
 
 interface ExpenditureAdvanceButtonProps {
   expenditure: Expenditure;
   colony: Colony;
 }
-
-const isExpenditureFunded = (expenditure: Expenditure) => {
-  return (
-    expenditure.balances?.every((balance) =>
-      BigNumber.from(balance.amount).gte(balance.requiredAmount),
-    ) ?? false
-  );
-};
 
 const getExpenditurePayoutsTotal = (expenditure: Expenditure) => {
   return expenditure.slots.reduce((total, slot) => {

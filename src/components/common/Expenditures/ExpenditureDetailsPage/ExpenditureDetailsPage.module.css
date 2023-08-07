@@ -1,3 +1,9 @@
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .recipients {
   display: flex;
   flex-direction: column;
