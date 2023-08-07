@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import styles from './DetailsItem.css';
 
 const DetailsItem = ({
