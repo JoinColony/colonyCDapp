@@ -13,7 +13,7 @@ import TokenIcon from '~shared/TokenIcon';
 import Button from '~shared/Button';
 import Icon from '~shared/Icon';
 import Avatar from '~shared/Avatar';
-import { NftData, SafeTransaction, Token, User } from '~types';
+import { NFTData, SafeTransaction, Token, User } from '~types';
 import { omit } from '~utils/lodash';
 import { defaultTransaction, extractTokenName } from '~utils/safes';
 import { formatArgument } from '~shared/DetailsWidget/SafeTransactionDetail/components/FunctionsSection';
@@ -136,7 +136,7 @@ const transactionTypeFieldsMap = {
     {
       key: 'nftData',
       label: MSG.nftHeldByTheSafe,
-      value: (nftData: NftData) => (
+      value: (nftData: NFTData) => (
         <div className={styles.nftContainer}>
           <Avatar
             avatar={nftData.imageUri || ''}
@@ -155,7 +155,7 @@ const transactionTypeFieldsMap = {
     {
       key: 'nftData',
       label: MSG.nftId,
-      value: (nftData: NftData) => (
+      value: (nftData: NFTData) => (
         <div className={styles.itemValue}>{nftData.id}</div>
       ),
     },
