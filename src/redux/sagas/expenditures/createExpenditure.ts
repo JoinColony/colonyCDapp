@@ -134,7 +134,7 @@ function* createExpenditure({
               tokenAddress,
               tokenSlots.map((slot) =>
                 BigNumber.from(slot.amount).mul(
-                  // This should get the token decimals of the selected token, which is not necessarily the native token
+                  // @TODO: This should get the token decimals of the selected token, which is not necessarily the native token
                   BigNumber.from(10).pow(nativeToken.decimals),
                 ),
               ),
