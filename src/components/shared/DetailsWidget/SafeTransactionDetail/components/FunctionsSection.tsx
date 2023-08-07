@@ -10,12 +10,12 @@ import {
 } from '~utils/safes/getContractUsefulMethods';
 import Numeral from '~shared/Numeral';
 import { defaultTransaction } from '~common/Dialogs/ControlSafeDialog/helpers';
+import { InvisibleCopyableMaskedAddress } from '~shared/InvisibleCopyableAddress';
 
 import {
   DefaultArgument,
   ContractSectionProps,
 } from '../../SafeTransactionDetail';
-import { InvisibleCopyableMaskedAddress } from './InvisibleCopyableMaskedAddress';
 
 import widgetStyles from '../../DetailsWidget.css';
 import styles from '../SafeTransactionDetail.css';

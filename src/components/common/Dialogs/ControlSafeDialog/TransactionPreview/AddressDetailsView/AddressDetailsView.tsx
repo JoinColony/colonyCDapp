@@ -4,7 +4,7 @@ import { isAddress } from 'ethers/lib/utils';
 import MaskedAddress from '~shared/MaskedAddress';
 import Avatar from '~shared/Avatar';
 import { User } from '~types';
-import { InvisibleCopyableMaskedAddress } from '~shared/DetailsWidget/SafeTransactionDetail/components/InvisibleCopyableMaskedAddress';
+import { InvisibleCopyableMaskedAddress } from '~shared/InvisibleCopyableAddress';
 
 import styles from './AddressDetailsView.css';
 
