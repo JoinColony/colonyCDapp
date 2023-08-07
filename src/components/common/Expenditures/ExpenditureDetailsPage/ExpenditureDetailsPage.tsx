@@ -1,34 +1,20 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Id } from '@colony/colony-js';
-import { BigNumber } from 'ethers';
 
-import { ExpenditureStatus, useGetExpenditureQuery } from '~gql';
+import { useGetExpenditureQuery } from '~gql';
 import { useColonyContext } from '~hooks';
-import { ActionTypes } from '~redux';
 import NotFoundRoute from '~routes/NotFoundRoute';
-import { ActionButton } from '~shared/Button';
 import { Heading3 } from '~shared/Heading';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
 import MaskedAddress from '~shared/MaskedAddress';
-import { Expenditure } from '~types';
 
 import Numeral from '~shared/Numeral';
 import { findDomainByNativeId } from '~utils/domains';
 
 import styles from './ExpenditureDetailsPage.module.css';
 import ExpenditureBalances from './ExpenditureBalances/ExpenditureBalances';
-
-const getExpenditurePayoutsTotal = (expenditure: Expenditure) => {
-  return expenditure.slots.reduce((total, slot) => {
-    return total.add(
-      slot.payouts?.reduce(
-        (slotTotal, payout) => slotTotal.add(payout.amount),
-        BigNumber.from(0),
-      ) ?? 0,
-    );
-  }, BigNumber.from(0));
-};
+import ExpenditureAdvanceButton from './ExpenditureAdvanceButton';
 
 const ExpenditureDetailsPage = () => {
   const { expenditureId } = useParams();
@@ -65,19 +51,6 @@ const ExpenditureDetailsPage = () => {
       <div>Status: {expenditure.status}</div>
       <div>Team: {expenditureDomain?.metadata?.name ?? 'Unknown team'}</div>
       <ExpenditureBalances expenditure={expenditure} />
-      <ActionButton
-        actionType={ActionTypes.EXPENDITURE_FUND}
-        values={{
-          colonyAddress: colony.colonyAddress,
-          expenditureFundingPotId: expenditure.nativeFundingPotId,
-          fromDomainFundingPotId:
-            expenditureDomain?.nativeFundingPotId ?? Id.RootPot,
-          amount: getExpenditurePayoutsTotal(expenditure).toString(),
-          tokenAddress: colony.nativeToken.tokenAddress,
-        }}
-      >
-        Fund expenditure
-      </ActionButton>
 
       <ul className={styles.recipients}>
         {expenditure.slots.map((slot) => (
@@ -125,29 +98,7 @@ const ExpenditureDetailsPage = () => {
         ))}
       </ul>
 
-      {expenditure.status === ExpenditureStatus.Draft && (
-        <ActionButton
-          actionType={ActionTypes.EXPENDITURE_LOCK}
-          values={{
-            colonyAddress: colony.colonyAddress,
-            nativeExpenditureId: expenditure.nativeId,
-          }}
-        >
-          Lock expenditure
-        </ActionButton>
-      )}
-
-      {expenditure.status === ExpenditureStatus.Locked && (
-        <ActionButton
-          actionType={ActionTypes.EXPENDITURE_FINALIZE}
-          values={{
-            colonyAddress: colony.colonyAddress,
-            nativeExpenditureId: expenditure.nativeId,
-          }}
-        >
-          Finalize expenditure
-        </ActionButton>
-      )}
+      <ExpenditureAdvanceButton expenditure={expenditure} colony={colony} />
     </div>
   );
 };
