@@ -5922,7 +5922,7 @@ export type GetColonyExpendituresQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyExpendituresQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, expenditures?: { __typename?: 'ModelExpenditureConnection', items: Array<{ __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', nativeDomainId: number } | null, balances?: Array<{ __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string, requiredAmount: string }> | null } | null> } | null } | null };
+export type GetColonyExpendituresQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, expenditures?: { __typename?: 'ModelExpenditureConnection', items: Array<{ __typename?: 'Expenditure', id: string, nativeId: number } | null> } | null } | null };
 
 export type GetExpenditureQueryVariables = Exact<{
   expenditureId: Scalars['ID'];
@@ -7649,12 +7649,13 @@ export const GetColonyExpendituresDocument = gql`
     id
     expenditures {
       items {
-        ...Expenditure
+        id
+        nativeId
       }
     }
   }
 }
-    ${ExpenditureFragmentDoc}`;
+    `;
 
 /**
  * __useGetColonyExpendituresQuery__
