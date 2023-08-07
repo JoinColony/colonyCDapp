@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd colonyNetwork
+
+cd ./lib/safe-contracts && npm i || true && cd ../../ && bash ./scripts/setup-foreign-chain.sh && node ./scripts/setup-bridging-contracts.js start-bridging-environment & tail -f /dev/null

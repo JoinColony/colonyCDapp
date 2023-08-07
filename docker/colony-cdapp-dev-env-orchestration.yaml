@@ -67,3 +67,16 @@ services:
       test: ['CMD', 'curl', '-f', 'http://localhost:20002']
       interval: 5s
       retries: 1000
+
+  safe-contracts:
+    container_name: 'safe'
+    image: colony-cdapp-dev-env/safe:latest
+    volumes:
+      - '../amplify/mock-data:/colonyCDapp/amplify/mock-data'
+    ports:
+      - '8546:8546'
+    depends_on:
+      network-contracts:
+        condition: service_healthy
+    links:
+      - 'network-contracts:network-contracts.docker'
