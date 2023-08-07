@@ -3645,6 +3645,7 @@ export type Query = {
   getExpenditure?: Maybe<Expenditure>;
   getExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   getExpendituresByColony?: Maybe<ModelExpenditureConnection>;
+  getExpendituresByNativeFundingPotId?: Maybe<ModelExpenditureConnection>;
   getExtensionByColonyAndHash?: Maybe<ModelColonyExtensionConnection>;
   getExtensionsByHash?: Maybe<ModelColonyExtensionConnection>;
   getIngestorStats?: Maybe<IngestorStats>;
@@ -3904,6 +3905,16 @@ export type QueryGetExpendituresByColonyArgs = {
   createdAt?: InputMaybe<ModelStringKeyConditionInput>;
   filter?: InputMaybe<ModelExpenditureFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
+export type QueryGetExpendituresByNativeFundingPotIdArgs = {
+  filter?: InputMaybe<ModelExpenditureFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nativeFundingPotId: Scalars['Int'];
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
