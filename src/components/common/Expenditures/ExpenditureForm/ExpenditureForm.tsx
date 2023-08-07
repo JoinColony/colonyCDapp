@@ -5,6 +5,7 @@ import { Form } from '~shared/Fields';
 
 import ExpenditureActionButton from '../ExpenditureActionButton';
 import ExpenditureFormFields from './ExpenditureFormFields';
+import { getInitialSlotFieldValue } from './helpers';
 
 export interface ExpenditureSlotFieldValue {
   recipientAddress: string;
@@ -26,13 +27,7 @@ const ExpenditureForm = () => {
   return (
     <Form<ExpenditureFormValues>
       defaultValues={{
-        slots: [
-          {
-            recipientAddress: '',
-            tokenAddress: colony?.nativeToken.tokenAddress ?? '',
-            amount: '0',
-          },
-        ],
+        slots: [getInitialSlotFieldValue(colony.nativeToken.tokenAddress)],
       }}
       onSubmit={() => {}}
     >
