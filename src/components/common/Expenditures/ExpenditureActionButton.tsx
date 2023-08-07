@@ -25,7 +25,9 @@ const ExpenditureActionButton = () => {
       colonyAddress: colony.colonyAddress,
       recipientAddress,
       tokenAddress,
-      amount: BigNumber.from(amount).mul(10).pow(colony.nativeToken.decimals),
+      amount: BigNumber.from(amount).mul(
+        BigNumber.from(10).pow(colony.nativeToken.decimals),
+      ),
       // @TODO: Allow modifying the domain ID from the UI
       domainId: 1,
     })),

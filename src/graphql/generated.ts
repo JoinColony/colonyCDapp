@@ -982,6 +982,7 @@ export type CreateDomainMetadataInput = {
 };
 
 export type CreateExpenditureInput = {
+  balances?: InputMaybe<Array<ExpenditureBalanceInput>>;
   colonyId: Scalars['ID'];
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   id?: InputMaybe<Scalars['ID']>;
@@ -1343,6 +1344,7 @@ export enum EmailPermissions {
 
 export type Expenditure = {
   __typename?: 'Expenditure';
+  balances?: Maybe<Array<ExpenditureBalance>>;
   colony: Colony;
   colonyId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
@@ -1354,6 +1356,19 @@ export type Expenditure = {
   slots: Array<ExpenditureSlot>;
   status: ExpenditureStatus;
   updatedAt: Scalars['AWSDateTime'];
+};
+
+export type ExpenditureBalance = {
+  __typename?: 'ExpenditureBalance';
+  amount: Scalars['String'];
+  requiredAmount: Scalars['String'];
+  tokenAddress: Scalars['ID'];
+};
+
+export type ExpenditureBalanceInput = {
+  amount: Scalars['String'];
+  requiredAmount: Scalars['String'];
+  tokenAddress: Scalars['ID'];
 };
 
 export type ExpenditureMetadata = {
@@ -4994,6 +5009,7 @@ export type UpdateDomainMetadataInput = {
 };
 
 export type UpdateExpenditureInput = {
+  balances?: InputMaybe<Array<ExpenditureBalanceInput>>;
   colonyId?: InputMaybe<Scalars['ID']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   id: Scalars['ID'];
