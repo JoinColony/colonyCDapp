@@ -56,57 +56,63 @@ const ExpenditureDetailsPage = () => {
   return (
     <div>
       <Heading3>Expenditure {expenditure.id}</Heading3>
-      <div>Status: {expenditure.status}</div>
-      <div>Team: {expenditureDomain?.metadata?.name ?? 'Unknown team'}</div>
-      <ExpenditureBalances expenditure={expenditure} />
 
-      <ul className={styles.recipients}>
-        {expenditure.slots.map((slot) => (
-          <li key={slot.id} className={styles.recipient}>
-            <div>
-              <div>Slot ID</div>
-              <div>{slot.id}</div>
-            </div>
+      <div className={styles.details}>
+        <div>Status: {expenditure.status}</div>
+        <div>Team: {expenditureDomain?.metadata?.name ?? 'Unknown team'}</div>
+        <ExpenditureBalances expenditure={expenditure} />
 
-            <div>
-              <div>Recipient address</div>
-              <MaskedAddress address={slot.recipientAddress ?? ''} />
-            </div>
-
-            <div>
-              <div>Token address</div>
-              {slot.payouts?.map((payout) => (
-                <MaskedAddress
-                  key={payout.tokenAddress}
-                  address={payout.tokenAddress}
-                />
-              ))}
-            </div>
-
-            <div>
-              <div>Amount</div>
-              {slot.payouts?.map((payout) => (
-                <div key={payout.tokenAddress}>
-                  <Numeral
-                    value={payout.amount}
-                    decimals={colony.nativeToken.decimals}
-                    suffix={colony.nativeToken.symbol}
-                  />
+        <div>
+          <div>Slots</div>
+          <ul className={styles.recipients}>
+            {expenditure.slots.map((slot) => (
+              <li key={slot.id} className={styles.recipient}>
+                <div>
+                  <div>Slot ID</div>
+                  <div>{slot.id}</div>
                 </div>
-              ))}
-            </div>
 
-            <div>
-              <div>Claim delay</div>
-              <div>
-                {slot.claimDelay ? `${slot.claimDelay} seconds` : 'None'}
-              </div>
-            </div>
-          </li>
-        ))}
-      </ul>
+                <div>
+                  <div>Recipient address</div>
+                  <MaskedAddress address={slot.recipientAddress ?? ''} />
+                </div>
 
-      <ExpenditureAdvanceButton expenditure={expenditure} colony={colony} />
+                <div>
+                  <div>Token address</div>
+                  {slot.payouts?.map((payout) => (
+                    <MaskedAddress
+                      key={payout.tokenAddress}
+                      address={payout.tokenAddress}
+                    />
+                  ))}
+                </div>
+
+                <div>
+                  <div>Amount</div>
+                  {slot.payouts?.map((payout) => (
+                    <div key={payout.tokenAddress}>
+                      <Numeral
+                        value={payout.amount}
+                        decimals={colony.nativeToken.decimals}
+                        suffix={colony.nativeToken.symbol}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                <div>
+                  <div>Claim delay</div>
+                  <div>
+                    {slot.claimDelay ? `${slot.claimDelay} seconds` : 'None'}
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <ExpenditureAdvanceButton expenditure={expenditure} colony={colony} />
+      </div>
     </div>
   );
 };
