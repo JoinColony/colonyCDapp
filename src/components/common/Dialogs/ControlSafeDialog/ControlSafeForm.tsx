@@ -18,6 +18,7 @@ import { isEmpty, isEqual, omit } from '~utils/lodash';
 import { hasRoot } from '~utils/checks';
 import { getAllUserRoles } from '~transformers';
 import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
+import { defaultTransaction } from '~utils/safes';
 
 import {
   TransferNFTSection,
@@ -28,7 +29,6 @@ import {
 } from './TransactionTypesSection';
 import {
   TransactionTypes,
-  defaultTransaction,
   transactionOptions,
   ContractFunctions,
 } from './helpers';
