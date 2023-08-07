@@ -21,7 +21,7 @@ const ExpenditureDetailsPage = () => {
 
   const { colony } = useColonyContext();
 
-  const { data } = useGetExpenditureQuery({
+  const { data, loading } = useGetExpenditureQuery({
     variables: {
       expenditureId: getExpenditureDatabaseId(
         colony?.colonyAddress ?? '',
@@ -31,7 +31,15 @@ const ExpenditureDetailsPage = () => {
     skip: !expenditureId,
   });
 
-  if (!colony || !data) {
+  if (!colony) {
+    return null;
+  }
+
+  if (loading) {
+    return <div>Loading expenditure...</div>;
+  }
+
+  if (!data) {
     return null;
   }
 

@@ -13,7 +13,7 @@ import styles from './ExpendituresPage.module.css';
 const ExpendituresPage = () => {
   const { colony } = useColonyContext();
 
-  const { data } = useGetColonyExpendituresQuery({
+  const { data, loading } = useGetColonyExpendituresQuery({
     variables: {
       colonyAddress: colony?.colonyAddress ?? '',
     },
@@ -27,6 +27,7 @@ const ExpendituresPage = () => {
   return (
     <div className={styles.pageWrapper}>
       <ul>
+        {loading && <div>Loading expenditures...</div>}
         {data?.getColony?.expenditures?.items
           .filter(notNull)
           .map((expenditure) => (
