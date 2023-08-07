@@ -17,4 +17,9 @@ fragment Expenditure on Expenditure {
   metadata {
     nativeDomainId
   }
+  balances {
+    tokenAddress
+    amount
+    requiredAmount
+  }
 }
