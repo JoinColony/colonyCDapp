@@ -8,12 +8,15 @@ import { MSG } from './consts';
 import styles from './DropdownContent.module.css';
 import LearnMore from '~shared/Extensions/LearnMore';
 import TitleLabel from '~v5/shared/TitleLabel';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { Actions } from '~constants/actions';
 
 const displayName =
   'v5.common.SubNavigation.partials.DropdownContent.DecideDropdown';
 
 const DecideDropdown: FC<PropsWithChildren> = () => {
   const { formatMessage } = useIntl();
+  const { toggleActionBar, setSelectedAction } = useActionSidebarContext();
 
   return (
     <div className="bg-base-white">
@@ -25,10 +28,18 @@ const DecideDropdown: FC<PropsWithChildren> = () => {
         <LinkItem
           title={MSG.createDecision}
           description={MSG.createDecisionDescription}
+          onClick={() => {
+            setSelectedAction(Actions.CREATE_DECISION);
+            toggleActionBar();
+          }}
         />
         <LinkItem
           title={MSG.simpleDiscussion}
           description={MSG.simpleDiscussionDescription}
+          onClick={() => {
+            setSelectedAction(Actions.SIMPLE_DISCUSSION);
+            toggleActionBar();
+          }}
         />
       </ul>
       <div className={styles.buttonWrapper}>
