@@ -3,13 +3,12 @@ import { nanoid } from 'nanoid';
 import classnames from 'classnames';
 
 import { omit } from '~utils/lodash';
-import { getArrayFromString } from '~utils/safes';
+import { getArrayFromString, defaultTransaction } from '~utils/safes';
 import {
   extractParameterName,
   extractParameterType,
 } from '~utils/safes/getContractUsefulMethods';
 import Numeral from '~shared/Numeral';
-import { defaultTransaction } from '~common/Dialogs/ControlSafeDialog/helpers';
 import { InvisibleCopyableMaskedAddress } from '~shared/InvisibleCopyableAddress';
 
 import {
