@@ -17,6 +17,7 @@ import Numeral from '~shared/Numeral';
 import { findDomainByNativeId } from '~utils/domains';
 
 import styles from './ExpenditureDetailsPage.module.css';
+import ExpenditureBalances from './ExpenditureBalances/ExpenditureBalances';
 
 const getExpenditurePayoutsTotal = (expenditure: Expenditure) => {
   return expenditure.slots.reduce((total, slot) => {
@@ -63,22 +64,20 @@ const ExpenditureDetailsPage = () => {
       <Heading3>Expenditure {expenditure.id}</Heading3>
       <div>Status: {expenditure.status}</div>
       <div>Team: {expenditureDomain?.metadata?.name ?? 'Unknown team'}</div>
-      <div>
-        Balance:{' '}
-        <ActionButton
-          actionType={ActionTypes.EXPENDITURE_FUND}
-          values={{
-            colonyAddress: colony.colonyAddress,
-            expenditureFundingPotId: expenditure.nativeFundingPotId,
-            fromDomainFundingPotId:
-              expenditureDomain?.nativeFundingPotId ?? Id.RootPot,
-            amount: getExpenditurePayoutsTotal(expenditure).toString(),
-            tokenAddress: colony.nativeToken.tokenAddress,
-          }}
-        >
-          Fund expenditure
-        </ActionButton>
-      </div>
+      <ExpenditureBalances expenditure={expenditure} />
+      <ActionButton
+        actionType={ActionTypes.EXPENDITURE_FUND}
+        values={{
+          colonyAddress: colony.colonyAddress,
+          expenditureFundingPotId: expenditure.nativeFundingPotId,
+          fromDomainFundingPotId:
+            expenditureDomain?.nativeFundingPotId ?? Id.RootPot,
+          amount: getExpenditurePayoutsTotal(expenditure).toString(),
+          tokenAddress: colony.nativeToken.tokenAddress,
+        }}
+      >
+        Fund expenditure
+      </ActionButton>
 
       <ul className={styles.recipients}>
         {expenditure.slots.map((slot) => (
