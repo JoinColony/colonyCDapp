@@ -12,6 +12,7 @@ import IconTooltip from '~shared/IconTooltip';
 import { transactionOptions } from '../helpers';
 
 import styles from './TransactionHeader.css';
+import { UpdatedMethods } from '../types';
 
 const displayName =
   'common.ControlSafeDialog.ControlSafeForm.TransactionHeader';
@@ -37,6 +38,11 @@ interface Props {
   transactionTabStatus: boolean[];
   handleTransactionTabStatus: React.Dispatch<React.SetStateAction<boolean[]>>;
   removeTab: UseFieldArrayRemove;
+  selectedContractMethods?: UpdatedMethods;
+  handleSelectedContractMethods: (
+    selectedContractMethods: UpdatedMethods,
+    index: number,
+  ) => void;
 }
 
 const TransactionHeader = ({
@@ -44,38 +50,37 @@ const TransactionHeader = ({
   transactionTabStatus,
   handleTransactionTabStatus,
   removeTab,
+  selectedContractMethods = {},
+  handleSelectedContractMethods,
 }: Props) => {
   const { watch, trigger } = useFormContext();
   const transactions = watch('transactions');
 
-  const handleTabRemoval = () =>
-    // contractMethods?: UpdatedMethods,
-    {
-      removeTab(transactionIndex);
+  const handleTabRemoval = (contractMethods: UpdatedMethods) => {
+    removeTab(transactionIndex);
 
-      // const shiftedContractMethods = contractMethods
-      //   ? Object.keys(contractMethods).reduce((acc, contractMethodIndex) => {
-      //       if (transactionIndex < Number(contractMethodIndex)) {
-      //         return {
-      //           ...acc,
-      //           [Number(contractMethodIndex) - 1]: contractMethods[
-      //             contractMethodIndex
-      //           ],
-      //         };
-      //       }
-      //       return {
-      //         ...acc,
-      //         [contractMethodIndex]: contractMethods[contractMethodIndex],
-      //       };
-      //     }, {})
-      //   : {};
-      // handleSelectedContractMethods(shiftedContractMethods, transactionIndex);
+    const shiftedContractMethods = contractMethods
+      ? Object.keys(contractMethods).reduce((acc, contractMethodIndex) => {
+          if (transactionIndex < Number(contractMethodIndex)) {
+            return {
+              ...acc,
+              [Number(contractMethodIndex) - 1]:
+                contractMethods[contractMethodIndex],
+            };
+          }
+          return {
+            ...acc,
+            [contractMethodIndex]: contractMethods[contractMethodIndex],
+          };
+        }, {})
+      : {};
+    handleSelectedContractMethods(shiftedContractMethods, transactionIndex);
 
-      const newTransactionTabStatus = [...transactionTabStatus];
-      newTransactionTabStatus.splice(transactionIndex, 1);
-      handleTransactionTabStatus(newTransactionTabStatus);
-      trigger();
-    };
+    const newTransactionTabStatus = [...transactionTabStatus];
+    newTransactionTabStatus.splice(transactionIndex, 1);
+    handleTransactionTabStatus(newTransactionTabStatus);
+    trigger();
+  };
 
   const handleTabToggle = (newIndex: number) => {
     const newTransactionTabs = transactionTabStatus.map((tab, index) =>
@@ -113,7 +118,10 @@ const TransactionHeader = ({
           ),
         }}
       />
-      <Button className={styles.tabButton} onClick={() => handleTabRemoval()}>
+      <Button
+        className={styles.tabButton}
+        onClick={() => handleTabRemoval(selectedContractMethods)}
+      >
         <IconTooltip
           icon="trash"
           className={styles.deleteTabIcon}

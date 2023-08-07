@@ -380,9 +380,12 @@ const ContractInteractionSection = ({
                       transactionIndex,
                     );
 
+                    const methodName =
+                      updatedSelectedContractMethods[transactionIndex]?.name;
+
                     updatedSelectedContractMethods[0]?.inputs?.map((input) =>
                       setValue(
-                        `transactions.${transactionIndex}.${input.name}-${selectedContractMethods[transactionIndex]?.name}`,
+                        `transactions.${transactionIndex}.${input.name}-${methodName}`,
                         '',
                       ),
                     );
