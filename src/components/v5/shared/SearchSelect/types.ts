@@ -4,6 +4,8 @@ export interface SearchSelectProps {
   onToggle: () => void;
   items: SearchSelectOptionProps[];
   isOpen: boolean;
+  onSelect?: (value: string) => void;
+  isLoading?: boolean;
 }
 
 export interface SearchSelectOptionProps {
@@ -14,7 +16,11 @@ export interface SearchSelectOptionProps {
 }
 
 export interface SearchSelectOption {
-  label: MessageDescriptor;
+  label: MessageDescriptor | string;
   value: string;
   isDisabled?: boolean;
+  avatar?: string;
+  showAvatar?: boolean;
+  color?: string;
+  walletAddress?: string;
 }

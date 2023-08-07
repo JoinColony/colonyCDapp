@@ -24,7 +24,7 @@ export const useGetColonyMembers = (colonyAddress?: Address | null) => {
       .map(({ name, profile, walletAddress }, index) => ({
         value: name,
         label: name,
-        avatar: profile?.avatar,
+        avatar: profile?.avatar || profile?.thumbnail,
         walletAddress,
         id: index,
       }));
