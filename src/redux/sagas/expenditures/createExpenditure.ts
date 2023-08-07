@@ -1,16 +1,9 @@
 import { ClientType } from '@colony/colony-js';
-import { takeEvery, fork, call, put } from 'redux-saga/effects';
+import { takeEvery, fork, call, put, all } from 'redux-saga/effects';
 import { BigNumber } from 'ethers';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 import { ColonyManager, ContextModule, getContext } from '~context';
-
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
-import { getColonyManager, putError, takeFrom } from '../utils';
 import {
   transactionAddParams,
   transactionPending,
@@ -23,16 +16,21 @@ import {
 } from '~gql';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
 import { toNumber } from '~utils/numbers';
+import { ExpenditureSlotFieldValue } from '~common/Expenditures/ExpenditureForm';
+
+import {
+  createTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
+import { getColonyManager, putError, takeFrom } from '../utils';
 
 function* createExpenditure({
   meta: { id: metaId, navigate },
   meta,
   payload: {
-    colonyName,
-    colonyAddress,
-    recipientAddress,
-    tokenAddress,
-    amount,
+    colony: { name: colonyName, colonyAddress, nativeToken },
+    slots,
     domainId,
   },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
@@ -46,12 +44,23 @@ function* createExpenditure({
   const txChannel = yield call(getTxChannel, metaId);
   const batchKey = 'createExpenditure';
 
+  // Group slots by token address, this is useful as we need to call setExpenditurePayouts method separately for each token
+  type MapValue = ExpenditureSlotFieldValue & { id: number };
+  const slotsByTokenAddress = new Map<string, MapValue[]>();
+  slots.forEach((slot, index) => {
+    const currentSlots = slotsByTokenAddress.get(slot.tokenAddress) ?? [];
+    // Add id to each slot
+    const slotWithId = { ...slot, id: index + 1 };
+    slotsByTokenAddress.set(slot.tokenAddress, [...currentSlots, slotWithId]);
+  });
+
   try {
-    const { makeExpenditure, setRecipients, setPayouts } =
+    const { makeExpenditure, setRecipients, ...setPayoutsChannels } =
       yield createTransactionChannels(metaId, [
         'makeExpenditure',
         'setRecipients',
-        'setPayouts',
+        // setExpenditurePayouts transactions will use token address as channel id
+        ...[...slotsByTokenAddress.keys()],
       ]);
 
     yield fork(createTransaction, makeExpenditure.id, {
@@ -79,17 +88,21 @@ function* createExpenditure({
       ready: false,
     });
 
-    yield fork(createTransaction, setPayouts.id, {
-      context: ClientType.ColonyClient,
-      methodName: 'setExpenditurePayouts',
-      identifier: colonyAddress,
-      group: {
-        key: batchKey,
-        id: metaId,
-        index: 2,
-      },
-      ready: false,
-    });
+    yield all(
+      Object.values(setPayoutsChannels).map((channel: { id: string }, index) =>
+        fork(createTransaction, channel.id, {
+          context: ClientType.ColonyClient,
+          methodName: 'setExpenditurePayouts',
+          identifier: colonyAddress,
+          group: {
+            key: batchKey,
+            id: metaId,
+            index: index + 2,
+          },
+          ready: false,
+        }),
+      ),
+    );
 
     yield put(transactionPending(makeExpenditure.id));
     yield put(transactionReady(makeExpenditure.id));
@@ -101,26 +114,40 @@ function* createExpenditure({
     yield put(
       transactionAddParams(setRecipients.id, [
         expenditureId,
-        [1],
-        [recipientAddress],
+        slots.map((_, index) => index + 1),
+        slots.map((slot) => slot.recipientAddress),
       ]),
     );
     yield put(transactionReady(setRecipients.id));
 
     yield takeFrom(setRecipients.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    yield put(transactionPending(setPayouts.id));
-    yield put(
-      transactionAddParams(setPayouts.id, [
-        expenditureId,
-        [1],
-        tokenAddress,
-        [amount],
-      ]),
+    // Call setExpenditurePayouts for each token
+    yield all(
+      [...slotsByTokenAddress.entries()]
+        .map(([tokenAddress, tokenSlots]) => [
+          put(transactionPending(setPayoutsChannels[tokenAddress].id)),
+          put(
+            transactionAddParams(setPayoutsChannels[tokenAddress].id, [
+              expenditureId,
+              tokenSlots.map((slot) => slot.id),
+              tokenAddress,
+              tokenSlots.map((slot) =>
+                BigNumber.from(slot.amount).mul(
+                  // This should get the token decimals of the selected token, which is not necessarily the native token
+                  BigNumber.from(10).pow(nativeToken.decimals),
+                ),
+              ),
+            ]),
+          ),
+          put(transactionReady(setPayoutsChannels[tokenAddress].id)),
+          takeFrom(
+            setPayoutsChannels[tokenAddress].channel,
+            ActionTypes.TRANSACTION_SUCCEEDED,
+          ),
+        ])
+        .flat(),
     );
-    yield put(transactionReady(setPayouts.id));
-
-    yield takeFrom(setPayouts.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     yield apolloClient.mutate<
       CreateExpenditureMetadataMutation,
