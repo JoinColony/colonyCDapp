@@ -5,11 +5,10 @@ import { Safe, SafeTransaction } from '~types';
 import { intl } from '~utils/intl';
 import { TransactionTypes } from '~common/Dialogs/ControlSafeDialog/helpers';
 import { extractTokenName } from '~utils/safes';
+import { InvisibleCopyableMaskedAddress } from '~shared/InvisibleCopyableAddress';
 
 import { ContractName } from '../../SafeTransactionDetail';
 import widgetStyles from '../../DetailsWidget.css';
-
-import { InvisibleCopyableMaskedAddress } from './InvisibleCopyableMaskedAddress';
 
 const displayName = 'DetailsWidget.SafeTransactionDetail.ContractSection';
 
