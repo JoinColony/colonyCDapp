@@ -9,11 +9,11 @@ import { ActionTypes } from '~redux';
 import { WizardDialogType } from '~hooks';
 import { Safe } from '~types';
 import { SUPPORTED_SAFE_NETWORKS } from '~constants';
-import { AbiItemExtended } from '~utils/safes';
+import { defaultTransaction, AbiItemExtended } from '~utils/safes';
 
 import ControlSafeForm from './ControlSafeForm';
 import { getMethodInputValidation, getValidationSchema } from './validation';
-import { defaultTransaction, getManageSafeDialogPayload } from './helpers';
+import { getManageSafeDialogPayload } from './helpers';
 
 interface CustomWizardDialogProps extends ActionDialogProps {
   preselectedSafe?: Safe;
