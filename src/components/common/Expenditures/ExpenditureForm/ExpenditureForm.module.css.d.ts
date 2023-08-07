@@ -1,7 +1,7 @@
 declare namespace ExpenditureFormModuleCssNamespace {
   export interface IExpenditureFormModuleCss {
     amountField: string;
-    form: string;
+    field: string;
   }
 }
 
