@@ -11,7 +11,7 @@ import widgetStyles from '../../DetailsWidget.css';
 
 import { InvisibleCopyableMaskedAddress } from './InvisibleCopyableMaskedAddress';
 
-const displayName = 'DetailsWidget.SafeTransactionDetail';
+const displayName = 'DetailsWidget.SafeTransactionDetail.ContractSection';
 
 const MSG = defineMessages({
   function: {
