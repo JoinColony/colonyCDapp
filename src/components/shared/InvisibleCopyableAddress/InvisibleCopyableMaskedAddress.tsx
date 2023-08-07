@@ -1,16 +1,23 @@
 import React from 'react';
 
-import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 import MaskedAddress from '~shared/MaskedAddress';
+
+import InvisibleCopyableAddress from './InvisibleCopyableAddress';
+
+const displayName = 'InvisibleCopyableMaskedAddress';
 
 interface InvisibleCopyableMaskedAddressProps {
   address: string;
 }
 
-export const InvisibleCopyableMaskedAddress = ({
+const InvisibleCopyableMaskedAddress = ({
   address,
 }: InvisibleCopyableMaskedAddressProps) => (
   <InvisibleCopyableAddress address={address}>
     <MaskedAddress address={address} />
   </InvisibleCopyableAddress>
 );
+
+InvisibleCopyableMaskedAddress.displayName = displayName;
+
+export default InvisibleCopyableMaskedAddress;
