@@ -32,7 +32,7 @@ const setEnvVariables = async () => {
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-  setEnvVariables();
+  await setEnvVariables();
 
   const expenditure = event.source;
 
