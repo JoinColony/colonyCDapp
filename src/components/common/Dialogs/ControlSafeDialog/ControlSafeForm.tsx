@@ -16,6 +16,8 @@ import { SelectedPickerItem, SafeTransaction } from '~types';
 import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
 import { isEmpty, isEqual, omit } from '~utils/lodash';
 import { hasRoot } from '~utils/checks';
+import { getAllUserRoles } from '~transformers';
+import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 
 import {
   TransferNFTSection,
@@ -37,8 +39,6 @@ import TransactionHeader from './TransactionHeader';
 import SafeTransactionPreview from './SafeTransactionPreview';
 
 import styles from './ControlSafeForm.css';
-import { getAllUserRoles } from '~transformers';
-import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 
 const displayName = 'common.ControlSafeDialog.ControlSafeForm';
 
