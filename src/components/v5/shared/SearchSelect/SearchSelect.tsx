@@ -21,11 +21,18 @@ import { useSearchSelect } from './hooks';
 import SearchInput from './partials/SearchInput';
 import SearchItem from './partials/SearchItem';
 import { accordionAnimation } from '~constants/accordionAnimation';
-import Icon from '~shared/Icon/';
+import Icon from '~shared/Icon';
+import { SpinnerLoader } from '~shared/Preloaders';
 
 const displayName = 'v5.SearchSelect';
 
-const SearchSelect: FC<SearchSelectProps> = ({ items, onToggle, isOpen }) => {
+const SearchSelect: FC<SearchSelectProps> = ({
+  items,
+  onToggle,
+  isOpen,
+  onSelect,
+  isLoading,
+}) => {
   const [searchValue, setSearchValue] = useState('');
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
@@ -75,54 +82,64 @@ const SearchSelect: FC<SearchSelectProps> = ({ items, onToggle, isOpen }) => {
       <div className="mb-6">
         <SearchInput onInput={onInput} />
       </div>
-      <CustomScrollbar height={600} mobileHeight="70vh">
-        <div className="pr-4 sm:pr-0">
-          {filteredList.map(({ options, title, isAccordion, key }) =>
-            isAccordion ? (
-              <div className="mb-6 last:mb-0" key={key}>
-                <div className="flex items-center justify-between">
+      {isLoading && (
+        <div className="flex justify-center h-5">
+          <SpinnerLoader appearance={{ size: 'medium' }} />
+        </div>
+      )}
+      {!isLoading && (
+        <CustomScrollbar height={600} mobileHeight="70vh">
+          <div className="pr-4 sm:pr-0">
+            {filteredList.map(({ options, title, isAccordion, key }) =>
+              isAccordion ? (
+                <div className="mb-6 last:mb-0" key={key}>
+                  <div className="flex items-center justify-between">
+                    <h5 className="text-4 text-gray-400 mb-2 uppercase">
+                      {formatMessage(title)}
+                    </h5>
+                    {isAccordion && (
+                      <button
+                        type="button"
+                        onClick={() => handleAccordionClick(key)}
+                      >
+                        <Icon
+                          name={
+                            openedAccordions.includes(key)
+                              ? 'caret-up'
+                              : 'caret-down'
+                          }
+                          appearance={{ size: 'extraTiny' }}
+                        />
+                      </button>
+                    )}
+                  </div>
+                  <AnimatePresence>
+                    {openedAccordions.includes(key) && (
+                      <motion.div
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        variants={accordionAnimation}
+                        transition={{ duration: 0.4, ease: 'easeOut' }}
+                        className="overflow-hidden"
+                      >
+                        <SearchItem options={options} onChange={onSelect} />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <div key={key} className="mb-6 last:mb-0">
                   <h5 className="text-4 text-gray-400 mb-2 uppercase">
                     {formatMessage(title)}
                   </h5>
-                  {isAccordion && (
-                    <button
-                      type="button"
-                      onClick={() => handleAccordionClick(key)}
-                    >
-                      <Icon
-                        name={
-                          openedAccordions.includes(key)
-                            ? 'caret-up'
-                            : 'caret-down'
-                        }
-                        appearance={{ size: 'extraTiny' }}
-                      />
-                    </button>
-                  )}
+                  <SearchItem options={options} onChange={onSelect} />
                 </div>
-                <AnimatePresence>
-                  {openedAccordions.includes(key) && (
-                    <motion.div
-                      initial="hidden"
-                      animate="visible"
-                      exit="hidden"
-                      variants={accordionAnimation}
-                      transition={{ duration: 0.4, ease: 'easeOut' }}
-                      className="overflow-hidden"
-                    >
-                      <SearchItem options={options} />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ) : (
-              <div key={key} className="mb-6 last:mb-0">
-                <SearchItem options={options} />
-              </div>
-            ),
-          )}
-        </div>
-      </CustomScrollbar>
+              ),
+            )}
+          </div>
+        </CustomScrollbar>
+      )}
     </>
   );
 
@@ -132,7 +149,7 @@ const SearchSelect: FC<SearchSelectProps> = ({ items, onToggle, isOpen }) => {
     </Modal>
   ) : (
     <Card
-      className="py-4 px-2.5 w-full sm:max-w-[20.375rem] absolute top-full right-1/2 translate-x-1/2"
+      className="py-4 px-2.5 w-full sm:max-w-[20.375rem] absolute top-full right-1/2 translate-x-1/2 z-50"
       hasShadow
       rounded="s"
       ref={ref}

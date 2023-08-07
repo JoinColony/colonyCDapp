@@ -41,4 +41,5 @@ export type PillsProps = {
   iconSize?: IconSize;
   pillSize?: PillSize;
   className?: string;
+  teamName?: string;
 };

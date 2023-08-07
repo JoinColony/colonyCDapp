@@ -9,12 +9,15 @@ import styles from './DropdownContent.module.css';
 import { MSG } from './consts';
 import LearnMore from '~shared/Extensions/LearnMore';
 import TitleLabel from '~v5/shared/TitleLabel';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { Actions } from '~constants/actions';
 
 const displayName =
   'v5.common.SubNavigation.partials.DropdownContent.PayDropdown';
 
 const PayDropdown: FC<PropsWithChildren> = () => {
   const { formatMessage } = useIntl();
+  const { toggleActionBar, setSelectedAction } = useActionSidebarContext();
 
   return (
     <div className="bg-base-white">
@@ -26,19 +29,35 @@ const PayDropdown: FC<PropsWithChildren> = () => {
         <LinkItem
           title={MSG.singlePayments}
           description={MSG.singlePaymentsDescription}
+          onClick={() => {
+            setSelectedAction(Actions.SIMPLE_PAYMENT);
+            toggleActionBar();
+          }}
         />
         <LinkItem
           title={MSG.advancedPayments}
           description={MSG.advancedPaymentsDescription}
           statusBadge={<ExtensionStatusBadge text={MSG.comingSoon} />}
+          onClick={() => {
+            setSelectedAction(Actions.ADVANCED_PAYMENT);
+            toggleActionBar();
+          }}
         />
         <LinkItem
           title={MSG.streamingPayments}
           description={MSG.streamingPaymentsDescription}
+          onClick={() => {
+            setSelectedAction(Actions.STREAMING_PAYMENT);
+            toggleActionBar();
+          }}
         />
         <LinkItem
           title={MSG.moveFunds}
           description={MSG.moveFundsDescription}
+          onClick={() => {
+            setSelectedAction(Actions.TRANSFER_FUNDS);
+            toggleActionBar();
+          }}
         />
       </ul>
       <div className={styles.buttonWrapper}>

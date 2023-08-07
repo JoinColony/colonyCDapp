@@ -5,4 +5,5 @@ export interface LinkItemProps {
   title: MessageDescriptor;
   description: MessageDescriptor;
   statusBadge?: ReactNode;
+  onClick: () => void;
 }

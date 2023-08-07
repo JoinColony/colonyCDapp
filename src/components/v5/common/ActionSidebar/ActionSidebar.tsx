@@ -13,6 +13,7 @@ import SearchSelect from '~v5/shared/SearchSelect';
 import { useActionSidebar, useActionsList } from './hooks';
 import { translateAction } from './utils';
 import { Actions } from '~constants/actions';
+import ActionsContent from '../ActionsContent';
 
 const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
   const ref = useRef(null);
@@ -99,6 +100,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
           </>
         </ActionSidebarRow>
         {/* @TODO: Add content depending on selected action */}
+        <ActionsContent />
       </div>
       <div className="mt-auto">
         {!selectedAction && (

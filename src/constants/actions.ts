@@ -21,4 +21,5 @@ export enum Actions {
   CREATE_NEW_INTEGRATION = 'create-new-integration',
   MANAGE_COLONY_OBJECTIVES = 'manage-colony-objectives',
   USER_PERMISSIONS = 'user-permissions',
+  SIMPLE_DISCUSSION = 'simple-discussion',
 }

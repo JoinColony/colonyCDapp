@@ -10,9 +10,15 @@ export const useSearchSelect = (
       items.map((item) => ({
         ...item,
         options: item.options.filter((option) => {
-          const value = option.value.replace('-', ' ');
+          const optionValue = option.value.replace('-', ' ');
+          const optionWalletAddress = option.walletAddress || '';
 
-          return value.toLowerCase().includes(searchValue.toLowerCase());
+          return (
+            optionValue.toLowerCase().includes(searchValue.toLowerCase()) ||
+            optionWalletAddress
+              .toLowerCase()
+              .startsWith(searchValue?.toLowerCase() ?? '')
+          );
         }),
       })),
     [items, searchValue],
