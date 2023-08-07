@@ -72,4 +72,14 @@ export type ExpendituresActionTypes =
       object
     >
   | ErrorActionType<ActionTypes.EXPENDITURE_CANCEL_ERROR, object>
-  | UniqueActionType<ActionTypes.EXPENDITURE_CANCEL_SUCCESS, object, object>;
+  | UniqueActionType<ActionTypes.EXPENDITURE_CANCEL_SUCCESS, object, object>
+  | UniqueActionType<
+      ActionTypes.EXPENDITURE_CLAIM,
+      {
+        colonyAddress: Address;
+        expenditure: Expenditure;
+      },
+      object
+    >
+  | ErrorActionType<ActionTypes.EXPENDITURE_CLAIM_ERROR, object>
+  | UniqueActionType<ActionTypes.EXPENDITURE_CLAIM_SUCCESS, object, object>;

@@ -6,6 +6,7 @@ import finalizeExpenditureSaga from './finalizeExpenditure';
 import fundExpenditureSaga from './fundExpenditure';
 import editExpenditureSaga from './editExpenditure';
 import cancelExpenditureSaga from './cancelExpenditure';
+import claimExpenditureSaga from './claimExpenditure';
 
 export default function* expendituresSagas() {
   yield all([
@@ -15,5 +16,6 @@ export default function* expendituresSagas() {
     call(fundExpenditureSaga),
     call(editExpenditureSaga),
     call(cancelExpenditureSaga),
+    call(claimExpenditureSaga),
   ]);
 }
