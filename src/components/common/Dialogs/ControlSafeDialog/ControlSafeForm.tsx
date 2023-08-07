@@ -403,7 +403,7 @@ const ControlSafeForm = ({
             enabledExtensionData.isVotingReputationEnabled
           }
           canManageAndControlSafes={canManageAndControlSafes}
-          // onlyForceAction={onlyForceAction}
+          userHasPermission={userHasPermission}
         />
       )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
