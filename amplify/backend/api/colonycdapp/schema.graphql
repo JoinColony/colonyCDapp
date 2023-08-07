@@ -2596,6 +2596,10 @@ type Expenditure @model {
   status: ExpenditureStatus!
   slots: [ExpenditureSlot!]!
   nativeFundingPotId: Int!
+    @index(
+      name: "byNativeFundingPotId"
+      queryField: "getExpendituresByNativeFundingPotId"
+    )
   metadata: ExpenditureMetadata @hasOne(fields: ["id"])
   balances: [ExpenditureBalance!]
     @function(name: "fetchExpenditureBalances-${env}")
