@@ -1,5 +1,5 @@
 import { ActionTypes } from '~redux/actionTypes';
-import { Address, Colony } from '~types';
+import { Address, Colony, Expenditure } from '~types';
 import { ExpenditureSlotFieldValue } from '~common/Expenditures/ExpenditureForm';
 
 import { UniqueActionType, ErrorActionType, MetaWithNavigate } from './index';
@@ -43,9 +43,7 @@ export type ExpendituresActionTypes =
       {
         colonyAddress: Address;
         fromDomainFundingPotId: number;
-        expenditureFundingPotId: number;
-        amount: string;
-        tokenAddress: Address;
+        expenditure: Expenditure;
       },
       object
     >

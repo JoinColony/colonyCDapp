@@ -1,5 +1,6 @@
 declare namespace ExpenditureDetailsPageModuleCssNamespace {
   export interface IExpenditureDetailsPageModuleCss {
+    details: string;
     recipient: string;
     recipients: string;
   }
