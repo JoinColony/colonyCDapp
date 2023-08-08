@@ -1,4 +1,3 @@
-import { Channel } from 'redux-saga';
 import { all, call, put } from 'redux-saga/effects';
 import { getExtensionHash, Extension, ClientType, Id } from '@colony/colony-js';
 import { poll } from 'ethers/lib/utils';
@@ -53,16 +52,11 @@ import {
   getColonyManager,
 } from '../utils';
 import {
+  ChannelDefinition,
   createGroupTransaction,
   createTransactionChannels,
 } from '../transactions';
 import { getOneTxPaymentVersion } from '../utils/extensionVersion';
-
-interface ChannelDefinition {
-  channel: Channel<any>;
-  index: number;
-  id: string;
-}
 
 function* colonyCreate({
   meta,
