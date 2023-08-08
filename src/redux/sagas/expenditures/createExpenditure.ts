@@ -19,9 +19,9 @@ import { toNumber } from '~utils/numbers';
 import { ExpenditureSlotFieldValue } from '~common/Expenditures/ExpenditureForm';
 
 import {
+  ChannelDefinition,
   createTransaction,
   createTransactionChannels,
-  getTxChannel,
 } from '../transactions';
 import { getColonyManager, putError, takeFrom } from '../utils';
 
@@ -41,7 +41,6 @@ function* createExpenditure({
   );
   const apolloClient = getContext(ContextModule.ApolloClient);
 
-  const txChannel = yield call(getTxChannel, metaId);
   const batchKey = 'createExpenditure';
 
   // Group slots by token address, this is useful as we need to call setExpenditurePayouts method separately for each token
@@ -54,15 +53,21 @@ function* createExpenditure({
     slotsByTokenAddress.set(slot.tokenAddress, [...currentSlots, slotWithId]);
   });
 
-  try {
-    const { makeExpenditure, setRecipients, ...setPayoutsChannels } =
-      yield createTransactionChannels(metaId, [
-        'makeExpenditure',
-        'setRecipients',
-        // setExpenditurePayouts transactions will use token address as channel id
-        ...slotsByTokenAddress.keys(),
-      ]);
+  const {
+    makeExpenditure,
+    setRecipients,
+    ...setPayoutsChannels
+  }: Record<string, ChannelDefinition> = yield createTransactionChannels(
+    metaId,
+    [
+      'makeExpenditure',
+      'setRecipients',
+      // setExpenditurePayouts transactions will use token address as channel id
+      ...slotsByTokenAddress.keys(),
+    ],
+  );
 
+  try {
     yield fork(createTransaction, makeExpenditure.id, {
       context: ClientType.ColonyClient,
       methodName: 'makeExpenditure',
@@ -89,7 +94,7 @@ function* createExpenditure({
     });
 
     yield all(
-      Object.values(setPayoutsChannels).map((channel: { id: string }, index) =>
+      Object.values(setPayoutsChannels).map((channel, index) =>
         fork(createTransaction, channel.id, {
           context: ClientType.ColonyClient,
           methodName: 'setExpenditurePayouts',
@@ -173,7 +178,11 @@ function* createExpenditure({
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   }
 
-  txChannel.close();
+  [
+    makeExpenditure,
+    setRecipients,
+    ...Object.values(setPayoutsChannels),
+  ].forEach((channel) => channel.channel.close());
 
   return null;
 }

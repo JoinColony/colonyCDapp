@@ -9,7 +9,11 @@ import {
   transactionReady,
 } from '~redux/actionCreators';
 
-import { createTransaction, createTransactionChannels } from '../transactions';
+import {
+  ChannelDefinition,
+  createTransaction,
+  createTransactionChannels,
+} from '../transactions';
 import { putError, takeFrom } from '../utils';
 
 function* fundExpenditure({
@@ -35,9 +39,10 @@ function* fundExpenditure({
   });
 
   // Create channel for each token, using its address as channel id
-  const channels = yield createTransactionChannels(meta.id, [
-    ...balancesByTokenAddresses.keys(),
-  ]);
+  const channels: Record<string, ChannelDefinition> =
+    yield createTransactionChannels(meta.id, [
+      ...balancesByTokenAddresses.keys(),
+    ]);
 
   try {
     yield all(
