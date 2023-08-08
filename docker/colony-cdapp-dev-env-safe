@@ -23,6 +23,9 @@ RUN git submodule update --init --recursive --depth 1
 # Install required network dependencies
 RUN npm i --build-from-source
 
+# Install required safe submodule network dependencies
+RUN npm i --build-from-source --prefix ./lib/safe-contracts
+
 # Compile network contracts
 RUN DISABLE_DOCKER=true yarn provision:token:contracts
 
