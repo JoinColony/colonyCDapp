@@ -8,13 +8,13 @@ import NotFoundRoute from '~routes/NotFoundRoute';
 import { Heading3 } from '~shared/Heading';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
 import MaskedAddress from '~shared/MaskedAddress';
-
 import Numeral from '~shared/Numeral';
 import { findDomainByNativeId } from '~utils/domains';
 
-import styles from './ExpenditureDetailsPage.module.css';
-import ExpenditureBalances from './ExpenditureBalances/ExpenditureBalances';
+import ExpenditureBalances from './ExpenditureBalances';
 import ExpenditureAdvanceButton from './ExpenditureAdvanceButton';
+
+import styles from './ExpenditureDetailsPage.module.css';
 
 const ExpenditureDetailsPage = () => {
   const { expenditureId } = useParams();

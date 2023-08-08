@@ -2,10 +2,10 @@ import React from 'react';
 import { weiToEth } from '@web3-onboard/common';
 
 import { Expenditure } from '~types';
-
-import styles from './ExpenditureBalances.module.css';
 import MaskedAddress from '~shared/MaskedAddress/MaskedAddress';
 import { isExpenditureFunded } from '~utils/expenditures';
+
+import styles from './ExpenditureBalances.module.css';
 
 interface ExpenditureBalancesProps {
   expenditure: Expenditure;
