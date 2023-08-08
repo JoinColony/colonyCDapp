@@ -1,5 +1,5 @@
-import { BigNumber } from 'ethers';
 import React from 'react';
+import { Id } from '@colony/colony-js';
 import { useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,12 +8,14 @@ import { ActionTypes } from '~redux';
 import { ActionButton } from '~shared/Button';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
 
+import { ExpenditureFormValues } from './ExpenditureForm';
+
 const ExpenditureActionButton = () => {
   const navigate = useNavigate();
 
   const { colony } = useColonyContext();
 
-  const { recipientAddress, tokenAddress, amount } = useWatch();
+  const { slots } = useWatch<ExpenditureFormValues>();
 
   if (!colony) {
     return null;
@@ -21,15 +23,10 @@ const ExpenditureActionButton = () => {
 
   const transform = pipe(
     mapPayload(() => ({
-      colonyName: colony.name,
-      colonyAddress: colony.colonyAddress,
-      recipientAddress,
-      tokenAddress,
-      amount: BigNumber.from(amount).mul(
-        BigNumber.from(10).pow(colony.nativeToken.decimals),
-      ),
-      // @TODO: Allow modifying the domain ID from the UI
-      domainId: 1,
+      colony,
+      slots,
+      // @TODO: This should come from the form values
+      domainId: Id.RootDomain,
     })),
     withMeta({ navigate }),
   );

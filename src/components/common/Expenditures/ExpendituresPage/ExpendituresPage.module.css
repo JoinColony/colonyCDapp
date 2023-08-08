@@ -1,15 +1,6 @@
 .pageWrapper {
-  padding-top: 20px;
-}
-
-.form {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  column-gap: 10px;
-}
-
-.amountField {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  padding-top: 20px;
+  gap: 20px;
 }

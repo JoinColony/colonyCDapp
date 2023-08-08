@@ -84,6 +84,11 @@ const ExpenditureDetailsPage = () => {
         {expenditure.slots.map((slot) => (
           <li key={slot.id} className={styles.recipient}>
             <div>
+              <div>Slot ID</div>
+              <div>{slot.id}</div>
+            </div>
+
+            <div>
               <div>Recipient address</div>
               <MaskedAddress address={slot.recipientAddress ?? ''} />
             </div>
