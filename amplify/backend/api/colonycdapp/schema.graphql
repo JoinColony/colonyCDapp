@@ -1490,10 +1490,8 @@ type ColonyFundsClaim @model {
 """
 Represents a native Colony Chain Funds Claim
 E.g., Token 0x0000...0000: ETH, xDAI, etc
-""" # This is really not elegant, but there's no other proper solution, as you can't # return the Token @hadOne relationship from the lambda function
-type # Note that we don't need token details for the values that we're fetching (since
-# it's implied), but it would have been nice not to have to basically repeat the type
-ColonyChainFundsClaim {
+""" # This is really not elegant, but there's no other proper solution, as you can't # return the Token @hadOne relationship from the lambda function # Note that we don't need token details for the values that we're fetching (since # it's implied), but it would have been nice not to have to basically repeat the type
+type ColonyChainFundsClaim {
   """
   Unique identifier for the Colony Chain Funds Claim
   """
@@ -1518,11 +1516,8 @@ ColonyChainFundsClaim {
 
 """
 Represents a Colony balance for a specific domain and token
-""" # This is not a @model since it will only be returned by a lambda function # so don't need to create tables for them
-type # Note that we also need input types since it treats the `balances` as available
-# to "write" to at creation time, even though, even if you were to write to
-# you'd never actually be able to read that data since the return is overwritten
-# by the lambda function
+""" # This is not a @model since it will only be returned by a lambda function # so don't need to create tables for them # Note that we also need input types since it treats the `balances` as available # to "write" to at creation time, even though, even if you were to write to # you'd never actually be able to read that data since the return is overwritten
+type # by the lambda function
 ColonyBalance {
   """
   Unique identifier for the Colony Balance
@@ -1950,11 +1945,8 @@ type ColonyMotion @model {
 
 """
 Represents an event triggered by a smart contract within the Colony Network
-""" # This will store the relevant events we care about for a particular colony # Altough it might also hold events emmited by other clients (eg: network or token)
-type # but are event pertaining to a colony
-# Generally you'd want to use this from a block ingenstor, after you've processed
-# data from an event, also save that even for future use
-ContractEvent @model {
+""" # This will store the relevant events we care about for a particular colony # Altough it might also hold events emmited by other clients (eg: network or token) # but are event pertaining to a colony # Generally you'd want to use this from a block ingenstor, after you've processed # data from an event, also save that even for future use
+type ContractEvent @model {
   """
   Unique identifier for the Contract Event, in the format chainID_transactionHash_logIndex
   """
@@ -2426,9 +2418,8 @@ type ColonyRole @model {
 """
 "
 Snapshot of the user's full roles/permissions at a specific block
-""" # it's a model, not a type since this is designed to work outside of the main # colony model, or colony role model, as, by design it should be only used
-type # in very specific cases
-ColonyHistoricRole @model {
+""" # it's a model, not a type since this is designed to work outside of the main # colony model, or colony role model, as, by design it should be only used # in very specific cases
+type ColonyHistoricRole @model {
   """
   Unique identifier for the role snapshot
   Format: `colonyAddress_domainNativeId_userAddress_blockNumber_roles`
@@ -2523,30 +2514,6 @@ ColonyHistoricRole @model {
   Timestamp at which the database entry was created
   """
   createdAt: AWSDateTime!
-  colonyId: ID!
-    @index(
-      name: "byColony"
-      queryField: "getExpendituresByColony"
-      sortKeyFields: ["createdAt"]
-    )
-  colony: Colony! @belongsTo(fields: ["colonyId"])
-  ownerAddress: ID!
-  status: ExpenditureStatus!
-  slots: [ExpenditureSlot!]!
-}
-
-# Each expenditure recipient is assigned to a particular integer slot
-type ExpenditureSlot {
-  id: Int!
-  recipientAddress: String
-  claimDelay: Int
-  payoutModifier: Int
-  payouts: [ExpenditurePayout!]
-}
-
-type ExpenditurePayout {
-  tokenAddress: ID!
-  amount: String!
 }
 
 """
