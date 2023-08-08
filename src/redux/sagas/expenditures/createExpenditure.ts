@@ -60,7 +60,7 @@ function* createExpenditure({
         'makeExpenditure',
         'setRecipients',
         // setExpenditurePayouts transactions will use token address as channel id
-        ...[...slotsByTokenAddress.keys()],
+        ...slotsByTokenAddress.keys(),
       ]);
 
     yield fork(createTransaction, makeExpenditure.id, {
