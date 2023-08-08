@@ -9,11 +9,6 @@ VOLUME [ "/colonyCDapp/amplify/mock-data" ]
 # Colony Network
 #
 
-# Add dependencies from the host
-# Note: these are listed individually so that if they change, they won't affect
-# the build of the other images
-ADD docker/files/safe/run.sh.base /colonyCDappBackend/run.sh
-
 WORKDIR /colonyCDappBackend
 
 # Clone the network repo
@@ -37,6 +32,12 @@ WORKDIR /colonyCDappBackend
 
 # Open up ports to the docker image
 EXPOSE 8546
+
+# Add dependencies from the host
+# Note: these are listed individually so that if they change, they won't affect
+# the build of the other images
+# they are also at the end of the file to speed up iterations
+ADD docker/files/safe/run.sh.base /colonyCDappBackend/run.sh
 
 # Make the run script executable
 RUN chmod +x ./run.sh
