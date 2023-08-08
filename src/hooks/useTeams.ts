@@ -2,7 +2,7 @@ import { useColonyContext } from '~hooks';
 import { setTeamColor } from '~v5/common/TeamReputationSummary/utils';
 import { SearchSelectOptionProps } from '~v5/shared/SearchSelect/types';
 
-export const useTeamsSelect = (): SearchSelectOptionProps => {
+export const useTeams = (): SearchSelectOptionProps => {
   const { colony } = useColonyContext();
   const { domains } = colony || {};
 

@@ -7,12 +7,13 @@ import FilterOptions from './partials/FilterOptions';
 import Modal from '~v5/shared/Modal';
 import PopoverBase from '~v5/shared/PopoverBase';
 import { useMembersPage } from '~frame/v5/pages/MembersPage/hooks';
-// import TableFiltering from '../TableFiltering';
+import TableFiltering from '../TableFiltering';
 import SearchInput from './partials/SearchInput';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
-import { filterOptions, followersFilterOptions } from './consts';
+import { followersFilterOptions } from './consts';
 import { useFilterContext } from '~context/FilterContext';
+import { useFilter } from './hooks';
 
 const displayName = 'v5.common.Filter';
 
@@ -22,18 +23,19 @@ const Filter: FC = () => {
   const [isSearchOpened, setIsSearchOpened] = useState(false);
   const isMobile = useMobile();
   const {
-    // selectedFilters,
+    selectedFilters,
     onSelectParentFilter,
     onSelectNestedOption,
-    // onClearFilters,
+    onClearFilters,
     selectedChildOption,
     numberSelectedFilters,
-    // selectedParentFilters,
+    selectedParentFilters,
     checkedItems,
     isFollowersPage,
   } = useFilterContext();
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     useMembersPage();
+  const filterOptions = useFilter();
 
   return (
     <>
@@ -85,13 +87,13 @@ const Filter: FC = () => {
         <>
           <div className="flex flex-row gap-2">
             {/* @TODO: uncomment that after API for filtering will be ready */}
-            {/* {!!selectedFilters?.length && (
+            {!!selectedFilters?.length && (
               <TableFiltering
                 selectedParentFilters={selectedParentFilters}
                 filterOptions={selectedFilters}
                 onClick={() => onClearFilters()}
               />
-            )} */}
+            )}
             <FilterButton isOpen={visible} setTriggerRef={setTriggerRef} />
           </div>
           {visible && (

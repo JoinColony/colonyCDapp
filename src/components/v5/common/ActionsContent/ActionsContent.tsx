@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import ActionSidebarRow from '../ActionSidebarRow/ActionSidebarRow';
-import TeamsSelect from './partials/TeamsSelect/TeamsSelect';
+import ActionSidebarRow from '../ActionSidebarRow';
+import TeamsSelect from './partials/TeamsSelect';
 import TeamBadge from '../Pills/TeamBadge';
-import UserSelect from './partials/UserSelect/UserSelect';
+import UserSelect from './partials/UserSelect';
 import styles from './ActionsContent.module.css';
-import UserAvatar from '~v5/shared/UserAvatar/UserAvatar';
+import UserAvatar from '~v5/shared/UserAvatar';
 import { useActionsContent } from './hooks';
 
 const displayName = 'v5.common.ActionsContent';

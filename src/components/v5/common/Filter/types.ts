@@ -16,7 +16,7 @@ export type FilterOptionsProps = {
   selectedChildOption?: FilterOption;
   onSelectParentFilter?: (option?: string) => void;
   onSelectNestedOption?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  checkedItems: Map<string, boolean>;
+  checkedItems: Map<string | undefined, boolean>;
 };
 
 export type ParentFilterOption = {
@@ -33,13 +33,16 @@ export type FilterPopoverProps = {
 };
 
 export type FilterOptionProps = {
-  id:
+  value?:
     | ContributorType
     | StatusType
     | TeamType
     | ReputationType
-    | PermissionsType;
-  title: MessageDescriptor;
+    | PermissionsType
+    | string;
+  color?: string;
+  isDisabled?: boolean;
+  label?: string | MessageDescriptor;
 };
 
 export type AccordionProps = Omit<FilterOptionsProps, 'options'> & {

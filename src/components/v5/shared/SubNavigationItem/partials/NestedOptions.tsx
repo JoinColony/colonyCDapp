@@ -34,9 +34,9 @@ const NestedOptions: FC<NestedOptionsProps> = ({
           'mt-1': isMobile,
         })}
       >
-        {(nestedFilters || []).map(({ id, title }) => {
+        {(nestedFilters || []).map(({ value, color, label }) => {
           return (
-            <li key={id}>
+            <li key={value}>
               <button
                 className={clsx('subnav-button', {
                   'px-0': isMobile,
@@ -45,34 +45,25 @@ const NestedOptions: FC<NestedOptionsProps> = ({
                 aria-label={formatMessage({ id: 'checkbox.select.filter' })}
               >
                 <Checkbox
-                  id={id}
-                  name={id}
-                  label={title}
+                  id={value}
+                  name={value}
+                  label={label}
                   onChange={onChange}
-                  isChecked={checkedItems?.get(id)}
+                  isChecked={checkedItems?.get(value)}
                   mode="secondary"
                 >
                   {selectedParentOption === 'team' && (
-                    <span
-                      className={clsx('h-[1rem] w-[1rem] rounded-[0.25rem]', {
-                        'bg-blue-400': id === 'Root',
-                        'bg-teams-purple-500': id === 'Business',
-                        'bg-teams-yellow-500': id === 'Product',
-                        'bg-teams-purple-400': id === 'Development',
-                        'bg-teams-pink-400': id === 'Design',
-                        'bg-teams-green-500': id === 'Devops',
-                      })}
-                    />
+                    <span className={clsx(color, 'h-4 w-4 rounded')} />
                   )}
                   {selectedParentOption === 'permissions' && (
                     <Icon
                       name={
-                        (id === 'permissionRoot' && 'app-window') ||
-                        (id === 'administration' && 'clipboard-text') ||
-                        (id === 'arbitration' && 'scales') ||
-                        (id === 'architecture' && 'buildings') ||
-                        (id === 'funding' && 'bank') ||
-                        ((id === 'recovery' &&
+                        (value === 'permissionRoot' && 'app-window') ||
+                        (value === 'administration' && 'clipboard-text') ||
+                        (value === 'arbitration' && 'scales') ||
+                        (value === 'architecture' && 'buildings') ||
+                        (value === 'funding' && 'bank') ||
+                        ((value === 'recovery' &&
                           'clock-counter-clockwise') as string)
                       }
                       appearance={{ size: 'extraSmall' }}
