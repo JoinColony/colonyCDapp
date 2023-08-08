@@ -7,12 +7,16 @@ import Button, { IconButton } from '~shared/Button';
 
 import styles from './ExpenditureForm.module.css';
 import { getInitialSlotFieldValue } from './helpers';
+import { ExpenditureFormProps } from './ExpenditureForm';
 
-interface ExpenditureFormFieldsProps {
+interface ExpenditureFormFieldsProps extends ExpenditureFormProps {
   colony: Colony;
 }
 
-const ExpenditureFormFields = ({ colony }: ExpenditureFormFieldsProps) => {
+const ExpenditureFormFields = ({
+  colony,
+  submitButtonText = 'Create expenditure',
+}: ExpenditureFormFieldsProps) => {
   const { control } = useFormContext();
 
   const { fields, append, remove } = useFieldArray({ name: 'slots', control });
@@ -38,14 +42,20 @@ const ExpenditureFormFields = ({ colony }: ExpenditureFormFieldsProps) => {
           </div>
         </div>
       ))}
-      <Button
-        onClick={() =>
-          append(getInitialSlotFieldValue(colony.nativeToken.tokenAddress))
-        }
-        appearance={{ size: 'small' }}
-      >
-        New recipient
-      </Button>
+
+      <div className={styles.buttons}>
+        <Button
+          appearance={{
+            size: 'small',
+          }}
+          onClick={() =>
+            append(getInitialSlotFieldValue(colony.nativeToken.tokenAddress))
+          }
+        >
+          Add recipient
+        </Button>
+        <Button type="submit">{submitButtonText}</Button>
+      </div>
     </>
   );
 };
