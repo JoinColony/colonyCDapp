@@ -15,7 +15,7 @@ const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
 }) => {
   const { formatMessage } = useIntl();
 
-  const lastIndex = filterOptions[filterOptions.length - 1];
+  const lastIndex = filterOptions?.[filterOptions.length - 1];
 
   const content = (
     <>
