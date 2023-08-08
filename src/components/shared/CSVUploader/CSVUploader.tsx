@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { MessageDescriptor } from 'react-intl';
 
 import { FileReaderFile } from '~utils/fileReader/types';
-import { HookFormInputStatus as InputStatus } from '~shared/Fields';
+import { InputStatus } from '~shared/Fields';
 import { isEqual, isNil } from '~utils/lodash';
 
 import { DefaultPlaceholder, SingleFileUpload } from '../FileUpload';

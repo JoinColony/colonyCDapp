@@ -73,10 +73,7 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
-            },
-            "CHAIN_NETWORK": "gnosis",
-            "CHAIN_RPC_ENDPOINT": "http://qa-cdapp.colony.io/rpc/",
-            "CHAIN_NETWORK_CONTRACT": "0x6a05DD32860C1b5351B97b4eCAAbFbc60edb102f"
+            }
           }
         },
         "Role": {
@@ -168,6 +165,46 @@
                     },
                     "lambda": {
                       "Ref": "LambdaFunction"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ssm:GetParameter",
+                "kms:Decrypt"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:aws:ssm:${region}:${account}:parameter/*",
+                  {
+                    "region": {
+                      "Ref": "AWS::Region"
+                    },
+                    "account": {
+                      "Ref": "AWS::AccountId"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ssm:GetParameter",
+                "kms:Decrypt"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:aws:ssm:${region}:${account}:parameter/*",
+                  {
+                    "region": {
+                      "Ref": "AWS::Region"
+                    },
+                    "account": {
+                      "Ref": "AWS::AccountId"
                     }
                   }
                 ]

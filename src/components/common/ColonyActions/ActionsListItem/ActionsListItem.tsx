@@ -1,15 +1,18 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { defineMessages } from 'react-intl';
 import { Placement } from '@popperjs/core';
+import { Id } from '@colony/colony-js';
 
 import UserAvatar from '~shared/UserAvatar';
 import ListItem, { ListItemStatus } from '~shared/ListItem';
-import { ColonyAction } from '~types';
+import { ColonyAction, Domain } from '~types';
 import { useColonyContext } from '~hooks';
 import {
   MotionState,
   useShouldDisplayMotionCountdownTime,
 } from '~utils/colonyMotions';
+import { formatText } from '~utils/intl';
 
 import CountDownTimer from '../CountDownTimer';
 import { getActionTitleValues } from '../helpers';
@@ -17,6 +20,13 @@ import ActionsListItemMeta from './ActionsListItemMeta';
 import { useColonyMotionState, useMotionTag } from './helpers';
 
 const displayName = 'common.ColonyActions.ActionsListItem';
+
+const MSG = defineMessages({
+  domain: {
+    id: `${displayName}.domain`,
+    defaultMessage: 'Team {domainId}',
+  },
+});
 
 const userAvatarPopoverOptions = {
   showArrow: false,
@@ -34,6 +44,25 @@ const userAvatarPopoverOptions = {
 interface Props {
   item: ColonyAction;
 }
+
+const getDomainName = (
+  fromDomain?: Domain | null,
+  motionDomain?: Domain | null,
+): string => {
+  if (!motionDomain) {
+    const actionFallback = formatText(MSG.domain, {
+      domainId: fromDomain?.id ?? Id.RootDomain,
+    }) as string; // safe casting as we're using simple values
+
+    return fromDomain?.metadata?.name ?? actionFallback;
+  }
+
+  const motionFallback = formatText(MSG.domain, {
+    domainId: motionDomain.nativeId,
+  }) as string; // safe casting as we're using simple values
+
+  return motionDomain.metadata?.name ?? motionFallback;
+};
 
 const ActionsListItem = ({
   item: {
@@ -69,6 +98,8 @@ const ActionsListItem = ({
     return null;
   }
 
+  const domainName = getDomainName(fromDomain, motionData?.motionDomain);
+
   return (
     <ListItem
       avatar={
@@ -91,7 +122,7 @@ const ActionsListItem = ({
           />
         )
       }
-      meta={<ActionsListItemMeta fromDomain={fromDomain ?? undefined} />}
+      meta={<ActionsListItemMeta domainName={domainName} />}
       onClick={handleActionRedirect}
       status={status}
       tag={<MotionTag />}

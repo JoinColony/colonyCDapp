@@ -5,7 +5,6 @@ import { useActiveInstalls, useColonyContext, useMobile } from '~hooks';
 import Button from '~v5/shared/Button';
 import { useExtensionDetailsPage } from '../ExtensionDetailsPage/hooks';
 import { isInstalledExtensionData } from '~utils/extensions';
-import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
 import { ActionButtonProps } from './types';
 import HeadingIcon from './HeadingIcon';
 import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
@@ -25,10 +24,7 @@ const ActionButtons: FC<ActionButtonProps> = ({
   } = useExtensionDetailsPage(extensionData);
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
-  const { colony } = useColonyContext();
-
-  const isSupportedColonyVersion =
-    colony?.version ?? MIN_SUPPORTED_COLONY_VERSION <= 0;
+  const { isSupportedColonyVersion } = useColonyContext();
 
   const isInstallButtonVisible =
     // @ts-ignore

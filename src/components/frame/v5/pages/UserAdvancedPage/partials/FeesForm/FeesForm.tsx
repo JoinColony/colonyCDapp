@@ -1,9 +1,8 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { HookForm } from '~shared/Fields';
+import { Form } from '~shared/Fields';
 import SettingsRow from '~v5/common/SettingsRow';
-import { SlotKey } from '~hooks';
 import { useFeesForm } from './hooks';
 
 const FeesForm = () => {
@@ -16,10 +15,10 @@ const FeesForm = () => {
   } = useFeesForm();
 
   return (
-    <HookForm
+    <Form
       validationSchema={metatransactionsValidationSchema}
       defaultValues={{
-        [SlotKey.Metatransactions]: metatransasctionsDefault,
+        metatransactionsEnabled: !!metatransasctionsDefault,
       }}
       onSubmit={handleSubmit}
     >
@@ -33,14 +32,14 @@ const FeesForm = () => {
               title={{ id: 'advancedSettings.fees.title' }}
               description={{ id: 'advancedSettings.fees.description' }}
               tooltipMessage={{ id: 'advancedSettings.fees.tooltip' }}
-              id={SlotKey.Metatransactions}
+              id="metatransactionsEnabled"
               onChange={handleFeesOnChange}
               register={register}
             />
           </div>
         </>
       )}
-    </HookForm>
+    </Form>
   );
 };
 

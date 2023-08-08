@@ -29,6 +29,11 @@ export const useSelectedColony = (watchlist) => {
             },
             colonyAddress: item?.colony.colonyAddress,
             name: item?.colony.name,
+            metadata: {
+              avatar: item?.colony.metadata.avatar,
+              displayName: item?.colony.metadata.displayName,
+              thumbnail: item?.colony.metadata.thumbnail,
+            },
           },
         };
       }),

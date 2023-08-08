@@ -47,9 +47,9 @@ const MSG = defineMessages({
   tooltipText: {
     id: `${displayName}.tooltipText`,
     defaultMessage: `{isContributorsSubsection, select,
-      true {Contributors are members of the Colony who have earned reputation.}
+      true {Contributors are members of the Colony who have reputation or permissions.}
       other { Watchers are members of the Colony
-         who currently don't have any reputation. }
+         who currently don't have any reputation or permissions. }
     }`,
   },
   viewMore: {

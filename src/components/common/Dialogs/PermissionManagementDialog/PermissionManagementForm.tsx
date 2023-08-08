@@ -3,11 +3,7 @@ import { defineMessages } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
-import {
-  InputLabel,
-  HookFormSelect as Select,
-  Annotations,
-} from '~shared/Fields';
+import { InputLabel, Select, Annotations } from '~shared/Fields';
 import {
   ActionDialogProps,
   DialogControls,

@@ -15,43 +15,47 @@ const SubNavigation: FC<SubNavigationProps> = ({
   const { handleClick, isCopyTriggered } = useMembersSubNavigation();
 
   return (
-    <ul>
-      <SubNavigationItem
-        iconName="pencil"
-        title="members.subnav.manage"
-        onClick={() => {
-          setIsMemberModalOpen(true);
-          setUser(user);
-        }}
-      />
-      <SubNavigationItem
-        iconName="eye"
-        title="members.subnav.members.profile"
-      />
-      {shouldPermissionsCanBeChanged && (
+    <>
+      <ul>
         <SubNavigationItem
-          iconName="lock-key"
-          title="members.subnav.members.permissions"
+          iconName="pencil"
+          title="members.subnav.manage"
+          onClick={() => {
+            setIsMemberModalOpen(true);
+            setUser(user);
+          }}
         />
-      )}
-      <SubNavigationItem
-        iconName="hand-coins"
-        title="members.subnav.make.payment"
-      />
-      <SubNavigationItem
-        iconName="arrow-square-out"
-        title="members.subnav.gnosis.scan"
-      />
-      <span className="divider m-2" />
-      <SubNavigationItem
-        iconName="copy-simple"
-        title="members.subnav.copy.wallet.address"
-        shouldBeTooltipVisible
-        tooltipText={['copied', 'copy']}
-        isCopyTriggered={isCopyTriggered}
-        onClick={handleClick}
-      />
-    </ul>
+        <SubNavigationItem
+          iconName="eye"
+          title="members.subnav.members.profile"
+        />
+        {shouldPermissionsCanBeChanged && (
+          <SubNavigationItem
+            iconName="lock-key"
+            title="members.subnav.members.permissions"
+          />
+        )}
+        <SubNavigationItem
+          iconName="hand-coins"
+          title="members.subnav.make.payment"
+        />
+        <SubNavigationItem
+          iconName="arrow-square-out"
+          title="members.subnav.gnosis.scan"
+        />
+      </ul>
+      <span className="divider my-3 mx-3.5 w-[calc(100%-1.75rem)]" />
+      <ul>
+        <SubNavigationItem
+          iconName="copy-simple"
+          title="members.subnav.copy.wallet.address"
+          shouldBeTooltipVisible
+          tooltipText={['copied', 'copy']}
+          isCopyTriggered={isCopyTriggered}
+          onClick={handleClick}
+        />
+      </ul>
+    </>
   );
 };
 

@@ -11,7 +11,7 @@ import Icon from '~shared/Icon';
 const displayName = 'v5.Button.TextButton';
 
 const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
-  mode = 'defalt',
+  mode = 'default',
   children,
   disabled = false,
   loading = false,
@@ -23,6 +23,7 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
   iconSize,
   ariaLabel,
   setTriggerRef,
+  className,
   isErrorColor,
   ...rest
 }) => {
@@ -44,8 +45,9 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
       ) : (
         <button
           className={clsx(
+            className,
             [styles.textButton],
-            'font-medium transition-all flex items-center duration-normal',
+            'font-medium text-gray-700 transition-all flex items-center duration-normal',
             {
               'text-sm': mode === 'default',
             },
@@ -55,7 +57,7 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
             {
               [styles.underlined]: mode === 'underlined',
               'pointer-events-none': disabled,
-              'text-gray-700 disabled:text-gray-400': !isErrorColor,
+              'disabled:text-gray-400': !isErrorColor,
               'text-negative-400': isErrorColor,
             },
           )}

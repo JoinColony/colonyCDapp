@@ -5,7 +5,3 @@
 .avatar {
   @apply w-[1.1875rem] h-[1.1875rem] flex items-center justify-center absolute -top-1 -right-1 bg-base-white rounded-full border border-gray-200 text-base-white [&_i]:flex [&_i]:items-center [&_i]:justify-center [&_i]:w-[0.6875rem] [&_i]:h-[0.6875rem];
 }
-
-.mobileButtons {
-  @apply w-full px-6 pb-6 mb-6 border-b border-b-gray-200 flex items-center gap-1 md:pb-5;
-}

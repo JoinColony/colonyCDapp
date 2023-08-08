@@ -11,7 +11,7 @@ import {
   DialogHeading,
   DialogSection,
 } from '~shared/Dialog';
-import { HookFormSelect as Select, Annotations } from '~shared/Fields';
+import { Select, Annotations } from '~shared/Fields';
 import ExternalLink from '~shared/ExternalLink';
 import SingleUserPicker, {
   filterUserSelection,

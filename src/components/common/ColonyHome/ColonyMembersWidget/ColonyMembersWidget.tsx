@@ -39,11 +39,11 @@ const ColonyMembersWidget = ({
     variables: {
       input: {
         colonyAddress: colony?.colonyAddress ?? '',
+        domainId: currentDomainId || Id.RootDomain,
       },
     },
     fetchPolicy: 'cache-and-network',
   });
-
   if (!colony) return null;
 
   const contributors = data?.getMembersForColony?.contributors;

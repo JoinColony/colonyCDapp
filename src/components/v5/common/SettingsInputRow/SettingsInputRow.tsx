@@ -3,7 +3,6 @@ import { useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
 
 import { SettingsInputRowProps } from './types';
-import { SlotKey } from '~hooks';
 import Button from '~v5/shared/Button';
 import Input from '~v5/common/Fields/Input';
 import Toast from '~shared/Extensions/Toast';
@@ -30,7 +29,7 @@ const SettingsInputRow: FC<SettingsInputRowProps> = ({
 
   useEffect(() => {
     if (!isOpen) {
-      resetField(SlotKey.CustomRPC);
+      resetField('customRpc');
     }
 
     if (isOpen && customRpcValue.length === 0) {
@@ -39,7 +38,7 @@ const SettingsInputRow: FC<SettingsInputRowProps> = ({
   }, [resetField, isOpen, customRpcValue.length, setIsInputVisible]);
 
   const handleClick = () => {
-    handleSubmit({ [SlotKey.CustomRPC]: rpcValue });
+    handleSubmit({ customRpc: rpcValue });
     setIsInputVisible(false);
     toast.success(
       <Toast
@@ -75,7 +74,7 @@ const SettingsInputRow: FC<SettingsInputRowProps> = ({
           {isInputVisible && (
             <div className="w-full max-w-[36.25rem]">
               <Input
-                name={SlotKey.CustomRPC}
+                name="customRpc"
                 register={register}
                 isError={!!error}
                 customErrorMessage={error}

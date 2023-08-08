@@ -18,7 +18,8 @@ const MSG = defineMessages({
   },
   watchersDescription: {
     id: `${displayName}.watchersDescription`,
-    defaultMessage: "Members who don't currently have any reputation",
+    defaultMessage:
+      "Members who don't currently have any reputation or permissions",
   },
   noMembersFound: {
     id: `${displayName}.noMembersFound`,

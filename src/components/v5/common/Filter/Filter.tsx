@@ -32,8 +32,7 @@ const Filter: FC = () => {
     checkedItems,
     isFollowersPage,
   } = useFilterContext();
-  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
-    useMembersPage();
+  const { getTooltipProps, setTooltipRef, setTriggerRef } = useMembersPage();
 
   return (
     <>
@@ -74,7 +73,11 @@ const Filter: FC = () => {
             <p className="text-4 text-gray-400 mb-4">
               {formatMessage({ id: 'filter.search.title' })}
             </p>
-            <SearchInput onSearchButtonClick={() => setIsSearchOpened(false)} />
+            <div className="sm:px-3.5 sm:mb-6">
+              <SearchInput
+                onSearchButtonClick={() => setIsSearchOpened(false)}
+              />
+            </div>
           </Modal>
         </div>
       ) : (
@@ -88,9 +91,12 @@ const Filter: FC = () => {
                 onClick={() => onClearFilters()}
               />
             )} */}
-            <FilterButton isOpen={visible} setTriggerRef={setTriggerRef} />
+            <FilterButton
+              isOpen={isFiltersOpen}
+              setTriggerRef={setTriggerRef}
+            />
           </div>
-          {visible && (
+          {isFiltersOpen && (
             <PopoverBase
               setTooltipRef={setTooltipRef}
               tooltipProps={getTooltipProps}
@@ -98,13 +104,15 @@ const Filter: FC = () => {
               cardProps={{
                 rounded: 's',
                 hasShadow: true,
-                className: 'py-4 px-2',
+                className: 'pt-6 pb-4 px-2.5',
               }}
               classNames="w-full sm:max-w-[17.375rem]"
             >
-              <SearchInput
-                onSearchButtonClick={() => setIsSearchOpened(false)}
-              />
+              <div className="sm:px-3.5 sm:mb-6">
+                <SearchInput
+                  onSearchButtonClick={() => setIsSearchOpened(false)}
+                />
+              </div>
               <FilterOptions
                 options={
                   isFollowersPage ? followersFilterOptions : filterOptions

@@ -31,14 +31,15 @@ const Input: FC<InputProps> = ({
     maxCharNumber,
     defaultValue,
   );
+  const registerField = register && register(name);
 
   const isErrorStatus = isCharLenghtError || isError;
 
   const input = (
     <div className="w-full">
       <input
+        {...registerField}
         type="text"
-        {...register?.(name)}
         name={name}
         placeholder={placeholder}
         className={clsx(className, 'input-round input', {
@@ -48,7 +49,10 @@ const Input: FC<InputProps> = ({
           'text-gray-400': isDisabled,
         })}
         defaultValue={defaultValue}
-        onChange={onChange}
+        onChange={(e) => {
+          onChange(e);
+          registerField?.onChange(e);
+        }}
         disabled={isDisabled}
       />
     </div>

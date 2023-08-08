@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { WizardStepProps } from '~shared/Wizard';
-import { ActionHookForm as ActionForm } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 
 import { mergePayload } from '~utils/actions';
 import { ActionTypes } from '~redux/index';
@@ -57,15 +57,17 @@ const options: Row[] = [
 type Props = Pick<WizardStepProps<FormValues>, 'nextStep' | 'wizardValues'>;
 
 const StepConfirmAllInput = ({ nextStep, wizardValues }: Props) => {
-  const transform = mergePayload({
+  const updatedWizardValues = {
     ...wizardValues,
     /**
      * Use tokenName/tokenSymbol if creating a new token,
      * or get the values from token object if using an existing one
      */
-    tokenName: wizardValues.tokenName ?? wizardValues.token?.name,
-    tokenSymbol: wizardValues.tokenSymbol ?? wizardValues.token?.symbol,
-  });
+    tokenName: wizardValues.tokenName || wizardValues.token?.name,
+    tokenSymbol: wizardValues.tokenSymbol || wizardValues.token?.symbol,
+  };
+
+  const transform = mergePayload(updatedWizardValues);
 
   return (
     <ActionForm
@@ -82,7 +84,7 @@ const StepConfirmAllInput = ({ nextStep, wizardValues }: Props) => {
             paragraph={MSG.subtitle}
           />
           <div className={styles.finalContainer}>
-            <CardRow cardOptions={options} values={wizardValues} />
+            <CardRow cardOptions={options} values={updatedWizardValues} />
           </div>
           <SubmitFormButton
             dataTest="userInputConfirm"

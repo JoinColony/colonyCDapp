@@ -38,7 +38,7 @@ const Table: FC<TableProps> = ({ list, onReputationSortClick }) => {
           <div className="flex items-center mt-2.5 sm:mt-0">
             {!!selectedMembers.length && (
               <Button
-                mode="secondaryOutline"
+                mode="quaternary"
                 iconName="trash"
                 size="small"
                 className="mr-2"

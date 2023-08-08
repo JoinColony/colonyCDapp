@@ -8,12 +8,15 @@ import { MSG } from './consts';
 import styles from './DropdownContent.module.css';
 import LearnMore from '~shared/Extensions/LearnMore';
 import TitleLabel from '~v5/shared/TitleLabel';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { Actions } from '~constants/actions';
 
 const displayName =
   'v5.common.SubNavigation.partials.DropdownContent.ManageDropdown';
 
 const ManageDropdown: FC<PropsWithChildren> = () => {
   const { formatMessage } = useIntl();
+  const { toggleActionBar, setSelectedAction } = useActionSidebarContext();
 
   return (
     <div className="bg-base-white">
@@ -25,18 +28,34 @@ const ManageDropdown: FC<PropsWithChildren> = () => {
         <LinkItem
           title={MSG.manageTeams}
           description={MSG.manageTeamsDescription}
+          onClick={() => {
+            setSelectedAction(Actions.EDIT_EXISTING_TEAM);
+            toggleActionBar();
+          }}
         />
         <LinkItem
           title={MSG.manageReputation}
           description={MSG.manageReputationDescription}
+          onClick={() => {
+            setSelectedAction(Actions.AWARD_REPUTATION);
+            toggleActionBar();
+          }}
         />
         <LinkItem
           title={MSG.managePermissions}
           description={MSG.managePermissionsDescription}
+          onClick={() => {
+            setSelectedAction(Actions.MANAGE_PERMISSIONS);
+            toggleActionBar();
+          }}
         />
         <LinkItem
           title={MSG.organizationDetails}
           description={MSG.organizationDetailsDescription}
+          onClick={() => {
+            setSelectedAction(Actions.EDIT_COLONY_DETAILS);
+            toggleActionBar();
+          }}
         />
       </ul>
       <div className={styles.buttonWrapper}>

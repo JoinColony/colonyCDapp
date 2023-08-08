@@ -6,19 +6,20 @@ import { ColonyWallet } from '~types';
 import ColonyManagerClass from './ColonyManager';
 
 import apolloClient from './apolloClient';
-import UserSettingsClass from './userSettings';
-
-export { UserSettingsClass as UserSettings };
 
 export { AppContext, AppContextProvider } from './AppContext';
 export { ColonyManagerClass as ColonyManager };
 export { ColonyContext, ColonyContextProvider } from './ColonyContext';
+export {
+  UserTokenBalanceContext,
+  UserTokenBalanceProvider,
+  useUserTokenBalanceContext,
+} from './UserTokenBalanceContext';
 
 export enum ContextModule {
   Wallet = 'wallet',
   ColonyManager = 'colonyManager',
   ApolloClient = 'apolloClient',
-  UserSettings = 'userSettings',
   Onboard = 'onboard',
 }
 
@@ -26,7 +27,6 @@ export interface Context {
   [ContextModule.Wallet]?: ColonyWallet;
   [ContextModule.ColonyManager]?: ColonyManagerClass;
   [ContextModule.ApolloClient]?: ApolloClientClass<object>;
-  [ContextModule.UserSettings]?: UserSettingsClass;
   [ContextModule.Onboard]?: OnboardAPI;
 }
 
@@ -34,7 +34,6 @@ const context: Context = {
   [ContextModule.ApolloClient]: apolloClient,
   [ContextModule.ColonyManager]: undefined,
   [ContextModule.Wallet]: undefined,
-  [ContextModule.UserSettings]: undefined,
   [ContextModule.Onboard]: undefined,
 };
 

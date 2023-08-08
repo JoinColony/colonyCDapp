@@ -1,6 +1,14 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, {
+  ChangeEvent,
+  ChangeEventHandler,
+  FC,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 import { useIntl } from 'react-intl';
 import debounce from 'lodash.debounce';
+import clsx from 'clsx';
 
 import Icon from '~shared/Icon';
 import styles from './SearchInput.module.css';
@@ -21,8 +29,8 @@ const SearchInput: FC<SearchInputProps> = ({ onSearchButtonClick }) => {
     [setSearchValue],
   );
 
-  const onInput: React.ChangeEventHandler<HTMLInputElement> = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onInput: ChangeEventHandler<HTMLInputElement> = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
       const { value: inputValue } = e.target;
 
       if (!isMobile) {
@@ -36,12 +44,20 @@ const SearchInput: FC<SearchInputProps> = ({ onSearchButtonClick }) => {
   );
 
   return (
-    <div className="w-full sm:px-4 sm:mb-6 relative">
-      <div className="absolute top-3 left-3 sm:left-8 flex">
+    <div
+      className={clsx(
+        styles.wrapper,
+        'group focus-within:border-blue-100 hover:after:border-blue-100 w-full relative',
+      )}
+    >
+      <span className={styles.icon}>
         <Icon name="magnifying-glass" appearance={{ size: 'tiny' }} />
-      </div>
+      </span>
       <input
-        className={styles.searchInput}
+        className={clsx(
+          styles.searchInput,
+          'border-gray-300 focus:outline-none group-hover:border-blue-200 group-focus-within:border-blue-200',
+        )}
         type="text"
         onInput={onInput}
         placeholder={formatMessage({ id: 'filter.input.placeholder' })}

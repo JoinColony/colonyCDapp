@@ -73,11 +73,7 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
-            },
-            "APPSYNC_API_KEY": {
-              "Fn::ImportValue": "amplify-colonycdapp-qa-113801-apicolonycdapp-1E5THNV10BXQV:GraphQLApiKey"
-            },
-            "AWS_APPSYNC_GRAPHQL_URL": "https://4wbzavolujffngfax5dalwsywi.appsync-api.eu-west-2.amazonaws.com/graphql"
+            }
           }
         },
         "Role": {

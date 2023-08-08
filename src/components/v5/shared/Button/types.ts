@@ -9,6 +9,7 @@ export type ButtonMode =
   | 'secondarySolid'
   | 'secondaryOutline'
   | 'tertiary'
+  | 'quaternary'
   | 'quinary'
   | 'senary'
   | 'septenary'
@@ -31,7 +32,7 @@ export interface CommonButtonProps
   setTriggerRef?: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
 }
 
-export type IconSize = 'extraTiny' | 'tiny' | 'small';
+export type IconSize = 'extraTiny' | 'tiny' | 'small' | 'extraSmall';
 
 export interface ButtonProps extends CommonButtonProps {
   mode?: ButtonMode;

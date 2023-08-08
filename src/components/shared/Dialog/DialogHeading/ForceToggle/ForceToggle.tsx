@@ -2,7 +2,7 @@ import React from 'react';
 import { PopperOptions } from 'react-popper-tooltip';
 import { MessageDescriptor } from 'react-intl';
 
-import { HookFormToggle as Toggle } from '~shared/Fields';
+import { Toggle } from '~shared/Fields';
 
 import styles from './ForceToggle.css';
 

@@ -1,5 +1,5 @@
 module.exports = {
-  getUser: /* GraphQL */ `
+  getUserByAddress: /* GraphQL */ `
     query GetUser($id: ID!) {
       getUserByAddress(id: $id) {
         items {
@@ -20,7 +20,7 @@ module.exports = {
     }
   `,
   getWatchersInColony: /* GraphQL */ `
-    query GetWatchersInColony($id: ID!) {
+    query GetWatchersInColony($id: ID!, $domainId: ID!) {
       getColonyByAddress(id: $id) {
         items {
           watchers {
@@ -38,6 +38,16 @@ module.exports = {
                   location
                   thumbnail
                   website
+                }
+                roles(filter: { domainId: { eq: $domainId } }) {
+                  items {
+                    role_0
+                    role_1
+                    role_2
+                    role_3
+                    role_5
+                    role_6
+                  }
                 }
               }
             }

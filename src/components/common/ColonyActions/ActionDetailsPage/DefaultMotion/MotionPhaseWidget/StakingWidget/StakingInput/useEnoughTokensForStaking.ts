@@ -6,6 +6,7 @@ import { Address } from '~types';
 export const useEnoughTokensForStaking = (
   tokenAddress: Address,
   walletAddress: Address,
+  colonyAddress: Address,
   userMinStake: string,
 ) => {
   const { data, loading: loadingUserTokenBalance } =
@@ -14,6 +15,7 @@ export const useEnoughTokensForStaking = (
         input: {
           tokenAddress,
           walletAddress,
+          colonyAddress,
         },
       },
       skip: !tokenAddress || !walletAddress,

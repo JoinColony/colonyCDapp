@@ -11,6 +11,9 @@ import {
   ColonyActionType,
   DomainMetadata,
   MotionMessage,
+  User,
+  ColonyExtension,
+  Token,
 } from '~types';
 import { useColonyContext, useUserReputation } from '~hooks';
 import { MotionVote } from '~utils/colonyMotions';
@@ -63,6 +66,60 @@ const getDomainNameFromChangelog = (
   return changelogItem.newName;
 };
 
+const getRecipient = (actionData: ColonyAction) => {
+  const { recipientUser, recipientColony, recipientExtension, recipientToken } =
+    actionData;
+
+  let recipient: User | Colony | ColonyExtension | Token | undefined;
+
+  if (recipientUser) {
+    recipient = recipientUser;
+  } else if (recipientColony) {
+    recipient = recipientColony;
+  } else if (recipientExtension) {
+    recipient = recipientExtension;
+  } else if (recipientToken) {
+    recipient = recipientToken;
+  }
+
+  return (
+    <span className={styles.userDecoration}>
+      {recipient ? (
+        <FriendlyName agent={recipient} autoShrinkAddress />
+      ) : (
+        <MaskedAddress address={actionData.recipientAddress || AddressZero} />
+      )}
+    </span>
+  );
+};
+
+const getInitiator = (actionData: ColonyAction) => {
+  const { initiatorUser, initiatorColony, initiatorExtension, initiatorToken } =
+    actionData;
+
+  let initiator: User | Colony | ColonyExtension | Token | undefined;
+
+  if (initiatorUser) {
+    initiator = initiatorUser;
+  } else if (initiatorColony) {
+    initiator = initiatorColony;
+  } else if (initiatorExtension) {
+    initiator = initiatorExtension;
+  } else if (initiatorToken) {
+    initiator = initiatorToken;
+  }
+
+  return (
+    <span className={styles.userDecoration}>
+      {initiator ? (
+        <FriendlyName agent={initiator} autoShrinkAddress />
+      ) : (
+        <MaskedAddress address={actionData.initiatorAddress || AddressZero} />
+      )}
+    </span>
+  );
+};
+
 export const mapColonyActionToExpectedFormat = (
   actionData: ColonyAction,
   colony?: Colony,
@@ -84,21 +141,8 @@ export const mapColonyActionToExpectedFormat = (
         actionData.transactionHash,
         actionData.fromDomain?.metadata || actionData.pendingDomainMetadata,
       ) ?? formatMessage({ id: 'unknownDomain' }),
-    initiator: (
-      <span className={styles.titleDecoration}>
-        {/* @TODO All all the other initiator types, and the fallback */}
-        <FriendlyName user={actionData.initiatorUser} autoShrinkAddress />
-      </span>
-    ),
-    recipient: (
-      <span className={styles.titleDecoration}>
-        {actionData.recipientUser ? (
-          <FriendlyName user={actionData.recipientUser} autoShrinkAddress />
-        ) : (
-          <MaskedAddress address={actionData.recipientAddress || AddressZero} />
-        )}
-      </span>
-    ),
+    initiator: getInitiator(actionData),
+    recipient: getRecipient(actionData),
     toDomain:
       actionData.toDomain?.metadata?.name ??
       formatMessage({ id: 'unknownDomain' }),
@@ -148,21 +192,8 @@ export const mapActionEventToExpectedFormat = (
     // clientOrExtensionType: (
     //   <span className={styles.highlight}>{event.emittedBy}</span>
     // ),
-    initiator: (
-      <span className={styles.userDecoration}>
-        {/* @TODO All all the other initiator types, and the fallback */}
-        <FriendlyName user={actionData.initiatorUser} autoShrinkAddress />
-      </span>
-    ),
-    recipient: (
-      <span className={styles.userDecoration}>
-        {actionData.recipientUser || actionData.recipientColony ? (
-          <FriendlyName user={actionData.recipientUser} autoShrinkAddress />
-        ) : (
-          <MaskedAddress address={actionData.recipientAddress || AddressZero} />
-        )}
-      </span>
-    ),
+    initiator: getInitiator(actionData),
+    recipient: getRecipient(actionData),
     isSmiteAction:
       actionData.type === ColonyActionType.EmitDomainReputationPenalty,
     tokenSymbol: actionData.token?.symbol,
@@ -186,14 +217,14 @@ export const useMapMotionEventToExpectedFormat = (
   motionMessageData: MotionMessage,
   actionData: ColonyAction,
 ) => {
-  const { colonyAddress, fromDomain, motionData, pendingColonyMetadata } =
-    actionData;
+  const { colonyAddress, motionData, pendingColonyMetadata } = actionData;
+  const { nativeMotionDomainId } = motionData || {};
   const { colony } = useColonyContext();
 
   const initiatorUserReputation = useUserReputation(
     colonyAddress,
     motionMessageData.initiatorAddress,
-    fromDomain?.nativeId,
+    Number(nativeMotionDomainId),
     motionData?.rootHash,
   );
 
@@ -240,7 +271,7 @@ export const useMapMotionEventToExpectedFormat = (
       <>
         <span className={styles.userDecoration}>
           <FriendlyName
-            user={motionMessageData.initiatorUser}
+            agent={motionMessageData.initiatorUser}
             autoShrinkAddress
           />
         </span>
@@ -256,7 +287,7 @@ export const useMapMotionEventToExpectedFormat = (
       <>
         <span className={styles.userDecoration}>
           <FriendlyName
-            user={motionMessageData.initiatorUser}
+            agent={motionMessageData.initiatorUser}
             autoShrinkAddress
           />
         </span>

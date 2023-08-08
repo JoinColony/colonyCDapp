@@ -3,6 +3,7 @@ import { Id } from '@colony/colony-js';
 import { useNavigate } from 'react-router-dom';
 import { string, object, array, number, boolean, InferType } from 'yup';
 
+import { MAX_ANNOTATION_LENGTH } from '~constants';
 import {
   mergePayload,
   withKey,
@@ -14,7 +15,7 @@ import { ActionTypes } from '~redux';
 import { WizardDialogType, useAppContext } from '~hooks';
 import { useGetMembersForColonyQuery } from '~gql';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
-import { ActionHookForm as Form } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 
 import PermissionManagementForm from './PermissionManagementForm';
 import { getPermissionManagementDialogPayload } from './helpers';
@@ -34,7 +35,7 @@ const validationSchema = object()
       })
       .defined(),
     roles: array().ensure().of(string()).defined(),
-    annotation: string().max(4000).defined(),
+    annotation: string().max(MAX_ANNOTATION_LENGTH).defined(),
     forceAction: boolean(),
     motionDomainId: number(),
   })
@@ -116,7 +117,7 @@ const PermissionManagementDialog = ({
 
   return (
     <Dialog cancel={cancel}>
-      <Form<FormValues>
+      <ActionForm<FormValues>
         defaultValues={{
           forceAction: false,
           user: defaultUser,
@@ -138,7 +139,7 @@ const PermissionManagementDialog = ({
           handleIsForceChange={setIsForce}
           isForce={isForce}
         />
-      </Form>
+      </ActionForm>
     </Dialog>
   );
 };

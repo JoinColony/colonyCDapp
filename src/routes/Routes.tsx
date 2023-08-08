@@ -85,8 +85,9 @@ import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
 import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
 import { PageThemeContextProvider } from '~context/PageThemeContext';
 import { FilterContextProvider } from '~context/FilterContext';
+import { ActionSidebarContextProvider } from '~context/ActionSidebarContext';
 
-// import useTitle from '~hooks/useTitle';
+import useTitle from '~hooks/useTitle';
 
 const displayName = 'routes.Routes';
 
@@ -100,7 +101,7 @@ const Routes = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const didClaimProfile = user?.name;
 
-  // useTitle();
+  useTitle();
 
   /**
    * @NOTE Memoized Switch
@@ -162,14 +163,16 @@ const Routes = () => {
                     <FilterContextProvider>
                       <SearchContextProvider>
                         <MemberContextProvider>
-                          <PageLayout
-                            loadingText="members"
-                            title={{ id: 'membersPage.title' }}
-                            description={{ id: 'membersPage.description' }}
-                            pageName="members"
-                          >
-                            <MembersPage />
-                          </PageLayout>
+                          <ActionSidebarContextProvider>
+                            <PageLayout
+                              loadingText="members"
+                              title={{ id: 'membersPage.title' }}
+                              description={{ id: 'membersPage.description' }}
+                              pageName="members"
+                            >
+                              <MembersPage />
+                            </PageLayout>
+                          </ActionSidebarContextProvider>
                         </MemberContextProvider>
                       </SearchContextProvider>
                     </FilterContextProvider>
@@ -192,14 +195,18 @@ const Routes = () => {
                     <FilterContextProvider>
                       <SearchContextProvider>
                         <MemberContextProvider>
-                          <PageLayout
-                            loadingText={pageName}
-                            title={{ id: `${pageName}Page.title` }}
-                            description={{ id: `${pageName}Page.description` }}
-                            pageName="members"
-                          >
-                            <ColonyUsersPage pageName={pageName} />
-                          </PageLayout>
+                          <ActionSidebarContextProvider>
+                            <PageLayout
+                              loadingText={pageName}
+                              title={{ id: `${pageName}Page.title` }}
+                              description={{
+                                id: `${pageName}Page.description`,
+                              }}
+                              pageName="members"
+                            >
+                              <ColonyUsersPage pageName={pageName} />
+                            </PageLayout>
+                          </ActionSidebarContextProvider>
                         </MemberContextProvider>
                       </SearchContextProvider>
                     </FilterContextProvider>
@@ -217,14 +224,16 @@ const Routes = () => {
                 <FilterContextProvider>
                   <SearchContextProvider>
                     <MemberContextProvider>
-                      <PageLayout
-                        loadingText="verified"
-                        title={{ id: 'verifiedPage.title' }}
-                        description={{ id: 'verifiedPage.description' }}
-                        pageName="members"
-                      >
-                        <VerifiedPage />
-                      </PageLayout>
+                      <ActionSidebarContextProvider>
+                        <PageLayout
+                          loadingText="verified"
+                          title={{ id: 'verifiedPage.title' }}
+                          description={{ id: 'verifiedPage.description' }}
+                          pageName="members"
+                        >
+                          <VerifiedPage />
+                        </PageLayout>
+                      </ActionSidebarContextProvider>
                     </MemberContextProvider>
                   </SearchContextProvider>
                 </FilterContextProvider>
@@ -264,14 +273,16 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <PageLayout
-                  loadingText={{ id: 'loading.extensionsPage' }}
-                  title={{ id: 'extensionsPage.title' }}
-                  description={{ id: 'extensionsPage.description' }}
-                  pageName="extensions"
-                >
-                  <ExtensionDetailsPage />
-                </PageLayout>
+                <ActionSidebarContextProvider>
+                  <PageLayout
+                    loadingText={{ id: 'loading.extensionsPage' }}
+                    title={{ id: 'extensionsPage.title' }}
+                    description={{ id: 'extensionsPage.description' }}
+                    pageName="extensions"
+                  >
+                    <ExtensionDetailsPage />
+                  </PageLayout>
+                </ActionSidebarContextProvider>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
@@ -281,14 +292,16 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <PageLayout
-                  loadingText={{ id: 'loading.extensionsPage' }}
-                  title={{ id: 'extensionsPage.title' }}
-                  description={{ id: 'extensionsPage.description' }}
-                  pageName="extensions"
-                >
-                  <LazyConsensusPage />
-                </PageLayout>
+                <ActionSidebarContextProvider>
+                  <PageLayout
+                    loadingText={{ id: 'loading.extensionsPage' }}
+                    title={{ id: 'extensionsPage.title' }}
+                    description={{ id: 'extensionsPage.description' }}
+                    pageName="extensions"
+                  >
+                    <LazyConsensusPage />
+                  </PageLayout>
+                </ActionSidebarContextProvider>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
@@ -312,14 +325,16 @@ const Routes = () => {
             element={
               <ColonyContextProvider>
                 <ExtensionsContextProvider>
-                  <PageLayout
-                    loadingText={{ id: 'loading.extensionsPage' }}
-                    title={{ id: 'colonyDetailsPage.title' }}
-                    description={{ id: 'colonyDetailsPage.description' }}
-                    pageName="extensions"
-                  >
-                    <ColonyDetailsPage />
-                  </PageLayout>
+                  <ActionSidebarContextProvider>
+                    <PageLayout
+                      loadingText={{ id: 'loading.extensionsPage' }}
+                      title={{ id: 'colonyDetailsPage.title' }}
+                      description={{ id: 'colonyDetailsPage.description' }}
+                      pageName="extensions"
+                    >
+                      <ColonyDetailsPage />
+                    </PageLayout>
+                  </ActionSidebarContextProvider>
                 </ExtensionsContextProvider>
               </ColonyContextProvider>
             }
@@ -330,14 +345,16 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <PageLayout
-                  loadingText={{ id: 'loading.extensionsPage' }}
-                  title={{ id: 'extensionsPage.title' }}
-                  description={{ id: 'extensionsPage.description' }}
-                  pageName="extensions"
-                >
-                  <ReputationPage />
-                </PageLayout>
+                <ActionSidebarContextProvider>
+                  <PageLayout
+                    loadingText={{ id: 'loading.extensionsPage' }}
+                    title={{ id: 'extensionsPage.title' }}
+                    description={{ id: 'extensionsPage.description' }}
+                    pageName="extensions"
+                  >
+                    <ReputationPage />
+                  </PageLayout>
+                </ActionSidebarContextProvider>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
@@ -347,14 +364,16 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <PageLayout
-                  loadingText={{ id: 'loading.extensionsPage' }}
-                  title={{ id: 'extensionsPage.title' }}
-                  description={{ id: 'extensionsPage.description' }}
-                  pageName="extensions"
-                >
-                  <PermissionsPage />
-                </PageLayout>
+                <ActionSidebarContextProvider>
+                  <PageLayout
+                    loadingText={{ id: 'loading.extensionsPage' }}
+                    title={{ id: 'extensionsPage.title' }}
+                    description={{ id: 'extensionsPage.description' }}
+                    pageName="extensions"
+                  >
+                    <PermissionsPage />
+                  </PageLayout>
+                </ActionSidebarContextProvider>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
@@ -364,14 +383,16 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <PageLayout
-                  loadingText={{ id: 'loading.extensionsPage' }}
-                  title={{ id: 'extensionsPage.title' }}
-                  description={{ id: 'extensionsPage.description' }}
-                  pageName="extensions"
-                >
-                  <ExtensionsPage />
-                </PageLayout>
+                <ActionSidebarContextProvider>
+                  <PageLayout
+                    loadingText={{ id: 'loading.extensionsPage' }}
+                    title={{ id: 'extensionsPage.title' }}
+                    description={{ id: 'extensionsPage.description' }}
+                    pageName="extensions"
+                  >
+                    <ExtensionsPage />
+                  </PageLayout>
+                </ActionSidebarContextProvider>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
@@ -381,14 +402,16 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <PageLayout
-                  loadingText={{ id: 'loading.extensionsPage' }}
-                  title={{ id: 'extensionsPage.title' }}
-                  description={{ id: 'extensionsPage.description' }}
-                  pageName="extensions"
-                >
-                  <IntegrationsPage />
-                </PageLayout>
+                <ActionSidebarContextProvider>
+                  <PageLayout
+                    loadingText={{ id: 'loading.extensionsPage' }}
+                    title={{ id: 'extensionsPage.title' }}
+                    description={{ id: 'extensionsPage.description' }}
+                    pageName="extensions"
+                  >
+                    <IntegrationsPage />
+                  </PageLayout>
+                </ActionSidebarContextProvider>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
@@ -415,14 +438,16 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <PageLayout
-                  loadingText={{ id: 'loading.extensionsPage' }}
-                  title={{ id: 'advancedPage.title' }}
-                  description={{ id: 'advancedPage.description' }}
-                  pageName="extensions"
-                >
-                  <AdvancedPage />
-                </PageLayout>
+                <ActionSidebarContextProvider>
+                  <PageLayout
+                    loadingText={{ id: 'loading.extensionsPage' }}
+                    title={{ id: 'advancedPage.title' }}
+                    description={{ id: 'advancedPage.description' }}
+                    pageName="extensions"
+                  >
+                    <AdvancedPage />
+                  </PageLayout>
+                </ActionSidebarContextProvider>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }

@@ -3,11 +3,11 @@
 }
 
 .title {
-  @apply text-gray-900 flex justify-between mb-1;
+  @apply text-gray-900 flex justify-between mb-1 w-full;
 }
 
 .description {
-  @apply text-gray-600 text-md flex-wrap;
+  @apply text-gray-600 text-md flex-wrap text-left;
 }
 
 .link {

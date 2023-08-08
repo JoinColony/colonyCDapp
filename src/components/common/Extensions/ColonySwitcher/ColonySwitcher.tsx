@@ -6,79 +6,77 @@ import ColoniesDropdown from './partials/ColoniesDropdown';
 import ColonyAvatarWrapper from './partials/ColonyAvatarWrapper';
 import ColonyDropdownMobile from './partials/ColonyDropdownMobile';
 import styles from './ColonySwitcher.module.css';
-import { useColonyContext, useMobile, useUserReputation } from '~hooks';
+import { useMobile } from '~hooks';
 import { ColonySwitcherProps } from './types';
 import { useHeader } from '~frame/Extensions/Header/hooks';
 import NavigationTools from '../NavigationTools';
+import PopoverBase from '~v5/shared/PopoverBase';
+import { useGetNetworkToken } from '~hooks/useGetNetworkToken';
 
 const displayName = 'common.Extensions.ColonySwitcher';
 
 const ColonySwitcher: FC<ColonySwitcherProps> = ({
   isCloseButtonVisible,
-  visible,
-  isMainMenuVisible,
+  isColonyDropdownOpen,
   setTooltipRef,
   setTriggerRef,
   getTooltipProps,
+  isArrowVisible,
 }) => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
-
+  const nativeToken = useGetNetworkToken();
   const {
     colonyToDisplayAddress,
     colonyToDisplay,
     sortByDate,
     userLoading,
     user,
-    wallet,
   } = useHeader();
-
-  const { colony } = useColonyContext();
-  const { profile } = user || {};
-  const { colonyAddress, nativeToken } = colony || {};
-  const { userReputation, totalReputation } = useUserReputation(
-    colonyAddress,
-    wallet?.address,
-  );
 
   const { items: watchlist = [] } = user?.watchlist || {};
 
   return (
-    <div className="flex justify-between relative">
+    <div
+      className={clsx('flex justify-between', {
+        relative: !isMobile,
+      })}
+    >
       <button
         aria-label={formatMessage({
-          id: visible ? 'ariaLabel.closeDropdown' : 'ariaLabel.openDropdown',
+          id: isColonyDropdownOpen
+            ? 'ariaLabel.closeDropdown'
+            : 'ariaLabel.openDropdown',
         })}
         ref={setTriggerRef}
-        className="flex items-center justify-between transition-colors duration-normal hover:text-blue-400"
+        className="flex items-center justify-between transition-colors duration-normal hover:text-blue-400 z-[51]"
         type="button"
       >
         <ColonyAvatarWrapper
-          isOpen={visible || isMainMenuVisible}
+          isArrowVisible={isArrowVisible}
           isMobile={isMobile}
           colonyToDisplayAddress={colonyToDisplayAddress}
           colonyToDisplay={isCloseButtonVisible && colonyToDisplay}
         />
       </button>
-      {visible && (
-        <div className="h-auto absolute top-[3.5rem] sm:top-[2.25rem]">
+      {isColonyDropdownOpen && (
+        <div
+          className={
+            !isMobile ? 'h-auto absolute top-[3.5rem] sm:top-[2.25rem]' : ''
+          }
+        >
           {isMobile ? (
-            <div
-              ref={setTooltipRef}
-              {...getTooltipProps({
-                className: clsx(`flex justify-start z-[9999]`),
-              })}
+            <PopoverBase
+              setTooltipRef={setTooltipRef}
+              tooltipProps={getTooltipProps}
+              classNames="w-full border-none shadow-none px-0 pt-0 pb-6 bg-base-white"
             >
-              <ColonyDropdownMobile isOpen={visible} userLoading={userLoading}>
-                <div className={styles.mobileButtons}>
-                  <NavigationTools
-                    nativeToken={nativeToken}
-                    totalReputation={totalReputation}
-                    userName={profile?.displayName || user?.name || ''}
-                    userReputation={userReputation}
-                    user={user}
-                  />
-                </div>
+              <ColonyDropdownMobile
+                isOpen={isColonyDropdownOpen}
+                userLoading={userLoading}
+              >
+                <NavigationTools nativeToken={nativeToken} />
+                <span className="divider mb-6" />
                 {watchlist.length ? (
                   <ColoniesDropdown
                     watchlist={[...watchlist].sort(sortByDate)}
@@ -90,17 +88,14 @@ const ColonySwitcher: FC<ColonySwitcherProps> = ({
                   </p>
                 )}
               </ColonyDropdownMobile>
-            </div>
+            </PopoverBase>
           ) : (
             <div
               ref={setTooltipRef}
               {...getTooltipProps({
                 className: clsx(
-                  `${styles.tooltipContainer} p-1 flex justify-start z-[9999] tooltip-container`,
-                  {
-                    'w-[26.75rem] border-none shadow-none': isMobile,
-                    'w-[15.1875rem]': !isMobile,
-                  },
+                  styles.tooltipContainer,
+                  'p-1 flex justify-start z-50 tooltip-container w-[15.1875rem]',
                 ),
               })}
             >

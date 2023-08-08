@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
-import { Appearance, HookFormSelect as Select } from '~shared/Fields';
+import { Appearance, Select } from '~shared/Fields';
 import ColorTag from '~shared/ColorTag';
 import { DomainColor } from '~types';
 

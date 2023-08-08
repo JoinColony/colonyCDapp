@@ -13,7 +13,8 @@
     "docker:compose": "docker compose --file docker/colony-cdapp-dev-env-orchestration.yaml",
     "dev": "npm run docker:build && npm run docker:compose up -- --force-recreate -V",
     "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
-    "stylelint": "stylelint --fix 'src/**/*.css'",
+    "lint:ci": "eslint 'src/**/*.{ts,tsx}'",
+    "stylelint:ci": "stylelint --allow-empty-input \"src/**/*.css\"",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "webpack": "webpack serve --config webpack.dev.js --port 9091",
     "webpack:prod": "NODE_ENV=production webpack-cli --config webpack.prod.js",
@@ -24,7 +25,8 @@
     "codegen": "node codegen",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "npx chromatic --project-token=f08326e25dbf"
+    "chromatic": "npx chromatic --project-token=f08326e25dbf",
+    "postinstall": "./scripts/lambda-functions-dependencies.sh"
   },
   "repository": {
     "type": "git",
@@ -147,7 +149,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
-    "@colony/colony-js": "^6.3.6",
+    "@colony/colony-js": "^6.4.0",
     "@colony/redux-promise-listener": "^1.2.0",
     "@colony/unicode-confusables-noascii": "^0.1.2",
     "@formatjs/intl-pluralrules": "^5.0.2",
@@ -172,7 +174,6 @@
     "eth-ens-namehash-ms": "^2.2.0",
     "ethers": "^5.6.8",
     "format-number": "^3.0.0",
-    "formik": "^2.2.9",
     "framer-motion": "^10.12.4",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
@@ -192,7 +193,7 @@
     "react-day-picker": "^8.0.5",
     "react-dom": "^18.1.0",
     "react-dropzone": "^14.2.1",
-    "react-hook-form": "^7.39.7",
+    "react-hook-form": "^7.45.2",
     "react-intl": "^6.0.4",
     "react-modal": "^3.15.1",
     "react-popper": "^2.3.0",
@@ -212,6 +213,7 @@
     "reselect": "^4.1.5",
     "scroll-into-view-if-needed": "^2.2.16",
     "use-local-storage": "^3.0.0",
+    "usehooks-ts": "^2.9.1",
     "yup": "^0.30.0"
   }
 }

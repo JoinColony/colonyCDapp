@@ -3,20 +3,17 @@ import { Id } from '@colony/colony-js';
 import { useNavigate } from 'react-router-dom';
 
 import Dialog from '~shared/Dialog';
-import { ActionHookForm as Form } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
-// import { getVerifiedUsers } from '~utils/verifiedRecipients';
+import { getVerifiedUsers } from '~utils/verifiedUsers';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { useSelectedUser } from '~hooks';
+import { useSelectedUser, useGetColonyMembers } from '~hooks';
 
 import DialogForm from '../ManageReputationDialogForm';
 import { AwardAndSmiteDialogProps } from '../types';
 
-import {
-  getManageReputationDialogPayload,
-  useGetColonyMembers,
-} from './helpers';
+import { getManageReputationDialogPayload } from './helpers';
 
 import {
   FormValues,
@@ -42,9 +39,10 @@ const ManageReputationContainer = ({
   const navigate = useNavigate();
   const allColonyMembers = useGetColonyMembers(colony.colonyAddress);
 
-  // const verifiedUsers = useMemo(() => {
-  //   return getVerifiedUsers(colony.whitelistedAddresses, colonyWatchers) || [];
-  // }, [colonyWatchers, colony]);
+  const verifiedUsers = getVerifiedUsers(
+    colony.metadata?.whitelistedAddresses ?? [],
+    allColonyMembers,
+  );
 
   const { isVotingReputationEnabled } = enabledExtensionData;
 
@@ -79,12 +77,14 @@ const ManageReputationContainer = ({
     withMeta({ navigate }),
   );
 
-  // const { isWhitelistActivated } = colony;
-  const selectedUser = useSelectedUser(allColonyMembers);
-  //   isWhitelistActivated ? verifiedUsers : colonyWatchers,
+  const { metadata } = colony;
+  const selectedUser = useSelectedUser(
+    metadata?.isWhitelistActivated ? verifiedUsers : allColonyMembers,
+  );
+
   return (
     <Dialog cancel={cancel}>
-      <Form<FormValues>
+      <ActionForm<FormValues>
         defaultValues={{
           forceAction: false,
           domainId: filteredDomainId || Id.RootDomain,
@@ -103,7 +103,7 @@ const ManageReputationContainer = ({
           nativeTokenDecimals={nativeTokenDecimals}
           back={() => callStep(prevStep)}
           users={
-            allColonyMembers // isWhitelistActivated ? verifiedUsers : colonyWatchers
+            metadata?.isWhitelistActivated ? verifiedUsers : allColonyMembers
           }
           updateSchemaUserReputation={
             isSmiteAction ? setSchemaUserReputation : undefined
@@ -114,7 +114,7 @@ const ManageReputationContainer = ({
           isForce={isForce}
           setIsForce={setIsForce}
         />
-      </Form>
+      </ActionForm>
     </Dialog>
   );
 };

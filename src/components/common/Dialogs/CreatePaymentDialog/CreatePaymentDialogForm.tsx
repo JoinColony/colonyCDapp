@@ -65,7 +65,6 @@ const MSG = defineMessages({
 
 interface Props extends ActionDialogProps {
   verifiedUsers: MemberUser[];
-  // showWhitelistWarning: boolean;
   handleIsForceChange: SetStateFn;
   isForce: boolean;
 }
@@ -79,6 +78,10 @@ const supRenderAvatar = (item: ItemDataType<User>) => (
   <UserAvatar user={item} size="xs" />
 );
 
+const WarningLabel = (chunks) => (
+  <span className={styles.warningLabel}>{chunks}</span>
+);
+
 const CreatePaymentDialogForm = ({
   back,
   verifiedUsers,
@@ -86,8 +89,7 @@ const CreatePaymentDialogForm = ({
   enabledExtensionData,
   handleIsForceChange,
   isForce,
-}: // showWhitelistWarning,
-Props) => {
+}: Props) => {
   const { watch } = useFormContext();
   const { recipient, fromDomainId, forceAction } = watch();
 
@@ -111,6 +113,14 @@ Props) => {
       handleIsForceChange(forceAction);
     }
   }, [forceAction, isForce, handleIsForceChange]);
+
+  const showWarningForAddress = colony.metadata?.isWhitelistActivated
+    ? recipient &&
+      !(colony.metadata?.whitelistedAddresses ?? []).some(
+        (address) =>
+          address.toLowerCase() === recipient.walletAddress.toLowerCase(),
+      )
+    : false;
 
   return (
     <>
@@ -152,20 +162,16 @@ Props) => {
             renderAvatar={supRenderAvatar}
           />
         </div>
-        {/* {showWhitelistWarning && (
+        {showWarningForAddress && (
           <div className={styles.warningContainer}>
             <p className={styles.warningText}>
               <FormattedMessage
                 {...MSG.warningText}
-                values={{
-                  span: (chunks) => (
-                    <span className={styles.warningLabel}>{chunks}</span>
-                  ),
-                }}
+                values={{ span: WarningLabel }}
               />
             </p>
           </div>
-        )} */}
+        )}
         {recipient &&
           recipient.name &&
           isConfusing(recipient.name || recipient.profile?.displayName) && (

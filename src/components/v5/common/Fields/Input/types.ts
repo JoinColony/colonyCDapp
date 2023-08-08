@@ -9,7 +9,7 @@ export type InputProps = {
   customErrorMessage?: string;
   defaultValue?: string;
   name: string;
-  register: UseFormRegister<FieldValues>;
+  register?: UseFormRegister<FieldValues>;
   className?: string;
   isDecoratedError?: boolean;
   successfulMessage?: string;

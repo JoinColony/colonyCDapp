@@ -1,12 +1,9 @@
 import { MessageDescriptor } from 'react-intl';
-import { Token } from '~types';
-import { MemberReputationProps } from '~common/Extensions/UserNavigation/partials/MemberReputation/types';
-import { UserAvatarProps } from '~v5/shared/UserAvatar/types';
+import { NetworkInfo } from '~constants';
 
-export interface NavigationToolsProps
-  extends MemberReputationProps,
-    Pick<UserAvatarProps, 'userName' | 'user'> {
+export interface NavigationToolsProps {
   buttonLabel?: string | MessageDescriptor;
-  nativeToken?: Token;
+  nativeToken?: NetworkInfo;
   hideColonies?: boolean;
+  hideMemberReputationOnMobile?: boolean;
 }

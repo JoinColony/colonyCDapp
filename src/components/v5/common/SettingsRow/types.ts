@@ -1,10 +1,12 @@
-import { UseFormRegister } from 'react-hook-form';
+import { FieldPath, FieldValues, UseFormRegister } from 'react-hook-form';
 import { MessageDescriptor } from 'react-intl';
-import { UserSettingsSlot } from '~context/userSettings';
 
 import { ButtonMode } from '~v5/shared/Button/types';
 
-export interface SettingsRowProps {
+export interface SettingsRowProps<
+  TFieldValues extends FieldValues,
+  TFieldName extends FieldPath<TFieldValues>,
+> {
   title: MessageDescriptor;
   description: MessageDescriptor;
   tooltipMessage?: MessageDescriptor;
@@ -13,6 +15,6 @@ export interface SettingsRowProps {
   buttonLabel?: MessageDescriptor;
   buttonIcon?: string;
   buttonMode?: ButtonMode;
-  id?: string;
-  register?: UseFormRegister<Partial<UserSettingsSlot>>;
+  id?: TFieldName;
+  register?: UseFormRegister<TFieldValues>;
 }

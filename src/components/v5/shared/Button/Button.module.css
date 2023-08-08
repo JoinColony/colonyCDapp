@@ -18,6 +18,10 @@
   @apply bg-base-white text-negative-400 border border-negative-400 hover:bg-negative-400 hover:text-base-white disabled:text-gray-300 disabled:border-gray-300;
 }
 
+.quaternary {
+  @apply bg-base-white text-negative-400 border border-negative-200 hover:bg-negative-400 hover:text-base-white disabled:text-gray-300 disabled:border-gray-300;
+}
+
 .tertiary {
   @apply bg-base-white text-gray-700 border border-gray-200 hover:border-blue-400 disabled:text-gray-300;
 }

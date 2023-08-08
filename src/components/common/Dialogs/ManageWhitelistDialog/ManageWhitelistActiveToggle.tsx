@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { HookFormToggle as Toggle } from '~shared/Fields';
+import { Toggle } from '~shared/Fields';
 import { Heading4 } from '~shared/Heading';
 
 import styles from './ManageWhitelistDialogForm.css';

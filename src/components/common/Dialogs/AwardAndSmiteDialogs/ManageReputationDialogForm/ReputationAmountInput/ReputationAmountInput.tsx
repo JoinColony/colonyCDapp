@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import Decimal from 'decimal.js';
 import { useFormContext } from 'react-hook-form';
 
-import { HookFormInput as Input } from '~shared/Fields';
+import { Input } from '~shared/Fields';
 import Numeral from '~shared/Numeral';
 import { Colony } from '~types';
 

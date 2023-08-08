@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
-import { HookFormCheckbox as Checkbox } from '~shared/Fields';
+import { Checkbox } from '~shared/Fields';
 import PermissionsLabel from '~shared/PermissionsLabel';
 import { formatText } from '~utils/intl';
 

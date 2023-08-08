@@ -2,8 +2,9 @@ import React, { useMemo, useState } from 'react';
 import { string, object, array, boolean, InferType } from 'yup';
 import { useNavigate } from 'react-router-dom';
 
+import { MAX_ANNOTATION_LENGTH } from '~constants';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
-import { ActionHookForm as Form } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 
 import { ActionTypes } from '~redux/index';
 import { WizardDialogType } from '~hooks';
@@ -12,13 +13,13 @@ import {
   mergeSchemas,
   validationSchemaFile,
   validationSchemaInput,
-} from '~utils/whitelistValidation';
+} from './whitelistValidation';
 
 import ManageWhitelistDialogForm from './ManageWhitelistDialogForm';
 import { getManageWhitelistDialogPayload, TABS } from './helpers';
 
-type Props = Required<DialogProps> &
-  WizardDialogType<object> &
+type Props = DialogProps &
+  Partial<WizardDialogType<object>> &
   ActionDialogProps & {
     userAddress?: string;
   };
@@ -26,7 +27,7 @@ type Props = Required<DialogProps> &
 const displayName = 'common.ManageWhitelistDialog';
 
 const validationSchema = object({
-  annotation: string().max(4000).defined(),
+  annotation: string().max(MAX_ANNOTATION_LENGTH).defined(),
   isWhitelistActivated: boolean().defined(),
 }).defined();
 
@@ -85,7 +86,7 @@ const ManageWhitelistDialog = ({
 
   return (
     <Dialog cancel={cancel}>
-      <Form<FormValues>
+      <ActionForm<FormValues>
         defaultValues={{
           annotation: '',
           isWhitelistActivated: colony.metadata?.isWhitelistActivated,
@@ -116,7 +117,7 @@ const ManageWhitelistDialog = ({
           backButtonText={{ id: !prevStep ? 'button.cancel' : 'button.back' }}
           enabledExtensionData={enabledExtensionData}
         />
-      </Form>
+      </ActionForm>
     </Dialog>
   );
 };

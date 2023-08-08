@@ -36,6 +36,7 @@ export type NetworkInfo = {
    * Used when adding the network to Metamask
    */
   rpcUrl?: string;
+  iconName?: string;
 };
 
 export const DEFAULT_NETWORK = process.env.NETWORK || Network.Ganache;
@@ -75,6 +76,7 @@ export const GNOSIS_NETWORK: NetworkInfo = {
   blockExplorerUrl: 'https://blockscout.com/poa/xdai',
   tokenExplorerLink: 'https://blockscout.com/poa/xdai/tokens',
   contractAddressLink: 'https://blockscout.com/poa/xdai/address',
+  iconName: 'gnosis',
 };
 
 export const ETHEREUM_NETWORK: NetworkInfo = {
@@ -86,6 +88,7 @@ export const ETHEREUM_NETWORK: NetworkInfo = {
   displayENSDomain: 'joincolony.eth',
   tokenExplorerLink: 'https://etherscan.io/tokens',
   contractAddressLink: 'https://etherscan.io/address',
+  iconName: 'ethereum',
 };
 
 export const GOERLI_NETWORK: NetworkInfo = {
@@ -108,6 +111,7 @@ export const GANACHE_NETWORK: NetworkInfo = {
   displayENSDomain: 'joincolony.eth',
   tokenExplorerLink: 'http://localhost',
   contractAddressLink: 'http://localhost',
+  iconName: 'ganache',
 };
 
 export const NETWORK_DATA: { [key: string]: NetworkInfo } = {
@@ -165,3 +169,7 @@ export const HOMEPAGE_MEMBERS_LIST_LIMIT = 8;
 export const HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT = 5;
 export const MEMBERS_LIST_LIMIT = 12;
 export const MEMBERS_MOBILE_LIST_LIMIT = 6;
+
+export const MAX_COLONY_DISPLAY_NAME = 20;
+
+export const MAX_ANNOTATION_LENGTH = 4000;

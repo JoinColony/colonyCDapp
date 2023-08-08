@@ -1,0 +1,15 @@
+.sidebar {
+  @apply fixed top-0 right-0 bottom-0 w-full h-full bg-base-white rounded-bl-lg border-l border-gray-200 shadow-default transition-all z-[60] flex flex-col;
+}
+
+.button {
+  @apply py-2.5 flex items-center justify-center text-gray-400;
+}
+
+.titleInput {
+  @apply heading-3 placeholder:text-gray-500 hover:text-blue-400 hover:placeholder:text-blue-400 text-gray-900 transition-colors duration-normal mb-7;
+}
+
+.iconButton {
+  @apply flex items-center text-gray-600 transition-colors duration-normal hover:text-blue-400;
+}

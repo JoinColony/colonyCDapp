@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { SlotKey } from '~hooks';
-
 export const useSettingsInputRow = () => {
   const {
     register,
@@ -10,9 +8,9 @@ export const useSettingsInputRow = () => {
     formState: { errors, defaultValues, isValid, isDirty },
     resetField,
   } = useFormContext();
-  const error = errors[SlotKey.CustomRPC]?.message as string | undefined;
-  const customRpcValue = defaultValues?.[SlotKey.CustomRPC];
-  const rpcValue = watch(SlotKey.CustomRPC);
+  const error = errors.customRpc?.message as string | undefined;
+  const customRpcValue = defaultValues?.customRpc ?? '';
+  const rpcValue = watch('customRpc');
   const [isInputVisible, setIsInputVisible] = useState(false);
 
   return {

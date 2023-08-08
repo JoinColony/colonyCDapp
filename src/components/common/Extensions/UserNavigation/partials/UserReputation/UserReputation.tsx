@@ -16,9 +16,9 @@ import Button from '~v5/shared/Button';
 import PopoverBase from '~v5/shared/PopoverBase';
 import UserAvatar from '~v5/shared/UserAvatar';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
-import { UserReputationProps } from '../../types';
 import { transactionCount } from '~frame/GasStation/transactionGroup';
 import styles from './UserReputation.module.css';
+import { UserReputationProps } from './types';
 
 export const displayName =
   'common.Extensions.UserNavigation.partials.UserReputation';
@@ -26,6 +26,7 @@ export const displayName =
 const UserReputation: FC<UserReputationProps> = ({
   transactionAndMessageGroups,
   hideColonies,
+  hideMemberReputationOnMobile,
 }) => {
   const { colony } = useColonyContext();
   const { wallet, user } = useAppContext();
@@ -35,7 +36,7 @@ const UserReputation: FC<UserReputationProps> = ({
   const [isOpen, setOpen] = useState(false);
   const [txNeedsSigning, setTxNeedsSigning] = useState(false);
 
-  const popperTooltipOffset = !isMobile ? [0, 8] : [0, 0];
+  const popperTooltipOffset = isMobile ? [0, 1] : [0, 8];
 
   const ref = useDetectClickOutside({
     onTriggered: () => {
@@ -43,31 +44,35 @@ const UserReputation: FC<UserReputationProps> = ({
       setTxNeedsSigning(false);
     },
   });
-  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
-    usePopperTooltip(
-      {
-        delayShow: 200,
-        delayHide: 200,
-        placement: 'bottom-end',
-        trigger: 'click',
-        interactive: true,
-        onVisibleChange: (newVisible) => {
-          if (!newVisible && isMobile) {
-            setIsWalletButtonVisible(true);
-          }
-        },
+  const {
+    getTooltipProps,
+    setTooltipRef,
+    setTriggerRef,
+    visible: isUserHubOpen,
+  } = usePopperTooltip(
+    {
+      delayShow: isMobile ? 0 : 200,
+      delayHide: isMobile ? 0 : 200,
+      placement: isMobile ? 'bottom' : 'bottom-end',
+      trigger: 'click',
+      interactive: true,
+      onVisibleChange: (newVisible) => {
+        if (!newVisible && isMobile) {
+          setIsWalletButtonVisible(true);
+        }
       },
-      {
-        modifiers: [
-          {
-            name: 'offset',
-            options: {
-              offset: popperTooltipOffset,
-            },
+    },
+    {
+      modifiers: [
+        {
+          name: 'offset',
+          options: {
+            offset: popperTooltipOffset,
           },
-        ],
-      },
-    );
+        },
+      ],
+    },
+  );
 
   const { colonyAddress } = colony || {};
   const { userReputation, totalReputation } = useUserReputation(
@@ -85,7 +90,7 @@ const UserReputation: FC<UserReputationProps> = ({
   const prevTxCount: number | void = usePrevious(txCount);
 
   useEffect(() => {
-    // this confition always will be false until we will be able to trigger transactions in Extension page
+    // this condition always will be false until we will be able to trigger transactions in Extension page
     if (prevTxCount != null && txCount > prevTxCount) {
       setOpen(true);
       setTxNeedsSigning(true);
@@ -94,12 +99,7 @@ const UserReputation: FC<UserReputationProps> = ({
 
   return (
     <div ref={ref}>
-      <Button
-        mode="tertiary"
-        isFullRounded
-        setTriggerRef={setTriggerRef}
-        // onClick={() => isMobile && setIsButtonVisible((prevState) => !prevState)}
-      >
+      <Button mode="tertiary" isFullRounded setTriggerRef={setTriggerRef}>
         <div className="flex items-center gap-3">
           <UserAvatar
             user={user}
@@ -110,20 +110,19 @@ const UserReputation: FC<UserReputationProps> = ({
             <MemberReputation
               userReputation={userReputation}
               totalReputation={totalReputation}
+              hideOnMobile={hideMemberReputationOnMobile}
             />
           )}
         </div>
       </Button>
-      {(visible || (isOpen && txNeedsSigning)) && (
+      {(isUserHubOpen || (isOpen && txNeedsSigning)) && (
         <PopoverBase
           setTooltipRef={setTooltipRef}
           tooltipProps={getTooltipProps}
-          classNames={clsx(styles.popover, 'bg-base-white')}
+          classNames={clsx(styles.popover)}
         >
           <div
-            className={clsx('w-full sm:w-[42.625rem]', {
-              inner: isMobile,
-            })}
+            className="w-full sm:w-[42.625rem] pt-4 sm:pt-0"
             ref={setTooltipRef}
           >
             <UserHub

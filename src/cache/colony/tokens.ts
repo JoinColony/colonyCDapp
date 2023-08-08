@@ -8,6 +8,8 @@ const tokensFieldCache = {
    */
   tokens: {
     read: (baseTokens) => {
+      if (baseTokens === undefined) return null;
+
       const updatedTokens: UnaliasedColonyTokensItem[] = [
         {
           __typename: 'ColonyTokens',

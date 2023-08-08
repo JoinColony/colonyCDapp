@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { InferType, number, object } from 'yup';
 
-import { ActionHookForm as ActionForm } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
 
 import { StakingControls, StakingSlider, useStakingInput } from '.';

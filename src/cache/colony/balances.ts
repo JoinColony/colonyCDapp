@@ -94,6 +94,8 @@ const balancesFieldCache = {
    */
   balances: {
     read: (domainBalanceRefs, { readField, cache }) => {
+      if (domainBalanceRefs === undefined) return null;
+
       const colonyAddress = readField('id');
       const { chainId: colonyChainId } = readField('chainMetadata');
       const { items: colonyTokens = [] } = readField('tokens');
@@ -113,7 +115,7 @@ const balancesFieldCache = {
               domain: null,
               id: `${colonyChainId}_${colonyAddress}_${COLONY_TOTAL_BALANCE_DOMAIN_ID}_${token.id}_balance`,
               token,
-              balance: totalTokenBalances[token.id].toString(),
+              balance: totalTokenBalances[token.id]?.toString(),
             }),
           ),
         ],

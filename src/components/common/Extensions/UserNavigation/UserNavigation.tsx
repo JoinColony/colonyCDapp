@@ -1,9 +1,9 @@
-import React, { FC, useLayoutEffect, useState } from 'react';
+import React, { FC, useEffect, useLayoutEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { usePopperTooltip } from 'react-popper-tooltip';
+import clsx from 'clsx';
 
 import { useSelector } from 'react-redux';
-import { useAppContext, useColonyContext, useMobile } from '~hooks';
+import { useAppContext, useMobile } from '~hooks';
 import Button, { Hamburger } from '~v5/shared/Button';
 import Token from './partials/Token';
 import UserMenu from './partials/UserMenu';
@@ -12,75 +12,39 @@ import { groupedTransactionsAndMessages } from '~redux/selectors';
 import { TransactionOrMessageGroups } from '~frame/GasStation/transactionGroup';
 import UserReputation from './partials/UserReputation';
 import { UserNavigationProps } from './types';
+import { useGetNetworkToken } from '~hooks/useGetNetworkToken';
 
 export const displayName = 'common.Extensions.UserNavigation';
 
 // @TODO: change name to Wallet
-const UserNavigation: FC<UserNavigationProps> = ({ hideColonies }) => {
-  const { colony } = useColonyContext();
+const UserNavigation: FC<UserNavigationProps> = ({
+  hideColonies,
+  isWalletButtonVisible,
+  userMenuGetTooltipProps,
+  userMenuSetTooltipRef,
+  userMenuSetTriggerRef,
+  setWalletTriggerRef,
+  isUserMenuOpen,
+  isWalletOpen,
+}) => {
   const { wallet, user, connectWallet } = useAppContext();
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
-  const [isButtonVisible, setIsButtonVisible] = useState(true);
-  const [isWalletButtonVisible, setIsWalletButtonVisible] = useState(true);
-
-  const popperTooltipOffset = !isMobile ? [0, 8] : [0, 0];
-  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
-    usePopperTooltip(
-      {
-        delayHide: isMobile ? 0 : 200,
-        placement: 'bottom-end',
-        trigger: 'click',
-        interactive: true,
-        onVisibleChange: (newVisible) => {
-          if (!newVisible && isMobile) {
-            setIsButtonVisible(true);
-          }
-        },
-      },
-      {
-        modifiers: [
-          {
-            name: 'offset',
-            options: {
-              offset: popperTooltipOffset,
-            },
-          },
-        ],
-      },
-    );
-
-  const { setTriggerRef: setWalletTriggerRef, visible: isWalletVisible } =
-    usePopperTooltip(
-      {
-        delayHide: isMobile ? 0 : 200,
-        placement: 'bottom-end',
-        trigger: 'click',
-        interactive: true,
-        onVisibleChange: (newVisible) => {
-          if (!newVisible && isMobile) {
-            setIsWalletButtonVisible(true);
-          }
-        },
-      },
-      {
-        modifiers: [
-          {
-            name: 'offset',
-            options: {
-              offset: popperTooltipOffset,
-            },
-          },
-        ],
-      },
-    );
+  const [isUserNavigationButtonsVisible, setIsUserNavigationButtonsVisible] =
+    useState(true);
 
   const isWalletConnected = !!wallet?.address;
-  const { nativeToken } = colony || {};
+  const nativeToken = useGetNetworkToken();
 
   const transactionAndMessageGroups = useSelector(
     groupedTransactionsAndMessages,
   );
+
+  useEffect(() => {
+    if (!isMobile) {
+      setIsUserNavigationButtonsVisible(true);
+    }
+  }, [isMobile]);
 
   useLayoutEffect(() => {
     if (!wallet && connectWallet && getLastWallet()) {
@@ -90,54 +54,55 @@ const UserNavigation: FC<UserNavigationProps> = ({ hideColonies }) => {
 
   return (
     <div className="flex gap-1">
-      {isWalletConnected && isButtonVisible && (
-        <>
-          {nativeToken && <Token nativeToken={nativeToken} />}
-          <UserReputation
-            hideColonies={hideColonies}
-            transactionAndMessageGroups={
-              transactionAndMessageGroups as unknown as TransactionOrMessageGroups
-            }
-          />
-        </>
-      )}
-      {isButtonVisible && !isWalletConnected && (
+      <div
+        className={clsx('flex gap-1', {
+          hidden: !isWalletConnected || !isUserNavigationButtonsVisible,
+        })}
+      >
+        {nativeToken && <Token nativeToken={nativeToken} />}
+        <UserReputation
+          hideColonies={hideColonies}
+          transactionAndMessageGroups={
+            transactionAndMessageGroups as unknown as TransactionOrMessageGroups
+          }
+        />
+      </div>
+      {isUserNavigationButtonsVisible && !isWalletConnected && (
         <Button
           mode="tertiary"
           isFullRounded
           setTriggerRef={setWalletTriggerRef}
           onClick={connectWallet}
-          iconName={isWalletVisible && isMobile ? 'close' : 'cardholder'}
+          iconName={isWalletOpen && isMobile ? 'close' : 'cardholder'}
           size="small"
         >
           {isWalletButtonVisible && formatMessage({ id: 'connectWallet' })}
         </Button>
       )}
-      <div>
-        {isWalletButtonVisible && (
+      {isWalletButtonVisible && (
+        <>
           <Hamburger
-            isOpened={visible && isMobile}
-            iconName={visible && isMobile ? 'close' : 'list'}
-            setTriggerRef={setTriggerRef}
+            isOpened={isUserMenuOpen && isMobile}
+            iconName={isUserMenuOpen && isMobile ? 'close' : 'list'}
+            setTriggerRef={userMenuSetTriggerRef}
             onClick={() =>
-              isMobile && setIsButtonVisible((prevState) => !prevState)
+              isMobile &&
+              setIsUserNavigationButtonsVisible((prevState) => !prevState)
             }
           />
-        )}
-        {visible && (
-          <div className="w-full h-auto">
+          {isUserMenuOpen && (
             <UserMenu
-              tooltipProps={getTooltipProps}
-              setTooltipRef={setTooltipRef}
+              tooltipProps={userMenuGetTooltipProps}
+              setTooltipRef={userMenuSetTooltipRef}
               isWalletConnected={isWalletConnected}
               user={user}
               walletAddress={user?.walletAddress}
               nativeToken={nativeToken}
               hideColonies={hideColonies}
             />
-          </div>
-        )}
-      </div>
+          )}
+        </>
+      )}
     </div>
   );
 };
