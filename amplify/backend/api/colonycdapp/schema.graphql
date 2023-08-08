@@ -774,6 +774,10 @@ enum ColonyActionType {
   An action related to a creating a Decision within a Colony via a motion
   """
   CREATE_DECISION_MOTION
+  """"
+  An action related to the creation of safe transactions via Safe Control
+  """
+  MAKE_ARBITRARY_TRANSACTION
 }
 
 """
@@ -2372,6 +2376,10 @@ type ColonyAction @model {
   JSON string to pass custom, dynamic event data
   """
   individualEvents: String
+  """
+  Safe transactions associated with the action
+  """
+  safeTransaction: ColonySafeTransaction @hasOne(fields: ["id"])
 }
 
 type ColonyDecision @model {
@@ -2661,7 +2669,97 @@ type Annotation @model {
   ipfsHash: String
 }
 
-type Safe {
+type SimpleTargetProfile {
+  avatarHash: String
+  displayName: String
+  username: String
+}
+
+type SimpleTarget {
+  id: String!
+  profile: SimpleTargetProfile!
+  walletAddress: String!
+}
+
+type ERC20Token {
+  name: String!
+  decimals: Int!
+  symbol: String!
+  logoUri: String!
+  address: String!
+}
+
+type SafeNativeToken {
+  name: String!
+  decimals: Int!
+  symbol: String!
+  address: String!
+  networkName: String!
+}
+
+type NFT {
+  id: String!
+  profile: NFTProfile!
+  walletAddress: String!
+}
+
+type NFTProfile {
+  displayName: String!
+}
+
+union SafeBalanceToken = ERC20Token | SafeNativeToken
+
+type FunctionParamType {
+  name: String!
+  type: String!
+}
+
+type NFTData {
+  address: String!
+  description: String
+  id: String!
+  imageUri: String
+  logoUri: String!
+  name: String
+  tokenName: String!
+  tokenSymbol: String!
+  uri: String!
+}
+
+type SafeTransactionData {
+  transactionType: String!
+  tokenAddress: ID
+  token: Token
+  amount: String
+  rawAmount: String
+  recipientUser: SimpleTarget
+  data: String
+  contract: SimpleTarget
+  abi: String
+  contractFunction: String
+  nft: NFT
+  nftData: NFTData
+  functionParamTypes: [FunctionParamType]
+}
+
+type ColonySafeTransaction @model {
+  id: ID!
+  title: String!
+  safeId: ID!
+  safe: Safe! @hasOne(fields: ["safeId"])
+  transactions: [SafeTransactionData!]!
+}
+
+input SafeInput {
+  id: ID!
+  name: String!
+  address: String!
+  chainId: Int!
+  moduleContractAddress: String!
+}
+
+type Safe @model {
+  id: ID!
   name: String!
   address: String!
   chainId: Int!
