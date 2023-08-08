@@ -61,4 +61,5 @@ export type FilterOption =
   | 'verified'
   | 'top'
   | 'dedicated'
-  | 'administration';
+  | 'administration'
+  | undefined;

@@ -29,18 +29,18 @@ export const FilterContext = createContext<{
   onSelectParentFilter: (id: FilterType) => void;
   onSelectNestedOption: (event: React.ChangeEvent<HTMLInputElement>) => void;
   numberSelectedFilters: number;
-  teamSelectedOptions: { value: number; label: FilterOption };
+  teamSelectedOptions: unknown;
 }>({
   selectedFilters: [],
   selectedParentFilters: [],
   checkedItems: new Map(),
-  selectedChildOption: '' as FilterOption,
+  selectedChildOption: undefined,
   isFollowersPage: false,
   onClearFilters: noop,
   onSelectParentFilter: noop,
   onSelectNestedOption: noop,
   numberSelectedFilters: 0,
-  teamSelectedOptions: { value: 0, label: '' as FilterOption },
+  teamSelectedOptions: { value: 0, label: undefined },
 });
 
 export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {

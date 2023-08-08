@@ -32,7 +32,8 @@ const Filter: FC = () => {
     checkedItems,
     isFollowersPage,
   } = useFilterContext();
-  const { getTooltipProps, setTooltipRef, setTriggerRef } = useMembersPage();
+  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+    useMembersPage();
 
   return (
     <>
@@ -91,12 +92,9 @@ const Filter: FC = () => {
                 onClick={() => onClearFilters()}
               />
             )} */}
-            <FilterButton
-              isOpen={isFiltersOpen}
-              setTriggerRef={setTriggerRef}
-            />
+            <FilterButton isOpen={visible} setTriggerRef={setTriggerRef} />
           </div>
-          {isFiltersOpen && (
+          {visible && (
             <PopoverBase
               setTooltipRef={setTooltipRef}
               tooltipProps={getTooltipProps}

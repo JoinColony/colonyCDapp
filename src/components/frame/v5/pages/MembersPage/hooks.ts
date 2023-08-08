@@ -19,7 +19,7 @@ export const useMembersPage = () => {
       delayShow: 200,
       delayHide: 200,
       placement: 'bottom-start',
-      trigger: ['click', 'hover'],
+      trigger: 'click',
       interactive: true,
     });
 
