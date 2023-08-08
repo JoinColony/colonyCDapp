@@ -236,6 +236,7 @@ enum ColonyActionType {
   EMIT_DOMAIN_REPUTATION_PENALTY_MOTION
   EMIT_DOMAIN_REPUTATION_REWARD
   EMIT_DOMAIN_REPUTATION_REWARD_MOTION
+  MAKE_ARBITRARY_TRANSACTION
 }
 
 enum SortingMethod {
@@ -753,6 +754,8 @@ type ColonyAction @model {
   # Roles Types:
   # [{ id: String, type: String, role: Number, setTo: boolean }]
   individualEvents: String
+
+  safeTransaction: ColonySafeTransaction @hasOne(fields: ["id"])
 }
 
 type ColonyActionRoles {
@@ -837,7 +840,97 @@ type IngestorStats @model {
   value: String!
 }
 
-type Safe {
+type SimpleTargetProfile {
+  avatarHash: String
+  displayName: String
+  username: String
+}
+
+type SimpleTarget {
+  id: String!
+  profile: SimpleTargetProfile!
+  walletAddress: String!
+}
+
+type ERC20Token {
+  name: String!
+  decimals: Int!
+  symbol: String!
+  logoUri: String!
+  address: String!
+}
+
+type SafeNativeToken {
+  name: String!
+  decimals: Int!
+  symbol: String!
+  address: String!
+  networkName: String!
+}
+
+type NFT {
+  id: String!
+  profile: NFTProfile!
+  walletAddress: String!
+}
+
+type NFTProfile {
+  displayName: String!
+}
+
+union SafeBalanceToken = ERC20Token | SafeNativeToken
+
+type FunctionParamType {
+  name: String!
+  type: String!
+}
+
+type NFTData {
+  address: String!
+  description: String
+  id: String!
+  imageUri: String
+  logoUri: String!
+  name: String
+  tokenName: String!
+  tokenSymbol: String!
+  uri: String!
+}
+
+type SafeTransactionData {
+  transactionType: String!
+  tokenAddress: ID
+  token: Token
+  amount: String
+  rawAmount: String
+  recipientUser: SimpleTarget
+  data: String
+  contract: SimpleTarget
+  abi: String
+  contractFunction: String
+  nft: NFT
+  nftData: NFTData
+  functionParamTypes: [FunctionParamType]
+}
+
+type ColonySafeTransaction @model {
+  id: ID!
+  title: String!
+  safeId: ID!
+  safe: Safe! @hasOne(fields: ["safeId"])
+  transactions: [SafeTransactionData!]!
+}
+
+input SafeInput {
+  id: ID!
+  name: String!
+  address: String!
+  chainId: Int!
+  moduleContractAddress: String!
+}
+
+type Safe @model {
+  id: ID!
   name: String!
   address: String!
   chainId: Int!
