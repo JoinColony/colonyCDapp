@@ -7,25 +7,24 @@ import Tooltip from '~shared/Extensions/Tooltip';
 import PopoverBase from '../PopoverBase';
 import NestedOptions from './partials/NestedOptions';
 import { useMembersSubNavigation } from './hooks';
+import { useFilterContext } from '~context/FilterContext';
 
 const displayName = 'v5.SubNavigationItem';
 
 const SubNavigationItem: FC<SubNavigationItemProps> = ({
   iconName,
   title,
-  options,
   option,
   shouldBeTooltipVisible = false,
   tooltipText = [],
   isCopyTriggered,
-  onSelectNestedOption,
-  selectedChildOption,
-  checkedItems,
   nestedFilters,
+  onClick,
 }) => {
   const { formatMessage } = useIntl();
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     useMembersSubNavigation();
+  const { filterOptions: options } = useFilterContext();
 
   const tooltipContent = (
     <>
@@ -47,6 +46,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
           aria-label={formatMessage({ id: 'select.filter.menu.item' })}
           className="subnav-button"
           ref={setTriggerRef}
+          onClick={onClick}
         >
           {shouldBeTooltipVisible ? (
             <Tooltip
@@ -78,13 +78,12 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
           }}
           classNames="w-full sm:max-w-[17.375rem] mr-2"
         >
-          <NestedOptions
-            selectedParentOption={option}
-            selectedChildOption={selectedChildOption}
-            onChange={onSelectNestedOption}
-            checkedItems={checkedItems}
-            nestedFilters={nestedFilters}
-          />
+          {option && nestedFilters && (
+            <NestedOptions
+              parentOption={option}
+              nestedFilters={nestedFilters}
+            />
+          )}
         </PopoverBase>
       )}
     </>

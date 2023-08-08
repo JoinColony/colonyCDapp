@@ -21,7 +21,7 @@ fragment Colony on Colony {
   motionsWithUnclaimedStakes {
     ...UnclaimedStakes
   }
-  domains {
+  domains(sortDirection: ASC) {
     items {
       ...Domain
     }

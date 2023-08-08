@@ -120,6 +120,7 @@ export type ColonyActionsArgs = {
 export type ColonyDomainsArgs = {
   filter?: InputMaybe<ModelDomainFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
+  nativeId?: InputMaybe<ModelIntKeyConditionInput>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
@@ -1389,6 +1390,13 @@ export type ExtensionParamsInput = {
   votingReputation?: InputMaybe<VotingReputationParamsInput>;
 };
 
+export enum FilteringMethod {
+  /** Apply an intersection filter */
+  Intersection = 'INTERSECTION',
+  /** Apply a union filter */
+  Union = 'UNION'
+}
+
 /** Input data for retrieving the state of a motion (i.e. the current period) */
 export type GetMotionStateInput = {
   /** The Ethereum address of the Colony */
@@ -1521,8 +1529,10 @@ export type IngestorStats = {
 export type MembersForColonyInput = {
   /** Address of the Colony */
   colonyAddress: Scalars['String'];
-  /** ID of the domain within the Colony */
-  domainId?: InputMaybe<Scalars['Int']>;
+  /** IDs of the domains within the Colony */
+  domainIds?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  /** The filtering method to apply to the member list */
+  filteringMethod?: InputMaybe<FilteringMethod>;
   /** Root hash for the reputation state */
   rootHash?: InputMaybe<Scalars['String']>;
   /** Sorting method to apply to the member list */
@@ -2172,6 +2182,15 @@ export type ModelIntInput = {
   le?: InputMaybe<Scalars['Int']>;
   lt?: InputMaybe<Scalars['Int']>;
   ne?: InputMaybe<Scalars['Int']>;
+};
+
+export type ModelIntKeyConditionInput = {
+  between?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  eq?: InputMaybe<Scalars['Int']>;
+  ge?: InputMaybe<Scalars['Int']>;
+  gt?: InputMaybe<Scalars['Int']>;
+  le?: InputMaybe<Scalars['Int']>;
+  lt?: InputMaybe<Scalars['Int']>;
 };
 
 export type ModelMotionMessageConditionInput = {
@@ -5174,7 +5193,7 @@ export type WatchedColonies = {
 /**
  * Represents a watcher within the Colony Network
  *
- * A watcher is a Colony member who doesn't have reputation
+ * A watcher is a Colony member who doesn't have reputation or permissions
  */
 export type Watcher = {
   __typename?: 'Watcher';
@@ -5712,7 +5731,7 @@ export const ColonyFragmentDoc = gql`
   motionsWithUnclaimedStakes {
     ...UnclaimedStakes
   }
-  domains {
+  domains(sortDirection: ASC) {
     items {
       ...Domain
     }

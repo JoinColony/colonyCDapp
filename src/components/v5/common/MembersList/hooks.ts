@@ -1,65 +1,33 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import {
-  HOMEPAGE_MEMBERS_LIST_LIMIT,
-  HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT,
-  MEMBERS_LIST_LIMIT,
-  MEMBERS_MOBILE_LIST_LIMIT,
-} from '~constants';
-import { useColonyContext, useMobile } from '~hooks';
+import { useState } from 'react';
+import { useColonyContext } from '~hooks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import { Member } from '~types';
 
-export const useMembersList = ({ list, isHomePage }) => {
+export const useMembersList = ({
+  list,
+  limit,
+}: {
+  list: Member[];
+  limit: number;
+}) => {
   const { colony } = useColonyContext();
-  const [membersLimit, setMembersLimit] = useState(MEMBERS_LIST_LIMIT);
-  const isMobile = useMobile();
+  const [membersLimit, setMembersLimit] = useState(limit);
   const { name } = colony || {};
   const colonyURL = `${window.location.origin}/colony/${name}`;
 
-  useEffect(() => {
-    if (isHomePage) {
-      setMembersLimit(
-        isMobile
-          ? HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT
-          : HOMEPAGE_MEMBERS_LIST_LIMIT,
-      );
-    } else {
-      setMembersLimit(
-        isMobile ? MEMBERS_MOBILE_LIST_LIMIT : MEMBERS_LIST_LIMIT,
-      );
-    }
-  }, [isHomePage, isMobile]);
-
   const { handleClipboardCopy } = useCopyToClipboard(colonyURL);
 
-  const [startIndex, setStartIndex] = useState(0);
-  const [visibleMembers, setVisibleMembers] = useState<Member[]>([]);
+  const visibleMembers = list.slice(0, membersLimit);
 
-  const listLength = list.length;
-  const endIndex = useMemo(
-    () => Math.min(startIndex + membersLimit, listLength),
-    [listLength, membersLimit, startIndex],
-  );
-  const canLoadMore = listLength > membersLimit && endIndex < listLength;
+  const canLoadMore = list.length > membersLimit;
 
-  const showMembers = useCallback(() => {
-    setVisibleMembers(list.slice(0, endIndex));
-  }, [list, endIndex]);
-
-  const loadMoreMembers = () => {
-    showMembers();
-    setStartIndex(endIndex);
-  };
-
-  useEffect(() => {
-    showMembers();
-  }, [list, showMembers]);
+  const loadMoreMembers = () =>
+    setMembersLimit((prevLimit) => prevLimit + prevLimit);
 
   return {
     handleClipboardCopy,
     loadMoreMembers,
     visibleMembers,
-    listLength,
     membersLimit,
     canLoadMore,
   };

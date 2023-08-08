@@ -6,11 +6,14 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+
 import { User } from '~types';
 
 import noop from '~utils/noop';
 
-export const MemberContext = createContext<{
+import { FilterContextProvider } from './FilterContext';
+
+const MemberContext = createContext<{
   isMemberModalOpen: boolean;
   setIsMemberModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   user?: User | null;
@@ -27,12 +30,19 @@ export const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | undefined | null>(undefined);
 
   const value = useMemo(
-    () => ({ isMemberModalOpen, setIsMemberModalOpen, user, setUser }),
+    () => ({
+      isMemberModalOpen,
+      setIsMemberModalOpen,
+      user,
+      setUser,
+    }),
     [isMemberModalOpen, user],
   );
 
   return (
-    <MemberContext.Provider {...{ value }}>{children}</MemberContext.Provider>
+    <MemberContext.Provider {...{ value }}>
+      <FilterContextProvider>{children}</FilterContextProvider>
+    </MemberContext.Provider>
   );
 };
 

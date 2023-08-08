@@ -10,6 +10,11 @@ import { useMembersList } from './hooks';
 import { useSearchContext } from '~context/SearchContext';
 import { TextButton } from '~v5/shared/Button';
 import { SpinnerLoader } from '~shared/Preloaders';
+import {
+  HOMEPAGE_MEMBERS_LIST_LIMIT,
+  HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT,
+} from '~constants';
+import { useMobile } from '~hooks';
 
 const displayName = 'v5.common.MembersList';
 
@@ -25,14 +30,19 @@ const MembersList: FC<MembersListProps> = ({
   isContributorsList,
 }) => {
   const { formatMessage } = useIntl();
+  const isMobile = useMobile();
+  const limit = isMobile
+    ? HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT
+    : HOMEPAGE_MEMBERS_LIST_LIMIT;
+
   const {
     handleClipboardCopy,
-    listLength,
     loadMoreMembers,
     visibleMembers,
     membersLimit,
     canLoadMore,
-  } = useMembersList({ list, isHomePage });
+  } = useMembersList({ list, limit });
+
   const { searchValue } = useSearchContext();
 
   const showLoadMoreButton = isHomePage
@@ -44,7 +54,7 @@ const MembersList: FC<MembersListProps> = ({
       <div className="flex items-center mb-2">
         <h3 className="heading-5 mr-3">{formatMessage(title)}</h3>
         <span className="text-md text-blue-400">
-          {listLength} {formatMessage(title)}
+          {list.length} {formatMessage(title)}
         </span>
       </div>
       <p className="mb-6 text-md text-gray-600">{formatMessage(description)}</p>
@@ -53,7 +63,7 @@ const MembersList: FC<MembersListProps> = ({
           <SpinnerLoader appearance={{ size: 'medium' }} />
         </div>
       )}
-      {!isLoading && listLength ? (
+      {!isLoading && visibleMembers.length ? (
         <ResponsiveMasonry columnsCountBreakPoints={{ 250: 1, 950: 2 }}>
           <Masonry gutter="1rem">
             {visibleMembers.map((item, index) => {
@@ -93,7 +103,7 @@ const MembersList: FC<MembersListProps> = ({
           </Masonry>
         </ResponsiveMasonry>
       ) : undefined}
-      {!isLoading && !listLength ? (
+      {!isLoading && !list.length ? (
         <EmptyContent
           icon="smiley-meh"
           title={emptyTitle}
@@ -104,7 +114,7 @@ const MembersList: FC<MembersListProps> = ({
         />
       ) : undefined}
       <div className="w-full flex justify-center mt-2">
-        {listLength > membersLimit && !searchValue && viewMoreUrl && (
+        {list.length > membersLimit && !searchValue && viewMoreUrl && (
           <Link className="text-3" to={viewMoreUrl}>
             {formatMessage({ id: 'viewMore' })}
           </Link>

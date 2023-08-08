@@ -31,13 +31,17 @@ input MembersForColonyInput {
   """
   rootHash: String
   """
-  ID of the domain within the Colony
+  IDs of the domains within the Colony
   """
-  domainId: Int
+  domainIds: [Int]
   """
   Sorting method to apply to the member list
   """
   sortingMethod: SortingMethod
+  """
+  The filtering method to apply to the member list
+  """
+  filteringMethod: FilteringMethod
 }
 
 """
@@ -794,6 +798,18 @@ enum SortingMethod {
   BY_LESS_PERMISSIONS
 }
 
+enum FilteringMethod {
+  """
+  Apply a union filter
+  """
+  UNION
+
+  """
+  Apply an intersection filter
+  """
+  INTERSECTION
+}
+
 enum ExpenditureStatus {
   DRAFT
   LOCKED
@@ -1035,7 +1051,7 @@ type Contributor {
 """
 Represents a watcher within the Colony Network
 
-A watcher is a Colony member who doesn't have reputation
+A watcher is a Colony member who doesn't have reputation or permissions
 """
 type Watcher {
   """
@@ -1370,7 +1386,7 @@ type Domain @model {
   """
   Colony ID associated with the Domain
   """
-  colonyId: ID! @index(name: "byColony")
+  colonyId: ID! @index(name: "byColony", sortKeyFields: ["nativeId"])
   """
   Colony associated with the Domain
   """
@@ -1516,9 +1532,9 @@ type ColonyChainFundsClaim {
 
 """
 Represents a Colony balance for a specific domain and token
-""" # This is not a @model since it will only be returned by a lambda function # so don't need to create tables for them # Note that we also need input types since it treats the `balances` as available # to "write" to at creation time, even though, even if you were to write to # you'd never actually be able to read that data since the return is overwritten
-type # by the lambda function
-ColonyBalance {
+""" 
+# This is not a @model since it will only be returned by a lambda function # so don't need to create tables for them # Note that we also need input types since it treats the `balances` as available # to "write" to at creation time, even though, even if you were to write to # you'd never actually be able to read that data since the return is overwritten # by the lambda function
+type ColonyBalance {
   """
   Unique identifier for the Colony Balance
   """
