@@ -21,7 +21,7 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { putError, takeFrom } from '../utils';
+import { putError, takeFrom, uploadAnnotation } from '../utils';
 
 function* createDomainAction({
   payload: {
@@ -55,7 +55,7 @@ function* createDomainAction({
       annotateCreateDomainAction: annotateCreateDomain,
     } = yield createTransactionChannels(metaId, [
       'createDomainAction',
-      // 'annotateCreateDomainAction',
+      'annotateCreateDomainAction',
     ]);
 
     yield createGroupTransaction(createDomain, batchKey, meta, {
@@ -66,15 +66,15 @@ function* createDomainAction({
       ready: false,
     });
 
-    // if (annotationMessage) {
-    //   yield createGroupTransaction(annotateCreateDomain, {
-    //     context: ClientType.ColonyClient,
-    //     methodName: 'annotateTransaction',
-    //     identifier: colonyAddress,
-    //     params: [],
-    //     ready: false,
-    //   });
-    // }
+    if (annotationMessage) {
+      yield createGroupTransaction(annotateCreateDomain, batchKey, meta, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        params: [],
+        ready: false,
+      });
+    }
 
     yield takeFrom(createDomain.channel, ActionTypes.TRANSACTION_CREATED);
     if (annotationMessage) {
@@ -90,7 +90,7 @@ function* createDomainAction({
 
     const {
       payload: {
-        receipt: { transactionHash },
+        receipt: { transactionHash: txHash },
         eventData,
       },
     } = yield takeFrom(createDomain.channel, ActionTypes.TRANSACTION_SUCCEEDED);
@@ -115,31 +115,13 @@ function* createDomainAction({
       },
     });
 
-    // if (annotationMessage) {
-    //   yield put(transactionPending(annotateCreateDomain.id));
-
-    //   /*
-    //    * Upload domain metadata to IPFS
-    //    */
-    //   const annotationMessageIpfsHash = yield call(
-    //     uploadIfpsAnnotation,
-    //     annotationMessage,
-    //   );
-
-    //   yield put(
-    //     transactionAddParams(annotateCreateDomain.id, [
-    //       txHash,
-    //       annotationMessageIpfsHash,
-    //     ]),
-    //   );
-
-    //   yield put(transactionReady(annotateCreateDomain.id));
-
-    //   yield takeFrom(
-    //     annotateCreateDomain.channel,
-    //     ActionTypes.TRANSACTION_SUCCEEDED,
-    //   );
-    // }
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateCreateDomain,
+        message: annotationMessage,
+        txHash,
+      });
+    }
 
     /*
      * Update the colony object cache
@@ -158,7 +140,7 @@ function* createDomainAction({
     });
 
     if (navigate) {
-      navigate(`/colony/${colonyName}/tx/${transactionHash}`, {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
     }

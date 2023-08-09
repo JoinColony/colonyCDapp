@@ -10,10 +10,15 @@ import {
   getTxChannel,
 } from '../transactions';
 import { transactionReady } from '../../actionCreators';
-import { getColonyManager, putError, takeFrom } from '../utils';
+import {
+  getColonyManager,
+  putError,
+  takeFrom,
+  uploadAnnotation,
+} from '../utils';
 
 function* createVersionUpgradeAction({
-  payload: { colonyAddress, colonyName, version /* annotationMessage */ },
+  payload: { colonyAddress, colonyName, version, annotationMessage },
   meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.ACTION_VERSION_UPGRADE>) {
@@ -29,13 +34,16 @@ function* createVersionUpgradeAction({
       throw new Error('Colony has the newest version');
     }
 
-    // const supportAnnotation = currentVersion >= 5 && annotationMessage;
+    const supportAnnotation = Number(version) >= 5 && annotationMessage;
 
     txChannel = yield call(getTxChannel, metaId);
 
     const batchKey = 'upgrade';
 
-    const { upgrade } = yield createTransactionChannels(metaId, ['upgrade']);
+    const { upgrade, annotateUpgrade } = yield createTransactionChannels(
+      metaId,
+      ['upgrade', 'annotateUpgrade'],
+    );
 
     yield fork(createTransaction, upgrade.id, {
       context: ClientType.ColonyClient,
@@ -50,26 +58,26 @@ function* createVersionUpgradeAction({
       ready: false,
     });
 
-    // if (supportAnnotation) {
-    //   yield fork(createTransaction, annotateUpgrade.id, {
-    //     context: ClientType.ColonyClient,
-    //     methodName: 'annotateTransaction',
-    //     identifier: colonyAddress,
-    //     params: [],
-    //     group: {
-    //       key: batchKey,
-    //       id: metaId,
-    //       index: 1,
-    //     },
-    //     ready: false,
-    //   });
-    // }
+    if (supportAnnotation) {
+      yield fork(createTransaction, annotateUpgrade.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        params: [],
+        group: {
+          key: batchKey,
+          id: metaId,
+          index: 1,
+        },
+        ready: false,
+      });
+    }
 
     yield takeFrom(upgrade.channel, ActionTypes.TRANSACTION_CREATED);
 
-    // if (supportAnnotation) {
-    //   yield takeFrom(annotateUpgrade.channel, ActionTypes.TRANSACTION_CREATED);
-    // }
+    if (supportAnnotation) {
+      yield takeFrom(annotateUpgrade.channel, ActionTypes.TRANSACTION_CREATED);
+    }
 
     yield put(transactionReady(upgrade.id));
 
@@ -79,21 +87,13 @@ function* createVersionUpgradeAction({
 
     yield takeFrom(upgrade.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    // /* need to check for annotation message here again because there is a TS error when pushing */
-    // if (annotationMessage && supportAnnotation) {
-    //   yield put(transactionPending(annotateUpgrade.id));
-
-    //   const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
-
-    //   yield put(transactionAddParams(annotateUpgrade.id, [txHash, ipfsHash]));
-
-    //   yield put(transactionReady(annotateUpgrade.id));
-
-    //   yield takeFrom(
-    //     annotateUpgrade.channel,
-    //     ActionTypes.TRANSACTION_SUCCEEDED,
-    //   );
-    // }
+    if (supportAnnotation) {
+      yield uploadAnnotation({
+        txChannel: annotateUpgrade,
+        message: annotationMessage,
+        txHash,
+      });
+    }
 
     yield colonyManager.setColonyClient(colonyAddress);
 

@@ -9,6 +9,7 @@ import { MessageActionTypes } from './message';
 import { UserActionTypes } from './user';
 import { MetacolonyVestingTypes } from './vesting';
 import { WalletActionTypes } from './wallet';
+import { IpfsActionTypes } from './ipfs';
 
 export { RootMotionMethodNames } from './motion';
 
@@ -95,6 +96,7 @@ export type AllActions =
   | ColonyActionTypes
   | ColonyActionsActionTypes
   | GasPricesActionTypes
+  | IpfsActionTypes
   | TransactionActionTypes
   | MessageActionTypes
   | UserActionTypes

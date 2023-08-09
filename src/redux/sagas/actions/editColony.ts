@@ -19,6 +19,7 @@ import {
   getUpdatedColonyMetadataChangelog,
   putError,
   takeFrom,
+  uploadAnnotation,
 } from '../utils';
 import {
   transactionAddParams,
@@ -39,6 +40,7 @@ function* editColonyAction({
     colonyAvatarImage,
     colonyThumbnail,
     tokenAddresses,
+    annotationMessage,
   },
   meta: { id: metaId, navigate },
   meta,
@@ -52,7 +54,7 @@ function* editColonyAction({
     const batchKey = 'editColonyAction';
     const {
       editColonyAction: editColony,
-      // annotateEditColonyAction: annotateEditColony,
+      annotateEditColonyAction: annotateEditColony,
     } = yield createTransactionChannels(metaId, [
       'editColonyAction',
       'annotateEditColonyAction',
@@ -66,24 +68,24 @@ function* editColonyAction({
       ready: false,
     });
 
-    // if (annotationMessage) {
-    //   yield createGroupTransaction(annotateEditColony, {
-    //     context: ClientType.ColonyClient,
-    //     methodName: 'annotateTransaction',
-    //     identifier: colonyAddress,
-    //     params: [],
-    //     ready: false,
-    //   });
-    // }
+    if (annotationMessage) {
+      yield createGroupTransaction(annotateEditColony, batchKey, meta, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        params: [],
+        ready: false,
+      });
+    }
 
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_CREATED);
 
-    // if (annotationMessage) {
-    //   yield takeFrom(
-    //     annotateEditColony.channel,
-    //     ActionTypes.TRANSACTION_CREATED,
-    //   );
-    // }
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateEditColony.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
 
     yield put(transactionPending(editColony.id));
 
@@ -183,31 +185,13 @@ function* editColonyAction({
       });
     }
 
-    // if (annotationMessage) {
-    //   yield put(transactionPending(annotateEditColony.id));
-
-    //   /*
-    //    * Upload annotation metadata to IPFS
-    //    */
-    //   const annotationMessageIpfsHash = yield call(
-    //     uploadIfpsAnnotation,
-    //     annotationMessage,
-    //   );
-
-    //   yield put(
-    //     transactionAddParams(annotateEditColony.id, [
-    //       txHash,
-    //       annotationMessageIpfsHash,
-    //     ]),
-    //   );
-
-    //   yield put(transactionReady(annotateEditColony.id));
-
-    //   yield takeFrom(
-    //     annotateEditColony.channel,
-    //     ActionTypes.TRANSACTION_SUCCEEDED,
-    //   );
-    // }
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateEditColony,
+        message: annotationMessage,
+        txHash,
+      });
+    }
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_EDIT_COLONY_SUCCESS,

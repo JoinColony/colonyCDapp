@@ -25,6 +25,7 @@ import {
   putError,
   takeFrom,
   getUpdatedDomainMetadataChangelog,
+  uploadAnnotation,
 } from '../utils';
 
 function* editDomainAction({
@@ -35,6 +36,7 @@ function* editDomainAction({
     domainColor,
     domainPurpose,
     domain,
+    annotationMessage,
   },
   meta: { id: metaId, navigate },
   meta,
@@ -52,10 +54,10 @@ function* editDomainAction({
     const batchKey = 'editDomainAction';
     const {
       editDomainAction: editDomain,
-      // annotateEditDomainAction: annotateEditDomain,
+      annotateEditDomainAction: annotateEditDomain,
     } = yield createTransactionChannels(metaId, [
       'editDomainAction',
-      // 'annotateEditDomainAction',
+      'annotateEditDomainAction',
     ]);
 
     yield createGroupTransaction(editDomain, batchKey, meta, {
@@ -66,23 +68,23 @@ function* editDomainAction({
       ready: false,
     });
 
-    // if (annotationMessage) {
-    //   yield createGroupTransaction(annotateEditDomain, {
-    //     context: ClientType.ColonyClient,
-    //     methodName: 'annotateTransaction',
-    //     identifier: colonyAddress,
-    //     params: [],
-    //     ready: false,
-    //   });
-    // }
+    if (annotationMessage) {
+      yield createGroupTransaction(annotateEditDomain, batchKey, meta, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        params: [],
+        ready: false,
+      });
+    }
 
     yield takeFrom(editDomain.channel, ActionTypes.TRANSACTION_CREATED);
-    // if (annotationMessage) {
-    //   yield takeFrom(
-    //     annotateEditDomain.channel,
-    //     ActionTypes.TRANSACTION_CREATED,
-    //   );
-    // }
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateEditDomain.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
 
     yield put(transactionPending(editDomain.id));
     /**
@@ -129,31 +131,13 @@ function* editDomainAction({
       });
     }
 
-    // if (annotationMessage) {
-    //   yield put(transactionPending(annotateEditDomain.id));
-
-    //   /*
-    //    * Upload annotationMessage to IPFS
-    //    */
-    //   const annotationMessageIpfsHash = yield call(
-    //     uploadIfpsAnnotation,
-    //     annotationMessage,
-    //   );
-
-    //   yield put(
-    //     transactionAddParams(annotateEditDomain.id, [
-    //       txHash,
-    //       annotationMessageIpfsHash,
-    //     ]),
-    //   );
-
-    //   yield put(transactionReady(annotateEditDomain.id));
-
-    //   yield takeFrom(
-    //     annotateEditDomain.channel,
-    //     ActionTypes.TRANSACTION_SUCCEEDED,
-    //   );
-    // }
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateEditDomain,
+        message: annotationMessage,
+        txHash,
+      });
+    }
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_DOMAIN_EDIT_SUCCESS,
