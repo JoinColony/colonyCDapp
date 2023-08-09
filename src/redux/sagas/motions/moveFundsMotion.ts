@@ -12,7 +12,12 @@ import { constants } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom, getColonyManager } from '../utils';
+import {
+  putError,
+  takeFrom,
+  getColonyManager,
+  uploadAnnotation,
+} from '../utils';
 
 import {
   createTransaction,
@@ -193,21 +198,14 @@ function* moveFundsMotion({
     );
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    // if (annotationMessage) {
-    //   const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
-    //   yield put(transactionPending(annotateMoveFundsMotion.id));
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateMoveFundsMotion,
+        message: annotationMessage,
+        txHash,
+      });
+    }
 
-    //   yield put(
-    //     transactionAddParams(annotateMoveFundsMotion.id, [txHash, ipfsHash]),
-    //   );
-
-    //   yield put(transactionReady(annotateMoveFundsMotion.id));
-
-    //   yield takeFrom(
-    //     annotateMoveFundsMotion.channel,
-    //     ActionTypes.TRANSACTION_SUCCEEDED,
-    //   );
-    // }
     yield put<AllActions>({
       type: ActionTypes.MOTION_MOVE_FUNDS_SUCCESS,
       meta,

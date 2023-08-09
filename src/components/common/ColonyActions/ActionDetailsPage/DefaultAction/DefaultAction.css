@@ -19,25 +19,6 @@
   column-gap: 11%;
 }
 
-.heading {
-  margin-bottom: 20px;
-  font-size: var(--size-medium-l);
-  font-weight: var(--weight-bold);
-  line-height: 24px;
-  color: var(--dark);
-  letter-spacing: var(--spacing-medium);
-}
-
-.heading span {
-  font-size: var(--size-medium-l);
-}
-
-.content {
-  margin-top: 17px;
-  word-break: break-word;
-  grid-area: feed;
-}
-
 @media screen and query700 {
   .main {
     padding-top: 0px;
@@ -53,9 +34,5 @@
     margin: 0;
     padding: 0 14px;
     border-top: 0px transparent;
-  }
-
-  .content {
-    width: 100%;
   }
 }

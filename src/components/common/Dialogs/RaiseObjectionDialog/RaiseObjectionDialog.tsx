@@ -21,7 +21,7 @@ const AMOUNT_DEFAULT = 0;
 const validationSchema = object()
   .shape({
     amount: number().required().default(AMOUNT_DEFAULT),
-    annotationMessage: string(),
+    annotation: string(),
   })
   .defined();
 
@@ -52,29 +52,20 @@ const RaiseObjectionDialog = ({
       <ActionForm<ObjectionValues>
         defaultValues={{
           amount,
+          annotation: '',
         }}
         actionType={ActionTypes.MOTION_STAKE}
         validationSchema={validationSchema}
         transform={transform}
         onSuccess={handleSuccess}
       >
-        {({ formState: { isSubmitting } /* watch */ }) => {
-          // const sliderAmount = watch('amount');
-          //   const stake = getStakeFromSlider(
-          //     sliderAmount,
-          //     remainingToStake,
-          //     minUserStake,
-          //   );
-
+        {({ formState: { isSubmitting } }) => {
           return (
             <>
               <ObjectionHeading />
               <ObjectionSlider />
               <ObjectionAnnotation disabled={isSubmitting} />
-              <ObjectionControls
-                cancel={close}
-                disabled={isSubmitting /* || userActivatedTokens.lt(stake) */}
-              />
+              <ObjectionControls cancel={close} disabled={isSubmitting} />
             </>
           );
         }}

@@ -25,6 +25,7 @@ import {
   // uploadIfpsAnnotation,
   getColonyManager,
   getUpdatedDomainMetadataChangelog,
+  uploadAnnotation,
 } from '../utils';
 
 import {
@@ -46,7 +47,7 @@ function* createEditDomainMotion({
     domainName,
     domainColor,
     domainPurpose,
-    // annotationMessage,
+    annotationMessage,
     domain,
     isCreateDomain,
     parentId = Id.RootDomain,
@@ -113,10 +114,9 @@ function* createEditDomainMotion({
     // setup batch ids and channels
     const batchKey = 'createMotion';
 
-    const { createMotion } = yield createTransactionChannels(
-      // annotateMotion
+    const { createMotion, annotateMotion } = yield createTransactionChannels(
       metaId,
-      ['createMotion'], // 'annotateMotion'
+      ['createMotion', 'annotateMotion'],
     );
 
     /*
@@ -162,25 +162,25 @@ function* createEditDomainMotion({
       ready: false,
     });
 
-    // if (annotationMessage) {
-    //   yield fork(createTransaction, annotateMotion.id, {
-    //     context: ClientType.ColonyClient,
-    //     methodName: 'annotateTransaction',
-    //     identifier: colonyAddress,
-    //     params: [],
-    //     group: {
-    //       key: batchKey,
-    //       id: metaId,
-    //       index: 1,
-    //     },
-    //     ready: false,
-    //   });
-    // }
+    if (annotationMessage) {
+      yield fork(createTransaction, annotateMotion.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        params: [],
+        group: {
+          key: batchKey,
+          id: metaId,
+          index: 1,
+        },
+        ready: false,
+      });
+    }
 
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
-    // if (annotationMessage) {
-    //   yield takeFrom(annotateMotion.channel, ActionTypes.TRANSACTION_CREATED);
-    // }
+    if (annotationMessage) {
+      yield takeFrom(annotateMotion.channel, ActionTypes.TRANSACTION_CREATED);
+    }
 
     yield put(transactionReady(createMotion.id));
 
@@ -236,16 +236,14 @@ function* createEditDomainMotion({
       });
     }
 
-    // if (annotationMessage) {
-    //   const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
-    //   yield put(transactionPending(annotateMotion.id));
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateMotion,
+        message: annotationMessage,
+        txHash,
+      });
+    }
 
-    //   yield put(transactionAddParams(annotateMotion.id, [txHash, ipfsHash]));
-
-    //   yield put(transactionReady(annotateMotion.id));
-
-    //   yield takeFrom(annotateMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
-    // }
     yield put<AllActions>({
       type: ActionTypes.MOTION_DOMAIN_CREATE_EDIT_SUCCESS,
       meta,
