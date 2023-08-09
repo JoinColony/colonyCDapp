@@ -33,7 +33,10 @@ const ExpenditureSlots = ({ expenditure, colony }: ExpenditureSlotsProps) => {
         )}
       </div>
       {isEditing ? (
-        <ExpenditureForm expenditure={expenditure} />
+        <ExpenditureForm
+          expenditure={expenditure}
+          submitButtonText="Save changes"
+        />
       ) : (
         <ul className={styles.slots}>
           {expenditure.slots.map((slot) => (

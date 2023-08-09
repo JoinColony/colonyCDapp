@@ -48,4 +48,15 @@ export type ExpendituresActionTypes =
       object
     >
   | ErrorActionType<ActionTypes.EXPENDITURE_FUND_ERROR, object>
-  | UniqueActionType<ActionTypes.EXPENDITURE_FUND_SUCCESS, object, object>;
+  | UniqueActionType<ActionTypes.EXPENDITURE_FUND_SUCCESS, object, object>
+  | UniqueActionType<
+      ActionTypes.EXPENDITURE_EDIT,
+      {
+        colonyAddress: Address;
+        expenditure: Expenditure;
+        slots: ExpenditureSlotFieldValue[];
+      },
+      object
+    >
+  | ErrorActionType<ActionTypes.EXPENDITURE_EDIT_ERROR, object>
+  | UniqueActionType<ActionTypes.EXPENDITURE_EDIT_SUCCESS, object, object>;
