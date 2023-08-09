@@ -1,0 +1,68 @@
+fragment SafeTransactionData on SafeTransactionData {
+  transactionType
+  token {
+    name
+    decimals
+    symbol
+    address
+    networkName
+    logoUri
+  }
+  amount
+  rawAmount
+  recipient {
+    id
+    profile {
+      avatarHash
+      displayName
+      username
+    }
+    walletAddress
+  }
+  data
+  contract {
+    id
+    profile {
+      avatarHash
+      displayName
+      username
+    }
+    walletAddress
+  }
+  abi
+  contractFunction
+  nft {
+    id
+    profile {
+      displayName
+    }
+    walletAddress
+  }
+  nftData {
+    address
+    description
+    id
+    imageUri
+    logoUri
+    name
+    tokenName
+    tokenSymbol
+    uri
+  }
+  functionParamTypes {
+    name
+    type
+  }
+}
+
+fragment NFTData on NFTData {
+  address
+  description
+  id
+  imageUri
+  logoUri
+  name
+  tokenName
+  tokenSymbol
+  uri
+}
