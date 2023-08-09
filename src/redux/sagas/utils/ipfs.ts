@@ -42,9 +42,10 @@ export function* ipfsUploadWithFallback(payload: string) {
   if (!ipfsHash) {
     try {
       ipfsHash = yield call(ipfsUpload, payload);
-    } catch {
+    } catch (e) {
       console.error(
         'Could not upload the colony metadata to IPFS a second time. Not retrying.',
+        e,
       );
     }
   }
