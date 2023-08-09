@@ -1,4 +1,7 @@
-.noContent {
-  margin-top: 83px;
-  text-align: center;
+.governanceLink {
+  color: var(--colony-blue);
+}
+
+.governanceLink:hover {
+  text-decoration: underline;
 }

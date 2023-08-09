@@ -158,7 +158,14 @@ const Routes = () => {
             path={path}
             element={
               <ColonyContextProvider>
-                <NavBar>
+                <NavBar
+                  routeProps={{
+                    backRoute: ({ colonyName }) =>
+                      `/colony/${colonyName}${
+                        path === DECISIONS_PAGE_ROUTE ? '/decisions' : ''
+                      }`,
+                  }}
+                >
                   <ActionDetailsPage />
                 </NavBar>
               </ColonyContextProvider>

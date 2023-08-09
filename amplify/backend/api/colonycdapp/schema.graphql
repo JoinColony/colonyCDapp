@@ -2367,10 +2367,21 @@ type ColonyAction @model {
 
 type ColonyDecision @model {
   id: ID!
+  actionId: ID!
+    @index(name: "byActionId", queryField: "getColonyDecisionByActionId")
+  action: ColonyAction @belongsTo(fields: ["actionId"])
   title: String!
+  colonyAddress: String!
+    @index(
+      name: "byColonyAddress"
+      queryField: "getColonyDecisionByColonyAddress"
+      sortKeyFields: ["createdAt"]
+    )
+  createdAt: AWSDateTime!
   description: String!
   motionDomainId: Int!
   walletAddress: String!
+  showInDecisionsList: Boolean!
 }
 
 """

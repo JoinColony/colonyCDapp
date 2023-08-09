@@ -8,7 +8,9 @@ import {
   ActionDetailsPageFeed,
   MotionDetailsPageFeed,
 } from '../ActionDetailsPageFeed';
-import Decision from '../Decision';
+
+import { DecisionContent } from '~common/ColonyDecisions/DecisionPreview/DecisionData';
+import TimeRelative from '~shared/TimeRelative/TimeRelative';
 
 import ActionAnnotation from './ActionAnnotation';
 
@@ -28,30 +30,53 @@ const DefaultActionContent = ({
   colony,
 }: DefaultActionContentProps) => {
   const { objectionAnnotation } = motionData ?? {};
+
+  if (decisionData) {
+    return (
+      <div className={styles.content}>
+        <DecisionContent
+          title={decisionData.title}
+          description={decisionData.description}
+          time={
+            <span className={styles.time}>
+              <TimeRelative value={new Date(decisionData.createdAt)} />
+            </span>
+          }
+        />
+        {objectionAnnotation && (
+          <DecisionContent
+            isObjection
+            description={objectionAnnotation.message}
+            time={
+              <span className={styles.time}>
+                <TimeRelative value={new Date(objectionAnnotation.createdAt)} />
+              </span>
+            }
+          />
+        )}
+        <MotionDetailsPageFeed actionData={actionData} />
+      </div>
+    );
+  }
+
   return (
     <div className={styles.content}>
-      {decisionData ? (
-        <Decision decisionData={decisionData} />
+      <Heading3
+        className={styles.heading}
+        data-test="actionHeading"
+        text={{ id: 'action.title' }}
+        textValues={getActionTitleValues(actionData, colony)}
+      />
+      <div className={styles.annotations}>
+        {annotation && <ActionAnnotation annotation={annotation} />}
+        {objectionAnnotation && (
+          <ActionAnnotation annotation={objectionAnnotation} isObjection />
+        )}
+      </div>
+      {isMotion ? (
+        <MotionDetailsPageFeed actionData={actionData} />
       ) : (
-        <div>
-          <Heading3
-            className={styles.heading}
-            data-test="actionHeading"
-            text={{ id: 'action.title' }}
-            textValues={getActionTitleValues(actionData, colony)}
-          />
-          <div className={styles.annotations}>
-            {annotation && <ActionAnnotation annotation={annotation} />}
-            {objectionAnnotation && (
-              <ActionAnnotation annotation={objectionAnnotation} isObjection />
-            )}
-          </div>
-          {isMotion ? (
-            <MotionDetailsPageFeed actionData={actionData} />
-          ) : (
-            <ActionDetailsPageFeed actionData={actionData} />
-          )}
-        </div>
+        <ActionDetailsPageFeed actionData={actionData} />
       )}
     </div>
   );

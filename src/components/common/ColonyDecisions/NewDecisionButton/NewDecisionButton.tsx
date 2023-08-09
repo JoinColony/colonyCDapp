@@ -8,7 +8,7 @@ import {
   RemoveExistingDecisionDialog,
 } from '~common/ColonyDecisions';
 import { ColonyHomeLayoutProps } from '~common/ColonyHome/ColonyHomeLayout';
-import { getDecisionFromStore } from '~utils/decisions';
+import { getDraftDecisionFromStore } from '~utils/decisions';
 import {
   useAppContext,
   useCanInteractWithNetwork,
@@ -21,49 +21,37 @@ const displayName = 'common.ColonyDecisions.NewDecisionButton';
 type NewDecisionButtonProps = Pick<ColonyHomeLayoutProps, 'filteredDomainId'>;
 
 const NewDecisionButton = ({
-  filteredDomainId: ethDomainId,
+  filteredDomainId: domainId,
 }: NewDecisionButtonProps) => {
-  const { user } = useAppContext();
+  const { user, walletConnecting, userLoading } = useAppContext();
   const { colony } = useColonyContext();
-  const { isVotingReputationEnabled } = useEnabledExtensions();
+  const { isVotingReputationEnabled, loading: isLoadingExtensions } =
+    useEnabledExtensions();
   const canInteractWithNetwork = useCanInteractWithNetwork();
-  const decision = useSelector(getDecisionFromStore(user?.walletAddress || ''));
-
-  //   const { isVotingExtensionEnabled, isLoadingExtensions } =
-  //     useEnabledExtensions({
-  //       colonyAddress: colony.colonyAddress,
-  //     });
-
-  // @TODO: This is copied from NewActionButton, extract instead.
-  // const { version: networkVersion } = useNetworkContracts();
-  //  const [isLoadingUser, setIsLoadingUser] = useState<boolean>(false);
-  //   useSelector((state: RootState) => {
-  //     const { isUserConnected } = state.users.wallet;
-  //     if (!ethereal && isUserConnected && isLoadingUser) {
-  //       setIsLoadingUser(false);
-  //     } else if (ethereal && isUserConnected && !isLoadingUser) {
-  //       setIsLoadingUser(true);
-  //     }
-  //   });
+  const draftDecision = useSelector(
+    getDraftDecisionFromStore(
+      user?.walletAddress || '',
+      colony?.colonyAddress ?? '',
+    ),
+  );
 
   const openDecisionDialog = useDialog(DecisionDialog);
   const openDeleteDraftDialog = useDialog(RemoveExistingDecisionDialog);
 
-  // @TODO: This is copied from NewActionButton, extract instead.
-  // const hasRegisteredProfile = !!username && !ethereal;
-  // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
-  // const mustUpgrade = colonyMustBeUpgraded(colony, networkVersion as string);
-  // const isLoadingData = isLoadingExtensions || isLoadingUser;
-
   const handleClick = () => {
-    if (decision) {
+    if (draftDecision) {
       openDeleteDraftDialog({
-        openDecisionDialog,
+        onClick: () =>
+          openDecisionDialog({
+            nativeDomainId: domainId,
+            colonyAddress: colony?.colonyAddress ?? '',
+          }),
+        colonyAddress: colony?.colonyAddress ?? '',
       });
     } else {
       openDecisionDialog({
-        nativeDomainId: ethDomainId,
-        decision,
+        nativeDomainId: domainId,
+        draftDecision,
         colonyAddress: colony?.colonyAddress ?? '',
       });
     }
@@ -71,7 +59,7 @@ const NewDecisionButton = ({
 
   return (
     <DialogButton
-      loading={false /* isLoadingData */}
+      loading={isLoadingExtensions || !!walletConnecting || !!userLoading}
       text={{ id: 'button.newDecision' }}
       handleClick={handleClick}
       disabled={!user || !isVotingReputationEnabled || !canInteractWithNetwork}

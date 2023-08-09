@@ -1,8 +1,8 @@
 import { defineMessages } from 'react-intl';
 
 import { NavItemProps as NavigationItem } from './NavItem';
-import { useEnabledExtensions } from '~hooks';
 import { MIN_VOTING_REPUTATION_VERSION_FOR_DECISIONS } from '~constants';
+import { useColonyHomeContext } from '~context';
 
 export const displayName = 'common.ColonyHome.ColonyNavigation';
 
@@ -22,8 +22,9 @@ const MSG = defineMessages({
 });
 
 const useGetNavigationItems = (colonyName?: string) => {
+  // These values are refetched whenever the governance extn is enabled/disabled
   const { isVotingReputationEnabled, votingReputationVersion } =
-    useEnabledExtensions();
+    useColonyHomeContext();
 
   if (!colonyName) {
     return [];

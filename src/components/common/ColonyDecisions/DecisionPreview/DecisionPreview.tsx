@@ -3,9 +3,9 @@ import { defineMessages } from 'react-intl';
 import { useSelector } from 'react-redux';
 
 import Tag from '~shared/Tag';
-import { getDecisionFromStore } from '~utils/decisions';
+import { getDraftDecisionFromStore } from '~utils/decisions';
 import LoadingTemplate from '~frame/LoadingTemplate';
-import { useAppContext } from '~hooks';
+import { useAppContext, useColonyContext } from '~hooks';
 
 import {
   DecisionData,
@@ -31,7 +31,13 @@ const MSG = defineMessages({
 
 const DecisionPreview = () => {
   const { user, walletConnecting, userLoading } = useAppContext();
-  const decision = useSelector(getDecisionFromStore(user?.walletAddress || ''));
+  const { colony } = useColonyContext();
+  const draftDecision = useSelector(
+    getDraftDecisionFromStore(
+      user?.walletAddress || '',
+      colony?.colonyAddress ?? '',
+    ),
+  );
 
   if (walletConnecting || userLoading) {
     return (
@@ -46,10 +52,10 @@ const DecisionPreview = () => {
       <div className={styles.banner}>
         <Tag text={MSG.preview} appearance={{ theme: 'light' }} />
       </div>
-      <DecisionData decision={decision} user={user} />
+      <DecisionData draftDecision={draftDecision} />
       <div className={styles.rightContent}>
-        <DecisionPreviewControls decision={decision} />
-        {decision && <DecisionDetails decision={decision} />}
+        <DecisionPreviewControls draftDecision={draftDecision} />
+        {draftDecision && <DecisionDetails draftDecision={draftDecision} />}
       </div>
     </DecisionPreviewLayout>
   );

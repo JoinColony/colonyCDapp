@@ -8,7 +8,7 @@ import { ActionTypes } from '~redux';
 
 import { Props as DefaultButtonProps } from './Button';
 
-interface Props extends DefaultButtonProps {
+export interface ActionButtonProps extends DefaultButtonProps {
   /** The base (i.e. submit) redux action type */
   actionType: ActionTypes;
   button?: ElementType;
@@ -34,7 +34,7 @@ const ActionButton = ({
   values,
   transform,
   ...props
-}: Props) => {
+}: ActionButtonProps) => {
   const submitAction = submit || actionType;
   const errorAction = error || getFormAction(actionType, 'ERROR');
   const successAction = success || getFormAction(actionType, 'SUCCESS');
@@ -62,8 +62,9 @@ const ActionButton = ({
        * @todo : display error somewhere
        */
       return;
+    } finally {
+      if (typeof onSuccess == 'function') onSuccess(result);
     }
-    if (typeof onSuccess == 'function') onSuccess(result);
   };
 
   const Button = button || DefaultButton;

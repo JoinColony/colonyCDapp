@@ -4,14 +4,13 @@ import { Placement } from '@popperjs/core';
 
 import ListItem, { ListItemStatus } from '~shared/ListItem';
 import UserAvatar from '~shared/UserAvatar';
-import { ColonyDecision } from '~types';
 import { useAppContext } from '~hooks';
 import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
 
 import DraftDecisionActions from './DraftDecisionActions';
 
-import styles from './DraftDecisionItem.css';
 import { Draft as DraftTag } from '~shared/Tag';
+import { DecisionDraft } from '~utils/decisions';
 
 const displayName = 'common.ColonyDecisions.DraftDecisionItem';
 
@@ -29,10 +28,10 @@ const avatarPopoverOptions = {
 };
 
 export interface DraftDecisionItemProps {
-  decision: ColonyDecision;
+  draftDecision: DecisionDraft;
 }
 
-const DraftDecisionItem = ({ decision }: DraftDecisionItemProps) => {
+const DraftDecisionItem = ({ draftDecision }: DraftDecisionItemProps) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { user } = useAppContext();
@@ -40,30 +39,28 @@ const DraftDecisionItem = ({ decision }: DraftDecisionItemProps) => {
 
   const redirectToPreview = () => navigate(`${pathname}${DECISIONS_PREVIEW}`);
 
-  if (!decision) {
+  if (!draftDecision) {
     return null;
   }
 
   return (
-    <div className={styles.draftDecision}>
-      <ListItem
-        extra={<DraftDecisionActions decision={decision} />}
-        avatar={
-          <UserAvatar
-            size="s"
-            address={walletAddress}
-            user={user}
-            notSet={false}
-            showInfo
-            popperOptions={avatarPopoverOptions}
-          />
-        }
-        onClick={redirectToPreview}
-        tag={<DraftTag />}
-        title={decision.title}
-        status={ListItemStatus.Draft}
-      />
-    </div>
+    <ListItem
+      extra={<DraftDecisionActions draftDecision={draftDecision} />}
+      avatar={
+        <UserAvatar
+          size="s"
+          address={walletAddress}
+          user={user}
+          notSet={false}
+          showInfo
+          popperOptions={avatarPopoverOptions}
+        />
+      }
+      onClick={redirectToPreview}
+      tag={<DraftTag />}
+      title={draftDecision.title}
+      status={ListItemStatus.Draft}
+    />
   );
 };
 

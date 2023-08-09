@@ -8,7 +8,7 @@ import ActionsPanel from './ActionsPanel';
 
 import ColonyHomeInfo from '../ColonyHomeInfo';
 import ColonyDomainDescription from '../ColonyDomainDescription';
-import ColonyExtensions from '../ColonyExtensionsWidget';
+import ColonyExtensionsWidget from '../ColonyExtensionsWidget';
 import ColonyFundingWidget from '../ColonyFundingWidget';
 import ColonyMembersWidget from '../ColonyMembersWidget';
 import ColonyUnclaimedTransfers from '../ColonyUnclaimedTransfers';
@@ -71,7 +71,7 @@ const ColonyHomeLayout = ({
             <ColonyUnclaimedTransfers />
             <ColonyFundingWidget currentDomainId={filteredDomainId} />
             <ColonyMembersWidget currentDomainId={filteredDomainId} />
-            <ColonyExtensions />
+            <ColonyExtensionsWidget />
           </aside>
         )}
       </div>

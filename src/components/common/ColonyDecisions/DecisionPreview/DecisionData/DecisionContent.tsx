@@ -4,39 +4,52 @@ import parse from 'html-react-parser';
 import UserAvatar from '~shared/UserAvatar';
 import { Heading3 } from '~shared/Heading';
 import { userDetailPopoverOptions } from '~shared/DetailsWidget';
+import { useAppContext } from '~hooks';
 
-import { DecisionDataProps } from './DecisionData';
+import { getMainClasses } from '~utils/css';
+import { Objection as ObjectionTag } from '~shared/Tag';
 
 import styles from './DecisionContent.css';
 
 const displayName = 'common.ColonyDecisions.DecisionPreview.DecisionContent';
 
-type SelectedProps = Omit<DecisionDataProps, 'setDecision'>;
-type DecisionContentProps = {
-  [k in keyof SelectedProps]-?: SelectedProps[k];
-};
+interface DecisionContentProps {
+  description: string;
+  title?: string;
+  time?: React.ReactNode;
+  isObjection?: boolean;
+}
 
-const DecisionContent = ({ decision, user }: DecisionContentProps) => {
+const DecisionContent = ({
+  title,
+  description,
+  time = null,
+  isObjection = false,
+}: DecisionContentProps) => {
+  const { user } = useAppContext();
   return (
-    <div className={styles.decisionContent}>
-      <span className={styles.userinfo}>
-        <UserAvatar
-          size="s"
-          notSet={false}
-          user={user}
-          address={user?.walletAddress || ''}
-          showInfo
-          popperOptions={userDetailPopoverOptions}
-        />
-        <span className={styles.userName}>{`@${user?.name}`}</span>
-      </span>
-      <Heading3
-        appearance={{ margin: 'none', theme: 'dark' }}
-        text={decision.title}
-      />
-      <div className={styles.descriptionContainer}>
-        {parse(decision.description)}
+    <div className={getMainClasses({}, styles, { isObjection })}>
+      <div className={styles.meta}>
+        <div className={styles.userinfo}>
+          <UserAvatar
+            size="s"
+            notSet={false}
+            user={user}
+            address={user?.walletAddress || ''}
+            showInfo
+            popperOptions={userDetailPopoverOptions}
+          />
+          <div className={styles.nameAndTime}>
+            <span className={styles.userName}>{`@${user?.name}`}</span>
+            {time}
+          </div>
+        </div>
+        {isObjection && <ObjectionTag />}
       </div>
+      {title && (
+        <Heading3 appearance={{ margin: 'none', theme: 'dark' }} text={title} />
+      )}
+      <div className={styles.descriptionContainer}>{parse(description)}</div>
     </div>
   );
 };

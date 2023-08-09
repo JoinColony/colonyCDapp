@@ -1,5 +1,4 @@
 import { all, call, fork, put } from 'redux-saga/effects';
-// import { formatEther } from 'ethers/lib/utils';
 
 import motionSagas from './motions';
 import { ColonyWallet, isFullWallet } from '~types';
@@ -8,13 +7,8 @@ import actionsSagas from './actions';
 import colonySagas, { colonyCreateSaga } from './colony';
 import extensionSagas from './extensions';
 
-// import actionsSagas from './actions';
 import decisionsSagas from './decisions';
-// import colonySagas, {
-// } from './colony';
-// import colonyExtensionSagas from './extensions';
-// import motionSagas from './motions';
-// import whitelistSagas from './whitelist';
+
 // import vestingSagas from './vesting';
 import { setupUsersSagas } from './users';
 
@@ -22,9 +16,7 @@ import { ActionTypes } from '../actionTypes';
 import { AllActions } from '../types/actions';
 
 import { setContext, ContextModule } from '~context';
-import { getDecisionFromLocalStorage } from '~utils/decisions';
 
-// import setupResolvers from '~context/setupResolvers';
 // import AppLoadingState from '~context/appLoadingState';
 
 import { getGasPrices, putError } from './utils';
@@ -70,19 +62,6 @@ export default function* setupUserContext() {
     yield put<AllActions>({
       type: ActionTypes.WALLET_OPEN_SUCCESS,
     });
-
-    /*
-     * Get saved decision from local storage and, if it exists, add to the store.
-     */
-
-    const decision = getDecisionFromLocalStorage(wallet?.address || '');
-
-    if (decision) {
-      yield put<AllActions>({
-        type: ActionTypes.DECISION_DRAFT_CREATED,
-        payload: decision,
-      });
-    }
 
     if (isFullWallet(wallet)) {
       yield call(getGasPrices);
