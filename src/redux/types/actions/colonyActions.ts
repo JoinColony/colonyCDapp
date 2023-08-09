@@ -3,7 +3,15 @@ import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
 import { ActionTypes } from '~redux';
-import { Address, WithKey, DomainColor, Domain, Colony, Safe } from '~types';
+import {
+  Address,
+  WithKey,
+  DomainColor,
+  Domain,
+  Colony,
+  Safe,
+  SafeTransactionData,
+} from '~types';
 
 import {
   ErrorActionType,
@@ -282,5 +290,22 @@ export type ColonyActionsActionTypes =
   | ErrorActionType<ActionTypes.ACTION_MANAGE_EXISTING_SAFES_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_MANAGE_EXISTING_SAFES_SUCCESS,
+      MetaWithNavigate<object>
+    >
+  | UniqueActionType<
+      ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION,
+      {
+        safe: Omit<Safe, 'safeName'>;
+        transactionsTitle: string;
+        transactions: SafeTransactionData[];
+        colonyAddress: Address;
+        colonyName: string;
+        annotationMessage: string | null;
+      },
+      MetaWithNavigate<object>
+    >
+  | ErrorActionType<ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION_SUCCESS,
       MetaWithNavigate<object>
     >;

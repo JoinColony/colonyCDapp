@@ -27,6 +27,8 @@ import {
   VoterRecordFragment,
   UnclaimedStakesFragment,
   SafeFragment,
+  SafeTransactionDataFragment,
+  NftDataFragment,
 } from '~gql';
 
 export type User = UserFragment;
@@ -106,3 +108,7 @@ export type VoterRecord = VoterRecordFragment;
 export type UnclaimedStakes = UnclaimedStakesFragment;
 
 export type Safe = SafeFragment;
+
+export type SafeTransactionData = SafeTransactionDataFragment;
+
+export type NFTData = NftDataFragment;
