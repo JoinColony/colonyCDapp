@@ -171,6 +171,9 @@ fragment ColonyMotion on ColonyMotion {
       ...MotionMessage
     }
   }
+  objectionAnnotation {
+    ...Annotation
+  }
 }
 
 fragment MotionMessage on MotionMessage {

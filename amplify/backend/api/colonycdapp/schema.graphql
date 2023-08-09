@@ -1940,6 +1940,15 @@ type ColonyMotion @model {
   List of motion status update messages
   """
   messages: [MotionMessage!]! @hasMany(indexName: "byMotionId", fields: ["id"])
+
+  """
+  Id of the associated objection annotation, if any
+  """
+  objectionAnnotationId: ID
+  """
+  The annotation object associated with the objection to the motion, if any
+  """
+  objectionAnnotation: Annotation @hasOne(fields: ["objectionAnnotationId"])
 }
 
 """
@@ -2574,6 +2583,10 @@ type Annotation @model {
   The id of the annotation.
   """
   id: ID!
+  """
+  The id of the action it annotates
+  """
+  actionId: ID!
   """
   The actual annotation message
   """

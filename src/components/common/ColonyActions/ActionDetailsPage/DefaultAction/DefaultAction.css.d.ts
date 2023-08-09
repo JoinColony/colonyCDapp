@@ -1,8 +1,6 @@
 declare namespace DefaultActionCssNamespace {
   export interface IDefaultActionCss {
     container: string;
-    content: string;
-    heading: string;
     main: string;
     mappings: string;
     names: string;
