@@ -38,10 +38,9 @@ const AmountField: FC<SelectProps> = ({ name }) => {
     dynamicCleaveOptionKey,
     inputWidth,
     onInput,
-    team,
     formattingOptions,
     selectedToken,
-  } = useAmountField(selectedTeam, token);
+  } = useAmountField(token);
 
   const handleCleaveChange = (e: CleaveChangeEvent) => {
     setValue(name, e.target.rawValue);
@@ -97,7 +96,7 @@ const AmountField: FC<SelectProps> = ({ name }) => {
                 const tokenBalance = getBalanceForTokenAndDomain(
                   colony?.balances,
                   colonyToken.tokenAddress,
-                  team?.nativeId,
+                  selectedTeam,
                 );
 
                 return (

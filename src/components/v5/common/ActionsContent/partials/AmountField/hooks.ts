@@ -4,10 +4,7 @@ import { Colony } from '~types';
 import { notNull } from '~utils/arrays';
 import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 
-export const useAmountField = (
-  selectedTeam: string | null,
-  selectedTokenAddress: string,
-) => {
+export const useAmountField = (selectedTokenAddress: string) => {
   const { colony } = useColonyContext();
   const [inputWidth, setInputWidth] = useState(0);
 
@@ -15,13 +12,6 @@ export const useAmountField = (
     colony?.tokens?.items
       .filter(notNull)
       .map((colonyToken) => colonyToken.token) || [];
-
-  const team = colony?.domains?.items.find((item) => {
-    const { metadata } = item || {};
-    const { name } = metadata || {};
-
-    return name === selectedTeam;
-  });
 
   const selectedToken = getSelectedToken(
     colony as Colony,
@@ -52,7 +42,6 @@ export const useAmountField = (
 
   return {
     colonyTokens,
-    team,
     onInput,
     dynamicCleaveOptionKey,
     inputWidth,
