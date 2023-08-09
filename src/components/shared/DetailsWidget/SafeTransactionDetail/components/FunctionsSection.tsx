@@ -90,7 +90,7 @@ const FunctionsSection = ({ transaction }: FunctionsSectionProps) => {
       {functions.map(([parameter, argument], i) => {
         const paramName = extractParameterName(
           parameter,
-          transaction.contractFunction,
+          transaction.contractFunction || '',
           transaction.functionParamTypes?.[i],
         );
         const paramType = extractParameterType(paramName);

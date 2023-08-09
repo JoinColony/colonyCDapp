@@ -12,11 +12,11 @@ import ExternalLink from '~shared/ExternalLink';
 import Button from '~shared/Button';
 import Icon from '~shared/Icon';
 import { filterUserSelection } from '~shared/SingleUserPicker';
-import { SelectedPickerItem, SafeTransaction } from '~types';
+import { SelectedPickerItem, SafeTransactionData } from '~types';
 import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
 import { isEmpty, isEqual, omit } from '~utils/lodash';
 import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
-import { defaultTransaction } from '~utils/safes';
+import { defaultTransaction, TransactionTypes } from '~utils/safes';
 import { hasRoot } from '~utils/checks';
 
 import {
@@ -26,11 +26,7 @@ import {
   ContractInteractionSection,
   ErrorMessage,
 } from './TransactionTypesSection';
-import {
-  TransactionTypes,
-  transactionOptions,
-  ContractFunctions,
-} from './helpers';
+import { transactionOptions, ContractFunctions } from './helpers';
 import { ControlSafeProps, UpdatedMethods } from './types';
 import AddItemButton from './AddItemButton';
 import SingleSafePicker from './SingleSafePicker';
@@ -84,6 +80,10 @@ const MSG = defineMessages({
     id: `${displayName}.upgradeWarning`,
     defaultMessage: `Controlling a Safe is not supported on your current Colony version. Please upgrade Colony to at least version 12.{break}You can do this via <span>New Action > Advanced > Upgrade</span>`,
   },
+  buttonCreateTransaction: {
+    id: `${displayName}.buttonCreateTransaction`,
+    defaultMessage: 'Create transaction',
+  },
 });
 
 export const { invalidSafeError } = MSG;
@@ -126,7 +126,7 @@ const ControlSafeForm = ({
 
   const selectedSafe: SelectedPickerItem = watch('safe');
   const safes = metadata?.safes || [];
-  /* const forceAction: boolean = watch('forceAction'); */
+  const forceAction: boolean = watch('forceAction');
 
   const {
     fields,
@@ -158,10 +158,10 @@ const ControlSafeForm = ({
   const handleSelectedContractMethods = useCallback(
     (contractMethods: UpdatedMethods, transactionIndex: number) => {
       // eslint-disable-next-line max-len
-      const functionParamTypes: SafeTransaction['functionParamTypes'] =
+      const functionParamTypes: SafeTransactionData['functionParamTypes'] =
         contractMethods[transactionIndex]?.inputs?.map((input) => ({
-          name: input.name,
-          type: input.type,
+          name: input.name || '',
+          type: input.type || '',
         }));
 
       setSelectedContractMethods(contractMethods);
@@ -190,10 +190,6 @@ const ControlSafeForm = ({
     },
     [selectedContractMethods, handleSelectedContractMethods, setValue],
   );
-
-  const submitButtonText = (() => {
-    return { id: 'button.confirm' };
-  })();
 
   const isSupportedColonyVersion = version >= 12;
 
@@ -288,9 +284,24 @@ const ControlSafeForm = ({
     setShowPreview(!isPreview);
   };
 
-  // tmp
-  const handleSubmit = () => {
-    console.warn('submitting');
+  const submitButtonText = (() => {
+    if (!showPreview) {
+      return MSG.buttonCreateTransaction;
+    }
+    return { id: 'button.confirm' };
+  })();
+
+  const continueButtonProps = {
+    text: submitButtonText,
+    loading: isSubmitting,
+    disabled:
+      !isValid ||
+      isSubmitting ||
+      !isDirty ||
+      (showPreview &&
+        votingReputationVersion === noMotionsVotingReputationVersion &&
+        !forceAction),
+    style: { width: styles.wideButton },
   };
 
   return (
@@ -408,30 +419,26 @@ const ControlSafeForm = ({
         />
       )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
-        {(back || showPreview) && (
+        <Button
+          appearance={{ theme: 'secondary', size: 'large' }}
+          onClick={showPreview ? () => handleShowPreview(showPreview) : back}
+          text={{ id: 'button.back' }}
+        />
+        {showPreview && (
           <Button
-            appearance={{ theme: 'secondary', size: 'large' }}
-            onClick={showPreview ? () => handleShowPreview(showPreview) : back}
-            text={{ id: 'button.back' }}
+            {...continueButtonProps}
+            appearance={{ theme: 'primary', size: 'large' }}
+            type="submit"
           />
         )}
-        <Button
-          appearance={{ theme: 'primary', size: 'large' }}
-          onClick={() =>
-            showPreview ? handleSubmit() : handleShowPreview(showPreview)
-          }
-          text={submitButtonText}
-          loading={isSubmitting}
-          disabled={
-            !isValid ||
-            isSubmitting ||
-            !isDirty ||
-            (showPreview &&
-              votingReputationVersion === noMotionsVotingReputationVersion)
-            /* && !forceAction) */
-          }
-          style={{ width: styles.wideButton }}
-        />
+        {!showPreview && (
+          <Button
+            {...continueButtonProps}
+            type="button"
+            appearance={{ theme: 'primary', size: 'large' }}
+            onClick={() => handleShowPreview(showPreview)}
+          />
+        )}
       </DialogSection>
     </>
   );

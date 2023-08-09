@@ -13,7 +13,7 @@ import { defaultTransaction, AbiItemExtended } from '~utils/safes';
 
 import ControlSafeForm from './ControlSafeForm';
 import { getMethodInputValidation, getValidationSchema } from './validation';
-import { getManageSafeDialogPayload } from './helpers';
+import { getControlSafeDialogPayload } from './helpers';
 
 interface CustomWizardDialogProps extends ActionDialogProps {
   preselectedSafe?: Safe;
@@ -46,7 +46,10 @@ const ControlSafeDialog = ({
   const [showPreview, setShowPreview] = useState(false);
   const navigate = useNavigate();
 
-  const validationSchema = getValidationSchema(expandedValidationSchema);
+  const validationSchema = getValidationSchema(
+    showPreview,
+    expandedValidationSchema,
+  );
 
   type FormValues = InferType<typeof validationSchema>;
 
@@ -55,7 +58,7 @@ const ControlSafeDialog = ({
   );
 
   const transform = pipe(
-    mapPayload((payload) => getManageSafeDialogPayload(colony, payload)),
+    mapPayload((payload) => getControlSafeDialogPayload(colony, payload)),
     withMeta({ navigate }),
   );
 
@@ -93,7 +96,7 @@ const ControlSafeDialog = ({
           transactions: [defaultTransaction],
         }}
         validationSchema={validationSchema}
-        actionType={ActionTypes.ACTION_MANAGE_EXISTING_SAFES}
+        actionType={ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION}
         transform={transform}
         onSuccess={close}
       >

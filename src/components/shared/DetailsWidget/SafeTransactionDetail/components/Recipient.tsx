@@ -2,32 +2,25 @@ import React from 'react';
 import classnames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 
-import { User, Colony } from '~types';
 import { UserDetail } from '~shared/DetailsWidget';
 
 import { MSG } from '../../detailsWidgetConfig';
 
 import widgetStyles from '../../DetailsWidget.css';
 import styles from '../SafeTransactionDetail.css';
+import { SimpleTarget } from '~gql';
 
 interface RecipientProps {
-  recipient: User;
-  colony: Colony;
+  recipient: SimpleTarget;
 }
 
-export const Recipient = ({
-  /* colony, */
-  recipient,
-}: RecipientProps) => (
+export const Recipient = ({ recipient }: RecipientProps) => (
   <div className={classnames(widgetStyles.item, styles.recipient)}>
     <div className={widgetStyles.label}>
       <FormattedMessage {...MSG.toRecipient} />
     </div>
     <div className={widgetStyles.value}>
-      <UserDetail
-        /* colony={colony} */
-        walletAddress={recipient?.walletAddress}
-      />
+      <UserDetail walletAddress={recipient?.walletAddress} />
     </div>
   </div>
 );
