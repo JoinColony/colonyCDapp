@@ -84,7 +84,6 @@ import UserProfilePage from '~frame/v5/pages/UserProfilePage';
 import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
 import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
 import { PageThemeContextProvider } from '~context/PageThemeContext';
-import { FilterContextProvider } from '~context/FilterContext';
 import { ActionSidebarContextProvider } from '~context/ActionSidebarContext';
 
 import useTitle from '~hooks/useTitle';
@@ -160,22 +159,20 @@ const Routes = () => {
               element={
                 <ColonyContextProvider>
                   <ExtensionsContextProvider>
-                    <FilterContextProvider>
-                      <SearchContextProvider>
-                        <MemberContextProvider>
-                          <ActionSidebarContextProvider>
-                            <PageLayout
-                              loadingText="members"
-                              title={{ id: 'membersPage.title' }}
-                              description={{ id: 'membersPage.description' }}
-                              pageName="members"
-                            >
-                              <MembersPage />
-                            </PageLayout>
-                          </ActionSidebarContextProvider>
-                        </MemberContextProvider>
-                      </SearchContextProvider>
-                    </FilterContextProvider>
+                    <SearchContextProvider>
+                      <MemberContextProvider>
+                        <ActionSidebarContextProvider>
+                          <PageLayout
+                            loadingText="members"
+                            title={{ id: 'membersPage.title' }}
+                            description={{ id: 'membersPage.description' }}
+                            pageName="members"
+                          >
+                            <MembersPage />
+                          </PageLayout>
+                        </ActionSidebarContextProvider>
+                      </MemberContextProvider>
+                    </SearchContextProvider>
                   </ExtensionsContextProvider>
                 </ColonyContextProvider>
               }
@@ -192,24 +189,22 @@ const Routes = () => {
               element={
                 <ColonyContextProvider>
                   <ExtensionsContextProvider>
-                    <FilterContextProvider>
-                      <SearchContextProvider>
-                        <MemberContextProvider>
-                          <ActionSidebarContextProvider>
-                            <PageLayout
-                              loadingText={pageName}
-                              title={{ id: `${pageName}Page.title` }}
-                              description={{
-                                id: `${pageName}Page.description`,
-                              }}
-                              pageName="members"
-                            >
-                              <ColonyUsersPage pageName={pageName} />
-                            </PageLayout>
-                          </ActionSidebarContextProvider>
-                        </MemberContextProvider>
-                      </SearchContextProvider>
-                    </FilterContextProvider>
+                    <SearchContextProvider>
+                      <MemberContextProvider>
+                        <ActionSidebarContextProvider>
+                          <PageLayout
+                            loadingText={pageName}
+                            title={{ id: `${pageName}Page.title` }}
+                            description={{
+                              id: `${pageName}Page.description`,
+                            }}
+                            pageName="members"
+                          >
+                            <ColonyUsersPage pageName={pageName} />
+                          </PageLayout>
+                        </ActionSidebarContextProvider>
+                      </MemberContextProvider>
+                    </SearchContextProvider>
                   </ExtensionsContextProvider>
                 </ColonyContextProvider>
               }
@@ -221,22 +216,20 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <FilterContextProvider>
-                  <SearchContextProvider>
-                    <MemberContextProvider>
-                      <ActionSidebarContextProvider>
-                        <PageLayout
-                          loadingText="verified"
-                          title={{ id: 'verifiedPage.title' }}
-                          description={{ id: 'verifiedPage.description' }}
-                          pageName="members"
-                        >
-                          <VerifiedPage />
-                        </PageLayout>
-                      </ActionSidebarContextProvider>
-                    </MemberContextProvider>
-                  </SearchContextProvider>
-                </FilterContextProvider>
+                <SearchContextProvider>
+                  <MemberContextProvider>
+                    <ActionSidebarContextProvider>
+                      <PageLayout
+                        loadingText="verified"
+                        title={{ id: 'verifiedPage.title' }}
+                        description={{ id: 'verifiedPage.description' }}
+                        pageName="members"
+                      >
+                        <VerifiedPage />
+                      </PageLayout>
+                    </ActionSidebarContextProvider>
+                  </MemberContextProvider>
+                </SearchContextProvider>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }

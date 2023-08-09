@@ -1,13 +1,12 @@
 import React, { FC } from 'react';
+import { usePopperTooltip } from 'react-popper-tooltip';
 
 import UserAvatarPopover from '../UserAvatarPopover';
-import { splitWalletAddress } from '~utils/splitWalletAddress';
 import Icon from '~shared/Icon';
 import BurgerMenu from '../BurgerMenu';
 import CardPermissions, { SubNavigation } from './partials';
 import UserStatusComponent from './partials/UserStatus';
 import { CardWithBiosProps } from './types';
-import { useMembersPage } from '~frame/v5/pages/MembersPage/hooks';
 import PopoverBase from '../PopoverBase';
 import { Contributor } from '~types';
 
@@ -30,7 +29,13 @@ const CardWithBios: FC<CardWithBiosProps> = ({
     setTooltipRef,
     setTriggerRef,
     visible: isUserDetailsOpen,
-  } = useMembersPage();
+  } = usePopperTooltip({
+    delayShow: 200,
+    delayHide: 200,
+    placement: 'bottom-start',
+    trigger: ['click', 'hover'],
+    interactive: true,
+  });
 
   return (
     <div className="max-h-[9.25rem] rounded-lg border border-gray-200 bg-gray-25 p-5 relative">
@@ -39,7 +44,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
           <div className="flex items-center">
             <UserAvatarPopover
               userName={profile?.displayName || name}
-              walletAddress={splitWalletAddress(walletAddress || '')}
+              walletAddress={walletAddress}
               isVerified={isVerified}
               aboutDescription={bio || ''}
               // @TODO: add colonyReputationItems

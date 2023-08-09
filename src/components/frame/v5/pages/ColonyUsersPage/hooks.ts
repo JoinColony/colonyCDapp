@@ -1,3 +1,4 @@
+import { useFilterContext } from '~context/FilterContext';
 import { useGetMembersForColonyQuery } from '~gql';
 
 import { useColonyContext } from '~hooks';
@@ -7,11 +8,17 @@ export const useContributorsPage = (searchValue?: string) => {
   const { colony } = useColonyContext();
   const { colonyAddress } = colony || {};
 
+  const { selectedDomainIds, sortingMethod, filteringMethod } =
+    useFilterContext();
+
   const { data, loading } = useGetMembersForColonyQuery({
     skip: !colonyAddress,
     variables: {
       input: {
         colonyAddress: colonyAddress ?? '',
+        domainIds: selectedDomainIds,
+        sortingMethod,
+        filteringMethod,
       },
     },
   });

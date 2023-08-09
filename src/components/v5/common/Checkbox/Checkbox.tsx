@@ -1,11 +1,11 @@
 /* eslint-disable max-len */
-import React, { FC, useCallback, PropsWithChildren } from 'react';
-import { useIntl } from 'react-intl';
+import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
 
 import { CheckboxProps } from './types';
 import styles from './Checkbox.module.css';
 import Icon from '~shared/Icon';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.common.Checkbox';
 
@@ -21,16 +21,6 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
   children,
   mode = 'primary',
 }) => {
-  const { formatMessage } = useIntl();
-  const labelText = typeof label === 'string' ? label : formatMessage(label);
-
-  const handleChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      onChange?.(event);
-    },
-    [onChange],
-  );
-
   return (
     <div
       className={clsx(classNames, {
@@ -49,7 +39,7 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
           checked={isChecked}
           disabled={disabled}
           className="peer absolute top-0 left-0 overflow-hidden w-0 h-0 opacity-0"
-          onChange={(event) => handleChange(event)}
+          onChange={onChange}
         />
         <span
           className={clsx(styles.checkboxBox, {
@@ -69,7 +59,7 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
 
         <div className="flex items-center gap-2">
           {children}
-          {labelText}
+          {label && formatText(label)}
         </div>
       </label>
     </div>

@@ -1,41 +1,39 @@
 export type TableFilteringProps = {
-  selectedParentFilters?: FilterType | FilterType[];
-  filterOptions: FilterOption | FilterOption[];
-  onClick: () => void;
+  onClick?: (e: React.SyntheticEvent) => void;
   className?: string;
 };
 
-export type FilterType =
-  | 'team'
-  | 'reputation'
-  | 'latest'
-  | 'status'
-  | 'contributor'
-  | 'permissions';
+export enum FilterTypes {
+  Team = 'team',
+  Reputation = 'reputation',
+  Latest = 'latest',
+  Status = 'status',
+  Contributor = 'contributor',
+  Permissions = 'permissions',
+}
+
+export type FilterType = `${FilterTypes}`;
+
+export type TeamType = number;
 
 export type ContributorType =
   | 'top'
   | 'dedicated'
   | 'active'
-  | 'contributor-verified'
+  | 'verified'
   | 'general';
-
-export type TeamType =
-  | 'Root'
-  | 'Business'
-  | 'Product'
-  | 'Development'
-  | 'Design'
-  | 'Devops'
-  | 'Procurement'
-  | 'Pagepro';
 
 export type StatusType = 'banned' | 'notBanned';
 
-export type ReputationType = 'highestToLowest' | 'lowestToHighest';
+export enum ReputationSortTypes {
+  DESC = 'highestToLowest',
+  ASC = 'lowestToHighest',
+}
+
+export type ReputationType = `${ReputationSortTypes}`;
 
 export type PermissionsType =
-  | 'permissionRoot'
+  | 'root'
   | 'administration'
   | 'arbitration'
   | 'architecture'
@@ -45,16 +43,10 @@ export type PermissionsType =
 // @TODO: add more filter options and move it to global types
 export type FilterOption =
   | ContributorType
-  | ContributorType[]
   | StatusType
-  | StatusType[]
-  | TeamType
-  | TeamType[]
   | ReputationType
-  | ReputationType[]
   | PermissionsType
-  | PermissionsType[]
-  | 'businnes'
+  | 'business'
   | 'development'
   | 'high to low'
   | 'newest'
@@ -63,6 +55,4 @@ export type FilterOption =
   | 'verified'
   | 'top'
   | 'dedicated'
-  | 'administration'
-  | undefined
-  | string;
+  | 'administration';

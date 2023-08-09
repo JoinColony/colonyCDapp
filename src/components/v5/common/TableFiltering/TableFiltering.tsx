@@ -1,58 +1,68 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 
-import { TableFilteringProps } from './types';
+import { FilterType, TableFilteringProps } from './types';
 import { CloseButton } from '~v5/shared/Button';
+import { formatText } from '~utils/intl';
 import styles from './TableFiltering.module.css';
+import { useFilterContext } from '~context/FilterContext';
 
 const displayName = 'v5.common.TableFiltering';
 
 const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
-  selectedParentFilters,
-  filterOptions,
-  className,
   onClick,
+  className,
 }) => {
   const { formatMessage } = useIntl();
 
-  const lastIndex = filterOptions?.[filterOptions.length - 1];
+  const { selectedFilterLabels, handleClearFilters } = useFilterContext();
 
-  const content = (
-    <>
-      {Array.isArray(filterOptions) ? (
-        filterOptions.map((name) => (
-          <p key={name} className="text-sm capitalize min-w-fit">
-            {name}
-            {lastIndex !== name ? ',' : ''}
-          </p>
-        ))
-      ) : (
-        <p className="text-sm capitalize">{filterOptions}</p>
-      )}
-      <CloseButton
-        aria-label={formatMessage({ id: 'ariaLabel.closeFilter' })}
-        className="shrink-0 ml-2 text-current !p-0"
-        onClick={onClick}
-        iconSize="extraTiny"
-      />
-    </>
-  );
+  if (!selectedFilterLabels.length) {
+    return null;
+  }
+
+  const handleClick = (
+    e: React.SyntheticEvent<HTMLButtonElement>,
+    parentFilterLabel: FilterType,
+  ) => {
+    onClick?.(e);
+    handleClearFilters([parentFilterLabel]);
+  };
 
   return (
     <>
-      {Array.isArray(selectedParentFilters) ? (
-        selectedParentFilters.map((name) => (
-          <div key={name} className={`${className} ${styles.pill}`}>
-            <div className={styles.pillName}>{name}:</div>
-            {content}
-          </div>
-        ))
-      ) : (
-        <div className={`${className} ${styles.pill}`}>
-          <div className={styles.pillName}>{selectedParentFilters}:</div>
-          {content}
-        </div>
-      )}
+      {selectedFilterLabels.reduce<JSX.Element[]>((acc, parentFilter) => {
+        const parentFilterLabel = Object.keys(parentFilter)[0] as FilterType;
+        const nestedFilters = parentFilter[parentFilterLabel];
+        const lastLabel = nestedFilters.at(-1);
+
+        if (nestedFilters.length) {
+          acc.push(
+            <div
+              key={parentFilterLabel}
+              className={`${className} ${styles.pill}`}
+            >
+              <div className={styles.pillName}>{parentFilterLabel}:</div>
+              {nestedFilters.map((label) => (
+                <p
+                  key={formatText(label)}
+                  className="text-sm capitalize min-w-fit"
+                >
+                  {formatText(label)}
+                  {lastLabel !== label ? ',' : ''}
+                </p>
+              ))}
+              <CloseButton
+                aria-label={formatMessage({ id: 'ariaLabel.closeFilter' })}
+                className="shrink-0 ml-2 text-current !p-0"
+                onClick={(e) => handleClick(e, parentFilterLabel)}
+                iconSize="extraTiny"
+              />
+            </div>,
+          );
+        }
+        return acc;
+      }, [])}
     </>
   );
 };
