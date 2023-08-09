@@ -25,6 +25,8 @@ export interface ExpenditureFormValues {
 export interface ExpenditureFormProps {
   expenditure?: Expenditure;
   submitButtonText?: string;
+  showCancelButton?: boolean;
+  onCancelClick?: () => void;
 }
 
 const ExpenditureForm = ({ expenditure, ...props }: ExpenditureFormProps) => {
