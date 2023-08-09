@@ -18,6 +18,7 @@ export type SubNavigationItemProps = {
   selectedChildOption?: FilterOption;
   checkedItems?: Map<string | undefined, boolean>;
   nestedFilters?: FilterOptionProps[];
+  onClick?: () => void;
 };
 
 export type NestedOptionsProps = {
