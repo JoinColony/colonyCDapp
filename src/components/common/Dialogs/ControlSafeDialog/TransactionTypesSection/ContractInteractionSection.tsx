@@ -6,8 +6,8 @@ import {
   useIntl,
 } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
-import { isAddress } from 'ethers/lib/utils';
 
+import { isAddress } from '~utils/web3';
 import {
   HookFormInput as Input,
   HookFormSelect as Select,
