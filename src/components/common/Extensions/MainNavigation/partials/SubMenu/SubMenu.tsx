@@ -23,7 +23,11 @@ const SubMenu: FC<SubMenuProps> = ({ items }) => {
 
   return (
     <Wrapper hasShadow={!isMobile}>
-      <ul className={clsx(styles.subMenuList, 'grid-cols-[repeat(3,1fr)]')}>
+      <ul
+        className={clsx(styles.subMenuList, {
+          'grid-cols-[repeat(3,1fr)]': !isMobile,
+        })}
+      >
         {items.map(({ label, href, description, status }) => (
           <li key={label}>
             <Link
