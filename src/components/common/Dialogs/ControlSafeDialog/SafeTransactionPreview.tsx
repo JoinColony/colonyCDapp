@@ -208,7 +208,6 @@ const transactionTypeFieldsMap = {
 interface Props
   extends Pick<ControlSafeProps, 'colony' | 'selectedContractMethods'> {
   isVotingExtensionEnabled: boolean;
-  canManageAndControlSafes: boolean;
   userHasPermission: boolean;
 }
 
@@ -217,7 +216,6 @@ const SafeTransactionPreview = ({
   selectedContractMethods,
   isVotingExtensionEnabled,
   userHasPermission,
-  canManageAndControlSafes,
 }: Props) => {
   const { watch, setValue } = useFormContext();
 
@@ -253,7 +251,7 @@ const SafeTransactionPreview = ({
     [transactions.length],
   );
 
-  const isNFT = (index) =>
+  const isNFT = (index: number) =>
     transactions[index].transactionType === TransactionTypes.TRANSFER_NFT;
 
   /*
@@ -286,7 +284,7 @@ const SafeTransactionPreview = ({
       <DialogSection appearance={{ theme: 'sidePadding' }}>
         <DialogHeading
           title={MSG.previewTitle}
-          userHasPermission={userHasPermission && canManageAndControlSafes}
+          userHasPermission={userHasPermission}
           isVotingExtensionEnabled={isVotingExtensionEnabled}
           isRootMotion
           colony={colony}
