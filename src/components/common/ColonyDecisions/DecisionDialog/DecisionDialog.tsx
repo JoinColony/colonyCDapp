@@ -13,7 +13,6 @@ import {
   useRichTextEditor,
 } from '~hooks';
 
-import { ColonyDecision } from '~types';
 import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
 import { createDecisionAction } from '~redux/actionCreators';
 
@@ -24,8 +23,10 @@ import {
   DialogHeading,
 } from '../DecisionDialog';
 
-import styles from './DecisionDialog.css';
 import { NotEnoughReputation } from '~common/Dialogs/Messages';
+import { DecisionDraft } from '~utils/decisions';
+
+import styles from './DecisionDialog.css';
 
 const displayName = 'common.ColonyDecisions.DecisionDialog';
 
@@ -56,7 +57,7 @@ const validationSchema = object()
 export type DecisionDialogValues = InferType<typeof validationSchema>;
 
 export interface DecisionDialogProps extends DialogProps {
-  decision?: ColonyDecision;
+  draftDecision?: DecisionDraft;
   nativeDomainId?: number;
   colonyAddress: string;
 }
@@ -65,7 +66,7 @@ const DecisionDialog = ({
   cancel,
   close,
   colonyAddress,
-  decision,
+  draftDecision,
   nativeDomainId,
 }: DecisionDialogProps) => {
   const { user } = useAppContext();
@@ -75,12 +76,12 @@ const DecisionDialog = ({
   const navigate = useNavigate();
 
   const motionDomainId =
-    decision?.motionDomainId ?? (nativeDomainId || Id.RootDomain);
+    draftDecision?.motionDomainId ?? (nativeDomainId || Id.RootDomain);
   const walletAddress = user?.walletAddress || '';
-  const content = decision?.description;
+  const content = draftDecision?.description;
 
   const handleSubmitDialog = (values: DecisionDialogValues) => {
-    dispatch(createDecisionAction(values));
+    dispatch(createDecisionAction({ ...values, colonyAddress }));
     if (!pathname.includes(DECISIONS_PREVIEW)) {
       navigate(`${pathname}${DECISIONS_PREVIEW}`);
     }
@@ -98,8 +99,8 @@ const DecisionDialog = ({
       <Form<DecisionDialogValues>
         defaultValues={{
           motionDomainId,
-          title: decision?.title,
-          description: decision?.description || '<p></p>',
+          title: draftDecision?.title,
+          description: draftDecision?.description || '<p></p>',
           walletAddress,
         }}
         onSubmit={handleSubmitDialog}

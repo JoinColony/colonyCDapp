@@ -15,6 +15,7 @@ interface ToolbarItemProps {
   keyboardShortcut: string;
   annotation: string;
   editor: Editor;
+  style?: React.CSSProperties;
 }
 
 const ToolbarItem = ({
@@ -23,6 +24,7 @@ const ToolbarItem = ({
   keyboardShortcut,
   annotation,
   editor,
+  style,
 }: ToolbarItemProps) => (
   <Button
     appearance={{ theme: 'ghost' }}
@@ -33,7 +35,11 @@ const ToolbarItem = ({
     key={icon}
     name={icon}
   >
-    <Icon name={icon} title={`${annotation}, <${keyboardShortcut}>`} />
+    <Icon
+      name={icon}
+      title={`${annotation}, <${keyboardShortcut}>`}
+      style={style}
+    />
   </Button>
 );
 

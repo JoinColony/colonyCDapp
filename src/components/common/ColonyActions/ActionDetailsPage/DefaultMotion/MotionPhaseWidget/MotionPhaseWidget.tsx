@@ -48,6 +48,7 @@ const MotionPhaseWidget = ({
   const { refetchColony } = useColonyContext();
   const { motionData, type, amount, fromDomain, tokenAddress } = actionData;
   const { startPollingAction, stopPollingAction } = rest;
+  const isDecision = !!actionData.decisionData;
 
   switch (motionState) {
     case MotionState.Staked:
@@ -61,7 +62,7 @@ const MotionPhaseWidget = ({
 
     case MotionState.Failed:
     case MotionState.Passed: {
-      if (!motionData.isFinalized) {
+      if (!motionData.isFinalized && !isDecision) {
         return (
           <div>
             <FinalizeMotion

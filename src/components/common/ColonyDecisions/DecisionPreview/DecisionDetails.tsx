@@ -1,18 +1,20 @@
 import React from 'react';
 
 import DetailsWidget from '~shared/DetailsWidget';
-import { ColonyAction, ColonyActionType, ColonyDecision } from '~types';
-import { useAppContext, useColonyContext } from '~hooks';
+import { ColonyAction, ColonyActionType } from '~types';
+import { useColonyContext } from '~hooks';
+import { DecisionDraft } from '~utils/decisions';
 
 const displayName = 'common.ColonyDecisions.DecisionPreview.DecisionDetails';
 
 interface DecisionDetailsProps {
-  decision: ColonyDecision;
+  draftDecision: DecisionDraft;
 }
 
-const DecisionDetails = ({ decision }: DecisionDetailsProps) => {
+const DecisionDetails = ({
+  draftDecision: { motionDomainId, walletAddress },
+}: DecisionDetailsProps) => {
   const { colony } = useColonyContext();
-  const { user } = useAppContext();
 
   if (!colony) {
     return null;
@@ -21,9 +23,9 @@ const DecisionDetails = ({ decision }: DecisionDetailsProps) => {
   const widgetValues = {
     type: ColonyActionType.CreateDecisionMotion,
     motionData: {
-      nativeMotionDomainId: String(decision.motionDomainId),
+      nativeMotionDomainId: String(motionDomainId),
     },
-    recipientAddress: user?.walletAddress,
+    initiatorAddress: walletAddress,
   } as ColonyAction; // @TODO: Remove casting
 
   return <DetailsWidget colony={colony} actionData={widgetValues} />;

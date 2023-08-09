@@ -2,9 +2,12 @@ import { Record, Map as ImmutableMap } from 'immutable';
 
 import { CORE_DECISIONS_LIST } from '~redux/constants';
 import { DecisionRecord } from '~redux/immutable/Decision';
-import { Address, ColonyDecision, DefaultValues, RecordToJS } from '~types';
+import { Address, DefaultValues, RecordToJS } from '~types';
+import { DecisionDraft } from '~utils/decisions';
 
-type DecisionsListObject = { [walletAddress: Address]: ColonyDecision };
+type DecisionsListObject = {
+  [walletAddress_colonyAddress: Address]: DecisionDraft;
+};
 
 type DecisionsListMap = ImmutableMap<Address, DecisionRecord> & {
   toJS(): DecisionsListObject;

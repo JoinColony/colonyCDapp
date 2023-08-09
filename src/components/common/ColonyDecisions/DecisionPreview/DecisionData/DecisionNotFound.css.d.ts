@@ -1,6 +1,6 @@
 declare namespace DecisionNotFoundCssNamespace {
   export interface IDecisionNotFoundCss {
-    noContent: string;
+    governanceLink: string;
   }
 }
 

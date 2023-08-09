@@ -120,9 +120,6 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
         ActionPageDetails.ReputationChange,
       ];
     }
-    // case actionType.includes(ColonyMotions.CreateDecisionMotion): {
-    //   return [ActionPageDetails.Type, ActionPageDetails.Author];
-    // }
     case actionType.includes(ColonyActionType.Generic): {
       return [ActionPageDetails.Type, ActionPageDetails.Generic];
     }

@@ -1,5 +1,9 @@
 @value mainTextSize: 13px;
 
+.list {
+  list-style-type: none;
+}
+
 .main {
   display: flex;
   align-items: center;

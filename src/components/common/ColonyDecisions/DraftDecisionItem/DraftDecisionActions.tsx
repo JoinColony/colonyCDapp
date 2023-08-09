@@ -13,7 +13,7 @@ const displayName = 'common.ColonyDecisions.DraftDecisionActions';
 
 type DraftDecisionActionsProps = DraftDecisionItemProps;
 
-const DraftDecisionActions = ({ decision }: DraftDecisionActionsProps) => {
+const DraftDecisionActions = ({ draftDecision }: DraftDecisionActionsProps) => {
   const { colony } = useColonyContext();
   const openDeleteDecisionDialog = useDialog(DeleteDecisionDialog);
   const openDecisionDialog = useDialog(DecisionDialog);
@@ -25,7 +25,7 @@ const DraftDecisionActions = ({ decision }: DraftDecisionActionsProps) => {
         text={{ id: 'button.delete' }}
         onClick={(e) => {
           e.stopPropagation();
-          openDeleteDecisionDialog({ decision });
+          openDeleteDecisionDialog({ draftDecision });
         }}
       />
       <Button
@@ -34,7 +34,7 @@ const DraftDecisionActions = ({ decision }: DraftDecisionActionsProps) => {
         onClick={(e) => {
           e.stopPropagation();
           openDecisionDialog({
-            decision,
+            draftDecision,
             colonyAddress: colony?.colonyAddress ?? '',
           });
         }}

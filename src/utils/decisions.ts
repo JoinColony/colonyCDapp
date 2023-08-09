@@ -2,32 +2,51 @@ import { CORE_DECISIONS, CORE_DECISIONS_LIST } from '~redux/constants';
 import { CoreDecisionsRecord } from '~redux/state/decisions';
 import { Address, ColonyDecision } from '~types';
 
-const getLocalStorageDecisionKey = (walletAddress: Address) =>
-  `decision:${walletAddress}`;
+export type DecisionDraft = Omit<
+  ColonyDecision,
+  '__typename' | 'createdAt' | 'actionId'
+>;
 
-export const getDecisionFromLocalStorage = (walletAddress: Address) => {
+const getLocalStorageDraftDecisionKey = (
+  walletAddress: Address,
+  colonyAddress: Address,
+) => `decision:${walletAddress}_${colonyAddress}`;
+
+export const getDraftDecisionFromLocalStorage = (
+  walletAddress: Address,
+  colonyAddress: Address,
+) => {
   const savedDraft = localStorage.getItem(
-    getLocalStorageDecisionKey(walletAddress),
+    getLocalStorageDraftDecisionKey(walletAddress, colonyAddress),
   );
-  return savedDraft ? (JSON.parse(savedDraft) as ColonyDecision) : undefined;
+  return savedDraft ? (JSON.parse(savedDraft) as DecisionDraft) : undefined;
 };
 
-export const setDecisionToLocalStorage = (
-  values: ColonyDecision,
+export const setDraftDecisionToLocalStorage = (
+  values: DecisionDraft,
   walletAddress: Address,
+  colonyAddress: Address,
 ) => {
   localStorage.setItem(
-    getLocalStorageDecisionKey(walletAddress),
-    JSON.stringify({ ...values, walletAddress }),
+    getLocalStorageDraftDecisionKey(walletAddress, colonyAddress),
+    JSON.stringify({ ...values, colonyAddress }),
   );
 };
 
-export const removeDecisionFromLocalStorage = (walletAddress: Address) => {
-  localStorage.removeItem(getLocalStorageDecisionKey(walletAddress));
+export const removeDraftDecisionFromLocalStorage = (
+  walletAddress: Address,
+  colonyAddress: Address,
+) => {
+  localStorage.removeItem(
+    getLocalStorageDraftDecisionKey(walletAddress, colonyAddress),
+  );
 };
 
-export const getDecisionFromStore =
-  (walletAddress: string) => (state: CoreDecisionsRecord) =>
-    state.getIn([CORE_DECISIONS, CORE_DECISIONS_LIST, walletAddress]) as
-      | ColonyDecision
-      | undefined;
+export const getDraftDecisionFromStore =
+  (walletAddress: string, colonyAddress: string) =>
+  (state: CoreDecisionsRecord) =>
+    state.getIn([
+      CORE_DECISIONS,
+      CORE_DECISIONS_LIST,
+      `${walletAddress}_${colonyAddress}`,
+    ]) as DecisionDraft | undefined;

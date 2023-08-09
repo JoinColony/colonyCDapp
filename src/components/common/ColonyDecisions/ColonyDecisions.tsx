@@ -1,30 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 
 import { SpinnerLoader } from '~shared/Preloaders';
-import { useAppContext, useEnabledExtensions } from '~hooks';
-import { getDecisionFromStore } from '~utils/decisions';
+import { useAppContext, useColonyContext, useEnabledExtensions } from '~hooks';
+import { getDraftDecisionFromStore } from '~utils/decisions';
+import { ModelSortDirection, useGetColonyDecisionsQuery } from '~gql';
+import { notNull } from '~utils/arrays';
+import LoadMoreButton from '~shared/LoadMoreButton/LoadMoreButton';
 
-// import { SortOptions } from './constants';
 import DraftDecisionItem from './DraftDecisionItem';
+import DecisionItem from './DecisionItem';
+import DecisionListHeader from './DecisionListHeader';
 
 import styles from './ColonyDecisions.css';
 
 const displayName = 'common.ColonyDecisions';
 
+const ITEMS_PER_PAGE = 10;
+
 const MSG = defineMessages({
   decisionsTitle: {
     id: `${displayName}.decisionsTitle`,
     defaultMessage: 'Decisions',
-  },
-  labelFilter: {
-    id: `${displayName}.labelFilter`,
-    defaultMessage: 'Filter',
-  },
-  placeholderFilter: {
-    id: `${displayName}.placeholderFilter`,
-    defaultMessage: 'Filter',
   },
   noDecisionsFound: {
     id: `${displayName}.noDecisionsFound`,
@@ -40,94 +38,53 @@ const MSG = defineMessages({
   },
 });
 
-// type Props = {
-//   //ethDomainId: number;
-// };
+interface ColonyDecisionsProps {
+  domainId: number;
+}
 
-// const ITEMS_PER_PAGE = 10;
+const ColonyDecisions = ({ domainId }: ColonyDecisionsProps) => {
+  const { colony } = useColonyContext();
+  const [sortDirection, setSortDirection] = useState<ModelSortDirection>(
+    ModelSortDirection.Desc,
+  );
+  const [page, setPage] = useState<number>(1);
 
-const ColonyDecisions = () => {
-  // const { colonyName } = useParams();
-  // const [dataPage, setDataPage] = useState<number>(1);
   const { isVotingReputationEnabled, loading: isLoadingExtensions } =
     useEnabledExtensions();
-  const { walletConnecting, userLoading, user } = useAppContext();
-  const decision = useSelector(getDecisionFromStore(user?.walletAddress || ''));
+  const { user } = useAppContext();
 
-  // const navigate = useNavigate();
-  // const handleActionRedirect = ({ transactionHash }: RedirectHandlerProps) =>
-  //   navigate(`/colony/${colonyName}/decisions/tx/${transactionHash}`);
+  const draftDecision = useSelector(
+    getDraftDecisionFromStore(
+      user?.walletAddress || '',
+      colony?.colonyAddress ?? '',
+    ),
+  );
 
-  //   const [sortOption, setSortOption] = useState<string>(
-  //     SortOptions.ENDING_SOONEST,
-  //   );
+  const filter: {
+    showInDecisionsList: { eq: boolean };
+    motionDomainId?: { eq: number };
+  } = {
+    showInDecisionsList: { eq: true },
+  };
 
-  //   const { isVotingExtensionEnabled, isLoadingExtensions } =
-  //     useEnabledExtensions({
-  //       colonyAddress,
-  //     });
+  if (domainId) {
+    filter.motionDomainId = { eq: domainId };
+  }
 
-  //   const { data: extensions } = useColonyExtensionsQuery({
-  //     variables: { address: colonyAddress },
-  //   });
-  //   const { installedExtensions } = extensions?.processedColony || {};
-  //   const votingReputationExtension = installedExtensions?.find(
-  //     ({ extensionId }) => extensionId === Extension.VotingReputation,
-  //   );
+  const { data, loading: isLoadingDecisions } = useGetColonyDecisionsQuery({
+    variables: {
+      colonyAddress: colony?.colonyAddress ?? '',
+      sortDirection,
+      filter,
+      limit: page * ITEMS_PER_PAGE,
+    },
+    fetchPolicy: 'cache-and-network',
+  });
 
-  //   const { data: motions, loading: decisionsLoading } =
-  //     useSubgraphDecisionsSubscription({
-  //       variables: {
-  //         /*
-  //          * @NOTE We always need to fetch one more item so that we know that more
-  //          * items exist and we show the "load more" button
-  //          */
-  //         colonyAddress: colonyAddress?.toLowerCase() || '',
-  //         extensionAddress:
-  //           votingReputationExtension?.address?.toLowerCase() || '',
-  //       },
-  //     });
+  const decisions =
+    data?.getColonyDecisionByColonyAddress?.items.filter(notNull);
 
-  //   const decisions = useTransformer(getActionsListData, [
-  //     installedExtensions?.map(({ address }) => address) as string[],
-  //     { ...motions },
-  //     undefined,
-  //     {},
-  //   ]);
-
-  //   const filteredDecisions = useMemo(
-  //     () =>
-  //       !ethDomainId || ethDomainId === ROOT_DOMAIN_ID
-  //         ? decisions
-  //         : decisions?.filter(
-  //             (decision) =>
-  //               decision.toDomain === ethDomainId.toString() ||
-  //               decision.fromDomain === ethDomainId.toString() ||
-  //               /* when no specific domain in the action it is displayed in Root */
-  //               (ethDomainId === ROOT_DOMAIN_ID &&
-  //                 decision.fromDomain === undefined),
-  //           ),
-  //     [ethDomainId, decisions],
-  //   );
-
-  //   const sortedDecisions = useMemo(
-  //     () =>
-  //       filteredDecisions.sort((first, second) =>
-  //         sortOption === SortOptions.ENDING_SOONEST
-  //           ? first.createdAt.getTime() - second.createdAt.getTime()
-  //           : second.createdAt.getTime() - first.createdAt.getTime(),
-  //       ),
-  //     [sortOption, filteredDecisions],
-  //   );
-
-  //   const paginatedDecisions = sortedDecisions.slice(
-  //     0,
-  //     ITEMS_PER_PAGE * dataPage,
-  //   );
-
-  // @TODO: Replace with query loading state.
-  const decisionsLoading = walletConnecting || userLoading;
-  if (decisionsLoading) {
+  if (isLoadingDecisions) {
     return (
       <div className={styles.loadingSpinner}>
         <SpinnerLoader
@@ -148,57 +105,36 @@ const ColonyDecisions = () => {
 
   return (
     <div>
-      {
-        /* {sortedDecisions.length > 0 ? (
-        <>
-          <div className={styles.bar}>
-            <div className={styles.title}>
-              <FormattedMessage {...MSG.decisionsTitle} />
-            </div>
-            <Form
-              initialValues={{ filter: SortOptions.ENDING_SOONEST }}
-              onSubmit={() => undefined}
-            >
-              <div className={styles.filter}>
-                <Select
-                  appearance={{
-                    alignOptions: 'left',
-                    theme: 'alt',
-                    unrestrictedOptionsWidth: 'true',
-                  }}
-                  elementOnly
-                  label={MSG.labelFilter}
-                  name="filter"
-                  options={SortSelectOptions}
-                  placeholder={MSG.placeholderFilter}
-                  onChange={setSortOption}
-                />
-              </div>
-            </Form>
-          </div>
-          <ActionsList
-            items={paginatedDecisions}
-            handleItemClick={handleActionRedirect}
-            colony={colony}
-          />
-          {ITEMS_PER_PAGE * dataPage < decisions?.length && (
-            <LoadMoreButton
-              onClick={() => setDataPage(dataPage + 1)}
-              isLoadingData={decisionsLoading}
-            />
-          )}
-        </> }
-      ) : ( */
-        !decisionsLoading && (
-          /* isVotingExtensionEnabled && */
+      <DecisionListHeader
+        sortDirection={sortDirection}
+        setSortDirection={setSortDirection}
+      />
+      {decisions?.length ? (
+        <ul>
+          {draftDecision && <DraftDecisionItem draftDecision={draftDecision} />}
+          {decisions.map((decisionData) => (
+            <DecisionItem decision={decisionData} key={decisionData.actionId} />
+          ))}
+        </ul>
+      ) : (
+        !isLoadingDecisions && (
           <div className={styles.draftDecisionContainer}>
-            {decision && <DraftDecisionItem decision={decision} />}
+            {draftDecision && (
+              <DraftDecisionItem draftDecision={draftDecision} />
+            )}
             <div className={styles.emptyState}>
               <FormattedMessage {...MSG.noDecisionsFound} />
             </div>
           </div>
         )
-      }
+      )}
+
+      {data?.getColonyDecisionByColonyAddress?.nextToken && (
+        <LoadMoreButton
+          onClick={() => setPage((pg) => pg + 1)}
+          isLoadingData={isLoadingDecisions}
+        />
+      )}
     </div>
   );
 };

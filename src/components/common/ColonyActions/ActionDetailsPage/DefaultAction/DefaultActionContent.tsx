@@ -9,6 +9,9 @@ import {
   MotionDetailsPageFeed,
 } from '../ActionDetailsPageFeed';
 
+import { DecisionContent } from '~common/ColonyDecisions/DecisionPreview/DecisionData';
+import TimeRelative from '~shared/TimeRelative/TimeRelative';
+
 import ActionAnnotation from './ActionAnnotation';
 
 import styles from './DefaultActionContent.css';
@@ -22,11 +25,40 @@ interface DefaultActionContentProps {
 }
 
 const DefaultActionContent = ({
-  actionData: { annotation, motionData },
+  actionData: { annotation, motionData, isMotion, decisionData },
   actionData,
   colony,
 }: DefaultActionContentProps) => {
   const { objectionAnnotation } = motionData ?? {};
+
+  if (decisionData) {
+    return (
+      <div className={styles.content}>
+        <DecisionContent
+          title={decisionData.title}
+          description={decisionData.description}
+          time={
+            <span className={styles.time}>
+              <TimeRelative value={new Date(decisionData.createdAt)} />
+            </span>
+          }
+        />
+        {objectionAnnotation && (
+          <DecisionContent
+            isObjection
+            description={objectionAnnotation.message}
+            time={
+              <span className={styles.time}>
+                <TimeRelative value={new Date(objectionAnnotation.createdAt)} />
+              </span>
+            }
+          />
+        )}
+        <MotionDetailsPageFeed actionData={actionData} />
+      </div>
+    );
+  }
+
   return (
     <div className={styles.content}>
       <Heading3
@@ -41,7 +73,7 @@ const DefaultActionContent = ({
           <ActionAnnotation annotation={objectionAnnotation} isObjection />
         )}
       </div>
-      {actionData.isMotion ? (
+      {isMotion ? (
         <MotionDetailsPageFeed actionData={actionData} />
       ) : (
         <ActionDetailsPageFeed actionData={actionData} />

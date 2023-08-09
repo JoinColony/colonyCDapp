@@ -6,9 +6,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Button from '~shared/Button';
 import Dialog, { DialogSection } from '~shared/Dialog';
 import { Heading3 } from '~shared/Heading';
-import { ColonyDecision } from '~types';
 import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
 import { removeDecisionAction } from '~redux/actionCreators';
+import { DecisionDraft } from '~utils/decisions';
 
 import styles from './DeleteDecisionDialog.css';
 
@@ -28,20 +28,20 @@ const MSG = defineMessage({
 interface DeleteDecisionDialogProps {
   cancel: () => void;
   close: () => void;
-  decision: ColonyDecision;
+  draftDecision: DecisionDraft;
 }
 
 const DeleteDecisionDialog = ({
   cancel,
   close,
-  decision: { walletAddress },
+  draftDecision: { walletAddress, colonyAddress },
 }: DeleteDecisionDialogProps) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const dispatch = useDispatch();
 
   const handleDeleteDecision = () => {
-    dispatch(removeDecisionAction(walletAddress));
+    dispatch(removeDecisionAction(walletAddress, colonyAddress));
     close();
     if (pathname.includes(DECISIONS_PREVIEW)) {
       // navigate to /decisions
