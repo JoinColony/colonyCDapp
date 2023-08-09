@@ -5593,6 +5593,10 @@ export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, 
 
 export type ExtensionDisplayFragmentFragment = { __typename?: 'ColonyExtension', hash: string, address: string };
 
+export type SafeTransactionDataFragment = { __typename?: 'SafeTransactionData', transactionType: string, amount?: string | null, rawAmount?: string | null, data?: string | null, abi?: string | null, contractFunction?: string | null, token?: { __typename?: 'SafeBalanceToken', name: string, decimals: number, symbol: string, address: string, networkName?: string | null, logoUri?: string | null } | null, recipient?: { __typename?: 'SimpleTarget', id: string, walletAddress: string, profile: { __typename?: 'SimpleTargetProfile', avatarHash?: string | null, displayName?: string | null, username?: string | null } } | null, contract?: { __typename?: 'SimpleTarget', id: string, walletAddress: string, profile: { __typename?: 'SimpleTargetProfile', avatarHash?: string | null, displayName?: string | null, username?: string | null } } | null, nft?: { __typename?: 'NFT', id: string, walletAddress: string, profile: { __typename?: 'NFTProfile', displayName: string } } | null, nftData?: { __typename?: 'NFTData', address: string, description?: string | null, id: string, imageUri?: string | null, logoUri: string, name?: string | null, tokenName: string, tokenSymbol: string, uri: string } | null, functionParamTypes?: Array<{ __typename?: 'FunctionParamType', name: string, type: string } | null> | null };
+
+export type NftDataFragment = { __typename?: 'NFTData', address: string, description?: string | null, id: string, imageUri?: string | null, logoUri: string, name?: string | null, tokenName: string, tokenSymbol: string, uri: string };
+
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
 
 export type UserTokenBalanceDataFragment = { __typename?: 'GetUserTokenBalanceReturn', balance?: string | null, inactiveBalance?: string | null, lockedBalance?: string | null, activeBalance?: string | null, pendingBalance?: string | null };
@@ -5678,6 +5682,13 @@ export type CreateDomainMutationVariables = Exact<{
 
 
 export type CreateDomainMutation = { __typename?: 'Mutation', createDomain?: { __typename?: 'Domain', id: string } | null };
+
+export type CreateColonySafeTransactionMutationVariables = Exact<{
+  input: CreateColonySafeTransactionInput;
+}>;
+
+
+export type CreateColonySafeTransactionMutation = { __typename?: 'Mutation', createColonySafeTransaction?: { __typename?: 'ColonySafeTransaction', id: string } | null };
 
 export type CreateColonyTokensMutationVariables = Exact<{
   input: CreateColonyTokensInput;
@@ -6466,6 +6477,77 @@ export const WatchListItemFragmentDoc = gql`
   createdAt
 }
     ${WatchedColonyFragmentDoc}`;
+export const SafeTransactionDataFragmentDoc = gql`
+    fragment SafeTransactionData on SafeTransactionData {
+  transactionType
+  token {
+    name
+    decimals
+    symbol
+    address
+    networkName
+    logoUri
+  }
+  amount
+  rawAmount
+  recipient {
+    id
+    profile {
+      avatarHash
+      displayName
+      username
+    }
+    walletAddress
+  }
+  data
+  contract {
+    id
+    profile {
+      avatarHash
+      displayName
+      username
+    }
+    walletAddress
+  }
+  abi
+  contractFunction
+  nft {
+    id
+    profile {
+      displayName
+    }
+    walletAddress
+  }
+  nftData {
+    address
+    description
+    id
+    imageUri
+    logoUri
+    name
+    tokenName
+    tokenSymbol
+    uri
+  }
+  functionParamTypes {
+    name
+    type
+  }
+}
+    `;
+export const NftDataFragmentDoc = gql`
+    fragment NFTData on NFTData {
+  address
+  description
+  id
+  imageUri
+  logoUri
+  name
+  tokenName
+  tokenSymbol
+  uri
+}
+    `;
 export const UserTokenBalanceDataFragmentDoc = gql`
     fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
   balance
@@ -6832,6 +6914,39 @@ export function useCreateDomainMutation(baseOptions?: Apollo.MutationHookOptions
 export type CreateDomainMutationHookResult = ReturnType<typeof useCreateDomainMutation>;
 export type CreateDomainMutationResult = Apollo.MutationResult<CreateDomainMutation>;
 export type CreateDomainMutationOptions = Apollo.BaseMutationOptions<CreateDomainMutation, CreateDomainMutationVariables>;
+export const CreateColonySafeTransactionDocument = gql`
+    mutation CreateColonySafeTransaction($input: CreateColonySafeTransactionInput!) {
+  createColonySafeTransaction(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateColonySafeTransactionMutationFn = Apollo.MutationFunction<CreateColonySafeTransactionMutation, CreateColonySafeTransactionMutationVariables>;
+
+/**
+ * __useCreateColonySafeTransactionMutation__
+ *
+ * To run a mutation, you first call `useCreateColonySafeTransactionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateColonySafeTransactionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createColonySafeTransactionMutation, { data, loading, error }] = useCreateColonySafeTransactionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateColonySafeTransactionMutation(baseOptions?: Apollo.MutationHookOptions<CreateColonySafeTransactionMutation, CreateColonySafeTransactionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateColonySafeTransactionMutation, CreateColonySafeTransactionMutationVariables>(CreateColonySafeTransactionDocument, options);
+      }
+export type CreateColonySafeTransactionMutationHookResult = ReturnType<typeof useCreateColonySafeTransactionMutation>;
+export type CreateColonySafeTransactionMutationResult = Apollo.MutationResult<CreateColonySafeTransactionMutation>;
+export type CreateColonySafeTransactionMutationOptions = Apollo.BaseMutationOptions<CreateColonySafeTransactionMutation, CreateColonySafeTransactionMutationVariables>;
 export const CreateColonyTokensDocument = gql`
     mutation CreateColonyTokens($input: CreateColonyTokensInput!) {
   createColonyTokens(input: $input) {

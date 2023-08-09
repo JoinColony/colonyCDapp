@@ -2681,22 +2681,6 @@ type SimpleTarget {
   walletAddress: String!
 }
 
-type ERC20Token {
-  name: String!
-  decimals: Int!
-  symbol: String!
-  logoUri: String!
-  address: String!
-}
-
-type SafeNativeToken {
-  name: String!
-  decimals: Int!
-  symbol: String!
-  address: String!
-  networkName: String!
-}
-
 type NFT {
   id: String!
   profile: NFTProfile!
@@ -2707,7 +2691,14 @@ type NFTProfile {
   displayName: String!
 }
 
-union SafeBalanceToken = ERC20Token | SafeNativeToken
+type SafeBalanceToken {
+  name: String!
+  decimals: Int!
+  symbol: String!
+  address: String!
+  networkName: String
+  logoUri: String
+}
 
 type FunctionParamType {
   name: String!
@@ -2728,11 +2719,10 @@ type NFTData {
 
 type SafeTransactionData {
   transactionType: String!
-  tokenAddress: ID
-  token: Token
+  token: SafeBalanceToken
   amount: String
   rawAmount: String
-  recipientUser: SimpleTarget
+  recipient: SimpleTarget
   data: String
   contract: SimpleTarget
   abi: String
@@ -2745,21 +2735,11 @@ type SafeTransactionData {
 type ColonySafeTransaction @model {
   id: ID!
   title: String!
-  safeId: ID!
-  safe: Safe! @hasOne(fields: ["safeId"])
+  safe: Safe!
   transactions: [SafeTransactionData!]!
 }
 
-input SafeInput {
-  id: ID!
-  name: String!
-  address: String!
-  chainId: Int!
-  moduleContractAddress: String!
-}
-
-type Safe @model {
-  id: ID!
+type Safe {
   name: String!
   address: String!
   chainId: Int!
