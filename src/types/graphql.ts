@@ -29,6 +29,8 @@ import {
   AnnotationFragment,
   ColonyDecisionFragment,
   SafeFragment,
+  SafeTransactionDataFragment,
+  NftDataFragment,
 } from '~gql';
 
 export type AnnotationType = AnnotationFragment;
@@ -112,3 +114,7 @@ export type VoterRecord = VoterRecordFragment;
 export type UnclaimedStakes = UnclaimedStakesFragment;
 
 export type Safe = SafeFragment;
+
+export type SafeTransactionData = SafeTransactionDataFragment;
+
+export type NFTData = NftDataFragment;
