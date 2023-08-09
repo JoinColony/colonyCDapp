@@ -32,6 +32,8 @@ import {
   ExpenditureSlotFragment,
   ExpenditurePayoutFragment,
   SafeFragment,
+  SafeTransactionDataFragment,
+  NftDataFragment,
 } from '~gql';
 
 export type AnnotationType = AnnotationFragment;
@@ -121,3 +123,7 @@ export type ExpenditureSlot = ExpenditureSlotFragment;
 export type ExpenditurePayout = ExpenditurePayoutFragment;
 
 export type Safe = SafeFragment;
+
+export type SafeTransactionData = SafeTransactionDataFragment;
+
+export type NFTData = NftDataFragment;
