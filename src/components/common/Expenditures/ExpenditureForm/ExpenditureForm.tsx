@@ -1,13 +1,16 @@
 import React from 'react';
 import { weiToEth } from '@web3-onboard/common';
+import { Id } from '@colony/colony-js';
+import { useNavigate } from 'react-router-dom';
 
 import { useColonyContext } from '~hooks';
-import { Form } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
+import { Expenditure } from '~types';
+import { ActionTypes } from '~redux';
+import { mapPayload, pipe, withMeta } from '~utils/actions';
 
-import ExpenditureActionButton from '../ExpenditureActionButton';
 import ExpenditureFormFields from './ExpenditureFormFields';
 import { getInitialSlotFieldValue } from './helpers';
-import { Expenditure } from '~types';
 
 export interface ExpenditureSlotFieldValue {
   recipientAddress: string;
@@ -25,14 +28,26 @@ export interface ExpenditureFormProps {
 }
 
 const ExpenditureForm = ({ expenditure, ...props }: ExpenditureFormProps) => {
+  const navigate = useNavigate();
+
   const { colony } = useColonyContext();
 
   if (!colony) {
     return null;
   }
 
+  const transformCreateExpenditurePayload = pipe(
+    mapPayload((payload: ExpenditureFormValues) => ({
+      colony,
+      slots: payload.slots,
+      // @TODO: This should come from the form values
+      domainId: Id.RootDomain,
+    })),
+    withMeta({ navigate }),
+  );
+
   return (
-    <Form<ExpenditureFormValues>
+    <ActionForm
       defaultValues={{
         slots: expenditure?.slots.map<ExpenditureSlotFieldValue>((slot) => ({
           recipientAddress: slot.recipientAddress ?? '',
@@ -40,11 +55,11 @@ const ExpenditureForm = ({ expenditure, ...props }: ExpenditureFormProps) => {
           amount: weiToEth(slot.payouts?.[0]?.amount.toString() ?? '0'),
         })) ?? [getInitialSlotFieldValue(colony.nativeToken.tokenAddress)],
       }}
-      onSubmit={() => {}}
+      actionType={ActionTypes.EXPENDITURE_CREATE}
+      transform={transformCreateExpenditurePayload}
     >
       <ExpenditureFormFields {...props} colony={colony} />
-      <ExpenditureActionButton />
-    </Form>
+    </ActionForm>
   );
 };
 
