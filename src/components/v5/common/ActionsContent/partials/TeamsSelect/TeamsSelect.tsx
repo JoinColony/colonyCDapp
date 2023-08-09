@@ -19,7 +19,7 @@ const TeamsSelect: FC<SelectProps> = ({ name }) => {
   const [isTeamSelectVisible, { toggle: toggleTeamSelect }] = useToggle();
 
   return (
-    <>
+    <div className="sm:relative w-full">
       <button
         type="button"
         className={styles.button}
@@ -54,7 +54,7 @@ const TeamsSelect: FC<SelectProps> = ({ name }) => {
           }}
         />
       )}
-    </>
+    </div>
   );
 };
 

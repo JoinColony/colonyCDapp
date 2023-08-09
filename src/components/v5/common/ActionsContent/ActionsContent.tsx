@@ -6,10 +6,13 @@ import UserSelect from './partials/UserSelect';
 import { useActionsContent } from './hooks';
 import AmountField from './partials/AmountField';
 import DecisionField from './partials/DecisionField';
+import TransactionTable from './partials/TransactionTable/TransactionTable';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
 
 const displayName = 'v5.common.ActionsContent';
 
 const ActionsContent: FC = () => {
+  const { selectedAction } = useActionSidebarContext();
   const {
     shouldShowFromField,
     shouldShowUserField,
@@ -51,12 +54,17 @@ const ActionsContent: FC = () => {
           <TeamsSelect name="createdIn" />
         </ActionSidebarRow>
       )}
-      <ActionSidebarRow
-        iconName="scales"
-        title={{ id: 'actionSidebar.decisionMethod' }}
-      >
-        <DecisionField />
-      </ActionSidebarRow>
+      {selectedAction && (
+        <>
+          <ActionSidebarRow
+            iconName="scales"
+            title={{ id: 'actionSidebar.decisionMethod' }}
+          >
+            <DecisionField />
+          </ActionSidebarRow>
+          <TransactionTable />
+        </>
+      )}
     </>
   );
 };

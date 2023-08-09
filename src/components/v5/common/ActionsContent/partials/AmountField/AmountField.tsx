@@ -15,12 +15,11 @@ import styles from './AmountField.module.css';
 import Numeral from '~shared/Numeral';
 import { useColonyContext, useDetectClickOutside } from '~hooks';
 import useToggle from '~hooks/useToggle';
-import { SelectProps } from '../../types';
-import { CleaveChangeEvent } from './types';
+import { AmountFieldProps, CleaveChangeEvent } from './types';
 
 const displayName = 'v5.common.ActionsContent.partials.AmountField';
 
-const AmountField: FC<SelectProps> = ({ name }) => {
+const AmountField: FC<AmountFieldProps> = ({ name, amount, defaultToken }) => {
   const { formatMessage } = useIntl();
   const { watch, register, setValue } = useFormContext();
   const { colony } = useColonyContext();
@@ -42,7 +41,7 @@ const AmountField: FC<SelectProps> = ({ name }) => {
     onInput,
     formattingOptions,
     selectedToken,
-  } = useAmountField(token);
+  } = useAmountField(defaultToken || token);
 
   const handleCleaveChange = (e: CleaveChangeEvent) => {
     setValue(name, e.target.rawValue);
@@ -62,6 +61,7 @@ const AmountField: FC<SelectProps> = ({ name }) => {
         className="placeholder:text-gray-500 text-gray-900"
         placeholder="0"
         onInput={onInput}
+        value={amount}
         onChange={handleCleaveChange}
         style={{ width: `${inputWidth || 0.65}rem` }}
       />

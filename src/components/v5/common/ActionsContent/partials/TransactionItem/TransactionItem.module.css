@@ -1,0 +1,7 @@
+.dotsButton {
+  @apply text-gray-400 hover:text-blue-400 p-[0.1875rem] transition-all duration-normal cursor-pointer;
+}
+
+.iconButton {
+  @apply flex text-md text-gray-600 transition-colors hover:text-blue-400;
+}

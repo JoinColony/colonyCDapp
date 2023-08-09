@@ -157,7 +157,7 @@ const SearchSelect: FC<SearchSelectProps> = ({
     </Modal>
   ) : (
     <Card
-      className="py-4 px-2.5 w-full sm:max-w-[20.375rem] absolute top-full right-1/2 translate-x-1/2 z-50"
+      className="py-4 px-2.5 w-full sm:max-w-[20.375rem] absolute top-[calc(100%+0.5rem)] left-0 z-50"
       hasShadow
       rounded="s"
       ref={ref}
