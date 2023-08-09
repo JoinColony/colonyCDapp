@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FileRejection } from 'react-dropzone';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 import { useAppContext, useCanEditProfile } from '~hooks';
 import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
@@ -12,12 +13,18 @@ import {
 } from '~images/optimisation';
 import { useUpdateUserProfileMutation } from '~gql';
 import Toast from '~shared/Extensions/Toast';
+import { convertBytes } from '~utils/convertBytes';
 
 export const useAvatarUploader = () => {
   const { updateUser } = useAppContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [uploadAvatarError, setUploadAvatarError] = useState<DropzoneErrors>();
   const [updateAvatar] = useUpdateUserProfileMutation();
+
+  const [showPropgress, setShowPropgress] = useState<boolean>();
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [file, setFileName] = useState({ fileName: '', fileSize: '' });
+
   const { user } = useCanEditProfile();
 
   const handleFileUpload = async (avatarFile: FileReaderFile | null) => {
@@ -30,6 +37,24 @@ export const useAvatarUploader = () => {
       const updatedAvatar = await getOptimisedAvatarUnder300KB(
         avatarFile?.file,
       );
+      setFileName({
+        fileName: avatarFile?.file.name || '',
+        fileSize: convertBytes(avatarFile?.file.size, 0),
+      });
+
+      if (avatarFile?.file) {
+        setShowPropgress(true);
+      }
+
+      const formData = new FormData();
+      formData.append('file', updatedAvatar || '');
+      setUploadProgress(0);
+      axios.post('', formData, {
+        onUploadProgress: ({ loaded, total = 0 }) => {
+          setUploadProgress(Math.floor((loaded / total) * 100));
+        },
+      });
+
       const thumbnail = await getOptimisedThumbnail(avatarFile?.file);
 
       await updateAvatar({
@@ -62,6 +87,7 @@ export const useAvatarUploader = () => {
       }
     } finally {
       setIsLoading(false);
+      setShowPropgress(false);
     }
   };
 
@@ -82,5 +108,8 @@ export const useAvatarUploader = () => {
     handleFileReject,
     handleFileRemove,
     handleFileUpload,
+    showPropgress,
+    uploadProgress,
+    file,
   };
 };

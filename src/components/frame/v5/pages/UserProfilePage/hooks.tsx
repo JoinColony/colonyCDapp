@@ -113,10 +113,13 @@ export const useUserProfile = () => {
     }
   };
 
+  const showNameMessage =
+    dirtyFields.displayName && !errors.displayName?.message;
+
   return {
     register,
     handleSubmit,
-    dirtyFields,
+    showNameMessage,
     onSubmit,
     errors,
     avatarUrl,
