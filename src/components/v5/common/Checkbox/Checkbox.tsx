@@ -10,11 +10,11 @@ import Icon from '~shared/Icon';
 const displayName = 'v5.common.Checkbox';
 
 const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
-  name,
+  name = '',
   disabled,
   id,
   register,
-  label,
+  label = '',
   onChange,
   classNames,
   isChecked,
@@ -22,6 +22,7 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
   mode = 'primary',
 }) => {
   const { formatMessage } = useIntl();
+  const labelText = typeof label === 'string' ? label : formatMessage(label);
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,7 +69,7 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
 
         <div className="flex items-center gap-2">
           {children}
-          {label && formatMessage(label)}
+          {labelText}
         </div>
       </label>
     </div>

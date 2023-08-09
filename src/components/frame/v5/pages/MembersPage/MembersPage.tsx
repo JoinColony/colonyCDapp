@@ -5,16 +5,14 @@ import TwoColumns from '~v5/frame/TwoColumns';
 import { useMembersPage } from './hooks';
 import MembersList from '~v5/common/MembersList';
 import TeamReputationSummary from '~v5/common/TeamReputationSummary';
-import { useSearchContext } from '~context/SearchContext';
 import Header from '~frame/v5/Header';
 import Spinner from '~v5/shared/Spinner';
 
 const displayName = 'v5.pages.MembersPage';
 
 const MembersPage: FC = () => {
-  const { searchValue } = useSearchContext();
   const { contributors, followers, loading, followersURL, contributorsURL } =
-    useMembersPage(searchValue);
+    useMembersPage();
 
   return (
     <Spinner loadingText={{ id: 'loading.membersPage' }}>

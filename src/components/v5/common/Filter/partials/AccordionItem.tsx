@@ -14,7 +14,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
   title,
   option,
   onSelectNestedOption,
-  onSelectParentFilter,
+  onMobileSelectParentFilter,
   selectedChildOption,
   checkedItems,
   nestedFilters,
@@ -24,7 +24,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
 
   const handleToggle = () => {
     setOpen((prev) => !prev);
-    onSelectParentFilter?.(option);
+    onMobileSelectParentFilter?.(option);
   };
 
   return (

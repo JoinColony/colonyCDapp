@@ -1,21 +1,25 @@
 import { usePopperTooltip } from 'react-popper-tooltip';
+import { useFilterContext } from '~context/FilterContext';
+import { useSearchContext } from '~context/SearchContext';
 import { useGetMembersForColonyQuery } from '~gql';
 
 import { useColonyContext } from '~hooks';
 import { searchMembers } from '~utils/members';
 
-export const useMembersPage = (searchValue?: string) => {
+export const useMembersPage = () => {
   const { colony } = useColonyContext();
   const { colonyAddress, name } = colony || {};
   const followersURL = `/colony/${name}/followers`;
   const contributorsURL = `/colony/${name}/contributors`;
+  const { searchValue } = useSearchContext();
+  const { teamSelectedOptions } = useFilterContext();
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({
       delayShow: 200,
       delayHide: 200,
       placement: 'bottom-start',
-      trigger: ['click', 'hover'],
+      trigger: 'click',
       interactive: true,
     });
 
@@ -24,8 +28,10 @@ export const useMembersPage = (searchValue?: string) => {
     variables: {
       input: {
         colonyAddress: colonyAddress ?? '',
+        domainId: teamSelectedOptions?.[0]?.value, // @TODO: fix that when API can handle passing []
       },
     },
+    fetchPolicy: 'cache-and-network',
   });
 
   const followers = data?.getMembersForColony?.watchers ?? [];

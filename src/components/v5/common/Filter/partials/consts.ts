@@ -1,100 +1,82 @@
+import { TeamType } from '~v5/common/TableFiltering/types';
 import { FilterOptionProps } from '../types';
 
 export const contributorTypes: FilterOptionProps[] = [
   {
-    id: 'top',
-    title: { id: 'filter.option.top' },
+    value: 'top',
+    label: { id: 'filter.option.top' },
   },
   {
-    id: 'dedicated',
-    title: { id: 'filter.option.dedicated' },
+    value: 'dedicated',
+    label: { id: 'filter.option.dedicated' },
   },
   {
-    id: 'active',
-    title: { id: 'filter.option.active' },
+    value: 'active',
+    label: { id: 'filter.option.active' },
   },
   {
-    id: 'contributorVerified',
-    title: { id: 'filter.option.verified' },
+    value: 'verified',
+    label: { id: 'filter.option.verified' },
   },
   {
-    id: 'general',
-    title: { id: 'filter.option.general' },
+    value: 'general',
+    label: { id: 'filter.option.general' },
   },
 ];
 
 export const statusTypes: FilterOptionProps[] = [
   {
-    id: 'banned',
-    title: { id: 'filter.option.banned' },
+    value: 'banned',
+    label: { id: 'filter.option.banned' },
   },
   {
-    id: 'notBanned',
-    title: { id: 'filter.option.notBanned' },
+    value: 'notBanned',
+    label: { id: 'filter.option.notBanned' },
   },
 ];
 
-export const teamTypes: FilterOptionProps[] = [
-  {
-    id: 'teamRoot',
-    title: { id: 'filter.option.root' },
-  },
-  {
-    id: 'business',
-    title: { id: 'filter.option.business' },
-  },
-  {
-    id: 'product',
-    title: { id: 'filter.option.product' },
-  },
-  {
-    id: 'development',
-    title: { id: 'filter.option.development' },
-  },
-  {
-    id: 'productDesign',
-    title: { id: 'filter.option.productDesign' },
-  },
-  {
-    id: 'devops',
-    title: { id: 'filter.option.devops' },
-  },
+export const teamTypes: TeamType[] = [
+  'Root',
+  'Procurement',
+  'Development',
+  'Pagepro',
+  'Design',
 ];
 
 export const reputationType: FilterOptionProps[] = [
   {
-    id: 'highestToLowest',
-    title: { id: 'filter.option.highest.to.lowest' },
+    value: 'highestToLowest',
+    label: { id: 'filter.option.highest.to.lowest' },
   },
   {
-    id: 'lowestToHighest',
-    title: { id: 'filter.option.lowest.to.highest' },
+    value: 'lowestToHighest',
+    label: { id: 'filter.option.lowest.to.highest' },
   },
 ];
 
 export const permissionsTypes: FilterOptionProps[] = [
   {
-    id: 'permissionRoot',
-    title: { id: 'filter.option.root' },
+    value: 'permissionRoot',
+    label: { id: 'filter.option.root' },
   },
   {
-    id: 'administration',
-    title: { id: 'filter.option.administration' },
+    value: 'administration',
+    label: { id: 'filter.option.administration' },
   },
   {
-    id: 'arbitration',
-    title: { id: 'filter.option.arbitration' },
+    value: 'arbitration',
+    label: { id: 'filter.option.arbitration' },
   },
   {
-    id: 'architecture',
-    title: { id: 'filter.option.architecture' },
+    value: 'architecture',
+    label: { id: 'filter.option.architecture' },
   },
   {
-    id: 'funding',
-    title: { id: 'filter.option.funding' },
+    value: 'funding',
+    label: { id: 'filter.option.funding' },
   },
   {
-    id: 'recovery',
-    title: { id: 'filter.option.recovery' },
+    value: 'recovery',
+    label: { id: 'filter.option.recovery' },
   },
 ];

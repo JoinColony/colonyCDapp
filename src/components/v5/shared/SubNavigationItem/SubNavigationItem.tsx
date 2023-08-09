@@ -1,11 +1,9 @@
 import React, { FC, useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { noop } from 'lodash';
 
 import Icon from '~shared/Icon';
 import { SubNavigationItemProps } from './types';
 import Tooltip from '~shared/Extensions/Tooltip';
-import { useMobile } from '~hooks';
 import PopoverBase from '../PopoverBase';
 import NestedOptions from './partials/NestedOptions';
 import { useMembersSubNavigation } from './hooks';
@@ -20,18 +18,14 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
   shouldBeTooltipVisible = false,
   tooltipText = [],
   isCopyTriggered,
-  onSelectParentFilter,
-  shouldBeActionOnHover = true,
   onSelectNestedOption,
   selectedChildOption,
   checkedItems,
   nestedFilters,
-  onClick,
 }) => {
   const { formatMessage } = useIntl();
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     useMembersSubNavigation();
-  const isMobile = useMobile();
 
   const tooltipContent = (
     <>
@@ -39,11 +33,6 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
       <span className="ml-2">{formatMessage({ id: title })}</span>
     </>
   );
-
-  const handleSelectElement = () => {
-    onClick?.();
-    onSelectParentFilter?.(option);
-  };
 
   const isOptionSelected = useMemo(
     () => options?.some((item) => item.option === option),
@@ -56,10 +45,6 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
         <button
           type="button"
           aria-label={formatMessage({ id: 'select.filter.menu.item' })}
-          onClick={handleSelectElement}
-          onMouseEnter={
-            isMobile || shouldBeActionOnHover ? noop : handleSelectElement
-          }
           className="subnav-button"
           ref={setTriggerRef}
         >

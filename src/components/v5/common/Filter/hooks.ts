@@ -1,103 +1,56 @@
-import { useCallback, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-
-import { FilterOption, FilterType } from '../TableFiltering/types';
+import { useMemo } from 'react';
+import { useTeams } from '~hooks/useTeams';
+import { ParentFilterOption } from './types';
 import {
   contributorTypes,
   permissionsTypes,
   reputationType,
   statusTypes,
-  teamTypes,
 } from './partials/consts';
 
 export const useFilter = () => {
-  const [selectedFilters, setSelectedFilters] = useState<FilterOption[]>([]);
-  const [selectedChildOption, setSelectedOption] = useState<FilterOption>();
-  const [selectedParentFilters, setSelectedParentFilter] = useState<
-    FilterType | FilterType[]
-  >([]);
-  const [checkedItems, setCheckedItems] = useState<Map<string, boolean>>(
-    new Map(),
-  );
-  const location = useLocation();
-  const isFollowersPage = location.pathname.includes('followers');
+  const teamsOptions = useTeams();
 
-  const onSaveSelectedFilters = useCallback(
-    (event) => {
-      let array: FilterOption[] = [...selectedFilters];
-
-      const item = event.target.id;
-      const isChecked = event.target.checked;
-
-      setCheckedItems((prevState) => new Map(prevState).set(item, isChecked));
-
-      if (isChecked) {
-        array = [...selectedFilters, event.target?.name];
-        setSelectedOption(event.target?.name);
-      } else {
-        array.splice(selectedFilters.indexOf(event.target?.name), 1);
-        setSelectedOption(undefined);
-      }
-      setSelectedFilters(array);
-    },
-    [selectedFilters, setSelectedFilters],
-  );
-
-  const onClearFilters = useCallback(() => {
-    setSelectedFilters([]);
-    setSelectedOption(undefined);
-    setCheckedItems(new Map());
-  }, []);
-
-  const onSelectParentFilter = useCallback((id: FilterType) => {
-    setSelectedParentFilter((prev: FilterType[]) => [...prev, id]);
-  }, []);
-
-  const onSelectNestedOption = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      onSaveSelectedFilters(event);
-    },
-    [onSaveSelectedFilters],
+  const filterOptions: ParentFilterOption[] = useMemo(
+    () => [
+      {
+        id: 0,
+        title: 'filter.teams',
+        option: 'team',
+        iconName: 'users-three',
+        content: teamsOptions.options,
+      },
+      {
+        id: 1,
+        title: 'filter.contributor.type',
+        option: 'contributor',
+        iconName: 'user',
+        content: contributorTypes,
+      },
+      {
+        id: 2,
+        title: 'filter.user.status',
+        option: 'status',
+        iconName: 'flag',
+        content: statusTypes,
+      },
+      {
+        id: 3,
+        title: 'filter.reputation',
+        option: 'reputation',
+        iconName: 'star-not-filled',
+        content: reputationType,
+      },
+      {
+        id: 4,
+        title: 'filter.permissions',
+        option: 'permissions',
+        iconName: 'lock-key',
+        content: permissionsTypes,
+      },
+    ],
+    [teamsOptions],
   );
 
-  const isContributorTypeSelected = contributorTypes.some(
-    ({ id }) => id === selectedChildOption,
-  );
-  const isStatusTypeSelected = statusTypes.some(
-    ({ id }) => id === selectedChildOption,
-  );
-
-  const isTeamTypeSelected = teamTypes.some(
-    ({ id }) => id === selectedChildOption,
-  );
-
-  const isPermissionsTypeSelected = permissionsTypes.some(
-    ({ id }) => id === selectedChildOption,
-  );
-
-  const isReputationTypeSelected = reputationType.some(
-    ({ id }) => id === selectedChildOption,
-  );
-
-  const numberSelectedFilters = [
-    isTeamTypeSelected,
-    isContributorTypeSelected,
-    isStatusTypeSelected,
-    isReputationTypeSelected,
-    isPermissionsTypeSelected,
-  ].filter(Boolean).length;
-
-  return {
-    selectedFilters: [...new Set(selectedFilters)],
-    onSelectParentFilter,
-    onSelectNestedOption,
-    onClearFilters,
-    selectedChildOption,
-    numberSelectedFilters,
-    selectedParentFilters: [...new Set(selectedParentFilters)] as
-      | FilterType[]
-      | FilterType,
-    checkedItems,
-    isFollowersPage,
-  };
+  return filterOptions;
 };
