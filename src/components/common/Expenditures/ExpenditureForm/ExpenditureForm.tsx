@@ -46,6 +46,16 @@ const ExpenditureForm = ({ expenditure, ...props }: ExpenditureFormProps) => {
     withMeta({ navigate }),
   );
 
+  const transformEditExpenditurePayload = mapPayload(
+    (payload: ExpenditureFormValues) => ({
+      colonyAddress: colony.colonyAddress,
+      expenditure,
+      slots: payload.slots,
+    }),
+  );
+
+  const isEditing = !!expenditure;
+
   return (
     <ActionForm
       defaultValues={{
@@ -55,8 +65,16 @@ const ExpenditureForm = ({ expenditure, ...props }: ExpenditureFormProps) => {
           amount: weiToEth(slot.payouts?.[0]?.amount.toString() ?? '0'),
         })) ?? [getInitialSlotFieldValue(colony.nativeToken.tokenAddress)],
       }}
-      actionType={ActionTypes.EXPENDITURE_CREATE}
-      transform={transformCreateExpenditurePayload}
+      actionType={
+        isEditing
+          ? ActionTypes.EXPENDITURE_EDIT
+          : ActionTypes.EXPENDITURE_CREATE
+      }
+      transform={
+        isEditing
+          ? transformEditExpenditurePayload
+          : transformCreateExpenditurePayload
+      }
     >
       <ExpenditureFormFields {...props} colony={colony} />
     </ActionForm>
