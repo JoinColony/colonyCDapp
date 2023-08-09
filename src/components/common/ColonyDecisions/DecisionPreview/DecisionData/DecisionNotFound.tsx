@@ -1,12 +1,15 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { Id } from '@colony/colony-js';
+import { Link } from 'react-router-dom';
 
 import Button from '~shared/Button';
 import { useDialog } from '~shared/Dialog';
 import { DecisionDialog } from '~common/ColonyDecisions';
 
 import { useColonyContext, useEnabledExtensions } from '~hooks';
+
+import styles from './DecisionNotFound.css';
 
 const displayName = 'common.ColonyDecisions.DecisionPreview.DecisionNotFound';
 
@@ -18,7 +21,7 @@ const MSG = defineMessages({
   },
   installExtension: {
     id: `${displayName}.installExtension`,
-    defaultMessage: `You need to install the Governance extension to use the Decisions feature.`,
+    defaultMessage: `You need to install the <link>Governance extension</link> to use the Decisions feature.`,
   },
 });
 
@@ -32,6 +35,18 @@ const createNewDecisionMsgValues = (handleClick: () => void) => ({
   ),
 });
 
+const extensionLinkMsgValues = (colonyName: string) => {
+  return {
+    link: (...chunks: any[]) => (
+      <span className={styles.governanceLink}>
+        <Link to={`/colony/${colonyName}/extensions/VotingReputation`}>
+          {chunks}
+        </Link>
+      </span>
+    ),
+  };
+};
+
 const DecisionNotFound = () => {
   const openDecisionDialog = useDialog(DecisionDialog);
   const { colony } = useColonyContext();
@@ -44,15 +59,20 @@ const DecisionNotFound = () => {
     });
   };
 
-  return isVotingReputationEnabled ? (
+  return (
     <div>
-      <FormattedMessage
-        {...MSG.noDecisionText}
-        values={createNewDecisionMsgValues(handleClick)}
-      />
+      {isVotingReputationEnabled ? (
+        <FormattedMessage
+          {...MSG.noDecisionText}
+          values={createNewDecisionMsgValues(handleClick)}
+        />
+      ) : (
+        <FormattedMessage
+          {...MSG.installExtension}
+          values={extensionLinkMsgValues(colony?.name ?? '')}
+        />
+      )}
     </div>
-  ) : (
-    <FormattedMessage {...MSG.installExtension} />
   );
 };
 
