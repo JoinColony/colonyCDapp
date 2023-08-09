@@ -105,11 +105,13 @@ export type TransactionChannel = {
   id: string;
 };
 
+type TransactionChannelMap = Record<string, TransactionChannel>;
+
 export function* createTransactionChannels(
   batchId: string,
   ids: string[],
   customIndex = 0,
-): IterableIterator<{ [id: string]: TransactionChannel }> {
+): IterableIterator<TransactionChannelMap> {
   const txIds = ids.map((id) => `${batchId}-${id}`);
   const channels = yield all(txIds.map((id) => call(getTxChannel, id))) as any;
   return ids.reduce(
