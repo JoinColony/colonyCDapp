@@ -1,10 +1,9 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { Safe, SafeTransaction } from '~types';
+import { Safe, SafeTransactionData } from '~types';
 import { intl } from '~utils/intl';
-import { TransactionTypes } from '~common/Dialogs/ControlSafeDialog/helpers';
-import { extractTokenName } from '~utils/safes';
+import { extractTokenName, TransactionTypes } from '~utils/safes';
 import { InvisibleCopyableMaskedAddress } from '~shared/InvisibleCopyableAddress';
 
 import { ContractName } from '../../SafeTransactionDetail';
@@ -38,7 +37,7 @@ const MSG = defineMessages({
 export const { unknownContract: unknownContractMSG, nft: nftMSG } = MSG;
 
 export interface ContractSectionProps {
-  transaction: SafeTransaction;
+  transaction: SafeTransactionData;
   safe: Safe;
   hideFunctionContract?: boolean;
 }
@@ -52,10 +51,10 @@ export const ContractSection = ({
     /* NOTE to self this might be an issue
     transaction.contract?.id || */
     transaction.contract?.walletAddress ||
-    transaction.tokenData?.tokenAddress ||
+    transaction.token?.address ||
     transaction.nftData?.address;
 
-  const getContractInfo = (safeTransaction: SafeTransaction) => {
+  const getContractInfo = (safeTransaction: SafeTransactionData) => {
     const { formatMessage } = intl();
     const { transactionType } = safeTransaction;
     const contractInfo = {
@@ -76,9 +75,9 @@ export const ContractSection = ({
         break;
       case TransactionTypes.TRANSFER_FUNDS:
         contractInfo.contractName =
-          safeTransaction.tokenData?.name || formatMessage(MSG.token);
+          safeTransaction.token?.name || formatMessage(MSG.token);
         contractInfo.contractAddress =
-          safeTransaction.tokenData?.tokenAddress || safe.address;
+          safeTransaction.token?.address || safe.address;
         break;
       case TransactionTypes.CONTRACT_INTERACTION:
         contractInfo.contractName =

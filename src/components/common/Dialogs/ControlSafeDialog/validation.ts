@@ -3,14 +3,17 @@ import { isHexString } from 'ethers/lib/utils';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 import { object, string, array, number } from 'yup';
 import moveDecimal from 'move-decimal-point';
+import Decimal from 'decimal.js';
 
 import { isAddress } from '~utils/web3';
 import { SafeBalance } from '~types';
 import { intl } from '~utils/intl';
-import { getSelectedSafeBalance, isAbiItem } from '~utils/safes';
+import {
+  getSelectedSafeBalance,
+  isAbiItem,
+  TransactionTypes,
+} from '~utils/safes';
 import { validateType } from '~utils/safes/contractParserValidation';
-
-import { TransactionTypes } from './helpers';
 
 const displayName = 'common.ControlSafeDialog.validation';
 
@@ -68,6 +71,7 @@ const MSG = defineMessages({
 });
 
 export const getValidationSchema = (
+  showPreview: boolean,
   expandedValidationSchema: Record<string, any>,
 ) =>
   object()
@@ -81,6 +85,13 @@ export const getValidationSchema = (
           })
           .required(() => MSG.requiredFieldError),
       }),
+      ...(showPreview
+        ? {
+            transactionsTitle: string()
+              .trim()
+              .required(() => MSG.requiredFieldError),
+          }
+        : {}),
       transactions: array(
         object().shape({
           transactionType: string().required(() => MSG.requiredFieldError),
@@ -159,10 +170,10 @@ export const getValidationSchema = (
                     );
 
                     if (safeBalance) {
-                      const convertedAmount = BigNumber.from(
+                      const convertedAmount = new Decimal(
                         moveDecimal(value, selectedTokenDecimals),
                       );
-                      const balance = BigNumber.from(safeBalance.balance);
+                      const balance = new Decimal(safeBalance.balance);
                       if (balance.lt(convertedAmount) || balance.isZero()) {
                         return this.createError({
                           message: formatMessage({

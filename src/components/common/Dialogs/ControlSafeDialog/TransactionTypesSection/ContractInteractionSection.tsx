@@ -27,7 +27,7 @@ import {
   getChainNameFromSafe,
 } from '~utils/safes';
 import { isEmpty, isEqual, isNil } from '~utils/lodash';
-import { Message, SafeTransaction } from '~types';
+import { Message, SafeTransactionData } from '~types';
 import { isMessageDescriptor } from '~utils/intl';
 import { BINANCE_NETWORK } from '~constants';
 
@@ -137,7 +137,7 @@ const ContractInteractionSection = ({
     formState: { isValid },
   } = useFormContext();
   const safe = watch('safe');
-  const transactions: SafeTransaction[] = watch(`transactions`);
+  const transactions: SafeTransactionData[] = watch(`transactions`);
   const transactionValues = transactions[transactionIndex];
   const selectedSafe = getSafe(safes, safe);
 

@@ -62,10 +62,13 @@ const AmountBalances = ({
     const safeNetworkData = SAFE_NETWORKS.find(
       (network) => Number(selectedSafe?.chainId) === network.chainId,
     );
+    // @NOTE: We know nativeToken is defined for Ethereum network.
+    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+    const token = safeNetworkData?.nativeToken || ETHEREUM_NETWORK.nativeToken!;
 
     return {
-      ...(safeNetworkData?.nativeToken || ETHEREUM_NETWORK.nativeToken)!,
       tokenAddress: ADDRESS_ZERO,
+      ...token,
     };
   });
 
@@ -118,7 +121,7 @@ const AmountBalances = ({
           <TokenSymbolSelector
             label={MSG.token}
             tokens={tokens}
-            name={`transactions.${transactionIndex}.tokenData.tokenAddress`}
+            name={`transactions.${transactionIndex}.token.tokenAddress`}
             elementOnly
             appearance={{ alignOptions: 'right', theme: 'grey' }}
             disabled={disabledInput}
