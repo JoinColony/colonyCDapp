@@ -4,18 +4,16 @@ import React, {
   FC,
   useCallback,
   useMemo,
-  useRef,
   useState,
 } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useOnClickOutside } from 'usehooks-ts';
 import { debounce } from 'lodash';
 import { useIntl } from 'react-intl';
 
 import { SearchSelectProps } from './types';
 import Card from '../Card';
 import CustomScrollbar from '../CustomScrollbar';
-import { useMobile } from '~hooks';
+import { useDetectClickOutside, useMobile } from '~hooks';
 import Modal from '../Modal';
 import { useSearchSelect } from './hooks';
 import SearchInput from './partials/SearchInput';
@@ -23,6 +21,7 @@ import SearchItem from './partials/SearchItem';
 import { accordionAnimation } from '~constants/accordionAnimation';
 import Icon from '~shared/Icon';
 import { SpinnerLoader } from '~shared/Preloaders';
+import EmptyContent from '~v5/common/EmptyContent';
 
 const displayName = 'v5.SearchSelect';
 
@@ -36,7 +35,6 @@ const SearchSelect: FC<SearchSelectProps> = ({
   const [searchValue, setSearchValue] = useState('');
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
-  const ref = useRef(null);
   const filteredList = useSearchSelect(items, searchValue);
 
   const defaultOpenedAccordions = useMemo(
@@ -48,9 +46,11 @@ const SearchSelect: FC<SearchSelectProps> = ({
     defaultOpenedAccordions,
   );
 
-  useOnClickOutside(ref, () => {
-    setSearchValue('');
-    onToggle();
+  const ref = useDetectClickOutside({
+    onTriggered: () => {
+      setSearchValue('');
+      onToggle();
+    },
   });
 
   const handleSearch = useMemo(
@@ -90,52 +90,60 @@ const SearchSelect: FC<SearchSelectProps> = ({
       {!isLoading && (
         <CustomScrollbar height={600} mobileHeight="70vh">
           <div className="pr-4 sm:pr-0">
-            {filteredList.map(({ options, title, isAccordion, key }) =>
-              isAccordion ? (
-                <div className="mb-6 last:mb-0" key={key}>
-                  <div className="flex items-center justify-between">
+            {filteredList.length > 0 ? (
+              filteredList.map(({ options, title, isAccordion, key }) =>
+                isAccordion ? (
+                  <div className="mb-6 last:mb-0" key={key}>
+                    <div className="flex items-center justify-between">
+                      <h5 className="text-4 text-gray-400 mb-2 uppercase">
+                        {formatMessage(title)}
+                      </h5>
+                      {isAccordion && (
+                        <button
+                          type="button"
+                          onClick={() => handleAccordionClick(key)}
+                        >
+                          <Icon
+                            name={
+                              openedAccordions.includes(key)
+                                ? 'caret-up'
+                                : 'caret-down'
+                            }
+                            appearance={{ size: 'extraTiny' }}
+                          />
+                        </button>
+                      )}
+                    </div>
+                    <AnimatePresence>
+                      {openedAccordions.includes(key) && (
+                        <motion.div
+                          initial="hidden"
+                          animate="visible"
+                          exit="hidden"
+                          variants={accordionAnimation}
+                          transition={{ duration: 0.4, ease: 'easeOut' }}
+                          className="overflow-hidden"
+                        >
+                          <SearchItem options={options} onChange={onSelect} />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <div key={key} className="mb-6 last:mb-0">
                     <h5 className="text-4 text-gray-400 mb-2 uppercase">
                       {formatMessage(title)}
                     </h5>
-                    {isAccordion && (
-                      <button
-                        type="button"
-                        onClick={() => handleAccordionClick(key)}
-                      >
-                        <Icon
-                          name={
-                            openedAccordions.includes(key)
-                              ? 'caret-up'
-                              : 'caret-down'
-                          }
-                          appearance={{ size: 'extraTiny' }}
-                        />
-                      </button>
-                    )}
+                    <SearchItem options={options} onChange={onSelect} />
                   </div>
-                  <AnimatePresence>
-                    {openedAccordions.includes(key) && (
-                      <motion.div
-                        initial="hidden"
-                        animate="visible"
-                        exit="hidden"
-                        variants={accordionAnimation}
-                        transition={{ duration: 0.4, ease: 'easeOut' }}
-                        className="overflow-hidden"
-                      >
-                        <SearchItem options={options} onChange={onSelect} />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ) : (
-                <div key={key} className="mb-6 last:mb-0">
-                  <h5 className="text-4 text-gray-400 mb-2 uppercase">
-                    {formatMessage(title)}
-                  </h5>
-                  <SearchItem options={options} onChange={onSelect} />
-                </div>
-              ),
+                ),
+              )
+            ) : (
+              <EmptyContent
+                icon="binoculars"
+                title={{ id: 'actionSidebar.emptyTitle' }}
+                description={{ id: 'actionSidebar.emptyDescription' }}
+              />
             )}
           </div>
         </CustomScrollbar>

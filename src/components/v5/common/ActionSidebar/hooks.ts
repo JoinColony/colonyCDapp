@@ -1,4 +1,6 @@
 import { useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+
 import { Actions } from '~constants/actions';
 import { SearchSelectOptionProps } from '~v5/shared/SearchSelect/types';
 import useToggle from '~hooks/useToggle';
@@ -9,10 +11,15 @@ export const useActionSidebar = () => {
     { toggle: toggleSelect, toggleOff: toggleSelectOff },
   ] = useToggle();
 
+  const methods = useForm({
+    mode: 'all',
+  });
+
   return {
     isSelectVisible,
     toggleSelect,
     toggleSelectOff,
+    methods,
   };
 };
 
