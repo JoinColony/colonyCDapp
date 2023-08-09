@@ -24,7 +24,7 @@ export const useAmountField = (selectedTokenAddress: string) => {
       numeral: true,
       numeralPositiveOnly: true,
       numeralDecimalScale: getTokenDecimalsWithFallback(
-        selectedToken && selectedToken.decimals,
+        selectedToken?.decimals,
       ),
     }),
     [selectedToken],
@@ -33,7 +33,7 @@ export const useAmountField = (selectedTokenAddress: string) => {
   const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     const valueWithoutCommas = value.replace(/,/g, '');
-    const width = valueWithoutCommas.length * 10;
+    const width = valueWithoutCommas.length * 0.65;
 
     setInputWidth(width);
   };

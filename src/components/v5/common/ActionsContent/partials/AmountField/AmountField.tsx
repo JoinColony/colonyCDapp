@@ -18,6 +18,8 @@ import useToggle from '~hooks/useToggle';
 import { SelectProps } from '../../types';
 import { CleaveChangeEvent } from './types';
 
+const displayName = 'v5.common.ActionsContent.partials.AmountField';
+
 const AmountField: FC<SelectProps> = ({ name }) => {
   const { formatMessage } = useIntl();
   const { watch, register, setValue } = useFormContext();
@@ -61,13 +63,14 @@ const AmountField: FC<SelectProps> = ({ name }) => {
         placeholder="0"
         onInput={onInput}
         onChange={handleCleaveChange}
-        style={{ width: `${inputWidth || 10}px` }}
+        style={{ width: `${inputWidth || 0.65}rem` }}
       />
       <div className="sm:relative w-full">
         <button
           type="button"
           className={styles.button}
           onClick={toggleTokenSelect}
+          aria-label={formatMessage({ id: 'ariaLabel.selectToken' })}
         >
           <TokenIcon token={selectedToken || colonyTokens[0]} size="xs" />
           <span className="text-md">
@@ -140,5 +143,7 @@ const AmountField: FC<SelectProps> = ({ name }) => {
     </div>
   );
 };
+
+AmountField.displayName = displayName;
 
 export default AmountField;

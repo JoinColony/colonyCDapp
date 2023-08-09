@@ -29,6 +29,7 @@ const UserSelect: FC<SelectProps> = ({ name }) => {
         type="button"
         className={styles.button}
         onClick={toggleUserSelect}
+        aria-label={formatMessage({ id: 'ariaLabel.selectUser' })}
       >
         {selectedUser ? (
           <UserAvatar

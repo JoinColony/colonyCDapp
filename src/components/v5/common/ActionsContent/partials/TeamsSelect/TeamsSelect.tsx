@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 
 import { useFormContext } from 'react-hook-form';
 import { useTeamsSelect } from './hooks';
-import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
+import SearchSelect from '~v5/shared/SearchSelect';
 import useToggle from '~hooks/useToggle';
 import TeamBadge from '~v5/common/Pills/TeamBadge';
 import styles from '../../ActionsContent.module.css';

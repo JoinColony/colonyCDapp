@@ -56,6 +56,9 @@ const DecisionField: FC = () => {
                 <button
                   type="button"
                   className={styles.button}
+                  aria-label={formatMessage({
+                    id: 'ariaLabel.selectDecisionMethod',
+                  })}
                   onClick={() => {
                     setSelectedDecisionMethod(value);
                     setValue('decisionMethod', value);
