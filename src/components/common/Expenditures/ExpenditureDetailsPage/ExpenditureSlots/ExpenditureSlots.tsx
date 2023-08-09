@@ -7,6 +7,7 @@ import Numeral from '~shared/Numeral';
 import Button from '~shared/Button/Button';
 
 import styles from './ExpenditureSlots.module.css';
+import { ExpenditureStatus } from '~gql';
 
 interface ExpenditureSlotsProps {
   expenditure: Expenditure;
@@ -16,11 +17,14 @@ interface ExpenditureSlotsProps {
 const ExpenditureSlots = ({ expenditure, colony }: ExpenditureSlotsProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
+  const canEditExpenditure =
+    !isEditing && expenditure.status === ExpenditureStatus.Draft;
+
   return (
     <div>
       <div>
         Slots{' '}
-        {!isEditing && (
+        {canEditExpenditure && (
           <Button
             appearance={{
               theme: 'primary',
