@@ -346,7 +346,7 @@ const ControlSafeForm = ({
                   label={MSG.transactionLabel}
                   name={`transactions[${index}].transactionType`}
                   onChange={(type) => {
-                    /* removeSelectedContractMethod(index); */
+                    removeSelectedContractMethod(index);
                     handleTransactionTypeChange(type as string, index);
                   }}
                   appearance={{ theme: 'grey', width: 'fluid' }}
