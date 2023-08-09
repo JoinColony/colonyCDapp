@@ -7,7 +7,7 @@ export const useTeamsSelect = (): SearchSelectOptionProps => {
   const { domains } = colony || {};
 
   const teams = domains?.items.map((team) => {
-    const { metadata } = team || {};
+    const { metadata, nativeId } = team || {};
     const { color, name: teamName } = metadata || {};
 
     const teamColor = setTeamColor(color);
@@ -17,6 +17,7 @@ export const useTeamsSelect = (): SearchSelectOptionProps => {
       value: teamName || '',
       isDisabled: false,
       color: teamColor,
+      nativeId,
     };
   });
 

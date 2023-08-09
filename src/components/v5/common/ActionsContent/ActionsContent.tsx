@@ -1,33 +1,20 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
 
-import ActionSidebarRow from '../ActionSidebarRow/ActionSidebarRow';
-import TeamsSelect from './partials/TeamsSelect/TeamsSelect';
-import TeamBadge from '../Pills/TeamBadge';
-import UserSelect from './partials/UserSelect/UserSelect';
-import styles from './ActionsContent.module.css';
-import UserAvatar from '~v5/shared/UserAvatar/UserAvatar';
+import ActionSidebarRow from '../ActionSidebarRow';
+import TeamsSelect from './partials/TeamsSelect';
+import UserSelect from './partials/UserSelect';
 import { useActionsContent } from './hooks';
+import AmountField from './partials/AmountField';
+import DecisionField from './partials/DecisionField';
 
 const displayName = 'v5.common.ActionsContent';
 
 const ActionsContent: FC = () => {
-  const { formatMessage } = useIntl();
   const {
-    isTeamSelectVisible,
-    isUserSelectVisible,
-    selectedTeam,
-    selectedUser,
-    setSelectedTeam,
-    setSelectedUser,
-    toggleTeamSelect,
-    toggleUserSelect,
     shouldShowFromField,
     shouldShowUserField,
     shouldShowAmountField,
-    userDisplayName,
-    username,
-    user,
+    shouldShowCreatedInField,
   } = useActionsContent();
 
   return (
@@ -37,24 +24,7 @@ const ActionsContent: FC = () => {
           iconName="users-three"
           title={{ id: 'actionSidebar.from' }}
         >
-          {selectedTeam ? (
-            <TeamBadge teamName={selectedTeam} text={selectedTeam} />
-          ) : (
-            <>
-              <button
-                type="button"
-                className={styles.button}
-                onClick={toggleTeamSelect}
-              >
-                {formatMessage({ id: 'actionSidebar.selectTeam' })}
-              </button>
-              <TeamsSelect
-                isOpen={isTeamSelectVisible}
-                onToggle={toggleTeamSelect}
-                onSelect={setSelectedTeam}
-              />
-            </>
-          )}
+          <TeamsSelect name="team" />
         </ActionSidebarRow>
       )}
       {shouldShowUserField && (
@@ -62,28 +32,7 @@ const ActionsContent: FC = () => {
           iconName="user-focus"
           title={{ id: 'actionSidebar.recipent' }}
         >
-          {selectedUser ? (
-            <UserAvatar
-              user={user}
-              userName={userDisplayName || username}
-              size="xs"
-            />
-          ) : (
-            <>
-              <button
-                type="button"
-                className={styles.button}
-                onClick={toggleUserSelect}
-              >
-                {formatMessage({ id: 'actionSidebar.selectMember' })}
-              </button>
-              <UserSelect
-                isOpen={isUserSelectVisible}
-                onToggle={toggleUserSelect}
-                onSelect={setSelectedUser}
-              />
-            </>
-          )}
+          <UserSelect name="recipient" />
         </ActionSidebarRow>
       )}
       {shouldShowAmountField && (
@@ -91,9 +40,23 @@ const ActionsContent: FC = () => {
           iconName="coins"
           title={{ id: 'actionSidebar.amount' }}
         >
-          asd
+          <AmountField name="amount" />
         </ActionSidebarRow>
       )}
+      {shouldShowCreatedInField && (
+        <ActionSidebarRow
+          iconName="house-line"
+          title={{ id: 'actionSidebar.createdIn' }}
+        >
+          <TeamsSelect name="createdIn" />
+        </ActionSidebarRow>
+      )}
+      <ActionSidebarRow
+        iconName="scales"
+        title={{ id: 'actionSidebar.decisionMethod' }}
+      >
+        <DecisionField />
+      </ActionSidebarRow>
     </>
   );
 };
