@@ -2,10 +2,9 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Numeral from '~shared/Numeral';
-import Avatar from '~shared/Avatar';
 import Icon from '~shared/Icon';
 import { Token, SafeTransaction } from '~types';
-import { TokenType } from '~gql';
+import TokenIcon from '~shared/TokenIcon';
 
 import { MSG } from '../../detailsWidgetConfig';
 
@@ -19,25 +18,12 @@ const renderTokenIcon = (tokenData: Token) => {
     );
   }
 
-  if (tokenData.type === TokenType.Erc20) {
-    return (
-      <Avatar
-        className={styles.tokenAvatar}
-        avatar={tokenData.thumbnail}
-        notSet={!tokenData.thumbnail}
-        title={`${tokenData.name} token logo`}
-        placeholderIcon="circle-close"
-        seed={tokenData.tokenAddress.toLowerCase()}
-      />
-    );
-  }
-
   return (
-    <Avatar
-      notSet
-      title={tokenData.name}
-      placeholderIcon="circle-close"
-      seed={tokenData.tokenAddress.toLowerCase()}
+    <TokenIcon
+      className={styles.tokenAvatar}
+      title={`${tokenData.name} token logo`}
+      iconName="circle-close"
+      token={tokenData}
     />
   );
 };
