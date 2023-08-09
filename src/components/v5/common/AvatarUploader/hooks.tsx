@@ -44,16 +44,16 @@ export const useAvatarUploader = () => {
 
       if (avatarFile?.file) {
         setShowPropgress(true);
-      }
 
-      const formData = new FormData();
-      formData.append('file', updatedAvatar || '');
-      setUploadProgress(0);
-      axios.post('', formData, {
-        onUploadProgress: ({ loaded, total = 0 }) => {
-          setUploadProgress(Math.floor((loaded / total) * 100));
-        },
-      });
+        const formData = new FormData();
+        formData.append('file', updatedAvatar || '');
+        setUploadProgress(0);
+        axios.post('', formData, {
+          onUploadProgress: ({ loaded, total = 0 }) => {
+            setUploadProgress(Math.floor((loaded / total) * 100));
+          },
+        });
+      }
 
       const thumbnail = await getOptimisedThumbnail(avatarFile?.file);
 
