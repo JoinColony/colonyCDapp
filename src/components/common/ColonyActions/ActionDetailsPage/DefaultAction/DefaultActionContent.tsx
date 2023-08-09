@@ -31,33 +31,48 @@ const DefaultActionContent = ({
 }: DefaultActionContentProps) => {
   const { objectionAnnotation } = motionData ?? {};
 
-  return (
-    <div className={styles.content}>
-      {decisionData ? (
+  if (decisionData) {
+    return (
+      <div className={styles.content}>
         <DecisionContent
-          decisionData={decisionData}
+          title={decisionData.title}
+          description={decisionData.description}
           time={
             <span className={styles.time}>
               <TimeRelative value={new Date(decisionData.createdAt)} />
             </span>
           }
         />
-      ) : (
-        <>
-          <Heading3
-            className={styles.heading}
-            data-test="actionHeading"
-            text={{ id: 'action.title' }}
-            textValues={getActionTitleValues(actionData, colony)}
+        {objectionAnnotation && (
+          <DecisionContent
+            isObjection
+            description={objectionAnnotation.message}
+            time={
+              <span className={styles.time}>
+                <TimeRelative value={new Date(objectionAnnotation.createdAt)} />
+              </span>
+            }
           />
-          <div className={styles.annotations}>
-            {annotation && <ActionAnnotation annotation={annotation} />}
-            {objectionAnnotation && (
-              <ActionAnnotation annotation={objectionAnnotation} isObjection />
-            )}
-          </div>
-        </>
-      )}
+        )}
+        <MotionDetailsPageFeed actionData={actionData} />
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.content}>
+      <Heading3
+        className={styles.heading}
+        data-test="actionHeading"
+        text={{ id: 'action.title' }}
+        textValues={getActionTitleValues(actionData, colony)}
+      />
+      <div className={styles.annotations}>
+        {annotation && <ActionAnnotation annotation={annotation} />}
+        {objectionAnnotation && (
+          <ActionAnnotation annotation={objectionAnnotation} isObjection />
+        )}
+      </div>
       {isMotion ? (
         <MotionDetailsPageFeed actionData={actionData} />
       ) : (

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { DecisionDialog, DeleteDecisionDialog } from '~common/ColonyDecisions';
 import { useDialog } from '~shared/Dialog';
 import Button, { ActionButton } from '~shared/Button';
-import { useColonyContext } from '~hooks';
+import { useColonyContext, useColonyHasReputation } from '~hooks';
 import { ActionTypes } from '~redux';
 
 import { DecisionDataProps } from '../DecisionData';
@@ -24,7 +24,7 @@ const DecisionPreviewControls = ({
 }: DecisionPreviewControlsProps) => {
   const { colony } = useColonyContext();
   const colonyAddress = colony?.colonyAddress ?? '';
-
+  const colonyHasReputation = useColonyHasReputation(colonyAddress);
   const openConfirmDeleteDialog = useDialog(DeleteDecisionDialog);
   const openDecisionDialog = useDialog(DecisionDialog);
   const navigate = useNavigate();
@@ -61,7 +61,7 @@ const DecisionPreviewControls = ({
         transform={withMeta({ navigate })}
         appearance={{ theme: 'primary', size: 'large' }}
         text={{ id: 'button.publish' }}
-        disabled={!draftDecision}
+        disabled={!draftDecision || !colonyHasReputation}
       />
     </div>
   );

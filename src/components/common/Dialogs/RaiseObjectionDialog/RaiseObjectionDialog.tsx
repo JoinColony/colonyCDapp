@@ -32,6 +32,7 @@ interface RaiseObjectionDialogProps extends DialogProps {
   transform: ReturnType<typeof mapPayload>;
   setIsSummary: SetStateFn;
   amount: number;
+  isDecision: boolean;
 }
 
 const RaiseObjectionDialog = ({
@@ -40,6 +41,7 @@ const RaiseObjectionDialog = ({
   transform,
   setIsSummary,
   amount,
+  isDecision,
 }: RaiseObjectionDialogProps) => {
   const handleSuccess: OnSuccess<ObjectionValues> = (...args) => {
     handleStakeSuccess(...args);
@@ -64,7 +66,10 @@ const RaiseObjectionDialog = ({
             <>
               <ObjectionHeading />
               <ObjectionSlider />
-              <ObjectionAnnotation disabled={isSubmitting} />
+              <ObjectionAnnotation
+                disabled={isSubmitting}
+                isDecision={isDecision}
+              />
               <ObjectionControls cancel={close} disabled={isSubmitting} />
             </>
           );

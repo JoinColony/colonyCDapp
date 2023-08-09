@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
-import { Id } from '@colony/colony-js';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import { useAppContext, useColonyContext, useEnabledExtensions } from '~hooks';
@@ -60,11 +59,23 @@ const ColonyDecisions = ({ domainId }: ColonyDecisionsProps) => {
       colony?.colonyAddress ?? '',
     ),
   );
+
+  const filter: {
+    showInDecisionsList: { eq: boolean };
+    motionDomainId?: { eq: number };
+  } = {
+    showInDecisionsList: { eq: true },
+  };
+
+  if (domainId) {
+    filter.motionDomainId = { eq: domainId };
+  }
+
   const { data, loading: isLoadingDecisions } = useGetColonyDecisionsQuery({
     variables: {
       colonyAddress: colony?.colonyAddress ?? '',
       sortDirection,
-      domainId: domainId || Id.RootDomain,
+      filter,
       limit: page * ITEMS_PER_PAGE,
     },
     fetchPolicy: 'cache-and-network',

@@ -60,7 +60,7 @@ const RichTextEditor = ({
       editor.off('selectionUpdate', handleUpdate);
       editor.off('blur', handleUpdate);
     };
-  }, [editor, content, disabled]);
+  }, [editor, content, disabled, name, setValue]);
 
   return (
     editor && (

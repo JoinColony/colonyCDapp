@@ -15,7 +15,12 @@ const DecisionData = ({ draftDecision }: DecisionDataProps) => {
     return <DecisionNotFound />;
   }
 
-  return <DecisionContent decisionData={draftDecision} />;
+  return (
+    <DecisionContent
+      title={draftDecision.title}
+      description={draftDecision.description}
+    />
+  );
 };
 
 DecisionData.displayName = displayName;

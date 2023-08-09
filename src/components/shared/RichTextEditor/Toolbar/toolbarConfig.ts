@@ -36,6 +36,7 @@ const getToolbarItems = (editor: Editor) => [
     onClick: () => editor.chain().focus().toggleBulletList().run(),
     keyboardShortcut: `${ctrl}+Shift+8`,
     annotation: formatMessage({ id: `annotation.${Icons.bulletList}` }),
+    style: { transform: 'translateX(-4px)' },
   },
   {
     icon: Icons.codeBlock,
