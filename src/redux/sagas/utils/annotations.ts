@@ -15,8 +15,19 @@ import { takeFrom } from './effects';
 import { ActionTypes } from '~redux/actionTypes';
 import { TransactionChannel } from '../transactions';
 
-export const uploadAnnotationToDb = async ({ message, txHash, ipfsHash }) => {
+export const uploadAnnotationToDb = async ({
+  message,
+  annotationId,
+  ipfsHash,
+  actionId,
+}: {
+  message: string;
+  annotationId: string;
+  ipfsHash: string;
+  actionId: string;
+}) => {
   const apolloClient = getContext(ContextModule.ApolloClient);
+
   await apolloClient.mutate<
     CreateAnnotationMutation,
     CreateAnnotationMutationVariables
@@ -25,7 +36,8 @@ export const uploadAnnotationToDb = async ({ message, txHash, ipfsHash }) => {
     variables: {
       input: {
         message,
-        id: txHash,
+        id: annotationId,
+        actionId,
         ipfsHash,
       },
     },
@@ -36,10 +48,12 @@ export function* uploadAnnotation({
   txChannel,
   message,
   txHash,
+  actionId,
 }: {
   txChannel: TransactionChannel;
   message: string;
   txHash: string;
+  actionId?: string;
 }) {
   yield put(transactionPending(txChannel.id));
 
@@ -50,7 +64,11 @@ export function* uploadAnnotation({
 
   yield uploadAnnotationToDb({
     message,
-    txHash,
+    annotationId: txHash,
+    // Action id will be the tx hash for all annotations,
+    // except for the motion objection annotation. In that case, the tx hash is of
+    // the `stakeMotion` action, not of the original action.
+    actionId: actionId || txHash,
     ipfsHash,
   });
 
