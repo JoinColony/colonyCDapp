@@ -15,7 +15,9 @@ interface ExpenditureFormFieldsProps extends ExpenditureFormProps {
 
 const ExpenditureFormFields = ({
   colony,
+  onCancelClick,
   submitButtonText = 'Create expenditure',
+  showCancelButton = false,
 }: ExpenditureFormFieldsProps) => {
   const { control } = useFormContext();
 
@@ -44,6 +46,16 @@ const ExpenditureFormFields = ({
       ))}
 
       <div className={styles.buttons}>
+        {showCancelButton && (
+          <div className={styles.cancelButton}>
+            <Button
+              appearance={{ size: 'small' }}
+              onClick={() => onCancelClick?.()}
+            >
+              Cancel
+            </Button>
+          </div>
+        )}
         <Button
           appearance={{
             size: 'small',

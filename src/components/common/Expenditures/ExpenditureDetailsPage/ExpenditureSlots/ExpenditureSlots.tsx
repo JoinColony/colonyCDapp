@@ -36,6 +36,8 @@ const ExpenditureSlots = ({ expenditure, colony }: ExpenditureSlotsProps) => {
         <ExpenditureForm
           expenditure={expenditure}
           submitButtonText="Save changes"
+          showCancelButton
+          onCancelClick={() => setIsEditing(false)}
         />
       ) : (
         <ul className={styles.slots}>
