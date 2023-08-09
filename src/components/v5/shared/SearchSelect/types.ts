@@ -23,4 +23,5 @@ export interface SearchSelectOption {
   showAvatar?: boolean;
   color?: string;
   walletAddress?: string;
+  nativeId?: number;
 }
