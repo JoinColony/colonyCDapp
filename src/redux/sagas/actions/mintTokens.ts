@@ -3,23 +3,13 @@ import { ClientType } from '@colony/colony-js';
 
 import { ActionTypes, AllActions, Action } from '~redux';
 
-import { putError, takeFrom, ipfsUploadAnnotation } from '../utils';
+import { putError, takeFrom, uploadAnnotation } from '../utils';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import {
-  transactionAddParams,
-  transactionPending,
-  transactionReady,
-} from '../../actionCreators';
-import { ContextModule, getContext } from '~context';
-import {
-  CreateAnnotationDocument,
-  CreateAnnotationMutation,
-  CreateAnnotationMutationVariables,
-} from '~gql';
+import { transactionReady } from '../../actionCreators';
 
 function* createMintTokensAction({
   payload: {
@@ -34,8 +24,6 @@ function* createMintTokensAction({
 }: Action<ActionTypes.ACTION_MINT_TOKENS>) {
   let txChannel;
   try {
-    const apolloClient = getContext(ContextModule.ApolloClient);
-
     if (!amount) {
       throw new Error('Amount to mint not set for mintTokens transaction');
     }
@@ -117,34 +105,11 @@ function* createMintTokensAction({
     yield takeFrom(claimColonyFunds.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
-      yield put(transactionPending(annotateMintTokens.id));
-
-      const ipfsHash = yield call(ipfsUploadAnnotation, annotationMessage);
-
-      yield apolloClient.mutate<
-        CreateAnnotationMutation,
-        CreateAnnotationMutationVariables
-      >({
-        mutation: CreateAnnotationDocument,
-        variables: {
-          input: {
-            message: annotationMessage,
-            id: txHash,
-            ipfsHash,
-          },
-        },
+      yield uploadAnnotation({
+        txChannel: annotateMintTokens,
+        message: annotationMessage,
+        txHash,
       });
-
-      yield put(
-        transactionAddParams(annotateMintTokens.id, [txHash, ipfsHash]),
-      );
-
-      yield put(transactionReady(annotateMintTokens.id));
-
-      yield takeFrom(
-        annotateMintTokens.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
     }
 
     yield put<AllActions>({

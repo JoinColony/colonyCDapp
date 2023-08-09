@@ -15,6 +15,7 @@ import {
   takeFrom,
   updateDomainReputation,
   getColonyManager,
+  uploadAnnotation,
 } from '../utils';
 
 import {
@@ -163,20 +164,12 @@ function* manageReputationMotion({
     }
 
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
-    // if (annotationMessage) {
-    //   yield takeFrom(
-    //     annotateManageReputationMotion.channel,
-    //     ActionTypes.TRANSACTION_CREATED,
-    //   );
-    // }
-
-    // let ipfsHash = null;
-    // ipfsHash = yield call(
-    //   ipfsUpload,
-    //   JSON.stringify({
-    //     annotationMessage,
-    //   }),
-    // );
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateManageReputationMotion.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
 
     yield put(transactionReady(createMotion.id));
 
@@ -188,23 +181,13 @@ function* manageReputationMotion({
     );
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    // if (annotationMessage) {
-    //   yield put(transactionPending(annotateManageReputationMotion.id));
-
-    //   yield put(
-    //     transactionAddParams(annotateManageReputationMotion.id, [
-    //       txHash,
-    //       ipfsHash,
-    //     ]),
-    //   );
-
-    //   yield put(transactionReady(annotateManageReputationMotion.id));
-
-    //   yield takeFrom(
-    //     annotateManageReputationMotion.channel,
-    //     ActionTypes.TRANSACTION_SUCCEEDED,
-    //   );
-    // }
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateManageReputationMotion,
+        message: annotationMessage,
+        txHash,
+      });
+    }
 
     /*
      * Refesh the user & colony reputation
