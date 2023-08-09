@@ -17,7 +17,7 @@ export type ContributorType =
   | 'top'
   | 'dedicated'
   | 'active'
-  | 'contributorVerified'
+  | 'contributor-verified'
   | 'general';
 
 export type TeamType =
@@ -26,7 +26,9 @@ export type TeamType =
   | 'Product'
   | 'Development'
   | 'Design'
-  | 'Devops';
+  | 'Devops'
+  | 'Procurement'
+  | 'Pagepro';
 
 export type StatusType = 'banned' | 'notBanned';
 
@@ -62,4 +64,5 @@ export type FilterOption =
   | 'top'
   | 'dedicated'
   | 'administration'
-  | undefined;
+  | undefined
+  | string;

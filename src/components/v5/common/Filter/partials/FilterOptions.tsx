@@ -11,7 +11,7 @@ const displayName = 'v5.common.Filter.partials.FilterOptions';
 const FilterOptions: FC<FilterOptionsProps> = ({
   options,
   onSelectNestedOption,
-  onSelectParentFilter,
+  onMobileSelectParentFilter,
   selectedChildOption,
   checkedItems,
 }) => {
@@ -23,7 +23,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({
       {isMobile ? (
         <Accordion
           items={options}
-          onSelectParentFilter={onSelectParentFilter}
+          onMobileSelectParentFilter={onMobileSelectParentFilter}
           onSelectNestedOption={onSelectNestedOption}
           selectedChildOption={selectedChildOption}
           checkedItems={checkedItems}
@@ -38,9 +38,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({
               option={option}
               options={options}
               nestedFilters={content}
-              onSelectParentFilter={onSelectParentFilter}
               onSelectNestedOption={onSelectNestedOption}
-              shouldBeActionOnHover={false}
               selectedChildOption={selectedChildOption}
               checkedItems={checkedItems}
             />

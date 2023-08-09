@@ -9,12 +9,12 @@ export type SubNavigationItemProps = {
   options?: ParentFilterOption[];
   option?: FilterType;
   shouldBeTooltipVisible?: boolean;
-  onClick?: () => void;
   isCopyTriggered?: boolean;
   tooltipText?: string[];
-  onSelectParentFilter?: (option?: string) => void;
-  shouldBeActionOnHover?: boolean;
-  onSelectNestedOption?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onSelectNestedOption?: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    selectedParentOption?: FilterType,
+  ) => void;
   selectedChildOption?: FilterOption;
   checkedItems?: Map<string | undefined, boolean>;
   nestedFilters?: FilterOptionProps[];
@@ -23,7 +23,10 @@ export type SubNavigationItemProps = {
 export type NestedOptionsProps = {
   selectedParentOption?: FilterType;
   selectedChildOption?: FilterOption;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    selectedParentOption?: FilterType,
+  ) => void;
   checkedItems?: Map<string | undefined, boolean>;
   nestedFilters?: FilterOptionProps[];
 };

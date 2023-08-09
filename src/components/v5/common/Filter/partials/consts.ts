@@ -1,3 +1,4 @@
+import { TeamType } from '~v5/common/TableFiltering/types';
 import { FilterOptionProps } from '../types';
 
 export const contributorTypes: FilterOptionProps[] = [
@@ -14,7 +15,7 @@ export const contributorTypes: FilterOptionProps[] = [
     label: { id: 'filter.option.active' },
   },
   {
-    value: 'contributorVerified',
+    value: 'verified',
     label: { id: 'filter.option.verified' },
   },
   {
@@ -34,31 +35,12 @@ export const statusTypes: FilterOptionProps[] = [
   },
 ];
 
-export const teamTypes: FilterOptionProps[] = [
-  {
-    value: 'Root',
-    label: { id: 'filter.option.root' },
-  },
-  {
-    value: 'Business',
-    label: { id: 'filter.option.business' },
-  },
-  {
-    value: 'Product',
-    label: { id: 'filter.option.product' },
-  },
-  {
-    value: 'Development',
-    label: { id: 'filter.option.development' },
-  },
-  {
-    value: 'Design',
-    label: { id: 'filter.option.productDesign' },
-  },
-  {
-    value: 'Devops',
-    label: { id: 'filter.option.devops' },
-  },
+export const teamTypes: TeamType[] = [
+  'Root',
+  'Procurement',
+  'Development',
+  'Pagepro',
+  'Design',
 ];
 
 export const reputationType: FilterOptionProps[] = [

@@ -22,7 +22,7 @@ const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
       {Array.isArray(filterOptions) ? (
         filterOptions.map((name) => (
           <p key={name} className="text-sm capitalize min-w-fit">
-            {formatMessage({ id: `filter.pill.${name}` })}
+            {name}
             {lastIndex !== name ? ',' : ''}
           </p>
         ))

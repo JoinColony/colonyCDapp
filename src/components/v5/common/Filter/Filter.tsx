@@ -7,7 +7,7 @@ import FilterOptions from './partials/FilterOptions';
 import Modal from '~v5/shared/Modal';
 import PopoverBase from '~v5/shared/PopoverBase';
 import { useMembersPage } from '~frame/v5/pages/MembersPage/hooks';
-import TableFiltering from '../TableFiltering';
+// import TableFiltering from '../TableFiltering';
 import SearchInput from './partials/SearchInput';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
@@ -23,13 +23,13 @@ const Filter: FC = () => {
   const [isSearchOpened, setIsSearchOpened] = useState(false);
   const isMobile = useMobile();
   const {
-    selectedFilters,
-    onSelectParentFilter,
+    // selectedFilters,
+    onMobileSelectParentFilter,
     onSelectNestedOption,
-    onClearFilters,
+    // onClearFilters,
     selectedChildOption,
     numberSelectedFilters,
-    selectedParentFilters,
+    // selectedParentFilters,
     checkedItems,
     isFollowersPage,
   } = useFilterContext();
@@ -62,7 +62,7 @@ const Filter: FC = () => {
           >
             <FilterOptions
               options={filterOptions}
-              onSelectParentFilter={onSelectParentFilter}
+              onMobileSelectParentFilter={onMobileSelectParentFilter}
               onSelectNestedOption={onSelectNestedOption}
               selectedChildOption={selectedChildOption}
               checkedItems={checkedItems}
@@ -87,13 +87,13 @@ const Filter: FC = () => {
         <>
           <div className="flex flex-row gap-2">
             {/* @TODO: uncomment that after API for filtering will be ready */}
-            {!!selectedFilters?.length && (
+            {/* {!!selectedFilters?.length && (
               <TableFiltering
                 selectedParentFilters={selectedParentFilters}
                 filterOptions={selectedFilters}
                 onClick={() => onClearFilters()}
               />
-            )}
+            )} */}
             <FilterButton isOpen={visible} setTriggerRef={setTriggerRef} />
           </div>
           {visible && (
@@ -117,7 +117,7 @@ const Filter: FC = () => {
                 options={
                   isFollowersPage ? followersFilterOptions : filterOptions
                 }
-                onSelectParentFilter={onSelectParentFilter}
+                onMobileSelectParentFilter={onMobileSelectParentFilter}
                 onSelectNestedOption={onSelectNestedOption}
                 selectedChildOption={selectedChildOption}
                 checkedItems={checkedItems}

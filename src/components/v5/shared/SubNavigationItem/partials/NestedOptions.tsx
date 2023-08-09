@@ -48,7 +48,7 @@ const NestedOptions: FC<NestedOptionsProps> = ({
                   id={value}
                   name={value}
                   label={label}
-                  onChange={onChange}
+                  onChange={(e) => onChange?.(e, selectedParentOption)}
                   isChecked={checkedItems?.get(value)}
                   mode="secondary"
                 >

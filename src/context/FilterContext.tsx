@@ -22,12 +22,15 @@ import { FilterOption, FilterType } from '~v5/common/TableFiltering/types';
 export const FilterContext = createContext<{
   selectedFilters: FilterOption[];
   selectedParentFilters: FilterType | FilterType[];
-  checkedItems: Map<string, boolean>;
+  checkedItems: Map<string | undefined, boolean>;
   selectedChildOption: FilterOption;
   isFollowersPage: boolean;
   onClearFilters: () => void;
-  onSelectParentFilter: (id: FilterType) => void;
-  onSelectNestedOption: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onMobileSelectParentFilter: (id: FilterType) => void;
+  onSelectNestedOption: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    selectedNestedOption: FilterType,
+  ) => void;
   numberSelectedFilters: number;
   teamSelectedOptions: unknown;
 }>({
@@ -37,7 +40,7 @@ export const FilterContext = createContext<{
   selectedChildOption: undefined,
   isFollowersPage: false,
   onClearFilters: noop,
-  onSelectParentFilter: noop,
+  onMobileSelectParentFilter: noop,
   onSelectNestedOption: noop,
   numberSelectedFilters: 0,
   teamSelectedOptions: { value: 0, label: undefined },
@@ -82,34 +85,38 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
     setCheckedItems(new Map());
   }, []);
 
-  const onSelectParentFilter = useCallback((id: FilterType) => {
+  const onMobileSelectParentFilter = useCallback((id: FilterType) => {
     setSelectedParentFilter((prev: FilterType[]) => [...prev, id]);
   }, []);
 
   const onSelectNestedOption = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (
+      event: React.ChangeEvent<HTMLInputElement>,
+      selectedNestedOption: FilterType,
+    ) => {
       onSaveSelectedFilters(event);
+      setSelectedParentFilter(selectedNestedOption);
     },
-    [onSaveSelectedFilters],
+    [onSaveSelectedFilters, setSelectedParentFilter],
   );
 
   const isContributorTypeSelected = contributorTypes.some(
-    ({ id }) => id === selectedChildOption,
+    ({ value }) => value === selectedChildOption,
   );
   const isStatusTypeSelected = statusTypes.some(
-    ({ id }) => id === selectedChildOption,
+    ({ value }) => value === selectedChildOption,
   );
 
   const isTeamTypeSelected = teamTypes.some(
-    ({ id }) => id === selectedChildOption,
+    (value) => value === selectedChildOption,
   );
 
   const isPermissionsTypeSelected = permissionsTypes.some(
-    ({ id }) => id === selectedChildOption,
+    ({ value }) => value === selectedChildOption,
   );
 
   const isReputationTypeSelected = reputationType.some(
-    ({ id }) => id === selectedChildOption,
+    ({ value }) => value === selectedChildOption,
   );
 
   const numberSelectedFilters = [
@@ -121,7 +128,6 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
   ].filter(Boolean).length;
 
   const mappedTeamSelectedOptions = useCallback(() => {
-    // @TODO: fix that when API will be returns all needed filters
     return [...selectedFilters]?.map((filterData) => {
       if (filterData === 'Root') {
         return {
@@ -129,7 +135,7 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
           label: filterData,
         };
       }
-      if (filterData === 'Business') {
+      if (filterData === 'Procurement') {
         return {
           value: 2,
           label: filterData,
@@ -147,15 +153,9 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
           label: filterData,
         };
       }
-      if (filterData === 'Devops') {
+      if (filterData === 'Pagepro') {
         return {
           value: 5,
-          label: filterData,
-        };
-      }
-      if (filterData === 'Product') {
-        return {
-          value: 6,
           label: filterData,
         };
       }
@@ -173,7 +173,7 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
       checkedItems,
       isFollowersPage,
       onClearFilters,
-      onSelectParentFilter,
+      onMobileSelectParentFilter,
       onSelectNestedOption,
       numberSelectedFilters,
       teamSelectedOptions,
@@ -185,7 +185,7 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
       checkedItems,
       isFollowersPage,
       onClearFilters,
-      onSelectParentFilter,
+      onMobileSelectParentFilter,
       onSelectNestedOption,
       numberSelectedFilters,
       teamSelectedOptions,
