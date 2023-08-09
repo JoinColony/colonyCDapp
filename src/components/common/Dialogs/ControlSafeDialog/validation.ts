@@ -1,9 +1,10 @@
 import { BigNumber } from 'ethers';
-import { isAddress, isHexString } from 'ethers/lib/utils';
+import { isHexString } from 'ethers/lib/utils';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 import { object, string, array, number } from 'yup';
 import moveDecimal from 'move-decimal-point';
 
+import { isAddress } from '~utils/web3';
 import { SafeBalance } from '~types';
 import { intl } from '~utils/intl';
 import { getSelectedSafeBalance, isAbiItem } from '~utils/safes';

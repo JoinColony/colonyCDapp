@@ -1,6 +1,6 @@
 import React from 'react';
-import { isAddress } from 'ethers/lib/utils';
 
+import { isAddress } from '~utils/web3';
 import MaskedAddress from '~shared/MaskedAddress';
 import Avatar from '~shared/Avatar';
 import { User } from '~types';
