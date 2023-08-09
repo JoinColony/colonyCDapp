@@ -7,7 +7,7 @@ const displayName = 'v5.common.Filter.partials.Accordion';
 
 const Accordion: FC<AccordionProps> = ({
   items,
-  onSelectParentFilter,
+  onMobileSelectParentFilter,
   onSelectNestedOption,
   selectedChildOption,
   checkedItems,
@@ -19,7 +19,7 @@ const Accordion: FC<AccordionProps> = ({
           key={id}
           title={title}
           option={option}
-          onSelectParentFilter={onSelectParentFilter}
+          onMobileSelectParentFilter={onMobileSelectParentFilter}
           onSelectNestedOption={onSelectNestedOption}
           selectedChildOption={selectedChildOption}
           checkedItems={checkedItems}
