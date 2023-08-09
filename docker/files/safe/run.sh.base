@@ -6,7 +6,7 @@ cd colonyNetwork
 sed -i 's|http://127.0.0.1:8545|http://network-contracts:8545|g' ./scripts/setup-bridging-contracts.js
 
 # not sure if this is needed, but past experience has made me wary of the loopback address in containers
-sed -i 's|http://127.0.0.1:8546|http://0.0.0.0:8545|g' ./scripts/setup-bridging-contracts.js
+sed -i 's|http://127.0.0.1:8546|http://0.0.0.0:8546|g' ./scripts/setup-bridging-contracts.js
 
 bash ./scripts/setup-foreign-chain.sh
 node ./scripts/setup-bridging-contracts.js start-bridging-environment
