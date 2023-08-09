@@ -40,4 +40,5 @@ export const ACTION_TYPES_ICONS_MAP: Record<AnyActionType, string> = {
   [ExtendedColonyActionType.UpdateTokens]: 'emoji-edit-tools',
   [ExtendedColonyActionType.AddSafe]: 'safe-logo',
   [ExtendedColonyActionType.RemoveSafe]: 'safe-logo',
+  [ColonyActionType.MakeArbitraryTransaction]: 'safe-logo',
 };

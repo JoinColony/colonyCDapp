@@ -6,6 +6,7 @@ import {
   SelectedPickerItem,
   Safe,
   NFTData,
+  SafeTransactionData,
 } from '~types';
 
 export {
@@ -17,6 +18,14 @@ export {
 } from './getContractUsefulMethods';
 
 export { getArrayFromString } from './contractParserValidation';
+
+export enum TransactionTypes {
+  TRANSFER_FUNDS = 'transferFunds',
+  TRANSFER_NFT = 'transferNft',
+  CONTRACT_INTERACTION = 'contractInteraction',
+  RAW_TRANSACTION = 'rawTransaction',
+  MULTIPLE_TRANSACTIONS = 'multipleTransactions',
+}
 
 export const getSafe = (
   safes: Safe[],
@@ -139,10 +148,9 @@ export const nftNameContainsTokenId = (tokenName: string): boolean => {
   return false;
 };
 
-export const defaultTransaction = {
-  // type SafeTransaction
+export const defaultTransaction: SafeTransactionData = {
   transactionType: '',
-  tokenData: null,
+  token: null,
   amount: null,
   rawAmount: null,
   recipient: undefined,

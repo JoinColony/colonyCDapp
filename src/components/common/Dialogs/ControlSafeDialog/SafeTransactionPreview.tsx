@@ -13,17 +13,17 @@ import TokenIcon from '~shared/TokenIcon';
 import Button from '~shared/Button';
 import Icon from '~shared/Icon';
 import Avatar from '~shared/Avatar';
-import { NFTData, SafeTransaction, Token, User } from '~types';
+import { NFTData, SafeTransactionData, Token, User } from '~types';
 import { omit } from '~utils/lodash';
-import { defaultTransaction, extractTokenName } from '~utils/safes';
+import {
+  defaultTransaction,
+  extractTokenName,
+  TransactionTypes,
+} from '~utils/safes';
 import { formatArgument } from '~shared/DetailsWidget/SafeTransactionDetail/components/FunctionsSection';
 
 import AddressDetailsView from './TransactionPreview/AddressDetailsView';
-import {
-  TransactionTypes,
-  transactionOptions,
-  MSG as ConstantsMSG,
-} from './helpers';
+import { transactionOptions, MSG as ConstantsMSG } from './helpers';
 import DetailsItem from './DetailsItem';
 import { ControlSafeProps } from './types';
 
@@ -224,7 +224,7 @@ const SafeTransactionPreview = ({
   } = useFormContext();
 
   const safe = watch('safe');
-  const transactions: SafeTransaction[] = watch(`transactions`);
+  const transactions: SafeTransactionData[] = watch(`transactions`);
 
   const [transactionTabStatus, setTransactionTabStatus] = useState(
     Array(transactions.length).fill(false),
@@ -232,7 +232,7 @@ const SafeTransactionPreview = ({
   const { formatMessage } = useIntl();
 
   const tokens = useMemo(
-    () => transactions.map((t) => t.tokenData),
+    () => transactions.map((t) => t.token),
     [transactions],
   );
 
