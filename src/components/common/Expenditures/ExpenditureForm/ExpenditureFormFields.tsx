@@ -45,7 +45,7 @@ const ExpenditureFormFields = ({
             <Input name={`payouts.${index}.amount`} label="Amount" />
             <div>{colony.nativeToken.symbol}</div>
           </div>
-          <Input name={`slots.${index}.claimDelay`} label="Claim delay" />
+          <Input name={`payouts.${index}.claimDelay`} label="Claim delay" />
         </div>
       ))}
 

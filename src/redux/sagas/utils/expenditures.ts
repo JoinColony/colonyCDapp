@@ -45,9 +45,9 @@ export const getSetExpenditureValuesFunctionParams = (
     // skill ids
     [],
     // slot ids for claim delays
-    [],
+    payouts.map((payout) => payout.slotId ?? 0),
     // claim delays
-    [],
+    payouts.map((payout) => payout.claimDelay),
     // slot ids for payout modifiers
     [],
     // payout modifiers
