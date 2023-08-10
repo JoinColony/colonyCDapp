@@ -34,7 +34,11 @@ const setupWalletContext = async () => {
      * If the wallet we've pulled from context does not have the same address as the selected account
      * in Metamask, it's because the user just switched their account in metamask.
      */
-    if (selectedMetamaskAddress && wallet.address !== selectedMetamaskAddress) {
+    if (
+      selectedMetamaskAddress &&
+      wallet.address !== selectedMetamaskAddress &&
+      wallet.label === ONBOARD_METAMASK_WALLET_LABEL
+    ) {
       disconnectWallet(wallet.label); // disconnect previous wallet
 
       // replace it in local storage with the wallet the user switched to
