@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { ColonyRole, Id } from '@colony/colony-js';
@@ -11,10 +11,10 @@ import ExternalLink from '~shared/ExternalLink';
 import Button from '~shared/Button';
 import Icon from '~shared/Icon';
 import { filterUserSelection } from '~shared/SingleUserPicker';
-import { SelectedPickerItem } from '~types';
+import { SelectedPickerItem, SafeTransaction } from '~types';
 import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
 import { useActionDialogStatus } from '~hooks';
-import { isEmpty } from '~utils/lodash';
+import { isEmpty, isEqual, omit } from '~utils/lodash';
 
 import {
   TransferNFTSection,
@@ -27,8 +27,9 @@ import {
   TransactionTypes,
   defaultTransaction,
   transactionOptions,
+  ContractFunctions,
 } from './helpers';
-import { ControlSafeProps } from './types';
+import { ControlSafeProps, UpdatedMethods } from './types';
 import AddItemButton from './AddItemButton';
 import SingleSafePicker from './SingleSafePicker';
 import TransactionHeader from './TransactionHeader';
@@ -92,16 +93,13 @@ const UpgradeWarning = (chunks: React.ReactNode[]) => (
 
 const requiredRoles: ColonyRole[] = [ColonyRole.Root];
 
-enum ContractFunctions {
-  TRANSFER_FUNDS = 'transfer',
-  TRANSFER_NFT = 'safeTransferFrom',
-}
-
 const ControlSafeForm = ({
   back,
   colony,
   colony: { version, metadata },
   enabledExtensionData,
+  selectedContractMethods,
+  setSelectedContractMethods,
 }: ControlSafeProps) => {
   const [prevSafeAddress, setPrevSafeAddress] = useState<string>('');
   const [transactionTabStatus, setTransactionTabStatus] = useState([true]);
@@ -116,6 +114,7 @@ const ControlSafeForm = ({
   } = useFormContext();
 
   const selectedSafe: SelectedPickerItem = watch('safe');
+  const safes = metadata?.safes || [];
 
   const {
     fields,
@@ -142,13 +141,48 @@ const ControlSafeForm = ({
     trigger();
   };
 
+  const handleSelectedContractMethods = useCallback(
+    (contractMethods: UpdatedMethods, transactionIndex: number) => {
+      // eslint-disable-next-line max-len
+      const functionParamTypes: SafeTransaction['functionParamTypes'] =
+        contractMethods[transactionIndex]?.inputs?.map((input) => ({
+          name: input.name,
+          type: input.type,
+        }));
+
+      setSelectedContractMethods(contractMethods);
+      setValue(
+        `transactions.${transactionIndex}.functionParamTypes`,
+        functionParamTypes,
+      );
+    },
+    [setValue, setSelectedContractMethods],
+  );
+
+  const removeSelectedContractMethod = useCallback(
+    (transactionIndex: number) => {
+      const updatedSelectedContractMethods = omit(
+        selectedContractMethods,
+        transactionIndex,
+      );
+
+      if (!isEqual(updatedSelectedContractMethods, selectedContractMethods)) {
+        handleSelectedContractMethods(
+          updatedSelectedContractMethods,
+          transactionIndex,
+        );
+        setValue(`transactions.${transactionIndex}.contractFunction`, '');
+      }
+    },
+    [selectedContractMethods, handleSelectedContractMethods, setValue],
+  );
+
   const submitButtonText = (() => {
     return { id: 'button.confirm' };
   })();
 
   const isSupportedColonyVersion = version >= 12;
 
-  /* invert this only for testing! */
   const disabledInputs =
     !userHasPermission || isSubmitting || !isSupportedColonyVersion;
 
@@ -176,7 +210,16 @@ const ControlSafeForm = ({
           />
         );
       case TransactionTypes.CONTRACT_INTERACTION:
-        return <ContractInteractionSection />;
+        return (
+          <ContractInteractionSection
+            colony={colony}
+            disabledInput={disabledInputs}
+            transactionIndex={transactionIndex}
+            selectedContractMethods={selectedContractMethods}
+            handleSelectedContractMethods={handleSelectedContractMethods}
+            removeSelectedContractMethod={removeSelectedContractMethod}
+          />
+        );
       case TransactionTypes.TRANSFER_NFT:
         return (
           <TransferNFTSection
@@ -213,8 +256,6 @@ const ControlSafeForm = ({
         break;
     }
   };
-
-  const safes = metadata?.safes || [];
 
   useEffect(() => {
     if (!selectedSafe) {
@@ -287,6 +328,8 @@ const ControlSafeForm = ({
               transactionIndex={index}
               transactionTabStatus={transactionTabStatus}
               handleTransactionTabStatus={setTransactionTabStatus}
+              selectedContractMethods={selectedContractMethods}
+              handleSelectedContractMethods={handleSelectedContractMethods}
               removeTab={removeTab}
             />
           )}
@@ -303,7 +346,7 @@ const ControlSafeForm = ({
                   label={MSG.transactionLabel}
                   name={`transactions[${index}].transactionType`}
                   onChange={(type) => {
-                    /* removeSelectedContractMethod(index); */
+                    removeSelectedContractMethod(index);
                     handleTransactionTypeChange(type as string, index);
                   }}
                   appearance={{ theme: 'grey', width: 'fluid' }}

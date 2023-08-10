@@ -57,11 +57,7 @@ const StepColonyName = ({
             appearance={{ weight: 'medium' }}
           />
           <div className={styles.nameForm}>
-            <NameInputs
-              disabled={isSubmitting}
-              isMobile={isMobile}
-              cleaveDefaultValue={defaultValues.colonyName}
-            />
+            <NameInputs disabled={isSubmitting} isMobile={isMobile} />
             <SubmitFormButton
               disabled={!isValid || isSubmitting}
               loading={isSubmitting}

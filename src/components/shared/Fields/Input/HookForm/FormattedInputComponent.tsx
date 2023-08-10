@@ -66,13 +66,13 @@ const HookFormFormattedInputComponent = ({
   options: formattingOptions,
   maxButtonParams,
   name,
-  value,
   onChange,
   disabled,
   ...restInputProps
 }: HookFormFormattedInputComponentProps) => {
-  const { setValue } = useFormContext();
+  const { setValue, watch } = useFormContext();
   const [cleave, setCleave] = useState<ReactInstanceWithCleave | null>(null);
+  const value = watch(name) || undefined;
 
   /*
    * @NOTE Coerce cleave into handling dynamically changing options
