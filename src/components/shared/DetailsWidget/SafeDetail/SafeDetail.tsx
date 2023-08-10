@@ -1,10 +1,9 @@
 import React from 'react';
 
 import Avatar from '~shared/Avatar';
-import MaskedAddress from '~shared/MaskedAddress';
-import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 import { Safe } from '~types';
 import { SAFE_NAMES_MAP } from '~constants';
+import { InvisibleCopyableMaskedAddress } from '~shared/InvisibleCopyableAddress';
 
 import styles from './SafeDetail.css';
 
@@ -27,11 +26,7 @@ const SafeDetail = ({ removedSafe }: Props) => {
         <div className={styles.displayName}>{`${removedSafe.name} (${
           SAFE_NAMES_MAP[removedSafe.chainId]
         })`}</div>
-        <InvisibleCopyableAddress address={removedSafe.address}>
-          <div className={styles.address}>
-            <MaskedAddress address={removedSafe.address} />
-          </div>
-        </InvisibleCopyableAddress>
+        <InvisibleCopyableMaskedAddress address={removedSafe.address} />
       </div>
     </div>
   );

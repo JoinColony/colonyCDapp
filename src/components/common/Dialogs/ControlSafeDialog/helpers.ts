@@ -63,22 +63,6 @@ export const transactionOptions = [
   },
 ];
 
-export const defaultTransaction = {
-  // type SafeTransaction
-  transactionType: '',
-  tokenData: null,
-  amount: null,
-  rawAmount: null,
-  recipient: null,
-  data: '',
-  contract: null,
-  abi: '',
-  contractFunction: '',
-  nft: null,
-  nftData: null,
-  functionParamTypes: null,
-};
-
 export enum ContractFunctions {
   TRANSFER_FUNDS = 'transfer',
   TRANSFER_NFT = 'safeTransferFrom',

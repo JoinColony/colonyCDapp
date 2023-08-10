@@ -16,6 +16,8 @@ export {
   fetchContractName,
 } from './getContractUsefulMethods';
 
+export { getArrayFromString } from './contractParserValidation';
+
 export const getSafe = (
   safes: Safe[],
   selectedSafe: SelectedPickerItem | null,
@@ -135,4 +137,20 @@ export const nftNameContainsTokenId = (tokenName: string): boolean => {
   }
 
   return false;
+};
+
+export const defaultTransaction = {
+  // type SafeTransaction
+  transactionType: '',
+  tokenData: null,
+  amount: null,
+  rawAmount: null,
+  recipient: undefined,
+  data: '',
+  contract: null,
+  abi: '',
+  contractFunction: '',
+  nft: null,
+  nftData: null,
+  functionParamTypes: null,
 };

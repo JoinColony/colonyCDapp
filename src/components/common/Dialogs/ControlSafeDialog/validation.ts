@@ -1,9 +1,10 @@
 import { BigNumber } from 'ethers';
-import { isAddress, isHexString } from 'ethers/lib/utils';
+import { isHexString } from 'ethers/lib/utils';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 import { object, string, array, number } from 'yup';
 import moveDecimal from 'move-decimal-point';
 
+import { isAddress } from '~utils/web3';
 import { SafeBalance } from '~types';
 import { intl } from '~utils/intl';
 import { getSelectedSafeBalance, isAbiItem } from '~utils/safes';
@@ -83,43 +84,41 @@ export const getValidationSchema = (
       transactions: array(
         object().shape({
           transactionType: string().required(() => MSG.requiredFieldError),
-          recipient: object()
-            .when('transactionType', {
-              is: (transactionType) =>
-                transactionType === TransactionTypes.TRANSFER_FUNDS ||
-                transactionType === TransactionTypes.RAW_TRANSACTION ||
-                transactionType === TransactionTypes.TRANSFER_NFT,
-              then: object().shape({
-                id: string()
-                  .required()
-                  .test(
-                    'is-valid-id',
-                    formatMessage({ id: `${displayName}.notAddressError` }),
-                    function validateId(value) {
-                      if (value) {
-                        /*
-                         * id may be 'filterValue' if a contract address is manually entered.
-                         * May occur in raw transaction section.
-                         */
-                        if (value === 'filterValue') {
-                          return isAddress(this.parent.walletAddress);
-                        }
-                        return isAddress(value);
+          recipient: object().when('transactionType', {
+            is: (transactionType) =>
+              transactionType === TransactionTypes.TRANSFER_FUNDS ||
+              transactionType === TransactionTypes.RAW_TRANSACTION ||
+              transactionType === TransactionTypes.TRANSFER_NFT,
+            then: object().shape({
+              id: string()
+                .required()
+                .test(
+                  'is-valid-id',
+                  formatMessage({ id: `${displayName}.notAddressError` }),
+                  function validateId(value) {
+                    if (value) {
+                      /*
+                       * id may be 'filterValue' if a contract address is manually entered.
+                       * May occur in raw transaction section.
+                       */
+                      if (value === 'filterValue') {
+                        return isAddress(this.parent.walletAddress);
                       }
-                      return false;
-                    },
-                  ),
-                profile: object()
-                  .shape({
-                    displayName: string().nullable(),
-                  })
-                  .defined()
-                  .nullable(),
-                walletAddress: string().address().required(),
-              }),
-              otherwise: object().nullable(),
-            })
-            .nullable(),
+                      return isAddress(value);
+                    }
+                    return false;
+                  },
+                ),
+              profile: object()
+                .shape({
+                  displayName: string().nullable(),
+                })
+                .defined()
+                .nullable(),
+              walletAddress: string().address().required(),
+            }),
+            otherwise: object().nullable(),
+          }),
           amount: string()
             .when('transactionType', {
               is: TransactionTypes.TRANSFER_FUNDS,

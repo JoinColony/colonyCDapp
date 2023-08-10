@@ -1,4 +1,4 @@
-import { Address, Token, User } from '~types';
+import { Address, SelectedPickerItem, Token, User } from '~types';
 
 export type ModuleAddress = Address;
 
@@ -26,6 +26,8 @@ export type SafeTransaction = {
   abi: string;
   contractFunction: string;
   functionParamTypes?: FunctionParamType[];
+  nft?: SelectedPickerItem;
+  nftData?: NFTData;
 };
 
 export interface SafeBalance {
