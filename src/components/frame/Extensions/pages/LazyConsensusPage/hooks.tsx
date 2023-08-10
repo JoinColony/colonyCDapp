@@ -189,7 +189,7 @@ export const useLazyConsensusPage = (
   ].some((item) => Object.keys(methods.formState.errors).includes(item));
 
   const shouldBeRadioButtonChangeToCustom = useMemo(
-    () => methods.formState.isDirty && isCustomExtensionErrorExist,
+    () => methods.formState.isDirty || isCustomExtensionErrorExist,
     [methods.formState, isCustomExtensionErrorExist],
   );
 
