@@ -35,6 +35,7 @@ export type FileUploadProps = {
     event: DropEvent,
   ) => void;
   handleFileRemove?: (...args: unknown[]) => Promise<unknown>;
+  isPropgressContentVisible?: boolean;
 };
 
 export type AvatarUploaderProps = {
@@ -43,3 +44,10 @@ export type AvatarUploaderProps = {
 };
 
 export type DefaultContentProps = Pick<ErrorContentProps, 'open'>;
+
+export type ProgressContentProps = {
+  progress: number;
+  handleFileRemove: (...args: unknown[]) => Promise<unknown>;
+  fileName: string;
+  fileSize: string;
+};

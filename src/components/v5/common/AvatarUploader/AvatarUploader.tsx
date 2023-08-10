@@ -4,6 +4,7 @@ import FileUpload from './partials/FileUpload';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { useAvatarUploader } from './hooks';
 import { AvatarUploaderProps } from './types';
+import ProgressContent from './partials/ProgressContent';
 
 const displayName = 'v5.common.AvatarUploader';
 
@@ -18,6 +19,9 @@ const AvatarUploader: FC<AvatarUploaderProps> = ({
     handleFileReject,
     handleFileRemove,
     handleFileUpload,
+    showPropgress,
+    uploadProgress,
+    file,
   } = useAvatarUploader();
   const dropzoneRef = useRef<{ open: () => void }>();
 
@@ -36,18 +40,30 @@ const AvatarUploader: FC<AvatarUploaderProps> = ({
   };
 
   return (
-    <FileUpload
-      dropzoneOptions={{
-        disabled,
-      }}
-      handleFileAccept={handleFileUpload}
-      handleFileReject={handleFileReject}
-      handleFileRemove={handleFileRemove}
-      placeholder={getPlaceholder(isLoading, avatarPlaceholder)}
-      forwardedRef={dropzoneRef}
-      errorCode={uploadAvatarError}
-      isAvatarUploaded={user?.profile?.avatar !== null}
-    />
+    <>
+      <FileUpload
+        dropzoneOptions={{
+          disabled,
+        }}
+        handleFileAccept={handleFileUpload}
+        handleFileReject={handleFileReject}
+        handleFileRemove={handleFileRemove}
+        placeholder={getPlaceholder(isLoading, avatarPlaceholder)}
+        forwardedRef={dropzoneRef}
+        errorCode={uploadAvatarError}
+        isAvatarUploaded={user?.profile?.avatar !== null}
+        isPropgressContentVisible={showPropgress}
+      />
+
+      {showPropgress && (
+        <ProgressContent
+          progress={uploadProgress}
+          fileName={file.fileName}
+          fileSize={file.fileSize}
+          handleFileRemove={handleFileRemove}
+        />
+      )}
+    </>
   );
 };
 
