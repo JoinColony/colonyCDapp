@@ -46,6 +46,7 @@ function* editExpenditure({
           recipientAddress: payout.recipientAddress,
           tokenAddress: slotPayout.tokenAddress,
           amount: '0',
+          claimDelay: payout.claimDelay,
         })) ?? []),
     );
   });
@@ -59,6 +60,7 @@ function* editExpenditure({
         recipientAddress: slot.recipientAddress ?? '',
         tokenAddress: payout.tokenAddress,
         amount: '0',
+        claimDelay: slot.claimDelay ?? 0,
       });
     });
   });
