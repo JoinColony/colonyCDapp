@@ -10,9 +10,9 @@ import Icon from '~shared/Icon';
 import IconTooltip from '~shared/IconTooltip';
 
 import { transactionOptions } from '../helpers';
+import { UpdatedMethods } from '../types';
 
 import styles from './TransactionHeader.css';
-import { UpdatedMethods } from '../types';
 
 const displayName =
   'common.ControlSafeDialog.ControlSafeForm.TransactionHeader';
