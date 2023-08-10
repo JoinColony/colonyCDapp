@@ -30,16 +30,39 @@ export interface SelectedNFT extends SelectedSafe {
 }
 
 /* eslint-disable prefer-destructuring */
-const LOCAL_HOME_BRIDGE_ADDRESS = process.env.LOCAL_HOME_BRIDGE_ADDRESS;
-const LOCAL_FOREIGN_BRIDGE_ADDRESS = process.env.LOCAL_FOREIGN_BRIDGE_ADDRESS;
+const LOCAL_HOME_BRIDGE_ADDRESS =
+  process.env.LOCAL_HOME_BRIDGE_ADDRESS ||
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
+  require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json');
+const LOCAL_FOREIGN_BRIDGE_ADDRESS =
+  process.env.LOCAL_FOREIGN_BRIDGE_ADDRESS ||
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
+  require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json');
+
 const LOCAL_ERC721_ADDRESS = process.env.LOCAL_ERC721_ADDRESS;
-const LOCAL_SAFE_ADDRESS = process.env.LOCAL_SAFE_ADDRESS;
-const LOCAL_SAFE_TOKEN_ADDRESS = process.env.LOCAL_SAFE_TOKEN_ADDRESS;
+// eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
+require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json');
+const LOCAL_SAFE_ADDRESS =
+  process.env.LOCAL_SAFE_ADDRESS ||
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
+  require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json');
+const LOCAL_SAFE_TOKEN_ADDRESS =
+  process.env.LOCAL_SAFE_TOKEN_ADDRESS ||
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
+  require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json');
 /* eslint-enable prefer-destructuring */
 
 const LOCAL_HOME_CHAIN = 'http://127.0.0.1:8545';
 const LOCAL_FOREIGN_CHAIN = 'http://127.0.0.1:8546';
 const LOCAL_TOKEN_ID = 1; // set in start-bridging-environment.js
+
+export const getDevBridgeAddress = () => {
+  return (
+    process.env.ZODIAC_BRIDGE_MODULE_ADDRESS ||
+    // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
+    require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
+  );
+};
 
 export const getHomeProvider = () => {
   return isDev
