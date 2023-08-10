@@ -1,12 +1,21 @@
 #!/bin/bash
 
+START_BLOCKCHAIN_SCRIPT=./scripts/start-blockchain-client.sh
+SETUP_FOREIGN_CHAIN_SCRIPT=./scripts/setup-foreign-chain.sh
+BRIDGING_CONTRACT_SCRIPT=./scripts/setup-bridging-contracts.js
+
 cd colonyNetwork
 
-# Replace localhost with docker network container
-sed -i 's|http://127.0.0.1:8545|http://network-contracts:8545|g' ./scripts/setup-bridging-contracts.js
+# Setup foreign chain
+sed -i 's|--db $DBPATH|--db  $DBPATH --server.host "0.0.0.0"|g' $START_BLOCKCHAIN_SCRIPT
+bash $SETUP_FOREIGN_CHAIN_SCRIPT
 
-# not sure if this is needed, but past experience has made me wary of the loopback address in containers
-sed -i 's|http://127.0.0.1:8546|http://0.0.0.0:8546|g' ./scripts/setup-bridging-contracts.js
+# Start bridging script
 
-bash ./scripts/setup-foreign-chain.sh
+# home rpc is the network docker container
+sed -i 's|http://127.0.0.1:8545|http://network-contracts:8545|g' $BRIDGING_CONTRACT_SCRIPT
+
+# foreign rpc set up previously in this script
+sed -i 's|http://127.0.0.1:8546|http://0.0.0.0:8546|g' $BRIDGING_CONTRACT_SCRIPT
+
 node ./scripts/setup-bridging-contracts.js start-bridging-environment
