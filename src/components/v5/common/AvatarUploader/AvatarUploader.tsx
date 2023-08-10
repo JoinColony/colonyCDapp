@@ -40,7 +40,7 @@ const AvatarUploader: FC<AvatarUploaderProps> = ({
   };
 
   return (
-    <form>
+    <>
       <FileUpload
         dropzoneOptions={{
           disabled,
@@ -63,7 +63,7 @@ const AvatarUploader: FC<AvatarUploaderProps> = ({
           handleFileRemove={handleFileRemove}
         />
       )}
-    </form>
+    </>
   );
 };
 

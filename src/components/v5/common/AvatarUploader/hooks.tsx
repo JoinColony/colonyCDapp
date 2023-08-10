@@ -42,20 +42,32 @@ export const useAvatarUploader = () => {
         fileSize: convertBytes(avatarFile?.file.size, 0),
       });
 
+      const thumbnail = await getOptimisedThumbnail(avatarFile?.file);
+
       if (avatarFile?.file) {
         setShowPropgress(true);
 
         const formData = new FormData();
         formData.append('file', updatedAvatar || '');
         setUploadProgress(0);
-        axios.post('', formData, {
-          onUploadProgress: ({ loaded, total = 0 }) => {
-            setUploadProgress(Math.floor((loaded / total) * 100));
+        axios.post(
+          '',
+          {
+            variables: {
+              input: {
+                // @ts-ignore
+                id: user?.walletAddress,
+                thumbnail,
+              },
+            },
           },
-        });
+          {
+            onUploadProgress: ({ loaded, total = 0 }) => {
+              setUploadProgress(Math.floor((loaded / total) * 100));
+            },
+          },
+        );
       }
-
-      const thumbnail = await getOptimisedThumbnail(avatarFile?.file);
 
       await updateAvatar({
         variables: {
