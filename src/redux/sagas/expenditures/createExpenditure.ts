@@ -16,7 +16,7 @@ import {
 } from '~gql';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
 import { toNumber } from '~utils/numbers';
-import { ExpenditureSlotFieldValue } from '~common/Expenditures/ExpenditureForm';
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 
 import {
   ChannelDefinition,
@@ -24,12 +24,13 @@ import {
   createTransactionChannels,
 } from '../transactions';
 import { getColonyManager, putError, takeFrom } from '../utils';
+import { groupExpenditureSlotsByTokenAddresses } from '../utils/expenditures';
 
 function* createExpenditure({
   meta: { id: metaId, navigate },
   meta,
   payload: {
-    colony: { name: colonyName, colonyAddress, nativeToken },
+    colony: { name: colonyName, colonyAddress },
     slots,
     domainId,
   },
@@ -44,14 +45,7 @@ function* createExpenditure({
   const batchKey = 'createExpenditure';
 
   // Group slots by token address, this is useful as we need to call setExpenditurePayouts method separately for each token
-  type MapValue = ExpenditureSlotFieldValue & { id: number };
-  const slotsByTokenAddress = new Map<string, MapValue[]>();
-  slots.forEach((slot, index) => {
-    const currentSlots = slotsByTokenAddress.get(slot.tokenAddress) ?? [];
-    // Add id to each slot
-    const slotWithId = { ...slot, id: index + 1 };
-    slotsByTokenAddress.set(slot.tokenAddress, [...currentSlots, slotWithId]);
-  });
+  const slotsByTokenAddress = groupExpenditureSlotsByTokenAddresses(slots);
 
   const {
     makeExpenditure,
@@ -139,8 +133,8 @@ function* createExpenditure({
               tokenAddress,
               tokenSlots.map((slot) =>
                 BigNumber.from(slot.amount).mul(
-                  // @TODO: This should get the token decimals of the selected token, which is not necessarily the native token
-                  BigNumber.from(10).pow(nativeToken.decimals),
+                  // @TODO: This should get the token decimals of the selected toke
+                  BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS),
                 ),
               ),
             ]),
