@@ -12,6 +12,7 @@ export const getInitialPayoutFieldValue = (
   recipientAddress: '',
   tokenAddress,
   amount: '0',
+  claimDelay: 0,
 });
 
 export const getExpenditurePayoutsFieldValue = (
@@ -26,6 +27,7 @@ export const getExpenditurePayoutsFieldValue = (
           recipientAddress: slot.recipientAddress ?? '',
           tokenAddress: payout.tokenAddress,
           amount: weiToEth(payout.amount),
+          claimDelay: slot.claimDelay ?? 0,
         })) ?? [];
 
     return [...payouts, ...slotPayouts];
