@@ -51,7 +51,7 @@ const AmountBalances = ({
     `transactions.${transactionIndex}.tokenData`,
   );
   const setSelectedTokenData = (value: Token) =>
-    setValue(`transactions.${transactionIndex}.tokenData`, value);
+    setValue(`transactions.${transactionIndex}.token`, value);
 
   const tokens: Token[] = (safeBalances || []).map((balance) => {
     // If selected safe balance uses an ERC20 token
@@ -121,7 +121,7 @@ const AmountBalances = ({
           <TokenSymbolSelector
             label={MSG.token}
             tokens={tokens}
-            name={`transactions.${transactionIndex}.token.tokenAddress`}
+            name={`transactions.${transactionIndex}.tokenAddress`}
             elementOnly
             appearance={{ alignOptions: 'right', theme: 'grey' }}
             disabled={disabledInput}
