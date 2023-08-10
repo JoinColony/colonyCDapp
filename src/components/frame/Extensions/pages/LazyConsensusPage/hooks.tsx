@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -189,7 +189,7 @@ export const useLazyConsensusPage = (
   ].some((item) => Object.keys(methods.formState.errors).includes(item));
 
   const shouldBeRadioButtonChangeToCustom = useMemo(
-    () => methods.formState.isDirty && isCustomExtensionErrorExist,
+    () => methods.formState.isDirty || isCustomExtensionErrorExist,
     [methods.formState, isCustomExtensionErrorExist],
   );
 
@@ -501,6 +501,21 @@ export const useLazyConsensusPage = (
     [manualOpen, onOpenIndexChange, openedByLastRadio],
   );
 
+  useEffect(() => {
+    // the case when no radio is checked and Custom extension parameters is expanded, input validation should be setted
+    if (manualOpen) {
+      setExtensionContentParameters(
+        extensionContent(
+          extensionData?.initializationParams,
+        ) as AccordionContent[],
+      );
+    }
+  }, [
+    setExtensionContentParameters,
+    extensionData?.initializationParams,
+    manualOpen,
+  ]);
+
   const onChangeGovernance = useCallback(
     (selectedOption: string) => {
       methods.setValue('governance', selectedOption);
@@ -528,12 +543,22 @@ export const useLazyConsensusPage = (
     ],
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (shouldBeRadioButtonChangeToCustom) {
       methods.resetField('governance');
-      methods.setValue('governance', 'radio-button-4');
+      methods.setValue('governance', CUSTOM);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldBeRadioButtonChangeToCustom]);
+
+  useEffect(() => {
+    // case when Custom extension parameters is expanded, user fill some input and then other inputs should be filled the correct data
+    const governanceValue = methods.getValues('governance');
+    if (methods.formState.dirtyFields && governanceValue === CUSTOM) {
+      const [, selectedFormFields] = setSelectedContentAndFormFields(CUSTOM);
+
+      updateGovernanceFormFields(selectedFormFields);
+    }
   }, [shouldBeRadioButtonChangeToCustom]);
 
   const handleFormSuccess = useCallback(() => {
