@@ -5,7 +5,7 @@ import { useMobile } from '~hooks';
 import ColonyTitle from './ColonyTitle';
 import ColonyNavigation from './ColonyNavigation';
 
-import styles from './ColonyHomeLayout.css';
+import styles from './ColonyHomeLayout/ColonyHomeLayout.css';
 
 const displayName = 'common.ColonyHome.ColonyHomeInfo';
 

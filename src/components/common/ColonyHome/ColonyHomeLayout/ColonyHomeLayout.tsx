@@ -1,20 +1,19 @@
 import React, { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import NewActionButton from '~common/NewActionButton';
 import ColonyTotalFunds from '~common/ColonyTotalFunds';
 import { useColonyContext } from '~hooks';
 
-import ColonyDomainSelector from './ColonyDomainSelector';
-import ColonyFundingWidget from './ColonyFundingWidget';
-import ColonyUnclaimedTransfers from './ColonyUnclaimedTransfers';
-import ColonyMembersWidget from './ColonyMembersWidget';
-import ColonyExtensions from './ColonyExtensionsWidget';
-import ColonyDomainDescription from './ColonyDomainDescription';
-import ColonyUpgrade from './ColonyUpgrade';
-import OneTxPaymentUpgrade from './OneTxPaymentUpgrade';
-// import ExtensionUpgrade from './ExtensionUpgrade';
-import ColonyHomeInfo from './ColonyHomeInfo';
+import ActionsPanel from './ActionsPanel';
+
+import ColonyHomeInfo from '../ColonyHomeInfo';
+import ColonyDomainDescription from '../ColonyDomainDescription';
+import ColonyExtensionsWidget from '../ColonyExtensionsWidget';
+import ColonyFundingWidget from '../ColonyFundingWidget';
+import ColonyMembersWidget from '../ColonyMembersWidget';
+import ColonyUnclaimedTransfers from '../ColonyUnclaimedTransfers';
+import ColonyUpgrade from '../ColonyUpgrade';
+import OneTxPaymentUpgrade from '../OneTxPaymentUpgrade';
 
 import styles from './ColonyHomeLayout.css';
 
@@ -22,7 +21,7 @@ const isExtensionsRoute = (pathname: string) => {
   return pathname.includes('extensions');
 };
 
-type Props = {
+export type ColonyHomeLayoutProps = {
   filteredDomainId: number;
   onDomainChange?: (domainId: number) => void;
   /*
@@ -35,11 +34,10 @@ type Props = {
 const displayName = 'common.ColonyHome.ColonyHomeLayout';
 
 const ColonyHomeLayout = ({
-  filteredDomainId,
   children,
-
+  filteredDomainId,
   onDomainChange = () => null,
-}: Props) => {
+}: ColonyHomeLayoutProps) => {
   const { colony } = useColonyContext();
   const { pathname } = useLocation();
 
@@ -59,15 +57,10 @@ const ColonyHomeLayout = ({
           {!isExtensions && (
             <>
               <ColonyTotalFunds />
-              <div className={styles.contentActionsPanel}>
-                <div className={styles.domainsDropdownContainer}>
-                  <ColonyDomainSelector
-                    filteredDomainId={filteredDomainId}
-                    onDomainChange={onDomainChange}
-                  />
-                </div>
-                <NewActionButton filteredDomainId={filteredDomainId} />
-              </div>
+              <ActionsPanel
+                onDomainChange={onDomainChange}
+                filteredDomainId={filteredDomainId}
+              />
             </>
           )}
           {children}
@@ -78,7 +71,7 @@ const ColonyHomeLayout = ({
             <ColonyUnclaimedTransfers />
             <ColonyFundingWidget currentDomainId={filteredDomainId} />
             <ColonyMembersWidget currentDomainId={filteredDomainId} />
-            <ColonyExtensions />
+            <ColonyExtensionsWidget />
           </aside>
         )}
       </div>

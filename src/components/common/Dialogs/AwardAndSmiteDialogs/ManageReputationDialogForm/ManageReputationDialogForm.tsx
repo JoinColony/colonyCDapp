@@ -169,7 +169,7 @@ const ManageReputationDialogForm = ({
   const selectedDomain = findDomainByNativeId(domainId, colony);
   const domainName = selectedDomain?.metadata?.name;
 
-  const handleDomainChange = (selectedDomainId: string) => {
+  const handleDomainChange = (selectedDomainId: number) => {
     if (isSmiteAction) {
       setValue('motionDomainId', selectedDomainId);
     }
@@ -266,7 +266,7 @@ const ManageReputationDialogForm = ({
       <DialogSection>
         <div className={styles.domainSelects}>
           <div>
-            <Select
+            <Select<number>
               options={domainOptions}
               label={MSG.team}
               labelValues={{

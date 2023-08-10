@@ -1,11 +1,5 @@
 @value query700 from '~styles/queries.css';
 
-.content {
-  margin-top: 17px;
-  word-break: break-word;
-  grid-area: feed;
-}
-
 .heading {
   margin-bottom: 20px;
   font-size: var(--size-medium-l);
@@ -17,6 +11,17 @@
 
 .heading span {
   font-size: var(--size-medium-l);
+}
+
+.content {
+  margin-top: 17px;
+  word-break: break-word;
+  grid-area: feed;
+}
+
+.time {
+  margin-left: 5px;
+  color: color-mod(var(--dark) alpha(65%));
 }
 
 .annotations {

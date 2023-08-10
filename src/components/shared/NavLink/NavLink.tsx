@@ -1,8 +1,9 @@
 import React, { ReactNode } from 'react';
-import { MessageDescriptor, useIntl } from 'react-intl';
+import { MessageDescriptor } from 'react-intl';
 import { NavLink as NavLinkComponent, NavLinkProps } from 'react-router-dom';
 
 import { SimpleMessageValues } from '~types';
+import { formatText } from '~utils/intl';
 
 import styles from './NavLink.css';
 
@@ -39,15 +40,8 @@ const NavLink = ({
   to,
   ...linkProps
 }: Props) => {
-  const { formatMessage } = useIntl();
-
-  const linkText =
-    typeof text === 'string' ? text : text && formatMessage(text, textValues);
-
-  const titleText =
-    typeof title === 'string'
-      ? title
-      : title && formatMessage(title, titleValues);
+  const linkText = formatText(text, textValues);
+  const titleText = formatText(title, titleValues);
 
   return (
     <NavLinkComponent

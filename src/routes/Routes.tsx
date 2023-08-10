@@ -40,6 +40,8 @@ import {
   USER_ROUTE,
   LANDING_PAGE_ROUTE,
   NOT_FOUND_ROUTE,
+  DECISIONS_PAGE_ROUTE,
+  COLONY_DECISIONS_PREVIEW_ROUTE,
   ACTIONS_PAGE_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
@@ -48,6 +50,7 @@ import {
 import NotFoundRoute from './NotFoundRoute';
 import { ColonyContextProvider } from '~context/ColonyContext';
 import CreateColonyWizard from '~common/CreateColonyWizard';
+import DecisionPreview from '~common/ColonyDecisions/DecisionPreview';
 import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
 
 import useTitle from '~hooks/useTitle';
@@ -100,7 +103,6 @@ const Routes = () => {
       <RoutesSwitch>
         <Route path="/" element={<Navigate to={LANDING_PAGE_ROUTE} />} />
         <Route path={NOT_FOUND_ROUTE} element={<FourOFour />} />
-
         <Route
           path={LANDING_PAGE_ROUTE}
           element={
@@ -109,7 +111,6 @@ const Routes = () => {
             </Default>
           }
         />
-
         <Route
           element={
             <ColonyContextProvider>
@@ -133,6 +134,16 @@ const Routes = () => {
           )}
         </Route>
         <Route
+          path={COLONY_DECISIONS_PREVIEW_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <NavBar>
+                <DecisionPreview />
+              </NavBar>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
           path={COLONY_HOME_ROUTE}
           element={
             <ColonyContextProvider>
@@ -142,16 +153,26 @@ const Routes = () => {
             </ColonyContextProvider>
           }
         />
-        <Route
-          path={ACTIONS_PAGE_ROUTE}
-          element={
-            <ColonyContextProvider>
-              <NavBar>
-                <ActionDetailsPage />
-              </NavBar>
-            </ColonyContextProvider>
-          }
-        />
+        {[ACTIONS_PAGE_ROUTE, DECISIONS_PAGE_ROUTE].map((path) => (
+          <Route
+            path={path}
+            element={
+              <ColonyContextProvider>
+                <NavBar
+                  routeProps={{
+                    backRoute: ({ colonyName }) =>
+                      `/colony/${colonyName}${
+                        path === DECISIONS_PAGE_ROUTE ? '/decisions' : ''
+                      }`,
+                  }}
+                >
+                  <ActionDetailsPage />
+                </NavBar>
+              </ColonyContextProvider>
+            }
+            key={path}
+          />
+        ))}
         <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyWizard />} />
         <Route path={CREATE_USER_ROUTE} element={<CreateUserWizard />} />
         <Route

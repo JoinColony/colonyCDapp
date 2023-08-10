@@ -45,6 +45,7 @@ export {
   UserDomainReputation,
 } from './useUserReputationForTopDomains';
 export { default as useColonyContext } from './useColonyContext';
+export { default as useRichTextEditor } from './useRichTextEditor';
 export { default as useExtensionData } from './useExtensionData';
 export { default as useExtensionsData } from './useExtensionsData';
 export { default as usePaginatedActions } from './usePaginatedActions';
