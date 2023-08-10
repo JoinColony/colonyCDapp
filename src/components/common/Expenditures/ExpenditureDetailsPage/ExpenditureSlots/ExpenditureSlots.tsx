@@ -60,10 +60,12 @@ const ExpenditureSlots = ({ expenditure, colony }: ExpenditureSlotsProps) => {
               <div>
                 <div>Token address</div>
                 {slot.payouts?.map((payout) => (
-                  <MaskedAddress
-                    key={payout.tokenAddress}
-                    address={payout.tokenAddress}
-                  />
+                  <div>
+                    <MaskedAddress
+                      key={payout.tokenAddress}
+                      address={payout.tokenAddress}
+                    />
+                  </div>
                 ))}
               </div>
 
