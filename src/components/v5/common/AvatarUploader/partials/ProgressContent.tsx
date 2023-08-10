@@ -15,6 +15,7 @@ const ProgressContent: FC<ProgressContentProps> = ({
   fileSize,
 }) => {
   const isUploadCompleted = progress === 100;
+
   return (
     <div
       className={clsx('gap-3 bg-base-white', styles.contentWrapper, {
