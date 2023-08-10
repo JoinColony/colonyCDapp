@@ -38,7 +38,7 @@ const LOCAL_SAFE_TOKEN_ADDRESS = process.env.LOCAL_SAFE_TOKEN_ADDRESS;
 /* eslint-enable prefer-destructuring */
 
 const LOCAL_HOME_CHAIN = 'http://127.0.0.1:8545';
-const LOCAL_FOREIGN_CHAIN = 'http://localhost:8546';
+const LOCAL_FOREIGN_CHAIN = 'http://127.0.0.1:8546';
 const LOCAL_TOKEN_ID = 1; // set in start-bridging-environment.js
 
 export const getHomeProvider = () => {
