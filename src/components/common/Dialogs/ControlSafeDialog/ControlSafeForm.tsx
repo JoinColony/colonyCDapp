@@ -346,6 +346,7 @@ const ControlSafeForm = ({
                   transactionIndex={index}
                   transactionTabStatus={transactionTabStatus}
                   handleTransactionTabStatus={setTransactionTabStatus}
+                  handleSelectedContractMethods={handleSelectedContractMethods}
                   removeTab={removeTab}
                 />
               )}
