@@ -90,6 +90,11 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
-    }
+    },
+    "fetchExpenditureBalances": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
   }
 }

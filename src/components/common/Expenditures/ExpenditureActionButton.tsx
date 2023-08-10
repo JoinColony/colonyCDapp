@@ -1,4 +1,5 @@
 import React from 'react';
+import { Id } from '@colony/colony-js';
 import { useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,12 +8,14 @@ import { ActionTypes } from '~redux';
 import { ActionButton } from '~shared/Button';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
 
+import { ExpenditureFormValues } from './ExpenditureForm';
+
 const ExpenditureActionButton = () => {
   const navigate = useNavigate();
 
   const { colony } = useColonyContext();
 
-  const { recipientAddress, tokenAddress, amount } = useWatch();
+  const { slots } = useWatch<ExpenditureFormValues>();
 
   if (!colony) {
     return null;
@@ -20,11 +23,10 @@ const ExpenditureActionButton = () => {
 
   const transform = pipe(
     mapPayload(() => ({
-      colonyName: colony.name,
-      colonyAddress: colony.colonyAddress,
-      recipientAddress,
-      tokenAddress,
-      amount,
+      colony,
+      slots,
+      // @TODO: This should come from the form values
+      domainId: Id.RootDomain,
     })),
     withMeta({ navigate }),
   );

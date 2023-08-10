@@ -982,13 +982,20 @@ export type CreateDomainMetadataInput = {
 };
 
 export type CreateExpenditureInput = {
+  balances?: InputMaybe<Array<ExpenditureBalanceInput>>;
   colonyId: Scalars['ID'];
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   id?: InputMaybe<Scalars['ID']>;
+  nativeFundingPotId: Scalars['Int'];
   nativeId: Scalars['Int'];
   ownerAddress: Scalars['ID'];
   slots: Array<ExpenditureSlotInput>;
   status: ExpenditureStatus;
+};
+
+export type CreateExpenditureMetadataInput = {
+  id?: InputMaybe<Scalars['ID']>;
+  nativeDomainId: Scalars['Int'];
 };
 
 export type CreateIngestorStatsInput = {
@@ -1168,6 +1175,10 @@ export type DeleteExpenditureInput = {
   id: Scalars['ID'];
 };
 
+export type DeleteExpenditureMetadataInput = {
+  id: Scalars['ID'];
+};
+
 export type DeleteIngestorStatsInput = {
   id: Scalars['ID'];
 };
@@ -1333,14 +1344,38 @@ export enum EmailPermissions {
 
 export type Expenditure = {
   __typename?: 'Expenditure';
+  balances?: Maybe<Array<ExpenditureBalance>>;
   colony: Colony;
   colonyId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
   id: Scalars['ID'];
+  metadata?: Maybe<ExpenditureMetadata>;
+  nativeFundingPotId: Scalars['Int'];
   nativeId: Scalars['Int'];
   ownerAddress: Scalars['ID'];
   slots: Array<ExpenditureSlot>;
   status: ExpenditureStatus;
+  updatedAt: Scalars['AWSDateTime'];
+};
+
+export type ExpenditureBalance = {
+  __typename?: 'ExpenditureBalance';
+  amount: Scalars['String'];
+  requiredAmount: Scalars['String'];
+  tokenAddress: Scalars['ID'];
+};
+
+export type ExpenditureBalanceInput = {
+  amount: Scalars['String'];
+  requiredAmount: Scalars['String'];
+  tokenAddress: Scalars['ID'];
+};
+
+export type ExpenditureMetadata = {
+  __typename?: 'ExpenditureMetadata';
+  createdAt: Scalars['AWSDateTime'];
+  id: Scalars['ID'];
+  nativeDomainId: Scalars['Int'];
   updatedAt: Scalars['AWSDateTime'];
 };
 
@@ -2074,6 +2109,7 @@ export type ModelExpenditureConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelExpenditureConditionInput>>>;
   colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
+  nativeFundingPotId?: InputMaybe<ModelIntInput>;
   nativeId?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelExpenditureConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelExpenditureConditionInput>>>;
@@ -2092,11 +2128,33 @@ export type ModelExpenditureFilterInput = {
   colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   id?: InputMaybe<ModelIdInput>;
+  nativeFundingPotId?: InputMaybe<ModelIntInput>;
   nativeId?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelExpenditureFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelExpenditureFilterInput>>>;
   ownerAddress?: InputMaybe<ModelIdInput>;
   status?: InputMaybe<ModelExpenditureStatusInput>;
+};
+
+export type ModelExpenditureMetadataConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelExpenditureMetadataConditionInput>>>;
+  nativeDomainId?: InputMaybe<ModelIntInput>;
+  not?: InputMaybe<ModelExpenditureMetadataConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelExpenditureMetadataConditionInput>>>;
+};
+
+export type ModelExpenditureMetadataConnection = {
+  __typename?: 'ModelExpenditureMetadataConnection';
+  items: Array<Maybe<ExpenditureMetadata>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelExpenditureMetadataFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelExpenditureMetadataFilterInput>>>;
+  id?: InputMaybe<ModelIdInput>;
+  nativeDomainId?: InputMaybe<ModelIntInput>;
+  not?: InputMaybe<ModelExpenditureMetadataFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelExpenditureMetadataFilterInput>>>;
 };
 
 export type ModelExpenditureStatusInput = {
@@ -2475,10 +2533,18 @@ export type ModelSubscriptionExpenditureFilterInput = {
   colonyId?: InputMaybe<ModelSubscriptionIdInput>;
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
+  nativeFundingPotId?: InputMaybe<ModelSubscriptionIntInput>;
   nativeId?: InputMaybe<ModelSubscriptionIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionExpenditureFilterInput>>>;
   ownerAddress?: InputMaybe<ModelSubscriptionIdInput>;
   status?: InputMaybe<ModelSubscriptionStringInput>;
+};
+
+export type ModelSubscriptionExpenditureMetadataFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionExpenditureMetadataFilterInput>>>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  nativeDomainId?: InputMaybe<ModelSubscriptionIntInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionExpenditureMetadataFilterInput>>>;
 };
 
 export type ModelSubscriptionFloatInput = {
@@ -2836,6 +2902,7 @@ export type Mutation = {
   createDomain?: Maybe<Domain>;
   createDomainMetadata?: Maybe<DomainMetadata>;
   createExpenditure?: Maybe<Expenditure>;
+  createExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   createIngestorStats?: Maybe<IngestorStats>;
   createMotionMessage?: Maybe<MotionMessage>;
   createProfile?: Maybe<Profile>;
@@ -2863,6 +2930,7 @@ export type Mutation = {
   deleteDomain?: Maybe<Domain>;
   deleteDomainMetadata?: Maybe<DomainMetadata>;
   deleteExpenditure?: Maybe<Expenditure>;
+  deleteExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   deleteIngestorStats?: Maybe<IngestorStats>;
   deleteMotionMessage?: Maybe<MotionMessage>;
   deleteProfile?: Maybe<Profile>;
@@ -2888,6 +2956,7 @@ export type Mutation = {
   updateDomain?: Maybe<Domain>;
   updateDomainMetadata?: Maybe<DomainMetadata>;
   updateExpenditure?: Maybe<Expenditure>;
+  updateExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   /**
    * Update an extension's details for a specific Colony
    * The extension hash is generated like so: `keccak256(toUtf8Bytes(extensionName))`, where `extensionName` is the name of the extension contract file in the Colony Network (e.g. `VotingReputation`)
@@ -3012,6 +3081,13 @@ export type MutationCreateDomainMetadataArgs = {
 export type MutationCreateExpenditureArgs = {
   condition?: InputMaybe<ModelExpenditureConditionInput>;
   input: CreateExpenditureInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreateExpenditureMetadataArgs = {
+  condition?: InputMaybe<ModelExpenditureMetadataConditionInput>;
+  input: CreateExpenditureMetadataInput;
 };
 
 
@@ -3189,6 +3265,13 @@ export type MutationDeleteExpenditureArgs = {
 
 
 /** Root mutation type */
+export type MutationDeleteExpenditureMetadataArgs = {
+  condition?: InputMaybe<ModelExpenditureMetadataConditionInput>;
+  input: DeleteExpenditureMetadataInput;
+};
+
+
+/** Root mutation type */
 export type MutationDeleteIngestorStatsArgs = {
   condition?: InputMaybe<ModelIngestorStatsConditionInput>;
   input: DeleteIngestorStatsInput;
@@ -3352,6 +3435,13 @@ export type MutationUpdateDomainMetadataArgs = {
 export type MutationUpdateExpenditureArgs = {
   condition?: InputMaybe<ModelExpenditureConditionInput>;
   input: UpdateExpenditureInput;
+};
+
+
+/** Root mutation type */
+export type MutationUpdateExpenditureMetadataArgs = {
+  condition?: InputMaybe<ModelExpenditureMetadataConditionInput>;
+  input: UpdateExpenditureMetadataInput;
 };
 
 
@@ -3553,7 +3643,9 @@ export type Query = {
   getDomain?: Maybe<Domain>;
   getDomainMetadata?: Maybe<DomainMetadata>;
   getExpenditure?: Maybe<Expenditure>;
+  getExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   getExpendituresByColony?: Maybe<ModelExpenditureConnection>;
+  getExpendituresByNativeFundingPotId?: Maybe<ModelExpenditureConnection>;
   getExtensionByColonyAndHash?: Maybe<ModelColonyExtensionConnection>;
   getExtensionsByHash?: Maybe<ModelColonyExtensionConnection>;
   getIngestorStats?: Maybe<IngestorStats>;
@@ -3600,6 +3692,7 @@ export type Query = {
   listCurrentVersions?: Maybe<ModelCurrentVersionConnection>;
   listDomainMetadata?: Maybe<ModelDomainMetadataConnection>;
   listDomains?: Maybe<ModelDomainConnection>;
+  listExpenditureMetadata?: Maybe<ModelExpenditureMetadataConnection>;
   listExpenditures?: Maybe<ModelExpenditureConnection>;
   listIngestorStats?: Maybe<ModelIngestorStatsConnection>;
   listMotionMessages?: Maybe<ModelMotionMessageConnection>;
@@ -3801,11 +3894,27 @@ export type QueryGetExpenditureArgs = {
 
 
 /** Root query type */
+export type QueryGetExpenditureMetadataArgs = {
+  id: Scalars['ID'];
+};
+
+
+/** Root query type */
 export type QueryGetExpendituresByColonyArgs = {
   colonyId: Scalars['ID'];
   createdAt?: InputMaybe<ModelStringKeyConditionInput>;
   filter?: InputMaybe<ModelExpenditureFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
+export type QueryGetExpendituresByNativeFundingPotIdArgs = {
+  filter?: InputMaybe<ModelExpenditureFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nativeFundingPotId: Scalars['Int'];
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
@@ -4104,6 +4213,14 @@ export type QueryListDomainsArgs = {
 
 
 /** Root query type */
+export type QueryListExpenditureMetadataArgs = {
+  filter?: InputMaybe<ModelExpenditureMetadataFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Root query type */
 export type QueryListExpendituresArgs = {
   filter?: InputMaybe<ModelExpenditureFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -4229,6 +4346,7 @@ export type Subscription = {
   onCreateDomain?: Maybe<Domain>;
   onCreateDomainMetadata?: Maybe<DomainMetadata>;
   onCreateExpenditure?: Maybe<Expenditure>;
+  onCreateExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   onCreateIngestorStats?: Maybe<IngestorStats>;
   onCreateMotionMessage?: Maybe<MotionMessage>;
   onCreateProfile?: Maybe<Profile>;
@@ -4252,6 +4370,7 @@ export type Subscription = {
   onDeleteDomain?: Maybe<Domain>;
   onDeleteDomainMetadata?: Maybe<DomainMetadata>;
   onDeleteExpenditure?: Maybe<Expenditure>;
+  onDeleteExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   onDeleteIngestorStats?: Maybe<IngestorStats>;
   onDeleteMotionMessage?: Maybe<MotionMessage>;
   onDeleteProfile?: Maybe<Profile>;
@@ -4275,6 +4394,7 @@ export type Subscription = {
   onUpdateDomain?: Maybe<Domain>;
   onUpdateDomainMetadata?: Maybe<DomainMetadata>;
   onUpdateExpenditure?: Maybe<Expenditure>;
+  onUpdateExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   onUpdateIngestorStats?: Maybe<IngestorStats>;
   onUpdateMotionMessage?: Maybe<MotionMessage>;
   onUpdateProfile?: Maybe<Profile>;
@@ -4362,6 +4482,11 @@ export type SubscriptionOnCreateDomainMetadataArgs = {
 
 export type SubscriptionOnCreateExpenditureArgs = {
   filter?: InputMaybe<ModelSubscriptionExpenditureFilterInput>;
+};
+
+
+export type SubscriptionOnCreateExpenditureMetadataArgs = {
+  filter?: InputMaybe<ModelSubscriptionExpenditureMetadataFilterInput>;
 };
 
 
@@ -4480,6 +4605,11 @@ export type SubscriptionOnDeleteExpenditureArgs = {
 };
 
 
+export type SubscriptionOnDeleteExpenditureMetadataArgs = {
+  filter?: InputMaybe<ModelSubscriptionExpenditureMetadataFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteIngestorStatsArgs = {
   filter?: InputMaybe<ModelSubscriptionIngestorStatsFilterInput>;
 };
@@ -4592,6 +4722,11 @@ export type SubscriptionOnUpdateDomainMetadataArgs = {
 
 export type SubscriptionOnUpdateExpenditureArgs = {
   filter?: InputMaybe<ModelSubscriptionExpenditureFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateExpenditureMetadataArgs = {
+  filter?: InputMaybe<ModelSubscriptionExpenditureMetadataFilterInput>;
 };
 
 
@@ -4885,13 +5020,20 @@ export type UpdateDomainMetadataInput = {
 };
 
 export type UpdateExpenditureInput = {
+  balances?: InputMaybe<Array<ExpenditureBalanceInput>>;
   colonyId?: InputMaybe<Scalars['ID']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   id: Scalars['ID'];
+  nativeFundingPotId?: InputMaybe<Scalars['Int']>;
   nativeId?: InputMaybe<Scalars['Int']>;
   ownerAddress?: InputMaybe<Scalars['ID']>;
   slots?: InputMaybe<Array<ExpenditureSlotInput>>;
   status?: InputMaybe<ExpenditureStatus>;
+};
+
+export type UpdateExpenditureMetadataInput = {
+  id: Scalars['ID'];
+  nativeDomainId?: InputMaybe<Scalars['Int']>;
 };
 
 /**
@@ -5214,7 +5356,7 @@ export type DomainFragment = { __typename?: 'Domain', id: string, nativeId: numb
 
 export type DomainMetadataFragment = { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null };
 
-export type ExpenditureFragment = { __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string }> | null }> };
+export type ExpenditureFragment = { __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', nativeDomainId: number } | null, balances?: Array<{ __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string, requiredAmount: string }> | null };
 
 export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number, params?: { __typename?: 'ExtensionParams', votingReputation?: { __typename?: 'VotingReputationParams', maxVoteFraction: string } | null } | null };
 
@@ -5291,6 +5433,13 @@ export type CreateDomainMutationVariables = Exact<{
 
 
 export type CreateDomainMutation = { __typename?: 'Mutation', createDomain?: { __typename?: 'Domain', id: string } | null };
+
+export type CreateExpenditureMetadataMutationVariables = Exact<{
+  input: CreateExpenditureMetadataInput;
+}>;
+
+
+export type CreateExpenditureMetadataMutation = { __typename?: 'Mutation', createExpenditureMetadata?: { __typename?: 'ExpenditureMetadata', id: string } | null };
 
 export type CreateColonyTokensMutationVariables = Exact<{
   input: CreateColonyTokensInput;
@@ -5405,14 +5554,14 @@ export type GetColonyExpendituresQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyExpendituresQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, expenditures?: { __typename?: 'ModelExpenditureConnection', items: Array<{ __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string }> | null }> } | null> } | null } | null };
+export type GetColonyExpendituresQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, expenditures?: { __typename?: 'ModelExpenditureConnection', items: Array<{ __typename?: 'Expenditure', id: string, nativeId: number } | null> } | null } | null };
 
 export type GetExpenditureQueryVariables = Exact<{
   expenditureId: Scalars['ID'];
 }>;
 
 
-export type GetExpenditureQuery = { __typename?: 'Query', getExpenditure?: { __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string }> | null }> } | null };
+export type GetExpenditureQuery = { __typename?: 'Query', getExpenditure?: { __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', nativeDomainId: number } | null, balances?: Array<{ __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string, requiredAmount: string }> | null } | null };
 
 export type GetMotionStateQueryVariables = Exact<{
   input: GetMotionStateInput;
@@ -6036,6 +6185,15 @@ export const ExpenditureFragmentDoc = gql`
       amount
     }
   }
+  nativeFundingPotId
+  metadata {
+    nativeDomainId
+  }
+  balances {
+    tokenAddress
+    amount
+    requiredAmount
+  }
 }
     `;
 export const UserTokenBalanceDataFragmentDoc = gql`
@@ -6338,6 +6496,39 @@ export function useCreateDomainMutation(baseOptions?: Apollo.MutationHookOptions
 export type CreateDomainMutationHookResult = ReturnType<typeof useCreateDomainMutation>;
 export type CreateDomainMutationResult = Apollo.MutationResult<CreateDomainMutation>;
 export type CreateDomainMutationOptions = Apollo.BaseMutationOptions<CreateDomainMutation, CreateDomainMutationVariables>;
+export const CreateExpenditureMetadataDocument = gql`
+    mutation CreateExpenditureMetadata($input: CreateExpenditureMetadataInput!) {
+  createExpenditureMetadata(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateExpenditureMetadataMutationFn = Apollo.MutationFunction<CreateExpenditureMetadataMutation, CreateExpenditureMetadataMutationVariables>;
+
+/**
+ * __useCreateExpenditureMetadataMutation__
+ *
+ * To run a mutation, you first call `useCreateExpenditureMetadataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateExpenditureMetadataMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createExpenditureMetadataMutation, { data, loading, error }] = useCreateExpenditureMetadataMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateExpenditureMetadataMutation(baseOptions?: Apollo.MutationHookOptions<CreateExpenditureMetadataMutation, CreateExpenditureMetadataMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateExpenditureMetadataMutation, CreateExpenditureMetadataMutationVariables>(CreateExpenditureMetadataDocument, options);
+      }
+export type CreateExpenditureMetadataMutationHookResult = ReturnType<typeof useCreateExpenditureMetadataMutation>;
+export type CreateExpenditureMetadataMutationResult = Apollo.MutationResult<CreateExpenditureMetadataMutation>;
+export type CreateExpenditureMetadataMutationOptions = Apollo.BaseMutationOptions<CreateExpenditureMetadataMutation, CreateExpenditureMetadataMutationVariables>;
 export const CreateColonyTokensDocument = gql`
     mutation CreateColonyTokens($input: CreateColonyTokensInput!) {
   createColonyTokens(input: $input) {
@@ -6903,12 +7094,13 @@ export const GetColonyExpendituresDocument = gql`
     id
     expenditures {
       items {
-        ...Expenditure
+        id
+        nativeId
       }
     }
   }
 }
-    ${ExpenditureFragmentDoc}`;
+    `;
 
 /**
  * __useGetColonyExpendituresQuery__

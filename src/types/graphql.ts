@@ -26,6 +26,7 @@ import {
   MotionStakesFragment,
   VoterRecordFragment,
   UnclaimedStakesFragment,
+  ExpenditureFragment,
 } from '~gql';
 
 export type User = UserFragment;
@@ -103,3 +104,5 @@ export type MotionStakes = MotionStakesFragment;
 export type VoterRecord = VoterRecordFragment;
 
 export type UnclaimedStakes = UnclaimedStakesFragment;
+
+export type Expenditure = ExpenditureFragment;

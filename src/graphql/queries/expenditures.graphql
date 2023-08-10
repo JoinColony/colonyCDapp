@@ -3,7 +3,8 @@ query GetColonyExpenditures($colonyAddress: ID!) {
     id
     expenditures {
       items {
-        ...Expenditure
+        id
+        nativeId
       }
     }
   }

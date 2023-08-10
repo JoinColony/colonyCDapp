@@ -13,4 +13,13 @@ fragment Expenditure on Expenditure {
       amount
     }
   }
+  nativeFundingPotId
+  metadata {
+    nativeDomainId
+  }
+  balances {
+    tokenAddress
+    amount
+    requiredAmount
+  }
 }
