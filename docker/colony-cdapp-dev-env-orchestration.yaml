@@ -51,7 +51,7 @@ services:
       - '../amplify/mock-data:/colonyCDapp/amplify/mock-data'
       - '../src/graphql:/colonyCDapp/src/graphql'
     depends_on:
-      network-contracts:
+      safe-contracts:
         condition: service_healthy
     tty: true
     environment:
@@ -75,6 +75,10 @@ services:
       - '../amplify/mock-data:/colonyCDapp/amplify/mock-data'
     ports:
       - '8546:8546'
+    healthcheck:
+      test: ['CMD', 'curl', '-X', 'POST', '--data', '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}', 'http://localhost:8546']
+      interval: 5s
+      retries: 1000
     depends_on:
       network-contracts:
         condition: service_healthy
