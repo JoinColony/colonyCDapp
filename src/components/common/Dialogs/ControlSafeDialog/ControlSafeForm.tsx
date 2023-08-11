@@ -4,7 +4,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { ColonyRole, Id } from '@colony/colony-js';
 import classnames from 'classnames';
 
-import { useAppContext, useActionDialogStatus } from '~hooks';
+import { useActionDialogStatus } from '~hooks';
 import { DialogSection } from '~shared/Dialog';
 import { HookFormSelect as Select } from '~shared/Fields';
 import Heading from '~shared/Heading';
@@ -15,9 +15,8 @@ import { filterUserSelection } from '~shared/SingleUserPicker';
 import { SelectedPickerItem, SafeTransactionData } from '~types';
 import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
 import { isEmpty, isEqual, omit } from '~utils/lodash';
-import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 import { defaultTransaction, TransactionTypes } from '~utils/safes';
-import { hasRoot } from '~utils/checks';
+import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 
 import {
   TransferNFTSection,
@@ -34,8 +33,6 @@ import TransactionHeader from './TransactionHeader';
 import SafeTransactionPreview from './SafeTransactionPreview';
 
 import styles from './ControlSafeForm.css';
-import { getAllUserRoles } from '~transformers';
-import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 
 const displayName = 'common.ControlSafeDialog.ControlSafeForm';
 
@@ -108,10 +105,6 @@ const ControlSafeForm = ({
   showPreview,
   setShowPreview,
 }: ControlSafeProps) => {
-  const { wallet } = useAppContext();
-  const allUserRoles = getAllUserRoles(colony, wallet?.address || '');
-  const canManageAndControlSafes = hasRoot(allUserRoles);
-
   const [prevSafeAddress, setPrevSafeAddress] = useState<string>('');
   const [transactionTabStatus, setTransactionTabStatus] = useState([true]);
   const savedTokenState = useState({});
