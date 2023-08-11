@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import Numeral from '~shared/Numeral';
 import Icon from '~shared/Icon';
-import { Token, SafeTransaction, SafeTransactionData } from '~types';
+import { SafeTransactionData, Token } from '~types';
 import TokenIcon from '~shared/TokenIcon';
 import { SafeBalanceToken } from '~gql';
 
@@ -12,8 +12,14 @@ import { MSG } from '../../detailsWidgetConfig';
 import widgetStyles from '../../DetailsWidget.css';
 import styles from '../SafeTransactionDetail.css';
 
-const renderTokenIcon = (tokenData: SafeBalanceToken) => {
-  if (tokenData.name === 'Ether') {
+const renderTokenIcon = (safeToken: SafeBalanceToken) => {
+  // HACK fix this
+  const token = {
+    ...safeToken,
+    tokenAddress: safeToken.address,
+  } as Token;
+
+  if (token.name === 'Ether') {
     return (
       <Icon className={styles.ether} name="ether-purple" title="Ether Logo" />
     );
@@ -22,9 +28,9 @@ const renderTokenIcon = (tokenData: SafeBalanceToken) => {
   return (
     <TokenIcon
       className={styles.tokenAvatar}
-      title={`${tokenData.name} token logo`}
+      title={`${token.name} token logo`}
       iconName="circle-close"
-      token={tokenData}
+      token={token}
     />
   );
 };
