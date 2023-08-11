@@ -49,10 +49,9 @@ export const ContractSection = ({
   hideFunctionContract,
 }: ContractSectionProps) => {
   const functionContract =
-    /* NOTE to self this might be an issue
-    transaction.contract?.id || */
+    transaction.contract?.id ||
     transaction.contract?.walletAddress ||
-    transaction.token?.address ||
+    transaction.token?.tokenAddress ||
     transaction.nftData?.address;
 
   const getContractInfo = (safeTransaction: SafeTransaction) => {
@@ -78,7 +77,7 @@ export const ContractSection = ({
         contractInfo.contractName =
           safeTransaction.token?.name || formatMessage(MSG.token);
         contractInfo.contractAddress =
-          safeTransaction.token?.address || safe.address;
+          safeTransaction.token?.tokenAddress || safe.address;
         break;
       case TransactionTypes.CONTRACT_INTERACTION:
         contractInfo.contractName =

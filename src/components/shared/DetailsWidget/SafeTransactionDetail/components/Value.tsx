@@ -5,7 +5,6 @@ import Numeral from '~shared/Numeral';
 import Icon from '~shared/Icon';
 import { Token } from '~types';
 import TokenIcon from '~shared/TokenIcon';
-import { SafeBalanceToken } from '~gql';
 import { SafeTransaction } from '~common/Dialogs/ControlSafeDialog/types';
 
 import { MSG } from '../../detailsWidgetConfig';
@@ -13,14 +12,8 @@ import { MSG } from '../../detailsWidgetConfig';
 import widgetStyles from '../../DetailsWidget.css';
 import styles from '../SafeTransactionDetail.css';
 
-const renderTokenIcon = (safeToken: SafeBalanceToken) => {
-  // HACK fix this
-  const token = {
-    ...safeToken,
-    tokenAddress: safeToken.address,
-  } as Token;
-
-  if (token.name === 'Ether') {
+const renderTokenIcon = (safeToken: Token) => {
+  if (safeToken.name === 'Ether') {
     return (
       <Icon className={styles.ether} name="ether-purple" title="Ether Logo" />
     );
@@ -29,16 +22,16 @@ const renderTokenIcon = (safeToken: SafeBalanceToken) => {
   return (
     <TokenIcon
       className={styles.tokenAvatar}
-      title={`${token.name} token logo`}
+      title={`${safeToken.name} token logo`}
       iconName="circle-close"
-      token={token}
+      token={safeToken}
     />
   );
 };
 
 interface ValueProps {
   transaction: SafeTransaction;
-  token: SafeBalanceToken;
+  token: Token;
 }
 
 export const Value = ({ transaction, token }: ValueProps) => (
