@@ -21,7 +21,7 @@ import Icon from '~shared/Icon';
 import { TokenType } from '~gql';
 
 import AmountBalances from '../AmountBalances';
-import { SafeTransaction, TransactionSectionProps } from '../types';
+import { TransactionSectionProps } from '../types';
 
 import { ErrorMessage as Error, Loading, RecipientPicker } from './shared';
 import styles from './TransactionTypesSection.css';
@@ -84,7 +84,9 @@ const TransferFundsSection = ({
 
   const { watch, setValue } = useFormContext();
   const safe: SelectedPickerItem = watch('safe');
-  const transactions: SafeTransaction[] = watch('transactions');
+  const selectedTokenAddress: string = watch(
+    `transactions.${transactionIndex}.token.tokenAddress`,
+  );
   const safeBalances: SafeBalance[] = watch('safeBalances');
   const setSafeBalances = (value: SafeBalance[]) =>
     setValue('safeBalances', value);
@@ -149,8 +151,6 @@ const TransferFundsSection = ({
     // setSafeBalances causes infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [safeAddress, getSafeBalance, savedTokens]);
-
-  const selectedTokenAddress = transactions[transactionIndex].token?.address;
 
   const selectedBalance = getSelectedSafeBalance(
     safeBalances,

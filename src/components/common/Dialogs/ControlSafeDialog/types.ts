@@ -1,7 +1,7 @@
-import { Colony, NFTData, SelectedPickerItem, User } from '~types';
+import { Colony, NFTData, SelectedPickerItem, Token, User } from '~types';
 import { EnabledExtensionData } from '~hooks';
 import { AbiItemExtended } from '~utils/safes';
-import { SafeBalanceToken } from '~gql';
+import { SimpleTarget } from '~gql';
 
 export interface ControlSafeProps {
   back: () => void;
@@ -25,12 +25,12 @@ export interface FunctionParamType {
 
 export type SafeTransaction = {
   transactionType: string;
-  token?: SafeBalanceToken;
+  token?: Token;
   amount?: string;
   rawAmount?: number;
   recipient?: User;
   data: string;
-  contract?: User;
+  contract?: SimpleTarget;
   abi: string;
   contractFunction: string;
   functionParamTypes?: FunctionParamType[];
