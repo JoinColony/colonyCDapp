@@ -48,7 +48,7 @@ const AmountBalances = ({
   const { watch, setValue, trigger } = useFormContext();
 
   const selectedTokenData: Token = watch(
-    `transactions.${transactionIndex}.tokenData`,
+    `transactions.${transactionIndex}.token`,
   );
   const setSelectedTokenData = (value: Token) =>
     setValue(`transactions.${transactionIndex}.token`, value);
@@ -121,7 +121,7 @@ const AmountBalances = ({
           <TokenSymbolSelector
             label={MSG.token}
             tokens={tokens}
-            name={`transactions.${transactionIndex}.tokenAddress`}
+            name={`transactions.${transactionIndex}.token.tokenAddress`}
             elementOnly
             appearance={{ alignOptions: 'right', theme: 'grey' }}
             disabled={disabledInput}
