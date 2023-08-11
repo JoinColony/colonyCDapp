@@ -38,4 +38,4 @@ sed -i 's|http://127.0.0.1:8546|http://0.0.0.0:8546|g' $BRIDGING_CONTRACT_SCRIPT
 sed -i '1a\ const { writeFileSync } = require("fs");' $BRIDGING_CONTRACT_SCRIPT
 sed -i "/console.log(\`Token address: \${token.address}\`);/a $FORMATTED_FUNCTION" $BRIDGING_CONTRACT_SCRIPT
 
-node ./scripts/setup-bridging-contracts.js start-bridging-environment
+node $BRIDGING_CONTRACT_SCRIPT start-bridging-environment
