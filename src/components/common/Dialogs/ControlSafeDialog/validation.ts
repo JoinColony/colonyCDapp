@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers';
 import { isHexString } from 'ethers/lib/utils';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 import { object, string, array, number } from 'yup';

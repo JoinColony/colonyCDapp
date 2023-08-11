@@ -29,6 +29,7 @@ import {
   SafeFragment,
   SafeTransactionDataFragment,
   NftDataFragment,
+  FunctionParamFragment,
 } from '~gql';
 
 export type User = UserFragment;
@@ -112,3 +113,5 @@ export type Safe = SafeFragment;
 export type SafeTransactionData = SafeTransactionDataFragment;
 
 export type NFTData = NftDataFragment;
+
+export type FunctionParam = FunctionParamFragment;

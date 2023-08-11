@@ -1,3 +1,21 @@
+fragment NFTData on NFTData {
+  address
+  description
+  id
+  imageUri
+  logoUri
+  name
+  tokenName
+  tokenSymbol
+  uri
+}
+
+fragment FunctionParam on FunctionParam {
+  name
+  type
+  value
+}
+
 fragment SafeTransactionData on SafeTransactionData {
   transactionType
   token {
@@ -39,30 +57,9 @@ fragment SafeTransactionData on SafeTransactionData {
     walletAddress
   }
   nftData {
-    address
-    description
-    id
-    imageUri
-    logoUri
-    name
-    tokenName
-    tokenSymbol
-    uri
+    ...NFTData
   }
-  functionParamTypes {
-    name
-    type
+  functionParams {
+    ...FunctionParam
   }
-}
-
-fragment NFTData on NFTData {
-  address
-  description
-  id
-  imageUri
-  logoUri
-  name
-  tokenName
-  tokenSymbol
-  uri
 }

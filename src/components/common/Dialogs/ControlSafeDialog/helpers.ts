@@ -2,8 +2,10 @@ import { defineMessages } from 'react-intl';
 import omitDeep from 'omit-deep-lodash';
 
 import { SAFE_NETWORKS } from '~constants';
-import { Colony, Safe, SafeTransactionData } from '~types';
+import { Colony, Safe } from '~types';
 import { TransactionTypes, getChainNameFromSafe } from '~utils/safes';
+
+import { SafeTransaction } from './types';
 
 const extractSafeName = (safeDisplayName: string) => {
   const pattern = /^(.*) \(/; // @NOTE: Matches any characters before a space and opening parenthesis
@@ -32,9 +34,28 @@ export const getControlSafeDialogPayload = (colony: Colony, payload: any) => {
     name: extractSafeName(safe.profile.displayName),
   };
   const transformedTransactions = transactions.map(
-    (transaction: any): SafeTransactionData => {
+    (transaction: any): SafeTransaction => {
+      const dynamicPropNames =
+        transaction.functionParamTypes?.map(
+          (functionParamType) =>
+            `${functionParamType.name}-${transaction.contractFunction}`,
+        ) || [];
+      const functionParams =
+        transaction.functionParamTypes?.map(
+          (param: any, index: number): any => {
+            return {
+              ...param,
+              value: transaction[dynamicPropNames[index]],
+            };
+          },
+        ) || [];
+      const filteredTransaction = omitDeep(transaction, [
+        ...dynamicPropNames,
+        'functionParamTypes',
+      ]);
+
       return {
-        ...transaction,
+        ...filteredTransaction,
         rawAmount: String(transaction.rawAmount),
         recipient: omitDeep(transaction.recipient, [
           '__typename',
@@ -57,6 +78,7 @@ export const getControlSafeDialogPayload = (colony: Colony, payload: any) => {
               address: transaction.token.tokenAddress,
             }
           : null,
+        functionParams,
       };
     },
   );

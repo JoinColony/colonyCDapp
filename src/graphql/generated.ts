@@ -934,15 +934,17 @@ export type ExtensionParamsInput = {
   votingReputation?: InputMaybe<VotingReputationParamsInput>;
 };
 
-export type FunctionParamType = {
-  __typename?: 'FunctionParamType';
+export type FunctionParam = {
+  __typename?: 'FunctionParam';
   name: Scalars['String'];
   type: Scalars['String'];
+  value: Scalars['String'];
 };
 
-export type FunctionParamTypeInput = {
+export type FunctionParamInput = {
   name: Scalars['String'];
   type: Scalars['String'];
+  value: Scalars['String'];
 };
 
 export type GetMotionStateInput = {
@@ -3354,7 +3356,7 @@ export type SafeTransactionData = {
   contract?: Maybe<SimpleTarget>;
   contractFunction?: Maybe<Scalars['String']>;
   data?: Maybe<Scalars['String']>;
-  functionParamTypes?: Maybe<Array<Maybe<FunctionParamType>>>;
+  functionParams?: Maybe<Array<Maybe<FunctionParam>>>;
   nft?: Maybe<Nft>;
   nftData?: Maybe<NftData>;
   rawAmount?: Maybe<Scalars['String']>;
@@ -3369,7 +3371,7 @@ export type SafeTransactionDataInput = {
   contract?: InputMaybe<SimpleTargetInput>;
   contractFunction?: InputMaybe<Scalars['String']>;
   data?: InputMaybe<Scalars['String']>;
-  functionParamTypes?: InputMaybe<Array<InputMaybe<FunctionParamTypeInput>>>;
+  functionParams?: InputMaybe<Array<InputMaybe<FunctionParamInput>>>;
   nft?: InputMaybe<NftInput>;
   nftData?: InputMaybe<NftDataInput>;
   rawAmount?: InputMaybe<Scalars['String']>;
@@ -4289,9 +4291,11 @@ export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, 
 
 export type ExtensionDisplayFragmentFragment = { __typename?: 'ColonyExtension', hash: string, address: string };
 
-export type SafeTransactionDataFragment = { __typename?: 'SafeTransactionData', transactionType: string, amount?: string | null, rawAmount?: string | null, data?: string | null, abi?: string | null, contractFunction?: string | null, token?: { __typename?: 'SafeBalanceToken', name: string, decimals: number, symbol: string, address: string, networkName?: string | null, logoUri?: string | null } | null, recipient?: { __typename?: 'SimpleTarget', id: string, walletAddress: string, profile: { __typename?: 'SimpleTargetProfile', avatarHash?: string | null, displayName?: string | null, username?: string | null } } | null, contract?: { __typename?: 'SimpleTarget', id: string, walletAddress: string, profile: { __typename?: 'SimpleTargetProfile', avatarHash?: string | null, displayName?: string | null, username?: string | null } } | null, nft?: { __typename?: 'NFT', id: string, walletAddress: string, profile: { __typename?: 'NFTProfile', displayName: string } } | null, nftData?: { __typename?: 'NFTData', address: string, description?: string | null, id: string, imageUri?: string | null, logoUri: string, name?: string | null, tokenName: string, tokenSymbol: string, uri: string } | null, functionParamTypes?: Array<{ __typename?: 'FunctionParamType', name: string, type: string } | null> | null };
-
 export type NftDataFragment = { __typename?: 'NFTData', address: string, description?: string | null, id: string, imageUri?: string | null, logoUri: string, name?: string | null, tokenName: string, tokenSymbol: string, uri: string };
+
+export type FunctionParamFragment = { __typename?: 'FunctionParam', name: string, type: string, value: string };
+
+export type SafeTransactionDataFragment = { __typename?: 'SafeTransactionData', transactionType: string, amount?: string | null, rawAmount?: string | null, data?: string | null, abi?: string | null, contractFunction?: string | null, token?: { __typename?: 'SafeBalanceToken', name: string, decimals: number, symbol: string, address: string, networkName?: string | null, logoUri?: string | null } | null, recipient?: { __typename?: 'SimpleTarget', id: string, walletAddress: string, profile: { __typename?: 'SimpleTargetProfile', avatarHash?: string | null, displayName?: string | null, username?: string | null } } | null, contract?: { __typename?: 'SimpleTarget', id: string, walletAddress: string, profile: { __typename?: 'SimpleTargetProfile', avatarHash?: string | null, displayName?: string | null, username?: string | null } } | null, nft?: { __typename?: 'NFT', id: string, walletAddress: string, profile: { __typename?: 'NFTProfile', displayName: string } } | null, nftData?: { __typename?: 'NFTData', address: string, description?: string | null, id: string, imageUri?: string | null, logoUri: string, name?: string | null, tokenName: string, tokenSymbol: string, uri: string } | null, functionParams?: Array<{ __typename?: 'FunctionParam', name: string, type: string, value: string } | null> | null };
 
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
 
@@ -5102,6 +5106,26 @@ export const WatchListItemFragmentDoc = gql`
   createdAt
 }
     ${WatchedColonyFragmentDoc}`;
+export const NftDataFragmentDoc = gql`
+    fragment NFTData on NFTData {
+  address
+  description
+  id
+  imageUri
+  logoUri
+  name
+  tokenName
+  tokenSymbol
+  uri
+}
+    `;
+export const FunctionParamFragmentDoc = gql`
+    fragment FunctionParam on FunctionParam {
+  name
+  type
+  value
+}
+    `;
 export const SafeTransactionDataFragmentDoc = gql`
     fragment SafeTransactionData on SafeTransactionData {
   transactionType
@@ -5144,35 +5168,14 @@ export const SafeTransactionDataFragmentDoc = gql`
     walletAddress
   }
   nftData {
-    address
-    description
-    id
-    imageUri
-    logoUri
-    name
-    tokenName
-    tokenSymbol
-    uri
+    ...NFTData
   }
-  functionParamTypes {
-    name
-    type
+  functionParams {
+    ...FunctionParam
   }
 }
-    `;
-export const NftDataFragmentDoc = gql`
-    fragment NFTData on NFTData {
-  address
-  description
-  id
-  imageUri
-  logoUri
-  name
-  tokenName
-  tokenSymbol
-  uri
-}
-    `;
+    ${NftDataFragmentDoc}
+${FunctionParamFragmentDoc}`;
 export const UserTokenBalanceDataFragmentDoc = gql`
     fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
   balance
