@@ -153,7 +153,7 @@ export const defaultTransaction: SafeTransactionData = {
   token: null,
   amount: null,
   rawAmount: null,
-  recipient: undefined,
+  recipient: null,
   data: '',
   contract: null,
   abi: '',
