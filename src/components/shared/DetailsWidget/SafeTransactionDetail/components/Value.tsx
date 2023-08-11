@@ -3,9 +3,10 @@ import { FormattedMessage } from 'react-intl';
 
 import Numeral from '~shared/Numeral';
 import Icon from '~shared/Icon';
-import { SafeTransactionData, Token } from '~types';
+import { Token } from '~types';
 import TokenIcon from '~shared/TokenIcon';
 import { SafeBalanceToken } from '~gql';
+import { SafeTransaction } from '~common/Dialogs/ControlSafeDialog/types';
 
 import { MSG } from '../../detailsWidgetConfig';
 
@@ -36,7 +37,7 @@ const renderTokenIcon = (safeToken: SafeBalanceToken) => {
 };
 
 interface ValueProps {
-  transaction: SafeTransactionData;
+  transaction: SafeTransaction;
   token: SafeBalanceToken;
 }
 

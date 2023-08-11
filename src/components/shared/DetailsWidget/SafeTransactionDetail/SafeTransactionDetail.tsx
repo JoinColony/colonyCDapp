@@ -5,9 +5,10 @@ import { nanoid } from 'nanoid';
 
 import Numeral from '~shared/Numeral';
 import Avatar from '~shared/Avatar';
-import { Colony, Safe, SafeTransactionData } from '~types';
+import { Colony, Safe } from '~types';
 import { MSG as TypesMSG } from '~common/Dialogs/ControlSafeDialog/helpers';
 import { TransactionTypes } from '~utils/safes';
+import { SafeTransaction } from '~common/Dialogs/ControlSafeDialog/types';
 
 import {
   ContractName,
@@ -41,7 +42,7 @@ const MSG = defineMessages({
 
 interface Props {
   safe: Safe;
-  safeTransactionDetails: SafeTransactionData[];
+  safeTransactionDetails: SafeTransaction[];
   colony: Colony;
   safeTransactionDetailStatuses: string[];
 }
@@ -188,7 +189,7 @@ const SafeTransactionDetail = ({
                             <div className={widgetStyles.value}>
                               <Numeral
                                 value={transaction.rawAmount}
-                                title={transaction.rawAmount}
+                                title={String(transaction.rawAmount)}
                               />
                             </div>
                           </div>

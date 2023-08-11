@@ -2700,9 +2700,10 @@ type SafeBalanceToken {
   logoUri: String
 }
 
-type FunctionParamType {
+type FunctionParam {
   name: String!
   type: String!
+  value: String!
 }
 
 type NFTData {
@@ -2729,7 +2730,7 @@ type SafeTransactionData {
   contractFunction: String
   nft: NFT
   nftData: NFTData
-  functionParamTypes: [FunctionParamType]
+  functionParams: [FunctionParam]
 }
 
 type ColonySafeTransaction @model {

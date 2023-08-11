@@ -27,12 +27,17 @@ import {
   getChainNameFromSafe,
 } from '~utils/safes';
 import { isEmpty, isEqual, isNil } from '~utils/lodash';
-import { Message, SafeTransactionData } from '~types';
+import { Message } from '~types';
 import { isMessageDescriptor } from '~utils/intl';
 import { BINANCE_NETWORK } from '~constants';
 
 import { invalidSafeError } from '..';
-import { ABIResponse, TransactionSectionProps, UpdatedMethods } from '../types';
+import {
+  ABIResponse,
+  SafeTransaction,
+  TransactionSectionProps,
+  UpdatedMethods,
+} from '../types';
 
 import { ErrorMessage as Error, Loading, AvatarXS } from './shared';
 
@@ -137,7 +142,7 @@ const ContractInteractionSection = ({
     formState: { isValid },
   } = useFormContext();
   const safe = watch('safe');
-  const transactions: SafeTransactionData[] = watch(`transactions`);
+  const transactions: SafeTransaction[] = watch(`transactions`);
   const transactionValues = transactions[transactionIndex];
   const selectedSafe = getSafe(safes, safe);
 

@@ -266,6 +266,8 @@ export type ColonyAction = {
   recipientUser?: Maybe<User>;
   /** Colony roles that are associated with the action */
   roles?: Maybe<ColonyActionRoles>;
+  /** Safe transactions associated with the action */
+  safeTransaction?: Maybe<ColonySafeTransaction>;
   /**
    * Whether to show the motion in the actions list
    * True for (forced) actions. True for motions if staked above 10%
@@ -340,6 +342,11 @@ export enum ColonyActionType {
   EmitDomainReputationRewardMotion = 'EMIT_DOMAIN_REPUTATION_REWARD_MOTION',
   /** A generic or unspecified Colony action */
   Generic = 'GENERIC',
+  /**
+   * "
+   * An action related to the creation of safe transactions via Safe Control
+   */
+  MakeArbitraryTransaction = 'MAKE_ARBITRARY_TRANSACTION',
   /** An action related to minting tokens within a Colony */
   MintTokens = 'MINT_TOKENS',
   /** An action related to minting tokens within a Colony via a motion */
@@ -726,6 +733,16 @@ export type ColonyRole = {
   updatedAt: Scalars['AWSDateTime'];
 };
 
+export type ColonySafeTransaction = {
+  __typename?: 'ColonySafeTransaction';
+  createdAt: Scalars['AWSDateTime'];
+  id: Scalars['ID'];
+  safe: Safe;
+  title: Scalars['String'];
+  transactions: Array<SafeTransactionData>;
+  updatedAt: Scalars['AWSDateTime'];
+};
+
 /**
  * Keeps track of the current amount a user has staked in a colony
  * When a user stakes, totalAmount increases. When a user reclaims their stake, totalAmount decreases.
@@ -1003,6 +1020,13 @@ export type CreateColonyRoleInput = {
   targetAddress?: InputMaybe<Scalars['ID']>;
 };
 
+export type CreateColonySafeTransactionInput = {
+  id?: InputMaybe<Scalars['ID']>;
+  safe: SafeInput;
+  title: Scalars['String'];
+  transactions: Array<SafeTransactionDataInput>;
+};
+
 export type CreateColonyStakeInput = {
   colonyId: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
@@ -1218,6 +1242,10 @@ export type DeleteColonyMotionInput = {
 };
 
 export type DeleteColonyRoleInput = {
+  id: Scalars['ID'];
+};
+
+export type DeleteColonySafeTransactionInput = {
   id: Scalars['ID'];
 };
 
@@ -1473,6 +1501,19 @@ export type ExtensionParams = {
 
 export type ExtensionParamsInput = {
   votingReputation?: InputMaybe<VotingReputationParamsInput>;
+};
+
+export type FunctionParam = {
+  __typename?: 'FunctionParam';
+  name: Scalars['String'];
+  type: Scalars['String'];
+  value: Scalars['String'];
+};
+
+export type FunctionParamInput = {
+  name: Scalars['String'];
+  type: Scalars['String'];
+  value: Scalars['String'];
 };
 
 /** Input data for retrieving the state of a motion (i.e. the current period) */
@@ -2028,6 +2069,27 @@ export type ModelColonyRoleFilterInput = {
   role_5?: InputMaybe<ModelBooleanInput>;
   role_6?: InputMaybe<ModelBooleanInput>;
   targetAddress?: InputMaybe<ModelIdInput>;
+};
+
+export type ModelColonySafeTransactionConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelColonySafeTransactionConditionInput>>>;
+  not?: InputMaybe<ModelColonySafeTransactionConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelColonySafeTransactionConditionInput>>>;
+  title?: InputMaybe<ModelStringInput>;
+};
+
+export type ModelColonySafeTransactionConnection = {
+  __typename?: 'ModelColonySafeTransactionConnection';
+  items: Array<Maybe<ColonySafeTransaction>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelColonySafeTransactionFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelColonySafeTransactionFilterInput>>>;
+  id?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelColonySafeTransactionFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelColonySafeTransactionFilterInput>>>;
+  title?: InputMaybe<ModelStringInput>;
 };
 
 export type ModelColonyStakeConditionInput = {
@@ -2587,6 +2649,13 @@ export type ModelSubscriptionColonyRoleFilterInput = {
   targetAddress?: InputMaybe<ModelSubscriptionIdInput>;
 };
 
+export type ModelSubscriptionColonySafeTransactionFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonySafeTransactionFilterInput>>>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonySafeTransactionFilterInput>>>;
+  title?: InputMaybe<ModelSubscriptionStringInput>;
+};
+
 export type ModelSubscriptionColonyStakeFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyStakeFilterInput>>>;
   colonyId?: InputMaybe<ModelSubscriptionIdInput>;
@@ -3009,6 +3078,7 @@ export type Mutation = {
   createColonyMetadata?: Maybe<ColonyMetadata>;
   createColonyMotion?: Maybe<ColonyMotion>;
   createColonyRole?: Maybe<ColonyRole>;
+  createColonySafeTransaction?: Maybe<ColonySafeTransaction>;
   createColonyStake?: Maybe<ColonyStake>;
   createColonyTokens?: Maybe<ColonyTokens>;
   createContractEvent?: Maybe<ContractEvent>;
@@ -3038,6 +3108,7 @@ export type Mutation = {
   deleteColonyMetadata?: Maybe<ColonyMetadata>;
   deleteColonyMotion?: Maybe<ColonyMotion>;
   deleteColonyRole?: Maybe<ColonyRole>;
+  deleteColonySafeTransaction?: Maybe<ColonySafeTransaction>;
   deleteColonyStake?: Maybe<ColonyStake>;
   deleteColonyTokens?: Maybe<ColonyTokens>;
   deleteContractEvent?: Maybe<ContractEvent>;
@@ -3065,6 +3136,7 @@ export type Mutation = {
   updateColonyMetadata?: Maybe<ColonyMetadata>;
   updateColonyMotion?: Maybe<ColonyMotion>;
   updateColonyRole?: Maybe<ColonyRole>;
+  updateColonySafeTransaction?: Maybe<ColonySafeTransaction>;
   updateColonyStake?: Maybe<ColonyStake>;
   updateColonyTokens?: Maybe<ColonyTokens>;
   updateContractEvent?: Maybe<ContractEvent>;
@@ -3155,6 +3227,13 @@ export type MutationCreateColonyMotionArgs = {
 export type MutationCreateColonyRoleArgs = {
   condition?: InputMaybe<ModelColonyRoleConditionInput>;
   input: CreateColonyRoleInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreateColonySafeTransactionArgs = {
+  condition?: InputMaybe<ModelColonySafeTransactionConditionInput>;
+  input: CreateColonySafeTransactionInput;
 };
 
 
@@ -3346,6 +3425,13 @@ export type MutationDeleteColonyRoleArgs = {
 
 
 /** Root mutation type */
+export type MutationDeleteColonySafeTransactionArgs = {
+  condition?: InputMaybe<ModelColonySafeTransactionConditionInput>;
+  input: DeleteColonySafeTransactionInput;
+};
+
+
+/** Root mutation type */
 export type MutationDeleteColonyStakeArgs = {
   condition?: InputMaybe<ModelColonyStakeConditionInput>;
   input: DeleteColonyStakeInput;
@@ -3527,6 +3613,13 @@ export type MutationUpdateColonyRoleArgs = {
 
 
 /** Root mutation type */
+export type MutationUpdateColonySafeTransactionArgs = {
+  condition?: InputMaybe<ModelColonySafeTransactionConditionInput>;
+  input: UpdateColonySafeTransactionInput;
+};
+
+
+/** Root mutation type */
 export type MutationUpdateColonyStakeArgs = {
   condition?: InputMaybe<ModelColonyStakeConditionInput>;
   input: UpdateColonyStakeInput;
@@ -3634,6 +3727,53 @@ export type MutationUpdateUserTokensArgs = {
 export type MutationUpdateWatchedColoniesArgs = {
   condition?: InputMaybe<ModelWatchedColoniesConditionInput>;
   input: UpdateWatchedColoniesInput;
+};
+
+export type Nft = {
+  __typename?: 'NFT';
+  id: Scalars['String'];
+  profile: NftProfile;
+  walletAddress: Scalars['String'];
+};
+
+export type NftData = {
+  __typename?: 'NFTData';
+  address: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  imageUri?: Maybe<Scalars['String']>;
+  logoUri: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
+  tokenName: Scalars['String'];
+  tokenSymbol: Scalars['String'];
+  uri: Scalars['String'];
+};
+
+export type NftDataInput = {
+  address: Scalars['String'];
+  description?: InputMaybe<Scalars['String']>;
+  id: Scalars['String'];
+  imageUri?: InputMaybe<Scalars['String']>;
+  logoUri: Scalars['String'];
+  name?: InputMaybe<Scalars['String']>;
+  tokenName: Scalars['String'];
+  tokenSymbol: Scalars['String'];
+  uri: Scalars['String'];
+};
+
+export type NftInput = {
+  id: Scalars['String'];
+  profile: NftProfileInput;
+  walletAddress: Scalars['String'];
+};
+
+export type NftProfile = {
+  __typename?: 'NFTProfile';
+  displayName: Scalars['String'];
+};
+
+export type NftProfileInput = {
+  displayName: Scalars['String'];
 };
 
 /**
@@ -3786,6 +3926,7 @@ export type Query = {
   getColonyMetadata?: Maybe<ColonyMetadata>;
   getColonyMotion?: Maybe<ColonyMotion>;
   getColonyRole?: Maybe<ColonyRole>;
+  getColonySafeTransaction?: Maybe<ColonySafeTransaction>;
   getColonyStake?: Maybe<ColonyStake>;
   getColonyStakeByUserAddress?: Maybe<ModelColonyStakeConnection>;
   getColonyTokens?: Maybe<ColonyTokens>;
@@ -3838,6 +3979,7 @@ export type Query = {
   listColonyMetadata?: Maybe<ModelColonyMetadataConnection>;
   listColonyMotions?: Maybe<ModelColonyMotionConnection>;
   listColonyRoles?: Maybe<ModelColonyRoleConnection>;
+  listColonySafeTransactions?: Maybe<ModelColonySafeTransactionConnection>;
   listColonyStakes?: Maybe<ModelColonyStakeConnection>;
   listColonyTokens?: Maybe<ModelColonyTokensConnection>;
   listContractEvents?: Maybe<ModelContractEventConnection>;
@@ -4005,6 +4147,12 @@ export type QueryGetColonyMotionArgs = {
 
 /** Root query type */
 export type QueryGetColonyRoleArgs = {
+  id: Scalars['ID'];
+};
+
+
+/** Root query type */
+export type QueryGetColonySafeTransactionArgs = {
   id: Scalars['ID'];
 };
 
@@ -4342,6 +4490,14 @@ export type QueryListColonyRolesArgs = {
 
 
 /** Root query type */
+export type QueryListColonySafeTransactionsArgs = {
+  filter?: InputMaybe<ModelColonySafeTransactionFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Root query type */
 export type QueryListColonyStakesArgs = {
   filter?: InputMaybe<ModelColonyStakeFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -4468,11 +4624,61 @@ export type Safe = {
   name: Scalars['String'];
 };
 
+export type SafeBalanceToken = {
+  __typename?: 'SafeBalanceToken';
+  address: Scalars['String'];
+  decimals: Scalars['Int'];
+  logoUri?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  networkName?: Maybe<Scalars['String']>;
+  symbol: Scalars['String'];
+};
+
+export type SafeBalanceTokenInput = {
+  address: Scalars['String'];
+  decimals: Scalars['Int'];
+  logoUri?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  networkName?: InputMaybe<Scalars['String']>;
+  symbol: Scalars['String'];
+};
+
 export type SafeInput = {
   address: Scalars['String'];
   chainId: Scalars['Int'];
   moduleContractAddress: Scalars['String'];
   name: Scalars['String'];
+};
+
+export type SafeTransactionData = {
+  __typename?: 'SafeTransactionData';
+  abi?: Maybe<Scalars['String']>;
+  amount?: Maybe<Scalars['String']>;
+  contract?: Maybe<SimpleTarget>;
+  contractFunction?: Maybe<Scalars['String']>;
+  data?: Maybe<Scalars['String']>;
+  functionParams?: Maybe<Array<Maybe<FunctionParam>>>;
+  nft?: Maybe<Nft>;
+  nftData?: Maybe<NftData>;
+  rawAmount?: Maybe<Scalars['String']>;
+  recipient?: Maybe<SimpleTarget>;
+  token?: Maybe<SafeBalanceToken>;
+  transactionType: Scalars['String'];
+};
+
+export type SafeTransactionDataInput = {
+  abi?: InputMaybe<Scalars['String']>;
+  amount?: InputMaybe<Scalars['String']>;
+  contract?: InputMaybe<SimpleTargetInput>;
+  contractFunction?: InputMaybe<Scalars['String']>;
+  data?: InputMaybe<Scalars['String']>;
+  functionParams?: InputMaybe<Array<InputMaybe<FunctionParamInput>>>;
+  nft?: InputMaybe<NftInput>;
+  nftData?: InputMaybe<NftDataInput>;
+  rawAmount?: InputMaybe<Scalars['String']>;
+  recipient?: InputMaybe<SimpleTargetInput>;
+  token?: InputMaybe<SafeBalanceTokenInput>;
+  transactionType: Scalars['String'];
 };
 
 /**
@@ -4485,6 +4691,32 @@ export type SetCurrentVersionInput = {
   key: Scalars['String'];
   /** Latest available version */
   version: Scalars['Int'];
+};
+
+export type SimpleTarget = {
+  __typename?: 'SimpleTarget';
+  id: Scalars['String'];
+  profile: SimpleTargetProfile;
+  walletAddress: Scalars['String'];
+};
+
+export type SimpleTargetInput = {
+  id: Scalars['String'];
+  profile: SimpleTargetProfileInput;
+  walletAddress: Scalars['String'];
+};
+
+export type SimpleTargetProfile = {
+  __typename?: 'SimpleTargetProfile';
+  avatarHash?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+};
+
+export type SimpleTargetProfileInput = {
+  avatarHash?: InputMaybe<Scalars['String']>;
+  displayName?: InputMaybe<Scalars['String']>;
+  username?: InputMaybe<Scalars['String']>;
 };
 
 /** Variants of sorting methods for a member list */
@@ -4532,6 +4764,7 @@ export type Subscription = {
   onCreateColonyMetadata?: Maybe<ColonyMetadata>;
   onCreateColonyMotion?: Maybe<ColonyMotion>;
   onCreateColonyRole?: Maybe<ColonyRole>;
+  onCreateColonySafeTransaction?: Maybe<ColonySafeTransaction>;
   onCreateColonyStake?: Maybe<ColonyStake>;
   onCreateColonyTokens?: Maybe<ColonyTokens>;
   onCreateContractEvent?: Maybe<ContractEvent>;
@@ -4557,6 +4790,7 @@ export type Subscription = {
   onDeleteColonyMetadata?: Maybe<ColonyMetadata>;
   onDeleteColonyMotion?: Maybe<ColonyMotion>;
   onDeleteColonyRole?: Maybe<ColonyRole>;
+  onDeleteColonySafeTransaction?: Maybe<ColonySafeTransaction>;
   onDeleteColonyStake?: Maybe<ColonyStake>;
   onDeleteColonyTokens?: Maybe<ColonyTokens>;
   onDeleteContractEvent?: Maybe<ContractEvent>;
@@ -4582,6 +4816,7 @@ export type Subscription = {
   onUpdateColonyMetadata?: Maybe<ColonyMetadata>;
   onUpdateColonyMotion?: Maybe<ColonyMotion>;
   onUpdateColonyRole?: Maybe<ColonyRole>;
+  onUpdateColonySafeTransaction?: Maybe<ColonySafeTransaction>;
   onUpdateColonyStake?: Maybe<ColonyStake>;
   onUpdateColonyTokens?: Maybe<ColonyTokens>;
   onUpdateContractEvent?: Maybe<ContractEvent>;
@@ -4647,6 +4882,11 @@ export type SubscriptionOnCreateColonyMotionArgs = {
 
 export type SubscriptionOnCreateColonyRoleArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyRoleFilterInput>;
+};
+
+
+export type SubscriptionOnCreateColonySafeTransactionArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonySafeTransactionFilterInput>;
 };
 
 
@@ -4775,6 +5015,11 @@ export type SubscriptionOnDeleteColonyRoleArgs = {
 };
 
 
+export type SubscriptionOnDeleteColonySafeTransactionArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonySafeTransactionFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteColonyStakeArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyStakeFilterInput>;
 };
@@ -4897,6 +5142,11 @@ export type SubscriptionOnUpdateColonyMotionArgs = {
 
 export type SubscriptionOnUpdateColonyRoleArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyRoleFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateColonySafeTransactionArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonySafeTransactionFilterInput>;
 };
 
 
@@ -5196,6 +5446,13 @@ export type UpdateColonyRoleInput = {
   role_5?: InputMaybe<Scalars['Boolean']>;
   role_6?: InputMaybe<Scalars['Boolean']>;
   targetAddress?: InputMaybe<Scalars['ID']>;
+};
+
+export type UpdateColonySafeTransactionInput = {
+  id: Scalars['ID'];
+  safe?: InputMaybe<SafeInput>;
+  title?: InputMaybe<Scalars['String']>;
+  transactions?: InputMaybe<Array<SafeTransactionDataInput>>;
 };
 
 export type UpdateColonyStakeInput = {
@@ -5593,9 +5850,11 @@ export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, 
 
 export type ExtensionDisplayFragmentFragment = { __typename?: 'ColonyExtension', hash: string, address: string };
 
-export type SafeTransactionDataFragment = { __typename?: 'SafeTransactionData', transactionType: string, amount?: string | null, rawAmount?: string | null, data?: string | null, abi?: string | null, contractFunction?: string | null, token?: { __typename?: 'SafeBalanceToken', name: string, decimals: number, symbol: string, address: string, networkName?: string | null, logoUri?: string | null } | null, recipient?: { __typename?: 'SimpleTarget', id: string, walletAddress: string, profile: { __typename?: 'SimpleTargetProfile', avatarHash?: string | null, displayName?: string | null, username?: string | null } } | null, contract?: { __typename?: 'SimpleTarget', id: string, walletAddress: string, profile: { __typename?: 'SimpleTargetProfile', avatarHash?: string | null, displayName?: string | null, username?: string | null } } | null, nft?: { __typename?: 'NFT', id: string, walletAddress: string, profile: { __typename?: 'NFTProfile', displayName: string } } | null, nftData?: { __typename?: 'NFTData', address: string, description?: string | null, id: string, imageUri?: string | null, logoUri: string, name?: string | null, tokenName: string, tokenSymbol: string, uri: string } | null, functionParamTypes?: Array<{ __typename?: 'FunctionParamType', name: string, type: string } | null> | null };
-
 export type NftDataFragment = { __typename?: 'NFTData', address: string, description?: string | null, id: string, imageUri?: string | null, logoUri: string, name?: string | null, tokenName: string, tokenSymbol: string, uri: string };
+
+export type FunctionParamFragment = { __typename?: 'FunctionParam', name: string, type: string, value: string };
+
+export type SafeTransactionDataFragment = { __typename?: 'SafeTransactionData', transactionType: string, amount?: string | null, rawAmount?: string | null, data?: string | null, abi?: string | null, contractFunction?: string | null, token?: { __typename?: 'SafeBalanceToken', name: string, decimals: number, symbol: string, address: string, networkName?: string | null, logoUri?: string | null } | null, recipient?: { __typename?: 'SimpleTarget', id: string, walletAddress: string, profile: { __typename?: 'SimpleTargetProfile', avatarHash?: string | null, displayName?: string | null, username?: string | null } } | null, contract?: { __typename?: 'SimpleTarget', id: string, walletAddress: string, profile: { __typename?: 'SimpleTargetProfile', avatarHash?: string | null, displayName?: string | null, username?: string | null } } | null, nft?: { __typename?: 'NFT', id: string, walletAddress: string, profile: { __typename?: 'NFTProfile', displayName: string } } | null, nftData?: { __typename?: 'NFTData', address: string, description?: string | null, id: string, imageUri?: string | null, logoUri: string, name?: string | null, tokenName: string, tokenSymbol: string, uri: string } | null, functionParams?: Array<{ __typename?: 'FunctionParam', name: string, type: string, value: string } | null> | null };
 
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
 
@@ -6477,6 +6736,26 @@ export const WatchListItemFragmentDoc = gql`
   createdAt
 }
     ${WatchedColonyFragmentDoc}`;
+export const NftDataFragmentDoc = gql`
+    fragment NFTData on NFTData {
+  address
+  description
+  id
+  imageUri
+  logoUri
+  name
+  tokenName
+  tokenSymbol
+  uri
+}
+    `;
+export const FunctionParamFragmentDoc = gql`
+    fragment FunctionParam on FunctionParam {
+  name
+  type
+  value
+}
+    `;
 export const SafeTransactionDataFragmentDoc = gql`
     fragment SafeTransactionData on SafeTransactionData {
   transactionType
@@ -6519,35 +6798,14 @@ export const SafeTransactionDataFragmentDoc = gql`
     walletAddress
   }
   nftData {
-    address
-    description
-    id
-    imageUri
-    logoUri
-    name
-    tokenName
-    tokenSymbol
-    uri
+    ...NFTData
   }
-  functionParamTypes {
-    name
-    type
+  functionParams {
+    ...FunctionParam
   }
 }
-    `;
-export const NftDataFragmentDoc = gql`
-    fragment NFTData on NFTData {
-  address
-  description
-  id
-  imageUri
-  logoUri
-  name
-  tokenName
-  tokenSymbol
-  uri
-}
-    `;
+    ${NftDataFragmentDoc}
+${FunctionParamFragmentDoc}`;
 export const UserTokenBalanceDataFragmentDoc = gql`
     fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
   balance

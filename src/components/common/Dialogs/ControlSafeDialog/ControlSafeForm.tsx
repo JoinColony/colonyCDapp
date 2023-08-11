@@ -12,7 +12,7 @@ import ExternalLink from '~shared/ExternalLink';
 import Button from '~shared/Button';
 import Icon from '~shared/Icon';
 import { filterUserSelection } from '~shared/SingleUserPicker';
-import { SelectedPickerItem, SafeTransactionData } from '~types';
+import { SelectedPickerItem, FunctionParamType } from '~types';
 import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
 import { isEmpty, isEqual, omit } from '~utils/lodash';
 import { defaultTransaction, TransactionTypes } from '~utils/safes';
@@ -150,12 +150,11 @@ const ControlSafeForm = ({
 
   const handleSelectedContractMethods = useCallback(
     (contractMethods: UpdatedMethods, transactionIndex: number) => {
-      // eslint-disable-next-line max-len
-      const functionParamTypes: SafeTransactionData['functionParamTypes'] =
+      const functionParamTypes: FunctionParamType[] =
         contractMethods[transactionIndex]?.inputs?.map((input) => ({
           name: input.name || '',
           type: input.type || '',
-        }));
+        })) || [];
 
       setSelectedContractMethods(contractMethods);
       setValue(
