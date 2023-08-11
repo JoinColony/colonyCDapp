@@ -23,7 +23,7 @@ import {
   getContractInteractionData,
   getZodiacModule,
   getHomeBridgeByChain,
-  getDevBridgeAddress,
+  getDevZodiacBridgeAddress,
 } from '../utils/safeHelpers';
 import {
   CreateColonySafeTransactionMutation,
@@ -49,7 +49,7 @@ function* initiateSafeTransactionAction({
     const apolloClient = getContext(ContextModule.ApolloClient);
 
     const ZODIAC_BRIDGE_MODULE_ADDRESS = isDev
-      ? getDevBridgeAddress()
+      ? getDevZodiacBridgeAddress()
       : safe.moduleContractAddress;
 
     if (!ZODIAC_BRIDGE_MODULE_ADDRESS) {
