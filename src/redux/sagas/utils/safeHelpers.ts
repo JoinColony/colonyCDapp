@@ -3,6 +3,7 @@ import { getTokenClient } from '@colony/colony-js';
 import { Contract, ethers } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { AddressZero } from '@ethersproject/constants';
+import { FormatTypes } from 'ethers/lib/utils';
 
 import { Address, ModuleAddress, Safe, SafeTransactionData } from '~types';
 import { GNOSIS_AMB_BRIDGES, isDev, SAFE_NETWORKS } from '~constants';
@@ -345,7 +346,7 @@ export const getContractInteractionData = async (
   const contractAddress = isDev
     ? LOCAL_SAFE_TOKEN_ADDRESS
     : transaction.contract.walletAddress;
-  let abi: string;
+  let abi: string | string[];
   let contractFunction: string;
 
   if (!safeAddress) {
@@ -359,8 +360,8 @@ export const getContractInteractionData = async (
   if (isDev) {
     const TokenInterface = await getTokenInterface(safe, contractAddress);
 
-    abi = JSON.stringify(TokenInterface.abi);
-    contractFunction = 'transferFrom';
+    abi = TokenInterface.format(FormatTypes.json);
+    contractFunction = 'transferFrom(address,address,uint256)';
   } else {
     abi = transaction.abi;
     contractFunction = transaction.contractFunction;

@@ -15,14 +15,13 @@ import {
   Message,
   SafeBalance,
   SafeBalanceApiData,
-  SafeTransactionData,
   SelectedPickerItem,
 } from '~types';
 import Icon from '~shared/Icon';
 import { TokenType } from '~gql';
 
 import AmountBalances from '../AmountBalances';
-import { TransactionSectionProps } from '../types';
+import { SafeTransaction, TransactionSectionProps } from '../types';
 
 import { ErrorMessage as Error, Loading, RecipientPicker } from './shared';
 import styles from './TransactionTypesSection.css';
@@ -85,7 +84,7 @@ const TransferFundsSection = ({
 
   const { watch, setValue } = useFormContext();
   const safe: SelectedPickerItem = watch('safe');
-  const transactions: SafeTransactionData[] = watch('transactions');
+  const transactions: SafeTransaction[] = watch('transactions');
   const safeBalances: SafeBalance[] = watch('safeBalances');
   const setSafeBalances = (value: SafeBalance[]) =>
     setValue('safeBalances', value);

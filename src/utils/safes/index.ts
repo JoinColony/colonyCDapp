@@ -1,3 +1,4 @@
+import { SafeTransaction } from '~common/Dialogs/ControlSafeDialog/types';
 import { ADDRESS_ZERO, SAFE_NAMES_MAP, SAFE_NETWORKS } from '~constants';
 import {
   Address,
@@ -6,7 +7,6 @@ import {
   SelectedPickerItem,
   Safe,
   NFTData,
-  SafeTransactionData,
 } from '~types';
 
 export {
@@ -148,17 +148,17 @@ export const nftNameContainsTokenId = (tokenName: string): boolean => {
   return false;
 };
 
-export const defaultTransaction: SafeTransactionData = {
+export const defaultTransaction: SafeTransaction = {
   transactionType: '',
-  token: null,
-  amount: null,
-  rawAmount: null,
-  recipient: null,
+  token: undefined,
+  amount: undefined,
+  rawAmount: undefined,
+  recipient: undefined,
   data: '',
-  contract: null,
+  contract: undefined,
   abi: '',
   contractFunction: '',
-  nft: null,
-  nftData: null,
-  functionParamTypes: null,
+  nft: undefined,
+  nftData: undefined,
+  functionParamTypes: undefined,
 };

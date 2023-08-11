@@ -13,7 +13,7 @@ import TokenIcon from '~shared/TokenIcon';
 import Button from '~shared/Button';
 import Icon from '~shared/Icon';
 import Avatar from '~shared/Avatar';
-import { NFTData, SafeTransactionData, Token, User } from '~types';
+import { NFTData, Token, User } from '~types';
 import { omit } from '~utils/lodash';
 import {
   defaultTransaction,
@@ -25,7 +25,7 @@ import { formatArgument } from '~shared/DetailsWidget/SafeTransactionDetail/comp
 import AddressDetailsView from './TransactionPreview/AddressDetailsView';
 import { transactionOptions, MSG as ConstantsMSG } from './helpers';
 import DetailsItem from './DetailsItem';
-import { ControlSafeProps } from './types';
+import { ControlSafeProps, SafeTransaction } from './types';
 
 import styles from './SafeTransactionPreview.css';
 
@@ -217,14 +217,10 @@ const SafeTransactionPreview = ({
   isVotingExtensionEnabled,
   userHasPermission,
 }: Props) => {
-  const {
-    watch,
-    setValue,
-    formState: { isSubmitting },
-  } = useFormContext();
+  const { watch, setValue } = useFormContext();
 
   const safe = watch('safe');
-  const transactions: SafeTransactionData[] = watch(`transactions`);
+  const transactions: SafeTransaction[] = watch(`transactions`);
 
   const [transactionTabStatus, setTransactionTabStatus] = useState(
     Array(transactions.length).fill(false),

@@ -617,6 +617,12 @@ enum ColonyActionType {
   An action related to a creating a Decision within a Colony via a motion
   """
   CREATE_DECISION_MOTION
+
+  """
+  "
+  An action related to the creation of safe transactions via Safe Control
+  """
+  MAKE_ARBITRARY_TRANSACTION
 }
 
 """Variants of sorting methods for a member list"""
@@ -712,6 +718,8 @@ type Query {
   listExpenditures(filter: ModelExpenditureFilterInput, limit: Int, nextToken: String): ModelExpenditureConnection
   getAnnotation(id: ID!): Annotation
   listAnnotations(filter: ModelAnnotationFilterInput, limit: Int, nextToken: String): ModelAnnotationConnection
+  getColonySafeTransaction(id: ID!): ColonySafeTransaction
+  listColonySafeTransactions(filter: ModelColonySafeTransactionFilterInput, limit: Int, nextToken: String): ModelColonySafeTransactionConnection
   getColonyTokens(id: ID!): ColonyTokens
   listColonyTokens(filter: ModelColonyTokensFilterInput, limit: Int, nextToken: String): ModelColonyTokensConnection
   getUserTokens(id: ID!): UserTokens
@@ -821,6 +829,9 @@ type Mutation {
   createAnnotation(input: CreateAnnotationInput!, condition: ModelAnnotationConditionInput): Annotation
   updateAnnotation(input: UpdateAnnotationInput!, condition: ModelAnnotationConditionInput): Annotation
   deleteAnnotation(input: DeleteAnnotationInput!, condition: ModelAnnotationConditionInput): Annotation
+  createColonySafeTransaction(input: CreateColonySafeTransactionInput!, condition: ModelColonySafeTransactionConditionInput): ColonySafeTransaction
+  updateColonySafeTransaction(input: UpdateColonySafeTransactionInput!, condition: ModelColonySafeTransactionConditionInput): ColonySafeTransaction
+  deleteColonySafeTransaction(input: DeleteColonySafeTransactionInput!, condition: ModelColonySafeTransactionConditionInput): ColonySafeTransaction
   createColonyTokens(input: CreateColonyTokensInput!, condition: ModelColonyTokensConditionInput): ColonyTokens
   updateColonyTokens(input: UpdateColonyTokensInput!, condition: ModelColonyTokensConditionInput): ColonyTokens
   deleteColonyTokens(input: DeleteColonyTokensInput!, condition: ModelColonyTokensConditionInput): ColonyTokens
@@ -1954,6 +1965,9 @@ type ColonyAction {
 
   """JSON string to pass custom, dynamic event data"""
   individualEvents: String
+
+  """Safe transactions associated with the action"""
+  safeTransaction: ColonySafeTransaction
   updatedAt: AWSDateTime!
   colonyActionsId: ID
 }
@@ -2174,6 +2188,79 @@ type Annotation {
 
   """The IPFS hash, if the annotation was also uploaded to IPFS"""
   ipfsHash: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type SimpleTargetProfile {
+  avatarHash: String
+  displayName: String
+  username: String
+}
+
+type SimpleTarget {
+  id: String!
+  profile: SimpleTargetProfile!
+  walletAddress: String!
+}
+
+type NFT {
+  id: String!
+  profile: NFTProfile!
+  walletAddress: String!
+}
+
+type NFTProfile {
+  displayName: String!
+}
+
+type SafeBalanceToken {
+  name: String!
+  decimals: Int!
+  symbol: String!
+  address: String!
+  networkName: String
+  logoUri: String
+}
+
+type FunctionParam {
+  name: String!
+  type: String!
+  value: String!
+}
+
+type NFTData {
+  address: String!
+  description: String
+  id: String!
+  imageUri: String
+  logoUri: String!
+  name: String
+  tokenName: String!
+  tokenSymbol: String!
+  uri: String!
+}
+
+type SafeTransactionData {
+  transactionType: String!
+  token: SafeBalanceToken
+  amount: String
+  rawAmount: String
+  recipient: SimpleTarget
+  data: String
+  contract: SimpleTarget
+  abi: String
+  contractFunction: String
+  nft: NFT
+  nftData: NFTData
+  functionParams: [FunctionParam]
+}
+
+type ColonySafeTransaction {
+  id: ID!
+  title: String!
+  safe: Safe!
+  transactions: [SafeTransactionData!]!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -2505,6 +2592,9 @@ type Subscription {
   onCreateAnnotation(filter: ModelSubscriptionAnnotationFilterInput): Annotation
   onUpdateAnnotation(filter: ModelSubscriptionAnnotationFilterInput): Annotation
   onDeleteAnnotation(filter: ModelSubscriptionAnnotationFilterInput): Annotation
+  onCreateColonySafeTransaction(filter: ModelSubscriptionColonySafeTransactionFilterInput): ColonySafeTransaction
+  onUpdateColonySafeTransaction(filter: ModelSubscriptionColonySafeTransactionFilterInput): ColonySafeTransaction
+  onDeleteColonySafeTransaction(filter: ModelSubscriptionColonySafeTransactionFilterInput): ColonySafeTransaction
   onCreateColonyTokens(filter: ModelSubscriptionColonyTokensFilterInput): ColonyTokens
   onUpdateColonyTokens(filter: ModelSubscriptionColonyTokensFilterInput): ColonyTokens
   onDeleteColonyTokens(filter: ModelSubscriptionColonyTokensFilterInput): ColonyTokens
@@ -4103,6 +4193,115 @@ input ModelSubscriptionAnnotationFilterInput {
   ipfsHash: ModelSubscriptionStringInput
   and: [ModelSubscriptionAnnotationFilterInput]
   or: [ModelSubscriptionAnnotationFilterInput]
+}
+
+input SafeTransactionDataInput {
+  transactionType: String!
+  token: SafeBalanceTokenInput
+  amount: String
+  rawAmount: String
+  recipient: SimpleTargetInput
+  data: String
+  contract: SimpleTargetInput
+  abi: String
+  contractFunction: String
+  nft: NFTInput
+  nftData: NFTDataInput
+  functionParams: [FunctionParamInput]
+}
+
+input SafeBalanceTokenInput {
+  name: String!
+  decimals: Int!
+  symbol: String!
+  address: String!
+  networkName: String
+  logoUri: String
+}
+
+input SimpleTargetInput {
+  id: String!
+  profile: SimpleTargetProfileInput!
+  walletAddress: String!
+}
+
+input SimpleTargetProfileInput {
+  avatarHash: String
+  displayName: String
+  username: String
+}
+
+input NFTInput {
+  id: String!
+  profile: NFTProfileInput!
+  walletAddress: String!
+}
+
+input NFTProfileInput {
+  displayName: String!
+}
+
+input NFTDataInput {
+  address: String!
+  description: String
+  id: String!
+  imageUri: String
+  logoUri: String!
+  name: String
+  tokenName: String!
+  tokenSymbol: String!
+  uri: String!
+}
+
+input FunctionParamInput {
+  name: String!
+  type: String!
+  value: String!
+}
+
+type ModelColonySafeTransactionConnection {
+  items: [ColonySafeTransaction]!
+  nextToken: String
+}
+
+input ModelColonySafeTransactionFilterInput {
+  id: ModelIDInput
+  title: ModelStringInput
+  and: [ModelColonySafeTransactionFilterInput]
+  or: [ModelColonySafeTransactionFilterInput]
+  not: ModelColonySafeTransactionFilterInput
+}
+
+input ModelColonySafeTransactionConditionInput {
+  title: ModelStringInput
+  and: [ModelColonySafeTransactionConditionInput]
+  or: [ModelColonySafeTransactionConditionInput]
+  not: ModelColonySafeTransactionConditionInput
+}
+
+input CreateColonySafeTransactionInput {
+  id: ID
+  title: String!
+  safe: SafeInput!
+  transactions: [SafeTransactionDataInput!]!
+}
+
+input UpdateColonySafeTransactionInput {
+  id: ID!
+  title: String
+  safe: SafeInput
+  transactions: [SafeTransactionDataInput!]
+}
+
+input DeleteColonySafeTransactionInput {
+  id: ID!
+}
+
+input ModelSubscriptionColonySafeTransactionFilterInput {
+  id: ModelSubscriptionIDInput
+  title: ModelSubscriptionStringInput
+  and: [ModelSubscriptionColonySafeTransactionFilterInput]
+  or: [ModelSubscriptionColonySafeTransactionFilterInput]
 }
 
 type ModelColonyTokensConnection {
