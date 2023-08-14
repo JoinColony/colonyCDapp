@@ -205,6 +205,7 @@ export const mapColonyActionToExpectedFormat = (
     rolesChanged: formattedRolesTitle.roleTitle,
     newVersion: actionData.newColonyVersion,
     chainName: getAddedSafeChainName(actionData),
+    safeTransactionTitle: actionData.safeTransaction?.title,
   };
 };
 
