@@ -3,10 +3,9 @@ import { ClientType } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 
 import { Action, ActionTypes, AllActions } from '~redux';
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { ExpenditurePayoutFieldValue } from '~common/Expenditures/ExpenditureForm';
 
-import { putError, groupExpenditurePayoutsByTokenAddresses } from '../utils';
+import { putError, getSetExpenditureValuesFunctionParams } from '../utils';
 import { createTransaction, getTxChannel } from '../transactions';
 
 function* editExpenditure({
@@ -64,52 +63,16 @@ function* editExpenditure({
     });
   });
 
-  // Group slots by token address
-  const payoutsByTokenAddresses =
-    groupExpenditurePayoutsByTokenAddresses(resolvedPayouts);
-
   try {
     yield fork(createTransaction, meta.id, {
       context: ClientType.ColonyClient,
       methodName: 'setExpenditureValues',
       identifier: colonyAddress,
-      params: [
+      params: getSetExpenditureValuesFunctionParams(
         expenditure.nativeId,
-        // slot ids for recipients
-        resolvedPayouts.map((payout) => payout.slotId ?? 0),
-        // recipient addresses
-        resolvedPayouts.map((payout) => payout.recipientAddress),
-        // slot ids for skill ids
-        [],
-        // skill ids
-        [],
-        // slot ids for claim delays
-        [],
-        // claim delays
-        [],
-        // slot ids for payout modifiers
-        [],
-        // payout modifiers
-        [],
-        // token addresses
-        [...payoutsByTokenAddresses.keys()],
-        // 2-dimensional array mapping token addresses to slot ids
-        [...payoutsByTokenAddresses.values()].map((payoutsByTokenAddress) =>
-          payoutsByTokenAddress.map((payout) => payout.slotId ?? 0),
-        ),
-        // 2-dimensional array mapping token addresses to amounts
-        [...payoutsByTokenAddresses.values()].map((payoutsByTokenAddress) =>
-          payoutsByTokenAddress.map((payout) =>
-            BigNumber.from(payout.amount).mul(
-              // @TODO: This should get the token decimals of the selected token
-              BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS),
-            ),
-          ),
-        ),
-      ],
+        resolvedPayouts,
+      ),
     });
-
-    // @TODO: Call contract methods to remove the "remaining" expenditure slots
 
     yield put<AllActions>({
       type: ActionTypes.EXPENDITURE_EDIT_SUCCESS,
