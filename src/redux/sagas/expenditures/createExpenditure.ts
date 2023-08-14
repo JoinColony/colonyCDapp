@@ -16,7 +16,6 @@ import {
 } from '~gql';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
 import { toNumber } from '~utils/numbers';
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 
 import {
   ChannelDefinition,
@@ -27,7 +26,7 @@ import {
   getColonyManager,
   putError,
   takeFrom,
-  groupExpenditurePayoutsByTokenAddresses,
+  getSetExpenditureValuesFunctionParams,
 } from '../utils';
 
 function* createExpenditure({
@@ -53,10 +52,6 @@ function* createExpenditure({
     ...payout,
     slotId: index + 1,
   }));
-
-  // Group payouts by token addresses
-  const payoutsByTokenAddresses =
-    groupExpenditurePayoutsByTokenAddresses(payoutsWithSlotIds);
 
   const {
     makeExpenditure,
@@ -100,40 +95,13 @@ function* createExpenditure({
 
     yield put(transactionPending(setExpenditureValues.id));
     yield put(
-      transactionAddParams(setExpenditureValues.id, [
-        expenditureId,
-        // slot ids for recipients
-        payoutsWithSlotIds.map((payout) => payout.slotId),
-        // recipient addresses
-        payoutsWithSlotIds.map((payout) => payout.recipientAddress),
-        // slot ids for skill ids
-        [],
-        // skill ids
-        [],
-        // slot ids for claim delays
-        [],
-        // claim delays
-        [],
-        // slot ids for payout modifiers
-        [],
-        // payout modifiers
-        [],
-        // token addresses
-        [...payoutsByTokenAddresses.keys()],
-        // 2-dimensional array mapping token addresses to slot ids
-        [...payoutsByTokenAddresses.values()].map((payoutsByTokenAddress) =>
-          payoutsByTokenAddress.map((payout) => payout.slotId),
+      transactionAddParams(
+        setExpenditureValues.id,
+        getSetExpenditureValuesFunctionParams(
+          expenditureId,
+          payoutsWithSlotIds,
         ),
-        // 2-dimensional array mapping token addresses to amounts
-        [...payoutsByTokenAddresses.values()].map((payoutsByTokenAddress) =>
-          payoutsByTokenAddress.map((payout) =>
-            BigNumber.from(payout.amount).mul(
-              // @TODO: This should get the token decimals of the selected token
-              BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS),
-            ),
-          ),
-        ),
-      ]),
+      ),
     );
     yield put(transactionReady(setExpenditureValues.id));
     yield takeFrom(
