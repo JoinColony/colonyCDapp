@@ -48,9 +48,15 @@ function* createExpenditure({
 
   const batchKey = 'createExpenditure';
 
+  // Add slot id to each payout
+  const payoutsWithSlotIds = payouts.map((payout, index) => ({
+    ...payout,
+    slotId: index + 1,
+  }));
+
   // Group payouts by token addresses
   const payoutsByTokenAddresses =
-    groupExpenditurePayoutsByTokenAddresses(payouts);
+    groupExpenditurePayoutsByTokenAddresses(payoutsWithSlotIds);
 
   const {
     makeExpenditure,
@@ -97,9 +103,9 @@ function* createExpenditure({
       transactionAddParams(setExpenditureValues.id, [
         expenditureId,
         // slot ids for recipients
-        payouts.map((payout) => payout.slotId),
+        payoutsWithSlotIds.map((payout) => payout.slotId),
         // recipient addresses
-        payouts.map((payout) => payout.recipientAddress),
+        payoutsWithSlotIds.map((payout) => payout.recipientAddress),
         // slot ids for skill ids
         [],
         // skill ids
