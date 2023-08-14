@@ -5695,6 +5695,8 @@ export type DomainMetadataFragment = { __typename?: 'DomainMetadata', name: stri
 
 export type ExpenditureFragment = { __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', nativeDomainId: number } | null, balances?: Array<{ __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string, requiredAmount: string }> | null };
 
+export type ExpenditureSlotFragment = { __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string }> | null };
+
 export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number, params?: { __typename?: 'ExtensionParams', votingReputation?: { __typename?: 'VotingReputationParams', maxVoteFraction: string } | null } | null };
 
 export type ExtensionDisplayFragmentFragment = { __typename?: 'ColonyExtension', hash: string, address: string };
@@ -6573,6 +6575,18 @@ export const WatchListItemFragmentDoc = gql`
   createdAt
 }
     ${WatchedColonyFragmentDoc}`;
+export const ExpenditureSlotFragmentDoc = gql`
+    fragment ExpenditureSlot on ExpenditureSlot {
+  id
+  recipientAddress
+  claimDelay
+  payoutModifier
+  payouts {
+    tokenAddress
+    amount
+  }
+}
+    `;
 export const ExpenditureFragmentDoc = gql`
     fragment Expenditure on Expenditure {
   id
@@ -6580,14 +6594,7 @@ export const ExpenditureFragmentDoc = gql`
   ownerAddress
   status
   slots {
-    id
-    recipientAddress
-    claimDelay
-    payoutModifier
-    payouts {
-      tokenAddress
-      amount
-    }
+    ...ExpenditureSlot
   }
   nativeFundingPotId
   metadata {
@@ -6599,7 +6606,7 @@ export const ExpenditureFragmentDoc = gql`
     requiredAmount
   }
 }
-    `;
+    ${ExpenditureSlotFragmentDoc}`;
 export const UserTokenBalanceDataFragmentDoc = gql`
     fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
   balance
