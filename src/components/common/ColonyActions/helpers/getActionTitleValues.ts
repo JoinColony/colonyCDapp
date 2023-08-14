@@ -22,6 +22,7 @@ enum ActionTitleMessageKeys {
   ToDomain = 'toDomain',
   TokenSymbol = 'tokenSymbol',
   ChainName = 'chainName',
+  SafeTransactionTitle = 'safeTransactionTitle',
 }
 
 /* Maps actionTypes to message values as found in en-actions.ts */
@@ -78,6 +79,8 @@ const getMessageDescriptorKeys = (
       ];
     case actionType.includes(ExtendedColonyActionType.AddSafe):
       return [ActionTitleMessageKeys.ChainName];
+    case actionType.includes(ExtendedColonyActionType.SafeTransaction):
+      return [ActionTitleMessageKeys.SafeTransactionTitle];
     default:
       return [];
   }

@@ -158,6 +158,7 @@ export enum ExtendedColonyActionType {
   UpdateTokens = 'UPDATE_TOKENS',
   RemoveSafe = 'REMOVE_SAFE',
   AddSafe = 'ADD_SAFE',
+  SafeTransaction = 'SAFE_TRANSACTION',
 }
 
 /**
