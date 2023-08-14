@@ -45,12 +45,13 @@ const ExpenditureForm = ({ expenditure, ...props }: ExpenditureFormProps) => {
     withMeta({ navigate }),
   );
 
-  const transformEditExpenditurePayload = mapPayload(
-    (payload: ExpenditureFormValues) => ({
+  const transformEditExpenditurePayload = pipe(
+    mapPayload((payload: ExpenditureFormValues) => ({
       colonyAddress: colony.colonyAddress,
       expenditure,
       payouts: payload.payouts,
-    }),
+    })),
+    withMeta({}),
   );
 
   const isEditing = !!expenditure;

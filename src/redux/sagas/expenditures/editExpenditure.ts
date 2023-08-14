@@ -1,108 +1,95 @@
-import { all, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 
 import { Action, ActionTypes, AllActions } from '~redux';
-import {
-  transactionAddParams,
-  transactionPending,
-  transactionReady,
-} from '~redux/actionCreators';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import { ExpenditurePayoutFieldValue } from '~common/Expenditures/ExpenditureForm';
 
-import { putError, takeFrom } from '../utils';
-import {
-  ChannelDefinition,
-  createTransaction,
-  createTransactionChannels,
-} from '../transactions';
-import { groupExpenditureSlotsByTokenAddresses } from '../utils/expenditures';
+import { putError, groupExpenditurePayoutsByTokenAddresses } from '../utils';
+import { createTransaction, getTxChannel } from '../transactions';
 
 function* editExpenditure({
-  payload: { colonyAddress, expenditure, slots },
+  payload: { colonyAddress, expenditure, payouts },
   meta,
 }: Action<ActionTypes.EXPENDITURE_EDIT>) {
-  const batchKey = 'editExpenditure';
+  const txChannel = yield call(getTxChannel, meta.id);
 
-  // Group slots by token address, this is useful as we need to call setExpenditurePayouts method separately for each token
-  const slotsByTokenAddress = groupExpenditureSlotsByTokenAddresses(slots);
+  const payoutsWithSlotIds = payouts.map((payout, index) => ({
+    ...payout,
+    slotId: index + 1,
+  }));
 
-  const {
-    setRecipients,
-    ...setPayoutsChannels
-  }: Record<string, ChannelDefinition> = yield createTransactionChannels(
-    meta.id,
-    [
-      'setRecipients',
-      // setExpenditurePayouts transactions will use token address as channel id
-      ...slotsByTokenAddress.keys(),
-    ],
-  );
+  const resolvedPayouts: ExpenditurePayoutFieldValue[] = [];
+
+  payoutsWithSlotIds.forEach((payout) => {
+    const existingSlot = expenditure.slots.find(
+      (slot) => slot.id === payout.slotId,
+    );
+
+    resolvedPayouts.push(payout);
+
+    // Set the amounts for any existing payouts in different tokens to 0
+    resolvedPayouts.push(
+      ...(existingSlot?.payouts
+        ?.filter(
+          (slotPayout) => slotPayout.tokenAddress !== payout.tokenAddress,
+        )
+        .map((slotPayout) => ({
+          slotId: payout.slotId,
+          recipientAddress: payout.recipientAddress,
+          tokenAddress: slotPayout.tokenAddress,
+          amount: '0',
+        })) ?? []),
+    );
+  });
+
+  // // Group slots by token address
+  const payoutsByTokenAddresses =
+    groupExpenditurePayoutsByTokenAddresses(payoutsWithSlotIds);
+
+  // @TODO: If there are now less payouts than before, we need to remove the old ones
 
   try {
-    yield fork(createTransaction, setRecipients.id, {
+    yield fork(createTransaction, meta.id, {
       context: ClientType.ColonyClient,
-      methodName: 'setExpenditureRecipients',
+      methodName: 'setExpenditureValues',
       identifier: colonyAddress,
       params: [
         expenditure.nativeId,
-        slots.map((_, index) => index + 1),
-        slots.map((slot) => slot.recipientAddress),
+        // slot ids for recipients
+        resolvedPayouts.map((payout) => payout.slotId ?? 0),
+        // recipient addresses
+        resolvedPayouts.map((payout) => payout.recipientAddress),
+        // slot ids for skill ids
+        [],
+        // skill ids
+        [],
+        // slot ids for claim delays
+        [],
+        // claim delays
+        [],
+        // slot ids for payout modifiers
+        [],
+        // payout modifiers
+        [],
+        // token addresses
+        [...payoutsByTokenAddresses.keys()],
+        // 2-dimensional array mapping token addresses to slot ids
+        [...payoutsByTokenAddresses.values()].map((payoutsByTokenAddress) =>
+          payoutsByTokenAddress.map((payout) => payout.slotId ?? 0),
+        ),
+        // 2-dimensional array mapping token addresses to amounts
+        [...payoutsByTokenAddresses.values()].map((payoutsByTokenAddress) =>
+          payoutsByTokenAddress.map((payout) =>
+            BigNumber.from(payout.amount).mul(
+              // @TODO: This should get the token decimals of the selected token
+              BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS),
+            ),
+          ),
+        ),
       ],
-      group: {
-        key: batchKey,
-        id: meta.id,
-        index: 0,
-      },
-      ready: false,
     });
-
-    yield all(
-      Object.values(setPayoutsChannels).map((channel, index) =>
-        fork(createTransaction, channel.id, {
-          context: ClientType.ColonyClient,
-          methodName: 'setExpenditurePayouts',
-          identifier: colonyAddress,
-          group: {
-            key: batchKey,
-            id: meta.id,
-            index: index + 1,
-          },
-          ready: false,
-        }),
-      ),
-    );
-
-    yield put(transactionPending(setRecipients.id));
-    yield put(transactionReady(setRecipients.id));
-    yield takeFrom(setRecipients.channel, ActionTypes.TRANSACTION_SUCCEEDED);
-
-    // Call setExpenditurePayouts for each token
-    yield all(
-      [...slotsByTokenAddress.entries()]
-        .map(([tokenAddress, tokenSlots]) => [
-          put(transactionPending(setPayoutsChannels[tokenAddress].id)),
-          put(
-            transactionAddParams(setPayoutsChannels[tokenAddress].id, [
-              expenditure.nativeId,
-              tokenSlots.map((slot) => slot.id),
-              tokenAddress,
-              tokenSlots.map((slot) =>
-                BigNumber.from(slot.amount).mul(
-                  // @TODO: This should get the token decimals of the selected token
-                  BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS),
-                ),
-              ),
-            ]),
-          ),
-          put(transactionReady(setPayoutsChannels[tokenAddress].id)),
-          takeFrom(
-            setPayoutsChannels[tokenAddress].channel,
-            ActionTypes.TRANSACTION_SUCCEEDED,
-          ),
-        ])
-        .flat(),
-    );
 
     // @TODO: Call contract methods to remove the "remaining" expenditure slots
 
@@ -115,9 +102,7 @@ function* editExpenditure({
     return yield putError(ActionTypes.EXPENDITURE_EDIT_ERROR, error, meta);
   }
 
-  [setRecipients, ...Object.values(setPayoutsChannels)].map((channel) =>
-    channel.channel.close(),
-  );
+  txChannel.close();
 
   return null;
 }
