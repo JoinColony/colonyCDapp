@@ -2219,7 +2219,6 @@ type SafeBalanceToken {
   decimals: Int!
   symbol: String!
   address: String!
-  networkName: String
   logoUri: String
 }
 
@@ -4215,7 +4214,6 @@ input SafeBalanceTokenInput {
   decimals: Int!
   symbol: String!
   address: String!
-  networkName: String
   logoUri: String
 }
 

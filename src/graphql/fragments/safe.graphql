@@ -1,3 +1,10 @@
+fragment Safe on Safe {
+  name
+  address
+  chainId
+  moduleContractAddress
+}
+
 fragment NFTData on NFTData {
   address
   description
@@ -60,5 +67,16 @@ fragment SafeTransactionData on SafeTransactionData {
   }
   functionParams {
     ...FunctionParam
+  }
+}
+
+fragment ColonySafeTransaction on ColonySafeTransaction {
+  id
+  title
+  safe {
+    ...Safe
+  }
+  transactions {
+    ...SafeTransactionData
   }
 }
