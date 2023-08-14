@@ -46,6 +46,7 @@ const ExpenditurePayouts = ({
           submitButtonText="Save changes"
           showCancelButton
           onCancelClick={() => setIsEditing(false)}
+          onSuccess={() => setIsEditing(false)}
         />
       ) : (
         <ul className={styles.payouts}>
