@@ -11,7 +11,7 @@ import { findDomainByNativeId } from '~utils/domains';
 
 import ExpenditureBalances from './ExpenditureBalances';
 import ExpenditureAdvanceButton from './ExpenditureAdvanceButton';
-import ExpenditureSlots from './ExpenditureSlots';
+import ExpenditurePayouts from './ExpenditurePayouts';
 
 import styles from './ExpenditureDetailsPage.module.css';
 
@@ -60,7 +60,7 @@ const ExpenditureDetailsPage = () => {
         <div>Status: {expenditure.status}</div>
         <div>Team: {expenditureDomain?.metadata?.name ?? 'Unknown team'}</div>
         <ExpenditureBalances expenditure={expenditure} />
-        <ExpenditureSlots expenditure={expenditure} colony={colony} />
+        <ExpenditurePayouts expenditure={expenditure} colony={colony} />
         <ExpenditureAdvanceButton expenditure={expenditure} colony={colony} />
       </div>
     </div>

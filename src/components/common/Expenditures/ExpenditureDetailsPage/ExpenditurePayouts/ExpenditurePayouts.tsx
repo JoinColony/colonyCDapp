@@ -4,17 +4,20 @@ import ExpenditureForm from '~common/Expenditures/ExpenditureForm';
 import MaskedAddress from '~shared/MaskedAddress';
 import { Colony, Expenditure } from '~types';
 import Numeral from '~shared/Numeral';
-import Button from '~shared/Button/Button';
-
-import styles from './ExpenditureSlots.module.css';
+import Button from '~shared/Button';
 import { ExpenditureStatus } from '~gql';
 
-interface ExpenditureSlotsProps {
+import styles from './ExpenditurePayouts.module.css';
+
+interface ExpenditurePayoutsProps {
   expenditure: Expenditure;
   colony: Colony;
 }
 
-const ExpenditureSlots = ({ expenditure, colony }: ExpenditureSlotsProps) => {
+const ExpenditurePayouts = ({
+  expenditure,
+  colony,
+}: ExpenditurePayoutsProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const canEditExpenditure =
@@ -44,34 +47,35 @@ const ExpenditureSlots = ({ expenditure, colony }: ExpenditureSlotsProps) => {
           onCancelClick={() => setIsEditing(false)}
         />
       ) : (
-        <ul className={styles.slots}>
-          {expenditure.slots.map((slot) => (
-            <li key={slot.id} className={styles.slot}>
-              <div>
-                <div>Slot ID</div>
-                <div>{slot.id}</div>
-              </div>
+        <ul className={styles.payouts}>
+          {expenditure.slots.map((slot) =>
+            slot.payouts?.map((payout) => (
+              <li
+                key={`${slot.id}-${payout.tokenAddress}`}
+                className={styles.payout}
+              >
+                <div>
+                  <div>Slot ID</div>
+                  <div>{slot.id}</div>
+                </div>
 
-              <div>
-                <div>Recipient address</div>
-                <MaskedAddress address={slot.recipientAddress ?? ''} />
-              </div>
+                <div>
+                  <div>Recipient address</div>
+                  <MaskedAddress address={slot.recipientAddress ?? ''} />
+                </div>
 
-              <div>
-                <div>Token address</div>
-                {slot.payouts?.map((payout) => (
+                <div>
+                  <div>Token address</div>
                   <div>
                     <MaskedAddress
                       key={payout.tokenAddress}
                       address={payout.tokenAddress}
                     />
                   </div>
-                ))}
-              </div>
+                </div>
 
-              <div>
-                <div>Amount</div>
-                {slot.payouts?.map((payout) => (
+                <div>
+                  <div>Amount</div>
                   <div key={payout.tokenAddress}>
                     <Numeral
                       value={payout.amount}
@@ -79,21 +83,21 @@ const ExpenditureSlots = ({ expenditure, colony }: ExpenditureSlotsProps) => {
                       suffix={colony.nativeToken.symbol}
                     />
                   </div>
-                ))}
-              </div>
-
-              <div>
-                <div>Claim delay</div>
-                <div>
-                  {slot.claimDelay ? `${slot.claimDelay} seconds` : 'None'}
                 </div>
-              </div>
-            </li>
-          ))}
+
+                <div>
+                  <div>Claim delay</div>
+                  <div>
+                    {slot.claimDelay ? `${slot.claimDelay} seconds` : 'None'}
+                  </div>
+                </div>
+              </li>
+            )),
+          )}
         </ul>
       )}
     </div>
   );
 };
 
-export default ExpenditureSlots;
+export default ExpenditurePayouts;
