@@ -10,8 +10,8 @@ import { mapPayload, pipe, withMeta } from '~utils/actions';
 
 import ExpenditureFormFields from './ExpenditureFormFields';
 import {
+  getExpenditurePayoutsFieldValue,
   getInitialPayoutFieldValue,
-  mapExpenditureSlotToPayoutFieldValues,
 } from './helpers';
 import { ExpenditurePayoutFieldValue } from './types';
 
@@ -59,11 +59,9 @@ const ExpenditureForm = ({ expenditure, ...props }: ExpenditureFormProps) => {
   return (
     <ActionForm
       defaultValues={{
-        payouts: expenditure?.slots
-          .map(mapExpenditureSlotToPayoutFieldValues)
-          .flat() ?? [
-          getInitialPayoutFieldValue(colony.nativeToken.tokenAddress),
-        ],
+        payouts: expenditure
+          ? getExpenditurePayoutsFieldValue(expenditure)
+          : [getInitialPayoutFieldValue(colony.nativeToken.tokenAddress)],
       }}
       actionType={
         isEditing
