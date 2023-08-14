@@ -6,7 +6,8 @@ import { toFinite } from '~utils/lodash';
 import { ExtensionConfig, ExtensionParamType } from '~types';
 
 const oneTransactionPaymentName = 'extensions.OneTxPayment';
-const votingReputationName = 'extensions.votingReputation';
+const votingReputationName = 'extensions.VotingReputation';
+const stakedExpenditureName = 'extensions.StakedExpenditure';
 
 const oneTransactionPaymentMessages = {
   oneTxPaymentName: {
@@ -122,9 +123,25 @@ const votingReputationMessages = {
   },
 };
 
+const stakedExpenditureMessages = {
+  stakedExpenditureName: {
+    id: `${stakedExpenditureName}.name`,
+    defaultMessage: 'Staked Expenditure',
+  },
+  stakedExpenditureDescriptionShort: {
+    id: `${stakedExpenditureName}.description`,
+    defaultMessage: 'Staked Expenditure extension.',
+  },
+  stakedExpenditureDescriptionLong: {
+    id: `${stakedExpenditureName}.descriptionLong`,
+    defaultMessage: 'Staked Expenditure extension.',
+  },
+};
+
 const MSG = defineMessages({
   ...oneTransactionPaymentMessages,
   ...votingReputationMessages,
+  ...stakedExpenditureMessages,
 });
 
 export const supportedExtensionsConfig: ExtensionConfig[] = [
@@ -134,8 +151,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     descriptionShort: MSG.oneTxPaymentDescriptionShort,
     descriptionLong: MSG.oneTxPaymentDescriptionLong,
     neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
-    // @NOTE: This is for testing only, should be set to false afterwards
-    uninstallable: true,
+    uninstallable: false,
     createdAt: 1557698400000,
   },
   {
@@ -290,5 +306,14 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     ],
     uninstallable: true,
     createdAt: 1603915271852,
+  },
+  {
+    extensionId: Extension.StakedExpenditure,
+    name: MSG.stakedExpenditureName,
+    descriptionShort: MSG.stakedExpenditureDescriptionShort,
+    descriptionLong: MSG.stakedExpenditureDescriptionLong,
+    neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
+    uninstallable: true,
+    createdAt: 1692048380000,
   },
 ];
