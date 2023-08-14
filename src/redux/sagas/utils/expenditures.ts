@@ -1,20 +1,25 @@
-import { ExpenditureSlotFieldValue } from '~common/Expenditures/ExpenditureForm';
-
-type SlotFieldValueWithId = ExpenditureSlotFieldValue & { id: number };
+import { ExpenditurePayoutFieldValue } from '~common/Expenditures/ExpenditureForm';
 
 /**
- * Util returning a map between token addresses and arrays of slot field values
+ * Util returning a map between token addresses and arrays of payouts field values
  */
-export const groupExpenditureSlotsByTokenAddresses = (
-  slots: ExpenditureSlotFieldValue[],
+export const groupExpenditurePayoutsByTokenAddresses = (
+  payouts: ExpenditurePayoutFieldValue[],
 ) => {
-  const slotsByTokenAddress = new Map<string, SlotFieldValueWithId[]>();
-  slots.forEach((slot, index) => {
-    const currentSlots = slotsByTokenAddress.get(slot.tokenAddress) ?? [];
-    // Add id to each slot
-    const slotWithId = { ...slot, id: index + 1 };
-    slotsByTokenAddress.set(slot.tokenAddress, [...currentSlots, slotWithId]);
+  const payoutsByTokenAddresses = new Map<
+    string,
+    ExpenditurePayoutFieldValue[]
+  >();
+  payouts.forEach((payout, index) => {
+    const currentTokenPayouts =
+      payoutsByTokenAddresses.get(payout.tokenAddress) ?? [];
+    // Add slot id to each payout
+    const payoutWithId = { ...payout, slotId: index + 1 };
+    payoutsByTokenAddresses.set(payout.tokenAddress, [
+      ...currentTokenPayouts,
+      payoutWithId,
+    ]);
   });
 
-  return slotsByTokenAddress;
+  return payoutsByTokenAddresses;
 };
