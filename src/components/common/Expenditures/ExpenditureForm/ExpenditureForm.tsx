@@ -24,9 +24,14 @@ export interface ExpenditureFormProps {
   submitButtonText?: string;
   showCancelButton?: boolean;
   onCancelClick?: () => void;
+  onSuccess?: () => void;
 }
 
-const ExpenditureForm = ({ expenditure, ...props }: ExpenditureFormProps) => {
+const ExpenditureForm = ({
+  expenditure,
+  onSuccess,
+  ...props
+}: ExpenditureFormProps) => {
   const navigate = useNavigate();
 
   const { colony } = useColonyContext();
@@ -73,6 +78,7 @@ const ExpenditureForm = ({ expenditure, ...props }: ExpenditureFormProps) => {
           ? transformEditExpenditurePayload
           : transformCreateExpenditurePayload
       }
+      onSuccess={onSuccess}
     >
       <ExpenditureFormFields {...props} colony={colony} />
     </ActionForm>
