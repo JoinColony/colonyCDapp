@@ -1,5 +1,6 @@
 import { MessageDescriptor } from 'react-intl';
 import { SimpleMessageValues } from '~types';
+import { ContributorType } from '../TableFiltering/types';
 
 export type ExtensionStatusBadgeMode =
   | 'coming-soon'
@@ -16,18 +17,14 @@ export type ExtensionStatusBadgeMode =
   | 'payments';
 
 export type UserStatusMode =
-  | 'dedicated'
+  | ContributorType
   | 'dedicated-filled'
-  | 'active'
   | 'active-filled'
-  | 'new'
   | 'active-new'
-  | 'top'
   | 'top-filled'
   | 'banned'
   | 'team'
-  | 'verified'
-  | 'general';
+  | 'verified';
 
 export type IconSize = 'extraTiny' | 'tiny';
 

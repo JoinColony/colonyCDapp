@@ -14,8 +14,9 @@ const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
   className,
 }) => {
   const { formatMessage } = useIntl();
+  const { getSelectedFilterLabels, handleClearFilters } = useFilterContext();
 
-  const { selectedFilterLabels, handleClearFilters } = useFilterContext();
+  const selectedFilterLabels = getSelectedFilterLabels();
 
   if (!selectedFilterLabels.length) {
     return null;
@@ -31,9 +32,9 @@ const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
 
   return (
     <>
-      {selectedFilterLabels.reduce<JSX.Element[]>((acc, parentFilter) => {
-        const parentFilterLabel = Object.keys(parentFilter)[0] as FilterType;
-        const nestedFilters = parentFilter[parentFilterLabel];
+      {selectedFilterLabels.reduce<JSX.Element[]>((acc, selectedFilter) => {
+        const parentFilterLabel = Object.keys(selectedFilter)[0] as FilterType;
+        const nestedFilters = selectedFilter[parentFilterLabel];
         const lastLabel = nestedFilters.at(-1);
 
         if (nestedFilters.length) {

@@ -86,7 +86,7 @@ const Members = ({
     variables: {
       input: {
         colonyAddress: colony?.colonyAddress ?? '',
-        domainIds: [selectedDomain || Id.RootDomain],
+        domainId: selectedDomain || Id.RootDomain,
         sortingMethod,
       },
     },

@@ -25,12 +25,12 @@ const FilterOptions: FC = () => {
         <Accordion items={options} />
       ) : (
         <ul className="flex flex-col">
-          {options?.map(({ id, iconName, title, option, content }) => (
+          {options?.map(({ id, iconName, title, filterType, content }) => (
             <SubNavigationItem
               key={id}
               iconName={iconName}
               title={title}
-              option={option}
+              option={filterType}
               nestedFilters={content}
             />
           ))}

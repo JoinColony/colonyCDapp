@@ -34,7 +34,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
   );
 
   const isOptionSelected = useMemo(
-    () => options?.some((item) => item.option === option),
+    () => options?.some((item) => item.filterType === option),
     [options, option],
   );
 

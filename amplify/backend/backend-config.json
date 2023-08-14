@@ -226,6 +226,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "updateContributorsWithReputation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "updateExtensionByColonyAndHash": {
       "build": true,
       "dependsOn": [
@@ -239,6 +244,6 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
-    }
+    },
   }
 }

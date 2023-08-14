@@ -1,0 +1,58 @@
+query GetPermissionedContributors(
+  $domainId: ID!
+  $colonyAddress: String!
+  $limit: Int!
+) {
+  getRoleByDomainAndColony(
+    domainId: $domainId
+    colonyAddress: { eq: $colonyAddress }
+    limit: $limit
+  ) {
+    items {
+      targetAddress
+      targetUser {
+        ...User
+      }
+      role_0
+      role_1
+      role_2
+      role_3
+      role_5
+      role_6
+    }
+    nextToken
+  }
+}
+
+query GetContributorsWithReputation(
+  $colonyAddress: String!
+  $domainId: String!
+  $limit: Int!
+) {
+  getContributorsByDomainAndColony(
+    colonyAddress: $colonyAddress
+    domainId: { eq: $domainId }
+    filter: { reputation: { ne: "0" } }
+    limit: $limit
+  ) {
+    items {
+      ...ContributorWithReputation
+      id
+    }
+    nextToken
+  }
+}
+
+query GetColonyWatcher($id: ID!, $limit: Int) {
+  getColony(id: $id) {
+    watchers(limit: $limit) {
+      items {
+        userID
+        user {
+          ...User
+        }
+      }
+      nextToken
+    }
+  }
+}

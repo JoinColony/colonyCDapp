@@ -7,7 +7,7 @@ import SubNavigation from '../pages/MembersPage/partials/SubNavigation';
 import Filter from '~v5/common/Filter';
 import { useHeader } from './hooks';
 import { HeaderProps } from './types';
-import { useMemberContext } from '~context/MemberContext';
+import { useMemberModalContext } from '~context/MemberModalContext';
 
 const displayName = 'v5.frame.Header';
 
@@ -19,7 +19,7 @@ const Header: FC<HeaderProps> = ({ title }) => {
     setTriggerRef,
     visible: isSubNavigationOpen,
   } = useHeader();
-  const { setIsMemberModalOpen } = useMemberContext();
+  const { setIsMemberModalOpen } = useMemberModalContext();
 
   return (
     <div className="flex items-center justify-between">

@@ -15,7 +15,10 @@ import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
 import styles from '~shared/Extensions/Toast/Toast.module.css';
 import { PageLayoutProps } from './types';
 import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
-import { useMemberContext } from '~context/MemberContext';
+import {
+  MemberModalProvider,
+  useMemberModalContext,
+} from '~context/MemberModalContext';
 import { usePageLayout } from './hooks';
 
 const displayName = 'frame.Extensions.layouts.PageLayout';
@@ -34,7 +37,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
     isMemberModalOpen,
     setIsMemberModalOpen,
     user: modalUser,
-  } = useMemberContext();
+  } = useMemberModalContext();
   const { calamityBannerItems, canUpgrade } = usePageLayout();
 
   useEffect(() => {
@@ -85,4 +88,12 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
 
 PageLayout.displayName = displayName;
 
-export default PageLayout;
+const PageLayoutWithMemberModalContext: FC<
+  PropsWithChildren<PageLayoutProps>
+> = ({ children, ...props }) => (
+  <MemberModalProvider>
+    <PageLayout {...props}>{children}</PageLayout>
+  </MemberModalProvider>
+);
+
+export default PageLayoutWithMemberModalContext;
