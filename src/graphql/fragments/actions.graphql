@@ -103,6 +103,9 @@ fragment ColonyAction on ColonyAction {
   decisionData {
     ...ColonyDecision
   }
+  safeTransaction {
+    ...ColonySafeTransaction
+  }
 }
 
 fragment Annotation on Annotation {
