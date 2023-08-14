@@ -20,14 +20,19 @@ function* editExpenditure({
     slotId: index + 1,
   }));
 
+  /**
+   * @NOTE: Resolving payouts means making sure that for every slot, there's only one payout with non-zero amount.
+   * This is to meet the UI requirement that there should be one payout per row.
+   */
   const resolvedPayouts: ExpenditurePayoutFieldValue[] = [];
 
   payoutsWithSlotIds.forEach((payout) => {
+    // Add payout as specified in the form
+    resolvedPayouts.push(payout);
+
     const existingSlot = expenditure.slots.find(
       (slot) => slot.id === payout.slotId,
     );
-
-    resolvedPayouts.push(payout);
 
     // Set the amounts for any existing payouts in different tokens to 0
     resolvedPayouts.push(
@@ -46,7 +51,7 @@ function* editExpenditure({
 
   // // Group slots by token address
   const payoutsByTokenAddresses =
-    groupExpenditurePayoutsByTokenAddresses(payoutsWithSlotIds);
+    groupExpenditurePayoutsByTokenAddresses(resolvedPayouts);
 
   // @TODO: If there are now less payouts than before, we need to remove the old ones
 
