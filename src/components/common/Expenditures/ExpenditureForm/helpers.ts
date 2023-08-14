@@ -1,6 +1,7 @@
 import { weiToEth } from '@web3-onboard/common';
+import { BigNumber } from 'ethers';
 
-import { ExpenditureSlot } from '~types';
+import { Expenditure } from '~types';
 
 import { ExpenditurePayoutFieldValue } from './types';
 
@@ -13,15 +14,20 @@ export const getInitialPayoutFieldValue = (
   amount: '0',
 });
 
-export const mapExpenditureSlotToPayoutFieldValues = (
-  expenditureSlot: ExpenditureSlot,
+export const getExpenditurePayoutsFieldValue = (
+  expenditure: Expenditure,
 ): ExpenditurePayoutFieldValue[] => {
-  return (
-    expenditureSlot.payouts?.map((payout) => ({
-      slotId: expenditureSlot.id,
-      recipientAddress: expenditureSlot.recipientAddress ?? '',
-      tokenAddress: payout.tokenAddress,
-      amount: weiToEth(payout.amount),
-    })) ?? []
-  );
+  return expenditure.slots.reduce((payouts, slot) => {
+    const slotPayouts: ExpenditurePayoutFieldValue[] =
+      slot.payouts
+        ?.filter((payout) => BigNumber.from(payout.amount).gt(0))
+        .map((payout) => ({
+          slotId: slot.id,
+          recipientAddress: slot.recipientAddress ?? '',
+          tokenAddress: payout.tokenAddress,
+          amount: weiToEth(payout.amount),
+        })) ?? [];
+
+    return [...payouts, ...slotPayouts];
+  }, []);
 };
