@@ -66,13 +66,15 @@ const getDomainName = (
 
 const ActionsListItem = ({
   item: {
-    fromDomain,
+    fromDomain: itemDomain,
     transactionHash,
     // commentCount = 0,
     // status = ListItemStatus.Defused,
     createdAt,
     isMotion,
     motionData,
+    initiatorColony,
+    safeTransaction,
   },
   item,
 }: Props) => {
@@ -99,6 +101,10 @@ const ActionsListItem = ({
   }
 
   const domainName = getDomainName(fromDomain, motionData?.motionDomain);
+
+  const fromDomain = safeTransaction
+    ? initiatorColony?.domains?.items[0]
+    : itemDomain;
 
   return (
     <ListItem
