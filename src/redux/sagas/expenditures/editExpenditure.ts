@@ -38,7 +38,9 @@ function* editExpenditure({
     resolvedPayouts.push(
       ...(existingSlot?.payouts
         ?.filter(
-          (slotPayout) => slotPayout.tokenAddress !== payout.tokenAddress,
+          (slotPayout) =>
+            slotPayout.tokenAddress !== payout.tokenAddress &&
+            BigNumber.from(slotPayout.amount).gt(0),
         )
         .map((slotPayout) => ({
           slotId: payout.slotId,
@@ -49,11 +51,22 @@ function* editExpenditure({
     );
   });
 
-  // // Group slots by token address
+  // If there are now less payouts than expenditure slots, we need to remove them by setting their amounts to 0
+  const remainingSlots = expenditure.slots.slice(payouts.length);
+  remainingSlots.forEach((slot) => {
+    slot.payouts?.forEach((payout) => {
+      resolvedPayouts.push({
+        slotId: slot.id,
+        recipientAddress: slot.recipientAddress ?? '',
+        tokenAddress: payout.tokenAddress,
+        amount: '0',
+      });
+    });
+  });
+
+  // Group slots by token address
   const payoutsByTokenAddresses =
     groupExpenditurePayoutsByTokenAddresses(resolvedPayouts);
-
-  // @TODO: If there are now less payouts than before, we need to remove the old ones
 
   try {
     yield fork(createTransaction, meta.id, {
