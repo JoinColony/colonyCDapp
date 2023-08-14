@@ -37,13 +37,15 @@ interface Props {
 
 const ActionsListItem = ({
   item: {
-    fromDomain,
+    fromDomain: itemDomain,
     transactionHash,
     // commentCount = 0,
     // status = ListItemStatus.Defused,
     createdAt,
     isMotion,
     motionData,
+    initiatorColony,
+    safeTransaction,
   },
   item,
 }: Props) => {
@@ -68,6 +70,10 @@ const ActionsListItem = ({
     navigate(`/colony/${colony.name}/tx/${transactionHash}`);
 
   const status = ListItemStatus.Defused;
+
+  const fromDomain = safeTransaction
+    ? initiatorColony?.domains?.items[0]
+    : itemDomain;
 
   return (
     <ListItem
