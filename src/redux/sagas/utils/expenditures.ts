@@ -10,14 +10,12 @@ export const groupExpenditurePayoutsByTokenAddresses = (
     string,
     ExpenditurePayoutFieldValue[]
   >();
-  payouts.forEach((payout, index) => {
+  payouts.forEach((payout) => {
     const currentTokenPayouts =
       payoutsByTokenAddresses.get(payout.tokenAddress) ?? [];
-    // Add slot id to each payout
-    const payoutWithId = { ...payout, slotId: index + 1 };
     payoutsByTokenAddresses.set(payout.tokenAddress, [
       ...currentTokenPayouts,
-      payoutWithId,
+      payout,
     ]);
   });
 
