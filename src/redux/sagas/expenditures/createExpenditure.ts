@@ -23,15 +23,19 @@ import {
   createTransaction,
   createTransactionChannels,
 } from '../transactions';
-import { getColonyManager, putError, takeFrom } from '../utils';
-import { groupExpenditureSlotsByTokenAddresses } from '../utils/expenditures';
+import {
+  getColonyManager,
+  putError,
+  takeFrom,
+  groupExpenditurePayoutsByTokenAddresses,
+} from '../utils';
 
 function* createExpenditure({
   meta: { id: metaId, navigate },
   meta,
   payload: {
     colony: { name: colonyName, colonyAddress },
-    slots,
+    payouts,
     domainId,
   },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
@@ -44,8 +48,9 @@ function* createExpenditure({
 
   const batchKey = 'createExpenditure';
 
-  // Group slots by token addresses
-  const slotsByTokenAddresses = groupExpenditureSlotsByTokenAddresses(slots);
+  // Group payouts by token addresses
+  const payoutsByTokenAddresses =
+    groupExpenditurePayoutsByTokenAddresses(payouts);
 
   const {
     makeExpenditure,
@@ -92,9 +97,9 @@ function* createExpenditure({
       transactionAddParams(setExpenditureValues.id, [
         expenditureId,
         // slot ids for recipients
-        slots.map((_, index) => index + 1),
+        payouts.map((payout) => payout.slotId),
         // recipient addresses
-        slots.map((slot) => slot.recipientAddress),
+        payouts.map((payout) => payout.recipientAddress),
         // slot ids for skill ids
         [],
         // skill ids
@@ -108,16 +113,16 @@ function* createExpenditure({
         // payout modifiers
         [],
         // token addresses
-        [...slotsByTokenAddresses.keys()],
+        [...payoutsByTokenAddresses.keys()],
         // 2-dimensional array mapping token addresses to slot ids
-        [...slotsByTokenAddresses.values()].map((slotsByTokenAddress) =>
-          slotsByTokenAddress.map((slot) => slot.id),
+        [...payoutsByTokenAddresses.values()].map((payoutsByTokenAddress) =>
+          payoutsByTokenAddress.map((payout) => payout.slotId),
         ),
         // 2-dimensional array mapping token addresses to amounts
-        [...slotsByTokenAddresses.values()].map((slotsByTokenAddress) =>
-          slotsByTokenAddress.map((slot) =>
-            BigNumber.from(slot.amount).mul(
-              // @TODO: This should get the token decimals of the selected toke
+        [...payoutsByTokenAddresses.values()].map((payoutsByTokenAddress) =>
+          payoutsByTokenAddress.map((payout) =>
+            BigNumber.from(payout.amount).mul(
+              // @TODO: This should get the token decimals of the selected token
               BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS),
             ),
           ),

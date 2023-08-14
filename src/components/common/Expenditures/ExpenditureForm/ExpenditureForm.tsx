@@ -1,5 +1,4 @@
 import React from 'react';
-import { weiToEth } from '@web3-onboard/common';
 import { Id } from '@colony/colony-js';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,16 +9,14 @@ import { ActionTypes } from '~redux';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
 
 import ExpenditureFormFields from './ExpenditureFormFields';
-import { getInitialSlotFieldValue } from './helpers';
-
-export interface ExpenditureSlotFieldValue {
-  recipientAddress: string;
-  tokenAddress: string;
-  amount: string;
-}
+import {
+  getInitialPayoutFieldValue,
+  mapExpenditureSlotToPayoutFieldValues,
+} from './helpers';
+import { ExpenditurePayoutFieldValue } from './types';
 
 export interface ExpenditureFormValues {
-  slots: ExpenditureSlotFieldValue[];
+  payouts: ExpenditurePayoutFieldValue[];
 }
 
 export interface ExpenditureFormProps {
@@ -41,7 +38,7 @@ const ExpenditureForm = ({ expenditure, ...props }: ExpenditureFormProps) => {
   const transformCreateExpenditurePayload = pipe(
     mapPayload((payload: ExpenditureFormValues) => ({
       colony,
-      slots: payload.slots,
+      payouts: payload.payouts,
       // @TODO: This should come from the form values
       domainId: Id.RootDomain,
     })),
@@ -52,7 +49,7 @@ const ExpenditureForm = ({ expenditure, ...props }: ExpenditureFormProps) => {
     (payload: ExpenditureFormValues) => ({
       colonyAddress: colony.colonyAddress,
       expenditure,
-      slots: payload.slots,
+      payouts: payload.payouts,
     }),
   );
 
@@ -61,11 +58,11 @@ const ExpenditureForm = ({ expenditure, ...props }: ExpenditureFormProps) => {
   return (
     <ActionForm
       defaultValues={{
-        slots: expenditure?.slots.map<ExpenditureSlotFieldValue>((slot) => ({
-          recipientAddress: slot.recipientAddress ?? '',
-          tokenAddress: slot.payouts?.[0]?.tokenAddress ?? '',
-          amount: weiToEth(slot.payouts?.[0]?.amount.toString() ?? '0'),
-        })) ?? [getInitialSlotFieldValue(colony.nativeToken.tokenAddress)],
+        payouts: expenditure?.slots
+          .map(mapExpenditureSlotToPayoutFieldValues)
+          .flat() ?? [
+          getInitialPayoutFieldValue(colony.nativeToken.tokenAddress),
+        ],
       }}
       actionType={
         isEditing

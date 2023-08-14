@@ -6,7 +6,7 @@ import { Colony } from '~types';
 import Button, { IconButton } from '~shared/Button';
 
 import styles from './ExpenditureForm.module.css';
-import { getInitialSlotFieldValue } from './helpers';
+import { getInitialPayoutFieldValue } from './helpers';
 import { ExpenditureFormProps } from './ExpenditureForm';
 
 interface ExpenditureFormFieldsProps extends ExpenditureFormProps {
@@ -21,7 +21,10 @@ const ExpenditureFormFields = ({
 }: ExpenditureFormFieldsProps) => {
   const { control } = useFormContext();
 
-  const { fields, append, remove } = useFieldArray({ name: 'slots', control });
+  const { fields, append, remove } = useFieldArray({
+    name: 'payouts',
+    control,
+  });
 
   return (
     <>
@@ -34,12 +37,12 @@ const ExpenditureFormFields = ({
             disabled={fields.length <= 1}
           />
           <Input
-            name={`slots.${index}.recipientAddress`}
+            name={`payouts.${index}.recipientAddress`}
             label="Recipient address"
           />
-          <Input name={`slots.${index}.tokenAddress`} label="Token address" />
+          <Input name={`payouts.${index}.tokenAddress`} label="Token address" />
           <div className={styles.amountField}>
-            <Input name={`slots.${index}.amount`} label="Amount" />
+            <Input name={`payouts.${index}.amount`} label="Amount" />
             <div>{colony.nativeToken.symbol}</div>
           </div>
         </div>
@@ -61,7 +64,7 @@ const ExpenditureFormFields = ({
             size: 'small',
           }}
           onClick={() =>
-            append(getInitialSlotFieldValue(colony.nativeToken.tokenAddress))
+            append(getInitialPayoutFieldValue(colony.nativeToken.tokenAddress))
           }
         >
           Add recipient
