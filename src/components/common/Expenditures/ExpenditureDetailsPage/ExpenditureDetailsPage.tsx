@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Id } from '@colony/colony-js';
 
-import { useGetExpenditureQuery } from '~gql';
+import { ExpenditureStatus, useGetExpenditureQuery } from '~gql';
 import { useColonyContext } from '~hooks';
 import NotFoundRoute from '~routes/NotFoundRoute';
 import { Heading3 } from '~shared/Heading';
@@ -72,16 +72,18 @@ const ExpenditureDetailsPage = () => {
         <ExpenditureBalances expenditure={expenditure} />
         <ExpenditurePayouts expenditure={expenditure} colony={colony} />
         <div className={styles.buttons}>
-          <ActionButton
-            actionType={ActionTypes.EXPENDITURE_CANCEL}
-            appearance={{ size: 'small' }}
-            values={{
-              colonyAddress: colony.colonyAddress,
-              nativeExpenditureId: expenditure.nativeId,
-            }}
-          >
-            Cancel expenditure
-          </ActionButton>
+          {expenditure.status === ExpenditureStatus.Draft && (
+            <ActionButton
+              actionType={ActionTypes.EXPENDITURE_CANCEL}
+              appearance={{ size: 'small' }}
+              values={{
+                colonyAddress: colony.colonyAddress,
+                nativeExpenditureId: expenditure.nativeId,
+              }}
+            >
+              Cancel expenditure
+            </ActionButton>
+          )}
           <ExpenditureAdvanceButton expenditure={expenditure} colony={colony} />
         </div>
       </div>
