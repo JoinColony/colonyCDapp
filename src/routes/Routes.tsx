@@ -80,9 +80,8 @@ import MembersPage from '~frame/v5/pages/MembersPage';
 import ColonyUsersPage from '~frame/v5/pages/ColonyUsersPage';
 import VerifiedPage from '~frame/v5/pages/VerifiedPage';
 import TeamsPage from '~frame/v5/pages/TeamsPage';
-import { SearchContextProvider } from '~context/SearchContext';
 import { ColonyUsersPageType } from '~frame/v5/pages/ColonyUsersPage/types';
-import { MemberContextProvider } from '~context/MemberContext';
+import { MemberContextProviderWithSearchAndFilter as MemberContextProvider } from '~context/MemberContext';
 import UserProfilePage from '~frame/v5/pages/UserProfilePage';
 import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
 import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
@@ -160,20 +159,18 @@ const Routes = () => {
               element={
                 <ColonyContextProvider>
                   <ExtensionsContextProvider>
-                    <SearchContextProvider>
-                      <MemberContextProvider>
-                        <ActionSidebarContextProvider>
-                          <PageLayout
-                            loadingText="members"
-                            title={{ id: 'membersPage.title' }}
-                            description={{ id: 'membersPage.description' }}
-                            pageName="members"
-                          >
-                            <MembersPage />
-                          </PageLayout>
-                        </ActionSidebarContextProvider>
-                      </MemberContextProvider>
-                    </SearchContextProvider>
+                    <MemberContextProvider>
+                      <ActionSidebarContextProvider>
+                        <PageLayout
+                          loadingText="members"
+                          title={{ id: 'membersPage.title' }}
+                          description={{ id: 'membersPage.description' }}
+                          pageName="members"
+                        >
+                          <MembersPage />
+                        </PageLayout>
+                      </ActionSidebarContextProvider>
+                    </MemberContextProvider>
                   </ExtensionsContextProvider>
                 </ColonyContextProvider>
               }
@@ -190,22 +187,20 @@ const Routes = () => {
               element={
                 <ColonyContextProvider>
                   <ExtensionsContextProvider>
-                    <SearchContextProvider>
-                      <MemberContextProvider>
-                        <ActionSidebarContextProvider>
-                          <PageLayout
-                            loadingText={pageName}
-                            title={{ id: `${pageName}Page.title` }}
-                            description={{
-                              id: `${pageName}Page.description`,
-                            }}
-                            pageName="members"
-                          >
-                            <ColonyUsersPage pageName={pageName} />
-                          </PageLayout>
-                        </ActionSidebarContextProvider>
-                      </MemberContextProvider>
-                    </SearchContextProvider>
+                    <MemberContextProvider>
+                      <ActionSidebarContextProvider>
+                        <PageLayout
+                          loadingText={pageName}
+                          title={{ id: `${pageName}Page.title` }}
+                          description={{
+                            id: `${pageName}Page.description`,
+                          }}
+                          pageName="members"
+                        >
+                          <ColonyUsersPage pageName={pageName} />
+                        </PageLayout>
+                      </ActionSidebarContextProvider>
+                    </MemberContextProvider>
                   </ExtensionsContextProvider>
                 </ColonyContextProvider>
               }
@@ -217,20 +212,18 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <SearchContextProvider>
-                  <MemberContextProvider>
-                    <ActionSidebarContextProvider>
-                      <PageLayout
-                        loadingText="verified"
-                        title={{ id: 'verifiedPage.title' }}
-                        description={{ id: 'verifiedPage.description' }}
-                        pageName="members"
-                      >
-                        <VerifiedPage />
-                      </PageLayout>
-                    </ActionSidebarContextProvider>
-                  </MemberContextProvider>
-                </SearchContextProvider>
+                <MemberContextProvider>
+                  <ActionSidebarContextProvider>
+                    <PageLayout
+                      loadingText="verified"
+                      title={{ id: 'verifiedPage.title' }}
+                      description={{ id: 'verifiedPage.description' }}
+                      pageName="members"
+                    >
+                      <VerifiedPage />
+                    </PageLayout>
+                  </ActionSidebarContextProvider>
+                </MemberContextProvider>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }

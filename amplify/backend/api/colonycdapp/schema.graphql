@@ -31,17 +31,13 @@ input MembersForColonyInput {
   """
   rootHash: String
   """
-  IDs of the domains within the Colony
+  ID of the domain within the Colony
   """
-  domainIds: [Int]
+  domainId: Int
   """
   Sorting method to apply to the member list
   """
   sortingMethod: SortingMethod
-  """
-  The filtering method to apply to the member list
-  """
-  filteringMethod: FilteringMethod
 }
 
 """
@@ -257,6 +253,13 @@ input GetUserReputationInput {
   The root hash of the reputation tree at a specific point in time
   """
   rootHash: String
+}
+
+input UpdateContributorsWithReputationInput {
+  """
+  The colony address
+  """
+  colonyAddress: String # allow undefined
 }
 
 """
@@ -822,6 +825,18 @@ enum ExpenditureStatus {
 }
 
 """
+The types of contributor a user can be in a colony
+"""
+enum ContributorType {
+  TOP
+  DEDICATED
+  ACTIVE
+  NEW
+  VERIFIED
+  GENERAL
+}
+
+"""
 Root query type
 """
 type Query {
@@ -899,6 +914,13 @@ type Mutation {
   updateExtensionByColonyAndHash(
     input: UpdateExtensionByColonyAndHashInput
   ): ColonyExtension @function(name: "updateExtensionByColonyAndHash-${env}")
+
+  """
+  Update contributors with reputation in the database for a colony
+  """
+  updateContributorsWithReputation(
+    input: UpdateContributorsWithReputationInput!
+  ): Boolean @function(name: "updateContributorsWithReputation-${env}")
 }
 
 """
@@ -1121,6 +1143,69 @@ type Token @model {
 }
 
 """
+The ContributorWithReputation model represents an address with reputation.
+"""
+type ContributorWithReputation @model {
+  """
+  Unique identifier
+  Format: <colonyAddress>_<nativeDomainId>_<contributorAddress>
+  """
+  id: ID!
+
+  """
+  The address of the contributor
+  """
+  contributorAddress: ID!
+    @index(
+      name: "byAddress"
+      queryField: "getContributorByAddressAndColony"
+      sortKeyFields: ["colonyAddress"]
+    )
+
+  """
+  The type of the contributor
+  """
+  type: ContributorType
+
+  """
+  The contributor's reputation
+  """
+  reputation: String!
+
+  """
+  The percentage of the contributor's reputation in the domain
+  """
+  domainReputationPercentage: String!
+
+  """
+  The percentage of the contributor's reputation in the colony
+  (Even though the ContributorWithReputation model is domain-specific, we store the colony-wide percentage here as well
+  to enable fast and simple sorting on the MembersPage)
+  """
+  colonyReputationPercentage: String!
+
+  """
+  Associated user, if any
+  """
+  user: User @hasOne(fields: ["contributorAddress"])
+
+  """
+  Address of the colony the contributor is under
+  """
+  colonyAddress: String!
+    @index(
+      name: "byColonyAddress"
+      queryField: "getContributorsByDomainAndColony"
+      sortKeyFields: ["domainId"]
+    )
+
+  """
+  The domain id the contributor is associated with
+  """
+  domainId: String!
+}
+
+"""
 Represents a Colony within the Colony Network
 """
 type Colony @model {
@@ -1210,6 +1295,12 @@ type Colony @model {
   # It should be retrieved on demand at the earliest occasion it's needed
   # ie: when opening a UAC modal
   roles: [ColonyRole] @hasMany
+
+  """
+  Time at which the contributors with reputation in the colony were last updated
+  """
+  lastUpdatedContributorsWithReputation: AWSDateTime
+
   expenditures: [Expenditure] @hasMany
   expendituresGlobalClaimDelay: Int
 }
@@ -1344,6 +1435,9 @@ type User @model {
   List of stakes the User made
   """
   stakes: [ColonyStake!]! @hasMany(indexName: "byUserAddress", fields: ["id"])
+  """
+  List of domains with the user's permissions in each domain
+  """
   roles: [ColonyRole] @hasMany(indexName: "byTargetAddress", fields: ["id"])
 }
 
@@ -1510,9 +1604,8 @@ type ColonyFundsClaim @model {
 """
 Represents a native Colony Chain Funds Claim
 E.g., Token 0x0000...0000: ETH, xDAI, etc
-"""
-type # This is really not elegant, but there's no other proper solution, as you can't
-# return the Token @hadOne relationship from the lambda function
+""" # This is really not elegant, but there's no other proper solution, as you can't
+type # return the Token @hadOne relationship from the lambda function
 # Note that we don't need token details for the values that we're fetching (since
 # it's implied), but it would have been nice not to have to basically repeat the type
 ColonyChainFundsClaim {
@@ -1540,9 +1633,8 @@ ColonyChainFundsClaim {
 
 """
 Represents a Colony balance for a specific domain and token
-"""
-type # This is not a @model since it will only be returned by a lambda function
-# so don't need to create tables for them
+""" # This is not a @model since it will only be returned by a lambda function
+type # so don't need to create tables for them
 # Note that we also need input types since it treats the `balances` as available
 # to "write" to at creation time, even though, even if you were to write to
 # you'd never actually be able to read that data since the return is overwritten # by the lambda function
@@ -1986,9 +2078,8 @@ type ColonyMotion @model {
 
 """
 Represents an event triggered by a smart contract within the Colony Network
-"""
-type # This will store the relevant events we care about for a particular colony
-# Altough it might also hold events emmited by other clients (eg: network or token)
+""" # This will store the relevant events we care about for a particular colony
+type # Altough it might also hold events emmited by other clients (eg: network or token)
 # but are event pertaining to a colony
 # Generally you'd want to use this from a block ingenstor, after you've processed
 # data from an event, also save that even for future use
@@ -2442,6 +2533,11 @@ type ColonyRole @model {
   Unique identifier of the domain
   """
   domainId: ID!
+    @index(
+      name: "byDomainId"
+      queryField: "getRoleByDomainAndColony"
+      sortKeyFields: ["colonyAddress"]
+    )
   """
   Expaneded `Domain` model, based on the `domainId` given
   """
@@ -2451,7 +2547,7 @@ type ColonyRole @model {
   """
   Address of the agent the permission was set for
   """
-  targetAddress: ID @index(name: "byTargetAddress")
+  targetAddress: ID! @index(name: "byTargetAddress")
   """
   Will expand to a `User` model if permission was set for a user
   """
@@ -2469,6 +2565,10 @@ type ColonyRole @model {
   """
   targetToken: Token @hasOne(fields: ["targetAddress"])
 
+  """
+  The colony in which the role was set
+  """
+  colonyAddress: String!
   """
   Block at which permissions were update last
   """
@@ -2501,9 +2601,8 @@ type ColonyRole @model {
 
 """
 Snapshot of the user's full roles/permissions at a specific block
-"""
-type # it's a model, not a type since this is designed to work outside of the main
-# colony model, or colony role model, as, by design it should be only used
+""" # it's a model, not a type since this is designed to work outside of the main
+type # colony model, or colony role model, as, by design it should be only used
 # in very specific cases
 ColonyHistoricRole @model {
   """

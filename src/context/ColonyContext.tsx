@@ -9,7 +9,10 @@ import { useLocation, useParams } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 import { ObservableQuery } from '@apollo/client';
 
-import { useGetFullColonyByNameQuery } from '~gql';
+import {
+  useGetFullColonyByNameQuery,
+  useUpdateContributorsWithReputationMutation,
+} from '~gql';
 import { Colony } from '~types';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import NotFoundRoute from '~routes/NotFoundRoute';
@@ -87,6 +90,15 @@ export const ColonyContextProvider = ({
 
   const isRedirect = locationState?.isRedirect;
   const colony = data?.getColonyByName?.items?.[0] ?? undefined;
+
+  const [updateContributorsWithReputation] =
+    useUpdateContributorsWithReputationMutation();
+
+  useEffect(() => {
+    updateContributorsWithReputation({
+      variables: { colonyAddress: colony?.colonyAddress },
+    });
+  }, [colony?.colonyAddress, updateContributorsWithReputation]);
 
   /* Stop polling if we weren't redirected from the ColonyCreation wizard or when the query returns the colony */
   if (isPolling && (!isRedirect || colony)) {
