@@ -48,7 +48,12 @@ const ExpenditureDetailsPage = () => {
   }
 
   const expenditureDomain = findDomainByNativeId(
-    expenditure.metadata?.nativeDomainId ?? Id.RootDomain,
+    expenditure.nativeDomainId,
+    colony,
+  );
+
+  const fundFromDomain = findDomainByNativeId(
+    expenditure.metadata?.fundFromDomainNativeId ?? Id.RootDomain,
     colony,
   );
 
@@ -58,7 +63,10 @@ const ExpenditureDetailsPage = () => {
 
       <div className={styles.details}>
         <div>Status: {expenditure.status}</div>
-        <div>Team: {expenditureDomain?.metadata?.name ?? 'Unknown team'}</div>
+        <div>
+          Created in: {expenditureDomain?.metadata?.name ?? 'Unknown team'}
+        </div>
+        <div>Fund from: {fundFromDomain?.metadata?.name ?? 'Unknown team'}</div>
         <ExpenditureBalances expenditure={expenditure} />
         <ExpenditurePayouts expenditure={expenditure} colony={colony} />
         <ExpenditureAdvanceButton expenditure={expenditure} colony={colony} />

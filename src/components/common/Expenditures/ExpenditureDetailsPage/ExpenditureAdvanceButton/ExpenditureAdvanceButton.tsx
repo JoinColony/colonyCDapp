@@ -42,7 +42,7 @@ const ExpenditureAdvanceButton = ({
           colonyAddress: colony.colonyAddress,
           fromDomainFundingPotId:
             findDomainByNativeId(
-              expenditure.metadata?.nativeDomainId ?? Id.RootDomain,
+              expenditure.metadata?.fundFromDomainNativeId ?? Id.RootDomain,
               colony,
             )?.nativeFundingPotId ?? Id.RootPot,
           expenditure,

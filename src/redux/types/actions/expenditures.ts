@@ -10,7 +10,10 @@ export type ExpendituresActionTypes =
       {
         colony: Colony;
         payouts: ExpenditurePayoutFieldValue[];
+        // id of the domain to create the expenditure in
         domainId: number;
+        // id of the domain to fund the expenditure from
+        fundFromDomainId: number;
       },
       MetaWithNavigate<object>
     >
