@@ -35,7 +35,7 @@ export type ExpendituresActionTypes =
       {
         colonyName: string;
         colonyAddress: Address;
-        nativeExpenditureId: string;
+        nativeExpenditureId: number;
       },
       object
     >
@@ -62,4 +62,14 @@ export type ExpendituresActionTypes =
       object
     >
   | ErrorActionType<ActionTypes.EXPENDITURE_EDIT_ERROR, object>
-  | UniqueActionType<ActionTypes.EXPENDITURE_EDIT_SUCCESS, object, object>;
+  | UniqueActionType<ActionTypes.EXPENDITURE_EDIT_SUCCESS, object, object>
+  | UniqueActionType<
+      ActionTypes.EXPENDITURE_CANCEL,
+      {
+        colonyAddress: Address;
+        nativeExpenditureId: number;
+      },
+      object
+    >
+  | ErrorActionType<ActionTypes.EXPENDITURE_CANCEL_ERROR, object>
+  | UniqueActionType<ActionTypes.EXPENDITURE_CANCEL_SUCCESS, object, object>;
