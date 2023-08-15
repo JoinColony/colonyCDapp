@@ -26,9 +26,9 @@ import {
   getDevZodiacBridgeAddress,
 } from '../utils/safeHelpers';
 import {
-  CreateColonySafeTransactionMutation,
-  CreateColonySafeTransactionDocument,
-  CreateColonySafeTransactionMutationVariables,
+  CreateSafeTransactionMutation,
+  CreateSafeTransactionDocument,
+  CreateSafeTransactionMutationVariables,
 } from '~gql';
 
 function* initiateSafeTransactionAction({
@@ -186,10 +186,10 @@ function* initiateSafeTransactionAction({
      * Save domain metadata in the database
      */
     yield apolloClient.mutate<
-      CreateColonySafeTransactionMutation,
-      CreateColonySafeTransactionMutationVariables
+      CreateSafeTransactionMutation,
+      CreateSafeTransactionMutationVariables
     >({
-      mutation: CreateColonySafeTransactionDocument,
+      mutation: CreateSafeTransactionDocument,
       variables: {
         input: {
           id: txHash,
