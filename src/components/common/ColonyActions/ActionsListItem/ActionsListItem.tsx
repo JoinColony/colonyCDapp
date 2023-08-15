@@ -13,6 +13,11 @@ import {
   useShouldDisplayMotionCountdownTime,
 } from '~utils/colonyMotions';
 import { formatText } from '~utils/intl';
+import Tag from '~shared/Tag';
+import {
+  TRANSACTION_STATUS,
+  MSG as SafeMSGs,
+} from '~utils/safes/getTransactionStatuses';
 
 import CountDownTimer from '../CountDownTimer';
 import { getActionTitleValues } from '../helpers';
@@ -99,11 +104,28 @@ const ActionsListItem = ({
     return null;
   }
 
-  const domainName = getDomainName(fromDomain, motionData?.motionDomain);
-
   const fromDomain = safeTransaction
     ? initiatorColony?.domains?.items[0]
     : itemDomain;
+
+  const domainName = getDomainName(fromDomain, motionData?.motionDomain);
+
+  const safeTransactionStatus = TRANSACTION_STATUS.PENDING;
+
+  const SafeTag = (
+    <Tag
+      text={SafeMSGs[safeTransactionStatus]}
+      appearance={{
+        theme:
+          safeTransactionStatus === TRANSACTION_STATUS.PENDING
+            ? 'golden'
+            : 'primary',
+        colorSchema: 'fullColor',
+      }}
+    />
+  );
+
+  const tag = safeTransaction ? SafeTag : <MotionTag />;
 
   return (
     <ListItem
@@ -130,7 +152,7 @@ const ActionsListItem = ({
       meta={<ActionsListItemMeta domainName={domainName} />}
       onClick={handleActionRedirect}
       status={status}
-      tag={<MotionTag />}
+      tag={tag}
       title={{ id: 'action.title' }}
       titleValues={getActionTitleValues(item, colony)}
     />
