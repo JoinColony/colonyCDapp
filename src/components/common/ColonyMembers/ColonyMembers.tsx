@@ -1,7 +1,6 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import ColonyHomeInfo from '~common/ColonyHome/ColonyHomeInfo';
 import Members from '~common/Members';
 import NotFoundRoute from '~routes/NotFoundRoute';
 import { useColonyContext } from '~hooks';
@@ -13,6 +12,7 @@ import TotalReputation from './TotalReputation';
 import useColonyMembers from './useColonyMembers';
 
 import styles from './ColonyMembers.css';
+import ColonyHomeInfo from '~common/ColonyHome/ColonyHomeInfo';
 
 const displayName = 'common.ColonyMembers';
 

@@ -3,6 +3,7 @@ declare namespace ListItemCssNamespace {
     avatar: string;
     content: string;
     day: string;
+    list: string;
     main: string;
     mainTextSize: string;
     meta: string;

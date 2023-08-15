@@ -3,9 +3,9 @@ const {
   getLatestMotionState,
   updateStakerRewardsInDB,
   getMotionData,
-  didMotionPass,
   updateMotionMessagesInDB,
   setEnvVariables,
+  updateMotionFinalizedMessages,
 } = require('./utils');
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
@@ -14,12 +14,35 @@ exports.handler = async (event) => {
   try {
     await setEnvVariables();
     const { colonyAddress, databaseMotionId } = event.arguments?.input || {};
-    /* Get latest motion state from chain */
     const motionData = await getMotionData(databaseMotionId);
 
     if (motionData) {
-      const { motionStateHistory } = motionData;
+      const { motionStateHistory, isDecision } = motionData;
+      /* Get latest motion state from chain */
       const motionState = await getLatestMotionState(colonyAddress, motionData);
+
+      if (
+        isDecision &&
+        (motionState === MotionState.Finalized ||
+          motionState === MotionState.Failed)
+      ) {
+        await updateStakerRewardsInDB(colonyAddress, motionData);
+        if (motionState === MotionState.Finalized) {
+          await updateMotionFinalizedMessages(
+            motionData,
+            motionStateHistory,
+            true,
+          );
+        } else if (!motionStateHistory.hasFailedNotFinalizable) {
+          await updateMotionMessagesInDB(
+            motionData,
+            ['MotionHasFailedNotFinalizable'],
+            'hasFailedNotFinalizable',
+          );
+        }
+
+        return motionState;
+      }
       /*
        * Check if we need to update staker rewards
        * This ensures the rewards are present in the event a motion fails before going to a vote,
@@ -70,33 +93,7 @@ exports.handler = async (event) => {
         ) {
           return motionState;
         }
-
-        const didPass = didMotionPass(motionData);
-
-        // Check if the motion passed and the messages have not already been stored in the db
-        if (didPass && !motionStateHistory.hasPassed) {
-          const newMessages = [];
-
-          // only display voting results if a vote has occurred
-          if (motionStateHistory.hasVoted) {
-            newMessages.push('MotionRevealResultMotionWon');
-          }
-          newMessages.push('MotionHasPassed');
-
-          await updateMotionMessagesInDB(motionData, newMessages, 'hasPassed');
-        }
-
-        if (!didPass && !motionStateHistory.hasFailed) {
-          const newMessages = [];
-
-          // only display voting results if a vote has occurred
-          if (motionStateHistory.hasVoted) {
-            newMessages.push('MotionRevealResultObjectionWon');
-          }
-          newMessages.push('MotionHasFailedFinalizable');
-
-          await updateMotionMessagesInDB(motionData, newMessages, 'hasFailed');
-        }
+        await updateMotionFinalizedMessages(motionData, motionStateHistory);
       }
 
       return motionState;

@@ -10,6 +10,7 @@ import { InstalledExtensionData } from '~types';
 import { mapPayload, mergePayload, pipe } from '~utils/actions';
 import { IconButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
+import { useColonyHomeContext } from '~context';
 
 import {
   createExtensionSetupInitialValues,
@@ -48,7 +49,7 @@ const ExtensionSetup = ({
 }: Props) => {
   const navigate = useNavigate();
   const { colony } = useColonyContext();
-
+  const { shortPollExtensions } = useColonyHomeContext();
   const transform = pipe(
     mapPayload((payload) =>
       mapExtensionActionPayload(extensionId, payload, initializationParams),
@@ -56,9 +57,10 @@ const ExtensionSetup = ({
     mergePayload({ colonyAddress: colony?.colonyAddress, extensionData }),
   );
 
-  const handleFormSuccess = useCallback(() => {
+  const handleFormSuccess = useCallback(async () => {
+    shortPollExtensions();
     navigate(`/colony/${colony?.name}/extensions/${extensionId}`);
-  }, [colony?.name, extensionId, navigate]);
+  }, [colony?.name, extensionId, navigate, shortPollExtensions]);
 
   const initialValues = useMemo(() => {
     if (!initializationParams) {

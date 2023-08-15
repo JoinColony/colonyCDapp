@@ -17,6 +17,8 @@ import { useCanInteractWithColony } from '~hooks';
 import { PageThemeContextProvider } from './PageThemeContext';
 import { UserTokenBalanceProvider } from './UserTokenBalanceContext';
 
+import { ColonyDecisionProvider } from './ColonyDecisionContext';
+
 interface ColonyContextValue {
   colony?: Colony;
   loading: boolean;
@@ -131,9 +133,11 @@ export const ColonyContextProvider = ({
 
   return (
     <ColonyContext.Provider value={colonyContext}>
-      <UserTokenBalanceProvider>
-        <PageThemeContextProvider>{children}</PageThemeContextProvider>
-      </UserTokenBalanceProvider>
+      <ColonyDecisionProvider colony={colony}>
+        <UserTokenBalanceProvider>
+          <PageThemeContextProvider>{children}</PageThemeContextProvider>
+        </UserTokenBalanceProvider>
+      </ColonyDecisionProvider>
     </ColonyContext.Provider>
   );
 };

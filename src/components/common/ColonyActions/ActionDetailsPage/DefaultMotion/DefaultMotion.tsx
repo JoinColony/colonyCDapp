@@ -34,6 +34,7 @@ const DefaultMotion = ({
   const { colony } = useColonyContext();
 
   const { isVotingReputationEnabled } = useEnabledExtensions();
+  const isDecision = !!actionData.decisionData;
 
   if (!colony) {
     return null;
@@ -45,7 +46,7 @@ const DefaultMotion = ({
   return (
     <div className={styles.main}>
       {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
-      {!showInActionsList && <StakeRequiredBanner isDecision={false} />}
+      {!showInActionsList && <StakeRequiredBanner isDecision={isDecision} />}
       {isVotingReputationEnabled && (
         <MotionHeading
           motionState={motionState}

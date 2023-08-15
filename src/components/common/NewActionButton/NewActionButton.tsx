@@ -1,47 +1,26 @@
 import React from 'react';
-import { defineMessages } from 'react-intl';
+import {
+  useAppContext,
+  useColonyContext,
+  useEnabledExtensions,
+  useNaiveBranchingDialogWizard,
+} from '~hooks';
 // import { Extension } from '@colony/colony-js';
 // import { useSelector } from 'react-redux';
 
-import {
-  useAppContext,
-  useNaiveBranchingDialogWizard,
-  useColonyContext,
-  useEnabledExtensions,
-} from '~hooks';
-import DialogButton from '~shared/Button/DialogButton';
+import { getWizardFlowConfig } from './wizardConfig';
+import { DialogButton } from '~shared/Button';
 
 // import {
 //   colonyMustBeUpgraded,
 //   oneTxMustBeUpgraded,
 // } from '~modules/dashboard/checks';
 
-import { getWizardFlowConfig } from './wizardConfig';
-
 const displayName = 'common.ColonyHome.NewActionButton';
-
-const MSG = defineMessages({
-  newAction: {
-    id: `${displayName}.newAction`,
-    defaultMessage: 'New Action',
-  },
-  walletNotConnectedWarning: {
-    id: `${displayName}.walletNotConnectedWarning`,
-    defaultMessage: `To interact with a colony you must connect your wallet, be on the same network as the colony, and have joined the colony.`,
-  },
-});
 
 interface Props {
   filteredDomainId: number;
 }
-
-// interface RootState {
-//   users: {
-//     wallet: {
-//       isUserConnected: boolean;
-//     };
-//   };
-// }
 
 const NewActionButton = ({ filteredDomainId }: Props) => {
   const { colony } = useColonyContext();
@@ -77,6 +56,7 @@ const NewActionButton = ({ filteredDomainId }: Props) => {
   //     !details?.missingPermissions.length &&
   //     extensionName === Extension.OneTxPayment,
   // );
+
   // const mustUpgradeOneTx = oneTxMustBeUpgraded(oneTxPaymentExtension);
   const hasRegisteredProfile = !!user?.name && !!user.walletAddress;
   // const mustUpgrade = colonyMustBeUpgraded(colony, networkVersion as string);
@@ -88,11 +68,15 @@ const NewActionButton = ({ filteredDomainId }: Props) => {
 
   return (
     <DialogButton
-      text={MSG.newAction}
       loading={isLoadingData}
+      text={{ id: 'button.newAction' }}
       handleClick={() => startWizardFlow('common.ColonyActionsDialog')}
-      disabled={!hasRegisteredProfile}
-      data-test="newActionButton"
+      disabled={
+        !hasRegisteredProfile
+        //   mustUpgrade ||
+        //   mustUpgradeOneTx ||
+      }
+      dataTest="newActionButton"
     />
   );
 };

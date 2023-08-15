@@ -1,19 +1,18 @@
 import { BigNumber } from 'ethers';
 import { ReactNode } from 'react';
-
 import { isEmpty } from '~utils/lodash';
+
 import {
   Address,
   Token,
   Domain as ColonyDomain,
   AnyActionType,
   ExtendedColonyActionType,
-  ActionUserRoles,
-  ColonyActionType,
   ColonyMetadata,
   ColonyAction,
+  ActionUserRoles,
 } from '~types';
-import { ColonyActionRoles } from '~gql';
+import { ColonyActionRoles, ColonyActionType } from '~gql';
 
 import { formatText } from './intl';
 import { MotionVote } from './colonyMotions';
@@ -121,11 +120,15 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
         ActionPageDetails.ReputationChange,
       ];
     }
-    // case actionType.includes(ColonyMotions.CreateDecisionMotion): {
-    //   return [ActionPageDetails.Type, ActionPageDetails.Author];
-    // }
     case actionType.includes(ColonyActionType.Generic): {
       return [ActionPageDetails.Type, ActionPageDetails.Generic];
+    }
+    case actionType.includes(ColonyActionType.CreateDecisionMotion): {
+      return [
+        ActionPageDetails.Type,
+        ActionPageDetails.Motion,
+        ActionPageDetails.Author,
+      ];
     }
     default:
       return [];
