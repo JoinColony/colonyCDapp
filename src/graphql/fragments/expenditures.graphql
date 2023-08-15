@@ -7,8 +7,9 @@ fragment Expenditure on Expenditure {
     ...ExpenditureSlot
   }
   nativeFundingPotId
+  nativeDomainId
   metadata {
-    nativeDomainId
+    fundFromDomainNativeId
   }
   balances {
     tokenAddress

@@ -2600,6 +2600,7 @@ type Expenditure @model {
       name: "byNativeFundingPotId"
       queryField: "getExpendituresByNativeFundingPotId"
     )
+  nativeDomainId: Int!
   metadata: ExpenditureMetadata @hasOne(fields: ["id"])
   balances: [ExpenditureBalance!]
     @function(name: "fetchExpenditureBalances-${env}")
@@ -2621,7 +2622,7 @@ type ExpenditurePayout {
 
 type ExpenditureMetadata @model {
   id: ID! # Self-managed, formatted as colonyId_nativeExpenditureId
-  nativeDomainId: Int!
+  fundFromDomainNativeId: Int!
 }
 
 """
