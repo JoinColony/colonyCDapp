@@ -2401,7 +2401,7 @@ type ColonyAction @model {
   """
   Safe transactions associated with the action
   """
-  safeTransaction: ColonySafeTransaction @hasOne(fields: ["id"])
+safeTransaction: SafeTransaction @hasOne(fields: ["id"])
 }
 
 type ColonyDecision @model {
@@ -2796,7 +2796,7 @@ type SafeTransactionData {
   functionParams: [FunctionParam]
 }
 
-type ColonySafeTransaction @model {
+type SafeTransaction @model {
   id: ID!
   title: String!
   safe: Safe!
