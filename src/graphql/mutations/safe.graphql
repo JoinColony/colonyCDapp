@@ -1,7 +1,5 @@
-mutation CreateColonySafeTransaction(
-  $input: CreateColonySafeTransactionInput!
-) {
-  createColonySafeTransaction(input: $input) {
+mutation CreateSafeTransaction($input: CreateSafeTransactionInput!) {
+  createSafeTransaction(input: $input) {
     id
   }
 }

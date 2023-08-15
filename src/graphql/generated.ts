@@ -267,7 +267,7 @@ export type ColonyAction = {
   /** Colony roles that are associated with the action */
   roles?: Maybe<ColonyActionRoles>;
   /** Safe transactions associated with the action */
-  safeTransaction?: Maybe<ColonySafeTransaction>;
+  safeTransaction?: Maybe<SafeTransaction>;
   /**
    * Whether to show the motion in the actions list
    * True for (forced) actions. True for motions if staked above 10%
@@ -733,16 +733,6 @@ export type ColonyRole = {
   updatedAt: Scalars['AWSDateTime'];
 };
 
-export type ColonySafeTransaction = {
-  __typename?: 'ColonySafeTransaction';
-  createdAt: Scalars['AWSDateTime'];
-  id: Scalars['ID'];
-  safe: Safe;
-  title: Scalars['String'];
-  transactions: Array<SafeTransactionData>;
-  updatedAt: Scalars['AWSDateTime'];
-};
-
 /**
  * Keeps track of the current amount a user has staked in a colony
  * When a user stakes, totalAmount increases. When a user reclaims their stake, totalAmount decreases.
@@ -1020,13 +1010,6 @@ export type CreateColonyRoleInput = {
   targetAddress?: InputMaybe<Scalars['ID']>;
 };
 
-export type CreateColonySafeTransactionInput = {
-  id?: InputMaybe<Scalars['ID']>;
-  safe: SafeInput;
-  title: Scalars['String'];
-  transactions: Array<SafeTransactionDataInput>;
-};
-
 export type CreateColonyStakeInput = {
   colonyId: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
@@ -1118,6 +1101,13 @@ export type CreateProfileInput = {
   meta?: InputMaybe<ProfileMetadataInput>;
   thumbnail?: InputMaybe<Scalars['String']>;
   website?: InputMaybe<Scalars['AWSURL']>;
+};
+
+export type CreateSafeTransactionInput = {
+  id?: InputMaybe<Scalars['ID']>;
+  safe: SafeInput;
+  title: Scalars['String'];
+  transactions: Array<SafeTransactionDataInput>;
 };
 
 export type CreateTokenInput = {
@@ -1245,10 +1235,6 @@ export type DeleteColonyRoleInput = {
   id: Scalars['ID'];
 };
 
-export type DeleteColonySafeTransactionInput = {
-  id: Scalars['ID'];
-};
-
 export type DeleteColonyStakeInput = {
   id: Scalars['ID'];
 };
@@ -1290,6 +1276,10 @@ export type DeleteMotionMessageInput = {
 };
 
 export type DeleteProfileInput = {
+  id: Scalars['ID'];
+};
+
+export type DeleteSafeTransactionInput = {
   id: Scalars['ID'];
 };
 
@@ -2071,27 +2061,6 @@ export type ModelColonyRoleFilterInput = {
   targetAddress?: InputMaybe<ModelIdInput>;
 };
 
-export type ModelColonySafeTransactionConditionInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelColonySafeTransactionConditionInput>>>;
-  not?: InputMaybe<ModelColonySafeTransactionConditionInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelColonySafeTransactionConditionInput>>>;
-  title?: InputMaybe<ModelStringInput>;
-};
-
-export type ModelColonySafeTransactionConnection = {
-  __typename?: 'ModelColonySafeTransactionConnection';
-  items: Array<Maybe<ColonySafeTransaction>>;
-  nextToken?: Maybe<Scalars['String']>;
-};
-
-export type ModelColonySafeTransactionFilterInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelColonySafeTransactionFilterInput>>>;
-  id?: InputMaybe<ModelIdInput>;
-  not?: InputMaybe<ModelColonySafeTransactionFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelColonySafeTransactionFilterInput>>>;
-  title?: InputMaybe<ModelStringInput>;
-};
-
 export type ModelColonyStakeConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelColonyStakeConditionInput>>>;
   colonyId?: InputMaybe<ModelIdInput>;
@@ -2455,6 +2424,27 @@ export type ModelProfileFilterInput = {
   website?: InputMaybe<ModelStringInput>;
 };
 
+export type ModelSafeTransactionConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSafeTransactionConditionInput>>>;
+  not?: InputMaybe<ModelSafeTransactionConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSafeTransactionConditionInput>>>;
+  title?: InputMaybe<ModelStringInput>;
+};
+
+export type ModelSafeTransactionConnection = {
+  __typename?: 'ModelSafeTransactionConnection';
+  items: Array<Maybe<SafeTransaction>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelSafeTransactionFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSafeTransactionFilterInput>>>;
+  id?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelSafeTransactionFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSafeTransactionFilterInput>>>;
+  title?: InputMaybe<ModelStringInput>;
+};
+
 export type ModelSizeInput = {
   between?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   eq?: InputMaybe<Scalars['Int']>;
@@ -2649,13 +2639,6 @@ export type ModelSubscriptionColonyRoleFilterInput = {
   targetAddress?: InputMaybe<ModelSubscriptionIdInput>;
 };
 
-export type ModelSubscriptionColonySafeTransactionFilterInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonySafeTransactionFilterInput>>>;
-  id?: InputMaybe<ModelSubscriptionIdInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonySafeTransactionFilterInput>>>;
-  title?: InputMaybe<ModelSubscriptionStringInput>;
-};
-
 export type ModelSubscriptionColonyStakeFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyStakeFilterInput>>>;
   colonyId?: InputMaybe<ModelSubscriptionIdInput>;
@@ -2798,6 +2781,13 @@ export type ModelSubscriptionProfileFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionProfileFilterInput>>>;
   thumbnail?: InputMaybe<ModelSubscriptionStringInput>;
   website?: InputMaybe<ModelSubscriptionStringInput>;
+};
+
+export type ModelSubscriptionSafeTransactionFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionSafeTransactionFilterInput>>>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionSafeTransactionFilterInput>>>;
+  title?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
 export type ModelSubscriptionStringInput = {
@@ -3078,7 +3068,6 @@ export type Mutation = {
   createColonyMetadata?: Maybe<ColonyMetadata>;
   createColonyMotion?: Maybe<ColonyMotion>;
   createColonyRole?: Maybe<ColonyRole>;
-  createColonySafeTransaction?: Maybe<ColonySafeTransaction>;
   createColonyStake?: Maybe<ColonyStake>;
   createColonyTokens?: Maybe<ColonyTokens>;
   createContractEvent?: Maybe<ContractEvent>;
@@ -3090,6 +3079,7 @@ export type Mutation = {
   createIngestorStats?: Maybe<IngestorStats>;
   createMotionMessage?: Maybe<MotionMessage>;
   createProfile?: Maybe<Profile>;
+  createSafeTransaction?: Maybe<SafeTransaction>;
   createToken?: Maybe<Token>;
   /** Create a unique Colony within the Colony Network. Use this instead of the automatically generated `createColony` mutation */
   createUniqueColony?: Maybe<Colony>;
@@ -3108,7 +3098,6 @@ export type Mutation = {
   deleteColonyMetadata?: Maybe<ColonyMetadata>;
   deleteColonyMotion?: Maybe<ColonyMotion>;
   deleteColonyRole?: Maybe<ColonyRole>;
-  deleteColonySafeTransaction?: Maybe<ColonySafeTransaction>;
   deleteColonyStake?: Maybe<ColonyStake>;
   deleteColonyTokens?: Maybe<ColonyTokens>;
   deleteContractEvent?: Maybe<ContractEvent>;
@@ -3120,6 +3109,7 @@ export type Mutation = {
   deleteIngestorStats?: Maybe<IngestorStats>;
   deleteMotionMessage?: Maybe<MotionMessage>;
   deleteProfile?: Maybe<Profile>;
+  deleteSafeTransaction?: Maybe<SafeTransaction>;
   deleteToken?: Maybe<Token>;
   deleteUser?: Maybe<User>;
   deleteUserTokens?: Maybe<UserTokens>;
@@ -3136,7 +3126,6 @@ export type Mutation = {
   updateColonyMetadata?: Maybe<ColonyMetadata>;
   updateColonyMotion?: Maybe<ColonyMotion>;
   updateColonyRole?: Maybe<ColonyRole>;
-  updateColonySafeTransaction?: Maybe<ColonySafeTransaction>;
   updateColonyStake?: Maybe<ColonyStake>;
   updateColonyTokens?: Maybe<ColonyTokens>;
   updateContractEvent?: Maybe<ContractEvent>;
@@ -3153,6 +3142,7 @@ export type Mutation = {
   updateIngestorStats?: Maybe<IngestorStats>;
   updateMotionMessage?: Maybe<MotionMessage>;
   updateProfile?: Maybe<Profile>;
+  updateSafeTransaction?: Maybe<SafeTransaction>;
   updateToken?: Maybe<Token>;
   updateUser?: Maybe<User>;
   updateUserTokens?: Maybe<UserTokens>;
@@ -3231,13 +3221,6 @@ export type MutationCreateColonyRoleArgs = {
 
 
 /** Root mutation type */
-export type MutationCreateColonySafeTransactionArgs = {
-  condition?: InputMaybe<ModelColonySafeTransactionConditionInput>;
-  input: CreateColonySafeTransactionInput;
-};
-
-
-/** Root mutation type */
 export type MutationCreateColonyStakeArgs = {
   condition?: InputMaybe<ModelColonyStakeConditionInput>;
   input: CreateColonyStakeInput;
@@ -3311,6 +3294,13 @@ export type MutationCreateMotionMessageArgs = {
 export type MutationCreateProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: CreateProfileInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreateSafeTransactionArgs = {
+  condition?: InputMaybe<ModelSafeTransactionConditionInput>;
+  input: CreateSafeTransactionInput;
 };
 
 
@@ -3425,13 +3415,6 @@ export type MutationDeleteColonyRoleArgs = {
 
 
 /** Root mutation type */
-export type MutationDeleteColonySafeTransactionArgs = {
-  condition?: InputMaybe<ModelColonySafeTransactionConditionInput>;
-  input: DeleteColonySafeTransactionInput;
-};
-
-
-/** Root mutation type */
 export type MutationDeleteColonyStakeArgs = {
   condition?: InputMaybe<ModelColonyStakeConditionInput>;
   input: DeleteColonyStakeInput;
@@ -3505,6 +3488,13 @@ export type MutationDeleteMotionMessageArgs = {
 export type MutationDeleteProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: DeleteProfileInput;
+};
+
+
+/** Root mutation type */
+export type MutationDeleteSafeTransactionArgs = {
+  condition?: InputMaybe<ModelSafeTransactionConditionInput>;
+  input: DeleteSafeTransactionInput;
 };
 
 
@@ -3613,13 +3603,6 @@ export type MutationUpdateColonyRoleArgs = {
 
 
 /** Root mutation type */
-export type MutationUpdateColonySafeTransactionArgs = {
-  condition?: InputMaybe<ModelColonySafeTransactionConditionInput>;
-  input: UpdateColonySafeTransactionInput;
-};
-
-
-/** Root mutation type */
 export type MutationUpdateColonyStakeArgs = {
   condition?: InputMaybe<ModelColonyStakeConditionInput>;
   input: UpdateColonyStakeInput;
@@ -3699,6 +3682,13 @@ export type MutationUpdateMotionMessageArgs = {
 export type MutationUpdateProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: UpdateProfileInput;
+};
+
+
+/** Root mutation type */
+export type MutationUpdateSafeTransactionArgs = {
+  condition?: InputMaybe<ModelSafeTransactionConditionInput>;
+  input: UpdateSafeTransactionInput;
 };
 
 
@@ -3926,7 +3916,6 @@ export type Query = {
   getColonyMetadata?: Maybe<ColonyMetadata>;
   getColonyMotion?: Maybe<ColonyMotion>;
   getColonyRole?: Maybe<ColonyRole>;
-  getColonySafeTransaction?: Maybe<ColonySafeTransaction>;
   getColonyStake?: Maybe<ColonyStake>;
   getColonyStakeByUserAddress?: Maybe<ModelColonyStakeConnection>;
   getColonyTokens?: Maybe<ColonyTokens>;
@@ -3953,6 +3942,7 @@ export type Query = {
   getProfileByEmail?: Maybe<ModelProfileConnection>;
   /** Retrieve a user's reputation within the top domains of a Colony */
   getReputationForTopDomains?: Maybe<GetReputationForTopDomainsReturn>;
+  getSafeTransaction?: Maybe<SafeTransaction>;
   getToken?: Maybe<Token>;
   getTokenByAddress?: Maybe<ModelTokenConnection>;
   /** Fetch a token's information. Tries to get the data from the DB first, if that fails, resolves to get data from chain */
@@ -3979,7 +3969,6 @@ export type Query = {
   listColonyMetadata?: Maybe<ModelColonyMetadataConnection>;
   listColonyMotions?: Maybe<ModelColonyMotionConnection>;
   listColonyRoles?: Maybe<ModelColonyRoleConnection>;
-  listColonySafeTransactions?: Maybe<ModelColonySafeTransactionConnection>;
   listColonyStakes?: Maybe<ModelColonyStakeConnection>;
   listColonyTokens?: Maybe<ModelColonyTokensConnection>;
   listContractEvents?: Maybe<ModelContractEventConnection>;
@@ -3991,6 +3980,7 @@ export type Query = {
   listIngestorStats?: Maybe<ModelIngestorStatsConnection>;
   listMotionMessages?: Maybe<ModelMotionMessageConnection>;
   listProfiles?: Maybe<ModelProfileConnection>;
+  listSafeTransactions?: Maybe<ModelSafeTransactionConnection>;
   listTokens?: Maybe<ModelTokenConnection>;
   listUserTokens?: Maybe<ModelUserTokensConnection>;
   listUsers?: Maybe<ModelUserConnection>;
@@ -4147,12 +4137,6 @@ export type QueryGetColonyMotionArgs = {
 
 /** Root query type */
 export type QueryGetColonyRoleArgs = {
-  id: Scalars['ID'];
-};
-
-
-/** Root query type */
-export type QueryGetColonySafeTransactionArgs = {
   id: Scalars['ID'];
 };
 
@@ -4318,6 +4302,12 @@ export type QueryGetProfileByEmailArgs = {
 /** Root query type */
 export type QueryGetReputationForTopDomainsArgs = {
   input?: InputMaybe<GetReputationForTopDomainsInput>;
+};
+
+
+/** Root query type */
+export type QueryGetSafeTransactionArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -4490,14 +4480,6 @@ export type QueryListColonyRolesArgs = {
 
 
 /** Root query type */
-export type QueryListColonySafeTransactionsArgs = {
-  filter?: InputMaybe<ModelColonySafeTransactionFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-};
-
-
-/** Root query type */
 export type QueryListColonyStakesArgs = {
   filter?: InputMaybe<ModelColonyStakeFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -4586,6 +4568,14 @@ export type QueryListProfilesArgs = {
 
 
 /** Root query type */
+export type QueryListSafeTransactionsArgs = {
+  filter?: InputMaybe<ModelSafeTransactionFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Root query type */
 export type QueryListTokensArgs = {
   filter?: InputMaybe<ModelTokenFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -4648,6 +4638,16 @@ export type SafeInput = {
   chainId: Scalars['Int'];
   moduleContractAddress: Scalars['String'];
   name: Scalars['String'];
+};
+
+export type SafeTransaction = {
+  __typename?: 'SafeTransaction';
+  createdAt: Scalars['AWSDateTime'];
+  id: Scalars['ID'];
+  safe: Safe;
+  title: Scalars['String'];
+  transactions: Array<SafeTransactionData>;
+  updatedAt: Scalars['AWSDateTime'];
 };
 
 export type SafeTransactionData = {
@@ -4764,7 +4764,6 @@ export type Subscription = {
   onCreateColonyMetadata?: Maybe<ColonyMetadata>;
   onCreateColonyMotion?: Maybe<ColonyMotion>;
   onCreateColonyRole?: Maybe<ColonyRole>;
-  onCreateColonySafeTransaction?: Maybe<ColonySafeTransaction>;
   onCreateColonyStake?: Maybe<ColonyStake>;
   onCreateColonyTokens?: Maybe<ColonyTokens>;
   onCreateContractEvent?: Maybe<ContractEvent>;
@@ -4776,6 +4775,7 @@ export type Subscription = {
   onCreateIngestorStats?: Maybe<IngestorStats>;
   onCreateMotionMessage?: Maybe<MotionMessage>;
   onCreateProfile?: Maybe<Profile>;
+  onCreateSafeTransaction?: Maybe<SafeTransaction>;
   onCreateToken?: Maybe<Token>;
   onCreateUser?: Maybe<User>;
   onCreateUserTokens?: Maybe<UserTokens>;
@@ -4790,7 +4790,6 @@ export type Subscription = {
   onDeleteColonyMetadata?: Maybe<ColonyMetadata>;
   onDeleteColonyMotion?: Maybe<ColonyMotion>;
   onDeleteColonyRole?: Maybe<ColonyRole>;
-  onDeleteColonySafeTransaction?: Maybe<ColonySafeTransaction>;
   onDeleteColonyStake?: Maybe<ColonyStake>;
   onDeleteColonyTokens?: Maybe<ColonyTokens>;
   onDeleteContractEvent?: Maybe<ContractEvent>;
@@ -4802,6 +4801,7 @@ export type Subscription = {
   onDeleteIngestorStats?: Maybe<IngestorStats>;
   onDeleteMotionMessage?: Maybe<MotionMessage>;
   onDeleteProfile?: Maybe<Profile>;
+  onDeleteSafeTransaction?: Maybe<SafeTransaction>;
   onDeleteToken?: Maybe<Token>;
   onDeleteUser?: Maybe<User>;
   onDeleteUserTokens?: Maybe<UserTokens>;
@@ -4816,7 +4816,6 @@ export type Subscription = {
   onUpdateColonyMetadata?: Maybe<ColonyMetadata>;
   onUpdateColonyMotion?: Maybe<ColonyMotion>;
   onUpdateColonyRole?: Maybe<ColonyRole>;
-  onUpdateColonySafeTransaction?: Maybe<ColonySafeTransaction>;
   onUpdateColonyStake?: Maybe<ColonyStake>;
   onUpdateColonyTokens?: Maybe<ColonyTokens>;
   onUpdateContractEvent?: Maybe<ContractEvent>;
@@ -4828,6 +4827,7 @@ export type Subscription = {
   onUpdateIngestorStats?: Maybe<IngestorStats>;
   onUpdateMotionMessage?: Maybe<MotionMessage>;
   onUpdateProfile?: Maybe<Profile>;
+  onUpdateSafeTransaction?: Maybe<SafeTransaction>;
   onUpdateToken?: Maybe<Token>;
   onUpdateUser?: Maybe<User>;
   onUpdateUserTokens?: Maybe<UserTokens>;
@@ -4885,11 +4885,6 @@ export type SubscriptionOnCreateColonyRoleArgs = {
 };
 
 
-export type SubscriptionOnCreateColonySafeTransactionArgs = {
-  filter?: InputMaybe<ModelSubscriptionColonySafeTransactionFilterInput>;
-};
-
-
 export type SubscriptionOnCreateColonyStakeArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyStakeFilterInput>;
 };
@@ -4942,6 +4937,11 @@ export type SubscriptionOnCreateMotionMessageArgs = {
 
 export type SubscriptionOnCreateProfileArgs = {
   filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
+};
+
+
+export type SubscriptionOnCreateSafeTransactionArgs = {
+  filter?: InputMaybe<ModelSubscriptionSafeTransactionFilterInput>;
 };
 
 
@@ -5015,11 +5015,6 @@ export type SubscriptionOnDeleteColonyRoleArgs = {
 };
 
 
-export type SubscriptionOnDeleteColonySafeTransactionArgs = {
-  filter?: InputMaybe<ModelSubscriptionColonySafeTransactionFilterInput>;
-};
-
-
 export type SubscriptionOnDeleteColonyStakeArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyStakeFilterInput>;
 };
@@ -5072,6 +5067,11 @@ export type SubscriptionOnDeleteMotionMessageArgs = {
 
 export type SubscriptionOnDeleteProfileArgs = {
   filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
+};
+
+
+export type SubscriptionOnDeleteSafeTransactionArgs = {
+  filter?: InputMaybe<ModelSubscriptionSafeTransactionFilterInput>;
 };
 
 
@@ -5145,11 +5145,6 @@ export type SubscriptionOnUpdateColonyRoleArgs = {
 };
 
 
-export type SubscriptionOnUpdateColonySafeTransactionArgs = {
-  filter?: InputMaybe<ModelSubscriptionColonySafeTransactionFilterInput>;
-};
-
-
 export type SubscriptionOnUpdateColonyStakeArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyStakeFilterInput>;
 };
@@ -5202,6 +5197,11 @@ export type SubscriptionOnUpdateMotionMessageArgs = {
 
 export type SubscriptionOnUpdateProfileArgs = {
   filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateSafeTransactionArgs = {
+  filter?: InputMaybe<ModelSubscriptionSafeTransactionFilterInput>;
 };
 
 
@@ -5448,13 +5448,6 @@ export type UpdateColonyRoleInput = {
   targetAddress?: InputMaybe<Scalars['ID']>;
 };
 
-export type UpdateColonySafeTransactionInput = {
-  id: Scalars['ID'];
-  safe?: InputMaybe<SafeInput>;
-  title?: InputMaybe<Scalars['String']>;
-  transactions?: InputMaybe<Array<SafeTransactionDataInput>>;
-};
-
 export type UpdateColonyStakeInput = {
   colonyId?: InputMaybe<Scalars['ID']>;
   id: Scalars['ID'];
@@ -5569,6 +5562,13 @@ export type UpdateProfileInput = {
   meta?: InputMaybe<ProfileMetadataInput>;
   thumbnail?: InputMaybe<Scalars['String']>;
   website?: InputMaybe<Scalars['AWSURL']>;
+};
+
+export type UpdateSafeTransactionInput = {
+  id: Scalars['ID'];
+  safe?: InputMaybe<SafeInput>;
+  title?: InputMaybe<Scalars['String']>;
+  transactions?: InputMaybe<Array<SafeTransactionDataInput>>;
 };
 
 export type UpdateTokenInput = {
@@ -5942,12 +5942,12 @@ export type CreateDomainMutationVariables = Exact<{
 
 export type CreateDomainMutation = { __typename?: 'Mutation', createDomain?: { __typename?: 'Domain', id: string } | null };
 
-export type CreateColonySafeTransactionMutationVariables = Exact<{
-  input: CreateColonySafeTransactionInput;
+export type CreateSafeTransactionMutationVariables = Exact<{
+  input: CreateSafeTransactionInput;
 }>;
 
 
-export type CreateColonySafeTransactionMutation = { __typename?: 'Mutation', createColonySafeTransaction?: { __typename?: 'ColonySafeTransaction', id: string } | null };
+export type CreateSafeTransactionMutation = { __typename?: 'Mutation', createSafeTransaction?: { __typename?: 'SafeTransaction', id: string } | null };
 
 export type CreateColonyTokensMutationVariables = Exact<{
   input: CreateColonyTokensInput;
@@ -7172,39 +7172,39 @@ export function useCreateDomainMutation(baseOptions?: Apollo.MutationHookOptions
 export type CreateDomainMutationHookResult = ReturnType<typeof useCreateDomainMutation>;
 export type CreateDomainMutationResult = Apollo.MutationResult<CreateDomainMutation>;
 export type CreateDomainMutationOptions = Apollo.BaseMutationOptions<CreateDomainMutation, CreateDomainMutationVariables>;
-export const CreateColonySafeTransactionDocument = gql`
-    mutation CreateColonySafeTransaction($input: CreateColonySafeTransactionInput!) {
-  createColonySafeTransaction(input: $input) {
+export const CreateSafeTransactionDocument = gql`
+    mutation CreateSafeTransaction($input: CreateSafeTransactionInput!) {
+  createSafeTransaction(input: $input) {
     id
   }
 }
     `;
-export type CreateColonySafeTransactionMutationFn = Apollo.MutationFunction<CreateColonySafeTransactionMutation, CreateColonySafeTransactionMutationVariables>;
+export type CreateSafeTransactionMutationFn = Apollo.MutationFunction<CreateSafeTransactionMutation, CreateSafeTransactionMutationVariables>;
 
 /**
- * __useCreateColonySafeTransactionMutation__
+ * __useCreateSafeTransactionMutation__
  *
- * To run a mutation, you first call `useCreateColonySafeTransactionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateColonySafeTransactionMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateSafeTransactionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSafeTransactionMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createColonySafeTransactionMutation, { data, loading, error }] = useCreateColonySafeTransactionMutation({
+ * const [createSafeTransactionMutation, { data, loading, error }] = useCreateSafeTransactionMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useCreateColonySafeTransactionMutation(baseOptions?: Apollo.MutationHookOptions<CreateColonySafeTransactionMutation, CreateColonySafeTransactionMutationVariables>) {
+export function useCreateSafeTransactionMutation(baseOptions?: Apollo.MutationHookOptions<CreateSafeTransactionMutation, CreateSafeTransactionMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateColonySafeTransactionMutation, CreateColonySafeTransactionMutationVariables>(CreateColonySafeTransactionDocument, options);
+        return Apollo.useMutation<CreateSafeTransactionMutation, CreateSafeTransactionMutationVariables>(CreateSafeTransactionDocument, options);
       }
-export type CreateColonySafeTransactionMutationHookResult = ReturnType<typeof useCreateColonySafeTransactionMutation>;
-export type CreateColonySafeTransactionMutationResult = Apollo.MutationResult<CreateColonySafeTransactionMutation>;
-export type CreateColonySafeTransactionMutationOptions = Apollo.BaseMutationOptions<CreateColonySafeTransactionMutation, CreateColonySafeTransactionMutationVariables>;
+export type CreateSafeTransactionMutationHookResult = ReturnType<typeof useCreateSafeTransactionMutation>;
+export type CreateSafeTransactionMutationResult = Apollo.MutationResult<CreateSafeTransactionMutation>;
+export type CreateSafeTransactionMutationOptions = Apollo.BaseMutationOptions<CreateSafeTransactionMutation, CreateSafeTransactionMutationVariables>;
 export const CreateColonyTokensDocument = gql`
     mutation CreateColonyTokens($input: CreateColonyTokensInput!) {
   createColonyTokens(input: $input) {

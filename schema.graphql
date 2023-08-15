@@ -718,8 +718,8 @@ type Query {
   listExpenditures(filter: ModelExpenditureFilterInput, limit: Int, nextToken: String): ModelExpenditureConnection
   getAnnotation(id: ID!): Annotation
   listAnnotations(filter: ModelAnnotationFilterInput, limit: Int, nextToken: String): ModelAnnotationConnection
-  getColonySafeTransaction(id: ID!): ColonySafeTransaction
-  listColonySafeTransactions(filter: ModelColonySafeTransactionFilterInput, limit: Int, nextToken: String): ModelColonySafeTransactionConnection
+  getSafeTransaction(id: ID!): SafeTransaction
+  listSafeTransactions(filter: ModelSafeTransactionFilterInput, limit: Int, nextToken: String): ModelSafeTransactionConnection
   getColonyTokens(id: ID!): ColonyTokens
   listColonyTokens(filter: ModelColonyTokensFilterInput, limit: Int, nextToken: String): ModelColonyTokensConnection
   getUserTokens(id: ID!): UserTokens
@@ -834,9 +834,9 @@ type Mutation {
   createAnnotation(input: CreateAnnotationInput!, condition: ModelAnnotationConditionInput): Annotation
   updateAnnotation(input: UpdateAnnotationInput!, condition: ModelAnnotationConditionInput): Annotation
   deleteAnnotation(input: DeleteAnnotationInput!, condition: ModelAnnotationConditionInput): Annotation
-  createColonySafeTransaction(input: CreateColonySafeTransactionInput!, condition: ModelColonySafeTransactionConditionInput): ColonySafeTransaction
-  updateColonySafeTransaction(input: UpdateColonySafeTransactionInput!, condition: ModelColonySafeTransactionConditionInput): ColonySafeTransaction
-  deleteColonySafeTransaction(input: DeleteColonySafeTransactionInput!, condition: ModelColonySafeTransactionConditionInput): ColonySafeTransaction
+  createSafeTransaction(input: CreateSafeTransactionInput!, condition: ModelSafeTransactionConditionInput): SafeTransaction
+  updateSafeTransaction(input: UpdateSafeTransactionInput!, condition: ModelSafeTransactionConditionInput): SafeTransaction
+  deleteSafeTransaction(input: DeleteSafeTransactionInput!, condition: ModelSafeTransactionConditionInput): SafeTransaction
   createColonyTokens(input: CreateColonyTokensInput!, condition: ModelColonyTokensConditionInput): ColonyTokens
   updateColonyTokens(input: UpdateColonyTokensInput!, condition: ModelColonyTokensConditionInput): ColonyTokens
   deleteColonyTokens(input: DeleteColonyTokensInput!, condition: ModelColonyTokensConditionInput): ColonyTokens
@@ -1972,7 +1972,7 @@ type ColonyAction {
   individualEvents: String
 
   """Safe transactions associated with the action"""
-  safeTransaction: ColonySafeTransaction
+  safeTransaction: SafeTransaction
   updatedAt: AWSDateTime!
   colonyActionsId: ID
 }
@@ -2261,7 +2261,7 @@ type SafeTransactionData {
   functionParams: [FunctionParam]
 }
 
-type ColonySafeTransaction {
+type SafeTransaction {
   id: ID!
   title: String!
   safe: Safe!
@@ -2597,9 +2597,9 @@ type Subscription {
   onCreateAnnotation(filter: ModelSubscriptionAnnotationFilterInput): Annotation
   onUpdateAnnotation(filter: ModelSubscriptionAnnotationFilterInput): Annotation
   onDeleteAnnotation(filter: ModelSubscriptionAnnotationFilterInput): Annotation
-  onCreateColonySafeTransaction(filter: ModelSubscriptionColonySafeTransactionFilterInput): ColonySafeTransaction
-  onUpdateColonySafeTransaction(filter: ModelSubscriptionColonySafeTransactionFilterInput): ColonySafeTransaction
-  onDeleteColonySafeTransaction(filter: ModelSubscriptionColonySafeTransactionFilterInput): ColonySafeTransaction
+  onCreateSafeTransaction(filter: ModelSubscriptionSafeTransactionFilterInput): SafeTransaction
+  onUpdateSafeTransaction(filter: ModelSubscriptionSafeTransactionFilterInput): SafeTransaction
+  onDeleteSafeTransaction(filter: ModelSubscriptionSafeTransactionFilterInput): SafeTransaction
   onCreateColonyTokens(filter: ModelSubscriptionColonyTokensFilterInput): ColonyTokens
   onUpdateColonyTokens(filter: ModelSubscriptionColonyTokensFilterInput): ColonyTokens
   onDeleteColonyTokens(filter: ModelSubscriptionColonyTokensFilterInput): ColonyTokens
@@ -4264,49 +4264,49 @@ input FunctionParamInput {
   value: String!
 }
 
-type ModelColonySafeTransactionConnection {
-  items: [ColonySafeTransaction]!
+type ModelSafeTransactionConnection {
+  items: [SafeTransaction]!
   nextToken: String
 }
 
-input ModelColonySafeTransactionFilterInput {
+input ModelSafeTransactionFilterInput {
   id: ModelIDInput
   title: ModelStringInput
-  and: [ModelColonySafeTransactionFilterInput]
-  or: [ModelColonySafeTransactionFilterInput]
-  not: ModelColonySafeTransactionFilterInput
+  and: [ModelSafeTransactionFilterInput]
+  or: [ModelSafeTransactionFilterInput]
+  not: ModelSafeTransactionFilterInput
 }
 
-input ModelColonySafeTransactionConditionInput {
+input ModelSafeTransactionConditionInput {
   title: ModelStringInput
-  and: [ModelColonySafeTransactionConditionInput]
-  or: [ModelColonySafeTransactionConditionInput]
-  not: ModelColonySafeTransactionConditionInput
+  and: [ModelSafeTransactionConditionInput]
+  or: [ModelSafeTransactionConditionInput]
+  not: ModelSafeTransactionConditionInput
 }
 
-input CreateColonySafeTransactionInput {
+input CreateSafeTransactionInput {
   id: ID
   title: String!
   safe: SafeInput!
   transactions: [SafeTransactionDataInput!]!
 }
 
-input UpdateColonySafeTransactionInput {
+input UpdateSafeTransactionInput {
   id: ID!
   title: String
   safe: SafeInput
   transactions: [SafeTransactionDataInput!]
 }
 
-input DeleteColonySafeTransactionInput {
+input DeleteSafeTransactionInput {
   id: ID!
 }
 
-input ModelSubscriptionColonySafeTransactionFilterInput {
+input ModelSubscriptionSafeTransactionFilterInput {
   id: ModelSubscriptionIDInput
   title: ModelSubscriptionStringInput
-  and: [ModelSubscriptionColonySafeTransactionFilterInput]
-  or: [ModelSubscriptionColonySafeTransactionFilterInput]
+  and: [ModelSubscriptionSafeTransactionFilterInput]
+  or: [ModelSubscriptionSafeTransactionFilterInput]
 }
 
 type ModelColonyTokensConnection {
