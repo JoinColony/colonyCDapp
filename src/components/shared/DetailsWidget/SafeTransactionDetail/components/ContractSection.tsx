@@ -1,14 +1,14 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { Safe, SafeTransaction } from '~types';
+import { Safe } from '~types';
 import { intl } from '~utils/intl';
-import { TransactionTypes } from '~common/Dialogs/ControlSafeDialog/helpers';
-import { extractTokenName } from '~utils/safes';
+import { extractTokenName, TransactionTypes } from '~utils/safes';
 import { InvisibleCopyableMaskedAddress } from '~shared/InvisibleCopyableAddress';
 
 import { ContractName } from '../../SafeTransactionDetail';
 import widgetStyles from '../../DetailsWidget.css';
+import { SafeTransaction } from '~common/Dialogs/ControlSafeDialog/types';
 
 const displayName = 'DetailsWidget.SafeTransactionDetail.ContractSection';
 
@@ -49,10 +49,9 @@ export const ContractSection = ({
   hideFunctionContract,
 }: ContractSectionProps) => {
   const functionContract =
-    /* NOTE to self this might be an issue
-    transaction.contract?.id || */
+    transaction.contract?.id ||
     transaction.contract?.walletAddress ||
-    transaction.tokenData?.tokenAddress ||
+    transaction.token?.tokenAddress ||
     transaction.nftData?.address;
 
   const getContractInfo = (safeTransaction: SafeTransaction) => {
@@ -76,9 +75,9 @@ export const ContractSection = ({
         break;
       case TransactionTypes.TRANSFER_FUNDS:
         contractInfo.contractName =
-          safeTransaction.tokenData?.name || formatMessage(MSG.token);
+          safeTransaction.token?.name || formatMessage(MSG.token);
         contractInfo.contractAddress =
-          safeTransaction.tokenData?.tokenAddress || safe.address;
+          safeTransaction.token?.tokenAddress || safe.address;
         break;
       case TransactionTypes.CONTRACT_INTERACTION:
         contractInfo.contractName =

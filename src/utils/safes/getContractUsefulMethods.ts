@@ -128,7 +128,9 @@ export const isAbiItem = (value: unknown): value is JsonFragment[] => {
   );
 };
 
-export const getContractUsefulMethods = (contractABI: string | undefined) => {
+export const getContractUsefulMethods = (
+  contractABI: string | undefined | null,
+) => {
   let parsedContractABI: JsonFragment[] = [];
   let usefulMethods: AbiItemExtended[] = [];
 
@@ -149,12 +151,12 @@ export const getContractUsefulMethods = (contractABI: string | undefined) => {
 
 /*
  * Function parameters are stored as `${paramName}-${functionName}`
- * In the SafeTransaction object.
+ * In the SafeTransactionData object.
  */
 export const extractParameterName = (
   safeTransactionKey: string,
   functionName: string,
-  functionParamType?: FunctionParamType,
+  functionParamType: FunctionParamType | undefined | null,
 ) => {
   const endIdx = safeTransactionKey.indexOf(functionName);
 

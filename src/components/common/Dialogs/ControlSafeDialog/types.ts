@@ -1,4 +1,4 @@
-import { Colony } from '~types';
+import { Colony, Token, User, SafeTransactionData } from '~types';
 import { EnabledExtensionData } from '~hooks';
 import { AbiItemExtended } from '~utils/safes';
 
@@ -12,9 +12,22 @@ export interface ControlSafeProps {
   >;
   showPreview: boolean;
   setShowPreview: (showPreview: boolean) => void;
-  // loadingState: [boolean, React.Dispatch<React.SetStateAction<boolean>>][];
-  // stepIndex: number;
-  // setStepIndex: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export interface FunctionParamType {
+  name: string;
+  type: string;
+}
+
+export interface SafeTransaction
+  extends Omit<
+    SafeTransactionData,
+    'functionParams' | 'rawAmount' | 'recipient' | 'token'
+  > {
+  token?: Token;
+  rawAmount?: number;
+  recipient?: User;
+  functionParamTypes?: FunctionParamType[];
 }
 
 export interface TransactionSectionProps

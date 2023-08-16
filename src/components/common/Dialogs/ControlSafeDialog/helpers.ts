@@ -1,29 +1,98 @@
 import { defineMessages } from 'react-intl';
-import { Colony } from '~types';
+import omitDeep from 'omit-deep-lodash';
 
-export const getManageSafeDialogPayload = (colony: Colony, payload: any) => {
-  const { safe } = payload;
+import { SAFE_NETWORKS } from '~constants';
+import { Colony, Safe } from '~types';
+import { TransactionTypes, getChainNameFromSafe } from '~utils/safes';
 
-  return {
-    colony,
-    safeList: [
-      {
-        chainId: safe.chainId,
-        name: safe.name,
-        address: safe.walletAddress,
-        moduleContractAddress: safe.id,
-      },
-    ],
-  };
+import { SafeTransaction } from './types';
+
+const extractSafeName = (safeDisplayName: string) => {
+  const pattern = /^(.*) \(/; // @NOTE: Matches any characters before a space and opening parenthesis
+  const match = safeDisplayName.match(pattern);
+  return match ? match[1] : ''; // @N0TE: Return the matched name or an empty string if no match
 };
 
-export enum TransactionTypes {
-  TRANSFER_FUNDS = 'transferFunds',
-  TRANSFER_NFT = 'transferNft',
-  CONTRACT_INTERACTION = 'contractInteraction',
-  RAW_TRANSACTION = 'rawTransaction',
-  MULTIPLE_TRANSACTIONS = 'multipleTransactions',
-}
+export const getControlSafeDialogPayload = (colony: Colony, payload: any) => {
+  const { name: colonyName, colonyAddress } = colony;
+  const {
+    safe,
+    transactionsTitle,
+    transactions,
+    annotation: annotationMessage,
+    motionDomainId,
+  } = payload;
+
+  const chainName = getChainNameFromSafe(safe.profile.displayName);
+  const transformedSafe: Safe = {
+    // Find will return because input value comes from SAFE_NETWORKS
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    chainId: SAFE_NETWORKS.find((network) => network.name === chainName)!
+      .chainId,
+    address: safe.walletAddress,
+    moduleContractAddress: safe.id,
+    name: extractSafeName(safe.profile.displayName),
+  };
+  const transformedTransactions = transactions.map(
+    (transaction: any): SafeTransaction => {
+      const dynamicPropNames =
+        transaction.functionParamTypes?.map(
+          (functionParamType) =>
+            `${functionParamType.name}-${transaction.contractFunction}`,
+        ) || [];
+      const functionParams =
+        transaction.functionParamTypes?.map(
+          (param: any, index: number): any => {
+            return {
+              ...param,
+              value: transaction[dynamicPropNames[index]],
+            };
+          },
+        ) || [];
+      const filteredTransaction = omitDeep(transaction, [
+        ...dynamicPropNames,
+        'functionParamTypes',
+      ]);
+
+      return {
+        ...filteredTransaction,
+        rawAmount: String(transaction.rawAmount),
+        recipient: omitDeep(transaction.recipient, [
+          '__typename',
+          'avatar',
+          'bio',
+          'email',
+          'location',
+          'name',
+          'thumbnail',
+          'website',
+        ]),
+        nftData: omitDeep(transaction.nftData, ['metadata']),
+        token: transaction.token
+          ? {
+              ...omitDeep(transaction.token, [
+                'thumbnail',
+                'tokenAddress',
+                'type',
+              ]),
+              address: transaction.token.tokenAddress,
+            }
+          : null,
+        functionParams,
+      };
+    },
+  );
+
+  return {
+    safe: transformedSafe,
+    transactionsTitle,
+    transactions: transformedTransactions,
+    annotationMessage,
+    colonyAddress,
+    colonyName,
+    motionDomainId,
+  };
+};
 
 export const MSG = defineMessages({
   [TransactionTypes.TRANSFER_FUNDS]: {

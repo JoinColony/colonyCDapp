@@ -48,10 +48,10 @@ const AmountBalances = ({
   const { watch, setValue, trigger } = useFormContext();
 
   const selectedTokenData: Token = watch(
-    `transactions.${transactionIndex}.tokenData`,
+    `transactions.${transactionIndex}.token`,
   );
   const setSelectedTokenData = (value: Token) =>
-    setValue(`transactions.${transactionIndex}.tokenData`, value);
+    setValue(`transactions.${transactionIndex}.token`, value);
 
   const tokens: Token[] = (safeBalances || []).map((balance) => {
     // If selected safe balance uses an ERC20 token
@@ -62,10 +62,13 @@ const AmountBalances = ({
     const safeNetworkData = SAFE_NETWORKS.find(
       (network) => Number(selectedSafe?.chainId) === network.chainId,
     );
+    // @NOTE: We know nativeToken is defined for Ethereum network.
+    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+    const token = safeNetworkData?.nativeToken || ETHEREUM_NETWORK.nativeToken!;
 
     return {
-      ...(safeNetworkData?.nativeToken || ETHEREUM_NETWORK.nativeToken)!,
       tokenAddress: ADDRESS_ZERO,
+      ...token,
     };
   });
 
@@ -118,7 +121,7 @@ const AmountBalances = ({
           <TokenSymbolSelector
             label={MSG.token}
             tokens={tokens}
-            name={`transactions.${transactionIndex}.tokenData.tokenAddress`}
+            name={`transactions.${transactionIndex}.token.tokenAddress`}
             elementOnly
             appearance={{ alignOptions: 'right', theme: 'grey' }}
             disabled={disabledInput}

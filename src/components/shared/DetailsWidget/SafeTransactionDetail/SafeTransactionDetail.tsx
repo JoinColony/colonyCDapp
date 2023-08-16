@@ -5,11 +5,10 @@ import { nanoid } from 'nanoid';
 
 import Numeral from '~shared/Numeral';
 import Avatar from '~shared/Avatar';
-import { Colony, Safe, SafeTransaction } from '~types';
-import {
-  TransactionTypes,
-  MSG as TypesMSG,
-} from '~common/Dialogs/ControlSafeDialog/helpers';
+import { Colony, Safe } from '~types';
+import { MSG as TypesMSG } from '~common/Dialogs/ControlSafeDialog/helpers';
+import { TransactionTypes } from '~utils/safes';
+import { SafeTransaction } from '~common/Dialogs/ControlSafeDialog/types';
 
 import {
   ContractName,
@@ -51,7 +50,6 @@ interface Props {
 const SafeTransactionDetail = ({
   safe,
   safeTransactionDetails,
-  colony,
   safeTransactionDetailStatuses,
 }: Props) => {
   const [openWidgets, setOpenWidgets] = useState<boolean[]>(
@@ -68,7 +66,7 @@ const SafeTransactionDetail = ({
           });
         };
         const idx = transactions.length > 1 ? index + 1 : null;
-        const token = transaction.tokenData;
+        const { token } = transaction;
         const NFT = transaction.nftData;
         const renderWidget = () => {
           switch (transaction.transactionType) {
@@ -88,10 +86,7 @@ const SafeTransactionDetail = ({
                     <>
                       <ContractSection transaction={transaction} safe={safe} />
                       {transaction.recipient && (
-                        <Recipient
-                          recipient={transaction.recipient}
-                          colony={colony}
-                        />
+                        <Recipient recipient={transaction.recipient} />
                       )}
                       {transaction.amount && token && (
                         <Value transaction={transaction} token={token} />
@@ -113,10 +108,7 @@ const SafeTransactionDetail = ({
                     <>
                       <ContractSection transaction={transaction} safe={safe} />
                       {transaction.recipient && (
-                        <Recipient
-                          recipient={transaction.recipient}
-                          colony={colony}
-                        />
+                        <Recipient recipient={transaction.recipient} />
                       )}
                       {NFT && (
                         <div className={widgetStyles.item}>
@@ -186,10 +178,7 @@ const SafeTransactionDetail = ({
                     <>
                       <ContractName name={safe.name} address={safe.address} />
                       {transaction.recipient && (
-                        <Recipient
-                          recipient={transaction.recipient}
-                          colony={colony}
-                        />
+                        <Recipient recipient={transaction.recipient} />
                       )}
                       {transaction.rawAmount && (
                         <div className={styles.value}>
@@ -200,7 +189,7 @@ const SafeTransactionDetail = ({
                             <div className={widgetStyles.value}>
                               <Numeral
                                 value={transaction.rawAmount}
-                                title={transaction.rawAmount}
+                                title={String(transaction.rawAmount)}
                               />
                             </div>
                           </div>

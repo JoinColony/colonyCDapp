@@ -236,6 +236,7 @@ enum ColonyActionType {
   EMIT_DOMAIN_REPUTATION_PENALTY_MOTION
   EMIT_DOMAIN_REPUTATION_REWARD
   EMIT_DOMAIN_REPUTATION_REWARD_MOTION
+  MAKE_ARBITRARY_TRANSACTION
 }
 
 enum SortingMethod {
@@ -753,6 +754,8 @@ type ColonyAction @model {
   # Roles Types:
   # [{ id: String, type: String, role: Number, setTo: boolean }]
   individualEvents: String
+
+  safeTransaction: SafeTransaction @hasOne(fields: ["id"])
 }
 
 type ColonyActionRoles {
@@ -835,6 +838,76 @@ type ColonyHistoricRole @model {
 type IngestorStats @model {
   id: ID!
   value: String!
+}
+
+type SimpleTargetProfile {
+  avatarHash: String
+  displayName: String
+  username: String
+}
+
+type SimpleTarget {
+  id: String!
+  profile: SimpleTargetProfile!
+  walletAddress: String!
+}
+
+type NFT {
+  id: String!
+  profile: NFTProfile!
+  walletAddress: String!
+}
+
+type NFTProfile {
+  displayName: String!
+}
+
+type SafeBalanceToken {
+  name: String!
+  decimals: Int!
+  symbol: String!
+  address: String!
+  logoUri: String
+}
+
+type FunctionParam {
+  name: String!
+  type: String!
+  value: String!
+}
+
+type NFTData {
+  address: String!
+  description: String
+  id: String!
+  imageUri: String
+  logoUri: String!
+  name: String
+  tokenName: String!
+  tokenSymbol: String!
+  uri: String!
+}
+
+type SafeTransactionData {
+  transactionType: String!
+  token: SafeBalanceToken
+  amount: String
+  rawAmount: String
+  recipient: SimpleTarget
+  data: String
+  contract: SimpleTarget
+  abi: String
+  contractFunction: String
+  nft: NFT
+  nftData: NFTData
+  functionParams: [FunctionParam]
+}
+
+type SafeTransaction @model {
+  id: ID!
+  title: String!
+  safe: Safe!
+  transactions: [SafeTransactionData!]!
 }
 
 type Safe {

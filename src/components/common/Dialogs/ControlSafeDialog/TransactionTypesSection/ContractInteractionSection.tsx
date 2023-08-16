@@ -27,12 +27,17 @@ import {
   getChainNameFromSafe,
 } from '~utils/safes';
 import { isEmpty, isEqual, isNil } from '~utils/lodash';
-import { Message, SafeTransaction } from '~types';
+import { Message } from '~types';
 import { isMessageDescriptor } from '~utils/intl';
 import { BINANCE_NETWORK } from '~constants';
 
 import { invalidSafeError } from '..';
-import { ABIResponse, TransactionSectionProps, UpdatedMethods } from '../types';
+import {
+  ABIResponse,
+  SafeTransaction,
+  TransactionSectionProps,
+  UpdatedMethods,
+} from '../types';
 
 import { ErrorMessage as Error, Loading, AvatarXS } from './shared';
 

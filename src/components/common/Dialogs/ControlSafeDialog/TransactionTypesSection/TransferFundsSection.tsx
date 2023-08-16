@@ -15,7 +15,6 @@ import {
   Message,
   SafeBalance,
   SafeBalanceApiData,
-  SafeTransaction,
   SelectedPickerItem,
 } from '~types';
 import Icon from '~shared/Icon';
@@ -85,7 +84,9 @@ const TransferFundsSection = ({
 
   const { watch, setValue } = useFormContext();
   const safe: SelectedPickerItem = watch('safe');
-  const transactions: SafeTransaction[] = watch('transactions');
+  const selectedTokenAddress: string = watch(
+    `transactions.${transactionIndex}.token.tokenAddress`,
+  );
   const safeBalances: SafeBalance[] = watch('safeBalances');
   const setSafeBalances = (value: SafeBalance[]) =>
     setValue('safeBalances', value);
@@ -150,9 +151,6 @@ const TransferFundsSection = ({
     // setSafeBalances causes infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [safeAddress, getSafeBalance, savedTokens]);
-
-  const selectedTokenAddress =
-    transactions[transactionIndex].tokenData?.tokenAddress;
 
   const selectedBalance = getSelectedSafeBalance(
     safeBalances,

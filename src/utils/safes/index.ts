@@ -1,3 +1,4 @@
+import { SafeTransaction } from '~common/Dialogs/ControlSafeDialog/types';
 import { ADDRESS_ZERO, SAFE_NAMES_MAP, SAFE_NETWORKS } from '~constants';
 import {
   Address,
@@ -17,6 +18,14 @@ export {
 } from './getContractUsefulMethods';
 
 export { getArrayFromString } from './contractParserValidation';
+
+export enum TransactionTypes {
+  TRANSFER_FUNDS = 'transferFunds',
+  TRANSFER_NFT = 'transferNft',
+  CONTRACT_INTERACTION = 'contractInteraction',
+  RAW_TRANSACTION = 'rawTransaction',
+  MULTIPLE_TRANSACTIONS = 'multipleTransactions',
+}
 
 export const getSafe = (
   safes: Safe[],
@@ -139,18 +148,17 @@ export const nftNameContainsTokenId = (tokenName: string): boolean => {
   return false;
 };
 
-export const defaultTransaction = {
-  // type SafeTransaction
+export const defaultTransaction: SafeTransaction = {
   transactionType: '',
-  tokenData: null,
-  amount: null,
-  rawAmount: null,
+  token: undefined,
+  amount: undefined,
+  rawAmount: undefined,
   recipient: undefined,
   data: '',
-  contract: null,
+  contract: undefined,
   abi: '',
   contractFunction: '',
-  nft: null,
-  nftData: null,
-  functionParamTypes: null,
+  nft: undefined,
+  nftData: undefined,
+  functionParamTypes: undefined,
 };
