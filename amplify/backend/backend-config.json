@@ -228,6 +228,15 @@
     },
     "updateContributorsWithReputation": {
       "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "colonycdappSSMAccess"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
@@ -244,6 +253,6 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
-    },
+    }
   }
 }
