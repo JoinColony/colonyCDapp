@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { InferType } from 'yup';
 import { useNavigate } from 'react-router-dom';
+import { Id } from '@colony/colony-js';
 
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
@@ -38,6 +39,7 @@ const ControlSafeDialog = ({
   cancel,
   close,
 }: Props) => {
+  const [isForce, setIsForce] = useState(false);
   const [selectedContractMethods, setSelectedContractMethods] =
     useState<UpdatedMethods>();
   const [expandedValidationSchema, setExpandedValidationSchema] = useState<
@@ -45,6 +47,13 @@ const ControlSafeDialog = ({
   >({});
   const [showPreview, setShowPreview] = useState(false);
   const navigate = useNavigate();
+
+  const { isVotingReputationEnabled } = enabledExtensionData;
+
+  const actionType =
+    !isForce && isVotingReputationEnabled
+      ? ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION
+      : ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION;
 
   const validationSchema = getValidationSchema(
     showPreview,
@@ -94,9 +103,10 @@ const ControlSafeDialog = ({
               }
             : undefined,
           transactions: [defaultTransaction],
+          motionDomainId: Id.RootDomain,
         }}
         validationSchema={validationSchema}
-        actionType={ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION}
+        actionType={actionType}
         transform={transform}
         onSuccess={close}
       >
@@ -108,6 +118,8 @@ const ControlSafeDialog = ({
           setSelectedContractMethods={setSelectedContractMethods}
           showPreview={showPreview}
           setShowPreview={setShowPreview}
+          handleIsForceChange={setIsForce}
+          isForce={isForce}
         />
       </Form>
     </Dialog>
