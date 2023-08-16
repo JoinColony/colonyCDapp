@@ -100,4 +100,7 @@ export const ACTIONS_EVENTS: ActionsEventsMap = {
   [ColonyActionType.VersionUpgradeMotion]: MOTION_EVENTS,
   [ColonyActionType.EmitDomainReputationPenaltyMotion]: MOTION_EVENTS,
   [ColonyActionType.EmitDomainReputationRewardMotion]: MOTION_EVENTS,
+  [ColonyActionType.MakeArbitraryTransaction]: [
+    ColonyAndExtensionsEvents.SafeTransaction,
+  ],
 };
