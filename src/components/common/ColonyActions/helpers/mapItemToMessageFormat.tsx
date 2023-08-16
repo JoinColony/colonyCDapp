@@ -227,6 +227,14 @@ export const mapActionEventToExpectedFormat = (
     chainName: getAddedSafeChainName(actionData),
     safeAddress: getSafeAddress(actionData),
     removedSafes: getRemovedSafesString(actionData),
+    safeName: 'test',
+    safeTransactionAmount: 'test',
+    isSafeTransactionRecipientUser: true,
+    safeTransactionRecipient: 'bob_test',
+    safeTransactionAddress: '0xtest',
+    safeTransactionContractName: 'safeTransactionContractName',
+    safeTransactionFunctionName: 'safeTransactionFunctionName',
+    safeTransactionNftToken: 'safeTransactionNftToken',
   };
 };
 

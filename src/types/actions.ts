@@ -113,6 +113,7 @@ export enum ColonyAndExtensionsEvents {
    */
   SafeAdded = 'SafeAdded',
   SafeRemoved = 'SafeRemoved',
+  SafeTransaction = 'SafeTransaction',
 }
 
 export type ActionUserRoles = {
