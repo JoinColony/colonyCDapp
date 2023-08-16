@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { ColonyRole, Id } from '@colony/colony-js';
+import { ColonyRole } from '@colony/colony-js';
 import classnames from 'classnames';
 
-import { useActionDialogStatus } from '~hooks';
 import { DialogSection } from '~shared/Dialog';
 import { HookFormSelect as Select } from '~shared/Fields';
 import Heading from '~shared/Heading';
@@ -18,6 +17,7 @@ import { isEmpty, isEqual, omit } from '~utils/lodash';
 import { defaultTransaction, TransactionTypes } from '~utils/safes';
 import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 
+import { NotEnoughReputation } from '../Messages';
 import {
   TransferNFTSection,
   TransferFundsSection,
@@ -25,7 +25,11 @@ import {
   ContractInteractionSection,
   ErrorMessage,
 } from './TransactionTypesSection';
-import { transactionOptions, ContractFunctions } from './helpers';
+import {
+  transactionOptions,
+  ContractFunctions,
+  useControlSafeDialogStatus,
+} from './helpers';
 import { ControlSafeProps, UpdatedMethods } from './types';
 import AddItemButton from './AddItemButton';
 import SingleSafePicker from './SingleSafePicker';
@@ -98,12 +102,14 @@ const requiredRoles: ColonyRole[] = [ColonyRole.Root];
 const ControlSafeForm = ({
   back,
   colony,
-  colony: { version, metadata },
+  colony: { metadata },
   enabledExtensionData,
   selectedContractMethods,
   setSelectedContractMethods,
   showPreview,
   setShowPreview,
+  handleIsForceChange,
+  isForce,
 }: ControlSafeProps) => {
   const [prevSafeAddress, setPrevSafeAddress] = useState<string>('');
   const [transactionTabStatus, setTransactionTabStatus] = useState([true]);
@@ -130,12 +136,12 @@ const ControlSafeForm = ({
     name: 'transactions',
   });
 
-  const { userHasPermission } = useActionDialogStatus(
-    colony,
-    requiredRoles,
-    [Id.RootDomain],
-    enabledExtensionData,
-  );
+  const {
+    userHasPermission,
+    canOnlyForceAction,
+    disabledInput: disablePreviewInputs,
+    isSupportedColonyVersion,
+  } = useControlSafeDialogStatus(colony, requiredRoles, enabledExtensionData);
 
   const { votingReputationVersion } = enabledExtensionData;
 
@@ -183,10 +189,8 @@ const ControlSafeForm = ({
     [selectedContractMethods, handleSelectedContractMethods, setValue],
   );
 
-  const isSupportedColonyVersion = version >= 12;
-
-  const disabledInputs =
-    !userHasPermission || isSubmitting || !isSupportedColonyVersion;
+  const disabledSectionInputs =
+    !isSupportedColonyVersion || (!userHasPermission && canOnlyForceAction);
 
   const renderTransactionSection = (transactionIndex: number) => {
     const transactionType = watch(
@@ -198,7 +202,7 @@ const ControlSafeForm = ({
         return (
           <TransferFundsSection
             colony={colony}
-            disabledInput={disabledInputs}
+            disabledInput={disabledSectionInputs}
             transactionIndex={transactionIndex}
             savedTokenState={savedTokenState}
           />
@@ -207,7 +211,7 @@ const ControlSafeForm = ({
         return (
           <RawTransactionSection
             colony={colony}
-            disabledInput={disabledInputs}
+            disabledInput={disabledSectionInputs}
             transactionIndex={transactionIndex}
           />
         );
@@ -215,7 +219,7 @@ const ControlSafeForm = ({
         return (
           <ContractInteractionSection
             colony={colony}
-            disabledInput={disabledInputs}
+            disabledInput={disabledSectionInputs}
             transactionIndex={transactionIndex}
             selectedContractMethods={selectedContractMethods}
             handleSelectedContractMethods={handleSelectedContractMethods}
@@ -226,7 +230,7 @@ const ControlSafeForm = ({
         return (
           <TransferNFTSection
             colony={colony}
-            disabledInput={disabledInputs}
+            disabledInput={disabledSectionInputs}
             transactionIndex={transactionIndex}
           />
         );
@@ -296,6 +300,12 @@ const ControlSafeForm = ({
     style: { width: styles.wideButton },
   };
 
+  useEffect(() => {
+    if (forceAction !== isForce) {
+      handleIsForceChange(forceAction);
+    }
+  }, [forceAction, isForce, handleIsForceChange]);
+
   return (
     <>
       {!showPreview ? (
@@ -344,7 +354,7 @@ const ControlSafeForm = ({
                 data={safes}
                 placeholder={MSG.safePickerPlaceholder}
                 filter={filterUserSelection}
-                disabled={disabledInputs}
+                disabled={disabledSectionInputs}
                 onSelected={handleSafeChange}
               />
             </div>
@@ -378,7 +388,7 @@ const ControlSafeForm = ({
                       }}
                       appearance={{ theme: 'grey', width: 'fluid' }}
                       placeholder={MSG.transactionPlaceholder}
-                      disabled={disabledInputs}
+                      disabled={disabledSectionInputs}
                     />
                   </div>
                 </DialogSection>
@@ -394,7 +404,7 @@ const ControlSafeForm = ({
             <div className={styles.addTransaction}>
               <AddItemButton
                 text={MSG.buttonTransaction}
-                disabled={isSubmitting}
+                disabled={disabledSectionInputs}
                 handleClick={() => handleNewTab()}
               />
             </div>
@@ -408,7 +418,16 @@ const ControlSafeForm = ({
             enabledExtensionData.isVotingReputationEnabled
           }
           userHasPermission={userHasPermission}
+          disabledInput={disablePreviewInputs}
         />
+      )}
+      {canOnlyForceAction && (!userHasPermission || showPreview) && (
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
+          <NotEnoughReputation
+            appearance={{ marginTop: 'negative' }}
+            includeForceCopy={userHasPermission}
+          />
+        </DialogSection>
       )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <Button

@@ -1,9 +1,11 @@
 import { defineMessages } from 'react-intl';
 import omitDeep from 'omit-deep-lodash';
+import { ColonyRole, Id } from '@colony/colony-js';
 
 import { SAFE_NETWORKS } from '~constants';
 import { Colony, Safe } from '~types';
 import { TransactionTypes, getChainNameFromSafe } from '~utils/safes';
+import { EnabledExtensionData, useActionDialogStatus } from '~hooks';
 
 import { SafeTransaction } from './types';
 
@@ -136,3 +138,25 @@ export enum ContractFunctions {
   TRANSFER_FUNDS = 'transfer',
   TRANSFER_NFT = 'safeTransferFrom',
 }
+
+export const useControlSafeDialogStatus = (
+  colony: Colony,
+  requiredRoles: ColonyRole[],
+  enabledExtensionData: EnabledExtensionData,
+) => {
+  const isSupportedColonyVersion = colony.version >= 12;
+  const { disabledInput: defaultDisabledInput, ...rest } =
+    useActionDialogStatus(
+      colony,
+      requiredRoles,
+      [Id.RootDomain],
+      enabledExtensionData,
+    );
+  const disabledInput = defaultDisabledInput || !isSupportedColonyVersion;
+
+  return {
+    ...rest,
+    disabledInput,
+    isSupportedColonyVersion,
+  };
+};

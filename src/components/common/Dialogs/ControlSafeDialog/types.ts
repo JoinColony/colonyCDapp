@@ -1,4 +1,4 @@
-import { Colony, Token, User, SafeTransactionData } from '~types';
+import { Colony, SetStateFn, Token, User, SafeTransactionData } from '~types';
 import { EnabledExtensionData } from '~hooks';
 import { AbiItemExtended } from '~utils/safes';
 
@@ -12,6 +12,8 @@ export interface ControlSafeProps {
   >;
   showPreview: boolean;
   setShowPreview: (showPreview: boolean) => void;
+  handleIsForceChange: SetStateFn<boolean>;
+  isForce: boolean;
 }
 
 export interface FunctionParamType {
