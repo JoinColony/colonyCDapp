@@ -23,7 +23,6 @@ fragment SafeTransactionData on SafeTransactionData {
     decimals
     symbol
     address
-    networkName
     logoUri
   }
   amount
