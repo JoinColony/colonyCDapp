@@ -14,8 +14,9 @@ import { filterUserSelection } from '~shared/SingleUserPicker';
 import { SelectedPickerItem, FunctionParamType } from '~types';
 import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
 import { isEmpty, isEqual, omit } from '~utils/lodash';
-import { defaultTransaction, TransactionTypes } from '~utils/safes';
+import { defaultTransaction } from '~utils/safes';
 import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
+import { SafeTransactionType } from '~gql';
 
 import { NotEnoughReputation } from '../Messages';
 import {
@@ -198,7 +199,7 @@ const ControlSafeForm = ({
     );
 
     switch (transactionType) {
-      case TransactionTypes.TRANSFER_FUNDS:
+      case SafeTransactionType.TransferFunds:
         return (
           <TransferFundsSection
             colony={colony}
@@ -207,7 +208,7 @@ const ControlSafeForm = ({
             savedTokenState={savedTokenState}
           />
         );
-      case TransactionTypes.RAW_TRANSACTION:
+      case SafeTransactionType.RawTransaction:
         return (
           <RawTransactionSection
             colony={colony}
@@ -215,7 +216,7 @@ const ControlSafeForm = ({
             transactionIndex={transactionIndex}
           />
         );
-      case TransactionTypes.CONTRACT_INTERACTION:
+      case SafeTransactionType.ContractInteraction:
         return (
           <ContractInteractionSection
             colony={colony}
@@ -226,7 +227,7 @@ const ControlSafeForm = ({
             removeSelectedContractMethod={removeSelectedContractMethod}
           />
         );
-      case TransactionTypes.TRANSFER_NFT:
+      case SafeTransactionType.TransferNft:
         return (
           <TransferNFTSection
             colony={colony}
@@ -251,10 +252,10 @@ const ControlSafeForm = ({
     const setContractFunction = (contractFunction: string) =>
       setValue(`transactions.${index}.contractFunction`, contractFunction);
     switch (type) {
-      case TransactionTypes.TRANSFER_FUNDS:
+      case SafeTransactionType.TransferFunds:
         setContractFunction(ContractFunctions.TRANSFER_FUNDS);
         break;
-      case TransactionTypes.TRANSFER_NFT:
+      case SafeTransactionType.TransferNft:
         setContractFunction(ContractFunctions.TRANSFER_NFT);
         break;
       default:
@@ -268,7 +269,7 @@ const ControlSafeForm = ({
       for (let i = 0; i < fields.length; i += 1) {
         const transactionType = watch(`transactions.${i}.transactionType`);
 
-        if (transactionType === TransactionTypes.TRANSFER_NFT) {
+        if (transactionType === SafeTransactionType.TransferNft) {
           setValue(`transactions.${i}.nft`, null);
           setValue(`transactions.${i}.nftData`, null);
         }

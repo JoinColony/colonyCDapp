@@ -6,9 +6,9 @@ import { nanoid } from 'nanoid';
 import Numeral from '~shared/Numeral';
 import Avatar from '~shared/Avatar';
 import { Colony, Safe } from '~types';
-import { MSG as TypesMSG } from '~common/Dialogs/ControlSafeDialog/helpers';
-import { TransactionTypes } from '~utils/safes';
+import { SafeTransactionMSG } from '~common/Dialogs/ControlSafeDialog/helpers';
 import { SafeTransaction } from '~common/Dialogs/ControlSafeDialog/types';
+import { SafeTransactionType } from '~gql';
 
 import {
   ContractName,
@@ -70,13 +70,13 @@ const SafeTransactionDetail = ({
         const NFT = transaction.nftData;
         const renderWidget = () => {
           switch (transaction.transactionType) {
-            case TransactionTypes.TRANSFER_FUNDS:
+            case SafeTransactionType.TransferFunds:
               return (
                 <>
                   <Title
                     index={idx}
                     transactionStatus={safeTransactionDetailStatuses[index]}
-                    title={TypesMSG.transferFunds}
+                    title={SafeTransactionMSG.TRANSFER_FUNDS}
                     {...{
                       isOpen: openWidgets[index],
                       setIsOpen,
@@ -95,13 +95,13 @@ const SafeTransactionDetail = ({
                   )}
                 </>
               );
-            case TransactionTypes.TRANSFER_NFT:
+            case SafeTransactionType.TransferNft:
               return (
                 <>
                   <Title
                     index={idx}
                     transactionStatus={safeTransactionDetailStatuses[index]}
-                    title={TypesMSG.transferNft}
+                    title={SafeTransactionMSG.TRANSFER_NFT}
                     {...{ isOpen: openWidgets[index], setIsOpen }}
                   />
                   {openWidgets[index] && (
@@ -144,13 +144,13 @@ const SafeTransactionDetail = ({
                   )}
                 </>
               );
-            case TransactionTypes.CONTRACT_INTERACTION:
+            case SafeTransactionType.ContractInteraction:
               return (
                 <>
                   <Title
                     index={idx}
                     transactionStatus={safeTransactionDetailStatuses[index]}
-                    title={TypesMSG.contractInteraction}
+                    title={SafeTransactionMSG.CONTRACT_INTERACTION}
                     {...{ isOpen: openWidgets[index], setIsOpen }}
                   />
                   {openWidgets[index] && (
@@ -165,13 +165,13 @@ const SafeTransactionDetail = ({
                   )}
                 </>
               );
-            case TransactionTypes.RAW_TRANSACTION:
+            case SafeTransactionType.RawTransaction:
               return (
                 <>
                   <Title
                     index={idx}
                     transactionStatus={safeTransactionDetailStatuses[index]}
-                    title={TypesMSG.rawTransaction}
+                    title={SafeTransactionMSG.RAW_TRANSACTION}
                     {...{ isOpen: openWidgets[index], setIsOpen }}
                   />
                   {openWidgets[index] && (

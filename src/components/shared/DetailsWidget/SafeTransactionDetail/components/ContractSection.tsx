@@ -3,7 +3,8 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { Safe } from '~types';
 import { intl } from '~utils/intl';
-import { extractTokenName, TransactionTypes } from '~utils/safes';
+import { SafeTransactionType } from '~gql';
+import { extractTokenName } from '~utils/safes';
 import { InvisibleCopyableMaskedAddress } from '~shared/InvisibleCopyableAddress';
 
 import { ContractName } from '../../SafeTransactionDetail';
@@ -63,7 +64,7 @@ export const ContractSection = ({
     };
 
     switch (transactionType) {
-      case TransactionTypes.TRANSFER_NFT:
+      case SafeTransactionType.TransferNft:
         contractInfo.contractName =
           extractTokenName(
             safeTransaction.nftData?.name ||
@@ -73,13 +74,13 @@ export const ContractSection = ({
         contractInfo.contractAddress =
           safeTransaction.nftData?.address || safe.address;
         break;
-      case TransactionTypes.TRANSFER_FUNDS:
+      case SafeTransactionType.TransferFunds:
         contractInfo.contractName =
           safeTransaction.token?.name || formatMessage(MSG.token);
         contractInfo.contractAddress =
           safeTransaction.token?.tokenAddress || safe.address;
         break;
-      case TransactionTypes.CONTRACT_INTERACTION:
+      case SafeTransactionType.ContractInteraction:
         contractInfo.contractName =
           safeTransaction.contract?.profile?.displayName ||
           formatMessage(MSG.unknownContract);
