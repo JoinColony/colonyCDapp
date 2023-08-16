@@ -1,0 +1,19 @@
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+}
+
+.buttonContainer button:last-child {
+  margin-left: 0px;
+  min-width: 160px;
+}
+
+.buttonContainer > button {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.buttonContainer button:nth-child(2) {
+  margin-right: 35px;
+}

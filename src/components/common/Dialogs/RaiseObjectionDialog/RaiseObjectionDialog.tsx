@@ -21,7 +21,7 @@ const AMOUNT_DEFAULT = 0;
 const validationSchema = object()
   .shape({
     amount: number().required().default(AMOUNT_DEFAULT),
-    annotationMessage: string(),
+    annotation: string(),
   })
   .defined();
 
@@ -32,6 +32,7 @@ interface RaiseObjectionDialogProps extends DialogProps {
   transform: ReturnType<typeof mapPayload>;
   setIsSummary: SetStateFn;
   amount: number;
+  isDecision: boolean;
 }
 
 const RaiseObjectionDialog = ({
@@ -40,6 +41,7 @@ const RaiseObjectionDialog = ({
   transform,
   setIsSummary,
   amount,
+  isDecision,
 }: RaiseObjectionDialogProps) => {
   const handleSuccess: OnSuccess<ObjectionValues> = (...args) => {
     handleStakeSuccess(...args);
@@ -52,29 +54,23 @@ const RaiseObjectionDialog = ({
       <ActionForm<ObjectionValues>
         defaultValues={{
           amount,
+          annotation: '',
         }}
         actionType={ActionTypes.MOTION_STAKE}
         validationSchema={validationSchema}
         transform={transform}
         onSuccess={handleSuccess}
       >
-        {({ formState: { isSubmitting } /* watch */ }) => {
-          // const sliderAmount = watch('amount');
-          //   const stake = getStakeFromSlider(
-          //     sliderAmount,
-          //     remainingToStake,
-          //     minUserStake,
-          //   );
-
+        {({ formState: { isSubmitting } }) => {
           return (
             <>
               <ObjectionHeading />
               <ObjectionSlider />
-              <ObjectionAnnotation disabled={isSubmitting} />
-              <ObjectionControls
-                cancel={close}
-                disabled={isSubmitting /* || userActivatedTokens.lt(stake) */}
+              <ObjectionAnnotation
+                disabled={isSubmitting}
+                isDecision={isDecision}
               />
+              <ObjectionControls cancel={close} disabled={isSubmitting} />
             </>
           );
         }}

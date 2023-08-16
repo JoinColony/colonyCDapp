@@ -15,8 +15,9 @@ export const getStakingTransformFn = (
   colonyAddress: string,
   motionId: string,
   vote: number,
+  actionId?: string,
 ) =>
-  mapPayload(({ amount: sliderAmount }) => {
+  mapPayload(({ amount: sliderAmount, annotation: annotationMessage }) => {
     const finalStake = getStakeFromSlider(
       sliderAmount,
       remainingToStake,
@@ -29,6 +30,8 @@ export const getStakingTransformFn = (
       colonyAddress,
       motionId: BigNumber.from(motionId),
       vote,
+      annotationMessage,
+      actionId,
     } as StakeMotionPayload;
   });
 

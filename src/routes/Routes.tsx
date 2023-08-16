@@ -37,6 +37,8 @@ import {
   USER_ROUTE,
   LANDING_PAGE_ROUTE,
   NOT_FOUND_ROUTE,
+  DECISIONS_PAGE_ROUTE,
+  COLONY_DECISIONS_PREVIEW_ROUTE,
   ACTIONS_PAGE_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
   COLONY_EXTENSION_DETAILS_ROUTE,
@@ -61,6 +63,7 @@ import {
 import NotFoundRoute from './NotFoundRoute';
 import { ColonyContextProvider } from '~context/ColonyContext';
 import CreateColonyWizard from '~common/CreateColonyWizard';
+import DecisionPreview from '~common/ColonyDecisions/DecisionPreview';
 import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
 import PageLayout from '~frame/Extensions/layouts/PageLayout';
 import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage';
@@ -77,9 +80,8 @@ import MembersPage from '~frame/v5/pages/MembersPage';
 import ColonyUsersPage from '~frame/v5/pages/ColonyUsersPage';
 import VerifiedPage from '~frame/v5/pages/VerifiedPage';
 import TeamsPage from '~frame/v5/pages/TeamsPage';
-import { SearchContextProvider } from '~context/SearchContext';
 import { ColonyUsersPageType } from '~frame/v5/pages/ColonyUsersPage/types';
-import { MemberContextProvider } from '~context/MemberContext';
+import { MemberContextProviderWithSearchAndFilter as MemberContextProvider } from '~context/MemberContext';
 import UserProfilePage from '~frame/v5/pages/UserProfilePage';
 import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
 import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
@@ -124,7 +126,6 @@ const Routes = () => {
       <RoutesSwitch>
         <Route path="/" element={<Navigate to={LANDING_PAGE_ROUTE} />} />
         <Route path={NOT_FOUND_ROUTE} element={<FourOFour />} />
-
         <Route
           path={LANDING_PAGE_ROUTE}
           element={
@@ -133,7 +134,6 @@ const Routes = () => {
             </Default>
           }
         />
-
         <Route
           element={
             <ColonyContextProvider>
@@ -159,20 +159,18 @@ const Routes = () => {
               element={
                 <ColonyContextProvider>
                   <ExtensionsContextProvider>
-                    <SearchContextProvider>
-                      <MemberContextProvider>
-                        <ActionSidebarContextProvider>
-                          <PageLayout
-                            loadingText="members"
-                            title={{ id: 'membersPage.title' }}
-                            description={{ id: 'membersPage.description' }}
-                            pageName="members"
-                          >
-                            <MembersPage />
-                          </PageLayout>
-                        </ActionSidebarContextProvider>
-                      </MemberContextProvider>
-                    </SearchContextProvider>
+                    <MemberContextProvider>
+                      <ActionSidebarContextProvider>
+                        <PageLayout
+                          loadingText="members"
+                          title={{ id: 'membersPage.title' }}
+                          description={{ id: 'membersPage.description' }}
+                          pageName="members"
+                        >
+                          <MembersPage />
+                        </PageLayout>
+                      </ActionSidebarContextProvider>
+                    </MemberContextProvider>
                   </ExtensionsContextProvider>
                 </ColonyContextProvider>
               }
@@ -189,22 +187,20 @@ const Routes = () => {
               element={
                 <ColonyContextProvider>
                   <ExtensionsContextProvider>
-                    <SearchContextProvider>
-                      <MemberContextProvider>
-                        <ActionSidebarContextProvider>
-                          <PageLayout
-                            loadingText={pageName}
-                            title={{ id: `${pageName}Page.title` }}
-                            description={{
-                              id: `${pageName}Page.description`,
-                            }}
-                            pageName="members"
-                          >
-                            <ColonyUsersPage pageName={pageName} />
-                          </PageLayout>
-                        </ActionSidebarContextProvider>
-                      </MemberContextProvider>
-                    </SearchContextProvider>
+                    <MemberContextProvider>
+                      <ActionSidebarContextProvider>
+                        <PageLayout
+                          loadingText={pageName}
+                          title={{ id: `${pageName}Page.title` }}
+                          description={{
+                            id: `${pageName}Page.description`,
+                          }}
+                          pageName="members"
+                        >
+                          <ColonyUsersPage pageName={pageName} />
+                        </PageLayout>
+                      </ActionSidebarContextProvider>
+                    </MemberContextProvider>
                   </ExtensionsContextProvider>
                 </ColonyContextProvider>
               }
@@ -216,20 +212,18 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsContextProvider>
-                <SearchContextProvider>
-                  <MemberContextProvider>
-                    <ActionSidebarContextProvider>
-                      <PageLayout
-                        loadingText="verified"
-                        title={{ id: 'verifiedPage.title' }}
-                        description={{ id: 'verifiedPage.description' }}
-                        pageName="members"
-                      >
-                        <VerifiedPage />
-                      </PageLayout>
-                    </ActionSidebarContextProvider>
-                  </MemberContextProvider>
-                </SearchContextProvider>
+                <MemberContextProvider>
+                  <ActionSidebarContextProvider>
+                    <PageLayout
+                      loadingText="verified"
+                      title={{ id: 'verifiedPage.title' }}
+                      description={{ id: 'verifiedPage.description' }}
+                      pageName="members"
+                    >
+                      <VerifiedPage />
+                    </PageLayout>
+                  </ActionSidebarContextProvider>
+                </MemberContextProvider>
               </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
@@ -252,12 +246,12 @@ const Routes = () => {
           }
         />
         <Route
-          path={COLONY_HOME_ROUTE}
+          path={COLONY_DECISIONS_PREVIEW_ROUTE}
           element={
             <ColonyContextProvider>
-              <Default routeProps={{ hasBackLink: false }}>
-                <ColonyHome />
-              </Default>
+              <NavBar>
+                <DecisionPreview />
+              </NavBar>
             </ColonyContextProvider>
           }
         />
@@ -300,15 +294,35 @@ const Routes = () => {
           }
         />
         <Route
-          path={ACTIONS_PAGE_ROUTE}
+          path={COLONY_HOME_ROUTE}
           element={
             <ColonyContextProvider>
-              <NavBar>
-                <ActionDetailsPage />
-              </NavBar>
+              <Default routeProps={{ hasBackLink: false }}>
+                <ColonyHome />
+              </Default>
             </ColonyContextProvider>
           }
         />
+        {[ACTIONS_PAGE_ROUTE, DECISIONS_PAGE_ROUTE].map((path) => (
+          <Route
+            path={path}
+            element={
+              <ColonyContextProvider>
+                <NavBar
+                  routeProps={{
+                    backRoute: ({ colonyName }) =>
+                      `/colony/${colonyName}${
+                        path === DECISIONS_PAGE_ROUTE ? '/decisions' : ''
+                      }`,
+                  }}
+                >
+                  <ActionDetailsPage />
+                </NavBar>
+              </ColonyContextProvider>
+            }
+            key={path}
+          />
+        ))}
         <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyWizard />} />
         <Route path={CREATE_USER_ROUTE} element={<CreateUserWizard />} />
         {[COLONY_ADMIN_ROUTE, COLONY_DETAILS_ROUTE].map((path) => (

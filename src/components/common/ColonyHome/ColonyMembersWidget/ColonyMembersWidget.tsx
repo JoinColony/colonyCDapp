@@ -39,7 +39,7 @@ const ColonyMembersWidget = ({
     variables: {
       input: {
         colonyAddress: colony?.colonyAddress ?? '',
-        domainIds: [currentDomainId || Id.RootDomain],
+        domainId: currentDomainId || Id.RootDomain,
       },
     },
     fetchPolicy: 'cache-and-network',

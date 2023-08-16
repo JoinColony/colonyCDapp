@@ -12,7 +12,7 @@ import { getAddressFromAgent, getDisplayNameFromAgent } from './helpers';
 const displayName = 'FriendlyName';
 
 export interface FriendlyNameProps {
-  /**  The user object to display */
+  /**  The object representing the agent initiating the action */
   agent?: User | Colony | ColonyExtension | Token | null;
   /** Whether to show a masked address or a full one */
   maskedAddress?: boolean;

@@ -5,7 +5,6 @@ import {
   ReputationType,
   PermissionsType,
   TeamType,
-  FilterTypes,
 } from '../TableFiltering/types';
 import { Message } from '~types';
 
@@ -16,7 +15,7 @@ export type AccordionProps = {
 export type ParentFilterOption = {
   id: number;
   title: string;
-  option: FilterType;
+  filterType: FilterType;
   iconName: string;
   content: FilterOptionProps[];
 };
@@ -27,11 +26,11 @@ export type FilterPopoverProps = {
 };
 
 export type NestedFilterOption =
-  | `${FilterTypes.Contributor}.${ContributorType}`
-  | `${FilterTypes.Status}.${StatusType}`
-  | `${FilterTypes.Reputation}.${ReputationType}`
-  | `${FilterTypes.Permissions}.${PermissionsType}`
-  | `${FilterTypes.Team}.${TeamType}`;
+  | ContributorType
+  | StatusType
+  | ReputationType
+  | PermissionsType
+  | TeamType;
 
 export type FilterOptionProps = {
   id: NestedFilterOption;

@@ -1,0 +1,3 @@
+mutation UpdateContributorsWithReputation($colonyAddress: String) {
+  updateContributorsWithReputation(input: { colonyAddress: $colonyAddress })
+}

@@ -7,6 +7,7 @@ import { ConfirmDialog } from '~shared/Dialog';
 import { Table, TableBody, TableRow, TableCell } from '~shared/Table';
 import { AnyExtensionData, InstalledExtensionData } from '~types';
 import { useColonyContext } from '~hooks';
+import { useColonyHomeContext } from '~context';
 
 import ExtensionActionButton from '../ExtensionActionButton';
 import ExtensionUpgradeButton from '../ExtensionUpgradeButton';
@@ -75,6 +76,7 @@ const ExtensionDetailsAside = ({
   pollingControls,
 }: ExtensionDetailsAsideProps) => {
   const { colony } = useColonyContext();
+  const { shortPollExtensions } = useColonyHomeContext();
 
   if (!colony) {
     return null;
@@ -122,6 +124,7 @@ const ExtensionDetailsAside = ({
             heading: MSG.headingDeprecate,
             children: <FormattedMessage {...MSG.textDeprecate} />,
           }}
+          onSuccess={shortPollExtensions}
           appearance={{ theme: 'blue' }}
           actionType={ActionTypes.EXTENSION_DEPRECATE}
           text={MSG.buttonDeprecate}
@@ -140,6 +143,7 @@ const ExtensionDetailsAside = ({
               heading: MSG.headingReEnable,
               children: <FormattedMessage {...MSG.textReEnable} />,
             }}
+            onSuccess={shortPollExtensions}
             appearance={{ theme: 'blue' }}
             actionType={ActionTypes.EXTENSION_DEPRECATE}
             text={MSG.buttonReEnable}

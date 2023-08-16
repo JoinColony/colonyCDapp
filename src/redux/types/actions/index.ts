@@ -9,6 +9,8 @@ import { MessageActionTypes } from './message';
 import { UserActionTypes } from './user';
 import { MetacolonyVestingTypes } from './vesting';
 import { WalletActionTypes } from './wallet';
+import { DecisionActionTypes } from './decisions';
+import { IpfsActionTypes } from './ipfs';
 
 export { RootMotionMethodNames } from './motion';
 
@@ -95,12 +97,14 @@ export type AllActions =
   | ColonyActionTypes
   | ColonyActionsActionTypes
   | GasPricesActionTypes
+  | IpfsActionTypes
   | TransactionActionTypes
   | MessageActionTypes
   | UserActionTypes
   | MotionActionTypes
   | MetacolonyVestingTypes
-  | WalletActionTypes;
+  | WalletActionTypes
+  | DecisionActionTypes;
 
 export type Action<T extends AllActions['type']> = Extract<
   AllActions,

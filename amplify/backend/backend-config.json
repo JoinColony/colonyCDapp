@@ -226,6 +226,20 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "updateContributorsWithReputation": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "colonycdappSSMAccess"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "updateExtensionByColonyAndHash": {
       "build": true,
       "dependsOn": [

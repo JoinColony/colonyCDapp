@@ -57,6 +57,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.EmitDomainReputationPenaltyMotion} {Smite}
       ${ColonyActionType.EmitDomainReputationReward} {Award}
       ${ColonyActionType.EmitDomainReputationRewardMotion} {Award}
+      ${ColonyActionType.CreateDecisionMotion} {Decision}
       ${ExtendedColonyActionType.UpdateAddressBook} {Update Address Book}
       ${ExtendedColonyActionType.UpdateTokens} {Update Tokens}
       other {Generic}

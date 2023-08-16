@@ -64,3 +64,13 @@ fragment Watcher on Watcher {
     ...MemberUser
   }
 }
+
+fragment ContributorWithReputation on ContributorWithReputation {
+  address: contributorAddress
+  user {
+    ...MemberUser
+  }
+  type
+  domainReputationPercentage
+  colonyReputationPercentage
+}

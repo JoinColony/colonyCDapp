@@ -26,7 +26,20 @@ import {
   MotionStakesFragment,
   VoterRecordFragment,
   UnclaimedStakesFragment,
+  AnnotationFragment,
+  ColonyDecisionFragment,
+  ContributorWithReputationFragment,
 } from '~gql';
+import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
+
+export type AnnotationType = AnnotationFragment;
+
+export type ContributorWithReputation = Omit<
+  ContributorWithReputationFragment,
+  'type'
+> & { type?: ContributorTypeFilter | null };
+
+export type ColonyDecision = ColonyDecisionFragment;
 
 export type User = UserFragment;
 

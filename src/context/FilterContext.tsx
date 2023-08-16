@@ -1,4 +1,3 @@
-import { Id } from '@colony/colony-js';
 import React, {
   createContext,
   FC,
@@ -10,17 +9,19 @@ import React, {
   useContext,
 } from 'react';
 import { useLocation } from 'react-router-dom';
-import { SortingMethod, FilteringMethod } from '~gql';
-import { SetStateFn } from '~types';
+import { SortingMethod } from '~gql';
 import { useFilterOptions } from '~v5/common/Filter/consts';
 import {
   ParentFilterOption,
   NestedFilterOption,
 } from '~v5/common/Filter/types';
 import {
+  ContributorTypeFilter,
   FilterType,
   FilterTypes,
-  ReputationSortTypes,
+  PermissionToNetworkIdMap,
+  ReputationSort,
+  StatusType,
 } from '~v5/common/TableFiltering/types';
 
 type SelectedFilterLabel = { [k: string]: string[] };
@@ -30,20 +31,17 @@ export type SelectedFiltersMap = {
 
 export const FilterContext = createContext<
   | {
-      selectedFilterLabels: SelectedFilterLabel[];
+      getSelectedFilterLabels: () => SelectedFilterLabel[];
       handleClearFilters: (parents?: FilterType[]) => void;
       handleFilterSelect: (event: React.ChangeEvent<HTMLInputElement>) => void;
-      selectedDomainIds: number[];
+      getFilterDomainIds: () => number[];
+      getSortingMethod: () => SortingMethod;
+      getFilterPermissions: () => number[];
+      getFilterStatus: () => StatusType | undefined;
+      getFilterContributorType: () => ContributorTypeFilter[];
       filterOptions: ParentFilterOption[];
-      selectedFilters: SelectedFiltersMap;
-      sortingMethod: SortingMethod;
-      filteringMethod: FilteringMethod;
       selectedFilterCount: number;
-      setFilteringMethod: SetStateFn;
-      isFilterChecked: (
-        parentFilter: FilterType,
-        nestedFilter: NestedFilterOption,
-      ) => boolean;
+      isFilterChecked: (nestedFilter: NestedFilterOption) => boolean;
     }
   | undefined
 >(undefined);
@@ -54,57 +52,54 @@ interface NestedFilterInfo {
 }
 
 const getInitialFiltersRecord = (filterOptions: ParentFilterOption[]) => {
-  const initialFilters = filterOptions.reduce((acc, { option }) => {
-    acc[option] = new Map();
+  const initialFilters = filterOptions.reduce((acc, { filterType }) => {
+    acc[filterType] = new Map();
     return acc;
   }, {} as SelectedFiltersMap);
-
-  // default Root to true in Team filter
-  initialFilters[FilterTypes.Team].set('1', {
-    label: 'Root',
-    isChecked: true,
-  });
 
   return initialFilters;
 };
 
 export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
-  const filterOptions = useFilterOptions();
   const { pathname } = useLocation();
-  const isFollowersPage = pathname.split('/').at(-1) === 'followers';
-
+  const { filterOptions, childParentFilterMap } = useFilterOptions();
+  const [selectedFilterCount, setSelectedFilterCount] = useState<number>(0);
   const [selectedFilters, setSelectedFilters] = useState<SelectedFiltersMap>(
     () => getInitialFiltersRecord(filterOptions),
   );
-  const [selectedFilterCount, setSelectedFilterCount] = useState<number>(1);
 
-  const [filteringMethod, setFilteringMethod] = useState<FilteringMethod>(
-    FilteringMethod.Union,
+  const isFollowersPage = pathname.split('/').at(-1) === 'followers';
+
+  const getSelectedFilterLabels = useCallback(
+    () =>
+      Object.entries(selectedFilters).reduce<SelectedFilterLabel[]>(
+        (acc, [parentFilterLabel, nestedFilterInfo]) => {
+          const selectedKeys = [...nestedFilterInfo.keys()]
+            .map((key) => nestedFilterInfo.get(key)?.label)
+            .filter((label): label is string => !!label);
+
+          acc.push({ [parentFilterLabel]: selectedKeys });
+          return acc;
+        },
+        [],
+      ),
+    [selectedFilters],
   );
-
-  const selectedFilterLabels = Object.entries(selectedFilters).reduce<
-    SelectedFilterLabel[]
-  >((acc, [parentFilterLabel, nestedFilterInfo]) => {
-    const selectedKeys = [...nestedFilterInfo.keys()]
-      .map((key) => nestedFilterInfo.get(key)?.label)
-      .filter((label): label is string => !!label);
-
-    acc.push({ [parentFilterLabel]: selectedKeys });
-    return acc;
-  }, []);
 
   const handleFilterSelect = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      const [parentFilter, nestedFilter] = event.target.id.split('.');
+      const nestedFilter = event.target.id;
+      const parentFilter = childParentFilterMap[nestedFilter];
 
       const isChecked = event.target.checked;
 
       if (isChecked) {
         setSelectedFilters((prevState) => {
           const parentFilterMap = prevState[parentFilter];
-          // cannot check both reputation filters at once
+          // cannot check both reputation or status filters at once
           if (
-            parentFilter === FilterTypes.Reputation &&
+            (parentFilter === FilterTypes.Reputation ||
+              parentFilter === FilterTypes.Status) &&
             prevState[parentFilter].size
           ) {
             parentFilterMap.clear();
@@ -141,48 +136,82 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
         setSelectedFilterCount((prevState) => prevState - 1);
       }
     },
-    [],
+    [childParentFilterMap],
   );
 
   const isFilterChecked = useCallback(
-    (parentFilter: FilterType, nestedFilter: NestedFilterOption) =>
-      !!selectedFilters[parentFilter ?? '']?.get(nestedFilter)?.isChecked,
+    (nestedFilter: NestedFilterOption) => {
+      const parentFilter = childParentFilterMap[nestedFilter];
+      return !!selectedFilters[parentFilter ?? '']?.get(nestedFilter)
+        ?.isChecked;
+    },
+    [selectedFilters, childParentFilterMap],
+  );
+
+  const handleClearFilters = useCallback((parents: FilterType[]) => {
+    let removedFilters = 0;
+    setSelectedFilters((prevState) => {
+      const updatedFilters = parents.reduce((acc, parent) => {
+        const nestedFilter = prevState[parent];
+        const updatedFilter = new Map(nestedFilter);
+        removedFilters += updatedFilter.size;
+        updatedFilter.clear();
+
+        return {
+          ...acc,
+          [parent]: updatedFilter,
+        };
+      }, {});
+
+      return {
+        ...prevState,
+        ...updatedFilters,
+      };
+    });
+    setSelectedFilterCount((prevState) => prevState - removedFilters);
+  }, []);
+
+  const getFilterDomainIds = useCallback(
+    () =>
+      [...selectedFilters[FilterTypes.Team].keys()]
+        .map((filterId) => {
+          const nativeDomainId = filterId.split('_').shift();
+          return Number(nativeDomainId);
+        })
+        .sort((a, b) => a - b),
     [selectedFilters],
   );
 
-  const handleClearFilters = useCallback(
-    (parents: FilterType[]) => {
-      let removedFilters = 0;
-      setSelectedFilters((prevState) => {
-        const updatedFilters = parents.reduce((acc, parent) => {
-          const nestedFilter = prevState[parent];
-          const updatedFilter = new Map(nestedFilter);
-          removedFilters += updatedFilter.size;
-          updatedFilter.clear();
-
-          if (parent === FilterTypes.Team && isFollowersPage) {
-            removedFilters -= 1;
-            updatedFilter.set('1', {
-              label: 'Root',
-              isChecked: true,
-            });
-          }
-
-          return {
-            ...acc,
-            [parent]: updatedFilter,
-          };
-        }, {});
-
-        return {
-          ...prevState,
-          ...updatedFilters,
-        };
-      });
-      setSelectedFilterCount((prevState) => prevState - removedFilters);
-    },
-    [isFollowersPage],
+  const getFilterPermissions = useCallback(
+    () =>
+      [...selectedFilters[FilterTypes.Permissions].keys()].map(
+        (permission) => PermissionToNetworkIdMap[permission],
+      ),
+    [selectedFilters],
   );
+
+  const getFilterStatus = useCallback(
+    () =>
+      [...selectedFilters[FilterTypes.Status].keys()].pop() as
+        | StatusType
+        | undefined,
+    [selectedFilters],
+  );
+
+  const getFilterContributorType = useCallback(
+    () =>
+      [
+        ...selectedFilters[FilterTypes.Contributor].keys(),
+      ] as ContributorTypeFilter[],
+    [selectedFilters],
+  );
+
+  const getSortingMethod = useCallback(() => {
+    const sort = [...selectedFilters[FilterTypes.Reputation].keys()].pop();
+    return sort === ReputationSort.ASC
+      ? SortingMethod.ByLowestRep
+      : SortingMethod.ByHighestRep;
+  }, [selectedFilters]);
 
   //  reset filters when switching to followers page, due to reduced selection
   useEffect(() => {
@@ -197,45 +226,31 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }, [isFollowersPage, handleClearFilters]);
 
-  const selectedDomainIds = useMemo(() => {
-    const ids = [...selectedFilters[FilterTypes.Team].keys()].map(
-      (nativeDomainId) => Number(nativeDomainId),
-    );
-    return ids.length ? ids : [Id.RootDomain];
-  }, [selectedFilters]);
-
-  const sortingMethod = useMemo(() => {
-    const sort = [...selectedFilters[FilterTypes.Reputation].keys()].pop();
-    return sort === ReputationSortTypes.ASC
-      ? SortingMethod.ByLowestRep
-      : SortingMethod.ByHighestRep;
-  }, [selectedFilters]);
-
   const value = useMemo(
     () => ({
-      selectedFilterLabels,
+      getSelectedFilterLabels,
       handleClearFilters,
       handleFilterSelect,
       filterOptions,
-      selectedFilters,
-      selectedDomainIds,
-      sortingMethod,
-      filteringMethod,
+      getFilterDomainIds,
+      getSortingMethod,
+      getFilterPermissions,
+      getFilterStatus,
+      getFilterContributorType,
       selectedFilterCount,
-      setFilteringMethod,
       isFilterChecked,
     }),
     [
-      selectedFilterLabels,
+      getSelectedFilterLabels,
       handleClearFilters,
       handleFilterSelect,
       filterOptions,
-      selectedFilters,
-      selectedDomainIds,
-      sortingMethod,
-      filteringMethod,
+      getFilterDomainIds,
+      getSortingMethod,
+      getFilterPermissions,
+      getFilterStatus,
+      getFilterContributorType,
       selectedFilterCount,
-      setFilteringMethod,
       isFilterChecked,
     ],
   );
@@ -249,7 +264,7 @@ export const useFilterContext = () => {
   const context = useContext(FilterContext);
   if (context === undefined) {
     throw new Error(
-      'useMemberFilterContext must be used within a MemberFilterContextProvider',
+      'useFilterContext must be used within the FilterContextProvider',
     );
   }
   return context;
