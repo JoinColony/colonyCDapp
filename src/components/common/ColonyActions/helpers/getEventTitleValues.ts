@@ -9,6 +9,7 @@ import {
   SystemMessages,
 } from '~types';
 import { getExtendedActionType } from '~utils/colonyActions';
+import { getSafeInteractionType } from '~utils/safes';
 
 import {
   mapActionEventToExpectedFormat,
@@ -259,16 +260,9 @@ const getExtendedEventName = (
     return ColonyAndExtensionsEvents.SafeRemoved;
   }
 
-  if (actionType === ExtendedColonyActionType.SafeTransaction) {
-    // @ts-ignore if the actionType is `SafeTransaction` then we know that it is defined
-    if (actionData.safeTransaction?.transactions?.length > 1) {
-      return SafeTransactionType.MultipleTransactions;
-    }
+  const safeInteractionEventName = getSafeInteractionType(actionData);
 
-    return actionData.safeTransaction?.transactions[0]?.transactionType;
-  }
-
-  return eventName;
+  return safeInteractionEventName || eventName;
 };
 
 /* Returns the correct message values for Actions according to the event type. */

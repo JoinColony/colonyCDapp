@@ -19,7 +19,11 @@ import {
 } from '~utils/colonyActions';
 import { findDomainByNativeId } from '~utils/domains';
 import { splitTransactionHash } from '~utils/strings';
-import { getAddedSafe, getRemovedSafes } from '~utils/safes';
+import {
+  getAddedSafe,
+  getRemovedSafes,
+  getSafeInteractionType,
+} from '~utils/safes';
 
 import {
   UserDetail,
@@ -168,12 +172,15 @@ const getDetailItemsMap = (
   const domainMetadata = fromDomain?.metadata || pendingDomainMetadata;
   const addedSafe = getAddedSafe(actionData);
   const removedSafes = getRemovedSafes(actionData);
+  const safeInteractionType = getSafeInteractionType(actionData);
+
+  const actionType = safeInteractionType || extendedActionType;
 
   return {
     [ActionPageDetails.Type]: {
       label: MSG.actionType,
       labelValues: undefined,
-      item: <ActionTypeDetail actionType={extendedActionType} />,
+      item: <ActionTypeDetail actionType={actionType} />,
     },
     [ActionPageDetails.FromDomain]: {
       label: MSG.fromDomain,
@@ -291,6 +298,21 @@ const getDetailItemsMap = (
       ),
     },
     [ActionPageDetails.Safe]: {
+      label: MSG.safe,
+      labelValues: {
+        removedSafeCount: removedSafes?.length,
+      },
+      item:
+        !!removedSafes &&
+        removedSafes.map((safe) => (
+          <SafeDetail
+            key={`${safe.chainId}-${safe.address}`}
+            removedSafe={safe}
+          />
+        )),
+      isListItem: true,
+    },
+    [ActionPageDetails.SafeTransaction]: {
       label: MSG.safe,
       labelValues: {
         removedSafeCount: removedSafes?.length,
