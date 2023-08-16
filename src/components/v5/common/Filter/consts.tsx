@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import clsx from 'clsx';
 import {
-  contributorTypes,
-  permissionsTypes,
-  reputationType,
-  statusTypes,
+  contributorFilters,
+  permissionsFilters,
+  reputationFilters,
+  statusFilters,
 } from './partials/consts';
-import { FilterOptionProps, ParentFilterOption } from './types';
+import {
+  FilterOptionProps,
+  NestedFilterOption,
+  ParentFilterOption,
+} from './types';
 import { useColonyContext } from '~hooks';
 import { notNull } from '~utils/arrays';
 import { FilterTypes } from '../TableFiltering/types';
@@ -16,67 +20,101 @@ export const followersFilterOptions: ParentFilterOption[] = [
   {
     id: 0,
     title: 'filter.user.status',
-    option: 'status',
+    filterType: FilterTypes.Status,
     iconName: 'flag',
-    content: statusTypes,
+    content: statusFilters,
   },
 ];
 
-export const useFilterOptions = (): ParentFilterOption[] => {
+const getFilterOptions = (teamsFilters: FilterOptionProps[]) => [
+  {
+    id: 0,
+    title: 'filter.teams',
+    filterType: FilterTypes.Team,
+    iconName: 'users-three',
+    content: teamsFilters,
+  },
+  {
+    id: 1,
+    title: 'filter.contributor.type',
+    filterType: FilterTypes.Contributor,
+    iconName: 'user',
+    content: contributorFilters,
+  },
+  {
+    id: 2,
+    title: 'filter.user.status',
+    filterType: FilterTypes.Status,
+    iconName: 'flag',
+    content: statusFilters,
+  },
+  {
+    id: 3,
+    title: 'filter.reputation',
+    filterType: FilterTypes.Reputation,
+    iconName: 'star-not-filled',
+    content: reputationFilters,
+  },
+  {
+    id: 4,
+    title: 'filter.permissions',
+    filterType: FilterTypes.Permissions,
+    iconName: 'lock-key',
+    content: permissionsFilters,
+  },
+];
+
+// mapping of nested filters to their parent
+const getChildParentFilterMap = (filterOptions: ParentFilterOption[]) =>
+  filterOptions.reduce((acc, { filterType, content }) => {
+    const childToParentMap = content.reduce(
+      (mapping, { id }) => ({ ...mapping, [id]: filterType }),
+      {},
+    );
+    return {
+      ...acc,
+      ...childToParentMap,
+    };
+  }, {} as Record<NestedFilterOption, FilterTypes>);
+
+type UseFilterOptionsReturn = {
+  filterOptions: ParentFilterOption[];
+  childParentFilterMap: Record<NestedFilterOption, FilterTypes>;
+};
+
+export const useFilterOptions = (): UseFilterOptionsReturn => {
   const { colony } = useColonyContext();
 
-  const teams = (colony?.domains?.items
-    ?.filter(notNull)
-    .map(({ metadata, nativeId }) => {
-      return {
-        id: `${FilterTypes.Team}.${nativeId}`,
-        title: metadata?.name ?? nativeId.toString(),
-        icon: (
-          <span
-            className={clsx(
-              'h-[1rem] w-[1rem] rounded-[0.25rem]',
-              setTeamColor(metadata?.color),
-            )}
-          />
-        ),
-      };
-    }) ?? []) as FilterOptionProps[];
+  const filterOptions = useMemo(() => {
+    const domains = colony?.domains?.items?.filter(notNull) ?? [];
 
-  return [
-    {
-      id: 0,
-      title: 'filter.teams',
-      option: 'team',
-      iconName: 'users-three',
-      content: teams,
-    },
-    {
-      id: 1,
-      title: 'filter.contributor.type',
-      option: 'contributor',
-      iconName: 'user',
-      content: contributorTypes,
-    },
-    {
-      id: 2,
-      title: 'filter.user.status',
-      option: 'status',
-      iconName: 'flag',
-      content: statusTypes,
-    },
-    {
-      id: 3,
-      title: 'filter.reputation',
-      option: 'reputation',
-      iconName: 'star-not-filled',
-      content: reputationType,
-    },
-    {
-      id: 4,
-      title: 'filter.permissions',
-      option: 'permissions',
-      iconName: 'lock-key',
-      content: permissionsTypes,
-    },
-  ];
+    const teamsFilters: FilterOptionProps[] = domains.map(
+      ({ metadata, nativeId }) => {
+        return {
+          id: `${nativeId}_domain`,
+          title: metadata?.name ?? nativeId.toString(),
+          icon: (
+            <span
+              className={clsx(
+                'h-[1rem] w-[1rem] rounded-[0.25rem]',
+                setTeamColor(metadata?.color),
+              )}
+            />
+          ),
+        };
+      },
+    );
+
+    return getFilterOptions(teamsFilters);
+  }, [colony]);
+
+  const childParentFilterMap = useMemo(
+    () => getChildParentFilterMap(filterOptions),
+    [filterOptions],
+  );
+
+  return {
+    filterOptions,
+    childParentFilterMap,
+  };
 };

@@ -6,15 +6,13 @@ import CardWithBios from '~v5/shared/CardWithBios';
 import EmptyContent from '../EmptyContent';
 import Link from '~v5/shared/Link';
 import { MembersListProps } from './types';
-import { useMembersList } from './hooks';
 import { useSearchContext } from '~context/SearchContext';
 import { TextButton } from '~v5/shared/Button';
 import { SpinnerLoader } from '~shared/Preloaders';
-import {
-  HOMEPAGE_MEMBERS_LIST_LIMIT,
-  HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT,
-} from '~constants';
-import { useMobile } from '~hooks';
+
+import { useColonyContext } from '~hooks';
+import { useMemberContext } from '~context/MemberContext';
+import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 
 const displayName = 'v5.common.MembersList';
 
@@ -26,28 +24,32 @@ const MembersList: FC<MembersListProps> = ({
   emptyTitle,
   emptyDescription,
   viewMoreUrl,
-  isHomePage,
   isContributorsList,
 }) => {
   const { formatMessage } = useIntl();
-  const isMobile = useMobile();
-  const limit = isMobile
-    ? HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT
-    : HOMEPAGE_MEMBERS_LIST_LIMIT;
+
+  const { colony } = useColonyContext();
+  const { name } = colony || {};
+  const colonyURL = `${window.location.origin}/colony/${name}`;
+
+  const { handleClipboardCopy } = useCopyToClipboard(colonyURL);
 
   const {
-    handleClipboardCopy,
-    loadMoreMembers,
-    visibleMembers,
+    loadMoreContributors,
+    loadMoreAll,
+    moreAllMembers,
+    moreContributors,
     membersLimit,
-    canLoadMore,
-  } = useMembersList({ list, limit });
+  } = useMemberContext();
 
   const { searchValue } = useSearchContext();
+  const showLoadMoreButton = isContributorsList
+    ? moreContributors
+    : moreAllMembers;
 
-  const showLoadMoreButton = isHomePage
-    ? searchValue && canLoadMore
-    : canLoadMore;
+  const loadMoreMembers = isContributorsList
+    ? loadMoreContributors
+    : loadMoreAll;
 
   return (
     <div>
@@ -63,39 +65,20 @@ const MembersList: FC<MembersListProps> = ({
           <SpinnerLoader appearance={{ size: 'medium' }} />
         </div>
       )}
-      {!isLoading && visibleMembers.length ? (
+      {!isLoading && list.length ? (
         <ResponsiveMasonry columnsCountBreakPoints={{ 250: 1, 950: 2 }}>
           <Masonry gutter="1rem">
-            {visibleMembers.map((item, index) => {
-              const { user } = item;
-              const { name, profile } = user || {};
-              const membersLength = list.length;
-
-              const incrementedIndex = index + 1;
-              const top = Math.floor(membersLength * 0.2);
-              const dedicated = Math.floor(membersLength * 0.4);
-              const active = Math.floor(membersLength * 0.6);
-
-              const isTopStatus = incrementedIndex <= top;
-              const isDedicatedStatus =
-                incrementedIndex <= dedicated && incrementedIndex > top;
-              const isActiveStatus =
-                incrementedIndex <= active && incrementedIndex > dedicated;
-              // @TODO: implement NEW status when API will be ready
-
+            {list.map((item) => {
+              const { user, type } = item;
+              const { name: username, profile } = user || {};
               return (
                 <CardWithBios
-                  key={name}
+                  key={username}
                   userData={item}
                   description={profile?.bio || ''}
                   shouldStatusBeVisible
                   shouldBeMenuVisible
-                  userStatus={
-                    (isTopStatus && 'top') ||
-                    (isDedicatedStatus && 'dedicated') ||
-                    (isActiveStatus && 'active') ||
-                    'general'
-                  }
+                  userStatus={type ?? undefined}
                   isContributorsList={isContributorsList}
                 />
               );

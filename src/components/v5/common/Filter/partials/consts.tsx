@@ -1,84 +1,84 @@
 import React from 'react';
 import {
-  FilterTypes,
-  ReputationSortTypes,
+  PermissionsFilter,
+  ReputationSort,
 } from '~v5/common/TableFiltering/types';
 import { FilterOptionProps } from '../types';
 import Icon from '~shared/Icon/Icon';
 
-export const contributorTypes: FilterOptionProps[] = [
+export const contributorFilters: FilterOptionProps[] = [
   {
-    id: `${FilterTypes.Contributor}.top`,
+    id: 'top',
     title: { id: 'filter.option.top' },
   },
   {
-    id: `${FilterTypes.Contributor}.dedicated`,
+    id: 'dedicated',
     title: { id: 'filter.option.dedicated' },
   },
   {
-    id: `${FilterTypes.Contributor}.active`,
+    id: 'active',
     title: { id: 'filter.option.active' },
   },
   {
-    id: `${FilterTypes.Contributor}.verified`,
-    title: { id: 'filter.option.verified' },
+    id: 'new',
+    title: { id: 'filter.option.new' },
   },
   {
-    id: `${FilterTypes.Contributor}.general`,
+    id: 'general',
     title: { id: 'filter.option.general' },
   },
 ];
 
-export const statusTypes: FilterOptionProps[] = [
+export const statusFilters: FilterOptionProps[] = [
   {
-    id: `${FilterTypes.Status}.banned`,
-    title: { id: 'filter.option.banned' },
+    id: 'statusVerified',
+    title: { id: 'filter.option.statusVerified' },
   },
   {
-    id: `${FilterTypes.Status}.notBanned`,
-    title: { id: 'filter.option.notBanned' },
+    id: 'statusNotVerified',
+    title: { id: 'filter.option.statusNotVerified' },
   },
 ];
 
-export const reputationType: FilterOptionProps[] = [
+export const reputationFilters: FilterOptionProps[] = [
   {
-    id: `${FilterTypes.Reputation}.${ReputationSortTypes.DESC}`,
+    id: ReputationSort.DESC,
     title: { id: 'filter.option.highestToLowest' },
   },
   {
-    id: `${FilterTypes.Reputation}.${ReputationSortTypes.ASC}`,
+    id: ReputationSort.ASC,
     title: { id: 'filter.option.lowestToHighest' },
   },
 ];
 
-export const permissionsTypes: FilterOptionProps[] = [
+export const permissionsFilters: FilterOptionProps[] = [
   {
-    id: `${FilterTypes.Permissions}.root`,
-    title: { id: 'filter.option.root' },
+    id: PermissionsFilter.Root,
+    title: { id: 'filter.option.rootPermissions' },
     icon: <Icon name="app-window" appearance={{ size: 'extraSmall' }} />,
   },
   {
-    id: `${FilterTypes.Permissions}.administration`,
+    id: PermissionsFilter.Administration,
     title: { id: 'filter.option.administration' },
     icon: <Icon name="clipboard-text" appearance={{ size: 'extraSmall' }} />,
   },
   {
-    id: `${FilterTypes.Permissions}.arbitration`,
+    id: PermissionsFilter.Arbitration,
     title: { id: 'filter.option.arbitration' },
     icon: <Icon name="scales" appearance={{ size: 'extraSmall' }} />,
   },
   {
-    id: `${FilterTypes.Permissions}.architecture`,
+    id: PermissionsFilter.Architecture,
     title: { id: 'filter.option.architecture' },
     icon: <Icon name="buildings" appearance={{ size: 'extraSmall' }} />,
   },
   {
-    id: `${FilterTypes.Permissions}.funding`,
+    id: PermissionsFilter.Funding,
     title: { id: 'filter.option.funding' },
     icon: <Icon name="bank" appearance={{ size: 'extraSmall' }} />,
   },
   {
-    id: `${FilterTypes.Permissions}.recovery`,
+    id: PermissionsFilter.Recovery,
     title: { id: 'filter.option.recovery' },
     icon: (
       <Icon
