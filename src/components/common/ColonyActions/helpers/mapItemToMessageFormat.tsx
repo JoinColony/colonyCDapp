@@ -11,6 +11,7 @@ import {
   ColonyActionType,
   DomainMetadata,
   MotionMessage,
+  SafeTransactionData,
 } from '~types';
 import { useColonyContext, useUserReputation } from '~hooks';
 import { MotionVote } from '~utils/colonyMotions';
@@ -40,6 +41,7 @@ import {
   getAddedSafeChainName,
   getRemovedSafes,
 } from '~utils/safes';
+import { unknownContractMSG } from '~shared/DetailsWidget/SafeTransactionDetail';
 
 import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
 import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
@@ -73,6 +75,48 @@ const getSafeAddress = (actionData: ColonyAction) => {
 
   return addedSafe ? <MaskedAddress address={addedSafe.address} /> : null;
 };
+
+const getSafeName = (actionData: ColonyAction) => {
+  const transactionSafeName = actionData?.safeTransaction?.safe?.name;
+
+  return <span className={styles.user}>@{transactionSafeName}</span>;
+};
+
+const getSafeTransactionAmount = (
+  firstSafeTransaction?: SafeTransactionData,
+) => (
+  <>
+    <Numeral value={firstSafeTransaction?.amount || ''} />
+    <span> {firstSafeTransaction?.token?.symbol}</span>
+  </>
+);
+
+// NOTE: The user data isn't being uploaded with so this is
+// always empty
+const getSafeTransactionRecipient = (
+  firstSafeTransaction?: SafeTransactionData,
+) => (
+  <span className={styles.user}>
+    @{firstSafeTransaction?.recipient?.profile.username}
+  </span>
+);
+
+const getSafeTransactionNftToken = (
+  firstSafeTransaction?: SafeTransactionData,
+) => (
+  <span className={styles.user}>
+    {firstSafeTransaction?.nftData?.name ||
+      firstSafeTransaction?.nftData?.tokenName}
+  </span>
+);
+
+const getSafeTransactionAddress = (
+  firstSafeTransaction?: SafeTransactionData,
+) => (
+  <MaskedAddress
+    address={firstSafeTransaction?.recipient?.walletAddress || ''}
+  />
+);
 
 const getRemovedSafesString = (actionData: ColonyAction) => {
   const removedSafes = getRemovedSafes(actionData);
@@ -171,6 +215,8 @@ export const mapActionEventToExpectedFormat = (
   eventId?: string,
   colony?: Colony,
 ) => {
+  const firstSafeTransaction = actionData?.safeTransaction?.transactions[0];
+
   return {
     amount: (
       <Numeral
@@ -227,14 +273,19 @@ export const mapActionEventToExpectedFormat = (
     chainName: getAddedSafeChainName(actionData),
     safeAddress: getSafeAddress(actionData),
     removedSafes: getRemovedSafesString(actionData),
-    safeName: 'test',
-    safeTransactionAmount: 'test',
-    isSafeTransactionRecipientUser: true,
-    safeTransactionRecipient: 'bob_test',
-    safeTransactionAddress: '0xtest',
-    safeTransactionContractName: 'safeTransactionContractName',
-    safeTransactionFunctionName: 'safeTransactionFunctionName',
-    safeTransactionNftToken: 'safeTransactionNftToken',
+    safeName: getSafeName(actionData),
+    safeTransactionAmount: getSafeTransactionAmount(firstSafeTransaction),
+    safeTransactionRecipient: getSafeTransactionRecipient(firstSafeTransaction),
+    safeTransactionNftToken: getSafeTransactionNftToken(firstSafeTransaction),
+    safeTransactionFunctionName: firstSafeTransaction?.contractFunction || '',
+    safeTransactionContractName:
+      firstSafeTransaction?.contract?.profile.displayName ||
+      formatMessage(unknownContractMSG),
+    safeTransactionAddress: getSafeTransactionAddress(firstSafeTransaction),
+    // id will be filterValue if an address was manually entered into the picker
+    isSafeTransactionRecipientUser: !(
+      firstSafeTransaction?.recipient?.id === 'filterValue'
+    ),
   };
 };
 
