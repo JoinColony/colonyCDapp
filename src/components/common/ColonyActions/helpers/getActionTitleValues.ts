@@ -3,6 +3,7 @@ import {
   ColonyActionType,
   Colony,
   ExtendedColonyActionType,
+  AnyActionType,
 } from '~types';
 import { getExtendedActionType } from '~utils/colonyActions';
 
@@ -26,9 +27,7 @@ enum ActionTitleMessageKeys {
 }
 
 /* Maps actionTypes to message values as found in en-actions.ts */
-const getMessageDescriptorKeys = (
-  actionType: ColonyActionType | ExtendedColonyActionType,
-) => {
+const getMessageDescriptorKeys = (actionType: AnyActionType) => {
   switch (true) {
     case actionType.includes(ColonyActionType.Payment):
       return [

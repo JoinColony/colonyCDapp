@@ -7,7 +7,7 @@ import {
 /*
  * Which icons correspond to which action types in the details widget
  */
-export const ACTION_TYPES_ICONS_MAP: Record<AnyActionType, string> = {
+export const ACTION_TYPES_ICONS_MAP: Partial<Record<AnyActionType, string>> = {
   [ColonyActionType.WrongColony]: 'forbidden-signal',
   [ColonyActionType.Payment]: 'emoji-dollar-stack',
   [ColonyActionType.Recovery]: 'emoji-alarm-lamp',
