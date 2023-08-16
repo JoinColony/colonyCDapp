@@ -41,4 +41,5 @@ export const ACTION_TYPES_ICONS_MAP: Record<AnyActionType, string> = {
   [ExtendedColonyActionType.RemoveSafe]: 'safe-logo',
   [ExtendedColonyActionType.SafeTransaction]: 'safe-logo',
   [ColonyActionType.MakeArbitraryTransaction]: 'safe-logo',
+  [ColonyActionType.MakeArbitraryTransactionsMotion]: 'safe-logo',
 };
