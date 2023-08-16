@@ -6,12 +6,9 @@ import Decimal from 'decimal.js';
 
 import { isAddress } from '~utils/web3';
 import { SafeBalance } from '~types';
+import { SafeTransactionType } from '~gql';
 import { intl } from '~utils/intl';
-import {
-  getSelectedSafeBalance,
-  isAbiItem,
-  TransactionTypes,
-} from '~utils/safes';
+import { getSelectedSafeBalance, isAbiItem } from '~utils/safes';
 import { validateType } from '~utils/safes/contractParserValidation';
 
 const displayName = 'common.ControlSafeDialog.validation';
@@ -96,9 +93,9 @@ export const getValidationSchema = (
           transactionType: string().required(() => MSG.requiredFieldError),
           recipient: object().when('transactionType', {
             is: (transactionType) =>
-              transactionType === TransactionTypes.TRANSFER_FUNDS ||
-              transactionType === TransactionTypes.RAW_TRANSACTION ||
-              transactionType === TransactionTypes.TRANSFER_NFT,
+              transactionType === SafeTransactionType.TransferFunds ||
+              transactionType === SafeTransactionType.RawTransaction ||
+              transactionType === SafeTransactionType.TransferNft,
             then: object().shape({
               id: string()
                 .required()
@@ -131,7 +128,7 @@ export const getValidationSchema = (
           }),
           amount: string()
             .when('transactionType', {
-              is: TransactionTypes.TRANSFER_FUNDS,
+              is: SafeTransactionType.TransferFunds,
               then: string()
                 .nullable()
                 .test(
@@ -194,7 +191,7 @@ export const getValidationSchema = (
             .nullable(),
           rawAmount: number()
             .when('transactionType', {
-              is: TransactionTypes.RAW_TRANSACTION,
+              is: SafeTransactionType.RawTransaction,
               then: number()
                 .transform((value) => (Number.isNaN(value) ? null : value))
                 .required(() => MSG.requiredFieldError)
@@ -204,7 +201,7 @@ export const getValidationSchema = (
             .nullable(),
           data: string()
             .when('transactionType', {
-              is: TransactionTypes.RAW_TRANSACTION,
+              is: SafeTransactionType.RawTransaction,
               then: string()
                 .required(() => MSG.requiredFieldError)
                 .test(
@@ -217,7 +214,7 @@ export const getValidationSchema = (
             .nullable(),
           contract: object()
             .when('transactionType', {
-              is: TransactionTypes.CONTRACT_INTERACTION,
+              is: SafeTransactionType.ContractInteraction,
               then: object().shape({
                 walletAddress: string()
                   .address()
@@ -228,7 +225,7 @@ export const getValidationSchema = (
             .nullable(),
           abi: string()
             .when('transactionType', {
-              is: TransactionTypes.CONTRACT_INTERACTION,
+              is: SafeTransactionType.ContractInteraction,
               then: string()
                 .required(() => MSG.requiredFieldError)
                 .test(
@@ -250,14 +247,14 @@ export const getValidationSchema = (
             .nullable(),
           contractFunction: string()
             .when('transactionType', {
-              is: TransactionTypes.CONTRACT_INTERACTION,
+              is: SafeTransactionType.ContractInteraction,
               then: string().required(() => MSG.requiredFieldError),
               otherwise: string(),
             })
             .nullable(),
           nft: object()
             .when('transactionType', {
-              is: TransactionTypes.TRANSFER_NFT,
+              is: SafeTransactionType.TransferNft,
               then: object().shape({
                 walletAddress: string().required(() => MSG.requiredFieldError),
                 profile: object().shape({
@@ -269,7 +266,7 @@ export const getValidationSchema = (
             .nullable(),
           nftData: object()
             .when('transactionType', {
-              is: TransactionTypes.TRANSFER_NFT,
+              is: SafeTransactionType.TransferNft,
               then: object().shape({
                 address: string(),
                 description: string().nullable(),

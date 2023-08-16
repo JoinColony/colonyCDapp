@@ -2,7 +2,12 @@ import { ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ContextModule, getContext } from '~context';
-import { TransactionTypes } from '~utils/safes';
+import {
+  SafeTransactionType,
+  CreateSafeTransactionMutation,
+  CreateSafeTransactionDocument,
+  CreateSafeTransactionMutationVariables,
+} from '~gql';
 import { ActionTypes } from '~redux/actionTypes';
 import { Action, AllActions } from '~redux/types';
 import { putError, takeFrom } from '~utils/saga/effects';
@@ -25,11 +30,6 @@ import {
   getHomeBridgeByChain,
   ZODIAC_BRIDGE_MODULE_ADDRESS,
 } from '../utils/safeHelpers';
-import {
-  CreateSafeTransactionMutation,
-  CreateSafeTransactionDocument,
-  CreateSafeTransactionMutationVariables,
-} from '~gql';
 
 function* initiateSafeTransactionAction({
   payload: {
@@ -69,27 +69,27 @@ function* initiateSafeTransactionAction({
     for (const transaction of transactions) {
       let txDataToBeSentToZodiacModule = '';
       switch (transaction.transactionType) {
-        case TransactionTypes.RAW_TRANSACTION:
+        case SafeTransactionType.RawTransaction:
           txDataToBeSentToZodiacModule = getRawTransactionData(
             zodiacBridgeModule,
             transaction,
           );
           break;
-        case TransactionTypes.TRANSFER_NFT:
+        case SafeTransactionType.TransferNft:
           txDataToBeSentToZodiacModule = getTransferNFTData(
             zodiacBridgeModule,
             safe,
             transaction,
           );
           break;
-        case TransactionTypes.TRANSFER_FUNDS:
+        case SafeTransactionType.TransferFunds:
           txDataToBeSentToZodiacModule = yield getTransferFundsData(
             zodiacBridgeModule,
             safe,
             transaction,
           );
           break;
-        case TransactionTypes.CONTRACT_INTERACTION:
+        case SafeTransactionType.ContractInteraction:
           txDataToBeSentToZodiacModule = yield getContractInteractionData(
             zodiacBridgeModule,
             safe,
