@@ -288,6 +288,7 @@ export const getValidationSchema = (
           ...expandedValidationSchema,
         }),
       ),
+      motionDomainId: number().defined(),
     })
     .defined();
 
