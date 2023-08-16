@@ -13,11 +13,15 @@ export const useActionsContent = () => {
     selectedAction === Actions.ADVANCED_PAYMENT;
   const shouldShowAmountField = selectedAction === Actions.SIMPLE_PAYMENT;
   const shouldShowCreatedInField = selectedAction === Actions.SIMPLE_PAYMENT;
+  const shouldShowDecisionField = selectedAction === Actions.SIMPLE_PAYMENT;
+  const shouldShowDescriptionField = selectedAction === Actions.SIMPLE_PAYMENT;
 
   return {
     shouldShowFromField,
     shouldShowUserField,
     shouldShowAmountField,
     shouldShowCreatedInField,
+    shouldShowDecisionField,
+    shouldShowDescriptionField,
   };
 };

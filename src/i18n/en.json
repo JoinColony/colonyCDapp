@@ -791,6 +791,7 @@
   "actionSidebar.availableTokens": "Available tokens",
   "actionSidebar.availableDecisions": "Available decision methods",
   "actionSidebar.decisionMethod": "Decision method",
+  "actionSidebar.description": "Description",
   "actionSidebar.availableFunds": "Available funds",
   "actionSidebar.createdIn": "Created in",
   "actionSidebar.chooseActionType": "Choose action type",
@@ -798,6 +799,7 @@
   "actionSidebar.selectMember": "Select member",
   "actionSidebar.popularActions": "Most popular actions",
   "actionSidebar.simplePayment": "Simple Payment",
+  "actionSidebar.enterDescription": "Enter a description",
   "actionSidebar.userPermission": "User Permission",
   "actionSidebar.transferFunds": "Transfer Funds",
   "actionSidebar.advancedPayments": "Advanced Payments",
@@ -867,5 +869,7 @@
   "upload.failed": "Upload failed, please try again",
   "tap.to.upload": "Tap to upload",
   "upload.avatar.successfully.toast.title": "Profile image changed successfully",
-  "upload.avatar.successfully.toast.description": "You can update this again at any time"
+  "upload.avatar.successfully.toast.description": "You can update this again at any time",
+  "button.show.less": "Show less",
+  "button.expand": "Expand"
 }
