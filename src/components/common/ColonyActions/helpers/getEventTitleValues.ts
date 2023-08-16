@@ -1,3 +1,4 @@
+import { SafeTransactionType } from '~gql';
 import {
   AnyMessageValues,
   Colony,
@@ -49,11 +50,22 @@ enum EventTitleMessageKeys {
   ChainName = 'chainName',
   SafeAddress = 'safeAddress',
   RemovedSafes = 'removedSafes',
+  SafeName = 'safeName',
+  SafeTransactionAmount = 'safeTransactionAmount',
+  IsSafeTransactionRecipientUser = 'isSafeTransactionRecipientUser',
+  SafeTransactionRecipient = 'safeTransactionRecipient',
+  SafeTransactionAddress = 'safeTransactionAddress',
+  SafeTransactionContractName = 'safeTransactionContractName',
+  SafeTransactionFunctionName = 'safeTransactionFunctionName',
+  SafeTransactionNftToken = 'safeTransactionNftToken',
 }
 
 /* Maps eventType to message values as found in en-events.ts */
 const EVENT_TYPE_MESSAGE_KEYS_MAP: {
-  [key in ColonyAndExtensionsEvents | SystemMessages]?: EventTitleMessageKeys[];
+  [key in
+    | ColonyAndExtensionsEvents
+    | SystemMessages
+    | SafeTransactionType]?: EventTitleMessageKeys[];
 } = {
   [ColonyAndExtensionsEvents.OneTxPaymentMade]: [
     EventTitleMessageKeys.Amount,
@@ -142,15 +154,6 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
     EventTitleMessageKeys.ReputationChangeNumeral,
     EventTitleMessageKeys.Recipient,
   ],
-  [ColonyAndExtensionsEvents.SafeAdded]: [
-    EventTitleMessageKeys.Initiator,
-    EventTitleMessageKeys.SafeAddress,
-    EventTitleMessageKeys.ChainName,
-  ],
-  [ColonyAndExtensionsEvents.SafeRemoved]: [
-    EventTitleMessageKeys.Initiator,
-    EventTitleMessageKeys.RemovedSafes,
-  ],
   [SystemMessages.ObjectionFullyStaked]: [
     EventTitleMessageKeys.ObjectionTag,
     EventTitleMessageKeys.MotionTag,
@@ -183,6 +186,41 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
   [SystemMessages.MotionHasFailedNotFinalizable]: [
     EventTitleMessageKeys.MotionTag,
   ],
+  [ColonyAndExtensionsEvents.SafeAdded]: [
+    EventTitleMessageKeys.Initiator,
+    EventTitleMessageKeys.SafeAddress,
+    EventTitleMessageKeys.ChainName,
+  ],
+  [ColonyAndExtensionsEvents.SafeRemoved]: [
+    EventTitleMessageKeys.Initiator,
+    EventTitleMessageKeys.RemovedSafes,
+  ],
+  [SafeTransactionType.TransferFunds]: [
+    EventTitleMessageKeys.SafeName,
+    EventTitleMessageKeys.SafeTransactionAmount,
+    EventTitleMessageKeys.IsSafeTransactionRecipientUser,
+    EventTitleMessageKeys.SafeTransactionRecipient,
+    EventTitleMessageKeys.SafeTransactionAddress,
+  ],
+  [SafeTransactionType.RawTransaction]: [
+    EventTitleMessageKeys.SafeName,
+    EventTitleMessageKeys.IsSafeTransactionRecipientUser,
+    EventTitleMessageKeys.SafeTransactionRecipient,
+    EventTitleMessageKeys.SafeTransactionAddress,
+  ],
+  [SafeTransactionType.TransferNft]: [
+    EventTitleMessageKeys.SafeName,
+    EventTitleMessageKeys.SafeTransactionNftToken,
+    EventTitleMessageKeys.IsSafeTransactionRecipientUser,
+    EventTitleMessageKeys.SafeTransactionRecipient,
+    EventTitleMessageKeys.SafeTransactionAddress,
+  ],
+  [SafeTransactionType.ContractInteraction]: [
+    EventTitleMessageKeys.SafeName,
+    EventTitleMessageKeys.SafeTransactionFunctionName,
+    EventTitleMessageKeys.SafeTransactionContractName,
+  ],
+  [SafeTransactionType.MultipleTransactions]: [EventTitleMessageKeys.SafeName],
 };
 
 const DEFAULT_KEYS = [
@@ -219,6 +257,15 @@ const getExtendedEventName = (
 
   if (actionType === ExtendedColonyActionType.RemoveSafe) {
     return ColonyAndExtensionsEvents.SafeRemoved;
+  }
+
+  if (actionType === ExtendedColonyActionType.SafeTransaction) {
+    // @ts-ignore if the actionType is `SafeTransaction` then we know that it is defined
+    if (actionData.safeTransaction?.transactions?.length > 1) {
+      return SafeTransactionType.MultipleTransactions;
+    }
+
+    return actionData.safeTransaction?.transactions[0]?.transactionType;
   }
 
   return eventName;
