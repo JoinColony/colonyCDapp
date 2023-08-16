@@ -37,6 +37,7 @@ export enum ActionPageDetails {
   ChainName = 'ChainName',
   SafeAddress = 'SafeAddress',
   ModuleAddress = 'ModuleAddress',
+  SafeTransaction = 'SafeTransaction',
 }
 
 type DetailsValuesMap = Partial<Record<ActionPageDetails, boolean>>;
@@ -132,6 +133,15 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
       return [ActionPageDetails.Type, ActionPageDetails.Safe];
     }
     case actionType.includes(ExtendedColonyActionType.AddSafe): {
+      return [
+        ActionPageDetails.Type,
+        ActionPageDetails.ChainName,
+        ActionPageDetails.SafeName,
+        ActionPageDetails.SafeAddress,
+        ActionPageDetails.ModuleAddress,
+      ];
+    }
+    case actionType.includes(ExtendedColonyActionType.SafeTransaction): {
       return [
         ActionPageDetails.Type,
         ActionPageDetails.ChainName,

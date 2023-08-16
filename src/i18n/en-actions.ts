@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 
+import { SafeTransactionType } from '~gql';
 import { ColonyActionType, ExtendedColonyActionType } from '~types';
 
 const actionsMessageDescriptors = {
@@ -64,6 +65,11 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.UpdateTokens} {Update Tokens}
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
+      ${SafeTransactionType.RawTransaction} {Raw transaction}
+      ${SafeTransactionType.TransferFunds} {Transfer funds}
+      ${SafeTransactionType.TransferNft} {Transfer NFT}
+      ${SafeTransactionType.ContractInteraction} {Contract interaction}
+      ${SafeTransactionType.MultipleTransactions} {Multiple transactions}
       other {Generic}
     }`,
 };

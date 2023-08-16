@@ -1,4 +1,5 @@
 import { ColonyRole } from '@colony/colony-js';
+import { SafeTransactionType } from '~gql';
 
 import { ListItemStatus } from '~shared/ListItem';
 
@@ -165,7 +166,10 @@ export enum ExtendedColonyActionType {
 /**
  * Union covering all contract-recognised and extended actions and motions types
  */
-export type AnyActionType = ColonyActionType | ExtendedColonyActionType;
+export type AnyActionType =
+  | ColonyActionType
+  | ExtendedColonyActionType
+  | SafeTransactionType;
 
 /*
  * This list will get longer once we add more system events to the dapp

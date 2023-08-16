@@ -8,6 +8,7 @@ import {
   Safe,
   NFTData,
 } from '~types';
+import { SafeTransactionType } from '~gql';
 
 export {
   getContractUsefulMethods,
@@ -153,4 +154,24 @@ export const defaultTransaction: SafeTransaction = {
   nft: undefined,
   nftData: undefined,
   functionParamTypes: undefined,
+};
+
+export const getSafeInteractionType = (actionData: ColonyAction) => {
+  if (actionData?.safeTransaction?.transactions) {
+    if (actionData.safeTransaction.transactions.length > 1) {
+      return SafeTransactionType.MultipleTransactions;
+    }
+
+    return actionData.safeTransaction.transactions[0].transactionType;
+  }
+
+  return undefined;
+};
+
+export const isSafeTransactionType = (
+  type: string,
+): type is SafeTransactionType => {
+  return Object.values(SafeTransactionType).includes(
+    type as SafeTransactionType,
+  );
 };
