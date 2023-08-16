@@ -1,7 +1,6 @@
-import { Colony, NFTData, SelectedPickerItem, Token, User } from '~types';
+import { Colony, Token, User, SafeTransactionData } from '~types';
 import { EnabledExtensionData } from '~hooks';
 import { AbiItemExtended } from '~utils/safes';
-import { SimpleTarget } from '~gql';
 
 export interface ControlSafeProps {
   back: () => void;
@@ -13,9 +12,6 @@ export interface ControlSafeProps {
   >;
   showPreview: boolean;
   setShowPreview: (showPreview: boolean) => void;
-  // loadingState: [boolean, React.Dispatch<React.SetStateAction<boolean>>][];
-  // stepIndex: number;
-  // setStepIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export interface FunctionParamType {
@@ -23,20 +19,16 @@ export interface FunctionParamType {
   type: string;
 }
 
-export type SafeTransaction = {
-  transactionType: string;
+export interface SafeTransaction
+  extends Omit<
+    SafeTransactionData,
+    'functionParams' | 'rawAmount' | 'recipient' | 'token'
+  > {
   token?: Token;
-  amount?: string;
   rawAmount?: number;
   recipient?: User;
-  data: string;
-  contract?: SimpleTarget;
-  abi: string;
-  contractFunction: string;
   functionParamTypes?: FunctionParamType[];
-  nft?: SelectedPickerItem;
-  nftData?: NFTData;
-};
+}
 
 export interface TransactionSectionProps
   extends Pick<ControlSafeProps, 'colony'> {
