@@ -3,4 +3,5 @@ export interface ExpenditurePayoutFieldValue {
   recipientAddress: string;
   tokenAddress: string;
   amount: string;
+  claimDelay: number;
 }
