@@ -41,6 +41,7 @@ const useColonyContributors = ({
       limit: pageSize * 3,
     },
     skip: !colonyAddress,
+    fetchPolicy: 'cache-and-network',
   });
 
   const { items, nextToken } = data?.getContributorsByColony || {};
