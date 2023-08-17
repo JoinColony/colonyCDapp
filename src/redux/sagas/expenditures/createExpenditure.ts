@@ -36,6 +36,7 @@ function* createExpenditure({
     colony: { name: colonyName, colonyAddress },
     payouts,
     domainId,
+    fundFromDomainId,
   },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -66,7 +67,12 @@ function* createExpenditure({
       context: ClientType.ColonyClient,
       methodName: 'makeExpenditure',
       identifier: colonyAddress,
-      params: [1, BigNumber.from(2).pow(256).sub(1), 1],
+      params: [
+        // @TODO: Get the permissions domain id using colony-js's getPermissionProofs
+        1,
+        BigNumber.from(2).pow(256).sub(1),
+        domainId,
+      ],
       group: {
         key: batchKey,
         id: meta.id,
@@ -117,7 +123,7 @@ function* createExpenditure({
       variables: {
         input: {
           id: getExpenditureDatabaseId(colonyAddress, toNumber(expenditureId)),
-          nativeDomainId: domainId,
+          fundFromDomainNativeId: fundFromDomainId,
         },
       },
     });

@@ -44,8 +44,9 @@ const ExpenditureForm = ({
     mapPayload((payload: ExpenditureFormValues) => ({
       colony,
       payouts: payload.payouts,
-      // @TODO: This should come from the form values
+      // @TODO: These should come from the form values
       domainId: Id.RootDomain,
+      fundFromDomainId: Id.RootDomain,
     })),
     withMeta({ navigate }),
   );

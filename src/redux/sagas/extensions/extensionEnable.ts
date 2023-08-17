@@ -1,7 +1,6 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, Id } from '@colony/colony-js';
 
-import { isDev } from '~constants';
 import { intArrayToBytes32 } from '~utils/web3';
 
 import { ActionTypes } from '../../actionTypes';
@@ -66,30 +65,20 @@ function* extensionEnable({
 
       const batchKey = 'enableExtensions';
 
-      const effects = Object.keys(transactionChannels).map((channelName) =>
-        createGroupTransaction(
-          transactionChannels[channelName],
-          batchKey,
-          meta,
-          {
-            identifier: colonyAddress,
-            methodName: channelName,
-            ...channels[channelName],
-          },
+      yield all(
+        Object.keys(transactionChannels).map((channelName) =>
+          createGroupTransaction(
+            transactionChannels[channelName],
+            batchKey,
+            meta,
+            {
+              identifier: colonyAddress,
+              methodName: channelName,
+              ...channels[channelName],
+            },
+          ),
         ),
       );
-
-      /* Delay action creation in development, else block ingestor doesn't detect all on-chain events */
-      if (isDev) {
-        for (const effect of effects) {
-          yield effect;
-          yield new Promise((res) => {
-            setTimeout(res, 3_000);
-          });
-        }
-      } else {
-        yield all(effects);
-      }
 
       yield all(
         Object.keys(transactionChannels).map((id) =>
