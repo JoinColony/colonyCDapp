@@ -43,7 +43,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
     interactive: true,
   });
 
-  const { domains } = useContributorBreakdown(userData);
+  const domains = useContributorBreakdown(userData);
 
   return (
     <div className="max-h-[9.25rem] rounded-lg border border-gray-200 bg-gray-25 p-5 relative">

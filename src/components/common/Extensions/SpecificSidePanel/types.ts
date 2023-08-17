@@ -1,7 +1,6 @@
 import { MessageDescriptor } from 'react-intl';
 
 import { AnyExtensionData } from '~types';
-import { ColonyReputationItem } from '~v5/shared/UserAvatarPopover/types';
 
 export interface PermissionsProps {
   data: {
@@ -69,8 +68,4 @@ export interface SpecificSidePanelProps {
 export interface SpecificSidePanelStoryProps {
   statuses: string[];
   sidePanelData: SidePanelDataProps;
-}
-
-export interface SpecificSidePanelHookProps {
-  colonyReputationItems: ColonyReputationItem[];
 }

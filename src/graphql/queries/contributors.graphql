@@ -1,6 +1,6 @@
-query GetColonyContributor($id: ID!) {
+query GetColonyContributor($id: ID!, $colonyAddress: ID!) {
   getColonyContributor(id: $id) {
-    id
+    ...ColonyContributor
   }
 }
 

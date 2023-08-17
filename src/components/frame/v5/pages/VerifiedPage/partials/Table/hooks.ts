@@ -1,16 +1,15 @@
 import { useState } from 'react';
-
-import { WhitelistedUser } from '~common/Dialogs/ManageWhitelistDialog/WhitelistedAddresses/helpers';
+import { ColonyContributor } from '~types';
 
 export const useVerifiedTable = () => {
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
 
   const onChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    item: WhitelistedUser,
+    item: ColonyContributor,
   ) => {
     const { checked } = e.target;
-    const { address } = item;
+    const { contributorAddress: address } = item;
     if (checked) {
       setSelectedMembers((prevState) => [...prevState, address]);
     } else {

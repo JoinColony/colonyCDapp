@@ -6205,10 +6205,11 @@ export type GetMembersForColonyQuery = { __typename?: 'Query', getMembersForColo
 
 export type GetColonyContributorQueryVariables = Exact<{
   id: Scalars['ID'];
+  colonyAddress: Scalars['ID'];
 }>;
 
 
-export type GetColonyContributorQuery = { __typename?: 'Query', getColonyContributor?: { __typename?: 'ColonyContributor', id: string } | null };
+export type GetColonyContributorQuery = { __typename?: 'Query', getColonyContributor?: { __typename?: 'ColonyContributor', contributorAddress: string, verified: boolean, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean }> | null } | null } } | null> } | null } | null } | null };
 
 export type GetColonyContributorsQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -8019,12 +8020,12 @@ export type GetMembersForColonyQueryHookResult = ReturnType<typeof useGetMembers
 export type GetMembersForColonyLazyQueryHookResult = ReturnType<typeof useGetMembersForColonyLazyQuery>;
 export type GetMembersForColonyQueryResult = Apollo.QueryResult<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>;
 export const GetColonyContributorDocument = gql`
-    query GetColonyContributor($id: ID!) {
+    query GetColonyContributor($id: ID!, $colonyAddress: ID!) {
   getColonyContributor(id: $id) {
-    id
+    ...ColonyContributor
   }
 }
-    `;
+    ${ColonyContributorFragmentDoc}`;
 
 /**
  * __useGetColonyContributorQuery__
@@ -8039,6 +8040,7 @@ export const GetColonyContributorDocument = gql`
  * const { data, loading, error } = useGetColonyContributorQuery({
  *   variables: {
  *      id: // value for 'id'
+ *      colonyAddress: // value for 'colonyAddress'
  *   },
  * });
  */

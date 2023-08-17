@@ -1,23 +1,27 @@
 import React, { FC, useCallback, useState } from 'react';
 
 import { TableItemProps } from './types';
-import { useColonyContext, useUserReputation } from '~hooks';
+import {
+  useColonyContext,
+  useContributorBreakdown,
+  useUserReputation,
+} from '~hooks';
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
 import Icon from '~shared/Icon';
 import { calculatePercentageReputation } from '~utils/reputation';
 import styles from './TableItem.module.css';
 import Checkbox from '~v5/common/Checkbox';
-import { formatMessage } from '~utils/yup/tests/helpers';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.pages.VerifiedPage.partials.TableItem';
 
 const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
   const { colony } = useColonyContext();
-  const { colonyAddress } = colony || {};
+  const { colonyAddress = '' } = colony || {};
 
   const { user } = member || {};
-  const { walletAddress, name, profile } = user || {};
+  const { walletAddress = '', name, profile } = user || {};
   const { bio } = profile || {};
   const { userReputation, totalReputation } = useUserReputation(
     colonyAddress,
@@ -37,6 +41,10 @@ const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
     [setIsChecked, onChange],
   );
 
+  const { verified: isVerified } = member ?? {};
+
+  const domains = useContributorBreakdown(member);
+
   return (
     <div className={styles.tableItem}>
       <div className="flex items-center">
@@ -51,12 +59,10 @@ const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
             userName={name}
             walletAddress={splitWalletAddress(walletAddress || '')}
             aboutDescription={bio || ''}
-            // @TODO: add colonyReputationItems
-            // colonyReputation={colonyReputationItems}
+            domains={domains}
             user={user}
             avatarSize="xs"
-            isVerified
-            // permissions={permissionsItems}
+            isVerified={isVerified}
           />
         </div>
         <span className="ml-1 flex shrink-0 text-blue-400">
@@ -75,7 +81,7 @@ const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
         <button
           type="button"
           className="ml-auto flex items-center hover:text-negative-400 transition-colors duration-normal"
-          aria-label={formatMessage({ id: 'ariaLabel.deleteMember' })}
+          aria-label={formatText({ id: 'ariaLabel.deleteMember' })}
           onClick={onDeleteClick}
         >
           <Icon name="trash" appearance={{ size: 'small' }} />

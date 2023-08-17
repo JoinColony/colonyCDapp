@@ -1,6 +1,6 @@
-import { WhitelistedUser } from '~common/Dialogs/ManageWhitelistDialog/WhitelistedAddresses/helpers';
+import { ColonyContributor } from '~types';
 
 export interface TableProps {
-  list: WhitelistedUser[];
+  list: ColonyContributor[];
   onReputationSortClick: () => void;
 }

@@ -1,36 +1,22 @@
-import { useCallback, useMemo } from 'react';
-import { useColonyContext } from '~hooks';
-import {
-  WhitelistedUser,
-  useWhitelistedUsers,
-} from '~common/Dialogs/ManageWhitelistDialog/WhitelistedAddresses/helpers';
+import { useMemo } from 'react';
 
-export const useVerifiedPage = (searchValue?: string) => {
-  const { colony } = useColonyContext();
-  const whitelistedAddresses = colony?.metadata?.whitelistedAddresses ?? [];
-  const users = useWhitelistedUsers(whitelistedAddresses);
+import { useMemberContext } from '~context/MemberContext';
+import { useSearchContext } from '~context/SearchContext';
+import { searchMembers } from '~utils/members';
 
-  const searchVerified = useCallback(
-    (members: WhitelistedUser[]) =>
-      members.filter(({ user }) => {
-        const { name, walletAddress } = user || {};
+export const useVerifiedPage = () => {
+  const { searchValue } = useSearchContext();
+  const { members } = useMemberContext();
 
-        return (
-          name?.toLowerCase().startsWith(searchValue?.toLowerCase() ?? '') ||
-          walletAddress
-            ?.toLowerCase()
-            .startsWith(searchValue?.toLowerCase() ?? '')
-        );
-      }),
-    [searchValue],
+  const verifiedMembers = useMemo(
+    () => members.filter(({ verified }) => verified),
+    [members],
   );
 
   const searchedVerified = useMemo(
-    () => (searchValue ? searchVerified(users) : users),
-    [searchValue, searchVerified, users],
+    () => searchMembers(verifiedMembers, searchValue),
+    [searchValue, verifiedMembers],
   );
 
-  return {
-    searchedVerified,
-  };
+  return searchedVerified;
 };

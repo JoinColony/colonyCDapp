@@ -177,7 +177,10 @@ function* manageVerifiedRecipients({
           GetColonyContributorQueryVariables
         >({
           query: GetColonyContributorDocument,
-          variables: { id: getColonyContributorId(colonyAddress, address) },
+          variables: {
+            id: getColonyContributorId(colonyAddress, address),
+            colonyAddress,
+          },
         });
 
         const isAlreadyContributor = !!data.getColonyContributor;
