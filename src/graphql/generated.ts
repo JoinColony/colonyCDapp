@@ -4848,17 +4848,17 @@ export type Safe = {
 export type SafeBalanceToken = {
   __typename?: 'SafeBalanceToken';
   decimals: Scalars['Int'];
-  logoUri?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   symbol: Scalars['String'];
+  thumbnail?: Maybe<Scalars['String']>;
   tokenAddress: Scalars['String'];
 };
 
 export type SafeBalanceTokenInput = {
   decimals: Scalars['Int'];
-  logoUri?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   symbol: Scalars['String'];
+  thumbnail?: InputMaybe<Scalars['String']>;
   tokenAddress: Scalars['String'];
 };
 

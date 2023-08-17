@@ -2220,7 +2220,7 @@ type SafeBalanceToken {
   decimals: Int!
   symbol: String!
   tokenAddress: String!
-  logoUri: String
+  networkName: String
 }
 
 type FunctionParam {
@@ -4223,7 +4223,7 @@ input SafeBalanceTokenInput {
   decimals: Int!
   symbol: String!
   tokenAddress: String!
-  logoUri: String
+  networkName: String
 }
 
 input SimpleTargetInput {
