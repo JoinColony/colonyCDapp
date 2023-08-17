@@ -6,13 +6,12 @@ import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { ColonyAction, ExtendedColonyActionType } from '~types';
 import { Forced as ForcedTag } from '~shared/Tag';
 import { ETHEREUM_NETWORK } from '~constants';
+import { getExtendedActionType } from '~utils/colonyActions';
 
 import SafeTransactionBanner from '../SafeTransactionBanner';
-
 import DefaultActionContent from './DefaultActionContent';
 
 import styles from './DefaultAction.css';
-import { getExtendedActionType } from '~utils/colonyActions';
 
 const displayName = 'common.ColonyActions.DefaultAction';
 
