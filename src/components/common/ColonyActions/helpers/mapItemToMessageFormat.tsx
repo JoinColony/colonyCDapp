@@ -12,8 +12,9 @@ import {
   DomainMetadata,
   MotionMessage,
   SafeTransactionData,
+  Address,
 } from '~types';
-import { useColonyContext, useUserReputation } from '~hooks';
+import { useColonyContext, useUserByAddress, useUserReputation } from '~hooks';
 import { MotionVote } from '~utils/colonyMotions';
 import { intl } from '~utils/intl';
 import { formatReputationChange } from '~utils/reputation';
@@ -91,15 +92,17 @@ const getSafeTransactionAmount = (
   </>
 );
 
-// NOTE: The user data isn't being uploaded with so this is
-// always empty
-const getSafeTransactionRecipient = (
-  firstSafeTransaction?: SafeTransactionData,
-) => (
-  <span className={styles.user}>
-    @{firstSafeTransaction?.recipient?.profile.username}
-  </span>
-);
+const SafeTransactionRecipient = (walletAddress?: Address) => {
+  if (!walletAddress) {
+    return '';
+  }
+
+  const { user } = useUserByAddress(walletAddress || '');
+  const userDisplayName = user?.profile?.displayName;
+  const username = user?.name;
+
+  return <span className={styles.user}>@{userDisplayName || username}</span>;
+};
 
 const getSafeTransactionNftToken = (
   firstSafeTransaction?: SafeTransactionData,
@@ -275,7 +278,9 @@ export const mapActionEventToExpectedFormat = (
     removedSafes: getRemovedSafesString(actionData),
     safeName: getSafeName(actionData),
     safeTransactionAmount: getSafeTransactionAmount(firstSafeTransaction),
-    safeTransactionRecipient: getSafeTransactionRecipient(firstSafeTransaction),
+    safeTransactionRecipient: SafeTransactionRecipient(
+      firstSafeTransaction?.recipient?.walletAddress,
+    ),
     safeTransactionNftToken: getSafeTransactionNftToken(firstSafeTransaction),
     safeTransactionFunctionName: firstSafeTransaction?.contractFunction || '',
     safeTransactionContractName:
