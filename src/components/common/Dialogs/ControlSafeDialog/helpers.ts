@@ -73,7 +73,7 @@ export const getControlSafeDialogPayload = (colony: Colony, payload: any) => {
         nftData: omitDeep(transaction.nftData, ['metadata']),
         token: transaction.token
           ? {
-              ...omitDeep(transaction.token, ['thumbnail', 'type']),
+              ...omitDeep(transaction.token, ['type']),
             }
           : null,
         functionParams,
