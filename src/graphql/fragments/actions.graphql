@@ -104,7 +104,7 @@ fragment ColonyAction on ColonyAction {
     ...ColonyDecision
   }
   safeTransaction {
-    ...ColonySafeTransaction
+    ...SafeTransaction
   }
 }
 
