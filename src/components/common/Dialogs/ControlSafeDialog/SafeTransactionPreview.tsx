@@ -363,8 +363,9 @@ const SafeTransactionPreview = ({
                       }
                     />
                   )}
-                {transactions[index].transactionType !== '' &&
+                {transactions[index].transactionType !== undefined &&
                   transactionTypeFieldsMap[
+                    // @ts-ignore transactionType cannot be undefined
                     transactions[index].transactionType
                   ].map(({ key, label, value }) => (
                     <DetailsItem
