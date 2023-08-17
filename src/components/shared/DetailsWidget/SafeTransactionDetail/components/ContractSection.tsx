@@ -3,13 +3,12 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { Safe } from '~types';
 import { intl } from '~utils/intl';
-import { SafeTransactionType } from '~gql';
+import { SafeTransactionType, SafeTransactionData } from '~gql';
 import { extractTokenName } from '~utils/safes';
 import { InvisibleCopyableMaskedAddress } from '~shared/InvisibleCopyableAddress';
 
 import { ContractName } from '../../SafeTransactionDetail';
 import widgetStyles from '../../DetailsWidget.css';
-import { SafeTransaction } from '~common/Dialogs/ControlSafeDialog/types';
 
 const displayName = 'DetailsWidget.SafeTransactionDetail.ContractSection';
 
@@ -39,7 +38,7 @@ const MSG = defineMessages({
 export const { unknownContract: unknownContractMSG, nft: nftMSG } = MSG;
 
 export interface ContractSectionProps {
-  transaction: SafeTransaction;
+  transaction: SafeTransactionData;
   safe: Safe;
   hideFunctionContract?: boolean;
 }
@@ -55,7 +54,7 @@ export const ContractSection = ({
     transaction.token?.tokenAddress ||
     transaction.nftData?.address;
 
-  const getContractInfo = (safeTransaction: SafeTransaction) => {
+  const getContractInfo = (safeTransaction: SafeTransactionData) => {
     const { formatMessage } = intl();
     const { transactionType } = safeTransaction;
     const contractInfo = {

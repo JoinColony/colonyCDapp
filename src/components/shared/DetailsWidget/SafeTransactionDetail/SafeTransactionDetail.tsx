@@ -5,9 +5,8 @@ import { nanoid } from 'nanoid';
 
 import Numeral from '~shared/Numeral';
 import Avatar from '~shared/Avatar';
-import { Colony, Safe } from '~types';
+import { Safe, SafeTransactionData } from '~types';
 import { SafeTransactionMSG } from '~common/Dialogs/ControlSafeDialog/helpers';
-import { SafeTransaction } from '~common/Dialogs/ControlSafeDialog/types';
 import { SafeTransactionType } from '~gql';
 
 import {
@@ -42,8 +41,7 @@ const MSG = defineMessages({
 
 interface Props {
   safe: Safe;
-  safeTransactionDetails: SafeTransaction[];
-  colony: Colony;
+  safeTransactionDetails: SafeTransactionData[];
   safeTransactionDetailStatuses: string[];
 }
 
