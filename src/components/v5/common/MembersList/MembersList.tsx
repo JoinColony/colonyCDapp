@@ -67,10 +67,10 @@ const MembersList: FC<MembersListProps> = ({
           <Masonry gutter="1rem">
             {list.map((item) => {
               const { user, type } = item;
-              const { name: username, profile } = user || {};
+              const { profile, walletAddress } = user || {};
               return (
                 <CardWithBios
-                  key={username}
+                  key={walletAddress}
                   userData={item}
                   description={profile?.bio || ''}
                   shouldStatusBeVisible

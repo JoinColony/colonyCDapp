@@ -168,11 +168,13 @@ exports.handler = async (event) => {
             const colonyReputationPercentage = contributorRepDecimal
               .mul(100)
               .div(totalRepInColony.toString())
+              .toDecimalPlaces(2)
               .toNumber();
 
             const domainReputationPercentage = contributorRepDecimal
               .mul(100)
               .div(totalRepInDomain.toString())
+              .toDecimalPlaces(2)
               .toNumber();
 
             const contributorReputationId = `${colonyAddress}_${nativeDomainId}_${contributorAddress}`;
