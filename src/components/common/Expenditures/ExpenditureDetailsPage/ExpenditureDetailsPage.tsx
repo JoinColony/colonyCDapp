@@ -2,12 +2,14 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Id } from '@colony/colony-js';
 
-import { useGetExpenditureQuery } from '~gql';
+import { ExpenditureStatus, useGetExpenditureQuery } from '~gql';
 import { useColonyContext } from '~hooks';
 import NotFoundRoute from '~routes/NotFoundRoute';
 import { Heading3 } from '~shared/Heading';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
 import { findDomainByNativeId } from '~utils/domains';
+import { ActionButton } from '~shared/Button';
+import { ActionTypes } from '~redux';
 
 import ExpenditureBalances from './ExpenditureBalances';
 import ExpenditureAdvanceButton from './ExpenditureAdvanceButton';
@@ -69,7 +71,21 @@ const ExpenditureDetailsPage = () => {
         <div>Fund from: {fundFromDomain?.metadata?.name ?? 'Unknown team'}</div>
         <ExpenditureBalances expenditure={expenditure} />
         <ExpenditurePayouts expenditure={expenditure} colony={colony} />
-        <ExpenditureAdvanceButton expenditure={expenditure} colony={colony} />
+        <div className={styles.buttons}>
+          {expenditure.status === ExpenditureStatus.Draft && (
+            <ActionButton
+              actionType={ActionTypes.EXPENDITURE_CANCEL}
+              appearance={{ size: 'small' }}
+              values={{
+                colonyAddress: colony.colonyAddress,
+                nativeExpenditureId: expenditure.nativeId,
+              }}
+            >
+              Cancel expenditure
+            </ActionButton>
+          )}
+          <ExpenditureAdvanceButton expenditure={expenditure} colony={colony} />
+        </div>
       </div>
     </div>
   );

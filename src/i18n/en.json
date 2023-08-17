@@ -262,6 +262,8 @@
   "transaction.group.fundExpenditure.description": "Fund Expenditure",
   "transaction.group.editExpenditure.title": "Edit Expenditure",
   "transaction.group.editExpenditure.description": "Edit Expenditure",
+  "transaction.ColonyClient.cancelExpenditure.title": "Cancel Expenditure",
+  "transaction.ColonyClient.cancelExpenditure.description": "Cancel Expenditure",
 
   "metatransaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
   "metatransaction.group.deposit.title": "Activate tokens",

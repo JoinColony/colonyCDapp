@@ -1,5 +1,6 @@
 declare namespace ExpenditureDetailsPageModuleCssNamespace {
   export interface IExpenditureDetailsPageModuleCss {
+    buttons: string;
     details: string;
   }
 }
