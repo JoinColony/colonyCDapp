@@ -13,18 +13,18 @@ interface Props {
   transactionHash: string;
 }
 
+const displayName = 'common.ActionsPage.SafeTransactionBanner';
+
 const MSG = defineMessages({
   processTransaction: {
-    id: `dashboard.ActionsPage.SafeTransactionBanner.processTransaction`,
+    id: `${displayName}.processTransaction`,
     defaultMessage: `Click ‘Process transaction’, then click ‘Execute’ to pay the gas costs and complete the transaction.`,
   },
   monitorUrl: {
-    id: `dashboard.ActionsPage.SafeTransactionBanner.monitorUrl`,
+    id: `${displayName}.monitorUrl`,
     defaultMessage: `Process transaction`,
   },
 });
-
-const displayName = 'dashboard.ActionsPage.SafeTransactionBanner';
 
 const SafeTransactionBanner = ({ chainId, transactionHash }: Props) => {
   const transactionMonitorUrl = getSafeTransactionMonitor(
