@@ -70,7 +70,7 @@ fragment SafeTransactionData on SafeTransactionData {
   }
 }
 
-fragment ColonySafeTransaction on ColonySafeTransaction {
+fragment SafeTransaction on SafeTransaction {
   id
   title
   safe {
