@@ -2225,7 +2225,7 @@ type SafeBalanceToken {
   decimals: Int!
   symbol: String!
   tokenAddress: String!
-  networkName: String
+  thumbnail: String
 }
 
 type FunctionParam {
@@ -4228,7 +4228,7 @@ input SafeBalanceTokenInput {
   decimals: Int!
   symbol: String!
   tokenAddress: String!
-  networkName: String
+  thumbnail: String
 }
 
 input SimpleTargetInput {
