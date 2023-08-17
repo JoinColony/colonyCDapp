@@ -10,7 +10,6 @@ import { SpinnerLoader } from '~shared/Preloaders';
 
 import { useColonyContext } from '~hooks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import { ContributorTypeFilter } from '../TableFiltering/types';
 import { useMemberContext } from '~context/MemberContext';
 
 const displayName = 'v5.common.MembersList';
@@ -66,7 +65,7 @@ const MembersList: FC<MembersListProps> = ({
         <ResponsiveMasonry columnsCountBreakPoints={{ 250: 1, 950: 2 }}>
           <Masonry gutter="1rem">
             {list.map((item) => {
-              const { user, type } = item;
+              const { user } = item;
               const { profile, walletAddress } = user || {};
               return (
                 <CardWithBios
@@ -75,11 +74,6 @@ const MembersList: FC<MembersListProps> = ({
                   description={profile?.bio || ''}
                   shouldStatusBeVisible
                   shouldBeMenuVisible
-                  userStatus={
-                    (type?.toLowerCase() ?? undefined) as
-                      | ContributorTypeFilter
-                      | undefined
-                  }
                   isContributorsList={isContributorsList}
                 />
               );

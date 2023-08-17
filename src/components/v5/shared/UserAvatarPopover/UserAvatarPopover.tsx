@@ -16,12 +16,10 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
   walletAddress,
   isVerified,
   aboutDescription,
-  colonyReputation,
-  permissions,
   user,
   userStatus,
   avatarSize,
-  teams,
+  domains,
   isContributorsList,
 }) => {
   const isMobile = useMobile();
@@ -72,15 +70,14 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
       walletAddress={walletAddress}
       isVerified={isVerified}
       aboutDescription={aboutDescription}
-      colonyReputation={colonyReputation}
-      permissions={permissions}
       avatar={thumbnail || avatar || ''}
       userStatus={userStatus}
-      teams={teams}
+      domains={domains}
       isContributorsList={isContributorsList}
     />
   );
 
+  const isTopSectionWithBackground = userStatus === 'top' && isContributorsList;
   return (
     <>
       {isMobile ? (
@@ -90,9 +87,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
             isFullOnMobile={false}
             onClose={onCloseModal}
             isOpen={isOpen}
-            isTopSectionWithBackground={
-              userStatus === 'top' && isContributorsList
-            }
+            isTopSectionWithBackground={isTopSectionWithBackground}
           >
             {content}
           </Modal>
@@ -106,10 +101,11 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
               tooltipProps={getTooltipProps}
               classNames="max-w-[20rem] shadow-default"
               withTooltipStyles={false}
-              cardProps={{ rounded: 's' }}
-              isTopSectionWithBackground={
-                userStatus === 'top' && isContributorsList
-              }
+              cardProps={{
+                rounded: 's',
+                className: isTopSectionWithBackground ? 'pb-6' : '',
+              }}
+              isTopSectionWithBackground={isTopSectionWithBackground}
             >
               {content}
             </PopoverBase>

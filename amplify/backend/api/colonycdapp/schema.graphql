@@ -832,7 +832,6 @@ enum ContributorType {
   DEDICATED
   ACTIVE
   NEW
-  VERIFIED
   GENERAL
 }
 

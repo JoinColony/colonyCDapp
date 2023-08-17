@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import { UserInfoProps } from '../types';
@@ -8,26 +7,23 @@ import UserPermissionsBadge from '~common/Extensions/UserPermissionsBadge';
 import TitleLabel from '~v5/shared/TitleLabel';
 import UserAvatarDetails from '~v5/shared/UserAvatarDetails';
 import UserStatus from '~v5/common/Pills/UserStatus';
+import { permissionsMap } from './consts';
+import { formatText } from '~utils/intl';
+import Tooltip from '~shared/Extensions/Tooltip/Tooltip';
 
 const displayName = 'v5.UserAvatarPopover.partials.UserInfo';
 
 const UserInfo: FC<UserInfoProps> = ({
   userName,
+  isVerified,
   walletAddress,
   aboutDescription,
-  colonyReputation,
-  permissions,
   avatar,
   userStatus,
-  teams = ['businnes', 'product', 'design'], // @TODO: fix that when API will return teams
+  domains,
   isContributorsList,
 }) => {
-  const { formatMessage } = useIntl();
-
-  const aboutDescriptionText =
-    typeof aboutDescription === 'string'
-      ? aboutDescription
-      : aboutDescription && formatMessage(aboutDescription);
+  const aboutDescriptionText = formatText(aboutDescription);
 
   const isTopContributorType = userStatus === 'top' && isContributorsList;
 
@@ -44,24 +40,22 @@ const UserInfo: FC<UserInfoProps> = ({
             userName={userName}
             walletAddress={walletAddress}
             avatar={avatar}
+            isVerified={isVerified}
             userStatus={userStatus}
             isContributorsList={isContributorsList}
           />
         </div>
-        {isTopContributorType && teams && (
+        {isTopContributorType && domains && (
           <>
             <TitleLabel
               className="mb-2 text-gray-900"
-              text={formatMessage({ id: 'userInfo.top.contributor.in' })}
+              text={formatText({ id: 'userInfo.top.contributor.in' })}
             />
             <div className="flex gap-1">
-              {Array.isArray(teams) ? (
-                teams?.map((item) => (
-                  <UserStatus mode="team" text={{ id: item }} />
-                ))
-              ) : (
-                <UserStatus mode="team" text={{ id: teams }} />
-              )}
+              {domains?.map(({ domainName, domainId }) => {
+                const name = domainName;
+                return <UserStatus key={domainId} mode="team" text={name} />;
+              })}
             </div>
           </>
         )}
@@ -70,7 +64,7 @@ const UserInfo: FC<UserInfoProps> = ({
         className={clsx('mt-2 mb-2', {
           'px-6': isTopContributorType,
         })}
-        text={formatMessage({ id: 'userInfo.about.section' })}
+        text={formatText({ id: 'userInfo.about.section' })}
       />
       <p
         className={clsx('text-md text-gray-600', {
@@ -79,44 +73,74 @@ const UserInfo: FC<UserInfoProps> = ({
       >
         {aboutDescriptionText}
       </p>
-      {colonyReputation && colonyReputation.length ? (
+      {domains?.length ? (
         <>
           <TitleLabel
             className={clsx('pt-6 mt-6 border-t border-gray-200 mb-2', {
               'mx-6': isTopContributorType,
             })}
-            text={formatMessage({ id: 'userInfo.colonyReputation.section' })}
+            text={formatText({
+              id: 'userInfo.teamBreakdown.section',
+            })}
           />
           <ul
             className={clsx('flex flex-col gap-2', {
               'px-6': isTopContributorType,
             })}
           >
-            {colonyReputation?.map(({ key, title, percentage, points }) => {
-              const titleText =
-                typeof title === 'string'
-                  ? title
-                  : title && formatMessage(title);
+            {domains.map(
+              ({
+                domainId,
+                domainName,
+                permissions,
+                reputationPercentage,
+                reputationRaw,
+              }) => {
+                const titleText = domainName;
 
-              return (
-                <li
-                  key={key}
-                  className="grid grid-cols-[1fr,auto] gap-x-4 font-medium"
-                >
-                  <span className="text-md">{titleText}</span>
-                  <span className="inline-flex items-center text-sm text-blue-400">
-                    <Icon name="star" appearance={{ size: 'extraTiny' }} />
-                    <span className="inline-block ml-1 mr-2">
-                      {percentage}%
+                return (
+                  <li
+                    key={domainId}
+                    className="grid grid-cols-[1fr,2fr,1fr] items-center font-medium"
+                  >
+                    <span className="text-md">{titleText}</span>
+                    {/* Note: permissions here is temporary, for illustrative purposes only */}
+                    <div className="flex flex-col">
+                      {permissions.map((permission) => {
+                        const { text, description, name } =
+                          permissionsMap[permission];
+
+                        return (
+                          <div key={name}>
+                            <UserPermissionsBadge
+                              text={text}
+                              description={description}
+                              name={name}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <span className="inline-flex items-center text-sm text-blue-400">
+                      <Tooltip
+                        tooltipContent={<span>{reputationRaw} pts</span>}
+                      >
+                        <Icon name="star" appearance={{ size: 'extraTiny' }} />
+                        <span className="inline-block ml-1 mr-2">
+                          {reputationPercentage}%
+                        </span>
+                      </Tooltip>
                     </span>
-                    {points && <span>{points} pts</span>}
-                  </span>
-                </li>
-              );
-            })}
+                  </li>
+                );
+              },
+            )}
           </ul>
         </>
       ) : undefined}
+
+      {/* 
+      @ Remove once new permissions pills are implemented
       {permissions && permissions.length && (
         <>
           <TitleLabel
@@ -141,7 +165,7 @@ const UserInfo: FC<UserInfoProps> = ({
             ))}
           </ul>
         </>
-      )}
+      )} */}
     </div>
   );
 };

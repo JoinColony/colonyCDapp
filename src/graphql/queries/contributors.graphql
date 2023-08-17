@@ -1,29 +1,3 @@
-query GetPermissionedContributors(
-  $domainId: ID!
-  $colonyAddress: ID!
-  $limit: Int!
-) {
-  getRoleByDomainAndColony(
-    domainId: $domainId
-    colonyAddress: { eq: $colonyAddress }
-    limit: $limit
-  ) {
-    items {
-      targetAddress
-      targetUser {
-        ...User
-      }
-      role_0
-      role_1
-      role_2
-      role_3
-      role_5
-      role_6
-    }
-    nextToken
-  }
-}
-
 query GetColonyContributor($id: ID!) {
   getColonyContributor(id: $id) {
     id

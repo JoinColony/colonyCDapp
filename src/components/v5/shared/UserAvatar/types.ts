@@ -8,6 +8,6 @@ export interface UserAvatarProps {
   user?: User | null;
   isLink?: boolean;
   size?: AvatarSize;
-  userStatus?: UserStatusMode;
+  userStatus: UserStatusMode | null;
   isContributorsList?: boolean;
 }

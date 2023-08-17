@@ -68,6 +68,8 @@ export { default as useActiveInstalls } from './useActiveInstalls';
 export { default as useGetColonyMembers } from './useGetColonyMembers';
 export { default as useAllMembers } from './members/useAllMembers';
 export { default as useColonyContributors } from './members/useColonyContributors';
+export { default as useContributorBreakdown } from './members/useContributorBreakdown';
+
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously
  */

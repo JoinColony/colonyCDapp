@@ -17,11 +17,8 @@ export type PermissionType =
 export type CardWithBiosProps = {
   description?: string;
   shouldStatusBeVisible: boolean;
-  userStatus?: UserStatusMode;
-  permissions?: Permissions[];
   shouldBeMenuVisible: boolean;
-  isVerified?: boolean;
-  userData?: ColonyContributor;
+  userData: ColonyContributor;
   isContributorsList?: boolean;
 };
 
