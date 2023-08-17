@@ -21,7 +21,6 @@ const renderTokenIcon = (safeToken: SafeBalanceToken) => {
     <TokenIcon
       className={styles.tokenAvatar}
       title={`${safeToken.name} token logo`}
-      iconName="circle-close"
       token={safeToken as Token}
     />
   );
