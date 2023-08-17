@@ -2,7 +2,6 @@ import { JsonFragment } from '@ethersproject/abi';
 import { keccak256, toUtf8Bytes } from 'ethers/lib/utils';
 
 import { BINANCE_NETWORK, SUPPORTED_SAFE_NETWORKS } from '~constants';
-import { FunctionParamType } from '~types';
 
 export interface AbiItemExtended extends JsonFragment {
   name: string;
@@ -147,34 +146,4 @@ export const getContractUsefulMethods = (
   }
 
   return usefulMethods;
-};
-
-/*
- * Function parameters are stored as `${paramName}-${functionName}`
- * In the SafeTransactionData object.
- */
-export const extractParameterName = (
-  safeTransactionKey: string,
-  functionName: string,
-  functionParamType: FunctionParamType | undefined | null,
-) => {
-  const endIdx = safeTransactionKey.indexOf(functionName);
-
-  if (endIdx === -1 || !functionParamType) {
-    return safeTransactionKey;
-  }
-
-  // -1 to exclude the hyphen, append param type
-  return `${safeTransactionKey.substring(0, endIdx - 1)} (${
-    functionParamType.type
-  })`;
-};
-
-export const extractParameterType = (parameterName: string) => {
-  const type = parameterName.split(' ');
-  if (type.length < 2) {
-    return parameterName;
-  }
-  // type follows parameter name by a space
-  return type[1].substring(1, type[1].length - 1); // remove brackets
 };
