@@ -323,6 +323,7 @@ const getDetailItemsMap = (
       labelValues: undefined,
       item: safeTransaction && (
         <SafeTransactionDetail
+          key={safeTransaction.id}
           safe={safeTransaction.safe}
           safeTransactionDetails={safeTransactionDetails}
           safeTransactionDetailStatuses={safeTransactionDetailStatuses}
