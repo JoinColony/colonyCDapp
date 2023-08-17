@@ -91,7 +91,7 @@ const FunctionsSection = ({ transaction }: FunctionsSectionProps) => {
         const paramName = extractParameterName(
           parameter,
           transaction.contractFunction || '',
-          transaction.functionParamTypes?.[i],
+          transaction.functionParams?.[i],
         );
         const paramType = extractParameterType(paramName);
         const isArrayType = paramType.substring(paramType.length - 2) === '[]';
