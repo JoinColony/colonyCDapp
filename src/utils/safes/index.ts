@@ -142,7 +142,7 @@ export const nftNameContainsTokenId = (tokenName: string): boolean => {
 };
 
 export const defaultTransaction: SafeTransaction = {
-  transactionType: '',
+  transactionType: undefined,
   token: undefined,
   amount: undefined,
   rawAmount: undefined,

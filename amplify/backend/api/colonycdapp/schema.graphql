@@ -868,7 +868,7 @@ type SafeBalanceToken {
   decimals: Int!
   symbol: String!
   tokenAddress: String!
-  networkName: String
+  thumbnail: String
 }
 
 type FunctionParam {
