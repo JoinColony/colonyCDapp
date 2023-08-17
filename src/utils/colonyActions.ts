@@ -142,13 +142,7 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
       ];
     }
     case actionType.includes(ExtendedColonyActionType.SafeTransaction): {
-      return [
-        ActionPageDetails.Type,
-        ActionPageDetails.ChainName,
-        ActionPageDetails.SafeName,
-        ActionPageDetails.SafeAddress,
-        ActionPageDetails.ModuleAddress,
-      ];
+      return [ActionPageDetails.Type, ActionPageDetails.SafeTransaction];
     }
     // case actionType.includes(ColonyMotions.CreateDecisionMotion): {
     //   return [ActionPageDetails.Type, ActionPageDetails.Author];
