@@ -867,7 +867,7 @@ type SafeBalanceToken {
   name: String!
   decimals: Int!
   symbol: String!
-  address: String!
+  tokenAddress: String!
   logoUri: String
 }
 

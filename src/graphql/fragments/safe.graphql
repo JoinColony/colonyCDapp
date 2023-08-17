@@ -29,7 +29,7 @@ fragment SafeTransactionData on SafeTransactionData {
     name
     decimals
     symbol
-    address
+    tokenAddress
     logoUri
   }
   amount
