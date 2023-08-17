@@ -58,8 +58,9 @@ exports.handler = async (event) => {
 
   // Get the balances for each token address
   const balances = await Promise.all(
-    [...tokenRequiredAmounts.entries()].map(
-      async ([tokenAddress, requiredAmount]) => {
+    [...tokenRequiredAmounts.entries()]
+      .filter(([_, requiredAmount]) => BigNumber.from(requiredAmount).gt(0))
+      .map(async ([tokenAddress, requiredAmount]) => {
         const tokenBalance = await colonyClient.getFundingPotBalance(
           expenditure.nativeFundingPotId,
           tokenAddress,
@@ -70,8 +71,7 @@ exports.handler = async (event) => {
           amount: tokenBalance.toString(),
           requiredAmount,
         };
-      },
-    ),
+      }),
   );
 
   return balances;

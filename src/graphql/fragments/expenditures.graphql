@@ -4,14 +4,7 @@ fragment Expenditure on Expenditure {
   ownerAddress
   status
   slots {
-    id
-    recipientAddress
-    claimDelay
-    payoutModifier
-    payouts {
-      tokenAddress
-      amount
-    }
+    ...ExpenditureSlot
   }
   nativeFundingPotId
   metadata {
@@ -21,5 +14,16 @@ fragment Expenditure on Expenditure {
     tokenAddress
     amount
     requiredAmount
+  }
+}
+
+fragment ExpenditureSlot on ExpenditureSlot {
+  id
+  recipientAddress
+  claimDelay
+  payoutModifier
+  payouts {
+    tokenAddress
+    amount
   }
 }

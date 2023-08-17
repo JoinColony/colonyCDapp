@@ -1,42 +1,87 @@
 import React from 'react';
+import { Id } from '@colony/colony-js';
+import { useNavigate } from 'react-router-dom';
 
 import { useColonyContext } from '~hooks';
-import { Form } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
+import { Expenditure } from '~types';
+import { ActionTypes } from '~redux';
+import { mapPayload, pipe, withMeta } from '~utils/actions';
 
-import ExpenditureActionButton from '../ExpenditureActionButton';
 import ExpenditureFormFields from './ExpenditureFormFields';
-import { getInitialSlotFieldValue } from './helpers';
-
-export interface ExpenditureSlotFieldValue {
-  recipientAddress: string;
-  tokenAddress: string;
-  amount: string;
-}
+import {
+  getExpenditurePayoutsFieldValue,
+  getInitialPayoutFieldValue,
+} from './helpers';
+import { ExpenditurePayoutFieldValue } from './types';
 
 export interface ExpenditureFormValues {
-  slots: ExpenditureSlotFieldValue[];
+  payouts: ExpenditurePayoutFieldValue[];
 }
 
-const ExpenditureForm = () => {
+export interface ExpenditureFormProps {
+  expenditure?: Expenditure;
+  submitButtonText?: string;
+  showCancelButton?: boolean;
+  onCancelClick?: () => void;
+  onSuccess?: () => void;
+}
+
+const ExpenditureForm = ({
+  expenditure,
+  onSuccess,
+  ...props
+}: ExpenditureFormProps) => {
+  const navigate = useNavigate();
+
   const { colony } = useColonyContext();
 
   if (!colony) {
     return null;
   }
 
-  return (
-    <Form<ExpenditureFormValues>
-      defaultValues={{
-        slots: [getInitialSlotFieldValue(colony.nativeToken.tokenAddress)],
-      }}
-      onSubmit={() => {}}
-    >
-      <>
-        <ExpenditureFormFields colony={colony} />
+  const transformCreateExpenditurePayload = pipe(
+    mapPayload((payload: ExpenditureFormValues) => ({
+      colony,
+      payouts: payload.payouts,
+      // @TODO: This should come from the form values
+      domainId: Id.RootDomain,
+    })),
+    withMeta({ navigate }),
+  );
 
-        <ExpenditureActionButton />
-      </>
-    </Form>
+  const transformEditExpenditurePayload = pipe(
+    mapPayload((payload: ExpenditureFormValues) => ({
+      colonyAddress: colony.colonyAddress,
+      expenditure,
+      payouts: payload.payouts,
+    })),
+    withMeta({}),
+  );
+
+  const isEditing = !!expenditure;
+
+  return (
+    <ActionForm
+      defaultValues={{
+        payouts: expenditure
+          ? getExpenditurePayoutsFieldValue(expenditure)
+          : [getInitialPayoutFieldValue(colony.nativeToken.tokenAddress)],
+      }}
+      actionType={
+        isEditing
+          ? ActionTypes.EXPENDITURE_EDIT
+          : ActionTypes.EXPENDITURE_CREATE
+      }
+      transform={
+        isEditing
+          ? transformEditExpenditurePayload
+          : transformCreateExpenditurePayload
+      }
+      onSuccess={onSuccess}
+    >
+      <ExpenditureFormFields {...props} colony={colony} />
+    </ActionForm>
   );
 };
 

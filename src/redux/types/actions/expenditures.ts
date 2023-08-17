@@ -1,6 +1,6 @@
 import { ActionTypes } from '~redux/actionTypes';
 import { Address, Colony, Expenditure } from '~types';
-import { ExpenditureSlotFieldValue } from '~common/Expenditures/ExpenditureForm';
+import { ExpenditurePayoutFieldValue } from '~common/Expenditures/ExpenditureForm';
 
 import { UniqueActionType, ErrorActionType, MetaWithNavigate } from './index';
 
@@ -9,7 +9,7 @@ export type ExpendituresActionTypes =
       ActionTypes.EXPENDITURE_CREATE,
       {
         colony: Colony;
-        slots: ExpenditureSlotFieldValue[];
+        payouts: ExpenditurePayoutFieldValue[];
         domainId: number;
       },
       MetaWithNavigate<object>
@@ -48,4 +48,15 @@ export type ExpendituresActionTypes =
       object
     >
   | ErrorActionType<ActionTypes.EXPENDITURE_FUND_ERROR, object>
-  | UniqueActionType<ActionTypes.EXPENDITURE_FUND_SUCCESS, object, object>;
+  | UniqueActionType<ActionTypes.EXPENDITURE_FUND_SUCCESS, object, object>
+  | UniqueActionType<
+      ActionTypes.EXPENDITURE_EDIT,
+      {
+        colonyAddress: Address;
+        expenditure: Expenditure;
+        payouts: ExpenditurePayoutFieldValue[];
+      },
+      object
+    >
+  | ErrorActionType<ActionTypes.EXPENDITURE_EDIT_ERROR, object>
+  | UniqueActionType<ActionTypes.EXPENDITURE_EDIT_SUCCESS, object, object>;

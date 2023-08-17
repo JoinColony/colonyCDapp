@@ -7,12 +7,11 @@ import { useColonyContext } from '~hooks';
 import NotFoundRoute from '~routes/NotFoundRoute';
 import { Heading3 } from '~shared/Heading';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
-import MaskedAddress from '~shared/MaskedAddress';
-import Numeral from '~shared/Numeral';
 import { findDomainByNativeId } from '~utils/domains';
 
 import ExpenditureBalances from './ExpenditureBalances';
 import ExpenditureAdvanceButton from './ExpenditureAdvanceButton';
+import ExpenditurePayouts from './ExpenditurePayouts';
 
 import styles from './ExpenditureDetailsPage.module.css';
 
@@ -61,56 +60,7 @@ const ExpenditureDetailsPage = () => {
         <div>Status: {expenditure.status}</div>
         <div>Team: {expenditureDomain?.metadata?.name ?? 'Unknown team'}</div>
         <ExpenditureBalances expenditure={expenditure} />
-
-        <div>
-          <div>Slots</div>
-          <ul className={styles.recipients}>
-            {expenditure.slots.map((slot) => (
-              <li key={slot.id} className={styles.recipient}>
-                <div>
-                  <div>Slot ID</div>
-                  <div>{slot.id}</div>
-                </div>
-
-                <div>
-                  <div>Recipient address</div>
-                  <MaskedAddress address={slot.recipientAddress ?? ''} />
-                </div>
-
-                <div>
-                  <div>Token address</div>
-                  {slot.payouts?.map((payout) => (
-                    <MaskedAddress
-                      key={payout.tokenAddress}
-                      address={payout.tokenAddress}
-                    />
-                  ))}
-                </div>
-
-                <div>
-                  <div>Amount</div>
-                  {slot.payouts?.map((payout) => (
-                    <div key={payout.tokenAddress}>
-                      <Numeral
-                        value={payout.amount}
-                        decimals={colony.nativeToken.decimals}
-                        suffix={colony.nativeToken.symbol}
-                      />
-                    </div>
-                  ))}
-                </div>
-
-                <div>
-                  <div>Claim delay</div>
-                  <div>
-                    {slot.claimDelay ? `${slot.claimDelay} seconds` : 'None'}
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-
+        <ExpenditurePayouts expenditure={expenditure} colony={colony} />
         <ExpenditureAdvanceButton expenditure={expenditure} colony={colony} />
       </div>
     </div>

@@ -6,16 +6,25 @@ import { Colony } from '~types';
 import Button, { IconButton } from '~shared/Button';
 
 import styles from './ExpenditureForm.module.css';
-import { getInitialSlotFieldValue } from './helpers';
+import { getInitialPayoutFieldValue } from './helpers';
+import { ExpenditureFormProps } from './ExpenditureForm';
 
-interface ExpenditureFormFieldsProps {
+interface ExpenditureFormFieldsProps extends ExpenditureFormProps {
   colony: Colony;
 }
 
-const ExpenditureFormFields = ({ colony }: ExpenditureFormFieldsProps) => {
+const ExpenditureFormFields = ({
+  colony,
+  onCancelClick,
+  submitButtonText = 'Create expenditure',
+  showCancelButton = false,
+}: ExpenditureFormFieldsProps) => {
   const { control } = useFormContext();
 
-  const { fields, append, remove } = useFieldArray({ name: 'slots', control });
+  const { fields, append, remove } = useFieldArray({
+    name: 'payouts',
+    control,
+  });
 
   return (
     <>
@@ -28,24 +37,40 @@ const ExpenditureFormFields = ({ colony }: ExpenditureFormFieldsProps) => {
             disabled={fields.length <= 1}
           />
           <Input
-            name={`slots.${index}.recipientAddress`}
+            name={`payouts.${index}.recipientAddress`}
             label="Recipient address"
           />
-          <Input name={`slots.${index}.tokenAddress`} label="Token address" />
+          <Input name={`payouts.${index}.tokenAddress`} label="Token address" />
           <div className={styles.amountField}>
-            <Input name={`slots.${index}.amount`} label="Amount" />
+            <Input name={`payouts.${index}.amount`} label="Amount" />
             <div>{colony.nativeToken.symbol}</div>
           </div>
         </div>
       ))}
-      <Button
-        onClick={() =>
-          append(getInitialSlotFieldValue(colony.nativeToken.tokenAddress))
-        }
-        appearance={{ size: 'small' }}
-      >
-        New recipient
-      </Button>
+
+      <div className={styles.buttons}>
+        {showCancelButton && (
+          <div className={styles.cancelButton}>
+            <Button
+              appearance={{ size: 'small' }}
+              onClick={() => onCancelClick?.()}
+            >
+              Cancel
+            </Button>
+          </div>
+        )}
+        <Button
+          appearance={{
+            size: 'small',
+          }}
+          onClick={() =>
+            append(getInitialPayoutFieldValue(colony.nativeToken.tokenAddress))
+          }
+        >
+          Add recipient
+        </Button>
+        <Button type="submit">{submitButtonText}</Button>
+      </div>
     </>
   );
 };

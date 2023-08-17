@@ -18,3 +18,13 @@
 .amountField > div {
   margin-bottom: 0 !important;
 }
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.cancelButton {
+  margin-right: auto;
+}
