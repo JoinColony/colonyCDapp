@@ -17,14 +17,22 @@ const DetailsWidget = ({ colony, actionData }: Props) => {
   const detailItems = getDetailItems(actionData, colony);
   return (
     <div>
-      {detailItems.map(({ label, labelValues, item }) => (
-        <DetailItem
-          label={label}
-          labelValues={labelValues}
-          item={item}
-          key={nanoid()}
-        />
-      ))}
+      {detailItems.map(({ label, labelValues, item }) => {
+        // If no label assume the item is self contained
+        // for example the Safe Transaction item
+        if (!label) {
+          return item;
+        }
+
+        return (
+          <DetailItem
+            label={label}
+            labelValues={labelValues}
+            item={item}
+            key={nanoid()}
+          />
+        );
+      })}
     </div>
   );
 };
