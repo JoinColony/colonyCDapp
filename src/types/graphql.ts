@@ -28,18 +28,14 @@ import {
   UnclaimedStakesFragment,
   AnnotationFragment,
   ColonyDecisionFragment,
-  ContributorWithReputationFragment,
+  ColonyContributorFragment,
 } from '~gql';
-import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
 
 export type AnnotationType = AnnotationFragment;
 
-export type ContributorWithReputation = Omit<
-  ContributorWithReputationFragment,
-  'type'
-> & { type?: ContributorTypeFilter | null };
-
 export type ColonyDecision = ColonyDecisionFragment;
+
+export type ColonyContributor = ColonyContributorFragment;
 
 export type User = UserFragment;
 

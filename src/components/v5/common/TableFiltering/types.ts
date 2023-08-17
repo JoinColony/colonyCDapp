@@ -29,8 +29,8 @@ export enum ContributorTypeFilter {
 export type ContributorType = `${ContributorTypeFilter}`;
 
 export enum StatusFilter {
-  verified = 'statusVerified',
-  notVerified = 'statusNotVerified',
+  Verified = 'statusVerified',
+  NotVerified = 'statusNotVerified',
 }
 
 export type StatusType = `${StatusFilter}`;

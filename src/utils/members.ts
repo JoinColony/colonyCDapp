@@ -1,17 +1,22 @@
-import { ContributorWithReputation } from '~types';
+import { ColonyContributor } from '~types';
 
 export const searchMembers = (
-  members: ContributorWithReputation[],
+  members: ColonyContributor[],
   searchValue?: string,
 ) => {
   if (!searchValue) {
     return members;
   }
 
-  return members.filter(({ address, user }) => {
+  return members.filter(({ contributorAddress: address, user }) => {
     return (
       user?.name.toLowerCase().startsWith(searchValue?.toLowerCase() ?? '') ||
       address.toLowerCase().startsWith(searchValue?.toLowerCase() ?? '')
     );
   });
 };
+
+export const getColonyContributorId = (
+  colonyAddress: string,
+  walletAddress: string,
+) => `${colonyAddress}_${walletAddress}`;

@@ -5,7 +5,16 @@ import { Action, AllActions, ActionTypes } from '~redux';
 import { ContextModule, getContext } from '~context';
 import { transactionPending, transactionReady } from '~redux/actionCreators';
 import {
+  CreateColonyContributorDocument,
+  CreateColonyContributorMutation,
+  CreateColonyContributorMutationVariables,
+  GetColonyContributorDocument,
+  GetColonyContributorQuery,
+  GetColonyContributorQueryVariables,
   GetFullColonyByNameDocument,
+  UpdateColonyContributorDocument,
+  UpdateColonyContributorMutation,
+  UpdateColonyContributorMutationVariables,
   UpdateColonyMetadataDocument,
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
@@ -22,6 +31,7 @@ import {
   takeFrom,
   uploadAnnotation,
 } from '../utils';
+import { getColonyContributorId } from '~utils/members';
 
 function* manageVerifiedRecipients({
   payload: {
@@ -159,6 +169,55 @@ function* manageVerifiedRecipients({
         refetchQueries: [GetFullColonyByNameDocument],
       });
     }
+
+    yield Promise.all(
+      verifiedAddresses.map(async (address) => {
+        const { data } = await apolloClient.query<
+          GetColonyContributorQuery,
+          GetColonyContributorQueryVariables
+        >({
+          query: GetColonyContributorDocument,
+          variables: { id: getColonyContributorId(colonyAddress, address) },
+        });
+
+        const isAlreadyContributor = !!data.getColonyContributor;
+
+        if (isAlreadyContributor) {
+          await apolloClient.mutate<
+            UpdateColonyContributorMutation,
+            UpdateColonyContributorMutationVariables
+          >({
+            mutation: UpdateColonyContributorDocument,
+            variables: {
+              input: {
+                id: getColonyContributorId(colonyAddress, address),
+                verified: true,
+              },
+            },
+            // Update colony object with modified metadata
+            refetchQueries: [GetFullColonyByNameDocument],
+          });
+        } else {
+          apolloClient.mutate<
+            CreateColonyContributorMutation,
+            CreateColonyContributorMutationVariables
+          >({
+            mutation: CreateColonyContributorDocument,
+            variables: {
+              input: {
+                id: getColonyContributorId(colonyAddress, address),
+                colonyAddress,
+                colonyReputationPercentage: 0,
+                contributorAddress: address,
+                verified: true,
+              },
+            },
+            // Update colony object with modified metadata
+            refetchQueries: [GetFullColonyByNameDocument],
+          });
+        }
+      }),
+    );
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_SUCCESS,

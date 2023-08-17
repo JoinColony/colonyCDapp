@@ -12,8 +12,12 @@ import { useMemberContext } from '~context/MemberContext';
 const displayName = 'v5.pages.MembersPage';
 
 const MembersPage: FC = () => {
-  const { contributors, followers, loadingContributors, loadingAllMembers } =
-    useMemberContext();
+  const {
+    contributors,
+    members: followers,
+    loadingContributors,
+    loadingMembers,
+  } = useMemberContext();
   const { colony } = useColonyContext();
   const { name } = colony || {};
   const followersURL = `/colony/${name}/followers`;
@@ -48,7 +52,7 @@ const MembersPage: FC = () => {
                   id: 'membersPage.contributors.emptyDescription',
                 }}
                 list={followers}
-                isLoading={loadingAllMembers}
+                isLoading={loadingMembers}
                 viewMoreUrl={followersURL}
               />
             </div>

@@ -1,18 +1,18 @@
-import { ColonyRole } from '@colony/colony-js';
+import { ColonyRole, Id } from '@colony/colony-js';
 import { useMemo, useState } from 'react';
 
 import { useGetColonyContributorsQuery } from '~gql';
+import { useColonyContext } from '~hooks';
+import { SortDirection } from '~types';
 import { notNull } from '~utils/arrays';
 import {
   ContributorTypeFilter,
   StatusType,
 } from '~v5/common/TableFiltering/types';
-import useColonyContext from '../useColonyContext';
-import useMemberFilters from './useMemberFilters';
-import { SortDirection } from '~types';
 import { hasSomeRole, updateQuery } from './utils';
+import useMemberFilters from './useMemberFilters';
 
-const useAllMembers = ({
+const useColonyContributors = ({
   filterPermissions,
   nativeDomainIds,
   filterStatus,
@@ -46,40 +46,44 @@ const useAllMembers = ({
   const { items, nextToken } = data?.getContributorsByColony || {};
 
   /*
-   * To be considered a member, you must either:
-   * be watching the colony, or
-   * be verified in the colony, or
-   * have at least one permission in any domain
-   * have at least some reputation in any domain
+   * To be considered a contributor, you must:
+   * have at least one permission or
+   * have at least some reputation in the selected domains
    */
 
-  const allMembers = useMemo(
-    () =>
-      items
-        ?.filter(notNull)
-        .filter(({ verified: isVerified, roles, reputation, user }) => {
-          // We filter these lists for the colony address in the query.
-          const isWatchingColony =
-            !!user?.watchlist?.items.filter(notNull).length;
-          // The Colony Roles entry associated with the user could have all permissions set to false, so we check for that here
-          const hasPermissions = !!roles?.items
-            .filter(notNull)
+  const allContributors = useMemo(() => {
+    const databaseDomainIds = new Set(
+      nativeDomainIds.map((id) => `${colonyAddress}_${id}`),
+    );
+
+    // Always include the root domain, since if the user has a permission in root, they have it in all domains
+    const permissionsDomainIds = new Set([
+      `${colonyAddress}_${Id.RootDomain}`,
+      ...databaseDomainIds,
+    ]);
+
+    return (
+      items?.filter(notNull).filter(({ roles, reputation }) => {
+        const filteredRoles = roles?.items.filter(notNull) ?? [];
+        const filteredReputation = reputation?.items.filter(notNull) ?? [];
+
+        return (
+          filteredReputation.some(({ domainId }) =>
+            databaseDomainIds.has(domainId),
+          ) ||
+          filteredRoles.some(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            .filter(({ domainId, id, __typename, ...permissions }) =>
+            ({ domainId, id, __typename, ...permissions }) =>
+              permissionsDomainIds.has(domainId) &&
               hasSomeRole(permissions, []),
-            ).length;
-          // That reputation is not 0 is checked for in the query
-          const hasReputation = !!reputation?.items.filter(notNull).length;
+          )
+        );
+      }) ?? []
+    );
+  }, [items, colonyAddress, nativeDomainIds]);
 
-          return (
-            isWatchingColony || hasPermissions || hasReputation || isVerified
-          );
-        }) ?? [],
-    [items],
-  );
-
-  const filteredMembers = useMemberFilters({
-    members: allMembers,
+  const filteredContributors = useMemberFilters({
+    members: allContributors,
     contributorTypes,
     filterPermissions,
     nativeDomainIds,
@@ -91,7 +95,7 @@ const useAllMembers = ({
   // we fetch more data in the background whenever this happens, and then only show up to the (pageSize * pageNo)
   // number of items.
 
-  if (filteredMembers.length < visibleItems && nextToken) {
+  if (filteredContributors.length < visibleItems && nextToken) {
     fetchMore({
       variables: { nextToken },
       updateQuery,
@@ -99,8 +103,8 @@ const useAllMembers = ({
   }
 
   return {
-    members: filteredMembers.slice(0, visibleItems),
-    canLoadMore: filteredMembers.length > visibleItems || !!nextToken,
+    contributors: filteredContributors.slice(0, visibleItems),
+    canLoadMore: filteredContributors.length > visibleItems || !!nextToken,
     loadMore() {
       setPage((prevPage) => prevPage + 1);
     },
@@ -108,4 +112,4 @@ const useAllMembers = ({
   };
 };
 
-export default useAllMembers;
+export default useColonyContributors;

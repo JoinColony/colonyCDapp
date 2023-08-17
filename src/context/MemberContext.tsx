@@ -5,7 +5,6 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useState,
 } from 'react';
 import { useParams } from 'react-router-dom';
 import { Id } from '@colony/colony-js';
@@ -14,28 +13,28 @@ import { FilterContextProvider, useFilterContext } from './FilterContext';
 
 import {
   useColonyContext,
-  useContributors,
-  useAllMembers,
   useMobile,
+  useColonyContributors,
+  useAllMembers,
 } from '~hooks';
 import { SearchContextProvider } from './SearchContext';
 import { notNull } from '~utils/arrays';
-import { ContributorWithReputation } from '~types';
 import {
   HOMEPAGE_MEMBERS_LIST_LIMIT,
   HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT,
 } from '~constants';
+import { ColonyContributor } from '~types';
 
 const MemberContext = createContext<
   | {
-      followers: ContributorWithReputation[];
-      contributors: ContributorWithReputation[];
+      members: ColonyContributor[];
+      contributors: ColonyContributor[];
       loadingContributors: boolean;
-      loadingAllMembers: boolean;
+      loadingMembers: boolean;
       loadMoreContributors: () => void;
-      loadMoreAll: () => void;
+      loadMoreMembers: () => void;
       moreContributors: boolean;
-      moreAllMembers: boolean;
+      moreMembers: boolean;
       membersLimit: number;
     }
   | undefined
@@ -47,11 +46,9 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const { domains } = colony ?? {};
   const isMobile = useMobile();
 
-  const pageLimit = isMobile
+  const pageSize = isMobile
     ? HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT
     : HOMEPAGE_MEMBERS_LIST_LIMIT;
-  const [limitContributors, setLimitContributors] = useState<number>(pageLimit);
-  const [limitAll, setLimitAll] = useState<number>(pageLimit);
 
   const {
     getFilterDomainIds: getDomainIds,
@@ -112,57 +109,60 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     [getFilterPermissions],
   );
   const contributorTypes = useMemo(
-    () => getFilterContributorType(),
+    () => new Set(getFilterContributorType()),
     [getFilterContributorType],
   );
 
   const {
     contributors,
+    canLoadMore: moreContributors,
+    loadMore: loadMoreContributors,
     loading: loadingContributors,
-    canFetchMore,
-  } = useContributors({
-    nativeDomainIds,
-    permissions,
-    filterStatus,
-    sortingMethod,
+  } = useColonyContributors({
     contributorTypes,
-    limit: limitContributors,
+    filterPermissions: permissions,
+    filterStatus,
+    nativeDomainIds,
+    sortDirection: sortingMethod,
+    pageSize,
   });
 
   const {
-    allMembers,
-    loading: loadingAllMembers,
-    canFetchMore: canFetchMoreAll,
+    members,
+    canLoadMore: moreMembers,
+    loadMore: loadMoreMembers,
+    loading: loadingMembers,
   } = useAllMembers({
-    nativeDomainIds,
-    permissions,
-    filterStatus,
-    sortingMethod,
     contributorTypes,
-    limit: limitAll,
+    filterPermissions: permissions,
+    filterStatus,
+    nativeDomainIds,
+    sortDirection: sortingMethod,
+    pageSize,
   });
 
   const value = useMemo(
     () => ({
-      followers: allMembers,
+      members,
       contributors,
-      moreContributors: canFetchMore,
-      moreAllMembers: canFetchMoreAll,
-      loadMoreContributors: () =>
-        setLimitContributors((oldLimit) => oldLimit + pageLimit),
-      loadMoreAll: () => setLimitAll((oldLimit) => oldLimit + pageLimit),
+      moreContributors,
+      moreMembers,
+      loadMoreContributors,
+      loadMoreMembers,
       loadingContributors,
-      loadingAllMembers,
-      membersLimit: pageLimit,
+      loadingMembers,
+      membersLimit: pageSize,
     }),
     [
+      members,
       contributors,
+      pageSize,
+      moreContributors,
       loadingContributors,
-      loadingAllMembers,
-      allMembers,
-      pageLimit,
-      canFetchMore,
-      canFetchMoreAll,
+      loadMoreContributors,
+      moreMembers,
+      loadingMembers,
+      loadMoreMembers,
     ],
   );
 

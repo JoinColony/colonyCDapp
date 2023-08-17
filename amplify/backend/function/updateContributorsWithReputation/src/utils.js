@@ -1,7 +1,9 @@
 const { default: fetch, Request } = require('node-fetch');
 const {
-  createContributorWithReputation,
-  updateContributorWithReputation,
+  createContributorReputation,
+  updateContributorReputation,
+  createColonyContributor,
+  updateColonyContributor,
 } = require('./graphql');
 
 const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
@@ -140,31 +142,27 @@ const getContributorType = (total, idx, createdAt) => {
   return contributorTypeMap.GENERAL;
 };
 
-const createReputedContributorInDb = async ({
+const createContributorReputationInDb = async ({
   colonyAddress,
   contributorAddress,
   nativeDomainId,
-  domainReputationPercentage,
-  colonyReputationPercentage,
+  reputationPercentage,
   id,
-  reputation,
-  type,
+  reputationRaw,
   graphqlURL,
   apiKey,
 }) => {
   const { errors } =
     (await graphqlRequest(
-      createContributorWithReputation,
+      createContributorReputation,
       {
         input: {
           colonyAddress,
           contributorAddress,
           domainId: getDomainDatabaseId(colonyAddress, nativeDomainId),
           id,
-          reputation,
-          domainReputationPercentage,
-          colonyReputationPercentage,
-          type,
+          reputationRaw,
+          reputationPercentage,
         },
       },
       graphqlURL,
@@ -176,25 +174,79 @@ const createReputedContributorInDb = async ({
   }
 };
 
-const updateReputedContributorInDb = async ({
+const updateContributorReputationInDb = async ({
   id,
-  reputation,
-  domainReputationPercentage,
-  colonyReputationPercentage,
-  type,
+  reputationRaw,
+  reputationPercentage,
   graphqlURL,
   apiKey,
 }) => {
-  // if exists, update existing contributor
   const { errors } =
     (await graphqlRequest(
-      updateContributorWithReputation,
+      updateContributorReputation,
       {
-        id,
-        reputation,
-        type,
-        domainReputationPercentage,
-        colonyReputationPercentage,
+        input: {
+          id,
+          reputationRaw,
+          reputationPercentage,
+        },
+      },
+      graphqlURL,
+      apiKey,
+    )) ?? {};
+
+  if (errors) {
+    throw new Error(errors[0].message);
+  }
+};
+
+const updateColonyContributorInDb = async ({
+  id,
+  type,
+  colonyReputationPercentage,
+  graphqlURL,
+  apiKey,
+}) => {
+  const { errors } =
+    (await graphqlRequest(
+      updateColonyContributor,
+      {
+        input: {
+          id,
+          type,
+          colonyReputationPercentage,
+        },
+      },
+      graphqlURL,
+      apiKey,
+    )) ?? {};
+
+  if (errors) {
+    throw new Error(errors[0].message);
+  }
+};
+
+const createColonyContributorInDb = async ({
+  id,
+  contributorAddress,
+  type,
+  colonyAddress,
+  colonyReputationPercentage,
+  graphqlURL,
+  apiKey,
+}) => {
+  const { errors } =
+    (await graphqlRequest(
+      createColonyContributor,
+      {
+        input: {
+          id,
+          contributorAddress,
+          verified: false,
+          type,
+          colonyAddress,
+          colonyReputationPercentage,
+        },
       },
       graphqlURL,
       apiKey,
@@ -209,7 +261,9 @@ module.exports = {
   graphqlRequest,
   getContributorType,
   sortAddressesDescendingByReputation,
-  createReputedContributorInDb,
-  updateReputedContributorInDb,
+  updateContributorReputationInDb,
+  createColonyContributorInDb,
+  createContributorReputationInDb,
+  updateColonyContributorInDb,
   isWithinLastHour,
 };

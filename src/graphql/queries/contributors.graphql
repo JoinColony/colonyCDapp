@@ -1,6 +1,6 @@
 query GetPermissionedContributors(
   $domainId: ID!
-  $colonyAddress: String!
+  $colonyAddress: ID!
   $limit: Int!
 ) {
   getRoleByDomainAndColony(
@@ -24,20 +24,26 @@ query GetPermissionedContributors(
   }
 }
 
-query GetContributorsWithReputation(
-  $colonyAddress: String!
-  $domainId: String!
-  $limit: Int!
+query GetColonyContributor($id: ID!) {
+  getColonyContributor(id: $id) {
+    id
+  }
+}
+
+query GetColonyContributors(
+  $colonyAddress: ID!
+  $sortDirection: ModelSortDirection = ASC
+  $limit: Int
+  $nextToken: String
 ) {
-  getContributorsByDomainAndColony(
+  getContributorsByColony(
     colonyAddress: $colonyAddress
-    domainId: { eq: $domainId }
-    filter: { reputation: { ne: "0" } }
+    sortDirection: $sortDirection
     limit: $limit
+    nextToken: $nextToken
   ) {
     items {
-      ...ContributorWithReputation
-      id
+      ...ColonyContributor
     }
     nextToken
   }

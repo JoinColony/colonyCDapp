@@ -1,0 +1,45 @@
+fragment ColonyContributor on ColonyContributor {
+  contributorAddress
+  verified
+  colonyReputationPercentage
+  roles(filter: { colonyAddress: { eq: $colonyAddress } }) {
+    items {
+      domainId
+      role_0
+      role_1
+      role_2
+      role_3
+      role_5
+      role_6
+      id
+    }
+  }
+  reputation(
+    filter: {
+      colonyAddress: { eq: $colonyAddress }
+      reputationRaw: { ne: "0" }
+    }
+  ) {
+    items {
+      domainId
+      id
+    }
+  }
+  user {
+    walletAddress: id
+    name
+    profile {
+      ...Profile
+    }
+    watchlist(filter: { colonyID: { eq: $colonyAddress } }) {
+      items {
+        id
+        createdAt
+        colony {
+          ...WatchedColony
+        }
+      }
+    }
+  }
+  type
+}

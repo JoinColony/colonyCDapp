@@ -7,18 +7,21 @@ const {
 const Decimal = require('decimal.js');
 
 const {
-  getContributorWithReputation,
+  getContributorReputation,
   getColony,
   updateColony,
+  getColonyContributor,
 } = require('./graphql');
 
 const {
   graphqlRequest,
   getContributorType,
   sortAddressesDescendingByReputation,
-  createReputedContributorInDb,
-  updateReputedContributorInDb,
+  createContributorReputationInDb,
+  updateContributorReputationInDb,
+  updateColonyContributorInDb,
   isWithinLastHour,
+  createColonyContributorInDb,
 } = require('./utils');
 
 Logger.setLogLevel(Logger.levels.ERROR);
@@ -148,6 +151,7 @@ exports.handler = async (event) => {
 
         // For each domain, sort addresses by reputation, get the contributor type, and
         // update the database with the corresponding ReputedContributor entry
+
         const sortedAddresses = await sortAddressesDescendingByReputation(
           colonyClient,
           skillId,
@@ -164,57 +168,87 @@ exports.handler = async (event) => {
             const colonyReputationPercentage = contributorRepDecimal
               .mul(100)
               .div(totalRepInColony.toString())
-              .toString();
+              .toNumber();
 
             const domainReputationPercentage = contributorRepDecimal
               .mul(100)
               .div(totalRepInDomain.toString())
-              .toString();
+              .toNumber();
 
-            const id = `${colonyAddress}_${nativeDomainId}_${contributorAddress}`;
+            const contributorReputationId = `${colonyAddress}_${nativeDomainId}_${contributorAddress}`;
+            const colonyContributorId = `${colonyAddress}_${contributorAddress}`;
             const reputation = reputationBN.toString();
+            const isRootDomain = nativeDomainId === Id.RootDomain;
 
-            const { data: response } =
+            const { data: repResponse } =
               (await graphqlRequest(
-                getContributorWithReputation,
-                { id },
+                getContributorReputation,
+                { id: contributorReputationId },
                 graphqlURL,
                 apiKey,
               )) ?? {};
 
-            if (response?.getContributorWithReputation) {
-              const { createdAt } = response.getContributorWithReputation;
-              const type =
-                nativeDomainId === Id.RootDomain
-                  ? getContributorType(totalAddresses, idx, createdAt)
-                  : null;
+            // If root domain, check if we have a contributor entry
+            if (isRootDomain) {
+              const { data: contributorResponse } =
+                (await graphqlRequest(
+                  getColonyContributor,
+                  { id: colonyContributorId },
+                  graphqlURL,
+                  apiKey,
+                )) ?? {};
 
-              await updateReputedContributorInDb({
-                id,
-                reputation,
-                domainReputationPercentage,
-                colonyReputationPercentage,
-                type,
+              if (contributorResponse?.getColonyContributor) {
+                const { createdAt } =
+                  repResponse?.getContributorReputation ??
+                  new Date().toISOString();
+
+                const type = getContributorType(totalAddresses, idx, createdAt);
+
+                await updateColonyContributorInDb({
+                  id: colonyContributorId,
+                  type,
+                  colonyReputationPercentage,
+                  graphqlURL,
+                  apiKey,
+                });
+              } else {
+                const type = getContributorType(
+                  totalAddresses,
+                  idx,
+                  new Date().toISOString(),
+                );
+
+                await createColonyContributorInDb({
+                  id: colonyContributorId,
+                  type,
+                  contributorAddress,
+                  colonyAddress,
+                  colonyReputationPercentage,
+                  graphqlURL,
+                  apiKey,
+                });
+              }
+            }
+
+            // for every domain, add / update contributor reputation entry
+
+            if (repResponse?.getContributorReputation) {
+              await updateContributorReputationInDb({
+                id: contributorReputationId,
+                reputationRaw: reputation,
+                reputationPercentage: domainReputationPercentage,
                 graphqlURL,
                 apiKey,
               });
             } else {
-              const type = Id.RootDomain
-                ? getContributorType(
-                    totalAddresses,
-                    idx,
-                    new Date().toISOString(),
-                  )
-                : null;
-              await createReputedContributorInDb({
+              await createContributorReputationInDb({
                 colonyAddress,
                 contributorAddress,
                 nativeDomainId,
-                id,
-                reputation,
-                domainReputationPercentage,
-                colonyReputationPercentage,
-                type,
+                id: contributorReputationId,
+                reputationRaw: reputation,
+                reputationPercentage: domainReputationPercentage,
                 graphqlURL,
                 apiKey,
               });

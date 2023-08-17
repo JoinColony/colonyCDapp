@@ -1,4 +1,4 @@
-import { ContributorWithReputation, User } from '~types';
+import { ColonyContributor, User } from '~types';
 import { UserStatusMode } from '~v5/common/Pills/types';
 
 export type Permissions = {
@@ -21,7 +21,7 @@ export type CardWithBiosProps = {
   permissions?: Permissions[];
   shouldBeMenuVisible: boolean;
   isVerified?: boolean;
-  userData?: ContributorWithReputation;
+  userData?: ColonyContributor;
   isContributorsList?: boolean;
 };
 

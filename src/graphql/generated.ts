@@ -435,6 +435,50 @@ export type ColonyChainFundsClaimInput = {
   updatedAt?: InputMaybe<Scalars['AWSDateTime']>;
 };
 
+/** The ColonyContributor model represents a contributor to the Colony. */
+export type ColonyContributor = {
+  __typename?: 'ColonyContributor';
+  /** Address of the colony the contributor is under */
+  colonyAddress: Scalars['ID'];
+  /** The contributor's reputation percentage in the colony */
+  colonyReputationPercentage: Scalars['Float'];
+  /** The address of the contributor */
+  contributorAddress: Scalars['ID'];
+  createdAt: Scalars['AWSDateTime'];
+  /**
+   * Unique identifier
+   * Format: <colonyAddress>_<contributorAddress>
+   */
+  id: Scalars['ID'];
+  reputation?: Maybe<ModelContributorReputationConnection>;
+  roles?: Maybe<ModelColonyRoleConnection>;
+  /** The type of the contributor */
+  type?: Maybe<ContributorType>;
+  updatedAt: Scalars['AWSDateTime'];
+  /** Associated user, if any */
+  user?: Maybe<User>;
+  /** Is the contributor a member of the colony's whitelist? */
+  verified: Scalars['Boolean'];
+};
+
+
+/** The ColonyContributor model represents a contributor to the Colony. */
+export type ColonyContributorReputationArgs = {
+  filter?: InputMaybe<ModelContributorReputationFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** The ColonyContributor model represents a contributor to the Colony. */
+export type ColonyContributorRolesArgs = {
+  filter?: InputMaybe<ModelColonyRoleFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
 export type ColonyDecision = {
   __typename?: 'ColonyDecision';
   action?: Maybe<ColonyAction>;
@@ -682,10 +726,10 @@ export type ColonyMotionMessagesArgs = {
 export type ColonyRole = {
   __typename?: 'ColonyRole';
   /** The colony in which the role was set */
-  colonyAddress: Scalars['String'];
+  colonyAddress: Scalars['ID'];
   colonyRolesId?: Maybe<Scalars['ID']>;
   createdAt: Scalars['AWSDateTime'];
-  /** Expaneded `Domain` model, based on the `domainId` given */
+  /** Expanded `Domain` model, based on the `domainId` given */
   domain: Domain;
   /** Unique identifier of the domain */
   domainId: Scalars['ID'];
@@ -850,6 +894,29 @@ export type Contributor = {
   user?: Maybe<User>;
 };
 
+export type ContributorReputation = {
+  __typename?: 'ContributorReputation';
+  /** The colony the reputation was earned in */
+  colonyAddress: Scalars['ID'];
+  /** The address of the contributor */
+  contributorAddress: Scalars['ID'];
+  createdAt: Scalars['AWSDateTime'];
+  /** The associated Domain model */
+  domain: Domain;
+  /** The domain id in which the contributor has reputation */
+  domainId: Scalars['ID'];
+  /**
+   * Unique identifier
+   * Format: `<colonyAddress>_<domainNativeId>_<contributorAddress>`
+   */
+  id: Scalars['ID'];
+  /** The percentage of the contributor's reputation in the domain */
+  reputationPercentage: Scalars['Float'];
+  /** The raw value of the contributor's reputation in the domain */
+  reputationRaw: Scalars['String'];
+  updatedAt: Scalars['AWSDateTime'];
+};
+
 /** The types of contributor a user can be in a colony */
 export enum ContributorType {
   Active = 'ACTIVE',
@@ -859,38 +926,6 @@ export enum ContributorType {
   Top = 'TOP',
   Verified = 'VERIFIED'
 }
-
-/** The ContributorWithReputation model represents an address with reputation. */
-export type ContributorWithReputation = {
-  __typename?: 'ContributorWithReputation';
-  /** Address of the colony the contributor is under */
-  colonyAddress: Scalars['String'];
-  /**
-   * The percentage of the contributor's reputation in the colony
-   * (Even though the ContributorWithReputation model is domain-specific, we store the colony-wide percentage here as well
-   * to enable fast and simple sorting on the MembersPage)
-   */
-  colonyReputationPercentage: Scalars['String'];
-  /** The address of the contributor */
-  contributorAddress: Scalars['ID'];
-  createdAt: Scalars['AWSDateTime'];
-  /** The domain id the contributor is associated with */
-  domainId: Scalars['String'];
-  /** The percentage of the contributor's reputation in the domain */
-  domainReputationPercentage: Scalars['String'];
-  /**
-   * Unique identifier
-   * Format: <colonyAddress>_<nativeDomainId>_<contributorAddress>
-   */
-  id: Scalars['ID'];
-  /** The contributor's reputation */
-  reputation: Scalars['String'];
-  /** The type of the contributor */
-  type?: Maybe<ContributorType>;
-  updatedAt: Scalars['AWSDateTime'];
-  /** Associated user, if any */
-  user?: Maybe<User>;
-};
 
 export type CreateAnnotationInput = {
   actionId: Scalars['ID'];
@@ -924,6 +959,15 @@ export type CreateColonyActionInput = {
   toDomainId?: InputMaybe<Scalars['ID']>;
   tokenAddress?: InputMaybe<Scalars['ID']>;
   type: ColonyActionType;
+};
+
+export type CreateColonyContributorInput = {
+  colonyAddress: Scalars['ID'];
+  colonyReputationPercentage: Scalars['Float'];
+  contributorAddress: Scalars['ID'];
+  id?: InputMaybe<Scalars['ID']>;
+  type?: InputMaybe<ContributorType>;
+  verified: Scalars['Boolean'];
 };
 
 export type CreateColonyDecisionInput = {
@@ -1027,7 +1071,7 @@ export type CreateColonyMotionInput = {
 };
 
 export type CreateColonyRoleInput = {
-  colonyAddress: Scalars['String'];
+  colonyAddress: Scalars['ID'];
   colonyRolesId?: InputMaybe<Scalars['ID']>;
   domainId: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
@@ -1068,15 +1112,13 @@ export type CreateContractEventInput = {
   target: Scalars['String'];
 };
 
-export type CreateContributorWithReputationInput = {
-  colonyAddress: Scalars['String'];
-  colonyReputationPercentage: Scalars['String'];
+export type CreateContributorReputationInput = {
+  colonyAddress: Scalars['ID'];
   contributorAddress: Scalars['ID'];
-  domainId: Scalars['String'];
-  domainReputationPercentage: Scalars['String'];
+  domainId: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
-  reputation: Scalars['String'];
-  type?: InputMaybe<ContributorType>;
+  reputationPercentage: Scalars['Float'];
+  reputationRaw: Scalars['String'];
 };
 
 export type CreateCurrentNetworkInverseFeeInput = {
@@ -1238,6 +1280,10 @@ export type DeleteColonyActionInput = {
   id: Scalars['ID'];
 };
 
+export type DeleteColonyContributorInput = {
+  id: Scalars['ID'];
+};
+
 export type DeleteColonyDecisionInput = {
   id: Scalars['ID'];
 };
@@ -1282,7 +1328,7 @@ export type DeleteContractEventInput = {
   id: Scalars['ID'];
 };
 
-export type DeleteContributorWithReputationInput = {
+export type DeleteContributorReputationInput = {
   id: Scalars['ID'];
 };
 
@@ -1822,6 +1868,35 @@ export type ModelColonyConnection = {
   nextToken?: Maybe<Scalars['String']>;
 };
 
+export type ModelColonyContributorConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelColonyContributorConditionInput>>>;
+  colonyAddress?: InputMaybe<ModelIdInput>;
+  colonyReputationPercentage?: InputMaybe<ModelFloatInput>;
+  contributorAddress?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelColonyContributorConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelColonyContributorConditionInput>>>;
+  type?: InputMaybe<ModelContributorTypeInput>;
+  verified?: InputMaybe<ModelBooleanInput>;
+};
+
+export type ModelColonyContributorConnection = {
+  __typename?: 'ModelColonyContributorConnection';
+  items: Array<Maybe<ColonyContributor>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelColonyContributorFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelColonyContributorFilterInput>>>;
+  colonyAddress?: InputMaybe<ModelIdInput>;
+  colonyReputationPercentage?: InputMaybe<ModelFloatInput>;
+  contributorAddress?: InputMaybe<ModelIdInput>;
+  id?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelColonyContributorFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelColonyContributorFilterInput>>>;
+  type?: InputMaybe<ModelContributorTypeInput>;
+  verified?: InputMaybe<ModelBooleanInput>;
+};
+
 export type ModelColonyDecisionConditionInput = {
   actionId?: InputMaybe<ModelIdInput>;
   and?: InputMaybe<Array<InputMaybe<ModelColonyDecisionConditionInput>>>;
@@ -2055,7 +2130,7 @@ export type ModelColonyMotionFilterInput = {
 
 export type ModelColonyRoleConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelColonyRoleConditionInput>>>;
-  colonyAddress?: InputMaybe<ModelStringInput>;
+  colonyAddress?: InputMaybe<ModelIdInput>;
   colonyRolesId?: InputMaybe<ModelIdInput>;
   domainId?: InputMaybe<ModelIdInput>;
   latestBlock?: InputMaybe<ModelIntInput>;
@@ -2078,7 +2153,7 @@ export type ModelColonyRoleConnection = {
 
 export type ModelColonyRoleFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelColonyRoleFilterInput>>>;
-  colonyAddress?: InputMaybe<ModelStringInput>;
+  colonyAddress?: InputMaybe<ModelIdInput>;
   colonyRolesId?: InputMaybe<ModelIdInput>;
   domainId?: InputMaybe<ModelIdInput>;
   id?: InputMaybe<ModelIdInput>;
@@ -2184,42 +2259,38 @@ export type ModelContractEventFilterInput = {
   target?: InputMaybe<ModelStringInput>;
 };
 
-export type ModelContributorTypeInput = {
-  eq?: InputMaybe<ContributorType>;
-  ne?: InputMaybe<ContributorType>;
-};
-
-export type ModelContributorWithReputationConditionInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelContributorWithReputationConditionInput>>>;
-  colonyAddress?: InputMaybe<ModelStringInput>;
-  colonyReputationPercentage?: InputMaybe<ModelStringInput>;
+export type ModelContributorReputationConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelContributorReputationConditionInput>>>;
+  colonyAddress?: InputMaybe<ModelIdInput>;
   contributorAddress?: InputMaybe<ModelIdInput>;
-  domainId?: InputMaybe<ModelStringInput>;
-  domainReputationPercentage?: InputMaybe<ModelStringInput>;
-  not?: InputMaybe<ModelContributorWithReputationConditionInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelContributorWithReputationConditionInput>>>;
-  reputation?: InputMaybe<ModelStringInput>;
-  type?: InputMaybe<ModelContributorTypeInput>;
+  domainId?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelContributorReputationConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelContributorReputationConditionInput>>>;
+  reputationPercentage?: InputMaybe<ModelFloatInput>;
+  reputationRaw?: InputMaybe<ModelStringInput>;
 };
 
-export type ModelContributorWithReputationConnection = {
-  __typename?: 'ModelContributorWithReputationConnection';
-  items: Array<Maybe<ContributorWithReputation>>;
+export type ModelContributorReputationConnection = {
+  __typename?: 'ModelContributorReputationConnection';
+  items: Array<Maybe<ContributorReputation>>;
   nextToken?: Maybe<Scalars['String']>;
 };
 
-export type ModelContributorWithReputationFilterInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelContributorWithReputationFilterInput>>>;
-  colonyAddress?: InputMaybe<ModelStringInput>;
-  colonyReputationPercentage?: InputMaybe<ModelStringInput>;
+export type ModelContributorReputationFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelContributorReputationFilterInput>>>;
+  colonyAddress?: InputMaybe<ModelIdInput>;
   contributorAddress?: InputMaybe<ModelIdInput>;
-  domainId?: InputMaybe<ModelStringInput>;
-  domainReputationPercentage?: InputMaybe<ModelStringInput>;
+  domainId?: InputMaybe<ModelIdInput>;
   id?: InputMaybe<ModelIdInput>;
-  not?: InputMaybe<ModelContributorWithReputationFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelContributorWithReputationFilterInput>>>;
-  reputation?: InputMaybe<ModelStringInput>;
-  type?: InputMaybe<ModelContributorTypeInput>;
+  not?: InputMaybe<ModelContributorReputationFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelContributorReputationFilterInput>>>;
+  reputationPercentage?: InputMaybe<ModelFloatInput>;
+  reputationRaw?: InputMaybe<ModelStringInput>;
+};
+
+export type ModelContributorTypeInput = {
+  eq?: InputMaybe<ContributorType>;
+  ne?: InputMaybe<ContributorType>;
 };
 
 export type ModelCurrentNetworkInverseFeeConditionInput = {
@@ -2369,6 +2440,15 @@ export type ModelFloatInput = {
   le?: InputMaybe<Scalars['Float']>;
   lt?: InputMaybe<Scalars['Float']>;
   ne?: InputMaybe<Scalars['Float']>;
+};
+
+export type ModelFloatKeyConditionInput = {
+  between?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  eq?: InputMaybe<Scalars['Float']>;
+  ge?: InputMaybe<Scalars['Float']>;
+  gt?: InputMaybe<Scalars['Float']>;
+  le?: InputMaybe<Scalars['Float']>;
+  lt?: InputMaybe<Scalars['Float']>;
 };
 
 export type ModelIdInput = {
@@ -2586,6 +2666,17 @@ export type ModelSubscriptionColonyActionFilterInput = {
   type?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
+export type ModelSubscriptionColonyContributorFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyContributorFilterInput>>>;
+  colonyAddress?: InputMaybe<ModelSubscriptionIdInput>;
+  colonyReputationPercentage?: InputMaybe<ModelSubscriptionFloatInput>;
+  contributorAddress?: InputMaybe<ModelSubscriptionIdInput>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyContributorFilterInput>>>;
+  type?: InputMaybe<ModelSubscriptionStringInput>;
+  verified?: InputMaybe<ModelSubscriptionBooleanInput>;
+};
+
 export type ModelSubscriptionColonyDecisionFilterInput = {
   actionId?: InputMaybe<ModelSubscriptionIdInput>;
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyDecisionFilterInput>>>;
@@ -2686,7 +2777,7 @@ export type ModelSubscriptionColonyMotionFilterInput = {
 
 export type ModelSubscriptionColonyRoleFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyRoleFilterInput>>>;
-  colonyAddress?: InputMaybe<ModelSubscriptionStringInput>;
+  colonyAddress?: InputMaybe<ModelSubscriptionIdInput>;
   domainId?: InputMaybe<ModelSubscriptionIdInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   latestBlock?: InputMaybe<ModelSubscriptionIntInput>;
@@ -2728,17 +2819,15 @@ export type ModelSubscriptionContractEventFilterInput = {
   target?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
-export type ModelSubscriptionContributorWithReputationFilterInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionContributorWithReputationFilterInput>>>;
-  colonyAddress?: InputMaybe<ModelSubscriptionStringInput>;
-  colonyReputationPercentage?: InputMaybe<ModelSubscriptionStringInput>;
+export type ModelSubscriptionContributorReputationFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionContributorReputationFilterInput>>>;
+  colonyAddress?: InputMaybe<ModelSubscriptionIdInput>;
   contributorAddress?: InputMaybe<ModelSubscriptionIdInput>;
-  domainId?: InputMaybe<ModelSubscriptionStringInput>;
-  domainReputationPercentage?: InputMaybe<ModelSubscriptionStringInput>;
+  domainId?: InputMaybe<ModelSubscriptionIdInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionContributorWithReputationFilterInput>>>;
-  reputation?: InputMaybe<ModelSubscriptionStringInput>;
-  type?: InputMaybe<ModelSubscriptionStringInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionContributorReputationFilterInput>>>;
+  reputationPercentage?: InputMaybe<ModelSubscriptionFloatInput>;
+  reputationRaw?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
 export type ModelSubscriptionCurrentNetworkInverseFeeFilterInput = {
@@ -3128,6 +3217,7 @@ export type Mutation = {
   createAnnotation?: Maybe<Annotation>;
   createColony?: Maybe<Colony>;
   createColonyAction?: Maybe<ColonyAction>;
+  createColonyContributor?: Maybe<ColonyContributor>;
   createColonyDecision?: Maybe<ColonyDecision>;
   createColonyExtension?: Maybe<ColonyExtension>;
   createColonyFundsClaim?: Maybe<ColonyFundsClaim>;
@@ -3138,7 +3228,7 @@ export type Mutation = {
   createColonyStake?: Maybe<ColonyStake>;
   createColonyTokens?: Maybe<ColonyTokens>;
   createContractEvent?: Maybe<ContractEvent>;
-  createContributorWithReputation?: Maybe<ContributorWithReputation>;
+  createContributorReputation?: Maybe<ContributorReputation>;
   createCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
   createCurrentVersion?: Maybe<CurrentVersion>;
   createDomain?: Maybe<Domain>;
@@ -3158,6 +3248,7 @@ export type Mutation = {
   deleteAnnotation?: Maybe<Annotation>;
   deleteColony?: Maybe<Colony>;
   deleteColonyAction?: Maybe<ColonyAction>;
+  deleteColonyContributor?: Maybe<ColonyContributor>;
   deleteColonyDecision?: Maybe<ColonyDecision>;
   deleteColonyExtension?: Maybe<ColonyExtension>;
   deleteColonyFundsClaim?: Maybe<ColonyFundsClaim>;
@@ -3168,7 +3259,7 @@ export type Mutation = {
   deleteColonyStake?: Maybe<ColonyStake>;
   deleteColonyTokens?: Maybe<ColonyTokens>;
   deleteContractEvent?: Maybe<ContractEvent>;
-  deleteContributorWithReputation?: Maybe<ContributorWithReputation>;
+  deleteContributorReputation?: Maybe<ContributorReputation>;
   deleteCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
   deleteCurrentVersion?: Maybe<CurrentVersion>;
   deleteDomain?: Maybe<Domain>;
@@ -3186,6 +3277,7 @@ export type Mutation = {
   updateAnnotation?: Maybe<Annotation>;
   updateColony?: Maybe<Colony>;
   updateColonyAction?: Maybe<ColonyAction>;
+  updateColonyContributor?: Maybe<ColonyContributor>;
   updateColonyDecision?: Maybe<ColonyDecision>;
   updateColonyExtension?: Maybe<ColonyExtension>;
   updateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
@@ -3196,7 +3288,7 @@ export type Mutation = {
   updateColonyStake?: Maybe<ColonyStake>;
   updateColonyTokens?: Maybe<ColonyTokens>;
   updateContractEvent?: Maybe<ContractEvent>;
-  updateContributorWithReputation?: Maybe<ContributorWithReputation>;
+  updateContributorReputation?: Maybe<ContributorReputation>;
   /** Update contributors with reputation in the database for a colony */
   updateContributorsWithReputation?: Maybe<Scalars['Boolean']>;
   updateCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
@@ -3237,6 +3329,13 @@ export type MutationCreateColonyArgs = {
 export type MutationCreateColonyActionArgs = {
   condition?: InputMaybe<ModelColonyActionConditionInput>;
   input: CreateColonyActionInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreateColonyContributorArgs = {
+  condition?: InputMaybe<ModelColonyContributorConditionInput>;
+  input: CreateColonyContributorInput;
 };
 
 
@@ -3311,9 +3410,9 @@ export type MutationCreateContractEventArgs = {
 
 
 /** Root mutation type */
-export type MutationCreateContributorWithReputationArgs = {
-  condition?: InputMaybe<ModelContributorWithReputationConditionInput>;
-  input: CreateContributorWithReputationInput;
+export type MutationCreateContributorReputationArgs = {
+  condition?: InputMaybe<ModelContributorReputationConditionInput>;
+  input: CreateContributorReputationInput;
 };
 
 
@@ -3435,6 +3534,13 @@ export type MutationDeleteColonyActionArgs = {
 
 
 /** Root mutation type */
+export type MutationDeleteColonyContributorArgs = {
+  condition?: InputMaybe<ModelColonyContributorConditionInput>;
+  input: DeleteColonyContributorInput;
+};
+
+
+/** Root mutation type */
 export type MutationDeleteColonyDecisionArgs = {
   condition?: InputMaybe<ModelColonyDecisionConditionInput>;
   input: DeleteColonyDecisionInput;
@@ -3505,9 +3611,9 @@ export type MutationDeleteContractEventArgs = {
 
 
 /** Root mutation type */
-export type MutationDeleteContributorWithReputationArgs = {
-  condition?: InputMaybe<ModelContributorWithReputationConditionInput>;
-  input: DeleteContributorWithReputationInput;
+export type MutationDeleteContributorReputationArgs = {
+  condition?: InputMaybe<ModelContributorReputationConditionInput>;
+  input: DeleteContributorReputationInput;
 };
 
 
@@ -3623,6 +3729,13 @@ export type MutationUpdateColonyActionArgs = {
 
 
 /** Root mutation type */
+export type MutationUpdateColonyContributorArgs = {
+  condition?: InputMaybe<ModelColonyContributorConditionInput>;
+  input: UpdateColonyContributorInput;
+};
+
+
+/** Root mutation type */
 export type MutationUpdateColonyDecisionArgs = {
   condition?: InputMaybe<ModelColonyDecisionConditionInput>;
   input: UpdateColonyDecisionInput;
@@ -3693,9 +3806,9 @@ export type MutationUpdateContractEventArgs = {
 
 
 /** Root mutation type */
-export type MutationUpdateContributorWithReputationArgs = {
-  condition?: InputMaybe<ModelContributorWithReputationConditionInput>;
-  input: UpdateContributorWithReputationInput;
+export type MutationUpdateContributorReputationArgs = {
+  condition?: InputMaybe<ModelContributorReputationConditionInput>;
+  input: UpdateContributorReputationInput;
 };
 
 
@@ -3934,6 +4047,7 @@ export type Query = {
   getColonyByAddress?: Maybe<ModelColonyConnection>;
   getColonyByName?: Maybe<ModelColonyConnection>;
   getColonyByType?: Maybe<ModelColonyConnection>;
+  getColonyContributor?: Maybe<ColonyContributor>;
   getColonyDecision?: Maybe<ColonyDecision>;
   getColonyDecisionByActionId?: Maybe<ModelColonyDecisionConnection>;
   getColonyDecisionByColonyAddress?: Maybe<ModelColonyDecisionConnection>;
@@ -3948,9 +4062,9 @@ export type Query = {
   getColonyStakeByUserAddress?: Maybe<ModelColonyStakeConnection>;
   getColonyTokens?: Maybe<ColonyTokens>;
   getContractEvent?: Maybe<ContractEvent>;
-  getContributorByAddressAndColony?: Maybe<ModelContributorWithReputationConnection>;
-  getContributorWithReputation?: Maybe<ContributorWithReputation>;
-  getContributorsByDomainAndColony?: Maybe<ModelContributorWithReputationConnection>;
+  getContributorByAddress?: Maybe<ModelColonyContributorConnection>;
+  getContributorReputation?: Maybe<ContributorReputation>;
+  getContributorsByColony?: Maybe<ModelColonyContributorConnection>;
   getCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
   getCurrentVersion?: Maybe<CurrentVersion>;
   getCurrentVersionByKey?: Maybe<ModelCurrentVersionConnection>;
@@ -3993,6 +4107,7 @@ export type Query = {
   listAnnotations?: Maybe<ModelAnnotationConnection>;
   listColonies?: Maybe<ModelColonyConnection>;
   listColonyActions?: Maybe<ModelColonyActionConnection>;
+  listColonyContributors?: Maybe<ModelColonyContributorConnection>;
   listColonyDecisions?: Maybe<ModelColonyDecisionConnection>;
   listColonyExtensions?: Maybe<ModelColonyExtensionConnection>;
   listColonyFundsClaims?: Maybe<ModelColonyFundsClaimConnection>;
@@ -4003,7 +4118,7 @@ export type Query = {
   listColonyStakes?: Maybe<ModelColonyStakeConnection>;
   listColonyTokens?: Maybe<ModelColonyTokensConnection>;
   listContractEvents?: Maybe<ModelContractEventConnection>;
-  listContributorWithReputations?: Maybe<ModelContributorWithReputationConnection>;
+  listContributorReputations?: Maybe<ModelContributorReputationConnection>;
   listCurrentNetworkInverseFees?: Maybe<ModelCurrentNetworkInverseFeeConnection>;
   listCurrentVersions?: Maybe<ModelCurrentVersionConnection>;
   listDomainMetadata?: Maybe<ModelDomainMetadataConnection>;
@@ -4095,6 +4210,12 @@ export type QueryGetColonyByTypeArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
   type: ColonyType;
+};
+
+
+/** Root query type */
+export type QueryGetColonyContributorArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -4202,10 +4323,10 @@ export type QueryGetContractEventArgs = {
 
 
 /** Root query type */
-export type QueryGetContributorByAddressAndColonyArgs = {
-  colonyAddress?: InputMaybe<ModelStringKeyConditionInput>;
+export type QueryGetContributorByAddressArgs = {
+  colonyReputationPercentage?: InputMaybe<ModelFloatKeyConditionInput>;
   contributorAddress: Scalars['ID'];
-  filter?: InputMaybe<ModelContributorWithReputationFilterInput>;
+  filter?: InputMaybe<ModelColonyContributorFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
@@ -4213,16 +4334,16 @@ export type QueryGetContributorByAddressAndColonyArgs = {
 
 
 /** Root query type */
-export type QueryGetContributorWithReputationArgs = {
+export type QueryGetContributorReputationArgs = {
   id: Scalars['ID'];
 };
 
 
 /** Root query type */
-export type QueryGetContributorsByDomainAndColonyArgs = {
-  colonyAddress: Scalars['String'];
-  domainId?: InputMaybe<ModelStringKeyConditionInput>;
-  filter?: InputMaybe<ModelContributorWithReputationFilterInput>;
+export type QueryGetContributorsByColonyArgs = {
+  colonyAddress: Scalars['ID'];
+  colonyReputationPercentage?: InputMaybe<ModelFloatKeyConditionInput>;
+  filter?: InputMaybe<ModelColonyContributorFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
@@ -4366,7 +4487,7 @@ export type QueryGetReputationForTopDomainsArgs = {
 
 /** Root query type */
 export type QueryGetRoleByDomainAndColonyArgs = {
-  colonyAddress?: InputMaybe<ModelStringKeyConditionInput>;
+  colonyAddress?: InputMaybe<ModelIdKeyConditionInput>;
   domainId: Scalars['ID'];
   filter?: InputMaybe<ModelColonyRoleFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -4488,6 +4609,14 @@ export type QueryListColonyActionsArgs = {
 
 
 /** Root query type */
+export type QueryListColonyContributorsArgs = {
+  filter?: InputMaybe<ModelColonyContributorFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Root query type */
 export type QueryListColonyDecisionsArgs = {
   filter?: InputMaybe<ModelColonyDecisionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -4568,8 +4697,8 @@ export type QueryListContractEventsArgs = {
 
 
 /** Root query type */
-export type QueryListContributorWithReputationsArgs = {
-  filter?: InputMaybe<ModelContributorWithReputationFilterInput>;
+export type QueryListContributorReputationsArgs = {
+  filter?: InputMaybe<ModelContributorReputationFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
@@ -4720,6 +4849,7 @@ export type Subscription = {
   onCreateAnnotation?: Maybe<Annotation>;
   onCreateColony?: Maybe<Colony>;
   onCreateColonyAction?: Maybe<ColonyAction>;
+  onCreateColonyContributor?: Maybe<ColonyContributor>;
   onCreateColonyDecision?: Maybe<ColonyDecision>;
   onCreateColonyExtension?: Maybe<ColonyExtension>;
   onCreateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
@@ -4730,7 +4860,7 @@ export type Subscription = {
   onCreateColonyStake?: Maybe<ColonyStake>;
   onCreateColonyTokens?: Maybe<ColonyTokens>;
   onCreateContractEvent?: Maybe<ContractEvent>;
-  onCreateContributorWithReputation?: Maybe<ContributorWithReputation>;
+  onCreateContributorReputation?: Maybe<ContributorReputation>;
   onCreateCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
   onCreateCurrentVersion?: Maybe<CurrentVersion>;
   onCreateDomain?: Maybe<Domain>;
@@ -4746,6 +4876,7 @@ export type Subscription = {
   onDeleteAnnotation?: Maybe<Annotation>;
   onDeleteColony?: Maybe<Colony>;
   onDeleteColonyAction?: Maybe<ColonyAction>;
+  onDeleteColonyContributor?: Maybe<ColonyContributor>;
   onDeleteColonyDecision?: Maybe<ColonyDecision>;
   onDeleteColonyExtension?: Maybe<ColonyExtension>;
   onDeleteColonyFundsClaim?: Maybe<ColonyFundsClaim>;
@@ -4756,7 +4887,7 @@ export type Subscription = {
   onDeleteColonyStake?: Maybe<ColonyStake>;
   onDeleteColonyTokens?: Maybe<ColonyTokens>;
   onDeleteContractEvent?: Maybe<ContractEvent>;
-  onDeleteContributorWithReputation?: Maybe<ContributorWithReputation>;
+  onDeleteContributorReputation?: Maybe<ContributorReputation>;
   onDeleteCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
   onDeleteCurrentVersion?: Maybe<CurrentVersion>;
   onDeleteDomain?: Maybe<Domain>;
@@ -4772,6 +4903,7 @@ export type Subscription = {
   onUpdateAnnotation?: Maybe<Annotation>;
   onUpdateColony?: Maybe<Colony>;
   onUpdateColonyAction?: Maybe<ColonyAction>;
+  onUpdateColonyContributor?: Maybe<ColonyContributor>;
   onUpdateColonyDecision?: Maybe<ColonyDecision>;
   onUpdateColonyExtension?: Maybe<ColonyExtension>;
   onUpdateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
@@ -4782,7 +4914,7 @@ export type Subscription = {
   onUpdateColonyStake?: Maybe<ColonyStake>;
   onUpdateColonyTokens?: Maybe<ColonyTokens>;
   onUpdateContractEvent?: Maybe<ContractEvent>;
-  onUpdateContributorWithReputation?: Maybe<ContributorWithReputation>;
+  onUpdateContributorReputation?: Maybe<ContributorReputation>;
   onUpdateCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
   onUpdateCurrentVersion?: Maybe<CurrentVersion>;
   onUpdateDomain?: Maybe<Domain>;
@@ -4810,6 +4942,11 @@ export type SubscriptionOnCreateColonyArgs = {
 
 export type SubscriptionOnCreateColonyActionArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyActionFilterInput>;
+};
+
+
+export type SubscriptionOnCreateColonyContributorArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyContributorFilterInput>;
 };
 
 
@@ -4863,8 +5000,8 @@ export type SubscriptionOnCreateContractEventArgs = {
 };
 
 
-export type SubscriptionOnCreateContributorWithReputationArgs = {
-  filter?: InputMaybe<ModelSubscriptionContributorWithReputationFilterInput>;
+export type SubscriptionOnCreateContributorReputationArgs = {
+  filter?: InputMaybe<ModelSubscriptionContributorReputationFilterInput>;
 };
 
 
@@ -4943,6 +5080,11 @@ export type SubscriptionOnDeleteColonyActionArgs = {
 };
 
 
+export type SubscriptionOnDeleteColonyContributorArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyContributorFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteColonyDecisionArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyDecisionFilterInput>;
 };
@@ -4993,8 +5135,8 @@ export type SubscriptionOnDeleteContractEventArgs = {
 };
 
 
-export type SubscriptionOnDeleteContributorWithReputationArgs = {
-  filter?: InputMaybe<ModelSubscriptionContributorWithReputationFilterInput>;
+export type SubscriptionOnDeleteContributorReputationArgs = {
+  filter?: InputMaybe<ModelSubscriptionContributorReputationFilterInput>;
 };
 
 
@@ -5073,6 +5215,11 @@ export type SubscriptionOnUpdateColonyActionArgs = {
 };
 
 
+export type SubscriptionOnUpdateColonyContributorArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyContributorFilterInput>;
+};
+
+
 export type SubscriptionOnUpdateColonyDecisionArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyDecisionFilterInput>;
 };
@@ -5123,8 +5270,8 @@ export type SubscriptionOnUpdateContractEventArgs = {
 };
 
 
-export type SubscriptionOnUpdateContributorWithReputationArgs = {
-  filter?: InputMaybe<ModelSubscriptionContributorWithReputationFilterInput>;
+export type SubscriptionOnUpdateContributorReputationArgs = {
+  filter?: InputMaybe<ModelSubscriptionContributorReputationFilterInput>;
 };
 
 
@@ -5297,6 +5444,15 @@ export type UpdateColonyActionInput = {
   type?: InputMaybe<ColonyActionType>;
 };
 
+export type UpdateColonyContributorInput = {
+  colonyAddress?: InputMaybe<Scalars['ID']>;
+  colonyReputationPercentage?: InputMaybe<Scalars['Float']>;
+  contributorAddress?: InputMaybe<Scalars['ID']>;
+  id: Scalars['ID'];
+  type?: InputMaybe<ContributorType>;
+  verified?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type UpdateColonyDecisionInput = {
   actionId?: InputMaybe<Scalars['ID']>;
   colonyAddress?: InputMaybe<Scalars['String']>;
@@ -5398,7 +5554,7 @@ export type UpdateColonyMotionInput = {
 };
 
 export type UpdateColonyRoleInput = {
-  colonyAddress?: InputMaybe<Scalars['String']>;
+  colonyAddress?: InputMaybe<Scalars['ID']>;
   colonyRolesId?: InputMaybe<Scalars['ID']>;
   domainId?: InputMaybe<Scalars['ID']>;
   id: Scalars['ID'];
@@ -5439,15 +5595,13 @@ export type UpdateContractEventInput = {
   target?: InputMaybe<Scalars['String']>;
 };
 
-export type UpdateContributorWithReputationInput = {
-  colonyAddress?: InputMaybe<Scalars['String']>;
-  colonyReputationPercentage?: InputMaybe<Scalars['String']>;
+export type UpdateContributorReputationInput = {
+  colonyAddress?: InputMaybe<Scalars['ID']>;
   contributorAddress?: InputMaybe<Scalars['ID']>;
-  domainId?: InputMaybe<Scalars['String']>;
-  domainReputationPercentage?: InputMaybe<Scalars['String']>;
+  domainId?: InputMaybe<Scalars['ID']>;
   id: Scalars['ID'];
-  reputation?: InputMaybe<Scalars['String']>;
-  type?: InputMaybe<ContributorType>;
+  reputationPercentage?: InputMaybe<Scalars['Float']>;
+  reputationRaw?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateContributorsWithReputationInput = {
@@ -5813,6 +5967,8 @@ export type ChainFundsClaimFragment = { __typename?: 'ColonyChainFundsClaim', id
 
 export type ColonyRoleFragment = { __typename?: 'ColonyRole', id: string, targetAddress: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, domain: { __typename?: 'Domain', nativeId: number } };
 
+export type ColonyContributorFragment = { __typename?: 'ColonyContributor', contributorAddress: string, verified: boolean, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', domainId: string, id: string } | null> } | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean }> | null } | null } } | null> } | null } | null };
+
 export type DomainFragment = { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null };
 
 export type DomainMetadataFragment = { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null };
@@ -5836,8 +5992,6 @@ export type MemberUserFragment = { __typename?: 'User', name: string, walletAddr
 export type ContributorFragment = { __typename?: 'Contributor', address: string, reputationPercentage?: string | null, reputationAmount?: string | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null };
 
 export type WatcherFragment = { __typename?: 'Watcher', address: string, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null };
-
-export type ContributorWithReputationFragment = { __typename?: 'ContributorWithReputation', type?: ContributorType | null, domainReputationPercentage: string, colonyReputationPercentage: string, address: string, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null };
 
 export type CreateAnnotationMutationVariables = Exact<{
   input: CreateAnnotationInput;
@@ -5887,6 +6041,20 @@ export type UpdateContributorsWithReputationMutationVariables = Exact<{
 
 
 export type UpdateContributorsWithReputationMutation = { __typename?: 'Mutation', updateContributorsWithReputation?: boolean | null };
+
+export type CreateColonyContributorMutationVariables = Exact<{
+  input: CreateColonyContributorInput;
+}>;
+
+
+export type CreateColonyContributorMutation = { __typename?: 'Mutation', createColonyContributor?: { __typename?: 'ColonyContributor', id: string } | null };
+
+export type UpdateColonyContributorMutationVariables = Exact<{
+  input: UpdateColonyContributorInput;
+}>;
+
+
+export type UpdateColonyContributorMutation = { __typename?: 'Mutation', updateColonyContributor?: { __typename?: 'ColonyContributor', id: string } | null };
 
 export type CreateColonyDecisionMutationVariables = Exact<{
   input: CreateColonyDecisionInput;
@@ -6033,21 +6201,29 @@ export type GetMembersForColonyQuery = { __typename?: 'Query', getMembersForColo
 
 export type GetPermissionedContributorsQueryVariables = Exact<{
   domainId: Scalars['ID'];
-  colonyAddress: Scalars['String'];
+  colonyAddress: Scalars['ID'];
   limit: Scalars['Int'];
 }>;
 
 
 export type GetPermissionedContributorsQuery = { __typename?: 'Query', getRoleByDomainAndColony?: { __typename?: 'ModelColonyRoleConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyRole', targetAddress: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, targetUser?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean }> | null } | null } } | null> } | null } | null } | null> } | null };
 
-export type GetContributorsWithReputationQueryVariables = Exact<{
-  colonyAddress: Scalars['String'];
-  domainId: Scalars['String'];
-  limit: Scalars['Int'];
+export type GetColonyContributorQueryVariables = Exact<{
+  id: Scalars['ID'];
 }>;
 
 
-export type GetContributorsWithReputationQuery = { __typename?: 'Query', getContributorsByDomainAndColony?: { __typename?: 'ModelContributorWithReputationConnection', nextToken?: string | null, items: Array<{ __typename?: 'ContributorWithReputation', id: string, type?: ContributorType | null, domainReputationPercentage: string, colonyReputationPercentage: string, address: string, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null } | null> } | null };
+export type GetColonyContributorQuery = { __typename?: 'Query', getColonyContributor?: { __typename?: 'ColonyContributor', id: string } | null };
+
+export type GetColonyContributorsQueryVariables = Exact<{
+  colonyAddress: Scalars['ID'];
+  sortDirection?: InputMaybe<ModelSortDirection>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetColonyContributorsQuery = { __typename?: 'Query', getContributorsByColony?: { __typename?: 'ModelColonyContributorConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', contributorAddress: string, verified: boolean, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', domainId: string, id: string } | null> } | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean }> | null } | null } } | null> } | null } | null } | null> } | null };
 
 export type GetColonyWatcherQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -6716,6 +6892,51 @@ export const WatchListItemFragmentDoc = gql`
   createdAt
 }
     ${WatchedColonyFragmentDoc}`;
+export const ColonyContributorFragmentDoc = gql`
+    fragment ColonyContributor on ColonyContributor {
+  contributorAddress
+  verified
+  colonyReputationPercentage
+  roles(filter: {colonyAddress: {eq: $colonyAddress}}) {
+    items {
+      domainId
+      role_0
+      role_1
+      role_2
+      role_3
+      role_5
+      role_6
+      id
+    }
+  }
+  reputation(
+    filter: {colonyAddress: {eq: $colonyAddress}, reputationRaw: {ne: "0"}}
+  ) {
+    items {
+      domainId
+      id
+    }
+  }
+  user {
+    walletAddress: id
+    name
+    profile {
+      ...Profile
+    }
+    watchlist(filter: {colonyID: {eq: $colonyAddress}}) {
+      items {
+        id
+        createdAt
+        colony {
+          ...WatchedColony
+        }
+      }
+    }
+  }
+  type
+}
+    ${ProfileFragmentDoc}
+${WatchedColonyFragmentDoc}`;
 export const UserTokenBalanceDataFragmentDoc = gql`
     fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
   balance
@@ -6750,17 +6971,6 @@ export const WatcherFragmentDoc = gql`
   user {
     ...MemberUser
   }
-}
-    ${MemberUserFragmentDoc}`;
-export const ContributorWithReputationFragmentDoc = gql`
-    fragment ContributorWithReputation on ContributorWithReputation {
-  address: contributorAddress
-  user {
-    ...MemberUser
-  }
-  type
-  domainReputationPercentage
-  colonyReputationPercentage
 }
     ${MemberUserFragmentDoc}`;
 export const CreateAnnotationDocument = gql`
@@ -6992,6 +7202,72 @@ export function useUpdateContributorsWithReputationMutation(baseOptions?: Apollo
 export type UpdateContributorsWithReputationMutationHookResult = ReturnType<typeof useUpdateContributorsWithReputationMutation>;
 export type UpdateContributorsWithReputationMutationResult = Apollo.MutationResult<UpdateContributorsWithReputationMutation>;
 export type UpdateContributorsWithReputationMutationOptions = Apollo.BaseMutationOptions<UpdateContributorsWithReputationMutation, UpdateContributorsWithReputationMutationVariables>;
+export const CreateColonyContributorDocument = gql`
+    mutation CreateColonyContributor($input: CreateColonyContributorInput!) {
+  createColonyContributor(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateColonyContributorMutationFn = Apollo.MutationFunction<CreateColonyContributorMutation, CreateColonyContributorMutationVariables>;
+
+/**
+ * __useCreateColonyContributorMutation__
+ *
+ * To run a mutation, you first call `useCreateColonyContributorMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateColonyContributorMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createColonyContributorMutation, { data, loading, error }] = useCreateColonyContributorMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateColonyContributorMutation(baseOptions?: Apollo.MutationHookOptions<CreateColonyContributorMutation, CreateColonyContributorMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateColonyContributorMutation, CreateColonyContributorMutationVariables>(CreateColonyContributorDocument, options);
+      }
+export type CreateColonyContributorMutationHookResult = ReturnType<typeof useCreateColonyContributorMutation>;
+export type CreateColonyContributorMutationResult = Apollo.MutationResult<CreateColonyContributorMutation>;
+export type CreateColonyContributorMutationOptions = Apollo.BaseMutationOptions<CreateColonyContributorMutation, CreateColonyContributorMutationVariables>;
+export const UpdateColonyContributorDocument = gql`
+    mutation UpdateColonyContributor($input: UpdateColonyContributorInput!) {
+  updateColonyContributor(input: $input) {
+    id
+  }
+}
+    `;
+export type UpdateColonyContributorMutationFn = Apollo.MutationFunction<UpdateColonyContributorMutation, UpdateColonyContributorMutationVariables>;
+
+/**
+ * __useUpdateColonyContributorMutation__
+ *
+ * To run a mutation, you first call `useUpdateColonyContributorMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateColonyContributorMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateColonyContributorMutation, { data, loading, error }] = useUpdateColonyContributorMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateColonyContributorMutation(baseOptions?: Apollo.MutationHookOptions<UpdateColonyContributorMutation, UpdateColonyContributorMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateColonyContributorMutation, UpdateColonyContributorMutationVariables>(UpdateColonyContributorDocument, options);
+      }
+export type UpdateColonyContributorMutationHookResult = ReturnType<typeof useUpdateColonyContributorMutation>;
+export type UpdateColonyContributorMutationResult = Apollo.MutationResult<UpdateColonyContributorMutation>;
+export type UpdateColonyContributorMutationOptions = Apollo.BaseMutationOptions<UpdateColonyContributorMutation, UpdateColonyContributorMutationVariables>;
 export const CreateColonyDecisionDocument = gql`
     mutation CreateColonyDecision($input: CreateColonyDecisionInput!) {
   createColonyDecision(input: $input) {
@@ -7722,7 +7998,7 @@ export type GetMembersForColonyQueryHookResult = ReturnType<typeof useGetMembers
 export type GetMembersForColonyLazyQueryHookResult = ReturnType<typeof useGetMembersForColonyLazyQuery>;
 export type GetMembersForColonyQueryResult = Apollo.QueryResult<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>;
 export const GetPermissionedContributorsDocument = gql`
-    query GetPermissionedContributors($domainId: ID!, $colonyAddress: String!, $limit: Int!) {
+    query GetPermissionedContributors($domainId: ID!, $colonyAddress: ID!, $limit: Int!) {
   getRoleByDomainAndColony(
     domainId: $domainId
     colonyAddress: {eq: $colonyAddress}
@@ -7774,52 +8050,87 @@ export function useGetPermissionedContributorsLazyQuery(baseOptions?: Apollo.Laz
 export type GetPermissionedContributorsQueryHookResult = ReturnType<typeof useGetPermissionedContributorsQuery>;
 export type GetPermissionedContributorsLazyQueryHookResult = ReturnType<typeof useGetPermissionedContributorsLazyQuery>;
 export type GetPermissionedContributorsQueryResult = Apollo.QueryResult<GetPermissionedContributorsQuery, GetPermissionedContributorsQueryVariables>;
-export const GetContributorsWithReputationDocument = gql`
-    query GetContributorsWithReputation($colonyAddress: String!, $domainId: String!, $limit: Int!) {
-  getContributorsByDomainAndColony(
-    colonyAddress: $colonyAddress
-    domainId: {eq: $domainId}
-    filter: {reputation: {ne: "0"}}
-    limit: $limit
-  ) {
-    items {
-      ...ContributorWithReputation
-      id
-    }
-    nextToken
+export const GetColonyContributorDocument = gql`
+    query GetColonyContributor($id: ID!) {
+  getColonyContributor(id: $id) {
+    id
   }
 }
-    ${ContributorWithReputationFragmentDoc}`;
+    `;
 
 /**
- * __useGetContributorsWithReputationQuery__
+ * __useGetColonyContributorQuery__
  *
- * To run a query within a React component, call `useGetContributorsWithReputationQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetContributorsWithReputationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetColonyContributorQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetColonyContributorQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetContributorsWithReputationQuery({
+ * const { data, loading, error } = useGetColonyContributorQuery({
  *   variables: {
- *      colonyAddress: // value for 'colonyAddress'
- *      domainId: // value for 'domainId'
- *      limit: // value for 'limit'
+ *      id: // value for 'id'
  *   },
  * });
  */
-export function useGetContributorsWithReputationQuery(baseOptions: Apollo.QueryHookOptions<GetContributorsWithReputationQuery, GetContributorsWithReputationQueryVariables>) {
+export function useGetColonyContributorQuery(baseOptions: Apollo.QueryHookOptions<GetColonyContributorQuery, GetColonyContributorQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetContributorsWithReputationQuery, GetContributorsWithReputationQueryVariables>(GetContributorsWithReputationDocument, options);
+        return Apollo.useQuery<GetColonyContributorQuery, GetColonyContributorQueryVariables>(GetColonyContributorDocument, options);
       }
-export function useGetContributorsWithReputationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetContributorsWithReputationQuery, GetContributorsWithReputationQueryVariables>) {
+export function useGetColonyContributorLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyContributorQuery, GetColonyContributorQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetContributorsWithReputationQuery, GetContributorsWithReputationQueryVariables>(GetContributorsWithReputationDocument, options);
+          return Apollo.useLazyQuery<GetColonyContributorQuery, GetColonyContributorQueryVariables>(GetColonyContributorDocument, options);
         }
-export type GetContributorsWithReputationQueryHookResult = ReturnType<typeof useGetContributorsWithReputationQuery>;
-export type GetContributorsWithReputationLazyQueryHookResult = ReturnType<typeof useGetContributorsWithReputationLazyQuery>;
-export type GetContributorsWithReputationQueryResult = Apollo.QueryResult<GetContributorsWithReputationQuery, GetContributorsWithReputationQueryVariables>;
+export type GetColonyContributorQueryHookResult = ReturnType<typeof useGetColonyContributorQuery>;
+export type GetColonyContributorLazyQueryHookResult = ReturnType<typeof useGetColonyContributorLazyQuery>;
+export type GetColonyContributorQueryResult = Apollo.QueryResult<GetColonyContributorQuery, GetColonyContributorQueryVariables>;
+export const GetColonyContributorsDocument = gql`
+    query GetColonyContributors($colonyAddress: ID!, $sortDirection: ModelSortDirection = ASC, $limit: Int, $nextToken: String) {
+  getContributorsByColony(
+    colonyAddress: $colonyAddress
+    sortDirection: $sortDirection
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      ...ColonyContributor
+    }
+    nextToken
+  }
+}
+    ${ColonyContributorFragmentDoc}`;
+
+/**
+ * __useGetColonyContributorsQuery__
+ *
+ * To run a query within a React component, call `useGetColonyContributorsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetColonyContributorsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetColonyContributorsQuery({
+ *   variables: {
+ *      colonyAddress: // value for 'colonyAddress'
+ *      sortDirection: // value for 'sortDirection'
+ *      limit: // value for 'limit'
+ *      nextToken: // value for 'nextToken'
+ *   },
+ * });
+ */
+export function useGetColonyContributorsQuery(baseOptions: Apollo.QueryHookOptions<GetColonyContributorsQuery, GetColonyContributorsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetColonyContributorsQuery, GetColonyContributorsQueryVariables>(GetColonyContributorsDocument, options);
+      }
+export function useGetColonyContributorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyContributorsQuery, GetColonyContributorsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetColonyContributorsQuery, GetColonyContributorsQueryVariables>(GetColonyContributorsDocument, options);
+        }
+export type GetColonyContributorsQueryHookResult = ReturnType<typeof useGetColonyContributorsQuery>;
+export type GetColonyContributorsLazyQueryHookResult = ReturnType<typeof useGetColonyContributorsLazyQuery>;
+export type GetColonyContributorsQueryResult = Apollo.QueryResult<GetColonyContributorsQuery, GetColonyContributorsQueryVariables>;
 export const GetColonyWatcherDocument = gql`
     query GetColonyWatcher($id: ID!, $limit: Int) {
   getColony(id: $id) {

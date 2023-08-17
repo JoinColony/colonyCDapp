@@ -4,15 +4,14 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
 import CardWithBios from '~v5/shared/CardWithBios';
 import EmptyContent from '../EmptyContent';
-import Link from '~v5/shared/Link';
 import { MembersListProps } from './types';
-import { useSearchContext } from '~context/SearchContext';
 import { TextButton } from '~v5/shared/Button';
 import { SpinnerLoader } from '~shared/Preloaders';
 
 import { useColonyContext } from '~hooks';
-import { useMemberContext } from '~context/MemberContext';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+import { ContributorTypeFilter } from '../TableFiltering/types';
+import { useMemberContext } from '~context/MemberContext';
 
 const displayName = 'v5.common.MembersList';
 
@@ -23,7 +22,7 @@ const MembersList: FC<MembersListProps> = ({
   isLoading,
   emptyTitle,
   emptyDescription,
-  viewMoreUrl,
+  // viewMoreUrl,
   isContributorsList,
 }) => {
   const { formatMessage } = useIntl();
@@ -36,20 +35,18 @@ const MembersList: FC<MembersListProps> = ({
 
   const {
     loadMoreContributors,
-    loadMoreAll,
-    moreAllMembers,
+    loadMoreMembers,
+    moreMembers,
     moreContributors,
-    membersLimit,
   } = useMemberContext();
 
-  const { searchValue } = useSearchContext();
+  // const { searchValue } = useSearchContext();
+
   const showLoadMoreButton = isContributorsList
     ? moreContributors
-    : moreAllMembers;
+    : moreMembers;
 
-  const loadMoreMembers = isContributorsList
-    ? loadMoreContributors
-    : loadMoreAll;
+  const loadMore = isContributorsList ? loadMoreContributors : loadMoreMembers;
 
   return (
     <div>
@@ -78,7 +75,11 @@ const MembersList: FC<MembersListProps> = ({
                   description={profile?.bio || ''}
                   shouldStatusBeVisible
                   shouldBeMenuVisible
-                  userStatus={type ?? undefined}
+                  userStatus={
+                    (type?.toLowerCase() ?? undefined) as
+                      | ContributorTypeFilter
+                      | undefined
+                  }
                   isContributorsList={isContributorsList}
                 />
               );
@@ -97,13 +98,13 @@ const MembersList: FC<MembersListProps> = ({
         />
       ) : undefined}
       <div className="w-full flex justify-center mt-2">
-        {list.length > membersLimit && !searchValue && viewMoreUrl && (
+        {/* {list.length > membersLimit && !searchValue && viewMoreUrl && (
           <Link className="text-3" to={viewMoreUrl}>
             {formatMessage({ id: 'viewMore' })}
           </Link>
-        )}
+        )} */}
         {showLoadMoreButton && (
-          <TextButton onClick={loadMoreMembers}>
+          <TextButton onClick={loadMore}>
             {formatMessage({ id: 'loadMore' })}
           </TextButton>
         )}

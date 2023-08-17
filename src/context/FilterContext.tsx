@@ -9,7 +9,7 @@ import React, {
   useContext,
 } from 'react';
 import { useLocation } from 'react-router-dom';
-import { SortingMethod } from '~gql';
+import { ModelSortDirection } from '~gql';
 import { useFilterOptions } from '~v5/common/Filter/consts';
 import {
   ParentFilterOption,
@@ -35,7 +35,7 @@ export const FilterContext = createContext<
       handleClearFilters: (parents?: FilterType[]) => void;
       handleFilterSelect: (event: React.ChangeEvent<HTMLInputElement>) => void;
       getFilterDomainIds: () => number[];
-      getSortingMethod: () => SortingMethod;
+      getSortingMethod: () => ModelSortDirection;
       getFilterPermissions: () => number[];
       getFilterStatus: () => StatusType | undefined;
       getFilterContributorType: () => ContributorTypeFilter[];
@@ -209,8 +209,8 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const getSortingMethod = useCallback(() => {
     const sort = [...selectedFilters[FilterTypes.Reputation].keys()].pop();
     return sort === ReputationSort.ASC
-      ? SortingMethod.ByLowestRep
-      : SortingMethod.ByHighestRep;
+      ? ModelSortDirection.Asc
+      : ModelSortDirection.Desc;
   }, [selectedFilters]);
 
   //  reset filters when switching to followers page, due to reduced selection

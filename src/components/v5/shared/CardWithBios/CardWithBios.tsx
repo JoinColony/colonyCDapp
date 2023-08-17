@@ -8,7 +8,6 @@ import CardPermissions, { SubNavigation } from './partials';
 import UserStatusComponent from './partials/UserStatus';
 import { CardWithBiosProps } from './types';
 import PopoverBase from '../PopoverBase';
-import { Contributor } from '~types';
 
 const displayName = 'v5.CardWithBios';
 
@@ -21,7 +20,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
   isVerified,
   isContributorsList,
 }) => {
-  const { user, reputationPercentage } = (userData as Contributor) || {};
+  const { user, colonyReputationPercentage } = userData || {};
   const { name, walletAddress, profile } = user || {};
   const { bio } = profile || {};
   const {
@@ -94,11 +93,11 @@ const CardWithBios: FC<CardWithBiosProps> = ({
         )}
 
         <div className="flex justify-between items-center">
-          {!!reputationPercentage && (
+          {!!colonyReputationPercentage && (
             <span className="flex items-center text-gray-600 text-3">
               <Icon name="star-not-filled" appearance={{ size: 'extraTiny' }} />
               <span className="inline-block ml-1 mr-2">
-                {reputationPercentage}%
+                {colonyReputationPercentage}%
               </span>
             </span>
           )}

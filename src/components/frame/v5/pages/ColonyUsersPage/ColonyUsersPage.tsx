@@ -12,10 +12,14 @@ import { useMemberContext } from '~context/MemberContext';
 const displayName = 'v5.pages.ColonyUsersPage';
 
 const ColonyUsersPage: FC<ColonyUsersPageProps> = ({ pageName }) => {
-  const { contributors, followers, loadingAllMembers, loadingContributors } =
-    useMemberContext();
+  const {
+    contributors,
+    members: followers,
+    loadingMembers,
+    loadingContributors,
+  } = useMemberContext();
   const isContributorsPage = pageName === 'contributors';
-  const loading = isContributorsPage ? loadingContributors : loadingAllMembers;
+  const loading = isContributorsPage ? loadingContributors : loadingMembers;
 
   return (
     <Spinner loadingText={{ id: `loading.${pageName}Page` }}>

@@ -1,10 +1,10 @@
 import { MessageDescriptor } from 'react-intl';
-import { ContributorWithReputation } from '~types';
+import { ColonyContributor } from '~types';
 
 export interface MembersListProps {
   title: MessageDescriptor;
   description: MessageDescriptor;
-  list: ContributorWithReputation[];
+  list: ColonyContributor[];
   isLoading: boolean;
   emptyTitle: MessageDescriptor;
   emptyDescription: MessageDescriptor;
