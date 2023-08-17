@@ -31,7 +31,7 @@ const FriendlyName = ({
   /*
    * We always make (for this component only), the address
    * size to be 1px smaller than the rest of the text because
-   * the "tech" font we user renders a bit larger than our display font while
+   * the "tech" font we use renders a bit larger than our display font while
    * using the same font size.
    */
   useEffect(() => {
