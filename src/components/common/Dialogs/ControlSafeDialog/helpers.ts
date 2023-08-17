@@ -111,24 +111,12 @@ export const SafeTransactionMSG = defineMessages({
   },
 });
 
-export const transactionOptions = [
-  {
-    value: SafeTransactionType.TransferFunds,
-    label: SafeTransactionMSG[SafeTransactionType.TransferFunds],
-  },
-  {
-    value: SafeTransactionType.TransferNft,
-    label: SafeTransactionMSG[SafeTransactionType.TransferNft],
-  },
-  {
-    value: SafeTransactionType.ContractInteraction,
-    label: SafeTransactionMSG[SafeTransactionType.ContractInteraction],
-  },
-  {
-    value: SafeTransactionType.RawTransaction,
-    label: SafeTransactionMSG[SafeTransactionType.RawTransaction],
-  },
-];
+export const transactionOptions = Object.entries(SafeTransactionMSG).map(
+  ([key, value]) => ({
+    value: key,
+    label: value,
+  }),
+);
 
 export enum ContractFunctions {
   TRANSFER_FUNDS = 'transfer',
