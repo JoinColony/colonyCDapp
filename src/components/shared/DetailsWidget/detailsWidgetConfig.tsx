@@ -33,6 +33,7 @@ import {
   DomainDescriptionDetail,
   ReputationChangeDetail,
   RolesDetail,
+  SafeTransactionDetail,
 } from '../DetailsWidget';
 
 import SafeValueDetail from './SafeValueDetail';
@@ -40,6 +41,7 @@ import SafeDetail from './SafeDetail';
 import AddressDetail from './AddressDetail';
 
 import styles from './DetailsWidget.css';
+import { TRANSACTION_STATUS } from '~utils/safes/getTransactionStatuses';
 
 const displayName = 'DetailsWidget';
 
@@ -129,7 +131,7 @@ const getShortenedHash = (transactionHash: string) => {
 };
 
 interface DetailItemConfig {
-  label: MessageDescriptor;
+  label?: MessageDescriptor;
   item: ReactNode;
   isListItem?: boolean;
   labelValues?: UniversalMessageValues;
@@ -153,6 +155,7 @@ const getDetailItemsMap = (
     isMotion,
     pendingColonyMetadata,
     pendingDomainMetadata,
+    safeTransaction,
   } = actionData;
 
   const shortenedHash = getShortenedHash(transactionHash || '');
@@ -175,6 +178,10 @@ const getDetailItemsMap = (
   const safeInteractionType = getSafeInteractionType(actionData);
 
   const actionType = safeInteractionType || extendedActionType;
+  const safeTransactionDetails = safeTransaction?.transactions || [];
+  const safeTransactionDetailStatuses = safeTransactionDetails.map(
+    () => TRANSACTION_STATUS.PENDING,
+  );
 
   return {
     [ActionPageDetails.Type]: {
@@ -313,18 +320,15 @@ const getDetailItemsMap = (
       isListItem: true,
     },
     [ActionPageDetails.SafeTransaction]: {
-      label: MSG.safe,
-      labelValues: {
-        removedSafeCount: removedSafes?.length,
-      },
-      item:
-        !!removedSafes &&
-        removedSafes.map((safe) => (
-          <SafeDetail
-            key={`${safe.chainId}-${safe.address}`}
-            removedSafe={safe}
-          />
-        )),
+      label: undefined,
+      labelValues: undefined,
+      item: safeTransaction && (
+        <SafeTransactionDetail
+          safe={safeTransaction.safe}
+          safeTransactionDetails={safeTransactionDetails}
+          safeTransactionDetailStatuses={safeTransactionDetailStatuses}
+        />
+      ),
       isListItem: true,
     },
   };
