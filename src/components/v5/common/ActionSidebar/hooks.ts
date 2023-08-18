@@ -80,7 +80,7 @@ export const useActionSidebar = (toggleActionSidebarOff) => {
     try {
       await asyncFunction({
         amount: values.amount,
-        motionDomainId: values.createdIn, //  "Created in" team (domain), only visible if the "Decision method" is set to "Reputation
+        motionDomainId: values.createdIn,
         annotation: values.annotation,
         tokenAddress: values.tokenAddress,
         recipient: values.recipient,
