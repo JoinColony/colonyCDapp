@@ -78,8 +78,8 @@ const ActionsListItem = ({
     createdAt,
     isMotion,
     motionData,
-    initiatorColony,
     safeTransaction,
+    initiatorColony,
   },
   item,
 }: Props) => {
