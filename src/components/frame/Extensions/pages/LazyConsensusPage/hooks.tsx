@@ -510,6 +510,7 @@ export const useLazyConsensusPage = (
         ) as AccordionContent[],
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     setExtensionContentParameters,
     extensionData?.initializationParams,
@@ -559,6 +560,7 @@ export const useLazyConsensusPage = (
 
       updateGovernanceFormFields(selectedFormFields);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldBeRadioButtonChangeToCustom]);
 
   const handleFormSuccess = useCallback(() => {

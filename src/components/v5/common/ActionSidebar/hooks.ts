@@ -83,7 +83,7 @@ export const useActionSidebar = (toggleActionSidebarOff) => {
         motionDomainId: values.createdIn,
         annotation: values.annotation,
         tokenAddress: values.tokenAddress,
-        recipient: values.recipient,
+        recipientAddress: values.recipient,
         fromDomainId: values.team,
         decisionMethod: values.decisionMethod,
       });

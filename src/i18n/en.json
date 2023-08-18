@@ -86,6 +86,7 @@
   "button.connectDiscord": "Connect Discord",
   "button.enterRecoveryMode": "Enter Recovery Mode",
   "button.createAction": "Create action",
+  "button.addTransaction": "Add transaction",
   "input.resetText": "Cancel",
   "label.amount": "Amount",
   "label.name": "Name",
@@ -805,6 +806,7 @@
   "actionSidebar.enterDescription": "Enter a description",
   "actionSidebar.userPermission": "User Permission",
   "actionSidebar.transferFunds": "Transfer Funds",
+  "actionSidebar.additionalPayments": "Additional Payments",
   "actionSidebar.advancedPayments": "Advanced Payments",
   "actionSidebar.emptyTitle": "No results to display",
   "actionSidebar.emptyDescription": "Try a different keyword search",
@@ -874,5 +876,7 @@
   "upload.avatar.successfully.toast.title": "Profile image changed successfully",
   "upload.avatar.successfully.toast.description": "You can update this again at any time",
   "button.show.less": "Show less",
-  "button.expand": "Expand"
+  "button.expand": "Expand",
+  "button.duplicate.row": "Duplicate row",
+  "button.remove.row": "Remove row"
 }

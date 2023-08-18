@@ -28,7 +28,7 @@ const UserSelect: FC<SelectProps> = ({ name }) => {
   }, [setValue, name, user]);
 
   return (
-    <>
+    <div className="sm:relative w-full">
       <button
         type="button"
         className={styles.button}
@@ -64,7 +64,7 @@ const UserSelect: FC<SelectProps> = ({ name }) => {
           isLoading={usersOptions.loading}
         />
       )}
-    </>
+    </div>
   );
 };
 

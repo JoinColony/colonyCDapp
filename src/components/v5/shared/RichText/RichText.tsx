@@ -39,7 +39,7 @@ const RichText: FC<RichTextProps> = ({
             {formatMessage({ id: 'button.show.less' })}
           </TextButton>
         )}
-        {characterCount >= 1000 && (
+        {characterCount >= 1000 && isDecriptionFieldExpanded && (
           <div className="text-xs text-gray-500 flex justify-end">
             {characterCount} / {MAX_ANNOTATION_NUM}
           </div>
