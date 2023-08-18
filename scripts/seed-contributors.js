@@ -18,9 +18,10 @@ async function postRequest(body) {
     headers: headers,
   });
 
-  const responseBody = await response.json();
-  if (responseBody.errors) {
-    throw new Error('Failed to seed record:', responseBody.errors);
+  const { errors } = await response.json();
+  if (errors) {
+    console.error(`error:`, JSON.stringify(errors));
+    throw new Error('Failed to seed record:', errors);
   } else {
     console.log('Successfully seeded record');
   }
@@ -170,10 +171,10 @@ const getType = (idx) => {
 
 function generateRecords(numRecords = 100) {
   const mockData = [];
-  const membersRep = getRepDistribution();
+  const membersRep = getRepDistribution(numRecords);
 
   // Base address
-  const COLONY_ADDRESS = '0x9fF782671De6211b369aC24a56FA708BA19e4C86';
+  const COLONY_ADDRESS = process.argv[2];
 
   for (let i = 0; i < numRecords; i++) {
     const contributorAddress = generateRandomEVMAddress();
@@ -218,13 +219,15 @@ function generateRecords(numRecords = 100) {
   return mockData;
 }
 
+const NUM_RECORDS = process.argv[3];
+
 // Generate and log the mock data
-const data = generateRecords();
+const data = generateRecords(Number(NUM_RECORDS));
+
+console.log(`Creating ${data.length} records`);
 
 const AWS_APPSYNC_GRAPHQL_URL = process.env.AWS_APPSYNC_GRAPHQL_URL;
 const API_KEY = process.env.AWS_APPSYNC_KEY;
-
-console.log({ AWS_APPSYNC_GRAPHQL_URL, API_KEY });
 
 async function seedDatabase() {
   await Promise.all(
