@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
@@ -22,6 +22,10 @@ const UserSelect: FC<SelectProps> = ({ name }) => {
   const { user } = useUserByName(selectedUser || '');
   const userDisplayName = user?.profile?.displayName;
   const username = user?.name;
+
+  useEffect(() => {
+    setValue(name, user?.walletAddress);
+  }, [setValue, name, user]);
 
   return (
     <>
@@ -56,7 +60,6 @@ const UserSelect: FC<SelectProps> = ({ name }) => {
           onToggle={toggleUserSelect}
           onSelect={(value) => {
             setSelectedUser(value);
-            setValue(name, value);
           }}
           isLoading={usersOptions.loading}
         />

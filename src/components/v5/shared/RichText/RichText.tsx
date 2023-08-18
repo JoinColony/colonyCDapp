@@ -17,36 +17,31 @@ const RichText: FC<RichTextProps> = ({
   toggleOnDecriptionSelect,
   toggleOffDecriptionSelect,
 }) => {
-  const { editorContent, characterCount } = useRichText(
-    name,
-    isDecriptionFieldExpanded,
-  );
+  const { editorContent } = useRichText(name, isDecriptionFieldExpanded);
   const { formatMessage } = useIntl();
+
+  const characterCount = editorContent?.storage.characterCount.characters();
 
   return (
     <>
       <MenuBar editor={editorContent} />
       <EditorContent editor={editorContent} />
 
-      {/* // wyswietlic jeśli jest sformatowany text lub ?? */}
-      {editorContent?.storage?.characterCount?.characters() >=
-        MIN_ANNOTATION_NUM &&
-        !isDecriptionFieldExpanded && (
-          <TextButton mode="underlined" onClick={toggleOnDecriptionSelect}>
-            {formatMessage({ id: 'button.expand' })}
-          </TextButton>
-        )}
+      {characterCount >= MIN_ANNOTATION_NUM && !isDecriptionFieldExpanded && (
+        <TextButton mode="underlined" onClick={toggleOnDecriptionSelect}>
+          {formatMessage({ id: 'button.expand' })}
+        </TextButton>
+      )}
 
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center justify-between mt-4">
         {!!characterCount && isDecriptionFieldExpanded && (
           <TextButton mode="underlined" onClick={toggleOffDecriptionSelect}>
             {formatMessage({ id: 'button.show.less' })}
           </TextButton>
         )}
-        {editorContent?.storage?.characterCount?.characters() >= 1000 && (
+        {characterCount >= 1000 && (
           <div className="text-xs text-gray-500 flex justify-end">
-            {editorContent?.storage.characterCount.characters()} /{' '}
-            {MAX_ANNOTATION_NUM}
+            {characterCount} / {MAX_ANNOTATION_NUM}
           </div>
         )}
       </div>

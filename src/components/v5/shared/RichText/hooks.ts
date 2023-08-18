@@ -9,7 +9,7 @@ import { mergeAttributes } from '@tiptap/core';
 import Placeholder from '@tiptap/extension-placeholder';
 import Paragraph from '@tiptap/extension-paragraph';
 import CharacterCount from '@tiptap/extension-character-count';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { MAX_ANNOTATION_NUM } from './consts';
 
@@ -77,7 +77,9 @@ export const useRichText = (
       ],
       editorProps: {
         attributes: {
-          class: 'prose max-w-prose focus:outline-none text-gray-900 text-md',
+          class: `prose max-w-none ${
+            isDecriptionFieldExpanded ? 'h-64' : 'h-auto'
+          } overflow-scroll focus:outline-none text-gray-900 text-md`,
         },
       },
       content,
@@ -110,11 +112,6 @@ export const useRichText = (
     }
   }, [editorContent, content, isDecriptionFieldExpanded, setContent]);
 
-  const characterCount: number = useMemo(
-    () => editorContent?.storage?.characterCount?.characters(),
-    [editorContent],
-  );
-
   const { setValue } = useFormContext();
 
   useEffect(() => {
@@ -134,5 +131,5 @@ export const useRichText = (
 
   // @TODO: Text Big, Text Small in menu
 
-  return { editorContent, characterCount };
+  return { editorContent };
 };
