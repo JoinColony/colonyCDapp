@@ -97,6 +97,9 @@ fragment ColonyAction on ColonyAction {
   pendingColonyMetadata {
     ...ColonyMetadata
   }
+  safeTransaction {
+    ...SafeTransaction
+  }
 }
 
 fragment MotionStakeValues on MotionStakeValues {

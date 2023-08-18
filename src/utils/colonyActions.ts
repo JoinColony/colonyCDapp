@@ -642,6 +642,10 @@ export const getExtendedActionType = (
     return ExtendedColonyActionType.RemoveSafe;
   }
 
+  if (!isEmpty(actionData.safeTransaction)) {
+    return ExtendedColonyActionType.SafeTransaction;
+  }
+
   return type;
 };
 

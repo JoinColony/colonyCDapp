@@ -10,6 +10,11 @@ import {
   MotionState,
   useShouldDisplayMotionCountdownTime,
 } from '~utils/colonyMotions';
+import Tag from '~shared/Tag';
+import {
+  TRANSACTION_STATUS,
+  MSG as SafeMSGs,
+} from '~utils/safes/getTransactionStatuses';
 
 import CountDownTimer from '../CountDownTimer';
 import { getActionTitleValues } from '../helpers';
@@ -37,13 +42,14 @@ interface Props {
 
 const ActionsListItem = ({
   item: {
-    fromDomain,
+    fromDomain: itemDomain,
     transactionHash,
     // commentCount = 0,
     // status = ListItemStatus.Defused,
     createdAt,
     isMotion,
     motionData,
+    safeTransaction,
   },
   item,
 }: Props) => {
@@ -69,6 +75,23 @@ const ActionsListItem = ({
 
   const status = ListItemStatus.Defused;
 
+  const safeTransactionStatus = TRANSACTION_STATUS.PENDING;
+
+  const SafeTag = (
+    <Tag
+      text={SafeMSGs[safeTransactionStatus]}
+      appearance={{
+        theme:
+          safeTransactionStatus === TRANSACTION_STATUS.PENDING
+            ? 'golden'
+            : 'primary',
+        colorSchema: 'fullColor',
+      }}
+    />
+  );
+
+  const tag = safeTransaction ? SafeTag : <MotionTag />;
+
   return (
     <ListItem
       avatar={
@@ -91,10 +114,10 @@ const ActionsListItem = ({
           />
         )
       }
-      meta={<ActionsListItemMeta fromDomain={fromDomain ?? undefined} />}
+      meta={<ActionsListItemMeta fromDomain={itemDomain ?? undefined} />}
       onClick={handleActionRedirect}
       status={status}
-      tag={<MotionTag />}
+      tag={tag}
       title={{ id: 'action.title' }}
       titleValues={getActionTitleValues(item, colony)}
     />

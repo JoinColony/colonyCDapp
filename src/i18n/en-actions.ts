@@ -32,6 +32,7 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.UpdateTokens} {Colony tokens were updated}    
       ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
+      ${ExtendedColonyActionType.SafeTransaction} {Safe transaction: {safeTransactionTitle}}
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,
