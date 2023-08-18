@@ -207,6 +207,7 @@ export enum ColonyActionType {
   EmitDomainReputationRewardMotion = 'EMIT_DOMAIN_REPUTATION_REWARD_MOTION',
   Generic = 'GENERIC',
   MakeArbitraryTransaction = 'MAKE_ARBITRARY_TRANSACTION',
+  MakeArbitraryTransactionsMotion = 'MAKE_ARBITRARY_TRANSACTIONS_MOTION',
   MintTokens = 'MINT_TOKENS',
   MintTokensMotion = 'MINT_TOKENS_MOTION',
   MoveFunds = 'MOVE_FUNDS',

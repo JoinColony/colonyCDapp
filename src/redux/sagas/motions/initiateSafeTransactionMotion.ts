@@ -1,20 +1,25 @@
-import { ClientType } from '@colony/colony-js';
+import { ClientType, getChildIndex, Id } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ContextModule, getContext } from '~context';
 import { TransactionTypes } from '~utils/safes';
+import { ADDRESS_ZERO, isDev } from '~constants';
 import { ActionTypes } from '~redux/actionTypes';
 import { Action, AllActions } from '~redux/types';
 import { putError, takeFrom } from '~utils/saga/effects';
 import { fill } from '~utils/lodash';
-import { isDev } from '~constants';
+import {
+  CreateSafeTransactionDocument,
+  CreateSafeTransactionMutation,
+  CreateSafeTransactionMutationVariables,
+} from '~gql';
+import { ContextModule, getContext } from '~context';
 
-import { transactionReady } from '../../actionCreators';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
+import { getColonyManager } from '../utils';
 // import { ipfsUploadAnnotation } from '../utils';
 import {
   getRawTransactionData,
@@ -25,28 +30,30 @@ import {
   getHomeBridgeByChain,
   ZODIAC_BRIDGE_MODULE_ADDRESS,
 } from '../utils/safeHelpers';
-import {
-  CreateSafeTransactionMutation,
-  CreateSafeTransactionDocument,
-  CreateSafeTransactionMutationVariables,
-} from '~gql';
+import { transactionReady } from '../../actionCreators';
 
-function* initiateSafeTransactionAction({
+function* initiateSafeTransactionMotion({
   payload: {
     safe,
     transactions,
     transactionsTitle: title,
     colonyAddress,
     colonyName,
-    // annotationMessage = null,
+    // annotationMessage,
+    motionDomainId,
   },
   meta: { id: metaId, navigate },
   meta,
-}: Action<ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION>) {
+}: Action<ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION>) {
   let txChannel;
   try {
     txChannel = yield call(getTxChannel, metaId);
     const apolloClient = getContext(ContextModule.ApolloClient);
+    const colonyManager = yield getColonyManager();
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
 
     const zodiacBridgeModuleAddress = isDev
       ? ZODIAC_BRIDGE_MODULE_ADDRESS
@@ -59,6 +66,35 @@ function* initiateSafeTransactionAction({
     }
     const homeBridge = getHomeBridgeByChain(safe.chainId);
     const zodiacBridgeModule = getZodiacModule(zodiacBridgeModuleAddress, safe);
+
+    const motionChildSkillIndex = yield call(
+      getChildIndex,
+      colonyClient,
+      motionDomainId,
+      Id.RootDomain,
+    );
+
+    const { skillId } = yield call(
+      [colonyClient, colonyClient.getDomain],
+      motionDomainId,
+    );
+
+    const { key, value, branchMask, siblings } = yield call(
+      colonyClient.getReputation,
+      skillId,
+      ADDRESS_ZERO,
+    );
+
+    // setup batch ids and channels
+    const batchKey = 'createMotion';
+
+    const {
+      createMotion,
+      // annotateInitiateSafeTransactionMotion,
+    } = yield createTransactionChannels(metaId, [
+      'createMotion',
+      // 'annotateInitiateSafeTransactionMotion',
+    ]);
 
     const transactionData: string[] = [];
     /*
@@ -102,7 +138,6 @@ function* initiateSafeTransactionAction({
           );
       }
 
-      /* eslint-disable-next-line max-len */
       const txDataToBeSentToAMB = yield homeBridge.interface.encodeFunctionData(
         'requireToPassMessage',
         [zodiacBridgeModule.address, txDataToBeSentToZodiacModule, 1000000],
@@ -111,73 +146,72 @@ function* initiateSafeTransactionAction({
       transactionData.push(txDataToBeSentToAMB);
     }
 
-    const batchKey = 'initiateSafeTransaction';
-
-    const {
-      initiateSafeTransaction,
-      // annotateInitiateSafeTransaction,
-    } = yield createTransactionChannels(metaId, [
-      'initiateSafeTransaction',
-      // 'annotateInitiateSafeTransaction',
-    ]);
-
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-          titleValues: { title },
-        },
-      });
-
-    yield createGroupTransaction(initiateSafeTransaction, {
-      context: ClientType.ColonyClient,
-      methodName: 'makeArbitraryTransactions',
-      identifier: colonyAddress,
-      params: [
+    const encodedAction = colonyClient.interface.encodeFunctionData(
+      'makeArbitraryTransactions',
+      [
+        /**
+         * The first param of makeArbitraryTransactions is an array of addresses of the receivers. For 1 transactionData, there should be 1 address in the array.
+         * All the transactions will be send to the home bridge, therefore we just generate an array filled with the corresponding address.
+         *
+         */
         fill(Array(transactionData.length), homeBridge.address),
         transactionData,
         true,
       ],
+    );
+
+    yield fork(createTransaction, createMotion.id, {
+      context: ClientType.VotingReputationClient,
+      methodName: 'createMotion',
+      identifier: colonyAddress,
+      params: [
+        motionDomainId,
+        motionChildSkillIndex,
+        ADDRESS_ZERO,
+        encodedAction,
+        key,
+        value,
+        branchMask,
+        siblings,
+      ],
+      group: {
+        key: batchKey,
+        id: metaId,
+        index: 0,
+      },
       ready: false,
-      titleValues: { title },
     });
 
-    // yield createGroupTransaction(annotateInitiateSafeTransaction, {
+    // yield fork(createTransaction, annotateInitiateSafeTransactionMotion.id, {
     //   context: ClientType.ColonyClient,
     //   methodName: 'annotateTransaction',
     //   identifier: colonyAddress,
     //   params: [],
+    //   group: {
+    //     key: batchKey,
+    //     id: metaId,
+    //     index: 1,
+    //   },
     //   ready: false,
     // });
 
-    yield takeFrom(
-      initiateSafeTransaction.channel,
-      ActionTypes.TRANSACTION_CREATED,
-    );
+    yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
 
     // yield takeFrom(
-    //   annotateInitiateSafeTransaction.channel,
+    //   annotateInitiateSafeTransactionMotion.channel,
     //   ActionTypes.TRANSACTION_CREATED,
     // );
 
-    yield put(transactionReady(initiateSafeTransaction.id));
+    yield put(transactionReady(createMotion.id));
 
     const {
       payload: { hash: txHash },
     } = yield takeFrom(
-      initiateSafeTransaction.channel,
+      createMotion.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    yield takeFrom(
-      initiateSafeTransaction.channel,
-      ActionTypes.TRANSACTION_SUCCEEDED,
-    );
-
-    // yield put(transactionPending(annotateInitiateSafeTransaction.id));
+    yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     /**
      * Save safe transaction in the database
@@ -198,29 +232,33 @@ function* initiateSafeTransactionAction({
     });
 
     // const annotationObject = JSON.stringify(safeTransactionData);
-
-    // let annotationMessageIpfsHash = null;
-    // annotationMessageIpfsHash = yield call(
+    /*
+     * Upload all data via annotationMessage to IPFS.
+     * This is to avoid storing the data in the colony metadata.
+     */
+    // const annotationMessageIpfsHash = yield call(
     //   ipfsUploadAnnotation,
     //   annotationObject,
     // );
 
+    // yield put(transactionPending(annotateInitiateSafeTransactionMotion.id));
+
     // yield put(
-    //   transactionAddParams(annotateInitiateSafeTransaction.id, [
+    //   transactionAddParams(annotateInitiateSafeTransactionMotion.id, [
     //     txHash,
     //     annotationMessageIpfsHash,
     //   ]),
     // );
 
-    // yield put(transactionReady(annotateInitiateSafeTransaction.id));
+    // yield put(transactionReady(annotateInitiateSafeTransactionMotion.id));
 
     // yield takeFrom(
-    //   annotateInitiateSafeTransaction.channel,
+    //   annotateInitiateSafeTransactionMotion.channel,
     //   ActionTypes.TRANSACTION_SUCCEEDED,
     // );
 
     yield put<AllActions>({
-      type: ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION_SUCCESS,
+      type: ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION_SUCCESS,
       meta,
     });
 
@@ -231,7 +269,7 @@ function* initiateSafeTransactionAction({
     });
   } catch (error) {
     return yield putError(
-      ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION_ERROR,
+      ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION_ERROR,
       error,
       meta,
     );
@@ -241,9 +279,9 @@ function* initiateSafeTransactionAction({
   return null;
 }
 
-export default function* initiateSafeTransactionSaga() {
+export default function* createInitiateSafeTransactionSaga() {
   yield takeEvery(
-    ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION,
-    initiateSafeTransactionAction,
+    ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION,
+    initiateSafeTransactionMotion,
   );
 }
