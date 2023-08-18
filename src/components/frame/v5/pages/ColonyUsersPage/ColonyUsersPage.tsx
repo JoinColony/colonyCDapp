@@ -22,7 +22,7 @@ const ColonyUsersPage: FC<ColonyUsersPageProps> = ({ pageName }) => {
   const loading = isContributorsPage ? loadingContributors : loadingMembers;
 
   return (
-    <Spinner loadingText={{ id: `loading.${pageName}Page` }}>
+    <Spinner loading={false} loadingText={{ id: `loading.${pageName}Page` }}>
       <TwoColumns aside={<Navigation pageName="members" />}>
         <div className="relative">
           <Header title={{ id: `membersPage.${pageName}.allMembers` }} />

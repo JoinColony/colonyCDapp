@@ -24,7 +24,7 @@ const MembersPage: FC = () => {
   const contributorsURL = `/colony/${name}/contributors`;
 
   return (
-    <Spinner loadingText={{ id: 'loading.membersPage' }}>
+    <Spinner loading={false} loadingText={{ id: 'loading.membersPage' }}>
       <TwoColumns aside={<Navigation pageName="members" />}>
         <div className="relative">
           <Header title={{ id: 'members.allMembers' }} />

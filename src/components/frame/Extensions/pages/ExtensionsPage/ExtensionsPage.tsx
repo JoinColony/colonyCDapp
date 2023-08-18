@@ -11,7 +11,7 @@ import { AnyExtensionData } from '~types';
 const displayName = 'frame.Extensions.pages.ExtensionsPage';
 
 const ExtensionsPage: FC = () => {
-  const { availableExtensionsData, installedExtensionsData } =
+  const { availableExtensionsData, installedExtensionsData, loading } =
     useExtensionsData();
   const { formatMessage } = useIntl();
 
@@ -34,7 +34,7 @@ const ExtensionsPage: FC = () => {
     );
 
   return (
-    <Spinner loadingText={{ id: 'loading.extensionsPage' }}>
+    <Spinner loading={loading} loadingText={{ id: 'loading.extensionsPage' }}>
       <TwoColumns aside={<Navigation pageName="extensions" />}>
         <h4 className="heading-4 mb-6">
           {formatMessage({ id: 'extensionsPage.availableExtensions' })}

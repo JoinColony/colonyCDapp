@@ -28,10 +28,11 @@ const UserProfilePage: FC = () => {
     errors,
     avatarUrl,
     showNameMessage,
+    loading,
   } = useUserProfile();
 
   return (
-    <Spinner loadingText={{ id: 'loading.userProfilePage' }}>
+    <Spinner loading={loading} loadingText={{ id: 'loading.userProfilePage' }}>
       <TwoColumns aside={<Navigation pageName="profile" />}>
         <h4 className="heading-4 mb-6">
           {formatMessage({ id: 'profile.page' })}

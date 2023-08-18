@@ -25,7 +25,7 @@ const displayName = 'frame.Extensions.pages.ExtensionDetailsPage';
 const ExtensionDetailsPage: FC = () => {
   const { extensionId } = useParams();
   const { colony } = useColonyContext();
-  const { extensionData } = useExtensionData(extensionId ?? '');
+  const { extensionData, loading } = useExtensionData(extensionId ?? '');
   const { formatMessage } = useIntl();
   const [activeTab, setActiveTab] = useState(0);
   // @TODO: Change extension missing permissions functionality
@@ -55,7 +55,10 @@ const ExtensionDetailsPage: FC = () => {
     extensionData.extensionId === Extension.VotingReputation;
 
   return (
-    <Spinner loadingText={{ id: 'loading.colonyDetailsPage' }}>
+    <Spinner
+      loading={loading}
+      loadingText={{ id: 'loading.colonyDetailsPage' }}
+    >
       <ThreeColumns
         leftAside={<Navigation pageName="extensions" />}
         topRow={

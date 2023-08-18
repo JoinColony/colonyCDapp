@@ -16,13 +16,17 @@ const AdvancedPage: FC = () => {
   const { formatMessage } = useIntl();
   const { colony } = useColonyContext();
   const { version } = colony || {};
-  const { colonyContractVersion } = useColonyContractVersion();
+  const { colonyContractVersion, loadingColonyContractVersion } =
+    useColonyContractVersion();
   const isMobile = useMobile();
 
   const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);
 
   return (
-    <Spinner loadingText={{ id: 'loading.advancedPage' }}>
+    <Spinner
+      loading={loadingColonyContractVersion}
+      loadingText={{ id: 'loading.advancedPage' }}
+    >
       <TwoColumns aside={<Navigation pageName="extensions" />}>
         <h3 className="heading-4 mb-6">
           {formatMessage({ id: 'advancedPage.colony.title' })}
