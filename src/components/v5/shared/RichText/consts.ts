@@ -1,2 +1,2 @@
-export const MAX_CHARACTERS_NUM = 20000;
-export const MIN_CHARACTERS_NUM = 58;
+export const MAX_ANNOTATION_NUM = 20000;
+export const MIN_ANNOTATION_NUM = 58;

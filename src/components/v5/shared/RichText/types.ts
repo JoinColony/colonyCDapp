@@ -5,4 +5,6 @@ export type MenuBarProps = {
   editor: Editor | null;
 };
 
-export type RichTextProps = DescriptionFieldProps;
+export type RichTextProps = DescriptionFieldProps & {
+  name: string;
+};

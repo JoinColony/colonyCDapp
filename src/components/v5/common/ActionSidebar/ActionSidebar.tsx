@@ -25,16 +25,11 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
   const isMobile = useMobile();
   const { toggleActionSidebarOff, selectedAction, setSelectedAction } =
     useActionSidebarContext();
-  const { isSelectVisible, toggleSelect, toggleSelectOff, methods } =
-    useActionSidebar();
-
+  const { isSelectVisible, toggleSelect, toggleSelectOff, methods, onSubmit } =
+    useActionSidebar(toggleActionSidebarOff);
   const actionsList = useActionsList();
 
   useOnClickOutside(ref, () => !isMobile && toggleActionSidebarOff());
-
-  const onSubmit = (data) => data;
-
-  const { handleSubmit } = methods;
 
   return (
     <div
@@ -73,7 +68,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
       </div>
       <FormProvider {...methods}>
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={methods.handleSubmit(onSubmit)}
           className="h-full flex flex-col"
         >
           <div className="px-6 py-8">
@@ -94,7 +89,9 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
                       className="flex text-md text-gray-600 transition-colors hover:text-blue-400"
                       onClick={toggleSelect}
                     >
-                      {formatMessage({ id: 'actionSidebar.chooseActionType' })}
+                      {formatMessage({
+                        id: 'actionSidebar.chooseActionType',
+                      })}
                     </button>
                     {isSelectVisible && (
                       <SearchSelect
@@ -130,10 +127,14 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
               />
               <Button
                 mode="primarySolid"
-                disabled={!selectedAction}
+                disabled={
+                  !selectedAction
+                  // || !!Object.keys(methods.formState.errors).length
+                }
                 text={{ id: 'button.createAction' }}
                 isFullSize={isMobile}
                 type="submit"
+                loading={methods.formState.isSubmitting}
               />
             </div>
           </div>
