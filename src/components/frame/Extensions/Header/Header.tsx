@@ -10,7 +10,7 @@ import MainNavigation from '~common/Extensions/MainNavigation';
 import { CloseButton } from '~v5/shared/Button';
 import { useHeader } from './hooks';
 import { HeaderProps } from './types';
-import ActionSidebar from '~v5/common/ActionSidebar/ActionSidebar';
+import ActionSidebar from '~v5/common/ActionSidebar';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 
 const displayName = 'frame.Extensions.Header';
@@ -50,20 +50,7 @@ const Header: FC<HeaderProps> = ({ hideColonies = false }) => {
         isUserMenuOpen ||
         isWalletOpen));
 
-  const userMenuComponent = isActionSidebarOpen ? (
-    <ActionSidebar>
-      <UserNavigation
-        isWalletButtonVisible={isWalletButtonVisible}
-        userMenuGetTooltipProps={userMenuGetTooltipProps}
-        userMenuSetTooltipRef={userMenuSetTooltipRef}
-        userMenuSetTriggerRef={userMenuSetTriggerRef}
-        setWalletTriggerRef={setWalletTriggerRef}
-        isUserMenuOpen={isUserMenuOpen}
-        isWalletOpen={isWalletOpen}
-        hideColonies={hideColonies}
-      />
-    </ActionSidebar>
-  ) : (
+  const userNavigation = (
     <UserNavigation
       isWalletButtonVisible={isWalletButtonVisible}
       userMenuGetTooltipProps={userMenuGetTooltipProps}
@@ -74,6 +61,12 @@ const Header: FC<HeaderProps> = ({ hideColonies = false }) => {
       isWalletOpen={isWalletOpen}
       hideColonies={hideColonies}
     />
+  );
+
+  const userMenuComponent = isActionSidebarOpen ? (
+    <ActionSidebar>{userNavigation}</ActionSidebar>
+  ) : (
+    userNavigation
   );
 
   return (

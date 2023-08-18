@@ -92,7 +92,6 @@
     "at-sign-circle",
     "attachment",
     "bell",
-    "bold",
     "bulletList",
     "caret-down",
     "caret-down-small",
@@ -201,7 +200,16 @@
     "extension-lazy-consensus",
     "extension-advanced-payments",
     "extension-one-transaction-payment",
-    "star-not-filled"
+    "star-not-filled",
+    "bold",
+    "italic",
+    "underline",
+    "h-one",
+    "h-two",
+    "h-three",
+    "bullets",
+    "numbers",
+    "quotes"
   ],
   "multiColorIcons": [
     "circle-check-primary",

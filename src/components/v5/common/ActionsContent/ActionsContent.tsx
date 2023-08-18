@@ -6,6 +6,9 @@ import UserSelect from './partials/UserSelect';
 import { useActionsContent } from './hooks';
 import AmountField from './partials/AmountField';
 import DecisionField from './partials/DecisionField';
+import DescriptionField from './partials/DescriptionField';
+import useToggle from '~hooks/useToggle';
+import { useDetectClickOutside } from '~hooks';
 
 const displayName = 'v5.common.ActionsContent';
 
@@ -15,7 +18,21 @@ const ActionsContent: FC = () => {
     shouldShowUserField,
     shouldShowAmountField,
     shouldShowCreatedInField,
+    shouldShowDecisionField,
+    shouldShowDescriptionField,
   } = useActionsContent();
+  const [
+    isDecriptionFieldExpanded,
+    {
+      toggle: toggleDecriptionSelect,
+      toggleOff: toggleOffDecriptionSelect,
+      toggleOn: toggleOnDecriptionSelect,
+    },
+  ] = useToggle();
+
+  const ref = useDetectClickOutside({
+    onTriggered: () => toggleOffDecriptionSelect(),
+  });
 
   return (
     <>
@@ -51,12 +68,30 @@ const ActionsContent: FC = () => {
           <TeamsSelect name="createdIn" />
         </ActionSidebarRow>
       )}
-      <ActionSidebarRow
-        iconName="scales"
-        title={{ id: 'actionSidebar.decisionMethod' }}
-      >
-        <DecisionField />
-      </ActionSidebarRow>
+      {shouldShowDecisionField && (
+        <ActionSidebarRow
+          iconName="scales"
+          title={{ id: 'actionSidebar.decisionMethod' }}
+        >
+          <DecisionField />
+        </ActionSidebarRow>
+      )}
+      {shouldShowDescriptionField && (
+        <ActionSidebarRow
+          iconName="pencil"
+          title={{ id: 'actionSidebar.description' }}
+          isDescriptionFieldRow
+          isOpened={isDecriptionFieldExpanded}
+          onToggle={toggleDecriptionSelect}
+          ref={ref}
+        >
+          <DescriptionField
+            isDecriptionFieldExpanded={isDecriptionFieldExpanded}
+            toggleOffDecriptionSelect={toggleOffDecriptionSelect}
+            toggleOnDecriptionSelect={toggleOnDecriptionSelect}
+          />
+        </ActionSidebarRow>
+      )}
     </>
   );
 };
