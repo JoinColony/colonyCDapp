@@ -2604,6 +2604,7 @@ type Expenditure @model {
   metadata: ExpenditureMetadata @hasOne(fields: ["id"])
   balances: [ExpenditureBalance!]
     @function(name: "fetchExpenditureBalances-${env}")
+  finalizedAt: AWSTimestamp
 }
 
 # Each expenditure can have multiple slots with one recipient and possibly multiple payouts (with different token addresses)
