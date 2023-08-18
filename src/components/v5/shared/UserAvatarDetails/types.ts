@@ -5,7 +5,7 @@ export interface UserAvatarDetailsProps extends AvatarProps {
   userName?: string;
   isVerified?: boolean;
   walletAddress?: string;
-  userStatus?: UserStatusMode;
+  userStatus?: UserStatusMode | null;
   isContributorsList?: boolean;
   isBordered?: boolean;
 }

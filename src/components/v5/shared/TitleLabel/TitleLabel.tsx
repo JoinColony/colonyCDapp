@@ -1,16 +1,17 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import { TitleLabelProps } from './types';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.TitleLabel';
 
 const TitleLabel: FC<TitleLabelProps> = ({ text, className }) => {
-  const { formatMessage } = useIntl();
+  if (!text) {
+    return null;
+  }
 
-  const textLabel =
-    typeof text === 'string' ? text : text && formatMessage(text);
+  const textLabel = formatText(text);
 
   return (
     <span

@@ -1,7 +1,7 @@
-import { WhitelistedUser } from '~common/Dialogs/ManageWhitelistDialog/WhitelistedAddresses/helpers';
+import { ColonyContributor } from '~types';
 
 export interface TableItemProps {
-  member: WhitelistedUser;
+  member: ColonyContributor;
   onDeleteClick: () => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }

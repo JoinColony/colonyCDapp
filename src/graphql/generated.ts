@@ -5967,7 +5967,11 @@ export type ChainFundsClaimFragment = { __typename?: 'ColonyChainFundsClaim', id
 
 export type ColonyRoleFragment = { __typename?: 'ColonyRole', id: string, targetAddress: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, domain: { __typename?: 'Domain', nativeId: number } };
 
-export type ColonyContributorFragment = { __typename?: 'ColonyContributor', contributorAddress: string, verified: boolean, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', domainId: string, id: string } | null> } | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean }> | null } | null } } | null> } | null } | null };
+export type ContributorReputationFragment = { __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } };
+
+export type ContributorRolesFragment = { __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } };
+
+export type ColonyContributorFragment = { __typename?: 'ColonyContributor', contributorAddress: string, verified: boolean, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean }> | null } | null } } | null> } | null } | null };
 
 export type DomainFragment = { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null };
 
@@ -6199,21 +6203,13 @@ export type GetMembersForColonyQueryVariables = Exact<{
 
 export type GetMembersForColonyQuery = { __typename?: 'Query', getMembersForColony?: { __typename?: 'MembersForColonyReturn', contributors?: Array<{ __typename?: 'Contributor', address: string, reputationPercentage?: string | null, reputationAmount?: string | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null }> | null, watchers?: Array<{ __typename?: 'Watcher', address: string, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null }> | null } | null };
 
-export type GetPermissionedContributorsQueryVariables = Exact<{
-  domainId: Scalars['ID'];
-  colonyAddress: Scalars['ID'];
-  limit: Scalars['Int'];
-}>;
-
-
-export type GetPermissionedContributorsQuery = { __typename?: 'Query', getRoleByDomainAndColony?: { __typename?: 'ModelColonyRoleConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyRole', targetAddress: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, targetUser?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean }> | null } | null } } | null> } | null } | null } | null> } | null };
-
 export type GetColonyContributorQueryVariables = Exact<{
   id: Scalars['ID'];
+  colonyAddress: Scalars['ID'];
 }>;
 
 
-export type GetColonyContributorQuery = { __typename?: 'Query', getColonyContributor?: { __typename?: 'ColonyContributor', id: string } | null };
+export type GetColonyContributorQuery = { __typename?: 'Query', getColonyContributor?: { __typename?: 'ColonyContributor', contributorAddress: string, verified: boolean, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean }> | null } | null } } | null> } | null } | null } | null };
 
 export type GetColonyContributorsQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -6223,7 +6219,7 @@ export type GetColonyContributorsQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyContributorsQuery = { __typename?: 'Query', getContributorsByColony?: { __typename?: 'ModelColonyContributorConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', contributorAddress: string, verified: boolean, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', domainId: string, id: string } | null> } | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean }> | null } | null } } | null> } | null } | null } | null> } | null };
+export type GetColonyContributorsQuery = { __typename?: 'Query', getContributorsByColony?: { __typename?: 'ModelColonyContributorConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', contributorAddress: string, verified: boolean, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean }> | null } | null } } | null> } | null } | null } | null> } | null };
 
 export type GetColonyWatcherQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -6892,6 +6888,38 @@ export const WatchListItemFragmentDoc = gql`
   createdAt
 }
     ${WatchedColonyFragmentDoc}`;
+export const ContributorRolesFragmentDoc = gql`
+    fragment ContributorRoles on ColonyRole {
+  domainId
+  domain {
+    metadata {
+      name
+    }
+    nativeId
+  }
+  role_0
+  role_1
+  role_2
+  role_3
+  role_5
+  role_6
+  id
+}
+    `;
+export const ContributorReputationFragmentDoc = gql`
+    fragment ContributorReputation on ContributorReputation {
+  reputationPercentage
+  reputationRaw
+  domainId
+  domain {
+    metadata {
+      name
+    }
+    nativeId
+  }
+  id
+}
+    `;
 export const ColonyContributorFragmentDoc = gql`
     fragment ColonyContributor on ColonyContributor {
   contributorAddress
@@ -6899,22 +6927,14 @@ export const ColonyContributorFragmentDoc = gql`
   colonyReputationPercentage
   roles(filter: {colonyAddress: {eq: $colonyAddress}}) {
     items {
-      domainId
-      role_0
-      role_1
-      role_2
-      role_3
-      role_5
-      role_6
-      id
+      ...ContributorRoles
     }
   }
   reputation(
     filter: {colonyAddress: {eq: $colonyAddress}, reputationRaw: {ne: "0"}}
   ) {
     items {
-      domainId
-      id
+      ...ContributorReputation
     }
   }
   user {
@@ -6935,7 +6955,9 @@ export const ColonyContributorFragmentDoc = gql`
   }
   type
 }
-    ${ProfileFragmentDoc}
+    ${ContributorRolesFragmentDoc}
+${ContributorReputationFragmentDoc}
+${ProfileFragmentDoc}
 ${WatchedColonyFragmentDoc}`;
 export const UserTokenBalanceDataFragmentDoc = gql`
     fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
@@ -7997,66 +8019,13 @@ export function useGetMembersForColonyLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type GetMembersForColonyQueryHookResult = ReturnType<typeof useGetMembersForColonyQuery>;
 export type GetMembersForColonyLazyQueryHookResult = ReturnType<typeof useGetMembersForColonyLazyQuery>;
 export type GetMembersForColonyQueryResult = Apollo.QueryResult<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>;
-export const GetPermissionedContributorsDocument = gql`
-    query GetPermissionedContributors($domainId: ID!, $colonyAddress: ID!, $limit: Int!) {
-  getRoleByDomainAndColony(
-    domainId: $domainId
-    colonyAddress: {eq: $colonyAddress}
-    limit: $limit
-  ) {
-    items {
-      targetAddress
-      targetUser {
-        ...User
-      }
-      role_0
-      role_1
-      role_2
-      role_3
-      role_5
-      role_6
-    }
-    nextToken
-  }
-}
-    ${UserFragmentDoc}`;
-
-/**
- * __useGetPermissionedContributorsQuery__
- *
- * To run a query within a React component, call `useGetPermissionedContributorsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetPermissionedContributorsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetPermissionedContributorsQuery({
- *   variables: {
- *      domainId: // value for 'domainId'
- *      colonyAddress: // value for 'colonyAddress'
- *      limit: // value for 'limit'
- *   },
- * });
- */
-export function useGetPermissionedContributorsQuery(baseOptions: Apollo.QueryHookOptions<GetPermissionedContributorsQuery, GetPermissionedContributorsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPermissionedContributorsQuery, GetPermissionedContributorsQueryVariables>(GetPermissionedContributorsDocument, options);
-      }
-export function useGetPermissionedContributorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPermissionedContributorsQuery, GetPermissionedContributorsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPermissionedContributorsQuery, GetPermissionedContributorsQueryVariables>(GetPermissionedContributorsDocument, options);
-        }
-export type GetPermissionedContributorsQueryHookResult = ReturnType<typeof useGetPermissionedContributorsQuery>;
-export type GetPermissionedContributorsLazyQueryHookResult = ReturnType<typeof useGetPermissionedContributorsLazyQuery>;
-export type GetPermissionedContributorsQueryResult = Apollo.QueryResult<GetPermissionedContributorsQuery, GetPermissionedContributorsQueryVariables>;
 export const GetColonyContributorDocument = gql`
-    query GetColonyContributor($id: ID!) {
+    query GetColonyContributor($id: ID!, $colonyAddress: ID!) {
   getColonyContributor(id: $id) {
-    id
+    ...ColonyContributor
   }
 }
-    `;
+    ${ColonyContributorFragmentDoc}`;
 
 /**
  * __useGetColonyContributorQuery__
@@ -8071,6 +8040,7 @@ export const GetColonyContributorDocument = gql`
  * const { data, loading, error } = useGetColonyContributorQuery({
  *   variables: {
  *      id: // value for 'id'
+ *      colonyAddress: // value for 'colonyAddress'
  *   },
  * });
  */

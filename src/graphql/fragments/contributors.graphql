@@ -1,17 +1,40 @@
+fragment ContributorReputation on ContributorReputation {
+  reputationPercentage
+  reputationRaw
+  domainId
+  domain {
+    metadata {
+      name
+    }
+    nativeId
+  }
+  id
+}
+
+fragment ContributorRoles on ColonyRole {
+  domainId
+  domain {
+    metadata {
+      name
+    }
+    nativeId
+  }
+  role_0
+  role_1
+  role_2
+  role_3
+  role_5
+  role_6
+  id
+}
+
 fragment ColonyContributor on ColonyContributor {
   contributorAddress
   verified
   colonyReputationPercentage
   roles(filter: { colonyAddress: { eq: $colonyAddress } }) {
     items {
-      domainId
-      role_0
-      role_1
-      role_2
-      role_3
-      role_5
-      role_6
-      id
+      ...ContributorRoles
     }
   }
   reputation(
@@ -21,8 +44,7 @@ fragment ColonyContributor on ColonyContributor {
     }
   ) {
     items {
-      domainId
-      id
+      ...ContributorReputation
     }
   }
   user {

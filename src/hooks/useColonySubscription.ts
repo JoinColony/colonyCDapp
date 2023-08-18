@@ -28,7 +28,7 @@ const useColonySubscription = () => {
   );
 
   const { data } = useGetColonyContributorQuery({
-    variables: { id: colonyContributorId },
+    variables: { id: colonyContributorId, colonyAddress },
   });
 
   const isAlreadyContributor = !!data?.getColonyContributor;
@@ -60,7 +60,7 @@ const useColonySubscription = () => {
         colonyReputationPercentage: 0,
         contributorAddress: walletAddress,
         verified: false,
-        id: `${colonyAddress}_${walletAddress}`,
+        id: getColonyContributorId(colonyAddress, walletAddress),
       },
     },
   });

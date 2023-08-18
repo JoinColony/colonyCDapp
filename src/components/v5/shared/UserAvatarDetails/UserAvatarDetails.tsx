@@ -15,6 +15,7 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
   userName,
   walletAddress,
   userStatus,
+  isVerified,
   avatar,
   isContributorsList,
   isBordered = false,
@@ -49,20 +50,17 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
           >
             <Avatar size="m" title={userName} avatar={avatar} />
           </div>
-          {!!userStatus &&
-            userStatus !== 'general' &&
-            userStatus !== 'banned' &&
-            isContributorsList && (
-              <span className="absolute bottom-[-0.9375rem]">
-                <UserStatus mode={mode} text={{ id: userStatus }} />
-              </span>
-            )}
+          {!!userStatus && userStatus !== 'general' && isContributorsList && (
+            <span className="absolute bottom-[-0.9375rem]">
+              <UserStatus mode={mode} text={{ id: userStatus }} />
+            </span>
+          )}
         </div>
       )}
       <div>
         <div className="grid grid-cols-[auto,1fr] gap-x-2 items-center mb-0.5">
           <p className="heading-4 truncate">{userName}</p>
-          {userStatus === 'verified' && (
+          {isVerified && (
             <span className="flex shrink-0 text-blue-400">
               <Icon name="verified" appearance={{ size: 'tiny' }} />
             </span>

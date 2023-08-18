@@ -29,6 +29,8 @@ import {
   AnnotationFragment,
   ColonyDecisionFragment,
   ColonyContributorFragment,
+  ContributorReputationFragment,
+  ContributorRolesFragment,
 } from '~gql';
 
 export type AnnotationType = AnnotationFragment;
@@ -36,6 +38,10 @@ export type AnnotationType = AnnotationFragment;
 export type ColonyDecision = ColonyDecisionFragment;
 
 export type ColonyContributor = ColonyContributorFragment;
+
+export type ContributorReputation = ContributorReputationFragment;
+
+export type ContributorRoles = ContributorRolesFragment;
 
 export type User = UserFragment;
 

@@ -1,11 +1,11 @@
 import React, { FC, PropsWithChildren } from 'react';
-import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import { UserPermissionsBadgeProps } from './types';
 import styles from './UserPermissionsBadge.module.css';
 import Tooltip from '~shared/Extensions/Tooltip';
 import Icon from '~shared/Icon';
+import { formatText } from '~utils/intl';
 
 const displayName = 'common.Extensions.UserPermissionsBadge';
 
@@ -20,15 +20,11 @@ const UserPermissionsBadge: FC<
   name,
   ...rest
 }) => {
-  const { formatMessage } = useIntl();
-
-  const userPermissionsBadgeText =
-    typeof text == 'string' ? text : text && formatMessage(text, textValues);
-
-  const userPermissionsBadgeDescription =
-    typeof description == 'string'
-      ? description
-      : description && formatMessage(description, descriptionValues);
+  const userPermissionsBadgeText = formatText(text, textValues);
+  const userPermissionsBadgeDescription = formatText(
+    description,
+    descriptionValues,
+  );
 
   const content = (
     <>

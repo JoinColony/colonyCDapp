@@ -4,24 +4,31 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 import UserAvatarPopover from '../UserAvatarPopover';
 import Icon from '~shared/Icon';
 import BurgerMenu from '../BurgerMenu';
-import CardPermissions, { SubNavigation } from './partials';
+import { SubNavigation } from './partials';
 import UserStatusComponent from './partials/UserStatus';
 import { CardWithBiosProps } from './types';
 import PopoverBase from '../PopoverBase';
+import { useContributorBreakdown } from '~hooks';
+import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
 
 const displayName = 'v5.CardWithBios';
 
 const CardWithBios: FC<CardWithBiosProps> = ({
   userData,
   description,
-  userStatus = 'general',
   shouldBeMenuVisible = true,
-  permissions,
-  isVerified,
   isContributorsList,
 }) => {
-  const { user, colonyReputationPercentage } = userData || {};
-  const { name, walletAddress, profile } = user || {};
+  const {
+    user,
+    colonyReputationPercentage,
+    type,
+    verified: isVerified,
+  } = userData || {};
+  const userStatus = (type?.toLowerCase() ??
+    null) as ContributorTypeFilter | null;
+
+  const { name, walletAddress = '', profile } = user || {};
   const { bio } = profile || {};
   const {
     getTooltipProps,
@@ -36,6 +43,8 @@ const CardWithBios: FC<CardWithBiosProps> = ({
     interactive: true,
   });
 
+  const domains = useContributorBreakdown(userData);
+
   return (
     <div className="max-h-[9.25rem] rounded-lg border border-gray-200 bg-gray-25 p-5 relative">
       <div className="flex flex-col gap-2">
@@ -46,13 +55,11 @@ const CardWithBios: FC<CardWithBiosProps> = ({
               walletAddress={walletAddress}
               isVerified={isVerified}
               aboutDescription={bio || ''}
-              // @TODO: add colonyReputationItems
-              // colonyReputation={colonyReputationItems}
+              domains={domains}
               user={user}
               userStatus={userStatus}
               avatarSize="sm"
               isContributorsList={isContributorsList}
-              // permissions={permissionsItems}
             />
             {isVerified && (
               <span className="ml-1 flex shrink-0 text-blue-400">
@@ -101,8 +108,6 @@ const CardWithBios: FC<CardWithBiosProps> = ({
               </span>
             </span>
           )}
-
-          {permissions && <CardPermissions permissions={permissions} />}
         </div>
       </div>
     </div>

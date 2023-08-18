@@ -178,6 +178,7 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
           const nativeDomainId = filterId.split('_').shift();
           return Number(nativeDomainId);
         })
+        // ensure root comes first
         .sort((a, b) => a - b),
     [selectedFilters],
   );
