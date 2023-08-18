@@ -349,12 +349,7 @@ const SafeTransactionPreview = ({
                   {!isNFT(index) && (
                     <DetailsItem
                       label={MSG.safe}
-                      value={
-                        <AddressDetailsView
-                          item={safe as never as User}
-                          isSafeItem
-                        />
-                      }
+                      value={<AddressDetailsView item={safe} isSafeItem />}
                     />
                   )}
                   {transactions[index].transactionType !==
