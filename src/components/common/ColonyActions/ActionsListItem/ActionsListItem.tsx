@@ -49,7 +49,6 @@ const ActionsListItem = ({
     createdAt,
     isMotion,
     motionData,
-    initiatorColony,
     safeTransaction,
   },
   item,
@@ -75,10 +74,6 @@ const ActionsListItem = ({
     navigate(`/colony/${colony.name}/tx/${transactionHash}`);
 
   const status = ListItemStatus.Defused;
-
-  const fromDomain = safeTransaction
-    ? initiatorColony?.domains?.items[0]
-    : itemDomain;
 
   const safeTransactionStatus = TRANSACTION_STATUS.PENDING;
 
@@ -119,7 +114,7 @@ const ActionsListItem = ({
           />
         )
       }
-      meta={<ActionsListItemMeta fromDomain={fromDomain ?? undefined} />}
+      meta={<ActionsListItemMeta fromDomain={itemDomain ?? undefined} />}
       onClick={handleActionRedirect}
       status={status}
       tag={tag}
