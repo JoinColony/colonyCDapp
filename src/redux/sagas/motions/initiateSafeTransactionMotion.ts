@@ -28,6 +28,7 @@ import {
   getContractInteractionData,
   getZodiacModule,
   getHomeBridgeByChain,
+  ZODIAC_BRIDGE_MODULE_ADDRESS,
 } from '../utils/safeHelpers';
 import { transactionReady } from '../../actionCreators';
 
@@ -54,20 +55,17 @@ function* initiateSafeTransactionMotion({
       colonyAddress,
     );
 
-    const ZODIAC_BRIDGE_MODULE_ADDRESS = isDev
-      ? process.env.ZODIAC_BRIDGE_MODULE_ADDRESS
+    const zodiacBridgeModuleAddress = isDev
+      ? ZODIAC_BRIDGE_MODULE_ADDRESS
       : safe.moduleContractAddress;
 
-    if (!ZODIAC_BRIDGE_MODULE_ADDRESS) {
+    if (!zodiacBridgeModuleAddress) {
       throw new Error(
         `Please provide a ZODIAC_BRIDGE_MODULE_ADDRESS. If running local, please add key-pair to your .env file.`,
       );
     }
     const homeBridge = getHomeBridgeByChain(safe.chainId);
-    const zodiacBridgeModule = getZodiacModule(
-      ZODIAC_BRIDGE_MODULE_ADDRESS,
-      safe,
-    );
+    const zodiacBridgeModule = getZodiacModule(zodiacBridgeModuleAddress, safe);
 
     const motionChildSkillIndex = yield call(
       getChildIndex,
