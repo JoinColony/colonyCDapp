@@ -36,3 +36,10 @@ query GetColonyWatcher($id: ID!, $limit: Int) {
     }
   }
 }
+
+query GetContributorCount($input: GetTotalMemberCountInput!) {
+  getTotalMemberCount(input: $input) {
+    contributorCount
+    memberCount
+  }
+}
