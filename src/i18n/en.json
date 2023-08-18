@@ -876,5 +876,7 @@
   "upload.avatar.successfully.toast.title": "Profile image changed successfully",
   "upload.avatar.successfully.toast.description": "You can update this again at any time",
   "button.show.less": "Show less",
-  "button.expand": "Expand"
+  "button.expand": "Expand",
+  "button.duplicate.row": "Duplicate row",
+  "button.remove.row": "Remove row"
 }

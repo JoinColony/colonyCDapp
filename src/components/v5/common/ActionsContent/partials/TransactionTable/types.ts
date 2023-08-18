@@ -1,5 +1,5 @@
 export interface TransactionProps {
-  key: string;
+  key: number;
   recipent: string;
   amount: string;
   token: string;

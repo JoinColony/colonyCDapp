@@ -61,9 +61,9 @@ const CreatePaymentDialog = ({
   );
 
   const transform = pipe(
-    mapPayload((payload) =>
-      getCreatePaymentDialogPayload(colony, payload, networkInverseFee),
-    ),
+    mapPayload((payload) => {
+      return getCreatePaymentDialogPayload(colony, payload, networkInverseFee);
+    }),
     withMeta({ navigate }),
   );
 

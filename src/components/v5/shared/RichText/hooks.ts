@@ -77,9 +77,7 @@ export const useRichText = (
       ],
       editorProps: {
         attributes: {
-          class: `prose max-w-none ${
-            isDecriptionFieldExpanded ? 'h-64' : 'h-auto'
-          } overflow-scroll focus:outline-none text-gray-900 text-md`,
+          class: `prose max-w-none overflow-scroll focus:outline-none text-gray-900 text-md`,
         },
       },
       content,

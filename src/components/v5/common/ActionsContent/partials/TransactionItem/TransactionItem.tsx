@@ -81,7 +81,10 @@ const TransactionItem: FC<TransactionItemProps> = ({
                   toggleOffTransactionMenu();
                 }}
               >
-                remove row
+                <span className="text-gray-900 flex items-center gap-2">
+                  <Icon name="trash" appearance={{ size: 'tiny' }} />
+                  {formatMessage({ id: 'button.remove.row' })}
+                </span>
               </button>
             </li>
             <li className="mb-4 last:mb-0">
@@ -93,7 +96,10 @@ const TransactionItem: FC<TransactionItemProps> = ({
                   toggleOffTransactionMenu();
                 }}
               >
-                duplicate row
+                <span className="text-gray-900 flex items-center gap-2">
+                  <Icon name="copy-simple" appearance={{ size: 'tiny' }} />
+                  {formatMessage({ id: 'button.duplicate.row' })}
+                </span>
               </button>
             </li>
           </ul>

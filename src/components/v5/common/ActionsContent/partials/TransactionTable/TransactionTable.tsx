@@ -1,9 +1,7 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
 
 import Button from '~v5/shared/Button/Button';
-import { TransactionProps } from './types';
 import { useColonyContext } from '~hooks';
 import styles from './TransactionTable.module.css';
 import TransactionItem from '../TransactionItem';
@@ -26,7 +24,7 @@ const TransactionTable: FC = () => {
 
   return (
     <div className="mt-7">
-      {transactions.length > 0 && (
+      {!!transactions.length && (
         <div className="mb-6">
           <h5 className="text-2 mb-3">
             {formatMessage({ id: 'actionSidebar.additionalPayments' })}
@@ -54,14 +52,14 @@ const TransactionTable: FC = () => {
       <Button
         mode="primaryOutline"
         iconName="plus"
+        size="small"
         text={{ id: 'button.addTransaction' }}
         onClick={() => {
           setTransactions([
             ...transactions,
             {
               amount: '0',
-              // @TODO: Find better way to get the key - because when removing a row, the key is not updated and it might be duplicated
-              key: `${transactions.length + 1}`,
+              key: Date.now(),
               recipent: '',
               token: nativeToken?.tokenAddress || '',
             },
