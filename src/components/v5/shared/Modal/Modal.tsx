@@ -37,7 +37,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
       {icon && (
         <span
           className={clsx(styles.icon, 'border-gray-200', {
-            'border-red-200 text-red-400': isWarning,
+            'border-red-200 text-negative-400': isWarning,
           })}
         >
           <Icon appearance={{ size: 'extraSmall' }} name={icon} />

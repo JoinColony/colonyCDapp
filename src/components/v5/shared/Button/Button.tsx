@@ -52,6 +52,8 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
             `${isFullRounded ? 'rounded-full' : 'rounded-lg'}`,
             {
               'text-md min-h-[2.5rem] px-4 py-2': size === 'default',
+              'text-md min-h-[2.5rem] px-[0.875rem] py-[0.625rem]':
+                size === 'large',
               '!rounded-[0.1875rem] capitalize text-4 px-2 py-1':
                 size === 'extraSmall',
               'text-sm min-h-[2.125rem] px-3 py-2': size === 'small',
@@ -63,7 +65,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
               [styles.quinary]: mode === 'quinary',
               [styles.senary]: mode === 'senary',
               [styles.quaternary]: mode === 'quaternary',
-              [styles.tertiary]: mode === 'tertiary',
+              [styles.tertiary]: mode === 'tertiary' || size === 'large',
               [styles.septenary]: mode === 'septenary',
               [styles.completed]: mode === 'completed',
               'pointer-events-none': disabled,
