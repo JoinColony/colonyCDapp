@@ -20,8 +20,6 @@
             "Type": "String",
             "Default": "functioncolonycdappSSMAccessArn"
           }
-        
-    
     },
     "Conditions": {
         "ShouldNotCreateEnvResources": {
@@ -165,7 +163,7 @@
                                 }
                               ]
                             }
-                          }
+                        }
                     ]
                 }
             }
