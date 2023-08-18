@@ -71,7 +71,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
           onSubmit={methods.handleSubmit(onSubmit)}
           className="h-full flex flex-col"
         >
-          <div className="px-6 py-8">
+          <div className="px-6 py-8 overflow-scroll h-[40rem]">
             <input
               type="text"
               className={styles.titleInput}
