@@ -9,3 +9,4 @@ export { default as xor } from 'lodash/xor';
 export { default as unionBy } from 'lodash/unionBy';
 export { default as intersectionBy } from 'lodash/intersectionBy';
 export { default as uniqBy } from 'lodash/uniqBy';
+export { default as difference } from 'lodash/difference';

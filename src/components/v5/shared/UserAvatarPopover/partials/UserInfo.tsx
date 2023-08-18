@@ -127,7 +127,7 @@ const UserInfo: FC<UserInfoProps> = ({
                       >
                         <Icon name="star" appearance={{ size: 'extraTiny' }} />
                         <span className="inline-block ml-1 mr-2">
-                          {reputationPercentage}%
+                          {reputationPercentage.toFixed(2)}%
                         </span>
                       </Tooltip>
                     </span>

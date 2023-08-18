@@ -1,15 +1,10 @@
 import React, { FC, useCallback, useState } from 'react';
 
 import { TableItemProps } from './types';
-import {
-  useColonyContext,
-  useContributorBreakdown,
-  useUserReputation,
-} from '~hooks';
+import { useContributorBreakdown } from '~hooks';
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
 import Icon from '~shared/Icon';
-import { calculatePercentageReputation } from '~utils/reputation';
 import styles from './TableItem.module.css';
 import Checkbox from '~v5/common/Checkbox';
 import { formatText } from '~utils/intl';
@@ -17,20 +12,10 @@ import { formatText } from '~utils/intl';
 const displayName = 'v5.pages.VerifiedPage.partials.TableItem';
 
 const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
-  const { colony } = useColonyContext();
-  const { colonyAddress = '' } = colony || {};
-
-  const { user } = member || {};
+  const { user, colonyReputationPercentage } = member || {};
   const { walletAddress = '', name, profile } = user || {};
   const { bio } = profile || {};
-  const { userReputation, totalReputation } = useUserReputation(
-    colonyAddress,
-    walletAddress,
-  );
-  const reputationPercentage = calculatePercentageReputation(
-    userReputation,
-    totalReputation,
-  );
+
   const [isChecked, setIsChecked] = useState<boolean>();
 
   const handleChange = useCallback(
@@ -41,7 +26,7 @@ const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
     [setIsChecked, onChange],
   );
 
-  const { verified: isVerified } = member ?? {};
+  const { isVerified } = member ?? {};
 
   const domains = useContributorBreakdown(member);
 
@@ -73,7 +58,7 @@ const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
       <div className="hidden sm:flex items-center">
         <Icon name="star" appearance={{ size: 'small' }} />
         <span className="ml-1 text-sm text-gray-600">
-          {reputationPercentage || '0'}%
+          {colonyReputationPercentage.toFixed(2) || '0'}%
         </span>
       </div>
       <div className="hidden sm:flex items-center">permissions</div>

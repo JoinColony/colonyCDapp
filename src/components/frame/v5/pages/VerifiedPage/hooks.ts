@@ -9,7 +9,7 @@ export const useVerifiedPage = () => {
   const { members, loadingMembers } = useMemberContext();
 
   const verifiedMembers = useMemo(
-    () => members.filter(({ verified }) => verified),
+    () => members.filter(({ isVerified }) => isVerified),
     [members],
   );
 

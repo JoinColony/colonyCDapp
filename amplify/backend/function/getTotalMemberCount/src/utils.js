@@ -69,67 +69,14 @@ const getContributorAndMemberCount = async (colonyAddress) => {
     await Promise.all(
       // For each entry, check if it's a contributor or member
       allContributors.map(
-        async ({ contributorAddress, verified: isVerified }) => {
-          const rolesQueryParams = {
-            TableName: `ColonyRole${tableSuffix}`,
-            IndexName: 'byTargetAddress', // The index to query
-            KeyConditionExpression: 'targetAddress = :targetAddress', // Query by the targetAddress
-            FilterExpression: 'colonyAddress = :colonyAddress', // Filter by the colonyAddress
-            ExpressionAttributeValues: {
-              ':targetAddress': contributorAddress,
-              ':colonyAddress': colonyAddress,
-            },
-          };
-
-          const reputationQueryParams = {
-            TableName: `ContributorReputation${tableSuffix}`,
-            IndexName: 'byContributorAddress',
-            KeyConditionExpression: 'contributorAddress = :contributorAddress',
-            FilterExpression:
-              'colonyAddress = :colonyAddress AND reputationRaw <> :zero', // Filter out 0 reputation
-            ExpressionAttributeValues: {
-              ':contributorAddress': contributorAddress,
-              ':colonyAddress': colonyAddress,
-              ':zero': '0',
-            },
-          };
-
-          const userWatchedColoniesQueryParams = {
-            TableName: `WatchedColonies${tableSuffix}`,
-            KeyConditionExpression: 'id = :contributorAddress',
-            // filter by this colony, i.e. is the contributor watching this colony
-            FilterExpression: 'colonyAddress = :colonyAddress',
-            ExpressionAttributeValues: {
-              ':contributorAddress': contributorAddress,
-              ':colonyAddress': colonyAddress,
-            },
-          };
-
-          const roles = await dynamoDB.query(rolesQueryParams).promise();
-
-          const reputation = await dynamoDB
-            .query(reputationQueryParams)
-            .promise();
-
+        async ({ isVerified, hasPermissions, hasReputation, isWatching }) => {
           // is contributor
-          if (reputation.Items.length) {
-            return { contributor: 1, member: 1 };
-          }
-
-          if (hasAtLeastOnePermission(roles.Items)) {
+          if (hasPermissions || hasReputation) {
             return { contributor: 1, member: 1 };
           }
 
           // is member
-          if (isVerified) {
-            return { contributor: 0, member: 1 };
-          }
-
-          const watchedColonies = await dynamoDB
-            .query(userWatchedColoniesQueryParams)
-            .promise();
-
-          if (watchedColonies.Items.length) {
+          if (isVerified || isWatching) {
             return { contributor: 0, member: 1 };
           }
 

@@ -260,6 +260,7 @@ export type ColonyActionsActionTypes =
         colonyTokenAddresses: Address[];
         annotationMessage?: string;
         isWhitelistActivated: boolean;
+        removedAddresses: Address[];
       },
       MetaWithNavigate<object>
     >

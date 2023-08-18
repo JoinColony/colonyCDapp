@@ -6,6 +6,7 @@ import {
   useCreateWatchedColoniesMutation,
   useDeleteWatchedColoniesMutation,
   useGetColonyContributorQuery,
+  useUpdateColonyContributorMutation,
 } from '~gql';
 import { CREATE_USER_ROUTE } from '~routes';
 import { useAppContext, useCanJoinColony, useColonyContext } from '~hooks';
@@ -29,6 +30,7 @@ const useColonySubscription = () => {
 
   const { data } = useGetColonyContributorQuery({
     variables: { id: colonyContributorId, colonyAddress },
+    skip: !colonyAddress || !walletAddress,
   });
 
   const isAlreadyContributor = !!data?.getColonyContributor;
@@ -59,11 +61,15 @@ const useColonySubscription = () => {
         colonyAddress,
         colonyReputationPercentage: 0,
         contributorAddress: walletAddress,
-        verified: false,
+        isVerified: false,
         id: getColonyContributorId(colonyAddress, walletAddress),
+        isWatching: true,
       },
     },
   });
+
+  /* Update a Colony Contributor */
+  const [updateContributor] = useUpdateColonyContributorMutation();
 
   /* Unwatch (unfollow) a colony */
   const [unwatch] = useDeleteWatchedColoniesMutation({
@@ -84,6 +90,10 @@ const useColonySubscription = () => {
       watch();
       if (!isAlreadyContributor) {
         createContributor();
+      } else {
+        updateContributor({
+          variables: { input: { id: colonyContributorId, isWatching: true } },
+        });
       }
     } else if (wallet && !user) {
       handleNewUser();
@@ -94,12 +104,19 @@ const useColonySubscription = () => {
     }
   };
 
+  const handleUnwatch = () => {
+    unwatch();
+    updateContributor({
+      variables: { input: { id: colonyContributorId, isWatching: false } },
+    });
+  };
+
   const canWatch = useCanJoinColony();
 
   return {
     canWatch,
     handleWatch,
-    unwatch,
+    handleUnwatch,
   };
 };
 

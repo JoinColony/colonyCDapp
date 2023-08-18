@@ -43,12 +43,14 @@ function* manageVerifiedRecipients({
     // colonyTokens = [],
     annotationMessage,
     isWhitelistActivated,
+    removedAddresses,
     // colonySafes = [],
   },
   meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE>) {
   let txChannel;
+
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
 
@@ -194,14 +196,12 @@ function* manageVerifiedRecipients({
             variables: {
               input: {
                 id: getColonyContributorId(colonyAddress, address),
-                verified: true,
+                isVerified: true,
               },
             },
-            // Update colony object with modified metadata
-            refetchQueries: [GetFullColonyByNameDocument],
           });
         } else {
-          apolloClient.mutate<
+          await apolloClient.mutate<
             CreateColonyContributorMutation,
             CreateColonyContributorMutationVariables
           >({
@@ -212,13 +212,28 @@ function* manageVerifiedRecipients({
                 colonyAddress,
                 colonyReputationPercentage: 0,
                 contributorAddress: address,
-                verified: true,
+                isVerified: true,
               },
             },
-            // Update colony object with modified metadata
-            refetchQueries: [GetFullColonyByNameDocument],
           });
         }
+      }),
+    );
+
+    yield Promise.all(
+      removedAddresses.map(async (address) => {
+        await apolloClient.mutate<
+          UpdateColonyContributorMutation,
+          UpdateColonyContributorMutationVariables
+        >({
+          mutation: UpdateColonyContributorDocument,
+          variables: {
+            input: {
+              id: getColonyContributorId(colonyAddress, address),
+              isVerified: false,
+            },
+          },
+        });
       }),
     );
 
