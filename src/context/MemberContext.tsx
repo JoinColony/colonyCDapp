@@ -24,11 +24,14 @@ import {
   HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT,
 } from '~constants';
 import { ColonyContributor } from '~types';
+import { useGetContributorCountQuery } from '~gql';
 
 const MemberContext = createContext<
   | {
       members: ColonyContributor[];
+      totalMemberCount: number;
       contributors: ColonyContributor[];
+      totalContributorCount: number;
       loadingContributors: boolean;
       loadingMembers: boolean;
       loadMoreContributors: () => void;
@@ -43,7 +46,7 @@ const MemberContext = createContext<
 const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const { domainId } = useParams();
   const { colony } = useColonyContext();
-  const { domains } = colony ?? {};
+  const { domains, colonyAddress = '' } = colony ?? {};
   const isMobile = useMobile();
 
   const pageSize = isMobile
@@ -141,10 +144,22 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     pageSize,
   });
 
+  const { data: { getTotalMemberCount } = {} } = useGetContributorCountQuery({
+    variables: { input: { colonyAddress } },
+    skip: !colonyAddress,
+  });
+
+  const {
+    contributorCount: totalContributorCount = 0,
+    memberCount: totalMemberCount = 0,
+  } = getTotalMemberCount ?? {};
+
   const value = useMemo(
     () => ({
       members,
+      totalMemberCount,
       contributors,
+      totalContributorCount,
       moreContributors,
       moreMembers,
       loadMoreContributors,
@@ -155,7 +170,9 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     }),
     [
       members,
+      totalMemberCount,
       contributors,
+      totalContributorCount,
       pageSize,
       moreContributors,
       loadingContributors,

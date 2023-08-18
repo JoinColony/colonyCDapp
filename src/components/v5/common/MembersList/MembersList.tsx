@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
+import { MessageDescriptor, useIntl } from 'react-intl';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
 import CardWithBios from '~v5/shared/CardWithBios';
@@ -11,9 +11,18 @@ import { SpinnerLoader } from '~shared/Preloaders';
 import { useColonyContext } from '~hooks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import { useMemberContext } from '~context/MemberContext';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.common.MembersList';
 
+const getSubTitle = (title: MessageDescriptor, count: number) => {
+  if (!count) {
+    return '';
+  }
+
+  const formatted = formatText(title);
+  return `${count} ${formatted}`;
+};
 const MembersList: FC<MembersListProps> = ({
   title,
   description,
@@ -37,8 +46,14 @@ const MembersList: FC<MembersListProps> = ({
     loadMoreMembers,
     moreMembers,
     moreContributors,
+    totalContributorCount,
+    totalMemberCount,
   } = useMemberContext();
 
+  const subTitle = getSubTitle(
+    title,
+    isContributorsList ? totalContributorCount : totalMemberCount,
+  );
   // const { searchValue } = useSearchContext();
 
   const showLoadMoreButton = isContributorsList
@@ -51,9 +66,7 @@ const MembersList: FC<MembersListProps> = ({
     <div>
       <div className="flex items-center mb-2">
         <h3 className="heading-5 mr-3">{formatMessage(title)}</h3>
-        <span className="text-md text-blue-400">
-          {list.length} {formatMessage(title)}
-        </span>
+        <span className="text-md text-blue-400">{subTitle}</span>
       </div>
       <p className="mb-6 text-md text-gray-600">{formatMessage(description)}</p>
       {isLoading && (

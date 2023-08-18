@@ -65,9 +65,9 @@ const useAllMembers = ({
           const hasPermissions = !!roles?.items
             .filter(notNull)
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            .filter(({ domainId, id, __typename, ...permissions }) =>
+            .some(({ domainId, id, __typename, ...permissions }) =>
               hasSomeRole(permissions, []),
-            ).length;
+            );
           // That reputation is not 0 is checked for in the query
           const hasReputation = !!reputation?.items.filter(notNull).length;
 
