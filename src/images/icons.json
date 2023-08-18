@@ -104,7 +104,8 @@
     "unlock",
     "user-plus",
     "wallet",
-    "ether"
+    "ether",
+    "share"
   ],
   "multiColorIcons": [
     "circle-check-primary",
