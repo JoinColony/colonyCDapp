@@ -14,7 +14,9 @@ fragment ContributorReputation on ContributorReputation {
 fragment ContributorRoles on ColonyRole {
   domainId
   domain {
+    id
     metadata {
+      id
       name
     }
     nativeId
@@ -30,18 +32,19 @@ fragment ContributorRoles on ColonyRole {
 
 fragment ColonyContributor on ColonyContributor {
   contributorAddress
-  verified
+  isVerified
+  hasPermissions
+  hasReputation
+  isWatching
   colonyReputationPercentage
-  roles(filter: { colonyAddress: { eq: $colonyAddress } }) {
+  roles(colonyAddress: { eq: $colonyAddress }) {
     items {
       ...ContributorRoles
     }
   }
   reputation(
-    filter: {
-      colonyAddress: { eq: $colonyAddress }
-      reputationRaw: { ne: "0" }
-    }
+    colonyAddress: { eq: $colonyAddress }
+    filter: { reputationRaw: { ne: "0" } }
   ) {
     items {
       ...ContributorReputation
@@ -52,15 +55,6 @@ fragment ColonyContributor on ColonyContributor {
     name
     profile {
       ...Profile
-    }
-    watchlist(filter: { colonyID: { eq: $colonyAddress } }) {
-      items {
-        id
-        createdAt
-        colony {
-          ...WatchedColony
-        }
-      }
     }
   }
   type

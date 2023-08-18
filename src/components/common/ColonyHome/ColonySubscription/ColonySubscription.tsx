@@ -31,7 +31,7 @@ const MSG = defineMessages({
 const ColonySubscription = () => {
   const { wallet, user, walletConnecting, userLoading } = useAppContext();
   const { colony, canInteractWithColony } = useColonyContext();
-  const { canWatch, handleWatch, unwatch } = useColonySubscription();
+  const { canWatch, handleWatch, handleUnwatch } = useColonySubscription();
   const noRegisteredUser = !user && !userLoading;
   const noWalletConnected = !wallet && !walletConnecting;
   const showJoinButton = canWatch || noWalletConnected || noRegisteredUser;
@@ -61,7 +61,10 @@ const ColonySubscription = () => {
             </Button>
           </div>
         ) : (
-          <ColonySubscriptionInfoPopover onUnsubscribe={unwatch} canUnsubscribe>
+          <ColonySubscriptionInfoPopover
+            onUnsubscribe={handleUnwatch}
+            canUnsubscribe
+          >
             {({ isOpen, toggle, ref, id }) => (
               <ThreeDotsButton
                 id={id}

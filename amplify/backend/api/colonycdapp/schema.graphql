@@ -1169,7 +1169,12 @@ type ContributorReputation @model {
   """
   The address of the contributor
   """
-  contributorAddress: ID! @index(name: "byContributorAddress")
+  contributorAddress: ID!
+    @index(
+      name: "byContributorAddress"
+      queryField: "getUserReputationInColony"
+      sortKeyFields: ["colonyAddress"]
+    )
 
   """
   The colony the reputation was earned in
@@ -1230,7 +1235,22 @@ type ColonyContributor @model {
   """
   Is the contributor a member of the colony's whitelist?
   """
-  verified: Boolean!
+  isVerified: Boolean!
+
+  """
+  Is the contributor watching the colony
+  """
+  isWatching: Boolean
+
+  """
+  Does the contributor have any permission in any domain the colony?
+  """
+  hasPermissions: Boolean
+
+  """
+  Does the contributor have any reputation the colony?
+  """
+  hasReputation: Boolean
 
   """
   The contributor's reputation in the domains in which they have reputation
@@ -2595,7 +2615,13 @@ type ColonyRole @model {
   """
   Address of the agent the permission was set for
   """
-  targetAddress: ID! @index(name: "byTargetAddress")
+  targetAddress: ID!
+    @index(
+      name: "byTargetAddress"
+      queryField: "getRoleByTargetAddressAndColony"
+      sortKeyFields: ["colonyAddress"]
+    )
+
   """
   Will expand to a `User` model if permission was set for a user
   """

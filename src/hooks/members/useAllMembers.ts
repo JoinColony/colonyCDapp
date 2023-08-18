@@ -10,7 +10,7 @@ import {
 import useColonyContext from '../useColonyContext';
 import useMemberFilters from './useMemberFilters';
 import { SortDirection } from '~types';
-import { hasSomeRole, updateQuery } from './utils';
+import { updateQuery } from './utils';
 
 const useAllMembers = ({
   filterPermissions,
@@ -57,24 +57,10 @@ const useAllMembers = ({
     () =>
       items
         ?.filter(notNull)
-        .filter(({ verified: isVerified, roles, reputation, user }) => {
-          // We filter these lists for the colony address in the query.
-          const isWatchingColony =
-            !!user?.watchlist?.items.filter(notNull).length;
-          // The Colony Roles entry associated with the user could have all permissions set to false, so we check for that here
-          const hasPermissions = !!roles?.items
-            .filter(notNull)
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            .some(({ domainId, id, __typename, ...permissions }) =>
-              hasSomeRole(permissions, []),
-            );
-          // That reputation is not 0 is checked for in the query
-          const hasReputation = !!reputation?.items.filter(notNull).length;
-
-          return (
-            isWatchingColony || hasPermissions || hasReputation || isVerified
-          );
-        }) ?? [],
+        .filter(
+          ({ isVerified, hasPermissions, hasReputation, isWatching }) =>
+            isWatching || hasPermissions || hasReputation || isVerified,
+        ) ?? [],
     [items],
   );
 

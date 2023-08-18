@@ -24,7 +24,7 @@ const InstalledBy: FC<PanelTypeProps> = ({ title, extensionData }) => {
   });
 
   const contributor = data?.getColonyContributor;
-  const { user, verified: isVerified } = contributor ?? {};
+  const { user, isVerified } = contributor ?? {};
   const { bio, displayName: userDisplayName } = user?.profile || {};
   const username = user?.name;
 

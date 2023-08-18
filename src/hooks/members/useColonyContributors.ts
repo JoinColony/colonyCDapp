@@ -1,4 +1,4 @@
-import { ColonyRole, Id } from '@colony/colony-js';
+import { ColonyRole } from '@colony/colony-js';
 import { useMemo, useState } from 'react';
 
 import { useGetColonyContributorsQuery } from '~gql';
@@ -9,7 +9,7 @@ import {
   ContributorTypeFilter,
   StatusType,
 } from '~v5/common/TableFiltering/types';
-import { hasSomeRole, updateQuery } from './utils';
+import { updateQuery } from './utils';
 import useMemberFilters from './useMemberFilters';
 
 const useColonyContributors = ({
@@ -53,35 +53,15 @@ const useColonyContributors = ({
    */
 
   const allContributors = useMemo(() => {
-    const databaseDomainIds = new Set(
-      nativeDomainIds.map((id) => `${colonyAddress}_${id}`),
-    );
-
-    // Always include the root domain, since if the user has a permission in root, they have it in all domains
-    const permissionsDomainIds = new Set([
-      `${colonyAddress}_${Id.RootDomain}`,
-      ...databaseDomainIds,
-    ]);
-
     return (
-      items?.filter(notNull).filter(({ roles, reputation }) => {
-        const filteredRoles = roles?.items.filter(notNull) ?? [];
-        const filteredReputation = reputation?.items.filter(notNull) ?? [];
-
-        return (
-          filteredReputation.some(({ domainId }) =>
-            databaseDomainIds.has(domainId),
-          ) ||
-          filteredRoles.some(
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            ({ domainId, id, __typename, ...permissions }) =>
-              permissionsDomainIds.has(domainId) &&
-              hasSomeRole(permissions, []),
-          )
-        );
-      }) ?? []
+      items
+        ?.filter(notNull)
+        .filter(
+          ({ hasReputation, hasPermissions }) =>
+            hasReputation || hasPermissions,
+        ) ?? []
     );
-  }, [items, colonyAddress, nativeDomainIds]);
+  }, [items]);
 
   const filteredContributors = useMemberFilters({
     members: allContributors,
@@ -89,6 +69,7 @@ const useColonyContributors = ({
     filterPermissions,
     nativeDomainIds,
     filterStatus,
+    isContributorList: true,
   });
 
   // We need to ensure that the user always sees the (pageSize * pageNo) number of items.

@@ -445,11 +445,19 @@ export type ColonyContributor = {
   /** The address of the contributor */
   contributorAddress: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
+  /** Does the contributor have any permission in any domain the colony? */
+  hasPermissions?: Maybe<Scalars['Boolean']>;
+  /** Does the contributor have any reputation the colony? */
+  hasReputation?: Maybe<Scalars['Boolean']>;
   /**
    * Unique identifier
    * Format: <colonyAddress>_<contributorAddress>
    */
   id: Scalars['ID'];
+  /** Is the contributor a member of the colony's whitelist? */
+  isVerified: Scalars['Boolean'];
+  /** Is the contributor watching the colony */
+  isWatching?: Maybe<Scalars['Boolean']>;
   reputation?: Maybe<ModelContributorReputationConnection>;
   roles?: Maybe<ModelColonyRoleConnection>;
   /** The type of the contributor */
@@ -457,13 +465,12 @@ export type ColonyContributor = {
   updatedAt: Scalars['AWSDateTime'];
   /** Associated user, if any */
   user?: Maybe<User>;
-  /** Is the contributor a member of the colony's whitelist? */
-  verified: Scalars['Boolean'];
 };
 
 
 /** The ColonyContributor model represents a contributor to the Colony. */
 export type ColonyContributorReputationArgs = {
+  colonyAddress?: InputMaybe<ModelIdKeyConditionInput>;
   filter?: InputMaybe<ModelContributorReputationFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
@@ -473,6 +480,7 @@ export type ColonyContributorReputationArgs = {
 
 /** The ColonyContributor model represents a contributor to the Colony. */
 export type ColonyContributorRolesArgs = {
+  colonyAddress?: InputMaybe<ModelIdKeyConditionInput>;
   filter?: InputMaybe<ModelColonyRoleFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
@@ -964,9 +972,12 @@ export type CreateColonyContributorInput = {
   colonyAddress: Scalars['ID'];
   colonyReputationPercentage: Scalars['Float'];
   contributorAddress: Scalars['ID'];
+  hasPermissions?: InputMaybe<Scalars['Boolean']>;
+  hasReputation?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['ID']>;
+  isVerified: Scalars['Boolean'];
+  isWatching?: InputMaybe<Scalars['Boolean']>;
   type?: InputMaybe<ContributorType>;
-  verified: Scalars['Boolean'];
 };
 
 export type CreateColonyDecisionInput = {
@@ -1889,10 +1900,13 @@ export type ModelColonyContributorConditionInput = {
   colonyAddress?: InputMaybe<ModelIdInput>;
   colonyReputationPercentage?: InputMaybe<ModelFloatInput>;
   contributorAddress?: InputMaybe<ModelIdInput>;
+  hasPermissions?: InputMaybe<ModelBooleanInput>;
+  hasReputation?: InputMaybe<ModelBooleanInput>;
+  isVerified?: InputMaybe<ModelBooleanInput>;
+  isWatching?: InputMaybe<ModelBooleanInput>;
   not?: InputMaybe<ModelColonyContributorConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyContributorConditionInput>>>;
   type?: InputMaybe<ModelContributorTypeInput>;
-  verified?: InputMaybe<ModelBooleanInput>;
 };
 
 export type ModelColonyContributorConnection = {
@@ -1906,11 +1920,14 @@ export type ModelColonyContributorFilterInput = {
   colonyAddress?: InputMaybe<ModelIdInput>;
   colonyReputationPercentage?: InputMaybe<ModelFloatInput>;
   contributorAddress?: InputMaybe<ModelIdInput>;
+  hasPermissions?: InputMaybe<ModelBooleanInput>;
+  hasReputation?: InputMaybe<ModelBooleanInput>;
   id?: InputMaybe<ModelIdInput>;
+  isVerified?: InputMaybe<ModelBooleanInput>;
+  isWatching?: InputMaybe<ModelBooleanInput>;
   not?: InputMaybe<ModelColonyContributorFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyContributorFilterInput>>>;
   type?: InputMaybe<ModelContributorTypeInput>;
-  verified?: InputMaybe<ModelBooleanInput>;
 };
 
 export type ModelColonyDecisionConditionInput = {
@@ -2687,10 +2704,13 @@ export type ModelSubscriptionColonyContributorFilterInput = {
   colonyAddress?: InputMaybe<ModelSubscriptionIdInput>;
   colonyReputationPercentage?: InputMaybe<ModelSubscriptionFloatInput>;
   contributorAddress?: InputMaybe<ModelSubscriptionIdInput>;
+  hasPermissions?: InputMaybe<ModelSubscriptionBooleanInput>;
+  hasReputation?: InputMaybe<ModelSubscriptionBooleanInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
+  isVerified?: InputMaybe<ModelSubscriptionBooleanInput>;
+  isWatching?: InputMaybe<ModelSubscriptionBooleanInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyContributorFilterInput>>>;
   type?: InputMaybe<ModelSubscriptionStringInput>;
-  verified?: InputMaybe<ModelSubscriptionBooleanInput>;
 };
 
 export type ModelSubscriptionColonyDecisionFilterInput = {
@@ -4104,6 +4124,7 @@ export type Query = {
   /** Retrieve a user's reputation within the top domains of a Colony */
   getReputationForTopDomains?: Maybe<GetReputationForTopDomainsReturn>;
   getRoleByDomainAndColony?: Maybe<ModelColonyRoleConnection>;
+  getRoleByTargetAddressAndColony?: Maybe<ModelColonyRoleConnection>;
   getToken?: Maybe<Token>;
   getTokenByAddress?: Maybe<ModelTokenConnection>;
   /** Fetch a token's information. Tries to get the data from the DB first, if that fails, resolves to get data from chain */
@@ -4115,6 +4136,7 @@ export type Query = {
   getUserByName?: Maybe<ModelUserConnection>;
   /** Retrieve a user's reputation within a specific domain in a Colony */
   getUserReputation?: Maybe<Scalars['String']>;
+  getUserReputationInColony?: Maybe<ModelContributorReputationConnection>;
   /** Retrieve a user's token balance for a specific token */
   getUserTokenBalance?: Maybe<GetUserTokenBalanceReturn>;
   getUserTokens?: Maybe<UserTokens>;
@@ -4514,6 +4536,17 @@ export type QueryGetRoleByDomainAndColonyArgs = {
 
 
 /** Root query type */
+export type QueryGetRoleByTargetAddressAndColonyArgs = {
+  colonyAddress?: InputMaybe<ModelIdKeyConditionInput>;
+  filter?: InputMaybe<ModelColonyRoleFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+  targetAddress: Scalars['ID'];
+};
+
+
+/** Root query type */
 export type QueryGetTokenArgs = {
   id: Scalars['ID'];
 };
@@ -4580,6 +4613,17 @@ export type QueryGetUserByNameArgs = {
 /** Root query type */
 export type QueryGetUserReputationArgs = {
   input?: InputMaybe<GetUserReputationInput>;
+};
+
+
+/** Root query type */
+export type QueryGetUserReputationInColonyArgs = {
+  colonyAddress?: InputMaybe<ModelIdKeyConditionInput>;
+  contributorAddress: Scalars['ID'];
+  filter?: InputMaybe<ModelContributorReputationFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
 
@@ -5471,9 +5515,12 @@ export type UpdateColonyContributorInput = {
   colonyAddress?: InputMaybe<Scalars['ID']>;
   colonyReputationPercentage?: InputMaybe<Scalars['Float']>;
   contributorAddress?: InputMaybe<Scalars['ID']>;
+  hasPermissions?: InputMaybe<Scalars['Boolean']>;
+  hasReputation?: InputMaybe<Scalars['Boolean']>;
   id: Scalars['ID'];
+  isVerified?: InputMaybe<Scalars['Boolean']>;
+  isWatching?: InputMaybe<Scalars['Boolean']>;
   type?: InputMaybe<ContributorType>;
-  verified?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type UpdateColonyDecisionInput = {
@@ -5773,6 +5820,7 @@ export type User = {
 
 /** Represents a User within the Colony Network */
 export type UserRolesArgs = {
+  colonyAddress?: InputMaybe<ModelIdKeyConditionInput>;
   filter?: InputMaybe<ModelColonyRoleFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
@@ -5992,9 +6040,9 @@ export type ColonyRoleFragment = { __typename?: 'ColonyRole', id: string, target
 
 export type ContributorReputationFragment = { __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } };
 
-export type ContributorRolesFragment = { __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } };
+export type ContributorRolesFragment = { __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', id: string, name: string } | null } };
 
-export type ColonyContributorFragment = { __typename?: 'ColonyContributor', contributorAddress: string, verified: boolean, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean }> | null } | null } } | null> } | null } | null };
+export type ColonyContributorFragment = { __typename?: 'ColonyContributor', contributorAddress: string, isVerified: boolean, hasPermissions?: boolean | null, hasReputation?: boolean | null, isWatching?: boolean | null, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', id: string, name: string } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null };
 
 export type DomainFragment = { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null };
 
@@ -6232,7 +6280,7 @@ export type GetColonyContributorQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyContributorQuery = { __typename?: 'Query', getColonyContributor?: { __typename?: 'ColonyContributor', contributorAddress: string, verified: boolean, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean }> | null } | null } } | null> } | null } | null } | null };
+export type GetColonyContributorQuery = { __typename?: 'Query', getColonyContributor?: { __typename?: 'ColonyContributor', contributorAddress: string, isVerified: boolean, hasPermissions?: boolean | null, hasReputation?: boolean | null, isWatching?: boolean | null, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', id: string, name: string } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null } | null };
 
 export type GetColonyContributorsQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -6242,7 +6290,7 @@ export type GetColonyContributorsQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyContributorsQuery = { __typename?: 'Query', getContributorsByColony?: { __typename?: 'ModelColonyContributorConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', contributorAddress: string, verified: boolean, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean }> | null } | null } } | null> } | null } | null } | null> } | null };
+export type GetColonyContributorsQuery = { __typename?: 'Query', getContributorsByColony?: { __typename?: 'ModelColonyContributorConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', contributorAddress: string, isVerified: boolean, hasPermissions?: boolean | null, hasReputation?: boolean | null, isWatching?: boolean | null, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', id: string, name: string } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null } | null> } | null };
 
 export type GetColonyWatcherQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -6922,7 +6970,9 @@ export const ContributorRolesFragmentDoc = gql`
     fragment ContributorRoles on ColonyRole {
   domainId
   domain {
+    id
     metadata {
+      id
       name
     }
     nativeId
@@ -6953,15 +7003,19 @@ export const ContributorReputationFragmentDoc = gql`
 export const ColonyContributorFragmentDoc = gql`
     fragment ColonyContributor on ColonyContributor {
   contributorAddress
-  verified
+  isVerified
+  hasPermissions
+  hasReputation
+  isWatching
   colonyReputationPercentage
-  roles(filter: {colonyAddress: {eq: $colonyAddress}}) {
+  roles(colonyAddress: {eq: $colonyAddress}) {
     items {
       ...ContributorRoles
     }
   }
   reputation(
-    filter: {colonyAddress: {eq: $colonyAddress}, reputationRaw: {ne: "0"}}
+    colonyAddress: {eq: $colonyAddress}
+    filter: {reputationRaw: {ne: "0"}}
   ) {
     items {
       ...ContributorReputation
@@ -6973,22 +7027,12 @@ export const ColonyContributorFragmentDoc = gql`
     profile {
       ...Profile
     }
-    watchlist(filter: {colonyID: {eq: $colonyAddress}}) {
-      items {
-        id
-        createdAt
-        colony {
-          ...WatchedColony
-        }
-      }
-    }
   }
   type
 }
     ${ContributorRolesFragmentDoc}
 ${ContributorReputationFragmentDoc}
-${ProfileFragmentDoc}
-${WatchedColonyFragmentDoc}`;
+${ProfileFragmentDoc}`;
 export const UserTokenBalanceDataFragmentDoc = gql`
     fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
   balance
