@@ -21,7 +21,7 @@ const UserAdvancedSettings: FC = () => {
   const { formatMessage } = useIntl();
 
   return (
-    <Spinner loadingText={{ id: 'loading.userAdvancedPage' }}>
+    <Spinner loading={false} loadingText={{ id: 'loading.userAdvancedPage' }}>
       <TwoColumns aside={<Navigation pageName="profile" />}>
         <FeesForm />
         <RpcForm />

@@ -7,7 +7,7 @@ import Spinner from '~v5/shared/Spinner';
 const displayName = 'frame.Extensions.pages.PermissionsPage';
 
 const PermissionsPage: FC = () => (
-  <Spinner loadingText={{ id: 'loading.permissionsPage' }}>
+  <Spinner loading={false} loadingText={{ id: 'loading.permissionsPage' }}>
     <TwoColumns aside={<Navigation pageName="extensions" />}>
       Permissions page
     </TwoColumns>

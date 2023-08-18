@@ -36,7 +36,7 @@ export const useLazyConsensusPage = (
   const { extensionId } = useParams();
   const navigate = useNavigate();
   const { colony } = useColonyContext();
-  const { extensionData } = useExtensionData(extensionId ?? '');
+  const { extensionData, loading } = useExtensionData(extensionId ?? '');
   const { status, badgeMessage } = useExtensionsBadge(extensionData);
   const [extensionContentParameters, setExtensionContentParameters] =
     useState<AccordionContent[]>();
@@ -630,5 +630,6 @@ export const useLazyConsensusPage = (
     onChangeGovernance,
     validationSchema,
     methods,
+    loading,
   };
 };

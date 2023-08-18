@@ -20,7 +20,7 @@ import { createYupTestFromQuery } from '~utils/yup/tests';
 export const useUserProfile = () => {
   const { updateUser } = useAppContext();
   const [editUser] = useUpdateUserProfileMutation();
-  const { user } = useCanEditProfile();
+  const { user, loadingProfile } = useCanEditProfile();
   const { formatMessage } = useIntl();
   const { profile } = user || {};
   const avatarUrl = profile?.avatar || profile?.thumbnail;
@@ -123,5 +123,6 @@ export const useUserProfile = () => {
     onSubmit,
     errors,
     avatarUrl,
+    loading: !!loadingProfile,
   };
 };

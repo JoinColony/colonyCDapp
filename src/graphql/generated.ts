@@ -923,8 +923,7 @@ export enum ContributorType {
   Dedicated = 'DEDICATED',
   General = 'GENERAL',
   New = 'NEW',
-  Top = 'TOP',
-  Verified = 'VERIFIED'
+  Top = 'TOP'
 }
 
 export type CreateAnnotationInput = {
@@ -1632,6 +1631,18 @@ export type GetReputationForTopDomainsReturn = {
   items?: Maybe<Array<UserDomainReputation>>;
 };
 
+/** The type of input of the getTotalMemberCount lambda */
+export type GetTotalMemberCountInput = {
+  colonyAddress: Scalars['ID'];
+};
+
+/** The return type of the getTotalMemberCount lambda */
+export type GetTotalMemberCountReturn = {
+  __typename?: 'GetTotalMemberCountReturn';
+  contributorCount: Scalars['Int'];
+  memberCount: Scalars['Int'];
+};
+
 /**
  * Input data for a user's reputation within a Domain in a Colony. If no `domainId` is passed, the Root Domain is used
  * A `rootHash` can be provided, to get reputation at a certain point in the past
@@ -1708,6 +1719,11 @@ export type IngestorStats = {
   /** JSON string to pass custom, dynamic values */
   value: Scalars['String'];
 };
+
+export enum MemberTotalType {
+  All = 'ALL',
+  Contributors = 'CONTRIBUTORS'
+}
 
 /** Input data for fetching the list of members for a specific Colony */
 export type MembersForColonyInput = {
@@ -4093,6 +4109,7 @@ export type Query = {
   /** Fetch a token's information. Tries to get the data from the DB first, if that fails, resolves to get data from chain */
   getTokenFromEverywhere?: Maybe<TokenFromEverywhereReturn>;
   getTokensByType?: Maybe<ModelTokenConnection>;
+  getTotalMemberCount: GetTotalMemberCountReturn;
   getUser?: Maybe<User>;
   getUserByAddress?: Maybe<ModelUserConnection>;
   getUserByName?: Maybe<ModelUserConnection>;
@@ -4525,6 +4542,12 @@ export type QueryGetTokensByTypeArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
   type: TokenType;
+};
+
+
+/** Root query type */
+export type QueryGetTotalMemberCountArgs = {
+  input: GetTotalMemberCountInput;
 };
 
 
@@ -6228,6 +6251,13 @@ export type GetColonyWatcherQueryVariables = Exact<{
 
 
 export type GetColonyWatcherQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', watchers?: { __typename?: 'ModelWatchedColoniesConnection', nextToken?: string | null, items: Array<{ __typename?: 'WatchedColonies', userID: string, user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean }> | null } | null } } | null> } | null } } | null> } | null } | null };
+
+export type GetContributorCountQueryVariables = Exact<{
+  input: GetTotalMemberCountInput;
+}>;
+
+
+export type GetContributorCountQuery = { __typename?: 'Query', getTotalMemberCount: { __typename?: 'GetTotalMemberCountReturn', contributorCount: number, memberCount: number } };
 
 export type GetColonyDecisionsQueryVariables = Exact<{
   colonyAddress: Scalars['String'];
@@ -8145,6 +8175,42 @@ export function useGetColonyWatcherLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetColonyWatcherQueryHookResult = ReturnType<typeof useGetColonyWatcherQuery>;
 export type GetColonyWatcherLazyQueryHookResult = ReturnType<typeof useGetColonyWatcherLazyQuery>;
 export type GetColonyWatcherQueryResult = Apollo.QueryResult<GetColonyWatcherQuery, GetColonyWatcherQueryVariables>;
+export const GetContributorCountDocument = gql`
+    query GetContributorCount($input: GetTotalMemberCountInput!) {
+  getTotalMemberCount(input: $input) {
+    contributorCount
+    memberCount
+  }
+}
+    `;
+
+/**
+ * __useGetContributorCountQuery__
+ *
+ * To run a query within a React component, call `useGetContributorCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetContributorCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetContributorCountQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetContributorCountQuery(baseOptions: Apollo.QueryHookOptions<GetContributorCountQuery, GetContributorCountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetContributorCountQuery, GetContributorCountQueryVariables>(GetContributorCountDocument, options);
+      }
+export function useGetContributorCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetContributorCountQuery, GetContributorCountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetContributorCountQuery, GetContributorCountQueryVariables>(GetContributorCountDocument, options);
+        }
+export type GetContributorCountQueryHookResult = ReturnType<typeof useGetContributorCountQuery>;
+export type GetContributorCountLazyQueryHookResult = ReturnType<typeof useGetContributorCountLazyQuery>;
+export type GetContributorCountQueryResult = Apollo.QueryResult<GetContributorCountQuery, GetContributorCountQueryVariables>;
 export const GetColonyDecisionsDocument = gql`
     query getColonyDecisions($colonyAddress: String!, $sortDirection: ModelSortDirection = ASC, $filter: ModelColonyDecisionFilterInput, $limit: Int = 10) {
   getColonyDecisionByColonyAddress(

@@ -45,7 +45,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
   }, [isDarkMode]);
 
   return (
-    <Spinner loadingText={loadingText}>
+    <Spinner loading={false} loadingText={loadingText}>
       {canUpgrade && <CalamityBanner items={calamityBannerItems} />}
       <ToastContainer
         className={styles.toastNotification}

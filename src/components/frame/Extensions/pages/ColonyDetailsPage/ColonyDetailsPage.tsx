@@ -16,14 +16,17 @@ const displayName = 'frame.Extensions.pages.ColonyDetailsPage';
 const ColonyDetailsPage: FC = () => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
-  const { colony } = useColonyContext();
+  const { colony, loading } = useColonyContext();
   const { name, metadata } = colony || {};
   const { avatar, thumbnail } = metadata || {};
 
   const socialLinks = [];
 
   return (
-    <Spinner loadingText={{ id: 'loading.colonyDetailsPage' }}>
+    <Spinner
+      loading={loading}
+      loadingText={{ id: 'loading.colonyDetailsPage' }}
+    >
       <TwoColumns aside={<Navigation pageName="extensions" />}>
         <div className={clsx('pt-[4.375rem] px-6 pb-6 mt-10', styles.box)}>
           <div className="absolute left-6 -top-11 rounded-full border-4 border-gray-100 flex">

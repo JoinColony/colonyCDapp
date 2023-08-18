@@ -422,6 +422,21 @@ input GetMotionTimeoutPeriodsInput {
 }
 
 """
+The type of input of the getTotalMemberCount lambda
+"""
+input GetTotalMemberCountInput {
+  colonyAddress: ID!
+}
+
+"""
+The return type of the getTotalMemberCount lambda
+"""
+type GetTotalMemberCountReturn {
+  contributorCount: Int!
+  memberCount: Int!
+}
+
+"""
 A type representing a user's reputation within a domain
 """
 type UserDomainReputation {
@@ -885,6 +900,10 @@ type Query {
     input: GetMotionTimeoutPeriodsInput
   ): GetMotionTimeoutPeriodsReturn
     @function(name: "fetchMotionTimeoutPeriods-${env}")
+
+  getTotalMemberCount(
+    input: GetTotalMemberCountInput!
+  ): GetTotalMemberCountReturn! @function(name: "getTotalMemberCount-${env}")
 }
 
 """
@@ -1176,6 +1195,11 @@ type ContributorReputation @model {
   The percentage of the contributor's reputation in the domain
   """
   reputationPercentage: Float!
+}
+
+enum MemberTotalType {
+  ALL
+  CONTRIBUTORS
 }
 
 """

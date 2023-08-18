@@ -15,7 +15,7 @@ export const useUserPreferencesPage = () => {
   const { formatMessage } = useIntl();
   const { updateUser } = useAppContext();
   const [editUser] = useUpdateUserProfileMutation();
-  const { user } = useCanEditProfile();
+  const { user, loadingProfile } = useCanEditProfile();
   const [isEmailInputVisible, setIsEmailInputVisible] = useState(false);
 
   const validationSchema = yup.object<UserPreferencesFormProps>({
@@ -92,5 +92,6 @@ export const useUserPreferencesPage = () => {
     isEmailInputVisible,
     setIsEmailInputVisible,
     errors,
+    loading: !!loadingProfile,
   };
 };

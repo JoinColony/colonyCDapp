@@ -1,17 +1,16 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 
-import { useExtensionsData } from '~hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { SpinnerProps } from './types';
 
 const displayName = 'v5.Spinner';
 
 const Spinner: FC<PropsWithChildren<SpinnerProps>> = ({
+  loading,
   loadingText,
   children,
 }) => {
-  const { loading } = useExtensionsData();
   const { formatMessage } = useIntl();
 
   const formattedLoadingText =

@@ -37,6 +37,7 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
     getValues,
     isEmailInputVisible,
     setIsEmailInputVisible,
+    loading,
   } = useUserPreferencesPage();
 
   if (!user) {
@@ -46,7 +47,10 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
   const emailValue = getValues('email');
 
   return (
-    <Spinner loadingText={{ id: 'loading.userPreferencesPage' }}>
+    <Spinner
+      loading={loading}
+      loadingText={{ id: 'loading.userPreferencesPage' }}
+    >
       <TwoColumns aside={<Navigation pageName="profile" />}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-6">

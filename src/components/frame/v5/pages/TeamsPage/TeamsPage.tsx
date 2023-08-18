@@ -5,7 +5,7 @@ import TwoColumns from '~v5/frame/TwoColumns';
 import Spinner from '~v5/shared/Spinner';
 
 const TeamsPage: FC = () => (
-  <Spinner loadingText={{ id: 'loading.teamsPage' }}>
+  <Spinner loading={false} loadingText={{ id: 'loading.teamsPage' }}>
     <TwoColumns aside={<Navigation pageName="members" />}>
       Teams page
     </TwoColumns>

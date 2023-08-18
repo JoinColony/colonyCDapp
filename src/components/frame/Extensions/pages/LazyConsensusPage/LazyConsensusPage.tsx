@@ -30,6 +30,7 @@ const LazyConsensusPage: FC = () => {
     handleSubmit,
     onSubmit,
     onChangeGovernance,
+    loading,
   } = useLazyConsensusPage(onOpenIndexChange, manualOpen);
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
@@ -51,7 +52,10 @@ const LazyConsensusPage: FC = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Spinner loadingText={{ id: 'loading.extensionsPage' }}>
+        <Spinner
+          loading={loading}
+          loadingText={{ id: 'loading.extensionsPage' }}
+        >
           <ThreeColumns
             leftAside={<Navigation pageName="extensions" />}
             topRow={
