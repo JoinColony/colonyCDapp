@@ -15,11 +15,7 @@
         },
         "s3Key": {
             "Type": "String"
-        },
-        "functioncolonycdappSSMAccessArn": {
-            "Type": "String",
-            "Default": "functioncolonycdappSSMAccessArn"
-          }
+        }
     },
     "Conditions": {
         "ShouldNotCreateEnvResources": {
@@ -72,12 +68,7 @@
             },
             "Role": { "Fn::GetAtt": ["LambdaExecutionRole", "Arn"] },
             "Runtime": "nodejs18.x",
-            "Layers": [
-                {
-                  "Ref": "functioncolonycdappSSMAccessArn"
-                },
-                "arn:aws:lambda:eu-west-2:133256977650:layer:AWS-Parameters-and-Secrets-Lambda-Extension:4"
-              ],
+            "Layers": [],
             "Timeout": 25
           }
         },
