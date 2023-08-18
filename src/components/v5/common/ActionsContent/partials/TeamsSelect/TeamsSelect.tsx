@@ -2,18 +2,18 @@ import React, { FC, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useFormContext } from 'react-hook-form';
-import { useTeamsSelect } from './hooks';
 import SearchSelect from '~v5/shared/SearchSelect';
 import useToggle from '~hooks/useToggle';
 import TeamBadge from '~v5/common/Pills/TeamBadge';
 import styles from '../../ActionsContent.module.css';
 import { SelectProps } from '../../types';
+import { useTeams } from '~hooks/useTeams';
 
 const displayName = 'v5.common.ActionsContent.partials.TeamsSelect';
 
 const TeamsSelect: FC<SelectProps> = ({ name }) => {
   const { register, setValue } = useFormContext();
-  const teamsOptions = useTeamsSelect();
+  const teamsOptions = useTeams();
   const { formatMessage } = useIntl();
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
   const [isTeamSelectVisible, { toggle: toggleTeamSelect }] = useToggle();

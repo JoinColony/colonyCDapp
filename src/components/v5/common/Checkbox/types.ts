@@ -1,12 +1,12 @@
 import { FieldValues, UseFormRegister } from 'react-hook-form';
-import { MessageDescriptor } from 'react-intl';
+import { Message } from '~types';
 
 export interface CheckboxProps {
-  label?: MessageDescriptor;
+  label?: Message;
   register?: UseFormRegister<FieldValues>;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  name: string;
-  id: string;
+  name?: string;
+  id?: string;
   disabled?: boolean;
   classNames?: string;
   isChecked?: boolean;

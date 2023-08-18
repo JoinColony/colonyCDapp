@@ -15,7 +15,7 @@ export type ButtonMode =
   | 'septenary'
   | 'completed';
 
-export type ButtonSize = 'default' | 'extraSmall' | 'small';
+export type ButtonSize = 'default' | 'extraSmall' | 'small' | 'large';
 
 export type TextButtonMode = 'default' | 'medium' | 'underlined';
 

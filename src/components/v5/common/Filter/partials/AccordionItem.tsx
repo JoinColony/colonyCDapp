@@ -13,10 +13,6 @@ const displayName = 'v5.common.Filter.partials.AccordionItem';
 const AccordionItem: FC<AccordionItemProps> = ({
   title,
   option,
-  onSelectNestedOption,
-  onSelectParentFilter,
-  selectedChildOption,
-  checkedItems,
   nestedFilters,
 }) => {
   const [isOpened, setOpen] = useState(false);
@@ -24,7 +20,6 @@ const AccordionItem: FC<AccordionItemProps> = ({
 
   const handleToggle = () => {
     setOpen((prev) => !prev);
-    onSelectParentFilter?.(option);
   };
 
   return (
@@ -60,10 +55,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
             className="overflow-hidden"
           >
             <NestedOptions
-              selectedParentOption={option}
-              selectedChildOption={selectedChildOption}
-              onChange={onSelectNestedOption}
-              checkedItems={checkedItems}
+              parentOption={option}
               nestedFilters={nestedFilters}
             />
           </motion.div>

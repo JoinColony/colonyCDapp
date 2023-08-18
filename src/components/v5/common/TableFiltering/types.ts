@@ -1,39 +1,67 @@
+import { ColonyRole } from '@colony/colony-js';
+
 export type TableFilteringProps = {
-  selectedParentFilters?: FilterType | FilterType[];
-  filterOptions: FilterOption | FilterOption[];
-  onClick: () => void;
+  onClick?: (e: React.SyntheticEvent) => void;
   className?: string;
 };
 
-export type FilterType =
-  | 'team'
-  | 'reputation'
-  | 'latest'
-  | 'status'
-  | 'contributor'
-  | 'permissions';
+export enum FilterTypes {
+  Team = 'team',
+  Reputation = 'reputation',
+  Latest = 'latest',
+  Status = 'status',
+  Contributor = 'contributor',
+  Permissions = 'permissions',
+}
 
-export type ContributorType =
-  | 'top'
-  | 'dedicated'
-  | 'active'
-  | 'contributorVerified'
-  | 'general';
+export type FilterType = `${FilterTypes}`;
 
-export type TeamType =
-  | 'teamRoot'
-  | 'business'
-  | 'product'
-  | 'development'
-  | 'productDesign'
-  | 'devops';
+export type TeamType = `${number}_domain`;
 
-export type StatusType = 'banned' | 'notBanned';
+export enum ContributorTypeFilter {
+  Top = 'top',
+  Dedicated = 'dedicated',
+  Active = 'active',
+  General = 'general',
+  New = 'new',
+}
 
-export type ReputationType = 'highestToLowest' | 'lowestToHighest';
+export type ContributorType = `${ContributorTypeFilter}`;
+
+export enum StatusFilter {
+  Verified = 'statusVerified',
+  NotVerified = 'statusNotVerified',
+}
+
+export type StatusType = `${StatusFilter}`;
+
+export enum ReputationSort {
+  DESC = 'highestToLowest',
+  ASC = 'lowestToHighest',
+}
+
+export type ReputationType = `${ReputationSort}`;
+
+export enum PermissionsFilter {
+  Root = 'rootPermissions',
+  Administration = 'administration',
+  Arbitration = 'arbitration',
+  Architecture = 'architecture',
+  Funding = 'funding',
+  Recovery = 'recovery',
+}
+
+export const PermissionToNetworkIdMap = {
+  [PermissionsFilter.Root]: ColonyRole.Root,
+  [PermissionsFilter.Administration]: ColonyRole.Administration,
+  [PermissionsFilter.Architecture]: ColonyRole.Architecture,
+  [PermissionsFilter.Funding]: ColonyRole.Funding,
+  [PermissionsFilter.Recovery]: ColonyRole.Recovery,
+  [PermissionsFilter.Arbitration]: ColonyRole.Arbitration,
+};
 
 export type PermissionsType =
-  | 'permissionRoot'
+  | 'rootPermissions'
   | 'administration'
   | 'arbitration'
   | 'architecture'
@@ -43,16 +71,10 @@ export type PermissionsType =
 // @TODO: add more filter options and move it to global types
 export type FilterOption =
   | ContributorType
-  | ContributorType[]
   | StatusType
-  | StatusType[]
-  | TeamType
-  | TeamType[]
   | ReputationType
-  | ReputationType[]
   | PermissionsType
-  | PermissionsType[]
-  | 'businnes'
+  | 'business'
   | 'development'
   | 'high to low'
   | 'newest'

@@ -1,6 +1,6 @@
-import { MessageDescriptor } from 'react-intl';
+import { Message } from '~types';
 
 export interface TitleLabelProps {
-  text: string | MessageDescriptor;
+  text?: Message;
   className?: string;
 }

@@ -132,6 +132,12 @@ export const MOTION_TAG_MAP: {
     text: formatMessage({ id: TagName.ForcedTag }) as TagText,
     tagName: TagName.ForcedTag,
   },
+  [MotionState.Draft]: {
+    theme: TagTheme.Golden,
+    colorSchema: TagColorSchema.FullColor,
+    text: formatMessage({ id: TagName.DraftTag }) as TagText,
+    tagName: TagName.DraftTag,
+  },
 };
 
 type MotionTag = ComponentType;
@@ -158,4 +164,5 @@ export const {
   Reveal,
   Staking,
   Voting,
+  Draft,
 } = motionTags;

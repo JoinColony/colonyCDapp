@@ -32,7 +32,7 @@ export const ACTION_TYPES_ICONS_MAP: Record<AnyActionType, string> = {
   [ColonyActionType.EmitDomainReputationPenaltyMotion]: 'emoji-firebolt',
   [ColonyActionType.EmitDomainReputationRewardMotion]: 'emoji-shooting-star',
   [ColonyActionType.UnlockTokenMotion]: 'emoji-padlock',
-  // [ColonyMotions.CreateDecisionMotion]: 'emoji-decisions',
+  [ColonyActionType.CreateDecisionMotion]: 'emoji-decisions',
   [ColonyActionType.NullMotion]: 'forbidden-signal',
   [ColonyActionType.Generic]: 'circle-check-primary',
   [ExtendedColonyActionType.UpdateAddressBook]: 'emoji-edit-tools',

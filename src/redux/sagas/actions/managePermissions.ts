@@ -4,7 +4,7 @@ import { ClientType, ColonyRole } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom } from '../utils';
+import { putError, takeFrom, uploadAnnotation } from '../utils';
 
 import {
   createGroupTransaction,
@@ -14,7 +14,14 @@ import {
 import { transactionReady } from '../../actionCreators';
 
 function* managePermissionsAction({
-  payload: { colonyAddress, domainId, userAddress, roles, colonyName },
+  payload: {
+    colonyAddress,
+    domainId,
+    userAddress,
+    roles,
+    colonyName,
+    annotationMessage,
+  },
   meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.ACTION_USER_ROLES_SET>) {
@@ -42,9 +49,11 @@ function* managePermissionsAction({
 
     const batchKey = 'setUserRoles';
 
-    const { setUserRoles } = yield createTransactionChannels(metaId, [
-      'setUserRoles',
-    ]);
+    const { setUserRoles, annotateSetUserRoles } =
+      yield createTransactionChannels(metaId, [
+        'setUserRoles',
+        'annotateSetUserRoles',
+      ]);
 
     const roleArray = Object.values(roles).reverse();
     /* Always make sure the Architecture Subdomain is false, it's deprecated */
@@ -67,17 +76,42 @@ function* managePermissionsAction({
       ready: false,
     });
 
+    if (annotationMessage) {
+      yield createGroupTransaction(annotateSetUserRoles, batchKey, meta, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        params: [],
+        ready: false,
+      });
+    }
+
     yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_CREATED);
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateSetUserRoles.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
 
     yield put(transactionReady(setUserRoles.id));
 
-    yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
-
     const {
-      payload: {
-        receipt: { transactionHash },
-      },
-    } = yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+      payload: { hash: txHash },
+    } = yield takeFrom(
+      setUserRoles.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
+
+    yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateSetUserRoles,
+        message: annotationMessage,
+        txHash,
+      });
+    }
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_USER_ROLES_SET_SUCCESS,
@@ -85,7 +119,7 @@ function* managePermissionsAction({
     });
 
     if (colonyName) {
-      navigate(`/colony/${colonyName}/tx/${transactionHash}`, {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
     }

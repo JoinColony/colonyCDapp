@@ -1,27 +1,22 @@
 import { all, call, fork, put } from 'redux-saga/effects';
-// import { formatEther } from 'ethers/lib/utils';
 
 import motionSagas from './motions';
-import { setContext, ContextModule } from '~context';
 import { ColonyWallet, isFullWallet } from '~types';
 
 import actionsSagas from './actions';
 import colonySagas, { colonyCreateSaga } from './colony';
 import extensionSagas from './extensions';
 
-// import actionsSagas from './actions';
-// import colonySagas, {
-// } from './colony';
-// import colonyExtensionSagas from './extensions';
-// import motionSagas from './motions';
-// import whitelistSagas from './whitelist';
+import decisionsSagas from './decisions';
+
 // import vestingSagas from './vesting';
 import { setupUsersSagas } from './users';
 
 import { ActionTypes } from '../actionTypes';
 import { AllActions } from '../types/actions';
 
-// import setupResolvers from '~context/setupResolvers';
+import { setContext, ContextModule } from '~context';
+
 // import AppLoadingState from '~context/appLoadingState';
 
 import { getGasPrices, putError } from './utils';
@@ -33,6 +28,7 @@ import getOnboard from './wallet/onboard';
 function* setupContextDependentSagas() {
   // const appLoadingState: typeof AppLoadingState = AppLoadingState;
   yield all([
+    call(decisionsSagas),
     call(actionsSagas),
     call(colonySagas),
     call(colonyCreateSaga),

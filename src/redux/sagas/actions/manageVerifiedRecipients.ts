@@ -1,18 +1,27 @@
 import { ClientType } from '@colony/colony-js';
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { Action, AllActions, ActionTypes } from '~redux';
 import { ContextModule, getContext } from '~context';
 import { transactionPending, transactionReady } from '~redux/actionCreators';
 import {
+  CreateColonyContributorDocument,
+  CreateColonyContributorMutation,
+  CreateColonyContributorMutationVariables,
+  GetColonyContributorDocument,
+  GetColonyContributorQuery,
+  GetColonyContributorQueryVariables,
   GetFullColonyByNameDocument,
+  UpdateColonyContributorDocument,
+  UpdateColonyContributorMutation,
+  UpdateColonyContributorMutationVariables,
   UpdateColonyMetadataDocument,
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
 } from '~gql';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
@@ -20,7 +29,9 @@ import {
   getUpdatedColonyMetadataChangelog,
   putError,
   takeFrom,
+  uploadAnnotation,
 } from '../utils';
+import { getColonyContributorId } from '~utils/members';
 
 function* manageVerifiedRecipients({
   payload: {
@@ -30,7 +41,7 @@ function* manageVerifiedRecipients({
     // colonyAvatarHash,
     verifiedAddresses = [],
     // colonyTokens = [],
-    // annotationMessage,
+    annotationMessage,
     isWhitelistActivated,
     // colonySafes = [],
   },
@@ -55,23 +66,13 @@ function* manageVerifiedRecipients({
     const batchKey = 'editColonyAction';
     const {
       editColonyAction: editColony,
-      // annotateEditColonyAction: annotateEditColony,
+      annotateEditColonyAction: annotateEditColony,
     } = yield createTransactionChannels(metaId, [
       'editColonyAction',
-      // 'annotateEditColonyAction',
+      'annotateEditColonyAction',
     ]);
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(editColony, {
+    yield createGroupTransaction(editColony, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: 'editColony',
       identifier: colonyAddress,
@@ -79,24 +80,24 @@ function* manageVerifiedRecipients({
       ready: false,
     });
 
-    // if (annotationMessage) {
-    //   yield createGroupTransaction(annotateEditColony, {
-    //     context: ClientType.ColonyClient,
-    //     methodName: 'annotateTransaction',
-    //     identifier: colonyAddress,
-    //     params: [],
-    //     ready: false,
-    //   });
-    // }
+    if (annotationMessage) {
+      yield createGroupTransaction(annotateEditColony, batchKey, meta, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        params: [],
+        ready: false,
+      });
+    }
 
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_CREATED);
 
-    // if (annotationMessage) {
-    //   yield takeFrom(
-    //     annotateEditColony.channel,
-    //     ActionTypes.TRANSACTION_CREATED,
-    //   );
-    // }
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateEditColony.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
 
     yield put(transactionPending(editColony.id));
 
@@ -133,31 +134,13 @@ function* manageVerifiedRecipients({
     );
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    // if (annotationMessage) {
-    //   yield put(transactionPending(annotateEditColony.id));
-
-    //   /*
-    //    * Upload annotation metadata to IPFS
-    //    */
-    //   const annotationMessageIpfsHash = yield call(
-    //     ipfsUploadAnnotation,
-    //     annotationMessage,
-    //   );
-
-    //   yield put(
-    //     transactionAddParams(annotateEditColony.id, [
-    //       txHash,
-    //       annotationMessageIpfsHash,
-    //     ]),
-    //   );
-
-    //   yield put(transactionReady(annotateEditColony.id));
-
-    //   yield takeFrom(
-    //     annotateEditColony.channel,
-    //     ActionTypes.TRANSACTION_SUCCEEDED,
-    //   );
-    // }
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateEditColony,
+        message: annotationMessage,
+        txHash,
+      });
+    }
 
     /**
      * Update colony metadata in the db
@@ -186,6 +169,58 @@ function* manageVerifiedRecipients({
         refetchQueries: [GetFullColonyByNameDocument],
       });
     }
+
+    yield Promise.all(
+      verifiedAddresses.map(async (address) => {
+        const { data } = await apolloClient.query<
+          GetColonyContributorQuery,
+          GetColonyContributorQueryVariables
+        >({
+          query: GetColonyContributorDocument,
+          variables: {
+            id: getColonyContributorId(colonyAddress, address),
+            colonyAddress,
+          },
+        });
+
+        const isAlreadyContributor = !!data.getColonyContributor;
+
+        if (isAlreadyContributor) {
+          await apolloClient.mutate<
+            UpdateColonyContributorMutation,
+            UpdateColonyContributorMutationVariables
+          >({
+            mutation: UpdateColonyContributorDocument,
+            variables: {
+              input: {
+                id: getColonyContributorId(colonyAddress, address),
+                verified: true,
+              },
+            },
+            // Update colony object with modified metadata
+            refetchQueries: [GetFullColonyByNameDocument],
+          });
+        } else {
+          apolloClient.mutate<
+            CreateColonyContributorMutation,
+            CreateColonyContributorMutationVariables
+          >({
+            mutation: CreateColonyContributorDocument,
+            variables: {
+              input: {
+                id: getColonyContributorId(colonyAddress, address),
+                colonyAddress,
+                colonyReputationPercentage: 0,
+                contributorAddress: address,
+                verified: true,
+              },
+            },
+            // Update colony object with modified metadata
+            refetchQueries: [GetFullColonyByNameDocument],
+          });
+        }
+      }),
+    );
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_SUCCESS,

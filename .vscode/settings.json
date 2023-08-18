@@ -1,0 +1,10 @@
+{
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "tailwindCSS.emmetCompletions": true,
+    "editor.inlineSuggest.enabled": true,
+    "editor.quickSuggestions": {
+    "strings": true
+    },
+    "css.validate": false,
+}

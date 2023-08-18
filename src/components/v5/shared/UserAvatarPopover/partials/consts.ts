@@ -1,53 +1,39 @@
-import { ColonyReputationItem, PermissionsItem } from '../types';
+import { ColonyRole } from '@colony/colony-js/*';
 
-export const colonyReputationItems: ColonyReputationItem[] = [
-  {
-    key: '1',
-    title: 'Business',
-    percentage: '5.32',
-    points: '750,200',
-  },
-  {
-    key: '2',
-    title: 'Development',
-    percentage: '2.11',
-    points: '182,712',
-  },
-  {
-    key: '3',
-    title: 'Product',
-    percentage: '0.32',
-    points: '34,989',
-  },
-];
+type Subtract<T, U> = T extends U ? never : T;
 
-export const permissionsItems: PermissionsItem[] = [
-  {
-    key: '1',
-    text: 'Architecture',
-    description:
-      'This permission allows users to create new domains, and manage permissions within those domains.',
-    name: 'clipboard-text',
-  },
-  {
-    key: '2',
-    text: 'Arbitration',
-    description:
-      'This permission allows users to create new domains, and manage permissions within those domains.',
-    name: 'scales',
-  },
-  {
-    key: '3',
+export const permissionsMap: Record<
+  Subtract<`${ColonyRole}`, '4' | '7'>,
+  { text: string; description: string; name: string }
+> = {
+  '0': {
     text: 'Recovery',
-    description:
-      'This permission allows users to create new domains, and manage permissions within those domains.',
+    description: 'TODO:  description',
     name: 'clock-counter-clockwise',
   },
-  {
-    key: '4',
+  '1': {
+    text: 'Root',
+    description: 'TODO:  description',
+    name: 'app-window',
+  },
+  '2': {
+    text: 'Arbitration',
+    description: 'TODO:  description',
+    name: 'scales',
+  },
+  '3': {
+    text: 'Architecture',
+    description: 'TODO:  description',
+    name: 'buildings',
+  },
+  '5': {
     text: 'Funding',
-    description:
-      'This permission allows users to create new domains, and manage permissions within those domains.',
+    description: 'TODO:  description',
     name: 'bank',
   },
-];
+  '6': {
+    text: 'Administration',
+    description: 'TODO:  description',
+    name: 'clipboard-text',
+  },
+};

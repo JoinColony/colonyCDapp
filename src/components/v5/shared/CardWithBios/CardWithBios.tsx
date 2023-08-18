@@ -1,36 +1,49 @@
 import React, { FC } from 'react';
+import { usePopperTooltip } from 'react-popper-tooltip';
 
 import UserAvatarPopover from '../UserAvatarPopover';
-import { splitWalletAddress } from '~utils/splitWalletAddress';
 import Icon from '~shared/Icon';
 import BurgerMenu from '../BurgerMenu';
-import CardPermissions, { SubNavigation } from './partials';
+import { SubNavigation } from './partials';
 import UserStatusComponent from './partials/UserStatus';
 import { CardWithBiosProps } from './types';
-import { useMembersPage } from '~frame/v5/pages/MembersPage/hooks';
 import PopoverBase from '../PopoverBase';
-import { Contributor } from '~types';
+import { useContributorBreakdown } from '~hooks';
+import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
 
 const displayName = 'v5.CardWithBios';
 
 const CardWithBios: FC<CardWithBiosProps> = ({
   userData,
   description,
-  userStatus = 'general',
   shouldBeMenuVisible = true,
-  permissions,
-  isVerified,
   isContributorsList,
 }) => {
-  const { user, reputationPercentage } = (userData as Contributor) || {};
-  const { name, walletAddress, profile } = user || {};
+  const {
+    user,
+    colonyReputationPercentage,
+    type,
+    verified: isVerified,
+  } = userData || {};
+  const userStatus = (type?.toLowerCase() ??
+    null) as ContributorTypeFilter | null;
+
+  const { name, walletAddress = '', profile } = user || {};
   const { bio } = profile || {};
   const {
     getTooltipProps,
     setTooltipRef,
     setTriggerRef,
     visible: isUserDetailsOpen,
-  } = useMembersPage();
+  } = usePopperTooltip({
+    delayShow: 200,
+    delayHide: 200,
+    placement: 'bottom-start',
+    trigger: ['click', 'hover'],
+    interactive: true,
+  });
+
+  const domains = useContributorBreakdown(userData);
 
   return (
     <div className="max-h-[9.25rem] rounded-lg border border-gray-200 bg-gray-25 p-5 relative">
@@ -39,16 +52,14 @@ const CardWithBios: FC<CardWithBiosProps> = ({
           <div className="flex items-center">
             <UserAvatarPopover
               userName={profile?.displayName || name}
-              walletAddress={splitWalletAddress(walletAddress || '')}
+              walletAddress={walletAddress}
               isVerified={isVerified}
               aboutDescription={bio || ''}
-              // @TODO: add colonyReputationItems
-              // colonyReputation={colonyReputationItems}
+              domains={domains}
               user={user}
               userStatus={userStatus}
               avatarSize="sm"
               isContributorsList={isContributorsList}
-              // permissions={permissionsItems}
             />
             {isVerified && (
               <span className="ml-1 flex shrink-0 text-blue-400">
@@ -89,16 +100,14 @@ const CardWithBios: FC<CardWithBiosProps> = ({
         )}
 
         <div className="flex justify-between items-center">
-          {!!reputationPercentage && (
+          {!!colonyReputationPercentage && (
             <span className="flex items-center text-gray-600 text-3">
               <Icon name="star-not-filled" appearance={{ size: 'extraTiny' }} />
               <span className="inline-block ml-1 mr-2">
-                {reputationPercentage}%
+                {colonyReputationPercentage}%
               </span>
             </span>
           )}
-
-          {permissions && <CardPermissions permissions={permissions} />}
         </div>
       </div>
     </div>

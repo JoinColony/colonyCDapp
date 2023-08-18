@@ -1,28 +1,21 @@
-import { MessageDescriptor } from 'react-intl';
-
 import {
   ContributorType,
   FilterType,
   StatusType,
-  FilterOption,
-  TeamType,
   ReputationType,
   PermissionsType,
+  TeamType,
 } from '../TableFiltering/types';
+import { Message } from '~types';
 
-export type FilterOptionsProps = {
-  options: ParentFilterOption[];
-  filterOption?: string;
-  selectedChildOption?: FilterOption;
-  onSelectParentFilter?: (option?: string) => void;
-  onSelectNestedOption?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  checkedItems: Map<string, boolean>;
+export type AccordionProps = {
+  items: ParentFilterOption[];
 };
 
 export type ParentFilterOption = {
   id: number;
   title: string;
-  option: FilterType;
+  filterType: FilterType;
   iconName: string;
   content: FilterOptionProps[];
 };
@@ -32,23 +25,21 @@ export type FilterPopoverProps = {
   setOpened: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+export type NestedFilterOption =
+  | ContributorType
+  | StatusType
+  | ReputationType
+  | PermissionsType
+  | TeamType;
+
 export type FilterOptionProps = {
-  id:
-    | ContributorType
-    | StatusType
-    | TeamType
-    | ReputationType
-    | PermissionsType;
-  title: MessageDescriptor;
+  id: NestedFilterOption;
+  title: Message;
+  icon?: JSX.Element;
 };
 
-export type AccordionProps = Omit<FilterOptionsProps, 'options'> & {
-  items: ParentFilterOption[];
-  selectedChildOption?: FilterOption;
-};
-
-export type AccordionItemProps = Omit<AccordionProps, 'items'> & {
+export type AccordionItemProps = {
   title: string;
   option: FilterType;
-  nestedFilters?: FilterOptionProps[];
+  nestedFilters: FilterOptionProps[];
 };

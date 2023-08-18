@@ -7,52 +7,22 @@ import { TransactionProps } from './types';
 import { useColonyContext } from '~hooks';
 import styles from './TransactionTable.module.css';
 import TransactionItem from '../TransactionItem';
+import { useTransactionTable } from './hooks';
+
+const displayName = 'v5.common.ActionsContent.partials.TransactionTable';
 
 const TransactionTable: FC = () => {
   const { formatMessage } = useIntl();
   const { colony } = useColonyContext();
-  const { unregister } = useFormContext();
+  const {
+    transactions,
+    handleRemoveRowClick,
+    handleDuplicateRowClick,
+    updateTransaction,
+    setTransactions,
+  } = useTransactionTable();
+
   const { nativeToken } = colony || {};
-
-  const [transactions, setTransactions] = useState<TransactionProps[]>([]);
-
-  const handleRemoveRowClick = (id: string) => {
-    setTransactions(transactions.filter((item) => item.key !== id));
-    unregister(`transaction-amount-${id}`);
-    unregister(`transaction-recipent-${id}`);
-  };
-
-  const handleDuplicateRowClick = (id: string) => {
-    const transaction = transactions.find((item) => item.key === id);
-
-    if (transaction) {
-      setTransactions([
-        ...transactions,
-        {
-          ...transaction,
-          key: `${transactions.length + 1}`,
-        },
-      ]);
-    }
-  };
-
-  const updateTransaction = useCallback(
-    (key: string, values: TransactionProps) => {
-      const updatedTransactions = transactions.map((transaction) => {
-        if (transaction.key === key) {
-          return {
-            ...transaction,
-            ...values,
-          };
-        }
-
-        return transaction;
-      });
-
-      setTransactions(updatedTransactions);
-    },
-    [transactions],
-  );
 
   return (
     <div className="mt-7">
@@ -101,5 +71,7 @@ const TransactionTable: FC = () => {
     </div>
   );
 };
+
+TransactionTable.displayName = displayName;
 
 export default TransactionTable;

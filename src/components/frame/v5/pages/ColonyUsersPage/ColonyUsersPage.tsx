@@ -4,18 +4,22 @@ import Navigation from '~v5/common/Navigation';
 import TwoColumns from '~v5/frame/TwoColumns';
 import MembersList from '~v5/common/MembersList';
 import TeamReputationSummary from '~v5/common/TeamReputationSummary';
-import { useSearchContext } from '~context/SearchContext';
 import Header from '~frame/v5/Header';
 import Spinner from '~v5/shared/Spinner';
 import { ColonyUsersPageProps } from './types';
-import { useContributorsPage } from './hooks';
+import { useMemberContext } from '~context/MemberContext';
 
 const displayName = 'v5.pages.ColonyUsersPage';
 
 const ColonyUsersPage: FC<ColonyUsersPageProps> = ({ pageName }) => {
-  const { searchValue } = useSearchContext();
-  const { contributors, followers, loading } = useContributorsPage(searchValue);
+  const {
+    contributors,
+    members: followers,
+    loadingMembers,
+    loadingContributors,
+  } = useMemberContext();
   const isContributorsPage = pageName === 'contributors';
+  const loading = isContributorsPage ? loadingContributors : loadingMembers;
 
   return (
     <Spinner loadingText={{ id: `loading.${pageName}Page` }}>
@@ -35,7 +39,6 @@ const ColonyUsersPage: FC<ColonyUsersPageProps> = ({ pageName }) => {
               list={isContributorsPage ? contributors : followers}
               isContributorsList={isContributorsPage}
               isLoading={loading}
-              isHomePage={false}
             />
           </div>
           {/* @TODO: Add real data */}

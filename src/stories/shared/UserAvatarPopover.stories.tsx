@@ -1,10 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
-import {
-  colonyReputationItems,
-  permissionsItems,
-} from '~v5/shared/UserAvatarPopover/partials/consts';
 
 const meta: Meta<typeof UserAvatarPopover> = {
   title: 'Shared/User Avatar Popover',
@@ -33,8 +29,6 @@ const meta: Meta<typeof UserAvatarPopover> = {
     userName: 'Panda',
     walletAddress: '0x155....1051',
     aboutDescription: `Passionate about sustainability and living a zero-waste lifestyle. Lover of all things vintage and retro. High-tops are my everything.`,
-    colonyReputation: colonyReputationItems,
-    permissions: permissionsItems,
   },
 };
 
@@ -70,6 +64,5 @@ export const Dedicated: Story = {
 export const Top: Story = {
   args: {
     userStatus: 'top',
-    teams: ['businnes', 'product', 'design'],
   },
 };

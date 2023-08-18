@@ -1,0 +1,14 @@
+mutation UpdateContributorsWithReputation($colonyAddress: String) {
+  updateContributorsWithReputation(input: { colonyAddress: $colonyAddress })
+}
+
+mutation CreateColonyContributor($input: CreateColonyContributorInput!) {
+  createColonyContributor(input: $input) {
+    id
+  }
+}
+mutation UpdateColonyContributor($input: UpdateColonyContributorInput!) {
+  updateColonyContributor(input: $input) {
+    id
+  }
+}

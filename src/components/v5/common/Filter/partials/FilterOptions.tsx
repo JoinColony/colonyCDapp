@@ -1,48 +1,37 @@
 import React, { FC } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useMobile } from '~hooks';
 
-import { FilterOptionsProps } from '../types';
 import SubNavigationItem from '~v5/shared/SubNavigationItem';
 import Header from '~v5/shared/SubNavigationItem/partials/Header';
 import Accordion from './Accordion';
+import { useFilterContext } from '~context/FilterContext';
+import { followersFilterOptions } from '../consts';
 
 const displayName = 'v5.common.Filter.partials.FilterOptions';
 
-const FilterOptions: FC<FilterOptionsProps> = ({
-  options,
-  onSelectNestedOption,
-  onSelectParentFilter,
-  selectedChildOption,
-  checkedItems,
-}) => {
+const FilterOptions: FC = () => {
   const isMobile = useMobile();
+  const location = useLocation();
+  const isFollowersPage = location.pathname.split('/').at(-1) === 'followers';
+
+  const { filterOptions } = useFilterContext();
+  const options = isFollowersPage ? followersFilterOptions : filterOptions;
 
   return (
     <div>
       <Header title={{ id: 'filters' }} />
       {isMobile ? (
-        <Accordion
-          items={options}
-          onSelectParentFilter={onSelectParentFilter}
-          onSelectNestedOption={onSelectNestedOption}
-          selectedChildOption={selectedChildOption}
-          checkedItems={checkedItems}
-        />
+        <Accordion items={options} />
       ) : (
         <ul className="flex flex-col">
-          {options?.map(({ id, iconName, title, option, content }) => (
+          {options?.map(({ id, iconName, title, filterType, content }) => (
             <SubNavigationItem
               key={id}
               iconName={iconName}
               title={title}
-              option={option}
-              options={options}
+              option={filterType}
               nestedFilters={content}
-              onSelectParentFilter={onSelectParentFilter}
-              onSelectNestedOption={onSelectNestedOption}
-              shouldBeActionOnHover={false}
-              selectedChildOption={selectedChildOption}
-              checkedItems={checkedItems}
             />
           ))}
         </ul>

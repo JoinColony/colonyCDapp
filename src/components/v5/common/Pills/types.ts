@@ -1,5 +1,5 @@
-import { MessageDescriptor } from 'react-intl';
-import { SimpleMessageValues } from '~types';
+import { Message, SimpleMessageValues } from '~types';
+import { ContributorType } from '../TableFiltering/types';
 
 export type ExtensionStatusBadgeMode =
   | 'coming-soon'
@@ -16,18 +16,14 @@ export type ExtensionStatusBadgeMode =
   | 'payments';
 
 export type UserStatusMode =
-  | 'dedicated'
+  | ContributorType
   | 'dedicated-filled'
-  | 'active'
   | 'active-filled'
-  | 'new'
   | 'active-new'
-  | 'top'
   | 'top-filled'
   | 'banned'
   | 'team'
-  | 'verified'
-  | 'general';
+  | 'verified';
 
 export type IconSize = 'extraTiny' | 'tiny';
 
@@ -35,7 +31,7 @@ export type PillSize = 'medium' | 'small';
 
 export type PillsProps = {
   mode?: ExtensionStatusBadgeMode | UserStatusMode;
-  text?: MessageDescriptor | string;
+  text?: Message;
   textValues?: SimpleMessageValues;
   iconName?: string;
   iconSize?: IconSize;

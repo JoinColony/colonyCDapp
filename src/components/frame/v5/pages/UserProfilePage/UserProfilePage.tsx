@@ -21,11 +21,14 @@ const displayName = 'v5.pages.UserProfilePage';
 const UserProfilePage: FC = () => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
-  const { register, handleSubmit, onSubmit, errors, avatarUrl, dirtyFields } =
-    useUserProfile();
-
-  const showNameMessage =
-    dirtyFields.displayName && !errors.displayName?.message;
+  const {
+    register,
+    handleSubmit,
+    onSubmit,
+    errors,
+    avatarUrl,
+    showNameMessage,
+  } = useUserProfile();
 
   return (
     <Spinner loadingText={{ id: 'loading.userProfilePage' }}>

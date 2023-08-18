@@ -63,7 +63,7 @@ const Table: FC<TableProps> = ({ list, onReputationSortClick }) => {
         {listLength ? (
           list.map((item) => (
             <TableItem
-              key={item.address}
+              key={item.contributorAddress}
               member={item}
               onDeleteClick={() => {}}
               onChange={(e) => onChange(e, item)}

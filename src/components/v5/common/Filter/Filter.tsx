@@ -1,18 +1,17 @@
 import React, { FC, useState } from 'react';
 import { useIntl } from 'react-intl';
+import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useMobile } from '~hooks';
 import FilterButton from '~v5/shared/Filter/FilterButton';
 import FilterOptions from './partials/FilterOptions';
 import Modal from '~v5/shared/Modal';
 import PopoverBase from '~v5/shared/PopoverBase';
-import { useMembersPage } from '~frame/v5/pages/MembersPage/hooks';
-// import TableFiltering from '../TableFiltering';
-import { useFilter } from './hooks';
+import TableFiltering from '../TableFiltering';
 import SearchInput from './partials/SearchInput';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
-import { filterOptions, followersFilterOptions } from './consts';
+import { useFilterContext } from '~context/FilterContext';
 
 const displayName = 'v5.common.Filter';
 
@@ -26,18 +25,15 @@ const Filter: FC = () => {
     setTooltipRef,
     setTriggerRef,
     visible: isFiltersOpen,
-  } = useMembersPage();
-  const {
-    // selectedFilters,
-    onSelectParentFilter,
-    onSelectNestedOption,
-    // onClearFilters,
-    selectedChildOption,
-    numberSelectedFilters,
-    // selectedParentFilters,
-    checkedItems,
-    isFollowersPage,
-  } = useFilter();
+  } = usePopperTooltip({
+    delayShow: 200,
+    delayHide: 200,
+    placement: 'bottom-start',
+    trigger: 'click',
+    interactive: true,
+  });
+
+  const { selectedFilterCount } = useFilterContext();
 
   return (
     <>
@@ -46,7 +42,7 @@ const Filter: FC = () => {
           <FilterButton
             isOpen={isOpened}
             onClick={() => setOpened(!isOpened)}
-            numberSelectedFilters={numberSelectedFilters}
+            numberSelectedFilters={selectedFilterCount}
           />
           <Button
             mode="primaryOutline"
@@ -62,13 +58,7 @@ const Filter: FC = () => {
             onClose={() => setOpened(false)}
             isOpen={isOpened}
           >
-            <FilterOptions
-              options={filterOptions}
-              onSelectParentFilter={onSelectParentFilter}
-              onSelectNestedOption={onSelectNestedOption}
-              selectedChildOption={selectedChildOption}
-              checkedItems={checkedItems}
-            />
+            <FilterOptions />
           </Modal>
           <Modal
             isFullOnMobile={false}
@@ -88,14 +78,7 @@ const Filter: FC = () => {
       ) : (
         <>
           <div className="flex flex-row gap-2">
-            {/* @TODO: uncomment that after API for filtering will be ready */}
-            {/* {!!selectedFilters?.length && (
-              <TableFiltering
-                selectedParentFilters={selectedParentFilters}
-                filterOptions={selectedFilters}
-                onClick={() => onClearFilters()}
-              />
-            )} */}
+            <TableFiltering />
             <FilterButton
               isOpen={isFiltersOpen}
               setTriggerRef={setTriggerRef}
@@ -118,15 +101,7 @@ const Filter: FC = () => {
                   onSearchButtonClick={() => setIsSearchOpened(false)}
                 />
               </div>
-              <FilterOptions
-                options={
-                  isFollowersPage ? followersFilterOptions : filterOptions
-                }
-                onSelectParentFilter={onSelectParentFilter}
-                onSelectNestedOption={onSelectNestedOption}
-                selectedChildOption={selectedChildOption}
-                checkedItems={checkedItems}
-              />
+              <FilterOptions />
             </PopoverBase>
           )}
         </>

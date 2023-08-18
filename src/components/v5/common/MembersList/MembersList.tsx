@@ -4,12 +4,13 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
 import CardWithBios from '~v5/shared/CardWithBios';
 import EmptyContent from '../EmptyContent';
-import Link from '~v5/shared/Link';
 import { MembersListProps } from './types';
-import { useMembersList } from './hooks';
-import { useSearchContext } from '~context/SearchContext';
 import { TextButton } from '~v5/shared/Button';
 import { SpinnerLoader } from '~shared/Preloaders';
+
+import { useColonyContext } from '~hooks';
+import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+import { useMemberContext } from '~context/MemberContext';
 
 const displayName = 'v5.common.MembersList';
 
@@ -20,31 +21,38 @@ const MembersList: FC<MembersListProps> = ({
   isLoading,
   emptyTitle,
   emptyDescription,
-  viewMoreUrl,
-  isHomePage,
+  // viewMoreUrl,
   isContributorsList,
 }) => {
   const { formatMessage } = useIntl();
-  const {
-    handleClipboardCopy,
-    listLength,
-    loadMoreMembers,
-    visibleMembers,
-    membersLimit,
-    canLoadMore,
-  } = useMembersList({ list, isHomePage });
-  const { searchValue } = useSearchContext();
 
-  const showLoadMoreButton = isHomePage
-    ? searchValue && canLoadMore
-    : canLoadMore;
+  const { colony } = useColonyContext();
+  const { name } = colony || {};
+  const colonyURL = `${window.location.origin}/colony/${name}`;
+
+  const { handleClipboardCopy } = useCopyToClipboard(colonyURL);
+
+  const {
+    loadMoreContributors,
+    loadMoreMembers,
+    moreMembers,
+    moreContributors,
+  } = useMemberContext();
+
+  // const { searchValue } = useSearchContext();
+
+  const showLoadMoreButton = isContributorsList
+    ? moreContributors
+    : moreMembers;
+
+  const loadMore = isContributorsList ? loadMoreContributors : loadMoreMembers;
 
   return (
     <div>
       <div className="flex items-center mb-2">
         <h3 className="heading-5 mr-3">{formatMessage(title)}</h3>
         <span className="text-md text-blue-400">
-          {listLength} {formatMessage(title)}
+          {list.length} {formatMessage(title)}
         </span>
       </div>
       <p className="mb-6 text-md text-gray-600">{formatMessage(description)}</p>
@@ -53,39 +61,19 @@ const MembersList: FC<MembersListProps> = ({
           <SpinnerLoader appearance={{ size: 'medium' }} />
         </div>
       )}
-      {!isLoading && listLength ? (
+      {!isLoading && list.length ? (
         <ResponsiveMasonry columnsCountBreakPoints={{ 250: 1, 950: 2 }}>
           <Masonry gutter="1rem">
-            {visibleMembers.map((item, index) => {
+            {list.map((item) => {
               const { user } = item;
-              const { name, profile } = user || {};
-              const membersLength = list.length;
-
-              const incrementedIndex = index + 1;
-              const top = Math.floor(membersLength * 0.2);
-              const dedicated = Math.floor(membersLength * 0.4);
-              const active = Math.floor(membersLength * 0.6);
-
-              const isTopStatus = incrementedIndex <= top;
-              const isDedicatedStatus =
-                incrementedIndex <= dedicated && incrementedIndex > top;
-              const isActiveStatus =
-                incrementedIndex <= active && incrementedIndex > dedicated;
-              // @TODO: implement NEW status when API will be ready
-
+              const { profile, walletAddress } = user || {};
               return (
                 <CardWithBios
-                  key={name}
+                  key={walletAddress}
                   userData={item}
                   description={profile?.bio || ''}
                   shouldStatusBeVisible
                   shouldBeMenuVisible
-                  userStatus={
-                    (isTopStatus && 'top') ||
-                    (isDedicatedStatus && 'dedicated') ||
-                    (isActiveStatus && 'active') ||
-                    'general'
-                  }
                   isContributorsList={isContributorsList}
                 />
               );
@@ -93,7 +81,7 @@ const MembersList: FC<MembersListProps> = ({
           </Masonry>
         </ResponsiveMasonry>
       ) : undefined}
-      {!isLoading && !listLength ? (
+      {!isLoading && !list.length ? (
         <EmptyContent
           icon="smiley-meh"
           title={emptyTitle}
@@ -104,13 +92,13 @@ const MembersList: FC<MembersListProps> = ({
         />
       ) : undefined}
       <div className="w-full flex justify-center mt-2">
-        {listLength > membersLimit && !searchValue && viewMoreUrl && (
+        {/* {list.length > membersLimit && !searchValue && viewMoreUrl && (
           <Link className="text-3" to={viewMoreUrl}>
             {formatMessage({ id: 'viewMore' })}
           </Link>
-        )}
+        )} */}
         {showLoadMoreButton && (
-          <TextButton onClick={loadMoreMembers}>
+          <TextButton onClick={loadMore}>
             {formatMessage({ id: 'loadMore' })}
           </TextButton>
         )}

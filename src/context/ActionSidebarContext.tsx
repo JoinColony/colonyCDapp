@@ -38,6 +38,7 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
   useEffect(() => {
     if (!isActionSidebarOpen) {
       setSelectedAction(null);
+      localStorage.removeItem('annotation');
     }
   }, [isActionSidebarOpen]);
 

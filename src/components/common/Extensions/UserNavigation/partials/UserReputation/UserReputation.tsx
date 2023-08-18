@@ -99,7 +99,12 @@ const UserReputation: FC<UserReputationProps> = ({
 
   return (
     <div ref={ref}>
-      <Button mode="tertiary" isFullRounded setTriggerRef={setTriggerRef}>
+      <Button
+        mode="tertiary"
+        size="large"
+        isFullRounded
+        setTriggerRef={setTriggerRef}
+      >
         <div className="flex items-center gap-3">
           <UserAvatar
             user={user}

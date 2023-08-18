@@ -1,37 +1,30 @@
 import React, { FC, useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { noop } from 'lodash';
 
 import Icon from '~shared/Icon';
 import { SubNavigationItemProps } from './types';
 import Tooltip from '~shared/Extensions/Tooltip';
-import { useMobile } from '~hooks';
 import PopoverBase from '../PopoverBase';
 import NestedOptions from './partials/NestedOptions';
 import { useMembersSubNavigation } from './hooks';
+import { useFilterContext } from '~context/FilterContext';
 
 const displayName = 'v5.SubNavigationItem';
 
 const SubNavigationItem: FC<SubNavigationItemProps> = ({
   iconName,
   title,
-  options,
   option,
   shouldBeTooltipVisible = false,
   tooltipText = [],
   isCopyTriggered,
-  onSelectParentFilter,
-  shouldBeActionOnHover = true,
-  onSelectNestedOption,
-  selectedChildOption,
-  checkedItems,
   nestedFilters,
   onClick,
 }) => {
   const { formatMessage } = useIntl();
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     useMembersSubNavigation();
-  const isMobile = useMobile();
+  const { filterOptions: options } = useFilterContext();
 
   const tooltipContent = (
     <>
@@ -40,13 +33,8 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
     </>
   );
 
-  const handleSelectElement = () => {
-    onClick?.();
-    onSelectParentFilter?.(option);
-  };
-
   const isOptionSelected = useMemo(
-    () => options?.some((item) => item.option === option),
+    () => options?.some((item) => item.filterType === option),
     [options, option],
   );
 
@@ -56,12 +44,9 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
         <button
           type="button"
           aria-label={formatMessage({ id: 'select.filter.menu.item' })}
-          onClick={handleSelectElement}
-          onMouseEnter={
-            isMobile || shouldBeActionOnHover ? noop : handleSelectElement
-          }
           className="subnav-button"
           ref={setTriggerRef}
+          onClick={onClick}
         >
           {shouldBeTooltipVisible ? (
             <Tooltip
@@ -93,13 +78,12 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
           }}
           classNames="w-full sm:max-w-[17.375rem] mr-2"
         >
-          <NestedOptions
-            selectedParentOption={option}
-            selectedChildOption={selectedChildOption}
-            onChange={onSelectNestedOption}
-            checkedItems={checkedItems}
-            nestedFilters={nestedFilters}
-          />
+          {option && nestedFilters && (
+            <NestedOptions
+              parentOption={option}
+              nestedFilters={nestedFilters}
+            />
+          )}
         </PopoverBase>
       )}
     </>

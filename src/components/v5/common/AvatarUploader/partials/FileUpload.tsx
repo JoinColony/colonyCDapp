@@ -20,6 +20,7 @@ const FileUpload: FC<FileUploadProps> = ({
   handleFileRemove,
   errorCode,
   isAvatarUploaded,
+  isPropgressContentVisible,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
@@ -62,11 +63,17 @@ const FileUpload: FC<FileUploadProps> = ({
             {avatar}
             <div className={styles.flexCol}>
               {uploaderInfo}
-              {isAvatarUploaded && !errorCode && successContent}
+              {isAvatarUploaded &&
+                !errorCode &&
+                !isPropgressContentVisible &&
+                successContent}
             </div>
           </div>
           {!!errorCode && errorContent}
-          {!isAvatarUploaded && !errorCode && defaultContent}
+          {!isAvatarUploaded &&
+            !errorCode &&
+            !isPropgressContentVisible &&
+            defaultContent}
         </div>
       ) : (
         <>
@@ -79,8 +86,14 @@ const FileUpload: FC<FileUploadProps> = ({
             >
               <input {...getInputProps()} />
               {!!errorCode && errorContent}
-              {isAvatarUploaded && !errorCode && successContent}
-              {!isAvatarUploaded && !errorCode && defaultContent}
+              {isAvatarUploaded &&
+                !errorCode &&
+                !isPropgressContentVisible &&
+                successContent}
+              {!isAvatarUploaded &&
+                !errorCode &&
+                !isPropgressContentVisible &&
+                defaultContent}
             </div>
           </div>
         </>
