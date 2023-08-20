@@ -18,6 +18,7 @@ export const useRichText = (
   isDecriptionFieldExpanded: boolean,
 ) => {
   const [content, setContent] = useState<string>('');
+  const [notFormattedContent, setNotFormattedContent] = useState<string>('');
 
   const editorContent = useEditor(
     {
@@ -106,7 +107,7 @@ export const useRichText = (
   useEffect(() => {
     if (content && editorContent && !isDecriptionFieldExpanded) {
       editorContent?.setEditable(false);
-      setContent(editorContent?.getText());
+      setNotFormattedContent(editorContent?.getText());
     }
   }, [editorContent, content, isDecriptionFieldExpanded, setContent]);
 
@@ -127,7 +128,5 @@ export const useRichText = (
     };
   }, [editorContent, content, name, setValue]);
 
-  // @TODO: Text Big, Text Small in menu
-
-  return { editorContent };
+  return { editorContent, notFormattedContent };
 };

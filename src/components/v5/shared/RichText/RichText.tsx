@@ -17,34 +17,44 @@ const RichText: FC<RichTextProps> = ({
   toggleOnDecriptionSelect,
   toggleOffDecriptionSelect,
 }) => {
-  const { editorContent } = useRichText(name, isDecriptionFieldExpanded);
+  const { editorContent, notFormattedContent } = useRichText(
+    name,
+    isDecriptionFieldExpanded,
+  );
   const { formatMessage } = useIntl();
 
   const characterCount = editorContent?.storage.characterCount.characters();
 
   return (
     <>
-      <MenuBar editor={editorContent} />
-      <EditorContent editor={editorContent} />
+      {editorContent && isDecriptionFieldExpanded ? (
+        <>
+          <MenuBar editor={editorContent} />
+          <EditorContent editor={editorContent} />
 
-      {characterCount >= MIN_ANNOTATION_NUM && !isDecriptionFieldExpanded && (
-        <TextButton mode="underlined" onClick={toggleOnDecriptionSelect}>
-          {formatMessage({ id: 'button.expand' })}
-        </TextButton>
-      )}
+          {characterCount >= MIN_ANNOTATION_NUM &&
+            !isDecriptionFieldExpanded && (
+              <TextButton mode="underlined" onClick={toggleOnDecriptionSelect}>
+                {formatMessage({ id: 'button.expand' })}
+              </TextButton>
+            )}
 
-      <div className="flex items-center justify-between mt-4">
-        {!!characterCount && isDecriptionFieldExpanded && (
-          <TextButton mode="underlined" onClick={toggleOffDecriptionSelect}>
-            {formatMessage({ id: 'button.show.less' })}
-          </TextButton>
-        )}
-        {characterCount >= 1000 && isDecriptionFieldExpanded && (
-          <div className="text-xs text-gray-500 flex justify-end">
-            {characterCount} / {MAX_ANNOTATION_NUM}
+          <div className="flex items-center justify-between mt-4">
+            {!!characterCount && isDecriptionFieldExpanded && (
+              <TextButton mode="underlined" onClick={toggleOffDecriptionSelect}>
+                {formatMessage({ id: 'button.show.less' })}
+              </TextButton>
+            )}
+            {characterCount >= 1000 && isDecriptionFieldExpanded && (
+              <div className="text-xs text-gray-500 flex justify-end">
+                {characterCount} / {MAX_ANNOTATION_NUM}
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </>
+      ) : (
+        notFormattedContent
+      )}
     </>
   );
 };
