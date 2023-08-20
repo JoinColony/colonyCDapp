@@ -3,6 +3,7 @@ import { takeEvery, fork, call, put, all } from 'redux-saga/effects';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 import { transactionPending, transactionReady } from '~redux/actionCreators';
+import { ExpenditurePayout } from '~types';
 
 import {
   createTransaction,
@@ -11,6 +12,13 @@ import {
 } from '../transactions';
 import { putError, takeFrom } from '../utils';
 
+type PayoutWithSlotId = ExpenditurePayout & {
+  slotId: number;
+};
+
+const getPayoutChannelId = (payout: PayoutWithSlotId) =>
+  `${payout.slotId}-${payout.tokenAddress}`;
+
 function* claimExpenditure({
   meta,
   payload: { colonyAddress, expenditure },
@@ -18,28 +26,32 @@ function* claimExpenditure({
   const txChannel = yield call(getTxChannel, meta.id);
   const batchKey = 'claimExpenditure';
 
+  const payoutsWithSlotIds = expenditure.slots.flatMap(
+    (slot) =>
+      slot.payouts?.map((payout) => ({
+        ...payout,
+        slotId: slot.id,
+      })) ?? [],
+  );
+
   try {
     const channels = yield createTransactionChannels(meta.id, [
-      ...expenditure.slots.map((slot) => slot.id.toString()),
+      ...payoutsWithSlotIds.map(getPayoutChannelId),
     ]);
 
     // Create one claim transaction for each slot
     // @TODO: We should create one transaction for each token address
     yield all(
-      expenditure.slots.map((slot) =>
-        fork(createTransaction, channels[slot.id].id, {
+      payoutsWithSlotIds.map((payout, index) =>
+        fork(createTransaction, channels[getPayoutChannelId(payout)].id, {
           context: ClientType.ColonyClient,
           methodName: 'claimExpenditurePayout',
           identifier: colonyAddress,
-          params: [
-            expenditure.nativeId,
-            slot.id,
-            slot.payouts?.[0].tokenAddress ?? '',
-          ],
+          params: [expenditure.nativeId, payout.slotId, payout.tokenAddress],
           group: {
             key: batchKey,
             id: meta.id,
-            index: 0,
+            index,
           },
           ready: false,
         }),
@@ -47,15 +59,18 @@ function* claimExpenditure({
     );
 
     yield all(
-      expenditure.slots
-        .map((slot) => [
-          put(transactionPending(channels[slot.id].id)),
-          put(transactionReady(channels[slot.id].id)),
-          takeFrom(
-            channels[slot.id].channel,
-            ActionTypes.TRANSACTION_SUCCEEDED,
-          ),
-        ])
+      payoutsWithSlotIds
+        .map((payout) => {
+          const payoutChannelId = getPayoutChannelId(payout);
+          return [
+            put(transactionPending(channels[payoutChannelId].id)),
+            put(transactionReady(channels[payoutChannelId].id)),
+            takeFrom(
+              channels[payoutChannelId].channel,
+              ActionTypes.TRANSACTION_SUCCEEDED,
+            ),
+          ];
+        })
         .flat(),
     );
 

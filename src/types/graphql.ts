@@ -28,6 +28,7 @@ import {
   UnclaimedStakesFragment,
   ExpenditureFragment,
   ExpenditureSlotFragment,
+  ExpenditurePayoutFragment,
 } from '~gql';
 
 export type User = UserFragment;
@@ -109,3 +110,5 @@ export type UnclaimedStakes = UnclaimedStakesFragment;
 export type Expenditure = ExpenditureFragment;
 
 export type ExpenditureSlot = ExpenditureSlotFragment;
+
+export type ExpenditurePayout = ExpenditurePayoutFragment;
