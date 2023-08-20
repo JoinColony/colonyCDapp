@@ -80,11 +80,11 @@ export const useActionSidebar = (toggleActionSidebarOff) => {
     try {
       await asyncFunction({
         amount: values.amount,
+        tokenAddress: values.tokenAddress,
+        fromDomainId: values.team,
+        recipient: { walletAddress: values.recipient },
         motionDomainId: values.createdIn,
         annotation: values.annotation,
-        tokenAddress: values.tokenAddress,
-        recipientAddress: values.recipient,
-        fromDomainId: values.team,
         decisionMethod: values.decisionMethod,
       });
       toggleActionSidebarOff();
