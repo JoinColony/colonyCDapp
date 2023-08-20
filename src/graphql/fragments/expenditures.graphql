@@ -25,7 +25,11 @@ fragment ExpenditureSlot on ExpenditureSlot {
   claimDelay
   payoutModifier
   payouts {
-    tokenAddress
-    amount
+    ...ExpenditurePayout
   }
+}
+
+fragment ExpenditurePayout on ExpenditurePayout {
+  tokenAddress
+  amount
 }

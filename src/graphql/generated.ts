@@ -5709,6 +5709,8 @@ export type ExpenditureFragment = { __typename?: 'Expenditure', id: string, nati
 
 export type ExpenditureSlotFragment = { __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string }> | null };
 
+export type ExpenditurePayoutFragment = { __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string };
+
 export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: number, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number, params?: { __typename?: 'ExtensionParams', votingReputation?: { __typename?: 'VotingReputationParams', maxVoteFraction: string } | null } | null };
 
 export type ExtensionDisplayFragmentFragment = { __typename?: 'ColonyExtension', hash: string, address: string };
@@ -6587,6 +6589,12 @@ export const WatchListItemFragmentDoc = gql`
   createdAt
 }
     ${WatchedColonyFragmentDoc}`;
+export const ExpenditurePayoutFragmentDoc = gql`
+    fragment ExpenditurePayout on ExpenditurePayout {
+  tokenAddress
+  amount
+}
+    `;
 export const ExpenditureSlotFragmentDoc = gql`
     fragment ExpenditureSlot on ExpenditureSlot {
   id
@@ -6594,11 +6602,10 @@ export const ExpenditureSlotFragmentDoc = gql`
   claimDelay
   payoutModifier
   payouts {
-    tokenAddress
-    amount
+    ...ExpenditurePayout
   }
 }
-    `;
+    ${ExpenditurePayoutFragmentDoc}`;
 export const ExpenditureFragmentDoc = gql`
     fragment Expenditure on Expenditure {
   id
