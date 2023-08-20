@@ -8,6 +8,8 @@ import { Colony, Expenditure } from '~types';
 import { isExpenditureFunded } from '~utils/expenditures';
 import { findDomainByNativeId } from '~utils/domains';
 
+import ExpenditureClaimButton from '../ExpenditureClaimButton/ExpenditureClaimButton';
+
 interface ExpenditureAdvanceButtonProps {
   expenditure: Expenditure;
   colony: Colony;
@@ -71,17 +73,7 @@ const ExpenditureAdvanceButton = ({
   }
 
   if (expenditure.status === ExpenditureStatus.Finalized) {
-    return (
-      <ActionButton
-        actionType={ActionTypes.EXPENDITURE_CLAIM}
-        values={{
-          colonyAddress: colony.colonyAddress,
-          expenditure,
-        }}
-      >
-        Claim funds
-      </ActionButton>
-    );
+    return <ExpenditureClaimButton colony={colony} expenditure={expenditure} />;
   }
 
   return null;
