@@ -4,7 +4,6 @@ import { Id } from '@colony/colony-js';
 
 import { ExpenditureStatus, useGetExpenditureQuery } from '~gql';
 import { useColonyContext } from '~hooks';
-import NotFoundRoute from '~routes/NotFoundRoute';
 import { Heading3 } from '~shared/Heading';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
 import { findDomainByNativeId } from '~utils/domains';
@@ -46,7 +45,12 @@ const ExpenditureDetailsPage = () => {
 
   const expenditure = data.getExpenditure;
   if (!expenditure) {
-    return <NotFoundRoute />;
+    return (
+      <div>
+        This expenditure does not exist in the database but a page refresh might
+        help.
+      </div>
+    );
   }
 
   const expenditureDomain = findDomainByNativeId(
