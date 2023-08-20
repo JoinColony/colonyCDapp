@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ExpenditureStatus } from '~gql';
 import { ActionTypes } from '~redux';
 import { ActionButton } from '~shared/Button';
@@ -49,7 +50,7 @@ const ExpenditureClaimButton = ({
         <div>Next claim at {new Date(nextClaimableAt).toString()}</div>
       )}
 
-      {claimableSlots.length && (
+      {claimableSlots.length > 0 && (
         <ActionButton
           actionType={ActionTypes.EXPENDITURE_CLAIM}
           values={{
