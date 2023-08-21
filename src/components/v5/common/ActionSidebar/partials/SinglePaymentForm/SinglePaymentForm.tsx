@@ -1,14 +1,12 @@
 import React, { FC, PropsWithChildren } from 'react';
 
 import { FormProvider } from 'react-hook-form';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { useSiglePayment } from './hooks';
+import { useSinglePayment } from './hooks';
 
 const displayName = 'v5.common.ActionSidebar.partials.SinglePaymentForm';
 
 const SinglePaymentForm: FC<PropsWithChildren> = ({ children }) => {
-  const { toggleActionSidebarOff } = useActionSidebarContext();
-  const { methods, onSubmit } = useSiglePayment(toggleActionSidebarOff);
+  const { methods, onSubmit } = useSinglePayment();
 
   return (
     <FormProvider {...methods}>

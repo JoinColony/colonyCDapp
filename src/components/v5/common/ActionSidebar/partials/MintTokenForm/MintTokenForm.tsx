@@ -1,14 +1,12 @@
 import React, { FC, PropsWithChildren } from 'react';
 
 import { FormProvider } from 'react-hook-form';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { useMintToken } from './hooks';
 
 const displayName = 'v5.common.ActionSidebar.partials.MintTokenForm';
 
 const MintTokenForm: FC<PropsWithChildren> = ({ children }) => {
-  const { toggleActionSidebarOff } = useActionSidebarContext();
-  const { methods, onSubmit } = useMintToken(toggleActionSidebarOff);
+  const { methods, onSubmit } = useMintToken();
 
   return (
     <FormProvider {...methods}>

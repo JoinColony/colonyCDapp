@@ -13,8 +13,10 @@ import {
 import { getCreatePaymentDialogPayload } from '~common/Dialogs/CreatePaymentDialog/helpers';
 import { MAX_ANNOTATION_NUM } from '~v5/shared/RichText/consts';
 import { toFinite } from '~utils/lodash';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
 
-export const useSiglePayment = (toggleActionSidebarOff) => {
+export const useSinglePayment = () => {
+  const { toggleActionSidebarOff } = useActionSidebarContext();
   const { isVotingReputationEnabled } = useEnabledExtensions();
   const { networkInverseFee } = useNetworkInverseFee();
   const { colony } = useColonyContext();

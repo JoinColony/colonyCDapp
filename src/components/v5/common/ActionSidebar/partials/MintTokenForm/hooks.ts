@@ -13,8 +13,10 @@ import {
 import { toFinite } from '~utils/lodash';
 import { getMintTokenDialogPayload } from '~common/Dialogs/MintTokenDialog/helpers';
 import { MAX_ANNOTATION_LENGTH } from '~constants';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
 
-export const useMintToken = (toggleActionSidebarOff) => {
+export const useMintToken = () => {
+  const { toggleActionSidebarOff } = useActionSidebarContext();
   const { isVotingReputationEnabled } = useEnabledExtensions();
   const { colony } = useColonyContext();
   const navigate = useNavigate();
