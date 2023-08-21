@@ -2009,6 +2009,10 @@ type VotingReputationParams {
   escalationPeriod: String!
 }
 
+type StakedExpenditureParams {
+  stakeFraction: String!
+}
+
 """
 Map of parameters that extensions are initialised with
 """
@@ -2017,6 +2021,10 @@ type ExtensionParams {
   Initialization parameters for the `VotingReputation` extension
   """
   votingReputation: VotingReputationParams
+  """
+  Initialization parameters for the `StakedExpenditure` extension
+  """
+  stakedExpenditure: StakedExpenditureParams
 }
 
 """
