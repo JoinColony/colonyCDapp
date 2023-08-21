@@ -1,7 +1,7 @@
 .bubbleMenu {
- @apply flex bg-base-white border border-gray-200 p-2 rounded-lg gap-2 items-center;
+  @apply flex bg-base-white border border-gray-200 p-2 rounded-lg gap-2 items-center;
 }
 
 .icon {
-  @apply flex hover:text-blue-400;
+  @apply hover:text-blue-400;
 }
