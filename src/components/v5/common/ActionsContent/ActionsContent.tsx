@@ -11,6 +11,7 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import DescriptionField from './partials/DescriptionField';
 import useToggle from '~hooks/useToggle';
 import { useDetectClickOutside } from '~hooks';
+import { Actions } from '~constants/actions';
 
 const displayName = 'v5.common.ActionsContent';
 
@@ -37,6 +38,10 @@ const ActionsContent: FC = () => {
     onTriggered: () => toggleOffDecriptionSelect(),
   });
 
+  const prepareAmountTitle =
+    (selectedAction === Actions.SIMPLE_PAYMENT && 'actionSidebar.amount') ||
+    'actionSidebar.value';
+
   return (
     <>
       {shouldShowFromField && (
@@ -56,10 +61,7 @@ const ActionsContent: FC = () => {
         </ActionSidebarRow>
       )}
       {shouldShowAmountField && (
-        <ActionSidebarRow
-          iconName="coins"
-          title={{ id: 'actionSidebar.amount' }}
-        >
+        <ActionSidebarRow iconName="coins" title={{ id: prepareAmountTitle }}>
           <AmountField name="amount" />
         </ActionSidebarRow>
       )}
@@ -95,7 +97,7 @@ const ActionsContent: FC = () => {
           />
         </ActionSidebarRow>
       )}
-      {selectedAction && <TransactionTable />}
+      {selectedAction === Actions.SIMPLE_PAYMENT && <TransactionTable />}
     </>
   );
 };
