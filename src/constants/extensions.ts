@@ -139,12 +139,12 @@ const stakedExpenditureMessages = {
     id: `${stakedExpenditureName}.descriptionLong`,
     defaultMessage: 'Staked Expenditure extension.',
   },
-  stakedExpenditureTotalStakeFractionTitle: {
-    id: `${stakedExpenditureName}.param.totalStakeFraction.title`,
+  stakedExpenditureStakeFractionTitle: {
+    id: `${stakedExpenditureName}.param.stakeFraction.title`,
     defaultMessage: 'Required Stake',
   },
-  stakedExpenditureTotalStakeFractionDescription: {
-    id: `${stakedExpenditureName}.param.totalStakeFraction.description`,
+  stakedExpenditureStakeFractionDescription: {
+    id: `${stakedExpenditureName}.param.stakeFraction.description`,
     defaultMessage: `What percentage of the team's reputation, in token terms, should need to stake to create an expenditure?\n\n<span>e.g. if a team has 100 reputation points between them, and the Required Stake is 5%, then 5 tokens would need to be staked to create an expenditure.</span>`,
   },
 };
@@ -329,15 +329,15 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     createdAt: 1692048380000,
     initializationParams: [
       {
-        paramName: 'totalStakeFraction',
+        paramName: 'stakeFraction',
         validation: number()
           .transform((value) => toFinite(value))
           .positive(() => MSG.positiveError)
           .required(() => MSG.requiredError)
           .max(100, () => MSG.lessThan100Error),
         defaultValue: 1,
-        title: MSG.stakedExpenditureTotalStakeFractionTitle,
-        description: MSG.stakedExpenditureTotalStakeFractionDescription,
+        title: MSG.stakedExpenditureStakeFractionTitle,
+        description: MSG.stakedExpenditureStakeFractionDescription,
         type: ExtensionParamType.Input,
         complementaryLabel: 'percent',
         formattingOptions: {
