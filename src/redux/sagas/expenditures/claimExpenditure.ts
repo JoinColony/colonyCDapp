@@ -28,10 +28,12 @@ function* claimExpenditure({
 
   const payoutsWithSlotIds = expenditure.slots.flatMap(
     (slot) =>
-      slot.payouts?.map((payout) => ({
-        ...payout,
-        slotId: slot.id,
-      })) ?? [],
+      slot.payouts
+        ?.filter((payout) => payout.amount !== '0')
+        .map((payout) => ({
+          ...payout,
+          slotId: slot.id,
+        })) ?? [],
   );
 
   try {
