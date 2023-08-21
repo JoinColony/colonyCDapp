@@ -18,6 +18,7 @@ import useToggle from '~hooks/useToggle';
 import SinglePaymentForm from './partials/SinglePaymentForm';
 import MintTokenForm from './partials/MintTokenForm';
 import { Actions } from '~constants/actions';
+import TransferFundsForm from './partials/TransferFundsForm';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -114,6 +115,9 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
     }
     if (selectedAction === Actions.MINT_TOKENS) {
       return <MintTokenForm>{formContent}</MintTokenForm>;
+    }
+    if (selectedAction === Actions.TRANSFER_FUNDS) {
+      return <TransferFundsForm>{formContent}</TransferFundsForm>;
     }
     return formContent;
   };
