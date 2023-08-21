@@ -1,7 +1,18 @@
 import { useMemo } from 'react';
 
+import { ColonyRole } from '@colony/colony-js';
 import { Actions } from '~constants/actions';
+import {
+  useAppContext,
+  useColonyContext,
+  useColonyHasReputation,
+  useDialogActionPermissions,
+  useEnabledExtensions,
+  useTransformer,
+} from '~hooks';
 import { SearchSelectOptionProps } from '~v5/shared/SearchSelect/types';
+import { Colony } from '~types';
+import { getAllUserRoles } from '~transformers';
 
 export const useActionsList = () =>
   useMemo(
@@ -136,3 +147,30 @@ export const useActionsList = () =>
     ],
     [],
   );
+
+export const useUserPermissionsErrors = (): boolean => {
+  const { isVotingReputationEnabled } = useEnabledExtensions();
+  const { colony } = useColonyContext();
+  const { wallet } = useAppContext();
+
+  const requiredRoles: ColonyRole[] = [ColonyRole.Root];
+
+  const hasReputation = useColonyHasReputation(colony?.colonyAddress as string);
+
+  const allUserRoles = useTransformer(getAllUserRoles, [
+    colony,
+    wallet?.address,
+  ]);
+
+  const [hasRoles] = useDialogActionPermissions(
+    colony as Colony,
+    isVotingReputationEnabled,
+    requiredRoles,
+    allUserRoles,
+    hasReputation,
+  );
+
+  const showPermissionErrors = !hasRoles && !isVotingReputationEnabled;
+
+  return showPermissionErrors;
+};
