@@ -11,10 +11,19 @@ export const useActionsContent = () => {
   const shouldShowUserField =
     selectedAction === Actions.SIMPLE_PAYMENT ||
     selectedAction === Actions.ADVANCED_PAYMENT;
-  const shouldShowAmountField = selectedAction === Actions.SIMPLE_PAYMENT;
-  const shouldShowCreatedInField = selectedAction === Actions.SIMPLE_PAYMENT;
-  const shouldShowDecisionField = selectedAction === Actions.SIMPLE_PAYMENT;
-  const shouldShowDescriptionField = selectedAction === Actions.SIMPLE_PAYMENT;
+  const shouldShowAmountField =
+    selectedAction === Actions.SIMPLE_PAYMENT ||
+    selectedAction === Actions.TRANSFER_FUNDS;
+  const shouldShowCreatedInField =
+    selectedAction === Actions.SIMPLE_PAYMENT ||
+    selectedAction === Actions.TRANSFER_FUNDS;
+  const shouldShowDecisionField =
+    selectedAction === Actions.SIMPLE_PAYMENT ||
+    selectedAction === Actions.TRANSFER_FUNDS;
+  const shouldShowDescriptionField =
+    selectedAction === Actions.SIMPLE_PAYMENT ||
+    selectedAction === Actions.TRANSFER_FUNDS;
+  const shouldShowToField = selectedAction === Actions.TRANSFER_FUNDS;
 
   return {
     shouldShowFromField,
@@ -23,5 +32,6 @@ export const useActionsContent = () => {
     shouldShowCreatedInField,
     shouldShowDecisionField,
     shouldShowDescriptionField,
+    shouldShowToField,
   };
 };
