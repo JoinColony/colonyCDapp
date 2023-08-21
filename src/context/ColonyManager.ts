@@ -180,6 +180,14 @@ export default class ColonyManager {
           throw new Error('Need colony identifier to get the WhitelistClient');
         return this.getColonyExtensionClient(identifier, Extension.Whitelist);
       }
+      case ClientType.StakedExpenditureClient: {
+        if (!identifier)
+          throw new Error('Need colony identifier to get the WhitelistClient');
+        return this.getColonyExtensionClient(
+          identifier,
+          Extension.StakedExpenditure,
+        );
+      }
       default: {
         throw new Error('A valid contract client type has to be specified');
       }
