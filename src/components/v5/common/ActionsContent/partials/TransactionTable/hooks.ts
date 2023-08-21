@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
-
 import { useFormContext } from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
+
 import { TransactionProps } from './types';
 
 export const useTransactionTable = () => {
@@ -21,7 +22,7 @@ export const useTransactionTable = () => {
         ...transactions,
         {
           ...transaction,
-          key: Date.now(),
+          key: uuidv4(),
         },
       ]);
     }

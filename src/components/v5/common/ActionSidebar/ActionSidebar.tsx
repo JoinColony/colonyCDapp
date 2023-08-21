@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 import { useOnClickOutside } from 'usehooks-ts';
 
-import { FormProvider } from 'react-hook-form';
 import styles from './ActionSidebar.module.css';
 import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';
@@ -11,10 +10,14 @@ import Button from '~v5/shared/Button';
 import ActionSidebarRow from '../ActionSidebarRow';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import SearchSelect from '~v5/shared/SearchSelect';
-import { useActionSidebar, useActionsList } from './hooks';
+import { useActionsList } from './hooks';
 import { translateAction } from './utils';
 import ActionsContent from '../ActionsContent';
 import PopularActions from './partials/PopularActions';
+import useToggle from '~hooks/useToggle';
+import SinglePaymentForm from './partials/SinglePaymentForm';
+import MintTokenForm from './partials/MintTokenForm';
+import { Actions } from '~constants/actions';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -25,11 +28,95 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
   const isMobile = useMobile();
   const { toggleActionSidebarOff, selectedAction, setSelectedAction } =
     useActionSidebarContext();
-  const { isSelectVisible, toggleSelect, toggleSelectOff, methods, onSubmit } =
-    useActionSidebar(toggleActionSidebarOff);
   const actionsList = useActionsList();
+  const [
+    isSelectVisible,
+    { toggle: toggleSelect, toggleOff: toggleSelectOff },
+  ] = useToggle();
 
   useOnClickOutside(ref, () => !isMobile && toggleActionSidebarOff());
+
+  const formContent = (
+    <>
+      <div className="px-6 py-8 overflow-scroll h-[40rem]">
+        <input
+          type="text"
+          className={styles.titleInput}
+          placeholder={formatMessage({ id: 'placeholder.title' })}
+        />
+        <ActionSidebarRow
+          iconName="file-plus"
+          title={{ id: 'actionSidebar.actionType' }}
+        >
+          <>
+            {!selectedAction && (
+              <>
+                <button
+                  type="button"
+                  className="flex text-md text-gray-600 transition-colors hover:text-blue-400"
+                  onClick={toggleSelect}
+                >
+                  {formatMessage({
+                    id: 'actionSidebar.chooseActionType',
+                  })}
+                </button>
+                {isSelectVisible && (
+                  <SearchSelect
+                    onToggle={toggleSelectOff}
+                    items={actionsList}
+                    isOpen={isSelectVisible}
+                  />
+                )}
+              </>
+            )}
+            {selectedAction && (
+              <span className="text-md">
+                {formatMessage({ id: translateAction(selectedAction) })}
+              </span>
+            )}
+          </>
+        </ActionSidebarRow>
+        <ActionsContent />
+      </div>
+      <div className="mt-auto">
+        {!selectedAction && (
+          <PopularActions setSelectedAction={setSelectedAction} />
+        )}
+        <div
+          className="flex items-center flex-col-reverse sm:flex-row 
+        justify-end gap-2 p-6 border-t border-gray-200"
+        >
+          <Button
+            mode="primaryOutline"
+            text={{ id: 'button.cancel' }}
+            onClick={toggleActionSidebarOff}
+            isFullSize={isMobile}
+          />
+          <Button
+            mode="primarySolid"
+            disabled={
+              !selectedAction
+              // || !!Object.keys(methods.formState.errors).length
+            }
+            text={{ id: 'button.createAction' }}
+            isFullSize={isMobile}
+            type="submit"
+            // loading={methods?.formState?.isSubmitting}
+          />
+        </div>
+      </div>
+    </>
+  );
+
+  const prepareFormContent = () => {
+    if (selectedAction === Actions.SIMPLE_PAYMENT) {
+      return <SinglePaymentForm>{formContent}</SinglePaymentForm>;
+    }
+    if (selectedAction === Actions.MINT_TOKENS) {
+      return <MintTokenForm>{formContent}</MintTokenForm>;
+    }
+    return formContent;
+  };
 
   return (
     <div
@@ -66,80 +153,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
         )}
         {children}
       </div>
-      <FormProvider {...methods}>
-        <form
-          onSubmit={methods.handleSubmit(onSubmit)}
-          className="h-full flex flex-col"
-        >
-          <div className="px-6 py-8 overflow-scroll h-[40rem]">
-            <input
-              type="text"
-              className={styles.titleInput}
-              placeholder={formatMessage({ id: 'placeholder.title' })}
-            />
-            <ActionSidebarRow
-              iconName="file-plus"
-              title={{ id: 'actionSidebar.actionType' }}
-            >
-              <>
-                {!selectedAction && (
-                  <>
-                    <button
-                      type="button"
-                      className="flex text-md text-gray-600 transition-colors hover:text-blue-400"
-                      onClick={toggleSelect}
-                    >
-                      {formatMessage({
-                        id: 'actionSidebar.chooseActionType',
-                      })}
-                    </button>
-                    {isSelectVisible && (
-                      <SearchSelect
-                        onToggle={toggleSelectOff}
-                        items={actionsList}
-                        isOpen={isSelectVisible}
-                      />
-                    )}
-                  </>
-                )}
-                {selectedAction && (
-                  <span className="text-md">
-                    {formatMessage({ id: translateAction(selectedAction) })}
-                  </span>
-                )}
-              </>
-            </ActionSidebarRow>
-            <ActionsContent />
-          </div>
-          <div className="mt-auto">
-            {!selectedAction && (
-              <PopularActions setSelectedAction={setSelectedAction} />
-            )}
-            <div
-              className="flex items-center flex-col-reverse sm:flex-row 
-              justify-end gap-2 p-6 border-t border-gray-200"
-            >
-              <Button
-                mode="primaryOutline"
-                text={{ id: 'button.cancel' }}
-                onClick={toggleActionSidebarOff}
-                isFullSize={isMobile}
-              />
-              <Button
-                mode="primarySolid"
-                disabled={
-                  !selectedAction
-                  // || !!Object.keys(methods.formState.errors).length
-                }
-                text={{ id: 'button.createAction' }}
-                isFullSize={isMobile}
-                type="submit"
-                loading={methods.formState.isSubmitting}
-              />
-            </div>
-          </div>
-        </form>
-      </FormProvider>
+      {prepareFormContent()}
     </div>
   );
 };

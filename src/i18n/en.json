@@ -793,6 +793,7 @@
   "actionSidebar.to": "To",
   "actionSidebar.recipent": "Recipent",
   "actionSidebar.amount": "Amount",
+  "actionSidebar.value": "Value",
   "actionSidebar.availableTokens": "Available tokens",
   "actionSidebar.availableDecisions": "Available decision methods",
   "actionSidebar.decisionMethod": "Decision method",

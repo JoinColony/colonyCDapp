@@ -13,15 +13,19 @@ export const useActionsContent = () => {
     selectedAction === Actions.ADVANCED_PAYMENT;
   const shouldShowAmountField =
     selectedAction === Actions.SIMPLE_PAYMENT ||
+    selectedAction === Actions.MINT_TOKENS ||
     selectedAction === Actions.TRANSFER_FUNDS;
   const shouldShowCreatedInField =
     selectedAction === Actions.SIMPLE_PAYMENT ||
+    selectedAction === Actions.MINT_TOKENS ||
     selectedAction === Actions.TRANSFER_FUNDS;
   const shouldShowDecisionField =
     selectedAction === Actions.SIMPLE_PAYMENT ||
+    selectedAction === Actions.MINT_TOKENS ||
     selectedAction === Actions.TRANSFER_FUNDS;
   const shouldShowDescriptionField =
     selectedAction === Actions.SIMPLE_PAYMENT ||
+    selectedAction === Actions.MINT_TOKENS ||
     selectedAction === Actions.TRANSFER_FUNDS;
   const shouldShowToField = selectedAction === Actions.TRANSFER_FUNDS;
 
