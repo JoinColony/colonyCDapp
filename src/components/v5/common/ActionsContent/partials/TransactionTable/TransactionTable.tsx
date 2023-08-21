@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+import { v4 as uuidv4 } from 'uuid';
 
 import Button from '~v5/shared/Button/Button';
 import { useColonyContext } from '~hooks';
@@ -59,7 +60,7 @@ const TransactionTable: FC = () => {
             ...transactions,
             {
               amount: '0',
-              key: Date.now(),
+              key: uuidv4(),
               recipent: '',
               token: nativeToken?.tokenAddress || '',
             },
