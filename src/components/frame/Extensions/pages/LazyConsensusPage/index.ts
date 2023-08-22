@@ -1,1 +1,1 @@
-export { default } from './LazyConsensusPage';
+export { default } from './LazyConsensusPageSetup';

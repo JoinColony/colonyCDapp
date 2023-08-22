@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
-import { useIntl } from 'react-intl';
 
 import { AccordionHeaderProps } from '../types';
 import Icon from '~shared/Icon';
+import { formatText } from '~utils/intl';
 
 const displayName = 'Extensions.Accordion.partials.AccordionHeader';
 
@@ -13,10 +13,7 @@ const AccordionHeader: FC<AccordionHeaderProps> = ({
   onClick,
   onKeyUp,
 }) => {
-  const { formatMessage } = useIntl();
-
-  const titleText =
-    typeof title === 'string' ? title : title && formatMessage(title);
+  const titleText = formatText(title);
 
   return (
     <button

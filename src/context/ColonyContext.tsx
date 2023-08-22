@@ -7,9 +7,11 @@ import React, {
 } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
-import { ObservableQuery } from '@apollo/client';
+import { ApolloQueryResult } from '@apollo/client';
 
 import {
+  Exact,
+  GetFullColonyByNameQuery,
   useGetFullColonyByNameQuery,
   useUpdateContributorsWithReputationMutation,
 } from '~gql';
@@ -22,11 +24,20 @@ import { UserTokenBalanceProvider } from './UserTokenBalanceContext';
 
 import { ColonyDecisionProvider } from './ColonyDecisionContext';
 
+export type RefetchColonyFn = (
+  variables?:
+    | Partial<
+        Exact<{
+          name: string;
+        }>
+      >
+    | undefined,
+) => Promise<ApolloQueryResult<GetFullColonyByNameQuery>> | null;
 interface ColonyContextValue {
   colony?: Colony;
   loading: boolean;
   canInteractWithColony: boolean;
-  refetchColony: (() => null) | ObservableQuery['refetch'];
+  refetchColony: RefetchColonyFn;
   startPolling: (pollInterval: number) => void;
   stopPolling: () => void;
   isSupportedColonyVersion: boolean;

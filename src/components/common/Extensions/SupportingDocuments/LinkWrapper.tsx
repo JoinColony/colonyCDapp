@@ -1,23 +1,19 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
+import { useParams } from 'react-router-dom';
 
 import Icon from '~shared/Icon';
 import Link from '~v5/shared/Link';
-import { doubleLink, singleLink } from './consts';
-
-interface LinkWrapperProps {
-  isDoubleLinkVisible: boolean;
-}
+import { links } from './consts';
+import { formatText } from '~utils/intl';
 
 const displayName = 'common.Extensions.SupportingDocuments.LinkWrapper';
 
-const LinkWrapper: FC<LinkWrapperProps> = ({ isDoubleLinkVisible }) => {
-  const { formatMessage } = useIntl();
-  const links = isDoubleLinkVisible ? doubleLink : singleLink;
+const LinkWrapper: FC = () => {
+  const { extensionId } = useParams();
 
   return (
     <>
-      {links.map(({ url, text }) => (
+      {links[extensionId ?? '']?.map(({ url, text }) => (
         <li key={text} className="mb-2 last:mb-0">
           <Link
             key={url}
@@ -31,7 +27,7 @@ const LinkWrapper: FC<LinkWrapperProps> = ({ isDoubleLinkVisible }) => {
                 title={{ id: 'file-text' }}
               />
             </span>
-            {formatMessage({ id: text })}
+            {formatText({ id: text })}
           </Link>
         </li>
       ))}

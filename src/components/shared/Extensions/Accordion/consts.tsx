@@ -18,11 +18,11 @@ export const accordionMocksContent = [
         textItem: (
           <ContentTypeText
             title="Required Stake"
-            subTitle="What percentage of the team’s reputation,
+            subTitle="What percentage of the team's reputation,
             in token terms, should need to stake on each side of a motion?"
           />
         ),
-        inputItem: <SpecialHourInput maxValue={8766} />,
+        inputItem: <SpecialHourInput />,
       },
     ],
   },
@@ -35,10 +35,10 @@ export const accordionMocksContent = [
         textItem: (
           <ContentTypeText
             title="Voter Reward"
-            subTitle="In a dispute, what percentage of the losing side’s stake should be awarded to the voters?"
+            subTitle="In a dispute, what percentage of the losing side's stake should be awarded to the voters?"
           />
         ),
-        inputItem: <SpecialPercentageInput maxValue={50} />,
+        inputItem: <SpecialPercentageInput />,
         accordionItem: [
           {
             id: 'step-1-0',
@@ -68,10 +68,10 @@ export const accordionMocksContent = [
         textItem: (
           <ContentTypeText
             title="Voter Reward"
-            subTitle="In a dispute, what percentage of the losing side’s stake should be awarded to the voters?"
+            subTitle="In a dispute, what percentage of the losing side's stake should be awarded to the voters?"
           />
         ),
-        inputItem: <SpecialPercentageInput maxValue={100} />,
+        inputItem: <SpecialPercentageInput />,
       },
       {
         id: 2,

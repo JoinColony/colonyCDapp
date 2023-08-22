@@ -12,7 +12,14 @@ const HeadingChunks = (chunks: React.ReactNode[]) => (
   <h4 className="text-gray-900 font-semibold mt-6 mb-4">{chunks}</h4>
 );
 
-const TabContent: FC<AnyExtensionData> = (extensionData: AnyExtensionData) => {
+const ParagraphChunks = (chunks: React.ReactNode[]) => (
+  <h4 className="my-4">{chunks}</h4>
+);
+
+interface TabContentProps {
+  extensionData: AnyExtensionData;
+}
+const TabContent: FC<TabContentProps> = ({ extensionData }) => {
   const { isEnabled, uninstallable, descriptionLong } = extensionData;
 
   return (
@@ -26,6 +33,7 @@ const TabContent: FC<AnyExtensionData> = (extensionData: AnyExtensionData) => {
           {...descriptionLong}
           values={{
             h4: HeadingChunks,
+            p: ParagraphChunks,
           }}
         />
       </div>

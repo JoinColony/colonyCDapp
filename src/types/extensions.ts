@@ -40,15 +40,6 @@ export interface ExtensionConfig {
   uninstallable: boolean;
   createdAt: number;
   icon: string;
-  permissions: {
-    title: string;
-    permissions: {
-      key: string;
-      text: MessageDescriptor;
-      description: MessageDescriptor;
-      name: string;
-    }[];
-  };
 }
 
 export type InstalledExtensionData = ExtensionConfig &

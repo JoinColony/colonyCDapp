@@ -1,4 +1,5 @@
 import { Props as ReactModalProps } from 'react-modal';
+import React from 'react';
 
 import { ButtonMode } from '../Button/types';
 
@@ -9,13 +10,13 @@ export interface ModalBaseProps extends ReactModalProps {
 
 export interface ModalProps extends ModalBaseProps {
   onClose: () => void;
-  onConfirm?: () => Promise<void>;
+  onConfirm?: () => void | Promise<void>;
   title?: React.ReactNode;
   subTitle?: React.ReactNode;
   icon?: string;
   isWarning?: boolean;
-  confirmMessage?: React.ReactNode;
-  closeMessage?: React.ReactNode;
+  confirmMessage?: string;
+  closeMessage?: string;
   disabled?: boolean;
   buttonMode?: ButtonMode;
   isTopSectionWithBackground?: boolean;

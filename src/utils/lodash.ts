@@ -10,3 +10,4 @@ export { default as unionBy } from 'lodash/unionBy';
 export { default as intersectionBy } from 'lodash/intersectionBy';
 export { default as uniqBy } from 'lodash/uniqBy';
 export { default as difference } from 'lodash/difference';
+export { default as get } from 'lodash/get';

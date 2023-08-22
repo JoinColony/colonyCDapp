@@ -3,7 +3,7 @@ import { ClientType, getExtensionHash } from '@colony/colony-js';
 
 import { AllActions, Action, ActionTypes } from '~redux';
 
-import { putError, refreshUpgradedExtension, takeFrom } from '../utils';
+import { putError, takeFrom } from '../utils';
 import {
   createTransaction,
   getTxChannel,
@@ -36,8 +36,6 @@ function* extensionUpgrade({
   } catch (error) {
     return yield putError(ActionTypes.EXTENSION_UPGRADE_ERROR, error, meta);
   }
-
-  refreshUpgradedExtension(colonyAddress, extensionId, version);
 
   txChannel.close();
 

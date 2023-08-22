@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 
 import { RadioListProps } from './types';
 import RadioBase from './RadioBase';
-import FormError from '~v5/shared/FormError';
 
 const displayName = 'common.Extensions.Fields.RadioList';
 
@@ -10,9 +9,8 @@ const RadioList: FC<RadioListProps> = ({
   title,
   items,
   onChange,
-  errors,
-  register,
   name,
+  checkedRadios,
 }) => (
   <>
     <h3 className="text-2 mb-4">{title}</h3>
@@ -21,8 +19,6 @@ const RadioList: FC<RadioListProps> = ({
         <li key={value}>
           <RadioBase
             name={name}
-            register={register}
-            isError={!!errors?.governance?.message}
             onChange={onChange}
             item={{
               value,
@@ -32,15 +28,11 @@ const RadioList: FC<RadioListProps> = ({
               badge,
               tooltip,
             }}
+            checked={checkedRadios?.[value]}
           />
         </li>
       ))}
     </ul>
-    {errors?.governance && (
-      <FormError isFullSize alignment="left">
-        {errors?.root?.message}
-      </FormError>
-    )}
   </>
 );
 
