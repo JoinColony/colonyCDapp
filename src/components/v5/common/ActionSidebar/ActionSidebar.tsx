@@ -18,10 +18,9 @@ import SinglePaymentForm from './partials/SinglePaymentForm';
 import MintTokenForm from './partials/MintTokenForm';
 import { Actions } from '~constants/actions';
 import ActionButtons from './partials/ActionButtons';
-import ErrorBanner from './partials/ErrorBanner';
 import TransferFundsForm from './partials/TransferFundsForm';
-import NotificationBanner from '~common/Extensions/NotificationBanner';
 import UnlockTokenForm from './partials/UnlockTokenForm';
+import NotificationBanner from '~common/Extensions/NotificationBanner';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -38,6 +37,9 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
     { toggle: toggleSelect, toggleOff: toggleSelectOff },
   ] = useToggle();
   const isUserHasPermission = useUserPermissionsErrors();
+  const isUnlockTokenAction = selectedAction === Actions.UNLOCK_TOKEN;
+  const showErrorBanner =
+    (isUserHasPermission && selectedAction) || isUnlockTokenAction;
 
   useOnClickOutside(ref, () => !isMobile && toggleActionSidebarOff());
 
@@ -49,17 +51,18 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
           className={styles.titleInput}
           placeholder={formatMessage({ id: 'placeholder.title' })}
         />
-        {isUserHasPermission && selectedAction && (
-          <ErrorBanner
-            title={{ id: 'actionSidebar.mint.token.permission.error' }}
-          />
-        )}
-        {selectedAction === Actions.UNLOCK_TOKEN && (
+        {showErrorBanner && (
           <div className="mb-7">
             <NotificationBanner
-              status="error"
-              title={{ id: 'actionSidebar.unlock.token.error' }}
-              actionText={{ id: 'learn.more' }}
+              status={isUnlockTokenAction ? 'error' : 'warning'}
+              title={{
+                id: isUnlockTokenAction
+                  ? 'actionSidebar.unlock.token.error'
+                  : 'actionSidebar.mint.token.permission.error',
+              }}
+              actionText={
+                isUnlockTokenAction ? { id: 'learn.more' } : undefined
+              }
               actionType="call-to-action"
             />
           </div>
