@@ -5,12 +5,14 @@ import { useMobile } from '~hooks';
 import Button from '~v5/shared/Button';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { ActionButtonsProps } from '../types';
+import { useGetSubmitButton } from './hooks';
 
 const displayName = 'v5.common.ActionSidebar.partials.ActionButtons';
 
 const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
   const ref = useRef(null);
   const isMobile = useMobile();
+  const submitText = useGetSubmitButton();
   const { toggleActionSidebarOff, selectedAction } = useActionSidebarContext();
 
   useOnClickOutside(ref, () => !isMobile && toggleActionSidebarOff());
@@ -32,7 +34,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
           !selectedAction || isActionDisabled
           // || !!Object.keys(methods.formState.errors).length
         }
-        text={{ id: 'button.createAction' }}
+        text={{ id: submitText }}
         isFullSize={isMobile}
         type="submit"
         // loading={methods?.formState?.isSubmitting}
