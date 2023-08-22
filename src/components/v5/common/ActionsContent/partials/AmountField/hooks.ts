@@ -6,7 +6,7 @@ import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 
 export const useAmountField = (selectedTokenAddress: string) => {
   const { colony } = useColonyContext();
-  const [inputWidth, setInputWidth] = useState(0);
+  const [inputWidth, setInputWidth] = useState<number>();
 
   const colonyTokens =
     colony?.tokens?.items

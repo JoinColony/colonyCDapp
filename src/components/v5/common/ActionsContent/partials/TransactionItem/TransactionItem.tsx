@@ -15,11 +15,11 @@ const TransactionItem: FC<TransactionItemProps> = ({
   amount,
   token,
   id,
+  recipent,
   onRemoveClick,
   onDuplicateClick,
   onUpdate,
 }) => {
-  // @TODO: Fix updating transaction, add default recipent to userSelect
   const { formatMessage } = useIntl();
   const { watch } = useFormContext();
   const [
@@ -34,6 +34,7 @@ const TransactionItem: FC<TransactionItemProps> = ({
   const recipentField = watch(`transaction-recipent-${id}`);
 
   useEffect(() => {
+    if (!amountField && !recipentField) return;
     onUpdate(id, {
       amount: amountField,
       recipent: recipentField,
@@ -45,7 +46,10 @@ const TransactionItem: FC<TransactionItemProps> = ({
   return (
     <div className="flex items-center py-3 px-4 border-b border-gray-200 last:border-b-0 relative">
       <div className="w-1/3">
-        <UserSelect name={`transaction-recipent-${id}`} />
+        <UserSelect
+          name={`transaction-recipent-${id}`}
+          selectedWalletAddress={recipent}
+        />
       </div>
       <div className="w-2/3">
         <AmountField

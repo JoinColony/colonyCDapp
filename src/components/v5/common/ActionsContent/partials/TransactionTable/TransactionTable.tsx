@@ -41,6 +41,7 @@ const TransactionTable: FC = () => {
                   {...transaction}
                   key={transaction.key}
                   id={transaction.key}
+                  recipent={transaction.recipent}
                   onRemoveClick={handleRemoveRowClick}
                   onDuplicateClick={handleDuplicateRowClick}
                   onUpdate={updateTransaction}
