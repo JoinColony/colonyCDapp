@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Cleave from 'cleave.js/react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
@@ -50,6 +50,10 @@ const AmountField: FC<AmountFieldProps> = ({ name, amount, defaultToken }) => {
   const ref = useDetectClickOutside({
     onTriggered: () => toggleOffTokenSelect(),
   });
+
+  useEffect(() => {
+    if (amount) setValue(name, amount);
+  }, [amount]);
 
   return (
     <div className="flex items-center gap-3 w-full" ref={ref}>

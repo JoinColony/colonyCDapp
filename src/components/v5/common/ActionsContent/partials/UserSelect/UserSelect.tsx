@@ -5,14 +5,14 @@ import { useFormContext } from 'react-hook-form';
 import { useUserSelect } from './hooks';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
 import UserAvatar from '~v5/shared/UserAvatar';
-import { useUserByName } from '~hooks';
+import { useUserByAddress, useUserByName } from '~hooks';
 import useToggle from '~hooks/useToggle';
 import styles from '../../ActionsContent.module.css';
 import { SelectProps } from '../../types';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
-const UserSelect: FC<SelectProps> = ({ name }) => {
+const UserSelect: FC<SelectProps> = ({ name, selectedWalletAddress = '' }) => {
   const { formatMessage } = useIntl();
   const { register, setValue } = useFormContext();
   const usersOptions = useUserSelect();
@@ -22,10 +22,11 @@ const UserSelect: FC<SelectProps> = ({ name }) => {
   const { user } = useUserByName(selectedUser || '');
   const userDisplayName = user?.profile?.displayName;
   const username = user?.name;
+  const { user: userByAddress } = useUserByAddress(selectedWalletAddress);
 
   useEffect(() => {
-    setValue(name, user?.walletAddress);
-  }, [setValue, name, user]);
+    setValue(name, user?.walletAddress || selectedWalletAddress);
+  }, [setValue, name, user, selectedWalletAddress]);
 
   return (
     <div className="sm:relative w-full">
@@ -35,10 +36,10 @@ const UserSelect: FC<SelectProps> = ({ name }) => {
         onClick={toggleUserSelect}
         aria-label={formatMessage({ id: 'ariaLabel.selectUser' })}
       >
-        {selectedUser ? (
+        {selectedUser || userByAddress ? (
           <UserAvatar
-            user={user}
-            userName={userDisplayName || username}
+            user={user || userByAddress}
+            userName={userDisplayName || username || userByAddress?.name}
             size="xs"
           />
         ) : (
