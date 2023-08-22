@@ -14,8 +14,8 @@ const useDialogActionPermissions = (
   hasReputation: boolean,
 ): [boolean, boolean] => {
   const { wallet } = useAppContext();
-  const { watch } = useFormContext();
-  const forceAction = watch('forceAction');
+  const method = useFormContext();
+  const forceAction = method?.watch('forceAction');
 
   const hasRoles = requiredRolesDomains.every((domainId) => {
     const userDomainRoles = getUserRolesForDomain(

@@ -3,7 +3,6 @@ import { useIntl } from 'react-intl';
 import { EditorContent } from '@tiptap/react';
 
 import MenuBar from './partials/Menu';
-
 import { MAX_ANNOTATION_NUM, MIN_ANNOTATION_NUM } from './consts';
 import { TextButton } from '../Button';
 import { RichTextProps } from './types';

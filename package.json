@@ -207,6 +207,7 @@
     "numbro": "^2.3.6",
     "papaparse": "^5.3.1",
     "path-browserify": "^1.0.1",
+    "phosphor-react": "^1.4.1",
     "qrcode": "^1.4.4",
     "query-string": "^6.11.1",
     "rc-slider": "^9.7.1",

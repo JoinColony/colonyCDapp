@@ -56,15 +56,15 @@ export const getUserRolesForDomain = (
   domainId: number,
   excludeInherited = false,
 ): ColonyRole[] => {
-  if (!colony || !domainId || !userAddress) return [];
+  // if (!colony || !domainId || !userAddress) return [];
 
-  const userRolesInAnyDomain = colony.roles?.items.find(
+  const userRolesInAnyDomain = colony?.roles?.items.find(
     (domainRole) =>
       domainRole?.domain?.nativeId === domainId &&
       domainRole?.targetAddress === userAddress,
   );
 
-  const userRolesInRootDomain = colony.roles?.items.find(
+  const userRolesInRootDomain = colony?.roles?.items.find(
     (domainRole) =>
       domainRole?.domain?.nativeId === Id.RootDomain &&
       domainRole?.targetAddress === userAddress,

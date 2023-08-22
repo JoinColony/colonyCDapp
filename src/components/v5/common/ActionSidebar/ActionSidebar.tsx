@@ -6,11 +6,10 @@ import { useOnClickOutside } from 'usehooks-ts';
 import styles from './ActionSidebar.module.css';
 import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';
-import Button from '~v5/shared/Button';
 import ActionSidebarRow from '../ActionSidebarRow';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import SearchSelect from '~v5/shared/SearchSelect';
-import { useActionsList } from './hooks';
+import { useActionsList, useUserPermissionsErrors } from './hooks';
 import { translateAction } from './utils';
 import ActionsContent from '../ActionsContent';
 import PopularActions from './partials/PopularActions';
@@ -18,6 +17,8 @@ import useToggle from '~hooks/useToggle';
 import SinglePaymentForm from './partials/SinglePaymentForm';
 import MintTokenForm from './partials/MintTokenForm';
 import { Actions } from '~constants/actions';
+import ActionButtons from './partials/ActionButtons';
+import ErrorBanner from './partials/ErrorBanner';
 import TransferFundsForm from './partials/TransferFundsForm';
 
 const displayName = 'v5.common.ActionSidebar';
@@ -34,6 +35,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
     isSelectVisible,
     { toggle: toggleSelect, toggleOff: toggleSelectOff },
   ] = useToggle();
+  const isUserHasPermission = useUserPermissionsErrors();
 
   useOnClickOutside(ref, () => !isMobile && toggleActionSidebarOff());
 
@@ -45,6 +47,11 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
           className={styles.titleInput}
           placeholder={formatMessage({ id: 'placeholder.title' })}
         />
+        {isUserHasPermission && selectedAction && (
+          <ErrorBanner
+            title={{ id: 'actionSidebar.mint.token.permission.error' }}
+          />
+        )}
         <ActionSidebarRow
           iconName="file-plus"
           title={{ id: 'actionSidebar.actionType' }}
@@ -83,28 +90,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
         {!selectedAction && (
           <PopularActions setSelectedAction={setSelectedAction} />
         )}
-        <div
-          className="flex items-center flex-col-reverse sm:flex-row 
-        justify-end gap-2 p-6 border-t border-gray-200"
-        >
-          <Button
-            mode="primaryOutline"
-            text={{ id: 'button.cancel' }}
-            onClick={toggleActionSidebarOff}
-            isFullSize={isMobile}
-          />
-          <Button
-            mode="primarySolid"
-            disabled={
-              !selectedAction
-              // || !!Object.keys(methods.formState.errors).length
-            }
-            text={{ id: 'button.createAction' }}
-            isFullSize={isMobile}
-            type="submit"
-            // loading={methods?.formState?.isSubmitting}
-          />
-        </div>
+        <ActionButtons isActionDisabled={isUserHasPermission} />
       </div>
     </>
   );
