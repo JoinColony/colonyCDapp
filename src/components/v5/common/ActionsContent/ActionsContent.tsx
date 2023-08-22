@@ -24,6 +24,7 @@ const ActionsContent: FC = () => {
     shouldShowCreatedInField,
     shouldShowDecisionField,
     shouldShowDescriptionField,
+    shouldShowTransferFundsField,
   } = useActionsContent();
   const [
     isDecriptionFieldExpanded,
@@ -52,6 +53,14 @@ const ActionsContent: FC = () => {
           <TeamsSelect name="team" />
         </ActionSidebarRow>
       )}
+      {shouldShowTransferFundsField && (
+        <ActionSidebarRow
+          iconName="arrow-down-right"
+          title={{ id: 'actionSidebar.to' }}
+        >
+          <TeamsSelect name="to" />
+        </ActionSidebarRow>
+      )}
       {shouldShowUserField && (
         <ActionSidebarRow
           iconName="user-focus"
@@ -65,20 +74,20 @@ const ActionsContent: FC = () => {
           <AmountField name="amount" />
         </ActionSidebarRow>
       )}
-      {shouldShowCreatedInField && (
-        <ActionSidebarRow
-          iconName="house-line"
-          title={{ id: 'actionSidebar.createdIn' }}
-        >
-          <TeamsSelect name="createdIn" />
-        </ActionSidebarRow>
-      )}
       {shouldShowDecisionField && selectedAction && (
         <ActionSidebarRow
           iconName="scales"
           title={{ id: 'actionSidebar.decisionMethod' }}
         >
           <DecisionField />
+        </ActionSidebarRow>
+      )}
+      {shouldShowCreatedInField && (
+        <ActionSidebarRow
+          iconName="house-line"
+          title={{ id: 'actionSidebar.createdIn' }}
+        >
+          <TeamsSelect name="createdIn" />
         </ActionSidebarRow>
       )}
       {shouldShowDescriptionField && (

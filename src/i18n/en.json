@@ -790,6 +790,7 @@
   "filter.pill.recovery": "Recovery",
   "actionSidebar.actionType": "Action type",
   "actionSidebar.from": "From",
+  "actionSidebar.to": "To",
   "actionSidebar.recipent": "Recipent",
   "actionSidebar.amount": "Amount",
   "actionSidebar.value": "Value",

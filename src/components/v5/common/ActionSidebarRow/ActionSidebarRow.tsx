@@ -1,9 +1,9 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
+import clsx from 'clsx';
 
 import { ActionSidebarRowProps } from './types';
 import Icon from '~shared/Icon';
-import clsx from 'clsx';
 
 const ActionSidebarRow: FC<PropsWithChildren<ActionSidebarRowProps>> = ({
   iconName,
