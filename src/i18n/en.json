@@ -831,6 +831,7 @@
   "actionSidebar.method.multisig": "Multi-Sig Permissions",
   "actionSidebar.method.permissions": "Permissions",
   "actionSidebar.mint.token.permission.error": "You don't have the right permissions to create this action type. Please choose another action type.",
+  "actionSidebar.unlock.token.error": "This action is irreversible. Use with caution.",
   "team.type": "Team",
   "reputation.type": "Reputation",
   "permissions.type": "Permissions types",

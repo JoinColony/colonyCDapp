@@ -20,6 +20,8 @@ import { Actions } from '~constants/actions';
 import ActionButtons from './partials/ActionButtons';
 import ErrorBanner from './partials/ErrorBanner';
 import TransferFundsForm from './partials/TransferFundsForm';
+import NotificationBanner from '~common/Extensions/NotificationBanner';
+import UnlockTokenForm from './partials/UnlockTokenForm';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -51,6 +53,16 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
           <ErrorBanner
             title={{ id: 'actionSidebar.mint.token.permission.error' }}
           />
+        )}
+        {selectedAction === Actions.UNLOCK_TOKEN && (
+          <div className="mb-7">
+            <NotificationBanner
+              status="error"
+              title={{ id: 'actionSidebar.unlock.token.error' }}
+              actionText={{ id: 'learn.more' }}
+              actionType="call-to-action"
+            />
+          </div>
         )}
         <ActionSidebarRow
           iconName="file-plus"
@@ -104,6 +116,9 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
     }
     if (selectedAction === Actions.TRANSFER_FUNDS) {
       return <TransferFundsForm>{formContent}</TransferFundsForm>;
+    }
+    if (selectedAction === Actions.UNLOCK_TOKEN) {
+      return <UnlockTokenForm>{formContent}</UnlockTokenForm>;
     }
     return formContent;
   };
