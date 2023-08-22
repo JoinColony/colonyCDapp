@@ -23,7 +23,8 @@
     "DEPRECATED:webpack:prod": "NODE_OPTIONS=\"--max-old-space-size=4096\" NODE_ENV=production webpack-cli --config webpack.prod.js",
     "voyager": "ts-node temp-voyager/voyager",
     "codegen": "node codegen",
-    "postinstall": "./scripts/lambda-functions-dependencies.sh"
+    "postinstall": "./scripts/lambda-functions-dependencies.sh",
+    "upgrade-colony-js": "./scripts/upgrade-colony-js.sh"
   },
   "repository": {
     "type": "git",
