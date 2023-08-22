@@ -12,7 +12,7 @@ import { SelectProps } from '../../types';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
-const UserSelect: FC<SelectProps> = ({ name, selectedWalletAddress }) => {
+const UserSelect: FC<SelectProps> = ({ name, selectedWalletAddress = '' }) => {
   const { formatMessage } = useIntl();
   const { register, setValue } = useFormContext();
   const usersOptions = useUserSelect();
