@@ -19,6 +19,7 @@ import MintTokenForm from './partials/MintTokenForm';
 import { Actions } from '~constants/actions';
 import ActionButtons from './partials/ActionButtons';
 import ErrorBanner from './partials/ErrorBanner';
+import TransferFundsForm from './partials/TransferFundsForm';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -100,6 +101,9 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
     }
     if (selectedAction === Actions.MINT_TOKENS) {
       return <MintTokenForm>{formContent}</MintTokenForm>;
+    }
+    if (selectedAction === Actions.TRANSFER_FUNDS) {
+      return <TransferFundsForm>{formContent}</TransferFundsForm>;
     }
     return formContent;
   };
