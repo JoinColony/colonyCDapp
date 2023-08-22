@@ -102,6 +102,7 @@
   "button.updateObjective": "Update objective",
   "button.createIntegration": "Create integration",
   "button.addTransaction": "Add transaction",
+  "button.pending": "Pending",
   "input.resetText": "Cancel",
   "label.amount": "Amount",
   "label.name": "Name",
