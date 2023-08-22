@@ -111,11 +111,11 @@ export const useRichText = (
     }
   }, [editorContent, content, isDecriptionFieldExpanded, setContent]);
 
-  const { setValue } = useFormContext();
+  const methods = useFormContext();
 
   useEffect(() => {
     const handleUpdate = ({ editor: textEditor }: { editor }) => {
-      setValue(name, textEditor.getHTML());
+      methods?.setValue(name, textEditor.getHTML());
     };
 
     editorContent?.commands.setContent(content);
@@ -126,7 +126,7 @@ export const useRichText = (
       editorContent?.off('selectionUpdate', handleUpdate);
       editorContent?.off('blur', handleUpdate);
     };
-  }, [editorContent, content, name, setValue]);
+  }, [editorContent, content, name, methods?.setValue]);
 
   return { editorContent, notFormattedContent };
 };

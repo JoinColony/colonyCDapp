@@ -20,6 +20,7 @@ import { Actions } from '~constants/actions';
 import ActionButtons from './partials/ActionButtons';
 import ErrorBanner from './partials/ErrorBanner';
 import TransferFundsForm from './partials/TransferFundsForm';
+import CreateNewTeamForm from './partials/CreateNewTeamForm';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -38,6 +39,15 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
   const isUserHasPermission = useUserPermissionsErrors();
 
   useOnClickOutside(ref, () => !isMobile && toggleActionSidebarOff());
+
+  // @TODO: handle showing error when addres is invalid and add tooltip and display wallet instead of name
+  // const showWarningForAddress = colony.metadata?.isWhitelistActivated
+  //   ? recipient &&
+  //     !(colony.metadata?.whitelistedAddresses ?? []).some(
+  //       (address) =>
+  //         address.toLowerCase() === recipient.walletAddress.toLowerCase(),
+  //     )
+  //   : false;
 
   const formContent = (
     <>
@@ -104,6 +114,9 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
     }
     if (selectedAction === Actions.TRANSFER_FUNDS) {
       return <TransferFundsForm>{formContent}</TransferFundsForm>;
+    }
+    if (selectedAction === Actions.CREATE_NEW_TEAM) {
+      return <CreateNewTeamForm>{formContent}</CreateNewTeamForm>;
     }
     return formContent;
   };

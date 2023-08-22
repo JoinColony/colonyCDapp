@@ -53,7 +53,7 @@ export const useSinglePayment = () => {
         .required(() => 'required field')
         .transform((value) => toFinite(value))
         .moreThan(0, () => 'Amount must be greater than zero'),
-      createdIn: yup.number().defined(),
+      createdIn: yup.string().defined(),
       annotation: yup.string().max(MAX_ANNOTATION_NUM).notRequired(),
       tokenAddress: yup.string().address().required(),
       recipient: yup.string().required(),

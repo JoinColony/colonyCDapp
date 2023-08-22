@@ -16,7 +16,7 @@ const displayName = 'v5.common.ActionsContent.partials.TeamsSelect';
 
 const TeamsSelect: FC<SelectProps> = ({ name }) => {
   const { selectedAction } = useActionSidebarContext();
-  const { register, setValue } = useFormContext();
+  const methods = useFormContext();
   const teamsOptions = useTeams();
   const { formatMessage } = useIntl();
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
@@ -25,9 +25,9 @@ const TeamsSelect: FC<SelectProps> = ({ name }) => {
   useEffect(() => {
     if (selectedAction === Actions.TRANSFER_FUNDS) {
       setSelectedTeam('Root');
-      setValue(name, Id.RootDomain);
+      methods?.setValue(name, Id.RootDomain);
     }
-  }, [name, selectedAction, setValue]);
+  }, [name, selectedAction, methods?.setValue]);
 
   return (
     <div className="sm:relative w-full">
@@ -44,7 +44,7 @@ const TeamsSelect: FC<SelectProps> = ({ name }) => {
       </button>
       <input
         type="text"
-        {...register(name)}
+        {...methods?.register(name)}
         name={name}
         id={name}
         className="hidden"
@@ -61,7 +61,7 @@ const TeamsSelect: FC<SelectProps> = ({ name }) => {
             )?.nativeId;
 
             setSelectedTeam(value);
-            setValue(name, teamId);
+            methods?.setValue(name, teamId);
           }}
         />
       )}
