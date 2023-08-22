@@ -1,16 +1,13 @@
-import { ButtonHTMLAttributes } from 'react';
-import { FieldErrorsImpl, UseFormRegister } from 'react-hook-form';
+import { ButtonHTMLAttributes, SyntheticEvent } from 'react';
+import { FieldErrorsImpl } from 'react-hook-form';
 import { MessageDescriptor } from 'react-intl';
 
-import { FormRadioButton } from '~common/Extensions/Fields/RadioList/types';
-import {
-  ComponentType,
-  FormPercentageInput,
-} from '~common/Extensions/SpecialInput/types';
+import { ComponentType } from '~common/Extensions/SpecialInput/types';
 
 export interface AccordionProps {
   items: AccordionContent[] | unknown[];
   openIndex: number;
+  onInputChange?: (e: SyntheticEvent<HTMLInputElement>) => void;
   onOpenIndexChange: (newOpenIndex: number | undefined) => void;
   errors?: Partial<
     FieldErrorsImpl<{
@@ -41,17 +38,10 @@ export interface AccordionContentDetails {
   inputItem?: JSX.Element;
   inputData: {
     inputType: 'percent' | 'hours';
-    maxValue: number;
-    minValue: number;
+    max: number;
+    min: number;
     name: string;
-    errors: Partial<
-      | FieldErrorsImpl<{
-          percent: number;
-          hours: number;
-        }>
-      | undefined
-    >;
-    register?: UseFormRegister<FormRadioButton | FormPercentageInput>;
+    step: number;
   };
   accordionItem?: AccordionMocksItemProps[];
   maxValue: any;
@@ -73,6 +63,7 @@ export interface AccordionItemProps {
   title?: MessageDescriptor | string;
   content?: AccordionContentDetails[];
   isOpen?: boolean;
+  onInputChange: (e: SyntheticEvent<HTMLInputElement>) => void;
   onClick?: () => void;
   errors?: Partial<
     FieldErrorsImpl<{

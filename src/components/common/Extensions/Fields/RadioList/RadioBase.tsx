@@ -1,43 +1,39 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
-import { useIntl } from 'react-intl';
 
-import styles from './RadioList.module.css';
 import { RadioBaseProps, RadioItemProps } from './types';
 import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import Tooltip from '~shared/Extensions/Tooltip';
 import Icon from '~shared/Icon';
+import { formatText } from '~utils/intl';
+
+import styles from './RadioList.module.css';
 
 const displayName = 'common.Extensions.Fields.RadioBase';
 
 const RadioBase: FC<RadioBaseProps> = ({
   item,
   isError,
-  register,
   onChange,
   name,
+  checked,
 }) => {
   const { disabled, label, description, value, badge, tooltip } =
     item as RadioItemProps;
 
-  const { formatMessage } = useIntl();
-
-  const labelText =
-    typeof label == 'string' ? label : label && formatMessage(label);
-  const descriptionText =
-    typeof description == 'string'
-      ? description
-      : description && formatMessage(description);
+  const labelText = formatText(label);
+  const descriptionText = formatText(description);
 
   return (
     <div className={styles.wrapper}>
       <input
         type="radio"
-        {...register(name)}
+        name={name}
         value={value}
         id={label}
         aria-disabled={disabled}
         disabled={disabled}
+        checked={checked}
         className={clsx('peer/radio hidden', {
           'pointer-events-none opacity-50': disabled,
         })}

@@ -1,29 +1,24 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
 
 import LinkWrapper from './LinkWrapper';
-import { SupportingDocumentsProps } from './types';
 import TitleLabel from '~v5/shared/TitleLabel';
+import { formatText } from '~utils/intl';
 
 const displayName = 'common.Extensions.SupportingDocuments';
 
-const SupportingDocuments: FC<SupportingDocumentsProps> = ({
-  isDoubleLinkVisible = false,
-}) => {
-  const { formatMessage } = useIntl();
-
+const SupportingDocuments: FC = () => {
   return (
     <div>
       <TitleLabel
         className="mb-1"
-        text={formatMessage({ id: 'supporting.documents.title' })}
+        text={formatText({ id: 'supporting.documents.title' })}
       />
       <p className="text-2">
-        {formatMessage({ id: 'supporting.documents.subtitle' })}
+        {formatText({ id: 'supporting.documents.subtitle' })}
       </p>
       <span className="block border-b border-gray-200 mt-2 mb-4" />
       <ul className="mb-2 last:mb-0">
-        <LinkWrapper isDoubleLinkVisible={isDoubleLinkVisible} />
+        <LinkWrapper />
       </ul>
     </div>
   );

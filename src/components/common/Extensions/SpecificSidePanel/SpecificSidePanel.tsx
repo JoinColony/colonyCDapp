@@ -9,6 +9,7 @@ import styles from './SpecificSidePanel.module.css';
 import { useSpecificSidePanel } from './hooks';
 import { SpecificSidePanelProps } from './types';
 import SpecificSidePanelRow from './partials/SpecificSidePanelRow';
+import { formatText } from '~utils/intl';
 
 const displayName = 'common.Extensions.SpecificSidePanel';
 
@@ -38,15 +39,11 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
             <div className={styles.panelRow}>
               <div className={styles.panelTitle}>{statusType.title}</div>
               <div className="flex justify-start flex-col gap-y-2 md:flex-row md:flex-wrap">
-                {Array.isArray(statuses) ? (
-                  statuses.map((status) => (
-                    <div key={status} className="flex flex-wrap gap-2">
-                      <ExtensionStatusBadge mode={status} text={status} />
-                    </div>
-                  ))
-                ) : (
-                  <ExtensionStatusBadge mode={statuses} text={statuses} />
-                )}
+                {statuses.map((status) => (
+                  <div key={status} className="flex flex-wrap gap-2">
+                    <ExtensionStatusBadge mode={status} text={status} />
+                  </div>
+                ))}
               </div>
             </div>
             {!statuses?.includes('not-installed') && (
@@ -89,9 +86,9 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
             />
             <div className="flex flex-col justify-between">
               <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">
-                {permissions.title}
+                {formatText({ id: 'extensionsPage.permissions' })}
               </div>
-              <Permissions data={permissions.permissions} />
+              <Permissions roles={permissions} />
             </div>
           </Fragment>
         ),

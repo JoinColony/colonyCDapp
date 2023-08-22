@@ -1,7 +1,6 @@
-import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
-
 import { PillsProps } from '~v5/common/Pills/types';
 import { TooltipProps } from '~shared/Extensions/Tooltip/types';
+import { Message } from '~types';
 
 export interface RadioItemProps {
   value: string;
@@ -15,16 +14,17 @@ export interface RadioItemProps {
 export interface RadioBaseProps {
   name: string;
   isError?: boolean;
-  register: UseFormRegister<FieldValues>;
   item?: RadioItemProps;
   onChange?: (e: string) => void;
+  checked?: boolean;
 }
 
 export interface RadioListProps extends RadioBaseProps {
   title: string;
   items: RadioItemProps[];
-  errors: FieldErrors<FieldValues>;
   onChange?: (e: string) => void;
+  error?: Message;
+  checkedRadios?: Record<string, boolean>;
 }
 
 export interface FormRadioButton {

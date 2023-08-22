@@ -4,15 +4,15 @@ import { useIntl } from 'react-intl';
 
 import { useUserByNameOrAddress } from '~hooks';
 import { SidePanelDataProps } from './types';
-import { InstalledExtensionData } from '~types';
+import { AnyExtensionData, InstalledExtensionData } from '~types';
 import UserAvatar from '~v5/shared/UserAvatar';
 import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types';
 import { isInstalledExtensionData } from '~utils/extensions';
 
-export const useSpecificSidePanel = (extensionData) => {
-  const [statuses, setStatuses] = useState<
-    ExtensionStatusBadgeMode | ExtensionStatusBadgeMode[]
-  >('disabled');
+export const useSpecificSidePanel = (extensionData: AnyExtensionData) => {
+  const [statuses, setStatuses] = useState<ExtensionStatusBadgeMode[]>([
+    'disabled',
+  ]);
   const { formatMessage } = useIntl();
 
   const isExtensionInstalled =
@@ -21,7 +21,7 @@ export const useSpecificSidePanel = (extensionData) => {
     extensionData &&
     format(
       new Date(
-        (extensionData as InstalledExtensionData)?.installedAt ?? 0 * 1000,
+        ((extensionData as InstalledExtensionData)?.installedAt ?? 0) * 1000,
       ),
       'dd MMMM yyyy',
     );
@@ -42,17 +42,18 @@ export const useSpecificSidePanel = (extensionData) => {
 
   useMemo(() => {
     if (!isExtensionInstalled) {
-      setStatuses('not-installed');
+      setStatuses(['not-installed']);
     } else if (extensionData.isEnabled) {
-      setStatuses('enabled');
+      setStatuses(['enabled']);
     } else if (isExtensionDeprecatedAndDisabled) {
       setStatuses(['disabled', 'deprecated']);
     } else {
-      setStatuses('disabled');
+      setStatuses(['disabled']);
     }
   }, [extensionData, isExtensionInstalled, isExtensionDeprecatedAndDisabled]);
 
-  const { availableVersion, currentVersion, address, permissions } =
+  // @ts-expect-error CurrentVersion/Address aren't shown in the parent if the extension is not installed
+  const { availableVersion, currentVersion, address, neededColonyPermissions } =
     extensionData;
 
   const sidePanelData: SidePanelDataProps[] = useMemo(
@@ -91,7 +92,7 @@ export const useSpecificSidePanel = (extensionData) => {
           title: formatMessage({ id: 'developer' }),
           developer: 'Colony',
         },
-        permissions,
+        permissions: neededColonyPermissions,
       },
     ],
     [
@@ -102,7 +103,7 @@ export const useSpecificSidePanel = (extensionData) => {
       user,
       currentVersion,
       address,
-      permissions,
+      neededColonyPermissions,
     ],
   );
 

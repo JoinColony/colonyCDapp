@@ -30,7 +30,7 @@ const oneTransactionPaymentMessages = {
   },
 };
 
-const votingReputationMessages = {
+export const votingReputationMessages = {
   votingReputationName: {
     id: `${votingReputationName}.name`,
     defaultMessage: 'Reputation Weighted (Lazy Consensus method)',
@@ -41,7 +41,7 @@ const votingReputationMessages = {
   },
   votingReputationDescriptionLong: {
     id: `${votingReputationName}.descriptionLong`,
-    defaultMessage: `This extension allows colonies to be governed by “lazy consensus” which enables decentralized decision making without voting on every decision.\n\n<h4>How it works</h4>A colony member may create a “motion” to take an action within the colony. e.g. Pay Alice 100 xDai.\n\nFor this motion to be valid, the motion must receive a specified “stake” in the colony's native token. This stake acts as a surety that the people who have staked the motion believe that the motion should pass (in this case, that Alice should be paid 100 xDai).\n\nIf the motion does not receive its full stake before the staking period ends, the motion will fail.\n\nAs long as nobody “objects” to the motion, the motion will automatically pass after a security delay, and Alice will be able to claim her 100 xDai.\n\nHowever, if someone believes that Alice should *not* be paid 100 xDai, and believes that a majority of the people in the colony will agree, they can object to the motion by staking in opposition to it, and cause a vote to take place.\n\nVotes are weighted by the voters reputation in the team in which the vote is taking place. Voters are incentivised to vote by being rewarded with a share of the stake of the losing side of the vote. The remainder of the losers stake is divided between the winning and losing stakers, proportional to the outcome of the vote.`,
+    defaultMessage: `<p>This extension allows colonies to be governed by “lazy consensus” which enables decentralized decision making without voting on every decision.</p><h4>How it works</h4><p>A colony member may create a “motion” to take an action within the colony. e.g. Pay Alice 100 xDai.</p><p>For this motion to be valid, the motion must receive a specified “stake” in the colony's native token. This stake acts as a surety that the people who have staked the motion believe that the motion should pass (in this case, that Alice should be paid 100 xDai).</p><p>If the motion does not receive its full stake before the staking period ends, the motion will fail.</p><p>As long as nobody “objects” to the motion, the motion will automatically pass after a security delay, and Alice will be able to claim her 100 xDai.</p><p>However, if someone believes that Alice should *not* be paid 100 xDai, and believes that a majority of the people in the colony will agree, they can object to the motion by staking in opposition to it, and cause a vote to take place.</p><p>Votes are weighted by the voters reputation in the team in which the vote is taking place. Voters are incentivised to vote by being rewarded with a share of the stake of the losing side of the vote. The remainder of the losers stake is divided between the winning and losing stakers, proportional to the outcome of the vote.</p>`,
   },
   votingReputationTotalStakeFractionTitle: {
     id: `${votingReputationName}.param.totalStakeFraction.title`,
@@ -180,37 +180,8 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     icon: 'extension-one-transaction-payment',
     neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
     // @NOTE: This is for testing only, should be set to false afterwards
-    uninstallable: true,
+    uninstallable: false,
     createdAt: 1557698400000,
-    permissions: {
-      title: 'Permissions the extension needs in the colony:',
-      permissions: [
-        {
-          key: '1',
-          text: MSG.votingReputationPermissionArchitecture,
-          description: MSG.votingReputationPermissionArchitectureDescription,
-          name: 'clipboard-text',
-        },
-        {
-          key: '2',
-          text: MSG.votingReputationPermissionArbitration,
-          description: MSG.votingReputationPermissionArbitrationDescription,
-          name: 'scales',
-        },
-        {
-          key: '3',
-          text: MSG.votingReputationPermissionRecovery,
-          description: MSG.votingReputationPermissionRecoveryDescription,
-          name: 'clock-counter-clockwise',
-        },
-        {
-          key: '4',
-          text: MSG.votingReputationPermissionFunding,
-          description: MSG.votingReputationPermissionFundingDescription,
-          name: 'bank',
-        },
-      ],
-    },
   },
   {
     extensionId: Extension.VotingReputation,
@@ -366,28 +337,5 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     ],
     uninstallable: true,
     createdAt: 1603915271852,
-    permissions: {
-      title: 'Permissions the extension needs in the colony:',
-      permissions: [
-        {
-          key: '1',
-          text: MSG.votingReputationPermissionArchitecture,
-          description: MSG.votingReputationPermissionArchitectureDescription,
-          name: 'clipboard-text',
-        },
-        {
-          key: '2',
-          text: MSG.votingReputationPermissionArbitration,
-          description: MSG.votingReputationPermissionArbitrationDescription,
-          name: 'scales',
-        },
-        {
-          key: '3',
-          text: MSG.votingReputationPermissionRecovery,
-          description: MSG.votingReputationPermissionRecoveryDescription,
-          name: 'clock-counter-clockwise',
-        },
-      ],
-    },
   },
 ];

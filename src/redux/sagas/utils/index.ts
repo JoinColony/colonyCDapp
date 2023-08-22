@@ -7,7 +7,6 @@ export * from './metatransactions';
 export * from './errorMessages';
 export * from './effects';
 export * from './enableExtensionHelpers';
-export * from './refreshExtension';
 export * from './metadataChangelog';
 export * from './ipfs';
 export * from './annotations';

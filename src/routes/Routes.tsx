@@ -48,7 +48,6 @@ import {
   COLONY_INTEGRATIONS_ROUTE,
   COLONY_INCORPORATION_ROUTE,
   COLONY_ADVANCED_ROUTE,
-  COLONY_EXTENSION_DETAILS_SETUP_ROUTE,
   COLONY_CONTRIBUTORS_ROUTE,
   COLONY_FOLLOWERS_ROUTE,
   COLONY_VERIFIED_ROUTE,
@@ -74,7 +73,6 @@ import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage';
 import IncorporationPage from '~frame/Extensions/pages/IncorporationPage';
 import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
 import PermissionsPage from '~frame/Extensions/pages/PermissionsPage';
-import LazyConsensusPage from '~frame/Extensions/pages/LazyConsensusPage';
 import { ExtensionsContextProvider } from '~context/ExtensionsContext';
 import MembersPage from '~frame/v5/pages/MembersPage';
 import ColonyUsersPage from '~frame/v5/pages/ColonyUsersPage';
@@ -268,25 +266,6 @@ const Routes = () => {
                     pageName="extensions"
                   >
                     <ExtensionDetailsPage />
-                  </PageLayout>
-                </ActionSidebarContextProvider>
-              </ExtensionsContextProvider>
-            </ColonyContextProvider>
-          }
-        />
-        <Route
-          path={COLONY_EXTENSION_DETAILS_SETUP_ROUTE}
-          element={
-            <ColonyContextProvider>
-              <ExtensionsContextProvider>
-                <ActionSidebarContextProvider>
-                  <PageLayout
-                    loadingText={{ id: 'loading.extensionsPage' }}
-                    title={{ id: 'extensionsPage.title' }}
-                    description={{ id: 'extensionsPage.description' }}
-                    pageName="extensions"
-                  >
-                    <LazyConsensusPage />
                   </PageLayout>
                 </ActionSidebarContextProvider>
               </ExtensionsContextProvider>
