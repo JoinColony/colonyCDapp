@@ -24,7 +24,7 @@ const ActionsContent: FC = () => {
     shouldShowCreatedInField,
     shouldShowDecisionField,
     shouldShowDescriptionField,
-    shouldShowToField,
+    shouldShowTransferFundsField,
   } = useActionsContent();
   const [
     isDecriptionFieldExpanded,
@@ -53,7 +53,7 @@ const ActionsContent: FC = () => {
           <TeamsSelect name="team" />
         </ActionSidebarRow>
       )}
-      {shouldShowToField && (
+      {shouldShowTransferFundsField && (
         <ActionSidebarRow
           iconName="arrow-down-right"
           title={{ id: 'actionSidebar.to' }}

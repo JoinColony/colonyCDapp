@@ -27,7 +27,8 @@ export const useActionsContent = () => {
     selectedAction === Actions.SIMPLE_PAYMENT ||
     selectedAction === Actions.MINT_TOKENS ||
     selectedAction === Actions.TRANSFER_FUNDS;
-  const shouldShowToField = selectedAction === Actions.TRANSFER_FUNDS;
+  const shouldShowTransferFundsField =
+    selectedAction === Actions.TRANSFER_FUNDS;
 
   return {
     shouldShowFromField,
@@ -36,6 +37,6 @@ export const useActionsContent = () => {
     shouldShowCreatedInField,
     shouldShowDecisionField,
     shouldShowDescriptionField,
-    shouldShowToField,
+    shouldShowTransferFundsField,
   };
 };
