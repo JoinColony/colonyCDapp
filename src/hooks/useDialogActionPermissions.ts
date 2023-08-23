@@ -13,8 +13,8 @@ const useDialogActionPermissions = (
   hasReputation: boolean,
 ): [boolean, boolean] => {
   const { wallet } = useAppContext();
-  const { watch } = useFormContext();
-  const forceAction = watch('forceAction');
+  const methods = useFormContext();
+  const forceAction = methods?.watch('forceAction');
   const hasRoles = addressHasRoles({
     colony,
     requiredRoles,

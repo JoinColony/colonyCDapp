@@ -1,24 +1,13 @@
 import React, { FC, PropsWithChildren } from 'react';
 
-import { FormProvider } from 'react-hook-form';
-import { useTransferFundsForm } from './hooks';
+import { useTransferFunds } from './hooks';
+import ActionForm from '../ActionForm/ActionForm';
 
 const displayName = 'v5.common.ActionSidebar.partials.TransferFundsForm';
 
-const TransferFundsForm: FC<PropsWithChildren> = ({ children }) => {
-  const { methods, onSubmit } = useTransferFundsForm();
-
-  return (
-    <FormProvider {...methods}>
-      <form
-        onSubmit={methods.handleSubmit(onSubmit)}
-        className="h-full flex flex-col"
-      >
-        {children}
-      </form>
-    </FormProvider>
-  );
-};
+const TransferFundsForm: FC<PropsWithChildren> = ({ children }) => (
+  <ActionForm useActionHook={useTransferFunds}>{children}</ActionForm>
+);
 
 TransferFundsForm.displayName = displayName;
 
