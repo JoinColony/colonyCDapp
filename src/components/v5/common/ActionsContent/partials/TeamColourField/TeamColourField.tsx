@@ -55,20 +55,18 @@ const TeamColourField: FC = () => {
           hasShadow
           rounded="s"
         >
-          <ul>
-            <SearchItem
-              options={teamsOptions?.options}
-              onChange={(value) => {
-                const teamId = teamsOptions.options.find(
-                  (team) => team.value === value,
-                )?.nativeId;
+          <SearchItem
+            options={teamsOptions?.options}
+            onChange={(value) => {
+              const teamId = teamsOptions.options.find(
+                (team) => team.value === value,
+              )?.nativeId;
 
-                setSelectedTeamColour(value);
-                methods?.setValue('domainColor', teamId);
-              }}
-              isLableVisible={false}
-            />
-          </ul>
+              setSelectedTeamColour(value);
+              methods?.setValue('domainColor', teamId);
+            }}
+            isLableVisible={false}
+          />
         </Card>
       )}
     </div>

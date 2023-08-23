@@ -23,7 +23,13 @@ const SearchItem: FC<SearchItemProps> = ({
   const { setSelectedAction } = useActionSidebarContext();
 
   return (
-    <ul className="w-full">
+    <ul
+      className={clsx({
+        'w-full': isLableVisible,
+        'flex -mx-2 items-center flex-wrap w-[8.75rem]': !isLableVisible,
+        'w-[12.75rem]': !isLableVisible && isMobile,
+      })}
+    >
       {sortDisabled(options).map(
         ({ label, value, isDisabled, avatar, showAvatar, color }) => {
           const firstDisabledOption = options.filter(
@@ -38,7 +44,7 @@ const SearchItem: FC<SearchItemProps> = ({
             <li
               className={clsx('mb-4 last:mb-0', {
                 'w-full': isLableVisible,
-                'inline-flex mr-[1.125rem] last:mr-0': !isLableVisible,
+                'inline-flex w-1/4 px-2': !isLableVisible,
               })}
               key={value}
             >
@@ -59,7 +65,7 @@ const SearchItem: FC<SearchItemProps> = ({
                 {color && !isLableVisible && (
                   <div
                     className={clsx(color, 'rounded', {
-                      'w-3.5 h-3.5': !isMobile,
+                      'w-[1.125rem] h-[1.125rem]': !isMobile,
                       'w-7 h-7': isMobile,
                     })}
                   />

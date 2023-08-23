@@ -21,7 +21,7 @@ const TeamColourBadge: FC<TeamColourBadgeProps> = ({ title }) => {
 
   return (
     <div className="flex items-center gap-1">
-      <span className={clsx(color, 'mr-2 w-3.5 h-3.5 rounded')} />
+      <span className={clsx(color, 'mr-2 w-[1.125rem] h-[1.125rem] rounded')} />
       <PillsBase className={`bg-base-white border ${teamColor}`}>
         {title}
       </PillsBase>
