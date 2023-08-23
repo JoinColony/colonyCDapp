@@ -23,7 +23,10 @@ const TeamsSelect: FC<SelectProps> = ({ name }) => {
   const [isTeamSelectVisible, { toggle: toggleTeamSelect }] = useToggle();
 
   useEffect(() => {
-    if (selectedAction === Actions.TRANSFER_FUNDS) {
+    if (
+      selectedAction === Actions.TRANSFER_FUNDS ||
+      selectedAction === Actions.UNLOCK_TOKEN
+    ) {
       setSelectedTeam('Root');
       setValue(name, Id.RootDomain);
     }
