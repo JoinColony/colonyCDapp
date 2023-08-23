@@ -188,6 +188,7 @@
   "transaction.group.unistallExtensions.title": "Uninstall Colony Extension",
   "transaction.group.unistallExtensions.description": "Uninstall Colony Extension",
   "transaction.VotingReputationClient.initialise.title": "Initialize Voting Reputation Extension",
+  "transaction.StakedExpenditureClient.initialise.title": "Initialize Staked Expenditure Extension",
   "transaction.ColonyClient.uninstallExtension.title": "Uninstall Colony Extension",
   "transaction.ColonyClient.uninstallExtension.description": "Uninstall Colony Extension",
   "transaction.ColonyClient.deprecateExtension.title": "Deprecate Colony Extension",
