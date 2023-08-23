@@ -12,6 +12,9 @@ fragment Extension on ColonyExtension {
     votingReputation {
       maxVoteFraction
     }
+    stakedExpenditure {
+      stakeFraction
+    }
   }
 }
 

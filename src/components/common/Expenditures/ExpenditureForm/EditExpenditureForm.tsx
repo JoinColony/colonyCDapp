@@ -43,7 +43,7 @@ const EditExpenditureForm = ({
   );
 
   return (
-    <ActionForm
+    <ActionForm<ExpenditureFormValues>
       defaultValues={{
         payouts: expenditure
           ? getExpenditurePayoutsFieldValue(expenditure)

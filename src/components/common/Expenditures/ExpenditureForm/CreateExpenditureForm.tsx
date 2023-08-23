@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Id } from '@colony/colony-js';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,6 +12,7 @@ import { ActionTypes } from '~redux';
 import { getInitialPayoutFieldValue } from './helpers';
 import { ExpenditureFormValues } from './types';
 import ExpenditureFormFields from './ExpenditureFormFields';
+import StakeExpenditureDialog from '../StakeExpenditureDialog';
 
 import styles from './ExpenditureForm.module.css';
 
@@ -19,6 +20,8 @@ const CreateExpenditureForm = () => {
   const navigate = useNavigate();
 
   const { colony } = useColonyContext();
+
+  const [isStakeDialogOpen, setIsStakeDialogOpen] = useState(false);
 
   if (!colony) {
     return null;
@@ -37,8 +40,10 @@ const CreateExpenditureForm = () => {
     withMeta({ navigate }),
   );
 
+  const isStakingRequired = true;
+
   return (
-    <ActionForm
+    <ActionForm<ExpenditureFormValues>
       actionType={ActionTypes.EXPENDITURE_CREATE}
       defaultValues={{
         payouts: [getInitialPayoutFieldValue(colony.nativeToken.tokenAddress)],
@@ -48,8 +53,24 @@ const CreateExpenditureForm = () => {
       <ExpenditureFormFields colony={colony} />
 
       <div className={styles.buttons}>
-        <Button type="submit">Create expenditure</Button>
+        <Button
+          type={isStakingRequired ? 'button' : 'submit'}
+          onClick={
+            isStakingRequired ? () => setIsStakeDialogOpen(true) : undefined
+          }
+        >
+          Create expenditure
+        </Button>
       </div>
+
+      {isStakeDialogOpen && (
+        <StakeExpenditureDialog
+          colony={colony}
+          selectedDomainId={Id.RootDomain}
+          onCancel={() => setIsStakeDialogOpen(false)}
+          onConfirm={() => {}}
+        />
+      )}
     </ActionForm>
   );
 };
