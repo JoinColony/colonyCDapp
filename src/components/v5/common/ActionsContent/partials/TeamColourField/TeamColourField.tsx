@@ -7,16 +7,18 @@ import styles from '../../ActionsContent.module.css';
 import useToggle from '~hooks/useToggle';
 import Card from '~v5/shared/Card';
 import { useDetectClickOutside } from '~hooks';
-import { decisionMethodOptions } from './consts';
+import { useTeams } from '~hooks/useTeams';
+import SearchItem from '~v5/shared/SearchSelect/partials/SearchItem/SearchItem';
+import TeamColourBadge from './partails/TeamColourBadge';
 
 const displayName = 'v5.common.ActionsContent.partials.TeamColourField';
 
 const TeamColourField: FC = () => {
   const method = useFormContext();
   const { formatMessage } = useIntl();
-  const [selectedTeamColour, setSelectedTeamColour] = useState<string | null>(
-    'reputation',
-  );
+  const methods = useFormContext();
+  const teamsOptions = useTeams();
+  const [selectedTeamColour, setSelectedTeamColour] = useState<string>();
   const [
     isTeamColourSelectVisible,
     { toggle: toggleDecisionSelect, toggleOff: toggleOffDecisionSelect },
@@ -30,10 +32,14 @@ const TeamColourField: FC = () => {
     <div className="sm:relative w-full" ref={ref}>
       <button
         type="button"
-        className={clsx(styles.button, 'capitalize')}
+        className={clsx(styles.button)}
         onClick={toggleDecisionSelect}
       >
-        {selectedTeamColour}
+        {selectedTeamColour ? (
+          <TeamColourBadge title={selectedTeamColour} />
+        ) : (
+          formatMessage({ id: 'actionSidebar.selectTeam' })
+        )}
       </button>
       <input
         type="text"
@@ -45,31 +51,23 @@ const TeamColourField: FC = () => {
       />
       {isTeamColourSelectVisible && (
         <Card
-          className="p-6 w-full sm:max-w-[13rem] absolute top-[calc(100%+0.5rem)] left-0 z-50"
+          className="p-6 max-w-[14.5rem] sm:max-w-[10.875rem] absolute top-[calc(100%+0.5rem)] left-0 z-50"
           hasShadow
           rounded="s"
         >
-          <h5 className="text-4 text-gray-400 mb-4 uppercase">
-            {formatMessage({ id: 'actionSidebar.availableDecisions' })}
-          </h5>
           <ul>
-            {decisionMethodOptions.map(({ key, label, value }) => (
-              <li key={key} className="mb-4 last:mb-0">
-                <button
-                  type="button"
-                  className={styles.button}
-                  aria-label={formatMessage({
-                    id: 'ariaLabel.selectTeamColour',
-                  })}
-                  onClick={() => {
-                    setSelectedTeamColour(value);
-                    method?.setValue('domainColor', value);
-                  }}
-                >
-                  {formatMessage(label)}
-                </button>
-              </li>
-            ))}
+            <SearchItem
+              options={teamsOptions?.options}
+              onChange={(value) => {
+                const teamId = teamsOptions.options.find(
+                  (team) => team.value === value,
+                )?.nativeId;
+
+                setSelectedTeamColour(value);
+                methods?.setValue('domainColor', teamId);
+              }}
+              isLableVisible={false}
+            />
           </ul>
         </Card>
       )}

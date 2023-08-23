@@ -50,7 +50,7 @@ export const useCrateNewTeam = () => {
         .required(() => 'Team name required'),
       domainPurpose: yup.string().trim().max(90).notRequired(),
       domainColor: yup.string().notRequired(),
-      createdIn: yup.string().defined(),
+      createdIn: yup.number().defined(),
       decisionMethod: yup.string().defined(),
       annotation: yup.string().max(MAX_ANNOTATION_LENGTH).notRequired(),
     })
@@ -63,12 +63,6 @@ export const useCrateNewTeam = () => {
     resolver: yupResolver(validationSchema),
     defaultValues: {
       forceAction: false,
-      teamName: '',
-      domainPurpose: '',
-      domainColor: '',
-      createdIn: '',
-      decisionMethod: '',
-      annotation: '',
     },
   });
 

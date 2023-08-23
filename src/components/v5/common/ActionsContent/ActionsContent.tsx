@@ -13,6 +13,7 @@ import useToggle from '~hooks/useToggle';
 import { useDetectClickOutside } from '~hooks';
 import { Actions } from '~constants/actions';
 import DefaultField from './partials/DefaultField';
+import TeamColourField from './partials/TeamColourField';
 
 const displayName = 'v5.common.ActionsContent';
 
@@ -105,7 +106,7 @@ const ActionsContent: FC = () => {
           iconName="paint"
           title={{ id: 'actionSidebar.teamColour' }}
         >
-          <DecisionField />
+          <TeamColourField />
         </ActionSidebarRow>
       )}
       {shouldShowCreatedInField && (

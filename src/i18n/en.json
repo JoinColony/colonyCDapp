@@ -492,6 +492,7 @@
   "ariaLabel.selectUser": "Select user",
   "ariaLabel.selectDecisionMethod": "Select decision method",
   "ariaLabel.selectToken": "Select token",
+  "ariaLabel.selectTeamColour": "Select team colour",
   "userInfo.about.section": "about",
   "userInfo.teamBreakdown.section": "Team Breakdown",
   "userInfo.permissions.section": "Permissions",

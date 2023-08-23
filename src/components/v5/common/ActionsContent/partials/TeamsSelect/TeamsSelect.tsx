@@ -25,7 +25,8 @@ const TeamsSelect: FC<SelectProps> = ({ name }) => {
   useEffect(() => {
     if (
       selectedAction === Actions.TRANSFER_FUNDS ||
-      selectedAction === Actions.UNLOCK_TOKEN
+      selectedAction === Actions.UNLOCK_TOKEN ||
+      selectedAction === Actions.CREATE_NEW_TEAM
     ) {
       setSelectedTeam('Root');
       methods?.setValue(name, Id.RootDomain);

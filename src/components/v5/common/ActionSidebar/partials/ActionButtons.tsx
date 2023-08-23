@@ -41,11 +41,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
       ) : (
         <Button
           mode="primarySolid"
-          disabled={
-            !selectedAction ||
-            isActionDisabled ||
-            (methods && !!Object.keys(methods?.formState?.errors)?.length)
-          }
+          disabled={!selectedAction || isActionDisabled}
           text={{ id: submitText }}
           isFullSize={isMobile}
           type="submit"

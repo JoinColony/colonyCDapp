@@ -9,11 +9,17 @@ import { SearchItemProps } from './types';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { Actions } from '~constants/actions';
 import Avatar from '~v5/shared/Avatar';
+import { useMobile } from '~hooks';
 
 const displayName = 'v5.SearchSelect.partials.SearchItem';
 
-const SearchItem: FC<SearchItemProps> = ({ options, onChange }) => {
+const SearchItem: FC<SearchItemProps> = ({
+  options,
+  onChange,
+  isLableVisible = true,
+}) => {
   const { formatMessage } = useIntl();
+  const isMobile = useMobile();
   const { setSelectedAction } = useActionSidebarContext();
 
   return (
@@ -29,7 +35,13 @@ const SearchItem: FC<SearchItemProps> = ({ options, onChange }) => {
           const hasAvatar = showAvatar || !!color;
 
           return (
-            <li className="mb-4 last:mb-0 w-full" key={value}>
+            <li
+              className={clsx('mb-4 last:mb-0', {
+                'flex w-full': isLableVisible,
+                'inline-flex mr-[1.125rem] last:mr-0': !isLableVisible,
+              })}
+              key={value}
+            >
               <button
                 type="button"
                 className={clsx(styles.button, {
@@ -44,7 +56,14 @@ const SearchItem: FC<SearchItemProps> = ({ options, onChange }) => {
                   onChange?.(value);
                 }}
               >
-                {color && (
+                {color && !isLableVisible ? (
+                  <div
+                    className={clsx(color, 'rounded', {
+                      'w-3.5 h-3.5': !isMobile,
+                      'w-7 h-7': isMobile,
+                    })}
+                  />
+                ) : (
                   <span className={clsx(color, 'mr-2 w-3.5 h-3.5 rounded')} />
                 )}
                 {showAvatar && (
@@ -52,7 +71,7 @@ const SearchItem: FC<SearchItemProps> = ({ options, onChange }) => {
                     <Avatar avatar={avatar} />
                   </div>
                 )}
-                {labelText}
+                {isLableVisible && labelText}
                 {firstDisabledOption?.value === value && (
                   <ExtensionsStatusBadge
                     mode="coming-soon"
