@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BigNumber } from 'ethers';
 
-import ExpenditureForm from '~common/Expenditures/ExpenditureForm';
+import { EditExpenditureForm } from '~common/Expenditures/ExpenditureForm';
 import MaskedAddress from '~shared/MaskedAddress';
 import { Colony, Expenditure } from '~types';
 import Numeral from '~shared/Numeral';
@@ -41,10 +41,8 @@ const ExpenditurePayouts = ({
         )}
       </div>
       {isEditing ? (
-        <ExpenditureForm
+        <EditExpenditureForm
           expenditure={expenditure}
-          submitButtonText="Save changes"
-          showCancelButton
           onCancelClick={() => setIsEditing(false)}
           onSuccess={() => setIsEditing(false)}
         />

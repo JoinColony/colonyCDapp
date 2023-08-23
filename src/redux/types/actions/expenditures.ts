@@ -1,5 +1,5 @@
 import { ActionTypes } from '~redux/actionTypes';
-import { Address, Colony, Expenditure } from '~types';
+import { Address, Colony, Domain, Expenditure } from '~types';
 import { ExpenditurePayoutFieldValue } from '~common/Expenditures/ExpenditureForm';
 
 import { UniqueActionType, ErrorActionType, MetaWithNavigate } from './index';
@@ -10,8 +10,8 @@ export type ExpendituresActionTypes =
       {
         colony: Colony;
         payouts: ExpenditurePayoutFieldValue[];
-        // id of the domain to create the expenditure in
-        domainId: number;
+        // the domain to create the expenditure in
+        createdInDomain: Domain;
         // id of the domain to fund the expenditure from
         fundFromDomainId: number;
       },
