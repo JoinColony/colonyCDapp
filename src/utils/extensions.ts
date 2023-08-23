@@ -1,3 +1,5 @@
+import Decimal from 'decimal.js';
+
 import {
   AnyExtensionData,
   ExtensionConfig,
@@ -42,3 +44,21 @@ export const mapToInstalledExtensionData = (
     isEnabled,
   };
 };
+
+/**
+ * For extensions accepting fraction parameter that the user enters as a percentage
+ * while the contracts require the value to be in wei. This function converts the
+ * percentage to wei.
+ */
+export const convertFractionToWei = (percentage: number) =>
+  new Decimal(percentage).mul(new Decimal(10).pow(16)).toString();
+
+/**
+ * For extensions accepting period parameter that the user enters in hours,
+ * this function converts it to seconds.
+ */
+export const convertPeriodToSeconds = (periodInHours: number) =>
+  new Decimal(periodInHours)
+    .mul(3600)
+    .toFixed(0, Decimal.ROUND_HALF_UP)
+    .toString();

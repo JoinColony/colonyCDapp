@@ -1,9 +1,13 @@
 import { ColonyRole, Extension } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { number } from 'yup';
-import { toFinite } from '~utils/lodash';
 
+import { toFinite } from '~utils/lodash';
 import { ExtensionConfig, ExtensionParamType } from '~types';
+import {
+  convertFractionToWei,
+  convertPeriodToSeconds,
+} from '~utils/extensions';
 
 const oneTransactionPaymentName = 'extensions.OneTxPayment';
 const votingReputationName = 'extensions.VotingReputation';
@@ -195,6 +199,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           numeral: true,
           numeralPositiveOnly: true,
         },
+        transformValue: convertFractionToWei,
       },
       {
         paramName: 'voterRewardFraction',
@@ -212,6 +217,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           numeral: true,
           numeralPositiveOnly: true,
         },
+        transformValue: convertFractionToWei,
       },
       {
         paramName: 'userMinStakeFraction',
@@ -229,6 +235,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           numeral: true,
           numeralPositiveOnly: true,
         },
+        transformValue: convertFractionToWei,
       },
       {
         paramName: 'maxVoteFraction',
@@ -246,6 +253,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           numeral: true,
           numeralPositiveOnly: true,
         },
+        transformValue: convertFractionToWei,
       },
       {
         paramName: 'stakePeriod',
@@ -263,6 +271,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           numeral: true,
           numeralPositiveOnly: true,
         },
+        transformValue: convertPeriodToSeconds,
       },
       {
         paramName: 'submitPeriod',
@@ -280,6 +289,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           numeral: true,
           numeralPositiveOnly: true,
         },
+        transformValue: convertPeriodToSeconds,
       },
       {
         paramName: 'revealPeriod',
@@ -297,6 +307,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           numeral: true,
           numeralPositiveOnly: true,
         },
+        transformValue: convertPeriodToSeconds,
       },
       {
         paramName: 'escalationPeriod',
@@ -314,6 +325,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           numeral: true,
           numeralPositiveOnly: true,
         },
+        transformValue: convertPeriodToSeconds,
       },
     ],
     uninstallable: true,
@@ -344,6 +356,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           numeral: true,
           numeralPositiveOnly: true,
         },
+        transformValue: convertFractionToWei,
       },
     ],
   },
