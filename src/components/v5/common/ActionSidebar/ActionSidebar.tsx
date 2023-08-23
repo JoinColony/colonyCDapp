@@ -22,6 +22,7 @@ import TransferFundsForm from './partials/TransferFundsForm';
 import UnlockTokenForm from './partials/UnlockTokenForm';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
 import UpgradeColonyForm from './partials/UpgradeColonyForm/UpgradeColonyForm';
+import Modal from '~v5/shared/Modal';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -37,12 +38,19 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
     isSelectVisible,
     { toggle: toggleSelect, toggleOff: toggleSelectOff },
   ] = useToggle();
+  const [
+    isCancelModalOpen,
+    { toggle: toggleCancelModal, toggleOff: toggleCancelModalOff },
+  ] = useToggle({ defaultToggleState: false });
   const isUserHasPermission = useUserPermissionsErrors();
   const isUnlockTokenAction = selectedAction === Actions.UNLOCK_TOKEN;
   const showErrorBanner =
     (isUserHasPermission && selectedAction) || isUnlockTokenAction;
 
-  useOnClickOutside(ref, () => !isMobile && toggleActionSidebarOff());
+  useOnClickOutside(
+    ref,
+    () => !isMobile && !isCancelModalOpen && toggleActionSidebarOff(),
+  );
 
   const formContent = (
     <>
@@ -106,7 +114,10 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
         {!selectedAction && (
           <PopularActions setSelectedAction={setSelectedAction} />
         )}
-        <ActionButtons isActionDisabled={isUserHasPermission} />
+        <ActionButtons
+          isActionDisabled={isUserHasPermission}
+          toggleCancelModal={toggleCancelModal}
+        />
       </div>
     </>
   );
@@ -138,6 +149,24 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
       })}
       ref={ref}
     >
+      <Modal
+        title={formatMessage({ id: 'actionSidebar.cancelModal.title' })}
+        subTitle={formatMessage({
+          id: 'actionSidebar.cancelModal.subtitle',
+        })}
+        isOpen={isCancelModalOpen}
+        onClose={toggleCancelModalOff}
+        onConfirm={() => {
+          toggleCancelModalOff();
+          toggleActionSidebarOff();
+        }}
+        icon="warning-circle"
+        buttonMode="primarySolid"
+        confirmMessage={formatMessage({ id: 'button.cancelAction' })}
+        closeMessage={formatMessage({
+          id: 'button.continueAction',
+        })}
+      />
       <div className="py-4 px-6 flex w-full items-center justify-between border-b border-gray-200">
         {isMobile ? (
           <button
