@@ -18,14 +18,17 @@ export const useActionsContent = () => {
   const shouldShowCreatedInField =
     selectedAction === Actions.SIMPLE_PAYMENT ||
     selectedAction === Actions.MINT_TOKENS ||
+    selectedAction === Actions.UNLOCK_TOKEN ||
     selectedAction === Actions.TRANSFER_FUNDS;
   const shouldShowDecisionField =
     selectedAction === Actions.SIMPLE_PAYMENT ||
     selectedAction === Actions.MINT_TOKENS ||
+    selectedAction === Actions.UNLOCK_TOKEN ||
     selectedAction === Actions.TRANSFER_FUNDS;
   const shouldShowDescriptionField =
     selectedAction === Actions.SIMPLE_PAYMENT ||
     selectedAction === Actions.MINT_TOKENS ||
+    selectedAction === Actions.UNLOCK_TOKEN ||
     selectedAction === Actions.TRANSFER_FUNDS;
   const shouldShowTransferFundsField =
     selectedAction === Actions.TRANSFER_FUNDS;
