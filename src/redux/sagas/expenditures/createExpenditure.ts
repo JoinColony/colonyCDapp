@@ -1,6 +1,5 @@
-import { ClientType } from '@colony/colony-js';
+import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { takeEvery, fork, call, put } from 'redux-saga/effects';
-import { BigNumber } from 'ethers';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 import { ColonyManager, ContextModule, getContext } from '~context';
@@ -63,16 +62,17 @@ function* createExpenditure({
   );
 
   try {
+    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient,
+      domainId,
+      ColonyRole.Administration,
+    );
+
     yield fork(createTransaction, makeExpenditure.id, {
       context: ClientType.ColonyClient,
       methodName: 'makeExpenditure',
       identifier: colonyAddress,
-      params: [
-        // @TODO: Get the permissions domain id using colony-js's getPermissionProofs
-        1,
-        BigNumber.from(2).pow(256).sub(1),
-        domainId,
-      ],
+      params: [permissionDomainId, childSkillIndex, domainId],
       group: {
         key: batchKey,
         id: meta.id,
