@@ -8,6 +8,8 @@ import { Colony, Expenditure } from '~types';
 import { isExpenditureFunded } from '~utils/expenditures';
 import { findDomainByNativeId } from '~utils/domains';
 
+import ExpenditureClaimButton from '../ExpenditureClaimButton/ExpenditureClaimButton';
+
 interface ExpenditureAdvanceButtonProps {
   expenditure: Expenditure;
   colony: Colony;
@@ -68,6 +70,10 @@ const ExpenditureAdvanceButton = ({
         Finalize expenditure
       </ActionButton>
     );
+  }
+
+  if (expenditure.status === ExpenditureStatus.Finalized) {
+    return <ExpenditureClaimButton colony={colony} expenditure={expenditure} />;
   }
 
   return null;

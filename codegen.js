@@ -49,6 +49,7 @@ const codegen = async () => {
           AWSDateTime: 'string',
           AWSEmail: 'string',
           AWSURL: 'string',
+          AWSTimestamp: 'number',
         },
       },
       watch: graphqlFiles,
