@@ -19,19 +19,24 @@ export const useActionsContent = () => {
     selectedAction === Actions.SIMPLE_PAYMENT ||
     selectedAction === Actions.MINT_TOKENS ||
     selectedAction === Actions.UNLOCK_TOKEN ||
+    selectedAction === Actions.UPGRADE_COLONY_VERSION ||
     selectedAction === Actions.TRANSFER_FUNDS;
   const shouldShowDecisionField =
     selectedAction === Actions.SIMPLE_PAYMENT ||
     selectedAction === Actions.MINT_TOKENS ||
     selectedAction === Actions.UNLOCK_TOKEN ||
+    selectedAction === Actions.UPGRADE_COLONY_VERSION ||
     selectedAction === Actions.TRANSFER_FUNDS;
   const shouldShowDescriptionField =
     selectedAction === Actions.SIMPLE_PAYMENT ||
     selectedAction === Actions.MINT_TOKENS ||
     selectedAction === Actions.UNLOCK_TOKEN ||
+    selectedAction === Actions.UPGRADE_COLONY_VERSION ||
     selectedAction === Actions.TRANSFER_FUNDS;
   const shouldShowTransferFundsField =
     selectedAction === Actions.TRANSFER_FUNDS;
+  const shouldShowVersionFields =
+    selectedAction === Actions.UPGRADE_COLONY_VERSION;
 
   return {
     shouldShowFromField,
@@ -41,5 +46,6 @@ export const useActionsContent = () => {
     shouldShowDecisionField,
     shouldShowDescriptionField,
     shouldShowTransferFundsField,
+    shouldShowVersionFields,
   };
 };
