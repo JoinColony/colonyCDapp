@@ -151,7 +151,8 @@ export const NETWORKS_WITH_METATRANSACTIONS = [
 
 export const ADDRESS_ZERO = ethersContants.AddressZero;
 
-export const GANACHE_LOCAL_RPC_URL = 'http://localhost:8545';
+export const GANACHE_LOCAL_RPC_URL =
+  process.env.GANACHE_RPC_URL || 'http://localhost:8545/';
 
 export const isDev = process.env.NETWORK === 'ganache';
 
