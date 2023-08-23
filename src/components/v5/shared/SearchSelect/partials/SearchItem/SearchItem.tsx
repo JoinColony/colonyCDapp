@@ -37,7 +37,7 @@ const SearchItem: FC<SearchItemProps> = ({
           return (
             <li
               className={clsx('mb-4 last:mb-0', {
-                'flex w-full': isLableVisible,
+                'w-full': isLableVisible,
                 'inline-flex mr-[1.125rem] last:mr-0': !isLableVisible,
               })}
               key={value}
@@ -56,14 +56,16 @@ const SearchItem: FC<SearchItemProps> = ({
                   onChange?.(value);
                 }}
               >
-                {color && !isLableVisible ? (
+                {color && !isLableVisible && (
                   <div
                     className={clsx(color, 'rounded', {
                       'w-3.5 h-3.5': !isMobile,
                       'w-7 h-7': isMobile,
                     })}
                   />
-                ) : (
+                )}
+
+                {color && isLableVisible && (
                   <span className={clsx(color, 'mr-2 w-3.5 h-3.5 rounded')} />
                 )}
                 {showAvatar && (
