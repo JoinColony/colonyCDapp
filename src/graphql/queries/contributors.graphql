@@ -23,20 +23,6 @@ query GetColonyContributors(
   }
 }
 
-query GetColonyWatcher($id: ID!, $limit: Int) {
-  getColony(id: $id) {
-    watchers(limit: $limit) {
-      items {
-        userID
-        user {
-          ...User
-        }
-      }
-      nextToken
-    }
-  }
-}
-
 query GetContributorCount($input: GetTotalMemberCountInput!) {
   getTotalMemberCount(input: $input) {
     contributorCount
