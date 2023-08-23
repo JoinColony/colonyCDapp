@@ -14,6 +14,7 @@ import { useDetectClickOutside } from '~hooks';
 import { Actions } from '~constants/actions';
 import DefaultField from './partials/DefaultField';
 import TeamColourField from './partials/TeamColourField';
+import ColonyVersionField from './partials/ColonyVersionField';
 
 const displayName = 'v5.common.ActionsContent';
 
@@ -30,6 +31,7 @@ const ActionsContent: FC = () => {
     shouldShowTeamPurposeField,
     shouldShowTeamNameField,
     shouldShowTeamColourField,
+    shouldShowVersionFields,
   } = useActionsContent();
   const [
     isDecriptionFieldExpanded,
@@ -58,6 +60,7 @@ const ActionsContent: FC = () => {
           <TeamsSelect name="team" />
         </ActionSidebarRow>
       )}
+      {shouldShowVersionFields && <ColonyVersionField />}
       {shouldShowTransferFundsField && (
         <ActionSidebarRow
           iconName="arrow-down-right"

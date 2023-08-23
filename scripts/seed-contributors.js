@@ -84,7 +84,10 @@ const userTemplate = ({ contributorAddress }) => {
 const colonyContributorTemplate = ({
   contributorAddress,
   type,
-  verified,
+  isVerified,
+  hasReputation,
+  hasPermissions,
+  isWatching,
   colonyAddress,
   colonyReputationPercentage,
 }) => ({
@@ -94,7 +97,10 @@ const colonyContributorTemplate = ({
                       id: "${colonyAddress}_${contributorAddress}",
                       contributorAddress: "${contributorAddress}",
                       type: ${type},
-                      verified: ${verified},
+                      isVerified: ${isVerified},
+                      hasReputation: ${hasReputation},
+                      hasPermissions: ${hasPermissions},
+                      isWatching: ${isWatching},
                       colonyReputationPercentage: ${colonyReputationPercentage},
                       colonyAddress: "${colonyAddress}",
                   }) {
@@ -123,13 +129,8 @@ const contributorReputationTemplate = ({
         }`,
 });
 
-const colonyRoleTemplate = ({ contributorAddress, colonyAddress }) => {
-  const roles = Array.from({ length: 6 })
-    .fill(false)
-    .map(() => Math.random() >= 0.5);
-
-  return {
-    query: `mutation CreateColonyRole {
+const colonyRoleTemplate = ({ contributorAddress, colonyAddress, roles }) => ({
+  query: `mutation CreateColonyRole {
               createColonyRole(input: {
                   id: "${colonyAddress}_1_${contributorAddress}",
                   domainId: "${colonyAddress}_1",
@@ -146,8 +147,7 @@ const colonyRoleTemplate = ({ contributorAddress, colonyAddress }) => {
                   id
               }
           }`,
-  };
-};
+});
 
 const getType = (idx) => {
   if (idx < 20) {
@@ -177,18 +177,26 @@ function generateRecords(numRecords = 100) {
   const COLONY_ADDRESS = process.argv[2];
 
   for (let i = 0; i < numRecords; i++) {
+    const roles = Array.from({ length: 6 })
+      .fill(false)
+      .map(() => Math.random() >= 0.5);
+
     const contributorAddress = generateRandomEVMAddress();
     contributorAddressList.push(contributorAddress);
     const idString = `${COLONY_ADDRESS}_${contributorAddress}`;
     const contributorType = getType(i);
     const colonyRepPercentage = membersRep[i];
-    const verified = Math.random() >= 0.5;
+    const isVerified = Math.random() >= 0.5;
+    const isWatching = Math.random() >= 0.5;
 
     const colonyContributor = {
       id: idString,
       contributorAddress: contributorAddress,
       type: contributorType,
-      verified,
+      isVerified,
+      hasReputation: colonyRepPercentage > 0,
+      hasPermissions: roles.some((role) => !!role),
+      isWatching,
       colonyReputationPercentage: colonyRepPercentage,
       colonyAddress: COLONY_ADDRESS,
     };
@@ -206,6 +214,7 @@ function generateRecords(numRecords = 100) {
     const colonyRole = {
       contributorAddress,
       colonyAddress: COLONY_ADDRESS,
+      roles,
     };
 
     mockData.push({
