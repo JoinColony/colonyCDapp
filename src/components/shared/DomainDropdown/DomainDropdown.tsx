@@ -98,6 +98,7 @@ const DomainDropdown = ({
             isRoot: true,
             nativeId: 0,
             nativeFundingPotId: 0,
+            nativeSkillId: 0,
             metadata: {
               name: 'All Teams',
               description: '',
