@@ -1,25 +1,26 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
 import clsx from 'clsx';
+import { useFormContext } from 'react-hook-form';
+
+import { SpecialInputProps } from './types';
+import { formatText } from '~utils/intl';
 
 import styles from './SpecialInput.module.css';
-import { SpecialInputProps } from './types';
 
 const displayName = 'common.Extensions.SpecialInput';
 
 const SpecialInput: FC<SpecialInputProps> = ({
   defaultValue,
   name,
-  value,
   disabled,
   id,
   placeholder,
-  register,
   isError,
   type,
+  step,
+  onChange,
 }) => {
-  const { formatMessage } = useIntl();
-
+  const { register } = useFormContext();
   return (
     <div
       className={clsx(styles.wrapper, 'group focus-within:border-blue-100', {
@@ -29,9 +30,8 @@ const SpecialInput: FC<SpecialInputProps> = ({
       })}
     >
       <input
+        {...register(name)}
         defaultValue={defaultValue}
-        name={name}
-        value={value}
         type="number"
         className={`${
           styles.input
@@ -42,7 +42,10 @@ const SpecialInput: FC<SpecialInputProps> = ({
         placeholder={placeholder}
         aria-disabled={disabled}
         disabled={disabled}
-        {...register?.(name)}
+        step={step}
+        // Stop value changing on scroll, which is generally an inadvertant side effect of scrolling the page
+        onWheel={(e) => e.currentTarget.blur()}
+        onChange={onChange}
       />
       <span
         className={`${
@@ -51,7 +54,7 @@ const SpecialInput: FC<SpecialInputProps> = ({
           isError ? '!border-negative-400' : 'border-gray-300'
         }`}
       >
-        {type === 'hours' ? formatMessage({ id: 'hours' }) : '%'}
+        {type === 'hours' ? formatText({ id: 'hours' }) : '%'}
       </span>
     </div>
   );

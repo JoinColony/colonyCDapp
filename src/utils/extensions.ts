@@ -1,3 +1,4 @@
+import { Extension } from '@colony/colony-js';
 import {
   AnyExtensionData,
   ExtensionConfig,
@@ -41,4 +42,16 @@ export const mapToInstalledExtensionData = (
     isInitialized,
     isEnabled,
   };
+};
+
+export const canExtensionBeInitialized = (extension: Extension) => {
+  switch (extension) {
+    case Extension.VotingReputation: {
+      return true;
+    }
+
+    default: {
+      return false;
+    }
+  }
 };

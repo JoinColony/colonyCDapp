@@ -8,14 +8,17 @@ import { ActionTypes } from '~redux';
 
 import { Props as DefaultButtonProps } from './Button';
 
-export interface ActionButtonProps extends DefaultButtonProps {
+export interface ActionButtonProps<P = any> extends DefaultButtonProps {
   /** The base (i.e. submit) redux action type */
   actionType: ActionTypes;
   button?: ElementType;
+  buttonProps?: P;
+  isLoading?: boolean;
   confirmText?: any;
   error?: string;
   onConfirmToggled?: (...args: any[]) => void;
   onSuccess?: (result: any) => void;
+  onError?: (error: any) => void;
   submit?: string;
   success?: string;
   text?: MessageDescriptor | string;
@@ -23,18 +26,21 @@ export interface ActionButtonProps extends DefaultButtonProps {
   values?: any | (() => any | Promise<any>);
 }
 
-const ActionButton = ({
+const ActionButton = <P,>({
   actionType,
   button,
+  buttonProps,
+  isLoading,
   error,
   submit,
   success,
   onSuccess,
+  onError,
   // @todo Remove `values` once async transform functions are supported
   values,
   transform,
   ...props
-}: ActionButtonProps) => {
+}: ActionButtonProps<P>) => {
   const submitAction = submit || actionType;
   const errorAction = error || getFormAction(actionType, 'ERROR');
   const successAction = success || getFormAction(actionType, 'SUCCESS');
@@ -57,7 +63,7 @@ const ActionButton = ({
       if (isMountedRef.current) setLoading(false);
     } catch (err) {
       setLoading(false);
-
+      onError?.(err);
       /**
        * @todo : display error somewhere
        */
@@ -68,7 +74,14 @@ const ActionButton = ({
   };
 
   const Button = button || DefaultButton;
-  return <Button onClick={handleClick} loading={loading} {...props} />;
+  return (
+    <Button
+      onClick={handleClick}
+      loading={loading || isLoading}
+      {...buttonProps}
+      {...props}
+    />
+  );
 };
 
 export default ActionButton;

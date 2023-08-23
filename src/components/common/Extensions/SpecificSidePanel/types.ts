@@ -1,14 +1,9 @@
-import { MessageDescriptor } from 'react-intl';
+import { ColonyRole } from '@colony/colony-js';
 
 import { AnyExtensionData } from '~types';
 
 export interface PermissionsProps {
-  data: {
-    key: string;
-    name: string;
-    text: MessageDescriptor | string;
-    description: MessageDescriptor | string;
-  }[];
+  roles: ColonyRole[];
 }
 
 export type SidePanelDataProps = {
@@ -44,15 +39,7 @@ export type SidePanelDataProps = {
     title: string;
     developer: string;
   };
-  permissions: {
-    title: string;
-    permissions: {
-      key: string;
-      text: MessageDescriptor | string;
-      description: MessageDescriptor | string;
-      name: string;
-    }[];
-  };
+  permissions: ColonyRole[];
 };
 
 export interface PanelTypeProps {

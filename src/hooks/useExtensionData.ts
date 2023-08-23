@@ -1,8 +1,11 @@
 import { getExtensionHash } from '@colony/colony-js';
 import { useMemo } from 'react';
+import { ApolloQueryResult } from '@apollo/client';
 
 import { supportedExtensionsConfig } from '~constants';
 import {
+  Exact,
+  GetColonyExtensionQuery,
   useGetColonyExtensionQuery,
   useGetCurrentExtensionVersionQuery,
 } from '~gql';
@@ -14,11 +17,31 @@ import {
 
 import useColonyContext from './useColonyContext';
 
+export enum ExtensionMethods {
+  INSTALL = 'installExtension',
+  UNINSTALL = 'uninstallExtension',
+  UPGRADE = 'upgradeExtension',
+  DEPRECATE = 'deprecateExtension',
+  REENABLE = 'reenableExtension',
+  ENABLE = 'enableExtension',
+}
+
+export type RefetchExtensionDataFn = (
+  variables?:
+    | Partial<
+        Exact<{
+          colonyAddress: string;
+          extensionHash: string;
+        }>
+      >
+    | undefined,
+) => Promise<ApolloQueryResult<GetColonyExtensionQuery>>;
 interface UseExtensionDataReturn {
   extensionData: AnyExtensionData | null;
   loading: boolean;
   startPolling: (interval: number) => void;
   stopPolling: () => void;
+  refetchExtensionData: RefetchExtensionDataFn;
 }
 
 /**
@@ -35,13 +58,14 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
     loading: extensionLoading,
     startPolling,
     stopPolling,
+    refetch,
   } = useGetColonyExtensionQuery({
     variables: {
       colonyAddress: colony?.colonyAddress ?? '',
       extensionHash,
     },
     skip: !colony,
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
   });
   const colonyExtension = data?.getExtensionByColonyAndHash?.items?.[0];
 
@@ -79,6 +103,7 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
     loading: extensionLoading || versionLoading,
     startPolling,
     stopPolling,
+    refetchExtensionData: refetch,
   };
 };
 

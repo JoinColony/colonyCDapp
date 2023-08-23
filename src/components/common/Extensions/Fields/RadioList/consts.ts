@@ -1,25 +1,20 @@
-import {
-  SPEED_OVER_SECURITY,
-  SECURITY_OVER_SPEED,
-  TESTING_GOVERNANCE,
-  CUSTOM,
-} from '~redux/constants';
+import { GovernanceOptions } from '~frame/Extensions/pages/ExtensionsPage/types';
 import { RadioItemProps } from './types';
 
 export const radioItems: RadioItemProps[] = [
   {
-    value: SPEED_OVER_SECURITY,
+    value: GovernanceOptions.SPEED_OVER_SECURITY,
     label: 'High trust team',
   },
   {
-    value: SECURITY_OVER_SPEED,
+    value: GovernanceOptions.SECURITY_OVER_SPEED,
     label: 'Second field',
     tooltip: {
       tooltipContent: 'Some content here',
     },
   },
   {
-    value: TESTING_GOVERNANCE,
+    value: GovernanceOptions.TESTING_GOVERNANCE,
     label: 'Third field',
     badge: {
       mode: 'coming-soon',
@@ -27,9 +22,9 @@ export const radioItems: RadioItemProps[] = [
     },
   },
   {
-    value: CUSTOM,
+    value: GovernanceOptions.CUSTOM,
     label: 'Fully open organization',
-    description: 'We won’t know everyone, so we prefer higher security.',
+    description: "We won't know everyone, so we prefer higher security.",
     tooltip: {
       tooltipContent: 'Some content here',
     },
@@ -49,7 +44,7 @@ export const radioItems: RadioItemProps[] = [
   {
     value: 'radio-button-6',
     label: 'Custom (Advanced)',
-    description: 'I know what I’m doing and want to configure it myself.',
+    description: "I know what I'm doing and want to configure it myself.",
     disabled: true,
   },
 ];

@@ -11,4 +11,5 @@ export type ActionButtonsProps = {
 
 export type ErrorBannerProps = {
   title: MessageDescriptor | string;
+  actionText?: MessageDescriptor | string;
 };

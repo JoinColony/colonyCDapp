@@ -7,48 +7,54 @@ import SpecialHourInput from '~shared/Extensions/ConnectForm/partials/SpecialHou
 
 const displayName = 'Extensions.Accordion.partials.AccordionContent';
 
-const AccordionContent: FC<AccordionItemProps> = ({ content, errors }) => (
+const AccordionContent: FC<AccordionItemProps> = ({
+  content,
+  onInputChange,
+}) => (
   <div className="mt-6">
-    {content?.map(({ id, textItem, inputData, accordionItem }) => (
-      <div
-        key={id}
-        className="border-b border-gray-200 mt-6 pb-6 last:border-none last:pb-0"
-      >
-        <div className="flex justify-between">
-          {textItem}
-          {inputData?.inputType && (
-            <div className="ml-6 shrink-0">
-              <div className="mr-[0.1875rem]">
-                {inputData.inputType === 'percent' ? (
-                  <SpecialPercentageInput
-                    name={inputData.name}
-                    minValue={inputData.minValue}
-                    maxValue={inputData.maxValue}
-                    register={inputData.register}
-                    errors={errors}
-                  />
-                ) : (
-                  <SpecialHourInput
-                    name={inputData.name}
-                    minValue={inputData.minValue}
-                    maxValue={inputData.maxValue}
-                    register={inputData.register}
-                    errors={errors}
-                  />
-                )}
+    {content?.map(
+      ({
+        id,
+        textItem,
+        inputData: { name, inputType, step },
+        accordionItem,
+      }) => {
+        return (
+          <div
+            key={id}
+            className="border-b border-gray-200 mt-6 pb-6 last:border-none last:pb-0"
+          >
+            <div className="flex justify-between">
+              {textItem}
+              <div className="ml-6 shrink-0">
+                <div className="mr-[0.1875rem]">
+                  {inputType === 'percent' ? (
+                    <SpecialPercentageInput
+                      name={name}
+                      step={step}
+                      onInputChange={onInputChange}
+                    />
+                  ) : (
+                    <SpecialHourInput
+                      name={name}
+                      step={step}
+                      onInputChange={onInputChange}
+                    />
+                  )}
+                </div>
               </div>
             </div>
-          )}
-        </div>
-        {accordionItem && (
-          <div className="mt-6">
-            {accordionItem.map((item) => (
-              <AccordionNestedItem key={item.id} accordionItem={item} />
-            ))}
+            {accordionItem && (
+              <div className="mt-6">
+                {accordionItem.map((item) => (
+                  <AccordionNestedItem key={item.id} accordionItem={item} />
+                ))}
+              </div>
+            )}
           </div>
-        )}
-      </div>
-    ))}
+        );
+      },
+    )}
   </div>
 );
 

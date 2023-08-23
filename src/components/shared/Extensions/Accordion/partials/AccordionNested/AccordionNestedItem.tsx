@@ -1,10 +1,10 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useState } from 'react';
-import { useIntl } from 'react-intl';
 
 import { AccordionNestedItemProps } from '../../types';
 import { accordionAnimation } from '~constants/accordionAnimation';
 import AccordionHeaderItem from './AccordionNestedHeader';
+import { formatText } from '~utils/intl';
 
 const displayName =
   'Extensions.Accordion.partials.AccordionNested.AccordionNestedItem';
@@ -12,14 +12,13 @@ const displayName =
 const AccordionNestedItem: FC<AccordionNestedItemProps> = ({
   accordionItem: { header, content },
 }) => {
-  const [visibility, setVisibility] = useState(true);
-  const { formatMessage } = useIntl();
+  const [visibility, setVisibility] = useState(false);
+
   const onOpenIndexChange = () => {
     setVisibility(!visibility);
   };
 
-  const contentText =
-    typeof content === 'string' ? content : content && formatMessage(content);
+  const contentText = formatText(content);
 
   return (
     <div className="mb-4 last:mb-0">
@@ -42,11 +41,9 @@ const AccordionNestedItem: FC<AccordionNestedItemProps> = ({
             transition={{ duration: 0.4, ease: 'easeOut' }}
             className="overflow-hidden"
           >
-            <div
-              className="mt-1 text-sm text-gray-600 first-letter:uppercase"
-              // eslint-disable-next-line react/no-danger
-              dangerouslySetInnerHTML={{ __html: contentText }}
-            />
+            <div className="mt-1 text-sm text-gray-600 first-letter:uppercase">
+              {contentText}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

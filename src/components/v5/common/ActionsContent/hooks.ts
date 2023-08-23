@@ -23,13 +23,15 @@ export const useActionsContent = () => {
   const shouldShowDecisionField =
     selectedAction === Actions.SIMPLE_PAYMENT ||
     selectedAction === Actions.MINT_TOKENS ||
+    selectedAction === Actions.UNLOCK_TOKEN ||
     selectedAction === Actions.TRANSFER_FUNDS ||
     selectedAction === Actions.CREATE_NEW_TEAM;
   const shouldShowDescriptionField =
     selectedAction === Actions.SIMPLE_PAYMENT ||
     selectedAction === Actions.MINT_TOKENS ||
     selectedAction === Actions.TRANSFER_FUNDS ||
-    selectedAction === Actions.CREATE_NEW_TEAM;
+    selectedAction === Actions.CREATE_NEW_TEAM ||
+    selectedAction === Actions.UNLOCK_TOKEN;
   const shouldShowTransferFundsField =
     selectedAction === Actions.TRANSFER_FUNDS;
   const shouldShowTeamPurposeField = selectedAction === Actions.CREATE_NEW_TEAM;

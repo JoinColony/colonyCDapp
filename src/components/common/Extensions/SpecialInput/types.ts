@@ -1,3 +1,4 @@
+import { SyntheticEvent } from 'react';
 import { FieldValues, UseFormRegister } from 'react-hook-form';
 
 export interface SpecialInputProps {
@@ -11,8 +12,9 @@ export interface SpecialInputProps {
   disabled?: boolean;
   min?: number;
   max?: number;
+  step?: number;
   isError?: boolean;
-  onChange?: () => void;
+  onChange?: (e: SyntheticEvent<HTMLInputElement>) => void;
 }
 
 export type ComponentType = 'percent' | 'hours';

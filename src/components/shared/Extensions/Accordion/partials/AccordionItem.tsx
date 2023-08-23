@@ -13,7 +13,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
   content,
   isOpen,
   onClick,
-  errors,
+  onInputChange,
 }) => (
   <div className="w-full mb-4 last:mb-0">
     <AccordionHeader
@@ -36,7 +36,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
             transition={{ duration: 0.4, ease: 'easeOut' }}
             className="overflow-hidden"
           >
-            <AccordionContent content={content} errors={errors} />
+            <AccordionContent content={content} onInputChange={onInputChange} />
           </motion.div>
         )}
       </AnimatePresence>
