@@ -21,6 +21,7 @@ import ActionButtons from './partials/ActionButtons';
 import TransferFundsForm from './partials/TransferFundsForm';
 import UnlockTokenForm from './partials/UnlockTokenForm';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
+import UpgradeColonyForm from './partials/UpgradeColonyForm/UpgradeColonyForm';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -122,6 +123,9 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
     }
     if (selectedAction === Actions.UNLOCK_TOKEN) {
       return <UnlockTokenForm>{formContent}</UnlockTokenForm>;
+    }
+    if (selectedAction === Actions.UPGRADE_COLONY_VERSION) {
+      return <UpgradeColonyForm>{formContent}</UpgradeColonyForm>;
     }
     return formContent;
   };

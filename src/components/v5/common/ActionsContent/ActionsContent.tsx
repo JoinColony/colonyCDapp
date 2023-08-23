@@ -12,6 +12,7 @@ import DescriptionField from './partials/DescriptionField';
 import useToggle from '~hooks/useToggle';
 import { useDetectClickOutside } from '~hooks';
 import { Actions } from '~constants/actions';
+import ColonyVersionField from './partials/ColonyVersionField/ColonyVersionField';
 
 const displayName = 'v5.common.ActionsContent';
 
@@ -25,6 +26,7 @@ const ActionsContent: FC = () => {
     shouldShowDecisionField,
     shouldShowDescriptionField,
     shouldShowTransferFundsField,
+    shouldShowVersionFields,
   } = useActionsContent();
   const [
     isDecriptionFieldExpanded,
@@ -53,6 +55,7 @@ const ActionsContent: FC = () => {
           <TeamsSelect name="team" />
         </ActionSidebarRow>
       )}
+      {shouldShowVersionFields && <ColonyVersionField />}
       {shouldShowTransferFundsField && (
         <ActionSidebarRow
           iconName="arrow-down-right"

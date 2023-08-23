@@ -1,6 +1,4 @@
 export const translateAction = (action: string) => {
-  // Change action name to match this actions.simplePayment, first word have to be lowerCase, second and go on words are capitalized
-
   const actionName = action
     .split('-')
     .map((word, index) => {
