@@ -4,7 +4,11 @@ import classNames from 'classnames';
 import { ColonyAction } from '~types';
 import { ETHEREUM_NETWORK } from '~constants';
 import { getExtendedActionType, safeActionTypes } from '~utils/colonyActions';
-import { useColonyContext } from '~hooks';
+import {
+  TRANSACTION_STATUS,
+  useColonyContext,
+  useSafeTransactionStatus,
+} from '~hooks';
 
 import SafeTransactionBanner from '../SafeTransactionBanner';
 
@@ -26,12 +30,16 @@ const ActionDetailsPageLayout = ({
   isMotion = false,
 }: ActionsPageLayoutProps) => {
   const { colony } = useColonyContext();
+  const safeTransactionStatus = useSafeTransactionStatus(actionData);
 
   if (!colony) {
     return null;
   }
 
-  const hasPendingSafeTransactions = true;
+  const hasPendingSafeTransactions = safeTransactionStatus.find(
+    (transactionStatus) =>
+      transactionStatus === TRANSACTION_STATUS.ACTION_NEEDED,
+  );
 
   const extendedActionType = actionData
     ? getExtendedActionType(actionData, colony?.metadata)

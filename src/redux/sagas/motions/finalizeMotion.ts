@@ -1,6 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { AnyVotingReputationClient, ClientType } from '@colony/colony-js';
-import { BigNumber } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
@@ -12,48 +11,33 @@ import {
   getTxChannel,
 } from '../transactions';
 import { transactionReady, transactionUpdateGas } from '../../actionCreators';
-import { ADDRESS_ZERO } from '~constants';
 
 function* finalizeMotion({
   meta,
-  payload: { /* userAddress */ colonyAddress, motionId },
+  payload: { userAddress, colonyAddress, motionId },
 }: Action<ActionTypes.MOTION_FINALIZE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
     const colonyManager = yield getColonyManager();
     const { provider } = colonyManager;
-    const colonyClient = yield colonyManager.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
-    );
+
     const votingReputationClient: AnyVotingReputationClient =
       yield colonyManager.getClient(
         ClientType.VotingReputationClient,
         colonyAddress,
       );
-    const motion = yield votingReputationClient.getMotion(motionId);
 
-    const networkEstimate = yield provider.estimateGas({
-      from: votingReputationClient.address,
-      to:
-        /*
-         * If the motion target is 0x000... then we pass in the colony's address
-         */
-        motion.altTarget === ADDRESS_ZERO
-          ? colonyClient.address
-          : motion.altTarget,
-      data: motion.action,
+    const encodedFinalizeMotion =
+      // @NOTE: I'm asserting the param here because according to typescript this value is not compatible with the type expected. It's  wrong, this is a valid function name.
+      votingReputationClient.interface.encodeFunctionData(
+        'finalizeMotion(uint256)' as any,
+        [motionId],
+      );
+    const finalizeEstimate = yield provider.estimateGas({
+      from: userAddress,
+      to: votingReputationClient.address,
+      data: encodedFinalizeMotion,
     });
-    /*
-     * Increase the estimate by 100k WEI. This is a flat increase for all networks
-     *
-     * @NOTE This will need to be increased further for `setExpenditureState` since
-     * that requires even more gas, but since we don't use that one yet, there's
-     * no reason to account for it just yet
-     */
-    const estimate = BigNumber.from(networkEstimate).add(
-      BigNumber.from(100000),
-    );
 
     const { finalizeMotionTransaction } = yield createTransactionChannels(
       meta.id,
@@ -77,7 +61,7 @@ function* finalizeMotion({
 
     yield put(
       transactionUpdateGas(finalizeMotionTransaction.id, {
-        gasLimit: estimate.toString(),
+        gasLimit: finalizeEstimate.toString(),
       }),
     );
 

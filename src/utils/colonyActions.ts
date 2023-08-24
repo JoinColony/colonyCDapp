@@ -47,8 +47,6 @@ export const safeActionTypes = [
   ExtendedColonyActionType.SafeMultipleTransactions,
 ];
 
-type DetailsValuesMap = Partial<Record<ActionPageDetails, boolean>>;
-
 const MOTION_SUFFIX = 'MOTION';
 const isMotion = (actionType: AnyActionType) =>
   actionType.includes(MOTION_SUFFIX);
@@ -149,7 +147,11 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
       ];
     }
     case safeActionTypes.some((type) => actionType.includes(type)): {
-      return [ActionPageDetails.Type, ActionPageDetails.SafeTransaction];
+      return [
+        ActionPageDetails.Type,
+        isMotion(actionType) ? ActionPageDetails.Motion : '',
+        ActionPageDetails.SafeTransaction,
+      ];
     }
     case actionType.includes(ColonyActionType.Generic): {
       return [ActionPageDetails.Type, ActionPageDetails.Generic];
@@ -195,23 +197,6 @@ export interface EventValues {
   reputationChange?: string;
   isSmiteAction?: boolean;
 }
-
-/*
- * Get colony action details for DetailsWidget based on action type and ActionPageDetails map
- */
-export const getDetailsForAction = (
-  actionType: AnyActionType,
-): DetailsValuesMap => {
-  const detailsForActionType = getDetailItemsKeys(actionType);
-  return Object.keys(ActionPageDetails).reduce((detailsMap, detailsKey) => {
-    return {
-      ...detailsMap,
-      [detailsKey]: detailsForActionType?.includes(
-        detailsKey as ActionPageDetails,
-      ),
-    };
-  }, {});
-};
 
 /*
  * Get values for action type based on action type
@@ -663,6 +648,10 @@ export const getExtendedActionType = (
     }
 
     const actionType = `SAFE_${actionData.safeTransaction.transactions[0].transactionType}`;
+
+    if (!isEmpty(actionData.motionData)) {
+      return `${actionType}_MOTION` as ExtendedColonyActionType;
+    }
 
     return actionType as ExtendedColonyActionType;
   }

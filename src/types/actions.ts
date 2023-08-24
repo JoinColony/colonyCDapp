@@ -170,6 +170,11 @@ export enum ExtendedColonyActionType {
   SafeTransferNft = 'SAFE_TRANSFER_NFT',
   SafeContractInteraction = 'SAFE_CONTRACT_INTERACTION',
   SafeMultipleTransactions = 'SAFE_MULTIPLE_TRANSACTIONS',
+  SafeTransferFundsMotion = 'SAFE_TRANSFER_FUNDS_MOTION',
+  SafeRawTransactionMotion = 'SAFE_RAW_TRANSACTION_MOTION',
+  SafeTransferNftMotion = 'SAFE_TRANSFER_NFT_MOTION',
+  SafeContractInteractionMotion = 'SAFE_CONTRACT_INTERACTION_MOTION',
+  SafeMultipleTransactionsMotion = 'SAFE_MULTIPLE_TRANSACTIONS_MOTION',
 }
 
 /**
