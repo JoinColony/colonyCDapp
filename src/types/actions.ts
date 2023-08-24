@@ -1,5 +1,4 @@
 import { ColonyRole } from '@colony/colony-js';
-import { SafeTransactionType } from '~gql';
 
 import { ListItemStatus } from '~shared/ListItem';
 
@@ -114,7 +113,13 @@ export enum ColonyAndExtensionsEvents {
    */
   SafeAdded = 'SafeAdded',
   SafeRemoved = 'SafeRemoved',
-  SafeTransaction = 'SafeTransaction',
+  // NOTE: these differ to allow easy mapping from the
+  // schema types to the action types
+  SafeTransferFunds = 'SAFE_TRANSFER_FUNDS',
+  SafeRawTransaction = 'SAFE_RAW_TRANSACTION',
+  SafeTransferNft = 'SAFE_TRANSFER_NFT',
+  SafeContractInteraction = 'SAFE_CONTRACT_INTERACTION',
+  SafeMultipleTransactions = 'SAFE_MULTIPLE_TRANSACTIONS',
 }
 
 export type ActionUserRoles = {
@@ -160,16 +165,17 @@ export enum ExtendedColonyActionType {
   UpdateTokens = 'UPDATE_TOKENS',
   RemoveSafe = 'REMOVE_SAFE',
   AddSafe = 'ADD_SAFE',
-  SafeTransaction = 'SAFE_TRANSACTION',
+  SafeTransferFunds = 'SAFE_TRANSFER_FUNDS',
+  SafeRawTransaction = 'SAFE_RAW_TRANSACTION',
+  SafeTransferNft = 'SAFE_TRANSFER_NFT',
+  SafeContractInteraction = 'SAFE_CONTRACT_INTERACTION',
+  SafeMultipleTransactions = 'SAFE_MULTIPLE_TRANSACTIONS',
 }
 
 /**
  * Union covering all contract-recognised and extended actions and motions types
  */
-export type AnyActionType =
-  | ColonyActionType
-  | ExtendedColonyActionType
-  | SafeTransactionType;
+export type AnyActionType = ColonyActionType | ExtendedColonyActionType;
 
 /*
  * This list will get longer once we add more system events to the dapp

@@ -4,10 +4,12 @@ import {
   ExtendedColonyActionType,
 } from '~types';
 
+const safeLogoIconName = 'safe-logo';
+
 /*
  * Which icons correspond to which action types in the details widget
  */
-export const ACTION_TYPES_ICONS_MAP: Partial<Record<AnyActionType, string>> = {
+export const ACTION_TYPES_ICONS_MAP: Record<AnyActionType, string> = {
   [ColonyActionType.WrongColony]: 'forbidden-signal',
   [ColonyActionType.Payment]: 'emoji-dollar-stack',
   [ColonyActionType.Recovery]: 'emoji-alarm-lamp',
@@ -35,11 +37,14 @@ export const ACTION_TYPES_ICONS_MAP: Partial<Record<AnyActionType, string>> = {
   // [ColonyMotions.CreateDecisionMotion]: 'emoji-decisions',
   [ColonyActionType.NullMotion]: 'forbidden-signal',
   [ColonyActionType.Generic]: 'circle-check-primary',
+  [ColonyActionType.MakeArbitraryTransaction]: '',
   [ExtendedColonyActionType.UpdateAddressBook]: 'emoji-edit-tools',
   [ExtendedColonyActionType.UpdateTokens]: 'emoji-edit-tools',
-  [ExtendedColonyActionType.AddSafe]: 'safe-logo',
-  [ExtendedColonyActionType.RemoveSafe]: 'safe-logo',
-  [ExtendedColonyActionType.SafeTransaction]: 'safe-logo',
-  [ColonyActionType.MakeArbitraryTransaction]: 'safe-logo',
-  [ColonyActionType.MakeArbitraryTransactionsMotion]: 'safe-logo',
+  [ExtendedColonyActionType.AddSafe]: safeLogoIconName,
+  [ExtendedColonyActionType.RemoveSafe]: safeLogoIconName,
+  [ExtendedColonyActionType.SafeTransferFunds]: safeLogoIconName,
+  [ExtendedColonyActionType.SafeContractInteraction]: safeLogoIconName,
+  [ExtendedColonyActionType.SafeMultipleTransactions]: safeLogoIconName,
+  [ExtendedColonyActionType.SafeTransferNft]: safeLogoIconName,
+  [ExtendedColonyActionType.SafeRawTransaction]: safeLogoIconName,
 };
