@@ -49,7 +49,9 @@ export const useMintToken = () => {
     transform,
     defaultValues: {
       forceAction: false,
+      createdIn: '',
       annotation: '',
+      decisionMethod: 'reputation',
       amount: 0,
     },
     actionType: ActionTypes.ACTION_MINT_TOKENS,

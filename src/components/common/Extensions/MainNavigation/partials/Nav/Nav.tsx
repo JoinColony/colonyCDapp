@@ -8,6 +8,7 @@ import styles from './Nav.module.css';
 import SubMenu from '../SubMenu';
 import { useMobile } from '~hooks';
 import NavMobile from '../NavMobile';
+import Link from '~v5/shared/Link';
 
 const displayName = 'common.Extensions.MainNavigation.partials.Nav';
 
@@ -30,12 +31,12 @@ const NavItem: FC<NavItemProps> = ({ item }) => {
   ) : (
     <>
       {item.href ? (
-        <a className={clsx(styles.navLink, 'heading-5')} href={item.href}>
+        <Link className={clsx(styles.navLink, 'heading-5')} to={item.href}>
           {formatMessage({
             id: `mainNavItem.${item.label}`,
             defaultMessage: `${item.label}`,
           })}
-        </a>
+        </Link>
       ) : (
         <button
           type="button"

@@ -16,7 +16,7 @@ const RichText: FC<RichTextProps> = ({
   toggleOnDecriptionSelect,
   toggleOffDecriptionSelect,
 }) => {
-  const { editorContent, notFormattedContent } = useRichText(
+  const { editorContent, notFormattedContent, field } = useRichText(
     name,
     isDecriptionFieldExpanded,
   );
@@ -29,7 +29,7 @@ const RichText: FC<RichTextProps> = ({
       {editorContent && isDecriptionFieldExpanded ? (
         <>
           <MenuBar editor={editorContent} />
-          <EditorContent editor={editorContent} />
+          <EditorContent editor={editorContent} {...field} />
 
           {characterCount >= MIN_ANNOTATION_NUM &&
             !isDecriptionFieldExpanded && (

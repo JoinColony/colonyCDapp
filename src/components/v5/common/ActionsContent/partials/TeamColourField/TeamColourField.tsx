@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
 import clsx from 'clsx';
@@ -14,9 +14,10 @@ import TeamColourBadge from './partails/TeamColourBadge';
 const displayName = 'v5.common.ActionsContent.partials.TeamColourField';
 
 const TeamColourField: FC = () => {
-  const method = useFormContext();
+  const { field } = useController({
+    name: 'domainColor',
+  });
   const { formatMessage } = useIntl();
-  const methods = useFormContext();
   const teamsOptions = useTeams();
   const [selectedTeamColour, setSelectedTeamColour] = useState<string>();
   const [
@@ -41,14 +42,7 @@ const TeamColourField: FC = () => {
           formatMessage({ id: 'actionSidebar.selectTeam' })
         )}
       </button>
-      <input
-        type="text"
-        {...method?.register('domainColor')}
-        name="domainColor"
-        id="domainColor"
-        className="hidden"
-        value={selectedTeamColour || ''}
-      />
+      <input type="text" id="domainColor" className="hidden" {...field} />
       {isTeamColourSelectVisible && (
         <Card
           className="p-6 max-w-[14.5rem] sm:max-w-[10.875rem] absolute top-[calc(100%+0.5rem)] left-0 z-50"
@@ -63,7 +57,7 @@ const TeamColourField: FC = () => {
               )?.nativeId;
 
               setSelectedTeamColour(value);
-              methods?.setValue('domainColor', teamId);
+              field.onChange(teamId);
             }}
             isLabelVisible={false}
           />
