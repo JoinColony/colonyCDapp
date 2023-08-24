@@ -38,3 +38,7 @@ query GetMotionTransactionHash($motionId: ID!) {
     }
   }
 }
+
+query GetSafeTransactionStatus($input: GetSafeTransactionStatusInput!) {
+  getSafeTransactionStatus(input: $input)
+}

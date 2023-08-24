@@ -26,7 +26,8 @@
         "fetchMotionState": {},
         "fetchVoterRewards": {},
         "fetchMotionTimeoutPeriods": {},
-        "qaSSMtest": {}
+        "qaSSMtest": {},
+        "getSafeTransactionStatus": {}
       }
     }
   },

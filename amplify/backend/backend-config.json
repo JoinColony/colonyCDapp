@@ -170,6 +170,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "getSafeTransactionStatus": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "getUserReputation": {
       "build": true,
       "dependsOn": [

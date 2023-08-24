@@ -82,6 +82,11 @@ input GetUserReputationInput {
   rootHash: String
 }
 
+input GetSafeTransactionStatusInput {
+  transactionHash: String!
+  chainId: Int!
+}
+
 input UpdateExtensionByColonyAndHashInput {
   colonyId: ID!
   hash: String!
@@ -270,6 +275,10 @@ type Query {
     input: GetMotionTimeoutPeriodsInput
   ): GetMotionTimeoutPeriodsReturn
     @function(name: "fetchMotionTimeoutPeriods-${env}")
+  getSafeTransactionStatus(
+    input: GetSafeTransactionStatusInput
+  ): [String!]
+    @function(name: "getSafeTransactionStatus-${env}")
 }
 
 type Mutation {
