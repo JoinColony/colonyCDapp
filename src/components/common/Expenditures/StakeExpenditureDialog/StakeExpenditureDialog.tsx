@@ -1,6 +1,7 @@
 import React from 'react';
 import { Extension } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
+import { useNavigate } from 'react-router-dom';
 
 import Dialog, { DialogSection } from '~shared/Dialog';
 import { Colony } from '~types';
@@ -15,7 +16,13 @@ import {
 import { isInstalledExtensionData } from '~utils/extensions';
 import { Heading3 } from '~shared/Heading';
 import Numeral from '~shared/Numeral';
-import Button from '~shared/Button';
+import { ActionButton } from '~shared/Button';
+import { ActionTypes } from '~redux';
+
+import {
+  ExpenditureFormValues,
+  getCreateExpenditureTransformPayloadFn,
+} from '../ExpenditureForm';
 
 import styles from './StakeExpenditureDialog.module.css';
 
@@ -59,15 +66,17 @@ interface StakeExpenditureDialogProps {
   colony: Colony;
   selectedDomainId: number;
   onCancel: () => void;
-  onConfirm: (stakeAmount: string) => void;
+  formValues: ExpenditureFormValues;
 }
 
 const StakeExpenditureDialog = ({
   colony,
   selectedDomainId,
   onCancel,
-  onConfirm,
+  formValues,
 }: StakeExpenditureDialogProps) => {
+  const navigate = useNavigate();
+
   const { user } = useAppContext();
 
   const stakeAmount = useRequiredStakeAmount(colony, selectedDomainId);
@@ -115,12 +124,17 @@ const StakeExpenditureDialog = ({
         )}
       </DialogSection>
       <DialogSection>
-        <Button
-          onClick={() => onConfirm(stakeAmount ?? '0')}
+        <ActionButton
+          actionType={ActionTypes.EXPENDITURE_CREATE}
           disabled={!stakeAmount || loadingUserTokenBalance || !hasEnoughTokens}
+          values={{
+            ...formValues,
+            stakeAmount: stakeAmount ?? '0',
+          }}
+          transform={getCreateExpenditureTransformPayloadFn(colony, navigate)}
         >
           Confirm stake
-        </Button>
+        </ActionButton>
       </DialogSection>
     </Dialog>
   );

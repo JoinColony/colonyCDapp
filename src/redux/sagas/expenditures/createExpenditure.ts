@@ -28,6 +28,9 @@ import {
   getSetExpenditureValuesFunctionParams,
 } from '../utils';
 
+export type CreateExpenditurePayload =
+  Action<ActionTypes.EXPENDITURE_CREATE>['payload'];
+
 function* createExpenditure({
   meta: { id: metaId, navigate },
   meta,
