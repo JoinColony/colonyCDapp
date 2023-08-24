@@ -15,9 +15,8 @@ import {
   ColonyExtension,
   Token,
   SafeTransactionData,
-  Address,
 } from '~types';
-import { useColonyContext, useUserByAddress, useUserReputation } from '~hooks';
+import { useColonyContext, useUserReputation } from '~hooks';
 import { MotionVote } from '~utils/colonyMotions';
 import { intl } from '~utils/intl';
 import { formatReputationChange } from '~utils/reputation';
@@ -149,18 +148,6 @@ const getSafeTransactionAmount = (
   </>
 );
 
-const SafeTransactionRecipient = (walletAddress?: Address) => {
-  if (!walletAddress) {
-    return '';
-  }
-
-  const { user } = useUserByAddress(walletAddress || '');
-  const userDisplayName = user?.profile?.displayName;
-  const username = user?.name;
-
-  return <span className={styles.user}>@{userDisplayName || username}</span>;
-};
-
 const getSafeTransactionNftToken = (
   firstSafeTransaction?: SafeTransactionData,
 ) => (
@@ -168,14 +155,6 @@ const getSafeTransactionNftToken = (
     {firstSafeTransaction?.nftData?.name ||
       firstSafeTransaction?.nftData?.tokenName}
   </span>
-);
-
-const getSafeTransactionAddress = (
-  firstSafeTransaction?: SafeTransactionData,
-) => (
-  <MaskedAddress
-    address={firstSafeTransaction?.recipient?.walletAddress || ''}
-  />
 );
 
 const getRemovedSafesString = (actionData: ColonyAction) => {
@@ -309,16 +288,11 @@ export const mapActionEventToExpectedFormat = (
     removedSafes: getRemovedSafesString(actionData),
     safeName: getSafeName(actionData),
     safeTransactionAmount: getSafeTransactionAmount(firstSafeTransaction),
-    safeTransactionRecipient: SafeTransactionRecipient(
-      firstSafeTransaction?.recipient?.walletAddress,
-    ),
-    safeTransactionNftToken: getSafeTransactionNftToken(firstSafeTransaction),
-    safeTransactionFunctionName: firstSafeTransaction?.contractFunction || '',
-    safeTransactionContractName:
+    nftToken: getSafeTransactionNftToken(firstSafeTransaction),
+    functionName: firstSafeTransaction?.contractFunction || '',
+    contractName:
       firstSafeTransaction?.contract?.profile.displayName ||
       formatMessage(unknownContractMSG),
-    safeTransactionAddress: getSafeTransactionAddress(firstSafeTransaction),
-    // id will be filterValue if an address was manually entered into the picker
     isSafeTransactionRecipientUser: !(
       firstSafeTransaction?.recipient?.id === 'filterValue'
     ),
