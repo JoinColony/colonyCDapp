@@ -6,7 +6,6 @@ import UserSelect from './partials/UserSelect';
 import { useActionsContent } from './hooks';
 import AmountField from './partials/AmountField';
 import DecisionField from './partials/DecisionField';
-import TransactionTable from './partials/TransactionTable';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import DescriptionField from './partials/DescriptionField';
 import useToggle from '~hooks/useToggle';
@@ -161,7 +160,6 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
           />
         </ActionSidebarRow>
       )}
-      {selectedAction === Actions.SIMPLE_PAYMENT && <TransactionTable />}
     </>
   );
 };

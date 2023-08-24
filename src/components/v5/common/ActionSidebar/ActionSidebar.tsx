@@ -25,6 +25,7 @@ import NotificationBanner from '~common/Extensions/NotificationBanner';
 import UpgradeColonyForm from './partials/UpgradeColonyForm/UpgradeColonyForm';
 import Modal from '~v5/shared/Modal';
 import { useActionFormContext } from './partials/ActionForm/ActionFormContext';
+import TransactionTable from '../ActionsContent/partials/TransactionTable/TransactionTable';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -112,7 +113,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
         </ActionSidebarRow>
         <ActionsContent formErrors={formErrors} />
         {(showErrorBanner || isFieldError) && (
-          <div className="mb-7">
+          <div className="mt-7">
             <NotificationBanner
               status={isUnlockTokenAction || isFieldError ? 'error' : 'warning'}
               title={{
@@ -125,6 +126,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
             />
           </div>
         )}
+        {selectedAction === Actions.SIMPLE_PAYMENT && <TransactionTable />}
       </div>
 
       <div className="mt-auto">
