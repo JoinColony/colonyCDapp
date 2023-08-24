@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { ExpenditureStatus } from '~gql';
+import { useCurrentBlockTime } from '~hooks';
 import { ActionTypes } from '~redux';
 import { ActionButton } from '~shared/Button';
 import { Colony, Expenditure } from '~types';
@@ -14,7 +15,9 @@ const ExpenditureClaimButton = ({
   colony,
   expenditure,
 }: ExpenditureClaimButtonProps) => {
-  if (expenditure.status !== ExpenditureStatus.Finalized) {
+  const currentBlockTime = useCurrentBlockTime();
+
+  if (expenditure.status !== ExpenditureStatus.Finalized || !currentBlockTime) {
     return null;
   }
 
@@ -32,7 +35,7 @@ const ExpenditureClaimButton = ({
       ((expenditure.finalizedAt ?? 0) + (slot.claimDelay ?? 0)) * 1000,
     ).getTime();
 
-    if (Date.now() >= claimableFrom) {
+    if (currentBlockTime >= claimableFrom) {
       return true;
     }
 
