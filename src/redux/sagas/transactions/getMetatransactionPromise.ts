@@ -72,7 +72,7 @@ async function getMetatransactionPromise(
      */
     case TRANSACTION_METHODS.DeployTokenAuthority: {
       normalizedClient = networkClient;
-      const [tokenAddress, allowedToTransfer] = params;
+      const [tokenAddress, , allowedToTransfer] = params;
       normalizedParams = [
         tokenAddress,
         clientAddress as string,
