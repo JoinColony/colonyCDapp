@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import classnames from 'classnames';
 
-import { SAFE_NETWORKS } from '~constants';
+import { SUPPORTED_SAFE_NETWORKS } from '~constants';
 import Avatar from '~shared/Avatar';
 import { HookFormCheckbox as Checkbox } from '~shared/Fields';
 import MaskedAddress from '~shared/MaskedAddress';
@@ -31,7 +31,7 @@ interface Props {
 
 const SafeListItem = ({ safe, isChecked }: Props) => {
   const { formatMessage } = useIntl();
-  const safeNetwork = SAFE_NETWORKS.find(
+  const safeNetwork = SUPPORTED_SAFE_NETWORKS.find(
     (network) => network.chainId === safe.chainId,
   );
   return (

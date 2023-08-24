@@ -35,10 +35,15 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       ${ExtendedColonyActionType.SafeMultipleTransactions} ${safeActionTitle}
+      ${ExtendedColonyActionType.SafeMultipleTransactionsMotion} ${safeActionTitle}
       ${ExtendedColonyActionType.SafeTransferNft} ${safeActionTitle}
+      ${ExtendedColonyActionType.SafeTransferNftMotion} ${safeActionTitle}
       ${ExtendedColonyActionType.SafeTransferFunds} ${safeActionTitle}
+      ${ExtendedColonyActionType.SafeTransferFundsMotion} ${safeActionTitle}
       ${ExtendedColonyActionType.SafeRawTransaction} ${safeActionTitle}
+      ${ExtendedColonyActionType.SafeRawTransactionMotion} ${safeActionTitle}
       ${ExtendedColonyActionType.SafeContractInteraction} ${safeActionTitle}
+      ${ExtendedColonyActionType.SafeContractInteractionMotion} ${safeActionTitle}
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,
@@ -71,10 +76,15 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       ${ExtendedColonyActionType.SafeRawTransaction} {Raw transaction}
+      ${ExtendedColonyActionType.SafeRawTransactionMotion} {Raw transaction}
       ${ExtendedColonyActionType.SafeTransferFunds} {Transfer funds}
+      ${ExtendedColonyActionType.SafeTransferFundsMotion} {Transfer funds}
       ${ExtendedColonyActionType.SafeTransferNft} {Transfer NFT}
+      ${ExtendedColonyActionType.SafeTransferNftMotion} {Transfer NFT}
       ${ExtendedColonyActionType.SafeContractInteraction} {Contract interaction}
+      ${ExtendedColonyActionType.SafeContractInteractionMotion} {Contract interaction}
       ${ExtendedColonyActionType.SafeMultipleTransactions} {Multiple transactions}
+      ${ExtendedColonyActionType.SafeMultipleTransactionsMotion} {Multiple transactions}
       other {Generic}
     }`,
 };

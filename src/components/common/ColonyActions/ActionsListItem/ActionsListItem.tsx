@@ -5,16 +5,18 @@ import { Placement } from '@popperjs/core';
 import UserAvatar from '~shared/UserAvatar';
 import ListItem, { ListItemStatus } from '~shared/ListItem';
 import { ColonyAction } from '~types';
-import { useColonyContext } from '~hooks';
+import {
+  useColonyContext,
+  TRANSACTION_STATUS,
+  SafeMSGs,
+  useSafeTransactionStatus,
+} from '~hooks';
 import {
   MotionState,
   useShouldDisplayMotionCountdownTime,
 } from '~utils/colonyMotions';
 import Tag from '~shared/Tag';
-import {
-  TRANSACTION_STATUS,
-  MSG as SafeMSGs,
-} from '~utils/safes/getTransactionStatuses';
+import { isEmpty } from '~utils/lodash';
 
 import CountDownTimer from '../CountDownTimer';
 import { getActionTitleValues } from '../helpers';
@@ -62,6 +64,12 @@ const ActionsListItem = ({
     transactionHash,
   );
 
+  const safeTransactionStatus = useSafeTransactionStatus(item);
+  const isActionNeeded = !!safeTransactionStatus.find(
+    (transactionStatus) =>
+      transactionStatus === TRANSACTION_STATUS.ACTION_NEEDED,
+  );
+
   const MotionTag = useMotionTag(isMotion, motionState);
   const showMotionCountdownTimer =
     useShouldDisplayMotionCountdownTime(motionState);
@@ -75,22 +83,26 @@ const ActionsListItem = ({
 
   const status = ListItemStatus.Defused;
 
-  const safeTransactionStatus = TRANSACTION_STATUS.PENDING;
-
-  const SafeTag = (
-    <Tag
-      text={SafeMSGs[safeTransactionStatus]}
-      appearance={{
-        theme:
-          safeTransactionStatus === TRANSACTION_STATUS.PENDING
-            ? 'golden'
-            : 'primary',
-        colorSchema: 'fullColor',
-      }}
-    />
+  const ActionListItemTags = (
+    <>
+      <MotionTag />
+      {safeTransaction && !isEmpty(safeTransactionStatus) && (
+        <Tag
+          text={
+            SafeMSGs[
+              isActionNeeded
+                ? TRANSACTION_STATUS.ACTION_NEEDED
+                : TRANSACTION_STATUS.COMPLETED
+            ]
+          }
+          appearance={{
+            theme: isActionNeeded ? 'golden' : 'primary',
+            colorSchema: 'fullColor',
+          }}
+        />
+      )}
+    </>
   );
-
-  const tag = safeTransaction ? SafeTag : <MotionTag />;
 
   return (
     <ListItem
@@ -117,7 +129,7 @@ const ActionsListItem = ({
       meta={<ActionsListItemMeta fromDomain={itemDomain ?? undefined} />}
       onClick={handleActionRedirect}
       status={status}
-      tag={tag}
+      tag={ActionListItemTags}
       title={{ id: 'action.title' }}
       titleValues={getActionTitleValues(item, colony)}
     />

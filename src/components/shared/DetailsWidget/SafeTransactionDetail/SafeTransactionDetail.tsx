@@ -5,9 +5,10 @@ import { nanoid } from 'nanoid';
 
 import Numeral from '~shared/Numeral';
 import Avatar from '~shared/Avatar';
-import { Safe, SafeTransactionData } from '~types';
+import { ColonyAction } from '~types';
 import { SafeTransactionMSG } from '~common/Dialogs/ControlSafeDialog/helpers';
 import { SafeTransactionType } from '~gql';
+import { useSafeTransactionStatus } from '~hooks';
 
 import {
   ContractName,
@@ -40,22 +41,26 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  safe: Safe;
-  safeTransactionDetails: SafeTransactionData[];
-  safeTransactionDetailStatuses: string[];
+  actionData: ColonyAction;
 }
 
-const SafeTransactionDetail = ({
-  safe,
-  safeTransactionDetails,
-  safeTransactionDetailStatuses,
-}: Props) => {
+const SafeTransactionDetail = ({ actionData }: Props) => {
+  const safeTransactions = actionData.safeTransaction?.transactions || [];
+  const safe = actionData.safeTransaction?.safe;
+
   const [openWidgets, setOpenWidgets] = useState<boolean[]>(
-    new Array(safeTransactionDetails.length).fill(true),
+    new Array(safeTransactions.length).fill(true),
   );
+  const safeTransactionStatus = useSafeTransactionStatus(actionData);
+
+  // @NOTE: This is only so that typescript doesn't complain. This case shouldn't happen if everything works as expected.
+  if (!safe) {
+    return null;
+  }
+
   return (
     <div className={styles.main}>
-      {safeTransactionDetails.map((transaction, index, transactions) => {
+      {safeTransactions.map((transaction, index, transactions) => {
         const setIsOpen = () => {
           setOpenWidgets((widgets) => {
             const updated = [...widgets];
@@ -73,7 +78,7 @@ const SafeTransactionDetail = ({
                 <>
                   <Title
                     index={idx}
-                    transactionStatus={safeTransactionDetailStatuses[index]}
+                    transactionStatus={safeTransactionStatus[index]}
                     title={SafeTransactionMSG.TRANSFER_FUNDS}
                     {...{
                       isOpen: openWidgets[index],
@@ -98,7 +103,7 @@ const SafeTransactionDetail = ({
                 <>
                   <Title
                     index={idx}
-                    transactionStatus={safeTransactionDetailStatuses[index]}
+                    transactionStatus={safeTransactionStatus[index]}
                     title={SafeTransactionMSG.TRANSFER_NFT}
                     {...{ isOpen: openWidgets[index], setIsOpen }}
                   />
@@ -147,7 +152,7 @@ const SafeTransactionDetail = ({
                 <>
                   <Title
                     index={idx}
-                    transactionStatus={safeTransactionDetailStatuses[index]}
+                    transactionStatus={safeTransactionStatus[index]}
                     title={SafeTransactionMSG.CONTRACT_INTERACTION}
                     {...{ isOpen: openWidgets[index], setIsOpen }}
                   />
@@ -168,7 +173,7 @@ const SafeTransactionDetail = ({
                 <>
                   <Title
                     index={idx}
-                    transactionStatus={safeTransactionDetailStatuses[index]}
+                    transactionStatus={safeTransactionStatus[index]}
                     title={SafeTransactionMSG.RAW_TRANSACTION}
                     {...{ isOpen: openWidgets[index], setIsOpen }}
                   />

@@ -60,6 +60,11 @@ export { default as useUserByAddress } from './useUserByAddress';
 export { default as useUserByName } from './useUserByName';
 export { default as useUserByNameOrAddress } from './useUserByNameOrAddress';
 export { default as useClipboardCopy } from './useClipboardCopy';
+export {
+  default as useSafeTransactionStatus,
+  TRANSACTION_STATUS,
+  MSG as SafeMSGs,
+} from './useSafeTransactionStatus';
 
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously
