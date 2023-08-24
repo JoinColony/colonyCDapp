@@ -1,29 +1,13 @@
 import { BigNumberish, utils, providers, TypedDataField } from 'ethers';
 
-import { Address, Network, isFullWallet } from '~types';
+import { Address, isFullWallet } from '~types';
 
-import { DEFAULT_NETWORK, DEFAULT_NETWORK_INFO } from '~constants';
+import { DEFAULT_NETWORK_INFO } from '~constants';
 import { ContextModule, getContext } from '~context';
 
 import { generateBroadcasterHumanReadableError } from './errorMessages';
 
-export function getChainId(): number {
-  /*
-   * @NOTE Short-circuit early, skip making an unnecessary RPC call
-   */
-  if (DEFAULT_NETWORK === Network.Ganache) {
-    /*
-     * Due to ganache internals shannanigans, when on the local ganache network
-     * we must use chainId 1, otherwise the broadcaster (and the underlying contracts)
-     * wont't be able to verify the signature (due to a chainId miss-match)
-     *
-     * This issue is only valid for ganache networks, as in production the chain id
-     * is returned properly
-     */
-    return 1;
-  }
-  return DEFAULT_NETWORK_INFO.chainId;
-}
+export const getChainId = (): number => DEFAULT_NETWORK_INFO.chainId;
 
 export const signTypedData = async ({
   domain,
