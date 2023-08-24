@@ -1,16 +1,26 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { ClientType } from '@colony/colony-js';
+import { ClientType, getPermissionProofs, ColonyRole } from '@colony/colony-js';
 
 import { Action, ActionTypes, AllActions } from '~redux';
+import { ColonyManager } from '~context';
 
-import { putError, takeFrom, uploadAnnotation } from '../utils';
+import {
+  putError,
+  takeFrom,
+  uploadAnnotation,
+  getColonyManager,
+} from '../utils';
 
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '~redux/actionCreators';
+import {
+  transactionReady,
+  transactionAddParams,
+  transactionPending,
+} from '~redux/actionCreators';
 
 function* manageReputationAction({
   payload: {
@@ -27,6 +37,8 @@ function* manageReputationAction({
 }: Action<ActionTypes.ACTION_MANAGE_REPUTATION>) {
   let txChannel;
   try {
+    const colonyManager: ColonyManager = yield getColonyManager();
+
     const batchKey = isSmitingReputation
       ? 'emitDomainReputationPenalty'
       : 'emitDomainReputationReward';
@@ -54,10 +66,10 @@ function* manageReputationAction({
     yield createGroupTransaction(manageReputation, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: isSmitingReputation
-        ? 'emitDomainReputationPenaltyWithProofs'
+        ? 'emitDomainReputationPenalty'
         : 'emitDomainReputationReward',
       identifier: colonyAddress,
-      params: [domainId, userAddress, amount],
+      params: [],
       ready: false,
     });
 
@@ -77,6 +89,39 @@ function* manageReputationAction({
       yield takeFrom(
         annotateManageReputation.channel,
         ActionTypes.TRANSACTION_CREATED,
+      );
+    }
+
+    yield put(transactionPending(manageReputation.id));
+
+    if (isSmitingReputation) {
+      const colonyClient = yield colonyManager.getClient(
+        ClientType.ColonyClient,
+        colonyAddress,
+      );
+
+      const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+        colonyClient,
+        domainId,
+        ColonyRole.Arbitration,
+      );
+
+      yield put(
+        transactionAddParams(manageReputation.id, [
+          permissionDomainId,
+          childSkillIndex,
+          domainId,
+          userAddress,
+          amount,
+        ]),
+      );
+    } else {
+      yield put(
+        transactionAddParams(manageReputation.id, [
+          domainId,
+          userAddress,
+          amount,
+        ]),
       );
     }
 
