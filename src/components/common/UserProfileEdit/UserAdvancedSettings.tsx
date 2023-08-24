@@ -123,7 +123,16 @@ const UserAdvancedSettings = ({ user: { walletAddress, profile } }: Props) => {
               <AdvancedSettingsRow
                 name={row.name}
                 paragraphText={row.paragraphText}
-                toggleDisabled={!metatransactionsAvailable}
+                toggleDisabled={(() => {
+                  if (row.name === 'metatransactionsEnabled') {
+                    return !metatransactionsAvailable;
+                  }
+                  // Not implemented currently, so disable it outright
+                  if (row.name === 'decentralizedModeEnabled') {
+                    return true;
+                  }
+                  return true;
+                })()}
                 toggleLabel={row.toggleLabel}
                 tooltipText={row.tooltipText}
                 tooltipTextValues={row.tooltipTextValues}
