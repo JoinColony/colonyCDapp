@@ -1,6 +1,11 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { hexlify, hexZeroPad } from 'ethers/lib/utils';
-import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
+import {
+  ClientType,
+  ColonyRole,
+  getPermissionProofs,
+  Id,
+} from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
@@ -116,7 +121,7 @@ function* managePermissionsAction({
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
       colonyClient,
       domainId,
-      ColonyRole.Architecture,
+      domainId === Id.RootDomain ? ColonyRole.Root : ColonyRole.Architecture,
     );
 
     yield put(
