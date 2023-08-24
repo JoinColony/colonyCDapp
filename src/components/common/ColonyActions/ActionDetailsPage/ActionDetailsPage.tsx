@@ -67,7 +67,7 @@ const ActionDetailsPage = () => {
 
   if (isInvalidTransaction) {
     return (
-      <Layout center actionData={action}>
+      <Layout center>
         <TransactionNotFound
           colonyName={colony.name}
           createdAt={createdAt}
