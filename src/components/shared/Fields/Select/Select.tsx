@@ -31,7 +31,7 @@ const MSG = defineMessages({
   },
 });
 
-const Select = <V,>({
+const Select = ({
   appearance,
   disabled,
   elementOnly,

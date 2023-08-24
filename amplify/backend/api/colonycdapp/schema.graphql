@@ -294,6 +294,11 @@ input UpdateExtensionByColonyAndHashInput {
   installedAt: AWSTimestamp
 }
 
+input GetSafeTransactionStatusInput {
+  transactionHash: String!
+  chainId: Int!
+}
+
 """
 Input data to store the latest available version of the core Colony contract and available extensions
 
@@ -860,6 +865,10 @@ type Query {
     input: GetMotionTimeoutPeriodsInput
   ): GetMotionTimeoutPeriodsReturn
     @function(name: "fetchMotionTimeoutPeriods-${env}")
+  getSafeTransactionStatus(
+    input: GetSafeTransactionStatusInput
+  ): [String!]
+    @function(name: "getSafeTransactionStatus-${env}")
 }
 
 """
