@@ -1,4 +1,3 @@
-import { SafeTransactionType } from '~gql';
 import {
   AnyMessageValues,
   Colony,
@@ -9,7 +8,6 @@ import {
   SystemMessages,
 } from '~types';
 import { getExtendedActionType } from '~utils/colonyActions';
-import { getSafeInteractionType } from '~utils/safes';
 
 import {
   mapActionEventToExpectedFormat,
@@ -63,10 +61,7 @@ enum EventTitleMessageKeys {
 
 /* Maps eventType to message values as found in en-events.ts */
 const EVENT_TYPE_MESSAGE_KEYS_MAP: {
-  [key in
-    | ColonyAndExtensionsEvents
-    | SystemMessages
-    | SafeTransactionType]?: EventTitleMessageKeys[];
+  [key in ColonyAndExtensionsEvents | SystemMessages]?: EventTitleMessageKeys[];
 } = {
   [ColonyAndExtensionsEvents.OneTxPaymentMade]: [
     EventTitleMessageKeys.Amount,
@@ -196,32 +191,34 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
     EventTitleMessageKeys.Initiator,
     EventTitleMessageKeys.RemovedSafes,
   ],
-  [SafeTransactionType.TransferFunds]: [
+  [ColonyAndExtensionsEvents.SafeTransferFunds]: [
     EventTitleMessageKeys.SafeName,
     EventTitleMessageKeys.SafeTransactionAmount,
     EventTitleMessageKeys.IsSafeTransactionRecipientUser,
     EventTitleMessageKeys.SafeTransactionRecipient,
     EventTitleMessageKeys.SafeTransactionAddress,
   ],
-  [SafeTransactionType.RawTransaction]: [
+  [ColonyAndExtensionsEvents.SafeRawTransaction]: [
     EventTitleMessageKeys.SafeName,
     EventTitleMessageKeys.IsSafeTransactionRecipientUser,
     EventTitleMessageKeys.SafeTransactionRecipient,
     EventTitleMessageKeys.SafeTransactionAddress,
   ],
-  [SafeTransactionType.TransferNft]: [
+  [ColonyAndExtensionsEvents.SafeTransferNft]: [
     EventTitleMessageKeys.SafeName,
     EventTitleMessageKeys.SafeTransactionNftToken,
     EventTitleMessageKeys.IsSafeTransactionRecipientUser,
     EventTitleMessageKeys.SafeTransactionRecipient,
     EventTitleMessageKeys.SafeTransactionAddress,
   ],
-  [SafeTransactionType.ContractInteraction]: [
+  [ColonyAndExtensionsEvents.SafeContractInteraction]: [
     EventTitleMessageKeys.SafeName,
     EventTitleMessageKeys.SafeTransactionFunctionName,
     EventTitleMessageKeys.SafeTransactionContractName,
   ],
-  [SafeTransactionType.MultipleTransactions]: [EventTitleMessageKeys.SafeName],
+  [ColonyAndExtensionsEvents.SafeMultipleTransactions]: [
+    EventTitleMessageKeys.SafeName,
+  ],
 };
 
 const DEFAULT_KEYS = [
@@ -260,9 +257,7 @@ const getExtendedEventName = (
     return ColonyAndExtensionsEvents.SafeRemoved;
   }
 
-  const safeInteractionEventName = getSafeInteractionType(actionData);
-
-  return safeInteractionEventName || eventName;
+  return eventName;
 };
 
 /* Returns the correct message values for Actions according to the event type. */

@@ -39,6 +39,14 @@ export enum ActionPageDetails {
   SafeTransaction = 'SafeTransaction',
 }
 
+export const safeActionTypes = [
+  ExtendedColonyActionType.SafeTransferFunds,
+  ExtendedColonyActionType.SafeRawTransaction,
+  ExtendedColonyActionType.SafeTransferNft,
+  ExtendedColonyActionType.SafeContractInteraction,
+  ExtendedColonyActionType.SafeMultipleTransactions,
+];
+
 type DetailsValuesMap = Partial<Record<ActionPageDetails, boolean>>;
 
 const MOTION_SUFFIX = 'MOTION';
@@ -140,7 +148,7 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
         ActionPageDetails.ModuleAddress,
       ];
     }
-    case actionType.includes(ExtendedColonyActionType.SafeTransaction): {
+    case safeActionTypes.some((type) => actionType.includes(type)): {
       return [ActionPageDetails.Type, ActionPageDetails.SafeTransaction];
     }
     case actionType.includes(ColonyActionType.Generic): {
@@ -650,7 +658,13 @@ export const getExtendedActionType = (
   }
 
   if (!isEmpty(actionData.safeTransaction)) {
-    return ExtendedColonyActionType.SafeTransaction;
+    if (actionData.safeTransaction.transactions.length > 1) {
+      return ExtendedColonyActionType.SafeMultipleTransactions;
+    }
+
+    const actionType = `SAFE_${actionData.safeTransaction.transactions[0].transactionType}`;
+
+    return actionType as ExtendedColonyActionType;
   }
 
   return type;

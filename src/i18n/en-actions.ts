@@ -1,7 +1,8 @@
 /* eslint-disable max-len */
 
-import { SafeTransactionType } from '~gql';
 import { ColonyActionType, ExtendedColonyActionType } from '~types';
+
+const safeActionTitle = '{Safe transaction: {safeTransactionTitle}}';
 
 const actionsMessageDescriptors = {
   'action.title': `{actionType, select,
@@ -33,7 +34,11 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.UpdateTokens} {Colony tokens were updated}    
       ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
-      ${ExtendedColonyActionType.SafeTransaction} {Safe transaction: {safeTransactionTitle}}
+      ${ExtendedColonyActionType.SafeMultipleTransactions} ${safeActionTitle}
+      ${ExtendedColonyActionType.SafeTransferNft} ${safeActionTitle}
+      ${ExtendedColonyActionType.SafeTransferFunds} ${safeActionTitle}
+      ${ExtendedColonyActionType.SafeRawTransaction} ${safeActionTitle}
+      ${ExtendedColonyActionType.SafeContractInteraction} ${safeActionTitle}
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,
@@ -66,11 +71,11 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.UpdateTokens} {Update Tokens}
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
-      ${SafeTransactionType.RawTransaction} {Raw transaction}
-      ${SafeTransactionType.TransferFunds} {Transfer funds}
-      ${SafeTransactionType.TransferNft} {Transfer NFT}
-      ${SafeTransactionType.ContractInteraction} {Contract interaction}
-      ${SafeTransactionType.MultipleTransactions} {Multiple transactions}
+      ${ExtendedColonyActionType.SafeRawTransaction} {Raw transaction}
+      ${ExtendedColonyActionType.SafeTransferFunds} {Transfer funds}
+      ${ExtendedColonyActionType.SafeTransferNft} {Transfer NFT}
+      ${ExtendedColonyActionType.SafeContractInteraction} {Contract interaction}
+      ${ExtendedColonyActionType.SafeMultipleTransactions} {Multiple transactions}
       other {Generic}
     }`,
 };

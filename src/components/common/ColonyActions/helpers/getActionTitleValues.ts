@@ -5,7 +5,7 @@ import {
   ExtendedColonyActionType,
   AnyActionType,
 } from '~types';
-import { getExtendedActionType } from '~utils/colonyActions';
+import { getExtendedActionType, safeActionTypes } from '~utils/colonyActions';
 
 import { generateMessageValues } from './getEventTitleValues';
 import { mapColonyActionToExpectedFormat } from './mapItemToMessageFormat';
@@ -78,7 +78,7 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
       ];
     case actionType.includes(ExtendedColonyActionType.AddSafe):
       return [ActionTitleMessageKeys.ChainName];
-    case actionType.includes(ExtendedColonyActionType.SafeTransaction):
+    case safeActionTypes.some((type) => actionType.includes(type)):
       return [ActionTitleMessageKeys.SafeTransactionTitle];
     default:
       return [];

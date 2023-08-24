@@ -19,11 +19,7 @@ import {
 } from '~utils/colonyActions';
 import { findDomainByNativeId } from '~utils/domains';
 import { splitTransactionHash } from '~utils/strings';
-import {
-  getAddedSafe,
-  getRemovedSafes,
-  getSafeInteractionType,
-} from '~utils/safes';
+import { getAddedSafe, getRemovedSafes } from '~utils/safes';
 
 import {
   UserDetail,
@@ -175,9 +171,7 @@ const getDetailItemsMap = (
   const domainMetadata = fromDomain?.metadata || pendingDomainMetadata;
   const addedSafe = getAddedSafe(actionData);
   const removedSafes = getRemovedSafes(actionData);
-  const safeInteractionType = getSafeInteractionType(actionData);
 
-  const actionType = safeInteractionType || extendedActionType;
   const safeTransactionDetails = safeTransaction?.transactions || [];
   const safeTransactionDetailStatuses = safeTransactionDetails.map(
     () => TRANSACTION_STATUS.PENDING,
@@ -187,7 +181,7 @@ const getDetailItemsMap = (
     [ActionPageDetails.Type]: {
       label: MSG.actionType,
       labelValues: undefined,
-      item: <ActionTypeDetail actionType={actionType} />,
+      item: <ActionTypeDetail actionType={extendedActionType} />,
     },
     [ActionPageDetails.FromDomain]: {
       label: MSG.fromDomain,
