@@ -4128,6 +4128,7 @@ export type Query = {
   /** Retrieve a user's reputation within the top domains of a Colony */
   getReputationForTopDomains?: Maybe<GetReputationForTopDomainsReturn>;
   getSafeTransaction?: Maybe<SafeTransaction>;
+  getSafeTransactionStatus?: Maybe<Array<Scalars['String']>>;
   getToken?: Maybe<Token>;
   getTokenByAddress?: Maybe<ModelTokenConnection>;
   /** Fetch a token's information. Tries to get the data from the DB first, if that fails, resolves to get data from chain */
@@ -6314,6 +6315,13 @@ export type GetMotionTransactionHashQueryVariables = Exact<{
 
 export type GetMotionTransactionHashQuery = { __typename?: 'Query', getColonyActionByMotionId?: { __typename?: 'ModelColonyActionConnection', items: Array<{ __typename?: 'ColonyAction', id: string } | null> } | null };
 
+export type GetSafeTransactionStatusQueryVariables = Exact<{
+  input: GetSafeTransactionStatusInput;
+}>;
+
+
+export type GetSafeTransactionStatusQuery = { __typename?: 'Query', getSafeTransactionStatus?: Array<string> | null };
+
 export type GetFullColonyByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
 }>;
@@ -7967,6 +7975,39 @@ export function useGetMotionTransactionHashLazyQuery(baseOptions?: Apollo.LazyQu
 export type GetMotionTransactionHashQueryHookResult = ReturnType<typeof useGetMotionTransactionHashQuery>;
 export type GetMotionTransactionHashLazyQueryHookResult = ReturnType<typeof useGetMotionTransactionHashLazyQuery>;
 export type GetMotionTransactionHashQueryResult = Apollo.QueryResult<GetMotionTransactionHashQuery, GetMotionTransactionHashQueryVariables>;
+export const GetSafeTransactionStatusDocument = gql`
+    query GetSafeTransactionStatus($input: GetSafeTransactionStatusInput!) {
+  getSafeTransactionStatus(input: $input)
+}
+    `;
+
+/**
+ * __useGetSafeTransactionStatusQuery__
+ *
+ * To run a query within a React component, call `useGetSafeTransactionStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSafeTransactionStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSafeTransactionStatusQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetSafeTransactionStatusQuery(baseOptions: Apollo.QueryHookOptions<GetSafeTransactionStatusQuery, GetSafeTransactionStatusQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSafeTransactionStatusQuery, GetSafeTransactionStatusQueryVariables>(GetSafeTransactionStatusDocument, options);
+      }
+export function useGetSafeTransactionStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSafeTransactionStatusQuery, GetSafeTransactionStatusQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSafeTransactionStatusQuery, GetSafeTransactionStatusQueryVariables>(GetSafeTransactionStatusDocument, options);
+        }
+export type GetSafeTransactionStatusQueryHookResult = ReturnType<typeof useGetSafeTransactionStatusQuery>;
+export type GetSafeTransactionStatusLazyQueryHookResult = ReturnType<typeof useGetSafeTransactionStatusLazyQuery>;
+export type GetSafeTransactionStatusQueryResult = Apollo.QueryResult<GetSafeTransactionStatusQuery, GetSafeTransactionStatusQueryVariables>;
 export const GetFullColonyByAddressDocument = gql`
     query GetFullColonyByAddress($address: ID!) {
   getColonyByAddress(id: $address) {
