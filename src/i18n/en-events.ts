@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
 
-import { SafeTransactionType } from '~gql';
 import { ColonyAndExtensionsEvents } from '~types';
 
 const eventsMessageDescriptors = {
@@ -33,23 +32,23 @@ const eventsMessageDescriptors = {
       other {{eventNameDecorated} emitted by {clientOrExtensionType}}
       ${ColonyAndExtensionsEvents.SafeRemoved} {{initiator} removed {removedSafes} using the Root permission.}
       ${ColonyAndExtensionsEvents.SafeAdded} {{initiator} added the Safe {safeAddress} from {chainName} using the Root permission.}
-      ${SafeTransactionType.TransferFunds} {{safeName} made a payment using the Root permission to pay {safeTransactionAmount} to
+      ${ColonyAndExtensionsEvents.SafeTransferFunds} {{safeName} made a payment using the Root permission to pay {safeTransactionAmount} to
       {isSafeTransactionRecipientUser, select,
         true {{safeTransactionRecipient}}
         other {{safeTransactionAddress}}
       }}
-      ${SafeTransactionType.RawTransaction} {{safeName} initiated a transaction with
+      ${ColonyAndExtensionsEvents.SafeRawTransaction} {{safeName} initiated a transaction with
       {isSafeTransactionRecipientUser, select,
         true {{safeTransactionRecipient}}
         other {{safeTransactionRawTransactionAddress}}
       }}
-      ${SafeTransactionType.TransferNft} {{safeName} made a payment using the Root permission to pay with NFT token called {safeTransactionNftToken} to
+      ${ColonyAndExtensionsEvents.SafeTransferNft} {{safeName} made a payment using the Root permission to pay with NFT token called {safeTransactionNftToken} to
       {isSafeTransactionRecipientUser, select,
         true {{safeTransactionRecipient}}
         other {{safeTransactionAddress}}
       }}
-      ${SafeTransactionType.ContractInteraction} {{safeName} called the {safeTransactionFunctionName} function on the {safeTransactionContractName} contract}
-      ${SafeTransactionType.MultipleTransactions} {{safeName} initiated multiple transactions}
+      ${ColonyAndExtensionsEvents.SafeContractInteraction} {{safeName} called the {safeTransactionFunctionName} function on the {safeTransactionContractName} contract}
+      ${ColonyAndExtensionsEvents.SafeMultipleTransactions} {{safeName} initiated multiple transactions}
     }`,
   'eventList.event': `{eventName, select,
       ${ColonyAndExtensionsEvents.DomainAdded} {{agent} added Team: {domain}}

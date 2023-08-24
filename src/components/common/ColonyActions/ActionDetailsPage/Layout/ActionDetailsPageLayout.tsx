@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 
-import { ColonyAction, ExtendedColonyActionType } from '~types';
+import { ColonyAction } from '~types';
 import { ETHEREUM_NETWORK } from '~constants';
-import { getExtendedActionType } from '~utils/colonyActions';
+import { getExtendedActionType, safeActionTypes } from '~utils/colonyActions';
 import { useColonyContext } from '~hooks';
 
 import SafeTransactionBanner from '../SafeTransactionBanner';
@@ -46,7 +46,7 @@ const ActionDetailsPageLayout = ({
       })}
     >
       {hasPendingSafeTransactions &&
-        extendedActionType === ExtendedColonyActionType.SafeTransaction && (
+        safeActionTypes.some((type) => extendedActionType.includes(type)) && (
           <SafeTransactionBanner
             chainId={(
               actionData?.safeTransaction?.safe?.chainId ||
