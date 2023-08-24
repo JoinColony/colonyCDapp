@@ -61,22 +61,6 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
           className={styles.titleInput}
           placeholder={formatMessage({ id: 'placeholder.title' })}
         />
-        {showErrorBanner && (
-          <div className="mb-7">
-            <NotificationBanner
-              status={isUnlockTokenAction ? 'error' : 'warning'}
-              title={{
-                id: isUnlockTokenAction
-                  ? 'actionSidebar.unlock.token.error'
-                  : 'actionSidebar.mint.token.permission.error',
-              }}
-              actionText={
-                isUnlockTokenAction ? { id: 'learn.more' } : undefined
-              }
-              actionType="call-to-action"
-            />
-          </div>
-        )}
         <ActionSidebarRow
           iconName="file-plus"
           title={{ id: 'actionSidebar.actionType' }}
@@ -110,6 +94,23 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
           </>
         </ActionSidebarRow>
         <ActionsContent />
+
+        {showErrorBanner && (
+          <div className="mb-7">
+            <NotificationBanner
+              status={isUnlockTokenAction ? 'error' : 'warning'}
+              title={{
+                id: isUnlockTokenAction
+                  ? 'actionSidebar.unlock.token.error'
+                  : 'actionSidebar.mint.token.permission.error',
+              }}
+              actionText={
+                isUnlockTokenAction ? { id: 'learn.more' } : undefined
+              }
+              actionType="call-to-action"
+            />
+          </div>
+        )}
       </div>
       <div className="mt-auto">
         {!selectedAction && (
