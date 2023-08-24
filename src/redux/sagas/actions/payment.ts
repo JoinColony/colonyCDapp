@@ -3,13 +3,6 @@ import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { ClientType, ColonyRole } from '@colony/colony-js';
 
-/*
- * @NOTE ColonyJS does not export this helper
- * So until it does, we have to force the import via non-relative paths
- */
-// eslint-disable-next-line import/no-relative-packages
-import { getMultiPermissionProofs } from '../../../../node_modules/@colony/colony-js/dist/esm/clients/Core/augments/commonAugments.js';
-
 import { ActionTypes, Action, AllActions } from '~redux';
 import { ColonyManager } from '~context';
 
@@ -18,6 +11,7 @@ import {
   takeFrom,
   uploadAnnotation,
   getColonyManager,
+  getMultiPermissionProofs,
 } from '../utils';
 
 import {
@@ -123,24 +117,19 @@ function* createPaymentAction({
 
     yield put(transactionPending(paymentAction.id));
 
-    const colonyClient = yield colonyManager.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
-    );
-
     const oneTxPaymentClient = yield colonyManager.getClient(
       ClientType.OneTxPaymentClient,
       colonyAddress,
     );
 
     const [extensionPDID, extensionCSI] = yield getMultiPermissionProofs(
-      colonyClient,
+      colonyAddress,
       domainId,
       [ColonyRole.Funding, ColonyRole.Administration],
       oneTxPaymentClient.address,
     );
     const [userPDID, userCSI] = yield getMultiPermissionProofs(
-      colonyClient,
+      colonyAddress,
       domainId,
       [ColonyRole.Funding, ColonyRole.Administration],
     );

@@ -1,3 +1,4 @@
+import { BigNumberish } from 'ethers';
 import {
   ColonyRole,
   Id,
@@ -11,19 +12,19 @@ import { ColonyManager } from '~context';
 import getColonyManager from './getColonyManager';
 
 export function* getMoveFundsPermissionProofs(
-  colonyAddress,
-  fromtPotId,
-  toPotId,
+  colonyAddress: string,
+  fromtPotId: BigNumberish,
+  toPotId: BigNumberish,
 ) {
   const colonyManager: ColonyManager = yield getColonyManager();
+
   const { signer } = colonyManager;
+  const walletAddress = yield signer.getAddress();
 
   const colonyClient = yield colonyManager.getClient(
     ClientType.ColonyClient,
     colonyAddress,
   );
-
-  const walletAddress = yield signer.getAddress();
 
   const fromDomainId = yield getPotDomain(colonyClient, fromtPotId);
   const toDomainId = yield getPotDomain(colonyClient, toPotId);
@@ -84,4 +85,39 @@ export function* getMoveFundsPermissionProofs(
     );
   }
   return [fromPermissionDomainId, fromChildSkillIndex, toChildSkillIndex];
+}
+
+export function* getMultiPermissionProofs(
+  colonyAddress: string,
+  domainId: BigNumberish,
+  roles: ColonyRole[],
+  customAddress?: string,
+) {
+  const colonyManager: ColonyManager = yield getColonyManager();
+
+  const colonyClient = yield colonyManager.getClient(
+    ClientType.ColonyClient,
+    colonyAddress,
+  );
+
+  const proofs = yield Promise.all(
+    roles.map((role) =>
+      getPermissionProofs(colonyClient, domainId, role, customAddress),
+    ),
+  );
+
+  // We are checking that all of the permissions resolve to the same domain and childSkillIndex
+  for (let idx = 0; idx < proofs.length; idx += 1) {
+    const [permissionDomainId, childSkillIndex, address] = proofs[idx];
+    if (
+      !permissionDomainId.eq(proofs[0][0]) ||
+      !childSkillIndex.eq(proofs[0][1])
+    ) {
+      throw new Error(
+        `${address} has to have all required roles (${roles}) in the same domain`,
+      );
+    }
+  }
+  // It does not need to be an array because if we get here, all the proofs are the same
+  return proofs[0];
 }
