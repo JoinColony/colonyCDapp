@@ -51,7 +51,7 @@ export const useMintToken = () => {
         .required(() => 'required field')
         .transform((value) => toFinite(value))
         .moreThan(0, () => 'Please enter an amount greater than 0'),
-      createdIn: yup.number().defined(),
+      createdIn: yup.string().defined(),
       decisionMethod: yup.string().defined(),
       annotation: yup.string().max(MAX_ANNOTATION_LENGTH).defined(),
     })

@@ -16,7 +16,7 @@ const displayName = 'v5.common.ActionsContent.partials.TeamsSelect';
 
 const TeamsSelect: FC<SelectProps> = ({ name }) => {
   const { selectedAction } = useActionSidebarContext();
-  const { register, setValue } = useFormContext();
+  const { setValue, register } = useFormContext();
   const teamsOptions = useTeams();
   const { formatMessage } = useIntl();
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
@@ -26,6 +26,7 @@ const TeamsSelect: FC<SelectProps> = ({ name }) => {
     if (
       selectedAction === Actions.TRANSFER_FUNDS ||
       selectedAction === Actions.UNLOCK_TOKEN ||
+      selectedAction === Actions.CREATE_NEW_TEAM ||
       selectedAction === Actions.UPGRADE_COLONY_VERSION
     ) {
       setSelectedTeam('Root');

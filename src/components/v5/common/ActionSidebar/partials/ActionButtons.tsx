@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { useMobile } from '~hooks';
-import Button from '~v5/shared/Button';
+import Button, { PendingButton } from '~v5/shared/Button';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { ActionButtonsProps } from '../types';
 import { useGetSubmitButton } from './hooks';
@@ -14,7 +15,10 @@ const ActionButtons: FC<ActionButtonsProps> = ({
 }) => {
   const isMobile = useMobile();
   const submitText = useGetSubmitButton();
+  const methods = useFormContext();
   const { selectedAction } = useActionSidebarContext();
+
+  const isLoading = methods?.formState?.isSubmitting;
 
   return (
     <div
@@ -27,17 +31,21 @@ const ActionButtons: FC<ActionButtonsProps> = ({
         onClick={toggleCancelModal}
         isFullSize={isMobile}
       />
-      <Button
-        mode="primarySolid"
-        disabled={
-          !selectedAction || isActionDisabled
-          // || !!Object.keys(methods.formState.errors).length
-        }
-        text={{ id: submitText }}
-        isFullSize={isMobile}
-        type="submit"
-        // loading={methods?.formState?.isSubmitting}
-      />
+      {isLoading ? (
+        <PendingButton
+          isPending={isLoading}
+          text={{ id: 'button.pending' }}
+          rounded="s"
+        />
+      ) : (
+        <Button
+          mode="primarySolid"
+          disabled={!selectedAction || isActionDisabled}
+          text={{ id: submitText }}
+          isFullSize={isMobile}
+          type="submit"
+        />
+      )}
     </div>
   );
 };

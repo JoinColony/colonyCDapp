@@ -9,15 +9,27 @@ import { SearchItemProps } from './types';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { Actions } from '~constants/actions';
 import Avatar from '~v5/shared/Avatar';
+import { useMobile } from '~hooks';
 
 const displayName = 'v5.SearchSelect.partials.SearchItem';
 
-const SearchItem: FC<SearchItemProps> = ({ options, onChange }) => {
+const SearchItem: FC<SearchItemProps> = ({
+  options,
+  onChange,
+  isLabelVisible = true,
+}) => {
   const { formatMessage } = useIntl();
+  const isMobile = useMobile();
   const { setSelectedAction } = useActionSidebarContext();
 
   return (
-    <ul className="w-full">
+    <ul
+      className={clsx({
+        'w-full': isLabelVisible,
+        'flex -mx-2 items-center flex-wrap w-[8.75rem]': !isLabelVisible,
+        'w-[12.75rem]': !isLabelVisible && isMobile,
+      })}
+    >
       {sortDisabled(options).map(
         ({ label, value, isDisabled, avatar, showAvatar, color }) => {
           const firstDisabledOption = options.filter(
@@ -29,7 +41,13 @@ const SearchItem: FC<SearchItemProps> = ({ options, onChange }) => {
           const hasAvatar = showAvatar || !!color;
 
           return (
-            <li className="mb-4 last:mb-0 w-full" key={value}>
+            <li
+              className={clsx('mb-4 last:mb-0', {
+                'w-full': isLabelVisible,
+                'inline-flex w-1/4 px-2': !isLabelVisible,
+              })}
+              key={value}
+            >
               <button
                 type="button"
                 className={clsx(styles.button, {
@@ -44,7 +62,16 @@ const SearchItem: FC<SearchItemProps> = ({ options, onChange }) => {
                   onChange?.(value);
                 }}
               >
-                {color && (
+                {color && !isLabelVisible && (
+                  <div
+                    className={clsx(color, 'rounded', {
+                      'w-[1.125rem] h-[1.125rem]': !isMobile,
+                      'w-7 h-7': isMobile,
+                    })}
+                  />
+                )}
+
+                {color && isLabelVisible && (
                   <span className={clsx(color, 'mr-2 w-3.5 h-3.5 rounded')} />
                 )}
                 {showAvatar && (
@@ -52,7 +79,7 @@ const SearchItem: FC<SearchItemProps> = ({ options, onChange }) => {
                     <Avatar avatar={avatar} />
                   </div>
                 )}
-                {labelText}
+                {isLabelVisible && labelText}
                 {firstDisabledOption?.value === value && (
                   <ExtensionsStatusBadge
                     mode="coming-soon"

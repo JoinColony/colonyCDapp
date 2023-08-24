@@ -38,4 +38,5 @@ export type PillsProps = {
   pillSize?: PillSize;
   className?: string;
   teamName?: string;
+  isIconVisible?: boolean;
 };

@@ -6,13 +6,15 @@ import UserSelect from './partials/UserSelect';
 import { useActionsContent } from './hooks';
 import AmountField from './partials/AmountField';
 import DecisionField from './partials/DecisionField';
-import TransactionTable from './partials/TransactionTable/TransactionTable';
+import TransactionTable from './partials/TransactionTable';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import DescriptionField from './partials/DescriptionField';
 import useToggle from '~hooks/useToggle';
 import { useDetectClickOutside } from '~hooks';
 import { Actions } from '~constants/actions';
-import ColonyVersionField from './partials/ColonyVersionField/ColonyVersionField';
+import DefaultField from './partials/DefaultField';
+import TeamColourField from './partials/TeamColourField';
+import ColonyVersionField from './partials/ColonyVersionField';
 
 const displayName = 'v5.common.ActionsContent';
 
@@ -26,6 +28,9 @@ const ActionsContent: FC = () => {
     shouldShowDecisionField,
     shouldShowDescriptionField,
     shouldShowTransferFundsField,
+    shouldShowTeamPurposeField,
+    shouldShowTeamNameField,
+    shouldShowTeamColourField,
     shouldShowVersionFields,
   } = useActionsContent();
   const [
@@ -77,12 +82,34 @@ const ActionsContent: FC = () => {
           <AmountField name="amount" />
         </ActionSidebarRow>
       )}
-      {shouldShowDecisionField && selectedAction && (
+      {shouldShowTeamNameField && (
         <ActionSidebarRow
-          iconName="scales"
-          title={{ id: 'actionSidebar.decisionMethod' }}
+          iconName="user-list"
+          title={{ id: 'actionSidebar.teamName' }}
         >
-          <DecisionField />
+          <DefaultField
+            name="teamName"
+            placeholder={{ id: 'actionSidebar.placeholder.teamName' }}
+          />
+        </ActionSidebarRow>
+      )}
+      {shouldShowTeamPurposeField && (
+        <ActionSidebarRow
+          iconName="rocket"
+          title={{ id: 'actionSidebar.teamPurpose' }}
+        >
+          <DefaultField
+            name="domainPurpose"
+            placeholder={{ id: 'actionSidebar.placeholder.purpose' }}
+          />
+        </ActionSidebarRow>
+      )}
+      {shouldShowTeamColourField && (
+        <ActionSidebarRow
+          iconName="paint"
+          title={{ id: 'actionSidebar.teamColour' }}
+        >
+          <TeamColourField />
         </ActionSidebarRow>
       )}
       {shouldShowCreatedInField && (
@@ -91,6 +118,14 @@ const ActionsContent: FC = () => {
           title={{ id: 'actionSidebar.createdIn' }}
         >
           <TeamsSelect name="createdIn" />
+        </ActionSidebarRow>
+      )}
+      {shouldShowDecisionField && selectedAction && (
+        <ActionSidebarRow
+          iconName="scales"
+          title={{ id: 'actionSidebar.decisionMethod' }}
+        >
+          <DecisionField />
         </ActionSidebarRow>
       )}
       {shouldShowDescriptionField && (

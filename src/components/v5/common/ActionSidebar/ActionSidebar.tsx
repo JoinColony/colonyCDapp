@@ -19,6 +19,7 @@ import MintTokenForm from './partials/MintTokenForm';
 import { Actions } from '~constants/actions';
 import ActionButtons from './partials/ActionButtons';
 import TransferFundsForm from './partials/TransferFundsForm';
+import CreateNewTeamForm from './partials/CreateNewTeamForm';
 import UnlockTokenForm from './partials/UnlockTokenForm';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
 import UpgradeColonyForm from './partials/UpgradeColonyForm/UpgradeColonyForm';
@@ -51,6 +52,15 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
     ref,
     () => !isMobile && !isCancelModalOpen && toggleActionSidebarOff(),
   );
+
+  // @TODO: handle showing error when addres is invalid and add tooltip and display wallet instead of name
+  // const showWarningForAddress = colony.metadata?.isWhitelistActivated
+  //   ? recipient &&
+  //     !(colony.metadata?.whitelistedAddresses ?? []).some(
+  //       (address) =>
+  //         address.toLowerCase() === recipient.walletAddress.toLowerCase(),
+  //     )
+  //   : false;
 
   const formContent = (
     <>
@@ -131,6 +141,9 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
     }
     if (selectedAction === Actions.TRANSFER_FUNDS) {
       return <TransferFundsForm>{formContent}</TransferFundsForm>;
+    }
+    if (selectedAction === Actions.CREATE_NEW_TEAM) {
+      return <CreateNewTeamForm>{formContent}</CreateNewTeamForm>;
     }
     if (selectedAction === Actions.UNLOCK_TOKEN) {
       return <UnlockTokenForm>{formContent}</UnlockTokenForm>;

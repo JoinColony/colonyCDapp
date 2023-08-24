@@ -22,6 +22,7 @@ const PendingButton: FC<PropsWithChildren<PendingButtonProps>> = ({
   ariaLabel,
   isPending,
   setTriggerRef,
+  rounded = 'l',
   ...rest
 }) => {
   const { formatMessage } = useIntl();
@@ -46,6 +47,8 @@ const PendingButton: FC<PropsWithChildren<PendingButtonProps>> = ({
             styles.pending,
             'flex items-center justify-center font-medium transition-all duration-normal',
             {
+              'rounded-lg': rounded === 's',
+              'rounded-full': rounded === 'l',
               'pointer-events-none': disabled,
             },
             className,

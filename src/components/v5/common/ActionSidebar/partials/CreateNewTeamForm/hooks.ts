@@ -10,28 +10,25 @@ import {
   useColonyContext,
   useEnabledExtensions,
 } from '~hooks';
-import { toFinite } from '~utils/lodash';
 import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { getTransferFundsDialogPayload } from '~common/Dialogs/TransferFundsDialog/helpers';
+import { getCreateDomainDialogPayload } from '~common/Dialogs/CreateDomainDialog/helpers';
+import { Colony } from '~types';
 
-export const useTransferFundsForm = () => {
+export const useCrateNewTeam = () => {
   const { toggleActionSidebarOff } = useActionSidebarContext();
   const { isVotingReputationEnabled } = useEnabledExtensions();
   const { colony } = useColonyContext();
   const navigate = useNavigate();
 
   const actionType = isVotingReputationEnabled
-    ? ActionTypes.ROOT_MOTION
-    : ActionTypes.ACTION_MOVE_FUNDS;
+    ? ActionTypes.MOTION_DOMAIN_CREATE_EDIT
+    : ActionTypes.ACTION_DOMAIN_CREATE;
 
   const transform = pipe(
-    mapPayload((payload) => {
-      if (colony) {
-        return getTransferFundsDialogPayload(colony, payload);
-      }
-      return null;
-    }),
+    mapPayload((payload) =>
+      getCreateDomainDialogPayload(colony as Colony, payload),
+    ),
     withMeta({ navigate }),
   );
 
@@ -45,23 +42,17 @@ export const useTransferFundsForm = () => {
   const validationSchema = yup
     .object()
     .shape({
-      forceAction: yup.bool().defined(),
-      amount: yup
-        .number()
-        .required(() => 'required field')
-        .transform((value) => toFinite(value))
-        .moreThan(0, () => 'Please enter an amount greater than 0'),
-      createdIn: yup.string().defined(),
-      tokenAddress: yup.string().defined(),
-      team: yup.number().required(),
-      to: yup
-        .number()
-        .required()
-        .when('fromDomainId', (fromDomainId, schema) =>
-          schema.notOneOf([fromDomainId], 'Cannot move to same team pot'),
-        ),
+      forceAction: yup.boolean().defined(),
+      teamName: yup
+        .string()
+        .trim()
+        .max(20)
+        .required(() => 'Team name required'),
+      domainPurpose: yup.string().trim().max(90).notRequired(),
+      domainColor: yup.string().notRequired(),
+      createdIn: yup.number().defined(),
       decisionMethod: yup.string().defined(),
-      annotation: yup.string().max(MAX_ANNOTATION_LENGTH).defined(),
+      annotation: yup.string().max(MAX_ANNOTATION_LENGTH).notRequired(),
     })
     .defined();
 
@@ -72,19 +63,16 @@ export const useTransferFundsForm = () => {
     resolver: yupResolver(validationSchema),
     defaultValues: {
       forceAction: false,
-      annotation: '',
-      amount: 0,
     },
   });
 
   const onSubmit = async (values: FormValues) => {
     try {
       await asyncFunction({
-        amount: values.amount,
+        teamName: values.teamName,
+        domainPurpose: values.domainPurpose,
+        domainColor: values.domainColor,
         motionDomainId: values.createdIn,
-        fromDomainId: values.team,
-        toDomainId: values.to,
-        tokenAddress: values.tokenAddress,
         decisionMethod: values.decisionMethod,
         annotation: values.annotation,
       });

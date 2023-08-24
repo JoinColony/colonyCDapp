@@ -9,8 +9,10 @@ import Card from '~v5/shared/Card';
 import { useDetectClickOutside } from '~hooks';
 import { decisionMethodOptions } from './consts';
 
+const displayName = 'v5.common.ActionsContent.partials.DecisionField';
+
 const DecisionField: FC = () => {
-  const { register, setValue } = useFormContext();
+  const method = useFormContext();
   const { formatMessage } = useIntl();
   const [selectedDecisionMethod, setSelectedDecisionMethod] = useState<
     string | null
@@ -35,7 +37,7 @@ const DecisionField: FC = () => {
       </button>
       <input
         type="text"
-        {...register('decisionMethod')}
+        {...method?.register('decisionMethod')}
         name="decisionMethod"
         id="decisionMethod"
         className="hidden"
@@ -61,7 +63,7 @@ const DecisionField: FC = () => {
                   })}
                   onClick={() => {
                     setSelectedDecisionMethod(value);
-                    setValue('decisionMethod', value);
+                    method?.setValue('decisionMethod', value);
                   }}
                 >
                   {formatMessage(label)}
@@ -74,5 +76,7 @@ const DecisionField: FC = () => {
     </div>
   );
 };
+
+DecisionField.displayName = displayName;
 
 export default DecisionField;
