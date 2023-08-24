@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import clsx from 'clsx';
-import { useIntl } from 'react-intl';
 
 import { UserMenuProps } from './types';
 import { useAppContext, useMobile } from '~hooks';
@@ -15,6 +14,9 @@ import UserSubmenu from '../UserSubmenu';
 import { userMenuItems } from './consts';
 import TitleLabel from '~v5/shared/TitleLabel';
 import NavigationTools from '~common/Extensions/NavigationTools';
+import { ActionButton } from '~shared/Button';
+import { ActionTypes } from '~redux';
+import { formatText } from '~utils/intl';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserMenu';
 
@@ -29,8 +31,7 @@ const UserMenu: FC<UserMenuProps> = ({
   hideColonies,
 }) => {
   const isMobile = useMobile();
-  const { formatMessage } = useIntl();
-  const { connectWallet } = useAppContext();
+  const { connectWallet, updateWallet } = useAppContext();
   const { name, profile } = user || {};
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 
@@ -80,7 +81,7 @@ const UserMenu: FC<UserMenuProps> = ({
                 iconName="cardholder"
                 iconSize="extraTiny"
               >
-                {formatMessage({ id: 'connectWallet' })}
+                {formatText({ id: 'connectWallet' })}
               </Button>
               <Button
                 mode="tertiary"
@@ -89,25 +90,25 @@ const UserMenu: FC<UserMenuProps> = ({
                 iconName="list"
                 iconSize="extraTiny"
               >
-                {formatMessage({ id: 'help' })}
+                {formatText({ id: 'help' })}
               </Button>
             </div>
             <div className="w-full pb-4 mb-6 border-b border-b-gray-200 sm:pb-3 sm:mb-5">
               <Button mode="quinary" isFullSize onClick={connectWallet}>
-                {formatMessage({ id: 'connectWallet' })}
+                {formatText({ id: 'connectWallet' })}
               </Button>
             </div>
           </div>
         )}
         <div className="w-full px-6 pb-4 mb-6 border-b border-b-gray-200 sm:pb-3">
-          <TitleLabel text={formatMessage({ id: 'userMenu.optionsTitle' })} />
+          <TitleLabel text={formatText({ id: 'userMenu.optionsTitle' })} />
           <ul className="text-left">
             {userMenuItems.map(({ id, link, icon, name: itemName }) => (
               <li key={id} className="mb-2 last:mb-0 sm:mb-0">
                 {link ? (
                   <Link to={link} className="navigation-link">
                     <Icon name={icon} appearance={{ size: iconSize }} />
-                    <p className="ml-2">{formatMessage({ id: itemName })}</p>
+                    <p className="ml-2">{formatText({ id: itemName })}</p>
                   </Link>
                 ) : (
                   <button
@@ -119,7 +120,7 @@ const UserMenu: FC<UserMenuProps> = ({
                   >
                     <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
                       <Icon name={icon} appearance={{ size: iconSize }} />
-                      <p className="ml-2">{formatMessage({ id: itemName })}</p>
+                      <p className="ml-2">{formatText({ id: itemName })}</p>
                     </span>
                     <Icon name={iconName} appearance={{ size: 'extraTiny' }} />
                   </button>
@@ -131,13 +132,17 @@ const UserMenu: FC<UserMenuProps> = ({
         <div className="px-6">
           {isWalletConnected && (
             <div className="w-full mb-4 sm:mb-3">
-              <TitleLabel text={formatMessage({ id: 'userMenu.other' })} />
-              <Link to="/" className="navigation-link">
+              <TitleLabel text={formatText({ id: 'userMenu.other' })} />
+              <div className="navigation-link">
                 <Icon name="plugs" appearance={{ size: iconSize }} />
-                <p className="ml-2">
-                  {formatMessage({ id: 'userMenu.disconnectWalletTitle' })}
-                </p>
-              </Link>
+                <ActionButton
+                  className="ml-2"
+                  appearance={{ theme: 'no-style' }}
+                  text={{ id: 'userMenu.disconnectWalletTitle' }}
+                  actionType={ActionTypes.USER_LOGOUT}
+                  onSuccess={updateWallet}
+                />
+              </div>
             </div>
           )}
           <ThemeSwitcher />
@@ -153,7 +158,7 @@ const UserMenu: FC<UserMenuProps> = ({
           <div className="px-6">
             <button
               type="button"
-              aria-label={formatMessage({ id: 'ariaLabel.backToMainMenu' })}
+              aria-label={formatText({ id: 'ariaLabel.backToMainMenu' })}
               className={clsx(styles.buttonBack, 'group text-4')}
               onClick={() => setActiveSubmenu(null)}
             >
@@ -161,7 +166,7 @@ const UserMenu: FC<UserMenuProps> = ({
 
               <TitleLabel
                 className="ml-2"
-                text={formatMessage({ id: activeSubmenu })}
+                text={formatText({ id: activeSubmenu })}
               />
             </button>
             <UserSubmenu submenuId={activeSubmenu} />
