@@ -49,4 +49,9 @@ export const ACTION_TYPES_ICONS_MAP: Record<AnyActionType, string> = {
   [ExtendedColonyActionType.SafeMultipleTransactions]: safeLogoIconName,
   [ExtendedColonyActionType.SafeTransferNft]: safeLogoIconName,
   [ExtendedColonyActionType.SafeRawTransaction]: safeLogoIconName,
+  [ExtendedColonyActionType.SafeTransferFundsMotion]: safeLogoIconName,
+  [ExtendedColonyActionType.SafeContractInteractionMotion]: safeLogoIconName,
+  [ExtendedColonyActionType.SafeMultipleTransactionsMotion]: safeLogoIconName,
+  [ExtendedColonyActionType.SafeTransferNftMotion]: safeLogoIconName,
+  [ExtendedColonyActionType.SafeRawTransactionMotion]: safeLogoIconName,
 };

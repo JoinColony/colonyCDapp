@@ -20,7 +20,6 @@ import {
 import { findDomainByNativeId } from '~utils/domains';
 import { splitTransactionHash } from '~utils/strings';
 import { getAddedSafe, getRemovedSafes } from '~utils/safes';
-import { TRANSACTION_STATUS } from '~utils/safes/getTransactionStatuses';
 
 import {
   UserDetail,
@@ -172,11 +171,6 @@ const getDetailItemsMap = (
   const addedSafe = getAddedSafe(actionData);
   const removedSafes = getRemovedSafes(actionData);
 
-  const safeTransactionDetails = safeTransaction?.transactions || [];
-  const safeTransactionDetailStatuses = safeTransactionDetails.map(
-    () => TRANSACTION_STATUS.PENDING,
-  );
-
   return {
     [ActionPageDetails.Type]: {
       label: MSG.actionType,
@@ -319,9 +313,7 @@ const getDetailItemsMap = (
       item: safeTransaction && (
         <SafeTransactionDetail
           key={safeTransaction.id}
-          safe={safeTransaction.safe}
-          safeTransactionDetails={safeTransactionDetails}
-          safeTransactionDetailStatuses={safeTransactionDetailStatuses}
+          actionData={actionData}
         />
       ),
       isListItem: true,

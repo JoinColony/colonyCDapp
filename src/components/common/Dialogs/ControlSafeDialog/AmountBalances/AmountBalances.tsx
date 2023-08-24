@@ -9,7 +9,7 @@ import {
   /* BINANCE_NETWORK, */
   DEFAULT_TOKEN_DECIMALS,
   ETHEREUM_NETWORK,
-  SAFE_NETWORKS,
+  SUPPORTED_SAFE_NETWORKS,
 } from '~constants';
 import { MaxButtonParams } from '~shared/Fields/Input/HookForm';
 import { Safe, SafeBalance, Token } from '~types';
@@ -59,7 +59,7 @@ const AmountBalances = ({
       return balance.token;
     }
     // Otherwise retrieve the safe chain's native token
-    const safeNetworkData = SAFE_NETWORKS.find(
+    const safeNetworkData = SUPPORTED_SAFE_NETWORKS.find(
       (network) => Number(selectedSafe?.chainId) === network.chainId,
     );
     // @NOTE: We know nativeToken is defined for Ethereum network.

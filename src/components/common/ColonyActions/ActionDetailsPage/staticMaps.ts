@@ -97,6 +97,7 @@ export const ACTIONS_EVENTS: ActionsEventsMap = {
   [ColonyActionType.EmitDomainReputationReward]: [
     ColonyAndExtensionsEvents.ArbitraryReputationUpdate,
   ],
+  [ColonyActionType.MakeArbitraryTransaction]: SAFE_EVENTS,
   [ColonyActionType.UnlockTokenMotion]: MOTION_EVENTS,
   [ColonyActionType.MintTokensMotion]: MOTION_EVENTS,
   [ColonyActionType.CreateDomainMotion]: MOTION_EVENTS,
@@ -108,5 +109,5 @@ export const ACTIONS_EVENTS: ActionsEventsMap = {
   [ColonyActionType.VersionUpgradeMotion]: MOTION_EVENTS,
   [ColonyActionType.EmitDomainReputationPenaltyMotion]: MOTION_EVENTS,
   [ColonyActionType.EmitDomainReputationRewardMotion]: MOTION_EVENTS,
-  [ColonyActionType.MakeArbitraryTransaction]: SAFE_EVENTS,
+  [ColonyActionType.MakeArbitraryTransactionsMotion]: MOTION_EVENTS,
 };
