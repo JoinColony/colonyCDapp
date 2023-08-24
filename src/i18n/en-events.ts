@@ -32,22 +32,10 @@ const eventsMessageDescriptors = {
       other {{eventNameDecorated} emitted by {clientOrExtensionType}}
       ${ColonyAndExtensionsEvents.SafeRemoved} {{initiator} removed {removedSafes} using the Root permission.}
       ${ColonyAndExtensionsEvents.SafeAdded} {{initiator} added the Safe {safeAddress} from {chainName} using the Root permission.}
-      ${ColonyAndExtensionsEvents.SafeTransferFunds} {{safeName} made a payment using the Root permission to pay {safeTransactionAmount} to
-      {isSafeTransactionRecipientUser, select,
-        true {{safeTransactionRecipient}}
-        other {{safeTransactionAddress}}
-      }}
-      ${ColonyAndExtensionsEvents.SafeRawTransaction} {{safeName} initiated a transaction with
-      {isSafeTransactionRecipientUser, select,
-        true {{safeTransactionRecipient}}
-        other {{safeTransactionRawTransactionAddress}}
-      }}
-      ${ColonyAndExtensionsEvents.SafeTransferNft} {{safeName} made a payment using the Root permission to pay with NFT token called {safeTransactionNftToken} to
-      {isSafeTransactionRecipientUser, select,
-        true {{safeTransactionRecipient}}
-        other {{safeTransactionAddress}}
-      }}
-      ${ColonyAndExtensionsEvents.SafeContractInteraction} {{safeName} called the {safeTransactionFunctionName} function on the {safeTransactionContractName} contract}
+      ${ColonyAndExtensionsEvents.SafeTransferFunds} {{safeName} made a payment using the Root permission to pay {safeTransactionAmount} to {recipient}}
+      ${ColonyAndExtensionsEvents.SafeRawTransaction} {{safeName} initiated a transaction with {recipient}}
+      ${ColonyAndExtensionsEvents.SafeTransferNft} {{safeName} made a payment using the Root permission to pay with NFT token called {nftToken} to {recipient}}
+      ${ColonyAndExtensionsEvents.SafeContractInteraction} {{safeName} called the {functionName} function on the {contractName} contract}
       ${ColonyAndExtensionsEvents.SafeMultipleTransactions} {{safeName} initiated multiple transactions}
     }`,
   'eventList.event': `{eventName, select,
