@@ -7,7 +7,11 @@ import {
 } from '@colony/colony-js';
 
 import { Action, ActionTypes, AllActions } from '~redux';
-import { transactionPending, transactionReady } from '~redux/actionCreators';
+import {
+  transactionAddParams,
+  transactionPending,
+  transactionReady,
+} from '~redux/actionCreators';
 import { ContextModule, getContext, ColonyManager } from '~context';
 import {
   CreateDomainMetadataDocument,
@@ -65,22 +69,11 @@ function* createDomainAction({
       'annotateCreateDomainAction',
     ]);
 
-    const colonyClient = yield colonyManager.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
-    );
-
-    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
-      colonyClient,
-      parentId,
-      ColonyRole.Architecture,
-    );
-
     yield createGroupTransaction(createDomain, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: 'addDomain(uint256,uint256,uint256)',
       identifier: colonyAddress,
-      params: [permissionDomainId, childSkillIndex, parentId],
+      params: [],
       ready: false,
     });
 
@@ -103,6 +96,25 @@ function* createDomainAction({
     }
 
     yield put(transactionPending(createDomain.id));
+
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
+
+    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient,
+      parentId,
+      ColonyRole.Architecture,
+    );
+
+    yield put(
+      transactionAddParams(createDomain.id, [
+        permissionDomainId,
+        childSkillIndex,
+        parentId,
+      ]),
+    );
     yield put(transactionReady(createDomain.id));
 
     const {

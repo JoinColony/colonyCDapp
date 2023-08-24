@@ -16,7 +16,11 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady, transactionPending } from '../../actionCreators';
+import {
+  transactionReady,
+  transactionPending,
+  transactionAddParams,
+} from '../../actionCreators';
 import {
   putError,
   takeFrom,
@@ -58,32 +62,11 @@ function* editDomainAction({
       'annotateEditDomainAction',
     ]);
 
-    const colonyClient = yield colonyManager.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
-    );
-
-    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
-      colonyClient,
-      domain.nativeId,
-      ColonyRole.Architecture,
-    );
-
     yield createGroupTransaction(editDomain, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: 'editDomain',
       identifier: colonyAddress,
-      params: [
-        permissionDomainId,
-        childSkillIndex,
-        domain.nativeId,
-        /**
-         * @NOTE: In order for the DomainMetadata event (which is the only event associated with Edit Domain action) to be emitted,
-         * the second parameter must be non-empty.
-         * It will be replaced with the IPFS hash in due course.
-         */
-        '.',
-      ],
+      params: [],
       ready: false,
     });
 
@@ -106,6 +89,32 @@ function* editDomainAction({
     }
 
     yield put(transactionPending(editDomain.id));
+
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
+
+    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient,
+      domain.nativeId,
+      ColonyRole.Architecture,
+    );
+
+    yield put(
+      transactionAddParams(editDomain.id, [
+        permissionDomainId,
+        childSkillIndex,
+        domain.nativeId,
+        /**
+         * @NOTE: In order for the DomainMetadata event (which is the only event associated with Edit Domain action) to be emitted,
+         * the second parameter must be non-empty.
+         * It will be replaced with the IPFS hash in due course.
+         */
+        '.',
+      ]),
+    );
+
     yield put(transactionReady(editDomain.id));
 
     const {
