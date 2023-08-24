@@ -67,14 +67,12 @@ const useRequiredStakeAmount = (colony: Colony, selectedDomainId: number) => {
 
 interface StakeExpenditureDialogProps {
   colony: Colony;
-  selectedDomainId: number;
   onCancel: () => void;
   formValues: ExpenditureFormValues;
 }
 
 const StakeExpenditureDialog = ({
   colony,
-  selectedDomainId,
   onCancel,
   formValues,
 }: StakeExpenditureDialogProps) => {
@@ -83,7 +81,7 @@ const StakeExpenditureDialog = ({
   const { user } = useAppContext();
 
   const { stakeAmount, stakedExpenditureAddress } =
-    useRequiredStakeAmount(colony, selectedDomainId) || {};
+    useRequiredStakeAmount(colony, formValues.createInDomainId) || {};
 
   const { loadingUserTokenBalance, hasEnoughTokens } =
     useEnoughTokensForStaking(

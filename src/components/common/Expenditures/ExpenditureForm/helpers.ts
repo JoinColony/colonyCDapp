@@ -1,7 +1,6 @@
 import { weiToEth } from '@web3-onboard/common';
 import { BigNumber } from 'ethers';
 import { NavigateFunction } from 'react-router-dom';
-import { Id } from '@colony/colony-js';
 
 import { Colony, Expenditure } from '~types';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
@@ -56,9 +55,9 @@ export const getCreateExpenditureTransformPayloadFn = (
           colony,
           // @TODO: These should come from the form values
           createdInDomain: colony
-            ? findDomainByNativeId(Id.RootDomain, colony)
+            ? findDomainByNativeId(payload.createInDomainId, colony)
             : null,
-          fundFromDomainId: Id.RootDomain,
+          fundFromDomainId: payload.fundFromDomainId,
         } as CreateExpenditurePayload),
     ),
     withMeta({ navigate }),
