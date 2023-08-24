@@ -65,7 +65,7 @@ const TeamColourField: FC = () => {
               setSelectedTeamColour(value);
               methods?.setValue('domainColor', teamId);
             }}
-            isLableVisible={false}
+            isLabelVisible={false}
           />
         </Card>
       )}
