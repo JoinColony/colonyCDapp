@@ -24,6 +24,7 @@ import UnlockTokenForm from './partials/UnlockTokenForm';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
 import UpgradeColonyForm from './partials/UpgradeColonyForm/UpgradeColonyForm';
 import Modal from '~v5/shared/Modal';
+import { useActionFormContext } from './partials/ActionForm/ActionFormContext';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -47,6 +48,22 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
   const isUnlockTokenAction = selectedAction === Actions.UNLOCK_TOKEN;
   const showErrorBanner =
     (isUserHasPermission && selectedAction) || isUnlockTokenAction;
+  const { formErrors } = useActionFormContext();
+
+  const isFieldError = !!Object.keys?.(formErrors || {}).length;
+
+  const prepareNofiticationTitle = () => {
+    let errorMessage;
+
+    if (isUnlockTokenAction) {
+      errorMessage = 'actionSidebar.unlock.token.error';
+    } else if (isFieldError) {
+      errorMessage = 'actionSidebar.fields.error';
+    } else {
+      errorMessage = 'actionSidebar.mint.token.permission.error';
+    }
+    return errorMessage;
+  };
 
   useOnClickOutside(
     ref,
@@ -93,16 +110,13 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
             )}
           </>
         </ActionSidebarRow>
-        <ActionsContent />
-
-        {showErrorBanner && (
+        <ActionsContent formErrors={formErrors} />
+        {(showErrorBanner || isFieldError) && (
           <div className="mb-7">
             <NotificationBanner
-              status={isUnlockTokenAction ? 'error' : 'warning'}
+              status={isUnlockTokenAction || isFieldError ? 'error' : 'warning'}
               title={{
-                id: isUnlockTokenAction
-                  ? 'actionSidebar.unlock.token.error'
-                  : 'actionSidebar.mint.token.permission.error',
+                id: prepareNofiticationTitle(),
               }}
               actionText={
                 isUnlockTokenAction ? { id: 'learn.more' } : undefined
@@ -112,6 +126,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
           </div>
         )}
       </div>
+
       <div className="mt-auto">
         {!selectedAction && (
           <PopularActions setSelectedAction={setSelectedAction} />

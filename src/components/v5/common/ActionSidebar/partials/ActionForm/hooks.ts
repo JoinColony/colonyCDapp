@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
@@ -7,6 +8,7 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { getFormAction } from '~utils/actions';
 import { useAsyncFunction, useEnabledExtensions } from '~hooks';
 import { ActionTypes } from '~redux';
+import { useActionFormContext } from './ActionFormContext';
 
 export const useActionHook = ({
   validationSchema,
@@ -17,6 +19,7 @@ export const useActionHook = ({
 }: ActionHookOptionsProps) => {
   const { toggleActionSidebarOff } = useActionSidebarContext();
   const { isVotingReputationEnabled } = useEnabledExtensions();
+  const { changeFormErrorsState } = useActionFormContext();
 
   const action = isVotingReputationEnabled ? defaultAction : actionType;
 
@@ -43,6 +46,10 @@ export const useActionHook = ({
       console.error(e);
     }
   };
+
+  useEffect(() => {
+    changeFormErrorsState?.(methods?.formState?.errors);
+  }, [changeFormErrorsState, methods?.formState?.errors]);
 
   return {
     methods,

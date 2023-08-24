@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
+import clsx from 'clsx';
 
 import { useUserSelect } from './hooks';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
@@ -12,7 +13,11 @@ import { SelectProps } from '../../types';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
-const UserSelect: FC<SelectProps> = ({ name, selectedWalletAddress = '' }) => {
+const UserSelect: FC<SelectProps> = ({
+  name,
+  selectedWalletAddress = '',
+  isErrors,
+}) => {
   const { formatMessage } = useIntl();
   const { register, setValue } = useFormContext();
   const usersOptions = useUserSelect();
@@ -32,7 +37,10 @@ const UserSelect: FC<SelectProps> = ({ name, selectedWalletAddress = '' }) => {
     <div className="sm:relative w-full">
       <button
         type="button"
-        className={styles.button}
+        className={clsx(styles.button, {
+          'text-gray-600': !isErrors,
+          'text-negative-400': isErrors,
+        })}
         onClick={toggleUserSelect}
         aria-label={formatMessage({ id: 'ariaLabel.selectUser' })}
       >

@@ -13,6 +13,7 @@ const ActionSidebarRow: FC<PropsWithChildren<ActionSidebarRowProps>> = ({
   isOpened,
   onToggle,
   ref,
+  isErrors,
 }) => {
   const { formatMessage } = useIntl();
 
@@ -47,8 +48,10 @@ const ActionSidebarRow: FC<PropsWithChildren<ActionSidebarRowProps>> = ({
     >
       {isDescriptionFieldRow ? (
         <button
-          className={clsx('flex items-center text-gray-600 group', {
+          className={clsx('flex items-center  group', {
             'hover:text-blue-400': isDescriptionFieldRow,
+            'text-negative-400': isErrors,
+            'text-gray-600': !isErrors,
           })}
           onClick={onToggle}
           type="button"
@@ -57,7 +60,14 @@ const ActionSidebarRow: FC<PropsWithChildren<ActionSidebarRowProps>> = ({
           {content}
         </button>
       ) : (
-        <div className="flex items-center text-gray-600">{content}</div>
+        <div
+          className={clsx('flex items-center', {
+            'text-negative-400': isErrors,
+            'text-gray-600': !isErrors,
+          })}
+        >
+          {content}
+        </div>
       )}
       {children}
     </div>

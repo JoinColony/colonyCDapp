@@ -10,10 +10,11 @@ import { useDetectClickOutside } from '~hooks';
 import { useTeams } from '~hooks/useTeams';
 import SearchItem from '~v5/shared/SearchSelect/partials/SearchItem/SearchItem';
 import TeamColourBadge from './partails/TeamColourBadge';
+import { TeamColourFieldProps } from './types';
 
 const displayName = 'v5.common.ActionsContent.partials.TeamColourField';
 
-const TeamColourField: FC = () => {
+const TeamColourField: FC<TeamColourFieldProps> = ({ isErrors }) => {
   const method = useFormContext();
   const { formatMessage } = useIntl();
   const methods = useFormContext();
@@ -32,7 +33,10 @@ const TeamColourField: FC = () => {
     <div className="sm:relative w-full" ref={ref}>
       <button
         type="button"
-        className={clsx(styles.button)}
+        className={clsx(styles.button, {
+          'text-gray-600': !isErrors,
+          'text-negative-400': isErrors,
+        })}
         onClick={toggleDecisionSelect}
       >
         {selectedTeamColour ? (
