@@ -4,7 +4,7 @@ import { ColonyRole, Id } from '@colony/colony-js';
 
 import { SAFE_NETWORKS } from '~constants';
 import { Colony, Safe } from '~types';
-import { TransactionTypes, getChainNameFromSafe } from '~utils/safes';
+import { getChainNameFromSafe } from '~utils/safes';
 import { EnabledExtensionData, useActionDialogStatus } from '~hooks';
 import { SafeTransactionType } from '~gql';
 
