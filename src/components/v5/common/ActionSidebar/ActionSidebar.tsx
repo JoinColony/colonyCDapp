@@ -53,15 +53,6 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
     () => !isMobile && !isCancelModalOpen && toggleActionSidebarOff(),
   );
 
-  // @TODO: handle showing error when addres is invalid and add tooltip and display wallet instead of name
-  // const showWarningForAddress = colony.metadata?.isWhitelistActivated
-  //   ? recipient &&
-  //     !(colony.metadata?.whitelistedAddresses ?? []).some(
-  //       (address) =>
-  //         address.toLowerCase() === recipient.walletAddress.toLowerCase(),
-  //     )
-  //   : false;
-
   const formContent = (
     <>
       <div className="px-6 py-8 overflow-scroll h-[40rem]">
@@ -132,26 +123,22 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
     </>
   );
 
+  const formComponentsByAction = {
+    [Actions.SIMPLE_PAYMENT]: SinglePaymentForm,
+    [Actions.MINT_TOKENS]: MintTokenForm,
+    [Actions.TRANSFER_FUNDS]: TransferFundsForm,
+    [Actions.CREATE_NEW_TEAM]: CreateNewTeamForm,
+    [Actions.UNLOCK_TOKEN]: UnlockTokenForm,
+    [Actions.UPGRADE_COLONY_VERSION]: UpgradeColonyForm,
+  };
+
   const prepareFormContent = () => {
-    if (selectedAction === Actions.SIMPLE_PAYMENT) {
-      return <SinglePaymentForm>{formContent}</SinglePaymentForm>;
-    }
-    if (selectedAction === Actions.MINT_TOKENS) {
-      return <MintTokenForm>{formContent}</MintTokenForm>;
-    }
-    if (selectedAction === Actions.TRANSFER_FUNDS) {
-      return <TransferFundsForm>{formContent}</TransferFundsForm>;
-    }
-    if (selectedAction === Actions.CREATE_NEW_TEAM) {
-      return <CreateNewTeamForm>{formContent}</CreateNewTeamForm>;
-    }
-    if (selectedAction === Actions.UNLOCK_TOKEN) {
-      return <UnlockTokenForm>{formContent}</UnlockTokenForm>;
-    }
-    if (selectedAction === Actions.UPGRADE_COLONY_VERSION) {
-      return <UpgradeColonyForm>{formContent}</UpgradeColonyForm>;
-    }
-    return formContent;
+    const FormComponent = formComponentsByAction[selectedAction as Actions];
+    return FormComponent ? (
+      <FormComponent>{formContent}</FormComponent>
+    ) : (
+      formContent
+    );
   };
 
   return (
