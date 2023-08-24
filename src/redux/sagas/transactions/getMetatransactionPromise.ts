@@ -203,13 +203,11 @@ async function getMetatransactionPromise(
       throw new Error(error.message);
     }
   } else {
-    /*
-     * All the 'WithProofs' helpers don't really exist on chain, so we have to
-     * make sure we are calling the on-chain method, rather than our own helper
-     */
-    const encodedTransaction = await normalizedClient.interface.functions[
-      normalizedMethodName
-    ].encode([...normalizedParams]);
+    const encodedTransaction =
+      await normalizedClient.interface.encodeFunctionData(
+        normalizedMethodName,
+        [...normalizedParams],
+      );
 
     const { messageUint8: messageData } = await generateMetatransactionMessage(
       encodedTransaction,
