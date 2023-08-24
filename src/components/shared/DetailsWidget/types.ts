@@ -39,6 +39,7 @@ export const ACTION_TYPES_ICONS_MAP: Record<AnyActionType, string> = {
   [ColonyActionType.NullMotion]: 'forbidden-signal',
   [ColonyActionType.Generic]: 'circle-check-primary',
   [ColonyActionType.MakeArbitraryTransaction]: '',
+  [ColonyActionType.MakeArbitraryTransactionsMotion]: '',
   [ExtendedColonyActionType.UpdateAddressBook]: 'emoji-edit-tools',
   [ExtendedColonyActionType.UpdateTokens]: 'emoji-edit-tools',
   [ExtendedColonyActionType.AddSafe]: safeLogoIconName,
