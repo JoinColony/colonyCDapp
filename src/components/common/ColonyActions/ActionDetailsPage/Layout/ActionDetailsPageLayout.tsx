@@ -12,7 +12,7 @@ import styles from './ActionDetailsPageLayout.css';
 
 interface ActionsPageLayoutProps {
   children: ReactNode;
-  actionData?: ColonyAction | null;
+  actionData?: ColonyAction;
   center?: boolean;
   isMotion?: boolean;
 }
@@ -27,16 +27,15 @@ const ActionDetailsPageLayout = ({
 }: ActionsPageLayoutProps) => {
   const { colony } = useColonyContext();
 
-  if (!colony || !actionData) {
+  if (!colony) {
     return null;
   }
 
   const hasPendingSafeTransactions = true;
 
-  const extendedActionType = getExtendedActionType(
-    actionData,
-    colony?.metadata,
-  );
+  const extendedActionType = actionData
+    ? getExtendedActionType(actionData, colony?.metadata)
+    : undefined;
 
   return (
     <div
@@ -46,7 +45,7 @@ const ActionDetailsPageLayout = ({
       })}
     >
       {hasPendingSafeTransactions &&
-        safeActionTypes.some((type) => extendedActionType.includes(type)) && (
+        safeActionTypes.some((type) => extendedActionType?.includes(type)) && (
           <SafeTransactionBanner
             chainId={(
               actionData?.safeTransaction?.safe?.chainId ||
