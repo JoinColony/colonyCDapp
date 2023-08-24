@@ -20,6 +20,7 @@ import {
 import { findDomainByNativeId } from '~utils/domains';
 import { splitTransactionHash } from '~utils/strings';
 import { getAddedSafe, getRemovedSafes } from '~utils/safes';
+import { TRANSACTION_STATUS } from '~utils/safes/getTransactionStatuses';
 
 import {
   UserDetail,
@@ -37,7 +38,6 @@ import SafeDetail from './SafeDetail';
 import AddressDetail from './AddressDetail';
 
 import styles from './DetailsWidget.css';
-import { TRANSACTION_STATUS } from '~utils/safes/getTransactionStatuses';
 
 const displayName = 'DetailsWidget';
 
