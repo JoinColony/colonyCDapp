@@ -1,9 +1,14 @@
 import { weiToEth } from '@web3-onboard/common';
 import { BigNumber } from 'ethers';
+import { NavigateFunction } from 'react-router-dom';
+import { Id } from '@colony/colony-js';
 
-import { Expenditure } from '~types';
+import { Colony, Expenditure } from '~types';
+import { mapPayload, pipe, withMeta } from '~utils/actions';
+import { findDomainByNativeId } from '~utils/domains';
+import { CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure';
 
-import { ExpenditurePayoutFieldValue } from './types';
+import { ExpenditureFormValues, ExpenditurePayoutFieldValue } from './types';
 
 export const getInitialPayoutFieldValue = (
   tokenAddress: string,
@@ -33,3 +38,23 @@ export const getExpenditurePayoutsFieldValue = (
     return [...payouts, ...slotPayouts];
   }, []);
 };
+
+export const getCreateExpenditureTransformPayloadFn = (
+  colony: Colony,
+  navigate: NavigateFunction,
+) =>
+  pipe(
+    mapPayload(
+      (payload: ExpenditureFormValues & { stakeAmount?: string }) =>
+        ({
+          ...payload,
+          colony,
+          // @TODO: These should come from the form values
+          createdInDomain: colony
+            ? findDomainByNativeId(Id.RootDomain, colony)
+            : null,
+          fundFromDomainId: Id.RootDomain,
+        } as CreateExpenditurePayload),
+    ),
+    withMeta({ navigate }),
+  );

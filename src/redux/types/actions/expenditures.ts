@@ -14,6 +14,7 @@ export type ExpendituresActionTypes =
         createdInDomain: Domain;
         // id of the domain to fund the expenditure from
         fundFromDomainId: number;
+        stakeAmount?: string | null;
       },
       MetaWithNavigate<object>
     >
