@@ -3,7 +3,7 @@ import { Id } from '@colony/colony-js';
 import { useNavigate } from 'react-router-dom';
 
 import { ActionForm } from '~shared/Fields';
-import { useColonyContext } from '~hooks';
+import { useColonyContext, useEnabledExtensions } from '~hooks';
 import Button from '~shared/Button';
 import { ActionTypes } from '~redux';
 
@@ -21,6 +21,7 @@ const CreateExpenditureForm = () => {
   const navigate = useNavigate();
 
   const { colony } = useColonyContext();
+  const { isStakedExpenditureEnabled } = useEnabledExtensions();
 
   const [isStakeDialogOpen, setIsStakeDialogOpen] = useState(false);
 
@@ -28,7 +29,11 @@ const CreateExpenditureForm = () => {
     return null;
   }
 
-  const isStakingRequired = true;
+  /**
+   * @TODO: This should include a permissions check as users with
+   * administration permissions can create expenditures without staking
+   */
+  const isStakingRequired = isStakedExpenditureEnabled;
 
   return (
     <ActionForm<ExpenditureFormValues>
