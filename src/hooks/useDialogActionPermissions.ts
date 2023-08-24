@@ -15,6 +15,7 @@ const useDialogActionPermissions = (
   const { wallet } = useAppContext();
   const method = useFormContext();
   const forceAction = method?.watch('forceAction');
+
   const hasRoles = addressHasRoles({
     colony,
     requiredRoles,

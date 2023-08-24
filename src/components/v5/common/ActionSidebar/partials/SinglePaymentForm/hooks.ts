@@ -1,49 +1,15 @@
-import { useForm } from 'react-hook-form';
-
 import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { ActionTypes } from '~redux';
-import { getFormAction, mapPayload, pipe } from '~utils/actions';
-import {
-  useAsyncFunction,
-  useColonyContext,
-  useEnabledExtensions,
-  useNetworkInverseFee,
-} from '~hooks';
+import { mapPayload, pipe } from '~utils/actions';
+import { useColonyContext, useNetworkInverseFee } from '~hooks';
 import { getCreatePaymentDialogPayload } from '~common/Dialogs/CreatePaymentDialog/helpers';
 import { MAX_ANNOTATION_NUM } from '~v5/shared/RichText/consts';
 import { toFinite } from '~utils/lodash';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { useActionHook } from '../ActionForm/hooks';
 
 export const useSinglePayment = () => {
-  const { toggleActionSidebarOff } = useActionSidebarContext();
-  const { isVotingReputationEnabled } = useEnabledExtensions();
   const { networkInverseFee } = useNetworkInverseFee();
   const { colony } = useColonyContext();
-
-  const actionType = isVotingReputationEnabled
-    ? ActionTypes.MOTION_EXPENDITURE_PAYMENT
-    : ActionTypes.ACTION_EXPENDITURE_PAYMENT;
-
-  const transform = pipe(
-    mapPayload((payload) => {
-      if (colony) {
-        return getCreatePaymentDialogPayload(
-          colony,
-          payload,
-          networkInverseFee,
-        );
-      }
-      return null;
-    }),
-  );
-
-  const asyncFunction = useAsyncFunction({
-    submit: actionType,
-    error: getFormAction(actionType, 'ERROR'),
-    success: getFormAction(actionType, 'SUCCESS'),
-    transform,
-  });
 
   const validationSchema = yup
     .object()
@@ -62,32 +28,33 @@ export const useSinglePayment = () => {
     })
     .defined();
 
-  type FormValues = yup.InferType<typeof validationSchema>;
+  const transform = pipe(
+    mapPayload((payload) => {
+      const values = {
+        amount: payload.amount,
+        tokenAddress: payload.tokenAddress,
+        fromDomainId: payload.team,
+        recipient: { walletAddress: payload.recipient },
+        motionDomainId: payload.createdIn,
+        annotation: payload.annotation,
+        decisionMethod: payload.decisionMethod,
+      };
+      if (colony) {
+        return getCreatePaymentDialogPayload(colony, values, networkInverseFee);
+      }
+      return null;
+    }),
+  );
 
-  const methods = useForm({
-    mode: 'all',
-    resolver: yupResolver(validationSchema),
+  return useActionHook({
+    validationSchema,
+    transform,
+    defaultValues: {
+      forceAction: false,
+      annotation: '',
+      amount: 0,
+    },
+    defaultAction: ActionTypes.MOTION_EXPENDITURE_PAYMENT,
+    actionType: ActionTypes.ACTION_EXPENDITURE_PAYMENT,
   });
-
-  const onSubmit = async (values: FormValues) => {
-    try {
-      await asyncFunction({
-        amount: values.amount,
-        tokenAddress: values.tokenAddress,
-        fromDomainId: values.team,
-        recipient: { walletAddress: values.recipient },
-        motionDomainId: values.createdIn,
-        annotation: values.annotation,
-        decisionMethod: values.decisionMethod,
-      });
-      toggleActionSidebarOff();
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  return {
-    methods,
-    onSubmit,
-  };
 };
