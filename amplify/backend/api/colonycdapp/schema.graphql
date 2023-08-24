@@ -2786,7 +2786,6 @@ enum SafeTransactionType {
   TRANSFER_NFT
   CONTRACT_INTERACTION
   RAW_TRANSACTION
-  MULTIPLE_TRANSACTIONS
 }
 
 type SafeTransactionData {
