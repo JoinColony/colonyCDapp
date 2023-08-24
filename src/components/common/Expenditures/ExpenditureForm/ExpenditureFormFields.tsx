@@ -50,9 +50,7 @@ const ExpenditureFormFields = ({ colony }: ExpenditureFormFieldsProps) => {
         }
         text=""
         icon="circle-plus"
-      >
-        Add recipient
-      </IconButton>
+      />
     </div>
   );
 };

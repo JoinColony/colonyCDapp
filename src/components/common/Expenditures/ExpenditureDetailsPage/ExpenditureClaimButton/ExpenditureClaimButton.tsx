@@ -4,6 +4,7 @@ import { ExpenditureStatus } from '~gql';
 import { useCurrentBlockTime } from '~hooks';
 import { ActionTypes } from '~redux';
 import { ActionButton } from '~shared/Button';
+import TimeRelative from '~shared/TimeRelative';
 import { Colony, Expenditure } from '~types';
 
 interface ExpenditureClaimButtonProps {
@@ -50,7 +51,17 @@ const ExpenditureClaimButton = ({
     <div>
       <div>You can now claim {claimableSlots.length} slots</div>
       {nextClaimableAt && (
-        <div>Next claim at {new Date(nextClaimableAt).toString()}</div>
+        <div>
+          Next claim{' '}
+          <TimeRelative
+            value={
+              // Get the next claimable date relative to the machine time
+              new Date(
+                new Date().getTime() + nextClaimableAt - currentBlockTime,
+              )
+            }
+          />
+        </div>
       )}
 
       {claimableSlots.length > 0 && (
