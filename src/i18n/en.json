@@ -157,8 +157,8 @@
   "transaction.group.createDomainAction.description": "Create Team",
   "transaction.group.editDomainAction.title": "Edit Team",
   "transaction.group.editDomainAction.description": "Edit Team",
-  "transaction.ColonyClient.addDomainWithProofs(uint256).title": "Create Team",
-  "transaction.ColonyClient.addDomainWithProofs(uint256).description": "Create Team",
+  "transaction.ColonyClient.addDomain(uint256,uint256,uint256).title": "Create Team",
+  "transaction.ColonyClient.addDomain(uint256,uint256,uint256).description": "Create Team",
   "transaction.ColonyClient.editDomainWithProofs.title": "Edit Team",
   "transaction.ColonyClient.editDomainWithProofs.description": "Edit Team",
 
