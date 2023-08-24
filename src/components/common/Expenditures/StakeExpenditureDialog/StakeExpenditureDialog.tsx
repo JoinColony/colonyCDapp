@@ -59,7 +59,10 @@ const useRequiredStakeAmount = (colony: Colony, selectedDomainId: number) => {
     .mul(totalDomainReputation)
     .div(BigNumber.from(10).pow(18));
 
-  return requiredStakeAmount.toString();
+  return {
+    stakeAmount: requiredStakeAmount.toString(),
+    stakedExpenditureAddress: extensionData.address,
+  };
 };
 
 interface StakeExpenditureDialogProps {
@@ -79,7 +82,8 @@ const StakeExpenditureDialog = ({
 
   const { user } = useAppContext();
 
-  const stakeAmount = useRequiredStakeAmount(colony, selectedDomainId);
+  const { stakeAmount, stakedExpenditureAddress } =
+    useRequiredStakeAmount(colony, selectedDomainId) || {};
 
   const { loadingUserTokenBalance, hasEnoughTokens } =
     useEnoughTokensForStaking(
@@ -125,11 +129,12 @@ const StakeExpenditureDialog = ({
       </DialogSection>
       <DialogSection>
         <ActionButton
-          actionType={ActionTypes.EXPENDITURE_CREATE}
+          actionType={ActionTypes.STAKED_EXPENDITURE_CREATE}
           disabled={!stakeAmount || loadingUserTokenBalance || !hasEnoughTokens}
           values={{
             ...formValues,
             stakeAmount: stakeAmount ?? '0',
+            stakedExpenditureAddress: stakedExpenditureAddress ?? '',
           }}
           transform={getCreateExpenditureTransformPayloadFn(colony, navigate)}
         >

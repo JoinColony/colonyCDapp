@@ -14,7 +14,6 @@ export type ExpendituresActionTypes =
         createdInDomain: Domain;
         // id of the domain to fund the expenditure from
         fundFromDomainId: number;
-        stakeAmount?: string | null;
       },
       MetaWithNavigate<object>
     >
@@ -83,4 +82,24 @@ export type ExpendituresActionTypes =
       object
     >
   | ErrorActionType<ActionTypes.EXPENDITURE_CLAIM_ERROR, object>
-  | UniqueActionType<ActionTypes.EXPENDITURE_CLAIM_SUCCESS, object, object>;
+  | UniqueActionType<ActionTypes.EXPENDITURE_CLAIM_SUCCESS, object, object>
+  | UniqueActionType<
+      ActionTypes.STAKED_EXPENDITURE_CREATE,
+      {
+        colony: Colony;
+        payouts: ExpenditurePayoutFieldValue[];
+        // the domain to create the expenditure in
+        createdInDomain: Domain;
+        // id of the domain to fund the expenditure from
+        fundFromDomainId: number;
+        stakeAmount: string;
+        stakedExpenditureAddress: Address;
+      },
+      MetaWithNavigate<object>
+    >
+  | ErrorActionType<ActionTypes.STAKED_EXPENDITURE_CREATE_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.STAKED_EXPENDITURE_CREATE_SUCCESS,
+      object,
+      object
+    >;
