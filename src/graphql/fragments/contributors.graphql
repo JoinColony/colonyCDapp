@@ -16,7 +16,6 @@ fragment ContributorRoles on ColonyRole {
   domain {
     id
     metadata {
-      id
       name
     }
     nativeId

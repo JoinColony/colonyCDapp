@@ -16,6 +16,22 @@ const cache = new InMemoryCache({
     ModelColonyConnection: {
       merge: false,
     },
+    Domain: {
+      fields: {
+        metadata: {
+          merge(existing, incoming) {
+            // If there's no existing metadata, use the incoming data
+            if (!existing) return incoming;
+
+            // Otherwise, merge the existing and incoming data
+            return {
+              ...existing,
+              ...incoming,
+            };
+          },
+        },
+      },
+    },
     Query: {
       fields: {
         getActionsByColony: {

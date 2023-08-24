@@ -1,5 +1,4 @@
-import React, { FC, useRef } from 'react';
-import { useOnClickOutside } from 'usehooks-ts';
+import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { useMobile } from '~hooks';
@@ -10,14 +9,14 @@ import { useGetSubmitButton } from './hooks';
 
 const displayName = 'v5.common.ActionSidebar.partials.ActionButtons';
 
-const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
-  const ref = useRef(null);
+const ActionButtons: FC<ActionButtonsProps> = ({
+  isActionDisabled,
+  toggleCancelModal,
+}) => {
   const isMobile = useMobile();
   const submitText = useGetSubmitButton();
-  const { toggleActionSidebarOff, selectedAction } = useActionSidebarContext();
   const methods = useFormContext();
-
-  useOnClickOutside(ref, () => !isMobile && toggleActionSidebarOff());
+  const { selectedAction } = useActionSidebarContext();
 
   const isLoading = methods?.formState?.isSubmitting;
 
@@ -29,7 +28,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
       <Button
         mode="primaryOutline"
         text={{ id: 'button.cancel' }}
-        onClick={toggleActionSidebarOff}
+        onClick={toggleCancelModal}
         isFullSize={isMobile}
       />
       {isLoading ? (
