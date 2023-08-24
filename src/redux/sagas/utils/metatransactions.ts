@@ -105,23 +105,8 @@ export const generateMetatransactionMessage = async (
     ['uint256', 'address', 'uint256', 'bytes'],
     [nonce.toString(), contractAddress, chainId, encodedTransaction],
   );
-  const messageBuffer = Buffer.from(
-    message.slice(2), // remove the `0x` prefix
-    'hex',
-  );
 
-  const messageUint8 = Array.from(messageBuffer) as unknown as Uint8Array;
-  /*
-   * Purser validator expects either a string or a Uint8Array. We convert this
-   * to a an array to make Metamask happy when signing the buffer.
-   *
-   * So in order to actually pass validation, both for Software and Metamask
-   * wallets we need to "fake" the array as actually being a Uint.
-   *
-   * Note this not affect the format of the data passed in to be signed,
-   * or the signature.
-   */
-  messageUint8.constructor = Uint8Array;
+  const messageUint8 = utils.arrayify(message);
 
   return {
     message,
