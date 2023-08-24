@@ -1,14 +1,17 @@
 import { WalletState } from '@web3-onboard/core';
+import { Account } from '@web3-onboard/core/dist/types';
+import { providers } from 'ethers';
 
 export type ColonyWallet = BasicWallet | FullWallet;
 
-export interface FullWallet extends WalletState {
-  address: string;
-  balance: Record<string, string>;
-  ens?: string | null;
+export interface FullWallet extends WalletState, Account {
+  ethersProvider: providers.Provider | null;
 }
 
-export type BasicWallet = Pick<FullWallet, 'address' | 'label' | 'chains'>;
+export type BasicWallet = Pick<
+  FullWallet,
+  'address' | 'label' | 'chains' | 'ethersProvider'
+>;
 
 export const isBasicWallet = (
   wallet?: ColonyWallet | null,
