@@ -7,6 +7,7 @@ export type PopularActionsProps = {
 
 export type ActionButtonsProps = {
   isActionDisabled?: boolean;
+  toggleCancelModal: () => void;
 };
 
 export type ErrorBannerProps = {
