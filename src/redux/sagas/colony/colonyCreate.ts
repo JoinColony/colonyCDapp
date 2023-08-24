@@ -6,9 +6,6 @@ import { utils } from 'ethers';
 import { Network as EthersNetwork } from '@ethersproject/networks';
 
 import {
-  CreateColonyContributorDocument,
-  CreateColonyContributorMutation,
-  CreateColonyContributorMutationVariables,
   CreateColonyMetadataDocument,
   CreateColonyMetadataMutation,
   CreateColonyMetadataMutationVariables,
@@ -60,7 +57,6 @@ import {
   createTransactionChannels,
 } from '../transactions';
 import { getOneTxPaymentVersion } from '../utils/extensionVersion';
-import { getColonyContributorId } from '~utils/members';
 
 interface ChannelDefinition {
   channel: Channel<any>;
@@ -384,27 +380,6 @@ function* colonyCreate({
           input: {
             colonyID: colonyAddress,
             userID: walletAddress,
-          },
-        },
-      });
-
-      /*
-       * Create first contributor entry in new colony
-       */
-
-      yield apolloClient.mutate<
-        CreateColonyContributorMutation,
-        CreateColonyContributorMutationVariables
-      >({
-        mutation: CreateColonyContributorDocument,
-        variables: {
-          input: {
-            id: getColonyContributorId(colonyAddress, walletAddress),
-            colonyAddress,
-            contributorAddress: walletAddress,
-            isVerified: false, // watchlist is false by default in new colonies
-            isWatching: true,
-            colonyReputationPercentage: 0,
           },
         },
       });
