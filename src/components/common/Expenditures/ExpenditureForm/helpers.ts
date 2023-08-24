@@ -45,7 +45,12 @@ export const getCreateExpenditureTransformPayloadFn = (
 ) =>
   pipe(
     mapPayload(
-      (payload: ExpenditureFormValues & { stakeAmount?: string }) =>
+      (
+        payload: ExpenditureFormValues & {
+          stakeAmount?: string;
+          stakedExpenditureAddress?: string;
+        },
+      ) =>
         ({
           ...payload,
           colony,
