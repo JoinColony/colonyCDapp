@@ -184,6 +184,8 @@
   "transaction.group.setUserRoles.description": "Assign permissions",
   "transaction.ColonyClient.setUserRoles.title": "Assign permissions",
   "transaction.ColonyClient.setUserRoles.description": "Assign permissions",
+  "transaction.ColonyClient.setUserRolesWithProofs.title": "Assign permissions",
+  "transaction.ColonyClient.setUserRolesWithProofs.description": "Assign permissions",
 
   "transaction.group.enableExtension.title": "Enable Colony Extension",
   "transaction.group.enableExtension.description": "Enable Colony Extension",
@@ -395,6 +397,8 @@
   "metatransaction.group.setUserRoles.description": "Assign permissions",
   "metatransaction.ColonyClient.setUserRoles.title": "Assign permissions",
   "metatransaction.ColonyClient.setUserRoles.description": "Assign permissions",
+  "metatransaction.ColonyClient.setUserRolesWithProofs.title": "Assign permissions",
+  "metatransaction.ColonyClient.setUserRolesWithProofs.description": "Assign permissions",
   "metatransaction.group.enableExtension.title": "Enable Colony Extension",
   "metatransaction.group.enableExtension.description": "Enable Colony Extension",
   "metatransaction.group.unistallExtensions.title": "Uninstall Colony Extension",
