@@ -1,5 +1,4 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { hexlify, hexZeroPad } from 'ethers/lib/utils';
 import {
   ClientType,
   ColonyRole,
@@ -27,6 +26,8 @@ import {
   transactionAddParams,
   transactionPending,
 } from '../../actionCreators';
+
+import { intArrayToBytes32 } from '~utils/web3';
 
 function* managePermissionsAction({
   payload: {
@@ -72,18 +73,17 @@ function* managePermissionsAction({
         'annotateSetUserRoles',
       ]);
 
-    const roleArray = Object.values(roles).reverse();
-    /* Always make sure the Architecture Subdomain is false, it's deprecated */
-    roleArray.splice(2, 0, false);
-
-    let roleBitmask = '';
-
-    roleArray.forEach((role) => {
-      roleBitmask += role ? '1' : '0';
-    });
-
-    const hexString = hexlify(parseInt(roleBitmask, 2));
-    const zeroPadHexString = hexZeroPad(hexString, 32);
+    const roleArray = Object.keys(roles)
+      .map((roleId) => parseInt(roleId, 10))
+      .filter((roleId) => {
+        if (roleId === ColonyRole.ArchitectureSubdomain) {
+          return false;
+        }
+        if (!roles[roleId]) {
+          return false;
+        }
+        return true;
+      });
 
     yield createGroupTransaction(setUserRoles, batchKey, meta, {
       context: ClientType.ColonyClient,
@@ -130,7 +130,7 @@ function* managePermissionsAction({
         childSkillIndex,
         userAddress,
         domainId,
-        zeroPadHexString,
+        intArrayToBytes32(roleArray),
       ]),
     );
     yield put(transactionReady(setUserRoles.id));
