@@ -19,6 +19,18 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
   const isLoading = methods?.formState?.isSubmitting;
   const isDirty = methods?.formState?.isDirty;
 
+  const onCancelClick = () => {
+    if (!methods) {
+      toggleActionSidebarOff();
+    }
+
+    if (isDirty) {
+      toggleCancelModal();
+    } else {
+      toggleActionSidebarOff();
+    }
+  };
+
   return (
     <div
       className="flex items-center flex-col-reverse sm:flex-row 
@@ -27,17 +39,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
       <Button
         mode="primaryOutline"
         text={{ id: 'button.cancel' }}
-        onClick={() => {
-          if (!methods) {
-            toggleActionSidebarOff();
-          }
-
-          if (isDirty) {
-            toggleCancelModal();
-          } else {
-            toggleActionSidebarOff();
-          }
-        }}
+        onClick={onCancelClick}
         isFullSize={isMobile}
       />
       {isLoading ? (
