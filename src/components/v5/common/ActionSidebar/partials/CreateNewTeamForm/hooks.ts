@@ -51,6 +51,12 @@ export const useCrateNewTeam = () => {
     transform,
     defaultValues: {
       forceAction: false,
+      teamName: '',
+      domainPurpose: '',
+      domainColor: '',
+      createdIn: 1,
+      decisionMethod: 'reputation',
+      annotation: '',
     },
     defaultAction: ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
     actionType: ActionTypes.ACTION_DOMAIN_CREATE,
