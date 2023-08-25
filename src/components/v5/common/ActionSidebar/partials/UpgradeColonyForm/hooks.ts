@@ -42,6 +42,8 @@ export const useUpgradeColony = () => {
     defaultValues: {
       forceAction: false,
       annotation: '',
+      createdIn: 0,
+      decisionMethod: 'reputation',
     },
     actionType: ActionTypes.ACTION_VERSION_UPGRADE,
   });

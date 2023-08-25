@@ -50,7 +50,12 @@ export const useSinglePayment = () => {
     validationSchema,
     transform,
     defaultValues: {
+      tokenAddress: colony?.nativeToken.tokenAddress || '',
+      team: 1,
+      to: 1,
+      recipent: undefined,
       forceAction: false,
+      decisionMethod: 'reputation',
       annotation: '',
       amount: 0,
     },

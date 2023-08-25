@@ -25,7 +25,7 @@ const Link: FC<LinkProps> = ({
     <a
       href={to}
       rel="nofollow noopener noreferrer"
-      target={IS_URL_EXTERNAL ? '_blank' : undefined}
+      target="_blank"
       className={`${className} transition-all duration-normal hover:text-blue-400`}
       onClick={onClick}
     >

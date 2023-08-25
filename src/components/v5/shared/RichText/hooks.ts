@@ -10,7 +10,7 @@ import Placeholder from '@tiptap/extension-placeholder';
 import Paragraph from '@tiptap/extension-paragraph';
 import CharacterCount from '@tiptap/extension-character-count';
 import { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 import { MAX_ANNOTATION_NUM } from './consts';
 
 export const useRichText = (
@@ -111,11 +111,13 @@ export const useRichText = (
     }
   }, [editorContent, content, isDecriptionFieldExpanded, setContent]);
 
-  const methods = useFormContext();
+  const { field } = useController({
+    name,
+  });
 
   useEffect(() => {
     const handleUpdate = ({ editor: textEditor }: { editor }) => {
-      methods?.setValue(name, textEditor.getHTML());
+      field.onChange(textEditor.getHTML());
     };
 
     editorContent?.commands.setContent(content);
@@ -126,7 +128,7 @@ export const useRichText = (
       editorContent?.off('selectionUpdate', handleUpdate);
       editorContent?.off('blur', handleUpdate);
     };
-  }, [editorContent, content, name, methods?.setValue]);
+  }, [editorContent, content, name, field]);
 
-  return { editorContent, notFormattedContent };
+  return { editorContent, notFormattedContent, field };
 };

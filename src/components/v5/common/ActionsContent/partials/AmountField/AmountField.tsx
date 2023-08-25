@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import Cleave from 'cleave.js/react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
-import { useFormContext } from 'react-hook-form';
+import { useController, useFormContext } from 'react-hook-form';
 
 import { useAmountField } from './hooks';
 import TokenIcon from '~shared/TokenIcon';
@@ -21,7 +21,13 @@ const displayName = 'v5.common.ActionsContent.partials.AmountField';
 
 const AmountField: FC<AmountFieldProps> = ({ name, amount, defaultToken }) => {
   const { formatMessage } = useIntl();
-  const { watch, register, setValue } = useFormContext();
+  const { watch } = useFormContext();
+  const { field } = useController({
+    name,
+  });
+  const { field: tokenAddressController } = useController({
+    name: 'tokenAddress',
+  });
   const { colony } = useColonyContext();
   const { nativeToken } = colony || {};
 
@@ -44,7 +50,7 @@ const AmountField: FC<AmountFieldProps> = ({ name, amount, defaultToken }) => {
   } = useAmountField(defaultToken || token);
 
   const handleCleaveChange = (e: CleaveChangeEvent) => {
-    setValue(name, e.target.rawValue);
+    field.onChange(e.target.rawValue);
   };
 
   const ref = useDetectClickOutside({
@@ -52,13 +58,13 @@ const AmountField: FC<AmountFieldProps> = ({ name, amount, defaultToken }) => {
   });
 
   useEffect(() => {
-    if (amount) setValue(name, amount);
+    if (amount) field.onChange(amount);
   }, [amount]);
 
   return (
     <div className="flex items-center gap-3 w-full" ref={ref}>
       <Cleave
-        {...register(name)}
+        {...field}
         name={name}
         key={dynamicCleaveOptionKey}
         options={formattingOptions}
@@ -83,11 +89,9 @@ const AmountField: FC<AmountFieldProps> = ({ name, amount, defaultToken }) => {
         </button>
         <input
           type="text"
-          {...register('tokenAddress')}
-          name="tokenAddress"
           id="tokenAddress"
           className="hidden"
-          value={selectedToken?.tokenAddress || ''}
+          {...tokenAddressController}
         />
         {isTokenSelectVisible && (
           <Card
@@ -113,7 +117,9 @@ const AmountField: FC<AmountFieldProps> = ({ name, amount, defaultToken }) => {
                       className={clsx(styles.button, 'justify-between w-full')}
                       onClick={() => {
                         setToken(colonyToken.tokenAddress);
-                        setValue('tokenAddress', colonyToken.tokenAddress);
+                        tokenAddressController.onChange(
+                          colonyToken.tokenAddress,
+                        );
                         toggleTokenSelect();
                       }}
                     >

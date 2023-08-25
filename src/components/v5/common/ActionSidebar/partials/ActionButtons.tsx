@@ -9,16 +9,27 @@ import { useGetSubmitButton } from './hooks';
 
 const displayName = 'v5.common.ActionSidebar.partials.ActionButtons';
 
-const ActionButtons: FC<ActionButtonsProps> = ({
-  isActionDisabled,
-  toggleCancelModal,
-}) => {
+const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
   const isMobile = useMobile();
   const submitText = useGetSubmitButton();
   const methods = useFormContext();
-  const { selectedAction } = useActionSidebarContext();
+  const { selectedAction, toggleCancelModal, toggleActionSidebarOff } =
+    useActionSidebarContext();
 
   const isLoading = methods?.formState?.isSubmitting;
+  const isDirty = methods?.formState?.isDirty;
+
+  const onCancelClick = () => {
+    if (!methods) {
+      toggleActionSidebarOff();
+    }
+
+    if (isDirty) {
+      toggleCancelModal();
+    } else {
+      toggleActionSidebarOff();
+    }
+  };
 
   return (
     <div
@@ -28,7 +39,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({
       <Button
         mode="primaryOutline"
         text={{ id: 'button.cancel' }}
-        onClick={toggleCancelModal}
+        onClick={onCancelClick}
         isFullSize={isMobile}
       />
       {isLoading ? (

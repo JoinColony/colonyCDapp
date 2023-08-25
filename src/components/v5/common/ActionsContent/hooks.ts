@@ -41,8 +41,7 @@ export const useActionsContent = () => {
   const shouldShowTeamNameField = selectedAction === Actions.CREATE_NEW_TEAM;
   const shouldShowTeamColourField = selectedAction === Actions.CREATE_NEW_TEAM;
   const shouldShowVersionFields =
-    selectedAction === Actions.UPGRADE_COLONY_VERSION ||
-    selectedAction === Actions.TRANSFER_FUNDS;
+    selectedAction === Actions.UPGRADE_COLONY_VERSION;
 
   return {
     shouldShowFromField,

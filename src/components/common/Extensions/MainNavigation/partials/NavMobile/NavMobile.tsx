@@ -8,6 +8,7 @@ import Icon from '~shared/Icon';
 import SubMenu from '../SubMenu';
 import { NavItemMobileProps } from '../types';
 import styles from './NavMobile.module.css';
+import Link from '~v5/shared/Link';
 
 const displayName = 'common.Extensions.MainNavigation.partials.NavMobile';
 
@@ -17,12 +18,12 @@ const NavMobile: FC<NavItemMobileProps> = ({ item, isOpen, toggleItem }) => {
   return (
     <>
       {item.href ? (
-        <a className={clsx(styles.navLink, 'heading-5')} href={item.href}>
+        <Link className={clsx(styles.navLink, 'heading-5')} to={item.href}>
           {formatMessage({
             id: `mainNavItem.${item.label}`,
             defaultMessage: `${item.label}`,
           })}
-        </a>
+        </Link>
       ) : (
         <button
           type="button"

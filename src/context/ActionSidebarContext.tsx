@@ -14,16 +14,22 @@ import noop from '~utils/noop';
 
 export const ActionSidebarContext = createContext<{
   isActionSidebarOpen: boolean;
+  isCancelModalOpen: boolean;
   selectedAction: Actions | null;
   setSelectedAction: React.Dispatch<React.SetStateAction<Actions | null>>;
   toggleActionBar: () => void;
+  toggleCancelModal: () => void;
   toggleActionSidebarOff: () => void;
+  toggleCancelModalOff: () => void;
 }>({
   isActionSidebarOpen: false,
+  isCancelModalOpen: false,
   selectedAction: null,
   toggleActionBar: noop,
   setSelectedAction: noop,
   toggleActionSidebarOff: noop,
+  toggleCancelModal: noop,
+  toggleCancelModalOff: noop,
 });
 
 export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
@@ -32,6 +38,10 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
   const [
     isActionSidebarOpen,
     { toggle: toggleActionBar, toggleOff: toggleActionSidebarOff },
+  ] = useToggle({ defaultToggleState: false });
+  const [
+    isCancelModalOpen,
+    { toggle: toggleCancelModal, toggleOff: toggleCancelModalOff },
   ] = useToggle({ defaultToggleState: false });
   const [selectedAction, setSelectedAction] = useState<Actions | null>(null);
 
@@ -45,6 +55,9 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
   const value = useMemo(
     () => ({
       isActionSidebarOpen,
+      isCancelModalOpen,
+      toggleCancelModal,
+      toggleCancelModalOff,
       toggleActionBar,
       toggleActionSidebarOff,
       setSelectedAction,
@@ -52,10 +65,12 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
     }),
     [
       isActionSidebarOpen,
+      isCancelModalOpen,
       selectedAction,
-      setSelectedAction,
       toggleActionBar,
       toggleActionSidebarOff,
+      toggleCancelModal,
+      toggleCancelModalOff,
     ],
   );
 
