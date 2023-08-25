@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
@@ -13,21 +13,22 @@ const DefaultField: FC<DefaultFieldProps> = ({
   placeholder,
   isErrors,
 }) => {
-  const method = useFormContext();
+  const { field } = useController({
+    name,
+  });
   const { formatMessage } = useIntl();
 
   return (
     <div className="sm:relative w-full">
       <input
         type="text"
-        {...method?.register(name)}
-        name={name}
         id={name}
         placeholder={formatMessage(placeholder)}
         className={clsx(styles.input, {
           'text-gray-900': !isErrors,
           'text-negative-400': isErrors,
         })}
+        {...field}
       />
     </div>
   );

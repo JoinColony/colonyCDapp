@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
 import clsx from 'clsx';
@@ -13,7 +13,10 @@ import { DecisionFieldProps } from './types';
 const displayName = 'v5.common.ActionsContent.partials.DecisionField';
 
 const DecisionField: FC<DecisionFieldProps> = ({ isErrors }) => {
-  const method = useFormContext();
+  const { field } = useController({
+    name: 'decisionMethod',
+  });
+
   const { formatMessage } = useIntl();
   const [selectedDecisionMethod, setSelectedDecisionMethod] = useState<
     string | null
@@ -32,20 +35,14 @@ const DecisionField: FC<DecisionFieldProps> = ({ isErrors }) => {
       <button
         type="button"
         className={clsx(styles.button, 'capitalize', {
+          'text-gray-600': !isErrors,
           'text-negative-400': isErrors,
         })}
         onClick={toggleDecisionSelect}
       >
         {selectedDecisionMethod}
       </button>
-      <input
-        type="text"
-        {...method?.register('decisionMethod')}
-        name="decisionMethod"
-        id="decisionMethod"
-        className="hidden"
-        value={selectedDecisionMethod || ''}
-      />
+      <input type="text" id="decisionMethod" className="hidden" {...field} />
       {isDecisionSelectVisible && (
         <Card
           className="p-6 w-full sm:max-w-[13rem] absolute top-[calc(100%+0.5rem)] left-0 z-50"
@@ -66,7 +63,7 @@ const DecisionField: FC<DecisionFieldProps> = ({ isErrors }) => {
                   })}
                   onClick={() => {
                     setSelectedDecisionMethod(value);
-                    method?.setValue('decisionMethod', value);
+                    field.onChange(value);
                   }}
                 >
                   {formatMessage(label)}

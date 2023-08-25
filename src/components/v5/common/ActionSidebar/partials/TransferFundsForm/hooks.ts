@@ -59,6 +59,10 @@ export const useTransferFunds = () => {
     transform,
     defaultValues: {
       forceAction: false,
+      tokenAddress: colony?.nativeToken.tokenAddress || '',
+      to: '',
+      decisionMethod: 'reputation',
+      team: 0,
       annotation: '',
       amount: 0,
     },

@@ -41,7 +41,9 @@ export const useUnlockToken = () => {
     transform,
     defaultValues: {
       forceAction: false,
+      decisionMethod: 'reputation',
       annotation: '',
+      createdIn: 1,
     },
     actionType: ActionTypes.ACTION_UNLOCK_TOKEN,
   });

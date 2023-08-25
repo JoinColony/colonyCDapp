@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
 import clsx from 'clsx';
+import { useController } from 'react-hook-form';
 
 import { useUserSelect } from './hooks';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
@@ -19,7 +19,9 @@ const UserSelect: FC<SelectProps> = ({
   isErrors,
 }) => {
   const { formatMessage } = useIntl();
-  const { register, setValue } = useFormContext();
+  const { field } = useController({
+    name,
+  });
   const usersOptions = useUserSelect();
   const [isUserSelectVisible, { toggle: toggleUserSelect }] = useToggle();
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
@@ -28,10 +30,6 @@ const UserSelect: FC<SelectProps> = ({
   const userDisplayName = user?.profile?.displayName;
   const username = user?.name;
   const { user: userByAddress } = useUserByAddress(selectedWalletAddress);
-
-  useEffect(() => {
-    setValue(name, user?.walletAddress || selectedWalletAddress);
-  }, [setValue, name, user, selectedWalletAddress]);
 
   return (
     <div className="sm:relative w-full">
@@ -54,20 +52,14 @@ const UserSelect: FC<SelectProps> = ({
           formatMessage({ id: 'actionSidebar.selectMember' })
         )}
       </button>
-      <input
-        type="text"
-        {...register(name)}
-        name={name}
-        id={name}
-        className="hidden"
-        value={selectedUser || ''}
-      />
+      <input type="text" id={name} className="hidden" {...field} />
       {isUserSelectVisible && (
         <SearchSelect
           items={[usersOptions]}
           isOpen={isUserSelectVisible}
           onToggle={toggleUserSelect}
           onSelect={(value) => {
+            field.onChange(value);
             setSelectedUser(value);
           }}
           isLoading={usersOptions.loading}

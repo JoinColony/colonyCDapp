@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
 import clsx from 'clsx';
+import { useController } from 'react-hook-form';
 
 import { Id } from '@colony/colony-js';
 import SearchSelect from '~v5/shared/SearchSelect';
@@ -17,23 +17,26 @@ const displayName = 'v5.common.ActionsContent.partials.TeamsSelect';
 
 const TeamsSelect: FC<SelectProps> = ({ name, isErrors }) => {
   const { selectedAction } = useActionSidebarContext();
-  const { setValue, register } = useFormContext();
+  const isRootDomain =
+    selectedAction === Actions.TRANSFER_FUNDS ||
+    selectedAction === Actions.UNLOCK_TOKEN ||
+    selectedAction === Actions.CREATE_NEW_TEAM ||
+    selectedAction === Actions.UPGRADE_COLONY_VERSION;
+
+  const { field } = useController({
+    name,
+    defaultValue: isRootDomain && Id.RootDomain,
+  });
   const teamsOptions = useTeams();
   const { formatMessage } = useIntl();
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
   const [isTeamSelectVisible, { toggle: toggleTeamSelect }] = useToggle();
 
   useEffect(() => {
-    if (
-      selectedAction === Actions.TRANSFER_FUNDS ||
-      selectedAction === Actions.UNLOCK_TOKEN ||
-      selectedAction === Actions.CREATE_NEW_TEAM ||
-      selectedAction === Actions.UPGRADE_COLONY_VERSION
-    ) {
+    if (isRootDomain) {
       setSelectedTeam('Root');
-      setValue(name, Id.RootDomain);
     }
-  }, [name, selectedAction, setValue]);
+  }, [isRootDomain, selectedAction]);
 
   return (
     <div className="sm:relative w-full">
@@ -51,14 +54,7 @@ const TeamsSelect: FC<SelectProps> = ({ name, isErrors }) => {
           formatMessage({ id: 'actionSidebar.selectTeam' })
         )}
       </button>
-      <input
-        type="text"
-        {...register(name)}
-        name={name}
-        id={name}
-        className="hidden"
-        value={selectedTeam || ''}
-      />
+      <input type="text" id={name} className="hidden" {...field} />
       {isTeamSelectVisible && (
         <SearchSelect
           items={[teamsOptions]}
@@ -70,7 +66,7 @@ const TeamsSelect: FC<SelectProps> = ({ name, isErrors }) => {
             )?.nativeId;
 
             setSelectedTeam(value);
-            setValue(name, teamId);
+            field.onChange(teamId);
           }}
         />
       )}
