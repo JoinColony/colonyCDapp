@@ -6,6 +6,7 @@ import {
   ColonyRole,
 } from '@colony/colony-js';
 
+import { ColonyManager } from '~context';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import {
@@ -39,7 +40,7 @@ function* stakeMotion({
 }: Action<ActionTypes.MOTION_STAKE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const colonyManager = yield call(getColonyManager);
+    const colonyManager: ColonyManager = yield call(getColonyManager);
 
     const { signer } = colonyManager;
 
