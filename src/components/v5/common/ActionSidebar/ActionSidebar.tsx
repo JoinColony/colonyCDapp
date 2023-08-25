@@ -24,6 +24,7 @@ import UnlockTokenForm from './partials/UnlockTokenForm';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
 import UpgradeColonyForm from './partials/UpgradeColonyForm/UpgradeColonyForm';
 import Modal from '~v5/shared/Modal';
+import CreateDecisionForm from './partials/CreateDecisionForm/CreateDecisionForm';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -52,15 +53,6 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
     ref,
     () => !isMobile && !isCancelModalOpen && toggleActionSidebarOff(),
   );
-
-  // @TODO: handle showing error when addres is invalid and add tooltip and display wallet instead of name
-  // const showWarningForAddress = colony.metadata?.isWhitelistActivated
-  //   ? recipient &&
-  //     !(colony.metadata?.whitelistedAddresses ?? []).some(
-  //       (address) =>
-  //         address.toLowerCase() === recipient.walletAddress.toLowerCase(),
-  //     )
-  //   : false;
 
   const formContent = (
     <>
@@ -150,6 +142,9 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
     }
     if (selectedAction === Actions.UPGRADE_COLONY_VERSION) {
       return <UpgradeColonyForm>{formContent}</UpgradeColonyForm>;
+    }
+    if (selectedAction === Actions.CREATE_DECISION) {
+      return <CreateDecisionForm>{formContent}</CreateDecisionForm>;
     }
     return formContent;
   };

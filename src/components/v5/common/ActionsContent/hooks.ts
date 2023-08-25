@@ -21,20 +21,23 @@ export const useActionsContent = () => {
     selectedAction === Actions.TRANSFER_FUNDS ||
     selectedAction === Actions.CREATE_NEW_TEAM ||
     selectedAction === Actions.UNLOCK_TOKEN ||
-    selectedAction === Actions.UPGRADE_COLONY_VERSION;
+    selectedAction === Actions.UPGRADE_COLONY_VERSION ||
+    selectedAction === Actions.CREATE_DECISION;
   const shouldShowDecisionField =
     selectedAction === Actions.SIMPLE_PAYMENT ||
     selectedAction === Actions.MINT_TOKENS ||
     selectedAction === Actions.UNLOCK_TOKEN ||
     selectedAction === Actions.TRANSFER_FUNDS ||
-    selectedAction === Actions.CREATE_NEW_TEAM;
+    selectedAction === Actions.CREATE_NEW_TEAM ||
+    selectedAction === Actions.CREATE_DECISION;
   const shouldShowDescriptionField =
     selectedAction === Actions.SIMPLE_PAYMENT ||
     selectedAction === Actions.MINT_TOKENS ||
     selectedAction === Actions.TRANSFER_FUNDS ||
     selectedAction === Actions.CREATE_NEW_TEAM ||
     selectedAction === Actions.UNLOCK_TOKEN ||
-    selectedAction === Actions.UPGRADE_COLONY_VERSION;
+    selectedAction === Actions.UPGRADE_COLONY_VERSION ||
+    selectedAction === Actions.CREATE_DECISION;
   const shouldShowTransferFundsField =
     selectedAction === Actions.TRANSFER_FUNDS;
   const shouldShowTeamPurposeField = selectedAction === Actions.CREATE_NEW_TEAM;
