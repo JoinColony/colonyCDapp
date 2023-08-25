@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useIntl } from 'react-intl';
+import clsx from 'clsx';
 import { useController } from 'react-hook-form';
 
 import { useUserSelect } from './hooks';
@@ -12,7 +13,11 @@ import { SelectProps } from '../../types';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
-const UserSelect: FC<SelectProps> = ({ name, selectedWalletAddress = '' }) => {
+const UserSelect: FC<SelectProps> = ({
+  name,
+  selectedWalletAddress = '',
+  isErrors,
+}) => {
   const { formatMessage } = useIntl();
   const { field } = useController({
     name,
@@ -30,7 +35,10 @@ const UserSelect: FC<SelectProps> = ({ name, selectedWalletAddress = '' }) => {
     <div className="sm:relative w-full">
       <button
         type="button"
-        className={styles.button}
+        className={clsx(styles.button, {
+          'text-gray-600': !isErrors,
+          'text-negative-400': isErrors,
+        })}
         onClick={toggleUserSelect}
         aria-label={formatMessage({ id: 'ariaLabel.selectUser' })}
       >

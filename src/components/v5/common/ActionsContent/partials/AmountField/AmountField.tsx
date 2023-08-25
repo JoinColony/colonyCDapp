@@ -19,7 +19,12 @@ import { AmountFieldProps, CleaveChangeEvent } from './types';
 
 const displayName = 'v5.common.ActionsContent.partials.AmountField';
 
-const AmountField: FC<AmountFieldProps> = ({ name, amount, defaultToken }) => {
+const AmountField: FC<AmountFieldProps> = ({
+  name,
+  amount,
+  defaultToken,
+  isErrors,
+}) => {
   const { formatMessage } = useIntl();
   const { watch } = useFormContext();
   const { field } = useController({
@@ -78,7 +83,9 @@ const AmountField: FC<AmountFieldProps> = ({ name, amount, defaultToken }) => {
       <div className="sm:relative w-full">
         <button
           type="button"
-          className={styles.button}
+          className={clsx(styles.button, {
+            'text-negative-400': isErrors,
+          })}
           onClick={toggleTokenSelect}
           aria-label={formatMessage({ id: 'ariaLabel.selectToken' })}
         >

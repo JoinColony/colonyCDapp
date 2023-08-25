@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import clsx from 'clsx';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import RichText from '~v5/shared/RichText';
@@ -9,10 +10,16 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
   isDecriptionFieldExpanded,
   toggleOffDecriptionSelect,
   toggleOnDecriptionSelect,
+  isErrors,
 }) => (
   <div className="sm:relative w-full">
     {!isDecriptionFieldExpanded && (
-      <div className="flex text-md text-gray-600 transition-colors hover:text-blue-400">
+      <div
+        className={clsx('flex text-md transition-colors hover:text-blue-400', {
+          'text-negative-400': isErrors,
+          'text-gray-600': !isErrors,
+        })}
+      >
         <RichText
           name="annotation"
           isDecriptionFieldExpanded={isDecriptionFieldExpanded}

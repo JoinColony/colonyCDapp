@@ -1,43 +1,33 @@
-import { useForm } from 'react-hook-form';
-
 import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
 import { ActionTypes } from '~redux';
-import { getFormAction, mapPayload, pipe, withMeta } from '~utils/actions';
-import {
-  useAsyncFunction,
-  useColonyContext,
-  useEnabledExtensions,
-} from '~hooks';
+import { mapPayload, pipe, withMeta } from '~utils/actions';
+import { useColonyContext } from '~hooks';
 import { MAX_ANNOTATION_LENGTH } from '~constants';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { getCreateDomainDialogPayload } from '~common/Dialogs/CreateDomainDialog/helpers';
-import { Colony } from '~types';
+import { useActionHook } from '../ActionForm/hooks';
 
 export const useCrateNewTeam = () => {
-  const { toggleActionSidebarOff } = useActionSidebarContext();
-  const { isVotingReputationEnabled } = useEnabledExtensions();
   const { colony } = useColonyContext();
   const navigate = useNavigate();
 
-  const actionType = isVotingReputationEnabled
-    ? ActionTypes.MOTION_DOMAIN_CREATE_EDIT
-    : ActionTypes.ACTION_DOMAIN_CREATE;
-
   const transform = pipe(
-    mapPayload((payload) =>
-      getCreateDomainDialogPayload(colony as Colony, payload),
-    ),
+    mapPayload((payload) => {
+      const values = {
+        teamName: payload.teamName,
+        domainPurpose: payload.domainPurpose,
+        domainColor: payload.domainColor,
+        motionDomainId: payload.createdIn,
+        decisionMethod: payload.decisionMethod,
+        annotation: payload.annotation,
+      };
+      if (colony) {
+        return getCreateDomainDialogPayload(colony, values);
+      }
+      return null;
+    }),
     withMeta({ navigate }),
   );
-
-  const asyncFunction = useAsyncFunction({
-    submit: actionType,
-    error: getFormAction(actionType, 'ERROR'),
-    success: getFormAction(actionType, 'SUCCESS'),
-    transform,
-  });
 
   const validationSchema = yup
     .object()
@@ -56,34 +46,19 @@ export const useCrateNewTeam = () => {
     })
     .defined();
 
-  type FormValues = yup.InferType<typeof validationSchema>;
-
-  const methods = useForm({
-    mode: 'all',
-    resolver: yupResolver(validationSchema),
+  return useActionHook({
+    validationSchema,
+    transform,
     defaultValues: {
       forceAction: false,
+      teamName: '',
+      domainPurpose: '',
+      domainColor: '',
+      createdIn: 1,
+      decisionMethod: 'reputation',
+      annotation: '',
     },
+    defaultAction: ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
+    actionType: ActionTypes.ACTION_DOMAIN_CREATE,
   });
-
-  const onSubmit = async (values: FormValues) => {
-    try {
-      await asyncFunction({
-        teamName: values.teamName,
-        domainPurpose: values.domainPurpose,
-        domainColor: values.domainColor,
-        motionDomainId: values.createdIn,
-        decisionMethod: values.decisionMethod,
-        annotation: values.annotation,
-      });
-      toggleActionSidebarOff();
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  return {
-    methods,
-    onSubmit,
-  };
 };

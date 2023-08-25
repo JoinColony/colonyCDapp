@@ -23,6 +23,8 @@ import CreateNewTeamForm from './partials/CreateNewTeamForm';
 import UnlockTokenForm from './partials/UnlockTokenForm';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
 import UpgradeColonyForm from './partials/UpgradeColonyForm/UpgradeColonyForm';
+import { useActionFormContext } from './partials/ActionForm/ActionFormContext';
+import TransactionTable from '../ActionsContent/partials/TransactionTable/TransactionTable';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -46,20 +48,27 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
   const isUnlockTokenAction = selectedAction === Actions.UNLOCK_TOKEN;
   const showErrorBanner =
     (isUserHasPermission && selectedAction) || isUnlockTokenAction;
+  const { formErrors } = useActionFormContext();
+
+  const isFieldError = !!Object.keys?.(formErrors || {}).length;
+
+  const prepareNofiticationTitle = () => {
+    let errorMessage;
+
+    if (isUnlockTokenAction) {
+      errorMessage = 'actionSidebar.unlock.token.error';
+    } else if (isFieldError) {
+      errorMessage = 'actionSidebar.fields.error';
+    } else {
+      errorMessage = 'actionSidebar.mint.token.permission.error';
+    }
+    return errorMessage;
+  };
 
   useOnClickOutside(
     ref,
     () => !isMobile && !isCancelModalOpen && toggleActionSidebarOff(),
   );
-
-  // @TODO: handle showing error when addres is invalid and add tooltip and display wallet instead of name
-  // const showWarningForAddress = colony.metadata?.isWhitelistActivated
-  //   ? recipient &&
-  //     !(colony.metadata?.whitelistedAddresses ?? []).some(
-  //       (address) =>
-  //         address.toLowerCase() === recipient.walletAddress.toLowerCase(),
-  //     )
-  //   : false;
 
   const formContent = (
     <>
@@ -69,22 +78,6 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
           className={styles.titleInput}
           placeholder={formatMessage({ id: 'placeholder.title' })}
         />
-        {showErrorBanner && (
-          <div className="mb-7">
-            <NotificationBanner
-              status={isUnlockTokenAction ? 'error' : 'warning'}
-              title={{
-                id: isUnlockTokenAction
-                  ? 'actionSidebar.unlock.token.error'
-                  : 'actionSidebar.mint.token.permission.error',
-              }}
-              actionText={
-                isUnlockTokenAction ? { id: 'learn.more' } : undefined
-              }
-              actionType="call-to-action"
-            />
-          </div>
-        )}
         <ActionSidebarRow
           iconName="file-plus"
           title={{ id: 'actionSidebar.actionType' }}
@@ -117,8 +110,24 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
             )}
           </>
         </ActionSidebarRow>
-        <ActionsContent />
+        <ActionsContent formErrors={formErrors} />
+        {(showErrorBanner || isFieldError) && (
+          <div className="mt-7">
+            <NotificationBanner
+              status={isUnlockTokenAction || isFieldError ? 'error' : 'warning'}
+              title={{
+                id: prepareNofiticationTitle(),
+              }}
+              actionText={
+                isUnlockTokenAction ? { id: 'learn.more' } : undefined
+              }
+              actionType="call-to-action"
+            />
+          </div>
+        )}
+        {selectedAction === Actions.SIMPLE_PAYMENT && <TransactionTable />}
       </div>
+
       <div className="mt-auto">
         {!selectedAction && (
           <PopularActions setSelectedAction={setSelectedAction} />
@@ -128,26 +137,22 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
     </>
   );
 
+  const formComponentsByAction = {
+    [Actions.SIMPLE_PAYMENT]: SinglePaymentForm,
+    [Actions.MINT_TOKENS]: MintTokenForm,
+    [Actions.TRANSFER_FUNDS]: TransferFundsForm,
+    [Actions.CREATE_NEW_TEAM]: CreateNewTeamForm,
+    [Actions.UNLOCK_TOKEN]: UnlockTokenForm,
+    [Actions.UPGRADE_COLONY_VERSION]: UpgradeColonyForm,
+  };
+
   const prepareFormContent = () => {
-    if (selectedAction === Actions.SIMPLE_PAYMENT) {
-      return <SinglePaymentForm>{formContent}</SinglePaymentForm>;
-    }
-    if (selectedAction === Actions.MINT_TOKENS) {
-      return <MintTokenForm>{formContent}</MintTokenForm>;
-    }
-    if (selectedAction === Actions.TRANSFER_FUNDS) {
-      return <TransferFundsForm>{formContent}</TransferFundsForm>;
-    }
-    if (selectedAction === Actions.CREATE_NEW_TEAM) {
-      return <CreateNewTeamForm>{formContent}</CreateNewTeamForm>;
-    }
-    if (selectedAction === Actions.UNLOCK_TOKEN) {
-      return <UnlockTokenForm>{formContent}</UnlockTokenForm>;
-    }
-    if (selectedAction === Actions.UPGRADE_COLONY_VERSION) {
-      return <UpgradeColonyForm>{formContent}</UpgradeColonyForm>;
-    }
-    return formContent;
+    const FormComponent = formComponentsByAction[selectedAction as Actions];
+    return FormComponent ? (
+      <FormComponent>{formContent}</FormComponent>
+    ) : (
+      formContent
+    );
   };
 
   return (

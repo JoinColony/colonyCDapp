@@ -1,24 +1,13 @@
 import React, { FC, PropsWithChildren } from 'react';
 
-import { FormProvider } from 'react-hook-form';
 import { useCrateNewTeam } from './hooks';
+import ActionForm from '../ActionForm';
 
 const displayName = 'v5.common.ActionSidebar.partials.CreateNewTeamForm';
 
-const CreateNewTeamForm: FC<PropsWithChildren> = ({ children }) => {
-  const { methods, onSubmit } = useCrateNewTeam();
-
-  return (
-    <FormProvider {...methods}>
-      <form
-        onSubmit={methods.handleSubmit(onSubmit)}
-        className="h-full flex flex-col"
-      >
-        {children}
-      </form>
-    </FormProvider>
-  );
-};
+const CreateNewTeamForm: FC<PropsWithChildren> = ({ children }) => (
+  <ActionForm useActionHook={useCrateNewTeam}>{children}</ActionForm>
+);
 
 CreateNewTeamForm.displayName = displayName;
 

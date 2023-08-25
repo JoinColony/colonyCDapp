@@ -860,6 +860,7 @@
   "actionSidebar.placeholder.teamName": "Enter team name",
   "actionSidebar.placeholder.purpose": "Enter short description",
   "actionSidebar.unlock.token.error": "This action is irreversible. Use with caution.",
+  "actionSidebar.fields.error": "Oops! Something went wrong. Please check highlighted fields and try again.",
   "team.type": "Team",
   "reputation.type": "Reputation",
   "permissions.type": "Permissions types",

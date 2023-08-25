@@ -5,3 +5,7 @@ export interface DecisionMethodProps {
   label: MessageDescriptor;
   value: string;
 }
+
+export type DecisionFieldProps = {
+  isErrors: boolean;
+};

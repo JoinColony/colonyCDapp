@@ -8,13 +8,15 @@ import useToggle from '~hooks/useToggle';
 import Card from '~v5/shared/Card';
 import { useDetectClickOutside } from '~hooks';
 import { decisionMethodOptions } from './consts';
+import { DecisionFieldProps } from './types';
 
 const displayName = 'v5.common.ActionsContent.partials.DecisionField';
 
-const DecisionField: FC = () => {
+const DecisionField: FC<DecisionFieldProps> = ({ isErrors }) => {
   const { field } = useController({
     name: 'decisionMethod',
   });
+
   const { formatMessage } = useIntl();
   const [selectedDecisionMethod, setSelectedDecisionMethod] = useState<
     string | null
@@ -32,7 +34,10 @@ const DecisionField: FC = () => {
     <div className="sm:relative w-full" ref={ref}>
       <button
         type="button"
-        className={clsx(styles.button, 'capitalize')}
+        className={clsx(styles.button, 'capitalize', {
+          'text-gray-600': !isErrors,
+          'text-negative-400': isErrors,
+        })}
         onClick={toggleDecisionSelect}
       >
         {selectedDecisionMethod}

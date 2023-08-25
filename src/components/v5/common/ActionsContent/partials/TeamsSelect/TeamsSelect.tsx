@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
+import clsx from 'clsx';
 import { useController } from 'react-hook-form';
 
 import { Id } from '@colony/colony-js';
@@ -14,7 +15,7 @@ import { Actions } from '~constants/actions';
 
 const displayName = 'v5.common.ActionsContent.partials.TeamsSelect';
 
-const TeamsSelect: FC<SelectProps> = ({ name }) => {
+const TeamsSelect: FC<SelectProps> = ({ name, isErrors }) => {
   const { selectedAction } = useActionSidebarContext();
   const isRootDomain =
     selectedAction === Actions.TRANSFER_FUNDS ||
@@ -41,7 +42,10 @@ const TeamsSelect: FC<SelectProps> = ({ name }) => {
     <div className="sm:relative w-full">
       <button
         type="button"
-        className={styles.button}
+        className={clsx(styles.button, {
+          'text-gray-600': !isErrors,
+          'text-negative-400': isErrors,
+        })}
         onClick={toggleTeamSelect}
       >
         {selectedTeam ? (
