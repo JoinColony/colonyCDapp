@@ -6,6 +6,9 @@ import {
   Id,
 } from '@colony/colony-js';
 
+import { ColonyManager } from '~context';
+import { intArrayToBytes32 } from '~utils/web3';
+
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import {
@@ -14,7 +17,6 @@ import {
   uploadAnnotation,
   getColonyManager,
 } from '../utils';
-import { ColonyManager } from '~context';
 
 import {
   createGroupTransaction,
@@ -26,8 +28,6 @@ import {
   transactionAddParams,
   transactionPending,
 } from '../../actionCreators';
-
-import { intArrayToBytes32 } from '~utils/web3';
 
 function* managePermissionsAction({
   payload: {
