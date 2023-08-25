@@ -4682,7 +4682,6 @@ export type SafeTransactionDataInput = {
 
 export enum SafeTransactionType {
   ContractInteraction = 'CONTRACT_INTERACTION',
-  MultipleTransactions = 'MULTIPLE_TRANSACTIONS',
   RawTransaction = 'RAW_TRANSACTION',
   TransferFunds = 'TRANSFER_FUNDS',
   TransferNft = 'TRANSFER_NFT'
