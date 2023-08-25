@@ -232,8 +232,8 @@
 
   "transaction.group.escalateMotion.title": "Escalate Motion",
   "transaction.group.escalateMotion.description": "Escalate Motion",
-  "transaction.VotingReputationClient.escalateMotionWithProofs.title": "Escalate Motion",
-  "transaction.VotingReputationClient.escalateMotionWithProofs.description": "Escalate Motion",
+  "transaction.VotingReputationClient.escalateMotion.title": "Escalate Motion",
+  "transaction.VotingReputationClient.escalateMotion.description": "Escalate Motion",
 
   "transaction.group.buyTokens.title": "Buy Tokens",
   "transaction.group.buyTokens.description": "Buy Tokens",
@@ -434,8 +434,8 @@
   "metatransaction.VotingReputationClient.claimReward.description": "Claim motion reward",
   "metatransaction.group.escalateMotion.title": "Escalate Motion",
   "metatransaction.group.escalateMotion.description": "Escalate Motion",
-  "metatransaction.VotingReputationClient.escalateMotionWithProofs.title": "Escalate Motion",
-  "metatransaction.VotingReputationClient.escalateMotionWithProofs.description": "Escalate Motion",
+  "metatransaction.VotingReputationClient.escalateMotion.title": "Escalate Motion",
+  "metatransaction.VotingReputationClient.escalateMotion.description": "Escalate Motion",
   "metatransaction.group.buyTokens.title": "Buy Tokens",
   "metatransaction.group.buyTokens.description": "Buy Tokens",
   "metatransaction.group.emitDomainReputationPenalty.title": "Smiting user",
