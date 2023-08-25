@@ -12,9 +12,11 @@ const DefaultField: FC<DefaultFieldProps> = ({
   name,
   placeholder,
   isErrors,
+  defaultValue,
 }) => {
   const { field } = useController({
     name,
+    defaultValue: defaultValue || '',
   });
   const { formatMessage } = useIntl();
 

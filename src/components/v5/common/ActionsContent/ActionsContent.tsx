@@ -15,6 +15,7 @@ import DefaultField from './partials/DefaultField';
 import TeamColourField from './partials/TeamColourField';
 import ColonyVersionField from './partials/ColonyVersionField';
 import { ActionsContentProps } from './types';
+import ColonyDetailsFields from './partials/ColonyDetailsFields/ColonyDetailsFields';
 
 const displayName = 'v5.common.ActionsContent';
 
@@ -32,6 +33,7 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
     shouldShowTeamNameField,
     shouldShowTeamColourField,
     shouldShowVersionFields,
+    shouldShowColonyDetailsFields,
   } = useActionsContent();
   const [
     isDecriptionFieldExpanded,
@@ -71,6 +73,7 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
           <TeamsSelect name="to" isErrors={formErrors?.to} />
         </ActionSidebarRow>
       )}
+      {shouldShowColonyDetailsFields && <ColonyDetailsFields />}
       {shouldShowUserField && (
         <ActionSidebarRow
           iconName="user-focus"

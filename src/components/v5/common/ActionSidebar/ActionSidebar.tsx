@@ -22,9 +22,10 @@ import TransferFundsForm from './partials/TransferFundsForm';
 import CreateNewTeamForm from './partials/CreateNewTeamForm';
 import UnlockTokenForm from './partials/UnlockTokenForm';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
-import UpgradeColonyForm from './partials/UpgradeColonyForm/UpgradeColonyForm';
+import UpgradeColonyForm from './partials/UpgradeColonyForm';
 import { useActionFormContext } from './partials/ActionForm/ActionFormContext';
-import TransactionTable from '../ActionsContent/partials/TransactionTable/TransactionTable';
+import TransactionTable from '../ActionsContent/partials/TransactionTable';
+import EditColonyDetailsForm from './partials/EditColonyDetailsForm';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -144,6 +145,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
     [Actions.CREATE_NEW_TEAM]: CreateNewTeamForm,
     [Actions.UNLOCK_TOKEN]: UnlockTokenForm,
     [Actions.UPGRADE_COLONY_VERSION]: UpgradeColonyForm,
+    [Actions.EDIT_COLONY_DETAILS]: EditColonyDetailsForm,
   };
 
   const prepareFormContent = () => {
