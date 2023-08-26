@@ -81,6 +81,27 @@ export type ChainMetadataInput = {
   transactionHash?: InputMaybe<Scalars['String']>;
 };
 
+export enum ClientType {
+  CoinMachineClient = 'CoinMachineClient',
+  ColonyClient = 'ColonyClient',
+  EvaluatedExpenditureClient = 'EvaluatedExpenditureClient',
+  FundingQueueClient = 'FundingQueueClient',
+  LightTokenClient = 'LightTokenClient',
+  MotionTargetClient = 'MotionTargetClient',
+  NetworkClient = 'NetworkClient',
+  OneTxPaymentClient = 'OneTxPaymentClient',
+  ReputationBootstrapperClient = 'ReputationBootstrapperClient',
+  StakedExpenditureClient = 'StakedExpenditureClient',
+  StreamingPaymentsClient = 'StreamingPaymentsClient',
+  TokenClient = 'TokenClient',
+  TokenLockingClient = 'TokenLockingClient',
+  TokenSupplierClient = 'TokenSupplierClient',
+  VestingSimpleClient = 'VestingSimpleClient',
+  VotingReputationClient = 'VotingReputationClient',
+  WhitelistClient = 'WhitelistClient',
+  WrappedTokenClient = 'WrappedTokenClient'
+}
+
 /** Represents a Colony within the Colony Network */
 export type Colony = {
   __typename?: 'Colony';
@@ -1209,6 +1230,36 @@ export type CreateTokenInput = {
   type?: InputMaybe<TokenType>;
 };
 
+export type CreateTransactionInput = {
+  blockHash?: InputMaybe<Scalars['String']>;
+  blockNumber?: InputMaybe<Scalars['Int']>;
+  colonyAddress: Scalars['ID'];
+  context: ClientType;
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  deployedContractAddress?: InputMaybe<Scalars['String']>;
+  error?: InputMaybe<TransactionErrorInput>;
+  eventData?: InputMaybe<Scalars['String']>;
+  from: Scalars['ID'];
+  gasLimit?: InputMaybe<Scalars['String']>;
+  gasPrice?: InputMaybe<Scalars['String']>;
+  group?: InputMaybe<TransactionGroupInput>;
+  groupId?: InputMaybe<Scalars['ID']>;
+  hash?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  identifier?: InputMaybe<Scalars['String']>;
+  loadingRelated?: InputMaybe<Scalars['Boolean']>;
+  metatransaction: Scalars['Boolean'];
+  methodContext?: InputMaybe<Scalars['String']>;
+  methodName: Scalars['String'];
+  options?: InputMaybe<Scalars['String']>;
+  params?: InputMaybe<Scalars['String']>;
+  receipt?: InputMaybe<Scalars['String']>;
+  status: TransactionStatus;
+  title?: InputMaybe<Scalars['String']>;
+  titleValues?: InputMaybe<Scalars['String']>;
+};
+
 /** Input data for creating a unique Colony within the Colony Network. Use this instead of the automatically generated `CreateColonyInput` input type */
 export type CreateUniqueColonyInput = {
   /** Metadata related to the Colony's creation on the blockchain */
@@ -1375,6 +1426,10 @@ export type DeleteProfileInput = {
 };
 
 export type DeleteTokenInput = {
+  id: Scalars['ID'];
+};
+
+export type DeleteTransactionInput = {
   id: Scalars['ID'];
 };
 
@@ -1807,6 +1862,11 @@ export type ModelBooleanInput = {
   attributeType?: InputMaybe<ModelAttributeTypes>;
   eq?: InputMaybe<Scalars['Boolean']>;
   ne?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type ModelClientTypeInput = {
+  eq?: InputMaybe<ClientType>;
+  ne?: InputMaybe<ClientType>;
 };
 
 export type ModelColonyActionConditionInput = {
@@ -3010,6 +3070,36 @@ export type ModelSubscriptionTokenFilterInput = {
   type?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
+export type ModelSubscriptionTransactionFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionTransactionFilterInput>>>;
+  blockHash?: InputMaybe<ModelSubscriptionStringInput>;
+  blockNumber?: InputMaybe<ModelSubscriptionIntInput>;
+  colonyAddress?: InputMaybe<ModelSubscriptionIdInput>;
+  context?: InputMaybe<ModelSubscriptionStringInput>;
+  createdAt?: InputMaybe<ModelSubscriptionStringInput>;
+  deleted?: InputMaybe<ModelSubscriptionBooleanInput>;
+  deployedContractAddress?: InputMaybe<ModelSubscriptionStringInput>;
+  eventData?: InputMaybe<ModelSubscriptionStringInput>;
+  from?: InputMaybe<ModelSubscriptionIdInput>;
+  gasLimit?: InputMaybe<ModelSubscriptionStringInput>;
+  gasPrice?: InputMaybe<ModelSubscriptionStringInput>;
+  groupId?: InputMaybe<ModelSubscriptionIdInput>;
+  hash?: InputMaybe<ModelSubscriptionStringInput>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  identifier?: InputMaybe<ModelSubscriptionStringInput>;
+  loadingRelated?: InputMaybe<ModelSubscriptionBooleanInput>;
+  metatransaction?: InputMaybe<ModelSubscriptionBooleanInput>;
+  methodContext?: InputMaybe<ModelSubscriptionStringInput>;
+  methodName?: InputMaybe<ModelSubscriptionStringInput>;
+  options?: InputMaybe<ModelSubscriptionStringInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionTransactionFilterInput>>>;
+  params?: InputMaybe<ModelSubscriptionStringInput>;
+  receipt?: InputMaybe<ModelSubscriptionStringInput>;
+  status?: InputMaybe<ModelSubscriptionStringInput>;
+  title?: InputMaybe<ModelSubscriptionStringInput>;
+  titleValues?: InputMaybe<ModelSubscriptionStringInput>;
+};
+
 export type ModelSubscriptionUserFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionUserFilterInput>>>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
@@ -3070,6 +3160,78 @@ export type ModelTokenFilterInput = {
 export type ModelTokenTypeInput = {
   eq?: InputMaybe<TokenType>;
   ne?: InputMaybe<TokenType>;
+};
+
+export type ModelTransactionConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelTransactionConditionInput>>>;
+  blockHash?: InputMaybe<ModelStringInput>;
+  blockNumber?: InputMaybe<ModelIntInput>;
+  colonyAddress?: InputMaybe<ModelIdInput>;
+  context?: InputMaybe<ModelClientTypeInput>;
+  createdAt?: InputMaybe<ModelStringInput>;
+  deleted?: InputMaybe<ModelBooleanInput>;
+  deployedContractAddress?: InputMaybe<ModelStringInput>;
+  eventData?: InputMaybe<ModelStringInput>;
+  from?: InputMaybe<ModelIdInput>;
+  gasLimit?: InputMaybe<ModelStringInput>;
+  gasPrice?: InputMaybe<ModelStringInput>;
+  groupId?: InputMaybe<ModelIdInput>;
+  hash?: InputMaybe<ModelStringInput>;
+  identifier?: InputMaybe<ModelStringInput>;
+  loadingRelated?: InputMaybe<ModelBooleanInput>;
+  metatransaction?: InputMaybe<ModelBooleanInput>;
+  methodContext?: InputMaybe<ModelStringInput>;
+  methodName?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelTransactionConditionInput>;
+  options?: InputMaybe<ModelStringInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelTransactionConditionInput>>>;
+  params?: InputMaybe<ModelStringInput>;
+  receipt?: InputMaybe<ModelStringInput>;
+  status?: InputMaybe<ModelTransactionStatusInput>;
+  title?: InputMaybe<ModelStringInput>;
+  titleValues?: InputMaybe<ModelStringInput>;
+};
+
+export type ModelTransactionConnection = {
+  __typename?: 'ModelTransactionConnection';
+  items: Array<Maybe<Transaction>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelTransactionFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelTransactionFilterInput>>>;
+  blockHash?: InputMaybe<ModelStringInput>;
+  blockNumber?: InputMaybe<ModelIntInput>;
+  colonyAddress?: InputMaybe<ModelIdInput>;
+  context?: InputMaybe<ModelClientTypeInput>;
+  createdAt?: InputMaybe<ModelStringInput>;
+  deleted?: InputMaybe<ModelBooleanInput>;
+  deployedContractAddress?: InputMaybe<ModelStringInput>;
+  eventData?: InputMaybe<ModelStringInput>;
+  from?: InputMaybe<ModelIdInput>;
+  gasLimit?: InputMaybe<ModelStringInput>;
+  gasPrice?: InputMaybe<ModelStringInput>;
+  groupId?: InputMaybe<ModelIdInput>;
+  hash?: InputMaybe<ModelStringInput>;
+  id?: InputMaybe<ModelIdInput>;
+  identifier?: InputMaybe<ModelStringInput>;
+  loadingRelated?: InputMaybe<ModelBooleanInput>;
+  metatransaction?: InputMaybe<ModelBooleanInput>;
+  methodContext?: InputMaybe<ModelStringInput>;
+  methodName?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelTransactionFilterInput>;
+  options?: InputMaybe<ModelStringInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelTransactionFilterInput>>>;
+  params?: InputMaybe<ModelStringInput>;
+  receipt?: InputMaybe<ModelStringInput>;
+  status?: InputMaybe<ModelTransactionStatusInput>;
+  title?: InputMaybe<ModelStringInput>;
+  titleValues?: InputMaybe<ModelStringInput>;
+};
+
+export type ModelTransactionStatusInput = {
+  eq?: InputMaybe<TransactionStatus>;
+  ne?: InputMaybe<TransactionStatus>;
 };
 
 export type ModelUserConditionInput = {
@@ -3274,6 +3436,7 @@ export type Mutation = {
   createMotionMessage?: Maybe<MotionMessage>;
   createProfile?: Maybe<Profile>;
   createToken?: Maybe<Token>;
+  createTransaction?: Maybe<Transaction>;
   /** Create a unique Colony within the Colony Network. Use this instead of the automatically generated `createColony` mutation */
   createUniqueColony?: Maybe<Colony>;
   /** Create a unique user within the Colony Network. Use this instead of the automatically generated `createUser` mutation */
@@ -3305,6 +3468,7 @@ export type Mutation = {
   deleteMotionMessage?: Maybe<MotionMessage>;
   deleteProfile?: Maybe<Profile>;
   deleteToken?: Maybe<Token>;
+  deleteTransaction?: Maybe<Transaction>;
   deleteUser?: Maybe<User>;
   deleteUserTokens?: Maybe<UserTokens>;
   deleteWatchedColonies?: Maybe<WatchedColonies>;
@@ -3341,6 +3505,7 @@ export type Mutation = {
   updateMotionMessage?: Maybe<MotionMessage>;
   updateProfile?: Maybe<Profile>;
   updateToken?: Maybe<Token>;
+  updateTransaction?: Maybe<Transaction>;
   updateUser?: Maybe<User>;
   updateUserTokens?: Maybe<UserTokens>;
   updateWatchedColonies?: Maybe<WatchedColonies>;
@@ -3512,6 +3677,13 @@ export type MutationCreateProfileArgs = {
 export type MutationCreateTokenArgs = {
   condition?: InputMaybe<ModelTokenConditionInput>;
   input: CreateTokenInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreateTransactionArgs = {
+  condition?: InputMaybe<ModelTransactionConditionInput>;
+  input: CreateTransactionInput;
 };
 
 
@@ -3713,6 +3885,13 @@ export type MutationDeleteProfileArgs = {
 export type MutationDeleteTokenArgs = {
   condition?: InputMaybe<ModelTokenConditionInput>;
   input: DeleteTokenInput;
+};
+
+
+/** Root mutation type */
+export type MutationDeleteTransactionArgs = {
+  condition?: InputMaybe<ModelTransactionConditionInput>;
+  input: DeleteTransactionInput;
 };
 
 
@@ -3924,6 +4103,13 @@ export type MutationUpdateTokenArgs = {
 
 
 /** Root mutation type */
+export type MutationUpdateTransactionArgs = {
+  condition?: InputMaybe<ModelTransactionConditionInput>;
+  input: UpdateTransactionInput;
+};
+
+
+/** Root mutation type */
 export type MutationUpdateUserArgs = {
   condition?: InputMaybe<ModelUserConditionInput>;
   input: UpdateUserInput;
@@ -4131,6 +4317,9 @@ export type Query = {
   getTokenFromEverywhere?: Maybe<TokenFromEverywhereReturn>;
   getTokensByType?: Maybe<ModelTokenConnection>;
   getTotalMemberCount: GetTotalMemberCountReturn;
+  getTransaction?: Maybe<Transaction>;
+  getTransactionsByUser?: Maybe<ModelTransactionConnection>;
+  getTransactionsByUserAndGroup?: Maybe<ModelTransactionConnection>;
   getUser?: Maybe<User>;
   getUserByAddress?: Maybe<ModelUserConnection>;
   getUserByName?: Maybe<ModelUserConnection>;
@@ -4167,6 +4356,7 @@ export type Query = {
   listMotionMessages?: Maybe<ModelMotionMessageConnection>;
   listProfiles?: Maybe<ModelProfileConnection>;
   listTokens?: Maybe<ModelTokenConnection>;
+  listTransactions?: Maybe<ModelTransactionConnection>;
   listUserTokens?: Maybe<ModelUserTokensConnection>;
   listUsers?: Maybe<ModelUserConnection>;
   listWatchedColonies?: Maybe<ModelWatchedColoniesConnection>;
@@ -4585,6 +4775,34 @@ export type QueryGetTotalMemberCountArgs = {
 
 
 /** Root query type */
+export type QueryGetTransactionArgs = {
+  id: Scalars['ID'];
+};
+
+
+/** Root query type */
+export type QueryGetTransactionsByUserArgs = {
+  createdAt?: InputMaybe<ModelStringKeyConditionInput>;
+  filter?: InputMaybe<ModelTransactionFilterInput>;
+  from: Scalars['ID'];
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
+export type QueryGetTransactionsByUserAndGroupArgs = {
+  filter?: InputMaybe<ModelTransactionFilterInput>;
+  from?: InputMaybe<ModelIdKeyConditionInput>;
+  groupId: Scalars['ID'];
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
 export type QueryGetUserArgs = {
   id: Scalars['ID'];
 };
@@ -4844,6 +5062,14 @@ export type QueryListTokensArgs = {
 
 
 /** Root query type */
+export type QueryListTransactionsArgs = {
+  filter?: InputMaybe<ModelTransactionFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Root query type */
 export type QueryListUserTokensArgs = {
   filter?: InputMaybe<ModelUserTokensFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -4937,6 +5163,7 @@ export type Subscription = {
   onCreateMotionMessage?: Maybe<MotionMessage>;
   onCreateProfile?: Maybe<Profile>;
   onCreateToken?: Maybe<Token>;
+  onCreateTransaction?: Maybe<Transaction>;
   onCreateUser?: Maybe<User>;
   onCreateUserTokens?: Maybe<UserTokens>;
   onCreateWatchedColonies?: Maybe<WatchedColonies>;
@@ -4964,6 +5191,7 @@ export type Subscription = {
   onDeleteMotionMessage?: Maybe<MotionMessage>;
   onDeleteProfile?: Maybe<Profile>;
   onDeleteToken?: Maybe<Token>;
+  onDeleteTransaction?: Maybe<Transaction>;
   onDeleteUser?: Maybe<User>;
   onDeleteUserTokens?: Maybe<UserTokens>;
   onDeleteWatchedColonies?: Maybe<WatchedColonies>;
@@ -4991,6 +5219,7 @@ export type Subscription = {
   onUpdateMotionMessage?: Maybe<MotionMessage>;
   onUpdateProfile?: Maybe<Profile>;
   onUpdateToken?: Maybe<Token>;
+  onUpdateTransaction?: Maybe<Transaction>;
   onUpdateUser?: Maybe<User>;
   onUpdateUserTokens?: Maybe<UserTokens>;
   onUpdateWatchedColonies?: Maybe<WatchedColonies>;
@@ -5114,6 +5343,11 @@ export type SubscriptionOnCreateProfileArgs = {
 
 export type SubscriptionOnCreateTokenArgs = {
   filter?: InputMaybe<ModelSubscriptionTokenFilterInput>;
+};
+
+
+export type SubscriptionOnCreateTransactionArgs = {
+  filter?: InputMaybe<ModelSubscriptionTransactionFilterInput>;
 };
 
 
@@ -5252,6 +5486,11 @@ export type SubscriptionOnDeleteTokenArgs = {
 };
 
 
+export type SubscriptionOnDeleteTransactionArgs = {
+  filter?: InputMaybe<ModelSubscriptionTransactionFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteUserArgs = {
   filter?: InputMaybe<ModelSubscriptionUserFilterInput>;
 };
@@ -5387,6 +5626,11 @@ export type SubscriptionOnUpdateTokenArgs = {
 };
 
 
+export type SubscriptionOnUpdateTransactionArgs = {
+  filter?: InputMaybe<ModelSubscriptionTransactionFilterInput>;
+};
+
+
 export type SubscriptionOnUpdateUserArgs = {
   filter?: InputMaybe<ModelSubscriptionUserFilterInput>;
 };
@@ -5475,6 +5719,114 @@ export enum TokenType {
   Colony = 'COLONY',
   /** An ERC20-compatible token */
   Erc20 = 'ERC20'
+}
+
+/** Represents a transaction made in a colony by a user */
+export type Transaction = {
+  __typename?: 'Transaction';
+  /** The block hash of the transaction */
+  blockHash?: Maybe<Scalars['String']>;
+  /** The block number of the transaction */
+  blockNumber?: Maybe<Scalars['Int']>;
+  /** The colony the transaction was made in */
+  colonyAddress: Scalars['ID'];
+  /** The contract the transaction was made on */
+  context: ClientType;
+  /** Time the transaction was created */
+  createdAt: Scalars['AWSDateTime'];
+  /** Is the transaction cancelled? */
+  deleted?: Maybe<Scalars['Boolean']>;
+  /** A contract address associated with a successful transaction */
+  deployedContractAddress?: Maybe<Scalars['String']>;
+  /** The error associated with the transaction, if any */
+  error?: Maybe<TransactionError>;
+  /** Event data associated with a successful transaction */
+  eventData?: Maybe<Scalars['String']>;
+  /** The sender of the transaction */
+  from: Scalars['ID'];
+  /** The transaction's gas limit */
+  gasLimit?: Maybe<Scalars['String']>;
+  /** The transaction's gas price */
+  gasPrice?: Maybe<Scalars['String']>;
+  /** The group to which the transaction belongs, if any */
+  group?: Maybe<TransactionGroup>;
+  /** The id of the group to which the transaction belongs, if any */
+  groupId?: Maybe<Scalars['ID']>;
+  /** The transaction hash */
+  hash?: Maybe<Scalars['String']>;
+  /** Transaction id */
+  id: Scalars['ID'];
+  /** An identifier for the transaction */
+  identifier?: Maybe<Scalars['String']>;
+  /** True if a related transaction is loading */
+  loadingRelated?: Maybe<Scalars['Boolean']>;
+  /** True if the transaction is a metatransaction */
+  metatransaction: Scalars['Boolean'];
+  /** Context in which method is used e.g. setOneTxRole */
+  methodContext?: Maybe<Scalars['String']>;
+  /** The name of the contract method used */
+  methodName: Scalars['String'];
+  /** Options associated with the transaction */
+  options?: Maybe<Scalars['String']>;
+  /** The params the transaction was called with */
+  params?: Maybe<Scalars['String']>;
+  /** Transaction receipt */
+  receipt?: Maybe<Scalars['String']>;
+  /** The current status of the transaction */
+  status: TransactionStatus;
+  /** A title to show in the UI */
+  title?: Maybe<Scalars['String']>;
+  /** Title values for FormatJS interpolation */
+  titleValues?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['AWSDateTime'];
+};
+
+export type TransactionError = {
+  __typename?: 'TransactionError';
+  message: Scalars['String'];
+  type: TransactionErrors;
+};
+
+export type TransactionErrorInput = {
+  message: Scalars['String'];
+  type: TransactionErrors;
+};
+
+export enum TransactionErrors {
+  Estimate = 'ESTIMATE',
+  EventData = 'EVENT_DATA',
+  Receipt = 'RECEIPT',
+  Send = 'SEND',
+  Unsuccessful = 'UNSUCCESSFUL'
+}
+
+export type TransactionGroup = {
+  __typename?: 'TransactionGroup';
+  description?: Maybe<Scalars['String']>;
+  descriptionValues?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  index: Scalars['Int'];
+  key: Scalars['String'];
+  title?: Maybe<Scalars['String']>;
+  titleValues?: Maybe<Scalars['String']>;
+};
+
+export type TransactionGroupInput = {
+  description?: InputMaybe<Scalars['String']>;
+  descriptionValues?: InputMaybe<Scalars['String']>;
+  id: Scalars['String'];
+  index: Scalars['Int'];
+  key: Scalars['String'];
+  title?: InputMaybe<Scalars['String']>;
+  titleValues?: InputMaybe<Scalars['String']>;
+};
+
+export enum TransactionStatus {
+  Created = 'CREATED',
+  Failed = 'FAILED',
+  Pending = 'PENDING',
+  Ready = 'READY',
+  Succeeded = 'SUCCEEDED'
 }
 
 export type UpdateAnnotationInput = {
@@ -5780,6 +6132,36 @@ export type UpdateTokenInput = {
   type?: InputMaybe<TokenType>;
 };
 
+export type UpdateTransactionInput = {
+  blockHash?: InputMaybe<Scalars['String']>;
+  blockNumber?: InputMaybe<Scalars['Int']>;
+  colonyAddress?: InputMaybe<Scalars['ID']>;
+  context?: InputMaybe<ClientType>;
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  deployedContractAddress?: InputMaybe<Scalars['String']>;
+  error?: InputMaybe<TransactionErrorInput>;
+  eventData?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['ID']>;
+  gasLimit?: InputMaybe<Scalars['String']>;
+  gasPrice?: InputMaybe<Scalars['String']>;
+  group?: InputMaybe<TransactionGroupInput>;
+  groupId?: InputMaybe<Scalars['ID']>;
+  hash?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  identifier?: InputMaybe<Scalars['String']>;
+  loadingRelated?: InputMaybe<Scalars['Boolean']>;
+  metatransaction?: InputMaybe<Scalars['Boolean']>;
+  methodContext?: InputMaybe<Scalars['String']>;
+  methodName?: InputMaybe<Scalars['String']>;
+  options?: InputMaybe<Scalars['String']>;
+  params?: InputMaybe<Scalars['String']>;
+  receipt?: InputMaybe<Scalars['String']>;
+  status?: InputMaybe<TransactionStatus>;
+  title?: InputMaybe<Scalars['String']>;
+  titleValues?: InputMaybe<Scalars['String']>;
+};
+
 export type UpdateUserInput = {
   id: Scalars['ID'];
   name?: InputMaybe<Scalars['String']>;
@@ -5813,6 +6195,7 @@ export type User = {
   roles?: Maybe<ModelColonyRoleConnection>;
   stakes?: Maybe<ModelColonyStakeConnection>;
   tokens?: Maybe<ModelUserTokensConnection>;
+  transactionHistory?: Maybe<ModelTransactionConnection>;
   updatedAt: Scalars['AWSDateTime'];
   watchlist?: Maybe<ModelWatchedColoniesConnection>;
 };
@@ -5841,6 +6224,16 @@ export type UserStakesArgs = {
 /** Represents a User within the Colony Network */
 export type UserTokensArgs = {
   filter?: InputMaybe<ModelUserTokensFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Represents a User within the Colony Network */
+export type UserTransactionHistoryArgs = {
+  createdAt?: InputMaybe<ModelStringKeyConditionInput>;
+  filter?: InputMaybe<ModelTransactionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
@@ -6056,6 +6449,8 @@ export type TokenFragment = { __typename?: 'Token', decimals: number, name: stri
 
 export type UserTokenBalanceDataFragment = { __typename?: 'GetUserTokenBalanceReturn', balance?: string | null, inactiveBalance?: string | null, lockedBalance?: string | null, activeBalance?: string | null, pendingBalance?: string | null };
 
+export type TransactionFragment = { __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, params?: string | null, groupId?: string | null, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, group?: { __typename?: 'TransactionGroup', id: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } | null };
+
 export type UserFragment = { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean }> | null } | null } } | null> } | null };
 
 export type UserDisplayFragment = { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', displayName?: string | null, avatar?: string | null, thumbnail?: string | null } | null };
@@ -6179,6 +6574,20 @@ export type DeleteColonyTokensMutationVariables = Exact<{
 
 
 export type DeleteColonyTokensMutation = { __typename?: 'Mutation', deleteColonyTokens?: { __typename?: 'ColonyTokens', id: string } | null };
+
+export type CreateTransactionMutationVariables = Exact<{
+  input: CreateTransactionInput;
+}>;
+
+
+export type CreateTransactionMutation = { __typename?: 'Mutation', createTransaction?: { __typename?: 'Transaction', id: string } | null };
+
+export type UpdateTransactionMutationVariables = Exact<{
+  input: UpdateTransactionInput;
+}>;
+
+
+export type UpdateTransactionMutation = { __typename?: 'Mutation', updateTransaction?: { __typename?: 'Transaction', id: string } | null };
 
 export type CreateUniqueUserMutationVariables = Exact<{
   input: CreateUniqueUserInput;
@@ -6369,6 +6778,32 @@ export type GetUserTokenBalanceQueryVariables = Exact<{
 
 
 export type GetUserTokenBalanceQuery = { __typename?: 'Query', getUserTokenBalance?: { __typename?: 'GetUserTokenBalanceReturn', balance?: string | null, inactiveBalance?: string | null, lockedBalance?: string | null, activeBalance?: string | null, pendingBalance?: string | null } | null };
+
+export type GetUserTransactionsQueryVariables = Exact<{
+  userAddress: Scalars['ID'];
+  colonyAddress: Scalars['ID'];
+  transactionsOlderThan?: InputMaybe<Scalars['String']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetUserTransactionsQuery = { __typename?: 'Query', getTransactionsByUser?: { __typename?: 'ModelTransactionConnection', nextToken?: string | null, items: Array<{ __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, params?: string | null, groupId?: string | null, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, group?: { __typename?: 'TransactionGroup', id: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } | null } | null> } | null };
+
+export type GetTransactionsByUserAndGroupQueryVariables = Exact<{
+  from: Scalars['ID'];
+  groupId: Scalars['ID'];
+}>;
+
+
+export type GetTransactionsByUserAndGroupQuery = { __typename?: 'Query', getTransactionsByUserAndGroup?: { __typename?: 'ModelTransactionConnection', items: Array<{ __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, params?: string | null, groupId?: string | null, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, group?: { __typename?: 'TransactionGroup', id: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } | null } | null> } | null };
+
+export type GetTransactionQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetTransactionQuery = { __typename?: 'Query', getTransaction?: { __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, params?: string | null, groupId?: string | null, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, group?: { __typename?: 'TransactionGroup', id: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } | null } | null };
 
 export type GetUserByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -7041,6 +7476,34 @@ export const UserTokenBalanceDataFragmentDoc = gql`
   pendingBalance
 }
     `;
+export const TransactionFragmentDoc = gql`
+    fragment Transaction on Transaction {
+  id
+  context
+  createdAt
+  from
+  colonyAddress
+  params
+  groupId
+  group {
+    id
+    key
+    index
+    description
+    descriptionValues
+    title
+    titleValues
+  }
+  hash
+  methodContext
+  methodName
+  status
+  metatransaction
+  title
+  titleValues
+  options
+}
+    `;
 export const MemberUserFragmentDoc = gql`
     fragment MemberUser on User {
   walletAddress: id
@@ -7594,6 +8057,72 @@ export function useDeleteColonyTokensMutation(baseOptions?: Apollo.MutationHookO
 export type DeleteColonyTokensMutationHookResult = ReturnType<typeof useDeleteColonyTokensMutation>;
 export type DeleteColonyTokensMutationResult = Apollo.MutationResult<DeleteColonyTokensMutation>;
 export type DeleteColonyTokensMutationOptions = Apollo.BaseMutationOptions<DeleteColonyTokensMutation, DeleteColonyTokensMutationVariables>;
+export const CreateTransactionDocument = gql`
+    mutation CreateTransaction($input: CreateTransactionInput!) {
+  createTransaction(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateTransactionMutationFn = Apollo.MutationFunction<CreateTransactionMutation, CreateTransactionMutationVariables>;
+
+/**
+ * __useCreateTransactionMutation__
+ *
+ * To run a mutation, you first call `useCreateTransactionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTransactionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTransactionMutation, { data, loading, error }] = useCreateTransactionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateTransactionMutation(baseOptions?: Apollo.MutationHookOptions<CreateTransactionMutation, CreateTransactionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateTransactionMutation, CreateTransactionMutationVariables>(CreateTransactionDocument, options);
+      }
+export type CreateTransactionMutationHookResult = ReturnType<typeof useCreateTransactionMutation>;
+export type CreateTransactionMutationResult = Apollo.MutationResult<CreateTransactionMutation>;
+export type CreateTransactionMutationOptions = Apollo.BaseMutationOptions<CreateTransactionMutation, CreateTransactionMutationVariables>;
+export const UpdateTransactionDocument = gql`
+    mutation UpdateTransaction($input: UpdateTransactionInput!) {
+  updateTransaction(input: $input) {
+    id
+  }
+}
+    `;
+export type UpdateTransactionMutationFn = Apollo.MutationFunction<UpdateTransactionMutation, UpdateTransactionMutationVariables>;
+
+/**
+ * __useUpdateTransactionMutation__
+ *
+ * To run a mutation, you first call `useUpdateTransactionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTransactionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTransactionMutation, { data, loading, error }] = useUpdateTransactionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateTransactionMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTransactionMutation, UpdateTransactionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateTransactionMutation, UpdateTransactionMutationVariables>(UpdateTransactionDocument, options);
+      }
+export type UpdateTransactionMutationHookResult = ReturnType<typeof useUpdateTransactionMutation>;
+export type UpdateTransactionMutationResult = Apollo.MutationResult<UpdateTransactionMutation>;
+export type UpdateTransactionMutationOptions = Apollo.BaseMutationOptions<UpdateTransactionMutation, UpdateTransactionMutationVariables>;
 export const CreateUniqueUserDocument = gql`
     mutation CreateUniqueUser($input: CreateUniqueUserInput!) {
   createUniqueUser(input: $input) {
@@ -8583,6 +9112,128 @@ export function useGetUserTokenBalanceLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type GetUserTokenBalanceQueryHookResult = ReturnType<typeof useGetUserTokenBalanceQuery>;
 export type GetUserTokenBalanceLazyQueryHookResult = ReturnType<typeof useGetUserTokenBalanceLazyQuery>;
 export type GetUserTokenBalanceQueryResult = Apollo.QueryResult<GetUserTokenBalanceQuery, GetUserTokenBalanceQueryVariables>;
+export const GetUserTransactionsDocument = gql`
+    query GetUserTransactions($userAddress: ID!, $colonyAddress: ID!, $transactionsOlderThan: String, $nextToken: String, $limit: Int) {
+  getTransactionsByUser(
+    from: $userAddress
+    createdAt: {lt: $transactionsOlderThan}
+    filter: {colonyAddress: {eq: $colonyAddress}, deleted: {ne: true}}
+    sortDirection: DESC
+    nextToken: $nextToken
+    limit: $limit
+  ) {
+    items {
+      ...Transaction
+    }
+    nextToken
+  }
+}
+    ${TransactionFragmentDoc}`;
+
+/**
+ * __useGetUserTransactionsQuery__
+ *
+ * To run a query within a React component, call `useGetUserTransactionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserTransactionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserTransactionsQuery({
+ *   variables: {
+ *      userAddress: // value for 'userAddress'
+ *      colonyAddress: // value for 'colonyAddress'
+ *      transactionsOlderThan: // value for 'transactionsOlderThan'
+ *      nextToken: // value for 'nextToken'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGetUserTransactionsQuery(baseOptions: Apollo.QueryHookOptions<GetUserTransactionsQuery, GetUserTransactionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserTransactionsQuery, GetUserTransactionsQueryVariables>(GetUserTransactionsDocument, options);
+      }
+export function useGetUserTransactionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserTransactionsQuery, GetUserTransactionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserTransactionsQuery, GetUserTransactionsQueryVariables>(GetUserTransactionsDocument, options);
+        }
+export type GetUserTransactionsQueryHookResult = ReturnType<typeof useGetUserTransactionsQuery>;
+export type GetUserTransactionsLazyQueryHookResult = ReturnType<typeof useGetUserTransactionsLazyQuery>;
+export type GetUserTransactionsQueryResult = Apollo.QueryResult<GetUserTransactionsQuery, GetUserTransactionsQueryVariables>;
+export const GetTransactionsByUserAndGroupDocument = gql`
+    query getTransactionsByUserAndGroup($from: ID!, $groupId: ID!) {
+  getTransactionsByUserAndGroup(groupId: $groupId, from: {eq: $from}) {
+    items {
+      ...Transaction
+    }
+  }
+}
+    ${TransactionFragmentDoc}`;
+
+/**
+ * __useGetTransactionsByUserAndGroupQuery__
+ *
+ * To run a query within a React component, call `useGetTransactionsByUserAndGroupQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTransactionsByUserAndGroupQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTransactionsByUserAndGroupQuery({
+ *   variables: {
+ *      from: // value for 'from'
+ *      groupId: // value for 'groupId'
+ *   },
+ * });
+ */
+export function useGetTransactionsByUserAndGroupQuery(baseOptions: Apollo.QueryHookOptions<GetTransactionsByUserAndGroupQuery, GetTransactionsByUserAndGroupQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTransactionsByUserAndGroupQuery, GetTransactionsByUserAndGroupQueryVariables>(GetTransactionsByUserAndGroupDocument, options);
+      }
+export function useGetTransactionsByUserAndGroupLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTransactionsByUserAndGroupQuery, GetTransactionsByUserAndGroupQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTransactionsByUserAndGroupQuery, GetTransactionsByUserAndGroupQueryVariables>(GetTransactionsByUserAndGroupDocument, options);
+        }
+export type GetTransactionsByUserAndGroupQueryHookResult = ReturnType<typeof useGetTransactionsByUserAndGroupQuery>;
+export type GetTransactionsByUserAndGroupLazyQueryHookResult = ReturnType<typeof useGetTransactionsByUserAndGroupLazyQuery>;
+export type GetTransactionsByUserAndGroupQueryResult = Apollo.QueryResult<GetTransactionsByUserAndGroupQuery, GetTransactionsByUserAndGroupQueryVariables>;
+export const GetTransactionDocument = gql`
+    query GetTransaction($id: ID!) {
+  getTransaction(id: $id) {
+    ...Transaction
+  }
+}
+    ${TransactionFragmentDoc}`;
+
+/**
+ * __useGetTransactionQuery__
+ *
+ * To run a query within a React component, call `useGetTransactionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTransactionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTransactionQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetTransactionQuery(baseOptions: Apollo.QueryHookOptions<GetTransactionQuery, GetTransactionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTransactionQuery, GetTransactionQueryVariables>(GetTransactionDocument, options);
+      }
+export function useGetTransactionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTransactionQuery, GetTransactionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTransactionQuery, GetTransactionQueryVariables>(GetTransactionDocument, options);
+        }
+export type GetTransactionQueryHookResult = ReturnType<typeof useGetTransactionQuery>;
+export type GetTransactionLazyQueryHookResult = ReturnType<typeof useGetTransactionLazyQuery>;
+export type GetTransactionQueryResult = Apollo.QueryResult<GetTransactionQuery, GetTransactionQueryVariables>;
 export const GetUserByAddressDocument = gql`
     query GetUserByAddress($address: ID!) {
   getUserByAddress(id: $address) {

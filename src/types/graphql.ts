@@ -31,6 +31,8 @@ import {
   ColonyContributorFragment,
   ContributorReputationFragment,
   ContributorRolesFragment,
+  TransactionStatus,
+  TransactionFragment,
 } from '~gql';
 
 export type AnnotationType = AnnotationFragment;
@@ -63,6 +65,8 @@ export type MotionMessage = MotionMessageFragment;
 
 export type Token = TokenFragment;
 
+export type Transaction = TransactionFragment;
+
 export type WatchListItem = WatchListItemFragment;
 
 export type WatchedColony = WatchedColonyFragment;
@@ -78,6 +82,8 @@ export { ColonyActionType };
 export { ModelSortDirection as SortDirection };
 
 export { DomainColor };
+
+export { TransactionStatus };
 
 /*
  * Funds claims

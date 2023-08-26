@@ -99,7 +99,10 @@ const CardWithBios: FC<CardWithBiosProps> = ({
             <span className="flex items-center text-gray-600 text-3">
               <Icon name="star-not-filled" appearance={{ size: 'extraTiny' }} />
               <span className="inline-block ml-1 mr-2">
-                {colonyReputationPercentage.toFixed(2)}%
+                {Number.isInteger(colonyReputationPercentage)
+                  ? colonyReputationPercentage
+                  : colonyReputationPercentage.toFixed(2)}
+                %
               </span>
             </span>
           )}

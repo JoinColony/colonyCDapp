@@ -1484,6 +1484,183 @@ type ColonyMetadataChangelog {
   haveTokensChanged: Boolean!
 }
 
+enum ClientType {
+  # Styling like this on purpose to maintain ease of compatibility with typescript equivalent
+  CoinMachineClient
+  ColonyClient
+  EvaluatedExpenditureClient
+  FundingQueueClient
+  MotionTargetClient
+  NetworkClient
+  OneTxPaymentClient
+  ReputationBootstrapperClient
+  StakedExpenditureClient
+  StreamingPaymentsClient
+  TokenSupplierClient
+  TokenClient
+  TokenLockingClient
+  VotingReputationClient
+  WhitelistClient
+  WrappedTokenClient
+  VestingSimpleClient
+  LightTokenClient
+}
+
+enum TransactionStatus {
+  CREATED
+  READY
+  PENDING
+  FAILED
+  SUCCEEDED
+}
+
+type TransactionGroup {
+  id: String!
+  index: Int!
+  key: String!
+  title: String # JSON string
+  titleValues: String # JSON string
+  description: String # JSON string
+  descriptionValues: String # JSON string
+}
+
+enum TransactionErrors {
+  ESTIMATE
+  EVENT_DATA
+  RECEIPT
+  SEND
+  UNSUCCESSFUL
+}
+
+type TransactionError {
+  type: TransactionErrors!
+  message: String!
+}
+
+"""
+Represents a transaction made in a colony by a user
+"""
+type Transaction @model {
+  """
+  Transaction id
+  """
+  id: ID!
+  """
+  The contract the transaction was made on
+  """
+  context: ClientType!
+  """
+  Time the transaction was created
+  """
+  createdAt: AWSDateTime!
+  """
+  The sender of the transaction
+  """
+  from: ID!
+    @index(
+      name: "byInitiatorAddress"
+      queryField: "getTransactionsByUser"
+      sortKeyFields: ["createdAt"]
+    )
+  """
+  The colony the transaction was made in
+  """
+  colonyAddress: ID!
+  """
+  The id of the group to which the transaction belongs, if any
+  """
+  groupId: ID
+    @index(
+      name: "byGroup"
+      queryField: "getTransactionsByUserAndGroup"
+      sortKeyFields: ["from"]
+    )
+  """
+  The group to which the transaction belongs, if any
+  """
+  group: TransactionGroup
+  """
+  The transaction hash
+  """
+  hash: String
+  """
+  The block number of the transaction
+  """
+  blockNumber: Int
+  """
+  The block hash of the transaction
+  """
+  blockHash: String
+  """
+  The error associated with the transaction, if any
+  """
+  error: TransactionError
+  """
+  The params the transaction was called with
+  """
+  params: String # a JSON stringified array
+  """
+  Context in which method is used e.g. setOneTxRole
+  """
+  methodContext: String
+  """
+  The name of the contract method used
+  """
+  methodName: String!
+  """
+  The current status of the transaction
+  """
+  status: TransactionStatus!
+  """
+  True if the transaction is a metatransaction
+  """
+  metatransaction: Boolean!
+  """
+  A title to show in the UI
+  """
+  title: String # JSON string
+  """
+  Title values for FormatJS interpolation
+  """
+  titleValues: String # JSON string
+  """
+  The transaction's gas limit
+  """
+  gasLimit: String
+  """
+  The transaction's gas price
+  """
+  gasPrice: String
+  """
+  An identifier for the transaction
+  """
+  identifier: String
+  """
+  Event data associated with a successful transaction
+  """
+  eventData: String # JSON string
+  """
+  A contract address associated with a successful transaction
+  """
+  deployedContractAddress: String
+  """
+  True if a related transaction is loading
+  """
+  loadingRelated: Boolean
+  """
+  Transaction receipt
+  """
+  receipt: String # JSON string
+  """
+  Is the transaction cancelled?
+  """
+  deleted: Boolean
+  """
+  Options associated with the transaction
+  """
+  options: String # JSON string
+}
+
 """
 Represents a User within the Colony Network
 """
@@ -1520,6 +1697,11 @@ type User @model {
   List of domains with the user's permissions in each domain
   """
   roles: [ColonyRole] @hasMany(indexName: "byTargetAddress", fields: ["id"])
+  """
+  A user's transaction history, broken down by colony
+  """
+  transactionHistory: [Transaction!]
+    @hasMany(indexName: "byInitiatorAddress", fields: ["id"])
 }
 
 """

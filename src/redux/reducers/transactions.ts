@@ -1,6 +1,6 @@
 import getObjectFromPath from 'lodash/get';
 
-import { TRANSACTION_STATUSES } from '~types';
+import { TransactionStatus } from '~types';
 
 import {
   TransactionRecord,
@@ -50,6 +50,7 @@ const coreTransactionsReducer: ReducerType<CoreTransactionsRecord> = (
           gasLimit,
           title,
           titleValues,
+          metatransaction,
         },
       } = action;
 
@@ -69,6 +70,7 @@ const coreTransactionsReducer: ReducerType<CoreTransactionsRecord> = (
         gasPrice,
         title,
         titleValues,
+        metatransaction,
       } as TransactionRecordProps);
 
       return state.setIn(
@@ -102,7 +104,7 @@ const coreTransactionsReducer: ReducerType<CoreTransactionsRecord> = (
       } = action;
       return state.setIn(
         [CORE_TRANSACTIONS_LIST, id, 'status'],
-        TRANSACTION_STATUSES.READY,
+        TransactionStatus.Ready,
       );
     }
     case ActionTypes.TRANSACTION_PENDING: {
@@ -111,7 +113,7 @@ const coreTransactionsReducer: ReducerType<CoreTransactionsRecord> = (
       } = action;
       return state.setIn(
         [CORE_TRANSACTIONS_LIST, id, 'status'],
-        TRANSACTION_STATUSES.PENDING,
+        TransactionStatus.Pending,
       );
     }
     case ActionTypes.TRANSACTION_LOAD_RELATED: {
@@ -140,10 +142,7 @@ const coreTransactionsReducer: ReducerType<CoreTransactionsRecord> = (
       // Clear errors and set to ready, because this action also retries sending
       return state
         .setIn([CORE_TRANSACTIONS_LIST, id, 'error'], undefined)
-        .setIn(
-          [CORE_TRANSACTIONS_LIST, id, 'status'],
-          TRANSACTION_STATUSES.READY,
-        );
+        .setIn([CORE_TRANSACTIONS_LIST, id, 'status'], TransactionStatus.Ready);
     }
     case ActionTypes.TRANSACTION_HASH_RECEIVED: {
       const {
@@ -161,7 +160,7 @@ const coreTransactionsReducer: ReducerType<CoreTransactionsRecord> = (
       } = action;
       return state.setIn(
         [CORE_TRANSACTIONS_LIST, id, 'status'],
-        TRANSACTION_STATUSES.PENDING,
+        TransactionStatus.Pending,
       );
     }
     case ActionTypes.TRANSACTION_RECEIPT_RECEIVED: {
@@ -181,7 +180,7 @@ const coreTransactionsReducer: ReducerType<CoreTransactionsRecord> = (
       return state.mergeIn([CORE_TRANSACTIONS_LIST, id], {
         deployedContractAddress,
         eventData,
-        status: TRANSACTION_STATUSES.SUCCEEDED,
+        status: TransactionStatus.Succeeded,
       });
     }
     case ActionTypes.TRANSACTION_ERROR: {
@@ -191,7 +190,7 @@ const coreTransactionsReducer: ReducerType<CoreTransactionsRecord> = (
       } = action;
       return state.mergeIn([CORE_TRANSACTIONS_LIST, id], {
         error,
-        status: TRANSACTION_STATUSES.FAILED,
+        status: TransactionStatus.Failed,
       });
     }
     case ActionTypes.TRANSACTION_CANCEL: {

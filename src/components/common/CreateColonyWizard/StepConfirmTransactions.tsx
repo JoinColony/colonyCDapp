@@ -13,7 +13,7 @@ import {
   findNewestGroup,
   TransactionOrMessageGroups,
 } from '~frame/GasStation/transactionGroup';
-import { TRANSACTION_STATUSES } from '~types';
+import { TransactionStatus } from '~gql';
 import { groupedTransactionsAndMessages } from '~redux/selectors';
 import { ActionTypes } from '~redux/index';
 import { useAppContext } from '~hooks';
@@ -66,14 +66,14 @@ type Props = Pick<WizardStepProps<FormValues>, 'wizardValues'>;
 
 type NewestGroup = Array<{
   methodName: string;
-  status: typeof TRANSACTION_STATUSES;
+  status: typeof TransactionStatus;
 }>;
 
 const getContractDeploymentStatus = (newestGroup: NewestGroup) =>
   !!newestGroup.find(
     ({ methodName = '', status = '' }) =>
       methodName.includes('createColony') &&
-      status === TRANSACTION_STATUSES.SUCCEEDED,
+      status === TransactionStatus.Succeeded,
   );
 
 const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
@@ -99,7 +99,7 @@ const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
       newestGroup as unknown as NewestGroup,
     );
     const deploymentHasErrors =
-      getGroupStatus(newestGroup) === TRANSACTION_STATUSES.FAILED;
+      getGroupStatus(newestGroup) === TransactionStatus.Failed;
     if (colonyContractWasDeployed && deploymentHasErrors) {
       setExistsRecoverableDeploymentError(true);
     } else if (existsRecoverableDeploymentError) {
@@ -123,7 +123,7 @@ const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
   // @TODO: Move the following to the colonyCreate saga
   // Redirect to the colony if a successful creteColony tx group is found
   if (
-    getGroupStatus(newestGroup) === TRANSACTION_STATUSES.SUCCEEDED &&
+    getGroupStatus(newestGroup) === TransactionStatus.Succeeded &&
     getGroupKey(newestGroup) === 'group.createColony'
   ) {
     updateUser?.(user?.walletAddress, true);

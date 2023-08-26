@@ -8,6 +8,12 @@ import {
 } from '~gql';
 
 export function* getCanUserSendMetatransactions() {
+  const metatransactionsAvailable = canUseMetatransactions();
+
+  if (!metatransactionsAvailable) {
+    return false;
+  }
+
   const wallet = getContext(ContextModule.Wallet);
   const apolloClient = getContext(ContextModule.ApolloClient);
 
@@ -27,7 +33,5 @@ export function* getCanUserSendMetatransactions() {
     data.getUserByAddress?.items[0]?.profile?.meta?.metatransactionsEnabled ||
     false;
 
-  const metatransactionsAvailable = canUseMetatransactions();
-
-  return metatransactionsAvailable && userHasMetatransactionEnabled;
+  return userHasMetatransactionEnabled;
 }

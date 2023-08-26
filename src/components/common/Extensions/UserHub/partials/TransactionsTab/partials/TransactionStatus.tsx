@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 
-import { TRANSACTION_STATUSES } from '~types';
+import { TransactionStatus as TransactionStatusEnum } from '~gql';
 
 import Icon from '~shared/Icon';
 
@@ -12,10 +12,10 @@ const displayName =
   'common.Extensions.UserHub.partials.TransactionTab.partials.TransactionStatus';
 
 const TransactionStatus: FC<TransactionStatusProps> = ({ status, date }) => {
-  const ready = status === TRANSACTION_STATUSES.READY;
-  const failed = status === TRANSACTION_STATUSES.FAILED;
-  const succeeded = status === TRANSACTION_STATUSES.SUCCEEDED;
-  const pending = status === TRANSACTION_STATUSES.PENDING;
+  const ready = status === TransactionStatusEnum.Ready;
+  const failed = status === TransactionStatusEnum.Failed;
+  const succeeded = status === TransactionStatusEnum.Succeeded;
+  const pending = status === TransactionStatusEnum.Pending;
 
   const createdAt = date && format(new Date(date ?? 0 * 1000), 'dd MMMM yyyy');
 

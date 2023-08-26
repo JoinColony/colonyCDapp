@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { TRANSACTION_STATUSES } from '~types';
+import { TransactionStatus } from '~gql';
 
 import { Tooltip } from '~shared/Popover';
 import { SpinnerLoader } from '~shared/Preloaders';
@@ -25,7 +25,7 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  status?: TRANSACTION_STATUSES;
+  status?: TransactionStatus;
 }
 
 const MessageCardStatus = ({ status }: Props) => (
@@ -48,15 +48,15 @@ const MessageCardStatus = ({ status }: Props) => (
          * @NOTE There's never going to be more then a message to sign at a
          * given time, so the counter will always show 1
          */}
-        {status === TRANSACTION_STATUSES.CREATED && (
+        {status === TransactionStatus.Created && (
           <span className={styles.counter}>1</span>
         )}
-        {status === TRANSACTION_STATUSES.PENDING && (
+        {status === TransactionStatus.Pending && (
           <div>
             <SpinnerLoader appearance={{ size: 'small', theme: 'primary' }} />
           </div>
         )}
-        {status === TRANSACTION_STATUSES.SUCCEEDED && (
+        {status === TransactionStatus.Succeeded && (
           <span
             className={styles.completed}
             data-test="gasStationTransactionSucceeded"
@@ -72,7 +72,7 @@ const MessageCardStatus = ({ status }: Props) => (
             />
           </span>
         )}
-        {status === TRANSACTION_STATUSES.FAILED && (
+        {status === TransactionStatus.Failed && (
           <span className={styles.failed}>!</span>
         )}
       </div>
