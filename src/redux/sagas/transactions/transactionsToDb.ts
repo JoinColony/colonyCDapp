@@ -71,7 +71,8 @@ export function* addTransactionToDb({
 
   const txGroup = group
     ? {
-        id: group.id.toString(),
+        id: `${group.id}-${group.index}`,
+        groupId: group.id.toString(),
         index: group.index,
         key: group.key,
         description: JSON.stringify(group.description),
@@ -195,8 +196,8 @@ function* updateTransactionInDb({
         const { gasLimit, gasPrice } = payload as TransactionGasUpdatePayload;
         yield updateTransaction({
           id,
-          gasLimit,
-          gasPrice,
+          gasLimit: gasLimit?.toString(),
+          gasPrice: gasPrice?.toString(),
         });
         break;
       }

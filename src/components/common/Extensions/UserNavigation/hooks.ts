@@ -63,7 +63,7 @@ const convertTransactionType = ({
   const txGroup = group
     ? {
         key: group.key,
-        id: group.id,
+        id: group.groupId,
         index: group.index,
         description: group.description
           ? JSON.parse(group.description)

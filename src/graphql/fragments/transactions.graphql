@@ -8,6 +8,7 @@ fragment Transaction on Transaction {
   groupId
   group {
     id
+    groupId
     key
     index
     description
