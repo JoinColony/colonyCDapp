@@ -57,6 +57,7 @@ import {
   createTransactionChannels,
 } from '../transactions';
 import { getOneTxPaymentVersion } from '../utils/extensionVersion';
+import { updateTransaction } from '../transactions/transactionsToDb';
 
 interface ChannelDefinition {
   channel: Channel<any>;
@@ -200,7 +201,7 @@ function* colonyCreate({
     /*
      * Wait until all transactions are created.
      */
-    yield all(
+    const transactionCreatedActions = yield all(
       Object.keys(channels).map((id) =>
         takeFrom(channels[id].channel, ActionTypes.TRANSACTION_CREATED),
       ),
@@ -291,6 +292,17 @@ function* colonyCreate({
         createColony.channel,
         ActionTypes.TRANSACTION_SUCCEEDED,
       );
+
+      /*
+       * Update transactions saved in the db with the new colony address
+       * This is so that the Create Colony action group persists in the user's transaction history
+       */
+      yield all(
+        transactionCreatedActions.map(({ meta: { id } }) =>
+          updateTransaction({ id, colonyAddress: createdColonyAddress }),
+        ),
+      );
+
       colonyAddress = createdColonyAddress;
 
       if (!colonyAddress) {
@@ -347,7 +359,7 @@ function* colonyCreate({
           input: {
             id: colonyAddress,
             displayName,
-            isWhitelistActivated: false, // if this changes, be sure to change the contributor entry below
+            isWhitelistActivated: false,
           },
         },
       });
@@ -449,22 +461,6 @@ function* colonyCreate({
         .filter(Boolean)
         .map(({ id }) => put(transactionAddIdentifier(id, tokenAddress))),
     );
-
-    /*
-     * @NOTE Wait for the block ingestor to pick up the new colony
-     *
-     * This is not ideal, but it's only needed for the local dev environment since
-     * the transactions fire at such a rapid rate, that the block ingestor can't
-     * keep up, so it won't set up the required event listeners, by the time the
-     * actual events from the new colony get emmited
-     *
-     * This isn't a issue in production, since transactions get mined at a more
-     * leasurely pace.
-     */
-    if (isDev) {
-      // eslint-disable-next-line no-promise-executor-return
-      yield new Promise((resolve) => setTimeout(resolve, 3000));
-    }
 
     if (deployTokenAuthority) {
       /*

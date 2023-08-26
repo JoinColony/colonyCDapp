@@ -25,6 +25,7 @@ export enum ContextModule {
   ApolloClient = 'apolloClient',
   Onboard = 'onboard',
   IPFSWithFallback = 'ipfsWithFallback',
+  CurrentColonyAddress = 'currentColonyAddress',
 }
 
 export interface Context {
@@ -33,6 +34,7 @@ export interface Context {
   [ContextModule.ApolloClient]?: ApolloClientClass<object>;
   [ContextModule.Onboard]?: OnboardAPI;
   [ContextModule.IPFSWithFallback]?: IPFSWithTimeout | null;
+  [ContextModule.CurrentColonyAddress]?: string;
 }
 
 const context: Context = {
