@@ -27,7 +27,7 @@ export interface SafeTransaction
     SafeTransactionData,
     'functionParams' | 'rawAmount' | 'recipient' | 'token' | 'transactionType'
   > {
-  transactionType?: SafeTransactionType;
+  transactionType: SafeTransactionType | undefined;
   token?: Token;
   rawAmount?: number;
   recipient?: User;
