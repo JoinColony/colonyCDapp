@@ -33,8 +33,10 @@ import {
   ExpenditurePayoutFragment,
   SafeFragment,
   SafeTransactionDataFragment,
+  SafeTransactionType,
   NftDataFragment,
   FunctionParamFragment,
+  SafeTransactionFragment,
 } from '~gql';
 
 export type AnnotationType = AnnotationFragment;
@@ -125,8 +127,12 @@ export type ExpenditurePayout = ExpenditurePayoutFragment;
 
 export type Safe = SafeFragment;
 
+export type SafeTransaction = SafeTransactionFragment;
+
 export type SafeTransactionData = SafeTransactionDataFragment;
 
 export type NFTData = NftDataFragment;
 
 export type FunctionParam = FunctionParamFragment;
+
+export { SafeTransactionType };

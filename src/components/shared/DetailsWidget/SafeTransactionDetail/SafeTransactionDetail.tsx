@@ -5,9 +5,8 @@ import { nanoid } from 'nanoid';
 
 import Numeral from '~shared/Numeral';
 import Avatar from '~shared/Avatar';
-import { ColonyAction } from '~types';
+import { ColonyAction, Safe, SafeTransactionData, SafeTransactionType } from '~types';
 import { SafeTransactionMSG } from '~common/Dialogs/ControlSafeDialog/helpers';
-import { SafeTransactionType } from '~gql';
 import { useSafeTransactionStatus } from '~hooks';
 
 import {

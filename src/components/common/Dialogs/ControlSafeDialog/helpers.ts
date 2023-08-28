@@ -5,10 +5,10 @@ import { ColonyRole, Id } from '@colony/colony-js';
 import { SUPPORTED_SAFE_NETWORKS } from '~constants';
 import { Colony, Safe } from '~types';
 import { getChainNameFromSafe } from '~utils/safes';
+import { Colony, Safe, SafeTransactionType } from '~types';
 import { EnabledExtensionData, useActionDialogStatus } from '~hooks';
-import { SafeTransactionType } from '~gql';
 
-import { SafeTransaction } from './types';
+import { FormSafeTransaction } from './types';
 
 const extractSafeName = (safeDisplayName: string) => {
   const pattern = /^(.*) \(/; // @NOTE: Matches any characters before a space and opening parenthesis
@@ -38,7 +38,7 @@ export const getControlSafeDialogPayload = (colony: Colony, payload: any) => {
     name: extractSafeName(safe.profile.displayName),
   };
   const transformedTransactions = transactions.map(
-    (transaction: any): SafeTransaction => {
+    (transaction: any): FormSafeTransaction => {
       const dynamicPropNames =
         transaction.functionParamTypes?.map(
           (functionParamType) =>
