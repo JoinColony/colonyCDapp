@@ -1,3 +1,5 @@
+import { GNOSIS_AMB_BRIDGES } from '~constants';
+
 export const FEEDBACK = `https://portal.productboard.com/colony/1-colony-portal/tabs/4-bugs`;
 export const HELP = `https://docs.colony.io/colonynetwork/tldr/colony/`;
 export const BETA_DISCLAIMER = `https://docs.colony.io/use/beta/`;
@@ -66,3 +68,12 @@ export const MODULE_ADDRESS_INSTRUCTIONS = `https://docs.colony.io/use/managing-
 export const SAFE_CONTROL_LEARN_MORE = `https://docs.colony.io/use/managing-funds/gnosis-safe-control/#how-it-all-works`;
 
 export const SAFE_INTEGRATION_LEARN_MORE = `https://docs.colony.io/use/managing-funds/gnosis-safe-control/controlling-a-safe`;
+
+export const getSafeTransactionMonitor = (
+  chainId: string,
+  transactionHash: string,
+) => {
+  const monitorUrl = GNOSIS_AMB_BRIDGES[chainId].monitor;
+
+  return `${monitorUrl}100/${transactionHash}`;
+};

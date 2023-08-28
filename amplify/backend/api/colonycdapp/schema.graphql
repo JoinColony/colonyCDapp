@@ -867,8 +867,8 @@ type SafeBalanceToken {
   name: String!
   decimals: Int!
   symbol: String!
-  address: String!
-  logoUri: String
+  tokenAddress: String!
+  thumbnail: String
 }
 
 type FunctionParam {
@@ -889,8 +889,15 @@ type NFTData {
   uri: String!
 }
 
+enum SafeTransactionType {
+  TRANSFER_FUNDS
+  TRANSFER_NFT
+  CONTRACT_INTERACTION
+  RAW_TRANSACTION
+}
+
 type SafeTransactionData {
-  transactionType: String!
+  transactionType: SafeTransactionType!
   token: SafeBalanceToken
   amount: String
   rawAmount: String

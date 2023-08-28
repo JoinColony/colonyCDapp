@@ -1,10 +1,18 @@
 import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 
+import { ColonyAction } from '~types';
+import { ETHEREUM_NETWORK } from '~constants';
+import { getExtendedActionType, safeActionTypes } from '~utils/colonyActions';
+import { useColonyContext } from '~hooks';
+
+import SafeTransactionBanner from '../SafeTransactionBanner';
+
 import styles from './ActionDetailsPageLayout.css';
 
 interface ActionsPageLayoutProps {
   children: ReactNode;
+  actionData?: ColonyAction;
   center?: boolean;
   isMotion?: boolean;
 }
@@ -13,9 +21,22 @@ const displayName = 'common.ColonyActions.ActionDetailsPageLayout';
 
 const ActionDetailsPageLayout = ({
   children,
+  actionData,
   center = false,
   isMotion = false,
 }: ActionsPageLayoutProps) => {
+  const { colony } = useColonyContext();
+
+  if (!colony) {
+    return null;
+  }
+
+  const hasPendingSafeTransactions = true;
+
+  const extendedActionType = actionData
+    ? getExtendedActionType(actionData, colony?.metadata)
+    : undefined;
+
   return (
     <div
       className={classNames(styles.layout, {
@@ -23,6 +44,16 @@ const ActionDetailsPageLayout = ({
         [styles.noTopPadding]: isMotion,
       })}
     >
+      {hasPendingSafeTransactions &&
+        safeActionTypes.some((type) => extendedActionType?.includes(type)) && (
+          <SafeTransactionBanner
+            chainId={(
+              actionData?.safeTransaction?.safe?.chainId ||
+              ETHEREUM_NETWORK.chainId
+            ).toString()}
+            transactionHash={actionData?.safeTransaction?.id || ''}
+          />
+        )}
       <div className={styles.main}>{children}</div>
     </div>
   );

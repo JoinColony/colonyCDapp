@@ -49,6 +49,11 @@ enum EventTitleMessageKeys {
   ChainName = 'chainName',
   SafeAddress = 'safeAddress',
   RemovedSafes = 'removedSafes',
+  SafeName = 'safeName',
+  SafeTransactionAmount = 'safeTransactionAmount',
+  ContractName = 'contractName',
+  FunctionName = 'functionName',
+  NftToken = 'nftToken',
 }
 
 /* Maps eventType to message values as found in en-events.ts */
@@ -142,15 +147,6 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
     EventTitleMessageKeys.ReputationChangeNumeral,
     EventTitleMessageKeys.Recipient,
   ],
-  [ColonyAndExtensionsEvents.SafeAdded]: [
-    EventTitleMessageKeys.Initiator,
-    EventTitleMessageKeys.SafeAddress,
-    EventTitleMessageKeys.ChainName,
-  ],
-  [ColonyAndExtensionsEvents.SafeRemoved]: [
-    EventTitleMessageKeys.Initiator,
-    EventTitleMessageKeys.RemovedSafes,
-  ],
   [SystemMessages.ObjectionFullyStaked]: [
     EventTitleMessageKeys.ObjectionTag,
     EventTitleMessageKeys.MotionTag,
@@ -182,6 +178,37 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
   ],
   [SystemMessages.MotionHasFailedNotFinalizable]: [
     EventTitleMessageKeys.MotionTag,
+  ],
+  [ColonyAndExtensionsEvents.SafeAdded]: [
+    EventTitleMessageKeys.Initiator,
+    EventTitleMessageKeys.SafeAddress,
+    EventTitleMessageKeys.ChainName,
+  ],
+  [ColonyAndExtensionsEvents.SafeRemoved]: [
+    EventTitleMessageKeys.Initiator,
+    EventTitleMessageKeys.RemovedSafes,
+  ],
+  [ColonyAndExtensionsEvents.SafeTransferFunds]: [
+    EventTitleMessageKeys.SafeName,
+    EventTitleMessageKeys.SafeTransactionAmount,
+    EventTitleMessageKeys.Recipient,
+  ],
+  [ColonyAndExtensionsEvents.SafeRawTransaction]: [
+    EventTitleMessageKeys.SafeName,
+    EventTitleMessageKeys.Recipient,
+  ],
+  [ColonyAndExtensionsEvents.SafeTransferNft]: [
+    EventTitleMessageKeys.SafeName,
+    EventTitleMessageKeys.NftToken,
+    EventTitleMessageKeys.Recipient,
+  ],
+  [ColonyAndExtensionsEvents.SafeContractInteraction]: [
+    EventTitleMessageKeys.SafeName,
+    EventTitleMessageKeys.FunctionName,
+    EventTitleMessageKeys.ContractName,
+  ],
+  [ColonyAndExtensionsEvents.SafeMultipleTransactions]: [
+    EventTitleMessageKeys.SafeName,
   ],
 };
 

@@ -29,8 +29,8 @@ fragment SafeTransactionData on SafeTransactionData {
     name
     decimals
     symbol
-    address
-    logoUri
+    tokenAddress
+    thumbnail
   }
   amount
   rawAmount

@@ -37,7 +37,16 @@ export enum ActionPageDetails {
   ChainName = 'ChainName',
   SafeAddress = 'SafeAddress',
   ModuleAddress = 'ModuleAddress',
+  SafeTransaction = 'SafeTransaction',
 }
+
+export const safeActionTypes = [
+  ExtendedColonyActionType.SafeTransferFunds,
+  ExtendedColonyActionType.SafeRawTransaction,
+  ExtendedColonyActionType.SafeTransferNft,
+  ExtendedColonyActionType.SafeContractInteraction,
+  ExtendedColonyActionType.SafeMultipleTransactions,
+];
 
 type DetailsValuesMap = Partial<Record<ActionPageDetails, boolean>>;
 
@@ -139,6 +148,9 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
         ActionPageDetails.SafeAddress,
         ActionPageDetails.ModuleAddress,
       ];
+    }
+    case safeActionTypes.some((type) => actionType.includes(type)): {
+      return [ActionPageDetails.Type, ActionPageDetails.SafeTransaction];
     }
     // case actionType.includes(ColonyMotions.CreateDecisionMotion): {
     //   return [ActionPageDetails.Type, ActionPageDetails.Author];
@@ -643,7 +655,13 @@ export const getExtendedActionType = (
   }
 
   if (!isEmpty(actionData.safeTransaction)) {
-    return ExtendedColonyActionType.SafeTransaction;
+    if (actionData.safeTransaction.transactions.length > 1) {
+      return ExtendedColonyActionType.SafeMultipleTransactions;
+    }
+
+    const actionType = `SAFE_${actionData.safeTransaction.transactions[0].transactionType}`;
+
+    return actionType as ExtendedColonyActionType;
   }
 
   return type;

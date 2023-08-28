@@ -27,3 +27,7 @@
   display: inline-block;
   margin-left: 4px;
 }
+
+.user {
+  composes: username from '~shared/DetailsWidget/UserDetail/UserDetail.css';
+}

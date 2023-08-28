@@ -2,12 +2,7 @@ import React from 'react';
 import { nanoid } from 'nanoid';
 import classnames from 'classnames';
 
-import { omit } from '~utils/lodash';
-import { getArrayFromString, defaultTransaction } from '~utils/safes';
-import {
-  extractParameterName,
-  extractParameterType,
-} from '~utils/safes/getContractUsefulMethods';
+import { getArrayFromString } from '~utils/safes';
 import Numeral from '~shared/Numeral';
 import { InvisibleCopyableMaskedAddress } from '~shared/InvisibleCopyableAddress';
 
@@ -81,19 +76,14 @@ export const formatArgument = (
 };
 
 const FunctionsSection = ({ transaction }: FunctionsSectionProps) => {
-  const functions = Object.entries(
-    omit(transaction, Object.keys(defaultTransaction)),
-  );
+  const functions = transaction.functionParams || [];
 
   return (
     <>
-      {functions.map(([parameter, argument], i) => {
-        const paramName = extractParameterName(
-          parameter,
-          transaction.contractFunction || '',
-          transaction.functionParamTypes?.[i],
-        );
-        const paramType = extractParameterType(paramName);
+      {functions.map((func) => {
+        const paramName = func?.name ?? '';
+        const paramType = func?.type ?? '';
+        const argument = func?.value ?? '';
         const isArrayType = paramType.substring(paramType.length - 2) === '[]';
 
         return (
@@ -106,7 +96,7 @@ const FunctionsSection = ({ transaction }: FunctionsSectionProps) => {
                 [styles.arrayContainer]: isArrayType,
               })}
             >
-              {formatArgument(paramType, argument as string, isArrayType)}
+              {formatArgument(paramType, argument, isArrayType)}
             </div>
           </div>
         );

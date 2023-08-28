@@ -103,7 +103,9 @@
     "triangle-warning",
     "unlock",
     "user-plus",
-    "wallet"
+    "wallet",
+    "ether",
+    "share"
   ],
   "multiColorIcons": [
     "circle-check-primary",

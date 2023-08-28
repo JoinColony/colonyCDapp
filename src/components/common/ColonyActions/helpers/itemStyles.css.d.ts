@@ -3,6 +3,7 @@ declare namespace ItemStylesCssNamespace {
     highlight: string;
     reputation: string;
     titleDecoration: string;
+    user: string;
     userDecoration: string;
     voteResultsWrapper: string;
   }

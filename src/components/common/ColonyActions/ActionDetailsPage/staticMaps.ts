@@ -61,6 +61,14 @@ const MOTION_EVENTS = [
   ColonyAndExtensionsEvents.MotionRewardClaimed,
 ];
 
+const SAFE_EVENTS = [
+  ColonyAndExtensionsEvents.SafeTransferFunds,
+  ColonyAndExtensionsEvents.SafeRawTransaction,
+  ColonyAndExtensionsEvents.SafeTransferNft,
+  ColonyAndExtensionsEvents.SafeContractInteraction,
+  ColonyAndExtensionsEvents.SafeMultipleTransactions,
+];
+
 type ActionsEventsMap = Partial<{
   [key in ColonyActionType]: ColonyAndExtensionsEvents[];
 }>;
@@ -100,4 +108,5 @@ export const ACTIONS_EVENTS: ActionsEventsMap = {
   [ColonyActionType.VersionUpgradeMotion]: MOTION_EVENTS,
   [ColonyActionType.EmitDomainReputationPenaltyMotion]: MOTION_EVENTS,
   [ColonyActionType.EmitDomainReputationRewardMotion]: MOTION_EVENTS,
+  [ColonyActionType.MakeArbitraryTransaction]: SAFE_EVENTS,
 };

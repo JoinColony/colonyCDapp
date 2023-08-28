@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 
 import { UserDetail } from '~shared/DetailsWidget';
-import { User } from '~types';
+import { SimpleTarget } from '~gql';
 
 import { MSG } from '../../detailsWidgetConfig';
 
@@ -11,7 +11,7 @@ import widgetStyles from '../../DetailsWidget.css';
 import styles from '../SafeTransactionDetail.css';
 
 interface RecipientProps {
-  recipient: User;
+  recipient: SimpleTarget;
 }
 
 export const Recipient = ({ recipient }: RecipientProps) => (

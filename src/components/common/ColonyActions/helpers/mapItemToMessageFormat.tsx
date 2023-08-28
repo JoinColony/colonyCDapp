@@ -11,8 +11,10 @@ import {
   ColonyActionType,
   DomainMetadata,
   MotionMessage,
+  SafeTransactionData,
+  User,
 } from '~types';
-import { useColonyContext, useUserReputation } from '~hooks';
+import { useColonyContext, useUserByAddress, useUserReputation } from '~hooks';
 import { MotionVote } from '~utils/colonyMotions';
 import { intl } from '~utils/intl';
 import { formatReputationChange } from '~utils/reputation';
@@ -40,6 +42,7 @@ import {
   getAddedSafeChainName,
   getRemovedSafes,
 } from '~utils/safes';
+import { unknownContractMSG } from '~shared/DetailsWidget/SafeTransactionDetail';
 
 import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
 import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
@@ -74,6 +77,30 @@ const getSafeAddress = (actionData: ColonyAction) => {
   return addedSafe ? <MaskedAddress address={addedSafe.address} /> : null;
 };
 
+const getSafeName = (actionData: ColonyAction) => {
+  const transactionSafeName = actionData?.safeTransaction?.safe?.name;
+
+  return <span className={styles.user}>@{transactionSafeName}</span>;
+};
+
+const getSafeTransactionAmount = (
+  firstSafeTransaction?: SafeTransactionData,
+) => (
+  <>
+    <Numeral value={firstSafeTransaction?.amount || ''} />
+    <span> {firstSafeTransaction?.token?.symbol}</span>
+  </>
+);
+
+const getSafeTransactionNftToken = (
+  firstSafeTransaction?: SafeTransactionData,
+) => (
+  <span className={styles.user}>
+    {firstSafeTransaction?.nftData?.name ||
+      firstSafeTransaction?.nftData?.tokenName}
+  </span>
+);
+
 const getRemovedSafesString = (actionData: ColonyAction) => {
   const removedSafes = getRemovedSafes(actionData);
   let removedSafeFullMessage: JSX.Element | null = null;
@@ -106,6 +133,32 @@ const getRemovedSafesString = (actionData: ColonyAction) => {
   return removedSafeFullMessage;
 };
 
+interface RecipientProps {
+  recipientUser: User | undefined | null;
+  recipientAddress: string;
+  safeRecipientAddress: string;
+}
+
+const Recipient = ({
+  recipientUser,
+  recipientAddress,
+  safeRecipientAddress,
+}: RecipientProps) => {
+  const { user: safeUser } = useUserByAddress(safeRecipientAddress);
+
+  const user = recipientUser || safeUser;
+
+  return (
+    <span className={styles.titleDecoration}>
+      {user ? (
+        <FriendlyName user={user} autoShrinkAddress />
+      ) : (
+        <MaskedAddress address={recipientAddress || AddressZero} />
+      )}
+    </span>
+  );
+};
+
 export const mapColonyActionToExpectedFormat = (
   actionData: ColonyAction,
   colony?: Colony,
@@ -135,7 +188,8 @@ export const mapColonyActionToExpectedFormat = (
     ),
     recipient: (
       <span className={styles.titleDecoration}>
-        {actionData.recipientUser ? (
+        {actionData.recipientUser ||
+        actionData.safeTransaction?.transactions[0].recipient ? (
           <FriendlyName user={actionData.recipientUser} autoShrinkAddress />
         ) : (
           <MaskedAddress address={actionData.recipientAddress || AddressZero} />
@@ -171,6 +225,8 @@ export const mapActionEventToExpectedFormat = (
   eventId?: string,
   colony?: Colony,
 ) => {
+  const firstSafeTransaction = actionData?.safeTransaction?.transactions[0];
+
   return {
     amount: (
       <Numeral
@@ -200,13 +256,13 @@ export const mapActionEventToExpectedFormat = (
       </span>
     ),
     recipient: (
-      <span className={styles.userDecoration}>
-        {actionData.recipientUser || actionData.recipientColony ? (
-          <FriendlyName user={actionData.recipientUser} autoShrinkAddress />
-        ) : (
-          <MaskedAddress address={actionData.recipientAddress || AddressZero} />
-        )}
-      </span>
+      <Recipient
+        recipientUser={actionData.recipientUser}
+        recipientAddress={actionData.recipientAddress ?? ''}
+        safeRecipientAddress={
+          firstSafeTransaction?.recipient?.walletAddress ?? ''
+        }
+      />
     ),
     isSmiteAction:
       actionData.type === ColonyActionType.EmitDomainReputationPenalty,
@@ -227,6 +283,16 @@ export const mapActionEventToExpectedFormat = (
     chainName: getAddedSafeChainName(actionData),
     safeAddress: getSafeAddress(actionData),
     removedSafes: getRemovedSafesString(actionData),
+    safeName: getSafeName(actionData),
+    safeTransactionAmount: getSafeTransactionAmount(firstSafeTransaction),
+    nftToken: getSafeTransactionNftToken(firstSafeTransaction),
+    functionName: firstSafeTransaction?.contractFunction || '',
+    contractName:
+      firstSafeTransaction?.contract?.profile.displayName ||
+      formatMessage(unknownContractMSG),
+    isSafeTransactionRecipientUser: !(
+      firstSafeTransaction?.recipient?.id === 'filterValue'
+    ),
   };
 };
 

@@ -19,14 +19,6 @@ export {
 
 export { getArrayFromString } from './contractParserValidation';
 
-export enum TransactionTypes {
-  TRANSFER_FUNDS = 'transferFunds',
-  TRANSFER_NFT = 'transferNft',
-  CONTRACT_INTERACTION = 'contractInteraction',
-  RAW_TRANSACTION = 'rawTransaction',
-  MULTIPLE_TRANSACTIONS = 'multipleTransactions',
-}
-
 export const getSafe = (
   safes: Safe[],
   selectedSafe: SelectedPickerItem | null,
@@ -149,7 +141,7 @@ export const nftNameContainsTokenId = (tokenName: string): boolean => {
 };
 
 export const defaultTransaction: SafeTransaction = {
-  transactionType: '',
+  transactionType: undefined,
   token: undefined,
   amount: undefined,
   rawAmount: undefined,

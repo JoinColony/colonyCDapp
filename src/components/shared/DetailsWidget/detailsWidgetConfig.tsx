@@ -20,6 +20,7 @@ import {
 import { findDomainByNativeId } from '~utils/domains';
 import { splitTransactionHash } from '~utils/strings';
 import { getAddedSafe, getRemovedSafes } from '~utils/safes';
+import { TRANSACTION_STATUS } from '~utils/safes/getTransactionStatuses';
 
 import {
   UserDetail,
@@ -29,6 +30,7 @@ import {
   DomainDescriptionDetail,
   ReputationChangeDetail,
   RolesDetail,
+  SafeTransactionDetail,
 } from '../DetailsWidget';
 
 import SafeValueDetail from './SafeValueDetail';
@@ -125,7 +127,7 @@ const getShortenedHash = (transactionHash: string) => {
 };
 
 interface DetailItemConfig {
-  label: MessageDescriptor;
+  label?: MessageDescriptor;
   item: ReactNode;
   isListItem?: boolean;
   labelValues?: UniversalMessageValues;
@@ -148,6 +150,7 @@ const getDetailItemsMap = (
     isMotion,
     pendingColonyMetadata,
     pendingDomainMetadata,
+    safeTransaction,
   } = actionData;
 
   const shortenedHash = getShortenedHash(transactionHash || '');
@@ -167,6 +170,11 @@ const getDetailItemsMap = (
   const domainMetadata = fromDomain?.metadata || pendingDomainMetadata;
   const addedSafe = getAddedSafe(actionData);
   const removedSafes = getRemovedSafes(actionData);
+
+  const safeTransactionDetails = safeTransaction?.transactions || [];
+  const safeTransactionDetailStatuses = safeTransactionDetails.map(
+    () => TRANSACTION_STATUS.PENDING,
+  );
 
   return {
     [ActionPageDetails.Type]: {
@@ -302,6 +310,19 @@ const getDetailItemsMap = (
             removedSafe={safe}
           />
         )),
+      isListItem: true,
+    },
+    [ActionPageDetails.SafeTransaction]: {
+      label: undefined,
+      labelValues: undefined,
+      item: safeTransaction && (
+        <SafeTransactionDetail
+          key={safeTransaction.id}
+          safe={safeTransaction.safe}
+          safeTransactionDetails={safeTransactionDetails}
+          safeTransactionDetailStatuses={safeTransactionDetailStatuses}
+        />
+      ),
       isListItem: true,
     },
   };

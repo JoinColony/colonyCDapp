@@ -4,8 +4,9 @@ import { ColonyRole, Id } from '@colony/colony-js';
 
 import { SAFE_NETWORKS } from '~constants';
 import { Colony, Safe } from '~types';
-import { TransactionTypes, getChainNameFromSafe } from '~utils/safes';
+import { getChainNameFromSafe } from '~utils/safes';
 import { EnabledExtensionData, useActionDialogStatus } from '~hooks';
+import { SafeTransactionType } from '~gql';
 
 import { SafeTransaction } from './types';
 
@@ -72,12 +73,7 @@ export const getControlSafeDialogPayload = (colony: Colony, payload: any) => {
         nftData: omitDeep(transaction.nftData, ['metadata']),
         token: transaction.token
           ? {
-              ...omitDeep(transaction.token, [
-                'thumbnail',
-                'tokenAddress',
-                'type',
-              ]),
-              address: transaction.token.tokenAddress,
+              ...omitDeep(transaction.token, ['type']),
             }
           : null,
         functionParams,
@@ -96,43 +92,31 @@ export const getControlSafeDialogPayload = (colony: Colony, payload: any) => {
   };
 };
 
-export const MSG = defineMessages({
-  [TransactionTypes.TRANSFER_FUNDS]: {
-    id: `common.ControlSafeDialog.ControlSafeForm.${TransactionTypes.TRANSFER_FUNDS}`,
+export const SafeTransactionMSG = defineMessages({
+  [SafeTransactionType.TransferFunds]: {
+    id: `common.ControlSafeDialog.ControlSafeForm.${SafeTransactionType.TransferFunds}`,
     defaultMessage: 'Transfer funds',
   },
-  [TransactionTypes.TRANSFER_NFT]: {
-    id: `common.ControlSafeDialog.ControlSafeForm.${TransactionTypes.TRANSFER_NFT}`,
+  [SafeTransactionType.TransferNft]: {
+    id: `common.ControlSafeDialog.ControlSafeForm.${SafeTransactionType.TransferNft}`,
     defaultMessage: 'Transfer NFT',
   },
-  [TransactionTypes.CONTRACT_INTERACTION]: {
-    id: `common.ControlSafeDialog.ControlSafeForm.${TransactionTypes.CONTRACT_INTERACTION}`,
+  [SafeTransactionType.ContractInteraction]: {
+    id: `common.ControlSafeDialog.ControlSafeForm.${SafeTransactionType.ContractInteraction}`,
     defaultMessage: 'Contract interaction',
   },
-  [TransactionTypes.RAW_TRANSACTION]: {
-    id: `common.ControlSafeDialog.ControlSafeForm.${TransactionTypes.RAW_TRANSACTION}`,
+  [SafeTransactionType.RawTransaction]: {
+    id: `common.ControlSafeDialog.ControlSafeForm.${SafeTransactionType.RawTransaction}`,
     defaultMessage: 'Raw transaction',
   },
 });
 
-export const transactionOptions = [
-  {
-    value: TransactionTypes.TRANSFER_FUNDS,
-    label: MSG[TransactionTypes.TRANSFER_FUNDS],
-  },
-  {
-    value: TransactionTypes.TRANSFER_NFT,
-    label: MSG[TransactionTypes.TRANSFER_NFT],
-  },
-  {
-    value: TransactionTypes.CONTRACT_INTERACTION,
-    label: MSG[TransactionTypes.CONTRACT_INTERACTION],
-  },
-  {
-    value: TransactionTypes.RAW_TRANSACTION,
-    label: MSG[TransactionTypes.RAW_TRANSACTION],
-  },
-];
+export const transactionOptions = Object.entries(SafeTransactionMSG).map(
+  ([key, value]) => ({
+    value: key,
+    label: value,
+  }),
+);
 
 export enum ContractFunctions {
   TRANSFER_FUNDS = 'transfer',

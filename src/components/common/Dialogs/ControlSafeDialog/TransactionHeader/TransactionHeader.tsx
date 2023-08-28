@@ -1,16 +1,15 @@
 import classnames from 'classnames';
 import React from 'react';
-import { FormattedMessage, defineMessages } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 import { UseFieldArrayRemove, useFormContext } from 'react-hook-form';
-import { nanoid } from 'nanoid';
 
 import Button from '~shared/Button';
 import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
 import IconTooltip from '~shared/IconTooltip';
 
-import { transactionOptions } from '../helpers';
-import { UpdatedMethods } from '../types';
+import { SafeTransactionMSG } from '../helpers';
+import { UpdatedMethods, SafeTransaction } from '../types';
 
 import styles from './TransactionHeader.css';
 
@@ -56,6 +55,8 @@ const TransactionHeader = ({
   const { watch, trigger } = useFormContext();
   const transactions = watch('transactions');
 
+  const { formatMessage } = useIntl();
+
   const handleTabRemoval = (contractMethods: UpdatedMethods) => {
     removeTab(transactionIndex);
 
@@ -89,13 +90,14 @@ const TransactionHeader = ({
     handleTransactionTabStatus(newTransactionTabs);
   };
 
-  const getTransactionTypeLabel = (transactionTypeValue: string) => {
-    const selectedTransactionType = transactionOptions.find(
-      (transaction) => transaction.value === transactionTypeValue,
-    );
-    return selectedTransactionType ? (
-      <FormattedMessage {...selectedTransactionType.label} key={nanoid()} />
-    ) : null;
+  const getTransactionTypeLabel = (
+    transactionTypeValue: SafeTransaction['transactionType'],
+  ) => {
+    if (transactionTypeValue) {
+      formatMessage(SafeTransactionMSG[transactionTypeValue]);
+    }
+
+    return null;
   };
 
   return (
@@ -114,7 +116,7 @@ const TransactionHeader = ({
         textValues={{
           transactionNumber: transactionIndex + 1,
           transactionType: getTransactionTypeLabel(
-            transactions[transactionIndex]?.transactionType || '',
+            transactions[transactionIndex]?.transactionType,
           ),
         }}
       />
