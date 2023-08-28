@@ -22,6 +22,7 @@ import {
   GetTokenFromEverywhereQuery,
   GetTokenFromEverywhereQueryVariables,
 } from '~gql';
+import { omit } from '~utils/lodash';
 
 import { erc721, ForeignAMB, HomeAMB, ZodiacBridgeModule } from './abis'; // Temporary
 
@@ -294,7 +295,7 @@ export const getTransferFundsData = async (
     query: GetTokenFromEverywhereDocument,
     variables: {
       input: {
-        tokenAddress,
+        tokenAddress: transaction.token.tokenAddress,
       },
     },
   });
@@ -303,7 +304,7 @@ export const getTransferFundsData = async (
    * If not create the token so it can be referenced by the token address
    * in the safe transaction creation mutation in the saga
    */
-  if (response?.data.getTokenFromEverywhere?.items?.length === 0) {
+  if (response?.data.getTokenFromEverywhere === null) {
     await apolloClient.mutate<
       CreateTokenMutation,
       CreateTokenMutationVariables
@@ -311,7 +312,8 @@ export const getTransferFundsData = async (
       mutation: CreateTokenDocument,
       variables: {
         input: {
-          ...transaction.token,
+          id: transaction.token.tokenAddress,
+          ...omit(transaction.token, 'tokenAddress'),
           chainMetadata: { chainId: network.chainId },
         },
       },
