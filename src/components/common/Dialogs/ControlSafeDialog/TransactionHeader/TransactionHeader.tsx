@@ -9,7 +9,7 @@ import Icon from '~shared/Icon';
 import IconTooltip from '~shared/IconTooltip';
 
 import { SafeTransactionMSG } from '../helpers';
-import { UpdatedMethods, SafeTransaction } from '../types';
+import { UpdatedMethods, FormSafeTransaction } from '../types';
 
 import styles from './TransactionHeader.css';
 
@@ -91,7 +91,7 @@ const TransactionHeader = ({
   };
 
   const getTransactionTypeLabel = (
-    transactionTypeValue: SafeTransaction['transactionType'],
+    transactionTypeValue: FormSafeTransaction['transactionType'],
   ) => {
     if (transactionTypeValue) {
       formatMessage(SafeTransactionMSG[transactionTypeValue]);
