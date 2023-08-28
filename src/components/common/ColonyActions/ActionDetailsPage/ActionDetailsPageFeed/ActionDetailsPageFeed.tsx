@@ -28,8 +28,8 @@ const arbitraryTransactionEventParser = (actionData: ColonyAction) => {
 const ActionDetailsPageFeed = ({ actionData }: ActionsPageFeedProps) => {
   const events =
     JSON.parse(actionData.individualEvents as string) ||
-    arbitraryTransactionEventParser(actionData) ||
-    ACTIONS_EVENTS[actionData.type];
+    ACTIONS_EVENTS[actionData.type] ||
+    arbitraryTransactionEventParser(actionData);
 
   return (
     <>
