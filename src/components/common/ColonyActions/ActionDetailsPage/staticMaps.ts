@@ -61,14 +61,6 @@ const MOTION_EVENTS = [
   ColonyAndExtensionsEvents.MotionRewardClaimed,
 ];
 
-const SAFE_EVENTS = [
-  ColonyAndExtensionsEvents.SafeTransferFunds,
-  ColonyAndExtensionsEvents.SafeRawTransaction,
-  ColonyAndExtensionsEvents.SafeTransferNft,
-  ColonyAndExtensionsEvents.SafeContractInteraction,
-  ColonyAndExtensionsEvents.SafeMultipleTransactions,
-];
-
 type ActionsEventsMap = Partial<{
   [key in ColonyActionType]: ColonyAndExtensionsEvents[];
 }>;

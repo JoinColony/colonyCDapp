@@ -192,5 +192,10 @@ export const parseSafeTransactionEventType = (
   safeTransaction: SafeTransaction | null | undefined,
 ) => {
   const type = parseSafeTransactionType(safeTransaction);
-  return [type as unknown as ColonyAndExtensionsEvents];
+
+  if (type) {
+    return [type as unknown as ColonyAndExtensionsEvents];
+  }
+
+  return undefined;
 };
