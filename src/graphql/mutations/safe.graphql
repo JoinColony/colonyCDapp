@@ -3,3 +3,9 @@ mutation CreateSafeTransaction($input: CreateSafeTransactionInput!) {
     id
   }
 }
+
+mutation CreateSafeTransactionData($input: CreateSafeTransactionDataInput!) {
+  createSafeTransactionData(input: $input) {
+    id
+  }
+}

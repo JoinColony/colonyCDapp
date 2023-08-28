@@ -2764,14 +2764,6 @@ type NFTProfile {
   displayName: String!
 }
 
-type SafeBalanceToken {
-  name: String!
-  decimals: Int!
-  symbol: String!
-  tokenAddress: String!
-  thumbnail: String
-}
-
 type FunctionParam {
   name: String!
   type: String!
@@ -2797,9 +2789,11 @@ enum SafeTransactionType {
   RAW_TRANSACTION
 }
 
-type SafeTransactionData {
+type SafeTransactionData @model {
+  id: ID!
   transactionType: SafeTransactionType!
-  token: SafeBalanceToken
+  tokenAddress: ID
+  token: Token @hasOne(fields: ["tokenAddress"])
   amount: String
   rawAmount: String
   recipient: SimpleTarget
@@ -2816,7 +2810,7 @@ type SafeTransaction @model {
   id: ID!
   title: String!
   safe: Safe!
-  transactions: [SafeTransactionData!]!
+  transactions: [SafeTransactionData] @hasMany
 }
 
 type Safe {
