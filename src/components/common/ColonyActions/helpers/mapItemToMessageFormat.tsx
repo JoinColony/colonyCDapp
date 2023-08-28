@@ -12,8 +12,9 @@ import {
   DomainMetadata,
   MotionMessage,
   SafeTransactionData,
+  User,
 } from '~types';
-import { useColonyContext, useUserReputation } from '~hooks';
+import { useColonyContext, useUserByAddress, useUserReputation } from '~hooks';
 import { MotionVote } from '~utils/colonyMotions';
 import { intl } from '~utils/intl';
 import { formatReputationChange } from '~utils/reputation';
@@ -132,6 +133,32 @@ const getRemovedSafesString = (actionData: ColonyAction) => {
   return removedSafeFullMessage;
 };
 
+interface RecipientProps {
+  recipientUser: User | undefined | null;
+  recipientAddress: string;
+  safeRecipientAddress: string;
+}
+
+const Recipient = ({
+  recipientUser,
+  recipientAddress,
+  safeRecipientAddress,
+}: RecipientProps) => {
+  const { user: safeUser } = useUserByAddress(safeRecipientAddress);
+
+  const user = recipientUser || safeUser;
+
+  return (
+    <span className={styles.titleDecoration}>
+      {user ? (
+        <FriendlyName user={user} autoShrinkAddress />
+      ) : (
+        <MaskedAddress address={recipientAddress || AddressZero} />
+      )}
+    </span>
+  );
+};
+
 export const mapColonyActionToExpectedFormat = (
   actionData: ColonyAction,
   colony?: Colony,
@@ -229,13 +256,13 @@ export const mapActionEventToExpectedFormat = (
       </span>
     ),
     recipient: (
-      <span className={styles.userDecoration}>
-        {actionData.recipientUser || actionData.recipientColony ? (
-          <FriendlyName user={actionData.recipientUser} autoShrinkAddress />
-        ) : (
-          <MaskedAddress address={actionData.recipientAddress || AddressZero} />
-        )}
-      </span>
+      <Recipient
+        recipientUser={actionData.recipientUser}
+        recipientAddress={actionData.recipientAddress ?? ''}
+        safeRecipientAddress={
+          firstSafeTransaction?.recipient?.walletAddress ?? ''
+        }
+      />
     ),
     isSmiteAction:
       actionData.type === ColonyActionType.EmitDomainReputationPenalty,
