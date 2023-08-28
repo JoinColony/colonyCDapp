@@ -4,7 +4,6 @@ import { FormattedMessage } from 'react-intl';
 import Numeral from '~shared/Numeral';
 import Icon from '~shared/Icon';
 import { Token, SafeTransactionData } from '~types';
-import { SafeBalanceToken } from '~gql';
 import TokenIcon from '~shared/TokenIcon';
 
 import { MSG } from '../../detailsWidgetConfig';
@@ -12,7 +11,7 @@ import { MSG } from '../../detailsWidgetConfig';
 import widgetStyles from '../../DetailsWidget.css';
 import styles from '../SafeTransactionDetail.css';
 
-const renderTokenIcon = (safeToken: SafeBalanceToken) => {
+const renderTokenIcon = (safeToken: Token) => {
   if (safeToken.name === 'Ether') {
     return <Icon className={styles.ether} name="ether" title="Ether Logo" />;
   }
@@ -28,7 +27,7 @@ const renderTokenIcon = (safeToken: SafeBalanceToken) => {
 
 interface ValueProps {
   transaction: SafeTransactionData;
-  token: SafeBalanceToken;
+  token: Token;
 }
 
 export const Value = ({ transaction, token }: ValueProps) => (

@@ -14,6 +14,7 @@ import {
   ColonyAction,
 } from '~types';
 import { ColonyActionRoles } from '~gql';
+import { parseSafeTransactionType } from '~utils/safes';
 
 import { formatText } from './intl';
 import { MotionVote } from './colonyMotions';

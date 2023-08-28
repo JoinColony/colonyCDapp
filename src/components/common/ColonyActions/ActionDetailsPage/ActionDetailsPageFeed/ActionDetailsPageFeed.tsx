@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { isEmpty } from '~utils/lodash';
-import { ColonyAction, ColonyAndExtensionsEvents } from '~types';
+import { ColonyAction } from '~types';
+import { parseSafeTransactionEventType } from '~utils/safes';
+
 import { ACTIONS_EVENTS } from '../staticMaps';
 
 import { ActionsPageEvent } from './ActionDetailsPageEvent';
@@ -15,14 +16,10 @@ interface ActionsPageFeedProps {
 
 // only safe events for now
 const arbitraryTransactionEventParser = (actionData: ColonyAction) => {
-  if (!isEmpty(actionData.safeTransaction)) {
-    if (actionData.safeTransaction.transactions.length > 1) {
-      return [ColonyAndExtensionsEvents.SafeMultipleTransactions];
-    }
+  const safeType = parseSafeTransactionEventType(actionData.safeTransaction);
 
-    const actionType = `SAFE_${actionData.safeTransaction.transactions[0].transactionType}`;
-
-    return [actionType as ColonyAndExtensionsEvents];
+  if (safeType) {
+    return safeType;
   }
 
   return undefined;

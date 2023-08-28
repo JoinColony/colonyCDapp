@@ -918,7 +918,7 @@ type SafeTransaction @model {
   id: ID!
   title: String!
   safe: Safe!
-  transactions: [SafeTransactionData] @hasMany
+  transactions: [SafeTransactionData!]! @hasMany
 }
 
 type Safe {

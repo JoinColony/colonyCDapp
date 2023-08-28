@@ -189,7 +189,7 @@ export const mapColonyActionToExpectedFormat = (
     recipient: (
       <span className={styles.titleDecoration}>
         {actionData.recipientUser ||
-        actionData.safeTransaction?.transactions[0].recipient ? (
+        actionData.safeTransaction?.transactions?.items[0]?.recipient ? (
           <FriendlyName user={actionData.recipientUser} autoShrinkAddress />
         ) : (
           <MaskedAddress address={actionData.recipientAddress || AddressZero} />
@@ -225,7 +225,8 @@ export const mapActionEventToExpectedFormat = (
   eventId?: string,
   colony?: Colony,
 ) => {
-  const firstSafeTransaction = actionData?.safeTransaction?.transactions[0];
+  const firstSafeTransaction =
+    actionData?.safeTransaction?.transactions?.items[0] || undefined;
 
   return {
     amount: (
