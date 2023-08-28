@@ -77,6 +77,8 @@ fragment SafeTransaction on SafeTransaction {
     ...Safe
   }
   transactions {
-    ...SafeTransactionData
+    items {
+      ...SafeTransactionData
+    }
   }
 }
