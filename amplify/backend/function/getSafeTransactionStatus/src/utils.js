@@ -32,7 +32,7 @@ const GNOSIS_AMB_BRIDGES = {
 
 const TRANSACTION_STATUS = {
   COMPLETED: 'Completed',
-  ACTION_NEEDED: 'Action neeeded',
+  ACTION_NEEDED: 'Action needed',
 };
 
 const getApiKey = (chainId) => {

@@ -118,10 +118,13 @@ const ActionsListItem = ({
 
   const domainName = getDomainName(fromDomain, motionData?.motionDomain);
 
+  const shouldDisplaySafeTransactionStatus =
+    safeTransaction && !isEmpty(safeTransactionStatus);
+
   const ActionListItemTags = (
     <>
       <MotionTag />
-      {safeTransaction && !isEmpty(safeTransactionStatus) && (
+      {shouldDisplaySafeTransactionStatus && (
         <Tag
           text={
             SafeMSGs[

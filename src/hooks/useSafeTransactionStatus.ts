@@ -6,7 +6,7 @@ import { ColonyAction } from '~types';
 
 export enum TRANSACTION_STATUS {
   COMPLETED = 'Completed',
-  ACTION_NEEDED = 'Action neeeded',
+  ACTION_NEEDED = 'Action needed',
 }
 
 const displayName = 'utils.safe';
@@ -14,11 +14,11 @@ const displayName = 'utils.safe';
 export const MSG = defineMessages({
   [TRANSACTION_STATUS.COMPLETED]: {
     id: `${displayName}.${[TRANSACTION_STATUS.COMPLETED]}`,
-    defaultMessage: 'Completed',
+    defaultMessage: TRANSACTION_STATUS.COMPLETED,
   },
   [TRANSACTION_STATUS.ACTION_NEEDED]: {
     id: `${displayName}.${[TRANSACTION_STATUS.ACTION_NEEDED]}`,
-    defaultMessage: 'Action needed',
+    defaultMessage: TRANSACTION_STATUS.ACTION_NEEDED,
   },
 });
 
