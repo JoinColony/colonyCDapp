@@ -50,10 +50,16 @@ export const getChainNameFromSafe = (safeDisplayName: string) => {
   return safeDisplayName.match(/\(([^()]*)\)$/)?.pop() || '';
 };
 
-export const getTxServiceBaseUrl = (selectedChain: string) => {
-  const selectedNetwork = SUPPORTED_SAFE_NETWORKS.find(
-    (network) => network.name === selectedChain,
+export const getNetworkFromChainName = (chainName: string) => {
+  const network = SAFE_NETWORKS.find(
+    (safeNetwork) => safeNetwork.name === chainName,
   );
+
+  return network;
+};
+
+export const getTxServiceBaseUrl = (selectedChain: string) => {
+  const selectedNetwork = getNetworkFromChainName(selectedChain);
 
   if (!selectedNetwork || !selectedNetwork.safeTxService) {
     throw new Error(`Selected chain ${selectedChain} not currently supported.`);

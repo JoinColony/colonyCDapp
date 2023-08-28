@@ -12,6 +12,7 @@ import {
   Safe,
   SafeTransactionData,
 } from '~types';
+import { NetworkInfo } from '~constants';
 
 import {
   ErrorActionType,
@@ -301,6 +302,7 @@ export type ColonyActionsActionTypes =
         colonyAddress: Address;
         colonyName: string;
         annotationMessage: string | null;
+        network: NetworkInfo;
       },
       MetaWithNavigate<object>
     >
