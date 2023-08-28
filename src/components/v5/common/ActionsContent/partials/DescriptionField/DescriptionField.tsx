@@ -10,14 +10,14 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
   isDecriptionFieldExpanded,
   toggleOffDecriptionSelect,
   toggleOnDecriptionSelect,
-  isErrors,
+  isError,
 }) => (
   <div className="sm:relative w-full">
     {!isDecriptionFieldExpanded && (
       <div
         className={clsx('flex text-md transition-colors hover:text-blue-400', {
-          'text-negative-400': isErrors,
-          'text-gray-600': !isErrors,
+          'placeholder:gray-500': !isError,
+          'placeholder:negative-400': isError,
         })}
       >
         <RichText

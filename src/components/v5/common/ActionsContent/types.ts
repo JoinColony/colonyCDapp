@@ -1,7 +1,7 @@
 export interface SelectProps {
   name: string;
   selectedWalletAddress?: string;
-  isErrors?: boolean;
+  isError?: boolean;
 }
 
 export type ActionsContentProps = {

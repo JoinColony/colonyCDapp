@@ -42,7 +42,7 @@ const SearchItem: FC<SearchItemProps> = ({
 
           return (
             <li
-              className={clsx('mb-4 last:mb-0', {
+              className={clsx('mb-4', {
                 'w-full': isLabelVisible,
                 'inline-flex w-1/4 px-2': !isLabelVisible,
               })}

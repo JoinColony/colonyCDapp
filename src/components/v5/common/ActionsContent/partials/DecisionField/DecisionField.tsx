@@ -12,7 +12,7 @@ import { DecisionFieldProps } from './types';
 
 const displayName = 'v5.common.ActionsContent.partials.DecisionField';
 
-const DecisionField: FC<DecisionFieldProps> = ({ isErrors }) => {
+const DecisionField: FC<DecisionFieldProps> = ({ isError }) => {
   const { field } = useController({
     name: 'decisionMethod',
   });
@@ -35,8 +35,8 @@ const DecisionField: FC<DecisionFieldProps> = ({ isErrors }) => {
       <button
         type="button"
         className={clsx(styles.button, 'capitalize', {
-          'text-gray-600': !isErrors,
-          'text-negative-400': isErrors,
+          'placeholder:gray-500': !isError,
+          'placeholder:negative-400': isError,
         })}
         onClick={toggleDecisionSelect}
       >

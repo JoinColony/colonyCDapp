@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import ActionSidebarRow from '../ActionSidebarRow';
 import TeamsSelect from './partials/TeamsSelect';
@@ -6,6 +7,7 @@ import UserSelect from './partials/UserSelect';
 import { useActionsContent } from './hooks';
 import AmountField from './partials/AmountField';
 import DecisionField from './partials/DecisionField';
+import TransactionTable from './partials/TransactionTable';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import DescriptionField from './partials/DescriptionField';
 import useToggle from '~hooks/useToggle';
@@ -14,11 +16,11 @@ import { Actions } from '~constants/actions';
 import DefaultField from './partials/DefaultField';
 import TeamColourField from './partials/TeamColourField';
 import ColonyVersionField from './partials/ColonyVersionField';
-import { ActionsContentProps } from './types';
+import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
 
 const displayName = 'v5.common.ActionsContent';
 
-const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
+const ActionsContent: FC = () => {
   const { selectedAction } = useActionSidebarContext();
   const {
     shouldShowFromField,
@@ -50,15 +52,19 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
     (selectedAction === Actions.SIMPLE_PAYMENT && 'actionSidebar.amount') ||
     'actionSidebar.value';
 
+  const methods = useFormContext();
+  const isError = (fieldName: string) =>
+    Object.keys(methods?.formState.errors).includes(fieldName);
+
   return (
     <>
       {shouldShowFromField && (
         <ActionSidebarRow
           iconName="users-three"
           title={{ id: 'actionSidebar.from' }}
-          isErrors={formErrors?.team}
+          isError={isError('team')}
         >
-          <TeamsSelect name="team" isErrors={formErrors?.team} />
+          <TeamsSelect name="team" isError={isError('team')} />
         </ActionSidebarRow>
       )}
       {shouldShowVersionFields && <ColonyVersionField />}
@@ -66,39 +72,39 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
         <ActionSidebarRow
           iconName="arrow-down-right"
           title={{ id: 'actionSidebar.to' }}
-          isErrors={formErrors?.to}
+          isError={isError('to')}
         >
-          <TeamsSelect name="to" isErrors={formErrors?.to} />
+          <TeamsSelect name="to" isError={isError('to')} />
         </ActionSidebarRow>
       )}
       {shouldShowUserField && (
         <ActionSidebarRow
           iconName="user-focus"
           title={{ id: 'actionSidebar.recipent' }}
-          isErrors={formErrors?.recipient}
+          isError={isError('recipient')}
         >
-          <UserSelect name="recipient" isErrors={formErrors?.recipient} />
+          <UserSelect name="recipient" isError={isError('recipient')} />
         </ActionSidebarRow>
       )}
       {shouldShowAmountField && (
         <ActionSidebarRow
           iconName="coins"
           title={{ id: prepareAmountTitle }}
-          isErrors={formErrors?.amount}
+          isError={isError('amount')}
         >
-          <AmountField name="amount" isErrors={formErrors?.amount} />
+          <AmountField name="amount" isError={isError('amount')} />
         </ActionSidebarRow>
       )}
       {shouldShowTeamNameField && (
         <ActionSidebarRow
           iconName="user-list"
           title={{ id: 'actionSidebar.teamName' }}
-          isErrors={formErrors?.teamName}
+          isError={isError('teamName')}
         >
           <DefaultField
             name="teamName"
             placeholder={{ id: 'actionSidebar.placeholder.teamName' }}
-            isErrors={formErrors?.teamName}
+            isError={isError('teamName')}
           />
         </ActionSidebarRow>
       )}
@@ -106,12 +112,13 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
         <ActionSidebarRow
           iconName="rocket"
           title={{ id: 'actionSidebar.teamPurpose' }}
-          isErrors={formErrors?.domainPurpose}
+          isError={isError('domainPurpose')}
         >
           <DefaultField
             name="domainPurpose"
             placeholder={{ id: 'actionSidebar.placeholder.purpose' }}
-            isErrors={formErrors?.domainPurpose}
+            isError={isError('domainPurpose')}
+            maxLength={MAX_DOMAIN_PURPOSE_LENGTH}
           />
         </ActionSidebarRow>
       )}
@@ -119,27 +126,27 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
         <ActionSidebarRow
           iconName="paint"
           title={{ id: 'actionSidebar.teamColour' }}
-          isErrors={formErrors?.domainColor}
+          isError={isError('domainColor')}
         >
-          <TeamColourField isErrors={formErrors?.domainColor} />
+          <TeamColourField isError={isError('domainColor')} />
         </ActionSidebarRow>
       )}
       {shouldShowCreatedInField && (
         <ActionSidebarRow
           iconName="house-line"
           title={{ id: 'actionSidebar.createdIn' }}
-          isErrors={formErrors?.createdIn}
+          isError={isError('createdIn')}
         >
-          <TeamsSelect name="createdIn" isErrors={formErrors?.createdIn} />
+          <TeamsSelect name="createdIn" isError={isError('createdIn')} />
         </ActionSidebarRow>
       )}
       {shouldShowDecisionField && selectedAction && (
         <ActionSidebarRow
           iconName="scales"
           title={{ id: 'actionSidebar.decisionMethod' }}
-          isErrors={formErrors?.decisionMethod}
+          isError={isError('decisionMethod')}
         >
-          <DecisionField isErrors={formErrors?.decisionMethod} />
+          <DecisionField isError={isError('decisionMethod')} />
         </ActionSidebarRow>
       )}
       {shouldShowDescriptionField && (
@@ -150,16 +157,17 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
           isOpened={isDecriptionFieldExpanded}
           onToggle={toggleDecriptionSelect}
           ref={ref}
-          isErrors={formErrors?.annotation}
+          isError={isError('annotation')}
         >
           <DescriptionField
             isDecriptionFieldExpanded={isDecriptionFieldExpanded}
             toggleOffDecriptionSelect={toggleOffDecriptionSelect}
             toggleOnDecriptionSelect={toggleOnDecriptionSelect}
-            isErrors={formErrors?.annotation}
+            isError={isError('annotation')}
           />
         </ActionSidebarRow>
       )}
+      {selectedAction === Actions.SIMPLE_PAYMENT && <TransactionTable />}
     </>
   );
 };

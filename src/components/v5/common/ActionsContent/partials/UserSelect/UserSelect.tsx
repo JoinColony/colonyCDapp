@@ -10,13 +10,14 @@ import { useUserByAddress, useUserByName } from '~hooks';
 import useToggle from '~hooks/useToggle';
 import styles from '../../ActionsContent.module.css';
 import { SelectProps } from '../../types';
+import { useActionFormContext } from '~v5/common/ActionSidebar/partials/ActionForm/ActionFormContext';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
 const UserSelect: FC<SelectProps> = ({
   name,
   selectedWalletAddress = '',
-  isErrors,
+  isError,
 }) => {
   const { formatMessage } = useIntl();
   const { field } = useController({
@@ -30,14 +31,15 @@ const UserSelect: FC<SelectProps> = ({
   const userDisplayName = user?.profile?.displayName;
   const username = user?.name;
   const { user: userByAddress } = useUserByAddress(selectedWalletAddress);
+  const { formErrors, changeFormErrorsState } = useActionFormContext();
 
   return (
     <div className="sm:relative w-full">
       <button
         type="button"
         className={clsx(styles.button, {
-          'text-gray-600': !isErrors,
-          'text-negative-400': isErrors,
+          'text-gray-500': !isError,
+          'text-negative-400': isError,
         })}
         onClick={toggleUserSelect}
         aria-label={formatMessage({ id: 'ariaLabel.selectUser' })}
@@ -61,6 +63,7 @@ const UserSelect: FC<SelectProps> = ({
           onSelect={(value) => {
             field.onChange(value);
             setSelectedUser(value);
+            changeFormErrorsState(formErrors);
           }}
           isLoading={usersOptions.loading}
         />

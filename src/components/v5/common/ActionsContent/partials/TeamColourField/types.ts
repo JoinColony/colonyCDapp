@@ -5,5 +5,5 @@ export type SelectedTeamColourPillProps = {
 export type TeamColourBadgeProps = SelectedTeamColourPillProps;
 
 export type TeamColourFieldProps = {
-  isErrors: boolean;
+  isError?: boolean;
 };

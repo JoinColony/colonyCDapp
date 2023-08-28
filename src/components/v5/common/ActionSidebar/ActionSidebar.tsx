@@ -110,7 +110,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
             )}
           </>
         </ActionSidebarRow>
-        <ActionsContent formErrors={formErrors} />
+        <ActionsContent />
         {(showErrorBanner || isFieldError) && (
           <div className="mt-7">
             <NotificationBanner

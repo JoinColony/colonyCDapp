@@ -7,5 +7,5 @@ export type ActionSidebarRowProps = {
   isOpened?: boolean;
   onToggle?: () => void;
   ref?: React.MutableRefObject<null>;
-  isErrors?: boolean;
+  isError?: boolean;
 };
