@@ -16,8 +16,8 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
     {!isDecriptionFieldExpanded && (
       <div
         className={clsx('flex text-md transition-colors hover:text-blue-400', {
-          'placeholder:gray-500': !isError,
-          'placeholder:negative-400': isError,
+          'placeholder-gray-500': !isError,
+          'placeholder-negative-400': isError,
         })}
       >
         <RichText

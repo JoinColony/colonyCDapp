@@ -11,8 +11,8 @@ const displayName = 'v5.common.ActionSidebar.partials.ActionButtons';
 
 const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
   const isMobile = useMobile();
-  const methods = useFormContext();
   const submitText = useGetSubmitButton();
+  const methods = useFormContext();
   const { selectedAction, toggleCancelModal, toggleActionSidebarOff } =
     useActionSidebarContext();
 

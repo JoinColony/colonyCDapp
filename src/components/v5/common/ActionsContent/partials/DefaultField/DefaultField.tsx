@@ -30,8 +30,8 @@ const DefaultField: FC<DefaultFieldProps> = ({
         id={name}
         placeholder={formatMessage(placeholder)}
         className={clsx(styles.input, 'text-gray-900', {
-          'placeholder:gray-500': !isError,
-          'placeholder:negative-400': isError,
+          'placeholder-gray-500': !isError,
+          'placeholder-negative-400': isError,
         })}
         {...field}
       />

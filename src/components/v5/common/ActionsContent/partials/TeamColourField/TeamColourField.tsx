@@ -35,8 +35,8 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ isError }) => {
       <button
         type="button"
         className={clsx(styles.button, {
-          'placeholder:gray-500': !isError,
-          'placeholder:negative-400': isError,
+          'placeholder-gray-500': !isError,
+          'placeholder-negative-400': isError,
         })}
         onClick={toggleDecisionSelect}
       >
