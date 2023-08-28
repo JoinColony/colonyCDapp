@@ -26,11 +26,7 @@ fragment FunctionParam on FunctionParam {
 fragment SafeTransactionData on SafeTransactionData {
   transactionType
   token {
-    name
-    decimals
-    symbol
-    tokenAddress
-    thumbnail
+    ...Token
   }
   amount
   rawAmount
