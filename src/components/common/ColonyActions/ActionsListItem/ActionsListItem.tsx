@@ -83,10 +83,13 @@ const ActionsListItem = ({
 
   const status = ListItemStatus.Defused;
 
+  const shouldDisplaySafeTransactionStatus =
+    safeTransaction && !isEmpty(safeTransactionStatus);
+
   const ActionListItemTags = (
     <>
       <MotionTag />
-      {safeTransaction && !isEmpty(safeTransactionStatus) && (
+      {shouldDisplaySafeTransactionStatus && (
         <Tag
           text={
             SafeMSGs[
