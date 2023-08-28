@@ -7,11 +7,14 @@ import {
   CreateSafeTransactionMutation,
   CreateSafeTransactionDocument,
   CreateSafeTransactionMutationVariables,
+  CreateSafeTransactionDataMutation,
+  CreateSafeTransactionDataDocument,
+  CreateSafeTransactionDataMutationVariables,
 } from '~gql';
 import { ActionTypes } from '~redux/actionTypes';
 import { Action, AllActions } from '~redux/types';
 import { putError, takeFrom } from '~utils/saga/effects';
-import { fill } from '~utils/lodash';
+import { fill, omit } from '~utils/lodash';
 import { isDev } from '~constants';
 
 import { transactionReady } from '../../actionCreators';
@@ -38,6 +41,7 @@ function* initiateSafeTransactionAction({
     transactionsTitle: title,
     colonyAddress,
     colonyName,
+    network,
     // annotationMessage = null,
   },
   meta: { id: metaId, navigate },
@@ -87,6 +91,7 @@ function* initiateSafeTransactionAction({
             zodiacBridgeModule,
             safe,
             transaction,
+            network,
           );
           break;
         case SafeTransactionType.ContractInteraction:
@@ -180,9 +185,9 @@ function* initiateSafeTransactionAction({
     // yield put(transactionPending(annotateInitiateSafeTransaction.id));
 
     /**
-     * Save safe transaction in the database
+     * Create parent safe transaction in the database
      */
-    yield apolloClient.mutate<
+    const safeTransaction = yield apolloClient.mutate<
       CreateSafeTransactionMutation,
       CreateSafeTransactionMutationVariables
     >({
@@ -192,10 +197,29 @@ function* initiateSafeTransactionAction({
           id: txHash,
           title,
           safe,
-          transactions,
         },
       },
     });
+
+    /*
+     * Create individual safe transaction data records
+     */
+    for (const transaction of transactions) {
+      yield apolloClient.mutate<
+        CreateSafeTransactionDataMutation,
+        CreateSafeTransactionDataMutationVariables
+      >({
+        mutation: CreateSafeTransactionDataDocument,
+        variables: {
+          input: {
+            ...omit(transaction, 'token'),
+            tokenAddress: transaction.token?.tokenAddress,
+            safeTransactionTransactionsId:
+              safeTransaction.data.createSafeTransaction.id,
+          },
+        },
+      });
+    }
 
     // const annotationObject = JSON.stringify(safeTransactionData);
 

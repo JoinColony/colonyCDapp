@@ -9,6 +9,7 @@ import {
   Safe,
   SafeTransactionData,
 } from '~types';
+import { NetworkInfo } from '~constants';
 
 import { ActionTypes } from '../../actionTypes';
 
@@ -288,6 +289,7 @@ export type MotionActionTypes =
         colonyName: string;
         motionDomainId: string;
         annotationMessage: string | null;
+        network: NetworkInfo;
       },
       MetaWithNavigate<object>
     >
