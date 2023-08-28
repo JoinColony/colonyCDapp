@@ -37,7 +37,7 @@ interface Props {
   transactionTabStatus: boolean[];
   handleTransactionTabStatus: React.Dispatch<React.SetStateAction<boolean[]>>;
   removeTab: UseFieldArrayRemove;
-  selectedContractMethods?: UpdatedMethods;
+  selectedContractMethods: UpdatedMethods | undefined;
   handleSelectedContractMethods: (
     selectedContractMethods: UpdatedMethods,
     index: number,
@@ -49,7 +49,7 @@ const TransactionHeader = ({
   transactionTabStatus,
   handleTransactionTabStatus,
   removeTab,
-  selectedContractMethods = {},
+  selectedContractMethods,
   handleSelectedContractMethods,
 }: Props) => {
   const { watch, trigger } = useFormContext();
@@ -57,9 +57,7 @@ const TransactionHeader = ({
 
   const { formatMessage } = useIntl();
 
-  const handleTabRemoval = (contractMethods: UpdatedMethods) => {
-    removeTab(transactionIndex);
-
+  const handleTabRemoval = (contractMethods: UpdatedMethods | undefined) => {
     const shiftedContractMethods = contractMethods
       ? Object.keys(contractMethods).reduce((acc, contractMethodIndex) => {
           if (transactionIndex < Number(contractMethodIndex)) {
@@ -80,6 +78,7 @@ const TransactionHeader = ({
     const newTransactionTabStatus = [...transactionTabStatus];
     newTransactionTabStatus.splice(transactionIndex, 1);
     handleTransactionTabStatus(newTransactionTabStatus);
+    removeTab(transactionIndex);
     trigger();
   };
 
@@ -94,7 +93,7 @@ const TransactionHeader = ({
     transactionTypeValue: FormSafeTransaction['transactionType'],
   ) => {
     if (transactionTypeValue) {
-      formatMessage(SafeTransactionMSG[transactionTypeValue]);
+      return formatMessage(SafeTransactionMSG[transactionTypeValue]);
     }
 
     return null;
@@ -116,7 +115,7 @@ const TransactionHeader = ({
         textValues={{
           transactionNumber: transactionIndex + 1,
           transactionType: getTransactionTypeLabel(
-            transactions[transactionIndex]?.transactionType,
+            transactions[transactionIndex].transactionType,
           ),
         }}
       />
