@@ -11,7 +11,11 @@ import {
   SelectedPickerItem,
   Safe,
   NFTData,
+  ColonyAndExtensionsEvents,
+  ExtendedColonyActionType,
+  SafeTransaction,
 } from '~types';
+import { notNull } from '~utils/arrays';
 
 export {
   getContractUsefulMethods,
@@ -163,4 +167,30 @@ export const defaultTransaction: FormSafeTransaction = {
   nft: undefined,
   nftData: undefined,
   functionParamTypes: undefined,
+};
+
+export const parseSafeTransactionType = (
+  safeTransaction: SafeTransaction | null | undefined,
+) => {
+  const safeTransactionDetails =
+    safeTransaction?.transactions?.items.filter(notNull) || [];
+
+  if (safeTransactionDetails.length > 1) {
+    return ExtendedColonyActionType.SafeMultipleTransactions;
+  }
+
+  if (safeTransactionDetails.length > 0) {
+    const actionType = `SAFE_${safeTransactionDetails[0].transactionType}`;
+
+    return actionType as ExtendedColonyActionType;
+  }
+
+  return undefined;
+};
+
+export const parseSafeTransactionEventType = (
+  safeTransaction: SafeTransaction | null | undefined,
+) => {
+  const type = parseSafeTransactionType(safeTransaction);
+  return [type as unknown as ColonyAndExtensionsEvents];
 };

@@ -81,7 +81,7 @@ const getRecipient = (actionData: ColonyAction) => {
     recipientToken,
     safeTransaction,
   } = actionData;
-  const safeRecipient = safeTransaction?.[0]?.recipient?.walletAddress ?? '';
+  const safeRecipient = safeTransaction?.transactions?.items[0]?.recipient;
 
   let recipient: User | Colony | ColonyExtension | Token | undefined;
 
@@ -249,7 +249,8 @@ export const mapActionEventToExpectedFormat = (
   eventId?: string,
   colony?: Colony,
 ) => {
-  const firstSafeTransaction = actionData?.safeTransaction?.transactions[0];
+  const firstSafeTransaction =
+    actionData?.safeTransaction?.transactions?.items[0] || undefined;
 
   return {
     amount: (
