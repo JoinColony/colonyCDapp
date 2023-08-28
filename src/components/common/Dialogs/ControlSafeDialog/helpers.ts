@@ -6,6 +6,7 @@ import { SUPPORTED_SAFE_NETWORKS } from '~constants';
 import { Colony, Safe } from '~types';
 import { getChainNameFromSafe } from '~utils/safes';
 import { Colony, Safe, SafeTransactionType } from '~types';
+import { getChainNameFromSafe, getNetworkFromChainName } from '~utils/safes';
 import { EnabledExtensionData, useActionDialogStatus } from '~hooks';
 
 import { FormSafeTransaction } from './types';
@@ -27,6 +28,8 @@ export const getControlSafeDialogPayload = (colony: Colony, payload: any) => {
   } = payload;
 
   const chainName = getChainNameFromSafe(safe.profile.displayName);
+  const network = getNetworkFromChainName(chainName);
+
   const transformedSafe: Safe = {
     // Find will return because input value comes from SUPPORTED_SAFE_NETWORKS
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -90,6 +93,7 @@ export const getControlSafeDialogPayload = (colony: Colony, payload: any) => {
     colonyAddress,
     colonyName,
     motionDomainId,
+    network,
   };
 };
 

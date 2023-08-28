@@ -6,8 +6,22 @@ import { AddressZero } from '@ethersproject/constants';
 import { FormatTypes } from 'ethers/lib/utils';
 
 import { Address, ModuleAddress, Safe, SafeTransactionData } from '~types';
-import { GNOSIS_AMB_BRIDGES, isDev, SUPPORTED_SAFE_NETWORKS } from '~constants';
+import {
+  GNOSIS_AMB_BRIDGES,
+  isDev,
+  NetworkInfo,
+  SUPPORTED_SAFE_NETWORKS,
+} from '~constants';
 import { getArrayFromString } from '~utils/safes';
+import apolloClient from '~context/apolloClient';
+import {
+  CreateTokenDocument,
+  CreateTokenMutation,
+  CreateTokenMutationVariables,
+  GetTokenFromEverywhereDocument,
+  GetTokenFromEverywhereQuery,
+  GetTokenFromEverywhereQueryVariables,
+} from '~gql';
 
 import { erc721, ForeignAMB, HomeAMB, ZodiacBridgeModule } from './abis'; // Temporary
 
@@ -247,6 +261,7 @@ export const getTransferFundsData = async (
   zodiacBridgeModule: Contract,
   safe: Safe,
   transaction: SafeTransactionData,
+  network: NetworkInfo,
 ) => {
   if (!transaction.token) {
     throw new Error('Transaction does not contain token data.');
@@ -269,15 +284,51 @@ export const getTransferFundsData = async (
     throw new Error('LOCAL_SAFE_TOKEN_ADDRESS not set in .env.');
   }
 
+  /**
+   * Call to check if the token is already in database
+   */
+  const response = await apolloClient.query<
+    GetTokenFromEverywhereQuery,
+    GetTokenFromEverywhereQueryVariables
+  >({
+    query: GetTokenFromEverywhereDocument,
+    variables: {
+      input: {
+        tokenAddress,
+      },
+    },
+  });
+
+  /**
+   * If not create the token so it can be referenced by the token address
+   * in the safe transaction creation mutation in the saga
+   */
+  if (response?.data.getTokenFromEverywhere?.items?.length === 0) {
+    await apolloClient.mutate<
+      CreateTokenMutation,
+      CreateTokenMutationVariables
+    >({
+      mutation: CreateTokenDocument,
+      variables: {
+        input: {
+          ...transaction.token,
+          chainMetadata: { chainId: network.chainId },
+        },
+      },
+    });
+  }
+
   const isSafeNativeToken = tokenAddress === AddressZero;
   const tokenDecimals = transaction.token.decimals;
   const { recipient } = transaction;
+
   const getAmount = (): number | string => {
     if (isSafeNativeToken) {
       return moveDecimal(transaction.amount, tokenDecimals); // moveDecimal returns a string
     }
     return 0;
   };
+
   const getData = async () => {
     if (isSafeNativeToken) {
       return '0x';
@@ -289,6 +340,7 @@ export const getTransferFundsData = async (
       transferAmount,
     ]);
   };
+
   const getRecipient = (): string => {
     if (isSafeNativeToken) {
       return recipient.walletAddress;
