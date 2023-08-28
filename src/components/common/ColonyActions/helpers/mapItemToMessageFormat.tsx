@@ -74,8 +74,14 @@ const getDomainNameFromChangelog = (
 };
 
 const getRecipient = (actionData: ColonyAction) => {
-  const { recipientUser, recipientColony, recipientExtension, recipientToken } =
-    actionData;
+  const {
+    recipientUser,
+    recipientColony,
+    recipientExtension,
+    recipientToken,
+    safeTransaction,
+  } = actionData;
+  const safeRecipient = safeTransaction?.[0]?.recipient?.walletAddress ?? '';
 
   let recipient: User | Colony | ColonyExtension | Token | undefined;
 
@@ -87,6 +93,8 @@ const getRecipient = (actionData: ColonyAction) => {
     recipient = recipientExtension;
   } else if (recipientToken) {
     recipient = recipientToken;
+  } else if (safeRecipient) {
+    recipient = safeRecipient;
   }
 
   return (
