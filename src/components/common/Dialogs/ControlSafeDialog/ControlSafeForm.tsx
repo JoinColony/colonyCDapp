@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { ColonyRole } from '@colony/colony-js';
@@ -158,40 +158,38 @@ const ControlSafeForm = ({
     trigger();
   };
 
-  const handleSelectedContractMethods = useCallback(
-    (contractMethods: UpdatedMethods, transactionIndex: number) => {
-      const functionParamTypes: FunctionParamType[] =
-        contractMethods[transactionIndex]?.inputs?.map((input) => ({
-          name: input.name || '',
-          type: input.type || '',
-        })) || [];
+  const handleSelectedContractMethods = (
+    contractMethods: UpdatedMethods,
+    transactionIndex: number,
+  ) => {
+    const functionParamTypes: FunctionParamType[] | undefined = contractMethods[
+      transactionIndex
+    ]?.inputs?.map((input) => ({
+      name: input.name || '',
+      type: input.type || '',
+    }));
 
-      setSelectedContractMethods(contractMethods);
-      setValue(
-        `transactions.${transactionIndex}.functionParamTypes`,
-        functionParamTypes,
-      );
-    },
-    [setValue, setSelectedContractMethods],
-  );
+    setSelectedContractMethods(contractMethods);
+    setValue(
+      `transactions.${transactionIndex}.functionParamTypes`,
+      functionParamTypes,
+    );
+  };
 
-  const removeSelectedContractMethod = useCallback(
-    (transactionIndex: number) => {
-      const updatedSelectedContractMethods = omit(
-        selectedContractMethods,
+  const removeSelectedContractMethod = (transactionIndex: number) => {
+    const updatedSelectedContractMethods = omit(
+      selectedContractMethods,
+      transactionIndex,
+    );
+
+    if (!isEqual(updatedSelectedContractMethods, selectedContractMethods)) {
+      handleSelectedContractMethods(
+        updatedSelectedContractMethods,
         transactionIndex,
       );
-
-      if (!isEqual(updatedSelectedContractMethods, selectedContractMethods)) {
-        handleSelectedContractMethods(
-          updatedSelectedContractMethods,
-          transactionIndex,
-        );
-        setValue(`transactions.${transactionIndex}.contractFunction`, '');
-      }
-    },
-    [selectedContractMethods, handleSelectedContractMethods, setValue],
-  );
+      setValue(`transactions.${transactionIndex}.contractFunction`, '');
+    }
+  };
 
   const disabledSectionInputs =
     !isSupportedColonyVersion || (!userHasPermission && canOnlyForceAction);
@@ -370,6 +368,7 @@ const ControlSafeForm = ({
                   transactionIndex={index}
                   transactionTabStatus={transactionTabStatus}
                   handleTransactionTabStatus={setTransactionTabStatus}
+                  selectedContractMethods={selectedContractMethods}
                   handleSelectedContractMethods={handleSelectedContractMethods}
                   removeTab={removeTab}
                 />
