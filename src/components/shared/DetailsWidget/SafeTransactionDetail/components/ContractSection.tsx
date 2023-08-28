@@ -1,9 +1,8 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { Safe } from '~types';
+import { Safe, SafeTransactionData, SafeTransactionType } from '~types';
 import { intl } from '~utils/intl';
-import { SafeTransactionType, SafeTransactionData } from '~gql';
 import { extractTokenName } from '~utils/safes';
 import { InvisibleCopyableMaskedAddress } from '~shared/InvisibleCopyableAddress';
 

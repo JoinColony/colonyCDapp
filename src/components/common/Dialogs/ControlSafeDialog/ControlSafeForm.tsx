@@ -11,12 +11,15 @@ import ExternalLink from '~shared/ExternalLink';
 import Button from '~shared/Button';
 import Icon from '~shared/Icon';
 import { filterUserSelection } from '~shared/SingleUserPicker';
-import { SelectedPickerItem, FunctionParamType } from '~types';
+import {
+  SelectedPickerItem,
+  FunctionParamType,
+  SafeTransactionType,
+} from '~types';
 import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
 import { isEmpty, isEqual, omit } from '~utils/lodash';
 import { defaultTransaction } from '~utils/safes';
 import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
-import { SafeTransactionType } from '~gql';
 
 import { NotEnoughReputation } from '../Messages';
 import {

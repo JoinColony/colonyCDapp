@@ -13,8 +13,7 @@ import TokenIcon from '~shared/TokenIcon';
 import Button from '~shared/Button';
 import Icon from '~shared/Icon';
 import Avatar from '~shared/Avatar';
-import { NFTData, Token, User } from '~types';
-import { SafeTransactionType } from '~gql';
+import { NFTData, Token, User, SafeTransactionType } from '~types';
 import { omit } from '~utils/lodash';
 import { defaultTransaction, extractTokenName } from '~utils/safes';
 import { formatArgument } from '~shared/DetailsWidget/SafeTransactionDetail/components/FunctionsSection';
@@ -22,7 +21,7 @@ import { formatArgument } from '~shared/DetailsWidget/SafeTransactionDetail/comp
 import AddressDetailsView from './TransactionPreview/AddressDetailsView';
 import { SafeTransactionMSG } from './helpers';
 import DetailsItem from './DetailsItem';
-import { ControlSafeProps, SafeTransaction } from './types';
+import { ControlSafeProps, FormSafeTransaction } from './types';
 
 import styles from './SafeTransactionPreview.css';
 
@@ -219,7 +218,7 @@ const SafeTransactionPreview = ({
   const { watch, setValue } = useFormContext();
 
   const safe = watch('safe');
-  const transactions: SafeTransaction[] = watch(`transactions`);
+  const transactions: FormSafeTransaction[] = watch(`transactions`);
 
   const [transactionTabStatus, setTransactionTabStatus] = useState(
     Array(transactions.length).fill(false),
