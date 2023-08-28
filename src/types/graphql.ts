@@ -30,8 +30,10 @@ import {
   ColonyDecisionFragment,
   SafeFragment,
   SafeTransactionDataFragment,
+  SafeTransactionType,
   NftDataFragment,
   FunctionParamFragment,
+  SafeTransactionFragment,
 } from '~gql';
 
 export type AnnotationType = AnnotationFragment;
@@ -116,8 +118,12 @@ export type UnclaimedStakes = UnclaimedStakesFragment;
 
 export type Safe = SafeFragment;
 
+export type SafeTransaction = SafeTransactionFragment;
+
 export type SafeTransactionData = SafeTransactionDataFragment;
 
 export type NFTData = NftDataFragment;
 
 export type FunctionParam = FunctionParamFragment;
+
+export { SafeTransactionType };

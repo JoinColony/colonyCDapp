@@ -1,4 +1,4 @@
-import { SafeTransaction } from '~common/Dialogs/ControlSafeDialog/types';
+import { FormSafeTransaction } from '~common/Dialogs/ControlSafeDialog/types';
 import {
   ADDRESS_ZERO,
   SAFE_NAMES_MAP,
@@ -144,7 +144,7 @@ export const nftNameContainsTokenId = (tokenName: string): boolean => {
   return false;
 };
 
-export const defaultTransaction: SafeTransaction = {
+export const defaultTransaction: FormSafeTransaction = {
   transactionType: undefined,
   token: undefined,
   amount: undefined,
