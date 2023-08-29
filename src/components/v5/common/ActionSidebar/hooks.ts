@@ -13,6 +13,14 @@ import {
 import { SearchSelectOptionProps } from '~v5/shared/SearchSelect/types';
 import { Colony } from '~types';
 import { getAllUserRoles } from '~transformers';
+import SinglePaymentForm from './partials/SinglePaymentForm';
+import MintTokenForm from './partials/MintTokenForm';
+import TransferFundsForm from './partials/TransferFundsForm';
+import CreateNewTeamForm from './partials/CreateNewTeamForm';
+import UnlockTokenForm from './partials/UnlockTokenForm';
+import UpgradeColonyForm from './partials/UpgradeColonyForm';
+import { useActionFormContext } from './partials/ActionForm/ActionFormContext';
+import CreateDecisionForm from './partials/CreateDecision';
 
 export const useActionsList = () =>
   useMemo(
@@ -61,7 +69,7 @@ export const useActionsList = () =>
           {
             label: { id: 'actions.createDecision' },
             value: Actions.CREATE_DECISION,
-            isDisabled: true,
+            isDisabled: false,
           },
         ],
       },
@@ -173,4 +181,39 @@ export const useUserPermissionsErrors = (): boolean => {
   const showPermissionErrors = !hasRoles && !isVotingReputationEnabled;
 
   return showPermissionErrors;
+};
+
+export const useActionSidebar = (selectedAction) => {
+  const { formErrors } = useActionFormContext();
+
+  const isFieldError = !!Object.keys?.(formErrors || {}).length;
+
+  const prepareNofiticationTitle = () => {
+    let errorMessage;
+
+    if (selectedAction === Actions.UNLOCK_TOKEN) {
+      errorMessage = 'actionSidebar.unlock.token.error';
+    } else if (isFieldError) {
+      errorMessage = 'actionSidebar.fields.error';
+    } else {
+      errorMessage = 'actionSidebar.mint.token.permission.error';
+    }
+    return errorMessage;
+  };
+
+  const formComponentsByAction = {
+    [Actions.SIMPLE_PAYMENT]: SinglePaymentForm,
+    [Actions.MINT_TOKENS]: MintTokenForm,
+    [Actions.TRANSFER_FUNDS]: TransferFundsForm,
+    [Actions.CREATE_NEW_TEAM]: CreateNewTeamForm,
+    [Actions.UNLOCK_TOKEN]: UnlockTokenForm,
+    [Actions.UPGRADE_COLONY_VERSION]: UpgradeColonyForm,
+    [Actions.CREATE_DECISION]: CreateDecisionForm,
+  };
+
+  return {
+    prepareNofiticationTitle,
+    formComponentsByAction,
+    isFieldError,
+  };
 };

@@ -61,6 +61,7 @@ export interface PendingButtonProps extends CommonButtonProps {
   text?: MessageDescriptor | string;
   textValues?: SimpleMessageValues;
   rounded?: 's' | 'm' | 'l';
+  isFullSize?: boolean;
 }
 
 export interface HamburgerProps extends CommonButtonProps {

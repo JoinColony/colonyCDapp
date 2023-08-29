@@ -53,6 +53,7 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ isError }) => {
           hasShadow
           rounded="s"
         >
+          {/* @TODO: fix team color picker, it should works like here: src/components/shared/ColorSelect/ColorSelect.tsx  */}
           <SearchItem
             options={teamsOptions?.options}
             onChange={(value) => {

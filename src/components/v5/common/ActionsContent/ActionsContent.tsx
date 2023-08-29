@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 
 import ActionSidebarRow from '../ActionSidebarRow';
 import TeamsSelect from './partials/TeamsSelect';
@@ -7,16 +8,16 @@ import UserSelect from './partials/UserSelect';
 import { useActionsContent } from './hooks';
 import AmountField from './partials/AmountField';
 import DecisionField from './partials/DecisionField';
-import TransactionTable from './partials/TransactionTable';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import DescriptionField from './partials/DescriptionField';
 import useToggle from '~hooks/useToggle';
 import { useDetectClickOutside } from '~hooks';
-import { Actions } from '~constants/actions';
 import DefaultField from './partials/DefaultField';
 import TeamColourField from './partials/TeamColourField';
 import ColonyVersionField from './partials/ColonyVersionField';
 import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
+import ActionTypeSelect from '../ActionSidebar/ActionTypeSelect';
+import styles from '../ActionSidebar/ActionSidebar.module.css';
 
 const displayName = 'v5.common.ActionsContent';
 
@@ -34,6 +35,8 @@ const ActionsContent: FC = () => {
     shouldShowTeamNameField,
     shouldShowTeamColourField,
     shouldShowVersionFields,
+    prepareAmountTitle,
+    isError,
   } = useActionsContent();
   const [
     isDecriptionFieldExpanded,
@@ -43,21 +46,24 @@ const ActionsContent: FC = () => {
       toggleOn: toggleOnDecriptionSelect,
     },
   ] = useToggle();
+  const { formatMessage } = useIntl();
 
   const ref = useDetectClickOutside({
     onTriggered: () => toggleOffDecriptionSelect(),
   });
-
-  const prepareAmountTitle =
-    (selectedAction === Actions.SIMPLE_PAYMENT && 'actionSidebar.amount') ||
-    'actionSidebar.value';
-
-  const methods = useFormContext();
-  const isError = (fieldName: string) =>
-    Object.keys(methods?.formState.errors).includes(fieldName);
+  const { field } = useController({
+    name: 'title',
+  });
 
   return (
     <>
+      <input
+        type="text"
+        {...field}
+        className={styles.titleInput}
+        placeholder={formatMessage({ id: 'placeholder.title' })}
+      />
+      <ActionTypeSelect />
       {shouldShowFromField && (
         <ActionSidebarRow
           iconName="users-three"
@@ -167,7 +173,6 @@ const ActionsContent: FC = () => {
           />
         </ActionSidebarRow>
       )}
-      {selectedAction === Actions.SIMPLE_PAYMENT && <TransactionTable />}
     </>
   );
 };
