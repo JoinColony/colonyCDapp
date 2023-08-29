@@ -1,6 +1,7 @@
 import { InMemoryCache } from '@apollo/client';
 
 import colonyCache from './colony';
+import expenditureCache from './expenditure';
 
 /*
  * @NOTE Make any modifications to GraphQL query data in here (replaces old client-only resolvers)
@@ -9,6 +10,7 @@ import colonyCache from './colony';
  */
 const cacheUpdates = {
   ...colonyCache,
+  ...expenditureCache,
 };
 
 const cache = new InMemoryCache({
