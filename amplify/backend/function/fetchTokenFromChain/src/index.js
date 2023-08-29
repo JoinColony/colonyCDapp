@@ -2,6 +2,10 @@ const { constants, utils, providers, Contract } = require('ethers');
 
 const basicTokenAbi = require('./basicTokenAbi.json');
 const { graphqlRequest, getTokenType } = require('./utils');
+const {
+  ETHEREUM_NETWORK,
+  BINANCE_NETWORK,
+} = require('../../../../../src/constants');
 
 /*
  * @TODO This needs to be imported properly into the project (maybe?)
@@ -31,10 +35,10 @@ const setEnvVariables = async (network) => {
     let chainRpcParam = 'chainRpcEndpoint';
 
     switch (network) {
-      case 'BNB':
+      case BINANCE_NETWORK.shortName:
         chainRpcParam = 'bnbRpcEndpoint';
         break;
-      case 'Mainnet':
+      case ETHEREUM_NETWORK.shortName:
       default:
       // Use default chainRpcParam ie Ethereum to set `rpcURL`
     }
