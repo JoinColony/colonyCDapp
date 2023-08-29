@@ -5,6 +5,7 @@ let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
 let reputationOracleEndpoint;
 let rpcURL;
+let bnbRpcURL;
 let network;
 let networkAddress;
 
@@ -18,6 +19,7 @@ const setEnvVariables = async () => {
       reputationOracleEndpoint,
       networkAddress,
       rpcURL,
+      bnbRpcURL,
       network,
     ] = await getParams([
       'appsyncApiKey',
@@ -25,6 +27,7 @@ const setEnvVariables = async () => {
       'reputationEndpoint',
       'networkContractAddress',
       'chainRpcEndpoint',
+      'bnbRpcEndpoint',
       'chainNetwork',
     ]);
   }
@@ -54,6 +57,7 @@ exports.handler = async ({ walletAddress, colonyAddress }) => {
     reputationOracleEndpoint,
     reputationAmount,
     rpcURL,
+    bnbRpcURL,
   });
   return null;
 };
