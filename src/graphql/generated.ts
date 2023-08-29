@@ -696,8 +696,8 @@ export type CreateSafeTransactionDataInput = {
   nftData?: InputMaybe<NftDataInput>;
   rawAmount?: InputMaybe<Scalars['String']>;
   recipient?: InputMaybe<SimpleTargetInput>;
-  safeTransactionTransactionsId: Scalars['ID'];
   tokenAddress?: InputMaybe<Scalars['ID']>;
+  transactionHash: Scalars['ID'];
   transactionType: SafeTransactionType;
 };
 
@@ -1561,6 +1561,16 @@ export type ModelIdInput = {
   size?: InputMaybe<ModelSizeInput>;
 };
 
+export type ModelIdKeyConditionInput = {
+  beginsWith?: InputMaybe<Scalars['ID']>;
+  between?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  eq?: InputMaybe<Scalars['ID']>;
+  ge?: InputMaybe<Scalars['ID']>;
+  gt?: InputMaybe<Scalars['ID']>;
+  le?: InputMaybe<Scalars['ID']>;
+  lt?: InputMaybe<Scalars['ID']>;
+};
+
 export type ModelIngestorStatsConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelIngestorStatsConditionInput>>>;
   not?: InputMaybe<ModelIngestorStatsConditionInput>;
@@ -1681,8 +1691,8 @@ export type ModelSafeTransactionDataConditionInput = {
   not?: InputMaybe<ModelSafeTransactionDataConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSafeTransactionDataConditionInput>>>;
   rawAmount?: InputMaybe<ModelStringInput>;
-  safeTransactionTransactionsId?: InputMaybe<ModelIdInput>;
   tokenAddress?: InputMaybe<ModelIdInput>;
+  transactionHash?: InputMaybe<ModelIdInput>;
   transactionType?: InputMaybe<ModelSafeTransactionTypeInput>;
 };
 
@@ -1702,8 +1712,8 @@ export type ModelSafeTransactionDataFilterInput = {
   not?: InputMaybe<ModelSafeTransactionDataFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSafeTransactionDataFilterInput>>>;
   rawAmount?: InputMaybe<ModelStringInput>;
-  safeTransactionTransactionsId?: InputMaybe<ModelIdInput>;
   tokenAddress?: InputMaybe<ModelIdInput>;
+  transactionHash?: InputMaybe<ModelIdInput>;
   transactionType?: InputMaybe<ModelSafeTransactionTypeInput>;
 };
 
@@ -2020,6 +2030,7 @@ export type ModelSubscriptionSafeTransactionDataFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionSafeTransactionDataFilterInput>>>;
   rawAmount?: InputMaybe<ModelSubscriptionStringInput>;
   tokenAddress?: InputMaybe<ModelSubscriptionIdInput>;
+  transactionHash?: InputMaybe<ModelSubscriptionIdInput>;
   transactionType?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
@@ -3442,6 +3453,7 @@ export type SafeTransaction = {
 
 export type SafeTransactionTransactionsArgs = {
   filter?: InputMaybe<ModelSafeTransactionDataFilterInput>;
+  id?: InputMaybe<ModelIdKeyConditionInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
@@ -3461,9 +3473,9 @@ export type SafeTransactionData = {
   nftData?: Maybe<NftData>;
   rawAmount?: Maybe<Scalars['String']>;
   recipient?: Maybe<SimpleTarget>;
-  safeTransactionTransactionsId: Scalars['ID'];
   token?: Maybe<Token>;
   tokenAddress?: Maybe<Scalars['ID']>;
+  transactionHash: Scalars['ID'];
   transactionType: SafeTransactionType;
   updatedAt: Scalars['AWSDateTime'];
 };
@@ -4217,8 +4229,8 @@ export type UpdateSafeTransactionDataInput = {
   nftData?: InputMaybe<NftDataInput>;
   rawAmount?: InputMaybe<Scalars['String']>;
   recipient?: InputMaybe<SimpleTargetInput>;
-  safeTransactionTransactionsId?: InputMaybe<Scalars['ID']>;
   tokenAddress?: InputMaybe<Scalars['ID']>;
+  transactionHash?: InputMaybe<Scalars['ID']>;
   transactionType?: InputMaybe<SafeTransactionType>;
 };
 
