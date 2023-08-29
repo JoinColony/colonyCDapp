@@ -2789,9 +2789,16 @@ enum SafeTransactionType {
   RAW_TRANSACTION
 }
 
+type SafeTransaction @model {
+  id: ID!
+  title: String!
+  safe: Safe!
+  transactions: [SafeTransactionData] @hasMany(indexName: "byTransaction", fields: ["id"])
+  # comments: [Comment] @hasMany(indexName: "byPost", fields: ["id"])
+}
+
 type SafeTransactionData @model {
   id: ID!
-  transactionType: SafeTransactionType!
   tokenAddress: ID
   token: Token @hasOne(fields: ["tokenAddress"])
   amount: String
@@ -2804,13 +2811,9 @@ type SafeTransactionData @model {
   nft: NFT
   nftData: NFTData
   functionParams: [FunctionParam]
-}
-
-type SafeTransaction @model {
-  id: ID!
-  title: String!
-  safe: Safe!
-  transactions: [SafeTransactionData!]! @hasMany
+  transactionType: SafeTransactionType!
+  transactionHash: ID! @index(name: "byTransaction", sortKeyFields: ["id"])
+  # postID: ID! @index(name: "byPost", sortKeyFields: ["content"])
 }
 
 type Safe {
