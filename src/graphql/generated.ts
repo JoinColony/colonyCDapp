@@ -3989,6 +3989,7 @@ export type TokenUsersArgs = {
 };
 
 export type TokenFromEverywhereArguments = {
+  network?: InputMaybe<Scalars['String']>;
   tokenAddress: Scalars['String'];
 };
 

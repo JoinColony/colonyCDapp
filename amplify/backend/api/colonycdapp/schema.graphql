@@ -10,6 +10,7 @@ input AMPLIFY {
 
 input TokenFromEverywhereArguments {
   tokenAddress: String!
+  network: String
 }
 
 input MembersForColonyInput {

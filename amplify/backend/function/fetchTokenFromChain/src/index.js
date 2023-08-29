@@ -12,7 +12,7 @@ const { createToken, getTokenByAddress } = require('./graphql');
 
 let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
-let rpcURL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let rpcURL = 'http://network-contracts.docker:8545'; // default for local testing
 
 const baseToken = {
   __typename: 'Token',
@@ -24,28 +24,43 @@ const baseToken = {
   colonies: null,
 };
 
-const setEnvVariables = async () => {
+const setEnvVariables = async (network) => {
   const ENV = process.env.ENV;
+
   if (ENV === 'qa') {
+    let chainRpcParam = 'chainRpcEndpoint';
+
+    switch (network) {
+      case 'BNB':
+        chainRpcParam = 'bnbRpcEndpoint';
+        break;
+      case 'Mainnet':
+      default:
+      // Use default chainRpcParam ie Ethereum to set `rpcURL`
+    }
+
     const { getParams } = require('/opt/nodejs/getParams');
     [apiKey, graphqlURL, rpcURL] = await getParams([
       'appsyncApiKey',
       'graphqlUrl',
-      'chainRpcEndpoint',
+      chainRpcParam,
     ]);
   }
 };
 
 exports.handler = async (event) => {
+  const {
+    tokenAddress = constants.AddressZero,
+    network = undefined, // refers to the shortName in the NetworkInfo type
+  } =
+    // eslint-disable-next-line no-unsafe-optional-chaining
+    event?.arguments?.input;
+
   try {
-    await setEnvVariables();
+    await setEnvVariables(network);
   } catch (e) {
     throw new Error('Unable to set env variables. Reason:', e);
   }
-
-  const { tokenAddress = constants.AddressZero } =
-    // eslint-disable-next-line no-unsafe-optional-chaining
-    event?.arguments?.input;
 
   const tokenQuery = await graphqlRequest(
     getTokenByAddress,
