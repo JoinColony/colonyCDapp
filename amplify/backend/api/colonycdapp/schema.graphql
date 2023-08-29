@@ -16,6 +16,7 @@ input TokenFromEverywhereArguments {
   Address of the token on the blockchain
   """
   tokenAddress: String!
+  network: String
 }
 
 """
