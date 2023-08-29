@@ -13,16 +13,7 @@ import {
   SUPPORTED_SAFE_NETWORKS,
 } from '~constants';
 import { getArrayFromString } from '~utils/safes';
-import apolloClient from '~context/apolloClient';
-import {
-  CreateTokenDocument,
-  CreateTokenMutation,
-  CreateTokenMutationVariables,
-  GetTokenFromEverywhereDocument,
-  GetTokenFromEverywhereQuery,
-  GetTokenFromEverywhereQueryVariables,
-} from '~gql';
-import { omit } from '~utils/lodash';
+import { getTokenFromEveryWhereQuery } from '~utils/queries';
 
 import { erc721, ForeignAMB, HomeAMB, ZodiacBridgeModule } from './abis'; // Temporary
 
@@ -287,38 +278,9 @@ export const getTransferFundsData = async (
 
   /**
    * Call to check if the token is already in database
+   * and add it if it isn't
    */
-  const response = await apolloClient.query<
-    GetTokenFromEverywhereQuery,
-    GetTokenFromEverywhereQueryVariables
-  >({
-    query: GetTokenFromEverywhereDocument,
-    variables: {
-      input: {
-        tokenAddress: transaction.token.tokenAddress,
-      },
-    },
-  });
-
-  /**
-   * If not create the token so it can be referenced by the token address
-   * in the safe transaction creation mutation in the saga
-   */
-  if (response?.data.getTokenFromEverywhere === null) {
-    await apolloClient.mutate<
-      CreateTokenMutation,
-      CreateTokenMutationVariables
-    >({
-      mutation: CreateTokenDocument,
-      variables: {
-        input: {
-          id: transaction.token.tokenAddress,
-          ...omit(transaction.token, 'tokenAddress'),
-          chainMetadata: { chainId: network.chainId },
-        },
-      },
-    });
-  }
+  await getTokenFromEveryWhereQuery(transaction.token.tokenAddress, network);
 
   const isSafeNativeToken = tokenAddress === AddressZero;
   const tokenDecimals = transaction.token.decimals;
