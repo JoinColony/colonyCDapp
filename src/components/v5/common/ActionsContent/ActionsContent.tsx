@@ -15,6 +15,7 @@ import DefaultField from './partials/DefaultField';
 import TeamColourField from './partials/TeamColourField';
 import ColonyVersionField from './partials/ColonyVersionField';
 import { ActionsContentProps } from './types';
+import { ActionSidebarRowFieldNameEnum } from '../ActionSidebarRow/enums';
 
 const displayName = 'v5.common.ActionsContent';
 
@@ -55,6 +56,7 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
       {shouldShowFromField && (
         <ActionSidebarRow
           iconName="users-three"
+          fieldName={ActionSidebarRowFieldNameEnum.FROM}
           title={{ id: 'actionSidebar.from' }}
           isErrors={formErrors?.team}
         >
@@ -65,6 +67,7 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
       {shouldShowTransferFundsField && (
         <ActionSidebarRow
           iconName="arrow-down-right"
+          fieldName={ActionSidebarRowFieldNameEnum.TO}
           title={{ id: 'actionSidebar.to' }}
           isErrors={formErrors?.to}
         >
@@ -74,6 +77,7 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
       {shouldShowUserField && (
         <ActionSidebarRow
           iconName="user-focus"
+          fieldName={ActionSidebarRowFieldNameEnum.RECIPIENT}
           title={{ id: 'actionSidebar.recipent' }}
           isErrors={formErrors?.recipient}
         >
@@ -83,6 +87,7 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
       {shouldShowAmountField && (
         <ActionSidebarRow
           iconName="coins"
+          fieldName={ActionSidebarRowFieldNameEnum.AMOUNT}
           title={{ id: prepareAmountTitle }}
           isErrors={formErrors?.amount}
         >
@@ -92,6 +97,7 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
       {shouldShowTeamNameField && (
         <ActionSidebarRow
           iconName="user-list"
+          fieldName={ActionSidebarRowFieldNameEnum.TEAM_NAME}
           title={{ id: 'actionSidebar.teamName' }}
           isErrors={formErrors?.teamName}
         >
@@ -105,6 +111,7 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
       {shouldShowTeamPurposeField && (
         <ActionSidebarRow
           iconName="rocket"
+          fieldName={ActionSidebarRowFieldNameEnum.TEAM_PURPOSE}
           title={{ id: 'actionSidebar.teamPurpose' }}
           isErrors={formErrors?.domainPurpose}
         >
@@ -118,6 +125,7 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
       {shouldShowTeamColourField && (
         <ActionSidebarRow
           iconName="paint"
+          fieldName={ActionSidebarRowFieldNameEnum.TEAM_COLOUR}
           title={{ id: 'actionSidebar.teamColour' }}
           isErrors={formErrors?.domainColor}
         >
@@ -127,6 +135,7 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
       {shouldShowCreatedInField && (
         <ActionSidebarRow
           iconName="house-line"
+          fieldName={ActionSidebarRowFieldNameEnum.CREATED_IN}
           title={{ id: 'actionSidebar.createdIn' }}
           isErrors={formErrors?.createdIn}
         >
@@ -136,6 +145,7 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
       {shouldShowDecisionField && selectedAction && (
         <ActionSidebarRow
           iconName="scales"
+          fieldName={ActionSidebarRowFieldNameEnum.DECISION_METHOD}
           title={{ id: 'actionSidebar.decisionMethod' }}
           isErrors={formErrors?.decisionMethod}
         >
@@ -145,6 +155,7 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
       {shouldShowDescriptionField && (
         <ActionSidebarRow
           iconName="pencil"
+          fieldName={ActionSidebarRowFieldNameEnum.DESCRIPTION}
           title={{ id: 'actionSidebar.description' }}
           isDescriptionFieldRow
           isOpened={isDecriptionFieldExpanded}

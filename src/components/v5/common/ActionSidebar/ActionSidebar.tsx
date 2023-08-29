@@ -25,6 +25,7 @@ import NotificationBanner from '~common/Extensions/NotificationBanner';
 import UpgradeColonyForm from './partials/UpgradeColonyForm/UpgradeColonyForm';
 import { useActionFormContext } from './partials/ActionForm/ActionFormContext';
 import TransactionTable from '../ActionsContent/partials/TransactionTable/TransactionTable';
+import { ActionSidebarRowFieldNameEnum } from '../ActionSidebarRow/enums';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -80,6 +81,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
         />
         <ActionSidebarRow
           iconName="file-plus"
+          fieldName={ActionSidebarRowFieldNameEnum.ACTION_TYPE}
           title={{ id: 'actionSidebar.actionType' }}
         >
           <>
