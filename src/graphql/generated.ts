@@ -4548,13 +4548,6 @@ export type DeleteColonyTokensMutationVariables = Exact<{
 
 export type DeleteColonyTokensMutation = { __typename?: 'Mutation', deleteColonyTokens?: { __typename?: 'ColonyTokens', id: string } | null };
 
-export type CreateTokenMutationVariables = Exact<{
-  input: CreateTokenInput;
-}>;
-
-
-export type CreateTokenMutation = { __typename?: 'Mutation', createToken?: { __typename?: 'Token', id: string } | null };
-
 export type CreateUniqueUserMutationVariables = Exact<{
   input: CreateUniqueUserInput;
 }>;
@@ -5814,39 +5807,6 @@ export function useDeleteColonyTokensMutation(baseOptions?: Apollo.MutationHookO
 export type DeleteColonyTokensMutationHookResult = ReturnType<typeof useDeleteColonyTokensMutation>;
 export type DeleteColonyTokensMutationResult = Apollo.MutationResult<DeleteColonyTokensMutation>;
 export type DeleteColonyTokensMutationOptions = Apollo.BaseMutationOptions<DeleteColonyTokensMutation, DeleteColonyTokensMutationVariables>;
-export const CreateTokenDocument = gql`
-    mutation CreateToken($input: CreateTokenInput!) {
-  createToken(input: $input) {
-    id
-  }
-}
-    `;
-export type CreateTokenMutationFn = Apollo.MutationFunction<CreateTokenMutation, CreateTokenMutationVariables>;
-
-/**
- * __useCreateTokenMutation__
- *
- * To run a mutation, you first call `useCreateTokenMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateTokenMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createTokenMutation, { data, loading, error }] = useCreateTokenMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useCreateTokenMutation(baseOptions?: Apollo.MutationHookOptions<CreateTokenMutation, CreateTokenMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateTokenMutation, CreateTokenMutationVariables>(CreateTokenDocument, options);
-      }
-export type CreateTokenMutationHookResult = ReturnType<typeof useCreateTokenMutation>;
-export type CreateTokenMutationResult = Apollo.MutationResult<CreateTokenMutation>;
-export type CreateTokenMutationOptions = Apollo.BaseMutationOptions<CreateTokenMutation, CreateTokenMutationVariables>;
 export const CreateUniqueUserDocument = gql`
     mutation CreateUniqueUser($input: CreateUniqueUserInput!) {
   createUniqueUser(input: $input) {
