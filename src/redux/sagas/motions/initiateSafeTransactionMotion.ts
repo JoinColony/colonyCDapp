@@ -248,8 +248,7 @@ function* initiateSafeTransactionMotion({
           input: {
             ...omit(transaction, 'token'),
             tokenAddress: transaction.token?.tokenAddress,
-            safeTransactionTransactionsId:
-              safeTransaction.data.createSafeTransaction.id,
+            transactionHash: safeTransaction.data.createSafeTransaction.id,
           },
         },
       });
