@@ -6,5 +6,4 @@ export type DefaultFieldProps = {
   defaultValue?: string;
   isError?: boolean;
   maxLength?: number;
-  defaultValue?: string;
 };

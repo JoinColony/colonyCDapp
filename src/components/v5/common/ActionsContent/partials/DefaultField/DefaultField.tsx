@@ -15,7 +15,6 @@ const DefaultField: FC<DefaultFieldProps> = ({
   defaultValue,
   isError,
   maxLength = MAX_COLONY_DISPLAY_NAME,
-  defaultValue,
 }) => {
   const { field } = useController({
     name,
