@@ -1,5 +1,5 @@
 import { ActionTypes } from '~redux/actionTypes';
-import { Address, Colony, Expenditure } from '~types';
+import { Address, Colony, Domain, Expenditure } from '~types';
 import { ExpenditurePayoutFieldValue } from '~common/Expenditures/ExpenditureForm';
 
 import { UniqueActionType, ErrorActionType, MetaWithNavigate } from './index';
@@ -10,8 +10,8 @@ export type ExpendituresActionTypes =
       {
         colony: Colony;
         payouts: ExpenditurePayoutFieldValue[];
-        // id of the domain to create the expenditure in
-        domainId: number;
+        // the domain to create the expenditure in
+        createdInDomain: Domain;
         // id of the domain to fund the expenditure from
         fundFromDomainId: number;
       },
@@ -82,4 +82,24 @@ export type ExpendituresActionTypes =
       object
     >
   | ErrorActionType<ActionTypes.EXPENDITURE_CLAIM_ERROR, object>
-  | UniqueActionType<ActionTypes.EXPENDITURE_CLAIM_SUCCESS, object, object>;
+  | UniqueActionType<ActionTypes.EXPENDITURE_CLAIM_SUCCESS, object, object>
+  | UniqueActionType<
+      ActionTypes.STAKED_EXPENDITURE_CREATE,
+      {
+        colony: Colony;
+        payouts: ExpenditurePayoutFieldValue[];
+        // the domain to create the expenditure in
+        createdInDomain: Domain;
+        // id of the domain to fund the expenditure from
+        fundFromDomainId: number;
+        stakeAmount: string;
+        stakedExpenditureAddress: Address;
+      },
+      MetaWithNavigate<object>
+    >
+  | ErrorActionType<ActionTypes.STAKED_EXPENDITURE_CREATE_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.STAKED_EXPENDITURE_CREATE_SUCCESS,
+      object,
+      object
+    >;

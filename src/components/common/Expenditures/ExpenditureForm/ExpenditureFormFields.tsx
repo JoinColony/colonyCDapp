@@ -3,22 +3,17 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { Input } from '~shared/Fields';
 import { Colony } from '~types';
-import Button, { IconButton } from '~shared/Button';
+import { IconButton } from '~shared/Button';
+
+import { getInitialPayoutFieldValue } from './helpers';
 
 import styles from './ExpenditureForm.module.css';
-import { getInitialPayoutFieldValue } from './helpers';
-import { ExpenditureFormProps } from './ExpenditureForm';
 
-interface ExpenditureFormFieldsProps extends ExpenditureFormProps {
+interface ExpenditureFormFieldsProps {
   colony: Colony;
 }
 
-const ExpenditureFormFields = ({
-  colony,
-  onCancelClick,
-  submitButtonText = 'Create expenditure',
-  showCancelButton = false,
-}: ExpenditureFormFieldsProps) => {
+const ExpenditureFormFields = ({ colony }: ExpenditureFormFieldsProps) => {
   const { control } = useFormContext();
 
   const { fields, append, remove } = useFieldArray({
@@ -27,7 +22,7 @@ const ExpenditureFormFields = ({
   });
 
   return (
-    <>
+    <div>
       {fields.map((field, index) => (
         <div className={styles.field} key={field.id}>
           <IconButton
@@ -49,30 +44,14 @@ const ExpenditureFormFields = ({
         </div>
       ))}
 
-      <div className={styles.buttons}>
-        {showCancelButton && (
-          <div className={styles.cancelButton}>
-            <Button
-              appearance={{ size: 'small' }}
-              onClick={() => onCancelClick?.()}
-            >
-              Cancel
-            </Button>
-          </div>
-        )}
-        <Button
-          appearance={{
-            size: 'small',
-          }}
-          onClick={() =>
-            append(getInitialPayoutFieldValue(colony.nativeToken.tokenAddress))
-          }
-        >
-          Add recipient
-        </Button>
-        <Button type="submit">{submitButtonText}</Button>
-      </div>
-    </>
+      <IconButton
+        onClick={() =>
+          append(getInitialPayoutFieldValue(colony.nativeToken.tokenAddress))
+        }
+        text=""
+        icon="circle-plus"
+      />
+    </div>
   );
 };
 

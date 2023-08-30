@@ -182,7 +182,9 @@ export default class ColonyManager {
       }
       case ClientType.StakedExpenditureClient: {
         if (!identifier)
-          throw new Error('Need colony identifier to get the WhitelistClient');
+          throw new Error(
+            'Need colony identifier to get the StakedExpenditureClient',
+          );
         return this.getColonyExtensionClient(
           identifier,
           Extension.StakedExpenditure,

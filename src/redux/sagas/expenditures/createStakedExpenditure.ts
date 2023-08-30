@@ -1,4 +1,4 @@
-import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
+import { ClientType, Id, getChildIndex } from '@colony/colony-js';
 import { takeEvery, fork, call, put } from 'redux-saga/effects';
 
 import { Action, ActionTypes, AllActions } from '~redux';
@@ -15,6 +15,7 @@ import {
 } from '~gql';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
 import { toNumber } from '~utils/numbers';
+import { ADDRESS_ZERO } from '~constants';
 
 import {
   ChannelDefinition,
@@ -28,10 +29,7 @@ import {
   getSetExpenditureValuesFunctionParams,
 } from '../utils';
 
-export type CreateExpenditurePayload =
-  Action<ActionTypes.EXPENDITURE_CREATE>['payload'];
-
-function* createExpenditure({
+function* createStakedExpenditure({
   meta: { navigate },
   meta,
   payload: {
@@ -39,8 +37,10 @@ function* createExpenditure({
     payouts,
     createdInDomain,
     fundFromDomainId,
+    stakeAmount,
+    stakedExpenditureAddress,
   },
-}: Action<ActionTypes.EXPENDITURE_CREATE>) {
+}: Action<ActionTypes.STAKED_EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
   const colonyClient = yield colonyManager.getClient(
     ClientType.ColonyClient,
@@ -57,29 +57,36 @@ function* createExpenditure({
   }));
 
   const {
+    approveStake,
     makeExpenditure,
     setExpenditureValues,
   }: Record<string, ChannelDefinition> = yield createTransactionChannels(
     meta.id,
-    ['makeExpenditure', 'setExpenditureValues'],
+    ['approveStake', 'makeExpenditure', 'setExpenditureValues'],
   );
 
   try {
-    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
-      colonyClient,
-      createdInDomain.nativeId,
-      ColonyRole.Administration,
-    );
-
-    yield fork(createTransaction, makeExpenditure.id, {
+    yield fork(createTransaction, approveStake.id, {
       context: ClientType.ColonyClient,
-      methodName: 'makeExpenditure',
+      methodName: 'approveStake',
       identifier: colonyAddress,
-      params: [permissionDomainId, childSkillIndex, createdInDomain.nativeId],
+      params: [stakedExpenditureAddress, createdInDomain.nativeId, stakeAmount],
       group: {
         key: batchKey,
         id: meta.id,
         index: 0,
+      },
+      ready: false,
+    });
+
+    yield fork(createTransaction, makeExpenditure.id, {
+      context: ClientType.StakedExpenditureClient,
+      methodName: 'makeExpenditureWithStake',
+      identifier: colonyAddress,
+      group: {
+        key: batchKey,
+        id: meta.id,
+        index: 1,
       },
       ready: false,
     });
@@ -91,12 +98,46 @@ function* createExpenditure({
       group: {
         key: batchKey,
         id: meta.id,
-        index: 1,
+        index: 2,
       },
       ready: false,
     });
 
+    yield put(transactionPending(approveStake.id));
+    yield put(transactionReady(approveStake.id));
+    yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    // Find a chill skill index as a proof the extension has permissions in the selected domain
+    const childSkillIndex = yield getChildIndex(
+      colonyClient,
+      // StakedExpenditure extension will always have its permissions assigned in the root domain
+      Id.RootDomain,
+      createdInDomain.nativeId,
+    );
+
+    // Get reputation proof for the selected domain
+    const {
+      key: reputationKey,
+      value: reputationValue,
+      branchMask,
+      siblings,
+    } = yield colonyClient.getReputation(
+      createdInDomain.nativeSkillId,
+      ADDRESS_ZERO,
+    );
+
     yield put(transactionPending(makeExpenditure.id));
+    yield put(
+      transactionAddParams(makeExpenditure.id, [
+        Id.RootDomain,
+        childSkillIndex,
+        createdInDomain.nativeId,
+        reputationKey,
+        reputationValue,
+        branchMask,
+        siblings,
+      ]),
+    );
     yield put(transactionReady(makeExpenditure.id));
     yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
@@ -142,13 +183,16 @@ function* createExpenditure({
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   }
 
-  [makeExpenditure, setExpenditureValues].forEach((channel) =>
+  [approveStake, makeExpenditure, setExpenditureValues].forEach((channel) =>
     channel.channel.close(),
   );
 
   return null;
 }
 
-export default function* createExpenditureSaga() {
-  yield takeEvery(ActionTypes.EXPENDITURE_CREATE, createExpenditure);
+export default function* createStakedExpenditureSaga() {
+  yield takeEvery(
+    ActionTypes.STAKED_EXPENDITURE_CREATE,
+    createStakedExpenditure,
+  );
 }

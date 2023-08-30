@@ -269,6 +269,8 @@
   "transaction.group.claimExpenditure.description": "Claim Expenditure Payouts",
   "transaction.ColonyClient.claimExpenditurePayout.title": "Claim Expenditure Payout",
   "transaction.ColonyClient.claimExpenditurePayout.description": "Claim Expenditure Payout",
+  "transaction.StakedExpenditureClient.makeExpenditureWithStake.title": "Make Expenditure With Stake",
+  "transaction.StakedExpenditureClient.makeExpenditureWithStake.description": "Make Expenditure With Stake",
 
   "metatransaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
   "metatransaction.group.deposit.title": "Activate tokens",

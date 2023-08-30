@@ -51,7 +51,7 @@ const ExtensionSetup = ({
 
   const transform = pipe(
     mapPayload((payload) =>
-      mapExtensionActionPayload(extensionId, payload, initializationParams),
+      mapExtensionActionPayload(payload, initializationParams),
     ),
     mergePayload({ colonyAddress: colony?.colonyAddress, extensionData }),
   );
