@@ -50,14 +50,16 @@ export const waitForColonyPermissions = ({
     }, interval);
   });
 
-export const waitForDbAfterAction = ({
+export const waitForDbAfterExtensionAction = ({
   refetchExtensionData,
   method,
   interval = 1000,
+  latestVersion,
 }: {
-  refetchExtensionData;
+  refetchExtensionData: RefetchExtensionDataFn;
   interval?: number;
   method: ExtensionMethods;
+  latestVersion?: number;
 }) =>
   new Promise<void>((res, rej) => {
     const initTime = new Date().valueOf();
@@ -101,6 +103,11 @@ export const waitForDbAfterAction = ({
           break;
         }
 
+        case ExtensionMethods.UPGRADE: {
+          condition = extension?.currentVersion === latestVersion;
+          break;
+        }
+
         // Extension data is filtered by deleted, therefore if it's been deleted it won't appear in query results
         case ExtensionMethods.UNINSTALL: {
           condition = !extension;
@@ -140,7 +147,7 @@ export const getFormSuccessFn =
     try {
       /* Wait for permissions first, so that the permissions warning doesn't flash in the ui */
       await waitForColonyPermissions({ extensionData, refetchColony });
-      await waitForDbAfterAction({
+      await waitForDbAfterExtensionAction({
         method: ExtensionMethods.ENABLE,
         refetchExtensionData,
       });
