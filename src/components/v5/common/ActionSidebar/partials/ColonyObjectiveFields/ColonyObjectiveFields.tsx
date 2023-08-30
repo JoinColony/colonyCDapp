@@ -47,7 +47,7 @@ const ColonyObjectiveFields: FC = () => {
           placeholder={formatText(MSG.titlePlaceholder)}
           mode="secondary"
           message={undefined}
-          value={objective?.title}
+          defaultValue={objective?.title}
         />
       </ActionFormRow>
       <ActionFormRow
@@ -60,7 +60,7 @@ const ColonyObjectiveFields: FC = () => {
           placeholder={formatText(MSG.descriptionPlaceholder)}
           mode="secondary"
           message={undefined}
-          value={objective?.description}
+          defaultValue={objective?.description}
         />
       </ActionFormRow>
       <ActionFormRow
@@ -77,7 +77,7 @@ const ColonyObjectiveFields: FC = () => {
           mode="secondary"
           autoWidth
           message={undefined}
-          value={objective?.progress}
+          defaultValue={objective?.progress}
         />
       </ActionFormRow>
     </>

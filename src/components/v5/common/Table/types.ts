@@ -7,4 +7,5 @@ export interface TableProps<T>
   getRowClassName?: (row: Row<T>) => string | undefined;
   verticalOnMobile?: boolean;
   hasPagination?: boolean;
+  sizeUnit?: 'px' | 'rem' | 'em' | '%';
 }

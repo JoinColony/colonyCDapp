@@ -12,13 +12,14 @@ const displayName = 'v5.common.Fields.FormInputBase';
 const FormInputBase: FC<FormInputBaseProps> = ({
   name,
   type,
-  value: initialValue,
+  defaultValue,
   ...rest
 }) => {
   const {
     field: { onChange, value },
     fieldState: { invalid, error },
   } = useController({
+    defaultValue,
     name,
   });
   const { readonly } = useAdditionalFormOptionsContext();
@@ -29,7 +30,7 @@ const FormInputBase: FC<FormInputBaseProps> = ({
       {...rest}
       readOnly={readonly}
       type={type}
-      value={value?.toString() || initialValue}
+      value={value?.toString() || ''}
       onChange={(event) => {
         const { value: inputValue, valueAsNumber } = event.target;
 

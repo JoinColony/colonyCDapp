@@ -12,10 +12,11 @@ export interface InputBaseProps
   prefix?: React.ReactNode;
   mode?: 'primary' | 'secondary';
   autoWidth?: boolean;
+  label?: React.ReactNode;
 }
 
 export interface FormInputBaseProps
-  extends Omit<InputBaseProps, 'onChange' | 'state'> {
+  extends Omit<InputBaseProps, 'onChange' | 'state' | 'value'> {
   name: string;
 }
 

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import * as yup from 'yup';
+import { object, string } from 'yup';
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
@@ -33,11 +33,9 @@ export const useTokensModal = (
   const tokenBalanceData = isActivate ? inactiveBalance : activeBalance;
   const tokenBalanceInEthers = moveDecimal(tokenBalanceData, -tokenDecimals);
 
-  const validationSchema = yup
-    .object()
+  const validationSchema = object()
     .shape({
-      amount: yup
-        .string()
+      amount: string()
         .required(formatText({ id: 'errors.zeroTokens' }))
         .test(
           'amount-test',

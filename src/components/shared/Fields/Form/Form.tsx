@@ -1,4 +1,4 @@
-import React, { useEffect, useImperativeHandle } from 'react';
+import React, { useCallback, useEffect, useImperativeHandle } from 'react';
 import {
   useForm,
   UseFormProps,
@@ -82,16 +82,27 @@ const Form = <FormData extends FieldValues>(
     }
   }, [isSubmitting, values, resetOnSubmit, reset]);
 
+  const submitHandler = useCallback<React.FormEventHandler<HTMLFormElement>>(
+    (event) => {
+      // We need stopPropagation to prevent the form from submitting parent
+      // forms because events propagate trough ReactDOM so event if
+      // html form elements are not nested this would submit parent form
+      event.stopPropagation();
+
+      const handler = handleSubmit(
+        (data, e) => onSubmit(data, formHelpers, e),
+        (errors, e) => onError && onError(errors, formHelpers, e),
+      );
+
+      return handler(event);
+    },
+    [handleSubmit, onSubmit, formHelpers, onError],
+  );
+
   return (
     <AdditionalFormOptionsContextProvider value={{ readonly }}>
       <FormProvider {...formHelpers}>
-        <form
-          className={className}
-          onSubmit={handleSubmit(
-            (data, e) => onSubmit(data, formHelpers, e),
-            (errors, e) => onError && onError(errors, formHelpers, e),
-          )}
-        >
+        <form className={className} onSubmit={submitHandler}>
           {typeof children === 'function' ? children(formHelpers) : children}
         </form>
       </FormProvider>

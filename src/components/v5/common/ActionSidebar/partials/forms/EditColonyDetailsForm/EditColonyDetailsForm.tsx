@@ -9,6 +9,7 @@ import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import { useEditColonyDetails } from './hooks';
 import { ActionFormBaseProps } from '../../../types';
 import { useDecisionMethods } from '../../../hooks';
+import SocialLinksTable from './partials/SocialLinksTable';
 import DescriptionRow from '../../DescriptionRow';
 
 const displayName = 'v5.common.ActionSidebar.partials.EditColonyDetailsForm';
@@ -57,6 +58,7 @@ const EditColonyDetailsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="createdIn" />
       </ActionFormRow>
       <DescriptionRow />
+      <SocialLinksTable name="externalLinks" />
     </>
   );
 };

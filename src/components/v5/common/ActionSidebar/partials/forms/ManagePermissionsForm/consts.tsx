@@ -1,6 +1,6 @@
 import { ColonyRole } from '@colony/colony-js';
 import React from 'react';
-import * as yup from 'yup';
+import { InferType, mixed, object, string } from 'yup';
 import { MAX_ANNOTATION_LENGTH } from '~constants';
 import {
   CUSTOM_USER_ROLE,
@@ -17,35 +17,30 @@ import {
 import RoleOptionLabel from './partials/RoleOptionLabel';
 import { UserRoleSelectMeta } from './types';
 
-export const validationSchema = yup
-  .object()
+export const validationSchema = object()
   .shape({
-    member: yup.string().required(),
-    team: yup.string().required(),
-    role: yup.string().required(),
-    authority: yup.string().required(),
-    permissions: yup
-      .mixed<Partial<Record<string, boolean>>>()
-      .test(
-        'permissions',
-        'You have to select at least one permission.',
-        (value, { parent }) => {
-          if (parent.role !== CUSTOM_USER_ROLE.role) {
-            return true;
-          }
+    member: string().required(),
+    team: string().required(),
+    role: string().required(),
+    authority: string().required(),
+    permissions: mixed<Partial<Record<string, boolean>>>().test(
+      'permissions',
+      'You have to select at least one permission.',
+      (value, { parent }) => {
+        if (parent.role !== CUSTOM_USER_ROLE.role) {
+          return true;
+        }
 
-          return Object.values(value || {}).some(Boolean);
-        },
-      ),
-    decisionMethod: yup.string().defined(),
-    description: yup.string().max(MAX_ANNOTATION_LENGTH).defined(),
+        return Object.values(value || {}).some(Boolean);
+      },
+    ),
+    decisionMethod: string().defined(),
+    description: string().max(MAX_ANNOTATION_LENGTH).defined(),
   })
   .defined()
   .concat(ACTION_BASE_VALIDATION_SCHEMA);
 
-export type ManagePermissionsFormValues = yup.InferType<
-  typeof validationSchema
->;
+export type ManagePermissionsFormValues = InferType<typeof validationSchema>;
 
 export const AUTHORITY = {
   ViaMultiSig: 'via-multi-sig',

@@ -6,10 +6,12 @@ import MeatBallMenu from '~v5/shared/MeatBallMenu';
 export const makeMenuColumn = <T,>(
   helper: ColumnHelper<T>,
   getMenuProps: TableWithMeatballMenuProps<T>['getMenuProps'],
+  meatBallMenuSize = 60,
 ) =>
   helper.display({
     id: 'menu',
-    size: 60,
+    size: meatBallMenuSize,
+    minSize: meatBallMenuSize,
     cell: ({ row }) => {
       const props = getMenuProps(row);
 

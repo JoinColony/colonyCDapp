@@ -1,5 +1,5 @@
 import { Extension } from '@colony/colony-js';
-import * as yup from 'yup';
+import { number, object } from 'yup';
 import { BigNumber } from 'ethers';
 import React from 'react';
 import { useVotingWidgetUpdate } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
@@ -87,10 +87,9 @@ export const useVotingStep = (
     startPollingAction(1000);
   };
 
-  const validationSchema = yup
-    .object()
+  const validationSchema = object()
     .shape({
-      vote: yup.number().required(),
+      vote: number().required(),
     })
     .defined();
 

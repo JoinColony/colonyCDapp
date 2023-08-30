@@ -1,34 +1,29 @@
-import * as yup from 'yup';
+import { object, string, number, array, InferType } from 'yup';
 import { MAX_ANNOTATION_NUM } from '~v5/shared/RichText/consts';
 import { toFinite } from '~utils/lodash';
 import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts';
 
-export const validationSchema = yup
-  .object()
+export const validationSchema = object()
   .shape({
-    from: yup.number().required(),
-    decisionMethod: yup.string().defined(),
-    createdIn: yup.string().defined(),
-    description: yup.string().max(MAX_ANNOTATION_NUM).notRequired(),
-    payments: yup
-      .array()
+    from: number().required(),
+    decisionMethod: string().defined(),
+    createdIn: string().defined(),
+    description: string().max(MAX_ANNOTATION_NUM).notRequired(),
+    payments: array()
       .of(
-        yup
-          .object()
+        object()
           .shape({
-            recipient: yup.string().required(),
-            amount: yup
-              .object()
+            recipient: string().required(),
+            amount: object()
               .shape({
-                amount: yup
-                  .number()
+                amount: number()
                   .required()
                   .transform((value) => toFinite(value))
                   .moreThan(0, () => 'Amount must be greater than zero.'),
-                tokenAddress: yup.string().address().required(),
+                tokenAddress: string().address().required(),
               })
               .required(),
-            delay: yup.number().moreThan(0).required(),
+            delay: number().moreThan(0).required(),
           })
           .required(),
       )
@@ -37,4 +32,4 @@ export const validationSchema = yup
   .defined()
   .concat(ACTION_BASE_VALIDATION_SCHEMA);
 
-export type AdvancedPaymentFormValues = yup.InferType<typeof validationSchema>;
+export type AdvancedPaymentFormValues = InferType<typeof validationSchema>;

@@ -5,9 +5,9 @@ import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect';
 import AmountField from '~v5/common/ActionSidebar/partials/AmountField';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
-import TransactionTable from '~v5/common/ActionSidebar/partials/TransactionTable';
 import { formatText } from '~utils/intl';
 
+import TransactionTable from '../../TransactionTable';
 import { useSimplePayment } from './hooks';
 import { ActionFormBaseProps } from '../../../types';
 import { useDecisionMethods } from '../../../hooks';

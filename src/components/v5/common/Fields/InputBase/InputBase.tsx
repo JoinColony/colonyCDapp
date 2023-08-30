@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import clsx from 'clsx';
 
 import { InputBaseProps } from './types';
@@ -21,10 +21,13 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
       disabled,
       stateClassNames: stateClassNamesProp,
       autoWidth = false,
+      label,
+      id: idProp,
       ...rest
     },
     ref,
   ) => {
+    const defaultId = useId();
     const stateClassNames = useStateClassNames(
       {
         [FIELD_STATE.Error]:
@@ -34,16 +37,23 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
     );
 
     const inputRef = useAdjustInputWidth(autoWidth, ref);
+    const id = idProp || defaultId;
 
     return (
       <div className={wrapperClassName}>
-        {prefix && prefix}
+        <label
+          className="text-gray-700 text-md font-medium mb-1.5"
+          htmlFor={id}
+        >
+          {label}
+        </label>
+        {prefix}
         <input
           ref={inputRef}
           className={clsx(
             className,
             state ? stateClassNames[state] : undefined,
-            'w-full text-md outline-0 placeholder:text-gray-400',
+            'w-full text-gray-900 text-md outline-0 placeholder:text-gray-400',
             {
               'text-gray-400 pointer-events-none': disabled,
               'bg-base-white rounded border py-2 px-3.5 border-gray-300 focus:border-blue-200 focus:shadow-light-blue':
@@ -51,10 +61,18 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
               'border-none': mode === 'secondary',
             },
           )}
+          id={id}
           {...rest}
         />
-        {suffix && suffix}
-        {message}
+        {suffix}
+        <span
+          className={clsx(
+            'border-0 text-md',
+            state ? stateClassNames[state] : undefined,
+          )}
+        >
+          {message}
+        </span>
       </div>
     );
   },
