@@ -73,6 +73,7 @@ const ExpenditureDetailsPage = () => {
           Created in: {expenditureDomain?.metadata?.name ?? 'Unknown team'}
         </div>
         <div>Fund from: {fundFromDomain?.metadata?.name ?? 'Unknown team'}</div>
+        <div>Type: {expenditure.metadata?.type}</div>
         <ExpenditureBalances expenditure={expenditure} />
         <ExpenditurePayouts expenditure={expenditure} colony={colony} />
         <div className={styles.buttons}>

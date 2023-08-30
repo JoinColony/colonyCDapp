@@ -14,7 +14,7 @@ import { ActionTypes } from '~redux';
 import {
   ExpenditureFormValues,
   getCreateExpenditureTransformPayloadFn,
-} from '../ExpenditureForm';
+} from '../../ExpenditureForm';
 import useExpenditureStaking from './useExpenditureStaking';
 
 import styles from './StakeExpenditureDialog.module.css';
