@@ -1,11 +1,12 @@
 const { constants, utils, providers, Contract } = require('ethers');
 
 const basicTokenAbi = require('./basicTokenAbi.json');
-const { graphqlRequest, getTokenType } = require('./utils');
 const {
+  graphqlRequest,
+  getTokenType,
   ETHEREUM_NETWORK,
   BINANCE_NETWORK,
-} = require('../../../../../src/constants');
+} = require('./utils');
 
 /*
  * @TODO This needs to be imported properly into the project (maybe?)
