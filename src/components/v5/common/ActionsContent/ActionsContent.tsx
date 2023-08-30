@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
-import { useController } from 'react-hook-form';
+import React, { FC, useEffect } from 'react';
+import { useController, useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
 import ActionSidebarRow from '../ActionSidebarRow';
 import TeamsSelect from './partials/TeamsSelect';
 import UserSelect from './partials/UserSelect';
-import { useActionsContent } from './hooks';
+import { useActionsContent, useGetTeamValues } from './hooks';
 import AmountField from './partials/AmountField';
 import DecisionField from './partials/DecisionField';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
@@ -19,6 +19,7 @@ import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
 import ActionTypeSelect from '../ActionSidebar/ActionTypeSelect';
 import styles from '../ActionSidebar/ActionSidebar.module.css';
 import { ActionSidebarRowFieldNameEnum } from '../ActionSidebarRow/enums';
+import { Actions } from '~constants/actions';
 
 const displayName = 'v5.common.ActionsContent';
 
@@ -28,9 +29,6 @@ const ActionsContent: FC = () => {
     shouldShowFromField,
     shouldShowUserField,
     shouldShowAmountField,
-    shouldShowCreatedInField,
-    shouldShowDecisionField,
-    shouldShowDescriptionField,
     shouldShowTransferFundsField,
     shouldShowTeamPurposeField,
     shouldShowTeamNameField,
@@ -49,12 +47,28 @@ const ActionsContent: FC = () => {
   ] = useToggle();
   const { formatMessage } = useIntl();
 
+  const methods = useFormContext();
+  const teamValue = methods?.watch('team');
+  const { teamColor, teamName, teamPurpose } = useGetTeamValues(teamValue);
+
+  useEffect(() => {
+    if (selectedAction === Actions.EDIT_EXISTING_TEAM) {
+      methods?.setValue('domainColor', teamColor);
+      methods?.setValue('teamName', teamName);
+      methods?.setValue('domainPurpose', teamPurpose);
+    }
+  }, [teamColor, teamName, teamPurpose, selectedAction]);
+
   const ref = useDetectClickOutside({
     onTriggered: () => toggleOffDecriptionSelect(),
   });
   const { field } = useController({
     name: 'title',
   });
+
+  const prepareTeamTitle =
+    (selectedAction === Actions.EDIT_EXISTING_TEAM && 'actionSidebar.team') ||
+    'actionSidebar.from';
 
   return (
     <>
@@ -69,7 +83,7 @@ const ActionsContent: FC = () => {
         <ActionSidebarRow
           iconName="users-three"
           fieldName={ActionSidebarRowFieldNameEnum.FROM}
-          title={{ id: 'actionSidebar.from' }}
+          title={{ id: prepareTeamTitle }}
           isError={isError('team')}
         >
           <TeamsSelect name="team" isError={isError('team')} />
@@ -117,6 +131,7 @@ const ActionsContent: FC = () => {
             name="teamName"
             placeholder={{ id: 'actionSidebar.placeholder.teamName' }}
             isError={isError('teamName')}
+            defaultValue={teamName}
           />
         </ActionSidebarRow>
       )}
@@ -132,6 +147,7 @@ const ActionsContent: FC = () => {
             placeholder={{ id: 'actionSidebar.placeholder.purpose' }}
             isError={isError('domainPurpose')}
             maxLength={MAX_DOMAIN_PURPOSE_LENGTH}
+            defaultValue={teamPurpose}
           />
         </ActionSidebarRow>
       )}
@@ -145,7 +161,7 @@ const ActionsContent: FC = () => {
           <TeamColourField isError={isError('domainColor')} />
         </ActionSidebarRow>
       )}
-      {shouldShowCreatedInField && (
+      {selectedAction && (
         <ActionSidebarRow
           iconName="house-line"
           fieldName={ActionSidebarRowFieldNameEnum.CREATED_IN}
@@ -155,7 +171,7 @@ const ActionsContent: FC = () => {
           <TeamsSelect name="createdIn" isError={isError('createdIn')} />
         </ActionSidebarRow>
       )}
-      {shouldShowDecisionField && selectedAction && (
+      {selectedAction && (
         <ActionSidebarRow
           iconName="scales"
           fieldName={ActionSidebarRowFieldNameEnum.DECISION_METHOD}
@@ -165,7 +181,7 @@ const ActionsContent: FC = () => {
           <DecisionField isError={isError('decisionMethod')} />
         </ActionSidebarRow>
       )}
-      {shouldShowDescriptionField && (
+      {selectedAction && (
         <ActionSidebarRow
           iconName="pencil"
           fieldName={ActionSidebarRowFieldNameEnum.DESCRIPTION}

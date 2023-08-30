@@ -833,6 +833,7 @@
   "actionSidebar.availableTokens": "Available tokens",
   "actionSidebar.availableDecisions": "Available decision methods",
   "actionSidebar.decisionMethod": "Decision method",
+  "actionSidebar.team": "Select team",
   "actionSidebar.teamPurpose": "Team purpose",
   "actionSidebar.teamName": "Team name",
   "actionSidebar.teamColour": "Team colour",

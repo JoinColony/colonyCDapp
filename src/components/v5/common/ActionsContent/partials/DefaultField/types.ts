@@ -5,4 +5,5 @@ export type DefaultFieldProps = {
   placeholder: MessageDescriptor;
   isError?: boolean;
   maxLength?: number;
+  defaultValue?: string;
 };

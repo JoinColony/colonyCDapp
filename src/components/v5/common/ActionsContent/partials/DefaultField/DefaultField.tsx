@@ -14,9 +14,11 @@ const DefaultField: FC<DefaultFieldProps> = ({
   placeholder,
   isError,
   maxLength = MAX_COLONY_DISPLAY_NAME,
+  defaultValue,
 }) => {
   const { field } = useController({
     name,
+    defaultValue: defaultValue || '',
   });
   const methods = useFormContext();
   const { formatMessage } = useIntl();

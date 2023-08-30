@@ -1,6 +1,8 @@
 import { useFormContext } from 'react-hook-form';
 import { Actions } from '~constants/actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { DomainColor } from '~gql';
+import { useColonyContext } from '~hooks';
 
 export const useActionsContent = () => {
   const { selectedAction } = useActionSidebarContext();
@@ -8,7 +10,8 @@ export const useActionsContent = () => {
   const shouldShowFromField =
     selectedAction === Actions.SIMPLE_PAYMENT ||
     selectedAction === Actions.TRANSFER_FUNDS ||
-    selectedAction === Actions.ADVANCED_PAYMENT;
+    selectedAction === Actions.ADVANCED_PAYMENT ||
+    selectedAction === Actions.EDIT_EXISTING_TEAM;
   const shouldShowUserField =
     selectedAction === Actions.SIMPLE_PAYMENT ||
     selectedAction === Actions.ADVANCED_PAYMENT;
@@ -16,34 +19,17 @@ export const useActionsContent = () => {
     selectedAction === Actions.SIMPLE_PAYMENT ||
     selectedAction === Actions.MINT_TOKENS ||
     selectedAction === Actions.TRANSFER_FUNDS;
-  const shouldShowCreatedInField =
-    selectedAction === Actions.SIMPLE_PAYMENT ||
-    selectedAction === Actions.MINT_TOKENS ||
-    selectedAction === Actions.TRANSFER_FUNDS ||
-    selectedAction === Actions.CREATE_NEW_TEAM ||
-    selectedAction === Actions.UNLOCK_TOKEN ||
-    selectedAction === Actions.UPGRADE_COLONY_VERSION ||
-    selectedAction === Actions.CREATE_DECISION;
-  const shouldShowDecisionField =
-    selectedAction === Actions.SIMPLE_PAYMENT ||
-    selectedAction === Actions.MINT_TOKENS ||
-    selectedAction === Actions.UNLOCK_TOKEN ||
-    selectedAction === Actions.TRANSFER_FUNDS ||
-    selectedAction === Actions.CREATE_NEW_TEAM ||
-    selectedAction === Actions.CREATE_DECISION;
-  const shouldShowDescriptionField =
-    selectedAction === Actions.SIMPLE_PAYMENT ||
-    selectedAction === Actions.MINT_TOKENS ||
-    selectedAction === Actions.TRANSFER_FUNDS ||
-    selectedAction === Actions.CREATE_NEW_TEAM ||
-    selectedAction === Actions.UNLOCK_TOKEN ||
-    selectedAction === Actions.UPGRADE_COLONY_VERSION ||
-    selectedAction === Actions.CREATE_DECISION;
   const shouldShowTransferFundsField =
     selectedAction === Actions.TRANSFER_FUNDS;
-  const shouldShowTeamPurposeField = selectedAction === Actions.CREATE_NEW_TEAM;
-  const shouldShowTeamNameField = selectedAction === Actions.CREATE_NEW_TEAM;
-  const shouldShowTeamColourField = selectedAction === Actions.CREATE_NEW_TEAM;
+  const shouldShowTeamPurposeField =
+    selectedAction === Actions.CREATE_NEW_TEAM ||
+    selectedAction === Actions.EDIT_EXISTING_TEAM;
+  const shouldShowTeamNameField =
+    selectedAction === Actions.CREATE_NEW_TEAM ||
+    selectedAction === Actions.EDIT_EXISTING_TEAM;
+  const shouldShowTeamColourField =
+    selectedAction === Actions.CREATE_NEW_TEAM ||
+    selectedAction === Actions.EDIT_EXISTING_TEAM;
   const shouldShowVersionFields =
     selectedAction === Actions.UPGRADE_COLONY_VERSION;
 
@@ -59,9 +45,6 @@ export const useActionsContent = () => {
     shouldShowFromField,
     shouldShowUserField,
     shouldShowAmountField,
-    shouldShowCreatedInField,
-    shouldShowDecisionField,
-    shouldShowDescriptionField,
     shouldShowTransferFundsField,
     shouldShowTeamPurposeField,
     shouldShowTeamNameField,
@@ -69,5 +52,19 @@ export const useActionsContent = () => {
     shouldShowVersionFields,
     prepareAmountTitle,
     isError,
+  };
+};
+
+export const useGetTeamValues = (teamId: number) => {
+  const { colony } = useColonyContext();
+  const { domains } = colony || {};
+
+  const team = domains?.items?.find((domain) => domain?.nativeId === teamId);
+  const { metadata } = team || {};
+
+  return {
+    teamName: metadata?.name || '',
+    teamPurpose: metadata?.description || '',
+    teamColor: metadata?.color || DomainColor.LightPink,
   };
 };
