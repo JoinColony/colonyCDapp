@@ -15,8 +15,10 @@ import Button from '~v5/shared/Button';
 import PopoverBase from '~v5/shared/PopoverBase';
 import UserAvatar from '~v5/shared/UserAvatar';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
-import styles from './UserReputation.module.css';
 import { UserReputationProps } from './types';
+import { useUserTransactionContext } from '~context/UserTransactionContext';
+
+import styles from './UserReputation.module.css';
 
 export const displayName =
   'common.Extensions.UserNavigation.partials.UserReputation';
@@ -30,22 +32,25 @@ const UserReputation: FC<UserReputationProps> = ({
   const isMobile = useMobile();
   const { profile } = user || {};
   const [, setIsWalletButtonVisible] = useState(true);
-  const [isOpen, setOpen] = useState(false);
-  const [txNeedsSigning, setTxNeedsSigning] = useState(false);
+  const { isUserHubOpen, setIsUserHubOpen } = useUserTransactionContext();
 
   const popperTooltipOffset = isMobile ? [0, 1] : [0, 8];
 
   const ref = useDetectClickOutside({
-    onTriggered: () => {
-      setOpen(false);
-      setTxNeedsSigning(false);
+    onTriggered: (e) => {
+      // This stops the hub closing when clicking the pending button (which is outside)
+      // @ts-expect-error
+      if (!e.target?.getAttribute?.('data-openhubifclicked')) {
+        setIsUserHubOpen?.(false);
+      }
     },
   });
+
   const {
     getTooltipProps,
     setTooltipRef,
     setTriggerRef,
-    visible: isUserHubOpen,
+    visible: isUserHubVisible,
   } = usePopperTooltip(
     {
       delayShow: isMobile ? 0 : 200,
@@ -77,30 +82,6 @@ const UserReputation: FC<UserReputationProps> = ({
     wallet?.address,
   );
 
-  /*
-   * I have commented out the below for two reasons:
-   * 1. Need to check we even need to auto-open the user hub, given that
-   * users now sign txs in metamask and not there
-   * 2. If yes to the above, we should listen for the action in redux that triggers metamask to open,
-   * and then open the user hub. No need to count txs.
-   */
-  // @ts-ignore
-  // const transactionsAndMessages = transactionAndMessageGroups.toJS();
-  // const txCount = useMemo(
-  //   () => transactionCount(transactionsAndMessages),
-  //   [transactionsAndMessages],
-  // );
-
-  // const prevTxCount: number | void = usePrevious(txCount);
-
-  // useEffect(() => {
-  //   // this condition always will be false until we will be able to trigger transactions in Extension page
-  //   if (prevTxCount != null && txCount > prevTxCount) {
-  //     setOpen(true);
-  //     setTxNeedsSigning(true);
-  //   }
-  // }, [txCount, prevTxCount, setTxNeedsSigning]);
-
   return (
     <div ref={ref}>
       <Button
@@ -124,7 +105,7 @@ const UserReputation: FC<UserReputationProps> = ({
           )}
         </div>
       </Button>
-      {(isUserHubOpen || (isOpen && txNeedsSigning)) && (
+      {(isUserHubVisible || isUserHubOpen) && (
         <PopoverBase
           setTooltipRef={setTooltipRef}
           tooltipProps={getTooltipProps}
@@ -134,11 +115,7 @@ const UserReputation: FC<UserReputationProps> = ({
             className="w-full sm:w-[42.625rem] pt-4 sm:pt-0"
             ref={setTooltipRef}
           >
-            <UserHub
-              autoOpenTransaction={txNeedsSigning}
-              setAutoOpenTransaction={setTxNeedsSigning}
-              isTransactionTabVisible={isOpen && txNeedsSigning}
-            />
+            <UserHub isTransactionTabVisible={isUserHubOpen} />
           </div>
         </PopoverBase>
       )}

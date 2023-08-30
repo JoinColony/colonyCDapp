@@ -20,6 +20,7 @@ import {
   useMemberModalContext,
 } from '~context/MemberModalContext';
 import { usePageLayout } from './hooks';
+import { UserTransactionContextProvider } from '~context/UserTransactionContext';
 
 const displayName = 'frame.Extensions.layouts.PageLayout';
 
@@ -57,7 +58,9 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
         pauseOnHover
         closeButton={CloseButton}
       />
-      <Header hideColonies={hideColonies} />
+      <UserTransactionContextProvider>
+        <Header hideColonies={hideColonies} />
+      </UserTransactionContextProvider>
       {/* @TODO: Remove wallet component when we have a proper wallet */}
       <div className="hidden">
         <Wallet />

@@ -18,17 +18,10 @@ const meta: Meta<typeof PendingButton> = {
         type: 'boolean',
       },
     },
-    isPending: {
-      name: 'Is pending?',
-      control: {
-        type: 'boolean',
-      },
-    },
   },
   args: {
     text: 'Pending...',
     disabled: false,
-    isPending: true,
   },
 };
 

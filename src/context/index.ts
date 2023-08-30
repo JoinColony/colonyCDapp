@@ -18,6 +18,7 @@ export {
   useUserTokenBalanceContext,
 } from './UserTokenBalanceContext';
 export * from './ColonyHomeContext';
+export * from './UserTransactionContext';
 
 export enum ContextModule {
   Wallet = 'wallet',

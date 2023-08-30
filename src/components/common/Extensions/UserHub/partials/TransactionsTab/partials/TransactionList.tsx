@@ -8,19 +8,19 @@ import {
 } from '~frame/GasStation/transactionGroup';
 import { MessageType } from '~redux/immutable';
 import GroupedTransaction from './GroupedTransaction';
-import { TransactionListProps } from '../types';
+import { useUserTransactionContext } from '~context/UserTransactionContext';
 
 const displayName =
   'common.Extensions.UserHub.partials.TransactionTab.partials.TransactionList';
 
-const TransactionList: FC<TransactionListProps> = ({
-  transactionAndMessageGroups,
-}) => {
+const TransactionList: FC = () => {
   const [groupId, setGroupId] = useState<string | undefined>();
 
   const handleSelectElement = useCallback((id: string) => {
     setGroupId(id);
   }, []);
+
+  const { transactionAndMessageGroups } = useUserTransactionContext();
 
   return (
     <ul>

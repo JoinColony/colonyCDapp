@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes } from 'react';
+import React, { ButtonHTMLAttributes } from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { SimpleMessageValues } from '~types';
 
@@ -56,12 +56,12 @@ export interface TextButtonProps extends CommonButtonProps {
   iconSize?: IconSize;
 }
 
-export interface PendingButtonProps extends CommonButtonProps {
-  isPending?: boolean;
+export interface IconButtonProps extends CommonButtonProps {
   text?: MessageDescriptor | string;
   textValues?: SimpleMessageValues;
   rounded?: 's' | 'm' | 'l';
   isFullSize?: boolean;
+  icon: React.ReactNode;
 }
 
 export interface HamburgerProps extends CommonButtonProps {

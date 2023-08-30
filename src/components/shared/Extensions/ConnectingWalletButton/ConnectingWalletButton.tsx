@@ -20,11 +20,7 @@ const ConnectingWalletButton = () => {
   return (
     <>
       {walletConnecting && (
-        <PendingButton
-          isPending={walletConnecting}
-          title="pending"
-          onClick={connectWallet}
-        >
+        <PendingButton title="pending" onClick={connectWallet}>
           {formatMessage({ id: 'pending' })}
         </PendingButton>
       )}

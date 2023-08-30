@@ -5,36 +5,36 @@ import { IconButtonProps } from './types';
 import Icon from '~shared/Icon';
 import IconButton from './IconButton';
 import { useMobile } from '~hooks';
-import { useUserTransactionContext } from '~context/UserTransactionContext';
+import { useUserTransactionContext } from '~context';
 
-const displayName = 'v5.Button.PendingButton';
+const displayName = 'v5.Button.CompleteButton';
 
-const PendingButton: FC<
-  PropsWithChildren<Omit<IconButtonProps, 'icon'>>
-> = () => {
+const CompletedButton: FC<PropsWithChildren<Omit<IconButtonProps, 'icon'>>> = (
+  props,
+) => {
   const isMobile = useMobile();
   const { setIsUserHubOpen } = useUserTransactionContext();
   return (
     <IconButton
+      {...props}
       onClick={() => setIsUserHubOpen(true)}
-      title={{ id: 'button.pending' }}
-      text={{ id: 'button.pending' }}
-      ariaLabel={{ id: 'button.pending' }}
+      title={{ id: 'button.completed' }}
+      text={{ id: 'button.completed' }}
+      ariaLabel={{ id: 'button.completed' }}
       isFullSize={isMobile}
       icon={
         <span className="flex shrink-0 ml-1.5">
           <Icon
-            name="spinner-gap"
-            className="w-[0.8125rem] h-[0.8125rem] animate-spin"
+            name="white-tick"
+            className="w-[0.8125rem] h-[0.8125rem]"
             appearance={{ size: 'tiny' }}
           />
         </span>
       }
-      data-openhubifclicked // see UserReputation for usage
     />
   );
 };
 
-PendingButton.displayName = displayName;
+CompletedButton.displayName = displayName;
 
-export default PendingButton;
+export default CompletedButton;
