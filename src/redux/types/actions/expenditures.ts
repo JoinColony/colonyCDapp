@@ -102,4 +102,18 @@ export type ExpendituresActionTypes =
       ActionTypes.STAKED_EXPENDITURE_CREATE_SUCCESS,
       object,
       object
+    >
+  | UniqueActionType<
+      ActionTypes.RECLAIM_EXPENDITURE_STAKE,
+      {
+        colonyAddress: Address;
+        nativeExpenditureId: string;
+      },
+      MetaWithNavigate<object>
+    >
+  | ErrorActionType<ActionTypes.RECLAIM_EXPENDITURE_STAKE_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.RECLAIM_EXPENDITURE_STAKE_SUCCESS,
+      object,
+      object
     >;

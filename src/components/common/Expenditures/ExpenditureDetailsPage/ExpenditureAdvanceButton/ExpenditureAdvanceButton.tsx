@@ -81,7 +81,7 @@ const ExpenditureAdvanceButton = ({
         <div>
           <ExpenditureClaimButton colony={colony} expenditure={expenditure} />
         </div>
-        <ReclaimStakeButton expenditure={expenditure} />
+        <ReclaimStakeButton colony={colony} expenditure={expenditure} />
       </div>
     );
   }
