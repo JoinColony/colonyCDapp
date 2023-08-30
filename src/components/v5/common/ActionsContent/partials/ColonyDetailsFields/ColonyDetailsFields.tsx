@@ -6,21 +6,14 @@ import { useActionFormContext } from '~v5/common/ActionSidebar/partials/ActionFo
 import { useColonyContext } from '~hooks';
 import ColonyAvatar from '~shared/ColonyAvatar';
 import ChangeColonyLogo from './partials/ChangeColonyLogo';
-import useToggle from '~hooks/useToggle';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
 
 const displayName = 'v5.common.ActionsContent.partials.ColonyDetailsFields';
 
 const ColonyDetailsFields = () => {
   const { formErrors } = useActionFormContext();
   const { colony } = useColonyContext();
-  const [
-    isAvatarModalOpened,
-    {
-      toggleOn: toggleChangeAvatarModalOn,
-      toggleOff: toggleChangeAvatarModalOff,
-    },
-  ] = useToggle({ defaultToggleState: false });
-
+  const { toggleChangeAvatarModalOn } = useActionSidebarContext();
   const { metadata, colonyAddress } = colony || {};
   const { displayName: colonyName } = metadata || {};
 
@@ -72,10 +65,7 @@ const ColonyDetailsFields = () => {
         />
       </ActionSidebarRow>
 
-      <ChangeColonyLogo
-        isAvatarModalOpened={isAvatarModalOpened}
-        toggleChangeAvatarModalOff={toggleChangeAvatarModalOff}
-      />
+      <ChangeColonyLogo />
     </>
   );
 };

@@ -2,20 +2,17 @@ import React, { FC, ReactElement, useRef } from 'react';
 import { useIntl } from 'react-intl';
 
 import Modal from '~v5/shared/Modal';
-import { ChangeColonyLogoProps } from '../types';
 import FileUpload from '~v5/common/AvatarUploader/partials/FileUpload';
 import ProgressContent from '~v5/common/AvatarUploader/partials/ProgressContent';
 import { SpinnerLoader } from '~shared/Preloaders';
 import Avatar from '~v5/shared/Avatar';
 import { useChangeColonyAvatar } from './hooks';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
 
 const displayName =
   'v5.common.ActionsContent.partials.ColonyDetailsFields.partials.ChangeColonyLogo';
 
-const ChangeColonyLogo: FC<ChangeColonyLogoProps> = ({
-  toggleChangeAvatarModalOff,
-  isAvatarModalOpened,
-}) => {
+const ChangeColonyLogo: FC = () => {
   const { formatMessage } = useIntl();
   const dropzoneRef = useRef<{ open: () => void }>();
   const {
@@ -29,6 +26,8 @@ const ChangeColonyLogo: FC<ChangeColonyLogoProps> = ({
     handleFileRemove,
     colonyAvatarImage,
   } = useChangeColonyAvatar();
+  const { isAvatarModalOpened, toggleChangeAvatarModalOff } =
+    useActionSidebarContext();
 
   const getPlaceholder = (
     loading: boolean,
@@ -43,6 +42,7 @@ const ChangeColonyLogo: FC<ChangeColonyLogoProps> = ({
 
     return avatar;
   };
+
   return (
     <Modal
       isOpen={isAvatarModalOpened}
