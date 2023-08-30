@@ -8,6 +8,7 @@ import { useColonyContext } from '~hooks';
 import ColonyAvatar from '~shared/ColonyAvatar';
 import ChangeColonyLogo from './partials/ChangeColonyLogo';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { ActionSidebarRowFieldNameEnum } from '~v5/common/ActionSidebarRow/enums';
 
 const displayName = 'v5.common.ActionsContent.partials.ColonyDetailsFields';
 
@@ -24,19 +25,21 @@ const ColonyDetailsFields = () => {
       <ActionSidebarRow
         iconName="pencil-circle"
         title={{ id: 'actionSidebar.colonyName' }}
-        isErrors={formErrors?.colonyDisplayName}
+        isError={formErrors?.colonyDisplayName}
+        fieldName={ActionSidebarRowFieldNameEnum.COLONY_NAME}
       >
         <DefaultField
           name="colonyDisplayName"
           placeholder={{ id: 'actionSidebar.colonyName.placeholder' }}
-          isErrors={formErrors?.colonyDisplayName}
+          isError={formErrors?.colonyDisplayName}
           defaultValue={colonyDisplayName}
         />
       </ActionSidebarRow>
       <ActionSidebarRow
         iconName="image"
         title={{ id: 'actionSidebar.colonyLogo' }}
-        isErrors={formErrors?.colonyLogo}
+        isError={formErrors?.colonyLogo}
+        fieldName={ActionSidebarRowFieldNameEnum.COLONY_LOGO}
       >
         <div className="flex items-center">
           <div className="flex mr-2 shrink-0">
@@ -58,12 +61,13 @@ const ColonyDetailsFields = () => {
       <ActionSidebarRow
         iconName="file-text"
         title={{ id: 'actionSidebar.colonyDescription' }}
-        isErrors={formErrors?.colonyDescription}
+        isError={formErrors?.colonyDescription}
+        fieldName={ActionSidebarRowFieldNameEnum.COLONY_DESCRIPTION}
       >
         <DefaultField
           name="colonyDescription"
           placeholder={{ id: 'actionSidebar.colonyDescription.placeholder' }}
-          isErrors={formErrors?.colonyDescription}
+          isError={formErrors?.colonyDescription}
         />
       </ActionSidebarRow>
 
