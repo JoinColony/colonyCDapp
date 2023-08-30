@@ -14,7 +14,7 @@ import {
 } from './helpers';
 import { ExpenditureFormValues } from './types';
 import ExpenditureFormFields from './ExpenditureFormFields';
-import StakeExpenditureDialog from '../StakeExpenditureDialog';
+import StakeExpenditureDialog from '../StakedExpenditure/StakeExpenditureDialog';
 
 import styles from './ExpenditureForm.module.css';
 
