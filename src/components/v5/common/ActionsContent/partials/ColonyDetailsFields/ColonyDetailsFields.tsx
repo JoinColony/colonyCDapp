@@ -5,12 +5,21 @@ import DefaultField from '../DefaultField';
 import { useActionFormContext } from '~v5/common/ActionSidebar/partials/ActionForm/ActionFormContext';
 import { useColonyContext } from '~hooks';
 import ColonyAvatar from '~shared/ColonyAvatar';
+import ChangeColonyLogo from './partials/ChangeColonyLogo';
+import useToggle from '~hooks/useToggle';
 
 const displayName = 'v5.common.ActionsContent.partials.ColonyDetailsFields';
 
 const ColonyDetailsFields = () => {
   const { formErrors } = useActionFormContext();
   const { colony } = useColonyContext();
+  const [
+    isAvatarModalOpened,
+    {
+      toggleOn: toggleChangeAvatarModalOn,
+      toggleOff: toggleChangeAvatarModalOff,
+    },
+  ] = useToggle({ defaultToggleState: false });
 
   const { metadata, colonyAddress } = colony || {};
   const { displayName: colonyName } = metadata || {};
@@ -42,7 +51,11 @@ const ColonyDetailsFields = () => {
               size="xs"
             />
           </div>
-          <button type="button" className="text-3 text-blue-400 underline">
+          <button
+            type="button"
+            className="text-3 underline text-gray-700 hover:text-blue-400"
+            onClick={() => toggleChangeAvatarModalOn()}
+          >
             Change logo
           </button>
         </div>
@@ -58,6 +71,11 @@ const ColonyDetailsFields = () => {
           isErrors={formErrors?.colonyDescription}
         />
       </ActionSidebarRow>
+
+      <ChangeColonyLogo
+        isAvatarModalOpened={isAvatarModalOpened}
+        toggleChangeAvatarModalOff={toggleChangeAvatarModalOff}
+      />
     </>
   );
 };

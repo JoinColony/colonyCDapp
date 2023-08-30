@@ -15,7 +15,7 @@ import DefaultField from './partials/DefaultField';
 import TeamColourField from './partials/TeamColourField';
 import ColonyVersionField from './partials/ColonyVersionField';
 import { ActionsContentProps } from './types';
-import ColonyDetailsFields from './partials/ColonyDetailsFields/ColonyDetailsFields';
+import ColonyDetailsFields from './partials/ColonyDetailsFields';
 
 const displayName = 'v5.common.ActionsContent';
 

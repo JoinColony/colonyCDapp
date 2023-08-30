@@ -105,6 +105,7 @@
   "button.createIntegration": "Create integration",
   "button.addTransaction": "Add transaction",
   "button.pending": "Pending",
+  "button.changeConfirm": "Change confirm",
   "input.resetText": "Cancel",
   "label.amount": "Amount",
   "label.name": "Name",
@@ -934,5 +935,7 @@
   "button.remove.row": "Remove row",
   "validation.number.positive": "Number must be positive",
   "validation.number.integer": "Number must be an integer",
-  "validation.required": "Field is required"
+  "validation.required": "Field is required",
+  "editColonyLogo.modal.title": "Upload new Colony logo",
+  "editColonyLogo.modal.subtitle": "Choose a new logo for your Colony."
 }
