@@ -9,7 +9,7 @@ import React, {
 
 import noop from '~utils/noop';
 
-export const ColnyAvatarContext = createContext<{
+export const ColonyAvatarContext = createContext<{
   colonyAvatar: string | null;
   colonyThumbnail: string | null;
   onSaveColonyAvatar: (avatar: string | null) => void;
@@ -21,9 +21,7 @@ export const ColnyAvatarContext = createContext<{
   onSaveColonyThumbnail: noop,
 });
 
-export const ColnyAvatarContextProvider: FC<PropsWithChildren> = ({
-  children,
-}) => {
+export const ColnyAvatarProvider: FC<PropsWithChildren> = ({ children }) => {
   const [colonyAvatar, setColonyAvatar] = useState<string | null>(null);
   const [colonyThumbnail, setColonyThumbnail] = useState<string | null>(null);
 
@@ -46,10 +44,10 @@ export const ColnyAvatarContextProvider: FC<PropsWithChildren> = ({
   );
 
   return (
-    <ColnyAvatarContext.Provider {...{ value }}>
+    <ColonyAvatarContext.Provider {...{ value }}>
       {children}
-    </ColnyAvatarContext.Provider>
+    </ColonyAvatarContext.Provider>
   );
 };
 
-export const useColnyAvatarContext = () => useContext(ColnyAvatarContext);
+export const useColonyAvatarContext = () => useContext(ColonyAvatarContext);

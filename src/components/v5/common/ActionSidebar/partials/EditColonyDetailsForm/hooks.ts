@@ -7,13 +7,13 @@ import { useColonyContext } from '~hooks';
 import { MAX_ANNOTATION_LENGTH, MAX_COLONY_DISPLAY_NAME } from '~constants';
 import { useActionHook } from '../ActionForm/hooks';
 import { getEditColonyDetailsDialogPayload } from '~common/Dialogs/EditColonyDetailsDialog/helpers';
-import { useColnyAvatarContext } from '~context/ColnyAvatarContext';
+import { useColonyAvatarContext } from '~context/ColonyAvatarContext';
 
 export const useEditColonyDetails = () => {
   const { colony } = useColonyContext();
   const { metadata } = colony || {};
   const navigate = useNavigate();
-  const { colonyAvatar, colonyThumbnail } = useColnyAvatarContext();
+  const { colonyAvatar, colonyThumbnail } = useColonyAvatarContext();
 
   const validationSchema = yup
     .object()

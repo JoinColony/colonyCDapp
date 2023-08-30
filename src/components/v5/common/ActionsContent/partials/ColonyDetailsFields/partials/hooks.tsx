@@ -11,7 +11,7 @@ import {
 import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
 import { getFileRejectionErrors } from '~shared/FileUpload/utils';
 import { convertBytes } from '~utils/convertBytes';
-import { useColnyAvatarContext } from '~context/ColnyAvatarContext';
+import { useColonyAvatarContext } from '~context/ColonyAvatarContext';
 
 export const useChangeColonyAvatar = () => {
   const { setValue, watch } = useFormContext();
@@ -21,7 +21,8 @@ export const useChangeColonyAvatar = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [file, setFileName] = useState({ fileName: '', fileSize: '' });
   const [uploadProgress, setUploadProgress] = useState<number>(0);
-  const { onSaveColonyAvatar, onSaveColonyThumbnail } = useColnyAvatarContext();
+  const { onSaveColonyAvatar, onSaveColonyThumbnail } =
+    useColonyAvatarContext();
 
   const handleFileRemove = async () => {
     setValue('colonyAvatarImage', null, { shouldDirty: true });
