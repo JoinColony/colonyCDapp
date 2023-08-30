@@ -4,27 +4,29 @@ import { AnyExtensionData } from '~types';
 import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button/Button';
 import Modal from '~v5/shared/Modal/Modal';
-import { useEnable } from './hooks';
+import { useReenable } from './hooks';
+import { useMobile } from '~hooks';
 
-const displayName = 'pages.ExtensionDetailsPage.EnableButton';
+const displayName = 'pages.ExtensionDetailsPage.RenableButton';
 
-const EnableButton = ({
+const ReenableButton = ({
   extensionData: { extensionId },
 }: {
   extensionData: AnyExtensionData;
 }) => {
   const [isReEnableModalOpen, setIsReEnableModalOpen] = useState(false);
-  const { handleEnable, isLoading } = useEnable({
+  const { handleReenable, isLoading } = useReenable({
     extensionId,
   });
+  const isMobile = useMobile();
+
   return (
-    <div className="flex justify-center w-full">
+    <>
       <Button
-        mode="primaryOutlineFull"
-        size="small"
-        isFullSize
-        loading={isLoading}
+        type="button"
         onClick={() => setIsReEnableModalOpen(true)}
+        isFullSize={isMobile}
+        loading={isLoading}
       >
         {formatText({ id: 'button.enable' })}
       </Button>
@@ -33,18 +35,19 @@ const EnableButton = ({
         subTitle={formatText({
           id: 'extensionReEnable.modal.subTitle',
         })}
+        buttonMode="primarySolid"
         isOpen={isReEnableModalOpen}
         onClose={() => setIsReEnableModalOpen(false)}
-        onConfirm={handleEnable}
+        onConfirm={handleReenable}
         confirmMessage={formatText({ id: 'button.confirm' })}
         closeMessage={formatText({
           id: 'button.cancel',
         })}
       />
-    </div>
+    </>
   );
 };
 
-EnableButton.displayName = displayName;
+ReenableButton.displayName = displayName;
 
-export default EnableButton;
+export default ReenableButton;

@@ -1218,6 +1218,11 @@ export type CreateProfileInput = {
   website?: InputMaybe<Scalars['AWSURL']>;
 };
 
+export type CreateReputationMiningCycleMetadataInput = {
+  id?: InputMaybe<Scalars['ID']>;
+  lastCompletedAt: Scalars['AWSDateTime'];
+};
+
 export type CreateTokenInput = {
   avatar?: InputMaybe<Scalars['String']>;
   chainMetadata: ChainMetadataInput;
@@ -1422,6 +1427,10 @@ export type DeleteMotionMessageInput = {
 };
 
 export type DeleteProfileInput = {
+  id: Scalars['ID'];
+};
+
+export type DeleteReputationMiningCycleMetadataInput = {
   id: Scalars['ID'];
 };
 
@@ -2677,6 +2686,27 @@ export type ModelProfileFilterInput = {
   website?: InputMaybe<ModelStringInput>;
 };
 
+export type ModelReputationMiningCycleMetadataConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelReputationMiningCycleMetadataConditionInput>>>;
+  lastCompletedAt?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelReputationMiningCycleMetadataConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelReputationMiningCycleMetadataConditionInput>>>;
+};
+
+export type ModelReputationMiningCycleMetadataConnection = {
+  __typename?: 'ModelReputationMiningCycleMetadataConnection';
+  items: Array<Maybe<ReputationMiningCycleMetadata>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelReputationMiningCycleMetadataFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelReputationMiningCycleMetadataFilterInput>>>;
+  id?: InputMaybe<ModelIdInput>;
+  lastCompletedAt?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelReputationMiningCycleMetadataFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelReputationMiningCycleMetadataFilterInput>>>;
+};
+
 export type ModelSizeInput = {
   between?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   eq?: InputMaybe<Scalars['Int']>;
@@ -3040,6 +3070,13 @@ export type ModelSubscriptionProfileFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionProfileFilterInput>>>;
   thumbnail?: InputMaybe<ModelSubscriptionStringInput>;
   website?: InputMaybe<ModelSubscriptionStringInput>;
+};
+
+export type ModelSubscriptionReputationMiningCycleMetadataFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionReputationMiningCycleMetadataFilterInput>>>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  lastCompletedAt?: InputMaybe<ModelSubscriptionStringInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionReputationMiningCycleMetadataFilterInput>>>;
 };
 
 export type ModelSubscriptionStringInput = {
@@ -3435,6 +3472,7 @@ export type Mutation = {
   createIngestorStats?: Maybe<IngestorStats>;
   createMotionMessage?: Maybe<MotionMessage>;
   createProfile?: Maybe<Profile>;
+  createReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   createToken?: Maybe<Token>;
   createTransaction?: Maybe<Transaction>;
   /** Create a unique Colony within the Colony Network. Use this instead of the automatically generated `createColony` mutation */
@@ -3467,6 +3505,7 @@ export type Mutation = {
   deleteIngestorStats?: Maybe<IngestorStats>;
   deleteMotionMessage?: Maybe<MotionMessage>;
   deleteProfile?: Maybe<Profile>;
+  deleteReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   deleteToken?: Maybe<Token>;
   deleteTransaction?: Maybe<Transaction>;
   deleteUser?: Maybe<User>;
@@ -3504,6 +3543,7 @@ export type Mutation = {
   updateIngestorStats?: Maybe<IngestorStats>;
   updateMotionMessage?: Maybe<MotionMessage>;
   updateProfile?: Maybe<Profile>;
+  updateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   updateToken?: Maybe<Token>;
   updateTransaction?: Maybe<Transaction>;
   updateUser?: Maybe<User>;
@@ -3670,6 +3710,13 @@ export type MutationCreateMotionMessageArgs = {
 export type MutationCreateProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: CreateProfileInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreateReputationMiningCycleMetadataArgs = {
+  condition?: InputMaybe<ModelReputationMiningCycleMetadataConditionInput>;
+  input: CreateReputationMiningCycleMetadataInput;
 };
 
 
@@ -3878,6 +3925,13 @@ export type MutationDeleteMotionMessageArgs = {
 export type MutationDeleteProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: DeleteProfileInput;
+};
+
+
+/** Root mutation type */
+export type MutationDeleteReputationMiningCycleMetadataArgs = {
+  condition?: InputMaybe<ModelReputationMiningCycleMetadataConditionInput>;
+  input: DeleteReputationMiningCycleMetadataInput;
 };
 
 
@@ -4096,6 +4150,13 @@ export type MutationUpdateProfileArgs = {
 
 
 /** Root mutation type */
+export type MutationUpdateReputationMiningCycleMetadataArgs = {
+  condition?: InputMaybe<ModelReputationMiningCycleMetadataConditionInput>;
+  input: UpdateReputationMiningCycleMetadataInput;
+};
+
+
+/** Root mutation type */
 export type MutationUpdateTokenArgs = {
   condition?: InputMaybe<ModelTokenConditionInput>;
   input: UpdateTokenInput;
@@ -4309,6 +4370,7 @@ export type Query = {
   getProfileByEmail?: Maybe<ModelProfileConnection>;
   /** Retrieve a user's reputation within the top domains of a Colony */
   getReputationForTopDomains?: Maybe<GetReputationForTopDomainsReturn>;
+  getReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   getRoleByDomainAndColony?: Maybe<ModelColonyRoleConnection>;
   getRoleByTargetAddressAndColony?: Maybe<ModelColonyRoleConnection>;
   getToken?: Maybe<Token>;
@@ -4355,6 +4417,7 @@ export type Query = {
   listIngestorStats?: Maybe<ModelIngestorStatsConnection>;
   listMotionMessages?: Maybe<ModelMotionMessageConnection>;
   listProfiles?: Maybe<ModelProfileConnection>;
+  listReputationMiningCycleMetadata?: Maybe<ModelReputationMiningCycleMetadataConnection>;
   listTokens?: Maybe<ModelTokenConnection>;
   listTransactions?: Maybe<ModelTransactionConnection>;
   listUserTokens?: Maybe<ModelUserTokensConnection>;
@@ -4715,6 +4778,12 @@ export type QueryGetReputationForTopDomainsArgs = {
 
 
 /** Root query type */
+export type QueryGetReputationMiningCycleMetadataArgs = {
+  id: Scalars['ID'];
+};
+
+
+/** Root query type */
 export type QueryGetRoleByDomainAndColonyArgs = {
   colonyAddress?: InputMaybe<ModelIdKeyConditionInput>;
   domainId: Scalars['ID'];
@@ -5054,6 +5123,14 @@ export type QueryListProfilesArgs = {
 
 
 /** Root query type */
+export type QueryListReputationMiningCycleMetadataArgs = {
+  filter?: InputMaybe<ModelReputationMiningCycleMetadataFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Root query type */
 export type QueryListTokensArgs = {
   filter?: InputMaybe<ModelTokenFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5090,6 +5167,15 @@ export type QueryListWatchedColoniesArgs = {
   filter?: InputMaybe<ModelWatchedColoniesFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
+};
+
+export type ReputationMiningCycleMetadata = {
+  __typename?: 'ReputationMiningCycleMetadata';
+  createdAt: Scalars['AWSDateTime'];
+  id: Scalars['ID'];
+  /** The timestamp of the most recent reputation mining cycle completion. */
+  lastCompletedAt: Scalars['AWSDateTime'];
+  updatedAt: Scalars['AWSDateTime'];
 };
 
 /**
@@ -5162,6 +5248,7 @@ export type Subscription = {
   onCreateIngestorStats?: Maybe<IngestorStats>;
   onCreateMotionMessage?: Maybe<MotionMessage>;
   onCreateProfile?: Maybe<Profile>;
+  onCreateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   onCreateToken?: Maybe<Token>;
   onCreateTransaction?: Maybe<Transaction>;
   onCreateUser?: Maybe<User>;
@@ -5190,6 +5277,7 @@ export type Subscription = {
   onDeleteIngestorStats?: Maybe<IngestorStats>;
   onDeleteMotionMessage?: Maybe<MotionMessage>;
   onDeleteProfile?: Maybe<Profile>;
+  onDeleteReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   onDeleteToken?: Maybe<Token>;
   onDeleteTransaction?: Maybe<Transaction>;
   onDeleteUser?: Maybe<User>;
@@ -5218,6 +5306,7 @@ export type Subscription = {
   onUpdateIngestorStats?: Maybe<IngestorStats>;
   onUpdateMotionMessage?: Maybe<MotionMessage>;
   onUpdateProfile?: Maybe<Profile>;
+  onUpdateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   onUpdateToken?: Maybe<Token>;
   onUpdateTransaction?: Maybe<Transaction>;
   onUpdateUser?: Maybe<User>;
@@ -5338,6 +5427,11 @@ export type SubscriptionOnCreateMotionMessageArgs = {
 
 export type SubscriptionOnCreateProfileArgs = {
   filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
+};
+
+
+export type SubscriptionOnCreateReputationMiningCycleMetadataArgs = {
+  filter?: InputMaybe<ModelSubscriptionReputationMiningCycleMetadataFilterInput>;
 };
 
 
@@ -5481,6 +5575,11 @@ export type SubscriptionOnDeleteProfileArgs = {
 };
 
 
+export type SubscriptionOnDeleteReputationMiningCycleMetadataArgs = {
+  filter?: InputMaybe<ModelSubscriptionReputationMiningCycleMetadataFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteTokenArgs = {
   filter?: InputMaybe<ModelSubscriptionTokenFilterInput>;
 };
@@ -5618,6 +5717,11 @@ export type SubscriptionOnUpdateMotionMessageArgs = {
 
 export type SubscriptionOnUpdateProfileArgs = {
   filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateReputationMiningCycleMetadataArgs = {
+  filter?: InputMaybe<ModelSubscriptionReputationMiningCycleMetadataFilterInput>;
 };
 
 
@@ -6120,6 +6224,11 @@ export type UpdateProfileInput = {
   meta?: InputMaybe<ProfileMetadataInput>;
   thumbnail?: InputMaybe<Scalars['String']>;
   website?: InputMaybe<Scalars['AWSURL']>;
+};
+
+export type UpdateReputationMiningCycleMetadataInput = {
+  id: Scalars['ID'];
+  lastCompletedAt?: InputMaybe<Scalars['AWSDateTime']>;
 };
 
 export type UpdateTokenInput = {
