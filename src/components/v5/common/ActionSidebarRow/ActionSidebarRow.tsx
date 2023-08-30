@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { ActionSidebarRowProps } from './types';
 import Icon from '~shared/Icon';
 import { useActionSidebarRow } from './hooks';
-import Tooltip from '~shared/Extensions/Tooltip/Tooltip';
+import Tooltip from '~shared/Extensions/Tooltip';
 
 const ActionSidebarRow: FC<PropsWithChildren<ActionSidebarRowProps>> = ({
   iconName,
@@ -15,7 +15,7 @@ const ActionSidebarRow: FC<PropsWithChildren<ActionSidebarRowProps>> = ({
   isOpened,
   onToggle,
   ref,
-  isErrors,
+  isError,
   fieldName,
 }) => {
   const { formatMessage } = useIntl();
@@ -60,8 +60,8 @@ const ActionSidebarRow: FC<PropsWithChildren<ActionSidebarRowProps>> = ({
           <button
             className={clsx('flex items-center  group', {
               'hover:text-blue-400': isDescriptionFieldRow,
-              'text-negative-400': isErrors,
-              'text-gray-600': !isErrors,
+              'text-negative-400': isError,
+              'text-gray-600': !isError,
             })}
             onClick={onToggle}
             type="button"
@@ -72,8 +72,8 @@ const ActionSidebarRow: FC<PropsWithChildren<ActionSidebarRowProps>> = ({
         ) : (
           <div
             className={clsx('flex items-center', {
-              'text-negative-400': isErrors,
-              'text-gray-600': !isErrors,
+              'text-negative-400': isError,
+              'text-gray-600': !isError,
             })}
           >
             {content}

@@ -14,7 +14,7 @@ import { TeamColourFieldProps } from './types';
 
 const displayName = 'v5.common.ActionsContent.partials.TeamColourField';
 
-const TeamColourField: FC<TeamColourFieldProps> = ({ isErrors }) => {
+const TeamColourField: FC<TeamColourFieldProps> = ({ isError }) => {
   const { field } = useController({
     name: 'domainColor',
   });
@@ -35,8 +35,8 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ isErrors }) => {
       <button
         type="button"
         className={clsx(styles.button, {
-          'text-gray-600': !isErrors,
-          'text-negative-400': isErrors,
+          'placeholder-gray-500': !isError,
+          'placeholder-negative-400': isError,
         })}
         onClick={toggleDecisionSelect}
       >
@@ -53,6 +53,7 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ isErrors }) => {
           hasShadow
           rounded="s"
         >
+          {/* @TODO: fix team color picker, it should works like here: src/components/shared/ColorSelect/ColorSelect.tsx  */}
           <SearchItem
             options={teamsOptions?.options}
             onChange={(value) => {

@@ -15,7 +15,7 @@ import { Actions } from '~constants/actions';
 
 const displayName = 'v5.common.ActionsContent.partials.TeamsSelect';
 
-const TeamsSelect: FC<SelectProps> = ({ name, isErrors }) => {
+const TeamsSelect: FC<SelectProps> = ({ name, isError }) => {
   const { selectedAction } = useActionSidebarContext();
   const isRootDomain =
     selectedAction === Actions.TRANSFER_FUNDS ||
@@ -43,8 +43,8 @@ const TeamsSelect: FC<SelectProps> = ({ name, isErrors }) => {
       <button
         type="button"
         className={clsx(styles.button, {
-          'text-gray-600': !isErrors,
-          'text-negative-400': isErrors,
+          'text-gray-500': !isError,
+          'text-negative-400': isError,
         })}
         onClick={toggleTeamSelect}
       >

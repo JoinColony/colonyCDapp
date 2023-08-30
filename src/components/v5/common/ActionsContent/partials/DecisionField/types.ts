@@ -7,5 +7,5 @@ export interface DecisionMethodProps {
 }
 
 export type DecisionFieldProps = {
-  isErrors: boolean;
+  isError?: boolean;
 };

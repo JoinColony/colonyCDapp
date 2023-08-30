@@ -47,6 +47,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
           isPending={isLoading}
           text={{ id: 'button.pending' }}
           rounded="s"
+          isFullSize={isMobile}
         />
       ) : (
         <Button
