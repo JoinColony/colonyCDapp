@@ -7,11 +7,8 @@ import { ActionButton } from '~shared/Button';
 import { Colony, Expenditure } from '~types';
 import { isExpenditureFunded } from '~utils/expenditures';
 import { findDomainByNativeId } from '~utils/domains';
-import ReclaimStakeButton from '~common/Expenditures/StakedExpenditure/ReclaimStakeButton';
 
 import ExpenditureClaimButton from '../ExpenditureClaimButton';
-
-import styles from './ExpenditureAdvanceButton.module.css';
 
 interface ExpenditureAdvanceButtonProps {
   expenditure: Expenditure;
@@ -76,14 +73,7 @@ const ExpenditureAdvanceButton = ({
   }
 
   if (expenditure.status === ExpenditureStatus.Finalized) {
-    return (
-      <div className={styles.buttons}>
-        <div>
-          <ExpenditureClaimButton colony={colony} expenditure={expenditure} />
-        </div>
-        <ReclaimStakeButton colony={colony} expenditure={expenditure} />
-      </div>
-    );
+    return <ExpenditureClaimButton colony={colony} expenditure={expenditure} />;
   }
 
   return null;
