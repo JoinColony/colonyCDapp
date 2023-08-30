@@ -7,7 +7,7 @@ import { useAsyncFunction, useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import Toast from '~shared/Extensions/Toast';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData';
-import { waitForDbAfterAction } from '../../utils';
+import { waitForDbAfterExtensionAction } from '../../utils';
 
 export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
   const { colony } = useColonyContext();
@@ -31,7 +31,7 @@ export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
     try {
       setIsLoading(true);
       await deprecateAsyncFunction(deprecateExtensionValues);
-      await waitForDbAfterAction({
+      await waitForDbAfterExtensionAction({
         method: ExtensionMethods.DEPRECATE,
         refetchExtensionData,
       });
@@ -82,7 +82,7 @@ export const useUninstall = ({ extensionId }: { extensionId: Extension }) => {
     try {
       setIsLoading(true);
       await uninstallAsyncFunction(uninstallExtensionValues);
-      await waitForDbAfterAction({
+      await waitForDbAfterExtensionAction({
         method: ExtensionMethods.UNINSTALL,
         refetchExtensionData,
       });
@@ -136,7 +136,7 @@ export const useEnable = ({ extensionId }: { extensionId: Extension }) => {
     try {
       setIsLoading(true);
       await enableAsyncFunction(enableExtensionValues);
-      await waitForDbAfterAction({
+      await waitForDbAfterExtensionAction({
         method: ExtensionMethods.REENABLE,
         refetchExtensionData,
       });
