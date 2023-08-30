@@ -21,16 +21,19 @@ const UninstallButton = ({
   });
 
   return (
-    <div className="flex justify-center w-full">
-      <Button
-        mode="primaryOutlineFull"
-        size="small"
-        isFullSize
-        loading={isLoading}
-        onClick={() => setIsUninstallModalOpen(true)}
-      >
-        {formatText({ id: 'button.uninstallExtension' })}
-      </Button>
+    <>
+      <div className="flex justify-center w-full">
+        <Button
+          mode="primaryOutlineFull"
+          size="small"
+          isFullSize
+          loading={isLoading}
+          onClick={() => setIsUninstallModalOpen(true)}
+        >
+          {formatText({ id: 'button.uninstallExtension' })}
+        </Button>
+      </div>
+
       <Modal
         isOpen={isUninstallModalOpen}
         icon="trash"
@@ -77,7 +80,7 @@ const UninstallButton = ({
           classNames="mt-5"
         />
       </Modal>
-    </div>
+    </>
   );
 };
 

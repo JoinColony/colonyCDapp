@@ -41,6 +41,7 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
   const isVotingReputationExtension =
     extensionData.extensionId === Extension.VotingReputation;
 
+  // If the extension itself doesn't have the correct permissions, show the banner
   const showPermissionsBanner =
     isInitialized &&
     !addressHasRoles({

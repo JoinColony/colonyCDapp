@@ -22,7 +22,7 @@ const DeprecateButton = ({
   });
 
   return (
-    <div className="mt-6">
+    <>
       <div className="flex justify-center w-full">
         <Button
           mode="primaryOutlineFull"
@@ -53,7 +53,7 @@ const DeprecateButton = ({
           {formatText({ id: 'extensionDetailsPage.confirmation' })}
         </p>
       </Modal>
-    </div>
+    </>
   );
 };
 

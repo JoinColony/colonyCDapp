@@ -114,7 +114,7 @@ export const useUninstall = ({ extensionId }: { extensionId: Extension }) => {
   return { handleUninstall, isLoading };
 };
 
-export const useEnable = ({ extensionId }: { extensionId: Extension }) => {
+export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { colony } = useColonyContext();
   const { colonyAddress = '' } = colony ?? {};
@@ -132,7 +132,7 @@ export const useEnable = ({ extensionId }: { extensionId: Extension }) => {
     success: ActionTypes.EXTENSION_DEPRECATE_SUCCESS,
   });
 
-  const handleEnable = async () => {
+  const handleReenable = async () => {
     try {
       setIsLoading(true);
       await enableAsyncFunction(enableExtensionValues);
@@ -148,7 +148,6 @@ export const useEnable = ({ extensionId }: { extensionId: Extension }) => {
         />,
       );
     } catch (err) {
-      console.error(err);
       toast.error(
         <Toast
           type="error"
@@ -163,5 +162,5 @@ export const useEnable = ({ extensionId }: { extensionId: Extension }) => {
     }
   };
 
-  return { handleEnable, isLoading };
+  return { handleReenable, isLoading };
 };
