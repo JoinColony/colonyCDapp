@@ -1,7 +1,7 @@
 import React, { FC, PropsWithChildren } from 'react';
 
 import { useCreateDecision } from './hooks';
-import ActionForm from '../ActionForm/ActionForm';
+import ActionForm from '../ActionForm';
 
 const displayName = 'v5.common.ActionSidebar.partials.SinglePaymentForm';
 
