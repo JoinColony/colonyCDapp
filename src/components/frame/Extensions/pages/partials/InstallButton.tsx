@@ -50,6 +50,7 @@ const InstallButton = ({ extensionData }: InstallButtonProps) => {
   };
 
   const handleInstallError = () => {
+    setIsInstallDisabled(false);
     toast.error(
       <Toast
         type="error"

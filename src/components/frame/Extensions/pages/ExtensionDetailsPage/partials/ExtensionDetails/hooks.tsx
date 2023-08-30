@@ -44,7 +44,7 @@ export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
       );
     } catch (err) {
       console.error(err);
-      toast.success(
+      toast.error(
         <Toast
           type="error"
           title={{ id: 'extensionDeprecate.toast.title.error' }}
@@ -114,28 +114,28 @@ export const useUninstall = ({ extensionId }: { extensionId: Extension }) => {
   return { handleUninstall, isLoading };
 };
 
-export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
+export const useEnable = ({ extensionId }: { extensionId: Extension }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { colony } = useColonyContext();
   const { colonyAddress = '' } = colony ?? {};
   const { refetchExtensionData } = useExtensionData(extensionId);
 
-  const reEnableExtensionValues = {
+  const enableExtensionValues = {
     colonyAddress,
     extensionId,
     isToDeprecate: false,
   };
 
-  const reEnableAsyncFunction = useAsyncFunction({
+  const enableAsyncFunction = useAsyncFunction({
     submit: ActionTypes.EXTENSION_DEPRECATE,
     error: ActionTypes.EXTENSION_DEPRECATE_ERROR,
     success: ActionTypes.EXTENSION_DEPRECATE_SUCCESS,
   });
 
-  const handleReEnable = async () => {
+  const handleEnable = async () => {
     try {
       setIsLoading(true);
-      await reEnableAsyncFunction(reEnableExtensionValues);
+      await enableAsyncFunction(enableExtensionValues);
       await waitForDbAfterAction({
         method: ExtensionMethods.REENABLE,
         refetchExtensionData,
@@ -163,5 +163,5 @@ export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
     }
   };
 
-  return { handleReEnable, isLoading };
+  return { handleEnable, isLoading };
 };

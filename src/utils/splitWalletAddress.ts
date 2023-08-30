@@ -1,6 +1,6 @@
 export const splitWalletAddress = (address: string): string => {
-  const firstFour = address.substring(0, 4);
+  const firstSix = address.substring(0, 6);
   const lastFour = address.substring(address.length - 4);
 
-  return `${firstFour}....${lastFour}`;
+  return `${firstSix}...${lastFour}`;
 };
