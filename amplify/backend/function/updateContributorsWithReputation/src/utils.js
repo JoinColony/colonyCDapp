@@ -6,6 +6,8 @@ const {
   updateColonyContributor,
 } = require('./graphql');
 
+const reputationMiningCycleMetadataId = 'REPUTATION_MINING_CYCLE_METADATA'; // this is constant, since we only need one entry of this type in the db.
+
 const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
   const options = {
     method: 'POST',
@@ -94,12 +96,6 @@ const isWithinLast30Days = (isoString) => {
   const thirtyDays = daysToMilliseconds(30);
   const date = new Date(isoString).valueOf();
   return isWithinTimeFromNow(date, thirtyDays);
-};
-
-const isWithinLastHour = (isoString) => {
-  const oneHour = hoursToMilliseconds(1);
-  const date = new Date(isoString).valueOf();
-  return isWithinTimeFromNow(date, oneHour);
 };
 
 const getContributorType = (total, idx, createdAt) => {
@@ -267,5 +263,5 @@ module.exports = {
   createColonyContributorInDb,
   createContributorReputationInDb,
   updateColonyContributorInDb,
-  isWithinLastHour,
+  reputationMiningCycleMetadataId,
 };

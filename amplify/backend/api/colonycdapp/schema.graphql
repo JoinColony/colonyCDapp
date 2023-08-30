@@ -3020,3 +3020,11 @@ type Annotation @model {
   """
   ipfsHash: String
 }
+
+type ReputationMiningCycleMetadata @model {
+  id: ID! # A constant, since we only need one entry in the database: "REPUTATION_MINING_CYCLE_METADATA"
+  """
+  The timestamp of the most recent reputation mining cycle completion.
+  """
+  lastCompletedAt: AWSDateTime! # We're using this to determine whether to re-calculate colony-wide user reputation (updateContributorsWithReputation)
+}
