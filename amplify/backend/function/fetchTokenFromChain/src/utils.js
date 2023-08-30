@@ -5,6 +5,16 @@ const TokenType = {
   ERC20: 'ERC20',
 };
 
+// These are a subsection of the constants in the main project
+// that should be imported when this is enabled via a different
+// lambda build system
+const ETHEREUM_NETWORK = {
+  shortName: 'Mainnet',
+};
+const BINANCE_NETWORK = {
+  shortName: 'BNB',
+};
+
 const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
   const options = {
     method: 'POST',
@@ -51,4 +61,6 @@ const getTokenType = async (client) => {
 module.exports = {
   graphqlRequest,
   getTokenType,
+  ETHEREUM_NETWORK,
+  BINANCE_NETWORK,
 };
