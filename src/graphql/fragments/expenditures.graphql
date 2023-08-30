@@ -10,6 +10,7 @@ fragment Expenditure on Expenditure {
   nativeDomainId
   metadata {
     fundFromDomainNativeId
+    type
   }
   balances {
     tokenAddress
@@ -17,6 +18,7 @@ fragment Expenditure on Expenditure {
     requiredAmount
   }
   finalizedAt
+  hasReclaimedStake
 }
 
 fragment ExpenditureSlot on ExpenditureSlot {
