@@ -12,11 +12,13 @@ const displayName = 'v5.common.ActionsContent.partials.DefaultField';
 const DefaultField: FC<DefaultFieldProps> = ({
   name,
   placeholder,
+  defaultValue,
   isError,
   maxLength = MAX_COLONY_DISPLAY_NAME,
 }) => {
   const { field } = useController({
     name,
+    defaultValue: defaultValue || '',
   });
   const methods = useFormContext();
   const { formatMessage } = useIntl();

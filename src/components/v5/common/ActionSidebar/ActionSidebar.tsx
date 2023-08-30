@@ -28,6 +28,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
     selectedAction,
     setSelectedAction,
     isCancelModalOpen,
+    isAvatarModalOpened,
   } = useActionSidebarContext();
   const { prepareNofiticationTitle, formComponentsByAction, isFieldError } =
     useActionSidebar(selectedAction);
@@ -39,7 +40,11 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
 
   useOnClickOutside(
     ref,
-    () => !isMobile && !isCancelModalOpen && toggleActionSidebarOff(),
+    () =>
+      !isMobile &&
+      !isCancelModalOpen &&
+      !isAvatarModalOpened &&
+      toggleActionSidebarOff(),
   );
 
   const formContent = (

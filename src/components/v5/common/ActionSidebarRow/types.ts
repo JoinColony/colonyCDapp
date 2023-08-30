@@ -1,4 +1,5 @@
 import { MessageDescriptor } from 'react-intl';
+import { ActionSidebarRowFieldNameEnum } from './enums';
 
 export type ActionSidebarRowProps = {
   iconName: string;
@@ -8,5 +9,5 @@ export type ActionSidebarRowProps = {
   onToggle?: () => void;
   ref?: React.MutableRefObject<null>;
   isError?: boolean;
-  fieldName: string;
+  fieldName: ActionSidebarRowFieldNameEnum;
 };

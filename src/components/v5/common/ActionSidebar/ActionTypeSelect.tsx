@@ -9,6 +9,7 @@ import SearchSelect from '~v5/shared/SearchSelect';
 import { useActionsList } from './hooks';
 import { translateAction } from './utils';
 import useToggle from '~hooks/useToggle';
+import { ActionSidebarRowFieldNameEnum } from '../ActionSidebarRow/enums';
 
 const displayName = 'v5.common.ActionTypeSelect';
 
@@ -33,6 +34,7 @@ const ActionTypeSelect: FC = () => {
     <ActionSidebarRow
       iconName="file-plus"
       title={{ id: 'actionSidebar.actionType' }}
+      fieldName={ActionSidebarRowFieldNameEnum.ACTION_TYPE}
     >
       <>
         {!selectedAction && (

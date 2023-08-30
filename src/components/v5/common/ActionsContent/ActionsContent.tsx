@@ -15,6 +15,7 @@ import { useDetectClickOutside } from '~hooks';
 import DefaultField from './partials/DefaultField';
 import TeamColourField from './partials/TeamColourField';
 import ColonyVersionField from './partials/ColonyVersionField';
+import ColonyDetailsFields from './partials/ColonyDetailsFields';
 import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
 import ActionTypeSelect from '../ActionSidebar/ActionTypeSelect';
 import styles from '../ActionSidebar/ActionSidebar.module.css';
@@ -36,6 +37,7 @@ const ActionsContent: FC = () => {
     shouldShowTeamNameField,
     shouldShowTeamColourField,
     shouldShowVersionFields,
+    shouldShowColonyDetailsFields,
     prepareAmountTitle,
     isError,
   } = useActionsContent();
@@ -86,6 +88,7 @@ const ActionsContent: FC = () => {
           <TeamsSelect name="to" isError={isError('to')} />
         </ActionSidebarRow>
       )}
+      {shouldShowColonyDetailsFields && <ColonyDetailsFields />}
       {shouldShowUserField && (
         <ActionSidebarRow
           iconName="user-focus"

@@ -22,6 +22,7 @@ export const useActionsContent = () => {
     selectedAction === Actions.TRANSFER_FUNDS ||
     selectedAction === Actions.CREATE_NEW_TEAM ||
     selectedAction === Actions.UNLOCK_TOKEN ||
+    selectedAction === Actions.EDIT_COLONY_DETAILS ||
     selectedAction === Actions.UPGRADE_COLONY_VERSION ||
     selectedAction === Actions.CREATE_DECISION;
   const shouldShowDecisionField =
@@ -29,6 +30,7 @@ export const useActionsContent = () => {
     selectedAction === Actions.MINT_TOKENS ||
     selectedAction === Actions.UNLOCK_TOKEN ||
     selectedAction === Actions.TRANSFER_FUNDS ||
+    selectedAction === Actions.EDIT_COLONY_DETAILS ||
     selectedAction === Actions.CREATE_NEW_TEAM ||
     selectedAction === Actions.CREATE_DECISION;
   const shouldShowDescriptionField =
@@ -37,6 +39,7 @@ export const useActionsContent = () => {
     selectedAction === Actions.TRANSFER_FUNDS ||
     selectedAction === Actions.CREATE_NEW_TEAM ||
     selectedAction === Actions.UNLOCK_TOKEN ||
+    selectedAction === Actions.EDIT_COLONY_DETAILS ||
     selectedAction === Actions.UPGRADE_COLONY_VERSION ||
     selectedAction === Actions.CREATE_DECISION;
   const shouldShowTransferFundsField =
@@ -46,6 +49,8 @@ export const useActionsContent = () => {
   const shouldShowTeamColourField = selectedAction === Actions.CREATE_NEW_TEAM;
   const shouldShowVersionFields =
     selectedAction === Actions.UPGRADE_COLONY_VERSION;
+  const shouldShowColonyDetailsFields =
+    selectedAction === Actions.EDIT_COLONY_DETAILS;
 
   const prepareAmountTitle =
     (selectedAction === Actions.SIMPLE_PAYMENT && 'actionSidebar.amount') ||
@@ -67,6 +72,7 @@ export const useActionsContent = () => {
     shouldShowTeamNameField,
     shouldShowTeamColourField,
     shouldShowVersionFields,
+    shouldShowColonyDetailsFields,
     prepareAmountTitle,
     isError,
   };

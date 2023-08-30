@@ -16,20 +16,26 @@ export const ActionSidebarContext = createContext<{
   isActionSidebarOpen: boolean;
   isCancelModalOpen: boolean;
   selectedAction: Actions | null;
+  isAvatarModalOpened: boolean;
   setSelectedAction: React.Dispatch<React.SetStateAction<Actions | null>>;
   toggleActionBar: () => void;
   toggleCancelModal: () => void;
   toggleActionSidebarOff: () => void;
   toggleCancelModalOff: () => void;
+  toggleChangeAvatarModalOn: () => void;
+  toggleChangeAvatarModalOff: () => void;
 }>({
   isActionSidebarOpen: false,
   isCancelModalOpen: false,
   selectedAction: null,
+  isAvatarModalOpened: false,
   toggleActionBar: noop,
   setSelectedAction: noop,
   toggleActionSidebarOff: noop,
   toggleCancelModal: noop,
   toggleCancelModalOff: noop,
+  toggleChangeAvatarModalOn: noop,
+  toggleChangeAvatarModalOff: noop,
 });
 
 export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
@@ -42,6 +48,13 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
   const [
     isCancelModalOpen,
     { toggle: toggleCancelModal, toggleOff: toggleCancelModalOff },
+  ] = useToggle({ defaultToggleState: false });
+  const [
+    isAvatarModalOpened,
+    {
+      toggleOn: toggleChangeAvatarModalOn,
+      toggleOff: toggleChangeAvatarModalOff,
+    },
   ] = useToggle({ defaultToggleState: false });
   const [selectedAction, setSelectedAction] = useState<Actions | null>(null);
 
@@ -62,8 +75,12 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
       toggleActionSidebarOff,
       setSelectedAction,
       selectedAction,
+      isAvatarModalOpened,
+      toggleChangeAvatarModalOn,
+      toggleChangeAvatarModalOff,
     }),
     [
+      isAvatarModalOpened,
       isActionSidebarOpen,
       isCancelModalOpen,
       selectedAction,
@@ -71,6 +88,8 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
       toggleActionSidebarOff,
       toggleCancelModal,
       toggleCancelModalOff,
+      toggleChangeAvatarModalOn,
+      toggleChangeAvatarModalOff,
     ],
   );
 
