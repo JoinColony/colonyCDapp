@@ -9,7 +9,6 @@ import { useFormContext } from 'react-hook-form';
 
 import { isAddress } from '~utils/web3';
 import {
-  HookFormInput as Input,
   HookFormSelect as Select,
   SelectOption,
   HookFormTextArea as Textarea,
@@ -31,17 +30,19 @@ import { Message } from '~types';
 import { isMessageDescriptor } from '~utils/intl';
 import { BINANCE_NETWORK } from '~constants';
 
-import { invalidSafeError } from '..';
+import { invalidSafeError } from '../..';
 import {
   ABIResponse,
   FormSafeTransaction,
   TransactionSectionProps,
   UpdatedMethods,
-} from '../types';
+} from '../../types';
 
-import { ErrorMessage as Error, Loading, AvatarXS } from './shared';
+import { ErrorMessage as Error, Loading, AvatarXS } from '../shared';
 
-import styles from './TransactionTypesSection.css';
+import defaultStyles from '../TransactionTypesSection.css';
+import styles from './ContractInteractionSection.css';
+import MethodParamInput from './MethodParamInput';
 
 const displayName = `common.ControlSafeDialog.ControlSafeForm.ContractInteractionSection`;
 
@@ -316,7 +317,7 @@ const ContractInteractionSection = ({
   return (
     <>
       <DialogSection>
-        <div className={styles.singleUserPickerContainer}>
+        <div className={defaultStyles.singleUserPickerContainer}>
           <SingleUserPicker
             data={[]}
             label={MSG.contractLabel}
@@ -409,27 +410,12 @@ const ContractInteractionSection = ({
               key={`${input.name}-${input.type}`}
               appearance={{ theme: 'sidePadding' }}
             >
-              <div className={styles.inputParamContainer}>
-                <Input
-                  label={`${input.name} (${input.type})`}
-                  // eslint-disable-next-line max-len
-                  name={`transactions.${transactionIndex}.${input.name}-${selectedContractMethods[transactionIndex]?.name}`}
-                  appearance={{ colorSchema: 'grey', theme: 'fat' }}
-                  disabled={disabledInput}
-                  placeholder={`${input.name} (${input.type})`}
-                  formattingOptions={
-                    input?.type?.includes('int') &&
-                    input.type.substring(input.type.length - 2) !== '[]'
-                      ? {
-                          numeral: true,
-                          numeralPositiveOnly:
-                            input.type.substring(0, 4) === 'uint',
-                          numeralDecimalScale: 0,
-                        }
-                      : undefined
-                  }
-                />
-              </div>
+              <MethodParamInput
+                disabledInput={disabledInput}
+                param={input}
+                transactionIndex={transactionIndex}
+                selectedContractMethods={selectedContractMethods}
+              />
             </DialogSection>
           ))}
         </>
