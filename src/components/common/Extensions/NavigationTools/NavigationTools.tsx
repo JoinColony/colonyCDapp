@@ -1,14 +1,11 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
-import { useSelector } from 'react-redux';
 
 import Button from '~v5/shared/Button';
 import { NavigationToolsProps } from './types';
 import Token from '~common/Extensions/UserNavigation/partials/Token';
 import { useMobile } from '~hooks';
 import UserReputation from '../UserNavigation/partials/UserReputation';
-import { groupedTransactionsAndMessages } from '~redux/selectors';
-import { TransactionOrMessageGroups } from '~frame/GasStation/transactionGroup';
 
 const displayName = 'common.Extensions.NavigationTools';
 
@@ -26,10 +23,6 @@ const NavigationTools: FC<NavigationToolsProps> = ({
       ? buttonLabel
       : buttonLabel && formatMessage(buttonLabel);
 
-  const transactionAndMessageGroups = useSelector(
-    groupedTransactionsAndMessages,
-  );
-
   return (
     <div className="px-6 pb-6">
       <div className="flex items-center gap-1">
@@ -37,9 +30,6 @@ const NavigationTools: FC<NavigationToolsProps> = ({
         {!hideColonies && (
           <UserReputation
             hideColonies={hideColonies}
-            transactionAndMessageGroups={
-              transactionAndMessageGroups as unknown as TransactionOrMessageGroups
-            }
             hideMemberReputationOnMobile={hideMemberReputationOnMobile}
           />
         )}

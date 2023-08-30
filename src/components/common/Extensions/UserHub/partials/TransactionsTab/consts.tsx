@@ -1,4 +1,4 @@
-import { TRANSACTION_STATUSES } from '~types';
+import { TransactionStatus } from '~gql';
 import { TransactionsItemProps } from './types';
 
 export const transactionsItems: TransactionsItemProps[] = [
@@ -7,13 +7,13 @@ export const transactionsItems: TransactionsItemProps[] = [
     title: 'Transfer funds',
     description: 'Transfer 500xDAI from Root to Business',
     date: '21 Feb 2022',
-    status: TRANSACTION_STATUSES.FAILED,
+    status: TransactionStatus.Failed,
     content: [
       {
         key: 'transaction-1-1',
         title: 'Submit work',
         notificationInfo: 'User cancelled the transaction via their wallet.',
-        status: TRANSACTION_STATUSES.FAILED,
+        status: TransactionStatus.Failed,
         isCurrentAction: true,
       },
       {
@@ -47,43 +47,43 @@ export const transactionsItems: TransactionsItemProps[] = [
     title: 'Simple payment',
     description: 'Paid Panda 100,000 CLNY',
     date: '21 Feb 2022',
-    status: TRANSACTION_STATUSES.SUCCEEDED,
+    status: TransactionStatus.Succeeded,
     content: [
       {
         key: 'transaction-2-1',
-        status: TRANSACTION_STATUSES.SUCCEEDED,
+        status: TransactionStatus.Succeeded,
         title: 'Submit work',
         isPending: true,
         isCurrentAction: true,
       },
       {
         key: 'transaction-2-2',
-        status: TRANSACTION_STATUSES.SUCCEEDED,
+        status: TransactionStatus.Succeeded,
         title: 'End task',
       },
       {
         key: 'transaction-2-3',
-        status: TRANSACTION_STATUSES.SUCCEEDED,
+        status: TransactionStatus.Succeeded,
         title: 'Rate Manager',
       },
       {
         key: 'transaction-2-4',
-        status: TRANSACTION_STATUSES.SUCCEEDED,
+        status: TransactionStatus.Succeeded,
         title: 'Rate Worker',
       },
       {
         key: 'transaction-2-5',
-        status: TRANSACTION_STATUSES.SUCCEEDED,
+        status: TransactionStatus.Succeeded,
         title: 'Reveal Rating',
       },
       {
         key: 'transaction-2-6',
-        status: TRANSACTION_STATUSES.SUCCEEDED,
+        status: TransactionStatus.Succeeded,
         title: 'Finalize Task',
       },
       {
         key: 'transaction-2-7',
-        status: TRANSACTION_STATUSES.SUCCEEDED,
+        status: TransactionStatus.Succeeded,
         title: 'Claim rewards',
       },
     ],
@@ -91,13 +91,13 @@ export const transactionsItems: TransactionsItemProps[] = [
   {
     key: 3,
     title: 'Edit Colony details',
-    status: TRANSACTION_STATUSES.SUCCEEDED,
-    description: 'Updated the Colony’s logo with new design',
+    status: TransactionStatus.Succeeded,
+    description: "Updated the Colony's logo with new design",
     date: '18 Feb 2022',
     content: [
       {
         key: 'transaction-3-1',
-        status: TRANSACTION_STATUSES.SUCCEEDED,
+        status: TransactionStatus.Succeeded,
         title: 'Submit work',
         isCurrentAction: true,
       },
@@ -106,21 +106,21 @@ export const transactionsItems: TransactionsItemProps[] = [
   {
     key: 4,
     title: 'Create new team',
-    status: TRANSACTION_STATUSES.SUCCEEDED,
+    status: TransactionStatus.Succeeded,
     description: 'Created Product Design team for new designers',
     date: '18 Feb 2022',
   },
   {
     key: 5,
     title: 'Simple payment',
-    status: TRANSACTION_STATUSES.SUCCEEDED,
+    status: TransactionStatus.Succeeded,
     description: 'Paid Panda 100,000 CLNY',
     date: '18 Feb 2022',
   },
   {
     key: 6,
     title: 'Simple payment',
-    status: TRANSACTION_STATUSES.SUCCEEDED,
+    status: TransactionStatus.Succeeded,
     description: 'Paid CaptainPlanet 67,000 CLNY',
     date: '18 Feb 2022',
   },

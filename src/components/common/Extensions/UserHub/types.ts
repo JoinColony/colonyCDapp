@@ -1,4 +1,3 @@
-import { TransactionOrMessageGroups } from '~frame/GasStation/transactionGroup';
 import { tabList } from './consts';
 import { Appearance } from './partials/TransactionsTab/types';
 
@@ -12,7 +11,6 @@ export type TabListProps = typeof tabList;
 
 export interface UserHubProps {
   appearance?: Appearance;
-  transactionAndMessageGroups: TransactionOrMessageGroups;
   autoOpenTransaction: boolean;
   setAutoOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
   isTransactionTabVisible: boolean;

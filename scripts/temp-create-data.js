@@ -36,7 +36,8 @@ const {
 const userThumbnails = require('./imageData');
 
 const API_KEY = 'da2-fakeApiId123456';
-const GRAPHQL_URI = 'http://localhost:20002/graphql';
+const GRAPHQL_URI =
+  process.env.AWS_APPSYNC_GRAPHQL_URL || 'http://localhost:20002/graphql';
 
 /*
  * Mutations

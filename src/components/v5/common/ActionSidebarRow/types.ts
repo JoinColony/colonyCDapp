@@ -8,4 +8,5 @@ export type ActionSidebarRowProps = {
   onToggle?: () => void;
   ref?: React.MutableRefObject<null>;
   isError?: boolean;
+  fieldName: string;
 };

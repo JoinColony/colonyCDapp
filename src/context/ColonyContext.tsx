@@ -23,6 +23,7 @@ import { PageThemeContextProvider } from './PageThemeContext';
 import { UserTokenBalanceProvider } from './UserTokenBalanceContext';
 
 import { ColonyDecisionProvider } from './ColonyDecisionContext';
+import { ContextModule, setContext } from '~context';
 
 export type RefetchColonyFn = (
   variables?:
@@ -102,9 +103,19 @@ export const ColonyContextProvider = ({
   const isRedirect = locationState?.isRedirect;
   const colony = data?.getColonyByName?.items?.[0] ?? undefined;
 
+  // This is useful when adding transactions to the db from the client
+  if (colony) {
+    setContext(ContextModule.CurrentColonyAddress, colony?.colonyAddress);
+  }
+
   const [updateContributorsWithReputation] =
     useUpdateContributorsWithReputationMutation();
 
+  /*
+   * Update colony-wide reputation whenever a user accesses a colony.
+   * Note that this (potentially expensive) calculation will only run if there's new reputation data available,
+   * so as to conserve resources. Since it runs inside a lambda, it is not a blocking operation.
+   */
   useEffect(() => {
     updateContributorsWithReputation({
       variables: { colonyAddress: colony?.colonyAddress },

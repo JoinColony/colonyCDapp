@@ -2,14 +2,11 @@ import React, { FC, useEffect, useLayoutEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
-import { useSelector } from 'react-redux';
 import { useAppContext, useMobile } from '~hooks';
 import Button, { Hamburger } from '~v5/shared/Button';
 import Token from './partials/Token';
 import UserMenu from './partials/UserMenu';
 import { getLastWallet } from '~utils/autoLogin';
-import { groupedTransactionsAndMessages } from '~redux/selectors';
-import { TransactionOrMessageGroups } from '~frame/GasStation/transactionGroup';
 import UserReputation from './partials/UserReputation';
 import { UserNavigationProps } from './types';
 import { useGetNetworkToken } from '~hooks/useGetNetworkToken';
@@ -36,10 +33,6 @@ const UserNavigation: FC<UserNavigationProps> = ({
   const isWalletConnected = !!wallet?.address;
   const nativeToken = useGetNetworkToken();
 
-  const transactionAndMessageGroups = useSelector(
-    groupedTransactionsAndMessages,
-  );
-
   useEffect(() => {
     if (!isMobile) {
       setIsUserNavigationButtonsVisible(true);
@@ -60,12 +53,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
         })}
       >
         {nativeToken && <Token nativeToken={nativeToken} />}
-        <UserReputation
-          hideColonies={hideColonies}
-          transactionAndMessageGroups={
-            transactionAndMessageGroups as unknown as TransactionOrMessageGroups
-          }
-        />
+        <UserReputation hideColonies={hideColonies} />
       </div>
       {isUserNavigationButtonsVisible && !isWalletConnected && (
         <Button

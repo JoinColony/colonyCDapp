@@ -9,7 +9,7 @@ import styles from './TransactionsItem.module.css';
 import { TransactionsItemProps } from '../../types';
 import { accordionAnimation } from '~constants/accordionAnimation';
 import TransactionsHeader from '../TransactionsHeader';
-import { TRANSACTION_STATUSES } from '~types';
+import { TransactionStatus } from '~gql';
 
 export const displayName =
   'common.Extensions.UserHub.TransactionsTab.partials.TransactionsItem';
@@ -85,11 +85,11 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
                       'font-semibold': isCurrentAction,
                       'before:bg-success-400':
                         isCurrentAction &&
-                        (statusContent === TRANSACTION_STATUSES.READY ||
-                          statusContent === TRANSACTION_STATUSES.SUCCEEDED),
+                        (statusContent === TransactionStatus.Ready ||
+                          statusContent === TransactionStatus.Succeeded),
                       'before:bg-negative-400':
                         isCurrentAction &&
-                        statusContent === TRANSACTION_STATUSES.FAILED,
+                        statusContent === TransactionStatus.Failed,
                       'before:!bg-blue-400': isCurrentAction && isPending,
                     })}
                   >
@@ -101,15 +101,15 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
                         <div
                           className={clsx('flex ml-2', {
                             'text-success-400':
-                              statusContent === TRANSACTION_STATUSES.READY ||
-                              statusContent === TRANSACTION_STATUSES.SUCCEEDED,
-                            'text-negative-400': TRANSACTION_STATUSES.FAILED,
+                              statusContent === TransactionStatus.Ready ||
+                              statusContent === TransactionStatus.Succeeded,
+                            'text-negative-400': TransactionStatus.Failed,
                           })}
                         >
                           <Icon
                             name={
-                              statusContent === TRANSACTION_STATUSES.READY ||
-                              statusContent === TRANSACTION_STATUSES.SUCCEEDED
+                              statusContent === TransactionStatus.Ready ||
+                              statusContent === TransactionStatus.Succeeded
                                 ? 'check-circle'
                                 : 'warning-circle'
                             }

@@ -58,7 +58,10 @@ const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
       <div className="hidden sm:flex items-center">
         <Icon name="star" appearance={{ size: 'small' }} />
         <span className="ml-1 text-sm text-gray-600">
-          {colonyReputationPercentage.toFixed(2) || '0'}%
+          {Number.isInteger(colonyReputationPercentage)
+            ? colonyReputationPercentage
+            : colonyReputationPercentage.toFixed(2)}
+          %
         </span>
       </div>
       <div className="hidden sm:flex items-center">permissions</div>

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import {
@@ -7,7 +7,6 @@ import {
   useColonyContext,
   useDetectClickOutside,
   useMobile,
-  usePrevious,
   useUserReputation,
 } from '~hooks';
 
@@ -16,7 +15,6 @@ import Button from '~v5/shared/Button';
 import PopoverBase from '~v5/shared/PopoverBase';
 import UserAvatar from '~v5/shared/UserAvatar';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
-import { transactionCount } from '~frame/GasStation/transactionGroup';
 import styles from './UserReputation.module.css';
 import { UserReputationProps } from './types';
 
@@ -24,7 +22,6 @@ export const displayName =
   'common.Extensions.UserNavigation.partials.UserReputation';
 
 const UserReputation: FC<UserReputationProps> = ({
-  transactionAndMessageGroups,
   hideColonies,
   hideMemberReputationOnMobile,
 }) => {
@@ -80,22 +77,29 @@ const UserReputation: FC<UserReputationProps> = ({
     wallet?.address,
   );
 
+  /*
+   * I have commented out the below for two reasons:
+   * 1. Need to check we even need to auto-open the user hub, given that
+   * users now sign txs in metamask and not there
+   * 2. If yes to the above, we should listen for the action in redux that triggers metamask to open,
+   * and then open the user hub. No need to count txs.
+   */
   // @ts-ignore
-  const transactionsAndMessages = transactionAndMessageGroups.toJS();
-  const txCount = useMemo(
-    () => transactionCount(transactionsAndMessages),
-    [transactionsAndMessages],
-  );
+  // const transactionsAndMessages = transactionAndMessageGroups.toJS();
+  // const txCount = useMemo(
+  //   () => transactionCount(transactionsAndMessages),
+  //   [transactionsAndMessages],
+  // );
 
-  const prevTxCount: number | void = usePrevious(txCount);
+  // const prevTxCount: number | void = usePrevious(txCount);
 
-  useEffect(() => {
-    // this condition always will be false until we will be able to trigger transactions in Extension page
-    if (prevTxCount != null && txCount > prevTxCount) {
-      setOpen(true);
-      setTxNeedsSigning(true);
-    }
-  }, [txCount, prevTxCount, setTxNeedsSigning]);
+  // useEffect(() => {
+  //   // this condition always will be false until we will be able to trigger transactions in Extension page
+  //   if (prevTxCount != null && txCount > prevTxCount) {
+  //     setOpen(true);
+  //     setTxNeedsSigning(true);
+  //   }
+  // }, [txCount, prevTxCount, setTxNeedsSigning]);
 
   return (
     <div ref={ref}>
@@ -131,7 +135,6 @@ const UserReputation: FC<UserReputationProps> = ({
             ref={setTooltipRef}
           >
             <UserHub
-              transactionAndMessageGroups={transactionsAndMessages}
               autoOpenTransaction={txNeedsSigning}
               setAutoOpenTransaction={setTxNeedsSigning}
               isTransactionTabVisible={isOpen && txNeedsSigning}

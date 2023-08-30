@@ -18,6 +18,7 @@ import ColonyVersionField from './partials/ColonyVersionField';
 import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
 import ActionTypeSelect from '../ActionSidebar/ActionTypeSelect';
 import styles from '../ActionSidebar/ActionSidebar.module.css';
+import { ActionSidebarRowFieldNameEnum } from '../ActionSidebarRow/enums';
 
 const displayName = 'v5.common.ActionsContent';
 
@@ -67,6 +68,7 @@ const ActionsContent: FC = () => {
       {shouldShowFromField && (
         <ActionSidebarRow
           iconName="users-three"
+          fieldName={ActionSidebarRowFieldNameEnum.FROM}
           title={{ id: 'actionSidebar.from' }}
           isError={isError('team')}
         >
@@ -77,6 +79,7 @@ const ActionsContent: FC = () => {
       {shouldShowTransferFundsField && (
         <ActionSidebarRow
           iconName="arrow-down-right"
+          fieldName={ActionSidebarRowFieldNameEnum.TO}
           title={{ id: 'actionSidebar.to' }}
           isError={isError('to')}
         >
@@ -86,6 +89,7 @@ const ActionsContent: FC = () => {
       {shouldShowUserField && (
         <ActionSidebarRow
           iconName="user-focus"
+          fieldName={ActionSidebarRowFieldNameEnum.RECIPIENT}
           title={{ id: 'actionSidebar.recipent' }}
           isError={isError('recipient')}
         >
@@ -95,6 +99,7 @@ const ActionsContent: FC = () => {
       {shouldShowAmountField && (
         <ActionSidebarRow
           iconName="coins"
+          fieldName={ActionSidebarRowFieldNameEnum.AMOUNT}
           title={{ id: prepareAmountTitle }}
           isError={isError('amount')}
         >
@@ -104,6 +109,7 @@ const ActionsContent: FC = () => {
       {shouldShowTeamNameField && (
         <ActionSidebarRow
           iconName="user-list"
+          fieldName={ActionSidebarRowFieldNameEnum.TEAM_NAME}
           title={{ id: 'actionSidebar.teamName' }}
           isError={isError('teamName')}
         >
@@ -117,6 +123,7 @@ const ActionsContent: FC = () => {
       {shouldShowTeamPurposeField && (
         <ActionSidebarRow
           iconName="rocket"
+          fieldName={ActionSidebarRowFieldNameEnum.TEAM_PURPOSE}
           title={{ id: 'actionSidebar.teamPurpose' }}
           isError={isError('domainPurpose')}
         >
@@ -131,6 +138,7 @@ const ActionsContent: FC = () => {
       {shouldShowTeamColourField && (
         <ActionSidebarRow
           iconName="paint"
+          fieldName={ActionSidebarRowFieldNameEnum.TEAM_COLOUR}
           title={{ id: 'actionSidebar.teamColour' }}
           isError={isError('domainColor')}
         >
@@ -140,6 +148,7 @@ const ActionsContent: FC = () => {
       {shouldShowCreatedInField && (
         <ActionSidebarRow
           iconName="house-line"
+          fieldName={ActionSidebarRowFieldNameEnum.CREATED_IN}
           title={{ id: 'actionSidebar.createdIn' }}
           isError={isError('createdIn')}
         >
@@ -149,6 +158,7 @@ const ActionsContent: FC = () => {
       {shouldShowDecisionField && selectedAction && (
         <ActionSidebarRow
           iconName="scales"
+          fieldName={ActionSidebarRowFieldNameEnum.DECISION_METHOD}
           title={{ id: 'actionSidebar.decisionMethod' }}
           isError={isError('decisionMethod')}
         >
@@ -158,6 +168,7 @@ const ActionsContent: FC = () => {
       {shouldShowDescriptionField && (
         <ActionSidebarRow
           iconName="pencil"
+          fieldName={ActionSidebarRowFieldNameEnum.DESCRIPTION}
           title={{ id: 'actionSidebar.description' }}
           isDescriptionFieldRow
           isOpened={isDecriptionFieldExpanded}

@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable';
 
-import { TRANSACTION_STATUSES } from '~types';
+import { TransactionStatus } from '~types';
 
 import { Message } from '../immutable';
 import { ActionTypes } from '../actionTypes';
@@ -21,7 +21,7 @@ const coreMessagesReducer: ReducerType<CoreMessagesRecord> = (
       const { id } = action.payload;
       return state.mergeIn(
         [CORE_MESSAGES_LIST, id],
-        fromJS({ status: TRANSACTION_STATUSES.PENDING }),
+        fromJS({ status: TransactionStatus.Pending }),
       );
     }
     case ActionTypes.MESSAGE_SIGNED: {
@@ -30,7 +30,7 @@ const coreMessagesReducer: ReducerType<CoreMessagesRecord> = (
         [CORE_MESSAGES_LIST, id],
         fromJS({
           signature,
-          status: TRANSACTION_STATUSES.SUCCEEDED,
+          status: TransactionStatus.Succeeded,
         }),
       );
     }
@@ -38,7 +38,7 @@ const coreMessagesReducer: ReducerType<CoreMessagesRecord> = (
       const { messageId } = action.meta;
       return state.updateIn(
         [CORE_MESSAGES_LIST, messageId, 'status'],
-        () => TRANSACTION_STATUSES.FAILED,
+        () => TransactionStatus.Failed,
       );
     }
     case ActionTypes.MESSAGE_CANCEL: {

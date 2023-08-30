@@ -3,7 +3,7 @@ import React, { MouseEvent } from 'react';
 import CardList from '~shared/CardList';
 
 import { TransactionType } from '~redux/immutable';
-import { TRANSACTION_STATUSES } from '~types';
+import { TransactionStatus } from '~gql';
 
 import { getActiveTransactionIdx } from '../transactionGroup';
 import { Appearance } from '../GasStationContent';
@@ -15,11 +15,11 @@ import TransactionBackToList from './TransactionBackToList';
 
 const showPrice = (tx?: TransactionType) =>
   !!tx &&
-  (tx.status === TRANSACTION_STATUSES.READY ||
-    tx.status === TRANSACTION_STATUSES.FAILED);
+  (tx.status === TransactionStatus.Ready ||
+    tx.status === TransactionStatus.Failed);
 
 const showInteraction = (tx?: TransactionType) =>
-  !!tx && tx.status !== TRANSACTION_STATUSES.SUCCEEDED;
+  !!tx && tx.status !== TransactionStatus.Succeeded;
 
 interface Props {
   /* If we are only showing the transaction details
