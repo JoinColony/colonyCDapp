@@ -276,13 +276,16 @@ export const getTransferFundsData = async (
     throw new Error('LOCAL_SAFE_TOKEN_ADDRESS not set in .env.');
   }
 
+  const isSafeNativeToken = tokenAddress === AddressZero;
+
   /**
    * Call to check if the token is already in database
    * and add it if it isn't
    */
-  await getTokenFromEveryWhereQuery(transaction.token.tokenAddress, network);
+  if (!isSafeNativeToken) {
+    await getTokenFromEveryWhereQuery(transaction.token.tokenAddress, network);
+  }
 
-  const isSafeNativeToken = tokenAddress === AddressZero;
   const tokenDecimals = transaction.token.decimals;
   const { recipient } = transaction;
 
