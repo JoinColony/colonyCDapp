@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 import Icon from '~shared/Icon';
 import { TransactionHeaderProps } from '../types';
-import { TRANSACTION_STATUSES } from '~types';
+import { TransactionStatus } from '~gql';
 
 export const displayName =
   'common.Extensions.UserHub.TransactionsTab.partials.TransactionHeader';
@@ -14,9 +14,9 @@ const TransactionsHeader: FC<TransactionHeaderProps> = ({
   date,
   status,
 }) => {
-  const ready = status === TRANSACTION_STATUSES.READY;
-  const failed = status === TRANSACTION_STATUSES.FAILED;
-  const succeeded = status === TRANSACTION_STATUSES.SUCCEEDED;
+  const ready = status === TransactionStatus.Ready;
+  const failed = status === TransactionStatus.Failed;
+  const succeeded = status === TransactionStatus.Succeeded;
 
   return (
     <>

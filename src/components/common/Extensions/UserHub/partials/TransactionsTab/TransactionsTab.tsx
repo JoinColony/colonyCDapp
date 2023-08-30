@@ -3,18 +3,22 @@ import { useIntl } from 'react-intl';
 
 import { TransactionsProps } from './types';
 import { isTxGroup } from '~frame/GasStation/transactionGroup';
-import { MessageType, TransactionType } from '~redux/immutable';
+import { MessageType } from '~redux/immutable';
 import TransactionDetails from './partials/TransactionDetails';
 import EmptyContent from '~v5/common/EmptyContent';
 import MessageCardDetails from '~frame/GasStation/MessageCardDetails';
 import TransactionList from './partials/TransactionList';
-import CustomScrollbar from '~v5/shared/CustomScrollbar';
+import { useTransactionsListObserver } from './hooks';
+
+import styles from './TransactionsTab.css';
 
 export const displayName = 'common.Extensions.UserHub.partials.TransactionsTab';
 
 const TransactionsTab: FC<TransactionsProps> = ({
   transactionAndMessageGroups,
   autoOpenTransaction,
+  canLoadMoreTransactions,
+  fetchMoreTransactions,
   setAutoOpenTransaction = () => {},
   appearance: { interactive },
 }) => {
@@ -23,24 +27,20 @@ const TransactionsTab: FC<TransactionsProps> = ({
     autoOpenTransaction ? 0 : -1,
   );
 
-  const unselectTransactionGroup = () => {
-    setSelectedGroupIdx(-1);
-    setAutoOpenTransaction(false);
-  };
-
   const renderTransactions = () => {
+    const unselectTransactionGroup = () => {
+      setSelectedGroupIdx(-1);
+      setAutoOpenTransaction(false);
+    };
     let detailsTransactionGroup = transactionAndMessageGroups[selectedGroupIdx];
     if (!interactive && selectedGroupIdx === -1) {
       [detailsTransactionGroup] = transactionAndMessageGroups;
     }
 
     if (detailsTransactionGroup || !interactive) {
-      const isTx = isTxGroup(detailsTransactionGroup);
-      if (isTx) {
+      if (isTxGroup(detailsTransactionGroup)) {
         return (
-          <TransactionDetails
-            transactionGroup={detailsTransactionGroup as TransactionType[]}
-          />
+          <TransactionDetails transactionGroup={detailsTransactionGroup} />
         );
       }
       // @TODO: when handle this cases?
@@ -62,12 +62,22 @@ const TransactionsTab: FC<TransactionsProps> = ({
   const isEmpty =
     !transactionAndMessageGroups || !transactionAndMessageGroups.length;
 
+  /* Load more when reaching end of list  */
+  useTransactionsListObserver({
+    canLoadMoreTransactions,
+    fetchMoreTransactions,
+    transactionAndMessageGroups,
+  });
+
   return (
     <div className="flex flex-col w-full h-full">
       <p className="heading-5 mb-2.5 sm:mb-0.5">
         {formatMessage({ id: 'transactions' })}
       </p>
-      <CustomScrollbar height={356} mobileHeight="60vh">
+      <div
+        id="transactionsListContainer"
+        className={styles.transactionsListContainer}
+      >
         {isEmpty ? (
           <EmptyContent
             title={{ id: 'empty.content.title.transactions' }}
@@ -77,7 +87,7 @@ const TransactionsTab: FC<TransactionsProps> = ({
         ) : (
           renderTransactions()
         )}
-      </CustomScrollbar>
+      </div>
     </div>
   );
 };

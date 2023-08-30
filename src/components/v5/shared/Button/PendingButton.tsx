@@ -23,6 +23,7 @@ const PendingButton: FC<PropsWithChildren<PendingButtonProps>> = ({
   isPending,
   setTriggerRef,
   rounded = 'l',
+  isFullSize,
   ...rest
 }) => {
   const { formatMessage } = useIntl();
@@ -50,6 +51,7 @@ const PendingButton: FC<PropsWithChildren<PendingButtonProps>> = ({
               'rounded-lg': rounded === 's',
               'rounded-full': rounded === 'l',
               'pointer-events-none': disabled,
+              'w-full': isFullSize,
             },
             className,
           )}

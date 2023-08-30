@@ -6,7 +6,7 @@ import {
   getGroupId,
   isTxGroup,
 } from '~frame/GasStation/transactionGroup';
-import { MessageType, TransactionType } from '~redux/immutable';
+import { MessageType } from '~redux/immutable';
 import GroupedTransaction from './GroupedTransaction';
 import { TransactionListProps } from '../types';
 
@@ -30,7 +30,7 @@ const TransactionList: FC<TransactionListProps> = ({
             <GroupedTransaction
               key={getGroupId(transactionOrMessageGroup)}
               groupId={getGroupId(transactionOrMessageGroup)}
-              transactionGroup={transactionOrMessageGroup as TransactionType[]}
+              transactionGroup={transactionOrMessageGroup}
               onClick={handleSelectElement}
               isContentOpened={
                 groupId === getGroupId(transactionOrMessageGroup)

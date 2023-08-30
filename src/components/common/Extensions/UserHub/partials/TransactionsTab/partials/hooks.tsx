@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { ActionTypes } from '~redux';
 
 import { useAsyncFunction } from '~hooks';
-import { TRANSACTION_STATUSES } from '~types';
+import { TransactionStatus } from '~gql';
 
 import {
   transactionEstimateGas,
@@ -54,10 +54,10 @@ export const useGroupedTransactionContent = (
     setIsShowingCancelConfirmation(!isShowingCancelConfirmation);
   }, [isShowingCancelConfirmation]);
 
-  const ready = status === TRANSACTION_STATUSES.READY;
-  const failed = status === TRANSACTION_STATUSES.FAILED;
-  const succeeded = status === TRANSACTION_STATUSES.SUCCEEDED;
-  const pending = status === TRANSACTION_STATUSES.PENDING;
+  const ready = status === TransactionStatus.Ready;
+  const failed = status === TransactionStatus.Failed;
+  const succeeded = status === TransactionStatus.Succeeded;
+  const pending = status === TransactionStatus.Pending;
 
   // Only transactions that can be signed can be cancelled
   const canBeSigned: boolean = selected && ready;

@@ -1,3 +1,4 @@
+import { useFormContext } from 'react-hook-form';
 import { Actions } from '~constants/actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 
@@ -22,14 +23,16 @@ export const useActionsContent = () => {
     selectedAction === Actions.CREATE_NEW_TEAM ||
     selectedAction === Actions.UNLOCK_TOKEN ||
     selectedAction === Actions.EDIT_COLONY_DETAILS ||
-    selectedAction === Actions.UPGRADE_COLONY_VERSION;
+    selectedAction === Actions.UPGRADE_COLONY_VERSION ||
+    selectedAction === Actions.CREATE_DECISION;
   const shouldShowDecisionField =
     selectedAction === Actions.SIMPLE_PAYMENT ||
     selectedAction === Actions.MINT_TOKENS ||
     selectedAction === Actions.UNLOCK_TOKEN ||
     selectedAction === Actions.TRANSFER_FUNDS ||
     selectedAction === Actions.EDIT_COLONY_DETAILS ||
-    selectedAction === Actions.CREATE_NEW_TEAM;
+    selectedAction === Actions.CREATE_NEW_TEAM ||
+    selectedAction === Actions.CREATE_DECISION;
   const shouldShowDescriptionField =
     selectedAction === Actions.SIMPLE_PAYMENT ||
     selectedAction === Actions.MINT_TOKENS ||
@@ -37,7 +40,8 @@ export const useActionsContent = () => {
     selectedAction === Actions.CREATE_NEW_TEAM ||
     selectedAction === Actions.UNLOCK_TOKEN ||
     selectedAction === Actions.EDIT_COLONY_DETAILS ||
-    selectedAction === Actions.UPGRADE_COLONY_VERSION;
+    selectedAction === Actions.UPGRADE_COLONY_VERSION ||
+    selectedAction === Actions.CREATE_DECISION;
   const shouldShowTransferFundsField =
     selectedAction === Actions.TRANSFER_FUNDS;
   const shouldShowTeamPurposeField = selectedAction === Actions.CREATE_NEW_TEAM;
@@ -47,6 +51,14 @@ export const useActionsContent = () => {
     selectedAction === Actions.UPGRADE_COLONY_VERSION;
   const shouldShowColonyDetailsFields =
     selectedAction === Actions.EDIT_COLONY_DETAILS;
+
+  const prepareAmountTitle =
+    (selectedAction === Actions.SIMPLE_PAYMENT && 'actionSidebar.amount') ||
+    'actionSidebar.value';
+
+  const methods = useFormContext();
+  const isError = (fieldName: string) =>
+    Object.keys(methods?.formState.errors || {}).includes(fieldName);
 
   return {
     shouldShowFromField,
@@ -61,5 +73,7 @@ export const useActionsContent = () => {
     shouldShowTeamColourField,
     shouldShowVersionFields,
     shouldShowColonyDetailsFields,
+    prepareAmountTitle,
+    isError,
   };
 };

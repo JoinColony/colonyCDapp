@@ -1,4 +1,6 @@
 import React, { FC } from 'react';
+import { useController } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 
 import ActionSidebarRow from '../ActionSidebarRow';
 import TeamsSelect from './partials/TeamsSelect';
@@ -10,16 +12,18 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import DescriptionField from './partials/DescriptionField';
 import useToggle from '~hooks/useToggle';
 import { useDetectClickOutside } from '~hooks';
-import { Actions } from '~constants/actions';
 import DefaultField from './partials/DefaultField';
 import TeamColourField from './partials/TeamColourField';
 import ColonyVersionField from './partials/ColonyVersionField';
-import { ActionsContentProps } from './types';
 import ColonyDetailsFields from './partials/ColonyDetailsFields';
+import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
+import ActionTypeSelect from '../ActionSidebar/ActionTypeSelect';
+import styles from '../ActionSidebar/ActionSidebar.module.css';
+import { ActionSidebarRowFieldNameEnum } from '../ActionSidebarRow/enums';
 
 const displayName = 'v5.common.ActionsContent';
 
-const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
+const ActionsContent: FC = () => {
   const { selectedAction } = useActionSidebarContext();
   const {
     shouldShowFromField,
@@ -34,6 +38,8 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
     shouldShowTeamColourField,
     shouldShowVersionFields,
     shouldShowColonyDetailsFields,
+    prepareAmountTitle,
+    isError,
   } = useActionsContent();
   const [
     isDecriptionFieldExpanded,
@@ -43,123 +49,141 @@ const ActionsContent: FC<ActionsContentProps> = ({ formErrors }) => {
       toggleOn: toggleOnDecriptionSelect,
     },
   ] = useToggle();
+  const { formatMessage } = useIntl();
 
   const ref = useDetectClickOutside({
     onTriggered: () => toggleOffDecriptionSelect(),
   });
-
-  const prepareAmountTitle =
-    (selectedAction === Actions.SIMPLE_PAYMENT && 'actionSidebar.amount') ||
-    'actionSidebar.value';
+  const { field } = useController({
+    name: 'title',
+  });
 
   return (
     <>
+      <input
+        type="text"
+        {...field}
+        className={styles.titleInput}
+        placeholder={formatMessage({ id: 'placeholder.title' })}
+      />
+      <ActionTypeSelect />
       {shouldShowFromField && (
         <ActionSidebarRow
           iconName="users-three"
+          fieldName={ActionSidebarRowFieldNameEnum.FROM}
           title={{ id: 'actionSidebar.from' }}
-          isErrors={formErrors?.team}
+          isError={isError('team')}
         >
-          <TeamsSelect name="team" isErrors={formErrors?.team} />
+          <TeamsSelect name="team" isError={isError('team')} />
         </ActionSidebarRow>
       )}
       {shouldShowVersionFields && <ColonyVersionField />}
       {shouldShowTransferFundsField && (
         <ActionSidebarRow
           iconName="arrow-down-right"
+          fieldName={ActionSidebarRowFieldNameEnum.TO}
           title={{ id: 'actionSidebar.to' }}
-          isErrors={formErrors?.to}
+          isError={isError('to')}
         >
-          <TeamsSelect name="to" isErrors={formErrors?.to} />
+          <TeamsSelect name="to" isError={isError('to')} />
         </ActionSidebarRow>
       )}
       {shouldShowColonyDetailsFields && <ColonyDetailsFields />}
       {shouldShowUserField && (
         <ActionSidebarRow
           iconName="user-focus"
+          fieldName={ActionSidebarRowFieldNameEnum.RECIPIENT}
           title={{ id: 'actionSidebar.recipent' }}
-          isErrors={formErrors?.recipient}
+          isError={isError('recipient')}
         >
-          <UserSelect name="recipient" isErrors={formErrors?.recipient} />
+          <UserSelect name="recipient" isError={isError('recipient')} />
         </ActionSidebarRow>
       )}
       {shouldShowAmountField && (
         <ActionSidebarRow
           iconName="coins"
+          fieldName={ActionSidebarRowFieldNameEnum.AMOUNT}
           title={{ id: prepareAmountTitle }}
-          isErrors={formErrors?.amount}
+          isError={isError('amount')}
         >
-          <AmountField name="amount" isErrors={formErrors?.amount} />
+          <AmountField name="amount" isError={isError('amount')} />
         </ActionSidebarRow>
       )}
       {shouldShowTeamNameField && (
         <ActionSidebarRow
           iconName="user-list"
+          fieldName={ActionSidebarRowFieldNameEnum.TEAM_NAME}
           title={{ id: 'actionSidebar.teamName' }}
-          isErrors={formErrors?.teamName}
+          isError={isError('teamName')}
         >
           <DefaultField
             name="teamName"
             placeholder={{ id: 'actionSidebar.placeholder.teamName' }}
-            isErrors={formErrors?.teamName}
+            isError={isError('teamName')}
           />
         </ActionSidebarRow>
       )}
       {shouldShowTeamPurposeField && (
         <ActionSidebarRow
           iconName="rocket"
+          fieldName={ActionSidebarRowFieldNameEnum.TEAM_PURPOSE}
           title={{ id: 'actionSidebar.teamPurpose' }}
-          isErrors={formErrors?.domainPurpose}
+          isError={isError('domainPurpose')}
         >
           <DefaultField
             name="domainPurpose"
             placeholder={{ id: 'actionSidebar.placeholder.purpose' }}
-            isErrors={formErrors?.domainPurpose}
+            isError={isError('domainPurpose')}
+            maxLength={MAX_DOMAIN_PURPOSE_LENGTH}
           />
         </ActionSidebarRow>
       )}
       {shouldShowTeamColourField && (
         <ActionSidebarRow
           iconName="paint"
+          fieldName={ActionSidebarRowFieldNameEnum.TEAM_COLOUR}
           title={{ id: 'actionSidebar.teamColour' }}
-          isErrors={formErrors?.domainColor}
+          isError={isError('domainColor')}
         >
-          <TeamColourField isErrors={formErrors?.domainColor} />
+          <TeamColourField isError={isError('domainColor')} />
         </ActionSidebarRow>
       )}
       {shouldShowCreatedInField && (
         <ActionSidebarRow
           iconName="house-line"
+          fieldName={ActionSidebarRowFieldNameEnum.CREATED_IN}
           title={{ id: 'actionSidebar.createdIn' }}
-          isErrors={formErrors?.createdIn}
+          isError={isError('createdIn')}
         >
-          <TeamsSelect name="createdIn" isErrors={formErrors?.createdIn} />
+          <TeamsSelect name="createdIn" isError={isError('createdIn')} />
         </ActionSidebarRow>
       )}
       {shouldShowDecisionField && selectedAction && (
         <ActionSidebarRow
           iconName="scales"
+          fieldName={ActionSidebarRowFieldNameEnum.DECISION_METHOD}
           title={{ id: 'actionSidebar.decisionMethod' }}
-          isErrors={formErrors?.decisionMethod}
+          isError={isError('decisionMethod')}
         >
-          <DecisionField isErrors={formErrors?.decisionMethod} />
+          <DecisionField isError={isError('decisionMethod')} />
         </ActionSidebarRow>
       )}
       {shouldShowDescriptionField && (
         <ActionSidebarRow
           iconName="pencil"
+          fieldName={ActionSidebarRowFieldNameEnum.DESCRIPTION}
           title={{ id: 'actionSidebar.description' }}
           isDescriptionFieldRow
           isOpened={isDecriptionFieldExpanded}
           onToggle={toggleDecriptionSelect}
           ref={ref}
-          isErrors={formErrors?.annotation}
+          isError={isError('annotation')}
         >
           <DescriptionField
             isDecriptionFieldExpanded={isDecriptionFieldExpanded}
             toggleOffDecriptionSelect={toggleOffDecriptionSelect}
             toggleOnDecriptionSelect={toggleOnDecriptionSelect}
-            isErrors={formErrors?.annotation}
+            isError={isError('annotation')}
           />
         </ActionSidebarRow>
       )}

@@ -12,12 +12,20 @@ import React, {
 export const ActionFormContext = createContext<{
   formErrors?: Record<any, any>;
   changeFormErrorsState: (data) => void;
-}>({ formErrors: {}, changeFormErrorsState: noop });
+  isSubmitting: boolean;
+  changeFormSubmitting: (submitting: boolean) => void;
+}>({
+  formErrors: {},
+  changeFormErrorsState: noop,
+  isSubmitting: false,
+  changeFormSubmitting: noop,
+});
 
 export const ActionFormContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
   const [formErrors, setFormErrors] = useState<Record<any, any>>();
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const changeFormErrorsState = useCallback(
     (errors) => {
@@ -26,9 +34,21 @@ export const ActionFormContextProvider: FC<PropsWithChildren> = ({
     [setFormErrors],
   );
 
+  const changeFormSubmitting = useCallback(
+    (submitting) => {
+      setIsSubmitting?.(submitting);
+    },
+    [setIsSubmitting],
+  );
+
   const value = useMemo(
-    () => ({ formErrors, changeFormErrorsState }),
-    [formErrors, changeFormErrorsState],
+    () => ({
+      formErrors,
+      changeFormErrorsState,
+      isSubmitting,
+      changeFormSubmitting,
+    }),
+    [formErrors, changeFormErrorsState, isSubmitting, changeFormSubmitting],
   );
 
   return (

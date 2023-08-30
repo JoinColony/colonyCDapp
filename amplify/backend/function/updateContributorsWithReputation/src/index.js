@@ -11,6 +11,7 @@ const {
   getColony,
   updateColony,
   getColonyContributor,
+  getReputationMiningCycleMetadata,
 } = require('./graphql');
 
 const {
@@ -20,8 +21,8 @@ const {
   createContributorReputationInDb,
   updateContributorReputationInDb,
   updateColonyContributorInDb,
-  isWithinLastHour,
   createColonyContributorInDb,
+  reputationMiningCycleMetadataId,
 } = require('./utils');
 
 Logger.setLogLevel(Logger.levels.ERROR);
@@ -113,17 +114,24 @@ exports.handler = async (event) => {
         apiKey,
       )) ?? {};
 
+    const { data: response } =
+      (await graphqlRequest(
+        getReputationMiningCycleMetadata,
+        { id: reputationMiningCycleMetadataId },
+        graphqlURL,
+        apiKey,
+      )) ?? {};
+
     const lastUpdatedCache =
       data?.getColony?.lastUpdatedContributorsWithReputation;
 
-    // If we updated the cache within the last hour, we don't need to update it again
-    // Note the decision to choose one hour is arbitrary and based on the idea that the reputation mining
-    // cycle takes between 1-2 hours. But if we want fresher data, we can reduce this number.
-    // In dev we can just call this function every time
+    const lastReputationMiningCycleCompletion =
+      response?.getReputationMiningCycleMetadata?.lastCompletedAt;
+
+    // We only need to update the cache if the reputation mining cycle has completed since the last time we updated the cache
     if (
-      process.env.ENV !== 'dev' &&
-      lastUpdatedCache &&
-      isWithinLastHour(lastUpdatedCache)
+      new Date(lastReputationMiningCycleCompletion).valueOf() <
+      new Date(lastUpdatedCache).valueOf()
     ) {
       return true;
     }

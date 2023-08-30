@@ -9,7 +9,7 @@ import { useAppContext, useColonyContext } from '~hooks';
 import { isInstalledExtensionData } from '~utils/extensions';
 
 import DeprecateButton from './DeprecateButton';
-import ReenableButton from './ReenableButton';
+import EnableButton from './EnableButton';
 import UninstallButton from './UninstallButton';
 import { addressHasRoles } from '~utils/checks';
 
@@ -49,10 +49,11 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
     extensionData.isDeprecated
   );
 
-  /* If installed, can be uninstalled. User needs root permission to uninstall. */
+  /* If installed, and deprecated / unenabled, can be uninstalled. User needs root permission to uninstall. */
   const canExtensionBeUninstalled = !!(
     hasRootPermission &&
     isInstalledExtensionData(extensionData) &&
+    (extensionData.isDeprecated || !extensionData.isEnabled) &&
     extensionData.uninstallable
   );
 
@@ -64,7 +65,7 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
       )}
       <div className="mt-6 flex flex-col gap-4">
         {canExtensionBeRenabled && (
-          <ReenableButton extensionData={extensionData} />
+          <EnableButton extensionData={extensionData} />
         )}
         {canExtensionBeUninstalled && (
           <UninstallButton extensionData={extensionData} />

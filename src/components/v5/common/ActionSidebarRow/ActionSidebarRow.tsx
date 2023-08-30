@@ -4,6 +4,8 @@ import clsx from 'clsx';
 
 import { ActionSidebarRowProps } from './types';
 import Icon from '~shared/Icon';
+import { useActionSidebarRow } from './hooks';
+import Tooltip from '~shared/Extensions/Tooltip';
 
 const ActionSidebarRow: FC<PropsWithChildren<ActionSidebarRowProps>> = ({
   iconName,
@@ -13,9 +15,11 @@ const ActionSidebarRow: FC<PropsWithChildren<ActionSidebarRowProps>> = ({
   isOpened,
   onToggle,
   ref,
-  isErrors,
+  isError,
+  fieldName,
 }) => {
   const { formatMessage } = useIntl();
+  const fieldToolTips = useActionSidebarRow();
 
   const content = (
     <>
@@ -46,29 +50,36 @@ const ActionSidebarRow: FC<PropsWithChildren<ActionSidebarRowProps>> = ({
       })}
       ref={ref}
     >
-      {isDescriptionFieldRow ? (
-        <button
-          className={clsx('flex items-center  group', {
-            'hover:text-blue-400': isDescriptionFieldRow,
-            'text-negative-400': isErrors,
-            'text-gray-600': !isErrors,
-          })}
-          onClick={onToggle}
-          type="button"
-          aria-expanded={isOpened}
-        >
-          {content}
-        </button>
-      ) : (
-        <div
-          className={clsx('flex items-center', {
-            'text-negative-400': isErrors,
-            'text-gray-600': !isErrors,
-          })}
-        >
-          {content}
-        </div>
-      )}
+      <Tooltip
+        tooltipContent={
+          <span>{formatMessage({ id: `${fieldToolTips[fieldName]}` })}</span>
+        }
+        placement="bottom-start"
+      >
+        {isDescriptionFieldRow ? (
+          <button
+            className={clsx('flex items-center  group', {
+              'hover:text-blue-400': isDescriptionFieldRow,
+              'text-negative-400': isError,
+              'text-gray-600': !isError,
+            })}
+            onClick={onToggle}
+            type="button"
+            aria-expanded={isOpened}
+          >
+            {content}
+          </button>
+        ) : (
+          <div
+            className={clsx('flex items-center', {
+              'text-negative-400': isError,
+              'text-gray-600': !isError,
+            })}
+          >
+            {content}
+          </div>
+        )}
+      </Tooltip>
       {children}
     </div>
   );

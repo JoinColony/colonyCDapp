@@ -15,11 +15,11 @@ import UserHubMobile from './UserHubMobile';
 import { UserHubProps } from './types';
 import TitleLabel from '~v5/shared/TitleLabel';
 import { stakesMock } from './partials/StakesTab/consts';
+import { useGroupedTransactionsAndMessages } from '../UserNavigation/hooks';
 
 export const displayName = 'common.Extensions.UserHub.partials.UserHub';
 
 const UserHub: FC<UserHubProps> = ({
-  transactionAndMessageGroups,
   autoOpenTransaction,
   setAutoOpenTransaction,
   isTransactionTabVisible = false,
@@ -36,6 +36,12 @@ const UserHub: FC<UserHubProps> = ({
   const handleChange = (selectedOption: number) => {
     setSelectedTab(selectedOption);
   };
+
+  const {
+    transactionAndMessageGroups,
+    fetchMoreTransactions,
+    canLoadMoreTransactions,
+  } = useGroupedTransactionsAndMessages();
 
   useEffect(() => {
     if (isTransactionTabVisible) {
@@ -126,6 +132,8 @@ const UserHub: FC<UserHubProps> = ({
                 transactionAndMessageGroups={transactionAndMessageGroups}
                 autoOpenTransaction={autoOpenTransaction}
                 setAutoOpenTransaction={setAutoOpenTransaction}
+                fetchMoreTransactions={fetchMoreTransactions}
+                canLoadMoreTransactions={canLoadMoreTransactions}
                 appearance={{ interactive: true }}
               />
             )}

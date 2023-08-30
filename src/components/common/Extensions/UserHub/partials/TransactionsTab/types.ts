@@ -1,19 +1,19 @@
 import { TransactionOrMessageGroups } from '~frame/GasStation/transactionGroup';
 import { TransactionType } from '~redux/immutable';
-import { TRANSACTION_STATUSES } from '~types';
+import { TransactionStatus } from '~gql';
 
 export interface TransactionHeaderProps {
   title: string;
   description: string;
   date: string;
-  status: TRANSACTION_STATUSES;
+  status: TransactionStatus;
 }
 
 export interface TransactionsContent {
   key: string;
   title: string;
   notificationInfo?: string;
-  status?: TRANSACTION_STATUSES;
+  status?: TransactionStatus;
   isCurrentAction?: boolean;
   isPending?: boolean;
 }
@@ -27,9 +27,11 @@ export interface TransactionsItemProps extends TransactionHeaderProps {
 
 export interface TransactionsProps {
   transactionAndMessageGroups: TransactionOrMessageGroups;
+  canLoadMoreTransactions: boolean;
   openIndex?: number;
   autoOpenTransaction?: boolean;
   appearance: Appearance;
+  fetchMoreTransactions: () => void;
   onOpenIndexChange?: (newOpenIndex: number | undefined) => void;
   close?: () => void;
   setAutoOpenTransaction?: (boolean) => void;
@@ -63,7 +65,7 @@ export interface GroupedTransactionProps {
 export interface TransactionStatusProps {
   groupCount?: number;
   hash?: string;
-  status: TRANSACTION_STATUSES;
+  status: TransactionStatus;
   loadingRelated?: boolean;
   date?: Date;
 }
