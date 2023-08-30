@@ -11,6 +11,7 @@ import {
 import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
 import { getFileRejectionErrors } from '~shared/FileUpload/utils';
 import { convertBytes } from '~utils/convertBytes';
+import { useColnyAvatarContext } from '~context/ColnyAvatarContext';
 
 export const useChangeColonyAvatar = () => {
   const { setValue, watch } = useFormContext();
@@ -20,6 +21,7 @@ export const useChangeColonyAvatar = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [file, setFileName] = useState({ fileName: '', fileSize: '' });
   const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const { onSaveColonyAvatar, onSaveColonyThumbnail } = useColnyAvatarContext();
 
   const handleFileRemove = async () => {
     setValue('colonyAvatarImage', null, { shouldDirty: true });
@@ -47,6 +49,8 @@ export const useChangeColonyAvatar = () => {
 
       setValue('colonyAvatarImage', optimisedImage, { shouldDirty: true });
       setValue('colonyThumbnail', optimisedThumbnail);
+      onSaveColonyAvatar(optimisedImage);
+      onSaveColonyThumbnail(optimisedThumbnail);
 
       if (uploadedFile?.file) {
         setShowPropgress(true);

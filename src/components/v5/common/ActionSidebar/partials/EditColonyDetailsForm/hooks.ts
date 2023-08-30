@@ -7,11 +7,13 @@ import { useColonyContext } from '~hooks';
 import { MAX_ANNOTATION_LENGTH, MAX_COLONY_DISPLAY_NAME } from '~constants';
 import { useActionHook } from '../ActionForm/hooks';
 import { getEditColonyDetailsDialogPayload } from '~common/Dialogs/EditColonyDetailsDialog/helpers';
+import { useColnyAvatarContext } from '~context/ColnyAvatarContext';
 
 export const useEditColonyDetails = () => {
   const { colony } = useColonyContext();
   const { metadata } = colony || {};
   const navigate = useNavigate();
+  const { colonyAvatar, colonyThumbnail } = useColnyAvatarContext();
 
   const validationSchema = yup
     .object()
@@ -34,8 +36,8 @@ export const useEditColonyDetails = () => {
     mapPayload((payload) => {
       const values = {
         colonyDisplayName: payload.colonyDisplayName,
-        colonyAvatarImage: payload.colonyAvatarImage,
-        colonyThumbnail: payload.colonyDescription,
+        colonyAvatarImage: colonyAvatar || payload.avatar,
+        colonyThumbnail: colonyThumbnail || payload.colonyThumbnail,
         motionDomainId: payload.createdIn,
         decisionMethod: payload.decisionMethod,
         annotationMessage: payload.annotation,
@@ -60,7 +62,7 @@ export const useEditColonyDetails = () => {
       annotation: '',
       createdIn: 1,
     },
-    defaultAction: ActionTypes.MOTION_EDIT_COLONY,
-    actionType: ActionTypes.ACTION_EDIT_COLONY,
+    defaultAction: ActionTypes.ACTION_EDIT_COLONY,
+    actionType: ActionTypes.MOTION_EDIT_COLONY,
   });
 };

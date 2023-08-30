@@ -13,6 +13,7 @@ import { HeaderProps } from './types';
 import ActionSidebar from '~v5/common/ActionSidebar';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { ActionFormContextProvider } from '~v5/common/ActionSidebar/partials/ActionForm/ActionFormContext';
+import { ColnyAvatarContextProvider } from '~context/ColnyAvatarContext';
 
 const displayName = 'frame.Extensions.Header';
 
@@ -66,7 +67,9 @@ const Header: FC<HeaderProps> = ({ hideColonies = false }) => {
 
   const userMenuComponent = isActionSidebarOpen ? (
     <ActionFormContextProvider>
-      <ActionSidebar>{userNavigation}</ActionSidebar>
+      <ColnyAvatarContextProvider>
+        <ActionSidebar>{userNavigation}</ActionSidebar>
+      </ColnyAvatarContextProvider>
     </ActionFormContextProvider>
   ) : (
     userNavigation

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import ActionSidebarRow from '~v5/common/ActionSidebarRow';
 import DefaultField from '../DefaultField';
@@ -14,8 +15,9 @@ const ColonyDetailsFields = () => {
   const { formErrors } = useActionFormContext();
   const { colony } = useColonyContext();
   const { toggleChangeAvatarModalOn } = useActionSidebarContext();
-  const { metadata, colonyAddress } = colony || {};
-  const { displayName: colonyName } = metadata || {};
+  const { colonyAddress } = colony || {};
+  const { watch } = useFormContext();
+  const { colonyDisplayName } = watch();
 
   return (
     <>
@@ -28,7 +30,7 @@ const ColonyDetailsFields = () => {
           name="colonyDisplayName"
           placeholder={{ id: 'actionSidebar.colonyName.placeholder' }}
           isErrors={formErrors?.colonyDisplayName}
-          defaultValue={colonyName}
+          defaultValue={colonyDisplayName}
         />
       </ActionSidebarRow>
       <ActionSidebarRow

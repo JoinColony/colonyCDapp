@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
@@ -20,7 +20,6 @@ export const useActionHook = ({
   const { toggleActionSidebarOff } = useActionSidebarContext();
   const { isVotingReputationEnabled } = useEnabledExtensions();
   const { changeFormErrorsState } = useActionFormContext();
-  const [isForce, setIsForce] = useState(false);
 
   const methods = useForm({
     mode: 'all',
@@ -28,16 +27,10 @@ export const useActionHook = ({
     defaultValues,
   });
 
-  const { forceAction } = methods.watch();
-
-  useEffect(() => {
-    if (forceAction !== isForce) {
-      setIsForce(forceAction);
-    }
-  }, [forceAction, isForce, setIsForce]);
-
   const action =
-    isVotingReputationEnabled && !isForce ? defaultAction : actionType;
+    isVotingReputationEnabled && methods.formState.isDirty
+      ? defaultAction
+      : actionType;
 
   type FormValues = yup.InferType<typeof validationSchema>;
 
