@@ -46,6 +46,11 @@ export const EVENT_ROLES_MAP: EventRolesMap = {
     ColonyRole.Root,
     ColonyRole.Arbitration,
   ],
+  [ColonyAndExtensionsEvents.SafeContractInteraction]: [ColonyRole.Root],
+  [ColonyAndExtensionsEvents.SafeMultipleTransactions]: [ColonyRole.Root],
+  [ColonyAndExtensionsEvents.SafeRawTransaction]: [ColonyRole.Root],
+  [ColonyAndExtensionsEvents.SafeTransferFunds]: [ColonyRole.Root],
+  [ColonyAndExtensionsEvents.SafeTransferNft]: [ColonyRole.Root],
   [ColonyAndExtensionsEvents.Generic]: [],
 };
 
