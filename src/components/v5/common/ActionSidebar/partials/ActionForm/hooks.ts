@@ -22,13 +22,16 @@ export const useActionHook = ({
   const { changeFormErrorsState, changeFormSubmitting } =
     useActionFormContext();
 
-  const action = isVotingReputationEnabled ? defaultAction : actionType;
-
   const methods = useForm({
     mode: 'all',
     resolver: yupResolver(validationSchema),
     defaultValues,
   });
+
+  const action =
+    isVotingReputationEnabled && methods.formState.isDirty
+      ? defaultAction
+      : actionType;
 
   type FormValues = yup.InferType<typeof validationSchema>;
 

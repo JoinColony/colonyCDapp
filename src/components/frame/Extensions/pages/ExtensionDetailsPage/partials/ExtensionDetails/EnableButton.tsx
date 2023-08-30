@@ -4,17 +4,17 @@ import { AnyExtensionData } from '~types';
 import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button/Button';
 import Modal from '~v5/shared/Modal/Modal';
-import { useReenable } from './hooks';
+import { useEnable } from './hooks';
 
-const displayName = 'pages.ExtensionDetailsPage.ReenableButton';
+const displayName = 'pages.ExtensionDetailsPage.EnableButton';
 
-const ReenableButton = ({
+const EnableButton = ({
   extensionData: { extensionId },
 }: {
   extensionData: AnyExtensionData;
 }) => {
   const [isReEnableModalOpen, setIsReEnableModalOpen] = useState(false);
-  const { handleReEnable, isLoading } = useReenable({
+  const { handleEnable, isLoading } = useEnable({
     extensionId,
   });
   return (
@@ -26,7 +26,7 @@ const ReenableButton = ({
         loading={isLoading}
         onClick={() => setIsReEnableModalOpen(true)}
       >
-        {formatText({ id: 'button.reEnable' })}
+        {formatText({ id: 'button.enable' })}
       </Button>
       <Modal
         title={formatText({ id: 'extensionReEnable.modal.title' })}
@@ -35,7 +35,7 @@ const ReenableButton = ({
         })}
         isOpen={isReEnableModalOpen}
         onClose={() => setIsReEnableModalOpen(false)}
-        onConfirm={handleReEnable}
+        onConfirm={handleEnable}
         confirmMessage={formatText({ id: 'button.confirm' })}
         closeMessage={formatText({
           id: 'button.cancel',
@@ -45,6 +45,6 @@ const ReenableButton = ({
   );
 };
 
-ReenableButton.displayName = displayName;
+EnableButton.displayName = displayName;
 
-export default ReenableButton;
+export default EnableButton;

@@ -12,6 +12,7 @@ const displayName = 'v5.common.ActionsContent.partials.DefaultField';
 const DefaultField: FC<DefaultFieldProps> = ({
   name,
   placeholder,
+  defaultValue,
   isError,
   maxLength = MAX_COLONY_DISPLAY_NAME,
   defaultValue,

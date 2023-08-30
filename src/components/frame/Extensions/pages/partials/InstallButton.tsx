@@ -8,7 +8,7 @@ import Toast from '~shared/Extensions/Toast/Toast';
 import { AnyExtensionData } from '~types';
 import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button/Button';
-import { waitForDbAfterAction } from '../ExtensionDetailsPage/utils';
+import { waitForDbAfterExtensionAction } from '../ExtensionDetailsPage/utils';
 import { ExtensionMethods } from '~hooks/useExtensionData';
 
 interface InstallButtonProps {
@@ -30,7 +30,7 @@ const InstallButton = ({ extensionData }: InstallButtonProps) => {
   const handleInstallSuccess = async () => {
     setIsInstallDisabled(true);
     setIsPolling(true);
-    await waitForDbAfterAction({
+    await waitForDbAfterExtensionAction({
       method: ExtensionMethods.INSTALL,
       refetchExtensionData,
     });
@@ -50,6 +50,7 @@ const InstallButton = ({ extensionData }: InstallButtonProps) => {
   };
 
   const handleInstallError = () => {
+    setIsInstallDisabled(false);
     toast.error(
       <Toast
         type="error"

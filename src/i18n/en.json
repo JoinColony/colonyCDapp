@@ -73,7 +73,6 @@
   "button.updateEndpoint": "Update Endpoint",
   "button.download": "Download",
   "button.deleteAccount": "Delete account",
-  "button.reEnable": "Re-enable",
   "button.addNewMember": "Add new member",
   "button.removeMembers": "Remove members",
   "button.uninstallExtension": "Uninstall extension",
@@ -105,6 +104,7 @@
   "button.createIntegration": "Create integration",
   "button.addTransaction": "Add transaction",
   "button.pending": "Pending",
+  "button.changeConfirm": "Change confirm",
   "input.resetText": "Cancel",
   "label.amount": "Amount",
   "label.name": "Name",
@@ -825,6 +825,11 @@
   "actionSidebar.actionType": "Action type",
   "actionSidebar.from": "From",
   "actionSidebar.to": "To",
+  "actionSidebar.colonyName": "Colony name",
+  "actionSidebar.colonyLogo": "Colony logo",
+  "actionSidebar.colonyDescription": "Colony description",
+  "actionSidebar.colonyDescription.placeholder": "Short colony description",
+  "actionSidebar.colonyName.placeholder": "Enter colony name",
   "actionSidebar.recipent": "Recipent",
   "actionSidebar.amount": "Amount",
   "actionSidebar.value": "Value",
@@ -973,5 +978,7 @@
   "button.remove.row": "Remove row",
   "validation.number.positive": "Number must be positive",
   "validation.number.integer": "Number must be an integer",
-  "validation.required": "Field is required"
+  "validation.required": "Field is required",
+  "editColonyLogo.modal.title": "Upload new Colony logo",
+  "editColonyLogo.modal.subtitle": "Choose a new logo for your Colony."
 }

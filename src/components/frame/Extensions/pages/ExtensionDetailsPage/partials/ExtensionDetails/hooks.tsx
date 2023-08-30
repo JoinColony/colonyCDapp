@@ -7,7 +7,7 @@ import { useAsyncFunction, useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import Toast from '~shared/Extensions/Toast';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData';
-import { waitForDbAfterAction } from '../../utils';
+import { waitForDbAfterExtensionAction } from '../../utils';
 
 export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
   const { colony } = useColonyContext();
@@ -31,7 +31,7 @@ export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
     try {
       setIsLoading(true);
       await deprecateAsyncFunction(deprecateExtensionValues);
-      await waitForDbAfterAction({
+      await waitForDbAfterExtensionAction({
         method: ExtensionMethods.DEPRECATE,
         refetchExtensionData,
       });
@@ -44,7 +44,7 @@ export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
       );
     } catch (err) {
       console.error(err);
-      toast.success(
+      toast.error(
         <Toast
           type="error"
           title={{ id: 'extensionDeprecate.toast.title.error' }}
@@ -82,7 +82,7 @@ export const useUninstall = ({ extensionId }: { extensionId: Extension }) => {
     try {
       setIsLoading(true);
       await uninstallAsyncFunction(uninstallExtensionValues);
-      await waitForDbAfterAction({
+      await waitForDbAfterExtensionAction({
         method: ExtensionMethods.UNINSTALL,
         refetchExtensionData,
       });
@@ -114,29 +114,29 @@ export const useUninstall = ({ extensionId }: { extensionId: Extension }) => {
   return { handleUninstall, isLoading };
 };
 
-export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
+export const useEnable = ({ extensionId }: { extensionId: Extension }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { colony } = useColonyContext();
   const { colonyAddress = '' } = colony ?? {};
   const { refetchExtensionData } = useExtensionData(extensionId);
 
-  const reEnableExtensionValues = {
+  const enableExtensionValues = {
     colonyAddress,
     extensionId,
     isToDeprecate: false,
   };
 
-  const reEnableAsyncFunction = useAsyncFunction({
+  const enableAsyncFunction = useAsyncFunction({
     submit: ActionTypes.EXTENSION_DEPRECATE,
     error: ActionTypes.EXTENSION_DEPRECATE_ERROR,
     success: ActionTypes.EXTENSION_DEPRECATE_SUCCESS,
   });
 
-  const handleReEnable = async () => {
+  const handleEnable = async () => {
     try {
       setIsLoading(true);
-      await reEnableAsyncFunction(reEnableExtensionValues);
-      await waitForDbAfterAction({
+      await enableAsyncFunction(enableExtensionValues);
+      await waitForDbAfterExtensionAction({
         method: ExtensionMethods.REENABLE,
         refetchExtensionData,
       });
@@ -163,5 +163,5 @@ export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
     }
   };
 
-  return { handleReEnable, isLoading };
+  return { handleEnable, isLoading };
 };

@@ -29,13 +29,15 @@ export function* extensionInstall({
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
 
-    yield put<AllActions>({
-      type: ActionTypes.EXTENSION_INSTALL_SUCCESS,
-      payload: {},
-      meta,
-    });
+    const result = yield waitForTxResult(txChannel);
 
-    yield waitForTxResult(txChannel);
+    if (result.type === ActionTypes.TRANSACTION_SUCCEEDED) {
+      yield put<AllActions>({
+        type: ActionTypes.EXTENSION_INSTALL_SUCCESS,
+        payload: {},
+        meta,
+      });
+    }
   } catch (error) {
     return yield putError(ActionTypes.EXTENSION_INSTALL_ERROR, error, meta);
   }

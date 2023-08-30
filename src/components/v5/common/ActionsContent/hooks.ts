@@ -32,6 +32,8 @@ export const useActionsContent = () => {
     selectedAction === Actions.EDIT_EXISTING_TEAM;
   const shouldShowVersionFields =
     selectedAction === Actions.UPGRADE_COLONY_VERSION;
+  const shouldShowColonyDetailsFields =
+    selectedAction === Actions.EDIT_COLONY_DETAILS;
 
   const prepareAmountTitle =
     (selectedAction === Actions.SIMPLE_PAYMENT && 'actionSidebar.amount') ||
@@ -50,6 +52,7 @@ export const useActionsContent = () => {
     shouldShowTeamNameField,
     shouldShowTeamColourField,
     shouldShowVersionFields,
+    shouldShowColonyDetailsFields,
     prepareAmountTitle,
     isError,
   };
