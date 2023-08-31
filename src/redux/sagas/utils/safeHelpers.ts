@@ -6,7 +6,7 @@ import { AddressZero } from '@ethersproject/constants';
 import { FormatTypes } from 'ethers/lib/utils';
 
 import { Address, ModuleAddress, Safe, SafeTransactionData } from '~types';
-import { GNOSIS_AMB_BRIDGES, isDev, SAFE_NETWORKS } from '~constants';
+import { GNOSIS_AMB_BRIDGES, isDev, SUPPORTED_SAFE_NETWORKS } from '~constants';
 import { getArrayFromString } from '~utils/safes';
 
 import { erc721, ForeignAMB, HomeAMB, ZodiacBridgeModule } from './abis'; // Temporary
@@ -68,7 +68,9 @@ export const getHomeProvider = () => {
 };
 
 export const getForeignProvider = (safeChainId: number) => {
-  const network = SAFE_NETWORKS.find((n) => n.chainId === safeChainId);
+  const network = SUPPORTED_SAFE_NETWORKS.find(
+    (n) => n.chainId === safeChainId,
+  );
 
   if (!network) {
     throw new Error(
@@ -140,7 +142,7 @@ export const getZodiacModule = (zodiacModuleAddress: Address, safe: Safe) => {
 };
 
 export const getTxServiceBaseUrl = (selectedChain: string) => {
-  const selectedNetwork = SAFE_NETWORKS.find(
+  const selectedNetwork = SUPPORTED_SAFE_NETWORKS.find(
     (network) => network.name === selectedChain,
   );
 

@@ -63,6 +63,8 @@ const VoteOutcome = ({
 
   const userSideWon = winningSide === currentUserVote;
 
+  const actionType = getExtendedActionType(actionData, pendingColonyMetadata);
+
   return (
     <div className={styles.main}>
       {typeof currentUserRecord?.vote === 'number' && (
@@ -78,9 +80,7 @@ const VoteOutcome = ({
       <Heading4
         text={voteTitleMsg}
         textValues={{
-          actionType: formatActionType(
-            getExtendedActionType(actionData, pendingColonyMetadata),
-          ),
+          actionType: formatActionType(actionType),
         }}
         appearance={{ weight: 'bold', theme: 'dark' }}
       />

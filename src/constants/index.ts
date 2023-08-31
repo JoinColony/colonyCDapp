@@ -136,8 +136,6 @@ export const BINANCE_NETWORK: NetworkInfo = {
   nativeToken: BINANCE_TOKEN,
 };
 
-export const SAFE_NETWORKS: NetworkInfo[] = [ETHEREUM_NETWORK, BINANCE_NETWORK];
-
 export const NETWORK_DATA: { [key: string]: NetworkInfo } = {
   [Network.Ganache]: GANACHE_NETWORK,
   [Network.Gnosis]: GNOSIS_NETWORK,

@@ -2,7 +2,7 @@ import { defineMessages } from 'react-intl';
 import omitDeep from 'omit-deep-lodash';
 import { ColonyRole, Id } from '@colony/colony-js';
 
-import { SAFE_NETWORKS } from '~constants';
+import { SUPPORTED_SAFE_NETWORKS } from '~constants';
 import { Colony, Safe } from '~types';
 import { getChainNameFromSafe } from '~utils/safes';
 import { EnabledExtensionData, useActionDialogStatus } from '~hooks';
@@ -28,10 +28,11 @@ export const getControlSafeDialogPayload = (colony: Colony, payload: any) => {
 
   const chainName = getChainNameFromSafe(safe.profile.displayName);
   const transformedSafe: Safe = {
-    // Find will return because input value comes from SAFE_NETWORKS
+    // Find will return because input value comes from SUPPORTED_SAFE_NETWORKS
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    chainId: SAFE_NETWORKS.find((network) => network.name === chainName)!
-      .chainId,
+    chainId: SUPPORTED_SAFE_NETWORKS.find(
+      (network) => network.name === chainName,
+    )!.chainId,
     address: safe.walletAddress,
     moduleContractAddress: safe.id,
     name: extractSafeName(safe.profile.displayName),

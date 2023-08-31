@@ -1,5 +1,9 @@
 import { SafeTransaction } from '~common/Dialogs/ControlSafeDialog/types';
-import { ADDRESS_ZERO, SAFE_NAMES_MAP, SAFE_NETWORKS } from '~constants';
+import {
+  ADDRESS_ZERO,
+  SAFE_NAMES_MAP,
+  SUPPORTED_SAFE_NETWORKS,
+} from '~constants';
 import {
   Address,
   ColonyAction,
@@ -47,7 +51,7 @@ export const getChainNameFromSafe = (safeDisplayName: string) => {
 };
 
 export const getTxServiceBaseUrl = (selectedChain: string) => {
-  const selectedNetwork = SAFE_NETWORKS.find(
+  const selectedNetwork = SUPPORTED_SAFE_NETWORKS.find(
     (network) => network.name === selectedChain,
   );
 
