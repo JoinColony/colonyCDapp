@@ -115,7 +115,7 @@ const ControlSafeForm = ({
   handleIsForceChange,
   isForce,
 }: ControlSafeProps) => {
-  const [prevSafeAddress, setPrevSafeAddress] = useState<string>('');
+  const [prevSafeChainId, setPrevSafeChainId] = useState<number | undefined>();
   const [transactionTabStatus, setTransactionTabStatus] = useState([true]);
   const savedTokenState = useState({});
 
@@ -227,6 +227,8 @@ const ControlSafeForm = ({
             selectedContractMethods={selectedContractMethods}
             handleSelectedContractMethods={handleSelectedContractMethods}
             removeSelectedContractMethod={removeSelectedContractMethod}
+            prevSafeChainId={prevSafeChainId}
+            handlePrevSafeChainIdChange={setPrevSafeChainId}
           />
         );
       case SafeTransactionType.TransferNft:
@@ -239,14 +241,6 @@ const ControlSafeForm = ({
         );
       default:
         return null;
-    }
-  };
-
-  const handleSafeChange = (newSafe: SelectedPickerItem) => {
-    const safeAddress = newSafe?.walletAddress;
-
-    if (safeAddress !== prevSafeAddress) {
-      setPrevSafeAddress(safeAddress);
     }
   };
 
@@ -358,7 +352,6 @@ const ControlSafeForm = ({
                 placeholder={MSG.safePickerPlaceholder}
                 filter={filterUserSelection}
                 disabled={disabledSectionInputs}
-                onSelected={handleSafeChange}
               />
             </div>
           </DialogSection>

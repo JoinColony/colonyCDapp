@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   defineMessages,
   FormattedMessage,
@@ -102,12 +102,14 @@ const MSG = defineMessages({
 });
 
 interface Props extends TransactionSectionProps {
-  selectedContractMethods?: UpdatedMethods;
+  selectedContractMethods: UpdatedMethods | undefined;
   removeSelectedContractMethod: (index: number) => void;
   handleSelectedContractMethods: (
     selectedContractMethods: UpdatedMethods,
     index: number,
   ) => void;
+  prevSafeChainId: number | undefined;
+  handlePrevSafeChainIdChange: (chainId: number) => void;
 }
 
 const getAttributionMessage = (chainId: string | undefined) => {
@@ -124,6 +126,8 @@ const ContractInteractionSection = ({
   selectedContractMethods = {},
   handleSelectedContractMethods,
   removeSelectedContractMethod,
+  prevSafeChainId,
+  handlePrevSafeChainIdChange,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -132,7 +136,6 @@ const ContractInteractionSection = ({
   const [formattedMethodOptions, setFormattedMethodOptions] = useState<
     SelectOption[]
   >([]);
-  const [prevSafeChainId, setPrevSafeChainId] = useState<number>();
   const [isLoadingABI, setIsLoadingABI] = useState<boolean>(false);
   const [fetchABIError, setFetchABIError] = useState<Message>('');
 
@@ -144,8 +147,8 @@ const ContractInteractionSection = ({
   } = useFormContext();
   const safe = watch('safe');
   const transactions: FormSafeTransaction[] = watch(`transactions`);
-  const transactionValues = transactions[transactionIndex];
   const selectedSafe = getSafe(safes, safe);
+  const transactionValues = transactions[transactionIndex];
 
   const onContractABIChange = useCallback(
     (abiResponse: ABIResponse) => {
@@ -169,12 +172,12 @@ const ContractInteractionSection = ({
       }
     },
     [
-      transactionIndex,
+      formatMessage,
       safe,
       setValue,
+      transactionIndex,
       transactionValues.abi,
       removeSelectedContractMethod,
-      formatMessage,
     ],
   );
 
@@ -203,13 +206,14 @@ const ContractInteractionSection = ({
 
         const contractName = await fetchContractName(
           contract.walletAddress,
-          Number(selectedSafe?.chainId),
+          selectedSafe.chainId,
         );
 
         setTransactionDisplayName(
           contractName || formatMessage(MSG.unknownContract),
         );
         setIsLoadingABI(false);
+        handlePrevSafeChainIdChange(selectedSafe.chainId);
       } else {
         const error = !isAddress(contract.walletAddress)
           ? MSG.invalidAddressError
@@ -221,17 +225,17 @@ const ContractInteractionSection = ({
       }
     },
     [
-      selectedSafe,
-      onContractABIChange,
       formatMessage,
+      selectedSafe,
       setValue,
       transactionIndex,
+      handlePrevSafeChainIdChange,
+      onContractABIChange,
     ],
   );
 
-  const usefulMethods: AbiItemExtended[] = useMemo(
-    () => getContractUsefulMethods(transactionValues.abi),
-    [transactionValues.abi],
+  const usefulMethods: AbiItemExtended[] = getContractUsefulMethods(
+    transactionValues.abi,
   );
 
   const isSpecificError = (error: Message, comparison: MessageDescriptor) => {
@@ -243,23 +247,19 @@ const ContractInteractionSection = ({
 
   useEffect(() => {
     if (
+      !isLoadingABI &&
       transactionValues.contract &&
-      safe &&
-      // only run effect if safe chain changes or there was previously an error
-      (prevSafeChainId !== selectedSafe?.chainId || fetchABIError)
+      prevSafeChainId &&
+      selectedSafe &&
+      prevSafeChainId !== selectedSafe.chainId
     ) {
-      if (selectedSafe) {
-        setPrevSafeChainId(selectedSafe.chainId);
-      }
       onContractChange(transactionValues.contract);
     }
-    // Don't want to run when ABI error changes, or else cause infinite loop
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    safe,
-    selectedSafe,
+    isLoadingABI,
     transactionValues.contract,
     onContractChange,
+    selectedSafe,
     prevSafeChainId,
   ]);
 
