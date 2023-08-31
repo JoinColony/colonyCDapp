@@ -6901,13 +6901,13 @@ export type GetUserTransactionsQueryVariables = Exact<{
 
 export type GetUserTransactionsQuery = { __typename?: 'Query', getTransactionsByUser?: { __typename?: 'ModelTransactionConnection', nextToken?: string | null, items: Array<{ __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, params?: string | null, groupId?: string | null, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, group?: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } | null } | null> } | null };
 
-export type GetTransactionsByUserAndGroupQueryVariables = Exact<{
+export type GetTransactionsByGroupQueryVariables = Exact<{
   from: Scalars['ID'];
   groupId: Scalars['ID'];
 }>;
 
 
-export type GetTransactionsByUserAndGroupQuery = { __typename?: 'Query', getTransactionsByUserAndGroup?: { __typename?: 'ModelTransactionConnection', items: Array<{ __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, params?: string | null, groupId?: string | null, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, group?: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } | null } | null> } | null };
+export type GetTransactionsByGroupQuery = { __typename?: 'Query', getTransactionsByUserAndGroup?: { __typename?: 'ModelTransactionConnection', items: Array<{ __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, params?: string | null, groupId?: string | null, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, group?: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } | null } | null> } | null };
 
 export type GetTransactionQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -9273,8 +9273,8 @@ export function useGetUserTransactionsLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type GetUserTransactionsQueryHookResult = ReturnType<typeof useGetUserTransactionsQuery>;
 export type GetUserTransactionsLazyQueryHookResult = ReturnType<typeof useGetUserTransactionsLazyQuery>;
 export type GetUserTransactionsQueryResult = Apollo.QueryResult<GetUserTransactionsQuery, GetUserTransactionsQueryVariables>;
-export const GetTransactionsByUserAndGroupDocument = gql`
-    query getTransactionsByUserAndGroup($from: ID!, $groupId: ID!) {
+export const GetTransactionsByGroupDocument = gql`
+    query GetTransactionsByGroup($from: ID!, $groupId: ID!) {
   getTransactionsByUserAndGroup(groupId: $groupId, from: {eq: $from}) {
     items {
       ...Transaction
@@ -9284,33 +9284,33 @@ export const GetTransactionsByUserAndGroupDocument = gql`
     ${TransactionFragmentDoc}`;
 
 /**
- * __useGetTransactionsByUserAndGroupQuery__
+ * __useGetTransactionsByGroupQuery__
  *
- * To run a query within a React component, call `useGetTransactionsByUserAndGroupQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTransactionsByUserAndGroupQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetTransactionsByGroupQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTransactionsByGroupQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetTransactionsByUserAndGroupQuery({
+ * const { data, loading, error } = useGetTransactionsByGroupQuery({
  *   variables: {
  *      from: // value for 'from'
  *      groupId: // value for 'groupId'
  *   },
  * });
  */
-export function useGetTransactionsByUserAndGroupQuery(baseOptions: Apollo.QueryHookOptions<GetTransactionsByUserAndGroupQuery, GetTransactionsByUserAndGroupQueryVariables>) {
+export function useGetTransactionsByGroupQuery(baseOptions: Apollo.QueryHookOptions<GetTransactionsByGroupQuery, GetTransactionsByGroupQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTransactionsByUserAndGroupQuery, GetTransactionsByUserAndGroupQueryVariables>(GetTransactionsByUserAndGroupDocument, options);
+        return Apollo.useQuery<GetTransactionsByGroupQuery, GetTransactionsByGroupQueryVariables>(GetTransactionsByGroupDocument, options);
       }
-export function useGetTransactionsByUserAndGroupLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTransactionsByUserAndGroupQuery, GetTransactionsByUserAndGroupQueryVariables>) {
+export function useGetTransactionsByGroupLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTransactionsByGroupQuery, GetTransactionsByGroupQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTransactionsByUserAndGroupQuery, GetTransactionsByUserAndGroupQueryVariables>(GetTransactionsByUserAndGroupDocument, options);
+          return Apollo.useLazyQuery<GetTransactionsByGroupQuery, GetTransactionsByGroupQueryVariables>(GetTransactionsByGroupDocument, options);
         }
-export type GetTransactionsByUserAndGroupQueryHookResult = ReturnType<typeof useGetTransactionsByUserAndGroupQuery>;
-export type GetTransactionsByUserAndGroupLazyQueryHookResult = ReturnType<typeof useGetTransactionsByUserAndGroupLazyQuery>;
-export type GetTransactionsByUserAndGroupQueryResult = Apollo.QueryResult<GetTransactionsByUserAndGroupQuery, GetTransactionsByUserAndGroupQueryVariables>;
+export type GetTransactionsByGroupQueryHookResult = ReturnType<typeof useGetTransactionsByGroupQuery>;
+export type GetTransactionsByGroupLazyQueryHookResult = ReturnType<typeof useGetTransactionsByGroupLazyQuery>;
+export type GetTransactionsByGroupQueryResult = Apollo.QueryResult<GetTransactionsByGroupQuery, GetTransactionsByGroupQueryVariables>;
 export const GetTransactionDocument = gql`
     query GetTransaction($id: ID!) {
   getTransaction(id: $id) {

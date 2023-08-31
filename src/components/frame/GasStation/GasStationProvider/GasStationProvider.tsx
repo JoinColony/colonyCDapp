@@ -1,4 +1,10 @@
-import React, { createContext, useState, ReactNode } from 'react';
+import React, {
+  createContext,
+  useState,
+  ReactNode,
+  useMemo,
+  useCallback,
+} from 'react';
 
 type SingleTransactionAlert = { wasSeen?: boolean; isOpen?: boolean };
 type TransactionAlerts = Record<string, SingleTransactionAlert>;
@@ -22,31 +28,35 @@ const GasStationProvider = ({ children }: Props) => {
   const [transactionAlerts, updateTransactionAlerts] =
     useState<TransactionAlerts>({});
 
-  const updateTransactionAlert = (
-    transactionId: string,
-    /*
-     * @NOTE This was thought about being extendable, so that more props can
-     * be tracked for a transactions from component land (eg: isOpen)
-     */
-    alertPayload: SingleTransactionAlert,
-  ) => {
-    return updateTransactionAlerts({
-      ...transactionAlerts,
-      [transactionId]: {
-        ...(transactionAlerts[transactionId] || {}),
-        ...alertPayload,
-      },
-    });
-  };
+  const updateTransactionAlert = useCallback(
+    (
+      transactionId: string,
+      /*
+       * @NOTE This was thought about being extendable, so that more props can
+       * be tracked for a transactions from component land (eg: isOpen)
+       */
+      alertPayload: SingleTransactionAlert,
+    ) => {
+      return updateTransactionAlerts({
+        ...transactionAlerts,
+        [transactionId]: {
+          ...(transactionAlerts[transactionId] || {}),
+          ...alertPayload,
+        },
+      });
+    },
+    [transactionAlerts],
+  );
 
+  const value = useMemo(
+    () => ({
+      transactionAlerts,
+      updateTransactionAlert,
+    }),
+    [transactionAlerts, updateTransactionAlert],
+  );
   return (
-    <GasStationContext.Provider
-      // eslint-disable-next-line react/jsx-no-constructed-context-values
-      value={{
-        transactionAlerts,
-        updateTransactionAlert,
-      }}
-    >
+    <GasStationContext.Provider value={value}>
       {children}
     </GasStationContext.Provider>
   );

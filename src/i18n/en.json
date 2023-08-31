@@ -125,6 +125,8 @@
   "wallet.metamask": "MetaMask",
   "text.learnMore": "Learn More",
   "learn.more": "Learn more",
+  "transaction.cancel.title": "Transaction cancelled",
+  "transaction.cancel.description": "Transaction cancelled by user", 
   "transaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
   "transaction.group.deposit.title": "Activate tokens",
   "transaction.group.deposit.description": "Activate tokens",

@@ -11,9 +11,9 @@ import {
   GetTransactionDocument,
   GetTransactionQuery,
   GetTransactionQueryVariables,
-  GetTransactionsByUserAndGroupDocument,
-  GetTransactionsByUserAndGroupQuery,
-  GetTransactionsByUserAndGroupQueryVariables,
+  GetTransactionsByGroupDocument,
+  GetTransactionsByGroupQuery,
+  GetTransactionsByGroupQueryVariables,
   TransactionStatus,
   UpdateTransactionDocument,
   UpdateTransactionMutation,
@@ -36,6 +36,30 @@ import {
 import { ActionTypes } from '~redux/actionTypes';
 import { notNull } from '~utils/arrays';
 import { ActionTypeWithPayloadAndMeta } from '~redux/types';
+
+let pendingTransactionCount = 0;
+
+const handleBeforeUnload = (e) => {
+  e.preventDefault();
+  e.returnValue = '';
+  return e.returnValue;
+};
+
+const onTransactionPending = () => {
+  pendingTransactionCount += 1;
+  // the first pending transaction, set up listener. I.e, we only need one
+  if (pendingTransactionCount === 1) {
+    window.addEventListener('beforeunload', handleBeforeUnload);
+  }
+};
+
+const onTransactionResolved = () => {
+  pendingTransactionCount -= 1;
+  // no pending transactions, remove listener
+  if (pendingTransactionCount === 0) {
+    window.removeEventListener('beforeunload', handleBeforeUnload);
+  }
+};
 
 export function* addTransactionToDb({
   meta: { id },
@@ -182,7 +206,9 @@ function* updateTransactionInDb({
       }
 
       case ActionTypes.TRANSACTION_PENDING: {
+        onTransactionPending();
         yield updateTransaction({ id, status: TransactionStatus.Pending });
+
         break;
       }
 
@@ -220,6 +246,7 @@ function* updateTransactionInDb({
       }
 
       case ActionTypes.TRANSACTION_SENT: {
+        onTransactionPending();
         yield updateTransaction({ id, status: TransactionStatus.Pending });
         break;
       }
@@ -231,6 +258,7 @@ function* updateTransactionInDb({
       }
 
       case ActionTypes.TRANSACTION_SUCCEEDED: {
+        onTransactionResolved();
         const { eventData, deployedContractAddress } =
           payload as TransactionSucceededPayload;
         yield updateTransaction({
@@ -243,6 +271,7 @@ function* updateTransactionInDb({
       }
 
       case ActionTypes.TRANSACTION_ERROR: {
+        onTransactionResolved();
         const { error } = payload as TransactionErrorPayload;
         yield updateTransaction({
           id,
@@ -253,6 +282,7 @@ function* updateTransactionInDb({
       }
 
       case ActionTypes.TRANSACTION_CANCEL: {
+        onTransactionResolved();
         const { data }: ApolloQueryResult<GetTransactionQuery> =
           yield fetchTransaction({ id });
 
@@ -268,12 +298,12 @@ function* updateTransactionInDb({
         if (txGroup) {
           const {
             data: response,
-          }: ApolloQueryResult<GetTransactionsByUserAndGroupQuery> =
+          }: ApolloQueryResult<GetTransactionsByGroupQuery> =
             yield apollo.query<
-              GetTransactionsByUserAndGroupQuery,
-              GetTransactionsByUserAndGroupQueryVariables
+              GetTransactionsByGroupQuery,
+              GetTransactionsByGroupQueryVariables
             >({
-              query: GetTransactionsByUserAndGroupDocument,
+              query: GetTransactionsByGroupDocument,
               // group ids are unique, but check "from" is the same, just to be sure
               variables: {
                 from,

@@ -10,7 +10,10 @@ import { getLastWallet } from '~utils/autoLogin';
 import UserReputation from './partials/UserReputation';
 import { UserNavigationProps } from './types';
 import { useGetNetworkToken } from '~hooks/useGetNetworkToken';
-import { useUserTransactionContext } from '~context/UserTransactionContext';
+import {
+  TransactionGroupStates,
+  useUserTransactionContext,
+} from '~context/UserTransactionContext';
 import CompletedButton from '~v5/shared/Button/CompletedButton';
 
 export const displayName = 'common.Extensions.UserNavigation';
@@ -46,8 +49,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
     }
   }, [connectWallet, wallet]);
 
-  const { isLatestTxPending, showCompletedButton } =
-    useUserTransactionContext();
+  const { groupState } = useUserTransactionContext();
 
   return (
     <div className="flex gap-1">
@@ -95,8 +97,12 @@ const UserNavigation: FC<UserNavigationProps> = ({
           )}
         </>
       )}
-      {!isMobile && isLatestTxPending && <PendingButton />}
-      {!isMobile && showCompletedButton && <CompletedButton />}
+      {!isMobile && groupState === TransactionGroupStates.SomePending && (
+        <PendingButton />
+      )}
+      {!isMobile && groupState === TransactionGroupStates.AllCompleted && (
+        <CompletedButton />
+      )}
     </div>
   );
 };

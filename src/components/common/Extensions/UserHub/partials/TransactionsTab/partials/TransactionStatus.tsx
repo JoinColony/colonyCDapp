@@ -12,7 +12,6 @@ const displayName =
   'common.Extensions.UserHub.partials.TransactionTab.partials.TransactionStatus';
 
 const TransactionStatus: FC<TransactionStatusProps> = ({ status, date }) => {
-  const ready = status === TransactionStatusEnum.Ready;
   const failed = status === TransactionStatusEnum.Failed;
   const succeeded = status === TransactionStatusEnum.Succeeded;
   const pending = status === TransactionStatusEnum.Pending;
@@ -22,22 +21,19 @@ const TransactionStatus: FC<TransactionStatusProps> = ({ status, date }) => {
   return (
     <div
       className={clsx('flex flex-col items-end', {
-        'text-success-400': succeeded || ready,
+        'text-success-400': succeeded,
         'text-negative-400': failed,
       })}
     >
-      {pending ? (
+      {pending && (
         <Icon
           name="spinner-gap"
           className="ml-2.5 w-[0.8125rem] h-[0.8125rem] animate-spin text-blue-400"
           appearance={{ size: 'tiny' }}
         />
-      ) : (
-        <Icon
-          name={succeeded || ready ? 'check-circle' : 'x-circle'}
-          appearance={{ size: 'tiny' }}
-        />
       )}
+      {succeeded && <Icon name="check-circle" appearance={{ size: 'tiny' }} />}
+      {failed && <Icon name="x-circle" appearance={{ size: 'tiny' }} />}
       {createdAt && (
         <span className="text-gray-400 text-xs block mt-1">{createdAt}</span>
       )}

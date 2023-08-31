@@ -14,7 +14,10 @@ import ActionSidebar from '~v5/common/ActionSidebar';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { ActionFormContextProvider } from '~v5/common/ActionSidebar/partials/ActionForm/ActionFormContext';
 import { ColnyAvatarProvider } from '~context/ColonyAvatarContext';
-import { useUserTransactionContext } from '~context/UserTransactionContext';
+import {
+  TransactionGroupStates,
+  useUserTransactionContext,
+} from '~context/UserTransactionContext';
 import CompletedButton from '~v5/shared/Button/CompletedButton';
 
 const displayName = 'frame.Extensions.Header';
@@ -77,13 +80,12 @@ const Header: FC<HeaderProps> = ({ hideColonies = false }) => {
     userNavigation
   );
 
-  const { isLatestTxPending, showCompletedButton } =
-    useUserTransactionContext();
+  const { groupState } = useUserTransactionContext();
 
   return (
     <header className="relative">
       <div className="bg-base-white w-full flex min-h-[6.375rem] justify-center px-6">
-        <div className="flex flex-col justify-center gap-y-2 w-full">
+        <div className="flex flex-col items-center justify-center gap-y-2 w-full">
           <div className="flex items-center justify-between sm:max-w-[90rem] w-full">
             <div className="mr-1.5 sm:mr-10">
               <ColonySwitcher
@@ -139,8 +141,12 @@ const Header: FC<HeaderProps> = ({ hideColonies = false }) => {
               </div>
             </div>
           </div>
-          {isMobile && isLatestTxPending && <PendingButton />}
-          {isMobile && showCompletedButton && <CompletedButton />}
+          {isMobile && groupState === TransactionGroupStates.SomePending && (
+            <PendingButton />
+          )}
+          {isMobile && groupState === TransactionGroupStates.AllCompleted && (
+            <CompletedButton />
+          )}
         </div>
       </div>
     </header>

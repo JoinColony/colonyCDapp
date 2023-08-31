@@ -20,7 +20,7 @@ query GetUserTransactions(
   }
 }
 
-query getTransactionsByUserAndGroup($from: ID!, $groupId: ID!) {
+query GetTransactionsByGroup($from: ID!, $groupId: ID!) {
   getTransactionsByUserAndGroup(groupId: $groupId, from: { eq: $from }) {
     items {
       ...Transaction
