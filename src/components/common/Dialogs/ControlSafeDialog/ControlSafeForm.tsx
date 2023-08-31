@@ -125,6 +125,7 @@ const ControlSafeForm = ({
     setValue,
     trigger,
     control,
+    resetField,
   } = useFormContext();
 
   const selectedSafe: SelectedPickerItem = watch('safe');
@@ -387,6 +388,12 @@ const ControlSafeForm = ({
                       name={`transactions[${index}].transactionType`}
                       onChange={(type) => {
                         removeSelectedContractMethod(index);
+                        resetField(`transactions.${index}`, {
+                          defaultValue: {
+                            ...defaultTransaction,
+                            transactionType: type,
+                          },
+                        });
                         handleTransactionTypeChange(type as string, index);
                       }}
                       appearance={{ theme: 'grey', width: 'fluid' }}
