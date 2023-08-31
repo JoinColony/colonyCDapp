@@ -193,7 +193,8 @@ export const getValidationSchema = (
               then: number()
                 .typeError(() => MSG.notPositiveIntegerError)
                 .required(() => MSG.requiredFieldError)
-                .positive(() => MSG.notPositiveIntegerError),
+                .min(0, () => MSG.notPositiveIntegerError)
+                .integer(() => MSG.notPositiveIntegerError),
               otherwise: number().nullable(),
             })
             .nullable(),
