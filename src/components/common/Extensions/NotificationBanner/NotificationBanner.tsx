@@ -49,7 +49,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
       )}
     >
       <div
-        className={clsx('flex break-all flex-col', {
+        className={clsx('flex flex-col', {
           'flex-row': !children || isAlt,
         })}
       >

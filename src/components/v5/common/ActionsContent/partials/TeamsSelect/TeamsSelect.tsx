@@ -25,18 +25,21 @@ const TeamsSelect: FC<SelectProps> = ({ name, isError }) => {
 
   const { field } = useController({
     name,
-    defaultValue: isRootDomain && Id.RootDomain,
+    defaultValue:
+      (isRootDomain && Id.RootDomain) ||
+      (name === 'createdIn' && Id.RootDomain),
   });
+
   const teamsOptions = useTeams();
   const { formatMessage } = useIntl();
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
   const [isTeamSelectVisible, { toggle: toggleTeamSelect }] = useToggle();
 
   useEffect(() => {
-    if (isRootDomain) {
+    if (isRootDomain || name === 'createdIn') {
       setSelectedTeam('Root');
     }
-  }, [isRootDomain, selectedAction]);
+  }, [isRootDomain, selectedAction, name]);
 
   return (
     <div className="sm:relative w-full">

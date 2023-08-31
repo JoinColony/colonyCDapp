@@ -34,9 +34,11 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
     useActionSidebar(selectedAction);
 
   const isUserHasPermission = useUserPermissionsErrors();
-  const isUnlockTokenAction = selectedAction === Actions.UNLOCK_TOKEN;
+  const actionsWithErrorBanners =
+    selectedAction === Actions.UNLOCK_TOKEN ||
+    selectedAction === Actions.ENTER_RECOVERY_MODE;
   const showErrorBanner =
-    (isUserHasPermission && selectedAction) || isUnlockTokenAction;
+    (isUserHasPermission && selectedAction) || actionsWithErrorBanners;
 
   useOnClickOutside(
     ref,
@@ -65,12 +67,14 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
         {(showErrorBanner || isFieldError) && (
           <div className="mt-7">
             <NotificationBanner
-              status={isUnlockTokenAction || isFieldError ? 'error' : 'warning'}
+              status={
+                actionsWithErrorBanners || isFieldError ? 'error' : 'warning'
+              }
               title={{
                 id: prepareNofiticationTitle(),
               }}
               actionText={
-                isUnlockTokenAction ? { id: 'learn.more' } : undefined
+                actionsWithErrorBanners ? { id: 'learn.more' } : undefined
               }
               actionType="call-to-action"
             />
