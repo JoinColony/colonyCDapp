@@ -15,7 +15,7 @@ import { ActionTypes } from '~redux/actionTypes';
 import { Action, AllActions } from '~redux/types';
 import { putError, takeFrom } from '~utils/saga/effects';
 import { fill, omit } from '~utils/lodash';
-import { isDev } from '~constants';
+import { ADDRESS_ZERO, isDev } from '~constants';
 
 import { transactionReady } from '../../actionCreators';
 import {
@@ -91,7 +91,6 @@ function* initiateSafeTransactionAction({
             zodiacBridgeModule,
             safe,
             transaction,
-            network,
           );
           break;
         case SafeTransactionType.ContractInteraction:
@@ -213,7 +212,10 @@ function* initiateSafeTransactionAction({
         variables: {
           input: {
             ...omit(transaction, 'token'),
-            tokenAddress: transaction.token?.tokenAddress,
+            tokenAddress:
+              transaction.token?.tokenAddress === ADDRESS_ZERO
+                ? `${transaction.token?.tokenAddress}_${network.shortName}`
+                : transaction.token?.tokenAddress,
             transactionHash: safeTransaction.data.createSafeTransaction.id,
           },
         },
