@@ -3,7 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
 import { useColonyContext } from '~hooks';
-import { MAX_ANNOTATION_LENGTH } from '~constants';
+import {
+  MAX_ANNOTATION_LENGTH,
+  MAX_COLONY_DISPLAY_NAME,
+  MAX_DOMAIN_PURPOSE_LENGTH,
+} from '~constants';
 import { useActionHook } from '../ActionForm/hooks';
 import { getEditDomainDialogPayload } from '~common/Dialogs/EditDomainDialog/helpers';
 
@@ -38,9 +42,13 @@ export const useEditTeam = () => {
       teamName: yup
         .string()
         .trim()
-        .max(20)
+        .max(MAX_COLONY_DISPLAY_NAME)
         .required(() => 'Team name required'),
-      domainPurpose: yup.string().trim().max(90).notRequired(),
+      domainPurpose: yup
+        .string()
+        .trim()
+        .max(MAX_DOMAIN_PURPOSE_LENGTH)
+        .notRequired(),
       domainColor: yup.string().notRequired(),
       createdIn: yup.number().defined(),
       decisionMethod: yup.string().defined(),

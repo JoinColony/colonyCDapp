@@ -1,11 +1,11 @@
-import React, { FC, useEffect } from 'react';
-import { useController, useFormContext } from 'react-hook-form';
+import React, { FC } from 'react';
+import { useController } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
 import ActionSidebarRow from '../ActionSidebarRow';
 import TeamsSelect from './partials/TeamsSelect';
 import UserSelect from './partials/UserSelect';
-import { useActionsContent, useGetTeamValues } from './hooks';
+import { useActionsContent } from './hooks';
 import AmountField from './partials/AmountField';
 import DecisionField from './partials/DecisionField';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
@@ -37,6 +37,8 @@ const ActionsContent: FC = () => {
     shouldShowVersionFields,
     shouldShowColonyDetailsFields,
     prepareAmountTitle,
+    teamName,
+    teamPurpose,
     isError,
   } = useActionsContent();
   const [
@@ -48,18 +50,6 @@ const ActionsContent: FC = () => {
     },
   ] = useToggle();
   const { formatMessage } = useIntl();
-
-  const methods = useFormContext();
-  const teamValue = methods?.watch('team');
-  const { teamColor, teamName, teamPurpose } = useGetTeamValues(teamValue);
-
-  useEffect(() => {
-    if (selectedAction === Actions.EDIT_EXISTING_TEAM) {
-      methods?.setValue('domainColor', teamColor);
-      methods?.setValue('teamName', teamName);
-      methods?.setValue('domainPurpose', teamPurpose);
-    }
-  }, [teamColor, teamName, teamPurpose, selectedAction]);
 
   const ref = useDetectClickOutside({
     onTriggered: () => toggleOffDecriptionSelect(),

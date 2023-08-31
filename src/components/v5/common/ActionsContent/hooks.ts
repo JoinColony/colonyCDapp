@@ -1,8 +1,23 @@
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Actions } from '~constants/actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { DomainColor } from '~gql';
 import { useColonyContext } from '~hooks';
+
+export const useGetTeamValues = (teamId: number) => {
+  const { colony } = useColonyContext();
+  const { domains } = colony || {};
+
+  const team = domains?.items?.find((domain) => domain?.nativeId === teamId);
+  const { metadata } = team || {};
+
+  return {
+    teamName: metadata?.name || '',
+    teamPurpose: metadata?.description || '',
+    teamColor: metadata?.color || DomainColor.LightPink,
+  };
+};
 
 export const useActionsContent = () => {
   const { selectedAction } = useActionSidebarContext();
@@ -42,6 +57,16 @@ export const useActionsContent = () => {
   const methods = useFormContext();
   const isError = (fieldName: string) =>
     Object.keys(methods?.formState.errors || {}).includes(fieldName);
+  const teamValue = methods?.watch('team');
+  const { teamColor, teamName, teamPurpose } = useGetTeamValues(teamValue);
+
+  useEffect(() => {
+    if (selectedAction === Actions.EDIT_EXISTING_TEAM) {
+      methods?.setValue('domainColor', teamColor);
+      methods?.setValue('teamName', teamName);
+      methods?.setValue('domainPurpose', teamPurpose);
+    }
+  }, [teamColor, teamName, teamPurpose, selectedAction]);
 
   return {
     shouldShowFromField,
@@ -54,20 +79,8 @@ export const useActionsContent = () => {
     shouldShowVersionFields,
     shouldShowColonyDetailsFields,
     prepareAmountTitle,
+    teamName,
+    teamPurpose,
     isError,
-  };
-};
-
-export const useGetTeamValues = (teamId: number) => {
-  const { colony } = useColonyContext();
-  const { domains } = colony || {};
-
-  const team = domains?.items?.find((domain) => domain?.nativeId === teamId);
-  const { metadata } = team || {};
-
-  return {
-    teamName: metadata?.name || '',
-    teamPurpose: metadata?.description || '',
-    teamColor: metadata?.color || DomainColor.LightPink,
   };
 };
