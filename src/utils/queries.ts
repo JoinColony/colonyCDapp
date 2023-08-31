@@ -16,7 +16,7 @@ export const getTokenFromEveryWhereQuery = async (
   tokenAddress: Address,
   network?: NetworkInfo,
 ) => {
-  await apolloClient.query<
+  const response = await apolloClient.query<
     GetTokenFromEverywhereQuery,
     GetTokenFromEverywhereQueryVariables
   >({
@@ -28,4 +28,12 @@ export const getTokenFromEveryWhereQuery = async (
       },
     },
   });
+
+  const tokenItems = response?.data.getTokenFromEverywhere?.items;
+
+  if (tokenItems) {
+    return tokenItems[0];
+  }
+
+  return null;
 };
