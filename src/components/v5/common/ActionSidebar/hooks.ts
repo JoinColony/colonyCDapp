@@ -21,6 +21,8 @@ import UnlockTokenForm from './partials/UnlockTokenForm';
 import UpgradeColonyForm from './partials/UpgradeColonyForm';
 import { useActionFormContext } from './partials/ActionForm/ActionFormContext';
 import CreateDecisionForm from './partials/CreateDecision';
+import EditTeamForm from './partials/EditTeamForm';
+import EnterRecoveryModeForm from './partials/EnterRecoveryModeForm';
 
 export const useActionsList = () =>
   useMemo(
@@ -193,6 +195,8 @@ export const useActionSidebar = (selectedAction) => {
 
     if (selectedAction === Actions.UNLOCK_TOKEN) {
       errorMessage = 'actionSidebar.unlock.token.error';
+    } else if (selectedAction === Actions.ENTER_RECOVERY_MODE) {
+      errorMessage = 'actionSidebar.enterRecoveryMode.error';
     } else if (isFieldError) {
       errorMessage = 'actionSidebar.fields.error';
     } else {
@@ -209,6 +213,8 @@ export const useActionSidebar = (selectedAction) => {
     [Actions.UNLOCK_TOKEN]: UnlockTokenForm,
     [Actions.UPGRADE_COLONY_VERSION]: UpgradeColonyForm,
     [Actions.CREATE_DECISION]: CreateDecisionForm,
+    [Actions.EDIT_EXISTING_TEAM]: EditTeamForm,
+    [Actions.ENTER_RECOVERY_MODE]: EnterRecoveryModeForm,
   };
 
   return {

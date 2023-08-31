@@ -32,9 +32,9 @@ const ActionTypeSelect: FC = () => {
 
   return (
     <ActionSidebarRow
+      fieldName={ActionSidebarRowFieldNameEnum.ACTION_TYPE}
       iconName="file-plus"
       title={{ id: 'actionSidebar.actionType' }}
-      fieldName={ActionSidebarRowFieldNameEnum.ACTION_TYPE}
     >
       <>
         {!selectedAction && (
