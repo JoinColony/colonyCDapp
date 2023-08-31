@@ -3,13 +3,14 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import moveDecimal from 'move-decimal-point';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import { ADDRESS_ZERO, DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { DialogSection } from '~shared/Dialog';
 import {
   getSafe,
   getSelectedSafeBalance,
   getTxServiceBaseUrl,
   getChainNameFromSafe,
+  getNetworkFromChainName,
 } from '~utils/safes';
 import {
   Message,
@@ -18,7 +19,7 @@ import {
   SelectedPickerItem,
 } from '~types';
 import Icon from '~shared/Icon';
-import { TokenType } from '~gql';
+import { getTokenFromEveryWhereQuery } from '~utils/queries';
 
 import AmountBalances from '../AmountBalances';
 import { TransactionSectionProps } from '../types';
@@ -109,22 +110,24 @@ const TransferFundsSection = ({
       );
       if (response.status === 200) {
         const data = (await response.json()) as SafeBalanceApiData[];
-        const formattedSafeBalances: SafeBalance[] = data.map(
-          (balanceData) => ({
+
+        const tokenFromDbPromises = data.map(async (balanceData) => {
+          const network = getNetworkFromChainName(chainName);
+          const token = await getTokenFromEveryWhereQuery(
+            balanceData?.tokenAddress || ADDRESS_ZERO,
+            network,
+          );
+
+          return {
             balance: balanceData.balance,
-            token:
-              balanceData.tokenAddress && balanceData.token
-                ? {
-                    tokenAddress: balanceData.tokenAddress,
-                    name: balanceData.token.name,
-                    symbol: balanceData.token.symbol,
-                    decimals: balanceData.token.decimals,
-                    thumbnail: balanceData.token.logoUri,
-                    type: TokenType.Erc20,
-                  }
-                : null,
-          }),
+            token,
+          };
+        });
+
+        const formattedSafeBalances: SafeBalance[] = await Promise.all(
+          tokenFromDbPromises,
         );
+
         setSavedTokens((tokens) => ({
           ...tokens,
           [safeAddress as string]: formattedSafeBalances,
