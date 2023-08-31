@@ -49,11 +49,6 @@ const RawTransactionSection = ({
         labelValues={{
           span: labelValues,
         }}
-        formattingOptions={{
-          numeral: true,
-          numeralPositiveOnly: true,
-          numeralDecimalScale: 0,
-        }}
       />
     </DialogSection>
     <DialogSection appearance={{ theme: 'sidePadding' }}>
