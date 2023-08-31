@@ -13,7 +13,6 @@ import {
   SUPPORTED_SAFE_NETWORKS,
 } from '~constants';
 import { getArrayFromString } from '~utils/safes';
-import { getTokenFromEveryWhereQuery } from '~utils/queries';
 
 import { erc721, ForeignAMB, HomeAMB, ZodiacBridgeModule } from './abis'; // Temporary
 
@@ -253,7 +252,6 @@ export const getTransferFundsData = async (
   zodiacBridgeModule: Contract,
   safe: Safe,
   transaction: SafeTransactionData,
-  network: NetworkInfo,
 ) => {
   if (!transaction.token) {
     throw new Error('Transaction does not contain token data.');
@@ -277,14 +275,6 @@ export const getTransferFundsData = async (
   }
 
   const isSafeNativeToken = tokenAddress === AddressZero;
-
-  /**
-   * Call to check if the token is already in database
-   * and add it if it isn't
-   */
-  if (!isSafeNativeToken) {
-    await getTokenFromEveryWhereQuery(transaction.token.tokenAddress, network);
-  }
 
   const tokenDecimals = transaction.token.decimals;
   const { recipient } = transaction;
