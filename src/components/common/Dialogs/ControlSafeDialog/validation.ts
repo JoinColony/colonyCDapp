@@ -148,9 +148,8 @@ export const getValidationSchema = (
                         }),
                       });
                     }
-                    const selectedToken = this.parent.tokenData?.tokenAddress;
-                    const selectedTokenDecimals =
-                      this.parent.tokenData?.decimals;
+                    const selectedToken = this.parent.token?.tokenAddress;
+                    const selectedTokenDecimals = this.parent.token?.decimals;
 
                     const {
                       safeBalances,
