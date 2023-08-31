@@ -3,14 +3,18 @@ import { ClientType } from '@colony/colony-js';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 
-import { putError, takeFrom, uploadAnnotation } from '../utils';
+import {
+  initiateTransaction,
+  putError,
+  takeFrom,
+  uploadAnnotation,
+} from '../utils';
 
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '~redux/actionCreators';
 
 function* manageReputationAction({
   payload: {
@@ -80,7 +84,7 @@ function* manageReputationAction({
       );
     }
 
-    yield put(transactionReady(manageReputation.id));
+    yield initiateTransaction({ id: manageReputation.id });
 
     const {
       payload: { hash: txHash },

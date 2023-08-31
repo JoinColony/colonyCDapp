@@ -3,7 +3,7 @@ import { ClientType, getExtensionHash } from '@colony/colony-js';
 
 import { AllActions, Action, ActionTypes } from '~redux';
 
-import { putError, takeFrom } from '../utils';
+import { initiateTransaction, putError, takeFrom } from '../utils';
 import {
   createTransaction,
   getTxChannel,
@@ -25,6 +25,9 @@ function* extensionUpgrade({
     });
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
+
+    yield initiateTransaction({ id: meta.id });
+
     const result = yield waitForTxResult(txChannel);
     if (result.type === ActionTypes.TRANSACTION_SUCCEEDED) {
       yield put<AllActions>({

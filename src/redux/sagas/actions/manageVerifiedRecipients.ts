@@ -3,7 +3,6 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { Action, AllActions, ActionTypes } from '~redux';
 import { ContextModule, getContext } from '~context';
-import { transactionPending, transactionReady } from '~redux/actionCreators';
 import {
   CreateColonyContributorDocument,
   CreateColonyContributorMutation,
@@ -27,6 +26,7 @@ import {
 } from '../transactions';
 import {
   getUpdatedColonyMetadataChangelog,
+  initiateTransaction,
   putError,
   takeFrom,
   uploadAnnotation,
@@ -101,7 +101,7 @@ function* manageVerifiedRecipients({
       );
     }
 
-    yield put(transactionPending(editColony.id));
+    // yield put(transactionPending(editColony.id));
 
     /*
      * Upload colony metadata to IPFS
@@ -126,7 +126,7 @@ function* manageVerifiedRecipients({
     //   ]),
     // );
 
-    yield put(transactionReady(editColony.id));
+    yield initiateTransaction({ id: editColony.id });
 
     const {
       payload: { hash: txHash },

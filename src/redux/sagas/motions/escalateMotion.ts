@@ -4,14 +4,18 @@ import { AddressZero } from '@ethersproject/constants';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom, getColonyManager } from '../utils';
+import {
+  putError,
+  takeFrom,
+  getColonyManager,
+  initiateTransaction,
+} from '../utils';
 
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '../../actionCreators';
 
 export type EscalateMotionPayload =
   Action<ActionTypes.MOTION_ESCALATE>['payload'];
@@ -70,7 +74,7 @@ function* escalateMotion({
       ActionTypes.TRANSACTION_CREATED,
     );
 
-    yield put(transactionReady(escalateMotionTransaction.id));
+    yield initiateTransaction({ id: escalateMotionTransaction.id });
 
     yield takeFrom(
       escalateMotionTransaction.channel,

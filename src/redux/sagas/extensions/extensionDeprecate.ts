@@ -3,7 +3,7 @@ import { ClientType, getExtensionHash } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom } from '../utils';
+import { initiateTransaction, putError, takeFrom } from '../utils';
 
 import {
   createTransaction,
@@ -26,6 +26,8 @@ function* extensionDeprecate({
     });
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
+
+    yield initiateTransaction({ id: meta.id });
 
     const result = yield waitForTxResult(txChannel);
 

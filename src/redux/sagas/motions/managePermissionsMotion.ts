@@ -12,9 +12,11 @@ import { ADDRESS_ZERO } from '~constants';
 import { Action, ActionTypes, AllActions } from '~redux/index';
 import { putError, takeFrom } from '~utils/saga/effects';
 
-import { transactionReady } from '../../actionCreators';
-
-import { getColonyManager, uploadAnnotation } from '../utils';
+import {
+  getColonyManager,
+  initiateTransaction,
+  uploadAnnotation,
+} from '../utils';
 import {
   createTransaction,
   createTransactionChannels,
@@ -153,7 +155,7 @@ function* managePermissionsMotion({
       );
     }
 
-    yield put(transactionReady(createMotion.id));
+    yield initiateTransaction({ id: createMotion.id });
 
     const {
       payload: { hash: txHash },

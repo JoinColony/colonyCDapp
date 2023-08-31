@@ -16,6 +16,7 @@ import {
   takeFrom,
   getColonyManager,
   uploadAnnotation,
+  initiateTransaction,
 } from '../utils';
 
 import {
@@ -23,7 +24,6 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '../../actionCreators';
 
 function* createPaymentMotion({
   payload: {
@@ -194,7 +194,7 @@ function* createPaymentMotion({
       );
     }
 
-    yield put(transactionReady(createMotion.id));
+    yield initiateTransaction({ id: createMotion.id });
 
     const {
       payload: { hash: txHash },

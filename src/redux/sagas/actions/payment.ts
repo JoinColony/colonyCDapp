@@ -5,14 +5,18 @@ import { ClientType } from '@colony/colony-js';
 
 import { ActionTypes, Action, AllActions } from '~redux';
 
-import { putError, takeFrom, uploadAnnotation } from '../utils';
+import {
+  initiateTransaction,
+  putError,
+  takeFrom,
+  uploadAnnotation,
+} from '../utils';
 
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '../../actionCreators';
 
 function* createPaymentAction({
   payload: {
@@ -26,7 +30,6 @@ function* createPaymentAction({
   meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.ACTION_EXPENDITURE_PAYMENT>) {
-  yield Math.min();
   let txChannel;
   try {
     /*
@@ -112,7 +115,8 @@ function* createPaymentAction({
       );
     }
 
-    yield put(transactionReady(paymentAction.id));
+    yield initiateTransaction({ id: paymentAction.id });
+
     const {
       payload: { hash: txHash },
     } = yield takeFrom(

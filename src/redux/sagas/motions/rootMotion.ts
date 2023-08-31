@@ -6,13 +6,13 @@ import { ColonyManager } from '~context';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { transactionReady } from '../../actionCreators';
 
 import {
   putError,
   takeFrom,
   getColonyManager,
   uploadAnnotation,
+  initiateTransaction,
 } from '../utils';
 import {
   createTransaction,
@@ -124,7 +124,7 @@ function* createRootMotionSaga({
       );
     }
 
-    yield put(transactionReady(createMotion.id));
+    yield initiateTransaction({ id: createMotion.id });
 
     const {
       payload: { hash: txHash },

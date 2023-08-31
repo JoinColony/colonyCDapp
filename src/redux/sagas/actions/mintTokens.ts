@@ -3,13 +3,17 @@ import { ClientType } from '@colony/colony-js';
 
 import { ActionTypes, AllActions, Action } from '~redux';
 
-import { putError, takeFrom, uploadAnnotation } from '../utils';
+import {
+  initiateTransaction,
+  putError,
+  takeFrom,
+  uploadAnnotation,
+} from '../utils';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '../../actionCreators';
 
 function* createMintTokensAction({
   payload: {
@@ -92,7 +96,7 @@ function* createMintTokensAction({
       );
     }
 
-    yield put(transactionReady(mintTokens.id));
+    yield initiateTransaction({ id: mintTokens.id });
 
     const {
       payload: { hash: txHash },
@@ -101,7 +105,9 @@ function* createMintTokensAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
     yield takeFrom(mintTokens.channel, ActionTypes.TRANSACTION_SUCCEEDED);
-    yield put(transactionReady(claimColonyFunds.id));
+
+    yield initiateTransaction({ id: claimColonyFunds.id });
+
     yield takeFrom(claimColonyFunds.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {

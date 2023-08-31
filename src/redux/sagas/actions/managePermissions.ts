@@ -4,14 +4,18 @@ import { ClientType, ColonyRole } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom, uploadAnnotation } from '../utils';
+import {
+  initiateTransaction,
+  putError,
+  takeFrom,
+  uploadAnnotation,
+} from '../utils';
 
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '../../actionCreators';
 
 function* managePermissionsAction({
   payload: {
@@ -94,7 +98,7 @@ function* managePermissionsAction({
       );
     }
 
-    yield put(transactionReady(setUserRoles.id));
+    yield initiateTransaction({ id: setUserRoles.id });
 
     const {
       payload: { hash: txHash },

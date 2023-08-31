@@ -2,7 +2,6 @@ import { Id, getChildIndex, ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '~redux/actionTypes';
-import { transactionReady } from '~redux/actionCreators';
 import { Action, AllActions } from '~redux/types';
 import { ADDRESS_ZERO } from '~constants';
 import { ContextModule, getContext } from '~context';
@@ -14,6 +13,7 @@ import {
 import { getMetadataDatabaseId } from '~utils/domains';
 import {
   getColonyManager,
+  initiateTransaction,
   putError,
   takeFrom,
   uploadAnnotation,
@@ -166,7 +166,7 @@ function* editColonyMotion({
       );
     }
 
-    yield put(transactionReady(createMotion.id));
+    yield initiateTransaction({ id: createMotion.id });
 
     const {
       payload: { hash: txHash },

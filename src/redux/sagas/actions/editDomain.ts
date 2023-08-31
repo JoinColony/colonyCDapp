@@ -16,16 +16,13 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+import { transactionPending, transactionAddParams } from '../../actionCreators';
 import {
   putError,
   takeFrom,
   getUpdatedDomainMetadataChangelog,
   uploadAnnotation,
+  initiateTransaction,
 } from '../utils';
 
 function* editDomainAction({
@@ -93,7 +90,7 @@ function* editDomainAction({
      * It will be replaced with the IPFS hash in due course.
      */
     yield put(transactionAddParams(editDomain.id, [domain.nativeId, '.']));
-    yield put(transactionReady(editDomain.id));
+    yield initiateTransaction({ id: editDomain.id });
 
     const {
       payload: { hash: txHash },

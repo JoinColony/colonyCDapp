@@ -4,14 +4,18 @@ import { utils } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom, getColonyManager } from '../utils';
+import {
+  putError,
+  takeFrom,
+  getColonyManager,
+  initiateTransaction,
+} from '../utils';
 
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '../../actionCreators';
 import { signMessage } from '../messages';
 
 export type RevealMotionPayload =
@@ -124,8 +128,7 @@ function* revealVoteMotion({
         ActionTypes.TRANSACTION_CREATED,
       );
 
-      yield put(transactionReady(revealVoteMotionTransaction.id));
-
+      yield initiateTransaction({ id: revealVoteMotionTransaction.id });
       yield takeFrom(
         revealVoteMotionTransaction.channel,
         ActionTypes.TRANSACTION_SUCCEEDED,

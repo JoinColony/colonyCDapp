@@ -9,9 +9,9 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '../../actionCreators';
 import {
   getColonyManager,
+  initiateTransaction,
   putError,
   takeFrom,
   uploadAnnotation,
@@ -79,7 +79,7 @@ function* createVersionUpgradeAction({
       yield takeFrom(annotateUpgrade.channel, ActionTypes.TRANSACTION_CREATED);
     }
 
-    yield put(transactionReady(upgrade.id));
+    yield initiateTransaction({ id: upgrade.id });
 
     const {
       payload: { hash: txHash },

@@ -19,7 +19,7 @@ import {
   createTransactionChannels,
 } from '../transactions';
 
-import { putError, takeFrom } from '../utils';
+import { initiateTransaction, putError, takeFrom } from '../utils';
 
 export type ClaimMotionRewardsPayload =
   Action<ActionTypes.MOTION_CLAIM>['payload'];
@@ -92,6 +92,12 @@ function* claimMotionRewards({
     yield all(
       Object.keys(channels).map((id) =>
         takeFrom(channels[id].channel, ActionTypes.TRANSACTION_CREATED),
+      ),
+    );
+
+    yield all(
+      Object.keys(channels).map((id) =>
+        initiateTransaction({ id: channels[id].id }),
       ),
     );
 

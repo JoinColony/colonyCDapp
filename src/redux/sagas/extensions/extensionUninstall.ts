@@ -8,7 +8,7 @@ import {
   getTxChannel,
   waitForTxResult,
 } from '../transactions';
-import { putError, takeFrom } from '../utils';
+import { initiateTransaction, putError, takeFrom } from '../utils';
 
 export function* extensionUninstall({
   meta,
@@ -26,7 +26,10 @@ export function* extensionUninstall({
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
 
+    yield initiateTransaction({ id: meta.id });
+
     const result = yield waitForTxResult(txChannel);
+
     if (result.type === ActionTypes.TRANSACTION_SUCCEEDED) {
       yield put<AllActions>({
         type: ActionTypes.EXTENSION_UNINSTALL_SUCCESS,

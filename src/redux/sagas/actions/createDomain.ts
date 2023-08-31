@@ -5,7 +5,6 @@ import { Action, ActionTypes, AllActions } from '~redux';
 import {
   transactionAddParams,
   transactionPending,
-  transactionReady,
 } from '~redux/actionCreators';
 import { ContextModule, getContext } from '~context';
 import {
@@ -21,7 +20,12 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { putError, takeFrom, uploadAnnotation } from '../utils';
+import {
+  initiateTransaction,
+  putError,
+  takeFrom,
+  uploadAnnotation,
+} from '../utils';
 
 function* createDomainAction({
   payload: {
@@ -86,7 +90,7 @@ function* createDomainAction({
 
     yield put(transactionPending(createDomain.id));
     yield put(transactionAddParams(createDomain.id, [parentId]));
-    yield put(transactionReady(createDomain.id));
+    yield initiateTransaction({ id: createDomain.id });
 
     const {
       payload: {
@@ -122,17 +126,6 @@ function* createDomainAction({
         txHash,
       });
     }
-
-    /*
-     * Update the colony object cache
-     */
-    // yield apolloClient.query<ColonyFromNameQuery, ColonyFromNameQueryVariables>(
-    //   {
-    //     query: ColonyFromNameDocument,
-    //     variables: { name: colonyName || '', address: colonyAddress },
-    //     fetchPolicy: 'network-only',
-    //   },
-    // );
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_DOMAIN_CREATE_SUCCESS,

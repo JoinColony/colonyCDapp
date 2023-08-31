@@ -17,15 +17,12 @@ import {
 } from '../transactions';
 import {
   getUpdatedColonyMetadataChangelog,
+  initiateTransaction,
   putError,
   takeFrom,
   uploadAnnotation,
 } from '../utils';
-import {
-  transactionAddParams,
-  transactionPending,
-  transactionReady,
-} from '../../actionCreators';
+import { transactionAddParams, transactionPending } from '../../actionCreators';
 import {
   getExistingTokenAddresses,
   getModifiedTokenAddresses,
@@ -128,7 +125,7 @@ function* editColonyAction({
      * It will be replaced with the IPFS hash in due course.
      */
     yield put(transactionAddParams(editColony.id, ['.']));
-    yield put(transactionReady(editColony.id));
+    yield initiateTransaction({ id: editColony.id });
 
     const {
       payload: { hash: txHash },

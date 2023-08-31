@@ -3,7 +3,7 @@ import { call, takeEvery, fork, put } from 'redux-saga/effects';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 
-import { takeFrom, putError } from '../utils';
+import { takeFrom, putError, initiateTransaction } from '../utils';
 import {
   createTransaction,
   getTxChannel,
@@ -28,6 +28,8 @@ export function* extensionInstall({
     });
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
+
+    yield initiateTransaction({ id: meta.id });
 
     const result = yield waitForTxResult(txChannel);
 

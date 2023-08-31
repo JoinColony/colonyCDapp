@@ -13,12 +13,17 @@ import {
   GetProfileByEmailDocument,
   GetUserByNameDocument,
 } from '~gql';
-import { transactionReady } from '~redux/actionCreators';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action, AllActions } from '../../types/actions';
-import { getColonyManager, putError, takeFrom } from '../utils';
 import {
+  getColonyManager,
+  initiateTransaction,
+  putError,
+  takeFrom,
+} from '../utils';
+import {
+  createGroupTransaction,
   createTransaction,
   createTransactionChannels,
   getTxChannel,
@@ -190,17 +195,7 @@ function* userDepositToken({
       'deposit',
     ]);
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: meta.id,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(approve, {
+    yield createGroupTransaction(approve, batchKey, meta, {
       context: ClientType.TokenClient,
       methodName: 'approve',
       identifier: tokenAddress,
@@ -208,7 +203,7 @@ function* userDepositToken({
       ready: false,
     });
 
-    yield createGroupTransaction(deposit, {
+    yield createGroupTransaction(deposit, batchKey, meta, {
       context: ClientType.TokenLockingClient,
       methodName: 'deposit(address,uint256,bool)',
       identifier: colonyAddress,
@@ -218,13 +213,13 @@ function* userDepositToken({
 
     yield takeFrom(approve.channel, ActionTypes.TRANSACTION_CREATED);
 
-    yield put(transactionReady(approve.id));
+    yield initiateTransaction({ id: approve.id });
 
     yield takeFrom(approve.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_CREATED);
 
-    yield put(transactionReady(deposit.id));
+    yield initiateTransaction({ id: deposit.id });
 
     yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
@@ -263,7 +258,7 @@ function* userWithdrawToken({
 
     yield takeFrom(withdraw.channel, ActionTypes.TRANSACTION_CREATED);
 
-    yield put(transactionReady(withdraw.id));
+    yield initiateTransaction({ id: withdraw.id });
 
     yield takeFrom(withdraw.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 

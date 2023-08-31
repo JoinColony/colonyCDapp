@@ -12,6 +12,7 @@ import {
 } from '../transactions';
 import {
   Channel,
+  initiateTransaction,
   modifyParams,
   putError,
   removeOldExtensionClients,
@@ -92,9 +93,12 @@ function* extensionEnable({
         ),
       );
 
+      yield initiateTransaction({ id: initialise.id });
+
       const result = yield waitForTxResult(initialise.channel);
 
       if (setUserRolesWithProofs) {
+        yield initiateTransaction({ id: setUserRolesWithProofs.id });
         yield waitForTxResult(setUserRolesWithProofs.channel);
         // assume if this doesn't error, the transaction has succeeded.
         // @TODO: Handle state in which it gets cancelled

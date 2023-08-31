@@ -8,8 +8,12 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '~redux/actionCreators';
-import { putError, takeFrom, uploadAnnotation } from '../utils';
+import {
+  initiateTransaction,
+  putError,
+  takeFrom,
+  uploadAnnotation,
+} from '../utils';
 
 function* tokenUnlockAction({
   meta,
@@ -67,10 +71,7 @@ function* tokenUnlockAction({
       );
     }
 
-    /*
-     * Check for transaction and wait for response
-     */
-    yield put(transactionReady(tokenUnlock.id));
+    yield initiateTransaction({ id: tokenUnlock.id });
 
     const {
       payload: { hash: txHash },
