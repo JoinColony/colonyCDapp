@@ -8,17 +8,17 @@ import {
   MAX_COLONY_DISPLAY_NAME,
   MAX_DOMAIN_PURPOSE_LENGTH,
 } from '~constants';
-import { getCreateDomainDialogPayload } from '~common/Dialogs/CreateDomainDialog/helpers';
 import { useActionHook } from '../ActionForm/hooks';
-import { DomainColor } from '~gql';
+import { getEditDomainDialogPayload } from '~common/Dialogs/EditDomainDialog/helpers';
 
-export const useCrateNewTeam = () => {
+export const useEditTeam = () => {
   const { colony } = useColonyContext();
   const navigate = useNavigate();
 
   const transform = pipe(
     mapPayload((payload) => {
       const values = {
+        domainId: payload.team,
         domainName: payload.teamName,
         domainPurpose: payload.domainPurpose,
         domainColor: payload.domainColor,
@@ -27,7 +27,7 @@ export const useCrateNewTeam = () => {
         annotation: payload.annotation,
       };
       if (colony) {
-        return getCreateDomainDialogPayload(colony, values);
+        return getEditDomainDialogPayload(colony, values);
       }
       return null;
     }),
@@ -38,6 +38,7 @@ export const useCrateNewTeam = () => {
     .object()
     .shape({
       forceAction: yup.boolean().defined(),
+      team: yup.number().defined(),
       teamName: yup
         .string()
         .trim()
@@ -59,15 +60,16 @@ export const useCrateNewTeam = () => {
     validationSchema,
     transform,
     defaultValues: {
+      team: 0,
       forceAction: false,
       teamName: '',
       domainPurpose: '',
-      domainColor: DomainColor.LightPink,
+      domainColor: '',
       createdIn: 1,
       decisionMethod: 'reputation',
       annotation: '',
     },
     defaultAction: ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
-    actionType: ActionTypes.ACTION_DOMAIN_CREATE,
+    actionType: ActionTypes.ACTION_DOMAIN_EDIT,
   });
 };

@@ -95,7 +95,7 @@ export const useActionSidebarRow = () => {
       };
     case Actions.EDIT_EXISTING_TEAM:
       return {
-        [ActionSidebarRowFieldNameEnum.TEAM]:
+        [ActionSidebarRowFieldNameEnum.FROM]:
           'actionSidebar.toolip.editTeam.selectTeam',
         [ActionSidebarRowFieldNameEnum.TEAM_NAME]:
           'actionSidebar.toolip.editTeam.teamName',
