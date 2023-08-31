@@ -26,7 +26,8 @@ const SearchItem: FC<SearchItemProps> = ({
     <ul
       className={clsx({
         'w-full': isLabelVisible,
-        'flex -mx-2 items-center flex-wrap w-[8.75rem]': !isLabelVisible,
+        'flex -mx-2 items-center flex-wrap w-[8.75rem] gap-y-4':
+          !isLabelVisible,
         'w-[12.75rem]': !isLabelVisible && isMobile,
       })}
     >
@@ -42,8 +43,8 @@ const SearchItem: FC<SearchItemProps> = ({
 
           return (
             <li
-              className={clsx('mb-4', {
-                'w-full': isLabelVisible,
+              className={clsx({
+                'w-full mb-4': isLabelVisible,
                 'inline-flex w-1/4 px-2': !isLabelVisible,
               })}
               key={value}
@@ -64,7 +65,7 @@ const SearchItem: FC<SearchItemProps> = ({
               >
                 {color && !isLabelVisible && (
                   <div
-                    className={clsx(color, 'rounded', {
+                    className={clsx(color, 'rounded shrink-0', {
                       'w-[1.125rem] h-[1.125rem]': !isMobile,
                       'w-7 h-7': isMobile,
                     })}
