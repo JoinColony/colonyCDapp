@@ -12,6 +12,7 @@ import {
 const oneTransactionPaymentName = 'extensions.OneTxPayment';
 const votingReputationName = 'extensions.VotingReputation';
 const stakedExpenditureName = 'extensions.StakedExpenditure';
+const stagedExpenditureName = 'extensions.StagedExpenditure';
 
 const validationMessages = {
   requiredError: {
@@ -153,11 +154,27 @@ const stakedExpenditureMessages = {
   },
 };
 
+const stagedExpenditureMessages = {
+  stagedExpenditureName: {
+    id: `${stagedExpenditureName}.name`,
+    defaultMessage: 'Staged Expenditure',
+  },
+  stagedExpenditureDescriptionShort: {
+    id: `${stagedExpenditureName}.description`,
+    defaultMessage: 'Staged Expenditure extension.',
+  },
+  stagedExpenditureDescriptionLong: {
+    id: `${stagedExpenditureName}.descriptionLong`,
+    defaultMessage: 'Staged Expenditure extension.',
+  },
+};
+
 const MSG = defineMessages({
   ...validationMessages,
   ...oneTransactionPaymentMessages,
   ...votingReputationMessages,
   ...stakedExpenditureMessages,
+  ...stagedExpenditureMessages,
 });
 
 export const supportedExtensionsConfig: ExtensionConfig[] = [
@@ -359,5 +376,14 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         transformValue: convertFractionToWei,
       },
     ],
+  },
+  {
+    extensionId: Extension.StagedExpenditure,
+    name: MSG.stagedExpenditureName,
+    descriptionShort: MSG.stagedExpenditureDescriptionShort,
+    descriptionLong: MSG.stagedExpenditureDescriptionLong,
+    neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
+    uninstallable: true,
+    createdAt: 1692048380000,
   },
 ];
