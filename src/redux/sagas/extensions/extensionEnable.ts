@@ -5,8 +5,12 @@ import { isDev } from '~constants';
 import { intArrayToBytes32 } from '~utils/web3';
 
 import { ActionTypes } from '../../actionTypes';
-import { Action } from '../../types/actions';
-import { createGroupTransaction, getTxChannel } from '../transactions';
+import { Action, AllActions } from '../../types/actions';
+import {
+  createGroupTransaction,
+  getTxChannel,
+  waitForTxResult,
+} from '../transactions';
 import {
   Channel,
   modifyParams,
@@ -100,20 +104,21 @@ function* extensionEnable({
         ),
       );
 
-      yield takeFrom(initialise.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+      const result = yield waitForTxResult(initialise.channel);
 
       if (setUserRolesWithProofs) {
-        yield takeFrom(
-          setUserRolesWithProofs.channel,
-          ActionTypes.TRANSACTION_SUCCEEDED,
-        );
+        yield waitForTxResult(setUserRolesWithProofs.channel);
+        // assume if this doesn't error, the transaction has succeeded.
+        // @TODO: Handle state in which it gets cancelled
       }
 
-      yield put({
-        type: ActionTypes.EXTENSION_ENABLE_SUCCESS,
-        payload: {},
-        meta,
-      });
+      if (result.type === ActionTypes.TRANSACTION_SUCCEEDED) {
+        yield put<AllActions>({
+          type: ActionTypes.EXTENSION_ENABLE_SUCCESS,
+          payload: {},
+          meta,
+        });
+      }
     }
   } catch (error) {
     return yield putError(ActionTypes.EXTENSION_ENABLE_ERROR, error, meta);

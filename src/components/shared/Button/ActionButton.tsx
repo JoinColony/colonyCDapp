@@ -55,15 +55,13 @@ const ActionButton = ({
         typeof values == 'function' ? await values() : values;
       result = await asyncFunction(asyncFuncValues);
       if (isMountedRef.current) setLoading(false);
+      if (typeof onSuccess == 'function') onSuccess(result);
     } catch (err) {
       setLoading(false);
 
       /**
        * @todo : display error somewhere
        */
-      return;
-    } finally {
-      if (typeof onSuccess == 'function') onSuccess(result);
     }
   };
 

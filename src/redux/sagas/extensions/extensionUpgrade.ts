@@ -25,14 +25,14 @@ function* extensionUpgrade({
     });
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
-
-    yield put<AllActions>({
-      type: ActionTypes.EXTENSION_UPGRADE_SUCCESS,
-      payload: {},
-      meta,
-    });
-
-    yield waitForTxResult(txChannel);
+    const result = yield waitForTxResult(txChannel);
+    if (result.type === ActionTypes.TRANSACTION_SUCCEEDED) {
+      yield put<AllActions>({
+        type: ActionTypes.EXTENSION_UPGRADE_SUCCESS,
+        payload: {},
+        meta,
+      });
+    }
   } catch (error) {
     return yield putError(ActionTypes.EXTENSION_UPGRADE_ERROR, error, meta);
   }
