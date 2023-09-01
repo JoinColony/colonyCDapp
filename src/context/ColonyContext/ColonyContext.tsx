@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useMemo,
-  ReactNode,
-  useState,
-  useEffect,
-} from 'react';
+import React, { createContext, useMemo, ReactNode, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 import { ApolloQueryResult } from '@apollo/client';
@@ -13,18 +7,18 @@ import {
   Exact,
   GetFullColonyByNameQuery,
   useGetFullColonyByNameQuery,
-  useUpdateContributorsWithReputationMutation,
 } from '~gql';
 import { Colony } from '~types';
 import LoadingTemplate from '~frame/LoadingTemplate';
-import { useAppContext, useCanInteractWithColony } from '~hooks';
+import { useCanInteractWithColony } from '~hooks';
 import { PageThemeContextProvider } from '../PageThemeContext';
 import { UserTokenBalanceProvider } from '../UserTokenBalanceContext';
 
 import { ColonyDecisionProvider } from '../ColonyDecisionContext';
-import { ContextModule, setContext } from '~context';
 import { NOT_FOUND_ROUTE } from '~routes';
-import { usePreviousColonyName } from './usePreviousName';
+import { useUpdateColonyReputation } from './useUpdateColonyReputation';
+import { usePreviousColonyName } from './usePreviousColonyName';
+import { usePreviousColony } from './usePreviousColony';
 
 export type RefetchColonyFn = (
   variables?:
@@ -57,7 +51,6 @@ const MSG = defineMessages({
 });
 
 const MIN_SUPPORTED_COLONY_VERSION = 5;
-const METACOLONY_COLONY_NAME = 'meta';
 export const PREV_COLONY_LOCAL_STORAGE_KEY = 'prevColonyName';
 
 const getColonyNameFromPath = (path: string) => {
@@ -71,32 +64,12 @@ export const ColonyContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const { user } = useAppContext();
   const { pathname } = useLocation();
   const colonyName = getColonyNameFromPath(pathname);
-  const [prevColonyName, setPrevColonyName] = useState<string>(
-    METACOLONY_COLONY_NAME,
-  );
   const navigate = useNavigate();
-  /* Update polling state when routing between colonies */
-  useEffect(() => {
-    if (colonyName && colonyName !== prevColonyName) {
-      setPrevColonyName(colonyName);
 
-      // persist
-      if (user?.walletAddress) {
-        localStorage.setItem(
-          `${PREV_COLONY_LOCAL_STORAGE_KEY}:${user.walletAddress}`,
-          colonyName,
-        );
-      }
-    }
-  }, [colonyName, prevColonyName, user?.walletAddress]);
-
-  const { hideLoader } = usePreviousColonyName({
+  const { hideLoader, prevColonyName } = usePreviousColonyName({
     colonyName,
-    setPrevColonyName,
-    walletAddress: user?.walletAddress,
   });
 
   const {
@@ -115,27 +88,8 @@ export const ColonyContextProvider = ({
   });
 
   const colony = data?.getColonyByName?.items?.[0] ?? undefined;
-
-  // This is useful when adding transactions to the db from the client
-  if (colony) {
-    setContext(ContextModule.CurrentColonyAddress, colony?.colonyAddress);
-  }
-
-  const [updateContributorsWithReputation] =
-    useUpdateContributorsWithReputationMutation();
-
-  /*
-   * Update colony-wide reputation whenever a user accesses a colony.
-   * Note that this (potentially expensive) calculation will only run if there's new reputation data available,
-   * so as to conserve resources. Since it runs inside a lambda, it is not a blocking operation.
-   */
-  useEffect(() => {
-    if (colony?.colonyAddress) {
-      updateContributorsWithReputation({
-        variables: { colonyAddress: colony.colonyAddress },
-      });
-    }
-  }, [colony?.colonyAddress, updateContributorsWithReputation]);
+  const { prevColony } = usePreviousColony({ colony });
+  useUpdateColonyReputation(colony?.colonyAddress);
 
   const canInteractWithColony = useCanInteractWithColony(colony);
   const isSupportedColonyVersion =
@@ -143,7 +97,7 @@ export const ColonyContextProvider = ({
 
   const colonyContext = useMemo<ColonyContextValue>(
     () => ({
-      colony,
+      colony: colony ?? prevColony,
       loading: loadingColony,
       canInteractWithColony,
       refetchColony,
@@ -153,6 +107,7 @@ export const ColonyContextProvider = ({
     }),
     [
       colony,
+      prevColony,
       loadingColony,
       canInteractWithColony,
       refetchColony,

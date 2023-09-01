@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { PREV_COLONY_LOCAL_STORAGE_KEY } from './ColonyContext';
-import { SetStateFn } from '~types';
+import { useAppContext } from '~hooks';
+
+const METACOLONY_COLONY_NAME = 'meta';
 
 // Retrieve the previous colony name from local storage, if it exists.
 // This is so that routes that don't have a colony in the url can still use a colony.
@@ -10,32 +12,48 @@ import { SetStateFn } from '~types';
 // fetched from local storage.
 
 export const usePreviousColonyName = ({
-  walletAddress,
   colonyName,
-  setPrevColonyName,
 }: {
   colonyName: string;
-  setPrevColonyName: SetStateFn<string>;
-  walletAddress?: string;
 }) => {
+  const { user } = useAppContext();
+  const { walletAddress } = user ?? {};
+
+  const [prevColonyName, setPrevColonyName] = useState<string>(
+    METACOLONY_COLONY_NAME,
+  );
   const [hideLoader, setHideLoader] = useState(false);
 
   useEffect(() => {
     if (walletAddress) {
-      const prevColony = localStorage.getItem(
+      const previousColonyName = localStorage.getItem(
         `${PREV_COLONY_LOCAL_STORAGE_KEY}:${walletAddress}`,
       );
 
-      if (prevColony) {
-        setPrevColonyName(prevColony);
+      if (previousColonyName) {
+        setPrevColonyName(previousColonyName);
         setHideLoader(true);
       }
     }
   }, [walletAddress, setPrevColonyName]);
 
   useEffect(() => {
+    if (colonyName && colonyName !== prevColonyName) {
+      setPrevColonyName(colonyName);
+
+      // persist
+      if (walletAddress) {
+        localStorage.setItem(
+          `${PREV_COLONY_LOCAL_STORAGE_KEY}:${walletAddress}`,
+          colonyName,
+        );
+      }
+    }
+  }, [colonyName, prevColonyName, walletAddress]);
+
+  useEffect(() => {
     setHideLoader(false);
   }, [colonyName]);
 
-  return { hideLoader };
+  return { hideLoader, prevColonyName, setPrevColonyName };
 };
