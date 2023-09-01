@@ -17,13 +17,14 @@ import {
 } from '~gql';
 import { Colony } from '~types';
 import LoadingTemplate from '~frame/LoadingTemplate';
-import { useCanInteractWithColony } from '~hooks';
-import { PageThemeContextProvider } from './PageThemeContext';
-import { UserTokenBalanceProvider } from './UserTokenBalanceContext';
+import { useAppContext, useCanInteractWithColony } from '~hooks';
+import { PageThemeContextProvider } from '../PageThemeContext';
+import { UserTokenBalanceProvider } from '../UserTokenBalanceContext';
 
-import { ColonyDecisionProvider } from './ColonyDecisionContext';
+import { ColonyDecisionProvider } from '../ColonyDecisionContext';
 import { ContextModule, setContext } from '~context';
 import { NOT_FOUND_ROUTE } from '~routes';
+import { usePreviousColonyName } from './usePreviousName';
 
 export type RefetchColonyFn = (
   variables?:
@@ -57,6 +58,7 @@ const MSG = defineMessages({
 
 const MIN_SUPPORTED_COLONY_VERSION = 5;
 const METACOLONY_COLONY_NAME = 'meta';
+export const PREV_COLONY_LOCAL_STORAGE_KEY = 'prevColonyName';
 
 const getColonyNameFromPath = (path: string) => {
   const pathFragments = path.split('/');
@@ -69,26 +71,37 @@ export const ColonyContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
+  const { user } = useAppContext();
   const { pathname } = useLocation();
   const colonyName = getColonyNameFromPath(pathname);
   const [prevColonyName, setPrevColonyName] = useState<string>(
     METACOLONY_COLONY_NAME,
   );
-  const { state: locationState } = useLocation();
   const navigate = useNavigate();
-  const [isPolling, setIsPolling] = useState(!!colonyName);
-
   /* Update polling state when routing between colonies */
   useEffect(() => {
     if (colonyName && colonyName !== prevColonyName) {
       setPrevColonyName(colonyName);
-      setIsPolling(true);
+
+      // persist
+      if (user?.walletAddress) {
+        localStorage.setItem(
+          `${PREV_COLONY_LOCAL_STORAGE_KEY}:${user.walletAddress}`,
+          colonyName,
+        );
+      }
     }
-  }, [colonyName, prevColonyName]);
+  }, [colonyName, prevColonyName, user?.walletAddress]);
+
+  const { hideLoader } = usePreviousColonyName({
+    colonyName,
+    setPrevColonyName,
+    walletAddress: user?.walletAddress,
+  });
 
   const {
     data,
-    loading,
+    loading: loadingColony,
     error,
     refetch: refetchColony,
     startPolling,
@@ -99,10 +112,8 @@ export const ColonyContextProvider = ({
     },
     fetchPolicy: 'network-only',
     nextFetchPolicy: 'cache-first',
-    pollInterval: 1000,
   });
 
-  const isRedirect = locationState?.isRedirect;
   const colony = data?.getColonyByName?.items?.[0] ?? undefined;
 
   // This is useful when adding transactions to the db from the client
@@ -119,18 +130,12 @@ export const ColonyContextProvider = ({
    * so as to conserve resources. Since it runs inside a lambda, it is not a blocking operation.
    */
   useEffect(() => {
-    updateContributorsWithReputation({
-      variables: { colonyAddress: colony?.colonyAddress },
-    });
-  }, [colony?.colonyAddress, updateContributorsWithReputation]);
-
-  /* Stop polling if we weren't redirected from the ColonyCreation wizard or when the query returns the colony */
-  useEffect(() => {
-    if (isPolling && (!isRedirect || colony)) {
-      stopPolling();
-      setIsPolling(false);
+    if (colony?.colonyAddress) {
+      updateContributorsWithReputation({
+        variables: { colonyAddress: colony.colonyAddress },
+      });
     }
-  }, [isPolling, isRedirect, colony, stopPolling]);
+  }, [colony?.colonyAddress, updateContributorsWithReputation]);
 
   const canInteractWithColony = useCanInteractWithColony(colony);
   const isSupportedColonyVersion =
@@ -139,7 +144,7 @@ export const ColonyContextProvider = ({
   const colonyContext = useMemo<ColonyContextValue>(
     () => ({
       colony,
-      loading,
+      loading: loadingColony,
       canInteractWithColony,
       refetchColony,
       startPolling,
@@ -148,7 +153,7 @@ export const ColonyContextProvider = ({
     }),
     [
       colony,
-      loading,
+      loadingColony,
       canInteractWithColony,
       refetchColony,
       startPolling,
@@ -157,7 +162,6 @@ export const ColonyContextProvider = ({
     ],
   );
 
-  const loadingColony = loading || isPolling;
   const colonyNotFound = !colony || error;
 
   useEffect(() => {
@@ -166,7 +170,7 @@ export const ColonyContextProvider = ({
     }
   }, [loadingColony, colonyNotFound, navigate]);
 
-  if (loadingColony) {
+  if (loadingColony && !hideLoader) {
     return <LoadingTemplate loadingText={MSG.loadingText} />;
   }
 
