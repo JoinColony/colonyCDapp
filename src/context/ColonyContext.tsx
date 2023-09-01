@@ -5,7 +5,7 @@ import React, {
   useState,
   useEffect,
 } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 import { ApolloQueryResult } from '@apollo/client';
 
@@ -17,13 +17,13 @@ import {
 } from '~gql';
 import { Colony } from '~types';
 import LoadingTemplate from '~frame/LoadingTemplate';
-import NotFoundRoute from '~routes/NotFoundRoute';
 import { useCanInteractWithColony } from '~hooks';
 import { PageThemeContextProvider } from './PageThemeContext';
 import { UserTokenBalanceProvider } from './UserTokenBalanceContext';
 
 import { ColonyDecisionProvider } from './ColonyDecisionContext';
 import { ContextModule, setContext } from '~context';
+import { NOT_FOUND_ROUTE } from '~routes';
 
 export type RefetchColonyFn = (
   variables?:
@@ -44,14 +44,7 @@ interface ColonyContextValue {
   isSupportedColonyVersion: boolean;
 }
 
-const ColonyContext = createContext<ColonyContextValue>({
-  loading: false,
-  canInteractWithColony: false,
-  refetchColony: () => null,
-  startPolling: () => undefined,
-  stopPolling: () => undefined,
-  isSupportedColonyVersion: false,
-});
+const ColonyContext = createContext<ColonyContextValue | null>(null);
 
 const displayName = 'ColonyContextProvider';
 
@@ -63,16 +56,26 @@ const MSG = defineMessages({
 });
 
 const MIN_SUPPORTED_COLONY_VERSION = 5;
+const METACOLONY_COLONY_NAME = 'meta';
+
+const getColonyNameFromPath = (path: string) => {
+  const pathFragments = path.split('/');
+  const idx = pathFragments.indexOf('colony') + 1;
+  return pathFragments[idx];
+};
 
 export const ColonyContextProvider = ({
   children,
 }: {
   children: ReactNode;
 }) => {
-  const { colonyName } = useParams<{ colonyName: string }>();
-  const [prevColonyName, setPrevColonyName] = useState<string>();
-
+  const { pathname } = useLocation();
+  const colonyName = getColonyNameFromPath(pathname);
+  const [prevColonyName, setPrevColonyName] = useState<string>(
+    METACOLONY_COLONY_NAME,
+  );
   const { state: locationState } = useLocation();
+  const navigate = useNavigate();
   const [isPolling, setIsPolling] = useState(!!colonyName);
 
   /* Update polling state when routing between colonies */
@@ -91,9 +94,8 @@ export const ColonyContextProvider = ({
     startPolling,
     stopPolling,
   } = useGetFullColonyByNameQuery({
-    skip: !colonyName,
     variables: {
-      name: colonyName ?? '',
+      name: colonyName || prevColonyName,
     },
     fetchPolicy: 'network-only',
     nextFetchPolicy: 'cache-first',
@@ -123,10 +125,12 @@ export const ColonyContextProvider = ({
   }, [colony?.colonyAddress, updateContributorsWithReputation]);
 
   /* Stop polling if we weren't redirected from the ColonyCreation wizard or when the query returns the colony */
-  if (isPolling && (!isRedirect || colony)) {
-    stopPolling();
-    setIsPolling(false);
-  }
+  useEffect(() => {
+    if (isPolling && (!isRedirect || colony)) {
+      stopPolling();
+      setIsPolling(false);
+    }
+  }, [isPolling, isRedirect, colony, stopPolling]);
 
   const canInteractWithColony = useCanInteractWithColony(colony);
   const isSupportedColonyVersion =
@@ -153,16 +157,17 @@ export const ColonyContextProvider = ({
     ],
   );
 
-  if (!colonyName) {
-    return null;
-  }
+  const loadingColony = loading || isPolling;
+  const colonyNotFound = !colony || error;
 
-  if (loading || isPolling) {
+  useEffect(() => {
+    if (!loadingColony && colonyNotFound) {
+      navigate(NOT_FOUND_ROUTE, { replace: true });
+    }
+  }, [loadingColony, colonyNotFound, navigate]);
+
+  if (loadingColony) {
     return <LoadingTemplate loadingText={MSG.loadingText} />;
-  }
-
-  if (!colony || error) {
-    return <NotFoundRoute />;
   }
 
   return (

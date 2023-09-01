@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { useColonyContext, useMobile } from '~hooks';
 import { LEARN_MORE_PAYMENTS } from '~constants';
 import Nav from './partials/Nav';
-import { useGetNavItems } from './partials/hooks';
+import { getNavItems } from './partials/utils';
 import { SubNavigationMobile } from '~v5/common/SubNavigation';
 import LearnMore from '~shared/Extensions/LearnMore';
 import Button from '~v5/shared/Button';
@@ -23,7 +23,7 @@ const MainNavigation: FC<MainNavigationProps> = ({
   const { colony } = useColonyContext();
   const { name } = colony || {};
   const isMobile = useMobile();
-  const navItems = useGetNavItems(name);
+  const navItems = getNavItems(name);
   const nativeToken = useGetNetworkToken();
   const { toggleActionBar } = useActionSidebarContext();
 

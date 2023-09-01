@@ -20,7 +20,6 @@ export const displayName = 'common.Extensions.UserNavigation';
 
 // @TODO: change name to Wallet
 const UserNavigation: FC<UserNavigationProps> = ({
-  hideColonies,
   isWalletButtonVisible,
   userMenuGetTooltipProps,
   userMenuSetTooltipRef,
@@ -59,7 +58,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
         })}
       >
         {nativeToken && <Token nativeToken={nativeToken} />}
-        <UserReputation hideColonies={hideColonies} />
+        <UserReputation />
       </div>
       {isUserNavigationButtonsVisible && !isWalletConnected && (
         <Button
@@ -92,7 +91,6 @@ const UserNavigation: FC<UserNavigationProps> = ({
               user={user}
               walletAddress={user?.walletAddress}
               nativeToken={nativeToken}
-              hideColonies={hideColonies}
             />
           )}
         </>

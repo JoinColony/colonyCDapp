@@ -37,7 +37,7 @@ import { ActionTypes } from '~redux/actionTypes';
 import { notNull } from '~utils/arrays';
 import { ActionTypeWithPayloadAndMeta } from '~redux/types';
 
-let pendingTransactionCount = 0;
+const pendingTransactions = new Set();
 
 const handleBeforeUnload = (e) => {
   e.preventDefault();
@@ -45,18 +45,19 @@ const handleBeforeUnload = (e) => {
   return e.returnValue;
 };
 
-const onTransactionPending = () => {
-  pendingTransactionCount += 1;
+const onTransactionPending = (id: string) => {
+  pendingTransactions.add(id);
   // the first pending transaction, set up listener. I.e, we only need one
-  if (pendingTransactionCount === 1) {
+  if (pendingTransactions.size === 1) {
     window.addEventListener('beforeunload', handleBeforeUnload);
   }
 };
 
-const onTransactionResolved = () => {
-  pendingTransactionCount -= 1;
+const onTransactionResolved = (id: string) => {
+  pendingTransactions.delete(id);
+
   // no pending transactions, remove listener
-  if (pendingTransactionCount === 0) {
+  if (pendingTransactions.size === 0) {
     window.removeEventListener('beforeunload', handleBeforeUnload);
   }
 };
@@ -206,7 +207,7 @@ function* updateTransactionInDb({
       }
 
       case ActionTypes.TRANSACTION_PENDING: {
-        onTransactionPending();
+        onTransactionPending(id);
         yield updateTransaction({ id, status: TransactionStatus.Pending });
 
         break;
@@ -246,7 +247,7 @@ function* updateTransactionInDb({
       }
 
       case ActionTypes.TRANSACTION_SENT: {
-        onTransactionPending();
+        onTransactionPending(id);
         yield updateTransaction({ id, status: TransactionStatus.Pending });
         break;
       }
@@ -258,7 +259,7 @@ function* updateTransactionInDb({
       }
 
       case ActionTypes.TRANSACTION_SUCCEEDED: {
-        onTransactionResolved();
+        onTransactionResolved(id);
         const { eventData, deployedContractAddress } =
           payload as TransactionSucceededPayload;
         yield updateTransaction({
@@ -271,7 +272,7 @@ function* updateTransactionInDb({
       }
 
       case ActionTypes.TRANSACTION_ERROR: {
-        onTransactionResolved();
+        onTransactionResolved(id);
         const { error } = payload as TransactionErrorPayload;
         yield updateTransaction({
           id,
@@ -282,7 +283,7 @@ function* updateTransactionInDb({
       }
 
       case ActionTypes.TRANSACTION_CANCEL: {
-        onTransactionResolved();
+        onTransactionResolved(id);
         const { data }: ApolloQueryResult<GetTransactionQuery> =
           yield fetchTransaction({ id });
 

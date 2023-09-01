@@ -2,7 +2,6 @@ import { Dispatch } from 'react';
 import { PropsGetterArgs } from 'react-popper-tooltip';
 
 export interface UserNavigationProps {
-  hideColonies?: boolean;
   isWalletButtonVisible?: boolean;
   isWalletOpen?: boolean;
   isUserMenuOpen?: boolean;
