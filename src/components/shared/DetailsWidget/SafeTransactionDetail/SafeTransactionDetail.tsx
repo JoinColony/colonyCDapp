@@ -21,6 +21,7 @@ import FunctionsSection from '../SafeTransactionDetail/components/FunctionsSecti
 
 import widgetStyles from '../DetailsWidget.css';
 import styles from './SafeTransactionDetail.css';
+import { getNativeTokenByChainId } from '~utils/tokens';
 
 const displayName = 'DetailsWidget.SafeTransactionDetail';
 
@@ -68,7 +69,7 @@ const SafeTransactionDetail = ({ actionData }: Props) => {
           });
         };
         const idx = transactions.length > 1 ? index + 1 : null;
-        const { token } = transaction;
+        const { token: transactionToken } = transaction;
         const NFT = transaction.nftData;
         const renderWidget = () => {
           switch (transaction.transactionType) {
@@ -90,8 +91,14 @@ const SafeTransactionDetail = ({ actionData }: Props) => {
                       {transaction.recipient && (
                         <Recipient recipient={transaction.recipient} />
                       )}
-                      {transaction.amount && token && (
-                        <Value transaction={transaction} token={token} />
+                      {transaction.amount && (
+                        <Value
+                          transaction={transaction}
+                          token={
+                            transactionToken ||
+                            getNativeTokenByChainId(safe.chainId)
+                          }
+                        />
                       )}
                     </>
                   )}
