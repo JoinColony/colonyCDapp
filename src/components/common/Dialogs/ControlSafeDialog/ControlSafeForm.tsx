@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { ColonyRole } from '@colony/colony-js';
@@ -115,7 +115,7 @@ const ControlSafeForm = ({
   handleIsForceChange,
   isForce,
 }: ControlSafeProps) => {
-  const [prevSafeAddress, setPrevSafeAddress] = useState<string>('');
+  const [prevSafeChainId, setPrevSafeChainId] = useState<number | undefined>();
   const [transactionTabStatus, setTransactionTabStatus] = useState([true]);
   const savedTokenState = useState({});
 
@@ -125,6 +125,7 @@ const ControlSafeForm = ({
     setValue,
     trigger,
     control,
+    resetField,
   } = useFormContext();
 
   const selectedSafe: SelectedPickerItem = watch('safe');
@@ -158,40 +159,38 @@ const ControlSafeForm = ({
     trigger();
   };
 
-  const handleSelectedContractMethods = useCallback(
-    (contractMethods: UpdatedMethods, transactionIndex: number) => {
-      const functionParamTypes: FunctionParamType[] =
-        contractMethods[transactionIndex]?.inputs?.map((input) => ({
-          name: input.name || '',
-          type: input.type || '',
-        })) || [];
+  const handleSelectedContractMethods = (
+    contractMethods: UpdatedMethods,
+    transactionIndex: number,
+  ) => {
+    const functionParamTypes: FunctionParamType[] | undefined = contractMethods[
+      transactionIndex
+    ]?.inputs?.map((input) => ({
+      name: input.name || '',
+      type: input.type || '',
+    }));
 
-      setSelectedContractMethods(contractMethods);
-      setValue(
-        `transactions.${transactionIndex}.functionParamTypes`,
-        functionParamTypes,
-      );
-    },
-    [setValue, setSelectedContractMethods],
-  );
+    setSelectedContractMethods(contractMethods);
+    setValue(
+      `transactions.${transactionIndex}.functionParamTypes`,
+      functionParamTypes,
+    );
+  };
 
-  const removeSelectedContractMethod = useCallback(
-    (transactionIndex: number) => {
-      const updatedSelectedContractMethods = omit(
-        selectedContractMethods,
+  const removeSelectedContractMethod = (transactionIndex: number) => {
+    const updatedSelectedContractMethods = omit(
+      selectedContractMethods,
+      transactionIndex,
+    );
+
+    if (!isEqual(updatedSelectedContractMethods, selectedContractMethods)) {
+      handleSelectedContractMethods(
+        updatedSelectedContractMethods,
         transactionIndex,
       );
-
-      if (!isEqual(updatedSelectedContractMethods, selectedContractMethods)) {
-        handleSelectedContractMethods(
-          updatedSelectedContractMethods,
-          transactionIndex,
-        );
-        setValue(`transactions.${transactionIndex}.contractFunction`, '');
-      }
-    },
-    [selectedContractMethods, handleSelectedContractMethods, setValue],
-  );
+      setValue(`transactions.${transactionIndex}.contractFunction`, '');
+    }
+  };
 
   const disabledSectionInputs =
     !isSupportedColonyVersion || (!userHasPermission && canOnlyForceAction);
@@ -228,6 +227,8 @@ const ControlSafeForm = ({
             selectedContractMethods={selectedContractMethods}
             handleSelectedContractMethods={handleSelectedContractMethods}
             removeSelectedContractMethod={removeSelectedContractMethod}
+            prevSafeChainId={prevSafeChainId}
+            handlePrevSafeChainIdChange={setPrevSafeChainId}
           />
         );
       case SafeTransactionType.TransferNft:
@@ -240,14 +241,6 @@ const ControlSafeForm = ({
         );
       default:
         return null;
-    }
-  };
-
-  const handleSafeChange = (newSafe: SelectedPickerItem) => {
-    const safeAddress = newSafe?.walletAddress;
-
-    if (safeAddress !== prevSafeAddress) {
-      setPrevSafeAddress(safeAddress);
     }
   };
 
@@ -359,7 +352,7 @@ const ControlSafeForm = ({
                 placeholder={MSG.safePickerPlaceholder}
                 filter={filterUserSelection}
                 disabled={disabledSectionInputs}
-                onSelected={handleSafeChange}
+                excludeFilterValue
               />
             </div>
           </DialogSection>
@@ -370,7 +363,8 @@ const ControlSafeForm = ({
                   transactionIndex={index}
                   transactionTabStatus={transactionTabStatus}
                   handleTransactionTabStatus={setTransactionTabStatus}
-                  handleSelectedContractMethods={handleSelectedContractMethods}
+                  selectedContractMethods={selectedContractMethods}
+                  handleSelectedContractMethods={setSelectedContractMethods}
                   removeTab={removeTab}
                 />
               )}
@@ -388,6 +382,12 @@ const ControlSafeForm = ({
                       name={`transactions[${index}].transactionType`}
                       onChange={(type) => {
                         removeSelectedContractMethod(index);
+                        resetField(`transactions.${index}`, {
+                          defaultValue: {
+                            ...defaultTransaction,
+                            transactionType: type,
+                          },
+                        });
                         handleTransactionTypeChange(type as string, index);
                       }}
                       appearance={{ theme: 'grey', width: 'fluid' }}

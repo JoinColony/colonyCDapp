@@ -11,6 +11,7 @@ export type OmniPickerUser = User & OmniPickerData;
 export const filterUserSelection = (
   data: OmniPickerUser[],
   filterValue: string | undefined,
+  excludeFilterValue?: boolean,
 ) => {
   if (!filterValue) {
     return data;
@@ -18,7 +19,7 @@ export const filterUserSelection = (
 
   const filteredUsers = data.filter(
     (user) =>
-      user?.name.toLowerCase().includes(filterValue.toLowerCase()) ||
+      user?.name?.toLowerCase().includes(filterValue.toLowerCase()) ||
       user?.walletAddress.toLowerCase().includes(filterValue.toLowerCase()) ||
       user?.profile?.displayName
         ?.toLowerCase()
@@ -32,6 +33,10 @@ export const filterUserSelection = (
     },
     walletAddress: filterValue,
   };
+
+  if (excludeFilterValue) {
+    return filteredUsers;
+  }
 
   return [customUser].concat(filteredUsers);
 };

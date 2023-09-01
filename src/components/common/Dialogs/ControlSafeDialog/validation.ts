@@ -35,9 +35,9 @@ const MSG = defineMessages({
     id: `${displayName}.notHexError`,
     defaultMessage: 'Value must be a valid hex string',
   },
-  notIntegerError: {
-    id: `${displayName}.notIntegerError`,
-    defaultMessage: 'Amount must be an integer',
+  notPositiveIntegerError: {
+    id: `${displayName}.notPositiveIntegerError`,
+    defaultMessage: 'Amount must be a positive integer',
   },
   invalidArrayError: {
     id: `${displayName}.invalidArrayError`,
@@ -191,9 +191,10 @@ export const getValidationSchema = (
             .when('transactionType', {
               is: SafeTransactionType.RawTransaction,
               then: number()
-                .transform((value) => (Number.isNaN(value) ? null : value))
+                .typeError(() => MSG.notPositiveIntegerError)
                 .required(() => MSG.requiredFieldError)
-                .integer(() => MSG.notIntegerError),
+                .min(0, () => MSG.notPositiveIntegerError)
+                .integer(() => MSG.notPositiveIntegerError),
               otherwise: number().nullable(),
             })
             .nullable(),

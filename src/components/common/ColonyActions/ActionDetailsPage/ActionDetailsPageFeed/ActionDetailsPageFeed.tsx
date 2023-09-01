@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ColonyAction } from '~types';
-import { parseSafeTransactionEventType } from '~utils/safes';
+import { parseSafeTransactionType } from '~utils/safes';
 
 import { ACTIONS_EVENTS } from '../staticMaps';
 
@@ -14,22 +14,10 @@ interface ActionsPageFeedProps {
   actionData: ColonyAction;
 }
 
-// only safe events for now
-const arbitraryTransactionEventParser = (actionData: ColonyAction) => {
-  const safeType = parseSafeTransactionEventType(actionData);
-
-  if (safeType) {
-    return safeType;
-  }
-
-  return undefined;
-};
-
 const ActionDetailsPageFeed = ({ actionData }: ActionsPageFeedProps) => {
   const events =
     JSON.parse(actionData.individualEvents as string) ||
-    ACTIONS_EVENTS[actionData.type] ||
-    arbitraryTransactionEventParser(actionData);
+    ACTIONS_EVENTS[parseSafeTransactionType(actionData) || actionData.type];
 
   return (
     <>

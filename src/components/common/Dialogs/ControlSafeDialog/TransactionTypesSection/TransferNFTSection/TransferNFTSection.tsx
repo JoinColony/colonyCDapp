@@ -146,6 +146,7 @@ const TransferNFTSection = ({
             label={MSG.selectNFT}
             name={`transactions.${transactionIndex}.nft`}
             filter={filterUserSelection}
+            excludeFilterValue
             renderAvatar={AvatarXS}
             data={availableNFTs || []}
             disabled={disabledInput}
