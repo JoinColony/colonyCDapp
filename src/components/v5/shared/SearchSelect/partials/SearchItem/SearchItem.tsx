@@ -10,6 +10,8 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { Actions } from '~constants/actions';
 import Avatar from '~v5/shared/Avatar';
 import { useMobile } from '~hooks';
+import Tooltip from '~shared/Extensions/Tooltip';
+import Icon from '~shared/Icon';
 
 const displayName = 'v5.SearchSelect.partials.SearchItem';
 
@@ -32,7 +34,15 @@ const SearchItem: FC<SearchItemProps> = ({
       })}
     >
       {sortDisabled(options).map(
-        ({ label, value, isDisabled, avatar, showAvatar, color }) => {
+        ({
+          label,
+          value,
+          isDisabled,
+          avatar,
+          showAvatar,
+          color,
+          missingPermissions,
+        }) => {
           const firstDisabledOption = options.filter(
             (option) => option.isDisabled,
           )[0];
@@ -55,8 +65,10 @@ const SearchItem: FC<SearchItemProps> = ({
                   'justify-between': !hasAvatar,
                   'justify-start': hasAvatar,
                   'text-gray-400 pointer-events-none': isDisabled,
+                  'hover:text-blue-400': !missingPermissions,
                 })}
                 onClick={() => {
+                  if (missingPermissions) return;
                   if (Object.values(Actions).includes(value as Actions)) {
                     setSelectedAction(value as Actions);
                   }
@@ -86,6 +98,20 @@ const SearchItem: FC<SearchItemProps> = ({
                     mode="coming-soon"
                     text="Coming soon"
                   />
+                )}
+                {missingPermissions && (
+                  <Tooltip
+                    tooltipContent={
+                      <span>{formatMessage({ id: missingPermissions })}</span>
+                    }
+                  >
+                    <span className="text-warning-400">
+                      <Icon
+                        name="warning-circle"
+                        appearance={{ size: 'tiny' }}
+                      />
+                    </span>
+                  </Tooltip>
                 )}
               </button>
             </li>
