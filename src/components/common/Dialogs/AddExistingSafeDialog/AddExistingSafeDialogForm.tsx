@@ -24,7 +24,6 @@ const MSG = defineMessages({
 const AddExistingSafeDialogForm = ({
   networkOptions,
   loadingModuleState,
-  loadingSafeState,
   stepIndex,
   setStepIndex,
   ...props
@@ -46,7 +45,6 @@ const AddExistingSafeDialogForm = ({
             networkOptions={networkOptions}
             setStepIndex={setStepIndex}
             loadingModuleState={loadingModuleState}
-            loadingSafeState={loadingSafeState}
             selectedChain={selectedChain}
             setSelectedChain={setSelectedChain}
           />
