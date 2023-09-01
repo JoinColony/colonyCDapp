@@ -127,6 +127,7 @@ function* initiateSafeTransactionMotion({
             zodiacBridgeModule,
             safe,
             transaction,
+            network,
           );
           break;
         case SafeTransactionType.ContractInteraction:
@@ -246,10 +247,7 @@ function* initiateSafeTransactionMotion({
         variables: {
           input: {
             ...omit(transaction, 'token'),
-            tokenAddress:
-              transaction.token?.tokenAddress === ADDRESS_ZERO
-                ? `${transaction.token?.tokenAddress}_${network.shortName}`
-                : transaction.token?.tokenAddress,
+            tokenAddress: transaction.token?.tokenAddress,
             transactionHash: safeTransaction.data.createSafeTransaction.id,
           },
         },
