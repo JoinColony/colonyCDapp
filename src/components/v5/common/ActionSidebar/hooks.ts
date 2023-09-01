@@ -9,6 +9,7 @@ import {
   useDialogActionPermissions,
   useEnabledExtensions,
   useTransformer,
+  useUserAccountRegistered,
 } from '~hooks';
 import { SearchSelectOptionProps } from '~v5/shared/SearchSelect/types';
 import { Colony } from '~types';
@@ -23,9 +24,56 @@ import { useActionFormContext } from './partials/ActionForm/ActionFormContext';
 import CreateDecisionForm from './partials/CreateDecision';
 import EditTeamForm from './partials/EditTeamForm';
 import EnterRecoveryModeForm from './partials/EnterRecoveryModeForm';
+import {
+  canAdminister,
+  canArchitect,
+  canEnterRecoveryMode,
+  canFund,
+  hasRoot,
+  userHasRole,
+} from '~utils/checks';
 
-export const useActionsList = () =>
-  useMemo(
+export const useActionsList = () => {
+  const { colony } = useColonyContext();
+  const { wallet } = useAppContext();
+  const enabledExtensionData = useEnabledExtensions();
+  const { isVotingReputationEnabled, isOneTxPaymentEnabled } =
+    enabledExtensionData;
+
+  const userHasAccountRegistered = useUserAccountRegistered();
+
+  const allUserRoles = getAllUserRoles(colony, wallet?.address || '');
+
+  const hasRootPermission = userHasAccountRegistered && hasRoot(allUserRoles);
+
+  const canEnterRecovery =
+    userHasAccountRegistered && canEnterRecoveryMode(allUserRoles);
+  const canEnterPermissionManagement =
+    (userHasAccountRegistered && canArchitect(allUserRoles)) ||
+    hasRootPermission;
+  const canCreateEditDomain =
+    userHasAccountRegistered && canArchitect(allUserRoles);
+  const canCreatePayment =
+    userHasAccountRegistered &&
+    ((canAdminister(allUserRoles) && canFund(allUserRoles)) ||
+      isVotingReputationEnabled);
+  const canMoveFunds = canFund(allUserRoles);
+  const canUserMintNativeToken = isVotingReputationEnabled
+    ? colony?.status?.nativeToken?.mintable
+    : hasRoot(allUserRoles) && colony?.status?.nativeToken?.mintable;
+  const canUserUnlockNativeToken = isVotingReputationEnabled
+    ? colony?.status?.nativeToken?.unlockable
+    : hasRoot(allUserRoles) && colony?.status?.nativeToken?.unlockable;
+  const canManageTokens = hasRoot(allUserRoles);
+  const canSmiteReputation =
+    userHasAccountRegistered &&
+    (userHasRole(allUserRoles, ColonyRole.Arbitration) ||
+      isVotingReputationEnabled);
+  const canAwardReputation =
+    userHasAccountRegistered &&
+    (userHasRole(allUserRoles, ColonyRole.Root) || isVotingReputationEnabled);
+
+  return useMemo(
     (): SearchSelectOptionProps[] => [
       {
         key: '1',
@@ -35,6 +83,10 @@ export const useActionsList = () =>
           {
             label: { id: 'actions.simplePayment' },
             value: Actions.SIMPLE_PAYMENT,
+            missingPermissions:
+              !canCreatePayment || !isOneTxPaymentEnabled
+                ? 'actionSidebar.missingPermissions.payment'
+                : undefined,
           },
           {
             label: { id: 'actions.advancedPayment' },
@@ -83,18 +135,36 @@ export const useActionsList = () =>
           {
             label: { id: 'actions.transferFunds' },
             value: Actions.TRANSFER_FUNDS,
+            missingPermissions:
+              !userHasAccountRegistered ||
+              !(canMoveFunds || isVotingReputationEnabled)
+                ? 'actionSidebar.missingPermissions.funds'
+                : undefined,
           },
           {
             label: { id: 'actions.mintTokens' },
             value: Actions.MINT_TOKENS,
+            missingPermissions:
+              !userHasAccountRegistered || !canUserMintNativeToken
+                ? 'actionSidebar.missingPermissions.root'
+                : undefined,
           },
           {
             label: { id: 'actions.unlockToken' },
             value: Actions.UNLOCK_TOKEN,
+            missingPermissions:
+              !userHasAccountRegistered || !canUserUnlockNativeToken
+                ? 'actionSidebar.missingPermissions.root'
+                : undefined,
           },
           {
             label: { id: 'actions.manageTokens' },
             value: Actions.MANAGE_TOKENS,
+            missingPermissions:
+              !userHasAccountRegistered ||
+              !(canManageTokens || isVotingReputationEnabled)
+                ? 'actionSidebar.missingPermissions.root'
+                : undefined,
           },
         ],
       },
@@ -106,10 +176,20 @@ export const useActionsList = () =>
           {
             label: { id: 'actions.createNewTeam' },
             value: Actions.CREATE_NEW_TEAM,
+            missingPermissions: !(
+              canCreateEditDomain || isVotingReputationEnabled
+            )
+              ? 'actionSidebar.missingPermissions.teams'
+              : undefined,
           },
           {
             label: { id: 'actions.editExistingTeam' },
             value: Actions.EDIT_EXISTING_TEAM,
+            missingPermissions: !(
+              canCreateEditDomain || isVotingReputationEnabled
+            )
+              ? 'actionSidebar.missingPermissions.teams'
+              : undefined,
           },
         ],
       },
@@ -121,26 +201,50 @@ export const useActionsList = () =>
           {
             label: { id: 'actions.awardReputation' },
             value: Actions.AWARD_REPUTATION,
+            missingPermissions: !canAwardReputation
+              ? 'actionSidebar.missingPermissions.awardReputation'
+              : undefined,
           },
           {
             label: { id: 'actions.removeReputation' },
             value: Actions.REMOVE_REPUTATION,
+            missingPermissions: !canSmiteReputation
+              ? 'actionSidebar.missingPermissions.smiteReputation'
+              : undefined,
           },
           {
             label: { id: 'actions.managePermissions' },
             value: Actions.MANAGE_PERMISSIONS,
+            missingPermissions: !(
+              canEnterPermissionManagement || isVotingReputationEnabled
+            )
+              ? 'actionSidebar.missingPermissions.permissions'
+              : undefined,
           },
           {
             label: { id: 'actions.editColonyDetails' },
             value: Actions.EDIT_COLONY_DETAILS,
+            missingPermissions: !(
+              hasRootPermission || isVotingReputationEnabled
+            )
+              ? 'actionSidebar.missingPermissions.root'
+              : undefined,
           },
           {
             label: { id: 'actions.upgradeColonyVersion' },
             value: Actions.UPGRADE_COLONY_VERSION,
+            missingPermissions: !(
+              hasRootPermission || isVotingReputationEnabled
+            )
+              ? 'actionSidebar.missingPermissions.root'
+              : undefined,
           },
           {
             label: { id: 'actions.enterRecoveryMode' },
             value: Actions.ENTER_RECOVERY_MODE,
+            missingPermissions: !canEnterRecovery
+              ? 'actionSidebar.missingPermissions.recovery'
+              : undefined,
           },
           {
             label: { id: 'actions.createNewIntegration' },
@@ -157,6 +261,7 @@ export const useActionsList = () =>
     ],
     [],
   );
+};
 
 export const useUserPermissionsErrors = (): boolean => {
   const { isVotingReputationEnabled } = useEnabledExtensions();

@@ -24,4 +24,5 @@ export interface SearchSelectOption {
   color?: string;
   walletAddress?: string;
   nativeId?: number;
+  missingPermissions?: string;
 }
