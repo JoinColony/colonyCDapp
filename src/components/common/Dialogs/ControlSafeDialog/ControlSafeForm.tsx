@@ -352,6 +352,7 @@ const ControlSafeForm = ({
                 placeholder={MSG.safePickerPlaceholder}
                 filter={filterUserSelection}
                 disabled={disabledSectionInputs}
+                excludeFilterValue
               />
             </div>
           </DialogSection>
