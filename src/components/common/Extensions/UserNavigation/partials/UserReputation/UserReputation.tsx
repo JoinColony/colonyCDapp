@@ -24,7 +24,6 @@ export const displayName =
   'common.Extensions.UserNavigation.partials.UserReputation';
 
 const UserReputation: FC<UserReputationProps> = ({
-  hideColonies,
   hideMemberReputationOnMobile,
 }) => {
   const { colony } = useColonyContext();
@@ -96,13 +95,11 @@ const UserReputation: FC<UserReputationProps> = ({
             userName={profile?.displayName || user?.name}
             size="xxs"
           />
-          {!hideColonies && (
-            <MemberReputation
-              userReputation={userReputation}
-              totalReputation={totalReputation}
-              hideOnMobile={hideMemberReputationOnMobile}
-            />
-          )}
+          <MemberReputation
+            userReputation={userReputation}
+            totalReputation={totalReputation}
+            hideOnMobile={hideMemberReputationOnMobile}
+          />
         </div>
       </Button>
       {(isUserHubVisible || isUserHubOpen) && (

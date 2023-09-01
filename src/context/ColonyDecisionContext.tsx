@@ -9,7 +9,7 @@ export const ColonyDecisionContext = createContext<void>(undefined);
 
 interface ColonyDecisionProviderProps {
   children: React.ReactNode;
-  colony: Colony;
+  colony?: Colony;
 }
 
 export const ColonyDecisionProvider = ({

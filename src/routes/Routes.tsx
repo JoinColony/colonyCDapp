@@ -60,7 +60,6 @@ import {
   // CLAIM_TOKEN_ROUTE,
 } from './routeConstants';
 import NotFoundRoute from './NotFoundRoute';
-import { ColonyContextProvider } from '~context/ColonyContext';
 import CreateColonyWizard from '~common/CreateColonyWizard';
 import DecisionPreview from '~common/ColonyDecisions/DecisionPreview';
 import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
@@ -134,17 +133,15 @@ const Routes = () => {
         />
         <Route
           element={
-            <ColonyContextProvider>
-              <Default
-                routeProps={{
-                  backText: ColonyBackText,
-                  backRoute: ({ colonyName }) => `/colony/${colonyName}`,
-                  hasSubscribedColonies: false,
-                }}
-              >
-                <Outlet />
-              </Default>
-            </ColonyContextProvider>
+            <Default
+              routeProps={{
+                backText: ColonyBackText,
+                backRoute: ({ colonyName }) => `/colony/${colonyName}`,
+                hasSubscribedColonies: false,
+              }}
+            >
+              <Outlet />
+            </Default>
           }
         >
           <Route path={COLONY_FUNDING_ROUTE} element={<ColonyFunding />} />
@@ -155,22 +152,20 @@ const Routes = () => {
               key={path}
               path={path}
               element={
-                <ColonyContextProvider>
-                  <ExtensionsContextProvider>
-                    <MemberContextProvider>
-                      <ActionSidebarContextProvider>
-                        <PageLayout
-                          loadingText="members"
-                          title={{ id: 'membersPage.title' }}
-                          description={{ id: 'membersPage.description' }}
-                          pageName="members"
-                        >
-                          <MembersPage />
-                        </PageLayout>
-                      </ActionSidebarContextProvider>
-                    </MemberContextProvider>
-                  </ExtensionsContextProvider>
-                </ColonyContextProvider>
+                <ExtensionsContextProvider>
+                  <MemberContextProvider>
+                    <ActionSidebarContextProvider>
+                      <PageLayout
+                        loadingText="members"
+                        title={{ id: 'membersPage.title' }}
+                        description={{ id: 'membersPage.description' }}
+                        pageName="members"
+                      >
+                        <MembersPage />
+                      </PageLayout>
+                    </ActionSidebarContextProvider>
+                  </MemberContextProvider>
+                </ExtensionsContextProvider>
               }
             />
           ),
@@ -183,24 +178,22 @@ const Routes = () => {
               key={path}
               path={path}
               element={
-                <ColonyContextProvider>
-                  <ExtensionsContextProvider>
-                    <MemberContextProvider>
-                      <ActionSidebarContextProvider>
-                        <PageLayout
-                          loadingText={pageName}
-                          title={{ id: `${pageName}Page.title` }}
-                          description={{
-                            id: `${pageName}Page.description`,
-                          }}
-                          pageName="members"
-                        >
-                          <ColonyUsersPage pageName={pageName} />
-                        </PageLayout>
-                      </ActionSidebarContextProvider>
-                    </MemberContextProvider>
-                  </ExtensionsContextProvider>
-                </ColonyContextProvider>
+                <ExtensionsContextProvider>
+                  <MemberContextProvider>
+                    <ActionSidebarContextProvider>
+                      <PageLayout
+                        loadingText={pageName}
+                        title={{ id: `${pageName}Page.title` }}
+                        description={{
+                          id: `${pageName}Page.description`,
+                        }}
+                        pageName="members"
+                      >
+                        <ColonyUsersPage pageName={pageName} />
+                      </PageLayout>
+                    </ActionSidebarContextProvider>
+                  </MemberContextProvider>
+                </ExtensionsContextProvider>
               }
             />
           );
@@ -208,96 +201,84 @@ const Routes = () => {
         <Route
           path={COLONY_VERIFIED_ROUTE}
           element={
-            <ColonyContextProvider>
-              <ExtensionsContextProvider>
-                <MemberContextProvider>
-                  <ActionSidebarContextProvider>
-                    <PageLayout
-                      loadingText="verified"
-                      title={{ id: 'verifiedPage.title' }}
-                      description={{ id: 'verifiedPage.description' }}
-                      pageName="members"
-                    >
-                      <VerifiedPage />
-                    </PageLayout>
-                  </ActionSidebarContextProvider>
-                </MemberContextProvider>
-              </ExtensionsContextProvider>
-            </ColonyContextProvider>
+            <ExtensionsContextProvider>
+              <MemberContextProvider>
+                <ActionSidebarContextProvider>
+                  <PageLayout
+                    loadingText="verified"
+                    title={{ id: 'verifiedPage.title' }}
+                    description={{ id: 'verifiedPage.description' }}
+                    pageName="members"
+                  >
+                    <VerifiedPage />
+                  </PageLayout>
+                </ActionSidebarContextProvider>
+              </MemberContextProvider>
+            </ExtensionsContextProvider>
           }
         />
         <Route
           path={COLONY_TEAMS_ROUTE}
           element={
-            <ColonyContextProvider>
-              <ExtensionsContextProvider>
-                <PageLayout
-                  loadingText="teams"
-                  title={{ id: 'teamsPage.title' }}
-                  description={{ id: 'teamsPage.description' }}
-                  pageName="members"
-                >
-                  <TeamsPage />
-                </PageLayout>
-              </ExtensionsContextProvider>
-            </ColonyContextProvider>
+            <ExtensionsContextProvider>
+              <PageLayout
+                loadingText="teams"
+                title={{ id: 'teamsPage.title' }}
+                description={{ id: 'teamsPage.description' }}
+                pageName="members"
+              >
+                <TeamsPage />
+              </PageLayout>
+            </ExtensionsContextProvider>
           }
         />
         <Route
           path={COLONY_DECISIONS_PREVIEW_ROUTE}
           element={
-            <ColonyContextProvider>
-              <NavBar>
-                <DecisionPreview />
-              </NavBar>
-            </ColonyContextProvider>
+            <NavBar>
+              <DecisionPreview />
+            </NavBar>
           }
         />
         <Route
           path={COLONY_EXTENSION_DETAILS_ROUTE}
           element={
-            <ColonyContextProvider>
-              <ExtensionsContextProvider>
-                <ActionSidebarContextProvider>
-                  <PageLayout
-                    loadingText={{ id: 'loading.extensionsPage' }}
-                    title={{ id: 'extensionsPage.title' }}
-                    description={{ id: 'extensionsPage.description' }}
-                    pageName="extensions"
-                  >
-                    <ExtensionDetailsPage />
-                  </PageLayout>
-                </ActionSidebarContextProvider>
-              </ExtensionsContextProvider>
-            </ColonyContextProvider>
+            <ExtensionsContextProvider>
+              <ActionSidebarContextProvider>
+                <PageLayout
+                  loadingText={{ id: 'loading.extensionsPage' }}
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
+                >
+                  <ExtensionDetailsPage />
+                </PageLayout>
+              </ActionSidebarContextProvider>
+            </ExtensionsContextProvider>
           }
         />
         <Route
           path={COLONY_HOME_ROUTE}
           element={
-            <ColonyContextProvider>
-              <Default routeProps={{ hasBackLink: false }}>
-                <ColonyHome />
-              </Default>
-            </ColonyContextProvider>
+            <Default routeProps={{ hasBackLink: false }}>
+              <ColonyHome />
+            </Default>
           }
         />
         {[ACTIONS_PAGE_ROUTE, DECISIONS_PAGE_ROUTE].map((path) => (
           <Route
             path={path}
             element={
-              <ColonyContextProvider>
-                <NavBar
-                  routeProps={{
-                    backRoute: ({ colonyName }) =>
-                      `/colony/${colonyName}${
-                        path === DECISIONS_PAGE_ROUTE ? '/decisions' : ''
-                      }`,
-                  }}
-                >
-                  <ActionDetailsPage />
-                </NavBar>
-              </ColonyContextProvider>
+              <NavBar
+                routeProps={{
+                  backRoute: ({ colonyName }) =>
+                    `/colony/${colonyName}${
+                      path === DECISIONS_PAGE_ROUTE ? '/decisions' : ''
+                    }`,
+                }}
+              >
+                <ActionDetailsPage />
+              </NavBar>
             }
             key={path}
           />
@@ -309,133 +290,119 @@ const Routes = () => {
             path={path}
             key={path}
             element={
-              <ColonyContextProvider>
-                <ExtensionsContextProvider>
-                  <ActionSidebarContextProvider>
-                    <PageLayout
-                      loadingText={{ id: 'loading.extensionsPage' }}
-                      title={{ id: 'colonyDetailsPage.title' }}
-                      description={{ id: 'colonyDetailsPage.description' }}
-                      pageName="extensions"
-                    >
-                      <ColonyDetailsPage />
-                    </PageLayout>
-                  </ActionSidebarContextProvider>
-                </ExtensionsContextProvider>
-              </ColonyContextProvider>
+              <ExtensionsContextProvider>
+                <ActionSidebarContextProvider>
+                  <PageLayout
+                    loadingText={{ id: 'loading.extensionsPage' }}
+                    title={{ id: 'colonyDetailsPage.title' }}
+                    description={{ id: 'colonyDetailsPage.description' }}
+                    pageName="extensions"
+                  >
+                    <ColonyDetailsPage />
+                  </PageLayout>
+                </ActionSidebarContextProvider>
+              </ExtensionsContextProvider>
             }
           />
         ))}
         <Route
           path={COLONY_REPUTATION_ROUTE}
           element={
-            <ColonyContextProvider>
-              <ExtensionsContextProvider>
-                <ActionSidebarContextProvider>
-                  <PageLayout
-                    loadingText={{ id: 'loading.extensionsPage' }}
-                    title={{ id: 'extensionsPage.title' }}
-                    description={{ id: 'extensionsPage.description' }}
-                    pageName="extensions"
-                  >
-                    <ReputationPage />
-                  </PageLayout>
-                </ActionSidebarContextProvider>
-              </ExtensionsContextProvider>
-            </ColonyContextProvider>
+            <ExtensionsContextProvider>
+              <ActionSidebarContextProvider>
+                <PageLayout
+                  loadingText={{ id: 'loading.extensionsPage' }}
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
+                >
+                  <ReputationPage />
+                </PageLayout>
+              </ActionSidebarContextProvider>
+            </ExtensionsContextProvider>
           }
         />
         <Route
           path={COLONY_PERMISSIONS_ROUTE}
           element={
-            <ColonyContextProvider>
-              <ExtensionsContextProvider>
-                <ActionSidebarContextProvider>
-                  <PageLayout
-                    loadingText={{ id: 'loading.extensionsPage' }}
-                    title={{ id: 'extensionsPage.title' }}
-                    description={{ id: 'extensionsPage.description' }}
-                    pageName="extensions"
-                  >
-                    <PermissionsPage />
-                  </PageLayout>
-                </ActionSidebarContextProvider>
-              </ExtensionsContextProvider>
-            </ColonyContextProvider>
+            <ExtensionsContextProvider>
+              <ActionSidebarContextProvider>
+                <PageLayout
+                  loadingText={{ id: 'loading.extensionsPage' }}
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
+                >
+                  <PermissionsPage />
+                </PageLayout>
+              </ActionSidebarContextProvider>
+            </ExtensionsContextProvider>
           }
         />
         <Route
           path={COLONY_EXTENSIONS_ROUTE}
           element={
-            <ColonyContextProvider>
-              <ExtensionsContextProvider>
-                <ActionSidebarContextProvider>
-                  <PageLayout
-                    loadingText={{ id: 'loading.extensionsPage' }}
-                    title={{ id: 'extensionsPage.title' }}
-                    description={{ id: 'extensionsPage.description' }}
-                    pageName="extensions"
-                  >
-                    <ExtensionsPage />
-                  </PageLayout>
-                </ActionSidebarContextProvider>
-              </ExtensionsContextProvider>
-            </ColonyContextProvider>
+            <ExtensionsContextProvider>
+              <ActionSidebarContextProvider>
+                <PageLayout
+                  loadingText={{ id: 'loading.extensionsPage' }}
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
+                >
+                  <ExtensionsPage />
+                </PageLayout>
+              </ActionSidebarContextProvider>
+            </ExtensionsContextProvider>
           }
         />
         <Route
           path={COLONY_INTEGRATIONS_ROUTE}
           element={
-            <ColonyContextProvider>
-              <ExtensionsContextProvider>
-                <ActionSidebarContextProvider>
-                  <PageLayout
-                    loadingText={{ id: 'loading.extensionsPage' }}
-                    title={{ id: 'extensionsPage.title' }}
-                    description={{ id: 'extensionsPage.description' }}
-                    pageName="extensions"
-                  >
-                    <IntegrationsPage />
-                  </PageLayout>
-                </ActionSidebarContextProvider>
-              </ExtensionsContextProvider>
-            </ColonyContextProvider>
+            <ExtensionsContextProvider>
+              <ActionSidebarContextProvider>
+                <PageLayout
+                  loadingText={{ id: 'loading.extensionsPage' }}
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
+                >
+                  <IntegrationsPage />
+                </PageLayout>
+              </ActionSidebarContextProvider>
+            </ExtensionsContextProvider>
           }
         />
         <Route
           path={COLONY_INCORPORATION_ROUTE}
           element={
-            <ColonyContextProvider>
-              <PageLayout
-                loadingText={{ id: 'loading.extensionsPage' }}
-                title={{ id: 'extensionsPage.title' }}
-                description={{ id: 'extensionsPage.description' }}
-                pageName="extensions"
-              >
-                <ExtensionsContextProvider>
-                  <IncorporationPage />
-                </ExtensionsContextProvider>
-              </PageLayout>
-            </ColonyContextProvider>
+            <PageLayout
+              loadingText={{ id: 'loading.extensionsPage' }}
+              title={{ id: 'extensionsPage.title' }}
+              description={{ id: 'extensionsPage.description' }}
+              pageName="extensions"
+            >
+              <ExtensionsContextProvider>
+                <IncorporationPage />
+              </ExtensionsContextProvider>
+            </PageLayout>
           }
         />
         <Route
           path={COLONY_ADVANCED_ROUTE}
           element={
-            <ColonyContextProvider>
-              <ExtensionsContextProvider>
-                <ActionSidebarContextProvider>
-                  <PageLayout
-                    loadingText={{ id: 'loading.extensionsPage' }}
-                    title={{ id: 'advancedPage.title' }}
-                    description={{ id: 'advancedPage.description' }}
-                    pageName="extensions"
-                  >
-                    <AdvancedPage />
-                  </PageLayout>
-                </ActionSidebarContextProvider>
-              </ExtensionsContextProvider>
-            </ColonyContextProvider>
+            <ExtensionsContextProvider>
+              <ActionSidebarContextProvider>
+                <PageLayout
+                  loadingText={{ id: 'loading.extensionsPage' }}
+                  title={{ id: 'advancedPage.title' }}
+                  description={{ id: 'advancedPage.description' }}
+                  pageName="extensions"
+                >
+                  <AdvancedPage />
+                </PageLayout>
+              </ActionSidebarContextProvider>
+            </ExtensionsContextProvider>
           }
         />
         <Route
@@ -455,7 +422,6 @@ const Routes = () => {
                 title={{ id: 'userProfilePage.title' }}
                 description={{ id: 'userProfilePage.description' }}
                 pageName="profile"
-                hideColonies
               >
                 <UserProfilePage />
               </PageLayout>
@@ -471,7 +437,6 @@ const Routes = () => {
                 title={{ id: 'userPreferencesPage.title' }}
                 description={{ id: 'userPreferencesPage.description' }}
                 pageName="profile"
-                hideColonies
               >
                 <UserPreferencesPage />
               </PageLayout>
@@ -487,7 +452,6 @@ const Routes = () => {
                 title={{ id: 'userAdvancedPage.title' }}
                 description={{ id: 'userAdvancedPage.description' }}
                 pageName="profile"
-                hideColonies
               >
                 <UserAdvancedPage />
               </PageLayout>
