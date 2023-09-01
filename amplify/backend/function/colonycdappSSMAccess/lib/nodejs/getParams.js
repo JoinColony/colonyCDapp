@@ -10,6 +10,7 @@ const ParamNames = {
   chainRpcEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2Fchain_rpc_endpoint`,
   chainNetwork: `%2Famplify%2Fcdapp%2F${ENV}%2Fchain_network`,
   appsyncApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2Faws_appsync_api_key`,
+  bnbRpcEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2Fbnb_rpc_endpoint`,
 };
 
 const getParam = async (paramName) => {

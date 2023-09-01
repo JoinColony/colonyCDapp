@@ -34,7 +34,7 @@ import { BINANCE_NETWORK } from '~constants';
 import { invalidSafeError } from '..';
 import {
   ABIResponse,
-  SafeTransaction,
+  FormSafeTransaction,
   TransactionSectionProps,
   UpdatedMethods,
 } from '../types';
@@ -142,7 +142,7 @@ const ContractInteractionSection = ({
     formState: { isValid },
   } = useFormContext();
   const safe = watch('safe');
-  const transactions: SafeTransaction[] = watch(`transactions`);
+  const transactions: FormSafeTransaction[] = watch(`transactions`);
   const transactionValues = transactions[transactionIndex];
   const selectedSafe = getSafe(safes, safe);
 

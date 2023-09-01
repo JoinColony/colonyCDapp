@@ -5,8 +5,7 @@ import moveDecimal from 'move-decimal-point';
 import Decimal from 'decimal.js';
 
 import { isAddress } from '~utils/web3';
-import { SafeBalance } from '~types';
-import { SafeTransactionType } from '~gql';
+import { SafeBalance, SafeTransactionType } from '~types';
 import { intl } from '~utils/intl';
 import { getSelectedSafeBalance, isAbiItem } from '~utils/safes';
 import { validateType } from '~utils/safes/contractParserValidation';
@@ -149,9 +148,8 @@ export const getValidationSchema = (
                         }),
                       });
                     }
-                    const selectedToken = this.parent.tokenData?.tokenAddress;
-                    const selectedTokenDecimals =
-                      this.parent.tokenData?.decimals;
+                    const selectedToken = this.parent.token?.tokenAddress;
+                    const selectedTokenDecimals = this.parent.token?.decimals;
 
                     const {
                       safeBalances,

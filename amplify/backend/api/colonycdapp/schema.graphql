@@ -10,6 +10,7 @@ input AMPLIFY {
 
 input TokenFromEverywhereArguments {
   tokenAddress: String!
+  network: String
 }
 
 input MembersForColonyInput {
@@ -872,14 +873,6 @@ type NFTProfile {
   displayName: String!
 }
 
-type SafeBalanceToken {
-  name: String!
-  decimals: Int!
-  symbol: String!
-  tokenAddress: String!
-  thumbnail: String
-}
-
 type FunctionParam {
   name: String!
   type: String!
@@ -905,9 +898,17 @@ enum SafeTransactionType {
   RAW_TRANSACTION
 }
 
-type SafeTransactionData {
-  transactionType: SafeTransactionType!
-  token: SafeBalanceToken
+type SafeTransaction @model {
+  id: ID!
+  title: String!
+  safe: Safe!
+  transactions: [SafeTransactionData] @hasMany(indexName: "byTransaction", fields: ["id"])
+}
+
+type SafeTransactionData @model {
+  id: ID!
+  tokenAddress: ID
+  token: Token @hasOne(fields: ["tokenAddress"])
   amount: String
   rawAmount: String
   recipient: SimpleTarget
@@ -918,13 +919,8 @@ type SafeTransactionData {
   nft: NFT
   nftData: NFTData
   functionParams: [FunctionParam]
-}
-
-type SafeTransaction @model {
-  id: ID!
-  title: String!
-  safe: Safe!
-  transactions: [SafeTransactionData!]!
+  transactionType: SafeTransactionType!
+  transactionHash: ID! @index(name: "byTransaction", sortKeyFields: ["id"])
 }
 
 type Safe {

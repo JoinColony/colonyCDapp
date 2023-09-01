@@ -1,4 +1,4 @@
-import { SafeTransaction } from '~common/Dialogs/ControlSafeDialog/types';
+import { FormSafeTransaction } from '~common/Dialogs/ControlSafeDialog/types';
 import {
   ADDRESS_ZERO,
   SAFE_NAMES_MAP,
@@ -11,7 +11,11 @@ import {
   SelectedPickerItem,
   Safe,
   NFTData,
+  ColonyAndExtensionsEvents,
+  ExtendedColonyActionType,
 } from '~types';
+import { notNull } from '~utils/arrays';
+import { isEmpty } from '~utils/lodash';
 
 export {
   getContractUsefulMethods,
@@ -50,10 +54,20 @@ export const getChainNameFromSafe = (safeDisplayName: string) => {
   return safeDisplayName.match(/\(([^()]*)\)$/)?.pop() || '';
 };
 
-export const getTxServiceBaseUrl = (selectedChain: string) => {
-  const selectedNetwork = SUPPORTED_SAFE_NETWORKS.find(
-    (network) => network.name === selectedChain,
+export const getNetworkFromChainName = (chainName: string) => {
+  const network = SUPPORTED_SAFE_NETWORKS.find(
+    (safeNetwork) => safeNetwork.name === chainName,
   );
+
+  if (!network) {
+    throw new Error(`Network ${chainName} not found`);
+  }
+
+  return network;
+};
+
+export const getTxServiceBaseUrl = (selectedChain: string) => {
+  const selectedNetwork = getNetworkFromChainName(selectedChain);
 
   if (!selectedNetwork || !selectedNetwork.safeTxService) {
     throw new Error(`Selected chain ${selectedChain} not currently supported.`);
@@ -144,7 +158,7 @@ export const nftNameContainsTokenId = (tokenName: string): boolean => {
   return false;
 };
 
-export const defaultTransaction: SafeTransaction = {
+export const defaultTransaction: FormSafeTransaction = {
   transactionType: undefined,
   token: undefined,
   amount: undefined,
@@ -157,4 +171,35 @@ export const defaultTransaction: SafeTransaction = {
   nft: undefined,
   nftData: undefined,
   functionParamTypes: undefined,
+};
+
+export const parseSafeTransactionType = (actionData: ColonyAction) => {
+  const safeTransactionDetails =
+    actionData.safeTransaction?.transactions?.items.filter(notNull) || [];
+
+  if (safeTransactionDetails.length > 1) {
+    return ExtendedColonyActionType.SafeMultipleTransactions;
+  }
+
+  if (safeTransactionDetails.length > 0) {
+    const actionType = `SAFE_${safeTransactionDetails[0].transactionType}`;
+
+    if (!isEmpty(actionData.motionData)) {
+      return `${actionType}_MOTION` as ExtendedColonyActionType;
+    }
+
+    return actionType as ExtendedColonyActionType;
+  }
+
+  return undefined;
+};
+
+export const parseSafeTransactionEventType = (actionData: ColonyAction) => {
+  const type = parseSafeTransactionType(actionData);
+
+  if (type) {
+    return [type as unknown as ColonyAndExtensionsEvents];
+  }
+
+  return undefined;
 };

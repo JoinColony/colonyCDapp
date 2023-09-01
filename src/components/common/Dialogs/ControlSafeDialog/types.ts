@@ -1,7 +1,13 @@
-import { Colony, SetStateFn, Token, User, SafeTransactionData } from '~types';
+import {
+  Colony,
+  SetStateFn,
+  Token,
+  User,
+  SafeTransactionData,
+  SafeTransactionType,
+} from '~types';
 import { EnabledExtensionData } from '~hooks';
 import { AbiItemExtended } from '~utils/safes';
-import { SafeTransactionType } from '~gql';
 
 export interface ControlSafeProps {
   back: () => void;
@@ -22,7 +28,7 @@ export interface FunctionParamType {
   type: string;
 }
 
-export interface SafeTransaction
+export interface FormSafeTransaction
   extends Omit<
     SafeTransactionData,
     'functionParams' | 'rawAmount' | 'recipient' | 'token' | 'transactionType'

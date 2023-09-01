@@ -3,12 +3,11 @@ import omitDeep from 'omit-deep-lodash';
 import { ColonyRole, Id } from '@colony/colony-js';
 
 import { SUPPORTED_SAFE_NETWORKS } from '~constants';
-import { Colony, Safe } from '~types';
-import { getChainNameFromSafe } from '~utils/safes';
+import { Colony, Safe, SafeTransactionType } from '~types';
+import { getChainNameFromSafe, getNetworkFromChainName } from '~utils/safes';
 import { EnabledExtensionData, useActionDialogStatus } from '~hooks';
-import { SafeTransactionType } from '~gql';
 
-import { SafeTransaction } from './types';
+import { FormSafeTransaction } from './types';
 
 const extractSafeName = (safeDisplayName: string) => {
   const pattern = /^(.*) \(/; // @NOTE: Matches any characters before a space and opening parenthesis
@@ -27,18 +26,20 @@ export const getControlSafeDialogPayload = (colony: Colony, payload: any) => {
   } = payload;
 
   const chainName = getChainNameFromSafe(safe.profile.displayName);
+  const network = getNetworkFromChainName(chainName);
+
   const transformedSafe: Safe = {
     // Find will return because input value comes from SUPPORTED_SAFE_NETWORKS
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     chainId: SUPPORTED_SAFE_NETWORKS.find(
-      (network) => network.name === chainName,
+      (safeNetwork) => safeNetwork.name === chainName,
     )!.chainId,
     address: safe.walletAddress,
     moduleContractAddress: safe.id,
     name: extractSafeName(safe.profile.displayName),
   };
   const transformedTransactions = transactions.map(
-    (transaction: any): SafeTransaction => {
+    (transaction: any): FormSafeTransaction => {
       const dynamicPropNames =
         transaction.functionParamTypes?.map(
           (functionParamType) =>
@@ -90,6 +91,7 @@ export const getControlSafeDialogPayload = (colony: Colony, payload: any) => {
     colonyAddress,
     colonyName,
     motionDomainId,
+    network,
   };
 };
 

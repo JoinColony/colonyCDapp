@@ -5,10 +5,11 @@ import { nanoid } from 'nanoid';
 
 import Numeral from '~shared/Numeral';
 import Avatar from '~shared/Avatar';
-import { ColonyAction } from '~types';
+import { ColonyAction, SafeTransactionType } from '~types';
 import { SafeTransactionMSG } from '~common/Dialogs/ControlSafeDialog/helpers';
-import { SafeTransactionType } from '~gql';
 import { useSafeTransactionStatus } from '~hooks';
+import { getNativeTokenByChainId } from '~utils/tokens';
+import { notNull } from '~utils/arrays';
 
 import {
   ContractName,
@@ -45,7 +46,9 @@ interface Props {
 }
 
 const SafeTransactionDetail = ({ actionData }: Props) => {
-  const safeTransactions = actionData.safeTransaction?.transactions || [];
+  const safeTransactions =
+    actionData.safeTransaction?.transactions?.items.filter(notNull) || [];
+
   const safe = actionData.safeTransaction?.safe;
 
   const [openWidgets, setOpenWidgets] = useState<boolean[]>(
@@ -69,7 +72,7 @@ const SafeTransactionDetail = ({ actionData }: Props) => {
           });
         };
         const idx = transactions.length > 1 ? index + 1 : null;
-        const { token } = transaction;
+        const { token: transactionToken } = transaction;
         const NFT = transaction.nftData;
         const renderWidget = () => {
           switch (transaction.transactionType) {
@@ -91,8 +94,14 @@ const SafeTransactionDetail = ({ actionData }: Props) => {
                       {transaction.recipient && (
                         <Recipient recipient={transaction.recipient} />
                       )}
-                      {transaction.amount && token && (
-                        <Value transaction={transaction} token={token} />
+                      {transaction.amount && (
+                        <Value
+                          transaction={transaction}
+                          token={
+                            transactionToken ||
+                            getNativeTokenByChainId(safe.chainId)
+                          }
+                        />
                       )}
                     </>
                   )}

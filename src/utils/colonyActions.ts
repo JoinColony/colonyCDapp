@@ -14,6 +14,7 @@ import {
   ColonyAction,
 } from '~types';
 import { ColonyActionRoles } from '~gql';
+import { parseSafeTransactionType } from '~utils/safes';
 
 import { formatText } from './intl';
 import { MotionVote } from './colonyMotions';
@@ -639,18 +640,10 @@ export const getExtendedActionType = (
     return ExtendedColonyActionType.RemoveSafe;
   }
 
-  if (!isEmpty(actionData.safeTransaction)) {
-    if (actionData.safeTransaction.transactions.length > 1) {
-      return ExtendedColonyActionType.SafeMultipleTransactions;
-    }
+  const safeType = parseSafeTransactionType(actionData);
 
-    const actionType = `SAFE_${actionData.safeTransaction.transactions[0].transactionType}`;
-
-    if (!isEmpty(actionData.motionData)) {
-      return `${actionType}_MOTION` as ExtendedColonyActionType;
-    }
-
-    return actionType as ExtendedColonyActionType;
+  if (safeType) {
+    return safeType;
   }
 
   return type;

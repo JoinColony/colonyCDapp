@@ -1,11 +1,11 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { Safe } from '~types';
+import { Safe, SafeTransactionData, SafeTransactionType } from '~types';
 import { intl } from '~utils/intl';
-import { SafeTransactionType, SafeTransactionData } from '~gql';
 import { extractTokenName } from '~utils/safes';
 import { InvisibleCopyableMaskedAddress } from '~shared/InvisibleCopyableAddress';
+import { getNativeTokenByChainId } from '~utils/tokens';
 
 import { ContractName } from '../../SafeTransactionDetail';
 import widgetStyles from '../../DetailsWidget.css';
@@ -48,11 +48,7 @@ export const ContractSection = ({
   safe,
   hideFunctionContract,
 }: ContractSectionProps) => {
-  const functionContract =
-    transaction.contract?.id ||
-    transaction.contract?.walletAddress ||
-    transaction.token?.tokenAddress ||
-    transaction.nftData?.address;
+  const nativeToken = getNativeTokenByChainId(safe.chainId);
 
   const getContractInfo = (safeTransaction: SafeTransactionData) => {
     const { formatMessage } = intl();
@@ -75,9 +71,13 @@ export const ContractSection = ({
         break;
       case SafeTransactionType.TransferFunds:
         contractInfo.contractName =
-          safeTransaction.token?.name || formatMessage(MSG.token);
+          safeTransaction.token?.name ||
+          nativeToken.name ||
+          formatMessage(MSG.token);
         contractInfo.contractAddress =
-          safeTransaction.token?.tokenAddress || safe.address;
+          safeTransaction.token?.tokenAddress ||
+          nativeToken.tokenAddress ||
+          safe.address;
         break;
       case SafeTransactionType.ContractInteraction:
         contractInfo.contractName =
@@ -92,6 +92,20 @@ export const ContractSection = ({
 
     return contractInfo;
   };
+
+  const getTransferFundsFunctionContract = () => {
+    if (transaction.transactionType === SafeTransactionType.TransferFunds) {
+      return transaction.token?.tokenAddress || nativeToken.tokenAddress;
+    }
+
+    return undefined;
+  };
+
+  const functionContract =
+    transaction.contract?.id ||
+    transaction.contract?.walletAddress ||
+    transaction.nftData?.address ||
+    getTransferFundsFunctionContract();
 
   const { contractName, contractAddress } = getContractInfo(transaction);
 
