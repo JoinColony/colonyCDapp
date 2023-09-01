@@ -16,7 +16,7 @@ interface ActionsPageFeedProps {
 
 // only safe events for now
 const arbitraryTransactionEventParser = (actionData: ColonyAction) => {
-  const safeType = parseSafeTransactionEventType(actionData.safeTransaction);
+  const safeType = parseSafeTransactionEventType(actionData);
 
   if (safeType) {
     return safeType;
