@@ -3,8 +3,6 @@ import omitDeep from 'omit-deep-lodash';
 import { ColonyRole, Id } from '@colony/colony-js';
 
 import { SUPPORTED_SAFE_NETWORKS } from '~constants';
-import { Colony, Safe } from '~types';
-import { getChainNameFromSafe } from '~utils/safes';
 import { Colony, Safe, SafeTransactionType } from '~types';
 import { getChainNameFromSafe, getNetworkFromChainName } from '~utils/safes';
 import { EnabledExtensionData, useActionDialogStatus } from '~hooks';
@@ -34,7 +32,7 @@ export const getControlSafeDialogPayload = (colony: Colony, payload: any) => {
     // Find will return because input value comes from SUPPORTED_SAFE_NETWORKS
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     chainId: SUPPORTED_SAFE_NETWORKS.find(
-      (network) => network.name === chainName,
+      (safeNetwork) => safeNetwork.name === chainName,
     )!.chainId,
     address: safe.walletAddress,
     moduleContractAddress: safe.id,

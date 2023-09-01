@@ -5,9 +5,11 @@ import { nanoid } from 'nanoid';
 
 import Numeral from '~shared/Numeral';
 import Avatar from '~shared/Avatar';
-import { ColonyAction, Safe, SafeTransactionData, SafeTransactionType } from '~types';
+import { ColonyAction, SafeTransactionType } from '~types';
 import { SafeTransactionMSG } from '~common/Dialogs/ControlSafeDialog/helpers';
 import { useSafeTransactionStatus } from '~hooks';
+import { getNativeTokenByChainId } from '~utils/tokens';
+import { notNull } from '~utils/arrays';
 
 import {
   ContractName,
@@ -21,7 +23,6 @@ import FunctionsSection from '../SafeTransactionDetail/components/FunctionsSecti
 
 import widgetStyles from '../DetailsWidget.css';
 import styles from './SafeTransactionDetail.css';
-import { getNativeTokenByChainId } from '~utils/tokens';
 
 const displayName = 'DetailsWidget.SafeTransactionDetail';
 
@@ -45,7 +46,9 @@ interface Props {
 }
 
 const SafeTransactionDetail = ({ actionData }: Props) => {
-  const safeTransactions = actionData.safeTransaction?.transactions || [];
+  const safeTransactions =
+    actionData.safeTransaction?.transactions?.items.filter(notNull) || [];
+
   const safe = actionData.safeTransaction?.safe;
 
   const [openWidgets, setOpenWidgets] = useState<boolean[]>(

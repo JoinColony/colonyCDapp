@@ -13,9 +13,9 @@ import {
   NFTData,
   ColonyAndExtensionsEvents,
   ExtendedColonyActionType,
-  SafeTransaction,
 } from '~types';
 import { notNull } from '~utils/arrays';
+import { isEmpty } from '~utils/lodash';
 
 export {
   getContractUsefulMethods,
@@ -55,7 +55,7 @@ export const getChainNameFromSafe = (safeDisplayName: string) => {
 };
 
 export const getNetworkFromChainName = (chainName: string) => {
-  const network = SAFE_NETWORKS.find(
+  const network = SUPPORTED_SAFE_NETWORKS.find(
     (safeNetwork) => safeNetwork.name === chainName,
   );
 
@@ -173,11 +173,9 @@ export const defaultTransaction: FormSafeTransaction = {
   functionParamTypes: undefined,
 };
 
-export const parseSafeTransactionType = (
-  safeTransaction: SafeTransaction | null | undefined,
-) => {
+export const parseSafeTransactionType = (actionData: ColonyAction) => {
   const safeTransactionDetails =
-    safeTransaction?.transactions?.items.filter(notNull) || [];
+    actionData.safeTransaction?.transactions?.items.filter(notNull) || [];
 
   if (safeTransactionDetails.length > 1) {
     return ExtendedColonyActionType.SafeMultipleTransactions;
@@ -186,16 +184,18 @@ export const parseSafeTransactionType = (
   if (safeTransactionDetails.length > 0) {
     const actionType = `SAFE_${safeTransactionDetails[0].transactionType}`;
 
+    if (!isEmpty(actionData.motionData)) {
+      return `${actionType}_MOTION` as ExtendedColonyActionType;
+    }
+
     return actionType as ExtendedColonyActionType;
   }
 
   return undefined;
 };
 
-export const parseSafeTransactionEventType = (
-  safeTransaction: SafeTransaction | null | undefined,
-) => {
-  const type = parseSafeTransactionType(safeTransaction);
+export const parseSafeTransactionEventType = (actionData: ColonyAction) => {
+  const type = parseSafeTransactionType(actionData);
 
   if (type) {
     return [type as unknown as ColonyAndExtensionsEvents];
