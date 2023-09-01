@@ -112,6 +112,7 @@ export const GOERLI_NETWORK: NetworkInfo = {
   displayENSDomain: 'joincolony.eth',
   tokenExplorerLink: 'https://goerli.etherscan.io/tokens',
   contractAddressLink: 'https://goerli.etherscan.io/address',
+  nativeToken: GOERLI_TOKEN,
 };
 
 export const GANACHE_NETWORK: NetworkInfo = {
@@ -123,6 +124,7 @@ export const GANACHE_NETWORK: NetworkInfo = {
   displayENSDomain: 'joincolony.eth',
   tokenExplorerLink: 'http://localhost',
   contractAddressLink: 'http://localhost',
+  nativeToken: ETHER_TOKEN,
 };
 
 export const BINANCE_NETWORK: NetworkInfo = {
