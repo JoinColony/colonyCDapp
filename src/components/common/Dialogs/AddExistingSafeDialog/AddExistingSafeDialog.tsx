@@ -29,7 +29,6 @@ const AddExistingSafeDialog = ({
   close,
 }: Props) => {
   const navigate = useNavigate();
-  const loadingSafeState = useState<boolean>(false);
   const loadingModuleState = useState<boolean>(false);
   const [stepIndex, setStepIndex] = useState<number>(1);
   const abortControllerState = useState<AbortController | undefined>(undefined);
@@ -38,7 +37,6 @@ const AddExistingSafeDialog = ({
     stepIndex,
     abortControllerState,
     metadata?.safes || [],
-    loadingSafeState,
     loadingModuleState,
   );
 
@@ -76,7 +74,6 @@ const AddExistingSafeDialog = ({
           networkOptions={networkOptions}
           back={() => callStep(prevStep)}
           colonyAddress={colonyAddress}
-          loadingSafeState={loadingSafeState}
           loadingModuleState={loadingModuleState}
           stepIndex={stepIndex}
           setStepIndex={setStepIndex}

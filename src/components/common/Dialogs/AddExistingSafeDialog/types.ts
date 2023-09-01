@@ -7,7 +7,6 @@ export interface AddExistingSafeProps {
   networkOptions: NetworkOption[];
   colonyAddress: Address;
   loadingModuleState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-  loadingSafeState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
   stepIndex: number;
   setStepIndex: React.Dispatch<React.SetStateAction<number>>;
 }

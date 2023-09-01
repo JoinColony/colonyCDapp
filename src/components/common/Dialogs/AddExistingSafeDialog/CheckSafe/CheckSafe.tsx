@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import classnames from 'classnames';
 import { useFormContext } from 'react-hook-form';
@@ -6,7 +6,6 @@ import { useFormContext } from 'react-hook-form';
 import Button from '~shared/Button';
 import { DialogSection } from '~shared/Dialog';
 import { HookFormSelect as Select, SelectOption } from '~shared/Fields';
-import { isAddress } from '~utils/web3';
 
 import { AddExistingSafeProps } from '../types';
 import SetupSafeCallout from '../SetupSafeCallout';
@@ -41,19 +40,16 @@ const CheckSafe = ({
   selectedChain,
   setSelectedChain,
   loadingModuleState,
-  loadingSafeState,
 }: CheckSafeProps) => {
   const {
     watch,
     formState: { errors, dirtyFields, isSubmitting },
     trigger,
-    clearErrors,
   } = useFormContext();
-  const { contractAddress, moduleContractAddress } = watch();
-  const contractAddressError = errors.contractAddress;
+  const { moduleContractAddress } = watch();
   const contractAddressDirtied = dirtyFields.contractAddress;
 
-  const [isLoadingSafe, setIsLoadingSafe] = loadingSafeState;
+  const [isLoadingSafe, setIsLoadingSafe] = useState(false);
   const [, setIsLoadingModule] = loadingModuleState;
 
   const handleNetworkChange = (fromNetworkValue: number) => {
@@ -62,12 +58,6 @@ const CheckSafe = ({
     );
     if (selectedNetwork) {
       setSelectedChain(selectedNetwork);
-    }
-    if (isAddress(contractAddress) && contractAddressDirtied) {
-      if (contractAddressError?.message) {
-        clearErrors('contractAddress');
-      }
-      setIsLoadingSafe(true);
     }
   };
 
@@ -114,7 +104,7 @@ const CheckSafe = ({
         </div>
         <SafeContractAddressInput
           selectedChain={selectedChain}
-          loadingSafeState={loadingSafeState}
+          setIsLoadingSafe={setIsLoadingSafe}
         />
       </DialogSection>
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>

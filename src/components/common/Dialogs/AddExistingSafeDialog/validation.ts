@@ -53,13 +53,15 @@ type AbortControllerState = [
 
 const handleTestCompletion = (
   result: true | ValidationError,
-  loadingState: LoadingState,
+  loadingState?: LoadingState,
 ): Promise<true | ValidationError> => {
   const isFetchAborted = result !== true && result.message === FETCH_ABORTED;
-  const [, setIsLoadingState] = loadingState;
 
   if (!isFetchAborted) {
-    setIsLoadingState(false);
+    if (loadingState) {
+      const [, setIsLoadingState] = loadingState;
+      setIsLoadingState(false);
+    }
     return new Promise((resolve) => {
       resolve(result);
     });
@@ -92,7 +94,6 @@ export const getValidationSchema = (
   stepIndex: number,
   abortControllerState: AbortControllerState,
   safes: Safe[],
-  loadingSafeState: LoadingState,
   loadingModuleState: LoadingState,
 ) => {
   const [abortController, setAbortController] = abortControllerState;
@@ -176,7 +177,7 @@ export const getValidationSchema = (
             };
 
             return validateAddress().then((result) => {
-              return handleTestCompletion(result, loadingSafeState);
+              return handleTestCompletion(result);
             });
           },
         ),
