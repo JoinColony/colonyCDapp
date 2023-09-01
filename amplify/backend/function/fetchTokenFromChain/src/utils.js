@@ -14,6 +14,9 @@ const ETHEREUM_NETWORK = {
 const BINANCE_NETWORK = {
   shortName: 'BNB',
 };
+const GANACHE_NETWORK = {
+  shortName: 'Ganache',
+};
 
 const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
   const options = {
@@ -58,9 +61,36 @@ const getTokenType = async (client) => {
   }
 };
 
+const getRpcUrlParamName = (network) => {
+  let chainRpcParam = 'chainRpcEndpoint';
+
+  switch (network) {
+    case BINANCE_NETWORK.shortName:
+      chainRpcParam = 'bnbRpcEndpoint';
+      break;
+    case ETHEREUM_NETWORK.shortName:
+    default:
+    // Use default chainRpcParam ie Ethereum to set `rpcURL`
+  }
+
+  return chainRpcParam;
+};
+
+const getDevRpcUrl = (network) => {
+  switch (network) {
+    case BINANCE_NETWORK.shortName:
+      return 'https://bsc.meowrpc.com';
+    case ETHEREUM_NETWORK.shortName:
+      return 'https://eth.drpc.org';
+    case GANACHE_NETWORK.shortName:
+    default:
+      return 'http://network-contracts.docker:8545'; // default for local testing
+  }
+};
+
 module.exports = {
   graphqlRequest,
   getTokenType,
-  ETHEREUM_NETWORK,
-  BINANCE_NETWORK,
+  getRpcUrlParamName,
+  getDevRpcUrl,
 };
