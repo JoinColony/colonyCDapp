@@ -12,9 +12,9 @@ import {
  * to ensure that the right type is passed as the
  * network parameter
  */
-export const getTokenFromEveryWhereQuery = async (
+export const fetchTokenFromDatabase = async (
   tokenAddress: Address,
-  network?: NetworkInfo,
+  network: NetworkInfo,
 ) => {
   const response = await apolloClient.query<
     GetTokenFromEverywhereQuery,
@@ -24,7 +24,7 @@ export const getTokenFromEveryWhereQuery = async (
     variables: {
       input: {
         tokenAddress,
-        network: network?.shortName,
+        network: network.shortName,
       },
     },
   });
