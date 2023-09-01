@@ -1,6 +1,11 @@
 import { ColonyRole } from '@colony/colony-js';
 
-import { ColonyActionType, ColonyAndExtensionsEvents } from '~types';
+import {
+  AnyActionType,
+  ColonyActionType,
+  ColonyAndExtensionsEvents,
+  ExtendedColonyActionType,
+} from '~types';
 
 export enum TransactionStatuses {
   Failed = 'failed',
@@ -66,16 +71,8 @@ const MOTION_EVENTS = [
   ColonyAndExtensionsEvents.MotionRewardClaimed,
 ];
 
-const SAFE_EVENTS = [
-  ColonyAndExtensionsEvents.SafeTransferFunds,
-  ColonyAndExtensionsEvents.SafeRawTransaction,
-  ColonyAndExtensionsEvents.SafeTransferNft,
-  ColonyAndExtensionsEvents.SafeContractInteraction,
-  ColonyAndExtensionsEvents.SafeMultipleTransactions,
-];
-
 type ActionsEventsMap = Partial<{
-  [key in ColonyActionType]: ColonyAndExtensionsEvents[];
+  [key in AnyActionType]: ColonyAndExtensionsEvents[];
 }>;
 
 export const ACTIONS_EVENTS: ActionsEventsMap = {
@@ -102,7 +99,6 @@ export const ACTIONS_EVENTS: ActionsEventsMap = {
   [ColonyActionType.EmitDomainReputationReward]: [
     ColonyAndExtensionsEvents.ArbitraryReputationUpdate,
   ],
-  [ColonyActionType.MakeArbitraryTransaction]: SAFE_EVENTS,
   [ColonyActionType.UnlockTokenMotion]: MOTION_EVENTS,
   [ColonyActionType.MintTokensMotion]: MOTION_EVENTS,
   [ColonyActionType.CreateDomainMotion]: MOTION_EVENTS,
@@ -115,4 +111,25 @@ export const ACTIONS_EVENTS: ActionsEventsMap = {
   [ColonyActionType.EmitDomainReputationPenaltyMotion]: MOTION_EVENTS,
   [ColonyActionType.EmitDomainReputationRewardMotion]: MOTION_EVENTS,
   [ColonyActionType.MakeArbitraryTransactionsMotion]: MOTION_EVENTS,
+  // @NOTE: Extended colony action events
+  [ExtendedColonyActionType.SafeTransferFunds]: [
+    ColonyAndExtensionsEvents.SafeTransferFunds,
+  ],
+  [ExtendedColonyActionType.SafeRawTransaction]: [
+    ColonyAndExtensionsEvents.SafeRawTransaction,
+  ],
+  [ExtendedColonyActionType.SafeTransferNft]: [
+    ColonyAndExtensionsEvents.SafeTransferNft,
+  ],
+  [ExtendedColonyActionType.SafeContractInteraction]: [
+    ColonyAndExtensionsEvents.SafeContractInteraction,
+  ],
+  [ExtendedColonyActionType.SafeMultipleTransactions]: [
+    ColonyAndExtensionsEvents.SafeMultipleTransactions,
+  ],
+  [ExtendedColonyActionType.SafeTransferFundsMotion]: MOTION_EVENTS,
+  [ExtendedColonyActionType.SafeRawTransactionMotion]: MOTION_EVENTS,
+  [ExtendedColonyActionType.SafeTransferNftMotion]: MOTION_EVENTS,
+  [ExtendedColonyActionType.SafeContractInteractionMotion]: MOTION_EVENTS,
+  [ExtendedColonyActionType.SafeMultipleTransactionsMotion]: MOTION_EVENTS,
 };
