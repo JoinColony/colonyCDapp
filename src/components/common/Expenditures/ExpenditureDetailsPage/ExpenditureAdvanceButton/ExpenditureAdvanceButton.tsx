@@ -8,7 +8,7 @@ import { Colony, Expenditure } from '~types';
 import { isExpenditureFunded } from '~utils/expenditures';
 import { findDomainByNativeId } from '~utils/domains';
 
-import ExpenditureClaimButton from '../ExpenditureClaimButton/ExpenditureClaimButton';
+import ExpenditureClaimButton from '../ExpenditureClaimButton';
 
 interface ExpenditureAdvanceButtonProps {
   expenditure: Expenditure;

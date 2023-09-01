@@ -13,6 +13,7 @@ import { ActionTypes } from '~redux';
 import ExpenditureBalances from './ExpenditureBalances';
 import ExpenditureAdvanceButton from './ExpenditureAdvanceButton';
 import ExpenditurePayouts from './ExpenditurePayouts';
+import ReclaimStakeButton from '../StakedExpenditure/ReclaimStakeButton';
 
 import styles from './ExpenditureDetailsPage.module.css';
 
@@ -73,6 +74,7 @@ const ExpenditureDetailsPage = () => {
           Created in: {expenditureDomain?.metadata?.name ?? 'Unknown team'}
         </div>
         <div>Fund from: {fundFromDomain?.metadata?.name ?? 'Unknown team'}</div>
+        <div>Type: {expenditure.metadata?.type}</div>
         <ExpenditureBalances expenditure={expenditure} />
         <ExpenditurePayouts expenditure={expenditure} colony={colony} />
         <div className={styles.buttons}>
@@ -89,6 +91,7 @@ const ExpenditureDetailsPage = () => {
             </ActionButton>
           )}
           <ExpenditureAdvanceButton expenditure={expenditure} colony={colony} />
+          <ReclaimStakeButton colony={colony} expenditure={expenditure} />
         </div>
       </div>
     </div>

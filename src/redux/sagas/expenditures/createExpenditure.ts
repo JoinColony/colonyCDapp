@@ -12,6 +12,7 @@ import {
   CreateExpenditureMetadataDocument,
   CreateExpenditureMetadataMutation,
   CreateExpenditureMetadataMutationVariables,
+  ExpenditureType,
 } from '~gql';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
 import { toNumber } from '~utils/numbers';
@@ -127,6 +128,7 @@ function* createExpenditure({
         input: {
           id: getExpenditureDatabaseId(colonyAddress, toNumber(expenditureId)),
           fundFromDomainNativeId: fundFromDomainId,
+          type: ExpenditureType.Forced,
         },
       },
     });

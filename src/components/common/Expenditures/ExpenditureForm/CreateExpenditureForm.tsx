@@ -6,6 +6,7 @@ import { ActionForm } from '~shared/Fields';
 import { useColonyContext, useEnabledExtensions } from '~hooks';
 import Button from '~shared/Button';
 import { ActionTypes } from '~redux';
+import DomainFundSelector from '~common/Dialogs/DomainFundSelectorSection/DomainFundSelector';
 
 import {
   getCreateExpenditureTransformPayloadFn,
@@ -13,7 +14,7 @@ import {
 } from './helpers';
 import { ExpenditureFormValues } from './types';
 import ExpenditureFormFields from './ExpenditureFormFields';
-import StakeExpenditureDialog from '../StakeExpenditureDialog';
+import StakeExpenditureDialog from '../StakedExpenditure/StakeExpenditureDialog';
 
 import styles from './ExpenditureForm.module.css';
 
@@ -40,6 +41,8 @@ const CreateExpenditureForm = () => {
       actionType={ActionTypes.EXPENDITURE_CREATE}
       defaultValues={{
         payouts: [getInitialPayoutFieldValue(colony.nativeToken.tokenAddress)],
+        createInDomainId: Id.RootDomain,
+        fundFromDomainId: Id.RootDomain,
       }}
       transform={getCreateExpenditureTransformPayloadFn(colony, navigate)}
     >
@@ -48,6 +51,19 @@ const CreateExpenditureForm = () => {
 
         return (
           <>
+            <div className={styles.domainSelection}>
+              <DomainFundSelector
+                colony={colony}
+                label="Create in"
+                name="createInDomainId"
+              />
+              <DomainFundSelector
+                colony={colony}
+                label="Fund from"
+                name="fundFromDomainId"
+              />
+            </div>
+
             <ExpenditureFormFields colony={colony} />
 
             <div className={styles.buttons}>
@@ -66,7 +82,6 @@ const CreateExpenditureForm = () => {
             {isStakeDialogOpen && (
               <StakeExpenditureDialog
                 colony={colony}
-                selectedDomainId={Id.RootDomain}
                 onCancel={() => setIsStakeDialogOpen(false)}
                 formValues={formValues}
               />
