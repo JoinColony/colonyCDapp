@@ -6,8 +6,6 @@ const {
   getTokenType,
   ETHEREUM_NETWORK,
   BINANCE_NETWORK,
-  getRpcUrlParamName,
-  getChainNativeToken,
 } = require('./utils');
 
 /*
@@ -35,11 +33,22 @@ const setEnvVariables = async (network) => {
   const ENV = process.env.ENV;
 
   if (ENV === 'qa') {
+    let chainRpcParam = 'chainRpcEndpoint';
+
+    switch (network) {
+      case BINANCE_NETWORK.shortName:
+        chainRpcParam = 'bnbRpcEndpoint';
+        break;
+      case ETHEREUM_NETWORK.shortName:
+      default:
+      // Use default chainRpcParam ie Ethereum to set `rpcURL`
+    }
+
     const { getParams } = require('/opt/nodejs/getParams');
     [apiKey, graphqlURL, rpcURL] = await getParams([
       'appsyncApiKey',
       'graphqlUrl',
-      getRpcUrlParamName(network),
+      chainRpcParam,
     ]);
   }
 };
@@ -58,20 +67,9 @@ exports.handler = async (event) => {
     throw new Error('Unable to set env variables. Reason:', e);
   }
 
-  /*
-   * @NOTE The chain native token is NOT stored in the database as
-   * all chain native tokens are Address Zero which breaks our model
-   * so we return early here with the correct Native Token
-   */
-
   const tokenQuery = await graphqlRequest(
     getTokenByAddress,
-    {
-      id:
-        tokenAddress !== constants.AddressZero
-          ? tokenAddress
-          : `${tokenAddress}_${network}`,
-    },
+    { id: tokenAddress },
     graphqlURL,
     apiKey,
   );
@@ -89,34 +87,6 @@ exports.handler = async (event) => {
   /*
    * Token not in database
    */
-
-  if (tokenAddress === constants.AddressZero) {
-    /*
-     * Save native token to database
-     */
-    const nativeToken = getChainNativeToken(network);
-    const { decimals, name, symbol, type, chainMetadata } = nativeToken;
-
-    await graphqlRequest(
-      createToken,
-      {
-        input: {
-          id: `${constants.AddressZero}_${network}`,
-          decimals,
-          name,
-          symbol,
-          type,
-          chainMetadata,
-        },
-      },
-      graphqlURL,
-      apiKey,
-    );
-
-    return {
-      items: [nativeToken],
-    };
-  }
 
   if (tokenQuery && !token) {
     try {
@@ -138,6 +108,7 @@ exports.handler = async (event) => {
       /*
        * Save it to the database first
        */
+
       const tokenMutation = await graphqlRequest(
         createToken,
         {
