@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
@@ -11,9 +11,6 @@ import {
 import { FETCH_ABORTED } from '~constants';
 import { Message } from '~types';
 import Avatar from '~shared/Avatar';
-import { isAddress } from '~utils/web3';
-
-import { StatusText } from '../types';
 
 import styles from './SafeContractAddressInput.css';
 
@@ -41,52 +38,50 @@ const MSG = defineMessages({
 
 interface Props {
   selectedChain: SelectOption;
-  loadingSafeState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+  setIsLoadingSafe: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SafeContractAddressInput = ({
   selectedChain,
-  loadingSafeState,
+  setIsLoadingSafe,
 }: Props) => {
   const {
     watch,
-    formState: { errors, dirtyFields, isSubmitting, isValidating },
+    formState: { errors, dirtyFields, isSubmitting },
     trigger,
+    clearErrors,
   } = useFormContext();
-  const { contractAddress } = watch();
+  const { contractAddress, chainId } = watch();
   const { formatMessage } = useIntl();
   const contractAddressError = errors.contractAddress;
   const contractAddressDirtied = dirtyFields.contractAddress;
 
-  const [isLoadingSafe, setIsLoadingSafe] = loadingSafeState;
+  const [statusText, setStatusText] = useState({});
 
   useEffect(() => {
-    if (!isLoadingSafe && contractAddressDirtied) {
-      trigger('contractAddress');
-    }
-  }, [isLoadingSafe, trigger, contractAddressDirtied]);
-
-  const getStatusText = (): StatusText | Record<string, never> => {
-    const isValidAddress =
-      !contractAddressError &&
-      contractAddressDirtied &&
-      isAddress(contractAddress);
-
-    if (isLoadingSafe) {
-      return { status: MSG.safeLoading };
-    }
-
-    if (!isValidAddress || isValidating) {
-      return {};
-    }
-
-    return {
-      status: MSG.safeCheck,
-      statusValues: {
-        selectedChain: selectedChain.label.toString(),
-      },
+    const validate = async () => {
+      if (!contractAddressDirtied) {
+        return;
+      }
+      setIsLoadingSafe(true);
+      setStatusText({ status: MSG.safeLoading });
+      clearErrors('contractAddress');
+      const validation = await trigger('contractAddress');
+      if (validation) {
+        setStatusText({
+          status: MSG.safeCheck,
+          statusValues: {
+            selectedChain: selectedChain.label.toString(),
+          },
+        });
+      } else {
+        setStatusText({});
+      }
+      setIsLoadingSafe(false);
     };
-  };
+
+    validate();
+  }, [contractAddress, chainId]);
 
   return (
     <div className={styles.contractAddressContainer}>
@@ -99,16 +94,6 @@ const SafeContractAddressInput = ({
         appearance={{ colorSchema: 'grey', theme: 'fat' }}
         disabled={isSubmitting}
         elementOnly
-        onChange={(e) => {
-          if (isAddress(e.target.value)) {
-            setIsLoadingSafe(true);
-          }
-        }}
-        onBlur={(e) => {
-          if (!contractAddressDirtied && isAddress(e.target.value)) {
-            setIsLoadingSafe(true);
-          }
-        }}
       />
       <InputStatus
         appearance={{ colorSchema: 'grey', theme: 'fat' }}
@@ -118,7 +103,7 @@ const SafeContractAddressInput = ({
             ? (contractAddressError?.message as Message | undefined)
             : undefined
         }
-        {...getStatusText()}
+        {...statusText}
       />
       <Avatar
         seed={contractAddress}
