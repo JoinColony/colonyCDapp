@@ -13,7 +13,7 @@ import {
   SUPPORTED_SAFE_NETWORKS,
 } from '~constants';
 import { getArrayFromString } from '~utils/safes';
-import { getTokenFromEveryWhereQuery } from '~utils/queries';
+import { fetchTokenFromDatabase } from '~utils/queries';
 
 import { erc721, ForeignAMB, HomeAMB, ZodiacBridgeModule } from './abis'; // Temporary
 
@@ -283,7 +283,7 @@ export const getTransferFundsData = async (
    * and add it if it isn't
    */
   if (!isSafeNativeToken) {
-    await getTokenFromEveryWhereQuery(transaction.token.tokenAddress, network);
+    await fetchTokenFromDatabase(transaction.token.tokenAddress, network);
   }
 
   const tokenDecimals = transaction.token.decimals;
