@@ -2,10 +2,12 @@ import Decimal from 'decimal.js';
 import { BigNumber, BigNumberish } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
-import { Colony, Address, ColonyBalances } from '~types';
+import { Colony, Address, ColonyBalances, Token } from '~types';
 import {
   DEFAULT_TOKEN_DECIMALS,
   COLONY_TOTAL_BALANCE_DOMAIN_ID,
+  NETWORK_DATA,
+  ADDRESS_ZERO,
 } from '~constants';
 
 import { notNull } from './arrays';
@@ -94,4 +96,26 @@ export const getSelectedToken = (colony: Colony, tokenAddress: string) => {
     (token) => token?.tokenAddress === tokenAddress,
   );
   return selectedToken;
+};
+
+// Ideally we would get a union type of all chain Id's in our
+// defined NetworkInfo types here but I have yet to figure out
+// how to do that
+export const getNativeTokenByChainId = (chainId: number): Token => {
+  const network = Object.values(NETWORK_DATA).find(
+    (data) => data.chainId === chainId,
+  );
+
+  if (!network) {
+    throw new Error(`Network not found with chainId: ${chainId}`);
+  }
+
+  if (!network.nativeToken) {
+    throw new Error(`Network ${network} does not have a native token defined`);
+  }
+
+  return {
+    tokenAddress: ADDRESS_ZERO,
+    ...network.nativeToken,
+  };
 };
