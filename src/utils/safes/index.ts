@@ -59,6 +59,10 @@ export const getNetworkFromChainName = (chainName: string) => {
     (safeNetwork) => safeNetwork.name === chainName,
   );
 
+  if (!network) {
+    throw new Error(`Network ${chainName} not found`);
+  }
+
   return network;
 };
 
