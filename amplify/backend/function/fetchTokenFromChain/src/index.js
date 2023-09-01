@@ -4,8 +4,8 @@ const basicTokenAbi = require('./basicTokenAbi.json');
 const {
   graphqlRequest,
   getTokenType,
-  ETHEREUM_NETWORK,
-  BINANCE_NETWORK,
+  getRpcUrlParamName,
+  getDevRpcUrl,
 } = require('./utils');
 
 /*
@@ -17,7 +17,7 @@ const { createToken, getTokenByAddress } = require('./graphql');
 
 let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
-let rpcURL = 'http://network-contracts.docker:8545'; // default for local testing
+let rpcURL;
 
 const baseToken = {
   __typename: 'Token',
@@ -31,18 +31,12 @@ const baseToken = {
 
 const setEnvVariables = async (network) => {
   const ENV = process.env.ENV;
+  if (ENV === 'dev') {
+    rpcURL = getDevRpcUrl(network);
+  }
 
   if (ENV === 'qa') {
-    let chainRpcParam = 'chainRpcEndpoint';
-
-    switch (network) {
-      case BINANCE_NETWORK.shortName:
-        chainRpcParam = 'bnbRpcEndpoint';
-        break;
-      case ETHEREUM_NETWORK.shortName:
-      default:
-      // Use default chainRpcParam ie Ethereum to set `rpcURL`
-    }
+    let chainRpcParam = getRpcUrlParamName(network);
 
     const { getParams } = require('/opt/nodejs/getParams');
     [apiKey, graphqlURL, rpcURL] = await getParams([
@@ -65,6 +59,14 @@ exports.handler = async (event) => {
     await setEnvVariables(network);
   } catch (e) {
     throw new Error('Unable to set env variables. Reason:', e);
+  }
+
+  /*
+   * We do not store native chain tokens in the database and the ethers logic
+   * fails with a native token so return null early
+   */
+  if (tokenAddress === constants.AddressZero) {
+    return null;
   }
 
   const tokenQuery = await graphqlRequest(
