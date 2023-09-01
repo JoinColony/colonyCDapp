@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import moveDecimal from 'move-decimal-point';
+import { getAddress } from 'ethers/lib/utils';
 
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { DialogSection } from '~shared/Dialog';
@@ -115,11 +116,11 @@ const TransferFundsSection = ({
             token:
               balanceData.tokenAddress && balanceData.token
                 ? {
-                    tokenAddress: balanceData.tokenAddress,
+                    // checksummed address required for correct database id
+                    tokenAddress: getAddress(balanceData.tokenAddress),
                     name: balanceData.token.name,
                     symbol: balanceData.token.symbol,
                     decimals: balanceData.token.decimals,
-                    thumbnail: balanceData.token.logoUri,
                     type: TokenType.Erc20,
                   }
                 : null,
