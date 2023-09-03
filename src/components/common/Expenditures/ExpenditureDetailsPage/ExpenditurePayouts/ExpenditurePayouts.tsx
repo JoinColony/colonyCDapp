@@ -93,6 +93,11 @@ const ExpenditurePayouts = ({
                       {slot.claimDelay ? `${slot.claimDelay} seconds` : 'None'}
                     </div>
                   </div>
+
+                  <div>
+                    <div>Claimed</div>
+                    <div>{payout.isClaimed ? 'Yes' : 'No'}</div>
+                  </div>
                 </li>
               )),
           )}
