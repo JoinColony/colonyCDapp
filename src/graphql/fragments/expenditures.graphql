@@ -34,4 +34,5 @@ fragment ExpenditureSlot on ExpenditureSlot {
 fragment ExpenditurePayout on ExpenditurePayout {
   tokenAddress
   amount
+  isClaimed
 }
