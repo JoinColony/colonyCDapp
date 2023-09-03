@@ -21,12 +21,12 @@ const getPayoutChannelId = (payout: PayoutWithSlotId) =>
 
 function* claimExpenditure({
   meta,
-  payload: { colonyAddress, expenditure },
+  payload: { colonyAddress, expenditureId, claimableSlots },
 }: Action<ActionTypes.EXPENDITURE_CLAIM>) {
   const txChannel = yield call(getTxChannel, meta.id);
   const batchKey = 'claimExpenditure';
 
-  const payoutsWithSlotIds = expenditure.slots.flatMap(
+  const payoutsWithSlotIds = claimableSlots.flatMap(
     (slot) =>
       slot.payouts
         ?.filter((payout) => payout.amount !== '0')
@@ -49,7 +49,7 @@ function* claimExpenditure({
           context: ClientType.ColonyClient,
           methodName: 'claimExpenditurePayout',
           identifier: colonyAddress,
-          params: [expenditure.nativeId, payout.slotId, payout.tokenAddress],
+          params: [expenditureId, payout.slotId, payout.tokenAddress],
           group: {
             key: batchKey,
             id: meta.id,
