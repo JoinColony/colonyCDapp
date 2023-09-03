@@ -2566,6 +2566,7 @@ type ExpenditureSlot {
 type ExpenditurePayout {
   tokenAddress: ID!
   amount: String!
+  isClaimed: Boolean!
 }
 
 type ExpenditureMetadata @model {
