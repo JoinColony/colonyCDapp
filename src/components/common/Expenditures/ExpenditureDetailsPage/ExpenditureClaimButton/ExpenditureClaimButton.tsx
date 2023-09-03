@@ -32,6 +32,13 @@ const ExpenditureClaimButton = ({
 
   let nextClaimableAt: number | null = null;
   const claimableSlots = expenditure.slots.filter((slot) => {
+    const hasClaimablePayouts = !!slot.payouts?.some(
+      (payout) => !payout.isClaimed,
+    );
+    if (!hasClaimablePayouts) {
+      return false;
+    }
+
     const claimableFrom = new Date(
       ((expenditure.finalizedAt ?? 0) + (slot.claimDelay ?? 0)) * 1000,
     ).getTime();
@@ -69,7 +76,8 @@ const ExpenditureClaimButton = ({
           actionType={ActionTypes.EXPENDITURE_CLAIM}
           values={{
             colonyAddress: colony.colonyAddress,
-            expenditure,
+            expenditureId: expenditure.nativeId,
+            claimableSlots,
           }}
         >
           Claim funds
