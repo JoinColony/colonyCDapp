@@ -208,9 +208,15 @@ const Select = <V,>({
   const activeOptionDisplay = useMemo<ReactNode>(() => {
     /*
      * @NOTE If the active option is removed by something (ie: filtered out),
-     * fall back to the last entry in the options array
+     * fall back to the placeholder, or last entry in the options array
      */
-    const activeOption = options[checkedOption] || options[options.length - 1];
+    const activeOption =
+      options[checkedOption] ||
+      (placeholder && {
+        label: formatText(placeholder),
+        value: null,
+      }) ||
+      options[options.length - 1];
     let activeOptionLabel;
     if (activeOption) {
       if (typeof activeOption.label === 'object') {
@@ -224,7 +230,7 @@ const Select = <V,>({
         activeOptionLabel = activeOption.label;
       }
     }
-    const activeOptionLabelText = activeOptionLabel || placeholder;
+    const activeOptionLabelText = activeOptionLabel;
     if (renderActiveOption) {
       return renderActiveOption(activeOption, activeOptionLabelText);
     }
