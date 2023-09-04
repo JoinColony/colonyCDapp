@@ -59,16 +59,19 @@ type Props = Pick<WizardStepProps<FormValues>, 'nextStep' | 'wizardValues'>;
 
 const StepConfirmAllInput = ({ nextStep, wizardValues }: Props) => {
   const navigate = useNavigate();
+
+  const updatedWizardValues = {
+    ...wizardValues,
+    /**
+     * Use tokenName/tokenSymbol if creating a new token,
+     * or get the values from token object if using an existing one
+     */
+    tokenName: wizardValues.tokenName || wizardValues.token?.name,
+    tokenSymbol: wizardValues.tokenSymbol || wizardValues.token?.symbol,
+  };
+
   const transform = pipe(
-    mergePayload({
-      ...wizardValues,
-      /**
-       * Use tokenName/tokenSymbol if creating a new token,
-       * or get the values from token object if using an existing one
-       */
-      tokenName: wizardValues.tokenName ?? wizardValues.token?.name,
-      tokenSymbol: wizardValues.tokenSymbol ?? wizardValues.token?.symbol,
-    }),
+    mergePayload(updatedWizardValues),
     withMeta({ navigate }),
   );
 
