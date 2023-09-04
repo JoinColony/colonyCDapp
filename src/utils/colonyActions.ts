@@ -16,6 +16,7 @@ import { ColonyActionRoles, ColonyActionType } from '~gql';
 
 import { formatText } from './intl';
 import { MotionVote } from './colonyMotions';
+import { parseSafeTransactionType } from './safes';
 
 export enum ActionPageDetails {
   Type = 'Type',

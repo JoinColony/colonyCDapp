@@ -35,7 +35,6 @@ fragment SafeTransactionData on SafeTransactionData {
     profile {
       avatarHash
       displayName
-      username
     }
     walletAddress
   }
@@ -45,7 +44,6 @@ fragment SafeTransactionData on SafeTransactionData {
     profile {
       avatarHash
       displayName
-      username
     }
     walletAddress
   }

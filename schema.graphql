@@ -16,6 +16,7 @@ directive @aws_subscribe(mutations: [String!]) on FIELD_DEFINITION
 input TokenFromEverywhereArguments {
   """Address of the token on the blockchain"""
   tokenAddress: String!
+  network: String
 }
 
 """Input data for fetching the list of members for a specific Colony"""
@@ -228,6 +229,11 @@ input UpdateExtensionByColonyAndHashInput {
 
   """The timestamp when the extension was installed"""
   installedAt: AWSTimestamp
+}
+
+input GetSafeTransactionStatusInput {
+  transactionHash: String!
+  chainId: Int!
 }
 
 """
@@ -675,6 +681,7 @@ type Query {
 
   """Get the timeout for the current period of a motion"""
   getMotionTimeoutPeriods(input: GetMotionTimeoutPeriodsInput): GetMotionTimeoutPeriodsReturn
+  getSafeTransactionStatus(input: GetSafeTransactionStatusInput): [String!]
   getProfile(id: ID!): Profile
   listProfiles(filter: ModelProfileFilterInput, limit: Int, nextToken: String): ModelProfileConnection
   getToken(id: ID!): Token
@@ -721,6 +728,8 @@ type Query {
   listAnnotations(filter: ModelAnnotationFilterInput, limit: Int, nextToken: String): ModelAnnotationConnection
   getSafeTransaction(id: ID!): SafeTransaction
   listSafeTransactions(filter: ModelSafeTransactionFilterInput, limit: Int, nextToken: String): ModelSafeTransactionConnection
+  getSafeTransactionData(id: ID!): SafeTransactionData
+  listSafeTransactionData(filter: ModelSafeTransactionDataFilterInput, limit: Int, nextToken: String): ModelSafeTransactionDataConnection
   getColonyTokens(id: ID!): ColonyTokens
   listColonyTokens(filter: ModelColonyTokensFilterInput, limit: Int, nextToken: String): ModelColonyTokensConnection
   getUserTokens(id: ID!): UserTokens
@@ -838,6 +847,9 @@ type Mutation {
   createSafeTransaction(input: CreateSafeTransactionInput!, condition: ModelSafeTransactionConditionInput): SafeTransaction
   updateSafeTransaction(input: UpdateSafeTransactionInput!, condition: ModelSafeTransactionConditionInput): SafeTransaction
   deleteSafeTransaction(input: DeleteSafeTransactionInput!, condition: ModelSafeTransactionConditionInput): SafeTransaction
+  createSafeTransactionData(input: CreateSafeTransactionDataInput!, condition: ModelSafeTransactionDataConditionInput): SafeTransactionData
+  updateSafeTransactionData(input: UpdateSafeTransactionDataInput!, condition: ModelSafeTransactionDataConditionInput): SafeTransactionData
+  deleteSafeTransactionData(input: DeleteSafeTransactionDataInput!, condition: ModelSafeTransactionDataConditionInput): SafeTransactionData
   createColonyTokens(input: CreateColonyTokensInput!, condition: ModelColonyTokensConditionInput): ColonyTokens
   updateColonyTokens(input: UpdateColonyTokensInput!, condition: ModelColonyTokensConditionInput): ColonyTokens
   deleteColonyTokens(input: DeleteColonyTokensInput!, condition: ModelColonyTokensConditionInput): ColonyTokens
@@ -2201,7 +2213,6 @@ type Annotation {
 type SimpleTargetProfile {
   avatarHash: String
   displayName: String
-  username: String
 }
 
 type SimpleTarget {
@@ -2218,14 +2229,6 @@ type NFT {
 
 type NFTProfile {
   displayName: String!
-}
-
-type SafeBalanceToken {
-  name: String!
-  decimals: Int!
-  symbol: String!
-  tokenAddress: String!
-  thumbnail: String
 }
 
 type FunctionParam {
@@ -2253,9 +2256,19 @@ enum SafeTransactionType {
   RAW_TRANSACTION
 }
 
+type SafeTransaction {
+  id: ID!
+  title: String!
+  safe: Safe!
+  transactions(id: ModelIDKeyConditionInput, filter: ModelSafeTransactionDataFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelSafeTransactionDataConnection
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
 type SafeTransactionData {
-  transactionType: SafeTransactionType!
-  token: SafeBalanceToken
+  id: ID!
+  tokenAddress: ID
+  token: Token
   amount: String
   rawAmount: String
   recipient: SimpleTarget
@@ -2266,13 +2279,8 @@ type SafeTransactionData {
   nft: NFT
   nftData: NFTData
   functionParams: [FunctionParam]
-}
-
-type SafeTransaction {
-  id: ID!
-  title: String!
-  safe: Safe!
-  transactions: [SafeTransactionData!]!
+  transactionType: SafeTransactionType!
+  transactionHash: ID!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -2607,6 +2615,9 @@ type Subscription {
   onCreateSafeTransaction(filter: ModelSubscriptionSafeTransactionFilterInput): SafeTransaction
   onUpdateSafeTransaction(filter: ModelSubscriptionSafeTransactionFilterInput): SafeTransaction
   onDeleteSafeTransaction(filter: ModelSubscriptionSafeTransactionFilterInput): SafeTransaction
+  onCreateSafeTransactionData(filter: ModelSubscriptionSafeTransactionDataFilterInput): SafeTransactionData
+  onUpdateSafeTransactionData(filter: ModelSubscriptionSafeTransactionDataFilterInput): SafeTransactionData
+  onDeleteSafeTransactionData(filter: ModelSubscriptionSafeTransactionDataFilterInput): SafeTransactionData
   onCreateColonyTokens(filter: ModelSubscriptionColonyTokensFilterInput): ColonyTokens
   onUpdateColonyTokens(filter: ModelSubscriptionColonyTokensFilterInput): ColonyTokens
   onDeleteColonyTokens(filter: ModelSubscriptionColonyTokensFilterInput): ColonyTokens
@@ -4207,27 +4218,47 @@ input ModelSubscriptionAnnotationFilterInput {
   or: [ModelSubscriptionAnnotationFilterInput]
 }
 
-input SafeTransactionDataInput {
-  transactionType: SafeTransactionType!
-  token: SafeBalanceTokenInput
-  amount: String
-  rawAmount: String
-  recipient: SimpleTargetInput
-  data: String
-  contract: SimpleTargetInput
-  abi: String
-  contractFunction: String
-  nft: NFTInput
-  nftData: NFTDataInput
-  functionParams: [FunctionParamInput]
+type ModelSafeTransactionConnection {
+  items: [SafeTransaction]!
+  nextToken: String
 }
 
-input SafeBalanceTokenInput {
-  name: String!
-  decimals: Int!
-  symbol: String!
-  tokenAddress: String!
-  thumbnail: String
+input ModelSafeTransactionFilterInput {
+  id: ModelIDInput
+  title: ModelStringInput
+  and: [ModelSafeTransactionFilterInput]
+  or: [ModelSafeTransactionFilterInput]
+  not: ModelSafeTransactionFilterInput
+}
+
+input ModelSafeTransactionConditionInput {
+  title: ModelStringInput
+  and: [ModelSafeTransactionConditionInput]
+  or: [ModelSafeTransactionConditionInput]
+  not: ModelSafeTransactionConditionInput
+}
+
+input CreateSafeTransactionInput {
+  id: ID
+  title: String!
+  safe: SafeInput!
+}
+
+input UpdateSafeTransactionInput {
+  id: ID!
+  title: String
+  safe: SafeInput
+}
+
+input DeleteSafeTransactionInput {
+  id: ID!
+}
+
+input ModelSubscriptionSafeTransactionFilterInput {
+  id: ModelSubscriptionIDInput
+  title: ModelSubscriptionStringInput
+  and: [ModelSubscriptionSafeTransactionFilterInput]
+  or: [ModelSubscriptionSafeTransactionFilterInput]
 }
 
 input SimpleTargetInput {
@@ -4239,7 +4270,6 @@ input SimpleTargetInput {
 input SimpleTargetProfileInput {
   avatarHash: String
   displayName: String
-  username: String
 }
 
 input NFTInput {
@@ -4270,49 +4300,95 @@ input FunctionParamInput {
   value: String!
 }
 
-type ModelSafeTransactionConnection {
-  items: [SafeTransaction]!
+type ModelSafeTransactionDataConnection {
+  items: [SafeTransactionData]!
   nextToken: String
 }
 
-input ModelSafeTransactionFilterInput {
+input ModelSafeTransactionTypeInput {
+  eq: SafeTransactionType
+  ne: SafeTransactionType
+}
+
+input ModelSafeTransactionDataFilterInput {
   id: ModelIDInput
-  title: ModelStringInput
-  and: [ModelSafeTransactionFilterInput]
-  or: [ModelSafeTransactionFilterInput]
-  not: ModelSafeTransactionFilterInput
+  tokenAddress: ModelIDInput
+  amount: ModelStringInput
+  rawAmount: ModelStringInput
+  data: ModelStringInput
+  abi: ModelStringInput
+  contractFunction: ModelStringInput
+  transactionType: ModelSafeTransactionTypeInput
+  transactionHash: ModelIDInput
+  and: [ModelSafeTransactionDataFilterInput]
+  or: [ModelSafeTransactionDataFilterInput]
+  not: ModelSafeTransactionDataFilterInput
 }
 
-input ModelSafeTransactionConditionInput {
-  title: ModelStringInput
-  and: [ModelSafeTransactionConditionInput]
-  or: [ModelSafeTransactionConditionInput]
-  not: ModelSafeTransactionConditionInput
+input ModelSafeTransactionDataConditionInput {
+  tokenAddress: ModelIDInput
+  amount: ModelStringInput
+  rawAmount: ModelStringInput
+  data: ModelStringInput
+  abi: ModelStringInput
+  contractFunction: ModelStringInput
+  transactionType: ModelSafeTransactionTypeInput
+  transactionHash: ModelIDInput
+  and: [ModelSafeTransactionDataConditionInput]
+  or: [ModelSafeTransactionDataConditionInput]
+  not: ModelSafeTransactionDataConditionInput
 }
 
-input CreateSafeTransactionInput {
+input CreateSafeTransactionDataInput {
   id: ID
-  title: String!
-  safe: SafeInput!
-  transactions: [SafeTransactionDataInput!]!
+  tokenAddress: ID
+  amount: String
+  rawAmount: String
+  recipient: SimpleTargetInput
+  data: String
+  contract: SimpleTargetInput
+  abi: String
+  contractFunction: String
+  nft: NFTInput
+  nftData: NFTDataInput
+  functionParams: [FunctionParamInput]
+  transactionType: SafeTransactionType!
+  transactionHash: ID!
 }
 
-input UpdateSafeTransactionInput {
+input UpdateSafeTransactionDataInput {
   id: ID!
-  title: String
-  safe: SafeInput
-  transactions: [SafeTransactionDataInput!]
+  tokenAddress: ID
+  amount: String
+  rawAmount: String
+  recipient: SimpleTargetInput
+  data: String
+  contract: SimpleTargetInput
+  abi: String
+  contractFunction: String
+  nft: NFTInput
+  nftData: NFTDataInput
+  functionParams: [FunctionParamInput]
+  transactionType: SafeTransactionType
+  transactionHash: ID
 }
 
-input DeleteSafeTransactionInput {
+input DeleteSafeTransactionDataInput {
   id: ID!
 }
 
-input ModelSubscriptionSafeTransactionFilterInput {
+input ModelSubscriptionSafeTransactionDataFilterInput {
   id: ModelSubscriptionIDInput
-  title: ModelSubscriptionStringInput
-  and: [ModelSubscriptionSafeTransactionFilterInput]
-  or: [ModelSubscriptionSafeTransactionFilterInput]
+  tokenAddress: ModelSubscriptionIDInput
+  amount: ModelSubscriptionStringInput
+  rawAmount: ModelSubscriptionStringInput
+  data: ModelSubscriptionStringInput
+  abi: ModelSubscriptionStringInput
+  contractFunction: ModelSubscriptionStringInput
+  transactionType: ModelSubscriptionStringInput
+  transactionHash: ModelSubscriptionIDInput
+  and: [ModelSubscriptionSafeTransactionDataFilterInput]
+  or: [ModelSubscriptionSafeTransactionDataFilterInput]
 }
 
 type ModelColonyTokensConnection {

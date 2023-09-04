@@ -2683,7 +2683,6 @@ type Annotation @model {
 type SimpleTargetProfile {
   avatarHash: String
   displayName: String
-  username: String
 }
 
 type SimpleTarget {

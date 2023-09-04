@@ -5,7 +5,7 @@ import { ColonyRole } from '@colony/colony-js';
 import classnames from 'classnames';
 
 import { DialogSection } from '~shared/Dialog';
-import { HookFormSelect as Select } from '~shared/Fields';
+import { Select } from '~shared/Fields';
 import Heading from '~shared/Heading';
 import ExternalLink from '~shared/ExternalLink';
 import Button from '~shared/Button';

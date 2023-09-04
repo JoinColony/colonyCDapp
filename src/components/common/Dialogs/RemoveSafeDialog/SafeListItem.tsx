@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import { SUPPORTED_SAFE_NETWORKS } from '~constants';
 import Avatar from '~shared/Avatar';
-import { HookFormCheckbox as Checkbox } from '~shared/Fields';
+import { Checkbox } from '~shared/Fields';
 import MaskedAddress from '~shared/MaskedAddress';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 import { Safe } from '~types';

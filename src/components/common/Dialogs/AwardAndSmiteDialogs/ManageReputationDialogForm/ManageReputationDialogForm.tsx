@@ -266,7 +266,7 @@ const ManageReputationDialogForm = ({
       <DialogSection>
         <div className={styles.domainSelects}>
           <div>
-            <Select<number>
+            <Select
               options={domainOptions}
               label={MSG.team}
               labelValues={{

@@ -8,12 +8,13 @@ import { Colony, ColonyExtension, Token, User } from '~types';
 
 import styles from './FriendlyName.css';
 import { getAddressFromAgent, getDisplayNameFromAgent } from './helpers';
+import { SimpleTarget } from '~gql';
 
 const displayName = 'FriendlyName';
 
 export interface FriendlyNameProps {
   /**  The object representing the agent initiating the action */
-  agent?: User | Colony | ColonyExtension | Token | null;
+  agent?: User | Colony | ColonyExtension | Token | SimpleTarget | null;
   /** Whether to show a masked address or a full one */
   maskedAddress?: boolean;
   /** Whether to apply the "shrink tech font by 1px" logic */

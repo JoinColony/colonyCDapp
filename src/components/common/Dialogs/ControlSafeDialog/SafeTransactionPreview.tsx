@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid';
 import { useFormContext } from 'react-hook-form';
 
 import { DialogSection } from '~shared/Dialog';
-import { HookFormInput as Input, Annotations } from '~shared/Fields';
+import { Input, Annotations } from '~shared/Fields';
 import DialogHeading from '~shared/Dialog/DialogHeading';
 import Heading from '~shared/Heading';
 import Numeral from '~shared/Numeral';

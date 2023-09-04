@@ -8,11 +8,7 @@ import { useFormContext } from 'react-hook-form';
 
 import Button from '~shared/Button';
 import { DialogSection } from '~shared/Dialog';
-import {
-  HookFormInput as Input,
-  Annotations,
-  InputLabel,
-} from '~shared/Fields';
+import { Input, Annotations, InputLabel } from '~shared/Fields';
 import MaskedAddress from '~shared/MaskedAddress';
 import Avatar from '~shared/Avatar';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';

@@ -8,11 +8,7 @@ import {
 import { useFormContext } from 'react-hook-form';
 
 import { isAddress } from '~utils/web3';
-import {
-  HookFormSelect as Select,
-  SelectOption,
-  HookFormTextArea as Textarea,
-} from '~shared/Fields';
+import { Select, SelectOption, Textarea } from '~shared/Fields';
 import SingleUserPicker, {
   filterUserSelection,
 } from '~shared/SingleUserPicker';
