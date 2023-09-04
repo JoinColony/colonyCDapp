@@ -57,6 +57,8 @@
   "button.modify": "Modify",
   "button.preview": "Preview",
   "button.publish": "Publish",
+  "button.changeVote": "Change Vote",
+  "button.vote": "Vote",
   "button.update": "Update",
   "button.upgrade": "Upgrade",
   "input.resetText": "Cancel",
