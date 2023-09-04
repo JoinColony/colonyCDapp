@@ -41,6 +41,8 @@ export const useEditColonyDetails = () => {
         motionDomainId: payload.createdIn,
         decisionMethod: payload.decisionMethod,
         annotationMessage: payload.annotation,
+        externalLinks: [], // @todo: wire into form
+        colonyDescription: '', // @todo: wire into form
       };
       if (colony) {
         return getEditColonyDetailsDialogPayload(colony, values);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { string, object, boolean, InferType } from 'yup';
+import { string, object, boolean, InferType, array } from 'yup';
 import { defineMessages } from 'react-intl';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
@@ -13,6 +13,7 @@ import { pipe, withMeta, mapPayload } from '~utils/actions';
 
 import EditColonyDetailsDialogForm from './EditColonyDetailsDialogForm';
 import { getEditColonyDetailsDialogPayload } from './helpers';
+import { ExternalLinks } from '~gql';
 
 type Props = Required<DialogProps> &
   WizardDialogType<object> &
@@ -35,7 +36,20 @@ const validationSchema = object()
     colonyDisplayName: string()
       .trim()
       .required(() => MSG.requiredFieldError),
+    colonyDescription: string().defined(),
     annotationMessage: string().max(MAX_ANNOTATION_LENGTH).defined(),
+    externalLinks: array()
+      .of(
+        object({
+          name: string().defined().oneOf(Object.values(ExternalLinks)),
+          link: string().when('name', {
+            is: (name) => !!name,
+            then: string().url().defined().required(),
+            otherwise: string().url().defined(),
+          }),
+        }).defined(),
+      )
+      .defined(),
   })
   .defined();
 
@@ -72,6 +86,10 @@ const EditColonyDetailsDialog = ({
           colonyDisplayName: metadata?.displayName,
           colonyAvatarImage: metadata?.avatar,
           colonyThumbnail: metadata?.thumbnail,
+          colonyDescription: metadata?.description ?? '',
+          externalLinks: metadata?.externalLinks ?? [
+            { name: ExternalLinks.Custom, link: '' },
+          ],
           annotationMessage: '',
           /*
            * @NOTE That since this a root motion, and we don't actually make use

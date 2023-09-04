@@ -12,6 +12,7 @@ import {
   MetaWithHistory,
   MetaWithNavigate,
 } from './index';
+import { ExternalLink } from '~gql';
 
 export enum RootMotionMethodNames {
   MintTokens = 'mintTokens',
@@ -156,6 +157,8 @@ export type MotionActionTypes =
         colonyAvatarImage?: string;
         colonyThumbnail?: string;
         tokenAddresses?: Address[];
+        colonyDescription?: string | null;
+        colonyExternalLinks?: ExternalLink[] | null;
         annotationMessage?: string;
       },
       MetaWithNavigate<object>

@@ -12,6 +12,7 @@ import {
   MetaWithHistory,
   MetaWithNavigate,
 } from './index';
+import { ExternalLink } from '~gql';
 
 /*
  * @NOTE About naming
@@ -81,6 +82,8 @@ export type ColonyActionsActionTypes =
       {
         colony: Colony;
         colonyDisplayName?: string;
+        colonyDescription?: string | null;
+        colonyExternalLinks?: ExternalLink[] | null;
         colonyAvatarImage?: string;
         colonyThumbnail?: string;
         tokenAddresses?: Address[];
