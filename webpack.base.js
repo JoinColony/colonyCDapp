@@ -51,6 +51,7 @@ const config = {
         util: 'util',
         path: 'path-browserify',
         constants: 'constants-browserify',
+        zlib: 'browserify-zlib',
       },
     ),
     extensions: ['.tsx', '.ts', '.jsx', '.js'],

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 interface Window {
+  // @ts-expect-error
   ethereum: object | undefined;
 }
 

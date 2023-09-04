@@ -1,6 +1,13 @@
 import React, { FC, useLayoutEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
+import {
+  ThirdwebProvider,
+  metamaskWallet,
+  walletConnect,
+  paperWallet,
+  ConnectWallet,
+} from '@thirdweb-dev/react';
 
 import { useAppContext, useMobile } from '~hooks';
 import Button, { Hamburger, PendingButton } from '~v5/shared/Button';
@@ -60,6 +67,18 @@ const UserNavigation: FC<UserNavigationProps> = ({
         {nativeToken && <Token nativeToken={nativeToken} />}
         <UserReputation />
       </div>
+      <ThirdwebProvider
+        supportedWallets={[
+          metamaskWallet(),
+          walletConnect(),
+          paperWallet({
+            paperClientId: 'bb61f458-f974-4d2c-a097-b9766b11c528',
+          }),
+        ]}
+        clientId="987176e68fbcfc62f5fb92db447a527f"
+      >
+        <ConnectWallet />
+      </ThirdwebProvider>
       {isUserNavigationButtonsVisible && !isWalletConnected && (
         <Button
           mode="tertiary"
