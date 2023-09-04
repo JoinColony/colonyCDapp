@@ -5,6 +5,7 @@ declare namespace ExpenditureFormModuleCssNamespace {
     cancelButton: string;
     domainSelection: string;
     field: string;
+    typeTabs: string;
   }
 }
 
