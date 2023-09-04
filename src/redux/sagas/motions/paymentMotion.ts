@@ -29,9 +29,9 @@ function* createPaymentMotion({
   payload: {
     colonyAddress,
     colonyName,
-    recipientAddress,
+    recipientAddresses,
     domainId,
-    singlePayment,
+    payments,
     annotationMessage,
     motionDomainId,
   },
@@ -43,22 +43,22 @@ function* createPaymentMotion({
     /*
      * Validate the required values for the payment
      */
-    if (!recipientAddress) {
+    if (!recipientAddresses || !recipientAddresses.length) {
       throw new Error('Recipient not assigned for OneTxPayment transaction');
     }
     if (!domainId) {
       throw new Error('Domain not set for OneTxPayment transaction');
     }
-    if (!singlePayment) {
+    if (!payments || !payments.length) {
       throw new Error('Payment details not set for OneTxPayment transaction');
     } else {
-      if (!singlePayment.amount) {
+      if (!payments.every(({ amount }) => !!amount)) {
         throw new Error('Payment amount not set for OneTxPayment transaction');
       }
-      if (!singlePayment.tokenAddress) {
+      if (!payments.every(({ tokenAddress }) => !!tokenAddress)) {
         throw new Error('Payment token not set for OneTxPayment transaction');
       }
-      if (!singlePayment.decimals) {
+      if (!payments.every(({ decimals }) => !!decimals)) {
         throw new Error(
           'Payment token decimals not set for OneTxPayment transaction',
         );
@@ -104,7 +104,11 @@ function* createPaymentMotion({
       votingReputationClient.address,
     );
 
-    const { amount, tokenAddress, decimals = 18 } = singlePayment;
+    const tokenAddresses = payments.map(({ tokenAddress }) => tokenAddress);
+
+    const amounts = payments.map(({ amount, decimals = 18 }) =>
+      BigNumber.from(moveDecimal(amount, decimals)),
+    );
 
     const encodedAction = oneTxPaymentClient.interface.encodeFunctionData(
       'makePaymentFundedFromDomain',
@@ -113,9 +117,9 @@ function* createPaymentMotion({
         extensionCSI,
         votingReputationPDID,
         votingReputationCSI,
-        [recipientAddress],
-        [tokenAddress],
-        [BigNumber.from(moveDecimal(amount, decimals))],
+        recipientAddresses,
+        tokenAddresses,
+        amounts,
         domainId,
         /*
          * NOTE Always make the payment in the global skill 0
