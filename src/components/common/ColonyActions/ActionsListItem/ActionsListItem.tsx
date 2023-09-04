@@ -81,7 +81,6 @@ const ActionsListItem = ({
     isMotion,
     motionData,
     safeTransaction,
-    initiatorColony,
   },
   item,
 }: Props) => {
@@ -113,11 +112,7 @@ const ActionsListItem = ({
     return null;
   }
 
-  const fromDomain = safeTransaction
-    ? initiatorColony?.domains?.items[0]
-    : itemDomain;
-
-  const domainName = getDomainName(fromDomain, motionData?.motionDomain);
+  const domainName = getDomainName(itemDomain, motionData?.motionDomain);
 
   const shouldDisplaySafeTransactionStatus =
     safeTransaction && !isEmpty(safeTransactionStatus);
