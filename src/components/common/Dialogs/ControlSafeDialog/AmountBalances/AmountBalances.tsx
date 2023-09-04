@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 import classnames from 'classnames';
 import { useFormContext } from 'react-hook-form';
 
-import { HookFormInput as Input, TokenSymbolSelector } from '~shared/Fields';
+import { Input, TokenSymbolSelector } from '~shared/Fields';
 import {
   ADDRESS_ZERO,
   /* BINANCE_NETWORK, */
@@ -11,9 +11,9 @@ import {
   ETHEREUM_NETWORK,
   SUPPORTED_SAFE_NETWORKS,
 } from '~constants';
-import { MaxButtonParams } from '~shared/Fields/Input/HookForm';
 import { Safe, SafeBalance, Token } from '~types';
 import { TokenType } from '~gql';
+import { MaxButtonParams } from '~shared/Fields/Input';
 
 import styles from './AmountTokens.css';
 

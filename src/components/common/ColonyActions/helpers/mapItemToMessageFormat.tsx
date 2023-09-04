@@ -50,6 +50,7 @@ import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
 import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
 
 import styles from './itemStyles.css';
+import { SimpleTarget } from '~gql';
 
 const { formatMessage } = intl({
   unknownDomain: 'UnknownDomain',
@@ -83,7 +84,13 @@ const getRecipient = (actionData: ColonyAction) => {
   } = actionData;
   const safeRecipient = safeTransaction?.transactions?.items[0]?.recipient;
 
-  let recipient: User | Colony | ColonyExtension | Token | undefined;
+  let recipient:
+    | User
+    | Colony
+    | ColonyExtension
+    | Token
+    | SimpleTarget
+    | undefined;
 
   if (recipientUser) {
     recipient = recipientUser;

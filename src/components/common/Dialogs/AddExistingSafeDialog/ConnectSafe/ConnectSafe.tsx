@@ -6,7 +6,7 @@ import Button from '~shared/Button';
 import { DialogSection } from '~shared/Dialog';
 import ExternalLink from '~shared/ExternalLink';
 import Icon from '~shared/Icon';
-import { HookFormInput as Input } from '~shared/Fields';
+import { Input } from '~shared/Fields';
 
 import {
   ETHEREUM_NETWORK,

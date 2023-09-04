@@ -1,7 +1,7 @@
 import React from 'react';
 import { JsonFragment } from '@ethersproject/abi';
 
-import { HookFormInput as Input } from '~shared/Fields';
+import { Input } from '~shared/Fields';
 
 import { UpdatedMethods } from '../../types';
 

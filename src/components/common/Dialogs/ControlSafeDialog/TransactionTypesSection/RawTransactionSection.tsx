@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { DialogSection } from '~shared/Dialog';
-import { HookFormInput as Input } from '~shared/Fields';
+import { Input } from '~shared/Fields';
 
 import { TransactionSectionProps } from '../types';
 

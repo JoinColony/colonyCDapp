@@ -2,12 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
-import {
-  HookFormInput as Input,
-  SelectOption,
-  HookFormInputStatus as InputStatus,
-  InputLabel,
-} from '~shared/Fields';
+import { Input, SelectOption, InputStatus, InputLabel } from '~shared/Fields';
 import { FETCH_ABORTED } from '~constants';
 import { Message } from '~types';
 import Avatar from '~shared/Avatar';
@@ -81,7 +76,15 @@ const SafeContractAddressInput = ({
     };
 
     validate();
-  }, [contractAddress, chainId]);
+  }, [
+    contractAddress,
+    chainId,
+    contractAddressDirtied,
+    trigger,
+    selectedChain,
+    clearErrors,
+    setIsLoadingSafe,
+  ]);
 
   return (
     <div className={styles.contractAddressContainer}>

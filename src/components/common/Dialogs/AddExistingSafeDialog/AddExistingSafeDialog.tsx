@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { InferType } from 'yup';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
-import { ActionHookForm as Form } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 import { GNOSIS_AMB_BRIDGES, SAFE_NAMES_MAP } from '~constants';
 import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
@@ -59,7 +59,7 @@ const AddExistingSafeDialog = ({
 
   return (
     <Dialog cancel={cancel}>
-      <Form<FormValues>
+      <ActionForm<FormValues>
         defaultValues={{
           chainId: networkOptions[0].value,
           safeName: '',
@@ -78,7 +78,7 @@ const AddExistingSafeDialog = ({
           stepIndex={stepIndex}
           setStepIndex={setStepIndex}
         />
-      </Form>
+      </ActionForm>
     </Dialog>
   );
 };

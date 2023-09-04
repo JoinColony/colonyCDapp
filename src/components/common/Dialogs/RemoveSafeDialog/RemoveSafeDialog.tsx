@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
-import { ActionHookForm as Form } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 
 import { ActionTypes } from '~redux';
 import { WizardDialogType } from '~hooks';
@@ -34,7 +34,7 @@ const RemoveSafeDialog = ({
 
   return (
     <Dialog cancel={cancel}>
-      <Form
+      <ActionForm
         defaultValues={{
           safes: [],
         }}
@@ -46,7 +46,7 @@ const RemoveSafeDialog = ({
           back={() => callStep(prevStep)}
           colonySafes={colony.metadata?.safes || []}
         />
-      </Form>
+      </ActionForm>
     </Dialog>
   );
 };

@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 
 import Button from '~shared/Button';
 import { DialogSection } from '~shared/Dialog';
-import { HookFormSelect as Select, SelectOption } from '~shared/Fields';
+import { Select, SelectOption } from '~shared/Fields';
 
 import { AddExistingSafeProps } from '../types';
 import SetupSafeCallout from '../SetupSafeCallout';
