@@ -6,17 +6,29 @@ import { ActionForm } from '~shared/Fields';
 import { useColonyContext, useEnabledExtensions } from '~hooks';
 import Button from '~shared/Button';
 import { ActionTypes } from '~redux';
-import DomainFundSelector from '~common/Dialogs/DomainFundSelectorSection/DomainFundSelector';
+import { Tab, TabList, Tabs } from '~shared/Tabs';
 
 import {
   getCreateExpenditureTransformPayloadFn,
   getInitialPayoutFieldValue,
 } from './helpers';
-import { ExpenditureFormValues } from './types';
+import { ExpenditureFormType, ExpenditureFormValues } from './types';
 import ExpenditureFormFields from './ExpenditureFormFields';
 import StakeExpenditureDialog from '../StakedExpenditure/StakeExpenditureDialog';
 
 import styles from './ExpenditureForm.module.css';
+import ExpenditureDomainSelector from './ExpenditureDomainSelector/ExpenditureDomainSelector';
+
+const formTypeOptions = [
+  {
+    type: ExpenditureFormType.Advanced,
+    label: 'Advanced Payment',
+  },
+  {
+    type: ExpenditureFormType.Staged,
+    label: 'Staged Payment',
+  },
+];
 
 const CreateExpenditureForm = () => {
   const navigate = useNavigate();
@@ -43,6 +55,7 @@ const CreateExpenditureForm = () => {
         payouts: [getInitialPayoutFieldValue(colony.nativeToken.tokenAddress)],
         createInDomainId: Id.RootDomain,
         fundFromDomainId: Id.RootDomain,
+        type: ExpenditureFormType.Advanced,
       }}
       transform={getCreateExpenditureTransformPayloadFn(colony, navigate)}
     >
@@ -51,18 +64,15 @@ const CreateExpenditureForm = () => {
 
         return (
           <>
-            <div className={styles.domainSelection}>
-              <DomainFundSelector
-                colony={colony}
-                label="Create in"
-                name="createInDomainId"
-              />
-              <DomainFundSelector
-                colony={colony}
-                label="Fund from"
-                name="fundFromDomainId"
-              />
-            </div>
+            <ExpenditureDomainSelector colony={colony} />
+
+            <Tabs>
+              <TabList containerClassName={styles.typeTabs}>
+                {formTypeOptions.map(({ type, label }) => (
+                  <Tab key={type}>{label}</Tab>
+                ))}
+              </TabList>
+            </Tabs>
 
             <ExpenditureFormFields colony={colony} />
 
