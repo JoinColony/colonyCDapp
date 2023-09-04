@@ -59,13 +59,13 @@ export type ColonyActionsActionTypes =
       {
         colonyAddress: Address;
         colonyName?: string;
-        recipientAddress: Address;
+        recipientAddresses: Address[];
         domainId: number;
-        singlePayment: {
+        payments: {
           amount: BigNumber;
           tokenAddress: Address;
           decimals: number;
-        };
+        }[];
         annotationMessage?: string;
         walletAddress: Address;
       },

@@ -33,13 +33,15 @@ export const getCreatePaymentDialogPayload = (
   return {
     colonyName: colony.name,
     colonyAddress: colony.colonyAddress,
-    recipientAddress: walletAddress,
+    recipientAddresses: [walletAddress],
     domainId: fromDomainId,
-    singlePayment: {
-      tokenAddress,
-      amount: amountWithFees, // @NOTE: Only the contract sees this amount
-      decimals,
-    },
+    payments: [
+      {
+        tokenAddress,
+        amount: amountWithFees, // @NOTE: Only the contract sees this amount
+        decimals,
+      },
+    ],
     annotationMessage,
     motionDomainId,
   };

@@ -45,7 +45,7 @@ const MSG = defineMessages({
   },
   annotation: {
     id: `${displayName}.annotation`,
-    defaultMessage: 'Explain why you’re making this payment (optional)',
+    defaultMessage: "Explain why you're making this payment (optional)",
   },
   noOneTxExtension: {
     id: `${displayName}.noOneTxExtension`,
