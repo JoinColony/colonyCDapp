@@ -4,6 +4,8 @@ declare namespace TransactionTypesSectionCssNamespace {
     labelDescription: string;
     singleUserPickerContainer: string;
     spinner: string;
+    tabContentClosed: string;
+    transactionTypeSelectContainer: string;
     warningContainer: string;
     warningIcon: string;
     warningSafeChainName: string;

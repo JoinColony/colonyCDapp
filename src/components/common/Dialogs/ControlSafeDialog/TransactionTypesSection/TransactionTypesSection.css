@@ -54,3 +54,11 @@
   min-width: 18px;
   fill: var(--golden);
 }
+
+.tabContentClosed {
+  display: none;
+}
+
+.transactionTypeSelectContainer label {
+  color: var(--dark);
+}

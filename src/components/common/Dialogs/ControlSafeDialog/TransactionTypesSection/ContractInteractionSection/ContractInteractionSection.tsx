@@ -26,7 +26,7 @@ import { Message } from '~types';
 import { isMessageDescriptor } from '~utils/intl';
 import { BINANCE_NETWORK } from '~constants';
 
-import { invalidSafeError } from '../..';
+import { invalidSafeError } from '../TransactionTypesSection';
 import {
   ABIResponse,
   FormSafeTransaction,

@@ -27,8 +27,7 @@
 }
 
 .safePicker button,
-.safePicker label,
-.transactionTypeSelectContainer label {
+.safePicker label {
   color: var(--dark);
 }
 
@@ -50,10 +49,6 @@
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
-}
-
-.tabContentClosed {
-  display: none;
 }
 
 .transactionTitle {

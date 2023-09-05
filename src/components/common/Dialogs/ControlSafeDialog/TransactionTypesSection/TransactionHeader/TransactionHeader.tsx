@@ -8,8 +8,8 @@ import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
 import IconTooltip from '~shared/IconTooltip';
 
-import { SafeTransactionMSG } from '../helpers';
-import { UpdatedMethods, FormSafeTransaction } from '../types';
+import { SafeTransactionMSG } from '../../helpers';
+import { UpdatedMethods, FormSafeTransaction } from '../../types';
 
 import styles from './TransactionHeader.css';
 
@@ -35,10 +35,12 @@ const MSG = defineMessages({
 interface Props {
   transactionIndex: number;
   transactionTabStatus: boolean[];
-  handleTransactionTabStatus: React.Dispatch<React.SetStateAction<boolean[]>>;
+  handleTransactionTabStatusChange: React.Dispatch<
+    React.SetStateAction<boolean[]>
+  >;
   removeTab: UseFieldArrayRemove;
   selectedContractMethods: UpdatedMethods | undefined;
-  handleSelectedContractMethods: (
+  handleSelectedContractMethodsChange: (
     selectedContractMethods: UpdatedMethods,
     index: number,
   ) => void;
@@ -47,10 +49,10 @@ interface Props {
 const TransactionHeader = ({
   transactionIndex,
   transactionTabStatus,
-  handleTransactionTabStatus,
+  handleTransactionTabStatusChange,
   removeTab,
   selectedContractMethods,
-  handleSelectedContractMethods,
+  handleSelectedContractMethodsChange,
 }: Props) => {
   const { watch, trigger } = useFormContext();
   const transactions = watch('transactions');
@@ -73,11 +75,14 @@ const TransactionHeader = ({
           };
         }, {})
       : {};
-    handleSelectedContractMethods(shiftedContractMethods, transactionIndex);
+    handleSelectedContractMethodsChange(
+      shiftedContractMethods,
+      transactionIndex,
+    );
 
     const newTransactionTabStatus = [...transactionTabStatus];
     newTransactionTabStatus.splice(transactionIndex, 1);
-    handleTransactionTabStatus(newTransactionTabStatus);
+    handleTransactionTabStatusChange(newTransactionTabStatus);
     removeTab(transactionIndex);
     trigger();
   };
@@ -86,7 +91,7 @@ const TransactionHeader = ({
     const newTransactionTabs = transactionTabStatus.map((tab, index) =>
       index === newIndex ? !tab : tab,
     );
-    handleTransactionTabStatus(newTransactionTabs);
+    handleTransactionTabStatusChange(newTransactionTabs);
   };
 
   const getTransactionTypeLabel = (
