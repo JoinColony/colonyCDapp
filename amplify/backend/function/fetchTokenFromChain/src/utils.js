@@ -9,7 +9,7 @@ const TokenType = {
 // that should be imported when this is enabled via a different
 // lambda build system
 const ETHEREUM_NETWORK = {
-  shortName: 'Mainnet',
+  shortName: 'ETH',
 };
 const BINANCE_NETWORK = {
   shortName: 'BNB',

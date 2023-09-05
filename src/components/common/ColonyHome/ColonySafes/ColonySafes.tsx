@@ -5,11 +5,12 @@ import classnames from 'classnames';
 import { isEmpty } from '~utils/lodash';
 import SafeInfoPopover from '~shared/SafeInfoPopover';
 import Heading from '~shared/Heading';
-import { Colony } from '~types';
-// import { useDialog } from '~shared/Dialog';
-// import ControlSafeDialog from '~dashboard/Dialogs/ControlSafeDialog/ControlSafeDialog';
+import { Colony, Safe } from '~types';
 
 import styles from './ColonySafes.css';
+import { useDialog } from '~shared/Dialog';
+import { ControlSafeDialog } from '~common/Dialogs';
+import { useEnabledExtensions } from '~hooks';
 
 const displayName = 'common.ColonyHome.ColonySafes';
 
@@ -24,10 +25,15 @@ interface Props {
   colony: Colony;
 }
 
-const ColonySafes = ({ colony: { metadata } }: Props) => {
-  // const openControlSafeDialog = useDialog(ControlSafeDialog);
-  // const handleOpenControlSafeDialog = (safe: Safe) =>
-  //   openControlSafeDialog({ preselectedSafe: safe, colony });
+const ColonySafes = ({ colony: { metadata }, colony }: Props) => {
+  const enabledExtensionData = useEnabledExtensions();
+  const openControlSafeDialog = useDialog(ControlSafeDialog);
+  const handleOpenControlSafeDialog = (safe: Safe) =>
+    openControlSafeDialog({
+      preselectedSafe: safe,
+      colony,
+      enabledExtensionData,
+    });
 
   if (isEmpty(metadata?.safes)) {
     return null;
@@ -46,16 +52,17 @@ const ColonySafes = ({ colony: { metadata } }: Props) => {
           >
             <SafeInfoPopover
               safe={safe}
-              // openDialog={handleOpenControlSafeDialog}
+              openControlSafeDialog={handleOpenControlSafeDialog}
               popperOptions={{
                 modifiers: [
                   {
                     name: 'offset',
                     options: {
-                      offset: [55, 10],
+                      offset: [-5, 15],
                     },
                   },
                 ],
+                placement: 'left-start',
               }}
             >
               {({ id, isOpen, toggle, ref }) => (

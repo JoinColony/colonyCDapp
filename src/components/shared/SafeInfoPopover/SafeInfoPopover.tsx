@@ -5,10 +5,10 @@ import { PopperOptions } from 'react-popper-tooltip';
 import { Safe } from '~types';
 import ExternalLink from '~shared/ExternalLink';
 import { getSafeLink } from '~constants/externalUrls';
-// import { DialogType } from '~shared/Dialog';
 import { ETHEREUM_NETWORK, SUPPORTED_SAFE_NETWORKS } from '~constants';
 import Button from '~shared/Button';
 import Popover, { PopoverChildFn } from '~shared/Popover';
+import { DialogType } from '~shared/Dialog';
 
 import SafeInfo from './SafeInfo';
 
@@ -16,7 +16,7 @@ import styles from './SafeInfoPopover.css';
 
 interface Props {
   safe: Safe;
-  // openControlSafeDialog: (safe: Safe) => DialogType<any>;
+  openControlSafeDialog: (safe: Safe) => DialogType<any>;
   children: ReactElement | PopoverChildFn;
   popperOptions?: PopperOptions;
 }
@@ -36,7 +36,7 @@ const MSG = defineMessages({
 
 const SafeInfoPopover = ({
   safe,
-  // openControlSafeDialog,
+  openControlSafeDialog,
   children,
   popperOptions,
 }: Props) => {
@@ -51,7 +51,7 @@ const SafeInfoPopover = ({
 
   return (
     <Popover
-      renderContent={
+      renderContent={({ close }) => (
         <div className={styles.main}>
           <div className={styles.section}>
             <SafeInfo safe={safe} />
@@ -60,16 +60,17 @@ const SafeInfoPopover = ({
             <Button
               appearance={{ theme: 'blue', size: 'small' }}
               text={MSG.buttonText}
-              // onClick={() => {
-              //   openControlSafeDialog(safe);
-              // }}
+              onClick={() => {
+                openControlSafeDialog(safe);
+                close();
+              }}
             />
             <ExternalLink href={safeLink} className={styles.safeLink}>
               <FormattedMessage {...MSG.linkText} />
             </ExternalLink>
           </div>
         </div>
-      }
+      )}
       popperOptions={popperOptions}
     >
       {children}
