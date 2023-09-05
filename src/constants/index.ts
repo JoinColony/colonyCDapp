@@ -92,7 +92,7 @@ export const GNOSIS_NETWORK: NetworkInfo = {
 export const ETHEREUM_NETWORK: NetworkInfo = {
   name: 'Ethereum',
   chainId: 1,
-  shortName: 'Mainnet',
+  shortName: 'ETH',
   blockExplorerName: 'Etherscan',
   blockExplorerUrl: 'https://etherscan.io',
   displayENSDomain: 'joincolony.eth',

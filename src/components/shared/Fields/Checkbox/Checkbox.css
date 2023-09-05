@@ -18,6 +18,7 @@
   box-shadow: 0 0 0 2px color-mod(var(--light-purple) alpha(25%));
   -webkit-appearance: none;
   appearance: none;
+  cursor: pointer;
 }
 
 .checkbox:checked::before {
@@ -49,7 +50,7 @@
 
 .themePink:not(.stateIsChecked) .checkbox {
   border: 1px solid var(--grey-blue);
-  box-shadow: 0 0 0 3px  color-mod(var(--grey-blue) alpha(25%));
+  box-shadow: 0 0 0 3px color-mod(var(--grey-blue) alpha(25%));
 }
 
 .themePink.delegate:not(:focus) + .checkbox {

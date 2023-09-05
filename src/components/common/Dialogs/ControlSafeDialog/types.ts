@@ -1,18 +1,14 @@
 import {
-  Colony,
   SetStateFn,
   Token,
   User,
   SafeTransactionData,
   SafeTransactionType,
 } from '~types';
-import { EnabledExtensionData } from '~hooks';
 import { AbiItemExtended } from '~utils/safes';
+import { ActionDialogProps } from '~shared/Dialog';
 
-export interface ControlSafeProps {
-  back: () => void;
-  colony: Colony;
-  enabledExtensionData: EnabledExtensionData;
+export interface ControlSafeProps extends ActionDialogProps {
   selectedContractMethods?: UpdatedMethods;
   setSelectedContractMethods: React.Dispatch<
     React.SetStateAction<UpdatedMethods | undefined>

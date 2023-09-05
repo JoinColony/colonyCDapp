@@ -20,8 +20,8 @@ interface CustomWizardDialogProps extends ActionDialogProps {
   preselectedSafe?: Safe;
 }
 
-type Props = Required<DialogProps> &
-  WizardDialogType<object> &
+type Props = DialogProps &
+  Partial<WizardDialogType<object>> &
   CustomWizardDialogProps;
 
 export type UpdatedMethods = {
@@ -111,7 +111,7 @@ const ControlSafeDialog = ({
         onSuccess={close}
       >
         <ControlSafeForm
-          back={() => callStep(prevStep)}
+          back={prevStep && callStep ? () => callStep(prevStep) : undefined}
           colony={colony}
           enabledExtensionData={enabledExtensionData}
           selectedContractMethods={selectedContractMethods}
