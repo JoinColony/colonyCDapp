@@ -2651,6 +2651,7 @@ type Expenditure @model {
   """
   fundingMotions: [ColonyMotion]
     @hasMany(indexName: "byExpenditureId", fields: ["id"])
+  isStaged: Boolean!
 }
 
 # Each expenditure can have multiple slots with one recipient and possibly multiple payouts (with different token addresses)
