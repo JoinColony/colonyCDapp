@@ -24,6 +24,7 @@ fragment Expenditure on Expenditure {
       ...ColonyMotion
     }
   }
+  isStaged
 }
 
 fragment ExpenditureSlot on ExpenditureSlot {
