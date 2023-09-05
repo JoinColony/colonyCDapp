@@ -15,6 +15,7 @@ import NotificationBanner from '~common/Extensions/NotificationBanner';
 import TransactionTable from '../ActionsContent/partials/TransactionTable';
 import ActionTypeSelect from './ActionTypeSelect';
 import PopularActions from './partials/PopularActions';
+import TokensTable from '../ActionsContent/partials/TokensTable';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -81,6 +82,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
           </div>
         )}
         {selectedAction === Actions.SIMPLE_PAYMENT && <TransactionTable />}
+        {selectedAction === Actions.MANAGE_TOKENS && <TokensTable />}
       </div>
 
       <div className="mt-auto">

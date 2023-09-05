@@ -1,13 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, InputHTMLAttributes } from 'react';
 import { useIntl } from 'react-intl';
 
-import { SearchInputProps } from './types';
 import Icon from '~shared/Icon';
 import styles from './SearchInput.module.css';
 
 const displayName = 'v5.SearchSelect.partials.SearchInput';
 
-const SearchInput: FC<SearchInputProps> = ({ onInput }) => {
+const SearchInput: FC<InputHTMLAttributes<HTMLInputElement>> = (props) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -16,10 +15,9 @@ const SearchInput: FC<SearchInputProps> = ({ onInput }) => {
         <Icon name="magnifying-glass" appearance={{ size: 'tiny' }} />
       </span>
       <input
-        name="search"
+        {...props}
         className={styles.input}
         placeholder={formatMessage({ id: 'placeholder.search' })}
-        onChange={onInput}
       />
     </div>
   );

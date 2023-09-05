@@ -32,6 +32,7 @@ import {
   hasRoot,
   userHasRole,
 } from '~utils/checks';
+import ManageTokensForm from './partials/ManageTokensForm';
 
 export const useActionsList = () => {
   const { colony } = useColonyContext();
@@ -320,6 +321,7 @@ export const useActionSidebar = (selectedAction) => {
     [Actions.CREATE_DECISION]: CreateDecisionForm,
     [Actions.EDIT_EXISTING_TEAM]: EditTeamForm,
     [Actions.ENTER_RECOVERY_MODE]: EnterRecoveryModeForm,
+    [Actions.MANAGE_TOKENS]: ManageTokensForm,
   };
 
   return {
