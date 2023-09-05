@@ -2,42 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { ColonyRole } from '@colony/colony-js';
-import classnames from 'classnames';
 
 import { DialogSection } from '~shared/Dialog';
-import { Select } from '~shared/Fields';
 import Heading from '~shared/Heading';
 import ExternalLink from '~shared/ExternalLink';
 import Button from '~shared/Button';
 import Icon from '~shared/Icon';
 import { filterUserSelection } from '~shared/SingleUserPicker';
-import {
-  SelectedPickerItem,
-  FunctionParamType,
-  SafeTransactionType,
-} from '~types';
+import { SelectedPickerItem, SafeTransactionType } from '~types';
 import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
-import { isEmpty, isEqual, omit } from '~utils/lodash';
 import { defaultTransaction } from '~utils/safes';
 import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 
 import { NotEnoughReputation } from '../Messages';
-import {
-  TransferNFTSection,
-  TransferFundsSection,
-  RawTransactionSection,
-  ContractInteractionSection,
-  ErrorMessage,
-} from './TransactionTypesSection';
-import {
-  transactionOptions,
-  ContractFunctions,
-  useControlSafeDialogStatus,
-} from './helpers';
-import { ControlSafeProps, UpdatedMethods } from './types';
+import TransactionTypesSection from './TransactionTypesSection';
+import { useControlSafeDialogStatus } from './helpers';
+import { ControlSafeProps } from './types';
 import AddItemButton from './AddItemButton';
 import SingleSafePicker from './SingleSafePicker';
-import TransactionHeader from './TransactionHeader';
 import SafeTransactionPreview from './SafeTransactionPreview';
 
 import styles from './ControlSafeForm.css';
@@ -61,21 +43,9 @@ const MSG = defineMessages({
     id: `${displayName}.safePickerPlaceholder`,
     defaultMessage: `Select Safe to control`,
   },
-  transactionLabel: {
-    id: `${displayName}.transactionLabel`,
-    defaultMessage: `Select transaction type`,
-  },
-  transactionPlaceholder: {
-    id: `${displayName}.transactionPlaceholder`,
-    defaultMessage: `Select transaction`,
-  },
   buttonTransaction: {
     id: `${displayName}.buttonTransaction`,
     defaultMessage: `Add another transaction`,
-  },
-  invalidSafeError: {
-    id: `${displayName}.invalidSafeError`,
-    defaultMessage: `Select a safe from the menu or add a new one via Safe Control`,
   },
   warningIconTitle: {
     id: `${displayName}.warningIconTitle`,
@@ -90,8 +60,6 @@ const MSG = defineMessages({
     defaultMessage: 'Create transaction',
   },
 });
-
-export const { invalidSafeError } = MSG;
 
 const ReadMoreLink = (chunks: React.ReactNode[]) => (
   <ExternalLink href={SAFE_INTEGRATION_LEARN_MORE}>{chunks}</ExternalLink>
@@ -120,12 +88,11 @@ const ControlSafeForm = ({
   const savedTokenState = useState({});
 
   const {
-    formState: { isSubmitting, dirtyFields, isValid, isDirty },
+    formState: { isSubmitting, isValid, isDirty },
     watch,
     setValue,
     trigger,
     control,
-    resetField,
   } = useFormContext();
 
   const selectedSafe: SelectedPickerItem = watch('safe');
@@ -159,106 +126,8 @@ const ControlSafeForm = ({
     trigger();
   };
 
-  const handleSelectedContractMethods = (
-    contractMethods: UpdatedMethods,
-    transactionIndex: number,
-  ) => {
-    const functionParamTypes: FunctionParamType[] | undefined = contractMethods[
-      transactionIndex
-    ]?.inputs?.map((input) => ({
-      name: input.name || '',
-      type: input.type || '',
-    }));
-
-    setSelectedContractMethods(contractMethods);
-    setValue(
-      `transactions.${transactionIndex}.functionParamTypes`,
-      functionParamTypes,
-    );
-  };
-
-  const removeSelectedContractMethod = (transactionIndex: number) => {
-    const updatedSelectedContractMethods = omit(
-      selectedContractMethods,
-      transactionIndex,
-    );
-
-    if (!isEqual(updatedSelectedContractMethods, selectedContractMethods)) {
-      handleSelectedContractMethods(
-        updatedSelectedContractMethods,
-        transactionIndex,
-      );
-      setValue(`transactions.${transactionIndex}.contractFunction`, '');
-    }
-  };
-
   const disabledSectionInputs =
     !isSupportedColonyVersion || (!userHasPermission && canOnlyForceAction);
-
-  const renderTransactionSection = (transactionIndex: number) => {
-    const transactionType = watch(
-      `transactions.${transactionIndex}.transactionType`,
-    );
-
-    switch (transactionType) {
-      case SafeTransactionType.TransferFunds:
-        return (
-          <TransferFundsSection
-            colony={colony}
-            disabledInput={disabledSectionInputs}
-            transactionIndex={transactionIndex}
-            savedTokenState={savedTokenState}
-          />
-        );
-      case SafeTransactionType.RawTransaction:
-        return (
-          <RawTransactionSection
-            colony={colony}
-            disabledInput={disabledSectionInputs}
-            transactionIndex={transactionIndex}
-          />
-        );
-      case SafeTransactionType.ContractInteraction:
-        return (
-          <ContractInteractionSection
-            colony={colony}
-            disabledInput={disabledSectionInputs}
-            transactionIndex={transactionIndex}
-            selectedContractMethods={selectedContractMethods}
-            handleSelectedContractMethods={handleSelectedContractMethods}
-            removeSelectedContractMethod={removeSelectedContractMethod}
-            prevSafeChainId={prevSafeChainId}
-            handlePrevSafeChainIdChange={setPrevSafeChainId}
-          />
-        );
-      case SafeTransactionType.TransferNft:
-        return (
-          <TransferNFTSection
-            colony={colony}
-            disabledInput={disabledSectionInputs}
-            transactionIndex={transactionIndex}
-          />
-        );
-      default:
-        return null;
-    }
-  };
-
-  const handleTransactionTypeChange = (type: string, index: number) => {
-    const setContractFunction = (contractFunction: string) =>
-      setValue(`transactions.${index}.contractFunction`, contractFunction);
-    switch (type) {
-      case SafeTransactionType.TransferFunds:
-        setContractFunction(ContractFunctions.TRANSFER_FUNDS);
-        break;
-      case SafeTransactionType.TransferNft:
-        setContractFunction(ContractFunctions.TRANSFER_NFT);
-        break;
-      default:
-        setContractFunction('');
-        break;
-    }
-  };
 
   useEffect(() => {
     if (!selectedSafe) {
@@ -357,52 +226,21 @@ const ControlSafeForm = ({
             </div>
           </DialogSection>
           {fields.map((transaction, index) => (
-            <div key={transaction.id}>
-              {fields.length > 1 && (
-                <TransactionHeader
-                  transactionIndex={index}
-                  transactionTabStatus={transactionTabStatus}
-                  handleTransactionTabStatus={setTransactionTabStatus}
-                  selectedContractMethods={selectedContractMethods}
-                  handleSelectedContractMethods={setSelectedContractMethods}
-                  removeTab={removeTab}
-                />
-              )}
-              <div
-                className={classnames({
-                  [styles.tabContentClosed]:
-                    fields.length > 1 && !transactionTabStatus[index],
-                })}
-              >
-                <DialogSection appearance={{ theme: 'sidePadding' }}>
-                  <div className={styles.transactionTypeSelectContainer}>
-                    <Select
-                      options={transactionOptions}
-                      label={MSG.transactionLabel}
-                      name={`transactions[${index}].transactionType`}
-                      onChange={(type) => {
-                        removeSelectedContractMethod(index);
-                        resetField(`transactions.${index}`, {
-                          defaultValue: {
-                            ...defaultTransaction,
-                            transactionType: type,
-                          },
-                        });
-                        handleTransactionTypeChange(type as string, index);
-                      }}
-                      appearance={{ theme: 'grey', width: 'fluid' }}
-                      placeholder={MSG.transactionPlaceholder}
-                      disabled={disabledSectionInputs}
-                    />
-                  </div>
-                </DialogSection>
-                {isEmpty(selectedSafe) && !isEmpty(dirtyFields) ? (
-                  <ErrorMessage error={MSG.invalidSafeError} />
-                ) : (
-                  renderTransactionSection(index)
-                )}
-              </div>
-            </div>
+            <TransactionTypesSection
+              key={transaction.id}
+              transactionIndex={index}
+              colony={colony}
+              selectedContractMethods={selectedContractMethods}
+              handleSelectedContractMethodsChange={setSelectedContractMethods}
+              transactionTabStatus={transactionTabStatus}
+              handleTransactionTabStatusChange={setTransactionTabStatus}
+              removeTab={removeTab}
+              savedTokenState={savedTokenState}
+              prevSafeChainId={prevSafeChainId}
+              handlePrevSafeChainIdChange={setPrevSafeChainId}
+              disabledSectionInputs={disabledSectionInputs}
+              hasMultipleTransactions={fields.length > 1}
+            />
           ))}
           <DialogSection>
             <div className={styles.addTransaction}>

@@ -6,11 +6,9 @@ declare namespace ControlSafeFormCssNamespace {
     nftValue: string;
     rawTransactionValues: string;
     safePicker: string;
-    tabContentClosed: string;
     tokenAmount: string;
     transactionDetailsSection: string;
     transactionTitle: string;
-    transactionTypeSelectContainer: string;
     upgradePath: string;
     upgradeWarning: string;
     warningIcon: string;
