@@ -7,7 +7,11 @@ import { mapPayload, pipe, withMeta } from '~utils/actions';
 import { findDomainByNativeId } from '~utils/domains';
 import { CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure';
 
-import { ExpenditureFormValues, ExpenditurePayoutFieldValue } from './types';
+import {
+  ExpenditureFormValues,
+  ExpenditurePayoutFieldValue,
+  ExpenditureStageFieldValue,
+} from './types';
 
 export const getInitialPayoutFieldValue = (
   tokenAddress: string,
@@ -62,3 +66,8 @@ export const getCreateExpenditureTransformPayloadFn = (
     ),
     withMeta({ navigate }),
   );
+
+export const getInitialStageFieldValue = (): ExpenditureStageFieldValue => ({
+  name: '',
+  amount: '0',
+});

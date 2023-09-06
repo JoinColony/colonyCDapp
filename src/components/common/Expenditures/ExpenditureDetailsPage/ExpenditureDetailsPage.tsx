@@ -133,6 +133,7 @@ const ExpenditureDetailsPage = () => {
             Current funding motion status: <MotionTag />
           </Link>
         )}
+        <div>Is Staged: {expenditure.isStaged ? 'Yes' : 'No'}</div>
         <ExpenditureBalances expenditure={expenditure} />
         <ExpenditurePayouts expenditure={expenditure} colony={colony} />
         <div className={styles.buttons}>
