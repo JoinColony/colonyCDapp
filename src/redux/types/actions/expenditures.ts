@@ -4,6 +4,12 @@ import { ExpenditurePayoutFieldValue } from '~common/Expenditures/ExpenditureFor
 
 import { UniqueActionType, ErrorActionType, MetaWithNavigate } from './index';
 
+export type ExpenditureFundPayload = {
+  colonyAddress: Address;
+  fromDomainFundingPotId: number;
+  expenditure: Expenditure;
+};
+
 export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.EXPENDITURE_CREATE,
@@ -43,11 +49,7 @@ export type ExpendituresActionTypes =
   | UniqueActionType<ActionTypes.EXPENDITURE_FINALIZE_SUCCESS, object, object>
   | UniqueActionType<
       ActionTypes.EXPENDITURE_FUND,
-      {
-        colonyAddress: Address;
-        fromDomainFundingPotId: number;
-        expenditure: Expenditure;
-      },
+      ExpenditureFundPayload,
       object
     >
   | ErrorActionType<ActionTypes.EXPENDITURE_FUND_ERROR, object>
