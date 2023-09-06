@@ -1,6 +1,5 @@
 import { ClientType } from '@colony/colony-js';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { BigNumber } from 'ethers';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 import {
@@ -15,6 +14,7 @@ import {
   createTransactionChannels,
 } from '../transactions';
 import { putError, takeFrom } from '../utils';
+import { getExpenditureBalancesByTokenAddress } from './utils';
 
 function* fundExpenditure({
   payload: { colonyAddress, expenditure, fromDomainFundingPotId },
@@ -26,22 +26,8 @@ function* fundExpenditure({
 
   // Create a map between token addresses and the total amount of the payouts for each token
   // We will call one moveFunds method for each token address instead of each payout to save gas
-  const balancesByTokenAddresses = new Map<string, BigNumber>();
-  expenditure.slots.forEach((slot) => {
-    slot.payouts?.forEach((payout) => {
-      if (payout.amount === '0') {
-        return;
-      }
-
-      const currentBalance =
-        balancesByTokenAddresses.get(payout.tokenAddress) ?? '0';
-
-      balancesByTokenAddresses.set(
-        payout.tokenAddress,
-        BigNumber.from(payout.amount).add(currentBalance),
-      );
-    });
-  });
+  const balancesByTokenAddresses =
+    getExpenditureBalancesByTokenAddress(expenditure);
 
   // Create channel for each token, using its address as channel id
   const channels: Record<string, ChannelDefinition> =

@@ -19,6 +19,9 @@ fragment Expenditure on Expenditure {
   }
   finalizedAt
   hasReclaimedStake
+  fundingMotion {
+    transactionHash
+  }
 }
 
 fragment ExpenditureSlot on ExpenditureSlot {

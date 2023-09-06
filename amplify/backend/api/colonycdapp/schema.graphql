@@ -774,6 +774,10 @@ enum ColonyActionType {
   An action related to a creating a Decision within a Colony via a motion
   """
   CREATE_DECISION_MOTION
+  """
+  An action related to creating a motion for funding an expenditure
+  """
+  FUND_EXPENDITURE_MOTION
 }
 
 """
@@ -1969,6 +1973,10 @@ type ColonyMotion @model {
   Whether the motion is a Simple Decision
   """
   isDecision: Boolean!
+  """
+  The transaction hash of the createMotion action
+  """
+  transactionHash: String!
 }
 
 """
@@ -2620,7 +2628,8 @@ type Expenditure @model {
   nativeFundingPotId: Int!
     @index(
       name: "byNativeFundingPotId"
-      queryField: "getExpendituresByNativeFundingPotId"
+      queryField: "getExpendituresByNativeFundingPotIdAndColony"
+      sortKeyFields: ["colonyId"]
     )
   nativeDomainId: Int!
   metadata: ExpenditureMetadata @hasOne(fields: ["id"])
@@ -2628,6 +2637,14 @@ type Expenditure @model {
     @function(name: "fetchExpenditureBalances-${env}")
   finalizedAt: AWSTimestamp
   hasReclaimedStake: Boolean
+  """
+  The id of the motion created to fund this expenditure, if there is one
+  """
+  fundingMotionId: ID
+  """
+  The funding motion associated with this expenditure, if there is one
+  """
+  fundingMotion: ColonyMotion @hasOne(fields: ["fundingMotionId"])
 }
 
 # Each expenditure can have multiple slots with one recipient and possibly multiple payouts (with different token addresses)

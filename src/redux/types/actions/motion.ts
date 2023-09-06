@@ -12,12 +12,18 @@ import {
   MetaWithHistory,
   MetaWithNavigate,
 } from './index';
+import { ExpenditureFundPayload } from './expenditures';
 
 export enum RootMotionMethodNames {
   MintTokens = 'mintTokens',
   Upgrade = 'upgrade',
   UnlockToken = 'unlockToken',
 }
+
+export type ExpenditureFundMotionPayload = ExpenditureFundPayload & {
+  fromDomainId: number;
+  motionDomainId: number;
+};
 
 export type MotionActionTypes =
   | UniqueActionType<
@@ -246,5 +252,15 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_MANAGE_REPUTATION_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_MANAGE_REPUTATION_SUCCESS,
+      MetaWithNavigate<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_EXPENDITURE_FUND,
+      ExpenditureFundMotionPayload,
+      MetaWithNavigate<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_FUND_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS,
       MetaWithNavigate<object>
     >;
