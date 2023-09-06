@@ -10,6 +10,8 @@ import TransactionItem from '../TransactionItem';
 import { useTransactionTable } from './hooks';
 import Table from '~v5/common/Table';
 import { TransactionTableProps } from './types';
+import UserSelect from '../UserSelect/UserSelect';
+import AmountField from '../AmountField/AmountField';
 
 const displayName = 'v5.common.ActionsContent.partials.TransactionTable';
 
@@ -18,7 +20,6 @@ const TransactionTable: FC = () => {
   const { colony } = useColonyContext();
   const {
     transactions,
-    columns,
     handleRemoveRowClick,
     handleDuplicateRowClick,
     updateTransaction,
@@ -27,16 +28,13 @@ const TransactionTable: FC = () => {
 
   const { nativeToken } = colony || {};
 
+  const columnHelper = createColumnHelper<TransactionTableProps>();
+
   const columns = [
     columnHelper.accessor('recipent', {
       header: () => 'Recipient',
       cell: ({ row }) => (
-        <Recipient
-          recipent={row.original.recipent}
-          token={row.original.token}
-          id={row.id}
-          onUpdate={updateTransaction}
-        />
+        <UserSelect name={row.id} selectedWalletAddress={row.original.amount} />
       ),
     }),
     columnHelper.accessor('amount', {
