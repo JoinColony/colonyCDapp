@@ -6,7 +6,6 @@ import { useFormContext } from 'react-hook-form';
 import { Input, TokenSymbolSelector } from '~shared/Fields';
 import {
   ADDRESS_ZERO,
-  /* BINANCE_NETWORK, */
   DEFAULT_TOKEN_DECIMALS,
   ETHEREUM_NETWORK,
   SUPPORTED_SAFE_NETWORKS,
@@ -15,7 +14,7 @@ import { Safe, SafeBalance, Token } from '~types';
 import { TokenType } from '~gql';
 import { MaxButtonParams } from '~shared/Fields/Input';
 
-import styles from './AmountTokens.css';
+import styles from './AmountBalances.css';
 
 interface Props {
   safeBalances: SafeBalance[];

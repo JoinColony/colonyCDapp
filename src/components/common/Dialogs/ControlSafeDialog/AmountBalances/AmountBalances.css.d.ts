@@ -1,5 +1,5 @@
-declare namespace AmountTokensCssNamespace {
-  export interface IAmountTokensCss {
+declare namespace AmountBalancesCssNamespace {
+  export interface IAmountBalancesCss {
     inputContainerMaxButton: string;
     networkFee: string;
     tokenAmount: string;
@@ -10,9 +10,9 @@ declare namespace AmountTokensCssNamespace {
   }
 }
 
-declare const AmountTokensCssModule: AmountTokensCssNamespace.IAmountTokensCss & {
+declare const AmountBalancesCssModule: AmountBalancesCssNamespace.IAmountBalancesCss & {
   /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
-  locals: AmountTokensCssNamespace.IAmountTokensCss;
+  locals: AmountBalancesCssNamespace.IAmountBalancesCss;
 };
 
-export = AmountTokensCssModule;
+export = AmountBalancesCssModule;

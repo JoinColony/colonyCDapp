@@ -27,21 +27,9 @@ import { TransactionSectionProps } from '../types';
 import { ErrorMessage as Error, Loading, RecipientPicker } from './shared';
 import styles from './TransactionTypesSection.css';
 
-const displayName = `common.ControlSafeDialog.TransferFundsSection`;
+const displayName = `common.ControlSafeDialog.ControlSafeDialogForm.TransferFundsSection`;
 
 const MSG = defineMessages({
-  amount: {
-    id: `${displayName}.amount`,
-    defaultMessage: 'Amount',
-  },
-  recipient: {
-    id: `${displayName}.recipient`,
-    defaultMessage: 'Select Recipient',
-  },
-  userPickerPlaceholder: {
-    id: `${displayName}.userPickerPlaceholder`,
-    defaultMessage: 'Select or paste a wallet address',
-  },
   balancesLoading: {
     id: `${displayName}.balancesLoading`,
     defaultMessage: 'Loading Safe balances',
@@ -89,8 +77,10 @@ const TransferFundsSection = ({
     `transactions.${transactionIndex}.token.tokenAddress`,
   );
   const safeBalances: SafeBalance[] = watch('safeBalances');
-  const setSafeBalances = (value: SafeBalance[]) =>
-    setValue('safeBalances', value);
+  const setSafeBalances = useCallback(
+    (value: SafeBalance[]) => setValue('safeBalances', value),
+    [setValue],
+  );
 
   const safeAddress = safe?.walletAddress;
 
@@ -137,9 +127,7 @@ const TransferFundsSection = ({
     } finally {
       setIsLoadingBalances(false);
     }
-    // setSafeBalances causes infinite loop
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [safe, safeAddress, setSavedTokens]);
+  }, [safe, safeAddress, setSavedTokens, setSafeBalances]);
 
   useEffect(() => {
     const savedTokenData = savedTokens[safeAddress];
@@ -149,9 +137,7 @@ const TransferFundsSection = ({
     } else {
       getSafeBalance();
     }
-    // setSafeBalances causes infinite loop
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [safeAddress, getSafeBalance, savedTokens]);
+  }, [safeAddress, getSafeBalance, savedTokens, setSafeBalances]);
 
   const selectedBalance = getSelectedSafeBalance(
     safeBalances,
