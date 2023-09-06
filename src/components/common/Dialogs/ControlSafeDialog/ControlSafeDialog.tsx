@@ -10,11 +10,12 @@ import { ActionTypes } from '~redux';
 import { WizardDialogType } from '~hooks';
 import { Safe } from '~types';
 import { SUPPORTED_SAFE_NETWORKS } from '~constants';
-import { defaultTransaction, AbiItemExtended } from '~utils/safes';
+import { defaultTransaction } from '~utils/safes';
 
 import ControlSafeForm from './ControlSafeForm';
 import { getMethodInputValidation, getValidationSchema } from './validation';
 import { getControlSafeDialogPayload } from './helpers';
+import { UpdatedMethods } from './types';
 
 interface CustomWizardDialogProps extends ActionDialogProps {
   preselectedSafe?: Safe;
@@ -24,11 +25,7 @@ type Props = DialogProps &
   Partial<WizardDialogType<object>> &
   CustomWizardDialogProps;
 
-export type UpdatedMethods = {
-  [key: number]: AbiItemExtended | undefined;
-};
-
-export const displayName = 'common.ControlSafeDialog';
+const displayName = 'common.ControlSafeDialog';
 
 const ControlSafeDialog = ({
   colony,
@@ -117,7 +114,7 @@ const ControlSafeDialog = ({
           selectedContractMethods={selectedContractMethods}
           setSelectedContractMethods={setSelectedContractMethods}
           showPreview={showPreview}
-          setShowPreview={setShowPreview}
+          handleShowPreviewChange={setShowPreview}
           handleIsForceChange={setIsForce}
           isForce={isForce}
         />

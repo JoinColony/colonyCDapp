@@ -14,7 +14,7 @@ export interface ControlSafeProps extends ActionDialogProps {
     React.SetStateAction<UpdatedMethods | undefined>
   >;
   showPreview: boolean;
-  setShowPreview: (showPreview: boolean) => void;
+  handleShowPreviewChange: (showPreview: boolean) => void;
   handleIsForceChange: SetStateFn<boolean>;
   isForce: boolean;
 }

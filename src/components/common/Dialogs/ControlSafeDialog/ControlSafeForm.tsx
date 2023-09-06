@@ -79,7 +79,7 @@ const ControlSafeForm = ({
   selectedContractMethods,
   setSelectedContractMethods,
   showPreview,
-  setShowPreview,
+  handleShowPreviewChange,
   handleIsForceChange,
   isForce,
 }: ControlSafeProps) => {
@@ -142,19 +142,7 @@ const ControlSafeForm = ({
     }
   }, [fields, watch, setValue, selectedSafe]);
 
-  const handleShowPreview = (isPreview: boolean) => {
-    setShowPreview(!isPreview);
-  };
-
-  const submitButtonText = (() => {
-    if (!showPreview) {
-      return MSG.buttonCreateTransaction;
-    }
-    return { id: 'button.confirm' };
-  })();
-
   const continueButtonProps = {
-    text: submitButtonText,
     loading: isSubmitting,
     disabled:
       !isValid ||
@@ -274,12 +262,15 @@ const ControlSafeForm = ({
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <Button
           appearance={{ theme: 'secondary', size: 'large' }}
-          onClick={showPreview ? () => handleShowPreview(showPreview) : back}
+          onClick={
+            showPreview ? () => handleShowPreviewChange(!showPreview) : back
+          }
           text={{ id: 'button.back' }}
         />
         {showPreview && (
           <Button
             {...continueButtonProps}
+            text={MSG.buttonCreateTransaction}
             appearance={{ theme: 'primary', size: 'large' }}
             type="submit"
           />
@@ -287,9 +278,10 @@ const ControlSafeForm = ({
         {!showPreview && (
           <Button
             {...continueButtonProps}
+            text={{ id: 'button.continue' }}
             type="button"
             appearance={{ theme: 'primary', size: 'large' }}
-            onClick={() => handleShowPreview(showPreview)}
+            onClick={() => handleShowPreviewChange(!showPreview)}
           />
         )}
       </DialogSection>

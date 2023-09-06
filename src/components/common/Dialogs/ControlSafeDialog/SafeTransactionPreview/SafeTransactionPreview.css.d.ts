@@ -2,21 +2,15 @@ declare namespace SafeTransactionPreviewCssNamespace {
   export interface ISafeTransactionPreviewCss {
     avatar: string;
     contractName: string;
-    deleteTabIcon: string;
-    deleteTabTooltip: string;
     footer: string;
     heading: string;
     itemValue: string;
     motionHeading: string;
     nftContainer: string;
     rawTransactionValues: string;
-    tabButton: string;
     tabContentClosed: string;
-    toggleTabIcon: string;
     tokenAmount: string;
     transactionDetailsSection: string;
-    transactionHeading: string;
-    transactionHeadingOpen: string;
     transactionTitle: string;
   }
 }
