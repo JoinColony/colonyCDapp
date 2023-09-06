@@ -4,7 +4,7 @@ import { FormCardSelectProps } from './types';
 import CardSelect from './CardSelect';
 import { FIELD_STATE } from '../consts';
 
-const displayName = 'v5.common.Fields.FormCardSelect';
+const displayName = 'v5.common.Fields.CardSelect.FormCardSelect';
 
 function FormCardSelect<TValue = string>({
   name,
