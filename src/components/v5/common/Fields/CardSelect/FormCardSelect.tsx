@@ -8,7 +8,7 @@ const displayName = 'v5.common.Fields.FormCardSelect';
 
 function FormCardSelect<TValue = string>({
   name,
-  ...props
+  ...rest
 }: FormCardSelectProps<TValue>): JSX.Element {
   const {
     field: { onChange },
@@ -20,7 +20,7 @@ function FormCardSelect<TValue = string>({
 
   return (
     <CardSelect<TValue>
-      {...{ ...props, value, onChange }}
+      {...{ ...rest, value, onChange }}
       state={invalid ? FIELD_STATE.Error : undefined}
       message={error?.message}
     />

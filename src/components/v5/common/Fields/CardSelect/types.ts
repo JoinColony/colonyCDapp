@@ -1,7 +1,7 @@
 import React from 'react';
 import { BaseFieldProps } from '../types';
 
-interface CardSelectOption<TValue> {
+export interface CardSelectOption<TValue> {
   value: TValue;
   label: React.ReactNode;
   ariaLabel?: string;
