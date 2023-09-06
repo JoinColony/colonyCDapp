@@ -21,12 +21,15 @@ const ProgressBar: FC<ProgressBarProps> = ({
     <div className="flex items-center">
       <div
         className={clsx('relative w-full rounded bg-gray-200', {
-          'h-2.5': isTall,
-          'h-2': !isTall,
+          'h-2.5 rounded-lg': isTall,
+          'h-2 rounded': !isTall,
         })}
       >
         <span
-          className="bg-blue-400 h-full absolute left-0 top-0 rounded"
+          className={clsx('bg-blue-400 h-full absolute left-0 top-0', {
+            'rounded-lg': isTall,
+            rounded: !isTall,
+          })}
           style={{ width: `${progress}%` }}
         />
       </div>
