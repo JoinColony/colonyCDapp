@@ -15,13 +15,13 @@ const PermissionsNeededBanner = () => {
             : { id: 'extension.notification.permissions.missing' }
         }
         status={isPermissionEnabled ? 'success' : 'warning'}
-        actionText={
-          isPermissionEnabled
+        action={{
+          type: 'call-to-action',
+          actionText: isPermissionEnabled
             ? { id: 'extension.notification.permissions.enabled' }
-            : { id: 'extension.notification.permissions.enable' }
-        }
-        actionType="call-to-action"
-        onClick={() => setIsPermissionEnabled(true)}
+            : { id: 'extension.notification.permissions.enable' },
+          onClick: () => setIsPermissionEnabled(true),
+        }}
       />
     </div>
   );

@@ -1,19 +1,28 @@
 import { MessageDescriptor } from 'react-intl';
+import { STATUS_TYPES } from '~v5/shared/IconedText/types';
 
 export interface NotificationBannerProps {
-  status: StatusType;
+  status: (typeof STATUS_TYPES)[keyof typeof STATUS_TYPES];
   title?: string | MessageDescriptor;
-  actionText?: string | MessageDescriptor;
-  actionType?: ActionType;
-  redirectUrl?: string;
   isFullSize?: boolean;
   isAlt?: boolean;
-  onClick?: () => void;
+  action?:
+    | {
+        type: 'copy';
+        copyContent: string;
+        actionText: string | MessageDescriptor;
+      }
+    | {
+        type: 'redirect';
+        href: string;
+        actionText: string | MessageDescriptor;
+      }
+    | {
+        type: 'call-to-action';
+        onClick: () => void;
+        actionText: string | MessageDescriptor;
+      };
 }
-
-type ActionType = 'redirect' | 'copy-url' | 'call-to-action';
-
-type StatusType = 'success' | 'warning' | 'error' | 'info';
 
 export interface CopyUrlProps {
   actionText: string;

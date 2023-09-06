@@ -130,8 +130,11 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
                         <NotificationBanner
                           status="error"
                           title={notificationInfo}
-                          actionText={formatMessage({ id: 'retry' })}
-                          actionType="redirect"
+                          action={{
+                            type: 'redirect',
+                            actionText: { id: 'retry' },
+                            href: '',
+                          }}
                           isAlt
                         />
                       </div>

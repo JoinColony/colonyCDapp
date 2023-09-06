@@ -73,10 +73,11 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
               title={{
                 id: prepareNofiticationTitle(),
               }}
-              actionText={
-                actionsWithErrorBanners ? { id: 'learn.more' } : undefined
-              }
-              actionType="call-to-action"
+              action={{
+                type: 'call-to-action',
+                actionText: actionsWithErrorBanners ? { id: 'learn.more' } : '',
+                onClick: () => {},
+              }}
             />
           </div>
         )}

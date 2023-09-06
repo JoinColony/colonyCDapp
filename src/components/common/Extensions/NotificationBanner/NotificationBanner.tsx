@@ -3,11 +3,11 @@ import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import Link from '~v5/shared/Link';
-import Icon from '~shared/Icon';
 
 import CopyUrl from './CopyUrl';
 import styles from './NotificationBanner.module.css';
 import { NotificationBannerProps } from './types';
+import IconedText from '~v5/shared/IconedText';
 
 const displayName = 'common.Extensions.NotificationBanner';
 
@@ -15,19 +15,17 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   status,
   title = '',
   children,
-  actionText,
-  actionType,
+  action,
   isAlt = false,
-  redirectUrl,
-  onClick,
 }) => {
   const { formatMessage } = useIntl();
   const titleText = typeof title === 'string' ? title : formatMessage(title);
   const actionMessage =
-    typeof actionText === 'string'
-      ? actionText
-      : actionText && formatMessage(actionText);
-  // @TODO: handle actionType 'call-to-action'
+    action &&
+    (typeof action.actionText === 'string'
+      ? action.actionText
+      : action.actionText && formatMessage(action.actionText));
+
   return (
     <div
       className={clsx(
@@ -54,22 +52,12 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
         })}
       >
         <div className="flex md:items-center">
-          {!isAlt && (
-            <Icon
-              name={status === 'success' ? 'check-circle' : 'warning-circle'}
-              className={clsx(
-                'min-w-[0.875rem] min-h-[0.875rem] mt-[0.125rem] md:mt-0',
-                {
-                  'text-success-400': status === 'success',
-                  'text-warning-400': status === 'warning',
-                  'text-negative-400': status === 'error',
-                },
-              )}
-            />
-          )}
-          <div className={`font-normal ${isAlt ? 'text-sm' : 'text-md ml-2'}`}>
-            {titleText}
-          </div>
+          <IconedText
+            title={titleText}
+            status={status}
+            withIcon={!isAlt}
+            fontSizeClassName={isAlt ? 'text-sm' : undefined}
+          />
         </div>
         {children && (
           <div
@@ -87,16 +75,16 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
           'ml-6 md:ml-2': !isAlt,
         })}
       >
-        {actionType && actionText && actionMessage && (
+        {action && (
           <>
-            {actionType === 'copy-url' && (
-              <CopyUrl actionText={actionMessage} />
+            {action.type === 'copy' && (
+              <CopyUrl actionText={action.copyContent} />
             )}
-            {actionType === 'redirect' && redirectUrl && (
-              <Link to={redirectUrl}>{actionMessage}</Link>
+            {action.type === 'redirect' && (
+              <Link to={action.href}>{actionMessage}</Link>
             )}
-            {actionType === 'call-to-action' && (
-              <button type="button" onClick={onClick}>
+            {action.type === 'call-to-action' && (
+              <button type="button" onClick={action.onClick}>
                 {actionMessage}
               </button>
             )}

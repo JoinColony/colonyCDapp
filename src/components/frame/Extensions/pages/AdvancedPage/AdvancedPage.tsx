@@ -59,10 +59,11 @@ const AdvancedPage: FC = () => {
             title={{
               id: 'advancedPage.recovery.notification',
             }}
-            actionType="redirect"
-            actionText={{ id: 'text.learnMore' }}
-            // @TODO: Add redirect link
-            redirectUrl="https://colony.io/colonyjs/docs/colonyjs-core/#recovery-mode"
+            action={{
+              type: 'redirect',
+              href: 'https://colony.io/colonyjs/docs/colonyjs-core/#recovery-mode',
+              actionText: { id: 'text.learnMore' },
+            }}
             isAlt
           />
         </div>
