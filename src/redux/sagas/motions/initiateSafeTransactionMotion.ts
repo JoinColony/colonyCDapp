@@ -17,13 +17,13 @@ import { putError, takeFrom } from '~utils/saga/effects';
 import { fill, omit } from '~utils/lodash';
 import { ContextModule, getContext } from '~context';
 
+import { transactionReady } from '../../actionCreators';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { getColonyManager } from '../utils';
-// import { ipfsUploadAnnotation } from '../utils';
+import { getColonyManager, uploadAnnotation } from '../utils';
 import {
   getRawTransactionData,
   getTransferNFTData,
@@ -33,7 +33,6 @@ import {
   getHomeBridgeByChain,
   ZODIAC_BRIDGE_MODULE_ADDRESS,
 } from '../utils/safeHelpers';
-import { transactionReady } from '../../actionCreators';
 
 function* initiateSafeTransactionMotion({
   payload: {
@@ -42,7 +41,7 @@ function* initiateSafeTransactionMotion({
     transactionsTitle: title,
     colonyAddress,
     colonyName,
-    // annotationMessage,
+    annotationMessage,
     motionDomainId,
     network,
   },
@@ -92,13 +91,11 @@ function* initiateSafeTransactionMotion({
     // setup batch ids and channels
     const batchKey = 'createMotion';
 
-    const {
-      createMotion,
-      // annotateInitiateSafeTransactionMotion,
-    } = yield createTransactionChannels(metaId, [
-      'createMotion',
-      // 'annotateInitiateSafeTransactionMotion',
-    ]);
+    const { createMotion, annotateInitiateSafeTransaction } =
+      yield createTransactionChannels(metaId, [
+        'createMotion',
+        'annotateInitiateSafeTransaction',
+      ]);
 
     const transactionData: string[] = [];
     /*
@@ -187,26 +184,29 @@ function* initiateSafeTransactionMotion({
       ready: false,
     });
 
-    // yield fork(createTransaction, annotateInitiateSafeTransactionMotion.id, {
-    //   context: ClientType.ColonyClient,
-    //   methodName: 'annotateTransaction',
-    //   identifier: colonyAddress,
-    //   params: [],
-    //   group: {
-    //     key: batchKey,
-    //     id: metaId,
-    //     index: 1,
-    //   },
-    //   ready: false,
-    // });
+    if (annotationMessage) {
+      yield fork(createTransaction, annotateInitiateSafeTransaction.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        params: [],
+        group: {
+          key: batchKey,
+          id: metaId,
+          index: 1,
+        },
+        ready: false,
+      });
+    }
 
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
 
-    // yield takeFrom(
-    //   annotateInitiateSafeTransactionMotion.channel,
-    //   ActionTypes.TRANSACTION_CREATED,
-    // );
-
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateInitiateSafeTransaction.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
     yield put(transactionReady(createMotion.id));
 
     const {
@@ -254,36 +254,18 @@ function* initiateSafeTransactionMotion({
       });
     }
 
-    // const annotationObject = JSON.stringify(safeTransactionData);
-    /*
-     * Upload all data via annotationMessage to IPFS.
-     * This is to avoid storing the data in the colony metadata.
-     */
-    // const annotationMessageIpfsHash = yield call(
-    //   ipfsUploadAnnotation,
-    //   annotationObject,
-    // );
-
-    // yield put(transactionPending(annotateInitiateSafeTransactionMotion.id));
-
-    // yield put(
-    //   transactionAddParams(annotateInitiateSafeTransactionMotion.id, [
-    //     txHash,
-    //     annotationMessageIpfsHash,
-    //   ]),
-    // );
-
-    // yield put(transactionReady(annotateInitiateSafeTransactionMotion.id));
-
-    // yield takeFrom(
-    //   annotateInitiateSafeTransactionMotion.channel,
-    //   ActionTypes.TRANSACTION_SUCCEEDED,
-    // );
-
     yield put<AllActions>({
       type: ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION_SUCCESS,
       meta,
     });
+
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateInitiateSafeTransaction,
+        message: annotationMessage,
+        txHash,
+      });
+    }
 
     yield navigate(`/colony/${colonyName}/tx/${txHash}`, {
       state: {
