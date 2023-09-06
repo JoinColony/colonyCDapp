@@ -7,7 +7,7 @@ import Link from '~v5/shared/Link';
 import CopyUrl from './CopyUrl';
 import styles from './NotificationBanner.module.css';
 import { NotificationBannerProps } from './types';
-import IconedText from '~v5/shared/IconedText';
+import StatusText from '~v5/shared/StatusText';
 
 const displayName = 'common.Extensions.NotificationBanner';
 
@@ -52,7 +52,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
         })}
       >
         <div className="flex md:items-center">
-          <IconedText
+          <StatusText
             title={titleText}
             status={status}
             withIcon={!isAlt}

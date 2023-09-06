@@ -1,5 +1,5 @@
 import { MessageDescriptor } from 'react-intl';
-import { STATUS_TYPES } from '~v5/shared/IconedText/types';
+import { STATUS_TYPES } from '~v5/shared/StatusText/types';
 
 export interface NotificationBannerProps {
   status: (typeof STATUS_TYPES)[keyof typeof STATUS_TYPES];

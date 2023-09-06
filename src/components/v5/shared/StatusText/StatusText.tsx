@@ -2,10 +2,10 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import clsx from 'clsx';
-import { IconedTextProps, STATUS_TYPES } from './types';
+import { StatusTextProps, STATUS_TYPES } from './types';
 import Icon from '~shared/Icon';
 
-const IconedText: FC<IconedTextProps> = ({
+const StatusText: FC<StatusTextProps> = ({
   title,
   status,
   withIcon = true,
@@ -37,4 +37,4 @@ const IconedText: FC<IconedTextProps> = ({
   );
 };
 
-export default IconedText;
+export default StatusText;

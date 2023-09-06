@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import IconedText from '~v5/shared/IconedText';
+import StatusText from '~v5/shared/StatusText';
 
-const iconedTextMeta: Meta<typeof IconedText> = {
-  title: 'Shared/Iconed Text',
-  component: IconedText,
+const statusTextMeta: Meta<typeof StatusText> = {
+  title: 'Shared/Status Text',
+  component: StatusText,
   argTypes: {
     status: {
       name: 'Status',
@@ -35,8 +35,8 @@ const iconedTextMeta: Meta<typeof IconedText> = {
   },
 };
 
-export default iconedTextMeta;
+export default statusTextMeta;
 
-export const Base: StoryObj<typeof IconedText> = {
-  render: (args) => <IconedText {...args} />,
+export const Base: StoryObj<typeof StatusText> = {
+  render: (args) => <StatusText {...args} />,
 };
