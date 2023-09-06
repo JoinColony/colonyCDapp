@@ -20,11 +20,12 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
 }) => {
   const { formatMessage } = useIntl();
   const titleText = typeof title === 'string' ? title : formatMessage(title);
+
+  const actionText = action && action.actionText;
   const actionMessage =
-    action &&
-    (typeof action.actionText === 'string'
-      ? action.actionText
-      : action.actionText && formatMessage(action.actionText));
+    typeof actionText === 'string'
+      ? actionText
+      : actionText && formatMessage(actionText);
 
   return (
     <div
@@ -56,7 +57,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
             title={titleText}
             status={status}
             withIcon={!isAlt}
-            fontSizeClassName={isAlt ? 'text-sm' : undefined}
+            textClassName={isAlt ? 'text-sm' : undefined}
           />
         </div>
         {children && (

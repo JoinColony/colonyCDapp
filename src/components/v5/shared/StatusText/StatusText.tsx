@@ -9,7 +9,7 @@ const StatusText: FC<StatusTextProps> = ({
   title,
   status,
   withIcon = true,
-  fontSizeClassName = 'text-md',
+  textClassName = 'text-md',
 }) => {
   const { formatMessage } = useIntl();
 
@@ -32,7 +32,7 @@ const StatusText: FC<StatusTextProps> = ({
       {withIcon && (
         <Icon name={iconName[status]} appearance={{ size: 'tiny' }} />
       )}
-      <p className={fontSizeClassName}>{titleText}</p>
+      <p className={textClassName}>{titleText}</p>
     </div>
   );
 };
