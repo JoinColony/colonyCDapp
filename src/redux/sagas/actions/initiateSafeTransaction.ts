@@ -23,7 +23,6 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-// import { ipfsUploadAnnotation } from '../utils';
 import {
   getRawTransactionData,
   getTransferNFTData,
@@ -33,6 +32,7 @@ import {
   getHomeBridgeByChain,
   ZODIAC_BRIDGE_MODULE_ADDRESS,
 } from '../utils/safeHelpers';
+import { uploadAnnotation } from '../utils';
 
 function* initiateSafeTransactionAction({
   payload: {
@@ -42,7 +42,7 @@ function* initiateSafeTransactionAction({
     colonyAddress,
     colonyName,
     network,
-    // annotationMessage = null,
+    annotationMessage,
   },
   meta: { id: metaId, navigate },
   meta,
@@ -118,13 +118,11 @@ function* initiateSafeTransactionAction({
 
     const batchKey = 'initiateSafeTransaction';
 
-    const {
-      initiateSafeTransaction,
-      // annotateInitiateSafeTransaction,
-    } = yield createTransactionChannels(metaId, [
-      'initiateSafeTransaction',
-      // 'annotateInitiateSafeTransaction',
-    ]);
+    const { initiateSafeTransaction, annotateInitiateSafeTransaction } =
+      yield createTransactionChannels(metaId, [
+        'initiateSafeTransaction',
+        'annotateInitiateSafeTransaction',
+      ]);
 
     const createGroupTransaction = ({ id, index }, config) =>
       fork(createTransaction, id, {
@@ -150,23 +148,27 @@ function* initiateSafeTransactionAction({
       titleValues: { title },
     });
 
-    // yield createGroupTransaction(annotateInitiateSafeTransaction, {
-    //   context: ClientType.ColonyClient,
-    //   methodName: 'annotateTransaction',
-    //   identifier: colonyAddress,
-    //   params: [],
-    //   ready: false,
-    // });
+    if (annotationMessage) {
+      yield createGroupTransaction(annotateInitiateSafeTransaction, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        params: [],
+        ready: false,
+      });
+    }
 
     yield takeFrom(
       initiateSafeTransaction.channel,
       ActionTypes.TRANSACTION_CREATED,
     );
 
-    // yield takeFrom(
-    //   annotateInitiateSafeTransaction.channel,
-    //   ActionTypes.TRANSACTION_CREATED,
-    // );
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateInitiateSafeTransaction.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
 
     yield put(transactionReady(initiateSafeTransaction.id));
 
@@ -181,8 +183,6 @@ function* initiateSafeTransactionAction({
       initiateSafeTransaction.channel,
       ActionTypes.TRANSACTION_SUCCEEDED,
     );
-
-    // yield put(transactionPending(annotateInitiateSafeTransaction.id));
 
     /**
      * Create parent safe transaction in the database
@@ -220,27 +220,13 @@ function* initiateSafeTransactionAction({
       });
     }
 
-    // const annotationObject = JSON.stringify(safeTransactionData);
-
-    // let annotationMessageIpfsHash = null;
-    // annotationMessageIpfsHash = yield call(
-    //   ipfsUploadAnnotation,
-    //   annotationObject,
-    // );
-
-    // yield put(
-    //   transactionAddParams(annotateInitiateSafeTransaction.id, [
-    //     txHash,
-    //     annotationMessageIpfsHash,
-    //   ]),
-    // );
-
-    // yield put(transactionReady(annotateInitiateSafeTransaction.id));
-
-    // yield takeFrom(
-    //   annotateInitiateSafeTransaction.channel,
-    //   ActionTypes.TRANSACTION_SUCCEEDED,
-    // );
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateInitiateSafeTransaction,
+        message: annotationMessage,
+        txHash,
+      });
+    }
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION_SUCCESS,
