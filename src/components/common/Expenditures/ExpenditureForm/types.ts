@@ -7,7 +7,8 @@ export interface ExpenditureFormValues {
   payouts: ExpenditurePayoutFieldValue[];
   createInDomainId: number;
   fundFromDomainId: number;
-  type: ExpenditureFormType;
+  formType: ExpenditureFormType;
+  stages: ExpenditureStageFieldValue[];
 }
 
 export interface ExpenditurePayoutFieldValue {
@@ -16,4 +17,9 @@ export interface ExpenditurePayoutFieldValue {
   tokenAddress: string;
   amount: string;
   claimDelay: number;
+}
+
+export interface ExpenditureStageFieldValue {
+  name: string;
+  amount: string;
 }

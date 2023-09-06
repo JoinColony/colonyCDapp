@@ -1,19 +1,23 @@
 import React from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
+import { IconButton } from '~shared/Button';
 import { Input } from '~shared/Fields';
 import { Colony } from '~types';
-import { IconButton } from '~shared/Button';
 
-import { getInitialPayoutFieldValue } from './helpers';
+import { getInitialPayoutFieldValue } from '../helpers';
 
-import styles from './ExpenditureForm.module.css';
+import styles from '../ExpenditureForm.module.css';
 
-interface ExpenditureFormFieldsProps {
+interface ExpenditurePayoutsFieldProps {
   colony: Colony;
+  singlePayout?: boolean;
 }
 
-const ExpenditureFormFields = ({ colony }: ExpenditureFormFieldsProps) => {
+const ExpenditurePayoutsField = ({
+  colony,
+  singlePayout = false,
+}: ExpenditurePayoutsFieldProps) => {
   const { control } = useFormContext();
 
   const { fields, append, remove } = useFieldArray({
@@ -22,15 +26,17 @@ const ExpenditureFormFields = ({ colony }: ExpenditureFormFieldsProps) => {
   });
 
   return (
-    <div>
+    <>
       {fields.map((field, index) => (
         <div className={styles.field} key={field.id}>
-          <IconButton
-            onClick={() => remove(index)}
-            text=""
-            icon="trash"
-            disabled={fields.length <= 1}
-          />
+          {!singlePayout && (
+            <IconButton
+              onClick={() => remove(index)}
+              text=""
+              icon="trash"
+              disabled={fields.length <= 1}
+            />
+          )}
           <Input
             name={`payouts.${index}.recipientAddress`}
             label="Recipient address"
@@ -44,15 +50,17 @@ const ExpenditureFormFields = ({ colony }: ExpenditureFormFieldsProps) => {
         </div>
       ))}
 
-      <IconButton
-        onClick={() =>
-          append(getInitialPayoutFieldValue(colony.nativeToken.tokenAddress))
-        }
-        text=""
-        icon="circle-plus"
-      />
-    </div>
+      {!singlePayout && (
+        <IconButton
+          onClick={() =>
+            append(getInitialPayoutFieldValue(colony.nativeToken.tokenAddress))
+          }
+          text=""
+          icon="circle-plus"
+        />
+      )}
+    </>
   );
 };
 
-export default ExpenditureFormFields;
+export default ExpenditurePayoutsField;

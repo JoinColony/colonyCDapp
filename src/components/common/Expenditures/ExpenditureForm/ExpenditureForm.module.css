@@ -1,7 +1,6 @@
 .field {
-  display: grid;
+  display: flex;
   align-items: center;
-  grid-template-columns: auto repeat(4, 1fr);
   column-gap: 10px;
 }
 

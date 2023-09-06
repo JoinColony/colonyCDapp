@@ -11,6 +11,7 @@ import { Tab, TabList, Tabs } from '~shared/Tabs';
 import {
   getCreateExpenditureTransformPayloadFn,
   getInitialPayoutFieldValue,
+  getInitialStageFieldValue,
 } from './helpers';
 import { ExpenditureFormType, ExpenditureFormValues } from './types';
 import ExpenditureFormFields from './ExpenditureFormFields';
@@ -55,18 +56,23 @@ const CreateExpenditureForm = () => {
         payouts: [getInitialPayoutFieldValue(colony.nativeToken.tokenAddress)],
         createInDomainId: Id.RootDomain,
         fundFromDomainId: Id.RootDomain,
-        type: ExpenditureFormType.Advanced,
+        formType: ExpenditureFormType.Advanced,
+        stages: [getInitialStageFieldValue()],
       }}
       transform={getCreateExpenditureTransformPayloadFn(colony, navigate)}
     >
-      {({ watch }) => {
+      {({ watch, setValue }) => {
         const formValues = watch();
 
         return (
           <>
             <ExpenditureDomainSelector colony={colony} />
 
-            <Tabs>
+            <Tabs
+              onSelect={(index) =>
+                setValue('formType', formTypeOptions[index].type)
+              }
+            >
               <TabList containerClassName={styles.typeTabs}>
                 {formTypeOptions.map(({ type, label }) => (
                   <Tab key={type}>{label}</Tab>
