@@ -8,8 +8,12 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '../../actionCreators';
-import { putError, takeFrom, uploadAnnotation } from '../utils';
+import {
+  initiateTransaction,
+  putError,
+  takeFrom,
+  uploadAnnotation,
+} from '../utils';
 
 function* createMoveFundsAction({
   payload: {
@@ -101,7 +105,7 @@ function* createMoveFundsAction({
       );
     }
 
-    yield put(transactionReady(moveFunds.id));
+    yield initiateTransaction({ id: moveFunds.id });
 
     const {
       payload: { hash: txHash },

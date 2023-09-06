@@ -1,96 +1,82 @@
-import React, { FC, useState } from 'react';
-import { useIntl } from 'react-intl';
+import React, { FC } from 'react';
 
 import { TransactionsProps } from './types';
-import { isTxGroup } from '~frame/GasStation/transactionGroup';
-import { MessageType } from '~redux/immutable';
-import TransactionDetails from './partials/TransactionDetails';
+
 import EmptyContent from '~v5/common/EmptyContent';
-import MessageCardDetails from '~frame/GasStation/MessageCardDetails';
 import TransactionList from './partials/TransactionList';
 import { useTransactionsListObserver } from './hooks';
 
 import styles from './TransactionsTab.css';
+import { formatText } from '~utils/intl';
+import { useUserTransactionContext } from '~context/UserTransactionContext';
 
 export const displayName = 'common.Extensions.UserHub.partials.TransactionsTab';
 
-const TransactionsTab: FC<TransactionsProps> = ({
-  transactionAndMessageGroups,
-  autoOpenTransaction,
-  canLoadMoreTransactions,
-  fetchMoreTransactions,
-  setAutoOpenTransaction = () => {},
-  appearance: { interactive },
-}) => {
-  const { formatMessage } = useIntl();
-  const [selectedGroupIdx, setSelectedGroupIdx] = useState<number>(
-    autoOpenTransaction ? 0 : -1,
-  );
+const TransactionsTab: FC<TransactionsProps> = () =>
+  // {
+  //   appearance: { interactive },
+  // }
+  {
+    const { transactionAndMessageGroups } = useUserTransactionContext();
+    // const [selectedGroupIdx, setSelectedGroupIdx] = useState<number>(
+    //   isLatestTxPending ? 0 : -1,
+    // );
 
-  const renderTransactions = () => {
-    const unselectTransactionGroup = () => {
-      setSelectedGroupIdx(-1);
-      setAutoOpenTransaction(false);
-    };
-    let detailsTransactionGroup = transactionAndMessageGroups[selectedGroupIdx];
-    if (!interactive && selectedGroupIdx === -1) {
-      [detailsTransactionGroup] = transactionAndMessageGroups;
-    }
+    // const renderTransactions = () => {
+    //   const unselectTransactionGroup = () => {
+    //     setSelectedGroupIdx(-1);
+    //   };
+    //   let detailsTransactionGroup = transactionAndMessageGroups[selectedGroupIdx];
+    //   if (!interactive && selectedGroupIdx === -1) {
+    //     [detailsTransactionGroup] = transactionAndMessageGroups;
+    //   }
 
-    if (detailsTransactionGroup || !interactive) {
-      if (isTxGroup(detailsTransactionGroup)) {
-        return (
-          <TransactionDetails transactionGroup={detailsTransactionGroup} />
-        );
-      }
-      // @TODO: when handle this cases?
-      return (
-        <MessageCardDetails
-          message={detailsTransactionGroup[0] as MessageType}
-          onClose={unselectTransactionGroup}
-        />
-      );
-    }
+    //   if (detailsTransactionGroup || !interactive) {
+    //     if (isTxGroup(detailsTransactionGroup)) {
+    //       return (
+    //         <TransactionDetails transactionGroup={detailsTransactionGroup} />
+    //       );
+    //     }
+    //     // @TODO: when handle this cases?
+    //     return (
+    //       <MessageCardDetails
+    //         message={detailsTransactionGroup[0] as MessageType}
+    //         onClose={unselectTransactionGroup}
+    //       />
+    //     );
+    //   }
+
+    //   return;
+    // };
+
+    const isEmpty =
+      !transactionAndMessageGroups || !transactionAndMessageGroups.length;
+
+    /* Load more when reaching end of list  */
+    useTransactionsListObserver();
 
     return (
-      <TransactionList
-        transactionAndMessageGroups={transactionAndMessageGroups}
-      />
+      <div className="flex flex-col w-full h-full">
+        <p className="heading-5 mb-2.5 sm:mb-0.5">
+          {formatText({ id: 'transactions' })}
+        </p>
+        <div
+          id="transactionsListContainer"
+          className={styles.transactionsListContainer}
+        >
+          {isEmpty ? (
+            <EmptyContent
+              title={{ id: 'empty.content.title.transactions' }}
+              description={{ id: 'empty.content.subtitle.transactions' }}
+              icon="binoculars"
+            />
+          ) : (
+            <TransactionList />
+          )}
+        </div>
+      </div>
     );
   };
-
-  const isEmpty =
-    !transactionAndMessageGroups || !transactionAndMessageGroups.length;
-
-  /* Load more when reaching end of list  */
-  useTransactionsListObserver({
-    canLoadMoreTransactions,
-    fetchMoreTransactions,
-    transactionAndMessageGroups,
-  });
-
-  return (
-    <div className="flex flex-col w-full h-full">
-      <p className="heading-5 mb-2.5 sm:mb-0.5">
-        {formatMessage({ id: 'transactions' })}
-      </p>
-      <div
-        id="transactionsListContainer"
-        className={styles.transactionsListContainer}
-      >
-        {isEmpty ? (
-          <EmptyContent
-            title={{ id: 'empty.content.title.transactions' }}
-            description={{ id: 'empty.content.subtitle.transactions' }}
-            icon="binoculars"
-          />
-        ) : (
-          renderTransactions()
-        )}
-      </div>
-    </div>
-  );
-};
 
 TransactionsTab.displayName = displayName;
 

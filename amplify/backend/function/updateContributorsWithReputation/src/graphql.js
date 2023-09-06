@@ -69,4 +69,11 @@ module.exports = {
       }
     }
   `,
+  getReputationMiningCycleMetadata: /* GraphQL */ `
+    query GetReputationMiningCycleMetadata($id: ID!) {
+      getReputationMiningCycleMetadata(id: $id) {
+        lastCompletedAt
+      }
+    }
+  `,
 };

@@ -1,4 +1,5 @@
 import { MessageDescriptor } from 'react-intl';
+import { ActionSidebarRowFieldNameEnum } from './enums';
 
 export interface ActionSidebarRowProps {
   iconName: string;
@@ -6,6 +7,7 @@ export interface ActionSidebarRowProps {
   isDescriptionFieldRow?: boolean;
   isOpened?: boolean;
   onToggle?: () => void;
-  isErrors?: boolean;
   children?: React.ReactNode;
+  isError?: boolean;
+  fieldName: ActionSidebarRowFieldNameEnum;
 }

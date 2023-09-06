@@ -10,5 +10,6 @@ export type UseToggleReturnType = [
     toggle: () => void;
     toggleOn: () => void;
     toggleOff: () => void;
+    registerContainerRef: (ref: HTMLElement | null) => void;
   },
 ];

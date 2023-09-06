@@ -53,6 +53,7 @@
     "image",
     "info",
     "lazy-consensus",
+    "pencil-circle",
     "lifebuoy",
     "list",
     "lock-key",
@@ -214,7 +215,8 @@
     "numbers",
     "quotes",
     "rocket",
-    "paint"
+    "paint",
+    "white-tick"
   ],
   "multiColorIcons": [
     "circle-check-primary",

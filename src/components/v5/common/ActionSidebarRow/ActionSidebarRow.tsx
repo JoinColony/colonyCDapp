@@ -4,6 +4,8 @@ import clsx from 'clsx';
 
 import { ActionSidebarRowProps } from './types';
 import Icon from '~shared/Icon';
+import { useActionSidebarRow } from './hooks';
+import Tooltip from '~shared/Extensions/Tooltip';
 
 const ActionSidebarRow = React.forwardRef<
   HTMLDivElement,
@@ -17,12 +19,13 @@ const ActionSidebarRow = React.forwardRef<
       isDescriptionFieldRow = false,
       isOpened,
       onToggle,
-      isErrors,
+      isError,
+      fieldName,
     },
     ref,
   ) => {
     const { formatMessage } = useIntl();
-
+    const fieldToolTips = useActionSidebarRow();
     const content = (
       <>
         <Icon name={iconName} appearance={{ size: 'extraTiny' }} />
@@ -52,29 +55,36 @@ const ActionSidebarRow = React.forwardRef<
         })}
         ref={ref}
       >
-        {isDescriptionFieldRow ? (
-          <button
-            className={clsx('flex items-center  group', {
-              'hover:text-blue-400': isDescriptionFieldRow,
-              'text-negative-400': isErrors,
-              'text-gray-600': !isErrors,
-            })}
-            onClick={onToggle}
-            type="button"
-            aria-expanded={isOpened}
-          >
-            {content}
-          </button>
-        ) : (
-          <div
-            className={clsx('flex items-center', {
-              'text-negative-400': isErrors,
-              'text-gray-600': !isErrors,
-            })}
-          >
-            {content}
-          </div>
-        )}
+        <Tooltip
+          tooltipContent={
+            <span>{formatMessage({ id: `${fieldToolTips[fieldName]}` })}</span>
+          }
+          placement="bottom-start"
+        >
+          {isDescriptionFieldRow ? (
+            <button
+              className={clsx('flex items-center  group', {
+                'hover:text-blue-400': isDescriptionFieldRow,
+                'text-negative-400': isError,
+                'text-gray-600': !isError,
+              })}
+              onClick={onToggle}
+              type="button"
+              aria-expanded={isOpened}
+            >
+              {content}
+            </button>
+          ) : (
+            <div
+              className={clsx('flex items-center', {
+                'text-negative-400': isError,
+                'text-gray-600': !isError,
+              })}
+            >
+              {content}
+            </div>
+          )}
+        </Tooltip>
         {children}
       </div>
     );

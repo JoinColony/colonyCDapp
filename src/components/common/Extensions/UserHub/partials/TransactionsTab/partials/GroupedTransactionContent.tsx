@@ -8,6 +8,7 @@ import { GroupedTransactionContentProps } from '../types';
 import { useGroupedTransactionContent } from './hooks';
 import CancelTransaction from './CancelTransaction';
 import TransactionStatus from './TransactionStatus';
+import { shortErrorMessage } from './utils';
 
 const displayName =
   'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransactionCard';
@@ -49,7 +50,6 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
     defaultTransactionMessageDescriptorId,
     handleRetryAction,
     failed,
-    ready,
     pending,
     succeeded,
     isShowingCancelConfirmation,
@@ -70,7 +70,7 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
   return (
     <li
       className={clsx(`${styles.listItem}`, {
-        'before:bg-success-400': ready || succeeded,
+        'before:bg-success-400': succeeded,
         'before:bg-negative-400': failed,
         'before:bg-blue-400': pending,
         'font-semibold': selected,
@@ -99,13 +99,19 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
       {failed && error && (
         <div className="mt-2 md:max-w-[24rem]">
           <NotificationBanner
-            status={failed && error && 'error'}
+            status="error"
             actionText={formatMessage({ id: 'retry' })}
             actionType="call-to-action"
             isAlt
             onClick={handleRetryAction}
           >
-            <FormattedMessage {...MSG.failedTx} values={{ ...error }} />
+            <FormattedMessage
+              {...MSG.failedTx}
+              values={{
+                type: error.type,
+                message: shortErrorMessage(error.message),
+              }}
+            />
           </NotificationBanner>
         </div>
       )}

@@ -1,9 +1,10 @@
+import { ApolloQueryResult } from '@apollo/client';
 import { ClientType } from '@colony/colony-js/tokens';
 import { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { TransactionOrMessageGroups } from '~frame/GasStation/transactionGroup';
-import { useGetUserTransactionsQuery } from '~gql';
+import { GetUserTransactionsQuery, useGetUserTransactionsQuery } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
 import { TransactionType } from '~redux/immutable';
 import { groupedTransactionsAndMessages } from '~redux/selectors';
@@ -117,6 +118,9 @@ export const useGroupedTransactionsAndMessages = (): {
   transactionAndMessageGroups: TransactionOrMessageGroups;
   fetchMoreTransactions: () => void;
   canLoadMoreTransactions: boolean;
+  refetchTransactions: () => Promise<
+    ApolloQueryResult<GetUserTransactionsQuery>
+  >;
 } => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -142,7 +146,7 @@ export const useGroupedTransactionsAndMessages = (): {
     .at(-1)?.[0]
     ?.createdAt?.toISOString();
 
-  const { data, fetchMore } = useGetUserTransactionsQuery({
+  const { data, fetchMore, refetch } = useGetUserTransactionsQuery({
     variables: {
       colonyAddress,
       userAddress: walletAddress,
@@ -181,6 +185,7 @@ export const useGroupedTransactionsAndMessages = (): {
   return {
     transactionAndMessageGroups: visibleTransactions,
     fetchMoreTransactions,
+    refetchTransactions: refetch,
     canLoadMoreTransactions:
       mergedTransactions.length > visibleItems || !!nextToken,
   };

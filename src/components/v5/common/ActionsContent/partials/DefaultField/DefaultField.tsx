@@ -1,22 +1,29 @@
 import React, { FC } from 'react';
-import { useController } from 'react-hook-form';
+import { useController, useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import styles from './DefaultField.module.css';
 import { DefaultFieldProps } from './types';
+import { MAX_COLONY_DISPLAY_NAME } from '~constants';
 
 const displayName = 'v5.common.ActionsContent.partials.DefaultField';
 
 const DefaultField: FC<DefaultFieldProps> = ({
   name,
   placeholder,
-  isErrors,
+  defaultValue,
+  isError,
+  maxLength = MAX_COLONY_DISPLAY_NAME,
 }) => {
   const { field } = useController({
     name,
+    defaultValue: defaultValue || '',
   });
+  const methods = useFormContext();
   const { formatMessage } = useIntl();
+
+  const isDirty = methods?.formState?.isDirty;
 
   return (
     <div className="sm:relative w-full">
@@ -24,12 +31,22 @@ const DefaultField: FC<DefaultFieldProps> = ({
         type="text"
         id={name}
         placeholder={formatMessage(placeholder)}
-        className={clsx(styles.input, {
-          'text-gray-900': !isErrors,
-          'text-negative-400': isErrors,
+        className={clsx(styles.input, 'text-gray-900', {
+          'placeholder-gray-500': !isError,
+          'placeholder-negative-400': isError,
         })}
         {...field}
       />
+      {isDirty && isError && (
+        <div
+          className={clsx('text-xs flex justify-end', {
+            'text-neutral-400': !isError,
+            'text-negative-400': isError,
+          })}
+        >
+          {field.value.length} / {maxLength}
+        </div>
+      )}
     </div>
   );
 };

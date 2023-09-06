@@ -4,14 +4,19 @@ import { BigNumber } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { getColonyManager, putError, takeFrom } from '../utils';
+import {
+  getColonyManager,
+  initiateTransaction,
+  putError,
+  takeFrom,
+} from '../utils';
 
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady, transactionUpdateGas } from '../../actionCreators';
+import { transactionUpdateGas } from '../../actionCreators';
 import { ADDRESS_ZERO } from '~constants';
 
 function* finalizeMotion({
@@ -81,7 +86,7 @@ function* finalizeMotion({
       }),
     );
 
-    yield put(transactionReady(finalizeMotionTransaction.id));
+    yield initiateTransaction({ id: finalizeMotionTransaction.id });
 
     yield takeFrom(
       finalizeMotionTransaction.channel,

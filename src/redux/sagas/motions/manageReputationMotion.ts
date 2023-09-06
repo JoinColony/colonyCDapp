@@ -16,6 +16,7 @@ import {
   updateDomainReputation,
   getColonyManager,
   uploadAnnotation,
+  initiateTransaction,
 } from '../utils';
 
 import {
@@ -23,7 +24,6 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '../../actionCreators';
 
 export type ManageReputationMotionPayload =
   Action<ActionTypes.MOTION_MANAGE_REPUTATION>['payload'];
@@ -171,7 +171,7 @@ function* manageReputationMotion({
       );
     }
 
-    yield put(transactionReady(createMotion.id));
+    yield initiateTransaction({ id: createMotion.id });
 
     const {
       payload: { hash: txHash },

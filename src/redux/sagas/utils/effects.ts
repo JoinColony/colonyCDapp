@@ -1,5 +1,4 @@
 import { ActionPattern } from '@redux-saga/types';
-import { NavigateFunction } from 'react-router-dom';
 import { Channel } from 'redux-saga';
 import {
   all,
@@ -13,6 +12,12 @@ import {
 } from 'redux-saga/effects';
 
 import { ErrorActionType, TakeFilter, Action } from '../../types/actions';
+import {
+  transactionEstimateGas,
+  transactionReady,
+  transactionSend,
+} from '~redux/actionCreators';
+import { getCanUserSendMetatransactions } from './getCanUserSendMetatransactions';
 /*
  * Effect to take a specific action from a channel.
  */
@@ -105,9 +110,20 @@ export const takeLatestCancellable = (
   ]);
 };
 
-export function* routeRedirect(route: string, navigate: NavigateFunction) {
-  if (route) {
-    // @ts-ignore
-    yield call<NavigateFunction>(navigate, route);
+export function* initiateTransaction({
+  id,
+  metatransaction,
+}: {
+  id: string;
+  metatransaction?: boolean;
+}) {
+  const shouldSendMetatransaction = yield getCanUserSendMetatransactions();
+
+  yield put(transactionReady(id));
+
+  if (metatransaction ?? shouldSendMetatransaction) {
+    yield put(transactionSend(id));
+  } else {
+    yield put(transactionEstimateGas(id));
   }
 }

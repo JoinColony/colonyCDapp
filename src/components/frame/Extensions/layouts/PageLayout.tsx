@@ -20,6 +20,7 @@ import {
   useMemberModalContext,
 } from '~context/MemberModalContext';
 import { usePageLayout } from './hooks';
+import { UserTransactionContextProvider } from '~context/UserTransactionContext';
 
 const displayName = 'frame.Extensions.layouts.PageLayout';
 
@@ -29,7 +30,6 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
   description,
   loadingText,
   pageName,
-  hideColonies,
 }) => {
   const isMobile = useMobile();
   const { isDarkMode } = usePageThemeContext();
@@ -57,7 +57,9 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
         pauseOnHover
         closeButton={CloseButton}
       />
-      <Header hideColonies={hideColonies} />
+      <UserTransactionContextProvider>
+        <Header />
+      </UserTransactionContextProvider>
       {/* @TODO: Remove wallet component when we have a proper wallet */}
       <div className="hidden">
         <Wallet />
@@ -69,11 +71,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
               <Navigation pageName={pageName} />
             </div>
           )}
-          <PageTitle
-            title={title}
-            subtitle={description}
-            hideColonies={hideColonies}
-          />
+          <PageTitle title={title} subtitle={description} />
           <div className="mt-9">{children}</div>
         </div>
       </main>

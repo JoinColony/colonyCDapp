@@ -1,21 +1,25 @@
-import React, { FC, useEffect, useLayoutEffect, useState } from 'react';
+import React, { FC, useLayoutEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import { useAppContext, useMobile } from '~hooks';
-import Button, { Hamburger } from '~v5/shared/Button';
+import Button, { Hamburger, PendingButton } from '~v5/shared/Button';
 import Token from './partials/Token';
 import UserMenu from './partials/UserMenu';
 import { getLastWallet } from '~utils/autoLogin';
 import UserReputation from './partials/UserReputation';
 import { UserNavigationProps } from './types';
 import { useGetNetworkToken } from '~hooks/useGetNetworkToken';
+import {
+  TransactionGroupStates,
+  useUserTransactionContext,
+} from '~context/UserTransactionContext';
+import CompletedButton from '~v5/shared/Button/CompletedButton';
 
 export const displayName = 'common.Extensions.UserNavigation';
 
 // @TODO: change name to Wallet
 const UserNavigation: FC<UserNavigationProps> = ({
-  hideColonies,
   isWalletButtonVisible,
   userMenuGetTooltipProps,
   userMenuSetTooltipRef,
@@ -33,17 +37,18 @@ const UserNavigation: FC<UserNavigationProps> = ({
   const isWalletConnected = !!wallet?.address;
   const nativeToken = useGetNetworkToken();
 
-  useEffect(() => {
-    if (!isMobile) {
-      setIsUserNavigationButtonsVisible(true);
-    }
-  }, [isMobile]);
+  if (!isMobile && !isUserNavigationButtonsVisible) {
+    setIsUserNavigationButtonsVisible(true);
+  }
 
   useLayoutEffect(() => {
-    if (!wallet && connectWallet && getLastWallet()) {
-      connectWallet();
+    const isWalletSavedInLocalStorage = getLastWallet();
+    if (!wallet && isWalletSavedInLocalStorage) {
+      connectWallet?.();
     }
   }, [connectWallet, wallet]);
+
+  const { groupState } = useUserTransactionContext();
 
   return (
     <div className="flex gap-1">
@@ -53,7 +58,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
         })}
       >
         {nativeToken && <Token nativeToken={nativeToken} />}
-        <UserReputation hideColonies={hideColonies} />
+        <UserReputation />
       </div>
       {isUserNavigationButtonsVisible && !isWalletConnected && (
         <Button
@@ -86,10 +91,15 @@ const UserNavigation: FC<UserNavigationProps> = ({
               user={user}
               walletAddress={user?.walletAddress}
               nativeToken={nativeToken}
-              hideColonies={hideColonies}
             />
           )}
         </>
+      )}
+      {!isMobile && groupState === TransactionGroupStates.SomePending && (
+        <PendingButton />
+      )}
+      {!isMobile && groupState === TransactionGroupStates.AllCompleted && (
+        <CompletedButton />
       )}
     </div>
   );

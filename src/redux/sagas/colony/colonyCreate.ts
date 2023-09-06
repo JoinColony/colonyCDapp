@@ -42,7 +42,6 @@ import { getDomainDatabaseId } from '~utils/domains';
 import {
   transactionAddParams,
   transactionAddIdentifier,
-  transactionReady,
   transactionLoadRelated,
   transactionPending,
 } from '../../actionCreators';
@@ -51,6 +50,7 @@ import {
   takeFrom,
   takeLatestCancellable,
   getColonyManager,
+  initiateTransaction,
 } from '../utils';
 import {
   createGroupTransaction,
@@ -224,6 +224,8 @@ function* colonyCreate({
      */
     let tokenAddress: string;
     if (createToken) {
+      yield initiateTransaction({ id: createToken.id });
+
       const {
         payload: { deployedContractAddress },
       } = yield takeFrom(
@@ -280,7 +282,7 @@ function* colonyCreate({
           '', // we aren't using ipfs to store metadata in the CDapp
         ]),
       );
-      yield put(transactionReady(createColony.id));
+      yield initiateTransaction({ id: createColony.id });
 
       const {
         payload: {
@@ -474,7 +476,8 @@ function* colonyCreate({
           [tokenLockingAddress],
         ]),
       );
-      yield put(transactionReady(deployTokenAuthority.id));
+      yield initiateTransaction({ id: deployTokenAuthority.id });
+
       const {
         payload: {
           eventData: {
@@ -494,7 +497,8 @@ function* colonyCreate({
       yield put(
         transactionAddParams(setTokenAuthority.id, [deployedContractAddress]),
       );
-      yield put(transactionReady(setTokenAuthority.id));
+      yield initiateTransaction({ id: setTokenAuthority.id });
+
       yield takeFrom(
         setTokenAuthority.channel,
         ActionTypes.TRANSACTION_SUCCEEDED,
@@ -503,7 +507,7 @@ function* colonyCreate({
 
     if (setOwner) {
       yield put(transactionAddParams(setOwner.id, [colonyAddress]));
-      yield put(transactionReady(setOwner.id));
+      yield initiateTransaction({ id: setOwner.id });
       yield takeFrom(setOwner.channel, ActionTypes.TRANSACTION_SUCCEEDED);
     }
 
@@ -516,7 +520,7 @@ function* colonyCreate({
       yield put(
         transactionAddParams(deployOneTx.id, [oneTxHash, oneTxVersion]),
       );
-      yield put(transactionReady(deployOneTx.id));
+      yield initiateTransaction({ id: deployOneTx.id });
 
       yield takeFrom(deployOneTx.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
@@ -551,7 +555,8 @@ function* colonyCreate({
           true,
         ]),
       );
-      yield put(transactionReady(setOneTxRoleAdministration.id));
+      yield initiateTransaction({ id: setOneTxRoleAdministration.id });
+
       yield takeFrom(
         setOneTxRoleAdministration.channel,
         ActionTypes.TRANSACTION_SUCCEEDED,
@@ -567,7 +572,7 @@ function* colonyCreate({
           true,
         ]),
       );
-      yield put(transactionReady(setOneTxRoleFunding.id));
+      yield initiateTransaction({ id: setOneTxRoleFunding.id });
 
       yield colonyManager.setColonyClient(colonyAddress);
 

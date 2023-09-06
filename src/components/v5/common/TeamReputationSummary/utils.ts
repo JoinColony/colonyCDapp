@@ -15,7 +15,7 @@ export const setTeamColor = (color?: DomainColor) => {
     case DomainColor.Aqua:
       return 'bg-teams-teal-500';
     case DomainColor.Black:
-      return 'bg-teams-gray-500';
+      return 'bg-teams-grey-500';
     case DomainColor.BlueGrey:
       return 'bg-teams-grey-100';
     case DomainColor.EmeraldGreen:
@@ -25,7 +25,7 @@ export const setTeamColor = (color?: DomainColor) => {
     case DomainColor.Magenta:
       return 'bg-teams-pink-600';
     case DomainColor.Orange:
-      return 'bg-teams-orange-400';
+      return 'bg-teams-red-400';
     case DomainColor.Pink:
       return 'bg-teams-pink-500';
     case DomainColor.Periwinkle:
@@ -64,7 +64,7 @@ export const setTeamBadge = (color?: DomainColor) => {
     case DomainColor.Magenta:
       return 'text-teams-pink-600 border-teams-pink-150';
     case DomainColor.Orange:
-      return 'text-teams-orange-400 border-teams-yellow-50';
+      return 'text-teams-red-400 border-teams-yellow-50';
     case DomainColor.Pink:
       return 'text-teams-pink-500 border-teams-pink-100';
     case DomainColor.Periwinkle:
@@ -72,8 +72,8 @@ export const setTeamBadge = (color?: DomainColor) => {
     case DomainColor.PurpleGrey:
       return 'text-teams-purple-400 border-teams-purple-100';
     case DomainColor.Red:
-      return 'text-teams-read-600 border-teams-red-50';
+      return 'text-teams-red-600 border-teams-red-50';
     default:
-      return 'text-teams-read-600 border-teams-red-50';
+      return 'text-teams-red-600 border-teams-red-50';
   }
 };

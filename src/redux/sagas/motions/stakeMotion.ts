@@ -8,6 +8,7 @@ import {
   takeFrom,
   getColonyManager,
   uploadAnnotation,
+  initiateTransaction,
 } from '../utils';
 
 import {
@@ -15,7 +16,6 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '../../actionCreators';
 
 function* stakeMotion({
   meta,
@@ -88,11 +88,11 @@ function* stakeMotion({
       yield takeFrom(annotateStaking.channel, ActionTypes.TRANSACTION_CREATED);
     }
 
-    yield put(transactionReady(approveStake.id));
+    yield initiateTransaction({ id: approveStake.id });
 
     yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    yield put(transactionReady(stakeMotionTransaction.id));
+    yield initiateTransaction({ id: stakeMotionTransaction.id });
 
     const {
       payload: { hash: txHash },

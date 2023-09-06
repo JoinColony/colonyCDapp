@@ -1,13 +1,15 @@
 import { useEffect, useRef } from 'react';
 import { TRANSACTION_LIST_PAGE_SIZE } from '~common/Extensions/UserNavigation/hooks';
+import { useUserTransactionContext } from '~context/UserTransactionContext';
 
-export const useTransactionsListObserver = ({
-  fetchMoreTransactions,
-  canLoadMoreTransactions,
-  transactionAndMessageGroups,
-}) => {
+export const useTransactionsListObserver = () => {
   const lastListItem = useRef<Element | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
+  const {
+    canLoadMoreTransactions,
+    fetchMoreTransactions,
+    transactionAndMessageGroups,
+  } = useUserTransactionContext();
 
   useEffect(() => {
     const root = document.querySelector('#transactionsListContainer');

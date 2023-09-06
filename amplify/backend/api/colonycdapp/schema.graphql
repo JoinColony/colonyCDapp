@@ -1412,6 +1412,22 @@ type PendingModifiedTokenAddresses {
   removed: [String!]
 }
 
+enum ExternalLinks {
+  Custom
+  Whitepaper
+  Youtube
+  Discord
+  Telegram
+  Github
+  Twitter
+  Instagram
+}
+
+type ExternalLink {
+  name: ExternalLinks!
+  link: String!
+}
+
 """
 Represents metadata for a Colony
 """
@@ -1424,6 +1440,14 @@ type ColonyMetadata @model {
   Display name of the Colony
   """
   displayName: String!
+  """
+  Description of the colony
+  """
+  description: String
+  """
+  An array of external links to related pages
+  """
+  externalLinks: [ExternalLink!]
   """
   URL of the Colony's avatar image
   """
@@ -1480,6 +1504,14 @@ type ColonyMetadataChangelog {
   Whether tokens have been added or removed from the Colony's token list
   """
   haveTokensChanged: Boolean!
+  """
+  Whether the colony description has changed
+  """
+  hasDescriptionChanged: Boolean
+  """
+  Whether the colony's external links have changed
+  """
+  haveExternalLinksChanged: Boolean
 }
 
 enum ClientType {
@@ -3019,4 +3051,12 @@ type Annotation @model {
   The IPFS hash, if the annotation was also uploaded to IPFS
   """
   ipfsHash: String
+}
+
+type ReputationMiningCycleMetadata @model {
+  id: ID! # A constant, since we only need one entry in the database: "REPUTATION_MINING_CYCLE_METADATA"
+  """
+  The timestamp of the most recent reputation mining cycle completion.
+  """
+  lastCompletedAt: AWSDateTime! # We're using this to determine whether to re-calculate colony-wide user reputation (updateContributorsWithReputation)
 }

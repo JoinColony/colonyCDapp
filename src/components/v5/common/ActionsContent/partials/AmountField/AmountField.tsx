@@ -23,7 +23,7 @@ const AmountField: FC<AmountFieldProps> = ({
   name,
   amount,
   defaultToken,
-  isErrors,
+  isError,
 }) => {
   const { formatMessage } = useIntl();
   const { watch } = useFormContext();
@@ -73,7 +73,10 @@ const AmountField: FC<AmountFieldProps> = ({
         name={name}
         key={dynamicCleaveOptionKey}
         options={formattingOptions}
-        className="placeholder:text-gray-500 text-gray-900"
+        className={clsx('text-gray-900', {
+          'placeholder:text-gray-500': !isError,
+          'placeholder:text-negative-400': isError,
+        })}
         placeholder="0"
         onInput={onInput}
         value={amount}
@@ -83,9 +86,7 @@ const AmountField: FC<AmountFieldProps> = ({
       <div className="sm:relative w-full">
         <button
           type="button"
-          className={clsx(styles.button, {
-            'text-negative-400': isErrors,
-          })}
+          className={clsx(styles.button, 'text-gray-500')}
           onClick={toggleTokenSelect}
           aria-label={formatMessage({ id: 'ariaLabel.selectToken' })}
         >

@@ -9,16 +9,6 @@ import apolloClient from './apolloClient';
 import ipfsWithFallback from './ipfs/ipfsWithFallbackContext';
 import { IPFSWithTimeout } from './ipfs/getIpfsWithFallback';
 
-export { AppContext, AppContextProvider } from './AppContext';
-export { ColonyManagerClass as ColonyManager };
-export { ColonyContext, ColonyContextProvider } from './ColonyContext';
-export {
-  UserTokenBalanceContext,
-  UserTokenBalanceProvider,
-  useUserTokenBalanceContext,
-} from './UserTokenBalanceContext';
-export * from './ColonyHomeContext';
-
 export enum ContextModule {
   Wallet = 'wallet',
   ColonyManager = 'colonyManager',
@@ -62,3 +52,14 @@ export const getContext = <K extends keyof Context>(contextKey: K) => {
 export const removeContext = <K extends keyof Context>(contextKey: K) => {
   context[contextKey] = undefined;
 };
+
+export { AppContext, AppContextProvider } from './AppContext';
+export { ColonyManagerClass as ColonyManager };
+export { ColonyContext, ColonyContextProvider } from './ColonyContext';
+export {
+  UserTokenBalanceContext,
+  UserTokenBalanceProvider,
+  useUserTokenBalanceContext,
+} from './UserTokenBalanceContext';
+export * from './ColonyHomeContext';
+export * from './UserTransactionContext';

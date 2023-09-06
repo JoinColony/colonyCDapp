@@ -15,7 +15,7 @@ import { Actions } from '~constants/actions';
 
 const displayName = 'v5.common.ActionsContent.partials.TeamsSelect';
 
-const TeamsSelect: FC<SelectProps> = ({ name, isErrors }) => {
+const TeamsSelect: FC<SelectProps> = ({ name, isError }) => {
   const { selectedAction } = useActionSidebarContext();
   const isRootDomain =
     selectedAction === Actions.TRANSFER_FUNDS ||
@@ -25,26 +25,29 @@ const TeamsSelect: FC<SelectProps> = ({ name, isErrors }) => {
 
   const { field } = useController({
     name,
-    defaultValue: isRootDomain && Id.RootDomain,
+    defaultValue:
+      (isRootDomain && Id.RootDomain) ||
+      (name === 'createdIn' && Id.RootDomain),
   });
+
   const teamsOptions = useTeams();
   const { formatMessage } = useIntl();
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
   const [isTeamSelectVisible, { toggle: toggleTeamSelect }] = useToggle();
 
   useEffect(() => {
-    if (isRootDomain) {
+    if (isRootDomain || name === 'createdIn') {
       setSelectedTeam('Root');
     }
-  }, [isRootDomain, selectedAction]);
+  }, [isRootDomain, selectedAction, name]);
 
   return (
     <div className="sm:relative w-full">
       <button
         type="button"
         className={clsx(styles.button, {
-          'text-gray-600': !isErrors,
-          'text-negative-400': isErrors,
+          'text-gray-500': !isError,
+          'text-negative-400': isError,
         })}
         onClick={toggleTeamSelect}
       >

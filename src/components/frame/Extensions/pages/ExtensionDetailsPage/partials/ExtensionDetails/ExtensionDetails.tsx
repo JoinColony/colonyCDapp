@@ -9,7 +9,6 @@ import { useAppContext, useColonyContext } from '~hooks';
 import { isInstalledExtensionData } from '~utils/extensions';
 
 import DeprecateButton from './DeprecateButton';
-import ReenableButton from './ReenableButton';
 import UninstallButton from './UninstallButton';
 import { addressHasRoles } from '~utils/checks';
 
@@ -41,30 +40,20 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
     extensionData.isEnabled &&
     !extensionData.isDeprecated;
 
-  /* If deprecated, can be re-enabled */
-  const canExtensionBeRenabled = !!(
-    hasRootPermission &&
-    isInstalledExtensionData(extensionData) &&
-    extensionData.uninstallable &&
-    extensionData.isDeprecated
-  );
-
-  /* If installed, can be uninstalled. User needs root permission to uninstall. */
+  /* If installed, and deprecated / unenabled, can be uninstalled. User needs root permission to uninstall. */
   const canExtensionBeUninstalled = !!(
     hasRootPermission &&
     isInstalledExtensionData(extensionData) &&
+    (extensionData.isDeprecated || !extensionData.isEnabled) &&
     extensionData.uninstallable
   );
 
   return (
     <div>
       <SpecificSidePanel extensionData={extensionData} />
-      {canExtensionBeDeprecated && (
-        <DeprecateButton extensionData={extensionData} />
-      )}
-      <div className="mt-6 flex flex-col gap-4">
-        {canExtensionBeRenabled && (
-          <ReenableButton extensionData={extensionData} />
+      <div className="mt-6">
+        {canExtensionBeDeprecated && (
+          <DeprecateButton extensionData={extensionData} />
         )}
         {canExtensionBeUninstalled && (
           <UninstallButton extensionData={extensionData} />

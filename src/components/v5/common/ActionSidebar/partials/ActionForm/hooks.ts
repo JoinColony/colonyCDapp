@@ -19,15 +19,19 @@ export const useActionHook = ({
 }: ActionHookOptionsProps) => {
   const { toggleActionSidebarOff } = useActionSidebarContext();
   const { isVotingReputationEnabled } = useEnabledExtensions();
-  const { changeFormErrorsState } = useActionFormContext();
-
-  const action = isVotingReputationEnabled ? defaultAction : actionType;
+  const { changeFormErrorsState, changeFormSubmitting } =
+    useActionFormContext();
 
   const methods = useForm({
     mode: 'all',
     resolver: yupResolver(validationSchema),
     defaultValues,
   });
+
+  const action =
+    isVotingReputationEnabled && methods.formState.isDirty
+      ? defaultAction
+      : actionType;
 
   type FormValues = yup.InferType<typeof validationSchema>;
 
@@ -49,7 +53,8 @@ export const useActionHook = ({
 
   useEffect(() => {
     changeFormErrorsState?.(methods?.formState?.errors);
-  }, [changeFormErrorsState, methods?.formState?.errors]);
+    changeFormSubmitting?.(methods?.formState?.isValid);
+  }, [changeFormErrorsState, methods?.formState]);
 
   return {
     methods,

@@ -1,81 +1,37 @@
-/* eslint-disable react/button-has-type */
 import React, { FC, PropsWithChildren } from 'react';
-import { useIntl } from 'react-intl';
-import clsx from 'clsx';
 
-import { PendingButtonProps } from './types';
-import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
-import styles from './PendingButton.module.css';
+import { IconButtonProps } from './types';
+
 import Icon from '~shared/Icon';
+import IconButton from './IconButton';
+import { useMobile } from '~hooks';
+import { useUserTransactionContext } from '~context/UserTransactionContext';
 
 const displayName = 'v5.Button.PendingButton';
 
-const PendingButton: FC<PropsWithChildren<PendingButtonProps>> = ({
-  children,
-  disabled = false,
-  loading = false,
-  title,
-  text,
-  textValues,
-  type = 'button',
-  className,
-  ariaLabel,
-  isPending,
-  setTriggerRef,
-  rounded = 'l',
-  ...rest
-}) => {
-  const { formatMessage } = useIntl();
-
-  const titleText =
-    typeof title === 'string' ? title : title && formatMessage(title);
-  const buttonText =
-    typeof text === 'string' ? text : text && formatMessage(text, textValues);
-  const ariaLabelText =
-    typeof ariaLabel === 'string'
-      ? ariaLabel
-      : ariaLabel && formatMessage(ariaLabel);
-
+const PendingButton: FC<
+  PropsWithChildren<Omit<IconButtonProps, 'icon'>>
+> = () => {
+  const isMobile = useMobile();
+  const { setIsUserHubOpen } = useUserTransactionContext();
   return (
-    <>
-      {loading ? (
-        <SpinnerLoader appearance={{ size: 'medium' }} />
-      ) : (
-        <button
-          className={clsx(
-            className,
-            styles.pending,
-            'flex items-center justify-center font-medium transition-all duration-normal',
-            {
-              'rounded-lg': rounded === 's',
-              'rounded-full': rounded === 'l',
-              'pointer-events-none': disabled,
-            },
-            className,
-          )}
-          disabled={disabled || loading}
-          aria-label={ariaLabelText}
-          aria-busy={loading}
-          title={titleText}
-          type={type}
-          ref={setTriggerRef}
-          {...rest}
-        >
-          {buttonText || children}
-          {isPending && (
-            <span className="flex shrink-0 ml-1.5">
-              <Icon
-                name="spinner-gap"
-                className={`w-[0.8125rem] h-[0.8125rem] ${
-                  isPending ? 'animate-spin' : 'animate-none'
-                }`}
-                appearance={{ size: 'tiny' }}
-              />
-            </span>
-          )}
-        </button>
-      )}
-    </>
+    <IconButton
+      onClick={() => setIsUserHubOpen(true)}
+      title={{ id: 'button.pending' }}
+      text={{ id: 'button.pending' }}
+      ariaLabel={{ id: 'button.pending' }}
+      isFullSize={isMobile}
+      icon={
+        <span className="flex shrink-0 ml-1.5">
+          <Icon
+            name="spinner-gap"
+            className="w-[0.8125rem] h-[0.8125rem] animate-spin"
+            appearance={{ size: 'tiny' }}
+          />
+        </span>
+      }
+      data-openhubifclicked // see UserReputation for usage
+    />
   );
 };
 

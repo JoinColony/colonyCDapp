@@ -1,18 +1,14 @@
-import React, { useCallback, useEffect, useContext, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import { ActionTypes } from '~redux';
 
-import { useAsyncFunction } from '~hooks';
 import { TransactionStatus } from '~gql';
 
 import {
   transactionEstimateGas,
-  transactionSend,
   transactionCancel,
+  transactionRetry,
 } from '~redux/actionCreators';
-import { withId } from '~utils/actions';
-import { GasStationContext } from '~frame/GasStation';
 import Toast from '~shared/Extensions/Toast';
 
 export const useGroupedTransactionContent = (
@@ -28,23 +24,16 @@ export const useGroupedTransactionContent = (
   const dispatch = useDispatch();
 
   const handleCancelTransaction = useCallback(() => {
-    try {
-      dispatch(transactionCancel(id));
-      toast.success(
-        <Toast
-          type="success"
-          title={{ id: 'extensionDeprecate.toast.title.success' }}
-          description={{
-            id: 'extensionDeprecate.toast.description.success',
-          }}
-        />,
-      );
-    } catch (err) {
-      toast.error(
-        <Toast type="error" title="Error" description="Something went wrong" />,
-      );
-      console.error(err);
-    }
+    dispatch(transactionCancel(id));
+    toast.success(
+      <Toast
+        type="success"
+        title={{ id: 'transaction.cancel.title' }}
+        description={{
+          id: 'transaction.cancel.description',
+        }}
+      />,
+    );
   }, [dispatch, id]);
 
   const [isShowingCancelConfirmation, setIsShowingCancelConfirmation] =
@@ -71,52 +60,32 @@ export const useGroupedTransactionContent = (
     }${methodName}.${methodContext ? `${methodContext}.` : ''}title`,
   };
 
-  const { updateTransactionAlert } = useContext(GasStationContext);
+  /*
+   * Commenting this effect out for now.
+   * I believe it's only useful for the old flow where the gas station would pop open automatically.
+   */
+  // useEffect(() => {
+  //   if (!error) {
+  //     if (metatransaction) {
+  //       dispatch(transactionSend(id));
+  //     } else {
+  //       dispatch(transactionEstimateGas(id));
+  //     }
+  //   }
+  // }, [dispatch, id, error, metatransaction]);
 
-  useEffect(() => {
-    if (!error) {
-      if (metatransaction) {
-        dispatch(transactionSend(id));
-      } else {
-        dispatch(transactionEstimateGas(id));
-      }
-    }
-  }, [dispatch, id, error, metatransaction]);
+  // const transform = useCallback(() => withId(id), [id])();
+  // const asyncFunction = useAsyncFunction({
+  //   submit: ActionTypes.TRANSACTION_RETRY,
+  //   error: ActionTypes.TRANSACTION_ERROR,
+  //   success: ActionTypes.TRANSACTION_SENT,
+  //   transform,
+  // });
 
-  const handleResetMetaTransactionAlert = useCallback(
-    () => updateTransactionAlert(id, { wasSeen: false }),
-    [id, updateTransactionAlert],
-  );
-
-  const transform = useCallback(withId(id), [id]);
-  const asyncFunction = useAsyncFunction({
-    submit: ActionTypes.TRANSACTION_RETRY,
-    error: ActionTypes.TRANSACTION_ERROR,
-    success: ActionTypes.TRANSACTION_SENT,
-    transform,
-  });
-
-  const handleRetryAction = useCallback(async () => {
-    try {
-      handleResetMetaTransactionAlert();
-      await asyncFunction(id).then(() =>
-        toast.success(
-          <Toast
-            type="success"
-            title={{ id: 'extensionDeprecate.toast.title.success' }}
-            description={{
-              id: 'extensionDeprecate.toast.description.success',
-            }}
-          />,
-        ),
-      );
-    } catch (err) {
-      toast.error(
-        <Toast type="error" title="Error" description="Something went wrong" />,
-      );
-      console.error(err);
-    }
-  }, [asyncFunction, id, handleResetMetaTransactionAlert]);
+  const handleRetryAction = () => {
+    dispatch(transactionRetry(id));
+    dispatch(transactionEstimateGas(id));
+  };
 
   return {
     defaultTransactionMessageDescriptorId,

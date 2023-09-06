@@ -100,6 +100,11 @@ fragment WatchListItem on WatchedColonies {
 fragment ColonyMetadata on ColonyMetadata {
   displayName
   avatar
+  description
+  externalLinks {
+    name
+    link
+  }
   thumbnail
   isWhitelistActivated
   whitelistedAddresses
@@ -110,6 +115,8 @@ fragment ColonyMetadata on ColonyMetadata {
     hasAvatarChanged
     hasWhitelistChanged
     haveTokensChanged
+    hasDescriptionChanged
+    haveExternalLinksChanged
   }
 }
 

@@ -3,9 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
 import { useColonyContext } from '~hooks';
-import { MAX_ANNOTATION_LENGTH } from '~constants';
+import {
+  MAX_ANNOTATION_LENGTH,
+  MAX_COLONY_DISPLAY_NAME,
+  MAX_DOMAIN_PURPOSE_LENGTH,
+} from '~constants';
 import { getCreateDomainDialogPayload } from '~common/Dialogs/CreateDomainDialog/helpers';
 import { useActionHook } from '../ActionForm/hooks';
+import { DomainColor } from '~gql';
 
 export const useCrateNewTeam = () => {
   const { colony } = useColonyContext();
@@ -14,7 +19,7 @@ export const useCrateNewTeam = () => {
   const transform = pipe(
     mapPayload((payload) => {
       const values = {
-        teamName: payload.teamName,
+        domainName: payload.teamName,
         domainPurpose: payload.domainPurpose,
         domainColor: payload.domainColor,
         motionDomainId: payload.createdIn,
@@ -36,9 +41,13 @@ export const useCrateNewTeam = () => {
       teamName: yup
         .string()
         .trim()
-        .max(20)
+        .max(MAX_COLONY_DISPLAY_NAME)
         .required(() => 'Team name required'),
-      domainPurpose: yup.string().trim().max(90).notRequired(),
+      domainPurpose: yup
+        .string()
+        .trim()
+        .max(MAX_DOMAIN_PURPOSE_LENGTH)
+        .notRequired(),
       domainColor: yup.string().notRequired(),
       createdIn: yup.number().defined(),
       decisionMethod: yup.string().defined(),
@@ -53,7 +62,7 @@ export const useCrateNewTeam = () => {
       forceAction: false,
       teamName: '',
       domainPurpose: '',
-      domainColor: '',
+      domainColor: DomainColor.LightPink,
       createdIn: 1,
       decisionMethod: 'reputation',
       annotation: '',

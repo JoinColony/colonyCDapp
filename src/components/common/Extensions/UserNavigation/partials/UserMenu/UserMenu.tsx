@@ -28,7 +28,6 @@ const UserMenu: FC<UserMenuProps> = ({
   isVerified,
   walletAddress,
   nativeToken,
-  hideColonies,
 }) => {
   const isMobile = useMobile();
   const { connectWallet, updateWallet } = useAppContext();
@@ -66,9 +65,7 @@ const UserMenu: FC<UserMenuProps> = ({
               userName={profile?.displayName || name || ''}
               isVerified={isVerified}
               walletAddress={walletAddress}
-              nativeToken={nativeToken}
               avatar={profile?.thumbnail || profile?.avatar || ''}
-              hideColonies={hideColonies}
             />
           </div>
         ) : (

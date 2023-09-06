@@ -4,13 +4,12 @@ import { AnyColonyClient, ClientType, getChildIndex } from '@colony/colony-js';
 import { Action, ActionTypes, AllActions } from '~redux/index';
 import { putError, takeFrom } from '~utils/saga/effects';
 import { ACTION_DECISION_MOTION_CODE, ADDRESS_ZERO } from '~constants';
-import { transactionReady } from '~redux/actionCreators';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { getColonyManager } from '../utils';
+import { getColonyManager, initiateTransaction } from '../utils';
 import {
   CreateColonyDecisionDocument,
   CreateColonyDecisionMutation,
@@ -118,7 +117,7 @@ function* createDecisionMotion({
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
     // yield takeFrom(annotateMotion.channel, ActionTypes.TRANSACTION_CREATED);
 
-    yield put(transactionReady(createMotion.id));
+    yield initiateTransaction({ id: createMotion.id });
 
     const {
       payload: { hash: txHash },

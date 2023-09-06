@@ -1,5 +1,5 @@
-import React, { FC, useState } from 'react';
-import { useController } from 'react-hook-form';
+import React, { FC } from 'react';
+import { useController, useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
 import clsx from 'clsx';
@@ -7,20 +7,19 @@ import styles from '../../ActionsContent.module.css';
 import useToggle from '~hooks/useToggle';
 import Card from '~v5/shared/Card';
 import { useDetectClickOutside } from '~hooks';
-import { useTeams } from '~hooks/useTeams';
 import SearchItem from '~v5/shared/SearchSelect/partials/SearchItem/SearchItem';
 import TeamColourBadge from './partails/TeamColourBadge';
 import { TeamColourFieldProps } from './types';
+import { useColors } from '~hooks/useColors';
 
 const displayName = 'v5.common.ActionsContent.partials.TeamColourField';
 
-const TeamColourField: FC<TeamColourFieldProps> = ({ isErrors }) => {
+const TeamColourField: FC<TeamColourFieldProps> = ({ isError }) => {
   const { field } = useController({
     name: 'domainColor',
   });
   const { formatMessage } = useIntl();
-  const teamsOptions = useTeams();
-  const [selectedTeamColour, setSelectedTeamColour] = useState<string>();
+  const colorsOptions = useColors();
   const [
     isTeamColourSelectVisible,
     { toggle: toggleDecisionSelect, toggleOff: toggleOffDecisionSelect },
@@ -30,18 +29,21 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ isErrors }) => {
     onTriggered: () => toggleOffDecisionSelect(),
   });
 
+  const methods = useFormContext();
+  const teamNameValue = methods?.watch('teamName');
+
   return (
     <div className="sm:relative w-full" ref={ref}>
       <button
         type="button"
         className={clsx(styles.button, {
-          'text-gray-600': !isErrors,
-          'text-negative-400': isErrors,
+          'placeholder-gray-500': !isError,
+          'placeholder-negative-400': isError,
         })}
         onClick={toggleDecisionSelect}
       >
-        {selectedTeamColour ? (
-          <TeamColourBadge title={selectedTeamColour} />
+        {teamNameValue ? (
+          <TeamColourBadge defaultColor={field.value} title={teamNameValue} />
         ) : (
           formatMessage({ id: 'actionSidebar.selectTeam' })
         )}
@@ -54,15 +56,8 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ isErrors }) => {
           rounded="s"
         >
           <SearchItem
-            options={teamsOptions?.options}
-            onChange={(value) => {
-              const teamId = teamsOptions.options.find(
-                (team) => team.value === value,
-              )?.nativeId;
-
-              setSelectedTeamColour(value);
-              field.onChange(teamId);
-            }}
+            options={colorsOptions?.options}
+            onChange={(value) => field.onChange(value)}
             isLabelVisible={false}
           />
         </Card>

@@ -1,3 +1,5 @@
+/* eslint-disable global-require */
+
 module.exports = {
   mode: 'jit',
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
@@ -141,9 +143,7 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-  ],
+  plugins: [require('@tailwindcss/typography')],
   future: {
     hoverOnlyWhenSupported: true,
   },

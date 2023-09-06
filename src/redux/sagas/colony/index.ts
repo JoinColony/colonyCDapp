@@ -3,7 +3,7 @@ import { ClientType } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError } from '../utils';
+import { initiateTransaction, putError } from '../utils';
 
 import {
   createTransaction,
@@ -27,6 +27,7 @@ function* colonyClaimToken({
       params: [tokenAddress],
     });
 
+    yield initiateTransaction({ id: meta.id });
     const { payload, type } = yield waitForTxResult(txChannel);
 
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {

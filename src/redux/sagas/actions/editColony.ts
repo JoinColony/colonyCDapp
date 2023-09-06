@@ -9,6 +9,7 @@ import {
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
 } from '~gql';
+import { isEqual } from '~utils/lodash';
 
 import {
   createGroupTransaction,
@@ -17,15 +18,12 @@ import {
 } from '../transactions';
 import {
   getUpdatedColonyMetadataChangelog,
+  initiateTransaction,
   putError,
   takeFrom,
   uploadAnnotation,
 } from '../utils';
-import {
-  transactionAddParams,
-  transactionPending,
-  transactionReady,
-} from '../../actionCreators';
+import { transactionAddParams, transactionPending } from '../../actionCreators';
 import {
   getExistingTokenAddresses,
   getModifiedTokenAddresses,
@@ -35,9 +33,11 @@ import {
 function* editColonyAction({
   payload: {
     colony,
-    colony: { colonyAddress, name: colonyName },
+    colony: { colonyAddress, name: colonyName, metadata },
     colonyDisplayName,
+    colonyDescription,
     colonyAvatarImage,
+    colonyExternalLinks,
     colonyThumbnail,
     tokenAddresses,
     annotationMessage,
@@ -128,7 +128,7 @@ function* editColonyAction({
      * It will be replaced with the IPFS hash in due course.
      */
     yield put(transactionAddParams(editColony.id, ['.']));
-    yield put(transactionReady(editColony.id));
+    yield initiateTransaction({ id: editColony.id });
 
     const {
       payload: { hash: txHash },
@@ -171,6 +171,9 @@ function* editColonyAction({
             displayName: colonyDisplayName,
             avatar: colonyAvatarImage,
             thumbnail: colonyThumbnail,
+            description: colonyDescription,
+            externalLinks: colonyExternalLinks,
+            // @TODO: refactor this function to take an object
             changelog: getUpdatedColonyMetadataChangelog(
               txHash,
               colony.metadata,
@@ -178,6 +181,8 @@ function* editColonyAction({
               colonyAvatarImage,
               false,
               haveTokensChanged,
+              metadata?.description !== colonyDescription,
+              !isEqual(metadata?.externalLinks, colonyExternalLinks),
             ),
           },
         },
