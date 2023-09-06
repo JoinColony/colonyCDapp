@@ -8,6 +8,7 @@ import { findDomainByNativeId } from '~utils/domains';
 import { CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure';
 
 import {
+  ExpenditureFormType,
   ExpenditureFormValues,
   ExpenditurePayoutFieldValue,
   ExpenditureStageFieldValue,
@@ -62,6 +63,7 @@ export const getCreateExpenditureTransformPayloadFn = (
             ? findDomainByNativeId(payload.createInDomainId, colony)
             : null,
           fundFromDomainId: payload.fundFromDomainId,
+          isStaged: payload.formType === ExpenditureFormType.Staged,
         } as CreateExpenditurePayload),
     ),
     withMeta({ navigate }),
