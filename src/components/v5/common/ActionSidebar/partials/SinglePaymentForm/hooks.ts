@@ -6,6 +6,7 @@ import { getCreatePaymentDialogPayload } from '~common/Dialogs/CreatePaymentDial
 import { MAX_ANNOTATION_NUM } from '~v5/shared/RichText/consts';
 import { toFinite } from '~utils/lodash';
 import { useActionHook } from '../ActionForm/hooks';
+import { DECISION_METHOD_OPTIONS } from '~v5/common/ActionsContent/consts';
 
 export const useSinglePayment = () => {
   const { networkInverseFee } = useNetworkInverseFee();
@@ -55,7 +56,7 @@ export const useSinglePayment = () => {
       to: 1,
       recipent: undefined,
       forceAction: false,
-      decisionMethod: 'reputation',
+      decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
       annotation: '',
       amount: 0,
     },
