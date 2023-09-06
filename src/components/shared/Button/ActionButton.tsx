@@ -8,7 +8,7 @@ import { ActionTypes } from '~redux';
 
 import { Props as DefaultButtonProps } from './Button';
 
-interface Props extends DefaultButtonProps {
+interface Props<P> extends DefaultButtonProps {
   /** The base (i.e. submit) redux action type */
   actionType: ActionTypes;
   button?: ElementType;
@@ -20,10 +20,10 @@ interface Props extends DefaultButtonProps {
   success?: string;
   text?: MessageDescriptor | string;
   transform?: ActionTransformFnType;
-  values?: any | (() => any | Promise<any>);
+  values?: P | (() => P | Promise<P>);
 }
 
-const ActionButton = ({
+const ActionButton = <P = any,>({
   actionType,
   button,
   error,
@@ -34,7 +34,7 @@ const ActionButton = ({
   values,
   transform,
   ...props
-}: Props) => {
+}: Props<P>) => {
   const submitAction = submit || actionType;
   const errorAction = error || getFormAction(actionType, 'ERROR');
   const successAction = success || getFormAction(actionType, 'SUCCESS');
@@ -52,7 +52,9 @@ const ActionButton = ({
     setLoading(true);
     try {
       const asyncFuncValues =
-        typeof values == 'function' ? await values() : values;
+        typeof values == 'function'
+          ? await (values as () => Promise<P> | P)()
+          : values;
       result = await asyncFunction(asyncFuncValues);
       if (isMountedRef.current) setLoading(false);
     } catch (err) {
