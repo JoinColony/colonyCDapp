@@ -40,6 +40,7 @@ function* createExpenditure({
     payouts,
     createdInDomain,
     fundFromDomainId,
+    isStaged,
   },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -60,9 +61,10 @@ function* createExpenditure({
   const {
     makeExpenditure,
     setExpenditureValues,
+    setExpenditureStaged,
   }: Record<string, ChannelDefinition> = yield createTransactionChannels(
     meta.id,
-    ['makeExpenditure', 'setExpenditureValues'],
+    ['makeExpenditure', 'setExpenditureValues', 'setExpenditureStaged'],
   );
 
   try {
@@ -97,6 +99,20 @@ function* createExpenditure({
       ready: false,
     });
 
+    if (isStaged) {
+      yield fork(createTransaction, setExpenditureStaged.id, {
+        context: ClientType.StagedExpenditureClient,
+        methodName: 'setExpenditureStaged',
+        identifier: colonyAddress,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 2,
+        },
+        ready: false,
+      });
+    }
+
     yield put(transactionPending(makeExpenditure.id));
     yield put(transactionReady(makeExpenditure.id));
     yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_SUCCEEDED);
@@ -118,6 +134,18 @@ function* createExpenditure({
       setExpenditureValues.channel,
       ActionTypes.TRANSACTION_SUCCEEDED,
     );
+
+    if (isStaged) {
+      yield put(transactionPending(setExpenditureStaged.id));
+      yield put(
+        transactionAddParams(setExpenditureStaged.id, [expenditureId, true]),
+      );
+      yield put(transactionReady(setExpenditureStaged.id));
+      yield takeFrom(
+        setExpenditureStaged.channel,
+        ActionTypes.TRANSACTION_SUCCEEDED,
+      );
+    }
 
     yield apolloClient.mutate<
       CreateExpenditureMetadataMutation,
@@ -144,8 +172,8 @@ function* createExpenditure({
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   }
 
-  [makeExpenditure, setExpenditureValues].forEach((channel) =>
-    channel.channel.close(),
+  [makeExpenditure, setExpenditureValues, setExpenditureStaged].forEach(
+    (channel) => channel.channel.close(),
   );
 
   return null;

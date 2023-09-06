@@ -275,6 +275,8 @@
   "transaction.StakedExpenditureClient.makeExpenditureWithStake.description": "Make Expenditure With Stake",
   "transaction.StakedExpenditureClient.reclaimStake.title": "Reclaim Stake",
   "transaction.StakedExpenditureClient.reclaimStake.description": "Reclaim Stake",
+  "transaction.StagedExpenditureClient.setExpenditureStaged.title": "Set Expenditure as Staged",
+  "transaction.StagedExpenditureClient.setExpenditureStaged.description": "Set Expenditure as Staged",
 
   "metatransaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
   "metatransaction.group.deposit.title": "Activate tokens",

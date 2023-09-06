@@ -40,6 +40,7 @@ function* createStakedExpenditure({
     fundFromDomainId,
     stakeAmount,
     stakedExpenditureAddress,
+    isStaged,
   },
 }: Action<ActionTypes.STAKED_EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -61,9 +62,15 @@ function* createStakedExpenditure({
     approveStake,
     makeExpenditure,
     setExpenditureValues,
+    setExpenditureStaged,
   }: Record<string, ChannelDefinition> = yield createTransactionChannels(
     meta.id,
-    ['approveStake', 'makeExpenditure', 'setExpenditureValues'],
+    [
+      'approveStake',
+      'makeExpenditure',
+      'setExpenditureValues',
+      'setExpenditureStaged',
+    ],
   );
 
   try {
@@ -103,6 +110,20 @@ function* createStakedExpenditure({
       },
       ready: false,
     });
+
+    if (isStaged) {
+      yield fork(createTransaction, setExpenditureStaged.id, {
+        context: ClientType.StagedExpenditureClient,
+        methodName: 'setExpenditureStaged',
+        identifier: colonyAddress,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 3,
+        },
+        ready: false,
+      });
+    }
 
     yield put(transactionPending(approveStake.id));
     yield put(transactionReady(approveStake.id));
@@ -160,6 +181,18 @@ function* createStakedExpenditure({
       ActionTypes.TRANSACTION_SUCCEEDED,
     );
 
+    if (isStaged) {
+      yield put(transactionPending(setExpenditureStaged.id));
+      yield put(
+        transactionAddParams(setExpenditureStaged.id, [expenditureId, true]),
+      );
+      yield put(transactionReady(setExpenditureStaged.id));
+      yield takeFrom(
+        setExpenditureStaged.channel,
+        ActionTypes.TRANSACTION_SUCCEEDED,
+      );
+    }
+
     yield apolloClient.mutate<
       CreateExpenditureMetadataMutation,
       CreateExpenditureMetadataMutationVariables
@@ -185,9 +218,12 @@ function* createStakedExpenditure({
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   }
 
-  [approveStake, makeExpenditure, setExpenditureValues].forEach((channel) =>
-    channel.channel.close(),
-  );
+  [
+    approveStake,
+    makeExpenditure,
+    setExpenditureValues,
+    setExpenditureStaged,
+  ].forEach((channel) => channel.channel.close());
 
   return null;
 }
