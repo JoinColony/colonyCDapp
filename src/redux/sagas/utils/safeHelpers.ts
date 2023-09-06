@@ -5,7 +5,13 @@ import moveDecimal from 'move-decimal-point';
 import { AddressZero } from '@ethersproject/constants';
 import { FormatTypes } from 'ethers/lib/utils';
 
-import { Address, ModuleAddress, Safe, SafeTransactionData } from '~types';
+import {
+  Address,
+  ModuleAddress,
+  Safe,
+  SafeTransactionData,
+  SafeTransactionType,
+} from '~types';
 import {
   GNOSIS_AMB_BRIDGES,
   isDev,
@@ -411,3 +417,75 @@ export const getContractInteractionData = async (
 export const getChainNameFromSafe = (safeDisplayName: string) => {
   return safeDisplayName.match(/\(([^()]*)\)$/)?.pop() || '';
 };
+
+export function* getTransactionEncodedData(
+  transactions: SafeTransactionData[],
+  safe: Safe,
+  network: NetworkInfo,
+  homeBridge: Contract,
+) {
+  const zodiacBridgeModuleAddress = isDev
+    ? ZODIAC_BRIDGE_MODULE_ADDRESS
+    : safe.moduleContractAddress;
+
+  if (!zodiacBridgeModuleAddress) {
+    throw new Error(
+      `Please provide a ZODIAC_BRIDGE_MODULE_ADDRESS. If running local, please add key-pair to your .env file.`,
+    );
+  }
+
+  const zodiacBridgeModule = getZodiacModule(zodiacBridgeModuleAddress, safe);
+  const transactionData: string[] = [];
+  /*
+   * Calls HomeBridge for each Tx, with the Colony as the sender.
+   * Loop necessary as yield cannot be called inside of an array iterator (like forEach).
+   */
+  /* eslint-disable-next-line no-restricted-syntax */
+  for (const transaction of transactions) {
+    let txDataToBeSentToZodiacModule = '';
+    switch (transaction.transactionType) {
+      case SafeTransactionType.RawTransaction:
+        txDataToBeSentToZodiacModule = getRawTransactionData(
+          zodiacBridgeModule,
+          transaction,
+        );
+        break;
+      case SafeTransactionType.TransferNft:
+        txDataToBeSentToZodiacModule = getTransferNFTData(
+          zodiacBridgeModule,
+          safe,
+          transaction,
+        );
+        break;
+      case SafeTransactionType.TransferFunds:
+        txDataToBeSentToZodiacModule = yield getTransferFundsData(
+          zodiacBridgeModule,
+          safe,
+          transaction,
+          network,
+        );
+        break;
+      case SafeTransactionType.ContractInteraction:
+        txDataToBeSentToZodiacModule = yield getContractInteractionData(
+          zodiacBridgeModule,
+          safe,
+          transaction,
+        );
+        break;
+      default:
+        throw new Error(
+          `Unknown transaction type: ${transaction.transactionType}`,
+        );
+    }
+
+    /* eslint-disable-next-line max-len */
+    const txDataToBeSentToAMB = yield homeBridge.interface.encodeFunctionData(
+      'requireToPassMessage',
+      [zodiacBridgeModule.address, txDataToBeSentToZodiacModule, 1000000],
+    );
+
+    transactionData.push(txDataToBeSentToAMB);
+  }
+
+  return transactionData;
+}

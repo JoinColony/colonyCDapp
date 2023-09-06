@@ -11,7 +11,6 @@ import {
   SelectedPickerItem,
   Safe,
   NFTData,
-  ColonyAndExtensionsEvents,
   ExtendedColonyActionType,
 } from '~types';
 import { notNull } from '~utils/arrays';
@@ -189,16 +188,6 @@ export const parseSafeTransactionType = (actionData: ColonyAction) => {
     }
 
     return actionType as ExtendedColonyActionType;
-  }
-
-  return undefined;
-};
-
-export const parseSafeTransactionEventType = (actionData: ColonyAction) => {
-  const type = parseSafeTransactionType(actionData);
-
-  if (type) {
-    return [type as unknown as ColonyAndExtensionsEvents];
   }
 
   return undefined;

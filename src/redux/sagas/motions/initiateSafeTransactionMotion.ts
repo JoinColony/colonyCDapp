@@ -2,7 +2,6 @@ import { ClientType, getChildIndex, Id } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import {
-  SafeTransactionType,
   CreateSafeTransactionDocument,
   CreateSafeTransactionMutation,
   CreateSafeTransactionMutationVariables,
@@ -25,13 +24,9 @@ import {
 } from '../transactions';
 import { getColonyManager, uploadAnnotation } from '../utils';
 import {
-  getRawTransactionData,
-  getTransferNFTData,
-  getTransferFundsData,
-  getContractInteractionData,
-  getZodiacModule,
   getHomeBridgeByChain,
   ZODIAC_BRIDGE_MODULE_ADDRESS,
+  getTransactionEncodedData,
 } from '../utils/safeHelpers';
 
 function* initiateSafeTransactionMotion({
@@ -68,7 +63,6 @@ function* initiateSafeTransactionMotion({
       );
     }
     const homeBridge = getHomeBridgeByChain(safe.chainId);
-    const zodiacBridgeModule = getZodiacModule(zodiacBridgeModuleAddress, safe);
 
     const motionChildSkillIndex = yield call(
       getChildIndex,
@@ -97,56 +91,12 @@ function* initiateSafeTransactionMotion({
         'annotateInitiateSafeTransaction',
       ]);
 
-    const transactionData: string[] = [];
-    /*
-     * Calls HomeBridge for each Tx, with the Colony as the sender.
-     * Loop necessary as yield cannot be called inside of an array iterator (like forEach).
-     */
-    /* eslint-disable-next-line no-restricted-syntax */
-    for (const transaction of transactions) {
-      let txDataToBeSentToZodiacModule = '';
-      switch (transaction.transactionType) {
-        case SafeTransactionType.RawTransaction:
-          txDataToBeSentToZodiacModule = getRawTransactionData(
-            zodiacBridgeModule,
-            transaction,
-          );
-          break;
-        case SafeTransactionType.TransferNft:
-          txDataToBeSentToZodiacModule = getTransferNFTData(
-            zodiacBridgeModule,
-            safe,
-            transaction,
-          );
-          break;
-        case SafeTransactionType.TransferFunds:
-          txDataToBeSentToZodiacModule = yield getTransferFundsData(
-            zodiacBridgeModule,
-            safe,
-            transaction,
-            network,
-          );
-          break;
-        case SafeTransactionType.ContractInteraction:
-          txDataToBeSentToZodiacModule = yield getContractInteractionData(
-            zodiacBridgeModule,
-            safe,
-            transaction,
-          );
-          break;
-        default:
-          throw new Error(
-            `Unknown transaction type: ${transaction.transactionType}`,
-          );
-      }
-
-      const txDataToBeSentToAMB = yield homeBridge.interface.encodeFunctionData(
-        'requireToPassMessage',
-        [zodiacBridgeModule.address, txDataToBeSentToZodiacModule, 1000000],
-      );
-
-      transactionData.push(txDataToBeSentToAMB);
-    }
+    const transactionData: string[] = yield getTransactionEncodedData(
+      transactions,
+      safe,
+      network,
+      homeBridge,
+    );
 
     const encodedAction = colonyClient.interface.encodeFunctionData(
       'makeArbitraryTransactions',
