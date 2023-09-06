@@ -1081,6 +1081,7 @@ export type CreateExpenditureInput = {
 export type CreateExpenditureMetadataInput = {
   fundFromDomainNativeId: Scalars['Int'];
   id?: InputMaybe<Scalars['ID']>;
+  stages?: InputMaybe<Array<InputMaybe<ExpenditureStagesInput>>>;
   type: ExpenditureType;
 };
 
@@ -1483,6 +1484,7 @@ export type ExpenditureMetadata = {
   createdAt: Scalars['AWSDateTime'];
   fundFromDomainNativeId: Scalars['Int'];
   id: Scalars['ID'];
+  stages?: Maybe<Array<Maybe<ExpenditureStages>>>;
   type: ExpenditureType;
   updatedAt: Scalars['AWSDateTime'];
 };
@@ -1515,6 +1517,21 @@ export type ExpenditureSlotInput = {
   payoutModifier?: InputMaybe<Scalars['Int']>;
   payouts?: InputMaybe<Array<ExpenditurePayoutInput>>;
   recipientAddress?: InputMaybe<Scalars['String']>;
+};
+
+export type ExpenditureStages = {
+  __typename?: 'ExpenditureStages';
+  amount: Scalars['String'];
+  name: Scalars['String'];
+  slotId: Scalars['Int'];
+  tokenAddress: Scalars['String'];
+};
+
+export type ExpenditureStagesInput = {
+  amount: Scalars['String'];
+  name: Scalars['String'];
+  slotId: Scalars['Int'];
+  tokenAddress: Scalars['String'];
 };
 
 export enum ExpenditureStatus {
@@ -5479,6 +5496,7 @@ export type UpdateExpenditureInput = {
 export type UpdateExpenditureMetadataInput = {
   fundFromDomainNativeId?: InputMaybe<Scalars['Int']>;
   id: Scalars['ID'];
+  stages?: InputMaybe<Array<InputMaybe<ExpenditureStagesInput>>>;
   type?: InputMaybe<ExpenditureType>;
 };
 

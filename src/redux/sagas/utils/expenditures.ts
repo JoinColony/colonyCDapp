@@ -1,8 +1,19 @@
 import { BigNumber } from 'ethers';
 
-import { ExpenditurePayoutFieldValue } from '~common/Expenditures/ExpenditureForm';
+import {
+  ExpenditurePayoutFieldValue,
+  ExpenditureStageFieldValue,
+} from '~common/Expenditures/ExpenditureForm';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { Expenditure, MethodParams } from '~types';
+import { ContextModule, getContext } from '~context';
+import {
+  CreateExpenditureMetadataDocument,
+  CreateExpenditureMetadataMutation,
+  CreateExpenditureMetadataMutationVariables,
+  ExpenditureType,
+} from '~gql';
+import { getExpenditureDatabaseId } from '~utils/databaseId';
 
 /**
  * Util returning a map between token addresses and arrays of payouts field values
@@ -92,3 +103,39 @@ export const getExpenditureBalancesByTokenAddress = (
 
   return balancesByTokenAddresses;
 };
+
+interface SaveExpenditureMetadataParams {
+  colonyAddress: string;
+  expenditureId: number;
+  fundFromDomainId: number;
+  expenditureType: ExpenditureType;
+  stages?: ExpenditureStageFieldValue[];
+}
+
+export function* saveExpenditureMetadata({
+  colonyAddress,
+  expenditureId,
+  fundFromDomainId,
+  expenditureType,
+  stages,
+}: SaveExpenditureMetadataParams) {
+  const apolloClient = getContext(ContextModule.ApolloClient);
+
+  yield apolloClient.mutate<
+    CreateExpenditureMetadataMutation,
+    CreateExpenditureMetadataMutationVariables
+  >({
+    mutation: CreateExpenditureMetadataDocument,
+    variables: {
+      input: {
+        id: getExpenditureDatabaseId(colonyAddress, expenditureId),
+        type: expenditureType,
+        fundFromDomainNativeId: fundFromDomainId,
+        stages: stages?.map((stage, index) => ({
+          ...stage,
+          slotId: index + 1,
+        })),
+      },
+    },
+  });
+}

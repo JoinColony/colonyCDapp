@@ -2,20 +2,13 @@ import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { takeEvery, fork, call, put } from 'redux-saga/effects';
 
 import { Action, ActionTypes, AllActions } from '~redux';
-import { ColonyManager, ContextModule, getContext } from '~context';
+import { ColonyManager } from '~context';
 import {
   transactionAddParams,
   transactionPending,
   transactionReady,
 } from '~redux/actionCreators';
-import {
-  CreateExpenditureMetadataDocument,
-  CreateExpenditureMetadataMutation,
-  CreateExpenditureMetadataMutationVariables,
-  ExpenditureType,
-} from '~gql';
-import { getExpenditureDatabaseId } from '~utils/databaseId';
-import { toNumber } from '~utils/numbers';
+import { ExpenditureType } from '~gql';
 
 import {
   ChannelDefinition,
@@ -27,6 +20,7 @@ import {
   putError,
   takeFrom,
   getSetExpenditureValuesFunctionParams,
+  saveExpenditureMetadata,
 } from '../utils';
 
 export type CreateExpenditurePayload =
@@ -41,6 +35,7 @@ function* createExpenditure({
     createdInDomain,
     fundFromDomainId,
     isStaged,
+    stages,
   },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -48,8 +43,6 @@ function* createExpenditure({
     ClientType.ColonyClient,
     colonyAddress,
   );
-  const apolloClient = getContext(ContextModule.ApolloClient);
-
   const batchKey = 'createExpenditure';
 
   // Add slot id to each payout
@@ -147,18 +140,12 @@ function* createExpenditure({
       );
     }
 
-    yield apolloClient.mutate<
-      CreateExpenditureMetadataMutation,
-      CreateExpenditureMetadataMutationVariables
-    >({
-      mutation: CreateExpenditureMetadataDocument,
-      variables: {
-        input: {
-          id: getExpenditureDatabaseId(colonyAddress, toNumber(expenditureId)),
-          fundFromDomainNativeId: fundFromDomainId,
-          type: ExpenditureType.Forced,
-        },
-      },
+    yield saveExpenditureMetadata({
+      colonyAddress,
+      expenditureId,
+      fundFromDomainId,
+      expenditureType: ExpenditureType.Forced,
+      stages,
     });
 
     yield put<AllActions>({
