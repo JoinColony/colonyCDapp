@@ -21,7 +21,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   const { formatMessage } = useIntl();
   const titleText = typeof title === 'string' ? title : formatMessage(title);
 
-  const actionText = action && action.actionText;
+  const { actionText } = action || {};
   const actionMessage =
     typeof actionText === 'string'
       ? actionText
