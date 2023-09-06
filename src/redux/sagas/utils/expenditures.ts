@@ -134,6 +134,10 @@ export function* saveExpenditureMetadata({
         stages: stages?.map((stage, index) => ({
           ...stage,
           slotId: index + 1,
+          // @TODO: This should get the token decimals of the selected token
+          amount: BigNumber.from(stage.amount)
+            .mul(BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS))
+            .toString(),
         })),
       },
     },

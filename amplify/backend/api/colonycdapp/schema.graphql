@@ -2598,7 +2598,7 @@ type ExpenditureMetadata @model {
   id: ID! # Self-managed, formatted as colonyId_nativeExpenditureId
   fundFromDomainNativeId: Int!
   type: ExpenditureType!
-  stages: [ExpenditureStages]
+  stages: [ExpenditureStage]
 }
 
 type ExpenditureBalance {
@@ -2607,7 +2607,7 @@ type ExpenditureBalance {
   requiredAmount: String! # Total amount required to cover all payouts for the given token
 }
 
-type ExpenditureStages {
+type ExpenditureStage {
   name: String!
   amount: String!
   tokenAddress: String!
