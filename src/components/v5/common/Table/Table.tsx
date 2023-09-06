@@ -57,17 +57,14 @@ const Table = <T,>({ className, tableTitle, data, columns }: TableProps<T>) => {
                     'border-b border-b-gray-200': lastRow.id !== row.id,
                   })}
                 >
-                  {row.getVisibleCells().map((cell) => {
-                    console.log(cell);
-                    return (
-                      <td key={cell.id} className="px-4 text-md text-gray-500">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </td>
-                    );
-                  })}
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className="px-4 text-md text-gray-500">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </td>
+                  ))}
                 </tr>
               );
             })}
