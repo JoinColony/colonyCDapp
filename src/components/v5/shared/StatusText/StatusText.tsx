@@ -2,8 +2,11 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import clsx from 'clsx';
-import { StatusTextProps, STATUS_TYPES } from './types';
+import { StatusTextProps } from './types';
 import Icon from '~shared/Icon';
+import { STATUS_TYPES } from './consts';
+
+const displayName = 'v5.shared.StatusText';
 
 const StatusText: FC<StatusTextProps> = ({
   title,
@@ -30,11 +33,16 @@ const StatusText: FC<StatusTextProps> = ({
       })}
     >
       {withIcon && (
-        <Icon name={iconName[status]} appearance={{ size: 'tiny' }} />
+        <Icon
+          name={iconName[status]}
+          className="h-[.875rem] w-[.875rem] flex-shrink-0"
+        />
       )}
       <p className={textClassName}>{titleText}</p>
     </div>
   );
 };
+
+StatusText.displayName = displayName;
 
 export default StatusText;

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import NotificationBanner from '~common/Extensions/NotificationBanner';
 import { useColonyContext, useColonyContractVersion, useMobile } from '~hooks';
@@ -62,7 +62,7 @@ const AdvancedPage: FC = () => {
             action={{
               type: 'redirect',
               href: 'https://colony.io/colonyjs/docs/colonyjs-core/#recovery-mode',
-              actionText: { id: 'text.learnMore' },
+              actionText: <FormattedMessage id="text.learnMore" />,
             }}
             isAlt
           />

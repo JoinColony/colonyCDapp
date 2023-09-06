@@ -22,10 +22,6 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   const titleText = typeof title === 'string' ? title : formatMessage(title);
 
   const { actionText } = action || {};
-  const actionMessage =
-    typeof actionText === 'string'
-      ? actionText
-      : actionText && formatMessage(actionText);
 
   return (
     <div
@@ -76,21 +72,25 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
           'ml-6 md:ml-2': !isAlt,
         })}
       >
-        {action && (
-          <>
-            {action.type === 'copy' && (
-              <CopyUrl actionText={action.copyContent} />
-            )}
-            {action.type === 'redirect' && (
-              <Link to={action.href}>{actionMessage}</Link>
-            )}
-            {action.type === 'call-to-action' && (
-              <button type="button" onClick={action.onClick}>
-                {actionMessage}
-              </button>
-            )}
-          </>
-        )}
+        {(() => {
+          switch (action?.type) {
+            case 'copy': {
+              return <CopyUrl actionText={action.copyContent} />;
+            }
+            case 'redirect': {
+              return <Link to={action.href}>{actionText}</Link>;
+            }
+            case 'call-to-action': {
+              return (
+                <button type="button" onClick={action.onClick}>
+                  {actionText}
+                </button>
+              );
+            }
+            default:
+              return null;
+          }
+        })()}
       </div>
     </div>
   );

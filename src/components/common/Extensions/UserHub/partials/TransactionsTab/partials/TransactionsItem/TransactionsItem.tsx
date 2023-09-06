@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import Icon from '~shared/Icon';
@@ -132,7 +132,7 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
                           title={notificationInfo}
                           action={{
                             type: 'redirect',
-                            actionText: { id: 'retry' },
+                            actionText: <FormattedMessage id="retry" />,
                             href: '',
                           }}
                           isAlt

@@ -100,7 +100,7 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
             status="error"
             action={{
               type: 'call-to-action',
-              actionText: { id: 'retry' },
+              actionText: <FormattedMessage id="retry" />,
               onClick: handleRetryAction,
             }}
             isAlt

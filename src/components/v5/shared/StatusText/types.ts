@@ -1,4 +1,5 @@
 import { MessageDescriptor } from 'react-intl';
+import { STATUS_TYPES } from './consts';
 
 export interface StatusTextProps {
   status: (typeof STATUS_TYPES)[keyof typeof STATUS_TYPES];
@@ -6,10 +7,3 @@ export interface StatusTextProps {
   withIcon?: boolean;
   textClassName?: string;
 }
-
-export const STATUS_TYPES = {
-  SUCCESS: 'success',
-  WARNING: 'warning',
-  ERROR: 'error',
-  INFO: 'info',
-} as const;

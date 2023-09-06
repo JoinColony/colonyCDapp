@@ -1,6 +1,6 @@
 import React, { FC, PropsWithChildren, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useOnClickOutside } from 'usehooks-ts';
 
 import styles from './ActionSidebar.module.css';
@@ -75,8 +75,9 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
               }}
               action={{
                 type: 'call-to-action',
-                actionText: actionsWithErrorBanners ? { id: 'learn.more' } : '',
-                onClick: () => {},
+                actionText: actionsWithErrorBanners ? (
+                  <FormattedMessage id="learn.more" />
+                ) : null,
               }}
             />
           </div>
