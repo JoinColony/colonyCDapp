@@ -4,3 +4,7 @@ export interface TransactionProps {
   amount: string;
   token: string;
 }
+
+export interface TransactionTableProps extends Omit<TransactionProps, 'key'> {
+  burgerMenu?: Element;
+}
