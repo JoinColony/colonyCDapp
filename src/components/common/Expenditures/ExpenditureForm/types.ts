@@ -9,6 +9,7 @@ export interface ExpenditureFormValues {
   fundFromDomainId: number;
   formType: ExpenditureFormType;
   stages: ExpenditureStageFieldValue[];
+  recipientAddress?: string;
 }
 
 export interface ExpenditurePayoutFieldValue {
@@ -22,4 +23,5 @@ export interface ExpenditurePayoutFieldValue {
 export interface ExpenditureStageFieldValue {
   name: string;
   amount: string;
+  tokenAddress: string;
 }

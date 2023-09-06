@@ -57,7 +57,7 @@ const CreateExpenditureForm = () => {
         createInDomainId: Id.RootDomain,
         fundFromDomainId: Id.RootDomain,
         formType: ExpenditureFormType.Advanced,
-        stages: [getInitialStageFieldValue()],
+        stages: [getInitialStageFieldValue(colony.nativeToken.tokenAddress)],
       }}
       transform={getCreateExpenditureTransformPayloadFn(colony, navigate)}
     >

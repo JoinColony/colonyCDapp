@@ -4,8 +4,8 @@ import { useFormContext } from 'react-hook-form';
 import { Colony } from '~types';
 
 import { ExpenditureFormType } from '../types';
-import ExpenditurePayoutsField from './ExpenditurePayoutsField';
-import ExpenditureStagesField from './ExpenditureStagesField';
+import StagedPaymentsFormFields from './StagedPaymentFormFields';
+import AdvancedPaymentsFormFields from './AdvancedPaymentsFormFields';
 
 interface ExpenditureFormFieldsProps {
   colony: Colony;
@@ -16,18 +16,14 @@ const ExpenditureFormFields = ({ colony }: ExpenditureFormFieldsProps) => {
 
   const formType: ExpenditureFormType = watch('formType');
 
-  return (
-    <div>
-      <ExpenditurePayoutsField
-        colony={colony}
-        singlePayout={formType === ExpenditureFormType.Staged}
-      />
-
-      {formType === ExpenditureFormType.Staged && (
-        <ExpenditureStagesField colony={colony} />
-      )}
-    </div>
-  );
+  switch (formType) {
+    case ExpenditureFormType.Advanced:
+      return <AdvancedPaymentsFormFields colony={colony} />;
+    case ExpenditureFormType.Staged:
+      return <StagedPaymentsFormFields colony={colony} />;
+    default:
+      return null;
+  }
 };
 
 export default ExpenditureFormFields;
