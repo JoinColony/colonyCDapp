@@ -1,11 +1,11 @@
 import { MessageDescriptor } from 'react-intl';
 
-export type ActionSidebarRowProps = {
+export interface ActionSidebarRowProps {
   iconName: string;
   title: MessageDescriptor;
   isDescriptionFieldRow?: boolean;
   isOpened?: boolean;
   onToggle?: () => void;
-  ref?: React.MutableRefObject<null>;
   isErrors?: boolean;
-};
+  children?: React.ReactNode;
+}

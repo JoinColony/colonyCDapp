@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 import { useOnClickOutside } from 'usehooks-ts';
 
-import styles from './ActionSidebar.module.css';
 import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';
 import ActionSidebarRow from '../ActionSidebarRow';
@@ -75,7 +74,11 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
       <div className="px-6 py-8 overflow-scroll h-[40rem]">
         <input
           type="text"
-          className={styles.titleInput}
+          className={`
+            heading-3 placeholder:text-gray-500
+            hover:text-blue-400 hover:placeholder:text-blue-400 text-gray-900
+            transition-colors duration-normal mb-7
+          `}
           placeholder={formatMessage({ id: 'placeholder.title' })}
         />
         <ActionSidebarRow
@@ -157,17 +160,20 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <div
-      className={clsx(styles.sidebar, {
-        'sm:max-w-[43.375rem]': !isSidebarFullscreen,
-        'max-w-full': isSidebarFullscreen,
-      })}
+      className={clsx(
+        `fixed top-0 right-0 bottom-0 w-full h-full bg-base-white rounded-bl-lg border-l border-gray-200 shadow-default transition-all z-[60] flex flex-col`,
+        {
+          'sm:max-w-[43.375rem]': !isSidebarFullscreen,
+          'max-w-full': isSidebarFullscreen,
+        },
+      )}
       ref={ref}
     >
       <div className="py-4 px-6 flex w-full items-center justify-between border-b border-gray-200">
         {isMobile ? (
           <button
             type="button"
-            className={styles.button}
+            className="py-2.5 flex items-center justify-center text-gray-400"
             onClick={toggleActionSidebarOff}
             aria-label={formatMessage({ id: 'ariaLabel.closeModal' })}
           >
@@ -176,7 +182,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
         ) : (
           <button
             type="button"
-            className={styles.button}
+            className="py-2.5 flex items-center justify-center text-gray-400"
             onClick={() => setIsSidebarFullscreen((prevState) => !prevState)}
             aria-label={formatMessage({ id: 'ariaLabel.fullWidth' })}
           >
