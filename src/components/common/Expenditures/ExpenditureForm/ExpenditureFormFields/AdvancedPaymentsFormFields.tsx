@@ -9,15 +9,13 @@ import { getInitialPayoutFieldValue } from '../helpers';
 
 import styles from '../ExpenditureForm.module.css';
 
-interface ExpenditurePayoutsFieldProps {
+interface AdvancedPaymentsFormFieldsProps {
   colony: Colony;
-  singlePayout?: boolean;
 }
 
-const ExpenditurePayoutsField = ({
+const AdvancedPaymentsFormFields = ({
   colony,
-  singlePayout = false,
-}: ExpenditurePayoutsFieldProps) => {
+}: AdvancedPaymentsFormFieldsProps) => {
   const { control } = useFormContext();
 
   const { fields, append, remove } = useFieldArray({
@@ -29,14 +27,13 @@ const ExpenditurePayoutsField = ({
     <>
       {fields.map((field, index) => (
         <div className={styles.field} key={field.id}>
-          {!singlePayout && (
-            <IconButton
-              onClick={() => remove(index)}
-              text=""
-              icon="trash"
-              disabled={fields.length <= 1}
-            />
-          )}
+          <IconButton
+            onClick={() => remove(index)}
+            text=""
+            icon="trash"
+            disabled={fields.length <= 1}
+          />
+
           <Input
             name={`payouts.${index}.recipientAddress`}
             label="Recipient address"
@@ -50,17 +47,15 @@ const ExpenditurePayoutsField = ({
         </div>
       ))}
 
-      {!singlePayout && (
-        <IconButton
-          onClick={() =>
-            append(getInitialPayoutFieldValue(colony.nativeToken.tokenAddress))
-          }
-          text=""
-          icon="circle-plus"
-        />
-      )}
+      <IconButton
+        onClick={() =>
+          append(getInitialPayoutFieldValue(colony.nativeToken.tokenAddress))
+        }
+        text=""
+        icon="circle-plus"
+      />
     </>
   );
 };
 
-export default ExpenditurePayoutsField;
+export default AdvancedPaymentsFormFields;
