@@ -1,9 +1,5 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
-// import {
-//   getStringForMetadataColony,
-//   getEventMetadataVersion,
-// } from '@colony/colony-event-metadata-parser';
 
 import { ContextModule, getContext } from '~context';
 import {
@@ -24,16 +20,14 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { getUpdatedColonyMetadataChangelog } from '../utils';
-
-// import { ipfsUploadAnnotation, ipfsUploadWithFallback } from '../utils';
+import { getUpdatedColonyMetadataChangelog, uploadAnnotation } from '../utils';
 
 function* manageExistingSafesAction({
   payload: {
     colony: { colonyAddress, name: colonyName },
     colony,
     safes,
-    // annotationMessage,
+    annotationMessage,
     isRemovingSafes,
   },
   meta: { id: metaId, navigate },
@@ -42,7 +36,6 @@ function* manageExistingSafesAction({
   let txChannel;
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
-    // const ipfsWithFallback = getContext(ContextModule.IPFSWithFallback);
 
     txChannel = yield call(getTxChannel, metaId);
 
@@ -50,13 +43,11 @@ function* manageExistingSafesAction({
       ? 'addExistingSafe'
       : 'removeExistingSafes';
 
-    const {
-      manageExistingSafesAction: manageExistingSafes,
-      // annotateManageExistingSafesAction: annotateManageExistingSafes,
-    } = yield createTransactionChannels(metaId, [
-      'manageExistingSafesAction',
-      // 'annotateManageExistingSafesAction',
-    ]);
+    const { manageExistingSafes, annotateManageExistingSafes } =
+      yield createTransactionChannels(metaId, [
+        'manageExistingSafes',
+        'annotateManageExistingSafes',
+      ]);
 
     const createGroupTransaction = ({ id, index }, config) =>
       fork(createTransaction, id, {
@@ -76,67 +67,29 @@ function* manageExistingSafesAction({
       ready: false,
     });
 
-    // if (annotationMessage) {
-    //   yield createGroupTransaction(annotateManageExistingSafes, {
-    //     context: ClientType.ColonyClient,
-    //     methodName: 'annotateTransaction',
-    //     identifier: colonyAddress,
-    //     params: [],
-    //     ready: false,
-    //   });
-    // }
+    if (annotationMessage) {
+      yield createGroupTransaction(annotateManageExistingSafes, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        params: [],
+        ready: false,
+      });
+    }
 
     yield takeFrom(
       manageExistingSafes.channel,
       ActionTypes.TRANSACTION_CREATED,
     );
 
-    // if (annotationMessage) {
-    //   yield takeFrom(
-    //     annotateManageExistingSafes.channel,
-    //     ActionTypes.TRANSACTION_CREATED,
-    //   );
-    // }
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateManageExistingSafes.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
 
     yield put(transactionPending(manageExistingSafes.id));
-
-    /*
-     * Fetch colony data from the subgraph
-     * And destructure the metadata hash.
-     */
-
-    // const {
-    //   data: {
-    //     colony: { metadata: currentMetadataIPFSHash },
-    //   },
-    // } = yield apolloClient.query<
-    //   SubgraphColonyQuery,
-    //   SubgraphColonyQueryVariables
-    // >({
-    //   query: SubgraphColonyDocument,
-    //   variables: {
-    //     address: colonyAddress.toLowerCase(),
-    //   },
-    //   fetchPolicy: 'network-only',
-    // });
-
-    // const currentMetadata = yield call(
-    //   ipfsWithFallback.getString,
-    //   currentMetadataIPFSHash,
-    // );
-
-    // if (!currentMetadata) {
-    //   throw new Error(
-    //     `There was an error while fetching the current colony metadata. Please try again later.`,
-    //   );
-    // }
-
-    // const parsedColonyMetadata = JSON.parse(currentMetadata);
-    // const metadataVersion = getEventMetadataVersion(currentMetadata);
-    // const currentColonyMetadata =
-    //   metadataVersion === 1
-    //     ? { ...parsedColonyMetadata }
-    //     : parsedColonyMetadata.data;
 
     let updatedColonySafes: Safe[];
 
@@ -156,22 +109,6 @@ function* manageExistingSafesAction({
       );
     }
 
-    // const colonyMetadata = getStringForMetadataColony(updatedColonyMetadata);
-    /*
-     * Upload updated metadata object to IPFS
-     */
-
-    // const updatedColonyMetadataIpfsHash = yield call(
-    //   ipfsUploadWithFallback,
-    //   colonyMetadata,
-    // );
-
-    // yield put(
-    //   transactionAddParams(manageExistingSafes.id, [
-    //     (updatedColonyMetadataIpfsHash as unknown) as string,
-    //   ]),
-    // );
-
     yield put(transactionReady(manageExistingSafes.id));
 
     const {
@@ -181,36 +118,18 @@ function* manageExistingSafesAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateManageExistingSafes,
+        message: annotationMessage,
+        txHash,
+      });
+    }
+
     yield takeFrom(
       manageExistingSafes.channel,
       ActionTypes.TRANSACTION_SUCCEEDED,
     );
-
-    // if (annotationMessage) {
-    //   yield put(transactionPending(annotateManageExistingSafes.id));
-
-    //   /*
-    //    * Upload annotationMessage to IPFS
-    //    */
-    //   const annotationMessageIpfsHash = yield call(
-    //     ipfsUploadAnnotation,
-    //     annotationMessage,
-    //   );
-
-    //   yield put(
-    //     transactionAddParams(annotateManageExistingSafes.id, [
-    //       txHash,
-    //       annotationMessageIpfsHash,
-    //     ]),
-    //   );
-
-    //   yield put(transactionReady(annotateManageExistingSafes.id));
-
-    //   yield takeFrom(
-    //     annotateManageExistingSafes.channel,
-    //     ActionTypes.TRANSACTION_SUCCEEDED,
-    //   );
-    // }
 
     /**
      * Update colony metadata in the db
