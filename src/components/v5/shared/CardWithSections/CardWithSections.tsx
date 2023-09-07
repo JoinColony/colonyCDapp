@@ -13,7 +13,7 @@ const CardWithSections: React.FC<CardWithSectionsProps> = ({ sections }) =>
           key={key}
           className={clsx(
             className,
-            'border-b border-gray-200 last:border-b-0 px-[1.125rem] py-[1.125rem]',
+            'border-b border-gray-200 last:border-b-0 p-[1.125rem]',
           )}
         >
           {content}
