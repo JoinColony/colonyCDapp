@@ -23,6 +23,8 @@ const {
   updateColonyContributorInDb,
   createColonyContributorInDb,
   reputationMiningCycleMetadataId,
+  updateReputationInDomain,
+  getDomainDatabaseId,
 } = require('./utils');
 
 Logger.setLogLevel(Logger.levels.ERROR);
@@ -157,6 +159,14 @@ exports.handler = async (event) => {
           return;
         }
 
+        // update total rep in domain in db
+        await updateReputationInDomain({
+          databaseDomainId: getDomainDatabaseId(colonyAddress, nativeDomainId),
+          apiKey,
+          graphqlURL,
+          reputation: totalRepInDomain.toString(),
+        });
+
         // For each domain, sort addresses by reputation, get the contributor type, and
         // update the database with the corresponding ReputedContributor entry
 
@@ -289,7 +299,13 @@ exports.handler = async (event) => {
 
     await graphqlRequest(
       updateColony,
-      { colonyAddress, date: new Date().toISOString() },
+      {
+        input: {
+          id: colonyAddress,
+          lastUpdatedContributorsWithReputation: new Date().toISOString(),
+          reputation: totalRepInColony.toString(),
+        },
+      },
       graphqlURL,
       apiKey,
     );

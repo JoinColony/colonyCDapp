@@ -4,6 +4,7 @@ const {
   updateContributorReputation,
   createColonyContributor,
   updateColonyContributor,
+  updateDomain,
 } = require('./graphql');
 
 const reputationMiningCycleMetadataId = 'REPUTATION_MINING_CYCLE_METADATA'; // this is constant, since we only need one entry of this type in the db.
@@ -255,6 +256,24 @@ const createColonyContributorInDb = async ({
   }
 };
 
+const updateReputationInDomain = async ({
+  databaseDomainId,
+  reputation,
+  graphqlURL,
+  apiKey,
+}) =>
+  graphqlRequest(
+    updateDomain,
+    {
+      input: {
+        id: databaseDomainId,
+        reputation,
+      },
+    },
+    graphqlURL,
+    apiKey,
+  );
+
 module.exports = {
   graphqlRequest,
   getContributorType,
@@ -263,5 +282,7 @@ module.exports = {
   createColonyContributorInDb,
   createContributorReputationInDb,
   updateColonyContributorInDb,
+  updateReputationInDomain,
+  getDomainDatabaseId,
   reputationMiningCycleMetadataId,
 };
