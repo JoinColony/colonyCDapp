@@ -16,7 +16,7 @@ function* releaseExpenditureStage({
     colonyAddress,
     expenditure,
     slotId,
-    tokenAddress,
+    tokenAddresses,
     stagedExpenditureAddress,
   },
   meta,
@@ -46,7 +46,7 @@ function* releaseExpenditureStage({
         childSkillIndex,
         expenditure.nativeId,
         slotId,
-        [tokenAddress],
+        tokenAddresses,
       ],
     });
 

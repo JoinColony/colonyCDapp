@@ -2608,9 +2608,7 @@ type ExpenditureBalance {
 }
 
 type ExpenditureStage {
-  name: String!
-  amount: String!
-  tokenAddress: String!
   slotId: Int!
+  name: String!
   isReleased: Boolean!
 }
