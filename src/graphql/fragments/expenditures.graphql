@@ -51,4 +51,5 @@ fragment ExpenditureStage on ExpenditureStage {
   name
   tokenAddress
   amount
+  isReleased
 }
