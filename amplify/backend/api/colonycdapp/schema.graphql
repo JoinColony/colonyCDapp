@@ -356,10 +356,6 @@ input GetMotionStateInput {
   The internal id of the motion in the database
   """
   databaseMotionId: String!
-  """
-  The hash of the associated transaction
-  """
-  transactionHash: String!
 }
 
 """
@@ -1939,12 +1935,19 @@ type ColonyMotion @model {
   The transaction hash of the createMotion action
   """
   transactionHash: String!
+    @index(name: "byTransactionHash", queryField: "getMotionByTransactionHash")
 
   """
   An option to manually specify the amount of gas to estimate for the finalization of this motion.
   Particularly useful for "heavy" actions, such as a multicall.
   """
   gasEstimate: String!
+
+  """
+  Expenditure associated with the motion, if any
+  """
+  expenditureId: ID
+    @index(name: "byExpenditureId", queryField: "getMotionByExpenditureId")
 }
 
 """
@@ -2569,13 +2572,10 @@ type Expenditure @model {
   finalizedAt: AWSTimestamp
   hasReclaimedStake: Boolean
   """
-  The id of the motion created to fund this expenditure, if there is one
+  The motions created to fund this expenditure, if there are any
   """
-  fundingMotionId: ID
-  """
-  The funding motion associated with this expenditure, if there is one
-  """
-  fundingMotion: ColonyMotion @hasOne(fields: ["fundingMotionId"])
+  fundingMotions: [ColonyMotion]
+    @hasMany(indexName: "byExpenditureId", fields: ["id"])
 }
 
 # Each expenditure can have multiple slots with one recipient and possibly multiple payouts (with different token addresses)

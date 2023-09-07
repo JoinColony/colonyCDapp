@@ -19,8 +19,10 @@ fragment Expenditure on Expenditure {
   }
   finalizedAt
   hasReclaimedStake
-  fundingMotion {
-    transactionHash
+  fundingMotions {
+    items {
+      ...ColonyMotion
+    }
   }
 }
 

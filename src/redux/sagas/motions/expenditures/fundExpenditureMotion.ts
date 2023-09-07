@@ -6,12 +6,12 @@ import {
   getPotDomain,
 } from '@colony/colony-js';
 import { ClientType } from '@colony/colony-js/tokens';
-import { BigNumber, constants } from 'ethers';
+import { constants } from 'ethers';
 
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { ADDRESS_ZERO } from '~constants';
 import { ActionTypes } from '~redux/actionTypes';
-import { getExpenditureBalancesByTokenAddress } from '~redux/sagas/expenditures/utils';
+import { getExpenditureBalancesByTokenAddress } from '~redux/sagas/utils/expenditures';
 import {
   createGroupTransaction,
   createTransactionChannels,
@@ -22,7 +22,7 @@ import { Action } from '~redux/types';
 
 function* fundExpenditureMotion({
   payload: {
-    colonyAddress,
+    colony: { colonyAddress, version: colonyVersion },
     expenditure,
     fromDomainFundingPotId,
     motionDomainId,
@@ -93,12 +93,8 @@ function* fundExpenditureMotion({
     );
 
     const balances = getExpenditureBalancesByTokenAddress(expenditure);
-    const colonyVersionBN: BigNumber = yield call([
-      colonyClient,
-      colonyClient.version,
-    ]);
 
-    const isOldVersion = colonyVersionBN.lte(6);
+    const isOldVersion = colonyVersion <= 6;
     const contractMethod = isOldVersion
       ? 'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)'
       : 'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)';
