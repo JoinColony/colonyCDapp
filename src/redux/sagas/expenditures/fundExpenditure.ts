@@ -14,7 +14,7 @@ import {
   createTransactionChannels,
 } from '../transactions';
 import { putError, takeFrom } from '../utils';
-import { getExpenditureBalancesByTokenAddress } from './utils';
+import { getExpenditureBalancesByTokenAddress } from '../utils/expenditures';
 
 function* fundExpenditure({
   payload: { colonyAddress, expenditure, fromDomainFundingPotId },

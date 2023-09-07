@@ -12,14 +12,18 @@ import ExpenditureClaimButton from '../ExpenditureClaimButton';
 import { addressHasRoles } from '~utils/checks';
 import { useAppContext, useEnabledExtensions } from '~hooks';
 import { ExpenditureFundMotionPayload } from '~redux/types/actions/motion';
-import Link from '~shared/Link/Link';
+import { MotionState } from '~utils/colonyMotions';
 
 interface ExpenditureAdvanceButtonProps {
   expenditure: Expenditure;
   colony: Colony;
+  latestFundingMotionState?: MotionState;
+  latestExpenditureFundingMotionHash?: string;
 }
 
 const ExpenditureAdvanceButton = ({
+  latestFundingMotionState,
+  latestExpenditureFundingMotionHash,
   expenditure,
   colony,
 }: ExpenditureAdvanceButtonProps) => {
@@ -41,6 +45,11 @@ const ExpenditureAdvanceButton = ({
     );
   }
 
+  const hasMotionFailed =
+    latestFundingMotionState === MotionState.Failed ||
+    latestFundingMotionState === MotionState.Invalid ||
+    latestFundingMotionState === MotionState.FailedNotFinalizable;
+
   const userHasFundingPermission = addressHasRoles({
     address: walletAddress,
     colony,
@@ -57,6 +66,14 @@ const ExpenditureAdvanceButton = ({
         {userHasFundingPermission && (
           <ActionButton
             actionType={ActionTypes.EXPENDITURE_FUND}
+            disabled={
+              latestFundingMotionState &&
+              // motion is in progress, thus disable
+              latestFundingMotionState !== MotionState.Failed &&
+              latestFundingMotionState !== MotionState.Invalid &&
+              latestFundingMotionState !== MotionState.FailedNotFinalizable &&
+              latestFundingMotionState !== MotionState.Passed
+            }
             values={{
               colonyAddress: colony.colonyAddress,
               fromDomainFundingPotId:
@@ -70,20 +87,15 @@ const ExpenditureAdvanceButton = ({
             Fund expenditure
           </ActionButton>
         )}
-        {/* eslint-disable-next-line no-nested-ternary */}
         {isVotingReputationEnabled ? (
-          expenditure.fundingMotion ? (
-            <Link
-              to={`/colony/${colony.name}/tx/${expenditure.fundingMotion.transactionHash}`}
-            >
-              Click for Motion
-            </Link>
-          ) : (
+          ((latestExpenditureFundingMotionHash && hasMotionFailed) ||
+            !latestExpenditureFundingMotionHash) && (
             <ActionButton<ExpenditureFundMotionPayload>
               actionType={ActionTypes.MOTION_EXPENDITURE_FUND}
               values={{
-                colonyAddress: colony.colonyAddress,
-                fromDomainId: expenditure.nativeDomainId ?? Id.RootDomain,
+                colony,
+                fromDomainId:
+                  expenditure.metadata?.fundFromDomainNativeId ?? Id.RootDomain,
                 fromDomainFundingPotId:
                   findDomainByNativeId(
                     expenditure.metadata?.fundFromDomainNativeId ??
@@ -91,7 +103,7 @@ const ExpenditureAdvanceButton = ({
                     colony,
                   )?.nativeFundingPotId ?? Id.RootPot,
                 expenditure,
-                motionDomainId: Id.RootDomain,
+                motionDomainId: expenditure.nativeDomainId ?? Id.RootDomain,
               }}
             >
               Fund expenditure motion

@@ -20,7 +20,11 @@ export enum RootMotionMethodNames {
   UnlockToken = 'unlockToken',
 }
 
-export type ExpenditureFundMotionPayload = ExpenditureFundPayload & {
+export type ExpenditureFundMotionPayload = Omit<
+  ExpenditureFundPayload,
+  'colonyAddress'
+> & {
+  colony: Colony;
   fromDomainId: number;
   motionDomainId: number;
 };
