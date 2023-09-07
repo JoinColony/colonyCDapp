@@ -136,7 +136,10 @@ const ExpenditureAdvanceButton = ({
     );
   }
 
-  if (expenditure.status === ExpenditureStatus.Finalized) {
+  if (
+    !expenditure.isStaged &&
+    expenditure.status === ExpenditureStatus.Finalized
+  ) {
     return <ExpenditureClaimButton colony={colony} expenditure={expenditure} />;
   }
 

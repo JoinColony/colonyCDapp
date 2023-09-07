@@ -126,4 +126,21 @@ export type ExpendituresActionTypes =
       ActionTypes.RECLAIM_EXPENDITURE_STAKE_SUCCESS,
       object,
       object
+    >
+  | UniqueActionType<
+      ActionTypes.RELEASE_EXPENDITURE_STAGE,
+      {
+        colonyAddress: Address;
+        expenditure: Expenditure;
+        slotId: number;
+        tokenAddress: Address;
+        stagedExpenditureAddress: Address;
+      },
+      MetaWithNavigate<object>
+    >
+  | ErrorActionType<ActionTypes.RELEASE_EXPENDITURE_STAGE_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.RELEASE_EXPENDITURE_STAGE_SUCCESS,
+      object,
+      object
     >;
