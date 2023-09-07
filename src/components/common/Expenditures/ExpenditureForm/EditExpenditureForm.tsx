@@ -7,7 +7,7 @@ import { ActionTypes } from '~redux';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
 import Button from '~shared/Button';
 
-import ExpenditureFormFields from './ExpenditureFormFields';
+import { AdvancedPaymentFormFields } from './ExpenditureFormFields';
 import {
   getExpenditurePayoutsFieldValue,
   getInitialPayoutFieldValue,
@@ -53,7 +53,7 @@ const EditExpenditureForm = ({
       transform={transformPayload}
       onSuccess={onSuccess}
     >
-      <ExpenditureFormFields colony={colony} />
+      <AdvancedPaymentFormFields colony={colony} />
 
       <div className={styles.buttons}>
         <Button
