@@ -993,8 +993,8 @@
   "editColonyLogo.modal.title": "Upload new Colony logo",
   "editColonyLogo.modal.subtitle": "Choose a new logo for your Colony.",
   "common.fields.cardSelect.placeholder": "Select value",
-  "common.memberWithPermission.title": "Members with recovery permissions",
-  "common.memberWithPermission.signed": "Signed",
-  "common.memberWithPermission.notSigned": "Not signed",
-  "common.recoveryPermissionsMembers.title": "Members with recovery permissions"
+  "common.memberSignature.title": "Members with recovery permissions",
+  "common.memberSignature.signed": "Signed",
+  "common.memberSignature.notSigned": "Not signed",
+  "common.memberSignatureList.title": "Members with recovery permissions"
 }
