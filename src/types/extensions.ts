@@ -46,6 +46,7 @@ export type InstalledExtensionData = ExtensionConfig &
   ColonyExtension & {
     availableVersion: number;
     isEnabled: boolean;
+    missingColonyPermissions: ColonyRole[];
   };
 
 export type InstallableExtensionData = ExtensionConfig & {

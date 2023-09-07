@@ -49,12 +49,10 @@ const ExtensionStatusBadge = ({
   } else if (extensionData.isDeprecated) {
     status = MSG.deprecated;
     theme = 'danger';
-  }
-  // else if (installedExtension.details?.missingPermissions.length) {
-  //   status = MSG.missingPermissions;
-  //   theme = 'danger';
-  // }
-  else if (extensionData.isEnabled) {
+  } else if (extensionData.missingColonyPermissions.length) {
+    status = MSG.missingPermissions;
+    theme = 'danger';
+  } else if (extensionData.isEnabled) {
     status = MSG.enabled;
     theme = 'primary';
   } else {
