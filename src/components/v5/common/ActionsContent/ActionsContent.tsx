@@ -18,7 +18,6 @@ import ColonyVersionField from './partials/ColonyVersionField';
 import ColonyDetailsFields from './partials/ColonyDetailsFields';
 import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
 import ActionTypeSelect from '../ActionSidebar/ActionTypeSelect';
-import styles from '../ActionSidebar/ActionSidebar.module.css';
 import { ActionSidebarRowFieldNameEnum } from '../ActionSidebarRow/enums';
 import { Actions } from '~constants/actions';
 import { DECISION_METHOD_OPTIONS } from './consts';
@@ -68,7 +67,16 @@ const ActionsContent: FC = () => {
       <input
         type="text"
         {...field}
-        className={styles.titleInput}
+        className={`
+          heading-3
+          placeholder:text-gray-500
+          hover:text-blue-400
+          hover:placeholder:text-blue-400
+          text-gray-900
+          transition-colors
+          duration-normal
+          mb-7
+        `}
         placeholder={formatMessage({ id: 'placeholder.title' })}
       />
       <ActionTypeSelect />

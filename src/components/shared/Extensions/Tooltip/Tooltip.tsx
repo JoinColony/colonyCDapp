@@ -20,6 +20,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   isOpen,
   isSuccess = false,
   isFullWidthContent,
+  className,
 }) => {
   const {
     getArrowProps,
@@ -43,7 +44,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   return (
     <>
       <div
-        className={clsx('flex cursor-pointer', {
+        className={clsx(className, 'flex cursor-pointer', {
           'w-full': isFullWidthContent,
         })}
         ref={setTriggerRef}
@@ -54,18 +55,24 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
         <div
           ref={setTooltipRef}
           {...getTooltipProps({
-            className: `${
-              styles.tooltipContainer
-            } tooltip-container text-base-white relative text-3 p-3 ${
-              isSuccess ? 'bg-success-400' : 'bg-gray-900 [&_a]:underline'
-            }`,
+            className: clsx(
+              styles.tooltipContainer,
+              'tooltip-container text-base-white relative text-3 p-3',
+              {
+                'bg-success-400': isSuccess,
+                'bg-gray-900 [&_a]:underline': !isSuccess,
+              },
+            ),
           })}
         >
           <div
             {...getArrowProps({
-              className: `${
-                showArrow ? `${styles.tooltipArrow} tooltip-arrow` : ''
-              } ${isSuccess ? 'text-success-400' : 'text-gray-900'}`,
+              className: clsx({
+                [styles.tooltipArrow]: showArrow,
+                'tooltip-arrow': showArrow,
+                'text-success-400': isSuccess,
+                'text-gray-900': !isSuccess,
+              }),
             })}
           />
           <div className="max-w-[15.625rem] flex flex-col items-start">
