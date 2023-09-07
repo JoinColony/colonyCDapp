@@ -2598,7 +2598,7 @@ type ExpenditureMetadata @model {
   id: ID! # Self-managed, formatted as colonyId_nativeExpenditureId
   fundFromDomainNativeId: Int!
   type: ExpenditureType!
-  stages: [ExpenditureStage]
+  stages: [ExpenditureStage!]
 }
 
 type ExpenditureBalance {
