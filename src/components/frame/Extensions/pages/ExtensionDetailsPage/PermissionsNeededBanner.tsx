@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import NotificationBanner from '~common/Extensions/NotificationBanner/NotificationBanner';
 
 const displayName = 'frame.Extensions.PermissionsNeededBanner';
@@ -10,18 +11,24 @@ const PermissionsNeededBanner = () => {
     <div className="mb-6">
       <NotificationBanner
         title={
-          isPermissionEnabled
-            ? { id: 'extension.notification.permissions.updated' }
-            : { id: 'extension.notification.permissions.missing' }
+          <FormattedMessage
+            id={
+              isPermissionEnabled
+                ? 'extension.notification.permissions.updated'
+                : 'extension.notification.permissions.missing'
+            }
+          />
         }
         status={isPermissionEnabled ? 'success' : 'warning'}
-        actionText={
-          isPermissionEnabled
-            ? { id: 'extension.notification.permissions.enabled' }
-            : { id: 'extension.notification.permissions.enable' }
-        }
-        actionType="call-to-action"
-        onClick={() => setIsPermissionEnabled(true)}
+        action={{
+          type: 'call-to-action',
+          actionText: isPermissionEnabled ? (
+            <FormattedMessage id="extension.notification.permissions.enabled" />
+          ) : (
+            <FormattedMessage id="extension.notification.permissions.enable" />
+          ),
+          onClick: () => setIsPermissionEnabled(true),
+        }}
       />
     </div>
   );

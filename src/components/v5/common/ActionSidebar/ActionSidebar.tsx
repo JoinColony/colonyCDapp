@@ -1,6 +1,6 @@
 import React, { FC, PropsWithChildren, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useOnClickOutside } from 'usehooks-ts';
 
 import Icon from '~shared/Icon';
@@ -73,13 +73,13 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
               status={
                 actionsWithErrorBanners || isFieldError ? 'error' : 'warning'
               }
-              title={{
-                id: prepareNofiticationTitle(),
+              title={<FormattedMessage id={prepareNofiticationTitle()} />}
+              action={{
+                type: 'call-to-action',
+                actionText: actionsWithErrorBanners ? (
+                  <FormattedMessage id="learn.more" />
+                ) : null,
               }}
-              actionText={
-                actionsWithErrorBanners ? { id: 'learn.more' } : undefined
-              }
-              actionType="call-to-action"
             />
           </div>
         )}

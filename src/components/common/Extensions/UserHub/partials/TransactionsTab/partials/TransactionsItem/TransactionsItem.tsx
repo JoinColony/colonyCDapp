@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import Icon from '~shared/Icon';
@@ -130,8 +130,11 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
                         <NotificationBanner
                           status="error"
                           title={notificationInfo}
-                          actionText={formatMessage({ id: 'retry' })}
-                          actionType="redirect"
+                          action={{
+                            type: 'redirect',
+                            actionText: <FormattedMessage id="retry" />,
+                            href: '',
+                          }}
                           isAlt
                         />
                       </div>
