@@ -2709,4 +2709,5 @@ type ExpenditureStage {
   amount: String!
   tokenAddress: String!
   slotId: Int!
+  isReleased: Boolean!
 }

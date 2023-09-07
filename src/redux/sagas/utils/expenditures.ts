@@ -138,6 +138,7 @@ export function* saveExpenditureMetadata({
           amount: BigNumber.from(stage.amount)
             .mul(BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS))
             .toString(),
+          isReleased: false,
         })),
       },
     },
