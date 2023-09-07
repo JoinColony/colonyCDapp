@@ -28,6 +28,7 @@ function* extensionEnable({
       extensionId,
       isInitialized,
       initializationParams,
+      neededColonyPermissions,
       missingColonyPermissions,
       address,
     },
@@ -65,7 +66,7 @@ function* extensionEnable({
     }
 
     if (needsSettingRoles) {
-      const bytes32Roles = intArrayToBytes32(missingColonyPermissions);
+      const bytes32Roles = intArrayToBytes32(neededColonyPermissions);
 
       yield fork(createTransaction, setUserRoles.id, {
         context: ClientType.ColonyClient,
