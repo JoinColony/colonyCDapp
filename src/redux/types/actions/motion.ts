@@ -25,6 +25,13 @@ export type ExpenditureFundMotionPayload = ExpenditureFundPayload & {
   motionDomainId: number;
 };
 
+export type MotionFinalizePayload = {
+  userAddress: Address;
+  colonyAddress: Address;
+  motionId: string;
+  gasEstimate: string;
+};
+
 export type MotionActionTypes =
   | UniqueActionType<
       ActionTypes.MOTION_STAKE,
@@ -70,11 +77,7 @@ export type MotionActionTypes =
     >
   | UniqueActionType<
       ActionTypes.MOTION_FINALIZE,
-      {
-        userAddress: Address;
-        colonyAddress: Address;
-        motionId: BigNumber;
-      },
+      MotionFinalizePayload,
       MetaWithHistory<object>
     >
   | ErrorActionType<ActionTypes.MOTION_FINALIZE_ERROR, object>

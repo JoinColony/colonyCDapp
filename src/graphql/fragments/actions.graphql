@@ -163,6 +163,7 @@ fragment ColonyMotion on ColonyMotion {
       ...MotionMessage
     }
   }
+  gasEstimate
 }
 
 fragment MotionMessage on MotionMessage {
