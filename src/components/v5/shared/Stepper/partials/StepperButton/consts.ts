@@ -7,6 +7,6 @@ export const STEP_STAGE = {
   Skipped: 'skipped',
 } as const;
 
-export const iconNameMap: Partial<Record<StepStage, string | undefined>> = {
+export const ICON_NAME_MAP: Partial<Record<StepStage, string | undefined>> = {
   [STEP_STAGE.Completed]: 'check',
 };
