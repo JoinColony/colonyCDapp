@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import MemberWithPermission from '~v5/common/MemberWithPermission';
+import MemberWithPermission from '~v5/common/MemberSignature';
 
 const meta: Meta<typeof MemberWithPermission> = {
   title: 'Common/Member With Permission',

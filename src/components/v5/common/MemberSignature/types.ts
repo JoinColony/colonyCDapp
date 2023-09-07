@@ -1,6 +1,6 @@
 import { User } from '~types';
 
-export interface MemberWithPermissionProps {
+export interface MemberSignatureProps {
   user: User;
   isSigned: boolean;
 }

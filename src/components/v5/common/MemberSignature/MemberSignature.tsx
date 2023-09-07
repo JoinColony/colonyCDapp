@@ -2,16 +2,14 @@ import React, { FC } from 'react';
 
 import { useIntl } from 'react-intl';
 import UserAvatar from '~v5/shared/UserAvatar';
-import { MemberWithPermissionProps } from './types';
+import { MemberSignatureProps } from './types';
 
-const displayName = 'v5.common.MemberWithPermission';
+const displayName = 'v5.common.MemberSignature';
 
-const MemberWithPermission: FC<MemberWithPermissionProps> = ({
-  user,
-  isSigned,
-}) => {
+const MemberSignature: FC<MemberSignatureProps> = ({ user, isSigned }) => {
   const { formatMessage } = useIntl();
-  const { name, profile } = user || {};
+
+  const { name, profile } = user;
   const { displayName: userDisplayName } = profile || {};
 
   return (
@@ -20,14 +18,14 @@ const MemberWithPermission: FC<MemberWithPermissionProps> = ({
       <span className="text-sm">
         {formatMessage({
           id: isSigned
-            ? 'common.memberWithPermission.signed'
-            : 'common.memberWithPermission.notSigned',
+            ? 'common.memberSignature.signed'
+            : 'common.memberSignature.notSigned',
         })}
       </span>
     </div>
   );
 };
 
-MemberWithPermission.displayName = displayName;
+MemberSignature.displayName = displayName;
 
-export default MemberWithPermission;
+export default MemberSignature;

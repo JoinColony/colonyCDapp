@@ -995,5 +995,6 @@
   "common.fields.cardSelect.placeholder": "Select value",
   "common.memberWithPermission.title": "Members with recovery permissions",
   "common.memberWithPermission.signed": "Signed",
-  "common.memberWithPermission.notSigned": "Not signed"
+  "common.memberWithPermission.notSigned": "Not signed",
+  "common.recoveryPermissionsMembers.title": "Members with recovery permissions"
 }
