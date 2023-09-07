@@ -17,6 +17,7 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
     [STATUS_TYPES.SUCCESS]: 'check-circle',
     [STATUS_TYPES.WARNING]: 'warning-circle',
     [STATUS_TYPES.ERROR]: 'warning-circle',
+    [STATUS_TYPES.INFO]: 'info',
   };
 
   return (
