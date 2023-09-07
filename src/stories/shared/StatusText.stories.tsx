@@ -14,12 +14,6 @@ const statusTextMeta: Meta<typeof StatusText> = {
       },
       options: ['success', 'warning', 'error'],
     },
-    title: {
-      name: 'Title',
-      control: {
-        type: 'text',
-      },
-    },
     withIcon: {
       name: 'With Icon',
       control: {
@@ -29,7 +23,7 @@ const statusTextMeta: Meta<typeof StatusText> = {
   },
   args: {
     status: 'success',
-    title:
+    children:
       'The required permissions have been updated. You can now enable the extension.',
     withIcon: true,
   },
