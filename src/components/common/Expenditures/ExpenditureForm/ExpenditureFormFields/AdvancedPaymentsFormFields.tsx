@@ -9,13 +9,13 @@ import { getInitialPayoutFieldValue } from '../helpers';
 
 import styles from '../ExpenditureForm.module.css';
 
-interface AdvancedPaymentsFormFieldsProps {
+interface AdvancedPaymentFormFieldsProps {
   colony: Colony;
 }
 
-const AdvancedPaymentsFormFields = ({
+const AdvancedPaymentFormFields = ({
   colony,
-}: AdvancedPaymentsFormFieldsProps) => {
+}: AdvancedPaymentFormFieldsProps) => {
   const { control } = useFormContext();
 
   const { fields, append, remove } = useFieldArray({
@@ -58,4 +58,4 @@ const AdvancedPaymentsFormFields = ({
   );
 };
 
-export default AdvancedPaymentsFormFields;
+export default AdvancedPaymentFormFields;
