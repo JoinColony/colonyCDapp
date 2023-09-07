@@ -6,7 +6,7 @@ import { StepperProps } from './types';
 import { STEP_STAGE } from './partials/StepperButton/consts';
 import { MIN_NUMBER_OF_STEPS_WITHOUT_MOBILE_NAVIGATION } from './consts';
 
-const displayName = 'v5.shared.Stepper';
+const displayName = 'v5.Stepper';
 
 const Stepper: React.FC<StepperProps> = ({
   activeStepIndex,
