@@ -1,5 +1,6 @@
 import React from 'react';
 import { Extension } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
 
 import MaskedAddress from '~shared/MaskedAddress';
 import Numeral from '~shared/Numeral';
@@ -33,50 +34,68 @@ const ExpenditureStages = ({ expenditure, colony }: ExpenditureStagesProps) => {
       <div>Stages</div>
 
       <ul className={styles.stages}>
-        {stages.map((stage) => (
-          <li key={stage.slotId} className={styles.stage}>
-            <div>
-              <div>Milestone</div>
-              <div>{stage.name}</div>
-            </div>
+        {expenditure.slots.map((slot) => {
+          const slotStage = stages.find((stage) => stage.slotId === slot.id);
+          const nonZeroPayouts = slot.payouts?.filter((payout) =>
+            BigNumber.from(payout.amount).gt(0),
+          );
 
-            <div>
-              <div>Token address</div>
+          return (
+            <li key={slot.id} className={styles.stage}>
+              {slotStage ? (
+                <div>
+                  <div>Milestone</div>
+                  <div>{slotStage.name}</div>
+                </div>
+              ) : (
+                <div>No stage details found for this payout.</div>
+              )}
+
               <div>
-                <MaskedAddress
-                  key={stage.tokenAddress}
-                  address={stage.tokenAddress}
-                />
+                <div>Token address</div>
+                <div>
+                  {nonZeroPayouts?.map((payout) => (
+                    <MaskedAddress
+                      key={payout.tokenAddress}
+                      address={payout.tokenAddress}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
 
-            <div>
-              <div>Amount</div>
               <div>
-                <Numeral
-                  value={stage.amount}
-                  decimals={colony.nativeToken.decimals}
-                  suffix={colony.nativeToken.symbol}
-                />
+                <div>Amount</div>
+                <div>
+                  {nonZeroPayouts?.map((payout) => (
+                    <Numeral
+                      key={payout.tokenAddress}
+                      value={payout.amount}
+                      decimals={colony.nativeToken.decimals}
+                      suffix={colony.nativeToken.symbol}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
 
-            {expenditure.status === ExpenditureStatus.Finalized && (
-              <ActionButton
-                actionType={ActionTypes.RELEASE_EXPENDITURE_STAGE}
-                values={{
-                  colonyAddress: colony.colonyAddress,
-                  expenditure,
-                  slotId: stage.slotId,
-                  tokenAddress: stage.tokenAddress,
-                  stagedExpenditureAddress,
-                }}
-              >
-                Release
-              </ActionButton>
-            )}
-          </li>
-        ))}
+              {expenditure.status === ExpenditureStatus.Finalized && (
+                <ActionButton
+                  actionType={ActionTypes.RELEASE_EXPENDITURE_STAGE}
+                  values={{
+                    colonyAddress: colony.colonyAddress,
+                    expenditure,
+                    slotId: slot.id,
+                    tokenAddresses:
+                      nonZeroPayouts?.map((payout) => payout.tokenAddress) ??
+                      [],
+                    stagedExpenditureAddress,
+                  }}
+                >
+                  Release
+                </ActionButton>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

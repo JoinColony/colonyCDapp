@@ -133,7 +133,7 @@ export type ExpendituresActionTypes =
         colonyAddress: Address;
         expenditure: Expenditure;
         slotId: number;
-        tokenAddress: Address;
+        tokenAddresses: Address[];
         stagedExpenditureAddress: Address;
       },
       MetaWithNavigate<object>
