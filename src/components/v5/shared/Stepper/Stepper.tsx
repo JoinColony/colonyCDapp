@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { useMobile } from '~hooks';
 import StepperButton from './partials/StepperButton/StepperButton';
 import { StepperProps } from './types';
-import { STEP_STAGE } from './partials/StepperButton/types';
+import { STEP_STAGE } from './partials/StepperButton/consts';
 import { MIN_NUMBER_OF_STEPS_WITHOUT_MOBILE_NAVIGATION } from './consts';
 
 const displayName = 'v5.shared.Stepper';

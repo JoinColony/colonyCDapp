@@ -1,12 +1,6 @@
 import { ButtonHTMLAttributes } from 'react';
 import { TooltipProps } from '~shared/Extensions/Tooltip/types';
-
-export const STEP_STAGE = {
-  Completed: 'completed',
-  Current: 'current',
-  Upcoming: 'upcoming',
-  Skipped: 'skipped',
-} as const;
+import { STEP_STAGE } from './consts';
 
 export type StepStage = (typeof STEP_STAGE)[keyof typeof STEP_STAGE];
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
@@ -9,7 +9,7 @@ import Tooltip from '~shared/Extensions/Tooltip';
 
 const ActionSidebarRow = React.forwardRef<
   HTMLDivElement,
-  ActionSidebarRowProps
+  PropsWithChildren<ActionSidebarRowProps>
 >(
   (
     {

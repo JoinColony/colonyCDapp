@@ -7,7 +7,6 @@ export interface ActionSidebarRowProps {
   isDescriptionFieldRow?: boolean;
   isOpened?: boolean;
   onToggle?: () => void;
-  children?: React.ReactNode;
   isError?: boolean;
   fieldName: ActionSidebarRowFieldNameEnum;
 }
