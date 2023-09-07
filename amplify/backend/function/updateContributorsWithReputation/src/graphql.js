@@ -58,13 +58,8 @@ module.exports = {
     }
   `,
   updateColony: /* GraphQL */ `
-    mutation UpdateColony($colonyAddress: ID!, $date: AWSDateTime!) {
-      updateColony(
-        input: {
-          id: $colonyAddress
-          lastUpdatedContributorsWithReputation: $date
-        }
-      ) {
+    mutation UpdateColony($input: UpdateColonyInput!) {
+      updateColony(input: $input) {
         id
       }
     }
@@ -73,6 +68,13 @@ module.exports = {
     query GetReputationMiningCycleMetadata($id: ID!) {
       getReputationMiningCycleMetadata(id: $id) {
         lastCompletedAt
+      }
+    }
+  `,
+  updateDomain: /* GraphQL */ `
+    mutation UpdateDomain($input: UpdateDomainInput!) {
+      updateDomain(input: $input) {
+        id
       }
     }
   `,
