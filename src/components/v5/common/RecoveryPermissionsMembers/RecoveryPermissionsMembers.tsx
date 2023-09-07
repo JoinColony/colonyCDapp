@@ -12,7 +12,7 @@ const RecoveryPermissionsMembers: FC = () => {
   const { loading, usersWithRecoveryRole } = useGetMembersWithRecovery();
   const { formatMessage } = useIntl();
 
-  const showList =
+  const shouldShowList =
     !loading && usersWithRecoveryRole && usersWithRecoveryRole.length;
 
   return (
@@ -26,7 +26,7 @@ const RecoveryPermissionsMembers: FC = () => {
         </div>
       )}
       <ul>
-        {showList &&
+        {shouldShowList &&
           usersWithRecoveryRole
             .map((item) => item?.user)
             .filter(notNull)
