@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import Tooltip from '~shared/Extensions/Tooltip';
 import Icon from '~shared/Icon';
 import { StepperButtonProps } from './types';
-import { iconNameMap } from './consts';
+import { ICON_NAME_MAP } from './consts';
 
 const displayName = 'v5.shared.StepperButton';
 
@@ -16,7 +16,7 @@ const StepperButton: React.FC<StepperButtonProps> = ({
   tooltipProps,
   ...rest
 }) => {
-  const icon = iconName || iconNameMap[stage];
+  const icon = iconName || ICON_NAME_MAP[stage];
 
   const content = (
     <button
