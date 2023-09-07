@@ -1,5 +1,4 @@
 import React, { FC, PropsWithChildren } from 'react';
-import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import Link from '~v5/shared/Link';
@@ -13,14 +12,11 @@ const displayName = 'common.Extensions.NotificationBanner';
 
 const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   status,
-  title = '',
+  title,
   children,
   action,
   isAlt = false,
 }) => {
-  const { formatMessage } = useIntl();
-  const titleText = typeof title === 'string' ? title : formatMessage(title);
-
   const { actionText } = action || {};
 
   return (
@@ -50,11 +46,12 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
       >
         <div className="flex md:items-center">
           <StatusText
-            title={titleText}
             status={status}
             withIcon={!isAlt}
             textClassName={isAlt ? 'text-sm' : undefined}
-          />
+          >
+            {title}
+          </StatusText>
         </div>
         {children && (
           <div

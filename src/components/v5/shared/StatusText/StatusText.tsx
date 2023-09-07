@@ -1,5 +1,4 @@
-import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
+import React, { FC, PropsWithChildren } from 'react';
 
 import clsx from 'clsx';
 import { StatusTextProps } from './types';
@@ -8,15 +7,12 @@ import { STATUS_TYPES } from './consts';
 
 const displayName = 'v5.shared.StatusText';
 
-const StatusText: FC<StatusTextProps> = ({
-  title,
+const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
+  children,
   status,
   withIcon = true,
   textClassName = 'text-md',
 }) => {
-  const { formatMessage } = useIntl();
-
-  const titleText = typeof title === 'string' ? title : formatMessage(title);
   const iconName = {
     [STATUS_TYPES.SUCCESS]: 'check-circle',
     [STATUS_TYPES.WARNING]: 'warning-circle',
@@ -38,7 +34,7 @@ const StatusText: FC<StatusTextProps> = ({
           className="h-[.875rem] w-[.875rem] flex-shrink-0"
         />
       )}
-      <p className={textClassName}>{titleText}</p>
+      <p className={textClassName}>{children}</p>
     </div>
   );
 };

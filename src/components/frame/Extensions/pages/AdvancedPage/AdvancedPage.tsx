@@ -34,11 +34,15 @@ const AdvancedPage: FC = () => {
         <div className="mb-4">
           <NotificationBanner
             status={canUpgrade ? 'warning' : 'success'}
-            title={{
-              id: canUpgrade
-                ? 'advancedPage.version.warning'
-                : 'advancedPage.version.success',
-            }}
+            title={
+              <FormattedMessage
+                id={
+                  canUpgrade
+                    ? 'advancedPage.version.warning'
+                    : 'advancedPage.version.success'
+                }
+              />
+            }
           />
         </div>
         <ColonyVersionWidget
@@ -56,9 +60,7 @@ const AdvancedPage: FC = () => {
         <div className="mb-6">
           <NotificationBanner
             status="info"
-            title={{
-              id: 'advancedPage.recovery.notification',
-            }}
+            title={<FormattedMessage id="advancedPage.recovery.notification" />}
             action={{
               type: 'redirect',
               href: 'https://colony.io/colonyjs/docs/colonyjs-core/#recovery-mode',

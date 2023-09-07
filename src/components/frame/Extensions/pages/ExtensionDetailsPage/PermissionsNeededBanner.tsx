@@ -11,9 +11,13 @@ const PermissionsNeededBanner = () => {
     <div className="mb-6">
       <NotificationBanner
         title={
-          isPermissionEnabled
-            ? { id: 'extension.notification.permissions.updated' }
-            : { id: 'extension.notification.permissions.missing' }
+          <FormattedMessage
+            id={
+              isPermissionEnabled
+                ? 'extension.notification.permissions.updated'
+                : 'extension.notification.permissions.missing'
+            }
+          />
         }
         status={isPermissionEnabled ? 'success' : 'warning'}
         action={{

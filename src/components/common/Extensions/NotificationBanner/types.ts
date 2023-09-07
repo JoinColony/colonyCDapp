@@ -1,9 +1,9 @@
-import { MessageDescriptor } from 'react-intl';
+import React from 'react';
 import { STATUS_TYPES } from '~v5/shared/StatusText/consts';
 
 export interface NotificationBannerProps {
   status: (typeof STATUS_TYPES)[keyof typeof STATUS_TYPES];
-  title?: string | MessageDescriptor;
+  title?: React.ReactNode;
   isFullSize?: boolean;
   isAlt?: boolean;
   action?: { actionText: React.ReactNode } & (

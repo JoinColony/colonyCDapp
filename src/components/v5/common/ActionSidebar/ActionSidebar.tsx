@@ -70,9 +70,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
               status={
                 actionsWithErrorBanners || isFieldError ? 'error' : 'warning'
               }
-              title={{
-                id: prepareNofiticationTitle(),
-              }}
+              title={<FormattedMessage id={prepareNofiticationTitle()} />}
               action={{
                 type: 'call-to-action',
                 actionText: actionsWithErrorBanners ? (
