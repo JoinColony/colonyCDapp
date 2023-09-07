@@ -10,13 +10,11 @@ import { getInitialStageFieldValue } from '../helpers';
 
 import styles from '../ExpenditureForm.module.css';
 
-interface StagedPaymentsFormFieldsProps {
+interface StagedPaymentFormFieldsProps {
   colony: Colony;
 }
 
-const StagedPaymentsFormFields = ({
-  colony,
-}: StagedPaymentsFormFieldsProps) => {
+const StagedPaymentFormFields = ({ colony }: StagedPaymentFormFieldsProps) => {
   const { control } = useFormContext();
 
   const { fields, append, remove } = useFieldArray({
@@ -63,4 +61,4 @@ const StagedPaymentsFormFields = ({
   );
 };
 
-export default StagedPaymentsFormFields;
+export default StagedPaymentFormFields;

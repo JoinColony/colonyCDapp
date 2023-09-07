@@ -6,7 +6,7 @@ import { ActionForm } from '~shared/Fields';
 import { useColonyContext, useEnabledExtensions } from '~hooks';
 import Button from '~shared/Button';
 import { ActionTypes } from '~redux';
-import { Tab, TabList, Tabs } from '~shared/Tabs';
+import { Tab, TabList, TabPanel, Tabs } from '~shared/Tabs';
 
 import {
   getCreateExpenditureTransformPayloadFn,
@@ -14,22 +14,14 @@ import {
   getInitialStageFieldValue,
 } from './helpers';
 import { ExpenditureFormType, ExpenditureFormValues } from './types';
-import ExpenditureFormFields from './ExpenditureFormFields';
 import StakeExpenditureDialog from '../StakedExpenditure/StakeExpenditureDialog';
+import ExpenditureDomainSelector from './ExpenditureDomainSelector/ExpenditureDomainSelector';
+import {
+  AdvancedPaymentFormFields,
+  StagedPaymentFormFields,
+} from './ExpenditureFormFields';
 
 import styles from './ExpenditureForm.module.css';
-import ExpenditureDomainSelector from './ExpenditureDomainSelector/ExpenditureDomainSelector';
-
-const formTypeOptions = [
-  {
-    type: ExpenditureFormType.Advanced,
-    label: 'Advanced Payment',
-  },
-  {
-    type: ExpenditureFormType.Staged,
-    label: 'Staged Payment',
-  },
-];
 
 const CreateExpenditureForm = () => {
   const navigate = useNavigate();
@@ -42,6 +34,19 @@ const CreateExpenditureForm = () => {
   if (!colony) {
     return null;
   }
+
+  const formTypeOptions = [
+    {
+      type: ExpenditureFormType.Advanced,
+      label: 'Advanced Payment',
+      component: <AdvancedPaymentFormFields colony={colony} />,
+    },
+    {
+      type: ExpenditureFormType.Staged,
+      label: 'Staged Payment',
+      component: <StagedPaymentFormFields colony={colony} />,
+    },
+  ];
 
   /**
    * @TODO: This should include a permissions check as users with
@@ -78,9 +83,10 @@ const CreateExpenditureForm = () => {
                   <Tab key={type}>{label}</Tab>
                 ))}
               </TabList>
+              {formTypeOptions.map(({ type, component }) => (
+                <TabPanel key={type}>{component}</TabPanel>
+              ))}
             </Tabs>
-
-            <ExpenditureFormFields colony={colony} />
 
             <div className={styles.buttons}>
               <Button
