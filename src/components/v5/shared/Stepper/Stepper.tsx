@@ -3,6 +3,10 @@ import clsx from 'clsx';
 import { useMobile } from '~hooks';
 import StepperButton from './partials/StepperButton/StepperButton';
 import { StepperProps } from './types';
+import { STEP_STAGE } from './partials/StepperButton/types';
+import { MIN_NUMBER_OF_STEPS_WITHOUT_MOBILE_NAVIGATION } from './consts';
+
+const displayName = 'v5.shared.Stepper';
 
 const Stepper: React.FC<StepperProps> = ({
   activeStepIndex,
@@ -11,7 +15,8 @@ const Stepper: React.FC<StepperProps> = ({
 }) => {
   const [openItemIndex, setOpenItemIndex] = useState(activeStepIndex);
   const isMobile = useMobile();
-  const withArrowsOnMobile = items.length > 4 && isMobile;
+  const withArrowsOnMobile =
+    items.length > MIN_NUMBER_OF_STEPS_WITHOUT_MOBILE_NAVIGATION && isMobile;
 
   return items.length ? (
     <>
@@ -79,10 +84,12 @@ const Stepper: React.FC<StepperProps> = ({
               <div className="flex flex-col sm:flex-row gap-[.375rem] items-center">
                 <StepperButton
                   stage={
-                    (index < activeStepIndex && !isSkipped && 'completed') ||
-                    (index === activeStepIndex && 'current') ||
-                    (isSkipped && 'skipped') ||
-                    'upcoming'
+                    (index < activeStepIndex &&
+                      !isSkipped &&
+                      STEP_STAGE.Completed) ||
+                    (index === activeStepIndex && STEP_STAGE.Current) ||
+                    (isSkipped && STEP_STAGE.Skipped) ||
+                    STEP_STAGE.Upcoming
                   }
                   onClick={() => {
                     setOpenItemIndex(index);
@@ -121,5 +128,7 @@ const Stepper: React.FC<StepperProps> = ({
     </>
   ) : null;
 };
+
+Stepper.displayName = displayName;
 
 export default Stepper;

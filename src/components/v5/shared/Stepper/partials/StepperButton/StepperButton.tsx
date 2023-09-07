@@ -1,8 +1,11 @@
 import React from 'react';
 import clsx from 'clsx';
-import Tooltip from '~shared/Extensions/Tooltip/Tooltip';
-import Icon from '~shared/Icon/Icon';
+import Tooltip from '~shared/Extensions/Tooltip';
+import Icon from '~shared/Icon';
 import { StepperButtonProps } from './types';
+import { iconNameMap } from './consts';
+
+const displayName = 'v5.shared.StepperButton';
 
 const StepperButton: React.FC<StepperButtonProps> = ({
   label,
@@ -13,12 +16,6 @@ const StepperButton: React.FC<StepperButtonProps> = ({
   tooltipProps,
   ...rest
 }) => {
-  const iconNameMap = {
-    completed: 'check',
-    current: undefined,
-    upcoming: undefined,
-  };
-
   const icon = iconName || iconNameMap[stage];
 
   const content = (
@@ -67,5 +64,7 @@ const StepperButton: React.FC<StepperButtonProps> = ({
     content
   );
 };
+
+StepperButton.displayName = displayName;
 
 export default StepperButton;
