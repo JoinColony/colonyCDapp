@@ -24,9 +24,12 @@ const MemberSignatureList: FC<MemberSignatureListProps> = ({
       )}
       {!isLoading && !!items?.length ? (
         <ul>
-          {items.map(({ isChecked, avatar, key }) => (
+          {items.map(({ isChecked, avatarProps, key }) => (
             <li key={key} className="mb-3 last:mb-0">
-              <MemberSignature avatar={avatar} isChecked={isChecked} />
+              <MemberSignature
+                avatarProps={avatarProps}
+                isChecked={isChecked}
+              />
             </li>
           ))}
         </ul>
