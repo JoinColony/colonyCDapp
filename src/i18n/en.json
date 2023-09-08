@@ -992,5 +992,10 @@
   "validation.required": "Field is required",
   "editColonyLogo.modal.title": "Upload new Colony logo",
   "editColonyLogo.modal.subtitle": "Choose a new logo for your Colony.",
-  "common.fields.cardSelect.placeholder": "Select value"
+  "common.fields.cardSelect.placeholder": "Select value",
+  "common.memberSignature.title": "Members with recovery permissions",
+  "common.memberSignature.signed": "Signed",
+  "common.memberSignature.notSigned": "Not signed",
+  "common.memberSignatureList.title": "Members with recovery permissions",
+  "common.memberSignatureList.empty": "Members list is empty"
 }
