@@ -2,27 +2,21 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Id, MotionState } from '@colony/colony-js';
 
-import {
-  ExpenditureStatus,
-  useGetExpenditureQuery,
-  useGetMotionStateQuery,
-} from '~gql';
+import { useGetExpenditureQuery, useGetMotionStateQuery } from '~gql';
 import { useColonyContext } from '~hooks';
 import { Heading3 } from '~shared/Heading';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
 import { findDomainByNativeId } from '~utils/domains';
-import { ActionButton } from '~shared/Button';
-import { ActionTypes } from '~redux';
+import { notNull } from '~utils/arrays';
+import { getMotionState } from '~utils/colonyMotions';
+import { motionTags } from '~shared/Tag';
 
 import ExpenditureBalances from './ExpenditureBalances';
 import ExpenditureAdvanceButton from './ExpenditureAdvanceButton';
 import ExpenditurePayouts from './ExpenditurePayouts';
 import ReclaimStakeButton from '../StakedExpenditure/ReclaimStakeButton';
 import ExpenditureStages from './ExpenditureStages';
-
-import { notNull } from '~utils/arrays';
-import { getMotionState } from '~utils/colonyMotions';
-import { motionTags } from '~shared/Tag';
+import CancelDraftExpenditureButton from './CancelDraftExpenditureButton';
 
 import styles from './ExpenditureDetailsPage.module.css';
 
@@ -38,7 +32,7 @@ const ExpenditureDetailsPage = () => {
         Number(expenditureId),
       ),
     },
-    skip: !expenditureId,
+    skip: !expenditureId || !colony,
   });
 
   const expenditure = data?.getExpenditure;
@@ -145,26 +139,11 @@ const ExpenditureDetailsPage = () => {
           <ExpenditurePayouts expenditure={expenditure} colony={colony} />
         )}
         <div className={styles.buttons}>
-          {expenditure.status === ExpenditureStatus.Draft && (
-            <ActionButton
-              actionType={ActionTypes.EXPENDITURE_CANCEL}
-              appearance={{ size: 'small' }}
-              values={{
-                colonyAddress: colony.colonyAddress,
-                nativeExpenditureId: expenditure.nativeId,
-              }}
-            >
-              Cancel expenditure
-            </ActionButton>
-          )}
-          <ExpenditureAdvanceButton
-            latestExpenditureFundingMotionHash={
-              latestExpenditureFundingMotionHash
-            }
-            latestFundingMotionState={latestFundingMotionState}
-            expenditure={expenditure}
+          <CancelDraftExpenditureButton
             colony={colony}
+            expenditure={expenditure}
           />
+          <ExpenditureAdvanceButton expenditure={expenditure} colony={colony} />
           <ReclaimStakeButton colony={colony} expenditure={expenditure} />
         </div>
       </div>
