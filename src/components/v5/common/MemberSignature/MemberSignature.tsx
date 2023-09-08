@@ -7,7 +7,7 @@ import AvatarUser from '~v5/shared/AvatarUser';
 const displayName = 'v5.common.MemberSignature';
 
 const MemberSignature: FC<MemberSignatureProps> = ({
-  isChecked,
+  hasSigned,
   avatarProps,
 }) => {
   const { formatMessage } = useIntl();
@@ -17,7 +17,7 @@ const MemberSignature: FC<MemberSignatureProps> = ({
       <AvatarUser {...avatarProps} size="xs" />
       <span className="text-sm">
         {formatMessage({
-          id: isChecked
+          id: hasSigned
             ? 'common.memberSignature.signed'
             : 'common.memberSignature.notSigned',
         })}

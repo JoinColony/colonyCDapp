@@ -17,7 +17,7 @@ const memberSignatureMeta: Meta<typeof MemberSignature> = {
     ),
   ],
   argTypes: {
-    isChecked: {
+    hasSigned: {
       name: 'Is Signed',
       control: {
         type: 'boolean',
@@ -30,7 +30,7 @@ export default memberSignatureMeta;
 
 export const Base: StoryObj<typeof MemberSignature> = {
   args: {
-    isChecked: true,
+    hasSigned: true,
     avatarProps: {
       userName: 'John Doe',
       walletAddress: '0x1234567890abcdef',

@@ -36,25 +36,25 @@ export const Base: StoryObj<typeof MemberSignatureList> = {
       {
         avatarProps: {
           userName: 'John Doe',
-          walletAddress: '0x1234567890123456789012345678901234567890',
+          seed: '0x1234567890123456789012345678901234567890',
         },
-        isChecked: true,
+        hasSigned: true,
         key: '1',
       },
       {
         avatarProps: {
           userName: 'Andrew Doe',
-          walletAddress: '0x12345678901234567890',
+          seed: '0x12345678901234567890',
         },
-        isChecked: false,
+        hasSigned: false,
         key: '2',
       },
       {
         avatarProps: {
           userName: 'Thomas Doe',
-          walletAddress: '0x1234567890',
+          seed: '0x1234567890',
         },
-        isChecked: false,
+        hasSigned: false,
         key: '3',
       },
     ],

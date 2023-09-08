@@ -8,7 +8,6 @@ import { AvatarUserProps } from './types';
 const displayName = 'v5.AvatarUser';
 
 const AvatarUser: FC<AvatarUserProps> = ({
-  walletAddress,
   avatar,
   hasAvatarDecor,
   userStatus,
@@ -32,7 +31,6 @@ const AvatarUser: FC<AvatarUserProps> = ({
           size={size}
           avatar={avatar}
           placeholderIcon="circle-person"
-          seed={walletAddress && walletAddress.toLowerCase()}
           {...rest}
         />
       </span>
