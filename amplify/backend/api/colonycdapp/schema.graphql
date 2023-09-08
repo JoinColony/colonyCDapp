@@ -1380,6 +1380,11 @@ type Colony @model {
   """
   lastUpdatedContributorsWithReputation: AWSDateTime
 
+  """
+  The total reputation amount in the colony
+  """
+  reputation: String
+
   expenditures: [Expenditure] @hasMany
   expendituresGlobalClaimDelay: Int
 }
@@ -1806,6 +1811,11 @@ type Domain @model {
   Metadata of the Domain
   """
   metadata: DomainMetadata @hasOne(fields: ["id"])
+
+  """
+  The amount of reputation in the domain
+  """
+  reputation: String
 }
 
 """

@@ -3,5 +3,5 @@ export interface CardProps {
   rounded?: 's' | 'm';
   className?: string;
   children?: React.ReactNode;
-  withPaddings?: boolean;
+  withPadding?: boolean;
 }

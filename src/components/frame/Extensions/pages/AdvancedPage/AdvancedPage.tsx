@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import NotificationBanner from '~common/Extensions/NotificationBanner';
 import { useColonyContext, useColonyContractVersion, useMobile } from '~hooks';
@@ -34,11 +34,15 @@ const AdvancedPage: FC = () => {
         <div className="mb-4">
           <NotificationBanner
             status={canUpgrade ? 'warning' : 'success'}
-            title={{
-              id: canUpgrade
-                ? 'advancedPage.version.warning'
-                : 'advancedPage.version.success',
-            }}
+            title={
+              <FormattedMessage
+                id={
+                  canUpgrade
+                    ? 'advancedPage.version.warning'
+                    : 'advancedPage.version.success'
+                }
+              />
+            }
           />
         </div>
         <ColonyVersionWidget
@@ -56,13 +60,12 @@ const AdvancedPage: FC = () => {
         <div className="mb-6">
           <NotificationBanner
             status="info"
-            title={{
-              id: 'advancedPage.recovery.notification',
+            title={<FormattedMessage id="advancedPage.recovery.notification" />}
+            action={{
+              type: 'redirect',
+              href: 'https://colony.io/colonyjs/docs/colonyjs-core/#recovery-mode',
+              actionText: <FormattedMessage id="text.learnMore" />,
             }}
-            actionType="redirect"
-            actionText={{ id: 'text.learnMore' }}
-            // @TODO: Add redirect link
-            redirectUrl="https://colony.io/colonyjs/docs/colonyjs-core/#recovery-mode"
             isAlt
           />
         </div>

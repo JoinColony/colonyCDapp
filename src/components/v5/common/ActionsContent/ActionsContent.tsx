@@ -7,7 +7,7 @@ import TeamsSelect from './partials/TeamsSelect';
 import UserSelect from './partials/UserSelect';
 import { useActionsContent } from './hooks';
 import AmountField from './partials/AmountField';
-import DecisionField from './partials/DecisionField';
+import { FormCardSelect } from '../Fields/CardSelect';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import DescriptionField from './partials/DescriptionField';
 import useToggle from '~hooks/useToggle';
@@ -18,9 +18,9 @@ import ColonyVersionField from './partials/ColonyVersionField';
 import ColonyDetailsFields from './partials/ColonyDetailsFields';
 import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
 import ActionTypeSelect from '../ActionSidebar/ActionTypeSelect';
-import styles from '../ActionSidebar/ActionSidebar.module.css';
 import { ActionSidebarRowFieldNameEnum } from '../ActionSidebarRow/enums';
 import { Actions } from '~constants/actions';
+import { DECISION_METHOD_OPTIONS } from './consts';
 
 const displayName = 'v5.common.ActionsContent';
 
@@ -67,7 +67,16 @@ const ActionsContent: FC = () => {
       <input
         type="text"
         {...field}
-        className={styles.titleInput}
+        className={`
+          heading-3
+          placeholder:text-gray-500
+          hover:text-blue-400
+          hover:placeholder:text-blue-400
+          text-gray-900
+          transition-colors
+          duration-normal
+          mb-7
+        `}
         placeholder={formatMessage({ id: 'placeholder.title' })}
       />
       <ActionTypeSelect />
@@ -171,7 +180,11 @@ const ActionsContent: FC = () => {
           title={{ id: 'actionSidebar.decisionMethod' }}
           isError={isError('decisionMethod')}
         >
-          <DecisionField isError={isError('decisionMethod')} />
+          <FormCardSelect
+            name="decisionMethod"
+            options={DECISION_METHOD_OPTIONS}
+            title={formatMessage({ id: 'actionSidebar.availableDecisions' })}
+          />
         </ActionSidebarRow>
       )}
       {selectedAction && (

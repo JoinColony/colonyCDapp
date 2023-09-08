@@ -1,19 +1,26 @@
-import { MessageDescriptor } from 'react-intl';
+import React from 'react';
+import { STATUS_TYPES } from '~v5/shared/StatusText/consts';
 
 export interface NotificationBannerProps {
-  status: StatusType;
-  title?: string | MessageDescriptor;
-  actionText?: string | MessageDescriptor;
-  actionType?: ActionType;
-  redirectUrl?: string;
+  status: (typeof STATUS_TYPES)[keyof typeof STATUS_TYPES];
+  title?: React.ReactNode;
   isFullSize?: boolean;
   isAlt?: boolean;
-  onClick?: () => void;
+  action?: { actionText: React.ReactNode } & (
+    | {
+        type: 'copy';
+        copyContent: string;
+      }
+    | {
+        type: 'redirect';
+        href: string;
+      }
+    | {
+        type: 'call-to-action';
+        onClick?: () => void;
+      }
+  );
 }
-
-type ActionType = 'redirect' | 'copy-url' | 'call-to-action';
-
-type StatusType = 'success' | 'warning' | 'error' | 'info';
 
 export interface CopyUrlProps {
   actionText: string;

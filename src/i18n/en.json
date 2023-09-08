@@ -126,7 +126,7 @@
   "text.learnMore": "Learn More",
   "learn.more": "Learn more",
   "transaction.cancel.title": "Transaction cancelled",
-  "transaction.cancel.description": "Transaction cancelled by user", 
+  "transaction.cancel.description": "Transaction cancelled by user",
   "transaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
   "transaction.group.deposit.title": "Activate tokens",
   "transaction.group.deposit.description": "Activate tokens",
@@ -993,5 +993,11 @@
   "editColonyLogo.modal.title": "Upload new Colony logo",
   "editColonyLogo.modal.subtitle": "Choose a new logo for your Colony.",
   "table.row.recipent": "Recipent",
-  "table.row.amount": "Amount"
+  "table.row.amount": "Amount",
+  "common.fields.cardSelect.placeholder": "Select value",
+  "common.memberSignature.title": "Members with recovery permissions",
+  "common.memberSignature.signed": "Signed",
+  "common.memberSignature.notSigned": "Not signed",
+  "common.memberSignatureList.title": "Members with recovery permissions",
+  "common.memberSignatureList.empty": "Members list is empty"
 }
