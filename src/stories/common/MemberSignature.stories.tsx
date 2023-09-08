@@ -31,9 +31,8 @@ export default memberSignatureMeta;
 export const Base: StoryObj<typeof MemberSignature> = {
   args: {
     isChecked: true,
-    user: {
-      name: 'John Doe',
-      walletAddress: '0x1234567890123456789012345678901234567890',
-    },
+    avatar: '',
+    userName: 'John Doe',
+    walletAddress: '0x1234567890abcdef',
   },
 };

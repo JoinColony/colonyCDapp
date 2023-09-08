@@ -1,20 +1,17 @@
 import React, { FC } from 'react';
 
 import { useIntl } from 'react-intl';
-import UserAvatar from '~v5/shared/UserAvatar';
 import { MemberSignatureProps } from './types';
+import AvatarUser from '~v5/shared/AvatarUser';
 
 const displayName = 'v5.common.MemberSignature';
 
-const MemberSignature: FC<MemberSignatureProps> = ({ user, isChecked }) => {
+const MemberSignature: FC<MemberSignatureProps> = ({ isChecked, ...rest }) => {
   const { formatMessage } = useIntl();
-
-  const { name, profile } = user;
-  const { displayName: userDisplayName } = profile || {};
 
   return (
     <div className="flex items-center justify-between gap-2">
-      <UserAvatar user={user} size="xs" userName={userDisplayName || name} />
+      <AvatarUser {...rest} size="xs" />
       <span className="text-sm">
         {formatMessage({
           id: isChecked

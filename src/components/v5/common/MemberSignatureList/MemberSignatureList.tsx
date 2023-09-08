@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 
-import { notNull, notUndefined } from '~utils/arrays';
 import { SpinnerLoader } from '~shared/Preloaders';
 import MemberSignature from '../MemberSignature';
 import { MemberSignatureListProps } from './types';
@@ -11,20 +10,8 @@ const MemberSignatureList: FC<MemberSignatureListProps> = ({
   items,
   isLoading,
   title,
-  checkedUsersList,
 }) => {
-  // @TODO: Use this data in recovery mode signatures list component
-  // const { loading, usersWithRecoveryRole } = useGetMembersWithRecovery();
-  const shouldShowList = !isLoading && items && items.length;
-
-  const mappedItems = items.map((user) => {
-    const isChecked = checkedUsersList?.includes(user.walletAddress);
-
-    return {
-      user,
-      isChecked,
-    };
-  });
+  const shouldShowList = !isLoading && !!items?.length;
 
   return (
     <div>
@@ -36,15 +23,16 @@ const MemberSignatureList: FC<MemberSignatureListProps> = ({
       )}
       {shouldShowList && (
         <ul>
-          {mappedItems
-            .filter(notNull)
-            .filter(notUndefined)
-            .map(({ isChecked, user }) => (
-              <li key={user.walletAddress} className="mb-3 last:mb-0">
-                {/* @TODO: Implement signed/not signed state */}
-                <MemberSignature user={user} isChecked={isChecked} />
-              </li>
-            ))}
+          {items.map(({ isChecked, walletAddress, ...rest }) => (
+            <li key={walletAddress} className="mb-3 last:mb-0">
+              {/* @TODO: Implement signed/not signed state */}
+              <MemberSignature
+                {...rest}
+                walletAddress={walletAddress}
+                isChecked={isChecked}
+              />
+            </li>
+          ))}
         </ul>
       )}
     </div>

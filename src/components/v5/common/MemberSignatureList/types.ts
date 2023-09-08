@@ -1,7 +1,7 @@
-import { User } from '~types';
+import { MemberSignatureProps } from '../MemberSignature/types';
 
 export interface MemberSignatureListProps {
-  items: User[];
+  items: MemberSignatureProps[];
   checkedUsersList: string[];
   isLoading?: boolean;
   title: React.ReactNode;

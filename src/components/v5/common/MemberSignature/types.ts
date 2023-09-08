@@ -1,6 +1,6 @@
-import { User } from '~types';
+import { AvatarUserProps } from '~v5/shared/AvatarUser/types';
 
-export interface MemberSignatureProps {
-  user: User;
+export interface MemberSignatureProps
+  extends Omit<AvatarUserProps, 'size' | 'isLink'> {
   isChecked: boolean;
 }

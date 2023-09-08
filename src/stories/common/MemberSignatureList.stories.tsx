@@ -35,18 +35,20 @@ export const Base: StoryObj<typeof MemberSignatureList> = {
     title: <FormattedMessage id="common.memberSignatureList.title" />,
     items: [
       {
-        name: 'John Doe',
+        userName: 'John Doe',
         walletAddress: '0x1234567890123456789012345678901234567890',
+        isChecked: true,
       },
       {
-        name: 'Andrew Doe',
+        userName: 'Andrew Doe',
         walletAddress: '0x12345678901234567890',
+        isChecked: false,
       },
       {
-        name: 'Thomas Doe',
+        userName: 'Thomas Doe',
         walletAddress: '0x1234567890',
+        isChecked: false,
       },
     ],
-    checkedUsersList: ['0x1234567890123456789012345678901234567890'],
   },
 };
