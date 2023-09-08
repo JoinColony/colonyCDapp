@@ -17,26 +17,29 @@ const MemberSignatureList: FC<MemberSignatureListProps> = ({
   return (
     <div>
       <h3 className="text-1 mb-2">{title}</h3>
-      {isLoading && (
+      {isLoading ? (
         <div className="flex justify-center">
           <SpinnerLoader appearance={{ size: 'medium' }} />
         </div>
-      )}
-      {!isLoading && !!items?.length ? (
-        <ul>
-          {items.map(({ hasSigned, avatarProps, key }) => (
-            <li key={key} className="mb-3 last:mb-0">
-              <MemberSignature
-                avatarProps={avatarProps}
-                hasSigned={hasSigned}
-              />
-            </li>
-          ))}
-        </ul>
       ) : (
-        <p className="text-sm text-gray-500">
-          {formatMessage({ id: 'common.memberSignatureList.empty' })}
-        </p>
+        <>
+          {items?.length ? (
+            <ul>
+              {items.map(({ hasSigned, avatarProps, key }) => (
+                <li key={key} className="mb-3 last:mb-0">
+                  <MemberSignature
+                    avatarProps={avatarProps}
+                    hasSigned={hasSigned}
+                  />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-sm text-gray-500">
+              {formatMessage({ id: 'common.memberSignatureList.empty' })}
+            </p>
+          )}
+        </>
       )}
     </div>
   );

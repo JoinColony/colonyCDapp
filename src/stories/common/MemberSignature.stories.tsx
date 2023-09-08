@@ -33,7 +33,7 @@ export const Base: StoryObj<typeof MemberSignature> = {
     hasSigned: true,
     avatarProps: {
       userName: 'John Doe',
-      walletAddress: '0x1234567890abcdef',
+      seed: '0x1234567890abcdef',
     },
   },
 };
