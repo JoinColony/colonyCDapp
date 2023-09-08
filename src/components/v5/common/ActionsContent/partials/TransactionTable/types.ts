@@ -5,6 +5,6 @@ export interface TransactionProps {
   token: string;
 }
 
-export interface TransactionTableProps extends Omit<TransactionProps, 'key'> {
-  burgerMenu?: Element;
+export interface TransactionTableProps extends TransactionProps {
+  menu?: Element;
 }
