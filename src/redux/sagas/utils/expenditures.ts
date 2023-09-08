@@ -132,7 +132,7 @@ export function* saveExpenditureMetadata({
         type: expenditureType,
         fundFromDomainNativeId: fundFromDomainId,
         stages: stages?.map((stage, index) => ({
-          ...stage,
+          name: stage.name,
           slotId: index + 1,
           isReleased: false,
         })),

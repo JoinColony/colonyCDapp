@@ -1,6 +1,7 @@
 import React from 'react';
 import { Extension } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
+import { useNavigate } from 'react-router-dom';
 
 import MaskedAddress from '~shared/MaskedAddress';
 import Numeral from '~shared/Numeral';
@@ -11,6 +12,7 @@ import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
 import { useExtensionData } from '~hooks';
 import { isInstalledExtensionData } from '~utils/extensions';
+import { pipe, withMeta } from '~utils/actions';
 
 import styles from './ExpenditureStages.module.css';
 
@@ -20,6 +22,8 @@ interface ExpenditureStagesProps {
 }
 
 const ExpenditureStages = ({ expenditure, colony }: ExpenditureStagesProps) => {
+  const navigate = useNavigate();
+
   const stages = expenditure.metadata?.stages?.filter(notNull) ?? [];
 
   const { extensionData } = useExtensionData(Extension.StagedExpenditure);
@@ -28,6 +32,8 @@ const ExpenditureStages = ({ expenditure, colony }: ExpenditureStagesProps) => {
     extensionData && isInstalledExtensionData(extensionData)
       ? extensionData.address
       : undefined;
+
+  const transformPayload = pipe(withMeta({ navigate }));
 
   return (
     <div>
@@ -77,22 +83,26 @@ const ExpenditureStages = ({ expenditure, colony }: ExpenditureStagesProps) => {
                 </div>
               </div>
 
-              {expenditure.status === ExpenditureStatus.Finalized && (
-                <ActionButton
-                  actionType={ActionTypes.RELEASE_EXPENDITURE_STAGE}
-                  values={{
-                    colonyAddress: colony.colonyAddress,
-                    expenditure,
-                    slotId: slot.id,
-                    tokenAddresses:
-                      nonZeroPayouts?.map((payout) => payout.tokenAddress) ??
-                      [],
-                    stagedExpenditureAddress,
-                  }}
-                >
-                  Release
-                </ActionButton>
-              )}
+              {expenditure.status === ExpenditureStatus.Finalized &&
+                !slotStage?.isReleased && (
+                  <ActionButton
+                    actionType={ActionTypes.RELEASE_EXPENDITURE_STAGE}
+                    transform={transformPayload}
+                    values={{
+                      colonyAddress: colony.colonyAddress,
+                      expenditure,
+                      slotId: slot.id,
+                      tokenAddresses:
+                        nonZeroPayouts?.map((payout) => payout.tokenAddress) ??
+                        [],
+                      stagedExpenditureAddress,
+                    }}
+                  >
+                    Release
+                  </ActionButton>
+                )}
+
+              {slotStage?.isReleased && <div>Released</div>}
             </li>
           );
         })}
