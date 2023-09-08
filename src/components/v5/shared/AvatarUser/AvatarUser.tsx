@@ -10,24 +10,22 @@ const displayName = 'v5.AvatarUser';
 const AvatarUser: FC<AvatarUserProps> = ({
   walletAddress,
   avatar,
-  isContributorsList,
+  hasAvatarDecor,
   userStatus,
   userName,
   size,
-  isLink = false,
+  href,
 }) => {
   const avatarImage = (
-    <span className="grid grid-cols-[auto,1fr] rounded-full items-center">
+    <span className="flex rounded-full items-center">
       <span
         className={clsx('flex rounded-full', {
           'border-2 border-blue-400 ':
-            userStatus === 'dedicated' && isContributorsList,
+            userStatus === 'dedicated' && hasAvatarDecor,
           'border-2 border-warning-400':
-            userStatus === 'active' && isContributorsList,
-          'border-2 border-green-400':
-            userStatus === 'new' && isContributorsList,
-          'border-2 border-purple-400':
-            userStatus === 'top' && isContributorsList,
+            userStatus === 'active' && hasAvatarDecor,
+          'border-2 border-green-400': userStatus === 'new' && hasAvatarDecor,
+          'border-2 border-purple-400': userStatus === 'top' && hasAvatarDecor,
         })}
       >
         <Avatar
@@ -50,11 +48,11 @@ const AvatarUser: FC<AvatarUserProps> = ({
     </span>
   );
 
-  if (isLink) {
+  if (href) {
     return (
       <Link
-        className="inline-flex transition-all duration-normal hover:text-blue-400"
-        to="/user/"
+        className="inline-flex transition-all duration-normal md:hover:text-blue-400"
+        to={href}
       >
         {avatarImage}
       </Link>

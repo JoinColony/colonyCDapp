@@ -4,9 +4,9 @@ import { AvatarSize } from '../Avatar/types';
 export interface AvatarUserProps {
   walletAddress: string;
   avatar?: string;
-  isContributorsList?: boolean;
+  hasAvatarDecor?: boolean;
   userStatus?: UserStatusMode;
   userName?: string;
   size: AvatarSize;
-  isLink?: boolean;
+  href?: string;
 }

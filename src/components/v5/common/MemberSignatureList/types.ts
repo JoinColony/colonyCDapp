@@ -1,8 +1,11 @@
 import { MemberSignatureProps } from '../MemberSignature/types';
 
 export interface MemberSignatureListProps {
-  items: MemberSignatureProps[];
-  checkedUsersList: string[];
+  items: MemberSignatureItem[];
   isLoading?: boolean;
   title: React.ReactNode;
+}
+
+export interface MemberSignatureItem extends MemberSignatureProps {
+  key: string;
 }
