@@ -1,13 +1,6 @@
-import { UserStatusMode } from '../Pills/types';
+import { AvatarUserProps } from '~v5/shared/AvatarUser/types';
 
-export interface MemberSignatureProps extends AvatarProps {
+export interface MemberSignatureProps {
+  avatar: Omit<AvatarUserProps, 'size'>;
   isChecked: boolean;
-}
-
-export interface AvatarProps {
-  walletAddress: string;
-  avatar?: string;
-  isContributorsList?: boolean;
-  userStatus?: UserStatusMode;
-  userName?: string;
 }

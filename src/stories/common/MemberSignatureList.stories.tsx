@@ -34,20 +34,26 @@ export const Base: StoryObj<typeof MemberSignatureList> = {
     title: 'Members with recovery permissions',
     items: [
       {
-        userName: 'John Doe',
-        walletAddress: '0x1234567890123456789012345678901234567890',
+        avatar: {
+          userName: 'John Doe',
+          walletAddress: '0x1234567890123456789012345678901234567890',
+        },
         isChecked: true,
         key: '1',
       },
       {
-        userName: 'Andrew Doe',
-        walletAddress: '0x12345678901234567890',
+        avatar: {
+          userName: 'Andrew Doe',
+          walletAddress: '0x12345678901234567890',
+        },
         isChecked: false,
         key: '2',
       },
       {
-        userName: 'Thomas Doe',
-        walletAddress: '0x1234567890',
+        avatar: {
+          userName: 'Thomas Doe',
+          walletAddress: '0x1234567890',
+        },
         isChecked: false,
         key: '3',
       },
