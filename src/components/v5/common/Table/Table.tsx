@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   flexRender,
   getCoreRowModel,
@@ -26,7 +26,7 @@ const Table = <T,>({
 }: TableProps<T>) => {
   const isMobile = useMobile();
   const { type, actionData, actionText } = action;
-
+  const [selectedRowId, setSelectedRowId] = useState<string>();
   const { control, getValues } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
@@ -39,30 +39,28 @@ const Table = <T,>({
     columnHelper.accessor('menu', {
       header: () => '',
       // eslint-disable-next-line react/no-unstable-nested-components
-      cell: ({ row }) => {
-        return (
-          <BurgerMenu
-            isMenuVisible={isMenuVisible}
-            onToogle={onToogle}
-            onToogleOff={onToogleOff}
-            onRemoveRow={() => remove(row.index)}
-            onDuplicateRow={() => {
-              const values = getValues().payments;
-              const selectedRow = values.find(
-                (item) => item.key === row.original.key,
-              );
-              if (selectedRow) {
-                append([
-                  {
-                    ...selectedRow,
-                    key: uuidv4(),
-                  },
-                ]);
-              }
-            }}
-          />
-        );
-      },
+      cell: ({ row }) => (
+        <BurgerMenu
+          isMenuVisible={isMenuVisible && row.id === selectedRowId}
+          onToogle={onToogle}
+          onToogleOff={onToogleOff}
+          onRemoveRow={() => remove(row.index)}
+          onDuplicateRow={() => {
+            const values = getValues().payments;
+            const selectedRow = values.find(
+              (item) => item.key === row.original.key,
+            );
+            if (selectedRow) {
+              append([
+                {
+                  ...selectedRow,
+                  key: uuidv4(),
+                },
+              ]);
+            }
+          }}
+        />
+      ),
     }),
   ];
 
@@ -107,6 +105,7 @@ const Table = <T,>({
                     className={clsx('h-[3.125rem] relative', {
                       'border-b border-b-gray-200': lastRow.id !== row.id,
                     })}
+                    onClick={() => setSelectedRowId(row.id)}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <td key={cell.id} className="px-4 text-md text-gray-500">

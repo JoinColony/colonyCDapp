@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { createColumnHelper } from '@tanstack/react-table';
+import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
 
 import { TransactionTableProps } from './types';
@@ -10,7 +10,7 @@ export const useTransactionTable = () => {
   const { formatMessage } = useIntl();
   const columnHelper = createColumnHelper<TransactionTableProps>();
 
-  const columns = useMemo(
+  const columns: ColumnDef<TransactionTableProps[]> = useMemo(
     () => [
       columnHelper.accessor('recipent', {
         header: () => formatMessage({ id: 'table.row.recipent' }),
@@ -36,7 +36,7 @@ export const useTransactionTable = () => {
         },
       }),
     ],
-    [columnHelper],
+    [],
   );
 
   return {
