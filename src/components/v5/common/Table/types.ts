@@ -12,10 +12,14 @@ export interface TableProps<T> {
   isMenuVisible: boolean;
   onToogle: () => void;
   onToogleOff: () => void;
+  registerContainerRef: (ref: HTMLElement | null) => void;
 }
 
 export interface BurgerMenuProps
-  extends Pick<TableProps, 'onToogle' | 'onToogleOff' | 'isMenuVisible'> {
+  extends Pick<
+    TableProps,
+    'onToogle' | 'onToogleOff' | 'isMenuVisible' | 'registerContainerRef'
+  > {
   onRemoveRow?: () => void;
   onDuplicateRow?: () => void;
 }

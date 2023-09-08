@@ -4,7 +4,6 @@ import { useIntl } from 'react-intl';
 import Icon from '~shared/Icon';
 import { BurgerMenuProps } from '../types';
 import Card from '~v5/shared/Card';
-import { useDetectClickOutside } from '~hooks';
 
 const displayName = 'v5.common.Table.partials.BurgerMenu';
 
@@ -14,11 +13,9 @@ const BurgerMenu: FC<BurgerMenuProps> = ({
   isMenuVisible,
   onRemoveRow,
   onDuplicateRow,
+  registerContainerRef,
 }) => {
   const { formatMessage } = useIntl();
-  const ref = useDetectClickOutside({
-    onTriggered: () => onToogleOff(),
-  });
 
   return (
     <>
@@ -37,7 +34,7 @@ const BurgerMenu: FC<BurgerMenuProps> = ({
           className="p-6 w-full sm:max-w-[11.125rem] absolute top-[calc(100%-1rem)] right-3 z-50"
           hasShadow
           rounded="s"
-          ref={ref}
+          ref={registerContainerRef}
         >
           <ul>
             {onRemoveRow && (

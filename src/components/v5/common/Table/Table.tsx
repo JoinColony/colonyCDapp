@@ -23,6 +23,7 @@ const Table = <T,>({
   isMenuVisible,
   onToogle,
   onToogleOff,
+  registerContainerRef,
 }: TableProps<T>) => {
   const isMobile = useMobile();
   const { type, actionData, actionText } = action;
@@ -45,6 +46,7 @@ const Table = <T,>({
           onToogle={onToogle}
           onToogleOff={onToogleOff}
           onRemoveRow={() => remove(row.index)}
+          registerContainerRef={registerContainerRef}
           onDuplicateRow={() => {
             const values = getValues().payments;
             const selectedRow = values.find(

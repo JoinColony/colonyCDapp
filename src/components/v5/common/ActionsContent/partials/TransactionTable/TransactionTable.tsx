@@ -15,7 +15,11 @@ const TransactionTable: FC = () => {
   const { nativeToken } = colony || {};
   const [
     isTransactionMenuVisible,
-    { toggle: toggleTransactionMenu, toggleOff: toggleOffTransactionMenu },
+    {
+      toggle: toggleTransactionMenu,
+      toggleOff: toggleOffTransactionMenu,
+      registerContainerRef,
+    },
   ] = useToggle();
 
   return (
@@ -27,6 +31,7 @@ const TransactionTable: FC = () => {
         isMenuVisible={isTransactionMenuVisible}
         onToogle={toggleTransactionMenu}
         onToogleOff={toggleOffTransactionMenu}
+        registerContainerRef={registerContainerRef}
         action={{
           type: 'payments',
           actionText: <FormattedMessage id="button.addTransaction" />,
