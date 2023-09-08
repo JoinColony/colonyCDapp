@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useIntl } from 'react-intl';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import MemberSignature from '../MemberSignature';
@@ -10,29 +11,33 @@ const MemberSignatureList: FC<MemberSignatureListProps> = ({
   items,
   isLoading,
   title,
-}) => (
-  <div>
-    <h3 className="text-1 mb-2">{title}</h3>
-    {isLoading && (
-      <div className="flex justify-center">
-        <SpinnerLoader appearance={{ size: 'medium' }} />
-      </div>
-    )}
-    {!isLoading && !!items?.length && (
-      <ul>
-        {items.map(({ isChecked, walletAddress, ...item }) => (
-          <li key={walletAddress} className="mb-3 last:mb-0">
-            <MemberSignature
-              {...item}
-              walletAddress={walletAddress}
-              isChecked={isChecked}
-            />
-          </li>
-        ))}
-      </ul>
-    )}
-  </div>
-);
+}) => {
+  const { formatMessage } = useIntl();
+
+  return (
+    <div>
+      <h3 className="text-1 mb-2">{title}</h3>
+      {isLoading && (
+        <div className="flex justify-center">
+          <SpinnerLoader appearance={{ size: 'medium' }} />
+        </div>
+      )}
+      {!isLoading && !!items?.length ? (
+        <ul>
+          {items.map(({ isChecked, avatar, key }) => (
+            <li key={key} className="mb-3 last:mb-0">
+              <MemberSignature avatar={avatar} isChecked={isChecked} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="text-sm text-gray-500">
+          {formatMessage({ id: 'common.memberSignatureList.empty' })}
+        </p>
+      )}
+    </div>
+  );
+};
 
 MemberSignatureList.displayName = displayName;
 

@@ -1,12 +1,10 @@
 import { UserStatusMode } from '~v5/common/Pills/types';
-import { AvatarSize } from '../Avatar/types';
+import { AvatarProps } from '../Avatar/types';
 
-export interface AvatarUserProps {
+export interface AvatarUserProps extends AvatarProps {
   walletAddress: string;
-  avatar?: string;
   hasAvatarDecor?: boolean;
   userStatus?: UserStatusMode;
   userName?: string;
-  size: AvatarSize;
   href?: string;
 }

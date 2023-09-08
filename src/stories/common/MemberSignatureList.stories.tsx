@@ -60,3 +60,11 @@ export const Base: StoryObj<typeof MemberSignatureList> = {
     ],
   },
 };
+
+export const EmptyList: StoryObj<typeof MemberSignatureList> = {
+  args: {
+    isLoading: false,
+    title: 'Members with recovery permissions',
+    items: [],
+  },
+};

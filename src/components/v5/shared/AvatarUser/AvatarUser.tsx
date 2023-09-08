@@ -17,15 +17,14 @@ const AvatarUser: FC<AvatarUserProps> = ({
   href,
 }) => {
   const avatarImage = (
-    <span className="flex rounded-full items-center">
+    <div className="flex rounded-full items-center">
       <span
         className={clsx('flex rounded-full', {
-          'border-2 border-blue-400 ':
-            userStatus === 'dedicated' && hasAvatarDecor,
-          'border-2 border-warning-400':
-            userStatus === 'active' && hasAvatarDecor,
-          'border-2 border-green-400': userStatus === 'new' && hasAvatarDecor,
-          'border-2 border-purple-400': userStatus === 'top' && hasAvatarDecor,
+          'border-2': hasAvatarDecor,
+          'border-blue-400 ': userStatus === 'dedicated' && hasAvatarDecor,
+          'border-warning-400': userStatus === 'active' && hasAvatarDecor,
+          'border-green-400': userStatus === 'new' && hasAvatarDecor,
+          'border-purple-400': userStatus === 'top' && hasAvatarDecor,
         })}
       >
         <Avatar
@@ -45,7 +44,7 @@ const AvatarUser: FC<AvatarUserProps> = ({
           {userName}
         </p>
       )}
-    </span>
+    </div>
   );
 
   if (href) {
