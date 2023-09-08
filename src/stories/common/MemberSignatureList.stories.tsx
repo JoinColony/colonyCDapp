@@ -34,7 +34,7 @@ export const Base: StoryObj<typeof MemberSignatureList> = {
     title: 'Members with recovery permissions',
     items: [
       {
-        avatar: {
+        avatarProps: {
           userName: 'John Doe',
           walletAddress: '0x1234567890123456789012345678901234567890',
         },
@@ -42,7 +42,7 @@ export const Base: StoryObj<typeof MemberSignatureList> = {
         key: '1',
       },
       {
-        avatar: {
+        avatarProps: {
           userName: 'Andrew Doe',
           walletAddress: '0x12345678901234567890',
         },
@@ -50,7 +50,7 @@ export const Base: StoryObj<typeof MemberSignatureList> = {
         key: '2',
       },
       {
-        avatar: {
+        avatarProps: {
           userName: 'Thomas Doe',
           walletAddress: '0x1234567890',
         },

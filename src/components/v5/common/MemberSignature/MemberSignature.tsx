@@ -6,12 +6,15 @@ import AvatarUser from '~v5/shared/AvatarUser';
 
 const displayName = 'v5.common.MemberSignature';
 
-const MemberSignature: FC<MemberSignatureProps> = ({ isChecked, avatar }) => {
+const MemberSignature: FC<MemberSignatureProps> = ({
+  isChecked,
+  avatarProps,
+}) => {
   const { formatMessage } = useIntl();
 
   return (
     <div className="flex items-center justify-between gap-2">
-      <AvatarUser {...avatar} size="xs" />
+      <AvatarUser {...avatarProps} size="xs" />
       <span className="text-sm">
         {formatMessage({
           id: isChecked
