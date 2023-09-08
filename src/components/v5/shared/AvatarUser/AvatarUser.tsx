@@ -15,6 +15,7 @@ const AvatarUser: FC<AvatarUserProps> = ({
   userName,
   size,
   href,
+  ...rest
 }) => {
   const avatarImage = (
     <div className="flex rounded-full items-center">
@@ -32,6 +33,7 @@ const AvatarUser: FC<AvatarUserProps> = ({
           avatar={avatar}
           placeholderIcon="circle-person"
           seed={walletAddress && walletAddress.toLowerCase()}
+          {...rest}
         />
       </span>
       {userName && (
