@@ -22,7 +22,7 @@ const TransactionTable: FC = () => {
     <div className="mt-7">
       <Table<TransactionTableProps>
         className="mt-7"
-        tableTitle={{ id: 'actionSidebar.additionalPayments' }}
+        tableTitle={<FormattedMessage id="actionSidebar.additionalPayments" />}
         columns={columns}
         isMenuVisible={isTransactionMenuVisible}
         onToogle={toggleTransactionMenu}

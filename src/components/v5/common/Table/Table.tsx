@@ -1,5 +1,4 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
 import {
   flexRender,
   getCoreRowModel,
@@ -25,9 +24,8 @@ const Table = <T,>({
   onToogle,
   onToogleOff,
 }: TableProps<T>) => {
-  const { formatMessage } = useIntl();
   const isMobile = useMobile();
-  const { type, actionData, actionText } = action || {};
+  const { type, actionData, actionText } = action;
 
   const { control, getValues } = useFormContext();
   const { fields, append, remove } = useFieldArray({
@@ -76,9 +74,7 @@ const Table = <T,>({
 
   return (
     <div className={className}>
-      {tableTitle && (
-        <h5 className="text-2 mb-3">{formatMessage(tableTitle)}</h5>
-      )}
+      {tableTitle && <h5 className="text-2 mb-3">{tableTitle}</h5>}
       {!!fields?.length && (
         <div className="border border-gray-200 rounded-lg">
           <table className="w-full">

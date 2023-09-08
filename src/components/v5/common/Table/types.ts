@@ -1,9 +1,8 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { MessageDescriptor } from 'react-intl';
 
 export interface TableProps<T> {
   className?: string;
-  tableTitle?: MessageDescriptor;
+  tableTitle?: React.ReactNode;
   columns: ColumnDef<T>[];
   action: {
     actionText: React.ReactNode;
@@ -17,8 +16,6 @@ export interface TableProps<T> {
 
 export interface BurgerMenuProps
   extends Pick<TableProps, 'onToogle' | 'onToogleOff' | 'isMenuVisible'> {
-  canRemoveRow?: boolean;
-  canDuplicateRow?: boolean;
   onRemoveRow?: () => void;
   onDuplicateRow?: () => void;
 }

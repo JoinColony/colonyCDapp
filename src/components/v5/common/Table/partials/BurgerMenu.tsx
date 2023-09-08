@@ -12,8 +12,6 @@ const BurgerMenu: FC<BurgerMenuProps> = ({
   onToogle,
   onToogleOff,
   isMenuVisible,
-  canRemoveRow = true,
-  canDuplicateRow = true,
   onRemoveRow,
   onDuplicateRow,
 }) => {
@@ -34,7 +32,7 @@ const BurgerMenu: FC<BurgerMenuProps> = ({
           <Icon name="dots-three" appearance={{ size: 'extraTiny' }} />
         </button>
       </div>
-      {isMenuVisible && (
+      {isMenuVisible && onRemoveRow && onDuplicateRow && (
         <Card
           className="p-6 w-full sm:max-w-[11.125rem] absolute top-[calc(100%-1rem)] right-3 z-50"
           hasShadow
@@ -42,13 +40,13 @@ const BurgerMenu: FC<BurgerMenuProps> = ({
           ref={ref}
         >
           <ul>
-            {canRemoveRow && (
+            {onRemoveRow && (
               <li className="mb-4 last:mb-0">
                 <button
                   type="button"
                   className="flex text-md text-gray-600 transition-colors hover:text-blue-400"
                   onClick={() => {
-                    onRemoveRow();
+                    onRemoveRow?.();
                     onToogleOff();
                   }}
                 >
@@ -59,13 +57,13 @@ const BurgerMenu: FC<BurgerMenuProps> = ({
                 </button>
               </li>
             )}
-            {canDuplicateRow && (
+            {onDuplicateRow && (
               <li className="mb-4 last:mb-0">
                 <button
                   type="button"
                   className="flex text-md text-gray-600 transition-colors hover:text-blue-400"
                   onClick={() => {
-                    onDuplicateRow();
+                    onDuplicateRow?.();
                     onToogleOff();
                   }}
                 >
