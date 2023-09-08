@@ -5,7 +5,7 @@ import lockExpenditureSaga from './lockExpenditure';
 import finalizeExpenditureSaga from './finalizeExpenditure';
 import fundExpenditureSaga from './fundExpenditure';
 import editExpenditureSaga from './editExpenditure';
-import cancelExpenditureSaga from './cancelExpenditure';
+import cancelDraftExpenditureSaga from './cancelDraftExpenditure';
 import claimExpenditureSaga from './claimExpenditure';
 import createStakedExpenditureSaga from './createStakedExpenditure';
 import reclaimExpenditureStakeSaga from './reclaimExpenditureStake';
@@ -18,7 +18,7 @@ export default function* expendituresSagas() {
     call(finalizeExpenditureSaga),
     call(fundExpenditureSaga),
     call(editExpenditureSaga),
-    call(cancelExpenditureSaga),
+    call(cancelDraftExpenditureSaga),
     call(claimExpenditureSaga),
     call(createStakedExpenditureSaga),
     call(reclaimExpenditureStakeSaga),

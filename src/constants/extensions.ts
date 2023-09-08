@@ -353,7 +353,11 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     name: MSG.stakedExpenditureName,
     descriptionShort: MSG.stakedExpenditureDescriptionShort,
     descriptionLong: MSG.stakedExpenditureDescriptionLong,
-    neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
+    neededColonyPermissions: [
+      ColonyRole.Administration,
+      ColonyRole.Funding,
+      ColonyRole.Arbitration,
+    ],
     uninstallable: true,
     createdAt: 1692048380000,
     initializationParams: [

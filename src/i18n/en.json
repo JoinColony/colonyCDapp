@@ -277,6 +277,8 @@
   "transaction.StagedExpenditureClient.setExpenditureStaged.description": "Set Expenditure as Staged",
   "transaction.StagedExpenditureClient.releaseStagedPayment.title": "Release Staged Payment",
   "transaction.StagedExpenditureClient.releaseStagedPayment.description": "Release Staged Payment",
+  "transaction.StakedExpenditureClient.cancelAndReclaimStake.title": "Cancel and Reclaim Stake",
+  "transaction.StakedExpenditureClient.cancelAndReclaimStake.description": "Cancel and Reclaim Stake",
 
   "metatransaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
   "metatransaction.group.deposit.title": "Activate tokens",
