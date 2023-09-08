@@ -1,17 +1,21 @@
 import React, { useMemo } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
+import { useIntl } from 'react-intl';
 
 import { TransactionTableProps } from './types';
 import UserSelect from '../UserSelect';
 import AmountField from '../AmountField';
 
 export const useTransactionTable = () => {
+  const { formatMessage } = useIntl();
   const columnHelper = createColumnHelper<TransactionTableProps>();
 
   const columns = useMemo(
     () => [
       columnHelper.accessor('recipent', {
-        header: () => 'Recipient',
+        header: () => {
+          formatMessage({ id: 'table.row.recipent' });
+        },
         cell: ({ row }) => (
           <UserSelect
             key={row.id}
@@ -21,7 +25,7 @@ export const useTransactionTable = () => {
         ),
       }),
       columnHelper.accessor('amount', {
-        header: () => 'Amount',
+        header: () => formatMessage({ id: 'table.row.amount' }),
         cell: ({ row }) => {
           return (
             <AmountField
