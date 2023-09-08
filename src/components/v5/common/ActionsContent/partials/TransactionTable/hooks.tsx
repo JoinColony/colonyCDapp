@@ -13,9 +13,7 @@ export const useTransactionTable = () => {
   const columns = useMemo(
     () => [
       columnHelper.accessor('recipent', {
-        header: () => {
-          formatMessage({ id: 'table.row.recipent' });
-        },
+        header: () => formatMessage({ id: 'table.row.recipent' }),
         cell: ({ row }) => (
           <UserSelect
             key={row.id}
