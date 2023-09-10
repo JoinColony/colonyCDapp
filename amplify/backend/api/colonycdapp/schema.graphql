@@ -2599,6 +2599,7 @@ type ExpenditureMetadata @model {
   fundFromDomainNativeId: Int!
   type: ExpenditureType!
   stages: [ExpenditureStage!]
+  stakeAmount: String
 }
 
 type ExpenditureBalance {
