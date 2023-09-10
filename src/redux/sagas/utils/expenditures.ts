@@ -110,6 +110,7 @@ interface SaveExpenditureMetadataParams {
   fundFromDomainId: number;
   expenditureType: ExpenditureType;
   stages?: ExpenditureStageFieldValue[];
+  stakeAmount?: string;
 }
 
 export function* saveExpenditureMetadata({
@@ -118,6 +119,7 @@ export function* saveExpenditureMetadata({
   fundFromDomainId,
   expenditureType,
   stages,
+  stakeAmount,
 }: SaveExpenditureMetadataParams) {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
@@ -136,6 +138,7 @@ export function* saveExpenditureMetadata({
           slotId: index + 1,
           isReleased: false,
         })),
+        stakeAmount,
       },
     },
   });

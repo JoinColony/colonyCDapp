@@ -193,6 +193,7 @@ function* createStakedExpenditure({
       fundFromDomainId,
       expenditureType: ExpenditureType.Staked,
       stages,
+      stakeAmount,
     });
 
     yield put<AllActions>({
