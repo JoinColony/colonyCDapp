@@ -26,7 +26,6 @@ const CancelDraftExpenditureButton = ({
   return (
     <ActionButton
       actionType={ActionTypes.EXPENDITURE_DRAFT_CANCEL}
-      appearance={{ size: 'small' }}
       values={{
         colonyAddress: colony.colonyAddress,
         expenditure,

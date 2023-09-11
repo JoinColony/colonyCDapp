@@ -17,6 +17,7 @@ import ExpenditurePayouts from './ExpenditurePayouts';
 import ReclaimStakeButton from '../StakedExpenditure/ReclaimStakeButton';
 import ExpenditureStages from './ExpenditureStages';
 import CancelDraftExpenditureButton from './CancelDraftExpenditureButton';
+import CancelStakedExpenditureButton from '../StakedExpenditure/CancelStakedExpenditureButton';
 
 import styles from './ExpenditureDetailsPage.module.css';
 
@@ -142,6 +143,10 @@ const ExpenditureDetailsPage = () => {
           <CancelDraftExpenditureButton
             colony={colony}
             expenditure={expenditure}
+          />
+          <CancelStakedExpenditureButton
+            expenditure={expenditure}
+            colony={colony}
           />
           <ExpenditureAdvanceButton expenditure={expenditure} colony={colony} />
           <ReclaimStakeButton colony={colony} expenditure={expenditure} />
