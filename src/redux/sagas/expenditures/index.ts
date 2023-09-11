@@ -10,6 +10,7 @@ import claimExpenditureSaga from './claimExpenditure';
 import createStakedExpenditureSaga from './createStakedExpenditure';
 import reclaimExpenditureStakeSaga from './reclaimExpenditureStake';
 import releaseExpenditureStageSaga from './releaseExpenditureStage';
+import cancelStakedExpenditureSaga from './cancelStakedExpenditure';
 
 export default function* expendituresSagas() {
   yield all([
@@ -23,5 +24,6 @@ export default function* expendituresSagas() {
     call(createStakedExpenditureSaga),
     call(reclaimExpenditureStakeSaga),
     call(releaseExpenditureStageSaga),
+    call(cancelStakedExpenditureSaga),
   ]);
 }

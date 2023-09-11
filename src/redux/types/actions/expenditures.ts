@@ -148,4 +148,20 @@ export type ExpendituresActionTypes =
       ActionTypes.RELEASE_EXPENDITURE_STAGE_SUCCESS,
       object,
       object
+    >
+  | UniqueActionType<
+      ActionTypes.STAKED_EXPENDITURE_CANCEL,
+      {
+        colonyAddress: Address;
+        stakedExpenditureAddress: string;
+        shouldPunish: boolean;
+        expenditure: Expenditure;
+      },
+      MetaWithNavigate<object>
+    >
+  | ErrorActionType<ActionTypes.STAKED_EXPENDITURE_CANCEL_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.STAKED_EXPENDITURE_CANCEL_SUCCESS,
+      object,
+      object
     >;
