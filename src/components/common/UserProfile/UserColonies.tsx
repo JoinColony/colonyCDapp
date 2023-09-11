@@ -37,7 +37,7 @@ const MSG = defineMessages({
 });
 
 const UserColonies = ({
-  user: { walletAddress, watchlist, name, profile },
+  user: { walletAddress, watchlist, profile },
 }: Props) => {
   const { user: currentUser } = useAppContext();
   const isCurrentUser = currentUser?.walletAddress === walletAddress;
@@ -62,10 +62,10 @@ const UserColonies = ({
           : {
               friendlyUsername: (
                 <span
-                  title={profile?.displayName ?? name ?? ''}
+                  title={profile?.displayName ?? ''}
                   className={styles.userHighlight}
                 >
-                  {profile?.displayName || name}
+                  {profile?.displayName ?? ''}
                 </span>
               ),
             }

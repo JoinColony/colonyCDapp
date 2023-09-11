@@ -13,8 +13,8 @@ const displayName = 'v5.pages.VerifiedPage.partials.TableItem';
 
 const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
   const { user, colonyReputationPercentage } = member || {};
-  const { walletAddress = '', name, profile } = user || {};
-  const { bio } = profile || {};
+  const { walletAddress = '', profile } = user || {};
+  const { bio, displayName: name } = profile || {};
 
   const [isChecked, setIsChecked] = useState<boolean>();
 

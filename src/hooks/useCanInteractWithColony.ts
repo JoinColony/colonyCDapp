@@ -14,7 +14,7 @@ export const useUserAccountRegistered = (): boolean => {
   if (!user) {
     return false;
   }
-  return !!user.name;
+  return !!user.profile?.displayName;
 };
 
 export const useCanInteractWithNetwork = (): boolean => {

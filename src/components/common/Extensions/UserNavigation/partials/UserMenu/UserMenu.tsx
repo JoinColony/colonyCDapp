@@ -17,6 +17,7 @@ import NavigationTools from '~common/Extensions/NavigationTools';
 import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
 import { formatText } from '~utils/intl';
+import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserMenu';
 
@@ -31,7 +32,7 @@ const UserMenu: FC<UserMenuProps> = ({
 }) => {
   const isMobile = useMobile();
   const { connectWallet, updateWallet } = useAppContext();
-  const { name, profile } = user || {};
+  const { profile } = user || {};
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 
   const iconName = isMobile ? 'caret-down' : 'caret-right';
@@ -62,7 +63,10 @@ const UserMenu: FC<UserMenuProps> = ({
         {isWalletConnected ? (
           <div className="px-6">
             <WalletConnectedTopMenu
-              userName={profile?.displayName || name || ''}
+              userName={
+                profile?.displayName ??
+                splitWalletAddress(user?.walletAddress ?? '')
+              }
               isVerified={isVerified}
               walletAddress={walletAddress}
               avatar={profile?.thumbnail || profile?.avatar || ''}

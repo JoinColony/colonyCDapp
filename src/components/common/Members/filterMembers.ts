@@ -9,8 +9,7 @@ const filterMemberBySearchTerm = (member: Member, searchTerm: string) => {
     member?.user?.profile?.displayName
       ?.toLowerCase()
       .includes(searchTerm.toLowerCase()) ||
-    member?.address?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    member?.user?.name.toLowerCase().includes(searchTerm.toLowerCase())
+    member?.address?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 };
 

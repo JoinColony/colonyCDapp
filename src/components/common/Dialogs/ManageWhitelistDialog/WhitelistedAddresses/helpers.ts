@@ -58,7 +58,6 @@ export const getFilteredUsers = (
   return users.filter(({ user, address }) => {
     return (
       address.toLowerCase().includes(filterTerm) ||
-      user?.name?.toLowerCase().includes(filterTerm) ||
       user?.profile?.displayName?.toLowerCase().includes(filterTerm)
     );
   });

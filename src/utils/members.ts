@@ -10,7 +10,6 @@ export const searchMembers = (
 
   return members.filter(({ contributorAddress: address, user }) => {
     return (
-      user?.name.toLowerCase().startsWith(searchValue.toLowerCase()) ||
       user?.profile?.displayName
         ?.toLowerCase()
         .startsWith(searchValue.toLowerCase()) ||

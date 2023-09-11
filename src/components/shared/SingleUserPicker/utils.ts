@@ -18,7 +18,6 @@ export const filterUserSelection = (
 
   const filteredUsers = data.filter(
     (user) =>
-      user?.name.toLowerCase().includes(filterValue.toLowerCase()) ||
       user?.walletAddress.toLowerCase().includes(filterValue.toLowerCase()) ||
       user?.profile?.displayName
         ?.toLowerCase()

@@ -29,7 +29,6 @@ const UserSelect: FC<SelectProps> = ({
 
   const { user } = useUserByName(selectedUser || '');
   const userDisplayName = user?.profile?.displayName;
-  const username = user?.name;
   const { user: userByAddress } = useUserByAddress(selectedWalletAddress);
   const { formErrors, changeFormErrorsState } = useActionFormContext();
 
@@ -47,7 +46,7 @@ const UserSelect: FC<SelectProps> = ({
         {selectedUser || userByAddress ? (
           <UserAvatar
             user={user || userByAddress}
-            userName={userDisplayName || username || userByAddress?.name}
+            userName={userDisplayName}
             size="xs"
           />
         ) : (

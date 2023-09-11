@@ -37,7 +37,7 @@ const UserSection = () => {
         <>
           <DropdownMenuItem>
             <NavLink
-              to={`/user/${user?.name}`}
+              to={`/user/${user?.profile?.displayName}`}
               text={MSG.myProfile}
               data-test="userProfile"
             />

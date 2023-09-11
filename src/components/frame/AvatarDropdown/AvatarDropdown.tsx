@@ -52,7 +52,7 @@ const AvatarDropdown = ({
 
   const popoverContent = isMobile
     ? () =>
-        user?.name &&
+        user?.profile?.displayName &&
         wallet?.address &&
         colony && (
           <AvatarDropdownPopoverMobile
