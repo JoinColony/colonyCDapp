@@ -27,7 +27,7 @@ const calculateUsernameChangePeriod = (displayNameChanged?: string | null) => {
   // if there's no displayNameChanged date, we'll let them change their username
   const nameChanged_ms = new Date(displayNameChanged ?? fallbackDate).valueOf();
   const now_ms = new Date().valueOf();
-  const daysSinceUsernameChange = Math.ceil(
+  const daysSinceUsernameChange = Math.floor(
     (now_ms - nameChanged_ms) / (1000 * 60 * 60 * 24),
   );
   /* eslint-enable camelcase */
