@@ -3,7 +3,8 @@ import { useFormContext } from 'react-hook-form';
 import { Actions } from '~constants/actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { DomainColor } from '~gql';
-import { useColonyContext } from '~hooks';
+import { useColonyContext, useGetColonyMembers } from '~hooks';
+import { getVerifiedUsers } from '~utils/verifiedUsers';
 
 export const useGetTeamValues = (teamId: number) => {
   const { colony } = useColonyContext();
@@ -82,5 +83,32 @@ export const useActionsContent = () => {
     teamName,
     teamPurpose,
     isError,
+  };
+};
+
+export const useVerifiedRecipient = () => {
+  const { colony } = useColonyContext();
+  const methods = useFormContext();
+  const recipient = methods?.watch('recipient');
+
+  const isAddressVerified = (colony?.metadata?.whitelistedAddresses ?? []).some(
+    (address) => address?.toLowerCase() === recipient?.toLowerCase(),
+  );
+
+  const allColonyMembers = useGetColonyMembers(colony?.colonyAddress);
+
+  const verifiedUsers = getVerifiedUsers(
+    colony?.metadata?.whitelistedAddresses ?? [],
+    allColonyMembers,
+  );
+
+  const isUserVerified = verifiedUsers.some(
+    (user) =>
+      user.profile?.displayName?.toLowerCase() === recipient?.toLowerCase(),
+  );
+
+  return {
+    isAddressVerified,
+    isUserVerified,
   };
 };
