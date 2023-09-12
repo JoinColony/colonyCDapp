@@ -4,22 +4,16 @@ export interface TableProps<T> {
   className?: string;
   tableTitle?: React.ReactNode;
   columns: ColumnDef<T>[];
-  action: {
-    actionText: React.ReactNode;
-    type: string;
-    actionData: { [key: string]: unknown };
-  };
-  isMenuVisible: boolean;
-  onToogle: () => void;
-  onToogleOff: () => void;
-  registerContainerRef: (ref: HTMLElement | null) => void;
+  fields: T[];
+  burgerColumn: ColumnDef<T, any>[];
+  setSelectedRowId: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
-export interface BurgerMenuProps
-  extends Pick<
-    TableProps,
-    'onToogle' | 'onToogleOff' | 'isMenuVisible' | 'registerContainerRef'
-  > {
-  onRemoveRow?: () => void;
-  onDuplicateRow?: () => void;
+export interface BurgerMenuProps {
+  isMenuVisible: boolean;
+  onRemoveRow: () => void;
+  onToogle: () => void;
+  onToogleOff: () => void;
+  onDuplicateRow: () => void;
+  registerContainerRef: (ref: HTMLElement | null) => void;
 }
