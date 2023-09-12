@@ -701,9 +701,17 @@ enum ColonyActionType {
   """
   PAYMENT
   """
+  An action related to making multiple payments within a Colony
+  """
+  MULTIPLE_PAYMENT
+  """
   An action related to a payment that was created via a motion within a Colony
   """
   PAYMENT_MOTION
+  """
+  An action related to making multiple payments within a Colony
+  """
+  MULTIPLE_PAYMENT_MOTION
   """
   An action related to the recovery functionality of a Colony
   """
@@ -2565,6 +2573,11 @@ type CurrentNetworkInverseFee @model {
   inverseFee: String!
 }
 
+type Payment {
+  amount: String!
+  tokenAddress: String!
+  recipientAddress: String!
+}
 """
 Represents an action performed within a Colony
 """
@@ -2662,7 +2675,6 @@ type ColonyAction @model {
   The address of the token that was received the action, if applicable
   """
   recipientToken: Token @hasOne(fields: ["recipientAddress"])
-
   """
   The amount involved in the action, if applicable
   """
@@ -2692,9 +2704,9 @@ type ColonyAction @model {
   """
   toDomain: Domain @hasOne(fields: ["toDomainId"])
   """
-  The fundamental chain id
+  The native id of the payment
   """
-  fundamentalChainId: Int
+  paymentId: Int
   """
   The resulting new Colony version, if applicable
   """
@@ -2737,6 +2749,10 @@ type ColonyAction @model {
   Corresponding Decision data, if action is a Simple Decision
   """
   decisionData: ColonyDecision @hasOne(fields: ["colonyDecisionId"])
+  """
+  Payment data for multiple OneTxPayments
+  """
+  payments: [Payment!]
   """
   Colony roles that are associated with the action
   """

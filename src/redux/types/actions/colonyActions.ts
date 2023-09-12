@@ -14,6 +14,19 @@ import {
 } from './index';
 import { ExternalLink } from '~gql';
 
+export type OneTxPaymentPayload = {
+  colonyAddress: Address;
+  colonyName?: string;
+  domainId: number;
+  payments: {
+    recipient: string;
+    amount: string;
+    tokenAddress: Address;
+    decimals: number;
+  }[];
+  annotationMessage?: string;
+  motionDomainId?: number;
+};
 /*
  * @NOTE About naming
  * I couldn't come up with anything better, as we already have ColonyActionTypes :(
@@ -57,19 +70,7 @@ export type ColonyActionsActionTypes =
     >
   | UniqueActionType<
       ActionTypes.ACTION_EXPENDITURE_PAYMENT,
-      {
-        colonyAddress: Address;
-        colonyName?: string;
-        recipientAddresses: Address[];
-        domainId: number;
-        payments: {
-          amount: BigNumber;
-          tokenAddress: Address;
-          decimals: number;
-        }[];
-        annotationMessage?: string;
-        walletAddress: Address;
-      },
+      OneTxPaymentPayload,
       MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_EXPENDITURE_PAYMENT_ERROR, object>

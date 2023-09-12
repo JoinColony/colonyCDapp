@@ -246,8 +246,6 @@ export type ColonyAction = {
   fromDomain?: Maybe<Domain>;
   /** The source Domain identifier, if applicable */
   fromDomainId?: Maybe<Scalars['ID']>;
-  /** The fundamental chain id */
-  fundamentalChainId?: Maybe<Scalars['Int']>;
   /** Unique identifier for the ColonyAction */
   id: Scalars['ID'];
   /** JSON string to pass custom, dynamic event data */
@@ -272,6 +270,10 @@ export type ColonyAction = {
   motionId?: Maybe<Scalars['ID']>;
   /** The resulting new Colony version, if applicable */
   newColonyVersion?: Maybe<Scalars['Int']>;
+  /** The native id of the payment */
+  paymentId?: Maybe<Scalars['Int']>;
+  /** Payment data for multiple OneTxPayments */
+  payments?: Maybe<Array<Payment>>;
   /** Colony metadata that is stored temporarily and commited to the database once the corresponding motion passes */
   pendingColonyMetadata?: Maybe<ColonyMetadata>;
   /** Identifier of Colony metadata that is stored temporarily and commited to the database once the corresponding motion passes */
@@ -374,6 +376,10 @@ export enum ColonyActionType {
   MoveFunds = 'MOVE_FUNDS',
   /** An action related to moving funds between domains via a motion */
   MoveFundsMotion = 'MOVE_FUNDS_MOTION',
+  /** An action related to making multiple payments within a Colony */
+  MultiplePayment = 'MULTIPLE_PAYMENT',
+  /** An action related to making multiple payments within a Colony */
+  MultiplePaymentMotion = 'MULTIPLE_PAYMENT_MOTION',
   /** An motion action placeholder that should not be used */
   NullMotion = 'NULL_MOTION',
   /** An action related to a payment within a Colony */
@@ -983,7 +989,6 @@ export type CreateColonyActionInput = {
   colonyId: Scalars['ID'];
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   fromDomainId?: InputMaybe<Scalars['ID']>;
-  fundamentalChainId?: InputMaybe<Scalars['Int']>;
   id?: InputMaybe<Scalars['ID']>;
   individualEvents?: InputMaybe<Scalars['String']>;
   initiatorAddress: Scalars['ID'];
@@ -991,6 +996,8 @@ export type CreateColonyActionInput = {
   motionDomainId?: InputMaybe<Scalars['Int']>;
   motionId?: InputMaybe<Scalars['ID']>;
   newColonyVersion?: InputMaybe<Scalars['Int']>;
+  paymentId?: InputMaybe<Scalars['Int']>;
+  payments?: InputMaybe<Array<PaymentInput>>;
   pendingColonyMetadataId?: InputMaybe<Scalars['ID']>;
   pendingDomainMetadataId?: InputMaybe<Scalars['ID']>;
   recipientAddress?: InputMaybe<Scalars['ID']>;
@@ -1926,7 +1933,6 @@ export type ModelColonyActionConditionInput = {
   colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   fromDomainId?: InputMaybe<ModelIdInput>;
-  fundamentalChainId?: InputMaybe<ModelIntInput>;
   individualEvents?: InputMaybe<ModelStringInput>;
   initiatorAddress?: InputMaybe<ModelIdInput>;
   isMotion?: InputMaybe<ModelBooleanInput>;
@@ -1935,6 +1941,7 @@ export type ModelColonyActionConditionInput = {
   newColonyVersion?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelColonyActionConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyActionConditionInput>>>;
+  paymentId?: InputMaybe<ModelIntInput>;
   pendingColonyMetadataId?: InputMaybe<ModelIdInput>;
   pendingDomainMetadataId?: InputMaybe<ModelIdInput>;
   recipientAddress?: InputMaybe<ModelIdInput>;
@@ -1960,7 +1967,6 @@ export type ModelColonyActionFilterInput = {
   colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   fromDomainId?: InputMaybe<ModelIdInput>;
-  fundamentalChainId?: InputMaybe<ModelIntInput>;
   id?: InputMaybe<ModelIdInput>;
   individualEvents?: InputMaybe<ModelStringInput>;
   initiatorAddress?: InputMaybe<ModelIdInput>;
@@ -1970,6 +1976,7 @@ export type ModelColonyActionFilterInput = {
   newColonyVersion?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelColonyActionFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyActionFilterInput>>>;
+  paymentId?: InputMaybe<ModelIntInput>;
   pendingColonyMetadataId?: InputMaybe<ModelIdInput>;
   pendingDomainMetadataId?: InputMaybe<ModelIdInput>;
   recipientAddress?: InputMaybe<ModelIdInput>;
@@ -2817,7 +2824,6 @@ export type ModelSubscriptionColonyActionFilterInput = {
   colonyId?: InputMaybe<ModelSubscriptionIdInput>;
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   fromDomainId?: InputMaybe<ModelSubscriptionIdInput>;
-  fundamentalChainId?: InputMaybe<ModelSubscriptionIntInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   individualEvents?: InputMaybe<ModelSubscriptionStringInput>;
   initiatorAddress?: InputMaybe<ModelSubscriptionIdInput>;
@@ -2826,6 +2832,7 @@ export type ModelSubscriptionColonyActionFilterInput = {
   motionId?: InputMaybe<ModelSubscriptionIdInput>;
   newColonyVersion?: InputMaybe<ModelSubscriptionIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyActionFilterInput>>>;
+  paymentId?: InputMaybe<ModelSubscriptionIntInput>;
   pendingColonyMetadataId?: InputMaybe<ModelSubscriptionIdInput>;
   pendingDomainMetadataId?: InputMaybe<ModelSubscriptionIdInput>;
   recipientAddress?: InputMaybe<ModelSubscriptionIdInput>;
@@ -4278,6 +4285,19 @@ export enum Network {
   /** Ethereum Mainnet */
   Mainnet = 'MAINNET'
 }
+
+export type Payment = {
+  __typename?: 'Payment';
+  amount: Scalars['String'];
+  recipientAddress: Scalars['String'];
+  tokenAddress: Scalars['String'];
+};
+
+export type PaymentInput = {
+  amount: Scalars['String'];
+  recipientAddress: Scalars['String'];
+  tokenAddress: Scalars['String'];
+};
 
 /** Colony token modifications that are stored temporarily and commited to the database once the corresponding motion passes */
 export type PendingModifiedTokenAddresses = {
@@ -6002,7 +6022,6 @@ export type UpdateColonyActionInput = {
   colonyId?: InputMaybe<Scalars['ID']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   fromDomainId?: InputMaybe<Scalars['ID']>;
-  fundamentalChainId?: InputMaybe<Scalars['Int']>;
   id: Scalars['ID'];
   individualEvents?: InputMaybe<Scalars['String']>;
   initiatorAddress?: InputMaybe<Scalars['ID']>;
@@ -6010,6 +6029,8 @@ export type UpdateColonyActionInput = {
   motionDomainId?: InputMaybe<Scalars['Int']>;
   motionId?: InputMaybe<Scalars['ID']>;
   newColonyVersion?: InputMaybe<Scalars['Int']>;
+  paymentId?: InputMaybe<Scalars['Int']>;
+  payments?: InputMaybe<Array<PaymentInput>>;
   pendingColonyMetadataId?: InputMaybe<Scalars['ID']>;
   pendingDomainMetadataId?: InputMaybe<Scalars['ID']>;
   recipientAddress?: InputMaybe<Scalars['ID']>;
