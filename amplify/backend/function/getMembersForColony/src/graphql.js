@@ -4,7 +4,6 @@ module.exports = {
       getUserByAddress(id: $id) {
         items {
           id
-          name
           profileId
           profile {
             avatar
@@ -27,7 +26,6 @@ module.exports = {
             items {
               user {
                 id
-                name
                 createdAt
                 profileId
                 profile {

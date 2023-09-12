@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { PREV_COLONY_LOCAL_STORAGE_KEY } from './ColonyContext';
 import { useAppContext } from '~hooks';
 
-const METACOLONY_COLONY_NAME = 'meta';
+export const METACOLONY_COLONY_NAME = 'meta';
 
 // Retrieve the previous colony name from local storage, if it exists.
 // This is so that routes that don't have a colony in the url can still use a colony.

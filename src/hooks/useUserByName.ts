@@ -8,7 +8,7 @@ const useUserByName = (username: string) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const user = data?.getUserByName?.items[0];
+  const user = data?.getProfileByUsername?.items[0]?.user;
 
   return {
     user,

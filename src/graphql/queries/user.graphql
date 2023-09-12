@@ -20,9 +20,11 @@ query GetReputationForTopDomains($input: GetReputationForTopDomainsInput!) {
 }
 
 query GetUserByName($name: String!) {
-  getUserByName(name: $name) {
+  getProfileByUsername(displayName: $name) {
     items {
-      ...User
+      user {
+        ...User
+      }
     }
   }
 }
@@ -33,9 +35,11 @@ query CombinedUser($name: String!, $address: ID!) {
       ...User
     }
   }
-  getUserByName(name: $name) {
+  getProfileByUsername(displayName: $name) {
     items {
-      ...User
+      user {
+        ...User
+      }
     }
   }
 }

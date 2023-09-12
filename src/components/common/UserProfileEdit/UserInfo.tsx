@@ -42,7 +42,7 @@ const UserInfo = ({ user: { walletAddress }, user }: UserInfoProps) => {
         <InputLabel label={MSG.labelUsername} />
         <UserMention
           user={user}
-          title={user.name || walletAddress}
+          title={user.profile?.displayName || walletAddress}
           hasLink={false}
           data-test="userProfileUsername"
         />

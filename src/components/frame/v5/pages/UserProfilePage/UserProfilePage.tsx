@@ -15,6 +15,7 @@ import { useUserProfile } from './hooks';
 import { MAX_BIO_CHARS, MAX_DISPLAYNAME_CHARS } from './consts';
 import AvatarUploader from '~v5/common/AvatarUploader';
 import Avatar from '~v5/shared/Avatar';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.pages.UserProfilePage';
 
@@ -29,6 +30,8 @@ const UserProfilePage: FC = () => {
     avatarUrl,
     showNameMessage,
     loading,
+    canChangeUsername,
+    daysTillUsernameChange,
   } = useUserProfile();
 
   return (
@@ -53,6 +56,7 @@ const UserProfilePage: FC = () => {
                   maxCharNumber={MAX_DISPLAYNAME_CHARS}
                   shouldNumberOfCharsBeVisible
                   name="displayName"
+                  isDisabled={!canChangeUsername}
                   register={register}
                   isError={!!errors.displayName?.message}
                   customErrorMessage={errors.displayName?.message}
@@ -66,6 +70,10 @@ const UserProfilePage: FC = () => {
                   isDecoratedError={
                     errors.displayName?.type === 'isUsernameTaken'
                   }
+                  disabledTooltipMessage={formatText(
+                    { id: 'displayName.input.disabled' },
+                    { days: daysTillUsernameChange },
+                  )}
                 />
               </div>
             </div>

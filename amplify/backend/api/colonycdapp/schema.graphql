@@ -49,13 +49,9 @@ input CreateUniqueUserInput {
   """
   id: ID!
   """
-  The username
-  """
-  name: String!
-  """
   Profile data for the user
   """
-  profile: ProfileInput
+  profile: ProfileInput!
 }
 
 """
@@ -961,6 +957,11 @@ type Profile @model {
   Display name of the user
   """
   displayName: String
+    @index(name: "byDisplayName", queryField: "getProfileByUsername")
+  """
+  Date displayName was changed
+  """
+  displayNameChanged: AWSDateTime
   """
   User's bio information
   """
@@ -981,6 +982,11 @@ type Profile @model {
   Metadata associated with the user's profile
   """
   meta: ProfileMetadata
+
+  """
+  The user associated with this profile
+  """
+  user: User! @belongsTo(fields: ["id"])
 }
 
 """
@@ -1705,10 +1711,6 @@ type User @model {
   Unique identifier for the user (wallet address)
   """
   id: ID! @index(name: "byAddress", queryField: "getUserByAddress")
-  """
-  (Short) name of the user
-  """
-  name: String! @index(name: "byName", queryField: "getUserByName")
   """
   List of tokens the user is using
   """

@@ -38,7 +38,7 @@ const UserMention = ({
   popperOptions,
   ...props
 }: Props) => {
-  const fallbackTo = to || `/user/${user?.name}`;
+  const fallbackTo = to || `/user/${user?.profile?.displayName}`;
   const trigger = showInfo ? 'click' : 'disabled';
   const showArrow = popperOptions && popperOptions.showArrow;
 
@@ -56,14 +56,14 @@ const UserMention = ({
     hasLink ? (
       <Link
         to={fallbackTo}
-        text={`@${user?.name}`}
+        text={`@${user?.profile?.displayName}`}
         className={styles.mention}
         {...props}
       />
     ) : (
       <span className={styles.mention} {...props}>
         {' '}
-        {`@${user?.name}`}
+        {`@${user?.profile?.displayName}`}
       </span>
     );
 

@@ -58,7 +58,8 @@ const NewActionButton = ({ filteredDomainId }: Props) => {
   // );
 
   // const mustUpgradeOneTx = oneTxMustBeUpgraded(oneTxPaymentExtension);
-  const hasRegisteredProfile = !!user?.name && !!user.walletAddress;
+  const hasRegisteredProfile =
+    !!user?.profile?.displayName && !!user.walletAddress;
   // const mustUpgrade = colonyMustBeUpgraded(colony, networkVersion as string);
   const isLoadingData = loadingExtensions || !!walletConnecting;
 

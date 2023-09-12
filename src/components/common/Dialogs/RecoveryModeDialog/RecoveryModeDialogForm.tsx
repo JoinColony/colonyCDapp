@@ -67,7 +67,8 @@ const RecoveryModeDialogForm = ({
     user?.walletAddress,
   ]);
 
-  const hasRegisteredProfile = !!user?.name && !!user?.walletAddress;
+  const hasRegisteredProfile =
+    !!user?.profile?.displayName && !!user?.walletAddress;
 
   const userHasPermission =
     hasRegisteredProfile && canEnterRecoveryMode(allUserRoles);
