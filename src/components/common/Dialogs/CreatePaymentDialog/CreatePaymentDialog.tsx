@@ -73,9 +73,13 @@ const CreatePaymentDialog = ({
         defaultValues={{
           forceAction: false,
           fromDomainId: filteredDomainId || Id.RootDomain,
-          recipient: undefined,
-          amount: 0,
-          tokenAddress: colony?.nativeToken.tokenAddress,
+          payments: [
+            {
+              recipient: undefined,
+              amount: 0,
+              tokenAddress: colony?.nativeToken.tokenAddress,
+            },
+          ],
           annotation: '',
           motionDomainId: filteredDomainId || Id.RootDomain,
         }}
