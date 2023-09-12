@@ -7,7 +7,14 @@ const displayName = 'v5.Card';
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   (
-    { hasShadow, rounded = 's', children, className, withPadding = true },
+    {
+      hasShadow,
+      rounded = 's',
+      children,
+      className,
+      withPadding = true,
+      style,
+    },
     ref,
   ) => (
     <div
@@ -21,6 +28,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
           'p-6': withPadding,
         },
       )}
+      style={style}
       ref={ref}
     >
       {children}
