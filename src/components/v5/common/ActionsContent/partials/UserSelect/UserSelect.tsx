@@ -15,7 +15,11 @@ import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
-const UserSelect: FC<SelectProps> = ({ name, isError }) => {
+const UserSelect: FC<SelectProps> = ({
+  name,
+  selectedWalletAddress = '',
+  isError,
+}) => {
   const { formatMessage } = useIntl();
   const { field } = useController({
     name,
@@ -30,7 +34,9 @@ const UserSelect: FC<SelectProps> = ({ name, isError }) => {
   ] = useToggle();
 
   const { user } = useUserByName(recipient || '');
-  const { user: userByAddress } = useUserByAddress(recipient || '');
+  const { user: userByAddress } = useUserByAddress(
+    recipient || selectedWalletAddress,
+  );
   const { formErrors, changeFormErrorsState } = useActionFormContext();
 
   return (
