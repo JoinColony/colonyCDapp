@@ -1,7 +1,7 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
-import { useController } from 'react-hook-form';
+import { useController, useFormContext } from 'react-hook-form';
 
 import { useUserSelect } from './hooks';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
@@ -11,25 +11,26 @@ import useToggle from '~hooks/useToggle';
 import styles from '../../ActionsContent.module.css';
 import { SelectProps } from '../../types';
 import { useActionFormContext } from '~v5/common/ActionSidebar/partials/ActionForm/ActionFormContext';
+import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
-const UserSelect: FC<SelectProps> = ({
-  name,
-  selectedWalletAddress = '',
-  isError,
-}) => {
+const UserSelect: FC<SelectProps> = ({ name, isError }) => {
   const { formatMessage } = useIntl();
   const { field } = useController({
     name,
   });
-  const usersOptions = useUserSelect();
-  const [isUserSelectVisible, { toggle: toggleUserSelect }] = useToggle();
-  const [selectedUser, setSelectedUser] = useState<string | null>(null);
+  const { watch } = useFormContext();
+  const { recipient } = watch();
 
-  const { user } = useUserByName(selectedUser || '');
-  const userDisplayName = user?.profile?.displayName;
-  const { user: userByAddress } = useUserByAddress(selectedWalletAddress);
+  const usersOptions = useUserSelect();
+  const [
+    isUserSelectVisible,
+    { toggle: toggleUserSelect, toggleOff: toggleUserSelectOff },
+  ] = useToggle();
+
+  const { user } = useUserByName(recipient || '');
+  const { user: userByAddress } = useUserByAddress(recipient || '');
   const { formErrors, changeFormErrorsState } = useActionFormContext();
 
   return (
@@ -43,10 +44,10 @@ const UserSelect: FC<SelectProps> = ({
         onClick={toggleUserSelect}
         aria-label={formatMessage({ id: 'ariaLabel.selectUser' })}
       >
-        {selectedUser || userByAddress ? (
+        {recipient || userByAddress ? (
           <UserAvatar
             user={user || userByAddress}
-            userName={userDisplayName}
+            userName={splitWalletAddress(recipient || '')}
             size="xs"
           />
         ) : (
@@ -61,7 +62,7 @@ const UserSelect: FC<SelectProps> = ({
           onToggle={toggleUserSelect}
           onSelect={(value) => {
             field.onChange(value);
-            setSelectedUser(value);
+            toggleUserSelectOff();
             changeFormErrorsState(formErrors);
           }}
           isLoading={usersOptions.loading}

@@ -42,13 +42,13 @@ const SearchItem: FC<SearchItemProps> = ({
           showAvatar,
           color,
           missingPermissions,
+          walletAddress,
         }) => {
           const firstDisabledOption = options.filter(
             (option) => option.isDisabled,
           )[0];
           const labelText =
             typeof label === 'string' ? label : formatMessage(label);
-
           const hasAvatar = showAvatar || !!color;
 
           return (
@@ -93,6 +93,7 @@ const SearchItem: FC<SearchItemProps> = ({
                   </div>
                 )}
                 {isLabelVisible && labelText}
+                {!label && <span className="truncate">{walletAddress}</span>}
                 {firstDisabledOption?.value === value && (
                   <ExtensionsStatusBadge
                     mode="coming-soon"
