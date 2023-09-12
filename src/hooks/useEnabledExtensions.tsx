@@ -10,6 +10,7 @@ export interface EnabledExtensionData {
   shortPollExtensions: () => void;
   isStakedExpenditureEnabled: boolean;
   isStagedExpenditureEnabled: boolean;
+  isStreamingPaymentsEnabled: boolean;
 }
 
 const useEnabledExtensions = (): EnabledExtensionData => {
@@ -28,6 +29,9 @@ const useEnabledExtensions = (): EnabledExtensionData => {
   const stagedExpenditureExtension = installedExtensionsData.find(
     (extension) => extension.extensionId === Extension.StagedExpenditure,
   );
+  const streamingPaymentsExtension = installedExtensionsData.find(
+    (extension) => extension.extensionId === Extension.StreamingPayments,
+  );
 
   return {
     loading,
@@ -36,6 +40,7 @@ const useEnabledExtensions = (): EnabledExtensionData => {
     votingReputationVersion: votingReputationExtension?.currentVersion,
     isStakedExpenditureEnabled: !!stakedExpenditureExtension?.isEnabled,
     isStagedExpenditureEnabled: !!stagedExpenditureExtension?.isEnabled,
+    isStreamingPaymentsEnabled: !!streamingPaymentsExtension?.isEnabled,
     shortPollExtensions,
   };
 };
