@@ -16,11 +16,13 @@ export const Base: StoryObj<typeof MeatBallMenu> = {
   args: {
     items: [
       {
+        key: '1',
         label: 'Add token',
         iconName: 'coin-vertical',
         onClick: () => alert('Add token'),
       },
       {
+        key: '2',
         label: 'Duplicate row',
         iconName: 'copy-simple',
         onClick: () => alert('Duplicate row'),
