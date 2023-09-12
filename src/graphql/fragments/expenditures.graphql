@@ -28,6 +28,7 @@ fragment Expenditure on Expenditure {
       ...ColonyMotion
     }
   }
+  isStakeForfeited
   isStaged
 }
 

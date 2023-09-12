@@ -2576,6 +2576,10 @@ type Expenditure @model {
   """
   fundingMotions: [ColonyMotion]
     @hasMany(indexName: "byExpenditureId", fields: ["id"])
+  """
+  Indicates if the creator's stake was forfeited when staked expenditure was cancelled
+  """
+  isStakeForfeited: Boolean
   isStaged: Boolean!
 }
 

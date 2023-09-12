@@ -23,6 +23,7 @@ const ReclaimStakeButton = ({
   if (
     expenditure.metadata?.type !== ExpenditureType.Staked ||
     expenditure.hasReclaimedStake ||
+    expenditure.isStakeForfeited ||
     !allowedStatuses.includes(expenditure.status)
   ) {
     return null;
