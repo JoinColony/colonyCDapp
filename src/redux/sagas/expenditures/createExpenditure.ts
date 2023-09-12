@@ -145,7 +145,7 @@ function* createExpenditure({
       expenditureId,
       fundFromDomainId,
       expenditureType: ExpenditureType.Forced,
-      stages,
+      stages: isStaged ? stages : undefined,
     });
 
     yield put<AllActions>({
