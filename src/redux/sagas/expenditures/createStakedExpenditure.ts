@@ -192,7 +192,7 @@ function* createStakedExpenditure({
       expenditureId,
       fundFromDomainId,
       expenditureType: ExpenditureType.Staked,
-      stages,
+      stages: isStaged ? stages : undefined,
       stakeAmount,
     });
 
