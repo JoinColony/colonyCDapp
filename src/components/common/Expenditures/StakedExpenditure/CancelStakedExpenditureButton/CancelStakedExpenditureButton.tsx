@@ -6,8 +6,6 @@ import { Colony, Expenditure } from '~types';
 
 import CancelStakedExpenditureDialog from './CancelStakedExpenditureDialog';
 
-const allowedStatuses = [ExpenditureStatus.Locked, ExpenditureStatus.Finalized];
-
 interface CancelStakedExpenditureButtonProps {
   colony: Colony;
   expenditure: Expenditure;
@@ -21,7 +19,7 @@ const CancelStakedExpenditureButton = ({
 
   if (
     expenditure.metadata?.type !== ExpenditureType.Staked ||
-    !allowedStatuses.includes(expenditure.status)
+    expenditure.status !== ExpenditureStatus.Locked
   ) {
     return null;
   }
