@@ -1,4 +1,5 @@
 import Decimal from 'decimal.js';
+import { Id } from '@colony/colony-js';
 
 import {
   AnyExtensionData,
@@ -6,8 +7,11 @@ import {
   InstalledExtensionData,
   ColonyExtension,
   InstallableExtensionData,
+  Colony,
 } from '~types';
+import { getUserRolesForDomain } from '~transformers';
 
+import { userHasRole } from './checks';
 /**
  * Type guard to distinguish installed extension data from installable extension data
  */
@@ -27,6 +31,7 @@ export const mapToInstallableExtensionData = (
 };
 
 export const mapToInstalledExtensionData = (
+  colony: Colony,
   extensionConfig: ExtensionConfig,
   colonyExtension: ColonyExtension,
   version: number,
@@ -36,12 +41,24 @@ export const mapToInstalledExtensionData = (
     colonyExtension?.isInitialized || !extensionConfig.initializationParams;
   const isEnabled = isInitialized && !colonyExtension.isDeprecated;
 
+  const extensionRoles = getUserRolesForDomain(
+    colony,
+    colonyExtension.address,
+    Id.RootDomain,
+  );
+  const missingPermissions = extensionConfig.neededColonyPermissions.filter(
+    (neededRole) => {
+      return !userHasRole(extensionRoles, neededRole);
+    },
+  );
+
   return {
     ...extensionConfig,
     ...colonyExtension,
     availableVersion: version,
     isInitialized,
     isEnabled,
+    missingColonyPermissions: missingPermissions,
   };
 };
 

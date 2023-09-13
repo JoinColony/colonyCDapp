@@ -1,6 +1,9 @@
 import { ActionTypes } from '~redux/actionTypes';
 import { Address, Colony, Domain, Expenditure, ExpenditureSlot } from '~types';
-import { ExpenditurePayoutFieldValue } from '~common/Expenditures/ExpenditureForm';
+import {
+  ExpenditurePayoutFieldValue,
+  ExpenditureStageFieldValue,
+} from '~common/Expenditures/ExpenditureForm';
 
 import { UniqueActionType, ErrorActionType, MetaWithNavigate } from './index';
 
@@ -20,6 +23,8 @@ export type ExpendituresActionTypes =
         createdInDomain: Domain;
         // id of the domain to fund the expenditure from
         fundFromDomainId: number;
+        isStaged: boolean;
+        stages: ExpenditureStageFieldValue[];
       },
       MetaWithNavigate<object>
     >
@@ -97,6 +102,8 @@ export type ExpendituresActionTypes =
         fundFromDomainId: number;
         stakeAmount: string;
         stakedExpenditureAddress: Address;
+        isStaged: boolean;
+        stages: ExpenditureStageFieldValue[];
       },
       MetaWithNavigate<object>
     >
@@ -117,6 +124,23 @@ export type ExpendituresActionTypes =
   | ErrorActionType<ActionTypes.RECLAIM_EXPENDITURE_STAKE_ERROR, object>
   | UniqueActionType<
       ActionTypes.RECLAIM_EXPENDITURE_STAKE_SUCCESS,
+      object,
+      object
+    >
+  | UniqueActionType<
+      ActionTypes.RELEASE_EXPENDITURE_STAGE,
+      {
+        colonyAddress: Address;
+        expenditure: Expenditure;
+        slotId: number;
+        tokenAddresses: Address[];
+        stagedExpenditureAddress: Address;
+      },
+      MetaWithNavigate<object>
+    >
+  | ErrorActionType<ActionTypes.RELEASE_EXPENDITURE_STAGE_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.RELEASE_EXPENDITURE_STAGE_SUCCESS,
       object,
       object
     >;

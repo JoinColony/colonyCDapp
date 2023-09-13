@@ -49,17 +49,15 @@ const ExtensionStatusBadge = ({
   } else if (extensionData.isDeprecated) {
     status = MSG.deprecated;
     theme = 'danger';
-  }
-  // else if (installedExtension.details?.missingPermissions.length) {
-  //   status = MSG.missingPermissions;
-  //   theme = 'danger';
-  // }
-  else if (extensionData.isEnabled) {
-    status = MSG.enabled;
-    theme = 'primary';
-  } else {
+  } else if (!extensionData.isInitialized) {
     status = MSG.disabled;
     theme = 'golden';
+  } else if (extensionData.missingColonyPermissions.length) {
+    status = MSG.missingPermissions;
+    theme = 'danger';
+  } else {
+    status = MSG.enabled;
+    theme = 'primary';
   }
 
   const isDeprecated =

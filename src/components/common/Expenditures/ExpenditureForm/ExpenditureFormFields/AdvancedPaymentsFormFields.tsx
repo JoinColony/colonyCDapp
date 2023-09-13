@@ -1,19 +1,21 @@
 import React from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
+import { IconButton } from '~shared/Button';
 import { Input } from '~shared/Fields';
 import { Colony } from '~types';
-import { IconButton } from '~shared/Button';
 
-import { getInitialPayoutFieldValue } from './helpers';
+import { getInitialPayoutFieldValue } from '../helpers';
 
-import styles from './ExpenditureForm.module.css';
+import styles from '../ExpenditureForm.module.css';
 
-interface ExpenditureFormFieldsProps {
+interface AdvancedPaymentFormFieldsProps {
   colony: Colony;
 }
 
-const ExpenditureFormFields = ({ colony }: ExpenditureFormFieldsProps) => {
+const AdvancedPaymentFormFields = ({
+  colony,
+}: AdvancedPaymentFormFieldsProps) => {
   const { control } = useFormContext();
 
   const { fields, append, remove } = useFieldArray({
@@ -22,7 +24,7 @@ const ExpenditureFormFields = ({ colony }: ExpenditureFormFieldsProps) => {
   });
 
   return (
-    <div>
+    <>
       {fields.map((field, index) => (
         <div className={styles.field} key={field.id}>
           <IconButton
@@ -31,6 +33,7 @@ const ExpenditureFormFields = ({ colony }: ExpenditureFormFieldsProps) => {
             icon="trash"
             disabled={fields.length <= 1}
           />
+
           <Input
             name={`payouts.${index}.recipientAddress`}
             label="Recipient address"
@@ -51,8 +54,8 @@ const ExpenditureFormFields = ({ colony }: ExpenditureFormFieldsProps) => {
         text=""
         icon="circle-plus"
       />
-    </div>
+    </>
   );
 };
 
-export default ExpenditureFormFields;
+export default AdvancedPaymentFormFields;

@@ -18,6 +18,7 @@ import ExpenditureBalances from './ExpenditureBalances';
 import ExpenditureAdvanceButton from './ExpenditureAdvanceButton';
 import ExpenditurePayouts from './ExpenditurePayouts';
 import ReclaimStakeButton from '../StakedExpenditure/ReclaimStakeButton';
+import ExpenditureStages from './ExpenditureStages';
 
 import { notNull } from '~utils/arrays';
 import { getMotionState } from '~utils/colonyMotions';
@@ -133,8 +134,16 @@ const ExpenditureDetailsPage = () => {
             Current funding motion status: <MotionTag />
           </Link>
         )}
+        <div>Is Staged: {expenditure.isStaged ? 'Yes' : 'No'}</div>
+        {expenditure.isStaged && (
+          <div>Recipient address: {expenditure.slots[0]?.recipientAddress}</div>
+        )}
         <ExpenditureBalances expenditure={expenditure} />
-        <ExpenditurePayouts expenditure={expenditure} colony={colony} />
+        {expenditure.isStaged ? (
+          <ExpenditureStages expenditure={expenditure} colony={colony} />
+        ) : (
+          <ExpenditurePayouts expenditure={expenditure} colony={colony} />
+        )}
         <div className={styles.buttons}>
           {expenditure.status === ExpenditureStatus.Draft && (
             <ActionButton

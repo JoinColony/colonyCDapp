@@ -6,15 +6,20 @@ import { ActionForm } from '~shared/Fields';
 import { useColonyContext, useEnabledExtensions } from '~hooks';
 import Button from '~shared/Button';
 import { ActionTypes } from '~redux';
-import DomainFundSelector from '~common/Dialogs/DomainFundSelectorSection/DomainFundSelector';
+import { Tab, TabList, TabPanel, Tabs } from '~shared/Tabs';
 
 import {
   getCreateExpenditureTransformPayloadFn,
   getInitialPayoutFieldValue,
+  getInitialStageFieldValue,
 } from './helpers';
-import { ExpenditureFormValues } from './types';
-import ExpenditureFormFields from './ExpenditureFormFields';
+import { ExpenditureFormType, ExpenditureFormValues } from './types';
 import StakeExpenditureDialog from '../StakedExpenditure/StakeExpenditureDialog';
+import ExpenditureDomainSelector from './ExpenditureDomainSelector/ExpenditureDomainSelector';
+import {
+  AdvancedPaymentFormFields,
+  StagedPaymentFormFields,
+} from './ExpenditureFormFields';
 
 import styles from './ExpenditureForm.module.css';
 
@@ -30,6 +35,19 @@ const CreateExpenditureForm = () => {
     return null;
   }
 
+  const formTypeOptions = [
+    {
+      type: ExpenditureFormType.Advanced,
+      label: 'Advanced Payment',
+      component: <AdvancedPaymentFormFields colony={colony} />,
+    },
+    {
+      type: ExpenditureFormType.Staged,
+      label: 'Staged Payment',
+      component: <StagedPaymentFormFields colony={colony} />,
+    },
+  ];
+
   /**
    * @TODO: This should include a permissions check as users with
    * administration permissions can create expenditures without staking
@@ -43,28 +61,32 @@ const CreateExpenditureForm = () => {
         payouts: [getInitialPayoutFieldValue(colony.nativeToken.tokenAddress)],
         createInDomainId: Id.RootDomain,
         fundFromDomainId: Id.RootDomain,
+        formType: ExpenditureFormType.Advanced,
+        stages: [getInitialStageFieldValue(colony.nativeToken.tokenAddress)],
       }}
       transform={getCreateExpenditureTransformPayloadFn(colony, navigate)}
     >
-      {({ watch }) => {
+      {({ watch, setValue }) => {
         const formValues = watch();
 
         return (
           <>
-            <div className={styles.domainSelection}>
-              <DomainFundSelector
-                colony={colony}
-                label="Create in"
-                name="createInDomainId"
-              />
-              <DomainFundSelector
-                colony={colony}
-                label="Fund from"
-                name="fundFromDomainId"
-              />
-            </div>
+            <ExpenditureDomainSelector colony={colony} />
 
-            <ExpenditureFormFields colony={colony} />
+            <Tabs
+              onSelect={(index) =>
+                setValue('formType', formTypeOptions[index].type)
+              }
+            >
+              <TabList containerClassName={styles.typeTabs}>
+                {formTypeOptions.map(({ type, label }) => (
+                  <Tab key={type}>{label}</Tab>
+                ))}
+              </TabList>
+              {formTypeOptions.map(({ type, component }) => (
+                <TabPanel key={type}>{component}</TabPanel>
+              ))}
+            </Tabs>
 
             <div className={styles.buttons}>
               <Button

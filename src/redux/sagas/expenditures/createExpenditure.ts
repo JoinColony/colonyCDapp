@@ -2,20 +2,13 @@ import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { takeEvery, fork, call, put } from 'redux-saga/effects';
 
 import { Action, ActionTypes, AllActions } from '~redux';
-import { ColonyManager, ContextModule, getContext } from '~context';
+import { ColonyManager } from '~context';
 import {
   transactionAddParams,
   transactionPending,
   transactionReady,
 } from '~redux/actionCreators';
-import {
-  CreateExpenditureMetadataDocument,
-  CreateExpenditureMetadataMutation,
-  CreateExpenditureMetadataMutationVariables,
-  ExpenditureType,
-} from '~gql';
-import { getExpenditureDatabaseId } from '~utils/databaseId';
-import { toNumber } from '~utils/numbers';
+import { ExpenditureType } from '~gql';
 
 import {
   ChannelDefinition,
@@ -27,6 +20,7 @@ import {
   putError,
   takeFrom,
   getSetExpenditureValuesFunctionParams,
+  saveExpenditureMetadata,
 } from '../utils';
 
 export type CreateExpenditurePayload =
@@ -40,6 +34,8 @@ function* createExpenditure({
     payouts,
     createdInDomain,
     fundFromDomainId,
+    isStaged,
+    stages,
   },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -47,8 +43,6 @@ function* createExpenditure({
     ClientType.ColonyClient,
     colonyAddress,
   );
-  const apolloClient = getContext(ContextModule.ApolloClient);
-
   const batchKey = 'createExpenditure';
 
   // Add slot id to each payout
@@ -60,9 +54,10 @@ function* createExpenditure({
   const {
     makeExpenditure,
     setExpenditureValues,
+    setExpenditureStaged,
   }: Record<string, ChannelDefinition> = yield createTransactionChannels(
     meta.id,
-    ['makeExpenditure', 'setExpenditureValues'],
+    ['makeExpenditure', 'setExpenditureValues', 'setExpenditureStaged'],
   );
 
   try {
@@ -97,6 +92,20 @@ function* createExpenditure({
       ready: false,
     });
 
+    if (isStaged) {
+      yield fork(createTransaction, setExpenditureStaged.id, {
+        context: ClientType.StagedExpenditureClient,
+        methodName: 'setExpenditureStaged',
+        identifier: colonyAddress,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 2,
+        },
+        ready: false,
+      });
+    }
+
     yield put(transactionPending(makeExpenditure.id));
     yield put(transactionReady(makeExpenditure.id));
     yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_SUCCEEDED);
@@ -119,18 +128,24 @@ function* createExpenditure({
       ActionTypes.TRANSACTION_SUCCEEDED,
     );
 
-    yield apolloClient.mutate<
-      CreateExpenditureMetadataMutation,
-      CreateExpenditureMetadataMutationVariables
-    >({
-      mutation: CreateExpenditureMetadataDocument,
-      variables: {
-        input: {
-          id: getExpenditureDatabaseId(colonyAddress, toNumber(expenditureId)),
-          fundFromDomainNativeId: fundFromDomainId,
-          type: ExpenditureType.Forced,
-        },
-      },
+    if (isStaged) {
+      yield put(transactionPending(setExpenditureStaged.id));
+      yield put(
+        transactionAddParams(setExpenditureStaged.id, [expenditureId, true]),
+      );
+      yield put(transactionReady(setExpenditureStaged.id));
+      yield takeFrom(
+        setExpenditureStaged.channel,
+        ActionTypes.TRANSACTION_SUCCEEDED,
+      );
+    }
+
+    yield saveExpenditureMetadata({
+      colonyAddress,
+      expenditureId,
+      fundFromDomainId,
+      expenditureType: ExpenditureType.Forced,
+      stages,
     });
 
     yield put<AllActions>({
@@ -144,8 +159,8 @@ function* createExpenditure({
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   }
 
-  [makeExpenditure, setExpenditureValues].forEach((channel) =>
-    channel.channel.close(),
+  [makeExpenditure, setExpenditureValues, setExpenditureStaged].forEach(
+    (channel) => channel.channel.close(),
   );
 
   return null;

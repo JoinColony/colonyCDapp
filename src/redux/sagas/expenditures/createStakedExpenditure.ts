@@ -2,20 +2,14 @@ import { ClientType, Id, getChildIndex } from '@colony/colony-js';
 import { takeEvery, fork, call, put } from 'redux-saga/effects';
 
 import { Action, ActionTypes, AllActions } from '~redux';
-import { ColonyManager, ContextModule, getContext } from '~context';
+import { ColonyManager } from '~context';
 import {
   transactionAddParams,
   transactionPending,
   transactionReady,
 } from '~redux/actionCreators';
-import {
-  CreateExpenditureMetadataDocument,
-  CreateExpenditureMetadataMutation,
-  CreateExpenditureMetadataMutationVariables,
-  ExpenditureType,
-} from '~gql';
-import { getExpenditureDatabaseId } from '~utils/databaseId';
-import { toNumber } from '~utils/numbers';
+import { ExpenditureType } from '~gql';
+
 import { ADDRESS_ZERO } from '~constants';
 
 import {
@@ -28,6 +22,7 @@ import {
   putError,
   takeFrom,
   getSetExpenditureValuesFunctionParams,
+  saveExpenditureMetadata,
 } from '../utils';
 
 function* createStakedExpenditure({
@@ -40,6 +35,8 @@ function* createStakedExpenditure({
     fundFromDomainId,
     stakeAmount,
     stakedExpenditureAddress,
+    isStaged,
+    stages,
   },
 }: Action<ActionTypes.STAKED_EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -47,8 +44,6 @@ function* createStakedExpenditure({
     ClientType.ColonyClient,
     colonyAddress,
   );
-  const apolloClient = getContext(ContextModule.ApolloClient);
-
   const batchKey = 'createExpenditure';
 
   // Add slot id to each payout
@@ -61,9 +56,15 @@ function* createStakedExpenditure({
     approveStake,
     makeExpenditure,
     setExpenditureValues,
+    setExpenditureStaged,
   }: Record<string, ChannelDefinition> = yield createTransactionChannels(
     meta.id,
-    ['approveStake', 'makeExpenditure', 'setExpenditureValues'],
+    [
+      'approveStake',
+      'makeExpenditure',
+      'setExpenditureValues',
+      'setExpenditureStaged',
+    ],
   );
 
   try {
@@ -103,6 +104,20 @@ function* createStakedExpenditure({
       },
       ready: false,
     });
+
+    if (isStaged) {
+      yield fork(createTransaction, setExpenditureStaged.id, {
+        context: ClientType.StagedExpenditureClient,
+        methodName: 'setExpenditureStaged',
+        identifier: colonyAddress,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 3,
+        },
+        ready: false,
+      });
+    }
 
     yield put(transactionPending(approveStake.id));
     yield put(transactionReady(approveStake.id));
@@ -160,18 +175,24 @@ function* createStakedExpenditure({
       ActionTypes.TRANSACTION_SUCCEEDED,
     );
 
-    yield apolloClient.mutate<
-      CreateExpenditureMetadataMutation,
-      CreateExpenditureMetadataMutationVariables
-    >({
-      mutation: CreateExpenditureMetadataDocument,
-      variables: {
-        input: {
-          id: getExpenditureDatabaseId(colonyAddress, toNumber(expenditureId)),
-          fundFromDomainNativeId: fundFromDomainId,
-          type: ExpenditureType.Staked,
-        },
-      },
+    if (isStaged) {
+      yield put(transactionPending(setExpenditureStaged.id));
+      yield put(
+        transactionAddParams(setExpenditureStaged.id, [expenditureId, true]),
+      );
+      yield put(transactionReady(setExpenditureStaged.id));
+      yield takeFrom(
+        setExpenditureStaged.channel,
+        ActionTypes.TRANSACTION_SUCCEEDED,
+      );
+    }
+
+    yield saveExpenditureMetadata({
+      colonyAddress,
+      expenditureId,
+      fundFromDomainId,
+      expenditureType: ExpenditureType.Staked,
+      stages,
     });
 
     yield put<AllActions>({
@@ -185,9 +206,12 @@ function* createStakedExpenditure({
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   }
 
-  [approveStake, makeExpenditure, setExpenditureValues].forEach((channel) =>
-    channel.channel.close(),
-  );
+  [
+    approveStake,
+    makeExpenditure,
+    setExpenditureValues,
+    setExpenditureStaged,
+  ].forEach((channel) => channel.channel.close());
 
   return null;
 }

@@ -7,7 +7,12 @@ import { mapPayload, pipe, withMeta } from '~utils/actions';
 import { findDomainByNativeId } from '~utils/domains';
 import { CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure';
 
-import { ExpenditureFormValues, ExpenditurePayoutFieldValue } from './types';
+import {
+  ExpenditureFormType,
+  ExpenditureFormValues,
+  ExpenditurePayoutFieldValue,
+  ExpenditureStageFieldValue,
+} from './types';
 
 export const getInitialPayoutFieldValue = (
   tokenAddress: string,
@@ -38,27 +43,44 @@ export const getExpenditurePayoutsFieldValue = (
   }, []);
 };
 
+const getStagedExpenditurePayouts = (
+  payload: ExpenditureFormValues,
+): ExpenditurePayoutFieldValue[] =>
+  payload.stages.map((stage) => ({
+    recipientAddress: payload.recipientAddress ?? '',
+    tokenAddress: stage.tokenAddress,
+    amount: stage.amount,
+    claimDelay: 0,
+  }));
+
 export const getCreateExpenditureTransformPayloadFn = (
   colony: Colony,
   navigate: NavigateFunction,
 ) =>
   pipe(
-    mapPayload(
-      (
-        payload: ExpenditureFormValues & {
-          stakeAmount?: string;
-          stakedExpenditureAddress?: string;
-        },
-      ) =>
-        ({
-          ...payload,
-          colony,
-          // @TODO: These should come from the form values
-          createdInDomain: colony
-            ? findDomainByNativeId(payload.createInDomainId, colony)
-            : null,
-          fundFromDomainId: payload.fundFromDomainId,
-        } as CreateExpenditurePayload),
-    ),
+    mapPayload((payload: ExpenditureFormValues) => {
+      const isStaged = payload.formType === ExpenditureFormType.Staged;
+
+      return {
+        ...payload,
+        colony,
+        createdInDomain: colony
+          ? findDomainByNativeId(payload.createInDomainId, colony)
+          : null,
+        fundFromDomainId: payload.fundFromDomainId,
+        isStaged,
+        payouts: isStaged
+          ? getStagedExpenditurePayouts(payload)
+          : payload.payouts,
+      } as CreateExpenditurePayload;
+    }),
     withMeta({ navigate }),
   );
+
+export const getInitialStageFieldValue = (
+  tokenAddress: string,
+): ExpenditureStageFieldValue => ({
+  name: '',
+  amount: '0',
+  tokenAddress,
+});

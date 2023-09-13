@@ -59,14 +59,19 @@ const useExtensionsData = (): UseExtensionsDataReturn => {
           {};
 
         // Unsupported extension
-        if (!extensionConfig || !version) {
+        if (!extensionConfig || !version || !colony) {
           return null;
         }
 
-        return mapToInstalledExtensionData(extensionConfig, extension, version);
+        return mapToInstalledExtensionData(
+          colony,
+          extensionConfig,
+          extension,
+          version,
+        );
       })
       .filter(notNull);
-  }, [colonyExtensions, extensionVersions]);
+  }, [colony, colonyExtensions, extensionVersions]);
 
   const availableExtensionsData = useMemo<InstallableExtensionData[]>(() => {
     if (!colonyExtensions) {

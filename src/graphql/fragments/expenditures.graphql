@@ -11,6 +11,9 @@ fragment Expenditure on Expenditure {
   metadata {
     fundFromDomainNativeId
     type
+    stages {
+      ...ExpenditureStage
+    }
   }
   balances {
     tokenAddress
@@ -24,6 +27,7 @@ fragment Expenditure on Expenditure {
       ...ColonyMotion
     }
   }
+  isStaged
 }
 
 fragment ExpenditureSlot on ExpenditureSlot {
@@ -40,4 +44,10 @@ fragment ExpenditurePayout on ExpenditurePayout {
   tokenAddress
   amount
   isClaimed
+}
+
+fragment ExpenditureStage on ExpenditureStage {
+  slotId
+  name
+  isReleased
 }

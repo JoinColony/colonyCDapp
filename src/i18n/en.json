@@ -183,8 +183,8 @@
   "transaction.ColonyClient.setUserRolesWithProofs.title": "Assign permissions",
   "transaction.ColonyClient.setUserRolesWithProofs.description": "Assign permissions",
 
-  "transaction.group.enableExtensions.title": "Enable Colony Extension",
-  "transaction.group.enableExtensions.description": "Enable Colony Extension",
+  "transaction.group.enableExtension.title": "Enable Colony Extension",
+  "transaction.group.enableExtension.description": "Enable Colony Extension",
   "transaction.group.unistallExtensions.title": "Uninstall Colony Extension",
   "transaction.group.unistallExtensions.description": "Uninstall Colony Extension",
   "transaction.VotingReputationClient.initialise.title": "Initialize Voting Reputation Extension",
@@ -273,6 +273,10 @@
   "transaction.StakedExpenditureClient.makeExpenditureWithStake.description": "Make Expenditure With Stake",
   "transaction.StakedExpenditureClient.reclaimStake.title": "Reclaim Stake",
   "transaction.StakedExpenditureClient.reclaimStake.description": "Reclaim Stake",
+  "transaction.StagedExpenditureClient.setExpenditureStaged.title": "Set Expenditure as Staged",
+  "transaction.StagedExpenditureClient.setExpenditureStaged.description": "Set Expenditure as Staged",
+  "transaction.StagedExpenditureClient.releaseStagedPayment.title": "Release Staged Payment",
+  "transaction.StagedExpenditureClient.releaseStagedPayment.description": "Release Staged Payment",
 
   "metatransaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
   "metatransaction.group.deposit.title": "Activate tokens",

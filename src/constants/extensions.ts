@@ -382,7 +382,11 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     name: MSG.stagedExpenditureName,
     descriptionShort: MSG.stagedExpenditureDescriptionShort,
     descriptionLong: MSG.stagedExpenditureDescriptionLong,
-    neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
+    neededColonyPermissions: [
+      ColonyRole.Administration,
+      ColonyRole.Funding,
+      ColonyRole.Arbitration,
+    ],
     uninstallable: true,
     createdAt: 1692048380000,
   },

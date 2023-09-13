@@ -2576,6 +2576,7 @@ type Expenditure @model {
   """
   fundingMotions: [ColonyMotion]
     @hasMany(indexName: "byExpenditureId", fields: ["id"])
+  isStaged: Boolean!
 }
 
 # Each expenditure can have multiple slots with one recipient and possibly multiple payouts (with different token addresses)
@@ -2597,10 +2598,17 @@ type ExpenditureMetadata @model {
   id: ID! # Self-managed, formatted as colonyId_nativeExpenditureId
   fundFromDomainNativeId: Int!
   type: ExpenditureType!
+  stages: [ExpenditureStage!]
 }
 
 type ExpenditureBalance {
   tokenAddress: ID!
   amount: String!
   requiredAmount: String! # Total amount required to cover all payouts for the given token
+}
+
+type ExpenditureStage {
+  slotId: Int!
+  name: String!
+  isReleased: Boolean!
 }
