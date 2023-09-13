@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Outlet,
   Route,
@@ -10,20 +10,19 @@ import ColonyActions from '~common/ColonyActions';
 // import ColonyEvents from '~dashboard/ColonyEvents';
 
 import ColonyDecisions from '~common/ColonyDecisions';
-
+import { ColonyHomeProvider } from '~context/ColonyHomeContext';
 import {
   COLONY_DECISIONS_ROUTE,
   COLONY_EVENTS_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
   COLONY_EXTENSION_DETAILS_ROUTE,
-} from '~routes/index';
-import NotFoundRoute from '~routes/NotFoundRoute';
+  NotFoundRoute,
+} from '~routes';
 import ColonyExtensions from '~common/ColonyExtensions';
 import ExtensionDetails from '~common/Extensions/ExtensionDetails';
 import { useColonyContext } from '~hooks';
 
 import ColonyHomeLayout from './ColonyHomeLayout';
-import { ColonyHomeProvider } from '~context/ColonyHomeContext';
 
 const displayName = 'common.ColonyHome';
 
@@ -37,57 +36,51 @@ const ColonyHome = () => {
     Number(queryDomainIdFilter),
   );
 
-  const memoizedSwitch = useMemo(() => {
-    if (colony) {
-      return (
-        <RoutesSwitch>
-          <Route
-            path={COLONY_EVENTS_ROUTE}
-            element={
-              <ColonyHomeLayout
-                filteredDomainId={domainIdFilter}
-                onDomainChange={setDomainIdFilter}
-              >
-                {/* <ColonyEvents colony={colony} ethDomainId={filteredDomainId} /> */}
-                <div>Events (Transactions Log)</div>
-              </ColonyHomeLayout>
-            }
-          />
-          <Route
-            element={
-              <ColonyHomeProvider>
-                <ColonyHomeLayout
-                  filteredDomainId={domainIdFilter}
-                  onDomainChange={setDomainIdFilter}
-                >
-                  <Outlet />
-                </ColonyHomeLayout>
-              </ColonyHomeProvider>
-            }
-          >
-            <Route path="/" element={<ColonyActions />} />
-            <Route
-              path={COLONY_EXTENSIONS_ROUTE}
-              element={<ColonyExtensions />}
-            />
-            <Route
-              path={COLONY_EXTENSION_DETAILS_ROUTE}
-              element={<ExtensionDetails />}
-            />
-            <Route
-              path={COLONY_DECISIONS_ROUTE}
-              element={<ColonyDecisions domainId={domainIdFilter} />}
-            />
-          </Route>
-
-          <Route path="*" element={<NotFoundRoute />} />
-        </RoutesSwitch>
-      );
-    }
+  if (!colony) {
     return null;
-  }, [colony, domainIdFilter]);
+  }
 
-  return memoizedSwitch;
+  return (
+    <RoutesSwitch>
+      <Route
+        path={COLONY_EVENTS_ROUTE}
+        element={
+          <ColonyHomeLayout
+            filteredDomainId={domainIdFilter}
+            onDomainChange={setDomainIdFilter}
+          >
+            {/* <ColonyEvents colony={colony} ethDomainId={filteredDomainId} /> */}
+            <div>Events (Transactions Log)</div>
+          </ColonyHomeLayout>
+        }
+      />
+      <Route
+        element={
+          <ColonyHomeProvider>
+            <ColonyHomeLayout
+              filteredDomainId={domainIdFilter}
+              onDomainChange={setDomainIdFilter}
+            >
+              <Outlet />
+            </ColonyHomeLayout>
+          </ColonyHomeProvider>
+        }
+      >
+        <Route path="/" element={<ColonyActions />} />
+        <Route path={COLONY_EXTENSIONS_ROUTE} element={<ColonyExtensions />} />
+        <Route
+          path={COLONY_EXTENSION_DETAILS_ROUTE}
+          element={<ExtensionDetails />}
+        />
+        <Route
+          path={COLONY_DECISIONS_ROUTE}
+          element={<ColonyDecisions domainId={domainIdFilter} />}
+        />
+      </Route>
+
+      <Route path="*" element={<NotFoundRoute />} />
+    </RoutesSwitch>
+  );
 };
 
 ColonyHome.displayName = displayName;
