@@ -4,6 +4,7 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import clsx from 'clsx';
 import { useController, useFormContext } from 'react-hook-form';
 
+import { isHexString } from 'ethers/lib/utils';
 import { useUserSelect } from './hooks';
 import SearchSelect from '~v5/shared/SearchSelect';
 import UserAvatar from '~v5/shared/UserAvatar';
@@ -47,6 +48,8 @@ const UserSelect: FC<SelectProps> = ({
   const { formErrors, changeFormErrorsState } = useActionFormContext();
   const splitWallet =
     isMobile && recipient ? splitWalletAddress(recipient) : recipient;
+  const isNotVerified = recipient && !isAddressVerified && !isUserVerified;
+  const isWalletAddressFormat = recipient && isHexString(recipient);
 
   return (
     <div className="sm:relative w-full">
@@ -65,7 +68,7 @@ const UserSelect: FC<SelectProps> = ({
               user={user || userByAddress}
               userName={userDisplayName || splitWallet}
               size="xs"
-              isWarning={recipient && !isAddressVerified && !isUserVerified}
+              isWarning={isNotVerified}
             />
           ) : (
             formatMessage({ id: 'actionSidebar.selectMember' })
@@ -76,10 +79,16 @@ const UserSelect: FC<SelectProps> = ({
             </span>
           )}
 
-          {recipient && !isAddressVerified && !isUserVerified && (
+          {isNotVerified && (
             <IconWithTooltip
               tooltipContent={
-                <FormattedMessage id="tooltip.wallet.address.warning" />
+                isWalletAddressFormat &&
+                !isAddressVerified &&
+                !isUserVerified ? (
+                  <FormattedMessage id="tooltip.wallet.address.not.verified.warning" />
+                ) : (
+                  <FormattedMessage id="tooltip.user.not.verified.warning" />
+                )
               }
               iconName="warning-circle"
               className="ml-2 text-warning-400"
