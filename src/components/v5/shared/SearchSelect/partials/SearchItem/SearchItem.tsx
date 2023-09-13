@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
@@ -10,8 +10,7 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { Actions } from '~constants/actions';
 import Avatar from '~v5/shared/Avatar';
 import { useMobile } from '~hooks';
-import Tooltip from '~shared/Extensions/Tooltip';
-import Icon from '~shared/Icon';
+import IconWithTooltip from '~v5/shared/IconWithTooltip';
 
 const displayName = 'v5.SearchSelect.partials.SearchItem';
 
@@ -101,18 +100,13 @@ const SearchItem: FC<SearchItemProps> = ({
                   />
                 )}
                 {missingPermissions && (
-                  <Tooltip
+                  <IconWithTooltip
                     tooltipContent={
-                      <span>{formatMessage({ id: missingPermissions })}</span>
+                      <FormattedMessage id={missingPermissions} />
                     }
-                  >
-                    <span className="text-warning-400">
-                      <Icon
-                        name="warning-circle"
-                        appearance={{ size: 'tiny' }}
-                      />
-                    </span>
-                  </Tooltip>
+                    iconName="warning-circle"
+                    className="text-warning-400"
+                  />
                 )}
               </button>
             </li>
