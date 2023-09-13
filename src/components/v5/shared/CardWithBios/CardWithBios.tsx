@@ -93,20 +93,24 @@ const CardWithBios: FC<CardWithBiosProps> = ({
         {description && (
           <p className="text-gray-600 text-sm line-clamp-2">{description}</p>
         )}
-
-        <div className="flex justify-between items-center">
-          {!!colonyReputationPercentage && (
-            <span className="flex items-center text-gray-600 text-3">
-              <Icon name="star-not-filled" appearance={{ size: 'extraTiny' }} />
-              <span className="inline-block ml-1 mr-2">
-                {Number.isInteger(colonyReputationPercentage)
-                  ? colonyReputationPercentage
-                  : colonyReputationPercentage.toFixed(2)}
-                %
+        {isContributorsList && (
+          <div className="flex justify-between items-center">
+            {!!colonyReputationPercentage && (
+              <span className="flex items-center text-gray-600 text-3">
+                <Icon
+                  name="star-not-filled"
+                  appearance={{ size: 'extraTiny' }}
+                />
+                <span className="inline-block ml-1 mr-2">
+                  {Number.isInteger(colonyReputationPercentage)
+                    ? colonyReputationPercentage
+                    : colonyReputationPercentage.toFixed(2)}
+                  %
+                </span>
               </span>
-            </span>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
