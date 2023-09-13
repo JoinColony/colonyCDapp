@@ -19,23 +19,10 @@ const meta: Meta<typeof IconWithTooltip> = {
         type: 'text',
       },
     },
-    isIconVisible: {
-      name: 'icon visability',
-      control: {
-        type: 'boolean',
-      },
-    },
-    hasMaxWidthTooltipContent: {
-      name: 'has max width tooltip content',
-      control: {
-        type: 'boolean',
-      },
-    },
   },
   args: {
     children: 'User',
     iconName: 'warning-circle',
-    isIconVisible: true,
     className: 'ml-2 text-warning-400',
   },
 };
@@ -48,20 +35,6 @@ export const Base: Story = {
     <div className="max-w-[4rem]">
       <IconWithTooltip {...args} tooltipContent="content">
         text
-      </IconWithTooltip>
-    </div>
-  ),
-};
-
-export const WithLargeContent: Story = {
-  render: (args) => (
-    <div className="max-w-[4rem]">
-      <IconWithTooltip
-        {...args}
-        hasMaxWidthTooltipContent={false}
-        tooltipContent="0xbC13FD8d3383e32D5f45F9cfE0b56fc83D3E31C5"
-      >
-        User
       </IconWithTooltip>
     </div>
   ),
