@@ -18,19 +18,11 @@ import { ColonyContextProvider } from '~context/ColonyContext';
 import CreateColonyWizard from '~common/CreateColonyWizard';
 import DecisionPreview from '~common/ColonyDecisions/DecisionPreview';
 import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
-import {
-  // NavBar, Plain, SimpleNav,
-  Default,
-  NavBar,
-  UserLayout,
-} from '~frame/RouteLayouts';
+import { Default, NavBar, UserLayout } from '~frame/RouteLayouts';
 import ColonyBackText from '~frame/ColonyBackText';
-// import LoadingTemplate from '~root/LoadingTemplate';
 import LandingPage from '~frame/LandingPage';
-// import ActionsPage from '~dashboard/ActionsPage';
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 
-// import appLoadingContext from '~context/appLoadingState';
 import { useAppContext, useMobile, useTitle } from '~hooks';
 
 import {
@@ -47,7 +39,6 @@ import {
   DECISIONS_PAGE_ROUTE,
   COLONY_DECISIONS_PREVIEW_ROUTE,
   ACTIONS_PAGE_ROUTE,
-  // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
 } from './routeConstants';
@@ -60,24 +51,13 @@ const MSG = defineMessages({
     id: `${displayName}.userProfileEditBack`,
     defaultMessage: 'Go to profile',
   },
-  // loadingAppMessage: {
-  //   id: 'routes.Routes.loadingAppMessage',
-  //   defaultMessage: 'Loading App',
-  // },
 });
 
 const Routes = () => {
-  const { user } = useAppContext(); // wallet
+  const { user } = useAppContext();
   const isMobile = useMobile();
-  // const isAppLoading = appLoadingContext.getIsLoading();
-  // const isConnected = wallet?.address;
-  // const didClaimProfile = user?.name;
 
   useTitle();
-
-  // if (isAppLoading) {
-  //   return <LoadingTemplate loadingText={MSG.loadingAppMessage} />;
-  // }
 
   return (
     <RoutesSwitch>
@@ -178,49 +158,8 @@ const Routes = () => {
           </Default>
         }
       />
-      {/* <WalletRequiredRoute
-        isConnected={isConnected}
-        didClaimProfile={didClaimProfile}
-        path={CREATE_USER_ROUTE}
-        component={CreateUserWizard}
-        layout={Plain}
-      />
-      <WalletRequiredRoute
-        isConnected={isConnected}
-        didClaimProfile={didClaimProfile}
-        path={CREATE_COLONY_ROUTE}
-        component={CreateColonyWizard}
-        layout={Plain}
-      />
 
-      <AlwaysAccesibleRoute
-        path={USER_ROUTE}
-        component={UserProfile}
-        layout={SimpleNav}
-        routeProps={{
-          hasBackLink: false,
-        }}
-      />
-      <AlwaysAccesibleRoute
-        path={USER_EDIT_ROUTE}
-        component={UserProfileEdit}
-        layout={Default}
-        routeProps={{
-          hasSubscribedColonies: false,
-          backText: MSG.userProfileEditBack,
-          backRoute: `/user/${username}`,
-        }}
-      />
-      <AlwaysAccesibleRoute
-        exact
-        path={ACTIONS_PAGE_ROUTE}
-        component={ActionsPage}
-        layout={NavBar}
-        routeProps={({ colonyName }) => ({
-          backText: '',
-          backRoute: `/colony/${colonyName}`,
-        })}
-      />
+      {/*
       <AlwaysAccesibleRoute
         path={UNWRAP_TOKEN_ROUTE}
         component={UnwrapTokensPage}
@@ -240,7 +179,7 @@ const Routes = () => {
         })}
       />
 
-      {/*
+      /*
        * Redirect anything else that's not found to the 404 route
        */}
       <Route path="*" element={<NotFoundRoute />} />

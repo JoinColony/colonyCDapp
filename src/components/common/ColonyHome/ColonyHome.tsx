@@ -36,54 +36,51 @@ const ColonyHome = () => {
     Number(queryDomainIdFilter),
   );
 
-  if (colony) {
-    return (
-      <RoutesSwitch>
-        <Route
-          path={COLONY_EVENTS_ROUTE}
-          element={
+  if (!colony) {
+    return null;
+  }
+
+  return (
+    <RoutesSwitch>
+      <Route
+        path={COLONY_EVENTS_ROUTE}
+        element={
+          <ColonyHomeLayout
+            filteredDomainId={domainIdFilter}
+            onDomainChange={setDomainIdFilter}
+          >
+            {/* <ColonyEvents colony={colony} ethDomainId={filteredDomainId} /> */}
+            <div>Events (Transactions Log)</div>
+          </ColonyHomeLayout>
+        }
+      />
+      <Route
+        element={
+          <ColonyHomeProvider>
             <ColonyHomeLayout
               filteredDomainId={domainIdFilter}
               onDomainChange={setDomainIdFilter}
             >
-              {/* <ColonyEvents colony={colony} ethDomainId={filteredDomainId} /> */}
-              <div>Events (Transactions Log)</div>
+              <Outlet />
             </ColonyHomeLayout>
-          }
+          </ColonyHomeProvider>
+        }
+      >
+        <Route path="/" element={<ColonyActions />} />
+        <Route path={COLONY_EXTENSIONS_ROUTE} element={<ColonyExtensions />} />
+        <Route
+          path={COLONY_EXTENSION_DETAILS_ROUTE}
+          element={<ExtensionDetails />}
         />
         <Route
-          element={
-            <ColonyHomeProvider>
-              <ColonyHomeLayout
-                filteredDomainId={domainIdFilter}
-                onDomainChange={setDomainIdFilter}
-              >
-                <Outlet />
-              </ColonyHomeLayout>
-            </ColonyHomeProvider>
-          }
-        >
-          <Route path="/" element={<ColonyActions />} />
-          <Route
-            path={COLONY_EXTENSIONS_ROUTE}
-            element={<ColonyExtensions />}
-          />
-          <Route
-            path={COLONY_EXTENSION_DETAILS_ROUTE}
-            element={<ExtensionDetails />}
-          />
-          <Route
-            path={COLONY_DECISIONS_ROUTE}
-            element={<ColonyDecisions domainId={domainIdFilter} />}
-          />
-        </Route>
+          path={COLONY_DECISIONS_ROUTE}
+          element={<ColonyDecisions domainId={domainIdFilter} />}
+        />
+      </Route>
 
-        <Route path="*" element={<NotFoundRoute />} />
-      </RoutesSwitch>
-    );
-  }
-
-  return null;
+      <Route path="*" element={<NotFoundRoute />} />
+    </RoutesSwitch>
+  );
 };
 
 ColonyHome.displayName = displayName;
