@@ -740,11 +740,6 @@ type Mutation {
   """Updates the latest available version of a Colony or an extension"""
   setCurrentVersion(input: SetCurrentVersionInput): Boolean
 
-  """
-  Update an extension's details for a specific Colony
-  The extension hash is generated like so: `keccak256(toUtf8Bytes(extensionName))`, where `extensionName` is the name of the extension contract file in the Colony Network (e.g. `VotingReputation`)
-  """
-  updateExtensionByColonyAndHash(input: UpdateExtensionByColonyAndHashInput): ColonyExtension
   createProfile(input: CreateProfileInput!, condition: ModelProfileConditionInput): Profile
   updateProfile(input: UpdateProfileInput!, condition: ModelProfileConditionInput): Profile
   deleteProfile(input: DeleteProfileInput!, condition: ModelProfileConditionInput): Profile

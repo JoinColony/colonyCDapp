@@ -3062,11 +3062,6 @@ export type Mutation = {
   updateDomain?: Maybe<Domain>;
   updateDomainMetadata?: Maybe<DomainMetadata>;
   updateExpenditure?: Maybe<Expenditure>;
-  /**
-   * Update an extension's details for a specific Colony
-   * The extension hash is generated like so: `keccak256(toUtf8Bytes(extensionName))`, where `extensionName` is the name of the extension contract file in the Colony Network (e.g. `VotingReputation`)
-   */
-  updateExtensionByColonyAndHash?: Maybe<ColonyExtension>;
   updateIngestorStats?: Maybe<IngestorStats>;
   updateMotionMessage?: Maybe<MotionMessage>;
   updateProfile?: Maybe<Profile>;
@@ -3568,12 +3563,6 @@ export type MutationUpdateDomainMetadataArgs = {
 export type MutationUpdateExpenditureArgs = {
   condition?: InputMaybe<ModelExpenditureConditionInput>;
   input: UpdateExpenditureInput;
-};
-
-
-/** Root mutation type */
-export type MutationUpdateExtensionByColonyAndHashArgs = {
-  input?: InputMaybe<UpdateExtensionByColonyAndHashInput>;
 };
 
 
