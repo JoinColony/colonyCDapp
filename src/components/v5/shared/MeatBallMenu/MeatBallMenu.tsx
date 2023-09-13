@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
@@ -15,7 +15,6 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
   buttonClassName,
 }) => {
   const { formatMessage } = useIntl();
-  const buttonRef = useRef<HTMLButtonElement>(null);
   const [
     isMenuOpen,
     { toggle: toggleMenu, toggleOff: toggleMenuOff, registerContainerRef },
@@ -24,7 +23,6 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
   return (
     <div className="md:relative">
       <button
-        ref={buttonRef}
         type="button"
         onClick={toggleMenu}
         aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
@@ -46,26 +44,35 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
           rounded="s"
           ref={registerContainerRef}
         >
-          <ul>
-            {items.map(({ key, label, onClick, iconName }) => (
-              <li key={key} className="flex-shrink-0">
-                <button
-                  type="button"
-                  className="flex w-full items-center text-md transition-colors
-                  duration-normal md:hover:bg-gray-50 rounded py-2 px-3.5 gap-2"
-                  onClick={() => {
-                    onClick();
-                    toggleMenuOff();
-                  }}
-                >
-                  {iconName && (
-                    <Icon name={iconName} appearance={{ size: 'extraSmall' }} />
-                  )}
-                  <span>{label}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
+          {!items.length ? (
+            <p className="text-sm text-gray-500">
+              {formatMessage({ id: 'shared.meatBallMenu.empty' })}
+            </p>
+          ) : (
+            <ul>
+              {items.map(({ key, label, onClick, iconName }) => (
+                <li key={key} className="flex-shrink-0">
+                  <button
+                    type="button"
+                    className="flex w-full items-center text-md transition-colors
+                    duration-normal md:hover:bg-gray-50 rounded py-2 px-3.5 gap-2"
+                    onClick={() => {
+                      onClick();
+                      toggleMenuOff();
+                    }}
+                  >
+                    {iconName && (
+                      <Icon
+                        name={iconName}
+                        appearance={{ size: 'extraSmall' }}
+                      />
+                    )}
+                    <span>{label}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </Card>
       )}
     </div>

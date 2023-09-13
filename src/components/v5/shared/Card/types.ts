@@ -4,5 +4,4 @@ export interface CardProps {
   className?: string;
   children?: React.ReactNode;
   withPadding?: boolean;
-  style?: React.CSSProperties;
 }

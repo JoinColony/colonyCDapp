@@ -105,3 +105,10 @@ export const MenuWithScroll: StoryObj<typeof MeatBallMenu> = {
     ],
   },
 };
+
+export const EmptyMenu: StoryObj<typeof MeatBallMenu> = {
+  args: {
+    cardClassName: 'min-w-[12rem]',
+    items: [],
+  },
+};
