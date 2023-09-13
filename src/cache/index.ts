@@ -17,19 +17,6 @@ const cache = new InMemoryCache({
       merge: false,
     },
     Domain: {
-      keyFields: ['id'],
-      merge(existing, incoming) {
-        if (!existing) return incoming;
-        // Ensure that queries that do reputation a reputation value aren't overwritten
-        // by queries returning null for reputation.
-        return {
-          ...existing,
-          ...incoming,
-          reputation: incoming.reputation
-            ? incoming.reputation
-            : existing.reputation,
-        };
-      },
       fields: {
         metadata: {
           merge(existing, incoming) {

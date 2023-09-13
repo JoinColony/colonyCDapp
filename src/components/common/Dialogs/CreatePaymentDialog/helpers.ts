@@ -2,6 +2,7 @@ import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
 import { useActionDialogStatus, EnabledExtensionData } from '~hooks';
+import { OneTxPaymentPayload } from '~redux/types/actions/colonyActions';
 import { Colony } from '~types';
 import {
   calculateFee,
@@ -15,36 +16,36 @@ export const getCreatePaymentDialogPayload = (
   networkInverseFee: string | undefined,
 ) => {
   const {
-    amount,
-    tokenAddress,
     fromDomainId,
-    recipient: { walletAddress },
+    payments,
     annotation: annotationMessage,
     motionDomainId,
   } = payload;
-  const selectedToken = getSelectedToken(colony, tokenAddress);
 
-  const decimals = getTokenDecimalsWithFallback(selectedToken?.decimals);
-
-  const amountWithFees = networkInverseFee
-    ? calculateFee(amount, networkInverseFee, decimals).totalToPay
-    : amount;
-
-  return {
+  const transformedPayload: OneTxPaymentPayload = {
     colonyName: colony.name,
     colonyAddress: colony.colonyAddress,
-    recipientAddresses: [walletAddress],
     domainId: fromDomainId,
-    payments: [
-      {
+    payments: payments.map(({ recipient, amount, tokenAddress }) => {
+      const selectedToken = getSelectedToken(colony, tokenAddress);
+      const decimals = getTokenDecimalsWithFallback(selectedToken?.decimals);
+
+      const amountWithFees = networkInverseFee
+        ? calculateFee(amount, networkInverseFee, decimals).totalToPay
+        : amount;
+
+      return {
+        recipient: recipient.walletAddress,
         tokenAddress,
         amount: amountWithFees, // @NOTE: Only the contract sees this amount
         decimals,
-      },
-    ],
+      };
+    }),
     annotationMessage,
     motionDomainId,
   };
+
+  return transformedPayload;
 };
 
 export const useCreatePaymentDialogStatus = (

@@ -10,6 +10,8 @@ import {
 export const ACTION_TYPES_ICONS_MAP: Record<AnyActionType, string> = {
   [ColonyActionType.WrongColony]: 'forbidden-signal',
   [ColonyActionType.Payment]: 'emoji-dollar-stack',
+  [ColonyActionType.MultiplePayment]: 'emoji-dollar-stack',
+  [ColonyActionType.MultiplePaymentMotion]: 'emoji-dollar-stack',
   [ColonyActionType.Recovery]: 'emoji-alarm-lamp',
   [ColonyActionType.MoveFunds]: 'emoji-world-globe',
   [ColonyActionType.UnlockToken]: 'emoji-padlock',

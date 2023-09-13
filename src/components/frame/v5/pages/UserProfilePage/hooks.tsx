@@ -17,6 +17,27 @@ import {
 import { USERNAME_REGEX } from '~common/CreateUserWizard/validation';
 import { createYupTestFromQuery } from '~utils/yup/tests';
 
+const USERNAME_CHANGE_LIMIT = 90; // username can be changed once every 90 days
+
+const calculateUsernameChangePeriod = (displayNameChanged?: string | null) => {
+  const date = new Date();
+  const fallbackDate = date.setDate(date.getDate() - 90);
+
+  /* eslint-disable camelcase */
+  // if there's no displayNameChanged date, we'll let them change their username
+  const nameChanged_ms = new Date(displayNameChanged ?? fallbackDate).valueOf();
+  const now_ms = new Date().valueOf();
+  const daysSinceUsernameChange = Math.floor(
+    (now_ms - nameChanged_ms) / (1000 * 60 * 60 * 24),
+  );
+  /* eslint-enable camelcase */
+
+  const daysTillUsernameChange =
+    USERNAME_CHANGE_LIMIT - daysSinceUsernameChange;
+  const canChangeUsername = daysTillUsernameChange <= 0;
+
+  return { canChangeUsername, daysTillUsernameChange };
+};
 export const useUserProfile = () => {
   const { updateUser } = useAppContext();
   const [editUser] = useUpdateUserProfileMutation();
@@ -85,6 +106,7 @@ export const useUserProfile = () => {
           input: {
             id: user?.walletAddress || '',
             ...updatedProfile,
+            displayNameChanged: new Date().toISOString(),
             website: updatedProfile.website || null,
           },
         },
@@ -116,6 +138,9 @@ export const useUserProfile = () => {
   const showNameMessage =
     dirtyFields.displayName && !errors.displayName?.message;
 
+  const { canChangeUsername, daysTillUsernameChange } =
+    calculateUsernameChangePeriod(profile?.displayNameChanged);
+
   return {
     register,
     handleSubmit,
@@ -124,5 +149,8 @@ export const useUserProfile = () => {
     errors,
     avatarUrl,
     loading: !!loadingProfile,
+    canChangeUsername,
+    daysTillUsernameChange:
+      daysTillUsernameChange < 0 ? 0 : daysTillUsernameChange,
   };
 };

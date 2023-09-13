@@ -10,14 +10,17 @@ import {
 } from '~gql';
 import { Colony } from '~types';
 import LoadingTemplate from '~frame/LoadingTemplate';
-import { useCanInteractWithColony } from '~hooks';
+import { useAppContext, useCanInteractWithColony } from '~hooks';
 import { PageThemeContextProvider } from '../PageThemeContext';
 import { UserTokenBalanceProvider } from '../UserTokenBalanceContext';
 
 import { ColonyDecisionProvider } from '../ColonyDecisionContext';
 import { NOT_FOUND_ROUTE } from '~routes';
 import { useUpdateColonyReputation } from './useUpdateColonyReputation';
-import { usePreviousColonyName } from './usePreviousColonyName';
+import {
+  METACOLONY_COLONY_NAME,
+  usePreviousColonyName,
+} from './usePreviousColonyName';
 import { usePreviousColony } from './usePreviousColony';
 
 export type RefetchColonyFn = (
@@ -53,6 +56,10 @@ const MSG = defineMessages({
 const MIN_SUPPORTED_COLONY_VERSION = 5;
 export const PREV_COLONY_LOCAL_STORAGE_KEY = 'prevColonyName';
 
+export const removePrevColonyFromLocalStorage = (address: string) => {
+  localStorage.removeItem(`${PREV_COLONY_LOCAL_STORAGE_KEY}:${address}`);
+};
+
 const getColonyNameFromPath = (path: string) => {
   const pathFragments = path.split('/');
   const idx = pathFragments.indexOf('colony') + 1;
@@ -67,10 +74,11 @@ export const ColonyContextProvider = ({
   const { pathname } = useLocation();
   const colonyName = getColonyNameFromPath(pathname);
   const navigate = useNavigate();
-
-  const { hideLoader, prevColonyName } = usePreviousColonyName({
-    colonyName,
-  });
+  const { user } = useAppContext();
+  const { hideLoader, prevColonyName, setPrevColonyName } =
+    usePreviousColonyName({
+      colonyName,
+    });
 
   const {
     data,
@@ -121,9 +129,23 @@ export const ColonyContextProvider = ({
 
   useEffect(() => {
     if (!loadingColony && colonyNotFound) {
-      navigate(NOT_FOUND_ROUTE, { replace: true });
+      if (colonyName) {
+        navigate(NOT_FOUND_ROUTE, { replace: true });
+      } else {
+        setPrevColonyName(METACOLONY_COLONY_NAME);
+        if (user) {
+          removePrevColonyFromLocalStorage(user.walletAddress);
+        }
+      }
     }
-  }, [loadingColony, colonyNotFound, navigate]);
+  }, [
+    loadingColony,
+    colonyNotFound,
+    colonyName,
+    navigate,
+    setPrevColonyName,
+    user,
+  ]);
 
   if (loadingColony && !hideLoader) {
     return <LoadingTemplate loadingText={MSG.loadingText} />;

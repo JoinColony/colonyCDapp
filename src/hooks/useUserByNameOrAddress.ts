@@ -38,7 +38,7 @@ const useUserByNameOrAddress = (userIdentifier: string) => {
         loading: addressLoading,
       }
     : {
-        user: userData?.getUserByName?.items[0],
+        user: userData?.getProfileByUsername?.items[0]?.user,
         error: userError,
         loading: userLoading,
       };

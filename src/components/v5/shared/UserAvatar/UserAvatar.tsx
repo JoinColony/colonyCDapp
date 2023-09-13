@@ -41,7 +41,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
           avatar={imageString}
           placeholderIcon="circle-person"
           seed={address && address.toLowerCase()}
-          title={profile?.displayName || user?.name || address || ''}
+          title={profile?.displayName || address || ''}
           {...rest}
         />
       </span>

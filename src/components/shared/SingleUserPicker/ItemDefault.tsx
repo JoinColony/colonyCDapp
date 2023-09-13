@@ -32,7 +32,7 @@ interface Props {
 }
 const ItemDefault = ({
   walletAddress,
-  itemData: { profile, walletAddress: userAddress, name: username },
+  itemData: { profile, walletAddress: userAddress },
   itemData,
   renderAvatar,
   showAddress,
@@ -61,7 +61,7 @@ const ItemDefault = ({
           &nbsp;
         </span>
       )}
-      {username && <UserMention user={itemData} hasLink={false} />}
+      {profile?.displayName && <UserMention user={itemData} hasLink={false} />}
       {showAddress && <span className={styles.address}>{userAddress}</span>}
       {!showAddress && showMaskedAddress && (
         <span className={styles.address}>

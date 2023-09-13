@@ -126,8 +126,8 @@ function* usernameCreate({
       variables: {
         input: {
           id: walletAddress,
-          name: username,
           profile: {
+            displayName: username,
             email: email || undefined,
             meta: {
               emailPermissions,

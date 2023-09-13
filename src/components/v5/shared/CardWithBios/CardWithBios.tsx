@@ -23,7 +23,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
   const userStatus = (type?.toLowerCase() ??
     null) as ContributorTypeFilter | null;
 
-  const { name, walletAddress = '', profile } = user || {};
+  const { walletAddress = '', profile } = user || {};
   const { bio } = profile || {};
   const {
     getTooltipProps,
@@ -46,7 +46,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <UserAvatarPopover
-              userName={profile?.displayName || name}
+              userName={profile?.displayName}
               walletAddress={walletAddress}
               isVerified={isVerified}
               aboutDescription={bio || ''}

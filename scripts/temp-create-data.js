@@ -164,9 +164,8 @@ const createUser = async (username, accountIndex = 0) => {
     {
       input: {
         id: userAddress,
-        name: username,
         profile: {
-          displayName: `User ${username.toUpperCase()}`,
+          displayName: username,
           thumbnail: userThumbnails[`thumbnailUser${username.toUpperCase()}`],
           email: `${username}@colony.io`,
           meta: { emailPermissions: [] },
@@ -179,10 +178,14 @@ const createUser = async (username, accountIndex = 0) => {
   await delay();
 
   if (userQuery?.errors) {
-    console.log('USER COULD NOT BE CREATED.', userQuery.errors[0].message);
+    console.log(
+      'USER COULD NOT BE CREATED.',
+      userQuery.errors[0].message,
+      JSON.stringify(userQuery.errors),
+    );
   } else {
     console.log(
-      `Creating user { name: "${username}", walletAddress: "${userAddress}", profile: { displayName: "User ${username.toUpperCase()}", email: "${username}@colony.io", emailPermissions: "[]" } }`,
+      `Creating user { walletAddress: "${userAddress}", profile: { displayName: "${username}", email: "${username}@colony.io", emailPermissions: "[]" } }`,
     );
   }
 

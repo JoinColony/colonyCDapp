@@ -23,7 +23,7 @@ export const usePageLayout = () => {
   ]);
   const openUpgradeColonyDialog = useDialog(NetworkContractUpgradeDialog);
   const enabledExtensionData = useEnabledExtensions();
-  const canUpgradeColony = user?.name && hasRoot(allUserRoles);
+  const canUpgradeColony = user?.profile?.displayName && hasRoot(allUserRoles);
 
   const handleUpgradeColony = useCallback(
     () =>
