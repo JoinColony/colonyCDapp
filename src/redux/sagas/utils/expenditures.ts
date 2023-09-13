@@ -2,7 +2,7 @@ import { BigNumber } from 'ethers';
 
 import { ExpenditurePayoutFieldValue } from '~common/Expenditures/ExpenditureForm';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
-import { MethodParams } from '~types';
+import { Expenditure, MethodParams } from '~types';
 
 /**
  * Util returning a map between token addresses and arrays of payouts field values
@@ -68,4 +68,27 @@ export const getSetExpenditureValuesFunctionParams = (
       ),
     ),
   ];
+};
+
+export const getExpenditureBalancesByTokenAddress = (
+  expenditure: Expenditure,
+) => {
+  const balancesByTokenAddresses = new Map<string, BigNumber>();
+  expenditure.slots.forEach((slot) => {
+    slot.payouts?.forEach((payout) => {
+      if (payout.amount === '0') {
+        return;
+      }
+
+      const currentBalance =
+        balancesByTokenAddresses.get(payout.tokenAddress) ?? '0';
+
+      balancesByTokenAddresses.set(
+        payout.tokenAddress,
+        BigNumber.from(payout.amount).add(currentBalance),
+      );
+    });
+  });
+
+  return balancesByTokenAddresses;
 };

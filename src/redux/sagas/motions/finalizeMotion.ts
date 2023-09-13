@@ -1,10 +1,10 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
-import { AnyVotingReputationClient, ClientType } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
+import { call, put, takeEvery } from 'redux-saga/effects';
+import { ClientType } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { getColonyManager, putError, takeFrom } from '../utils';
+import { putError, takeFrom } from '../utils';
 
 import {
   createGroupTransaction,
@@ -12,49 +12,14 @@ import {
   getTxChannel,
 } from '../transactions';
 import { transactionReady, transactionUpdateGas } from '../../actionCreators';
-import { ADDRESS_ZERO } from '~constants';
+import { DEFAULT_GAS_LIMIT } from '~constants';
 
 function* finalizeMotion({
   meta,
-  payload: { /* userAddress */ colonyAddress, motionId },
+  payload: { colonyAddress, motionId, gasEstimate },
 }: Action<ActionTypes.MOTION_FINALIZE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const colonyManager = yield getColonyManager();
-    const { provider } = colonyManager;
-    const colonyClient = yield colonyManager.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
-    );
-    const votingReputationClient: AnyVotingReputationClient =
-      yield colonyManager.getClient(
-        ClientType.VotingReputationClient,
-        colonyAddress,
-      );
-    const motion = yield votingReputationClient.getMotion(motionId);
-
-    const networkEstimate = yield provider.estimateGas({
-      from: votingReputationClient.address,
-      to:
-        /*
-         * If the motion target is 0x000... then we pass in the colony's address
-         */
-        motion.altTarget === ADDRESS_ZERO
-          ? colonyClient.address
-          : motion.altTarget,
-      data: motion.action,
-    });
-    /*
-     * Increase the estimate by 100k WEI. This is a flat increase for all networks
-     *
-     * @NOTE This will need to be increased further for `setExpenditureState` since
-     * that requires even more gas, but since we don't use that one yet, there's
-     * no reason to account for it just yet
-     */
-    const estimate = BigNumber.from(networkEstimate).add(
-      BigNumber.from(100000),
-    );
-
     const { finalizeMotionTransaction } = yield createTransactionChannels(
       meta.id,
       ['finalizeMotionTransaction'],
@@ -75,9 +40,13 @@ function* finalizeMotion({
       ActionTypes.TRANSACTION_CREATED,
     );
 
+    const gasLimit = BigNumber.from(gasEstimate).lte(DEFAULT_GAS_LIMIT)
+      ? gasEstimate
+      : DEFAULT_GAS_LIMIT.toString();
+
     yield put(
       transactionUpdateGas(finalizeMotionTransaction.id, {
-        gasLimit: estimate.toString(),
+        gasLimit,
       }),
     );
 

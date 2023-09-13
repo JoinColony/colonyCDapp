@@ -19,6 +19,11 @@ fragment Expenditure on Expenditure {
   }
   finalizedAt
   hasReclaimedStake
+  fundingMotions {
+    items {
+      ...ColonyMotion
+    }
+  }
 }
 
 fragment ExpenditureSlot on ExpenditureSlot {

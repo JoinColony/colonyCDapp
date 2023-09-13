@@ -163,6 +163,8 @@ fragment ColonyMotion on ColonyMotion {
       ...MotionMessage
     }
   }
+  gasEstimate
+  transactionHash
 }
 
 fragment MotionMessage on MotionMessage {

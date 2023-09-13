@@ -1,8 +1,12 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import { Id } from '@colony/colony-js';
+import { Link, useParams } from 'react-router-dom';
+import { Id, MotionState } from '@colony/colony-js';
 
-import { ExpenditureStatus, useGetExpenditureQuery } from '~gql';
+import {
+  ExpenditureStatus,
+  useGetExpenditureQuery,
+  useGetMotionStateQuery,
+} from '~gql';
 import { useColonyContext } from '~hooks';
 import { Heading3 } from '~shared/Heading';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
@@ -15,22 +19,53 @@ import ExpenditureAdvanceButton from './ExpenditureAdvanceButton';
 import ExpenditurePayouts from './ExpenditurePayouts';
 import ReclaimStakeButton from '../StakedExpenditure/ReclaimStakeButton';
 
+import { notNull } from '~utils/arrays';
+import { getMotionState } from '~utils/colonyMotions';
+import { motionTags } from '~shared/Tag';
+
 import styles from './ExpenditureDetailsPage.module.css';
 
 const ExpenditureDetailsPage = () => {
   const { expenditureId } = useParams();
 
   const { colony } = useColonyContext();
-
+  const { colonyAddress = '' } = colony || {};
   const { data, loading } = useGetExpenditureQuery({
     variables: {
       expenditureId: getExpenditureDatabaseId(
-        colony?.colonyAddress ?? '',
+        colonyAddress,
         Number(expenditureId),
       ),
     },
     skip: !expenditureId,
   });
+
+  const expenditure = data?.getExpenditure;
+
+  const expenditureFundingMotions =
+    expenditure?.fundingMotions?.items.filter(notNull) ?? [];
+
+  const latestFundingMotion = expenditureFundingMotions.at(-1);
+
+  const latestExpenditureFundingMotionHash: string | undefined =
+    latestFundingMotion?.transactionHash;
+
+  const { data: motionStateQuery } = useGetMotionStateQuery({
+    skip: !latestFundingMotion,
+    variables: {
+      input: {
+        colonyAddress,
+        databaseMotionId: latestFundingMotion?.databaseMotionId ?? '',
+      },
+    },
+  });
+
+  const networkMotionState =
+    motionStateQuery?.getMotionState ?? MotionState.Null;
+
+  const latestFundingMotionState =
+    latestFundingMotion &&
+    getMotionState(networkMotionState, latestFundingMotion);
 
   if (!colony) {
     return null;
@@ -44,7 +79,6 @@ const ExpenditureDetailsPage = () => {
     return null;
   }
 
-  const expenditure = data.getExpenditure;
   if (!expenditure) {
     return (
       <div>
@@ -64,6 +98,12 @@ const ExpenditureDetailsPage = () => {
     colony,
   );
 
+  const oldFundingMotions = expenditureFundingMotions?.slice(0, -1);
+
+  const MotionTag = latestFundingMotionState
+    ? motionTags[latestFundingMotionState]
+    : () => null;
+
   return (
     <div>
       <Heading3>Expenditure {expenditure.id}</Heading3>
@@ -75,6 +115,24 @@ const ExpenditureDetailsPage = () => {
         </div>
         <div>Fund from: {fundFromDomain?.metadata?.name ?? 'Unknown team'}</div>
         <div>Type: {expenditure.metadata?.type}</div>
+        {oldFundingMotions?.length ? (
+          <div>Previous funding motions:</div>
+        ) : null}
+        {oldFundingMotions?.map(({ transactionHash }, idx) => (
+          <Link
+            key={transactionHash}
+            to={`/colony/${colony.name}/tx/${transactionHash}`}
+          >
+            Funding motion {idx + 1}
+          </Link>
+        ))}
+        {latestFundingMotionState && (
+          <Link
+            to={`/colony/${colony.name}/tx/${latestExpenditureFundingMotionHash}`}
+          >
+            Current funding motion status: <MotionTag />
+          </Link>
+        )}
         <ExpenditureBalances expenditure={expenditure} />
         <ExpenditurePayouts expenditure={expenditure} colony={colony} />
         <div className={styles.buttons}>
@@ -90,7 +148,14 @@ const ExpenditureDetailsPage = () => {
               Cancel expenditure
             </ActionButton>
           )}
-          <ExpenditureAdvanceButton expenditure={expenditure} colony={colony} />
+          <ExpenditureAdvanceButton
+            latestExpenditureFundingMotionHash={
+              latestExpenditureFundingMotionHash
+            }
+            latestFundingMotionState={latestFundingMotionState}
+            expenditure={expenditure}
+            colony={colony}
+          />
           <ReclaimStakeButton colony={colony} expenditure={expenditure} />
         </div>
       </div>
