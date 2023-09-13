@@ -97,7 +97,7 @@ const Routes = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isConnected = wallet?.address;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const didClaimProfile = user?.name;
+  const didClaimProfile = user?.profile?.displayName;
 
   useTitle();
 

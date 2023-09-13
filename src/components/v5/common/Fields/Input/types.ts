@@ -1,4 +1,5 @@
 import { UseFormRegister, FieldValues } from 'react-hook-form';
+import { Message } from '~types';
 
 export type InputProps = {
   maxCharNumber?: number;
@@ -14,6 +15,7 @@ export type InputProps = {
   isDecoratedError?: boolean;
   successfulMessage?: string;
   isDisabled?: boolean;
+  disabledTooltipMessage?: Message;
 };
 
 export type PillProps = {

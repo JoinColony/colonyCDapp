@@ -13,19 +13,9 @@ import {
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
 
-import {
-  cancelEarly,
-  cleanQueryName,
-  createUnknownError,
-  formatMessage,
-} from './helpers';
+import { cancelEarly, createUnknownError, formatMessage } from './helpers';
 
 const apolloClient = getContext(ContextModule.ApolloClient);
-
-/* Map custom query names to actual query names */
-export const customQueries: Record<string, string> = {
-  GetFullColonyByName: 'getColonyByName',
-};
 
 /**
  * Run a query inside a TestFunction
@@ -125,7 +115,7 @@ export function createYupTestFromQuery({
       );
     }
 
-    const result = await runQuery(
+    const result: object = await runQuery(
       query,
       {
         [variableKey]: value,
@@ -137,7 +127,7 @@ export function createYupTestFromQuery({
       return result;
     }
 
-    return !!(result as object)[cleanQueryName(queryName)]?.items.length;
+    return Object.keys(result).every((key) => !!result[key].items.length);
   }
 }
 

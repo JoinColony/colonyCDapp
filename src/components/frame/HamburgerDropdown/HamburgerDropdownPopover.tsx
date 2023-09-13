@@ -38,7 +38,7 @@ const HamburgerDropdownPopover = ({ closePopover }: Props) => {
   return (
     <div className={styles.menu}>
       <DropdownMenu onClick={closePopover}>
-        {user?.name && colony?.name && <ColonySection />}
+        {user?.profile?.displayName && colony?.name && <ColonySection />}
         <UserSection />
         {canInteractWithNetwork && <CreateColonySection />}
         <HelperSection />
