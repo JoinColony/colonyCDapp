@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
-import { useIntl } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
+
 import clsx from 'clsx';
 import { useController, useFormContext } from 'react-hook-form';
 
@@ -12,7 +13,7 @@ import styles from '../../ActionsContent.module.css';
 import { SelectProps } from '../../types';
 import { useActionFormContext } from '~v5/common/ActionSidebar/partials/ActionForm/ActionFormContext';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
-import Tooltip from '~shared/Extensions/Tooltip';
+import IconWithTooltip from '~v5/shared/IconWithTooltip';
 import Icon from '~shared/Icon';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
@@ -47,6 +48,16 @@ const UserSelect: FC<SelectProps> = ({
   const splitWallet =
     isMobile && recipient ? splitWalletAddress(recipient) : recipient;
 
+  // @TODO: fix tooltip on mobile after clinet feedback
+
+  const selectedUserData: string =
+    recipient &&
+    usersOptions.options.find(
+      (userOption) =>
+        userOption.label?.toLowerCase() === recipient?.toLowerCase(),
+    )?.label;
+  const isSelectedUserHasName = selectedUserData === recipient;
+
   return (
     <div className="sm:relative w-full">
       <div className="flex gap-2 items-center">
@@ -59,16 +70,12 @@ const UserSelect: FC<SelectProps> = ({
           onClick={toggleUserSelect}
           aria-label={formatMessage({ id: 'ariaLabel.selectUser' })}
         >
-          {splitWallet ? (
-            <Tooltip
-              tooltipContent={recipient}
-              hasMaxWidthTooltipContent={false}
-            >
+          {recipient && isSelectedUserHasName && (
+            <>
               <UserAvatar
                 user={user || userByAddress}
                 userName={userDisplayName || splitWallet}
                 size="xs"
-                isAddressVerified={isAddressVerified}
                 isUserVerified={isUserVerified}
               />
               {isUserVerified && (
@@ -76,21 +83,35 @@ const UserSelect: FC<SelectProps> = ({
                   <Icon name="verified" />
                 </span>
               )}
-            </Tooltip>
-          ) : (
-            formatMessage({ id: 'actionSidebar.selectMember' })
+            </>
           )}
+
+          {splitWallet && isAddressVerified && recipient && (
+            <IconWithTooltip
+              tooltipContent={recipient}
+              iconName="verified"
+              className="text-blue-400"
+              hasMaxWidthTooltipContent={false}
+              isIconVisible={isUserVerified}
+            >
+              <UserAvatar
+                user={user || userByAddress}
+                userName={userDisplayName || splitWallet}
+                size="xs"
+                isAddressVerified={isAddressVerified}
+              />
+            </IconWithTooltip>
+          )}
+          {!recipient && formatMessage({ id: 'actionSidebar.selectMember' })}
         </button>
         {recipient && !isAddressVerified && !isUserVerified && (
-          <Tooltip
-            tooltipContent={formatMessage({
-              id: 'tooltip.wallet.address.warning',
-            })}
-          >
-            <span className="flex text-orange-400">
-              <Icon name="warning-circle" />
-            </span>
-          </Tooltip>
+          <IconWithTooltip
+            tooltipContent={
+              <FormattedMessage id="tooltip.wallet.address.warning" />
+            }
+            iconName="warning-circle"
+            className="text-orange-400"
+          />
         )}
       </div>
       <input type="text" id={name} className="hidden" {...field} />
