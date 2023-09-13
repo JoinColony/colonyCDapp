@@ -50,7 +50,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
 
   const formContent = (
     <>
-      <div className="px-6 py-8 overflow-scroll h-[40rem]">
+      <div className="px-6 py-8">
         {!selectedAction && (
           <>
             <input

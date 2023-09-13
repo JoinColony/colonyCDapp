@@ -78,7 +78,7 @@ const SearchSelect: FC<SearchSelectProps> = ({
   }, []);
 
   const content = (
-    <>
+    <div className="h-full flex flex-col">
       <div className="mb-6">
         <SearchInput onInput={onInput} />
       </div>
@@ -88,7 +88,7 @@ const SearchSelect: FC<SearchSelectProps> = ({
         </div>
       )}
       {!isLoading && (
-        <CustomScrollbar height={600} mobileHeight="70vh">
+        <CustomScrollbar>
           <div className="pr-4 sm:pr-0">
             {filteredList.length > 0 ? (
               filteredList.map(({ options, title, isAccordion, key }) =>
@@ -148,16 +148,18 @@ const SearchSelect: FC<SearchSelectProps> = ({
           </div>
         </CustomScrollbar>
       )}
-    </>
+    </div>
   );
 
   return isMobile ? (
     <Modal isOpen={isOpen} onClose={onToggle} isFullOnMobile={false}>
-      <div ref={ref}>{content}</div>
+      <div ref={ref} className="h-[85vh]">
+        {content}
+      </div>
     </Modal>
   ) : (
     <Card
-      className="py-4 px-2.5 w-full sm:max-w-[20.375rem] absolute top-[calc(100%+0.5rem)] left-0 z-50"
+      className="py-4 px-2.5 w-full sm:max-w-[20.375rem] absolute top-[calc(100%+0.5rem)] left-0 z-50 h-[60vh]"
       hasShadow
       rounded="s"
       ref={ref}
