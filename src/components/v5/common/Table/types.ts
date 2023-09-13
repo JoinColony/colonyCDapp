@@ -5,15 +5,4 @@ export interface TableProps<T> {
   tableTitle?: React.ReactNode;
   columns: ColumnDef<T>[];
   fields: T[];
-  burgerColumn: ColumnDef<T, any>[];
-  setSelectedRowId: React.Dispatch<React.SetStateAction<string | undefined>>;
-}
-
-export interface BurgerMenuProps {
-  isMenuVisible: boolean;
-  onRemoveRow: () => void;
-  onToogle: () => void;
-  onToogleOff: () => void;
-  onDuplicateRow: () => void;
-  registerContainerRef: (ref: HTMLElement | null) => void;
 }

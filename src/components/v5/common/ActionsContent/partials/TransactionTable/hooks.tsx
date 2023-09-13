@@ -39,7 +39,5 @@ export const useTransactionTable = () => {
     [],
   );
 
-  return {
-    columns,
-  };
+  return columns;
 };

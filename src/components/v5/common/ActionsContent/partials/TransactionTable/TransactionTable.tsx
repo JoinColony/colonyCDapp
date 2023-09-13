@@ -13,7 +13,7 @@ const displayName = 'v5.common.ActionsContent.partials.TransactionTable';
 const TransactionTable: FC = () => {
   const isMobile = useMobile();
   const { colony } = useColonyContext();
-  const { columns } = useTransactionTable();
+  const columns = useTransactionTable();
   const { nativeToken } = colony || {};
   const { control, getValues } = useFormContext();
   const { fields, append, remove } = useFieldArray({
