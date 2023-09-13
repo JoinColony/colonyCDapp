@@ -14,7 +14,7 @@ const CustomScrollbar: FC<PropsWithChildren<CustomScrollbarProps>> = ({
     className={clsx(
       className,
       styles.customScrollbar,
-      'pr-1 h-full w-full overflow-y-scroll',
+      'pr-1 md:max-h-[50vh] w-full overflow-y-scroll',
     )}
   >
     {children}

@@ -9,6 +9,7 @@ import React, {
 import { AnimatePresence, motion } from 'framer-motion';
 import { debounce } from 'lodash';
 import { useIntl } from 'react-intl';
+import clsx from 'clsx';
 
 import { SearchSelectProps } from './types';
 import Card from '../Card';
@@ -31,6 +32,7 @@ const SearchSelect: FC<SearchSelectProps> = ({
   isOpen,
   onSelect,
   isLoading,
+  className,
 }) => {
   const [searchValue, setSearchValue] = useState('');
   const isMobile = useMobile();
@@ -153,13 +155,16 @@ const SearchSelect: FC<SearchSelectProps> = ({
 
   return isMobile ? (
     <Modal isOpen={isOpen} onClose={onToggle} isFullOnMobile={false}>
-      <div ref={ref} className="h-[85vh]">
+      <div ref={ref} className={className}>
         {content}
       </div>
     </Modal>
   ) : (
     <Card
-      className="py-4 px-2.5 w-full sm:max-w-[20.375rem] absolute top-[calc(100%+0.5rem)] left-0 z-50 h-[60vh]"
+      className={clsx(
+        className,
+        'py-4 px-2.5 w-full sm:max-w-[20.375rem] absolute top-[calc(100%+0.5rem)] left-0 z-50',
+      )}
       hasShadow
       rounded="s"
       ref={ref}

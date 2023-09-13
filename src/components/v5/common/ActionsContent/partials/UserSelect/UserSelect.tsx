@@ -65,6 +65,7 @@ const UserSelect: FC<SelectProps> = ({
             changeFormErrorsState(formErrors);
           }}
           isLoading={usersOptions.loading}
+          className="max-h-[85vh] md:max-h-auto"
         />
       )}
     </div>
