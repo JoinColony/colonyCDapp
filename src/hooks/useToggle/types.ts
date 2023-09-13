@@ -11,6 +11,5 @@ export type UseToggleReturnType = [
     toggleOn: () => void;
     toggleOff: () => void;
     registerContainerRef: (ref: HTMLElement | null) => void;
-    currentElementRef: React.MutableRefObject<HTMLElement | null>;
   },
 ];

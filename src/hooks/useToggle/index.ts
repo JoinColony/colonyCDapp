@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 import { RefRegistryEntry, UseToggleReturnType } from './types';
 
@@ -17,7 +17,6 @@ const useToggle = ({
   defaultToggleState = false,
 } = {}): UseToggleReturnType => {
   const [toggleState, setToggleState] = useState(defaultToggleState);
-  const currentElementRef = useRef<HTMLElement | null>(null);
 
   const toggle = useCallback(() => {
     setTimeout(() => {
@@ -46,7 +45,6 @@ const useToggle = ({
 
   const registerContainerRef = useCallback(
     (ref: HTMLElement | null): void => {
-      currentElementRef.current = ref;
       const currentEntryIndex = refsRegistry.findIndex(
         ({ toggleOff: entryToggleOff }) => entryToggleOff === toggleOff,
       );
@@ -68,10 +66,7 @@ const useToggle = ({
     [toggleOff, toggleState],
   );
 
-  return [
-    toggleState,
-    { toggle, toggleOn, toggleOff, registerContainerRef, currentElementRef },
-  ];
+  return [toggleState, { toggle, toggleOn, toggleOff, registerContainerRef }];
 };
 
 export default useToggle;

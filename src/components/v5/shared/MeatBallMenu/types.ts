@@ -1,7 +1,7 @@
 export interface MeatBallItem {
   key: string;
   label: React.ReactNode;
-  iconName: string;
+  iconName?: string;
   onClick: () => void;
 }
 
