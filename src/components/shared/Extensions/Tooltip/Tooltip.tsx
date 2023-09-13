@@ -21,7 +21,6 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   isSuccess = false,
   isFullWidthContent,
   className,
-  hasMaxWidthTooltipContent = true,
 }) => {
   const {
     getArrowProps,
@@ -76,11 +75,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
               }),
             })}
           />
-          <div
-            className={clsx('flex flex-col items-start', {
-              'max-w-[15.625rem]': hasMaxWidthTooltipContent,
-            })}
-          >
+          <div className="flex flex-col items-start max-w-[15.625rem]">
             {isSuccess ? (
               <div className="flex items-center text-base-white gap-2">
                 <Icon name="check" appearance={{ size: 'extraTiny' }} />

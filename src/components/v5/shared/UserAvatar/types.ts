@@ -10,6 +10,5 @@ export interface UserAvatarProps {
   size?: AvatarSize;
   userStatus?: UserStatusMode | null;
   isContributorsList?: boolean;
-  isAddressVerified?: boolean;
-  isUserVerified?: boolean;
+  isWarning?: boolean;
 }

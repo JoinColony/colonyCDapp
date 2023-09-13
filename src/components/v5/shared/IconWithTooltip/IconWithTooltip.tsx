@@ -11,21 +11,13 @@ const IconWithTooltip: FC<PropsWithChildren<IconWithTooltipProps>> = ({
   iconName,
   tooltipContent,
   className,
-  hasMaxWidthTooltipContent = true,
-  isIconVisible = true,
   children,
 }) => (
-  <Tooltip
-    tooltipContent={tooltipContent}
-    hasMaxWidthTooltipContent={hasMaxWidthTooltipContent}
-    className="flex items-center"
-  >
+  <Tooltip tooltipContent={tooltipContent} className="flex items-center">
     {children}
-    {isIconVisible && (
-      <span className={clsx(className, 'flex')}>
-        <Icon name={iconName} />
-      </span>
-    )}
+    <span className={clsx(className, 'flex')}>
+      <Icon name={iconName} />
+    </span>
   </Tooltip>
 );
 

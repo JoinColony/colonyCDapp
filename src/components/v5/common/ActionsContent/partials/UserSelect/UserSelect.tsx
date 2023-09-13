@@ -48,17 +48,6 @@ const UserSelect: FC<SelectProps> = ({
   const splitWallet =
     isMobile && recipient ? splitWalletAddress(recipient) : recipient;
 
-  // @TODO: fix tooltip on mobile after clinet feedback
-
-  const selectedUserDetails =
-    recipient &&
-    usersOptions.options.find(
-      (userOption) =>
-        (userOption.label as string)?.toLowerCase() ===
-        recipient?.toLowerCase(),
-    )?.label;
-  const isSelectedUserHasName = selectedUserDetails === recipient;
-
   return (
     <div className="sm:relative w-full">
       <div className="flex gap-2 items-center">
@@ -71,49 +60,32 @@ const UserSelect: FC<SelectProps> = ({
           onClick={toggleUserSelect}
           aria-label={formatMessage({ id: 'ariaLabel.selectUser' })}
         >
-          {recipient && isSelectedUserHasName && (
-            <>
-              <UserAvatar
-                user={user || userByAddress}
-                userName={userDisplayName || splitWallet}
-                size="xs"
-                isUserVerified={isUserVerified}
-              />
-              {isUserVerified && (
-                <span className="flex ml-2 text-blue-400">
-                  <Icon name="verified" />
-                </span>
-              )}
-            </>
+          {recipient ? (
+            <UserAvatar
+              user={user || userByAddress}
+              userName={userDisplayName || splitWallet}
+              size="xs"
+              isWarning={recipient && !isAddressVerified && !isUserVerified}
+            />
+          ) : (
+            formatMessage({ id: 'actionSidebar.selectMember' })
+          )}
+          {recipient && isUserVerified && !isAddressVerified && (
+            <span className="flex ml-2 text-blue-400">
+              <Icon name="verified" />
+            </span>
           )}
 
-          {splitWallet && isAddressVerified && recipient && (
+          {recipient && !isAddressVerified && !isUserVerified && (
             <IconWithTooltip
-              tooltipContent={recipient}
-              iconName="verified"
-              className="text-blue-400"
-              hasMaxWidthTooltipContent={false}
-              isIconVisible={isUserVerified}
-            >
-              <UserAvatar
-                user={user || userByAddress}
-                userName={userDisplayName || splitWallet}
-                size="xs"
-                isAddressVerified={isAddressVerified}
-              />
-            </IconWithTooltip>
+              tooltipContent={
+                <FormattedMessage id="tooltip.wallet.address.warning" />
+              }
+              iconName="warning-circle"
+              className="ml-2 text-warning-400"
+            />
           )}
-          {!recipient && formatMessage({ id: 'actionSidebar.selectMember' })}
         </button>
-        {recipient && !isAddressVerified && !isUserVerified && (
-          <IconWithTooltip
-            tooltipContent={
-              <FormattedMessage id="tooltip.wallet.address.warning" />
-            }
-            iconName="warning-circle"
-            className="text-orange-400"
-          />
-        )}
       </div>
       <input type="text" id={name} className="hidden" {...field} />
       {isUserSelectVisible && (
