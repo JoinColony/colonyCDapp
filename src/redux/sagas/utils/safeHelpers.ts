@@ -42,32 +42,15 @@ export interface SelectedNFT extends SelectedSafe {
   id: string; // id is address + id,
 }
 
-/* eslint-disable prefer-destructuring, @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require */
-const LOCAL_HOME_BRIDGE_ADDRESS = isDev
-  ? require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
-      .LOCAL_HOME_BRIDGE_ADDRESS
-  : null;
-const LOCAL_FOREIGN_BRIDGE_ADDRESS = isDev
-  ? require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
-      .LOCAL_FOREIGN_BRIDGE_ADDRESS
-  : null;
-const LOCAL_ERC721_ADDRESS = isDev
-  ? require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
-      .LOCAL_ERC721_ADDRESS
-  : null;
-const LOCAL_SAFE_ADDRESS = isDev
-  ? require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
-      .LOCAL_SAFE_ADDRESS
-  : null;
-const LOCAL_SAFE_TOKEN_ADDRESS = isDev
-  ? require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
-      .LOCAL_SAFE_TOKEN_ADDRESS
-  : null;
-export const ZODIAC_BRIDGE_MODULE_ADDRESS = isDev
-  ? require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
-      .ZODIAC_BRIDGE_MODULE_ADDRESS
-  : null;
-/* eslint-enable prefer-destructuring, @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require */
+/* eslint-disable prefer-destructuring */
+const LOCAL_HOME_BRIDGE_ADDRESS = process.env.LOCAL_HOME_BRIDGE_ADDRESS;
+const LOCAL_FOREIGN_BRIDGE_ADDRESS = process.env.LOCAL_FOREIGN_BRIDGE_ADDRESS;
+const LOCAL_ERC721_ADDRESS = process.env.LOCAL_ERC721_ADDRESS;
+const LOCAL_SAFE_ADDRESS = process.env.LOCAL_SAFE_ADDRESS;
+const LOCAL_SAFE_TOKEN_ADDRESS = process.env.LOCAL_SAFE_TOKEN_ADDRESS;
+export const ZODIAC_BRIDGE_MODULE_ADDRESS =
+  process.env.ZODIAC_BRIDGE_MODULE_ADDRESS;
+/* eslint-enable prefer-destructuring */
 
 const LOCAL_HOME_CHAIN = 'http://127.0.0.1:8545';
 const LOCAL_FOREIGN_CHAIN = 'http://127.0.0.1:8546';
