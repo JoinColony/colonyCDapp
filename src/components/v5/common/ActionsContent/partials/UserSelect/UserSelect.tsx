@@ -50,13 +50,14 @@ const UserSelect: FC<SelectProps> = ({
 
   // @TODO: fix tooltip on mobile after clinet feedback
 
-  const selectedUserData: string =
+  const selectedUserDetails =
     recipient &&
     usersOptions.options.find(
       (userOption) =>
-        userOption.label?.toLowerCase() === recipient?.toLowerCase(),
+        (userOption.label as string)?.toLowerCase() ===
+        recipient?.toLowerCase(),
     )?.label;
-  const isSelectedUserHasName = selectedUserData === recipient;
+  const isSelectedUserHasName = selectedUserDetails === recipient;
 
   return (
     <div className="sm:relative w-full">
