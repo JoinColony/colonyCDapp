@@ -20,6 +20,10 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
     { toggle: toggleMenu, toggleOff: toggleMenuOff, registerContainerRef },
   ] = useToggle();
 
+  if (!items.length) {
+    throw new Error('There are no items added to the menu.');
+  }
+
   return (
     <div className="md:relative">
       <button
@@ -44,35 +48,26 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
           rounded="s"
           ref={registerContainerRef}
         >
-          {!items.length ? (
-            <p className="text-sm text-gray-500">
-              {formatMessage({ id: 'shared.meatBallMenu.empty' })}
-            </p>
-          ) : (
-            <ul>
-              {items.map(({ key, label, onClick, iconName }) => (
-                <li key={key} className="flex-shrink-0">
-                  <button
-                    type="button"
-                    className="flex w-full items-center text-md transition-colors
+          <ul>
+            {items.map(({ key, label, onClick, iconName }) => (
+              <li key={key} className="flex-shrink-0">
+                <button
+                  type="button"
+                  className="flex w-full items-center text-md transition-colors
                     duration-normal md:hover:bg-gray-50 rounded py-2 px-3.5 gap-2"
-                    onClick={() => {
-                      onClick();
-                      toggleMenuOff();
-                    }}
-                  >
-                    {iconName && (
-                      <Icon
-                        name={iconName}
-                        appearance={{ size: 'extraSmall' }}
-                      />
-                    )}
-                    <span>{label}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
+                  onClick={() => {
+                    onClick();
+                    toggleMenuOff();
+                  }}
+                >
+                  {iconName && (
+                    <Icon name={iconName} appearance={{ size: 'extraSmall' }} />
+                  )}
+                  <span>{label}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
         </Card>
       )}
     </div>
