@@ -6,6 +6,8 @@ import VoteChartBar from './partials/VoteChartBar';
 import { VOTE_CHART_BAR_DIRECTION } from './partials/VoteChartBar/types';
 import VoteChartThresholdIndicator from './partials/VoteChartThresholdIndicator';
 
+const displayName = 'v5.VoteChart';
+
 const VoteChart: FC<VoteChartProps> = ({
   percentageVotesFor = 0,
   forLabel,
@@ -43,7 +45,7 @@ const VoteChart: FC<VoteChartProps> = ({
             direction={VOTE_CHART_BAR_DIRECTION.Left}
           />
           <span
-            className={clsx('text-xs text-center transition', {
+            className={clsx('text-xs text-center transition-[color]', {
               'text-red-300 font-medium': againstValue > 0,
               'text-gray-500': againstValue === 0,
             })}
@@ -80,5 +82,7 @@ const VoteChart: FC<VoteChartProps> = ({
     </div>
   );
 };
+
+VoteChart.displayName = displayName;
 
 export default VoteChart;

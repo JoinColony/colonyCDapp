@@ -2,6 +2,8 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 import { VOTE_CHART_BAR_DIRECTION, VoteChartBarProps } from './types';
 
+const displayName = 'v5.VoteChart.partials.VoteChartBar';
+
 const VoteChartBar: FC<VoteChartBarProps> = ({
   value,
   direction,
@@ -44,5 +46,7 @@ const VoteChartBar: FC<VoteChartBarProps> = ({
     </div>
   );
 };
+
+VoteChartBar.displayName = displayName;
 
 export default VoteChartBar;

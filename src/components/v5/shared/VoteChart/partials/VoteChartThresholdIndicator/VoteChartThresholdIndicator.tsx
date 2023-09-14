@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 
+const displayName = 'v5.VoteChart.partials.VoteChartThresholdIndicator';
+
 const VoteChartThresholdIndicator: FC = () => (
   <div
     className={`
@@ -27,5 +29,7 @@ const VoteChartThresholdIndicator: FC = () => (
     />
   </div>
 );
+
+VoteChartThresholdIndicator.displayName = displayName;
 
 export default VoteChartThresholdIndicator;
