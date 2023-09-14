@@ -30,8 +30,8 @@ export type ExpendituresActionTypes =
         createdInDomain: Domain;
         // id of the domain to fund the expenditure from
         fundFromDomainId: number;
-        isStaged: boolean;
-        stages: ExpenditureStageFieldValue[];
+        isStaged?: boolean;
+        stages?: ExpenditureStageFieldValue[];
       },
       MetaWithNavigate<object>
     >
@@ -114,8 +114,8 @@ export type ExpendituresActionTypes =
         fundFromDomainId: number;
         stakeAmount: string;
         stakedExpenditureAddress: Address;
-        isStaged: boolean;
-        stages: ExpenditureStageFieldValue[];
+        isStaged?: boolean;
+        stages?: ExpenditureStageFieldValue[];
       },
       MetaWithNavigate<object>
     >

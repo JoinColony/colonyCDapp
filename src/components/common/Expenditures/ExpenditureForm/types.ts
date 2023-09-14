@@ -1,15 +1,7 @@
 export enum ExpenditureFormType {
   Advanced = 'Advanced',
   Staged = 'Staged',
-}
-
-export interface ExpenditureFormValues {
-  payouts: ExpenditurePayoutFieldValue[];
-  createInDomainId: number;
-  fundFromDomainId: number;
-  formType: ExpenditureFormType;
-  stages: ExpenditureStageFieldValue[];
-  recipientAddress?: string;
+  Streaming = 'Streaming',
 }
 
 export interface ExpenditurePayoutFieldValue {
@@ -25,3 +17,22 @@ export interface ExpenditureStageFieldValue {
   amount: string;
   tokenAddress: string;
 }
+
+interface BaseCreateExpenditureFormValues {
+  createInDomainId: number;
+  fundFromDomainId: number;
+}
+
+export interface AdvancedPaymentFormValues
+  extends BaseCreateExpenditureFormValues {
+  payouts: ExpenditurePayoutFieldValue[];
+}
+
+export interface StreamingPaymentFormValues
+  extends BaseCreateExpenditureFormValues {
+  recipientAddress: string;
+}
+
+export type CreateExpenditureFormValues =
+  | AdvancedPaymentFormValues
+  | StreamingPaymentFormValues;
