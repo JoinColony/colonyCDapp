@@ -6,7 +6,8 @@ import { useColonyContext } from '~hooks';
 import { notNull } from '~utils/arrays';
 import Link from '~shared/Link';
 
-import { CreateExpenditureForm } from '../ExpenditureForm';
+// import { CreateExpenditureForm } from '../ExpenditureForm';
+import CreateExpenditure from '../ExpenditureForm/CreateExpenditure';
 
 import styles from './ExpendituresPage.module.css';
 
@@ -43,7 +44,7 @@ const ExpendituresPage = () => {
 
       <div>
         <Heading3>Create new expenditure</Heading3>
-        <CreateExpenditureForm />
+        <CreateExpenditure />
       </div>
     </div>
   );

@@ -9,7 +9,6 @@ import { CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpend
 
 import {
   ExpenditureFormType,
-  ExpenditureFormValues,
   ExpenditurePayoutFieldValue,
   ExpenditureStageFieldValue,
 } from './types';
@@ -44,7 +43,7 @@ export const getExpenditurePayoutsFieldValue = (
 };
 
 const getStagedExpenditurePayouts = (
-  payload: ExpenditureFormValues,
+  payload: any, // @TODO: Fix
 ): ExpenditurePayoutFieldValue[] =>
   payload.stages.map((stage) => ({
     recipientAddress: payload.recipientAddress ?? '',
@@ -58,7 +57,8 @@ export const getCreateExpenditureTransformPayloadFn = (
   navigate: NavigateFunction,
 ) =>
   pipe(
-    mapPayload((payload: ExpenditureFormValues) => {
+    mapPayload((payload: any) => {
+      // @TODO: Fix
       const isStaged = payload.formType === ExpenditureFormType.Staged;
 
       return {
