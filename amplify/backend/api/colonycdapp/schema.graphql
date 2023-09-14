@@ -876,13 +876,6 @@ type Mutation {
   """
   setCurrentVersion(input: SetCurrentVersionInput): Boolean
     @function(name: "setCurrentVersion-${env}")
-  """
-  Update an extension's details for a specific Colony
-  The extension hash is generated like so: `keccak256(toUtf8Bytes(extensionName))`, where `extensionName` is the name of the extension contract file in the Colony Network (e.g. `VotingReputation`)
-  """
-  updateExtensionByColonyAndHash(
-    input: UpdateExtensionByColonyAndHashInput
-  ): ColonyExtension @function(name: "updateExtensionByColonyAndHash-${env}")
 }
 
 """
