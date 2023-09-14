@@ -4,4 +4,5 @@ export interface IconWithTooltipProps {
   iconName: string;
   tooltipContent: React.ReactNode;
   className?: string;
+  onClick?: () => void;
 }

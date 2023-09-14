@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { isHexString } from 'ethers/lib/utils';
-import { useUserSelect } from './hooks';
+import { useUserSelect, useVerifiedRecipient } from './hooks';
 import SearchSelect from '~v5/shared/SearchSelect';
 import UserAvatar from '~v5/shared/UserAvatar';
 import { useMobile, useUserByAddress, useUserByName } from '~hooks';
@@ -16,6 +16,10 @@ import { useActionFormContext } from '~v5/common/ActionSidebar/partials/ActionFo
 import { splitWalletAddress } from '~utils/splitWalletAddress';
 import IconWithTooltip from '~v5/shared/IconWithTooltip';
 import Icon from '~shared/Icon';
+import Modal from '~v5/shared/Modal';
+import noop from '~utils/noop';
+import NotificationBanner from '~common/Extensions/NotificationBanner';
+import UserAvatarContent from '~v5/shared/UserAvatarPopover/partials/UserAvatarContent';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
@@ -23,8 +27,6 @@ const UserSelect: FC<SelectProps> = ({
   name,
   selectedWalletAddress = '',
   isError,
-  isAddressVerified,
-  isUserVerified,
 }) => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
@@ -40,7 +42,10 @@ const UserSelect: FC<SelectProps> = ({
     { toggle: toggleUserSelect, toggleOff: toggleUserSelectOff },
   ] = useToggle();
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { user } = useUserByName(selectedUser || '');
+  const { isAddressVerified, isUserVerified } = useVerifiedRecipient();
+
   const userDisplayName = user?.profile?.displayName;
   const { user: userByAddress } = useUserByAddress(
     recipient || selectedWalletAddress,
@@ -48,7 +53,8 @@ const UserSelect: FC<SelectProps> = ({
   const { formErrors, changeFormErrorsState } = useActionFormContext();
   const splitWallet =
     isMobile && recipient ? splitWalletAddress(recipient) : recipient;
-  const isNotVerified = recipient && !isAddressVerified && !isUserVerified;
+  const isRecipientNotVerified =
+    recipient && !isAddressVerified && !isUserVerified;
   const isWalletAddressFormat = recipient && isHexString(recipient);
 
   return (
@@ -68,7 +74,7 @@ const UserSelect: FC<SelectProps> = ({
               user={user || userByAddress}
               userName={userDisplayName || splitWallet}
               size="xs"
-              isWarning={isNotVerified}
+              isWarning={isRecipientNotVerified}
             />
           ) : (
             formatMessage({ id: 'actionSidebar.selectMember' })
@@ -78,23 +84,21 @@ const UserSelect: FC<SelectProps> = ({
               <Icon name="verified" />
             </span>
           )}
-
-          {isNotVerified && (
-            <IconWithTooltip
-              tooltipContent={
-                isWalletAddressFormat &&
-                !isAddressVerified &&
-                !isUserVerified ? (
-                  <FormattedMessage id="tooltip.wallet.address.not.verified.warning" />
-                ) : (
-                  <FormattedMessage id="tooltip.user.not.verified.warning" />
-                )
-              }
-              iconName="warning-circle"
-              className="ml-2 text-warning-400"
-            />
-          )}
         </button>
+        {isRecipientNotVerified && (
+          <IconWithTooltip
+            tooltipContent={
+              isWalletAddressFormat && !isAddressVerified && !isUserVerified ? (
+                <FormattedMessage id="tooltip.wallet.address.not.verified.warning" />
+              ) : (
+                <FormattedMessage id="tooltip.user.not.verified.warning" />
+              )
+            }
+            iconName="warning-circle"
+            className="ml-2 text-warning-400"
+            onClick={() => (isMobile ? setIsModalOpen(true) : noop)}
+          />
+        )}
       </div>
       <input type="text" id={name} className="hidden" {...field} />
       {isUserSelectVisible && (
@@ -111,6 +115,33 @@ const UserSelect: FC<SelectProps> = ({
           isLoading={usersOptions.loading}
         />
       )}
+
+      <Modal
+        isFullOnMobile={false}
+        onClose={() => setIsModalOpen(false)}
+        isOpen={isModalOpen}
+      >
+        <div className="flex flex-col gap-6">
+          <UserAvatarContent
+            aboutDescription={user?.profile?.bio || ''}
+            userName={user?.profile?.displayName}
+            user={user}
+            avatarSize="md"
+            walletAddress={user?.walletAddress || recipient}
+          />
+
+          <NotificationBanner
+            status="warning"
+            title={<FormattedMessage id="tooltip.user.not.verified.warning" />}
+            isAlt
+            action={{
+              type: 'call-to-action',
+              actionText: 'Add as verified member',
+              onClick: () => setIsModalOpen(false),
+            }}
+          />
+        </div>
+      </Modal>
     </div>
   );
 };

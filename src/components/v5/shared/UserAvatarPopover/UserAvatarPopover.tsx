@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { noop } from 'lodash';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
@@ -6,8 +6,8 @@ import { UserAvatarPopoverProps } from './types';
 import UserAvatar from '~v5/shared/UserAvatar';
 import { useMobile } from '~hooks';
 import Modal from '~v5/shared/Modal';
-import UserInfo from './partials/UserInfo';
 import PopoverBase from '~v5/shared/PopoverBase';
+import UserAvatarContent from './partials/UserAvatarContent';
 
 const displayName = 'v5.UserAvatarPopover';
 
@@ -24,16 +24,6 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
 }) => {
   const isMobile = useMobile();
   const [isOpen, setIsOpen] = useState(false);
-  const { profile } = user || {};
-  const { avatar, thumbnail } = profile || {};
-
-  const onOpenModal = useCallback(() => {
-    setIsOpen(true);
-  }, []);
-
-  const onCloseModal = useCallback(() => {
-    setIsOpen(false);
-  }, []);
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({
@@ -46,9 +36,9 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
 
   const button = (
     <button
-      onClick={isMobile ? onOpenModal : noop}
-      onMouseEnter={isMobile ? noop : () => onOpenModal()}
-      onMouseLeave={isMobile ? noop : () => onCloseModal()}
+      onClick={isMobile ? () => setIsOpen(true) : noop}
+      onMouseEnter={isMobile ? noop : () => setIsOpen(true)}
+      onMouseLeave={isMobile ? noop : () => setIsOpen(false)}
       type="button"
       ref={setTriggerRef}
       className="inline-flex transition-all duration-normal hover:text-blue-400"
@@ -64,13 +54,12 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
   );
 
   const content = (
-    <UserInfo
+    <UserAvatarContent
       userName={userName}
       title={userName}
       walletAddress={walletAddress}
       isVerified={isVerified}
       aboutDescription={aboutDescription}
-      avatar={thumbnail || avatar || ''}
       userStatus={userStatus}
       domains={domains}
       isContributorsList={isContributorsList}
@@ -85,7 +74,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
           {button}
           <Modal
             isFullOnMobile={false}
-            onClose={onCloseModal}
+            onClose={() => setIsOpen(false)}
             isOpen={isOpen}
             isTopSectionWithBackground={isTopSectionWithBackground}
           >

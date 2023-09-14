@@ -19,6 +19,7 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
   avatar,
   isContributorsList,
   isBordered = false,
+  size = 'm',
 }) => {
   const { handleClipboardCopy, isCopied } = useCopyToClipboard(
     walletAddress || '',
@@ -34,7 +35,7 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
   return (
     <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center">
       {!!userStatus && userStatus === 'verified' ? (
-        <Avatar size="m" title={userName} avatar={avatar} />
+        <Avatar size={size} title={userName} avatar={avatar} />
       ) : (
         <div className="flex relative justify-center">
           <div
@@ -48,7 +49,7 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
               'border-purple-400': userStatus === 'top' && isContributorsList,
             })}
           >
-            <Avatar size="m" title={userName} avatar={avatar} />
+            <Avatar size={size} title={userName} avatar={avatar} />
           </div>
           {!!userStatus && userStatus !== 'general' && isContributorsList && (
             <span className="absolute bottom-[-0.9375rem]">
@@ -59,7 +60,7 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
       )}
       <div>
         <div className="grid grid-cols-[auto,1fr] gap-x-2 items-center mb-0.5">
-          <p className="heading-4 truncate">{userName}</p>
+          <p className="heading-4 truncate">{userName || walletAddress}</p>
           {isVerified && (
             <span className="flex shrink-0 text-blue-400">
               <Icon name="verified" appearance={{ size: 'tiny' }} />

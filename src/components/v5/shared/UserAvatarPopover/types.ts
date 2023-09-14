@@ -9,6 +9,7 @@ import { DomainWithPermissionsAndReputation } from '~hooks/members/types';
 export interface UserInfoProps extends AvatarProps, UserAvatarDetailsProps {
   aboutDescription: MessageDescriptor | string;
   domains?: DomainWithPermissionsAndReputation[];
+  avatarSize?: AvatarSize;
 }
 
 export interface UserAvatarPopoverProps
@@ -18,3 +19,5 @@ export interface UserAvatarPopoverProps
   avatarSize?: AvatarSize;
   isContributorsList?: boolean;
 }
+
+export type UserAvatarContentProps = UserAvatarPopoverProps;

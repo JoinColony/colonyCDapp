@@ -22,6 +22,7 @@ const UserInfo: FC<UserInfoProps> = ({
   userStatus,
   domains,
   isContributorsList,
+  avatarSize,
 }) => {
   const aboutDescriptionText = formatText(aboutDescription);
 
@@ -40,6 +41,7 @@ const UserInfo: FC<UserInfoProps> = ({
             userName={userName}
             walletAddress={walletAddress}
             avatar={avatar}
+            size={avatarSize}
             isVerified={isVerified}
             userStatus={userStatus}
             isContributorsList={isContributorsList}
@@ -60,12 +62,14 @@ const UserInfo: FC<UserInfoProps> = ({
           </>
         )}
       </div>
-      <TitleLabel
-        className={clsx('mt-2 mb-2', {
-          'px-6': isTopContributorType,
-        })}
-        text={formatText({ id: 'userInfo.about.section' })}
-      />
+      {aboutDescriptionText && (
+        <TitleLabel
+          className={clsx('mt-2 mb-2', {
+            'px-6': isTopContributorType,
+          })}
+          text={formatText({ id: 'userInfo.about.section' })}
+        />
+      )}
       <p
         className={clsx('text-md text-gray-600', {
           'px-6': isTopContributorType,

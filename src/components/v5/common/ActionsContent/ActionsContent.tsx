@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 import ActionSidebarRow from '../ActionSidebarRow';
 import TeamsSelect from './partials/TeamsSelect';
 import UserSelect from './partials/UserSelect';
-import { useActionsContent, useVerifiedRecipient } from './hooks';
+import { useActionsContent } from './hooks';
 import AmountField from './partials/AmountField';
 import { FormCardSelect } from '../Fields/CardSelect';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
@@ -41,7 +41,6 @@ const ActionsContent: FC = () => {
     teamPurpose,
     isError,
   } = useActionsContent();
-  const { isAddressVerified, isUserVerified } = useVerifiedRecipient();
   const [
     isDecriptionFieldExpanded,
     {
@@ -110,12 +109,7 @@ const ActionsContent: FC = () => {
           title={{ id: 'actionSidebar.recipent' }}
           isError={isError('recipient')}
         >
-          <UserSelect
-            name="recipient"
-            isError={isError('recipient')}
-            isAddressVerified={isAddressVerified}
-            isUserVerified={isUserVerified}
-          />
+          <UserSelect name="recipient" isError={isError('recipient')} />
         </ActionSidebarRow>
       )}
       {shouldShowAmountField && (
