@@ -5,7 +5,7 @@ import Icon from '~shared/Icon';
 import { StepperButtonProps } from './types';
 import { ICON_NAME_MAP } from './consts';
 
-const displayName = 'v5.StepperButton';
+const displayName = 'v5.Stepper.partials.StepperButton';
 
 const StepperButton: React.FC<StepperButtonProps> = ({
   label,
