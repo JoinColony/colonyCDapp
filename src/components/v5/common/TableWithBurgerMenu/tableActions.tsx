@@ -1,13 +1,14 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { createColumnHelper } from '@tanstack/react-table';
+import { TableActionColumn, TableActionsProps } from './types';
 
-export const useTableWithBurgerMenu = (actions) => {
-  const { append, remove, getValues } = actions;
+export const tableActions = <T,>(actions: TableActionsProps<T>, formValues: T[]) => {
+  const { append, remove } = actions;
 
-  const columnHelper = createColumnHelper();
+  const columnHelper = createColumnHelper<TableActionColumn>();
 
-  const burgerColumn = [
+  return [
     columnHelper.accessor('menu', {
       header: () => '',
       cell: ({ row }) => (
@@ -16,8 +17,7 @@ export const useTableWithBurgerMenu = (actions) => {
           <button
             type="button"
             onClick={() => {
-              const values = getValues().payments;
-              const selectedRow = values.find(
+              const selectedRow = formValues.find(
                 (item) => item.key === row.original.key,
               );
               if (selectedRow) {
@@ -39,6 +39,4 @@ export const useTableWithBurgerMenu = (actions) => {
       ),
     }),
   ];
-
-  return burgerColumn;
 };

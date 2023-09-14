@@ -10,7 +10,7 @@ export const useTransactionTable = () => {
   const { formatMessage } = useIntl();
   const columnHelper = createColumnHelper<TransactionTableProps>();
 
-  const columns: ColumnDef<TransactionTableProps[]> = useMemo(
+  const columns: ColumnDef<TransactionTableProps, string>[] = useMemo(
     () => [
       columnHelper.accessor('recipent', {
         header: () => formatMessage({ id: 'table.row.recipent' }),

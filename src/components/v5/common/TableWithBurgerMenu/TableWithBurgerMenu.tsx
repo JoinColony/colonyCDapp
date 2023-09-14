@@ -1,7 +1,8 @@
 import React from 'react';
+import { ColumnDef } from '@tanstack/react-table';
 import Table from '~v5/common/Table';
-import { TableWithBurgerMenuProps } from '../Table/types';
-import { useTableWithBurgerMenu } from './hooks';
+import { TableWithBurgerMenuProps } from './types';
+import { tableActions } from './tableActions';
 
 const displayName = 'v5.common.TableWithBurgerMenu';
 
@@ -10,15 +11,16 @@ const TableWithBurgerMenu = <T,>({
   tableTitle,
   columns,
   actions,
+  formValues,
 }: TableWithBurgerMenuProps<T>) => {
-  const burgerColumn = useTableWithBurgerMenu(actions);
+  const actionsColumn = tableActions<T>(actions, formValues) as ColumnDef<T>[];
   const { fields } = actions;
 
   return (
     <Table<T>
       className={className}
       tableTitle={tableTitle}
-      columns={[...columns, ...burgerColumn]}
+      columns={[...columns, ...actionsColumn]}
       fields={fields}
     />
   );

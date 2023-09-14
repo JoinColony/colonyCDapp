@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { v4 as uuidv4 } from 'uuid';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { FieldValues, UseFormGetValues, useFieldArray, useFormContext } from 'react-hook-form';
 import { useColonyContext, useMobile } from '~hooks';
 import { useTransactionTable } from './hooks';
 import TableWithBurgerMenu from '~v5/common/TableWithBurgerMenu';
@@ -20,6 +20,7 @@ const TransactionTable: FC = () => {
     control,
     name: 'payments',
   });
+  const formValues: TransactionTableProps[] = getValues().payments;
 
   return (
     <div className="mt-7">
@@ -34,8 +35,8 @@ const TransactionTable: FC = () => {
             fields,
             append,
             remove,
-            getValues,
           }}
+          formValues={formValues}
         />
       )}
       <Button
