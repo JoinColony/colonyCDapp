@@ -999,5 +999,6 @@
   "common.memberSignature.signed": "Signed",
   "common.memberSignature.notSigned": "Not signed",
   "common.memberSignatureList.title": "Members with recovery permissions",
-  "common.memberSignatureList.empty": "Members list is empty"
+  "common.memberSignatureList.empty": "Members list is empty",
+  "add.verified.member": "Add as verified member"
 }

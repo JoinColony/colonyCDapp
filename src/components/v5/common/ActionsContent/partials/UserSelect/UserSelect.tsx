@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { isHexString } from 'ethers/lib/utils';
-import { useUserSelect, useVerifiedRecipient } from './hooks';
+import { useUserSelect, useVerifyRecipient } from './hooks';
 import SearchSelect from '~v5/shared/SearchSelect';
 import UserAvatar from '~v5/shared/UserAvatar';
 import { useMobile, useUserByAddress, useUserByName } from '~hooks';
@@ -44,7 +44,7 @@ const UserSelect: FC<SelectProps> = ({
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { user } = useUserByName(selectedUser || '');
-  const { isAddressVerified, isUserVerified } = useVerifiedRecipient();
+  const { isAddressVerified, isUserVerified } = useVerifyRecipient();
 
   const userDisplayName = user?.profile?.displayName;
   const { user: userByAddress } = useUserByAddress(
@@ -136,7 +136,7 @@ const UserSelect: FC<SelectProps> = ({
             isAlt
             action={{
               type: 'call-to-action',
-              actionText: 'Add as verified member',
+              actionText: <FormattedMessage id="add.verified.member" />,
               onClick: () => setIsModalOpen(false),
             }}
           />

@@ -32,7 +32,7 @@ export const useUserSelect = (): UserSelectHookProps => {
   };
 };
 
-export const useVerifiedRecipient = () => {
+export const useVerifyRecipient = () => {
   const { colony } = useColonyContext();
   const methods = useFormContext();
   const recipient = methods?.watch('recipient');

@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import UserInfo from './UserInfo';
 import { UserAvatarContentProps } from '../types';
 
-const displayName = 'v5.UserAvatarPopover';
+const displayName = 'v5.UserAvatarPopover.partials.UserAvatarContent';
 
 const UserAvatarContent: FC<UserAvatarContentProps> = ({
   userName,
