@@ -10,30 +10,6 @@ import { getVerifiedUsers } from '~utils/verifiedUsers';
 export const useUserSelect = (): UserSelectHookProps => {
   const { colony } = useColonyContext();
   const { members, loading } = useGetColonyMembers(colony?.colonyAddress);
-
-  const users = members?.map((member) => {
-    const { label, walletAddress, avatar } = member || {};
-
-    return {
-      label: label || '',
-      value: label || walletAddress || '',
-      avatar: avatar || '',
-      walletAddress: walletAddress || '',
-      showAvatar: true,
-    };
-  });
-
-  return {
-    loading,
-    options: users || [],
-    key: 'users',
-    title: { id: 'actions.recipent' },
-    isAccordion: false,
-  };
-};
-
-export const useVerifyRecipient = () => {
-  const { colony } = useColonyContext();
   const methods = useFormContext();
   const recipient = methods?.watch('recipient');
 
@@ -53,7 +29,24 @@ export const useVerifyRecipient = () => {
       user.profile?.displayName?.toLowerCase() === recipient?.toLowerCase(),
   );
 
+  const users = members?.map((member) => {
+    const { label, walletAddress, avatar } = member || {};
+
+    return {
+      label: label || '',
+      value: label || walletAddress || '',
+      avatar: avatar || '',
+      walletAddress: walletAddress || '',
+      showAvatar: true,
+    };
+  });
+
   return {
+    loading,
+    options: users || [],
+    key: 'users',
+    title: { id: 'actions.recipent' },
+    isAccordion: false,
     isAddressVerified,
     isUserVerified,
   };

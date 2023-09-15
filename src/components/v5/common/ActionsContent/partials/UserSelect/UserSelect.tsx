@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { isHexString } from 'ethers/lib/utils';
-import { useUserSelect, useVerifyRecipient } from './hooks';
+import { useUserSelect } from './hooks';
 import SearchSelect from '~v5/shared/SearchSelect';
 import UserAvatar from '~v5/shared/UserAvatar';
 import { useMobile, useUserByAddress, useUserByName } from '~hooks';
@@ -44,7 +44,6 @@ const UserSelect: FC<SelectProps> = ({
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { user } = useUserByName(selectedUser || '');
-  const { isAddressVerified, isUserVerified } = useVerifyRecipient();
 
   const userDisplayName = user?.profile?.displayName;
   const { user: userByAddress } = useUserByAddress(
@@ -55,7 +54,9 @@ const UserSelect: FC<SelectProps> = ({
   const splitWallet =
     isMobile && recipient ? splitWalletAddress(recipient) : recipient;
   const isRecipientNotVerified =
-    recipient && !isAddressVerified && !isUserVerified;
+    recipient &&
+    !usersOptions.isAddressVerified &&
+    !usersOptions.isUserVerified;
   const isWalletAddressFormat = recipient && isHexString(recipient);
 
   useEffect(() => {
@@ -84,16 +85,20 @@ const UserSelect: FC<SelectProps> = ({
           ) : (
             formatMessage({ id: 'actionSidebar.selectMember' })
           )}
-          {recipient && isUserVerified && !isAddressVerified && (
-            <span className="flex ml-2 text-blue-400">
-              <Icon name="verified" />
-            </span>
-          )}
+          {recipient &&
+            usersOptions.isUserVerified &&
+            !usersOptions.isAddressVerified && (
+              <span className="flex ml-2 text-blue-400">
+                <Icon name="verified" />
+              </span>
+            )}
         </button>
         {isRecipientNotVerified && (
           <IconWithTooltip
             tooltipContent={
-              isWalletAddressFormat && !isAddressVerified && !isUserVerified ? (
+              isWalletAddressFormat &&
+              !usersOptions.isAddressVerified &&
+              !usersOptions.isUserVerified ? (
                 <FormattedMessage id="tooltip.wallet.address.not.verified.warning" />
               ) : (
                 <FormattedMessage id="tooltip.user.not.verified.warning" />
