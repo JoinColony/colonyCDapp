@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useCrateNewTeam } from './hooks';
 import { ActionFormBaseProps } from '../../../types';

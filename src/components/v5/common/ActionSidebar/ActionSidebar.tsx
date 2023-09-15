@@ -47,10 +47,25 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
   return (
     <div
       className={clsx(
-        `fixed top-0 right-0 bottom-0 w-full h-full bg-base-white rounded-bl-lg border-l border-gray-200 shadow-default transition-all z-[60] flex flex-col`,
+        `
+          fixed
+          top-0
+          right-0
+          bottom-0
+          w-full
+          h-full
+          bg-base-white
+          rounded-bl-lg
+          border-l
+          border-gray-200
+          shadow-default
+          transition-all
+          z-[60]
+          flex
+          flex-col
+        `,
         {
           'sm:max-w-[43.375rem]': !isSidebarFullscreen,
-          'max-w-full': isSidebarFullscreen,
         },
       )}
       ref={registerContainerRef}
@@ -100,7 +115,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
               placeholder={intl.formatMessage({ id: 'placeholder.title' })}
             />
             <ActionTypeSelect />
-            {FormComponent && <FormComponent {...{ getFormOptions }} />}
+            {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
             {notificationBanner && (
               <div className="mt-7">
                 <NotificationBanner {...notificationBanner} />

@@ -2,33 +2,10 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { TextButton } from '~v5/shared/Button';
-import { ACTION } from '~constants/actions';
 import { PopularActionsProps } from '../types';
+import { POPULAR_ACTIONS } from './consts';
 
 const displayName = 'v5.common.ActionSidebar.partials.PopularActions';
-
-const POPULAR_ACTIONS = [
-  {
-    action: ACTION.SIMPLE_PAYMENT,
-    text: { id: 'actionSidebar.simplePayment' },
-    iconName: 'money',
-  },
-  {
-    action: ACTION.USER_PERMISSIONS,
-    text: { id: 'actionSidebar.userPermission' },
-    iconName: 'wrench',
-  },
-  {
-    action: ACTION.TRANSFER_FUNDS,
-    text: { id: 'actionSidebar.transferFunds' },
-    iconName: 'user-switch',
-  },
-  {
-    action: ACTION.ADVANCED_PAYMENT,
-    text: { id: 'actionSidebar.advancedPayments' },
-    iconName: 'coins',
-  },
-];
 
 const PopularActions: FC<PopularActionsProps> = ({ setSelectedAction }) => {
   const { formatMessage } = useIntl();

@@ -31,7 +31,11 @@ const ActionTypeSelect: FC = () => {
       tooltip={<FormattedMessage id="actionSidebar.toolip.actionType" />}
     >
       <>
-        {!actionType && (
+        {actionType ? (
+          <span className="text-md">
+            {intl.formatMessage({ id: translateAction(actionType) })}
+          </span>
+        ) : (
           <>
             <button
               type="button"
@@ -52,11 +56,6 @@ const ActionTypeSelect: FC = () => {
               />
             )}
           </>
-        )}
-        {actionType && (
-          <span className="text-md">
-            {intl.formatMessage({ id: translateAction(actionType) })}
-          </span>
         )}
       </>
     </ActionSidebarRow>

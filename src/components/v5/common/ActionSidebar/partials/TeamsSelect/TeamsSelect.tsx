@@ -38,10 +38,13 @@ const TeamsSelect: FC<TeamSelectProps> = ({ name }) => {
     <div className="sm:relative w-full">
       <button
         type="button"
-        className={clsx('flex text-md transition-colors hover:text-blue-400', {
-          'text-gray-500': !isError,
-          'text-negative-400': isError,
-        })}
+        className={clsx(
+          'flex text-md transition-colors md:hover:text-blue-400',
+          {
+            'text-gray-500': !isError,
+            'text-negative-400': isError,
+          },
+        )}
         onClick={toggleTeamSelect}
       >
         {selectedOption ? (

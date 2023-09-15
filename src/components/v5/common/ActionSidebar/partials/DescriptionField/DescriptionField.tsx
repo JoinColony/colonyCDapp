@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
-
 import { AnimatePresence, motion } from 'framer-motion';
 import { useController } from 'react-hook-form';
 import RichText from '~v5/shared/RichText';
@@ -23,7 +22,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
       {!isDecriptionFieldExpanded && (
         <div
           className={clsx(
-            'flex text-md transition-colors hover:text-blue-400',
+            'flex text-md transition-colors md:hover:text-blue-400',
             {
               'placeholder-gray-500': !isError,
               'placeholder-negative-400': isError,
@@ -38,7 +37,6 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
           />
         </div>
       )}
-
       {isDecriptionFieldExpanded && (
         <AnimatePresence>
           {isDecriptionFieldExpanded && (

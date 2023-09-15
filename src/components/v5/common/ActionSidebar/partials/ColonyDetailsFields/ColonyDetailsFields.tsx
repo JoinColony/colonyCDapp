@@ -1,6 +1,5 @@
-import React from 'react';
-
-import { FormattedMessage, useIntl } from 'react-intl';
+import React, { FC } from 'react';
+import { useIntl } from 'react-intl';
 import ActionSidebarRow from '~v5/common/ActionFormRow';
 import DefaultField from '../DefaultField';
 import { useColonyContext } from '~hooks';
@@ -10,7 +9,7 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext';
 
 const displayName = 'v5.common.ActionsContent.partials.ColonyDetailsFields';
 
-const ColonyDetailsFields = () => {
+const ColonyDetailsFields: FC = () => {
   const intl = useIntl();
   const { colony } = useColonyContext();
   const {
@@ -22,7 +21,7 @@ const ColonyDetailsFields = () => {
     <>
       <ActionSidebarRow
         iconName="pencil-circle"
-        title={<FormattedMessage id="actionSidebar.colonyName" />}
+        title={intl.formatMessage({ id: 'actionSidebar.colonyName' })}
         fieldName="colonyName"
       >
         <DefaultField
@@ -34,7 +33,7 @@ const ColonyDetailsFields = () => {
       </ActionSidebarRow>
       <ActionSidebarRow
         iconName="image"
-        title={<FormattedMessage id="actionSidebar.colonyLogo" />}
+        title={intl.formatMessage({ id: 'actionSidebar.colonyLogo' })}
         fieldName="colonyLogo"
       >
         <div className="flex items-center">
@@ -56,7 +55,7 @@ const ColonyDetailsFields = () => {
       </ActionSidebarRow>
       <ActionSidebarRow
         iconName="file-text"
-        title={<FormattedMessage id="actionSidebar.colonyDescription" />}
+        title={intl.formatMessage({ id: 'actionSidebar.colonyDescription' })}
         fieldName="colonyDescription"
       >
         <DefaultField
@@ -66,7 +65,6 @@ const ColonyDetailsFields = () => {
           })}
         />
       </ActionSidebarRow>
-
       <ChangeColonyLogo />
     </>
   );

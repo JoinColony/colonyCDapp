@@ -70,7 +70,7 @@ const ActionSidebarRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
           'flex-col': isExpandable && isExpanded,
           'items-center': !isExpandable,
         })}
-        {...{ ref }}
+        ref={ref}
       >
         {tooltip ? (
           <Tooltip

@@ -36,10 +36,13 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
     <div className="sm:relative w-full" ref={registerContainerRef}>
       <button
         type="button"
-        className={clsx('flex text-md transition-colors hover:text-blue-400', {
-          'placeholder-gray-500': !isError,
-          'placeholder-negative-400': isError,
-        })}
+        className={clsx(
+          'flex text-md transition-colors md:hover:text-blue-400',
+          {
+            'placeholder-gray-500': !isError,
+            'placeholder-negative-400': isError,
+          },
+        )}
         onClick={toggleDecisionSelect}
       >
         {field.value ? (
