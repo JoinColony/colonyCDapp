@@ -145,11 +145,14 @@ const SearchSelect: FC<SearchSelectProps> = ({
                 {isDefaultItemVisible ? (
                   <button
                     type="button"
-                    className="text-sm hover:text-blue-400 flex items-center gap-2 min-h-[3.125rem] truncate"
+                    className="text-sm hover:text-blue-400 flex items-center gap-2 min-h-[3.125rem]
+                     "
                     onClick={() => onSelect?.(searchValue)}
                   >
                     <Avatar />
-                    {searchValue}
+                    <span className="max-w-[15.625rem] truncate">
+                      {searchValue}
+                    </span>
                   </button>
                 ) : (
                   <EmptyContent
