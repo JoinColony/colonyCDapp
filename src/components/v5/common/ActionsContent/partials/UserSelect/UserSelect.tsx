@@ -113,6 +113,7 @@ const UserSelect: FC<SelectProps> = ({
             changeFormErrorsState(formErrors);
           }}
           isLoading={usersOptions.loading}
+          isDefaultItemVisible
         />
       )}
 

@@ -21,6 +21,7 @@ import SearchItem from './partials/SearchItem';
 import { accordionAnimation } from '~constants/accordionAnimation';
 import Icon from '~shared/Icon';
 import { SpinnerLoader } from '~shared/Preloaders';
+import Avatar from '~v5/shared/Avatar';
 import EmptyContent from '~v5/common/EmptyContent';
 
 const displayName = 'v5.SearchSelect';
@@ -31,6 +32,7 @@ const SearchSelect: FC<SearchSelectProps> = ({
   isOpen,
   onSelect,
   isLoading,
+  isDefaultItemVisible = false,
 }) => {
   const [searchValue, setSearchValue] = useState('');
   const isMobile = useMobile();
@@ -139,11 +141,24 @@ const SearchSelect: FC<SearchSelectProps> = ({
                 ),
               )
             ) : (
-              <EmptyContent
-                icon="binoculars"
-                title={{ id: 'actionSidebar.emptyTitle' }}
-                description={{ id: 'actionSidebar.emptyDescription' }}
-              />
+              <>
+                {isDefaultItemVisible ? (
+                  <button
+                    type="button"
+                    className="text-sm hover:text-blue-400 flex items-center gap-2 min-h-[3.125rem] truncate"
+                    onClick={() => onSelect?.(searchValue)}
+                  >
+                    <Avatar />
+                    {searchValue}
+                  </button>
+                ) : (
+                  <EmptyContent
+                    icon="binoculars"
+                    title={{ id: 'actionSidebar.emptyTitle' }}
+                    description={{ id: 'actionSidebar.emptyDescription' }}
+                  />
+                )}
+              </>
             )}
           </div>
         </CustomScrollbar>
