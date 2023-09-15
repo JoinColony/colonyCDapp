@@ -3,7 +3,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { createColumnHelper } from '@tanstack/react-table';
 import { TableActionColumn, TableActionsProps } from './types';
 
-export const tableActions = <T,>(actions: TableActionsProps<T>, formValues: T[]) => {
+export const tableActions = <T extends { key: number }>(
+  actions: TableActionsProps,
+  formValues: T[],
+) => {
   const { append, remove } = actions;
 
   const columnHelper = createColumnHelper<TableActionColumn>();
@@ -32,7 +35,7 @@ export const tableActions = <T,>(actions: TableActionsProps<T>, formValues: T[])
           >
             duplicate
           </button>
-          <button type="button" onClick={() => remove(row.id)}>
+          <button type="button" onClick={() => remove(row.index)}>
             remove
           </button>
         </div>

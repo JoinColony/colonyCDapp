@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { v4 as uuidv4 } from 'uuid';
-import { FieldValues, UseFormGetValues, useFieldArray, useFormContext } from 'react-hook-form';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 import { useColonyContext, useMobile } from '~hooks';
 import { useTransactionTable } from './hooks';
 import TableWithBurgerMenu from '~v5/common/TableWithBurgerMenu';

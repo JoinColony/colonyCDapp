@@ -6,7 +6,7 @@ import { tableActions } from './tableActions';
 
 const displayName = 'v5.common.TableWithBurgerMenu';
 
-const TableWithBurgerMenu = <T,>({
+const TableWithBurgerMenu = <T extends { key: number }>({
   className,
   tableTitle,
   columns,

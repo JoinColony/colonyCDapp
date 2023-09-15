@@ -4,5 +4,5 @@ export interface TableProps<T> {
   className?: string;
   tableTitle?: React.ReactNode;
   columns: ColumnDef<T>[];
-  fields: T[];
+  fields: Record<'id', string>[];
 }

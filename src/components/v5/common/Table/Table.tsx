@@ -15,7 +15,7 @@ const Table = <T,>({
   fields,
 }: TableProps<T>) => {
   const table = useReactTable<T>({
-    data: fields,
+    data: fields as T[],
     columns,
     getCoreRowModel: getCoreRowModel(),
   });

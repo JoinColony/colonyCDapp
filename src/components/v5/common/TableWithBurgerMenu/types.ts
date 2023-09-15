@@ -2,24 +2,26 @@ import {
   FieldValues,
   UseFieldArrayAppend,
   UseFieldArrayRemove,
-  FieldArrayPath
 } from 'react-hook-form';
 import { TableProps } from '../Table/types';
 
-export interface TableActionsProps<T> {
-  fields: T[];
-  append: UseFieldArrayAppend<FieldValues, FieldArrayPath<FieldValues>>;
+export interface TableActionsProps {
+  fields: Record<'id', string>[];
+  append: UseFieldArrayAppend<FieldValues, string>;
   remove: UseFieldArrayRemove;
 }
 
-export interface TableWithBurgerMenuProps<T> extends Omit<TableProps<T>, 'fields'> extends TableActionsProps {
-  actions: TableActionsProps<T>;
+export interface TableWithBurgerMenuProps<T>
+  extends Omit<TableProps<T>, 'fields'>,
+    TableActionsProps {
+  actions: TableActionsProps;
   formValues: T[];
 }
 
-export interface TableActions<T> extends TableWithBurgerMenuProps<T> {}
+export type TableActions<T> = TableWithBurgerMenuProps<T>;
 
 export interface TableActionColumn {
+  id: number;
   key: number;
   menu: string;
 }
