@@ -8,7 +8,6 @@ export const tableActions = <T extends { key: number }>(
   formValues: T[],
 ) => {
   const { append, remove } = actions;
-
   const columnHelper = createColumnHelper<TableActionColumn>();
 
   return [

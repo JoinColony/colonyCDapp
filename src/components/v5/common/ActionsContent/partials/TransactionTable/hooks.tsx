@@ -6,7 +6,10 @@ import { TransactionTableProps } from './types';
 import UserSelect from '../UserSelect';
 import AmountField from '../AmountField';
 
-export const useTransactionTable = () => {
+export const useTransactionTable = (): ColumnDef<
+  TransactionTableProps,
+  string
+>[] => {
   const { formatMessage } = useIntl();
   const columnHelper = createColumnHelper<TransactionTableProps>();
 
