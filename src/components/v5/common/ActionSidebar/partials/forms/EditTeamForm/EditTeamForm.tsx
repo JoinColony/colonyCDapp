@@ -24,12 +24,18 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         iconName="house-line"
         fieldName="team"
         title={<FormattedMessage id="actionSidebar.team" />}
+        tooltip={
+          <FormattedMessage id="actionSidebar.toolip.editTeam.selectTeam" />
+        }
       >
         <TeamsSelect name="team" />
       </ActionFormRow>
       <ActionFormRow
         fieldName="teamName"
         iconName="user-list"
+        tooltip={
+          <FormattedMessage id="actionSidebar.toolip.editTeam.teamName" />
+        }
         title={<FormattedMessage id="actionSidebar.teamName" />}
       >
         <DefaultField
@@ -43,6 +49,9 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         iconName="rocket"
         fieldName="domainPurpose"
         title={<FormattedMessage id="actionSidebar.teamPurpose" />}
+        tooltip={
+          <FormattedMessage id="actionSidebar.toolip.createTeam.teamPurpose" />
+        }
       >
         <DefaultField
           name="domainPurpose"
@@ -55,12 +64,16 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         iconName="paint"
         fieldName="domainColor"
         title={<FormattedMessage id="actionSidebar.teamColour" />}
+        tooltip={
+          <FormattedMessage id="actionSidebar.toolip.createTeam.teamColour" />
+        }
       >
         <TeamColourField name="domainColor" />
       </ActionFormRow>
       <ActionFormRow
         iconName="house-line"
         fieldName="createdIn"
+        tooltip={<FormattedMessage id="actionSidebar.toolip.createdIn" />}
         title={<FormattedMessage id="actionSidebar.createdIn" />}
       >
         <TeamsSelect name="createdIn" />
@@ -68,6 +81,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="scales"
         fieldName="decisionMethod"
+        tooltip={<FormattedMessage id="actionSidebar.toolip.decisionMethod" />}
         title={<FormattedMessage id="actionSidebar.decisionMethod" />}
       >
         <FormCardSelect
@@ -79,6 +93,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="pencil"
         fieldName="description"
+        tooltip={<FormattedMessage id="actionSidebar.toolip.description" />}
         title={<FormattedMessage id="actionSidebar.description" />}
         isExpandable
       >

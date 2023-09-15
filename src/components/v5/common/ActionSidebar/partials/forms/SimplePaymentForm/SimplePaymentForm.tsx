@@ -24,6 +24,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="users-three"
         fieldName="from"
+        tooltip={<FormattedMessage id="actionSidebar.toolip.paymentFrom" />}
         title={<FormattedMessage id="actionSidebar.from" />}
       >
         <TeamsSelect name="from" />
@@ -31,6 +32,9 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="user-focus"
         fieldName="recipient"
+        tooltip={
+          <FormattedMessage id="actionSidebar.toolip.paymentRecipient" />
+        }
         title={<FormattedMessage id="actionSidebar.recipent" />}
       >
         <UserSelect name="recipient" />
@@ -38,6 +42,9 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="coins"
         fieldName="amount"
+        tooltip={
+          <FormattedMessage id="actionSidebar.toolip.singlePaymentAmount" />
+        }
         title={<FormattedMessage id="actionSidebar.amount" />}
       >
         <AmountField name="amount" />
@@ -45,6 +52,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="house-line"
         fieldName="createdIn"
+        tooltip={<FormattedMessage id="actionSidebar.toolip.createdIn" />}
         title={<FormattedMessage id="actionSidebar.createdIn" />}
       >
         <TeamsSelect name="createdIn" />
@@ -52,6 +60,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="scales"
         fieldName="decisionMethod"
+        tooltip={<FormattedMessage id="actionSidebar.toolip.decisionMethod" />}
         title={<FormattedMessage id="actionSidebar.decisionMethod" />}
       >
         <FormCardSelect
@@ -63,6 +72,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="pencil"
         fieldName="description"
+        tooltip={<FormattedMessage id="actionSidebar.toolip.description" />}
         title={<FormattedMessage id="actionSidebar.description" />}
         isExpandable
       >

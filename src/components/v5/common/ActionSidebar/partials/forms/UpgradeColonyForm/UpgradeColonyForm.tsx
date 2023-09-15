@@ -23,6 +23,7 @@ const UpgradeColonyForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="house-line"
         fieldName="createdIn"
+        tooltip={<FormattedMessage id="actionSidebar.toolip.createdIn" />}
         title={<FormattedMessage id="actionSidebar.createdIn" />}
       >
         <TeamsSelect name="createdIn" />
@@ -30,6 +31,7 @@ const UpgradeColonyForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="scales"
         fieldName="decisionMethod"
+        tooltip={<FormattedMessage id="actionSidebar.toolip.decisionMethod" />}
         title={<FormattedMessage id="actionSidebar.decisionMethod" />}
       >
         <FormCardSelect
@@ -41,6 +43,7 @@ const UpgradeColonyForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="pencil"
         fieldName="description"
+        tooltip={<FormattedMessage id="actionSidebar.toolip.description" />}
         title={<FormattedMessage id="actionSidebar.description" />}
         isExpandable
       >

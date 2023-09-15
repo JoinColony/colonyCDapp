@@ -22,6 +22,9 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="users-three"
         fieldName="from"
+        tooltip={
+          <FormattedMessage id="actionSidebar.toolip.transferFunds.from" />
+        }
         title={<FormattedMessage id="actionSidebar.from" />}
       >
         <TeamsSelect name="from" />
@@ -30,6 +33,9 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         iconName="arrow-down-right"
         fieldName="to"
         title={<FormattedMessage id="actionSidebar.recipent" />}
+        tooltip={
+          <FormattedMessage id="actionSidebar.toolip.transferFunds.to" />
+        }
       >
         <TeamsSelect name="to" />
       </ActionFormRow>
@@ -37,12 +43,16 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         iconName="coins"
         fieldName="amount"
         title={<FormattedMessage id="actionSidebar.amount" />}
+        tooltip={
+          <FormattedMessage id="actionSidebar.toolip.transferFunds.amount" />
+        }
       >
         <AmountField name="amount" />
       </ActionFormRow>
       <ActionFormRow
         iconName="house-line"
         fieldName="createdIn"
+        tooltip={<FormattedMessage id="actionSidebar.toolip.createdIn" />}
         title={<FormattedMessage id="actionSidebar.createdIn" />}
       >
         <TeamsSelect name="createdIn" />
@@ -50,6 +60,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="scales"
         fieldName="decisionMethod"
+        tooltip={<FormattedMessage id="actionSidebar.toolip.decisionMethod" />}
         title={<FormattedMessage id="actionSidebar.decisionMethod" />}
       >
         <FormCardSelect
@@ -61,6 +72,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="pencil"
         fieldName="description"
+        tooltip={<FormattedMessage id="actionSidebar.toolip.description" />}
         title={<FormattedMessage id="actionSidebar.description" />}
         isExpandable
       >

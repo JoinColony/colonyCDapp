@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { useController, useWatch } from 'react-hook-form';
 import ActionSidebarRow from '../ActionFormRow';
@@ -28,6 +28,7 @@ const ActionTypeSelect: FC = () => {
       fieldName={ACTION_TYPE_FIELD_NAME}
       iconName="file-plus"
       title={intl.formatMessage({ id: 'actionSidebar.actionType' })}
+      tooltip={<FormattedMessage id="actionSidebar.toolip.actionType" />}
     >
       <>
         {!actionType && (
