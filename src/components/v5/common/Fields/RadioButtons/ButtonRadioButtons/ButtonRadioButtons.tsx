@@ -5,6 +5,8 @@ import RadioButtonsBase from '../RadioButtonsBase';
 import { ButtonRadioButtonsProps } from './types';
 import { RadioItem } from '../RadioButtonsBase/types';
 
+const displayName = 'v5.common.ButtonRadioButtons';
+
 const ButtonRadioButtons: FC<ButtonRadioButtonsProps> = ({
   items,
   className,
@@ -67,5 +69,7 @@ const ButtonRadioButtons: FC<ButtonRadioButtonsProps> = ({
     />
   );
 };
+
+ButtonRadioButtons.displayName = displayName;
 
 export default ButtonRadioButtons;

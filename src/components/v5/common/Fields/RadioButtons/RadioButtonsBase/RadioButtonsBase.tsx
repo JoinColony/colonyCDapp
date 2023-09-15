@@ -6,6 +6,8 @@ import isEqual from 'lodash/isEqual';
 import { RadioButtonsBaseProps } from './types';
 import RadioBase from './RadioBase';
 
+const displayName = 'v5.common.RadioButtonsBase';
+
 function RadioButtonsBase<TValue = string>({
   items,
   value,
@@ -40,5 +42,7 @@ function RadioButtonsBase<TValue = string>({
     </ul>
   );
 }
+
+RadioButtonsBase.displayName = displayName;
 
 export default RadioButtonsBase;
