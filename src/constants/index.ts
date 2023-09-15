@@ -84,9 +84,9 @@ export const GNOSIS_NETWORK: NetworkInfo = {
   shortName: 'xDai',
   displayENSDomain: 'joincolony.colonyxdai',
   blockExplorerName: 'Gnosisscan',
-  blockExplorerUrl: 'https://blockscout.com/poa/xdai',
-  tokenExplorerLink: 'https://blockscout.com/poa/xdai/tokens',
-  contractAddressLink: 'https://blockscout.com/poa/xdai/address',
+  blockExplorerUrl: 'https://gnosis.blockscout.com/',
+  tokenExplorerLink: 'https://gnosis.blockscout.com/tokens',
+  contractAddressLink: 'https://gnosis.blockscout.com/address',
 };
 
 export const ETHEREUM_NETWORK: NetworkInfo = {

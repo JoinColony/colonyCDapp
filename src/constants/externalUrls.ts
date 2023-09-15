@@ -15,7 +15,7 @@ export const ETHERSCAN_CONVERSION_RATE = `https://api.etherscan.io/api?module=st
 export const ETH_GAS_STATION = `https://ethgasstation.info/json/ethgasAPI.json`;
 export const XDAI_GAS_STATION = `https://gnosis.blockscout.com/api/v1/gas-price-oracle`;
 export const getBlockscoutUserURL = (userAddress: string) =>
-  `https://blockscout.com/xdai/mainnet/address/${userAddress}/transactions`;
+  `https://gnosis.blockscout.com/address/${userAddress}`;
 
 /*
  * Motions and Disputes
