@@ -82,7 +82,7 @@ const ColonyDetailsPage: FC = () => {
             <h5 className="text-3 mb-2">
               {formatMessage({ id: 'colonyDetailsPage.objectiveBoxTitle' })}
             </h5>
-            <ObjectiveBox />
+            <ObjectiveBox progress={0} />
           </div>
           {isMobile && (
             // @TODO: Add functionality to create objective
