@@ -5,16 +5,17 @@ import {
 } from 'react-hook-form';
 import { TableProps } from '../Table/types';
 
-export interface TableActionsProps {
+interface FieldsActions {
   fields: Record<'id', string>[];
   append: UseFieldArrayAppend<FieldValues, string>;
   remove: UseFieldArrayRemove;
 }
 
+export type TableActionsProps = FieldsActions;
+
 export interface TableWithBurgerMenuProps<T>
-  extends Omit<TableProps<T>, 'fields'>,
-    TableActionsProps {
-  actions: TableActionsProps;
+  extends Omit<TableProps<T>, 'fields'> {
+  actions: FieldsActions;
   formValues: T[];
 }
 

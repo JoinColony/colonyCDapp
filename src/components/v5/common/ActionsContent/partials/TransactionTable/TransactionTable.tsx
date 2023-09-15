@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { v4 as uuidv4 } from 'uuid';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { FieldValues, useFieldArray, useFormContext } from 'react-hook-form';
 import { useColonyContext, useMobile } from '~hooks';
 import { useTransactionTable } from './hooks';
 import TableWithBurgerMenu from '~v5/common/TableWithBurgerMenu';
@@ -16,7 +16,7 @@ const TransactionTable: FC = () => {
   const columns = useTransactionTable();
   const { nativeToken } = colony || {};
   const { control, getValues } = useFormContext();
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove } = useFieldArray<FieldValues, string, 'id'>({
     control,
     name: 'payments',
   });
