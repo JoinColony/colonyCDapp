@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 
 import clsx from 'clsx';
@@ -50,12 +50,16 @@ const UserSelect: FC<SelectProps> = ({
   const { user: userByAddress } = useUserByAddress(
     recipient || selectedWalletAddress,
   );
-  const { formErrors, changeFormErrorsState } = useActionFormContext();
+  const { formErrors, onChangeRecipientVerification } = useActionFormContext();
   const splitWallet =
     isMobile && recipient ? splitWalletAddress(recipient) : recipient;
   const isRecipientNotVerified =
     recipient && !isAddressVerified && !isUserVerified;
   const isWalletAddressFormat = recipient && isHexString(recipient);
+
+  useEffect(() => {
+    onChangeRecipientVerification(isRecipientNotVerified);
+  }, [isRecipientNotVerified, onChangeRecipientVerification]);
 
   return (
     <div className="sm:relative w-full">

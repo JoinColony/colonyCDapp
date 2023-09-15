@@ -14,11 +14,15 @@ export const ActionFormContext = createContext<{
   changeFormErrorsState: (data) => void;
   isSubmitting: boolean;
   changeFormSubmitting: (submitting: boolean) => void;
+  isRecipientNotVerified: boolean;
+  onChangeRecipientVerification: (isVerified: boolean) => void;
 }>({
   formErrors: {},
   changeFormErrorsState: noop,
   isSubmitting: false,
   changeFormSubmitting: noop,
+  isRecipientNotVerified: false,
+  onChangeRecipientVerification: noop,
 });
 
 export const ActionFormContextProvider: FC<PropsWithChildren> = ({
@@ -26,6 +30,8 @@ export const ActionFormContextProvider: FC<PropsWithChildren> = ({
 }) => {
   const [formErrors, setFormErrors] = useState<Record<any, any>>();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isRecipientNotVerified, setIsRecipientNotVerified] =
+    useState<boolean>(false);
 
   const changeFormErrorsState = useCallback(
     (errors) => {
@@ -41,14 +47,30 @@ export const ActionFormContextProvider: FC<PropsWithChildren> = ({
     [setIsSubmitting],
   );
 
+  const onChangeRecipientVerification = useCallback(
+    (isVerified) => {
+      setIsRecipientNotVerified?.(isVerified);
+    },
+    [setIsRecipientNotVerified],
+  );
+
   const value = useMemo(
     () => ({
       formErrors,
       changeFormErrorsState,
       isSubmitting,
       changeFormSubmitting,
+      isRecipientNotVerified,
+      onChangeRecipientVerification,
     }),
-    [formErrors, changeFormErrorsState, isSubmitting, changeFormSubmitting],
+    [
+      formErrors,
+      changeFormErrorsState,
+      isSubmitting,
+      changeFormSubmitting,
+      isRecipientNotVerified,
+      onChangeRecipientVerification,
+    ],
   );
 
   return (
