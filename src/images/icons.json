@@ -216,7 +216,9 @@
     "quotes",
     "rocket",
     "paint",
-    "white-tick"
+    "white-tick",
+    "thumbs-up",
+    "thumbs-down"
   ],
   "multiColorIcons": [
     "circle-check-primary",
