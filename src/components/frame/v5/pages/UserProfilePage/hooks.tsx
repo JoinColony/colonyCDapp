@@ -19,6 +19,25 @@ import { createYupTestFromQuery } from '~utils/yup/tests';
 
 const USERNAME_CHANGE_LIMIT = 90; // username can be changed once every 90 days
 
+const calculateUsernameChangePeriod = (displayNameChanged?: string | null) => {
+  const date = new Date();
+  const fallbackDate = date.setDate(date.getDate() - 90);
+
+  /* eslint-disable camelcase */
+  // if there's no displayNameChanged date, we'll let them change their username
+  const nameChanged_ms = new Date(displayNameChanged ?? fallbackDate).valueOf();
+  const now_ms = new Date().valueOf();
+  const daysSinceUsernameChange = Math.floor(
+    (now_ms - nameChanged_ms) / (1000 * 60 * 60 * 24),
+  );
+  /* eslint-enable camelcase */
+
+  const daysTillUsernameChange =
+    USERNAME_CHANGE_LIMIT - daysSinceUsernameChange;
+  const canChangeUsername = daysTillUsernameChange <= 0;
+
+  return { canChangeUsername, daysTillUsernameChange };
+};
 export const useUserProfile = () => {
   const { updateUser } = useAppContext();
   const [editUser] = useUpdateUserProfileMutation();
@@ -119,19 +138,8 @@ export const useUserProfile = () => {
   const showNameMessage =
     dirtyFields.displayName && !errors.displayName?.message;
 
-  /* eslint-disable camelcase */
-  const nameChanged_ms = new Date(
-    profile?.displayNameChanged ?? new Date(),
-  ).valueOf();
-  const now_ms = new Date().valueOf();
-  const daysSinceUsernameChange = Math.ceil(
-    (now_ms - nameChanged_ms) / (1000 * 60 * 60 * 24),
-  );
-  /* eslint-enable camelcase */
-
-  const daysTillUsernameChange =
-    USERNAME_CHANGE_LIMIT - daysSinceUsernameChange;
-  const canChangeUsername = daysTillUsernameChange <= 0;
+  const { canChangeUsername, daysTillUsernameChange } =
+    calculateUsernameChangePeriod(profile?.displayNameChanged);
 
   return {
     register,

@@ -1,4 +1,4 @@
-import { string, object, number, boolean } from 'yup';
+import { string, object, number, boolean, array } from 'yup';
 import { defineMessages } from 'react-intl';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
@@ -30,22 +30,28 @@ const getValidationSchema = (
   object()
     .shape({
       fromDomainId: number().required(),
-      recipient: object()
-        .shape({
-          walletAddress: string().address().required(),
-        })
-        .default(undefined)
-        .required(() => MSG.requiredFieldError),
-      amount: number()
-        .required(() => MSG.requiredFieldError)
-        .transform((value) => toFinite(value))
-        .moreThan(0, () => MSG.amountZero)
-        .test(
-          'has-enough-balance',
-          () => MSG.noBalance,
-          getHasEnoughBalanceTestFn(colony, networkInverseFee),
-        ),
-      tokenAddress: string().address().required(),
+      payments: array()
+        .of(
+          object({
+            recipient: object()
+              .shape({
+                walletAddress: string().address().required(),
+              })
+              .default(undefined)
+              .required(() => MSG.requiredFieldError),
+            amount: number()
+              .required(() => MSG.requiredFieldError)
+              .transform((value) => toFinite(value))
+              .moreThan(0, () => MSG.amountZero)
+              .test(
+                'has-enough-balance',
+                () => MSG.noBalance,
+                getHasEnoughBalanceTestFn(colony, networkInverseFee),
+              ),
+            tokenAddress: string().address().required(),
+          }).defined(),
+        )
+        .defined(),
       annotation: string().max(MAX_ANNOTATION_LENGTH).defined(),
       forceAction: boolean().defined(),
       motionDomainId: number().defined(),

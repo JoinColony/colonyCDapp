@@ -33,7 +33,7 @@ import {
   GetTokenFromEverywhereQueryVariables,
 } from '~gql';
 import { ColonyManager, ContextModule, getContext } from '~context';
-import { DEFAULT_TOKEN_DECIMALS, isDev } from '~constants';
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { ActionTypes, Action, AllActions } from '~redux/index';
 import { createAddress } from '~utils/web3';
 import { toNumber } from '~utils/numbers';
@@ -142,9 +142,6 @@ function* colonyCreate({
         context: ClientType.NetworkClient,
         methodName: 'createColony(address,uint256,string,string)',
         ready: false,
-        title: isDev
-          ? { id: 'transaction.group.createColony.titleWithHold' }
-          : undefined,
       });
     }
 

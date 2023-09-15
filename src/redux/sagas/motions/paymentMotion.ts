@@ -6,8 +6,6 @@ import {
   ColonyRole,
 } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
-import { BigNumber } from 'ethers';
-import moveDecimal from 'move-decimal-point';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
@@ -24,12 +22,12 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
+import { sortAndCombinePayments } from '../actions/payment';
 
 function* createPaymentMotion({
   payload: {
     colonyAddress,
     colonyName,
-    recipientAddresses,
     domainId,
     payments,
     annotationMessage,
@@ -43,9 +41,11 @@ function* createPaymentMotion({
     /*
      * Validate the required values for the payment
      */
-    if (!recipientAddresses || !recipientAddresses.length) {
-      throw new Error('Recipient not assigned for OneTxPayment transaction');
+
+    if (!motionDomainId) {
+      throw new Error('Motion domain id not set for OneTxPayment transaction');
     }
+
     if (!domainId) {
       throw new Error('Domain not set for OneTxPayment transaction');
     }
@@ -62,6 +62,9 @@ function* createPaymentMotion({
         throw new Error(
           'Payment token decimals not set for OneTxPayment transaction',
         );
+      }
+      if (!payments.every(({ recipient }) => !!recipient)) {
+        throw new Error('Recipient not assigned for OneTxPayment transaction');
       }
     }
 
@@ -104,10 +107,16 @@ function* createPaymentMotion({
       votingReputationClient.address,
     );
 
-    const tokenAddresses = payments.map(({ tokenAddress }) => tokenAddress);
+    const sortedCombinedPayments = sortAndCombinePayments(payments);
 
-    const amounts = payments.map(({ amount, decimals = 18 }) =>
-      BigNumber.from(moveDecimal(amount, decimals)),
+    const tokenAddresses = sortedCombinedPayments.map(
+      ({ tokenAddress }) => tokenAddress,
+    );
+
+    const amounts = sortedCombinedPayments.map(({ amount }) => amount);
+
+    const recipientAddresses = sortedCombinedPayments.map(
+      ({ recipient }) => recipient,
     );
 
     const encodedAction = oneTxPaymentClient.interface.encodeFunctionData(
