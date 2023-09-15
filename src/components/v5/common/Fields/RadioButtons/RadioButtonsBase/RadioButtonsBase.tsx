@@ -27,7 +27,7 @@ function RadioButtonsBase<TValue = string>({
             onChange={(event): void => {
               const { target } = event;
 
-              if (!('checked' in target)) {
+              if (!(target instanceof HTMLInputElement)) {
                 return;
               }
 
