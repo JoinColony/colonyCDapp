@@ -10,14 +10,15 @@ import { MSG } from './consts';
 import LearnMore from '~shared/Extensions/LearnMore';
 import TitleLabel from '~v5/shared/TitleLabel';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { Actions } from '~constants/actions';
 
 const displayName =
   'v5.common.SubNavigation.partials.DropdownContent.PayDropdown';
 
 const PayDropdown: FC<PropsWithChildren> = () => {
   const { formatMessage } = useIntl();
-  const { toggleActionBar, setSelectedAction } = useActionSidebarContext();
+  const {
+    actionSidebarToggle: [, { toggleOn: toggleActionSideBarOn }],
+  } = useActionSidebarContext();
 
   return (
     <div className="bg-base-white">
@@ -30,8 +31,8 @@ const PayDropdown: FC<PropsWithChildren> = () => {
           title={MSG.singlePayments}
           description={MSG.singlePaymentsDescription}
           onClick={() => {
-            setSelectedAction(Actions.SIMPLE_PAYMENT);
-            toggleActionBar();
+            // setSelectedAction(Actions.SIMPLE_PAYMENT);
+            toggleActionSideBarOn();
           }}
         />
         <LinkItem
@@ -39,24 +40,24 @@ const PayDropdown: FC<PropsWithChildren> = () => {
           description={MSG.advancedPaymentsDescription}
           statusBadge={<ExtensionStatusBadge text={MSG.comingSoon} />}
           onClick={() => {
-            setSelectedAction(Actions.ADVANCED_PAYMENT);
-            toggleActionBar();
+            // setSelectedAction(Actions.ADVANCED_PAYMENT);
+            toggleActionSideBarOn();
           }}
         />
         <LinkItem
           title={MSG.streamingPayments}
           description={MSG.streamingPaymentsDescription}
           onClick={() => {
-            setSelectedAction(Actions.STREAMING_PAYMENT);
-            toggleActionBar();
+            // setSelectedAction(Actions.STREAMING_PAYMENT);
+            toggleActionSideBarOn();
           }}
         />
         <LinkItem
           title={MSG.moveFunds}
           description={MSG.moveFundsDescription}
           onClick={() => {
-            setSelectedAction(Actions.TRANSFER_FUNDS);
-            toggleActionBar();
+            // setSelectedAction(Actions.TRANSFER_FUNDS);
+            toggleActionSideBarOn();
           }}
         />
       </ul>

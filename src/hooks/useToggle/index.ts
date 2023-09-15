@@ -3,13 +3,37 @@ import { useState, useCallback, useEffect } from 'react';
 import { RefRegistryEntry, UseToggleReturnType } from './types';
 
 let documentClickHandlerRegistered = false;
+let htmlElementInstance: HTMLElement | null = null;
 const refsRegistry: RefRegistryEntry[] = [];
+
+const getHtmlElement = (): HTMLElement | null => {
+  if (htmlElementInstance) {
+    return htmlElementInstance;
+  }
+
+  htmlElementInstance = document.querySelector('html');
+
+  return htmlElementInstance;
+};
 
 const documentClickHandler = (event: MouseEvent): void => {
   refsRegistry.forEach(({ element, toggleOff, toggleState }) => {
-    if (toggleState && !element.contains(event.target as Node)) {
-      toggleOff();
+    if (!(event.target instanceof Element)) {
+      return;
     }
+
+    const htmlElement = getHtmlElement();
+
+    if (
+      !htmlElement ||
+      !htmlElement.contains(event.target) ||
+      element.contains(event.target) ||
+      !toggleState
+    ) {
+      return;
+    }
+
+    toggleOff();
   });
 };
 

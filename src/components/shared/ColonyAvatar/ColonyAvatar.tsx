@@ -39,9 +39,11 @@ const ColonyAvatar = ({
       {...avatarProps}
     />
   );
+
   if (showLink && name) {
     return <NavLink to={`/colony/${name}`}>{colonyAvatar}</NavLink>;
   }
+
   return colonyAvatar;
 };
 

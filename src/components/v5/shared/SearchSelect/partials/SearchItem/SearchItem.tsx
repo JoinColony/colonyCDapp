@@ -6,8 +6,6 @@ import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import { sortDisabled } from '../../utils';
 import styles from '../../SearchSelect.module.css';
 import { SearchItemProps } from './types';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { Actions } from '~constants/actions';
 import Avatar from '~v5/shared/Avatar';
 import { useMobile } from '~hooks';
 import Tooltip from '~shared/Extensions/Tooltip';
@@ -22,7 +20,6 @@ const SearchItem: FC<SearchItemProps> = ({
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
-  const { setSelectedAction } = useActionSidebarContext();
 
   return (
     <ul
@@ -69,9 +66,7 @@ const SearchItem: FC<SearchItemProps> = ({
                 })}
                 onClick={() => {
                   if (missingPermissions) return;
-                  if (Object.values(Actions).includes(value as Actions)) {
-                    setSelectedAction(value as Actions);
-                  }
+
                   onChange?.(value);
                 }}
               >

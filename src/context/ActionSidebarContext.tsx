@@ -3,94 +3,36 @@ import React, {
   FC,
   PropsWithChildren,
   useContext,
-  useEffect,
   useMemo,
-  useState,
 } from 'react';
-import { Actions } from '~constants/actions';
 import useToggle from '~hooks/useToggle';
-
-import noop from '~utils/noop';
+import { DEFAULT_USE_TOGGLE_RETURN_VALUE } from '~hooks/useToggle/consts';
+import { UseToggleReturnType } from '~hooks/useToggle/types';
 
 export const ActionSidebarContext = createContext<{
-  isActionSidebarOpen: boolean;
-  isCancelModalOpen: boolean;
-  selectedAction: Actions | null;
-  isAvatarModalOpened: boolean;
-  setSelectedAction: React.Dispatch<React.SetStateAction<Actions | null>>;
-  toggleActionBar: () => void;
-  toggleCancelModal: () => void;
-  toggleActionSidebarOff: () => void;
-  toggleCancelModalOff: () => void;
-  toggleChangeAvatarModalOn: () => void;
-  toggleChangeAvatarModalOff: () => void;
+  actionSidebarToggle: UseToggleReturnType;
+  cancelModalToggle: UseToggleReturnType;
+  avatarModalToggle: UseToggleReturnType;
 }>({
-  isActionSidebarOpen: false,
-  isCancelModalOpen: false,
-  selectedAction: null,
-  isAvatarModalOpened: false,
-  toggleActionBar: noop,
-  setSelectedAction: noop,
-  toggleActionSidebarOff: noop,
-  toggleCancelModal: noop,
-  toggleCancelModalOff: noop,
-  toggleChangeAvatarModalOn: noop,
-  toggleChangeAvatarModalOff: noop,
+  actionSidebarToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
+  cancelModalToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
+  avatarModalToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
 });
 
 export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
-  const [
-    isActionSidebarOpen,
-    { toggle: toggleActionBar, toggleOff: toggleActionSidebarOff },
-  ] = useToggle({ defaultToggleState: false });
-  const [
-    isCancelModalOpen,
-    { toggle: toggleCancelModal, toggleOff: toggleCancelModalOff },
-  ] = useToggle({ defaultToggleState: false });
-  const [
-    isAvatarModalOpened,
-    {
-      toggleOn: toggleChangeAvatarModalOn,
-      toggleOff: toggleChangeAvatarModalOff,
-    },
-  ] = useToggle({ defaultToggleState: false });
-  const [selectedAction, setSelectedAction] = useState<Actions | null>(null);
-
-  useEffect(() => {
-    if (!isActionSidebarOpen) {
-      setSelectedAction(null);
-      localStorage.removeItem('annotation');
-    }
-  }, [isActionSidebarOpen]);
+  const actionSidebarToggle = useToggle();
+  const cancelModalToggle = useToggle();
+  const avatarModalToggle = useToggle();
 
   const value = useMemo(
     () => ({
-      isActionSidebarOpen,
-      isCancelModalOpen,
-      toggleCancelModal,
-      toggleCancelModalOff,
-      toggleActionBar,
-      toggleActionSidebarOff,
-      setSelectedAction,
-      selectedAction,
-      isAvatarModalOpened,
-      toggleChangeAvatarModalOn,
-      toggleChangeAvatarModalOff,
+      actionSidebarToggle,
+      cancelModalToggle,
+      avatarModalToggle,
     }),
-    [
-      isAvatarModalOpened,
-      isActionSidebarOpen,
-      isCancelModalOpen,
-      selectedAction,
-      toggleActionBar,
-      toggleActionSidebarOff,
-      toggleCancelModal,
-      toggleCancelModalOff,
-      toggleChangeAvatarModalOn,
-      toggleChangeAvatarModalOff,
-    ],
+    [actionSidebarToggle, cancelModalToggle, avatarModalToggle],
   );
 
   return (

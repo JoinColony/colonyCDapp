@@ -10,6 +10,7 @@ const useUserByAddress = (address: Address) => {
   });
 
   const user = data?.getUserByAddress?.items[0];
+
   return {
     user,
     loading,

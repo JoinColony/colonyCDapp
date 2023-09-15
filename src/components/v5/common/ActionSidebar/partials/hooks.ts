@@ -1,69 +1,44 @@
-import { useEffect, useState } from 'react';
-import { Actions } from '~constants/actions';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { useMemo } from 'react';
+import { useWatch } from 'react-hook-form';
+import { useIntl } from 'react-intl';
+import { ACTION, Action } from '~constants/actions';
+import { ACTION_TYPE_FIELD_NAME } from '../consts';
 
-export const useGetSubmitButton = () => {
-  const { selectedAction } = useActionSidebarContext();
-  const [submitButtonText, setSubmitButtonText] = useState(
-    'button.createAction',
-  );
+const ACTION_SUBMIT_BUTTON_TEXT: Partial<Record<Action, string>> = {
+  [ACTION.ADVANCED_PAYMENT]: 'button.createPayment',
+  [ACTION.SIMPLE_PAYMENT]: 'button.createPayment',
+  [ACTION.BATCH_PAYMENT]: 'button.createPayment',
+  [ACTION.SPLIT_PAYMENT]: 'button.createPayment',
+  [ACTION.STAGED_PAYMENT]: 'button.createPayment',
+  [ACTION.STREAMING_PAYMENT]: 'button.createStream',
+  [ACTION.TRANSFER_FUNDS]: 'button.createTransfer',
+  [ACTION.MINT_TOKENS]: 'button.createTokens',
+  [ACTION.UNLOCK_TOKEN]: 'button.unlockToken',
+  [ACTION.MANAGE_TOKENS]: 'button.updateTokens',
+  [ACTION.EDIT_COLONY_DETAILS]: 'button.editDetails',
+  [ACTION.EDIT_EXISTING_TEAM]: 'button.editTeam',
+  [ACTION.CREATE_NEW_TEAM]: 'button.createTeam',
+  [ACTION.AWARD_REPUTATION]: 'button.changeReputation',
+  [ACTION.MANAGE_PERMISSIONS]: 'button.changePermissions',
+  [ACTION.UPGRADE_COLONY_VERSION]: 'button.upgradeVersion',
+  [ACTION.ENTER_RECOVERY_MODE]: 'button.enterRecovery',
+  [ACTION.MANAGE_COLONY_OBJECTIVES]: 'button.updateObjective',
+  [ACTION.CREATE_NEW_INTEGRATION]: 'button.createIntegration',
+};
 
-  useEffect(() => {
-    switch (selectedAction) {
-      case Actions.ADVANCED_PAYMENT:
-      case Actions.SIMPLE_PAYMENT:
-      case Actions.BATCH_PAYMENT:
-      case Actions.SPLIT_PAYMENT:
-      case Actions.STAGED_PAYMENT:
-        setSubmitButtonText('button.createPayment');
-        break;
-      case Actions.STREAMING_PAYMENT:
-        setSubmitButtonText('button.createStream');
-        break;
-      case Actions.TRANSFER_FUNDS:
-        setSubmitButtonText('button.createTransfer');
-        break;
-      case Actions.MINT_TOKENS:
-        setSubmitButtonText('button.createTokens');
-        break;
-      case Actions.UNLOCK_TOKEN:
-        setSubmitButtonText('button.unlockToken');
-        break;
-      case Actions.MANAGE_TOKENS:
-        setSubmitButtonText('button.updateTokens');
-        break;
-      case Actions.EDIT_COLONY_DETAILS:
-        setSubmitButtonText('button.editDetails');
-        break;
-      case Actions.EDIT_EXISTING_TEAM:
-        setSubmitButtonText('button.editTeam');
-        break;
-      case Actions.CREATE_NEW_TEAM:
-        setSubmitButtonText('button.createTeam');
-        break;
-      case Actions.AWARD_REPUTATION:
-        setSubmitButtonText('button.changeReputation');
-        break;
-      case Actions.MANAGE_PERMISSIONS:
-        setSubmitButtonText('button.changePermissions');
-        break;
-      case Actions.UPGRADE_COLONY_VERSION:
-        setSubmitButtonText('button.upgradeVersion');
-        break;
-      case Actions.ENTER_RECOVERY_MODE:
-        setSubmitButtonText('button.enterRecovery');
-        break;
-      case Actions.MANAGE_COLONY_OBJECTIVES:
-        setSubmitButtonText('button.updateObjective');
-        break;
-      case Actions.CREATE_NEW_INTEGRATION:
-        setSubmitButtonText('button.createIntegration');
-        break;
-      default:
-        setSubmitButtonText('button.createAction');
-        break;
+export const useSubmitButtonText = () => {
+  const intl = useIntl();
+  const selectedAction: Action | undefined = useWatch({
+    name: ACTION_TYPE_FIELD_NAME,
+  });
+
+  return useMemo(() => {
+    if (!selectedAction || !ACTION_SUBMIT_BUTTON_TEXT[selectedAction]) {
+      return intl.formatMessage({ id: 'button.createAction' });
     }
-  }, [selectedAction]);
 
-  return submitButtonText;
+    return intl.formatMessage({
+      id: ACTION_SUBMIT_BUTTON_TEXT[selectedAction],
+    });
+  }, [intl, selectedAction]);
 };

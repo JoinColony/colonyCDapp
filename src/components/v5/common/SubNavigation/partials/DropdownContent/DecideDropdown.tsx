@@ -9,14 +9,16 @@ import styles from './DropdownContent.module.css';
 import LearnMore from '~shared/Extensions/LearnMore';
 import TitleLabel from '~v5/shared/TitleLabel';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { Actions } from '~constants/actions';
+// import { Actions } from '~constants/actions';
 
 const displayName =
   'v5.common.SubNavigation.partials.DropdownContent.DecideDropdown';
 
 const DecideDropdown: FC<PropsWithChildren> = () => {
   const { formatMessage } = useIntl();
-  const { toggleActionBar, setSelectedAction } = useActionSidebarContext();
+  const {
+    actionSidebarToggle: [, { toggleOn: toggleActionSideBarOn }],
+  } = useActionSidebarContext();
 
   return (
     <div className="bg-base-white">
@@ -29,16 +31,16 @@ const DecideDropdown: FC<PropsWithChildren> = () => {
           title={MSG.createDecision}
           description={MSG.createDecisionDescription}
           onClick={() => {
-            setSelectedAction(Actions.CREATE_DECISION);
-            toggleActionBar();
+            // setSelectedAction(Actions.CREATE_DECISION);
+            toggleActionSideBarOn();
           }}
         />
         <LinkItem
           title={MSG.simpleDiscussion}
           description={MSG.simpleDiscussionDescription}
           onClick={() => {
-            setSelectedAction(Actions.SIMPLE_DISCUSSION);
-            toggleActionBar();
+            // setSelectedAction(Actions.SIMPLE_DISCUSSION);
+            toggleActionSideBarOn();
           }}
         />
       </ul>
