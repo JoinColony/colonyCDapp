@@ -1826,6 +1826,11 @@ type Domain @model {
   The amount of reputation in the domain
   """
   reputation: String
+
+  """
+  The amount of reputation in the domain, as a percentage of the total in the colony
+  """
+  reputationPercentage: String
 }
 
 """

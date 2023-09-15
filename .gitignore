@@ -44,3 +44,5 @@ src/**/*.css.d.ts
 src/images/.DS_Store
 src/images/icons/.DS_Store
 src/.DS_Store
+
+.DS_Store
