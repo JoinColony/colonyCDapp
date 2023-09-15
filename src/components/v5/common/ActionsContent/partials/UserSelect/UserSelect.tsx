@@ -50,7 +50,8 @@ const UserSelect: FC<SelectProps> = ({
   const { user: userByAddress } = useUserByAddress(
     recipient || selectedWalletAddress,
   );
-  const { formErrors, onChangeRecipientVerification } = useActionFormContext();
+  const { formErrors, onChangeRecipientVerification, changeFormErrorsState } =
+    useActionFormContext();
   const splitWallet =
     isMobile && recipient ? splitWalletAddress(recipient) : recipient;
   const isRecipientNotVerified =
