@@ -22,7 +22,7 @@ const ButtonRadioButtons: FC<ButtonRadioButtonsProps> = ({
               flex
               items-center
               justify-center
-              gap-[0.375rem]
+              gap-1.5
               border
               border-current
               transition
