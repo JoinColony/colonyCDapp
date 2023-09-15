@@ -16,6 +16,26 @@ const meta: Meta<typeof ProgressBar> = {
       </div>
     ),
   ],
+  argTypes: {
+    progress: {
+      name: 'Progress',
+      control: {
+        type: 'range',
+      },
+    },
+    additionalText: {
+      name: 'Additional text',
+      control: {
+        type: 'text',
+      },
+    },
+    isTall: {
+      name: 'Is tall?',
+      control: {
+        type: 'boolean',
+      },
+    },
+  },
 };
 
 export default meta;
@@ -30,5 +50,13 @@ export const Base: Story = {
 export const WithData: Story = {
   args: {
     progress: 40,
+  },
+};
+
+export const WithAdditionalText: Story = {
+  args: {
+    progress: 50,
+    additionalText: 'Rep',
+    isTall: true,
   },
 };
