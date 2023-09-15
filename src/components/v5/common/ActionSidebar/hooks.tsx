@@ -13,6 +13,7 @@ import {
   useColonyHasReputation,
   useDialogActionPermissions,
   useEnabledExtensions,
+  useGlobalEventHandler,
   useTransformer,
   useUserAccountRegistered,
 } from '~hooks';
@@ -47,6 +48,8 @@ import {
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { getFormAction } from '~utils/actions';
 import noop from '~utils/noop';
+import { GLOBAL_EVENTS } from '~utils/browser/dispatchGlobalEvent/consts';
+import { SetActionTypeCutomEventDetail } from '~utils/browser/dispatchGlobalEvent/types';
 
 export const useActionsList = () => {
   const { colony } = useColonyContext();
@@ -365,6 +368,15 @@ export const useActionForm = () => {
       form.setValue(ACTION_TYPE_FIELD_NAME, actionType, { shouldDirty: true });
     },
     [form],
+  );
+
+  useGlobalEventHandler<SetActionTypeCutomEventDetail>(
+    GLOBAL_EVENTS.SET_ACTION_TYPE,
+    (event) => {
+      form.setValue(ACTION_TYPE_FIELD_NAME, event.detail.actionType, {
+        shouldDirty: true,
+      });
+    },
   );
 
   return {

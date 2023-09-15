@@ -1,4 +1,7 @@
+import React from 'react';
 import { defineMessages } from 'react-intl';
+import { ACTION } from '~constants/actions';
+import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 
 export const MSG = defineMessages({
   singlePayments: {
@@ -98,3 +101,63 @@ export const MSG = defineMessages({
     defaultMessage: 'View decisions',
   },
 });
+
+export const DECIDE_DROPDOWN_ITEMS = [
+  {
+    action: ACTION.CREATE_DECISION,
+    title: MSG.createDecision,
+    description: MSG.createDecisionDescription,
+  },
+  {
+    action: ACTION.SIMPLE_DISCUSSION,
+    title: MSG.simpleDiscussion,
+    description: MSG.simpleDiscussionDescription,
+  },
+];
+
+export const PAY_DROPDOWN_ITEMS = [
+  {
+    title: MSG.singlePayments,
+    description: MSG.singlePaymentsDescription,
+    action: ACTION.SIMPLE_PAYMENT,
+  },
+  {
+    title: MSG.advancedPayments,
+    description: MSG.advancedPaymentsDescription,
+    action: ACTION.ADVANCED_PAYMENT,
+    statusBadge: <ExtensionStatusBadge text={MSG.comingSoon} />,
+  },
+  {
+    title: MSG.streamingPayments,
+    description: MSG.streamingPaymentsDescription,
+    action: ACTION.STREAMING_PAYMENT,
+  },
+  {
+    title: MSG.moveFunds,
+    description: MSG.moveFundsDescription,
+    action: ACTION.TRANSFER_FUNDS,
+  },
+];
+
+export const MANAGE_DROPDOWN_ITEMS = [
+  {
+    action: ACTION.EDIT_EXISTING_TEAM,
+    title: MSG.manageTeams,
+    description: MSG.manageTeamsDescription,
+  },
+  {
+    action: ACTION.AWARD_REPUTATION,
+    title: MSG.manageReputation,
+    description: MSG.manageReputationDescription,
+  },
+  {
+    action: ACTION.MANAGE_PERMISSIONS,
+    title: MSG.managePermissions,
+    description: MSG.managePermissionsDescription,
+  },
+  {
+    action: ACTION.EDIT_COLONY_DETAILS,
+    title: MSG.organizationDetails,
+    description: MSG.organizationDetailsDescription,
+  },
+];

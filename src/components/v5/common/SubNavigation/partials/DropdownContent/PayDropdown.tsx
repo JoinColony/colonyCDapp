@@ -3,13 +3,14 @@ import { useIntl } from 'react-intl';
 
 import Button from '~v5/shared/Button';
 import { LEARN_MORE_PAYMENTS } from '~constants';
-import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import LinkItem from '../LinkItem';
 import styles from './DropdownContent.module.css';
-import { MSG } from './consts';
+import { MSG, PAY_DROPDOWN_ITEMS } from './consts';
 import LearnMore from '~shared/Extensions/LearnMore';
 import TitleLabel from '~v5/shared/TitleLabel';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { GLOBAL_EVENTS } from '~utils/browser/dispatchGlobalEvent/consts';
+import dispatchGlobalEvent from '~utils/browser/dispatchGlobalEvent';
 
 const displayName =
   'v5.common.SubNavigation.partials.DropdownContent.PayDropdown';
@@ -27,39 +28,20 @@ const PayDropdown: FC<PropsWithChildren> = () => {
         text={formatMessage({ id: 'createNewPayments' })}
       />
       <ul className={styles.listWrapper}>
-        <LinkItem
-          title={MSG.singlePayments}
-          description={MSG.singlePaymentsDescription}
-          onClick={() => {
-            // setSelectedAction(Actions.SIMPLE_PAYMENT);
-            toggleActionSideBarOn();
-          }}
-        />
-        <LinkItem
-          title={MSG.advancedPayments}
-          description={MSG.advancedPaymentsDescription}
-          statusBadge={<ExtensionStatusBadge text={MSG.comingSoon} />}
-          onClick={() => {
-            // setSelectedAction(Actions.ADVANCED_PAYMENT);
-            toggleActionSideBarOn();
-          }}
-        />
-        <LinkItem
-          title={MSG.streamingPayments}
-          description={MSG.streamingPaymentsDescription}
-          onClick={() => {
-            // setSelectedAction(Actions.STREAMING_PAYMENT);
-            toggleActionSideBarOn();
-          }}
-        />
-        <LinkItem
-          title={MSG.moveFunds}
-          description={MSG.moveFundsDescription}
-          onClick={() => {
-            // setSelectedAction(Actions.TRANSFER_FUNDS);
-            toggleActionSideBarOn();
-          }}
-        />
+        {PAY_DROPDOWN_ITEMS.map(({ action, ...rest }) => (
+          <LinkItem
+            {...rest}
+            key={action}
+            onClick={() => {
+              toggleActionSideBarOn();
+              dispatchGlobalEvent(GLOBAL_EVENTS.SET_ACTION_TYPE, {
+                detail: {
+                  actionType: action,
+                },
+              });
+            }}
+          />
+        ))}
       </ul>
       <div className={styles.buttonWrapper}>
         <Button text={MSG.buttonTextPay} mode="quinary" isFullSize />
