@@ -6,6 +6,7 @@ export type LeftColumnProps = {
 };
 
 export type UserProfileFormProps = {
+  hasDisplayNameChanged?: boolean;
   bio?: string | null;
   username?: string | null;
   displayName?: string | null;

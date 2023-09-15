@@ -39,7 +39,7 @@ export const isEmailAlreadyRegistered = createYupTestFromQuery({
   isOptional: true,
   circuitBreaker: isValidEmail,
 });
-const isUsernameTaken = createYupTestFromQuery({
+export const isUsernameTaken = createYupTestFromQuery({
   query: GetUserByNameDocument,
   circuitBreaker: isValidUsername,
 });
