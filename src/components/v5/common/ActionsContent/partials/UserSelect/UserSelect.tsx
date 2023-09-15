@@ -101,6 +101,7 @@ const UserSelect: FC<SelectProps> = ({
             }
             iconName="warning-circle"
             className="ml-2 text-warning-400"
+            ariaLabel={formatMessage({ id: 'ariaLabel.openModal' })}
             onClick={() => (isMobile ? setIsModalOpen(true) : noop)}
           />
         )}
