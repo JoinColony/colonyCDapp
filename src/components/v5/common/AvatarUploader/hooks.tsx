@@ -3,6 +3,7 @@ import { FileRejection } from 'react-dropzone';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
+import { useIntl } from 'react-intl';
 import { useAppContext, useCanEditProfile } from '~hooks';
 import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
 import { getFileRejectionErrors } from '~shared/FileUpload/utils';
@@ -14,6 +15,7 @@ import {
 import { useUpdateUserProfileMutation } from '~gql';
 import Toast from '~shared/Extensions/Toast';
 import { convertBytes } from '~utils/convertBytes';
+import { FileUploadOptions } from './types';
 
 export const useAvatarUploader = () => {
   const { updateUser } = useAppContext();
@@ -124,4 +126,39 @@ export const useAvatarUploader = () => {
     uploadProgress,
     file,
   };
+};
+
+export const useFormatFormats = (fileFormats: string[]) => {
+  const { formatMessage } = useIntl();
+
+  return fileFormats
+    .map((format, index) => {
+      if (fileFormats.length === 1) {
+        return format;
+      }
+
+      if (index === fileFormats.length - 1) {
+        return `${formatMessage({ id: 'avatar.uploader.or' })} ${format}`;
+      }
+
+      return format;
+    })
+    .join(', ');
+};
+
+export const useGetUploaderText = (fileOptions: FileUploadOptions) => {
+  const { formatMessage } = useIntl();
+
+  const { fileDimension, fileFormat, fileSize } = fileOptions;
+
+  const formattedFormats = useFormatFormats(fileFormat);
+
+  return formatMessage(
+    { id: 'avatar.uploader.info' },
+    {
+      format: formattedFormats,
+      dimension: fileDimension,
+      size: fileSize,
+    },
+  );
 };
