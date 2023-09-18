@@ -10,6 +10,8 @@ import { intl } from '~utils/intl';
 import { getSelectedSafeBalance, isAbiItem } from '~utils/safes';
 import { validateType } from '~utils/safes/contractParserValidation';
 
+import { FormSafeTransaction } from './types';
+
 const displayName = 'common.ControlSafeDialog.validation';
 
 const requiredFieldError = 'Please enter a value';
@@ -153,8 +155,10 @@ export const getValidationSchema = (
 
                     const {
                       safeBalances,
+                      transactions,
                     }: {
                       safeBalances: SafeBalance[];
+                      transactions: FormSafeTransaction[];
                       // Type is incorrect. "from" does appear in TextContext
                       // @ts-ignore
                     } = this.from[1].value;
@@ -164,11 +168,26 @@ export const getValidationSchema = (
                     );
 
                     if (safeBalance) {
-                      const convertedAmount = new Decimal(
-                        moveDecimal(value, selectedTokenDecimals),
+                      const totalAmount = transactions.reduce(
+                        (total, transaction) => {
+                          if (
+                            transaction.amount &&
+                            transaction.token?.tokenAddress === selectedToken
+                          ) {
+                            const convertedAmount = new Decimal(
+                              moveDecimal(
+                                transaction.amount,
+                                selectedTokenDecimals,
+                              ),
+                            );
+                            return total.plus(convertedAmount);
+                          }
+                          return total;
+                        },
+                        new Decimal(0),
                       );
                       const balance = new Decimal(safeBalance.balance);
-                      if (balance.lt(convertedAmount) || balance.isZero()) {
+                      if (balance.lt(totalAmount) || balance.isZero()) {
                         return this.createError({
                           message: formatMessage({
                             id: `${displayName}.insuffienctFundsError`,

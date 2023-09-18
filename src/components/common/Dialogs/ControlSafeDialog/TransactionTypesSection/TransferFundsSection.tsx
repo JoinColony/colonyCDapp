@@ -167,7 +167,11 @@ const TransferFundsSection = ({
           transactionIndex={transactionIndex}
           maxButtonParams={{
             maxAmount: `${formattedSafeBalance}`,
-            options: { shouldValidate: true },
+            options: {
+              shouldValidate: true,
+              shouldDirty: true,
+              shouldTouch: true,
+            },
           }}
         />
       </DialogSection>
