@@ -1,15 +1,15 @@
-import React, { FC, ReactElement, useRef } from 'react';
+import React, { FC, useRef } from 'react';
 import { useIntl } from 'react-intl';
 
 import Modal from '~v5/shared/Modal';
 import FileUpload from '~v5/common/AvatarUploader/partials/FileUpload';
 import ProgressContent from '~v5/common/AvatarUploader/partials/ProgressContent';
-import { SpinnerLoader } from '~shared/Preloaders';
 import Avatar from '~v5/shared/Avatar';
 import { useChangeColonyAvatar } from './hooks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { ChangeColonyLogoProps } from './types';
-import { useFormatFormats } from '~v5/common/AvatarUploader/hooks';
+import { useGetUploaderText } from '~v5/common/AvatarUploader/hooks';
+import { getPlaceholder } from '~v5/common/AvatarUploader/utils';
 
 const displayName =
   'v5.common.ActionsContent.partials.ColonyDetailsFields.partials.ChangeColonyLogo';
@@ -30,43 +30,7 @@ const ChangeColonyLogo: FC<ChangeColonyLogoProps> = ({ fileOptions }) => {
   } = useChangeColonyAvatar();
   const { isAvatarModalOpened, toggleChangeAvatarModalOff } =
     useActionSidebarContext();
-
-  const getPlaceholder = (
-    loading: boolean,
-    avatar: ReactElement<
-      unknown,
-      string | React.JSXElementConstructor<unknown>
-    >,
-  ) => {
-    if (loading) {
-      return <SpinnerLoader appearance={{ size: 'medium' }} />;
-    }
-
-    return avatar;
-  };
-
-  const { fileDimension, fileFormat, fileSize } = fileOptions;
-  const formattedFormats = useFormatFormats(fileFormat);
-
-  const uploaderText = formatMessage(
-    { id: 'avatar.uploader.info' },
-    {
-      format: formattedFormats,
-      dimension: fileDimension,
-      size: fileSize,
-    },
-  );
-  const avatar = (
-    <div className="flex items-center gap-4 sm:items-start sm:w-16 mr-4">
-      <div className="flex-shrink-0">
-        {getPlaceholder(
-          isLoading,
-          <Avatar size="xm" avatar={colonyAvatarImage} />,
-        )}
-      </div>
-      <div className="sm:hidden text-gray-600 text-sm">{uploaderText}</div>
-    </div>
-  );
+  const uploaderText = useGetUploaderText(fileOptions);
 
   return (
     <Modal
@@ -91,11 +55,19 @@ const ChangeColonyLogo: FC<ChangeColonyLogoProps> = ({ fileOptions }) => {
         {formatMessage({ id: 'editColonyLogo.modal.subtitle' })}
       </p>
       <div className="flex sm:flex-row flex-col gap-4 sm:gap-2">
-        {avatar}
-        <div className="flex flex-col gap-2 w-full">
-          <div className="hidden sm:block text-gray-600 text-sm">
-            {uploaderText}
+        <div className="flex items-center gap-4 sm:items-start mr-4">
+          <div className="flex-shrink-0">
+            {getPlaceholder(
+              isLoading,
+              <Avatar size="xm" avatar={colonyAvatarImage} />,
+            )}
           </div>
+          <p className="sm:hidden text-gray-600 text-sm">{uploaderText}</p>
+        </div>
+        <div className="flex flex-col gap-2 w-full">
+          <p className="hidden sm:block text-gray-600 text-sm">
+            {uploaderText}
+          </p>
           <FileUpload
             dropzoneOptions={{
               disabled: false,
@@ -109,7 +81,6 @@ const ChangeColonyLogo: FC<ChangeColonyLogoProps> = ({ fileOptions }) => {
             isAvatarUploaded={colonyAvatarImage !== null}
             isPropgressContentVisible={showPropgress}
           />
-
           {showPropgress && (
             <ProgressContent
               progress={uploadProgress}

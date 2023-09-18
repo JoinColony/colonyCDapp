@@ -15,6 +15,7 @@ import {
 import { useUpdateUserProfileMutation } from '~gql';
 import Toast from '~shared/Extensions/Toast';
 import { convertBytes } from '~utils/convertBytes';
+import { FileUploadOptions } from './types';
 
 export const useAvatarUploader = () => {
   const { updateUser } = useAppContext();
@@ -127,20 +128,31 @@ export const useAvatarUploader = () => {
   };
 };
 
-export const useFormatFormats = (fileFormats: string[]) => {
+export const useGetUploaderText = (fileOptions: FileUploadOptions) => {
   const { formatMessage } = useIntl();
 
-  return fileFormats
+  const { fileDimension, fileFormat, fileSize } = fileOptions;
+
+  const formattedFormats = fileFormat
     .map((format, index) => {
-      if (fileFormats.length === 1) {
+      if (fileFormat.length === 1) {
         return format;
       }
 
-      if (index === fileFormats.length - 1) {
+      if (index === fileFormat.length - 1) {
         return `${formatMessage({ id: 'or' })} ${format}`;
       }
 
       return format;
     })
     .join(', ');
+
+  return formatMessage(
+    { id: 'avatar.uploader.info' },
+    {
+      format: formattedFormats,
+      dimension: fileDimension,
+      size: fileSize,
+    },
+  );
 };

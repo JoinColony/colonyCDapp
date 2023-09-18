@@ -3,7 +3,6 @@ import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import Icon from '~shared/Icon';
-import styles from './AvatarUploader.module.css';
 import { DefaultContentProps } from '../types';
 import { useMobile } from '~hooks';
 import { useFormatFormats } from '../hooks';
@@ -44,11 +43,9 @@ const DefaultContent: FC<DefaultContentProps> = ({
         </button>
       ) : (
         <>
-          <div className={styles.iconWrapper}>
-            <div className={`bg-gray-50 w-9 h-9 ${styles.iconCircle}`}>
-              <div
-                className={`bg-gray-200 text-gray-600 w-7 h-7 ${styles.iconCircle}`}
-              >
+          <div className="w-10 mb-2">
+            <div className="p-[0.25rem] rounded-full flex items-start justify-center">
+              <div className="p-[0.25rem] rounded-full flex items-start justify-center">
                 <Icon name="cloud-arrow-up" appearance={{ size: 'small' }} />
               </div>
             </div>

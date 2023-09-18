@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 
 import Icon from '~shared/Icon';
-import styles from './AvatarUploader.module.css';
 import { ProgressContentProps } from '../types';
 import ProgressBar from '~v5/shared/ProgressBar';
 
@@ -18,14 +17,18 @@ const ProgressContent: FC<ProgressContentProps> = ({
 
   return (
     <div
-      className={clsx('gap-3 bg-base-white', styles.contentWrapper, {
-        'border-blue-400': isUploadCompleted,
-      })}
+      className={clsx(
+        'gap-3 bg-base-white flex px-6 py-4 rounded border w-full',
+        {
+          'border-blue-400': isUploadCompleted,
+        },
+      )}
     >
-      <div className={styles.iconWrapper}>
-        <div className={`bg-blue-100 w-9 h-9 ${styles.iconCircle}`}>
+      <div className="w-10 mb-2">
+        <div className="bg-blue-100 w-9 h-9 p-[0.25rem] rounded-full flex items-start justify-center">
           <div
-            className={`bg-blue-light-100 text-blue-400 w-7 h-7 ${styles.iconCircle}`}
+            className={`bg-blue-light-100 text-blue-400 
+            w-7 h-7 p-[0.25rem] rounded-full flex items-start justify-center`}
           >
             <Icon name="cloud-arrow-up" appearance={{ size: 'small' }} />
           </div>

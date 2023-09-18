@@ -14,14 +14,12 @@ export type SuccessContentProps = Pick<
   'open' | 'handleFileRemove'
 >;
 
-export type ErrorContentProps = Pick<
-  FileUploadProps,
-  'handleFileRemove' | 'errorCode'
-> & {
+export interface ErrorContentProps
+  extends Pick<FileUploadProps, 'handleFileRemove' | 'errorCode'> {
   fileRejections?: string;
   open: () => void;
   getInputProps: <T extends DropzoneInputProps>(props?: T | undefined) => T;
-};
+}
 
 export interface FileUploadOptions {
   fileFormat: string[];
@@ -29,7 +27,7 @@ export interface FileUploadOptions {
   fileDimension: string;
 }
 
-export type FileUploadProps = {
+export interface FileUploadProps {
   dropzoneOptions: DropzoneOptions;
   forwardedRef: Ref<unknown> | undefined;
   isAvatarUploaded: boolean;
@@ -43,22 +41,22 @@ export type FileUploadProps = {
   isPropgressContentVisible?: boolean;
   isSimplified?: boolean;
   fileOptions: FileUploadOptions;
-};
+}
 
-export type AvatarUploaderProps = {
+export interface AvatarUploaderProps {
   avatarPlaceholder: React.ReactElement;
   disabled?: boolean;
   fileOptions: FileUploadOptions;
-};
+}
 
 export interface DefaultContentProps extends Pick<ErrorContentProps, 'open'> {
   isSimplified?: boolean;
   fileOptions: FileUploadOptions;
 }
 
-export type ProgressContentProps = {
+export interface ProgressContentProps {
   progress: number;
   handleFileRemove: (...args: unknown[]) => Promise<unknown>;
   fileName: string;
   fileSize: string;
-};
+}

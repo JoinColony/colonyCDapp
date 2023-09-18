@@ -16,7 +16,6 @@ const fileUploadMeta: Meta<typeof FileUpload> = {
       </div>
     ),
   ],
-  argTypes: {},
 };
 
 export default fileUploadMeta;
