@@ -697,7 +697,7 @@
   "actions.createNewIntegration": "Create new integration",
   "actions.manageColonyObjective": "Manage Colony objective",
   "actions.userPermissions": "User permissions",
-  "actions.a": "Colony members",
+  "actions.recipent": "Colony members",
   "connectWallet": "Connect wallet",
   "copyWalletAddress": "Copy wallet address",
   "copy.address": "Copy address",
