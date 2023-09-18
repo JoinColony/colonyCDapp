@@ -8,11 +8,13 @@ import { SpinnerLoader } from '~shared/Preloaders';
 import Avatar from '~v5/shared/Avatar';
 import { useChangeColonyAvatar } from './hooks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { ChangeColonyLogoProps } from './types';
+import { useFormatFormats } from '~v5/common/AvatarUploader/hooks';
 
 const displayName =
   'v5.common.ActionsContent.partials.ColonyDetailsFields.partials.ChangeColonyLogo';
 
-const ChangeColonyLogo: FC = () => {
+const ChangeColonyLogo: FC<ChangeColonyLogoProps> = ({ fileOptions }) => {
   const { formatMessage } = useIntl();
   const dropzoneRef = useRef<{ open: () => void }>();
   const {
@@ -43,6 +45,29 @@ const ChangeColonyLogo: FC = () => {
     return avatar;
   };
 
+  const { fileDimension, fileFormat, fileSize } = fileOptions;
+  const formattedFormats = useFormatFormats(fileFormat);
+
+  const uploaderText = formatMessage(
+    { id: 'avatar.uploader.info' },
+    {
+      format: formattedFormats,
+      dimension: fileDimension,
+      size: fileSize,
+    },
+  );
+  const avatar = (
+    <div className="flex items-center gap-4 sm:items-start sm:w-16 mr-4">
+      <div className="flex-shrink-0">
+        {getPlaceholder(
+          isLoading,
+          <Avatar size="xm" avatar={colonyAvatarImage} />,
+        )}
+      </div>
+      <div className="sm:hidden text-gray-600 text-sm">{uploaderText}</div>
+    </div>
+  );
+
   return (
     <Modal
       isOpen={isAvatarModalOpened}
@@ -65,33 +90,36 @@ const ChangeColonyLogo: FC = () => {
       <p className="text-md text-gray-600 mb-6">
         {formatMessage({ id: 'editColonyLogo.modal.subtitle' })}
       </p>
-      <>
-        <FileUpload
-          dropzoneOptions={{
-            disabled: false,
-          }}
-          handleFileAccept={handleFileAccept}
-          handleFileReject={handleFileReject}
-          handleFileRemove={handleFileRemove}
-          placeholder={getPlaceholder(
-            isLoading,
-            <Avatar size="xm" avatar={colonyAvatarImage} />,
-          )}
-          forwardedRef={dropzoneRef}
-          errorCode={avatarFileError}
-          isAvatarUploaded={colonyAvatarImage !== null}
-          isPropgressContentVisible={showPropgress}
-        />
-
-        {showPropgress && (
-          <ProgressContent
-            progress={uploadProgress}
-            fileName={file.fileName}
-            fileSize={file.fileSize}
+      <div className="flex sm:flex-row flex-col gap-4 sm:gap-2">
+        {avatar}
+        <div className="flex flex-col gap-2 w-full">
+          <div className="hidden sm:block text-gray-600 text-sm">
+            {uploaderText}
+          </div>
+          <FileUpload
+            dropzoneOptions={{
+              disabled: false,
+            }}
+            handleFileAccept={handleFileAccept}
+            handleFileReject={handleFileReject}
             handleFileRemove={handleFileRemove}
+            fileOptions={fileOptions}
+            forwardedRef={dropzoneRef}
+            errorCode={avatarFileError}
+            isAvatarUploaded={colonyAvatarImage !== null}
+            isPropgressContentVisible={showPropgress}
           />
-        )}
-      </>
+
+          {showPropgress && (
+            <ProgressContent
+              progress={uploadProgress}
+              fileName={file.fileName}
+              fileSize={file.fileSize}
+              handleFileRemove={handleFileRemove}
+            />
+          )}
+        </div>
+      </div>
     </Modal>
   );
 };

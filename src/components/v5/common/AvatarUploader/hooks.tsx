@@ -3,6 +3,7 @@ import { FileRejection } from 'react-dropzone';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
+import { useIntl } from 'react-intl';
 import { useAppContext, useCanEditProfile } from '~hooks';
 import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
 import { getFileRejectionErrors } from '~shared/FileUpload/utils';
@@ -124,4 +125,22 @@ export const useAvatarUploader = () => {
     uploadProgress,
     file,
   };
+};
+
+export const useFormatFormats = (fileFormats: string[]) => {
+  const { formatMessage } = useIntl();
+
+  return fileFormats
+    .map((format, index) => {
+      if (fileFormats.length === 1) {
+        return format;
+      }
+
+      if (index === fileFormats.length - 1) {
+        return `${formatMessage({ id: 'or' })} ${format}`;
+      }
+
+      return format;
+    })
+    .join(', ');
 };
