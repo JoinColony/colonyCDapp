@@ -52,7 +52,6 @@ const AvatarUploader: FC<AvatarUploaderProps> = ({
           isAvatarUploaded={user?.profile?.avatar !== null}
           isPropgressContentVisible={showPropgress}
         />
-
         {showPropgress && (
           <ProgressContent
             progress={uploadProgress}

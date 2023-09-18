@@ -138,7 +138,7 @@ export const useFormatFormats = (fileFormats: string[]) => {
       }
 
       if (index === fileFormats.length - 1) {
-        return `${formatMessage({ id: 'or' })} ${format}`;
+        return `${formatMessage({ id: 'avatar.uploader.or' })} ${format}`;
       }
 
       return format;
