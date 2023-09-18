@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import Cleave from 'cleave.js/react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
@@ -19,12 +19,7 @@ import { AmountFieldProps, CleaveChangeEvent } from './types';
 
 const displayName = 'v5.common.ActionsContent.partials.AmountField';
 
-const AmountField: FC<AmountFieldProps> = ({
-  name,
-  amount,
-  defaultToken,
-  isError,
-}) => {
+const AmountField: FC<AmountFieldProps> = ({ name, defaultToken, isError }) => {
   const { formatMessage } = useIntl();
   const { watch } = useFormContext();
   const { field } = useController({
@@ -62,10 +57,6 @@ const AmountField: FC<AmountFieldProps> = ({
     onTriggered: () => toggleOffTokenSelect(),
   });
 
-  useEffect(() => {
-    if (amount) field.onChange(amount);
-  }, [amount]);
-
   return (
     <div className="flex items-center gap-3 w-full" ref={ref}>
       <Cleave
@@ -79,7 +70,7 @@ const AmountField: FC<AmountFieldProps> = ({
         })}
         placeholder="0"
         onInput={onInput}
-        value={amount}
+        value={field.value}
         onChange={handleCleaveChange}
         style={{ width: `${inputWidth || 0.65}rem` }}
       />

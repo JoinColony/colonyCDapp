@@ -83,7 +83,9 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
             />
           </div>
         )}
-        {selectedAction === Actions.SIMPLE_PAYMENT && <TransactionTable />}
+        {selectedAction === Actions.SIMPLE_PAYMENT && (
+          <TransactionTable name="payments" />
+        )}
       </div>
 
       <div className="mt-auto">

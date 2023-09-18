@@ -1,11 +1,23 @@
 import React from 'react';
-import { flexRender, useReactTable } from '@tanstack/react-table';
+import {
+  flexRender,
+  useReactTable,
+  getCoreRowModel as libGetCoreRowModel,
+} from '@tanstack/react-table';
 import { TableProps } from './types';
 
 const displayName = 'v5.common.Table';
 
-const Table = <T,>({ className, title, ...rest }: TableProps<T>) => {
-  const table = useReactTable<T>(rest);
+const Table = <T,>({
+  className,
+  title,
+  getCoreRowModel,
+  ...rest
+}: TableProps<T>) => {
+  const table = useReactTable<T>({
+    getCoreRowModel: getCoreRowModel || libGetCoreRowModel<T>(),
+    ...rest,
+  });
 
   return (
     <div className={className}>

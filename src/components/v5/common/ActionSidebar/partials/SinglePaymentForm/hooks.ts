@@ -26,6 +26,12 @@ export const useSinglePayment = () => {
       recipient: yup.string().required(),
       team: yup.number().required(),
       decisionMethod: yup.string().defined(),
+      payments: yup.array().of(
+        yup.object().shape({
+          recipent: yup.string(),
+          amount: yup.string(),
+        }),
+      ),
     })
     .defined();
 
@@ -39,6 +45,7 @@ export const useSinglePayment = () => {
         motionDomainId: payload.createdIn,
         annotation: payload.annotation,
         decisionMethod: payload.decisionMethod,
+        payments: payload.payments,
       };
       if (colony) {
         return getCreatePaymentDialogPayload(colony, values, networkInverseFee);
@@ -59,6 +66,7 @@ export const useSinglePayment = () => {
       decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
       annotation: '',
       amount: 0,
+      payments: [],
     },
     defaultAction: ActionTypes.MOTION_EXPENDITURE_PAYMENT,
     actionType: ActionTypes.ACTION_EXPENDITURE_PAYMENT,

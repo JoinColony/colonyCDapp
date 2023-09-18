@@ -1,6 +1,8 @@
 import { TableOptions } from '@tanstack/react-table';
 
-export interface TableProps<T> extends TableOptions<T> {
+export interface TableProps<T>
+  extends Omit<TableOptions<T>, 'getCoreRowModel'> {
+  getCoreRowModel?: TableOptions<T>['getCoreRowModel'];
   className?: string;
   title?: React.ReactNode;
 }
