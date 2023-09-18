@@ -128,24 +128,30 @@ export const useAvatarUploader = () => {
   };
 };
 
-export const useGetUploaderText = (fileOptions: FileUploadOptions) => {
+export const useFormatFormats = (fileFormats: string[]) => {
   const { formatMessage } = useIntl();
 
-  const { fileDimension, fileFormat, fileSize } = fileOptions;
-
-  const formattedFormats = fileFormat
+  return fileFormats
     .map((format, index) => {
-      if (fileFormat.length === 1) {
+      if (fileFormats.length === 1) {
         return format;
       }
 
-      if (index === fileFormat.length - 1) {
+      if (index === fileFormats.length - 1) {
         return `${formatMessage({ id: 'or' })} ${format}`;
       }
 
       return format;
     })
     .join(', ');
+};
+
+export const useGetUploaderText = (fileOptions: FileUploadOptions) => {
+  const { formatMessage } = useIntl();
+
+  const { fileDimension, fileFormat, fileSize } = fileOptions;
+
+  const formattedFormats = useFormatFormats(fileFormat);
 
   return formatMessage(
     { id: 'avatar.uploader.info' },
