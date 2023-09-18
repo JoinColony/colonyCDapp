@@ -567,6 +567,7 @@
   "teamsPage.description": "Teams of the Colony",
   "userProfilePage.title": "Profile",
   "userProfilePage.description": "Edit and update your account information",
+  "userProfilePage.website.error": "Enter a valid URL",
   "userPreferencesPage.title": "Preferences",
   "userPreferencesPage.description": "Set your preferences for your Colony account",
   "userPreferencesPage.accountPreferences": "Account preferences",
