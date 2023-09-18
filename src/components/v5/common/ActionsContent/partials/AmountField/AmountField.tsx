@@ -19,14 +19,19 @@ import { AmountFieldProps, CleaveChangeEvent } from './types';
 
 const displayName = 'v5.common.ActionsContent.partials.AmountField';
 
-const AmountField: FC<AmountFieldProps> = ({ name, defaultToken, isError }) => {
+const AmountField: FC<AmountFieldProps> = ({
+  name,
+  tokenFieldName,
+  defaultToken,
+  isError,
+}) => {
   const { formatMessage } = useIntl();
   const { watch } = useFormContext();
   const { field } = useController({
     name,
   });
   const { field: tokenAddressController } = useController({
-    name: 'tokenAddress',
+    name: tokenFieldName || 'tokenAddress',
   });
   const { colony } = useColonyContext();
   const { nativeToken } = colony || {};
@@ -47,7 +52,7 @@ const AmountField: FC<AmountFieldProps> = ({ name, defaultToken, isError }) => {
     onInput,
     formattingOptions,
     selectedToken,
-  } = useAmountField(defaultToken || token);
+  } = useAmountField(defaultToken || token, name);
 
   const handleCleaveChange = (e: CleaveChangeEvent) => {
     field.onChange(e.target.rawValue);

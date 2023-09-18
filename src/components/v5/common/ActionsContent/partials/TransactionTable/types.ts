@@ -1,7 +1,4 @@
 export interface TransactionTableModel {
-  recipent: string;
-  amount: string;
-  token: string;
   key: string;
 }
 

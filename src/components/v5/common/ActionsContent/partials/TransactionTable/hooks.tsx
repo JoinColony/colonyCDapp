@@ -1,7 +1,6 @@
 import React, { useMemo, useCallback } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
-import { v4 as uuidv4 } from 'uuid';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
 
 import { TransactionTableModel } from './types';
@@ -19,22 +18,22 @@ export const useTransactionTableColumns = (
 
   const columns: ColumnDef<TransactionTableModel, string>[] = useMemo(
     () => [
-      columnHelper.accessor('recipent', {
+      columnHelper.display({
+        id: 'recipent',
         header: () => intl.formatMessage({ id: 'table.row.recipent' }),
         cell: ({ row }) => (
-          <UserSelect
-            name={`${name}.${row.index}.recipent`}
-            selectedWalletAddress={row.original.recipent}
-          />
+          <UserSelect key={row.id} name={`${name}.${row.index}.recipent`} />
         ),
       }),
-      columnHelper.accessor('amount', {
+      columnHelper.display({
+        id: 'amount',
         header: () => intl.formatMessage({ id: 'table.row.amount' }),
         cell: ({ row }) => {
           return (
             <AmountField
+              key={row.id}
               name={`${name}.${row.index}.amount`}
-              defaultToken={row.original.token}
+              tokenFieldName={`${name}.${row.index}.token`}
             />
           );
         },
@@ -46,32 +45,32 @@ export const useTransactionTableColumns = (
   return columns;
 };
 
-export const useGetTableMenuProps = (fieldArrayMethods) => {
+export const useGetTableMenuProps = ({ insert, remove }) => {
   const intl = useIntl();
 
   return useCallback<
     TableWithMeatballMenuProps<TransactionTableModel>['getMenuProps']
   >(
     ({ index, original }) => ({
+      cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
       items: [
         {
           key: 'duplicate',
           onClick: () =>
-            fieldArrayMethods.insert(index, {
+            insert(index + 1, {
               ...original,
-              key: uuidv4(),
             }),
           label: intl.formatMessage({ id: 'table.row.duplicate' }),
           iconName: 'copy-simple',
         },
         {
           key: 'remove',
-          onClick: () => fieldArrayMethods.remove(index),
-          label: `${index} - ${intl.formatMessage({ id: 'table.row.remove' })}`,
+          onClick: () => remove(index),
+          label: intl.formatMessage({ id: 'table.row.remove' }),
           iconName: 'trash',
         },
       ],
     }),
-    [intl, fieldArrayMethods],
+    [insert, intl, remove],
   );
 };

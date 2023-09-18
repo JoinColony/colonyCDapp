@@ -4,7 +4,7 @@ import { Colony } from '~types';
 import { notNull } from '~utils/arrays';
 import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 
-export const useAmountField = (selectedTokenAddress: string) => {
+export const useAmountField = (selectedTokenAddress: string, name: string) => {
   const { colony } = useColonyContext();
   const [inputWidth, setInputWidth] = useState<number>();
 
@@ -38,7 +38,7 @@ export const useAmountField = (selectedTokenAddress: string) => {
     setInputWidth(width);
   };
 
-  const dynamicCleaveOptionKey = JSON.stringify(formattingOptions);
+  const dynamicCleaveOptionKey = JSON.stringify({ ...formattingOptions, name });
 
   return {
     colonyTokens,

@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { v4 as uuidv4 } from 'uuid';
-import { useFieldArray, useWatch } from 'react-hook-form';
+import { useFieldArray } from 'react-hook-form';
 
 import Button from '~v5/shared/Button/Button';
 import { useColonyContext, useMobile } from '~hooks';
@@ -16,7 +15,12 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
   const fieldArrayMethods = useFieldArray({
     name,
   });
-  const data: TransactionTableModel[] = useWatch({ name }) || [];
+  const data: TransactionTableModel[] = fieldArrayMethods.fields.map(
+    ({ id }, index) => ({
+      key: id,
+      index,
+    }),
+  );
   const columns = useTransactionTableColumns(name);
   const isMobile = useMobile();
   const getMenuProps = useGetTableMenuProps(fieldArrayMethods);
@@ -45,7 +49,6 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
             amount: '0',
             recipent: '',
             token: nativeToken?.tokenAddress || '',
-            key: uuidv4(),
           });
         }}
       >

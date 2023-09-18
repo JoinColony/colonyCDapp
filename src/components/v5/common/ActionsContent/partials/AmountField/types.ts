@@ -7,4 +7,5 @@ export type CleaveChangeEvent = React.ChangeEvent<
 export interface AmountFieldProps extends Pick<SelectProps, 'name'> {
   defaultToken?: string;
   isError?: boolean;
+  tokenFieldName?: string;
 }
