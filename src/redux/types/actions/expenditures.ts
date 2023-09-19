@@ -166,4 +166,18 @@ export type ExpendituresActionTypes =
       ActionTypes.STAKED_EXPENDITURE_CANCEL_SUCCESS,
       object,
       object
+    >
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_CREATE,
+      {
+        colonyAddress: Address;
+        createdInDomain: Domain;
+      },
+      MetaWithNavigate<object>
+    >
+  | ErrorActionType<ActionTypes.STREAMING_PAYMENT_CREATE_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_CREATE_SUCCESS,
+      object,
+      object
     >;

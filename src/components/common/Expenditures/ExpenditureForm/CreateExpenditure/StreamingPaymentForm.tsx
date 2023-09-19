@@ -23,7 +23,7 @@ const StreamingPaymentForm = () => {
 
   return (
     <CreateExpenditureForm<StreamingPaymentFormValues>
-      actionType={ActionTypes.STAKED_EXPENDITURE_CANCEL}
+      actionType={ActionTypes.STREAMING_PAYMENT_CREATE}
       defaultValues={{
         createInDomainId: Id.RootDomain,
         fundFromDomainId: Id.RootDomain,
