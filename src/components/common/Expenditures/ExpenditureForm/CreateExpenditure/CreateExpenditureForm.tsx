@@ -6,14 +6,14 @@ import { ActionForm } from '~shared/Fields';
 import ExpenditureDomainSelector from '../ExpenditureDomainSelector/ExpenditureDomainSelector';
 import { useColonyContext } from '~hooks';
 import { ActionFormProps } from '~shared/Fields/Form';
-import { CreateExpenditureFormValues } from '../types';
+import { ExpenditureFormValues } from '../types';
 
 type CreateExpenditureFormProps<T extends FieldValues> = Pick<
   ActionFormProps<T>,
   'defaultValues' | 'actionType' | 'transform' | 'children'
 >;
 
-const CreateExpenditureForm = <T extends CreateExpenditureFormValues>({
+const CreateExpenditureForm = <T extends ExpenditureFormValues>({
   children,
   ...actionFormProps
 }: CreateExpenditureFormProps<T>) => {

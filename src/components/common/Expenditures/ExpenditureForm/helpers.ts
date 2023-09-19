@@ -11,6 +11,7 @@ import {
   ExpenditureFormType,
   ExpenditurePayoutFieldValue,
   ExpenditureStageFieldValue,
+  StagedPaymentFormValues,
 } from './types';
 
 export const getInitialPayoutFieldValue = (
@@ -42,8 +43,8 @@ export const getExpenditurePayoutsFieldValue = (
   }, []);
 };
 
-const getStagedExpenditurePayouts = (
-  payload: any, // @TODO: Fix
+export const getStagedExpenditurePayouts = (
+  payload: StagedPaymentFormValues,
 ): ExpenditurePayoutFieldValue[] =>
   payload.stages.map((stage) => ({
     recipientAddress: payload.recipientAddress ?? '',

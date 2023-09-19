@@ -12,7 +12,7 @@ import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
 
 import {
-  CreateExpenditureFormValues,
+  ExpenditureFormValues,
   getCreateExpenditureTransformPayloadFn,
 } from '../../ExpenditureForm';
 import useExpenditureStaking from './useExpenditureStaking';
@@ -22,7 +22,7 @@ import styles from './StakeExpenditureDialog.module.css';
 interface StakeExpenditureDialogProps {
   colony: Colony;
   onCancel: () => void;
-  formValues: CreateExpenditureFormValues;
+  formValues: ExpenditureFormValues;
 }
 
 const StakeExpenditureDialog = ({
