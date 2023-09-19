@@ -1,25 +1,22 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import Dialog, { DialogSection } from '~shared/Dialog';
 import { Colony } from '~types';
-
 import { SpinnerLoader } from '~shared/Preloaders';
 import { useAppContext } from '~hooks';
 import { Heading3 } from '~shared/Heading';
 import Numeral from '~shared/Numeral';
 import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
+import { ActionButtonProps } from '~shared/Button/ActionButton';
 
-import {
-  ExpenditureFormValues,
-  getCreateExpenditureTransformPayloadFn,
-} from '../../ExpenditureForm';
+import { ExpenditureFormValues } from '../../ExpenditureForm';
 import useExpenditureStaking from './useExpenditureStaking';
 
 import styles from './StakeExpenditureDialog.module.css';
 
-interface StakeExpenditureDialogProps {
+interface StakeExpenditureDialogProps
+  extends Pick<ActionButtonProps, 'transform'> {
   colony: Colony;
   onCancel: () => void;
   formValues: ExpenditureFormValues;
@@ -29,9 +26,8 @@ const StakeExpenditureDialog = ({
   colony,
   onCancel,
   formValues,
+  transform,
 }: StakeExpenditureDialogProps) => {
-  const navigate = useNavigate();
-
   const { user } = useAppContext();
 
   const { stakeAmount, stakedExpenditureAddress, hasEnoughTokens, isLoading } =
@@ -93,7 +89,7 @@ const StakeExpenditureDialog = ({
             stakeAmount: stakeAmount ?? '0',
             stakedExpenditureAddress: stakedExpenditureAddress ?? '',
           }}
-          transform={getCreateExpenditureTransformPayloadFn(colony, navigate)}
+          transform={transform}
         >
           Confirm stake
         </ActionButton>

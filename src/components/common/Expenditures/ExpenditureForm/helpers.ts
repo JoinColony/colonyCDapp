@@ -1,14 +1,9 @@
 import { weiToEth } from '@web3-onboard/common';
 import { BigNumber } from 'ethers';
-import { NavigateFunction } from 'react-router-dom';
 
-import { Colony, Expenditure } from '~types';
-import { mapPayload, pipe, withMeta } from '~utils/actions';
-import { findDomainByNativeId } from '~utils/domains';
-import { CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure';
+import { Expenditure } from '~types';
 
 import {
-  ExpenditureFormType,
   ExpenditurePayoutFieldValue,
   ExpenditureStageFieldValue,
   StagedPaymentFormValues,
@@ -52,31 +47,6 @@ export const getStagedExpenditurePayouts = (
     amount: stage.amount,
     claimDelay: 0,
   }));
-
-export const getCreateExpenditureTransformPayloadFn = (
-  colony: Colony,
-  navigate: NavigateFunction,
-) =>
-  pipe(
-    mapPayload((payload: any) => {
-      // @TODO: Fix
-      const isStaged = payload.formType === ExpenditureFormType.Staged;
-
-      return {
-        ...payload,
-        colony,
-        createdInDomain: colony
-          ? findDomainByNativeId(payload.createInDomainId, colony)
-          : null,
-        fundFromDomainId: payload.fundFromDomainId,
-        isStaged,
-        payouts: isStaged
-          ? getStagedExpenditurePayouts(payload)
-          : payload.payouts,
-      } as CreateExpenditurePayload;
-    }),
-    withMeta({ navigate }),
-  );
 
 export const getInitialStageFieldValue = (
   tokenAddress: string,
