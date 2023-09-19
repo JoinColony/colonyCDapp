@@ -35,6 +35,7 @@ export interface FormProps<FormData extends FieldValues> {
   options?: UseFormProps<FormData>;
   /** Pass true to reset the default values to latest values on form submission. This will reset the isDirty prop. */
   resetOnSubmit?: boolean;
+  className?: string;
 }
 
 const Form = <FormData extends FieldValues>({
@@ -46,6 +47,7 @@ const Form = <FormData extends FieldValues>({
   options,
   resetOnSubmit = false,
   validationSchema,
+  className,
 }: FormProps<FormData>) => {
   const formHelpers = useForm({
     resolver: validationSchema ? yupResolver(validationSchema) : undefined,
@@ -75,6 +77,7 @@ const Form = <FormData extends FieldValues>({
   return (
     <FormProvider {...formHelpers}>
       <form
+        className={className}
         onSubmit={handleSubmit(
           (data, e) => onSubmit(data, formHelpers, e),
           (errors, e) => onError && onError(errors, formHelpers, e),

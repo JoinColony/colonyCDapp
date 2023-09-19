@@ -5,26 +5,23 @@ import { useMobile } from '~hooks';
 import Button, { PendingButton } from '~v5/shared/Button';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { ActionButtonsProps } from '../types';
-import { useGetSubmitButton } from './hooks';
+import { useSubmitButtonText } from './hooks';
 
 const displayName = 'v5.common.ActionSidebar.partials.ActionButtons';
 
 const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
   const isMobile = useMobile();
-  const submitText = useGetSubmitButton();
-  const methods = useFormContext();
-  const { selectedAction, toggleCancelModal, toggleActionSidebarOff } =
-    useActionSidebarContext();
-
-  const isLoading = methods?.formState?.isSubmitting;
-  const isDirty = methods?.formState?.isDirty;
+  const submitText = useSubmitButtonText();
+  const {
+    formState: { isSubmitting, dirtyFields },
+  } = useFormContext();
+  const {
+    actionSidebarToggle: [, { toggleOff: toggleActionSidebarOff }],
+    cancelModalToggle: [, { toggle: toggleCancelModal }],
+  } = useActionSidebarContext();
 
   const onCancelClick = () => {
-    if (!methods) {
-      toggleActionSidebarOff();
-    }
-
-    if (isDirty) {
+    if (Object.keys(dirtyFields).length > 0) {
       toggleCancelModal();
     } else {
       toggleActionSidebarOff();
@@ -33,7 +30,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
 
   return (
     <div
-      className="flex items-center flex-col-reverse sm:flex-row 
+      className="flex items-center flex-col-reverse sm:flex-row
         justify-end gap-2 p-6 border-t border-gray-200"
     >
       <Button
@@ -42,13 +39,13 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
         onClick={onCancelClick}
         isFullSize={isMobile}
       />
-      {isLoading ? (
+      {isSubmitting ? (
         <PendingButton rounded="s" isFullSize={isMobile} />
       ) : (
         <Button
           mode="primarySolid"
-          disabled={!selectedAction || isActionDisabled}
-          text={{ id: submitText }}
+          disabled={isActionDisabled}
+          text={submitText}
           isFullSize={isMobile}
           type="submit"
         />

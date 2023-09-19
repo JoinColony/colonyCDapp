@@ -1,30 +1,24 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
-import clsx from 'clsx';
 
 import useDropzoneWithFileReader from '~hooks/useDropzoneWithFileReader';
-import styles from './AvatarUploader.module.css';
 import SuccessContent from './SuccessContent';
 import ErrorContent from './ErrorContent';
 import DefaultContent from './DefaultContent';
 import { FileUploadProps } from '../types';
-import { useMobile } from '~hooks';
 
 const displayName = 'v5.common.AvatarUploader.partials.partials.FileUpload';
 
 const FileUpload: FC<FileUploadProps> = ({
   dropzoneOptions,
-  placeholder,
   handleFileAccept,
   handleFileReject,
   handleFileRemove,
   errorCode,
   isAvatarUploaded,
   isPropgressContentVisible,
+  isSimplified,
+  fileOptions,
 }) => {
-  const { formatMessage } = useIntl();
-  const isMobile = useMobile();
-
   const { getInputProps, getRootProps, open, isDragReject, fileRejections } =
     useDropzoneWithFileReader({
       dropzoneOptions: {
@@ -35,16 +29,16 @@ const FileUpload: FC<FileUploadProps> = ({
       handleFileReject,
     });
 
-  const avatar = <div className="w-16 mr-4">{placeholder}</div>;
-  const uploaderInfo = (
-    <div className={styles.text}>
-      {formatMessage({ id: 'avatar.uploader.info' })}
-    </div>
-  );
   const successContent = (
     <SuccessContent open={open} handleFileRemove={handleFileRemove} />
   );
-  const defaultContent = <DefaultContent open={open} />;
+  const defaultContent = (
+    <DefaultContent
+      isSimplified={isSimplified}
+      open={open}
+      fileOptions={fileOptions}
+    />
+  );
   const errorContent = (
     <ErrorContent
       errorCode={errorCode}
@@ -55,49 +49,22 @@ const FileUpload: FC<FileUploadProps> = ({
     />
   );
 
+  const shouldShowDefaultContent =
+    !isAvatarUploaded && !errorCode && !isPropgressContentVisible;
+  const shouldShowSuccessContent =
+    isAvatarUploaded && !errorCode && !isPropgressContentVisible;
+
   return (
-    <div className="flex gap-2">
-      {isMobile ? (
-        <div className={styles.flexCol}>
-          <div className="flex items-center">
-            {avatar}
-            <div className={styles.flexCol}>
-              {uploaderInfo}
-              {isAvatarUploaded &&
-                !errorCode &&
-                !isPropgressContentVisible &&
-                successContent}
-            </div>
-          </div>
-          {!!errorCode && errorContent}
-          {!isAvatarUploaded &&
-            !errorCode &&
-            !isPropgressContentVisible &&
-            defaultContent}
-        </div>
-      ) : (
-        <>
-          {avatar}
-          <div className={`${styles.flexCol} w-full`}>
-            {uploaderInfo}
-            <div
-              className={clsx(styles.wrapper)}
-              {...getRootProps({ 'aria-invalid': isDragReject })}
-            >
-              <input {...getInputProps()} />
-              {!!errorCode && errorContent}
-              {isAvatarUploaded &&
-                !errorCode &&
-                !isPropgressContentVisible &&
-                successContent}
-              {!isAvatarUploaded &&
-                !errorCode &&
-                !isPropgressContentVisible &&
-                defaultContent}
-            </div>
-          </div>
-        </>
-      )}
+    <div className="w-full">
+      <div
+        className="flex md:flex-col w-full"
+        {...getRootProps({ 'aria-invalid': isDragReject })}
+      >
+        <input {...getInputProps()} />
+        {!!errorCode && errorContent}
+        {shouldShowSuccessContent && successContent}
+        {shouldShowDefaultContent && defaultContent}
+      </div>
     </div>
   );
 };

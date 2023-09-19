@@ -102,7 +102,7 @@ exports.handler = async (event) => {
           AddressZero,
         ));
     } catch (e) {
-      // may error if there's no rep in colony. In that case, there are no reputed contributors to update.
+      // may error if there's no rep in colony. In that case, there are no contributors to update.
       return true;
     }
 
@@ -165,10 +165,11 @@ exports.handler = async (event) => {
           apiKey,
           graphqlURL,
           reputation: totalRepInDomain.toString(),
+          colonyReputation: totalRepInColony.toString(),
         });
 
         // For each domain, sort addresses by reputation, get the contributor type, and
-        // update the database with the corresponding ReputedContributor entry
+        // update the database with the corresponding Contributor entry
 
         const sortedAddresses = await sortAddressesDescendingByReputation(
           colonyClient,
