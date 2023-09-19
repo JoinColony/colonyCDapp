@@ -30,11 +30,7 @@ export const useTransactionTableColumns = (
         header: () => intl.formatMessage({ id: 'table.row.amount' }),
         cell: ({ row }) => {
           return (
-            <AmountField
-              key={row.id}
-              name={`${name}.${row.index}.amount`}
-              tokenFieldName={`${name}.${row.index}.token`}
-            />
+            <AmountField key={row.id} name={`${name}.${row.index}.amount`} />
           );
         },
       }),
