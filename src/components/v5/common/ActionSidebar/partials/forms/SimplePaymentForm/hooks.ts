@@ -30,12 +30,16 @@ const validationSchema = yup
     recipient: yup.string().required(),
     from: yup.number().required(),
     decisionMethod: yup.string().defined(),
-    payments: yup.array().of(
-      yup.object().shape({
-        recipent: yup.string(),
-        amount: yup.string(),
-      }),
-    ),
+    payments: yup
+      .array()
+      .min(1, 'it needs to have at least one element')
+      .of(
+        yup.object().shape({
+          recipent: yup.string(),
+          amount: yup.string(),
+        }),
+      )
+      .required(),
   })
   .defined();
 
