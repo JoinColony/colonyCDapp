@@ -13,22 +13,20 @@ import Icon from '~shared/Icon';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
 import UserAvatar from '~v5/shared/UserAvatar';
-import { useActionFormContext } from '~v5/common/ActionSidebar/partials/ActionForm/ActionFormContext';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
 const UserSelect: FC<SelectProps> = ({
   name,
-  selectedWalletAddress,
+  selectedWalletAddress = '',
   isError,
 }) => {
   const intl = useIntl();
   const { field } = useController({
     name,
   });
-  const { watch } = useFormContext();
+  const { watch, setError, clearErrors } = useFormContext();
   const { recipient } = watch();
-
   const usersOptions = useUserSelect();
   const [
     isUserSelectVisible,
@@ -39,17 +37,17 @@ const UserSelect: FC<SelectProps> = ({
   const { user: userByAddress } = useUserByAddress(
     recipient || selectedWalletAddress,
   );
-
   const ref = useDetectClickOutside({
     onTriggered: () => toggleUserSelectOff(),
   });
 
-  const { formErrors, onChangeRecipientVerification, changeFormErrorsState } =
-    useActionFormContext();
-
   useEffect(() => {
-    onChangeRecipientVerification(usersOptions.isRecipientNotVerified);
-  }, [usersOptions.isRecipientNotVerified, onChangeRecipientVerification]);
+    if (usersOptions.isRecipientNotVerified) {
+      setError('recipent', { type: 'validate', message: 'user not verified' });
+    } else {
+      clearErrors('recipent');
+    }
+  }, [usersOptions.isRecipientNotVerified, setError, clearErrors]);
 
   return (
     <div className="sm:relative w-full">
@@ -138,7 +136,6 @@ const UserSelect: FC<SelectProps> = ({
             field.onChange(value);
             setSelectedUser(value);
             toggleUserSelectOff();
-            changeFormErrorsState(formErrors);
           }}
           isLoading={usersOptions.loading}
           isDefaultItemVisible
