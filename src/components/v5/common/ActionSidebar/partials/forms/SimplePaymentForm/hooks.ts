@@ -30,6 +30,12 @@ const validationSchema = yup
     recipient: yup.string().required(),
     from: yup.number().required(),
     decisionMethod: yup.string().defined(),
+    payments: yup.array().of(
+      yup.object().shape({
+        recipent: yup.string(),
+        amount: yup.string(),
+      }),
+    ),
   })
   .defined();
 
@@ -51,6 +57,7 @@ export const useSimplePayment = (
           amount: 0,
           tokenAddress: colony?.nativeToken.tokenAddress || '',
         },
+        payments: [],
       }),
       [colony?.nativeToken.tokenAddress],
     ),
@@ -68,7 +75,7 @@ export const useSimplePayment = (
             motionDomainId: payload.createdIn,
             annotation: payload.annotation,
             decisionMethod: payload.decisionMethod,
-            payments: [],
+            payments: payload.payments,
           };
 
           if (colony) {
