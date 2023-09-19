@@ -120,7 +120,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
       ,
       { toggle: toggleActionSidebarOff, registerContainerRef },
     ],
-    cancelModalToggle: [isCancelModalOpen, { toggle: toggleCancelModalOff }],
+    cancelModalToggle: [isCancelModalOpen, { toggleOff: toggleCancelModalOff }],
   } = useActionSidebarContext();
   const [isSidebarFullscreen, { toggle: toggleIsSidebarFullscreen }] =
     useToggle();
