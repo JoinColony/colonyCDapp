@@ -18,6 +18,12 @@ export interface ExpenditureStageFieldValue {
   tokenAddress: string;
 }
 
+export enum StreamingPaymentEndCondition {
+  WhenCancelled = 'WhenCancelled',
+  LimitReached = 'LimitReached',
+  FixedTime = 'FixedTime',
+}
+
 interface BaseCreateExpenditureFormValues {
   createInDomainId: number;
   fundFromDomainId: number;
@@ -28,11 +34,21 @@ export interface AdvancedPaymentFormValues
   payouts: ExpenditurePayoutFieldValue[];
 }
 
+export interface StagedPaymentFormValues
+  extends BaseCreateExpenditureFormValues {
+  recipientAddress: string;
+  stages: ExpenditureStageFieldValue[];
+}
+
 export interface StreamingPaymentFormValues
   extends BaseCreateExpenditureFormValues {
   recipientAddress: string;
+  endCondition: StreamingPaymentEndCondition;
+  tokenAddress: string;
+  amount: string;
 }
 
 export type CreateExpenditureFormValues =
   | AdvancedPaymentFormValues
+  | StagedPaymentFormValues
   | StreamingPaymentFormValues;

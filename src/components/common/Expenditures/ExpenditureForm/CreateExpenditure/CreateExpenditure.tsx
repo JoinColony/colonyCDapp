@@ -5,6 +5,7 @@ import { Tab, TabList, Tabs, TabPanel } from '~shared/Tabs';
 import { ExpenditureFormType } from '../types';
 import AdvancedPaymentForm from './AdvancedPaymentForm';
 import StreamingPaymentForm from './StreamingPaymentForm';
+import StagedPaymentForm from './StagedPaymentForm';
 
 const tabs = [
   { type: ExpenditureFormType.Advanced, label: 'Advanced Payment' },
@@ -24,7 +25,7 @@ const CreateExpenditure = () => {
         <AdvancedPaymentForm />
       </TabPanel>
       <TabPanel>
-        <AdvancedPaymentForm />
+        <StagedPaymentForm />
       </TabPanel>
       <TabPanel>
         <StreamingPaymentForm />
