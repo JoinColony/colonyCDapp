@@ -12,7 +12,7 @@ const CustomScrollbar: FC<PropsWithChildren<CustomScrollbarProps>> = ({
   <div
     className={clsx(
       className,
-      'customScrollbar md:hover:scrollbar-thumb-bg-gray-300 pr-1 md:max-h-[50vh] w-full overflow-y-scroll',
+      'customScrollbar pr-1 md:max-h-[50vh] w-full overflow-y-scroll',
     )}
   >
     {children}

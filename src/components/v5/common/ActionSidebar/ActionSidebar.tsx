@@ -21,6 +21,7 @@ import Modal from '~v5/shared/Modal';
 import { ActionForm } from '~shared/Fields';
 import { ActionFormBaseProps } from './types';
 import { formatText } from '~utils/intl';
+import CustomScrollbar from '~v5/shared/CustomScrollbar';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -77,10 +78,9 @@ const ActionSidebarFormContent: FC<PropsWithChildren<Props>> = ({
         )}
         {children}
       </div>
-      <div
+      <CustomScrollbar
         className={clsx('px-6 py-8 flex-grow', {
-          'customScrollbar max-h-[80vh] h-full overflow-y-auto':
-            !!selectedAction,
+          'max-h-[80vh] h-full overflow-y-auto': !!selectedAction,
         })}
       >
         <input
@@ -99,7 +99,7 @@ const ActionSidebarFormContent: FC<PropsWithChildren<Props>> = ({
             <NotificationBanner {...notificationBanner} />
           </div>
         )}
-      </div>
+      </CustomScrollbar>
       <div className="mt-auto">
         {!selectedAction && (
           <PopularActions
