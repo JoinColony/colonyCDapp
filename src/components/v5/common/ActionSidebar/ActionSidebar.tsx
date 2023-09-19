@@ -82,7 +82,7 @@ const ActionSidebarFormContent: FC<PropsWithChildren<Props>> = ({
           type="text"
           className={`
             heading-3 placeholder:text-gray-500
-            hover:text-blue-400 hover:placeholder:text-blue-400 text-gray-900
+            md:hover:text-blue-400 md:hover:placeholder:text-blue-400 text-gray-900
             transition-colors duration-normal mb-7
           `}
           placeholder={formatText({ id: 'placeholder.title' })}
