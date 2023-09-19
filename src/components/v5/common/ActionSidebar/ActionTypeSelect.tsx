@@ -53,7 +53,7 @@ const ActionTypeSelect: FC = () => {
                 onToggle={toggleSelectOff}
                 items={actionsList}
                 isOpen={isSelectVisible}
-                className="h-[85vh] md:h-[60vh]"
+                className="h-[85vh] sm:h-[60vh]"
               />
             )}
           </>
