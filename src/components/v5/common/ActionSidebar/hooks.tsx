@@ -1,14 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ColonyRole } from '@colony/colony-js';
-import { useForm } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { useUnmountEffect } from 'framer-motion';
 import { ACTION, Action } from '~constants/actions';
 import {
   useAppContext,
-  useAsyncFunction,
   useColonyContext,
   useColonyHasReputation,
   useDialogActionPermissions,
@@ -40,16 +38,12 @@ import {
 } from '~utils/checks';
 import { ACTION_TYPE_FIELD_NAME, ACTION_TYPE_NOTIFICATION } from './consts';
 import { NotificationBannerProps } from '~common/Extensions/NotificationBanner/types';
-import {
-  ActionFormBaseProps,
-  ActionFormOptions,
-  UseActionFormBaseHook,
-} from './types';
+import { ActionFormBaseProps, UseActionFormBaseHook } from './types';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { getFormAction } from '~utils/actions';
-import noop from '~utils/noop';
 import { GLOBAL_EVENTS } from '~utils/browser/dispatchGlobalEvent/consts';
 import { SetActionTypeCutomEventDetail } from '~utils/browser/dispatchGlobalEvent/types';
+import { ActionFormProps } from '~shared/Fields/Form/ActionForm';
+import { ActionTypes } from '~redux';
 
 export const useActionsList = () => {
   const { colony } = useColonyContext();
@@ -321,7 +315,7 @@ export const useUserHasPermissions = (): boolean => {
   return hasRoles || isVotingReputationEnabled;
 };
 
-export const useActionForm = () => {
+export const useSidebarActionForm = () => {
   const actionFormComponents = useMemo<
     Partial<Record<Action, React.FC<ActionFormBaseProps>>>
   >(
@@ -340,35 +334,12 @@ export const useActionForm = () => {
     [],
   );
 
-  const [actionFormOptions, setActionFormOptions] =
-    useState<ActionFormOptions>();
-  const { onSubmit = noop, ...rest } = actionFormOptions || {};
-  const form = useForm({
-    mode: 'all',
-    ...rest,
-  });
-
+  const form = useFormContext();
   const selectedAction: Action | undefined = form.watch(ACTION_TYPE_FIELD_NAME);
-  const hasErrors = Object.keys(form.formState.errors).length > 0;
+  const hasErrors = !form.formState.isValid && form.formState.isSubmitted;
   const formComponent = selectedAction
     ? actionFormComponents[selectedAction]
     : undefined;
-  const getFormOptions = useCallback<ActionFormBaseProps['getFormOptions']>(
-    async (formOptions) => {
-      setActionFormOptions(formOptions);
-      const { defaultValues } = formOptions || {};
-      const { title, [ACTION_TYPE_FIELD_NAME]: actionType } = form.getValues();
-
-      form.reset({
-        ...(typeof defaultValues === 'function'
-          ? await defaultValues()
-          : defaultValues || {}),
-        title,
-      });
-      form.setValue(ACTION_TYPE_FIELD_NAME, actionType, { shouldDirty: true });
-    },
-    [form],
-  );
 
   useGlobalEventHandler<SetActionTypeCutomEventDetail>(
     GLOBAL_EVENTS.SET_ACTION_TYPE,
@@ -380,12 +351,43 @@ export const useActionForm = () => {
   );
 
   return {
-    form,
     selectedAction,
     hasErrors,
     formComponent,
+  };
+};
+
+export const useActionFormProps = () => {
+  const [actionFormProps, setActionFormProps] = useState<ActionFormProps<any>>({
+    actionType: ActionTypes.ACTION_EXPENDITURE_PAYMENT,
+    children: undefined,
+  });
+  const getFormOptions = useCallback<ActionFormBaseProps['getFormOptions']>(
+    async (formOptions, form) => {
+      if (!formOptions) {
+        return;
+      }
+
+      setActionFormProps({ ...formOptions, children: undefined });
+
+      const { defaultValues } = formOptions || {};
+      const { title, [ACTION_TYPE_FIELD_NAME]: actionType } = form.getValues();
+
+      form.reset({
+        ...(typeof defaultValues === 'function'
+          ? await defaultValues()
+          : defaultValues || {}),
+        title,
+      });
+
+      form.setValue(ACTION_TYPE_FIELD_NAME, actionType, { shouldDirty: true });
+    },
+    [],
+  );
+
+  return {
+    actionFormProps,
     getFormOptions,
-    onSubmit,
   };
 };
 
@@ -426,38 +428,28 @@ export const useActionFormBaseHook: UseActionFormBaseHook = ({
   actionType,
   getFormOptions,
 }) => {
+  const form = useFormContext();
   const {
     actionSidebarToggle: [, { toggleOff: toggleActionSidebarOff }],
   } = useActionSidebarContext();
 
-  const asyncFunction = useAsyncFunction({
-    submit: actionType,
-    error: getFormAction(actionType, 'ERROR'),
-    success: getFormAction(actionType, 'SUCCESS'),
-    transform,
-  });
-  const onSubmit = useCallback(
-    async (values) => {
-      try {
-        await asyncFunction(values);
-        toggleActionSidebarOff();
-      } catch (e) {
-        console.error(e);
-      }
-    },
-    [asyncFunction, toggleActionSidebarOff],
-  );
-
   useEffect(() => {
-    getFormOptions({
-      resolver: yupResolver(validationSchema),
-      defaultValues,
-      onSubmit,
-    });
+    getFormOptions(
+      {
+        transform,
+        actionType,
+        validationSchema,
+        defaultValues,
+        onSuccess: () => {
+          toggleActionSidebarOff();
+        },
+      },
+      form,
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [defaultValues, onSubmit]);
+  }, [defaultValues, validationSchema, toggleActionSidebarOff]);
 
   useUnmountEffect(() => {
-    getFormOptions(undefined);
+    getFormOptions(undefined, form);
   });
 };

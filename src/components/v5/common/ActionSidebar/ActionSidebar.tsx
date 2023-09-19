@@ -1,14 +1,14 @@
 import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
-import { useIntl } from 'react-intl';
 
-import { FormProvider } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import {
-  useActionForm,
+  useActionFormProps,
   useNotificationBanner,
+  useSidebarActionForm,
   useUserHasPermissions,
 } from './hooks';
 import ActionButtons from './partials/ActionButtons';
@@ -18,19 +18,103 @@ import PopularActions from './partials/PopularActions';
 import useToggle from '~hooks/useToggle';
 import { ACTION_TYPE_FIELD_NAME } from './consts';
 import Modal from '~v5/shared/Modal';
+import { ActionForm } from '~shared/Fields';
+import { ActionFormBaseProps } from './types';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.common.ActionSidebar';
 
-const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
+interface Props extends ActionFormBaseProps {
+  toggleIsSidebarFullscreen: () => void;
+  isSidebarFullscreen: boolean;
+}
+
+const ActionSidebarFormContent: FC<PropsWithChildren<Props>> = ({
+  children,
+  toggleIsSidebarFullscreen,
+  isSidebarFullscreen,
+  getFormOptions,
+}) => {
   const {
-    form,
-    selectedAction,
-    hasErrors,
     formComponent: FormComponent,
-    getFormOptions,
-    onSubmit,
-  } = useActionForm();
-  const intl = useIntl();
+    hasErrors,
+    selectedAction,
+  } = useSidebarActionForm();
+  const isMobile = useMobile();
+  const {
+    actionSidebarToggle: [, { toggle: toggleActionSidebarOff }],
+  } = useActionSidebarContext();
+  const userHasPermissions = useUserHasPermissions();
+  const form = useFormContext();
+  const notificationBanner = useNotificationBanner(hasErrors, selectedAction);
+
+  return (
+    <>
+      <div className="py-4 px-6 flex w-full items-center justify-between border-b border-gray-200">
+        {isMobile ? (
+          <button
+            type="button"
+            className="py-2.5 flex items-center justify-center text-gray-400"
+            onClick={toggleActionSidebarOff}
+            aria-label={formatText({ id: 'ariaLabel.closeModal' })}
+          >
+            <Icon name="close" appearance={{ size: 'tiny' }} />
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="py-2.5 flex items-center justify-center text-gray-400"
+            onClick={toggleIsSidebarFullscreen}
+            aria-label={formatText({ id: 'ariaLabel.fullWidth' })}
+          >
+            <Icon
+              name={
+                isSidebarFullscreen ? 'arrow-right-line' : 'arrows-out-simple'
+              }
+              appearance={{ size: 'tiny' }}
+            />
+          </button>
+        )}
+        {children}
+      </div>
+      <div className="px-6 py-8 flex-grow">
+        <input
+          type="text"
+          className={`
+            heading-3 placeholder:text-gray-500
+            hover:text-blue-400 hover:placeholder:text-blue-400 text-gray-900
+            transition-colors duration-normal mb-7
+          `}
+          placeholder={formatText({ id: 'placeholder.title' })}
+        />
+        <ActionTypeSelect />
+        {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
+        {notificationBanner && (
+          <div className="mt-7">
+            <NotificationBanner {...notificationBanner} />
+          </div>
+        )}
+      </div>
+      <div className="mt-auto">
+        {!selectedAction && (
+          <PopularActions
+            setSelectedAction={(action) =>
+              form.setValue(ACTION_TYPE_FIELD_NAME, action, {
+                shouldDirty: true,
+              })
+            }
+          />
+        )}
+        <ActionButtons
+          isActionDisabled={!userHasPermissions || !selectedAction}
+        />
+      </div>
+    </>
+  );
+};
+
+const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
+  const { getFormOptions, actionFormProps } = useActionFormProps();
   const {
     actionSidebarToggle: [
       ,
@@ -40,9 +124,6 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
   } = useActionSidebarContext();
   const [isSidebarFullscreen, { toggle: toggleIsSidebarFullscreen }] =
     useToggle();
-  const isMobile = useMobile();
-  const userHasPermissions = useUserHasPermissions();
-  const notificationBanner = useNotificationBanner(hasErrors, selectedAction);
 
   return (
     <div
@@ -70,91 +151,34 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
       )}
       ref={registerContainerRef}
     >
-      <FormProvider {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col h-full"
+      <ActionForm {...actionFormProps} className="flex flex-col h-full">
+        <ActionSidebarFormContent
+          toggleIsSidebarFullscreen={toggleIsSidebarFullscreen}
+          isSidebarFullscreen={isSidebarFullscreen}
+          getFormOptions={getFormOptions}
         >
-          <div className="py-4 px-6 flex w-full items-center justify-between border-b border-gray-200">
-            {isMobile ? (
-              <button
-                type="button"
-                className="py-2.5 flex items-center justify-center text-gray-400"
-                onClick={toggleActionSidebarOff}
-                aria-label={intl.formatMessage({ id: 'ariaLabel.closeModal' })}
-              >
-                <Icon name="close" appearance={{ size: 'tiny' }} />
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="py-2.5 flex items-center justify-center text-gray-400"
-                onClick={toggleIsSidebarFullscreen}
-                aria-label={intl.formatMessage({ id: 'ariaLabel.fullWidth' })}
-              >
-                <Icon
-                  name={
-                    isSidebarFullscreen
-                      ? 'arrow-right-line'
-                      : 'arrows-out-simple'
-                  }
-                  appearance={{ size: 'tiny' }}
-                />
-              </button>
-            )}
-            {children}
-          </div>
-          <div className="px-6 py-8 flex-grow">
-            <input
-              type="text"
-              className={`
-                heading-3 placeholder:text-gray-500
-                hover:text-blue-400 hover:placeholder:text-blue-400 text-gray-900
-                transition-colors duration-normal mb-7
-              `}
-              placeholder={intl.formatMessage({ id: 'placeholder.title' })}
-            />
-            <ActionTypeSelect />
-            {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
-            {notificationBanner && (
-              <div className="mt-7">
-                <NotificationBanner {...notificationBanner} />
-              </div>
-            )}
-          </div>
-          <div className="mt-auto">
-            {!selectedAction && (
-              <PopularActions
-                setSelectedAction={(action) =>
-                  form.setValue(ACTION_TYPE_FIELD_NAME, action)
-                }
-              />
-            )}
-            <ActionButtons
-              isActionDisabled={!userHasPermissions || !selectedAction}
-            />
-          </div>
-        </form>
+          {children}
+        </ActionSidebarFormContent>
+      </ActionForm>
 
-        <Modal
-          title={intl.formatMessage({ id: 'actionSidebar.cancelModal.title' })}
-          subTitle={intl.formatMessage({
-            id: 'actionSidebar.cancelModal.subtitle',
-          })}
-          isOpen={isCancelModalOpen}
-          onClose={toggleCancelModalOff}
-          onConfirm={() => {
-            toggleCancelModalOff();
-            toggleActionSidebarOff();
-          }}
-          icon="warning-circle"
-          buttonMode="primarySolid"
-          confirmMessage={intl.formatMessage({ id: 'button.cancelAction' })}
-          closeMessage={intl.formatMessage({
-            id: 'button.continueAction',
-          })}
-        />
-      </FormProvider>
+      <Modal
+        title={formatText({ id: 'actionSidebar.cancelModal.title' })}
+        subTitle={formatText({
+          id: 'actionSidebar.cancelModal.subtitle',
+        })}
+        isOpen={isCancelModalOpen}
+        onClose={toggleCancelModalOff}
+        onConfirm={() => {
+          toggleCancelModalOff();
+          toggleActionSidebarOff();
+        }}
+        icon="warning-circle"
+        buttonMode="primarySolid"
+        confirmMessage={formatText({ id: 'button.cancelAction' })}
+        closeMessage={formatText({
+          id: 'button.continueAction',
+        })}
+      />
     </div>
   );
 };
