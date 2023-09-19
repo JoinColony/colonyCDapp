@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
-import { useIntl } from 'react-intl';
+import { formatText } from '~utils/intl';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
 
 import { TransactionTableModel } from './types';
@@ -10,7 +10,6 @@ import AmountField from '../AmountField';
 export const useTransactionTableColumns = (
   name: string,
 ): ColumnDef<TransactionTableModel, string>[] => {
-  const intl = useIntl();
   const columnHelper = useMemo(
     () => createColumnHelper<TransactionTableModel>(),
     [],
@@ -20,14 +19,14 @@ export const useTransactionTableColumns = (
     () => [
       columnHelper.display({
         id: 'recipent',
-        header: () => intl.formatMessage({ id: 'table.row.recipent' }),
+        header: () => formatText({ id: 'table.row.recipent' }),
         cell: ({ row }) => (
           <UserSelect key={row.id} name={`${name}.${row.index}.recipent`} />
         ),
       }),
       columnHelper.display({
         id: 'amount',
-        header: () => intl.formatMessage({ id: 'table.row.amount' }),
+        header: () => formatText({ id: 'table.row.amount' }),
         cell: ({ row }) => {
           return (
             <AmountField key={row.id} name={`${name}.${row.index}.amount`} />
@@ -35,15 +34,13 @@ export const useTransactionTableColumns = (
         },
       }),
     ],
-    [intl, columnHelper, name],
+    [formatText, columnHelper, name],
   );
 
   return columns;
 };
 
 export const useGetTableMenuProps = ({ insert, remove }, data) => {
-  const intl = useIntl();
-
   return useCallback<
     TableWithMeatballMenuProps<TransactionTableModel>['getMenuProps']
   >(
@@ -56,17 +53,17 @@ export const useGetTableMenuProps = ({ insert, remove }, data) => {
             insert(index + 1, {
               ...data[index],
             }),
-          label: intl.formatMessage({ id: 'table.row.duplicate' }),
+          label: formatText({ id: 'table.row.duplicate' }),
           iconName: 'copy-simple',
         },
         {
           key: 'remove',
           onClick: () => remove(index),
-          label: intl.formatMessage({ id: 'table.row.remove' }),
+          label: formatText({ id: 'table.row.remove' }),
           iconName: 'trash',
         },
       ],
     }),
-    [data, insert, intl, remove],
+    [data, insert, formatText, remove],
   );
 };
