@@ -11,13 +11,16 @@ import Button from '~shared/Button';
 import StakeExpenditureDialog from '~common/Expenditures/StakedExpenditure/StakeExpenditureDialog';
 
 import CreateExpenditureForm from './CreateExpenditureForm';
-import { AdvancedPaymentFormFields } from '../ExpenditureFormFields';
-import { getInitialPayoutFieldValue } from '../helpers';
-import { AdvancedPaymentFormValues } from '../types';
+import { StagedPaymentFormFields } from '../ExpenditureFormFields';
+import { StagedPaymentFormValues } from '../types';
+import {
+  getInitialStageFieldValue,
+  getStagedExpenditurePayouts,
+} from '../helpers';
 
 import styles from '../ExpenditureForm.module.css';
 
-const AdvancedPaymentForm = () => {
+const StagedPaymentForm = () => {
   const navigate = useNavigate();
 
   const { colony } = useColonyContext();
@@ -32,7 +35,7 @@ const AdvancedPaymentForm = () => {
   const isStakingRequired = isStakedExpenditureEnabled;
 
   const transformPayload = pipe(
-    mapPayload((payload: AdvancedPaymentFormValues) => {
+    mapPayload((payload: StagedPaymentFormValues) => {
       return {
         ...payload,
         colony,
@@ -40,14 +43,15 @@ const AdvancedPaymentForm = () => {
           ? findDomainByNativeId(payload.createInDomainId, colony)
           : null,
         fundFromDomainId: payload.fundFromDomainId,
-        payouts: payload.payouts,
+        payouts: getStagedExpenditurePayouts(payload),
+        isStaged: true,
       } as CreateExpenditurePayload;
     }),
     withMeta({ navigate }),
   );
 
   return (
-    <CreateExpenditureForm<AdvancedPaymentFormValues>
+    <CreateExpenditureForm<StagedPaymentFormValues>
       actionType={
         isStakingRequired
           ? ActionTypes.STAKED_EXPENDITURE_CREATE
@@ -56,7 +60,7 @@ const AdvancedPaymentForm = () => {
       defaultValues={{
         createInDomainId: Id.RootDomain,
         fundFromDomainId: Id.RootDomain,
-        payouts: [getInitialPayoutFieldValue(colony.nativeToken.tokenAddress)],
+        stages: [getInitialStageFieldValue(colony.nativeToken.tokenAddress)],
       }}
       transform={transformPayload}
     >
@@ -64,9 +68,16 @@ const AdvancedPaymentForm = () => {
         const formValues = watch();
         return (
           <>
-            <AdvancedPaymentFormFields colony={colony} />
+            <StagedPaymentFormFields colony={colony} />
             <div className={styles.buttons}>
-              <Button type={isStakingRequired ? 'button' : 'submit'}>
+              <Button
+                type={isStakingRequired ? 'button' : 'submit'}
+                onClick={
+                  isStakingRequired
+                    ? () => setIsStakeDialogOpen(true)
+                    : undefined
+                }
+              >
                 Create
               </Button>
             </div>
@@ -85,4 +96,4 @@ const AdvancedPaymentForm = () => {
   );
 };
 
-export default AdvancedPaymentForm;
+export default StagedPaymentForm;
