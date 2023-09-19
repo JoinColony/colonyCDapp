@@ -1,6 +1,7 @@
-import React, { FC, useState } from 'react';
+import React, { FC, PropsWithChildren, useState } from 'react';
 import { noop } from 'lodash';
 import { usePopperTooltip } from 'react-popper-tooltip';
+import { isHexString } from 'ethers/lib/utils';
 
 import { UserAvatarPopoverProps } from './types';
 import UserAvatar from '~v5/shared/UserAvatar';
@@ -8,10 +9,11 @@ import { useMobile } from '~hooks';
 import Modal from '~v5/shared/Modal';
 import PopoverBase from '~v5/shared/PopoverBase';
 import UserAvatarContent from './partials/UserAvatarContent';
+import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 const displayName = 'v5.UserAvatarPopover';
 
-const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
+const UserAvatarPopover: FC<PropsWithChildren<UserAvatarPopoverProps>> = ({
   userName,
   walletAddress,
   isVerified,
@@ -21,9 +23,13 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
   avatarSize,
   domains,
   isContributorsList,
+  children,
+  isWarning,
 }) => {
   const isMobile = useMobile();
   const [isOpen, setIsOpen] = useState(false);
+  const userFormat =
+    isHexString(userName) && userName ? splitWalletAddress(userName) : userName;
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({
@@ -45,17 +51,18 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
     >
       <UserAvatar
         size={avatarSize || 'xs'}
-        userName={userName}
+        userName={userFormat}
         user={user}
         userStatus={userStatus}
         isContributorsList={isContributorsList}
+        isWarning={isWarning}
       />
     </button>
   );
 
   const content = (
     <UserAvatarContent
-      userName={userName}
+      userName={userFormat}
       title={userName}
       walletAddress={walletAddress}
       isVerified={isVerified}
@@ -79,6 +86,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
             isTopSectionWithBackground={isTopSectionWithBackground}
           >
             {content}
+            {children}
           </Modal>
         </>
       ) : (
@@ -97,6 +105,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
               isTopSectionWithBackground={isTopSectionWithBackground}
             >
               {content}
+              {children}
             </PopoverBase>
           )}
         </>

@@ -12,16 +12,12 @@ const IconWithTooltip: FC<PropsWithChildren<IconWithTooltipProps>> = ({
   tooltipContent,
   className,
   children,
-  onClick,
-  ariaLabel,
 }) => (
   <Tooltip tooltipContent={tooltipContent} className="flex items-center">
     {children}
-    <button type="button" aria-label={ariaLabel} onClick={onClick}>
-      <span className={clsx(className, 'flex')}>
-        <Icon name={iconName} />
-      </span>
-    </button>
+    <span className={clsx(className, 'flex')}>
+      <Icon name={iconName} />
+    </span>
   </Tooltip>
 );
 

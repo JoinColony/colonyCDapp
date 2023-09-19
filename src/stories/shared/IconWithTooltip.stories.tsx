@@ -24,7 +24,6 @@ const meta: Meta<typeof IconWithTooltip> = {
     children: 'User',
     iconName: 'warning-circle',
     className: 'ml-2 text-warning-400',
-    ariaLabel: 'handle some action',
   },
 };
 

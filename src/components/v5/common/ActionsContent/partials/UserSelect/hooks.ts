@@ -6,7 +6,7 @@ import {
 import { useGetColonyMembers } from '~v5/shared/MembersSelect/hooks';
 import { UserSelectHookProps } from './types';
 import { getVerifiedUsers } from '~utils/verifiedUsers';
-import { useGetVerifiedMembersQuery } from '~gql';
+// import { useGetVerifiedMembersQuery } from '~gql';
 
 export const useUserSelect = (): UserSelectHookProps => {
   const { colony } = useColonyContext();
@@ -15,10 +15,11 @@ export const useUserSelect = (): UserSelectHookProps => {
   const methods = useFormContext();
   const recipient = methods?.watch('recipient');
 
-  const { data } = useGetVerifiedMembersQuery({
-    variables: { colonyAddress },
-    skip: !colonyAddress,
-  });
+  // @TODO: use that hook when returns any data
+  // const { data } = useGetVerifiedMembersQuery({
+  //   variables: { colonyAddress },
+  //   skip: !colonyAddress,
+  // });
 
   const isAddressVerified = (colony?.metadata?.whitelistedAddresses ?? []).some(
     (address) => address?.toLowerCase() === recipient?.toLowerCase(),
