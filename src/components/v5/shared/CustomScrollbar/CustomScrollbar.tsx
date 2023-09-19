@@ -1,7 +1,6 @@
 import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
 
-import styles from './CustomScrollbar.module.css';
 import { CustomScrollbarProps } from './types';
 
 const displayName = 'v5.CustomScrollbar';
@@ -13,8 +12,7 @@ const CustomScrollbar: FC<PropsWithChildren<CustomScrollbarProps>> = ({
   <div
     className={clsx(
       className,
-      styles.customScrollbar,
-      'pr-1 md:max-h-[50vh] w-full overflow-y-scroll',
+      'customScrollbar md:hover:scrollbar-thumb-bg-gray-300 pr-1 md:max-h-[50vh] w-full overflow-y-scroll',
     )}
   >
     {children}

@@ -50,7 +50,7 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
 
   const formContent = (
     <>
-      <div className="px-6 py-8">
+      <div className="px-6 py-8 customScrollbar max-h-[80vh]">
         {!selectedAction && (
           <>
             <input
