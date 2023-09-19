@@ -4,12 +4,14 @@ import {
   useReactTable,
   getCoreRowModel as libGetCoreRowModel,
 } from '@tanstack/react-table';
+import clsx from 'clsx';
 import { TableProps } from './types';
 
 const displayName = 'v5.common.Table';
 
 const Table = <T,>({
   className,
+  isError,
   title,
   getCoreRowModel,
   ...rest
@@ -22,7 +24,15 @@ const Table = <T,>({
   return (
     <div className={className}>
       {title && <h5 className="text-2 mb-3">{title}</h5>}
-      <table className="border border-separate border-spacing-0 border-1 w-full border-gray-200 rounded-lg">
+      <table
+        className={clsx(
+          'border border-separate border-spacing-0 border-1 w-full rounded-lg',
+          {
+            'border-red-400': isError,
+            'border-gray-200': !isError,
+          },
+        )}
+      >
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -30,7 +40,7 @@ const Table = <T,>({
                 <th
                   key={header.id}
                   className={`text-left text-sm text-gray-600 bg-gray-50 font-normal
-                  px-[1.1rem] py-[0.7rem]`}
+                  first-of-type:rounded-tl-lg last-of-type:rounded-tr-lg px-[1.1rem] py-[0.7rem]`}
                 >
                   {header.isPlaceholder
                     ? null

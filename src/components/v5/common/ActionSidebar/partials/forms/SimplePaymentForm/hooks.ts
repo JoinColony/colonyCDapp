@@ -32,14 +32,18 @@ const validationSchema = yup
     decisionMethod: yup.string().defined(),
     payments: yup
       .array()
-      .min(1, 'it needs to have at least one element')
       .of(
         yup.object().shape({
-          recipent: yup.string(),
-          amount: yup.string(),
+          recipent: yup.string().required(),
+          amount: yup
+            .number()
+            .required()
+            .transform((value) => toFinite(value))
+            .moreThan(0),
         }),
       )
-      .required(),
+      .required()
+      .min(1),
   })
   .defined();
 
@@ -61,7 +65,6 @@ export const useSimplePayment = (
           amount: 0,
           tokenAddress: colony?.nativeToken.tokenAddress || '',
         },
-        payments: [],
       }),
       [colony?.nativeToken.tokenAddress],
     ),

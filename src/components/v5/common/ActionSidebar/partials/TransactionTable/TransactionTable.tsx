@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useFieldArray, useWatch } from 'react-hook-form';
+import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 
 import Button from '~v5/shared/Button/Button';
 import { useColonyContext, useMobile } from '~hooks';
@@ -24,12 +24,16 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
   const isMobile = useMobile();
   const value = useWatch({ name });
   const getMenuProps = useGetTableMenuProps(fieldArrayMethods, value);
+  const {
+    formState: { errors },
+  } = useFormContext();
 
   return (
     <div className="mt-7">
       {!!data.length && (
         <TableWithMeatballMenu<TransactionTableModel>
           className="mt-7"
+          isError={!!errors[name]}
           getRowId={({ key }) => key}
           columns={columns}
           data={data}
