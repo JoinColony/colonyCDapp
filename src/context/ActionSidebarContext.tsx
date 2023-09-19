@@ -22,9 +22,13 @@ export const ActionSidebarContext = createContext<{
 export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
-  const actionSidebarToggle = useToggle();
   const cancelModalToggle = useToggle();
   const avatarModalToggle = useToggle();
+  const actionSidebarToggle = useToggle({
+    shouldCloseOnDocumentClick: () => {
+      return !cancelModalToggle[0] && !avatarModalToggle[0];
+    },
+  });
 
   const value = useMemo(
     () => ({

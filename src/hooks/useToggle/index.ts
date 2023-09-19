@@ -1,6 +1,10 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 
-import { RefRegistryEntry, UseToggleReturnType } from './types';
+import {
+  RefRegistryEntry,
+  ShouldCloseCallback,
+  UseToggleReturnType,
+} from './types';
 
 let documentClickHandlerRegistered = false;
 let htmlElementInstance: HTMLElement | null = null;
@@ -17,30 +21,47 @@ const getHtmlElement = (): HTMLElement | null => {
 };
 
 const documentClickHandler = (event: MouseEvent): void => {
-  refsRegistry.forEach(({ element, toggleOff, toggleState }) => {
-    if (!(event.target instanceof Element)) {
-      return;
-    }
+  refsRegistry.forEach(
+    ({ element, toggleOff, toggleState, shouldCloseCallbackRef }) => {
+      if (!(event.target instanceof Element)) {
+        return;
+      }
 
-    const htmlElement = getHtmlElement();
+      const htmlElement = getHtmlElement();
 
-    if (
-      !htmlElement ||
-      !htmlElement.contains(event.target) ||
-      element.contains(event.target) ||
-      !toggleState
-    ) {
-      return;
-    }
+      if (
+        !htmlElement ||
+        !htmlElement.contains(event.target) ||
+        element.contains(event.target) ||
+        !toggleState
+      ) {
+        return;
+      }
 
-    toggleOff();
-  });
+      const shouldClose =
+        shouldCloseCallbackRef.current &&
+        shouldCloseCallbackRef.current(element);
+
+      if (!shouldClose) {
+        return;
+      }
+
+      toggleOff();
+    },
+  );
 };
 
 const useToggle = ({
   defaultToggleState = false,
+  shouldCloseOnDocumentClick,
+}: {
+  defaultToggleState?: boolean;
+  shouldCloseOnDocumentClick?: ShouldCloseCallback;
 } = {}): UseToggleReturnType => {
   const [toggleState, setToggleState] = useState(defaultToggleState);
+  const shouldCloseCallbackRef = useRef(shouldCloseOnDocumentClick);
+
+  shouldCloseCallbackRef.current = shouldCloseOnDocumentClick;
 
   const toggle = useCallback(() => {
     setTimeout(() => {
@@ -81,6 +102,7 @@ const useToggle = ({
 
       if (ref && currentEntryIndex < 0) {
         refsRegistry.push({
+          shouldCloseCallbackRef,
           element: ref,
           toggleOff,
           toggleState,

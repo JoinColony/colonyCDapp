@@ -13,7 +13,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
   const isMobile = useMobile();
   const submitText = useSubmitButtonText();
   const {
-    formState: { isDirty, isSubmitting },
+    formState: { isSubmitting, dirtyFields },
   } = useFormContext();
   const {
     actionSidebarToggle: [, { toggleOff: toggleActionSidebarOff }],
@@ -21,7 +21,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
   } = useActionSidebarContext();
 
   const onCancelClick = () => {
-    if (isDirty) {
+    if (Object.keys(dirtyFields).length > 0) {
       toggleCancelModal();
     } else {
       toggleActionSidebarOff();
