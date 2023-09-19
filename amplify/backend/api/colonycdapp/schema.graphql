@@ -808,6 +808,10 @@ enum ColonyActionType {
   An action related to the creation of a motion to start a streaming payment.
   """
   CREATE_STREAMING_PAYMENT_MOTION
+  """
+  An action related to creating a motion to release an expenditure stage
+  """
+  RELEASE_EXPENDITURE_STAGE_MOTION
 }
 
 """

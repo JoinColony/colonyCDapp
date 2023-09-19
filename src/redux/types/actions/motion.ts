@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
-import { Address, Colony, Domain, DomainColor } from '~types';
+import { Address, Colony, Domain, DomainColor, Expenditure } from '~types';
 import { ExternalLink, StreamingPaymentEndCondition } from '~gql';
 
 import { ActionTypes } from '../../actionTypes';
@@ -283,5 +283,23 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_STREAMING_PAYMENT_CREATE_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_STREAMING_PAYMENT_CREATE_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE,
+      {
+        colonyAddress: Address;
+        colonyName: string;
+        expenditure: Expenditure;
+        slotId: number;
+        tokenAddresses: Address[];
+        stagedExpenditureAddress: Address;
+        motionDomainId: number;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_SUCCESS,
       MetaWithSetter<object>
     >;

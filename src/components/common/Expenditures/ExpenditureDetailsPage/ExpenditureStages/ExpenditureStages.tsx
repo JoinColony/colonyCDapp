@@ -1,5 +1,5 @@
 import React from 'react';
-import { Extension } from '@colony/colony-js';
+import { Extension, Id } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ import { notNull } from '~utils/arrays';
 import { ExpenditureStatus } from '~gql';
 import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
-import { useExtensionData } from '~hooks';
+import { useEnabledExtensions, useExtensionData } from '~hooks';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { pipe, withMeta } from '~utils/actions';
 
@@ -27,6 +27,7 @@ const ExpenditureStages = ({ expenditure, colony }: ExpenditureStagesProps) => {
   const stages = expenditure.metadata?.stages?.filter(notNull) ?? [];
 
   const { extensionData } = useExtensionData(Extension.StagedExpenditure);
+  const { isVotingReputationEnabled } = useEnabledExtensions();
 
   const stagedExpenditureAddress =
     extensionData && isInstalledExtensionData(extensionData)
@@ -86,7 +87,11 @@ const ExpenditureStages = ({ expenditure, colony }: ExpenditureStagesProps) => {
               {expenditure.status === ExpenditureStatus.Finalized &&
                 !slotStage?.isReleased && (
                   <ActionButton
-                    actionType={ActionTypes.RELEASE_EXPENDITURE_STAGE}
+                    actionType={
+                      isVotingReputationEnabled
+                        ? ActionTypes.MOTION_RELEASE_EXPENDITURE
+                        : ActionTypes.RELEASE_EXPENDITURE_STAGE
+                    }
                     transform={transformPayload}
                     values={{
                       colonyAddress: colony.colonyAddress,
@@ -96,6 +101,8 @@ const ExpenditureStages = ({ expenditure, colony }: ExpenditureStagesProps) => {
                         nonZeroPayouts?.map((payout) => payout.tokenAddress) ??
                         [],
                       stagedExpenditureAddress,
+                      motionDomainId:
+                        expenditure.nativeDomainId ?? Id.RootDomain,
                     }}
                   >
                     Release
@@ -107,6 +114,12 @@ const ExpenditureStages = ({ expenditure, colony }: ExpenditureStagesProps) => {
           );
         })}
       </ul>
+      {!isVotingReputationEnabled && (
+        <span>
+          Install the governance extension to enable the expenditure release
+          motion
+        </span>
+      )}
     </div>
   );
 };
