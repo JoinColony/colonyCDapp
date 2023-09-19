@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { useController, useFormContext } from 'react-hook-form';
 import { useUserSelect } from './hooks';
 import SearchSelect from '~v5/shared/SearchSelect';
-import { useDetectClickOutside, useUserByName } from '~hooks';
+import { useDetectClickOutside, useUserByAddress, useUserByName } from '~hooks';
 import useToggle from '~hooks/useToggle';
 import styles from '../../ActionsContent.module.css';
 import { SelectProps } from '../../types';
@@ -17,7 +17,11 @@ import { useActionFormContext } from '~v5/common/ActionSidebar/partials/ActionFo
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
-const UserSelect: FC<SelectProps> = ({ name, isError }) => {
+const UserSelect: FC<SelectProps> = ({
+  name,
+  selectedWalletAddress,
+  isError,
+}) => {
   const intl = useIntl();
   const { field } = useController({
     name,
@@ -32,6 +36,9 @@ const UserSelect: FC<SelectProps> = ({ name, isError }) => {
   ] = useToggle();
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const { user } = useUserByName(selectedUser || '');
+  const { user: userByAddress } = useUserByAddress(
+    recipient || selectedWalletAddress,
+  );
 
   const ref = useDetectClickOutside({
     onTriggered: () => toggleUserSelectOff(),
@@ -60,7 +67,7 @@ const UserSelect: FC<SelectProps> = ({ name, isError }) => {
           {recipient ? (
             <>
               <UserAvatar
-                user={user}
+                user={user || userByAddress}
                 userName={usersOptions.userFormat}
                 size="xs"
                 isWarning={usersOptions.isRecipientNotVerified}
@@ -82,7 +89,7 @@ const UserSelect: FC<SelectProps> = ({ name, isError }) => {
             userName={recipient}
             walletAddress={user?.walletAddress || recipient}
             aboutDescription={user?.profile?.bio || ''}
-            user={user}
+            user={user || userByAddress}
             className={clsx(styles.button, {
               'text-gray-500': !isError,
               'text-negative-400': isError,
