@@ -3,4 +3,5 @@ export const STATUS_TYPES = {
   WARNING: 'warning',
   ERROR: 'error',
   INFO: 'info',
+  NOT_VERIFIED: 'notVerified',
 } as const;

@@ -4,4 +4,6 @@ export interface UserSelectHookProps extends SearchSelectOptionProps {
   loading: boolean;
   isAddressVerified: boolean;
   isUserVerified: boolean;
+  isRecipientNotVerified: boolean;
+  userFormat: string;
 }

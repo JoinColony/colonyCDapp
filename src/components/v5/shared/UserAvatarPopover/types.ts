@@ -18,6 +18,8 @@ export interface UserAvatarPopoverProps
   popperOptions?: PopperOptions;
   avatarSize?: AvatarSize;
   isContributorsList?: boolean;
+  userFormat?: string;
+  popoverButtonContent?: React.ReactElement;
 }
 
 export type UserAvatarContentProps = UserAvatarPopoverProps;

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import clsx from 'clsx';
 import { useController, useFormContext } from 'react-hook-form';
@@ -9,15 +9,16 @@ import { useDetectClickOutside, useUserByName } from '~hooks';
 import useToggle from '~hooks/useToggle';
 import styles from '../../ActionsContent.module.css';
 import { SelectProps } from '../../types';
-import { useActionFormContext } from '~v5/common/ActionSidebar/partials/ActionForm/ActionFormContext';
 import Icon from '~shared/Icon';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
+import UserAvatar from '~v5/shared/UserAvatar';
+import { useActionFormContext } from '~v5/common/ActionSidebar/partials/ActionForm/ActionFormContext';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
 const UserSelect: FC<SelectProps> = ({ name, isError }) => {
-  const { formatMessage } = useIntl();
+  const intl = useIntl();
   const { field } = useController({
     name,
   });
@@ -31,20 +32,17 @@ const UserSelect: FC<SelectProps> = ({ name, isError }) => {
   ] = useToggle();
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const { user } = useUserByName(selectedUser || '');
-  const { formErrors, onChangeRecipientVerification, changeFormErrorsState } =
-    useActionFormContext();
-  const isRecipientNotVerified =
-    recipient &&
-    !usersOptions.isAddressVerified &&
-    !usersOptions.isUserVerified;
-
-  useEffect(() => {
-    onChangeRecipientVerification(isRecipientNotVerified);
-  }, [isRecipientNotVerified, onChangeRecipientVerification]);
 
   const ref = useDetectClickOutside({
     onTriggered: () => toggleUserSelectOff(),
   });
+
+  const { formErrors, onChangeRecipientVerification, changeFormErrorsState } =
+    useActionFormContext();
+
+  useEffect(() => {
+    onChangeRecipientVerification(usersOptions.isRecipientNotVerified);
+  }, [usersOptions.isRecipientNotVerified, onChangeRecipientVerification]);
 
   return (
     <div className="sm:relative w-full">
@@ -56,41 +54,17 @@ const UserSelect: FC<SelectProps> = ({ name, isError }) => {
             'text-negative-400': isError,
           })}
           onClick={toggleUserSelect}
-          aria-label={formatMessage({ id: 'ariaLabel.selectUser' })}
+          aria-label={intl.formatMessage({ id: 'ariaLabel.selectUser' })}
           ref={ref}
         >
           {recipient ? (
             <>
-              <UserAvatarPopover
-                userName={recipient}
-                walletAddress={user?.walletAddress || recipient}
-                aboutDescription={user?.profile?.bio || ''}
+              <UserAvatar
                 user={user}
-                className={clsx(styles.button, {
-                  'text-gray-500': !isError,
-                  'text-negative-400': isError,
-                })}
-                isWarning={isRecipientNotVerified}
-                avatarSize="xs"
-              >
-                <NotificationBanner
-                  status="warning"
-                  title={
-                    <FormattedMessage id="tooltip.user.not.verified.warning" />
-                  }
-                  isAlt
-                  action={{
-                    type: 'call-to-action',
-                    actionText: <FormattedMessage id="add.verified.member" />,
-                    onClick: () => {},
-                  }}
-                />
-              </UserAvatarPopover>
-              {isRecipientNotVerified && (
-                <span className="flex ml-2 text-warning-400 ">
-                  <Icon name="warning-circle" />
-                </span>
-              )}
+                userName={usersOptions.userFormat}
+                size="xs"
+                isWarning={usersOptions.isRecipientNotVerified}
+              />
               {recipient &&
                 usersOptions.isUserVerified &&
                 !usersOptions.isAddressVerified && (
@@ -100,9 +74,52 @@ const UserSelect: FC<SelectProps> = ({ name, isError }) => {
                 )}
             </>
           ) : (
-            formatMessage({ id: 'actionSidebar.selectMember' })
+            intl.formatMessage({ id: 'actionSidebar.selectMember' })
           )}
         </button>
+        {usersOptions.isRecipientNotVerified && (
+          <UserAvatarPopover
+            userName={recipient}
+            walletAddress={user?.walletAddress || recipient}
+            aboutDescription={user?.profile?.bio || ''}
+            user={user}
+            className={clsx(styles.button, {
+              'text-gray-500': !isError,
+              'text-negative-400': isError,
+            })}
+            isWarning={usersOptions.isRecipientNotVerified}
+            avatarSize="xs"
+            userFormat={usersOptions.userFormat}
+            popoverButtonContent={
+              <button type="button">
+                <span className="flex ml-2 text-warning-400">
+                  <Icon name="warning-circle" />
+                </span>
+              </button>
+            }
+          >
+            <NotificationBanner
+              status="notVerified"
+              title={intl.formatMessage(
+                { id: 'tooltip.user.not.verified.warning' },
+                {
+                  walletAddress: (
+                    <span className="font-semibold block mt-2">
+                      {user?.walletAddress || recipient}
+                    </span>
+                  ),
+                },
+              )}
+              isAlt
+              action={{
+                type: 'call-to-action',
+                actionText: intl.formatMessage({ id: 'add.verified.member' }),
+                onClick: () => {},
+              }}
+              className="mt-4"
+            />
+          </UserAvatarPopover>
+        )}
       </div>
       <input type="text" id={name} className="hidden" {...field} />
       {isUserSelectVisible && (

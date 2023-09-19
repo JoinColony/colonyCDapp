@@ -1,4 +1,5 @@
 import { useFormContext } from 'react-hook-form';
+import { isHexString } from 'ethers/lib/utils';
 import {
   useColonyContext,
   useGetColonyMembers as useGetColonyMembersToVerify,
@@ -6,6 +7,7 @@ import {
 import { useGetColonyMembers } from '~v5/shared/MembersSelect/hooks';
 import { UserSelectHookProps } from './types';
 import { getVerifiedUsers } from '~utils/verifiedUsers';
+import { splitWalletAddress } from '~utils/splitWalletAddress';
 // import { useGetVerifiedMembersQuery } from '~gql';
 
 export const useUserSelect = (): UserSelectHookProps => {
@@ -49,6 +51,14 @@ export const useUserSelect = (): UserSelectHookProps => {
     };
   });
 
+  const isRecipientNotVerified: boolean =
+    recipient && !isAddressVerified && !isUserVerified;
+
+  const userFormat: string =
+    isHexString(recipient) && recipient
+      ? splitWalletAddress(recipient)
+      : recipient;
+
   return {
     loading,
     options: users || [],
@@ -57,5 +67,7 @@ export const useUserSelect = (): UserSelectHookProps => {
     isAccordion: false,
     isAddressVerified,
     isUserVerified,
+    isRecipientNotVerified,
+    userFormat,
   };
 };

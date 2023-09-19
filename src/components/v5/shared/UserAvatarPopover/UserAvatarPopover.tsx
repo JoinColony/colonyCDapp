@@ -1,7 +1,6 @@
 import React, { FC, PropsWithChildren, useState } from 'react';
 import { noop } from 'lodash';
 import { usePopperTooltip } from 'react-popper-tooltip';
-import { isHexString } from 'ethers/lib/utils';
 
 import { UserAvatarPopoverProps } from './types';
 import UserAvatar from '~v5/shared/UserAvatar';
@@ -9,7 +8,6 @@ import { useMobile } from '~hooks';
 import Modal from '~v5/shared/Modal';
 import PopoverBase from '~v5/shared/PopoverBase';
 import UserAvatarContent from './partials/UserAvatarContent';
-import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 const displayName = 'v5.UserAvatarPopover';
 
@@ -25,11 +23,20 @@ const UserAvatarPopover: FC<PropsWithChildren<UserAvatarPopoverProps>> = ({
   isContributorsList,
   children,
   isWarning,
+  userFormat,
+  popoverButtonContent = (
+    <UserAvatar
+      size={avatarSize || 'xs'}
+      userName={userFormat}
+      user={user}
+      userStatus={userStatus}
+      isContributorsList={isContributorsList}
+      isWarning={isWarning}
+    />
+  ),
 }) => {
   const isMobile = useMobile();
   const [isOpen, setIsOpen] = useState(false);
-  const userFormat =
-    isHexString(userName) && userName ? splitWalletAddress(userName) : userName;
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({
@@ -49,14 +56,7 @@ const UserAvatarPopover: FC<PropsWithChildren<UserAvatarPopoverProps>> = ({
       ref={setTriggerRef}
       className="inline-flex transition-all duration-normal hover:text-blue-400"
     >
-      <UserAvatar
-        size={avatarSize || 'xs'}
-        userName={userFormat}
-        user={user}
-        userStatus={userStatus}
-        isContributorsList={isContributorsList}
-        isWarning={isWarning}
-      />
+      {popoverButtonContent}
     </button>
   );
 

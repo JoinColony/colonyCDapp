@@ -16,12 +16,14 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   children,
   action,
   isAlt = false,
+  className,
 }) => {
   const { actionText } = action || {};
 
   return (
     <div
       className={clsx(
+        className,
         styles.banner,
         `gap-2 ${
           isAlt
@@ -31,10 +33,13 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
         {
           'bg-success-100 border-success-200': status === 'success',
           'bg-warning-100 border-warning-200': status === 'warning',
+          'bg-warning-100 border-warning-400': status === 'notVerified',
           'bg-negative-100 border-negative-200': status === 'error',
           'bg-gray-50 border-gray-200 text-gray-600 text-sm': status === 'info',
           'text-success-400': isAlt && status === 'success',
-          'text-warning-400': isAlt && status === 'warning',
+          'text-warning-400':
+            (isAlt && status === 'warning') ||
+            (isAlt && status === 'notVerified'),
           'text-negative-400': isAlt && status === 'error',
         },
       )}
