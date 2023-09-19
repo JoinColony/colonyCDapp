@@ -91,7 +91,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           />
         )}
       </ActionFormRow>
-      <TransactionTable name="payment" />
+      <TransactionTable name="payments" />
     </>
   );
 };
