@@ -45,20 +45,20 @@ export const useTransactionTableColumns = (
   return columns;
 };
 
-export const useGetTableMenuProps = ({ insert, remove }) => {
+export const useGetTableMenuProps = ({ insert, remove }, data) => {
   const intl = useIntl();
 
   return useCallback<
     TableWithMeatballMenuProps<TransactionTableModel>['getMenuProps']
   >(
-    ({ index, original }) => ({
+    ({ index }) => ({
       cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
       items: [
         {
           key: 'duplicate',
           onClick: () =>
             insert(index + 1, {
-              ...original,
+              ...data[index],
             }),
           label: intl.formatMessage({ id: 'table.row.duplicate' }),
           iconName: 'copy-simple',
@@ -71,6 +71,6 @@ export const useGetTableMenuProps = ({ insert, remove }) => {
         },
       ],
     }),
-    [insert, intl, remove],
+    [data, insert, intl, remove],
   );
 };

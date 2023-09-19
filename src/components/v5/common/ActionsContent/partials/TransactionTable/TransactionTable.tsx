@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useFieldArray } from 'react-hook-form';
+import { useFieldArray, useWatch } from 'react-hook-form';
 
 import Button from '~v5/shared/Button/Button';
 import { useColonyContext, useMobile } from '~hooks';
@@ -16,14 +16,14 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
     name,
   });
   const data: TransactionTableModel[] = fieldArrayMethods.fields.map(
-    ({ id }, index) => ({
+    ({ id }) => ({
       key: id,
-      index,
     }),
   );
   const columns = useTransactionTableColumns(name);
   const isMobile = useMobile();
-  const getMenuProps = useGetTableMenuProps(fieldArrayMethods);
+  const value = useWatch({ name });
+  const getMenuProps = useGetTableMenuProps(fieldArrayMethods, value);
 
   return (
     <div className="mt-7">
