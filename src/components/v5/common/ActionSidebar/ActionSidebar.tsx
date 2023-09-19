@@ -21,7 +21,6 @@ import Modal from '~v5/shared/Modal';
 import { ActionForm } from '~shared/Fields';
 import { ActionFormBaseProps } from './types';
 import { formatText } from '~utils/intl';
-import CustomScrollbar from '~v5/shared/CustomScrollbar';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -78,28 +77,32 @@ const ActionSidebarFormContent: FC<PropsWithChildren<Props>> = ({
         )}
         {children}
       </div>
-      <CustomScrollbar
-        className={clsx('px-6 py-8 flex-grow', {
-          'max-h-[80vh] h-full overflow-y-auto': !!selectedAction,
-        })}
-      >
-        <input
-          type="text"
-          className={`
-            heading-3 placeholder:text-gray-500
-            md:hover:text-blue-400 md:hover:placeholder:text-blue-400 text-gray-900
-            transition-colors duration-normal mb-7
-          `}
-          placeholder={formatText({ id: 'placeholder.title' })}
-        />
-        <ActionTypeSelect />
-        {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
-        {notificationBanner && (
-          <div className="mt-7">
-            <NotificationBanner {...notificationBanner} />
-          </div>
-        )}
-      </CustomScrollbar>
+      <div className="px-6 py-8 flex-grow">
+        <div
+          className={clsx('h-full', {
+            'max-h-[75vh] md:max-h-[75vh] pr-1 h-full overflow-y-auto':
+              selectedAction,
+            'md:max-h-full overflow-y-visible': !selectedAction,
+          })}
+        >
+          <input
+            type="text"
+            className={`
+              heading-3 placeholder:text-gray-500
+              md:hover:text-blue-400 md:hover:placeholder:text-blue-400 text-gray-900
+              transition-colors duration-normal mb-7
+            `}
+            placeholder={formatText({ id: 'placeholder.title' })}
+          />
+          <ActionTypeSelect />
+          {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
+          {notificationBanner && (
+            <div className="mt-7">
+              <NotificationBanner {...notificationBanner} />
+            </div>
+          )}
+        </div>
+      </div>
       <div className="mt-auto">
         {!selectedAction && (
           <PopularActions

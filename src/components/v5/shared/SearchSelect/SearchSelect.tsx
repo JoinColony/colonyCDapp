@@ -11,7 +11,6 @@ import { useIntl } from 'react-intl';
 
 import { SearchSelectProps } from './types';
 import Card from '../Card';
-import CustomScrollbar from '../CustomScrollbar';
 import { useMobile } from '~hooks';
 import Modal from '../Modal';
 import { useSearchSelect } from './hooks';
@@ -76,7 +75,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
           </div>
         )}
         {!isLoading && (
-          <CustomScrollbar>
+          <div className="pr-1 md:max-h-[60vh] w-full overflow-y-scroll max-h-[80vh]">
             <div className="pr-4 sm:pr-0">
               {filteredList.length > 0 ? (
                 filteredList.map(({ options, title, isAccordion, key }) =>
@@ -134,7 +133,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                 />
               )}
             </div>
-          </CustomScrollbar>
+          </div>
         )}
       </>
     );
