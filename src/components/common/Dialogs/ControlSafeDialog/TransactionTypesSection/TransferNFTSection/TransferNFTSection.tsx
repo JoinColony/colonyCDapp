@@ -12,9 +12,9 @@ import {
   getSelectedNFTData,
   getTxServiceBaseUrl,
 } from '~utils/safes';
-import { Message } from '~types';
+import { Message, NFTData } from '~types';
 
-import { TransactionSectionProps } from '../../types';
+import { FormSafeTransaction, TransactionSectionProps } from '../../types';
 import {
   AvatarXS,
   ErrorMessage as Error,
@@ -63,6 +63,21 @@ const MSG = defineMessages({
   },
 });
 
+const getFilteredNFTData = (
+  nftData: NFTData[],
+  transactions: FormSafeTransaction[],
+  transactionIndex: number,
+) =>
+  nftData.filter((nft, i) => {
+    const isNFTSelected = transactions.some(
+      (transaction) =>
+        transaction.nft?.walletAddress === nft.address &&
+        transactionIndex !== i,
+    );
+
+    return !isNFTSelected;
+  });
+
 const TransferNFTSection = ({
   colony,
   disabledInput,
@@ -71,6 +86,7 @@ const TransferNFTSection = ({
   const { watch, setValue } = useFormContext();
   const currentNFT = watch(`transactions.${transactionIndex}.nft`);
   const currentNFTData = watch(`transactions.${transactionIndex}.nftData`);
+  const transactions: FormSafeTransaction[] = watch('transactions');
   const safe = watch('safe');
   const [savedNFTs, setSavedNFTs] = useState({});
   const [availableNFTs, setAvailableNFTs] = useState<any[]>();
@@ -101,7 +117,10 @@ const TransferNFTSection = ({
             ...nfts,
             [safe.walletAddress]: data.results,
           }));
-          setAvailableNFTs(data.results);
+
+          setAvailableNFTs(
+            getFilteredNFTData(data.results, transactions, transactionIndex),
+          );
         }
       } catch (e) {
         setNFTError(MSG.nftError);
@@ -113,11 +132,13 @@ const TransferNFTSection = ({
     const savedNFTData = savedNFTs[safe.walletAddress];
     if (savedNFTData) {
       setNFTError('');
-      setAvailableNFTs(savedNFTData);
+      setAvailableNFTs(
+        getFilteredNFTData(savedNFTData, transactions, transactionIndex),
+      );
     } else {
       getNFTs();
     }
-  }, [safe, savedNFTs, setSavedNFTs]);
+  }, [safe, savedNFTs, setSavedNFTs, transactions, transactionIndex]);
 
   useEffect(() => {
     if (!currentNFT && currentNFTData) {
