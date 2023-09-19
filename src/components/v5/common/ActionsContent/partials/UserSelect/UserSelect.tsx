@@ -121,7 +121,7 @@ const UserSelect: FC<SelectProps> = ({
               action={{
                 type: 'call-to-action',
                 actionText: intl.formatMessage({ id: 'add.verified.member' }),
-                onClick: () => {},
+                onClick: () => {}, // @TODO: add action
               }}
               className="mt-4"
             />
