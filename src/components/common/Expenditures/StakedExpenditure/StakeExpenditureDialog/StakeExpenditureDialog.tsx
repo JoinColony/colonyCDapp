@@ -9,6 +9,7 @@ import Numeral from '~shared/Numeral';
 import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
 import { ActionButtonProps } from '~shared/Button/ActionButton';
+import { CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure';
 
 import { ExpenditureFormValues } from '../../ExpenditureForm';
 import useExpenditureStaking from './useExpenditureStaking';
@@ -16,7 +17,7 @@ import useExpenditureStaking from './useExpenditureStaking';
 import styles from './StakeExpenditureDialog.module.css';
 
 interface StakeExpenditureDialogProps
-  extends Pick<ActionButtonProps, 'transform'> {
+  extends Pick<ActionButtonProps<CreateExpenditurePayload>, 'transform'> {
   colony: Colony;
   onCancel: () => void;
   formValues: ExpenditureFormValues;
