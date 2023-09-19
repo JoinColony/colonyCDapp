@@ -87,6 +87,7 @@ const StagedPaymentForm = () => {
                 colony={colony}
                 onCancel={() => setIsStakeDialogOpen(false)}
                 formValues={formValues}
+                transform={transformPayload}
               />
             )}
           </>
