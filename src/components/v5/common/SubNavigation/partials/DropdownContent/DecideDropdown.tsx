@@ -4,19 +4,22 @@ import { useIntl } from 'react-intl';
 import Button from '~v5/shared/Button';
 import { LEARN_MORE_ADMIN } from '~constants';
 import LinkItem from '../LinkItem';
-import { MSG } from './consts';
+import { DECIDE_DROPDOWN_ITEMS, MSG } from './consts';
 import styles from './DropdownContent.module.css';
 import LearnMore from '~shared/Extensions/LearnMore';
 import TitleLabel from '~v5/shared/TitleLabel';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { Actions } from '~constants/actions';
+import dispatchGlobalEvent from '~utils/browser/dispatchGlobalEvent';
+import { GLOBAL_EVENTS } from '~utils/browser/dispatchGlobalEvent/consts';
 
 const displayName =
   'v5.common.SubNavigation.partials.DropdownContent.DecideDropdown';
 
 const DecideDropdown: FC<PropsWithChildren> = () => {
   const { formatMessage } = useIntl();
-  const { toggleActionBar, setSelectedAction } = useActionSidebarContext();
+  const {
+    actionSidebarToggle: [, { toggleOn: toggleActionSideBarOn }],
+  } = useActionSidebarContext();
 
   return (
     <div className="bg-base-white">
@@ -25,22 +28,20 @@ const DecideDropdown: FC<PropsWithChildren> = () => {
         text={formatMessage({ id: 'createNewDecisions' })}
       />
       <ul className={styles.listWrapper}>
-        <LinkItem
-          title={MSG.createDecision}
-          description={MSG.createDecisionDescription}
-          onClick={() => {
-            setSelectedAction(Actions.CREATE_DECISION);
-            toggleActionBar();
-          }}
-        />
-        <LinkItem
-          title={MSG.simpleDiscussion}
-          description={MSG.simpleDiscussionDescription}
-          onClick={() => {
-            setSelectedAction(Actions.SIMPLE_DISCUSSION);
-            toggleActionBar();
-          }}
-        />
+        {DECIDE_DROPDOWN_ITEMS.map(({ action, ...rest }) => (
+          <LinkItem
+            {...rest}
+            key={action}
+            onClick={() => {
+              toggleActionSideBarOn();
+              dispatchGlobalEvent(GLOBAL_EVENTS.SET_ACTION_TYPE, {
+                detail: {
+                  actionType: action,
+                },
+              });
+            }}
+          />
+        ))}
       </ul>
       <div className={styles.buttonWrapper}>
         <Button text={MSG.buttonTextDecide} mode="quinary" isFullSize />

@@ -19,7 +19,7 @@ export type OnSuccess<V extends FieldValues> = (
   result: any,
 ) => void;
 
-interface Props<V extends Record<string, any>>
+export interface ActionFormProps<V extends Record<string, any>>
   extends Omit<FormProps<V>, 'onError' | 'onSubmit'> {
   /** Redux action type to dispatch on submit (e.g. CREATE_XXX) */
   actionType: ActionTypes;
@@ -56,7 +56,7 @@ const ActionForm = <V extends Record<string, any>>({
   actionType,
   transform,
   ...props
-}: Props<V>) => {
+}: ActionFormProps<V>) => {
   const asyncFunction = useAsyncFunction({
     submit: submit || actionType,
     error: error || getFormAction(actionType, 'ERROR'),

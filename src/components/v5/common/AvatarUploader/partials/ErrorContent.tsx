@@ -1,11 +1,9 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
-import clsx from 'clsx';
 
 import Icon from '~shared/Icon';
 import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
 import { TextButton } from '~v5/shared/Button';
-import styles from './AvatarUploader.module.css';
 import { ErrorContentProps } from '../types';
 
 const displayName = 'v5.common.AvatarUploader.partials.ErrorContent';
@@ -25,17 +23,10 @@ const ErrorContent: FC<ErrorContentProps> = ({
     ((errorCode === DropzoneErrors.INVALID && 'invalid.type.error') as string);
 
   return (
-    <div
-      className={clsx(
-        'gap-3 bg-base-white border-negative-400',
-        styles.contentWrapper,
-      )}
-    >
-      <div className={styles.iconWrapper}>
-        <div className={`bg-negative-100 ${styles.iconCircle}`}>
-          <div
-            className={`bg-negative-200 text-negative-400 ${styles.iconCircle}`}
-          >
+    <div className="gap-3 bg-base-white border-negative-400 flex px-6 py-4 rounded border w-full">
+      <div className="w-10 mb-2">
+        <div className="bg-negative-100 p-[0.25rem] rounded-full flex items-start justify-center">
+          <div className="bg-negative-200 text-negative-400 p-[0.25rem] rounded-full flex items-start justify-center">
             <Icon name="cloud-arrow-up" appearance={{ size: 'small' }} />
           </div>
         </div>

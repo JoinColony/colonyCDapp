@@ -1,15 +1,27 @@
-import { MessageDescriptor } from 'react-intl';
-import { Actions } from '~constants/actions';
+import { UseFormReturn } from 'react-hook-form';
+import { Action } from '~constants/actions';
+import { ActionFormProps } from '~shared/Fields/Form/ActionForm';
 
-export type PopularActionsProps = {
-  setSelectedAction: React.Dispatch<React.SetStateAction<Actions | null>>;
-};
-
-export type ActionButtonsProps = {
+export interface ActionButtonsProps {
   isActionDisabled?: boolean;
-};
+}
 
-export type ErrorBannerProps = {
-  title: MessageDescriptor | string;
-  actionText?: MessageDescriptor | string;
-};
+export interface PopularActionsProps {
+  setSelectedAction: (action: Action | null) => void;
+}
+
+export interface ActionFormBaseProps {
+  getFormOptions: (
+    formOptions: Omit<ActionFormProps<any>, 'children'> | undefined,
+    form: UseFormReturn,
+  ) => void;
+}
+
+export type UseActionFormBaseHook = (
+  options: {
+    getFormOptions: ActionFormBaseProps['getFormOptions'];
+  } & Pick<
+    ActionFormProps<any>,
+    'transform' | 'actionType' | 'defaultValues' | 'validationSchema'
+  >,
+) => void;

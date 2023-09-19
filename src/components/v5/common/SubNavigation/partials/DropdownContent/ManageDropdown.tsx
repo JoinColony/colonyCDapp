@@ -4,19 +4,22 @@ import { useIntl } from 'react-intl';
 import Button from '~v5/shared/Button';
 import { LEARN_MORE_DECISIONS } from '~constants';
 import LinkItem from '../LinkItem';
-import { MSG } from './consts';
+import { MANAGE_DROPDOWN_ITEMS, MSG } from './consts';
 import styles from './DropdownContent.module.css';
 import LearnMore from '~shared/Extensions/LearnMore';
 import TitleLabel from '~v5/shared/TitleLabel';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { Actions } from '~constants/actions';
+import dispatchGlobalEvent from '~utils/browser/dispatchGlobalEvent';
+import { GLOBAL_EVENTS } from '~utils/browser/dispatchGlobalEvent/consts';
 
 const displayName =
   'v5.common.SubNavigation.partials.DropdownContent.ManageDropdown';
 
 const ManageDropdown: FC<PropsWithChildren> = () => {
   const { formatMessage } = useIntl();
-  const { toggleActionBar, setSelectedAction } = useActionSidebarContext();
+  const {
+    actionSidebarToggle: [, { toggleOn: toggleActionSidebarBarOn }],
+  } = useActionSidebarContext();
 
   return (
     <div className="bg-base-white">
@@ -25,38 +28,20 @@ const ManageDropdown: FC<PropsWithChildren> = () => {
         text={formatMessage({ id: 'manageColony' })}
       />
       <ul className={styles.listWrapper}>
-        <LinkItem
-          title={MSG.manageTeams}
-          description={MSG.manageTeamsDescription}
-          onClick={() => {
-            setSelectedAction(Actions.EDIT_EXISTING_TEAM);
-            toggleActionBar();
-          }}
-        />
-        <LinkItem
-          title={MSG.manageReputation}
-          description={MSG.manageReputationDescription}
-          onClick={() => {
-            setSelectedAction(Actions.AWARD_REPUTATION);
-            toggleActionBar();
-          }}
-        />
-        <LinkItem
-          title={MSG.managePermissions}
-          description={MSG.managePermissionsDescription}
-          onClick={() => {
-            setSelectedAction(Actions.MANAGE_PERMISSIONS);
-            toggleActionBar();
-          }}
-        />
-        <LinkItem
-          title={MSG.organizationDetails}
-          description={MSG.organizationDetailsDescription}
-          onClick={() => {
-            setSelectedAction(Actions.EDIT_COLONY_DETAILS);
-            toggleActionBar();
-          }}
-        />
+        {MANAGE_DROPDOWN_ITEMS.map(({ action, ...rest }) => (
+          <LinkItem
+            {...rest}
+            key={action}
+            onClick={() => {
+              toggleActionSidebarBarOn();
+              dispatchGlobalEvent(GLOBAL_EVENTS.SET_ACTION_TYPE, {
+                detail: {
+                  actionType: action,
+                },
+              });
+            }}
+          />
+        ))}
       </ul>
       <div className={styles.buttonWrapper}>
         <Button text={MSG.buttonTextManage} mode="quinary" isFullSize />

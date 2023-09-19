@@ -11,8 +11,7 @@ import { CloseButton, PendingButton } from '~v5/shared/Button';
 import { useHeader } from './hooks';
 import ActionSidebar from '~v5/common/ActionSidebar';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { ActionFormContextProvider } from '~v5/common/ActionSidebar/partials/ActionForm/ActionFormContext';
-import { ColnyAvatarProvider } from '~context/ColonyAvatarContext';
+import { ColonyAvatarProvider } from '~context/ColonyAvatarContext';
 import {
   TransactionGroupStates,
   useUserTransactionContext,
@@ -41,7 +40,9 @@ const Header: FC = () => {
     isUserMenuOpen,
     isWalletOpen,
   } = useHeader();
-  const { isActionSidebarOpen } = useActionSidebarContext();
+  const {
+    actionSidebarToggle: [isActionSidebarOpen],
+  } = useActionSidebarContext();
 
   const isCloseButtonVisible =
     (isMainMenuOpen || isColonySwitcherOpen) &&
@@ -69,11 +70,9 @@ const Header: FC = () => {
   );
 
   const userMenuComponent = isActionSidebarOpen ? (
-    <ActionFormContextProvider>
-      <ColnyAvatarProvider>
-        <ActionSidebar>{userNavigation}</ActionSidebar>
-      </ColnyAvatarProvider>
-    </ActionFormContextProvider>
+    <ColonyAvatarProvider>
+      <ActionSidebar>{userNavigation}</ActionSidebar>
+    </ColonyAvatarProvider>
   ) : (
     userNavigation
   );
@@ -124,7 +123,7 @@ const Header: FC = () => {
               <div>
                 {isCloseButtonVisible ? (
                   <div className="relative z-[51] p-1.5 border border-transparent">
-                    {/* This close button is a fallback that doesn't handle any action. The popover is closing when we click outside them 
+                    {/* This close button is a fallback that doesn't handle any action. The popover is closing when we click outside them
                   and this is part of the header with a high z-index */}
                     <CloseButton iconSize="extraTiny" />
                   </div>
