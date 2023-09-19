@@ -6,7 +6,6 @@ import Button, { PendingButton } from '~v5/shared/Button';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { ActionButtonsProps } from '../types';
 import { useGetSubmitButton } from './hooks';
-import { useActionFormContext } from './ActionForm/ActionFormContext';
 
 const displayName = 'v5.common.ActionSidebar.partials.ActionButtons';
 
@@ -16,7 +15,6 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
   const methods = useFormContext();
   const { selectedAction, toggleCancelModal, toggleActionSidebarOff } =
     useActionSidebarContext();
-  const { isRecipientNotVerified } = useActionFormContext();
 
   const isLoading = methods?.formState?.isSubmitting;
   const isDirty = methods?.formState?.isDirty;
@@ -49,12 +47,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
       ) : (
         <Button
           mode="primarySolid"
-          disabled={
-            !selectedAction ||
-            isActionDisabled ||
-            !!Object.keys(methods?.formState.errors).length ||
-            isRecipientNotVerified
-          }
+          disabled={!selectedAction || isActionDisabled}
           text={{ id: submitText }}
           isFullSize={isMobile}
           type="submit"
