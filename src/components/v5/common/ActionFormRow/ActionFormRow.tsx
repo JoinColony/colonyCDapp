@@ -22,7 +22,7 @@ const ActionSidebarRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
     const content = (
       <>
         <Icon name={iconName} appearance={{ size: 'extraTiny' }} />
-        <span className="text-md ml-2 min-w-[11.25rem] flex gap-4 items-center">
+        <span className="text-md ml-2 min-w-[8rem] sm:min-w-[11.25rem] flex gap-4 items-center">
           {title}
           {isExpandable && (
             <span
@@ -42,7 +42,7 @@ const ActionSidebarRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
 
     const tooltipContent = isExpandable ? (
       <button
-        className={clsx('flex items-center  group', {
+        className={clsx('flex items-center group', {
           'hover:text-blue-400': isExpandable,
           'text-negative-400': isError,
           'text-gray-600': !isError,
@@ -66,7 +66,7 @@ const ActionSidebarRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
 
     return (
       <div
-        className={clsx('flex  gap-2 relative mb-3 last:mb-0', {
+        className={clsx('flex gap-2 relative mb-3 last:mb-0', {
           'flex-col': isExpandable && isExpanded,
           'items-center': !isExpandable,
         })}

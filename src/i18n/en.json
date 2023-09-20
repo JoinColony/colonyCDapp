@@ -670,6 +670,7 @@
   "extension.notification.permissions.updated": "The required permissions have been updated. TODO: Wire this in with Actions / Motions",
   "extension.notification.permissions.enable": "Enable permissions",
   "extension.notification.permissions.enabled": "Enable extension",
+  "actions.selectActionType": "Select action type",
   "actions.payments": "Payments",
   "actions.simplePayment": "Simple payment",
   "actions.advancedPayment": "Advanced payment",

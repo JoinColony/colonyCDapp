@@ -8,10 +8,10 @@ import React, {
 import { AnimatePresence, motion } from 'framer-motion';
 import { debounce } from 'lodash';
 import { useIntl } from 'react-intl';
+import Portal from '~v5/shared/Portal';
 
 import { SearchSelectProps } from './types';
 import Card from '../Card';
-import CustomScrollbar from '../CustomScrollbar';
 import { useMobile } from '~hooks';
 import Modal from '../Modal';
 import { useSearchSelect } from './hooks';
@@ -21,11 +21,15 @@ import { accordionAnimation } from '~constants/accordionAnimation';
 import Icon from '~shared/Icon';
 import { SpinnerLoader } from '~shared/Preloaders';
 import EmptyContent from '~v5/common/EmptyContent';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.SearchSelect';
 
 const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
-  ({ items, onToggle, isOpen, onSelect, isLoading }, ref) => {
+  (
+    { items, onToggle, isOpen, onSelect, isLoading, hideSearchOnMobile },
+    ref,
+  ) => {
     const [searchValue, setSearchValue] = useState('');
     const isMobile = useMobile();
     const { formatMessage } = useIntl();
@@ -68,7 +72,13 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
     const content = (
       <>
         <div className="mb-6">
-          <SearchInput onInput={onInput} />
+          {isMobile && hideSearchOnMobile ? (
+            <p className="text-4 text-gray-400 uppercase">
+              {formatText({ id: 'actions.selectActionType' })}
+            </p>
+          ) : (
+            <SearchInput onInput={onInput} />
+          )}
         </div>
         {isLoading && (
           <div className="flex justify-center h-5">
@@ -76,8 +86,8 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
           </div>
         )}
         {!isLoading && (
-          <CustomScrollbar height={600} mobileHeight="70vh">
-            <div className="pr-4 sm:pr-0">
+          <div className="pr-1 w-full overflow-y-scroll max-h-[calc(100vh-10rem)] sm:max-h-full">
+            <div>
               {filteredList.length > 0 ? (
                 filteredList.map(({ options, title, isAccordion, key }) =>
                   isAccordion ? (
@@ -134,24 +144,26 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                 />
               )}
             </div>
-          </CustomScrollbar>
+          </div>
         )}
       </>
     );
 
     return isMobile ? (
       <Modal isOpen={isOpen} onClose={onToggle} isFullOnMobile={false}>
-        <div ref={ref}>{content}</div>
+        {content}
       </Modal>
     ) : (
-      <Card
-        className="py-4 px-2.5 w-full sm:max-w-[20.375rem] absolute top-[calc(100%+0.5rem)] left-0 z-50"
-        hasShadow
-        rounded="s"
-        ref={ref}
-      >
-        {content}
-      </Card>
+      <Portal>
+        <Card
+          className="py-4 px-2.5 w-full sm:max-w-[20.375rem] z-[60] absolute max-h-[37.5rem]"
+          hasShadow
+          rounded="s"
+          ref={ref}
+        >
+          {content}
+        </Card>
+      </Portal>
     );
   },
 );

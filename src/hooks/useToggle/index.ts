@@ -28,7 +28,6 @@ const documentClickHandler = (event: MouseEvent): void => {
       }
 
       const htmlElement = getHtmlElement();
-
       if (
         !htmlElement ||
         !htmlElement.contains(event.target) ||
@@ -38,9 +37,9 @@ const documentClickHandler = (event: MouseEvent): void => {
         return;
       }
 
-      const shouldClose =
-        shouldCloseCallbackRef.current &&
-        shouldCloseCallbackRef.current(element);
+      const shouldClose = shouldCloseCallbackRef.current
+        ? shouldCloseCallbackRef.current(event.target)
+        : true;
 
       if (!shouldClose) {
         return;

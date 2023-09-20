@@ -3,7 +3,6 @@ import ReactModal from 'react-modal';
 import clsx from 'clsx';
 
 import { ModalBaseProps } from './types';
-import styles from './Modal.module.css';
 
 const displayName = 'v5.ModalBase';
 
@@ -16,18 +15,17 @@ const ModalBase: FC<ModalBaseProps> = ({
   <ReactModal
     role={role}
     overlayClassName={{
-      base: styles.overlay,
+      base: 'flex justify-center items-center fixed inset-0 z-[999] overflow-hidden bg-base-sprite/50',
       afterOpen: '',
       beforeClose: 'blur-none',
     }}
     className={clsx(
-      styles.modal,
-      `${
-        isFullOnMobile
-          ? 'w-[100vw] h-[100vh]'
-          : '!w-[calc(100vw-3rem)] max-h-[calc(100vh-4rem)] border border-gray-200 rounded-xl shadow-default'
-      }`,
+      `relative outline-0 overflow-hidden bg-base-white md:h-auto
+      md:border md:border-gray-200 md:rounded-xl shadow-default flex flex-col`,
       {
+        'w-screen h-screen': isFullOnMobile,
+        'w-[calc(100vw-3rem)] max-h-[calc(100vh-4rem)] border border-gray-200 rounded-xl shadow-default':
+          !isFullOnMobile,
         base: 'z-[4] outline-0',
         'pt-6 pl-6': !isTopSectionWithBackground,
         'pt-0 pl-0': isTopSectionWithBackground,

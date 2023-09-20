@@ -8,6 +8,7 @@ import React, {
 import useToggle from '~hooks/useToggle';
 import { DEFAULT_USE_TOGGLE_RETURN_VALUE } from '~hooks/useToggle/consts';
 import { UseToggleReturnType } from '~hooks/useToggle/types';
+import { getPortalContainer } from '~v5/shared/Portal/utils';
 
 export const ActionSidebarContext = createContext<{
   actionSidebarToggle: UseToggleReturnType;
@@ -25,8 +26,12 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
   const cancelModalToggle = useToggle();
   const avatarModalToggle = useToggle();
   const actionSidebarToggle = useToggle({
-    shouldCloseOnDocumentClick: () => {
-      return !cancelModalToggle[0] && !avatarModalToggle[0];
+    shouldCloseOnDocumentClick: (element) => {
+      return (
+        !cancelModalToggle[0] &&
+        !avatarModalToggle[0] &&
+        !getPortalContainer().contains(element)
+      );
     },
   });
 

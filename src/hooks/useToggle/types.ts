@@ -1,4 +1,4 @@
-export type ShouldCloseCallback = (element: HTMLElement) => boolean;
+export type ShouldCloseCallback = (element: Element) => boolean;
 
 export interface RefRegistryEntry {
   element: HTMLElement;
