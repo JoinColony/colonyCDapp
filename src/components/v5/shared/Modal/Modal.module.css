@@ -1,13 +1,5 @@
-.overlay {
-  @apply flex justify-center items-center fixed top-0 left-0 right-0 bottom-0 z-[999] overflow-hidden bg-base-sprite bg-opacity-[50%];
-}
-
-.modal {
-  @apply relative outline-0 overflow-hidden bg-base-white max-h-[initial] md:h-auto md:w-[30.3125rem] md:border md:border-gray-200 md:rounded-xl shadow-default flex flex-col w-full;
-}
-
 .inner {
-  @apply flex flex-col w-full flex-grow overflow-y-auto;
+  @apply flex flex-col w-full flex-grow;
 
   -webkit-overflow-scrolling: touch;
 }

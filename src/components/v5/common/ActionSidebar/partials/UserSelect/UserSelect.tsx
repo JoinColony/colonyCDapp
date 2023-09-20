@@ -9,6 +9,7 @@ import UserAvatar from '~v5/shared/UserAvatar';
 import { useUserByAddress, useUserByName } from '~hooks';
 import useToggle from '~hooks/useToggle';
 import { UserSelectProps } from './types';
+import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
@@ -34,10 +35,16 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
   const userDisplayName = user?.profile?.displayName;
   const { user: userByAddress } = useUserByAddress(field.value);
 
+  const { portalElementRef, relativeElementRef } = useRelativePortalElement<
+    HTMLButtonElement,
+    HTMLDivElement
+  >([isUserSelectVisible]);
+
   return (
     <div className="sm:relative w-full">
       <button
         type="button"
+        ref={relativeElementRef}
         className={clsx(
           'flex text-md transition-colors md:hover:text-blue-400',
           {
@@ -67,9 +74,12 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
             field.onChange(value);
             toggleUserSelectOff();
           }}
-          ref={registerContainerRef}
+          ref={(ref) => {
+            registerContainerRef(ref);
+            portalElementRef.current = ref;
+          }}
           isLoading={usersOptions.loading}
-          className="max-h-[85vh] md:max-h-auto"
+          className="z-[100]"
         />
       )}
     </div>

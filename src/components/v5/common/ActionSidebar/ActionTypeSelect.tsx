@@ -8,6 +8,7 @@ import { useActionsList } from './hooks';
 import { translateAction } from './utils';
 import useToggle from '~hooks/useToggle';
 import { ACTION_TYPE_FIELD_NAME } from './consts';
+import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 
 const displayName = 'v5.common.ActionTypeSelect';
 
@@ -22,6 +23,10 @@ const ActionTypeSelect: FC = () => {
   const {
     field: { onChange },
   } = useController({ name: ACTION_TYPE_FIELD_NAME });
+  const { portalElementRef, relativeElementRef } = useRelativePortalElement<
+    HTMLButtonElement,
+    HTMLDivElement
+  >([isSelectVisible]);
 
   return (
     <ActionSidebarRow
@@ -39,6 +44,7 @@ const ActionTypeSelect: FC = () => {
           <>
             <button
               type="button"
+              ref={relativeElementRef}
               className="flex text-md text-gray-600 transition-colors hover:text-blue-400"
               onClick={toggleSelect}
             >
@@ -48,11 +54,15 @@ const ActionTypeSelect: FC = () => {
             </button>
             {isSelectVisible && (
               <SearchSelect
-                ref={registerContainerRef}
+                hideSearch
+                ref={(ref) => {
+                  registerContainerRef(ref);
+                  portalElementRef.current = ref;
+                }}
                 onToggle={toggleSelectOff}
                 items={actionsList}
                 isOpen={isSelectVisible}
-                className="h-[85vh] sm:h-[60vh]"
+                className="z-[100]"
                 onSelect={onChange}
               />
             )}

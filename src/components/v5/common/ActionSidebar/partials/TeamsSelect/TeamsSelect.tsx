@@ -8,6 +8,7 @@ import useToggle from '~hooks/useToggle';
 import TeamBadge from '~v5/common/Pills/TeamBadge';
 import { useTeams } from '~hooks/useTeams';
 import { TeamSelectProps } from './types';
+import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 
 const displayName = 'v5.common.ActionsContent.partials.TeamsSelect';
 
@@ -34,10 +35,16 @@ const TeamsSelect: FC<TeamSelectProps> = ({ name }) => {
     (option) => option.value === selectedTeam,
   );
 
+  const { portalElementRef, relativeElementRef } = useRelativePortalElement<
+    HTMLButtonElement,
+    HTMLDivElement
+  >([isTeamSelectVisible]);
+
   return (
     <div className="sm:relative w-full">
       <button
         type="button"
+        ref={relativeElementRef}
         className={clsx(
           'flex text-md transition-colors md:hover:text-blue-400',
           {
@@ -61,7 +68,10 @@ const TeamsSelect: FC<TeamSelectProps> = ({ name }) => {
       </button>
       {isTeamSelectVisible && (
         <SearchSelect
-          ref={registerContainerRef}
+          ref={(ref) => {
+            registerContainerRef(ref);
+            portalElementRef.current = ref;
+          }}
           items={[teamsOptions]}
           isOpen={isTeamSelectVisible}
           onToggle={toggleTeamSelect}
@@ -70,6 +80,7 @@ const TeamsSelect: FC<TeamSelectProps> = ({ name }) => {
 
             toggleTeamSelectOff();
           }}
+          className="z-[100]"
         />
       )}
     </div>

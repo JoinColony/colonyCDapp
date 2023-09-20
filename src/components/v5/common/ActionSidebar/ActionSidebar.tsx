@@ -80,8 +80,7 @@ const ActionSidebarFormContent: FC<PropsWithChildren<Props>> = ({
       <div className="px-6 py-8 flex-grow">
         <div
           className={clsx('h-full', {
-            'max-h-[75vh] md:max-h-[75vh] pr-1 h-full overflow-y-auto':
-              selectedAction,
+            'max-h-[75vh] pr-1 h-full overflow-y-auto': selectedAction,
             'md:max-h-full overflow-y-visible': !selectedAction,
           })}
         >
