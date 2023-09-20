@@ -80,7 +80,7 @@ const TeamsSelect: FC<TeamSelectProps> = ({ name }) => {
 
             toggleTeamSelectOff();
           }}
-          className="z-[100]"
+          className="z-[60]"
         />
       )}
     </div>

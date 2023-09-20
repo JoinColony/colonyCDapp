@@ -79,7 +79,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
             portalElementRef.current = ref;
           }}
           isLoading={usersOptions.loading}
-          className="z-[100]"
+          className="z-[60]"
         />
       )}
     </div>

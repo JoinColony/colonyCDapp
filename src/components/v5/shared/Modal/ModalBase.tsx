@@ -15,7 +15,7 @@ const ModalBase: FC<ModalBaseProps> = ({
   <ReactModal
     role={role}
     overlayClassName={{
-      base: 'flex justify-center items-center fixed inset-0 z-[999] overflow-hidden bg-base-sprite bg-opacity-[50%]',
+      base: 'flex justify-center items-center fixed inset-0 z-[999] overflow-hidden bg-base-sprite/50',
       afterOpen: '',
       beforeClose: 'blur-none',
     }}

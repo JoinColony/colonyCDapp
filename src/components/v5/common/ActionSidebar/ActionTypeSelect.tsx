@@ -54,7 +54,7 @@ const ActionTypeSelect: FC = () => {
             </button>
             {isSelectVisible && (
               <SearchSelect
-                hideSearch
+                hideSearchOnMobile
                 ref={(ref) => {
                   registerContainerRef(ref);
                   portalElementRef.current = ref;
@@ -62,7 +62,7 @@ const ActionTypeSelect: FC = () => {
                 onToggle={toggleSelectOff}
                 items={actionsList}
                 isOpen={isSelectVisible}
-                className="z-[100]"
+                className="z-[60]"
                 onSelect={onChange}
               />
             )}

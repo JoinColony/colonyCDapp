@@ -26,7 +26,10 @@ import { formatText } from '~utils/intl';
 const displayName = 'v5.SearchSelect';
 
 const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
-  ({ items, onToggle, isOpen, onSelect, isLoading, hideSearch }, ref) => {
+  (
+    { items, onToggle, isOpen, onSelect, isLoading, hideSearchOnMobile },
+    ref,
+  ) => {
     const [searchValue, setSearchValue] = useState('');
     const isMobile = useMobile();
     const { formatMessage } = useIntl();
@@ -69,7 +72,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
     const content = (
       <>
         <div className="mb-6">
-          {isMobile && hideSearch ? (
+          {isMobile && hideSearchOnMobile ? (
             <p className="text-4 text-gray-400 uppercase">
               {formatText({ id: 'actions.selectActionType' })}
             </p>
@@ -153,7 +156,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
     ) : (
       <Portal>
         <Card
-          className="py-4 px-2.5 w-full sm:max-w-[20.375rem] z-[100] absolute max-h-[37.5rem]"
+          className="py-4 px-2.5 w-full sm:max-w-[20.375rem] z-[60] absolute max-h-[37.5rem]"
           hasShadow
           rounded="s"
           ref={ref}

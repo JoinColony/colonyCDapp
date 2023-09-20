@@ -58,12 +58,12 @@ const SearchItem: FC<SearchItemProps> = ({
               <button
                 type="button"
                 className={clsx(
-                  'w-full text-md transition-colors duration-normal text-left flex items-center',
+                  'w-full text-md transition-colors text-left flex items-center',
                   {
                     'justify-between': !hasAvatar,
                     'justify-start': hasAvatar,
                     'text-gray-400 pointer-events-none gap-1': isDisabled,
-                    'hover:text-blue-400': !missingPermissions,
+                    'md:hover:text-blue-400': !missingPermissions,
                   },
                 )}
                 onClick={() => {

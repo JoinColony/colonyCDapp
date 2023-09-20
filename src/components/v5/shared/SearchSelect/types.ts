@@ -7,7 +7,7 @@ export interface SearchSelectProps {
   onSelect?: (value: string) => void;
   isLoading?: boolean;
   className?: string;
-  hideSearch?: boolean;
+  hideSearchOnMobile?: boolean;
 }
 
 export interface SearchSelectOptionProps {

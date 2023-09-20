@@ -77,30 +77,23 @@ const ActionSidebarFormContent: FC<PropsWithChildren<Props>> = ({
         )}
         {children}
       </div>
-      <div className="px-6 py-8 flex-grow">
-        <div
-          className={clsx('h-full', {
-            'max-h-[75vh] pr-1 h-full overflow-y-auto': selectedAction,
-            'md:max-h-full overflow-y-visible': !selectedAction,
-          })}
-        >
-          <input
-            type="text"
-            className={`
-              heading-3 placeholder:text-gray-500
-              md:hover:text-blue-400 md:hover:placeholder:text-blue-400 text-gray-900
-              transition-colors duration-normal mb-7
-            `}
-            placeholder={formatText({ id: 'placeholder.title' })}
-          />
-          <ActionTypeSelect />
-          {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
-          {notificationBanner && (
-            <div className="mt-7">
-              <NotificationBanner {...notificationBanner} />
-            </div>
-          )}
-        </div>
+      <div className="px-6 py-8 flex-grow overflow-y-auto mr-1">
+        <input
+          type="text"
+          className={`
+                heading-3 placeholder:text-gray-500
+                md:hover:text-blue-400 md:hover:placeholder:text-blue-400 text-gray-900
+                transition-colors duration-normal mb-7
+              `}
+          placeholder={formatText({ id: 'placeholder.title' })}
+        />
+        <ActionTypeSelect />
+        {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
+        {notificationBanner && (
+          <div className="mt-7">
+            <NotificationBanner {...notificationBanner} />
+          </div>
+        )}
       </div>
       <div className="mt-auto">
         {!selectedAction && (
@@ -139,9 +132,8 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
           fixed
           top-0
           right-0
-          bottom-0
           w-full
-          h-full
+          h-screen
           bg-base-white
           rounded-bl-lg
           border-l
