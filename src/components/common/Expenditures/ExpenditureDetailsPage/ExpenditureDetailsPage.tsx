@@ -2,7 +2,11 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Id, MotionState } from '@colony/colony-js';
 
-import { useGetExpenditureQuery, useGetMotionStateQuery } from '~gql';
+import {
+  ColonyActionType,
+  useGetExpenditureQuery,
+  useGetMotionStateQuery,
+} from '~gql';
 import { useColonyContext } from '~hooks';
 import { Heading3 } from '~shared/Heading';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
@@ -18,6 +22,7 @@ import ReclaimStakeButton from '../StakedExpenditure/ReclaimStakeButton';
 import ExpenditureStages from './ExpenditureStages';
 import CancelDraftExpenditureButton from './CancelDraftExpenditureButton';
 import CancelStakedExpenditureButton from '../StakedExpenditure/CancelStakedExpenditureButton';
+import { hasMotionFailed, isMotionInProgress } from './helpers';
 
 import styles from './ExpenditureDetailsPage.module.css';
 
@@ -39,16 +44,31 @@ const ExpenditureDetailsPage = () => {
   const expenditure = data?.getExpenditure;
 
   const expenditureFundingMotions =
-    expenditure?.fundingMotions?.items
+    expenditure?.motions?.items
       .filter(notNull)
+      .filter(
+        ({ action }) => action?.type === ColonyActionType.FundExpenditureMotion,
+      )
+      .sort((a, b) => Number(a.motionId) - Number(b.motionId)) ?? [];
+
+  const expenditureCancelMotions =
+    expenditure?.motions?.items
+      .filter(notNull)
+      .filter(
+        ({ action }) =>
+          action?.type === ColonyActionType.CancelStakedExpenditureMotion,
+      )
       .sort((a, b) => Number(a.motionId) - Number(b.motionId)) ?? [];
 
   const latestFundingMotion = expenditureFundingMotions.at(-1);
+  const latestCancelMotion = expenditureCancelMotions.at(-1);
 
   const latestExpenditureFundingMotionHash: string | undefined =
     latestFundingMotion?.transactionHash;
+  const latestExpenditureCancelMotionHash: string | undefined =
+    latestCancelMotion?.transactionHash;
 
-  const { data: motionStateQuery } = useGetMotionStateQuery({
+  const { data: fundingMotionStateQuery } = useGetMotionStateQuery({
     skip: !latestFundingMotion,
     variables: {
       input: {
@@ -58,12 +78,29 @@ const ExpenditureDetailsPage = () => {
     },
   });
 
-  const networkMotionState =
-    motionStateQuery?.getMotionState ?? MotionState.Null;
+  const { data: cancelMotionStateQuery } = useGetMotionStateQuery({
+    skip: !latestCancelMotion,
+    variables: {
+      input: {
+        colonyAddress,
+        databaseMotionId: latestCancelMotion?.databaseMotionId ?? '',
+      },
+    },
+  });
+
+  const networkFundingMotionState =
+    fundingMotionStateQuery?.getMotionState ?? MotionState.Null;
+
+  const networkCancelMotionState =
+    cancelMotionStateQuery?.getMotionState ?? MotionState.Null;
 
   const latestFundingMotionState =
     latestFundingMotion &&
-    getMotionState(networkMotionState, latestFundingMotion);
+    getMotionState(networkFundingMotionState, latestFundingMotion);
+
+  const latestCancelMotionState =
+    latestCancelMotion &&
+    getMotionState(networkCancelMotionState, latestCancelMotion);
 
   if (!colony) {
     return null;
@@ -97,9 +134,14 @@ const ExpenditureDetailsPage = () => {
   );
 
   const oldFundingMotions = expenditureFundingMotions?.slice(0, -1);
+  const oldCancelMotions = expenditureCancelMotions?.slice(0, -1);
 
-  const MotionTag = latestFundingMotionState
+  const FundingMotionTag = latestFundingMotionState
     ? motionTags[latestFundingMotionState]
+    : () => null;
+
+  const CancelMotionTag = latestCancelMotionState
+    ? motionTags[latestCancelMotionState]
     : () => null;
 
   return (
@@ -128,7 +170,23 @@ const ExpenditureDetailsPage = () => {
           <Link
             to={`/colony/${colony.name}/tx/${latestExpenditureFundingMotionHash}`}
           >
-            Current funding motion status: <MotionTag />
+            Current funding motion status: <FundingMotionTag />
+          </Link>
+        )}
+        {oldCancelMotions?.length ? <div>Previous cancel motions:</div> : null}
+        {oldCancelMotions?.map(({ transactionHash }, idx) => (
+          <Link
+            key={transactionHash}
+            to={`/colony/${colony.name}/tx/${transactionHash}`}
+          >
+            Cancel motion {idx + 1}
+          </Link>
+        ))}
+        {latestCancelMotionState && (
+          <Link
+            to={`/colony/${colony.name}/tx/${latestExpenditureCancelMotionHash}`}
+          >
+            Current cancel expenditure motion status: <CancelMotionTag />
           </Link>
         )}
         <div>Is Staged: {expenditure.isStaged ? 'Yes' : 'No'}</div>
@@ -149,14 +207,26 @@ const ExpenditureDetailsPage = () => {
           <CancelStakedExpenditureButton
             expenditure={expenditure}
             colony={colony}
+            hasMotionFailed={
+              latestCancelMotionState &&
+              hasMotionFailed(latestCancelMotionState)
+            }
+            isMotionInProgress={isMotionInProgress(latestCancelMotionState)}
+            latestExpenditureCancelMotionHash={
+              latestExpenditureCancelMotionHash
+            }
           />
           <ExpenditureAdvanceButton
-            latestFundingMotionState={latestFundingMotionState}
+            expenditure={expenditure}
+            colony={colony}
+            hasMotionFailed={
+              latestFundingMotionState &&
+              hasMotionFailed(latestFundingMotionState)
+            }
+            isMotionInProgress={isMotionInProgress(latestFundingMotionState)}
             latestExpenditureFundingMotionHash={
               latestExpenditureFundingMotionHash
             }
-            expenditure={expenditure}
-            colony={colony}
           />
           <ReclaimStakeButton colony={colony} expenditure={expenditure} />
         </div>
