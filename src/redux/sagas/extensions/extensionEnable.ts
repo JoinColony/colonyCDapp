@@ -85,12 +85,14 @@ function* extensionEnable({
     }
 
     if (needsInitialisation) {
+      yield takeFrom(initialise.channel, ActionTypes.TRANSACTION_CREATED);
       yield put(transactionPending(initialise.id));
       yield put(transactionReady(initialise.id));
       yield takeFrom(initialise.channel, ActionTypes.TRANSACTION_SUCCEEDED);
     }
 
     if (needsSettingRoles) {
+      yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_CREATED);
       yield put(transactionPending(setUserRoles.id));
       yield put(transactionReady(setUserRoles.id));
       yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_SUCCEEDED);
@@ -102,6 +104,7 @@ function* extensionEnable({
       meta,
     });
   } catch (error) {
+    console.error(error);
     return yield putError(ActionTypes.EXTENSION_ENABLE_ERROR, error, meta);
   }
 
