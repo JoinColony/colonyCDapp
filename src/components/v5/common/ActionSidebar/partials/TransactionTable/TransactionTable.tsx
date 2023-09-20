@@ -29,7 +29,7 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
   const fieldState = getFieldState(name);
 
   return (
-    <div className="mt-7">
+    <div>
       {!!data.length && (
         <TableWithMeatballMenu<TransactionTableModel>
           tableClassName={fieldState.error && 'border-red-400'}
