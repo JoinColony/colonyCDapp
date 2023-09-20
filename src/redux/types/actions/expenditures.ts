@@ -13,6 +13,13 @@ export type ExpenditureFundPayload = {
   expenditure: Expenditure;
 };
 
+export type StakedExpenditureCancelPayload = {
+  colonyAddress: Address;
+  stakedExpenditureAddress: string;
+  shouldPunish: boolean;
+  expenditure: Expenditure;
+};
+
 export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.EXPENDITURE_CREATE,
@@ -151,12 +158,7 @@ export type ExpendituresActionTypes =
     >
   | UniqueActionType<
       ActionTypes.STAKED_EXPENDITURE_CANCEL,
-      {
-        colonyAddress: Address;
-        stakedExpenditureAddress: string;
-        shouldPunish: boolean;
-        expenditure: Expenditure;
-      },
+      StakedExpenditureCancelPayload,
       MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.STAKED_EXPENDITURE_CANCEL_ERROR, object>

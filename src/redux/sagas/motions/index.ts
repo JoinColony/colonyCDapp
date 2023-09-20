@@ -15,7 +15,10 @@ import paymentMotionSaga from './paymentMotion';
 import manageReputationMotionSaga from './manageReputationMotion';
 import editColonyMotionSaga from './editColonyMotion';
 import createDecisionMotionSaga from './createDecisionMotion';
-import { fundExpenditureMotionSaga } from './expenditures';
+import {
+  fundExpenditureMotionSaga,
+  cancelStakedExpenditureMotionSaga,
+} from './expenditures';
 
 export default function* actionsSagas() {
   yield all([
@@ -32,6 +35,7 @@ export default function* actionsSagas() {
     call(editColonyMotionSaga),
     call(createDecisionMotionSaga),
     call(fundExpenditureMotionSaga),
+    call(cancelStakedExpenditureMotionSaga),
     call(paymentMotionSaga),
     // call(escalateMotionSaga),
     call(manageReputationMotionSaga),
