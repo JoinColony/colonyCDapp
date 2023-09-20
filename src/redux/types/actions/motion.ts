@@ -12,7 +12,10 @@ import {
   MetaWithHistory,
   MetaWithNavigate,
 } from './index';
-import { ExpenditureFundPayload } from './expenditures';
+import {
+  ExpenditureFundPayload,
+  StakedExpenditureCancelPayload,
+} from './expenditures';
 
 export enum RootMotionMethodNames {
   MintTokens = 'mintTokens',
@@ -20,14 +23,21 @@ export enum RootMotionMethodNames {
   UnlockToken = 'unlockToken',
 }
 
-export type ExpenditureFundMotionPayload = Omit<
-  ExpenditureFundPayload,
-  'colonyAddress'
-> & {
-  colony: Colony;
+type MotionExpenditureBase = {
   fromDomainId: number;
   motionDomainId: number;
 };
+export type ExpenditureFundMotionPayload = Omit<
+  ExpenditureFundPayload,
+  'colonyAddress'
+> &
+  MotionExpenditureBase & {
+    colony: Colony;
+  };
+
+export type StakedExpenditureCancelMotionPayload =
+  StakedExpenditureCancelPayload &
+    MotionExpenditureBase & { colonyName: string };
 
 export type MotionFinalizePayload = {
   userAddress: Address;
@@ -269,5 +279,15 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_FUND_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS,
+      MetaWithNavigate<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL,
+      StakedExpenditureCancelMotionPayload,
+      MetaWithNavigate<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_SUCCESS,
       MetaWithNavigate<object>
     >;
