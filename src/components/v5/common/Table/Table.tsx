@@ -27,7 +27,7 @@ const Table = <T,>({
       <table
         className={clsx(
           tableClassName,
-          'border border-separate border-spacing-0 border-1 w-full rounded-lg border-gray-200',
+          'border border-separate border-spacing-0 border-1 w-full rounded-lg border-gray-200 overflow-hidden',
         )}
       >
         <thead>
@@ -37,7 +37,7 @@ const Table = <T,>({
                 <th
                   key={header.id}
                   className={`text-left text-sm text-gray-600 bg-gray-50 font-normal
-                  first-of-type:rounded-tl-lg last-of-type:rounded-tr-lg px-[1.1rem] py-[0.7rem]`}
+                  px-[1.1rem] py-[0.7rem]`}
                 >
                   {header.isPlaceholder
                     ? null

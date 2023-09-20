@@ -7,6 +7,7 @@ import { useColonyContext, useMobile } from '~hooks';
 import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
 import { useTransactionTableColumns, useGetTableMenuProps } from './hooks';
 import { TransactionTableModel, TransactionTableProps } from './types';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.common.ActionsContent.partials.TransactionTable';
 
@@ -31,16 +32,14 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
     <div className="mt-7">
       {!!data.length && (
         <TableWithMeatballMenu<TransactionTableModel>
-          className="mt-7"
           tableClassName={fieldState.error && 'border-red-400'}
           getRowId={({ key }) => key}
           columns={columns}
           data={data}
           getMenuProps={getMenuProps}
-          title={<FormattedMessage id="actionSidebar.additionalPayments" />}
+          title={formatText({ id: 'actionSidebar.additionalPayments' })}
         />
       )}
-
       <Button
         mode="primaryOutline"
         iconName="plus"
