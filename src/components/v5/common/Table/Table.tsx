@@ -11,7 +11,7 @@ const displayName = 'v5.common.Table';
 
 const Table = <T,>({
   className,
-  isError,
+  tableClassName,
   title,
   getCoreRowModel,
   ...rest
@@ -26,11 +26,8 @@ const Table = <T,>({
       {title && <h5 className="text-2 mb-3">{title}</h5>}
       <table
         className={clsx(
-          'border border-separate border-spacing-0 border-1 w-full rounded-lg',
-          {
-            'border-red-400': isError,
-            'border-gray-200': !isError,
-          },
+          tableClassName,
+          'border border-separate border-spacing-0 border-1 w-full rounded-lg border-gray-200',
         )}
       >
         <thead>

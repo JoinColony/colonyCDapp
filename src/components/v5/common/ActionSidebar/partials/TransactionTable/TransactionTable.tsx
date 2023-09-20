@@ -24,16 +24,15 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
   const isMobile = useMobile();
   const value = useWatch({ name });
   const getMenuProps = useGetTableMenuProps(fieldArrayMethods, value);
-  const {
-    formState: { errors },
-  } = useFormContext();
+  const { getFieldState } = useFormContext();
+  const fieldState = getFieldState(name);
 
   return (
     <div className="mt-7">
       {!!data.length && (
         <TableWithMeatballMenu<TransactionTableModel>
           className="mt-7"
-          isError={!!errors[name]}
+          tableClassName={fieldState.error && 'border-red-400'}
           getRowId={({ key }) => key}
           columns={columns}
           data={data}

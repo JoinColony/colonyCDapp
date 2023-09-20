@@ -36,10 +36,16 @@ const validationSchema = yup
         yup.object().shape({
           recipent: yup.string().required(),
           amount: yup
-            .number()
-            .required()
-            .transform((value) => toFinite(value))
-            .moreThan(0),
+            .object()
+            .shape({
+              amount: yup
+                .number()
+                .required(() => 'required field')
+                .transform((value) => toFinite(value))
+                .moreThan(0, () => 'Amount must be greater than zero'),
+              tokenAddress: yup.string().address().required(),
+            })
+            .required(),
         }),
       )
       .required()
