@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+import clsx from 'clsx';
 
 import Button from '~v5/shared/Button/Button';
 import { useColonyContext, useMobile } from '~hooks';
@@ -32,7 +33,7 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
     <div>
       {!!data.length && (
         <TableWithMeatballMenu<TransactionTableModel>
-          tableClassName={fieldState.error && 'border-red-400'}
+          tableClassName={clsx(fieldState.error, 'border-red-400')}
           getRowId={({ key }) => key}
           columns={columns}
           data={data}
