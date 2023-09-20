@@ -16,6 +16,8 @@ import Numeral from '~shared/Numeral';
 import { useColonyContext } from '~hooks';
 import useToggle from '~hooks/useToggle';
 import { AmountFieldProps, CleaveChangeEvent } from './types';
+import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
+import Portal from '~v5/shared/Portal';
 
 const displayName = 'v5.common.ActionsContent.partials.AmountField';
 
@@ -56,6 +58,11 @@ const AmountField: FC<AmountFieldProps> = ({ name }) => {
     field.onChange(e.target.rawValue);
   };
 
+  const { portalElementRef, relativeElementRef } = useRelativePortalElement<
+    HTMLButtonElement,
+    HTMLDivElement
+  >([isTokenSelectVisible]);
+
   return (
     <div className="flex items-center gap-3 w-full" ref={registerContainerRef}>
       <Cleave
@@ -75,6 +82,7 @@ const AmountField: FC<AmountFieldProps> = ({ name }) => {
       <div className="sm:relative w-full">
         <button
           type="button"
+          ref={relativeElementRef}
           className={clsx(styles.button, 'text-gray-500')}
           onClick={toggleTokenSelect}
           aria-label={formatMessage({ id: 'ariaLabel.selectToken' })}
@@ -91,59 +99,71 @@ const AmountField: FC<AmountFieldProps> = ({ name }) => {
           {...tokenAddressController}
         />
         {isTokenSelectVisible && (
-          <Card
-            className="py-4 px-2.5 w-full sm:max-w-[20.375rem] absolute top-[calc(100%+0.5rem)] left-0 z-50"
-            hasShadow
-            rounded="s"
-          >
-            <h5 className="text-4 text-gray-400 mb-4 uppercase">
-              {formatMessage({ id: 'actionSidebar.availableTokens' })}
-            </h5>
-            <ul>
-              {colonyTokens.map((colonyToken) => {
-                const tokenBalance = getBalanceForTokenAndDomain(
-                  colony?.balances,
-                  colonyToken.tokenAddress,
-                  selectedTeam,
-                );
+          <Portal>
+            <Card
+              className="py-4 px-2.5 w-full sm:max-w-[20.375rem] absolute top-[calc(100%+0.5rem)] left-0 z-[60]"
+              hasShadow
+              rounded="s"
+              ref={(ref) => {
+                registerContainerRef(ref);
+                portalElementRef.current = ref;
+              }}
+            >
+              <h5 className="text-4 text-gray-400 mb-4 uppercase">
+                {formatMessage({ id: 'actionSidebar.availableTokens' })}
+              </h5>
+              <ul>
+                {colonyTokens.map((colonyToken) => {
+                  const tokenBalance = getBalanceForTokenAndDomain(
+                    colony?.balances,
+                    colonyToken.tokenAddress,
+                    selectedTeam,
+                  );
 
-                return (
-                  <li key={colonyToken.tokenAddress} className="mb-4 last:mb-0">
-                    <button
-                      type="button"
-                      className={clsx(styles.button, 'justify-between w-full')}
-                      onClick={() => {
-                        tokenAddressController.onChange(
-                          colonyToken.tokenAddress,
-                        );
-                        toggleTokenSelect();
-                      }}
+                  return (
+                    <li
+                      key={colonyToken.tokenAddress}
+                      className="mb-4 last:mb-0"
                     >
-                      <div className="flex items-center gap-2">
-                        <TokenIcon token={colonyToken} size="xs" />
-                        <span className="text-md">{colonyToken.symbol}</span>
-                      </div>
-                      {tokenBalance && (
-                        <span className="text-sm text-gray-400">
-                          {formatMessage({
-                            id: 'actionSidebar.availableFunds',
-                          })}
-                          {': '}
-                          <Numeral
-                            value={tokenBalance}
-                            decimals={getTokenDecimalsWithFallback(
-                              colonyToken?.decimals,
-                            )}
-                          />{' '}
-                          {colonyToken.symbol}
-                        </span>
-                      )}
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </Card>
+                      <button
+                        type="button"
+                        className={clsx(
+                          styles.button,
+                          'justify-between w-full',
+                        )}
+                        onClick={() => {
+                          tokenAddressController.onChange(
+                            colonyToken.tokenAddress,
+                          );
+                          toggleTokenSelect();
+                        }}
+                      >
+                        <div className="flex items-center gap-2">
+                          <TokenIcon token={colonyToken} size="xs" />
+                          <span className="text-md">{colonyToken.symbol}</span>
+                        </div>
+                        {tokenBalance && (
+                          <span className="text-sm text-gray-400">
+                            {formatMessage({
+                              id: 'actionSidebar.availableFunds',
+                            })}
+                            {': '}
+                            <Numeral
+                              value={tokenBalance}
+                              decimals={getTokenDecimalsWithFallback(
+                                colonyToken?.decimals,
+                              )}
+                            />{' '}
+                            {colonyToken.symbol}
+                          </span>
+                        )}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </Card>
+          </Portal>
         )}
       </div>
     </div>
