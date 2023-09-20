@@ -41,6 +41,18 @@
   input[type='number'] {
     -moz-appearance: textfield;
   }
+
+  ::-webkit-scrollbar {
+    @apply w-[.4375rem];
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply w-[.3125rem] bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-md bg-gray-100 transition-all md:hover:bg-gray-300;
+  }
 }
 
 @layer utilities {

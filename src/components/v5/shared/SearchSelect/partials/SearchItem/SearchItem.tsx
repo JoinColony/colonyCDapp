@@ -4,7 +4,6 @@ import clsx from 'clsx';
 
 import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import { sortDisabled } from '../../utils';
-import styles from '../../SearchSelect.module.css';
 import { SearchItemProps } from './types';
 import Avatar from '~v5/shared/Avatar';
 import { useMobile } from '~hooks';
@@ -58,12 +57,15 @@ const SearchItem: FC<SearchItemProps> = ({
             >
               <button
                 type="button"
-                className={clsx(styles.button, {
-                  'justify-between': !hasAvatar,
-                  'justify-start': hasAvatar,
-                  'text-gray-400 pointer-events-none': isDisabled,
-                  'hover:text-blue-400': !missingPermissions,
-                })}
+                className={clsx(
+                  'w-full text-md transition-colors text-left flex items-center',
+                  {
+                    'justify-between': !hasAvatar,
+                    'justify-start': hasAvatar,
+                    'text-gray-400 pointer-events-none gap-1': isDisabled,
+                    'md:hover:text-blue-400': !missingPermissions,
+                  },
+                )}
                 onClick={() => {
                   if (missingPermissions) return;
 
