@@ -181,6 +181,7 @@
     "@web3-onboard/common": "^2.2.3",
     "@web3-onboard/core": "^2.8.5",
     "@web3-onboard/injected-wallets": "^2.2.4",
+    "@xobotyi/scrollbar-width": "^1.9.5",
     "axios": "^1.4.0",
     "bn.js": "^5.1.1",
     "camelcase": "^6.0.0",

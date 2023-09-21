@@ -21,7 +21,7 @@ const ModalBase: FC<ModalBaseProps> = ({
     }}
     className={clsx(
       `relative outline-0 overflow-hidden bg-base-white md:h-auto
-      md:border md:border-gray-200 md:rounded-xl shadow-default flex flex-col`,
+      md:border md:border-gray-200 md:rounded-xl shadow-default flex flex-col md:w-[30.3125rem]`,
       {
         'w-screen h-screen': isFullOnMobile,
         'w-[calc(100vw-3rem)] max-h-[calc(100vh-4rem)] border border-gray-200 rounded-xl shadow-default':
