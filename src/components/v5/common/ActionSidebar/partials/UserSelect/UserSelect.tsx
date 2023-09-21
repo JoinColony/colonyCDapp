@@ -6,7 +6,7 @@ import { useController } from 'react-hook-form';
 import { useUserSelect } from './hooks';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
 import UserAvatar from '~v5/shared/UserAvatar';
-import { useUserByAddress, useUserByName } from '~hooks';
+import { useUserByAddress } from '~hooks';
 import useToggle from '~hooks/useToggle';
 import { UserSelectProps } from './types';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
@@ -31,9 +31,8 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
       registerContainerRef,
     },
   ] = useToggle();
-  const { user } = useUserByName(field.value);
-  const userDisplayName = user?.profile?.displayName;
   const { user: userByAddress } = useUserByAddress(field.value);
+  const userDisplayName = userByAddress?.profile?.displayName;
 
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
@@ -55,9 +54,9 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
         onClick={toggleUserSelect}
         aria-label={formatMessage({ id: 'ariaLabel.selectUser' })}
       >
-        {user || userByAddress ? (
+        {userByAddress ? (
           <UserAvatar
-            user={user || userByAddress}
+            user={userByAddress}
             userName={userDisplayName}
             size="xs"
           />

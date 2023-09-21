@@ -24,7 +24,7 @@ const SubMenu: FC<SubMenuProps> = ({ items }) => {
   } = useActionSidebarContext();
 
   return (
-    <Wrapper hasShadow={!isMobile}>
+    <Wrapper hasShadow={!isMobile} className="w-full">
       <ul
         className={clsx(styles.subMenuList, {
           'grid-cols-[repeat(3,1fr)]': !isMobile,
