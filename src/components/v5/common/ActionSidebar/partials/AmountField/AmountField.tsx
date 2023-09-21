@@ -61,7 +61,9 @@ const AmountField: FC<AmountFieldProps> = ({ name }) => {
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
     HTMLDivElement
-  >([isTokenSelectVisible]);
+  >([isTokenSelectVisible], {
+    top: 8,
+  });
 
   return (
     <div className="flex items-center gap-3 w-full" ref={registerContainerRef}>
@@ -101,7 +103,7 @@ const AmountField: FC<AmountFieldProps> = ({ name }) => {
         {isTokenSelectVisible && (
           <Portal>
             <Card
-              className="py-4 px-2.5 w-full sm:max-w-[20.375rem] absolute top-[calc(100%+0.5rem)] left-0 z-[60]"
+              className="absolute z-[60]"
               hasShadow
               rounded="s"
               ref={(ref) => {

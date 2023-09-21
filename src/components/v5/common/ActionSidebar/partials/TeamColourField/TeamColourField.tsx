@@ -9,6 +9,8 @@ import SearchItem from '~v5/shared/SearchSelect/partials/SearchItem/SearchItem';
 import TeamColourBadge from './partials/TeamColourBadge';
 import { TeamColourFieldProps } from './types';
 import { useColors } from '~hooks/useColors';
+import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
+import Portal from '~v5/shared/Portal';
 
 const displayName = 'v5.common.ActionsContent.partials.TeamColourField';
 
@@ -32,9 +34,17 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
   ] = useToggle();
   const teamNameValue = useWatch({ name: 'teamName' });
 
+  const { portalElementRef, relativeElementRef } = useRelativePortalElement<
+    HTMLButtonElement,
+    HTMLDivElement
+  >([isTeamColourSelectVisible], {
+    top: 8,
+  });
+
   return (
-    <div className="sm:relative w-full" ref={registerContainerRef}>
+    <div className="sm:relative w-full">
       <button
+        ref={relativeElementRef}
         type="button"
         className={clsx(
           'flex text-md transition-colors md:hover:text-blue-400',
@@ -55,20 +65,26 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
         )}
       </button>
       {isTeamColourSelectVisible && (
-        <Card
-          className="p-6 max-w-[14.5rem] sm:max-w-[10.875rem] absolute top-[calc(100%+0.5rem)] left-0 z-50"
-          hasShadow
-          rounded="s"
-        >
-          <SearchItem
-            options={colorsOptions?.options}
-            onChange={(value) => {
-              field.onChange(value);
-              toggleOffDecisionSelect();
+        <Portal>
+          <Card
+            ref={(ref) => {
+              registerContainerRef(ref);
+              portalElementRef.current = ref;
             }}
-            isLabelVisible={false}
-          />
-        </Card>
+            className="p-6 absolute z-[60]"
+            hasShadow
+            rounded="s"
+          >
+            <SearchItem
+              options={colorsOptions?.options}
+              onChange={(value) => {
+                field.onChange(value);
+                toggleOffDecisionSelect();
+              }}
+              isLabelVisible={false}
+            />
+          </Card>
+        </Portal>
       )}
     </div>
   );
