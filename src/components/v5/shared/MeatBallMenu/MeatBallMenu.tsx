@@ -21,15 +21,14 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
     isMenuOpen,
     { toggle: toggleMenu, toggleOff: toggleMenuOff, registerContainerRef },
   ] = useToggle();
-
-  if (!items.length) {
-    throw new Error('There are no items added to the menu.');
-  }
-
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
     HTMLDivElement
   >([isMenuOpen]);
+
+  if (!items.length) {
+    throw new Error('There are no items added to the menu.');
+  }
 
   return (
     <div className="md:relative">
@@ -50,8 +49,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
           <Card
             className={clsx(
               cardClassName,
-              `px-2.5 py-4 w-full absolute top-full
-              right-0 left-0 sm:left-auto sm:right-[calc(100%-1rem)] z-[60] max-h-[16rem] overflow-y-auto`,
+              `px-2.5 py-4 absolute z-[60] overflow-y-auto w-auto`,
             )}
             hasShadow
             rounded="s"

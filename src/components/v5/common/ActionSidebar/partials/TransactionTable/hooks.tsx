@@ -34,7 +34,7 @@ export const useTransactionTableColumns = (
         },
       }),
     ],
-    [formatText, columnHelper, name],
+    [columnHelper, name],
   );
 
   return columns;
@@ -64,6 +64,6 @@ export const useGetTableMenuProps = ({ insert, remove }, data) => {
         },
       ],
     }),
-    [data, insert, formatText, remove],
+    [data, insert, remove],
   );
 };
