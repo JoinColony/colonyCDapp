@@ -11,11 +11,7 @@ import Portal from '~v5/shared/Portal';
 
 const displayName = 'v5.MeatBallMenu';
 
-const MeatBallMenu: FC<MeatBallMenuProps> = ({
-  items,
-  cardClassName,
-  buttonClassName,
-}) => {
+const MeatBallMenu: FC<MeatBallMenuProps> = ({ items, buttonClassName }) => {
   const { formatMessage } = useIntl();
   const [
     isMenuOpen,
@@ -47,10 +43,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
       {isMenuOpen && (
         <Portal>
           <Card
-            className={clsx(
-              cardClassName,
-              `px-2.5 py-4 absolute z-[60] overflow-y-auto w-auto`,
-            )}
+            className="px-2.5 py-4 absolute z-[60] overflow-y-auto w-auto"
             hasShadow
             rounded="s"
             ref={(ref) => {

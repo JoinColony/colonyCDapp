@@ -9,7 +9,5 @@ export const makeMenuColumn = <T,>(
 ) =>
   helper.display({
     id: 'menu',
-    cell: ({ row }) => (
-      <MeatBallMenu {...getMenuProps(row)} cardClassName="min-w-[11.0625rem]" />
-    ),
+    cell: ({ row }) => <MeatBallMenu {...getMenuProps(row)} />,
   });
