@@ -3,7 +3,6 @@ fragment User on User {
     ...Profile
   }
   walletAddress: id
-  name
   watchlist {
     items {
       id
@@ -17,9 +16,9 @@ fragment User on User {
 
 fragment UserDisplay on User {
   walletAddress: id
-  name
   profile {
     displayName
+    displayNameChanged
     avatar
     thumbnail
   }
@@ -29,6 +28,7 @@ fragment Profile on Profile {
   avatar
   bio
   displayName
+  displayNameChanged
   email
   location
   thumbnail
@@ -43,7 +43,6 @@ fragment Profile on Profile {
 
 fragment MemberUser on User {
   walletAddress: id
-  name
   profile {
     ...Profile
   }

@@ -1,9 +1,7 @@
-import { DomainColor } from '~gql';
+import { Domain } from '~types';
 
 export interface TeamPointsRowProps {
-  color?: DomainColor;
-  name?: string;
-  id: number;
+  team: Domain;
 }
 
 export interface TeamPointsProps {

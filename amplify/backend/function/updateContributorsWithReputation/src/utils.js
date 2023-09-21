@@ -4,7 +4,9 @@ const {
   updateContributorReputation,
   createColonyContributor,
   updateColonyContributor,
+  updateDomain,
 } = require('./graphql');
+const Decimal = require('decimal.js');
 
 const reputationMiningCycleMetadataId = 'REPUTATION_MINING_CYCLE_METADATA'; // this is constant, since we only need one entry of this type in the db.
 
@@ -255,6 +257,32 @@ const createColonyContributorInDb = async ({
   }
 };
 
+const updateReputationInDomain = async ({
+  databaseDomainId,
+  reputation,
+  colonyReputation,
+  graphqlURL,
+  apiKey,
+}) => {
+  const reputationPercentage = new Decimal(reputation)
+    .mul(100)
+    .div(colonyReputation)
+    .toString();
+
+  return graphqlRequest(
+    updateDomain,
+    {
+      input: {
+        id: databaseDomainId,
+        reputation,
+        reputationPercentage,
+      },
+    },
+    graphqlURL,
+    apiKey,
+  );
+};
+
 module.exports = {
   graphqlRequest,
   getContributorType,
@@ -263,5 +291,7 @@ module.exports = {
   createColonyContributorInDb,
   createContributorReputationInDb,
   updateColonyContributorInDb,
+  updateReputationInDomain,
+  getDomainDatabaseId,
   reputationMiningCycleMetadataId,
 };

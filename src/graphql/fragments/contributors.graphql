@@ -3,6 +3,7 @@ fragment ContributorReputation on ContributorReputation {
   reputationRaw
   domainId
   domain {
+    id
     metadata {
       name
     }
@@ -51,7 +52,6 @@ fragment ColonyContributor on ColonyContributor {
   }
   user {
     walletAddress: id
-    name
     profile {
       ...Profile
     }

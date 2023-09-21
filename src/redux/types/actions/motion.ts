@@ -12,6 +12,8 @@ import {
   MetaWithHistory,
   MetaWithNavigate,
 } from './index';
+import { ExternalLink } from '~gql';
+import { OneTxPaymentPayload } from './colonyActions';
 
 export enum RootMotionMethodNames {
   MintTokens = 'mintTokens',
@@ -128,19 +130,7 @@ export type MotionActionTypes =
     >
   | UniqueActionType<
       ActionTypes.MOTION_EXPENDITURE_PAYMENT,
-      {
-        colonyAddress: Address;
-        colonyName?: string;
-        recipientAddress: Address;
-        domainId: number;
-        singlePayment: {
-          amount: BigNumber;
-          tokenAddress: Address;
-          decimals: number;
-        };
-        annotationMessage?: string;
-        motionDomainId: string;
-      },
+      OneTxPaymentPayload,
       MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_PAYMENT_ERROR, object>
@@ -156,6 +146,8 @@ export type MotionActionTypes =
         colonyAvatarImage?: string;
         colonyThumbnail?: string;
         tokenAddresses?: Address[];
+        colonyDescription?: string | null;
+        colonyExternalLinks?: ExternalLink[] | null;
         annotationMessage?: string;
       },
       MetaWithNavigate<object>

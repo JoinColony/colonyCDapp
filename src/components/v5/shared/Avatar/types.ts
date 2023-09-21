@@ -5,7 +5,7 @@ export interface AvatarProps {
   notSet?: boolean;
   placeholderIcon?: string;
   size?: AvatarSize;
-  title?: string;
+  title?: string | null;
 }
 
 export type AvatarSize =

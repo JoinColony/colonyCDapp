@@ -31,12 +31,16 @@ const MSG = defineMessages({
 });
 
 interface Props {
+  amountInputName?: string;
+  addressInputName?: string;
   colony: Colony;
   disabled: boolean;
   includeNetworkFee?: boolean;
 }
 
 const TokenAmountInput = ({
+  amountInputName = 'amount',
+  addressInputName = 'tokenAddress',
   colony,
   disabled,
   includeNetworkFee = false,
@@ -66,7 +70,7 @@ const TokenAmountInput = ({
       <div className={styles.tokenAmountInputContainer}>
         <Input
           label={MSG.amount}
-          name="amount"
+          name={amountInputName}
           appearance={{
             theme: 'minimal',
             align: 'right',
@@ -85,12 +89,12 @@ const TokenAmountInput = ({
           <TokenSymbolSelector
             label={MSG.token}
             tokens={colonyTokens}
-            name="tokenAddress"
+            name={addressInputName}
             elementOnly
             appearance={{ alignOptions: 'right', theme: 'grey' }}
             disabled={disabled}
             onChange={() => {
-              trigger('amount');
+              trigger(amountInputName);
             }}
           />
         </div>

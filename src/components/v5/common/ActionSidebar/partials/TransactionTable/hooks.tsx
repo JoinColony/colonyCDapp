@@ -1,0 +1,69 @@
+import React, { useMemo, useCallback } from 'react';
+import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
+import { formatText } from '~utils/intl';
+import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
+
+import { TransactionTableModel } from './types';
+import UserSelect from '../UserSelect';
+import AmountField from '../AmountField';
+
+export const useTransactionTableColumns = (
+  name: string,
+): ColumnDef<TransactionTableModel, string>[] => {
+  const columnHelper = useMemo(
+    () => createColumnHelper<TransactionTableModel>(),
+    [],
+  );
+
+  const columns: ColumnDef<TransactionTableModel, string>[] = useMemo(
+    () => [
+      columnHelper.display({
+        id: 'recipent',
+        header: () => formatText({ id: 'table.row.recipent' }),
+        cell: ({ row }) => (
+          <UserSelect key={row.id} name={`${name}.${row.index}.recipent`} />
+        ),
+      }),
+      columnHelper.display({
+        id: 'amount',
+        header: () => formatText({ id: 'table.row.amount' }),
+        cell: ({ row }) => {
+          return (
+            <AmountField key={row.id} name={`${name}.${row.index}.amount`} />
+          );
+        },
+      }),
+    ],
+    [columnHelper, name],
+  );
+
+  return columns;
+};
+
+export const useGetTableMenuProps = ({ insert, remove }, data) => {
+  return useCallback<
+    TableWithMeatballMenuProps<TransactionTableModel>['getMenuProps']
+  >(
+    ({ index }) => ({
+      cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
+      items: [
+        {
+          key: 'duplicate',
+          onClick: () =>
+            insert(index + 1, {
+              ...data[index],
+            }),
+          label: formatText({ id: 'table.row.duplicate' }),
+          iconName: 'copy-simple',
+        },
+        {
+          key: 'remove',
+          onClick: () => remove(index),
+          label: formatText({ id: 'table.row.remove' }),
+          iconName: 'trash',
+        },
+      ],
+    }),
+    [data, insert, remove],
+  );
+};

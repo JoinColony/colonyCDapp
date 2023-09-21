@@ -14,10 +14,9 @@ export const useTeams = (): SearchSelectOptionProps => {
 
     return {
       label: teamName || '',
-      value: teamName || '',
+      value: (nativeId || '').toString(),
       isDisabled: false,
       color: teamColor,
-      nativeId,
     };
   });
 

@@ -9,6 +9,7 @@ import { DEFAULT_MAX_CHAR_NUMBER } from './consts';
 import Tooltip from '~shared/Extensions/Tooltip';
 import InputPills from './partials/InputPills';
 import CharacterNumbers from './partials/CharacterNumbers';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.common.Fields.Input';
 
@@ -25,6 +26,7 @@ const Input: FC<InputProps> = ({
   isDecoratedError,
   successfulMessage,
   isDisabled,
+  disabledTooltipMessage,
 }) => {
   const { formatMessage } = useIntl();
   const { isTyping, isCharLenghtError, currentCharNumber, onChange } = useInput(
@@ -60,14 +62,12 @@ const Input: FC<InputProps> = ({
 
   return (
     <div className="flex relative flex-col gap-1">
-      {isDisabled ? (
+      {isDisabled && disabledTooltipMessage ? (
         <Tooltip
           isFullWidthContent
           tooltipContent={
             <span className="text-3 w-full">
-              {formatMessage({
-                id: 'displayName.input.disabled',
-              })}
+              {formatText(disabledTooltipMessage)}
             </span>
           }
         >

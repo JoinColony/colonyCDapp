@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage } from 'react-intl';
 import clsx from 'clsx';
 
 import styles from './TransactionsItem/TransactionsItem.module.css';
@@ -44,8 +44,6 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
     titleValues,
   },
 }) => {
-  const { formatMessage } = useIntl();
-
   const {
     defaultTransactionMessageDescriptorId,
     handleRetryAction,
@@ -100,10 +98,12 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
         <div className="mt-2 md:max-w-[24rem]">
           <NotificationBanner
             status="error"
-            actionText={formatMessage({ id: 'retry' })}
-            actionType="call-to-action"
+            action={{
+              type: 'call-to-action',
+              actionText: <FormattedMessage id="retry" />,
+              onClick: handleRetryAction,
+            }}
             isAlt
-            onClick={handleRetryAction}
           >
             <FormattedMessage
               {...MSG.failedTx}

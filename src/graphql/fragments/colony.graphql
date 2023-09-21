@@ -47,6 +47,7 @@ fragment Colony on Colony {
       ...ColonyRole
     }
   }
+  reputation
 }
 
 fragment ColonyDisplay on Colony {
@@ -100,6 +101,11 @@ fragment WatchListItem on WatchedColonies {
 fragment ColonyMetadata on ColonyMetadata {
   displayName
   avatar
+  description
+  externalLinks {
+    name
+    link
+  }
   thumbnail
   isWhitelistActivated
   whitelistedAddresses
@@ -110,6 +116,8 @@ fragment ColonyMetadata on ColonyMetadata {
     hasAvatarChanged
     hasWhitelistChanged
     haveTokensChanged
+    hasDescriptionChanged
+    haveExternalLinksChanged
   }
 }
 
@@ -150,6 +158,7 @@ fragment ChainFundsClaim on ColonyChainFundsClaim {
 fragment ColonyRole on ColonyRole {
   id
   domain {
+    id
     # @TODO Make a "Light" fragment out of this
     nativeId
   }

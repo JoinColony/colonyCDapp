@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
-import { isConfusing } from '@colony/unicode-confusables-noascii';
-import { useFormContext } from 'react-hook-form';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 
-import ConfusableWarning from '~shared/ConfusableWarning';
 import {
   ActionDialogProps,
   DialogSection,
@@ -12,15 +10,11 @@ import {
   DialogControls,
 } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
-import SingleUserPicker, {
-  filterUserSelection,
-} from '~shared/SingleUserPicker';
-import UserAvatar from '~shared/UserAvatar';
-import { ItemDataType } from '~shared/OmniPicker';
-import { MemberUser, SetStateFn, User } from '~types';
 
+import { MemberUser, SetStateFn } from '~types';
+
+import PaymentRecipient from './PaymentRecipient';
 import DomainFundSelectorSection from '../DomainFundSelectorSection';
-import TokenAmountInput from '../TokenAmountInput';
 import {
   NoPermissionMessage,
   CannotCreateMotionMessage,
@@ -45,7 +39,7 @@ const MSG = defineMessages({
   },
   annotation: {
     id: `${displayName}.annotation`,
-    defaultMessage: 'Explain why you’re making this payment (optional)',
+    defaultMessage: "Explain why you're making this payment (optional)",
   },
   noOneTxExtension: {
     id: `${displayName}.noOneTxExtension`,
@@ -56,10 +50,6 @@ const MSG = defineMessages({
   userPickerPlaceholder: {
     id: `${displayName}.userPickerPlaceholder`,
     defaultMessage: 'Search for a user or paste wallet address',
-  },
-  warningText: {
-    id: `${displayName}.warningText`,
-    defaultMessage: `<span>Warning.</span> You are about to make a payment to an address not on the whitelist. Are you sure the address is correct?`,
   },
 });
 
@@ -74,14 +64,6 @@ const requiredRoles: ColonyRole[] = [
   ColonyRole.Administration,
 ];
 
-const supRenderAvatar = (item: ItemDataType<User>) => (
-  <UserAvatar user={item} size="xs" />
-);
-
-const WarningLabel = (chunks) => (
-  <span className={styles.warningLabel}>{chunks}</span>
-);
-
 const CreatePaymentDialogForm = ({
   back,
   verifiedUsers,
@@ -91,7 +73,7 @@ const CreatePaymentDialogForm = ({
   isForce,
 }: Props) => {
   const { watch } = useFormContext();
-  const { recipient, fromDomainId, forceAction } = watch();
+  const { fromDomainId, forceAction } = watch();
 
   const {
     userHasPermission,
@@ -103,24 +85,15 @@ const CreatePaymentDialogForm = ({
     showPermissionErrors,
   } = useCreatePaymentDialogStatus(colony, requiredRoles, enabledExtensionData);
 
-  const formattedData = verifiedUsers.map((user) => ({
-    ...user,
-    id: user.walletAddress,
-  }));
+  const { fields, append } = useFieldArray({
+    name: 'payments',
+  });
 
   useEffect(() => {
     if (forceAction !== isForce) {
       handleIsForceChange(forceAction);
     }
   }, [forceAction, isForce, handleIsForceChange]);
-
-  const showWarningForAddress = colony.metadata?.isWhitelistActivated
-    ? recipient &&
-      !(colony.metadata?.whitelistedAddresses ?? []).some(
-        (address) =>
-          address.toLowerCase() === recipient.walletAddress.toLowerCase(),
-      )
-    : false;
 
   return (
     <>
@@ -146,47 +119,28 @@ const CreatePaymentDialogForm = ({
           disabled={!canCreatePayment}
         />
       </DialogSection>
-      <DialogSection>
-        <div className={styles.singleUserContainer}>
-          <SingleUserPicker
-            appearance={{ width: 'wide' }}
-            data={formattedData}
-            label={MSG.to}
-            name="recipient"
-            filter={filterUserSelection}
-            disabled={disabledInput}
-            placeholder={MSG.userPickerPlaceholder}
-            dataTest="paymentRecipientPicker"
-            itemDataTest="paymentRecipientItem"
-            valueDataTest="paymentRecipientName"
-            renderAvatar={supRenderAvatar}
-          />
-        </div>
-        {showWarningForAddress && (
-          <div className={styles.warningContainer}>
-            <p className={styles.warningText}>
-              <FormattedMessage
-                {...MSG.warningText}
-                values={{ span: WarningLabel }}
-              />
-            </p>
-          </div>
-        )}
-        {recipient &&
-          recipient.name &&
-          isConfusing(recipient.name || recipient.profile?.displayName) && (
-            <ConfusableWarning
-              walletAddress={recipient.walletAddress}
-              colonyAddress={colony?.colonyAddress}
-            />
-          )}
-      </DialogSection>
-      <DialogSection>
-        <TokenAmountInput
+      {fields.map(({ id }, index) => (
+        <PaymentRecipient
+          key={id}
+          index={index}
+          verifiedUsers={verifiedUsers}
           colony={colony}
           disabled={disabledInput}
-          includeNetworkFee
         />
+      ))}
+      <DialogSection>
+        <button
+          type="button"
+          onClick={() => {
+            append({
+              recipient: undefined,
+              amount: 0,
+              tokenAddress: colony?.nativeToken.tokenAddress,
+            });
+          }}
+        >
+          Add another payment
+        </button>
       </DialogSection>
       <DialogSection>
         <Annotations

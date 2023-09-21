@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
 import { Id } from '@colony/colony-js';
 import Decimal from 'decimal.js';
 
@@ -8,19 +7,23 @@ import Icon from '~shared/Icon';
 import { TextButton } from '~v5/shared/Button';
 import TitleLabel from '~v5/shared/TitleLabel';
 import TeamReputationSummaryRow from './partials/TeamReputationSummaryRow';
-import { useTeamReputationSummary } from './hooks';
 import { useColonyContext } from '~hooks';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import Numeral from '~shared/Numeral';
+import { notNull } from '~utils/arrays';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.common.TeamReputationSummary';
 
 const TeamReputationSummary: FC = () => {
   const { colony } = useColonyContext();
-  const { nativeToken } = colony || {};
-  const { formatMessage } = useIntl();
+  const { nativeToken, domains, reputation } = colony || {};
 
-  const { teams, totalPoints } = useTeamReputationSummary();
+  const colonyReputation = reputation ?? '0';
+  const teams = domains?.items
+    .filter(notNull)
+    .filter(({ nativeId }) => nativeId !== Id.RootDomain);
+
   const showOthers = teams && teams?.length > 5;
 
   return (
@@ -30,42 +33,40 @@ const TeamReputationSummary: FC = () => {
       </span>
       <span className="heading-4 mb-1">
         <Numeral
-          value={new Decimal(totalPoints).abs().toString()}
+          value={new Decimal(colonyReputation).abs().toString()}
           decimals={nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS}
         />
-        {totalPoints > 0 && 'M'}
+        {colonyReputation !== '0' && 'M'}
       </span>
       <span className="text-gray-600 text-sm border-b border-gray-200 pb-6 mb-6">
-        {formatMessage({ id: 'teamReputation.reputationPoints.label' })}
+        {formatText({ id: 'teamReputation.reputationPoints.label' })}
       </span>
       <TitleLabel
         className="mb-2"
-        text={formatMessage({
+        text={formatText({
           id: 'label.pointsPerTeam',
         })}
       />
-      {totalPoints > 0 ? (
+      {teams?.length ? (
         <>
           <ul>
-            {teams?.map(
-              ({ nativeId, color, teamName }, index) =>
+            {teams?.map((team, index) => {
+              const { nativeId } = team;
+              return (
                 index < 5 && (
                   <li key={nativeId} className="flex items-center text-sm mb-3">
-                    <TeamReputationSummaryRow
-                      color={color}
-                      id={nativeId || Id.RootDomain}
-                      name={teamName}
-                    />
+                    <TeamReputationSummaryRow team={team} />
                   </li>
-                ),
-            )}
+                )
+              );
+            })}
           </ul>
           {showOthers && (
             <div className="flex items-center text-sm">
               <span className="flex items-center flex-grow">
                 <span className="flex rounded-full w-[0.625rem] h-[0.625rem] mr-2 bg-gray-100" />
                 <span>
-                  {formatMessage({
+                  {formatText({
                     id: 'label.allOther',
                   })}
                 </span>
@@ -78,11 +79,11 @@ const TeamReputationSummary: FC = () => {
       ) : (
         <>
           <span className="block text-gray-600 text-sm mb-2">
-            {formatMessage({ id: 'teamReputation.noTeams' })}
+            {formatText({ id: 'teamReputation.noTeams' })}
           </span>
           {/* @TODO handle action on click - creating a team */}
           <TextButton mode="underlined">
-            {formatMessage({
+            {formatText({
               id: 'button.createATeam',
             })}
           </TextButton>

@@ -23,6 +23,8 @@ const {
   updateColonyContributorInDb,
   createColonyContributorInDb,
   reputationMiningCycleMetadataId,
+  updateReputationInDomain,
+  getDomainDatabaseId,
 } = require('./utils');
 
 Logger.setLogLevel(Logger.levels.ERROR);
@@ -100,7 +102,7 @@ exports.handler = async (event) => {
           AddressZero,
         ));
     } catch (e) {
-      // may error if there's no rep in colony. In that case, there are no reputed contributors to update.
+      // may error if there's no rep in colony. In that case, there are no contributors to update.
       return true;
     }
 
@@ -157,8 +159,17 @@ exports.handler = async (event) => {
           return;
         }
 
+        // update total rep in domain in db
+        await updateReputationInDomain({
+          databaseDomainId: getDomainDatabaseId(colonyAddress, nativeDomainId),
+          apiKey,
+          graphqlURL,
+          reputation: totalRepInDomain.toString(),
+          colonyReputation: totalRepInColony.toString(),
+        });
+
         // For each domain, sort addresses by reputation, get the contributor type, and
-        // update the database with the corresponding ReputedContributor entry
+        // update the database with the corresponding Contributor entry
 
         const sortedAddresses = await sortAddressesDescendingByReputation(
           colonyClient,
@@ -289,7 +300,13 @@ exports.handler = async (event) => {
 
     await graphqlRequest(
       updateColony,
-      { colonyAddress, date: new Date().toISOString() },
+      {
+        input: {
+          id: colonyAddress,
+          lastUpdatedContributorsWithReputation: new Date().toISOString(),
+          reputation: totalRepInColony.toString(),
+        },
+      },
       graphqlURL,
       apiKey,
     );

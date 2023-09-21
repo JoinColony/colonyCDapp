@@ -9,11 +9,9 @@ import UserNavigation from '~common/Extensions/UserNavigation';
 import MainNavigation from '~common/Extensions/MainNavigation';
 import { CloseButton, PendingButton } from '~v5/shared/Button';
 import { useHeader } from './hooks';
-import { HeaderProps } from './types';
 import ActionSidebar from '~v5/common/ActionSidebar';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { ActionFormContextProvider } from '~v5/common/ActionSidebar/partials/ActionForm/ActionFormContext';
-import { ColnyAvatarProvider } from '~context/ColonyAvatarContext';
+import { ColonyAvatarProvider } from '~context/ColonyAvatarContext';
 import {
   TransactionGroupStates,
   useUserTransactionContext,
@@ -22,7 +20,7 @@ import CompletedButton from '~v5/shared/Button/CompletedButton';
 
 const displayName = 'frame.Extensions.Header';
 
-const Header: FC<HeaderProps> = ({ hideColonies = false }) => {
+const Header: FC = () => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
   const {
@@ -42,7 +40,9 @@ const Header: FC<HeaderProps> = ({ hideColonies = false }) => {
     isUserMenuOpen,
     isWalletOpen,
   } = useHeader();
-  const { isActionSidebarOpen } = useActionSidebarContext();
+  const {
+    actionSidebarToggle: [isActionSidebarOpen],
+  } = useActionSidebarContext();
 
   const isCloseButtonVisible =
     (isMainMenuOpen || isColonySwitcherOpen) &&
@@ -66,16 +66,13 @@ const Header: FC<HeaderProps> = ({ hideColonies = false }) => {
       setWalletTriggerRef={setWalletTriggerRef}
       isUserMenuOpen={isUserMenuOpen}
       isWalletOpen={isWalletOpen}
-      hideColonies={hideColonies}
     />
   );
 
   const userMenuComponent = isActionSidebarOpen ? (
-    <ActionFormContextProvider>
-      <ColnyAvatarProvider>
-        <ActionSidebar>{userNavigation}</ActionSidebar>
-      </ColnyAvatarProvider>
-    </ActionFormContextProvider>
+    <ColonyAvatarProvider>
+      <ActionSidebar>{userNavigation}</ActionSidebar>
+    </ColonyAvatarProvider>
   ) : (
     userNavigation
   );
@@ -97,41 +94,36 @@ const Header: FC<HeaderProps> = ({ hideColonies = false }) => {
               />
             </div>
             <div
-              className={clsx('flex w-full items-center gap-x-2', {
-                'justify-end': hideColonies,
-                'justify-between': !hideColonies,
-              })}
-            >
-              {!hideColonies && (
-                <>
-                  <button
-                    type="button"
-                    className={clsx('flex items-center sm:hidden', {
-                      hidden:
-                        isMainMenuOpen ||
-                        isColonySwitcherOpen ||
-                        isUserMenuOpen ||
-                        isWalletOpen,
-                    })}
-                    ref={mainMenuSetTriggerRef}
-                    aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
-                  >
-                    <Icon name="list" appearance={{ size: 'tiny' }} />
-                    <span className="text-2 ml-1.5">
-                      {formatMessage({ id: 'menu' })}
-                    </span>
-                  </button>
-                  <MainNavigation
-                    setTooltipRef={mainMenuSetTooltipRef}
-                    tooltipProps={mainMenuGetTooltipProps}
-                    isMenuOpen={isMainMenuOpen}
-                  />
-                </>
+              className={clsx(
+                'flex w-full items-center gap-x-2 justify-between',
               )}
+            >
+              <button
+                type="button"
+                className={clsx('flex items-center sm:hidden', {
+                  hidden:
+                    isMainMenuOpen ||
+                    isColonySwitcherOpen ||
+                    isUserMenuOpen ||
+                    isWalletOpen,
+                })}
+                ref={mainMenuSetTriggerRef}
+                aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
+              >
+                <Icon name="list" appearance={{ size: 'tiny' }} />
+                <span className="text-2 ml-1.5">
+                  {formatMessage({ id: 'menu' })}
+                </span>
+              </button>
+              <MainNavigation
+                setTooltipRef={mainMenuSetTooltipRef}
+                tooltipProps={mainMenuGetTooltipProps}
+                isMenuOpen={isMainMenuOpen}
+              />
               <div>
                 {isCloseButtonVisible ? (
                   <div className="relative z-[51] p-1.5 border border-transparent">
-                    {/* This close button is a fallback that doesn't handle any action. The popover is closing when we click outside them 
+                    {/* This close button is a fallback that doesn't handle any action. The popover is closing when we click outside them
                   and this is part of the header with a high z-index */}
                     <CloseButton iconSize="extraTiny" />
                   </div>

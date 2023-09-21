@@ -18,9 +18,7 @@ const ColonyDetailsPage: FC = () => {
   const isMobile = useMobile();
   const { colony, loading } = useColonyContext();
   const { name, metadata } = colony || {};
-  const { avatar, thumbnail } = metadata || {};
-
-  const socialLinks = [];
+  const { avatar, thumbnail, description, externalLinks } = metadata || {};
 
   return (
     <Spinner
@@ -33,14 +31,14 @@ const ColonyDetailsPage: FC = () => {
             <Avatar size="md" avatar={avatar || thumbnail || ''} />
           </div>
           <h2 className="heading-2 mb-1">{name}</h2>
-          {/* @TODO: Add description when it will be in API */}
-          <p className="text-md text-gray-600 mb-5">
-            {formatMessage({ id: 'colonyDetailsPage.tempDescription' })}
-          </p>
-          <div className="mb-6">
-            {/* @TODO: Add functionality to add and display social links */}
-            {socialLinks.length ? (
-              <div />
+          <p className="text-md text-gray-600 mb-5">{description}</p>
+          <div className="mb-6 flex gap-x-2">
+            {externalLinks?.length ? (
+              externalLinks.map(({ name: linkName, link }) => (
+                <a key={`${linkName}:${link}`} href={link}>
+                  {linkName}
+                </a>
+              ))
             ) : (
               <TextButton
                 iconName="plus"
@@ -84,7 +82,7 @@ const ColonyDetailsPage: FC = () => {
             <h5 className="text-3 mb-2">
               {formatMessage({ id: 'colonyDetailsPage.objectiveBoxTitle' })}
             </h5>
-            <ObjectiveBox />
+            <ObjectiveBox progress={0} />
           </div>
           {isMobile && (
             // @TODO: Add functionality to create objective

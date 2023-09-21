@@ -77,7 +77,7 @@ const displayName = 'common.CreateColonyWizard.CardRow';
 
 const CardRow = ({ cardOptions, values }: CardProps) => {
   const { user } = useAppContext();
-  const username = user?.profile?.displayName || user?.name || '';
+  const username = user?.profile?.displayName ?? '';
 
   return (
     <>

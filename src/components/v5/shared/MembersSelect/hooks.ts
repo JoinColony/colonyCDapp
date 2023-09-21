@@ -21,9 +21,9 @@ export const useGetColonyMembers = (colonyAddress?: Address | null) => {
     return allMembers
       .map(({ user }) => user)
       .filter<MemberUser>(notMaybe)
-      .map(({ name, profile, walletAddress }, index) => ({
-        value: name,
-        label: name,
+      .map(({ profile, walletAddress }, index) => ({
+        value: profile?.displayName,
+        label: profile?.displayName,
         avatar: profile?.avatar || profile?.thumbnail,
         walletAddress,
         id: index,

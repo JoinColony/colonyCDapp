@@ -1,16 +1,14 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import Icon from '~shared/Icon';
 import styles from '../Input.module.css';
 import { PillProps } from '../types';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.common.Fields.Input.partials.InputPills';
 
 const InputPills: FC<PillProps> = ({ message, status }) => {
-  const { formatMessage } = useIntl();
-
   const iconType =
     (status === 'success' && 'check-circle') ||
     (status === 'error' && 'x-circle') ||
@@ -25,11 +23,7 @@ const InputPills: FC<PillProps> = ({ message, status }) => {
       })}
     >
       <Icon name={iconType} appearance={{ size: 'small' }} />
-      <span className="ml-1">
-        {formatMessage({
-          id: message || 'too.many.characters',
-        })}
-      </span>
+      <span className="ml-1">{formatText(message)}</span>
     </div>
   );
 };

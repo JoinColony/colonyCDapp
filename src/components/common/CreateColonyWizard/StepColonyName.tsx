@@ -12,6 +12,7 @@ import {
 } from '../CreateColonyWizard';
 import { HeadingText, SubmitFormButton, TruncatedName } from './shared';
 import NameInputs from './StepColonyNameInputs';
+import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 import styles from './StepColonyName.css';
 
@@ -38,7 +39,8 @@ const StepColonyName = ({
   nextStep,
 }: Props) => {
   const { user } = useAppContext();
-  const username = user?.profile?.displayName || user?.name || '';
+  const username =
+    user?.profile?.displayName ?? splitWalletAddress(user?.walletAddress ?? '');
   const isMobile = useMobile();
   const headingText = { username: TruncatedName(username, 38) };
 

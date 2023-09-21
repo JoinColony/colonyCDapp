@@ -3,15 +3,15 @@ import { useIntl } from 'react-intl';
 
 import Link from '~v5/shared/Link';
 import Icon from '~shared/Icon';
-import { WalletConnectedTopMenuProps } from './types';
 import { useMobile } from '~hooks';
 import UserAvatarDetails from '~v5/shared/UserAvatarDetails';
 import { USER_EDIT_ROUTE } from '~routes';
+import { UserAvatarDetailsProps } from '~v5/shared/UserAvatarDetails/types';
 
 const displayName =
   'common.Extensions.UserNavigation.partials.WalletConnectedTopMenu';
 
-const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
+const WalletConnectedTopMenu: FC<UserAvatarDetailsProps> = ({
   isVerified,
   userName,
   walletAddress,

@@ -17,6 +17,7 @@ import UserAvatar from '~v5/shared/UserAvatar';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
 import { UserReputationProps } from './types';
 import { useUserTransactionContext } from '~context/UserTransactionContext';
+import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 import styles from './UserReputation.module.css';
 
@@ -24,7 +25,6 @@ export const displayName =
   'common.Extensions.UserNavigation.partials.UserReputation';
 
 const UserReputation: FC<UserReputationProps> = ({
-  hideColonies,
   hideMemberReputationOnMobile,
 }) => {
   const { colony } = useColonyContext();
@@ -93,16 +93,16 @@ const UserReputation: FC<UserReputationProps> = ({
         <div className="flex items-center gap-3">
           <UserAvatar
             user={user}
-            userName={profile?.displayName || user?.name}
+            userName={
+              profile?.displayName ?? splitWalletAddress(wallet?.address ?? '')
+            }
             size="xxs"
           />
-          {!hideColonies && (
-            <MemberReputation
-              userReputation={userReputation}
-              totalReputation={totalReputation}
-              hideOnMobile={hideMemberReputationOnMobile}
-            />
-          )}
+          <MemberReputation
+            userReputation={userReputation}
+            totalReputation={totalReputation}
+            hideOnMobile={hideMemberReputationOnMobile}
+          />
         </div>
       </Button>
       {(isUserHubVisible || isUserHubOpen) && (

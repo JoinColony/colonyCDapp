@@ -4,9 +4,13 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import { ApolloProvider } from '@apollo/client';
 
-import '~utils/yup/customMethods'; // ensures custom yup methods are available when components load
 import { DialogProvider } from '~shared/Dialog';
-import { AppContextProvider, getContext, ContextModule } from '~context';
+import {
+  AppContextProvider,
+  getContext,
+  ContextModule,
+  ColonyContextProvider,
+} from '~context';
 import { TokenActivationProvider } from '~shared/TokenActivationProvider';
 
 import messages from './i18n/en.json';
@@ -45,13 +49,15 @@ const Entry = ({ store }: Props) => {
         <ReduxProvider store={store}>
           <AppContextProvider>
             <Router>
-              <DialogProvider>
-                <TokenActivationProvider>
-                  <div className="h-full w-full bg-base-white">
-                    <Routes />
-                  </div>
-                </TokenActivationProvider>
-              </DialogProvider>
+              <ColonyContextProvider>
+                <DialogProvider>
+                  <TokenActivationProvider>
+                    <div className="h-full w-full bg-base-white">
+                      <Routes />
+                    </div>
+                  </TokenActivationProvider>
+                </DialogProvider>
+              </ColonyContextProvider>
             </Router>
           </AppContextProvider>
         </ReduxProvider>

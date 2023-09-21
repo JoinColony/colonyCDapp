@@ -26,17 +26,17 @@ const InstalledBy: FC<PanelTypeProps> = ({ title, extensionData }) => {
   const contributor = data?.getColonyContributor;
   const { user, isVerified } = contributor ?? {};
   const { bio, displayName: userDisplayName } = user?.profile || {};
-  const username = user?.name;
 
   const domains = useContributorBreakdown(contributor);
+  const splitAddress = splitWalletAddress(user?.walletAddress || '');
 
   return (
     <div className={styles.panelRow}>
       <div className={styles.panelTitle}>{title}</div>
       <div className="flex">
         <UserAvatarPopover
-          userName={userDisplayName || username || ''}
-          walletAddress={splitWalletAddress(user?.walletAddress || '')}
+          userName={userDisplayName ?? splitAddress}
+          walletAddress={splitAddress}
           domains={domains}
           aboutDescription={bio || ''}
           user={user}

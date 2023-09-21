@@ -6,6 +6,8 @@ fragment Domain on Domain {
   metadata {
     ...DomainMetadata
   }
+  reputation
+  reputationPercentage
 }
 
 fragment DomainMetadata on DomainMetadata {

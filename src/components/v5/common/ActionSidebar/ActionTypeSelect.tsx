@@ -1,66 +1,72 @@
-import React, { FC, useRef } from 'react';
-import { useIntl } from 'react-intl';
-import { useOnClickOutside } from 'usehooks-ts';
+import React, { FC } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 
-import { useMobile } from '~hooks';
-import ActionSidebarRow from '../ActionSidebarRow';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { useController, useWatch } from 'react-hook-form';
+import ActionSidebarRow from '../ActionFormRow';
 import SearchSelect from '~v5/shared/SearchSelect';
 import { useActionsList } from './hooks';
 import { translateAction } from './utils';
 import useToggle from '~hooks/useToggle';
-import { ActionSidebarRowFieldNameEnum } from '../ActionSidebarRow/enums';
+import { ACTION_TYPE_FIELD_NAME } from './consts';
+import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 
 const displayName = 'v5.common.ActionTypeSelect';
 
 const ActionTypeSelect: FC = () => {
-  const ref = useRef(null);
-  const { formatMessage } = useIntl();
-  const isMobile = useMobile();
-  const { toggleActionSidebarOff, selectedAction, isCancelModalOpen } =
-    useActionSidebarContext();
+  const intl = useIntl();
   const actionsList = useActionsList();
   const [
     isSelectVisible,
-    { toggle: toggleSelect, toggleOff: toggleSelectOff },
+    { toggle: toggleSelect, toggleOff: toggleSelectOff, registerContainerRef },
   ] = useToggle();
-
-  useOnClickOutside(
-    ref,
-    () => !isMobile && !isCancelModalOpen && toggleActionSidebarOff(),
-  );
+  const actionType = useWatch({ name: ACTION_TYPE_FIELD_NAME });
+  const {
+    field: { onChange },
+  } = useController({ name: ACTION_TYPE_FIELD_NAME });
+  const { portalElementRef, relativeElementRef } = useRelativePortalElement<
+    HTMLButtonElement,
+    HTMLDivElement
+  >([isSelectVisible]);
 
   return (
     <ActionSidebarRow
-      fieldName={ActionSidebarRowFieldNameEnum.ACTION_TYPE}
+      fieldName={ACTION_TYPE_FIELD_NAME}
       iconName="file-plus"
-      title={{ id: 'actionSidebar.actionType' }}
+      title={intl.formatMessage({ id: 'actionSidebar.actionType' })}
+      tooltip={<FormattedMessage id="actionSidebar.toolip.actionType" />}
     >
       <>
-        {!selectedAction && (
+        {actionType ? (
+          <span className="text-md">
+            {intl.formatMessage({ id: translateAction(actionType) })}
+          </span>
+        ) : (
           <>
             <button
               type="button"
+              ref={relativeElementRef}
               className="flex text-md text-gray-600 transition-colors hover:text-blue-400"
               onClick={toggleSelect}
             >
-              {formatMessage({
+              {intl.formatMessage({
                 id: 'actionSidebar.chooseActionType',
               })}
             </button>
             {isSelectVisible && (
               <SearchSelect
+                hideSearchOnMobile
+                ref={(ref) => {
+                  registerContainerRef(ref);
+                  portalElementRef.current = ref;
+                }}
                 onToggle={toggleSelectOff}
                 items={actionsList}
                 isOpen={isSelectVisible}
+                className="z-[60]"
+                onSelect={onChange}
               />
             )}
           </>
-        )}
-        {selectedAction && (
-          <span className="text-md">
-            {formatMessage({ id: translateAction(selectedAction) })}
-          </span>
         )}
       </>
     </ActionSidebarRow>

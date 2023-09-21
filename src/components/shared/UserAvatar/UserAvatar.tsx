@@ -72,11 +72,7 @@ const UserAvatar = ({
           title={
             showInfo
               ? ''
-              : profile?.displayName ||
-                user?.name ||
-                walletAddress ||
-                address ||
-                ''
+              : profile?.displayName || walletAddress || address || ''
           }
           {...avatarProps}
         />
@@ -85,7 +81,11 @@ const UserAvatar = ({
   );
 
   if (showLink && user) {
-    return <Link to={`/user/${user.name.toLowerCase()}`}>{avatar}</Link>;
+    return (
+      <Link to={`/user/${user.profile?.displayName?.toLowerCase()}`}>
+        {avatar}
+      </Link>
+    );
   }
 
   return avatar;

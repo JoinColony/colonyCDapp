@@ -9,6 +9,7 @@ import {
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
 } from '~gql';
+import { isEqual } from '~utils/lodash';
 
 import {
   createGroupTransaction,
@@ -32,9 +33,11 @@ import {
 function* editColonyAction({
   payload: {
     colony,
-    colony: { colonyAddress, name: colonyName },
+    colony: { colonyAddress, name: colonyName, metadata },
     colonyDisplayName,
+    colonyDescription,
     colonyAvatarImage,
+    colonyExternalLinks,
     colonyThumbnail,
     tokenAddresses,
     annotationMessage,
@@ -168,6 +171,9 @@ function* editColonyAction({
             displayName: colonyDisplayName,
             avatar: colonyAvatarImage,
             thumbnail: colonyThumbnail,
+            description: colonyDescription,
+            externalLinks: colonyExternalLinks,
+            // @TODO: refactor this function to take an object
             changelog: getUpdatedColonyMetadataChangelog(
               txHash,
               colony.metadata,
@@ -175,6 +181,8 @@ function* editColonyAction({
               colonyAvatarImage,
               false,
               haveTokensChanged,
+              metadata?.description !== colonyDescription,
+              !isEqual(metadata?.externalLinks, colonyExternalLinks),
             ),
           },
         },

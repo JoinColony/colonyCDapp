@@ -6,6 +6,7 @@ import Decimal from 'decimal.js';
 
 import './styles/main.global.css';
 
+import '~utils/yup/customMethods'; // ensures custom yup methods are available when components load
 import Entry from './Entry';
 import store from '~redux/createReduxStore';
 

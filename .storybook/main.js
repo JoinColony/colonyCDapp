@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const devWebpackConfig = require('../webpack.dev');
 
 const devConfig = devWebpackConfig();
@@ -122,6 +123,23 @@ module.exports = {
         },
       ],
     });
+
+    const providePlugin = config.plugins.find((plugin) => plugin.constructor === webpack.ProvidePlugin);
+
+    if (providePlugin) {
+      providePlugin.definitions = {
+        ...providePlugin.definitions,
+        Buffer: ['buffer', 'Buffer'],
+      }
+    } else {
+      config.plugins.push(
+        new webpack.ProvidePlugin({
+          process: 'process/browser',
+          Buffer: ['buffer', 'Buffer'],
+        }),
+      );
+    }
+
 
     return config;
   },

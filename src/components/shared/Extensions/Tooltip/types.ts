@@ -13,4 +13,5 @@ export interface TooltipProps {
   isOpen?: boolean;
   isSuccess?: boolean;
   isFullWidthContent?: boolean;
+  className?: string;
 }

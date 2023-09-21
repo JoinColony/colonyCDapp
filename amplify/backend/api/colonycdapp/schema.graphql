@@ -49,13 +49,9 @@ input CreateUniqueUserInput {
   """
   id: ID!
   """
-  The username
-  """
-  name: String!
-  """
   Profile data for the user
   """
-  profile: ProfileInput
+  profile: ProfileInput!
 }
 
 """
@@ -705,9 +701,17 @@ enum ColonyActionType {
   """
   PAYMENT
   """
+  An action related to making multiple payments within a Colony
+  """
+  MULTIPLE_PAYMENT
+  """
   An action related to a payment that was created via a motion within a Colony
   """
   PAYMENT_MOTION
+  """
+  An action related to making multiple payments within a Colony
+  """
+  MULTIPLE_PAYMENT_MOTION
   """
   An action related to the recovery functionality of a Colony
   """
@@ -961,6 +965,11 @@ type Profile @model {
   Display name of the user
   """
   displayName: String
+    @index(name: "byDisplayName", queryField: "getProfileByUsername")
+  """
+  Date displayName was changed
+  """
+  displayNameChanged: AWSDateTime
   """
   User's bio information
   """
@@ -981,6 +990,11 @@ type Profile @model {
   Metadata associated with the user's profile
   """
   meta: ProfileMetadata
+
+  """
+  The user associated with this profile
+  """
+  user: User! @belongsTo(fields: ["id"])
 }
 
 """
@@ -1380,6 +1394,11 @@ type Colony @model {
   """
   lastUpdatedContributorsWithReputation: AWSDateTime
 
+  """
+  The total reputation amount in the colony
+  """
+  reputation: String
+
   expenditures: [Expenditure] @hasMany
   expendituresGlobalClaimDelay: Int
 }
@@ -1412,6 +1431,22 @@ type PendingModifiedTokenAddresses {
   removed: [String!]
 }
 
+enum ExternalLinks {
+  Custom
+  Whitepaper
+  Youtube
+  Discord
+  Telegram
+  Github
+  Twitter
+  Instagram
+}
+
+type ExternalLink {
+  name: ExternalLinks!
+  link: String!
+}
+
 """
 Represents metadata for a Colony
 """
@@ -1424,6 +1459,14 @@ type ColonyMetadata @model {
   Display name of the Colony
   """
   displayName: String!
+  """
+  Description of the colony
+  """
+  description: String
+  """
+  An array of external links to related pages
+  """
+  externalLinks: [ExternalLink!]
   """
   URL of the Colony's avatar image
   """
@@ -1480,6 +1523,14 @@ type ColonyMetadataChangelog {
   Whether tokens have been added or removed from the Colony's token list
   """
   haveTokensChanged: Boolean!
+  """
+  Whether the colony description has changed
+  """
+  hasDescriptionChanged: Boolean
+  """
+  Whether the colony's external links have changed
+  """
+  haveExternalLinksChanged: Boolean
 }
 
 enum ClientType {
@@ -1669,10 +1720,6 @@ type User @model {
   """
   id: ID! @index(name: "byAddress", queryField: "getUserByAddress")
   """
-  (Short) name of the user
-  """
-  name: String! @index(name: "byName", queryField: "getUserByName")
-  """
   List of tokens the user is using
   """
   tokens: [Token] @manyToMany(relationName: "UserTokens")
@@ -1774,6 +1821,16 @@ type Domain @model {
   Metadata of the Domain
   """
   metadata: DomainMetadata @hasOne(fields: ["id"])
+
+  """
+  The amount of reputation in the domain
+  """
+  reputation: String
+
+  """
+  The amount of reputation in the domain, as a percentage of the total in the colony
+  """
+  reputationPercentage: String
 }
 
 """
@@ -2521,6 +2578,11 @@ type CurrentNetworkInverseFee @model {
   inverseFee: String!
 }
 
+type Payment {
+  amount: String!
+  tokenAddress: String!
+  recipientAddress: String!
+}
 """
 Represents an action performed within a Colony
 """
@@ -2618,7 +2680,6 @@ type ColonyAction @model {
   The address of the token that was received the action, if applicable
   """
   recipientToken: Token @hasOne(fields: ["recipientAddress"])
-
   """
   The amount involved in the action, if applicable
   """
@@ -2648,9 +2709,9 @@ type ColonyAction @model {
   """
   toDomain: Domain @hasOne(fields: ["toDomainId"])
   """
-  The fundamental chain id
+  The native id of the payment
   """
-  fundamentalChainId: Int
+  paymentId: Int
   """
   The resulting new Colony version, if applicable
   """
@@ -2693,6 +2754,10 @@ type ColonyAction @model {
   Corresponding Decision data, if action is a Simple Decision
   """
   decisionData: ColonyDecision @hasOne(fields: ["colonyDecisionId"])
+  """
+  Payment data for multiple OneTxPayments
+  """
+  payments: [Payment!]
   """
   Colony roles that are associated with the action
   """
