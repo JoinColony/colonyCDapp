@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ColonyRole, Id } from '@colony/colony-js';
 
-import { ExpenditureStatus, ExpenditureType } from '~gql';
+import { ExpenditureStatus } from '~gql';
 import Button from '~shared/Button';
 import { Colony, Expenditure } from '~types';
 import { addressHasRoles } from '~utils/checks';
@@ -31,7 +31,7 @@ const CancelStakedExpenditureButton = ({
   const [isMotion, setIsMotion] = useState(false);
 
   if (
-    expenditure.metadata?.type !== ExpenditureType.Staked ||
+    !expenditure.isStaked ||
     expenditure.status !== ExpenditureStatus.Locked
   ) {
     return null;

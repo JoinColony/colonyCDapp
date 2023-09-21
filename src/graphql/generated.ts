@@ -980,7 +980,10 @@ export type ContributorReputation = {
   updatedAt: Scalars['AWSDateTime'];
 };
 
-/** The types of contributor a user can be in a colony */
+/**
+ * <<<<<<< HEAD
+ * The types of contributor a user can be in a colony
+ */
 export enum ContributorType {
   Active = 'ACTIVE',
   Dedicated = 'DEDICATED',
@@ -1232,6 +1235,7 @@ export type CreateExpenditureInput = {
   id?: InputMaybe<Scalars['ID']>;
   isStaged: Scalars['Boolean'];
   isStakeForfeited?: InputMaybe<Scalars['Boolean']>;
+  isStaked: Scalars['Boolean'];
   nativeDomainId: Scalars['Int'];
   nativeFundingPotId: Scalars['Int'];
   nativeId: Scalars['Int'];
@@ -1245,7 +1249,6 @@ export type CreateExpenditureMetadataInput = {
   id?: InputMaybe<Scalars['ID']>;
   stages?: InputMaybe<Array<ExpenditureStageInput>>;
   stakeAmount?: InputMaybe<Scalars['String']>;
-  type: ExpenditureType;
 };
 
 export type CreateIngestorStatsInput = {
@@ -1665,6 +1668,7 @@ export type Expenditure = {
   isStaged: Scalars['Boolean'];
   /** Indicates if the creator's stake was forfeited when staked expenditure was cancelled */
   isStakeForfeited?: Maybe<Scalars['Boolean']>;
+  isStaked: Scalars['Boolean'];
   metadata?: Maybe<ExpenditureMetadata>;
   motions?: Maybe<ModelColonyMotionConnection>;
   nativeDomainId: Scalars['Int'];
@@ -1704,7 +1708,6 @@ export type ExpenditureMetadata = {
   id: Scalars['ID'];
   stages?: Maybe<Array<ExpenditureStage>>;
   stakeAmount?: Maybe<Scalars['String']>;
-  type: ExpenditureType;
   updatedAt: Scalars['AWSDateTime'];
 };
 
@@ -2672,6 +2675,7 @@ export type ModelExpenditureConditionInput = {
   hasReclaimedStake?: InputMaybe<ModelBooleanInput>;
   isStaged?: InputMaybe<ModelBooleanInput>;
   isStakeForfeited?: InputMaybe<ModelBooleanInput>;
+  isStaked?: InputMaybe<ModelBooleanInput>;
   nativeDomainId?: InputMaybe<ModelIntInput>;
   nativeFundingPotId?: InputMaybe<ModelIntInput>;
   nativeId?: InputMaybe<ModelIntInput>;
@@ -2696,6 +2700,7 @@ export type ModelExpenditureFilterInput = {
   id?: InputMaybe<ModelIdInput>;
   isStaged?: InputMaybe<ModelBooleanInput>;
   isStakeForfeited?: InputMaybe<ModelBooleanInput>;
+  isStaked?: InputMaybe<ModelBooleanInput>;
   nativeDomainId?: InputMaybe<ModelIntInput>;
   nativeFundingPotId?: InputMaybe<ModelIntInput>;
   nativeId?: InputMaybe<ModelIntInput>;
@@ -2711,7 +2716,6 @@ export type ModelExpenditureMetadataConditionInput = {
   not?: InputMaybe<ModelExpenditureMetadataConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelExpenditureMetadataConditionInput>>>;
   stakeAmount?: InputMaybe<ModelStringInput>;
-  type?: InputMaybe<ModelExpenditureTypeInput>;
 };
 
 export type ModelExpenditureMetadataConnection = {
@@ -2727,17 +2731,11 @@ export type ModelExpenditureMetadataFilterInput = {
   not?: InputMaybe<ModelExpenditureMetadataFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelExpenditureMetadataFilterInput>>>;
   stakeAmount?: InputMaybe<ModelStringInput>;
-  type?: InputMaybe<ModelExpenditureTypeInput>;
 };
 
 export type ModelExpenditureStatusInput = {
   eq?: InputMaybe<ExpenditureStatus>;
   ne?: InputMaybe<ExpenditureStatus>;
-};
-
-export type ModelExpenditureTypeInput = {
-  eq?: InputMaybe<ExpenditureType>;
-  ne?: InputMaybe<ExpenditureType>;
 };
 
 export type ModelFloatInput = {
@@ -3217,6 +3215,7 @@ export type ModelSubscriptionExpenditureFilterInput = {
   id?: InputMaybe<ModelSubscriptionIdInput>;
   isStaged?: InputMaybe<ModelSubscriptionBooleanInput>;
   isStakeForfeited?: InputMaybe<ModelSubscriptionBooleanInput>;
+  isStaked?: InputMaybe<ModelSubscriptionBooleanInput>;
   nativeDomainId?: InputMaybe<ModelSubscriptionIntInput>;
   nativeFundingPotId?: InputMaybe<ModelSubscriptionIntInput>;
   nativeId?: InputMaybe<ModelSubscriptionIntInput>;
@@ -3231,7 +3230,6 @@ export type ModelSubscriptionExpenditureMetadataFilterInput = {
   id?: InputMaybe<ModelSubscriptionIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionExpenditureMetadataFilterInput>>>;
   stakeAmount?: InputMaybe<ModelSubscriptionStringInput>;
-  type?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
 export type ModelSubscriptionFloatInput = {
@@ -4579,7 +4577,11 @@ export type ProfileMetadataInput = {
   metatransactionsEnabled?: InputMaybe<Scalars['Boolean']>;
 };
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type Query = {
   __typename?: 'Query';
   getActionsByColony?: Maybe<ModelColonyActionConnection>;
@@ -4692,7 +4694,11 @@ export type Query = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetActionsByColonyArgs = {
   colonyId: Scalars['ID'];
   createdAt?: InputMaybe<ModelStringKeyConditionInput>;
@@ -4703,13 +4709,21 @@ export type QueryGetActionsByColonyArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetAnnotationArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColoniesByNativeTokenIdArgs = {
   filter?: InputMaybe<ModelColonyFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -4719,19 +4733,31 @@ export type QueryGetColoniesByNativeTokenIdArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyActionArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyActionByMotionIdArgs = {
   filter?: InputMaybe<ModelColonyActionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -4741,7 +4767,11 @@ export type QueryGetColonyActionByMotionIdArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyByAddressArgs = {
   filter?: InputMaybe<ModelColonyFilterInput>;
   id: Scalars['ID'];
@@ -4751,7 +4781,11 @@ export type QueryGetColonyByAddressArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyByNameArgs = {
   filter?: InputMaybe<ModelColonyFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -4761,7 +4795,11 @@ export type QueryGetColonyByNameArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyByTypeArgs = {
   filter?: InputMaybe<ModelColonyFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -4771,19 +4809,31 @@ export type QueryGetColonyByTypeArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyContributorArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyDecisionArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyDecisionByActionIdArgs = {
   actionId: Scalars['ID'];
   filter?: InputMaybe<ModelColonyDecisionFilterInput>;
@@ -4793,7 +4843,11 @@ export type QueryGetColonyDecisionByActionIdArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyDecisionByColonyAddressArgs = {
   colonyAddress: Scalars['String'];
   createdAt?: InputMaybe<ModelStringKeyConditionInput>;
@@ -4804,25 +4858,41 @@ export type QueryGetColonyDecisionByColonyAddressArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyExtensionArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyFundsClaimArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyHistoricRoleArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyHistoricRoleByDateArgs = {
   createdAt?: InputMaybe<ModelStringKeyConditionInput>;
   filter?: InputMaybe<ModelColonyHistoricRoleFilterInput>;
@@ -4833,31 +4903,51 @@ export type QueryGetColonyHistoricRoleByDateArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyMetadataArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyMotionArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyRoleArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyStakeArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyStakeByUserAddressArgs = {
   colonyId?: InputMaybe<ModelIdKeyConditionInput>;
   filter?: InputMaybe<ModelColonyStakeFilterInput>;
@@ -4868,19 +4958,31 @@ export type QueryGetColonyStakeByUserAddressArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetColonyTokensArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetContractEventArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetContributorByAddressArgs = {
   colonyReputationPercentage?: InputMaybe<ModelFloatKeyConditionInput>;
   contributorAddress: Scalars['ID'];
@@ -4891,13 +4993,21 @@ export type QueryGetContributorByAddressArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetContributorReputationArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetContributorsByColonyArgs = {
   colonyAddress: Scalars['ID'];
   colonyReputationPercentage?: InputMaybe<ModelFloatKeyConditionInput>;
@@ -4908,19 +5018,31 @@ export type QueryGetContributorsByColonyArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetCurrentNetworkInverseFeeArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetCurrentVersionArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetCurrentVersionByKeyArgs = {
   filter?: InputMaybe<ModelCurrentVersionFilterInput>;
   key: Scalars['String'];
@@ -4930,31 +5052,51 @@ export type QueryGetCurrentVersionByKeyArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetDomainArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetDomainMetadataArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetExpenditureArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetExpenditureMetadataArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetExpendituresByColonyArgs = {
   colonyId: Scalars['ID'];
   createdAt?: InputMaybe<ModelStringKeyConditionInput>;
@@ -4965,7 +5107,11 @@ export type QueryGetExpendituresByColonyArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetExpendituresByNativeFundingPotIdAndColonyArgs = {
   colonyId?: InputMaybe<ModelIdKeyConditionInput>;
   filter?: InputMaybe<ModelExpenditureFilterInput>;
@@ -4976,7 +5122,11 @@ export type QueryGetExpendituresByNativeFundingPotIdAndColonyArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetExtensionByColonyAndHashArgs = {
   colonyId: Scalars['ID'];
   filter?: InputMaybe<ModelColonyExtensionFilterInput>;
@@ -4987,7 +5137,11 @@ export type QueryGetExtensionByColonyAndHashArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetExtensionsByHashArgs = {
   filter?: InputMaybe<ModelColonyExtensionFilterInput>;
   hash: Scalars['String'];
@@ -4997,19 +5151,31 @@ export type QueryGetExtensionsByHashArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetIngestorStatsArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetMembersForColonyArgs = {
   input?: InputMaybe<MembersForColonyInput>;
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetMotionByExpenditureIdArgs = {
   expenditureId: Scalars['ID'];
   filter?: InputMaybe<ModelColonyMotionFilterInput>;
@@ -5019,7 +5185,11 @@ export type QueryGetMotionByExpenditureIdArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetMotionByTransactionHashArgs = {
   filter?: InputMaybe<ModelColonyMotionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5029,13 +5199,21 @@ export type QueryGetMotionByTransactionHashArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetMotionMessageArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetMotionMessageByMotionIdArgs = {
   createdAt?: InputMaybe<ModelStringKeyConditionInput>;
   filter?: InputMaybe<ModelMotionMessageFilterInput>;
@@ -5046,25 +5224,41 @@ export type QueryGetMotionMessageByMotionIdArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetMotionStateArgs = {
   input?: InputMaybe<GetMotionStateInput>;
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetMotionTimeoutPeriodsArgs = {
   input?: InputMaybe<GetMotionTimeoutPeriodsInput>;
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetProfileArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetProfileByEmailArgs = {
   email: Scalars['AWSEmail'];
   filter?: InputMaybe<ModelProfileFilterInput>;
@@ -5074,7 +5268,11 @@ export type QueryGetProfileByEmailArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetProfileByUsernameArgs = {
   displayName: Scalars['String'];
   filter?: InputMaybe<ModelProfileFilterInput>;
@@ -5084,19 +5282,31 @@ export type QueryGetProfileByUsernameArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetReputationForTopDomainsArgs = {
   input?: InputMaybe<GetReputationForTopDomainsInput>;
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetReputationMiningCycleMetadataArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetRoleByDomainAndColonyArgs = {
   colonyAddress?: InputMaybe<ModelIdKeyConditionInput>;
   domainId: Scalars['ID'];
@@ -5107,7 +5317,11 @@ export type QueryGetRoleByDomainAndColonyArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetRoleByTargetAddressAndColonyArgs = {
   colonyAddress?: InputMaybe<ModelIdKeyConditionInput>;
   filter?: InputMaybe<ModelColonyRoleFilterInput>;
@@ -5118,13 +5332,21 @@ export type QueryGetRoleByTargetAddressAndColonyArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetTokenArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetTokenByAddressArgs = {
   filter?: InputMaybe<ModelTokenFilterInput>;
   id: Scalars['ID'];
@@ -5134,13 +5356,21 @@ export type QueryGetTokenByAddressArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetTokenFromEverywhereArgs = {
   input?: InputMaybe<TokenFromEverywhereArguments>;
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetTokensByTypeArgs = {
   filter?: InputMaybe<ModelTokenFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5150,19 +5380,31 @@ export type QueryGetTokensByTypeArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetTotalMemberCountArgs = {
   input: GetTotalMemberCountInput;
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetTransactionArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetTransactionsByUserArgs = {
   createdAt?: InputMaybe<ModelStringKeyConditionInput>;
   filter?: InputMaybe<ModelTransactionFilterInput>;
@@ -5173,7 +5415,11 @@ export type QueryGetTransactionsByUserArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetTransactionsByUserAndGroupArgs = {
   filter?: InputMaybe<ModelTransactionFilterInput>;
   from?: InputMaybe<ModelIdKeyConditionInput>;
@@ -5184,13 +5430,21 @@ export type QueryGetTransactionsByUserAndGroupArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetUserArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetUserByAddressArgs = {
   filter?: InputMaybe<ModelUserFilterInput>;
   id: Scalars['ID'];
@@ -5200,13 +5454,21 @@ export type QueryGetUserByAddressArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetUserReputationArgs = {
   input?: InputMaybe<GetUserReputationInput>;
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetUserReputationInColonyArgs = {
   colonyAddress?: InputMaybe<ModelIdKeyConditionInput>;
   contributorAddress: Scalars['ID'];
@@ -5217,31 +5479,51 @@ export type QueryGetUserReputationInColonyArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetUserTokenBalanceArgs = {
   input?: InputMaybe<GetUserTokenBalanceInput>;
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetUserTokensArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetVoterRewardsArgs = {
   input?: InputMaybe<GetVoterRewardsInput>;
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryGetWatchedColoniesArgs = {
   id: Scalars['ID'];
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListAnnotationsArgs = {
   filter?: InputMaybe<ModelAnnotationFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5249,7 +5531,11 @@ export type QueryListAnnotationsArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListColoniesArgs = {
   filter?: InputMaybe<ModelColonyFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5257,7 +5543,11 @@ export type QueryListColoniesArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListColonyActionsArgs = {
   filter?: InputMaybe<ModelColonyActionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5265,7 +5555,11 @@ export type QueryListColonyActionsArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListColonyContributorsArgs = {
   filter?: InputMaybe<ModelColonyContributorFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5273,7 +5567,11 @@ export type QueryListColonyContributorsArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListColonyDecisionsArgs = {
   filter?: InputMaybe<ModelColonyDecisionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5281,7 +5579,11 @@ export type QueryListColonyDecisionsArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListColonyExtensionsArgs = {
   filter?: InputMaybe<ModelColonyExtensionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5289,7 +5591,11 @@ export type QueryListColonyExtensionsArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListColonyFundsClaimsArgs = {
   filter?: InputMaybe<ModelColonyFundsClaimFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5297,7 +5603,11 @@ export type QueryListColonyFundsClaimsArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListColonyHistoricRolesArgs = {
   filter?: InputMaybe<ModelColonyHistoricRoleFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5305,7 +5615,11 @@ export type QueryListColonyHistoricRolesArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListColonyMetadataArgs = {
   filter?: InputMaybe<ModelColonyMetadataFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5313,7 +5627,11 @@ export type QueryListColonyMetadataArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListColonyMotionsArgs = {
   filter?: InputMaybe<ModelColonyMotionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5321,7 +5639,11 @@ export type QueryListColonyMotionsArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListColonyRolesArgs = {
   filter?: InputMaybe<ModelColonyRoleFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5329,7 +5651,11 @@ export type QueryListColonyRolesArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListColonyStakesArgs = {
   filter?: InputMaybe<ModelColonyStakeFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5337,7 +5663,11 @@ export type QueryListColonyStakesArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListColonyTokensArgs = {
   filter?: InputMaybe<ModelColonyTokensFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5345,7 +5675,11 @@ export type QueryListColonyTokensArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListContractEventsArgs = {
   filter?: InputMaybe<ModelContractEventFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5353,7 +5687,11 @@ export type QueryListContractEventsArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListContributorReputationsArgs = {
   filter?: InputMaybe<ModelContributorReputationFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5361,7 +5699,11 @@ export type QueryListContributorReputationsArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListCurrentNetworkInverseFeesArgs = {
   filter?: InputMaybe<ModelCurrentNetworkInverseFeeFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5369,7 +5711,11 @@ export type QueryListCurrentNetworkInverseFeesArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListCurrentVersionsArgs = {
   filter?: InputMaybe<ModelCurrentVersionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5377,7 +5723,11 @@ export type QueryListCurrentVersionsArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListDomainMetadataArgs = {
   filter?: InputMaybe<ModelDomainMetadataFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5385,7 +5735,11 @@ export type QueryListDomainMetadataArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListDomainsArgs = {
   filter?: InputMaybe<ModelDomainFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5393,7 +5747,11 @@ export type QueryListDomainsArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListExpenditureMetadataArgs = {
   filter?: InputMaybe<ModelExpenditureMetadataFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5401,7 +5759,11 @@ export type QueryListExpenditureMetadataArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListExpendituresArgs = {
   filter?: InputMaybe<ModelExpenditureFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5409,7 +5771,11 @@ export type QueryListExpendituresArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListIngestorStatsArgs = {
   filter?: InputMaybe<ModelIngestorStatsFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5417,7 +5783,11 @@ export type QueryListIngestorStatsArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListMotionMessagesArgs = {
   filter?: InputMaybe<ModelMotionMessageFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5425,7 +5795,11 @@ export type QueryListMotionMessagesArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListProfilesArgs = {
   filter?: InputMaybe<ModelProfileFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5433,7 +5807,11 @@ export type QueryListProfilesArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListReputationMiningCycleMetadataArgs = {
   filter?: InputMaybe<ModelReputationMiningCycleMetadataFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5441,7 +5819,11 @@ export type QueryListReputationMiningCycleMetadataArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListTokensArgs = {
   filter?: InputMaybe<ModelTokenFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5449,7 +5831,11 @@ export type QueryListTokensArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListTransactionsArgs = {
   filter?: InputMaybe<ModelTransactionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5457,7 +5843,11 @@ export type QueryListTransactionsArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListUserTokensArgs = {
   filter?: InputMaybe<ModelUserTokensFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5465,7 +5855,11 @@ export type QueryListUserTokensArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListUsersArgs = {
   filter?: InputMaybe<ModelUserFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5473,7 +5867,11 @@ export type QueryListUsersArgs = {
 };
 
 
-/** Root query type */
+/**
+ * =======
+ * >>>>>>> 7273d478a (Refactor: Move expenditure staked status to the core model)
+ * Root query type
+ */
 export type QueryListWatchedColoniesArgs = {
   filter?: InputMaybe<ModelWatchedColoniesFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -6521,6 +6919,7 @@ export type UpdateExpenditureInput = {
   id: Scalars['ID'];
   isStaged?: InputMaybe<Scalars['Boolean']>;
   isStakeForfeited?: InputMaybe<Scalars['Boolean']>;
+  isStaked?: InputMaybe<Scalars['Boolean']>;
   nativeDomainId?: InputMaybe<Scalars['Int']>;
   nativeFundingPotId?: InputMaybe<Scalars['Int']>;
   nativeId?: InputMaybe<Scalars['Int']>;
@@ -6534,7 +6933,6 @@ export type UpdateExpenditureMetadataInput = {
   id: Scalars['ID'];
   stages?: InputMaybe<Array<ExpenditureStageInput>>;
   stakeAmount?: InputMaybe<Scalars['String']>;
-  type?: InputMaybe<ExpenditureType>;
 };
 
 /**
@@ -6912,7 +7310,7 @@ export type DomainFragment = { __typename?: 'Domain', id: string, nativeId: numb
 
 export type DomainMetadataFragment = { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null };
 
-export type ExpenditureFragment = { __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, nativeDomainId: number, finalizedAt?: number | null, hasReclaimedStake?: boolean | null, isStakeForfeited?: boolean | null, isStaged: boolean, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', fundFromDomainNativeId: number, type: ExpenditureType, stakeAmount?: string | null, stages?: Array<{ __typename?: 'ExpenditureStage', slotId: number, name: string, isReleased: boolean }> | null } | null, balances?: Array<{ __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string, requiredAmount: string }> | null, motions?: { __typename?: 'ModelColonyMotionConnection', items: Array<{ __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, gasEstimate: string, transactionHash: string, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: number, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, initiatorUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null }> | null } | null } } | null> } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null> } | null };
+export type ExpenditureFragment = { __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, nativeDomainId: number, finalizedAt?: number | null, hasReclaimedStake?: boolean | null, isStaked: boolean, isStakeForfeited?: boolean | null, isStaged: boolean, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', fundFromDomainNativeId: number, stakeAmount?: string | null, stages?: Array<{ __typename?: 'ExpenditureStage', slotId: number, name: string, isReleased: boolean }> | null } | null, balances?: Array<{ __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string, requiredAmount: string }> | null, motions?: { __typename?: 'ModelColonyMotionConnection', items: Array<{ __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, gasEstimate: string, transactionHash: string, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: number, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, initiatorUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null }> | null } | null } } | null> } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null> } | null };
 
 export type ExpenditureSlotFragment = { __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean }> | null };
 
@@ -7216,7 +7614,7 @@ export type GetExpenditureQueryVariables = Exact<{
 }>;
 
 
-export type GetExpenditureQuery = { __typename?: 'Query', getExpenditure?: { __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, nativeDomainId: number, finalizedAt?: number | null, hasReclaimedStake?: boolean | null, isStakeForfeited?: boolean | null, isStaged: boolean, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', fundFromDomainNativeId: number, type: ExpenditureType, stakeAmount?: string | null, stages?: Array<{ __typename?: 'ExpenditureStage', slotId: number, name: string, isReleased: boolean }> | null } | null, balances?: Array<{ __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string, requiredAmount: string }> | null, motions?: { __typename?: 'ModelColonyMotionConnection', items: Array<{ __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, gasEstimate: string, transactionHash: string, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: number, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, initiatorUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null }> | null } | null } } | null> } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null> } | null } | null };
+export type GetExpenditureQuery = { __typename?: 'Query', getExpenditure?: { __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, nativeDomainId: number, finalizedAt?: number | null, hasReclaimedStake?: boolean | null, isStaked: boolean, isStakeForfeited?: boolean | null, isStaged: boolean, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', fundFromDomainNativeId: number, stakeAmount?: string | null, stages?: Array<{ __typename?: 'ExpenditureStage', slotId: number, name: string, isReleased: boolean }> | null } | null, balances?: Array<{ __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string, requiredAmount: string }> | null, motions?: { __typename?: 'ModelColonyMotionConnection', items: Array<{ __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, gasEstimate: string, transactionHash: string, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: number, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, initiatorUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null }> | null } | null } } | null> } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null> } | null } | null };
 
 export type GetColonyExtensionsByColonyAddressQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -8032,7 +8430,6 @@ export const ExpenditureFragmentDoc = gql`
   nativeDomainId
   metadata {
     fundFromDomainNativeId
-    type
     stages {
       ...ExpenditureStage
     }
@@ -8050,6 +8447,7 @@ export const ExpenditureFragmentDoc = gql`
       ...ColonyMotion
     }
   }
+  isStaked
   isStakeForfeited
   isStaged
 }

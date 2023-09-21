@@ -4,7 +4,6 @@ import { takeEvery, fork, call, put } from 'redux-saga/effects';
 import { Action, ActionTypes, AllActions } from '~redux';
 import { ColonyManager } from '~context';
 import { transactionAddParams } from '~redux/actionCreators';
-import { ExpenditureType } from '~gql';
 
 import {
   ChannelDefinition,
@@ -142,7 +141,6 @@ function* createExpenditure({
       colonyAddress,
       expenditureId,
       fundFromDomainId,
-      expenditureType: ExpenditureType.Forced,
       stages: isStaged ? stages : undefined,
     });
 

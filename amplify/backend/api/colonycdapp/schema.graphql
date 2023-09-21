@@ -857,19 +857,6 @@ enum ContributorType {
   NEW
   GENERAL
 }
-"""
-Describes the type of an expenditure
-"""
-enum ExpenditureType {
-  """
-  Expenditure created by user with Administration role
-  """
-  FORCED
-  """
-  Expenditure created by Staked Expenditure extension
-  """
-  STAKED
-}
 
 """
 Root query type
@@ -3113,6 +3100,7 @@ type Expenditure @model {
   """
   isStakeForfeited: Boolean
   isStaged: Boolean!
+  isStaked: Boolean!
 }
 
 # Each expenditure can have multiple slots with one recipient and possibly multiple payouts (with different token addresses)
@@ -3133,7 +3121,6 @@ type ExpenditurePayout {
 type ExpenditureMetadata @model {
   id: ID! # Self-managed, formatted as colonyId_nativeExpenditureId
   fundFromDomainNativeId: Int!
-  type: ExpenditureType!
   stages: [ExpenditureStage!]
   stakeAmount: String
 }

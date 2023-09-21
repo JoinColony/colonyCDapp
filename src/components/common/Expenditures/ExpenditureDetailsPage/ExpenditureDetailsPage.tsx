@@ -14,6 +14,7 @@ import { findDomainByNativeId } from '~utils/domains';
 import { notNull } from '~utils/arrays';
 import { getMotionState } from '~utils/colonyMotions';
 import { motionTags } from '~shared/Tag';
+import { boolToYesNo } from '~utils/strings';
 
 import ExpenditureBalances from './ExpenditureBalances';
 import ExpenditureAdvanceButton from './ExpenditureAdvanceButton';
@@ -31,6 +32,7 @@ const ExpenditureDetailsPage = () => {
 
   const { colony } = useColonyContext();
   const { colonyAddress = '' } = colony || {};
+
   const { data, loading } = useGetExpenditureQuery({
     variables: {
       expenditureId: getExpenditureDatabaseId(
@@ -40,7 +42,6 @@ const ExpenditureDetailsPage = () => {
     },
     skip: !expenditureId || !colony,
   });
-
   const expenditure = data?.getExpenditure;
 
   const expenditureFundingMotions =
@@ -154,7 +155,6 @@ const ExpenditureDetailsPage = () => {
           Created in: {expenditureDomain?.metadata?.name ?? 'Unknown team'}
         </div>
         <div>Fund from: {fundFromDomain?.metadata?.name ?? 'Unknown team'}</div>
-        <div>Type: {expenditure.metadata?.type}</div>
         {oldFundingMotions?.length ? (
           <div>Previous funding motions:</div>
         ) : null}
@@ -189,7 +189,8 @@ const ExpenditureDetailsPage = () => {
             Current cancel expenditure motion status: <CancelMotionTag />
           </Link>
         )}
-        <div>Is Staged: {expenditure.isStaged ? 'Yes' : 'No'}</div>
+        <div>Is Staked: {boolToYesNo(expenditure.isStaked)}</div>
+        <div>Is Staged: {boolToYesNo(expenditure.isStaged)}</div>
         {expenditure.isStaged && (
           <div>Recipient address: {expenditure.slots[0]?.recipientAddress}</div>
         )}
