@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ExpenditureStatus, ExpenditureType } from '~gql';
+import { ExpenditureStatus } from '~gql';
 import { ActionTypes } from '~redux';
 import { ActionButton } from '~shared/Button';
 import { Colony, Expenditure } from '~types';
@@ -21,7 +21,7 @@ const ReclaimStakeButton = ({
   expenditure,
 }: ReclaimStakeButtonProps) => {
   if (
-    expenditure.metadata?.type !== ExpenditureType.Staked ||
+    !expenditure.isStaked ||
     expenditure.hasReclaimedStake ||
     expenditure.isStakeForfeited ||
     !allowedStatuses.includes(expenditure.status)

@@ -2,7 +2,6 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 
 import { Action, ActionTypes, AllActions } from '~redux';
-import { ExpenditureType } from '~gql';
 import { ColonyManager } from '~context';
 
 import { createTransaction, getTxChannel } from '../transactions';
@@ -21,10 +20,7 @@ function* cancelDraftExpenditure({
   const txChannel = yield call(getTxChannel, meta.id);
 
   try {
-    if (
-      expenditure.metadata?.type === ExpenditureType.Staked &&
-      stakedExpenditureAddress
-    ) {
+    if (expenditure.isStaked && stakedExpenditureAddress) {
       const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
         colonyClient,
         expenditure.nativeDomainId,

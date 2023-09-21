@@ -8,7 +8,6 @@ import {
   transactionPending,
   transactionReady,
 } from '~redux/actionCreators';
-import { ExpenditureType } from '~gql';
 
 import {
   ChannelDefinition,
@@ -144,7 +143,6 @@ function* createExpenditure({
       colonyAddress,
       expenditureId,
       fundFromDomainId,
-      expenditureType: ExpenditureType.Forced,
       stages: isStaged ? stages : undefined,
     });
 

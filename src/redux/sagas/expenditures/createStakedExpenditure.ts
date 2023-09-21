@@ -8,8 +8,6 @@ import {
   transactionPending,
   transactionReady,
 } from '~redux/actionCreators';
-import { ExpenditureType } from '~gql';
-
 import { ADDRESS_ZERO } from '~constants';
 
 import {
@@ -201,7 +199,6 @@ function* createStakedExpenditure({
       colonyAddress,
       expenditureId,
       fundFromDomainId,
-      expenditureType: ExpenditureType.Staked,
       stages: isStaged ? stages : undefined,
       stakeAmount,
     });
