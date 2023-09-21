@@ -4,6 +4,9 @@ import { Id } from '@colony/colony-js';
 import { ActionTypes } from '~redux';
 import { useColonyContext } from '~hooks';
 import Button from '~shared/Button';
+import { mapPayload, pipe } from '~utils/actions';
+import { CreateStreamingPaymentPayload } from '~redux/sagas/expenditures/createStreamingPayment';
+import { findDomainByNativeId } from '~utils/domains';
 
 import CreateExpenditureForm from './CreateExpenditureForm';
 import {
@@ -21,6 +24,25 @@ const StreamingPaymentForm = () => {
     return null;
   }
 
+  const transformPayload = pipe(
+    mapPayload(
+      (payload: StreamingPaymentFormValues) =>
+        ({
+          colonyAddress: colony.colonyAddress,
+          createdInDomain: findDomainByNativeId(
+            payload.createInDomainId,
+            colony,
+          ),
+          recipientAddress: payload.recipientAddress,
+          tokenAddresses: [payload.tokenAddress],
+          amounts: [payload.amount],
+          startTime: payload.startTime,
+          endTime: payload.endTime,
+          interval: payload.interval,
+        } as CreateStreamingPaymentPayload),
+    ),
+  );
+
   return (
     <CreateExpenditureForm<StreamingPaymentFormValues>
       actionType={ActionTypes.STREAMING_PAYMENT_CREATE}
@@ -28,8 +50,13 @@ const StreamingPaymentForm = () => {
         createInDomainId: Id.RootDomain,
         fundFromDomainId: Id.RootDomain,
         recipientAddress: '',
+        startTime: new Date().getTime() / 1000,
         endCondition: StreamingPaymentEndCondition.WhenCancelled,
+        amount: '0',
+        tokenAddress: colony.nativeToken.tokenAddress,
+        interval: 60,
       }}
+      transform={transformPayload}
     >
       <StreamingPaymentFormFields colony={colony} />
 

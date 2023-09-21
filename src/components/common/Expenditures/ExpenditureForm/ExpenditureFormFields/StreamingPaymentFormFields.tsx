@@ -20,7 +20,7 @@ const StreamingPaymentFormFields = ({
   return (
     <div>
       <Input name="recipientAddress" label="Recipient address" />
-      <Input name="startDate" label="Start date" />
+      <Input name="startTime" label="Start date" />
       <Select
         name="endCondition"
         label="Ends"
@@ -51,8 +51,18 @@ const StreamingPaymentFormFields = ({
         />
       )}
       {endCondition === StreamingPaymentEndCondition.FixedTime && (
-        <Input name="endDate" label="End date" />
+        <Input name="endTime" label="End date" />
       )}
+      <Select
+        name="interval"
+        label="Amount per"
+        options={[
+          { label: 'minute', value: 60 },
+          { label: 'hour', value: 3600 },
+          { label: 'day', value: 86400 },
+          { label: 'month', value: 2592000 },
+        ]}
+      />
     </div>
   );
 };

@@ -36,9 +36,7 @@ const AdvancedPaymentForm = () => {
       return {
         ...payload,
         colony,
-        createdInDomain: colony
-          ? findDomainByNativeId(payload.createInDomainId, colony)
-          : null,
+        createdInDomain: findDomainByNativeId(payload.createInDomainId, colony),
         fundFromDomainId: payload.fundFromDomainId,
         payouts: payload.payouts,
       } as CreateExpenditurePayload;
@@ -66,7 +64,14 @@ const AdvancedPaymentForm = () => {
           <>
             <AdvancedPaymentFormFields colony={colony} />
             <div className={styles.buttons}>
-              <Button type={isStakingRequired ? 'button' : 'submit'}>
+              <Button
+                type={isStakingRequired ? 'button' : 'submit'}
+                onClick={
+                  isStakingRequired
+                    ? () => setIsStakeDialogOpen(true)
+                    : undefined
+                }
+              >
                 Create
               </Button>
             </div>
