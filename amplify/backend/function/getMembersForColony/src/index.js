@@ -31,7 +31,7 @@ const SortingMethod = {
 
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;
-  if (ENV === 'qa' || ENV === 'safecontr') {
+  if (ENV === 'qa' || ENV === 'sc') {
     const { getParams } = require('/opt/nodejs/getParams');
     [
       apiKey,
