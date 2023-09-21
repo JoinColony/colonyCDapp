@@ -34,7 +34,7 @@ const validationSchema = yup
       .array()
       .of(
         yup.object().shape({
-          recipent: yup.string().required(),
+          recipient: yup.string().required(),
           amount: yup
             .object()
             .shape({
@@ -48,8 +48,7 @@ const validationSchema = yup
             .required(),
         }),
       )
-      .required()
-      .min(1),
+      .required(),
   })
   .defined();
 
@@ -64,9 +63,9 @@ export const useSimplePayment = (
     defaultValues: useMemo(
       () => ({
         createdIn: Id.RootDomain.toString(),
-        recipent: undefined,
         decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
         annotation: '',
+        payments: [],
         amount: {
           amount: 0,
           tokenAddress: colony?.nativeToken.tokenAddress || '',
@@ -80,26 +79,31 @@ export const useSimplePayment = (
     transform: useCallback(
       pipe(
         mapPayload((payload) => {
-          const values = {
-            amount: payload.amount.amount,
-            tokenAddress: payload.amount.tokenAddress,
-            fromDomainId: payload.from,
-            recipient: { walletAddress: payload.recipient },
-            motionDomainId: payload.createdIn,
-            annotation: payload.annotation,
-            decisionMethod: payload.decisionMethod,
-            payments: payload.payments,
-          };
-
-          if (colony) {
-            return getCreatePaymentDialogPayload(
-              colony,
-              values,
-              networkInverseFee,
-            );
+          if (!colony) {
+            return null;
           }
 
-          return null;
+          return getCreatePaymentDialogPayload(
+            colony,
+            {
+              fromDomainId: payload.from,
+              payments: [
+                {
+                  amount: payload.amount.amount,
+                  tokenAddress: payload.amount.tokenAddress,
+                  recipient: { walletAddress: payload.recipient },
+                },
+                ...payload.payments.map(({ amount, recipient }) => ({
+                  amount: amount.amount,
+                  tokenAddress: amount.tokenAddress,
+                  recipient: { walletAddress: recipient },
+                })),
+              ],
+              annotation: payload.annotation,
+              motionDomainId: payload.createdIn,
+            },
+            networkInverseFee,
+          );
         }),
       ),
       [colony, networkInverseFee],

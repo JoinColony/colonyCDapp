@@ -51,9 +51,10 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
         isFullSize={isMobile}
         onClick={() => {
           fieldArrayMethods.append({
-            amount: '0',
-            recipent: '',
-            token: nativeToken?.tokenAddress || '',
+            amount: {
+              amount: '0',
+              tokenAddress: nativeToken?.tokenAddress || '',
+            },
           });
         }}
       >

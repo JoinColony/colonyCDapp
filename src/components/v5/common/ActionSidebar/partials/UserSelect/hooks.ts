@@ -11,7 +11,7 @@ export const useUserSelect = (): UserSelectHookProps => {
 
     return {
       label: label || '',
-      value: label || walletAddress || '',
+      value: walletAddress || '',
       avatar: avatar || '',
       walletAddress: walletAddress || '',
       showAvatar: true,

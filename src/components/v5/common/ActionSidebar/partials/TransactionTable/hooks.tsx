@@ -18,20 +18,18 @@ export const useTransactionTableColumns = (
   const columns: ColumnDef<TransactionTableModel, string>[] = useMemo(
     () => [
       columnHelper.display({
-        id: 'recipent',
-        header: () => formatText({ id: 'table.row.recipent' }),
+        id: 'recipient',
+        header: () => formatText({ id: 'table.row.recipient' }),
         cell: ({ row }) => (
-          <UserSelect key={row.id} name={`${name}.${row.index}.recipent`} />
+          <UserSelect key={row.id} name={`${name}.${row.index}.recipient`} />
         ),
       }),
       columnHelper.display({
         id: 'amount',
         header: () => formatText({ id: 'table.row.amount' }),
-        cell: ({ row }) => {
-          return (
-            <AmountField key={row.id} name={`${name}.${row.index}.amount`} />
-          );
-        },
+        cell: ({ row }) => (
+          <AmountField key={row.id} name={`${name}.${row.index}.amount`} />
+        ),
       }),
     ],
     [columnHelper, name],
@@ -40,8 +38,8 @@ export const useTransactionTableColumns = (
   return columns;
 };
 
-export const useGetTableMenuProps = ({ insert, remove }, data) => {
-  return useCallback<
+export const useGetTableMenuProps = ({ insert, remove }, data) =>
+  useCallback<
     TableWithMeatballMenuProps<TransactionTableModel>['getMenuProps']
   >(
     ({ index }) => ({
@@ -66,4 +64,3 @@ export const useGetTableMenuProps = ({ insert, remove }, data) => {
     }),
     [data, insert, remove],
   );
-};
