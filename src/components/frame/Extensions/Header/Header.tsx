@@ -17,7 +17,6 @@ import {
   useUserTransactionContext,
 } from '~context/UserTransactionContext';
 import CompletedButton from '~v5/shared/Button/CompletedButton';
-import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
 
 const displayName = 'frame.Extensions.Header';
 
@@ -69,8 +68,6 @@ const Header: FC = () => {
       isWalletOpen={isWalletOpen}
     />
   );
-
-  useDisableBodyScroll(isMobile && isActionSidebarOpen);
 
   const userMenuComponent = isActionSidebarOpen ? (
     <ColonyAvatarProvider>

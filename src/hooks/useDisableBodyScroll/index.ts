@@ -12,6 +12,8 @@ const useDisableBodyScroll = (condition: boolean | (() => boolean)): void => {
     } else {
       enableScrollOnBody();
     }
+
+    return () => enableScrollOnBody();
   }, [conditionMet]);
 };
 
