@@ -2211,7 +2211,7 @@ type ColonyAction @model {
   """
   The Ethereum address of the action initiator. Can be a user, extension or colony
   """
-  initiatorAddress: ID!
+  initiatorAddress: ID
 
   # Action type specific fields which might be null
 
