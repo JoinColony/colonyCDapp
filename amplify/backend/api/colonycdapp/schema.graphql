@@ -774,6 +774,10 @@ enum ColonyActionType {
   An action related to creating a motion for funding an expenditure
   """
   FUND_EXPENDITURE_MOTION
+  """
+  An action related to a motion to cancel a staked expenditure
+  """
+  CANCEL_STAKED_EXPENDITURE_MOTION
 }
 
 """
@@ -1972,7 +1976,7 @@ type ColonyMotion @model {
   """
   The transaction hash of the createMotion action
   """
-  transactionHash: String!
+  transactionHash: ID!
     @index(name: "byTransactionHash", queryField: "getMotionByTransactionHash")
 
   """
@@ -1986,6 +1990,8 @@ type ColonyMotion @model {
   """
   expenditureId: ID
     @index(name: "byExpenditureId", queryField: "getMotionByExpenditureId")
+
+  action: ColonyAction @belongsTo(fields: ["transactionHash"])
 }
 
 """
@@ -2647,10 +2653,9 @@ type Expenditure @model {
   finalizedAt: AWSTimestamp
   hasReclaimedStake: Boolean
   """
-  The motions created to fund this expenditure, if there are any
+  The motions created that relate to this expenditure, if there are any
   """
-  fundingMotions: [ColonyMotion]
-    @hasMany(indexName: "byExpenditureId", fields: ["id"])
+  motions: [ColonyMotion] @hasMany(indexName: "byExpenditureId", fields: ["id"])
   """
   Indicates if the creator's stake was forfeited when staked expenditure was cancelled
   """

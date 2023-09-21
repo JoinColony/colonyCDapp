@@ -23,7 +23,7 @@ fragment Expenditure on Expenditure {
   }
   finalizedAt
   hasReclaimedStake
-  fundingMotions {
+  motions {
     items {
       ...ColonyMotion
     }

@@ -119,6 +119,7 @@ function* createStakedExpenditure({
       });
     }
 
+    yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_CREATED);
     yield put(transactionPending(approveStake.id));
     yield put(transactionReady(approveStake.id));
     yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_SUCCEEDED);
@@ -142,6 +143,7 @@ function* createStakedExpenditure({
       ADDRESS_ZERO,
     );
 
+    yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_CREATED);
     yield put(transactionPending(makeExpenditure.id));
     yield put(
       transactionAddParams(makeExpenditure.id, [
@@ -159,6 +161,10 @@ function* createStakedExpenditure({
 
     const expenditureId = yield call(colonyClient.getExpenditureCount);
 
+    yield takeFrom(
+      setExpenditureValues.channel,
+      ActionTypes.TRANSACTION_CREATED,
+    );
     yield put(transactionPending(setExpenditureValues.id));
     yield put(
       transactionAddParams(
@@ -176,6 +182,10 @@ function* createStakedExpenditure({
     );
 
     if (isStaged) {
+      yield takeFrom(
+        setExpenditureStaged.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
       yield put(transactionPending(setExpenditureStaged.id));
       yield put(
         transactionAddParams(setExpenditureStaged.id, [expenditureId, true]),
