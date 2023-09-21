@@ -847,6 +847,12 @@ enum ExpenditureStatus {
   CANCELLED
 }
 
+enum ExpenditureType {
+  PAYMENT_BUILDER
+  STAGED
+  STREAMING
+}
+
 """
 The types of contributor a user can be in a colony
 """
@@ -3099,8 +3105,8 @@ type Expenditure @model {
   Indicates if the creator's stake was forfeited when staked expenditure was cancelled
   """
   isStakeForfeited: Boolean
-  isStaged: Boolean!
   isStaked: Boolean!
+  type: ExpenditureType!
 }
 
 # Each expenditure can have multiple slots with one recipient and possibly multiple payouts (with different token addresses)
