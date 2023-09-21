@@ -1,6 +1,7 @@
-export interface TransactionProps {
-  key: number;
-  recipent: string;
-  amount: string;
-  token: string;
+export interface TransactionTableModel {
+  key: string;
+}
+
+export interface TransactionTableProps {
+  name: string;
 }

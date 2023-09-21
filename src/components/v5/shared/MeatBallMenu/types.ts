@@ -7,6 +7,5 @@ export interface MeatBallItem {
 
 export interface MeatBallMenuProps {
   items: MeatBallItem[];
-  cardClassName?: string;
   buttonClassName?: string;
 }

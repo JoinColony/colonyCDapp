@@ -1002,5 +1002,9 @@
   "common.memberSignature.notSigned": "Not signed",
   "common.memberSignatureList.title": "Members with recovery permissions",
   "common.memberSignatureList.empty": "Members list is empty",
-  "motion.staking.threshold.label": "Not public until min {threshold} is staked"
+  "motion.staking.threshold.label": "Not public until min {threshold} is staked",
+  "table.row.recipent": "Recipient",
+  "table.row.amount": "Amount",
+  "table.row.duplicate": "Duplicate row",
+  "table.row.remove": "Remove row"
 }

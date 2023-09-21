@@ -5,6 +5,10 @@ export const useRelativePortalElement = <
   S extends HTMLElement,
 >(
   deps: React.DependencyList = [],
+  {
+    bottomPadding = 20,
+    rightPadding = 20,
+  }: { bottomPadding?: number; rightPadding?: number } = {},
 ) => {
   const relativeElementRef = useRef<T | null>(null);
   const portalElementRef = useRef<S | null>(null);
@@ -15,17 +19,20 @@ export const useRelativePortalElement = <
         return;
       }
 
-      portalElementRef.current.style.top = `${
-        relativeElementRef.current.getBoundingClientRect().bottom +
-        window.scrollY
-      }px`;
-      portalElementRef.current.style.left = `${
-        relativeElementRef.current.getBoundingClientRect().left
-      }px`;
+      const { bottom, left } =
+        relativeElementRef.current.getBoundingClientRect();
+      const leftPosition =
+        portalElementRef.current.clientWidth + left + rightPadding >
+        window.innerWidth
+          ? window.innerWidth -
+            portalElementRef.current.clientWidth -
+            rightPadding
+          : left;
+
+      portalElementRef.current.style.top = `${bottom + window.scrollY}px`;
+      portalElementRef.current.style.left = `${leftPosition}px`;
       portalElementRef.current.style.maxHeight = `${
-        window.innerHeight -
-        relativeElementRef.current.getBoundingClientRect().bottom -
-        20
+        window.innerHeight - bottom - bottomPadding
       }px`;
     };
 
@@ -34,7 +41,8 @@ export const useRelativePortalElement = <
     window.addEventListener('scroll', onScroll);
 
     return () => window.removeEventListener('scroll', onScroll);
-  }, deps);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rightPadding, bottomPadding, ...deps]);
 
   return { relativeElementRef, portalElementRef };
 };

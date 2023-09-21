@@ -30,6 +30,26 @@ const validationSchema = yup
     recipient: yup.string().required(),
     from: yup.number().required(),
     decisionMethod: yup.string().defined(),
+    payments: yup
+      .array()
+      .of(
+        yup.object().shape({
+          recipent: yup.string().required(),
+          amount: yup
+            .object()
+            .shape({
+              amount: yup
+                .number()
+                .required(() => 'required field')
+                .transform((value) => toFinite(value))
+                .moreThan(0, () => 'Amount must be greater than zero'),
+              tokenAddress: yup.string().address().required(),
+            })
+            .required(),
+        }),
+      )
+      .required()
+      .min(1),
   })
   .defined();
 
@@ -68,7 +88,7 @@ export const useSimplePayment = (
             motionDomainId: payload.createdIn,
             annotation: payload.annotation,
             decisionMethod: payload.decisionMethod,
-            payments: [],
+            payments: payload.payments,
           };
 
           if (colony) {
