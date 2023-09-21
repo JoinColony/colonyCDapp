@@ -4,6 +4,9 @@ on:
   workflow_dispatch: # Allows manual workflow trigger
   repository_dispatch: # Allows API workflow trigger
     types: [cdapp-frontend-dev]
+  push:
+   branches:
+    - extensions-new-ui
 
 concurrency:
   group: cdapp-frontend-dev
