@@ -7,7 +7,7 @@ const displayName = 'v5.CardWithSections';
 
 const CardWithSections: React.FC<CardWithSectionsProps> = ({ sections }) =>
   sections.length ? (
-    <Card withPadding={false}>
+    <Card className="w-full" withPadding={false}>
       {sections.map(({ key, content, className }) => (
         <div
           key={key}
