@@ -172,6 +172,12 @@ export type ExpendituresActionTypes =
       {
         colonyAddress: Address;
         createdInDomain: Domain;
+        recipientAddress: Address;
+        tokenAddresses: Address[];
+        amounts: string[];
+        startTime: number;
+        endTime?: number;
+        interval: number;
       },
       MetaWithNavigate<object>
     >

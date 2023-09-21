@@ -7,8 +7,23 @@ import { Action } from '~redux/types';
 import { getColonyManager, putError } from '../utils';
 import { createTransaction } from '../transactions';
 
+export type CreateStreamingPaymentPayload =
+  Action<ActionTypes.STREAMING_PAYMENT_CREATE>['payload'];
+
+// @TODO: Figure out a more appropriate way of getting this
+const TIMESTAMP_IN_FUTURE = 5277994620;
+
 function* createStreamingPayment({
-  payload: { colonyAddress, createdInDomain },
+  payload: {
+    colonyAddress,
+    createdInDomain,
+    recipientAddress,
+    tokenAddresses,
+    amounts,
+    startTime,
+    endTime,
+    interval,
+  },
   meta,
 }: Action<ActionTypes.STREAMING_PAYMENT_CREATE>) {
   const colonyManager = yield getColonyManager();
@@ -44,6 +59,12 @@ function* createStreamingPayment({
         adminPermissionDomainId,
         adminChildSkillIndex,
         createdInDomain.nativeId,
+        startTime,
+        endTime ?? TIMESTAMP_IN_FUTURE,
+        interval,
+        recipientAddress,
+        tokenAddresses,
+        amounts,
       ],
     });
   } catch (error) {
