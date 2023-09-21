@@ -1,17 +1,17 @@
 import React from 'react';
 import { ColonyRole, Id } from '@colony/colony-js';
 
-import { ExpenditureStatus } from '~gql';
+import { ExpenditureStatus, ExpenditureType } from '~gql';
 import { ActionTypes } from '~redux';
 import { ActionButton } from '~shared/Button';
 import { Colony, Expenditure } from '~types';
 import { isExpenditureFunded } from '~utils/expenditures';
 import { findDomainByNativeId } from '~utils/domains';
-
-import ExpenditureClaimButton from '../ExpenditureClaimButton';
 import { addressHasRoles } from '~utils/checks';
 import { useAppContext, useEnabledExtensions } from '~hooks';
 import { ExpenditureFundMotionPayload } from '~redux/types/actions/motion';
+
+import ExpenditureClaimButton from '../ExpenditureClaimButton';
 
 interface ExpenditureAdvanceButtonProps {
   expenditure: Expenditure;
@@ -126,7 +126,7 @@ const ExpenditureAdvanceButton = ({
   }
 
   if (
-    !expenditure.isStaged &&
+    expenditure.type !== ExpenditureType.Staged &&
     expenditure.status === ExpenditureStatus.Finalized
   ) {
     return <ExpenditureClaimButton colony={colony} expenditure={expenditure} />;

@@ -4,6 +4,7 @@ import { Id, MotionState } from '@colony/colony-js';
 
 import {
   ColonyActionType,
+  ExpenditureType,
   useGetExpenditureQuery,
   useGetMotionStateQuery,
 } from '~gql';
@@ -151,6 +152,7 @@ const ExpenditureDetailsPage = () => {
 
       <div className={styles.details}>
         <div>Status: {expenditure.status}</div>
+        <div>Type: {expenditure.type}</div>
         <div>
           Created in: {expenditureDomain?.metadata?.name ?? 'Unknown team'}
         </div>
@@ -190,15 +192,15 @@ const ExpenditureDetailsPage = () => {
           </Link>
         )}
         <div>Is Staked: {boolToYesNo(expenditure.isStaked)}</div>
-        <div>Is Staged: {boolToYesNo(expenditure.isStaged)}</div>
-        {expenditure.isStaged && (
+        {expenditure.type === ExpenditureType.Staged && (
           <div>Recipient address: {expenditure.slots[0]?.recipientAddress}</div>
         )}
         <ExpenditureBalances expenditure={expenditure} />
-        {expenditure.isStaged ? (
-          <ExpenditureStages expenditure={expenditure} colony={colony} />
-        ) : (
+        {expenditure.type === ExpenditureType.PaymentBuilder && (
           <ExpenditurePayouts expenditure={expenditure} colony={colony} />
+        )}
+        {expenditure.type === ExpenditureType.Staged && (
+          <ExpenditureStages expenditure={expenditure} colony={colony} />
         )}
         <div className={styles.buttons}>
           <CancelDraftExpenditureButton

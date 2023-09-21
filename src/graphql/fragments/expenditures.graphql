@@ -27,9 +27,9 @@ fragment Expenditure on Expenditure {
       ...ColonyMotion
     }
   }
+  type
   isStaked
   isStakeForfeited
-  isStaged
 }
 
 fragment ExpenditureSlot on ExpenditureSlot {
