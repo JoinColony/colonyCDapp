@@ -33,9 +33,7 @@ const InputBase: FC<InputBaseProps> = ({
         {...rest}
       />
       {suffix && suffix}
-      {message && (
-        <span className="text-sm text-negative-400 block mt-1">{message}</span>
-      )}
+      {message && message}
     </div>
   );
 };
