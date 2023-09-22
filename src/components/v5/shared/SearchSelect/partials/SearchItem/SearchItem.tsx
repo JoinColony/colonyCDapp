@@ -9,7 +9,7 @@ import Avatar from '~v5/shared/Avatar';
 import { useMobile } from '~hooks';
 import Tooltip from '~shared/Extensions/Tooltip';
 import Icon from '~shared/Icon';
-import TokenIcon from '~shared/TokenIcon/TokenIcon';
+import TokenIcon from '~shared/TokenIcon';
 
 const displayName = 'v5.SearchSelect.partials.SearchItem';
 

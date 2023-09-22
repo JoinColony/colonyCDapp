@@ -2,7 +2,6 @@ import React, { FC, InputHTMLAttributes } from 'react';
 import { useIntl } from 'react-intl';
 
 import Icon from '~shared/Icon';
-import styles from './SearchInput.module.css';
 
 const displayName = 'v5.SearchSelect.partials.SearchInput';
 
@@ -16,7 +15,8 @@ const SearchInput: FC<InputHTMLAttributes<HTMLInputElement>> = (props) => {
       </span>
       <input
         {...props}
-        className={styles.input}
+        className={`py-2.5 pr-3 pl-8 border rounded-lg 
+        border-gray-300 w-full text-3 text-gray-500 placeholder:text-gray-500`}
         placeholder={formatMessage({ id: 'placeholder.search' })}
       />
     </div>

@@ -16,14 +16,12 @@ const TokensTable: FC<TokensTableProps> = ({
   shouldShowMenu = () => true,
 }) => {
   const isMobile = useMobile();
-
   const fieldArrayMethods = useFieldArray({
     name,
   });
   const data: TokensTableModel[] = fieldArrayMethods.fields.map(({ id }) => ({
     key: id,
   }));
-
   const { getFieldState } = useFormContext();
   const fieldState = getFieldState(name);
   const value = useWatch({ name }) || [];

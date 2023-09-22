@@ -5,15 +5,14 @@ import { isAddress } from 'ethers/lib/utils';
 import clsx from 'clsx';
 import { TokenSelectProps } from './types';
 import useToggle from '~hooks/useToggle';
-import getTokenList from '~common/Dialogs/TokenManagementDialog/TokenManagementDialogForm/getTokenList';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
-import { SearchSelectOptionProps } from '~v5/shared/SearchSelect/types';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
 import TokenStatus from './partials/TokenStatus';
 import TokenIcon from '~shared/TokenIcon';
 import { useGetTokenFromEverywhereQuery } from '~gql';
+import { useTokenSelect } from './hooks';
 
 const displayName = 'v5.common.ActionsContent.partials.TokenSelect';
 
@@ -33,13 +32,8 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
       registerContainerRef,
     },
   ] = useToggle();
+  const { tokenOptions, isRemoteTokenAddress } = useTokenSelect(field.value);
 
-  const networkTokenList = getTokenList();
-
-  const isRemoteTokenAddress =
-    field.value &&
-    isAddress(field.value) &&
-    !networkTokenList.some(({ token }) => token.tokenAddress === field.value);
   const { data: tokenData, loading } = useGetTokenFromEverywhereQuery({
     variables: {
       input: {
@@ -48,16 +42,6 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
     },
     skip: !isRemoteTokenAddress,
   });
-
-  const tokens: SearchSelectOptionProps = {
-    key: 'tokens',
-    title: { id: 'manageTokensTable.availableTokens' },
-    options: networkTokenList.map((networkToken) => ({
-      label: networkToken.token.name,
-      value: networkToken.token.tokenAddress,
-      token: networkToken.token,
-    })),
-  };
 
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
@@ -74,7 +58,7 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
         <div className="flex items-center gap-2">
           <TokenIcon token={field.value} size="xxs" />
           {formatText(
-            tokens.options.find((option) => option.value === field.value)
+            tokenOptions.options.find((option) => option.value === field.value)
               ?.label,
           )}
         </div>
@@ -118,7 +102,11 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
       {isTokenSelectVisible && (
         <SearchSelect
           showEmptyContent={!isRemoteTokenAddress}
-          items={[isRemoteTokenAddress ? { ...tokens, options: [] } : tokens]}
+          items={[
+            isRemoteTokenAddress
+              ? { ...tokenOptions, options: [] }
+              : tokenOptions,
+          ]}
           onSearch={(query) => {
             field.onChange(isAddress(query) ? query : undefined);
           }}
