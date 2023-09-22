@@ -39,7 +39,7 @@ export const Base: StoryObj<typeof InputBase> = {
 export const WithError: StoryObj<typeof InputBase> = {
   args: {
     mode: 'primary',
-    hasError: true,
+    state: 'error',
     defaultValue: 'Default value',
   },
 };
@@ -47,7 +47,7 @@ export const WithError: StoryObj<typeof InputBase> = {
 export const WithErrorMessage: StoryObj<typeof InputBase> = {
   args: {
     mode: 'primary',
-    errorMessage: 'Something went wrong',
+    message: 'Something went wrong',
     defaultValue: 'Default value',
   },
 };

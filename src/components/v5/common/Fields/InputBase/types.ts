@@ -1,10 +1,10 @@
 import { InputHTMLAttributes } from 'react';
+import { BaseFieldProps } from '../types';
 
 export interface InputBaseProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'prefix'> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'prefix'>,
+    BaseFieldProps {
   className?: string;
-  hasError?: boolean;
-  errorMessage?: React.ReactNode;
   suffix?: React.ReactNode;
   prefix?: React.ReactNode;
   mode: 'primary' | 'secondary';
