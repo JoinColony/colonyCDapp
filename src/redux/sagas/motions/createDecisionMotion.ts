@@ -24,7 +24,7 @@ function* createDecisionMotion({
     colonyAddress,
     draftDecision: { motionDomainId, title, description, walletAddress },
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_CREATE_DECISION>) {
   const txChannel = yield call(getTxChannel, metaId);
@@ -126,6 +126,8 @@ function* createDecisionMotion({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
+    setTxHash?.(txHash);
+
     yield apolloClient.mutate<
       CreateColonyDecisionMutation,
       CreateColonyDecisionMutationVariables
@@ -164,7 +166,7 @@ function* createDecisionMotion({
     });
 
     if (colonyName) {
-      navigate(`/colony/${colonyName}/decisions/tx/${txHash}`, {
+      navigate?.(`/colony/${colonyName}/decisions/tx/${txHash}`, {
         state: { isRedirect: true },
       });
     }
