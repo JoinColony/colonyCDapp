@@ -9,6 +9,7 @@ import Avatar from '~v5/shared/Avatar';
 import { useMobile } from '~hooks';
 import Tooltip from '~shared/Extensions/Tooltip';
 import Icon from '~shared/Icon';
+import TokenIcon from '~shared/TokenIcon/TokenIcon';
 
 const displayName = 'v5.SearchSelect.partials.SearchItem';
 
@@ -38,6 +39,7 @@ const SearchItem: FC<SearchItemProps> = ({
           showAvatar,
           color,
           missingPermissions,
+          token,
         }) => {
           const firstDisabledOption = options.filter(
             (option) => option.isDisabled,
@@ -45,7 +47,7 @@ const SearchItem: FC<SearchItemProps> = ({
           const labelText =
             typeof label === 'string' ? label : formatMessage(label);
 
-          const hasAvatar = showAvatar || !!color;
+          const hasAvatar = showAvatar || !!color || !!token;
 
           return (
             <li
@@ -80,7 +82,11 @@ const SearchItem: FC<SearchItemProps> = ({
                     })}
                   />
                 )}
-
+                {token && (
+                  <div className="mr-2">
+                    <TokenIcon token={token} size="xxs" />
+                  </div>
+                )}
                 {color && isLabelVisible && (
                   <span className={clsx(color, 'mr-2 w-3.5 h-3.5 rounded')} />
                 )}
