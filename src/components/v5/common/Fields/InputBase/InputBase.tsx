@@ -6,6 +6,7 @@ import { FIELD_STATE } from '../consts';
 
 const InputBase: FC<InputBaseProps> = ({
   className,
+  wrapperClassName,
   state,
   message,
   prefix,
@@ -15,11 +16,7 @@ const InputBase: FC<InputBaseProps> = ({
   ...rest
 }) => {
   return (
-    <div
-      className={clsx({
-        'flex items-center gap-2': suffix || prefix,
-      })}
-    >
+    <div className={wrapperClassName}>
       {prefix && prefix}
       <input
         className={clsx(
