@@ -28,7 +28,7 @@ function* createRootMotionSaga({
     motionParams,
     annotationMessage,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ROOT_MOTION>) {
   let txChannel;
@@ -133,6 +133,8 @@ function* createRootMotionSaga({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
+    setTxHash?.(txHash);
+
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
@@ -149,7 +151,7 @@ function* createRootMotionSaga({
     });
 
     if (colonyName) {
-      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+      navigate?.(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
     }

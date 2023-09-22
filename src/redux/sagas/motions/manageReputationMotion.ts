@@ -39,7 +39,7 @@ function* manageReputationMotion({
     motionDomainId,
     isSmitingReputation,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_MANAGE_REPUTATION>) {
   let txChannel;
@@ -179,6 +179,9 @@ function* manageReputationMotion({
       createMotion.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
@@ -200,7 +203,7 @@ function* manageReputationMotion({
     });
 
     if (colonyName) {
-      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+      navigate?.(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
     }

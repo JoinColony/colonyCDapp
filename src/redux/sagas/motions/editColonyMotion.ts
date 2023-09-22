@@ -38,7 +38,7 @@ function* editColonyMotion({
     colonyExternalLinks,
     annotationMessage,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_EDIT_COLONY>) {
   let txChannel;
@@ -177,6 +177,8 @@ function* editColonyMotion({
       createMotion.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     const modifiedTokenAddresses = getPendingModifiedTokenAddresses(
@@ -250,7 +252,7 @@ function* editColonyMotion({
     });
 
     if (colonyName) {
-      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+      navigate?.(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
     }
