@@ -11,7 +11,6 @@ import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import TransactionTable from '~v5/common/ActionSidebar/partials/TransactionTable';
 import { DECISION_METHOD_OPTIONS } from '../../consts';
-import TokensTable from '../../TokensTable';
 
 const displayName = 'v5.common.ActionSidebar.partials.SimplePaymentForm';
 
@@ -93,7 +92,6 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         )}
       </ActionFormRow>
       <TransactionTable name="payments" />
-      <TokensTable name="tokens" />
     </>
   );
 };
