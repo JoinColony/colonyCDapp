@@ -11,7 +11,7 @@ export type CreateStreamingPaymentPayload =
   Action<ActionTypes.STREAMING_PAYMENT_CREATE>['payload'];
 
 // @TODO: Figure out a more appropriate way of getting this
-const TIMESTAMP_IN_FUTURE = 5277994620;
+const TIMESTAMP_IN_FUTURE = 2_000_000_000;
 
 function* createStreamingPayment({
   payload: {

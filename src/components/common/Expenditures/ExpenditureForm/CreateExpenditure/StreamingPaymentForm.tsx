@@ -50,7 +50,7 @@ const StreamingPaymentForm = () => {
         createInDomainId: Id.RootDomain,
         fundFromDomainId: Id.RootDomain,
         recipientAddress: '',
-        startTime: new Date().getTime() / 1000,
+        startTime: Math.floor(new Date().getTime() / 1000),
         endCondition: StreamingPaymentEndCondition.WhenCancelled,
         amount: '0',
         tokenAddress: colony.nativeToken.tokenAddress,
