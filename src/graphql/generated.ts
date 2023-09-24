@@ -1125,6 +1125,7 @@ export type CreateStreamingPaymentInput = {
   interval: Scalars['String'];
   nativeDomainId: Scalars['Int'];
   nativeId: Scalars['Int'];
+  payouts?: InputMaybe<Array<ExpenditurePayoutInput>>;
   recipientAddress: Scalars['String'];
   startTime: Scalars['AWSTimestamp'];
 };
@@ -1564,8 +1565,7 @@ export enum ExpenditureStatus {
 
 export enum ExpenditureType {
   PaymentBuilder = 'PAYMENT_BUILDER',
-  Staged = 'STAGED',
-  Streaming = 'STREAMING'
+  Staged = 'STAGED'
 }
 
 /** Map of parameters that extensions are initialised with */
@@ -4843,6 +4843,7 @@ export type StreamingPayment = {
   interval: Scalars['String'];
   nativeDomainId: Scalars['Int'];
   nativeId: Scalars['Int'];
+  payouts?: Maybe<Array<ExpenditurePayout>>;
   recipientAddress: Scalars['String'];
   startTime: Scalars['AWSTimestamp'];
   updatedAt: Scalars['AWSDateTime'];
@@ -5702,6 +5703,7 @@ export type UpdateStreamingPaymentInput = {
   interval?: InputMaybe<Scalars['String']>;
   nativeDomainId?: InputMaybe<Scalars['Int']>;
   nativeId?: InputMaybe<Scalars['Int']>;
+  payouts?: InputMaybe<Array<ExpenditurePayoutInput>>;
   recipientAddress?: InputMaybe<Scalars['String']>;
   startTime?: InputMaybe<Scalars['AWSTimestamp']>;
 };

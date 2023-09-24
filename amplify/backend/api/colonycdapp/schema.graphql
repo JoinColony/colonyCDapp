@@ -2677,28 +2677,6 @@ type ExpenditureMetadata @model {
   stakeAmount: String
 }
 
-"""
-Defines an annotation for actions, motions and decisions
-"""
-type Annotation @model {
-  """
-  The id of the annotation.
-  """
-  id: ID!
-  """
-  The id of the action it annotates
-  """
-  actionId: ID!
-  """
-  The actual annotation message
-  """
-  message: String!
-  """
-  The IPFS hash, if the annotation was also uploaded to IPFS
-  """
-  ipfsHash: String
-}
-
 type ExpenditureBalance {
   tokenAddress: ID!
   amount: String!
@@ -2720,4 +2698,27 @@ type StreamingPayment @model {
   startTime: AWSTimestamp!
   endTime: AWSTimestamp!
   interval: String!
+  payouts: [ExpenditurePayout!]
+}
+
+"""
+Defines an annotation for actions, motions and decisions
+"""
+type Annotation @model {
+  """
+  The id of the annotation.
+  """
+  id: ID!
+  """
+  The id of the action it annotates
+  """
+  actionId: ID!
+  """
+  The actual annotation message
+  """
+  message: String!
+  """
+  The IPFS hash, if the annotation was also uploaded to IPFS
+  """
+  ipfsHash: String
 }
