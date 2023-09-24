@@ -1118,6 +1118,17 @@ export type CreateProfileInput = {
   website?: InputMaybe<Scalars['AWSURL']>;
 };
 
+export type CreateStreamingPaymentInput = {
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  endTime: Scalars['AWSTimestamp'];
+  id?: InputMaybe<Scalars['ID']>;
+  interval: Scalars['String'];
+  nativeDomainId: Scalars['Int'];
+  nativeId: Scalars['Int'];
+  recipientAddress: Scalars['String'];
+  startTime: Scalars['AWSTimestamp'];
+};
+
 export type CreateTokenInput = {
   avatar?: InputMaybe<Scalars['String']>;
   chainMetadata: ChainMetadataInput;
@@ -1288,6 +1299,10 @@ export type DeleteMotionMessageInput = {
 };
 
 export type DeleteProfileInput = {
+  id: Scalars['ID'];
+};
+
+export type DeleteStreamingPaymentInput = {
   id: Scalars['ID'];
 };
 
@@ -2546,6 +2561,39 @@ export enum ModelSortDirection {
   Desc = 'DESC'
 }
 
+export type ModelStreamingPaymentConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelStreamingPaymentConditionInput>>>;
+  createdAt?: InputMaybe<ModelStringInput>;
+  endTime?: InputMaybe<ModelIntInput>;
+  interval?: InputMaybe<ModelStringInput>;
+  nativeDomainId?: InputMaybe<ModelIntInput>;
+  nativeId?: InputMaybe<ModelIntInput>;
+  not?: InputMaybe<ModelStreamingPaymentConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelStreamingPaymentConditionInput>>>;
+  recipientAddress?: InputMaybe<ModelStringInput>;
+  startTime?: InputMaybe<ModelIntInput>;
+};
+
+export type ModelStreamingPaymentConnection = {
+  __typename?: 'ModelStreamingPaymentConnection';
+  items: Array<Maybe<StreamingPayment>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelStreamingPaymentFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelStreamingPaymentFilterInput>>>;
+  createdAt?: InputMaybe<ModelStringInput>;
+  endTime?: InputMaybe<ModelIntInput>;
+  id?: InputMaybe<ModelIdInput>;
+  interval?: InputMaybe<ModelStringInput>;
+  nativeDomainId?: InputMaybe<ModelIntInput>;
+  nativeId?: InputMaybe<ModelIntInput>;
+  not?: InputMaybe<ModelStreamingPaymentFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelStreamingPaymentFilterInput>>>;
+  recipientAddress?: InputMaybe<ModelStringInput>;
+  startTime?: InputMaybe<ModelIntInput>;
+};
+
 export type ModelStringInput = {
   attributeExists?: InputMaybe<Scalars['Boolean']>;
   attributeType?: InputMaybe<ModelAttributeTypes>;
@@ -2888,6 +2936,19 @@ export type ModelSubscriptionProfileFilterInput = {
   website?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
+export type ModelSubscriptionStreamingPaymentFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionStreamingPaymentFilterInput>>>;
+  createdAt?: InputMaybe<ModelSubscriptionStringInput>;
+  endTime?: InputMaybe<ModelSubscriptionIntInput>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  interval?: InputMaybe<ModelSubscriptionStringInput>;
+  nativeDomainId?: InputMaybe<ModelSubscriptionIntInput>;
+  nativeId?: InputMaybe<ModelSubscriptionIntInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionStreamingPaymentFilterInput>>>;
+  recipientAddress?: InputMaybe<ModelSubscriptionStringInput>;
+  startTime?: InputMaybe<ModelSubscriptionIntInput>;
+};
+
 export type ModelSubscriptionStringInput = {
   beginsWith?: InputMaybe<Scalars['String']>;
   between?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -3178,6 +3239,7 @@ export type Mutation = {
   createIngestorStats?: Maybe<IngestorStats>;
   createMotionMessage?: Maybe<MotionMessage>;
   createProfile?: Maybe<Profile>;
+  createStreamingPayment?: Maybe<StreamingPayment>;
   createToken?: Maybe<Token>;
   /** Create a unique Colony within the Colony Network. Use this instead of the automatically generated `createColony` mutation */
   createUniqueColony?: Maybe<Colony>;
@@ -3208,6 +3270,7 @@ export type Mutation = {
   deleteIngestorStats?: Maybe<IngestorStats>;
   deleteMotionMessage?: Maybe<MotionMessage>;
   deleteProfile?: Maybe<Profile>;
+  deleteStreamingPayment?: Maybe<StreamingPayment>;
   deleteToken?: Maybe<Token>;
   deleteUser?: Maybe<User>;
   deleteUserTokens?: Maybe<UserTokens>;
@@ -3236,6 +3299,7 @@ export type Mutation = {
   updateIngestorStats?: Maybe<IngestorStats>;
   updateMotionMessage?: Maybe<MotionMessage>;
   updateProfile?: Maybe<Profile>;
+  updateStreamingPayment?: Maybe<StreamingPayment>;
   updateToken?: Maybe<Token>;
   updateUser?: Maybe<User>;
   updateUserTokens?: Maybe<UserTokens>;
@@ -3394,6 +3458,13 @@ export type MutationCreateMotionMessageArgs = {
 export type MutationCreateProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: CreateProfileInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreateStreamingPaymentArgs = {
+  condition?: InputMaybe<ModelStreamingPaymentConditionInput>;
+  input: CreateStreamingPaymentInput;
 };
 
 
@@ -3592,6 +3663,13 @@ export type MutationDeleteProfileArgs = {
 
 
 /** Root mutation type */
+export type MutationDeleteStreamingPaymentArgs = {
+  condition?: InputMaybe<ModelStreamingPaymentConditionInput>;
+  input: DeleteStreamingPaymentInput;
+};
+
+
+/** Root mutation type */
 export type MutationDeleteTokenArgs = {
   condition?: InputMaybe<ModelTokenConditionInput>;
   input: DeleteTokenInput;
@@ -3776,6 +3854,13 @@ export type MutationUpdateMotionMessageArgs = {
 export type MutationUpdateProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: UpdateProfileInput;
+};
+
+
+/** Root mutation type */
+export type MutationUpdateStreamingPaymentArgs = {
+  condition?: InputMaybe<ModelStreamingPaymentConditionInput>;
+  input: UpdateStreamingPaymentInput;
 };
 
 
@@ -3986,6 +4071,7 @@ export type Query = {
   getProfileByEmail?: Maybe<ModelProfileConnection>;
   /** Retrieve a user's reputation within the top domains of a Colony */
   getReputationForTopDomains?: Maybe<GetReputationForTopDomainsReturn>;
+  getStreamingPayment?: Maybe<StreamingPayment>;
   getToken?: Maybe<Token>;
   getTokenByAddress?: Maybe<ModelTokenConnection>;
   /** Fetch a token's information. Tries to get the data from the DB first, if that fails, resolves to get data from chain */
@@ -4024,6 +4110,7 @@ export type Query = {
   listIngestorStats?: Maybe<ModelIngestorStatsConnection>;
   listMotionMessages?: Maybe<ModelMotionMessageConnection>;
   listProfiles?: Maybe<ModelProfileConnection>;
+  listStreamingPayments?: Maybe<ModelStreamingPaymentConnection>;
   listTokens?: Maybe<ModelTokenConnection>;
   listUserTokens?: Maybe<ModelUserTokensConnection>;
   listUsers?: Maybe<ModelUserConnection>;
@@ -4386,6 +4473,12 @@ export type QueryGetReputationForTopDomainsArgs = {
 
 
 /** Root query type */
+export type QueryGetStreamingPaymentArgs = {
+  id: Scalars['ID'];
+};
+
+
+/** Root query type */
 export type QueryGetTokenArgs = {
   id: Scalars['ID'];
 };
@@ -4650,6 +4743,14 @@ export type QueryListProfilesArgs = {
 
 
 /** Root query type */
+export type QueryListStreamingPaymentsArgs = {
+  filter?: InputMaybe<ModelStreamingPaymentFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Root query type */
 export type QueryListTokensArgs = {
   filter?: InputMaybe<ModelTokenFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -4734,6 +4835,19 @@ export type StakerRewardsInput = {
   rewards: MotionStakeValuesInput;
 };
 
+export type StreamingPayment = {
+  __typename?: 'StreamingPayment';
+  createdAt: Scalars['AWSDateTime'];
+  endTime: Scalars['AWSTimestamp'];
+  id: Scalars['ID'];
+  interval: Scalars['String'];
+  nativeDomainId: Scalars['Int'];
+  nativeId: Scalars['Int'];
+  recipientAddress: Scalars['String'];
+  startTime: Scalars['AWSTimestamp'];
+  updatedAt: Scalars['AWSDateTime'];
+};
+
 export type Subscription = {
   __typename?: 'Subscription';
   onCreateAnnotation?: Maybe<Annotation>;
@@ -4758,6 +4872,7 @@ export type Subscription = {
   onCreateIngestorStats?: Maybe<IngestorStats>;
   onCreateMotionMessage?: Maybe<MotionMessage>;
   onCreateProfile?: Maybe<Profile>;
+  onCreateStreamingPayment?: Maybe<StreamingPayment>;
   onCreateToken?: Maybe<Token>;
   onCreateUser?: Maybe<User>;
   onCreateUserTokens?: Maybe<UserTokens>;
@@ -4784,6 +4899,7 @@ export type Subscription = {
   onDeleteIngestorStats?: Maybe<IngestorStats>;
   onDeleteMotionMessage?: Maybe<MotionMessage>;
   onDeleteProfile?: Maybe<Profile>;
+  onDeleteStreamingPayment?: Maybe<StreamingPayment>;
   onDeleteToken?: Maybe<Token>;
   onDeleteUser?: Maybe<User>;
   onDeleteUserTokens?: Maybe<UserTokens>;
@@ -4810,6 +4926,7 @@ export type Subscription = {
   onUpdateIngestorStats?: Maybe<IngestorStats>;
   onUpdateMotionMessage?: Maybe<MotionMessage>;
   onUpdateProfile?: Maybe<Profile>;
+  onUpdateStreamingPayment?: Maybe<StreamingPayment>;
   onUpdateToken?: Maybe<Token>;
   onUpdateUser?: Maybe<User>;
   onUpdateUserTokens?: Maybe<UserTokens>;
@@ -4924,6 +5041,11 @@ export type SubscriptionOnCreateMotionMessageArgs = {
 
 export type SubscriptionOnCreateProfileArgs = {
   filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
+};
+
+
+export type SubscriptionOnCreateStreamingPaymentArgs = {
+  filter?: InputMaybe<ModelSubscriptionStreamingPaymentFilterInput>;
 };
 
 
@@ -5057,6 +5179,11 @@ export type SubscriptionOnDeleteProfileArgs = {
 };
 
 
+export type SubscriptionOnDeleteStreamingPaymentArgs = {
+  filter?: InputMaybe<ModelSubscriptionStreamingPaymentFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteTokenArgs = {
   filter?: InputMaybe<ModelSubscriptionTokenFilterInput>;
 };
@@ -5184,6 +5311,11 @@ export type SubscriptionOnUpdateMotionMessageArgs = {
 
 export type SubscriptionOnUpdateProfileArgs = {
   filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateStreamingPaymentArgs = {
+  filter?: InputMaybe<ModelSubscriptionStreamingPaymentFilterInput>;
 };
 
 
@@ -5561,6 +5693,17 @@ export type UpdateProfileInput = {
   meta?: InputMaybe<ProfileMetadataInput>;
   thumbnail?: InputMaybe<Scalars['String']>;
   website?: InputMaybe<Scalars['AWSURL']>;
+};
+
+export type UpdateStreamingPaymentInput = {
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  endTime?: InputMaybe<Scalars['AWSTimestamp']>;
+  id: Scalars['ID'];
+  interval?: InputMaybe<Scalars['String']>;
+  nativeDomainId?: InputMaybe<Scalars['Int']>;
+  nativeId?: InputMaybe<Scalars['Int']>;
+  recipientAddress?: InputMaybe<Scalars['String']>;
+  startTime?: InputMaybe<Scalars['AWSTimestamp']>;
 };
 
 export type UpdateTokenInput = {

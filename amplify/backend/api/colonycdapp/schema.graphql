@@ -812,7 +812,6 @@ enum ExpenditureStatus {
 enum ExpenditureType {
   PAYMENT_BUILDER
   STAGED
-  STREAMING
 }
 
 """
@@ -2672,7 +2671,7 @@ type ExpenditurePayout {
 }
 
 type ExpenditureMetadata @model {
-  id: ID! # Self-managed, formatted as colonyId_nativeExpenditureId
+  id: ID! # Self-managed, formatted as colonyId_nativeId
   fundFromDomainNativeId: Int!
   stages: [ExpenditureStage!]
   stakeAmount: String
@@ -2710,4 +2709,15 @@ type ExpenditureStage {
   slotId: Int!
   name: String!
   isReleased: Boolean!
+}
+
+type StreamingPayment @model {
+  id: ID! # Self-managed, formatted as colonyId_nativeId
+  nativeId: Int!
+  createdAt: AWSDateTime!
+  recipientAddress: String!
+  nativeDomainId: Int!
+  startTime: AWSTimestamp!
+  endTime: AWSTimestamp!
+  interval: String!
 }
