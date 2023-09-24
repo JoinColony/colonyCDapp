@@ -3130,6 +3130,30 @@ type ExpenditureMetadata @model {
   stakeAmount: String
 }
 
+type ExpenditureBalance {
+  tokenAddress: ID!
+  amount: String!
+  requiredAmount: String! # Total amount required to cover all payouts for the given token
+}
+
+type ExpenditureStage {
+  slotId: Int!
+  name: String!
+  isReleased: Boolean!
+}
+
+type StreamingPayment @model {
+  id: ID! # Self-managed, formatted as colonyId_nativeId
+  nativeId: Int!
+  createdAt: AWSDateTime!
+  recipientAddress: String!
+  nativeDomainId: Int!
+  startTime: AWSTimestamp!
+  endTime: AWSTimestamp!
+  interval: String!
+  payouts: [ExpenditurePayout!]
+}
+
 """
 Defines an annotation for actions, motions and decisions
 """
@@ -3158,27 +3182,4 @@ type ReputationMiningCycleMetadata @model {
   The timestamp of the most recent reputation mining cycle completion.
   """
   lastCompletedAt: AWSDateTime! # We're using this to determine whether to re-calculate colony-wide user reputation (updateContributorsWithReputation)
-}
-
-type ExpenditureBalance {
-  tokenAddress: ID!
-  amount: String!
-  requiredAmount: String! # Total amount required to cover all payouts for the given token
-}
-
-type ExpenditureStage {
-  slotId: Int!
-  name: String!
-  isReleased: Boolean!
-}
-
-type StreamingPayment @model {
-  id: ID! # Self-managed, formatted as colonyId_nativeId
-  nativeId: Int!
-  createdAt: AWSDateTime!
-  recipientAddress: String!
-  nativeDomainId: Int!
-  startTime: AWSTimestamp!
-  endTime: AWSTimestamp!
-  interval: String!
 }
