@@ -8,6 +8,7 @@ import React, {
 import { AnimatePresence, motion } from 'framer-motion';
 import { debounce } from 'lodash';
 import { useIntl } from 'react-intl';
+import clsx from 'clsx';
 import Portal from '~v5/shared/Portal';
 
 import { SearchSelectProps } from './types';
@@ -27,7 +28,16 @@ const displayName = 'v5.SearchSelect';
 
 const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
   (
-    { items, onToggle, isOpen, onSelect, isLoading, hideSearchOnMobile },
+    {
+      items,
+      onToggle,
+      isOpen,
+      onSelect,
+      isLoading,
+      hideSearchOnMobile,
+      onSearch,
+      showEmptyContent = true,
+    },
     ref,
   ) => {
     const [searchValue, setSearchValue] = useState('');
@@ -54,9 +64,10 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
       (e: ChangeEvent<HTMLInputElement>) => {
         const { value: inputValue } = e.target;
 
+        onSearch?.(inputValue);
         handleSearch(inputValue);
       },
-      [handleSearch],
+      [handleSearch, onSearch],
     );
 
     const handleAccordionClick = useCallback((key: string) => {
@@ -71,7 +82,11 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
 
     const content = (
       <>
-        <div className="mb-6">
+        <div
+          className={clsx({
+            'mb-6': filteredList.length > 0 && showEmptyContent,
+          })}
+        >
           {isMobile && hideSearchOnMobile ? (
             <p className="text-4 text-gray-400 uppercase">
               {formatText({ id: 'actions.selectActionType' })}
@@ -137,11 +152,15 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                   ),
                 )
               ) : (
-                <EmptyContent
-                  icon="binoculars"
-                  title={{ id: 'actionSidebar.emptyTitle' }}
-                  description={{ id: 'actionSidebar.emptyDescription' }}
-                />
+                <>
+                  {showEmptyContent && (
+                    <EmptyContent
+                      icon="binoculars"
+                      title={{ id: 'actionSidebar.emptyTitle' }}
+                      description={{ id: 'actionSidebar.emptyDescription' }}
+                    />
+                  )}
+                </>
               )}
             </div>
           </div>
