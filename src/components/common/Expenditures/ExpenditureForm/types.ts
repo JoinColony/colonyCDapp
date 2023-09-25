@@ -1,3 +1,5 @@
+import { StreamingPaymentEndCondition } from '~gql';
+
 export enum ExpenditureFormType {
   Advanced = 'Advanced',
   Staged = 'Staged',
@@ -16,12 +18,6 @@ export interface ExpenditureStageFieldValue {
   name: string;
   amount: string;
   tokenAddress: string;
-}
-
-export enum StreamingPaymentEndCondition {
-  WhenCancelled = 'WhenCancelled',
-  LimitReached = 'LimitReached',
-  FixedTime = 'FixedTime',
 }
 
 interface BaseCreateExpenditureFormValues {

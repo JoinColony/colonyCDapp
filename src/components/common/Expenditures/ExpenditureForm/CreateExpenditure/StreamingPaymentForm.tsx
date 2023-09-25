@@ -8,12 +8,10 @@ import Button from '~shared/Button';
 import { mapPayload, pipe } from '~utils/actions';
 import { CreateStreamingPaymentPayload } from '~redux/sagas/expenditures/createStreamingPayment';
 import { findDomainByNativeId } from '~utils/domains';
+import { StreamingPaymentEndCondition } from '~gql';
 
 import CreateExpenditureForm from './CreateExpenditureForm';
-import {
-  StreamingPaymentEndCondition,
-  StreamingPaymentFormValues,
-} from '../types';
+import { StreamingPaymentFormValues } from '../types';
 import { StreamingPaymentFormFields } from '../ExpenditureFormFields';
 import { getTimestampFromCleaveDateAndTime } from '../helpers';
 
