@@ -16,6 +16,7 @@ import {
   ChannelDefinition,
   createTransaction,
   createTransactionChannels,
+  waitForTxResult,
 } from '../transactions';
 import {
   getColonyManager,
@@ -119,9 +120,10 @@ function* createStakedExpenditure({
       });
     }
 
+    yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_CREATED);
     yield put(transactionPending(approveStake.id));
     yield put(transactionReady(approveStake.id));
-    yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(approveStake.channel);
 
     // Find a chill skill index as a proof the extension has permissions in the selected domain
     const childSkillIndex = yield getChildIndex(
@@ -142,6 +144,7 @@ function* createStakedExpenditure({
       ADDRESS_ZERO,
     );
 
+    yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_CREATED);
     yield put(transactionPending(makeExpenditure.id));
     yield put(
       transactionAddParams(makeExpenditure.id, [
@@ -155,10 +158,14 @@ function* createStakedExpenditure({
       ]),
     );
     yield put(transactionReady(makeExpenditure.id));
-    yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(makeExpenditure.channel);
 
     const expenditureId = yield call(colonyClient.getExpenditureCount);
 
+    yield takeFrom(
+      setExpenditureValues.channel,
+      ActionTypes.TRANSACTION_CREATED,
+    );
     yield put(transactionPending(setExpenditureValues.id));
     yield put(
       transactionAddParams(
@@ -170,21 +177,19 @@ function* createStakedExpenditure({
       ),
     );
     yield put(transactionReady(setExpenditureValues.id));
-    yield takeFrom(
-      setExpenditureValues.channel,
-      ActionTypes.TRANSACTION_SUCCEEDED,
-    );
+    yield waitForTxResult(setExpenditureValues.channel);
 
     if (isStaged) {
+      yield takeFrom(
+        setExpenditureStaged.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
       yield put(transactionPending(setExpenditureStaged.id));
       yield put(
         transactionAddParams(setExpenditureStaged.id, [expenditureId, true]),
       );
       yield put(transactionReady(setExpenditureStaged.id));
-      yield takeFrom(
-        setExpenditureStaged.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
+      yield waitForTxResult(setExpenditureStaged.channel);
     }
 
     yield saveExpenditureMetadata({
@@ -205,15 +210,14 @@ function* createStakedExpenditure({
     navigate(`/colony/${colonyName}/expenditures/${expenditureId}`);
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
+  } finally {
+    [
+      approveStake,
+      makeExpenditure,
+      setExpenditureValues,
+      setExpenditureStaged,
+    ].forEach(({ channel }) => channel.close());
   }
-
-  [
-    approveStake,
-    makeExpenditure,
-    setExpenditureValues,
-    setExpenditureStaged,
-  ].forEach((channel) => channel.channel.close());
-
   return null;
 }
 

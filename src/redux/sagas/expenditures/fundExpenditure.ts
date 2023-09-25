@@ -12,6 +12,7 @@ import {
   ChannelDefinition,
   createTransaction,
   createTransactionChannels,
+  waitForTxResult,
 } from '../transactions';
 import { putError, takeFrom } from '../utils';
 import { getExpenditureBalancesByTokenAddress } from '../utils/expenditures';
@@ -53,26 +54,25 @@ function* fundExpenditure({
       ),
     );
 
-    yield all(
-      [...balancesByTokenAddresses.entries()]
-        .map(([tokenAddress, amount]) => [
-          put(transactionPending(channels[tokenAddress].id)),
-          put(
-            transactionAddParams(channels[tokenAddress].id, [
-              fromDomainFundingPotId,
-              expenditureFundingPotId,
-              amount,
-              tokenAddress,
-            ]),
-          ),
-          put(transactionReady(channels[tokenAddress].id)),
-          takeFrom(
-            channels[tokenAddress].channel,
-            ActionTypes.TRANSACTION_SUCCEEDED,
-          ),
-        ])
-        .flat(),
-    );
+    for (const [tokenAddress, amount] of [
+      ...balancesByTokenAddresses.entries(),
+    ]) {
+      yield takeFrom(
+        channels[tokenAddress].channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+      yield put(transactionPending(channels[tokenAddress].id));
+      yield put(
+        transactionAddParams(channels[tokenAddress].id, [
+          fromDomainFundingPotId,
+          expenditureFundingPotId,
+          amount,
+          tokenAddress,
+        ]),
+      );
+      yield put(transactionReady(channels[tokenAddress].id));
+      yield waitForTxResult(channels[tokenAddress].channel);
+    }
 
     yield put<AllActions>({
       type: ActionTypes.EXPENDITURE_FUND_SUCCESS,
@@ -81,11 +81,11 @@ function* fundExpenditure({
     });
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_FUND_ERROR, error, meta);
+  } finally {
+    [...balancesByTokenAddresses.keys()].forEach((tokenAddress) =>
+      channels[tokenAddress].channel.close(),
+    );
   }
-
-  [...balancesByTokenAddresses.keys()].forEach((tokenAddress) =>
-    channels[tokenAddress].channel.close(),
-  );
 
   return null;
 }

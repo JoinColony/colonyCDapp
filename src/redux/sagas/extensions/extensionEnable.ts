@@ -10,6 +10,7 @@ import {
   ChannelDefinition,
   createTransaction,
   createTransactionChannels,
+  waitForTxResult,
 } from '../transactions';
 import {
   modifyParams,
@@ -85,15 +86,17 @@ function* extensionEnable({
     }
 
     if (needsInitialisation) {
+      yield takeFrom(initialise.channel, ActionTypes.TRANSACTION_CREATED);
       yield put(transactionPending(initialise.id));
       yield put(transactionReady(initialise.id));
-      yield takeFrom(initialise.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+      yield waitForTxResult(initialise.channel);
     }
 
     if (needsSettingRoles) {
+      yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_CREATED);
       yield put(transactionPending(setUserRoles.id));
       yield put(transactionReady(setUserRoles.id));
-      yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+      yield waitForTxResult(setUserRoles.channel);
     }
 
     yield put({
