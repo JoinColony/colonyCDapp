@@ -55,3 +55,19 @@ export const getInitialStageFieldValue = (
   amount: '0',
   tokenAddress,
 });
+
+export const getTimestampFromCleaveDateAndTime = (
+  date: string,
+  time: string,
+) => {
+  const resultDate = new Date();
+  resultDate.setDate(Number(date.slice(0, 2)));
+  resultDate.setMonth(Number(date.slice(2, 4)) - 1);
+  resultDate.setFullYear(Number(date.slice(4, 8)));
+  resultDate.setHours(Number(time.slice(0, 2)));
+  resultDate.setMinutes(Number(time.slice(2, 4)));
+  resultDate.setSeconds(0);
+
+  const timestamp = Math.floor(resultDate.getTime() / 1000);
+  return timestamp;
+};

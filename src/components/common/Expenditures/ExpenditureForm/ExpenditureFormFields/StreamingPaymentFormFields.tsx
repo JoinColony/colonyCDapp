@@ -6,6 +6,7 @@ import TokenAmountInput from '~common/Dialogs/TokenAmountInput';
 import { Colony } from '~types';
 
 import { StreamingPaymentEndCondition } from '../types';
+import ExpenditureTimeInput from '../ExpenditureTimeInput';
 
 interface StreamingPaymentFormFieldsProps {
   colony: Colony;
@@ -20,7 +21,7 @@ const StreamingPaymentFormFields = ({
   return (
     <div>
       <Input name="recipientAddress" label="Recipient address" />
-      <Input name="startTime" label="Start date" />
+      <ExpenditureTimeInput namePrefix="start" labelPrefix="Start" />
       <Select
         name="endCondition"
         label="Ends"
@@ -51,7 +52,7 @@ const StreamingPaymentFormFields = ({
         />
       )}
       {endCondition === StreamingPaymentEndCondition.FixedTime && (
-        <Input name="endTime" label="End date" />
+        <ExpenditureTimeInput namePrefix="end" labelPrefix="End" />
       )}
       <Select
         name="interval"

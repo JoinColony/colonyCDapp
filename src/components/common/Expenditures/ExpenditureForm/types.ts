@@ -43,8 +43,10 @@ export interface StagedPaymentFormValues
 export interface StreamingPaymentFormValues
   extends BaseCreateExpenditureFormValues {
   recipientAddress: string;
-  startTime: number;
-  endTime?: number;
+  startDate: string;
+  startTime: string;
+  endDate?: string;
+  endTime?: string;
   endCondition: StreamingPaymentEndCondition;
   tokenAddress: string;
   amount: string;
