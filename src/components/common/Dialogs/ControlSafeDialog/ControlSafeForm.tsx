@@ -260,13 +260,16 @@ const ControlSafeForm = ({
         </DialogSection>
       )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
-        <Button
-          appearance={{ theme: 'secondary', size: 'large' }}
-          onClick={
-            showPreview ? () => handleShowPreviewChange(!showPreview) : back
-          }
-          text={{ id: 'button.back' }}
-        />
+        {(back && !showPreview) ||
+          (showPreview && (
+            <Button
+              appearance={{ theme: 'secondary', size: 'large' }}
+              onClick={
+                showPreview ? () => handleShowPreviewChange(!showPreview) : back
+              }
+              text={{ id: 'button.back' }}
+            />
+          ))}
         {showPreview && (
           <Button
             {...continueButtonProps}
