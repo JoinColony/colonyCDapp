@@ -61,16 +61,14 @@ export const useTokenSelect = (inputValue: string) => {
       return <SpinnerLoader appearance={{ size: 'small' }} />;
     }
 
-    return (
-      (
-        <TokenStatus status="success">
-          {tokenData?.getTokenFromEverywhere?.items?.[0]?.name}
-        </TokenStatus>
-      ) || (
-        <TokenStatus status="error">
-          {formatText({ id: 'manageTokensTable.notFound' })}
-        </TokenStatus>
-      )
+    return tokenData ? (
+      <TokenStatus status="success">
+        {tokenData.getTokenFromEverywhere?.items?.[0]?.name}
+      </TokenStatus>
+    ) : (
+      <TokenStatus status="error">
+        {formatText({ id: 'manageTokensTable.notFound' })}
+      </TokenStatus>
     );
   };
 
