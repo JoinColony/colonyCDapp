@@ -43,6 +43,7 @@ const TokensTable: FC<TokensTableProps> = ({
           columns={columns}
           data={data}
           getMenuProps={getMenuProps}
+          className="mb-6"
           title={formatText({ id: 'actionSidebar.approvedTokens' })}
         />
       )}
@@ -50,7 +51,6 @@ const TokensTable: FC<TokensTableProps> = ({
         mode="primaryOutline"
         iconName="plus"
         size="small"
-        className="mt-6"
         isFullSize={isMobile}
         onClick={() => {
           fieldArrayMethods.append({

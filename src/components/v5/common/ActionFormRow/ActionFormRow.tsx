@@ -9,7 +9,15 @@ import useToggle from '~hooks/useToggle';
 
 const ActionSidebarRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
   (
-    { iconName, title, children, isExpandable = false, fieldName, tooltip },
+    {
+      iconName,
+      title,
+      children,
+      isExpandable = false,
+      fieldName,
+      tooltip,
+      className,
+    },
     ref,
   ) => {
     const {
@@ -66,7 +74,7 @@ const ActionSidebarRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
 
     return (
       <div
-        className={clsx('flex gap-2 relative mb-3 last:mb-0', {
+        className={clsx(className, 'flex gap-2 relative mb-3 last:mb-0', {
           'flex-col': isExpandable && isExpanded,
           'items-center': !isExpandable,
         })}
