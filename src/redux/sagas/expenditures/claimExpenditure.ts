@@ -1,5 +1,5 @@
 import { ClientType } from '@colony/colony-js';
-import { takeEvery, fork, call, put, all } from 'redux-saga/effects';
+import { takeEvery, fork, put, all } from 'redux-saga/effects';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 import { transactionPending, transactionReady } from '~redux/actionCreators';
@@ -8,7 +8,7 @@ import { ExpenditurePayout } from '~types';
 import {
   createTransaction,
   createTransactionChannels,
-  getTxChannel,
+  waitForTxResult,
 } from '../transactions';
 import { putError, takeFrom } from '../utils';
 
@@ -23,7 +23,6 @@ function* claimExpenditure({
   meta,
   payload: { colonyAddress, expenditureId, claimableSlots },
 }: Action<ActionTypes.EXPENDITURE_CLAIM>) {
-  const txChannel = yield call(getTxChannel, meta.id);
   const batchKey = 'claimExpenditure';
 
   const payoutsWithSlotIds = claimableSlots.flatMap(
@@ -36,11 +35,11 @@ function* claimExpenditure({
         })) ?? [],
   );
 
-  try {
-    const channels = yield createTransactionChannels(meta.id, [
-      ...payoutsWithSlotIds.map(getPayoutChannelId),
-    ]);
+  const channels = yield createTransactionChannels(meta.id, [
+    ...payoutsWithSlotIds.map(getPayoutChannelId),
+  ]);
 
+  try {
     // Create one claim transaction for each slot
     // @TODO: We should create one transaction for each token address
     yield all(
@@ -60,21 +59,16 @@ function* claimExpenditure({
       ),
     );
 
-    yield all(
-      payoutsWithSlotIds
-        .map((payout) => {
-          const payoutChannelId = getPayoutChannelId(payout);
-          return [
-            put(transactionPending(channels[payoutChannelId].id)),
-            put(transactionReady(channels[payoutChannelId].id)),
-            takeFrom(
-              channels[payoutChannelId].channel,
-              ActionTypes.TRANSACTION_SUCCEEDED,
-            ),
-          ];
-        })
-        .flat(),
-    );
+    for (const payout of payoutsWithSlotIds) {
+      const payoutChannelId = getPayoutChannelId(payout);
+      yield takeFrom(
+        channels[payoutChannelId].channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+      yield put(transactionPending(channels[payoutChannelId].id));
+      yield put(transactionReady(channels[payoutChannelId].id));
+      yield waitForTxResult(channels[payoutChannelId].channel);
+    }
 
     yield put<AllActions>({
       type: ActionTypes.EXPENDITURE_CLAIM_SUCCESS,
@@ -82,10 +76,13 @@ function* claimExpenditure({
       meta,
     });
   } catch (error) {
-    return yield putError(ActionTypes.EXPENDITURE_CLAIM_ERROR, error, meta);
+    yield putError(ActionTypes.EXPENDITURE_CLAIM_ERROR, error, meta);
+  } finally {
+    for (const payout of payoutsWithSlotIds) {
+      const payoutChannelId = getPayoutChannelId(payout);
+      channels[payoutChannelId].channel.close();
+    }
   }
-
-  txChannel.close();
 
   return null;
 }

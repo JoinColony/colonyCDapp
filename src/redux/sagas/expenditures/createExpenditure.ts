@@ -14,6 +14,7 @@ import {
   ChannelDefinition,
   createTransaction,
   createTransactionChannels,
+  waitForTxResult,
 } from '../transactions';
 import {
   getColonyManager,
@@ -106,11 +107,17 @@ function* createExpenditure({
       });
     }
 
+    yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_CREATED);
     yield put(transactionPending(makeExpenditure.id));
     yield put(transactionReady(makeExpenditure.id));
-    yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(makeExpenditure.channel);
 
     const expenditureId = yield call(colonyClient.getExpenditureCount);
+
+    yield takeFrom(
+      setExpenditureValues.channel,
+      ActionTypes.TRANSACTION_CREATED,
+    );
 
     yield put(transactionPending(setExpenditureValues.id));
     yield put(
@@ -123,21 +130,19 @@ function* createExpenditure({
       ),
     );
     yield put(transactionReady(setExpenditureValues.id));
-    yield takeFrom(
-      setExpenditureValues.channel,
-      ActionTypes.TRANSACTION_SUCCEEDED,
-    );
+    yield waitForTxResult(setExpenditureValues.channel);
 
     if (isStaged) {
+      yield takeFrom(
+        setExpenditureStaged.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
       yield put(transactionPending(setExpenditureStaged.id));
       yield put(
         transactionAddParams(setExpenditureStaged.id, [expenditureId, true]),
       );
       yield put(transactionReady(setExpenditureStaged.id));
-      yield takeFrom(
-        setExpenditureStaged.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
+      yield waitForTxResult(setExpenditureStaged.channel);
     }
 
     yield saveExpenditureMetadata({
