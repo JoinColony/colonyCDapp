@@ -852,6 +852,12 @@ enum ExpenditureType {
   STAGED
 }
 
+enum StreamingPaymentEndCondition {
+  WHEN_CANCELLED
+  LIMIT_REACHED
+  FIXED_TIME
+}
+
 """
 The types of contributor a user can be in a colony
 """
@@ -3152,6 +3158,13 @@ type StreamingPayment @model {
   endTime: AWSTimestamp!
   interval: String!
   payouts: [ExpenditurePayout!]
+  metadata: StreamingPaymentMetadata @hasOne(fields: ["id"])
+}
+
+type StreamingPaymentMetadata @model {
+  id: ID! # Self-managed, formatted as colonyId_nativeId
+  endCondition: StreamingPaymentEndCondition!
+  limitAmount: String
 }
 
 """
