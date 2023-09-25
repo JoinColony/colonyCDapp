@@ -7,6 +7,7 @@ export interface ActionFormRowProps {
   title: React.ReactNode;
   isExpandable?: boolean;
   fieldName?: string;
+  className?: string;
   children?:
     | ((props: UseToggleReturnType) => React.ReactNode)
     | React.ReactNode;
