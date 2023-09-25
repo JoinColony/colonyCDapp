@@ -1,5 +1,6 @@
 import React from 'react';
 import { Id } from '@colony/colony-js';
+import { format, addMonths } from 'date-fns';
 
 import { ActionTypes } from '~redux';
 import { useColonyContext } from '~hooks';
@@ -14,6 +15,7 @@ import {
   StreamingPaymentFormValues,
 } from '../types';
 import { StreamingPaymentFormFields } from '../ExpenditureFormFields';
+import { getTimestampFromCleaveDateAndTime } from '../helpers';
 
 import styles from '../ExpenditureForm.module.css';
 
@@ -36,12 +38,28 @@ const StreamingPaymentForm = () => {
           recipientAddress: payload.recipientAddress,
           tokenAddresses: [payload.tokenAddress],
           amounts: [payload.amount],
-          startTime: payload.startTime,
-          endTime: payload.endTime,
+          startTime: getTimestampFromCleaveDateAndTime(
+            payload.startDate,
+            payload.startTime,
+          ),
+          endTime:
+            payload.endDate && payload.endTime
+              ? getTimestampFromCleaveDateAndTime(
+                  payload.endDate,
+                  payload.endTime,
+                )
+              : undefined,
           interval: payload.interval,
         } as CreateStreamingPaymentPayload),
     ),
   );
+
+  const nowDate = new Date();
+  const startDate = format(nowDate, 'ddMMyyyy');
+  const startTime = format(nowDate, 'HHmm');
+  const futureDate = addMonths(nowDate, 1);
+  const endDate = format(futureDate, 'ddMMyyyy');
+  const endTime = format(futureDate, 'HHmm');
 
   return (
     <CreateExpenditureForm<StreamingPaymentFormValues>
@@ -50,8 +68,11 @@ const StreamingPaymentForm = () => {
         createInDomainId: Id.RootDomain,
         fundFromDomainId: Id.RootDomain,
         recipientAddress: '',
-        startTime: Math.floor(new Date().getTime() / 1000),
+        startDate,
+        startTime,
         endCondition: StreamingPaymentEndCondition.WhenCancelled,
+        endDate,
+        endTime,
         amount: '0',
         tokenAddress: colony.nativeToken.tokenAddress,
         interval: 60,
