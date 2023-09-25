@@ -3,8 +3,12 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 
-import { createTransaction, getTxChannel } from '../transactions';
-import { putError, takeFrom } from '../utils';
+import {
+  createTransaction,
+  getTxChannel,
+  waitForTxResult,
+} from '../transactions';
+import { putError } from '../utils';
 
 function* lockExpenditure({
   payload: { colonyAddress, nativeExpenditureId },
@@ -20,13 +24,15 @@ function* lockExpenditure({
       params: [nativeExpenditureId],
     });
 
-    yield takeFrom(txChannel, ActionTypes.TRANSACTION_SUCCEEDED);
+    const { type } = yield waitForTxResult(txChannel);
 
-    yield put<AllActions>({
-      type: ActionTypes.EXPENDITURE_LOCK_SUCCESS,
-      payload: {},
-      meta,
-    });
+    if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
+      yield put<AllActions>({
+        type: ActionTypes.EXPENDITURE_LOCK_SUCCESS,
+        payload: {},
+        meta,
+      });
+    }
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_LOCK_ERROR, error, meta);
   }

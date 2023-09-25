@@ -5,8 +5,12 @@ import { Action, ActionTypes, AllActions } from '~redux';
 import { ExpenditureType } from '~gql';
 import { ColonyManager } from '~context';
 
-import { createTransaction, getTxChannel } from '../transactions';
-import { getColonyManager, putError, takeFrom } from '../utils';
+import {
+  createTransaction,
+  getTxChannel,
+  waitForTxResult,
+} from '../transactions';
+import { getColonyManager, putError } from '../utils';
 
 function* cancelDraftExpenditure({
   meta,
@@ -46,14 +50,15 @@ function* cancelDraftExpenditure({
         params: [expenditure.nativeId],
       });
     }
+    const { type } = yield waitForTxResult(txChannel);
 
-    yield takeFrom(txChannel, ActionTypes.TRANSACTION_SUCCEEDED);
-
-    yield put<AllActions>({
-      type: ActionTypes.EXPENDITURE_DRAFT_CANCEL_SUCCESS,
-      payload: {},
-      meta,
-    });
+    if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
+      yield put<AllActions>({
+        type: ActionTypes.EXPENDITURE_DRAFT_CANCEL_SUCCESS,
+        payload: {},
+        meta,
+      });
+    }
   } catch (error) {
     return yield putError(
       ActionTypes.EXPENDITURE_DRAFT_CANCEL_ERROR,

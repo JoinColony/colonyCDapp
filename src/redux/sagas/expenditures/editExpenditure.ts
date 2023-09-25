@@ -6,7 +6,11 @@ import { Action, ActionTypes, AllActions } from '~redux';
 import { ExpenditurePayoutFieldValue } from '~common/Expenditures/ExpenditureForm';
 
 import { putError, getSetExpenditureValuesFunctionParams } from '../utils';
-import { createTransaction, getTxChannel } from '../transactions';
+import {
+  createTransaction,
+  getTxChannel,
+  waitForTxResult,
+} from '../transactions';
 
 function* editExpenditure({
   payload: { colonyAddress, expenditure, payouts },
@@ -76,11 +80,15 @@ function* editExpenditure({
       ),
     });
 
-    yield put<AllActions>({
-      type: ActionTypes.EXPENDITURE_EDIT_SUCCESS,
-      payload: {},
-      meta,
-    });
+    const { type } = yield waitForTxResult(txChannel);
+
+    if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
+      yield put<AllActions>({
+        type: ActionTypes.EXPENDITURE_EDIT_SUCCESS,
+        payload: {},
+        meta,
+      });
+    }
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_EDIT_ERROR, error, meta);
   }

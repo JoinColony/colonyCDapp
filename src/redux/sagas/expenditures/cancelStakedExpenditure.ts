@@ -4,7 +4,11 @@ import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { Action, ActionTypes, AllActions } from '~redux';
 import { ColonyManager } from '~context';
 
-import { createTransaction, getTxChannel } from '../transactions';
+import {
+  createTransaction,
+  getTxChannel,
+  waitForTxResult,
+} from '../transactions';
 import { getColonyManager, putError } from '../utils';
 
 function* cancelStakedExpenditure({
@@ -54,11 +58,15 @@ function* cancelStakedExpenditure({
       ],
     });
 
-    yield put<AllActions>({
-      type: ActionTypes.STAKED_EXPENDITURE_CANCEL_SUCCESS,
-      payload: {},
-      meta,
-    });
+    const { type } = yield waitForTxResult(txChannel);
+
+    if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
+      yield put<AllActions>({
+        type: ActionTypes.STAKED_EXPENDITURE_CANCEL_SUCCESS,
+        payload: {},
+        meta,
+      });
+    }
   } catch (error) {
     return yield putError(
       ActionTypes.STAKED_EXPENDITURE_CANCEL_ERROR,
