@@ -7,11 +7,7 @@ import { TokenSelectProps } from './types';
 import useToggle from '~hooks/useToggle';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
-import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
-import TokenStatus from './partials/TokenStatus';
-import TokenIcon from '~shared/TokenIcon';
-import { useGetTokenFromEverywhereQuery } from '~gql';
 import { useTokenSelect } from './hooks';
 
 const displayName = 'v5.common.ActionsContent.partials.TokenSelect';
@@ -32,55 +28,12 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
       registerContainerRef,
     },
   ] = useToggle();
-  const { tokenOptions, isRemoteTokenAddress } = useTokenSelect(field.value);
-
-  const { data: tokenData, loading } = useGetTokenFromEverywhereQuery({
-    variables: {
-      input: {
-        tokenAddress: field.value || '',
-      },
-    },
-    skip: !isRemoteTokenAddress,
-  });
-
+  const { tokenOptions, isRemoteTokenAddress, renderButtonContent } =
+    useTokenSelect(field.value);
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
     HTMLDivElement
   >([isTokenSelectVisible]);
-
-  const renderButtonContent = () => {
-    if (!isRemoteTokenAddress) {
-      if (!field.value) {
-        return formatText({ id: 'manageTokensTable.select' });
-      }
-
-      return (
-        <div className="flex items-center gap-2">
-          <TokenIcon token={field.value} size="xxs" />
-          {formatText(
-            tokenOptions.options.find((option) => option.value === field.value)
-              ?.label,
-          )}
-        </div>
-      );
-    }
-
-    if (loading) {
-      return <SpinnerLoader appearance={{ size: 'small' }} />;
-    }
-
-    return (
-      (
-        <TokenStatus status="success">
-          {tokenData?.getTokenFromEverywhere?.items?.[0]?.name}
-        </TokenStatus>
-      ) || (
-        <TokenStatus status="error">
-          {formatText({ id: 'manageTokensTable.notFound' })}
-        </TokenStatus>
-      )
-    );
-  };
 
   return (
     <div className="sm:relative w-full">
