@@ -9,7 +9,6 @@ import {
   ErrorActionType,
   UniqueActionType,
   ActionTypeWithMeta,
-  MetaWithHistory,
   MetaWithNavigate,
 } from './index';
 import { ExternalLink } from '~gql';
@@ -161,7 +160,7 @@ export type ColonyActionsActionTypes =
   | ErrorActionType<ActionTypes.ACTION_USER_ROLES_SET_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_USER_ROLES_SET_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_UNLOCK_TOKEN,
@@ -185,12 +184,12 @@ export type ColonyActionsActionTypes =
         colonyName: string;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_RECOVERY_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_RECOVERY_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_RECOVERY_SET_SLOT,

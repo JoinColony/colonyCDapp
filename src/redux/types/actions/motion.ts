@@ -9,8 +9,8 @@ import {
   ErrorActionType,
   UniqueActionType,
   ActionTypeWithMeta,
-  MetaWithHistory,
-  MetaWithNavigate,
+  MetaWithSetter,
+  UniqueActionTypeWithoutPayload,
 } from './index';
 import { ExternalLink } from '~gql';
 import { OneTxPaymentPayload } from './colonyActions';
@@ -35,10 +35,7 @@ export type MotionActionTypes =
       object
     >
   | ErrorActionType<ActionTypes.MOTION_STAKE_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_STAKE_SUCCESS,
-      MetaWithHistory<object>
-    >
+  | UniqueActionTypeWithoutPayload<ActionTypes.MOTION_STAKE_SUCCESS, object>
   | UniqueActionType<
       ActionTypes.MOTION_VOTE,
       {
@@ -47,10 +44,10 @@ export type MotionActionTypes =
         motionId: BigNumber;
         vote: number;
       },
-      MetaWithHistory<object>
+      object
     >
   | ErrorActionType<ActionTypes.MOTION_VOTE_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.MOTION_VOTE_SUCCESS, MetaWithHistory<object>>
+  | UniqueActionTypeWithoutPayload<ActionTypes.MOTION_VOTE_SUCCESS, object>
   | UniqueActionType<
       ActionTypes.MOTION_REVEAL_VOTE,
       {
@@ -58,12 +55,12 @@ export type MotionActionTypes =
         colonyAddress: Address;
         motionId: BigNumber;
       },
-      MetaWithHistory<object>
+      object
     >
   | ErrorActionType<ActionTypes.MOTION_REVEAL_VOTE_ERROR, object>
-  | ActionTypeWithMeta<
+  | UniqueActionTypeWithoutPayload<
       ActionTypes.MOTION_REVEAL_VOTE_SUCCESS,
-      MetaWithHistory<object>
+      object
     >
   | UniqueActionType<
       ActionTypes.MOTION_FINALIZE,
@@ -72,13 +69,10 @@ export type MotionActionTypes =
         colonyAddress: Address;
         motionId: BigNumber;
       },
-      MetaWithHistory<object>
+      object
     >
   | ErrorActionType<ActionTypes.MOTION_FINALIZE_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_FINALIZE_SUCCESS,
-      MetaWithHistory<object>
-    >
+  | UniqueActionTypeWithoutPayload<ActionTypes.MOTION_FINALIZE_SUCCESS, object>
   | UniqueActionType<
       ActionTypes.MOTION_CLAIM,
       {
@@ -86,13 +80,10 @@ export type MotionActionTypes =
         colonyAddress: Address;
         transactionHash: string;
       },
-      MetaWithHistory<object>
+      object
     >
   | ErrorActionType<ActionTypes.MOTION_CLAIM_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_CLAIM_SUCCESS,
-      MetaWithHistory<object>
-    >
+  | UniqueActionTypeWithoutPayload<ActionTypes.MOTION_CLAIM_SUCCESS, object>
   | UniqueActionType<
       ActionTypes.MOTION_CLAIM_ALL,
       {
@@ -100,13 +91,10 @@ export type MotionActionTypes =
         colonyAddress: Address;
         motionIds: string[];
       },
-      MetaWithHistory<object>
+      object
     >
   | ErrorActionType<ActionTypes.MOTION_CLAIM_ALL_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_CLAIM_ALL_SUCCESS,
-      MetaWithHistory<object>
-    >
+  | UniqueActionTypeWithoutPayload<ActionTypes.MOTION_CLAIM_ALL_SUCCESS, object>
   | UniqueActionType<
       ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
       {
@@ -121,22 +109,22 @@ export type MotionActionTypes =
         annotationMessage?: string;
         parentId?: number;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_DOMAIN_CREATE_EDIT_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_DOMAIN_CREATE_EDIT_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.MOTION_EXPENDITURE_PAYMENT,
       OneTxPaymentPayload,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_PAYMENT_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_EXPENDITURE_PAYMENT_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.MOTION_EDIT_COLONY,
@@ -150,12 +138,12 @@ export type MotionActionTypes =
         colonyExternalLinks?: ExternalLink[] | null;
         annotationMessage?: string;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_EDIT_COLONY_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_EDIT_COLONY_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.MOTION_MOVE_FUNDS,
@@ -169,12 +157,12 @@ export type MotionActionTypes =
         amount: BigNumber;
         annotationMessage?: string;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_MOVE_FUNDS_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_MOVE_FUNDS_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.ROOT_MOTION,
@@ -185,10 +173,10 @@ export type MotionActionTypes =
         motionParams: [BigNumber] | [string];
         annotationMessage?: string;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.ROOT_MOTION_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.ROOT_MOTION_SUCCESS, MetaWithHistory<object>>
+  | ActionTypeWithMeta<ActionTypes.ROOT_MOTION_SUCCESS, MetaWithSetter<object>>
   | UniqueActionType<
       ActionTypes.MOTION_USER_ROLES_SET,
       {
@@ -200,12 +188,12 @@ export type MotionActionTypes =
         motionDomainId: string;
         annotationMessage?: string;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_USER_ROLES_SET_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_USER_ROLES_SET_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.MOTION_ESCALATE,
@@ -214,13 +202,10 @@ export type MotionActionTypes =
         colonyAddress: Address;
         motionId: BigNumber;
       },
-      MetaWithHistory<object>
+      object
     >
   | ErrorActionType<ActionTypes.MOTION_ESCALATE_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_ESCALATE_SUCCESS,
-      MetaWithHistory<object>
-    >
+  | UniqueActionTypeWithoutPayload<ActionTypes.MOTION_ESCALATE_SUCCESS, object>
   | UniqueActionType<
       ActionTypes.MOTION_MANAGE_REPUTATION,
       {
@@ -233,10 +218,10 @@ export type MotionActionTypes =
         annotationMessage?: string;
         isSmitingReputation?: boolean;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_MANAGE_REPUTATION_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_MANAGE_REPUTATION_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >;

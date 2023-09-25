@@ -49,7 +49,7 @@ function* createEditDomainMotion({
     parentId = Id.RootDomain,
     motionDomainId,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_DOMAIN_CREATE_EDIT>) {
   let txChannel;
@@ -188,6 +188,9 @@ function* createEditDomainMotion({
       createMotion.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (isCreateDomain) {
@@ -246,7 +249,7 @@ function* createEditDomainMotion({
     });
 
     if (colonyName) {
-      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+      navigate?.(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
     }

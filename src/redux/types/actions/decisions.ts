@@ -5,7 +5,7 @@ import {
   ActionTypeWithMeta,
   ActionTypeWithPayload,
   ErrorActionType,
-  MetaWithNavigate,
+  MetaWithSetter,
   UniqueActionType,
 } from '../actions';
 import { DecisionDraft } from '~utils/decisions';
@@ -23,10 +23,10 @@ export type DecisionActionTypes =
         colonyName?: string;
         draftDecision: DecisionDraft;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_CREATE_DECISION_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_CREATE_DECISION_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >;

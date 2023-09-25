@@ -46,7 +46,7 @@ const Input: FC<InputProps> = ({
         placeholder={placeholder}
         className={clsx(className, 'input-round input', {
           'border-gray-300': !isTyping,
-          'border-blue-200 shadow-lightBlue': isTyping,
+          'border-blue-200 shadow-light-blue': isTyping,
           'border-negative-400': isErrorStatus,
           'text-gray-400': isDisabled,
         })}
