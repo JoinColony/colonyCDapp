@@ -4,8 +4,8 @@ import { useFormContext } from 'react-hook-form';
 import { Input, Select } from '~shared/Fields';
 import TokenAmountInput from '~common/Dialogs/TokenAmountInput';
 import { Colony } from '~types';
+import { StreamingPaymentEndCondition } from '~gql';
 
-import { StreamingPaymentEndCondition } from '../types';
 import ExpenditureTimeInput from '../ExpenditureTimeInput';
 
 interface StreamingPaymentFormFieldsProps {
