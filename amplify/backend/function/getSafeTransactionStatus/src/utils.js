@@ -35,11 +35,24 @@ const TRANSACTION_STATUS = {
   ACTION_NEEDED: 'Action needed',
 };
 
-const getApiKey = (chainId) => {
-  if (chainId === BINANCE_NETWORK.chainId) {
-    return process.env.BSCSCAN_API_KEY;
+const getApiKey = async (chainId) => {
+  let bscscanApiKey = '';
+  let etherscanApiKey = '';
+  const ENV = process.env.ENV;
+
+  if (ENV === 'qa' || ENV === 'sc') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [bscscanApiKey, etherscanApiKey] = await getParams([
+      'bscscanApiKey',
+      'etherscanApiKey',
+    ]);
   }
-  return process.env.ETHERSCAN_API_KEY;
+
+  if (chainId === BINANCE_NETWORK.chainId) {
+    return bscscanApiKey;
+  }
+
+  return etherscanApiKey;
 };
 
 const getMessageLogs = async (
@@ -117,17 +130,6 @@ const getMessageIds = (txReceipt, homeAMBContract, bridgeAddress) => {
   );
 };
 
-/* eslint-disable prefer-destructuring, @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require */
-const LOCAL_HOME_BRIDGE_ADDRESS =
-  process.env.LOCAL_HOME_BRIDGE_ADDRESS ||
-  require('../../../../mock-data/colonyNetworkArtifacts/safe-addresses.json')
-    .LOCAL_HOME_BRIDGE_ADDRESS;
-const LOCAL_FOREIGN_BRIDGE_ADDRESS =
-  process.env.LOCAL_FOREIGN_BRIDGE_ADDRESS ||
-  require('../../../../mock-data/colonyNetworkArtifacts/safe-addresses.json')
-    .LOCAL_FOREIGN_BRIDGE_ADDRESS;
-/* eslint-enable prefer-destructuring, @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require */
-
 const LOCAL_HOME_CHAIN = 'http://127.0.0.1:8545';
 const LOCAL_FOREIGN_CHAIN = 'http://127.0.0.1:8546';
 
@@ -157,7 +159,7 @@ const getForeignBridgeByChain = (safeChainId) => {
   const foreignProvider = getForeignProvider(safeChainId);
   const foreignSigner = foreignProvider.getSigner();
   const foreignBridgeAddress = isDev
-    ? LOCAL_FOREIGN_BRIDGE_ADDRESS
+    ? require('../../../../mock-data/colonyNetworkArtifacts/safe-addresses.json').LOCAL_FOREIGN_BRIDGE_ADDRESS
     : GNOSIS_AMB_BRIDGES[safeChainId]?.foreignAMB;
 
   if (!foreignBridgeAddress) {
@@ -173,7 +175,7 @@ const getHomeBridgeByChain = (safeChainId) => {
   const homeProvider = getHomeProvider();
   const homeSigner = homeProvider.getSigner();
   const homeBridgeAddress = isDev
-    ? LOCAL_HOME_BRIDGE_ADDRESS
+    ? require('../../../../mock-data/colonyNetworkArtifacts/safe-addresses.json').LOCAL_HOME_BRIDGE_ADDRESS
     : GNOSIS_AMB_BRIDGES[safeChainId]?.homeAMB;
 
   if (!homeBridgeAddress) {
