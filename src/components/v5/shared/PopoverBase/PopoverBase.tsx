@@ -24,7 +24,11 @@ const PopoverBase: FC<PropsWithChildren<PopoverBaseProps>> = ({
     })}
   >
     {cardProps ? (
-      <Card {...cardProps} withPadding={isTopSectionWithBackground}>
+      <Card
+        className="w-full"
+        {...cardProps}
+        withPadding={isTopSectionWithBackground}
+      >
         {children}
       </Card>
     ) : (

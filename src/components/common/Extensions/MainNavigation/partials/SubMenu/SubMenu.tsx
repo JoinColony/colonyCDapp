@@ -19,10 +19,12 @@ const SubMenu: FC<SubMenuProps> = ({ items }) => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
   const Wrapper = isMobile ? 'div' : Card;
-  const { toggleActionBar } = useActionSidebarContext();
+  const {
+    actionSidebarToggle: [, { toggle: toggleActionSideBar }],
+  } = useActionSidebarContext();
 
   return (
-    <Wrapper hasShadow={!isMobile}>
+    <Wrapper hasShadow={!isMobile} className="w-full">
       <ul
         className={clsx(styles.subMenuList, {
           'grid-cols-[repeat(3,1fr)]': !isMobile,
@@ -66,7 +68,7 @@ const SubMenu: FC<SubMenuProps> = ({ items }) => {
               <Button
                 text="Create new action"
                 mode="quinary"
-                onClick={toggleActionBar}
+                onClick={toggleActionSideBar}
                 isFullSize={isMobile}
               />
             </div>

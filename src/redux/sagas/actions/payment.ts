@@ -153,7 +153,7 @@ function* createPaymentAction({
   } catch (error) {
     putError(ActionTypes.ACTION_EXPENDITURE_PAYMENT_ERROR, error, meta);
   } finally {
-    txChannel.close();
+    txChannel?.close();
   }
 }
 

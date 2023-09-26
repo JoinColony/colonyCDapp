@@ -22,7 +22,6 @@ export default meatBallMenuMeta;
 
 export const Base: StoryObj<typeof MeatBallMenu> = {
   args: {
-    cardClassName: 'min-w-[12rem]',
     items: [
       {
         key: '1',
@@ -42,7 +41,6 @@ export const Base: StoryObj<typeof MeatBallMenu> = {
 
 export const MenuWithoutIcons: StoryObj<typeof MeatBallMenu> = {
   args: {
-    cardClassName: 'min-w-[10rem]',
     items: [
       {
         key: '1',
@@ -60,7 +58,6 @@ export const MenuWithoutIcons: StoryObj<typeof MeatBallMenu> = {
 
 export const MenuWithScroll: StoryObj<typeof MeatBallMenu> = {
   args: {
-    cardClassName: 'min-w-[12rem]',
     items: [
       {
         key: '1',
@@ -108,7 +105,6 @@ export const MenuWithScroll: StoryObj<typeof MeatBallMenu> = {
 
 export const EmptyMenu: StoryObj<typeof MeatBallMenu> = {
   args: {
-    cardClassName: 'min-w-[12rem]',
     items: [],
   },
 };

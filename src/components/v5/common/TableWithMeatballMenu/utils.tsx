@@ -9,5 +9,9 @@ export const makeMenuColumn = <T,>(
 ) =>
   helper.display({
     id: 'menu',
-    cell: ({ row }) => <MeatBallMenu {...getMenuProps(row)} />,
+    cell: ({ row }) => {
+      const props = getMenuProps(row);
+
+      return props ? <MeatBallMenu {...props} /> : undefined;
+    },
   });

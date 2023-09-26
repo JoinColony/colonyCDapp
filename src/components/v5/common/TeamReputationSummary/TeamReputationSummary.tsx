@@ -27,7 +27,7 @@ const TeamReputationSummary: FC = () => {
   const showOthers = teams && teams?.length > 5;
 
   return (
-    <Card>
+    <Card className="w-full">
       <span className="flex text-blue-400 mb-2">
         <Icon name="users-three" appearance={{ size: 'big' }} />
       </span>

@@ -6,6 +6,8 @@ import useToggle from '~hooks/useToggle';
 import Card from '~v5/shared/Card';
 import { CardSelectProps } from './types';
 import { FIELD_STATE } from '../consts';
+import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
+import Portal from '~v5/shared/Portal';
 
 const displayName = 'v5.common.Fields.CardSelect';
 
@@ -44,9 +46,17 @@ function CardSelect<TValue = string>({
     return options.find((option) => valueComparator(option.value, value));
   }, [options, value, valueComparator]);
 
+  const { portalElementRef, relativeElementRef } = useRelativePortalElement<
+    HTMLButtonElement,
+    HTMLDivElement
+  >([isSelectVisible], {
+    top: 8,
+  });
+
   return (
     <div className="sm:relative w-full">
       <button
+        ref={relativeElementRef}
         type="button"
         className={clsx(
           'flex capitalize text-md md:transition-colors md:hover:text-blue-400',
@@ -62,33 +72,38 @@ function CardSelect<TValue = string>({
           intl.formatMessage({ id: 'common.fields.cardSelect.placeholder' })}
       </button>
       {isSelectVisible && (
-        <Card
-          ref={registerContainerRef}
-          className="p-6 w-full sm:max-w-[13rem] absolute top-[calc(100%+0.5rem)] left-0 z-50"
-          hasShadow
-          rounded="s"
-        >
-          {title && (
-            <h5 className="text-4 text-gray-400 mb-4 uppercase">{title}</h5>
-          )}
-          <ul>
-            {options.map(({ label, value: optionValue, ariaLabel }) => (
-              <li key={keyExtractor(optionValue)} className="mb-4 last:mb-0">
-                <button
-                  type="button"
-                  className="flex text-md md:transition-colors md:hover:text-blue-400"
-                  aria-label={ariaLabel}
-                  onClick={() => {
-                    onChange(optionValue);
-                    toggleSelectOff();
-                  }}
-                >
-                  {label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </Card>
+        <Portal>
+          <Card
+            ref={(ref) => {
+              registerContainerRef(ref);
+              portalElementRef.current = ref;
+            }}
+            className="p-6 absolute z-[60]"
+            hasShadow
+            rounded="s"
+          >
+            {title && (
+              <h5 className="text-4 text-gray-400 mb-4 uppercase">{title}</h5>
+            )}
+            <ul>
+              {options.map(({ label, value: optionValue, ariaLabel }) => (
+                <li key={keyExtractor(optionValue)} className="mb-4 last:mb-0">
+                  <button
+                    type="button"
+                    className="flex text-md md:transition-colors md:hover:text-blue-400"
+                    aria-label={ariaLabel}
+                    onClick={() => {
+                      onChange(optionValue);
+                      toggleSelectOff();
+                    }}
+                  >
+                    {label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        </Portal>
       )}
     </div>
   );

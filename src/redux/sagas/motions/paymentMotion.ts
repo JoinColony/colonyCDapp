@@ -33,7 +33,7 @@ function* createPaymentMotion({
     annotationMessage,
     motionDomainId,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_EXPENDITURE_PAYMENT>) {
   let txChannel;
@@ -215,6 +215,9 @@ function* createPaymentMotion({
       createMotion.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
@@ -230,7 +233,7 @@ function* createPaymentMotion({
     });
 
     if (colonyName) {
-      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+      navigate?.(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
     }

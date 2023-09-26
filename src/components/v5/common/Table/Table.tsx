@@ -1,16 +1,35 @@
 import React from 'react';
-import { flexRender, useReactTable } from '@tanstack/react-table';
+import {
+  flexRender,
+  useReactTable,
+  getCoreRowModel as libGetCoreRowModel,
+} from '@tanstack/react-table';
+import clsx from 'clsx';
 import { TableProps } from './types';
 
 const displayName = 'v5.common.Table';
 
-const Table = <T,>({ className, title, ...rest }: TableProps<T>) => {
-  const table = useReactTable<T>(rest);
+const Table = <T,>({
+  className,
+  tableClassName,
+  title,
+  getCoreRowModel,
+  ...rest
+}: TableProps<T>) => {
+  const table = useReactTable<T>({
+    getCoreRowModel: getCoreRowModel || libGetCoreRowModel<T>(),
+    ...rest,
+  });
 
   return (
     <div className={className}>
       {title && <h5 className="text-2 mb-3">{title}</h5>}
-      <table className="border border-separate border-spacing-0 border-1 w-full border-gray-200 rounded-lg">
+      <table
+        className={clsx(
+          tableClassName,
+          'border border-separate border-spacing-0 border-1 w-full rounded-lg border-gray-200 overflow-hidden',
+        )}
+      >
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>

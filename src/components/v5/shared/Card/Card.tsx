@@ -13,7 +13,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     <div
       className={clsx(
         className,
-        'bg-base-white border border-gray-200 flex flex-col w-full',
+        'bg-base-white border border-gray-200 flex flex-col',
         {
           'rounded-lg': rounded === 's',
           'rounded-xl': rounded === 'm',

@@ -120,6 +120,11 @@ const UserProfilePage: FC = () => {
                       avatarPlaceholder={
                         <Avatar size="xm" avatar={avatarUrl} />
                       }
+                      fileOptions={{
+                        fileFormat: ['.PNG', '.JPG', '.SVG'],
+                        fileDimension: '250x250px',
+                        fileSize: '1MB',
+                      }}
                     />
                   </div>
                 </div>

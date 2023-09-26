@@ -1,4 +1,5 @@
 import { MessageDescriptor } from 'react-intl';
+import { TokenFragment } from '~gql';
 
 export interface SearchSelectProps {
   onToggle: () => void;
@@ -7,6 +8,10 @@ export interface SearchSelectProps {
   onSelect?: (value: string) => void;
   isLoading?: boolean;
   isDefaultItemVisible?: boolean;
+  className?: string;
+  hideSearchOnMobile?: boolean;
+  onSearch?: (value: string) => void;
+  showEmptyContent?: boolean;
 }
 
 export interface SearchSelectOptionProps {
@@ -26,4 +31,5 @@ export interface SearchSelectOption {
   walletAddress?: string;
   nativeId?: number;
   missingPermissions?: string;
+  token?: TokenFragment;
 }

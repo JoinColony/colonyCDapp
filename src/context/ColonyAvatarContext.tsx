@@ -2,6 +2,7 @@ import React, {
   createContext,
   FC,
   PropsWithChildren,
+  useCallback,
   useContext,
   useMemo,
   useState,
@@ -21,17 +22,17 @@ export const ColonyAvatarContext = createContext<{
   onSaveColonyThumbnail: noop,
 });
 
-export const ColnyAvatarProvider: FC<PropsWithChildren> = ({ children }) => {
+export const ColonyAvatarProvider: FC<PropsWithChildren> = ({ children }) => {
   const [colonyAvatar, setColonyAvatar] = useState<string | null>(null);
   const [colonyThumbnail, setColonyThumbnail] = useState<string | null>(null);
 
-  const onSaveColonyAvatar = (avatar: string | null) => {
+  const onSaveColonyAvatar = useCallback((avatar: string | null) => {
     setColonyAvatar(avatar);
-  };
+  }, []);
 
-  const onSaveColonyThumbnail = (thumbnail: string | null) => {
+  const onSaveColonyThumbnail = useCallback((thumbnail: string | null) => {
     setColonyThumbnail(thumbnail);
-  };
+  }, []);
 
   const value = useMemo(
     () => ({
