@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useController } from 'react-hook-form';
 
 import { isAddress } from 'ethers/lib/utils';
@@ -9,10 +9,12 @@ import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 import { formatText } from '~utils/intl';
 import { useTokenSelect } from './hooks';
+import { FIELD_STATE } from '~v5/common/Fields/consts';
 
 const displayName = 'v5.common.ActionsContent.partials.TokenSelect';
 
 const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
+  const [searchError, setSearchError] = useState(false);
   const {
     field,
     fieldState: { error },
@@ -28,12 +30,23 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
       registerContainerRef,
     },
   ] = useToggle();
-  const { tokenOptions, isRemoteTokenAddress, renderButtonContent } =
-    useTokenSelect(field.value);
+  const {
+    tokenOptions,
+    isRemoteTokenAddress,
+    renderButtonContent,
+    isNativeToken,
+    colonyTokens,
+  } = useTokenSelect(field.value);
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
     HTMLDivElement
   >([isTokenSelectVisible]);
+
+  useEffect(() => {
+    if (!isTokenSelectVisible) {
+      setSearchError(false);
+    }
+  }, [isTokenSelectVisible]);
 
   return (
     <div className="sm:relative w-full">
@@ -45,6 +58,7 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
           {
             'text-gray-500': !isError,
             'text-negative-400': isError,
+            'pointer-events-none': isNativeToken,
           },
         )}
         onClick={toggleTokenSelect}
@@ -60,7 +74,25 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
               ? { ...tokenOptions, options: [] }
               : tokenOptions,
           ]}
+          error={{
+            state: searchError ? FIELD_STATE.Error : undefined,
+            message: searchError ? (
+              <span className="text-sm text-negative-400">
+                This token is already on colony tokens list
+              </span>
+            ) : undefined,
+          }}
           onSearch={(query) => {
+            const isDuplicatedToken = colonyTokens.some(
+              (token) => token?.token.tokenAddress === query,
+            );
+
+            if (isDuplicatedToken) {
+              setSearchError(true);
+              return;
+            }
+
+            setSearchError(false);
             field.onChange(isAddress(query) ? query : undefined);
           }}
           isOpen={isTokenSelectVisible}

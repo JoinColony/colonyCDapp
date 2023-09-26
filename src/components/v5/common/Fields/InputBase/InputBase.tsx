@@ -11,7 +11,7 @@ const InputBase: FC<InputBaseProps> = ({
   message,
   prefix,
   suffix,
-  mode,
+  mode = 'primary',
   disabled,
   ...rest
 }) => {

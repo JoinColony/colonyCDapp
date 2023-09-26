@@ -56,7 +56,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
         {children && (
           <div
             className={clsx('text-sm max-w-[50rem] mt-1.5', {
-              'text-red-400': status === 'error',
+              'text-negative-400': status === 'error',
             })}
           >
             {children}

@@ -8,5 +8,5 @@ export interface InputBaseProps
   wrapperClassName?: string;
   suffix?: React.ReactNode;
   prefix?: React.ReactNode;
-  mode: 'primary' | 'secondary';
+  mode?: 'primary' | 'secondary';
 }

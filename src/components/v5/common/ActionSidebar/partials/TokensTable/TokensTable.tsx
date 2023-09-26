@@ -37,7 +37,7 @@ const TokensTable: FC<TokensTableProps> = ({
       {!!data.length && (
         <TableWithMeatballMenu<TokensTableModel>
           tableClassName={clsx({
-            '!border-red-400': !!fieldState.error,
+            '!border-negative-400': !!fieldState.error,
           })}
           getRowId={({ key }) => key}
           columns={columns}
@@ -54,7 +54,7 @@ const TokensTable: FC<TokensTableProps> = ({
         isFullSize={isMobile}
         onClick={() => {
           fieldArrayMethods.append({
-            tokenAddress: '',
+            token: '',
           });
         }}
       >

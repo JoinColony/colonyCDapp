@@ -8,9 +8,17 @@ import TokenIcon from '~shared/TokenIcon/TokenIcon';
 import { formatText } from '~utils/intl';
 import { SearchSelectOptionProps } from '~v5/shared/SearchSelect/types';
 import TokenStatus from './partials/TokenStatus/TokenStatus';
+import { useGetAllTokens } from '~hooks/useGetAllTokens';
+import { useColonyContext } from '~hooks';
 
 export const useTokenSelect = (inputValue: string) => {
   const predefinedTokens = getTokenList();
+  const allTokens = useGetAllTokens();
+  const { colony } = useColonyContext();
+  const colonyTokens = colony?.tokens?.items || [];
+  const isNativeToken = colonyTokens.some(
+    (token) => token?.token.tokenAddress === inputValue,
+  );
 
   const tokenOptions: SearchSelectOptionProps = {
     key: 'tokens',
@@ -26,8 +34,8 @@ export const useTokenSelect = (inputValue: string) => {
     () =>
       inputValue &&
       isAddress(inputValue) &&
-      !predefinedTokens.some(({ token }) => token.tokenAddress === inputValue),
-    [inputValue, predefinedTokens],
+      !allTokens.some(({ token }) => token.tokenAddress === inputValue),
+    [inputValue, allTokens],
   );
 
   const { data: tokenData, loading } = useGetTokenFromEverywhereQuery({
@@ -45,7 +53,7 @@ export const useTokenSelect = (inputValue: string) => {
         return formatText({ id: 'manageTokensTable.select' });
       }
 
-      const selectedToken = predefinedTokens.find(
+      const selectedToken = allTokens.find(
         ({ token }) => token.tokenAddress === inputValue,
       )?.token as TokenFragment;
 
@@ -76,5 +84,7 @@ export const useTokenSelect = (inputValue: string) => {
     tokenOptions,
     isRemoteTokenAddress,
     renderButtonContent,
+    isNativeToken,
+    colonyTokens,
   };
 };
