@@ -71,7 +71,10 @@ const getMessageLogs = async (
   // so there is no need to limit the range of the block to reduce the network traffic
   url.searchParams.append('fromBlock', '0');
   url.searchParams.append('toBlock', 'latest');
-  url.searchParams.append('apiKey', getApiKey(Number(safeChainId)) || '');
+  url.searchParams.append(
+    'apiKey',
+    (await getApiKey(Number(safeChainId))) || '',
+  );
   const eventTopic = utils.id(event);
   const topics = [eventTopic, ...options.topics];
 

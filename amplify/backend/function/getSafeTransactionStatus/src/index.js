@@ -10,12 +10,26 @@ const {
   isDev,
 } = require('./utils');
 
-const rpcURL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let rpcURL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+
+const setEnvVariables = async () => {
+  const ENV = process.env.ENV;
+  if (ENV === 'qa' || ENV === 'sc') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [rpcURL] = await getParams(['chainRpcEndpoint']);
+  }
+};
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
+  try {
+    await setEnvVariables();
+  } catch (e) {
+    throw new Error('Unable to set environment variables. Reason:', e);
+  }
+
   const { transactionHash, chainId } = event.arguments?.input || {};
 
   if (!transactionHash) {
