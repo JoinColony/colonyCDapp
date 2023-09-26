@@ -33,6 +33,9 @@ import {
   ContributorRolesFragment,
   TransactionStatus,
   TransactionFragment,
+  ExpenditureFragment,
+  ExpenditureSlotFragment,
+  ExpenditurePayoutFragment,
 } from '~gql';
 
 export type AnnotationType = AnnotationFragment;
@@ -124,3 +127,9 @@ export type MotionStakes = MotionStakesFragment;
 export type VoterRecord = VoterRecordFragment;
 
 export type UnclaimedStakes = UnclaimedStakesFragment;
+
+export type Expenditure = ExpenditureFragment;
+
+export type ExpenditureSlot = ExpenditureSlotFragment;
+
+export type ExpenditurePayout = ExpenditurePayoutFragment;

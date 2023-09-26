@@ -14,12 +14,29 @@ import {
 } from './index';
 import { ExternalLink } from '~gql';
 import { OneTxPaymentPayload } from './colonyActions';
+import { ExpenditureFundPayload } from './expenditures';
 
 export enum RootMotionMethodNames {
   MintTokens = 'mintTokens',
   Upgrade = 'upgrade',
   UnlockToken = 'unlockToken',
 }
+
+export type ExpenditureFundMotionPayload = Omit<
+  ExpenditureFundPayload,
+  'colonyAddress'
+> & {
+  colony: Colony;
+  fromDomainId: number;
+  motionDomainId: number;
+};
+
+export type MotionFinalizePayload = {
+  userAddress: Address;
+  colonyAddress: Address;
+  motionId: string;
+  gasEstimate: string;
+};
 
 export type MotionActionTypes =
   | UniqueActionType<
@@ -62,15 +79,7 @@ export type MotionActionTypes =
       ActionTypes.MOTION_REVEAL_VOTE_SUCCESS,
       object
     >
-  | UniqueActionType<
-      ActionTypes.MOTION_FINALIZE,
-      {
-        userAddress: Address;
-        colonyAddress: Address;
-        motionId: BigNumber;
-      },
-      object
-    >
+  | UniqueActionType<ActionTypes.MOTION_FINALIZE, MotionFinalizePayload, object>
   | ErrorActionType<ActionTypes.MOTION_FINALIZE_ERROR, object>
   | UniqueActionTypeWithoutPayload<ActionTypes.MOTION_FINALIZE_SUCCESS, object>
   | UniqueActionType<
@@ -223,5 +232,15 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_MANAGE_REPUTATION_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_MANAGE_REPUTATION_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_EXPENDITURE_FUND,
+      ExpenditureFundMotionPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_FUND_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS,
       MetaWithSetter<object>
     >;

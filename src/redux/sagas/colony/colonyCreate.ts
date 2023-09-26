@@ -1,4 +1,3 @@
-import { Channel } from 'redux-saga';
 import { all, call, put } from 'redux-saga/effects';
 import { getExtensionHash, Extension, ClientType, Id } from '@colony/colony-js';
 import { poll } from 'ethers/lib/utils';
@@ -37,7 +36,7 @@ import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { ActionTypes, Action, AllActions } from '~redux/index';
 import { createAddress } from '~utils/web3';
 import { toNumber } from '~utils/numbers';
-import { getDomainDatabaseId } from '~utils/domains';
+import { getDomainDatabaseId } from '~utils/databaseId';
 
 import {
   transactionAddParams,
@@ -53,17 +52,12 @@ import {
   initiateTransaction,
 } from '../utils';
 import {
+  ChannelDefinition,
   createGroupTransaction,
   createTransactionChannels,
 } from '../transactions';
 import { getOneTxPaymentVersion } from '../utils/extensionVersion';
 import { updateTransaction } from '../transactions/transactionsToDb';
-
-interface ChannelDefinition {
-  channel: Channel<any>;
-  index: number;
-  id: string;
-}
 
 function* colonyCreate({
   meta,

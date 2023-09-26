@@ -50,7 +50,10 @@ const ExtensionActionButton = ({
     return null;
   }
 
-  if (!extensionData.isInitialized) {
+  if (
+    !extensionData.isInitialized ||
+    extensionData.missingColonyPermissions.length
+  ) {
     return (
       <EnableButton
         extensionData={extensionData}

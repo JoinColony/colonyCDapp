@@ -8,7 +8,8 @@ import { ActionTypes } from '~redux';
 
 import { Props as DefaultButtonProps } from './Button';
 
-export interface ActionButtonProps<P = any> extends DefaultButtonProps {
+export interface ActionButtonProps<P = any, V = any>
+  extends DefaultButtonProps {
   /** The base (i.e. submit) redux action type */
   actionType: ActionTypes;
   button?: ElementType;
@@ -23,10 +24,10 @@ export interface ActionButtonProps<P = any> extends DefaultButtonProps {
   success?: string;
   text?: MessageDescriptor | string;
   transform?: ActionTransformFnType;
-  values?: any | (() => any | Promise<any>);
+  values?: V | (() => V | Promise<V>);
 }
 
-const ActionButton = <P,>({
+const ActionButton = <P = any, V = any>({
   actionType,
   button,
   buttonProps,
@@ -40,7 +41,7 @@ const ActionButton = <P,>({
   values,
   transform,
   ...props
-}: ActionButtonProps<P>) => {
+}: ActionButtonProps<P, V>) => {
   const submitAction = submit || actionType;
   const errorAction = error || getFormAction(actionType, 'ERROR');
   const successAction = success || getFormAction(actionType, 'SUCCESS');
@@ -58,7 +59,9 @@ const ActionButton = <P,>({
     setLoading(true);
     try {
       const asyncFuncValues =
-        typeof values == 'function' ? await values() : values;
+        typeof values == 'function'
+          ? await (values as () => Promise<V> | V)()
+          : values;
       result = await asyncFunction(asyncFuncValues);
       if (isMountedRef.current) setLoading(false);
       if (typeof onSuccess == 'function') onSuccess(result);

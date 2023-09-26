@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
   Route,
   Routes as RoutesSwitch,
@@ -11,20 +11,16 @@ import ColonyHome from '~common/ColonyHome';
 import ColonyFunding from '~common/ColonyFunding';
 import FourOFour from '~frame/FourOFour';
 import UserProfile from '~common/UserProfile';
-import {
-  // NavBar, Plain, SimpleNav,
-  Default,
-  NavBar,
-  UserLayout,
-} from '~frame/RouteLayouts';
+import { ColonyContextProvider } from '~context/ColonyContext';
+import CreateColonyWizard from '~common/CreateColonyWizard';
+import DecisionPreview from '~common/ColonyDecisions/DecisionPreview';
+import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
+import { Default, NavBar, UserLayout } from '~frame/RouteLayouts';
 import ColonyBackText from '~frame/ColonyBackText';
-// import LoadingTemplate from '~root/LoadingTemplate';
 import LandingPage from '~frame/LandingPage';
-// import ActionsPage from '~dashboard/ActionsPage';
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 
-// import appLoadingContext from '~context/appLoadingState';
-import { useAppContext } from '~hooks';
+import { useTitle } from '~hooks';
 
 import {
   COLONY_FUNDING_ROUTE,
@@ -60,9 +56,7 @@ import {
   // CLAIM_TOKEN_ROUTE,
 } from './routeConstants';
 import NotFoundRoute from './NotFoundRoute';
-import CreateColonyWizard from '~common/CreateColonyWizard';
-import DecisionPreview from '~common/ColonyDecisions/DecisionPreview';
-import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
+
 import PageLayout from '~frame/Extensions/layouts/PageLayout';
 import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage';
 import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage';
@@ -85,54 +79,26 @@ import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
 import { PageThemeContextProvider } from '~context/PageThemeContext';
 import { ActionSidebarContextProvider } from '~context/ActionSidebarContext';
 
-import useTitle from '~hooks/useTitle';
-
 const displayName = 'routes.Routes';
 
 const Routes = () => {
-  const { user, wallet } = useAppContext();
-  // const isAppLoading = appLoadingContext.getIsLoading();
-
-  // disabling rules to silence eslint warnings
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const isConnected = wallet?.address;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const didClaimProfile = user?.profile?.displayName;
-
   useTitle();
 
-  /**
-   * @NOTE Memoized Switch
-   *
-   * We need to memoize the entire route switch to prevent re-renders at not
-   * so oportune times.
-   *
-   * The `balance` value, accessible through (no longer isLoggedInUser), even if we don't
-   * use it here directly, will cause a re-render of the `<Routes />` component
-   * every time it changes (using the subscription).
-   *
-   * To prevent this, we memoize the whole routes logic, to only render it again
-   * when the user connects a new wallet.
-   *
-   * This was particularly problematic when creating a new colony, and after
-   * the first TX, the balance would change and as a result everything would
-   * re-render, reseting the wizard.
-   */
-  const MemoizedSwitch = useMemo(
-    () => (
-      <RoutesSwitch>
-        <Route path="/" element={<Navigate to={LANDING_PAGE_ROUTE} />} />
-        <Route path={NOT_FOUND_ROUTE} element={<FourOFour />} />
-        <Route
-          path={LANDING_PAGE_ROUTE}
-          element={
-            <Default routeProps={{ hasBackLink: false }}>
-              <LandingPage />
-            </Default>
-          }
-        />
-        <Route
-          element={
+  return (
+    <RoutesSwitch>
+      <Route path="/" element={<Navigate to={LANDING_PAGE_ROUTE} />} />
+      <Route path={NOT_FOUND_ROUTE} element={<FourOFour />} />
+      <Route
+        path={LANDING_PAGE_ROUTE}
+        element={
+          <Default routeProps={{ hasBackLink: false }}>
+            <LandingPage />
+          </Default>
+        }
+      />
+      <Route
+        element={
+          <ColonyContextProvider>
             <Default
               routeProps={{
                 backText: ColonyBackText,
@@ -142,323 +108,322 @@ const Routes = () => {
             >
               <Outlet />
             </Default>
-          }
-        >
-          <Route path={COLONY_FUNDING_ROUTE} element={<ColonyFunding />} />
-        </Route>
-        {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map(
-          (path) => (
-            <Route
-              key={path}
-              path={path}
-              element={
-                <ExtensionsContextProvider>
-                  <MemberContextProvider>
-                    <ActionSidebarContextProvider>
-                      <PageLayout
-                        loadingText="members"
-                        title={{ id: 'membersPage.title' }}
-                        description={{ id: 'membersPage.description' }}
-                        pageName="members"
-                      >
-                        <MembersPage />
-                      </PageLayout>
-                    </ActionSidebarContextProvider>
-                  </MemberContextProvider>
-                </ExtensionsContextProvider>
-              }
-            />
-          ),
-        )}
-        {[COLONY_CONTRIBUTORS_ROUTE, COLONY_FOLLOWERS_ROUTE].map((path) => {
-          const pageName = path.split('/')[2] as ColonyUsersPageType;
-
-          return (
-            <Route
-              key={path}
-              path={path}
-              element={
-                <ExtensionsContextProvider>
-                  <MemberContextProvider>
-                    <ActionSidebarContextProvider>
-                      <PageLayout
-                        loadingText={pageName}
-                        title={{ id: `${pageName}Page.title` }}
-                        description={{
-                          id: `${pageName}Page.description`,
-                        }}
-                        pageName="members"
-                      >
-                        <ColonyUsersPage pageName={pageName} />
-                      </PageLayout>
-                    </ActionSidebarContextProvider>
-                  </MemberContextProvider>
-                </ExtensionsContextProvider>
-              }
-            />
-          );
-        })}
+          </ColonyContextProvider>
+        }
+      >
+        <Route path={COLONY_FUNDING_ROUTE} element={<ColonyFunding />} />
+      </Route>
+      {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map((path) => (
         <Route
-          path={COLONY_VERIFIED_ROUTE}
+          key={path}
+          path={path}
           element={
             <ExtensionsContextProvider>
               <MemberContextProvider>
                 <ActionSidebarContextProvider>
                   <PageLayout
-                    loadingText="verified"
-                    title={{ id: 'verifiedPage.title' }}
-                    description={{ id: 'verifiedPage.description' }}
+                    loadingText="members"
+                    title={{ id: 'membersPage.title' }}
+                    description={{ id: 'membersPage.description' }}
                     pageName="members"
                   >
-                    <VerifiedPage />
+                    <MembersPage />
                   </PageLayout>
                 </ActionSidebarContextProvider>
               </MemberContextProvider>
             </ExtensionsContextProvider>
           }
         />
-        <Route
-          path={COLONY_TEAMS_ROUTE}
-          element={
-            <ExtensionsContextProvider>
+      ))}
+      {[COLONY_CONTRIBUTORS_ROUTE, COLONY_FOLLOWERS_ROUTE].map((path) => {
+        const pageName = path.split('/')[2] as ColonyUsersPageType;
+
+        return (
+          <Route
+            key={path}
+            path={path}
+            element={
+              <ExtensionsContextProvider>
+                <MemberContextProvider>
+                  <ActionSidebarContextProvider>
+                    <PageLayout
+                      loadingText={pageName}
+                      title={{ id: `${pageName}Page.title` }}
+                      description={{
+                        id: `${pageName}Page.description`,
+                      }}
+                      pageName="members"
+                    >
+                      <ColonyUsersPage pageName={pageName} />
+                    </PageLayout>
+                  </ActionSidebarContextProvider>
+                </MemberContextProvider>
+              </ExtensionsContextProvider>
+            }
+          />
+        );
+      })}
+      <Route
+        path={COLONY_VERIFIED_ROUTE}
+        element={
+          <ExtensionsContextProvider>
+            <MemberContextProvider>
+              <ActionSidebarContextProvider>
+                <PageLayout
+                  loadingText="verified"
+                  title={{ id: 'verifiedPage.title' }}
+                  description={{ id: 'verifiedPage.description' }}
+                  pageName="members"
+                >
+                  <VerifiedPage />
+                </PageLayout>
+              </ActionSidebarContextProvider>
+            </MemberContextProvider>
+          </ExtensionsContextProvider>
+        }
+      />
+      <Route
+        path={COLONY_TEAMS_ROUTE}
+        element={
+          <ExtensionsContextProvider>
+            <PageLayout
+              loadingText="teams"
+              title={{ id: 'teamsPage.title' }}
+              description={{ id: 'teamsPage.description' }}
+              pageName="members"
+            >
+              <TeamsPage />
+            </PageLayout>
+          </ExtensionsContextProvider>
+        }
+      />
+      <Route
+        path={COLONY_DECISIONS_PREVIEW_ROUTE}
+        element={
+          <NavBar>
+            <DecisionPreview />
+          </NavBar>
+        }
+      />
+      <Route
+        path={COLONY_EXTENSION_DETAILS_ROUTE}
+        element={
+          <ExtensionsContextProvider>
+            <ActionSidebarContextProvider>
               <PageLayout
-                loadingText="teams"
-                title={{ id: 'teamsPage.title' }}
-                description={{ id: 'teamsPage.description' }}
-                pageName="members"
+                loadingText={{ id: 'loading.extensionsPage' }}
+                title={{ id: 'extensionsPage.title' }}
+                description={{ id: 'extensionsPage.description' }}
+                pageName="extensions"
               >
-                <TeamsPage />
+                <ExtensionDetailsPage />
               </PageLayout>
-            </ExtensionsContextProvider>
-          }
-        />
+            </ActionSidebarContextProvider>
+          </ExtensionsContextProvider>
+        }
+      />
+      <Route
+        path={COLONY_HOME_ROUTE}
+        element={
+          <Default routeProps={{ hasBackLink: false }}>
+            <ColonyHome />
+          </Default>
+        }
+      />
+      {[ACTIONS_PAGE_ROUTE, DECISIONS_PAGE_ROUTE].map((path) => (
         <Route
-          path={COLONY_DECISIONS_PREVIEW_ROUTE}
+          path={path}
           element={
-            <NavBar>
-              <DecisionPreview />
+            <NavBar
+              routeProps={{
+                backRoute: ({ colonyName }) =>
+                  `/colony/${colonyName}${
+                    path === DECISIONS_PAGE_ROUTE ? '/decisions' : ''
+                  }`,
+              }}
+            >
+              <ActionDetailsPage />
             </NavBar>
           }
+          key={path}
         />
+      ))}
+      <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyWizard />} />
+      <Route path={CREATE_USER_ROUTE} element={<CreateUserWizard />} />
+      {[COLONY_ADMIN_ROUTE, COLONY_DETAILS_ROUTE].map((path) => (
         <Route
-          path={COLONY_EXTENSION_DETAILS_ROUTE}
+          path={path}
+          key={path}
           element={
             <ExtensionsContextProvider>
               <ActionSidebarContextProvider>
                 <PageLayout
                   loadingText={{ id: 'loading.extensionsPage' }}
-                  title={{ id: 'extensionsPage.title' }}
-                  description={{ id: 'extensionsPage.description' }}
+                  title={{ id: 'colonyDetailsPage.title' }}
+                  description={{ id: 'colonyDetailsPage.description' }}
                   pageName="extensions"
                 >
-                  <ExtensionDetailsPage />
+                  <ColonyDetailsPage />
                 </PageLayout>
               </ActionSidebarContextProvider>
             </ExtensionsContextProvider>
           }
         />
-        <Route
-          path={COLONY_HOME_ROUTE}
-          element={
-            <Default routeProps={{ hasBackLink: false }}>
-              <ColonyHome />
-            </Default>
-          }
-        />
-        {[ACTIONS_PAGE_ROUTE, DECISIONS_PAGE_ROUTE].map((path) => (
-          <Route
-            path={path}
-            element={
-              <NavBar
-                routeProps={{
-                  backRoute: ({ colonyName }) =>
-                    `/colony/${colonyName}${
-                      path === DECISIONS_PAGE_ROUTE ? '/decisions' : ''
-                    }`,
-                }}
+      ))}
+      <Route
+        path={COLONY_REPUTATION_ROUTE}
+        element={
+          <ExtensionsContextProvider>
+            <ActionSidebarContextProvider>
+              <PageLayout
+                loadingText={{ id: 'loading.extensionsPage' }}
+                title={{ id: 'extensionsPage.title' }}
+                description={{ id: 'extensionsPage.description' }}
+                pageName="extensions"
               >
-                <ActionDetailsPage />
-              </NavBar>
-            }
-            key={path}
-          />
-        ))}
-        <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyWizard />} />
-        <Route path={CREATE_USER_ROUTE} element={<CreateUserWizard />} />
-        {[COLONY_ADMIN_ROUTE, COLONY_DETAILS_ROUTE].map((path) => (
-          <Route
-            path={path}
-            key={path}
-            element={
-              <ExtensionsContextProvider>
-                <ActionSidebarContextProvider>
-                  <PageLayout
-                    loadingText={{ id: 'loading.extensionsPage' }}
-                    title={{ id: 'colonyDetailsPage.title' }}
-                    description={{ id: 'colonyDetailsPage.description' }}
-                    pageName="extensions"
-                  >
-                    <ColonyDetailsPage />
-                  </PageLayout>
-                </ActionSidebarContextProvider>
-              </ExtensionsContextProvider>
-            }
-          />
-        ))}
-        <Route
-          path={COLONY_REPUTATION_ROUTE}
-          element={
+                <ReputationPage />
+              </PageLayout>
+            </ActionSidebarContextProvider>
+          </ExtensionsContextProvider>
+        }
+      />
+      <Route
+        path={COLONY_PERMISSIONS_ROUTE}
+        element={
+          <ExtensionsContextProvider>
+            <ActionSidebarContextProvider>
+              <PageLayout
+                loadingText={{ id: 'loading.extensionsPage' }}
+                title={{ id: 'extensionsPage.title' }}
+                description={{ id: 'extensionsPage.description' }}
+                pageName="extensions"
+              >
+                <PermissionsPage />
+              </PageLayout>
+            </ActionSidebarContextProvider>
+          </ExtensionsContextProvider>
+        }
+      />
+      <Route
+        path={COLONY_EXTENSIONS_ROUTE}
+        element={
+          <ExtensionsContextProvider>
+            <ActionSidebarContextProvider>
+              <PageLayout
+                loadingText={{ id: 'loading.extensionsPage' }}
+                title={{ id: 'extensionsPage.title' }}
+                description={{ id: 'extensionsPage.description' }}
+                pageName="extensions"
+              >
+                <ExtensionsPage />
+              </PageLayout>
+            </ActionSidebarContextProvider>
+          </ExtensionsContextProvider>
+        }
+      />
+      <Route
+        path={COLONY_INTEGRATIONS_ROUTE}
+        element={
+          <ExtensionsContextProvider>
+            <ActionSidebarContextProvider>
+              <PageLayout
+                loadingText={{ id: 'loading.extensionsPage' }}
+                title={{ id: 'extensionsPage.title' }}
+                description={{ id: 'extensionsPage.description' }}
+                pageName="extensions"
+              >
+                <IntegrationsPage />
+              </PageLayout>
+            </ActionSidebarContextProvider>
+          </ExtensionsContextProvider>
+        }
+      />
+      <Route
+        path={COLONY_INCORPORATION_ROUTE}
+        element={
+          <PageLayout
+            loadingText={{ id: 'loading.extensionsPage' }}
+            title={{ id: 'extensionsPage.title' }}
+            description={{ id: 'extensionsPage.description' }}
+            pageName="extensions"
+          >
             <ExtensionsContextProvider>
-              <ActionSidebarContextProvider>
-                <PageLayout
-                  loadingText={{ id: 'loading.extensionsPage' }}
-                  title={{ id: 'extensionsPage.title' }}
-                  description={{ id: 'extensionsPage.description' }}
-                  pageName="extensions"
-                >
-                  <ReputationPage />
-                </PageLayout>
-              </ActionSidebarContextProvider>
+              <IncorporationPage />
             </ExtensionsContextProvider>
-          }
-        />
-        <Route
-          path={COLONY_PERMISSIONS_ROUTE}
-          element={
-            <ExtensionsContextProvider>
-              <ActionSidebarContextProvider>
-                <PageLayout
-                  loadingText={{ id: 'loading.extensionsPage' }}
-                  title={{ id: 'extensionsPage.title' }}
-                  description={{ id: 'extensionsPage.description' }}
-                  pageName="extensions"
-                >
-                  <PermissionsPage />
-                </PageLayout>
-              </ActionSidebarContextProvider>
-            </ExtensionsContextProvider>
-          }
-        />
-        <Route
-          path={COLONY_EXTENSIONS_ROUTE}
-          element={
-            <ExtensionsContextProvider>
-              <ActionSidebarContextProvider>
-                <PageLayout
-                  loadingText={{ id: 'loading.extensionsPage' }}
-                  title={{ id: 'extensionsPage.title' }}
-                  description={{ id: 'extensionsPage.description' }}
-                  pageName="extensions"
-                >
-                  <ExtensionsPage />
-                </PageLayout>
-              </ActionSidebarContextProvider>
-            </ExtensionsContextProvider>
-          }
-        />
-        <Route
-          path={COLONY_INTEGRATIONS_ROUTE}
-          element={
-            <ExtensionsContextProvider>
-              <ActionSidebarContextProvider>
-                <PageLayout
-                  loadingText={{ id: 'loading.extensionsPage' }}
-                  title={{ id: 'extensionsPage.title' }}
-                  description={{ id: 'extensionsPage.description' }}
-                  pageName="extensions"
-                >
-                  <IntegrationsPage />
-                </PageLayout>
-              </ActionSidebarContextProvider>
-            </ExtensionsContextProvider>
-          }
-        />
-        <Route
-          path={COLONY_INCORPORATION_ROUTE}
-          element={
+          </PageLayout>
+        }
+      />
+      <Route
+        path={COLONY_ADVANCED_ROUTE}
+        element={
+          <ExtensionsContextProvider>
+            <ActionSidebarContextProvider>
+              <PageLayout
+                loadingText={{ id: 'loading.extensionsPage' }}
+                title={{ id: 'advancedPage.title' }}
+                description={{ id: 'advancedPage.description' }}
+                pageName="extensions"
+              >
+                <AdvancedPage />
+              </PageLayout>
+            </ActionSidebarContextProvider>
+          </ExtensionsContextProvider>
+        }
+      />
+      <Route
+        path={USER_ROUTE}
+        element={
+          <UserLayout routeProps={{ hasBackLink: false }}>
+            <UserProfile />
+          </UserLayout>
+        }
+      />
+      <Route
+        path={USER_EDIT_ROUTE}
+        element={
+          <PageThemeContextProvider>
             <PageLayout
-              loadingText={{ id: 'loading.extensionsPage' }}
-              title={{ id: 'extensionsPage.title' }}
-              description={{ id: 'extensionsPage.description' }}
-              pageName="extensions"
+              loadingText={{ id: 'loading.userProfilePage' }}
+              title={{ id: 'userProfilePage.title' }}
+              description={{ id: 'userProfilePage.description' }}
+              pageName="profile"
             >
-              <ExtensionsContextProvider>
-                <IncorporationPage />
-              </ExtensionsContextProvider>
+              <UserProfilePage />
             </PageLayout>
-          }
-        />
-        <Route
-          path={COLONY_ADVANCED_ROUTE}
-          element={
-            <ExtensionsContextProvider>
-              <ActionSidebarContextProvider>
-                <PageLayout
-                  loadingText={{ id: 'loading.extensionsPage' }}
-                  title={{ id: 'advancedPage.title' }}
-                  description={{ id: 'advancedPage.description' }}
-                  pageName="extensions"
-                >
-                  <AdvancedPage />
-                </PageLayout>
-              </ActionSidebarContextProvider>
-            </ExtensionsContextProvider>
-          }
-        />
-        <Route
-          path={USER_ROUTE}
-          element={
-            <UserLayout routeProps={{ hasBackLink: false }}>
-              <UserProfile />
-            </UserLayout>
-          }
-        />
-        <Route
-          path={USER_EDIT_ROUTE}
-          element={
-            <PageThemeContextProvider>
-              <PageLayout
-                loadingText={{ id: 'loading.userProfilePage' }}
-                title={{ id: 'userProfilePage.title' }}
-                description={{ id: 'userProfilePage.description' }}
-                pageName="profile"
-              >
-                <UserProfilePage />
-              </PageLayout>
-            </PageThemeContextProvider>
-          }
-        />
-        <Route
-          path={USER_PREFERENCES_ROUTE}
-          element={
-            <PageThemeContextProvider>
-              <PageLayout
-                loadingText={{ id: 'loading.userPreferencesPage' }}
-                title={{ id: 'userPreferencesPage.title' }}
-                description={{ id: 'userPreferencesPage.description' }}
-                pageName="profile"
-              >
-                <UserPreferencesPage />
-              </PageLayout>
-            </PageThemeContextProvider>
-          }
-        />
-        <Route
-          path={USER_ADVANCED_ROUTE}
-          element={
-            <PageThemeContextProvider>
-              <PageLayout
-                loadingText={{ id: 'loading.userAdvancedPage' }}
-                title={{ id: 'userAdvancedPage.title' }}
-                description={{ id: 'userAdvancedPage.description' }}
-                pageName="profile"
-              >
-                <UserAdvancedPage />
-              </PageLayout>
-            </PageThemeContextProvider>
-          }
-        />
-        {/* <WalletRequiredRoute
+          </PageThemeContextProvider>
+        }
+      />
+      <Route
+        path={USER_PREFERENCES_ROUTE}
+        element={
+          <PageThemeContextProvider>
+            <PageLayout
+              loadingText={{ id: 'loading.userPreferencesPage' }}
+              title={{ id: 'userPreferencesPage.title' }}
+              description={{ id: 'userPreferencesPage.description' }}
+              pageName="profile"
+            >
+              <UserPreferencesPage />
+            </PageLayout>
+          </PageThemeContextProvider>
+        }
+      />
+      <Route
+        path={USER_ADVANCED_ROUTE}
+        element={
+          <PageThemeContextProvider>
+            <PageLayout
+              loadingText={{ id: 'loading.userAdvancedPage' }}
+              title={{ id: 'userAdvancedPage.title' }}
+              description={{ id: 'userAdvancedPage.description' }}
+              pageName="profile"
+            >
+              <UserAdvancedPage />
+            </PageLayout>
+          </PageThemeContextProvider>
+        }
+      />
+      {/* <WalletRequiredRoute
           isConnected={isConnected}
           didClaimProfile={didClaimProfile}
           path={CREATE_USER_ROUTE}
@@ -472,67 +437,33 @@ const Routes = () => {
           component={CreateColonyWizard}
           layout={Plain}
         />
+      ))}
+      {/*
+      <AlwaysAccesibleRoute
+        path={UNWRAP_TOKEN_ROUTE}
+        component={UnwrapTokensPage}
+        layout={NavBar}
+        routeProps={({ colonyName }) => ({
+          backText: ColonyBackText,
+          backRoute: `/colony/${colonyName}`,
+        })}
+      />
+      <AlwaysAccesibleRoute
+        path={CLAIM_TOKEN_ROUTE}
+        component={ClaimTokensPage}
+        layout={NavBar}
+        routeProps={({ colonyName }) => ({
+          backText: ColonyBackText,
+          backRoute: `/colony/${colonyName}`,
+        })}
+      />
 
-        <AlwaysAccesibleRoute
-          path={USER_ROUTE}
-          component={UserProfile}
-          layout={SimpleNav}
-          routeProps={{
-            hasBackLink: false,
-          }}
-        />
-        <AlwaysAccesibleRoute
-          path={USER_EDIT_ROUTE}
-          component={UserProfileEdit}
-          layout={Default}
-          routeProps={{
-            hasSubscribedColonies: false,
-            backText: MSG.userProfileEditBack,
-            backRoute: `/user/${username}`,
-          }}
-        />
-        <AlwaysAccesibleRoute
-          exact
-          path={ACTIONS_PAGE_ROUTE}
-          component={ActionsPage}
-          layout={NavBar}
-          routeProps={({ colonyName }) => ({
-            backText: '',
-            backRoute: `/colony/${colonyName}`,
-          })}
-        />
-        <AlwaysAccesibleRoute
-          path={UNWRAP_TOKEN_ROUTE}
-          component={UnwrapTokensPage}
-          layout={NavBar}
-          routeProps={({ colonyName }) => ({
-            backText: ColonyBackText,
-            backRoute: `/colony/${colonyName}`,
-          })}
-        />
-        <AlwaysAccesibleRoute
-          path={CLAIM_TOKEN_ROUTE}
-          component={ClaimTokensPage}
-          layout={NavBar}
-          routeProps={({ colonyName }) => ({
-            backText: ColonyBackText,
-            backRoute: `/colony/${colonyName}`,
-          })}
-        />
-
-        {/*
-         * Redirect anything else that's not found to the 404 route
-         */}
-        <Route path="*" element={<NotFoundRoute />} />
-      </RoutesSwitch>
-    ),
-    [],
+      /*
+       * Redirect anything else that's not found to the 404 route
+       */}
+      <Route path="*" element={<NotFoundRoute />} />
+    </RoutesSwitch>
   );
-
-  // if (isAppLoading) {
-  //   return <LoadingTemplate loadingText={MSG.loadingAppMessage} />;
-  // }
-  return MemoizedSwitch;
 };
 
 Routes.displayName = displayName;

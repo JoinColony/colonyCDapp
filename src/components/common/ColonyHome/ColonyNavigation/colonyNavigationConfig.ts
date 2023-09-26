@@ -1,8 +1,9 @@
 import { defineMessages } from 'react-intl';
 
-import { NavItemProps as NavigationItem } from './NavItem';
 import { MIN_VOTING_REPUTATION_VERSION_FOR_DECISIONS } from '~constants';
 import { useColonyHomeContext } from '~context';
+
+import { NavItemProps as NavigationItem } from './NavItem';
 
 export const displayName = 'common.ColonyHome.ColonyNavigation';
 
@@ -18,6 +19,10 @@ const MSG = defineMessages({
   linkTextDecisions: {
     id: `${displayName}.linkTextDecisions`,
     defaultMessage: 'Decisions',
+  },
+  linkTextExpenditures: {
+    id: `${displayName}.linkTextExpeditures`,
+    defaultMessage: 'Expenditures',
   },
 });
 
@@ -54,6 +59,11 @@ const useGetNavigationItems = (colonyName?: string) => {
       showDot: hasNewExtensions,
       text: MSG.linkTextExtensions,
       dataTest: 'extensionsNavigationButton',
+    },
+    {
+      linkTo: `/colony/${colonyName}/expenditures`,
+      text: MSG.linkTextExpenditures,
+      dataTest: 'expendituresNavigationButton',
     },
   ];
 

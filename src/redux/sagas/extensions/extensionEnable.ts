@@ -1,22 +1,22 @@
-import { all, call, put, takeEvery } from 'redux-saga/effects';
+import { fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, Id } from '@colony/colony-js';
 
 import { intArrayToBytes32 } from '~utils/web3';
 
 import { ActionTypes } from '../../actionTypes';
-import { Action, AllActions } from '../../types/actions';
+import { Action } from '../../types/actions';
+
 import {
-  createGroupTransaction,
-  getTxChannel,
+  ChannelDefinition,
+  createTransaction,
+  createTransactionChannels,
   waitForTxResult,
 } from '../transactions';
 import {
-  Channel,
   initiateTransaction,
   modifyParams,
   putError,
   removeOldExtensionClients,
-  setupEnablingGroupTransactions,
   takeFrom,
 } from '../utils';
 
@@ -30,93 +30,83 @@ function* extensionEnable({
       isInitialized,
       initializationParams,
       neededColonyPermissions,
+      missingColonyPermissions,
       address,
     },
   },
 }: Action<ActionTypes.EXTENSION_ENABLE>) {
-  const initChannelName = `${meta.id}-initialise`;
+  const batchKey = 'enableExtension';
+  let txIndex = 0;
 
   yield removeOldExtensionClients(colonyAddress, extensionId);
 
-  const initChannel = yield call(getTxChannel, initChannelName);
+  const needsInitialisation = !isInitialized && initializationParams;
+  const needsSettingRoles = missingColonyPermissions.length;
+
+  const { initialise, setUserRoles }: Record<string, ChannelDefinition> =
+    yield createTransactionChannels(meta.id, ['initialise', 'setUserRoles']);
 
   try {
-    if (!isInitialized && initializationParams) {
+    if (needsInitialisation) {
       const initParams = modifyParams(initializationParams, payload);
 
-      const additionalChannels: {
-        setUserRolesWithProofs?: Channel;
-      } = {};
+      yield fork(createTransaction, initialise.id, {
+        context: `${extensionId}Client`,
+        methodName: 'initialise',
+        identifier: colonyAddress,
+        ready: false,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 0,
+        },
+        params: initParams,
+      });
 
-      if (neededColonyPermissions.length) {
-        const bytes32Roles = intArrayToBytes32(neededColonyPermissions);
-        additionalChannels.setUserRolesWithProofs = {
-          context: ClientType.ColonyClient,
-          params: [address, Id.RootDomain, bytes32Roles],
-        };
-      }
-
-      const {
-        channels,
-        transactionChannels,
-        transactionChannels: { initialise, setUserRolesWithProofs },
-      } = yield setupEnablingGroupTransactions(
-        meta.id,
-        initParams,
-        extensionId,
-        additionalChannels,
-      );
-
-      const batchKey = 'enableExtensions';
-
-      yield all(
-        Object.keys(transactionChannels).map((channelName) =>
-          createGroupTransaction(
-            transactionChannels[channelName],
-            batchKey,
-            meta,
-            {
-              identifier: colonyAddress,
-              methodName: channelName,
-              ...channels[channelName],
-            },
-          ),
-        ),
-      );
-
-      yield all(
-        Object.keys(transactionChannels).map((id) =>
-          takeFrom(
-            transactionChannels[id].channel,
-            ActionTypes.TRANSACTION_CREATED,
-          ),
-        ),
-      );
-
-      yield initiateTransaction({ id: initialise.id });
-
-      const result = yield waitForTxResult(initialise.channel);
-
-      if (setUserRolesWithProofs) {
-        yield initiateTransaction({ id: setUserRolesWithProofs.id });
-        yield waitForTxResult(setUserRolesWithProofs.channel);
-        // assume if this doesn't error, the transaction has succeeded.
-        // @TODO: Handle state in which it gets cancelled
-      }
-
-      if (result.type === ActionTypes.TRANSACTION_SUCCEEDED) {
-        yield put<AllActions>({
-          type: ActionTypes.EXTENSION_ENABLE_SUCCESS,
-          payload: {},
-          meta,
-        });
-      }
+      txIndex += 1;
     }
+
+    if (needsSettingRoles) {
+      const bytes32Roles = intArrayToBytes32(neededColonyPermissions);
+
+      yield fork(createTransaction, setUserRoles.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'setUserRolesWithProofs',
+        identifier: colonyAddress,
+        ready: false,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: txIndex,
+        },
+        params: [address, Id.RootDomain, bytes32Roles],
+      });
+
+      txIndex += 1;
+    }
+
+    if (needsInitialisation) {
+      yield takeFrom(initialise.channel, ActionTypes.TRANSACTION_CREATED);
+      yield initiateTransaction({ id: initialise.id });
+      yield waitForTxResult(initialise.channel);
+    }
+
+    if (needsSettingRoles) {
+      yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_CREATED);
+      yield initiateTransaction({ id: setUserRoles.id });
+      yield waitForTxResult(setUserRoles.channel);
+    }
+
+    yield put({
+      type: ActionTypes.EXTENSION_ENABLE_SUCCESS,
+      payload: {},
+      meta,
+    });
   } catch (error) {
     return yield putError(ActionTypes.EXTENSION_ENABLE_ERROR, error, meta);
+  } finally {
+    [initialise, setUserRoles].map(({ channel }) => channel.close());
   }
-
-  initChannel.close();
 
   return null;
 }

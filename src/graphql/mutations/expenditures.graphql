@@ -1,0 +1,5 @@
+mutation CreateExpenditureMetadata($input: CreateExpenditureMetadataInput!) {
+  createExpenditureMetadata(input: $input) {
+    id
+  }
+}
