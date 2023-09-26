@@ -1,11 +1,24 @@
-import { fork, takeEvery } from 'redux-saga/effects';
-import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
+import { call, fork, takeEvery } from 'redux-saga/effects';
+import {
+  AnyStreamingPaymentsClient,
+  ClientType,
+  ColonyRole,
+  getPermissionProofs,
+} from '@colony/colony-js';
 
 import { ActionTypes } from '~redux/actionTypes';
 import { Action } from '~redux/types';
+import { ContextModule, getContext } from '~context';
+import {
+  CreateStreamingPaymentMetadataDocument,
+  CreateStreamingPaymentMetadataMutation,
+  CreateStreamingPaymentMetadataMutationVariables,
+} from '~gql';
+import { getExpenditureDatabaseId } from '~utils/databaseId';
+import { toNumber } from '~utils/numbers';
 
-import { getColonyManager, putError } from '../utils';
-import { createTransaction } from '../transactions';
+import { getColonyManager, putError, takeFrom } from '../utils';
+import { createTransaction, getTxChannel } from '../transactions';
 
 export type CreateStreamingPaymentPayload =
   Action<ActionTypes.STREAMING_PAYMENT_CREATE>['payload'];
@@ -18,21 +31,32 @@ function* createStreamingPayment({
     colonyAddress,
     createdInDomain,
     recipientAddress,
-    tokenAddresses,
-    amounts,
+    tokenAddress,
+    amount,
     startTime,
     endTime,
     interval,
+    endCondition,
+    limitAmount,
   },
   meta,
 }: Action<ActionTypes.STREAMING_PAYMENT_CREATE>) {
-  const colonyManager = yield getColonyManager();
-  const colonyClient = yield colonyManager.getClient(
-    ClientType.ColonyClient,
-    colonyAddress,
-  );
+  const apolloClient = getContext(ContextModule.ApolloClient);
+
+  const txChannel = yield getTxChannel(meta.id);
 
   try {
+    const colonyManager = yield getColonyManager();
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
+    const streamingPaymentsClient: AnyStreamingPaymentsClient = yield call(
+      [colonyManager, colonyManager.getClient],
+      ClientType.StreamingPaymentsClient,
+      colonyAddress,
+    );
+
     // Get permissions proof of the caller's Funding permission
     const [fundingPermissionDomainId, fundingChildSkillIndex] =
       yield getPermissionProofs(
@@ -63,9 +87,32 @@ function* createStreamingPayment({
         endTime ?? TIMESTAMP_IN_FUTURE,
         interval,
         recipientAddress,
-        tokenAddresses,
-        amounts,
+        [tokenAddress],
+        [amount],
       ],
+    });
+
+    yield takeFrom(txChannel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    const streamingPaymentId = yield call(
+      streamingPaymentsClient.getNumStreamingPayments,
+    );
+
+    yield apolloClient.mutate<
+      CreateStreamingPaymentMetadataMutation,
+      CreateStreamingPaymentMetadataMutationVariables
+    >({
+      mutation: CreateStreamingPaymentMetadataDocument,
+      variables: {
+        input: {
+          id: getExpenditureDatabaseId(
+            colonyAddress,
+            toNumber(streamingPaymentId),
+          ),
+          endCondition,
+          limitAmount,
+        },
+      },
     });
   } catch (error) {
     return yield putError(

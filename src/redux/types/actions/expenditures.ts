@@ -4,6 +4,7 @@ import {
   ExpenditurePayoutFieldValue,
   ExpenditureStageFieldValue,
 } from '~common/Expenditures/ExpenditureForm';
+import { StreamingPaymentEndCondition } from '~gql';
 
 import { UniqueActionType, ErrorActionType, MetaWithNavigate } from './index';
 
@@ -173,11 +174,13 @@ export type ExpendituresActionTypes =
         colonyAddress: Address;
         createdInDomain: Domain;
         recipientAddress: Address;
-        tokenAddresses: Address[];
-        amounts: string[];
+        tokenAddress: Address;
+        amount: string;
         startTime: number;
         endTime?: number;
         interval: number;
+        endCondition: StreamingPaymentEndCondition;
+        limitAmount?: string;
       },
       MetaWithNavigate<object>
     >

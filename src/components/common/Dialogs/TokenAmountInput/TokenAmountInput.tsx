@@ -36,6 +36,7 @@ interface Props extends Pick<InputProps, 'label'> {
   includeNetworkFee?: boolean;
   tokenAddressFieldName?: string;
   amountFieldName?: string;
+  disabledTokenAddress?: boolean;
 }
 
 const TokenAmountInput = ({
@@ -45,6 +46,7 @@ const TokenAmountInput = ({
   tokenAddressFieldName = 'tokenAddress',
   amountFieldName = 'amount',
   label,
+  disabledTokenAddress,
 }: Props) => {
   const { watch, trigger } = useFormContext();
   const { amount, tokenAddress } = watch();
@@ -93,7 +95,7 @@ const TokenAmountInput = ({
             name={tokenAddressFieldName}
             elementOnly
             appearance={{ alignOptions: 'right', theme: 'grey' }}
-            disabled={disabled}
+            disabled={disabled || !!disabledTokenAddress}
             onChange={() => {
               trigger(amountFieldName);
             }}
