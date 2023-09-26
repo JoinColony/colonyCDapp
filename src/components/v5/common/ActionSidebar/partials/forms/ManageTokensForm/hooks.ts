@@ -67,6 +67,7 @@ export const useManageTokens = (
             selectedTokenAddresses: payload.selectedTokenAddresses.map(
               ({ token }) => token,
             ),
+            forceAction: false,
           };
           if (colony) {
             return getTokenManagementDialogPayload(colony, values);
