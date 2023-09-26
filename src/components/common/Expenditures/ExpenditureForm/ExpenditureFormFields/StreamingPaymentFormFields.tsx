@@ -46,9 +46,10 @@ const StreamingPaymentFormFields = ({
       {endCondition === StreamingPaymentEndCondition.LimitReached && (
         <TokenAmountInput
           colony={colony}
-          tokenAddressFieldName="limitTokenAddress"
+          tokenAddressFieldName="tokenAddress"
           amountFieldName="limitAmount"
           label="Limit"
+          disabledTokenAddress
         />
       )}
       {endCondition === StreamingPaymentEndCondition.FixedTime && (

@@ -34,8 +34,8 @@ const StreamingPaymentForm = () => {
             colony,
           ),
           recipientAddress: payload.recipientAddress,
-          tokenAddresses: [payload.tokenAddress],
-          amounts: [payload.amount],
+          tokenAddress: payload.tokenAddress,
+          amount: payload.amount,
           startTime: getTimestampFromCleaveDateAndTime(
             payload.startDate,
             payload.startTime,
@@ -48,6 +48,8 @@ const StreamingPaymentForm = () => {
                 )
               : undefined,
           interval: payload.interval,
+          endCondition: payload.endCondition,
+          limitAmount: payload.limitAmount,
         } as CreateStreamingPaymentPayload),
     ),
   );
