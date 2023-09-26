@@ -10,11 +10,13 @@ const isDev = process.env.ENV === 'dev';
 const ETHEREUM_NETWORK = {
   chainId: 1,
   apiUri: 'https://api.etherscan.io/api',
+  rpcUrl: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
 };
 
 const BINANCE_NETWORK = {
   chainId: 56,
   apiUri: 'https://api.bscscan.com/api',
+  rpcUrl: 'https://bsc-dataseed.binance.org/',
 };
 
 const SUPPORTED_SAFE_NETWORKS = [ETHEREUM_NETWORK, BINANCE_NETWORK];

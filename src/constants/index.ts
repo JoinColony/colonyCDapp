@@ -99,6 +99,7 @@ export const ETHEREUM_NETWORK: NetworkInfo = {
   tokenExplorerLink: 'https://etherscan.io/tokens',
   contractAddressLink: 'https://etherscan.io/address',
   safeTxService: 'https://safe-transaction-mainnet.safe.global/api',
+  rpcUrl: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
   apiUri: 'https://api.etherscan.io/api',
   nativeToken: ETHER_TOKEN,
 };
