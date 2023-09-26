@@ -15,9 +15,11 @@
         },
         "s3Key": {
             "Type": "String"
+        },
+        "functioncolonycdappSSMAccessArn": {
+          "Type": "String",
+          "Default": "functioncolonycdappSSMAccessArn"
         }
-        
-    
     },
     "Conditions": {
         "ShouldNotCreateEnvResources": {
@@ -70,7 +72,12 @@
             },
             "Role": { "Fn::GetAtt": ["LambdaExecutionRole", "Arn"] },
             "Runtime": "nodejs14.x",
-            "Layers": [],
+            "Layers": [
+              {
+                "Ref": "functioncolonycdappSSMAccessArn"
+              },
+              "arn:aws:lambda:eu-west-2:133256977650:layer:AWS-Parameters-and-Secrets-Lambda-Extension:4"
+            ],
             "Timeout": 25
           }
         },
@@ -129,6 +136,26 @@
                             "logs:CreateLogStream",
                             "logs:PutLogEvents"],
                             "Resource": { "Fn::Sub": [ "arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*", { "region": {"Ref": "AWS::Region"}, "account": {"Ref": "AWS::AccountId"}, "lambda": {"Ref": "LambdaFunction"}} ]}
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "ssm:GetParameter",
+                            "kms:Decrypt"
+                          ],
+                          "Resource": {
+                            "Fn::Sub": [
+                              "arn:aws:ssm:${region}:${account}:parameter/*",
+                              {
+                                "region": {
+                                  "Ref": "AWS::Region"
+                                },
+                                "account": {
+                                  "Ref": "AWS::AccountId"
+                                }
+                              }
+                            ]
+                          }
                         }
                     ]
                 }
