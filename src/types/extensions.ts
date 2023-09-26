@@ -1,5 +1,6 @@
 import { ColonyRole, Extension } from '@colony/colony-js';
 import { CleaveOptions } from 'cleave.js/options';
+import { BigNumberish } from 'ethers';
 import { MessageDescriptor } from 'react-intl';
 import { Schema } from 'yup';
 
@@ -26,6 +27,8 @@ export interface ExtensionInitParam {
   type: ExtensionParamType;
   complementaryLabel?: 'hours' | 'periods' | 'percent';
   formattingOptions?: CleaveOptions;
+  // Transform function that will be applied to the param value before passing it to the saga
+  transformValue?: (value: string | number) => BigNumberish;
 }
 
 export interface ExtensionConfig {
@@ -43,6 +46,7 @@ export type InstalledExtensionData = ExtensionConfig &
   ColonyExtension & {
     availableVersion: number;
     isEnabled: boolean;
+    missingColonyPermissions: ColonyRole[];
   };
 
 export type InstallableExtensionData = ExtensionConfig & {

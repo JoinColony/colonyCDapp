@@ -21,6 +21,7 @@ import {
 import ColonyExtensions from '~common/ColonyExtensions';
 import ExtensionDetails from '~common/Extensions/ExtensionDetails';
 import { useColonyContext } from '~hooks';
+import Expenditures from '~common/Expenditures';
 
 import ColonyHomeLayout from './ColonyHomeLayout';
 
@@ -76,6 +77,7 @@ const ColonyHome = () => {
           path={COLONY_DECISIONS_ROUTE}
           element={<ColonyDecisions domainId={domainIdFilter} />}
         />
+        <Route path="/expenditures/*" element={<Expenditures />} />
       </Route>
 
       <Route path="*" element={<NotFoundRoute />} />

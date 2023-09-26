@@ -9,7 +9,7 @@ import {
   UpdateDomainMetadataMutation,
   UpdateDomainMetadataMutationVariables,
 } from '~gql';
-import { getDomainDatabaseId } from '~utils/domains';
+import { getDomainDatabaseId } from '~utils/databaseId';
 
 import {
   createGroupTransaction,

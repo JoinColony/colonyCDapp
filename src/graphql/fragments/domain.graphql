@@ -3,6 +3,7 @@ fragment Domain on Domain {
   nativeId
   isRoot
   nativeFundingPotId
+  nativeSkillId
   metadata {
     ...DomainMetadata
   }

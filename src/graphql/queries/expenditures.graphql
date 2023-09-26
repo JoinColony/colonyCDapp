@@ -1,0 +1,17 @@
+query GetColonyExpenditures($colonyAddress: ID!) {
+  getColony(id: $colonyAddress) {
+    id
+    expenditures {
+      items {
+        id
+        nativeId
+      }
+    }
+  }
+}
+
+query GetExpenditure($expenditureId: ID!) {
+  getExpenditure(id: $expenditureId) {
+    ...Expenditure
+  }
+}

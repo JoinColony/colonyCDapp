@@ -145,11 +145,12 @@ export const createGroupTransaction = (
   { id, index }: { id: string; index: number },
   key: string,
   meta: { id: string },
-  config: TxConfig,
+  config: Omit<TxConfig, 'group'> & { group?: Partial<TxConfig['group']> },
 ) =>
   fork(createTransaction, id, {
     ...config,
     group: {
+      ...config.group,
       key,
       id: meta.id,
       index,

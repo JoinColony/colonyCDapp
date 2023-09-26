@@ -1,4 +1,3 @@
-import { Channel } from 'redux-saga';
 import { all, call, put } from 'redux-saga/effects';
 import { getExtensionHash, Extension, ClientType, Id } from '@colony/colony-js';
 import { poll } from 'ethers/lib/utils';
@@ -33,11 +32,11 @@ import {
   GetTokenFromEverywhereQueryVariables,
 } from '~gql';
 import { ColonyManager, ContextModule, getContext } from '~context';
-import { DEFAULT_TOKEN_DECIMALS, isDev } from '~constants';
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { ActionTypes, Action, AllActions } from '~redux/index';
 import { createAddress } from '~utils/web3';
 import { toNumber } from '~utils/numbers';
-import { getDomainDatabaseId } from '~utils/domains';
+import { getDomainDatabaseId } from '~utils/databaseId';
 
 import {
   transactionAddParams,
@@ -53,16 +52,11 @@ import {
   getColonyManager,
 } from '../utils';
 import {
+  ChannelDefinition,
   createGroupTransaction,
   createTransactionChannels,
 } from '../transactions';
 import { getOneTxPaymentVersion } from '../utils/extensionVersion';
-
-interface ChannelDefinition {
-  channel: Channel<any>;
-  index: number;
-  id: string;
-}
 
 function* colonyCreate({
   meta,
@@ -141,9 +135,6 @@ function* colonyCreate({
         context: ClientType.NetworkClient,
         methodName: 'createColony(address,uint256,string,string)',
         ready: false,
-        title: isDev
-          ? { id: 'transaction.group.createColony.titleWithHold' }
-          : undefined,
       });
     }
 
@@ -449,22 +440,6 @@ function* colonyCreate({
         .filter(Boolean)
         .map(({ id }) => put(transactionAddIdentifier(id, tokenAddress))),
     );
-
-    /*
-     * @NOTE Wait for the block ingestor to pick up the new colony
-     *
-     * This is not ideal, but it's only needed for the local dev environment since
-     * the transactions fire at such a rapid rate, that the block ingestor can't
-     * keep up, so it won't set up the required event listeners, by the time the
-     * actual events from the new colony get emmited
-     *
-     * This isn't a issue in production, since transactions get mined at a more
-     * leasurely pace.
-     */
-    if (isDev) {
-      // eslint-disable-next-line no-promise-executor-return
-      yield new Promise((resolve) => setTimeout(resolve, 3000));
-    }
 
     if (deployTokenAuthority) {
       /*

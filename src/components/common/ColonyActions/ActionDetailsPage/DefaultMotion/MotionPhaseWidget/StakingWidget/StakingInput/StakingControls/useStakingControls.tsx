@@ -1,14 +1,17 @@
 import { BigNumber } from 'ethers';
 
 import { useGetUserReputationQuery } from '~gql';
-import { useAppContext, useColonyContext } from '~hooks';
+import {
+  useAppContext,
+  useColonyContext,
+  useEnoughTokensForStaking,
+} from '~hooks';
 
 import { useStakingWidgetContext } from '../../StakingWidgetProvider';
 import {
   userCanStakeMore,
   userHasInsufficientReputation,
 } from '../StakingSliderMessages/helpers';
-import { useEnoughTokensForStaking } from '../useEnoughTokensForStaking';
 
 const useStakingControls = (limitExceeded: boolean) => {
   const { colony, loading: loadingColony } = useColonyContext();
@@ -25,7 +28,7 @@ const useStakingControls = (limitExceeded: boolean) => {
 
   const {
     userActivatedTokens,
-    enoughTokensToStakeMinimum,
+    hasEnoughTokens: enoughTokensToStakeMinimum,
     loadingUserTokenBalance,
   } = useEnoughTokensForStaking(
     colony?.nativeToken.tokenAddress ?? '',

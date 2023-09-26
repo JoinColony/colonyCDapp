@@ -3,11 +3,11 @@ import { BigNumber } from 'ethers';
 import { useGetUserTokenBalanceQuery } from '~gql';
 import { Address } from '~types';
 
-export const useEnoughTokensForStaking = (
+const useEnoughTokensForStaking = (
   tokenAddress: Address,
   walletAddress: Address,
   colonyAddress: Address,
-  userMinStake: string,
+  requiredStake: string,
 ) => {
   const { data, loading: loadingUserTokenBalance } =
     useGetUserTokenBalanceQuery({
@@ -25,11 +25,13 @@ export const useEnoughTokensForStaking = (
 
   const userActivatedTokens = BigNumber.from(activeBalance ?? 0);
 
-  const enoughTokensToStakeMinimum = userActivatedTokens.gte(userMinStake);
+  const hasEnoughTokens = userActivatedTokens.gte(requiredStake);
 
   return {
     loadingUserTokenBalance,
-    enoughTokensToStakeMinimum,
+    hasEnoughTokens,
     userActivatedTokens,
   };
 };
+
+export default useEnoughTokensForStaking;

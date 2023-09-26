@@ -91,7 +91,6 @@ export const useGetColonyAction = () => {
       input: {
         colonyAddress: colony?.colonyAddress ?? '',
         databaseMotionId: action?.motionData?.databaseMotionId ?? '',
-        transactionHash: transactionHash ?? '',
       },
     },
     onCompleted: () => {

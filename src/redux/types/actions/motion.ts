@@ -12,12 +12,29 @@ import {
   MetaWithHistory,
   MetaWithNavigate,
 } from './index';
+import { ExpenditureFundPayload } from './expenditures';
 
 export enum RootMotionMethodNames {
   MintTokens = 'mintTokens',
   Upgrade = 'upgrade',
   UnlockToken = 'unlockToken',
 }
+
+export type ExpenditureFundMotionPayload = Omit<
+  ExpenditureFundPayload,
+  'colonyAddress'
+> & {
+  colony: Colony;
+  fromDomainId: number;
+  motionDomainId: number;
+};
+
+export type MotionFinalizePayload = {
+  userAddress: Address;
+  colonyAddress: Address;
+  motionId: string;
+  gasEstimate: string;
+};
 
 export type MotionActionTypes =
   | UniqueActionType<
@@ -65,11 +82,7 @@ export type MotionActionTypes =
     >
   | UniqueActionType<
       ActionTypes.MOTION_FINALIZE,
-      {
-        userAddress: Address;
-        colonyAddress: Address;
-        motionId: BigNumber;
-      },
+      MotionFinalizePayload,
       MetaWithHistory<object>
     >
   | ErrorActionType<ActionTypes.MOTION_FINALIZE_ERROR, object>
@@ -246,5 +259,15 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_MANAGE_REPUTATION_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_MANAGE_REPUTATION_SUCCESS,
+      MetaWithNavigate<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_EXPENDITURE_FUND,
+      ExpenditureFundMotionPayload,
+      MetaWithNavigate<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_FUND_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS,
       MetaWithNavigate<object>
     >;
