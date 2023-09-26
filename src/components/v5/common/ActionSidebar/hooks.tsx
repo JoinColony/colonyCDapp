@@ -44,6 +44,7 @@ import { GLOBAL_EVENTS } from '~utils/browser/dispatchGlobalEvent/consts';
 import { SetActionTypeCutomEventDetail } from '~utils/browser/dispatchGlobalEvent/types';
 import { ActionFormProps } from '~shared/Fields/Form/ActionForm';
 import { ActionTypes } from '~redux';
+import SplitPaymentForm from './partials/forms/SplitPaymentForm';
 
 export const useActionsList = () => {
   const { colony } = useColonyContext();
@@ -113,7 +114,6 @@ export const useActionsList = () => {
           {
             label: { id: 'actions.splitPayment' },
             value: ACTION.SPLIT_PAYMENT,
-            isDisabled: true,
           },
           {
             label: { id: 'actions.stagedPayment' },
@@ -330,6 +330,7 @@ export const useSidebarActionForm = () => {
       [ACTION.EDIT_EXISTING_TEAM]: EditTeamForm,
       [ACTION.ENTER_RECOVERY_MODE]: EnterRecoveryModeForm,
       [ACTION.EDIT_COLONY_DETAILS]: EditColonyDetailsForm,
+      [ACTION.SPLIT_PAYMENT]: SplitPaymentForm,
     }),
     [],
   );

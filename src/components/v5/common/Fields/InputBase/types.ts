@@ -8,5 +8,10 @@ export interface InputBaseProps
   wrapperClassName?: string;
   suffix?: React.ReactNode;
   prefix?: React.ReactNode;
-  mode: 'primary' | 'secondary';
+  mode?: 'primary' | 'secondary';
+}
+
+export interface FormInputBaseProps
+  extends Omit<InputBaseProps, 'onChange' | 'value' | 'state' | 'message'> {
+  name: string;
 }

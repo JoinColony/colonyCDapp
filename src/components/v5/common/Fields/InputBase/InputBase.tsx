@@ -4,6 +4,8 @@ import clsx from 'clsx';
 import { InputBaseProps } from './types';
 import { FIELD_STATE } from '../consts';
 
+const displayName = 'v5.common.Fields.InputBase';
+
 const InputBase: FC<InputBaseProps> = ({
   className,
   wrapperClassName,
@@ -11,7 +13,7 @@ const InputBase: FC<InputBaseProps> = ({
   message,
   prefix,
   suffix,
-  mode,
+  mode = 'primary',
   disabled,
   ...rest
 }) => {
@@ -37,5 +39,7 @@ const InputBase: FC<InputBaseProps> = ({
     </div>
   );
 };
+
+InputBase.displayName = displayName;
 
 export default InputBase;

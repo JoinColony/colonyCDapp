@@ -218,7 +218,8 @@
     "paint",
     "white-tick",
     "thumbs-up",
-    "thumbs-down"
+    "thumbs-down",
+    "pie-chart"
   ],
   "multiColorIcons": [
     "circle-check-primary",
