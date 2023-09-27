@@ -203,9 +203,17 @@ function* manageReputationMotion({
     });
 
     if (colonyName) {
-      navigate?.(`/colony/${colonyName}/tx/${txHash}`, {
-        state: { isRedirect: true },
-      });
+      if (navigate) {
+        navigate(`/colony/${colonyName}/tx/${txHash}`, {
+          state: { isRedirect: true },
+        });
+      } else {
+        window.history.replaceState(
+          {},
+          '',
+          `/colony/${colonyName}/activity/tx/${txHash}`,
+        );
+      }
     }
   } catch (error) {
     putError(ActionTypes.MOTION_MANAGE_REPUTATION_ERROR, error, meta);
