@@ -3154,7 +3154,7 @@ type Expenditure @model {
   """
   Indicates whether the expenditure stake has been reclaimed
   """
-  hasReclaimedStake: 
+  hasReclaimedStake: Boolean
   type: ExpenditureType!
 }
 
