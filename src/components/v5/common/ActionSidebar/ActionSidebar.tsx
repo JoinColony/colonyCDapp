@@ -7,6 +7,7 @@ import { useMobile } from '~hooks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import {
   useActionFormProps,
+  useCloseSidebarClick,
   useNotificationBanner,
   useSidebarActionForm,
   useUserHasPermissions,
@@ -21,6 +22,7 @@ import Modal from '~v5/shared/Modal';
 import { ActionForm } from '~shared/Fields';
 import { ActionFormBaseProps } from './types';
 import { formatText } from '~utils/intl';
+import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -41,12 +43,10 @@ const ActionSidebarFormContent: FC<PropsWithChildren<Props>> = ({
     selectedAction,
   } = useSidebarActionForm();
   const isMobile = useMobile();
-  const {
-    actionSidebarToggle: [, { toggle: toggleActionSidebarOff }],
-  } = useActionSidebarContext();
   const userHasPermissions = useUserHasPermissions();
   const form = useFormContext();
   const notificationBanner = useNotificationBanner(hasErrors, selectedAction);
+  const closeSidebarClick = useCloseSidebarClick(form.formState.dirtyFields);
 
   return (
     <>
@@ -55,7 +55,7 @@ const ActionSidebarFormContent: FC<PropsWithChildren<Props>> = ({
           <button
             type="button"
             className="py-2.5 flex items-center justify-center text-gray-400"
-            onClick={toggleActionSidebarOff}
+            onClick={closeSidebarClick}
             aria-label={formatText({ id: 'ariaLabel.closeModal' })}
           >
             <Icon name="close" appearance={{ size: 'tiny' }} />
@@ -99,9 +99,7 @@ const ActionSidebarFormContent: FC<PropsWithChildren<Props>> = ({
         {!selectedAction && (
           <PopularActions
             setSelectedAction={(action) =>
-              form.setValue(ACTION_TYPE_FIELD_NAME, action, {
-                shouldDirty: true,
-              })
+              form.setValue(ACTION_TYPE_FIELD_NAME, action)
             }
           />
         )}
@@ -117,13 +115,15 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
   const { getFormOptions, actionFormProps } = useActionFormProps();
   const {
     actionSidebarToggle: [
-      ,
+      isActionSidebarOpen,
       { toggle: toggleActionSidebarOff, registerContainerRef },
     ],
     cancelModalToggle: [isCancelModalOpen, { toggleOff: toggleCancelModalOff }],
   } = useActionSidebarContext();
   const [isSidebarFullscreen, { toggle: toggleIsSidebarFullscreen }] =
     useToggle();
+
+  useDisableBodyScroll(isActionSidebarOpen);
 
   return (
     <div
@@ -132,14 +132,13 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
           fixed
           top-0
           right-0
+          bottom-0
           w-full
-          h-screen
           bg-base-white
           rounded-bl-lg
           border-l
           border-gray-200
           shadow-default
-          transition-all
           z-[60]
           flex
           flex-col

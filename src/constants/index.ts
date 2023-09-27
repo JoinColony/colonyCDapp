@@ -88,7 +88,7 @@ export const ETHEREUM_NETWORK: NetworkInfo = {
   displayENSDomain: 'joincolony.eth',
   tokenExplorerLink: 'https://etherscan.io/tokens',
   contractAddressLink: 'https://etherscan.io/address',
-  iconName: 'ethereum',
+  iconName: 'ethereum-icon',
 };
 
 export const GOERLI_NETWORK: NetworkInfo = {

@@ -6,6 +6,7 @@ import Button, { PendingButton } from '~v5/shared/Button';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { ActionButtonsProps } from '../types';
 import { useSubmitButtonText } from './hooks';
+import { useCloseSidebarClick } from '../hooks';
 
 const displayName = 'v5.common.ActionSidebar.partials.ActionButtons';
 
@@ -16,17 +17,19 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
     formState: { isSubmitting, dirtyFields },
   } = useFormContext();
   const {
-    actionSidebarToggle: [, { toggleOff: toggleActionSidebarOff }],
-    cancelModalToggle: [, { toggle: toggleCancelModal }],
+    actionSidebarToggle: [, { useRegisterOnBeforeCloseCallback }],
+    cancelModalToggle: [isCancelModalOpen, { toggleOn: toggleCancelModalOn }],
   } = useActionSidebarContext();
+  const onCancelClick = useCloseSidebarClick(dirtyFields);
 
-  const onCancelClick = () => {
-    if (Object.keys(dirtyFields).length > 0) {
-      toggleCancelModal();
-    } else {
-      toggleActionSidebarOff();
+  useRegisterOnBeforeCloseCallback(() => {
+    if (Object.keys(dirtyFields).length > 0 && !isCancelModalOpen) {
+      toggleCancelModalOn();
+      return false;
     }
-  };
+
+    return undefined;
+  });
 
   return (
     <div
