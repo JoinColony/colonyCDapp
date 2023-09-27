@@ -520,6 +520,8 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     createdAt: 1692048380000,
   },
   {
+    icon: 'extension-advanced-payments',
+    category: ExtensionCategory.Expenditures,
     extensionId: Extension.StreamingPayments,
     name: MSG.streamingPaymentsName,
     descriptionShort: MSG.streamingPaymentsDescriptionShort,

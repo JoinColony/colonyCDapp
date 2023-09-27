@@ -8,7 +8,12 @@ import {
 } from '@colony/colony-js';
 
 import { Action, ActionTypes } from '~redux';
-import { createInvalidParamsError, getColonyManager } from '~redux/sagas/utils';
+import {
+  createInvalidParamsError,
+  getColonyManager,
+  initiateTransaction,
+  takeFrom,
+} from '~redux/sagas/utils';
 import {
   createGroupTransaction,
   createTransactionChannels,
@@ -18,7 +23,7 @@ import { ADDRESS_ZERO } from '~constants';
 
 function* cancelStakedExpenditureMotion({
   meta,
-  meta: { navigate },
+  meta: { navigate, setTxHash },
   payload: {
     colonyAddress,
     colonyName,
@@ -137,6 +142,17 @@ function* cancelStakedExpenditureMotion({
       },
     });
 
+    yield initiateTransaction({ id: createMotion.id });
+
+    const {
+      payload: { hash: txHash },
+    } = yield takeFrom(
+      createMotion.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
+
+    setTxHash?.(txHash);
+
     const { type, payload } = yield call(waitForTxResult, createMotion.channel);
 
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
@@ -145,7 +161,7 @@ function* cancelStakedExpenditureMotion({
         meta,
       });
 
-      navigate(`/colony/${colonyName}/tx/${payload.transaction.hash}`);
+      navigate?.(`/colony/${colonyName}/tx/${payload.transaction.hash}`);
     }
   } catch (e) {
     console.error(e);
