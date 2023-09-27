@@ -56,7 +56,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
         onClick={toggleUserSelect}
         aria-label={formatText({ id: 'ariaLabel.selectUser' })}
       >
-        {userByAddress ? (
+        {userByAddress || field.value ? (
           <>
             <UserAvatar
               user={userByAddress}
@@ -96,7 +96,8 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
       )}
       {usersOptions.isRecipientNotVerified && (
         <UserAvatarPopover
-          userName={displayName}
+          userName={displayName || field.value}
+          walletAddress={userByAddress?.walletAddress || field.value}
           aboutDescription={userByAddress?.profile?.bio || ''}
           user={userByAddress}
           avatarClassName={
