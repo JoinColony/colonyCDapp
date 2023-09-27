@@ -138,10 +138,16 @@ const getMessageIds = (txReceipt, homeAMBContract, bridgeAddress) => {
 const LOCAL_HOME_CHAIN = 'http://127.0.0.1:8545';
 const LOCAL_FOREIGN_CHAIN = 'http://127.0.0.1:8546';
 
-const getHomeProvider = () => {
-  return isDev
-    ? new providers.JsonRpcProvider(LOCAL_HOME_CHAIN)
-    : new providers.Web3Provider(Web3.givenProvider); // Metamask
+const getHomeProvider = async () => {
+  const ENV = process.env.ENV;
+  let rpcURL = LOCAL_HOME_CHAIN;
+
+  if (ENV === 'qa' || ENV === 'sc') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [rpcURL] = await getParams(['chainRpcEndpoint']);
+  }
+
+  return new providers.JsonRpcProvider(rpcURL);
 };
 
 const getForeignProvider = (safeChainId) => {
@@ -176,8 +182,8 @@ const getForeignBridgeByChain = (safeChainId) => {
   return new Contract(foreignBridgeAddress, ForeignAMB, foreignSigner);
 };
 
-const getHomeBridgeByChain = (safeChainId) => {
-  const homeProvider = getHomeProvider();
+const getHomeBridgeByChain = async (safeChainId) => {
+  const homeProvider = await getHomeProvider();
   const homeSigner = homeProvider.getSigner();
   const homeBridgeAddress = isDev
     ? require('../../../../mock-data/colonyNetworkArtifacts/safe-addresses.json').LOCAL_HOME_BRIDGE_ADDRESS

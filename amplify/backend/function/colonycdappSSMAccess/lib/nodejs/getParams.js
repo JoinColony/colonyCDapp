@@ -33,6 +33,7 @@ const getParam = async (paramName) => {
         },
       },
     );
+
     const resource = await res.json();
     const {
       Parameter: { Value },

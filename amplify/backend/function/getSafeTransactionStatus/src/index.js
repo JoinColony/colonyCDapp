@@ -44,7 +44,7 @@ exports.handler = async (event) => {
   const networkApiURI =
     SUPPORTED_SAFE_NETWORKS.find((network) => network.chainId === chainId)
       .apiUri || '';
-  const homeAMBContract = getHomeBridgeByChain(chainId);
+  const homeAMBContract = await getHomeBridgeByChain(chainId);
   const foreignAMBContract = getForeignBridgeByChain(chainId);
 
   const messageIds = getMessageIds(
