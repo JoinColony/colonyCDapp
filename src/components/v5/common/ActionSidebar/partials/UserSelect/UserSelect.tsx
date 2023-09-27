@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 import { useController } from 'react-hook-form';
 
+import { isHexString } from 'ethers/lib/utils';
 import { useUserSelect } from './hooks';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
 import UserAvatar from '~v5/shared/UserAvatar';
@@ -40,6 +41,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
     HTMLButtonElement,
     HTMLDivElement
   >([isUserSelectVisible]);
+  const fieldValueFormat: string = isHexString(field.value) ? field.value : '';
 
   return (
     <div className="sm:relative w-full flex items-center">
@@ -120,7 +122,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
               {
                 walletAddress: (
                   <span className="font-semibold block mt-2">
-                    {userByAddress?.walletAddress}
+                    {userByAddress?.walletAddress || fieldValueFormat}
                   </span>
                 ),
               },
