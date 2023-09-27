@@ -454,11 +454,13 @@ export const useActionFormBaseHook: UseActionFormBaseHook = ({
   });
 };
 
-export const useCloseSidebarClick = (dirtyFields: Record<string, any>) => {
+export const useCloseSidebarClick = () => {
+  const { formState } = useFormContext();
   const {
     actionSidebarToggle: [, { toggleOff: toggleActionSidebarOff }],
     cancelModalToggle: [, { toggle: toggleCancelModal }],
   } = useActionSidebarContext();
+  const { dirtyFields } = formState;
 
   return () => {
     if (Object.keys(dirtyFields).length > 0) {

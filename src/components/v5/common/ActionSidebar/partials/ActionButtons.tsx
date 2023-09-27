@@ -20,7 +20,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
     actionSidebarToggle: [, { useRegisterOnBeforeCloseCallback }],
     cancelModalToggle: [isCancelModalOpen, { toggleOn: toggleCancelModalOn }],
   } = useActionSidebarContext();
-  const onCancelClick = useCloseSidebarClick(dirtyFields);
+  const onCancelClick = useCloseSidebarClick();
 
   useRegisterOnBeforeCloseCallback(() => {
     if (Object.keys(dirtyFields).length > 0 && !isCancelModalOpen) {

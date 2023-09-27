@@ -46,7 +46,7 @@ const ActionSidebarFormContent: FC<PropsWithChildren<Props>> = ({
   const userHasPermissions = useUserHasPermissions();
   const form = useFormContext();
   const notificationBanner = useNotificationBanner(hasErrors, selectedAction);
-  const closeSidebarClick = useCloseSidebarClick(form.formState.dirtyFields);
+  const closeSidebarClick = useCloseSidebarClick();
 
   return (
     <>
