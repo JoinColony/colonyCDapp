@@ -19,7 +19,7 @@ const UserAvatarContent: FC<UserAvatarContentProps> = ({
 
   return (
     <UserInfo
-      userName={userName}
+      userName={profile?.displayName || walletAddress}
       title={userName}
       walletAddress={walletAddress}
       isVerified={isVerified}

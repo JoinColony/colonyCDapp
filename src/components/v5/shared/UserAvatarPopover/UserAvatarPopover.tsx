@@ -22,16 +22,16 @@ const UserAvatarPopover: FC<PropsWithChildren<UserAvatarPopoverProps>> = ({
   domains,
   isContributorsList,
   children,
-  isWarning,
+  avatarClassName,
   userFormat,
   popoverButtonContent = (
     <UserAvatar
       size={avatarSize || 'xs'}
-      userName={userFormat}
+      userName={userName}
       user={user}
       userStatus={userStatus}
       isContributorsList={isContributorsList}
-      isWarning={isWarning}
+      avatarClassName={avatarClassName}
     />
   ),
 }) => {
@@ -64,6 +64,7 @@ const UserAvatarPopover: FC<PropsWithChildren<UserAvatarPopoverProps>> = ({
     <UserAvatarContent
       userName={userFormat}
       title={userName}
+      user={user}
       walletAddress={walletAddress}
       isVerified={isVerified}
       aboutDescription={aboutDescription}

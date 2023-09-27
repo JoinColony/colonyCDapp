@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 import { useController } from 'react-hook-form';
 
@@ -10,11 +9,14 @@ import { useUserByAddress } from '~hooks';
 import useToggle from '~hooks/useToggle';
 import { UserSelectProps } from './types';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
+import Icon from '~shared/Icon';
+import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
+import NotificationBanner from '~common/Extensions/NotificationBanner';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
 const UserSelect: FC<UserSelectProps> = ({ name }) => {
-  const { formatMessage } = useIntl();
   const {
     field,
     fieldState: { error },
@@ -22,7 +24,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
     name,
   });
   const isError = !!error;
-  const usersOptions = useUserSelect();
+  const usersOptions = useUserSelect(field.value);
   const [
     isUserSelectVisible,
     {
@@ -40,7 +42,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
   >([isUserSelectVisible]);
 
   return (
-    <div className="sm:relative w-full">
+    <div className="sm:relative w-full flex items-center">
       <button
         type="button"
         ref={relativeElementRef}
@@ -52,16 +54,24 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
           },
         )}
         onClick={toggleUserSelect}
-        aria-label={formatMessage({ id: 'ariaLabel.selectUser' })}
+        aria-label={formatText({ id: 'ariaLabel.selectUser' })}
       >
         {userByAddress ? (
-          <UserAvatar
-            user={userByAddress}
-            userName={userDisplayName}
-            size="xs"
-          />
+          <>
+            <UserAvatar
+              user={userByAddress}
+              userName={userDisplayName || usersOptions.userFormat}
+              size="xs"
+              isWarning={usersOptions.isRecipientNotVerified}
+            />
+            {userByAddress && usersOptions.isUserVerified && (
+              <span className="flex ml-2 text-blue-400">
+                <Icon name="verified" />
+              </span>
+            )}
+          </>
         ) : (
-          formatMessage({ id: 'actionSidebar.selectMember' })
+          formatText({ id: 'actionSidebar.selectMember' })
         )}
       </button>
       {isUserSelectVisible && (
@@ -80,6 +90,47 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
           isLoading={usersOptions.loading}
           className="z-[60]"
         />
+      )}
+      {usersOptions.isRecipientNotVerified && (
+        <UserAvatarPopover
+          userName={displayName}
+          walletAddress={userByAddress?.walletAddress || userByAddress}
+          aboutDescription={userByAddress?.profile?.bio || ''}
+          user={userByAddress}
+          avatarClassName={
+            usersOptions.isRecipientNotVerified ? 'text-warning-400' : ''
+          }
+          avatarSize="xs"
+          userFormat={usersOptions.userFormat}
+          popoverButtonContent={
+            <button type="button">
+              <span className="flex ml-2 text-warning-400">
+                <Icon name="warning-circle" />
+              </span>
+            </button>
+          }
+        >
+          <NotificationBanner
+            status="notVerified"
+            title={formatText(
+              { id: 'tooltip.user.not.verified.warning' },
+              {
+                walletAddress: (
+                  <span className="font-semibold block mt-2">
+                    {userByAddress?.walletAddress}
+                  </span>
+                ),
+              },
+            )}
+            isAlt
+            action={{
+              type: 'call-to-action',
+              actionText: formatText({ id: 'add.verified.member' }),
+              onClick: () => {}, // @TODO: add action
+            }}
+            className="mt-4"
+          />
+        </UserAvatarPopover>
       )}
     </div>
   );
