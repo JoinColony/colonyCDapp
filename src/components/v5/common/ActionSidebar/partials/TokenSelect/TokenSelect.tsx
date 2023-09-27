@@ -78,7 +78,7 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
           message={
             searchError ? (
               <span className="text-sm text-negative-400">
-                This token is already on colony tokens list
+                {formatText({ id: 'manageTokensTable.error' })}
               </span>
             ) : undefined
           }
