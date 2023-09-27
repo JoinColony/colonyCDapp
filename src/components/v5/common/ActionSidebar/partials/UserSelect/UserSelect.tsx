@@ -62,7 +62,9 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
               user={userByAddress}
               userName={userDisplayName || usersOptions.userFormat}
               size="xs"
-              isWarning={usersOptions.isRecipientNotVerified}
+              avatarClassName={
+                usersOptions.isRecipientNotVerified ? 'text-warning-400' : ''
+              }
             />
             {userByAddress && usersOptions.isUserVerified && (
               <span className="flex ml-2 text-blue-400">
@@ -94,7 +96,6 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
       {usersOptions.isRecipientNotVerified && (
         <UserAvatarPopover
           userName={displayName}
-          walletAddress={userByAddress?.walletAddress || userByAddress}
           aboutDescription={userByAddress?.profile?.bio || ''}
           user={userByAddress}
           avatarClassName={
