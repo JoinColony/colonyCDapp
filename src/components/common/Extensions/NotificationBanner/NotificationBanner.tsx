@@ -4,7 +4,6 @@ import clsx from 'clsx';
 import Link from '~v5/shared/Link';
 
 import CopyUrl from './CopyUrl';
-import styles from './NotificationBanner.module.css';
 import { NotificationBannerProps } from './types';
 import StatusText from '~v5/shared/StatusText';
 
@@ -22,7 +21,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   return (
     <div
       className={clsx(
-        styles.banner,
+        'border border-solid rounded-lg flex justify-between min-h-[2.75rem] flex-col md:flex-row md:items-center',
         `gap-2 ${
           isAlt
             ? 'rounded min-h-[3.75rem] p-4'
@@ -64,10 +63,14 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
         )}
       </div>
       <div
-        className={clsx(styles.actionWrapper, 'text-4', {
-          'ml-0 md:ml-0 md:self-center': isAlt,
-          'ml-6 md:ml-2': !isAlt,
-        })}
+        className={clsx(
+          `[&_a]:underline [&_button]:underline [&_a]:hover:no-underline
+        [&_button]:hover:no-underline mt-2 md:mt-0 text-4`,
+          {
+            'ml-0 md:ml-0 md:self-center': isAlt,
+            'ml-6 md:ml-2': !isAlt,
+          },
+        )}
       >
         {(() => {
           switch (action?.type) {
