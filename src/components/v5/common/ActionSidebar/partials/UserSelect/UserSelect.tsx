@@ -91,6 +91,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
           }}
           isLoading={usersOptions.loading}
           className="z-[60]"
+          isDefaultItemVisible
         />
       )}
       {usersOptions.isRecipientNotVerified && (
