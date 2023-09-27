@@ -64,7 +64,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
               user={userByAddress}
               userName={userDisplayName || usersOptions.userFormat}
               size="xs"
-              avatarClassName={
+              className={
                 usersOptions.isRecipientNotVerified ? 'text-warning-400' : ''
               }
             />
@@ -102,7 +102,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
           walletAddress={userByAddress?.walletAddress || field.value}
           aboutDescription={userByAddress?.profile?.bio || ''}
           user={userByAddress}
-          avatarClassName={
+          className={
             usersOptions.isRecipientNotVerified ? 'text-warning-400' : ''
           }
           avatarSize="xs"

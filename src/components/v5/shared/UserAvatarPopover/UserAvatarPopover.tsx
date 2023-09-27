@@ -22,7 +22,7 @@ const UserAvatarPopover: FC<PropsWithChildren<UserAvatarPopoverProps>> = ({
   domains,
   isContributorsList,
   children,
-  avatarClassName,
+  className,
   userFormat,
   popoverButtonContent = (
     <UserAvatar
@@ -31,7 +31,7 @@ const UserAvatarPopover: FC<PropsWithChildren<UserAvatarPopoverProps>> = ({
       user={user}
       userStatus={userStatus}
       isContributorsList={isContributorsList}
-      avatarClassName={avatarClassName}
+      className={className}
     />
   ),
 }) => {
