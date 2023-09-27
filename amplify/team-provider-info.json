@@ -74,7 +74,8 @@
           "s3Key": "amplify-builds/setCurrentVersion-4f575649357a5a454d2b-build.zip"
         },
         "updateContributorsWithReputation": {},
-        "getTotalMemberCount": {}
+        "getTotalMemberCount": {},
+        "fetchExpenditureBalances": {}
       },
       "api": {
         "colonycdapp": {}
