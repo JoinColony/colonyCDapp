@@ -3067,7 +3067,7 @@ Model storing block ingestor stats, as key-value entries
 """
 type IngestorStats @model {
   """
-  Unique identifier of the ingestore stats
+  Unique identifier of the ingestor stats
   """
   id: ID!
   """
@@ -3077,44 +3077,91 @@ type IngestorStats @model {
 }
 
 type Expenditure @model {
-  id: ID! # Self-managed, formatted as colonyId_nativeExpenditureId
+  """
+  Unique identifier for the role snapshot
+  Self-managed, format: `colonyId_nativeExpenditureId`
+  """
+  id: ID!
+  """
+  Native (contract) ID of the expenditure
+  """
   nativeId: Int!
   createdAt: AWSDateTime!
+  """
+  Colony ID (address) to which the expenditure belongs
+  """
   colonyId: ID!
     @index(
       name: "byColony"
       queryField: "getExpendituresByColony"
       sortKeyFields: ["createdAt"]
     )
+  """
+  The Colony to which the expenditure belongs
+  """
   colony: Colony! @belongsTo(fields: ["colonyId"])
+  """
+  Address of the expenditure owner, it can be a user or an extension
+  """
   ownerAddress: ID!
+  """
+  Status of the expenditure
+  """
   status: ExpenditureStatus!
+  """
+  Array containing expenditure slots
+  """
   slots: [ExpenditureSlot!]!
+  """
+  Native (contract) ID of the funding pot of the expenditure
+  """
   nativeFundingPotId: Int!
     @index(
       name: "byNativeFundingPotId"
       queryField: "getExpendituresByNativeFundingPotIdAndColony"
       sortKeyFields: ["colonyId"]
     )
+  """
+  Native (contract) ID of the expenditure domain
+  """
   nativeDomainId: Int!
+  """
+  Optional metadata linked to the expenditure
+  It contains client-side data that is not stored on chain
+  """
   metadata: ExpenditureMetadata @hasOne(fields: ["id"])
+  """
+  Array containing expenditure balances
+  """
   balances: [ExpenditureBalance!]
     @function(name: "fetchExpenditureBalances-${env}")
+  """
+  The timestamp at which the expenditure was finalized
+  """
   finalizedAt: AWSTimestamp
-  hasReclaimedStake: Boolean
   """
   The motions created that relate to this expenditure, if there are any
   """
   motions: [ColonyMotion] @hasMany(indexName: "byExpenditureId", fields: ["id"])
   """
+  Indicates whether the expenditure was staked for
+  """
+  isStaked: Boolean!
+  """
   Indicates if the creator's stake was forfeited when staked expenditure was cancelled
   """
   isStakeForfeited: Boolean
-  isStaked: Boolean!
+  """
+  Indicates whether the expenditure stake has been reclaimed
+  """
+  hasReclaimedStake: 
   type: ExpenditureType!
 }
 
-# Each expenditure can have multiple slots with one recipient and possibly multiple payouts (with different token addresses)
+"""
+Represents a slot of an expenditure
+Each expenditure can have multiple slots, with a single recipients and multiple payouts (in different token addresses)
+"""
 type ExpenditureSlot {
   id: Int!
   recipientAddress: String
