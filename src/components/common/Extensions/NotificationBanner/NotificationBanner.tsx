@@ -6,7 +6,6 @@ import Link from '~v5/shared/Link';
 import CopyUrl from './CopyUrl';
 import { NotificationBannerProps } from './types';
 import StatusText from '~v5/shared/StatusText';
-import { useMobile } from '~hooks';
 
 const displayName = 'common.Extensions.NotificationBanner';
 
@@ -18,7 +17,6 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   isAlt = false,
 }) => {
   const { actionText } = action || {};
-  const isMobile = useMobile();
 
   return (
     <div
@@ -80,9 +78,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
                 return (
                   <Link
                     to={action.href}
-                    className={clsx('underline', {
-                      'hover:no-underline': !isMobile,
-                    })}
+                    className="underline md:hover:no-underline"
                   >
                     {actionText}
                   </Link>
@@ -92,9 +88,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
                 return (
                   <button
                     type="button"
-                    className={clsx('underline', {
-                      'hover:no-underline': !isMobile,
-                    })}
+                    className="underline md:hover:no-underline"
                     onClick={action.onClick}
                   >
                     {actionText}
