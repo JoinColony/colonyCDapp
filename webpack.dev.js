@@ -13,6 +13,9 @@ module.exports = () => ({
   devServer: {
     historyApiFallback: true,
     hot: true,
+    client: {
+      logging: 'error',
+    },
   },
   output: {
     filename: 'dev-[name].js',
