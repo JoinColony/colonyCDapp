@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
@@ -9,6 +8,7 @@ import Avatar from '~v5/shared/Avatar';
 import { useMobile } from '~hooks';
 import IconWithTooltip from '~v5/shared/IconWithTooltip';
 import TokenIcon from '~shared/TokenIcon';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.SearchSelect.partials.SearchItem';
 
@@ -17,7 +17,6 @@ const SearchItem: FC<SearchItemProps> = ({
   onChange,
   isLabelVisible = true,
 }) => {
-  const { formatMessage } = useIntl();
   const isMobile = useMobile();
 
   return (
@@ -45,7 +44,7 @@ const SearchItem: FC<SearchItemProps> = ({
             (option) => option.isDisabled,
           )[0];
           const labelText =
-            typeof label === 'string' ? label : formatMessage(label);
+            typeof label === 'string' ? label : formatText(label);
 
           const hasAvatar = showAvatar || !!color || !!token;
 
@@ -105,9 +104,7 @@ const SearchItem: FC<SearchItemProps> = ({
                 )}
                 {missingPermissions && (
                   <IconWithTooltip
-                    tooltipContent={
-                      <FormattedMessage id={missingPermissions} />
-                    }
+                    tooltipContent={formatText({ id: missingPermissions })}
                     iconName="warning-circle"
                     className="text-warning-400"
                   />

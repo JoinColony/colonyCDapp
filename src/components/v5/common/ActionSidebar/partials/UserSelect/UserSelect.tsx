@@ -68,7 +68,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
                 usersOptions.isRecipientNotVerified ? 'text-warning-400' : ''
               }
             />
-            {userByAddress && usersOptions.isUserVerified && (
+            {usersOptions.isUserVerified && (
               <span className="flex ml-2 text-blue-400">
                 <Icon name="verified" />
               </span>
@@ -118,9 +118,10 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
           <NotificationBanner
             status="notVerified"
             title={formatText(
-              { id: 'tooltip.user.not.verified.warning' },
+              { id: 'user.not.verified.warning' },
               {
-                walletAddress: (
+                walletAddress: (userByAddress?.walletAddress ||
+                  fieldValueFormat) && (
                   <span className="font-semibold block mt-2">
                     {userByAddress?.walletAddress || fieldValueFormat}
                   </span>

@@ -457,8 +457,6 @@
   "permission.1": "Root",
   "tooltip.lockedToken": "This token is locked. Colony native tokens are locked and non-transferrable by default to avoid unwanted project token transfer outside of the colony.",
   "tooltip.forceToggle": "Toggle \"Force\" to bypass governance and perform this action immediately. This is only possible with the right permissions.",
-  "tooltip.wallet.address.not.verified.warning": "Warning. You are about to make a payment to a non verified address. Are you sure the address  is correct?",
-  "tooltip.user.not.verified.warning": "This member has not yet been verified. Ensure you know who this member and the address is correct. {walletAddress}",
   "error.network": "There was a problem with the connection. Please try again",
   "status.loading": "Loading{optionalText}...",
   "supporting.documents.title": "extension support",
@@ -1017,5 +1015,6 @@
   "table.row.token": "Token",
   "table.row.symbol": "Symbol",
   "table.row.duplicate": "Duplicate row",
-  "table.row.remove": "Remove row"
+  "table.row.remove": "Remove row",
+  "user.not.verified.warning": "This member has not yet been verified. Ensure you know who this member and the address is correct. {walletAddress}"
 }
