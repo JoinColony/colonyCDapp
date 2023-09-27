@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { isAddress } from '@ethersproject/address';
 
 import getTokenList from '~common/Dialogs/TokenManagementDialog/TokenManagementDialogForm/getTokenList';
-import { TokenFragment, useGetTokenFromEverywhereQuery } from '~gql';
+import { useGetTokenFromEverywhereQuery } from '~gql';
 import { SpinnerLoader } from '~shared/Preloaders';
 import TokenIcon from '~shared/TokenIcon/TokenIcon';
 import { formatText } from '~utils/intl';
@@ -55,11 +55,11 @@ export const useTokenSelect = (inputValue: string) => {
 
       const selectedToken = allTokens.find(
         ({ token }) => token.tokenAddress === inputValue,
-      )?.token as TokenFragment;
+      )?.token;
 
       return (
         <div className="flex items-center gap-2">
-          <TokenIcon token={selectedToken} size="xxs" />
+          {selectedToken && <TokenIcon token={selectedToken} size="xxs" />}
           {selectedToken?.name}
         </div>
       );

@@ -74,14 +74,14 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
               ? { ...tokenOptions, options: [] }
               : tokenOptions,
           ]}
-          error={{
-            state: searchError ? FIELD_STATE.Error : undefined,
-            message: searchError ? (
+          state={searchError ? FIELD_STATE.Error : undefined}
+          message={
+            searchError ? (
               <span className="text-sm text-negative-400">
                 This token is already on colony tokens list
               </span>
-            ) : undefined,
-          }}
+            ) : undefined
+          }
           onSearch={(query) => {
             const isDuplicatedToken = colonyTokens.some(
               (token) => token?.token.tokenAddress === query,

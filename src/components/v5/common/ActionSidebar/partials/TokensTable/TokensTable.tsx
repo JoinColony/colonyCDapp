@@ -53,9 +53,7 @@ const TokensTable: FC<TokensTableProps> = ({
         size="small"
         isFullSize={isMobile}
         onClick={() => {
-          fieldArrayMethods.append({
-            token: '',
-          });
+          fieldArrayMethods.append({});
         }}
       >
         {formatText({ id: 'button.addToken' })}

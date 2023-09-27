@@ -2,7 +2,7 @@ import { MessageDescriptor } from 'react-intl';
 import { TokenFragment } from '~gql';
 import { BaseFieldProps } from '~v5/common/Fields/types';
 
-export interface SearchSelectProps {
+export interface SearchSelectProps extends BaseFieldProps {
   onToggle: () => void;
   items: SearchSelectOptionProps[];
   isOpen: boolean;
@@ -12,7 +12,6 @@ export interface SearchSelectProps {
   hideSearchOnMobile?: boolean;
   onSearch?: (value: string) => void;
   showEmptyContent?: boolean;
-  error?: BaseFieldProps;
 }
 
 export interface SearchSelectOptionProps {

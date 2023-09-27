@@ -37,7 +37,8 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
       hideSearchOnMobile,
       onSearch,
       showEmptyContent = true,
-      error,
+      state,
+      message,
     },
     ref,
   ) => {
@@ -93,7 +94,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
               {formatText({ id: 'actions.selectActionType' })}
             </p>
           ) : (
-            <SearchInput onInput={onInput} {...error} />
+            <SearchInput onInput={onInput} state={state} message={message} />
           )}
         </div>
         {isLoading && (
