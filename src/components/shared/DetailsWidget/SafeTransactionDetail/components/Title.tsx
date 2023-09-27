@@ -4,7 +4,7 @@ import { FormattedMessage, MessageDescriptor } from 'react-intl';
 
 import Icon from '~shared/Icon';
 import Tag from '~shared/Tag';
-import { TRANSACTION_STATUSES } from '~types';
+import { TRANSACTION_STATUS } from '~hooks';
 
 import widgetStyles from '../../DetailsWidget.css';
 import styles from '../SafeTransactionDetail.css';
@@ -34,7 +34,7 @@ export const Title = ({
             text={transactionStatus}
             appearance={{
               theme:
-                transactionStatus === TRANSACTION_STATUSES.PENDING
+                transactionStatus === TRANSACTION_STATUS.ACTION_NEEDED
                   ? 'golden'
                   : 'primary',
               colorSchema: 'fullColor',
