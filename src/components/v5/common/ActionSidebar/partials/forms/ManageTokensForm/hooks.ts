@@ -41,6 +41,14 @@ export const useManageTokens = (
     [colony?.tokens?.items],
   );
 
+  const shouldShowMenu = useCallback(
+    (token: string) =>
+      !colonyTokens
+        .map(({ token: colonyToken }) => colonyToken.tokenAddress)
+        .some((colonyTokenAddress) => colonyTokenAddress === token),
+    [colonyTokens],
+  );
+
   useActionFormBaseHook({
     getFormOptions,
     validationSchema,
@@ -79,4 +87,6 @@ export const useManageTokens = (
       [colony, user, navigate],
     ),
   });
+
+  return { shouldShowMenu };
 };

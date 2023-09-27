@@ -83,16 +83,15 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
             ) : undefined
           }
           onSearch={(query) => {
-            const isDuplicatedToken = colonyTokens.some(
+            const isColonyNativeToken = colonyTokens.some(
               (token) => token?.token.tokenAddress === query,
             );
+            setSearchError(isColonyNativeToken);
 
-            if (isDuplicatedToken) {
-              setSearchError(true);
+            if (isColonyNativeToken) {
               return;
             }
 
-            setSearchError(false);
             field.onChange(isAddress(query) ? query : undefined);
           }}
           isOpen={isTokenSelectVisible}

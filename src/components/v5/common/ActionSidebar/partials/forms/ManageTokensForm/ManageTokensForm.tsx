@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useManageTokens } from './hooks';
@@ -9,20 +9,13 @@ import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField';
 import { DECISION_METHOD_OPTIONS } from '../../consts';
 import TokensTable from '../../TokensTable/TokensTable';
-import { useColonyContext } from '~hooks';
-import { notNull } from '~utils/arrays';
 
 const displayName = 'v5.common.ActionSidebar.partials.ManageTokensForm';
 
 const ManageTokensForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const intl = useIntl();
-  const { colony } = useColonyContext();
-  const colonyTokens = useMemo(
-    () => colony?.tokens?.items.filter(notNull) || [],
-    [colony?.tokens?.items],
-  );
 
-  useManageTokens(getFormOptions);
+  const { shouldShowMenu } = useManageTokens(getFormOptions);
 
   return (
     <>
@@ -71,11 +64,7 @@ const ManageTokensForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       </ActionFormRow>
       <TokensTable
         name="selectedTokenAddresses"
-        shouldShowMenu={(token) =>
-          !colonyTokens
-            .map(({ token: colonyToken }) => colonyToken.tokenAddress)
-            .includes(token)
-        }
+        shouldShowMenu={shouldShowMenu}
       />
     </>
   );
