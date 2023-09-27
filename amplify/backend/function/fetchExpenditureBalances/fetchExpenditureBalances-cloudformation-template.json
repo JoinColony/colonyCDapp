@@ -15,9 +15,11 @@
         },
         "s3Key": {
             "Type": "String"
-        }
-        
-    
+        },
+        "functioncolonycdappSSMAccessArn": {
+            "Type": "String",
+            "Default": "functioncolonycdappSSMAccessArn"
+          }
     },
     "Conditions": {
         "ShouldNotCreateEnvResources": {
