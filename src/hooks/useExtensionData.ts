@@ -74,6 +74,7 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
       variables: {
         extensionHash,
       },
+      skip: !colony,
       fetchPolicy: 'cache-and-network',
     });
   const { version } = versionData?.getCurrentVersionByKey?.items?.[0] || {};
@@ -83,12 +84,13 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
   );
 
   const extensionData = useMemo<AnyExtensionData | null>(() => {
-    if (!version || !extensionConfig) {
+    if (!version || !extensionConfig || !colony) {
       return null;
     }
 
     if (colonyExtension) {
       return mapToInstalledExtensionData(
+        colony,
         extensionConfig,
         colonyExtension,
         version,
@@ -96,7 +98,7 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
     }
 
     return mapToInstallableExtensionData(extensionConfig, version);
-  }, [colonyExtension, extensionConfig, version]);
+  }, [colony, colonyExtension, extensionConfig, version]);
 
   return {
     extensionData,

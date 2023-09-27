@@ -26,7 +26,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "chromatic": "npx chromatic --project-token=f08326e25dbf",
-    "postinstall": "./scripts/lambda-functions-dependencies.sh"
+    "postinstall": "./scripts/lambda-functions-dependencies.sh",
+    "upgrade-colony-js": "./scripts/upgrade-colony-js.sh"
   },
   "repository": {
     "type": "git",
@@ -152,7 +153,7 @@
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "@colony/colony-event-metadata-parser": "^2.0.2",
-    "@colony/colony-js": "^6.5.0-next.0",
+    "@colony/colony-js": "^6.5.0-next.1",
     "@colony/redux-promise-listener": "^1.2.0",
     "@colony/unicode-confusables-noascii": "^0.1.2",
     "@formatjs/intl-pluralrules": "^5.0.2",

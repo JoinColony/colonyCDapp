@@ -1,0 +1,10 @@
+.balances {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.balance {
+  display: flex;
+  gap: 10px;
+}

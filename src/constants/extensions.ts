@@ -1,17 +1,47 @@
 import { ColonyRole, Extension } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { number } from 'yup';
-import { toFinite } from '~utils/lodash';
 
+import { toFinite } from '~utils/lodash';
 import { ExtensionConfig, ExtensionParamType } from '~types';
+import {
+  convertFractionToWei,
+  convertPeriodToSeconds,
+} from '~utils/extensions';
 
 export enum ExtensionCategory {
   Payments = 'Payments',
   DecisionMethods = 'Decision Methods',
+  Expenditures = 'Expenditures',
 }
 
 const oneTransactionPaymentName = 'extensions.OneTxPayment';
-const votingReputationName = 'extensions.votingReputation';
+const votingReputationName = 'extensions.VotingReputation';
+const stakedExpenditureName = 'extensions.StakedExpenditure';
+const stagedExpenditureName = 'extensions.StagedExpenditure';
+
+const validationMessages = {
+  requiredError: {
+    id: 'extensions.param.validation.requiredError',
+    defaultMessage: 'Please enter a value.',
+  },
+  lessThan50Error: {
+    id: 'extensions.param.validation.lessThan50Error',
+    defaultMessage: 'Please enter a percentage less than or equal to 50%.',
+  },
+  lessThan100Error: {
+    id: 'extensions.param.validation.lessThan100Error',
+    defaultMessage: 'Please enter a percentage less than or equal to 100%.',
+  },
+  lessThan1YearError: {
+    id: 'extensions.param.validation.lessThan50Error',
+    defaultMessage: 'Please enter hours less than or equal to 1 year.',
+  },
+  positiveError: {
+    id: 'extensions.param.validation.positiveError',
+    defaultMessage: 'Please enter a positive number',
+  },
+};
 
 const oneTransactionPaymentMessages = {
   oneTxPaymentName: {
@@ -165,9 +195,86 @@ export const votingReputationMessages = {
   },
 };
 
+const stakedExpenditureMessages = {
+  stakedExpenditureName: {
+    id: `${stakedExpenditureName}.name`,
+    defaultMessage: 'Staked Expenditure',
+  },
+  stakedExpenditureDescriptionShort: {
+    id: `${stakedExpenditureName}.description`,
+    defaultMessage: 'Staked Expenditure extension.',
+  },
+  stakedExpenditureDescriptionLong: {
+    id: `${stakedExpenditureName}.descriptionLong`,
+    defaultMessage: 'Staked Expenditure extension.',
+  },
+  stakedExpenditureStakeFractionTitle: {
+    id: `${stakedExpenditureName}.param.stakeFraction.title`,
+    defaultMessage: 'Required Stake',
+  },
+  stakedExpenditureStakeFractionDescription: {
+    id: `${stakedExpenditureName}.param.stakeFraction.description`,
+    defaultMessage: `What percentage of the team's reputation, in token terms, should need to stake to create an expenditure?\n\n<span>e.g. if a team has 100 reputation points between them, and the Required Stake is 5%, then 5 tokens would need to be staked to create an expenditure.</span>`,
+  },
+};
+
+const stagedExpenditureMessages = {
+  stagedExpenditureName: {
+    id: `${stagedExpenditureName}.name`,
+    defaultMessage: 'Staged Expenditure',
+  },
+  stagedExpenditureDescriptionShort: {
+    id: `${stagedExpenditureName}.description`,
+    defaultMessage: 'Staged Expenditure extension.',
+  },
+  stagedExpenditureDescriptionLong: {
+    id: `${stagedExpenditureName}.descriptionLong`,
+    defaultMessage: 'Staged Expenditure extension.',
+  },
+  votingReputationPermissionArchitecture: {
+    id: `${votingReputationName}.param.permission.architecture`,
+    defaultMessage: 'Architecture',
+  },
+  votingReputationPermissionArchitectureDescription: {
+    id: `${votingReputationName}.param.permission.architectureDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
+  votingReputationPermissionArbitration: {
+    id: `${votingReputationName}.param.permission.arbitration`,
+    defaultMessage: 'Arbitration',
+  },
+  votingReputationPermissionArbitrationDescription: {
+    id: `${votingReputationName}.param.permission.arbitrationDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
+  votingReputationPermissionRecovery: {
+    id: `${votingReputationName}.param.permission.recovery`,
+    defaultMessage: 'Recovery',
+  },
+  votingReputationPermissionRecoveryDescription: {
+    id: `${votingReputationName}.param.permission.recoveryDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
+  votingReputationPermissionFunding: {
+    id: `${votingReputationName}.param.permission.funding`,
+    defaultMessage: 'Funding',
+  },
+  votingReputationPermissionFundingDescription: {
+    id: `${votingReputationName}.param.permission.fundingDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
+};
+
 const MSG = defineMessages({
+  ...validationMessages,
   ...oneTransactionPaymentMessages,
   ...votingReputationMessages,
+  ...stakedExpenditureMessages,
+  ...stagedExpenditureMessages,
 });
 
 export const supportedExtensionsConfig: ExtensionConfig[] = [
@@ -179,7 +286,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     descriptionLong: MSG.oneTxPaymentDescriptionLong,
     icon: 'extension-one-transaction-payment',
     neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
-    // @NOTE: This is for testing only, should be set to false afterwards
     uninstallable: false,
     createdAt: 1557698400000,
   },
@@ -202,9 +308,9 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         paramName: 'totalStakeFraction',
         validation: number()
           .transform((value) => toFinite(value))
-          .positive(() => MSG.votingReputationPositiveError)
-          .required(() => MSG.votingReputationRequiredError)
-          .max(50, () => MSG.votingReputationLessThan50Error),
+          .positive(() => MSG.positiveError)
+          .required(() => MSG.requiredError)
+          .max(50, () => MSG.lessThan50Error),
         defaultValue: 1,
         title: MSG.votingReputationTotalStakeFractionTitle,
         description: MSG.votingReputationTotalStakeFractionDescription,
@@ -214,14 +320,15 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           numeral: true,
           numeralPositiveOnly: true,
         },
+        transformValue: convertFractionToWei,
       },
       {
         paramName: 'voterRewardFraction',
         validation: number()
           .transform((value) => toFinite(value))
-          .positive(() => MSG.votingReputationPositiveError)
-          .required(() => MSG.votingReputationRequiredError)
-          .max(50, () => MSG.votingReputationLessThan50Error),
+          .positive(() => MSG.positiveError)
+          .required(() => MSG.requiredError)
+          .max(50, () => MSG.lessThan50Error),
         defaultValue: 20,
         title: MSG.votingReputationVoterRewardFractionTitle,
         description: MSG.votingReputationVoterRewardFractionDescription,
@@ -231,14 +338,15 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           numeral: true,
           numeralPositiveOnly: true,
         },
+        transformValue: convertFractionToWei,
       },
       {
         paramName: 'userMinStakeFraction',
         validation: number()
           .transform((value) => toFinite(value))
-          .positive(() => MSG.votingReputationPositiveError)
-          .required(() => MSG.votingReputationRequiredError)
-          .max(100, () => MSG.votingReputationLessThan100Error),
+          .positive(() => MSG.positiveError)
+          .required(() => MSG.requiredError)
+          .max(100, () => MSG.lessThan100Error),
         defaultValue: 1,
         title: MSG.votingReputationUserMinStakeFractionTitle,
         description: MSG.votingReputationUserMinStakeFractionDescription,
@@ -248,14 +356,15 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           numeral: true,
           numeralPositiveOnly: true,
         },
+        transformValue: convertFractionToWei,
       },
       {
         paramName: 'maxVoteFraction',
         validation: number()
           .transform((value) => toFinite(value))
-          .positive(() => MSG.votingReputationPositiveError)
-          .required(() => MSG.votingReputationRequiredError)
-          .max(100, () => MSG.votingReputationLessThan100Error),
+          .positive(() => MSG.positiveError)
+          .required(() => MSG.requiredError)
+          .max(100, () => MSG.lessThan100Error),
         defaultValue: 70,
         title: MSG.votingReputationMaxVoteFractionTitle,
         description: MSG.votingReputationMaxVoteFractionDescription,
@@ -265,14 +374,15 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           numeral: true,
           numeralPositiveOnly: true,
         },
+        transformValue: convertFractionToWei,
       },
       {
         paramName: 'stakePeriod',
         validation: number()
           .transform((value) => toFinite(value))
-          .positive(() => MSG.votingReputationPositiveError)
-          .required(() => MSG.votingReputationRequiredError)
-          .max(8760, () => MSG.votingReputationLessThan1YearError),
+          .positive(() => MSG.positiveError)
+          .required(() => MSG.requiredError)
+          .max(8760, () => MSG.lessThan1YearError),
         defaultValue: 72, // 3 days in hours
         title: MSG.votingReputationStakePeriodTitle,
         description: MSG.votingReputationStakePeriodDescription,
@@ -282,14 +392,15 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           numeral: true,
           numeralPositiveOnly: true,
         },
+        transformValue: convertPeriodToSeconds,
       },
       {
         paramName: 'submitPeriod',
         validation: number()
           .transform((value) => toFinite(value))
-          .positive(() => MSG.votingReputationPositiveError)
-          .required(() => MSG.votingReputationRequiredError)
-          .max(8760, () => MSG.votingReputationLessThan1YearError),
+          .positive(() => MSG.positiveError)
+          .required(() => MSG.requiredError)
+          .max(8760, () => MSG.lessThan1YearError),
         defaultValue: 72, // 3 days in hours
         title: MSG.votingReputationSubmitPeriodTitle,
         description: MSG.votingReputationSubmitPeriodDescription,
@@ -299,14 +410,15 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           numeral: true,
           numeralPositiveOnly: true,
         },
+        transformValue: convertPeriodToSeconds,
       },
       {
         paramName: 'revealPeriod',
         validation: number()
           .transform((value) => toFinite(value))
-          .positive(() => MSG.votingReputationPositiveError)
-          .required(() => MSG.votingReputationRequiredError)
-          .max(8760, () => MSG.votingReputationLessThan1YearError),
+          .positive(() => MSG.positiveError)
+          .required(() => MSG.requiredError)
+          .max(8760, () => MSG.lessThan1YearError),
         defaultValue: 72, // 3 days in hours
         title: MSG.votingReputationRevealPeriodTitle,
         description: MSG.votingReputationRevealPeriodDescription,
@@ -316,14 +428,15 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           numeral: true,
           numeralPositiveOnly: true,
         },
+        transformValue: convertPeriodToSeconds,
       },
       {
         paramName: 'escalationPeriod',
         validation: number()
           .transform((value) => toFinite(value))
-          .positive(() => MSG.votingReputationPositiveError)
-          .required(() => MSG.votingReputationRequiredError)
-          .max(8760, () => MSG.votingReputationLessThan1YearError),
+          .positive(() => MSG.positiveError)
+          .required(() => MSG.requiredError)
+          .max(8760, () => MSG.lessThan1YearError),
         defaultValue: 72, // 3 days in hours
         title: MSG.votingReputationEscalationPeriodTitle,
         description: MSG.votingReputationEscalationPeriodDescription,
@@ -333,9 +446,60 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           numeral: true,
           numeralPositiveOnly: true,
         },
+        transformValue: convertPeriodToSeconds,
       },
     ],
     uninstallable: true,
     createdAt: 1603915271852,
+  },
+  {
+    icon: 'extension-advanced-payments',
+    category: ExtensionCategory.Expenditures,
+    extensionId: Extension.StakedExpenditure,
+    name: MSG.stakedExpenditureName,
+    descriptionShort: MSG.stakedExpenditureDescriptionShort,
+    descriptionLong: MSG.stakedExpenditureDescriptionLong,
+    neededColonyPermissions: [
+      ColonyRole.Administration,
+      ColonyRole.Funding,
+      ColonyRole.Arbitration,
+    ],
+    uninstallable: true,
+    createdAt: 1692048380000,
+    initializationParams: [
+      {
+        paramName: 'stakeFraction',
+        validation: number()
+          .transform((value) => toFinite(value))
+          .positive(() => MSG.positiveError)
+          .required(() => MSG.requiredError)
+          .max(100, () => MSG.lessThan100Error),
+        defaultValue: 1,
+        title: MSG.stakedExpenditureStakeFractionTitle,
+        description: MSG.stakedExpenditureStakeFractionDescription,
+        type: ExtensionParamType.Input,
+        complementaryLabel: 'percent',
+        formattingOptions: {
+          numeral: true,
+          numeralPositiveOnly: true,
+        },
+        transformValue: convertFractionToWei,
+      },
+    ],
+  },
+  {
+    icon: 'extension-advanced-payments',
+    category: ExtensionCategory.Expenditures,
+    extensionId: Extension.StagedExpenditure,
+    name: MSG.stagedExpenditureName,
+    descriptionShort: MSG.stagedExpenditureDescriptionShort,
+    descriptionLong: MSG.stagedExpenditureDescriptionLong,
+    neededColonyPermissions: [
+      ColonyRole.Administration,
+      ColonyRole.Funding,
+      ColonyRole.Arbitration,
+    ],
+    uninstallable: true,
+    createdAt: 1692048380000,
   },
 ];

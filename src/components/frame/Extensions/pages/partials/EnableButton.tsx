@@ -1,5 +1,5 @@
 import React from 'react';
-import { ColonyRole, Id } from '@colony/colony-js';
+import { ColonyRole, Extension, Id } from '@colony/colony-js';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useFormContext } from 'react-hook-form';
 
@@ -71,38 +71,39 @@ const EnableButton = ({
     extensionData.isDeprecated
   );
 
-  if (isSetupRoute) {
-    if (isEnableButtonVisible) {
+  if (isEnableButtonVisible) {
+    if (
+      !isSetupRoute &&
+      extensionData.extensionId === Extension.VotingReputation
+    ) {
       return (
         <Button
-          type="submit"
-          disabled={!isValid}
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(`${pathname}${COLONY_EXTENSION_SETUP_ROUTE}`);
+          }}
           isFullSize={isMobile}
-          loading={isSubmitting || waitingForEnableConfirmation}
         >
           {formatText({ id: 'button.enable' })}
         </Button>
       );
     }
-  }
 
-  if (canExtensionBeRenabled) {
-    return <ReenableButton extensionData={extensionData} />;
-  }
-
-  if (isEnableButtonVisible) {
     return (
       <Button
-        type="button"
-        onClick={(e) => {
-          e.preventDefault();
-          navigate(`${pathname}${COLONY_EXTENSION_SETUP_ROUTE}`);
-        }}
+        type="submit"
+        disabled={!isValid}
         isFullSize={isMobile}
+        loading={isSubmitting || waitingForEnableConfirmation}
       >
         {formatText({ id: 'button.enable' })}
       </Button>
     );
+  }
+
+  if (canExtensionBeRenabled) {
+    return <ReenableButton extensionData={extensionData} />;
   }
 
   return null;

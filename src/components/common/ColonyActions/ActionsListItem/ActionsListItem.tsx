@@ -87,7 +87,6 @@ const ActionsListItem = ({
   const { motionState, refetchMotionState } = useColonyMotionState(
     isMotion,
     motionData,
-    transactionHash,
   );
 
   const MotionTag = useMotionTag(isMotion, motionState);

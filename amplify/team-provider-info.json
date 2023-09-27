@@ -73,10 +73,6 @@
           "deploymentBucketName": "amplify-colonycdapp-qa-113801-deployment",
           "s3Key": "amplify-builds/setCurrentVersion-4f575649357a5a454d2b-build.zip"
         },
-        "updateExtensionByColonyAndHash": {
-          "deploymentBucketName": "amplify-colonycdapp-qa-113801-deployment",
-          "s3Key": "amplify-builds/updateExtensionByColonyAndHash-44564773753344627a4f-build.zip"
-        },
         "updateContributorsWithReputation": {},
         "getTotalMemberCount": {}
       },
@@ -85,6 +81,13 @@
       },
       "custom": {
         "lambdaParams": {}
+      }
+    }
+  },
+  "dev": {
+    "categories": {
+      "function": {
+        "fetchExpenditureBalances": {}
       }
     }
   }

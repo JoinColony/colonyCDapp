@@ -1,9 +1,9 @@
 import React, { FC, PropsWithChildren } from 'react';
-import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import PillsBase from '../PillsBase';
 import { PillsProps } from '../types';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.common.Pills.ExtensionStatusBadge';
 
@@ -14,10 +14,7 @@ const ExtensionStatusBadge: FC<PropsWithChildren<PillsProps>> = ({
   textValues,
   ...rest
 }) => {
-  const { formatMessage } = useIntl();
-
-  const extensionStatusBadgeText =
-    typeof text == 'string' ? text : text && formatMessage(text, textValues);
+  const extensionStatusBadgeText = formatText(text, textValues);
 
   return (
     <PillsBase
