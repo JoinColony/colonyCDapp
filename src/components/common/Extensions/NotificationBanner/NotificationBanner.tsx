@@ -55,43 +55,45 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
         {children && (
           <div
             className={clsx('text-sm max-w-[50rem] mt-1.5', {
-              'text-red-400': status === 'error',
+              'text-negative-400': status === 'error',
             })}
           >
             {children}
           </div>
         )}
       </div>
-      <div
-        className={clsx(
-          `[&_a]:underline [&_button]:underline [&_a]:hover:no-underline
+      {action && (
+        <div
+          className={clsx(
+            `[&_a]:underline [&_button]:underline [&_a]:hover:no-underline
         [&_button]:hover:no-underline mt-2 md:mt-0 text-4`,
-          {
-            'ml-0 md:ml-0 md:self-center': isAlt,
-            'ml-6 md:ml-2': !isAlt,
-          },
-        )}
-      >
-        {(() => {
-          switch (action?.type) {
-            case 'copy': {
-              return <CopyUrl actionText={action.copyContent} />;
+            {
+              'ml-0 md:ml-0 md:self-center': isAlt,
+              'ml-6 md:ml-2': !isAlt,
+            },
+          )}
+        >
+          {(() => {
+            switch (action?.type) {
+              case 'copy': {
+                return <CopyUrl actionText={action.copyContent} />;
+              }
+              case 'redirect': {
+                return <Link to={action.href}>{actionText}</Link>;
+              }
+              case 'call-to-action': {
+                return (
+                  <button type="button" onClick={action.onClick}>
+                    {actionText}
+                  </button>
+                );
+              }
+              default:
+                return null;
             }
-            case 'redirect': {
-              return <Link to={action.href}>{actionText}</Link>;
-            }
-            case 'call-to-action': {
-              return (
-                <button type="button" onClick={action.onClick}>
-                  {actionText}
-                </button>
-              );
-            }
-            default:
-              return null;
-          }
-        })()}
-      </div>
+          })()}
+        </div>
+      )}
     </div>
   );
 };
