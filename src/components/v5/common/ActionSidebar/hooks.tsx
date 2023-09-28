@@ -380,7 +380,7 @@ export const useActionFormProps = () => {
         title,
       });
 
-      form.setValue(ACTION_TYPE_FIELD_NAME, actionType, { shouldDirty: true });
+      form.setValue(ACTION_TYPE_FIELD_NAME, actionType);
     },
     [],
   );
@@ -452,4 +452,21 @@ export const useActionFormBaseHook: UseActionFormBaseHook = ({
   useUnmountEffect(() => {
     getFormOptions(undefined, form);
   });
+};
+
+export const useCloseSidebarClick = () => {
+  const { formState } = useFormContext();
+  const {
+    actionSidebarToggle: [, { toggleOff: toggleActionSidebarOff }],
+    cancelModalToggle: [, { toggle: toggleCancelModal }],
+  } = useActionSidebarContext();
+  const { dirtyFields } = formState;
+
+  return () => {
+    if (Object.keys(dirtyFields).length > 0) {
+      toggleCancelModal();
+    } else {
+      toggleActionSidebarOff();
+    }
+  };
 };

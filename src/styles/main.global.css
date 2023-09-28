@@ -27,7 +27,7 @@
   }
 
   #root {
-    @apply h-full;
+    @apply min-h-screen;
   }
 
   input[type='number']::-webkit-inner-spin-button,

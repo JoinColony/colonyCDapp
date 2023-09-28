@@ -29,8 +29,8 @@ const ModalBase: FC<ModalBaseProps> = ({
         `relative outline-0 overflow-hidden bg-base-white md:h-auto
         md:border md:border-gray-200 md:rounded-xl shadow-default flex flex-col md:w-[30.3125rem]`,
         {
-          'w-screen h-screen': isFullOnMobile,
-          'w-[calc(100vw-3rem)] max-h-[calc(100vh-4rem)] border border-gray-200 rounded-xl shadow-default':
+          'w-screen h-full': isFullOnMobile,
+          'w-[calc(100vw-3rem)] max-h-[calc(100%-4rem)] border border-gray-200 rounded-xl shadow-default':
             !isFullOnMobile,
           base: 'z-[4] outline-0',
           'pt-6 pl-6': !isTopSectionWithBackground,
