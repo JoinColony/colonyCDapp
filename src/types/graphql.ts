@@ -33,6 +33,8 @@ import {
   ContributorRolesFragment,
   TransactionStatus,
   TransactionFragment,
+  CommentFragment,
+  VoteFragment,
 } from '~gql';
 
 export type AnnotationType = AnnotationFragment;
@@ -124,3 +126,7 @@ export type MotionStakes = MotionStakesFragment;
 export type VoterRecord = VoterRecordFragment;
 
 export type UnclaimedStakes = UnclaimedStakesFragment;
+
+export type Comment = CommentFragment;
+
+export type Vote = VoteFragment;
