@@ -1,0 +1,64 @@
+.container {
+  margin: 8px;
+}
+
+.container button,
+.container textarea,
+.container input {
+  margin: 8px;
+  border: solid thin black;
+}
+
+.container button {
+  padding: 2px;
+}
+
+.commentList {
+  background-color: aliceblue;
+}
+
+.submitForm {
+  display: flex;
+  margin-top: 16px;
+}
+
+.submitContainer {
+  display: flex;
+  width: 100%;
+  background-color: blanchedalmond;
+}
+
+.submitTextArea {
+  width: 100%;
+}
+
+.comment {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+}
+
+.comment > ol {
+  margin-left: 16px;
+}
+
+.commentContent {
+  flex: 1;
+}
+
+.editComment {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.createdAtText {
+  font-size: 10px;
+  opacity: 50%;
+}
+
+.modifiedText {
+  font-size: 10px;
+  font-style: italic;
+  opacity: 50%;
+}
