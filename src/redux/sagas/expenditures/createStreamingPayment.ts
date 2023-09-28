@@ -17,7 +17,12 @@ import {
 import { getExpenditureDatabaseId } from '~utils/databaseId';
 import { toNumber } from '~utils/numbers';
 
-import { getColonyManager, putError, takeFrom } from '../utils';
+import {
+  getColonyManager,
+  initiateTransaction,
+  putError,
+  takeFrom,
+} from '../utils';
 import { createTransaction, getTxChannel } from '../transactions';
 
 export type CreateStreamingPaymentPayload =
@@ -92,6 +97,8 @@ function* createStreamingPayment({
       ],
     });
 
+    yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
+    yield initiateTransaction({ id: meta.id });
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     const streamingPaymentId = yield call(
