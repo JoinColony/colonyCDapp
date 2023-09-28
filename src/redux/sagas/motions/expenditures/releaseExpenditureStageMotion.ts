@@ -109,7 +109,7 @@ function* releaseExpenditureStageMotion({
         meta,
       });
 
-      navigate(`/colony/${colonyName}/tx/${payload.transaction.hash}`);
+      navigate?.(`/colony/${colonyName}/tx/${payload.transaction.hash}`);
     }
   } catch (error) {
     console.error(error);
