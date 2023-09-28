@@ -49,7 +49,7 @@ const ActionDetailsPageLayout = ({
     <div
       className={classNames(styles.layout, {
         [styles.center]: center,
-        [styles.noTopPadding]: isMotion,
+        [styles.noTopPadding]: isMotion && !hasPendingSafeTransactions,
       })}
     >
       {hasPendingSafeTransactions &&
