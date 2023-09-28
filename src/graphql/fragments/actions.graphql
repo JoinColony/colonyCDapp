@@ -100,6 +100,59 @@ fragment ColonyAction on ColonyAction {
   decisionData {
     ...ColonyDecision
   }
+  discussion {
+    ...Discussion
+  }
+}
+
+fragment Discussion on Discussion {
+  comments {
+    items {
+      ...Comment
+    }
+  }
+}
+
+fragment Vote on Vote {
+  id
+  voterAddress
+  type
+  amount
+}
+
+fragment CommentFields on Comment {
+  id
+  commentCommentsId
+  content
+  flag
+  createdAt
+  updatedAt
+  author {
+    id
+    name
+    profile {
+      displayName
+    }
+  }
+  votes {
+    items {
+      ...Vote
+    }
+  }
+}
+
+fragment Comment on Comment {
+  ...CommentFields
+  comments {
+    items {
+      ...CommentFields
+      comments {
+        items {
+          ...CommentFields
+        }
+      }
+    }
+  }
 }
 
 fragment Annotation on Annotation {
