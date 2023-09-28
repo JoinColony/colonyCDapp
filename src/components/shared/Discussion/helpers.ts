@@ -105,7 +105,7 @@ export const submitVote = async (
 
   await publish(
     actionId,
-    JSON.stringify({ type: 'vote', action: 'create', vote }),
+    JSON.stringify({ action: 'create', data: { ...vote, __typename: 'Vote' } }),
   );
 };
 
@@ -125,7 +125,7 @@ export const updateVote = async (
 
   await publish(
     actionId,
-    JSON.stringify({ type: 'vote', action: 'update', vote }),
+    JSON.stringify({ action: 'update', data: { ...vote, __typename: 'Vote' } }),
   );
 };
 
