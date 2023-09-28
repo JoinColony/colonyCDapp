@@ -1,7 +1,8 @@
 import { MessageDescriptor } from 'react-intl';
 import { TokenFragment } from '~gql';
+import { BaseFieldProps } from '~v5/common/Fields/types';
 
-export interface SearchSelectProps {
+export interface SearchSelectProps extends BaseFieldProps {
   onToggle: () => void;
   items: SearchSelectOptionProps[];
   isOpen: boolean;

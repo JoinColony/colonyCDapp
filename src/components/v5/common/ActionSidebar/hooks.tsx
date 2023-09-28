@@ -45,6 +45,7 @@ import { SetActionTypeCutomEventDetail } from '~utils/browser/dispatchGlobalEven
 import { ActionFormProps } from '~shared/Fields/Form/ActionForm';
 import { ActionTypes } from '~redux';
 import SplitPaymentForm from './partials/forms/SplitPaymentForm';
+import ManageTokensForm from './partials/forms/ManageTokensForm';
 
 export const useActionsList = () => {
   const { colony } = useColonyContext();
@@ -331,6 +332,7 @@ export const useSidebarActionForm = () => {
       [ACTION.ENTER_RECOVERY_MODE]: EnterRecoveryModeForm,
       [ACTION.EDIT_COLONY_DETAILS]: EditColonyDetailsForm,
       [ACTION.SPLIT_PAYMENT]: SplitPaymentForm,
+      [ACTION.MANAGE_TOKENS]: ManageTokensForm,
     }),
     [],
   );
@@ -381,7 +383,7 @@ export const useActionFormProps = () => {
         title,
       });
 
-      form.setValue(ACTION_TYPE_FIELD_NAME, actionType, { shouldDirty: true });
+      form.setValue(ACTION_TYPE_FIELD_NAME, actionType);
     },
     [],
   );
@@ -453,4 +455,21 @@ export const useActionFormBaseHook: UseActionFormBaseHook = ({
   useUnmountEffect(() => {
     getFormOptions(undefined, form);
   });
+};
+
+export const useCloseSidebarClick = () => {
+  const { formState } = useFormContext();
+  const {
+    actionSidebarToggle: [, { toggleOff: toggleActionSidebarOff }],
+    cancelModalToggle: [, { toggle: toggleCancelModal }],
+  } = useActionSidebarContext();
+  const { dirtyFields } = formState;
+
+  return () => {
+    if (Object.keys(dirtyFields).length > 0) {
+      toggleCancelModal();
+    } else {
+      toggleActionSidebarOff();
+    }
+  };
 };

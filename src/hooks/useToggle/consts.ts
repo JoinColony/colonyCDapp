@@ -8,5 +8,6 @@ export const DEFAULT_USE_TOGGLE_RETURN_VALUE: UseToggleReturnType = [
     toggleOff: noop,
     toggleOn: noop,
     registerContainerRef: noop,
+    useRegisterOnBeforeCloseCallback: noop,
   },
 ];

@@ -26,7 +26,7 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
         'text-success-400': status === STATUS_TYPES.SUCCESS,
         'text-warning-400': status === STATUS_TYPES.WARNING,
         'text-negative-400': status === STATUS_TYPES.ERROR,
-        'gap-1': withIcon,
+        'gap-2': withIcon,
       })}
     >
       {withIcon && (
