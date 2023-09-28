@@ -25,6 +25,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
   useRegisterOnBeforeCloseCallback(() => {
     if (Object.keys(dirtyFields).length > 0 && !isCancelModalOpen) {
       toggleCancelModalOn();
+
       return false;
     }
 
