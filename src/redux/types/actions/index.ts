@@ -11,6 +11,7 @@ import { MetacolonyVestingTypes } from './vesting';
 import { WalletActionTypes } from './wallet';
 import { DecisionActionTypes } from './decisions';
 import { IpfsActionTypes } from './ipfs';
+import { ExpendituresActionTypes } from './expenditures';
 
 export { RootMotionMethodNames } from './motion';
 
@@ -104,7 +105,8 @@ export type AllActions =
   | MotionActionTypes
   | MetacolonyVestingTypes
   | WalletActionTypes
-  | DecisionActionTypes;
+  | DecisionActionTypes
+  | ExpendituresActionTypes;
 
 export type Action<T extends AllActions['type']> = Extract<
   AllActions,

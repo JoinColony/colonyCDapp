@@ -48,7 +48,7 @@ export interface FinalizeMotionProps {
 const FinalizeMotion = ({
   amount,
   tokenAddress,
-  motionData: { nativeMotionDomainId, motionId },
+  motionData: { nativeMotionDomainId, motionId, gasEstimate },
   requiresDomainFunds,
   startPollingAction,
   stopPollingAction,
@@ -89,6 +89,7 @@ const FinalizeMotion = ({
         item={
           <FinalizeButton
             isFinalizable={isFinalizable}
+            gasEstimate={gasEstimate}
             motionId={motionId}
             startPollingAction={startPollingAction}
             setIsPolling={setIsPolling}

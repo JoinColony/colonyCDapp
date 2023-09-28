@@ -8,7 +8,7 @@ import { ActionTypes } from '~redux';
 import { Appearance } from './Button';
 import ActionButton, { ActionButtonProps } from './ActionButton';
 
-interface Props<D extends ComponentType<any>> extends ActionButtonProps {
+interface Props<D extends ComponentType<any>> extends ActionButtonProps<any> {
   actionType: ActionTypes;
   appearance?: Appearance;
   className?: string;

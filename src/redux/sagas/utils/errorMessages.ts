@@ -9,6 +9,14 @@ const { formatMessage } = intl({
   'error.invalidSignature': `Invalid Metatransaction signature sent to the broadcaster`,
 });
 
+export const createInvalidParamsError = (
+  sagaName: string,
+  paramDescription: string,
+) =>
+  new Error(
+    `Error: ${paramDescription} was not passed to the ${sagaName} saga`,
+  );
+
 export const generateBroadcasterHumanReadableError = (
   methodName?: string,
   error?: { reason?: string },

@@ -54,7 +54,6 @@ const DecisionItem = ({
   const { motionState, refetchMotionState } = useColonyMotionState(
     true,
     motionData,
-    actionId,
   );
 
   const showMotionCountdownTimer =

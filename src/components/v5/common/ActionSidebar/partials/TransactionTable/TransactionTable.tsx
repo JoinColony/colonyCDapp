@@ -37,7 +37,7 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
       {!!data.length && (
         <TableWithMeatballMenu<TransactionTableModel>
           className={clsx({
-            '!border-red-400': !!fieldState.error,
+            '!border-negative-400': !!fieldState.error,
           })}
           getRowId={({ key }) => key}
           columns={columns}

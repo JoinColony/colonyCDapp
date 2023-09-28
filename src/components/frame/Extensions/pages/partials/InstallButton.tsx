@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { Extension } from '@colony/colony-js';
+
 import { useColonyContext, useExtensionData, useMobile } from '~hooks';
 import { ActionTypes } from '~redux';
 import { ActionButton } from '~shared/Button';
@@ -44,9 +46,11 @@ const InstallButton = ({ extensionData }: InstallButtonProps) => {
         }}
       />,
     );
-    navigate(
-      `/colony/${colonyName}/extensions/${extensionData?.extensionId}/setup`,
-    );
+    if (extensionData.extensionId === Extension.VotingReputation) {
+      navigate(
+        `/colony/${colonyName}/extensions/${extensionData?.extensionId}/setup`,
+      );
+    }
   };
 
   const handleInstallError = () => {

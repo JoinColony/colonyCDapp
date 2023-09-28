@@ -28,8 +28,9 @@ function* extensionUpgrade({
 
     yield initiateTransaction({ id: meta.id });
 
-    const result = yield waitForTxResult(txChannel);
-    if (result.type === ActionTypes.TRANSACTION_SUCCEEDED) {
+    const { type } = yield waitForTxResult(txChannel);
+
+    if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
       yield put<AllActions>({
         type: ActionTypes.EXTENSION_UPGRADE_SUCCESS,
         payload: {},

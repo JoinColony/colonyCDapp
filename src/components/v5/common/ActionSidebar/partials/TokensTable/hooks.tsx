@@ -49,7 +49,7 @@ export const useGetTableMenuProps = (
     TableWithMeatballMenuProps<TokensTableModel>['getMenuProps']
   >(
     ({ index }) => {
-      const shouldShow = shouldShowMenu(data[index]);
+      const shouldShow = shouldShowMenu(data[index]?.token);
 
       return shouldShow
         ? {

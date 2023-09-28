@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 
 import {
+  OnBeforeCloseCallback,
   RefRegistryEntry,
   ShouldCloseCallback,
   UseToggleReturnType,
@@ -22,7 +23,13 @@ const getHtmlElement = (): HTMLElement | null => {
 
 const documentClickHandler = (event: MouseEvent): void => {
   refsRegistry.forEach(
-    ({ element, toggleOff, toggleState, shouldCloseCallbackRef }) => {
+    ({
+      element,
+      toggleOff,
+      toggleState,
+      shouldCloseCallbackRef,
+      onBeforeCloseCallbacksRef,
+    }) => {
       if (!(event.target instanceof Element)) {
         return;
       }
@@ -37,11 +44,16 @@ const documentClickHandler = (event: MouseEvent): void => {
         return;
       }
 
+      const eventTargetElement = event.target;
       const shouldClose = shouldCloseCallbackRef.current
-        ? shouldCloseCallbackRef.current(event.target)
+        ? shouldCloseCallbackRef.current(eventTargetElement)
         : true;
+      const onBeforeCallbackShouldClose =
+        onBeforeCloseCallbacksRef.current.some(
+          (callback) => callback(eventTargetElement) === false,
+        );
 
-      if (!shouldClose) {
+      if (!shouldClose || onBeforeCallbackShouldClose) {
         return;
       }
 
@@ -59,6 +71,7 @@ const useToggle = ({
 } = {}): UseToggleReturnType => {
   const [toggleState, setToggleState] = useState(defaultToggleState);
   const shouldCloseCallbackRef = useRef(shouldCloseOnDocumentClick);
+  const onBeforeCloseCallbacksRef = useRef<OnBeforeCloseCallback[]>([]);
 
   shouldCloseCallbackRef.current = shouldCloseOnDocumentClick;
 
@@ -102,6 +115,7 @@ const useToggle = ({
       if (ref && currentEntryIndex < 0) {
         refsRegistry.push({
           shouldCloseCallbackRef,
+          onBeforeCloseCallbacksRef,
           element: ref,
           toggleOff,
           toggleState,
@@ -111,7 +125,33 @@ const useToggle = ({
     [toggleOff, toggleState],
   );
 
-  return [toggleState, { toggle, toggleOn, toggleOff, registerContainerRef }];
+  const useRegisterOnBeforeCloseCallback = useCallback(
+    (callback: OnBeforeCloseCallback) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      useEffect(() => {
+        onBeforeCloseCallbacksRef.current.push(callback);
+
+        return () => {
+          onBeforeCloseCallbacksRef.current =
+            onBeforeCloseCallbacksRef.current.filter(
+              (entry) => entry !== callback,
+            );
+        };
+      }, [callback]);
+    },
+    [],
+  );
+
+  return [
+    toggleState,
+    {
+      toggle,
+      toggleOn,
+      toggleOff,
+      registerContainerRef,
+      useRegisterOnBeforeCloseCallback,
+    },
+  ];
 };
 
 export default useToggle;

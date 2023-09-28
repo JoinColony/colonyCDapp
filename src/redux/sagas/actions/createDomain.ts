@@ -12,7 +12,7 @@ import {
   CreateDomainMetadataMutation,
   CreateDomainMetadataMutationVariables,
 } from '~gql';
-import { getDomainDatabaseId } from '~utils/domains';
+import { getDomainDatabaseId } from '~utils/databaseId';
 import { toNumber } from '~utils/numbers';
 
 import {
