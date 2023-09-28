@@ -84,7 +84,7 @@ const ActionSidebarFormContent: FC<PropsWithChildren<Props>> = ({
           name="title"
           placeholder={formatText({ id: 'placeholder.title' })}
           stateClassNames={{
-            [FIELD_STATE.Error]: '',
+            [FIELD_STATE.Error]: 'placeholder:text-red-400',
           }}
           className={clsx(
             `
@@ -92,10 +92,6 @@ const ActionSidebarFormContent: FC<PropsWithChildren<Props>> = ({
               md:hover:text-blue-400 md:hover:placeholder:text-blue-400 text-gray-900
               transition-colors mb-7
             `,
-            // {
-            //   'placeholder:text-gray-500': !fieldState.error,
-            //   'placeholder:text-red-400': !!fieldState.error,
-            // },
           )}
           mode="secondary"
           message={false}
