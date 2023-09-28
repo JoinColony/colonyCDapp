@@ -61,8 +61,8 @@ function CardSelect<TValue = string>({
         className={clsx(
           'flex capitalize text-md md:transition-colors md:hover:text-blue-400',
           {
-            'placeholder:gray-500': !state,
-            'placeholder:negative-400': state === FIELD_STATE.Error,
+            'text-gray-500': !state,
+            'text-negative-400': state === FIELD_STATE.Error,
           },
         )}
         onClick={toggleSelect}
