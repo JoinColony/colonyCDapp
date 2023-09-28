@@ -87,5 +87,12 @@
         "lambdaParams": {}
       }
     }
+  },
+  "dev": {
+    "categories": {
+      "function": {
+        "submitComment": {}
+      }
+    }
   }
 }

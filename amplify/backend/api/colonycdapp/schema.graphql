@@ -939,6 +939,13 @@ type Mutation {
   updateContributorsWithReputation(
     input: UpdateContributorsWithReputationInput!
   ): Boolean @function(name: "updateContributorsWithReputation-${env}")
+  """
+  Create a comment on a discussion.
+  This is filtered through a lambda function to enable spam checking and notifications.
+  The Boolean return value indicates to the user whether the comment has been accepted.
+  """
+  submitComment(input: SubmitCommentInput): SubmitCommentResponse
+    @function(name: "submitComment-${env}")
 }
 
 """
@@ -3078,6 +3085,49 @@ type ReputationMiningCycleMetadata @model {
   """
   lastCompletedAt: AWSDateTime! # We're using this to determine whether to re-calculate colony-wide user reputation (updateContributorsWithReputation)
 }
+
+input SubmitCommentInput {
+  """
+  Action Id
+  """
+  actionId: String
+  """
+  The author address
+  """
+  authorAddress: String
+  """
+  Comment content
+  """
+  content: String
+  """
+  User ip address, used for spam detection
+  """
+  ipAddress: String
+  """
+  User agent, used for spam detection
+  """
+  userAgent: String
+  """
+  UI flag for comment
+  """
+  flag: CommentFlags
+  """
+  Comment id, only used for updating a comment
+  """
+  commentId: String
+  """
+  Parent comment id, used when replying to a comment
+  """
+  parentId: String
+}
+
+type SubmitCommentResponse {
+  """
+  Indicates to the user whether the comment has failed spam filtering
+  """
+  accepted: Boolean!
+}
+
 """
 Defines an discussion for any colony action.
 It is made up of comments
