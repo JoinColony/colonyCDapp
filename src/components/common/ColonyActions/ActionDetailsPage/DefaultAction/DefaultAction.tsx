@@ -1,6 +1,7 @@
 import React from 'react';
 
 import DetailsWidget from '~shared/DetailsWidget';
+import Discussion from '~shared/Discussion';
 
 import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { ColonyAction } from '~types';
@@ -33,6 +34,7 @@ const DefaultAction = ({ actionData }: DefaultActionProps) => {
         <DefaultActionContent actionData={actionData} colony={colony} />
         <DetailsWidget actionData={actionData} colony={colony} />
       </div>
+      <Discussion actionData={actionData} />
     </div>
   );
 };
