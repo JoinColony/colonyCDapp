@@ -2,7 +2,12 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Id, MotionState } from '@colony/colony-js';
 
-import { useGetExpenditureQuery, useGetMotionStateQuery } from '~gql';
+import {
+  ColonyActionType,
+  ExpenditureType,
+  useGetExpenditureQuery,
+  useGetMotionStateQuery,
+} from '~gql';
 import { useColonyContext } from '~hooks';
 import { Heading3 } from '~shared/Heading';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
@@ -10,6 +15,7 @@ import { findDomainByNativeId } from '~utils/domains';
 import { notNull } from '~utils/arrays';
 import { getMotionState } from '~utils/colonyMotions';
 import { motionTags } from '~shared/Tag';
+import { boolToYesNo } from '~utils/strings';
 
 import ExpenditureBalances from './ExpenditureBalances';
 import ExpenditureAdvanceButton from './ExpenditureAdvanceButton';
@@ -18,6 +24,7 @@ import ReclaimStakeButton from '../StakedExpenditure/ReclaimStakeButton';
 import ExpenditureStages from './ExpenditureStages';
 import CancelDraftExpenditureButton from './CancelDraftExpenditureButton';
 import CancelStakedExpenditureButton from '../StakedExpenditure/CancelStakedExpenditureButton';
+import { hasMotionFailed, isMotionInProgress } from './helpers';
 
 import styles from './ExpenditureDetailsPage.module.css';
 
@@ -26,6 +33,7 @@ const ExpenditureDetailsPage = () => {
 
   const { colony } = useColonyContext();
   const { colonyAddress = '' } = colony || {};
+
   const { data, loading } = useGetExpenditureQuery({
     variables: {
       expenditureId: getExpenditureDatabaseId(
@@ -35,20 +43,34 @@ const ExpenditureDetailsPage = () => {
     },
     skip: !expenditureId || !colony,
   });
-
   const expenditure = data?.getExpenditure;
 
   const expenditureFundingMotions =
-    expenditure?.fundingMotions?.items
+    expenditure?.motions?.items
       .filter(notNull)
+      .filter(
+        ({ action }) => action?.type === ColonyActionType.FundExpenditureMotion,
+      )
+      .sort((a, b) => Number(a.motionId) - Number(b.motionId)) ?? [];
+
+  const expenditureCancelMotions =
+    expenditure?.motions?.items
+      .filter(notNull)
+      .filter(
+        ({ action }) =>
+          action?.type === ColonyActionType.CancelStakedExpenditureMotion,
+      )
       .sort((a, b) => Number(a.motionId) - Number(b.motionId)) ?? [];
 
   const latestFundingMotion = expenditureFundingMotions.at(-1);
+  const latestCancelMotion = expenditureCancelMotions.at(-1);
 
   const latestExpenditureFundingMotionHash: string | undefined =
     latestFundingMotion?.transactionHash;
+  const latestExpenditureCancelMotionHash: string | undefined =
+    latestCancelMotion?.transactionHash;
 
-  const { data: motionStateQuery } = useGetMotionStateQuery({
+  const { data: fundingMotionStateQuery } = useGetMotionStateQuery({
     skip: !latestFundingMotion,
     variables: {
       input: {
@@ -58,12 +80,29 @@ const ExpenditureDetailsPage = () => {
     },
   });
 
-  const networkMotionState =
-    motionStateQuery?.getMotionState ?? MotionState.Null;
+  const { data: cancelMotionStateQuery } = useGetMotionStateQuery({
+    skip: !latestCancelMotion,
+    variables: {
+      input: {
+        colonyAddress,
+        databaseMotionId: latestCancelMotion?.databaseMotionId ?? '',
+      },
+    },
+  });
+
+  const networkFundingMotionState =
+    fundingMotionStateQuery?.getMotionState ?? MotionState.Null;
+
+  const networkCancelMotionState =
+    cancelMotionStateQuery?.getMotionState ?? MotionState.Null;
 
   const latestFundingMotionState =
     latestFundingMotion &&
-    getMotionState(networkMotionState, latestFundingMotion);
+    getMotionState(networkFundingMotionState, latestFundingMotion);
+
+  const latestCancelMotionState =
+    latestCancelMotion &&
+    getMotionState(networkCancelMotionState, latestCancelMotion);
 
   if (!colony) {
     return null;
@@ -97,9 +136,14 @@ const ExpenditureDetailsPage = () => {
   );
 
   const oldFundingMotions = expenditureFundingMotions?.slice(0, -1);
+  const oldCancelMotions = expenditureCancelMotions?.slice(0, -1);
 
-  const MotionTag = latestFundingMotionState
+  const FundingMotionTag = latestFundingMotionState
     ? motionTags[latestFundingMotionState]
+    : () => null;
+
+  const CancelMotionTag = latestCancelMotionState
+    ? motionTags[latestCancelMotionState]
     : () => null;
 
   return (
@@ -108,11 +152,11 @@ const ExpenditureDetailsPage = () => {
 
       <div className={styles.details}>
         <div>Status: {expenditure.status}</div>
+        <div>Type: {expenditure.type}</div>
         <div>
           Created in: {expenditureDomain?.metadata?.name ?? 'Unknown team'}
         </div>
         <div>Fund from: {fundFromDomain?.metadata?.name ?? 'Unknown team'}</div>
-        <div>Type: {expenditure.metadata?.type}</div>
         {oldFundingMotions?.length ? (
           <div>Previous funding motions:</div>
         ) : null}
@@ -128,18 +172,35 @@ const ExpenditureDetailsPage = () => {
           <Link
             to={`/colony/${colony.name}/tx/${latestExpenditureFundingMotionHash}`}
           >
-            Current funding motion status: <MotionTag />
+            Current funding motion status: <FundingMotionTag />
           </Link>
         )}
-        <div>Is Staged: {expenditure.isStaged ? 'Yes' : 'No'}</div>
-        {expenditure.isStaged && (
+        {oldCancelMotions?.length ? <div>Previous cancel motions:</div> : null}
+        {oldCancelMotions?.map(({ transactionHash }, idx) => (
+          <Link
+            key={transactionHash}
+            to={`/colony/${colony.name}/tx/${transactionHash}`}
+          >
+            Cancel motion {idx + 1}
+          </Link>
+        ))}
+        {latestCancelMotionState && (
+          <Link
+            to={`/colony/${colony.name}/tx/${latestExpenditureCancelMotionHash}`}
+          >
+            Current cancel expenditure motion status: <CancelMotionTag />
+          </Link>
+        )}
+        <div>Is Staked: {boolToYesNo(expenditure.isStaked)}</div>
+        {expenditure.type === ExpenditureType.Staged && (
           <div>Recipient address: {expenditure.slots[0]?.recipientAddress}</div>
         )}
         <ExpenditureBalances expenditure={expenditure} />
-        {expenditure.isStaged ? (
-          <ExpenditureStages expenditure={expenditure} colony={colony} />
-        ) : (
+        {expenditure.type === ExpenditureType.PaymentBuilder && (
           <ExpenditurePayouts expenditure={expenditure} colony={colony} />
+        )}
+        {expenditure.type === ExpenditureType.Staged && (
+          <ExpenditureStages expenditure={expenditure} colony={colony} />
         )}
         <div className={styles.buttons}>
           <CancelDraftExpenditureButton
@@ -149,14 +210,26 @@ const ExpenditureDetailsPage = () => {
           <CancelStakedExpenditureButton
             expenditure={expenditure}
             colony={colony}
+            hasMotionFailed={
+              latestCancelMotionState &&
+              hasMotionFailed(latestCancelMotionState)
+            }
+            isMotionInProgress={isMotionInProgress(latestCancelMotionState)}
+            latestExpenditureCancelMotionHash={
+              latestExpenditureCancelMotionHash
+            }
           />
           <ExpenditureAdvanceButton
-            latestFundingMotionState={latestFundingMotionState}
+            expenditure={expenditure}
+            colony={colony}
+            hasMotionFailed={
+              latestFundingMotionState &&
+              hasMotionFailed(latestFundingMotionState)
+            }
+            isMotionInProgress={isMotionInProgress(latestFundingMotionState)}
             latestExpenditureFundingMotionHash={
               latestExpenditureFundingMotionHash
             }
-            expenditure={expenditure}
-            colony={colony}
           />
           <ReclaimStakeButton colony={colony} expenditure={expenditure} />
         </div>

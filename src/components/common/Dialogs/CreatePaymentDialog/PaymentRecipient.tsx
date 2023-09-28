@@ -106,8 +106,8 @@ const PaymentRecipient = ({
       </DialogSection>
       <DialogSection>
         <TokenAmountInput
-          addressInputName={`payments.${index}.tokenAddress`}
-          amountInputName={`payments.${index}.amount`}
+          tokenAddressFieldName={`payments.${index}.tokenAddress`}
+          amountFieldName={`payments.${index}.amount`}
           colony={colony}
           disabled={disabled}
           includeNetworkFee
