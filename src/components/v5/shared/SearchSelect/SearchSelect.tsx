@@ -39,6 +39,8 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
       onSearch,
       showEmptyContent = true,
       isDefaultItemVisible = false,
+      state,
+      message,
     },
     ref,
   ) => {
@@ -94,7 +96,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
               {formatText({ id: 'actions.selectActionType' })}
             </p>
           ) : (
-            <SearchInput onInput={onInput} />
+            <SearchInput onInput={onInput} state={state} message={message} />
           )}
         </div>
         {isLoading && (
@@ -103,7 +105,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
           </div>
         )}
         {!isLoading && (
-          <div className="pr-1 w-full overflow-y-scroll max-h-[calc(100vh-10rem)] sm:max-h-full">
+          <div className="pr-1 w-full overflow-y-scroll max-h-[calc(100vh-12rem)] sm:max-h-full">
             <div>
               {filteredList.length > 0 ? (
                 filteredList.map(({ options, title, isAccordion, key }) =>

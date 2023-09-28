@@ -1,3 +1,4 @@
+import { Extension } from '@colony/colony-js';
 import { object, string } from 'yup';
 import { createExtensionSetupValidationSchema } from '~common/Extensions/ExtensionSetup/utils';
 import { formatText } from '~utils/intl';
@@ -8,9 +9,16 @@ export const getValidationSchema = ({ initializationParams }) => {
     createExtensionSetupValidationSchema(initializationParams);
 
   return object({
+    type: string().oneOf(Object.values(Extension)).required(),
     option: string()
-      .required(formatText({ id: 'validation.required' }))
-      .oneOf(Object.values(GovernanceOptions)),
+      .when('type', {
+        is: Extension.VotingReputation,
+        then: string()
+          .required(formatText({ id: 'validation.required' }))
+          .oneOf(Object.values(GovernanceOptions)),
+        otherwise: string().notRequired(),
+      })
+      .defined(),
     params: paramsSchema,
   }).defined();
 };

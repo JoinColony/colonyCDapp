@@ -28,7 +28,7 @@ import {
 } from '~utils/autoLogin';
 // import { ActionTypes } from '../../actionTypes';
 // import { Action, AllActions } from '../../types/actions';
-import { BasicWallet } from '~types';
+import { BasicWallet, FullWallet } from '~types';
 import { ContextModule, getContext } from '~context';
 // import { createAddress } from '~utils/web3';
 // import { DEFAULT_NETWORK, NETWORK_DATA, TOKEN_DATA } from '~constants';
@@ -85,6 +85,7 @@ export const getBasicWallet = async (lastWallet: LastWallet) => {
       address: lastWallet.address,
       label: lastWallet.type,
       chains: [{ id: getChainIdAsHex(network.chainId), namespace: 'evm' }],
+      ethersProvider: provider,
     } as BasicWallet;
   }
 
@@ -118,8 +119,11 @@ export const getWallet = async (lastWallet: LastWallet | null) => {
   const [account] = wallet.accounts;
   setLastWallet({ type: wallet.label, address: account.address });
 
+  const provider = getProvider(wallet.label);
+
   return {
     ...wallet,
     ...account,
-  };
+    ethersProvider: provider,
+  } as FullWallet;
 };

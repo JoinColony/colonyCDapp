@@ -1,14 +1,15 @@
 import React, { FC } from 'react';
 
 import { TokenSymbolProps } from './types';
-import getTokenList from '~common/Dialogs/TokenManagementDialog/TokenManagementDialogForm/getTokenList';
+import { useGetAllTokens } from '~hooks/useGetAllTokens';
 
 const displayName =
   'v5.common.ActionsContent.partials.TokenSelect.partials.TokenSymbol';
 
 const TokenSymbol: FC<TokenSymbolProps> = ({ address }) => {
-  const networkTokenList = getTokenList();
-  const selectedToken = networkTokenList.find(
+  const allTokens = useGetAllTokens();
+
+  const selectedToken = allTokens.find(
     ({ token }) => token.tokenAddress === address,
   )?.token;
 

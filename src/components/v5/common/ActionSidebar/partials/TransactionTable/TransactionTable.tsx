@@ -31,16 +31,18 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
 
   return (
     <div>
+      <h5 className="text-2 mb-3 mt-6">
+        {formatText({ id: 'actionSidebar.additionalPayments' })}
+      </h5>
       {!!data.length && (
         <TableWithMeatballMenu<TransactionTableModel>
-          tableClassName={clsx({
-            '!border-red-400': !!fieldState.error,
+          className={clsx({
+            '!border-negative-400': !!fieldState.error,
           })}
           getRowId={({ key }) => key}
           columns={columns}
           data={data}
           getMenuProps={getMenuProps}
-          title={formatText({ id: 'actionSidebar.additionalPayments' })}
         />
       )}
       <Button

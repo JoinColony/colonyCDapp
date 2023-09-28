@@ -66,7 +66,10 @@ const AmountField: FC<AmountFieldProps> = ({ name }) => {
   });
 
   return (
-    <div className="flex items-center gap-3 w-full" ref={registerContainerRef}>
+    <div
+      className="flex items-center gap-3 w-full text-md"
+      ref={registerContainerRef}
+    >
       <Cleave
         name={name}
         key={dynamicCleaveOptionKey}
@@ -94,12 +97,6 @@ const AmountField: FC<AmountFieldProps> = ({ name }) => {
             {selectedToken?.symbol || colonyTokens[0].symbol}
           </span>
         </button>
-        <input
-          type="text"
-          id="tokenAddress"
-          className="hidden"
-          {...tokenAddressController}
-        />
         {isTokenSelectVisible && (
           <Portal>
             <Card

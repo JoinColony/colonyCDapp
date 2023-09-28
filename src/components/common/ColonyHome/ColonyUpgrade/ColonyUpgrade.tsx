@@ -39,7 +39,13 @@ const MSG = defineMessages({
 
 const ColonyUpgrade = () => {
   const { colony } = useColonyContext();
-  const { colonyContractVersion } = useColonyContractVersion();
+  const { colonyContractVersion, loadingColonyContractVersion } =
+    useColonyContractVersion();
+
+  const hasAlreadyDismissedAlert = !!localStorage.getItem(
+    `upgradeTo${colonyContractVersion}BannerDismissed`,
+  );
+
   const openUpgradeColonyDialog = useDialog(NetworkContractUpgradeDialog);
   const { user, wallet } = useAppContext();
   const enabledExtensionData = useEnabledExtensions();
@@ -49,6 +55,13 @@ const ColonyUpgrade = () => {
       colony,
       enabledExtensionData,
     });
+
+  const handleAlertDismissed = () => {
+    localStorage.setItem(
+      `upgradeTo${colonyContractVersion}BannerDismissed`,
+      'true',
+    );
+  };
 
   const allUserRoles = useTransformer(getAllUserRoles, [
     colony,
@@ -86,7 +99,11 @@ const ColonyUpgrade = () => {
     );
   }
 
-  if (canUpgrade) {
+  if (
+    canUpgrade &&
+    !hasAlreadyDismissedAlert &&
+    !loadingColonyContractVersion
+  ) {
     return (
       <div className={styles.upgradeBannerContainer}>
         <Alert
@@ -95,6 +112,7 @@ const ColonyUpgrade = () => {
             margin: 'none',
             borderRadius: 'none',
           }}
+          onAlertDismissed={handleAlertDismissed}
         >
           {(handleDismissed) => (
             <>

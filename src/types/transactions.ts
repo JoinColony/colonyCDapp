@@ -5,8 +5,9 @@ import { TransactionErrors } from '~gql';
 import { SimpleMessageValues } from './index';
 
 export type MethodParam = string | BigNumberish | boolean;
-export type MethodParams = (MethodParam | MethodParam[])[];
+
 export { TransactionErrors };
+export type MethodParams = (MethodParam | MethodParam[] | MethodParam[][])[];
 
 export interface TxConfig {
   context: string;

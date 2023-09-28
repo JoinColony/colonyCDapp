@@ -33,7 +33,7 @@
     "dots-three-vertical",
     "dots-three",
     "download-simple",
-    "ethereum",
+    "ethereum-icon",
     "eye",
     "file-arrow-down",
     "file-text",
@@ -218,7 +218,8 @@
     "paint",
     "white-tick",
     "thumbs-up",
-    "thumbs-down"
+    "thumbs-down",
+    "pie-chart"
   ],
   "multiColorIcons": [
     "circle-check-primary",

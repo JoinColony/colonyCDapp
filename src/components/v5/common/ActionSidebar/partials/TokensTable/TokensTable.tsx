@@ -34,17 +34,18 @@ const TokensTable: FC<TokensTableProps> = ({
 
   return (
     <div>
+      <h5 className="text-2 mb-3 mt-6">
+        {formatText({ id: 'actionSidebar.approvedTokens' })}
+      </h5>
       {!!data.length && (
         <TableWithMeatballMenu<TokensTableModel>
-          tableClassName={clsx({
-            '!border-red-400': !!fieldState.error,
+          className={clsx('mb-6', {
+            '!border-negative-400': !!fieldState.error,
           })}
           getRowId={({ key }) => key}
           columns={columns}
           data={data}
           getMenuProps={getMenuProps}
-          className="mb-6"
-          title={formatText({ id: 'actionSidebar.approvedTokens' })}
         />
       )}
       <Button
@@ -53,9 +54,7 @@ const TokensTable: FC<TokensTableProps> = ({
         size="small"
         isFullSize={isMobile}
         onClick={() => {
-          fieldArrayMethods.append({
-            tokenAddress: '',
-          });
+          fieldArrayMethods.append({});
         }}
       >
         {formatText({ id: 'button.addToken' })}

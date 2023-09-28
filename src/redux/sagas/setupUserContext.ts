@@ -23,6 +23,7 @@ import { getGasPrices, putError } from './utils';
 import setupWalletContext from './setupWalletContext';
 import getOnboard from './wallet/onboard';
 import { setupTransactionSagas } from './transactions';
+import expendituresSagas from './expenditures';
 // import { setupUserBalanceListener } from './setupUserBalanceListener';
 
 function* setupContextDependentSagas() {
@@ -38,6 +39,7 @@ function* setupContextDependentSagas() {
     // call(vestingSagas),
     call(setupUsersSagas),
     call(setupTransactionSagas),
+    call(expendituresSagas),
     /**
      * We've loaded all the context sagas, so we can proceed with redering
      * all the app's routes

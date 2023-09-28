@@ -6,7 +6,6 @@ import {
   useNavigate,
   useParams,
 } from 'react-router-dom';
-import { Extension } from '@colony/colony-js';
 
 import { useColonyContext, useExtensionData } from '~hooks';
 import ExtensionDetails from './partials/ExtensionDetails';
@@ -61,11 +60,7 @@ const ExtensionDetailsPage: FC = () => {
 
   const transform = pipe(
     mapPayload(({ params }) =>
-      mapExtensionActionPayload(
-        extensionId as Extension,
-        params,
-        initializationParams,
-      ),
+      mapExtensionActionPayload(params, initializationParams),
     ),
     mergePayload({ colonyAddress: colony?.colonyAddress, extensionData }),
   );
@@ -73,6 +68,7 @@ const ExtensionDetailsPage: FC = () => {
   const schema = getValidationSchema({ initializationParams });
 
   const defaultValues = {
+    type: extensionData.extensionId,
     option: '',
     params: initialValues,
   };

@@ -6,4 +6,10 @@ declare module 'yup' {
     hexString(message?: TestOptionsMessage): StringSchemaOriginal<T>;
     hasHexPrefix(message?: TestOptionsMessage): StringSchemaOriginal<T>;
   }
+  interface BasicArraySchema<T> {
+    unique(
+      message?: TestOptionsMessage,
+      mapper?: (a: Exclude<T, undefined | null>[number]) => any,
+    ): ArraySchema<T>;
+  }
 }

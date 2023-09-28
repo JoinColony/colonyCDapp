@@ -10,6 +10,14 @@ query GetVoterRewards($input: GetVoterRewardsInput!) {
   }
 }
 
+query GetMotionByTransactionHash($transactionHash: String!) {
+  getMotionByTransactionHash(transactionHash: $transactionHash) {
+    items {
+      ...ColonyMotion
+    }
+  }
+}
+
 query GetMotionTimeoutPeriods($input: GetMotionTimeoutPeriodsInput!) {
   getMotionTimeoutPeriods(input: $input) {
     timeLeftToStake

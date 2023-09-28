@@ -11,7 +11,8 @@ import {
   CreateColonyMetadataMutation,
   CreateColonyMetadataMutationVariables,
 } from '~gql';
-import { getMetadataDatabaseId } from '~utils/domains';
+import { getPendingMetadataDatabaseId } from '~utils/databaseId';
+
 import {
   getColonyManager,
   initiateTransaction,
@@ -202,7 +203,7 @@ function* editColonyMotion({
         mutation: CreateColonyMetadataDocument,
         variables: {
           input: {
-            id: getMetadataDatabaseId(colonyAddress, txHash),
+            id: getPendingMetadataDatabaseId(colonyAddress, txHash),
             displayName: colonyDisplayName ?? colony.metadata.displayName,
             avatar: colonyAvatarImage,
             thumbnail: colonyThumbnail,
@@ -252,9 +253,17 @@ function* editColonyMotion({
     });
 
     if (colonyName) {
-      navigate?.(`/colony/${colonyName}/tx/${txHash}`, {
-        state: { isRedirect: true },
-      });
+      if (navigate) {
+        navigate(`/colony/${colonyName}/tx/${txHash}`, {
+          state: { isRedirect: true },
+        });
+      } else {
+        window.history.replaceState(
+          {},
+          '',
+          `/colony/${colonyName}/activity/tx/${txHash}`,
+        );
+      }
     }
   } catch (caughtError) {
     putError(ActionTypes.MOTION_EDIT_COLONY_ERROR, caughtError, meta);
