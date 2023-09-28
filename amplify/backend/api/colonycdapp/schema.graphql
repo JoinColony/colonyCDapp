@@ -2762,6 +2762,14 @@ type ColonyAction @model {
   JSON string to pass custom, dynamic event data
   """
   individualEvents: String
+  """
+  The id of the discussion, if there is one
+  """
+  discussionId: ID
+  """
+  The discussion associated with the action, if there is one
+  """
+  discussion: Discussion @hasOne(fields: ["id"])
 }
 
 type ColonyDecision @model {
@@ -3069,4 +3077,115 @@ type ReputationMiningCycleMetadata @model {
   The timestamp of the most recent reputation mining cycle completion.
   """
   lastCompletedAt: AWSDateTime! # We're using this to determine whether to re-calculate colony-wide user reputation (updateContributorsWithReputation)
+}
+"""
+Defines an discussion for any colony action.
+It is made up of comments
+"""
+type Discussion @model {
+  """
+  The id of the discussion, it is the transaction address of the action, motion, task or decision.
+  """
+  id: ID!
+  """
+  A collection of comments
+  """
+  comments: [Comment] @hasMany
+  """
+  The colony action being discussed
+  """
+  action: ColonyAction @belongsTo
+}
+
+"""
+Defines all the different flags a comment can have
+"""
+enum CommentFlags {
+  """
+  Show a flag in the UI indicating support of the action
+  """
+  support
+  """
+  Show a flag in the UI indicating opposition to the action
+  """
+  oppose
+}
+
+"""
+Defines the different ways a user can vote on a comment
+"""
+enum CommentVoteTypes {
+  """
+  Vote in suppport of the comment
+  """
+  for
+  """
+  Vote against the comment
+  """
+  against
+}
+
+"""
+Defines the vote model for comments
+"""
+type Vote @model {
+  """
+  Wallet address of the voter of the comment
+  """
+  voterAddress: ID! @index(name: "byVoterAddress")
+  """
+  Extended user object for given voterAddress
+  """
+  voter: User! @hasOne(fields: ["voterAddress"])
+  """
+  The type of vote
+  """
+  type: CommentVoteTypes!
+  """
+  The value of the vote is defined by the amount of the users tokens for Colony this action is connected to.
+  Defined as a string as this number can get quite large
+  """
+  amount: String!
+}
+
+"""
+Defines an comment
+"""
+type Comment @model {
+  """
+  The id of the comment
+  """
+  id: ID!
+  """
+  The content of the comment
+  """
+  content: String
+  """
+  Corresponding Discussion data
+  """
+  discussion: Discussion @belongsTo
+  """
+  Wallet address of the author of the comment
+  """
+  authorAddress: ID! @index(name: "byAuthorAddress")
+  """
+  Extended user object for given authorAddress
+  """
+  author: User @hasOne(fields: ["authorAddress"])
+  """
+  All responses to this comment
+  """
+  comments: [Comment] @hasMany
+  """
+  Id of the comment this comment was created in response to
+  """
+  parentId: Comment @belongsTo
+  """
+  Additional UI flags on the comment
+  """
+  flag: CommentFlags
+  """
+  All the votes on this comment
+  """
+  votes: [Vote] @hasMany
 }
