@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import debounce from 'lodash.debounce';
+import merge from 'lodash/merge';
+import { BaseFieldProps } from './types';
 
 export const useInput = (maxCharNumber: number, defaultValue?: string) => {
   const [isTyping, setIsTyping] = useState(false);
@@ -45,3 +47,12 @@ export const useInput = (maxCharNumber: number, defaultValue?: string) => {
     onChange,
   };
 };
+
+export const useStateClassNames = (
+  defaultStateClassNames: Exclude<BaseFieldProps['stateClassNames'], undefined>,
+  stateClassNames?: BaseFieldProps['stateClassNames'],
+) =>
+  useMemo(
+    () => merge(defaultStateClassNames, stateClassNames),
+    [defaultStateClassNames, stateClassNames],
+  );

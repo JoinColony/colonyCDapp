@@ -9,10 +9,9 @@ export interface InputBaseProps
   suffix?: React.ReactNode;
   prefix?: React.ReactNode;
   mode?: 'primary' | 'secondary';
-  shouldShowErrorMessage?: boolean;
 }
 
 export interface FormInputBaseProps
-  extends Omit<InputBaseProps, 'onChange' | 'value' | 'state' | 'message'> {
+  extends Omit<InputBaseProps, 'onChange' | 'value' | 'state'> {
   name: string;
 }
