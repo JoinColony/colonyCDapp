@@ -13,14 +13,14 @@ import { ADDRESS_ZERO } from '~constants';
 import {
   createGroupTransaction,
   createTransactionChannels,
-  getTxChannel,
   waitForTxResult,
 } from '../../transactions';
-import { getColonyManager, putError } from '../../utils';
+import { getColonyManager } from '../../utils';
 
 function* releaseExpenditureStageMotion({
   payload: {
     colonyAddress,
+    colonyName,
     expenditure,
     slotId,
     tokenAddresses,
@@ -28,9 +28,14 @@ function* releaseExpenditureStageMotion({
     motionDomainId,
   },
   meta,
-}: Action<ActionTypes.MOTION_RELEASE_EXPENDITURE>) {
-  const txChannel = yield call(getTxChannel, meta.id);
-
+  meta: { navigate },
+}: Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE>) {
+  const batchId = 'motion-release-expenditure-stage';
+  const { createMotion /* annotationMotionMessage */ } = yield call(
+    createTransactionChannels,
+    batchId,
+    ['createMotion', 'annotationMotionMessage'],
+  );
   const colonyManager = yield getColonyManager();
   const colonyClient = yield colonyManager.getClient(
     ClientType.ColonyClient,
@@ -42,13 +47,6 @@ function* releaseExpenditureStageMotion({
       [colonyManager, colonyManager.getClient],
       ClientType.StagedExpenditureClient,
       colonyAddress,
-    );
-
-    const batchId = 'motion-release-expenditure-stage';
-    const { createMotion /* annotationMotionMessage */ } = yield call(
-      createTransactionChannels,
-      batchId,
-      ['createMotion', 'annotationMotionMessage'],
     );
 
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
@@ -103,30 +101,35 @@ function* releaseExpenditureStageMotion({
       },
     });
 
-    const { type } = yield call(waitForTxResult, createMotion.channel);
+    const { type, payload } = yield call(waitForTxResult, createMotion.channel);
 
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
-      yield put<Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_SUCCESS>>({
-        type: ActionTypes.MOTION_RELEASE_EXPENDITURE_SUCCESS,
+      yield put<Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_SUCCESS>>({
+        type: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_SUCCESS,
         meta,
       });
+
+      navigate(`/colony/${colonyName}/tx/${payload.transaction.hash}`);
     }
   } catch (error) {
-    return yield putError(
-      ActionTypes.MOTION_RELEASE_EXPENDITURE_ERROR,
-      error,
+    console.error(error);
+    yield put<Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_ERROR>>({
+      type: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_ERROR,
+      payload: {
+        name: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_ERROR,
+        message: JSON.stringify(error),
+      },
       meta,
-    );
+      error: true,
+    });
+  } finally {
+    createMotion.channel.close();
   }
-
-  txChannel.close();
-
-  return null;
 }
 
 export default function* releaseExpenditureStageSaga() {
   yield takeEvery(
-    ActionTypes.MOTION_RELEASE_EXPENDITURE,
+    ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE,
     releaseExpenditureStageMotion,
   );
 }

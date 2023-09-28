@@ -2427,6 +2427,10 @@ type ColonyMotion @model {
   """
   expenditureId: ID
     @index(name: "byExpenditureId", queryField: "getMotionByExpenditureId")
+  """
+  Expenditure stage associated with the motion
+  """
+  expenditureSlotId: Int
 
   action: ColonyAction @belongsTo(fields: ["transactionHash"])
 }
