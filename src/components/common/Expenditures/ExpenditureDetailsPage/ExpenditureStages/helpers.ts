@@ -22,12 +22,22 @@ export const useExpenditureStageStatus = (
   });
 
   if (!releaseExpenditureStageMotion && expenditureStage?.isReleased) {
-    return MotionState.Forced;
+    return {
+      expenditureStageStatus: MotionState.Forced,
+    };
   }
 
   if (releaseExpenditureStageMotion && data?.getMotionState) {
-    return getMotionState(data.getMotionState, releaseExpenditureStageMotion);
+    return {
+      expenditureStageStatus: getMotionState(
+        data.getMotionState,
+        releaseExpenditureStageMotion,
+      ),
+      motionTransactionHash: releaseExpenditureStageMotion.transactionHash,
+    };
   }
 
-  return null;
+  return {
+    expenditureStageStatus: null,
+  };
 };

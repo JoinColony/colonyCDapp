@@ -9,18 +9,18 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { ActionTypes } from '~redux/actionTypes';
 import { Action } from '~redux/types';
 import { ADDRESS_ZERO } from '~constants';
+import { takeFrom } from '~utils/saga/effects';
 
 import {
   createGroupTransaction,
   createTransactionChannels,
   waitForTxResult,
 } from '../../transactions';
-import { getColonyManager } from '../../utils';
+import { getColonyManager, initiateTransaction } from '../../utils';
 
 function* releaseExpenditureStageMotion({
   payload: {
     colonyAddress,
-    colonyName,
     expenditure,
     slotId,
     tokenAddresses,
@@ -28,12 +28,12 @@ function* releaseExpenditureStageMotion({
     motionDomainId,
   },
   meta,
-  meta: { navigate },
+  meta: { setTxHash, id },
 }: Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE>) {
   const batchId = 'motion-release-expenditure-stage';
   const { createMotion /* annotationMotionMessage */ } = yield call(
     createTransactionChannels,
-    batchId,
+    id,
     ['createMotion', 'annotationMotionMessage'],
   );
   const colonyManager = yield getColonyManager();
@@ -86,7 +86,7 @@ function* releaseExpenditureStageMotion({
       params: [
         motionDomainId,
         childSkillIndex,
-        ADDRESS_ZERO,
+        stagedExpenditureClient.address,
         encodedReleaseStagedPaymentAction,
         key,
         value,
@@ -101,15 +101,24 @@ function* releaseExpenditureStageMotion({
       },
     });
 
-    const { type, payload } = yield call(waitForTxResult, createMotion.channel);
+    yield initiateTransaction({ id: createMotion.id });
+
+    const {
+      payload: { hash: txHash },
+    } = yield takeFrom(
+      createMotion.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
+
+    setTxHash?.(txHash);
+
+    const { type } = yield call(waitForTxResult, createMotion.channel);
 
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
       yield put<Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_SUCCESS>>({
         type: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_SUCCESS,
         meta,
       });
-
-      navigate?.(`/colony/${colonyName}/tx/${payload.transaction.hash}`);
     }
   } catch (error) {
     console.error(error);

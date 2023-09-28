@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { BigNumber } from 'ethers';
 import { Id } from '@colony/colony-js';
 
@@ -36,11 +36,12 @@ const ExpenditureStagesItem = ({
   const expenditureStage = expenditureStages.find(
     (stage) => stage.slotId === expenditureSlot.id,
   );
-  const expenditureStageStatus = useExpenditureStageStatus(
-    colony.colonyAddress,
-    expenditure,
-    expenditureStage,
-  );
+  const { expenditureStageStatus, motionTransactionHash } =
+    useExpenditureStageStatus(
+      colony.colonyAddress,
+      expenditure,
+      expenditureStage,
+    );
   const ExpenditureStageTag = motionTags[expenditureStageStatus ?? ''];
 
   const nonZeroPayouts = expenditureSlot.payouts?.filter((payout) =>
@@ -112,7 +113,17 @@ const ExpenditureStagesItem = ({
           </>
         )}
       {expenditureStage?.isReleased && <div>Released</div>}
-      {expenditureStageStatus && <ExpenditureStageTag />}
+      {expenditureStageStatus && (
+        <>
+          {motionTransactionHash ? (
+            <Link to={`/colony/${colony.name}/tx/${motionTransactionHash}`}>
+              <ExpenditureStageTag />
+            </Link>
+          ) : (
+            <ExpenditureStageTag />
+          )}
+        </>
+      )}
     </li>
   );
 };
