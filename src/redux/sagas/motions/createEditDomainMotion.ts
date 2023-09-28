@@ -15,7 +15,7 @@ import {
   CreateDomainMetadataMutationVariables,
   DomainColor,
 } from '~gql';
-import { getMetadataDatabaseId } from '~utils/domains';
+import { getPendingMetadataDatabaseId } from '~utils/databaseId';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
@@ -204,7 +204,7 @@ function* createEditDomainMotion({
         mutation: CreateDomainMetadataDocument,
         variables: {
           input: {
-            id: getMetadataDatabaseId(colonyAddress, txHash),
+            id: getPendingMetadataDatabaseId(colonyAddress, txHash),
             name: domainName,
             color: domainColor || DomainColor.LightPink,
             description: domainPurpose || '',
@@ -219,7 +219,7 @@ function* createEditDomainMotion({
         mutation: CreateDomainMetadataDocument,
         variables: {
           input: {
-            id: getMetadataDatabaseId(colonyAddress, txHash),
+            id: getPendingMetadataDatabaseId(colonyAddress, txHash),
             name: domainName,
             color: domainColor || domain.metadata.color,
             description: domainPurpose || domain.metadata.description,
@@ -249,9 +249,17 @@ function* createEditDomainMotion({
     });
 
     if (colonyName) {
-      navigate?.(`/colony/${colonyName}/tx/${txHash}`, {
-        state: { isRedirect: true },
-      });
+      if (navigate) {
+        navigate(`/colony/${colonyName}/tx/${txHash}`, {
+          state: { isRedirect: true },
+        });
+      } else {
+        window.history.replaceState(
+          {},
+          '',
+          `/colony/${colonyName}/activity/tx/${txHash}`,
+        );
+      }
     }
   } catch (caughtError) {
     putError(ActionTypes.MOTION_DOMAIN_CREATE_EDIT_ERROR, caughtError, meta);

@@ -22,7 +22,7 @@ const LazyConsensusPageSetup: FC<LazyConsensusPageSetupProps> = ({
   const { openIndex, onOpenIndexChange, isAccordionOpen } = useAccordion();
   const [isCustomChecked, setIsCustomChecked] = useState(false);
 
-  const { reset } = useFormContext();
+  const { setValue } = useFormContext();
 
   const onChangeGovernance = (selectedDefaultOption: GovernanceOptions) => {
     if (selectedDefaultOption === GovernanceOptions.CUSTOM) {
@@ -31,16 +31,10 @@ const LazyConsensusPageSetup: FC<LazyConsensusPageSetupProps> = ({
     } else {
       setIsCustomChecked(false);
     }
-
     const defaultFormData = getSelectedFormData(selectedDefaultOption);
 
-    reset(
-      {
-        option: selectedDefaultOption,
-        params: defaultFormData,
-      },
-      { keepDefaultValues: true },
-    );
+    setValue('params', defaultFormData, { shouldValidate: true });
+    setValue('option', selectedDefaultOption, { shouldValidate: true });
   };
 
   const { pathname } = useLocation();

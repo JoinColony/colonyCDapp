@@ -27,6 +27,16 @@ export const governanceRadioList: RadioItemProps[] = [
 ];
 
 export const defaultGovernanceOptions = {
+  [GovernanceOptions.CUSTOM]: {
+    totalStakeFraction: 1,
+    voterRewardFraction: 20,
+    userMinStakeFraction: 1,
+    maxVoteFraction: 70,
+    stakePeriod: 72,
+    submitPeriod: 72,
+    revealPeriod: 72,
+    escalationPeriod: 72,
+  },
   [GovernanceOptions.SPEED_OVER_SECURITY]: {
     totalStakeFraction: 1,
     voterRewardFraction: 20,

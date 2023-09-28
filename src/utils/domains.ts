@@ -16,23 +16,6 @@ export const findDomainByNativeId = (
     .find(({ nativeId }) => nativeId === domainNativeId);
 };
 
-/**
- * As we have to self-manage the database IDs of the domains, this helper function generates it for us
- */
-export const getDomainDatabaseId = (
-  colonyAddress: string,
-  nativeDomainId: number,
-) => {
-  return `${colonyAddress}_${nativeDomainId}`;
-};
-
-export const getMetadataDatabaseId = (
-  colonyAddress: string,
-  txHash: string,
-) => {
-  return `${colonyAddress}_motion-${txHash}`;
-};
-
 export const getDomainOptions = (colonyDomains: Domain[]) =>
   sortBy(
     colonyDomains.map((domain) => ({

@@ -215,9 +215,17 @@ function* moveFundsMotion({
     });
 
     if (colonyName) {
-      navigate?.(`/colony/${colonyName}/tx/${txHash}`, {
-        state: { isRedirect: true },
-      });
+      if (navigate) {
+        navigate(`/colony/${colonyName}/tx/${txHash}`, {
+          state: { isRedirect: true },
+        });
+      } else {
+        window.history.replaceState(
+          {},
+          '',
+          `/colony/${colonyName}/activity/tx/${txHash}`,
+        );
+      }
     }
   } catch (caughtError) {
     putError(ActionTypes.MOTION_MOVE_FUNDS_ERROR, caughtError, meta);

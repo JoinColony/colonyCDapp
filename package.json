@@ -26,7 +26,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "chromatic": "npx chromatic --project-token=f08326e25dbf",
-    "postinstall": "./scripts/lambda-functions-dependencies.sh"
+    "postinstall": "./scripts/lambda-functions-dependencies.sh",
+    "upgrade-colony-js": "./scripts/upgrade-colony-js.sh"
   },
   "repository": {
     "type": "git",
@@ -50,6 +51,7 @@
     "@graphql-codegen/typescript-react-apollo": "^3.3.6",
     "@jackfranklin/test-data-bot": "^1.4.0",
     "@jest/globals": "^29.0.2",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@storybook/addon-essentials": "^7.0.2",
     "@storybook/addon-interactions": "^7.0.2",
     "@storybook/addon-links": "^7.0.2",
@@ -119,6 +121,8 @@
     "postcss-svg": "^3.0.0",
     "prettier": "^2.8.7",
     "process": "^0.11.10",
+    "react-refresh": "^0.14.0",
+    "react-refresh-typescript": "^2.0.9",
     "storybook": "^7.0.2",
     "storybook-addon-apollo-client": "^4.1.4",
     "storybook-react-intl": "^2.0.1",
@@ -152,7 +156,7 @@
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "@colony/colony-event-metadata-parser": "^2.0.2",
-    "@colony/colony-js": "^6.5.0-next.0",
+    "@colony/colony-js": "^6.5.0-next.1",
     "@colony/redux-promise-listener": "^1.2.0",
     "@colony/unicode-confusables-noascii": "^0.1.2",
     "@formatjs/intl-pluralrules": "^5.0.2",
