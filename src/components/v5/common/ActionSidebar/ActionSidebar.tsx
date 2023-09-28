@@ -24,6 +24,7 @@ import { ActionFormBaseProps } from './types';
 import { formatText } from '~utils/intl';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
 import FormInputBase from '../Fields/InputBase/FormInputBase';
+import { FIELD_STATE } from '../Fields/consts';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -46,7 +47,6 @@ const ActionSidebarFormContent: FC<PropsWithChildren<Props>> = ({
   const isMobile = useMobile();
   const userHasPermissions = useUserHasPermissions();
   const form = useFormContext();
-  const fieldState = form.getFieldState('title');
   const notificationBanner = useNotificationBanner(hasErrors, selectedAction);
   const closeSidebarClick = useCloseSidebarClick();
 
@@ -83,19 +83,22 @@ const ActionSidebarFormContent: FC<PropsWithChildren<Props>> = ({
         <FormInputBase
           name="title"
           placeholder={formatText({ id: 'placeholder.title' })}
+          stateClassNames={{
+            [FIELD_STATE.Error]: '',
+          }}
           className={clsx(
             `
-                heading-3 
-                md:hover:text-blue-400 md:hover:placeholder:text-blue-400 text-gray-900
-                transition-colors mb-7
-              `,
-            {
-              'placeholder:text-gray-500': !fieldState.error,
-              'placeholder:text-red-400': !!fieldState.error,
-            },
+              heading-3
+              md:hover:text-blue-400 md:hover:placeholder:text-blue-400 text-gray-900
+              transition-colors mb-7
+            `,
+            // {
+            //   'placeholder:text-gray-500': !fieldState.error,
+            //   'placeholder:text-red-400': !!fieldState.error,
+            // },
           )}
           mode="secondary"
-          shouldShowErrorMessage={false}
+          message={false}
         />
         <ActionTypeSelect />
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
