@@ -1,0 +1,17 @@
+mutation SubmitComment($input: SubmitCommentInput!) {
+  submitComment(input: $input) {
+    accepted
+  }
+}
+
+mutation createVote($input: CreateVoteInput!) {
+  createVote(input: $input) {
+    id
+  }
+}
+
+mutation updateVote($input: UpdateVoteInput!) {
+  updateVote(input: $input) {
+    id
+  }
+}
