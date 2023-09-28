@@ -15,6 +15,7 @@ const InputBase: FC<InputBaseProps> = ({
   suffix,
   mode = 'primary',
   disabled,
+  shouldShowErrorMessage = true,
   ...rest
 }) => {
   return (
@@ -30,12 +31,13 @@ const InputBase: FC<InputBaseProps> = ({
             'text-gray-400 pointer-events-none': disabled,
             'bg-base-white rounded border py-3 px-3.5 border-gray-300 focus:border-blue-200 focus:shadow-light-blue':
               mode === 'primary',
+            'border-none': mode === 'secondary',
           },
         )}
         {...rest}
       />
       {suffix && suffix}
-      {message && message}
+      {message && shouldShowErrorMessage && message}
     </div>
   );
 };
