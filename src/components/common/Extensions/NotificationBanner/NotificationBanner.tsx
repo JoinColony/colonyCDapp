@@ -4,7 +4,6 @@ import clsx from 'clsx';
 import Link from '~v5/shared/Link';
 
 import CopyUrl from './CopyUrl';
-import styles from './NotificationBanner.module.css';
 import { NotificationBannerProps } from './types';
 import StatusText from '~v5/shared/StatusText';
 
@@ -22,7 +21,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   return (
     <div
       className={clsx(
-        styles.banner,
+        'border rounded-lg flex justify-between min-h-[2.75rem] flex-col md:flex-row md:items-center',
         `gap-2 ${
           isAlt
             ? 'rounded min-h-[3.75rem] p-4'
@@ -63,32 +62,45 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
           </div>
         )}
       </div>
-      <div
-        className={clsx(styles.actionWrapper, 'text-4', {
-          'ml-0 md:ml-0 md:self-center': isAlt,
-          'ml-6 md:ml-2': !isAlt,
-        })}
-      >
-        {(() => {
-          switch (action?.type) {
-            case 'copy': {
-              return <CopyUrl actionText={action.copyContent} />;
+      {action && (
+        <div
+          className={clsx('mt-2 md:mt-0 text-4', {
+            'md:self-center': isAlt,
+            'ml-6 md:ml-2': !isAlt,
+          })}
+        >
+          {(() => {
+            switch (action?.type) {
+              case 'copy': {
+                return <CopyUrl actionText={action.copyContent} />;
+              }
+              case 'redirect': {
+                return (
+                  <Link
+                    to={action.href}
+                    className="underline md:hover:no-underline"
+                  >
+                    {actionText}
+                  </Link>
+                );
+              }
+              case 'call-to-action': {
+                return (
+                  <button
+                    type="button"
+                    className="underline md:hover:no-underline"
+                    onClick={action.onClick}
+                  >
+                    {actionText}
+                  </button>
+                );
+              }
+              default:
+                return null;
             }
-            case 'redirect': {
-              return <Link to={action.href}>{actionText}</Link>;
-            }
-            case 'call-to-action': {
-              return (
-                <button type="button" onClick={action.onClick}>
-                  {actionText}
-                </button>
-              );
-            }
-            default:
-              return null;
-          }
-        })()}
-      </div>
+          })()}
+        </div>
+      )}
     </div>
   );
 };

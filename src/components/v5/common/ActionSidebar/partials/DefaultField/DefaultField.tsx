@@ -39,7 +39,7 @@ const DefaultField: FC<DefaultFieldProps> = ({
       />
       {isDirty && isError && (
         <div
-          className={clsx('text-xs shrink-0 ml-auto', {
+          className={clsx('text-xs shrink-0 ml-auto absolute right-0 top-5', {
             'text-neutral-400': !isError,
             'text-negative-400': isError,
           })}
