@@ -116,7 +116,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
           }
         >
           <NotificationBanner
-            status="notVerified"
+            status="warning"
             title={formatText(
               { id: 'user.not.verified.warning' },
               {
