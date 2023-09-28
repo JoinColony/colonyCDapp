@@ -964,6 +964,7 @@
   "manageTokensTable.select": "Select token or enter contract address",
   "manageTokensTable.notFound": "Token not found",
   "manageTokensTable.availableTokens": "Available tokens",
+  "manageTokensTable.error": "This token is already on colony tokens list",
   "team.type": "Team",
   "reputation.type": "Reputation",
   "permissions.type": "Permissions types",
