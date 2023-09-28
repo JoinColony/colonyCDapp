@@ -166,9 +166,17 @@ function* createDecisionMotion({
     });
 
     if (colonyName) {
-      navigate?.(`/colony/${colonyName}/decisions/tx/${txHash}`, {
-        state: { isRedirect: true },
-      });
+      if (navigate) {
+        navigate(`/colony/${colonyName}/decisions/tx/${txHash}`, {
+          state: { isRedirect: true },
+        });
+      } else {
+        window.history.replaceState(
+          {},
+          '',
+          `/colony/${colonyName}/activity/tx/${txHash}`,
+        );
+      }
     }
 
     yield put({

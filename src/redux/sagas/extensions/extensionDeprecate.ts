@@ -29,9 +29,9 @@ function* extensionDeprecate({
 
     yield initiateTransaction({ id: meta.id });
 
-    const result = yield waitForTxResult(txChannel);
+    const { type } = yield waitForTxResult(txChannel);
 
-    if (result.type === ActionTypes.TRANSACTION_SUCCEEDED) {
+    if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
       yield put<AllActions>({
         type: ActionTypes.EXTENSION_DEPRECATE_SUCCESS,
         payload: {},

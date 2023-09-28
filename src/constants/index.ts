@@ -130,6 +130,15 @@ export const TOKEN_DATA = {
   [Network.Mainnet]: ETHER_TOKEN,
 };
 
+const GAS_LIMITS = {
+  [Network.Ganache]: 6_721_975, // Default ganache gas limit. To verify, run web3.eth.getBlock("latest") in truffle console and inspect "gasLimit" field.
+  [Network.Gnosis]: 30_000_000, // https://docs.gnosischain.com/specs/#general-information
+  [Network.Mainnet]: 30_000_000, // https://ethereum.org/en/developers/docs/blocks/#:~:text=Each%20block%20has%20a%20target,(2x%20target%20block%20size).
+};
+
+export const DEFAULT_GAS_LIMIT: number =
+  GAS_LIMITS[DEFAULT_NETWORK] ?? 30_000_000;
+
 /*
  * Chains on which the network contracts are deployed
  * Since CDapp is multichain, this tells us which of those "multi" chains
@@ -155,7 +164,8 @@ export const NETWORKS_WITH_METATRANSACTIONS = [
 
 export const ADDRESS_ZERO = ethersContants.AddressZero;
 
-export const GANACHE_LOCAL_RPC_URL = 'http://localhost:8545';
+export const GANACHE_LOCAL_RPC_URL =
+  process.env.GANACHE_RPC_URL || 'http://localhost:8545/';
 
 export const isDev = process.env.NETWORK === 'ganache';
 

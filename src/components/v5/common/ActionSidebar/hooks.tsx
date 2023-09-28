@@ -135,7 +135,7 @@ export const useActionsList = () => {
           {
             label: { id: 'actions.createDecision' },
             value: ACTION.CREATE_DECISION,
-            isDisabled: true,
+            isDisabled: false,
           },
         ],
       },

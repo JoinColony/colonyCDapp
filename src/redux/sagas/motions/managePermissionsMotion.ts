@@ -181,9 +181,17 @@ function* managePermissionsMotion({
     });
 
     if (colonyName) {
-      navigate?.(`/colony/${colonyName}/tx/${txHash}`, {
-        state: { isRedirect: true },
-      });
+      if (navigate) {
+        navigate(`/colony/${colonyName}/tx/${txHash}`, {
+          state: { isRedirect: true },
+        });
+      } else {
+        window.history.replaceState(
+          {},
+          '',
+          `/colony/${colonyName}/activity/tx/${txHash}`,
+        );
+      }
     }
   } catch (caughtError) {
     putError(ActionTypes.MOTION_USER_ROLES_SET_ERROR, caughtError, meta);

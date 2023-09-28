@@ -23,7 +23,7 @@ if (rootNode) {
   ReactModal.setAppElement(rootNode);
   root.render(createElement(Entry, { store }));
 
-  if (module.hot) {
-    module.hot.accept();
-  }
+  // if (module.hot) {
+  //   module.hot.accept();
+  // }
 }

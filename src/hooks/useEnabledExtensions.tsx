@@ -8,6 +8,8 @@ export interface EnabledExtensionData {
   isVotingReputationEnabled: boolean;
   votingReputationVersion: number | undefined;
   shortPollExtensions: () => void;
+  isStakedExpenditureEnabled: boolean;
+  isStagedExpenditureEnabled: boolean;
 }
 
 const useEnabledExtensions = (): EnabledExtensionData => {
@@ -20,12 +22,20 @@ const useEnabledExtensions = (): EnabledExtensionData => {
   const votingReputationExtension = installedExtensionsData.find(
     (extension) => extension.extensionId === Extension.VotingReputation,
   );
+  const stakedExpenditureExtension = installedExtensionsData.find(
+    (extension) => extension.extensionId === Extension.StakedExpenditure,
+  );
+  const stagedExpenditureExtension = installedExtensionsData.find(
+    (extension) => extension.extensionId === Extension.StagedExpenditure,
+  );
 
   return {
     loading,
     isOneTxPaymentEnabled: !!oneTxPaymentExtension?.isEnabled,
     isVotingReputationEnabled: !!votingReputationExtension?.isEnabled,
     votingReputationVersion: votingReputationExtension?.currentVersion,
+    isStakedExpenditureEnabled: !!stakedExpenditureExtension?.isEnabled,
+    isStagedExpenditureEnabled: !!stagedExpenditureExtension?.isEnabled,
     shortPollExtensions,
   };
 };
