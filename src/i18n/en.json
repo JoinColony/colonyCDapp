@@ -1051,5 +1051,16 @@
   "table.row.token": "Token",
   "table.row.symbol": "Symbol",
   "table.row.duplicate": "Duplicate row",
-  "table.row.remove": "Remove row"
+  "table.row.remove": "Remove row",
+  "actionSidebar.distribution": "Distribution",
+  "actionSidebar.distributionPlaceholder": "Select split type",
+  "actionSidebar.distributionTypes": "DISTRIBUTION TYPES",
+  "actionSidebar.distributionTypes.equal": "Equal",
+  "actionSidebar.distributionTypes.unequal": "Unequal",
+  "actionSidebar.distributionTypes.reputationPercentage": "Reputation percentage",
+  "actionSidebar.toolip.distributionTypes": "The type of distribution for the split payment.",
+  "button.addRecipient": "Add recipient",
+  "table.row.percent": "Percent",
+  "table.footer.total": "TOTAL",
+  "actionSidebar.payments": "Payments"
 }
