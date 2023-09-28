@@ -24,7 +24,11 @@ const Discussion = ({ actionData: { discussion, transactionHash } }: Props) => {
         savedComments={savedComments}
         setInReplyToId={setInReplyToId}
       />
-      <CommentInput actionId={transactionHash} parentId={inReplyToId} />
+      <CommentInput
+        actionId={transactionHash}
+        parentId={inReplyToId}
+        setInReplyToId={setInReplyToId}
+      />
     </div>
   );
 };

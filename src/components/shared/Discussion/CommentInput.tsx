@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Dispatch, SetStateAction } from 'react';
 
 import { useSubmitCommentMutation, CommentFlags } from '~gql';
 import { useAppContext } from '~hooks';
@@ -11,9 +11,10 @@ const displayName = 'CommentInput';
 interface Props {
   actionId: string;
   parentId: string | undefined;
+  setInReplyToId: Dispatch<SetStateAction<string | undefined>>;
 }
 
-const CommentInput = ({ actionId, parentId }: Props) => {
+const CommentInput = ({ actionId, parentId, setInReplyToId }: Props) => {
   const [comment, setComment] = useState('');
   const [flag, setFlag] = useState<CommentFlags>();
   const [submitComment] = useSubmitCommentMutation();
@@ -40,6 +41,7 @@ const CommentInput = ({ actionId, parentId }: Props) => {
     });
     setComment('');
     setFlag(undefined);
+    setInReplyToId(undefined);
   };
 
   return (
