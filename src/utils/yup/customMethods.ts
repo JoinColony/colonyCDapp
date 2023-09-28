@@ -40,8 +40,14 @@ function hasHexPrefix(msg?: TestOptionsMessage) {
 }
 
 function unique(message, mapper = (a) => a) {
-  return this.test('unique', message, function (list) {
-    return list.length === new Set(list.map(mapper)).size;
+  return this.test({
+    name: 'unique',
+    message,
+    test(list) {
+      if (!list) return true;
+
+      return list.length === new Set(list.map(mapper)).size;
+    },
   });
 }
 

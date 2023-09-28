@@ -11,7 +11,6 @@ import {
   MAX_DOMAIN_PURPOSE_LENGTH,
 } from '~constants';
 import { getCreateDomainDialogPayload } from '~common/Dialogs/CreateDomainDialog/helpers';
-import { DomainColor } from '~gql';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
 import { DECISION_METHOD_OPTIONS } from '../../consts';
@@ -48,7 +47,7 @@ export const useCrateNewTeam = (
       () => ({
         teamName: '',
         domainPurpose: '',
-        domainColor: DomainColor.LightPink,
+        domainColor: '',
         createdIn: Id.RootDomain.toString(),
         decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
         annotation: '',

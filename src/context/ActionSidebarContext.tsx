@@ -14,22 +14,26 @@ export const ActionSidebarContext = createContext<{
   actionSidebarToggle: UseToggleReturnType;
   cancelModalToggle: UseToggleReturnType;
   avatarModalToggle: UseToggleReturnType;
+  changeActionModalToggle: UseToggleReturnType;
 }>({
   actionSidebarToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
   cancelModalToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
   avatarModalToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
+  changeActionModalToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
 });
 
 export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
   const cancelModalToggle = useToggle();
+  const changeActionModalToggle = useToggle();
   const avatarModalToggle = useToggle();
   const actionSidebarToggle = useToggle({
     shouldCloseOnDocumentClick: (element) => {
       return (
         !cancelModalToggle[0] &&
         !avatarModalToggle[0] &&
+        !changeActionModalToggle[0] &&
         !getPortalContainer().contains(element)
       );
     },
@@ -40,8 +44,14 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
       actionSidebarToggle,
       cancelModalToggle,
       avatarModalToggle,
+      changeActionModalToggle,
     }),
-    [actionSidebarToggle, cancelModalToggle, avatarModalToggle],
+    [
+      actionSidebarToggle,
+      cancelModalToggle,
+      avatarModalToggle,
+      changeActionModalToggle,
+    ],
   );
 
   return (

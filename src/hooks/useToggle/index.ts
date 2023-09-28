@@ -48,12 +48,17 @@ const documentClickHandler = (event: MouseEvent): void => {
       const shouldClose = shouldCloseCallbackRef.current
         ? shouldCloseCallbackRef.current(eventTargetElement)
         : true;
+
+      if (!shouldClose) {
+        return;
+      }
+
       const onBeforeCallbackShouldClose =
         onBeforeCloseCallbacksRef.current.some(
           (callback) => callback(eventTargetElement) === false,
         );
 
-      if (!shouldClose || onBeforeCallbackShouldClose) {
+      if (onBeforeCallbackShouldClose) {
         return;
       }
 
