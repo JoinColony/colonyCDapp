@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { isHexString } from 'ethers/lib/utils';
 import UserInfo from './UserInfo';
 import { UserAvatarContentProps } from '../types';
 
@@ -21,7 +22,7 @@ const UserAvatarContent: FC<UserAvatarContentProps> = ({
     <UserInfo
       userName={profile?.displayName || walletAddress}
       title={userName}
-      walletAddress={walletAddress}
+      walletAddress={isHexString(walletAddress) ? walletAddress : ''}
       isVerified={isVerified}
       aboutDescription={aboutDescription}
       avatar={thumbnail || avatar || ''}

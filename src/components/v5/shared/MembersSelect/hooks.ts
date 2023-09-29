@@ -27,6 +27,7 @@ export const useGetColonyMembers = (colonyAddress?: Address | null) => {
         avatar: profile?.avatar || profile?.thumbnail,
         walletAddress,
         id: index,
+        showAvatar: true,
       }));
   }, [
     data?.getMembersForColony?.contributors,

@@ -6,7 +6,7 @@ import { isHexString } from 'ethers/lib/utils';
 import { useUserSelect } from './hooks';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
 import UserAvatar from '~v5/shared/UserAvatar';
-import { useUserByAddress } from '~hooks';
+import { useUserByAddress, useUserByName } from '~hooks';
 import useToggle from '~hooks/useToggle';
 import { UserSelectProps } from './types';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
@@ -35,13 +35,18 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
     },
   ] = useToggle();
   const { user: userByAddress } = useUserByAddress(field.value);
-  const userDisplayName = userByAddress?.profile?.displayName;
+  const { user: userByName } = useUserByName(field.value);
+  const userDisplayName =
+    userByAddress?.profile?.displayName ||
+    userByName?.profile?.displayName ||
+    field.value;
+  const userWalletAddress =
+    userByAddress?.walletAddress || userByName?.walletAddress || field.value;
 
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
     HTMLDivElement
   >([isUserSelectVisible]);
-  // const fieldValueFormat: string = isHexString(field.value) ? field.value : '';
 
   return (
     <div className="sm:relative w-full flex items-center">
@@ -58,11 +63,11 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
         onClick={toggleUserSelect}
         aria-label={formatText({ id: 'ariaLabel.selectUser' })}
       >
-        {userByAddress || field.value ? (
+        {field.value ? (
           <>
             <UserAvatar
-              user={userByAddress}
-              userName={userDisplayName || usersOptions.userFormat}
+              user={userByName || userByAddress}
+              userName={userDisplayName}
               size="xs"
               className={
                 usersOptions.isRecipientNotVerified ? 'text-warning-400' : ''
@@ -94,7 +99,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
             registerContainerRef(ref);
             portalElementRef.current = ref;
           }}
-          isLoading={usersOptions.loading}
+          isLoading={usersOptions.isLoading}
           className="z-[60]"
           isDefaultItemVisible
           showEmptyContent={false}
@@ -102,15 +107,17 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
       )}
       {usersOptions.isRecipientNotVerified && (
         <UserAvatarPopover
-          userName={displayName || field.value}
-          walletAddress={userByAddress?.walletAddress || field.value}
-          aboutDescription={userByAddress?.profile?.bio || ''}
-          user={userByAddress}
-          className={
-            usersOptions.isRecipientNotVerified ? 'text-warning-400' : ''
+          userName={displayName}
+          walletAddress={userWalletAddress}
+          aboutDescription={
+            userByAddress?.profile?.bio || userByName?.profile?.bio || ''
           }
+          user={userByAddress || userByName}
+          className={clsx(
+            usersOptions.isRecipientNotVerified,
+            'text-warning-400',
+          )}
           avatarSize="xs"
-          userFormat={usersOptions.userFormat}
           popoverButtonContent={
             <button type="button">
               <span className="flex ml-2 text-warning-400">
@@ -121,16 +128,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
         >
           <NotificationBanner
             status="warning"
-            title={formatText(
-              { id: 'user.not.verified.warning' },
-              {
-                walletAddress: userByAddress?.walletAddress && (
-                  <span className="font-semibold block mt-2">
-                    {userByAddress?.walletAddress}
-                  </span>
-                ),
-              },
-            )}
+            title={formatText({ id: 'user.not.verified.warning' })}
             isAlt
             action={{
               type: 'call-to-action',
@@ -138,7 +136,14 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
               onClick: () => {}, // @TODO: add action
             }}
             className="mt-4"
-          />
+          >
+            {userByAddress?.walletAddress ||
+              (userByName?.walletAddress && (
+                <div className="mt-2">
+                  {userByAddress?.walletAddress || userByName?.walletAddress}
+                </div>
+              ))}
+          </NotificationBanner>
         </UserAvatarPopover>
       )}
     </div>

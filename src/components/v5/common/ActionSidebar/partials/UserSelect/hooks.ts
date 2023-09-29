@@ -1,57 +1,51 @@
-import { isHexString } from 'ethers/lib/utils';
+import { useMemo } from 'react';
 import { useColonyContext } from '~hooks';
 import { useGetColonyMembers } from '~v5/shared/MembersSelect/hooks';
 import { UserSelectHookProps } from './types';
-import { splitWalletAddress } from '~utils/splitWalletAddress';
 import { useGetVerifiedMembersQuery } from '~gql';
+import { SearchSelectOption } from '~v5/shared/SearchSelect/types';
 
 export const useUserSelect = (inputValue: string): UserSelectHookProps => {
   const { colony } = useColonyContext();
   const { colonyAddress = '', metadata } = colony ?? {};
   const { members, loading } = useGetColonyMembers(colonyAddress);
-  const { data } = useGetVerifiedMembersQuery({
+  const { data, loading: verifiedMembersLoading } = useGetVerifiedMembersQuery({
     variables: { colonyAddress },
     skip: !colonyAddress,
   });
   const isWhitelistActivated = metadata?.isWhitelistActivated;
 
-  const transformMember = (member) => {
-    const { label, walletAddress, avatar } = member || {};
+  const verifiedUsers: SearchSelectOption[] = useMemo(
+    () =>
+      (data?.getContributorsByColony?.items ?? []).map((item, index) => ({
+        value: item?.user?.profile?.displayName,
+        label: item?.user?.profile?.displayName,
+        avatar: item?.user?.profile?.avatar || item?.user?.profile?.thumbnail,
+        walletAddress: item?.user?.walletAddress,
+        id: index,
+        showAvatar: true,
+      })),
+    [data?.getContributorsByColony?.items],
+  );
 
-    return {
-      label: label || '',
-      value: walletAddress || '',
-      avatar: avatar || '',
-      walletAddress: walletAddress || '',
-      showAvatar: true,
-    };
-  };
+  const preparedUserOptions: SearchSelectOption[] = isWhitelistActivated
+    ? verifiedUsers
+    : members || [];
 
-  const prepareVerifiedUsers =
-    data?.getContributorsByColony?.items?.map(transformMember);
-  const users = members?.map(transformMember);
-
-  const isUserVerified = data?.getContributorsByColony?.items.some(
-    (item) =>
-      item?.user?.profile?.displayName === inputValue ||
-      item?.user?.walletAddress === inputValue,
+  const isUserVerified = preparedUserOptions.some(
+    ({ label, walletAddress }) =>
+      label === inputValue || walletAddress === inputValue,
   );
 
   const isRecipientNotVerified: boolean = !!inputValue && !isUserVerified;
 
-  const userFormat: string =
-    isHexString(inputValue) && inputValue
-      ? splitWalletAddress(inputValue)
-      : inputValue;
-
   return {
-    loading,
-    options: isWhitelistActivated ? prepareVerifiedUsers : users || [],
+    isLoading: loading || verifiedMembersLoading,
+    options: preparedUserOptions,
     key: 'users',
     title: { id: 'actions.recipent' },
     isAccordion: false,
     isUserVerified,
     isRecipientNotVerified,
-    userFormat,
   };
 };

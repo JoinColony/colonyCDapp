@@ -1,10 +1,9 @@
 import { SearchSelectOptionProps } from '~v5/shared/SearchSelect/types';
 
 export interface UserSelectHookProps extends SearchSelectOptionProps {
-  loading: boolean;
+  isLoading: boolean;
   isUserVerified?: boolean;
   isRecipientNotVerified: boolean;
-  userFormat: string;
 }
 
 export interface UserSelectProps {

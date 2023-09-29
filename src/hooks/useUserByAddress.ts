@@ -16,7 +16,7 @@ const useUserByAddress = (address: Address) => {
   return {
     user: {
       ...user,
-      walletAddress: isHexString(address) && splitWalletAddress(address),
+      walletAddress: isHexString(address) ? splitWalletAddress(address) : '',
     },
     loading,
     error,

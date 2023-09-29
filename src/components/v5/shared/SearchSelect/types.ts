@@ -23,10 +23,10 @@ export interface SearchSelectOptionProps {
 }
 
 export interface SearchSelectOption {
-  label: MessageDescriptor | string;
-  value: string;
+  label?: MessageDescriptor | string | null;
+  value?: string | null;
   isDisabled?: boolean;
-  avatar?: string;
+  avatar?: string | null;
   showAvatar?: boolean;
   color?: string;
   walletAddress?: string;
