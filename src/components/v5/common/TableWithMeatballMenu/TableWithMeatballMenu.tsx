@@ -17,7 +17,15 @@ const TableWithMeatballMenu = <T,>({
     [columns, helper, getMenuProps],
   );
 
-  return <Table<T> columns={columnsWithMenu} {...rest} />;
+  return (
+    <Table<T>
+      getRowClassName={() =>
+        'relative [&>tr:last-child>th]:p-0 [&>tr:last-child>td]:p-0'
+      }
+      columns={columnsWithMenu}
+      {...rest}
+    />
+  );
 };
 
 TableWithMeatballMenu.displayName = displayName;
