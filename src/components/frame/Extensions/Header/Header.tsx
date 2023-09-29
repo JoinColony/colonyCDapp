@@ -1,7 +1,8 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 
+import { useSearchParams } from 'react-router-dom';
 import { useMobile } from '~hooks';
 import ColonySwitcher from '~common/Extensions/ColonySwitcher';
 import Icon from '~shared/Icon';
@@ -41,8 +42,19 @@ const Header: FC = () => {
     isWalletOpen,
   } = useHeader();
   const {
-    actionSidebarToggle: [isActionSidebarOpen],
+    actionSidebarToggle: [
+      isActionSidebarOpen,
+      { toggleOn: toggleActionSidebarOn },
+    ],
   } = useActionSidebarContext();
+  const [searchParams] = useSearchParams();
+  const transactionId = searchParams?.get('tx');
+
+  useEffect(() => {
+    if (transactionId) {
+      toggleActionSidebarOn();
+    }
+  }, [toggleActionSidebarOn, transactionId]);
 
   const isCloseButtonVisible =
     (isMainMenuOpen || isColonySwitcherOpen) &&
@@ -71,7 +83,9 @@ const Header: FC = () => {
 
   const userMenuComponent = isActionSidebarOpen ? (
     <ColonyAvatarProvider>
-      <ActionSidebar>{userNavigation}</ActionSidebar>
+      <ActionSidebar transactionId={transactionId || undefined}>
+        {userNavigation}
+      </ActionSidebar>
     </ColonyAvatarProvider>
   ) : (
     userNavigation

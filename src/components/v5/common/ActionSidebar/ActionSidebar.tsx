@@ -7,7 +7,7 @@ import { useMobile } from '~hooks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import {
   useActionFormProps,
-  useCloseSidebarClick,
+  // useCloseSidebarClick,
   useNotificationBanner,
   useSidebarActionForm,
   useUserHasPermissions,
@@ -20,23 +20,16 @@ import useToggle from '~hooks/useToggle';
 import { ACTION_TYPE_FIELD_NAME } from './consts';
 import Modal from '~v5/shared/Modal';
 import { ActionForm } from '~shared/Fields';
-import { ActionFormBaseProps } from './types';
+import { ActionFormBaseProps, ActionSidebarProps } from './types';
 import { formatText } from '~utils/intl';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
 import FormInputBase from '../Fields/InputBase/FormInputBase';
 import { FIELD_STATE } from '../Fields/consts';
+import MotionSimplePayment from './partials/motions/MotionSimplePayment';
 
 const displayName = 'v5.common.ActionSidebar';
 
-interface Props extends ActionFormBaseProps {
-  toggleIsSidebarFullscreen: () => void;
-  isSidebarFullscreen: boolean;
-}
-
-const ActionSidebarFormContent: FC<PropsWithChildren<Props>> = ({
-  children,
-  toggleIsSidebarFullscreen,
-  isSidebarFullscreen,
+const ActionSidebarFormContent: FC<ActionFormBaseProps> = ({
   getFormOptions,
 }) => {
   const {
@@ -44,42 +37,14 @@ const ActionSidebarFormContent: FC<PropsWithChildren<Props>> = ({
     hasErrors,
     selectedAction,
   } = useSidebarActionForm();
-  const isMobile = useMobile();
+
   const userHasPermissions = useUserHasPermissions();
   const form = useFormContext();
   const notificationBanner = useNotificationBanner(hasErrors, selectedAction);
-  const closeSidebarClick = useCloseSidebarClick();
 
   return (
     <>
-      <div className="py-4 px-6 flex w-full items-center justify-between border-b border-gray-200">
-        {isMobile ? (
-          <button
-            type="button"
-            className="py-2.5 flex items-center justify-center text-gray-400"
-            onClick={closeSidebarClick}
-            aria-label={formatText({ id: 'ariaLabel.closeModal' })}
-          >
-            <Icon name="close" appearance={{ size: 'tiny' }} />
-          </button>
-        ) : (
-          <button
-            type="button"
-            className="py-2.5 flex items-center justify-center text-gray-400"
-            onClick={toggleIsSidebarFullscreen}
-            aria-label={formatText({ id: 'ariaLabel.fullWidth' })}
-          >
-            <Icon
-              name={
-                isSidebarFullscreen ? 'arrow-right-line' : 'arrows-out-simple'
-              }
-              appearance={{ size: 'tiny' }}
-            />
-          </button>
-        )}
-        {children}
-      </div>
-      <div className="px-6 py-8 flex-grow overflow-y-auto mr-1">
+      <div className="flex-grow overflow-y-auto">
         <FormInputBase
           name="title"
           placeholder={formatText({ id: 'placeholder.title' })}
@@ -120,7 +85,10 @@ const ActionSidebarFormContent: FC<PropsWithChildren<Props>> = ({
   );
 };
 
-const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
+const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
+  children,
+  transactionId,
+}) => {
   const { getFormOptions, actionFormProps } = useActionFormProps();
   const {
     actionSidebarToggle: [
@@ -131,6 +99,9 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
   } = useActionSidebarContext();
   const [isSidebarFullscreen, { toggle: toggleIsSidebarFullscreen }] =
     useToggle();
+  // @todo: uncomment it when it will work correctly
+  // const closeSidebarClick = useCloseSidebarClick();
+  const isMobile = useMobile();
 
   useDisableBodyScroll(isActionSidebarOpen);
 
@@ -153,20 +124,71 @@ const ActionSidebar: FC<PropsWithChildren> = ({ children }) => {
           flex-col
         `,
         {
-          'sm:max-w-[43.375rem]': !isSidebarFullscreen,
+          'sm:max-w-[43.375rem]': !isSidebarFullscreen && !transactionId,
+          'sm:max-w-[67.3125rem]': !isSidebarFullscreen && transactionId,
         },
       )}
       ref={registerContainerRef}
     >
-      <ActionForm {...actionFormProps} className="flex flex-col h-full">
-        <ActionSidebarFormContent
-          toggleIsSidebarFullscreen={toggleIsSidebarFullscreen}
-          isSidebarFullscreen={isSidebarFullscreen}
-          getFormOptions={getFormOptions}
-        >
-          {children}
-        </ActionSidebarFormContent>
-      </ActionForm>
+      <div className="py-4 px-6 flex w-full items-center justify-between border-b border-gray-200">
+        {isMobile ? (
+          <button
+            type="button"
+            className="py-2.5 flex items-center justify-center text-gray-400"
+            // onClick={closeSidebarClick}
+            aria-label={formatText({ id: 'ariaLabel.closeModal' })}
+          >
+            <Icon name="close" appearance={{ size: 'tiny' }} />
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="py-2.5 flex items-center justify-center text-gray-400"
+            onClick={toggleIsSidebarFullscreen}
+            aria-label={formatText({ id: 'ariaLabel.fullWidth' })}
+          >
+            <Icon
+              name={
+                isSidebarFullscreen ? 'arrow-right-line' : 'arrows-out-simple'
+              }
+              appearance={{ size: 'tiny' }}
+            />
+          </button>
+        )}
+        {children}
+      </div>
+      <div
+        className={clsx('flex w-full h-full', {
+          'flex-col-reverse md:flex-row': transactionId,
+        })}
+      >
+        <div className="flex-grow px-6 py-8">
+          <ActionForm {...actionFormProps} className="flex flex-col h-full">
+            <ActionSidebarFormContent getFormOptions={getFormOptions} />
+          </ActionForm>
+        </div>
+        {transactionId && (
+          <div
+            className={`
+              w-full
+              md:w-[35%]
+              md:h-full
+              md:overflow-y-auto
+              px-6
+              py-8
+              border-b
+              border-b-gray-200
+              md:border-b-0
+              md:border-l
+              md:border-l-gray-200
+              bg-gray-25
+            `}
+          >
+            {/* @todo: add functionality to switch between motion types */}
+            <MotionSimplePayment />
+          </div>
+        )}
+      </div>
 
       <Modal
         title={formatText({ id: 'actionSidebar.cancelModal.title' })}
