@@ -41,7 +41,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
     HTMLButtonElement,
     HTMLDivElement
   >([isUserSelectVisible]);
-  const fieldValueFormat: string = isHexString(field.value) ? field.value : '';
+  // const fieldValueFormat: string = isHexString(field.value) ? field.value : '';
 
   return (
     <div className="sm:relative w-full flex items-center">
@@ -87,6 +87,9 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
             field.onChange(value);
             toggleUserSelectOff();
           }}
+          onSearch={(query) => {
+            field.onChange(isHexString(query) ? field.value : undefined);
+          }}
           ref={(ref) => {
             registerContainerRef(ref);
             portalElementRef.current = ref;
@@ -94,6 +97,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
           isLoading={usersOptions.loading}
           className="z-[60]"
           isDefaultItemVisible
+          showEmptyContent={false}
         />
       )}
       {usersOptions.isRecipientNotVerified && (
@@ -120,10 +124,9 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
             title={formatText(
               { id: 'user.not.verified.warning' },
               {
-                walletAddress: (userByAddress?.walletAddress ||
-                  fieldValueFormat) && (
+                walletAddress: userByAddress?.walletAddress && (
                   <span className="font-semibold block mt-2">
-                    {userByAddress?.walletAddress || fieldValueFormat}
+                    {userByAddress?.walletAddress}
                   </span>
                 ),
               },

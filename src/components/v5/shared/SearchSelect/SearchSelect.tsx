@@ -157,10 +157,10 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                 )
               ) : (
                 <>
-                  {isDefaultItemVisible ? (
+                  {isDefaultItemVisible && (
                     <button
                       type="button"
-                      className="text-sm hover:text-blue-400 flex items-center gap-2 min-h-[3.125rem]
+                      className="text-sm md:hover:text-blue-400 flex items-center gap-2 min-h-[3.125rem]
                       "
                       onClick={() => onSelect?.(searchValue)}
                     >
@@ -169,7 +169,8 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                         {searchValue}
                       </span>
                     </button>
-                  ) : (
+                  )}
+                  {showEmptyContent && (
                     <EmptyContent
                       icon="binoculars"
                       title={{ id: 'actionSidebar.emptyTitle' }}
