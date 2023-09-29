@@ -20,7 +20,7 @@ import useToggle from '~hooks/useToggle';
 import { ACTION_TYPE_FIELD_NAME } from './consts';
 import Modal from '~v5/shared/Modal';
 import { ActionForm } from '~shared/Fields';
-import { ActionFormBaseProps, ActionSidebarProps } from './types';
+import { ActionSidebarFormContentProps, ActionSidebarProps } from './types';
 import { formatText } from '~utils/intl';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
 import FormInputBase from '../Fields/InputBase/FormInputBase';
@@ -29,8 +29,9 @@ import MotionSimplePayment from './partials/motions/MotionSimplePayment';
 
 const displayName = 'v5.common.ActionSidebar';
 
-const ActionSidebarFormContent: FC<ActionFormBaseProps> = ({
+const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   getFormOptions,
+  isMotion,
 }) => {
   const {
     formComponent: FormComponent,
@@ -61,6 +62,7 @@ const ActionSidebarFormContent: FC<ActionFormBaseProps> = ({
           mode="secondary"
           message={false}
         />
+        {/* @todo: add preview mode to the form */}
         <ActionTypeSelect />
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
         {notificationBanner && (
@@ -69,18 +71,20 @@ const ActionSidebarFormContent: FC<ActionFormBaseProps> = ({
           </div>
         )}
       </div>
-      <div className="mt-auto">
-        {!selectedAction && (
-          <PopularActions
-            setSelectedAction={(action) =>
-              form.setValue(ACTION_TYPE_FIELD_NAME, action)
-            }
+      {!isMotion && (
+        <div className="mt-auto">
+          {!selectedAction && (
+            <PopularActions
+              setSelectedAction={(action) =>
+                form.setValue(ACTION_TYPE_FIELD_NAME, action)
+              }
+            />
+          )}
+          <ActionButtons
+            isActionDisabled={!userHasPermissions || !selectedAction}
           />
-        )}
-        <ActionButtons
-          isActionDisabled={!userHasPermissions || !selectedAction}
-        />
-      </div>
+        </div>
+      )}
     </>
   );
 };
@@ -164,7 +168,10 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       >
         <div className="flex-grow px-6 py-8">
           <ActionForm {...actionFormProps} className="flex flex-col h-full">
-            <ActionSidebarFormContent getFormOptions={getFormOptions} />
+            <ActionSidebarFormContent
+              getFormOptions={getFormOptions}
+              isMotion={!!transactionId}
+            />
           </ActionForm>
         </div>
         {transactionId && (

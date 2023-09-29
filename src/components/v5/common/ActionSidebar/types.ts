@@ -29,3 +29,7 @@ export type UseActionFormBaseHook = (
 export interface ActionSidebarProps {
   transactionId?: string;
 }
+
+export interface ActionSidebarFormContentProps extends ActionFormBaseProps {
+  isMotion?: boolean;
+}
