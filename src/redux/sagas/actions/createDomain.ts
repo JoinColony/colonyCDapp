@@ -37,7 +37,7 @@ function* createDomainAction({
     annotationMessage,
     parentId = Id.RootDomain,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_DOMAIN_CREATE>) {
   let txChannel;
@@ -98,6 +98,9 @@ function* createDomainAction({
         eventData,
       },
     } = yield takeFrom(createDomain.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    setTxHash?.(txHash);
+
     const { domainId } = eventData?.DomainAdded || {};
     const nativeDomainId = toNumber(domainId);
 
@@ -136,6 +139,12 @@ function* createDomainAction({
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
+    } else {
+      window.history.replaceState(
+        {},
+        '',
+        `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
+      );
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_DOMAIN_CREATE_ERROR, error, meta);

@@ -21,7 +21,7 @@ import { OneTxPaymentPayload } from '~redux/types/actions/colonyActions';
 
 function* createPaymentAction({
   payload: { colonyAddress, colonyName, domainId, payments, annotationMessage },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_EXPENDITURE_PAYMENT>) {
   let txChannel;
@@ -130,6 +130,9 @@ function* createPaymentAction({
       paymentAction.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(paymentAction.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
@@ -145,10 +148,16 @@ function* createPaymentAction({
       meta,
     });
 
-    if (colonyName) {
+    if (colonyName && navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
+    } else {
+      window.history.replaceState(
+        {},
+        '',
+        `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
+      );
     }
   } catch (error) {
     putError(ActionTypes.ACTION_EXPENDITURE_PAYMENT_ERROR, error, meta);

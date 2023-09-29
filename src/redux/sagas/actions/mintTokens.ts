@@ -23,7 +23,7 @@ function* createMintTokensAction({
     amount,
     annotationMessage,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_MINT_TOKENS>) {
   let txChannel;
@@ -104,6 +104,9 @@ function* createMintTokensAction({
       mintTokens.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(mintTokens.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     yield initiateTransaction({ id: claimColonyFunds.id });
@@ -124,10 +127,16 @@ function* createMintTokensAction({
     });
 
     // Redirect to actions page
-    if (colonyName) {
+    if (colonyName && navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
+    } else {
+      window.history.replaceState(
+        {},
+        '',
+        `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
+      );
     }
   } catch (caughtError) {
     putError(ActionTypes.ACTION_MINT_TOKENS_ERROR, caughtError, meta);
