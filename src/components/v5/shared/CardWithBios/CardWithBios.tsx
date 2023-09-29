@@ -19,11 +19,17 @@ const CardWithBios: FC<CardWithBiosProps> = ({
   shouldBeMenuVisible = true,
   isContributorsList,
 }) => {
-  const { user, colonyReputationPercentage, type, isVerified } = userData || {};
+  const {
+    user,
+    colonyReputationPercentage,
+    type,
+    isVerified,
+    contributorAddress,
+  } = userData || {};
   const userStatus = (type?.toLowerCase() ??
     null) as ContributorTypeFilter | null;
 
-  const { walletAddress = '', profile } = user || {};
+  const { walletAddress = contributorAddress, profile } = user || {};
   const { bio } = profile || {};
   const {
     getTooltipProps,
