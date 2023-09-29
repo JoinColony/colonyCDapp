@@ -9,7 +9,7 @@ import {
   ErrorActionType,
   UniqueActionType,
   ActionTypeWithMeta,
-  MetaWithNavigate,
+  MetaWithSetter,
 } from './index';
 import { ExternalLink } from '~gql';
 
@@ -42,12 +42,12 @@ export type ColonyActionsActionTypes =
         annotationMessage?: string;
         parentId?: number;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.ACTION_DOMAIN_CREATE_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_DOMAIN_CREATE_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_DOMAIN_EDIT,
@@ -60,22 +60,22 @@ export type ColonyActionsActionTypes =
         domainPurpose?: string;
         annotationMessage?: string;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.ACTION_DOMAIN_EDIT_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_DOMAIN_EDIT_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_EXPENDITURE_PAYMENT,
       OneTxPaymentPayload,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.ACTION_EXPENDITURE_PAYMENT_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_EXPENDITURE_PAYMENT_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_EDIT_COLONY,
@@ -89,12 +89,12 @@ export type ColonyActionsActionTypes =
         tokenAddresses?: Address[];
         annotationMessage?: string;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.ACTION_EDIT_COLONY_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_EDIT_COLONY_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_MOVE_FUNDS,
@@ -107,12 +107,12 @@ export type ColonyActionsActionTypes =
         amount: BigNumber;
         annotationMessage?: string;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.ACTION_MOVE_FUNDS_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_MOVE_FUNDS_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_MINT_TOKENS,
@@ -123,12 +123,12 @@ export type ColonyActionsActionTypes =
         amount: BigNumber;
         annotationMessage?: string;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.ACTION_MINT_TOKENS_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_MINT_TOKENS_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_VERSION_UPGRADE,
@@ -138,11 +138,11 @@ export type ColonyActionsActionTypes =
         colonyName?: string;
         annotationMessage?: string;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ActionTypeWithMeta<
       ActionTypes.ACTION_VERSION_UPGRADE_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.ACTION_VERSION_UPGRADE_ERROR, object>
   | UniqueActionType<
@@ -155,12 +155,12 @@ export type ColonyActionsActionTypes =
         roles: Record<ColonyRole, boolean>;
         annotationMessage?: string;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.ACTION_USER_ROLES_SET_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_USER_ROLES_SET_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_UNLOCK_TOKEN,
@@ -169,11 +169,11 @@ export type ColonyActionsActionTypes =
         colonyName: string;
         annotationMessage?: string;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ActionTypeWithMeta<
       ActionTypes.ACTION_UNLOCK_TOKEN_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.ACTION_UNLOCK_TOKEN_ERROR, object>
   | UniqueActionType<
@@ -184,12 +184,12 @@ export type ColonyActionsActionTypes =
         colonyName: string;
         annotationMessage?: string;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.ACTION_RECOVERY_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_RECOVERY_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_RECOVERY_SET_SLOT,
@@ -247,12 +247,12 @@ export type ColonyActionsActionTypes =
         isSmitingReputation?: boolean;
         annotationMessage?: string;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.ACTION_MANAGE_REPUTATION_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_MANAGE_REPUTATION_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE,
@@ -265,7 +265,7 @@ export type ColonyActionsActionTypes =
         isWhitelistActivated: boolean;
         removedAddresses: Address[];
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_ERROR, object>
   | UniqueActionType<

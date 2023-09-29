@@ -26,7 +26,7 @@ function* managePermissionsAction({
     colonyName,
     annotationMessage,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_USER_ROLES_SET>) {
   let txChannel;
@@ -107,6 +107,8 @@ function* managePermissionsAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
+    setTxHash?.(txHash);
+
     yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
@@ -122,10 +124,16 @@ function* managePermissionsAction({
       meta,
     });
 
-    if (colonyName) {
+    if (navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
+    } else {
+      window.history.replaceState(
+        {},
+        '',
+        `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
+      );
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_USER_ROLES_SET_ERROR, error, meta);

@@ -35,7 +35,7 @@ function* editDomainAction({
     domain,
     annotationMessage,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_DOMAIN_EDIT>) {
   let txChannel;
@@ -98,6 +98,9 @@ function* editDomainAction({
       editDomain.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(editDomain.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     /**
@@ -141,10 +144,16 @@ function* editDomainAction({
       meta,
     });
 
-    if (colonyName) {
+    if (navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
+    } else {
+      window.history.replaceState(
+        {},
+        '',
+        `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
+      );
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_DOMAIN_EDIT_ERROR, error, meta);
