@@ -3,6 +3,7 @@ declare namespace ExpenditureFormModuleCssNamespace {
     amountField: string;
     buttons: string;
     cancelButton: string;
+    dateTime: string;
     domainSelection: string;
     field: string;
     typeTabs: string;

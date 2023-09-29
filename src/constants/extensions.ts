@@ -19,6 +19,7 @@ const oneTransactionPaymentName = 'extensions.OneTxPayment';
 const votingReputationName = 'extensions.VotingReputation';
 const stakedExpenditureName = 'extensions.StakedExpenditure';
 const stagedExpenditureName = 'extensions.StagedExpenditure';
+const streamingPaymentsName = 'extensions.StreamingPayments';
 
 const validationMessages = {
   requiredError: {
@@ -269,12 +270,28 @@ const stagedExpenditureMessages = {
   },
 };
 
+const streamingPaymentsMessage = {
+  streamingPaymentsName: {
+    id: `${streamingPaymentsName}.name`,
+    defaultMessage: 'Streaming Payments',
+  },
+  streamingPaymentsDescriptionShort: {
+    id: `${streamingPaymentsName}.description`,
+    defaultMessage: 'Streaming Payments extension.',
+  },
+  streamingPaymentsDescriptionLong: {
+    id: `${streamingPaymentsName}.descriptionLong`,
+    defaultMessage: 'Streaming Payments extension.',
+  },
+};
+
 const MSG = defineMessages({
   ...validationMessages,
   ...oneTransactionPaymentMessages,
   ...votingReputationMessages,
   ...stakedExpenditureMessages,
   ...stagedExpenditureMessages,
+  ...streamingPaymentsMessage,
 });
 
 export const supportedExtensionsConfig: ExtensionConfig[] = [
@@ -499,6 +516,17 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       ColonyRole.Funding,
       ColonyRole.Arbitration,
     ],
+    uninstallable: true,
+    createdAt: 1692048380000,
+  },
+  {
+    icon: 'extension-advanced-payments',
+    category: ExtensionCategory.Expenditures,
+    extensionId: Extension.StreamingPayments,
+    name: MSG.streamingPaymentsName,
+    descriptionShort: MSG.streamingPaymentsDescriptionShort,
+    descriptionLong: MSG.streamingPaymentsDescriptionLong,
+    neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
     uninstallable: true,
     createdAt: 1692048380000,
   },

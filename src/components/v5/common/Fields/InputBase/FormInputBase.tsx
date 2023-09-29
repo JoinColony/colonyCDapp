@@ -17,6 +17,7 @@ const FormInputBase: FC<FormInputBaseProps> = ({ name, type, ...rest }) => {
 
   return (
     <InputBase
+      message={error?.message}
       {...rest}
       type={type}
       value={value}
@@ -30,7 +31,6 @@ const FormInputBase: FC<FormInputBaseProps> = ({ name, type, ...rest }) => {
         }
       }}
       state={invalid ? FIELD_STATE.Error : undefined}
-      message={error?.message}
     />
   );
 };

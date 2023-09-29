@@ -800,6 +800,10 @@ enum ColonyActionType {
   An action related to creating a motion for funding an expenditure
   """
   FUND_EXPENDITURE_MOTION
+  """
+  An action related to a motion to cancel a staked expenditure
+  """
+  CANCEL_STAKED_EXPENDITURE_MOTION
 }
 
 """
@@ -843,6 +847,17 @@ enum ExpenditureStatus {
   CANCELLED
 }
 
+enum ExpenditureType {
+  PAYMENT_BUILDER
+  STAGED
+}
+
+enum StreamingPaymentEndCondition {
+  WHEN_CANCELLED
+  LIMIT_REACHED
+  FIXED_TIME
+}
+
 """
 The types of contributor a user can be in a colony
 """
@@ -852,19 +867,6 @@ enum ContributorType {
   ACTIVE
   NEW
   GENERAL
-}
-"""
-Describes the type of an expenditure
-"""
-enum ExpenditureType {
-  """
-  Expenditure created by user with Administration role
-  """
-  FORCED
-  """
-  Expenditure created by Staked Expenditure extension
-  """
-  STAKED
 }
 
 """
@@ -2401,7 +2403,7 @@ type ColonyMotion @model {
   """
   The transaction hash of the createMotion action
   """
-  transactionHash: String!
+  transactionHash: ID!
     @index(name: "byTransactionHash", queryField: "getMotionByTransactionHash")
 
   """
@@ -2415,6 +2417,8 @@ type ColonyMotion @model {
   """
   expenditureId: ID
     @index(name: "byExpenditureId", queryField: "getMotionByExpenditureId")
+
+  action: ColonyAction @belongsTo(fields: ["transactionHash"])
 }
 
 """
@@ -3063,7 +3067,7 @@ Model storing block ingestor stats, as key-value entries
 """
 type IngestorStats @model {
   """
-  Unique identifier of the ingestore stats
+  Unique identifier of the ingestor stats
   """
   id: ID!
   """
@@ -3073,44 +3077,91 @@ type IngestorStats @model {
 }
 
 type Expenditure @model {
-  id: ID! # Self-managed, formatted as colonyId_nativeExpenditureId
+  """
+  Unique identifier for the role snapshot
+  Self-managed, format: `colonyId_nativeExpenditureId`
+  """
+  id: ID!
+  """
+  Native (contract) ID of the expenditure
+  """
   nativeId: Int!
   createdAt: AWSDateTime!
+  """
+  Colony ID (address) to which the expenditure belongs
+  """
   colonyId: ID!
     @index(
       name: "byColony"
       queryField: "getExpendituresByColony"
       sortKeyFields: ["createdAt"]
     )
+  """
+  The Colony to which the expenditure belongs
+  """
   colony: Colony! @belongsTo(fields: ["colonyId"])
+  """
+  Address of the expenditure owner, it can be a user or an extension
+  """
   ownerAddress: ID!
+  """
+  Status of the expenditure
+  """
   status: ExpenditureStatus!
+  """
+  Array containing expenditure slots
+  """
   slots: [ExpenditureSlot!]!
+  """
+  Native (contract) ID of the funding pot of the expenditure
+  """
   nativeFundingPotId: Int!
     @index(
       name: "byNativeFundingPotId"
       queryField: "getExpendituresByNativeFundingPotIdAndColony"
       sortKeyFields: ["colonyId"]
     )
+  """
+  Native (contract) ID of the expenditure domain
+  """
   nativeDomainId: Int!
+  """
+  Optional metadata linked to the expenditure
+  It contains client-side data that is not stored on chain
+  """
   metadata: ExpenditureMetadata @hasOne(fields: ["id"])
+  """
+  Array containing expenditure balances
+  """
   balances: [ExpenditureBalance!]
     @function(name: "fetchExpenditureBalances-${env}")
+  """
+  The timestamp at which the expenditure was finalized
+  """
   finalizedAt: AWSTimestamp
-  hasReclaimedStake: Boolean
   """
-  The motions created to fund this expenditure, if there are any
+  The motions created that relate to this expenditure, if there are any
   """
-  fundingMotions: [ColonyMotion]
-    @hasMany(indexName: "byExpenditureId", fields: ["id"])
+  motions: [ColonyMotion] @hasMany(indexName: "byExpenditureId", fields: ["id"])
+  """
+  Indicates whether the expenditure was staked for
+  """
+  isStaked: Boolean!
   """
   Indicates if the creator's stake was forfeited when staked expenditure was cancelled
   """
   isStakeForfeited: Boolean
-  isStaged: Boolean!
+  """
+  Indicates whether the expenditure stake has been reclaimed
+  """
+  hasReclaimedStake: Boolean
+  type: ExpenditureType!
 }
 
-# Each expenditure can have multiple slots with one recipient and possibly multiple payouts (with different token addresses)
+"""
+Represents a slot of an expenditure
+Each expenditure can have multiple slots, with a single recipients and multiple payouts (in different token addresses)
+"""
 type ExpenditureSlot {
   id: Int!
   recipientAddress: String
@@ -3126,11 +3177,41 @@ type ExpenditurePayout {
 }
 
 type ExpenditureMetadata @model {
-  id: ID! # Self-managed, formatted as colonyId_nativeExpenditureId
+  id: ID! # Self-managed, formatted as colonyId_nativeId
   fundFromDomainNativeId: Int!
-  type: ExpenditureType!
   stages: [ExpenditureStage!]
   stakeAmount: String
+}
+
+type ExpenditureBalance {
+  tokenAddress: ID!
+  amount: String!
+  requiredAmount: String! # Total amount required to cover all payouts for the given token
+}
+
+type ExpenditureStage {
+  slotId: Int!
+  name: String!
+  isReleased: Boolean!
+}
+
+type StreamingPayment @model {
+  id: ID! # Self-managed, formatted as colonyId_nativeId
+  nativeId: Int!
+  createdAt: AWSDateTime!
+  recipientAddress: String!
+  nativeDomainId: Int!
+  startTime: AWSTimestamp!
+  endTime: AWSTimestamp!
+  interval: String!
+  payouts: [ExpenditurePayout!]
+  metadata: StreamingPaymentMetadata @hasOne(fields: ["id"])
+}
+
+type StreamingPaymentMetadata @model {
+  id: ID! # Self-managed, formatted as colonyId_nativeId
+  endCondition: StreamingPaymentEndCondition!
+  limitAmount: String
 }
 
 """
@@ -3161,16 +3242,4 @@ type ReputationMiningCycleMetadata @model {
   The timestamp of the most recent reputation mining cycle completion.
   """
   lastCompletedAt: AWSDateTime! # We're using this to determine whether to re-calculate colony-wide user reputation (updateContributorsWithReputation)
-}
-
-type ExpenditureBalance {
-  tokenAddress: ID!
-  amount: String!
-  requiredAmount: String! # Total amount required to cover all payouts for the given token
-}
-
-type ExpenditureStage {
-  slotId: Int!
-  name: String!
-  isReleased: Boolean!
 }

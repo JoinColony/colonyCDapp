@@ -18,11 +18,13 @@ const ExpenditureDomainSelector = ({
         colony={colony}
         label="Create in"
         name="createInDomainId"
+        hideBalance
       />
       <DomainFundSelector
         colony={colony}
         label="Fund from"
         name="fundFromDomainId"
+        hideBalance
       />
     </div>
   );

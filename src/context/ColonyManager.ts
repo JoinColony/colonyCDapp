@@ -200,6 +200,16 @@ export default class ColonyManager {
           Extension.StagedExpenditure,
         );
       }
+      case ClientType.StreamingPaymentsClient: {
+        if (!identifier)
+          throw new Error(
+            'Need colony identifier to get the StreamingPaymentsClient',
+          );
+        return this.getColonyExtensionClient(
+          identifier,
+          Extension.StreamingPayments,
+        );
+      }
       default: {
         throw new Error('A valid contract client type has to be specified');
       }

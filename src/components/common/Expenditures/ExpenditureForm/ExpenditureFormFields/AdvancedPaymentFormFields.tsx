@@ -24,7 +24,7 @@ const AdvancedPaymentFormFields = ({
   });
 
   return (
-    <>
+    <div>
       {fields.map((field, index) => (
         <div className={styles.field} key={field.id}>
           <IconButton
@@ -54,7 +54,7 @@ const AdvancedPaymentFormFields = ({
         text=""
         icon="circle-plus"
       />
-    </>
+    </div>
   );
 };
 
