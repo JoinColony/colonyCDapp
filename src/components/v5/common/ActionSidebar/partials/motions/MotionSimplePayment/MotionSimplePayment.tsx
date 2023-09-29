@@ -7,6 +7,9 @@ import RevealStep from './steps/RevealStep';
 import StakingStep from './steps/StakingStep';
 import VotingStep from './steps/VotingStep';
 
+const displayName =
+  'v5.common.ActionSidebar.partials.motions.MotionSimplePayment';
+
 const MotionSimplePayment: FC = () => {
   // @todo: pass current step to the state when other steps will be available
   const [activeStepIndex, setActiveStepIndex] = useState(0);
@@ -71,5 +74,7 @@ const MotionSimplePayment: FC = () => {
     />
   );
 };
+
+MotionSimplePayment.displayName = displayName;
 
 export default MotionSimplePayment;

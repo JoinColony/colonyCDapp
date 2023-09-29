@@ -11,8 +11,6 @@ import { isTransactionFormat } from '~utils/web3';
 import { useColonyContext } from '~hooks';
 import { useUserTokenBalanceContext } from '~context';
 
-// import { ActionDetailsPageParams } from './ActionDetailsPage';
-
 export type RefetchMotionState = ReturnType<
   typeof useGetMotionStateQuery
 >['refetch'];
