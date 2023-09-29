@@ -205,6 +205,6 @@ function* fundExpenditureMotion({
   // @todo add annotation logic post-rebase on master
 }
 
-export function* fundExpenditureMotionSaga() {
+export default function* fundExpenditureMotionSaga() {
   yield takeEvery(ActionTypes.MOTION_EXPENDITURE_FUND, fundExpenditureMotion);
 }

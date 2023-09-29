@@ -4,12 +4,20 @@ import {
   ExpenditurePayoutFieldValue,
   ExpenditureStageFieldValue,
 } from '~common/Expenditures/ExpenditureForm';
+import { StreamingPaymentEndCondition } from '~gql';
 
 import { UniqueActionType, ErrorActionType, MetaWithNavigate } from './index';
 
 export type ExpenditureFundPayload = {
   colonyAddress: Address;
   fromDomainFundingPotId: number;
+  expenditure: Expenditure;
+};
+
+export type StakedExpenditureCancelPayload = {
+  colonyAddress: Address;
+  stakedExpenditureAddress: string;
+  shouldPunish: boolean;
   expenditure: Expenditure;
 };
 
@@ -23,8 +31,8 @@ export type ExpendituresActionTypes =
         createdInDomain: Domain;
         // id of the domain to fund the expenditure from
         fundFromDomainId: number;
-        isStaged: boolean;
-        stages: ExpenditureStageFieldValue[];
+        isStaged?: boolean;
+        stages?: ExpenditureStageFieldValue[];
       },
       MetaWithNavigate<object>
     >
@@ -107,8 +115,8 @@ export type ExpendituresActionTypes =
         fundFromDomainId: number;
         stakeAmount: string;
         stakedExpenditureAddress: Address;
-        isStaged: boolean;
-        stages: ExpenditureStageFieldValue[];
+        isStaged?: boolean;
+        stages?: ExpenditureStageFieldValue[];
       },
       MetaWithNavigate<object>
     >
@@ -151,17 +159,34 @@ export type ExpendituresActionTypes =
     >
   | UniqueActionType<
       ActionTypes.STAKED_EXPENDITURE_CANCEL,
-      {
-        colonyAddress: Address;
-        stakedExpenditureAddress: string;
-        shouldPunish: boolean;
-        expenditure: Expenditure;
-      },
+      StakedExpenditureCancelPayload,
       MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.STAKED_EXPENDITURE_CANCEL_ERROR, object>
   | UniqueActionType<
       ActionTypes.STAKED_EXPENDITURE_CANCEL_SUCCESS,
+      object,
+      object
+    >
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_CREATE,
+      {
+        colonyAddress: Address;
+        createdInDomain: Domain;
+        recipientAddress: Address;
+        tokenAddress: Address;
+        amount: string;
+        startTime: number;
+        endTime?: number;
+        interval: number;
+        endCondition: StreamingPaymentEndCondition;
+        limitAmount?: string;
+      },
+      MetaWithNavigate<object>
+    >
+  | ErrorActionType<ActionTypes.STREAMING_PAYMENT_CREATE_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_CREATE_SUCCESS,
       object,
       object
     >;

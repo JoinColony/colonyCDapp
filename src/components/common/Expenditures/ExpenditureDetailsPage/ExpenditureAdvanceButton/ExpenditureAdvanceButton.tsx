@@ -1,28 +1,29 @@
 import React from 'react';
 import { ColonyRole, Id } from '@colony/colony-js';
 
-import { ExpenditureStatus } from '~gql';
+import { ExpenditureStatus, ExpenditureType } from '~gql';
 import { ActionTypes } from '~redux';
 import { ActionButton } from '~shared/Button';
 import { Colony, Expenditure } from '~types';
 import { isExpenditureFunded } from '~utils/expenditures';
 import { findDomainByNativeId } from '~utils/domains';
-
-import ExpenditureClaimButton from '../ExpenditureClaimButton';
 import { addressHasRoles } from '~utils/checks';
 import { useAppContext, useEnabledExtensions } from '~hooks';
 import { ExpenditureFundMotionPayload } from '~redux/types/actions/motion';
-import { MotionState } from '~utils/colonyMotions';
+
+import ExpenditureClaimButton from '../ExpenditureClaimButton';
 
 interface ExpenditureAdvanceButtonProps {
   expenditure: Expenditure;
   colony: Colony;
-  latestFundingMotionState?: MotionState;
+  hasMotionFailed?: boolean;
+  isMotionInProgress: boolean;
   latestExpenditureFundingMotionHash?: string;
 }
 
 const ExpenditureAdvanceButton = ({
-  latestFundingMotionState,
+  hasMotionFailed,
+  isMotionInProgress,
   latestExpenditureFundingMotionHash,
   expenditure,
   colony,
@@ -45,11 +46,6 @@ const ExpenditureAdvanceButton = ({
     );
   }
 
-  const hasMotionFailed =
-    latestFundingMotionState === MotionState.Failed ||
-    latestFundingMotionState === MotionState.Invalid ||
-    latestFundingMotionState === MotionState.FailedNotFinalizable;
-
   const userHasFundingPermission = addressHasRoles({
     address: walletAddress,
     colony,
@@ -66,14 +62,7 @@ const ExpenditureAdvanceButton = ({
         {userHasFundingPermission && (
           <ActionButton
             actionType={ActionTypes.EXPENDITURE_FUND}
-            disabled={
-              latestFundingMotionState &&
-              // motion is in progress, thus disable
-              latestFundingMotionState !== MotionState.Failed &&
-              latestFundingMotionState !== MotionState.Invalid &&
-              latestFundingMotionState !== MotionState.FailedNotFinalizable &&
-              latestFundingMotionState !== MotionState.Passed
-            }
+            disabled={isMotionInProgress}
             values={{
               colonyAddress: colony.colonyAddress,
               fromDomainFundingPotId:
@@ -137,7 +126,7 @@ const ExpenditureAdvanceButton = ({
   }
 
   if (
-    !expenditure.isStaged &&
+    expenditure.type !== ExpenditureType.Staged &&
     expenditure.status === ExpenditureStatus.Finalized
   ) {
     return <ExpenditureClaimButton colony={colony} expenditure={expenditure} />;

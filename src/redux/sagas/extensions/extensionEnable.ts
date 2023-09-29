@@ -103,6 +103,7 @@ function* extensionEnable({
       meta,
     });
   } catch (error) {
+    console.error(error);
     return yield putError(ActionTypes.EXTENSION_ENABLE_ERROR, error, meta);
   } finally {
     [initialise, setUserRoles].map(({ channel }) => channel.close());

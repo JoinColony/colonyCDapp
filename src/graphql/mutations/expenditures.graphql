@@ -3,3 +3,11 @@ mutation CreateExpenditureMetadata($input: CreateExpenditureMetadataInput!) {
     id
   }
 }
+
+mutation CreateStreamingPaymentMetadata(
+  $input: CreateStreamingPaymentMetadataInput!
+) {
+  createStreamingPaymentMetadata(input: $input) {
+    id
+  }
+}

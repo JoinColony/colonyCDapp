@@ -55,7 +55,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
     >
       <UserAvatar
         size={avatarSize || 'xs'}
-        userName={userName}
+        userName={userName ?? walletAddress}
         user={user}
         userStatus={userStatus}
         isContributorsList={isContributorsList}
