@@ -10,6 +10,7 @@ import { toFinite } from '~utils/lodash';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
 import { DECISION_METHOD_OPTIONS } from '../../consts';
+import { formatText } from '~utils/intl';
 
 const validationSchema = yup
   .object()
@@ -64,7 +65,7 @@ export const useSimplePayment = (
       () => ({
         createdIn: Id.RootDomain.toString(),
         decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
-        annotation: '',
+        annotation: formatText({ id: 'actionSidebar.enterDescription' }),
         payments: [],
         amount: {
           amount: 0,

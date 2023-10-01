@@ -7,7 +7,6 @@ import Bold from '@tiptap/extension-bold';
 import Heading from '@tiptap/extension-heading';
 import { mergeAttributes } from '@tiptap/core';
 import Placeholder from '@tiptap/extension-placeholder';
-import Paragraph from '@tiptap/extension-paragraph';
 import CharacterCount from '@tiptap/extension-character-count';
 import { useEffect, useState } from 'react';
 import { useController } from 'react-hook-form';
@@ -17,8 +16,10 @@ export const useRichText = (
   name: string,
   isDecriptionFieldExpanded: boolean,
 ) => {
-  const [content, setContent] = useState<string>('');
   const [notFormattedContent, setNotFormattedContent] = useState<string>('');
+  const { field } = useController({
+    name,
+  });
 
   const editorContent = useEditor(
     {
@@ -32,12 +33,7 @@ export const useRichText = (
         Placeholder.configure({
           placeholder: 'Enter a description',
           showOnlyWhenEditable: false,
-          emptyNodeClass: `first:before:text-gray-500 first:before:hover:text-blue-400 first:before:float-left first:before:content-[attr(data-placeholder)] first:before:pointer-events-none`,
-        }),
-        Paragraph.configure({
-          HTMLAttributes: {
-            class: !isDecriptionFieldExpanded ? 'line-clamp-2 text-left' : '',
-          },
+          emptyNodeClass: `first:before:text-gray-500 md:first:before:hover:text-blue-400 first:before:float-left first:before:content-[attr(data-placeholder)] first:before:pointer-events-none`,
         }),
         Heading.configure({ levels: [1, 2, 3] }).extend({
           levels: [1, 2],
@@ -81,46 +77,41 @@ export const useRichText = (
           class: `prose max-w-none overflow-auto focus:outline-none text-gray-900 text-md`,
         },
       },
-      content,
+      content: field.value,
       onUpdate: ({ editor }) => {
         const json = editor.getHTML();
-        setContent(json);
-        localStorage.setItem('annotation', json);
+        field.onChange(json);
       },
     },
     [],
   );
 
-  useEffect(() => {
-    const savedContent = localStorage.getItem('annotation');
-    if (savedContent) {
-      setContent(savedContent);
-    }
-  }, []);
+  const characterCount: number =
+    editorContent?.storage.characterCount.characters();
 
   useEffect(() => {
-    if (content && editorContent) {
-      editorContent.commands.setContent(content);
+    if (field.value && editorContent) {
+      editorContent.commands.setContent(field.value, false, {
+        preserveWhitespace: 'full',
+      });
     }
-  }, [editorContent, content]);
+  }, [editorContent, field.value]);
 
   useEffect(() => {
-    if (content && editorContent && !isDecriptionFieldExpanded) {
+    if (field.value && editorContent && !isDecriptionFieldExpanded) {
       editorContent?.setEditable(false);
       setNotFormattedContent(editorContent?.getText());
     }
-  }, [editorContent, content, isDecriptionFieldExpanded, setContent]);
-
-  const { field } = useController({
-    name,
-  });
+  }, [editorContent, isDecriptionFieldExpanded, field.value]);
 
   useEffect(() => {
     const handleUpdate = ({ editor: textEditor }: { editor }) => {
       field.onChange(textEditor.getHTML());
     };
 
-    editorContent?.commands.setContent(content);
+    editorContent?.commands.setContent(field.value, false, {
+      preserveWhitespace: 'full',
+    });
     editorContent?.on('selectionUpdate', handleUpdate);
     editorContent?.on('blur', handleUpdate);
 
@@ -128,7 +119,7 @@ export const useRichText = (
       editorContent?.off('selectionUpdate', handleUpdate);
       editorContent?.off('blur', handleUpdate);
     };
-  }, [editorContent, content, name, field]);
+  }, [editorContent, field.value, name]);
 
-  return { editorContent, notFormattedContent, field };
+  return { editorContent, notFormattedContent, field, characterCount };
 };
