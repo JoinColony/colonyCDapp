@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BigNumber } from 'ethers';
 
-import { EditExpenditureForm } from '~common/Expenditures/ExpenditureForm';
+import { EditExpenditure } from '~common/Expenditures/ExpenditureForm';
 import MaskedAddress from '~shared/MaskedAddress';
 import { Colony, Expenditure } from '~types';
 import Numeral from '~shared/Numeral';
@@ -22,7 +22,9 @@ const ExpenditurePayouts = ({
   const [isEditing, setIsEditing] = useState(false);
 
   const canEditExpenditure =
-    !isEditing && expenditure.status === ExpenditureStatus.Draft;
+    !isEditing &&
+    (expenditure.status === ExpenditureStatus.Draft ||
+      expenditure.status === ExpenditureStatus.Locked);
 
   return (
     <div>
@@ -41,10 +43,9 @@ const ExpenditurePayouts = ({
         )}
       </div>
       {isEditing ? (
-        <EditExpenditureForm
+        <EditExpenditure
           expenditure={expenditure}
-          onCancelClick={() => setIsEditing(false)}
-          onSuccess={() => setIsEditing(false)}
+          onEditingFinished={() => setIsEditing(false)}
         />
       ) : (
         <ul className={styles.payouts}>

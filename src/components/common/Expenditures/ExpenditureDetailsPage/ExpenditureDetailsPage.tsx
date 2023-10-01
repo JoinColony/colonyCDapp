@@ -25,7 +25,6 @@ import ExpenditureStages from './ExpenditureStages';
 import CancelDraftExpenditureButton from './CancelDraftExpenditureButton';
 import CancelStakedExpenditureButton from '../StakedExpenditure/CancelStakedExpenditureButton';
 import { hasMotionFailed, isMotionInProgress } from './helpers';
-import EditLockedExpenditureButton from '../EditLockedExpenditure';
 
 import styles from './ExpenditureDetailsPage.module.css';
 
@@ -220,7 +219,6 @@ const ExpenditureDetailsPage = () => {
               latestExpenditureCancelMotionHash
             }
           />
-          <EditLockedExpenditureButton expenditure={expenditure} />
           <ExpenditureAdvanceButton
             expenditure={expenditure}
             colony={colony}

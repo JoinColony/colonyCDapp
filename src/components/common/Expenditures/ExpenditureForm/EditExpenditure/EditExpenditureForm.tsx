@@ -7,25 +7,23 @@ import { ActionTypes } from '~redux';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
 import Button from '~shared/Button';
 
-import { AdvancedPaymentFormFields } from './ExpenditureFormFields';
+import { AdvancedPaymentFormFields } from '../ExpenditureFormFields';
 import {
   getExpenditurePayoutsFieldValue,
   getInitialPayoutFieldValue,
-} from './helpers';
-import { AdvancedPaymentFormValues } from './types';
+} from '../helpers';
+import { AdvancedPaymentFormValues } from '../types';
 
-import styles from './ExpenditureForm.module.css';
+import styles from '../ExpenditureForm.module.css';
 
 export interface EditExpenditureFormProps {
   expenditure: Expenditure;
-  onCancelClick?: () => void;
-  onSuccess?: () => void;
+  onEditingFinished: () => void;
 }
 
 const EditExpenditureForm = ({
   expenditure,
-  onSuccess,
-  onCancelClick,
+  onEditingFinished,
 }: EditExpenditureFormProps) => {
   const { colony } = useColonyContext();
 
@@ -51,15 +49,12 @@ const EditExpenditureForm = ({
       }}
       actionType={ActionTypes.EXPENDITURE_EDIT}
       transform={transformPayload}
-      onSuccess={onSuccess}
+      onSuccess={onEditingFinished}
     >
       <AdvancedPaymentFormFields colony={colony} />
 
       <div className={styles.buttons}>
-        <Button
-          appearance={{ size: 'small' }}
-          onClick={() => onCancelClick?.()}
-        >
+        <Button appearance={{ size: 'small' }} onClick={onEditingFinished}>
           Cancel
         </Button>
         <Button type="submit">Save changes</Button>
