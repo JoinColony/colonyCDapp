@@ -14,29 +14,40 @@ export const ActionSidebarContext = createContext<{
   actionSidebarToggle: UseToggleReturnType;
   cancelModalToggle: UseToggleReturnType;
   avatarModalToggle: UseToggleReturnType;
-  changeActionModalToggle: UseToggleReturnType;
 }>({
   actionSidebarToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
   cancelModalToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
   avatarModalToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
-  changeActionModalToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
 });
 
 export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
   const cancelModalToggle = useToggle();
-  const changeActionModalToggle = useToggle();
   const avatarModalToggle = useToggle();
-  const actionSidebarToggle = useToggle({
-    shouldCloseOnDocumentClick: (element) => {
-      return (
-        !cancelModalToggle[0] &&
-        !avatarModalToggle[0] &&
-        !changeActionModalToggle[0] &&
-        !getPortalContainer().contains(element)
-      );
+  const actionSidebarToggle = useToggle();
+  const [
+    ,
+    {
+      useRegisterOnBeforeCloseCallback:
+        actionSidebarUseRegisterOnBeforeCloseCallback,
     },
+  ] = actionSidebarToggle;
+
+  actionSidebarUseRegisterOnBeforeCloseCallback((element) => {
+    const reactModalPortals = Array.from(
+      document.querySelectorAll('.ReactModalPortal'),
+    );
+
+    // Element inside the modal or in the portal container
+    if (
+      getPortalContainer().contains(element) ||
+      reactModalPortals.some((portal) => portal.contains(element))
+    ) {
+      return false;
+    }
+
+    return undefined;
   });
 
   const value = useMemo(
@@ -44,14 +55,8 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
       actionSidebarToggle,
       cancelModalToggle,
       avatarModalToggle,
-      changeActionModalToggle,
     }),
-    [
-      actionSidebarToggle,
-      cancelModalToggle,
-      avatarModalToggle,
-      changeActionModalToggle,
-    ],
+    [actionSidebarToggle, cancelModalToggle, avatarModalToggle],
   );
 
   return (

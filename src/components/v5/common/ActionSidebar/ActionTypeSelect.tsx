@@ -9,7 +9,6 @@ import useToggle from '~hooks/useToggle';
 import { ACTION_TYPE_FIELD_NAME } from './consts';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 import { formatText } from '~utils/intl';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import Modal from '~v5/shared/Modal';
 
 const displayName = 'v5.common.ActionTypeSelect';
@@ -32,15 +31,6 @@ const ActionTypeSelect: FC = () => {
     HTMLDivElement
   >([isSelectVisible]);
   const { formState, setValue } = useFormContext();
-  const {
-    changeActionModalToggle: [
-      ,
-      {
-        toggleOn: toggleChangeActionModalOn,
-        toggleOff: toggleChangeActionModalOff,
-      },
-    ],
-  } = useActionSidebarContext();
 
   return (
     <>
@@ -74,9 +64,13 @@ const ActionTypeSelect: FC = () => {
             isOpen={isSelectVisible}
             className="z-[60]"
             onSelect={(action) => {
+              toggleSelectOff();
+
+              if (action === actionType) {
+                return;
+              }
+
               if (Object.keys(formState.dirtyFields).length > 0) {
-                toggleChangeActionModalOn();
-                toggleSelectOff();
                 setNextActionType(action);
 
                 return;
@@ -93,11 +87,10 @@ const ActionTypeSelect: FC = () => {
           id: 'actionSidebar.cancelModal.subtitle',
         })}
         isOpen={!!nextActionType}
-        onClose={toggleChangeActionModalOff}
+        onClose={() => setNextActionType(undefined)}
         onConfirm={() => {
           setValue(ACTION_TYPE_FIELD_NAME, nextActionType);
           setNextActionType(undefined);
-          toggleChangeActionModalOff();
         }}
         icon="warning-circle"
         buttonMode="primarySolid"
