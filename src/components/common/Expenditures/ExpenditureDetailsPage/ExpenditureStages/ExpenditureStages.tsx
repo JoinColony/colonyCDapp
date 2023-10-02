@@ -38,6 +38,7 @@ const ExpenditureStages = ({ expenditure, colony }: ExpenditureStagesProps) => {
             expenditureStages={stages}
             expenditureSlot={slot}
             stagedExpenditureAddress={stagedExpenditureAddress}
+            isVotingReputationEnabled={isVotingReputationEnabled}
           />
         ))}
       </ul>

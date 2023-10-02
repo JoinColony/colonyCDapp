@@ -21,6 +21,7 @@ interface Props {
   expenditureStages: ExpenditureStage[];
   stagedExpenditureAddress: string | undefined;
   expenditureSlot: ExpenditureSlot;
+  isVotingReputationEnabled: boolean;
 }
 
 const ExpenditureStagesItem = ({
@@ -29,6 +30,7 @@ const ExpenditureStagesItem = ({
   expenditureStages,
   stagedExpenditureAddress,
   expenditureSlot,
+  isVotingReputationEnabled,
 }: Props) => {
   const navigate = useNavigate();
   const transformPayload = pipe(withMeta({ navigate }));
@@ -96,13 +98,15 @@ const ExpenditureStagesItem = ({
         !expenditureStage?.isReleased &&
         !expenditureStageStatus && (
           <>
-            <ActionButton
-              actionType={ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE}
-              transform={transformPayload}
-              values={payloadValues}
-            >
-              Release (with motion)
-            </ActionButton>
+            {isVotingReputationEnabled && (
+              <ActionButton
+                actionType={ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE}
+                transform={transformPayload}
+                values={payloadValues}
+              >
+                Release (with motion)
+              </ActionButton>
+            )}
             <ActionButton
               actionType={ActionTypes.RELEASE_EXPENDITURE_STAGE}
               transform={transformPayload}
@@ -113,7 +117,7 @@ const ExpenditureStagesItem = ({
           </>
         )}
       {expenditureStage?.isReleased && <div>Released</div>}
-      {expenditureStageStatus && (
+      {expenditureStageStatus && isVotingReputationEnabled && (
         <>
           {motionTransactionHash ? (
             <Link to={`/colony/${colony.name}/tx/${motionTransactionHash}`}>
