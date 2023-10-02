@@ -25,3 +25,11 @@ export type UseActionFormBaseHook = (
     'transform' | 'actionType' | 'defaultValues' | 'validationSchema'
   >,
 ) => void;
+
+export interface ActionSidebarProps {
+  transactionId?: string;
+}
+
+export interface ActionSidebarFormContentProps extends ActionFormBaseProps {
+  isMotion?: boolean;
+}

@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 
 import { useController, useFormContext, useWatch } from 'react-hook-form';
 import ActionSidebarRow from '../ActionFormRow';
@@ -49,7 +48,7 @@ const ActionTypeSelect: FC = () => {
         fieldName={ACTION_TYPE_FIELD_NAME}
         iconName="file-plus"
         title={formatText({ id: 'actionSidebar.actionType' })}
-        tooltip={<FormattedMessage id="actionSidebar.toolip.actionType" />}
+        tooltip={formatText({ id: 'actionSidebar.toolip.actionType' })}
       >
         <button
           type="button"
