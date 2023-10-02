@@ -62,7 +62,7 @@ const getTokenType = async (client) => {
 };
 
 const getRpcUrlParamName = (network) => {
-  let chainRpcParam = 'chainRpcEndpoint';
+  let chainRpcParam;
 
   switch (network) {
     case BINANCE_NETWORK.shortName:
@@ -70,7 +70,8 @@ const getRpcUrlParamName = (network) => {
       break;
     case ETHEREUM_NETWORK.shortName:
     default:
-    // Use default chainRpcParam ie Ethereum to set `rpcURL`
+      chainRpcParam = 'ethRpcEndpoint';
+      break;
   }
 
   return chainRpcParam;

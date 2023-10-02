@@ -28,6 +28,7 @@ const setEnvVariables = async () => {
       'networkContractAddress',
       'chainRpcEndpoint',
       'bnbRpcEndpoint',
+      'ethRpcEndpoint',
       'chainNetwork',
     ]);
   }

@@ -11,6 +11,7 @@ const ParamNames = {
   chainNetwork: `%2Famplify%2Fcdapp%2F${ENV}%2Fchain_network`,
   appsyncApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2Faws_appsync_api_key`,
   bnbRpcEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2Fbnb_rpc_endpoint`,
+  ethRpcEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2Feth_rpc_endpoint`,
   bscscanApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2Fbscscan_api_key`,
   etherscanApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2Fetherscan_api_key`,
 };
