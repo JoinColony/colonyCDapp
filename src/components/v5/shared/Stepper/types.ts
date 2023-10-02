@@ -5,9 +5,10 @@ export interface StepperItem {
   heading: Omit<StepperButtonProps, 'onClick' | 'stage'> & {
     decor?: JSX.Element;
   };
-  content: JSX.Element;
+  content: React.ReactNode;
   isOptional?: boolean;
   isSkipped?: boolean;
+  isHidden?: boolean;
 }
 
 export interface StepperProps {

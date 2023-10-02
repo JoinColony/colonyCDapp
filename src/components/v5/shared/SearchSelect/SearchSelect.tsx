@@ -6,8 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { debounce } from 'lodash';
-import { useIntl } from 'react-intl';
+import debounce from 'lodash/debounce';
 import clsx from 'clsx';
 import Portal from '~v5/shared/Portal';
 
@@ -44,7 +43,6 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
   ) => {
     const [searchValue, setSearchValue] = useState('');
     const isMobile = useMobile();
-    const { formatMessage } = useIntl();
     const filteredList = useSearchSelect(items, searchValue);
 
     const defaultOpenedAccordions = useMemo(
@@ -111,7 +109,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                     <div className="mb-6 last:mb-0" key={key}>
                       <div className="flex items-center justify-between">
                         <h5 className="text-4 text-gray-400 mb-2 uppercase">
-                          {formatMessage(title)}
+                          {formatText(title)}
                         </h5>
                         {isAccordion && (
                           <button
@@ -147,7 +145,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                   ) : (
                     <div key={key} className="mb-6 last:mb-0">
                       <h5 className="text-4 text-gray-400 mb-2 uppercase">
-                        {formatMessage(title)}
+                        {formatText(title)}
                       </h5>
                       <SearchItem options={options} onChange={onSelect} />
                     </div>

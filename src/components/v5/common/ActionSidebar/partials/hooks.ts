@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
-import { useIntl } from 'react-intl';
 import { ACTION, Action } from '~constants/actions';
+import { useEnabledExtensions } from '~hooks';
+import { formatText } from '~utils/intl';
 import { ACTION_TYPE_FIELD_NAME } from '../consts';
 
 const ACTION_SUBMIT_BUTTON_TEXT: Partial<Record<Action, string>> = {
@@ -26,19 +27,31 @@ const ACTION_SUBMIT_BUTTON_TEXT: Partial<Record<Action, string>> = {
   [ACTION.CREATE_NEW_INTEGRATION]: 'button.createIntegration',
 };
 
+const MOTION_SUBMIT_BUTTON_TEXT: Partial<Record<Action, string>> = {
+  [ACTION.SIMPLE_PAYMENT]: 'button.createMotion',
+};
+
 export const useSubmitButtonText = () => {
-  const intl = useIntl();
+  const { isVotingReputationEnabled } = useEnabledExtensions();
   const selectedAction: Action | undefined = useWatch({
     name: ACTION_TYPE_FIELD_NAME,
   });
 
+  const selectedTexts = isVotingReputationEnabled
+    ? MOTION_SUBMIT_BUTTON_TEXT
+    : ACTION_SUBMIT_BUTTON_TEXT;
+
   return useMemo(() => {
-    if (!selectedAction || !ACTION_SUBMIT_BUTTON_TEXT[selectedAction]) {
-      return intl.formatMessage({ id: 'button.createAction' });
+    if (!selectedAction || !selectedTexts[selectedAction]) {
+      return formatText({
+        id: isVotingReputationEnabled
+          ? 'button.createMotion'
+          : 'button.createAction',
+      });
     }
 
-    return intl.formatMessage({
-      id: ACTION_SUBMIT_BUTTON_TEXT[selectedAction],
+    return formatText({
+      id: selectedTexts[selectedAction],
     });
-  }, [intl, selectedAction]);
+  }, [isVotingReputationEnabled, selectedAction, selectedTexts]);
 };

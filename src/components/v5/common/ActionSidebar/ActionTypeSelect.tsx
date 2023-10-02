@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 
 import { useController, useWatch } from 'react-hook-form';
 import ActionSidebarRow from '../ActionFormRow';
@@ -9,11 +8,11 @@ import { translateAction } from './utils';
 import useToggle from '~hooks/useToggle';
 import { ACTION_TYPE_FIELD_NAME } from './consts';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.common.ActionTypeSelect';
 
 const ActionTypeSelect: FC = () => {
-  const intl = useIntl();
   const actionsList = useActionsList();
   const [
     isSelectVisible,
@@ -32,13 +31,13 @@ const ActionTypeSelect: FC = () => {
     <ActionSidebarRow
       fieldName={ACTION_TYPE_FIELD_NAME}
       iconName="file-plus"
-      title={intl.formatMessage({ id: 'actionSidebar.actionType' })}
-      tooltip={<FormattedMessage id="actionSidebar.toolip.actionType" />}
+      title={formatText({ id: 'actionSidebar.actionType' })}
+      tooltip={formatText({ id: 'actionSidebar.toolip.actionType' })}
     >
       <>
         {actionType ? (
           <span className="text-md">
-            {intl.formatMessage({ id: translateAction(actionType) })}
+            {formatText({ id: translateAction(actionType) })}
           </span>
         ) : (
           <>
@@ -48,7 +47,7 @@ const ActionTypeSelect: FC = () => {
               className="flex text-md text-gray-600 transition-colors hover:text-blue-400"
               onClick={toggleSelect}
             >
-              {intl.formatMessage({
+              {formatText({
                 id: 'actionSidebar.chooseActionType',
               })}
             </button>
