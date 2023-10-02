@@ -12,6 +12,7 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
   status,
   withIcon = true,
   textClassName = 'text-md',
+  iconAlignment = 'center',
 }) => {
   const iconName = {
     [STATUS_TYPES.SUCCESS]: 'check-circle',
@@ -22,11 +23,13 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
 
   return (
     <div
-      className={clsx('flex items-center', {
+      className={clsx('flex', {
         'text-success-400': status === STATUS_TYPES.SUCCESS,
         'text-warning-400': status === STATUS_TYPES.WARNING,
         'text-negative-400': status === STATUS_TYPES.ERROR,
         'gap-2': withIcon,
+        'items-center': iconAlignment === 'center',
+        'items-start': iconAlignment === 'top',
       })}
     >
       {withIcon && (

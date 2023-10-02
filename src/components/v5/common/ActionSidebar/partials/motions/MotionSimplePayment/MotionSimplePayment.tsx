@@ -12,7 +12,7 @@ const displayName =
 
 const MotionSimplePayment: FC = () => {
   // @todo: pass current step to the state when other steps will be available
-  const [activeStepIndex, setActiveStepIndex] = useState(0);
+  const [activeStepIndex, setActiveStepIndex] = useState(1);
 
   const items = useMemo(
     () => [
