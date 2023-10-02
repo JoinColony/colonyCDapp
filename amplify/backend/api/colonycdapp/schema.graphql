@@ -951,6 +951,11 @@ type Mutation {
   updateContributorsWithReputation(
     input: UpdateContributorsWithReputationInput!
   ): Boolean @function(name: "updateContributorsWithReputation-${env}")
+  """
+  Send a notification to a user, this also creates a notification in the database
+  """
+  sendNotification(input: SendNotificationInput!): Boolean
+    @function(name: "sendNotification-${env}")
 }
 
 """
@@ -1837,6 +1842,59 @@ type User @model {
   """
   transactionHistory: [Transaction!]
     @hasMany(indexName: "byInitiatorAddress", fields: ["id"])
+}
+
+"""
+The different types of notifications a user receives
+"""
+enum NotificationType {
+  """
+  Colony Action ready for further interaction
+  """
+  Ready
+  """
+  User has been mentioned
+  """
+  Mention
+  """
+  User is assigned a task in a Colony
+  """
+  Assignment
+  """
+  Notification does not fit defined types
+  """
+  Custom
+}
+
+"""
+Input type for sending a notification
+"""
+input SendNotificationInput {
+  """
+  Unique identifier for the user to send to.
+  If null a notification will be sent to anyone subscribed to the colony notifications
+  """
+  userId: ID
+  """
+  Unique identifier for Colony notification is sent from
+  """
+  colonyId: ID!
+  """
+  Type of notification
+  """
+  type: NotificationType!
+  """
+  Unique identifier for user associated with notification
+  """
+  associatedUserId: ID!
+  """
+  Unique identifier for Colony action associated with notification
+  """
+  associatedActionId: ID
+  """
+  Content of notification if a custom notification
+  """
+  customNotificationText: String
 }
 
 """
