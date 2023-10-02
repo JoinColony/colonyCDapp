@@ -52,7 +52,7 @@ const Entry = ({ store }: Props) => {
               <ColonyContextProvider>
                 <DialogProvider>
                   <TokenActivationProvider>
-                    <div className="h-full w-full bg-base-white">
+                    <div className="h-full w-full bg-base-white min-h-screen flex flex-col">
                       <Routes />
                     </div>
                   </TokenActivationProvider>

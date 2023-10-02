@@ -11,14 +11,13 @@ const PopularActions: FC<PopularActionsProps> = ({ setSelectedAction }) => {
   const { formatMessage } = useIntl();
 
   return (
-    <div className="p-6">
-      <h4 className="text-1 pb-2">
+    <div>
+      <h4 className="text-1 pb-2 border-b border-b-gray-200 mb-2">
         {formatMessage({ id: 'actionSidebar.popularActions' })}
       </h4>
-      <div className="divider mb-2" />
       <ul>
         {POPULAR_ACTIONS.map(({ action, text, iconName }) => (
-          <li className="flex items-center mb-4" key={action}>
+          <li className="flex items-center mb-4 last:mb-0" key={action}>
             <TextButton
               text={text}
               iconName={iconName}
