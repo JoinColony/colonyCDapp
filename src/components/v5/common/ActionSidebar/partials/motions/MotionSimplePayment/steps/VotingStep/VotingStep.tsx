@@ -73,7 +73,7 @@ const VotingStep: FC = () => {
                       label: formatText({ id: 'motion.oppose' }),
                       id: 'oppose',
                       value: 'oppose',
-                      colorClassName: 'text-red-500',
+                      colorClassName: 'text-negative-300',
                       iconName: 'thumbs-down',
                     },
                     {
