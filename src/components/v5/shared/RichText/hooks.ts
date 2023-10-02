@@ -36,7 +36,7 @@ export const useRichText = (
             return 'Enter a description';
           },
           showOnlyWhenEditable: false,
-          emptyNodeClass: `first:before:text-gray-500 md:first:before:hover:text-blue-400 first:before:float-left first:before:content-[attr(data-placeholder)] first:before:pointer-events-none`,
+          emptyNodeClass: `first:before:text-gray-500 md:first:before:hover:text-blue-400 first:before:content-[attr(data-placeholder)] first:before:pointer-events-none`,
         }),
         Heading.configure({ levels: [1, 2, 3] }).extend({
           levels: [1, 2],

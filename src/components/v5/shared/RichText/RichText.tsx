@@ -32,30 +32,33 @@ const RichText: FC<RichTextProps> = ({
           <MenuBar editor={editorContent} />
           <EditorContent editor={editorContent} {...field} />
 
-          <div className="flex items-center justify-between mt-4">
-            {!!characterCount && isDecriptionFieldExpanded && (
-              <TextButton mode="underlined" onClick={toggleOffDecriptionSelect}>
-                {formatMessage({ id: 'button.show.less' })}
-              </TextButton>
-            )}
-            {characterCount >= 1000 && isDecriptionFieldExpanded && (
-              <div className="text-xs text-gray-500 flex justify-end">
-                {characterCount} / {MAX_ANNOTATION_NUM}
-              </div>
-            )}
-          </div>
+          {(characterCount || isDecriptionFieldExpanded) && (
+            <div className="flex items-center justify-between mt-4">
+              {isDecriptionFieldExpanded && (
+                <TextButton
+                  mode="underlined"
+                  onClick={toggleOffDecriptionSelect}
+                >
+                  {formatMessage({ id: 'button.show.less' })}
+                </TextButton>
+              )}
+              {characterCount >= 1000 && isDecriptionFieldExpanded && (
+                <div className="text-xs text-gray-500 flex justify-end">
+                  {characterCount} / {MAX_ANNOTATION_NUM}
+                </div>
+              )}
+            </div>
+          )}
         </>
       ) : (
         <>
           <span
-            className={clsx(
-              characterCount >= MIN_ANNOTATION_NUM,
-              'line-clamp-2 text-left',
-            )}
+            className={clsx({
+              'line-clamp-2 text-left': characterCount >= MIN_ANNOTATION_NUM,
+            })}
           >
             {notFormattedContent}
           </span>
-
           {characterCount > NUMBER_OF_CHARS_IN_TWO_LINES &&
             !isDecriptionFieldExpanded && (
               <TextButton mode="underlined" onClick={toggleOnDecriptionSelect}>

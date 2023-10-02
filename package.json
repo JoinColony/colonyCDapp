@@ -181,7 +181,7 @@
     "@tiptap/extension-underline": "^2.0.4",
     "@tiptap/html": "^2.0.4",
     "@tiptap/pm": "^2.0.4",
-    "@tiptap/react": "^2.1.11",
+    "@tiptap/react": "^2.0.4",
     "@tiptap/starter-kit": "^2.0.4",
     "@types/pica": "^9.0.1",
     "@web3-onboard/common": "^2.2.3",
