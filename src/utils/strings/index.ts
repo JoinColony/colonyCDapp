@@ -171,3 +171,8 @@ export const ensureHexPrefix = (value: string): string => {
   }
   return `${HEX_HEADER}${value}`;
 };
+
+/**
+ * Given a bool, returns 'Yes' or 'No'
+ */
+export const boolToYesNo = (value: boolean) => (value ? 'Yes' : 'No');

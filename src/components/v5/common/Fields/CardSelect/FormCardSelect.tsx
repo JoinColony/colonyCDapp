@@ -1,5 +1,5 @@
 import React from 'react';
-import { useController, useWatch } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 import { FormCardSelectProps } from './types';
 import CardSelect from './CardSelect';
 import { FIELD_STATE } from '../consts';
@@ -11,16 +11,17 @@ function FormCardSelect<TValue = string>({
   ...rest
 }: FormCardSelectProps<TValue>): JSX.Element {
   const {
-    field: { onChange },
+    field: { onChange, value },
     fieldState: { invalid, error },
   } = useController({
     name,
   });
-  const value = useWatch({ name });
 
   return (
     <CardSelect<TValue>
-      {...{ ...rest, value, onChange }}
+      {...rest}
+      value={value}
+      onChange={onChange}
       state={invalid ? FIELD_STATE.Error : undefined}
       message={error?.message}
     />

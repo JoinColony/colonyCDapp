@@ -4,8 +4,6 @@ import { takeEvery, fork, call, put } from 'redux-saga/effects';
 import { Action, ActionTypes, AllActions } from '~redux';
 import { ColonyManager } from '~context';
 import { transactionAddParams } from '~redux/actionCreators';
-import { ExpenditureType } from '~gql';
-
 import { ADDRESS_ZERO } from '~constants';
 
 import {
@@ -24,7 +22,7 @@ import {
 } from '../utils';
 
 function* createStakedExpenditure({
-  meta: { navigate },
+  meta: { navigate, setTxHash },
   meta,
   payload: {
     colony: { name: colonyName, colonyAddress },
@@ -153,6 +151,14 @@ function* createStakedExpenditure({
       ]),
     );
     yield initiateTransaction({ id: makeExpenditure.id });
+    const {
+      payload: { hash: txHash },
+    } = yield takeFrom(
+      makeExpenditure.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
+
+    setTxHash?.(txHash);
     yield waitForTxResult(makeExpenditure.channel);
 
     const expenditureId = yield call(colonyClient.getExpenditureCount);
@@ -189,7 +195,6 @@ function* createStakedExpenditure({
       colonyAddress,
       expenditureId,
       fundFromDomainId,
-      expenditureType: ExpenditureType.Staked,
       stages: isStaged ? stages : undefined,
       stakeAmount,
     });
@@ -200,7 +205,15 @@ function* createStakedExpenditure({
       meta,
     });
 
-    navigate(`/colony/${colonyName}/expenditures/${expenditureId}`);
+    if (navigate) {
+      navigate(`/colony/${colonyName}/expenditures/${expenditureId}`);
+    } else {
+      window.history.replaceState(
+        {},
+        '',
+        `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
+      );
+    }
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   } finally {

@@ -188,6 +188,12 @@ function* fundExpenditureMotion({
         meta,
       });
     }
+
+    window.history.replaceState(
+      {},
+      '',
+      `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
+    );
   } catch (e) {
     console.error(e);
     yield put<Action<ActionTypes.MOTION_EXPENDITURE_FUND_ERROR>>({
@@ -205,6 +211,6 @@ function* fundExpenditureMotion({
   // @todo add annotation logic post-rebase on master
 }
 
-export function* fundExpenditureMotionSaga() {
+export default function* fundExpenditureMotionSaga() {
   yield takeEvery(ActionTypes.MOTION_EXPENDITURE_FUND, fundExpenditureMotion);
 }

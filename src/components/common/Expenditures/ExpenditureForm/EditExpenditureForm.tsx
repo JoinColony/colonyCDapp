@@ -12,7 +12,7 @@ import {
   getExpenditurePayoutsFieldValue,
   getInitialPayoutFieldValue,
 } from './helpers';
-import { ExpenditureFormValues } from './types';
+import { AdvancedPaymentFormValues } from './types';
 
 import styles from './ExpenditureForm.module.css';
 
@@ -34,7 +34,7 @@ const EditExpenditureForm = ({
   }
 
   const transformPayload = pipe(
-    mapPayload((payload: ExpenditureFormValues) => ({
+    mapPayload((payload: AdvancedPaymentFormValues) => ({
       colonyAddress: colony.colonyAddress,
       expenditure,
       payouts: payload.payouts,
@@ -43,7 +43,7 @@ const EditExpenditureForm = ({
   );
 
   return (
-    <ActionForm<ExpenditureFormValues>
+    <ActionForm<AdvancedPaymentFormValues>
       defaultValues={{
         payouts: expenditure
           ? getExpenditurePayoutsFieldValue(expenditure)

@@ -97,12 +97,6 @@ const AmountField: FC<AmountFieldProps> = ({ name }) => {
             {selectedToken?.symbol || colonyTokens[0].symbol}
           </span>
         </button>
-        <input
-          type="text"
-          id="tokenAddress"
-          className="hidden"
-          {...tokenAddressController}
-        />
         {isTokenSelectVisible && (
           <Portal>
             <Card

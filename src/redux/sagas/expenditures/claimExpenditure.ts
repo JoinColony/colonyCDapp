@@ -40,7 +40,6 @@ function* claimExpenditure({
 
   try {
     // Create one claim transaction for each slot
-    // @TODO: We should create one transaction for each token address
     yield all(
       payoutsWithSlotIds.map((payout, index) =>
         fork(createTransaction, channels[getPayoutChannelId(payout)].id, {

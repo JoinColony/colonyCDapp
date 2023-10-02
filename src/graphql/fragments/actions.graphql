@@ -180,6 +180,9 @@ fragment ColonyMotion on ColonyMotion {
   isDecision
   gasEstimate
   transactionHash
+  action {
+    type
+  }
 }
 
 fragment MotionMessage on MotionMessage {

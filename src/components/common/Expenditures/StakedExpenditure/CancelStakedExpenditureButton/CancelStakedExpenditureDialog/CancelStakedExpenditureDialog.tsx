@@ -1,5 +1,6 @@
-import { Extension } from '@colony/colony-js';
+import { Extension, Id } from '@colony/colony-js';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 
 import { useExtensionData } from '~hooks';
@@ -11,7 +12,7 @@ import { ActionForm, Toggle } from '~shared/Fields';
 import { Heading3 } from '~shared/Heading';
 import Numeral from '~shared/Numeral/Numeral';
 import { Colony, Expenditure } from '~types';
-import { mapPayload, pipe } from '~utils/actions';
+import { mapPayload, pipe, withMeta } from '~utils/actions';
 import { isInstalledExtensionData } from '~utils/extensions';
 
 interface FormValues {
@@ -22,18 +23,29 @@ interface CancelStakedExpenditureDialogProps
   extends Pick<DialogProps, 'cancel'> {
   colony: Colony;
   expenditure: Expenditure;
+  isMotion: boolean;
 }
 
 const CancelStakedExpenditureDialog = ({
   colony,
   expenditure,
+  isMotion,
   cancel,
 }: CancelStakedExpenditureDialogProps) => {
   const { extensionData } = useExtensionData(Extension.StakedExpenditure);
+  const navigate = useNavigate();
 
   const transform = pipe(
     mapPayload((payload: FormValues) => ({
       ...payload,
+      ...(isMotion
+        ? {
+            fromDomainId:
+              expenditure.metadata?.fundFromDomainNativeId ?? Id.RootDomain,
+            motionDomainId: expenditure.nativeDomainId ?? Id.RootDomain,
+          }
+        : {}),
+      colonyName: colony.name,
       colonyAddress: colony.colonyAddress,
       stakedExpenditureAddress:
         extensionData && isInstalledExtensionData(extensionData)
@@ -41,15 +53,20 @@ const CancelStakedExpenditureDialog = ({
           : '',
       expenditure,
     })),
+    withMeta({ navigate }),
   );
 
   return (
     <Dialog cancel={cancel}>
       <ActionForm
-        actionType={ActionTypes.STAKED_EXPENDITURE_CANCEL}
+        actionType={
+          isMotion
+            ? ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL
+            : ActionTypes.STAKED_EXPENDITURE_CANCEL
+        }
         transform={transform}
         defaultValues={{
-          shouldPenalise: false,
+          shouldPunish: false,
         }}
       >
         <DialogSection>

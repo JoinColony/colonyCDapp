@@ -17,7 +17,7 @@ import {
 
 function* tokenUnlockAction({
   meta,
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   payload: { colonyAddress, annotationMessage, colonyName },
 }: Action<ActionTypes.ACTION_UNLOCK_TOKEN>) {
   let txChannel;
@@ -79,6 +79,9 @@ function* tokenUnlockAction({
       tokenUnlock.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(tokenUnlock.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
@@ -94,10 +97,16 @@ function* tokenUnlockAction({
       meta,
     });
 
-    if (colonyName) {
+    if (navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
+    } else {
+      window.history.replaceState(
+        {},
+        '',
+        `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
+      );
     }
   } catch (error) {
     putError(ActionTypes.ACTION_UNLOCK_TOKEN_ERROR, error, meta);

@@ -36,6 +36,7 @@ export const ACTION_TYPES_ICONS_MAP: Record<AnyActionType, string> = {
   [ColonyActionType.UnlockTokenMotion]: 'emoji-padlock',
   [ColonyActionType.CreateDecisionMotion]: 'emoji-decisions',
   [ColonyActionType.FundExpenditureMotion]: 'emoji-world-globe',
+  [ColonyActionType.CancelStakedExpenditureMotion]: 'forbidden-signal',
   [ColonyActionType.NullMotion]: 'forbidden-signal',
   [ColonyActionType.Generic]: 'circle-check-primary',
   [ExtendedColonyActionType.UpdateAddressBook]: 'emoji-edit-tools',

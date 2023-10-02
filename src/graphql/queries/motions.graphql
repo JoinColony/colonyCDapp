@@ -10,7 +10,7 @@ query GetVoterRewards($input: GetVoterRewardsInput!) {
   }
 }
 
-query GetMotionByTransactionHash($transactionHash: String!) {
+query GetMotionByTransactionHash($transactionHash: ID!) {
   getMotionByTransactionHash(transactionHash: $transactionHash) {
     items {
       ...ColonyMotion
