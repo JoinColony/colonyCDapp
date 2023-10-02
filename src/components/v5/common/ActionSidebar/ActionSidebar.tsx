@@ -39,15 +39,12 @@ const ActionSidebarFormContent: FC<PropsWithChildren<Props>> = ({
   isSidebarFullscreen,
   getFormOptions,
 }) => {
-  const {
-    formComponent: FormComponent,
-    hasErrors,
-    selectedAction,
-  } = useSidebarActionForm();
+  const { formComponent: FormComponent, selectedAction } =
+    useSidebarActionForm();
   const isMobile = useMobile();
   const userHasPermissions = useUserHasPermissions();
   const form = useFormContext();
-  const notificationBanner = useNotificationBanner(hasErrors, selectedAction);
+  const notificationBanner = useNotificationBanner();
   const closeSidebarClick = useCloseSidebarClick();
 
   return (

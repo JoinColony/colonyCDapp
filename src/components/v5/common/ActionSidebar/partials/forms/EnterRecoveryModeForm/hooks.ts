@@ -15,7 +15,7 @@ const validationSchema = yup
   .shape({
     createdIn: yup.number().defined(),
     decisionMethod: yup.string().defined(),
-    annotation: yup.string().max(MAX_ANNOTATION_LENGTH).defined(),
+    description: yup.string().max(MAX_ANNOTATION_LENGTH).defined(),
   })
   .defined();
 
@@ -33,7 +33,7 @@ export const useEnterRecoveryMode = (
     defaultValues: useMemo(
       () => ({
         decisionMethod: '',
-        annotation: '',
+        description: '',
         createdIn: Id.RootDomain.toString(),
       }),
       [],
@@ -45,7 +45,7 @@ export const useEnterRecoveryMode = (
           const values = {
             motionDomainId: payload.createdIn,
             decisionMethod: payload.decisionMethod,
-            annotation: payload.annotation,
+            annotation: payload.description,
           };
           if (colony) {
             return getRecoveryModeDialogPayload(colony, values, user);

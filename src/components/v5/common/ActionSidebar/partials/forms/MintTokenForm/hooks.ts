@@ -29,7 +29,7 @@ const validationSchema = yup
       .required(),
     createdIn: yup.string().defined(),
     decisionMethod: yup.string().defined(),
-    annotation: yup.string().max(MAX_ANNOTATION_LENGTH).defined(),
+    description: yup.string().max(MAX_ANNOTATION_LENGTH).defined(),
   })
   .defined();
 
@@ -44,7 +44,7 @@ export const useMintToken = (
     defaultValues: useMemo(
       () => ({
         createdIn: Id.RootDomain.toString(),
-        annotation: '',
+        description: '',
         decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
         amount: {
           amount: 0,
@@ -63,7 +63,7 @@ export const useMintToken = (
             mintAmount: payload.amount.amount,
             motionDomainId: payload.createdIn,
             decisionMethod: payload.decisionMethod,
-            annotation: payload.annotation,
+            annotation: payload.description,
           };
 
           if (colony) {

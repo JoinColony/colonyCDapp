@@ -76,7 +76,6 @@
     "@types/react-portal": "^4.0.4",
     "@types/recompose": "^0.30.0",
     "@types/reselect": "^2.2.0",
-    "@types/webpack-env": "^1.18.1",
     "@types/yup": "^0.29.0",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",

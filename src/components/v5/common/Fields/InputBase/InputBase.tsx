@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { InputBaseProps } from './types';
 import { FIELD_STATE } from '../consts';
 import { useStateClassNames } from '../hooks';
+import { useAdjustInputWidth } from './hooks';
 
 const displayName = 'v5.common.Fields.InputBase';
 
@@ -17,6 +18,7 @@ const InputBase: FC<InputBaseProps> = ({
   mode = 'primary',
   disabled,
   stateClassNames: stateClassNamesProp,
+  autoWidth = false,
   ...rest
 }) => {
   const stateClassNames = useStateClassNames(
@@ -26,11 +28,13 @@ const InputBase: FC<InputBaseProps> = ({
     },
     stateClassNamesProp,
   );
+  const inputRef = useAdjustInputWidth(autoWidth);
 
   return (
     <div className={wrapperClassName}>
       {prefix && prefix}
       <input
+        ref={inputRef}
         className={clsx(
           className,
           state ? stateClassNames[state] : undefined,
