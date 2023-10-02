@@ -1,7 +1,6 @@
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useMemo } from 'react';
-import { Id } from '@colony/colony-js';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
 import { useAppContext, useColonyContext } from '~hooks';
@@ -32,9 +31,7 @@ export const useEnterRecoveryMode = (
     actionType: ActionTypes.ACTION_UNLOCK_TOKEN,
     defaultValues: useMemo(
       () => ({
-        decisionMethod: '',
         annotation: '',
-        createdIn: Id.RootDomain.toString(),
       }),
       [],
     ),
@@ -43,8 +40,6 @@ export const useEnterRecoveryMode = (
       pipe(
         mapPayload((payload) => {
           const values = {
-            motionDomainId: payload.createdIn,
-            decisionMethod: payload.decisionMethod,
             annotation: payload.annotation,
           };
           if (colony) {

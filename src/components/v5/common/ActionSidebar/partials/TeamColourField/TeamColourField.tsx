@@ -49,8 +49,8 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
         className={clsx(
           'flex text-md transition-colors md:hover:text-blue-400',
           {
-            'placeholder-gray-500': !isError,
-            'placeholder-negative-400': isError,
+            'text-gray-500': !isError,
+            'text-negative-400': isError,
           },
         )}
         onClick={toggleDecisionSelect}
@@ -61,7 +61,7 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
             title={teamNameValue || ''}
           />
         ) : (
-          formatMessage({ id: 'actionSidebar.selectTeam' })
+          formatMessage({ id: 'actionSidebar.selectTeamColor' })
         )}
       </button>
       {isTeamColourSelectVisible && (
