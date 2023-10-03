@@ -64,7 +64,7 @@ const RichText: FC<RichTextProps> = ({
             !isDecriptionFieldExpanded && (
               <TextButton
                 mode="underlined"
-                className="text-gray-400"
+                className="text-gray-400 ml-1"
                 onClick={toggleOnDecriptionSelect}
               >
                 {formatMessage({ id: 'button.expand' })}
