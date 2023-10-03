@@ -4,13 +4,13 @@ import Button from '~v5/shared/Button';
 
 import CardWithStatusText from '~v5/shared/CardWithStatusText';
 import ProgressBar from '~v5/shared/ProgressBar';
-import Icon from '~shared/Icon';
 import TextWithValue from './partials/TextWithValue';
 import FormButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/FormButtonRadioButtons';
 import { ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
 import { TextWithValueItem } from './partials/TextWithValue/types';
 import { VOTING_THRESHOLD } from '~constants';
+import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.VotingStep';
@@ -26,10 +26,11 @@ const VotingStep: FC = () => {
       key: '2',
       leftColumn: formatText({ id: 'motion.votingStep.teamReputation' }),
       rightColumn: (
-        <div className="flex items-center gap-1">
-          <Icon name="star" appearance={{ size: 'tiny' }} />
-          <span>17.61%</span>
-        </div>
+        <MemberReputation
+          userReputation="20"
+          totalReputation="100"
+          textClassName="text-sm"
+        />
       ),
     },
     {
