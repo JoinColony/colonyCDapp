@@ -37,6 +37,7 @@ const RichText: FC<RichTextProps> = ({
               {isDecriptionFieldExpanded && (
                 <TextButton
                   mode="underlined"
+                  className="text-gray-400"
                   onClick={toggleOffDecriptionSelect}
                 >
                   {formatMessage({ id: 'button.show.less' })}
@@ -61,7 +62,11 @@ const RichText: FC<RichTextProps> = ({
           </span>
           {characterCount > NUMBER_OF_CHARS_IN_TWO_LINES &&
             !isDecriptionFieldExpanded && (
-              <TextButton mode="underlined" onClick={toggleOnDecriptionSelect}>
+              <TextButton
+                mode="underlined"
+                className="text-gray-400"
+                onClick={toggleOnDecriptionSelect}
+              >
                 {formatMessage({ id: 'button.expand' })}
               </TextButton>
             )}
