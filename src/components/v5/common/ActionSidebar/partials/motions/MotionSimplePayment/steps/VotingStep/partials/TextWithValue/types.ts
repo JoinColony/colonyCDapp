@@ -1,4 +1,9 @@
+export interface TextWithValueItem {
+  key: string;
+  rightColumn: React.ReactNode;
+  leftColumn: React.ReactNode;
+}
+
 export interface TextWithValueProps {
-  children: React.ReactNode;
-  text: React.ReactNode;
+  items: TextWithValueItem[];
 }

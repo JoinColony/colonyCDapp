@@ -7,7 +7,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
   progress,
   isTall,
   additionalText,
-  minimumProgress,
+  threshold,
 }) => {
   if (progress > 100 || progress < 0) {
     throw new Error('Progress bar value must be between 0 and 100');
@@ -28,10 +28,10 @@ const ProgressBar: FC<ProgressBarProps> = ({
           })}
           style={{ width: `${progress}%` }}
         />
-        {minimumProgress && progress < minimumProgress && (
+        {threshold && progress < threshold && (
           <span
             className="w-[.125rem] h-full bg-gray-400 absolute top-0"
-            style={{ left: `${minimumProgress}%` }}
+            style={{ left: `${threshold}%` }}
           />
         )}
       </div>

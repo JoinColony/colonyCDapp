@@ -4,37 +4,38 @@ import Button from '~v5/shared/Button';
 
 import CardWithStatusText from '~v5/shared/CardWithStatusText';
 import ProgressBar from '~v5/shared/ProgressBar';
-import { VotingStepItem } from './types';
 import Icon from '~shared/Icon';
 import TextWithValue from './partials/TextWithValue';
 import FormButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/FormButtonRadioButtons';
 import { ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
+import { TextWithValueItem } from './partials/TextWithValue/types';
+import { VOTING_THRESHOLD } from '~constants';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.VotingStep';
 
 const VotingStep: FC = () => {
-  const items: VotingStepItem[] = [
+  const items: TextWithValueItem[] = [
     {
       key: '1',
-      text: formatText({ id: 'motion.votingStep.votingMethod' }),
-      children: <span className="text-sm">Reputation-weighted</span>,
+      leftColumn: formatText({ id: 'motion.votingStep.votingMethod' }),
+      rightColumn: <span>Reputation-weighted</span>,
     },
     {
       key: '2',
-      text: formatText({ id: 'motion.votingStep.teamReputation' }),
-      children: (
+      leftColumn: formatText({ id: 'motion.votingStep.teamReputation' }),
+      rightColumn: (
         <div className="flex items-center gap-1">
           <Icon name="star" appearance={{ size: 'tiny' }} />
-          <span className="text-sm">17.61%</span>
+          <span>17.61%</span>
         </div>
       ),
     },
     {
       key: '3',
-      text: formatText({ id: 'motion.votingStep.rewardRange' }),
-      children: <span className="text-sm">0.0006 - 12 CLNY</span>,
+      leftColumn: formatText({ id: 'motion.votingStep.rewardRange' }),
+      rightColumn: <span>0.0006 - 12 CLNY</span>,
     },
   ];
 
@@ -42,16 +43,13 @@ const VotingStep: FC = () => {
     <CardWithStatusText
       statusTextSectionProps={{
         status: 'info',
-        children: (
-          <p className="text-4">
-            {formatText({ id: 'motion.votingStep.statusText' })}
-          </p>
-        ),
+        children: formatText({ id: 'motion.votingStep.statusText' }),
+        textClassName: 'text-4',
         iconAlignment: 'top',
         content: (
           <ProgressBar
             progress={0}
-            minimumProgress={40}
+            threshold={VOTING_THRESHOLD}
             additionalText={formatText({
               id: 'motion.votingStep.additionalText',
             })}
@@ -64,10 +62,11 @@ const VotingStep: FC = () => {
           content: (
             <ActionForm actionType={ActionTypes.MOTION_VOTE}>
               <div className="mb-6 pb-6 border-b border-gray-200">
-                <p className="text-2 mb-3 text-center">
+                <h4 className="text-2 mb-3 text-center">
                   {formatText({ id: 'motion.votingStep.title' })}
-                </p>
+                </h4>
                 <FormButtonRadioButtons
+                  // @TODO: Replace this with const that will be merged by Asia C.
                   items={[
                     {
                       label: formatText({ id: 'motion.oppose' }),
@@ -87,14 +86,12 @@ const VotingStep: FC = () => {
                   name="vote"
                 />
               </div>
-              <ul className="mb-6">
-                {items.map(({ key, ...item }) => (
-                  <li key={key} className="mb-2 last:mb-0">
-                    <TextWithValue {...item} />
-                  </li>
-                ))}
-              </ul>
-              <Button mode="primarySolid" isFullSize text="Submit vote" />
+              <TextWithValue items={items} />
+              <Button
+                mode="primarySolid"
+                isFullSize
+                text={formatText({ id: 'motion.votingStep.submit' })}
+              />
             </ActionForm>
           ),
         },
