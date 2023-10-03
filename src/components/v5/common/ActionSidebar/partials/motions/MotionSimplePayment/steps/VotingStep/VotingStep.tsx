@@ -4,28 +4,28 @@ import Button from '~v5/shared/Button';
 
 import CardWithStatusText from '~v5/shared/CardWithStatusText';
 import ProgressBar from '~v5/shared/ProgressBar';
-import TextWithValue from './partials/TextWithValue';
 import FormButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/FormButtonRadioButtons';
 import { ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
-import { TextWithValueItem } from './partials/TextWithValue/types';
 import { VOTING_THRESHOLD } from '~constants';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
+import { DescriptionListItem } from './partials/DescriptionList/types';
+import DescriptionList from './partials/DescriptionList';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.VotingStep';
 
 const VotingStep: FC = () => {
-  const items: TextWithValueItem[] = [
+  const items: DescriptionListItem[] = [
     {
       key: '1',
-      leftColumn: formatText({ id: 'motion.votingStep.votingMethod' }),
-      rightColumn: <span>Reputation-weighted</span>,
+      label: formatText({ id: 'motion.votingStep.votingMethod' }),
+      value: 'Reputation-weighted',
     },
     {
       key: '2',
-      leftColumn: formatText({ id: 'motion.votingStep.teamReputation' }),
-      rightColumn: (
+      label: formatText({ id: 'motion.votingStep.teamReputation' }),
+      value: (
         <MemberReputation
           userReputation="20"
           totalReputation="100"
@@ -35,8 +35,8 @@ const VotingStep: FC = () => {
     },
     {
       key: '3',
-      leftColumn: formatText({ id: 'motion.votingStep.rewardRange' }),
-      rightColumn: <span>0.0006 - 12 CLNY</span>,
+      label: formatText({ id: 'motion.votingStep.rewardRange' }),
+      value: '0.0006 - 12 CLNY',
     },
   ];
 
@@ -87,7 +87,7 @@ const VotingStep: FC = () => {
                   name="vote"
                 />
               </div>
-              <TextWithValue items={items} />
+              <DescriptionList items={items} className="mb-6" />
               <Button
                 mode="primarySolid"
                 isFullSize
