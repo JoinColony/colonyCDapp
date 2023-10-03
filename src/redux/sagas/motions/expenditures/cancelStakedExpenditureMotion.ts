@@ -161,7 +161,15 @@ function* cancelStakedExpenditureMotion({
         meta,
       });
 
-      navigate?.(`/colony/${colonyName}/tx/${payload.transaction.hash}`);
+      if (navigate) {
+        navigate(`/colony/${colonyName}/tx/${payload.transaction.hash}`);
+      } else {
+        window.history.replaceState(
+          {},
+          '',
+          `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
+        );
+      }
     }
   } catch (e) {
     console.error(e);

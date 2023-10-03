@@ -25,7 +25,7 @@ function* createMoveFundsAction({
     tokenAddress,
     annotationMessage,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_MOVE_FUNDS>) {
   let txChannel;
@@ -114,6 +114,8 @@ function* createMoveFundsAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
+    setTxHash?.(txHash);
+
     yield takeFrom(moveFunds.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
@@ -129,10 +131,16 @@ function* createMoveFundsAction({
       meta,
     });
 
-    if (colonyName) {
+    if (colonyName && navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
+    } else {
+      window.history.replaceState(
+        {},
+        '',
+        `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
+      );
     }
   } catch (caughtError) {
     putError(ActionTypes.ACTION_MOVE_FUNDS_ERROR, caughtError, meta);

@@ -3,7 +3,6 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import {
   OnBeforeCloseCallback,
   RefRegistryEntry,
-  ShouldCloseCallback,
   UseToggleReturnType,
 } from './types';
 
@@ -23,13 +22,7 @@ const getHtmlElement = (): HTMLElement | null => {
 
 const documentClickHandler = (event: MouseEvent): void => {
   refsRegistry.forEach(
-    ({
-      element,
-      toggleOff,
-      toggleState,
-      shouldCloseCallbackRef,
-      onBeforeCloseCallbacksRef,
-    }) => {
+    ({ element, toggleOff, toggleState, onBeforeCloseCallbacksRef }) => {
       if (!(event.target instanceof Element)) {
         return;
       }
@@ -45,15 +38,12 @@ const documentClickHandler = (event: MouseEvent): void => {
       }
 
       const eventTargetElement = event.target;
-      const shouldClose = shouldCloseCallbackRef.current
-        ? shouldCloseCallbackRef.current(eventTargetElement)
-        : true;
       const onBeforeCallbackShouldClose =
         onBeforeCloseCallbacksRef.current.some(
           (callback) => callback(eventTargetElement) === false,
         );
 
-      if (!shouldClose || onBeforeCallbackShouldClose) {
+      if (onBeforeCallbackShouldClose) {
         return;
       }
 
@@ -64,16 +54,11 @@ const documentClickHandler = (event: MouseEvent): void => {
 
 const useToggle = ({
   defaultToggleState = false,
-  shouldCloseOnDocumentClick,
 }: {
   defaultToggleState?: boolean;
-  shouldCloseOnDocumentClick?: ShouldCloseCallback;
 } = {}): UseToggleReturnType => {
   const [toggleState, setToggleState] = useState(defaultToggleState);
-  const shouldCloseCallbackRef = useRef(shouldCloseOnDocumentClick);
   const onBeforeCloseCallbacksRef = useRef<OnBeforeCloseCallback[]>([]);
-
-  shouldCloseCallbackRef.current = shouldCloseOnDocumentClick;
 
   const toggle = useCallback(() => {
     setTimeout(() => {
@@ -114,7 +99,6 @@ const useToggle = ({
 
       if (ref && currentEntryIndex < 0) {
         refsRegistry.push({
-          shouldCloseCallbackRef,
           onBeforeCloseCallbacksRef,
           element: ref,
           toggleOff,

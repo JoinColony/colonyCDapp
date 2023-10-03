@@ -27,7 +27,7 @@ const UserAvatarPopover: FC<PropsWithChildren<UserAvatarPopoverProps>> = ({
   popoverButtonContent = (
     <UserAvatar
       size={avatarSize || 'xs'}
-      userName={userName}
+      userName={userName ?? walletAddress}
       user={user}
       userStatus={userStatus}
       isContributorsList={isContributorsList}

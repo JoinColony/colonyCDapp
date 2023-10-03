@@ -188,6 +188,12 @@ function* fundExpenditureMotion({
         meta,
       });
     }
+
+    window.history.replaceState(
+      {},
+      '',
+      `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
+    );
   } catch (e) {
     console.error(e);
     yield put<Action<ActionTypes.MOTION_EXPENDITURE_FUND_ERROR>>({

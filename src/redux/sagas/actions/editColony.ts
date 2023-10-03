@@ -42,7 +42,7 @@ function* editColonyAction({
     tokenAddresses,
     annotationMessage,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_EDIT_COLONY>) {
   let txChannel;
@@ -136,6 +136,9 @@ function* editColonyAction({
       editColony.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     const existingTokenAddresses = getExistingTokenAddresses(colony);
@@ -203,10 +206,16 @@ function* editColonyAction({
       meta,
     });
 
-    if (colonyName) {
+    if (navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
+    } else {
+      window.history.replaceState(
+        {},
+        '',
+        `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
+      );
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_EDIT_COLONY_ERROR, error, meta);

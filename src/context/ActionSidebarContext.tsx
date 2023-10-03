@@ -25,14 +25,29 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
 }) => {
   const cancelModalToggle = useToggle();
   const avatarModalToggle = useToggle();
-  const actionSidebarToggle = useToggle({
-    shouldCloseOnDocumentClick: (element) => {
-      return (
-        !cancelModalToggle[0] &&
-        !avatarModalToggle[0] &&
-        !getPortalContainer().contains(element)
-      );
+  const actionSidebarToggle = useToggle();
+  const [
+    ,
+    {
+      useRegisterOnBeforeCloseCallback:
+        actionSidebarUseRegisterOnBeforeCloseCallback,
     },
+  ] = actionSidebarToggle;
+
+  actionSidebarUseRegisterOnBeforeCloseCallback((element) => {
+    const reactModalPortals = Array.from(
+      document.querySelectorAll('.ReactModalPortal'),
+    );
+
+    // Element inside the modal or in the portal container
+    if (
+      getPortalContainer().contains(element) ||
+      reactModalPortals.some((portal) => portal.contains(element))
+    ) {
+      return false;
+    }
+
+    return undefined;
   });
 
   const value = useMemo(

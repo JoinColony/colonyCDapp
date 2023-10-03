@@ -257,7 +257,7 @@ function* createEditDomainMotion({
         window.history.replaceState(
           {},
           '',
-          `/colony/${colonyName}/activity/tx/${txHash}`,
+          `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
         );
       }
     }
