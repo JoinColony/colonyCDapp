@@ -20,7 +20,7 @@ const TableWithMeatballMenu = <T,>({
   return (
     <Table<T>
       getRowClassName={() =>
-        'relative [&>tr:last-child>th]:p-0 [&>tr:last-child>td]:p-0'
+        'relative [&>tr:last-child>th]:p-0 [&>tr:last-child>td]:p-0 [&>tr:first-child>td]:pr-9'
       }
       columns={columnsWithMenu}
       {...rest}

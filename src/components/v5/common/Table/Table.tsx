@@ -34,6 +34,7 @@ const Table = <T,>({
       {isMobile ? (
         rows.map((row) => {
           const cells = row.getVisibleCells();
+          const columnsCount = cells.length - 1;
 
           return (
             <tbody
@@ -64,7 +65,10 @@ const Table = <T,>({
                             header.getContext(),
                           )}
                     </th>
-                    <td className="p-4 text-left text-sm font-normal">
+                    <td
+                      className="p-4 text-left text-sm font-normal"
+                      colSpan={columnsCount}
+                    >
                       {flexRender(
                         header.column.columnDef.cell,
                         cells[index].getContext(),
@@ -111,24 +115,26 @@ const Table = <T,>({
                 ))}
               </tr>
             ))}
-            {table.getFooterGroups().map((footerGroup) => (
-              <tr key={footerGroup.id}>
-                {footerGroup.headers.map((column) => (
-                  <td
-                    key={column.id}
-                    className="text-md text-gray-500 p-[1.1rem] border-t border-gray-200"
-                  >
-                    {flexRender(
-                      column.column.columnDef.footer,
-                      column.getContext(),
-                    )}
-                  </td>
-                ))}
-              </tr>
-            ))}
           </tbody>
         </>
       )}
+      <tfoot>
+        {table.getFooterGroups().map((footerGroup) => (
+          <tr key={footerGroup.id}>
+            {footerGroup.headers.map((column) => (
+              <td
+                key={column.id}
+                className="text-md text-gray-500 p-[1.1rem] sm:border-t sm:border-gray-200"
+              >
+                {flexRender(
+                  column.column.columnDef.footer,
+                  column.getContext(),
+                )}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tfoot>
     </table>
   );
 };
