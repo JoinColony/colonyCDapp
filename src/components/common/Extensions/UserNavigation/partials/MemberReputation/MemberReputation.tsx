@@ -13,6 +13,7 @@ const MemberReputation: FC<MemberReputationProps> = ({
   userReputation,
   totalReputation,
   hideOnMobile = true,
+  textClassName = 'text-3',
 }) => {
   const percentageReputation = calculatePercentageReputation(
     userReputation,
@@ -27,7 +28,7 @@ const MemberReputation: FC<MemberReputationProps> = ({
       })}
     >
       <Icon name="star" appearance={{ size: 'tiny' }} />
-      <span className="text-3 ml-1">
+      <span className={clsx(textClassName, 'ml-1')}>
         {!percentageReputation && '— %'}
         {percentageReputation === ZeroValue.NearZero && percentageReputation}
         {percentageReputation &&
