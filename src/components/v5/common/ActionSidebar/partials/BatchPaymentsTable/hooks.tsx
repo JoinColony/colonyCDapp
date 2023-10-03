@@ -1,12 +1,9 @@
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
 
 import { formatText } from '~utils/intl';
 import { BatchPaymentsTableModel } from './types';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
-import TokenSelect from '../TokenSelect';
-import UserSelect from '../UserSelect';
-import AmountField from '../AmountField';
 
 export const useBatchPaymentsTableColumns = (
   name: string,
@@ -21,23 +18,23 @@ export const useBatchPaymentsTableColumns = (
       columnHelper.display({
         id: 'recipient',
         header: () => formatText({ id: 'table.row.recipient' }),
-        cell: ({ row }) => (
-          <UserSelect key={row.id} name={`${name}.${row.index}.recipient`} />
-        ),
+        cell: () => {
+          // @TODO: display data
+        },
       }),
       columnHelper.display({
         id: 'amount',
         header: () => formatText({ id: 'table.row.amount' }),
-        cell: ({ row }) => (
-          // @TODO: update field
-          <AmountField key={row.id} name={`${name}.${row.index}.amount`} />
-        ),
+        cell: () => {
+          // @TODO: display data
+        },
       }),
       columnHelper.display({
         id: 'token',
         header: () => formatText({ id: 'table.row.token' }),
-        // @TODO: add new field
-        cell: ({ row }) => <TokenSelect name={`${name}.${row.index}.token`} />,
+        cell: () => {
+          // @TODO: display data
+        },
       }),
     ],
     [columnHelper, name],
