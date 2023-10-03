@@ -85,6 +85,7 @@ module.exports = {
         ],
       },
     ],
+    'react/jsx-key': ['error'],
 
     'react/state-in-constructor': ['error', 'never'],
     'react/static-property-placement': 'off',
