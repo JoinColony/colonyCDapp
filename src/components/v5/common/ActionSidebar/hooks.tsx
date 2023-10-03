@@ -111,7 +111,7 @@ export const useActionsList = () => {
           {
             label: { id: 'actions.batchPayment' },
             value: ACTION.BATCH_PAYMENT,
-            isDisabled: false,
+            isDisabled: true,
           },
           {
             label: { id: 'actions.splitPayment' },

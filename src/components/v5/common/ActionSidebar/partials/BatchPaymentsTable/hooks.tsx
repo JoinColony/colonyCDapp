@@ -29,12 +29,14 @@ export const useBatchPaymentsTableColumns = (
         id: 'amount',
         header: () => formatText({ id: 'table.row.amount' }),
         cell: ({ row }) => (
+          // @TODO: update field
           <AmountField key={row.id} name={`${name}.${row.index}.amount`} />
         ),
       }),
       columnHelper.display({
         id: 'token',
         header: () => formatText({ id: 'table.row.token' }),
+        // @TODO: add new field
         cell: ({ row }) => <TokenSelect name={`${name}.${row.index}.token`} />,
       }),
     ],

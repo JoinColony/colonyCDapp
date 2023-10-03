@@ -50,7 +50,7 @@ const BatchPaymentsTable: FC<BatchPaymentsTableProps> = ({ name }) => {
         size="small"
         isFullSize={isMobile}
         onClick={() => {
-          fieldArrayMethods.append({});
+          // @TODO trigger open uploader modal
         }}
       >
         {formatText({ id: 'button.addBatchPayments' })}
