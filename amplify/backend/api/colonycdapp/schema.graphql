@@ -2428,7 +2428,7 @@ type ColonyMotion @model {
   expenditureId: ID
     @index(name: "byExpenditureId", queryField: "getMotionByExpenditureId")
   """
-  Expenditure stage associated with the motion
+  Id of the expenditure stage payment to be released if the motion pass
   """
   expenditureSlotId: Int
 
