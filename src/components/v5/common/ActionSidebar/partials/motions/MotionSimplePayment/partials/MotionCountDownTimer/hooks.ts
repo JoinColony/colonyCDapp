@@ -4,6 +4,7 @@ import { RefetchMotionState } from '~common/ColonyActions';
 import { MotionStakes, useGetMotionTimeoutPeriodsQuery } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
 import { MotionState } from '~utils/colonyMotions';
+import { CountDownTimerProps } from '~v5/common/CountDownTimer/types';
 import { getCurrentStatePeriodInMs, splitTimeLeft } from './helpers';
 
 const useMotionTimeoutPeriods = (colonyAddress = '', motionId: string) => {
@@ -31,7 +32,7 @@ export const useMotionCountdown = (
   motionId: string,
   refetchMotionState: RefetchMotionState,
   motionStakes: MotionStakes,
-) => {
+): CountDownTimerProps => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const { percentage: percentageStaked } = motionStakes;
@@ -151,6 +152,6 @@ export const useMotionCountdown = (
 
   return {
     countdown: splitTime,
-    loadingCountdown: loadingMotionTimeoutPeriods,
+    isLoading: loadingMotionTimeoutPeriods,
   };
 };

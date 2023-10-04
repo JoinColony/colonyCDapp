@@ -8,11 +8,8 @@ import { CountDownTimerProps } from './types';
 
 const displayName = 'common.CountDownTimer';
 
-const CountDownTimer: FC<CountDownTimerProps> = ({
-  countdown,
-  loadingCountdown,
-}) => {
-  if (loadingCountdown) {
+const CountDownTimer: FC<CountDownTimerProps> = ({ countdown, isLoading }) => {
+  if (isLoading) {
     return <MiniSpinnerLoader />;
   }
 
