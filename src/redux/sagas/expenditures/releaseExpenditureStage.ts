@@ -31,6 +31,7 @@ function* releaseExpenditureStage({
 
   try {
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient.networkClient,
       colonyClient,
       expenditure.nativeDomainId,
       ColonyRole.Arbitration,

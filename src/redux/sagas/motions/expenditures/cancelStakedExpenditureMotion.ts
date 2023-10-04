@@ -74,6 +74,7 @@ function* cancelStakedExpenditureMotion({
 
     const [extensionPermissionDomainId, extensionChildSkillIndex] =
       yield getPermissionProofs(
+        colonyClient.networkClient,
         colonyClient,
         expenditure.nativeDomainId,
         ColonyRole.Arbitration,
@@ -82,6 +83,7 @@ function* cancelStakedExpenditureMotion({
 
     const [userPermissionDomainId, userChildSkillIndex] =
       yield getPermissionProofs(
+        colonyClient.networkClient,
         colonyClient,
         expenditure.nativeDomainId,
         ColonyRole.Arbitration,
@@ -115,6 +117,7 @@ function* cancelStakedExpenditureMotion({
 
     const childSkillIndex = yield call(
       getChildIndex,
+      colonyClient.networkClient,
       colonyClient,
       motionDomainId,
       fromDomainId,

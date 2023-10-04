@@ -26,6 +26,7 @@ function* cancelDraftExpenditure({
   try {
     if (expenditure.isStaked && stakedExpenditureAddress) {
       const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+        colonyClient.networkClient,
         colonyClient,
         expenditure.nativeDomainId,
         ColonyRole.Arbitration,

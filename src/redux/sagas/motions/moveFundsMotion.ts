@@ -80,6 +80,7 @@ function* moveFundsMotion({
 
     const motionChildSkillIndex = yield call(
       getChildIndex,
+      colonyClient.networkClient,
       colonyClient,
       Id.RootDomain,
       Id.RootDomain,
@@ -109,6 +110,7 @@ function* moveFundsMotion({
 
     const [fromPermissionDomainId, fromChildSkillIndex] = yield call(
       getPermissionProofs,
+      colonyClient.networkClient,
       colonyClient,
       fromDomain.nativeId,
       [ColonyRole.Funding],
@@ -117,6 +119,7 @@ function* moveFundsMotion({
 
     const [, toChildSkillIndex] = yield call(
       getPermissionProofs,
+      colonyClient.networkClient,
       colonyClient,
       toDomain.nativeId,
       [ColonyRole.Funding],

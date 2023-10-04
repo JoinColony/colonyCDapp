@@ -1,4 +1,4 @@
-import { getExtensionHash } from '@colony/colony-js';
+import { getExtensionHash, Extension } from '@colony/colony-js';
 import { useMemo } from 'react';
 import { ApolloQueryResult } from '@apollo/client';
 
@@ -51,7 +51,7 @@ interface UseExtensionDataReturn {
 const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
   const { colony } = useColonyContext();
 
-  const extensionHash = getExtensionHash(extensionId);
+  const extensionHash = getExtensionHash(extensionId as Extension);
 
   const {
     data,
