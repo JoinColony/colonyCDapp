@@ -60,6 +60,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         />
         {/* @todo: add preview mode to the form */}
         <ActionTypeSelect />
+        {/* @todo: add motion action type to each action */}
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
         {notificationBanner && (
           <div className="mt-7">
@@ -187,8 +188,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
               bg-gray-25
             `}
           >
-            {/* @todo: add functionality to switch between motion types */}
-            <MotionSimplePayment />
+            <MotionSimplePayment transactionId={transactionId} />
           </div>
         )}
       </div>
