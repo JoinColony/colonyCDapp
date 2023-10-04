@@ -18,6 +18,7 @@ import createDecisionMotionSaga from './createDecisionMotion';
 import {
   fundExpenditureMotionSaga,
   cancelStakedExpenditureMotionSaga,
+  createStreamingPaymentMotionSaga,
 } from './expenditures';
 
 export default function* actionsSagas() {
@@ -36,6 +37,7 @@ export default function* actionsSagas() {
     call(createDecisionMotionSaga),
     call(fundExpenditureMotionSaga),
     call(cancelStakedExpenditureMotionSaga),
+    call(createStreamingPaymentMotionSaga),
     call(paymentMotionSaga),
     // call(escalateMotionSaga),
     call(manageReputationMotionSaga),

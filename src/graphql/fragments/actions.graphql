@@ -94,6 +94,9 @@ fragment ColonyAction on ColonyAction {
   pendingColonyMetadata {
     ...ColonyMetadata
   }
+  pendingStreamingPaymentMetadata {
+    ...StreamingPaymentMetadata
+  }
   annotation {
     ...Annotation
   }

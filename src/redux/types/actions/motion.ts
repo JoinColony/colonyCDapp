@@ -2,6 +2,7 @@ import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
 import { Address, Colony, Domain, DomainColor } from '~types';
+import { ExternalLink, StreamingPaymentEndCondition } from '~gql';
 
 import { ActionTypes } from '../../actionTypes';
 
@@ -12,7 +13,6 @@ import {
   MetaWithSetter,
   UniqueActionTypeWithoutPayload,
 } from './index';
-import { ExternalLink } from '~gql';
 import { OneTxPaymentPayload } from './colonyActions';
 import {
   ExpenditureFundPayload,
@@ -262,5 +262,26 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_STREAMING_PAYMENT_CREATE,
+      {
+        colonyAddress: Address;
+        createdInDomain: Domain;
+        recipientAddress: Address;
+        tokenAddress: Address;
+        amount: string;
+        startTime: number;
+        endTime?: number;
+        interval: number;
+        endCondition: StreamingPaymentEndCondition;
+        limitAmount?: string;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_STREAMING_PAYMENT_CREATE_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_STREAMING_PAYMENT_CREATE_SUCCESS,
       MetaWithSetter<object>
     >;

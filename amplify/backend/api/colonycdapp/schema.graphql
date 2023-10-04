@@ -804,6 +804,10 @@ enum ColonyActionType {
   An action related to a motion to cancel a staked expenditure
   """
   CANCEL_STAKED_EXPENDITURE_MOTION
+  """
+  An action related to the creation of a motion to start a streaming payment. 
+  """
+  CREATE_STREAMING_PAYMENT_MOTION
 }
 
 """
@@ -2648,7 +2652,7 @@ type ColonyAction @model {
   """
   The type of action performed
   """
-  type: ColonyActionType!
+  type: ColonyActionType! @index(name: "byType", queryField: "getColonyActionsByType")
   """
   The block number where the action was recorded
   """
@@ -2775,6 +2779,15 @@ type ColonyAction @model {
   """
   pendingColonyMetadata: ColonyMetadata
     @hasOne(fields: ["pendingColonyMetadataId"])
+  """
+  Identifier of Streaming Payment metadata that is stored temporarily and commited to the database once the corresponding motion passes
+  """
+  pendingStreamingPaymentMetadataId: ID
+  """
+  Streaming Payment metadata that is stored temporarily and commited to the database once the corresponding motion passes
+  """
+  pendingStreamingPaymentMetadata: StreamingPaymentMetadata
+    @hasOne(fields: ["pendingStreamingPaymentMetadataId"])
   """
   The id of the associated annotation, if there is one
   """
@@ -3209,7 +3222,7 @@ type StreamingPayment @model {
 }
 
 type StreamingPaymentMetadata @model {
-  id: ID! # Self-managed, formatted as colonyId_nativeId
+  id: ID! # Self-managed, formatted as colonyId_nativeId or colonyId_motionTransactionHash
   endCondition: StreamingPaymentEndCondition!
   limitAmount: String
 }
