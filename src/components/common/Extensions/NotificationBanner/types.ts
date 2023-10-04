@@ -20,6 +20,7 @@ export interface NotificationBannerProps {
         onClick?: () => void;
       }
   );
+  className?: string;
 }
 
 export interface CopyUrlProps {

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 
 import useDropzoneWithFileReader from '~hooks/useDropzoneWithFileReader';
 import SuccessContent from './SuccessContent';
@@ -8,7 +8,7 @@ import { FileUploadProps } from '../types';
 
 const displayName = 'v5.common.AvatarUploader.partials.partials.FileUpload';
 
-const FileUpload: FC<FileUploadProps> = ({
+const FileUpload: FC<PropsWithChildren<FileUploadProps>> = ({
   dropzoneOptions,
   handleFileAccept,
   handleFileReject,
@@ -18,6 +18,8 @@ const FileUpload: FC<FileUploadProps> = ({
   isPropgressContentVisible,
   isSimplified,
   fileOptions,
+  fileUploadErrorMessages,
+  children,
 }) => {
   const { getInputProps, getRootProps, open, isDragReject, fileRejections } =
     useDropzoneWithFileReader({
@@ -46,6 +48,8 @@ const FileUpload: FC<FileUploadProps> = ({
       open={open}
       getInputProps={getInputProps}
       fileRejections={fileRejections?.[0]?.file?.name}
+      fileOptions={fileOptions}
+      fileUploadErrorMessages={fileUploadErrorMessages}
     />
   );
 
@@ -63,7 +67,12 @@ const FileUpload: FC<FileUploadProps> = ({
         <input {...getInputProps()} />
         {!!errorCode && errorContent}
         {shouldShowSuccessContent && successContent}
-        {shouldShowDefaultContent && defaultContent}
+        {shouldShowDefaultContent && (
+          <>
+            {children}
+            {defaultContent}
+          </>
+        )}
       </div>
     </div>
   );

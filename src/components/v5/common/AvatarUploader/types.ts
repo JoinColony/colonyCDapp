@@ -15,7 +15,10 @@ export type SuccessContentProps = Pick<
 >;
 
 export interface ErrorContentProps
-  extends Pick<FileUploadProps, 'handleFileRemove' | 'errorCode'> {
+  extends Pick<
+    FileUploadProps,
+    'handleFileRemove' | 'errorCode' | 'fileOptions' | 'fileUploadErrorMessages'
+  > {
   fileRejections?: string;
   open: () => void;
   getInputProps: <T extends DropzoneInputProps>(props?: T | undefined) => T;
@@ -24,8 +27,15 @@ export interface ErrorContentProps
 export interface FileUploadOptions {
   fileFormat: string[];
   fileSize: string;
-  fileDimension: string;
+  fileDimension?: string;
+  filEntriesNumber?: number;
 }
+
+export type FileUploadErrorMessageTypes = {
+  invalidFileFormat?: string;
+  tooLargeFile?: string;
+  exceedsNumberFile?: string;
+};
 
 export interface FileUploadProps {
   dropzoneOptions: DropzoneOptions;
@@ -41,6 +51,7 @@ export interface FileUploadProps {
   isPropgressContentVisible?: boolean;
   isSimplified?: boolean;
   fileOptions: FileUploadOptions;
+  fileUploadErrorMessages?: FileUploadErrorMessageTypes;
 }
 
 export interface AvatarUploaderProps {

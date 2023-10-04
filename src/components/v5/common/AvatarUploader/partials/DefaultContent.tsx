@@ -18,7 +18,7 @@ const DefaultContent: FC<DefaultContentProps> = ({
   const isMobile = useMobile();
 
   const isSimpleOnMobile = isSimplified && isMobile;
-  const formattedFormats = useFormatFormats(fileFormat);
+  const formattedFormats = useFormatFormats(fileFormat ?? []);
 
   return (
     <div

@@ -49,6 +49,7 @@
   "button.changeAction": "Yes, change the action",
   "button.cancelAction": "Yes, cancel the action",
   "button.continueAction": "No, go back to editing",
+  "button.uploadCSVFile": "Upload CSV file",
   "button.continue": "Continue",
   "button.createMotion": "Create Motion",
   "button.newDecision": "New Decision",
@@ -1028,7 +1029,7 @@
   "button.try.again": "Try again",
   "click.to.upload": "Click to upload",
   "drag.and.drop": "or drag and drop",
-  "too.large.file.error": "File size is too large, it should not exceed 1MB",
+  "too.large.file.error": "File size is too large, it should not exceed {fileSize}",
   "invalid.type.error": "Incorrect file format, must be .PNG, .JPG, or .SVG",
   "upload.failed": "Upload failed, please try again",
   "tap.to.upload": "Tap to upload",
@@ -1082,5 +1083,13 @@
   "button.addRecipient": "Add recipient",
   "table.row.percent": "Percent",
   "table.footer.total": "TOTAL",
-  "actionSidebar.payments": "Payments"
+  "actionSidebar.payments": "Payments",
+  "batchPayment.fileUploader.modal.title": "Batch payments",
+  "batchPayment.fileUploader.modal.subtitle": "For batch payments, you can download and use the .csv import template.",
+  "upload.file.invalid.format.type": "File structure incorrect, please try again",
+  "upload.csv.file.too.large.error": "File size should not exceed {fileSize} in file size",
+  "upload.csv.file.exceeds.number": "File exceeds {number} number of entries, please try again",
+  "batchPayment.notification.banner.message": "Important! Be sure to remove the sample data and view the details are correct once they have been imported. {br} {br} The file can not exceed {number} row entries.",
+  "batchPayment.uploader.header": "Upload CSV File",
+  "batchPayment.download.csv.template": "Download .CSV batch payments template"
 }

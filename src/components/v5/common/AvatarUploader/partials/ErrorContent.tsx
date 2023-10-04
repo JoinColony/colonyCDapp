@@ -14,13 +14,22 @@ const ErrorContent: FC<ErrorContentProps> = ({
   open,
   getInputProps,
   fileRejections,
+  fileOptions,
+  fileUploadErrorMessages = {
+    tooLargeFile: 'too.large.file.error',
+    invalidFileFormat: 'invalid.type.error',
+    exceedsNumberFile: 'upload.csv.file.exceeds.number',
+  },
 }) => {
+  const { tooLargeFile, invalidFileFormat, exceedsNumberFile } =
+    fileUploadErrorMessages;
   const { formatMessage } = useIntl();
 
   const errorMessage =
-    (errorCode === DropzoneErrors.TOO_LARGE && 'too.large.file.error') ||
+    (errorCode === DropzoneErrors.TOO_LARGE && tooLargeFile) ||
     (errorCode === DropzoneErrors.CUSTOM && 'upload.failed') ||
-    ((errorCode === DropzoneErrors.INVALID && 'invalid.type.error') as string);
+    (errorCode === DropzoneErrors.EXCEEDS_NUMBER && exceedsNumberFile) ||
+    ((errorCode === DropzoneErrors.INVALID && invalidFileFormat) as string);
 
   return (
     <div className="gap-3 bg-base-white border-negative-400 flex px-6 py-4 rounded border w-full">
@@ -34,7 +43,10 @@ const ErrorContent: FC<ErrorContentProps> = ({
       <div className="flex flex-col w-full gap-1">
         <div className="flex justify-between items-center">
           <span className="text-negative-400 text-1">
-            {formatMessage({ id: errorMessage })}
+            {formatMessage(
+              { id: errorMessage },
+              { fileSize: fileOptions.fileSize },
+            )}
           </span>
           <button
             type="button"

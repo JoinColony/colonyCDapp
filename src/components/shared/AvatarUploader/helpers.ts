@@ -35,6 +35,7 @@ export enum DropzoneErrors {
   // TOO_MANY = 'too-many-files',
   CUSTOM = 'custom-error',
   DEFAULT = 'default',
+  EXCEEDS_NUMBER = 'exceeds-number',
 }
 /**
  * For a common set of error messages you can expect from the Avatar Uploader.

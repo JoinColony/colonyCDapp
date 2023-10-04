@@ -1,9 +1,16 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
-
+import axios from 'axios';
+import { FileRejection } from 'react-dropzone';
+import { useFormContext } from 'react-hook-form';
 import { formatText } from '~utils/intl';
 import { BatchPaymentsTableModel } from './types';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
+import { FileReaderFile } from '~utils/fileReader/types';
+import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
+import { getFileRejectionErrors } from '~shared/FileUpload/utils';
+import getFileReader from '~utils/fileReader';
+import useDropzoneWithFileReader from '~hooks/useDropzoneWithFileReader';
 
 export const useBatchPaymentsTableColumns = (
   name: string,

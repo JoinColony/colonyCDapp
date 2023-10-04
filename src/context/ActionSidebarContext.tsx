@@ -14,10 +14,12 @@ export const ActionSidebarContext = createContext<{
   actionSidebarToggle: UseToggleReturnType;
   cancelModalToggle: UseToggleReturnType;
   avatarModalToggle: UseToggleReturnType;
+  uploaderModalToggle: UseToggleReturnType;
 }>({
   actionSidebarToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
   cancelModalToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
   avatarModalToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
+  uploaderModalToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
 });
 
 export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
@@ -33,6 +35,7 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
         actionSidebarUseRegisterOnBeforeCloseCallback,
     },
   ] = actionSidebarToggle;
+  const uploaderModalToggle = useToggle();
 
   actionSidebarUseRegisterOnBeforeCloseCallback((element) => {
     const reactModalPortals = Array.from(
@@ -55,8 +58,14 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
       actionSidebarToggle,
       cancelModalToggle,
       avatarModalToggle,
+      uploaderModalToggle,
     }),
-    [actionSidebarToggle, cancelModalToggle, avatarModalToggle],
+    [
+      actionSidebarToggle,
+      cancelModalToggle,
+      avatarModalToggle,
+      uploaderModalToggle,
+    ],
   );
 
   return (
