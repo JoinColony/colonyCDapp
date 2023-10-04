@@ -115,15 +115,15 @@ const Stepper: React.FC<StepperProps> = ({
               {!isMobile && (
                 <div
                   className={clsx(
-                    'grid transition-[grid-template-rows_0.5s_ease-in-out]',
+                    'grid transition-[grid-template-rows_0.5s_ease-in-out] w-full',
                     {
                       'grid-rows-[1fr]': index === openItemIndex,
                       'grid-rows-[0fr]': index !== openItemIndex,
                     },
                   )}
                 >
-                  <div className="overflow-hidden">
-                    <div className="pt-4">{content}</div>
+                  <div className="overflow-hidden w-full">
+                    <div className="pt-4 w-full">{content}</div>
                   </div>
                 </div>
               )}

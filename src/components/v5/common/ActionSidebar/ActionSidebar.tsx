@@ -192,7 +192,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
             `}
           >
             {/* @todo: add functionality to switch between motion types */}
-            <MotionSimplePayment />
+            <MotionSimplePayment transactionId={transactionId} />
           </div>
         )}
       </div>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 
 import { failedLoadingDuration as pollingTimeout } from '~frame/LoadingTemplate';
 import {
@@ -51,8 +50,6 @@ export const useGetColonyAction = (transactionHash?: string) => {
     };
   }, [stopPollingForAction]);
 
-  const { state: locationState } = useLocation();
-  const isRedirect = locationState?.isRedirect;
   /** Refetch colony when the action loads to update
    * any fields that might have been modified by the action
    */
@@ -61,17 +58,15 @@ export const useGetColonyAction = (transactionHash?: string) => {
       return;
     }
 
-    if (isRedirect) {
-      if (actionData.getColonyAction.type === ColonyActionType.Payment) {
-        refetchTokenBalances();
-      }
-      refetchColony();
+    if (actionData.getColonyAction.type === ColonyActionType.Payment) {
+      refetchTokenBalances();
     }
-  }, [actionData, refetchColony, refetchTokenBalances, isRedirect]);
+    refetchColony();
+  }, [actionData, refetchColony, refetchTokenBalances]);
 
   /* Don't poll if we've not been redirected from the saga */
   const action = actionData?.getColonyAction;
-  const shouldStopPolling = (!isRedirect && isPolling) || (action && isPolling);
+  const shouldStopPolling = isPolling || (action && isPolling);
 
   if (shouldStopPolling) {
     stopPollingForAction();

@@ -1,26 +1,48 @@
 import React, { FC, useMemo, useState } from 'react';
+import { MotionStakes } from '~types';
+import { MotionState } from '~utils/colonyMotions';
 import { formatText } from '~utils/intl';
+import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction';
 import Stepper from '~v5/shared/Stepper';
+import MotionCountDownTimer from './partials/MotionCountDownTimer';
 import FinalizeStep from './steps/FinalizeStep';
 import OutcomeStep from './steps/OutcomeStep';
 import RevealStep from './steps/RevealStep';
 import StakingStep from './steps/StakingStep';
 import VotingStep from './steps/VotingStep';
+import { MotionSimplePaymentProps } from './types';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment';
 
-const MotionSimplePayment: FC = () => {
+const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
+  transactionId,
+}) => {
   // @todo: pass current step to the state when other steps will be available
   const [activeStepIndex, setActiveStepIndex] = useState(0);
+  const { action, motionState, refetchMotionState } =
+    useGetColonyAction(transactionId);
+  const { motionData } = action || {};
+  const { motionId = '', motionStakes } = motionData || {};
 
   const items = useMemo(
     () => [
       {
         key: '1',
-        content: <StakingStep />,
+        content: <StakingStep action={action} transactionId={transactionId} />,
         heading: {
           label: formatText({ id: 'motion.staking.label' }) || '',
+          decor:
+            (motionState as unknown as MotionState) === MotionState.Staking ? (
+              <MotionCountDownTimer
+                motionState={
+                  (motionState as unknown as MotionState) || MotionState.Staking
+                }
+                motionId={motionId}
+                motionStakes={motionStakes as unknown as MotionStakes}
+                refetchMotionState={refetchMotionState}
+              />
+            ) : undefined,
         },
       },
       {
@@ -63,7 +85,14 @@ const MotionSimplePayment: FC = () => {
         },
       },
     ],
-    [],
+    [
+      action,
+      motionId,
+      motionStakes,
+      motionState,
+      refetchMotionState,
+      transactionId,
+    ],
   );
 
   return (

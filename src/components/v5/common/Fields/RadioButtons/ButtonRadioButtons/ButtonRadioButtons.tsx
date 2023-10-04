@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import Icon from '~shared/Icon';
 import RadioButtonsBase from '../RadioButtonsBase';
@@ -7,12 +7,12 @@ import { RadioItem } from '../RadioButtonsBase/types';
 
 const displayName = 'v5.common.ButtonRadioButtons';
 
-const ButtonRadioButtons: FC<ButtonRadioButtonsProps> = ({
+function ButtonRadioButtons<TValue = string>({
   items,
   className,
   ...rest
-}) => {
-  const modifiedItems = items.map<RadioItem<string>>(
+}: ButtonRadioButtonsProps<TValue>): JSX.Element {
+  const modifiedItems = items.map<RadioItem<TValue>>(
     ({ label, iconName, colorClassName, ...item }) => ({
       ...item,
       // eslint-disable-next-line react/no-unstable-nested-components
@@ -68,7 +68,7 @@ const ButtonRadioButtons: FC<ButtonRadioButtonsProps> = ({
       items={modifiedItems}
     />
   );
-};
+}
 
 ButtonRadioButtons.displayName = displayName;
 
