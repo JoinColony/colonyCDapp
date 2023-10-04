@@ -5,8 +5,8 @@ import { Id } from '@colony/colony-js';
 
 import MaskedAddress from '~shared/MaskedAddress';
 import Numeral from '~shared/Numeral';
-import { Colony, Expenditure, ExpenditureSlot } from '~types';
-import { ExpenditureStage, ExpenditureStatus } from '~gql';
+import { Colony, Expenditure, ExpenditureSlot, ExpenditureStage } from '~types';
+import { ExpenditureStatus } from '~gql';
 import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
 import { pipe, withMeta } from '~utils/actions';

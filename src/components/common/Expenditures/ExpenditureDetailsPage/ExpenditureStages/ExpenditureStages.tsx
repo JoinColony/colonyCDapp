@@ -33,6 +33,7 @@ const ExpenditureStages = ({ expenditure, colony }: ExpenditureStagesProps) => {
       <ul className={styles.stages}>
         {expenditure.slots.map((slot) => (
           <ExpenditureStagesItem
+            key={slot.id}
             colony={colony}
             expenditure={expenditure}
             expenditureStages={stages}
