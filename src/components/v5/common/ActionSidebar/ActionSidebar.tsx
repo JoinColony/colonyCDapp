@@ -33,15 +33,11 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   getFormOptions,
   isMotion,
 }) => {
-  const {
-    formComponent: FormComponent,
-    hasErrors,
-    selectedAction,
-  } = useSidebarActionForm();
-
+  const { formComponent: FormComponent, selectedAction } =
+    useSidebarActionForm();
   const userHasPermissions = useUserHasPermissions();
   const form = useFormContext();
-  const notificationBanner = useNotificationBanner(hasErrors, selectedAction);
+  const notificationBanner = useNotificationBanner();
 
   return (
     <>

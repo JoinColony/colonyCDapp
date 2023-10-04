@@ -20,7 +20,7 @@ const FormInputBase: FC<FormInputBaseProps> = ({ name, type, ...rest }) => {
       message={error?.message}
       {...rest}
       type={type}
-      value={value}
+      value={value?.toString() || ''}
       onChange={(event) => {
         const { value: inputValue, valueAsNumber } = event.target;
 

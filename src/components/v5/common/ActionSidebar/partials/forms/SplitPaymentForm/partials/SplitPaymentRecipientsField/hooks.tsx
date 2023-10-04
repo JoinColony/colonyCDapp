@@ -86,11 +86,7 @@ export const useRecipientsFieldTableColumns = (
           cell: ({ row }) =>
             distributionMethod === DISTRIBUTION_METHOD.Unequal ? (
               <FormInputBase
-                style={{
-                  width: `${
-                    (getPercentValue(row.index).toString().length || 1) * 0.5
-                  }rem`,
-                }}
+                autoWidth
                 onBlur={() => {
                   const maxPercent =
                     100 -
