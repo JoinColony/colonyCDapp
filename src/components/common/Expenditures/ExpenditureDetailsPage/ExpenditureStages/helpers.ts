@@ -1,5 +1,5 @@
-import { ExpenditureStage, useGetMotionStateQuery } from '~gql';
-import { Expenditure } from '~types';
+import { useGetMotionStateQuery } from '~gql';
+import { Expenditure, ExpenditureStage } from '~types';
 import { MotionState, getMotionState } from '~utils/colonyMotions';
 
 export const useExpenditureStageStatus = (
