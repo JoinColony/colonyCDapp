@@ -11,3 +11,8 @@ export interface ButtonRadioButtonsProps
   extends Omit<RadioButtonsBaseProps<string>, 'items'> {
   items: ButtonRadioButtonItem[];
 }
+
+export interface FormButtonRadioButtonsProps
+  extends Omit<ButtonRadioButtonsProps, 'onChange' | 'value'> {
+  name: string;
+}

@@ -48,6 +48,7 @@ import { ActionTypes } from '~redux';
 import SplitPaymentForm from './partials/forms/SplitPaymentForm';
 import ManageTokensForm from './partials/forms/ManageTokensForm';
 import AdvancedPaymentForm from './partials/forms/AdvancedPaymentForm';
+import BatchPaymentForm from './partials/forms/BatchPaymentForm';
 
 export const useActionsList = () => {
   const { colony } = useColonyContext();
@@ -335,6 +336,7 @@ export const useSidebarActionForm = () => {
       [ACTION.SPLIT_PAYMENT]: SplitPaymentForm,
       [ACTION.MANAGE_TOKENS]: ManageTokensForm,
       [ACTION.ADVANCED_PAYMENT]: AdvancedPaymentForm,
+      [ACTION.BATCH_PAYMENT]: BatchPaymentForm,
     }),
     [],
   );

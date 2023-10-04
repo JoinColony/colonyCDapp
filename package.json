@@ -167,6 +167,7 @@
     "@tanstack/react-table": "^8.10.0",
     "@tiptap/extension-blockquote": "^2.0.4",
     "@tiptap/extension-bold": "^2.0.4",
+    "@tiptap/extension-bubble-menu": "^2.1.11",
     "@tiptap/extension-character-count": "^2.0.4",
     "@tiptap/extension-color": "^2.0.4",
     "@tiptap/extension-document": "^2.0.4",
