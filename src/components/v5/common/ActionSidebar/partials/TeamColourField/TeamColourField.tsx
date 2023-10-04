@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { useController, useWatch } from 'react-hook-form';
-import { useIntl } from 'react-intl';
 
 import clsx from 'clsx';
 import useToggle from '~hooks/useToggle';
@@ -11,6 +10,7 @@ import { TeamColourFieldProps } from './types';
 import { useColors } from '~hooks/useColors';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 import Portal from '~v5/shared/Portal';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.common.ActionsContent.partials.TeamColourField';
 
@@ -22,7 +22,6 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
     name,
   });
   const isError = !!error;
-  const { formatMessage } = useIntl();
   const colorsOptions = useColors();
   const [
     isTeamColourSelectVisible,
@@ -58,10 +57,12 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
         {field.value ? (
           <TeamColourBadge
             defaultColor={field.value}
-            title={teamNameValue || ''}
+            title={
+              teamNameValue || formatText({ id: 'actionSidebar.teamName' })
+            }
           />
         ) : (
-          formatMessage({ id: 'actionSidebar.selectTeamColor' })
+          formatText({ id: 'actionSidebar.selectTeamColor' })
         )}
       </button>
       {isTeamColourSelectVisible && (

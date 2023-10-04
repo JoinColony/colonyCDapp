@@ -7,4 +7,5 @@ export interface StatusTextProps {
   iconClassName?: string;
   withIcon?: boolean;
   textClassName?: string;
+  iconAlignment?: 'top' | 'center';
 }

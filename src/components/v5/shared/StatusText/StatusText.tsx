@@ -15,6 +15,7 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
   iconClassName,
   withIcon = true,
   textClassName = 'text-md',
+  iconAlignment = 'center',
 }) => {
   const iconName = {
     [STATUS_TYPES.SUCCESS]: 'check-circle',
@@ -30,6 +31,8 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
         'text-warning-400': status === STATUS_TYPES.WARNING,
         'text-negative-400': status === STATUS_TYPES.ERROR,
         'gap-2': withIcon,
+        'items-center': iconAlignment === 'center',
+        'items-start': iconAlignment === 'top',
       })}
     >
       {withIcon && (
