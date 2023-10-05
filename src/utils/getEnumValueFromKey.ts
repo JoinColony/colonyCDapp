@@ -4,7 +4,7 @@ export const getEnumValueFromKey = <TEnum extends object>(
   defaultEnumValue?: TEnum[keyof TEnum],
 ): TEnum[keyof TEnum] => {
   if (key === undefined) {
-    if (!defaultEnumValue) {
+    if (defaultEnumValue === undefined) {
       throw new Error('Could not find enum entry for undefined key');
     }
 
@@ -14,7 +14,7 @@ export const getEnumValueFromKey = <TEnum extends object>(
   const enumEntry = enumObject[key];
 
   if (enumEntry === undefined) {
-    if (!defaultEnumValue) {
+    if (defaultEnumValue === undefined) {
       throw new Error(`Could not find enum entry for key "${key}"`);
     }
 
