@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ColonyRole } from '@colony/colony-js';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useUnmountEffect } from 'framer-motion';
 import { ACTION, Action } from '~constants/actions';
@@ -11,6 +11,7 @@ import {
   useColonyHasReputation,
   useDialogActionPermissions,
   useEnabledExtensions,
+  useFlatFormErrors,
   useGlobalEventHandler,
   useTransformer,
   useUserAccountRegistered,
@@ -46,6 +47,8 @@ import { ActionFormProps } from '~shared/Fields/Form/ActionForm';
 import { ActionTypes } from '~redux';
 import SplitPaymentForm from './partials/forms/SplitPaymentForm';
 import ManageTokensForm from './partials/forms/ManageTokensForm';
+import AdvancedPaymentForm from './partials/forms/AdvancedPaymentForm';
+import BatchPaymentForm from './partials/forms/BatchPaymentForm';
 
 export const useActionsList = () => {
   const { colony } = useColonyContext();
@@ -105,7 +108,6 @@ export const useActionsList = () => {
           {
             label: { id: 'actions.advancedPayment' },
             value: ACTION.ADVANCED_PAYMENT,
-            isDisabled: true,
           },
           {
             label: { id: 'actions.batchPayment' },
@@ -333,13 +335,14 @@ export const useSidebarActionForm = () => {
       [ACTION.EDIT_COLONY_DETAILS]: EditColonyDetailsForm,
       [ACTION.SPLIT_PAYMENT]: SplitPaymentForm,
       [ACTION.MANAGE_TOKENS]: ManageTokensForm,
+      [ACTION.ADVANCED_PAYMENT]: AdvancedPaymentForm,
+      [ACTION.BATCH_PAYMENT]: BatchPaymentForm,
     }),
     [],
   );
 
   const form = useFormContext();
   const selectedAction: Action | undefined = form.watch(ACTION_TYPE_FIELD_NAME);
-  const hasErrors = !form.formState.isValid && form.formState.isSubmitted;
   const formComponent = selectedAction
     ? actionFormComponents[selectedAction]
     : undefined;
@@ -355,7 +358,6 @@ export const useSidebarActionForm = () => {
 
   return {
     selectedAction,
-    hasErrors,
     formComponent,
   };
 };
@@ -394,11 +396,17 @@ export const useActionFormProps = () => {
   };
 };
 
-export const useNotificationBanner = (
-  hasError: boolean,
-  selectedAction: string | undefined,
-): NotificationBannerProps | undefined =>
-  useMemo(() => {
+export const useNotificationBanner = ():
+  | NotificationBannerProps
+  | undefined => {
+  const { formState } = useFormContext();
+  const hasErrors = !formState.isValid && formState.isSubmitted;
+  const selectedAction: Action | undefined = useWatch({
+    name: ACTION_TYPE_FIELD_NAME,
+  });
+  const flatFormErrors = useFlatFormErrors(formState.errors);
+
+  return useMemo(() => {
     const actionTypeNotificationTitle = selectedAction
       ? ACTION_TYPE_NOTIFICATION[selectedAction]
       : undefined;
@@ -414,15 +422,23 @@ export const useNotificationBanner = (
       };
     }
 
-    if (!hasError) {
+    if (!hasErrors) {
       return undefined;
     }
 
     return {
       status: 'error',
       title: <FormattedMessage id="actionSidebar.fields.error" />,
+      children: flatFormErrors.length ? (
+        <ul className="list-disc list-inside">
+          {flatFormErrors.map(({ key, message }) => (
+            <li key={key}>{message}</li>
+          ))}
+        </ul>
+      ) : undefined,
     };
-  }, [hasError, selectedAction]);
+  }, [flatFormErrors, hasErrors, selectedAction]);
+};
 
 export const useActionFormBaseHook: UseActionFormBaseHook = ({
   validationSchema,

@@ -9,6 +9,7 @@ export interface InputBaseProps
   suffix?: React.ReactNode;
   prefix?: React.ReactNode;
   mode?: 'primary' | 'secondary';
+  autoWidth?: boolean;
 }
 
 export interface FormInputBaseProps

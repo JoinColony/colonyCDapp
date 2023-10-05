@@ -48,6 +48,7 @@ fragment Colony on Colony {
     }
   }
   reputation
+  expendituresGlobalClaimDelay
 }
 
 fragment ColonyDisplay on Colony {

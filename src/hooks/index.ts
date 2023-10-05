@@ -72,6 +72,7 @@ export { default as useContributorBreakdown } from './members/useContributorBrea
 export { default as useGlobalEventHandler } from './useGlobalEventHandler';
 export { default as useEnoughTokensForStaking } from './useEnoughTokensForStaking';
 export { default as useCurrentBlockTime } from './useCurrentBlockTime';
+export { default as useFlatFormErrors } from './useFlatFormErrors';
 
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously
