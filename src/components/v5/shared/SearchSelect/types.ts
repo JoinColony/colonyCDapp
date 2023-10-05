@@ -8,7 +8,7 @@ export interface SearchSelectProps extends BaseFieldProps {
   isOpen: boolean;
   onSelect?: (value: string) => void;
   isLoading?: boolean;
-  isDefaultItemVisible?: boolean;
+  showSearchValueAsOption?: boolean;
   className?: string;
   hideSearchOnMobile?: boolean;
   onSearch?: (value: string) => void;

@@ -34,12 +34,16 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
       registerContainerRef,
     },
   ] = useToggle();
-  const { user: userByAddress } = useUserByAddress(field.value);
-  const { user: userByName } = useUserByName(field.value);
+  const { user: userByAddress, loading: userByAddressLoading } =
+    useUserByAddress(field.value);
+  const { user: userByName, loading: userByNameLoading } = useUserByName(
+    field.value,
+  );
   const userDisplayName =
-    userByAddress?.profile?.displayName ||
-    userByName?.profile?.displayName ||
+    (!userByAddressLoading && userByAddress?.profile?.displayName) ||
+    (!userByNameLoading && userByName?.profile?.displayName) ||
     field.value;
+
   const userWalletAddress =
     userByAddress?.walletAddress || userByName?.walletAddress || field.value;
 
@@ -101,18 +105,18 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
           }}
           isLoading={usersOptions.isLoading}
           className="z-[60]"
-          isDefaultItemVisible
+          showSearchValueAsOption
           showEmptyContent={false}
         />
       )}
       {usersOptions.isRecipientNotVerified && (
         <UserAvatarPopover
-          userName={displayName}
+          userName={userDisplayName}
           walletAddress={userWalletAddress}
           aboutDescription={
             userByAddress?.profile?.bio || userByName?.profile?.bio || ''
           }
-          user={userByAddress || userByName}
+          user={userByName || userByAddress}
           className={clsx(
             usersOptions.isRecipientNotVerified,
             'text-warning-400',
@@ -139,7 +143,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
           >
             {userByAddress?.walletAddress ||
               (userByName?.walletAddress && (
-                <div className="mt-2">
+                <div className="mt-2 font-semibold">
                   {userByAddress?.walletAddress || userByName?.walletAddress}
                 </div>
               ))}

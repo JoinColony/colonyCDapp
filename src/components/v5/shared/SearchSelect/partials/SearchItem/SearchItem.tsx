@@ -43,8 +43,7 @@ const SearchItem: FC<SearchItemProps> = ({
           const firstDisabledOption = options.filter(
             (option) => option.isDisabled,
           )[0];
-          const labelText =
-            typeof label === 'string' ? label : formatText(label || '');
+          const labelText = formatText(label || '');
 
           const hasAvatar = showAvatar || !!color || !!token;
 

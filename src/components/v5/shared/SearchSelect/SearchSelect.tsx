@@ -37,7 +37,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
       hideSearchOnMobile,
       onSearch,
       showEmptyContent = true,
-      isDefaultItemVisible = false,
+      showSearchValueAsOption = false,
       state,
       message,
     },
@@ -155,7 +155,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                 )
               ) : (
                 <>
-                  {isDefaultItemVisible && (
+                  {showSearchValueAsOption && (
                     <button
                       type="button"
                       className="text-sm md:hover:text-blue-400 flex items-center gap-2 min-h-[3.125rem]

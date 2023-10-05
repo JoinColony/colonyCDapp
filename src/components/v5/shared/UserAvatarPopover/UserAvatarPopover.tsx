@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, useState } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { noop } from 'lodash';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
@@ -8,6 +8,7 @@ import { useMobile } from '~hooks';
 import Modal from '~v5/shared/Modal';
 import PopoverBase from '~v5/shared/PopoverBase';
 import UserAvatarContent from './partials/UserAvatarContent';
+import useToggle from '~hooks/useToggle';
 
 const displayName = 'v5.UserAvatarPopover';
 
@@ -36,7 +37,8 @@ const UserAvatarPopover: FC<PropsWithChildren<UserAvatarPopoverProps>> = ({
   ),
 }) => {
   const isMobile = useMobile();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isModalVisible, { toggle: toggleSelect, toggleOff: toggleSelectOff }] =
+    useToggle();
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({
@@ -49,9 +51,9 @@ const UserAvatarPopover: FC<PropsWithChildren<UserAvatarPopoverProps>> = ({
 
   const button = (
     <button
-      onClick={isMobile ? () => setIsOpen(true) : noop}
-      onMouseEnter={isMobile ? noop : () => setIsOpen(true)}
-      onMouseLeave={isMobile ? noop : () => setIsOpen(false)}
+      onClick={isMobile ? toggleSelect : noop}
+      onMouseEnter={isMobile ? noop : toggleSelect}
+      onMouseLeave={isMobile ? noop : toggleSelectOff}
       type="button"
       ref={setTriggerRef}
       className="inline-flex transition-all duration-normal hover:text-blue-400"
@@ -82,8 +84,8 @@ const UserAvatarPopover: FC<PropsWithChildren<UserAvatarPopoverProps>> = ({
           {button}
           <Modal
             isFullOnMobile={false}
-            onClose={() => setIsOpen(false)}
-            isOpen={isOpen}
+            onClose={toggleSelectOff}
+            isOpen={isModalVisible}
             isTopSectionWithBackground={isTopSectionWithBackground}
           >
             {content}
