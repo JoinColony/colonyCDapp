@@ -1,5 +1,5 @@
-import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import React, { FC, useEffect, useMemo, useState } from 'react';
+import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
 import { getMotionState, MotionState } from '~utils/colonyMotions';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
