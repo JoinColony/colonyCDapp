@@ -6,13 +6,21 @@ import OutcomeStep from './steps/OutcomeStep';
 import RevealStep from './steps/RevealStep';
 import StakingStep from './steps/StakingStep';
 import VotingStep from './steps/VotingStep';
+import { useGetColonyAction } from '~common/ColonyActions';
+import { MotionAction } from '~types/motions';
+import { MotionSimplePaymentProps } from './types';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment';
 
-const MotionSimplePayment: FC = () => {
+const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
+  transactionId,
+}) => {
   // @todo: pass current step to the state when other steps will be available
-  const [activeStepIndex, setActiveStepIndex] = useState(0);
+  const { action, loadingAction, startPollingForAction, stopPollingForAction } =
+    useGetColonyAction(transactionId);
+  // @todo: pass current step to the state when other steps will be available
+  const [activeStepIndex, setActiveStepIndex] = useState(1);
 
   const items = useMemo(
     () => [
@@ -25,7 +33,13 @@ const MotionSimplePayment: FC = () => {
       },
       {
         key: '2',
-        content: <VotingStep />,
+        content: (
+          <VotingStep
+            actionData={action as MotionAction}
+            startPollingAction={startPollingForAction}
+            stopPollingAction={stopPollingForAction}
+          />
+        ),
         heading: {
           label: formatText({ id: 'motion.voting.label' }) || '',
         },
@@ -63,15 +77,21 @@ const MotionSimplePayment: FC = () => {
         },
       },
     ],
-    [],
+    [action, startPollingForAction, stopPollingForAction],
   );
 
   return (
-    <Stepper
-      activeStepIndex={activeStepIndex}
-      setActiveStepIndex={setActiveStepIndex}
-      items={items}
-    />
+    <>
+      {loadingAction ? (
+        <div>Loading...</div>
+      ) : (
+        <Stepper
+          activeStepIndex={activeStepIndex}
+          setActiveStepIndex={setActiveStepIndex}
+          items={items}
+        />
+      )}
+    </>
   );
 };
 
