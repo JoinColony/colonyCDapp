@@ -6,6 +6,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+const { InjectManifest } = require('workbox-webpack-plugin');
 
 const mode = process.env.NODE_ENV || 'development';
 
@@ -179,6 +180,11 @@ const config = {
     new webpack.ProvidePlugin({
       process: 'process/browser',
       Buffer: ['buffer', 'Buffer'],
+    }),
+    new InjectManifest({
+      swSrc: './src/workers/firebase-messaging-sw.ts',
+      swDest: 'firebase-messaging-sw.js',
+      exclude: [/./],
     }),
   ],
   /*
