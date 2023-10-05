@@ -38,7 +38,7 @@ function Stepper<TKey>({
 
           return (
             <motion.li
-              key={Number(key)}
+              key={String(key)}
               initial="visible"
               animate={isHidden ? 'hidden' : 'visible'}
               variants={accordionAnimation}
