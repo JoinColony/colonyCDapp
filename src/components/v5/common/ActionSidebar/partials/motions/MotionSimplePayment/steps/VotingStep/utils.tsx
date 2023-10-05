@@ -30,3 +30,24 @@ export const renderVoteRadioButtons = (
 
   return [opposeOption];
 };
+
+export const setLocalStorageVoteValue = (
+  transactionId: string,
+  vote: number,
+) => {
+  const previousVotes = JSON.parse(localStorage.getItem('votes') || '{}');
+
+  localStorage.setItem(
+    'votes',
+    JSON.stringify({
+      ...previousVotes,
+      [transactionId]: vote,
+    }),
+  );
+};
+
+export const getLocalStorageVoteValue = (transactionId: string) => {
+  const votes = JSON.parse(localStorage.getItem('votes') || '{}');
+
+  return votes[transactionId];
+};

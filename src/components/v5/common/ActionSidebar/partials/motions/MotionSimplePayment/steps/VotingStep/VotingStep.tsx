@@ -22,6 +22,7 @@ const VotingStep: FC<VotingStepProps> = ({
   actionData,
   startPollingAction,
   stopPollingAction,
+  transactionId,
 }) => {
   const {
     currentReputationPercent,
@@ -32,7 +33,12 @@ const VotingStep: FC<VotingStepProps> = ({
     thresholdPercent,
     validationSchema,
     transform,
-  } = useVotingStep(actionData, startPollingAction, stopPollingAction);
+  } = useVotingStep(
+    actionData,
+    startPollingAction,
+    stopPollingAction,
+    transactionId,
+  );
 
   const isSupportVote = currentUserVote === MotionVote.Yay;
 

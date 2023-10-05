@@ -4,6 +4,7 @@ import { MotionAction } from '~types/motions';
 export interface VotingStepProps
   extends Omit<PollingControls, 'refetchAction'> {
   actionData: MotionAction;
+  transactionId: string;
 }
 
 export interface VotingFormValues {

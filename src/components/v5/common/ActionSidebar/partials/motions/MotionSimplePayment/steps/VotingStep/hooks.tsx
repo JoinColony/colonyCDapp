@@ -19,11 +19,13 @@ import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberR
 import Numeral from '~shared/Numeral';
 import { VotingFormValues } from './types';
 import { OnSuccess } from '~shared/Fields';
+import { getLocalStorageVoteValue, setLocalStorageVoteValue } from './utils';
 
 export const useVotingStep = (
   actionData,
   startPollingAction,
   stopPollingAction,
+  transactionId: string,
 ) => {
   const { colony } = useColonyContext();
   const { nativeToken } = colony || {};
@@ -75,10 +77,8 @@ export const useVotingStep = (
     fetchPolicy: 'cache-and-network',
   });
   const { max: maxReward, min: minReward } = data?.getVoterRewards || {};
-  const currentUserRecord = voterRecord.find(
-    ({ address }) => address === user?.walletAddress,
-  );
-  const { vote: currentUserVote } = currentUserRecord || {};
+
+  const currentUserVote = getLocalStorageVoteValue(transactionId);
 
   const transform = mapPayload(
     ({ vote }) =>
@@ -90,7 +90,8 @@ export const useVotingStep = (
       } as MotionVotePayload),
   );
 
-  const handleSuccess: OnSuccess<VotingFormValues> = (_, { reset }) => {
+  const handleSuccess: OnSuccess<VotingFormValues> = (vote, { reset }) => {
+    setLocalStorageVoteValue(transactionId, vote.vote);
     setHasUserVoted(true);
     reset();
     startPollingAction(1000);

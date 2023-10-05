@@ -77,6 +77,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
                   actionData={action as MotionAction}
                   startPollingAction={startPollingForAction}
                   stopPollingAction={stopPollingForAction}
+                  transactionId={transactionId}
                 />
               ),
               heading: {
