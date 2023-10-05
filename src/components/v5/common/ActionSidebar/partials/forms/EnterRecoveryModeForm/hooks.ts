@@ -14,7 +14,7 @@ const validationSchema = yup
   .shape({
     createdIn: yup.number().defined(),
     decisionMethod: yup.string().defined(),
-    annotation: yup.string().max(MAX_ANNOTATION_LENGTH).defined(),
+    description: yup.string().max(MAX_ANNOTATION_LENGTH).defined(),
   })
   .defined();
 
@@ -31,7 +31,7 @@ export const useEnterRecoveryMode = (
     actionType: ActionTypes.ACTION_UNLOCK_TOKEN,
     defaultValues: useMemo(
       () => ({
-        annotation: '',
+        description: '',
       }),
       [],
     ),
@@ -40,7 +40,7 @@ export const useEnterRecoveryMode = (
       pipe(
         mapPayload((payload) => {
           const values = {
-            annotation: payload.annotation,
+            annotation: payload.description,
           };
           if (colony) {
             return getRecoveryModeDialogPayload(colony, values, user);

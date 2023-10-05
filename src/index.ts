@@ -1,5 +1,3 @@
-/// <reference types="@types/webpack-env" />
-/* eslint-disable import/no-import-module-exports */
 import { createElement } from 'react';
 import { createRoot } from 'react-dom/client';
 import ReactModal from 'react-modal';
@@ -22,8 +20,4 @@ if (rootNode) {
   const root = createRoot(rootNode);
   ReactModal.setAppElement(rootNode);
   root.render(createElement(Entry, { store }));
-
-  // if (module.hot) {
-  //   module.hot.accept();
-  // }
 }

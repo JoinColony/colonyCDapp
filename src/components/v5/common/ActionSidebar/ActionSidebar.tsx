@@ -33,15 +33,11 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   getFormOptions,
   isMotion,
 }) => {
-  const {
-    formComponent: FormComponent,
-    hasErrors,
-    selectedAction,
-  } = useSidebarActionForm();
-
+  const { formComponent: FormComponent, selectedAction } =
+    useSidebarActionForm();
   const userHasPermissions = useUserHasPermissions();
   const form = useFormContext();
-  const notificationBanner = useNotificationBanner(hasErrors, selectedAction);
+  const notificationBanner = useNotificationBanner();
 
   return (
     <>
@@ -64,6 +60,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         />
         {/* @todo: add preview mode to the form */}
         <ActionTypeSelect />
+        {/* @todo: add motion action type to each action */}
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
         {notificationBanner && (
           <div className="mt-7">
@@ -191,7 +188,6 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
               bg-gray-25
             `}
           >
-            {/* @todo: add functionality to switch between motion types */}
             <MotionSimplePayment transactionId={transactionId} />
           </div>
         )}

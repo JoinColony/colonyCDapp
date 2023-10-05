@@ -33,7 +33,7 @@ const validationSchema = yup
     domainColor: yup.string().notRequired(),
     createdIn: yup.number().defined(),
     decisionMethod: yup.string().defined(),
-    annotation: yup.string().max(MAX_ANNOTATION_LENGTH).notRequired(),
+    description: yup.string().max(MAX_ANNOTATION_LENGTH).notRequired(),
   })
   .defined();
 
@@ -73,7 +73,7 @@ export const useEditTeam = (
         domainColor: '',
         createdIn: Id.RootDomain.toString(),
         decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
-        annotation: '',
+        description: '',
       }),
       [],
     ),
@@ -88,7 +88,7 @@ export const useEditTeam = (
             domainColor: payload.domainColor,
             motionDomainId: payload.createdIn,
             decisionMethod: payload.decisionMethod,
-            annotation: payload.annotation,
+            annotation: payload.description,
           };
 
           if (colony) {

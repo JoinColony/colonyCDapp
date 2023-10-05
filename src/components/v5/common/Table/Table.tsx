@@ -52,21 +52,27 @@ const Table = <T,>({ className, getCoreRowModel, ...rest }: TableProps<T>) => {
             ))}
           </tr>
         ))}
-        {table.getFooterGroups().map((footerGroup) => (
-          <tr key={footerGroup.id}>
-            {footerGroup.headers.map((column) => (
-              <td
-                key={column.id}
-                className="text-md text-gray-500 p-[1.1rem] border-t border-gray-200"
-              >
-                {flexRender(
-                  column.column.columnDef.footer,
-                  column.getContext(),
+        {table.getFooterGroups().map(
+          (footerGroup) =>
+            !!footerGroup.headers.length && (
+              <tr key={footerGroup.id}>
+                {footerGroup.headers.map(
+                  (column) =>
+                    column.column.columnDef.footer && (
+                      <td
+                        key={column.id}
+                        className="text-md text-gray-500 p-[1.1rem] border-t border-gray-200"
+                      >
+                        {flexRender(
+                          column.column.columnDef.footer,
+                          column.getContext(),
+                        )}
+                      </td>
+                    ),
                 )}
-              </td>
-            ))}
-          </tr>
-        ))}
+              </tr>
+            ),
+        )}
       </tbody>
     </table>
   );
