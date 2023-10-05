@@ -3,13 +3,19 @@ import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
-import { useColonyContext, useNetworkInverseFee } from '~hooks';
+import {
+  useColonyContext,
+  useEnabledExtensions,
+  useNetworkInverseFee,
+} from '~hooks';
 import { getCreatePaymentDialogPayload } from '~common/Dialogs/CreatePaymentDialog/helpers';
 import { MAX_ANNOTATION_NUM } from '~v5/shared/RichText/consts';
 import { toFinite } from '~utils/lodash';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
 import { DECISION_METHOD_OPTIONS } from '../../consts';
+import getLastIndexFromPath from '~utils/getLastIndexFromPath';
+import { formatText } from '~utils/intl';
 
 const validationSchema = yup
   .object()
@@ -19,14 +25,14 @@ const validationSchema = yup
       .shape({
         amount: yup
           .number()
-          .required(() => 'required field')
+          .required(() => formatText({ id: 'errors.amount' }))
           .transform((value) => toFinite(value))
           .moreThan(0, () => 'Amount must be greater than zero'),
         tokenAddress: yup.string().address().required(),
       })
       .required(),
     createdIn: yup.string().defined(),
-    annotation: yup.string().max(MAX_ANNOTATION_NUM).notRequired(),
+    description: yup.string().max(MAX_ANNOTATION_NUM).notRequired(),
     recipient: yup.string().required(),
     from: yup.number().required(),
     decisionMethod: yup.string().defined(),
@@ -40,9 +46,20 @@ const validationSchema = yup
             .shape({
               amount: yup
                 .number()
-                .required(() => 'required field')
+                .required(() => formatText({ id: 'errors.amount' }))
                 .transform((value) => toFinite(value))
-                .moreThan(0, () => 'Amount must be greater than zero'),
+                .moreThan(0, ({ path }) => {
+                  const index = getLastIndexFromPath(path);
+
+                  if (index === undefined) {
+                    return formatText({ id: 'errors.amount' });
+                  }
+
+                  return formatText(
+                    { id: 'errors.payments.amount' },
+                    { paymentIndex: index + 1 },
+                  );
+                }),
               tokenAddress: yup.string().address().required(),
             })
             .required(),
@@ -57,6 +74,7 @@ export const useSimplePayment = (
 ) => {
   const { networkInverseFee } = useNetworkInverseFee();
   const { colony } = useColonyContext();
+  const { isVotingReputationEnabled } = useEnabledExtensions();
 
   useActionFormBaseHook({
     validationSchema,
@@ -64,7 +82,7 @@ export const useSimplePayment = (
       () => ({
         createdIn: Id.RootDomain.toString(),
         decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
-        annotation: '',
+        description: '',
         payments: [],
         amount: {
           amount: 0,
@@ -73,7 +91,9 @@ export const useSimplePayment = (
       }),
       [colony?.nativeToken.tokenAddress],
     ),
-    actionType: ActionTypes.ACTION_EXPENDITURE_PAYMENT,
+    actionType: isVotingReputationEnabled
+      ? ActionTypes.MOTION_EXPENDITURE_PAYMENT
+      : ActionTypes.ACTION_EXPENDITURE_PAYMENT,
     getFormOptions,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
@@ -99,7 +119,7 @@ export const useSimplePayment = (
                   recipient: { walletAddress: recipient },
                 })),
               ],
-              annotation: payload.annotation,
+              annotation: payload.description,
               motionDomainId: payload.createdIn,
             },
             networkInverseFee,

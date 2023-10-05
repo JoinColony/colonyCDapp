@@ -1,17 +1,18 @@
 import { StepperButtonProps } from './partials/StepperButton/types';
 
-export interface StepperItem {
-  key: string;
+export interface StepperItem<TKey> {
+  key: TKey;
   heading: Omit<StepperButtonProps, 'onClick' | 'stage'> & {
     decor?: JSX.Element;
   };
-  content: JSX.Element;
+  content: React.ReactNode;
   isOptional?: boolean;
   isSkipped?: boolean;
+  isHidden?: boolean;
 }
 
-export interface StepperProps {
-  items: StepperItem[];
-  activeStepIndex: number;
-  setActiveStepIndex: (index: number) => void;
+export interface StepperProps<TKey> {
+  items: StepperItem<TKey>[];
+  activeStepKey: TKey;
+  setActiveStepKey: (key: TKey) => void;
 }

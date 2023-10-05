@@ -1,7 +1,8 @@
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
+import { useFormContext } from 'react-hook-form';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
 import { useColonyContext } from '~hooks';
@@ -32,7 +33,7 @@ const validationSchema = yup
     domainColor: yup.string().notRequired(),
     createdIn: yup.number().defined(),
     decisionMethod: yup.string().defined(),
-    annotation: yup.string().max(MAX_ANNOTATION_LENGTH).notRequired(),
+    description: yup.string().max(MAX_ANNOTATION_LENGTH).notRequired(),
   })
   .defined();
 
@@ -41,6 +42,25 @@ export const useEditTeam = (
 ) => {
   const { colony } = useColonyContext();
   const navigate = useNavigate();
+  const { domains } = colony || {};
+  const { watch, setValue } = useFormContext();
+
+  const selectedTeamId = watch('team');
+  const selectedTeam = domains?.items.find(
+    (item) => item?.nativeId === parseFloat(selectedTeamId),
+  );
+
+  useEffect(() => {
+    if (!selectedTeam) {
+      return;
+    }
+
+    const { metadata } = selectedTeam;
+
+    setValue('teamName', metadata?.name);
+    setValue('domainPurpose', metadata?.description);
+    setValue('domainColor', metadata?.color);
+  }, [selectedTeam, setValue]);
 
   useActionFormBaseHook({
     getFormOptions,
@@ -53,7 +73,7 @@ export const useEditTeam = (
         domainColor: '',
         createdIn: Id.RootDomain.toString(),
         decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
-        annotation: '',
+        description: '',
       }),
       [],
     ),
@@ -68,7 +88,7 @@ export const useEditTeam = (
             domainColor: payload.domainColor,
             motionDomainId: payload.createdIn,
             decisionMethod: payload.decisionMethod,
-            annotation: payload.annotation,
+            annotation: payload.description,
           };
 
           if (colony) {

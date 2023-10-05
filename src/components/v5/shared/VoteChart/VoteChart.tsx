@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
-import { useIntl } from 'react-intl';
+
+import { formatText } from '~utils/intl';
+
 import { VoteChartProps } from './types';
 import VoteChartBar from './partials/VoteChartBar';
 import { VOTE_CHART_BAR_DIRECTION } from './partials/VoteChartBar/types';
@@ -15,9 +17,8 @@ const VoteChart: FC<VoteChartProps> = ({
   againstLabel,
   threshold,
   thresholdLabel,
+  className,
 }) => {
-  const intl = useIntl();
-
   const forValue =
     (percentageVotesFor < 0 && 0) ||
     (percentageVotesFor > 100 && 100) ||
@@ -29,15 +30,21 @@ const VoteChart: FC<VoteChartProps> = ({
     percentageVotesAgainst;
 
   return (
-    <div className="w-full">
-      <p className="text-xs font-medium text-center mb-1 text-blue-400">
-        {thresholdLabel ||
-          intl.formatMessage(
-            { id: 'motion.staking.threshold.label' },
-            { threshold: `${threshold}%` },
-          )}
-      </p>
-      <div className="flex pt-2">
+    <div className={clsx(className, 'w-full')}>
+      {!!threshold && (
+        <p className="text-xs font-medium text-center mb-1 text-blue-400">
+          {thresholdLabel ||
+            formatText(
+              { id: 'motion.staking.threshold.label' },
+              { threshold: `${threshold}%` },
+            )}
+        </p>
+      )}
+      <div
+        className={clsx('flex', {
+          'pt-2': !!threshold,
+        })}
+      >
         <div className="flex flex-1 flex-col items-center gap-1">
           <VoteChartBar
             value={againstValue}
@@ -55,14 +62,16 @@ const VoteChart: FC<VoteChartProps> = ({
         </div>
         <div className="flex flex-1 flex-col items-center gap-1">
           <div className="relative w-full">
-            <div
-              className="absolute top-0 bottom-0 h-full z-[1]"
-              style={{
-                left: `${threshold}%`,
-              }}
-            >
-              <VoteChartThresholdIndicator />
-            </div>
+            {!!threshold && (
+              <div
+                className="absolute top-0 bottom-0 h-full z-[1]"
+                style={{
+                  left: `${threshold}%`,
+                }}
+              >
+                <VoteChartThresholdIndicator />
+              </div>
+            )}
             <VoteChartBar
               value={forValue}
               barBackgroundClassName="bg-purple-200"

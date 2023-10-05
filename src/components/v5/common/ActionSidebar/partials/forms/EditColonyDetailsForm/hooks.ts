@@ -25,7 +25,7 @@ const validationSchema = yup
       .required(() => 'Colony name is required'),
     createdIn: yup.number().defined(),
     decisionMethod: yup.string().defined(),
-    annotation: yup.string().max(MAX_ANNOTATION_LENGTH).defined(),
+    description: yup.string().max(MAX_ANNOTATION_LENGTH).defined(),
   })
   .defined();
 
@@ -46,7 +46,7 @@ export const useEditColonyDetails = (
         colonyDisplayName: metadata?.displayName || '',
         colonyAvatarImage: metadata?.avatar || '',
         colonyThumbnail: metadata?.thumbnail || '',
-        annotation: '',
+        description: '',
         createdIn: Id.RootDomain.toString(),
       }),
       [metadata],
@@ -62,7 +62,7 @@ export const useEditColonyDetails = (
             colonyThumbnail: colonyThumbnail || payload.colonyThumbnail,
             motionDomainId: payload.createdIn,
             decisionMethod: payload.decisionMethod,
-            annotationMessage: payload.annotation,
+            annotationMessage: payload.description,
             externalLinks: [], // @todo: wire into form
             colonyDescription: '', // @todo: wire into form
           };

@@ -117,10 +117,6 @@ export type ActionTypeString = AllActions['type'];
 
 export type TakeFilter = (action: AllActions) => boolean;
 
-export type MetaWithNavigate<M> = {
-  navigate: NavigateFunction;
-} & M;
-
 export type MetaWithSetter<M> = {
   // Once new UI has been completed, 'navigate' can be removed.
   // Keeping only to maintain compatibility with old UI while we transition.

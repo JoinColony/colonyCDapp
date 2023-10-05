@@ -6,7 +6,7 @@ import {
 } from '~common/Expenditures/ExpenditureForm';
 import { StreamingPaymentEndCondition } from '~gql';
 
-import { UniqueActionType, ErrorActionType, MetaWithNavigate } from './index';
+import { UniqueActionType, ErrorActionType, MetaWithSetter } from './index';
 
 export type ExpenditureFundPayload = {
   colonyAddress: Address;
@@ -34,7 +34,7 @@ export type ExpendituresActionTypes =
         isStaged?: boolean;
         stages?: ExpenditureStageFieldValue[];
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.EXPENDITURE_CREATE_ERROR, object>
   | UniqueActionType<ActionTypes.EXPENDITURE_CREATE_SUCCESS, object, object>
@@ -118,7 +118,7 @@ export type ExpendituresActionTypes =
         isStaged?: boolean;
         stages?: ExpenditureStageFieldValue[];
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.STAKED_EXPENDITURE_CREATE_ERROR, object>
   | UniqueActionType<
@@ -132,7 +132,7 @@ export type ExpendituresActionTypes =
         colonyAddress: Address;
         nativeExpenditureId: string;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.RECLAIM_EXPENDITURE_STAKE_ERROR, object>
   | UniqueActionType<
@@ -149,7 +149,7 @@ export type ExpendituresActionTypes =
         tokenAddresses: Address[];
         stagedExpenditureAddress: Address;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.RELEASE_EXPENDITURE_STAGE_ERROR, object>
   | UniqueActionType<
@@ -160,7 +160,7 @@ export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.STAKED_EXPENDITURE_CANCEL,
       StakedExpenditureCancelPayload,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.STAKED_EXPENDITURE_CANCEL_ERROR, object>
   | UniqueActionType<
@@ -182,7 +182,7 @@ export type ExpendituresActionTypes =
         endCondition: StreamingPaymentEndCondition;
         limitAmount?: string;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.STREAMING_PAYMENT_CREATE_ERROR, object>
   | UniqueActionType<

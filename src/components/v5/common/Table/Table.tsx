@@ -23,6 +23,12 @@ const Table = <T,>({
   });
   const { rows } = table.getRowModel();
   const headerGroups = table.getHeaderGroups();
+  const footerGroups = table.getFooterGroups();
+  const hasFooter = footerGroups.map((footerGroup) =>
+    footerGroup.headers
+      .map((column) => column.column.columnDef)
+      .some((columnDef) => columnDef.footer),
+  )[0];
 
   return (
     <table
@@ -118,23 +124,25 @@ const Table = <T,>({
           </tbody>
         </>
       )}
-      <tfoot>
-        {table.getFooterGroups().map((footerGroup) => (
-          <tr key={footerGroup.id}>
-            {footerGroup.headers.map((column) => (
-              <td
-                key={column.id}
-                className="text-md text-gray-500 p-[1.1rem] sm:border-t sm:border-gray-200"
-              >
-                {flexRender(
-                  column.column.columnDef.footer,
-                  column.getContext(),
-                )}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tfoot>
+      {hasFooter && (
+        <tfoot>
+          {footerGroups.map((footerGroup) => (
+            <tr key={footerGroup.id}>
+              {footerGroup.headers.map((column) => (
+                <td
+                  key={column.id}
+                  className="text-md text-gray-500 p-[1.1rem] sm:border-t border-gray-200"
+                >
+                  {flexRender(
+                    column.column.columnDef.footer,
+                    column.getContext(),
+                  )}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tfoot>
+      )}
     </table>
   );
 };

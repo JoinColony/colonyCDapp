@@ -47,9 +47,9 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
           className={clsx(
             className,
             [styles.textButton],
-            'font-medium text-gray-700 transition-all flex items-center duration-normal',
+            'font-medium transition-all flex items-center duration-normal',
             {
-              'text-sm': mode === 'default',
+              'text-sm text-gray-700': mode === 'default',
             },
             {
               'text-md': mode === 'medium',

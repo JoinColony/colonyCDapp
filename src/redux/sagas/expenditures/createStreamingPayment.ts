@@ -23,7 +23,11 @@ import {
   putError,
   takeFrom,
 } from '../utils';
-import { createTransaction, getTxChannel } from '../transactions';
+import {
+  createTransaction,
+  getTxChannel,
+  waitForTxResult,
+} from '../transactions';
 
 export type CreateStreamingPaymentPayload =
   Action<ActionTypes.STREAMING_PAYMENT_CREATE>['payload'];
@@ -45,6 +49,7 @@ function* createStreamingPayment({
     limitAmount,
   },
   meta,
+  meta: { setTxHash },
 }: Action<ActionTypes.STREAMING_PAYMENT_CREATE>) {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
@@ -99,7 +104,12 @@ function* createStreamingPayment({
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
     yield initiateTransaction({ id: meta.id });
-    yield takeFrom(txChannel, ActionTypes.TRANSACTION_SUCCEEDED);
+    const {
+      payload: { hash: txHash },
+    } = yield takeFrom(txChannel, ActionTypes.TRANSACTION_HASH_RECEIVED);
+    setTxHash?.(txHash);
+
+    yield waitForTxResult(txChannel);
 
     const streamingPaymentId = yield call(
       streamingPaymentsClient.getNumStreamingPayments,
@@ -121,6 +131,12 @@ function* createStreamingPayment({
         },
       },
     });
+
+    window.history.replaceState(
+      {},
+      '',
+      `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
+    );
   } catch (error) {
     return yield putError(
       ActionTypes.STREAMING_PAYMENT_CREATE_ERROR,

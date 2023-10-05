@@ -2,8 +2,13 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import { EditorContent } from '@tiptap/react';
 
+import clsx from 'clsx';
 import MenuBar from './partials/Menu';
-import { MAX_ANNOTATION_NUM, MIN_ANNOTATION_NUM } from './consts';
+import {
+  MAX_ANNOTATION_NUM,
+  MIN_ANNOTATION_NUM,
+  NUMBER_OF_CHARS_IN_TWO_LINES,
+} from './consts';
 import { TextButton } from '../Button';
 import { RichTextProps } from './types';
 import { useRichText } from './hooks';
@@ -16,13 +21,9 @@ const RichText: FC<RichTextProps> = ({
   toggleOnDecriptionSelect,
   toggleOffDecriptionSelect,
 }) => {
-  const { editorContent, notFormattedContent, field } = useRichText(
-    name,
-    isDecriptionFieldExpanded,
-  );
+  const { editorContent, notFormattedContent, field, characterCount } =
+    useRichText(name, isDecriptionFieldExpanded);
   const { formatMessage } = useIntl();
-
-  const characterCount = editorContent?.storage.characterCount.characters();
 
   return (
     <>
@@ -31,28 +32,45 @@ const RichText: FC<RichTextProps> = ({
           <MenuBar editor={editorContent} />
           <EditorContent editor={editorContent} {...field} />
 
-          {characterCount >= MIN_ANNOTATION_NUM &&
+          {(characterCount || isDecriptionFieldExpanded) && (
+            <div className="flex items-center justify-between mt-4">
+              {isDecriptionFieldExpanded && (
+                <TextButton
+                  mode="underlined"
+                  className="text-gray-400"
+                  onClick={toggleOffDecriptionSelect}
+                >
+                  {formatMessage({ id: 'button.show.less' })}
+                </TextButton>
+              )}
+              {characterCount >= 1000 && isDecriptionFieldExpanded && (
+                <div className="text-xs text-gray-500 flex justify-end">
+                  {characterCount} / {MAX_ANNOTATION_NUM}
+                </div>
+              )}
+            </div>
+          )}
+        </>
+      ) : (
+        <>
+          <span
+            className={clsx({
+              'line-clamp-2 text-left': characterCount >= MIN_ANNOTATION_NUM,
+            })}
+          >
+            {notFormattedContent}
+          </span>
+          {characterCount > NUMBER_OF_CHARS_IN_TWO_LINES &&
             !isDecriptionFieldExpanded && (
-              <TextButton mode="underlined" onClick={toggleOnDecriptionSelect}>
+              <TextButton
+                mode="underlined"
+                className="text-gray-400 ml-1"
+                onClick={toggleOnDecriptionSelect}
+              >
                 {formatMessage({ id: 'button.expand' })}
               </TextButton>
             )}
-
-          <div className="flex items-center justify-between mt-4">
-            {!!characterCount && isDecriptionFieldExpanded && (
-              <TextButton mode="underlined" onClick={toggleOffDecriptionSelect}>
-                {formatMessage({ id: 'button.show.less' })}
-              </TextButton>
-            )}
-            {characterCount >= 1000 && isDecriptionFieldExpanded && (
-              <div className="text-xs text-gray-500 flex justify-end">
-                {characterCount} / {MAX_ANNOTATION_NUM}
-              </div>
-            )}
-          </div>
         </>
-      ) : (
-        notFormattedContent
       )}
     </>
   );
