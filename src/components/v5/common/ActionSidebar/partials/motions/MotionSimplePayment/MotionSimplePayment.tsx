@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 
-import { MotionStakes } from '~types';
 import { MotionState } from '~utils/colonyMotions';
+import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
 import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction';
 import Stepper from '~v5/shared/Stepper';
@@ -26,11 +26,15 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
   const { motionId = '', motionStakes } = motionData || {};
   const [activeStepKey, setActiveStepKey] = useState(MotionState.Staking);
 
+  const motionStateEnum = getEnumValueFromKey(
+    MotionState,
+    motionState,
+    MotionState.Staking,
+  );
+
   useEffect(() => {
-    if (motionState) {
-      setActiveStepKey(motionState as unknown as MotionState);
-    }
-  }, [motionState]);
+    setActiveStepKey(motionStateEnum);
+  }, [motionStateEnum]);
 
   // @todo: add missing steps
   const items = useMemo(
@@ -44,15 +48,11 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
               heading: {
                 label: formatText({ id: 'motion.staking.label' }) || '',
                 decor:
-                  (motionState as unknown as MotionState) ===
-                  MotionState.Staking ? (
+                  motionStateEnum === MotionState.Staking && motionStakes ? (
                     <MotionCountDownTimer
-                      motionState={
-                        (motionState as unknown as MotionState) ||
-                        MotionState.Staking
-                      }
+                      motionState={motionStateEnum}
                       motionId={motionId}
-                      motionStakes={motionStakes as unknown as MotionStakes}
+                      motionStakes={motionStakes}
                       refetchMotionState={refetchMotionState}
                     />
                   ) : undefined,
@@ -99,7 +99,13 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
               },
             },
           ],
-    [loadingAction, motionId, motionStakes, motionState, refetchMotionState],
+    [
+      loadingAction,
+      motionId,
+      motionStakes,
+      motionStateEnum,
+      refetchMotionState,
+    ],
   );
 
   // @todo: replace with spinner
