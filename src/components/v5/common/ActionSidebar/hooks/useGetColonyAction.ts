@@ -61,6 +61,7 @@ export const useGetColonyAction = (transactionHash?: string) => {
     if (actionData.getColonyAction.type === ColonyActionType.Payment) {
       refetchTokenBalances();
     }
+
     refetchColony();
   }, [actionData, refetchColony, refetchTokenBalances]);
 

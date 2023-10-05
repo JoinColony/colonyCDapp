@@ -24,22 +24,22 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
     useGetColonyAction(transactionId);
   const { motionData } = action || {};
   const { motionId = '', motionStakes } = motionData || {};
-  // @todo: pass current step to the state when other steps will be available
-  const [activeStepIndex, setActiveStepIndex] = useState(motionState || 0);
+  const [activeStepKey, setActiveStepKey] = useState(MotionState.Staking);
 
   useEffect(() => {
     if (motionState) {
-      setActiveStepIndex(motionState);
+      setActiveStepKey(motionState as unknown as MotionState);
     }
   }, [motionState]);
 
+  // @todo: add missing steps
   const items = useMemo(
     () =>
       loadingAction
         ? []
         : [
             {
-              key: '1',
+              key: MotionState.Staking,
               content: <StakingStep />,
               heading: {
                 label: formatText({ id: 'motion.staking.label' }) || '',
@@ -59,7 +59,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
               },
             },
             {
-              key: '2',
+              key: MotionState.Voting,
               content: <VotingStep />,
               heading: {
                 label: formatText({ id: 'motion.voting.label' }) || '',
@@ -68,7 +68,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
               isOptional: true,
             },
             {
-              key: '2.5',
+              key: MotionState.Reveal,
               content: <RevealStep />,
               heading: {
                 label: formatText({ id: 'motion.reveal.label' }) || '',
@@ -79,7 +79,8 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
               isOptional: true,
             },
             {
-              key: '3',
+              // @todo: change to MotionState when the outcome is known and revealed
+              key: MotionState.Passed,
               content: <OutcomeStep />,
               heading: {
                 // @todo: chnage label and styling when the outcome is known and revealed
@@ -91,7 +92,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
               isHidden: false,
             },
             {
-              key: '4',
+              key: MotionState.Passed,
               content: <FinalizeStep />,
               heading: {
                 label: formatText({ id: 'motion.finalize.label' }) || '',
@@ -105,9 +106,9 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
   return loadingAction ? (
     <div>Loading</div>
   ) : (
-    <Stepper
-      activeStepIndex={activeStepIndex}
-      setActiveStepIndex={setActiveStepIndex}
+    <Stepper<MotionState>
+      activeStepKey={activeStepKey}
+      setActiveStepKey={setActiveStepKey}
       items={items}
     />
   );
