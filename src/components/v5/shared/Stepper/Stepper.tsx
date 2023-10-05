@@ -10,15 +10,17 @@ import { accordionAnimation } from '~constants/accordionAnimation';
 
 const displayName = 'v5.Stepper';
 
-const Stepper: React.FC<StepperProps> = ({
-  activeStepIndex,
-  setActiveStepIndex,
+function Stepper<TKey extends React.Key>({
+  activeStepKey,
+  setActiveStepKey,
   items,
-}) => {
-  const [openItemIndex, setOpenItemIndex] = useState(activeStepIndex);
+}: StepperProps<TKey>): JSX.Element | null {
+  const activeItemIndex = items.findIndex(({ key }) => key === activeStepKey);
+  const [openItemIndex, setOpenItemIndex] = useState(activeItemIndex);
   const isMobile = useMobile();
   const withArrowsOnMobile =
     items.length > MIN_NUMBER_OF_STEPS_WITHOUT_MOBILE_NAVIGATION && isMobile;
+  const openedItem = items.find(({ key }) => key === openItemIndex) || items[0];
 
   return items.length ? (
     <>
@@ -78,8 +80,8 @@ const Stepper: React.FC<StepperProps> = ({
                 `,
                 {
                   'sm:mb-4 sm:last-mb-0': !isHidden,
-                  'sm:before:bg-gray-900': index <= activeStepIndex,
-                  'sm:before:bg-white': index > activeStepIndex,
+                  'sm:before:bg-gray-900': index <= activeItemIndex,
+                  'sm:before:bg-white': index > activeItemIndex,
                   'after:border-dashed': isNextStepOptional,
                   'after:border-gray-400': isNextStepSkipped,
                   'sm:before:border-gray-400': isSkipped,
@@ -91,22 +93,22 @@ const Stepper: React.FC<StepperProps> = ({
               <div className="flex flex-col sm:flex-row gap-[.375rem] items-center">
                 <StepperButton
                   stage={
-                    (index < activeStepIndex &&
+                    (index < activeItemIndex &&
                       !isSkipped &&
                       STEP_STAGE.Completed) ||
-                    (index === activeStepIndex && STEP_STAGE.Current) ||
+                    (index === activeItemIndex && STEP_STAGE.Current) ||
                     (isSkipped && STEP_STAGE.Skipped) ||
                     STEP_STAGE.Upcoming
                   }
                   onClick={() => {
                     setOpenItemIndex(index);
 
-                    if (index > activeStepIndex) {
-                      setActiveStepIndex(index);
+                    if (index > activeItemIndex) {
+                      setActiveStepKey(key);
                     }
                   }}
                   className="relative z-[1]"
-                  disabled={index > activeStepIndex || isSkipped}
+                  disabled={index > activeItemIndex || isSkipped}
                   isHighlighted={index === openItemIndex && !isSkipped}
                   {...restHeading}
                 />
@@ -131,10 +133,10 @@ const Stepper: React.FC<StepperProps> = ({
           );
         })}
       </ul>
-      {isMobile && <div className="pt-4">{items[openItemIndex].content}</div>}
+      {isMobile && <div className="pt-4">{openedItem.content}</div>}
     </>
   ) : null;
-};
+}
 
 Stepper.displayName = displayName;
 

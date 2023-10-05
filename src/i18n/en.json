@@ -1076,6 +1076,8 @@
   "motion.votingStep.submit": "Submit vote",
   "motion.support": "Support",
   "motion.oppose": "Oppose",
+  "motion.staking.chart.forLabel": "Supported",
+  "motion.staking.chart.againstLabel": "Opposed",
   "table.row.recipient": "Recipient",
   "table.row.amount": "Amount",
   "table.row.token": "Token",
@@ -1093,5 +1095,13 @@
   "button.max": "Max",
   "table.row.percent": "Percent",
   "table.footer.total": "TOTAL",
-  "actionSidebar.payments": "Payments"
+  "actionSidebar.payments": "Payments",
+  "actionSidebar.fundFrom": "Fund from",
+  "table.column.claimDelay": "Claim delay",
+  "table.column.claimDelayFieldSuffix": "{hours, plural, =1 {Hour} other {Hours}}",
+  "table.column.totalDelay": "Total delay",
+  "errors.amount": "Amount must be greater than zero",
+  "errors.payments.amount": "Amount must be greater than zero in {paymentIndex, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} payment.",
+  "button.stake.oppose": "Oppose",
+  "button.stake.support": "Support"
 }

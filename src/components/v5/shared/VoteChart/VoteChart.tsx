@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
-import { useIntl } from 'react-intl';
+
+import { formatText } from '~utils/intl';
+
 import { VoteChartProps } from './types';
 import VoteChartBar from './partials/VoteChartBar';
 import { VOTE_CHART_BAR_DIRECTION } from './partials/VoteChartBar/types';
@@ -17,8 +19,6 @@ const VoteChart: FC<VoteChartProps> = ({
   thresholdLabel,
   className,
 }) => {
-  const intl = useIntl();
-
   const forValue =
     (percentageVotesFor < 0 && 0) ||
     (percentageVotesFor > 100 && 100) ||
@@ -34,7 +34,7 @@ const VoteChart: FC<VoteChartProps> = ({
       {!!threshold && (
         <p className="text-xs font-medium text-center mb-1 text-blue-400">
           {thresholdLabel ||
-            intl.formatMessage(
+            formatText(
               { id: 'motion.staking.threshold.label' },
               { threshold: `${threshold}%` },
             )}

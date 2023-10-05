@@ -19,7 +19,7 @@ const validationSchema = yup
       .trim()
       .required(() => 'Please enter a title'),
     createdIn: yup.string().defined(),
-    annotation: yup
+    description: yup
       .string()
       .notOneOf(['<p></p>'], () => 'Please enter a description')
       .defined(),
@@ -59,7 +59,7 @@ export const useCreateDecision = (
       () => ({
         createdIn: Id.RootDomain.toString(),
         title: '',
-        annotation: '',
+        description: '',
         walletAddress,
         decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
       }),
@@ -72,7 +72,7 @@ export const useCreateDecision = (
           handleSaveDecisionInlocalStoage({
             title: payload.title,
             motionDomainId: payload.createdIn,
-            description: payload.annotation,
+            description: payload.description,
             walletAddress,
           });
 
@@ -84,7 +84,7 @@ export const useCreateDecision = (
             draftDecision: {
               motionDomainId: payload.createdIn,
               title: payload.title,
-              description: payload.annotation,
+              description: payload.description,
               walletAddress,
             },
           };

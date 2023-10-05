@@ -42,7 +42,7 @@ const meta: Meta<typeof Stepper> = {
         isSkipped: true,
       },
     ],
-    activeStepIndex: 1,
+    activeStepKey: '1',
   },
 };
 

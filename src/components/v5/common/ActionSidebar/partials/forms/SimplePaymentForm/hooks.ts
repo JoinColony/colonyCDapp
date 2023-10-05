@@ -14,6 +14,8 @@ import { toFinite } from '~utils/lodash';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
 import { DECISION_METHOD_OPTIONS } from '../../consts';
+import getLastIndexFromPath from '~utils/getLastIndexFromPath';
+import { formatText } from '~utils/intl';
 
 const validationSchema = yup
   .object()
@@ -23,14 +25,14 @@ const validationSchema = yup
       .shape({
         amount: yup
           .number()
-          .required(() => 'required field')
+          .required(() => formatText({ id: 'errors.amount' }))
           .transform((value) => toFinite(value))
           .moreThan(0, () => 'Amount must be greater than zero'),
         tokenAddress: yup.string().address().required(),
       })
       .required(),
     createdIn: yup.string().defined(),
-    annotation: yup.string().max(MAX_ANNOTATION_NUM).notRequired(),
+    description: yup.string().max(MAX_ANNOTATION_NUM).notRequired(),
     recipient: yup.string().required(),
     from: yup.number().required(),
     decisionMethod: yup.string().defined(),
@@ -44,9 +46,20 @@ const validationSchema = yup
             .shape({
               amount: yup
                 .number()
-                .required(() => 'required field')
+                .required(() => formatText({ id: 'errors.amount' }))
                 .transform((value) => toFinite(value))
-                .moreThan(0, () => 'Amount must be greater than zero'),
+                .moreThan(0, ({ path }) => {
+                  const index = getLastIndexFromPath(path);
+
+                  if (index === undefined) {
+                    return formatText({ id: 'errors.amount' });
+                  }
+
+                  return formatText(
+                    { id: 'errors.payments.amount' },
+                    { paymentIndex: index + 1 },
+                  );
+                }),
               tokenAddress: yup.string().address().required(),
             })
             .required(),
@@ -69,7 +82,7 @@ export const useSimplePayment = (
       () => ({
         createdIn: Id.RootDomain.toString(),
         decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
-        annotation: '',
+        description: '',
         payments: [],
         amount: {
           amount: 0,
@@ -106,7 +119,7 @@ export const useSimplePayment = (
                   recipient: { walletAddress: recipient },
                 })),
               ],
-              annotation: payload.annotation,
+              annotation: payload.description,
               motionDomainId: payload.createdIn,
             },
             networkInverseFee,

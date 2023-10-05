@@ -5,5 +5,5 @@ export interface CountDownTimerProps {
     minutes: number;
     seconds: number;
   };
-  loadingCountdown: boolean;
+  isLoading: boolean;
 }

@@ -67,7 +67,7 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             isDecriptionFieldExpanded={isDecriptionFieldExpanded}
             toggleOffDecriptionSelect={toggleOffDecriptionSelect}
             toggleOnDecriptionSelect={toggleOnDecriptionSelect}
-            fieldName="annotation"
+            fieldName="description"
           />
         )}
       </ActionFormRow>

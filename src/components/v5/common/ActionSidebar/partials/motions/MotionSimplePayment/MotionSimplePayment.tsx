@@ -1,9 +1,12 @@
-import React, { FC, useMemo, useState } from 'react';
-import { MotionStakes } from '~types';
-import { MotionState } from '~utils/colonyMotions';
+import { MotionState as NetworkMotionState } from '@colony/colony-js';
+import React, { FC, useEffect, useMemo, useState } from 'react';
+
+import { getMotionState, MotionState } from '~utils/colonyMotions';
+import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
 import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction';
 import Stepper from '~v5/shared/Stepper';
+
 import MotionCountDownTimer from './partials/MotionCountDownTimer';
 import FinalizeStep from './steps/FinalizeStep';
 import OutcomeStep from './steps/OutcomeStep';
@@ -18,87 +21,109 @@ const displayName =
 const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
   transactionId,
 }) => {
-  // @todo: pass current step to the state when other steps will be available
-  const [activeStepIndex, setActiveStepIndex] = useState(0);
-  const { action, motionState, refetchMotionState } =
+  const { action, motionState, refetchMotionState, loadingAction } =
     useGetColonyAction(transactionId);
   const { motionData } = action || {};
   const { motionId = '', motionStakes } = motionData || {};
 
+  const networkMotionStateEnum = getEnumValueFromKey(
+    NetworkMotionState,
+    motionState,
+    NetworkMotionState.Null,
+  );
+
+  const motionStateEnum = motionData
+    ? getMotionState(networkMotionStateEnum, motionData)
+    : MotionState.Staking;
+  const [activeStepKey, setActiveStepKey] = useState(motionStateEnum);
+
+  useEffect(() => {
+    setActiveStepKey(motionStateEnum);
+  }, [motionStateEnum]);
+
+  // @todo: add missing steps
   const items = useMemo(
-    () => [
-      {
-        key: '1',
-        content: <StakingStep action={action} transactionId={transactionId} />,
-        heading: {
-          label: formatText({ id: 'motion.staking.label' }) || '',
-          decor:
-            (motionState as unknown as MotionState) === MotionState.Staking ? (
-              <MotionCountDownTimer
-                motionState={
-                  (motionState as unknown as MotionState) || MotionState.Staking
-                }
-                motionId={motionId}
-                motionStakes={motionStakes as unknown as MotionStakes}
-                refetchMotionState={refetchMotionState}
-              />
-            ) : undefined,
-        },
-      },
-      {
-        key: '2',
-        content: <VotingStep />,
-        heading: {
-          label: formatText({ id: 'motion.voting.label' }) || '',
-        },
-        // @todo: add a condition to be required if staking won't go directly to finalize step
-        isOptional: true,
-      },
-      {
-        key: '2.5',
-        content: <RevealStep />,
-        heading: {
-          label: formatText({ id: 'motion.reveal.label' }) || '',
-        },
-        // @todo: add a condition to show when voting step is active
-        isHidden: true,
-        // @todo: chnage to false when visible
-        isOptional: true,
-      },
-      {
-        key: '3',
-        content: <OutcomeStep />,
-        heading: {
-          // @todo: chnage label and styling when the outcome is known and revealed
-          label: formatText({ id: 'motion.outcome.label' }) || '',
-        },
-        // @todo: add a condition to be required if staking won't go directly to finalize step
-        isOptional: true,
-        // @todo: add a condition to hide when voting step is skipped
-        isHidden: false,
-      },
-      {
-        key: '4',
-        content: <FinalizeStep />,
-        heading: {
-          label: formatText({ id: 'motion.finalize.label' }) || '',
-        },
-      },
-    ],
+    () =>
+      loadingAction
+        ? []
+        : [
+            {
+              key: MotionState.Staking,
+              content: (
+                <StakingStep action={action} transactionId={transactionId} />
+              ),
+              heading: {
+                label: formatText({ id: 'motion.staking.label' }) || '',
+                decor:
+                  motionStateEnum === MotionState.Staking && motionStakes ? (
+                    <MotionCountDownTimer
+                      motionState={motionStateEnum}
+                      motionId={motionId}
+                      motionStakes={motionStakes}
+                      refetchMotionState={refetchMotionState}
+                    />
+                  ) : undefined,
+              },
+            },
+            {
+              key: MotionState.Voting,
+              content: <VotingStep />,
+              heading: {
+                label: formatText({ id: 'motion.voting.label' }) || '',
+              },
+              // @todo: add a condition to be required if staking won't go directly to finalize step
+              isOptional: true,
+            },
+            {
+              key: MotionState.Reveal,
+              content: <RevealStep />,
+              heading: {
+                label: formatText({ id: 'motion.reveal.label' }) || '',
+              },
+              // @todo: add a condition to show when voting step is active
+              isHidden: true,
+              // @todo: chnage to false when visible
+              isOptional: true,
+            },
+            {
+              // @todo: change to MotionState when the outcome is known and revealed
+              key: MotionState.Failed,
+              content: <OutcomeStep />,
+              heading: {
+                // @todo: chnage label and styling when the outcome is known and revealed
+                label: formatText({ id: 'motion.outcome.label' }) || '',
+              },
+              // @todo: add a condition to be required if staking won't go directly to finalize step
+              isOptional: true,
+              // @todo: add a condition to hide when voting step is skipped
+              isHidden: false,
+            },
+            {
+              key: MotionState.Passed,
+              content: <FinalizeStep />,
+              heading: {
+                label: formatText({ id: 'motion.finalize.label' }) || '',
+              },
+            },
+          ],
     [
       action,
+      loadingAction,
       motionId,
       motionStakes,
-      motionState,
+      motionStateEnum,
       refetchMotionState,
       transactionId,
     ],
   );
 
-  return (
-    <Stepper
-      activeStepIndex={activeStepIndex}
-      setActiveStepIndex={setActiveStepIndex}
+  // @todo: replace with spinner
+  return loadingAction ? (
+    <div>Loading</div>
+  ) : (
+    <Stepper<MotionState>
+      activeStepKey={activeStepKey}
+      setActiveStepKey={setActiveStepKey}
       items={items}
     />
   );
