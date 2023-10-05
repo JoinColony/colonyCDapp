@@ -10,6 +10,7 @@ export const getEnumValueFromKey = <TEnum extends object>(
 
     return defaultEnumValue;
   }
+
   const enumEntry = enumObject[key];
 
   if (enumEntry === undefined) {

@@ -10,16 +10,17 @@ import { accordionAnimation } from '~constants/accordionAnimation';
 
 const displayName = 'v5.Stepper';
 
-function Stepper<TKey>({
+function Stepper<TKey extends React.Key>({
   activeStepKey,
   setActiveStepKey,
   items,
 }: StepperProps<TKey>): JSX.Element | null {
-  const [openItemKey, setOpenItemKey] = useState(activeStepKey);
+  const activeItemIndex = items.findIndex(({ key }) => key === activeStepKey);
+  const [openItemIndex, setOpenItemIndex] = useState(activeItemIndex);
   const isMobile = useMobile();
   const withArrowsOnMobile =
     items.length > MIN_NUMBER_OF_STEPS_WITHOUT_MOBILE_NAVIGATION && isMobile;
-  const openedItem = items.find(({ key }) => key === openItemKey) || items[0];
+  const openedItem = items.find(({ key }) => key === openItemIndex) || items[0];
 
   return items.length ? (
     <>
@@ -38,7 +39,7 @@ function Stepper<TKey>({
 
           return (
             <motion.li
-              key={String(key)}
+              key={key}
               initial="visible"
               animate={isHidden ? 'hidden' : 'visible'}
               variants={accordionAnimation}
@@ -79,8 +80,8 @@ function Stepper<TKey>({
                 `,
                 {
                   'sm:mb-4 sm:last-mb-0': !isHidden,
-                  'sm:before:bg-gray-900': key <= activeStepKey,
-                  'sm:before:bg-white': key > activeStepKey,
+                  'sm:before:bg-gray-900': index <= activeItemIndex,
+                  'sm:before:bg-white': index > activeItemIndex,
                   'after:border-dashed': isNextStepOptional,
                   'after:border-gray-400': isNextStepSkipped,
                   'sm:before:border-gray-400': isSkipped,
@@ -92,23 +93,23 @@ function Stepper<TKey>({
               <div className="flex flex-col sm:flex-row gap-[.375rem] items-center">
                 <StepperButton
                   stage={
-                    (key < activeStepKey &&
+                    (index < activeItemIndex &&
                       !isSkipped &&
                       STEP_STAGE.Completed) ||
-                    (key === activeStepKey && STEP_STAGE.Current) ||
+                    (index === activeItemIndex && STEP_STAGE.Current) ||
                     (isSkipped && STEP_STAGE.Skipped) ||
                     STEP_STAGE.Upcoming
                   }
                   onClick={() => {
-                    setOpenItemKey(key);
+                    setOpenItemIndex(index);
 
-                    if (key > activeStepKey) {
+                    if (index > activeItemIndex) {
                       setActiveStepKey(key);
                     }
                   }}
                   className="relative z-[1]"
-                  disabled={key > activeStepKey || isSkipped}
-                  isHighlighted={key === openItemKey && !isSkipped}
+                  disabled={index > activeItemIndex || isSkipped}
+                  isHighlighted={index === openItemIndex && !isSkipped}
                   {...restHeading}
                 />
                 {decor || null}
@@ -118,8 +119,8 @@ function Stepper<TKey>({
                   className={clsx(
                     'grid transition-[grid-template-rows_0.5s_ease-in-out] w-full',
                     {
-                      'grid-rows-[1fr]': key === openItemKey,
-                      'grid-rows-[0fr]': key !== openItemKey,
+                      'grid-rows-[1fr]': index === openItemIndex,
+                      'grid-rows-[0fr]': index !== openItemIndex,
                     },
                   )}
                 >

@@ -1,6 +1,7 @@
+import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 
-import { MotionState } from '~utils/colonyMotions';
+import { getMotionState, MotionState } from '~utils/colonyMotions';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
 import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction';
@@ -24,13 +25,17 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
     useGetColonyAction(transactionId);
   const { motionData } = action || {};
   const { motionId = '', motionStakes } = motionData || {};
-  const [activeStepKey, setActiveStepKey] = useState(MotionState.Staking);
 
-  const motionStateEnum = getEnumValueFromKey(
-    MotionState,
+  const networkMotionStateEnum = getEnumValueFromKey(
+    NetworkMotionState,
     motionState,
-    MotionState.Staking,
+    NetworkMotionState.Null,
   );
+
+  const motionStateEnum = motionData
+    ? getMotionState(networkMotionStateEnum, motionData)
+    : MotionState.Staking;
+  const [activeStepKey, setActiveStepKey] = useState(motionStateEnum);
 
   useEffect(() => {
     setActiveStepKey(motionStateEnum);
@@ -80,7 +85,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
             },
             {
               // @todo: change to MotionState when the outcome is known and revealed
-              key: MotionState.Objection,
+              key: MotionState.Failed,
               content: <OutcomeStep />,
               heading: {
                 // @todo: chnage label and styling when the outcome is known and revealed
