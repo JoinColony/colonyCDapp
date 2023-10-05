@@ -80,7 +80,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
             },
             {
               // @todo: change to MotionState when the outcome is known and revealed
-              key: MotionState.Passed,
+              key: MotionState.Objection,
               content: <OutcomeStep />,
               heading: {
                 // @todo: chnage label and styling when the outcome is known and revealed
