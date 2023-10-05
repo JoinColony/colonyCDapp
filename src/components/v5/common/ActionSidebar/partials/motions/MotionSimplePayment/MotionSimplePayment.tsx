@@ -81,6 +81,15 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
               ),
               heading: {
                 label: formatText({ id: 'motion.voting.label' }) || '',
+                decor:
+                  motionStateEnum === MotionState.Voting && motionStakes ? (
+                    <MotionCountDownTimer
+                      motionState={motionStateEnum}
+                      motionId={motionId}
+                      motionStakes={motionStakes}
+                      refetchMotionState={refetchMotionState}
+                    />
+                  ) : undefined,
               },
               // @todo: add a condition to be required if staking won't go directly to finalize step
               isOptional: true,
@@ -118,11 +127,14 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
             },
           ],
     [
+      action,
       loadingAction,
       motionId,
       motionStakes,
       motionStateEnum,
       refetchMotionState,
+      startPollingForAction,
+      stopPollingForAction,
     ],
   );
 

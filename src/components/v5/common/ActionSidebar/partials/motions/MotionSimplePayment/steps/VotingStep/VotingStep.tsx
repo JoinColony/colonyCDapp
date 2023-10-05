@@ -75,8 +75,7 @@ const VotingStep: FC<VotingStepProps> = ({
                       <PillsBase
                         className={clsx({
                           'bg-purple-100 text-purple-400': isSupportVote,
-                          'bg-negative-100 text-negative-400':
-                            currentUserVote === MotionVote.Nay,
+                          'bg-negative-100 text-negative-400': !isSupportVote,
                         })}
                         iconName={isSupportVote ? 'thumbs-up' : 'thumbs-down'}
                       >
@@ -94,7 +93,6 @@ const VotingStep: FC<VotingStepProps> = ({
                   </h4>
                 )}
                 <FormButtonRadioButtons
-                  // @TODO: Replace this with const that will be merged by Asia C.
                   items={renderVoteRadioButtons(
                     hasUserVoted,
                     currentUserVote || 0,
