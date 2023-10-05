@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 
 import { MotionStakes } from '~types';
 import { MotionState } from '~utils/colonyMotions';
@@ -26,6 +26,12 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
   const { motionId = '', motionStakes } = motionData || {};
   // @todo: pass current step to the state when other steps will be available
   const [activeStepIndex, setActiveStepIndex] = useState(motionState || 0);
+
+  useEffect(() => {
+    if (motionState) {
+      setActiveStepIndex(motionState);
+    }
+  }, [motionState]);
 
   const items = useMemo(
     () =>
