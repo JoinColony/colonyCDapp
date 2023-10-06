@@ -4,7 +4,7 @@ import { format, addMonths } from 'date-fns';
 import { Link } from 'react-router-dom';
 
 import { ActionTypes } from '~redux';
-import { useColonyContext } from '~hooks';
+import { useColonyContext, useEnabledExtensions } from '~hooks';
 import Button from '~shared/Button';
 import { mapPayload, pipe } from '~utils/actions';
 import { CreateStreamingPaymentPayload } from '~redux/sagas/expenditures/createStreamingPayment';
@@ -34,6 +34,7 @@ const StreamingPaymentForm = () => {
     },
     skip: !colony,
   });
+  const { isVotingReputationEnabled } = useEnabledExtensions();
 
   if (!colony) {
     return null;
@@ -120,7 +121,7 @@ const StreamingPaymentForm = () => {
           ))}
       </ul>
       <div className={styles.buttons}>
-        <ForceToggle />
+        {isVotingReputationEnabled && <ForceToggle />}
         <Button type="submit">Create {!isForce && '(with motion)'}</Button>
       </div>
     </CreateExpenditureForm>
