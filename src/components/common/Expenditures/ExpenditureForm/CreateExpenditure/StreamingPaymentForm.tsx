@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Id } from '@colony/colony-js';
 import { format, addMonths } from 'date-fns';
 import { Link } from 'react-router-dom';
 
 import { ActionTypes } from '~redux';
-import { useColonyContext, useEnabledExtensions } from '~hooks';
+import { useColonyContext } from '~hooks';
 import Button from '~shared/Button';
 import { mapPayload, pipe } from '~utils/actions';
 import { CreateStreamingPaymentPayload } from '~redux/sagas/expenditures/createStreamingPayment';
@@ -14,19 +14,20 @@ import {
   StreamingPaymentEndCondition,
   useGetMotionsByActionTypeQuery,
 } from '~gql';
+import ForceToggle from '~shared/Dialog/DialogHeading/ForceToggle';
+import { notNull } from '~utils/arrays';
 
-import CreateExpenditureForm from './CreateExpenditureForm';
 import { StreamingPaymentFormValues } from '../types';
 import { StreamingPaymentFormFields } from '../ExpenditureFormFields';
 import { getTimestampFromCleaveDateAndTime } from '../helpers';
 
+import CreateExpenditureForm from './CreateExpenditureForm';
+
 import styles from '../ExpenditureForm.module.css';
-import { notNull } from '~utils/arrays';
 
 const StreamingPaymentForm = () => {
   const { colony } = useColonyContext();
-  const { isVotingReputationEnabled } = useEnabledExtensions();
-
+  const [isForce, setIsForce] = useState(false);
   const { data, loading } = useGetMotionsByActionTypeQuery({
     variables: {
       actionType: ColonyActionType.CreateStreamingPaymentMotion,
@@ -75,13 +76,13 @@ const StreamingPaymentForm = () => {
   const endDate = format(futureDate, 'ddMMyyyy');
   const endTime = format(futureDate, 'HHmm');
 
+  const actionType = !isForce
+    ? ActionTypes.MOTION_STREAMING_PAYMENT_CREATE
+    : ActionTypes.STREAMING_PAYMENT_CREATE;
+
   return (
     <CreateExpenditureForm<StreamingPaymentFormValues>
-      actionType={
-        isVotingReputationEnabled
-          ? ActionTypes.MOTION_STREAMING_PAYMENT_CREATE
-          : ActionTypes.STREAMING_PAYMENT_CREATE
-      }
+      actionType={actionType}
       defaultValues={{
         createInDomainId: Id.RootDomain,
         fundFromDomainId: Id.RootDomain,
@@ -94,10 +95,15 @@ const StreamingPaymentForm = () => {
         amount: '0',
         tokenAddress: colony.nativeToken.tokenAddress,
         interval: 60,
+        forceAction: true,
       }}
       transform={transformPayload}
     >
-      <StreamingPaymentFormFields colony={colony} />
+      <StreamingPaymentFormFields
+        colony={colony}
+        isForce={isForce}
+        handleIsForceChange={setIsForce}
+      />
       <ul>
         {loading && <div>Loading streaming payment motions...</div>}
         {data?.getColonyActionsByType?.items
@@ -114,9 +120,8 @@ const StreamingPaymentForm = () => {
           ))}
       </ul>
       <div className={styles.buttons}>
-        <Button type="submit">
-          Create {isVotingReputationEnabled && '(with motion)'}
-        </Button>
+        <ForceToggle />
+        <Button type="submit">Create {!isForce && '(with motion)'}</Button>
       </div>
     </CreateExpenditureForm>
   );

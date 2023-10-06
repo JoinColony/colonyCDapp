@@ -47,6 +47,7 @@ export interface StreamingPaymentFormValues
   tokenAddress: string;
   amount: string;
   interval: number;
+  forceAction: boolean;
   limitAmount?: string;
 }
 

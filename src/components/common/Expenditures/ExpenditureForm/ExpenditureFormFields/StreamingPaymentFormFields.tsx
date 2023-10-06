@@ -1,22 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { Input, Select } from '~shared/Fields';
 import TokenAmountInput from '~common/Dialogs/TokenAmountInput';
-import { Colony } from '~types';
+import { Colony, SetStateFn } from '~types';
 import { StreamingPaymentEndCondition } from '~gql';
 
 import ExpenditureTimeInput from '../ExpenditureTimeInput';
 
 interface StreamingPaymentFormFieldsProps {
   colony: Colony;
+  handleIsForceChange: SetStateFn;
+  isForce: boolean;
 }
 
 const StreamingPaymentFormFields = ({
   colony,
+  isForce,
+  handleIsForceChange,
 }: StreamingPaymentFormFieldsProps) => {
   const { watch } = useFormContext();
   const endCondition = watch('endCondition') as StreamingPaymentEndCondition;
+  const forceAction = watch('forceAction');
+
+  useEffect(() => {
+    if (forceAction !== isForce) {
+      handleIsForceChange(forceAction);
+    }
+  }, [forceAction, isForce, handleIsForceChange]);
 
   return (
     <div>
