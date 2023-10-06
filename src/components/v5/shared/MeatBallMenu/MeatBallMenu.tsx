@@ -11,7 +11,11 @@ import Portal from '~v5/shared/Portal';
 
 const displayName = 'v5.MeatBallMenu';
 
-const MeatBallMenu: FC<MeatBallMenuProps> = ({ items, buttonClassName }) => {
+const MeatBallMenu: FC<MeatBallMenuProps> = ({
+  items,
+  buttonClassName,
+  className,
+}) => {
   const { formatMessage } = useIntl();
   const [
     isMenuOpen,
@@ -27,7 +31,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({ items, buttonClassName }) => {
   }
 
   return (
-    <div className="md:relative">
+    <div className={clsx(className, 'md:relative')}>
       <button
         type="button"
         ref={relativeElementRef}
