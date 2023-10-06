@@ -20,11 +20,12 @@ import Numeral from '~shared/Numeral';
 import { VotingFormValues } from './types';
 import { OnSuccess } from '~shared/Fields';
 import { getLocalStorageVoteValue, setLocalStorageVoteValue } from './utils';
+import { MotionAction } from '~types/motions';
 
 export const useVotingStep = (
-  actionData,
-  startPollingAction,
-  stopPollingAction,
+  actionData: MotionAction,
+  startPollingAction: (pollingInterval: number) => void,
+  stopPollingAction: () => void,
   transactionId: string,
 ) => {
   const { colony } = useColonyContext();
