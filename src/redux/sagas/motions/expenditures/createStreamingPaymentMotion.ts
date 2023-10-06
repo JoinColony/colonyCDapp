@@ -48,10 +48,10 @@ function* createStreamingPaymentMotion({
 }: Action<ActionTypes.MOTION_STREAMING_PAYMENT_CREATE>) {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
-  const batchId = 'motion-cstreaming-payment-create';
+  const batchId = 'motion-streaming-payment-create';
   const { createMotion /* annotationMessage */ } = yield call(
     createTransactionChannels,
-    batchId,
+    meta.id,
     ['createMotion', 'annotateMotion'],
   );
 
