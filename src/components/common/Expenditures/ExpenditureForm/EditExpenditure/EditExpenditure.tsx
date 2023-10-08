@@ -1,22 +1,26 @@
 import React from 'react';
 
 import { ExpenditureStatus } from '~gql';
-import { Expenditure } from '~types';
+import { Colony, Expenditure } from '~types';
 
 import EditExpenditureForm from './EditExpenditureForm';
+import EditLockedExpenditureForm from './EditLockedExpenditureForm';
 
 interface EditExpenditureProps {
   expenditure: Expenditure;
   onEditingFinished: () => void;
+  colony: Colony;
 }
 
 const EditExpenditure = ({
   expenditure,
   onEditingFinished,
+  colony,
 }: EditExpenditureProps) => {
   if (expenditure.status === ExpenditureStatus.Draft) {
     return (
       <EditExpenditureForm
+        colony={colony}
         expenditure={expenditure}
         onEditingFinished={onEditingFinished}
       />
@@ -24,7 +28,13 @@ const EditExpenditure = ({
   }
 
   if (expenditure.status === ExpenditureStatus.Locked) {
-    return <div>Edit Locked Expenditure</div>;
+    return (
+      <EditLockedExpenditureForm
+        colony={colony}
+        expenditure={expenditure}
+        onEditingFinished={onEditingFinished}
+      />
+    );
   }
 
   return null;

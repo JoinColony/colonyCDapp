@@ -44,6 +44,7 @@ const ExpenditurePayouts = ({
       </div>
       {isEditing ? (
         <EditExpenditure
+          colony={colony}
           expenditure={expenditure}
           onEditingFinished={() => setIsEditing(false)}
         />

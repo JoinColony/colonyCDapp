@@ -1,17 +1,17 @@
 import React from 'react';
 
-import { ActionForm } from '~shared/Fields';
 import { Colony, Expenditure } from '~types';
+import { ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
 import Button from '~shared/Button';
 
 import { AdvancedPaymentFormFields } from '../ExpenditureFormFields';
+import { AdvancedPaymentFormValues } from '../types';
 import {
   getExpenditurePayoutsFieldValue,
   getInitialPayoutFieldValue,
 } from '../helpers';
-import { AdvancedPaymentFormValues } from '../types';
 
 import styles from '../ExpenditureForm.module.css';
 
@@ -21,7 +21,7 @@ export interface EditExpenditureFormProps {
   colony: Colony;
 }
 
-const EditExpenditureForm = ({
+const EditLockedExpenditureForm = ({
   expenditure,
   onEditingFinished,
   colony,
@@ -42,7 +42,7 @@ const EditExpenditureForm = ({
           ? getExpenditurePayoutsFieldValue(expenditure)
           : [getInitialPayoutFieldValue(colony.nativeToken.tokenAddress)],
       }}
-      actionType={ActionTypes.EXPENDITURE_EDIT}
+      actionType={ActionTypes.EXPENDITURE_LOCKED_EDIT}
       transform={transformPayload}
       onSuccess={onEditingFinished}
     >
@@ -58,4 +58,4 @@ const EditExpenditureForm = ({
   );
 };
 
-export default EditExpenditureForm;
+export default EditLockedExpenditureForm;
