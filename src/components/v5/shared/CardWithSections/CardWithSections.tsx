@@ -5,7 +5,11 @@ import { CardWithSectionsProps } from './types';
 
 const displayName = 'v5.CardWithSections';
 
-const CardWithSections: React.FC<CardWithSectionsProps> = ({ sections }) =>
+const CardWithSections: React.FC<CardWithSectionsProps> = ({
+  sections,
+  footer,
+  footerClassName,
+}) =>
   sections.length ? (
     <Card className="w-full" withPadding={false}>
       {sections.map(({ key, content, className }) => (
@@ -19,6 +23,9 @@ const CardWithSections: React.FC<CardWithSectionsProps> = ({ sections }) =>
           {content}
         </div>
       ))}
+      {footer && (
+        <div className={clsx(footerClassName, 'p-[1.125rem]')}>{footer}</div>
+      )}
     </Card>
   ) : null;
 

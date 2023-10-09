@@ -8,6 +8,8 @@ const displayName = 'v5.CardWithStatusText';
 const CardWithStatusText: React.FC<CardWithStatusTextProps> = ({
   statusTextSectionProps,
   sections,
+  footer,
+  footerClassName,
 }) => {
   const { content, ...restStatusTextSectionProps } = statusTextSectionProps;
 
@@ -25,7 +27,13 @@ const CardWithStatusText: React.FC<CardWithStatusTextProps> = ({
     ...sections,
   ];
 
-  return <CardWithSections sections={sectionsWithStatusText} />;
+  return (
+    <CardWithSections
+      sections={sectionsWithStatusText}
+      footer={footer}
+      footerClassName={footerClassName}
+    />
+  );
 };
 
 CardWithStatusText.displayName = displayName;
