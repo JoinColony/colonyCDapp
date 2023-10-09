@@ -8,4 +8,5 @@ export interface MeatBallItem {
 export interface MeatBallMenuProps {
   items: MeatBallItem[];
   buttonClassName?: string;
+  className?: string;
 }

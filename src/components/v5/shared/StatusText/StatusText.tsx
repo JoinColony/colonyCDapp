@@ -10,6 +10,9 @@ const displayName = 'v5.shared.StatusText';
 const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
   children,
   status,
+  className,
+  iconName: iconNameProp,
+  iconClassName,
   withIcon = true,
   textClassName = 'text-md',
   iconAlignment = 'center',
@@ -23,7 +26,7 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
 
   return (
     <div
-      className={clsx('flex', {
+      className={clsx(className, 'flex', {
         'text-success-400': status === STATUS_TYPES.SUCCESS,
         'text-warning-400': status === STATUS_TYPES.WARNING,
         'text-negative-400': status === STATUS_TYPES.ERROR,
@@ -34,8 +37,11 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
     >
       {withIcon && (
         <Icon
-          name={iconName[status]}
-          className="h-[.875rem] w-[.875rem] flex-shrink-0"
+          name={iconNameProp || iconName[status]}
+          className={clsx(
+            iconClassName,
+            'h-[.875rem] w-[.875rem] flex-shrink-0',
+          )}
         />
       )}
       <p className={textClassName}>{children}</p>

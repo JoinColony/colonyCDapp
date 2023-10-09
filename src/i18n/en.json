@@ -1066,6 +1066,8 @@
   "motion.votingStep.submit": "Submit vote",
   "motion.support": "Support",
   "motion.oppose": "Oppose",
+  "motion.staking.chart.forLabel": "Supported",
+  "motion.staking.chart.againstLabel": "Opposed",
   "table.row.recipient": "Recipient",
   "table.row.amount": "Amount",
   "table.row.token": "Token",
@@ -1090,5 +1092,7 @@
   "errors.amount": "Amount must be greater than zero",
   "errors.payments.amount": "Amount must be greater than zero in {paymentIndex, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} payment.",
   "asyncText.defaultLoading": "Loading...",
-  "asyncText.defaultError": "Failed to load"
+  "asyncText.defaultError": "Failed to load",
+  "button.stake.oppose": "Oppose",
+  "button.stake.support": "Support"
 }
