@@ -1,10 +1,9 @@
 import React from 'react';
 import { useController } from 'react-hook-form';
-
 import ButtonRadioButtons from './ButtonRadioButtons';
 import { FormButtonRadioButtonsProps } from './types';
 
-const displayName = 'v5.common.Fields.RadioButtons.FormButtonRadioButtons';
+const displayName = 'v5.common.Fields.CardSelect.FormButtonRadioButtons';
 
 function FormButtonRadioButtons<TValue = string>({
   name,

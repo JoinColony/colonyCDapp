@@ -21,11 +21,12 @@ export type RefetchAction = ReturnType<
   typeof useGetColonyActionQuery
 >['refetch'];
 
-export const useGetColonyAction = () => {
+export const useGetColonyAction = (transactionHash?: string) => {
   const { colony, refetchColony } = useColonyContext();
   const { refetchTokenBalances } = useUserTokenBalanceContext();
-  const { transactionHash } = useParams<ActionDetailsPageParams>();
-  const isValidTx = isTransactionFormat(transactionHash);
+  const { transactionHash: transactionId } =
+    useParams<ActionDetailsPageParams>();
+  const isValidTx = isTransactionFormat(transactionHash || transactionId);
   const skipQuery = !colony || !isValidTx;
   /* Unfortunately, we need to track polling state ourselves: https://github.com/apollographql/apollo-client/issues/9081#issuecomment-975722271 */
   const [isPolling, setIsPolling] = useState(!skipQuery);
@@ -39,7 +40,7 @@ export const useGetColonyAction = () => {
   } = useGetColonyActionQuery({
     skip: skipQuery,
     variables: {
-      transactionHash: transactionHash ?? '',
+      transactionHash: (transactionHash || transactionId) ?? '',
     },
     pollInterval: 1000,
   });
@@ -68,13 +69,13 @@ export const useGetColonyAction = () => {
       if (actionData.getColonyAction.type === ColonyActionType.Payment) {
         refetchTokenBalances();
       }
-      refetchColony();
     }
+    refetchColony();
   }, [actionData, refetchColony, refetchTokenBalances, isRedirect]);
 
   /* Don't poll if we've not been redirected from the saga */
   const action = actionData?.getColonyAction;
-  const shouldStopPolling = (!isRedirect && isPolling) || (action && isPolling);
+  const shouldStopPolling = isPolling || (action && isPolling);
 
   if (shouldStopPolling) {
     stopPollingForAction();
