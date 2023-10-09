@@ -6,8 +6,8 @@ import { Colony, Address, ColonyBalances, Token } from '~types';
 import {
   DEFAULT_TOKEN_DECIMALS,
   COLONY_TOTAL_BALANCE_DOMAIN_ID,
-  NETWORK_DATA,
   ADDRESS_ZERO,
+  SUPPORTED_SAFE_NETWORKS,
 } from '~constants';
 
 import { notNull } from './arrays';
@@ -102,20 +102,22 @@ export const getSelectedToken = (colony: Colony, tokenAddress: string) => {
 // defined NetworkInfo types here but I have yet to figure out
 // how to do that
 export const getNativeTokenByChainId = (chainId: number): Token => {
-  const network = Object.values(NETWORK_DATA).find(
-    (data) => data.chainId === chainId,
+  const selectedNetwork = SUPPORTED_SAFE_NETWORKS.find(
+    (network) => network.chainId === chainId,
   );
 
-  if (!network) {
+  if (!selectedNetwork) {
     throw new Error(`Network not found with chainId: ${chainId}`);
   }
 
-  if (!network.nativeToken) {
-    throw new Error(`Network ${network} does not have a native token defined`);
+  if (!selectedNetwork.nativeToken) {
+    throw new Error(
+      `Network ${selectedNetwork} does not have a native token defined`,
+    );
   }
 
   return {
     tokenAddress: ADDRESS_ZERO,
-    ...network.nativeToken,
+    ...selectedNetwork.nativeToken,
   };
 };
