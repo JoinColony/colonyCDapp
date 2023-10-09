@@ -1,22 +1,21 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 
-import { BigNumber } from 'ethers';
 import clsx from 'clsx';
+import { motion } from 'framer-motion';
 import { RevealStepProps } from './types';
 import CardWithStatusText from '~v5/shared/CardWithStatusText';
 import ProgressBar from '~v5/shared/ProgressBar';
 import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button';
-import { ActionForm, OnSuccess } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
-import { useGetVoterRewardsQuery } from '~gql';
-import { useAppContext, useColonyContext } from '~hooks';
-import { useRevealWidgetUpdate } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/RevealWidget/useRevealWidgetUpdate';
 import StatusText from '~v5/shared/StatusText';
 import Numeral from '~shared/Numeral';
-import { mapPayload } from '~utils/actions';
-import { RevealMotionPayload } from '~redux/sagas/motions/revealVoteMotion';
 import RevealInformationList from './partials/RevealInformationList';
+import { useRevealStep } from './hooks';
+import MotionBadge from '../../partials/MotionBadge/MotionBadge';
+import { accordionAnimation } from '~constants/accordionAnimation';
+import Icon from '~shared/Icon';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.RevealStep';
@@ -25,50 +24,25 @@ const RevealStep: FC<RevealStepProps> = ({
   motionData,
   startPollingAction,
   stopPollingAction,
+  transactionId,
 }) => {
-  const { nativeMotionDomainId, voterRecord, rootHash, motionId } = motionData;
-  const { user } = useAppContext();
-  const { colony } = useColonyContext();
-  const { nativeToken } = colony || {};
-  const { data } = useGetVoterRewardsQuery({
-    variables: {
-      input: {
-        voterAddress: user?.walletAddress ?? '',
-        colonyAddress: colony?.colonyAddress ?? '',
-        nativeMotionDomainId,
-        motionId,
-        rootHash,
-      },
-    },
-    skip: !user || !colony,
-    fetchPolicy: 'cache-and-network',
-  });
-
-  const { reward: voterReward } = data?.getVoterRewards || {};
-
-  const { userVoteRevealed, setUserVoteRevealed } = useRevealWidgetUpdate(
-    voterRecord,
+  const [isInformationOpen, setIsInformationOpen] = useState(false);
+  const {
+    handleSuccess,
+    nativeToken,
+    transform,
+    userVoteRevealed,
+    voterReward,
+    voters,
+    isSupportVote,
+    revealProgress,
+    totalVoters,
+  } = useRevealStep(
+    motionData,
+    startPollingAction,
     stopPollingAction,
+    transactionId,
   );
-  const transform = mapPayload(
-    () =>
-      ({
-        colonyAddress: colony?.colonyAddress,
-        userAddress: user?.walletAddress ?? '',
-        motionId: BigNumber.from(motionId),
-      } as RevealMotionPayload),
-  );
-
-  const handleSuccess: OnSuccess<Record<string, any>> = (_, { reset }) => {
-    reset();
-    startPollingAction(1000);
-    setUserVoteRevealed(true);
-  };
-
-  const voters = voterRecord.map((voter) => ({
-    address: voter.address,
-    hasRevealed: voter.vote !== null,
-  }));
 
   return (
     <CardWithStatusText
@@ -79,9 +53,13 @@ const RevealStep: FC<RevealStepProps> = ({
         content: (
           <div className="mt-1 flex flex-col gap-2">
             <ProgressBar
-              progress={0}
+              progress={revealProgress}
+              max={totalVoters}
               additionalText={formatText({
-                id: 'motion.revealStep.additionalText',
+                id:
+                  revealProgress === 1
+                    ? 'motion.revealStep.voteRevealed'
+                    : 'motion.revealStep.votesRevealed',
               })}
             />
             <StatusText
@@ -108,7 +86,7 @@ const RevealStep: FC<RevealStepProps> = ({
                   <h4 className="text-2">
                     {formatText({ id: 'motion.revealStep.title' })}
                   </h4>
-                  support
+                  <MotionBadge status={isSupportVote ? 'support' : 'oppose'} />
                 </div>
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-sm text-gray-600">
@@ -135,7 +113,41 @@ const RevealStep: FC<RevealStepProps> = ({
           ),
         },
       ]}
-      footer={<RevealInformationList items={voters} />}
+      footer={
+        <>
+          <button
+            type="button"
+            className="text-sm text-gray-600 flex items-center justify-between gap-2 w-full md:hover:text-blue-400"
+            onClick={() => setIsInformationOpen((prevState) => !prevState)}
+          >
+            <span className="transition-colors">
+              {formatText({
+                id: isInformationOpen
+                  ? 'motion.revealStep.buttonHide'
+                  : 'motion.revealStep.buttonShow',
+              })}
+            </span>
+            <Icon
+              name="caret-up"
+              className={clsx(
+                'w-[0.875rem] h-[0.875rem] flex-shrink-0 transition-all',
+                {
+                  'rotate-180': isInformationOpen,
+                  'rotate-0': !isInformationOpen,
+                },
+              )}
+            />
+          </button>
+          <motion.div
+            initial="hidden"
+            animate={isInformationOpen ? 'visible' : 'hidden'}
+            variants={accordionAnimation}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+          >
+            <RevealInformationList items={voters} />
+          </motion.div>
+        </>
+      }
     />
   );
 };
