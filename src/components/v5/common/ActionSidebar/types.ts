@@ -45,3 +45,7 @@ export type DescriptionMetadataGetter<TValues = FieldValues> = (
     colony: ColonyFragment | undefined;
   },
 ) => Promise<React.ReactNode>;
+
+export interface ActionTypeSelectProps {
+  className?: string;
+}

@@ -10,10 +10,11 @@ import { ACTION_TYPE_FIELD_NAME } from './consts';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 import { formatText } from '~utils/intl';
 import Modal from '~v5/shared/Modal';
+import { ActionTypeSelectProps } from './types';
 
 const displayName = 'v5.common.ActionTypeSelect';
 
-const ActionTypeSelect: FC = () => {
+const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
   const actionsList = useActionsList();
   const [nextActionType, setNextActionType] = useState<string | undefined>(
     undefined,
@@ -33,7 +34,7 @@ const ActionTypeSelect: FC = () => {
   const { formState, setValue } = useFormContext();
 
   return (
-    <>
+    <div className={className}>
       <ActionSidebarRow
         fieldName={ACTION_TYPE_FIELD_NAME}
         iconName="file-plus"
@@ -99,7 +100,7 @@ const ActionTypeSelect: FC = () => {
           id: 'button.continueAction',
         })}
       />
-    </>
+    </div>
   );
 };
 
