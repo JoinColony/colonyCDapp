@@ -6,11 +6,13 @@ import Button, { PendingButton } from '~v5/shared/Button';
 import { ActionForm } from '~shared/Fields';
 import CardWithStatusText from '~v5/shared/CardWithStatusText';
 import DescriptionList from '../VotingStep/partials/DescriptionList';
-import { useFinalizeStep } from './hooks';
+import { useClaimConfig, useFinalizeStep } from './hooks';
 import { FinalizeStepProps } from './types';
-import TeamBadge from '~v5/common/Pills/TeamBadge';
-import { useAppContext } from '~hooks';
+// import TeamBadge from '~v5/common/Pills/TeamBadge';
+import { useAppContext, useColonyContext } from '~hooks';
 import Icon from '~shared/Icon';
+
+import { ActionButton } from '~shared/Button';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.FinalizeStep';
@@ -19,10 +21,21 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   actionData,
   startPollingAction,
   stopPollingAction,
+  refetchAction,
 }) => {
   const { user } = useAppContext();
   const [isPolling, setIsPolling] = useState(false);
-  const { items, isFinalizable, transform } = useFinalizeStep(actionData);
+  const { refetchColony } = useColonyContext();
+  const { isFinalizable, transform } = useFinalizeStep(actionData);
+  const {
+    items,
+    isClaimed,
+    buttonTextId,
+    remainingStakesNumber,
+    handleClaimSuccess,
+    claimPayload,
+    canClaimStakes,
+  } = useClaimConfig(actionData, startPollingAction, refetchAction);
 
   const handleSuccess = () => {
     startPollingAction(1000);
@@ -35,6 +48,15 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     return stopPollingAction;
   }, [stopPollingAction]);
 
+  /* Update colony object when motion gets finalized. */
+  if (actionData.motionData.isFinalized) {
+    refetchColony();
+  }
+
+  if (isClaimed) {
+    stopPollingAction();
+  }
+
   return (
     <CardWithStatusText
       statusTextSectionProps={{
@@ -44,13 +66,12 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
         iconAlignment: 'top',
         content: (
           <span className="flex items-center text-4 mt-2">
-            {/* @TODO add logic with transactions */}
             <span className="flex text-blue-400 mr-2">
               <Icon name="arrows-clockwise" appearance={{ size: 'tiny' }} />
             </span>
             {formatText(
               { id: 'motion.finalizeStep.transactions.remaining' },
-              { transactions: 3 },
+              { transactions: remainingStakesNumber },
             )}
           </span>
         ),
@@ -67,11 +88,22 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
               <div className="mb-2">
                 <h4 className="text-1 mb-3 flex justify-between items-center">
                   {formatText({ id: 'motion.finalizeStep.title' })}
-                  <TeamBadge mode="claimed" teamName="Claimed" />
-                  {/* @TODO add logic to show / hide the pill */}
+                  {/* <TeamBadge
+                    mode="claimed"
+                    teamName={formatText({ id: pillTextId })}
+                  /> */}
+                  {/* @TODO: implement new logic according to the updated designs */}
+                  <ActionButton
+                    actionType={ActionTypes.MOTION_CLAIM}
+                    values={claimPayload}
+                    appearance={{ theme: 'primary', size: 'medium' }}
+                    text={{ id: buttonTextId }}
+                    disabled={!canClaimStakes}
+                    onSuccess={handleClaimSuccess}
+                  />
                 </h4>
               </div>
-              <DescriptionList items={items} className="mb-6" />
+              {items && <DescriptionList items={items} className="mb-6" />}
               {isPolling ? (
                 <PendingButton className="w-full" rounded="s" />
               ) : (

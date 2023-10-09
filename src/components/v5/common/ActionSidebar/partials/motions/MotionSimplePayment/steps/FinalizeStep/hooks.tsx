@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BigNumber } from 'ethers';
-import { ColonyActionType } from '~gql';
+import { useLocation } from 'react-router-dom';
+import { ColonyActionType, StakerRewards, UserStakes } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
 import { mapPayload } from '~utils/actions';
 import { formatText } from '~utils/intl';
@@ -9,6 +10,10 @@ import { getBalanceForTokenAndDomain } from '~utils/tokens';
 import { MotionFinalizePayload } from '~redux/types/actions/motion';
 import { DescriptionListItem } from '../VotingStep/partials/DescriptionList/types';
 import { MotionAction } from '~types/motions';
+import { useUserTokenBalanceContext } from '~context';
+import { getTransactionHashFromPathName } from '~utils/urls';
+import { ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards';
+import { RefetchAction } from '~common/ColonyActions/ActionDetailsPage/useGetColonyAction';
 
 export const useFinalizeStep = (actionData: MotionAction) => {
   const {
@@ -20,7 +25,6 @@ export const useFinalizeStep = (actionData: MotionAction) => {
   } = actionData;
   const { colony } = useColonyContext();
   const { balances } = colony || {};
-  const { nativeToken } = colony || {};
   const { user } = useAppContext();
 
   const domainBalance = getBalanceForTokenAndDomain(
@@ -51,6 +55,102 @@ export const useFinalizeStep = (actionData: MotionAction) => {
       } as MotionFinalizePayload),
   );
 
+  return {
+    transform,
+    isFinalizable,
+  };
+};
+
+export const useClaimConfig = (
+  actionData: MotionAction,
+  startPollingAction: (pollingInterval: number) => void,
+  refetchAction: RefetchAction,
+) => {
+  const {
+    motionData: {
+      stakerRewards,
+      usersStakes,
+      databaseMotionId,
+      remainingStakes,
+    },
+  } = actionData;
+  const { user } = useAppContext();
+  const { colony } = useColonyContext();
+  const { pollLockedTokenBalance } = useUserTokenBalanceContext();
+
+  const location = useLocation();
+  const [isClaimed, setIsClaimed] = useState(false);
+
+  const userAddress = user?.walletAddress;
+  const colonyAddress = colony?.colonyAddress;
+  const nativeTokenDecimals = colony?.nativeToken.decimals;
+  const nativeTokenSymbol = colony?.nativeToken.symbol;
+
+  const userStake = usersStakes.find(({ address }) => address === userAddress);
+  const stakerReward = stakerRewards.find(
+    ({ address }) => address === userAddress,
+  );
+
+  // Keep isClaimed state in sync with changes to unclaimed motions on colony object
+  useEffect(() => {
+    if (colony?.motionsWithUnclaimedStakes) {
+      const motionIsUnclaimed = colony.motionsWithUnclaimedStakes.some(
+        ({ motionId }) => motionId === databaseMotionId,
+      );
+
+      if (!motionIsUnclaimed) {
+        setIsClaimed(true);
+        refetchAction();
+      } else {
+        setIsClaimed(false);
+      }
+    }
+  }, [colony?.motionsWithUnclaimedStakes, databaseMotionId, refetchAction]);
+
+  // Keep isClaimed state in sync with user changes
+  useEffect(() => {
+    if (!user) {
+      setIsClaimed(false);
+    } else {
+      setIsClaimed(!!stakerReward?.isClaimed);
+    }
+  }, [user, stakerReward]);
+
+  const {
+    rewards: { yay: yayReward, nay: nayReward },
+    isClaimed: isRewardClaimed,
+  } = stakerReward as StakerRewards;
+
+  if (isRewardClaimed && !isClaimed) {
+    setIsClaimed(true);
+  }
+
+  const {
+    stakes: {
+      raw: { nay: nayStakes, yay: yayStakes },
+    },
+  } = userStake as UserStakes;
+
+  const totals = BigNumber.from(yayReward).add(nayReward);
+  const userTotalStake = BigNumber.from(nayStakes).add(yayStakes);
+  const userWinnings = totals.sub(userTotalStake);
+
+  // Else, return full widget
+  const buttonTextId = isClaimed ? 'button.claimed' : 'button.claim';
+  const remainingStakesNumber = remainingStakes.length;
+  const canClaimStakes = !totals.isZero() && !isClaimed;
+  const handleClaimSuccess = () => {
+    setIsClaimed(true);
+    startPollingAction(1000);
+    pollLockedTokenBalance();
+  };
+
+  const claimPayload = {
+    userAddress,
+    colonyAddress,
+    transactionHash: getTransactionHashFromPathName(location.pathname),
+  } as ClaimMotionRewardsPayload;
+
   const items: DescriptionListItem[] = [
     {
       key: '1',
@@ -58,9 +158,9 @@ export const useFinalizeStep = (actionData: MotionAction) => {
       value: (
         <div>
           <Numeral
-            value="21.346" // @TODO: display correct value
-            decimals={nativeToken?.decimals}
-            suffix={nativeToken?.symbol}
+            value={userTotalStake}
+            decimals={nativeTokenDecimals}
+            suffix={nativeTokenSymbol}
           />
         </div>
       ),
@@ -71,9 +171,9 @@ export const useFinalizeStep = (actionData: MotionAction) => {
       value: (
         <div>
           <Numeral
-            value="0" // @TODO: display correct value
-            decimals={nativeToken?.decimals}
-            suffix={nativeToken?.symbol}
+            value={userWinnings}
+            decimals={nativeTokenDecimals}
+            suffix={nativeTokenSymbol}
           />
         </div>
       ),
@@ -84,9 +184,9 @@ export const useFinalizeStep = (actionData: MotionAction) => {
       value: (
         <div>
           <Numeral
-            value="21.346" // @TODO: display correct value
-            decimals={nativeToken?.decimals}
-            suffix={nativeToken?.symbol}
+            value={totals}
+            decimals={nativeTokenDecimals}
+            suffix={nativeTokenSymbol}
           />
         </div>
       ),
@@ -94,8 +194,12 @@ export const useFinalizeStep = (actionData: MotionAction) => {
   ];
 
   return {
-    transform,
     items,
-    isFinalizable,
+    isClaimed,
+    buttonTextId,
+    remainingStakesNumber,
+    handleClaimSuccess,
+    claimPayload,
+    canClaimStakes,
   };
 };

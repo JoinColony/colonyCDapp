@@ -29,6 +29,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
     loadingAction,
     startPollingForAction,
     stopPollingForAction,
+    refetchAction,
   } = useGetColonyAction(transactionId);
   const { motionData } = action || {};
   const { motionId = '', motionStakes } = motionData || {};
@@ -126,6 +127,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
                   actionData={action as MotionAction}
                   startPollingAction={startPollingForAction}
                   stopPollingAction={stopPollingForAction}
+                  refetchAction={refetchAction}
                 />
               ),
               heading: {
