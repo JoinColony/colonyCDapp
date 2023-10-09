@@ -1088,5 +1088,7 @@
   "table.column.claimDelayFieldSuffix": "{hours, plural, =1 {Hour} other {Hours}}",
   "table.column.totalDelay": "Total delay",
   "errors.amount": "Amount must be greater than zero",
-  "errors.payments.amount": "Amount must be greater than zero in {paymentIndex, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} payment."
+  "errors.payments.amount": "Amount must be greater than zero in {paymentIndex, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} payment.",
+  "asyncText.defaultLoading": "Loading...",
+  "asyncText.defaultError": "Failed to load"
 }

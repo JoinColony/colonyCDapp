@@ -1,33 +1,14 @@
-import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
 import { useAppContext, useColonyContext } from '~hooks';
-import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
 import { getTokenManagementDialogPayload } from '~common/Dialogs/TokenManagementDialog/helpers';
 import { notNull } from '~utils/arrays';
-
-const validationSchema = yup
-  .object()
-  .shape({
-    createdIn: yup.number().defined(),
-    decisionMethod: yup.string().defined(),
-    annotation: yup.string().max(MAX_ANNOTATION_LENGTH).defined(),
-    selectedTokenAddresses: yup
-      .array()
-      .of(
-        yup.object().shape({
-          token: yup.string().required(),
-        }),
-      )
-      .unique('unique', (value) => value?.token)
-      .defined(),
-  })
-  .defined();
+import { validationSchema, ManageTokensFormValues } from './consts';
 
 export const useManageTokens = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -67,7 +48,7 @@ export const useManageTokens = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
-        mapPayload((payload) => {
+        mapPayload((payload: ManageTokensFormValues) => {
           const values = {
             motionDomainId: payload.createdIn,
             decisionMethod: payload.decisionMethod,
@@ -77,9 +58,11 @@ export const useManageTokens = (
             ),
             forceAction: false,
           };
+
           if (colony) {
             return getTokenManagementDialogPayload(colony, values);
           }
+
           return null;
         }),
         withMeta({ navigate }),

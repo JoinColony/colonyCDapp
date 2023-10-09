@@ -1,33 +1,17 @@
-import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 
 import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
+import { DeepPartial } from 'utility-types';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
 import { useColonyContext } from '~hooks';
-import { MAX_ANNOTATION_LENGTH, MAX_COLONY_DISPLAY_NAME } from '~constants';
 import { getEditColonyDetailsDialogPayload } from '~common/Dialogs/EditColonyDetailsDialog/helpers';
 import { useColonyAvatarContext } from '~context/ColonyAvatarContext';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
 import { DECISION_METHOD_OPTIONS } from '../../consts';
-
-const validationSchema = yup
-  .object()
-  .shape({
-    colonyAvatarImage: yup.string().nullable().defined(),
-    colonyThumbnail: yup.string().nullable().defined(),
-    colonyDisplayName: yup
-      .string()
-      .trim()
-      .max(MAX_COLONY_DISPLAY_NAME)
-      .required(() => 'Colony name is required'),
-    createdIn: yup.number().defined(),
-    decisionMethod: yup.string().defined(),
-    description: yup.string().max(MAX_ANNOTATION_LENGTH).defined(),
-  })
-  .defined();
+import { validationSchema, EditColonyDetailsFormValues } from './consts';
 
 export const useEditColonyDetails = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -40,7 +24,7 @@ export const useEditColonyDetails = (
   useActionFormBaseHook({
     getFormOptions,
     validationSchema,
-    defaultValues: useMemo(
+    defaultValues: useMemo<DeepPartial<EditColonyDetailsFormValues>>(
       () => ({
         decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
         colonyDisplayName: metadata?.displayName || '',
@@ -55,10 +39,10 @@ export const useEditColonyDetails = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
-        mapPayload((payload) => {
+        mapPayload((payload: EditColonyDetailsFormValues) => {
           const values = {
             colonyDisplayName: payload.colonyDisplayName,
-            colonyAvatarImage: colonyAvatar || payload.avatar,
+            colonyAvatarImage: colonyAvatar || payload.colonyAvatarImage,
             colonyThumbnail: colonyThumbnail || payload.colonyThumbnail,
             motionDomainId: payload.createdIn,
             decisionMethod: payload.decisionMethod,

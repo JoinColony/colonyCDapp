@@ -1,6 +1,9 @@
-import { UseFormReturn } from 'react-hook-form';
+import { ApolloClient } from '@apollo/client';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
 import { Action } from '~constants/actions';
+import { ColonyFragment } from '~gql';
 import { ActionFormProps } from '~shared/Fields/Form/ActionForm';
+import { User } from '~types';
 
 export interface ActionButtonsProps {
   isActionDisabled?: boolean;
@@ -33,3 +36,12 @@ export interface ActionSidebarProps {
 export interface ActionSidebarFormContentProps extends ActionFormBaseProps {
   isMotion?: boolean;
 }
+
+export type DescriptionMetadataGetter<TValues = FieldValues> = (
+  formData: TValues,
+  meta: {
+    client: ApolloClient<object>;
+    currentUser: User | null | undefined;
+    colony: ColonyFragment | undefined;
+  },
+) => Promise<React.ReactNode>;
