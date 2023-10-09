@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react';
+import React, { FC } from 'react';
 import clsx from 'clsx';
 
 import { TextareaBaseProps } from './types';
@@ -20,8 +20,7 @@ const TextareaBase: FC<TextareaBaseProps> = ({
       'border-negative-400 text-negative-400 focus:border-negative-400',
   });
 
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  useAutosizeTextArea(textAreaRef.current, value);
+  const textAreaRef = useAutosizeTextArea(value);
 
   return (
     <textarea

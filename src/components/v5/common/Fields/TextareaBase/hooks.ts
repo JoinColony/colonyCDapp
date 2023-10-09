@@ -1,18 +1,27 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import noop from 'lodash/noop';
 
 const useAutosizeTextArea = (
-  textAreaRef: HTMLTextAreaElement | null,
   value: string | number | readonly string[] | undefined,
 ) => {
-  useEffect(() => {
-    if (textAreaRef) {
-      const newTextAreaRef = textAreaRef;
-      newTextAreaRef.style.height = '0px';
-      const { scrollHeight } = newTextAreaRef;
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-      newTextAreaRef.style.height = `${scrollHeight}px`;
+  useEffect(() => {
+    if (!textAreaRef.current) {
+      return noop;
     }
+    const textArea = textAreaRef.current;
+    textArea.style.height = '0px';
+    const { scrollHeight } = textArea;
+
+    textArea.style.height = `${scrollHeight}px`;
+
+    return () => {
+      textArea.style.height = '';
+    };
   }, [textAreaRef, value]);
+
+  return textAreaRef;
 };
 
 export default useAutosizeTextArea;
