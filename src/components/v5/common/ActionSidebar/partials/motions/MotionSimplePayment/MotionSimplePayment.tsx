@@ -14,6 +14,7 @@ import RevealStep from './steps/RevealStep';
 import StakingStep from './steps/StakingStep';
 import VotingStep from './steps/VotingStep';
 import { MotionSimplePaymentProps } from './types';
+import { MotionAction } from '~types/motions';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment';
@@ -71,9 +72,25 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
             },
             {
               key: MotionState.Voting,
-              content: <VotingStep />,
+              content: (
+                <VotingStep
+                  actionData={action as MotionAction}
+                  startPollingAction={startPollingForAction}
+                  stopPollingAction={stopPollingForAction}
+                  transactionId={transactionId}
+                />
+              ),
               heading: {
                 label: formatText({ id: 'motion.voting.label' }) || '',
+                decor:
+                  motionStateEnum === MotionState.Voting && motionStakes ? (
+                    <MotionCountDownTimer
+                      motionState={motionStateEnum}
+                      motionId={motionId}
+                      motionStakes={motionStakes}
+                      refetchMotionState={refetchMotionState}
+                    />
+                  ) : undefined,
               },
               // @todo: add a condition to be required if staking won't go directly to finalize step
               isOptional: true,
@@ -127,11 +144,14 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
             },
           ],
     [
+      action,
       loadingAction,
       motionId,
       motionStakes,
       motionStateEnum,
       refetchMotionState,
+      startPollingForAction,
+      stopPollingForAction,
     ],
   );
 
