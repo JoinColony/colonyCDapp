@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import clsx from 'clsx';
 import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button';
 
@@ -13,7 +12,7 @@ import { VotingStepProps } from './types';
 import { MotionVote } from '~utils/colonyMotions';
 import { renderVoteRadioButtons } from './utils';
 import { useVotingStep } from './hooks';
-import PillsBase from '~v5/common/Pills/PillsBase';
+import MotionBadge from '../../partials/MotionBadge/MotionBadge';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.VotingStep';
@@ -77,20 +76,20 @@ const VotingStep: FC<VotingStepProps> = ({
                 {hasUserVoted ? (
                   <div className="mb-3">
                     <div className="flex items-center justify-between gap-2 mb-4">
-                      <h4 className="text-2">You voted:</h4>
-                      <PillsBase
-                        className={clsx({
-                          'bg-purple-100 text-purple-400': isSupportVote,
-                          'bg-negative-100 text-negative-400': !isSupportVote,
-                        })}
-                        iconName={isSupportVote ? 'thumbs-up' : 'thumbs-down'}
-                      >
-                        {isSupportVote ? 'support' : 'oppose'}
-                      </PillsBase>
+                      <h4 className="text-2">
+                        {formatText({ id: 'motion.votingStep.voted' })}
+                      </h4>
+                      <MotionBadge
+                        status={isSupportVote ? 'support' : 'oppose'}
+                      />
                     </div>
-                    <h4 className="text-2 mb-1">Change your vote:</h4>
+                    <h4 className="text-2 mb-1">
+                      {formatText({ id: 'motion.votingStep.changeVote' })}
+                    </h4>
                     <p className="text-sm text-gray-600">
-                      You can change your vote while still in voting phase.
+                      {formatText({
+                        id: 'motion.votingStep.changeVoteDescription',
+                      })}
                     </p>
                   </div>
                 ) : (
