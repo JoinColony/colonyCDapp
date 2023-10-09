@@ -121,7 +121,13 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
             },
             {
               key: MotionState.Passed,
-              content: <FinalizeStep />,
+              content: (
+                <FinalizeStep
+                  actionData={action as MotionAction}
+                  startPollingAction={startPollingForAction}
+                  stopPollingAction={stopPollingForAction}
+                />
+              ),
               heading: {
                 label: formatText({ id: 'motion.finalize.label' }) || '',
               },

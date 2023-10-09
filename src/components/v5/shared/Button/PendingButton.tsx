@@ -9,18 +9,21 @@ import { useUserTransactionContext } from '~context/UserTransactionContext';
 
 const displayName = 'v5.Button.PendingButton';
 
-const PendingButton: FC<
-  PropsWithChildren<Omit<IconButtonProps, 'icon'>>
-> = () => {
+const PendingButton: FC<PropsWithChildren<Omit<IconButtonProps, 'icon'>>> = ({
+  className,
+  rounded,
+}) => {
   const isMobile = useMobile();
   const { setIsUserHubOpen } = useUserTransactionContext();
   return (
     <IconButton
+      className={className}
       onClick={() => setIsUserHubOpen(true)}
       title={{ id: 'button.pending' }}
       text={{ id: 'button.pending' }}
       ariaLabel={{ id: 'button.pending' }}
       isFullSize={isMobile}
+      rounded={rounded}
       icon={
         <span className="flex shrink-0 ml-1.5">
           <Icon
