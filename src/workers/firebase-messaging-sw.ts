@@ -1,7 +1,15 @@
-/* eslint-disable no-restricted-globals */
+/// <reference lib="WebWorker" />
 
+// export empty type because of tsc --isolatedModules flag
 import { initializeApp } from 'firebase/app';
 import { getMessaging, onBackgroundMessage } from 'firebase/messaging/sw';
+import { precacheAndRoute } from 'workbox-precaching';
+
+export type {};
+declare const self: ServiceWorkerGlobalScope;
+
+// eslint-disable-next-line no-underscore-dangle
+precacheAndRoute(self.__WB_MANIFEST);
 
 const firebaseConfig = process.env.FIREBASE_CONFIG
   ? JSON.parse(process.env.FIREBASE_CONFIG)
@@ -20,15 +28,43 @@ onBackgroundMessage(messaging, (payload) => {
     '[firebase-messaging-sw.js] Received background message ',
     payload,
   );
+
   // Customize notification here
-  const notificationTitle = payload?.notification?.title;
+  const notificationTitle = payload?.data?.title || 'Colony Notification';
   const notificationOptions = {
     body: payload?.notification?.body,
     icon: 'favicon.png',
+    // We can pass in many more options here
+    // https://developer.mozilla.org/en-US/docs/Web/API/notification
   };
 
-  // @ts-ignore
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
-// workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
+self.addEventListener('notificationclick', (event) => {
+  // All notification options can be reached via event.notification
+  const targetBase = 'http://localhost:9091';
+  const openToRoute = 'landing';
+
+  event.notification.close();
+
+  event.waitUntil(
+    self.clients
+      .matchAll({ type: 'window', includeUncontrolled: true })
+      .then((clientList) => {
+        // Check if there's already a tab open with any route under targetBase
+        for (const client of clientList) {
+          if (client.url.startsWith(targetBase) && 'focus' in client) {
+            return client.focus(); // Focus the existing tab
+          }
+        }
+
+        // If no tab is found, open a new tab with the default route (change to any desired route)
+        if (self.clients.openWindow) {
+          return self.clients.openWindow(`${targetBase}/${openToRoute}`);
+        }
+
+        return undefined;
+      }),
+  );
+});
