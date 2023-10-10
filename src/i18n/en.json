@@ -1096,5 +1096,9 @@
   "errors.amount": "Amount must be greater than zero",
   "errors.payments.amount": "Amount must be greater than zero in {paymentIndex, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} payment.",
   "button.stake.oppose": "Oppose",
-  "button.stake.support": "Support"
+  "button.stake.support": "Support",
+  "notifications": "Notifications",
+  "markAllAsRead": "Mark all as read",
+  "empty.content.title.notifications": "No notifications",
+  "empty.content.subtitle.notifications": "Go get yourself some love"
 }

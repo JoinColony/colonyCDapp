@@ -17,4 +17,10 @@ export const tabList = [
     value: 'transactions',
     icon: 'receipt',
   },
+  {
+    id: 3,
+    label: 'Notifications',
+    value: 'notifications',
+    icon: 'bell',
+  },
 ];

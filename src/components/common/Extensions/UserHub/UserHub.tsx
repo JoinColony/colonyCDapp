@@ -7,6 +7,7 @@ import { useMobile } from '~hooks';
 import ReputationTab from './partials/ReputationTab';
 import StakesTab from './partials/StakesTab';
 import TransactionsTab from './partials/TransactionsTab';
+import NotificationsTab from './partials/NotificationsTab';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
 import styles from './UserHub.module.css';
@@ -119,6 +120,7 @@ const UserHub: FC<UserHubProps> = ({ isTransactionTabVisible = false }) => {
             {selectedTab === 2 && (
               <TransactionsTab appearance={{ interactive: true }} />
             )}
+            {selectedTab === 3 && <NotificationsTab />}
           </motion.div>
         </AnimatePresence>
         {isMobile && (
