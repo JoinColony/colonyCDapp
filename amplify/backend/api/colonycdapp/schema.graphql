@@ -998,11 +998,19 @@ type Profile @model {
   Metadata associated with the user's profile
   """
   meta: ProfileMetadata
-
   """
   The user associated with this profile
   """
   user: User! @belongsTo(fields: ["id"])
+  """
+  List of a user's notifications
+  """
+  notifications: [Notification] @hasMany
+  """
+  Notification settings
+  """
+  notificationSettings: NotificationSettings
+}
 }
 
 """
