@@ -3,7 +3,7 @@ import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
 import classnames from 'classnames';
 import { useFormContext } from 'react-hook-form';
 
-import { SimpleMessageValues, User } from '~types';
+import { SelectedPickerItem, SimpleMessageValues, User } from '~types';
 import { getMainClasses } from '~utils/css';
 import UserAvatar from '~shared/UserAvatar';
 
@@ -20,7 +20,8 @@ import ItemDefault from './ItemDefault';
 
 import styles from './SingleUserPicker.css';
 
-type AvatarRenderFn = (user?: ItemDataType<User>) => ReactNode;
+export type AvatarRenderFn = (user?: ItemDataType<User>) => ReactNode;
+export type OnSelectedFn = (user: SelectedPickerItem) => void;
 
 const displayName = 'SingleUserPicker';
 
@@ -83,6 +84,9 @@ interface Props extends WithOmnipickerInProps {
   /** Status text */
   placeholder?: string | MessageDescriptor;
 
+  /** icon name for the avatar placeholder */
+  placeholderIconName?: string;
+
   /** Override avatar rendering */
   renderAvatar: AvatarRenderFn;
 
@@ -90,7 +94,7 @@ interface Props extends WithOmnipickerInProps {
   renderItem?: (user: ItemDataType<User>, selected?: boolean) => ReactNode;
 
   /** Callback for things that happend after selection  */
-  onSelected?: (user: User) => void;
+  onSelected?: OnSelectedFn;
 
   value?: User;
 
@@ -121,6 +125,7 @@ const SingleUserPicker = ({
   onSelected,
   openOmniPicker,
   placeholder,
+  placeholderIconName = 'filled-circle-person',
   registerInputNode,
   renderAvatar = (item?: ItemDataType<User>) => (
     <UserAvatar user={item} size="xs" />
@@ -145,7 +150,7 @@ const SingleUserPicker = ({
     }
   }, [disabled, openOmniPicker, setValue, name]);
   const handlePick = useCallback(
-    (user: User) => {
+    (user: SelectedPickerItem) => {
       setValue(name, user, { shouldValidate: true });
       if (onSelected) onSelected(user);
     },
@@ -198,7 +203,7 @@ const SingleUserPicker = ({
           ) : (
             <Icon
               className={omniPickerIsOpen ? styles.focusIcon : styles.icon}
-              name="filled-circle-person"
+              name={placeholderIconName}
               title={MSG.selectMember}
             />
           )}

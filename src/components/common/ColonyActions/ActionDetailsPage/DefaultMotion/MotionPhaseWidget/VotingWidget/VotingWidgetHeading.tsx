@@ -28,14 +28,14 @@ const VotingWidgetHeading = ({
   actionData,
   pendingColonyMetadata,
 }: VotingWidgetHeadingProps) => {
+  const actionType = getExtendedActionType(actionData, pendingColonyMetadata);
+
   return (
     <div className={styles.main}>
       <Heading4
         text={MSG.title}
         textValues={{
-          actionType: formatActionType(
-            getExtendedActionType(actionData, pendingColonyMetadata),
-          ),
+          actionType: formatActionType(actionType),
         }}
         appearance={{ weight: 'bold', theme: 'dark', margin: 'none' }}
       />

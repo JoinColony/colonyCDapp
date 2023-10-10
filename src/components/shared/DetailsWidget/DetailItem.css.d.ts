@@ -2,6 +2,7 @@ declare namespace DetailItemCssNamespace {
   export interface IDetailItemCss {
     item: string;
     label: string;
+    listValue: string;
     tooltip: string;
     value: string;
   }

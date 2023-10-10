@@ -110,6 +110,15 @@ fragment ColonyMetadata on ColonyMetadata {
     hasAvatarChanged
     hasWhitelistChanged
     haveTokensChanged
+    newSafes {
+      ...Safe
+    }
+    oldSafes {
+      ...Safe
+    }
+  }
+  safes {
+    ...Safe
   }
 }
 
@@ -160,4 +169,11 @@ fragment ColonyRole on ColonyRole {
   role_3
   role_5
   role_6
+}
+
+fragment Safe on Safe {
+  name
+  address
+  chainId
+  moduleContractAddress
 }

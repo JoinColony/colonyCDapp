@@ -218,6 +218,8 @@ function* editColonyMotion({
                     : colonyAvatarImage !== colony.metadata.avatar,
                 hasWhitelistChanged: false,
                 haveTokensChanged,
+                newSafes: colony.metadata.safes,
+                oldSafes: colony.metadata.safes,
               },
             ],
             modifiedTokenAddresses,

@@ -16,6 +16,7 @@ input TokenFromEverywhereArguments {
   Address of the token on the blockchain
   """
   tokenAddress: String!
+  network: String
 }
 
 """
@@ -292,6 +293,11 @@ input UpdateExtensionByColonyAndHashInput {
   The timestamp when the extension was installed
   """
   installedAt: AWSTimestamp
+}
+
+input GetSafeTransactionStatusInput {
+  transactionHash: String!
+  chainId: Int!
 }
 
 """
@@ -774,6 +780,11 @@ enum ColonyActionType {
   An action related to creating a motion for funding an expenditure
   """
   FUND_EXPENDITURE_MOTION
+  """"
+  An action related to the creation of safe transactions via Safe Control
+  """
+  MAKE_ARBITRARY_TRANSACTION
+  MAKE_ARBITRARY_TRANSACTIONS_MOTION
 }
 
 """
@@ -869,6 +880,10 @@ type Query {
     input: GetMotionTimeoutPeriodsInput
   ): GetMotionTimeoutPeriodsReturn
     @function(name: "fetchMotionTimeoutPeriods-${env}")
+  getSafeTransactionStatus(
+    input: GetSafeTransactionStatusInput
+  ): [String!]
+    @function(name: "getSafeTransactionStatus-${env}")
 }
 
 """
@@ -1269,7 +1284,11 @@ type ColonyMetadata @model {
   Token addresses that were modified in a previous action (motion)
   Only present on pendingColonyMetadata for consumption in block ingestor
   """
-  modifiedTokenAddresses: PendingModifiedTokenAddresses #
+  modifiedTokenAddresses: PendingModifiedTokenAddresses
+  """
+  List of safes that are used within the Colony
+  """
+  safes: [Safe!]
 }
 
 """
@@ -1301,6 +1320,11 @@ type ColonyMetadataChangelog {
   Whether tokens have been added or removed from the Colony's token list
   """
   haveTokensChanged: Boolean!
+  """"
+  Whether safes have been added or removed from the Colony's safe list
+  """
+  newSafes: [Safe!]
+  oldSafes: [Safe!]
 }
 
 """
@@ -2385,6 +2409,10 @@ type ColonyAction @model {
   JSON string to pass custom, dynamic event data
   """
   individualEvents: String
+  """
+  Safe transactions associated with the action
+  """
+safeTransaction: SafeTransaction @hasOne(fields: ["id"])
 }
 
 type ColonyDecision @model {
@@ -2713,4 +2741,82 @@ type ExpenditureStage {
   slotId: Int!
   name: String!
   isReleased: Boolean!
+}
+
+type SimpleTargetProfile {
+  avatarHash: String
+  displayName: String
+}
+
+type SimpleTarget {
+  id: String!
+  profile: SimpleTargetProfile!
+  walletAddress: String!
+}
+
+type NFT {
+  id: String!
+  profile: NFTProfile!
+  walletAddress: String!
+}
+
+type NFTProfile {
+  displayName: String!
+}
+
+type FunctionParam {
+  name: String!
+  type: String!
+  value: String!
+}
+
+type NFTData {
+  address: String!
+  description: String
+  id: String!
+  imageUri: String
+  logoUri: String!
+  name: String
+  tokenName: String!
+  tokenSymbol: String!
+  uri: String!
+}
+
+enum SafeTransactionType {
+  TRANSFER_FUNDS
+  TRANSFER_NFT
+  CONTRACT_INTERACTION
+  RAW_TRANSACTION
+}
+
+type SafeTransaction @model {
+  id: ID!
+  title: String!
+  safe: Safe!
+  transactions: [SafeTransactionData] @hasMany(indexName: "byTransaction", fields: ["id"])
+}
+
+type SafeTransactionData @model {
+  id: ID!
+  tokenAddress: ID
+  token: Token @hasOne(fields: ["tokenAddress"])
+  amount: String
+  rawAmount: String
+  recipient: SimpleTarget
+  data: String
+  contract: SimpleTarget
+  abi: String
+  contractFunction: String
+  nft: NFT
+  nftData: NFTData
+  functionParams: [FunctionParam]
+  transactionType: SafeTransactionType!
+  transactionHash: ID! @index(name: "byTransaction", sortKeyFields: ["id"])
+}
+
+type Safe {
+  name: String!
+  address: String!
+  chainId: Int!
+  moduleContractAddress: String!
 }

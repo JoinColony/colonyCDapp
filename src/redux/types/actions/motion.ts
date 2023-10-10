@@ -1,7 +1,15 @@
 import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
-import { Address, Colony, Domain, DomainColor } from '~types';
+import {
+  Address,
+  Colony,
+  Domain,
+  DomainColor,
+  Safe,
+  SafeTransactionData,
+} from '~types';
+import { NetworkInfo } from '~constants';
 
 import { ActionTypes } from '../../actionTypes';
 
@@ -269,5 +277,24 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_FUND_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS,
+      MetaWithNavigate<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION,
+      {
+        safe: Omit<Safe, 'safeName'>;
+        transactionsTitle: string;
+        transactions: SafeTransactionData[];
+        colonyAddress: Address;
+        colonyName: string;
+        motionDomainId: string;
+        annotationMessage: string | null;
+        network: NetworkInfo;
+      },
+      MetaWithNavigate<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION_SUCCESS,
       MetaWithNavigate<object>
     >;

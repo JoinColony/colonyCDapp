@@ -22,7 +22,8 @@ export const getAddressFromAgent = (
       return agent.tokenAddress;
     }
 
-    case 'User': {
+    case 'User':
+    case 'SimpleTarget': {
       return agent.walletAddress;
     }
 

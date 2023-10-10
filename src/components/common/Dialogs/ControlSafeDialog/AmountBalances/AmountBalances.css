@@ -1,0 +1,51 @@
+.tokenAmount {
+  display: flex;
+}
+
+.tokenAmountSelect {
+  align-self: center;
+  margin-left: 20px;
+}
+
+.tokenAmountContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 20px;
+  gap: 5px;
+}
+
+.tokenAmountUsd {
+  width: 100%;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.tokenAmount label {
+  font-size: var(--size-smallish);
+  color: var(--dark);
+}
+
+.tokenAmount input {
+  font-weight: var(--weight-normal);
+  color: var(--dark);
+}
+
+.tokenAmountInputContainer {
+  width: 100%;
+}
+
+.inputContainerMaxButton button {
+  right: initial;
+  left: -6px;
+}
+
+.networkFee {
+  position: relative;
+  bottom: 14px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  text-align: right;
+  color: var(--grey-purple);
+}

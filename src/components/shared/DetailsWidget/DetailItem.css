@@ -42,3 +42,11 @@
 .tooltip {
   width: 220px;
 }
+
+.listValue {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 10px 0;
+  gap: 10px;
+}

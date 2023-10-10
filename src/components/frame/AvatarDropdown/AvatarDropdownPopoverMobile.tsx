@@ -14,8 +14,7 @@ import {
   useUserReputation,
   useCanInteractWithNetwork,
 } from '~hooks';
-import { SimpleMessageValues } from '~types/index';
-import { UserTokenBalanceData } from '~types';
+import { UserTokenBalanceData, SimpleMessageValues } from '~types';
 import UserTokenActivationDisplay from '~frame/UserTokenActivationButton/UserTokenActivationDisplay';
 
 import { TokenActivationPopover } from '../TokenActivation';
