@@ -55,7 +55,7 @@ function* cancelStakedExpenditureMotion({
   const batchId = 'motion-cancel-staked-expenditure';
   const { createMotion /* annotationMessage */ } = yield call(
     createTransactionChannels,
-    batchId,
+    meta.id,
     ['createMotion', 'annotateMotion'],
   );
 

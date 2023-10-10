@@ -37,6 +37,7 @@ export const ACTION_TYPES_ICONS_MAP: Record<AnyActionType, string> = {
   [ColonyActionType.CreateDecisionMotion]: 'emoji-decisions',
   [ColonyActionType.FundExpenditureMotion]: 'emoji-world-globe',
   [ColonyActionType.CancelStakedExpenditureMotion]: 'forbidden-signal',
+  [ColonyActionType.CreateStreamingPaymentMotion]: 'emoji-dollar-stack',
   [ColonyActionType.NullMotion]: 'forbidden-signal',
   [ColonyActionType.Generic]: 'circle-check-primary',
   [ExtendedColonyActionType.UpdateAddressBook]: 'emoji-edit-tools',

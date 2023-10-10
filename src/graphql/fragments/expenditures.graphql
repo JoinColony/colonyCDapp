@@ -53,3 +53,8 @@ fragment ExpenditureStage on ExpenditureStage {
   name
   isReleased
 }
+
+fragment StreamingPaymentMetadata on StreamingPaymentMetadata {
+  endCondition
+  limitAmount
+}

@@ -38,3 +38,14 @@ query GetMotionTransactionHash($motionId: ID!) {
     }
   }
 }
+
+query GetMotionsByActionType($actionType: ColonyActionType!) {
+  getColonyActionsByType(type: $actionType) {
+    items {
+      motionData {
+        transactionHash
+        nativeMotionId
+      }
+    }
+  }
+}
