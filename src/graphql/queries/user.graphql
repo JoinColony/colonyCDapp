@@ -51,3 +51,15 @@ query GetUsers($filter: ModelUserFilterInput) {
     }
   }
 }
+
+query GetUserNotifications($id: ID!, $colonyId: ID) {
+  notificationsByDate(
+    userId: $id
+    filter: { colonyId: { eq: $colonyId } }
+    sortDirection: ASC
+  ) {
+    items {
+      ...Notification
+    }
+  }
+}
