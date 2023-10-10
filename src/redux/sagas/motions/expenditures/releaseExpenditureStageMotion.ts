@@ -120,6 +120,12 @@ function* releaseExpenditureStageMotion({
         meta,
       });
     }
+
+    window.history.replaceState(
+      {},
+      '',
+      `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
+    );
   } catch (error) {
     console.error(error);
     yield put<Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_ERROR>>({
