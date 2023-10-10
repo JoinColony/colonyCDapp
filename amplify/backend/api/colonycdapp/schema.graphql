@@ -1389,6 +1389,33 @@ type ColonyContributor @model {
   """
   roles: [ColonyRole]
     @hasMany(indexName: "byTargetAddress", fields: ["contributorAddress"])
+
+  """
+  Contributor notification settings
+  """
+  notificationSettings: ContributorNotificationSettings
+}
+
+"""
+Contributor Notification Settings
+"""
+type ContributorNotificationSettings {
+  """
+  Whether the user will receive push notifications
+  """
+  enablePush: Boolean
+  """
+  Whether the user will receive email notifications
+  """
+  enableEmail: Boolean
+  """
+  Whether the user will receive notifications about actions
+  """
+  enableActions: Boolean
+  """
+  Whether the user will receive notifications about decisions
+  """
+  enableDecisions: Boolean
 }
 
 """
