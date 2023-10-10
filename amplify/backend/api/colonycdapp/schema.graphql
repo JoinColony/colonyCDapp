@@ -1011,6 +1011,30 @@ type Profile @model {
   """
   notificationSettings: NotificationSettings
 }
+
+"""
+An object holding the personal notification settings of a user
+"""
+type NotificationSettings {
+  """
+  Device registration tokens for push notifications
+  If this is null or the array is empty the user is not subscribed to push notifications
+  """
+  notificationTokens: [String]
+  """
+  Indicates whether the user wants to be emailed
+  """
+  enableEmail: Boolean
+  """
+  Indicates whether the user wants to be notified on mentions
+  """
+  enableMention: Boolean
+  """
+  Indicates whether the user wants to be notified on assignments
+  """
+  enableAssign: Boolean
+}
+
 """
 Notifications that a user may receive from a Colony
 """
