@@ -53,13 +53,22 @@ const RichText: FC<RichTextProps> = ({
         </>
       ) : (
         <>
-          <span
-            className={clsx({
-              'line-clamp-2 text-left': characterCount >= MIN_ANNOTATION_NUM,
+          <button
+            type="button"
+            onClick={toggleOnDecriptionSelect}
+            className={clsx('sm:hover:text-blue-400', {
+              'text-gray-900': characterCount,
+              'text-gray-500': !characterCount,
             })}
           >
-            {notFormattedContent}
-          </span>
+            <div
+              className={clsx({
+                'line-clamp-2 text-left': characterCount >= MIN_ANNOTATION_NUM,
+              })}
+            >
+              {notFormattedContent}
+            </div>
+          </button>
           {characterCount > NUMBER_OF_CHARS_IN_TWO_LINES &&
             !isDecriptionFieldExpanded && (
               <TextButton
