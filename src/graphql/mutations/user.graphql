@@ -25,3 +25,17 @@ mutation SubscribeToColonyPushNotifications(
 ) {
   subscribeToColonyPushNotifications(input: $input)
 }
+
+mutation UpdateUserNotificationToken($id: ID!, $notificationTokens: [String]!) {
+  updateProfile(
+    input: {
+      id: $id
+      notificationSettings: { notificationTokens: $notificationTokens }
+    }
+  ) {
+    id
+    notificationSettings {
+      notificationTokens
+    }
+  }
+}
