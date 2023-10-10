@@ -1011,6 +1011,54 @@ type Profile @model {
   """
   notificationSettings: NotificationSettings
 }
+"""
+Notifications that a user may receive from a Colony
+"""
+type Notification @model {
+  """
+  User ID the Notification was sent to
+  """
+  userId: ID!
+    @index(
+      name: "byUser"
+      queryField: "notificationsByDate"
+      sortKeyFields: ["createdAt"]
+    )
+  """
+  The user object the notification was sent to
+  """
+  user: User! @hasOne(fields: ["userId"])
+  """
+  Colony ID associated with the Notification
+  """
+  colonyId: ID!
+  """
+  The colony the notification was sent from
+  """
+  colony: Colony! @hasOne(fields: ["colonyId"])
+  """
+  Timestamp when the notification was sent
+  """
+  createdAt: AWSDateTime!
+  """
+  Flag indicating whether the notification has been read by the user
+  """
+  read: Boolean!
+  """
+  The default title for a notification is the Colony Display name
+  This enables setting a different title and takes precedence if set
+  """
+  title: String
+  """
+  The text of the notification with indications which string portions are links
+  eg. 'This signifies a {link}'
+  """
+  text: String!
+  """
+  The links connected to what is signified in the text
+  The order matches what is in the string
+  """
+  links: [String]
 }
 
 """
