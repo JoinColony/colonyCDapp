@@ -32,7 +32,7 @@ const ActionSidebarRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
         <Icon
           name={iconName}
           appearance={{ size: 'extraTiny' }}
-          className={clsx('[&_svg]:h-3 [&_svg]:w-3', {
+          className={clsx('h-3 w-3', {
             'text-negative-400': isError,
             'text-gray-400': !isError,
           })}
