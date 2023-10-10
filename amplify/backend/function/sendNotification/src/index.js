@@ -86,6 +86,8 @@ exports.handler = async (event, context, callback) => {
   } else {
     await broadcastToColony(params);
   }
+
+  return true;
 };
 
 async function sendMessageToUser(params) {
@@ -127,7 +129,7 @@ async function sendMessageToUser(params) {
       !Boolean(notificationPreferences?.enableMentions)
     ) {
       console.warn('User has disabled mentions, aborting notification');
-      return;
+      return false;
     }
 
     const message = {
