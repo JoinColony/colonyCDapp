@@ -45,7 +45,12 @@ let NotificationType;
   NotificationType['Ready'] = 'Ready';
 })(NotificationType || (NotificationType = {}));
 
+const removeInterpolationMarkers = (message) => {
+  return message.replace(/[\[\]]/g, '');
+};
+
 module.exports = {
   graphqlRequest,
   NotificationType,
+  removeInterpolationMarkers,
 };

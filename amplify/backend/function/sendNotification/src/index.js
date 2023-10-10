@@ -1,6 +1,10 @@
 const admin = require('firebase-admin');
 
-const { graphqlRequest, NotificationType } = require('./utils');
+const {
+  graphqlRequest,
+  NotificationType,
+  removeInterpolationMarkers,
+} = require('./utils');
 const { getUser, getColonyName, createUserNotification } = require('./graphql');
 const { notificationBuilder } = require('./messages');
 const { sendEmail } = require('./email');
@@ -133,7 +137,7 @@ async function sendMessageToUser(params) {
     }
 
     const message = {
-      data,
+      data: { ...data, body: removeInterpolationMarkers(data.body) },
       tokens: notificationTokens,
     };
 
@@ -166,7 +170,7 @@ async function broadcastToColony(params) {
   const { messaging, colonyId, data } = params;
 
   const message = {
-    data,
+    data: { ...data, body: removeInterpolationMarkers(data.body) },
     topic: colonyId,
   };
 

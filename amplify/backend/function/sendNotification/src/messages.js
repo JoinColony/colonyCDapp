@@ -46,20 +46,20 @@ const bodyBuilder = async (arguments) => {
     case NotificationType.Assignment:
       return intl.formatMessage({
         id: 'assignment',
-        defaultMessage: `${associatedUserDisplayName} assigned you to a task in ${type}: ${associatedActionId}`,
+        defaultMessage: `[${associatedUserDisplayName}] assigned you to a task in Development team: [${associatedActionId}]`,
       });
     case NotificationType.Custom:
       return customNotificationText;
     case NotificationType.Mention:
       return intl.formatMessage({
         id: 'mention',
-        defaultMessage: `${associatedUserDisplayName} has mentioned you in: ${associatedActionId}`,
+        defaultMessage: `[${associatedUserDisplayName}] has mentioned you in: [${associatedActionId}]`,
       });
     // When does this happen?
     case NotificationType.Ready:
       return intl.formatMessage({
         id: 'ready',
-        defaultMessage: `Batch payment to 51 addresses by ${associatedUserDisplayName} is ready to be released`,
+        defaultMessage: `Batch payment to 51 addresses by [${associatedUserDisplayName}] is ready to be released`,
       });
     default:
       throw new Error(`Notification type: ${type} is not defined`);

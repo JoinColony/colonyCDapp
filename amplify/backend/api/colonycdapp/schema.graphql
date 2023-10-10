@@ -1080,7 +1080,7 @@ type Notification @model {
   title: String
   """
   The text of the notification with indications which string portions are links
-  eg. 'This signifies a {link}'
+  eg. 'This signifies a [link]'
   """
   text: String!
   """
