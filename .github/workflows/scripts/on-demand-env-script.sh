@@ -61,17 +61,34 @@ fi
 
 # Create a user and password for HTTP Basic Authentication
 sudo mkdir -p /etc/nginx
-sudo htpasswd -cb /etc/nginx/.htpasswd user yourpassword
-# USERNAME=$(aws ssm get-parameter --name "/your/path/username" --query "Parameter.Value" --output text)
-# PASSWORD=$(aws ssm get-parameter --name "/your/path/password" --with-decryption --query "Parameter.Value" --output text)
+# sudo htpasswd -cb /etc/nginx/.htpasswd user yourpassword
+PASSWORD=$(aws ssm get-parameter --name "/qa/pr-environment/password" --with-decryption --query "Parameter.Value" --output text)
+USERNAME=$(aws ssm get-parameter --name "/qa/pr-environment/username" --query "Parameter.Value" --output text)
 
-# sudo htpasswd -cb /etc/nginx/.htpasswd $USERNAME $PASSWORD
+sudo htpasswd -cb /etc/nginx/.htpasswd $USERNAME $PASSWORD
+
+sudo mkdir -p /etc/nginx/ssl
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt
+
 
 # Create a new Nginx configuration file for reverse proxy with authentication
 cat <<EOL | sudo tee /etc/nginx/sites-available/myapp
 server {
     listen       80;
     server_name  _;
+
+    # Redirect all HTTP requests to HTTPS with a 301 Moved Permanently response.
+    return 301 https://\$host\$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name _;
+
+    # Specify the key and certificate file
+    ssl_certificate /etc/nginx/ssl/nginx.crt;
+    ssl_certificate_key /etc/nginx/ssl/nginx.key;
 
     location / {
         auth_basic "Restricted Access";
@@ -86,6 +103,7 @@ server {
     }
 }
 EOL
+
 
 # Enable the site and restart Nginx
 sudo ln -s /etc/nginx/sites-available/myapp /etc/nginx/sites-enabled
