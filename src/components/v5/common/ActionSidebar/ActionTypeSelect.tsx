@@ -45,7 +45,7 @@ const ActionTypeSelect: FC = () => {
           type="button"
           ref={relativeElementRef}
           className={clsx(
-            'flex text-md transition-colors hover:text-blue-400',
+            'flex text-md transition-colors md:hover:text-blue-400',
             {
               'text-gray-600': !actionType,
               'text-gray-900': actionType,
