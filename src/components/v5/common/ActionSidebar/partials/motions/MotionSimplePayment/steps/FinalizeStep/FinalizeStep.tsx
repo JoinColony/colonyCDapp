@@ -65,15 +65,15 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
         textClassName: 'text-4',
         iconAlignment: 'top',
         content: (
-          <span className="flex items-center text-4 mt-2">
-            <div className="flex text-blue-400 gap-2">
+          <div className="flex items-center text-4 gap-2">
+            <span className="flex text-blue-400 mr-2">
               <Icon name="arrows-clockwise" appearance={{ size: 'tiny' }} />
-            </div>
+            </span>
             {formatText(
               { id: 'motion.finalizeStep.transactions.remaining' },
               { transactions: remainingStakesNumber },
             )}
-          </span>
+          </div>
         ),
       }}
       sections={[
