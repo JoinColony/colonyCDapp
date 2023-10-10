@@ -9,7 +9,7 @@ class PinataCache {
 
   async init(): Promise<Cache> {
     if (!this.cache) {
-      this.cache = await caches.open(PINATA_CACHE_STORE);
+      this.cache = await caches?.open(PINATA_CACHE_STORE);
     }
     return this.cache;
   }
