@@ -88,7 +88,10 @@ const AmountField: FC<AmountFieldProps> = ({ name }) => {
         <button
           type="button"
           ref={relativeElementRef}
-          className={clsx(styles.button, 'text-gray-500')}
+          className={clsx(styles.button, {
+            'text-gray-900': selectedToken?.symbol,
+            'text-gray-500': !selectedToken?.symbol,
+          })}
           onClick={toggleTokenSelect}
           aria-label={formatMessage({ id: 'ariaLabel.selectToken' })}
         >
