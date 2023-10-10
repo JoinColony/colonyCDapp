@@ -66,9 +66,9 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
         iconAlignment: 'top',
         content: (
           <span className="flex items-center text-4 mt-2">
-            <span className="flex text-blue-400 mr-2">
+            <div className="flex text-blue-400 gap-2">
               <Icon name="arrows-clockwise" appearance={{ size: 'tiny' }} />
-            </span>
+            </div>
             {formatText(
               { id: 'motion.finalizeStep.transactions.remaining' },
               { transactions: remainingStakesNumber },
@@ -88,6 +88,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
               <div className="mb-2">
                 <h4 className="text-1 mb-3 flex justify-between items-center">
                   {formatText({ id: 'motion.finalizeStep.title' })}
+                  {/* @TODO: use MotionBadge component */}
                   {/* <TeamBadge
                     mode="claimed"
                     teamName={formatText({ id: pillTextId })}
