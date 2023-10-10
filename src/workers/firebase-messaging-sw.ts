@@ -24,11 +24,6 @@ initializeApp(firebaseConfig);
 // messages.
 const messaging = getMessaging();
 onBackgroundMessage(messaging, (payload) => {
-  console.warn(
-    '[firebase-messaging-sw.js] Received background message ',
-    payload,
-  );
-
   // Customize notification here
   const notificationTitle = payload?.data?.title || 'Colony Notification';
   const notificationOptions = {
