@@ -11,7 +11,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
   max = 100,
 }) => {
   if (progress > max || progress < 0) {
-    throw new Error('Progress bar value must be between 0 and 100');
+    throw new Error(`Progress bar value must be between between 0 and ${max}`);
   }
 
   return (
