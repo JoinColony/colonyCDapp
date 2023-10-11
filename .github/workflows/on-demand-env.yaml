@@ -50,7 +50,8 @@ jobs:
         --image-id ami-0eb260c4d5475b901 \
         --count 1 \
         --instance-type t3.2xlarge \
-        --security-group-ids sg-02cb297114f9747fe \
+        --iam-instance-profile Name=${{ vars.ON_DEMAND_ENV_EC2_INSTANCE_PROFILE_NAME }} \
+        --security-group-ids ${{ vars.ON_DEMAND_ENV_EC2_SG_ID }} \
         --user-data "file://./temp-on-demand-env-script.sh" \
         --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=dev-env-github-run-number-${{ github.run_number }}}]' \
         --block-device-mappings '[{"DeviceName":"/dev/sda1","Ebs":{"VolumeSize":80}}]' \
