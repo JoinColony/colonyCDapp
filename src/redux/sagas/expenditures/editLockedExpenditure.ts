@@ -7,7 +7,12 @@ import { ExpenditurePayoutFieldValue } from '~common/Expenditures/ExpenditureFor
 import { ColonyManager } from '~context';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 
-import { putError, initiateTransaction, getColonyManager } from '../utils';
+import {
+  putError,
+  initiateTransaction,
+  getColonyManager,
+  getPayoutsWithSlotIds,
+} from '../utils';
 import {
   createTransaction,
   getTxChannel,
@@ -30,10 +35,7 @@ function* editLockedExpenditure({
 
   const txChannel = yield call(getTxChannel, meta.id);
 
-  const payoutsWithSlotIds = payouts.map((payout, index) => ({
-    ...payout,
-    slotId: index + 1,
-  }));
+  const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
 
   /**
    * @NOTE: Resolving payouts means making sure that for every slot, there's only one payout with non-zero amount.

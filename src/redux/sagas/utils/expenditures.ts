@@ -139,3 +139,12 @@ export function* saveExpenditureMetadata({
     },
   });
 }
+
+/**
+ * Util attaching `slotId` property to each payout
+ */
+export const getPayoutsWithSlotIds = (payouts: ExpenditurePayoutFieldValue[]) =>
+  payouts.map((payout, index) => ({
+    ...payout,
+    slotId: index + 1,
+  }));

@@ -9,6 +9,7 @@ import {
   putError,
   getSetExpenditureValuesFunctionParams,
   initiateTransaction,
+  getPayoutsWithSlotIds,
 } from '../utils';
 import {
   createTransaction,
@@ -22,11 +23,7 @@ function* editExpenditure({
 }: Action<ActionTypes.EXPENDITURE_EDIT>) {
   const txChannel = yield call(getTxChannel, meta.id);
 
-  const payoutsWithSlotIds = payouts.map((payout, index) => ({
-    ...payout,
-    slotId: index + 1,
-  }));
-
+  const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
   /**
    * @NOTE: Resolving payouts means making sure that for every slot, there's only one payout with non-zero amount.
    * This is to meet the UI requirement that there should be one payout per row.
