@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import clsx from 'clsx';
 
 import { useController, useFormContext, useWatch } from 'react-hook-form';
 import ActionSidebarRow from '../ActionFormRow';
@@ -43,7 +44,13 @@ const ActionTypeSelect: FC = () => {
         <button
           type="button"
           ref={relativeElementRef}
-          className="flex text-md text-gray-600 transition-colors hover:text-blue-400"
+          className={clsx(
+            'flex text-md transition-colors md:hover:text-blue-400',
+            {
+              'text-gray-600': !actionType,
+              'text-gray-900': actionType,
+            },
+          )}
           onClick={toggleSelect}
         >
           {formatText({
