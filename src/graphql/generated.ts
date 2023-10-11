@@ -1264,6 +1264,11 @@ export type CreateMotionMessageInput = {
   vote?: InputMaybe<Scalars['String']>;
 };
 
+export type CreatePrivateBetaInviteCodeInput = {
+  id?: InputMaybe<Scalars['ID']>;
+  valid?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type CreateProfileInput = {
   avatar?: InputMaybe<Scalars['String']>;
   bio?: InputMaybe<Scalars['String']>;
@@ -1501,6 +1506,10 @@ export type DeleteIngestorStatsInput = {
 };
 
 export type DeleteMotionMessageInput = {
+  id: Scalars['ID'];
+};
+
+export type DeletePrivateBetaInviteCodeInput = {
   id: Scalars['ID'];
 };
 
@@ -2908,6 +2917,27 @@ export type ModelMotionMessageFilterInput = {
   vote?: InputMaybe<ModelStringInput>;
 };
 
+export type ModelPrivateBetaInviteCodeConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelPrivateBetaInviteCodeConditionInput>>>;
+  not?: InputMaybe<ModelPrivateBetaInviteCodeConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelPrivateBetaInviteCodeConditionInput>>>;
+  valid?: InputMaybe<ModelBooleanInput>;
+};
+
+export type ModelPrivateBetaInviteCodeConnection = {
+  __typename?: 'ModelPrivateBetaInviteCodeConnection';
+  items: Array<Maybe<PrivateBetaInviteCode>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelPrivateBetaInviteCodeFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelPrivateBetaInviteCodeFilterInput>>>;
+  id?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelPrivateBetaInviteCodeFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelPrivateBetaInviteCodeFilterInput>>>;
+  valid?: InputMaybe<ModelBooleanInput>;
+};
+
 export type ModelProfileConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelProfileConditionInput>>>;
   avatar?: InputMaybe<ModelStringInput>;
@@ -3400,6 +3430,13 @@ export type ModelSubscriptionMotionMessageFilterInput = {
   vote?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
+export type ModelSubscriptionPrivateBetaInviteCodeFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionPrivateBetaInviteCodeFilterInput>>>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionPrivateBetaInviteCodeFilterInput>>>;
+  valid?: InputMaybe<ModelSubscriptionBooleanInput>;
+};
+
 export type ModelSubscriptionProfileFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionProfileFilterInput>>>;
   avatar?: InputMaybe<ModelSubscriptionStringInput>;
@@ -3832,6 +3869,7 @@ export type Mutation = {
   createExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   createIngestorStats?: Maybe<IngestorStats>;
   createMotionMessage?: Maybe<MotionMessage>;
+  createPrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   createProfile?: Maybe<Profile>;
   createReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   createStreamingPayment?: Maybe<StreamingPayment>;
@@ -3868,6 +3906,7 @@ export type Mutation = {
   deleteExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   deleteIngestorStats?: Maybe<IngestorStats>;
   deleteMotionMessage?: Maybe<MotionMessage>;
+  deletePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   deleteProfile?: Maybe<Profile>;
   deleteReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   deleteStreamingPayment?: Maybe<StreamingPayment>;
@@ -3904,6 +3943,7 @@ export type Mutation = {
   updateExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   updateIngestorStats?: Maybe<IngestorStats>;
   updateMotionMessage?: Maybe<MotionMessage>;
+  updatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   updateProfile?: Maybe<Profile>;
   updateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   updateStreamingPayment?: Maybe<StreamingPayment>;
@@ -4074,6 +4114,13 @@ export type MutationCreateIngestorStatsArgs = {
 export type MutationCreateMotionMessageArgs = {
   condition?: InputMaybe<ModelMotionMessageConditionInput>;
   input: CreateMotionMessageInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreatePrivateBetaInviteCodeArgs = {
+  condition?: InputMaybe<ModelPrivateBetaInviteCodeConditionInput>;
+  input: CreatePrivateBetaInviteCodeInput;
 };
 
 
@@ -4314,6 +4361,13 @@ export type MutationDeleteMotionMessageArgs = {
 
 
 /** Root mutation type */
+export type MutationDeletePrivateBetaInviteCodeArgs = {
+  condition?: InputMaybe<ModelPrivateBetaInviteCodeConditionInput>;
+  input: DeletePrivateBetaInviteCodeInput;
+};
+
+
+/** Root mutation type */
 export type MutationDeleteProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: DeleteProfileInput;
@@ -4550,6 +4604,13 @@ export type MutationUpdateMotionMessageArgs = {
 
 
 /** Root mutation type */
+export type MutationUpdatePrivateBetaInviteCodeArgs = {
+  condition?: InputMaybe<ModelPrivateBetaInviteCodeConditionInput>;
+  input: UpdatePrivateBetaInviteCodeInput;
+};
+
+
+/** Root mutation type */
 export type MutationUpdateProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: UpdateProfileInput;
@@ -4680,6 +4741,14 @@ export type PendingModifiedTokenAddressesInput = {
   removed?: InputMaybe<Array<Scalars['String']>>;
 };
 
+export type PrivateBetaInviteCode = {
+  __typename?: 'PrivateBetaInviteCode';
+  createdAt: Scalars['AWSDateTime'];
+  id?: Maybe<Scalars['ID']>;
+  updatedAt: Scalars['AWSDateTime'];
+  valid?: Maybe<Scalars['Boolean']>;
+};
+
 /** Represents a user's profile within the Colony Network */
 export type Profile = {
   __typename?: 'Profile';
@@ -4808,6 +4877,7 @@ export type Query = {
   getMotionState: Scalars['Int'];
   /** Get the timeout for the current period of a motion */
   getMotionTimeoutPeriods?: Maybe<GetMotionTimeoutPeriodsReturn>;
+  getPrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
   getProfileByUsername?: Maybe<ModelProfileConnection>;
@@ -4861,6 +4931,7 @@ export type Query = {
   listExpenditures?: Maybe<ModelExpenditureConnection>;
   listIngestorStats?: Maybe<ModelIngestorStatsConnection>;
   listMotionMessages?: Maybe<ModelMotionMessageConnection>;
+  listPrivateBetaInviteCodes?: Maybe<ModelPrivateBetaInviteCodeConnection>;
   listProfiles?: Maybe<ModelProfileConnection>;
   listReputationMiningCycleMetadata?: Maybe<ModelReputationMiningCycleMetadataConnection>;
   listStreamingPaymentMetadata?: Maybe<ModelStreamingPaymentMetadataConnection>;
@@ -5236,6 +5307,12 @@ export type QueryGetMotionStateArgs = {
 /** Root query type */
 export type QueryGetMotionTimeoutPeriodsArgs = {
   input?: InputMaybe<GetMotionTimeoutPeriodsInput>;
+};
+
+
+/** Root query type */
+export type QueryGetPrivateBetaInviteCodeArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -5619,6 +5696,14 @@ export type QueryListMotionMessagesArgs = {
 
 
 /** Root query type */
+export type QueryListPrivateBetaInviteCodesArgs = {
+  filter?: InputMaybe<ModelPrivateBetaInviteCodeFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Root query type */
 export type QueryListProfilesArgs = {
   filter?: InputMaybe<ModelProfileFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5807,6 +5892,7 @@ export type Subscription = {
   onCreateExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   onCreateIngestorStats?: Maybe<IngestorStats>;
   onCreateMotionMessage?: Maybe<MotionMessage>;
+  onCreatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onCreateProfile?: Maybe<Profile>;
   onCreateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   onCreateStreamingPayment?: Maybe<StreamingPayment>;
@@ -5839,6 +5925,7 @@ export type Subscription = {
   onDeleteExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   onDeleteIngestorStats?: Maybe<IngestorStats>;
   onDeleteMotionMessage?: Maybe<MotionMessage>;
+  onDeletePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onDeleteProfile?: Maybe<Profile>;
   onDeleteReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   onDeleteStreamingPayment?: Maybe<StreamingPayment>;
@@ -5871,6 +5958,7 @@ export type Subscription = {
   onUpdateExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   onUpdateIngestorStats?: Maybe<IngestorStats>;
   onUpdateMotionMessage?: Maybe<MotionMessage>;
+  onUpdatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onUpdateProfile?: Maybe<Profile>;
   onUpdateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   onUpdateStreamingPayment?: Maybe<StreamingPayment>;
@@ -5995,6 +6083,11 @@ export type SubscriptionOnCreateIngestorStatsArgs = {
 
 export type SubscriptionOnCreateMotionMessageArgs = {
   filter?: InputMaybe<ModelSubscriptionMotionMessageFilterInput>;
+};
+
+
+export type SubscriptionOnCreatePrivateBetaInviteCodeArgs = {
+  filter?: InputMaybe<ModelSubscriptionPrivateBetaInviteCodeFilterInput>;
 };
 
 
@@ -6158,6 +6251,11 @@ export type SubscriptionOnDeleteMotionMessageArgs = {
 };
 
 
+export type SubscriptionOnDeletePrivateBetaInviteCodeArgs = {
+  filter?: InputMaybe<ModelSubscriptionPrivateBetaInviteCodeFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteProfileArgs = {
   filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
 };
@@ -6315,6 +6413,11 @@ export type SubscriptionOnUpdateIngestorStatsArgs = {
 
 export type SubscriptionOnUpdateMotionMessageArgs = {
   filter?: InputMaybe<ModelSubscriptionMotionMessageFilterInput>;
+};
+
+
+export type SubscriptionOnUpdatePrivateBetaInviteCodeArgs = {
+  filter?: InputMaybe<ModelSubscriptionPrivateBetaInviteCodeFilterInput>;
 };
 
 
@@ -6849,6 +6952,11 @@ export type UpdateMotionMessageInput = {
   motionId?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
   vote?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdatePrivateBetaInviteCodeInput = {
+  id: Scalars['ID'];
+  valid?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type UpdateProfileInput = {
