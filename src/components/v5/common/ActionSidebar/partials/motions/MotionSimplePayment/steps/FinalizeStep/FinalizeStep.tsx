@@ -44,17 +44,15 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
 
   /* Stop polling when mounted / dismounted */
   useEffect(() => {
-    stopPollingAction();
+    if (isClaimed) {
+      stopPollingAction();
+    }
     return stopPollingAction;
-  }, [stopPollingAction]);
+  }, [isClaimed, stopPollingAction]);
 
   /* Update colony object when motion gets finalized. */
   if (actionData.motionData.isFinalized) {
     refetchColony();
-  }
-
-  if (isClaimed) {
-    stopPollingAction();
   }
 
   return (

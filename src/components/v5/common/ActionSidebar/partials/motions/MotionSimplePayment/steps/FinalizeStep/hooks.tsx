@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BigNumber } from 'ethers';
 import { useLocation } from 'react-router-dom';
-import { ColonyActionType, StakerRewards, UserStakes } from '~gql';
+import { ColonyActionType } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
 import { mapPayload } from '~utils/actions';
 import { formatText } from '~utils/intl';
@@ -46,13 +46,12 @@ export const useFinalizeStep = (actionData: MotionAction) => {
     BigNumber.from(domainBalance ?? '0').gte(amount as string);
 
   const transform = mapPayload(
-    () =>
-      ({
-        colonyAddress: colony?.colonyAddress,
-        userAddress: user?.walletAddress,
-        motionId,
-        gasEstimate,
-      } as MotionFinalizePayload),
+    (): MotionFinalizePayload => ({
+      colonyAddress: colony?.colonyAddress || '',
+      userAddress: user?.walletAddress || '',
+      motionId,
+      gasEstimate,
+    }),
   );
 
   return {
@@ -114,25 +113,20 @@ export const useClaimConfig = (
     } else {
       setIsClaimed(!!stakerReward?.isClaimed);
     }
-  }, [user, stakerReward]);
+  }, [user, stakerReward?.isClaimed]);
 
-  const {
-    rewards: { yay: yayReward, nay: nayReward },
-    isClaimed: isRewardClaimed,
-  } = stakerReward as StakerRewards;
+  useEffect(() => {
+    if (stakerReward?.isClaimed && !isClaimed) {
+      setIsClaimed(true);
+    }
+  }, [stakerReward?.isClaimed, isClaimed]);
 
-  if (isRewardClaimed && !isClaimed) {
-    setIsClaimed(true);
-  }
-
-  const {
-    stakes: {
-      raw: { nay: nayStakes, yay: yayStakes },
-    },
-  } = userStake as UserStakes;
-
-  const totals = BigNumber.from(yayReward).add(nayReward);
-  const userTotalStake = BigNumber.from(nayStakes).add(yayStakes);
+  const totals = BigNumber.from(stakerReward?.rewards.yay).add(
+    stakerReward?.rewards.nay || '',
+  );
+  const userTotalStake = BigNumber.from(userStake?.stakes.raw.nay).add(
+    userStake?.stakes.raw.yay || '',
+  );
   const userWinnings = totals.sub(userTotalStake);
 
   // Else, return full widget
