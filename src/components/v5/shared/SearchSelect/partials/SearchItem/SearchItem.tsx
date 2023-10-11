@@ -37,7 +37,7 @@ const SearchItem: FC<SearchItemProps> = ({
           showAvatar,
           color,
           missingPermissions,
-          walletAddress,
+          walletAddress = '',
           token,
         }) => {
           const firstDisabledOption = options.filter(
