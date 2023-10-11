@@ -1,25 +1,33 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import { ClientType } from '@colony/colony-js';
-import { BigNumber } from 'ethers';
+import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
+import { BigNumber, utils } from 'ethers';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 import { ExpenditurePayoutFieldValue } from '~common/Expenditures/ExpenditureForm';
+import { ColonyManager } from '~context';
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 
-import {
-  putError,
-  getSetExpenditureValuesFunctionParams,
-  initiateTransaction,
-} from '../utils';
+import { putError, initiateTransaction, getColonyManager } from '../utils';
 import {
   createTransaction,
   getTxChannel,
   waitForTxResult,
 } from '../transactions';
 
+function toB32(input) {
+  return utils.hexZeroPad(utils.hexlify(input), 32);
+}
+
 function* editLockedExpenditure({
   payload: { colonyAddress, expenditure, payouts },
   meta,
 }: Action<ActionTypes.EXPENDITURE_LOCKED_EDIT>) {
+  const colonyManager: ColonyManager = yield getColonyManager();
+  const colonyClient = yield colonyManager.getClient(
+    ClientType.ColonyClient,
+    colonyAddress,
+  );
+
   const txChannel = yield call(getTxChannel, meta.id);
 
   const payoutsWithSlotIds = payouts.map((payout, index) => ({
@@ -74,14 +82,52 @@ function* editLockedExpenditure({
   });
 
   try {
+    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient,
+      expenditure.nativeDomainId,
+      ColonyRole.Administration,
+    );
+
+    const encodedMulticallData: string[] = [];
+
+    resolvedPayouts.forEach((payout) => {
+      // Set recipient
+      encodedMulticallData.push(
+        colonyClient.interface.encodeFunctionData('setExpenditureState', [
+          permissionDomainId,
+          childSkillIndex,
+          expenditure.nativeId,
+          BigNumber.from(26),
+          [false, true],
+          [toB32(payout.slotId), toB32(BigNumber.from(0))],
+          toB32(payout.recipientAddress),
+        ]),
+      );
+
+      // Set token address and amount
+      encodedMulticallData.push(
+        colonyClient.interface.encodeFunctionData(
+          'setExpenditurePayout(uint256,uint256,uint256,uint256,address,uint256)',
+          [
+            permissionDomainId,
+            childSkillIndex,
+            expenditure.nativeId,
+            payout.slotId,
+            payout.tokenAddress,
+            BigNumber.from(payout.amount).mul(
+              // @TODO: This should get the token decimals of the selected token
+              BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS),
+            ),
+          ],
+        ),
+      );
+    });
+
     yield fork(createTransaction, meta.id, {
       context: ClientType.ColonyClient,
-      methodName: 'setExpenditureValues',
+      methodName: 'multicall',
       identifier: colonyAddress,
-      params: getSetExpenditureValuesFunctionParams(
-        expenditure.nativeId,
-        resolvedPayouts,
-      ),
+      params: [encodedMulticallData],
     });
 
     yield initiateTransaction({ id: meta.id });
@@ -96,6 +142,7 @@ function* editLockedExpenditure({
       });
     }
   } catch (error) {
+    console.error(error);
     return yield putError(
       ActionTypes.EXPENDITURE_LOCKED_EDIT_ERROR,
       error,
