@@ -9,6 +9,10 @@ import { BalanceProps } from '../types';
 import PopoverButton from '~shared/Extensions/PopoverButton';
 import { useColonyContext, useMobile } from '~hooks';
 import TitleLabel from '~v5/shared/TitleLabel';
+import Button from '~v5/shared/Button';
+import { formatText } from '~utils/intl';
+import { useTokensModalContext } from '~context/TokensModalContext';
+import { TOKENS_MODAL_TYPES } from '~v5/shared/Modal/partials/TokensModal/consts';
 
 const displayName =
   'common.Extensions.UserHub.partials.ReputationTab.partials.Balance';
@@ -35,6 +39,8 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
     [nativeToken],
   );
 
+  const { toggleOnTeamSelect, setTokensModalType } = useTokensModalContext();
+
   return (
     <div>
       <TitleLabel text={formatMessage({ id: 'balance.in.colony' })} />
@@ -60,8 +66,28 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
               </span>
               {!isMobile && (
                 <div className="flex gap-2">
-                  <PopoverButton type="deposit" />
-                  <PopoverButton type="withdraw" />
+                  <Button
+                    mode="primaryOutline"
+                    size="extraSmall"
+                    iconName="arrow-circle-down-right"
+                    iconSize="extraTiny"
+                    text={formatText({ id: 'button.activate' })}
+                    onClick={() => {
+                      toggleOnTeamSelect();
+                      setTokensModalType(TOKENS_MODAL_TYPES.activate);
+                    }}
+                  />
+                  <Button
+                    mode="primaryOutline"
+                    size="extraSmall"
+                    iconName="arrow-circle-up-right"
+                    iconSize="extraTiny"
+                    text={formatText({ id: 'button.deactivate' })}
+                    onClick={() => {
+                      toggleOnTeamSelect();
+                      setTokensModalType(TOKENS_MODAL_TYPES.deactivate);
+                    }}
+                  />
                 </div>
               )}
             </div>
@@ -75,8 +101,22 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
           </div>
           {isMobile && (
             <div className="flex gap-2 w-full mt-3">
-              <PopoverButton type="deposit" isFullSize />
-              <PopoverButton type="withdraw" isFullSize />
+              <Button
+                mode="primaryOutline"
+                size="extraSmall"
+                iconName="arrow-circle-down-right"
+                iconSize="extraTiny"
+                text={formatText({ id: 'button.activate' })}
+                isFullSize
+              />
+              <Button
+                mode="primaryOutline"
+                size="extraSmall"
+                iconName="arrow-circle-up-right"
+                iconSize="extraTiny"
+                text={formatText({ id: 'button.deactivate' })}
+                isFullSize
+              />
             </div>
           )}
         </div>

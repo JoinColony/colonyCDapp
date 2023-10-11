@@ -21,6 +21,7 @@ import {
 } from '~context/MemberModalContext';
 import { usePageLayout } from './hooks';
 import { UserTransactionContextProvider } from '~context/UserTransactionContext';
+import { TokensModalContextProvider } from '~context/TokensModalContext';
 
 const displayName = 'frame.Extensions.layouts.PageLayout';
 
@@ -45,42 +46,44 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
   }, [isDarkMode]);
 
   return (
-    <Spinner loading={false} loadingText={loadingText}>
-      {canUpgrade && <CalamityBanner items={calamityBannerItems} />}
-      <ToastContainer
-        className={styles.toastNotification}
-        autoClose={3000}
-        hideProgressBar
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        pauseOnHover
-        closeButton={CloseButton}
-      />
-      <UserTransactionContextProvider>
-        <Header />
-      </UserTransactionContextProvider>
-      {/* @TODO: Remove wallet component when we have a proper wallet */}
-      <div className="hidden">
-        <Wallet />
-      </div>
-      <main className="mt-5 pb-24">
-        <div className="inner">
-          {isMobile && (
-            <div className="mb-9">
-              <Navigation pageName={pageName} />
-            </div>
-          )}
-          <PageTitle title={title} subtitle={description} />
-          <div className="mt-9">{children}</div>
+    <TokensModalContextProvider>
+      <Spinner loading={false} loadingText={loadingText}>
+        {canUpgrade && <CalamityBanner items={calamityBannerItems} />}
+        <ToastContainer
+          className={styles.toastNotification}
+          autoClose={3000}
+          hideProgressBar
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          pauseOnHover
+          closeButton={CloseButton}
+        />
+        <UserTransactionContextProvider>
+          <Header />
+        </UserTransactionContextProvider>
+        {/* @TODO: Remove wallet component when we have a proper wallet */}
+        <div className="hidden">
+          <Wallet />
         </div>
-      </main>
-      <ManageMemberModal
-        isOpen={isMemberModalOpen}
-        onClose={() => setIsMemberModalOpen(false)}
-        user={modalUser}
-      />
-    </Spinner>
+        <main className="mt-5 pb-24">
+          <div className="inner">
+            {isMobile && (
+              <div className="mb-9">
+                <Navigation pageName={pageName} />
+              </div>
+            )}
+            <PageTitle title={title} subtitle={description} />
+            <div className="mt-9">{children}</div>
+          </div>
+        </main>
+        <ManageMemberModal
+          isOpen={isMemberModalOpen}
+          onClose={() => setIsMemberModalOpen(false)}
+          user={modalUser}
+        />
+      </Spinner>
+    </TokensModalContextProvider>
   );
 };
 
