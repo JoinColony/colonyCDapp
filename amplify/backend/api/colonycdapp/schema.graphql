@@ -3243,3 +3243,8 @@ type ReputationMiningCycleMetadata @model {
   """
   lastCompletedAt: AWSDateTime! # We're using this to determine whether to re-calculate colony-wide user reputation (updateContributorsWithReputation)
 }
+
+type PrivateBetaInviteCode @model {
+  id: ID
+  valid: Boolean @default(value: "true")
+}
