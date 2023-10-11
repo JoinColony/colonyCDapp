@@ -18,9 +18,10 @@ export const useUserSelect = (inputValue: string): UserSelectHookProps => {
   const verifiedUsers: SearchSelectOption[] = useMemo(
     () =>
       (data?.getContributorsByColony?.items ?? []).map((item, index) => ({
-        value: item?.user?.profile?.displayName,
-        label: item?.user?.profile?.displayName,
-        avatar: item?.user?.profile?.avatar || item?.user?.profile?.thumbnail,
+        value: item?.user?.profile?.displayName || '',
+        label: item?.user?.profile?.displayName || '',
+        avatar:
+          item?.user?.profile?.avatar || item?.user?.profile?.thumbnail || '',
         walletAddress: item?.user?.walletAddress,
         id: index,
         showAvatar: true,

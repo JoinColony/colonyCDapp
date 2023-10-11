@@ -6,7 +6,7 @@ import { isHexString } from 'ethers/lib/utils';
 import { useUserSelect } from './hooks';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
 import UserAvatar from '~v5/shared/UserAvatar';
-import { useUserByAddress, useUserByName } from '~hooks';
+import { useUserByAddress } from '~hooks';
 import useToggle from '~hooks/useToggle';
 import { UserSelectProps } from './types';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
@@ -36,16 +36,12 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
   ] = useToggle();
   const { user: userByAddress, loading: userByAddressLoading } =
     useUserByAddress(field.value);
-  const { user: userByName, loading: userByNameLoading } = useUserByName(
-    field.value,
-  );
+
   const userDisplayName =
     (!userByAddressLoading && userByAddress?.profile?.displayName) ||
-    (!userByNameLoading && userByName?.profile?.displayName) ||
     field.value;
 
-  const userWalletAddress =
-    userByAddress?.walletAddress || userByName?.walletAddress || field.value;
+  const userWalletAddress = field.value;
 
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
@@ -67,10 +63,10 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
         onClick={toggleUserSelect}
         aria-label={formatText({ id: 'ariaLabel.selectUser' })}
       >
-        {field.value ? (
+        {userByAddress || field.value ? (
           <>
             <UserAvatar
-              user={userByName || userByAddress}
+              user={userByAddress || field.value}
               userName={userDisplayName}
               size="xs"
               className={
@@ -97,7 +93,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
             toggleUserSelectOff();
           }}
           onSearch={(query) => {
-            field.onChange(isHexString(query) ? field.value : undefined);
+            field.onChange(isHexString(query) ? query : undefined);
           }}
           ref={(ref) => {
             registerContainerRef(ref);
@@ -113,10 +109,8 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
         <UserAvatarPopover
           userName={userDisplayName}
           walletAddress={userWalletAddress}
-          aboutDescription={
-            userByAddress?.profile?.bio || userByName?.profile?.bio || ''
-          }
-          user={userByName || userByAddress}
+          aboutDescription={userByAddress?.profile?.bio || ''}
+          user={userByAddress}
           className={clsx(
             usersOptions.isRecipientNotVerified,
             'text-warning-400',
@@ -142,9 +136,9 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
             className="mt-4"
           >
             {userByAddress?.walletAddress ||
-              (userByName?.walletAddress && (
-                <div className="mt-2 font-semibold">
-                  {userByAddress?.walletAddress || userByName?.walletAddress}
+              (field.value && (
+                <div className="mt-2 font-semibold break-words">
+                  {userByAddress?.walletAddress || field.value}
                 </div>
               ))}
           </NotificationBanner>
