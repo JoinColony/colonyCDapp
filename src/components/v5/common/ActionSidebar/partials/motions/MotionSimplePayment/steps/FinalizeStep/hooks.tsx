@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { BigNumber } from 'ethers';
 import { useLocation } from 'react-router-dom';
 import { ColonyActionType } from '~gql';
@@ -121,18 +121,29 @@ export const useClaimConfig = (
     }
   }, [stakerReward?.isClaimed, isClaimed]);
 
-  const totals = BigNumber.from(stakerReward?.rewards.yay).add(
-    stakerReward?.rewards.nay || '',
+  const totals = useMemo(
+    () =>
+      stakerReward &&
+      BigNumber.from(stakerReward?.rewards?.yay).add(
+        stakerReward?.rewards.nay || '',
+      ),
+    [stakerReward],
   );
-  const userTotalStake = BigNumber.from(userStake?.stakes.raw.nay).add(
-    userStake?.stakes.raw.yay || '',
+
+  const userTotalStake = useMemo(
+    () =>
+      userStake &&
+      BigNumber.from(userStake?.stakes?.raw?.nay).add(
+        userStake?.stakes?.raw?.yay || '',
+      ),
+    [userStake],
   );
-  const userWinnings = totals.sub(userTotalStake);
+  const userWinnings = totals?.sub(userTotalStake || 0);
 
   // Else, return full widget
   const buttonTextId = isClaimed ? 'button.claimed' : 'button.claim';
   const remainingStakesNumber = remainingStakes.length;
-  const canClaimStakes = !totals.isZero() && !isClaimed;
+  const canClaimStakes = !totals?.isZero() && !isClaimed;
   const handleClaimSuccess = () => {
     setIsClaimed(true);
     startPollingAction(1000);
@@ -152,7 +163,7 @@ export const useClaimConfig = (
       value: (
         <div>
           <Numeral
-            value={userTotalStake}
+            value={userTotalStake || 0}
             decimals={nativeTokenDecimals}
             suffix={nativeTokenSymbol}
           />
@@ -165,7 +176,7 @@ export const useClaimConfig = (
       value: (
         <div>
           <Numeral
-            value={userWinnings}
+            value={userWinnings || 0}
             decimals={nativeTokenDecimals}
             suffix={nativeTokenSymbol}
           />
@@ -178,7 +189,7 @@ export const useClaimConfig = (
       value: (
         <div>
           <Numeral
-            value={totals}
+            value={totals || 0}
             decimals={nativeTokenDecimals}
             suffix={nativeTokenSymbol}
           />
