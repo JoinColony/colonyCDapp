@@ -24,7 +24,6 @@ const UserInfo: FC<UserInfoProps> = ({
   isContributorsList,
 }) => {
   const aboutDescriptionText = formatText(aboutDescription);
-
   const isTopContributorType = userStatus === 'top' && isContributorsList;
 
   return (
@@ -52,10 +51,9 @@ const UserInfo: FC<UserInfoProps> = ({
               text={formatText({ id: 'userInfo.top.contributor.in' })}
             />
             <div className="flex gap-1">
-              {domains?.map(({ domainName, domainId }) => {
-                const name = domainName;
-                return <UserStatus key={domainId} mode="team" text={name} />;
-              })}
+              {domains?.map(({ domainName, domainId }) => (
+                <UserStatus key={domainId} mode="team" text={domainName} />
+              ))}
             </div>
           </>
         )}
@@ -95,51 +93,45 @@ const UserInfo: FC<UserInfoProps> = ({
                 permissions,
                 reputationPercentage,
                 reputationRaw,
-              }) => {
-                const titleText = domainName;
+              }) => (
+                <li
+                  key={domainId}
+                  className="grid grid-cols-[1fr,2fr,1fr] items-center font-medium"
+                >
+                  <span className="text-md">{domainName}</span>
+                  {/* Note: permissions here is temporary, for illustrative purposes only */}
+                  <div className="flex flex-col">
+                    {permissions.map((permission) => {
+                      const { text, description, name } =
+                        permissionsMap[permission];
 
-                return (
-                  <li
-                    key={domainId}
-                    className="grid grid-cols-[1fr,2fr,1fr] items-center font-medium"
-                  >
-                    <span className="text-md">{titleText}</span>
-                    {/* Note: permissions here is temporary, for illustrative purposes only */}
-                    <div className="flex flex-col">
-                      {permissions.map((permission) => {
-                        const { text, description, name } =
-                          permissionsMap[permission];
-
-                        return (
-                          <div key={name}>
-                            <UserPermissionsBadge
-                              text={text}
-                              description={description}
-                              name={name}
-                            />
-                          </div>
-                        );
-                      })}
-                    </div>
-                    <span className="inline-flex items-center text-sm text-blue-400">
-                      <Tooltip
-                        tooltipContent={<span>{reputationRaw} pts</span>}
-                      >
-                        <Icon name="star" appearance={{ size: 'extraTiny' }} />
-                        <span className="inline-block ml-1 mr-2">
-                          {reputationPercentage.toFixed(2)}%
-                        </span>
-                      </Tooltip>
-                    </span>
-                  </li>
-                );
-              },
+                      return (
+                        <div key={name}>
+                          <UserPermissionsBadge
+                            text={text}
+                            description={description}
+                            name={name}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <span className="inline-flex items-center text-sm text-blue-400">
+                    <Tooltip tooltipContent={<span>{reputationRaw} pts</span>}>
+                      <Icon name="star" appearance={{ size: 'extraTiny' }} />
+                      <span className="inline-block ml-1 mr-2">
+                        {reputationPercentage.toFixed(2)}%
+                      </span>
+                    </Tooltip>
+                  </span>
+                </li>
+              ),
             )}
           </ul>
         </>
       ) : undefined}
 
-      {/* 
+      {/*
       @ Remove once new permissions pills are implemented
       {permissions && permissions.length && (
         <>
