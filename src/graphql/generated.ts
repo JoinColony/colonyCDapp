@@ -7577,6 +7577,13 @@ export type GetMembersForColonyQueryVariables = Exact<{
 
 export type GetMembersForColonyQuery = { __typename?: 'Query', getMembersForColony?: { __typename?: 'MembersForColonyReturn', contributors?: Array<{ __typename?: 'Contributor', address: string, reputationPercentage?: string | null, reputationAmount?: string | null, user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null }> | null, watchers?: Array<{ __typename?: 'Watcher', address: string, user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null }> | null } | null };
 
+export type GetPrivateBetaCodeInviteValidityQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetPrivateBetaCodeInviteValidityQuery = { __typename?: 'Query', getPrivateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', valid?: boolean | null } | null };
+
 export type GetColonyContributorQueryVariables = Exact<{
   id: Scalars['ID'];
   colonyAddress: Scalars['ID'];
@@ -9707,6 +9714,41 @@ export function useGetMembersForColonyLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type GetMembersForColonyQueryHookResult = ReturnType<typeof useGetMembersForColonyQuery>;
 export type GetMembersForColonyLazyQueryHookResult = ReturnType<typeof useGetMembersForColonyLazyQuery>;
 export type GetMembersForColonyQueryResult = Apollo.QueryResult<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>;
+export const GetPrivateBetaCodeInviteValidityDocument = gql`
+    query GetPrivateBetaCodeInviteValidity($id: ID!) {
+  getPrivateBetaInviteCode(id: $id) {
+    valid
+  }
+}
+    `;
+
+/**
+ * __useGetPrivateBetaCodeInviteValidityQuery__
+ *
+ * To run a query within a React component, call `useGetPrivateBetaCodeInviteValidityQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPrivateBetaCodeInviteValidityQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPrivateBetaCodeInviteValidityQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetPrivateBetaCodeInviteValidityQuery(baseOptions: Apollo.QueryHookOptions<GetPrivateBetaCodeInviteValidityQuery, GetPrivateBetaCodeInviteValidityQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPrivateBetaCodeInviteValidityQuery, GetPrivateBetaCodeInviteValidityQueryVariables>(GetPrivateBetaCodeInviteValidityDocument, options);
+      }
+export function useGetPrivateBetaCodeInviteValidityLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPrivateBetaCodeInviteValidityQuery, GetPrivateBetaCodeInviteValidityQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPrivateBetaCodeInviteValidityQuery, GetPrivateBetaCodeInviteValidityQueryVariables>(GetPrivateBetaCodeInviteValidityDocument, options);
+        }
+export type GetPrivateBetaCodeInviteValidityQueryHookResult = ReturnType<typeof useGetPrivateBetaCodeInviteValidityQuery>;
+export type GetPrivateBetaCodeInviteValidityLazyQueryHookResult = ReturnType<typeof useGetPrivateBetaCodeInviteValidityLazyQuery>;
+export type GetPrivateBetaCodeInviteValidityQueryResult = Apollo.QueryResult<GetPrivateBetaCodeInviteValidityQuery, GetPrivateBetaCodeInviteValidityQueryVariables>;
 export const GetColonyContributorDocument = gql`
     query GetColonyContributor($id: ID!, $colonyAddress: ID!) {
   getColonyContributor(id: $id) {
