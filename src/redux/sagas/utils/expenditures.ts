@@ -148,3 +148,58 @@ export const getPayoutsWithSlotIds = (payouts: ExpenditurePayoutFieldValue[]) =>
     ...payout,
     slotId: index + 1,
   }));
+
+/**
+ * Util resolving payouts for an expenditure that's being edited
+ * @NOTE: Resolving payouts means making sure that for every slot, there's only one payout with non-zero amount.
+ * This is to meet the UI requirement that there should be one payout per row.
+ */
+export const getResolvedExpenditurePayouts = (
+  expenditure: Expenditure,
+  payouts: ExpenditurePayoutFieldValue[],
+) => {
+  const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
+  const resolvedPayouts: ExpenditurePayoutFieldValue[] = [];
+
+  payoutsWithSlotIds.forEach((payout) => {
+    // Add payout as specified in the form
+    resolvedPayouts.push(payout);
+
+    const existingSlot = expenditure.slots.find(
+      (slot) => slot.id === payout.slotId,
+    );
+
+    // Set the amounts for any existing payouts in different tokens to 0
+    resolvedPayouts.push(
+      ...(existingSlot?.payouts
+        ?.filter(
+          (slotPayout) =>
+            slotPayout.tokenAddress !== payout.tokenAddress &&
+            BigNumber.from(slotPayout.amount).gt(0),
+        )
+        .map((slotPayout) => ({
+          slotId: payout.slotId,
+          recipientAddress: payout.recipientAddress,
+          tokenAddress: slotPayout.tokenAddress,
+          amount: '0',
+          claimDelay: payout.claimDelay,
+        })) ?? []),
+    );
+  });
+
+  // If there are now less payouts than expenditure slots, we need to remove them by setting their amounts to 0
+  const remainingSlots = expenditure.slots.slice(payouts.length);
+  remainingSlots.forEach((slot) => {
+    slot.payouts?.forEach((payout) => {
+      resolvedPayouts.push({
+        slotId: slot.id,
+        recipientAddress: slot.recipientAddress ?? '',
+        tokenAddress: payout.tokenAddress,
+        amount: '0',
+        claimDelay: slot.claimDelay ?? 0,
+      });
+    });
+  });
+
+  return resolvedPayouts;
+};

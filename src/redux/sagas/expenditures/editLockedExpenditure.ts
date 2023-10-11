@@ -11,7 +11,7 @@ import {
   putError,
   initiateTransaction,
   getColonyManager,
-  getPayoutsWithSlotIds,
+  getResolvedExpenditurePayouts,
 } from '../utils';
 import {
   createTransaction,
@@ -35,55 +35,12 @@ function* editLockedExpenditure({
 
   const txChannel = yield call(getTxChannel, meta.id);
 
-  const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
-
-  /**
-   * @NOTE: Resolving payouts means making sure that for every slot, there's only one payout with non-zero amount.
-   * This is to meet the UI requirement that there should be one payout per row.
-   */
-  const resolvedPayouts: ExpenditurePayoutFieldValue[] = [];
-
-  payoutsWithSlotIds.forEach((payout) => {
-    // Add payout as specified in the form
-    resolvedPayouts.push(payout);
-
-    const existingSlot = expenditure.slots.find(
-      (slot) => slot.id === payout.slotId,
-    );
-
-    // Set the amounts for any existing payouts in different tokens to 0
-    resolvedPayouts.push(
-      ...(existingSlot?.payouts
-        ?.filter(
-          (slotPayout) =>
-            slotPayout.tokenAddress !== payout.tokenAddress &&
-            BigNumber.from(slotPayout.amount).gt(0),
-        )
-        .map((slotPayout) => ({
-          slotId: payout.slotId,
-          recipientAddress: payout.recipientAddress,
-          tokenAddress: slotPayout.tokenAddress,
-          amount: '0',
-          claimDelay: payout.claimDelay,
-        })) ?? []),
-    );
-  });
-
-  // If there are now less payouts than expenditure slots, we need to remove them by setting their amounts to 0
-  const remainingSlots = expenditure.slots.slice(payouts.length);
-  remainingSlots.forEach((slot) => {
-    slot.payouts?.forEach((payout) => {
-      resolvedPayouts.push({
-        slotId: slot.id,
-        recipientAddress: slot.recipientAddress ?? '',
-        tokenAddress: payout.tokenAddress,
-        amount: '0',
-        claimDelay: slot.claimDelay ?? 0,
-      });
-    });
-  });
+  const resolvedPayouts: ExpenditurePayoutFieldValue[] =
+    getResolvedExpenditurePayouts(expenditure, payouts);
 
   try {
+    // @TODO: Fix removing payouts
+
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
       colonyClient,
       expenditure.nativeDomainId,
