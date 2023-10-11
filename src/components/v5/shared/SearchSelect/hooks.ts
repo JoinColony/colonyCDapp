@@ -17,7 +17,7 @@ export const useSearchSelect = (
             optionValue.toLowerCase().includes(searchValue.toLowerCase()) ||
             optionWalletAddress
               .toLowerCase()
-              .startsWith(searchValue.toLowerCase() ?? '')
+              .startsWith(searchValue?.toLowerCase() ?? '')
           );
         }),
       })),
