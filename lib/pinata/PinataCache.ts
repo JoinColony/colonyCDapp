@@ -9,7 +9,7 @@ class PinataCache {
 
   async init(): Promise<Cache> {
     if (!this.cache) {
-      this.cache = await caches.open(PINATA_CACHE_STORE);
+      this.cache = await window.caches?.open(PINATA_CACHE_STORE);
     }
     return this.cache;
   }
@@ -72,7 +72,11 @@ class PinataCache {
          * upload the IPFS blob ourself, in which case, we'll have to request it from
          * the Gateway
          */
-        await this.cache?.add(new Request(HASH_URL));
+        if (!this.cache) {
+          throw new Error('Cache has not been initialized successfully');
+        }
+
+        await this.cache.add(new Request(HASH_URL));
       } else {
         /*
          * @NOTE If we have a network response, that means that we've uploaded to IPFS
