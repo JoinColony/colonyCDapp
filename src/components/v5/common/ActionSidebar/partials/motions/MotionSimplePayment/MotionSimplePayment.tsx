@@ -29,6 +29,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
     loadingAction,
     startPollingForAction,
     stopPollingForAction,
+    refetchAction,
   } = useGetColonyAction(transactionId);
   const { motionData } = action || {};
   const { motionId = '', motionStakes } = motionData || {};
@@ -121,7 +122,14 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
             },
             {
               key: MotionState.Passed,
-              content: <FinalizeStep />,
+              content: (
+                <FinalizeStep
+                  actionData={action as MotionAction}
+                  startPollingAction={startPollingForAction}
+                  stopPollingAction={stopPollingForAction}
+                  refetchAction={refetchAction}
+                />
+              ),
               heading: {
                 label: formatText({ id: 'motion.finalize.label' }) || '',
               },
