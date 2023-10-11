@@ -51,9 +51,11 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   }, [isClaimed, stopPollingAction]);
 
   /* Update colony object when motion gets finalized. */
-  if (actionData.motionData.isFinalized) {
-    refetchColony();
-  }
+  useEffect(() => {
+    if (actionData.motionData.isFinalized) {
+      refetchColony();
+    }
+  }, [actionData.motionData.isFinalized, refetchColony]);
 
   return (
     <CardWithStatusText
