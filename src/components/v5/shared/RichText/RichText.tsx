@@ -61,13 +61,13 @@ const RichText: FC<RichTextProps> = ({
               'text-gray-500': !characterCount,
             })}
           >
-            <div
+            <span
               className={clsx({
                 'line-clamp-2 text-left': characterCount >= MIN_ANNOTATION_NUM,
               })}
             >
               {notFormattedContent}
-            </div>
+            </span>
           </button>
           {characterCount > NUMBER_OF_CHARS_IN_TWO_LINES &&
             !isDecriptionFieldExpanded && (
