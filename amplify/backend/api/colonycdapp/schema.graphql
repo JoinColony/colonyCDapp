@@ -1414,6 +1414,19 @@ type Colony @model {
   A flag to indicate whether the colony is private
   """
   private: Boolean @default(value: "true")
+
+  colonyMemberInvite: ColonyMemberInvite
+}
+
+type ColonyMemberInvite {
+  """
+  This is the invite code, to invalidate delete this field and recreate it
+  """
+  id: ID!
+  """
+  Count of how many times this invite has been used
+  """
+  invitesUsed: Int
 }
 
 """
