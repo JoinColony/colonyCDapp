@@ -1105,5 +1105,9 @@
   "asyncText.defaultLoading": "Loading...",
   "asyncText.defaultError": "Failed to load",
   "button.stake.oppose": "Oppose",
-  "button.stake.support": "Support"
+  "button.stake.support": "Support",
+  "role.mod": "Mod",
+  "role.owner": "Owner",
+  "role.custom": "Custom",
+  "role.payer": "Payer"
 }
