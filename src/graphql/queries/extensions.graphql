@@ -5,3 +5,13 @@ query GetColonyExtensionsByColonyAddress($colonyAddress: ID!) {
     }
   }
 }
+
+query GetExtensionInstallationsCount($id: ID!) {
+  getExtensionInstallationsCount(id: $id) {
+    oneTxPayment
+    stakedExpenditure
+    stagedExpenditure
+    streamingPayments
+    reputationWeighted
+  }
+}

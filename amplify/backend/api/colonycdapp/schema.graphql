@@ -2574,7 +2574,7 @@ type ExtensionParams {
 }
 
 """
-Represents a single extension installed on a Colony
+Represents a single extension installation in a Colony
 """
 type ColonyExtension @model {
   """
@@ -3383,4 +3383,16 @@ type Safe {
   address: String!
   chainId: Int!
   moduleContractAddress: String!
+}
+
+type ExtensionInstallationsCount @model {
+  """
+  The model id. It's the chain id the of the colony the extension belongs to
+  """
+  id: ID!
+  oneTxPayment: Int!
+  stakedExpenditure: Int!
+  stagedExpenditure: Int!
+  streamingPayments: Int!
+  reputationWeighted: Int!
 }
