@@ -1,18 +1,21 @@
 import React, { FC, useCallback, useState } from 'react';
 
 import { TableItemProps } from './types';
-import { useContributorBreakdown } from '~hooks';
+import { useColonyContext, useContributorBreakdown } from '~hooks';
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
 import Icon from '~shared/Icon';
 import styles from './TableItem.module.css';
 import Checkbox from '~v5/common/Checkbox';
 import { formatText } from '~utils/intl';
+import { getRole } from '~constants/permissions';
+import { getAllUserRoles } from '~transformers';
 
 const displayName = 'v5.pages.VerifiedPage.partials.TableItem';
 
 const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
-  const { user, colonyReputationPercentage } = member || {};
+  const { colony } = useColonyContext();
+  const { user, colonyReputationPercentage, contributorAddress } = member || {};
   const { walletAddress = '', profile } = user || {};
   const { bio, displayName: name } = profile || {};
 
@@ -29,6 +32,8 @@ const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
   const { isVerified } = member ?? {};
 
   const domains = useContributorBreakdown(member);
+  const allRoles = getAllUserRoles(colony, contributorAddress);
+  const permissionRole = getRole(allRoles);
 
   return (
     <div className={styles.tableItem}>
@@ -64,7 +69,7 @@ const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
           %
         </span>
       </div>
-      <div className="hidden sm:flex items-center">permissions</div>
+      <div className="hidden sm:flex items-center">{permissionRole.name}</div>
       <div className="flex">
         <button
           type="button"

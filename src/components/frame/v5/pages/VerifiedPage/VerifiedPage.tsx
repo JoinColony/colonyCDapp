@@ -9,7 +9,12 @@ import { useVerifiedPage } from './hooks';
 const displayName = 'v5.pages.VerifiedPage';
 
 const VerifiedPage: FC = () => {
-  const { verifiedMembers, loadingMembers } = useVerifiedPage();
+  const {
+    verifiedMembers,
+    loadingMembers,
+    onSortReputationClick,
+    isSortedDesc,
+  } = useVerifiedPage();
 
   return (
     <Spinner
@@ -19,7 +24,11 @@ const VerifiedPage: FC = () => {
       <TwoColumns aside={<Navigation pageName="members" />}>
         <div className="flex justify-between mt-6">
           <div className="w-full">
-            <Table list={verifiedMembers} onReputationSortClick={() => {}} />
+            <Table
+              list={verifiedMembers}
+              isSortedDesc={isSortedDesc}
+              onReputationSortClick={onSortReputationClick}
+            />
           </div>
         </div>
       </TwoColumns>

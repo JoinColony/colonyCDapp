@@ -1,21 +1,22 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
+import clsx from 'clsx';
 import Icon from '~shared/Icon';
 import styles from '../Table/Table.module.css';
 import { TableHeadProps } from './types';
 
 const displayName = 'v5.pages.VerifiedPage.partials.TableHead';
 
-const TableHead: FC<TableHeadProps> = ({ onClick }) => {
+const TableHead: FC<TableHeadProps> = ({ onClick, isSortedDesc }) => {
   const { formatMessage } = useIntl();
 
   return (
     <div className={styles.tableHead}>
-      <div>{formatMessage({ id: 'verifiedPage.table.member' })}</div>
-      <div className="hidden sm:block">
+      <p>{formatMessage({ id: 'verifiedPage.table.member' })}</p>
+      <p className="hidden sm:block">
         {formatMessage({ id: 'verifiedPage.table.status' })}
-      </div>
+      </p>
       <button
         className="hidden sm:flex items-center"
         type="button"
@@ -25,19 +26,17 @@ const TableHead: FC<TableHeadProps> = ({ onClick }) => {
         <span className="mr-1">
           {formatMessage({ id: 'verifiedPage.table.reputation' })}
         </span>
-        <Icon name="arrow-down" appearance={{ size: 'extraTiny' }} />
+        <Icon
+          name="arrow-down"
+          className={clsx('w-3 h-3 transition-transform', {
+            'rotate-180': !isSortedDesc,
+            'rotate-0': isSortedDesc,
+          })}
+        />
       </button>
-      <button
-        className="hidden sm:flex items-center"
-        type="button"
-        aria-label={formatMessage({ id: 'ariaLabel.sortPermission' })}
-        onClick={onClick}
-      >
-        <span className="mr-1">
-          {formatMessage({ id: 'verifiedPage.table.permission' })}
-        </span>
-        <Icon name="arrow-down" appearance={{ size: 'extraTiny' }} />
-      </button>
+      <p className="hidden sm:block">
+        {formatMessage({ id: 'verifiedPage.table.permission' })}
+      </p>
       <div />
     </div>
   );
