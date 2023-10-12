@@ -98,12 +98,28 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
             },
             {
               key: MotionState.Reveal,
-              content: <RevealStep />,
+              content: (
+                <RevealStep
+                  motionData={motionData}
+                  startPollingAction={startPollingForAction}
+                  stopPollingAction={stopPollingForAction}
+                  transactionId={transactionId}
+                />
+              ),
               heading: {
                 label: formatText({ id: 'motion.reveal.label' }) || '',
+                decor:
+                  motionStateEnum === MotionState.Reveal && motionStakes ? (
+                    <MotionCountDownTimer
+                      motionState={motionStateEnum}
+                      motionId={motionId}
+                      motionStakes={motionStakes}
+                      refetchMotionState={refetchMotionState}
+                    />
+                  ) : undefined,
               },
               // @todo: add a condition to show when voting step is active
-              isHidden: true,
+              isHidden: false,
               // @todo: chnage to false when visible
               isOptional: true,
             },
@@ -138,12 +154,14 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
     [
       action,
       loadingAction,
+      motionData,
       motionId,
       motionStakes,
       motionStateEnum,
       refetchMotionState,
       startPollingForAction,
       stopPollingForAction,
+      transactionId,
     ],
   );
 

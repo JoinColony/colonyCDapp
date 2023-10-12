@@ -6,4 +6,6 @@ export interface CardWithSectionItem {
 
 export interface CardWithSectionsProps {
   sections: CardWithSectionItem[];
+  footer?: React.ReactNode;
+  footerClassName?: string;
 }
