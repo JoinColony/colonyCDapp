@@ -35,6 +35,7 @@ const ExitRecoveryStep: FC = () => {
                 },
                 { signatures: 2 },
               )}
+              max={2}
             />
           ),
         }}
