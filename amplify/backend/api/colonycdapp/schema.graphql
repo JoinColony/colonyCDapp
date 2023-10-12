@@ -3263,6 +3263,6 @@ type ReputationMiningCycleMetadata @model {
 }
 
 type PrivateBetaInviteCode @model {
-  id: ID
+  id: ID!
   valid: Boolean @default(value: "true")
 }

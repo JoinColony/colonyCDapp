@@ -4765,7 +4765,7 @@ export type PendingModifiedTokenAddressesInput = {
 export type PrivateBetaInviteCode = {
   __typename?: 'PrivateBetaInviteCode';
   createdAt: Scalars['AWSDateTime'];
-  id?: Maybe<Scalars['ID']>;
+  id: Scalars['ID'];
   updatedAt: Scalars['AWSDateTime'];
   valid?: Maybe<Scalars['Boolean']>;
 };
