@@ -113,6 +113,7 @@ export type Colony = {
   chainFundsClaim?: Maybe<ColonyChainFundsClaim>;
   /** Metadata related to the chain of the Colony */
   chainMetadata: ChainMetadata;
+  colonyMemberInvite?: Maybe<ColonyMemberInvite>;
   createdAt: Scalars['AWSDateTime'];
   domains?: Maybe<ModelDomainConnection>;
   expenditures?: Maybe<ModelExpenditureConnection>;
@@ -636,6 +637,19 @@ export type ColonyHistoricRole = {
   updatedAt: Scalars['AWSDateTime'];
 };
 
+export type ColonyMemberInvite = {
+  __typename?: 'ColonyMemberInvite';
+  /** This is the invite code, to invalidate delete this field and regenerate it */
+  id: Scalars['ID'];
+  /** Count of how many times this invite has been used */
+  invitesUsed?: Maybe<Scalars['Int']>;
+};
+
+export type ColonyMemberInviteInput = {
+  id?: InputMaybe<Scalars['ID']>;
+  invitesUsed?: InputMaybe<Scalars['Int']>;
+};
+
 /** Represents metadata for a Colony */
 export type ColonyMetadata = {
   __typename?: 'ColonyMetadata';
@@ -1092,6 +1106,7 @@ export type CreateColonyInput = {
   balances?: InputMaybe<ColonyBalancesInput>;
   chainFundsClaim?: InputMaybe<ColonyChainFundsClaimInput>;
   chainMetadata: ChainMetadataInput;
+  colonyMemberInvite?: InputMaybe<ColonyMemberInviteInput>;
   expendituresGlobalClaimDelay?: InputMaybe<Scalars['Int']>;
   id?: InputMaybe<Scalars['ID']>;
   lastUpdatedContributorsWithReputation?: InputMaybe<Scalars['AWSDateTime']>;
@@ -6758,6 +6773,7 @@ export type UpdateColonyInput = {
   balances?: InputMaybe<ColonyBalancesInput>;
   chainFundsClaim?: InputMaybe<ColonyChainFundsClaimInput>;
   chainMetadata?: InputMaybe<ChainMetadataInput>;
+  colonyMemberInvite?: InputMaybe<ColonyMemberInviteInput>;
   expendituresGlobalClaimDelay?: InputMaybe<Scalars['Int']>;
   id: Scalars['ID'];
   lastUpdatedContributorsWithReputation?: InputMaybe<Scalars['AWSDateTime']>;
