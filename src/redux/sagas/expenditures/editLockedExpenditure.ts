@@ -80,6 +80,19 @@ function* editLockedExpenditure({
           ],
         ),
       );
+
+      // Set claim delay
+      encodedMulticallData.push(
+        colonyClient.interface.encodeFunctionData('setExpenditureState', [
+          permissionDomainId,
+          childSkillIndex,
+          expenditure.nativeId,
+          BigNumber.from(26),
+          [false, true],
+          [toB32(payout.slotId), toB32(BigNumber.from(1))],
+          toB32(BigNumber.from(payout.claimDelay)),
+        ]),
+      );
     });
 
     yield fork(createTransaction, meta.id, {
