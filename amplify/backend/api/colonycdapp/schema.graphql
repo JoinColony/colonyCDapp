@@ -3263,6 +3263,16 @@ type ReputationMiningCycleMetadata @model {
 }
 
 type PrivateBetaInviteCode @model {
+  """
+  The id functions as the invite code
+  """
   id: ID!
+  """
+  The invite code is a use once only affair
+  """
   valid: Boolean @default(value: "true")
+  """
+  This tracks the amount of invites this invite code is also allowed to generate
+  """
+  shareableInvites: Int
 }
