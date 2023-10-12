@@ -35,10 +35,12 @@ const ProgressBar: FC<ProgressBarProps> = ({
           />
         )}
       </div>
-      <span className="text-3 text-gray-600 ml-3">{progress}%</span>
-      {additionalText && (
-        <span className="text-3 text-gray-600 ml-1">{additionalText}</span>
-      )}
+      <div className="flex min-w-fit">
+        <span className="text-3 text-gray-600 ml-3">{progress}%</span>
+        {additionalText && (
+          <span className="text-3 text-gray-600 ml-1">{additionalText}</span>
+        )}
+      </div>
     </div>
   );
 };

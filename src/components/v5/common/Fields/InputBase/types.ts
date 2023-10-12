@@ -10,6 +10,7 @@ export interface InputBaseProps
   prefix?: React.ReactNode;
   mode?: 'primary' | 'secondary';
   autoWidth?: boolean;
+  prefixClassName?: string;
 }
 
 export interface FormInputBaseProps

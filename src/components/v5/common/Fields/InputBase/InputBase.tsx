@@ -10,6 +10,7 @@ const displayName = 'v5.common.Fields.InputBase';
 
 const InputBase: FC<InputBaseProps> = ({
   className,
+  prefixClassName,
   wrapperClassName,
   state,
   message,
@@ -32,7 +33,7 @@ const InputBase: FC<InputBaseProps> = ({
 
   return (
     <div className={wrapperClassName}>
-      {prefix && prefix}
+      {prefix && <span className={prefixClassName}>{prefix}</span>}
       <input
         ref={inputRef}
         className={clsx(
