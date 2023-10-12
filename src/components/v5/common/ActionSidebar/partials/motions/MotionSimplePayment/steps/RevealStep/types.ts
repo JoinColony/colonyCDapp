@@ -3,6 +3,6 @@ import { ColonyMotion } from '~types';
 
 export interface RevealStepProps
   extends Omit<PollingControls, 'refetchAction'> {
-  motionData: ColonyMotion;
+  motionData: ColonyMotion | undefined | null;
   transactionId: string;
 }

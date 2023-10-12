@@ -44,6 +44,8 @@ const RevealStep: FC<RevealStepProps> = ({
     transactionId,
   );
 
+  const { decimals, symbol } = nativeToken || {};
+
   return (
     <CardWithStatusText
       statusTextSectionProps={{
@@ -95,8 +97,8 @@ const RevealStep: FC<RevealStepProps> = ({
                   <span className="text-sm">
                     <Numeral
                       value={voterReward || '0'}
-                      decimals={nativeToken?.decimals}
-                      suffix={nativeToken?.symbol}
+                      decimals={decimals}
+                      suffix={symbol}
                     />
                   </span>
                 </div>

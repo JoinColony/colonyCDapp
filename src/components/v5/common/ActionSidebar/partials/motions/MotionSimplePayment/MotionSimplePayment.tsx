@@ -15,7 +15,6 @@ import StakingStep from './steps/StakingStep';
 import VotingStep from './steps/VotingStep';
 import { MotionSimplePaymentProps } from './types';
 import { MotionAction } from '~types/motions';
-import { ColonyMotion } from '~types';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment';
@@ -100,7 +99,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
               key: MotionState.Reveal,
               content: (
                 <RevealStep
-                  motionData={motionData as ColonyMotion}
+                  motionData={motionData}
                   startPollingAction={startPollingForAction}
                   stopPollingAction={stopPollingForAction}
                   transactionId={transactionId}

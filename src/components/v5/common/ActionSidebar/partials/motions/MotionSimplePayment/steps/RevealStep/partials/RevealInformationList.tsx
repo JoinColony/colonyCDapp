@@ -5,12 +5,20 @@ import RevealInformationItem from './RevealInformationItem';
 import { RevealInformationListProps } from './types';
 import { TextButton } from '~v5/shared/Button';
 import { formatText } from '~utils/intl';
+import { REVEAL_INFORMATION_LIST_MAX_ITEMS } from './consts';
+
+const displayName =
+  'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.RevealStep.partials.RevealInformationList';
 
 const RevealInformationList: FC<RevealInformationListProps> = ({ items }) => {
-  const [itemsLength, setItemsLength] = useState(6);
+  const [itemsLength, setItemsLength] = useState(
+    REVEAL_INFORMATION_LIST_MAX_ITEMS,
+  );
 
   const itemsToShow = items.slice(0, itemsLength);
-  const shouldShowButton = items.length > 6 && itemsLength < items.length;
+  const shouldShowButton =
+    items.length > REVEAL_INFORMATION_LIST_MAX_ITEMS &&
+    itemsLength < items.length;
 
   return (
     <div>
@@ -34,5 +42,7 @@ const RevealInformationList: FC<RevealInformationListProps> = ({ items }) => {
     </div>
   );
 };
+
+RevealInformationList.displayName = displayName;
 
 export default RevealInformationList;
