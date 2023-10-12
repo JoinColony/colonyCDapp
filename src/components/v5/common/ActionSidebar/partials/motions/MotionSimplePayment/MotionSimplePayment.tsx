@@ -146,12 +146,14 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
     [
       action,
       loadingAction,
+      motionData,
       motionId,
       motionStakes,
       motionStateEnum,
       refetchMotionState,
       startPollingForAction,
       stopPollingForAction,
+      transactionId,
     ],
   );
 
