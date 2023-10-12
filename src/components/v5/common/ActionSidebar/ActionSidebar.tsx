@@ -160,7 +160,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         {children}
       </div>
       <div
-        className={clsx('flex w-full h-full', {
+        className={clsx('flex w-full h-[calc(100%-4.625rem)] md:h-full', {
           'flex-col-reverse md:flex-row': transactionId,
         })}
       >
