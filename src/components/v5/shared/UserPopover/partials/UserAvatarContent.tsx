@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { isHexString } from 'ethers/lib/utils';
 import UserInfo from './UserInfo';
-import { UserAvatarContentProps } from '../types';
+import { UserAvatarContentProps } from '~v5/shared/UserAvatarPopover/types';
 
 const displayName = 'v5.UserAvatarPopover.partials.UserAvatarContent';
 
@@ -29,7 +29,7 @@ const UserAvatarContent: FC<UserAvatarContentProps> = ({
       userStatus={userStatus}
       domains={domains}
       isContributorsList={isContributorsList}
-      avatarSize="md"
+      size="md"
     />
   );
 };

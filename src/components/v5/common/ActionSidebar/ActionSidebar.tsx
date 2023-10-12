@@ -6,6 +6,7 @@ import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import {
+  useActionDescriptionMetadata,
   useActionFormProps,
   // useCloseSidebarClick,
   useNotificationBanner,
@@ -38,6 +39,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const userHasPermissions = useUserHasPermissions();
   const form = useFormContext();
   const notificationBanner = useNotificationBanner();
+  const descriptionMetadata = useActionDescriptionMetadata();
 
   return (
     <>
@@ -48,18 +50,18 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           stateClassNames={{
             [FIELD_STATE.Error]: 'placeholder:text-red-400',
           }}
-          className={clsx(
-            `
-              heading-3
-              md:hover:text-blue-400 md:hover:placeholder:text-blue-400 text-gray-900
-              transition-colors mb-7
-            `,
-          )}
+          className={`
+            heading-3
+            md:hover:text-blue-400 md:hover:placeholder:text-blue-400 text-gray-900
+            transition-colors
+          `}
           mode="secondary"
           message={false}
         />
+        <p className="text-gray-600 font-medium mt-2">{descriptionMetadata}</p>
         {/* @todo: add preview mode to the form */}
-        <ActionTypeSelect />
+        <ActionTypeSelect className="mt-7 mb-3" />
+        {/* @todo: add motion action type to each action */}
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
         {notificationBanner && (
           <div className="mt-7">
@@ -187,8 +189,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
               bg-gray-25
             `}
           >
-            {/* @todo: add functionality to switch between motion types */}
-            <MotionSimplePayment />
+            <MotionSimplePayment transactionId={transactionId} />
           </div>
         )}
       </div>

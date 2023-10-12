@@ -1,41 +1,16 @@
-import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
+import { DeepPartial } from 'utility-types';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
 import { useColonyContext } from '~hooks';
-import {
-  MAX_ANNOTATION_LENGTH,
-  MAX_COLONY_DISPLAY_NAME,
-  MAX_DOMAIN_PURPOSE_LENGTH,
-} from '~constants';
 import { getEditDomainDialogPayload } from '~common/Dialogs/EditDomainDialog/helpers';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
 import { DECISION_METHOD_OPTIONS } from '../../consts';
-
-const validationSchema = yup
-  .object()
-  .shape({
-    team: yup.number().defined(),
-    teamName: yup
-      .string()
-      .trim()
-      .max(MAX_COLONY_DISPLAY_NAME)
-      .required(() => 'Team name required'),
-    domainPurpose: yup
-      .string()
-      .trim()
-      .max(MAX_DOMAIN_PURPOSE_LENGTH)
-      .notRequired(),
-    domainColor: yup.string().notRequired(),
-    createdIn: yup.number().defined(),
-    decisionMethod: yup.string().defined(),
-    description: yup.string().max(MAX_ANNOTATION_LENGTH).notRequired(),
-  })
-  .defined();
+import { validationSchema, EditTeamFormValues } from './consts';
 
 export const useEditTeam = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -66,7 +41,7 @@ export const useEditTeam = (
     getFormOptions,
     validationSchema,
     actionType: ActionTypes.ACTION_DOMAIN_EDIT,
-    defaultValues: useMemo(
+    defaultValues: useMemo<DeepPartial<EditTeamFormValues>>(
       () => ({
         teamName: '',
         domainPurpose: '',
@@ -80,7 +55,7 @@ export const useEditTeam = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
-        mapPayload((payload) => {
+        mapPayload((payload: EditTeamFormValues) => {
           const values = {
             domainId: payload.team,
             domainName: payload.teamName,

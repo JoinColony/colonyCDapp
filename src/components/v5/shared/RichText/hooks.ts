@@ -93,14 +93,6 @@ export const useRichText = (
     editorContent?.storage.characterCount.characters();
 
   useEffect(() => {
-    if (field.value && editorContent) {
-      editorContent.commands.setContent(field.value, false, {
-        preserveWhitespace: 'full',
-      });
-    }
-  }, [editorContent, field.value]);
-
-  useEffect(() => {
     if (field.value && editorContent && !isDecriptionFieldExpanded) {
       editorContent?.setEditable(false);
       setNotFormattedContent(editorContent?.getText());
@@ -112,9 +104,6 @@ export const useRichText = (
       field.onChange(textEditor.getHTML());
     };
 
-    editorContent?.commands.setContent(field.value, false, {
-      preserveWhitespace: 'full',
-    });
     editorContent?.on('selectionUpdate', handleUpdate);
     editorContent?.on('blur', handleUpdate);
 
@@ -122,6 +111,7 @@ export const useRichText = (
       editorContent?.off('selectionUpdate', handleUpdate);
       editorContent?.off('blur', handleUpdate);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editorContent, field.value, name]);
 
   return { editorContent, notFormattedContent, field, characterCount };

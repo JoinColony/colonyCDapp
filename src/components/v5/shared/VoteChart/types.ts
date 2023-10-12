@@ -1,8 +1,9 @@
 export interface VoteChartProps {
   percentageVotesFor: number;
   percentageVotesAgainst: number;
-  threshold: number;
   againstLabel: string;
   forLabel: string;
+  threshold?: number;
   thresholdLabel?: string;
+  className?: string;
 }

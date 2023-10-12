@@ -11,9 +11,9 @@ import useToggle from '~hooks/useToggle';
 import { UserSelectProps } from './types';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 import Icon from '~shared/Icon';
-import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
 import { formatText } from '~utils/intl';
+import UserPopover from '~v5/shared/UserPopover';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
@@ -106,7 +106,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
         />
       )}
       {usersOptions.isRecipientNotVerified && (
-        <UserAvatarPopover
+        <UserPopover
           userName={userDisplayName}
           walletAddress={userWalletAddress}
           aboutDescription={userByAddress?.profile?.bio || ''}
@@ -115,34 +115,34 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
             usersOptions.isRecipientNotVerified,
             'text-warning-400',
           )}
-          avatarSize="xs"
-          popoverButtonContent={
-            <button type="button">
-              <span className="flex ml-2 text-warning-400">
-                <Icon name="warning-circle" />
-              </span>
-            </button>
+          size="xs"
+          additionalContent={
+            <NotificationBanner
+              status="warning"
+              title={formatText({ id: 'user.not.verified.warning' })}
+              isAlt
+              action={{
+                type: 'call-to-action',
+                actionText: formatText({ id: 'add.verified.member' }),
+                onClick: () => {}, // @TODO: add action
+              }}
+              className="mt-4"
+            >
+              {userByAddress?.walletAddress ||
+                (field.value && (
+                  <div className="mt-2 font-semibold break-words">
+                    {userByAddress?.walletAddress || field.value}
+                  </div>
+                ))}
+            </NotificationBanner>
           }
         >
-          <NotificationBanner
-            status="warning"
-            title={formatText({ id: 'user.not.verified.warning' })}
-            isAlt
-            action={{
-              type: 'call-to-action',
-              actionText: formatText({ id: 'add.verified.member' }),
-              onClick: () => {}, // @TODO: add action
-            }}
-            className="mt-4"
-          >
-            {userByAddress?.walletAddress ||
-              (field.value && (
-                <div className="mt-2 font-semibold break-words">
-                  {userByAddress?.walletAddress || field.value}
-                </div>
-              ))}
-          </NotificationBanner>
-        </UserAvatarPopover>
+          <button type="button">
+            <span className="flex ml-2 text-warning-400">
+              <Icon name="warning-circle" />
+            </span>
+          </button>
+        </UserPopover>
       )}
     </div>
   );
