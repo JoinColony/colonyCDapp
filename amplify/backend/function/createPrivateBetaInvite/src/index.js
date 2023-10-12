@@ -18,6 +18,8 @@ const setEnvVariables = async () => {
 exports.handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
 
+  const { shareableInvites = 0 } = event.arguments?.input || {};
+
   try {
     await setEnvVariables();
   } catch (e) {
@@ -26,7 +28,7 @@ exports.handler = async (event) => {
 
   const creation = await graphqlRequest(
     createPrivateBetaInviteCode,
-    {},
+    { shareableInvites },
     graphqlURL,
     apiKey,
   );
@@ -38,5 +40,5 @@ exports.handler = async (event) => {
 
   const inviteCode = creation?.data?.createPrivateBetaInviteCode?.id;
 
-  console.log({ inviteCode });
+  return inviteCode;
 };

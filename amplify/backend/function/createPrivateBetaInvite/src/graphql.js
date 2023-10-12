@@ -1,7 +1,9 @@
 module.exports = {
   createPrivateBetaInviteCode: /* GraphQL */ `
-    mutation CreatePrivateBetaInviteCode {
-      createPrivateBetaInviteCode(input: {}) {
+    mutation CreatePrivateBetaInviteCode($shareableInvites: Int!) {
+      createPrivateBetaInviteCode(
+        input: { shareableInvites: $shareableInvites }
+      ) {
         id
       }
     }
