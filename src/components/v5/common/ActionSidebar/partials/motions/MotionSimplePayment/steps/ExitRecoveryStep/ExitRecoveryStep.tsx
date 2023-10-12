@@ -106,17 +106,23 @@ const ExitRecoveryStep: FC = () => {
                 </div>
                 <FormInputBase
                   name="oldStorageSlot"
-                  prefix={formatText({
-                    id: 'motion.exitRecovery.storageSlots.form.oldStorage',
-                  })}
-                  prefixClassName="text-md"
+                  prefix={
+                    <span className="text-md">
+                      {formatText({
+                        id: 'motion.exitRecovery.storageSlots.form.oldStorage',
+                      })}
+                    </span>
+                  }
                 />
                 <FormInputBase
                   name="oldStorageSlot"
-                  prefix={formatText({
-                    id: 'motion.exitRecovery.storageSlots.form.oldStorage',
-                  })}
-                  prefixClassName="text-md"
+                  prefix={
+                    <span className="text-md">
+                      {formatText({
+                        id: 'motion.exitRecovery.storageSlots.form.oldStorage',
+                      })}
+                    </span>
+                  }
                 />
                 <Button
                   mode="primarySolid"
