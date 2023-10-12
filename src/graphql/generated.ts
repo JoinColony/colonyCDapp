@@ -4786,10 +4786,16 @@ export type PendingModifiedTokenAddressesInput = {
 export type PrivateBetaInviteCode = {
   __typename?: 'PrivateBetaInviteCode';
   createdAt: Scalars['AWSDateTime'];
+<<<<<<< HEAD
   /** The id functions as the invite code */
   id: Scalars['ID'];
   /** This tracks the amount of invites this invite code is also allowed to generate */
   shareableInvites?: Maybe<Scalars['Int']>;
+||||||| parent of 50281c73a (feat: make the ID a required field)
+  id?: Maybe<Scalars['ID']>;
+=======
+  id: Scalars['ID'];
+>>>>>>> 50281c73a (feat: make the ID a required field)
   updatedAt: Scalars['AWSDateTime'];
   /** The invite code is a use once only affair */
   valid?: Maybe<Scalars['Boolean']>;
