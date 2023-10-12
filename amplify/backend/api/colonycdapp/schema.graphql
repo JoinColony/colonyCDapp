@@ -1409,6 +1409,11 @@ type Colony @model {
 
   expenditures: [Expenditure] @hasMany(indexName: "byColony", fields: ["id"])
   expendituresGlobalClaimDelay: Int
+
+  """
+  A flag to indicate whether the colony is private
+  """
+  private: Boolean @default(value: "true")
 }
 
 """

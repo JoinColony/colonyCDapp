@@ -49,6 +49,7 @@ fragment Colony on Colony {
   }
   reputation
   expendituresGlobalClaimDelay
+  private
 }
 
 fragment ColonyDisplay on Colony {
