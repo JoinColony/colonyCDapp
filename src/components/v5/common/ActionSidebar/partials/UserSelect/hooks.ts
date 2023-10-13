@@ -9,11 +9,11 @@ export const useUserSelect = (inputValue: string): UserSelectHookProps => {
   const { colony } = useColonyContext();
   const { colonyAddress = '', metadata } = colony ?? {};
   const { members, loading } = useGetColonyMembers(colonyAddress);
+  const isWhitelistActivated = metadata?.isWhitelistActivated;
   const { data, loading: verifiedMembersLoading } = useGetVerifiedMembersQuery({
     variables: { colonyAddress },
-    skip: !colonyAddress,
+    skip: !colonyAddress || !isWhitelistActivated,
   });
-  const isWhitelistActivated = metadata?.isWhitelistActivated;
 
   const verifiedUsers: SearchSelectOption[] = useMemo(
     () =>
@@ -34,8 +34,7 @@ export const useUserSelect = (inputValue: string): UserSelectHookProps => {
     : members || [];
 
   const isUserVerified = preparedUserOptions.some(
-    ({ label, walletAddress }) =>
-      label === inputValue || walletAddress === inputValue,
+    ({ walletAddress }) => walletAddress === inputValue,
   );
 
   const isRecipientNotVerified: boolean = !!inputValue && !isUserVerified;
