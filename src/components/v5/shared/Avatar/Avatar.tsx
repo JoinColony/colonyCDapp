@@ -49,13 +49,16 @@ const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
     >
       {source ? (
         <div
-          className={clsx(styles.image, 'rounded-lg border-2', {
-            'border-purple-400': mode === 'top',
-            'border-warning-400': mode === 'active',
-            'border-blue-400': mode === 'dedicated',
-            'border-green-400': mode === 'new',
-            'border-none': mode === 'general' || mode === undefined,
-          })}
+          className={clsx(
+            'w-full h-full absolute top-0 left-0 rounded-full bg-cover border-2',
+            {
+              'border-purple-400': mode === 'top',
+              'border-warning-400': mode === 'active',
+              'border-blue-400': mode === 'dedicated',
+              'border-green-400': mode === 'new',
+              'border-none': mode === 'general' || mode === undefined,
+            },
+          )}
           style={imageStyle}
         />
       ) : (

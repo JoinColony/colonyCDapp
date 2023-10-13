@@ -116,9 +116,7 @@ const UserInfo: FC<UserInfoProps> = ({
                       <span className="flex justify-end">
                         <PermissionsBadge
                           text={permissionRole.name}
-                          iconName={
-                            permissionRole.name === 'admin' ? 'users' : 'user'
-                          }
+                          iconName="user" // @TODO: add user-tree icon for multiSig
                         />
                       </span>
                       <span className="flex justify-end text-sm text-blue-400 min-w-[4.5rem]">
