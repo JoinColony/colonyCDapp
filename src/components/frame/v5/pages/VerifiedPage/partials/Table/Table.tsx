@@ -12,12 +12,8 @@ import { useVerifiedTable } from './hooks';
 
 const displayName = 'v5.pages.VerifiedPage.partials.Table';
 
-const Table: FC<TableProps> = ({
-  list,
-  onReputationSortClick,
-  isSortedDesc,
-}) => {
-  // @TODO: Add action for adding new member, removing user from whitelist, handle pagination and sorting
+const Table: FC<TableProps> = ({ list, onReputationSortClick, isSorted }) => {
+  // @TODO: Add action for adding new member, removing user from whitelist, handle pagination
   const { formatMessage } = useIntl();
   const { searchValue } = useSearchContext();
   const { onChange, selectedMembers } = useVerifiedTable();
@@ -61,7 +57,7 @@ const Table: FC<TableProps> = ({
           </div>
         </div>
       </div>
-      <TableHead onClick={onReputationSortClick} isSortedDesc={isSortedDesc} />
+      <TableHead onClick={onReputationSortClick} isSorted={isSorted} />
       <div className="px-4 border border-gray-200 rounded-b-lg">
         {listLength ? (
           list.map((item) => (

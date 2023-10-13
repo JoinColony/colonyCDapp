@@ -26,7 +26,7 @@ const VerifiedPage: FC = () => {
           <div className="w-full">
             <Table
               list={verifiedMembers}
-              isSortedDesc={isSortedDesc}
+              isSorted={isSortedDesc}
               onReputationSortClick={onSortReputationClick}
             />
           </div>
