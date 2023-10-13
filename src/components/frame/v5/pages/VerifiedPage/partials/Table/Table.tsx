@@ -4,7 +4,6 @@ import { useIntl } from 'react-intl';
 import Filter from '~v5/common/Filter';
 import Button from '~v5/shared/Button';
 import { TableProps } from './types';
-import styles from './Table.module.css';
 import TableItem from '../TableItem';
 import TableHead from '../TableHead';
 import EmptyContent from '~v5/common/EmptyContent';
@@ -63,7 +62,7 @@ const Table: FC<TableProps> = ({
         </div>
       </div>
       <TableHead onClick={onReputationSortClick} isSortedDesc={isSortedDesc} />
-      <div className={styles.tableBody}>
+      <div className="px-4 border border-gray-200 rounded-b-lg">
         {listLength ? (
           list.map((item) => (
             <TableItem

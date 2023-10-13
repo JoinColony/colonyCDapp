@@ -1,15 +1,19 @@
 import React, { FC, useCallback, useState } from 'react';
 
+import { ColonyRole } from '@colony/colony-js';
 import { TableItemProps } from './types';
 import { useColonyContext, useContributorBreakdown } from '~hooks';
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
 import Icon from '~shared/Icon';
-import styles from './TableItem.module.css';
 import Checkbox from '~v5/common/Checkbox';
 import { formatText } from '~utils/intl';
 import { getRole } from '~constants/permissions';
 import { getAllUserRoles } from '~transformers';
+import PermissionsBadge from '~v5/common/Pills/PermissionsBadge';
+import UserStatusComponent from '~v5/shared/CardWithBios/partials/UserStatus';
+import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
+import Tooltip from '~shared/Extensions/Tooltip';
 
 const displayName = 'v5.pages.VerifiedPage.partials.TableItem';
 
@@ -29,14 +33,19 @@ const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
     [setIsChecked, onChange],
   );
 
-  const { isVerified } = member ?? {};
+  const { isVerified, type } = member ?? {};
 
   const domains = useContributorBreakdown(member);
   const allRoles = getAllUserRoles(colony, contributorAddress);
   const permissionRole = getRole(allRoles);
 
+  const userStatus = (type?.toLowerCase() ?? null) as ContributorTypeFilter;
+
   return (
-    <div className={styles.tableItem}>
+    <div
+      className="grid grid-cols-[2fr_0.5fr_0.5fr] sm:grid-cols-[3fr_1fr_0.5fr_7rem_2rem]
+    py-3 border-t border-gray-100 first:border-none gap-4"
+    >
       <div className="flex items-center">
         <Checkbox
           id={`verified-${name}`}
@@ -59,7 +68,9 @@ const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
           <Icon name="verified" appearance={{ size: 'tiny' }} />
         </span>
       </div>
-      <div className="hidden sm:flex items-center">status</div>
+      <div className="hidden sm:flex items-center">
+        {userStatus && <UserStatusComponent userStatus={userStatus} />}
+      </div>
       <div className="hidden sm:flex items-center">
         <Icon name="star" appearance={{ size: 'small' }} />
         <span className="ml-1 text-sm text-gray-600">
@@ -69,7 +80,26 @@ const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
           %
         </span>
       </div>
-      <div className="hidden sm:flex items-center">{permissionRole.name}</div>
+      <div className="flex items-center">
+        <Tooltip
+          tooltipContent={
+            <>
+              {formatText(
+                { id: 'role.description' },
+                { role: permissionRole.name },
+              )}
+              <ul className="list-disc font-medium pl-4 mb-4">
+                {permissionRole.permissions.map((permission) => (
+                  <li key={permission}>{ColonyRole[permission]}</li>
+                ))}
+              </ul>
+              <a href="/">{formatText({ id: 'learn.more' })}</a>
+            </>
+          }
+        >
+          <PermissionsBadge iconName="user" text={permissionRole.name} />
+        </Tooltip>
+      </div>
       <div className="flex">
         <button
           type="button"

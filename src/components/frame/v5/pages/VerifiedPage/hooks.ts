@@ -7,12 +7,7 @@ import { searchMembers } from '~utils/members';
 export const useVerifiedPage = () => {
   const [isSortedDesc, setIsSortedDesc] = useState(true);
   const { searchValue } = useSearchContext();
-  const { members, loadingMembers } = useMemberContext();
-
-  const verifiedMembers = useMemo(
-    () => members.filter(({ isVerified }) => isVerified),
-    [members],
-  );
+  const { verifiedMembers, loadingMembers } = useMemberContext();
 
   const searchedVerified = useMemo(
     () => searchMembers(verifiedMembers, searchValue),

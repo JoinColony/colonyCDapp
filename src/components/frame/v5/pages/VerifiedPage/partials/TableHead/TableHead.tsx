@@ -3,7 +3,6 @@ import { useIntl } from 'react-intl';
 
 import clsx from 'clsx';
 import Icon from '~shared/Icon';
-import styles from '../Table/Table.module.css';
 import { TableHeadProps } from './types';
 
 const displayName = 'v5.pages.VerifiedPage.partials.TableHead';
@@ -12,7 +11,10 @@ const TableHead: FC<TableHeadProps> = ({ onClick, isSortedDesc }) => {
   const { formatMessage } = useIntl();
 
   return (
-    <div className={styles.tableHead}>
+    <div
+      className="py-3 px-4 bg-base-bg border-l border-r border-gray-200 grid grid-cols-[2fr_0.5fr_0.5fr]
+    sm:grid-cols-[3fr_1fr_0.5fr_7rem_2rem] text-sm text-gray-600 gap-4"
+    >
       <p>{formatMessage({ id: 'verifiedPage.table.member' })}</p>
       <p className="hidden sm:block">
         {formatMessage({ id: 'verifiedPage.table.status' })}
@@ -34,7 +36,7 @@ const TableHead: FC<TableHeadProps> = ({ onClick, isSortedDesc }) => {
           })}
         />
       </button>
-      <p className="hidden sm:block">
+      <p className="block">
         {formatMessage({ id: 'verifiedPage.table.permission' })}
       </p>
       <div />

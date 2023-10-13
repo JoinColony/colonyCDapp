@@ -1118,5 +1118,6 @@
   "role.mod": "Mod",
   "role.owner": "Owner",
   "role.custom": "Custom",
-  "role.payer": "Payer"
+  "role.payer": "Payer",
+  "role.description": "This member has the {role} permission bundle that includes the following permissions:"
 }
