@@ -9,6 +9,8 @@ import UserStatus from '~v5/common/Pills/UserStatus';
 import { formatText } from '~utils/intl';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip';
 import { getRole } from '~constants/permissions';
+import PermissionsBadge from '~v5/common/Pills/PermissionsBadge';
+import Numeral from '~shared/Numeral';
 
 const displayName = 'v5.UserAvatarPopover.partials.UserInfo';
 
@@ -105,24 +107,37 @@ const UserInfo: FC<UserInfoProps> = ({
                 return (
                   <li
                     key={domainId}
-                    className="grid grid-cols-[1fr,2fr,1fr] items-center font-medium"
+                    className="grid grid-cols-[2fr,1fr] items-center font-medium"
                   >
-                    <span className="text-md">{domainName}</span>
-                    {/* @TODO: add permissions pills */}
-                    <span className="flex justify-end mr-2">
-                      {permissionRole.name}
+                    <span className="text-md whitespace-nowrap">
+                      {domainName}
                     </span>
-                    <span className="flex justify-end text-sm text-blue-400">
-                      <Tooltip
-                        className="items-center"
-                        tooltipContent={<span>{reputationRaw} pts</span>}
-                      >
-                        <Icon name="star" appearance={{ size: 'extraTiny' }} />
-                        <span className="inline-block ml-1 mr-2">
-                          {reputationPercentage.toFixed(2)}%
-                        </span>
-                      </Tooltip>
-                    </span>
+                    <div className="flex justify-end">
+                      <span className="flex justify-end">
+                        <PermissionsBadge
+                          text={permissionRole.name}
+                          iconName={
+                            permissionRole.name === 'admin' ? 'users' : 'user'
+                          }
+                        />
+                      </span>
+                      <span className="flex justify-end text-sm text-blue-400 min-w-[4.5rem]">
+                        <Tooltip
+                          className="items-center"
+                          tooltipContent={
+                            <Numeral value={reputationRaw} suffix="pts" />
+                          }
+                        >
+                          <Icon
+                            name="star"
+                            appearance={{ size: 'extraTiny' }}
+                          />
+                          <span className="inline-block ml-1 mr-2">
+                            {reputationPercentage.toFixed(2)}%
+                          </span>
+                        </Tooltip>
+                      </span>
+                    </div>
                   </li>
                 );
               },
