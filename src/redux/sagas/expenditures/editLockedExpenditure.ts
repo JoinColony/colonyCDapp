@@ -56,8 +56,8 @@ function* editLockedExpenditure({
       params: [encodedMulticallData],
       title: { id: 'transaction.multicall.setExpenditureState.title' },
       /**
-       * @NOTE The group is not needed here, but it's a workaround
-       * to override the transaction title and description
+       * @NOTE Although there's only one transaction, this group is needed here as
+       * it's a workaround to override the transaction title and description
        */
       group: {
         key: 'multicall',

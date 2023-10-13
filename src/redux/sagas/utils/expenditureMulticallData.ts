@@ -72,11 +72,6 @@ export const getMulticallDataForPayout = (
   const existingSlot = expenditure.slots.find(
     (slot) => slot.id === payout.slotId,
   );
-  const existingPayout = existingSlot?.payouts?.find(
-    (slotPayout) =>
-      slotPayout.amount === payout.amount &&
-      slotPayout.tokenAddress === payout.tokenAddress,
-  );
 
   // Set recipient
   if (
@@ -97,6 +92,17 @@ export const getMulticallDataForPayout = (
   }
 
   // Set token address and amount
+  const payoutAmountInWei = BigNumber.from(payout.amount)
+    .mul(
+      // @TODO: This should get the token decimals of the selected token
+      BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS),
+    )
+    .toString();
+  const existingPayout = existingSlot?.payouts?.find(
+    (slotPayout) =>
+      slotPayout.amount === payoutAmountInWei &&
+      slotPayout.tokenAddress === payout.tokenAddress,
+  );
   if (!existingPayout) {
     encodedMulticallData.push(
       colonyClient.interface.encodeFunctionData(
@@ -107,10 +113,7 @@ export const getMulticallDataForPayout = (
           expenditure.nativeId,
           payout.slotId ?? '',
           payout.tokenAddress,
-          BigNumber.from(payout.amount).mul(
-            // @TODO: This should get the token decimals of the selected token
-            BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS),
-          ),
+          payoutAmountInWei,
         ],
       ),
     );
