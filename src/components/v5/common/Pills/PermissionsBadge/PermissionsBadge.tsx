@@ -1,14 +1,15 @@
 import React, { FC } from 'react';
 
-import { PermissionsBadgeProps } from './types';
 import PillsBase from '../PillsBase';
+import { PillsProps } from '../types';
 
 const displayName = 'v5.common.Pills.PermissionsBadge';
 
-const PermissionsBadge: FC<PermissionsBadgeProps> = ({ text, iconName }) => (
+const PermissionsBadge: FC<PillsProps> = ({ text, iconName, ...rest }) => (
   <PillsBase
     className="bg-base-white border border-gray-100"
     iconName={iconName}
+    {...rest}
   >
     {text}
   </PillsBase>
