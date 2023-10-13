@@ -12,6 +12,7 @@ import {
   initiateTransaction,
   getColonyManager,
   getResolvedExpenditurePayouts,
+  takeFrom,
 } from '../utils';
 import {
   createTransaction,
@@ -100,7 +101,23 @@ function* editLockedExpenditure({
       methodName: 'multicall',
       identifier: colonyAddress,
       params: [encodedMulticallData],
+      title: { id: 'transaction.multicall.setExpenditureState.title' },
+      /**
+       * @NOTE The group is not needed here, but it's a workaround
+       * to override the transaction title and description
+       */
+      group: {
+        key: 'multicall',
+        id: meta.id,
+        index: 0,
+        title: { id: 'transaction.multicall.setExpenditureState.title' },
+        description: {
+          id: 'transaction.multicall.setExpenditureState.description',
+        },
+      },
     });
+
+    yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
 
     yield initiateTransaction({ id: meta.id });
 

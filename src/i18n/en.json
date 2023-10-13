@@ -322,6 +322,8 @@
   "transaction.StakedExpenditureClient.cancelAndPunish.description": "Cancel Staked Expenditure",
   "transaction.StreamingPaymentsClient.create.title": "Create Streaming Payment",
   "transaction.StreamingPaymentsClient.create.description": "Create Streaming Payment",
+  "transaction.multicall.setExpenditureState.title": "Set Expenditure State",
+  "transaction.multicall.setExpenditureState.description": "Set Expenditure State",
 
   "metatransaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
   "metatransaction.group.deposit.title": "Activate tokens",
