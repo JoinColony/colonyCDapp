@@ -1,11 +1,8 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
-import { BigNumber, utils } from 'ethers';
 
 import { Action, ActionTypes, AllActions } from '~redux';
-import { ExpenditurePayoutFieldValue } from '~common/Expenditures/ExpenditureForm';
 import { ColonyManager } from '~context';
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 
 import {
   putError,
@@ -13,16 +10,13 @@ import {
   getColonyManager,
   getResolvedExpenditurePayouts,
   takeFrom,
+  getMulticallDataForPayout,
 } from '../utils';
 import {
   createTransaction,
   getTxChannel,
   waitForTxResult,
 } from '../transactions';
-
-function toB32(input) {
-  return utils.hexZeroPad(utils.hexlify(input), 32);
-}
 
 function* editLockedExpenditure({
   payload: { colonyAddress, expenditure, payouts },
@@ -36,65 +30,24 @@ function* editLockedExpenditure({
 
   const txChannel = yield call(getTxChannel, meta.id);
 
-  const resolvedPayouts: ExpenditurePayoutFieldValue[] =
-    getResolvedExpenditurePayouts(expenditure, payouts);
+  const resolvedPayouts = getResolvedExpenditurePayouts(expenditure, payouts);
 
   try {
-    // @TODO: Fix removing payouts
-
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
       colonyClient,
       expenditure.nativeDomainId,
       ColonyRole.Administration,
     );
 
-    const encodedMulticallData: string[] = [];
-
-    resolvedPayouts.forEach((payout) => {
-      // Set recipient
-      encodedMulticallData.push(
-        colonyClient.interface.encodeFunctionData('setExpenditureState', [
-          permissionDomainId,
-          childSkillIndex,
-          expenditure.nativeId,
-          BigNumber.from(26),
-          [false, true],
-          [toB32(payout.slotId), toB32(BigNumber.from(0))],
-          toB32(payout.recipientAddress),
-        ]),
-      );
-
-      // Set token address and amount
-      encodedMulticallData.push(
-        colonyClient.interface.encodeFunctionData(
-          'setExpenditurePayout(uint256,uint256,uint256,uint256,address,uint256)',
-          [
-            permissionDomainId,
-            childSkillIndex,
-            expenditure.nativeId,
-            payout.slotId,
-            payout.tokenAddress,
-            BigNumber.from(payout.amount).mul(
-              // @TODO: This should get the token decimals of the selected token
-              BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS),
-            ),
-          ],
-        ),
-      );
-
-      // Set claim delay
-      encodedMulticallData.push(
-        colonyClient.interface.encodeFunctionData('setExpenditureState', [
-          permissionDomainId,
-          childSkillIndex,
-          expenditure.nativeId,
-          BigNumber.from(26),
-          [false, true],
-          [toB32(payout.slotId), toB32(BigNumber.from(1))],
-          toB32(BigNumber.from(payout.claimDelay)),
-        ]),
-      );
-    });
+    const encodedMulticallData: string[] = resolvedPayouts.flatMap((payout) =>
+      getMulticallDataForPayout(
+        expenditure,
+        payout,
+        colonyClient,
+        permissionDomainId,
+        childSkillIndex,
+      ),
+    );
 
     yield fork(createTransaction, meta.id, {
       context: ClientType.ColonyClient,
