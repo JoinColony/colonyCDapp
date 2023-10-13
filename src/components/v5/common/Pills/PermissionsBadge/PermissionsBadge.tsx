@@ -5,10 +5,10 @@ import PillsBase from '../PillsBase';
 
 const displayName = 'v5.common.Pills.PermissionsBadge';
 
-const PermissionsBadge: FC<PermissionsBadgeProps> = ({ text, isMultiSig }) => (
+const PermissionsBadge: FC<PermissionsBadgeProps> = ({ text, iconName }) => (
   <PillsBase
     className="bg-base-white border border-gray-100"
-    iconName={isMultiSig ? 'users-three' : 'user'}
+    iconName={iconName}
   >
     {text}
   </PillsBase>

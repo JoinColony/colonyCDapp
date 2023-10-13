@@ -12,10 +12,10 @@ const meta: Meta<typeof PermissionsBadge> = {
         type: 'text',
       },
     },
-    isMultiSig: {
-      name: 'Is MultiSig',
+    iconName: {
+      name: 'Icon Name',
       control: {
-        type: 'boolean',
+        type: 'text',
       },
     },
   },
@@ -27,12 +27,13 @@ type Story = StoryObj<typeof PermissionsBadge>;
 export const Base: Story = {
   args: {
     text: 'Payer',
+    iconName: 'user',
   },
 };
 
 export const MultiSig: Story = {
   args: {
     text: 'Custom',
-    isMultiSig: true,
+    iconName: 'user-three',
   },
 };
