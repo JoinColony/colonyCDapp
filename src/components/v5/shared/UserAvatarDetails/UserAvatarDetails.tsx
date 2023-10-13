@@ -7,6 +7,7 @@ import { UserAvatarDetailsProps } from './types';
 import UserStatus from '~v5/common/Pills/UserStatus';
 import { UserStatusMode } from '~v5/common/Pills/types';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.UserAvatarDetails';
 
@@ -52,7 +53,7 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
           </div>
           {!!userStatus && userStatus !== 'general' && isContributorsList && (
             <span className="absolute bottom-[-0.9375rem]">
-              <UserStatus mode={mode} text={{ id: userStatus }} />
+              <UserStatus mode={mode} text={formatText({ id: userStatus })} />
             </span>
           )}
         </div>
