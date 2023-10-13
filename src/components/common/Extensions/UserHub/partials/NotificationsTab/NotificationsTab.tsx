@@ -15,10 +15,10 @@ const NotificationsTab: FC = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const { colonyAddress } = colony || {};
-  const { walletAddress } = user || {};
 
-  const { notifications, registerDeviceForNotifications, subscribeToColony } =
-    useNotifications(walletAddress);
+  const { notifications, subscribeToColony } = useNotifications(
+    user || undefined,
+  );
 
   return (
     <div>
@@ -38,16 +38,7 @@ const NotificationsTab: FC = () => {
           type="button"
           className="text-blue-400 text-4 hover:text-gray-900 transition-all duration-normal"
           onClick={() => {
-            registerDeviceForNotifications(walletAddress || '');
-          }}
-        >
-          Register for Notifications
-        </button>
-        <button
-          type="button"
-          className="text-blue-400 text-4 hover:text-gray-900 transition-all duration-normal"
-          onClick={() => {
-            subscribeToColony(walletAddress || '', colonyAddress || '', true);
+            subscribeToColony(colonyAddress || '', true);
           }}
         >
           Subscribe to colony
@@ -56,7 +47,7 @@ const NotificationsTab: FC = () => {
           type="button"
           className="text-blue-400 text-4 hover:text-gray-900 transition-all duration-normal"
           onClick={() => {
-            subscribeToColony(walletAddress || '', colonyAddress || '', false);
+            subscribeToColony(colonyAddress || '', false);
           }}
         >
           UnSubscribe to colony

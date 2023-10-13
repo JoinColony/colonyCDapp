@@ -63,11 +63,3 @@ query GetUserNotifications($id: ID!, $colonyId: ID) {
     }
   }
 }
-
-query GetUserNotificationTokens($id: ID!) {
-  getProfile(id: $id) {
-    notificationSettings {
-      notificationTokens
-    }
-  }
-}

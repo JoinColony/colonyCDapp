@@ -5,21 +5,20 @@ import {
   onMessage,
   getToken,
   Messaging,
+  deleteToken,
 } from 'firebase/messaging';
 import { useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
 
-import { ContextModule, getContext } from '~context';
 import {
-  GetUserNotificationTokensDocument,
-  GetUserNotificationTokensQuery,
-  GetUserNotificationTokensQueryVariables,
-  useUpdateUserNotificationTokenMutation,
   useSubscribeToColonyPushNotificationsMutation,
   useGetUserNotificationsQuery,
+  useUpdateUserProfileMutation,
 } from '~gql';
 import Toast from '~shared/Extensions/Toast';
 import { notNull } from '~utils/arrays';
+import { useAppContext } from '~hooks';
+import { excludeTypenameKey } from '~utils/objects';
 
 const vapidKey = process.env.VAPID_KEY;
 
@@ -27,17 +26,17 @@ const firebaseConfig = process.env.FIREBASE_CONFIG
   ? JSON.parse(process.env.FIREBASE_CONFIG)
   : {};
 
-export const useNotifications = (
-  walletAddress: string | undefined,
-  colonyId?: string,
-) => {
+export const useNotifications = (colonyId?: string) => {
+  const { updateUser, user } = useAppContext();
   const { formatMessage } = useIntl();
-  const apolloClient = getContext(ContextModule.ApolloClient);
-  const [updateNotificationTokens] = useUpdateUserNotificationTokenMutation();
   const [subscribeToColonyPushNotifications] =
     useSubscribeToColonyPushNotificationsMutation();
+  const [editUser] = useUpdateUserProfileMutation();
 
+  const [userAddress, setUserAddress] = useState(user?.walletAddress);
   const [cachedMessaging, setCachedMessaging] = useState<Messaging>();
+
+  useEffect(() => setUserAddress(user?.walletAddress), [user]);
 
   const {
     data,
@@ -45,28 +44,23 @@ export const useNotifications = (
     refetch,
   } = useGetUserNotificationsQuery({
     variables: {
-      id: walletAddress ?? '',
+      id: userAddress ?? '',
       colonyId,
     },
-    skip: !walletAddress,
+    skip: !userAddress,
   });
 
   const notifications = data?.notificationsByDate?.items.filter(notNull) ?? [];
+  const notificationSettings = excludeTypenameKey(
+    user?.profile?.notificationSettings ?? {},
+  );
 
-  const fetchNotificationTokens = async (userId: string) => {
-    const { data: tokensData } = await apolloClient.query<
-      GetUserNotificationTokensQuery,
-      GetUserNotificationTokensQueryVariables
-    >({
-      query: GetUserNotificationTokensDocument,
-      variables: {
-        id: userId,
-      },
-    });
-    return (
-      tokensData.getProfile?.notificationSettings?.notificationTokens || []
-    );
-  };
+  // NOTE: This needs to change as is a user has agreed to permissions
+  // once and changes their mind this will always be true
+  const pushNotificationsEnabledForDevice =
+    Notification.permission === 'granted';
+
+  const emailEnabledForUser = notificationSettings?.enableEmail || false;
 
   useEffect(() => {
     async function setupNotifications() {
@@ -99,43 +93,72 @@ export const useNotifications = (
   }, []);
 
   const filterNotificationsByColony = (filterByColony: string) => {
-    refetch({ id: walletAddress, colonyId: filterByColony });
+    refetch({ id: userAddress, colonyId: filterByColony });
   };
 
-  const registerDeviceForNotifications = async (userId: string) => {
+  const enablePushNotifications = async (enable: boolean) => {
     try {
-      if (!cachedMessaging) {
+      if (!cachedMessaging || !userAddress) {
         return;
       }
 
-      // Get registration token. Initially this makes a network call, once retrieved
-      // subsequent calls to getToken will return from cache.
-      const currentToken = await getToken(cachedMessaging, { vapidKey });
+      const notificationTokens = notificationSettings?.notificationTokens || [];
 
-      if (currentToken) {
-        const notificationTokens = await fetchNotificationTokens(userId);
+      if (enable) {
+        // Get registration token. Initially this makes a network call, once retrieved
+        // subsequent calls to getToken will return from cache.
+        const currentToken = await getToken(cachedMessaging, { vapidKey });
 
-        if (notificationTokens.includes(currentToken)) {
-          return;
+        if (currentToken) {
+          if (notificationTokens.includes(currentToken)) {
+            return;
+          }
+
+          await editUser({
+            variables: {
+              input: {
+                id: userAddress,
+                notificationSettings: {
+                  ...notificationSettings,
+                  notificationTokens: [...notificationTokens, currentToken],
+                },
+              },
+            },
+          });
+
+          updateUser?.(user?.walletAddress, true);
+
+          toast.success(
+            <Toast
+              type="success"
+              title="Success"
+              description="Registered for push notifications"
+            />,
+          );
+        } else {
+          // No registration token available.
+          // Permission is requested to generate one and allow notifications.
         }
+      } else {
+        const currentToken = await getToken(cachedMessaging, { vapidKey });
 
-        await updateNotificationTokens({
+        await deleteToken(cachedMessaging);
+
+        await editUser({
           variables: {
-            id: userId,
-            notificationTokens: [...notificationTokens, currentToken],
+            input: {
+              id: userAddress,
+              notificationSettings: {
+                ...notificationSettings,
+                notificationTokens: notificationTokens.filter(
+                  (token) => token !== currentToken,
+                ),
+              },
+            },
           },
         });
 
-        toast.success(
-          <Toast
-            type="success"
-            title="Success"
-            description="Registered for push notifications"
-          />,
-        );
-      } else {
-        // No registration token available.
-        // Permission is requested to generate one and allow notifications.
+        updateUser?.(user?.walletAddress, true);
       }
     } catch (error) {
       console.error('An error occurred while retrieving token. ', error);
@@ -149,16 +172,42 @@ export const useNotifications = (
     }
   };
 
+  const enableEmailNotifications = async (enable: boolean) => {
+    if (!userAddress) {
+      throw new Error('now user address defined');
+    }
+    try {
+      await editUser({
+        variables: {
+          input: {
+            id: userAddress,
+            notificationSettings: {
+              ...notificationSettings,
+              enableEmail: enable,
+            },
+          },
+        },
+      });
+
+      updateUser?.(user?.walletAddress, true);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const subscribeToColony = async (
-    userId: string,
     notifyingColonyId: string,
     enable: boolean,
   ) => {
+    if (!userAddress) {
+      return;
+    }
+
     try {
       const success = await subscribeToColonyPushNotifications({
         variables: {
           input: {
-            userId,
+            userId: userAddress,
             colonyId: notifyingColonyId,
             enable,
           },
@@ -194,7 +243,10 @@ export const useNotifications = (
     notifications,
     loadingNotifications,
     filterNotificationsByColony,
-    registerDeviceForNotifications,
+    pushNotificationsEnabledForDevice,
+    enablePushNotifications,
+    emailEnabledForUser,
+    enableEmailNotifications,
     subscribeToColony,
   };
 };
