@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import NotificationsItems from './partials/NotificationsTabItem';
-import { useAppContext, useColonyContext, useMobile } from '~hooks';
+import { useColonyContext, useMobile } from '~hooks';
 import EmptyContent from '~v5/common/EmptyContent';
 import { useNotifications } from '~hooks/useNotifications';
 
@@ -13,12 +13,9 @@ const NotificationsTab: FC = () => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { colony } = useColonyContext();
-  const { user } = useAppContext();
   const { colonyAddress } = colony || {};
 
-  const { notifications, subscribeToColony } = useNotifications(
-    user || undefined,
-  );
+  const { notifications, subscribeToColony } = useNotifications();
 
   return (
     <div>
