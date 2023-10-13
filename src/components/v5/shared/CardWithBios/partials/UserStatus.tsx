@@ -11,6 +11,7 @@ import {
   TOP_CONTRIBUTOR_PERCENT,
   getIconName,
 } from './consts';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.CardWithBios.partials.UserStatusComponent';
 
@@ -48,7 +49,7 @@ const UserStatusComponent: FC<UserStatusComponentProps> = ({ userStatus }) => {
         </>
       }
     >
-      <UserStatus mode={userStatus} text={{ id: userStatus }}>
+      <UserStatus mode={userStatus} text={formatText({ id: userStatus })}>
         {userStatus}
       </UserStatus>
     </Tooltip>

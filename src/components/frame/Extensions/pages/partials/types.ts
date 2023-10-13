@@ -7,7 +7,7 @@ export interface ActionButtonProps {
   isSetupRoute: boolean;
   waitingForEnableConfirmation: boolean;
   extensionStatusMode?: ExtensionStatusBadgeMode;
-  extensionStatusText?: MessageDescriptor | string;
+  extensionStatusText?: React.ReactNode;
 }
 
 export interface ActiveInstallsProps {
