@@ -161,7 +161,7 @@ async function sendMessageToUser(params) {
     }
   }
 
-  if (notificationSettings?.enableEmails) {
+  if (notificationSettings?.enableEmail) {
     await sendEmail(params);
   }
 }

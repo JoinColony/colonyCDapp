@@ -19,7 +19,7 @@ const sendUserEmail = async ({
   mailjet,
   userEmail,
   userName,
-  colonyName,
+  title,
   userId,
 }) => {
   try {
@@ -28,13 +28,13 @@ const sendUserEmail = async ({
         constructMessage({
           recipientEmail: userEmail,
           recipientName: userName || userId,
-          subject: colonyName,
+          subject: title,
           plainText: `Dear ${
             userName || userId
-          }, welcome to Mailjet! May the colony ${colonyName} be with you!`,
+          }, welcome to Mailjet! May the colony ${title} be with you!`,
           html: `<h3>Dear ${
             userName || userId
-          }, welcome to <a href="https://www.mailjet.com/">Mailjet</a>!</h3><br />May the colony ${colonyName} force be with you!`,
+          }, welcome to <a href="https://www.mailjet.com/">Mailjet</a>!</h3><br />May the colony ${title} force be with you!`,
         }),
       ],
     });
@@ -47,7 +47,7 @@ const sendUserEmail = async ({
 const sendColonyEmail = async ({
   mailjet,
   colonyId,
-  colonyName,
+  title,
   graphqlURL,
   apiKey,
 }) => {
@@ -82,9 +82,9 @@ const sendColonyEmail = async ({
             recipientName:
               contributor.user?.profile?.displayName ||
               contributor.user?.profile?.id,
-            subject: colonyName,
-            plainText: `This is a colony wide notification for ${colonyName}!`,
-            html: `<h3>This is a colony wide notification for ${colonyName}</h3>`,
+            subject: title,
+            plainText: `This is a colony wide notification for ${title}!`,
+            html: `<h3>This is a colony wide notification for ${title}</h3>`,
           }),
         ],
       });
