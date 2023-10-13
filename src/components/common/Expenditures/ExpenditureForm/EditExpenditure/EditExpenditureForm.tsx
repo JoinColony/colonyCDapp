@@ -19,12 +19,14 @@ export interface EditExpenditureFormProps {
   expenditure: Expenditure;
   onEditingFinished: () => void;
   colony: Colony;
+  actionType: ActionTypes;
 }
 
 const EditExpenditureForm = ({
   expenditure,
   onEditingFinished,
   colony,
+  actionType,
 }: EditExpenditureFormProps) => {
   const transformPayload = pipe(
     mapPayload((payload: AdvancedPaymentFormValues) => ({
@@ -42,7 +44,7 @@ const EditExpenditureForm = ({
           ? getExpenditurePayoutsFieldValue(expenditure)
           : [getInitialPayoutFieldValue(colony.nativeToken.tokenAddress)],
       }}
-      actionType={ActionTypes.EXPENDITURE_EDIT}
+      actionType={actionType}
       transform={transformPayload}
       onSuccess={onEditingFinished}
     >

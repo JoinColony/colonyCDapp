@@ -2,9 +2,9 @@ import React from 'react';
 
 import { ExpenditureStatus } from '~gql';
 import { Colony, Expenditure } from '~types';
+import { ActionTypes } from '~redux';
 
 import EditExpenditureForm from './EditExpenditureForm';
-import EditLockedExpenditureForm from './EditLockedExpenditureForm';
 
 interface EditExpenditureProps {
   expenditure: Expenditure;
@@ -17,27 +17,26 @@ const EditExpenditure = ({
   onEditingFinished,
   colony,
 }: EditExpenditureProps) => {
+  let actionType: ActionTypes | null = null;
+
   if (expenditure.status === ExpenditureStatus.Draft) {
-    return (
-      <EditExpenditureForm
-        colony={colony}
-        expenditure={expenditure}
-        onEditingFinished={onEditingFinished}
-      />
-    );
+    actionType = ActionTypes.EXPENDITURE_EDIT;
+  } else if (expenditure.status === ExpenditureStatus.Locked) {
+    actionType = ActionTypes.EXPENDITURE_LOCKED_EDIT;
   }
 
-  if (expenditure.status === ExpenditureStatus.Locked) {
-    return (
-      <EditLockedExpenditureForm
-        colony={colony}
-        expenditure={expenditure}
-        onEditingFinished={onEditingFinished}
-      />
-    );
+  if (!actionType) {
+    return null;
   }
 
-  return null;
+  return (
+    <EditExpenditureForm
+      colony={colony}
+      expenditure={expenditure}
+      onEditingFinished={onEditingFinished}
+      actionType={actionType}
+    />
+  );
 };
 
 export default EditExpenditure;
