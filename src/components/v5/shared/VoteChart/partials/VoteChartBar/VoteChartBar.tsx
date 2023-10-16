@@ -6,8 +6,10 @@ const displayName = 'v5.VoteChart.partials.VoteChartBar';
 
 const VoteChartBar: FC<VoteChartBarProps> = ({
   value,
+  predictedValue,
   direction,
   barBackgroundClassName,
+  predictionBarClassName,
 }) => {
   return (
     <div
@@ -40,9 +42,30 @@ const VoteChartBar: FC<VoteChartBarProps> = ({
         }}
         className={clsx(
           barBackgroundClassName,
-          'h-[calc(100%+2px)] -my-[1px] block transition-[width] relative z-[1]',
+          'h-[calc(100%+2px)] -my-[1px] block transition-[width] relative z-[2]',
         )}
       />
+      {predictedValue && (
+        <span
+          style={{
+            width: `${predictedValue}%`,
+          }}
+          className={clsx(
+            predictionBarClassName,
+            'absolute top-0 bottom-0 border h-full block transition-all z-[1]',
+            {
+              'left-0': direction === VOTE_CHART_BAR_DIRECTION.Right,
+              'right-0': direction === VOTE_CHART_BAR_DIRECTION.Left,
+              'rounded-r-3xl':
+                direction === VOTE_CHART_BAR_DIRECTION.Right &&
+                predictedValue === 100,
+              'rounded-l-3xl':
+                direction === VOTE_CHART_BAR_DIRECTION.Left &&
+                predictedValue === 100,
+            },
+          )}
+        />
+      )}
     </div>
   );
 };
