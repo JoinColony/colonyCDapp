@@ -11,7 +11,6 @@ import {
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
 import Card from '~v5/shared/Card';
-import styles from './AmountField.module.css';
 import Numeral from '~shared/Numeral';
 import { useColonyContext } from '~hooks';
 import useToggle from '~hooks/useToggle';
@@ -88,7 +87,13 @@ const AmountField: FC<AmountFieldProps> = ({ name }) => {
         <button
           type="button"
           ref={relativeElementRef}
-          className={clsx(styles.button, 'text-gray-500')}
+          className={clsx(
+            'flex items-center gap-2 transition-colors md:hover:text-blue-400',
+            {
+              'text-gray-900': selectedToken?.symbol,
+              'text-gray-500': !selectedToken?.symbol,
+            },
+          )}
           onClick={toggleTokenSelect}
           aria-label={formatMessage({ id: 'ariaLabel.selectToken' })}
         >
@@ -126,10 +131,8 @@ const AmountField: FC<AmountFieldProps> = ({ name }) => {
                     >
                       <button
                         type="button"
-                        className={clsx(
-                          styles.button,
-                          'justify-between w-full',
-                        )}
+                        className={`flex items-center gap-2 transition-colors md:hover:text-blue-400
+                        justify-between w-full`}
                         onClick={() => {
                           tokenAddressController.onChange(
                             colonyToken.tokenAddress,

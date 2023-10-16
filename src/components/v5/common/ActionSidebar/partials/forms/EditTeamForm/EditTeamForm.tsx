@@ -10,6 +10,7 @@ import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import TeamColourField from '~v5/common/ActionSidebar/partials/TeamColourField';
 import DefaultField from '~v5/common/ActionSidebar/partials/DefaultField';
 import { DECISION_METHOD_OPTIONS } from '../../consts';
+import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase';
 
 const displayName = 'v5.common.ActionSidebar.partials.EditTeamForm';
 
@@ -53,7 +54,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           <FormattedMessage id="actionSidebar.toolip.createTeam.teamPurpose" />
         }
       >
-        <DefaultField
+        <FormTextareaBase
           name="domainPurpose"
           placeholder={intl.formatMessage({
             id: 'actionSidebar.placeholder.purpose',

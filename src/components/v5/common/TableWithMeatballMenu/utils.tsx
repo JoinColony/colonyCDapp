@@ -12,6 +12,10 @@ export const makeMenuColumn = <T,>(
     cell: ({ row }) => {
       const props = getMenuProps(row);
 
-      return props ? <MeatBallMenu {...props} /> : undefined;
+      return props ? (
+        <div className="absolute top-4 right-4 md:static md:top-auto md:right-auto">
+          <MeatBallMenu {...props} />
+        </div>
+      ) : undefined;
     },
   });

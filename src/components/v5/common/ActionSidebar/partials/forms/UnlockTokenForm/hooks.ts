@@ -1,24 +1,15 @@
-import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
+import { DeepPartial } from 'utility-types';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
 import { useColonyContext } from '~hooks';
-import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { getUnlockTokenDialogPayload } from '~common/Dialogs/UnlockTokenDialog/helpers';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
 import { DECISION_METHOD_OPTIONS } from '../../consts';
-
-const validationSchema = yup
-  .object()
-  .shape({
-    createdIn: yup.number().defined(),
-    decisionMethod: yup.string().defined(),
-    annotation: yup.string().max(MAX_ANNOTATION_LENGTH).defined(),
-  })
-  .defined();
+import { UnlockTokenFormValues, validationSchema } from './consts';
 
 export const useUnlockToken = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -29,7 +20,7 @@ export const useUnlockToken = (
   useActionFormBaseHook({
     getFormOptions,
     actionType: ActionTypes.ACTION_UNLOCK_TOKEN,
-    defaultValues: useMemo(
+    defaultValues: useMemo<DeepPartial<UnlockTokenFormValues>>(
       () => ({
         decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
         annotation: '',
@@ -40,7 +31,7 @@ export const useUnlockToken = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
-        mapPayload((payload) => {
+        mapPayload((payload: UnlockTokenFormValues) => {
           const values = {
             motionDomainId: payload.createdIn,
             decisionMethod: payload.decisionMethod,

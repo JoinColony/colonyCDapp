@@ -1,4 +1,3 @@
-import { Message, SimpleMessageValues } from '~types';
 import { ContributorType } from '../TableFiltering/types';
 
 export type ExtensionStatusBadgeMode =
@@ -31,8 +30,7 @@ export type PillSize = 'medium' | 'small';
 
 export type PillsProps = {
   mode?: ExtensionStatusBadgeMode | UserStatusMode;
-  text?: Message;
-  textValues?: SimpleMessageValues;
+  text?: React.ReactNode;
   iconName?: string;
   iconSize?: IconSize;
   pillSize?: PillSize;

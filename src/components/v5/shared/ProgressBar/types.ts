@@ -3,4 +3,5 @@ export interface ProgressBarProps {
   isTall?: boolean;
   additionalText?: React.ReactNode;
   threshold?: number;
+  max?: number;
 }

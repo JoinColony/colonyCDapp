@@ -6,6 +6,7 @@ import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import {
+  useActionDescriptionMetadata,
   useActionFormProps,
   // useCloseSidebarClick,
   useNotificationBanner,
@@ -38,6 +39,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const userHasPermissions = useUserHasPermissions();
   const form = useFormContext();
   const notificationBanner = useNotificationBanner();
+  const descriptionMetadata = useActionDescriptionMetadata();
 
   return (
     <>
@@ -48,18 +50,17 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           stateClassNames={{
             [FIELD_STATE.Error]: 'placeholder:text-red-400',
           }}
-          className={clsx(
-            `
-              heading-3
-              md:hover:text-blue-400 md:hover:placeholder:text-blue-400 text-gray-900
-              transition-colors mb-7
-            `,
-          )}
+          className={`
+            heading-3
+            md:hover:text-blue-400 md:hover:placeholder:text-blue-400 text-gray-900
+            transition-colors
+          `}
           mode="secondary"
           message={false}
         />
+        <p className="text-gray-600 font-medium mt-2">{descriptionMetadata}</p>
         {/* @todo: add preview mode to the form */}
-        <ActionTypeSelect />
+        <ActionTypeSelect className="mt-7" />
         {/* @todo: add motion action type to each action */}
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
         {notificationBanner && (
@@ -113,7 +114,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           fixed
           top-0
           right-0
-          bottom-0
+          h-screen
           w-full
           bg-base-white
           rounded-bl-lg
@@ -159,7 +160,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         {children}
       </div>
       <div
-        className={clsx('flex w-full h-full', {
+        className={clsx('flex w-full flex-grow overflow-hidden', {
           'flex-col-reverse md:flex-row': transactionId,
         })}
       >
