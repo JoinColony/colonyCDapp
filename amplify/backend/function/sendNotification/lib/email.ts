@@ -1,8 +1,6 @@
 import Mailjet from 'node-mailjet';
 
-import { notNull } from '../../../../../src/utils/arrays';
-
-import { graphqlRequest } from '../../utils';
+import { notNull, graphqlRequest } from '../../utils';
 
 import {
   GetColonyContributors_SnDocument,

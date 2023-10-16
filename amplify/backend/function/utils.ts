@@ -51,3 +51,5 @@ export const graphqlRequest = async <
     throw error;
   }
 };
+
+export { notNull } from '../../../src/utils/arrays';

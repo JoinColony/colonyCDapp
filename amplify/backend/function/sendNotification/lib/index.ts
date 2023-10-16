@@ -1,11 +1,9 @@
 // Unfortunatey we cannot destructure this library
 // https://github.com/firebase/firebase-admin-node/issues/593
 import * as admin from 'firebase-admin';
-
 import { Handler } from 'aws-lambda';
 
-import { notNull } from '../../../../../src/utils/arrays';
-import { graphqlRequest } from '../../utils';
+import { graphqlRequest, notNull } from '../../utils';
 import { getParams } from '../../getParams';
 
 import {
