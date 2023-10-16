@@ -1104,6 +1104,9 @@
   "table.row.symbol": "Symbol",
   "table.row.duplicate": "Duplicate row",
   "table.row.remove": "Remove row",
+  "table.row.asset": "Asset",
+  "table.row.type": "Type",
+  "table.row.balance": "Balance",
   "actionSidebar.distribution": "Distribution",
   "actionSidebar.distributionPlaceholder": "Select split type",
   "actionSidebar.distributionTypes": "DISTRIBUTION TYPES",
@@ -1128,5 +1131,7 @@
   "role.mod": "Mod",
   "role.owner": "Owner",
   "role.custom": "Custom",
-  "role.payer": "Payer"
+  "role.payer": "Payer",
+  "balancePage.title": "Balance",
+  "balancePage.description": "Overview of the Colony's balance by token"
 }

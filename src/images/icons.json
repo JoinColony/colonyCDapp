@@ -221,7 +221,9 @@
     "thumbs-up",
     "thumbs-down",
     "pie-chart",
-    "clock"
+    "clock",
+    "transfer",
+    "add"
   ],
   "multiColorIcons": [
     "circle-check-primary",

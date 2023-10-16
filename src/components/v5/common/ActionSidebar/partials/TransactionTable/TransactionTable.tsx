@@ -17,6 +17,7 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
   const fieldArrayMethods = useFieldArray({
     name,
   });
+  console.log('');
   const data: TransactionTableModel[] = fieldArrayMethods.fields.map(
     ({ id }) => ({
       key: id,
