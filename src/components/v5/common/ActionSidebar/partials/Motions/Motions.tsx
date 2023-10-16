@@ -1,5 +1,5 @@
-import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import React, { FC, useEffect, useMemo, useState } from 'react';
+import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
 import { getMotionState, MotionState } from '~utils/colonyMotions';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
@@ -13,15 +13,12 @@ import OutcomeStep from './steps/OutcomeStep';
 import RevealStep from './steps/RevealStep';
 import StakingStep from './steps/StakingStep';
 import VotingStep from './steps/VotingStep';
-import { MotionSimplePaymentProps } from './types';
+import { MotionsProps } from './types';
 import { MotionAction } from '~types/motions';
 
-const displayName =
-  'v5.common.ActionSidebar.partials.motions.MotionSimplePayment';
+const displayName = 'v5.common.ActionSidebar.partials.Motions';
 
-const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
-  transactionId,
-}) => {
+const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const {
     action,
     motionState,
@@ -43,11 +40,11 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
   const motionStateEnum = motionData
     ? getMotionState(networkMotionStateEnum, motionData)
     : MotionState.Staking;
-  const [activeStepKey, setActiveStepKey] = useState(motionStateEnum);
+  const [activeStepKey, setActiveStepKey] = useState(networkMotionStateEnum);
 
   useEffect(() => {
-    setActiveStepKey(motionStateEnum);
-  }, [motionStateEnum]);
+    setActiveStepKey(networkMotionStateEnum);
+  }, [networkMotionStateEnum]);
 
   // @todo: add missing steps
   const items = useMemo(
@@ -56,7 +53,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
         ? []
         : [
             {
-              key: MotionState.Staking,
+              key: NetworkMotionState.Staking,
               content: <StakingStep />,
               heading: {
                 label: formatText({ id: 'motion.staking.label' }) || '',
@@ -72,7 +69,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
               },
             },
             {
-              key: MotionState.Voting,
+              key: NetworkMotionState.Submit,
               content: (
                 <VotingStep
                   actionData={action as MotionAction}
@@ -97,7 +94,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
               isOptional: true,
             },
             {
-              key: MotionState.Reveal,
+              key: NetworkMotionState.Reveal,
               content: (
                 <RevealStep
                   motionData={motionData}
@@ -125,7 +122,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
             },
             {
               // @todo: change to MotionState when the outcome is known and revealed
-              key: MotionState.Failed,
+              key: NetworkMotionState.Finalizable,
               content: <OutcomeStep />,
               heading: {
                 // @todo: chnage label and styling when the outcome is known and revealed
@@ -137,7 +134,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
               isHidden: false,
             },
             {
-              key: MotionState.Passed,
+              key: NetworkMotionState.Finalized,
               content: (
                 <FinalizeStep
                   actionData={action as MotionAction}
@@ -158,6 +155,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
       motionId,
       motionStakes,
       motionStateEnum,
+      refetchAction,
       refetchMotionState,
       startPollingForAction,
       stopPollingForAction,
@@ -169,7 +167,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
   return loadingAction ? (
     <div>Loading</div>
   ) : (
-    <Stepper<MotionState>
+    <Stepper<NetworkMotionState>
       activeStepKey={activeStepKey}
       setActiveStepKey={setActiveStepKey}
       items={items}
@@ -177,6 +175,6 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
   );
 };
 
-MotionSimplePayment.displayName = displayName;
+Motions.displayName = displayName;
 
-export default MotionSimplePayment;
+export default Motions;

@@ -26,7 +26,7 @@ import { formatText } from '~utils/intl';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
 import FormInputBase from '../Fields/InputBase/FormInputBase';
 import { FIELD_STATE } from '../Fields/consts';
-import MotionSimplePayment from './partials/motions/MotionSimplePayment';
+import Motions from './partials/Motions';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -189,7 +189,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
               bg-gray-25
             `}
           >
-            <MotionSimplePayment transactionId={transactionId} />
+            <Motions transactionId={transactionId} />
           </div>
         )}
       </div>
