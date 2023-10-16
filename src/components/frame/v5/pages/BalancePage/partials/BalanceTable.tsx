@@ -11,8 +11,9 @@ import { useColonyContext } from '~hooks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import CopyWallet from '~v5/shared/CopyWallet/CopyWallet';
+import TransferFundsForm from './TransferFundsForm';
 
-const displayName = 'v5.pages.VerifiedPage.partials.BalaceTable';
+const displayName = 'v5.pages.BalancePage.partials.BalaceTable';
 
 const BalaceTable: FC = () => {
   //   const { searchValue } = useSearchContext();
@@ -27,8 +28,14 @@ const BalaceTable: FC = () => {
       { toggleOn: toggleAddFundsModalOn, toggleOff: toggleAddFundsModalOff },
     ],
   } = useActionSidebarContext();
-  const { handleClipboardCopy, isCopied } = useCopyToClipboard('0xCFD3aa1EbC6119D80Ed47955a87A9d9C281A97B3');
-console.log(colony);
+  const { handleClipboardCopy, isCopied } = useCopyToClipboard(
+    '0xCFD3aa1EbC6119D80Ed47955a87A9d9C281A97B3',
+  );
+
+  if (!colony || !colony.tokens) {
+    return null;
+  }
+
   return (
     <>
       <div className="py-5 px-4 border border-gray-200 rounded-t-lg">
@@ -52,12 +59,13 @@ console.log(colony);
         </div>
       </div>
       <TableHead onClick={() => {}} />
-      {colony?.tokens && (
+
+      {colony.tokens.items && (
         <div className="px-4 border border-gray-200 rounded-b-lg">
           {colony.tokens.items.map((item) => (
             <TableItem
               key={item?.token.tokenAddress}
-              token={item?.token}
+              token={item.token}
               isTokenNative={
                 item?.token.tokenAddress === nativeToken?.tokenAddress
               }
@@ -94,6 +102,10 @@ console.log(colony);
           handleClipboardCopy={handleClipboardCopy}
           walletAddress="0xCFD3aa1EbC6119D80Ed47955a87A9d9C281A97B3"
         />
+        <span className="text-1">
+          {formatText({ id: 'balancePage.modal.add.funds.form.wallet' })}
+        </span>
+        <TransferFundsForm />
       </Modal>
     </>
   );

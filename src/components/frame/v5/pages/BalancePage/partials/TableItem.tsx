@@ -17,7 +17,7 @@ import { ADDRESS_ZERO } from '~constants';
 import EthUsd from '~shared/EthUsd';
 import { tableMenuProps } from './utils';
 
-const displayName = 'v5.pages.VerifiedPage.partials.TableItem';
+const displayName = 'v5.pages.BalancePage.partials.TableItem';
 
 const TableItem: FC<TableItemProps> = ({
   token,

@@ -1,11 +1,10 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
 
 import Icon from '~shared/Icon';
-import { TableHeadProps } from './types';
+import { TableHeadProps } from '../types';
 import { formatText } from '~utils/intl';
 
-const displayName = 'v5.pages.VerifiedPage.partials.TableHead';
+const displayName = 'v5.pages.BalancePage.partials.TableHead';
 
 const TableHead: FC<TableHeadProps> = ({ onClick }) => {
   return (

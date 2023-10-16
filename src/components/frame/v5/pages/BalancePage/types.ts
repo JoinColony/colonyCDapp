@@ -5,6 +5,10 @@ import {
   TokenType,
 } from '~gql';
 
+export interface TableHeadProps {
+  onClick: () => void;
+}
+
 export interface TableItemProps {
   token: TokenFragment;
   isTokenNative: boolean;
