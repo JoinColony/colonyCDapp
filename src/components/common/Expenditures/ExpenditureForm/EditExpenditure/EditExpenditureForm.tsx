@@ -5,6 +5,7 @@ import { Colony, Expenditure } from '~types';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
 import Button from '~shared/Button';
+import { TEMP_convertEthToWei } from '~utils/expenditures';
 
 import { AdvancedPaymentFormFields } from '../ExpenditureFormFields';
 import {
@@ -32,7 +33,10 @@ const EditExpenditureForm = ({
     mapPayload((payload: AdvancedPaymentFormValues) => ({
       colonyAddress: colony.colonyAddress,
       expenditure,
-      payouts: payload.payouts,
+      payouts: payload.payouts.map((payout) => ({
+        ...payout,
+        amount: TEMP_convertEthToWei(payout.amount).toString(),
+      })),
     })),
     withMeta({}),
   );

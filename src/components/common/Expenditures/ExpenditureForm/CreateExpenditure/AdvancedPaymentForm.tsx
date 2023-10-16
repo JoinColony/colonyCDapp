@@ -9,6 +9,7 @@ import { findDomainByNativeId } from '~utils/domains';
 import { CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure';
 import Button from '~shared/Button';
 import StakeExpenditureDialog from '~common/Expenditures/StakedExpenditure/StakeExpenditureDialog';
+import { TEMP_convertEthToWei } from '~utils/expenditures';
 
 import CreateExpenditureForm from './CreateExpenditureForm';
 import { AdvancedPaymentFormFields } from '../ExpenditureFormFields';
@@ -38,7 +39,10 @@ const AdvancedPaymentForm = () => {
         colony,
         createdInDomain: findDomainByNativeId(payload.createInDomainId, colony),
         fundFromDomainId: payload.fundFromDomainId,
-        payouts: payload.payouts,
+        payouts: payload.payouts.map((payout) => ({
+          ...payout,
+          amount: TEMP_convertEthToWei(payout.amount).toString(),
+        })),
       } as CreateExpenditurePayload;
     }),
     withMeta({ navigate }),

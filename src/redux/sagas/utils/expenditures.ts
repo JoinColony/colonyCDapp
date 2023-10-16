@@ -4,7 +4,6 @@ import {
   ExpenditurePayoutFieldValue,
   ExpenditureStageFieldValue,
 } from '~common/Expenditures/ExpenditureForm';
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { Expenditure, MethodParams } from '~types';
 import { ContextModule, getContext } from '~context';
 import {
@@ -70,12 +69,7 @@ export const getSetExpenditureValuesFunctionParams = (
     ),
     // 2-dimensional array mapping token addresses to amounts
     [...payoutsByTokenAddresses.values()].map((payoutsByTokenAddress) =>
-      payoutsByTokenAddress.map((payout) =>
-        BigNumber.from(payout.amount).mul(
-          // @TODO: This should get the token decimals of the selected token
-          BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS),
-        ),
-      ),
+      payoutsByTokenAddress.map((payout) => payout.amount),
     ),
   ];
 };

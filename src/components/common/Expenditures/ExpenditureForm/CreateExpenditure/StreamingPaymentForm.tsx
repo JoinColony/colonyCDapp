@@ -16,6 +16,7 @@ import {
 } from '~gql';
 import ForceToggle from '~shared/Dialog/DialogHeading/ForceToggle';
 import { notNull } from '~utils/arrays';
+import { TEMP_convertEthToWei } from '~utils/expenditures';
 
 import { StreamingPaymentFormValues } from '../types';
 import { StreamingPaymentFormFields } from '../ExpenditureFormFields';
@@ -51,7 +52,8 @@ const StreamingPaymentForm = () => {
           ),
           recipientAddress: payload.recipientAddress,
           tokenAddress: payload.tokenAddress,
-          amount: payload.amount,
+          // @TODO: This should get the token decimals of the selected token
+          amount: TEMP_convertEthToWei(payload.amount).toString(),
           startTime: getTimestampFromCleaveDateAndTime(
             payload.startDate,
             payload.startTime,
@@ -65,7 +67,9 @@ const StreamingPaymentForm = () => {
               : undefined,
           interval: payload.interval,
           endCondition: payload.endCondition,
-          limitAmount: payload.limitAmount,
+          limitAmount: payload.limitAmount
+            ? TEMP_convertEthToWei(payload.limitAmount).toString()
+            : undefined,
         } as CreateStreamingPaymentPayload),
     ),
   );
