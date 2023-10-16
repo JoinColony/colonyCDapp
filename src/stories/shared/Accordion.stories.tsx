@@ -23,3 +23,9 @@ const accordionMeta: Meta<typeof Accordion> = {
 export default accordionMeta;
 
 export const Base: StoryObj<typeof Accordion> = {};
+
+export const WithOpenedItem: StoryObj<typeof Accordion> = {
+  args: {
+    openedItemIndex: 0,
+  },
+};
