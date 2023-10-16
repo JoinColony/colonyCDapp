@@ -62,6 +62,13 @@ export const useSidebarActionForm = () => {
     },
   );
 
+  useGlobalEventHandler<SetActionTypeCutomEventDetail>(
+    GLOBAL_EVENTS.SET_TOKEN_ADDRESS,
+    (event) => {
+      form.setValue('amount.tokenAddress', event.detail.tokenAddress);
+    },
+  );
+
   return {
     selectedAction,
     formComponent,

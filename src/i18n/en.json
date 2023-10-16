@@ -1527,5 +1527,10 @@
     "useProfile.advancedTab.title": "Advanced",
     "profilePage.customRpc": "Gnosis Chain Custom RPC",
     "wallet.information": "Wallet information",
-    "advancedSettings.title": "Advanced settings"
+    "advancedSettings.title": "Advanced settings",
+    "balancePage.burger.label.addFunds": "Add funds",
+    "balancePage.burger.label.viewEthscan": "View on Ethscan",
+    "balancePage.burger.label.mintTokens": "Mint tokens",
+    "balancePage.burger.label.transferFunds": "Transfer funds",
+    "balancePage.burger.label.makePayment": "Make payment using this token"
 }

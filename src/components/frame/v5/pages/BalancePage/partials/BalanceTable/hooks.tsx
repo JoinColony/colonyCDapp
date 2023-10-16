@@ -1,18 +1,23 @@
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React, { useCallback, useMemo } from 'react';
+import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { formatText } from '~utils/intl';
 import Numeral from '~shared/Numeral';
-import TokenAvatar from '../TokenAvatar';
 import {
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
+import dispatchGlobalEvent from '~utils/browser/dispatchGlobalEvent';
+import { GLOBAL_EVENTS } from '~utils/browser/dispatchGlobalEvent/consts';
+import { getBlockExplorerLink } from '~utils/external';
+import { ACTION } from '~constants/actions';
+import { NativeTokenStatus } from '~gql';
+import { Token } from '~types';
+import { useActionSidebarContext } from '~context';
 import TokenTypeBadge from '~v5/common/Pills/TokenTypeBadge';
 import { TOKEN_TYPE } from '~v5/common/Pills/TokenTypeBadge/types';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
-// import Link from '~v5/shared/Link';
-// import { DEFAULT_NETWORK_INFO } from '~constants';
-// import { getBlockExplorerLink } from '~utils/external';
+import Link from '~v5/shared/Link';
+import TokenAvatar from '../TokenAvatar';
 import { BalanceTableFieldModel } from './types';
 
 export const useBalanceTableColumns = (
@@ -114,60 +119,120 @@ export const useBalanceTableColumns = (
   return columns;
 };
 
-export const useGetTableMenuProps = () =>
-  useCallback<
+export const useGetTableMenuProps = (
+  data: BalanceTableFieldModel[],
+  toggleAddFundsModalOn: () => void,
+  nativeTokenStatus?: NativeTokenStatus | null,
+  nativeToken?: Token,
+) => {
+  const {
+    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
+  } = useActionSidebarContext();
+
+  const getMenuProps = useCallback<
     TableWithMeatballMenuProps<BalanceTableFieldModel>['getMenuProps']
-  >(() => {
-    // @TODO: add actions and translations to every item
-    return {
-      cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
-      items: [
-        {
-          key: 'add_funds',
-          onClick: () => {},
-          label: '',
-          icon: '',
-        },
-        // {
-        //   key: 'view_ethscan',
-        //   onClick: () => {},
-        //   icon: 'arrow-square-out',
-        //   label: formatText(
-        //     { id: 'membersPage.memberNav.viewOn' },
-        //     {
-        //       networkName: DEFAULT_NETWORK_INFO.blockExplorerName,
-        //     },
-        //   ),
-        //   renderItemWrapper: (props, children) => (
-        //     <Link
-        //       to={getBlockExplorerLink({
-        //         linkType: 'address',
-        //         addressOrHash: walletAddress,
-        //       })}
-        //       {...props}
-        //     >
-        //       {children}
-        //     </Link>
-        //   ),
-        // },
-        // {
-        //   key: 'mint_tokens',
-        //   onClick: () => {},
-        //   label: 'Mint tokens',
-        //   icon: 'bank',
-        // },
-        // {
-        //   key: 'transfer_fundss',
-        //   onClick: () => {},
-        //   label: 'Transfer funds',
-        //   icon: 'transfer',
-        // },
-        // {
-        //   key: 'make_payment',
-        //   onClick: () => {},
-        //   label: 'Make payment with token',
-        //   icon: 'hand-coins',
-        // },
-      ],
-    };
-  }, []);
+  >(
+    ({ index }) => {
+      const selectedTokenData = data[index]?.token;
+      const isTokenNative =
+        selectedTokenData?.tokenAddress === nativeToken?.tokenAddress;
+
+      return {
+        cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
+        items: [
+          ...(!isTokenNative && !nativeTokenStatus?.unlocked
+            ? [
+                {
+                  key: 'add_funds',
+                  onClick: () => {
+                    toggleAddFundsModalOn();
+                  },
+                  label: formatText({
+                    id: 'balancePage.burger.label.addFunds',
+                  }),
+                  icon: 'add',
+                },
+              ]
+            : []),
+          {
+            key: 'view_ethscan',
+            renderItemWrapper: (props, children) => (
+              <Link
+                to={getBlockExplorerLink({
+                  linkType: 'token',
+                  addressOrHash: selectedTokenData?.tokenAddress || '',
+                })}
+                {...props}
+              >
+                {children}
+              </Link>
+            ),
+            label: formatText({ id: 'balancePage.burger.label.viewEthscan' }),
+            icon: 'arrow-square-out',
+          },
+          ...(isTokenNative
+            ? [
+                {
+                  key: 'mint_tokens',
+                  onClick: () => {
+                    dispatchGlobalEvent(GLOBAL_EVENTS.SET_ACTION_TYPE, {
+                      detail: {
+                        actionType: ACTION.MINT_TOKENS,
+                      },
+                    });
+                    toggleActionSidebarOn();
+                  },
+                  label: formatText({
+                    id: 'balancePage.burger.label.mintTokens',
+                  }),
+                  icon: 'bank',
+                },
+              ]
+            : []),
+          {
+            key: 'transfer_funds',
+            onClick: () => {
+              toggleActionSidebarOn();
+              dispatchGlobalEvent(GLOBAL_EVENTS.SET_ACTION_TYPE, {
+                detail: {
+                  actionType: ACTION.TRANSFER_FUNDS,
+                },
+              });
+            },
+            label: formatText({ id: 'balancePage.burger.label.transferFunds' }),
+            icon: 'transfer',
+          },
+          {
+            key: 'make_payment',
+            onClick: () => {
+              toggleActionSidebarOn();
+              dispatchGlobalEvent(GLOBAL_EVENTS.SET_TOKEN_ADDRESS, {
+                detail: {
+                  tokenAddress: selectedTokenData?.tokenAddress,
+                },
+              });
+              dispatchGlobalEvent(GLOBAL_EVENTS.SET_ACTION_TYPE, {
+                detail: {
+                  actionType: ACTION.SIMPLE_PAYMENT,
+                },
+              });
+            },
+            label: formatText({ id: 'balancePage.burger.label.makePayment' }),
+            icon: 'hand-coins',
+          },
+        ],
+      };
+    },
+    [
+      data,
+      toggleActionSidebarOn,
+      toggleAddFundsModalOn,
+      nativeToken?.tokenAddress,
+      nativeTokenStatus,
+    ],
+  );
+
+  return {
+    getMenuProps,
+  };
+};
