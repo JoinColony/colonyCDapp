@@ -41,7 +41,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
           buttonClassName,
           'p-[0.1875rem] transition-all duration-normal cursor-pointer md:hover:text-blue-400 flex justify-center items-center',
           {
-            'text-gray-400': !isMenuOpen,
+            'text-gray-600': !isMenuOpen,
             'text-blue-400': isMenuOpen,
           },
         )}

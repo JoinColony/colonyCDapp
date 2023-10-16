@@ -140,7 +140,7 @@ const Table = <T,>({
                           name="arrow-down"
                           appearance={{ size: 'extraTiny' }}
                           className={clsx(
-                            'ml-1.5 mb-0.5 transition-transform align-middle',
+                            'ml-1.5 !w-[0.55rem] !h-[0.55rem] mb-0.5 transition-transform align-middle',
                             {
                               'rotate-180':
                                 header.column.getIsSorted() === 'asc',

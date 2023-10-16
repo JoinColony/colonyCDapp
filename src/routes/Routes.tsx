@@ -22,6 +22,7 @@ import { ExtensionsContextProvider } from '~context/ExtensionsContext';
 import MembersPage from '~frame/v5/pages/MembersPage';
 import ColonyUsersPage from '~frame/v5/pages/ColonyUsersPage';
 import VerifiedPage from '~frame/v5/pages/VerifiedPage';
+import BalancePage from '~frame/v5/pages/BalancePage';
 import TeamsPage from '~frame/v5/pages/TeamsPage';
 import UserProfilePage from '~frame/v5/pages/UserProfilePage';
 import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
@@ -56,6 +57,7 @@ import {
   COLONY_CONTRIBUTORS_ROUTE,
   COLONY_FOLLOWERS_ROUTE,
   COLONY_VERIFIED_ROUTE,
+  COLONY_BALANCE_ROUTE,
   COLONY_TEAMS_ROUTE,
   USER_PREFERENCES_ROUTE,
   USER_ADVANCED_ROUTE,
@@ -141,7 +143,9 @@ const Routes = () => {
               element={<ColonyUsersPage pageName="followers" />}
             />
             <Route path={COLONY_VERIFIED_ROUTE} element={<VerifiedPage />} />
+            <Route path={COLONY_BALANCE_ROUTE} element={<BalancePage />} />
             <Route path={COLONY_TEAMS_ROUTE} element={<TeamsPage />} />
+            <Route path={COLONY_BALANCE_ROUTE} element={<BalancePage />} />
           </Route>
           <Route
             path={COLONY_DECISIONS_PREVIEW_ROUTE}

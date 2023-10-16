@@ -21,6 +21,7 @@ export const COLONY_MEMBERS_WITH_DOMAIN_ROUTE = `members/:domainId`;
 export const COLONY_CONTRIBUTORS_ROUTE = `contributors`;
 export const COLONY_FOLLOWERS_ROUTE = `followers`;
 export const COLONY_VERIFIED_ROUTE = `verified`;
+export const COLONY_BALANCE_ROUTE = `balance`;
 export const COLONY_TEAMS_ROUTE = `teams`;
 export const COLONY_DECISIONS_PREVIEW_ROUTE = `decisions/preview`;
 export const DECISIONS_PAGE_ROUTE = `decisions/tx/:transactionHash`;

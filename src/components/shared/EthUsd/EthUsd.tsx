@@ -39,6 +39,7 @@ const EthUsd = ({
   unit = 'ether',
   placeholder,
   value,
+  className,
   ...rest
 }: Props) => {
   const [valueUsd, setValueUsd] = useState<number | undefined>();
@@ -92,6 +93,7 @@ const EthUsd = ({
 
   return (
     <Numeral
+      className={className}
       prefix={showPrefix && valueUsd ? '~ ' : ''}
       suffix={showSuffix ? ` ${suffixText}` : ''}
       value={valueUsd || placeholder || '-'}
