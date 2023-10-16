@@ -175,6 +175,7 @@
     "button.pending": "Pending",
     "button.changeConfirm": "Change confirm",
     "button.addBatchPayments": "Add batch payments",
+    "button.addFunds": "Add funds",
     "input.resetText": "Cancel",
     "label.amount": "Amount",
     "label.username": "Username",
@@ -1483,5 +1484,8 @@
     "balancePage.table.emptyTitle": "No results to display",
     "balancePage.table.emptyDescription": "There are no tokens in the Colony that match your search. Try searching again",
     "token.type.native": "Native",
-    "token.type.reputation": "Reputation"
+    "token.type.reputation": "Reputation",
+    "balancePage.modal.title": "Deposit funds to the Colony",
+    "balancePage.modal.subtitle": "Send funds to the Colony's treasury.",
+    "balancePage.send.funds": "Send funds to the Colony"
 }

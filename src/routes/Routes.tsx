@@ -208,6 +208,7 @@ const Routes = () => {
             />
             <Route path={COLONY_VERIFIED_ROUTE} element={<VerifiedPage />} />
             <Route path={COLONY_TEAMS_ROUTE} element={<TeamsPage />} />
+            <Route path={COLONY_BALANCE_ROUTE} element={<BalancePage />} />
           </Route>
           <Route
             path={COLONY_DECISIONS_PREVIEW_ROUTE}

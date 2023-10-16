@@ -12,20 +12,32 @@ import { formatText } from '~utils/intl';
 import { useSearchContext } from '~context/SearchContext';
 import Filter from '~v5/common/Filter';
 import { useBalanceTableColumns, useGetTableMenuProps } from './hooks';
+import EmptyContent from '~v5/common/EmptyContent';
 import TableWithHeaderAndMeatballMenu from '~v5/common/TableWithHeaderAndMeatballMenu';
+import useToggle from '~hooks/useToggle';
+import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+import Modal from '~v5/shared/Modal';
+import CopyWallet from '~v5/shared/CopyWallet';
 
 const displayName = 'v5.pages.BalancePage.partials.BalaceTable';
 
 const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
   const { colony } = useColonyContext();
-  const { balances, nativeToken, status } = colony || {};
+  const { balances, nativeToken, status, colonyAddress } = colony || {};
   const { nativeToken: nativeTokenStatus } = status || {};
-  const onAddFunds = () => {}; // @TODO: open modal
   const isMobile = useMobile();
   const { searchValue } = useSearchContext();
-  const [sorting, setSorting] = useState<SortingState>();
+  const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
   const tokensDataLength = data?.length;
+
+  const [
+    isAddFundsModalOpened,
+    { toggleOn: toggleAddFundsModalOn, toggleOff: toggleAddFundsModalOff },
+  ] = useToggle();
+  const { handleClipboardCopy, isCopied } = useCopyToClipboard(
+    colonyAddress || '',
+  );
 
   const columns = useBalanceTableColumns(
     nativeToken,
@@ -35,47 +47,79 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
   const getMenuProps = useGetTableMenuProps();
 
   return (
-    <TableWithHeaderAndMeatballMenu<BalanceTableFieldModel>
-      title={formatText({ id: 'balancePage.table.title' })}
-      className="[&_td]:border-b [&_td]:border-gray-100 [&_th]:border-b [&_tr:last-child>td]:border-0 [&_td]:py-0 [&_td]:h-[3.75rem] [&_th:nth-last-child(2)]:text-right [&_td:nth-last-child(2)]:text-right"
-      verticalOnMobile={false}
-      hasPagination
-      getRowId={({ token }) => (token ? token.tokenAddress : uniqueId())}
-      columns={columns}
-      data={data || []}
-      state={{
-        sorting,
-        rowSelection,
-        columnVisibility: {
-          symbol: !isMobile,
-          type: !isMobile,
-        },
-      }}
-      enableSortingRemoval={false}
-      sortDescFirst={false}
-      initialState={{
-        pagination: {
-          pageSize: 10,
-        },
-      }}
-      onSortingChange={setSorting}
-      onRowSelectionChange={setRowSelection}
-      getSortedRowModel={getSortedRowModel()}
-      getPaginationRowModel={getPaginationRowModel()}
-      getMenuProps={getMenuProps}
-    >
-      <>
-        {(!!tokensDataLength || !!searchValue) && <Filter />}
-        <Button
-          mode="primarySolid"
-          className="ml-2"
-          onClick={onAddFunds}
-          size="small"
-        >
-          {formatText({ id: 'balancePage.table.addFunds' })}
-        </Button>
-      </>
-    </TableWithHeaderAndMeatballMenu>
+    <>
+      <TableWithHeaderAndMeatballMenu<BalanceTableFieldModel>
+        title={formatText({ id: 'balancePage.table.title' })}
+        verticalOnMobile={false}
+        hasPagination
+        getRowId={({ token }) => (token ? token.tokenAddress : uniqueId())}
+        columns={columns}
+        data={data || []}
+        state={{
+          sorting,
+          rowSelection,
+          columnVisibility: {
+            symbol: !isMobile,
+            type: !isMobile,
+          },
+        }}
+        initialState={{
+          pagination: {
+            pageSize: 10,
+          },
+        }}
+        onSortingChange={setSorting}
+        onRowSelectionChange={setRowSelection}
+        getSortedRowModel={getSortedRowModel()}
+        getPaginationRowModel={getPaginationRowModel()}
+        emptyContent={
+          !tokensDataLength && (
+            <div className="border border-1 w-full rounded-b-lg border-gray-200">
+              <EmptyContent
+                icon="binoculars"
+                title={{ id: 'balancePage.table.emptyTitle' }}
+                description={{ id: 'balancePage.table.emptyDescription' }}
+                withoutButtonIcon
+              />
+            </div>
+          )
+        }
+        getMenuProps={getMenuProps}
+      >
+        <>
+          {(!!tokensDataLength || !!searchValue) && <Filter />}
+          <Button
+            mode="primarySolid"
+            className="ml-2"
+            onClick={toggleAddFundsModalOn}
+            size="small"
+          >
+            {formatText({ id: 'balancePage.table.addFunds' })}
+          </Button>
+        </>
+      </TableWithHeaderAndMeatballMenu>
+      <Modal
+        isOpen={isAddFundsModalOpened}
+        onClose={toggleAddFundsModalOff}
+        buttonMode="primarySolid"
+        icon="piggy-bank"
+      >
+        <h5 className="heading-5 mb-1.5">
+          {formatText({ id: 'balancePage.modal.title' })}
+        </h5>
+        <p className="text-md text-gray-600 mb-6">
+          {formatText({ id: 'balancePage.modal.subtitle' })}
+        </p>
+        <p className="flex text-1 mb-2">
+          {formatText({ id: 'balancePage.send.funds' })}
+        </p>
+        <CopyWallet
+          isCopied={isCopied}
+          handleClipboardCopy={handleClipboardCopy}
+          value={colonyAddress || ''}
+        />
+      </Modal>
+    </>
   );
 };
 
