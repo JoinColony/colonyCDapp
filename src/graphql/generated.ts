@@ -138,6 +138,7 @@ export type Colony = {
   roles?: Maybe<ModelColonyRoleConnection>;
   /** Status information for the Colony */
   status?: Maybe<ColonyStatus>;
+  streamingPayments?: Maybe<ModelStreamingPaymentConnection>;
   tokens?: Maybe<ModelColonyTokensConnection>;
   /** Type of the Colony (Regular or Metacolony) */
   type?: Maybe<ColonyType>;
@@ -199,6 +200,16 @@ export type ColonyFundsClaimsArgs = {
 /** Represents a Colony within the Colony Network */
 export type ColonyRolesArgs = {
   filter?: InputMaybe<ModelColonyRoleFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Represents a Colony within the Colony Network */
+export type ColonyStreamingPaymentsArgs = {
+  createdAt?: InputMaybe<ModelStringKeyConditionInput>;
+  filter?: InputMaybe<ModelStreamingPaymentFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
@@ -362,7 +373,7 @@ export enum ColonyActionType {
   CreateDomain = 'CREATE_DOMAIN',
   /** An action related to creating a domain within a Colony via a motion */
   CreateDomainMotion = 'CREATE_DOMAIN_MOTION',
-  /** An action related to the creation of a motion to start a streaming payment.  */
+  /** An action related to the creation of a motion to start a streaming payment. */
   CreateStreamingPaymentMotion = 'CREATE_STREAMING_PAYMENT_MOTION',
   /** An action related to editing a domain's details */
   EditDomain = 'EDIT_DOMAIN',
@@ -1290,6 +1301,7 @@ export type CreateReputationMiningCycleMetadataInput = {
 };
 
 export type CreateStreamingPaymentInput = {
+  colonyId: Scalars['ID'];
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   endTime: Scalars['AWSTimestamp'];
   id?: InputMaybe<Scalars['ID']>;
@@ -2990,6 +3002,7 @@ export enum ModelSortDirection {
 
 export type ModelStreamingPaymentConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelStreamingPaymentConditionInput>>>;
+  colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   endTime?: InputMaybe<ModelIntInput>;
   interval?: InputMaybe<ModelStringInput>;
@@ -3014,6 +3027,7 @@ export type ModelStreamingPaymentEndConditionInput = {
 
 export type ModelStreamingPaymentFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelStreamingPaymentFilterInput>>>;
+  colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   endTime?: InputMaybe<ModelIntInput>;
   id?: InputMaybe<ModelIdInput>;
@@ -3433,6 +3447,7 @@ export type ModelSubscriptionReputationMiningCycleMetadataFilterInput = {
 
 export type ModelSubscriptionStreamingPaymentFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionStreamingPaymentFilterInput>>>;
+  colonyId?: InputMaybe<ModelSubscriptionIdInput>;
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   endTime?: InputMaybe<ModelSubscriptionIntInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
@@ -4829,6 +4844,7 @@ export type Query = {
   getRoleByTargetAddressAndColony?: Maybe<ModelColonyRoleConnection>;
   getStreamingPayment?: Maybe<StreamingPayment>;
   getStreamingPaymentMetadata?: Maybe<StreamingPaymentMetadata>;
+  getStreamingPaymentsByColony?: Maybe<ModelStreamingPaymentConnection>;
   getToken?: Maybe<Token>;
   getTokenByAddress?: Maybe<ModelTokenConnection>;
   /** Fetch a token's information. Tries to get the data from the DB first, if that fails, resolves to get data from chain */
@@ -5333,6 +5349,17 @@ export type QueryGetStreamingPaymentMetadataArgs = {
 
 
 /** Root query type */
+export type QueryGetStreamingPaymentsByColonyArgs = {
+  colonyId: Scalars['ID'];
+  createdAt?: InputMaybe<ModelStringKeyConditionInput>;
+  filter?: InputMaybe<ModelStreamingPaymentFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
 export type QueryGetTokenArgs = {
   id: Scalars['ID'];
 };
@@ -5775,6 +5802,10 @@ export type StakerRewardsInput = {
 
 export type StreamingPayment = {
   __typename?: 'StreamingPayment';
+  /** The Colony to which the streaming payment belongs */
+  colony: Colony;
+  /** Colony ID (address) to which the streaming payment belongs */
+  colonyId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
   endTime: Scalars['AWSTimestamp'];
   id: Scalars['ID'];
@@ -6892,6 +6923,7 @@ export type UpdateReputationMiningCycleMetadataInput = {
 };
 
 export type UpdateStreamingPaymentInput = {
+  colonyId?: InputMaybe<Scalars['ID']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   endTime?: InputMaybe<Scalars['AWSTimestamp']>;
   id: Scalars['ID'];
@@ -7540,7 +7572,7 @@ export type GetColonyExpendituresQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyExpendituresQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, expenditures?: { __typename?: 'ModelExpenditureConnection', items: Array<{ __typename?: 'Expenditure', id: string, nativeId: number } | null> } | null } | null };
+export type GetColonyExpendituresQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, expenditures?: { __typename?: 'ModelExpenditureConnection', items: Array<{ __typename?: 'Expenditure', id: string, nativeId: number } | null> } | null, streamingPayments?: { __typename?: 'ModelStreamingPaymentConnection', items: Array<{ __typename?: 'StreamingPayment', id: string, nativeId: number } | null> } | null } | null };
 
 export type GetExpenditureQueryVariables = Exact<{
   expenditureId: Scalars['ID'];
@@ -9827,6 +9859,12 @@ export const GetColonyExpendituresDocument = gql`
   getColony(id: $colonyAddress) {
     id
     expenditures {
+      items {
+        id
+        nativeId
+      }
+    }
+    streamingPayments {
       items {
         id
         nativeId

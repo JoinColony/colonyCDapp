@@ -4,3 +4,9 @@
   padding-top: 20px;
   gap: 20px;
 }
+
+.listWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}

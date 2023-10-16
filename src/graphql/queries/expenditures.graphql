@@ -7,6 +7,12 @@ query GetColonyExpenditures($colonyAddress: ID!) {
         nativeId
       }
     }
+    streamingPayments {
+      items {
+        id
+        nativeId
+      }
+    }
   }
 }
 
