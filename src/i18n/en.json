@@ -108,6 +108,7 @@
   "button.addToken": "Add token",
   "button.pending": "Pending",
   "button.changeConfirm": "Change confirm",
+  "button.sendFunds": "Send funds",
   "button.addBatchPayments": "Add batch payments",
   "input.resetText": "Cancel",
   "label.amount": "Amount",
@@ -1138,5 +1139,8 @@
   "balancePage.table.title": "Colony token balance",
   "balancePage.table.addFunds": "Add funds to the Colony",
   "token.type.native": "Native",
-  "token.type.reputation": "Reputation"
+  "token.type.reputation": "Reputation",
+  "balancePage.modal.title": "Deposit funds to the Colony",
+  "balancePage.modal.subtitle": "Send funds to the Colony's treasury.",
+  "balancePage.send.funds": "Send funds to the Colony "
 }
