@@ -1,9 +1,11 @@
 import Decimal from 'decimal.js';
 import { BigNumber } from 'ethers';
+import moveDecimal from 'move-decimal-point';
 
 import { Action, ActionTypes } from '~redux';
 import { SetStateFn } from '~types';
 import { mapPayload } from '~utils/actions';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 type StakeMotionPayload = Action<ActionTypes.MOTION_STAKE>['payload'];
 
@@ -48,24 +50,19 @@ export const getStakeFromSlider = (
 };
 
 export const getStakingTransformFn = (
-  remainingToStake: string,
-  userMinStake: string,
   userAddress: string,
   colonyAddress: string,
   motionId: string,
-  // vote: number,
+  nativeTokenDecimals: number | undefined,
   actionId?: string,
 ) =>
   mapPayload(({ amount, voteType }) => {
-    // console.log({ sliderAmount });
-    // const finalStake = getStakeFromSlider(
-    //   sliderAmount,
-    //   remainingToStake,
-    //   userMinStake,
-    // );
+    const amountValue = BigNumber.from(
+      moveDecimal(amount, getTokenDecimalsWithFallback(nativeTokenDecimals)),
+    );
 
     return {
-      amount,
+      amount: amountValue,
       userAddress,
       colonyAddress,
       motionId: BigNumber.from(motionId),

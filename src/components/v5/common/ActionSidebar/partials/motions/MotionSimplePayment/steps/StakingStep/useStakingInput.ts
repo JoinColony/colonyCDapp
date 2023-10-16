@@ -1,13 +1,13 @@
+import { BigNumber } from 'ethers';
+import { number, object, ObjectSchema, string } from 'yup';
 import { useAppContext, useColonyContext } from '~hooks';
-
 import { useUserTokenBalanceContext } from '~context';
+
 import { getHandleStakeSuccessFn, getStakingTransformFn } from './helpers';
+import { StakingFormValues } from './types';
 
 export const useStakingInput = (
-  isObjection,
   motionId,
-  remainingToStake,
-  userMinStake,
   setIsRefetching,
   startPollingAction,
 ) => {
@@ -15,15 +15,30 @@ export const useStakingInput = (
   const { colony } = useColonyContext();
   const { pollLockedTokenBalance } = useUserTokenBalanceContext();
 
-  // const vote = isObjection ? MotionVote.Nay : MotionVote.Yay;
+  const validationSchema: ObjectSchema<StakingFormValues> = object({
+    amount: string()
+      .required()
+      .test('amount-test', 'test', (value) => {
+        if (!value) {
+          return false;
+        }
+
+        try {
+          const amount = BigNumber.from(value);
+
+          return amount.gt(0);
+        } catch {
+          return false;
+        }
+      }),
+    voteType: number().required(),
+  }).defined();
 
   const transform = getStakingTransformFn(
-    remainingToStake,
-    userMinStake,
     user?.walletAddress ?? '',
     colony?.colonyAddress ?? '',
     motionId,
-    // vote,
+    colony?.nativeToken?.decimals,
   );
 
   const handleSuccess = getHandleStakeSuccessFn(
@@ -35,6 +50,6 @@ export const useStakingInput = (
   return {
     transform,
     handleSuccess,
-    isObjection,
+    validationSchema,
   };
 };

@@ -1,5 +1,5 @@
+import { BigNumber } from 'ethers';
 import React, { FC } from 'react';
-import { object, string } from 'yup';
 
 import { useGetColonyAction } from '~common/ColonyActions';
 import { ActionTypes } from '~redux';
@@ -11,16 +11,13 @@ import StatusText from '~v5/shared/StatusText';
 
 import NotEnoughTokensInfo from './partials/NotEnoughTokensInfo';
 import StakingForm from './partials/StakingForm';
-import { StakingStepProps } from './types';
+import { StakingFormValues, StakingStepProps } from './types';
 import { useStakingInput } from './useStakingInput';
+import { useStakingSlider } from './useStakingSlider';
 import useStakingWidgetUpdate from './useStakingWidgetUpdate';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.StakingStep';
-
-const validationSchema = object({
-  amount: string().defined(),
-}).defined();
 
 const StakingStep: FC<StakingStepProps> = ({
   className,
@@ -28,12 +25,16 @@ const StakingStep: FC<StakingStepProps> = ({
   transactionId,
 }) => {
   const { motionData } = action || {};
-  const { motionId, motionStakes, remainingStakes, userMinStake } =
-    motionData || {};
-  const isObjection = false;
-  const [nayRemaining, yayRemaining] = remainingStakes || [];
-  const remainingToStake = isObjection ? nayRemaining : yayRemaining;
+  const { motionId, motionStakes, requiredStake = '' } = motionData || {};
+
   const { startPollingForAction, stopPollingForAction } = useGetColonyAction();
+
+  const {
+    enoughTokensToStakeMinimum,
+    opposePercentageStaked,
+    supportPercentageStaked,
+    isLoadingData,
+  } = useStakingSlider(transactionId);
 
   // @todo: clean up this code after logic for staking will be ready
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -42,24 +43,29 @@ const StakingStep: FC<StakingStepProps> = ({
     stopPollingForAction,
   );
 
-  const { handleSuccess, transform } = useStakingInput(
-    isObjection,
+  const { handleSuccess, transform, validationSchema } = useStakingInput(
     motionId,
-    remainingToStake,
-    userMinStake,
     setIsRefetching,
     startPollingForAction,
   );
 
-  // @todo: show after stake submit, when 100% supported
-  const showFullySupportedPassInfo = true;
-  // @todo: show when a user doesn't have enough tokens activated to stake
-  const showNotEnoughTokensMessage = true;
+  const { raw } = motionStakes || {};
+  const { yay: yayStakes, nay: nayStakes } = raw || {};
 
-  return (
-    <ActionForm<{
-      amount: string;
-    }>
+  const isStaked =
+    yayStakes && nayStakes && requiredStake
+      ? BigNumber.from(yayStakes).gte(requiredStake) &&
+        BigNumber.from(nayStakes).isZero()
+      : false;
+
+  const showFullySupportedPassInfo =
+    supportPercentageStaked === '100%' && opposePercentageStaked !== '100%';
+  const showNotEnoughTokensMessage = !enoughTokensToStakeMinimum;
+
+  return isLoadingData ? (
+    <div>Loading</div>
+  ) : (
+    <ActionForm<StakingFormValues>
       defaultValues={{
         amount: '0',
       }}
@@ -68,51 +74,51 @@ const StakingStep: FC<StakingStepProps> = ({
       transform={transform}
       onSuccess={handleSuccess}
     >
-      {({ formState: { isSubmitSuccessful } }) => (
-        <div className={className}>
-          <CardWithStatusText
-            statusTextSectionProps={{
-              textClassName: 'text-4 text-gray-900',
-              children: formatText({ id: 'motion.staking.status.text' }),
-              content: showFullySupportedPassInfo ? (
-                <StatusText
-                  status="info"
-                  className="mt-2"
-                  iconName="check-circle"
-                  iconClassName="text-blue-400"
-                  textClassName="text-4 text-gray-900"
-                >
-                  {formatText({ id: 'motion.staking.passIfNotOpposed' })}
-                </StatusText>
-              ) : undefined,
-              status: 'info',
-            }}
-            sections={[
-              ...(showNotEnoughTokensMessage
-                ? [
-                    {
-                      key: '1',
-                      content: <NotEnoughTokensInfo />,
-                      className: 'bg-negative-100 text-negative-400',
-                    },
-                  ]
-                : []),
-              {
-                key: '2',
-                content: <StakingForm transactionId={transactionId} />,
-              },
-              ...(isSubmitSuccessful
-                ? [
-                    {
-                      key: '3',
-                      content: 'accordion',
-                    },
-                  ]
-                : []),
-            ]}
-          />
-        </div>
-      )}
+      <div className={className}>
+        <CardWithStatusText
+          statusTextSectionProps={{
+            textClassName: 'text-4 text-gray-900',
+            children: formatText({ id: 'motion.staking.status.text' }),
+            iconAlignment: 'top',
+            content: showFullySupportedPassInfo ? (
+              <StatusText
+                status="info"
+                className="mt-2"
+                iconName="check-circle"
+                iconClassName="text-blue-400"
+                textClassName="text-4 text-gray-900"
+                iconAlignment="top"
+              >
+                {formatText({ id: 'motion.staking.passIfNotOpposed' })}
+              </StatusText>
+            ) : undefined,
+            status: 'info',
+          }}
+          sections={[
+            ...(showNotEnoughTokensMessage
+              ? [
+                  {
+                    key: '1',
+                    content: <NotEnoughTokensInfo />,
+                    className: 'bg-negative-100 text-negative-400',
+                  },
+                ]
+              : []),
+            {
+              key: '2',
+              content: <StakingForm transactionId={transactionId} />,
+            },
+            ...(isStaked
+              ? [
+                  {
+                    key: '3',
+                    content: 'accordion',
+                  },
+                ]
+              : []),
+          ]}
+        />
+      </div>
     </ActionForm>
   );
 };

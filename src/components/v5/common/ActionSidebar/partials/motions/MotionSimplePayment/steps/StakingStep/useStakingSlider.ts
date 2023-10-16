@@ -2,7 +2,7 @@ import { BigNumber } from 'ethers';
 
 import { useGetColonyActionQuery, useGetUserReputationQuery } from '~gql';
 import { useAppContext, useEnoughTokensForStaking } from '~hooks';
-import { calculateStakeLimitDecimal } from '../../helpers';
+import { calculateStakeLimitDecimal } from './helpers';
 
 export const useStakingSlider = (transactionHash: string) => {
   const { user, userLoading, walletConnecting } = useAppContext();

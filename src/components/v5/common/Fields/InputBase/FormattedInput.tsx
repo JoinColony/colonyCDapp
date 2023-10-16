@@ -9,7 +9,7 @@ import { FIELD_STATE } from '../consts';
 const displayName = 'FormattedInput';
 
 const FormattedInput: FC<FormattedInputProps> = ({
-  formattingOptions,
+  options,
   onChange,
   disabled,
   value,
@@ -19,6 +19,7 @@ const FormattedInput: FC<FormattedInputProps> = ({
   stateClassNames: stateClassNamesProp,
   buttonProps,
   wrapperClassName,
+  message,
   ...rest
 }) => {
   const [cleave, setCleave] = useState<ReactInstanceWithCleave | null>(null);
@@ -30,8 +31,12 @@ const FormattedInput: FC<FormattedInputProps> = ({
    * This is necessary for correctly setting the initial value
    */
   useEffect(() => {
-    cleave?.setRawValue(value);
-  }, [cleave, value]);
+    if (typeof value !== 'string') {
+      return;
+    }
+
+    cleave?.setRawValue(`${options.prefix || ''}${value}`);
+  }, [cleave, options.prefix, value]);
 
   useEffect(() => {
     if (buttonRef.current && wrapperRef.current) {
@@ -55,7 +60,7 @@ const FormattedInput: FC<FormattedInputProps> = ({
   //  * https://github.com/nosir/cleave.js/issues/352#issuecomment-447640572
   //  */
 
-  const dynamicCleaveOptionKey = JSON.stringify(formattingOptions);
+  const dynamicCleaveOptionKey = JSON.stringify(options);
   const { label: buttonLabel, ...restButtonProps } = buttonProps || {};
 
   return (
@@ -93,7 +98,7 @@ const FormattedInput: FC<FormattedInputProps> = ({
          * @NOTE: If formattingOptions is not either memoized or defined outside of the ancestor Input component,
          * it will cause Cleave to be re-mounted and thus lose its state and focus.
          */
-        options={formattingOptions}
+        options={options}
         onInit={(cleaveInstance) => setCleave(cleaveInstance)}
         onChange={onChange}
         className={clsx(
@@ -108,6 +113,7 @@ const FormattedInput: FC<FormattedInputProps> = ({
           },
         )}
       />
+      {message}
     </div>
   );
 };

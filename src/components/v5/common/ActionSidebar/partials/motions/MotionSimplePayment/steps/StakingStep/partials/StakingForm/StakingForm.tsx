@@ -1,16 +1,21 @@
 import React, { FC } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
+import moveDecimal from 'move-decimal-point';
+// import { BigNumber } from 'ethers';
+
 import { accordionAnimation } from '~constants/accordionAnimation';
-import { formatText } from '~utils/intl';
 import FormButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/FormButtonRadioButtons';
 import VoteChart from '~v5/shared/VoteChart';
-import { STAKING_RADIO_BUTTONS } from '../../../../consts';
-import { StakingFormProps } from './types';
 import Numeral from '~shared/Numeral';
 import Button from '~v5/shared/Button';
 import FormFormattedInput from '~v5/common/Fields/InputBase/FormFormattedInput';
-import { useStakingSlider } from './useStakingSlider';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { formatText } from '~utils/intl';
+
+import { STAKING_RADIO_BUTTONS } from '../../../../consts';
+import { useStakingSlider } from '../../useStakingSlider';
+import { StakingFormProps } from './types';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.StakingStep.partials.StakingForm';
@@ -27,7 +32,25 @@ const StakingForm: FC<StakingFormProps> = ({ transactionId }) => {
     nativeTokenSymbol,
     opposePercentageStaked = '0%',
     supportPercentageStaked = '0%',
+    userMaxStake,
   } = useStakingSlider(transactionId);
+
+  const tokenDecimals = getTokenDecimalsWithFallback(nativeTokenDecimals);
+  const tokenBalanceInEthers = moveDecimal(userMaxStake, -tokenDecimals);
+
+  // const amountValue = BigNumber.from(
+  //   moveDecimal(
+  //     getValues('amount'),
+  //     getTokenDecimalsWithFallback(nativeTokenDecimals),
+  //   ),
+  // );
+  // const predictedValuePercentage = useMemo(
+  //   () =>
+  //     amountValue
+  //       ? amountValue.div(BigNumber.from(requiredStake)).mul(100).toString()
+  //       : '0',
+  //   [amountValue, requiredStake],
+  // );
 
   return (
     <div>
@@ -57,14 +80,21 @@ const StakingForm: FC<StakingFormProps> = ({ transactionId }) => {
         percentageVotesAgainst={Number(opposePercentageStaked.slice(0, -1))}
         percentageVotesFor={Number(supportPercentageStaked.slice(0, -1))}
         threshold={10}
-        thresholdLabel="Threshold"
+        thresholdLabel={
+          formatText(
+            { id: 'motion.staking.chart.thresholdLabel' },
+            {
+              value: '10%',
+            },
+          ) || ''
+        }
         className="mb-6"
       />
       <div>
         <FormButtonRadioButtons name="voteType" items={STAKING_RADIO_BUTTONS} />
       </div>
       <AnimatePresence>
-        {getValues('voteType') && (
+        {getValues('voteType') !== undefined && (
           <motion.div
             key="accordion-content"
             initial="hidden"
@@ -76,10 +106,11 @@ const StakingForm: FC<StakingFormProps> = ({ transactionId }) => {
           >
             <FormFormattedInput
               name="amount"
-              formattingOptions={{
+              options={{
                 numeral: true,
+                numeralDecimalScale: tokenDecimals,
                 numeralPositiveOnly: true,
-                numeralDecimalScale: nativeTokenDecimals,
+                rawValueTrimPrefix: true,
                 prefix: nativeTokenSymbol,
                 // @todo: fix this - right now prefix is not moved to the end of the text
                 tailPrefix: true,
@@ -88,7 +119,7 @@ const StakingForm: FC<StakingFormProps> = ({ transactionId }) => {
                 label: formatText({ id: 'button.max' }) || '',
                 onClick: () => {
                   // @todo: add proper value
-                  setValue('amount', requiredStake, {
+                  setValue('amount', tokenBalanceInEthers, {
                     shouldTouch: true,
                     shouldValidate: true,
                     shouldDirty: true,

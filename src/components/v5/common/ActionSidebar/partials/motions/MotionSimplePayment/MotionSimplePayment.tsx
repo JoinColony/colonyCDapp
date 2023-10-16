@@ -35,11 +35,12 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
   const motionStateEnum = motionData
     ? getMotionState(networkMotionStateEnum, motionData)
     : MotionState.Staking;
-  const [activeStepKey, setActiveStepKey] = useState(motionStateEnum);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [activeStepKey, setActiveStepKey] = useState(networkMotionStateEnum);
 
   useEffect(() => {
-    setActiveStepKey(motionStateEnum);
-  }, [motionStateEnum]);
+    setActiveStepKey(networkMotionStateEnum);
+  }, [networkMotionStateEnum]);
 
   // @todo: add missing steps
   const items = useMemo(
@@ -48,14 +49,15 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
         ? []
         : [
             {
-              key: MotionState.Staking,
+              key: NetworkMotionState.Staking,
               content: (
                 <StakingStep action={action} transactionId={transactionId} />
               ),
               heading: {
                 label: formatText({ id: 'motion.staking.label' }) || '',
                 decor:
-                  motionStateEnum === MotionState.Staking && motionStakes ? (
+                  networkMotionStateEnum === NetworkMotionState.Staking &&
+                  motionStakes ? (
                     <MotionCountDownTimer
                       motionState={motionStateEnum}
                       motionId={motionId}
@@ -66,7 +68,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
               },
             },
             {
-              key: MotionState.Voting,
+              key: NetworkMotionState.Submit,
               content: <VotingStep />,
               heading: {
                 label: formatText({ id: 'motion.voting.label' }) || '',
@@ -75,7 +77,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
               isOptional: true,
             },
             {
-              key: MotionState.Reveal,
+              key: NetworkMotionState.Reveal,
               content: <RevealStep />,
               heading: {
                 label: formatText({ id: 'motion.reveal.label' }) || '',
@@ -87,7 +89,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
             },
             {
               // @todo: change to MotionState when the outcome is known and revealed
-              key: MotionState.Failed,
+              key: NetworkMotionState.Finalizable,
               content: <OutcomeStep />,
               heading: {
                 // @todo: chnage label and styling when the outcome is known and revealed
@@ -99,7 +101,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
               isHidden: false,
             },
             {
-              key: MotionState.Passed,
+              key: NetworkMotionState.Finalized,
               content: <FinalizeStep />,
               heading: {
                 label: formatText({ id: 'motion.finalize.label' }) || '',
@@ -112,6 +114,7 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
       motionId,
       motionStakes,
       motionStateEnum,
+      networkMotionStateEnum,
       refetchMotionState,
       transactionId,
     ],
@@ -121,8 +124,9 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
   return loadingAction ? (
     <div>Loading</div>
   ) : (
-    <Stepper<MotionState>
-      activeStepKey={activeStepKey}
+    <Stepper<NetworkMotionState>
+      // activeStepKey={activeStepKey}
+      activeStepKey={NetworkMotionState.Staking}
       setActiveStepKey={setActiveStepKey}
       items={items}
     />

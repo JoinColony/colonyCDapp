@@ -26,13 +26,9 @@ const FormFormattedInput: FC<FormFormattedInputProps> = ({
       type={type}
       value={value}
       onChange={(event) => {
-        const { value: inputValue, valueAsNumber } = event.target;
+        const { rawValue } = event.target;
 
-        if (type === 'number') {
-          onChange(Number.isNaN(valueAsNumber) ? 0 : valueAsNumber);
-        } else {
-          onChange(inputValue);
-        }
+        onChange(rawValue);
       }}
       state={invalid ? FIELD_STATE.Error : undefined}
     />
