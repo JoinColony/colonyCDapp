@@ -63,3 +63,15 @@ export const getParams = async (params: Array<keyof typeof ParamNames>) => {
 
   return Promise.all(params.map((param) => getParam(param)));
 };
+
+export const setEnvVariables = async (
+  params: Array<keyof typeof ParamNames>,
+) => {
+  const ENV = process.env.ENV;
+
+  if (ENV === 'qa') {
+    (await getParams(params)) || [];
+  }
+
+  return [];
+};
