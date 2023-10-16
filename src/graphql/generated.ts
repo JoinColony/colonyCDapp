@@ -7854,6 +7854,41 @@ export type GetColonyExtensionsByColonyAddressQueryVariables = Exact<{
 
 export type GetColonyExtensionsByColonyAddressQuery = { __typename?: 'Query', getExtensionByColonyAndHash?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', id: string } | null> } | null };
 
+export type GetUserDetails_SnQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetUserDetails_SnQuery = { __typename?: 'Query', getProfile?: { __typename?: 'Profile', displayName?: string | null, email?: string | null, notificationSettings?: { __typename?: 'NotificationSettings', notificationTokens?: Array<string | null> | null, enableEmail?: boolean | null, enableMention?: boolean | null, enableAssign?: boolean | null } | null } | null };
+
+export type GetDisplayName_SnQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetDisplayName_SnQuery = { __typename?: 'Query', getProfile?: { __typename?: 'Profile', displayName?: string | null } | null };
+
+export type GetColonyName_SnQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetColonyName_SnQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', name: string, metadata?: { __typename?: 'ColonyMetadata', displayName: string } | null } | null };
+
+export type GetColonyContributors_SnQueryVariables = Exact<{
+  colonyAddress: Scalars['ID'];
+}>;
+
+
+export type GetColonyContributors_SnQuery = { __typename?: 'Query', getContributorsByColony?: { __typename?: 'ModelColonyContributorConnection', items: Array<{ __typename?: 'ColonyContributor', notificationSettings?: { __typename?: 'ContributorNotificationSettings', enablePush?: boolean | null, enableEmail?: boolean | null, enableActions?: boolean | null, enableDecisions?: boolean | null } | null, user?: { __typename?: 'User', profile?: { __typename?: 'Profile', id: string, displayName?: string | null, email?: string | null } | null } | null } | null> } | null };
+
+export type CreateNotification_SnMutationVariables = Exact<{
+  input: CreateNotificationInput;
+}>;
+
+
+export type CreateNotification_SnMutation = { __typename?: 'Mutation', createNotification?: { __typename?: 'Notification', id: string } | null };
+
 export type GetMotionStateQueryVariables = Exact<{
   input: GetMotionStateInput;
 }>;
@@ -10321,6 +10356,203 @@ export function useGetColonyExtensionsByColonyAddressLazyQuery(baseOptions?: Apo
 export type GetColonyExtensionsByColonyAddressQueryHookResult = ReturnType<typeof useGetColonyExtensionsByColonyAddressQuery>;
 export type GetColonyExtensionsByColonyAddressLazyQueryHookResult = ReturnType<typeof useGetColonyExtensionsByColonyAddressLazyQuery>;
 export type GetColonyExtensionsByColonyAddressQueryResult = Apollo.QueryResult<GetColonyExtensionsByColonyAddressQuery, GetColonyExtensionsByColonyAddressQueryVariables>;
+export const GetUserDetails_SnDocument = gql`
+    query GetUserDetails_Sn($id: ID!) {
+  getProfile(id: $id) {
+    displayName
+    email
+    notificationSettings {
+      notificationTokens
+      enableEmail
+      enableMention
+      enableAssign
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserDetails_SnQuery__
+ *
+ * To run a query within a React component, call `useGetUserDetails_SnQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserDetails_SnQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserDetails_SnQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetUserDetails_SnQuery(baseOptions: Apollo.QueryHookOptions<GetUserDetails_SnQuery, GetUserDetails_SnQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserDetails_SnQuery, GetUserDetails_SnQueryVariables>(GetUserDetails_SnDocument, options);
+      }
+export function useGetUserDetails_SnLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserDetails_SnQuery, GetUserDetails_SnQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserDetails_SnQuery, GetUserDetails_SnQueryVariables>(GetUserDetails_SnDocument, options);
+        }
+export type GetUserDetails_SnQueryHookResult = ReturnType<typeof useGetUserDetails_SnQuery>;
+export type GetUserDetails_SnLazyQueryHookResult = ReturnType<typeof useGetUserDetails_SnLazyQuery>;
+export type GetUserDetails_SnQueryResult = Apollo.QueryResult<GetUserDetails_SnQuery, GetUserDetails_SnQueryVariables>;
+export const GetDisplayName_SnDocument = gql`
+    query GetDisplayName_Sn($id: ID!) {
+  getProfile(id: $id) {
+    displayName
+  }
+}
+    `;
+
+/**
+ * __useGetDisplayName_SnQuery__
+ *
+ * To run a query within a React component, call `useGetDisplayName_SnQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDisplayName_SnQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetDisplayName_SnQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetDisplayName_SnQuery(baseOptions: Apollo.QueryHookOptions<GetDisplayName_SnQuery, GetDisplayName_SnQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetDisplayName_SnQuery, GetDisplayName_SnQueryVariables>(GetDisplayName_SnDocument, options);
+      }
+export function useGetDisplayName_SnLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetDisplayName_SnQuery, GetDisplayName_SnQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetDisplayName_SnQuery, GetDisplayName_SnQueryVariables>(GetDisplayName_SnDocument, options);
+        }
+export type GetDisplayName_SnQueryHookResult = ReturnType<typeof useGetDisplayName_SnQuery>;
+export type GetDisplayName_SnLazyQueryHookResult = ReturnType<typeof useGetDisplayName_SnLazyQuery>;
+export type GetDisplayName_SnQueryResult = Apollo.QueryResult<GetDisplayName_SnQuery, GetDisplayName_SnQueryVariables>;
+export const GetColonyName_SnDocument = gql`
+    query GetColonyName_Sn($id: ID!) {
+  getColony(id: $id) {
+    name
+    metadata {
+      displayName
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetColonyName_SnQuery__
+ *
+ * To run a query within a React component, call `useGetColonyName_SnQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetColonyName_SnQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetColonyName_SnQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetColonyName_SnQuery(baseOptions: Apollo.QueryHookOptions<GetColonyName_SnQuery, GetColonyName_SnQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetColonyName_SnQuery, GetColonyName_SnQueryVariables>(GetColonyName_SnDocument, options);
+      }
+export function useGetColonyName_SnLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyName_SnQuery, GetColonyName_SnQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetColonyName_SnQuery, GetColonyName_SnQueryVariables>(GetColonyName_SnDocument, options);
+        }
+export type GetColonyName_SnQueryHookResult = ReturnType<typeof useGetColonyName_SnQuery>;
+export type GetColonyName_SnLazyQueryHookResult = ReturnType<typeof useGetColonyName_SnLazyQuery>;
+export type GetColonyName_SnQueryResult = Apollo.QueryResult<GetColonyName_SnQuery, GetColonyName_SnQueryVariables>;
+export const GetColonyContributors_SnDocument = gql`
+    query GetColonyContributors_Sn($colonyAddress: ID!) {
+  getContributorsByColony(colonyAddress: $colonyAddress) {
+    items {
+      notificationSettings {
+        enablePush
+        enableEmail
+        enableActions
+        enableDecisions
+      }
+      user {
+        profile {
+          id
+          displayName
+          email
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetColonyContributors_SnQuery__
+ *
+ * To run a query within a React component, call `useGetColonyContributors_SnQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetColonyContributors_SnQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetColonyContributors_SnQuery({
+ *   variables: {
+ *      colonyAddress: // value for 'colonyAddress'
+ *   },
+ * });
+ */
+export function useGetColonyContributors_SnQuery(baseOptions: Apollo.QueryHookOptions<GetColonyContributors_SnQuery, GetColonyContributors_SnQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetColonyContributors_SnQuery, GetColonyContributors_SnQueryVariables>(GetColonyContributors_SnDocument, options);
+      }
+export function useGetColonyContributors_SnLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyContributors_SnQuery, GetColonyContributors_SnQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetColonyContributors_SnQuery, GetColonyContributors_SnQueryVariables>(GetColonyContributors_SnDocument, options);
+        }
+export type GetColonyContributors_SnQueryHookResult = ReturnType<typeof useGetColonyContributors_SnQuery>;
+export type GetColonyContributors_SnLazyQueryHookResult = ReturnType<typeof useGetColonyContributors_SnLazyQuery>;
+export type GetColonyContributors_SnQueryResult = Apollo.QueryResult<GetColonyContributors_SnQuery, GetColonyContributors_SnQueryVariables>;
+export const CreateNotification_SnDocument = gql`
+    mutation CreateNotification_Sn($input: CreateNotificationInput!) {
+  createNotification(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateNotification_SnMutationFn = Apollo.MutationFunction<CreateNotification_SnMutation, CreateNotification_SnMutationVariables>;
+
+/**
+ * __useCreateNotification_SnMutation__
+ *
+ * To run a mutation, you first call `useCreateNotification_SnMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateNotification_SnMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createNotificationSnMutation, { data, loading, error }] = useCreateNotification_SnMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateNotification_SnMutation(baseOptions?: Apollo.MutationHookOptions<CreateNotification_SnMutation, CreateNotification_SnMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateNotification_SnMutation, CreateNotification_SnMutationVariables>(CreateNotification_SnDocument, options);
+      }
+export type CreateNotification_SnMutationHookResult = ReturnType<typeof useCreateNotification_SnMutation>;
+export type CreateNotification_SnMutationResult = Apollo.MutationResult<CreateNotification_SnMutation>;
+export type CreateNotification_SnMutationOptions = Apollo.BaseMutationOptions<CreateNotification_SnMutation, CreateNotification_SnMutationVariables>;
 export const GetMotionStateDocument = gql`
     query GetMotionState($input: GetMotionStateInput!) {
   getMotionState(input: $input)
