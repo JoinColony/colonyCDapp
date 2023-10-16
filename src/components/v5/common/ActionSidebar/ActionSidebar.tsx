@@ -114,7 +114,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           fixed
           top-0
           right-0
-          bottom-0
+          h-screen
           w-full
           bg-base-white
           rounded-bl-lg
@@ -160,7 +160,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         {children}
       </div>
       <div
-        className={clsx('flex w-full h-full', {
+        className={clsx('flex w-full flex-grow overflow-hidden', {
           'flex-col-reverse md:flex-row': transactionId,
         })}
       >
