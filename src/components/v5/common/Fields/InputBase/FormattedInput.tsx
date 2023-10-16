@@ -1,11 +1,11 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC } from 'react';
 import Cleave from 'cleave.js/react';
-import { ReactInstanceWithCleave } from 'cleave.js/react/props';
 import clsx from 'clsx';
 
 import { FormattedInputProps } from './types';
 import { useStateClassNames } from '../hooks';
 import { FIELD_STATE } from '../consts';
+import { useFormattedInput } from './hooks';
 
 const displayName = 'v5.common.Fields.FormattedInput';
 
@@ -23,29 +23,8 @@ const FormattedInput: FC<FormattedInputProps> = ({
   message,
   ...rest
 }) => {
-  const [cleave, setCleave] = useState<ReactInstanceWithCleave | null>(null);
-  const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
-
-  /**
-   * Sync the cleave raw value with hook-form value
-   * This is necessary for correctly setting the initial value
-   */
-  useEffect(() => {
-    if (typeof value !== 'string') {
-      return;
-    }
-
-    cleave?.setRawValue(`${options?.prefix || ''}${value}`);
-  }, [cleave, options?.prefix, value]);
-
-  useEffect(() => {
-    if (buttonRef.current && wrapperRef.current) {
-      const { width } = buttonRef.current.getBoundingClientRect();
-
-      wrapperRef.current.style.setProperty('--button-width', `${width}px`);
-    }
-  }, []);
+  const { dynamicCleaveOptionKey, setCleave, buttonRef, wrapperRef } =
+    useFormattedInput(value, options);
 
   const stateClassNames = useStateClassNames(
     {
@@ -55,13 +34,6 @@ const FormattedInput: FC<FormattedInputProps> = ({
     stateClassNamesProp,
   );
 
-  // /*
-  //  * @NOTE Coerce cleave into handling dynamically changing options
-  //  * See here for why this isn't yet supported "officially":
-  //  * https://github.com/nosir/cleave.js/issues/352#issuecomment-447640572
-  //  */
-
-  const dynamicCleaveOptionKey = JSON.stringify(options);
   const { label: buttonLabel, ...restButtonProps } = buttonProps || {};
 
   return (
