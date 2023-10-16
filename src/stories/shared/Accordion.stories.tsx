@@ -1,31 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import Accordion from '~v5/shared/Accordion';
 
-import Accordion from '~shared/Extensions/Accordion';
-import { accordionMocksContent } from '~shared/Extensions/Accordion/consts';
-import { useAccordion } from '~shared/Extensions/Accordion/hooks';
-import { AccordionContent } from '~shared/Extensions/Accordion/types';
-
-const meta: Meta<typeof Accordion> = {
+const accordionMeta: Meta<typeof Accordion> = {
   title: 'Shared/Accordion',
   component: Accordion,
+  args: {
+    items: [
+      {
+        key: '1',
+        title: 'Item 1',
+        content: 'Item 1 content',
+      },
+      {
+        key: '2',
+        title: 'Item 2',
+        content: 'Item 2 content',
+      },
+    ],
+  },
 };
 
-export default meta;
-type Story = StoryObj<typeof Accordion>;
+export default accordionMeta;
 
-const AccordionWithHooks = () => {
-  const { openIndex, onOpenIndexChange } = useAccordion();
-
-  return (
-    <Accordion
-      openIndex={openIndex}
-      onOpenIndexChange={onOpenIndexChange}
-      items={accordionMocksContent as AccordionContent[]}
-    />
-  );
-};
-
-export const Base: Story = {
-  render: () => <AccordionWithHooks />,
-};
+export const Base: StoryObj<typeof Accordion> = {};
