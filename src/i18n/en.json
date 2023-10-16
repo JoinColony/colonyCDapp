@@ -539,6 +539,7 @@
   "ariaLabel.selectDecisionMethod": "Select decision method",
   "ariaLabel.selectToken": "Select token",
   "ariaLabel.selectTeamColour": "Select team colour",
+  "ariaLabel.sortTokens": "Sort tokens",
   "userInfo.about.section": "about",
   "userInfo.teamBreakdown.section": "Team Breakdown",
   "userInfo.permissions.section": "Permissions",
@@ -1133,5 +1134,9 @@
   "role.custom": "Custom",
   "role.payer": "Payer",
   "balancePage.title": "Balance",
-  "balancePage.description": "Overview of the Colony's balance by token"
+  "balancePage.description": "Overview of the Colony's balance by token",
+  "balancePage.table.title": "Colony token balance",
+  "balancePage.table.addFunds": "Add funds to the Colony",
+  "token.type.native": "Native",
+  "token.type.reputation": "Reputation"
 }
