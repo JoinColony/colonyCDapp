@@ -31,8 +31,8 @@ const UserInfo: FC<UserInfoProps> = ({
   return (
     <div
       className={clsx({
-        'min-w-[17rem]': !isTopContributorType,
-        'min-w-[20rem]': isTopContributorType,
+        'sm:min-w-[17rem]': !isTopContributorType,
+        'sm:min-w-[20rem]': isTopContributorType,
       })}
     >
       <div
@@ -111,7 +111,7 @@ const UserInfo: FC<UserInfoProps> = ({
                     key={domainId}
                     className="grid grid-cols-[2fr,1fr] items-center font-medium"
                   >
-                    <span className="text-md whitespace-nowrap">
+                    <span className="text-md whitespace-nowrap truncate">
                       {domainName}
                     </span>
                     <div className="flex justify-end">

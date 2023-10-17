@@ -17,7 +17,7 @@ const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
   placeholderIcon = 'circle-close',
   size = 'xs',
   title,
-  mode,
+  mode = 'general',
 }) => {
   // eslint-disable-next-line no-param-reassign
   title = title ?? '';
@@ -56,7 +56,7 @@ const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
               'border-warning-400': mode === 'active',
               'border-blue-400': mode === 'dedicated',
               'border-green-400': mode === 'new',
-              'border-none': mode === 'general' || mode === undefined,
+              'border-none': mode === 'general',
             },
           )}
           style={imageStyle}
