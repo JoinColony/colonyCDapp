@@ -83,7 +83,7 @@ const BalaceTable: FC = () => {
         buttonMode="primarySolid"
         icon="piggy-bank"
         confirmMessage={formatText({
-          id: 'button.sendFunds',
+          id: 'button.addFunds',
         })}
         closeMessage={formatText({ id: 'button.cancel' })}
       >

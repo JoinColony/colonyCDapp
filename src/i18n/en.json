@@ -108,7 +108,7 @@
   "button.addToken": "Add token",
   "button.pending": "Pending",
   "button.changeConfirm": "Change confirm",
-  "button.sendFunds": "Send funds",
+  "button.addFunds": "Add funds",
   "button.addBatchPayments": "Add batch payments",
   "input.resetText": "Cancel",
   "label.amount": "Amount",
