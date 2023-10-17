@@ -23,7 +23,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
     <div
       className={clsx(
         className,
-        'border rounded-lg flex justify-between min-h-[2.75rem] flex-col md:flex-row md:items-center',
+        'border rounded-lg flex justify-between min-h-[2.75rem] flex-col',
         `gap-2 ${
           isAlt
             ? 'rounded min-h-[3.75rem] p-4'
