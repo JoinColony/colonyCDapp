@@ -1,7 +1,4 @@
-import {
-  Props as CleaveProps,
-  Props as CleaveProps,
-} from 'cleave.js/react/props';
+import { Props as CleaveProps } from 'cleave.js/react/props';
 import { InputHTMLAttributes } from 'react';
 
 import { BaseFieldProps } from '../types';
