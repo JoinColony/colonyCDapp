@@ -56,10 +56,10 @@ const VoteChartBar: FC<VoteChartBarProps> = ({
             {
               'left-0': direction === VOTE_CHART_BAR_DIRECTION.Right,
               'right-0': direction === VOTE_CHART_BAR_DIRECTION.Left,
-              'rounded-r-3xl after:rounded-r-3xl':
+              'rounded-r-3xl':
                 direction === VOTE_CHART_BAR_DIRECTION.Right &&
                 predictedValue === 100,
-              'rounded-l-3xl after:rounded-l-3xl':
+              'rounded-l-3xl':
                 direction === VOTE_CHART_BAR_DIRECTION.Left &&
                 predictedValue === 100,
             },

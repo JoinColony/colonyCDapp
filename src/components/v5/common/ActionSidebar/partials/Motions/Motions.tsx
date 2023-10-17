@@ -13,15 +13,12 @@ import OutcomeStep from './steps/OutcomeStep';
 import RevealStep from './steps/RevealStep';
 import StakingStep from './steps/StakingStep';
 import VotingStep from './steps/VotingStep';
-import { MotionSimplePaymentProps } from './types';
+import { MotionsProps } from './types';
 import { MotionAction } from '~types/motions';
 
-const displayName =
-  'v5.common.ActionSidebar.partials.motions.MotionSimplePayment';
+const displayName = 'v5.common.ActionSidebar.partials.Motions';
 
-const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
-  transactionId,
-}) => {
+const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const {
     action,
     motionState,
@@ -184,6 +181,6 @@ const MotionSimplePayment: FC<MotionSimplePaymentProps> = ({
   );
 };
 
-MotionSimplePayment.displayName = displayName;
+Motions.displayName = displayName;
 
-export default MotionSimplePayment;
+export default Motions;
