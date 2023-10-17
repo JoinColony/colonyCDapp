@@ -14,6 +14,7 @@ const Table = <T,>({
   className,
   getCoreRowModel,
   getRowClassName = () => undefined,
+  verticalOnMobile = true,
   ...rest
 }: TableProps<T>) => {
   const isMobile = useMobile();
@@ -37,7 +38,7 @@ const Table = <T,>({
         'border border-separate border-spacing-0 border-1 w-full rounded-lg border-gray-200 overflow-hidden',
       )}
     >
-      {isMobile ? (
+      {isMobile && verticalOnMobile ? (
         rows.map((row) => {
           const cells = row.getVisibleCells();
           const columnsCount = cells.length - 1;

@@ -60,7 +60,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         />
         <p className="text-gray-600 font-medium mt-2">{descriptionMetadata}</p>
         {/* @todo: add preview mode to the form */}
-        <ActionTypeSelect className="mt-7" />
+        <ActionTypeSelect className="mt-7 mb-3" />
         {/* @todo: add motion action type to each action */}
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
         {notificationBanner && (

@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 
 import { FieldPath, FieldValues } from 'react-hook-form';
 import { SettingsRowProps } from './types';
-import Switch from '~v5/common/Fields/Switch';
+import { FormSwitch } from '~v5/common/Fields/Switch';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
 import Tooltip from '~shared/Extensions/Tooltip';
@@ -23,7 +23,6 @@ const SettingsRow = <
   onChange,
   onClick,
   id,
-  register,
 }: SettingsRowProps<TFieldValues, TFieldName>) => {
   const { formatMessage } = useIntl();
 
@@ -46,15 +45,7 @@ const SettingsRow = <
           {formatMessage(description)}
         </p>
       </div>
-      {onChange && (
-        <Switch
-          id={id}
-          register={register}
-          onChange={({ target }) => {
-            onChange(target.checked);
-          }}
-        />
-      )}
+      {onChange && <FormSwitch name={id || ''} />}
       {onClick && buttonLabel && (
         <Button
           mode={buttonMode}

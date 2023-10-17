@@ -40,7 +40,7 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
         fieldName={ACTION_TYPE_FIELD_NAME}
         iconName="file-plus"
         title={formatText({ id: 'actionSidebar.actionType' })}
-        tooltip={formatText({ id: 'actionSidebar.toolip.actionType' })}
+        tooltip={formatText({ id: 'actionSidebar.tooltip.actionType' })}
       >
         <button
           type="button"
