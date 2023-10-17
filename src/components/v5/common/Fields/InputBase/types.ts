@@ -1,4 +1,6 @@
 import { InputHTMLAttributes } from 'react';
+import { Props as CleaveProps } from 'cleave.js/react/props';
+
 import { BaseFieldProps } from '../types';
 
 export interface InputBaseProps
@@ -14,5 +16,19 @@ export interface InputBaseProps
 
 export interface FormInputBaseProps
   extends Omit<InputBaseProps, 'onChange' | 'value' | 'state'> {
+  name: string;
+}
+
+export interface FormattedInputProps
+  extends Omit<InputBaseProps, 'value' | 'prefix' | 'onChange'>,
+    CleaveProps {
+  buttonProps?: React.HTMLAttributes<HTMLButtonElement> & {
+    label: string;
+  };
+  wrapperClassName?: string;
+}
+
+export interface FormFormattedInputProps
+  extends Omit<FormattedInputProps, 'onChange' | 'value' | 'state'> {
   name: string;
 }
