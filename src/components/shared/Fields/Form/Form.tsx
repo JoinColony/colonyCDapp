@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useImperativeHandle } from 'react';
 import {
   useForm,
   UseFormProps,
@@ -38,23 +38,28 @@ export interface FormProps<FormData extends FieldValues> {
   className?: string;
 }
 
-const Form = <FormData extends FieldValues>({
-  children,
-  defaultValues,
-  mode = 'onTouched',
-  onSubmit,
-  onError,
-  options,
-  resetOnSubmit = false,
-  validationSchema,
-  className,
-}: FormProps<FormData>) => {
+const Form = <FormData extends FieldValues>(
+  {
+    children,
+    defaultValues,
+    mode = 'onTouched',
+    onSubmit,
+    onError,
+    options,
+    resetOnSubmit = false,
+    validationSchema,
+    className,
+  }: FormProps<FormData>,
+  ref: React.ForwardedRef<UseFormReturn<FormData, any, undefined>>,
+) => {
   const formHelpers = useForm({
     resolver: validationSchema ? yupResolver(validationSchema) : undefined,
     defaultValues,
     mode,
     ...options,
   });
+
+  useImperativeHandle(ref, () => formHelpers);
 
   const {
     handleSubmit,
@@ -90,4 +95,5 @@ const Form = <FormData extends FieldValues>({
 };
 
 Form.displayName = displayName;
-export default Form;
+
+export default React.forwardRef(Form);

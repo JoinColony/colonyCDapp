@@ -202,6 +202,4 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
   },
 );
 
-SearchSelect.displayName = displayName;
-
-export default SearchSelect;
+export default Object.assign(SearchSelect, { displayName });
