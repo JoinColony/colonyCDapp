@@ -8,7 +8,7 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import {
   useActionDescriptionMetadata,
   useActionFormProps,
-  // useCloseSidebarClick,
+  useCloseSidebarClick,
   useNotificationBanner,
   useSidebarActionForm,
   useUserHasPermissions,
@@ -101,8 +101,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   } = useActionSidebarContext();
   const [isSidebarFullscreen, { toggle: toggleIsSidebarFullscreen }] =
     useToggle();
-  // @todo: uncomment it when it will work correctly
-  // const closeSidebarClick = useCloseSidebarClick();
+  const { formRef, closeSidebarClick } = useCloseSidebarClick();
   const isMobile = useMobile();
 
   useDisableBodyScroll(isActionSidebarOpen);
@@ -137,7 +136,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           <button
             type="button"
             className="py-2.5 flex items-center justify-center text-gray-400"
-            // onClick={closeSidebarClick}
+            onClick={closeSidebarClick}
             aria-label={formatText({ id: 'ariaLabel.closeModal' })}
           >
             <Icon name="close" appearance={{ size: 'tiny' }} />
@@ -165,7 +164,11 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         })}
       >
         <div className="flex-grow px-6 py-8">
-          <ActionForm {...actionFormProps} className="flex flex-col h-full">
+          <ActionForm
+            {...actionFormProps}
+            className="flex flex-col h-full"
+            ref={formRef}
+          >
             <ActionSidebarFormContent
               getFormOptions={getFormOptions}
               isMotion={!!transactionId}
