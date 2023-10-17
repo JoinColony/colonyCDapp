@@ -1,8 +1,9 @@
-import { PropsGetterArgs } from 'react-popper-tooltip';
-import { Colony, WatchListItem } from '~types';
+import { Colony, WatchedColony, WatchListItem } from '~types';
 
 export interface ColoniesDropdownProps {
-  watchlist: (WatchListItem | null)[];
+  activeColony?: Colony;
+  activeColonyAddress?: string;
+  coloniesByCategory: ColoniesByCategory;
   isMobile?: boolean;
 }
 
@@ -12,8 +13,8 @@ export interface ColonyItemProps {
 }
 
 export interface ColonyAvatarProps {
-  colonyToDisplay?: Colony;
-  colonyToDisplayAddress?: string;
+  colony?: Colony | WatchedColony;
+  colonyAddress?: string;
   isMobile: boolean;
   isArrowVisible?: boolean;
   setTriggerRef?: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
@@ -25,13 +26,10 @@ export interface ColonyDropdownMobileProps {
 }
 
 export interface ColonySwitcherProps {
+  activeColony?: Colony;
   isCloseButtonVisible?: boolean;
   isColonyDropdownOpen?: boolean;
   isArrowVisible?: boolean;
-  setTooltipRef: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
-  setTriggerRef: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
-  getTooltipProps: (args?: PropsGetterArgs | undefined) => {
-    'data-popper-interactive': boolean | undefined;
-    style: React.CSSProperties;
-  };
 }
+
+export type ColoniesByCategory = Record<string, WatchListItem[]>;

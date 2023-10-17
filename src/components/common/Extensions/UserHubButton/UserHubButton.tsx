@@ -2,85 +2,67 @@ import clsx from 'clsx';
 import React, { FC, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
+import UserHub from '~common/Extensions/UserHub';
 import {
   useAppContext,
   useColonyContext,
   useDetectClickOutside,
   useMobile,
-  useUserReputation,
 } from '~hooks';
-
-import UserHub from '~common/Extensions/UserHub';
 import Button from '~v5/shared/Button';
 import PopoverBase from '~v5/shared/PopoverBase';
 import UserAvatar from '~v5/shared/UserAvatar';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
-import { UserReputationProps } from './types';
-import { useUserTransactionContext } from '~context/UserTransactionContext';
+import { UserHubButtonProps } from './types';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
 
-import styles from './UserReputation.module.css';
+import styles from './UserHubButton.module.css';
 
 export const displayName =
-  'common.Extensions.UserNavigation.partials.UserReputation';
+  'common.Extensions.UserNavigation.partials.UserHubButton';
 
-const UserReputation: FC<UserReputationProps> = ({
+const UserHubButton: FC<UserHubButtonProps> = ({
   hideMemberReputationOnMobile,
 }) => {
+  const isMobile = useMobile();
   const { colony } = useColonyContext();
   const { wallet, user } = useAppContext();
-  const isMobile = useMobile();
   const { profile } = user || {};
-  const [, setIsWalletButtonVisible] = useState(true);
-  const { isUserHubOpen, setIsUserHubOpen } = useUserTransactionContext();
+  const walletAddress = wallet?.address;
+  const [isUserHubOpen, setIsUserHubOpen] = useState(false);
 
   const popperTooltipOffset = isMobile ? [0, 1] : [0, 8];
 
   const ref = useDetectClickOutside({
     onTriggered: (e) => {
       // This stops the hub closing when clicking the pending button (which is outside)
-      // @ts-expect-error
-      if (!e.target?.getAttribute?.('data-openhubifclicked')) {
+      if (!(e.target as HTMLElement)?.getAttribute('data-openhubifclicked')) {
         setIsUserHubOpen?.(false);
       }
     },
   });
 
-  const {
-    getTooltipProps,
-    setTooltipRef,
-    setTriggerRef,
-    visible: isUserHubVisible,
-  } = usePopperTooltip(
-    {
-      delayShow: isMobile ? 0 : 200,
-      delayHide: isMobile ? 0 : 200,
-      placement: isMobile ? 'bottom' : 'bottom-end',
-      trigger: 'click',
-      interactive: true,
-      onVisibleChange: (newVisible) => {
-        if (!newVisible && isMobile) {
-          setIsWalletButtonVisible(true);
-        }
+  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+    usePopperTooltip(
+      {
+        delayShow: isMobile ? 0 : 200,
+        delayHide: isMobile ? 0 : 200,
+        placement: isMobile ? 'bottom' : 'bottom-end',
+        trigger: 'click',
+        interactive: true,
+        onVisibleChange: () => {},
       },
-    },
-    {
-      modifiers: [
-        {
-          name: 'offset',
-          options: {
-            offset: popperTooltipOffset,
+      {
+        modifiers: [
+          {
+            name: 'offset',
+            options: {
+              offset: popperTooltipOffset,
+            },
           },
-        },
-      ],
-    },
-  );
-
-  const { colonyAddress } = colony || {};
-  const { userReputation, totalReputation } = useUserReputation(
-    colonyAddress,
-    wallet?.address,
-  );
+        ],
+      },
+    );
 
   return (
     <div ref={ref}>
@@ -94,18 +76,20 @@ const UserReputation: FC<UserReputationProps> = ({
           <UserAvatar
             user={user}
             userName={
-              profile?.displayName ?? splitWalletAddress(wallet?.address ?? '')
+              profile?.displayName ?? splitWalletAddress(walletAddress ?? '')
             }
             size="xxs"
           />
-          <MemberReputation
-            userReputation={userReputation}
-            totalReputation={totalReputation}
-            hideOnMobile={hideMemberReputationOnMobile}
-          />
+          {walletAddress && (
+            <MemberReputation
+              colonyAddress={colony?.colonyAddress}
+              hideOnMobile={hideMemberReputationOnMobile}
+              walletAddress={walletAddress}
+            />
+          )}
         </div>
       </Button>
-      {(isUserHubVisible || isUserHubOpen) && (
+      {(visible || isUserHubOpen) && (
         <PopoverBase
           setTooltipRef={setTooltipRef}
           tooltipProps={getTooltipProps}
@@ -123,6 +107,6 @@ const UserReputation: FC<UserReputationProps> = ({
   );
 };
 
-UserReputation.displayName = displayName;
+UserHubButton.displayName = displayName;
 
-export default UserReputation;
+export default UserHubButton;

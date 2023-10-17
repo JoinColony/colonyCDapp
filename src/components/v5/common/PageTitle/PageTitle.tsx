@@ -1,13 +1,17 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { PageTitleProps } from './types';
 import SubNavigation from '~v5/common/SubNavigation';
+import { useColonyContext } from '~hooks';
+
+import { PageTitleProps } from './types';
 
 const displayName = 'v5.common.PageTitle';
 
 const PageTitle: FC<PageTitleProps> = ({ title, subtitle }) => {
   const { formatMessage } = useIntl();
+
+  const { colony } = useColonyContext();
 
   return (
     <div className="border-b border-gray-200 pb-6">
@@ -20,9 +24,11 @@ const PageTitle: FC<PageTitleProps> = ({ title, subtitle }) => {
             </h2>
           )}
         </div>
-        <div className="hidden md:block">
-          <SubNavigation />
-        </div>
+        {colony && colony.colonyAddress && (
+          <div className="hidden md:block">
+            <SubNavigation />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -5,7 +5,6 @@ import { IconButtonProps } from './types';
 import Icon from '~shared/Icon';
 import IconButton from './IconButton';
 import { useMobile } from '~hooks';
-import { useUserTransactionContext } from '~context';
 
 const displayName = 'v5.Button.CompleteButton';
 
@@ -13,11 +12,9 @@ const CompletedButton: FC<PropsWithChildren<Omit<IconButtonProps, 'icon'>>> = (
   props,
 ) => {
   const isMobile = useMobile();
-  const { setIsUserHubOpen } = useUserTransactionContext();
   return (
     <IconButton
       {...props}
-      onClick={() => setIsUserHubOpen(true)}
       title={{ id: 'button.completed' }}
       text={{ id: 'button.completed' }}
       ariaLabel={{ id: 'button.completed' }}

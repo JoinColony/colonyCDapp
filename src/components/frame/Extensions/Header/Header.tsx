@@ -1,46 +1,27 @@
-import clsx from 'clsx';
 import React, { FC, useEffect } from 'react';
-import { useIntl } from 'react-intl';
 
 import { useSearchParams } from 'react-router-dom';
 import { useMobile } from '~hooks';
 import ColonySwitcher from '~common/Extensions/ColonySwitcher';
-import Icon from '~shared/Icon';
 import UserNavigation from '~common/Extensions/UserNavigation';
-import MainNavigation from '~common/Extensions/MainNavigation';
-import { CloseButton, PendingButton } from '~v5/shared/Button';
-import { useHeader } from './hooks';
+import { CloseButton } from '~v5/shared/Button';
 import ActionSidebar from '~v5/common/ActionSidebar';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { ColonyAvatarProvider } from '~context/ColonyAvatarContext';
-import {
-  TransactionGroupStates,
-  useUserTransactionContext,
-} from '~context/UserTransactionContext';
-import CompletedButton from '~v5/shared/Button/CompletedButton';
+import HeaderAvatar from '~common/Extensions/UserNavigation/partials/HeaderAvatar';
+
+import { HeaderProps } from './types';
 
 const displayName = 'frame.Extensions.Header';
 
-const Header: FC = () => {
+const Header: FC<HeaderProps> = ({
+  // @TODO: We definitely want to avoid passing the colony object here for separation of concerns. PLEASE FIX THIS
+  colony,
+  navBar = null,
+  txButtons,
+  userHub,
+}) => {
   const isMobile = useMobile();
-  const { formatMessage } = useIntl();
-  const {
-    mainMenuGetTooltipProps,
-    mainMenuSetTooltipRef,
-    mainMenuSetTriggerRef,
-    colonySwitcherGetTooltipProps,
-    colonySwitcherSetTooltipRef,
-    colonySwitcherSetTriggerRef,
-    userMenuGetTooltipProps,
-    userMenuSetTooltipRef,
-    userMenuSetTriggerRef,
-    setWalletTriggerRef,
-    isWalletButtonVisible,
-    isMainMenuOpen,
-    isColonySwitcherOpen,
-    isUserMenuOpen,
-    isWalletOpen,
-  } = useHeader();
   const {
     actionSidebarToggle: [
       isActionSidebarOpen,
@@ -56,42 +37,21 @@ const Header: FC = () => {
     }
   }, [toggleActionSidebarOn, transactionId]);
 
-  const isCloseButtonVisible =
-    (isMainMenuOpen || isColonySwitcherOpen) &&
-    isMobile &&
-    !isActionSidebarOpen;
+  const isCloseButtonVisible = isMobile && !isActionSidebarOpen && false;
 
-  const isArrowVisible =
-    !isMobile ||
-    (isMobile &&
-      (isColonySwitcherOpen ||
-        isMainMenuOpen ||
-        isUserMenuOpen ||
-        isWalletOpen));
+  const isArrowVisible = !isMobile;
 
-  const userNavigation = (
-    <UserNavigation
-      isWalletButtonVisible={isWalletButtonVisible}
-      userMenuGetTooltipProps={userMenuGetTooltipProps}
-      userMenuSetTooltipRef={userMenuSetTooltipRef}
-      userMenuSetTriggerRef={userMenuSetTriggerRef}
-      setWalletTriggerRef={setWalletTriggerRef}
-      isUserMenuOpen={isUserMenuOpen}
-      isWalletOpen={isWalletOpen}
-    />
-  );
+  const userHubComponent = userHub || <HeaderAvatar />;
 
   const userMenuComponent = isActionSidebarOpen ? (
     <ColonyAvatarProvider>
       <ActionSidebar transactionId={transactionId || undefined}>
-        {userNavigation}
+        <UserNavigation txButtons={txButtons} userHub={userHubComponent} />
       </ActionSidebar>
     </ColonyAvatarProvider>
   ) : (
-    userNavigation
+    <UserNavigation txButtons={txButtons} userHub={userHubComponent} />
   );
-
-  const { groupState } = useUserTransactionContext();
 
   return (
     <header className="relative">
@@ -100,40 +60,12 @@ const Header: FC = () => {
           <div className="flex items-center justify-between sm:max-w-[90rem] w-full">
             <div className="mr-1.5 sm:mr-10">
               <ColonySwitcher
-                getTooltipProps={colonySwitcherGetTooltipProps}
-                setTooltipRef={colonySwitcherSetTooltipRef}
-                setTriggerRef={colonySwitcherSetTriggerRef}
-                isColonyDropdownOpen={isColonySwitcherOpen}
+                activeColony={colony}
                 isArrowVisible={isArrowVisible}
               />
             </div>
-            <div
-              className={clsx(
-                'flex w-full items-center gap-x-2 justify-between',
-              )}
-            >
-              <button
-                type="button"
-                className={clsx('flex items-center sm:hidden', {
-                  hidden:
-                    isMainMenuOpen ||
-                    isColonySwitcherOpen ||
-                    isUserMenuOpen ||
-                    isWalletOpen,
-                })}
-                ref={mainMenuSetTriggerRef}
-                aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
-              >
-                <Icon name="list" appearance={{ size: 'tiny' }} />
-                <span className="text-2 ml-1.5">
-                  {formatMessage({ id: 'menu' })}
-                </span>
-              </button>
-              <MainNavigation
-                setTooltipRef={mainMenuSetTooltipRef}
-                tooltipProps={mainMenuGetTooltipProps}
-                isMenuOpen={isMainMenuOpen}
-              />
+            <div className="flex w-full items-center gap-x-2 justify-between">
+              <nav>{navBar}</nav>
               <div>
                 {isCloseButtonVisible ? (
                   <div className="relative z-[51] p-1.5 border border-transparent">
@@ -147,12 +79,7 @@ const Header: FC = () => {
               </div>
             </div>
           </div>
-          {isMobile && groupState === TransactionGroupStates.SomePending && (
-            <PendingButton />
-          )}
-          {isMobile && groupState === TransactionGroupStates.AllCompleted && (
-            <CompletedButton />
-          )}
+          {txButtons}
         </div>
       </div>
     </header>

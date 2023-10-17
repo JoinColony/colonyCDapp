@@ -1,40 +1,120 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
+import { usePopperTooltip } from 'react-popper-tooltip';
 
+import { useAppContext, useGetNetworkToken, useMobile } from '~hooks';
+import PopoverBase from '~v5/shared/PopoverBase';
+import { NETWORK_DATA } from '~constants';
+import { WatchListItem } from '~types';
+import { nonNullable } from '~utils/types';
+import { Network } from '~gql';
+
+import NavigationTools from '../NavigationTools';
 import ColoniesDropdown from './partials/ColoniesDropdown';
 import ColonyAvatarWrapper from './partials/ColonyAvatarWrapper';
 import ColonyDropdownMobile from './partials/ColonyDropdownMobile';
+import { ColoniesByCategory, ColonySwitcherProps } from './types';
+
+// @TODO: Remove the mock
+import { watchListMock } from './consts';
+
 import styles from './ColonySwitcher.module.css';
-import { useMobile } from '~hooks';
-import { ColonySwitcherProps } from './types';
-import { useHeader } from '~frame/Extensions/Header/hooks';
-import NavigationTools from '../NavigationTools';
-import PopoverBase from '~v5/shared/PopoverBase';
-import { useGetNetworkToken } from '~hooks/useGetNetworkToken';
 
 const displayName = 'common.Extensions.ColonySwitcher';
 
+const sortByDate = (
+  firstWatchEntry: WatchListItem,
+  secondWatchEntry: WatchListItem,
+) => {
+  const firstWatchTime = new Date(firstWatchEntry?.createdAt || 1).getTime();
+  const secondWatchTime = new Date(secondWatchEntry?.createdAt || 1).getTime();
+  return firstWatchTime - secondWatchTime;
+};
+
 const ColonySwitcher: FC<ColonySwitcherProps> = ({
   isCloseButtonVisible,
-  isColonyDropdownOpen,
-  setTooltipRef,
-  setTriggerRef,
-  getTooltipProps,
   isArrowVisible,
+  activeColony,
 }) => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
   const nativeToken = useGetNetworkToken();
-  const {
-    colonyToDisplayAddress,
-    colonyToDisplay,
-    sortByDate,
-    userLoading,
-    user,
-  } = useHeader();
+  const { userLoading, user } = useAppContext();
 
-  const { items: watchlist = [] } = user?.watchlist || {};
+  const watchlist = useMemo(
+    // @TODO: Remove the mock
+    () =>
+      (user?.watchlist?.items.filter(nonNullable) || watchListMock || []).sort(
+        sortByDate,
+      ),
+    [user],
+  );
+
+  const colonyAddress = activeColony?.colonyAddress;
+
+  const coloniesByCategory = useMemo(
+    () =>
+      watchlist
+        .map((item) => {
+          const newNetwork = Object.keys(NETWORK_DATA).find(
+            (network) =>
+              NETWORK_DATA[network].chainId ===
+              item?.colony.chainMetadata.chainId,
+          );
+
+          if (!newNetwork) {
+            return item;
+          }
+
+          return {
+            ...item,
+            colony: {
+              chainMetadata: {
+                chainId: item?.colony.chainMetadata.chainId,
+                network: newNetwork as Network,
+              },
+              colonyAddress: item?.colony.colonyAddress,
+              name: item?.colony.name,
+              metadata: {
+                avatar: item.colony?.metadata?.avatar,
+                displayName:
+                  item.colony?.metadata?.displayName || item.colony?.name,
+                thumbnail: item.colony?.metadata?.thumbnail,
+              },
+            },
+          };
+        })
+        .reduce((group, item) => {
+          const network = (item && item.colony.chainMetadata?.network) || '';
+          // eslint-disable-next-line no-param-reassign
+          group[network] = group[network] ?? [];
+          group[network].push(item);
+          return group;
+        }, {} as ColoniesByCategory),
+    [watchlist],
+  );
+
+  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+    usePopperTooltip(
+      {
+        delayShow: isMobile ? 0 : 200,
+        delayHide: isMobile ? 0 : 200,
+        placement: 'bottom',
+        trigger: 'click',
+        interactive: true,
+      },
+      {
+        modifiers: [
+          {
+            name: 'offset',
+            options: {
+              offset: isMobile ? [0, -69] : [120, 8],
+            },
+          },
+        ],
+      },
+    );
 
   return (
     <div
@@ -44,9 +124,7 @@ const ColonySwitcher: FC<ColonySwitcherProps> = ({
     >
       <button
         aria-label={formatMessage({
-          id: isColonyDropdownOpen
-            ? 'ariaLabel.closeDropdown'
-            : 'ariaLabel.openDropdown',
+          id: visible ? 'ariaLabel.closeDropdown' : 'ariaLabel.openDropdown',
         })}
         ref={setTriggerRef}
         className="flex items-center justify-between transition-colors duration-normal hover:text-blue-400 z-[51]"
@@ -55,11 +133,11 @@ const ColonySwitcher: FC<ColonySwitcherProps> = ({
         <ColonyAvatarWrapper
           isArrowVisible={isArrowVisible}
           isMobile={isMobile}
-          colonyToDisplayAddress={colonyToDisplayAddress}
-          colonyToDisplay={isCloseButtonVisible && colonyToDisplay}
+          colonyAddress={colonyAddress}
+          colony={isCloseButtonVisible ? activeColony : undefined}
         />
       </button>
-      {isColonyDropdownOpen && (
+      {visible && (
         <div
           className={
             !isMobile ? 'h-auto absolute top-[3.5rem] sm:top-[2.25rem]' : ''
@@ -71,16 +149,15 @@ const ColonySwitcher: FC<ColonySwitcherProps> = ({
               tooltipProps={getTooltipProps}
               classNames="w-full border-none shadow-none px-0 pt-0 pb-6 bg-base-white"
             >
-              <ColonyDropdownMobile
-                isOpen={isColonyDropdownOpen}
-                userLoading={userLoading}
-              >
+              <ColonyDropdownMobile isOpen={visible} userLoading={userLoading}>
                 <NavigationTools nativeToken={nativeToken} />
                 <span className="divider mb-6" />
                 {watchlist.length ? (
                   <ColoniesDropdown
-                    watchlist={[...watchlist].sort(sortByDate)}
                     isMobile={isMobile}
+                    activeColony={activeColony}
+                    activeColonyAddress={colonyAddress}
+                    coloniesByCategory={coloniesByCategory}
                   />
                 ) : (
                   <p className="text-sm px-6">
@@ -100,7 +177,11 @@ const ColonySwitcher: FC<ColonySwitcherProps> = ({
               })}
             >
               {!!watchlist.length && !userLoading ? (
-                <ColoniesDropdown watchlist={[...watchlist].sort(sortByDate)} />
+                <ColoniesDropdown
+                  activeColony={activeColony}
+                  activeColonyAddress={colonyAddress}
+                  coloniesByCategory={coloniesByCategory}
+                />
               ) : (
                 <p className="text-sm">
                   {formatMessage({ id: 'missing.colonies' })}

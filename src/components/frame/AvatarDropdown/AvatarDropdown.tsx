@@ -3,7 +3,7 @@ import classnames from 'classnames';
 
 import Popover from '~shared/Popover';
 import UserAvatar from '~shared/UserAvatar';
-import { useAppContext, useColonyContext, useMobile } from '~hooks';
+import { useAppContext, useMobile } from '~hooks';
 import { removeValueUnits } from '~utils/css';
 import { SimpleMessageValues } from '~types/index';
 import { UserTokenBalanceData } from '~types';
@@ -11,8 +11,10 @@ import AvatarDropdownPopover from './AvatarDropdownPopover';
 import AvatarDropdownPopoverMobile from './AvatarDropdownPopoverMobile';
 
 import styles from './AvatarDropdown.css';
+import { ColonyFragment } from '~gql';
 
 interface Props {
+  colony?: ColonyFragment;
   preventTransactions?: boolean;
   spinnerMsg: SimpleMessageValues;
   tokenBalanceData?: UserTokenBalanceData;
@@ -23,13 +25,13 @@ const displayName = 'frame.AvatarDropdown';
 const { refWidth, horizontalOffset, verticalOffset } = styles;
 
 const AvatarDropdown = ({
+  colony,
   preventTransactions = false,
   spinnerMsg,
   tokenBalanceData,
 }: Props) => {
   const isMobile = useMobile();
   const { wallet, user } = useAppContext();
-  const { colony } = useColonyContext();
 
   /*
    * @NOTE Offset Calculations
@@ -53,10 +55,10 @@ const AvatarDropdown = ({
   const popoverContent = isMobile
     ? () =>
         user?.profile?.displayName &&
-        wallet?.address &&
-        colony && (
+        wallet?.address && (
           <AvatarDropdownPopoverMobile
             {...{
+              colony,
               spinnerMsg,
               tokenBalanceData,
             }}

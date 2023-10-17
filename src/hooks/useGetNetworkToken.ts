@@ -1,7 +1,7 @@
 import { NETWORK_DATA, NetworkInfo } from '~constants';
 import useAppContext from './useAppContext';
 
-export const useGetNetworkToken = (): NetworkInfo | undefined => {
+const useGetNetworkToken = (): NetworkInfo | undefined => {
   const { wallet } = useAppContext();
 
   if (!wallet) {
@@ -17,3 +17,5 @@ export const useGetNetworkToken = (): NetworkInfo | undefined => {
 
   return networkToken;
 };
+
+export default useGetNetworkToken;

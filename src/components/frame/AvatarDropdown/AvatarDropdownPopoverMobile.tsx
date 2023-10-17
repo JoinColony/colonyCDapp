@@ -10,7 +10,6 @@ import MaskedAddress from '~shared/MaskedAddress';
 import MemberReputation from '~shared/MemberReputation';
 import {
   useAppContext,
-  useColonyContext,
   useUserReputation,
   useCanInteractWithNetwork,
 } from '~hooks';
@@ -22,6 +21,7 @@ import { TokenActivationPopover } from '../TokenActivation';
 import ItemContainer from './ItemContainer';
 
 import styles from './AvatarDropdownPopoverMobile.css';
+import { ColonyFragment } from '~gql';
 
 const displayName = 'frame.AvatarDropdown.AvatarDropdownPopoverMobile';
 
@@ -45,15 +45,16 @@ const MSG = defineMessages({
 });
 
 interface Props {
+  colony?: ColonyFragment;
   spinnerMsg: SimpleMessageValues;
   tokenBalanceData?: UserTokenBalanceData;
 }
 
 const AvatarDropdownPopoverMobile = ({
+  colony,
   spinnerMsg,
   tokenBalanceData,
 }: Props) => {
-  const { colony } = useColonyContext();
   const { wallet } = useAppContext();
   const canInteractWithNetwork = useCanInteractWithNetwork();
 
@@ -72,27 +73,27 @@ const AvatarDropdownPopoverMobile = ({
             {wallet?.address && <MaskedAddress address={wallet.address} />}
           </ItemContainer>
         </DropdownMenuItem>
-        <DropdownMenuItem>
-          <ItemContainer message={MSG.balance} spinnerMsg={spinnerMsg}>
-            {canInteractWithNetwork && nativeToken && tokenBalanceData && (
+        {canInteractWithNetwork && nativeToken && tokenBalanceData && (
+          <DropdownMenuItem>
+            <ItemContainer message={MSG.balance} spinnerMsg={spinnerMsg}>
               <UserTokenActivationDisplay
                 nativeToken={nativeToken}
                 tokenBalanceData={tokenBalanceData}
               />
-            )}
-          </ItemContainer>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <ItemContainer message={MSG.reputation} spinnerMsg={spinnerMsg}>
-            {colonyAddress && (
+            </ItemContainer>
+          </DropdownMenuItem>
+        )}
+        {colonyAddress && (
+          <DropdownMenuItem>
+            <ItemContainer message={MSG.reputation} spinnerMsg={spinnerMsg}>
               <MemberReputation
                 userReputation={userReputation}
                 totalReputation={totalReputation}
                 showIconTitle={false}
               />
-            )}
-          </ItemContainer>
-        </DropdownMenuItem>
+            </ItemContainer>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem>
           <div className={styles.buttonContainer}>
             {nativeToken && tokenBalanceData && (

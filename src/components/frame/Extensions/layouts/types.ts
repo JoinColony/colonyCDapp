@@ -1,6 +1,6 @@
 import { MessageDescriptor } from 'react-intl';
 
-export interface PageLayoutProps {
+export interface ColonyLayoutProps {
   title: MessageDescriptor;
   description: MessageDescriptor;
   loadingText: MessageDescriptor | string;
