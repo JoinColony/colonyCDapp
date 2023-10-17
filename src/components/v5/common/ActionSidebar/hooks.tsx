@@ -1,7 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { ColonyRole } from '@colony/colony-js';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useFormContext, UseFormReturn, useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useUnmountEffect } from 'framer-motion';
 import { useApolloClient } from '@apollo/client';
@@ -493,19 +499,24 @@ export const useActionFormBaseHook: UseActionFormBaseHook = ({
 };
 
 export const useCloseSidebarClick = () => {
-  const { formState } = useFormContext();
+  const formContext = useFormContext();
+  const formRef = useRef<UseFormReturn<object>>(null);
   const {
     actionSidebarToggle: [, { toggleOff: toggleActionSidebarOff }],
     cancelModalToggle: [, { toggle: toggleCancelModal }],
   } = useActionSidebarContext();
-  const { dirtyFields } = formState;
 
-  return () => {
-    if (Object.keys(dirtyFields).length > 0) {
-      toggleCancelModal();
-    } else {
-      toggleActionSidebarOff();
-    }
+  return {
+    closeSidebarClick: () => {
+      const { dirtyFields } = (formContext || formRef.current)?.formState || {};
+
+      if (Object.keys(dirtyFields).length > 0) {
+        toggleCancelModal();
+      } else {
+        toggleActionSidebarOff();
+      }
+    },
+    formRef,
   };
 };
 

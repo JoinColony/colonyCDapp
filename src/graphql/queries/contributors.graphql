@@ -29,3 +29,16 @@ query GetContributorCount($input: GetTotalMemberCountInput!) {
     memberCount
   }
 }
+
+query GetVerifiedMembers($colonyAddress: ID!) {
+  getContributorsByColony(
+    colonyAddress: $colonyAddress
+    filter: { isVerified: { eq: true } }
+  ) {
+    items {
+      user {
+        ...User
+      }
+    }
+  }
+}

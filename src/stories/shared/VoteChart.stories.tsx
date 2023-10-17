@@ -13,6 +13,14 @@ const voteChartMeta: Meta<typeof VoteChart> = {
         max: 100,
       },
     },
+    predictPercentageVotesFor: {
+      name: 'Predicted percentage of votes for',
+      control: {
+        type: 'number',
+        min: 1,
+        max: 100,
+      },
+    },
     forLabel: {
       name: 'Label for votes for',
       control: {
@@ -21,6 +29,14 @@ const voteChartMeta: Meta<typeof VoteChart> = {
     },
     percentageVotesAgainst: {
       name: 'Percentage of votes against',
+      control: {
+        type: 'number',
+        min: 1,
+        max: 100,
+      },
+    },
+    predictPercentageVotesAgainst: {
+      name: 'Predicted percentage of votes against',
       control: {
         type: 'number',
         min: 1,
@@ -60,3 +76,15 @@ const voteChartMeta: Meta<typeof VoteChart> = {
 export default voteChartMeta;
 
 export const Base: StoryObj<typeof VoteChart> = {};
+
+export const WithPredictionFor: StoryObj<typeof VoteChart> = {
+  args: {
+    predictPercentageVotesFor: 70,
+  },
+};
+
+export const WithPredictionAgainst: StoryObj<typeof VoteChart> = {
+  args: {
+    predictPercentageVotesAgainst: 70,
+  },
+};

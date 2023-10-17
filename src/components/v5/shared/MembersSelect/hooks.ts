@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useGetMembersForColonyQuery } from '~gql';
 import { Address, Member, MemberUser } from '~types';
 import { notMaybe } from '~utils/arrays';
+import { SearchSelectOption } from '../SearchSelect/types';
 
 export const useGetColonyMembers = (colonyAddress?: Address | null) => {
   const { data, loading } = useGetMembersForColonyQuery({
@@ -13,7 +14,7 @@ export const useGetColonyMembers = (colonyAddress?: Address | null) => {
     },
   });
 
-  const members = useMemo(() => {
+  const members: SearchSelectOption[] = useMemo(() => {
     const watchers = data?.getMembersForColony?.watchers ?? [];
     const contributors = data?.getMembersForColony?.contributors ?? [];
     const allMembers: Member[] = [...watchers, ...contributors];
@@ -22,11 +23,12 @@ export const useGetColonyMembers = (colonyAddress?: Address | null) => {
       .map(({ user }) => user)
       .filter<MemberUser>(notMaybe)
       .map(({ profile, walletAddress }, index) => ({
-        value: profile?.displayName,
-        label: profile?.displayName,
-        avatar: profile?.avatar || profile?.thumbnail,
+        value: profile?.displayName || '',
+        label: profile?.displayName || '',
+        avatar: profile?.avatar || profile?.thumbnail || '',
         walletAddress,
         id: index,
+        showAvatar: true,
       }));
   }, [
     data?.getMembersForColony?.contributors,

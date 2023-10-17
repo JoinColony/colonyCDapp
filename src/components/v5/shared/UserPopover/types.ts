@@ -15,4 +15,5 @@ export interface UserPopoverProps extends UserInfoProps {
   user?: User | null;
   popperOptions?: PopperOptions;
   isContributorsList?: boolean;
+  additionalContent?: JSX.Element;
 }
