@@ -1100,6 +1100,8 @@
   "motion.oppose": "Oppose",
   "motion.staking.chart.forLabel": "Supported",
   "motion.staking.chart.againstLabel": "Opposed",
+  "motion.staking.accordion.title.show": "Show staking information",
+  "motion.staking.accordion.title.hide": "Hide staking information",
   "motion.finalizeStep.statusText": "Finalize to execute the agreed transactions and return stakes.",
   "motion.finalizeStep.title": "Staking overview",
   "motion.finalizeStep.staked": "Staked",

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import AccordionItem from './partials/AccordionItem';
 import { AccordionProps } from './types';
 
@@ -10,15 +10,28 @@ const Accordion: FC<AccordionProps> = ({
   openedItemIndex = -1,
   className,
   itemClassName,
-}) =>
-  items.length ? (
+}) => {
+  const [openItemsIndexes, setOpenItemsIndexes] = useState<number[]>([
+    openedItemIndex,
+  ]);
+
+  return items.length ? (
     <ul className={clsx(className, 'w-full')}>
       {items.map(({ key, content, ...item }, index) => (
         <li key={key}>
           <AccordionItem
             {...item}
             className={itemClassName}
-            isOpen={index === openedItemIndex}
+            isOpen={openItemsIndexes.includes(index)}
+            onToggle={() => {
+              if (openItemsIndexes.includes(index)) {
+                setOpenItemsIndexes(
+                  openItemsIndexes.filter((i) => i !== index),
+                );
+              } else {
+                setOpenItemsIndexes([...openItemsIndexes, index]);
+              }
+            }}
           >
             {content}
           </AccordionItem>
@@ -26,6 +39,7 @@ const Accordion: FC<AccordionProps> = ({
       ))}
     </ul>
   ) : null;
+};
 
 Accordion.displayName = displayName;
 

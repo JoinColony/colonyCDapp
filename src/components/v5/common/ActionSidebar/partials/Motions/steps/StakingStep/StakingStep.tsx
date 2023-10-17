@@ -2,10 +2,12 @@ import { BigNumber } from 'ethers';
 import React, { FC } from 'react';
 
 import { useGetColonyAction } from '~common/ColonyActions';
+import useToggle from '~hooks/useToggle';
 import { ActionTypes } from '~redux';
 import { ActionForm } from '~shared/Fields';
 import { MotionStakes } from '~types';
 import { formatText } from '~utils/intl';
+import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
 import CardWithStatusText from '~v5/shared/CardWithStatusText';
 import StatusText from '~v5/shared/StatusText';
 
@@ -26,6 +28,8 @@ const StakingStep: FC<StakingStepProps> = ({
 }) => {
   const { motionData } = action || {};
   const { motionId, motionStakes, requiredStake = '' } = motionData || {};
+
+  const [isAccordionOpen, { toggle: toggleAccordion }] = useToggle();
 
   const { startPollingForAction, stopPollingForAction } = useGetColonyAction();
 
@@ -108,11 +112,29 @@ const StakingStep: FC<StakingStepProps> = ({
               key: '2',
               content: <StakingForm transactionId={transactionId} />,
             },
-            ...(isStaked
+            ...(!isStaked
               ? [
                   {
                     key: '3',
-                    content: 'accordion',
+                    content: (
+                      <AccordionItem
+                        title={formatText({
+                          id: isAccordionOpen
+                            ? 'motion.staking.accordion.title.hide'
+                            : 'motion.staking.accordion.title.show',
+                        })}
+                        isOpen={isAccordionOpen}
+                        onToggle={toggleAccordion}
+                        className={`
+                          [&_.accordion-toggler]:text-gray-500
+                          [&_.accordion-toggler]:text-sm
+                          [&_.accordion-toggler_svg]:h-[0.875rem]
+                          [&_.accordion-toggler_svg]:w-[0.875rem]
+                        `}
+                      >
+                        content
+                      </AccordionItem>
+                    ),
                   },
                 ]
               : []),
