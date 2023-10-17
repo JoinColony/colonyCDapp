@@ -8,7 +8,11 @@ import { formatText } from '~utils/intl';
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.partials.MotionBadge';
 
-const MotionBadge: FC<MotionBadgeProps> = ({ status }) => {
+const MotionBadge: FC<MotionBadgeProps> = ({
+  status,
+  text: textProp,
+  iconName,
+}) => {
   const icons = {
     [MOTION_BADGE_STATUS.support]: 'thumbs-up',
     [MOTION_BADGE_STATUS.oppose]: 'thumbs-down',
@@ -25,9 +29,9 @@ const MotionBadge: FC<MotionBadgeProps> = ({ status }) => {
         'bg-negative-100 text-negative-400':
           status === MOTION_BADGE_STATUS.oppose,
       })}
-      iconName={icons[status]}
+      iconName={iconName || icons[status]}
     >
-      {formatText(text[status])}
+      {textProp || formatText(text[status])}
     </PillsBase>
   );
 };

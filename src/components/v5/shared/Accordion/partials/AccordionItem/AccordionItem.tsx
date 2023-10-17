@@ -6,25 +6,22 @@ import { accordionAnimation } from '~constants/accordionAnimation';
 import Icon from '~shared/Icon';
 
 import { AccordionItemProps } from './types';
-import useToggle from '~hooks/useToggle';
 
 const displayName = 'v5.Accordion.partials.AccordionItem';
 
 const AccordionItem: FC<PropsWithChildren<AccordionItemProps>> = ({
   title,
   iconName = 'arrow-down',
-  isOpen: isOpenProp = false,
+  isOpen,
+  onToggle,
   className,
   children,
-}) => {
-  const [isOpen, { toggle }] = useToggle({ defaultToggleState: isOpenProp });
-
-  return (
-    <div className={clsx(className, 'w-full')}>
-      <button
-        type="button"
-        onClick={toggle}
-        className={`
+}) => (
+  <div className={clsx(className, 'w-full')}>
+    <button
+      type="button"
+      onClick={onToggle}
+      className={`
           accordion-toggler
           w-full
           flex
@@ -35,34 +32,33 @@ const AccordionItem: FC<PropsWithChildren<AccordionItemProps>> = ({
           transition-colors
           md:hover:text-blue-500
         `}
+    >
+      {title}
+      <span
+        className={clsx('transition-transform duration-[400ms] ease-out', {
+          'rotate-180': isOpen,
+        })}
       >
-        {title}
-        <span
-          className={clsx('transition-transform duration-[400ms] ease-out', {
-            'rotate-180': isOpen,
-          })}
+        <Icon name={iconName} appearance={{ size: 'extraTiny' }} />
+      </span>
+    </button>
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          key="accordion-content"
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          variants={accordionAnimation}
+          transition={{ duration: 0.4, ease: 'easeOut' }}
+          className="accordion-content"
         >
-          <Icon name={iconName} appearance={{ size: 'extraTiny' }} />
-        </span>
-      </button>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            key="accordion-content"
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            variants={accordionAnimation}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
-            className="accordion-content"
-          >
-            <div>{children}</div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-};
+          <div>{children}</div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </div>
+);
 
 AccordionItem.displayName = displayName;
 
