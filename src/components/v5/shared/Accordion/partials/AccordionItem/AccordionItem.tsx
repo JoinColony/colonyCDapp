@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, useState } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -6,6 +6,7 @@ import { accordionAnimation } from '~constants/accordionAnimation';
 import Icon from '~shared/Icon';
 
 import { AccordionItemProps } from './types';
+import useToggle from '~hooks/useToggle';
 
 const displayName = 'v5.Accordion.partials.AccordionItem';
 
@@ -16,13 +17,13 @@ const AccordionItem: FC<PropsWithChildren<AccordionItemProps>> = ({
   className,
   children,
 }) => {
-  const [isOpen, setIsOpen] = useState(isOpenProp);
+  const [isOpen, { toggle }] = useToggle({ defaultToggleState: isOpenProp });
 
   return (
     <div className={clsx(className, 'w-full')}>
       <button
         type="button"
-        onClick={() => setIsOpen((prevState) => !prevState)}
+        onClick={toggle}
         className={`
           accordion-toggler
           w-full
