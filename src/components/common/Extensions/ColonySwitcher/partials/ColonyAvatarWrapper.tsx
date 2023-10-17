@@ -3,7 +3,6 @@ import clsx from 'clsx';
 
 import ColonyAvatar from '~shared/ColonyAvatar';
 import Icon from '~shared/Icon';
-import { Colony } from '~types';
 import { ColonyAvatarProps } from '../types';
 import styles from '../ColonySwitcher.module.css';
 
@@ -11,8 +10,8 @@ const displayName =
   'common.Extensions.ColonySwitcher.partials.ColonyAvatarWrapper';
 
 const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
-  colonyToDisplay,
-  colonyToDisplayAddress,
+  colony,
+  colonyAddress,
   isMobile,
   isArrowVisible,
   setTriggerRef,
@@ -22,8 +21,8 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
       <div className="relative">
         <span className="flex items-center justify-center bg-blue-300 rounded-full">
           <ColonyAvatar
-            colony={colonyToDisplay as Colony}
-            colonyAddress={colonyToDisplayAddress || ''}
+            colony={colony}
+            colonyAddress={colonyAddress || ''}
             size="sm"
           />
         </span>
@@ -31,11 +30,9 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
           <Icon name="gnosis" />
         </div>
       </div>
-      {isMobile && colonyToDisplay && (
+      {isMobile && colony && (
         <div className="text-2 ml-2 shrink-0">
-          {colonyToDisplay?.metadata?.displayName ||
-            colonyToDisplay?.name ||
-            'Colony name'}
+          {colony?.metadata?.displayName || colony?.name || 'Colony name'}
         </div>
       )}
       <span

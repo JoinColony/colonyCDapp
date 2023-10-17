@@ -23,7 +23,7 @@ import {
 import { useAppContext } from '~hooks';
 import { CORE_TRANSACTIONS, CORE_TRANSACTIONS_LIST } from '~redux/constants';
 import { TransactionType } from '~redux/immutable';
-import { SetStateFn, TransactionStatus } from '~types';
+import { TransactionStatus } from '~types';
 import { notNull } from '~utils/arrays';
 
 interface UserTransactionContextValues
@@ -32,8 +32,6 @@ interface UserTransactionContextValues
     'refetchTransactions'
   > {
   groupState: TransactionGroupStates;
-  isUserHubOpen: boolean;
-  setIsUserHubOpen: SetStateFn<boolean>;
 }
 
 export const UserTransactionContext =
@@ -204,7 +202,6 @@ const useFailPendingTransactions = ({
 export const UserTransactionContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
-  const [isUserHubOpen, setIsUserHubOpen] = useState(false);
   const {
     transactionAndMessageGroups,
     fetchMoreTransactions,
@@ -233,16 +230,12 @@ export const UserTransactionContextProvider: FC<PropsWithChildren> = ({
       fetchMoreTransactions,
       canLoadMoreTransactions,
       groupState,
-      isUserHubOpen,
-      setIsUserHubOpen,
     }),
     [
       transactionAndMessageGroups,
       fetchMoreTransactions,
       canLoadMoreTransactions,
       groupState,
-      isUserHubOpen,
-      setIsUserHubOpen,
     ],
   );
 

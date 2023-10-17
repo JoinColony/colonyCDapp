@@ -54,6 +54,7 @@ export { default as useTokenActivationContext } from './useTokenActivationContex
 export * from './useCanInteractWithColony';
 export { default as useColonyFundsClaims } from './useColonyFundsClaims';
 export { default as useCurrentSelectedToken } from './useCurrentSelectedToken';
+export { default as useGetNetworkToken } from './useGetNetworkToken';
 export { default as useTokenTotalBalance } from './useTokenTotalBalance';
 export { default as useColonyContractVersion } from './useColonyContractVersion';
 export { default as useNetworkInverseFee } from './useNetworkInverseFee';

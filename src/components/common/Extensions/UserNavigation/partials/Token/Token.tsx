@@ -1,13 +1,12 @@
 import React, { FC } from 'react';
 
 import { TokenProps } from './types';
-import styles from './Token.module.css';
 import Icon from '~shared/Icon';
 
 export const displayName = 'common.Extensions.UserNavigation.partials.Token';
 
 const Token: FC<TokenProps> = ({ nativeToken }) => (
-  <div className={styles.token}>
+  <div className="flex items-center justify-center min-w-[2.625rem] min-h-[2.5rem] px-[0.875rem] py-[0.625rem] bg-base-white border rounded-full border-gray-200">
     <Icon
       name={nativeToken.iconName || 'ganache'}
       appearance={{ size: 'tiny' }}

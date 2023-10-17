@@ -1,27 +1,25 @@
-import React, { FC } from 'react';
+import React from 'react';
+import { useIntl } from 'react-intl';
 
-import { useColonyContext, useMobile } from '~hooks';
+import { usePopperTooltip } from 'react-popper-tooltip';
+import { useColonyContext, useGetNetworkToken, useMobile } from '~hooks';
 import { LEARN_MORE_PAYMENTS } from '~constants';
 import Nav from './partials/Nav';
 import { getNavItems } from './partials/utils';
 import { SubNavigationMobile } from '~v5/common/SubNavigation';
 import LearnMore from '~shared/Extensions/LearnMore';
 import Button from '~v5/shared/Button';
-import { MainNavigationProps } from './types';
 import PopoverBase from '~v5/shared/PopoverBase';
 import NavigationTools from '../NavigationTools';
-import { useGetNetworkToken } from '~hooks/useGetNetworkToken';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import Icon from '~shared/Icon';
 
-const displayName = 'common.Extensions.MainNavigation';
+const displayName = 'common.Extensions.ColonyNavigation';
 
-const MainNavigation: FC<MainNavigationProps> = ({
-  setTooltipRef,
-  tooltipProps,
-  isMenuOpen,
-}) => {
+const ColonyNavigation = () => {
   const { colony } = useColonyContext();
   const { name } = colony || {};
+  const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const navItems = getNavItems(name);
   const nativeToken = useGetNetworkToken();
@@ -29,13 +27,43 @@ const MainNavigation: FC<MainNavigationProps> = ({
     actionSidebarToggle: [, { toggle: toggleActionSideBar }],
   } = useActionSidebarContext();
 
+  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+    usePopperTooltip(
+      {
+        delayShow: isMobile ? 0 : 200,
+        delayHide: isMobile ? 0 : 200,
+        placement: 'bottom',
+        trigger: 'click',
+        interactive: true,
+      },
+      {
+        modifiers: [
+          {
+            name: 'offset',
+            options: {
+              offset: [0, -61],
+            },
+          },
+        ],
+      },
+    );
+
   return (
-    <div>
+    <>
+      <button
+        type="button"
+        className="flex items-center sm:hidden"
+        ref={setTriggerRef}
+        aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
+      >
+        <Icon name="list" appearance={{ size: 'tiny' }} />
+        <span className="text-2 ml-1.5">{formatMessage({ id: 'menu' })}</span>
+      </button>
       {!isMobile && <Nav items={navItems} />}
-      {isMobile && isMenuOpen && (
+      {isMobile && visible && (
         <PopoverBase
           setTooltipRef={setTooltipRef}
-          tooltipProps={tooltipProps}
+          tooltipProps={getTooltipProps}
           classNames="w-full border-none shadow-none px-0 pt-0 pb-6 bg-base-white"
         >
           <div className="w-full pt-[5.5625rem] sm:pt-0">
@@ -67,10 +95,10 @@ const MainNavigation: FC<MainNavigationProps> = ({
           </div>
         </PopoverBase>
       )}
-    </div>
+    </>
   );
 };
 
-MainNavigation.displayName = displayName;
+ColonyNavigation.displayName = displayName;
 
-export default MainNavigation;
+export default ColonyNavigation;

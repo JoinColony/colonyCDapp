@@ -87,6 +87,7 @@ fragment WatchedColony on Colony {
   name
   chainMetadata {
     chainId
+    network
   }
   metadata {
     ...ColonyMetadata
