@@ -26,7 +26,7 @@ import { formatText } from '~utils/intl';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
 import FormInputBase from '../Fields/InputBase/FormInputBase';
 import { FIELD_STATE } from '../Fields/consts';
-import MotionSimplePayment from './partials/motions/MotionSimplePayment';
+import Motions from './partials/Motions';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -60,7 +60,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         />
         <p className="text-gray-600 font-medium mt-2">{descriptionMetadata}</p>
         {/* @todo: add preview mode to the form */}
-        <ActionTypeSelect className="mt-7" />
+        <ActionTypeSelect className="mt-7 mb-3" />
         {/* @todo: add motion action type to each action */}
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
         {notificationBanner && (
@@ -114,7 +114,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           fixed
           top-0
           right-0
-          bottom-0
+          h-screen
           w-full
           bg-base-white
           rounded-bl-lg
@@ -160,7 +160,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         {children}
       </div>
       <div
-        className={clsx('flex w-full h-full', {
+        className={clsx('flex w-full flex-grow overflow-hidden', {
           'flex-col-reverse md:flex-row': transactionId,
         })}
       >
@@ -189,7 +189,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
               bg-gray-25
             `}
           >
-            <MotionSimplePayment transactionId={transactionId} />
+            <Motions transactionId={transactionId} />
           </div>
         )}
       </div>

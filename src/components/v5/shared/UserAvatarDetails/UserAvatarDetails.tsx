@@ -19,6 +19,7 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
   avatar,
   isContributorsList,
   isBordered = false,
+  size = 'm',
 }) => {
   const mode: UserStatusMode =
     (userStatus === 'new' && 'active-new') ||
@@ -30,7 +31,12 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
   return (
     <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center">
       {!!userStatus && userStatus === 'verified' ? (
-        <Avatar size="m" title={userName} avatar={avatar} mode={userStatus} />
+        <Avatar
+          size={size}
+          title={userName}
+          avatar={avatar}
+          mode={userStatus}
+        />
       ) : (
         <div className="flex relative justify-center">
           <div
@@ -45,7 +51,7 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
             })}
           >
             <Avatar
-              size="m"
+              size={size}
               title={userName}
               avatar={avatar}
               mode={userStatus || 'general'}
@@ -60,7 +66,7 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
       )}
       <div>
         <div className="grid grid-cols-[auto,1fr] gap-x-2 items-center mb-0.5">
-          <p className="heading-4 truncate">{userName}</p>
+          <p className="heading-4 truncate">{userName || walletAddress}</p>
           {isVerified && (
             <span className="flex shrink-0 text-blue-400">
               <Icon name="verified" appearance={{ size: 'tiny' }} />

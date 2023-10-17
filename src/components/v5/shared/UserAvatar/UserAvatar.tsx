@@ -16,6 +16,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
   size = 'xxs',
   userStatus,
   isContributorsList,
+  className,
   ...rest
 }) => {
   const address = user?.walletAddress;
@@ -47,7 +48,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
       </span>
       {userName && (
         <p
-          className={clsx('font-medium truncate', {
+          className={clsx(className, 'font-medium truncate', {
             'text-sm ml-1': size === 'xxs',
             'text-md ml-2': size === 'xs' || size === 'sm',
           })}

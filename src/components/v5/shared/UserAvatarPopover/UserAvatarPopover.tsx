@@ -6,17 +6,14 @@ import UserPopover from '../UserPopover';
 
 const displayName = 'v5.UserAvatarPopover';
 
-const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
-  avatarSize,
-  ...props
-}) => {
+const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({ size, ...props }) => {
   const { user, userName, walletAddress, userStatus, isContributorsList } =
     props;
 
   return (
     <UserPopover {...props}>
       <UserAvatar
-        size={avatarSize || 'xs'}
+        size={size || 'xs'}
         userName={userName ?? walletAddress}
         user={user}
         userStatus={userStatus}
