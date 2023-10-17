@@ -15,12 +15,14 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   children,
   action,
   isAlt = false,
+  className,
 }) => {
   const { actionText } = action || {};
 
   return (
     <div
       className={clsx(
+        className,
         'border rounded-lg flex justify-between min-h-[2.75rem] flex-col md:flex-row md:items-center',
         `gap-2 ${
           isAlt
@@ -56,6 +58,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
           <div
             className={clsx('text-sm max-w-[50rem] mt-1.5', {
               'text-negative-400': status === 'error',
+              'text-warning-400': status === 'warning',
             })}
           >
             {children}

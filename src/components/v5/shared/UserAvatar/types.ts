@@ -10,4 +10,5 @@ export interface UserAvatarProps {
   size?: AvatarSize;
   userStatus?: UserStatusMode | null;
   isContributorsList?: boolean;
+  className?: string;
 }

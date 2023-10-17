@@ -4,3 +4,5 @@ import { UserPopoverProps } from '../UserPopover/types';
 export interface UserAvatarPopoverProps extends UserPopoverProps {
   avatarSize?: AvatarSize;
 }
+
+export type UserAvatarContentProps = UserAvatarPopoverProps;
