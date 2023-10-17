@@ -412,7 +412,7 @@ export enum ColonyActionType {
   /** An action related to the recovery functionality of a Colony */
   Recovery = 'RECOVERY',
   /** An action related to creating a motion to release an expenditure stage */
-  ReleaseExpenditureStageMotion = 'RELEASE_EXPENDITURE_STAGE_MOTION',
+  SetExpenditureStateMotion = 'SET_EXPENDITURE_STATE_MOTION',
   /** An action related to setting user roles within a Colony */
   SetUserRoles = 'SET_USER_ROLES',
   /** An action related to setting user roles within a Colony via a motion */
@@ -730,7 +730,7 @@ export type ColonyMotion = {
   createdBy: Scalars['String'];
   /** Expenditure associated with the motion, if any */
   expenditureId?: Maybe<Scalars['ID']>;
-  /** Expenditure stage associated with the motion */
+  /** Id of the expenditure stage payment to be released if the motion pass */
   expenditureSlotId?: Maybe<Scalars['Int']>;
   /**
    * An option to manually specify the amount of gas to estimate for the finalization of this motion.

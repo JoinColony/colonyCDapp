@@ -811,7 +811,7 @@ enum ColonyActionType {
   """
   An action related to creating a motion to release an expenditure stage
   """
-  RELEASE_EXPENDITURE_STAGE_MOTION
+  SET_EXPENDITURE_STATE_MOTION
 }
 
 """

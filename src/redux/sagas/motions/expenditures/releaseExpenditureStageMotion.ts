@@ -5,6 +5,7 @@ import {
   getPermissionProofs,
 } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
+import { hexZeroPad, hexlify } from 'ethers/lib/utils';
 
 import { ActionTypes } from '~redux/actionTypes';
 import { Action } from '~redux/types';
@@ -18,15 +19,13 @@ import {
 } from '../../transactions';
 import { getColonyManager, initiateTransaction } from '../../utils';
 
+const mask = [false, true];
+
+const convertNumberToBytes32 = (number: number) =>
+  hexZeroPad(hexlify(number), 32);
+
 function* releaseExpenditureStageMotion({
-  payload: {
-    colonyAddress,
-    expenditure,
-    slotId,
-    tokenAddresses,
-    stagedExpenditureAddress,
-    motionDomainId,
-  },
+  payload: { colonyAddress, expenditure, slotId, motionDomainId },
   meta,
   meta: { setTxHash, id },
 }: Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE>) {
@@ -43,9 +42,9 @@ function* releaseExpenditureStageMotion({
   );
 
   try {
-    const stagedExpenditureClient = yield call(
+    const votingReputationClient = yield call(
       [colonyManager, colonyManager.getClient],
-      ClientType.StagedExpenditureClient,
+      ClientType.VotingReputationClient,
       colonyAddress,
     );
 
@@ -53,7 +52,7 @@ function* releaseExpenditureStageMotion({
       colonyClient,
       expenditure.nativeDomainId,
       ColonyRole.Arbitration,
-      stagedExpenditureAddress,
+      votingReputationClient.address,
     );
 
     const { skillId } = yield call(
@@ -67,15 +66,19 @@ function* releaseExpenditureStageMotion({
       ADDRESS_ZERO,
     );
 
+    const keys = [convertNumberToBytes32(slotId), convertNumberToBytes32(1)];
+
     const encodedReleaseStagedPaymentAction =
-      yield stagedExpenditureClient.interface.encodeFunctionData(
-        'releaseStagedPayment(uint256,uint256,uint256,uint256,address[])',
+      yield colonyClient.interface.encodeFunctionData(
+        'setExpenditureState(uint256,uint256,uint256,uint256,bool[],bytes32[],bytes32)',
         [
           permissionDomainId,
           childSkillIndex,
           expenditure.nativeId,
-          slotId,
-          tokenAddresses,
+          26, // @NOTE: Memory slot of expenditure's slots
+          mask,
+          keys,
+          convertNumberToBytes32(0),
         ],
       );
 
@@ -86,7 +89,7 @@ function* releaseExpenditureStageMotion({
       params: [
         motionDomainId,
         childSkillIndex,
-        stagedExpenditureClient.address,
+        ADDRESS_ZERO,
         encodedReleaseStagedPaymentAction,
         key,
         value,
