@@ -54,7 +54,7 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
               size={size}
               title={userName}
               avatar={avatar}
-              mode={userStatus || 'general'}
+              mode={userStatus ?? 'general'}
             />
           </div>
           {!!userStatus && userStatus !== 'general' && isContributorsList && (
