@@ -21,6 +21,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   domains,
   isContributorsList,
   children,
+  additionalContent,
 }) => {
   const isMobile = useMobile();
   const [isOpen, setIsOpen] = useState(false);
@@ -84,6 +85,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
           isTopSectionWithBackground={isTopSectionWithBackground}
         >
           {content}
+          {additionalContent}
         </Modal>
       ) : (
         <>
@@ -100,6 +102,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
               isTopSectionWithBackground={isTopSectionWithBackground}
             >
               {content}
+              {additionalContent}
             </PopoverBase>
           )}
         </>

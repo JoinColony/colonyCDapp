@@ -7,13 +7,12 @@ const displayName = 'v5.Accordion';
 
 const Accordion: FC<AccordionProps> = ({
   items,
-  openedItemIndex = -1,
+  openedItemIndexes = [],
   className,
   itemClassName,
 }) => {
-  const [openItemsIndexes, setOpenItemsIndexes] = useState<number[]>([
-    openedItemIndex,
-  ]);
+  const [openItemsIndexes, setOpenItemsIndexes] =
+    useState<number[]>(openedItemIndexes);
 
   return items.length ? (
     <ul className={clsx(className, 'w-full')}>

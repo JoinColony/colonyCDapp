@@ -7494,6 +7494,13 @@ export type GetContributorCountQueryVariables = Exact<{
 
 export type GetContributorCountQuery = { __typename?: 'Query', getTotalMemberCount: { __typename?: 'GetTotalMemberCountReturn', contributorCount: number, memberCount: number } };
 
+export type GetVerifiedMembersQueryVariables = Exact<{
+  colonyAddress: Scalars['ID'];
+}>;
+
+
+export type GetVerifiedMembersQuery = { __typename?: 'Query', getContributorsByColony?: { __typename?: 'ModelColonyContributorConnection', items: Array<{ __typename?: 'ColonyContributor', user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null }> | null } | null } } | null> } | null } | null } | null> } | null };
+
 export type GetColonyDecisionsQueryVariables = Exact<{
   colonyAddress: Scalars['String'];
   sortDirection?: InputMaybe<ModelSortDirection>;
@@ -9696,6 +9703,48 @@ export function useGetContributorCountLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type GetContributorCountQueryHookResult = ReturnType<typeof useGetContributorCountQuery>;
 export type GetContributorCountLazyQueryHookResult = ReturnType<typeof useGetContributorCountLazyQuery>;
 export type GetContributorCountQueryResult = Apollo.QueryResult<GetContributorCountQuery, GetContributorCountQueryVariables>;
+export const GetVerifiedMembersDocument = gql`
+    query GetVerifiedMembers($colonyAddress: ID!) {
+  getContributorsByColony(
+    colonyAddress: $colonyAddress
+    filter: {isVerified: {eq: true}}
+  ) {
+    items {
+      user {
+        ...User
+      }
+    }
+  }
+}
+    ${UserFragmentDoc}`;
+
+/**
+ * __useGetVerifiedMembersQuery__
+ *
+ * To run a query within a React component, call `useGetVerifiedMembersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetVerifiedMembersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetVerifiedMembersQuery({
+ *   variables: {
+ *      colonyAddress: // value for 'colonyAddress'
+ *   },
+ * });
+ */
+export function useGetVerifiedMembersQuery(baseOptions: Apollo.QueryHookOptions<GetVerifiedMembersQuery, GetVerifiedMembersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetVerifiedMembersQuery, GetVerifiedMembersQueryVariables>(GetVerifiedMembersDocument, options);
+      }
+export function useGetVerifiedMembersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetVerifiedMembersQuery, GetVerifiedMembersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetVerifiedMembersQuery, GetVerifiedMembersQueryVariables>(GetVerifiedMembersDocument, options);
+        }
+export type GetVerifiedMembersQueryHookResult = ReturnType<typeof useGetVerifiedMembersQuery>;
+export type GetVerifiedMembersLazyQueryHookResult = ReturnType<typeof useGetVerifiedMembersLazyQuery>;
+export type GetVerifiedMembersQueryResult = Apollo.QueryResult<GetVerifiedMembersQuery, GetVerifiedMembersQueryVariables>;
 export const GetColonyDecisionsDocument = gql`
     query getColonyDecisions($colonyAddress: String!, $sortDirection: ModelSortDirection = ASC, $filter: ModelColonyDecisionFilterInput, $limit: Int = 10) {
   getColonyDecisionByColonyAddress(

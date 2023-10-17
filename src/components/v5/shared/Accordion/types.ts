@@ -8,7 +8,7 @@ export interface AccordionItem
 
 export interface AccordionProps {
   items: AccordionItem[];
-  openedItemIndex?: number;
+  openedItemIndexes?: number[];
   className?: string;
   itemClassName?: string;
 }

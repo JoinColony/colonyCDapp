@@ -20,6 +20,7 @@ import SearchItem from './partials/SearchItem';
 import { accordionAnimation } from '~constants/accordionAnimation';
 import Icon from '~shared/Icon';
 import { SpinnerLoader } from '~shared/Preloaders';
+import Avatar from '~v5/shared/Avatar';
 import EmptyContent from '~v5/common/EmptyContent';
 import { formatText } from '~utils/intl';
 
@@ -36,6 +37,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
       hideSearchOnMobile,
       onSearch,
       showEmptyContent = true,
+      showSearchValueAsOption = false,
       state,
       message,
     },
@@ -153,6 +155,19 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                 )
               ) : (
                 <>
+                  {showSearchValueAsOption && (
+                    <button
+                      type="button"
+                      className="text-sm md:hover:text-blue-400 flex items-center gap-2 min-h-[3.125rem]
+                      "
+                      onClick={() => onSelect?.(searchValue)}
+                    >
+                      <Avatar />
+                      <span className="max-w-[15.625rem] truncate">
+                        {searchValue}
+                      </span>
+                    </button>
+                  )}
                   {showEmptyContent && (
                     <EmptyContent
                       icon="binoculars"
