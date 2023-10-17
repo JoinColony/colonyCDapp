@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-
 import { useController } from 'react-hook-form';
-import { FormFormattedInputProps } from './types';
+
 import { FIELD_STATE } from '../consts';
+import { FormFormattedInputProps } from './types';
 import FormattedInput from './FormattedInput';
 
 const displayName = 'v5.common.Fields.FormFormattedInput';
