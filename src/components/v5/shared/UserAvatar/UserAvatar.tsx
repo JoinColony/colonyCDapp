@@ -14,6 +14,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
   preferThumbnail = true,
   userName,
   size = 'xxs',
+  avatarSize,
   userStatus,
   isContributorsList,
   ...rest
@@ -37,7 +38,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
         })}
       >
         <Avatar
-          size={size}
+          size={avatarSize || size}
           avatar={imageString}
           placeholderIcon="circle-person"
           seed={address && address.toLowerCase()}
