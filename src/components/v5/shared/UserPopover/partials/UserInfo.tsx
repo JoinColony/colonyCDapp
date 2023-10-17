@@ -67,7 +67,7 @@ const UserInfo: FC<UserInfoProps> = ({
       {aboutDescriptionText && (
         <>
           <TitleLabel
-            className={clsx('my-2', {
+            className={clsx('mb-2', {
               'px-6': isTopContributorType,
             })}
             text={formatText({ id: 'userInfo.about.section' })}
@@ -85,11 +85,10 @@ const UserInfo: FC<UserInfoProps> = ({
       {domains?.length ? (
         <div
           className={clsx({
-            'px-6 pb-6': isTopContributorType,
+            'px-6 pb-6 pt-2': isTopContributorType,
           })}
         >
           <TitleLabel
-            className="mt-2"
             text={formatText({
               id: 'userInfo.teamBreakdown.section',
             })}
@@ -104,6 +103,7 @@ const UserInfo: FC<UserInfoProps> = ({
                 reputationRaw,
               }) => {
                 const permissionRole = getRole(permissions);
+
                 return (
                   <li
                     key={domainId}
@@ -113,28 +113,22 @@ const UserInfo: FC<UserInfoProps> = ({
                       {domainName}
                     </span>
                     <div className="flex justify-end">
-                      <span className="flex justify-end">
-                        <PermissionsBadge
-                          text={permissionRole.name}
-                          iconName="user" // @TODO: add user-tree icon for multiSig
-                        />
-                      </span>
-                      <span className="flex justify-end text-sm text-blue-400 min-w-[4.5rem]">
-                        <Tooltip
-                          className="items-center"
-                          tooltipContent={
-                            <Numeral value={reputationRaw} suffix="pts" />
-                          }
-                        >
-                          <Icon
-                            name="star"
-                            appearance={{ size: 'extraTiny' }}
-                          />
-                          <span className="inline-block ml-1 mr-2">
-                            {reputationPercentage.toFixed(2)}%
-                          </span>
-                        </Tooltip>
-                      </span>
+                      <PermissionsBadge
+                        text={permissionRole.name}
+                        iconName="user" // @TODO: add user-tree icon for multiSig
+                      />
+
+                      <Tooltip
+                        className="flex justify-end text-sm text-blue-400 min-w-[4.5rem] items-center"
+                        tooltipContent={
+                          <Numeral value={reputationRaw} suffix="pts" />
+                        }
+                      >
+                        <Icon name="star" appearance={{ size: 'extraTiny' }} />
+                        <span className="inline-block ml-1">
+                          {reputationPercentage.toFixed(2)}%
+                        </span>
+                      </Tooltip>
                     </div>
                   </li>
                 );
