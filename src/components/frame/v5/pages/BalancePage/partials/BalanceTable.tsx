@@ -1,26 +1,26 @@
 import React, { FC } from 'react';
-import Filter from '~v5/common/Filter';
 import Button from '~v5/shared/Button';
-import EmptyContent from '~v5/common/EmptyContent';
-import { useSearchContext } from '~context/SearchContext';
 import TableHead from './TableHead';
 import TableItem from './TableItem';
 import { formatText } from '~utils/intl';
-import Modal from '~v5/shared/Modal';
 import { useColonyContext } from '~hooks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import CopyWallet from '~v5/shared/CopyWallet/CopyWallet';
 import TransferFundsForm from './TransferFundsForm';
+import { BalaceTableProps } from '../types';
+import Modal from '~v5/shared/Modal';
 
 const displayName = 'v5.pages.BalancePage.partials.BalaceTable';
 
-const BalaceTable: FC = () => {
-  //   const { searchValue } = useSearchContext();
+const BalaceTable: FC<BalaceTableProps> = ({
+  data,
+  isSorted,
+  onBalanceSort,
+}) => {
   const { colony } = useColonyContext();
   const { balances, nativeToken, status } = colony || {};
   const { nativeToken: nativeTokenStatus } = status || {};
-  //   const { onChange, selectedMembers } = useVerifiedTable();
 
   const {
     avatarModalToggle: [
@@ -38,7 +38,7 @@ const BalaceTable: FC = () => {
 
   return (
     <>
-      <div className="py-5 px-4 border border-gray-200 rounded-t-lg">
+      <div className="pb-4">
         <div className="flex sm:justify-between sm:items-center sm:flex-row flex-col">
           <div className="flex items-center">
             <h4 className="heading-5 mr-3">
@@ -46,7 +46,6 @@ const BalaceTable: FC = () => {
             </h4>
           </div>
           <div className="flex items-center mt-2.5 sm:mt-0">
-            {/* {(!!listLength || !!searchValue) && <Filter />} */}
             <Button
               mode="primarySolid"
               className="ml-2"
@@ -58,20 +57,18 @@ const BalaceTable: FC = () => {
           </div>
         </div>
       </div>
-      <TableHead onClick={() => {}} />
-
-      {colony.tokens.items && (
+      <TableHead onClick={onBalanceSort} isSorted={isSorted} />
+      {data && (
         <div className="px-4 border border-gray-200 rounded-b-lg">
-          {colony.tokens.items.map((item) => (
+          {data.map((item) => (
             <TableItem
-              key={item?.token.tokenAddress}
+              key={item.token.tokenAddress}
               token={item.token}
               isTokenNative={
-                item?.token.tokenAddress === nativeToken?.tokenAddress
+                item.token.tokenAddress === nativeToken?.tokenAddress
               }
               balances={balances || {}}
               nativeTokenStatus={nativeTokenStatus || {}}
-              onChange={() => {}}
             />
           ))}
         </div>

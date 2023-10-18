@@ -1,28 +1,23 @@
-import {
-  ColonyBalancesFragment,
-  NativeTokenStatus,
-  TokenFragment,
-  TokenType,
-} from '~gql';
+import { ColonyBalancesFragment, NativeTokenStatus, TokenFragment } from '~gql';
 
-export interface TableHeadProps {
-  onClick: () => void;
+export interface BalanceList {
+  token: TokenFragment;
+  balance: string;
 }
 
-export interface TableItemProps {
-  token: TokenFragment;
+export interface BalaceTableProps {
+  data: BalanceList[];
+  isSorted?: boolean;
+  onBalanceSort: () => void;
+}
+
+export interface TableItemProps extends Pick<BalanceList, 'token'> {
   isTokenNative: boolean;
   nativeTokenStatus: NativeTokenStatus;
   balances: ColonyBalancesFragment;
   domainId?: number;
-  onChange: () => void;
 }
-export interface BalanceTableModel {
-  key: string;
-  asset: string;
-  symbol: string;
-  type: TokenType;
-  balance: string;
-  decimals: number;
-  isTokenNative: boolean;
+
+export interface TableHeadProps extends Pick<BalaceTableProps, 'isSorted'> {
+  onClick: () => void;
 }

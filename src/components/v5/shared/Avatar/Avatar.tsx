@@ -1,5 +1,6 @@
 import React, { CSSProperties, FC, PropsWithChildren } from 'react';
 
+import clsx from 'clsx';
 import getIcon from './identicon';
 import styles from './Avatar.module.css';
 import Icon from '~shared/Icon';
@@ -16,6 +17,7 @@ const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
   placeholderIcon = 'circle-close',
   size = 'xs',
   title,
+  mode = 'general',
 }) => {
   // eslint-disable-next-line no-param-reassign
   title = title ?? '';
@@ -46,7 +48,19 @@ const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
       title={title}
     >
       {source ? (
-        <div className={styles.image} style={imageStyle} />
+        <div
+          className={clsx(
+            'w-full h-full absolute top-0 left-0 rounded-full bg-cover border-2',
+            {
+              'border-purple-400': mode === 'top',
+              'border-warning-400': mode === 'active',
+              'border-blue-400': mode === 'dedicated',
+              'border-green-400': mode === 'new',
+              'border-none': mode === 'general',
+            },
+          )}
+          style={imageStyle}
+        />
       ) : (
         <Icon
           className={

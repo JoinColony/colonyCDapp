@@ -1,5 +1,7 @@
+import { ReactInstanceWithCleave } from 'cleave.js/react/props';
 import noop from 'lodash/noop';
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { FormattedInputProps } from './types';
 
 export const useAdjustInputWidth = (autoWidth: boolean) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -45,4 +47,54 @@ export const useAdjustInputWidth = (autoWidth: boolean) => {
   }, [autoWidth]);
 
   return inputRef;
+};
+
+export const useFormattedInput = (
+  value: FormattedInputProps['value'],
+  options?: FormattedInputProps['options'],
+) => {
+  const [cleave, setCleave] = useState<ReactInstanceWithCleave | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+  const { prefix, tailPrefix } = options || {};
+
+  /**
+   * Sync the cleave raw value with value prop
+   * This is necessary for correctly setting the initial value
+   */
+  useEffect(() => {
+    if (typeof value !== 'string') {
+      return;
+    }
+
+    cleave?.setRawValue(
+      `${prefix && !tailPrefix ? prefix : ''}${value}${
+        prefix && tailPrefix ? ` ${prefix}` : ''
+      }`,
+    );
+  }, [cleave, prefix, tailPrefix, value]);
+
+  useEffect(() => {
+    if (buttonRef.current && wrapperRef.current) {
+      const { width } = buttonRef.current.getBoundingClientRect();
+
+      wrapperRef.current.style.setProperty('--button-width', `${width}px`);
+    }
+  }, []);
+
+  // /*
+  //  * @NOTE Coerce cleave into handling dynamically changing options
+  //  * See here for why this isn't yet supported "officially":
+  //  * https://github.com/nosir/cleave.js/issues/352#issuecomment-447640572
+  //  */
+
+  const dynamicCleaveOptionKey = JSON.stringify(options);
+
+  return {
+    dynamicCleaveOptionKey,
+    setCleave,
+    wrapperRef,
+    buttonRef,
+  };
 };

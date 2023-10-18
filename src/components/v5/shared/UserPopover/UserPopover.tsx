@@ -21,6 +21,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   domains,
   isContributorsList,
   children,
+  additionalContent,
 }) => {
   const isMobile = useMobile();
   const [isOpen, setIsOpen] = useState(false);
@@ -84,6 +85,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
           isTopSectionWithBackground={isTopSectionWithBackground}
         >
           {content}
+          {additionalContent}
         </Modal>
       ) : (
         <>
@@ -95,11 +97,14 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
               withTooltipStyles={false}
               cardProps={{
                 rounded: 's',
-                className: isTopSectionWithBackground ? 'pb-6' : '',
+                className: !isTopSectionWithBackground ? 'p-6' : '',
               }}
-              isTopSectionWithBackground={isTopSectionWithBackground}
+              isTopSectionWithBackground={
+                isTopSectionWithBackground && isMobile
+              }
             >
               {content}
+              {additionalContent}
             </PopoverBase>
           )}
         </>

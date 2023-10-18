@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import PillsBase from '../PillsBase';
 import { TOKEN_TYPE, TokenTypeBadgeProps } from './types';
 
-const displayName = 'v5.common.Pills.TeamBadge';
+const displayName = 'v5.common.Pills.TokenTypeBadge';
 
 const TokenTypeBadge: FC<TokenTypeBadgeProps> = ({ tokenType, name }) => {
   return (
