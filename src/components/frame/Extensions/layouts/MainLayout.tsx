@@ -1,13 +1,14 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { ToastContainer } from 'react-toastify';
 
-import { Header } from '~frame/Extensions/Header';
 import Wallet from '~frame/RouteLayouts/UserNavigation/Wallet';
 import Spinner from '~v5/shared/Spinner';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
 import styles from '~shared/Extensions/Toast/Toast.module.css';
 
-import { ColonyLayoutProps } from './types';
+import type { ColonyLayoutProps } from './types';
+
+import Header from './Header';
 
 const displayName = 'frame.Extensions.layouts.MainLayout';
 
