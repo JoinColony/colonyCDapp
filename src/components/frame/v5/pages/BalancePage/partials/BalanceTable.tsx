@@ -7,7 +7,7 @@ import { useColonyContext } from '~hooks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import CopyWallet from '~v5/shared/CopyWallet/CopyWallet';
-import TransferFundsForm from './TransferFundsForm';
+import TransferFundsForm from './TransferFunds';
 import { BalaceTableProps } from '../types';
 import Modal from '~v5/shared/Modal';
 
@@ -29,7 +29,7 @@ const BalaceTable: FC<BalaceTableProps> = ({
     ],
   } = useActionSidebarContext();
   const { handleClipboardCopy, isCopied } = useCopyToClipboard(
-    '0xCFD3aa1EbC6119D80Ed47955a87A9d9C281A97B3',
+    '0xCFD3aa1EbC6119D80Ed47955a87A9d9C281A97B3', // @TODO: fix me!
   );
 
   if (!colony || !colony.tokens) {
@@ -76,13 +76,8 @@ const BalaceTable: FC<BalaceTableProps> = ({
       <Modal
         isOpen={isAddFundsModalOpened}
         onClose={toggleAddFundsModalOff}
-        onConfirm={toggleAddFundsModalOff}
         buttonMode="primarySolid"
         icon="piggy-bank"
-        confirmMessage={formatText({
-          id: 'button.addFunds',
-        })}
-        closeMessage={formatText({ id: 'button.cancel' })}
       >
         <h5 className="heading-5 mb-1.5">
           {formatText({ id: 'balancePage.modal.title' })}
@@ -99,10 +94,10 @@ const BalaceTable: FC<BalaceTableProps> = ({
           handleClipboardCopy={handleClipboardCopy}
           walletAddress="0xCFD3aa1EbC6119D80Ed47955a87A9d9C281A97B3"
         />
-        <span className="text-1">
+        <p className="text-1 mb-2">
           {formatText({ id: 'balancePage.modal.add.funds.form.wallet' })}
-        </span>
-        <TransferFundsForm />
+        </p>
+        <TransferFundsForm onClose={toggleAddFundsModalOff} />
       </Modal>
     </>
   );

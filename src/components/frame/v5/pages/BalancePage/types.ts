@@ -21,3 +21,7 @@ export interface TableItemProps extends Pick<BalanceList, 'token'> {
 export interface TableHeadProps extends Pick<BalaceTableProps, 'isSorted'> {
   onClick: () => void;
 }
+
+export interface TransferFundsProps {
+  onClose: () => void;
+}

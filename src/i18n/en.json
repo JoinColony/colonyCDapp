@@ -110,6 +110,7 @@
   "button.changeConfirm": "Change confirm",
   "button.addFunds": "Add funds",
   "button.addBatchPayments": "Add batch payments",
+  "button.max": "Max",
   "input.resetText": "Cancel",
   "label.amount": "Amount",
   "label.name": "Name",
@@ -1146,5 +1147,6 @@
   "balancePage.modal.title": "Deposit funds to the Colony",
   "balancePage.modal.subtitle": "Send funds to the Colony's treasury.",
   "balancePage.send.funds": "Send funds to the Colony",
-  "balancePage.modal.add.funds.form.wallet": "Add funds directly from your wallet"
+  "balancePage.modal.add.funds.form.wallet": "Add funds directly from your wallet",
+  "balancePage.modal.add.funds.form.label": "Enter amount"
 }
