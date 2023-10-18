@@ -19,7 +19,7 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
     tokenBalanceData,
     tokenDecimals,
     transform,
-    nativeToken,
+    tokenSymbol,
     pollActiveTokenBalance,
     tokenBalanceInEthers,
     loading,
@@ -29,7 +29,7 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
     <Modal {...props} onClose={onClose}>
       <ActionForm
         actionType={actionType}
-        defaultValues={{ amount: 0 }}
+        defaultValues={{ amount: '0' }}
         validationSchema={validationSchema}
         transform={transform}
         onSuccess={(_, { reset }) => {
@@ -59,21 +59,22 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
                     <Numeral
                       value={tokenBalanceData || 0}
                       decimals={tokenDecimals}
-                      suffix={nativeToken?.symbol}
+                      suffix={tokenSymbol}
                     />
                   )}
                 </span>
               </div>
-              {/* Update this component when Joanna will finish this in staking motion flow */}
               <FormFormattedInput
                 name="amount"
                 options={{
                   numeral: true,
-                  numeralPositiveOnly: true,
                   numeralDecimalScale: tokenDecimals,
-                  // prefix: nativeToken?.symbol,
+                  numeralPositiveOnly: true,
+                  rawValueTrimPrefix: true,
+                  prefix: tokenSymbol,
                   tailPrefix: true,
                 }}
+                messageClassName="text-negative-400 text-sm mt-2"
                 buttonProps={{
                   label: formatText({ id: 'button.max' }) || '',
                   onClick: () => {

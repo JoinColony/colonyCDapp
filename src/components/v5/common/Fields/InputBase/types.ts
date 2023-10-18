@@ -26,6 +26,7 @@ export interface FormattedInputProps
     label: string;
   };
   wrapperClassName?: string;
+  messageClassName?: string;
 }
 
 export interface FormFormattedInputProps

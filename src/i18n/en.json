@@ -1133,6 +1133,8 @@
   "table.column.claimDelay": "Claim delay",
   "table.column.claimDelayFieldSuffix": "{hours, plural, =1 {Hour} other {Hours}}",
   "table.column.totalDelay": "Total delay",
+  "errors.zeroTokens": "Please enter a value of tokens.",
+  "errors.notEnoughTokens": "Not a enough tokens to deactivate.",
   "errors.amount": "Amount must be greater than zero",
   "errors.payments.amount": "Amount must be greater than zero in {paymentIndex, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} payment.",
   "asyncText.defaultLoading": "Loading...",

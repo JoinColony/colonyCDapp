@@ -5,7 +5,6 @@ import { useMemo } from 'react';
 import { useColonyContext } from '~hooks';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { formatText } from '~utils/intl';
-import { toFinite } from '~utils/lodash';
 import { TOKENS_MODAL_TYPES } from './consts';
 import { ActionTypes } from '~redux';
 import { pipe, mapPayload } from '~utils/actions';
@@ -15,6 +14,7 @@ import { TokensModalType } from './types';
 export const useTokensModal = (type: TokensModalType) => {
   const { colony } = useColonyContext();
   const { nativeToken } = colony || {};
+  const { symbol: tokenSymbol } = nativeToken || {};
   const {
     tokenBalanceData: tokenData,
     pollActiveTokenBalance,
@@ -34,13 +34,31 @@ export const useTokensModal = (type: TokensModalType) => {
     .object()
     .shape({
       amount: yup
-        .number()
-        .required(() => formatText({ id: 'errors.amount' }))
-        .transform((value) => toFinite(value))
-        .moreThan(0, () => 'Amount must be greater than zero')
-        .lessThan(
-          tokenBalanceInEthers,
-          () => `Amount must be less than ${tokenBalanceInEthers}`,
+        .string()
+        .required(() => formatText({ id: 'errors.zeroTokens' }))
+        .test(
+          'amount-test',
+          () => formatText({ id: 'errors.notEnoughTokens' }),
+          (value) => {
+            if (!value) {
+              return false;
+            }
+
+            try {
+              const amount = BigNumber.from(
+                moveDecimal(value, nativeToken?.decimals),
+              );
+              const balance = BigNumber.from(tokenBalanceData);
+
+              if (amount.gt(balance)) {
+                return false;
+              }
+
+              return amount.gt(0);
+            } catch {
+              return false;
+            }
+          },
         ),
     })
     .defined();
@@ -70,7 +88,7 @@ export const useTokensModal = (type: TokensModalType) => {
     transform,
     tokenBalanceData,
     tokenDecimals,
-    nativeToken,
+    tokenSymbol,
     pollActiveTokenBalance,
     tokenBalanceInEthers,
     loading,
