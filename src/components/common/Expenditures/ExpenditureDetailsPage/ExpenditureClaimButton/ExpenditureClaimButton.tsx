@@ -33,7 +33,7 @@ const ExpenditureClaimButton = ({
   let nextClaimableAt: number | null = null;
   const claimableSlots = expenditure.slots.filter((slot) => {
     const hasClaimablePayouts = !!slot.payouts?.some(
-      (payout) => !payout.isClaimed,
+      (payout) => !payout.isClaimed && payout.amount !== '0',
     );
     if (!hasClaimablePayouts) {
       return false;

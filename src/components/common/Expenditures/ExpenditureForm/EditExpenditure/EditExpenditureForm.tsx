@@ -1,38 +1,33 @@
 import React from 'react';
 
-import { useColonyContext } from '~hooks';
 import { ActionForm } from '~shared/Fields';
-import { Expenditure } from '~types';
+import { Colony, Expenditure } from '~types';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
 import Button from '~shared/Button';
 
-import { AdvancedPaymentFormFields } from './ExpenditureFormFields';
+import { AdvancedPaymentFormFields } from '../ExpenditureFormFields';
 import {
   getExpenditurePayoutsFieldValue,
   getInitialPayoutFieldValue,
-} from './helpers';
-import { AdvancedPaymentFormValues } from './types';
+} from '../helpers';
+import { AdvancedPaymentFormValues } from '../types';
 
-import styles from './ExpenditureForm.module.css';
+import styles from '../ExpenditureForm.module.css';
 
 export interface EditExpenditureFormProps {
   expenditure: Expenditure;
-  onCancelClick?: () => void;
-  onSuccess?: () => void;
+  onEditingFinished: () => void;
+  colony: Colony;
+  actionType: ActionTypes;
 }
 
 const EditExpenditureForm = ({
   expenditure,
-  onSuccess,
-  onCancelClick,
+  onEditingFinished,
+  colony,
+  actionType,
 }: EditExpenditureFormProps) => {
-  const { colony } = useColonyContext();
-
-  if (!colony) {
-    return null;
-  }
-
   const transformPayload = pipe(
     mapPayload((payload: AdvancedPaymentFormValues) => ({
       colonyAddress: colony.colonyAddress,
@@ -49,17 +44,14 @@ const EditExpenditureForm = ({
           ? getExpenditurePayoutsFieldValue(expenditure)
           : [getInitialPayoutFieldValue(colony.nativeToken.tokenAddress)],
       }}
-      actionType={ActionTypes.EXPENDITURE_EDIT}
+      actionType={actionType}
       transform={transformPayload}
-      onSuccess={onSuccess}
+      onSuccess={onEditingFinished}
     >
       <AdvancedPaymentFormFields colony={colony} />
 
       <div className={styles.buttons}>
-        <Button
-          appearance={{ size: 'small' }}
-          onClick={() => onCancelClick?.()}
-        >
+        <Button appearance={{ size: 'small' }} onClick={onEditingFinished}>
           Cancel
         </Button>
         <Button type="submit">Save changes</Button>

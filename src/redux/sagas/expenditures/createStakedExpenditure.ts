@@ -19,6 +19,7 @@ import {
   getSetExpenditureValuesFunctionParams,
   saveExpenditureMetadata,
   initiateTransaction,
+  getPayoutsWithSlotIds,
 } from '../utils';
 
 function* createStakedExpenditure({
@@ -42,11 +43,7 @@ function* createStakedExpenditure({
   );
   const batchKey = 'createExpenditure';
 
-  // Add slot id to each payout
-  const payoutsWithSlotIds = payouts.map((payout, index) => ({
-    ...payout,
-    slotId: index + 1,
-  }));
+  const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
 
   const {
     approveStake,

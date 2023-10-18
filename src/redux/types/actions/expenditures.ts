@@ -189,4 +189,19 @@ export type ExpendituresActionTypes =
       ActionTypes.STREAMING_PAYMENT_CREATE_SUCCESS,
       object,
       object
+    >
+  | UniqueActionType<
+      ActionTypes.EXPENDITURE_LOCKED_EDIT,
+      {
+        colonyAddress: Address;
+        expenditure: Expenditure;
+        payouts: ExpenditurePayoutFieldValue[];
+      },
+      object
+    >
+  | ErrorActionType<ActionTypes.EXPENDITURE_LOCKED_EDIT_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.EXPENDITURE_LOCKED_EDIT_SUCCESS,
+      object,
+      object
     >;
