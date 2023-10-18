@@ -6,7 +6,7 @@ import BalaceTable from './partials/BalanceTable';
 import { useBalancePage } from './hooks';
 import { BalanceList } from './types';
 
-const displayName = 'frame.Extensions.pages.BalancePage';
+const displayName = 'v5.pages.BalancePage';
 
 const BalancePage: FC = () => {
   const { colony, isSortedDesc, onBalanceSort } = useBalancePage();
