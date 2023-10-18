@@ -1,7 +1,6 @@
 import React, { FC, PropsWithChildren, useCallback } from 'react';
 import { ToastContainer } from 'react-toastify';
 
-import { ColonyHeader } from '~frame/Extensions/Header';
 import Wallet from '~frame/RouteLayouts/UserNavigation/Wallet';
 import Navigation from '~v5/common/Navigation';
 import PageTitle from '~v5/common/PageTitle';
@@ -25,7 +24,9 @@ import { useDialog } from '~shared/Dialog';
 import { getAllUserRoles } from '~transformers';
 import { canColonyBeUpgraded, hasRoot } from '~utils/checks';
 
-import { ColonyLayoutProps } from './types';
+import type { ColonyLayoutProps } from './types';
+
+import ColonyHeader from './ColonyHeader';
 
 const displayName = 'frame.Extensions.layouts.ColonyLayout';
 
