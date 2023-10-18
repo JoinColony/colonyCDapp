@@ -150,7 +150,8 @@
     "webpack": "^5.74.0",
     "webpack-bundle-analyzer": "^4.6.1",
     "webpack-cli": "^4.10.0",
-    "webpack-dev-server": "^4.11.1"
+    "webpack-dev-server": "^4.11.1",
+    "workbox-webpack-plugin": "^7.0.0"
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
@@ -201,6 +202,7 @@
     "embla-carousel-react": "^8.0.0-rc11",
     "eth-ens-namehash-ms": "^2.2.0",
     "ethers": "^5.6.8",
+    "firebase": "^10.4.0",
     "format-number": "^3.0.0",
     "framer-motion": "^10.12.4",
     "graphql": "^16.6.0",
