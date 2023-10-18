@@ -6,13 +6,14 @@ import Spinner from '~v5/shared/Spinner';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
 import styles from '~shared/Extensions/Toast/Toast.module.css';
 
-import type { ColonyLayoutProps } from './types';
+import type { MainLayoutProps } from './types';
 
 import Header from './Header';
+import MainSidebar from './MainSidebar';
 
 const displayName = 'frame.Extensions.layouts.MainLayout';
 
-const ColonyLayout: FC<PropsWithChildren<ColonyLayoutProps>> = ({
+const MainLayout: FC<PropsWithChildren<MainLayoutProps>> = ({
   children,
   loadingText,
 }) => {
@@ -28,20 +29,27 @@ const ColonyLayout: FC<PropsWithChildren<ColonyLayoutProps>> = ({
         pauseOnHover
         closeButton={CloseButton}
       />
-      <Header />
-      {/* @TODO: Remove wallet component when we have a proper wallet */}
-      <div className="hidden">
-        <Wallet />
-      </div>
-      <main className="mt-5 pb-24">
-        <div className="inner">
-          <div className="mt-9">{children}</div>
+      <div className="grid grid-cols-[80px,auto] gap-4 p-4">
+        <aside className="sticky top-4 h-[calc(100vh-2rem)]">
+          <MainSidebar />
+        </aside>
+        <div className="">
+          <Header />
+          {/* @TODO: Remove wallet component when we have a proper wallet */}
+          <div className="hidden">
+            <Wallet />
+          </div>
+          <main className="mt-5 pb-24">
+            <div className="inner">
+              <div className="mt-9">{children}</div>
+            </div>
+          </main>
         </div>
-      </main>
+      </div>
     </Spinner>
   );
 };
 
-ColonyLayout.displayName = displayName;
+MainLayout.displayName = displayName;
 
-export default ColonyLayout;
+export default MainLayout;

@@ -16,7 +16,6 @@ export interface ColonyAvatarProps {
   colony?: Colony | WatchedColony;
   colonyAddress?: string;
   isMobile: boolean;
-  isArrowVisible?: boolean;
   setTriggerRef?: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
 }
 
@@ -29,7 +28,6 @@ export interface ColonySwitcherProps {
   activeColony?: Colony;
   isCloseButtonVisible?: boolean;
   isColonyDropdownOpen?: boolean;
-  isArrowVisible?: boolean;
 }
 
 export type ColoniesByCategory = Record<string, WatchListItem[]>;
