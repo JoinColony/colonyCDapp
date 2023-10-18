@@ -1,10 +1,10 @@
 /// <reference lib="WebWorker" />
 
-// export empty type because of tsc --isolatedModules flag
 import { initializeApp } from 'firebase/app';
 import { getMessaging, onBackgroundMessage } from 'firebase/messaging/sw';
 import { precacheAndRoute } from 'workbox-precaching';
 
+// export empty type because of tsc --isolatedModules flag
 export type {};
 declare const self: ServiceWorkerGlobalScope;
 
