@@ -26,6 +26,6 @@ export const Base: StoryObj<typeof Accordion> = {};
 
 export const WithOpenedItem: StoryObj<typeof Accordion> = {
   args: {
-    openedItemIndex: 0,
+    openedItemIndexes: [0],
   },
 };
