@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import clsx from 'clsx';
 
 import { useController, useFormContext, useWatch } from 'react-hook-form';
 import ActionSidebarRow from '../ActionFormRow';
@@ -10,10 +11,11 @@ import { ACTION_TYPE_FIELD_NAME } from './consts';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 import { formatText } from '~utils/intl';
 import Modal from '~v5/shared/Modal';
+import { ActionTypeSelectProps } from './types';
 
 const displayName = 'v5.common.ActionTypeSelect';
 
-const ActionTypeSelect: FC = () => {
+const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
   const actionsList = useActionsList();
   const [nextActionType, setNextActionType] = useState<string | undefined>(
     undefined,
@@ -33,7 +35,7 @@ const ActionTypeSelect: FC = () => {
   const { formState, setValue } = useFormContext();
 
   return (
-    <>
+    <div className={className}>
       <ActionSidebarRow
         fieldName={ACTION_TYPE_FIELD_NAME}
         iconName="file-plus"
@@ -43,7 +45,13 @@ const ActionTypeSelect: FC = () => {
         <button
           type="button"
           ref={relativeElementRef}
-          className="flex text-md text-gray-600 transition-colors hover:text-blue-400"
+          className={clsx(
+            'flex text-md transition-colors md:hover:text-blue-400',
+            {
+              'text-gray-600': !actionType,
+              'text-gray-900': actionType,
+            },
+          )}
           onClick={toggleSelect}
         >
           {formatText({
@@ -99,7 +107,7 @@ const ActionTypeSelect: FC = () => {
           id: 'button.continueAction',
         })}
       />
-    </>
+    </div>
   );
 };
 

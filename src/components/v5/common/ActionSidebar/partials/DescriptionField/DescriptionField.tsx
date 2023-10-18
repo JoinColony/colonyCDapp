@@ -46,7 +46,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
               animate="visible"
               exit="hidden"
               variants={accordionAnimation}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
               className="overflow-hidden"
             >
               <RichText

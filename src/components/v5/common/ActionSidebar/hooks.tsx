@@ -1,9 +1,16 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { ColonyRole } from '@colony/colony-js';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useFormContext, UseFormReturn, useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useUnmountEffect } from 'framer-motion';
+import { useApolloClient } from '@apollo/client';
 import { ACTION, Action } from '~constants/actions';
 import {
   useAppContext,
@@ -39,7 +46,11 @@ import {
 } from '~utils/checks';
 import { ACTION_TYPE_FIELD_NAME, ACTION_TYPE_NOTIFICATION } from './consts';
 import { NotificationBannerProps } from '~common/Extensions/NotificationBanner/types';
-import { ActionFormBaseProps, UseActionFormBaseHook } from './types';
+import {
+  ActionFormBaseProps,
+  DescriptionMetadataGetter,
+  UseActionFormBaseHook,
+} from './types';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { GLOBAL_EVENTS } from '~utils/browser/dispatchGlobalEvent/consts';
 import { SetActionTypeCutomEventDetail } from '~utils/browser/dispatchGlobalEvent/types';
@@ -49,6 +60,20 @@ import SplitPaymentForm from './partials/forms/SplitPaymentForm';
 import ManageTokensForm from './partials/forms/ManageTokensForm';
 import AdvancedPaymentForm from './partials/forms/AdvancedPaymentForm';
 import BatchPaymentForm from './partials/forms/BatchPaymentForm';
+import AsyncText from '~v5/shared/AsyncText';
+import { simplePaymentDescriptionMetadataGetter } from './partials/forms/SimplePaymentForm/utils';
+import { advancedPaymentDescriptionMetadataGetter } from './partials/forms/AdvancedPaymentForm/utils';
+import { splitPaymentDescriptionMetadataGetter } from './partials/forms/SplitPaymentForm/utils';
+import { trasferFundsDescriptionMetadataGetter } from './partials/forms/TransferFundsForm/utils';
+import { mintTokenDescriptionMetadataGetter } from './partials/forms/MintTokenForm/utils';
+import { unlockTokenDescriptionMetadataGetter } from './partials/forms/UnlockTokenForm/utils';
+import { manageTokensDescriptionMetadataGetter } from './partials/forms/ManageTokensForm/utils';
+import { editColonyDetailsDescriptionMetadataGetter } from './partials/forms/EditColonyDetailsForm/utils';
+import { createNewTeamDescriptionMetadataGetter } from './partials/forms/CreateNewTeamForm/utils';
+import { editTeamDescriptionMetadataGetter } from './partials/forms/EditTeamForm/utils';
+import { upgradeColonyDescriptionMetadataGetter } from './partials/forms/UpgradeColonyForm/utils';
+import { enterRecoveryModeDescriptionMetadataGetter } from './partials/forms/EnterRecoveryModeForm/utils';
+import { createDecisionDescriptionMetadataGetter } from './partials/forms/CreateDecisionForm/utils';
 
 export const useActionsList = () => {
   const { colony } = useColonyContext();
@@ -474,18 +499,68 @@ export const useActionFormBaseHook: UseActionFormBaseHook = ({
 };
 
 export const useCloseSidebarClick = () => {
-  const { formState } = useFormContext();
+  const formContext = useFormContext();
+  const formRef = useRef<UseFormReturn<object>>(null);
   const {
     actionSidebarToggle: [, { toggleOff: toggleActionSidebarOff }],
     cancelModalToggle: [, { toggle: toggleCancelModal }],
   } = useActionSidebarContext();
-  const { dirtyFields } = formState;
 
-  return () => {
-    if (Object.keys(dirtyFields).length > 0) {
-      toggleCancelModal();
-    } else {
-      toggleActionSidebarOff();
-    }
+  return {
+    closeSidebarClick: () => {
+      const { dirtyFields } = (formContext || formRef.current)?.formState || {};
+
+      if (Object.keys(dirtyFields).length > 0) {
+        toggleCancelModal();
+      } else {
+        toggleActionSidebarOff();
+      }
+    },
+    formRef,
   };
+};
+
+const DESC_METADATA: Partial<Record<Action, DescriptionMetadataGetter>> = {
+  [ACTION.SIMPLE_PAYMENT]: simplePaymentDescriptionMetadataGetter,
+  [ACTION.ADVANCED_PAYMENT]: advancedPaymentDescriptionMetadataGetter,
+  [ACTION.SPLIT_PAYMENT]: splitPaymentDescriptionMetadataGetter,
+  [ACTION.TRANSFER_FUNDS]: trasferFundsDescriptionMetadataGetter,
+  [ACTION.MINT_TOKENS]: mintTokenDescriptionMetadataGetter,
+  [ACTION.UNLOCK_TOKEN]: unlockTokenDescriptionMetadataGetter,
+  [ACTION.MANAGE_TOKENS]: manageTokensDescriptionMetadataGetter,
+  [ACTION.EDIT_COLONY_DETAILS]: editColonyDetailsDescriptionMetadataGetter,
+  [ACTION.CREATE_NEW_TEAM]: createNewTeamDescriptionMetadataGetter,
+  [ACTION.EDIT_EXISTING_TEAM]: editTeamDescriptionMetadataGetter,
+  [ACTION.UPGRADE_COLONY_VERSION]: upgradeColonyDescriptionMetadataGetter,
+  [ACTION.ENTER_RECOVERY_MODE]: enterRecoveryModeDescriptionMetadataGetter,
+  [ACTION.CREATE_DECISION]: createDecisionDescriptionMetadataGetter,
+};
+
+export const useActionDescriptionMetadata = () => {
+  const formValues = useFormContext().getValues();
+  const selectedAction: Action | undefined = useWatch({
+    name: ACTION_TYPE_FIELD_NAME,
+  });
+  const apolloClient = useApolloClient();
+  const { user } = useAppContext();
+  const { colony } = useColonyContext();
+
+  return useMemo(() => {
+    if (!selectedAction) {
+      return undefined;
+    }
+
+    return (
+      <AsyncText
+        text={async () =>
+          DESC_METADATA[selectedAction]?.(formValues, {
+            client: apolloClient,
+            currentUser: user,
+            colony,
+          })
+        }
+      />
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(formValues), selectedAction, apolloClient, colony]);
 };

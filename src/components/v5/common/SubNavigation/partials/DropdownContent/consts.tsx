@@ -1,6 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 import { ACTION } from '~constants/actions';
+import { formatText } from '~utils/intl';
 import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 
 export const MSG = defineMessages({
@@ -125,7 +126,7 @@ export const PAY_DROPDOWN_ITEMS = [
     title: MSG.advancedPayments,
     description: MSG.advancedPaymentsDescription,
     action: ACTION.ADVANCED_PAYMENT,
-    statusBadge: <ExtensionStatusBadge text={MSG.comingSoon} />,
+    statusBadge: <ExtensionStatusBadge text={formatText(MSG.comingSoon)} />,
   },
   {
     title: MSG.streamingPayments,

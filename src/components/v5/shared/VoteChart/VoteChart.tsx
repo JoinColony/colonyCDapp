@@ -12,8 +12,10 @@ const displayName = 'v5.VoteChart';
 
 const VoteChart: FC<VoteChartProps> = ({
   percentageVotesFor = 0,
+  predictPercentageVotesFor,
   forLabel,
   percentageVotesAgainst = 0,
+  predictPercentageVotesAgainst,
   againstLabel,
   threshold,
   thresholdLabel,
@@ -28,6 +30,18 @@ const VoteChart: FC<VoteChartProps> = ({
     (percentageVotesAgainst < 0 && 0) ||
     (percentageVotesAgainst > 100 && 100) ||
     percentageVotesAgainst;
+
+  const predictedForValue = predictPercentageVotesFor
+    ? (predictPercentageVotesFor < 0 && 0) ||
+      (predictPercentageVotesFor > 100 && 100) ||
+      predictPercentageVotesFor
+    : undefined;
+
+  const predictedAgainstValue = predictPercentageVotesAgainst
+    ? (predictPercentageVotesAgainst < 0 && 0) ||
+      (predictPercentageVotesAgainst > 100 && 100) ||
+      predictPercentageVotesAgainst
+    : undefined;
 
   return (
     <div className={clsx(className, 'w-full')}>
@@ -48,12 +62,14 @@ const VoteChart: FC<VoteChartProps> = ({
         <div className="flex flex-1 flex-col items-center gap-1">
           <VoteChartBar
             value={againstValue}
-            barBackgroundClassName="bg-red-300"
+            barBackgroundClassName="bg-negative-300"
+            predictionBarClassName="border-negative-300 bg-negative-100"
+            predictedValue={predictedAgainstValue}
             direction={VOTE_CHART_BAR_DIRECTION.Left}
           />
           <span
             className={clsx('text-xs text-center transition-[color]', {
-              'text-red-300 font-medium': againstValue > 0,
+              'text-negative-400 font-medium': againstValue > 0,
               'text-gray-500': againstValue === 0,
             })}
           >
@@ -64,7 +80,7 @@ const VoteChart: FC<VoteChartProps> = ({
           <div className="relative w-full">
             {!!threshold && (
               <div
-                className="absolute top-0 bottom-0 h-full z-[1]"
+                className="absolute top-0 bottom-0 h-full z-[3]"
                 style={{
                   left: `${threshold}%`,
                 }}
@@ -74,13 +90,15 @@ const VoteChart: FC<VoteChartProps> = ({
             )}
             <VoteChartBar
               value={forValue}
+              predictedValue={predictedForValue}
               barBackgroundClassName="bg-purple-200"
+              predictionBarClassName="border-purple-200 bg-purple-100"
               direction={VOTE_CHART_BAR_DIRECTION.Right}
             />
           </div>
           <span
             className={clsx('text-xs text-center transition', {
-              'text-purple-200 font-medium': forValue > 0,
+              'text-purple-400 font-medium': forValue > 0,
               'text-gray-500': forValue === 0,
             })}
           >

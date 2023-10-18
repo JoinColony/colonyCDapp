@@ -62,6 +62,7 @@ export interface IconButtonProps extends CommonButtonProps {
   rounded?: 's' | 'm' | 'l';
   isFullSize?: boolean;
   icon: React.ReactNode;
+  className?: string;
 }
 
 export interface HamburgerProps extends CommonButtonProps {

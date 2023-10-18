@@ -29,7 +29,14 @@ const ActionSidebarRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
 
     const content = (
       <>
-        <Icon name={iconName} appearance={{ size: 'extraTiny' }} />
+        <Icon
+          name={iconName}
+          appearance={{ size: 'extraTiny' }}
+          className={clsx('h-3 w-3', {
+            'text-negative-400': isError,
+            'text-gray-400': !isError,
+          })}
+        />
         <span className="text-md ml-2 min-w-[8rem] sm:min-w-[11.25rem] flex gap-4 items-center">
           {title}
           {isExpandable && (

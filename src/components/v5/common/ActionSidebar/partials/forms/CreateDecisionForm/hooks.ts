@@ -1,4 +1,3 @@
-import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { Id } from '@colony/colony-js';
 import { useCallback, useMemo } from 'react';
@@ -10,22 +9,7 @@ import { createDecisionAction } from '~redux/actionCreators';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
 import { DECISION_METHOD_OPTIONS } from '../../consts';
-
-const validationSchema = yup
-  .object()
-  .shape({
-    title: yup
-      .string()
-      .trim()
-      .required(() => 'Please enter a title'),
-    createdIn: yup.string().defined(),
-    description: yup
-      .string()
-      .notOneOf(['<p></p>'], () => 'Please enter a description')
-      .defined(),
-    walletAddress: yup.string().address().required(),
-  })
-  .defined();
+import { validationSchema, CreateDecisionFormValues } from './consts';
 
 export const useCreateDecision = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -68,10 +52,10 @@ export const useCreateDecision = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
-        mapPayload((payload) => {
+        mapPayload((payload: CreateDecisionFormValues) => {
           handleSaveDecisionInlocalStoage({
             title: payload.title,
-            motionDomainId: payload.createdIn,
+            motionDomainId: Number(payload.createdIn),
             description: payload.description,
             walletAddress,
           });

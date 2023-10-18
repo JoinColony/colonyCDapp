@@ -8,9 +8,10 @@ const ProgressBar: FC<ProgressBarProps> = ({
   isTall,
   additionalText,
   threshold,
+  max = 100,
 }) => {
-  if (progress > 100 || progress < 0) {
-    throw new Error('Progress bar value must be between 0 and 100');
+  if (progress > max || progress < 0) {
+    throw new Error(`Progress bar value must be between between 0 and ${max}`);
   }
 
   return (
@@ -26,7 +27,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
             'rounded-lg': isTall,
             rounded: !isTall,
           })}
-          style={{ width: `${progress}%` }}
+          style={{ width: `${(progress / max) * 100}%` }}
         />
         {threshold && progress < threshold && (
           <span
@@ -35,9 +36,11 @@ const ProgressBar: FC<ProgressBarProps> = ({
           />
         )}
       </div>
-      <span className="text-3 text-gray-600 ml-3">{progress}%</span>
+      <span className="text-3 text-gray-600 ml-3">{progress}</span>
       {additionalText && (
-        <span className="text-3 text-gray-600 ml-1">{additionalText}</span>
+        <span className="text-3 text-gray-600 ml-1 flex-shrink-0">
+          {additionalText}
+        </span>
       )}
     </div>
   );

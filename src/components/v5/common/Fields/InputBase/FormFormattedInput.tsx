@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-
 import { useController } from 'react-hook-form';
-import { FormFormattedInputProps } from './types';
+
 import { FIELD_STATE } from '../consts';
+import { FormFormattedInputProps } from './types';
 import FormattedInput from './FormattedInput';
 
 const displayName = 'v5.common.Fields.FormFormattedInput';
@@ -26,13 +26,9 @@ const FormFormattedInput: FC<FormFormattedInputProps> = ({
       type={type}
       value={value}
       onChange={(event) => {
-        const { value: inputValue, valueAsNumber } = event.target;
+        const { rawValue } = event.target;
 
-        if (type === 'number') {
-          onChange(Number.isNaN(valueAsNumber) ? 0 : valueAsNumber);
-        } else {
-          onChange(inputValue);
-        }
+        onChange(rawValue);
       }}
       state={invalid ? FIELD_STATE.Error : undefined}
     />

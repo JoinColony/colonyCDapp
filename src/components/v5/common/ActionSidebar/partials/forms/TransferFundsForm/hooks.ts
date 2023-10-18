@@ -1,43 +1,15 @@
-import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
+import { DeepPartial } from 'utility-types';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
 import { useColonyContext } from '~hooks';
-import { toFinite } from '~utils/lodash';
-import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { getTransferFundsDialogPayload } from '~common/Dialogs/TransferFundsDialog/helpers';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
 import { DECISION_METHOD_OPTIONS } from '../../consts';
-
-const validationSchema = yup
-  .object()
-  .shape({
-    amount: yup
-      .object()
-      .shape({
-        amount: yup
-          .number()
-          .required(() => 'required field')
-          .transform((value) => toFinite(value))
-          .moreThan(0, () => 'Amount must be greater than zero'),
-        tokenAddress: yup.string().address().required(),
-      })
-      .required(),
-    createdIn: yup.string().defined(),
-    from: yup.number().required(),
-    to: yup
-      .number()
-      .required()
-      .when('from', (from, schema) =>
-        schema.notOneOf([from], 'Cannot move to same team pot'),
-      ),
-    decisionMethod: yup.string().defined(),
-    annotation: yup.string().max(MAX_ANNOTATION_LENGTH).defined(),
-  })
-  .defined();
+import { validationSchema, TransferFundsFormValues } from './consts';
 
 export const useTransferFunds = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -47,13 +19,13 @@ export const useTransferFunds = (
 
   useActionFormBaseHook({
     validationSchema,
-    defaultValues: useMemo(
+    defaultValues: useMemo<DeepPartial<TransferFundsFormValues>>(
       () => ({
         createdIn: Id.RootDomain.toString(),
         to: Id.RootDomain.toString(),
         from: Id.RootDomain.toString(),
         decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
-        annotation: '',
+        description: '',
         amount: {
           amount: 0,
           tokenAddress: colony?.nativeToken.tokenAddress || '',
@@ -66,7 +38,7 @@ export const useTransferFunds = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
-        mapPayload((payload) => {
+        mapPayload((payload: TransferFundsFormValues) => {
           const values = {
             amount: payload.amount.amount,
             motionDomainId: payload.createdIn,
@@ -74,7 +46,7 @@ export const useTransferFunds = (
             toDomainId: payload.to,
             tokenAddress: payload.amount.tokenAddress,
             decisionMethod: payload.decisionMethod,
-            annotation: payload.annotation,
+            annotation: payload.description,
           };
 
           if (colony) {

@@ -1,3 +1,5 @@
+import { UserStatusMode } from '~v5/common/Pills/types';
+
 export interface AvatarProps {
   seed?: string;
   avatar?: string | null;
@@ -6,6 +8,7 @@ export interface AvatarProps {
   placeholderIcon?: string;
   size?: AvatarSize;
   title?: string | null;
+  mode?: UserStatusMode;
 }
 
 export type AvatarSize =

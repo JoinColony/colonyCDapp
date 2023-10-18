@@ -56,6 +56,7 @@ export const useRecipientsFieldTableColumns = (
           header: () => formatText({ id: 'table.column.claimDelay' }),
           cell: ({ row }) => (
             <FormInputBase
+              message={false}
               autoWidth
               wrapperClassName="flex-row flex"
               min={0}
