@@ -54,6 +54,22 @@ fragment ExpenditureStage on ExpenditureStage {
   isReleased
 }
 
+fragment StreamingPayment on StreamingPayment {
+  id
+  nativeId
+  recipientAddress
+  nativeDomainId
+  startTime
+  endTime
+  interval
+  payouts {
+    ...ExpenditurePayout
+  }
+  metadata {
+    ...StreamingPaymentMetadata
+  }
+}
+
 fragment StreamingPaymentMetadata on StreamingPaymentMetadata {
   endCondition
   limitAmount

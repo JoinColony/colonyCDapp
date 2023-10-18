@@ -45,7 +45,7 @@ const ExpendituresList = ({ colony }: ExpendituresListProps) => {
           .map((streamingPayment) => (
             <li key={streamingPayment.id}>
               <Link
-                to={`/colony/${colony.name}/expenditures/${streamingPayment.nativeId}`}
+                to={`/colony/${colony.name}/expenditures/streaming/${streamingPayment.nativeId}`}
               >
                 Streaming Payment ID: {streamingPayment.nativeId}
               </Link>

@@ -112,10 +112,6 @@ const ExpenditureDetailsPage = () => {
     return <div>Loading expenditure...</div>;
   }
 
-  if (!data) {
-    return null;
-  }
-
   if (!expenditure) {
     return (
       <div>
