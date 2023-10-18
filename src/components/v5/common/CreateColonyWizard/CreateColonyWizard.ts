@@ -71,7 +71,11 @@ const initialValues: [Step1, Step2, Step3] = [
   },
 ];
 
-const CreateColonyContainer = withWizard<FormValues>({
+interface WizardProps {
+  inviteCode: string;
+}
+
+const CreateColonyContainer = withWizard<FormValues, WizardProps>({
   initialValues,
   steps: stepFunction,
 })(WizardTemplate);

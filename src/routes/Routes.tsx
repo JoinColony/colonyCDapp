@@ -12,7 +12,6 @@ import ColonyFunding from '~common/ColonyFunding';
 import FourOFour from '~frame/FourOFour';
 import UserProfile from '~common/UserProfile';
 import { ColonyContextProvider } from '~context/ColonyContext';
-import CreateColonyWizard from '~common/CreateColonyWizard';
 import DecisionPreview from '~common/ColonyDecisions/DecisionPreview';
 import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
 import { Default, NavBar, UserLayout } from '~frame/RouteLayouts';
@@ -50,7 +49,6 @@ import {
   COLONY_TEAMS_ROUTE,
   USER_PREFERENCES_ROUTE,
   USER_ADVANCED_ROUTE,
-  PRIVATE_BETA_INVITE_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -83,6 +81,7 @@ import { useMemberModalContext } from '~context/MemberModalContext';
 import { AppContextProvider } from '~context';
 import { applyTheme } from '~frame/Extensions/themes/utils';
 import { Theme } from '~frame/Extensions/themes/enum';
+import CreateColonyPage from '~frame/v5/pages/CreateColonyPage';
 
 const displayName = 'routes.Routes';
 
@@ -143,22 +142,20 @@ const Routes = () => {
             </ColonyContextProvider>
           }
         />
-        <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyWizard />} />
-        <Route path={CREATE_USER_ROUTE} element={<CreateUserWizard />} />
         <Route
-          path={PRIVATE_BETA_INVITE_ROUTE}
+          path={CREATE_COLONY_ROUTE}
           element={
-            /* @TODO: MainLayout is the new layout that should be used for all pages outside of colonies eventually */
             <MainLayout
-              loadingText="teams"
-              title={{ id: 'teamsPage.title' }}
-              description={{ id: 'teamsPage.description' }}
-              pageName="members"
+              loadingText="createColony"
+              title={{ id: 'createColonyPage.title' }}
+              description={{ id: 'createColony.description' }}
+              pageName="createColony"
             >
-              <div>Private beta invite</div>
+              <CreateColonyPage />
             </MainLayout>
           }
         />
+        <Route path={CREATE_USER_ROUTE} element={<CreateUserWizard />} />
         <Route path={COLONY_HOME_ROUTE} element={<ColonyRoute />}>
           <Route
             index
