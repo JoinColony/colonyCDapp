@@ -67,7 +67,7 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
               {/* Update this component when Joanna will finish this in staking motion flow */}
               <FormFormattedInput
                 name="amount"
-                formattingOptions={{
+                options={{
                   numeral: true,
                   numeralPositiveOnly: true,
                   numeralDecimalScale: tokenDecimals,
