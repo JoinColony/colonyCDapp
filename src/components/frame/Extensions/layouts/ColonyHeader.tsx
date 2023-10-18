@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useColonyContext, useMobile } from '~hooks';
+import { useMobile } from '~hooks';
 import ColonyNavigation from '~common/Extensions/ColonyNavigation';
 import UserHubButton from '~common/Extensions/UserHubButton';
 import { CompletedButton, PendingButton } from '~v5/shared/Button';
@@ -16,7 +16,6 @@ const displayName = 'frame.Extensions.ColonyHeader';
 const ColonyHeader = () => {
   const isMobile = useMobile();
   const { groupState } = useUserTransactionContext();
-  const { colony } = useColonyContext();
 
   const txButtons = isMobile
     ? [
@@ -31,14 +30,7 @@ const ColonyHeader = () => {
 
   const userHub = <UserHubButton />;
 
-  return (
-    <Header
-      colony={colony}
-      navBar={navBar}
-      userHub={userHub}
-      txButtons={txButtons}
-    />
-  );
+  return <Header navBar={navBar} userHub={userHub} txButtons={txButtons} />;
 };
 
 ColonyHeader.displayName = displayName;

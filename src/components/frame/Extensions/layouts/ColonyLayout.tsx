@@ -8,7 +8,6 @@ import CalamityBanner from '~v5/shared/CalamityBanner';
 import Spinner from '~v5/shared/Spinner';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
 import styles from '~shared/Extensions/Toast/Toast.module.css';
-import { UserTransactionContextProvider } from '~context/UserTransactionContext';
 import { NetworkContractUpgradeDialog } from '~common/Dialogs';
 import { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
 import { ColonyFragment } from '~gql';
@@ -24,13 +23,14 @@ import { useDialog } from '~shared/Dialog';
 import { getAllUserRoles } from '~transformers';
 import { canColonyBeUpgraded, hasRoot } from '~utils/checks';
 
-import type { ColonyLayoutProps } from './types';
+import type { MainLayoutProps } from './types';
 
 import ColonyHeader from './ColonyHeader';
+import MainSidebar from './MainSidebar';
 
 const displayName = 'frame.Extensions.layouts.ColonyLayout';
 
-const ColonyLayout: FC<PropsWithChildren<ColonyLayoutProps>> = ({
+const ColonyLayout: FC<PropsWithChildren<MainLayoutProps>> = ({
   children,
   title,
   description,
@@ -90,9 +90,8 @@ const ColonyLayout: FC<PropsWithChildren<ColonyLayoutProps>> = ({
         pauseOnHover
         closeButton={CloseButton}
       />
-      <UserTransactionContextProvider>
-        <ColonyHeader />
-      </UserTransactionContextProvider>
+      <MainSidebar colony={colony} />
+      <ColonyHeader />
       {/* @TODO: Remove wallet component when we have a proper wallet */}
       <div className="hidden">
         <Wallet />

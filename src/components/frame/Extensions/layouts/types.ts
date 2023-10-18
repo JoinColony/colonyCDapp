@@ -1,9 +1,7 @@
 import type { ReactNode } from 'react';
 import type { MessageDescriptor } from 'react-intl';
 
-import type { Colony } from '~types';
-
-export interface ColonyLayoutProps {
+export interface MainLayoutProps {
   title: MessageDescriptor;
   description: MessageDescriptor;
   loadingText: MessageDescriptor | string;
@@ -12,7 +10,6 @@ export interface ColonyLayoutProps {
 }
 
 export interface HeaderProps {
-  colony?: Colony;
   navBar?: ReactNode;
   txButtons?: ReactNode;
   userHub?: ReactNode;

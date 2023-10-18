@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import clsx from 'clsx';
 
 import ColonyAvatar from '~shared/ColonyAvatar';
 import Icon from '~shared/Icon';
@@ -13,12 +12,11 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
   colony,
   colonyAddress,
   isMobile,
-  isArrowVisible,
   setTriggerRef,
 }) => {
   return (
     <>
-      <div className="relative">
+      <div className="relative" ref={setTriggerRef}>
         <span className="flex items-center justify-center bg-blue-300 rounded-full">
           <ColonyAvatar
             colony={colony}
@@ -35,14 +33,6 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
           {colony?.metadata?.displayName || colony?.name || 'Colony name'}
         </div>
       )}
-      <span
-        className={clsx('ml-2', {
-          'opacity-0 pointer-events-none': !isArrowVisible,
-        })}
-        ref={setTriggerRef}
-      >
-        <Icon name="caret-down" appearance={{ size: 'extraExtraTiny' }} />
-      </span>
     </>
   );
 };

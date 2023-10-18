@@ -34,7 +34,6 @@ const sortByDate = (
 
 const ColonySwitcher: FC<ColonySwitcherProps> = ({
   isCloseButtonVisible,
-  isArrowVisible,
   activeColony,
 }) => {
   const isMobile = useMobile();
@@ -118,7 +117,7 @@ const ColonySwitcher: FC<ColonySwitcherProps> = ({
 
   return (
     <div
-      className={clsx('flex justify-between', {
+      className={clsx('flex justify-center', {
         relative: !isMobile,
       })}
     >
@@ -127,11 +126,10 @@ const ColonySwitcher: FC<ColonySwitcherProps> = ({
           id: visible ? 'ariaLabel.closeDropdown' : 'ariaLabel.openDropdown',
         })}
         ref={setTriggerRef}
-        className="flex items-center justify-between transition-colors duration-normal hover:text-blue-400 z-[51]"
+        className="flex items-center justify-center transition-colors duration-normal hover:text-blue-400 z-[51]"
         type="button"
       >
         <ColonyAvatarWrapper
-          isArrowVisible={isArrowVisible}
           isMobile={isMobile}
           colonyAddress={colonyAddress}
           colony={isCloseButtonVisible ? activeColony : undefined}
