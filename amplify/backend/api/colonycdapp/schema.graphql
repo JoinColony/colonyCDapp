@@ -1045,7 +1045,7 @@ type Notification @model {
   userId: ID!
     @index(
       name: "byUser"
-      queryField: "notificationsByDate"
+      queryField: "getNotificationsByDate"
       sortKeyFields: ["createdAt"]
     )
   """
