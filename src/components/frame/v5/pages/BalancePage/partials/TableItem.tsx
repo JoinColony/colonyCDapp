@@ -25,7 +25,6 @@ const TableItem: FC<TableItemProps> = ({
   nativeTokenStatus,
   balances,
   domainId = 1,
-  onChange,
 }) => {
   const { symbol } = token || {};
   const currentTokenBalance =

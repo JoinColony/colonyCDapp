@@ -1,13 +1,12 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
-
+import clsx from 'clsx';
 import Icon from '~shared/Icon';
-import { TableHeadProps } from './types';
+import { TableHeadProps } from '../types';
 import { formatText } from '~utils/intl';
 
-const displayName = 'v5.pages.VerifiedPage.partials.TableHead';
+const displayName = 'v5.pages.BalancePage.partials.TableHead';
 
-const TableHead: FC<TableHeadProps> = ({ onClick }) => {
+const TableHead: FC<TableHeadProps> = ({ onClick, isSorted }) => {
   return (
     <div
       className={`py-3 px-4 bg-base-bg border-l border-r border-gray-200 grid
@@ -19,13 +18,20 @@ const TableHead: FC<TableHeadProps> = ({ onClick }) => {
         {formatText({ id: 'table.row.type' })}
       </div>
       <button
-        className="w-auto flex items-center ml-auto"
+        className="w-auto flex gap-1 items-center ml-auto"
         type="button"
-        aria-label={formatText({ id: 'ariaLabel.sortTokens' })}
+        aria-label={formatText({ id: 'ariaLabel.sortBalace' })}
         onClick={onClick}
       >
-        <span className="mr-1">{formatText({ id: 'table.row.balance' })}</span>
-        <Icon name="arrow-down" appearance={{ size: 'extraTiny' }} />
+        <span>{formatText({ id: 'table.row.balance' })}</span>
+        <Icon
+          name="arrow-down"
+          appearance={{ size: 'extraTiny' }}
+          className={clsx('w-3 h-3 transition-transform', {
+            'rotate-180': !isSorted,
+            'rotate-0': isSorted,
+          })}
+        />
       </button>
       <div />
     </div>

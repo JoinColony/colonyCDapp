@@ -1,26 +1,22 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
-import Filter from '~v5/common/Filter';
 import Button from '~v5/shared/Button';
-import EmptyContent from '~v5/common/EmptyContent';
-import { useSearchContext } from '~context/SearchContext';
 import TableHead from './TableHead';
 import TableItem from './TableItem';
 import { formatText } from '~utils/intl';
-import Modal from '~v5/shared/Modal';
 import { useColonyContext } from '~hooks';
+import { BalaceTableProps } from '../types';
 
-const displayName = 'v5.pages.VerifiedPage.partials.BalaceTable';
+const displayName = 'v5.pages.BalancePage.partials.BalaceTable';
 
-const BalaceTable: FC = () => {
-  //   const { searchValue } = useSearchContext();
+const BalaceTable: FC<BalaceTableProps> = ({
+  data,
+  isSorted,
+  onBalanceSort,
+}) => {
   const { colony } = useColonyContext();
   const { balances, nativeToken, status } = colony || {};
   const { nativeToken: nativeTokenStatus } = status || {};
-  //   const { onChange, selectedMembers } = useVerifiedTable();
   const onAddFunds = () => {}; // @TODO: open modal
-
-  console.log(colony?.tokens?.items);
 
   return (
     <>
@@ -32,7 +28,6 @@ const BalaceTable: FC = () => {
             </h4>
           </div>
           <div className="flex items-center mt-2.5 sm:mt-0">
-            {/* {(!!listLength || !!searchValue) && <Filter />} */}
             <Button
               mode="primarySolid"
               className="ml-2"
@@ -44,10 +39,10 @@ const BalaceTable: FC = () => {
           </div>
         </div>
       </div>
-      <TableHead onClick={() => {}} />
-      {colony?.tokens && (
+      <TableHead onClick={onBalanceSort} isSorted={isSorted} />
+      {data && (
         <div className="px-4 border border-gray-200 rounded-b-lg">
-          {colony.tokens.items.map((item) => (
+          {data.map((item) => (
             <TableItem
               key={item?.token.tokenAddress}
               token={item?.token}
@@ -56,19 +51,10 @@ const BalaceTable: FC = () => {
               }
               balances={balances || {}}
               nativeTokenStatus={nativeTokenStatus || {}}
-              onChange={() => {}}
             />
           ))}
         </div>
       )}
-      {/* <Modal
-          isFullOnMobile={false}
-          onClose={onCloseModal}
-          isOpen={isOpen}
-          isTopSectionWithBackground={isTopSectionWithBackground}
-        >
-          {content}
-        </Modal> */}
     </>
   );
 };
