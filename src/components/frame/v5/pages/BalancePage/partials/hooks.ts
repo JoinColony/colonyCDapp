@@ -19,6 +19,10 @@ export const useTransferFunds = () => {
     ? ActionTypes.MOTION_MOVE_FUNDS
     : ActionTypes.ACTION_MOVE_FUNDS;
 
+  if (!colony) {
+    return null;
+  }
+
   const transform = pipe(
     mapPayload((payload) => getTransferFundsDialogPayload(colony, payload)),
     withMeta({ navigate }),
