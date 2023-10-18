@@ -1020,7 +1020,7 @@ type NotificationSettings {
   Device registration tokens for push notifications
   If this is null or the array is empty the user is not subscribed to push notifications
   """
-  notificationTokens: [String]
+  notificationTokens: [String!]
   """
   Indicates whether the user wants to be emailed
   """
@@ -1082,7 +1082,7 @@ type Notification @model {
   The links connected to what is signified in the text
   The order matches what is in the string
   """
-  links: [String]
+  links: [String!]
 }
 
 """
