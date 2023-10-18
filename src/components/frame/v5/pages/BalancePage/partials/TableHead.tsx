@@ -9,7 +9,7 @@ const displayName = 'v5.pages.BalancePage.partials.TableHead';
 const TableHead: FC<TableHeadProps> = ({ onClick, isSorted }) => {
   return (
     <div
-      className={`py-3 px-4 bg-base-bg border-l border-r border-gray-200 grid
+      className={`py-3 px-4 bg-base-bg border-t border-l border-r rounded-t-lg border-gray-200 grid
       grid-cols-[1fr_0.5fr_0.5fr_0.5fr] sm:grid-cols-[2fr_0.5fr_0.5fr_1fr_1fr] text-sm text-gray-600`}
     >
       <div>{formatText({ id: 'table.row.asset' })}</div>

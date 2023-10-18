@@ -15,14 +15,12 @@ const BalancePage: FC = () => {
     <Spinner loading={false} loadingText={{ id: 'loading.advancedPage' }}>
       <TwoColumns aside={<Navigation pageName="members" />}>
         {/* @TODO: use exiting table component */}
-        <div className="flex justify-between mt-6">
-          <div className="w-full">
-            <BalaceTable
-              data={colony as BalanceList[]}
-              isSorted={isSortedDesc}
-              onBalanceSort={onBalanceSort}
-            />
-          </div>
+        <div className="w-full">
+          <BalaceTable
+            data={colony as BalanceList[]}
+            isSorted={isSortedDesc}
+            onBalanceSort={onBalanceSort}
+          />
         </div>
       </TwoColumns>
     </Spinner>

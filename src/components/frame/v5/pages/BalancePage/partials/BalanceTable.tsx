@@ -20,7 +20,7 @@ const BalaceTable: FC<BalaceTableProps> = ({
 
   return (
     <>
-      <div className="py-5 px-4 border border-gray-200 rounded-t-lg">
+      <div className="pb-4">
         <div className="flex sm:justify-between sm:items-center sm:flex-row flex-col">
           <div className="flex items-center">
             <h4 className="heading-5 mr-3">
