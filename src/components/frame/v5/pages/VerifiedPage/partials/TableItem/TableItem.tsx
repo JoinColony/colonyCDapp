@@ -60,7 +60,7 @@ const TableItem: FC<TableItemProps> = ({ member, onDeleteClick, onChange }) => {
         <span className="ml-1 text-sm text-gray-600">
           {Number.isInteger(colonyReputationPercentage)
             ? colonyReputationPercentage
-            : colonyReputationPercentage?.toFixed(2)}
+            : colonyReputationPercentage.toFixed(2)}
           %
         </span>
       </div>

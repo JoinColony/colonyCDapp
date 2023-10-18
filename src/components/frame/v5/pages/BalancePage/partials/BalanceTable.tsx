@@ -44,10 +44,10 @@ const BalaceTable: FC<BalaceTableProps> = ({
         <div className="px-4 border border-gray-200 rounded-b-lg">
           {data.map((item) => (
             <TableItem
-              key={item?.token.tokenAddress}
-              token={item?.token}
+              key={item.token.tokenAddress}
+              token={item.token}
               isTokenNative={
-                item?.token.tokenAddress === nativeToken?.tokenAddress
+                item.token.tokenAddress === nativeToken?.tokenAddress
               }
               balances={balances || {}}
               nativeTokenStatus={nativeTokenStatus || {}}
