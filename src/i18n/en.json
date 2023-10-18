@@ -1067,6 +1067,8 @@
   "motion.revealStep.submit": "Reveal vote",
   "motion.revealStep.buttonHide": "Hide reveal information",
   "motion.revealStep.buttonShow": "Show reveal information",
+  "motion.revealStep.emptyTitle": "No reveal required:",
+  "motion.revealStep.emptyDescription": "You did not vote so do not need to reveal. Please wait for all required voters to reveal or the reveal stage to end.",
   "motion.votingStep.statusText": "Voting ends when either time runs out, or {thresholdPercent}% of reputation in this domain has voted.",
   "motion.votingStep.title": "Vote to support or oppose?",
   "motion.votingStep.additionalText": "% Rep",

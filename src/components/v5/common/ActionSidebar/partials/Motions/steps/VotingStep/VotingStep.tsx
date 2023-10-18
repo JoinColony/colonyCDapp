@@ -73,7 +73,7 @@ const VotingStep: FC<VotingStepProps> = ({
               defaultValues={{ vote: undefined }}
             >
               <div className="mb-6 pb-6 border-b border-gray-200">
-                {hasUserVoted ? (
+                {hasUserVoted && currentUserVote ? (
                   <div className="mb-3">
                     <div className="flex items-center justify-between gap-2 mb-4">
                       <h4 className="text-2">
@@ -93,7 +93,7 @@ const VotingStep: FC<VotingStepProps> = ({
                     </p>
                   </div>
                 ) : (
-                  <h4 className="text-2 mb-3 text-center">
+                  <h4 className="text-1 mb-3 text-center">
                     {formatText({ id: 'motion.votingStep.title' })}
                   </h4>
                 )}
