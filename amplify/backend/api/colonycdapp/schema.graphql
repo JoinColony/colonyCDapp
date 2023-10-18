@@ -1878,19 +1878,19 @@ enum NotificationType {
   """
   Colony Action ready for further interaction
   """
-  Ready
+  READY
   """
   User has been mentioned
   """
-  Mention
+  MENTION
   """
   User is assigned a task in a Colony
   """
-  Assignment
+  ASSIGNMENT
   """
   Notification does not fit defined types
   """
-  Custom
+  CUSTOM
 }
 
 """
