@@ -88,6 +88,7 @@ export const useTokensModal = (type: TokensModalType) => {
     transform,
     tokenBalanceData,
     tokenDecimals,
+    nativeToken,
     tokenSymbol,
     pollActiveTokenBalance,
     tokenBalanceInEthers,

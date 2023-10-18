@@ -19,6 +19,7 @@ const FormattedInput: FC<FormattedInputProps> = ({
   mode = 'primary',
   stateClassNames: stateClassNamesProp,
   buttonProps,
+  customPrefix,
   wrapperClassName,
   messageClassName,
   message,
@@ -65,6 +66,7 @@ const FormattedInput: FC<FormattedInputProps> = ({
             {buttonLabel}
           </button>
         )}
+        {customPrefix && customPrefix}
         <Cleave
           {...rest}
           disabled={disabled}
@@ -85,6 +87,7 @@ const FormattedInput: FC<FormattedInputProps> = ({
               'bg-base-white rounded border py-3 pl-3.5 border-gray-300 focus:border-blue-200 focus:shadow-light-blue':
                 mode === 'primary',
               'border-none': mode === 'secondary',
+              'pl-10': customPrefix,
             },
           )}
         />

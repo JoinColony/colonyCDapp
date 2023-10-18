@@ -9,6 +9,7 @@ import { formatText } from '~utils/intl';
 import { ActionForm } from '~shared/Fields';
 import { TokensModalProps } from './types';
 import { useTokensModal } from './hooks';
+import TokenIcon from '~shared/TokenIcon';
 
 const displayName = 'v5.Modal.partials.TokensModal';
 
@@ -18,6 +19,7 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
     actionType,
     tokenBalanceData,
     tokenDecimals,
+    nativeToken,
     transform,
     tokenSymbol,
     pollActiveTokenBalance,
@@ -66,6 +68,15 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
               </div>
               <FormFormattedInput
                 name="amount"
+                customPrefix={
+                  <>
+                    {nativeToken && (
+                      <div className="absolute top-0 left-0 px-3.5 py-3 h-full flex items-center justify-center">
+                        <TokenIcon token={nativeToken || {}} size="xxs" />
+                      </div>
+                    )}
+                  </>
+                }
                 options={{
                   numeral: true,
                   numeralDecimalScale: tokenDecimals,
