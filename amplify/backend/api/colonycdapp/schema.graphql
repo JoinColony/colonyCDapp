@@ -1051,7 +1051,7 @@ type Notification @model {
   """
   The user object the notification was sent to
   """
-  user: User! @hasOne(fields: ["userId"])
+  user: Profile! @hasOne(fields: ["userId"])
   """
   Colony ID associated with the Notification
   """
