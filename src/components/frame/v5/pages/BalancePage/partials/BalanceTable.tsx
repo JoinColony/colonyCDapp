@@ -19,7 +19,7 @@ const BalaceTable: FC<BalaceTableProps> = ({
   onBalanceSort,
 }) => {
   const { colony } = useColonyContext();
-  const { balances, nativeToken, status } = colony || {};
+  const { balances, nativeToken, status, colonyAddress } = colony || {};
   const { nativeToken: nativeTokenStatus } = status || {};
 
   const {
@@ -29,7 +29,7 @@ const BalaceTable: FC<BalaceTableProps> = ({
     ],
   } = useActionSidebarContext();
   const { handleClipboardCopy, isCopied } = useCopyToClipboard(
-    '0xCFD3aa1EbC6119D80Ed47955a87A9d9C281A97B3', // @TODO: fix me!
+    colonyAddress || '',
   );
 
   if (!colony || !colony.tokens) {
@@ -92,7 +92,7 @@ const BalaceTable: FC<BalaceTableProps> = ({
         <CopyWallet
           isCopied={isCopied}
           handleClipboardCopy={handleClipboardCopy}
-          walletAddress="0xCFD3aa1EbC6119D80Ed47955a87A9d9C281A97B3"
+          walletAddress={colonyAddress || ''}
         />
         <p className="text-1 mb-2">
           {formatText({ id: 'balancePage.modal.add.funds.form.wallet' })}
