@@ -6,6 +6,7 @@ import { pipe, mapPayload, withMeta } from '~utils/actions';
 import { ActionTypes } from '~redux/index';
 import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { getTransferFundsDialogPayload } from '~common/Dialogs/TransferFundsDialog/helpers';
+import { ColonyFragment } from '~gql';
 
 export const useTransferFunds = () => {
   const { colony } = useColonyContext();
@@ -19,12 +20,10 @@ export const useTransferFunds = () => {
     ? ActionTypes.MOTION_MOVE_FUNDS
     : ActionTypes.ACTION_MOVE_FUNDS;
 
-  if (!colony) {
-    return null;
-  }
-
   const transform = pipe(
-    mapPayload((payload) => getTransferFundsDialogPayload(colony, payload)),
+    mapPayload((payload) =>
+      getTransferFundsDialogPayload(colony as ColonyFragment, payload),
+    ),
     withMeta({ navigate }),
   );
 
