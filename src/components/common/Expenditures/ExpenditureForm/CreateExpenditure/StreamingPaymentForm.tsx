@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Id } from '@colony/colony-js';
 import { format, addMonths } from 'date-fns';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { ActionTypes } from '~redux';
 import { useColonyContext, useEnabledExtensions } from '~hooks';
 import Button from '~shared/Button';
-import { mapPayload, pipe } from '~utils/actions';
+import { mapPayload, pipe, withMeta } from '~utils/actions';
 import { CreateStreamingPaymentPayload } from '~redux/sagas/expenditures/createStreamingPayment';
 import { findDomainByNativeId } from '~utils/domains';
 import {
@@ -21,12 +21,12 @@ import { TEMP_convertEthToWei } from '~utils/expenditures';
 import { StreamingPaymentFormValues } from '../types';
 import { StreamingPaymentFormFields } from '../ExpenditureFormFields';
 import { getTimestampFromCleaveDateAndTime } from '../helpers';
-
 import CreateExpenditureForm from './CreateExpenditureForm';
 
 import styles from '../ExpenditureForm.module.css';
 
 const StreamingPaymentForm = () => {
+  const navigate = useNavigate();
   const { colony } = useColonyContext();
   const [isForce, setIsForce] = useState(false);
   const { data, loading } = useGetMotionsByActionTypeQuery({
@@ -45,7 +45,7 @@ const StreamingPaymentForm = () => {
     mapPayload(
       (payload: StreamingPaymentFormValues) =>
         ({
-          colonyAddress: colony.colonyAddress,
+          colony,
           createdInDomain: findDomainByNativeId(
             payload.createInDomainId,
             colony,
@@ -72,6 +72,7 @@ const StreamingPaymentForm = () => {
             : undefined,
         } as CreateStreamingPaymentPayload),
     ),
+    withMeta({ navigate }),
   );
 
   const nowDate = new Date();

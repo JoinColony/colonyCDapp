@@ -37,7 +37,7 @@ const TIMESTAMP_IN_FUTURE = 2_000_000_000;
 
 function* createStreamingPayment({
   payload: {
-    colonyAddress,
+    colony: { colonyAddress, name: colonyName },
     createdInDomain,
     recipientAddress,
     tokenAddress,
@@ -49,7 +49,7 @@ function* createStreamingPayment({
     limitAmount,
   },
   meta,
-  meta: { setTxHash },
+  meta: { setTxHash, navigate },
 }: Action<ActionTypes.STREAMING_PAYMENT_CREATE>) {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
@@ -132,11 +132,17 @@ function* createStreamingPayment({
       },
     });
 
-    window.history.replaceState(
-      {},
-      '',
-      `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
-    );
+    if (navigate) {
+      navigate?.(
+        `/colony/${colonyName}/expenditures/streaming/${streamingPaymentId}`,
+      );
+    } else {
+      window.history.replaceState(
+        {},
+        '',
+        `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
+      );
+    }
   } catch (error) {
     return yield putError(
       ActionTypes.STREAMING_PAYMENT_CREATE_ERROR,
