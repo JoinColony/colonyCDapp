@@ -304,7 +304,6 @@
   "transaction.WrappedTokenClient.withdraw.description": "Unwrap Token",
   "transaction.VestingSimpleClient.claimGrant.title": "Claim Colony Grant",
   "transaction.VestingSimpleClient.claimGrant.description": "Claim Colony Grant",
-  "transaction.VotingReputationClient.initialise.title": "Initialize Voting Reputation Extension",
   "transaction.group.createExpenditure.title": "Create Expenditure",
   "transaction.group.createExpenditure.description": "Create Expenditure",
   "transaction.ColonyClient.makeExpenditure.title": "Make Expenditure",
@@ -918,7 +917,6 @@
   "actionSidebar.actionType": "Action type",
   "actionSidebar.from": "From",
   "actionSidebar.to": "To",
-  "actionSidebar.colonyName": "Colony name",
   "actionSidebar.colonyLogo": "Colony logo",
   "actionSidebar.colonyDescription": "Colony description",
   "actionSidebar.colonyDescription.placeholder": "Short colony description",
@@ -1324,5 +1322,10 @@
   "actionSidebar.managePermissions.permissionsModal.owner.heading": "All of the actions within Admin, plus:",
   "actionSidebar.managePermissions.authority.disbaledTooltip": "The Mod permission does not support multi-sig authority.",
   "colonyAvatar.colonyImage.alt": "Colony logo",
-  "colonyAvatar.chainImage.alt": "Chain logo"
+  "colonyAvatar.chainImage.alt": "Chain logo",
+  "colonyName": "Colony name",
+  "createColonyWizard.step.colonyName.heading": "Welcome, {username}!",
+  "createColonyWizard.step.colonyName.description": "Let’s set up your Colony. Enter a name for your Colony and a short description about your Colony’s mission and purpose.",
+  "createColonyWizard.step.colonyName.url": "Custom Colony URL",
+  "createColonyWizard.step.colonyName.urlSubLabel": "You can change your Colony’s name, but not the URL. Choose carefully."
 }
