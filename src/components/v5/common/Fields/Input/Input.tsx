@@ -89,18 +89,15 @@ const Input: FC<InputProps> = ({
         <InputPills message={successfulMessage} status="success" />
       )}
 
-      {isErrorStatus && (
-        <>
-          {isDecoratedError && !isTyping ? (
-            <InputPills message={customErrorMessage} status="error" />
-          ) : (
-            <FormError isFullSize alignment="left">
-              {customErrorMessage ||
-                formatMessage({ id: 'too.many.characters' })}
-            </FormError>
-          )}
-        </>
-      )}
+      <div className={isErrorStatus ? 'visible' : 'invisible'}>
+        {isDecoratedError && !isTyping ? (
+          <InputPills message={customErrorMessage} status="error" />
+        ) : (
+          <FormError isFullSize alignment="left">
+            {customErrorMessage || formatMessage({ id: 'too.many.characters' })}
+          </FormError>
+        )}
+      </div>
     </div>
   );
 };
