@@ -7,7 +7,6 @@ import { useColonyContext } from '~hooks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import CopyWallet from '~v5/shared/CopyWallet/CopyWallet';
-import TransferFundsForm from './TransferFunds';
 import { BalaceTableProps } from '../types';
 import Modal from '~v5/shared/Modal';
 
@@ -94,10 +93,6 @@ const BalaceTable: FC<BalaceTableProps> = ({
           handleClipboardCopy={handleClipboardCopy}
           walletAddress={colonyAddress || ''}
         />
-        <p className="text-1 mb-2">
-          {formatText({ id: 'balancePage.modal.add.funds.form.wallet' })}
-        </p>
-        <TransferFundsForm onClose={toggleAddFundsModalOff} />
       </Modal>
     </>
   );
