@@ -1,7 +1,8 @@
 import React from 'react';
 import { FormattedMessage, MessageDescriptor } from 'react-intl';
+import { useFormContext } from 'react-hook-form';
 
-import Button from '~shared/Button';
+import Button from '~v5/shared/Button';
 import { Appearance, Heading3 } from '~shared/Heading';
 import { ComplexMessageValues } from '~types';
 import { multiLineTextEllipsis } from '~utils/strings';
@@ -15,30 +16,34 @@ export const TruncatedName = (name: string, maxLength = 120) => (
   </span>
 );
 
-interface SubmitFormButtonProps {
-  disabled: boolean;
-  loading: boolean;
-  dataTest: string;
-  className?: string;
-}
+export const ButtonRow = () => {
+  const {
+    formState: { isValid, isSubmitting },
+  } = useFormContext();
 
-export const SubmitFormButton = ({
-  disabled,
-  loading,
-  dataTest,
-  className,
-}: SubmitFormButtonProps) => (
-  <div className={className || styles.submitButton}>
-    <Button
-      appearance={{ theme: 'primary', size: 'large' }}
-      text={{ id: 'button.continue' }}
-      type="submit"
-      data-test={dataTest}
-      disabled={disabled}
-      loading={loading}
-    />
-  </div>
-);
+  const disabled = !isValid || isSubmitting;
+  const loading = isSubmitting;
+
+  /* const customHandler = useCallback(() => previousStep(), [previousStep]); */
+
+  return (
+    <div className="pt-12 flex justify-between">
+      <Button
+        text={{ id: 'button.back' }}
+        type="submit"
+        loading={loading}
+        mode="primaryOutline"
+      />
+      <Button
+        text={{ id: 'button.continue' }}
+        type="submit"
+        disabled={disabled}
+        loading={loading}
+        mode="solidBlack"
+      />
+    </div>
+  );
+};
 
 interface HeadingTextProps {
   text: MessageDescriptor;
