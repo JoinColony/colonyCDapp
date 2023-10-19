@@ -1,3 +1,4 @@
+import { weiToEth } from '@web3-onboard/common';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -6,6 +7,8 @@ import { useColonyContext } from '~hooks';
 import { Heading3 } from '~shared/Heading';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
 import { findDomainByNativeId } from '~utils/domains';
+
+import styles from './StreamingPaymentDetailsPage.module.css';
 
 const StreamingPaymentDetailsPage = () => {
   const { streamingPaymentId } = useParams();
@@ -50,11 +53,19 @@ const StreamingPaymentDetailsPage = () => {
     <div>
       <Heading3>Streaming payment {streamingPayment.id}</Heading3>
 
-      <div>
+      <div className={styles.details}>
         <div>Recipient address: {streamingPayment.recipientAddress}</div>
         <div>
           Created in: {streamingPaymentDomain?.metadata?.name ?? 'Unknown team'}
         </div>
+        <div>
+          End condition: {streamingPayment.metadata?.endCondition ?? 'Unknown'}
+        </div>
+        {streamingPayment.metadata?.limitAmount && (
+          <div>
+            Limit amount: {weiToEth(streamingPayment.metadata?.limitAmount)}
+          </div>
+        )}
         <div>
           Start time:{' '}
           {new Date(streamingPayment.startTime * 1000).toISOString()}
@@ -62,8 +73,7 @@ const StreamingPaymentDetailsPage = () => {
         <div>
           End time: {new Date(streamingPayment.endTime * 1000).toISOString()}
         </div>
-        <div>Interval: {streamingPayment.interval}</div>
-        <div>Metadata: {JSON.stringify(streamingPayment.metadata)}</div>
+        <div>Interval: {streamingPayment.interval}s</div>
       </div>
     </div>
   );
