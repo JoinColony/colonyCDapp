@@ -8,6 +8,8 @@ import { Heading3 } from '~shared/Heading';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
 import { findDomainByNativeId } from '~utils/domains';
 
+import StreamingPaymentPayouts from './StreamingPaymentPayouts';
+
 import styles from './StreamingPaymentDetailsPage.module.css';
 
 const StreamingPaymentDetailsPage = () => {
@@ -75,6 +77,8 @@ const StreamingPaymentDetailsPage = () => {
         </div>
         <div>Interval: {streamingPayment.interval}s</div>
       </div>
+
+      <StreamingPaymentPayouts streamingPayment={streamingPayment} />
     </div>
   );
 };
