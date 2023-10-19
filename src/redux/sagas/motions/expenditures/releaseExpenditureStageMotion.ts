@@ -5,7 +5,6 @@ import {
   getPermissionProofs,
 } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { hexZeroPad, hexlify } from 'ethers/lib/utils';
 
 import { ActionTypes } from '~redux/actionTypes';
 import { Action } from '~redux/types';
@@ -17,15 +16,20 @@ import {
   createTransactionChannels,
   waitForTxResult,
 } from '../../transactions';
-import { getColonyManager, initiateTransaction } from '../../utils';
-
-const mask = [false, true];
-
-const convertNumberToBytes32 = (number: number) =>
-  hexZeroPad(hexlify(number), 32);
+import {
+  getColonyManager,
+  getMulticallDataForStageRelease,
+  initiateTransaction,
+} from '../../utils';
 
 function* releaseExpenditureStageMotion({
-  payload: { colonyAddress, expenditure, slotId, motionDomainId },
+  payload: {
+    colonyAddress,
+    expenditure,
+    slotId,
+    motionDomainId,
+    tokenAddresses,
+  },
   meta,
   meta: { setTxHash, id },
 }: Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE>) {
@@ -66,21 +70,19 @@ function* releaseExpenditureStageMotion({
       ADDRESS_ZERO,
     );
 
-    const keys = [convertNumberToBytes32(slotId), convertNumberToBytes32(1)];
+    const encodedMulticallData: string[] = getMulticallDataForStageRelease(
+      expenditure,
+      slotId,
+      colonyClient,
+      permissionDomainId,
+      childSkillIndex,
+      tokenAddresses,
+    );
 
     const encodedReleaseStagedPaymentAction =
-      yield colonyClient.interface.encodeFunctionData(
-        'setExpenditureState(uint256,uint256,uint256,uint256,bool[],bytes32[],bytes32)',
-        [
-          permissionDomainId,
-          childSkillIndex,
-          expenditure.nativeId,
-          26, // @NOTE: Memory slot of expenditure's slots
-          mask,
-          keys,
-          convertNumberToBytes32(0),
-        ],
-      );
+      yield colonyClient.interface.encodeFunctionData('multicall', [
+        encodedMulticallData,
+      ]);
 
     yield createGroupTransaction(createMotion, batchId, meta, {
       context: ClientType.VotingReputationClient,

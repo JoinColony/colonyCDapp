@@ -11,6 +11,7 @@ import {
   ColonyClientV9,
 } from '@colony/colony-js';
 import { BigNumber, BigNumberish, utils } from 'ethers';
+import { hexZeroPad, hexlify } from 'ethers/lib/utils';
 
 import { ExpenditurePayoutFieldValue } from '~common/Expenditures/ExpenditureForm';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
@@ -130,6 +131,52 @@ export const getMulticallDataForPayout = (
         [MAPPING, ARRAY],
         [toB32(payout.slotId ?? ''), EXPENDITURESLOT_CLAIMDELAY],
         toB32(BigNumber.from(payout.claimDelay)),
+      ]),
+    );
+  }
+
+  return encodedMulticallData;
+};
+
+const convertNumberToBytes32 = (number: number) =>
+  hexZeroPad(hexlify(number), 32);
+
+const mask = [false, true];
+
+export const getMulticallDataForStageRelease = (
+  expenditure: Expenditure,
+  slotId: number,
+  colonyClient: AnyColonyClient,
+  permissionDomainId: BigNumber,
+  childSkillIndex: BigNumber,
+  tokenAddresses: string[],
+) => {
+  const keys = [convertNumberToBytes32(slotId), convertNumberToBytes32(1)];
+
+  if (!isSupportedColonyClient(colonyClient)) {
+    throw new Error('Colony client not supported');
+  }
+
+  const encodedMulticallData: string[] = [];
+
+  encodedMulticallData.push(
+    colonyClient.interface.encodeFunctionData('setExpenditureState', [
+      permissionDomainId,
+      childSkillIndex,
+      expenditure.nativeId,
+      26, // @NOTE: Memory slot of expenditure's slots
+      mask,
+      keys,
+      convertNumberToBytes32(0),
+    ]),
+  );
+
+  for (const tokenAddress of tokenAddresses) {
+    encodedMulticallData.push(
+      colonyClient.interface.encodeFunctionData('claimExpenditurePayout', [
+        expenditure.nativeId,
+        slotId,
+        tokenAddress,
       ]),
     );
   }
