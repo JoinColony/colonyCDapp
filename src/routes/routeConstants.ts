@@ -11,6 +11,7 @@ export const COLONY_EXTENSIONS_ROUTE = `/colony/:colonyName/extensions`;
 export const COLONY_INTEGRATIONS_ROUTE = `/colony/:colonyName/integrations`;
 export const COLONY_INCORPORATION_ROUTE = `/colony/:colonyName/incorporation`;
 export const COLONY_ADVANCED_ROUTE = `/colony/:colonyName/advanced`;
+export const COLONY_BALANCE_ROUTE = '/colony/:colonyName/balance';
 export const COLONY_EXTENSION_DETAILS_ROUTE = `/colony/:colonyName/extensions/:extensionId/*`;
 export const COLONY_EXTENSION_DETAILS_SETUP_ROUTE = `/colony/:colonyName/extensions/:extensionId/setup`;
 export const COLONY_EXTENSION_SETUP_ROUTE = `/setup`;

@@ -51,6 +51,7 @@ import {
   USER_PREFERENCES_ROUTE,
   USER_ADVANCED_ROUTE,
   COLONY_ADMIN_ROUTE,
+  COLONY_BALANCE_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -71,6 +72,7 @@ import MembersPage from '~frame/v5/pages/MembersPage';
 import ColonyUsersPage from '~frame/v5/pages/ColonyUsersPage';
 import VerifiedPage from '~frame/v5/pages/VerifiedPage';
 import TeamsPage from '~frame/v5/pages/TeamsPage';
+import BalancePage from '~frame/v5/pages/BalancePage';
 import { ColonyUsersPageType } from '~frame/v5/pages/ColonyUsersPage/types';
 import { MemberContextProviderWithSearchAndFilter as MemberContextProvider } from '~context/MemberContext';
 import UserProfilePage from '~frame/v5/pages/UserProfilePage';
@@ -179,6 +181,23 @@ const Routes = () => {
                 </PageLayout>
               </ActionSidebarContextProvider>
             </MemberContextProvider>
+          </ExtensionsContextProvider>
+        }
+      />
+      <Route
+        path={COLONY_BALANCE_ROUTE}
+        element={
+          <ExtensionsContextProvider>
+            <ActionSidebarContextProvider>
+              <PageLayout
+                loadingText={{ id: 'loading.extensionsPage' }}
+                title={{ id: 'balancePage.title' }}
+                description={{ id: 'balancePage.description' }}
+                pageName="members"
+              >
+                <BalancePage />
+              </PageLayout>
+            </ActionSidebarContextProvider>
           </ExtensionsContextProvider>
         }
       />

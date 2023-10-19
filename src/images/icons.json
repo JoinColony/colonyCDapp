@@ -221,7 +221,10 @@
     "thumbs-up",
     "thumbs-down",
     "pie-chart",
-    "clock"
+    "clock",
+    "transfer",
+    "add",
+    "piggy-bank"
   ],
   "multiColorIcons": [
     "circle-check-primary",

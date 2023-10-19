@@ -83,6 +83,12 @@ const useSideNavigation = (pageName: string) => {
           label: 'Teams',
           value: 'teams',
         },
+        {
+          id: 5,
+          linkTo: `/colony/${name}/balance`,
+          label: 'Balance',
+          value: 'balance',
+        },
       ];
     }
     case 'profile': {
