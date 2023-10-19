@@ -3,7 +3,11 @@ import { Id } from '@colony/colony-js';
 import { useWatch } from 'react-hook-form';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
-import { useColonyContext, useNetworkInverseFee } from '~hooks';
+import {
+  useColonyContext,
+  useEnabledExtensions,
+  useNetworkInverseFee,
+} from '~hooks';
 import { getCreatePaymentDialogPayload } from '~common/Dialogs/CreatePaymentDialog/helpers';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
@@ -16,6 +20,7 @@ export const useSplitPayment = (
 ) => {
   const { networkInverseFee } = useNetworkInverseFee();
   const { colony } = useColonyContext();
+  const { isVotingReputationEnabled } = useEnabledExtensions();
   const colonyTokens = useMemo(
     () =>
       colony?.tokens?.items
@@ -51,7 +56,9 @@ export const useSplitPayment = (
       }),
       [colony?.nativeToken.tokenAddress],
     ),
-    actionType: ActionTypes.ACTION_EXPENDITURE_PAYMENT,
+    actionType: isVotingReputationEnabled
+      ? ActionTypes.MOTION_EXPENDITURE_PAYMENT
+      : ActionTypes.ACTION_EXPENDITURE_PAYMENT,
     getFormOptions,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(

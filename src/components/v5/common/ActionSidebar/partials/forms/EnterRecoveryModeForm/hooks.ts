@@ -1,9 +1,8 @@
-import { useNavigate } from 'react-router-dom';
 import { useCallback, useMemo } from 'react';
 import { DeepPartial } from 'utility-types';
 import { ActionTypes } from '~redux';
-import { mapPayload, pipe, withMeta } from '~utils/actions';
-import { useAppContext, useColonyContext } from '~hooks';
+import { mapPayload, pipe } from '~utils/actions';
+import { useAppContext, useColonyContext, useEnabledExtensions } from '~hooks';
 import { getRecoveryModeDialogPayload } from '~common/Dialogs/RecoveryModeDialog/helpers';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
@@ -14,12 +13,14 @@ export const useEnterRecoveryMode = (
 ) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const navigate = useNavigate();
+  const { isVotingReputationEnabled } = useEnabledExtensions();
 
   useActionFormBaseHook({
     getFormOptions,
     validationSchema,
-    actionType: ActionTypes.ACTION_UNLOCK_TOKEN,
+    actionType: isVotingReputationEnabled
+      ? ActionTypes.ROOT_MOTION
+      : ActionTypes.ACTION_UNLOCK_TOKEN,
     defaultValues: useMemo<DeepPartial<EnterRecoveryModeFormValues>>(
       () => ({
         description: '',
@@ -40,9 +41,8 @@ export const useEnterRecoveryMode = (
 
           return null;
         }),
-        withMeta({ navigate }),
       ),
-      [colony, user, navigate],
+      [colony, user],
     ),
   });
 };
