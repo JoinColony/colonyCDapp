@@ -27,6 +27,9 @@ const Input: FC<InputProps> = ({
   successfulMessage,
   isDisabled,
   disabledTooltipMessage,
+  labelMessage,
+  labelClassName,
+  subLabelMessage,
 }) => {
   const { formatMessage } = useIntl();
   const { isTyping, isCharLenghtError, currentCharNumber, onChange } = useInput(
@@ -62,6 +65,23 @@ const Input: FC<InputProps> = ({
 
   return (
     <div className="flex relative flex-col gap-1">
+      {labelMessage && (
+        <label
+          className={clsx(
+            labelClassName,
+            'flex flex-col text-sm font-medium leading-5',
+          )}
+          htmlFor={name}
+        >
+          {formatText(labelMessage)}
+          {subLabelMessage && (
+            <span className="text-xs text-gray-400">
+              {formatText(subLabelMessage)}
+            </span>
+          )}
+        </label>
+      )}
+
       {isDisabled && disabledTooltipMessage ? (
         <Tooltip
           isFullWidthContent

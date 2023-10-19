@@ -16,6 +16,9 @@ export type InputProps = {
   successfulMessage?: string;
   isDisabled?: boolean;
   disabledTooltipMessage?: Message;
+  labelMessage?: Message;
+  labelClassName?: string;
+  subLabelMessage?: Message;
 };
 
 export type PillProps = {
