@@ -1,10 +1,9 @@
-import { useNavigate } from 'react-router-dom';
 import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
 import { DeepPartial } from 'utility-types';
 import { ActionTypes } from '~redux';
-import { mapPayload, pipe, withMeta } from '~utils/actions';
-import { useColonyContext } from '~hooks';
+import { mapPayload, pipe } from '~utils/actions';
+import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { getUnlockTokenDialogPayload } from '~common/Dialogs/UnlockTokenDialog/helpers';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
@@ -15,11 +14,13 @@ export const useUnlockToken = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
-  const navigate = useNavigate();
+  const { isVotingReputationEnabled } = useEnabledExtensions();
 
   useActionFormBaseHook({
     getFormOptions,
-    actionType: ActionTypes.ACTION_UNLOCK_TOKEN,
+    actionType: isVotingReputationEnabled
+      ? ActionTypes.ROOT_MOTION
+      : ActionTypes.ACTION_UNLOCK_TOKEN,
     defaultValues: useMemo<DeepPartial<UnlockTokenFormValues>>(
       () => ({
         decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
@@ -42,9 +43,8 @@ export const useUnlockToken = (
           }
           return null;
         }),
-        withMeta({ navigate }),
       ),
-      [colony, navigate],
+      [colony],
     ),
     validationSchema,
   });

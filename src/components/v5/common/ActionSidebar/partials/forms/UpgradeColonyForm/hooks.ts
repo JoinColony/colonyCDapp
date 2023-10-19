@@ -1,10 +1,9 @@
-import { useNavigate } from 'react-router-dom';
 import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
 import { DeepPartial } from 'utility-types';
 import { ActionTypes } from '~redux';
-import { mapPayload, pipe, withMeta } from '~utils/actions';
-import { useColonyContext } from '~hooks';
+import { mapPayload, pipe } from '~utils/actions';
+import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { getUnlockTokenDialogPayload } from '~common/Dialogs/UnlockTokenDialog/helpers';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
@@ -15,10 +14,12 @@ export const useUpgradeColony = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
-  const navigate = useNavigate();
+  const { isVotingReputationEnabled } = useEnabledExtensions();
 
   useActionFormBaseHook({
-    actionType: ActionTypes.ACTION_VERSION_UPGRADE,
+    actionType: isVotingReputationEnabled
+      ? ActionTypes.ROOT_MOTION
+      : ActionTypes.ACTION_VERSION_UPGRADE,
     getFormOptions,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
@@ -36,9 +37,8 @@ export const useUpgradeColony = (
 
           return null;
         }),
-        withMeta({ navigate }),
       ),
-      [colony, navigate],
+      [colony],
     ),
     defaultValues: useMemo<DeepPartial<UpgradeColonyFormValues>>(
       () => ({
