@@ -12,7 +12,6 @@ export interface AvatarProps {
 }
 
 export type AvatarSize =
-  | 'xxxs'
   | 'xxs'
   | 'xs'
   | 'sm'

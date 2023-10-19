@@ -3,7 +3,6 @@ import React, { CSSProperties, ReactNode } from 'react';
 import getIcon from './identicon';
 import Icon from '~shared/Icon';
 import styles from './Avatar.module.css';
-import { AvatarSize } from '~v5/shared/Avatar/types';
 
 export interface Props {
   /** Seed phrase for blockies fallback (usually an address) */
@@ -25,7 +24,7 @@ export interface Props {
   placeholderIcon?: string;
 
   /** Avatar size (default is between `s` and `m`) */
-  size?: AvatarSize;
+  size?: 'xxxs' | 'xxs' | 'xs' | 's' | 'sm' | 'm' | 'l' | 'xl';
 
   /** Title for a11y */
   title: string;

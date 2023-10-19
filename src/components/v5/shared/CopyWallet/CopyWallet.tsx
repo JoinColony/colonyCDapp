@@ -7,7 +7,7 @@ import { CopyWalletProps } from './types';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
 import { useMobile } from '~hooks';
 
-const displayName = 'v5.CopyWalletAddressButton';
+const displayName = 'v5.CopyWallet';
 
 const CopyWallet: FC<CopyWalletProps> = ({
   disabled = false,

@@ -1146,7 +1146,5 @@
   "token.type.reputation": "Reputation",
   "balancePage.modal.title": "Deposit funds to the Colony",
   "balancePage.modal.subtitle": "Send funds to the Colony's treasury.",
-  "balancePage.send.funds": "Send funds to the Colony",
-  "balancePage.modal.add.funds.form.wallet": "Add funds directly from your wallet",
-  "balancePage.modal.add.funds.form.label": "Enter amount"
+  "balancePage.send.funds": "Send funds to the Colony"
 }
