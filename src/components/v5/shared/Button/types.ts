@@ -13,6 +13,7 @@ export type ButtonMode =
   | 'quinary'
   | 'senary'
   | 'septenary'
+  | 'solidBlack'
   | 'completed';
 
 export type ButtonSize = 'default' | 'extraSmall' | 'small' | 'large';
