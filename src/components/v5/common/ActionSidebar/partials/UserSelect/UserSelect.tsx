@@ -89,7 +89,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
           isOpen={isUserSelectVisible}
           onToggle={toggleUserSelect}
           onSelect={(value) => {
-            field.onChange(value);
+            field.onChange(isHexString(value) ? value : undefined);
             toggleUserSelectOff();
           }}
           onSearch={(query) => {
@@ -127,6 +127,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
                 onClick: () => {}, // @TODO: add action
               }}
               className="mt-4"
+              textAlign="left"
             >
               {userByAddress?.walletAddress ||
                 (field.value && (

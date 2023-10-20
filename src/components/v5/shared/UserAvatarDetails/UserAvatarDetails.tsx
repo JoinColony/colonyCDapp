@@ -3,11 +3,10 @@ import clsx from 'clsx';
 
 import Avatar from '~v5/shared/Avatar';
 import Icon from '~shared/Icon';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import CopyWalletAddressButton from '~v5/shared/CopyWalletAddressButton';
 import { UserAvatarDetailsProps } from './types';
 import UserStatus from '~v5/common/Pills/UserStatus';
 import { UserStatusMode } from '~v5/common/Pills/types';
+import { splitWalletAddress } from '~utils/splitWalletAddress';
 import { formatText } from '~utils/intl';
 
 const displayName = 'v5.UserAvatarDetails';
@@ -22,10 +21,6 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
   isBordered = false,
   size = 'm',
 }) => {
-  const { handleClipboardCopy, isCopied } = useCopyToClipboard(
-    walletAddress || '',
-  );
-
   const mode: UserStatusMode =
     (userStatus === 'new' && 'active-new') ||
     (userStatus === 'active' && 'active-filled') ||
@@ -36,7 +31,12 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
   return (
     <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center">
       {!!userStatus && userStatus === 'verified' ? (
-        <Avatar size={size} title={userName} avatar={avatar} />
+        <Avatar
+          size={size}
+          title={userName}
+          avatar={avatar}
+          mode={userStatus}
+        />
       ) : (
         <div className="flex relative justify-center">
           <div
@@ -50,7 +50,12 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
               'border-purple-400': userStatus === 'top' && isContributorsList,
             })}
           >
-            <Avatar size={size} title={userName} avatar={avatar} />
+            <Avatar
+              size={size}
+              title={userName}
+              avatar={avatar}
+              mode={userStatus ?? 'general'}
+            />
           </div>
           {!!userStatus && userStatus !== 'general' && isContributorsList && (
             <span className="absolute bottom-[-0.9375rem]">
@@ -68,11 +73,9 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
             </span>
           )}
         </div>
-        <CopyWalletAddressButton
-          isCopied={isCopied}
-          handleClipboardCopy={handleClipboardCopy}
-          walletAddress={walletAddress || ''}
-        />
+        <p className="text-sm text-gray-600">
+          {walletAddress && splitWalletAddress(walletAddress)}
+        </p>
       </div>
     </div>
   );

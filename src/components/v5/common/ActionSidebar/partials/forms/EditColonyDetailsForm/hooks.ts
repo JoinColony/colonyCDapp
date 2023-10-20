@@ -1,11 +1,9 @@
-import { useNavigate } from 'react-router-dom';
-
 import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
 import { DeepPartial } from 'utility-types';
 import { ActionTypes } from '~redux';
-import { mapPayload, pipe, withMeta } from '~utils/actions';
-import { useColonyContext } from '~hooks';
+import { mapPayload, pipe } from '~utils/actions';
+import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { getEditColonyDetailsDialogPayload } from '~common/Dialogs/EditColonyDetailsDialog/helpers';
 import { useColonyAvatarContext } from '~context/ColonyAvatarContext';
 import { ActionFormBaseProps } from '../../../types';
@@ -18,8 +16,8 @@ export const useEditColonyDetails = (
 ) => {
   const { colony } = useColonyContext();
   const { metadata } = colony || {};
-  const navigate = useNavigate();
   const { colonyAvatar, colonyThumbnail } = useColonyAvatarContext();
+  const { isVotingReputationEnabled } = useEnabledExtensions();
 
   useActionFormBaseHook({
     getFormOptions,
@@ -35,7 +33,9 @@ export const useEditColonyDetails = (
       }),
       [metadata],
     ),
-    actionType: ActionTypes.MOTION_EDIT_COLONY,
+    actionType: isVotingReputationEnabled
+      ? ActionTypes.MOTION_EDIT_COLONY
+      : ActionTypes.ACTION_EDIT_COLONY,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
@@ -57,9 +57,8 @@ export const useEditColonyDetails = (
 
           return null;
         }),
-        withMeta({ navigate }),
       ),
-      [navigate, colony, colonyAvatar, colonyThumbnail],
+      [colony, colonyAvatar, colonyThumbnail],
     ),
   });
 };
