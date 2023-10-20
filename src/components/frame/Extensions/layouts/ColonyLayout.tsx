@@ -1,43 +1,30 @@
 import React, { FC, PropsWithChildren, useCallback } from 'react';
-import { ToastContainer } from 'react-toastify';
 
-import Wallet from '~frame/RouteLayouts/UserNavigation/Wallet';
-import Navigation from '~v5/common/Navigation';
-import PageTitle from '~v5/common/PageTitle';
-import CalamityBanner from '~v5/shared/CalamityBanner';
-import Spinner from '~v5/shared/Spinner';
-import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
-import styles from '~shared/Extensions/Toast/Toast.module.css';
 import { NetworkContractUpgradeDialog } from '~common/Dialogs';
+import { useMemberModalContext } from '~context/MemberModalContext';
 import { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
+import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
 import { ColonyFragment } from '~gql';
 import {
   useAppContext,
   useColonyContext,
   useColonyContractVersion,
   useEnabledExtensions,
-  useMobile,
   useTransformer,
 } from '~hooks';
 import { useDialog } from '~shared/Dialog';
 import { getAllUserRoles } from '~transformers';
 import { canColonyBeUpgraded, hasRoot } from '~utils/checks';
 
-import type { MainLayoutProps } from './types';
+import type { ColonyLayoutProps } from './types';
 
+import MainLayout from './MainLayout';
 import ColonyHeader from './ColonyHeader';
 import MainSidebar from './MainSidebar';
 
 const displayName = 'frame.Extensions.layouts.ColonyLayout';
 
-const ColonyLayout: FC<PropsWithChildren<MainLayoutProps>> = ({
-  children,
-  title,
-  description,
-  loadingText,
-  pageName,
-}) => {
-  const isMobile = useMobile();
+const ColonyLayout: FC<PropsWithChildren<ColonyLayoutProps>> = (props) => {
   const { colony } = useColonyContext();
   const { colonyContractVersion } = useColonyContractVersion();
   const { user, wallet } = useAppContext();
@@ -45,6 +32,13 @@ const ColonyLayout: FC<PropsWithChildren<MainLayoutProps>> = ({
     colony as ColonyFragment,
     wallet?.address || '',
   ]);
+
+  const {
+    isMemberModalOpen,
+    setIsMemberModalOpen,
+    user: modalUser,
+  } = useMemberModalContext();
+
   const openUpgradeColonyDialog = useDialog(NetworkContractUpgradeDialog);
   const enabledExtensionData = useEnabledExtensions();
   const canUpgradeColony = user?.profile?.displayName && hasRoot(allUserRoles);
@@ -77,37 +71,24 @@ const ColonyLayout: FC<PropsWithChildren<MainLayoutProps>> = ({
       ]
     : [];
 
+  const header = <ColonyHeader />;
+  const sidebar = <MainSidebar colony={colony} />;
+
   return (
-    <Spinner loading={false} loadingText={loadingText}>
-      <CalamityBanner items={calamityBannerItems} />
-      <ToastContainer
-        className={styles.toastNotification}
-        autoClose={3000}
-        hideProgressBar
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        pauseOnHover
-        closeButton={CloseButton}
+    <>
+      <MainLayout
+        {...props}
+        calamityBannerItems={calamityBannerItems}
+        header={header}
+        sidebar={sidebar}
       />
-      <MainSidebar colony={colony} />
-      <ColonyHeader />
-      {/* @TODO: Remove wallet component when we have a proper wallet */}
-      <div className="hidden">
-        <Wallet />
-      </div>
-      <main className="mt-5 pb-24">
-        <div className="inner">
-          {isMobile && (
-            <div className="mb-9">
-              <Navigation pageName={pageName} />
-            </div>
-          )}
-          <PageTitle title={title} subtitle={description} />
-          <div className="mt-9">{children}</div>
-        </div>
-      </main>
-    </Spinner>
+
+      <ManageMemberModal
+        isOpen={isMemberModalOpen}
+        onClose={() => setIsMemberModalOpen(false)}
+        user={modalUser}
+      />
+    </>
   );
 };
 

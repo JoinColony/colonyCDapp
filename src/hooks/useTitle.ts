@@ -193,6 +193,7 @@ export const useTitle = (title?: string) => {
       colonyName: colonyDisplayName,
     });
 
+  // @TODO: maybe use a more react-y way to set the title (like react helmet or hoofd)
   document.title = titleToSet;
 };
 

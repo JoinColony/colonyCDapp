@@ -1,13 +1,18 @@
 import type { ReactNode } from 'react';
-import type { MessageDescriptor } from 'react-intl';
+
+import type { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
 
 export interface MainLayoutProps {
-  title: MessageDescriptor;
-  description: MessageDescriptor;
-  loadingText: MessageDescriptor | string;
-  pageName: string;
+  calamityBannerItems?: CalamityBannerItemProps[];
+  header?: ReactNode;
   hideColonies?: boolean;
+  sidebar?: ReactNode;
 }
+
+export type ColonyLayoutProps = Omit<
+  MainLayoutProps,
+  'calamityBannerItems' | 'header' | 'sidebar'
+>;
 
 export interface HeaderProps {
   navBar?: ReactNode;
