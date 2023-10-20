@@ -1,15 +1,14 @@
 import React, { FC, useState } from 'react';
 
-import { useCurrentPage, useMobile, useSideNavigation } from '~hooks';
+import { useCurrentPage, useMobile } from '~hooks';
 import NavItem from './partials/NavItem';
 import Select from '~v5/common/Fields/Select';
 import { NavigationProps } from './types';
 
 const displayName = 'v5.common.Navigation';
 
-const Navigation: FC<NavigationProps> = ({ pageName }) => {
+const Navigation: FC<NavigationProps> = ({ navigationItems }) => {
   const isMobile = useMobile();
-  const navigationItems = useSideNavigation(pageName);
   const navId = useCurrentPage(navigationItems);
 
   const [selectedElement, setSelectedElement] = useState(navId);

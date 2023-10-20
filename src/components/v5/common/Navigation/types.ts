@@ -7,5 +7,12 @@ export interface NavItemProps {
 }
 
 export interface NavigationProps {
-  pageName: string;
+  navigationItems: NavigationItem[];
+}
+
+export interface NavigationItem {
+  id: number;
+  linkTo: string;
+  label: string;
+  value: string;
 }

@@ -3,7 +3,11 @@ import { defineMessages } from 'react-intl';
 
 import { DropdownMenuItem, DropdownMenuSection } from '~shared/DropdownMenu';
 import NavLink from '~shared/NavLink';
-import { CREATE_USER_ROUTE, USER_EDIT_ROUTE } from '~routes/routeConstants';
+import {
+  CREATE_USER_ROUTE,
+  USER_HOME_ROUTE,
+  USER_EDIT_PROFILE_ROUTE,
+} from '~routes/routeConstants';
 import { useAppContext, useUserAccountRegistered } from '~hooks';
 
 const displayName = 'PopoverSection.UserSection';
@@ -44,7 +48,7 @@ const UserSection = () => {
           </DropdownMenuItem>
           <DropdownMenuItem>
             <NavLink
-              to={USER_EDIT_ROUTE}
+              to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`}
               text={MSG.settings}
               data-test="userProfileSettings"
             />

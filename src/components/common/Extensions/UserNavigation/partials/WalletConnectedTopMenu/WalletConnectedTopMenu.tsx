@@ -5,7 +5,7 @@ import Link from '~v5/shared/Link';
 import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';
 import UserAvatarDetails from '~v5/shared/UserAvatarDetails';
-import { USER_EDIT_ROUTE } from '~routes';
+import { USER_HOME_ROUTE, USER_EDIT_PROFILE_ROUTE } from '~routes';
 import { UserAvatarDetailsProps } from '~v5/shared/UserAvatarDetails/types';
 
 const displayName =
@@ -32,7 +32,10 @@ const WalletConnectedTopMenu: FC<UserAvatarDetailsProps> = ({
           isVerified={isVerified}
         />
       </div>
-      <Link to={USER_EDIT_ROUTE} className="navigation-link">
+      <Link
+        to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`}
+        className="navigation-link"
+      >
         <Icon name="user-circle-gear" appearance={{ size: iconSize }} />
         <p className="ml-2">{formatMessage({ id: 'userMenu.menageTitle' })}</p>
       </Link>

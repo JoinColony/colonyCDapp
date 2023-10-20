@@ -62,7 +62,6 @@ export { default as useUserByAddress } from './useUserByAddress';
 export { default as useUserByName } from './useUserByName';
 export { default as useUserByNameOrAddress } from './useUserByNameOrAddress';
 export { default as useDetectClickOutside } from './useDetectClickOutside';
-export { default as useSideNavigation } from './useSideNavigation';
 export { default as useCurrentPage } from './useCurrentPage';
 export { default as useFetchActiveInstallsExtension } from './useFetchActiveInstallsExtension';
 export { default as useActiveInstalls } from './useActiveInstalls';

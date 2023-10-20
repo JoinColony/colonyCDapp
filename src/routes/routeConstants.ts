@@ -1,6 +1,7 @@
 // @NOTE: While adding or modifying a route here make sure you
 // also modify the document title hook at src/utils/hooks/useTitle.ts
 
+// Colony rooutes
 export const COLONY_HOME_ROUTE = '/colony/:colonyName/*';
 export const COLONY_DETAILS_ROUTE = `details`;
 export const COLONY_ADMIN_ROUTE = `admin`;
@@ -25,15 +26,18 @@ export const ACTIONS_PAGE_ROUTE = 'tx/:transactionHash';
 
 export const COLONY_EXTENSION_SETUP_ROUTE = `/setup`;
 
+// User routes
+export const USER_HOME_ROUTE = '/my';
+export const USER_EDIT_PROFILE_ROUTE = 'profile';
+export const USER_ADVANCED_ROUTE = 'advanced-settings';
+export const USER_PREFERENCES_ROUTE = 'preferences';
+
 // UNUSED?
 export const COLONY_EVENTS_ROUTE = `/events`;
 export const DECISIONS_PREVIEW_ROUTE_SUFFIX = '/preview';
 
 export const CREATE_COLONY_ROUTE = '/create-colony/:inviteCode';
 export const CREATE_USER_ROUTE = '/create-user';
-export const USER_EDIT_ROUTE = '/edit-profile';
-export const USER_ADVANCED_ROUTE = '/profile-advanced';
-export const USER_PREFERENCES_ROUTE = '/profile-preferences';
 export const USER_ROUTE = '/user/:username';
 export const NOT_FOUND_ROUTE = '/404';
 export const LANDING_PAGE_ROUTE = '/landing';

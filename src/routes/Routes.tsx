@@ -37,7 +37,7 @@ import {
   COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
   CREATE_COLONY_ROUTE,
   CREATE_USER_ROUTE,
-  USER_EDIT_ROUTE,
+  USER_EDIT_PROFILE_ROUTE,
   USER_ROUTE,
   LANDING_PAGE_ROUTE,
   NOT_FOUND_ROUTE,
@@ -58,6 +58,7 @@ import {
   COLONY_TEAMS_ROUTE,
   USER_PREFERENCES_ROUTE,
   USER_ADVANCED_ROUTE,
+  USER_HOME_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -68,6 +69,8 @@ import NotFoundRoute from './NotFoundRoute';
 import MainRoute from './MainRoute';
 import ColonyRoute from './ColonyRoute';
 import ColonyMembersRoute from './ColonyMembersRoute';
+import ColonySettingsRoute from './ColonySettingsRoute';
+import UserRoute from './UserRoute';
 
 const displayName = 'routes.Routes';
 
@@ -93,12 +96,19 @@ const Routes = () => {
               </UserLayout>
             }
           />
-          <Route path={USER_EDIT_ROUTE} element={<UserProfilePage />} />
-          <Route
-            path={USER_PREFERENCES_ROUTE}
-            element={<UserPreferencesPage />}
-          />
-          <Route path={USER_ADVANCED_ROUTE} element={<UserAdvancedPage />} />
+
+          {/* User routes */}
+          <Route path={USER_HOME_ROUTE} element={<UserRoute />}>
+            <Route
+              path={USER_EDIT_PROFILE_ROUTE}
+              element={<UserProfilePage />}
+            />
+            <Route
+              path={USER_PREFERENCES_ROUTE}
+              element={<UserPreferencesPage />}
+            />
+            <Route path={USER_ADVANCED_ROUTE} element={<UserAdvancedPage />} />
+          </Route>
         </Route>
 
         {/* Colony routes */}
@@ -130,33 +140,47 @@ const Routes = () => {
               </NavBar>
             }
           />
-          <Route path={COLONY_EXTENSIONS_ROUTE} element={<ExtensionsPage />} />
-          <Route
-            path={COLONY_EXTENSION_DETAILS_ROUTE}
-            element={
-              /* I am not sure why this needs a provider, but I guess we'll find out soon enough */
-              <ExtensionsContextProvider>
-                <ExtensionDetailsPage />
-              </ExtensionsContextProvider>
-            }
-          />
+
+          {/* Colony settings routes */}
+          <Route element={<ColonySettingsRoute />}>
+            <Route
+              path={COLONY_DETAILS_ROUTE}
+              element={<ColonyDetailsPage />}
+            />
+            <Route
+              path={COLONY_REPUTATION_ROUTE}
+              element={<ReputationPage />}
+            />
+            <Route
+              path={COLONY_PERMISSIONS_ROUTE}
+              element={<PermissionsPage />}
+            />
+            <Route
+              path={COLONY_EXTENSIONS_ROUTE}
+              element={<ExtensionsPage />}
+            />
+            <Route
+              path={COLONY_EXTENSION_DETAILS_ROUTE}
+              element={
+                /* I am not sure why this needs a provider, but I guess we'll find out soon enough */
+                <ExtensionsContextProvider>
+                  <ExtensionDetailsPage />
+                </ExtensionsContextProvider>
+              }
+            />
+            <Route
+              path={COLONY_INTEGRATIONS_ROUTE}
+              element={<IntegrationsPage />}
+            />
+            <Route
+              path={COLONY_INCORPORATION_ROUTE}
+              element={<IncorporationPage />}
+            />
+            <Route path={COLONY_ADVANCED_ROUTE} element={<AdvancedPage />} />
+          </Route>
+
           <Route path={ACTIONS_PAGE_ROUTE} element={<ActionDetailsPage />} />
           <Route path={DECISIONS_PAGE_ROUTE} element={<ActionDetailsPage />} />
-          <Route path={COLONY_DETAILS_ROUTE} element={<ColonyDetailsPage />} />
-          <Route path={COLONY_REPUTATION_ROUTE} element={<ReputationPage />} />
-          <Route
-            path={COLONY_PERMISSIONS_ROUTE}
-            element={<PermissionsPage />}
-          />
-          <Route
-            path={COLONY_INTEGRATIONS_ROUTE}
-            element={<IntegrationsPage />}
-          />
-          <Route
-            path={COLONY_INCORPORATION_ROUTE}
-            element={<IncorporationPage />}
-          />
-          <Route path={COLONY_ADVANCED_ROUTE} element={<AdvancedPage />} />
         </Route>
         {/*
       <AlwaysAccesibleRoute
