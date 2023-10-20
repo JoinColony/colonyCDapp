@@ -1,10 +1,9 @@
-import { useNavigate } from 'react-router-dom';
 import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
 import { DeepPartial } from 'utility-types';
 import { ActionTypes } from '~redux';
-import { mapPayload, pipe, withMeta } from '~utils/actions';
-import { useColonyContext } from '~hooks';
+import { mapPayload, pipe } from '~utils/actions';
+import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { getCreateDomainDialogPayload } from '~common/Dialogs/CreateDomainDialog/helpers';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
@@ -15,10 +14,12 @@ export const useCrateNewTeam = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
-  const navigate = useNavigate();
+  const { isVotingReputationEnabled } = useEnabledExtensions();
 
   useActionFormBaseHook({
-    actionType: ActionTypes.ACTION_DOMAIN_CREATE,
+    actionType: isVotingReputationEnabled
+      ? ActionTypes.MOTION_DOMAIN_CREATE_EDIT
+      : ActionTypes.ACTION_DOMAIN_CREATE,
     defaultValues: useMemo<DeepPartial<CreateNewTeamFormValues>>(
       () => ({
         teamName: '',
@@ -51,9 +52,8 @@ export const useCrateNewTeam = (
 
           return null;
         }),
-        withMeta({ navigate }),
       ),
-      [colony, navigate],
+      [colony],
     ),
   });
 };

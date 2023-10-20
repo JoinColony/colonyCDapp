@@ -1,9 +1,8 @@
-import { useNavigate } from 'react-router-dom';
 import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
 import { ActionTypes } from '~redux';
-import { mapPayload, pipe, withMeta } from '~utils/actions';
-import { useAppContext, useColonyContext } from '~hooks';
+import { mapPayload, pipe } from '~utils/actions';
+import { useAppContext, useColonyContext, useEnabledExtensions } from '~hooks';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
 import { getTokenManagementDialogPayload } from '~common/Dialogs/TokenManagementDialog/helpers';
@@ -16,8 +15,8 @@ export const useManageTokens = (
 ) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const navigate = useNavigate();
   const { readonly } = useAdditionalFormOptionsContext();
+  const { isVotingReputationEnabled } = useEnabledExtensions();
 
   const colonyTokens = useMemo(
     () => colony?.tokens?.items.filter(notNull) || [],
@@ -40,7 +39,9 @@ export const useManageTokens = (
   useActionFormBaseHook({
     getFormOptions,
     validationSchema,
-    actionType: ActionTypes.ACTION_EDIT_COLONY,
+    actionType: isVotingReputationEnabled
+      ? ActionTypes.MOTION_EDIT_COLONY
+      : ActionTypes.ACTION_EDIT_COLONY,
     defaultValues: useMemo(
       () => ({
         decisionMethod: '',
@@ -72,9 +73,8 @@ export const useManageTokens = (
 
           return null;
         }),
-        withMeta({ navigate }),
       ),
-      [colony, user, navigate],
+      [colony, user],
     ),
   });
 
