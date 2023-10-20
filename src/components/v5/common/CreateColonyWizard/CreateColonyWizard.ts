@@ -8,7 +8,6 @@ import StepColonyName from './StepColonyName';
 import StepConfirmAllInput from './StepConfirmAllInput';
 import StepConfirmTransactions from './StepConfirmTransactions';
 import StepCreateToken from './StepCreateToken';
-import StepSelectToken from './StepSelectToken';
 import StepTokenChoice from './StepTokenChoice';
 
 const stepArray: StepType[] = [
@@ -29,22 +28,7 @@ export type FormValues = {
   displayName: string;
 };
 
-const pickTokenStep = (tokenChoice: FormValues['tokenChoice']) => {
-  if (tokenChoice === 'select') return StepSelectToken;
-  return StepCreateToken;
-};
-
-/*
- * This is a step function to allow the wizard flow to branch
- * off into two instead of just stepping through an array in a linear manner
- */
-const stepFunction: StepsFn<any> = (
-  step: number,
-  { tokenChoice }: Pick<FormValues, 'tokenChoice'>,
-): ComponentType<any> => {
-  if (step === 2) {
-    return pickTokenStep(tokenChoice);
-  }
+const stepFunction: StepsFn<any> = (step: number): ComponentType<any> => {
   return stepArray[step] as ComponentType<any>;
 };
 
