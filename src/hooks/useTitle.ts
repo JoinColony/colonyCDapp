@@ -12,7 +12,7 @@ import { defineMessages, useIntl, MessageDescriptor } from 'react-intl';
 import {
   CREATE_COLONY_ROUTE,
   CREATE_USER_ROUTE,
-  USER_EDIT_ROUTE,
+  USER_EDIT_PROFILE_ROUTE,
   NOT_FOUND_ROUTE,
   LANDING_PAGE_ROUTE,
   COLONY_HOME_ROUTE,
@@ -131,7 +131,7 @@ const COLONY_HOME_ROUTE_WITHOUT_WILDCARD = COLONY_HOME_ROUTE.slice(0, -2);
 const routeMessages: Record<string, MessageDescriptor> = {
   [CREATE_COLONY_ROUTE]: MSG.createColony,
   [CREATE_USER_ROUTE]: MSG.createUser,
-  [USER_EDIT_ROUTE]: MSG.editProfile,
+  [USER_EDIT_PROFILE_ROUTE]: MSG.editProfile,
   [NOT_FOUND_ROUTE]: MSG.notFound,
   [LANDING_PAGE_ROUTE]: MSG.landing,
   [COLONY_HOME_ROUTE]: MSG.colonyHome,

@@ -1,18 +1,8 @@
 import React, { FC } from 'react';
 
-import Navigation from '~v5/common/Navigation';
-import TwoColumns from '~v5/frame/TwoColumns';
-import Spinner from '~v5/shared/Spinner';
-
 const displayName = 'frame.Extensions.pages.ReputationPage';
 
-const ReputationPage: FC = () => (
-  <Spinner loading={false} loadingText={{ id: 'loading.reputationPage' }}>
-    <TwoColumns aside={<Navigation pageName="extensions" />}>
-      Reputation page
-    </TwoColumns>
-  </Spinner>
-);
+const ReputationPage: FC = () => <div>Reputation page</div>;
 
 ReputationPage.displayName = displayName;
 
