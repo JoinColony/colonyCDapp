@@ -20,7 +20,7 @@ const WizardTemplateColony = ({ children }: Props) => {
 
   return (
     <main className="flex flex-col items-center">
-      <article className="max-w-md">{children}</article>
+      <article className="max-w-[33.125rem]">{children}</article>
     </main>
   );
 };
