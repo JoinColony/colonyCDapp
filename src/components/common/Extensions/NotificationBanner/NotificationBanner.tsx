@@ -16,6 +16,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   action,
   isAlt = false,
   className,
+  textAlign = 'center',
 }) => {
   const { actionText } = action || {};
 
@@ -68,7 +69,8 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
       {action && (
         <div
           className={clsx('mt-2 md:mt-0 text-4', {
-            'md:self-center': isAlt,
+            'md:self-center': textAlign === 'center',
+            'md:self-start': textAlign === 'left',
             'ml-6 md:ml-2': !isAlt,
           })}
         >

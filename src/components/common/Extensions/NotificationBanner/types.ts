@@ -21,6 +21,7 @@ export interface NotificationBannerProps {
         onClick?: () => void;
       }
   );
+  textAlign?: 'center' | 'left';
 }
 
 export interface CopyUrlProps {
