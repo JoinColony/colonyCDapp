@@ -1,20 +1,24 @@
 import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { BigNumber } from 'ethers';
-import { Id } from '@colony/colony-js';
+import { Id, MotionState as NetworkMotionState } from '@colony/colony-js';
 
 import MaskedAddress from '~shared/MaskedAddress';
 import Numeral from '~shared/Numeral';
 import { Colony, Expenditure, ExpenditureSlot, ExpenditureStage } from '~types';
-import { ExpenditureStatus } from '~gql';
+import { ExpenditureStatus, useGetMotionStateQuery } from '~gql';
 import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
 import { pipe, withMeta } from '~utils/actions';
+import { MotionState, getMotionState } from '~utils/colonyMotions';
+import { notNull } from '~utils/arrays';
 import { motionTags } from '~shared/Tag';
-import { MotionState } from '~utils/colonyMotions';
+
+import MotionHistoryItem from './MotionHistoryItem';
+
+import { isMotionInProgress } from '../helpers';
 
 import styles from './ExpenditureStages.module.css';
-import { useExpenditureStageStatus } from './helpers';
 
 interface Props {
   colony: Colony;
@@ -39,13 +43,6 @@ const ExpenditureStagesItem = ({
   const expenditureStage = expenditureStages.find(
     (stage) => stage.slotId === expenditureSlot.id,
   );
-  const { expenditureStageStatus, motionTransactionHash } =
-    useExpenditureStageStatus(
-      colony.colonyAddress,
-      expenditure,
-      expenditureStage,
-    );
-  const ExpenditureStageTag = motionTags[expenditureStageStatus ?? ''];
 
   const nonZeroPayouts = expenditureSlot.payouts?.filter((payout) =>
     BigNumber.from(payout.amount).gt(0),
@@ -59,79 +56,113 @@ const ExpenditureStagesItem = ({
     motionDomainId: expenditure.nativeDomainId ?? Id.RootDomain,
   };
 
-  const hasFailedReleaseExpenditureMotion =
-    expenditureStageStatus === MotionState.Failed ||
-    expenditureStageStatus === MotionState.FailedNotFinalizable;
+  const releaseExpenditureStageMotions =
+    expenditure.motions?.items
+      .filter(notNull)
+      .filter(
+        (motion) => motion?.expenditureSlotId === expenditureStage?.slotId,
+      )
+      .sort((a, b) => Number(a.motionId) - Number(b.motionId)) ?? [];
+  const latestReleaseExpenditureStageMotion =
+    releaseExpenditureStageMotions.at(-1);
+
+  const { data: latestReleaseExpenditureMotionStateQuery } =
+    useGetMotionStateQuery({
+      skip: !latestReleaseExpenditureStageMotion,
+      variables: {
+        input: {
+          colonyAddress: colony.colonyAddress,
+          databaseMotionId:
+            latestReleaseExpenditureStageMotion?.databaseMotionId ?? '',
+        },
+      },
+    });
+
+  const latestReleaseExpenditureStageMotionState =
+    latestReleaseExpenditureStageMotion &&
+    getMotionState(
+      latestReleaseExpenditureMotionStateQuery?.getMotionState ??
+        NetworkMotionState.Null,
+      latestReleaseExpenditureStageMotion,
+    );
+
+  const ForcedTag = motionTags[MotionState.Forced];
 
   return (
-    <li key={expenditureStage?.slotId} className={styles.stage}>
-      {expenditureStage ? (
+    <li key={expenditureStage?.slotId} className={styles.stageItem}>
+      <div className={styles.stage}>
+        {expenditureStage ? (
+          <div>
+            <div>Milestone</div>
+            <div>{expenditureStage.name}</div>
+          </div>
+        ) : (
+          <div>No stage details found for this payout.</div>
+        )}
         <div>
-          <div>Milestone</div>
-          <div>{expenditureStage.name}</div>
+          <div>Token address</div>
+          <div>
+            {nonZeroPayouts?.map((payout) => (
+              <MaskedAddress
+                key={payout.tokenAddress}
+                address={payout.tokenAddress}
+              />
+            ))}
+          </div>
         </div>
-      ) : (
-        <div>No stage details found for this payout.</div>
-      )}
-      <div>
-        <div>Token address</div>
-        <div>
-          {nonZeroPayouts?.map((payout) => (
-            <MaskedAddress
-              key={payout.tokenAddress}
-              address={payout.tokenAddress}
-            />
-          ))}
-        </div>
-      </div>
 
-      <div>
-        <div>Amount</div>
         <div>
-          {nonZeroPayouts?.map((payout) => (
-            <Numeral
-              key={payout.tokenAddress}
-              value={payout.amount}
-              decimals={colony.nativeToken.decimals}
-              suffix={colony.nativeToken.symbol}
-            />
-          ))}
+          <div>Amount</div>
+          <div>
+            {nonZeroPayouts?.map((payout) => (
+              <Numeral
+                key={payout.tokenAddress}
+                value={payout.amount}
+                decimals={colony.nativeToken.decimals}
+                suffix={colony.nativeToken.symbol}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-      {expenditure.status === ExpenditureStatus.Finalized &&
-        !expenditureStage?.isReleased &&
-        (!expenditureStageStatus || hasFailedReleaseExpenditureMotion) && (
-          <>
-            {isVotingReputationEnabled && (
+        {expenditure.status === ExpenditureStatus.Finalized &&
+          !expenditureStage?.isReleased &&
+          !isMotionInProgress(latestReleaseExpenditureStageMotionState) && (
+            <>
+              {isVotingReputationEnabled && (
+                <ActionButton
+                  actionType={ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE}
+                  transform={transformPayload}
+                  values={payloadValues}
+                >
+                  Release (with motion)
+                </ActionButton>
+              )}
               <ActionButton
-                actionType={ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE}
+                actionType={ActionTypes.RELEASE_EXPENDITURE_STAGE}
                 transform={transformPayload}
                 values={payloadValues}
               >
-                Release (with motion)
+                Release (with permissions)
               </ActionButton>
-            )}
-            <ActionButton
-              actionType={ActionTypes.RELEASE_EXPENDITURE_STAGE}
-              transform={transformPayload}
-              values={payloadValues}
-            >
-              Release (with permissions)
-            </ActionButton>
+            </>
+          )}
+        {expenditureStage?.isReleased && (
+          <>
+            <div>Released</div>
+            {latestReleaseExpenditureStageMotionState !== MotionState.Passed &&
+              isVotingReputationEnabled && <ForcedTag />}
           </>
         )}
-      {expenditureStage?.isReleased && <div>Released</div>}
-      {expenditureStageStatus && isVotingReputationEnabled && (
-        <>
-          {motionTransactionHash ? (
-            <Link to={`/colony/${colony.name}/tx/${motionTransactionHash}`}>
-              <ExpenditureStageTag />
-            </Link>
-          ) : (
-            <ExpenditureStageTag />
-          )}
-        </>
-      )}
+      </div>
+      <div>
+        {releaseExpenditureStageMotions.map((motion) => (
+          <MotionHistoryItem
+            key={motion.motionId}
+            colony={colony}
+            motion={motion}
+          />
+        ))}
+      </div>
     </li>
   );
 };
