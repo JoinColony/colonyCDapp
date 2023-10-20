@@ -25,6 +25,7 @@ const TableItem: FC<TableItemProps> = ({
   nativeTokenStatus,
   balances,
   domainId = 1,
+  onClick,
 }) => {
   const { symbol } = token || {};
   const currentTokenBalance =
@@ -94,7 +95,7 @@ const TableItem: FC<TableItemProps> = ({
         )}
       </div>
       <div className="flex items-center ml-auto">
-        <MeatBallMenu items={tableMenuProps} />
+        <MeatBallMenu items={tableMenuProps} onSelect={onClick} />
       </div>
     </div>
   );

@@ -15,6 +15,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
   items,
   buttonClassName,
   className,
+  onSelect,
 }) => {
   const { formatMessage } = useIntl();
   const [
@@ -35,7 +36,9 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
       <button
         type="button"
         ref={relativeElementRef}
-        onClick={toggleMenu}
+        onClick={() => {
+          toggleMenu();
+        }}
         aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
         className={clsx(
           buttonClassName,
@@ -63,6 +66,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
                     className="flex w-full items-center text-md transition-colors
                     duration-normal md:hover:bg-gray-50 rounded py-2 px-3.5 gap-2"
                     onClick={() => {
+                      onSelect?.();
                       onClick();
                       toggleMenuOff();
                     }}

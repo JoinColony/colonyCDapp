@@ -80,6 +80,7 @@ import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
 import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
 import { PageThemeContextProvider } from '~context/PageThemeContext';
 import { ActionSidebarContextProvider } from '~context/ActionSidebarContext';
+import { SelectedTokenContextProvider } from '~context/SelectedTokenContext';
 
 const displayName = 'routes.Routes';
 
@@ -188,16 +189,18 @@ const Routes = () => {
         path={COLONY_BALANCE_ROUTE}
         element={
           <ExtensionsContextProvider>
-            <ActionSidebarContextProvider>
-              <PageLayout
-                loadingText={{ id: 'loading.extensionsPage' }}
-                title={{ id: 'balancePage.title' }}
-                description={{ id: 'balancePage.description' }}
-                pageName="members"
-              >
-                <BalancePage />
-              </PageLayout>
-            </ActionSidebarContextProvider>
+            <SelectedTokenContextProvider>
+              <ActionSidebarContextProvider>
+                <PageLayout
+                  loadingText={{ id: 'loading.extensionsPage' }}
+                  title={{ id: 'balancePage.title' }}
+                  description={{ id: 'balancePage.description' }}
+                  pageName="members"
+                >
+                  <BalancePage />
+                </PageLayout>
+              </ActionSidebarContextProvider>
+            </SelectedTokenContextProvider>
           </ExtensionsContextProvider>
         }
       />

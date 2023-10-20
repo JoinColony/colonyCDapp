@@ -9,6 +9,7 @@ import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import CopyWallet from '~v5/shared/CopyWallet/CopyWallet';
 import { BalaceTableProps } from '../types';
 import Modal from '~v5/shared/Modal';
+import { useSelectedTokenContext } from '~context/SelectedTokenContext';
 
 const displayName = 'v5.pages.BalancePage.partials.BalaceTable';
 
@@ -30,6 +31,7 @@ const BalaceTable: FC<BalaceTableProps> = ({
   const { handleClipboardCopy, isCopied } = useCopyToClipboard(
     colonyAddress || '',
   );
+  const { setSelectToken } = useSelectedTokenContext();
 
   if (!colony || !colony.tokens) {
     return null;
@@ -68,6 +70,7 @@ const BalaceTable: FC<BalaceTableProps> = ({
               }
               balances={balances || {}}
               nativeTokenStatus={nativeTokenStatus || {}}
+              onClick={() => setSelectToken(item)}
             />
           ))}
         </div>
