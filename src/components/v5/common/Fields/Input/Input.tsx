@@ -67,10 +67,7 @@ const Input: FC<InputProps> = ({
     <div className="flex relative flex-col gap-1">
       {labelMessage && (
         <label
-          className={clsx(
-            labelClassName,
-            'flex flex-col text-sm font-medium leading-5',
-          )}
+          className={clsx(labelClassName, 'flex flex-col text-1')}
           htmlFor={name}
         >
           {formatText(labelMessage)}
