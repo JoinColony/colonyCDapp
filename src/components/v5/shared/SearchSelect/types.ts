@@ -13,6 +13,7 @@ export interface SearchSelectProps extends BaseFieldProps {
   hideSearchOnMobile?: boolean;
   onSearch?: (value: string) => void;
   showEmptyContent?: boolean;
+  readonly?: boolean;
 }
 
 export interface SearchSelectOptionProps {

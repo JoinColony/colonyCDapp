@@ -33,10 +33,6 @@ export interface ActionSidebarProps {
   transactionId?: string;
 }
 
-export interface ActionSidebarFormContentProps extends ActionFormBaseProps {
-  isMotion?: boolean;
-}
-
 export type DescriptionMetadataGetter<TValues = FieldValues> = (
   formData: TValues,
   meta: {

@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 
 import { useController } from 'react-hook-form';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { FIELD_STATE } from '../consts';
 import TextareaBase from './TextareaBase';
 import { FormTextareaBaseProps } from './types';
@@ -14,8 +15,11 @@ const FormTextareaBase: FC<FormTextareaBaseProps> = ({ name, ...rest }) => {
   } = useController({
     name,
   });
+  const { readonly } = useAdditionalFormOptionsContext();
 
-  return (
+  return readonly ? (
+    <p className="text-md text-gray-900">{field.value}</p>
+  ) : (
     <TextareaBase
       message={error?.message}
       state={invalid ? FIELD_STATE.Error : undefined}

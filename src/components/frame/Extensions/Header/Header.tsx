@@ -80,7 +80,6 @@ const Header: FC = () => {
       isWalletOpen={isWalletOpen}
     />
   );
-
   const userMenuComponent = isActionSidebarOpen ? (
     <ColonyAvatarProvider>
       <ActionSidebar transactionId={transactionId || undefined}>

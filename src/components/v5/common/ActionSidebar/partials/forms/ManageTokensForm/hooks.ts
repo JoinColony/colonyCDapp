@@ -9,6 +9,7 @@ import { useActionFormBaseHook } from '../../../hooks';
 import { getTokenManagementDialogPayload } from '~common/Dialogs/TokenManagementDialog/helpers';
 import { notNull } from '~utils/arrays';
 import { validationSchema, ManageTokensFormValues } from './consts';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 
 export const useManageTokens = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -16,6 +17,7 @@ export const useManageTokens = (
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const navigate = useNavigate();
+  const { readonly } = useAdditionalFormOptionsContext();
 
   const colonyTokens = useMemo(
     () => colony?.tokens?.items.filter(notNull) || [],
@@ -23,11 +25,16 @@ export const useManageTokens = (
   );
 
   const shouldShowMenu = useCallback(
-    (token: string) =>
-      !colonyTokens
+    (token: string) => {
+      if (readonly) {
+        return false;
+      }
+
+      return !colonyTokens
         .map(({ token: colonyToken }) => colonyToken.tokenAddress)
-        .some((colonyTokenAddress) => colonyTokenAddress === token),
-    [colonyTokens],
+        .some((colonyTokenAddress) => colonyTokenAddress === token);
+    },
+    [colonyTokens, readonly],
   );
 
   useActionFormBaseHook({

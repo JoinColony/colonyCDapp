@@ -8,6 +8,7 @@ import { CardSelectProps } from './types';
 import { FIELD_STATE } from '../consts';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 import Portal from '~v5/shared/Portal';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 
 const displayName = 'v5.common.Fields.CardSelect';
 
@@ -25,6 +26,7 @@ function CardSelect<TValue = string>({
   placeholder,
 }: CardSelectProps<TValue>): JSX.Element {
   const intl = useIntl();
+  const { readonly } = useAdditionalFormOptionsContext();
 
   const [
     isSelectVisible,
@@ -55,56 +57,71 @@ function CardSelect<TValue = string>({
 
   return (
     <div className="sm:relative w-full">
-      <button
-        ref={relativeElementRef}
-        type="button"
-        className={clsx(
-          'flex capitalize text-md md:transition-colors md:hover:text-blue-400',
-          {
-            'text-gray-500': !state,
-            'text-gray-900': value,
-            'text-negative-400': state === FIELD_STATE.Error,
-          },
-        )}
-        onClick={toggleSelect}
-      >
-        {selectedOption?.label ||
-          placeholder ||
-          intl.formatMessage({ id: 'common.fields.cardSelect.placeholder' })}
-      </button>
-      {isSelectVisible && (
-        <Portal>
-          <Card
-            ref={(ref) => {
-              registerContainerRef(ref);
-              portalElementRef.current = ref;
-            }}
-            className="p-6 absolute z-[60]"
-            hasShadow
-            rounded="s"
-          >
-            {title && (
-              <h5 className="text-4 text-gray-400 mb-4 uppercase">{title}</h5>
+      {readonly ? (
+        <span className="capitalize text-md text-gray-900">
+          {selectedOption?.label}
+        </span>
+      ) : (
+        <>
+          <button
+            ref={relativeElementRef}
+            type="button"
+            className={clsx(
+              'flex capitalize text-md md:transition-colors md:hover:text-blue-400',
+              {
+                'text-gray-500': !state,
+                'text-gray-900': value,
+                'text-negative-400': state === FIELD_STATE.Error,
+              },
             )}
-            <ul>
-              {options.map(({ label, value: optionValue, ariaLabel }) => (
-                <li key={keyExtractor(optionValue)} className="mb-4 last:mb-0">
-                  <button
-                    type="button"
-                    className="flex text-md md:transition-colors md:hover:text-blue-400"
-                    aria-label={ariaLabel}
-                    onClick={() => {
-                      onChange(optionValue);
-                      toggleSelectOff();
-                    }}
-                  >
-                    {label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </Card>
-        </Portal>
+            onClick={toggleSelect}
+          >
+            {selectedOption?.label ||
+              placeholder ||
+              intl.formatMessage({
+                id: 'common.fields.cardSelect.placeholder',
+              })}
+          </button>
+          {isSelectVisible && (
+            <Portal>
+              <Card
+                ref={(ref) => {
+                  registerContainerRef(ref);
+                  portalElementRef.current = ref;
+                }}
+                className="p-6 absolute z-[60]"
+                hasShadow
+                rounded="s"
+              >
+                {title && (
+                  <h5 className="text-4 text-gray-400 mb-4 uppercase">
+                    {title}
+                  </h5>
+                )}
+                <ul>
+                  {options.map(({ label, value: optionValue, ariaLabel }) => (
+                    <li
+                      key={keyExtractor(optionValue)}
+                      className="mb-4 last:mb-0"
+                    >
+                      <button
+                        type="button"
+                        className="flex text-md md:transition-colors md:hover:text-blue-400"
+                        aria-label={ariaLabel}
+                        onClick={() => {
+                          onChange(optionValue);
+                          toggleSelectOff();
+                        }}
+                      >
+                        {label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            </Portal>
+          )}
+        </>
       )}
     </div>
   );

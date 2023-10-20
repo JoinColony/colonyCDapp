@@ -24,7 +24,7 @@ import {
   useUserAccountRegistered,
 } from '~hooks';
 import { SearchSelectOptionProps } from '~v5/shared/SearchSelect/types';
-import { Colony } from '~types';
+import { Colony, ColonyActionType } from '~types';
 import { getAllUserRoles } from '~transformers';
 import SinglePaymentForm from './partials/forms/SimplePaymentForm';
 import MintTokenForm from './partials/forms/MintTokenForm';
@@ -74,6 +74,7 @@ import { editTeamDescriptionMetadataGetter } from './partials/forms/EditTeamForm
 import { upgradeColonyDescriptionMetadataGetter } from './partials/forms/UpgradeColonyForm/utils';
 import { enterRecoveryModeDescriptionMetadataGetter } from './partials/forms/EnterRecoveryModeForm/utils';
 import { createDecisionDescriptionMetadataGetter } from './partials/forms/CreateDecisionForm/utils';
+import { useGetColonyAction } from '~common/ColonyActions';
 
 export const useActionsList = () => {
   const { colony } = useColonyContext();
@@ -387,9 +388,15 @@ export const useSidebarActionForm = () => {
   };
 };
 
-export const useActionFormProps = () => {
+export const useActionFormProps = (
+  defaultMotionValues: ActionFormProps<any>['defaultValues'],
+  isReadyonly?: boolean,
+) => {
   const [actionFormProps, setActionFormProps] = useState<ActionFormProps<any>>({
     actionType: ActionTypes.ACTION_EXPENDITURE_PAYMENT,
+    defaultValues: {
+      ...defaultMotionValues,
+    },
     children: undefined,
   });
   const getFormOptions = useCallback<ActionFormBaseProps['getFormOptions']>(
@@ -398,7 +405,14 @@ export const useActionFormProps = () => {
         return;
       }
 
-      setActionFormProps({ ...formOptions, children: undefined });
+      setActionFormProps({
+        ...formOptions,
+        options: {
+          readonly: isReadyonly,
+          ...formOptions.options,
+        },
+        children: undefined,
+      });
 
       const { defaultValues } = formOptions || {};
       const { title, [ACTION_TYPE_FIELD_NAME]: actionType } = form.getValues();
@@ -407,12 +421,13 @@ export const useActionFormProps = () => {
         ...(typeof defaultValues === 'function'
           ? await defaultValues()
           : defaultValues || {}),
+        ...(defaultMotionValues || {}),
         title,
       });
 
       form.setValue(ACTION_TYPE_FIELD_NAME, actionType);
     },
-    [],
+    [isReadyonly, defaultMotionValues],
   );
 
   return {
@@ -563,4 +578,137 @@ export const useActionDescriptionMetadata = () => {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(formValues), selectedAction, apolloClient, colony]);
+};
+
+export const useGetDefaultValues = (transactionId: string | undefined) => {
+  const { action, loadingAction } = useGetColonyAction(transactionId);
+
+  const defaultValues = useMemo(() => {
+    if (!action) {
+      return undefined;
+    }
+
+    const repeatableFields = {
+      createdIn: action.motionData?.motionDomain.nativeId.toString(),
+      description: action.annotation?.message,
+      // @TODO: handle title and decision if it will be available in api
+      // title: action.title,
+      // decisionMethod: action.decisionMethod
+    };
+
+    switch (action.type) {
+      case ColonyActionType.MintTokensMotion:
+        return {
+          [ACTION_TYPE_FIELD_NAME]: ACTION.MINT_TOKENS,
+          amount: {
+            amount: action?.amount,
+            tokenAddress: action.token?.tokenAddress,
+          },
+          ...repeatableFields,
+        };
+      case ColonyActionType.PaymentMotion:
+        return {
+          [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
+          amount: {
+            amount: action?.amount,
+            tokenAddress: action.token?.tokenAddress,
+          },
+          from: action.fromDomain?.nativeId.toString(),
+          recipient: action.recipientAddress,
+          ...repeatableFields,
+        };
+      case ColonyActionType.MultiplePaymentMotion:
+        return {
+          [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
+          from: action.fromDomain?.nativeId.toString(),
+          amount: {
+            amount: action.payments?.[0]?.amount,
+            tokenAddress: action.payments?.[0]?.tokenAddress,
+          },
+          recipient: action.payments?.[0]?.recipientAddress,
+          payments: action.payments
+            ?.slice(1, action.payments.length)
+            .map((payment) => {
+              return {
+                amount: {
+                  amount: payment.amount,
+                  tokenAddress: payment.tokenAddress,
+                },
+                recipient: payment.recipientAddress,
+              };
+            }),
+          ...repeatableFields,
+        };
+      case ColonyActionType.MoveFundsMotion:
+        return {
+          [ACTION_TYPE_FIELD_NAME]: ACTION.TRANSFER_FUNDS,
+          from: action.fromDomain?.nativeId.toString(),
+          to: action.toDomain?.nativeId.toString(),
+          amount: {
+            amount: action?.amount,
+            tokenAddress: action.token?.tokenAddress,
+          },
+          recipient: action.recipientAddress,
+          ...repeatableFields,
+        };
+      case ColonyActionType.ColonyEditMotion: {
+        const modifiedTokens =
+          action.pendingColonyMetadata?.modifiedTokenAddresses?.added?.map(
+            (token) => ({
+              token,
+            }),
+          );
+        const colonyTokens = action.colony.tokens?.items?.map((token) => ({
+          token: token?.token?.tokenAddress,
+        }));
+        const allTokens = [...(colonyTokens || []), ...(modifiedTokens || [])];
+        if (modifiedTokens && modifiedTokens?.length > 0) {
+          return {
+            [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_TOKENS,
+            selectedTokenAddresses: allTokens,
+            ...repeatableFields,
+          };
+        }
+        return {
+          [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_COLONY_DETAILS,
+          colonyName: action.pendingColonyMetadata?.displayName,
+          // @TODO: Fix avatar and thumbnail
+          colonyAvatar:
+            action.pendingColonyMetadata?.avatar ||
+            action.pendingColonyMetadata?.thumbnail,
+          colonyDescription: action.pendingColonyMetadata?.description,
+          externalLinks: action.pendingColonyMetadata?.externalLinks,
+          ...repeatableFields,
+        };
+      }
+      case ColonyActionType.CreateDomainMotion:
+        return {
+          [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_NEW_TEAM,
+          teamName: action.pendingDomainMetadata?.name,
+          domainColor: action.pendingDomainMetadata?.color,
+          domainPurpose: action.pendingDomainMetadata?.description,
+          ...repeatableFields,
+        };
+      case ColonyActionType.EditDomainMotion:
+        return {
+          [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_EXISTING_TEAM,
+          team: action.motionData?.motionDomain?.nativeId?.toString(),
+          teamName: action.pendingDomainMetadata?.name,
+          domainColor: action.pendingDomainMetadata?.color,
+          domainPurpose: action.pendingDomainMetadata?.description,
+          ...repeatableFields,
+        };
+      case ColonyActionType.CreateDecisionMotion:
+        return {
+          [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_DECISION,
+          createdIn: action.decisionData?.motionDomainId.toString(),
+          title: action.decisionData?.title,
+          description: action.decisionData?.description,
+        };
+      default:
+        return undefined;
+    }
+  }, [action]);
+
+  return { defaultValues, loadingAction };
 };

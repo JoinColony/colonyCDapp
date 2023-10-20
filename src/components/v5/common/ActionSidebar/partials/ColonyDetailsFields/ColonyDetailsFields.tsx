@@ -1,11 +1,13 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+import { useController } from 'react-hook-form';
 import ActionSidebarRow from '~v5/common/ActionFormRow';
 import DefaultField from '../DefaultField';
 import { useColonyContext } from '~hooks';
 import ColonyAvatar from '~shared/ColonyAvatar';
 import ChangeColonyLogo from './partials/ChangeColonyLogo';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 
 const displayName = 'v5.common.ActionsContent.partials.ColonyDetailsFields';
 
@@ -16,6 +18,10 @@ const ColonyDetailsFields: FC = () => {
     avatarModalToggle: [, { toggleOn: toggleChangeAvatarModalOn }],
   } = useActionSidebarContext();
   const { colonyAddress } = colony || {};
+  const { readonly } = useAdditionalFormOptionsContext();
+  const { field } = useController({
+    name: 'colonyAvatar',
+  });
 
   return (
     <>
@@ -40,17 +46,20 @@ const ColonyDetailsFields: FC = () => {
           <div className="flex mr-2 shrink-0">
             <ColonyAvatar
               colony={colony}
+              externalAvatar={field.value}
               colonyAddress={colonyAddress || ''}
               size="xs"
             />
           </div>
-          <button
-            type="button"
-            className="text-3 underline text-gray-700 hover:text-blue-400"
-            onClick={() => toggleChangeAvatarModalOn()}
-          >
-            Change logo
-          </button>
+          {!readonly && (
+            <button
+              type="button"
+              className="text-3 underline text-gray-700 hover:text-blue-400"
+              onClick={() => toggleChangeAvatarModalOn()}
+            >
+              Change logo
+            </button>
+          )}
         </div>
       </ActionSidebarRow>
       <ActionSidebarRow
