@@ -1,10 +1,10 @@
 import React from 'react';
-import { FormattedMessage, MessageDescriptor } from 'react-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
 import Button from '~v5/shared/Button';
 import { Appearance, Heading3 } from '~shared/Heading';
-import { ComplexMessageValues } from '~types';
+import { ComplexMessageValues, SimpleMessageValues } from '~types';
 import { multiLineTextEllipsis } from '~utils/strings';
 
 import styles from './shared.css';
@@ -16,7 +16,41 @@ export const TruncatedName = (name: string, maxLength = 120) => (
   </span>
 );
 
-export const ButtonRow = () => {
+interface HeaderRowProps {
+  heading: MessageDescriptor | string;
+  headingValues?: SimpleMessageValues;
+  description: MessageDescriptor;
+}
+
+export const HeaderRow = ({
+  heading,
+  headingValues,
+  description,
+}: HeaderRowProps) => {
+  const { formatMessage } = useIntl();
+
+  const headingText =
+    typeof heading === 'string'
+      ? heading
+      : heading && formatMessage(heading, headingValues);
+  const subHeadingText =
+    typeof description === 'string'
+      ? description
+      : description && formatMessage(description);
+
+  return (
+    <div className="pb-4 border-b border-gray300 mb-8">
+      <h3 className="heading-3">{headingText}</h3>
+      <p className="text-sm text-gray-400">{subHeadingText}</p>
+    </div>
+  );
+};
+
+interface ButtonRowProps {
+  previousStep: () => boolean;
+}
+
+export const ButtonRow = ({ previousStep }: ButtonRowProps) => {
   const {
     formState: { isValid, isSubmitting },
   } = useFormContext();
@@ -24,13 +58,12 @@ export const ButtonRow = () => {
   const disabled = !isValid || isSubmitting;
   const loading = isSubmitting;
 
-  /* const customHandler = useCallback(() => previousStep(), [previousStep]); */
-
   return (
     <div className="pt-12 flex justify-between">
       <Button
         text={{ id: 'button.back' }}
-        type="submit"
+        textValues={{ loading: 'test' }}
+        onClick={previousStep}
         loading={loading}
         mode="primaryOutline"
       />
