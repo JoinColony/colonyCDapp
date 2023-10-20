@@ -1,11 +1,10 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
 
 import { WizardStepProps } from '~shared/Wizard';
 import { Form } from '~shared/Fields';
 import { useAppContext } from '~hooks';
 
-import { ButtonRow } from './shared';
+import { ButtonRow, HeaderRow } from './shared';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 import {
@@ -20,44 +19,38 @@ const displayName = 'common.CreateColonyWizard.StepColonyName';
 
 type Props = Pick<
   WizardStepProps<FormValues, Step1>,
-  'wizardForm' | 'nextStep' | 'wizardValues'
+  'wizardForm' | 'nextStep' | 'wizardValues' | 'previousStep'
 >;
 
 const StepColonyName = ({
-  wizardForm: { initialValues: defaultValues },
+  wizardValues: {
+    displayName: wizardDisplayName,
+    colonyName: wizardColonyName,
+  },
   nextStep,
+  previousStep,
 }: Props) => {
   const { user } = useAppContext();
-  const { formatMessage } = useIntl();
 
   const username =
     user?.profile?.displayName ?? splitWalletAddress(user?.walletAddress ?? '');
 
   return (
-    <Form<Step1>
-      onSubmit={nextStep}
-      validationSchema={validationSchema}
-      defaultValues={defaultValues}
-    >
-      {() => (
-        <section className="">
-          <div className="pb-4 border-b border-gray300">
-            <h3 className="heading-3">
-              {formatMessage(
-                { id: 'createColonyWizard.step.colonyName.heading' },
-                { username },
-              )}
-            </h3>
-            <p className="text-sm text-gray-400">
-              {formatMessage({
-                id: 'createColonyWizard.step.colonyName.description',
-              })}
-            </p>
-          </div>
-          <NameInputs />
-          <ButtonRow />
-        </section>
-      )}
+    <Form<Step1> onSubmit={nextStep} validationSchema={validationSchema}>
+      <section className="">
+        <HeaderRow
+          heading={{ id: 'createColonyWizard.step.colonyName.heading' }}
+          headingValues={{ username }}
+          description={{
+            id: 'createColonyWizard.step.colonyName.description',
+          }}
+        />
+        <NameInputs
+          displayName={wizardDisplayName}
+          colonyName={wizardColonyName}
+        />
+        <ButtonRow previousStep={previousStep} />
+      </section>
     </Form>
   );
 };
