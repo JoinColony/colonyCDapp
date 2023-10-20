@@ -10,15 +10,23 @@ import type { MainLayoutProps } from './types';
 
 import Header from './Header';
 import MainSidebar from './MainSidebar';
+import CalamityBanner from '~v5/shared/CalamityBanner';
 
 const displayName = 'frame.Extensions.layouts.MainLayout';
 
 const MainLayout: FC<PropsWithChildren<MainLayoutProps>> = ({
+  calamityBannerItems = [],
   children,
-  loadingText,
+  header,
+  sidebar,
 }) => {
+  const headerComponent = header || <Header />;
+  const sidebarComponent = sidebar || <MainSidebar />;
+
   return (
-    <Spinner loading={false} loadingText={loadingText}>
+    // @TODO: this is only temporary until we have a better way to define the loading text
+    <Spinner loading={false} loadingText="Loading">
+      <CalamityBanner items={calamityBannerItems} />
       <ToastContainer
         className={styles.toastNotification}
         autoClose={3000}
@@ -31,10 +39,10 @@ const MainLayout: FC<PropsWithChildren<MainLayoutProps>> = ({
       />
       <div className="grid grid-cols-[80px,auto] gap-4 p-4">
         <aside className="sticky top-4 h-[calc(100vh-2rem)]">
-          <MainSidebar />
+          {sidebarComponent}
         </aside>
         <div className="">
-          <Header />
+          {headerComponent}
           {/* @TODO: Remove wallet component when we have a proper wallet */}
           <div className="hidden">
             <Wallet />
