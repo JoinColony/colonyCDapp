@@ -160,9 +160,12 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         {children}
       </div>
       <div
-        className={clsx('flex w-full flex-grow overflow-hidden', {
-          'flex-col-reverse md:flex-row': transactionId,
-        })}
+        className={clsx(
+          'flex w-full flex-grow overflow-auto md:overflow-hidden',
+          {
+            'flex-col-reverse md:flex-row': transactionId,
+          },
+        )}
       >
         <div className="flex-grow px-6 py-8">
           <ActionForm {...actionFormProps} className="flex flex-col h-full">

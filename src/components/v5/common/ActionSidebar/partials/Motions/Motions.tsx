@@ -4,17 +4,19 @@ import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import { getMotionState, MotionState } from '~utils/colonyMotions';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
+import { MotionAction } from '~types/motions';
+import { SpinnerLoader } from '~shared/Preloaders';
 import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction';
 import Stepper from '~v5/shared/Stepper';
 
 import MotionCountDownTimer from './partials/MotionCountDownTimer';
+import { MotionProvider } from './partials/MotionProvider/MotionProvider';
 import FinalizeStep from './steps/FinalizeStep';
 import OutcomeStep from './steps/OutcomeStep';
 import RevealStep from './steps/RevealStep';
 import StakingStep from './steps/StakingStep';
 import VotingStep from './steps/VotingStep';
 import { MotionsProps } from './types';
-import { MotionAction } from '~types/motions';
 
 const displayName = 'v5.common.ActionSidebar.partials.Motions';
 
@@ -44,8 +46,19 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const [activeStepKey, setActiveStepKey] = useState(networkMotionStateEnum);
 
   useEffect(() => {
+    startPollingForAction(1000);
     setActiveStepKey(networkMotionStateEnum);
-  }, [networkMotionStateEnum]);
+  }, [networkMotionStateEnum, startPollingForAction]);
+
+  const { percentage } = motionStakes || {};
+  const { nay, yay } = percentage || {};
+
+  const objectingStakesPercentageValue = Number(nay) || 0;
+  const supportingStakesPercentageValue = Number(yay) || 0;
+
+  const isFullyStaked =
+    objectingStakesPercentageValue === 100 &&
+    supportingStakesPercentageValue === 100;
 
   // @todo: add missing steps
   const items = useMemo(
@@ -56,12 +69,14 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
             {
               key: NetworkMotionState.Staking,
               content: (
-                <StakingStep action={action} transactionId={transactionId} />
+                <StakingStep
+                  isActive={activeStepKey === NetworkMotionState.Staking}
+                />
               ),
               heading: {
                 label: formatText({ id: 'motion.staking.label' }) || '',
                 decor:
-                  networkMotionStateEnum === NetworkMotionState.Staking &&
+                  activeStepKey === NetworkMotionState.Staking &&
                   motionStakes ? (
                     <MotionCountDownTimer
                       motionState={motionStateEnum}
@@ -94,8 +109,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                     />
                   ) : undefined,
               },
-              // @todo: add a condition to be required if staking won't go directly to finalize step
-              isOptional: true,
+              isOptional: !isFullyStaked,
             },
             {
               key: NetworkMotionState.Reveal,
@@ -154,12 +168,13 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
           ],
     [
       action,
+      activeStepKey,
+      isFullyStaked,
       loadingAction,
       motionData,
       motionId,
       motionStakes,
       motionStateEnum,
-      networkMotionStateEnum,
       refetchAction,
       refetchMotionState,
       startPollingForAction,
@@ -168,16 +183,20 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     ],
   );
 
-  // @todo: replace with spinner
   return loadingAction ? (
-    <div>Loading</div>
+    <SpinnerLoader />
   ) : (
-    <Stepper<NetworkMotionState>
-      // activeStepKey={activeStepKey}
-      activeStepKey={NetworkMotionState.Staking}
-      setActiveStepKey={setActiveStepKey}
-      items={items}
-    />
+    <MotionProvider
+      motionAction={action as MotionAction}
+      startPollingAction={startPollingForAction}
+      stopPollingAction={stopPollingForAction}
+    >
+      <Stepper<NetworkMotionState>
+        activeStepKey={activeStepKey}
+        setActiveStepKey={setActiveStepKey}
+        items={items}
+      />
+    </MotionProvider>
   );
 };
 

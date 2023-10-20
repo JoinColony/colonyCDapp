@@ -69,11 +69,12 @@ const VoteChart: FC<VoteChartProps> = ({
           />
           <span
             className={clsx('text-xs text-center transition-[color]', {
-              'text-negative-400 font-medium': againstValue > 0,
-              'text-gray-500': againstValue === 0,
+              'text-negative-400 font-medium':
+                predictedAgainstValue || againstValue > 0,
+              'text-gray-500': againstValue === 0 && !predictedAgainstValue,
             })}
           >
-            {againstValue}% {againstLabel}
+            {predictedAgainstValue || againstValue}% {againstLabel}
           </span>
         </div>
         <div className="flex flex-1 flex-col items-center gap-1">
@@ -98,11 +99,12 @@ const VoteChart: FC<VoteChartProps> = ({
           </div>
           <span
             className={clsx('text-xs text-center transition', {
-              'text-purple-400 font-medium': forValue > 0,
-              'text-gray-500': forValue === 0,
+              'text-purple-400 font-medium':
+                predictedAgainstValue || forValue > 0,
+              'text-gray-500': forValue === 0 && !predictedAgainstValue,
             })}
           >
-            {forValue}% {forLabel}
+            {predictedForValue || forValue}% {forLabel}
           </span>
         </div>
       </div>

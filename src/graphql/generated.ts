@@ -7657,6 +7657,7 @@ export type CombinedUserQuery = { __typename?: 'Query', getUserByAddress?: { __t
 
 export type GetUsersQueryVariables = Exact<{
   filter?: InputMaybe<ModelUserFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -10546,8 +10547,8 @@ export type CombinedUserQueryHookResult = ReturnType<typeof useCombinedUserQuery
 export type CombinedUserLazyQueryHookResult = ReturnType<typeof useCombinedUserLazyQuery>;
 export type CombinedUserQueryResult = Apollo.QueryResult<CombinedUserQuery, CombinedUserQueryVariables>;
 export const GetUsersDocument = gql`
-    query GetUsers($filter: ModelUserFilterInput) {
-  listUsers(filter: $filter) {
+    query GetUsers($filter: ModelUserFilterInput, $limit: Int) {
+  listUsers(filter: $filter, limit: $limit) {
     items {
       ...User
     }
@@ -10568,6 +10569,7 @@ export const GetUsersDocument = gql`
  * const { data, loading, error } = useGetUsersQuery({
  *   variables: {
  *      filter: // value for 'filter'
+ *      limit: // value for 'limit'
  *   },
  * });
  */

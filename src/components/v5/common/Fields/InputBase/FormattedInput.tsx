@@ -37,55 +37,62 @@ const FormattedInput: FC<FormattedInputProps> = ({
   const { label: buttonLabel, ...restButtonProps } = buttonProps || {};
 
   return (
-    <div className={clsx(wrapperClassName, 'relative w-full')} ref={wrapperRef}>
-      {buttonProps && (
-        <button
-          {...restButtonProps}
-          ref={buttonRef}
-          className={`
-            absolute
-            top-0
-            bottom-0
-            right-0
-            h-full
-            z-[1]
-            text-right
-            px-3.5
-            py-3
-            text-1
-            text-blue-400
-            transition-all
-            md:hover:opacity-80
-          `}
-          type="button"
-          disabled={disabled}
-        >
-          {buttonLabel}
-        </button>
-      )}
-      <Cleave
-        {...rest}
-        disabled={disabled}
-        key={dynamicCleaveOptionKey}
-        /*
-         * @NOTE: If formattingOptions is not either memoized or defined outside of the ancestor Input component,
-         * it will cause Cleave to be re-mounted and thus lose its state and focus.
-         */
-        options={options}
-        onInit={(cleaveInstance) => setCleave(cleaveInstance)}
-        onChange={onChange}
-        className={clsx(
-          className,
-          state ? stateClassNames[state] : undefined,
-          'w-full text-md outline-0 placeholder:text-gray-500 pr-[var(--button-width)]',
-          {
-            'text-gray-400 pointer-events-none': disabled,
-            'bg-base-white rounded border py-3 pl-3.5 border-gray-300 focus:border-blue-200 focus:shadow-light-blue':
-              mode === 'primary',
-            'border-none': mode === 'secondary',
-          },
+    <div className={clsx(wrapperClassName, 'w-full')}>
+      <div className="w-full relative" ref={wrapperRef}>
+        {buttonProps && (
+          <button
+            {...restButtonProps}
+            ref={buttonRef}
+            className={clsx(
+              `
+              absolute
+              top-0
+              bottom-0
+              right-0
+              h-full
+              z-[1]
+              text-right
+              px-3.5
+              py-3
+              text-1
+              transition-all
+              md:hover:opacity-80
+            `,
+              {
+                'text-negative-400': state === FIELD_STATE.Error,
+                'text-blue-400': state !== FIELD_STATE.Error,
+              },
+            )}
+            type="button"
+            disabled={disabled}
+          >
+            {buttonLabel}
+          </button>
         )}
-      />
+        <Cleave
+          {...rest}
+          disabled={disabled}
+          key={dynamicCleaveOptionKey}
+          /*
+           * @NOTE: If formattingOptions is not either memoized or defined outside of the ancestor Input component,
+           * it will cause Cleave to be re-mounted and thus lose its state and focus.
+           */
+          options={options}
+          onInit={(cleaveInstance) => setCleave(cleaveInstance)}
+          onChange={onChange}
+          className={clsx(
+            className,
+            state ? stateClassNames[state] : undefined,
+            'w-full text-md outline-0 placeholder:text-gray-500 pr-[var(--button-width)]',
+            {
+              'text-gray-400 pointer-events-none': disabled,
+              'bg-base-white rounded border py-3 pl-3.5 border-gray-300 focus:border-blue-200 focus:shadow-light-blue':
+                mode === 'primary',
+              'border-none': mode === 'secondary',
+            },
+          )}
+        />
+      </div>
       {message}
     </div>
   );

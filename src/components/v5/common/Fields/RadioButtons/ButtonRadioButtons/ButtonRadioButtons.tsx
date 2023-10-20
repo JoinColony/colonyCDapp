@@ -10,6 +10,7 @@ const displayName = 'v5.common.ButtonRadioButtons';
 function ButtonRadioButtons<TValue = string>({
   items,
   className,
+  disabled,
   ...rest
 }: ButtonRadioButtonsProps<TValue>): JSX.Element {
   const modifiedItems = items.map<RadioItem<TValue>>(
@@ -19,7 +20,6 @@ function ButtonRadioButtons<TValue = string>({
       children: ({ checked }) => (
         <span
           className={clsx(
-            colorClassName,
             `
               flex
               items-center
@@ -35,7 +35,9 @@ function ButtonRadioButtons<TValue = string>({
               rounded-lg
             `,
             {
-              'bg-current': checked,
+              'bg-current': checked && !disabled,
+              [colorClassName]: !disabled,
+              'text-gray-300': disabled,
             },
           )}
         >
@@ -50,8 +52,9 @@ function ButtonRadioButtons<TValue = string>({
           )}
           <span
             className={clsx('text-3', {
-              'text-gray-900': !checked,
-              'text-white': checked,
+              'text-gray-900': !checked && !disabled,
+              'text-gray-300': disabled,
+              'text-white': checked && !disabled,
             })}
           >
             {label}
