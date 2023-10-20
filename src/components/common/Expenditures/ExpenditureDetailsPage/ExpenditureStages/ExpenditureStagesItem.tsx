@@ -10,10 +10,11 @@ import { ExpenditureStatus } from '~gql';
 import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
 import { pipe, withMeta } from '~utils/actions';
+import { motionTags } from '~shared/Tag';
+import { MotionState } from '~utils/colonyMotions';
 
 import styles from './ExpenditureStages.module.css';
 import { useExpenditureStageStatus } from './helpers';
-import { motionTags } from '~shared/Tag';
 
 interface Props {
   colony: Colony;
@@ -58,6 +59,10 @@ const ExpenditureStagesItem = ({
     motionDomainId: expenditure.nativeDomainId ?? Id.RootDomain,
   };
 
+  const hasFailedReleaseExpenditureMotion =
+    expenditureStageStatus === MotionState.Failed ||
+    expenditureStageStatus === MotionState.FailedNotFinalizable;
+
   return (
     <li key={expenditureStage?.slotId} className={styles.stage}>
       {expenditureStage ? (
@@ -93,10 +98,9 @@ const ExpenditureStagesItem = ({
           ))}
         </div>
       </div>
-
       {expenditure.status === ExpenditureStatus.Finalized &&
         !expenditureStage?.isReleased &&
-        !expenditureStageStatus && (
+        (!expenditureStageStatus || hasFailedReleaseExpenditureMotion) && (
           <>
             {isVotingReputationEnabled && (
               <ActionButton
