@@ -14,7 +14,8 @@ import {
 } from './types';
 import { formatText } from '~utils/intl';
 
-const displayName = 'v5.common.ActionsContent.partials.TransactionTable';
+const displayName =
+  'v5.common.ActionsContent.partials.AdvancedPaymentRecipentsField';
 
 const AdvancedPaymentRecipentsField: FC<AdvancedPaymentRecipentsFieldProps> = ({
   name,

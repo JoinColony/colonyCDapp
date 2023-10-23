@@ -24,7 +24,7 @@ const RpcForm = () => {
       }}
       onSubmit={() => {}}
     >
-      {({ register }) => (
+      {() => (
         <div className="border-b border-gray-200">
           <SettingsRow
             title={{ id: 'advancedSettings.rpc.title' }}
@@ -32,7 +32,6 @@ const RpcForm = () => {
             tooltipMessage={{ id: 'advancedSettings.rpc.tooltip' }}
             id="decentralizedModeEnabled"
             onChange={handleDecentarlizedOnChange}
-            register={register}
           />
           <SettingsInputRow
             isOpen={isInputVisible}
