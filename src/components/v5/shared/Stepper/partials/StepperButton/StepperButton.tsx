@@ -40,8 +40,16 @@ const StepperButton: React.FC<StepperButtonProps> = ({
         {
           'border-gray-900 text-gray-900 bg-white':
             !isHighlighted && stage !== 'skipped',
-          'bg-gray-900 border-gray-900 text-white': isHighlighted,
+          'bg-gray-900 border-gray-900 text-white':
+            isHighlighted &&
+            stage !== 'passed' &&
+            isHighlighted &&
+            stage !== 'failed',
           'border-gray-400 text-gray-400 bg-white': stage === 'skipped',
+          'bg-base-white text-purple-400 border-purple-400':
+            stage === 'passed' && isHighlighted,
+          'bg-base-white text-red-400 border-red-400':
+            stage === 'failed' && isHighlighted,
         },
       )}
       {...rest}

@@ -29,7 +29,13 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     refetchAction,
   } = useGetColonyAction(transactionId);
   const { motionData } = action || {};
-  const { motionId = '', motionStakes } = motionData || {};
+  const {
+    motionId = '',
+    motionStakes,
+    // motionStakes: {
+    //   percentage: { yay: yayPercent, nay: nayPercent },
+    // },
+  } = motionData || {};
 
   const networkMotionStateEnum = getEnumValueFromKey(
     NetworkMotionState,
@@ -40,10 +46,12 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const motionStateEnum = motionData
     ? getMotionState(networkMotionStateEnum, motionData)
     : MotionState.Staking;
-  const [activeStepKey, setActiveStepKey] = useState(networkMotionStateEnum);
+  const [activeStepKey, setActiveStepKey] = useState(
+    NetworkMotionState.Finalizable,
+  );
 
   useEffect(() => {
-    setActiveStepKey(networkMotionStateEnum);
+    setActiveStepKey(NetworkMotionState.Finalizable);
   }, [networkMotionStateEnum]);
 
   // @todo: add missing steps
@@ -123,10 +131,10 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
             {
               // @todo: change to MotionState when the outcome is known and revealed
               key: NetworkMotionState.Finalizable,
-              content: <OutcomeStep />,
+              content: <OutcomeStep motionData={motionData} />,
               heading: {
                 // @todo: chnage label and styling when the outcome is known and revealed
-                label: formatText({ id: 'motion.outcome.label' }) || '',
+                label:  motionData?.motionStakes?.percentage?.yay > motionData?.motionStakes?.percentage?.nay ? formatText({ id: 'motion.passed.label' }) : formatText({ id: 'motion.failed.label' }) || formatText({ id: 'motion.outcome.label' }) || '',
               },
               // @todo: add a condition to be required if staking won't go directly to finalize step
               isOptional: true,
