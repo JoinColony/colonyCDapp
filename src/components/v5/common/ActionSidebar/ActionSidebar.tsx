@@ -4,13 +4,14 @@ import clsx from 'clsx';
 import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { useCloseSidebarClick, useGetDefaultValues } from './hooks';
+import { useCloseSidebarClick, useGetActionDefaultValues } from './hooks';
 import useToggle from '~hooks/useToggle';
 import Modal from '~v5/shared/Modal';
 import { ActionSidebarProps } from './types';
 import { formatText } from '~utils/intl';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent';
+import { SpinnerLoader } from '~shared/Preloaders';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -18,7 +19,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   children,
   transactionId,
 }) => {
-  const { defaultValues, loadingAction } = useGetDefaultValues(
+  const { defaultValues, loadingAction } = useGetActionDefaultValues(
     transactionId || undefined,
   );
 
@@ -88,7 +89,14 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         )}
         {children}
       </div>
-      {!loadingAction && (
+      {loadingAction ? (
+        <div className="h-full flex items-center justify-center flex-col gap-4">
+          <SpinnerLoader appearance={{ size: 'huge' }} />
+          <p className="text-gray-600">
+            {formatText({ id: 'actionSidebar.loading' })}
+          </p>
+        </div>
+      ) : (
         <ActionSidebarContent
           transactionId={transactionId}
           formRef={formRef}

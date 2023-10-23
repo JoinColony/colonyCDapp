@@ -15,6 +15,7 @@ import StakingStep from './steps/StakingStep';
 import VotingStep from './steps/VotingStep';
 import { MotionsProps } from './types';
 import { MotionAction } from '~types/motions';
+import { SpinnerLoader } from '~shared/Preloaders';
 
 const displayName = 'v5.common.ActionSidebar.partials.Motions';
 
@@ -163,9 +164,10 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     ],
   );
 
-  // @todo: replace with spinner
   return loadingAction ? (
-    <div>Loading</div>
+    <div>
+      <SpinnerLoader appearance={{ size: 'medium' }} />
+    </div>
   ) : (
     <Stepper<NetworkMotionState>
       activeStepKey={activeStepKey}

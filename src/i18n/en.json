@@ -1114,6 +1114,7 @@
   "actionSidebar.distributionTypes.unequal": "Unequal",
   "actionSidebar.distributionTypes.reputationPercentage": "Reputation percentage",
   "actionSidebar.toolip.distributionTypes": "The type of distribution for the split payment.",
+  "actionSidebar.loading": "Loading motion...",
   "button.addRecipient": "Add recipient",
   "table.row.percent": "Percent",
   "table.footer.total": "TOTAL",

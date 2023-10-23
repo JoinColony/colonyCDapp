@@ -580,7 +580,9 @@ export const useActionDescriptionMetadata = () => {
   }, [JSON.stringify(formValues), selectedAction, apolloClient, colony]);
 };
 
-export const useGetDefaultValues = (transactionId: string | undefined) => {
+export const useGetActionDefaultValues = (
+  transactionId: string | undefined,
+) => {
   const { action, loadingAction } = useGetColonyAction(transactionId);
 
   const defaultValues = useMemo(() => {
@@ -672,7 +674,6 @@ export const useGetDefaultValues = (transactionId: string | undefined) => {
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_COLONY_DETAILS,
           colonyName: action.pendingColonyMetadata?.displayName,
-          // @TODO: Fix avatar and thumbnail
           colonyAvatar:
             action.pendingColonyMetadata?.avatar ||
             action.pendingColonyMetadata?.thumbnail,
@@ -710,5 +711,8 @@ export const useGetDefaultValues = (transactionId: string | undefined) => {
     }
   }, [action]);
 
-  return { defaultValues, loadingAction };
+  return {
+    defaultValues,
+    loadingAction,
+  };
 };
