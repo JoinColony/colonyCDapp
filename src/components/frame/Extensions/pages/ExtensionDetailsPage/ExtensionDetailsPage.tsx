@@ -9,7 +9,6 @@ import {
 
 import { useColonyContext, useExtensionData } from '~hooks';
 import ExtensionDetails from './partials/ExtensionDetails';
-import ThreeColumns from '~v5/frame/ThreeColumns';
 import ImageCarousel from '~common/Extensions/ImageCarousel';
 
 import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
@@ -90,32 +89,36 @@ const ExtensionDetailsPage: FC = () => {
       defaultValues={defaultValues}
       onSuccess={handleFormSuccess}
     >
-      <ThreeColumns
-        leftAside={null}
-        topRow={
+      <div className="grid grid-cols-6 gap-4">
+        <div className="order-1 col-span-6">
           <ExtensionsTopRow
             extensionData={extensionData}
             isSetupRoute={isSetupRoute}
             waitingForEnableConfirmation={waitingForEnableConfirmation}
           />
-        }
-        withSlider={!isSetupRoute && <ImageCarousel />}
-        rightAside={<ExtensionDetails extensionData={extensionData} />}
-      >
-        <Routes>
-          <Route
-            path="/"
-            element={<ExtensionInfo extensionData={extensionData} />}
-          />
-          {SetupComponent && (
+        </div>
+        <div className="order-2 col-span-6 lg:col-span-4">
+          {!isSetupRoute && <ImageCarousel />}
+        </div>
+        <div className="order-3 md:order-4 lg:order-3 col-span-6 md:col-span-2 lg:row-span-2">
+          <ExtensionDetails extensionData={extensionData} />
+        </div>
+        <div className="order-4 md:order-3 lg:order-4 col-span-6 md:col-span-4">
+          <Routes>
             <Route
-              path={COLONY_EXTENSION_SETUP_ROUTE}
-              element={<SetupComponent extensionData={extensionData} />}
+              path="/"
+              element={<ExtensionInfo extensionData={extensionData} />}
             />
-          )}
-          <Route path="*" element={<NotFoundRoute />} />
-        </Routes>
-      </ThreeColumns>
+            {SetupComponent && (
+              <Route
+                path={COLONY_EXTENSION_SETUP_ROUTE}
+                element={<SetupComponent extensionData={extensionData} />}
+              />
+            )}
+            <Route path="*" element={<NotFoundRoute />} />
+          </Routes>
+        </div>
+      </div>
     </ActionForm>
   );
 };
