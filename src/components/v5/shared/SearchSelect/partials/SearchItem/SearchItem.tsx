@@ -70,6 +70,7 @@ const SearchItem: FC<SearchItemProps> = ({
                   if (missingPermissions) return;
 
                   onChange?.(walletAddress || value);
+                  // onChange?.(value);
                 }}
               >
                 {color && !isLabelVisible && (

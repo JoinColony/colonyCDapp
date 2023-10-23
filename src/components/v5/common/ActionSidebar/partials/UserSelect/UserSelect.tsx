@@ -89,7 +89,8 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
           isOpen={isUserSelectVisible}
           onToggle={toggleUserSelect}
           onSelect={(value) => {
-            field.onChange(isHexString(value) ? value : undefined);
+            field.onChange(value);
+            // field.onChange(isHexString(value) ? value : undefined);
             toggleUserSelectOff();
           }}
           onSearch={(query) => {
@@ -113,7 +114,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
           user={userByAddress}
           className={clsx(
             usersOptions.isRecipientNotVerified,
-            'text-warning-400',
+            'text-warning-400 z-[60]',
           )}
           size="xs"
           additionalContent={

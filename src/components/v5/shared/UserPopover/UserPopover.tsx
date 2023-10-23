@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, useCallback, useState } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { noop } from 'lodash';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
@@ -7,6 +7,7 @@ import { useMobile } from '~hooks';
 import Modal from '~v5/shared/Modal';
 import UserInfo from './partials/UserInfo';
 import PopoverBase from '~v5/shared/PopoverBase';
+import useToggle from '~hooks/useToggle';
 
 const displayName = 'v5.UserPopover';
 
@@ -24,17 +25,11 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   additionalContent,
 }) => {
   const isMobile = useMobile();
-  const [isOpen, setIsOpen] = useState(false);
   const { profile } = user || {};
   const { avatar, thumbnail } = profile || {};
 
-  const onOpenModal = useCallback(() => {
-    setIsOpen(true);
-  }, []);
-
-  const onCloseModal = useCallback(() => {
-    setIsOpen(false);
-  }, []);
+  const [isVisible, { toggle: toggleSelect, toggleOff: toggleSelectOff }] =
+    useToggle();
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({
@@ -47,9 +42,9 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
 
   const button = (
     <button
-      onClick={isMobile ? onOpenModal : noop}
-      onMouseEnter={isMobile ? noop : () => onOpenModal()}
-      onMouseLeave={isMobile ? noop : () => onCloseModal()}
+      onClick={isMobile ? toggleSelect : noop}
+      onMouseEnter={isMobile ? noop : () => toggleSelect()}
+      onMouseLeave={isMobile ? noop : () => toggleSelectOff()}
       type="button"
       ref={setTriggerRef}
       className="inline-flex transition-all duration-normal hover:text-blue-400"
@@ -80,8 +75,8 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
       {isMobile ? (
         <Modal
           isFullOnMobile={false}
-          onClose={onCloseModal}
-          isOpen={isOpen}
+          onClose={toggleSelectOff}
+          isOpen={isVisible}
           isTopSectionWithBackground={isTopSectionWithBackground}
         >
           {content}
@@ -93,7 +88,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
             <PopoverBase
               setTooltipRef={setTooltipRef}
               tooltipProps={getTooltipProps}
-              classNames="max-w-[20rem] shadow-default"
+              classNames="max-w-[20rem] shadow-default z-[60]"
               withTooltipStyles={false}
               cardProps={{
                 rounded: 's',

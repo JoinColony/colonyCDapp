@@ -1,19 +1,27 @@
 import { useMemo } from 'react';
-import { useColonyContext } from '~hooks';
+import { useColonyContext, useNetworkInverseFee } from '~hooks';
 import { useGetColonyMembers } from '~v5/shared/MembersSelect/hooks';
 import { UserSelectHookProps } from './types';
 import { useGetVerifiedMembersQuery } from '~gql';
 import { SearchSelectOption } from '~v5/shared/SearchSelect/types';
+import { getVerifiedUsers } from '~utils/verifiedUsers';
 
 export const useUserSelect = (inputValue: string): UserSelectHookProps => {
   const { colony } = useColonyContext();
   const { colonyAddress = '', metadata } = colony ?? {};
-  const { members, loading } = useGetColonyMembers(colonyAddress);
+  // const { members, loading } = useGetColonyMembers(colonyAddress);
   const isWhitelistActivated = metadata?.isWhitelistActivated;
   const { data, loading: verifiedMembersLoading } = useGetVerifiedMembersQuery({
     variables: { colonyAddress },
     skip: !colonyAddress || !isWhitelistActivated,
   });
+
+  const { members, loading } = useGetColonyMembers(colony?.colonyAddress);
+  const verifiedUsers2 = getVerifiedUsers(
+    colony?.metadata?.whitelistedAddresses ?? [],
+    members ?? [],
+  );
+
 
   const verifiedUsers: SearchSelectOption[] = useMemo(
     () =>
@@ -36,6 +44,9 @@ export const useUserSelect = (inputValue: string): UserSelectHookProps => {
   const isUserVerified = preparedUserOptions.some(
     ({ walletAddress }) => walletAddress === inputValue,
   );
+
+  console.log(preparedUserOptions, inputValue, verifiedUsers);
+  console.log(verifiedUsers2);
 
   const isRecipientNotVerified: boolean = !!inputValue && !isUserVerified;
 
