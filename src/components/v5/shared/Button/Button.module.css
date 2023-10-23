@@ -1,13 +1,13 @@
 .primarySolid {
-  @apply bg-blue-400 text-base-white md:hover:bg-blue-300 disabled:bg-gray-300;
+  @apply bg-gray-900 text-base-white md:hover:text-gray-900 md:hover:bg-white border border-gray-900 disabled:bg-gray-300 disabled:border-none;
 }
 
 .primaryOutline {
-  @apply bg-base-white text-gray-700 border border-gray-300 md:hover:text-blue-400 md:hover:border-blue-400 md:hover:bg-base-white disabled:text-gray-300;
+  @apply bg-base-white text-gray-700 border border-gray-300 md:hover:text-gray-900 md:hover:border-gray-900 md:hover:bg-base-white disabled:text-gray-300;
 }
 
 .primaryOutlineFull {
-  @apply bg-base-white text-gray-700 border border-gray-100 md:hover:bg-blue-400 md:hover:border-blue-400 md:hover:text-base-white disabled:text-gray-300;
+  @apply bg-base-white text-gray-700 border border-gray-100 md:hover:bg-gray-900 md:hover:border-gray-900 md:hover:text-base-white disabled:text-gray-300;
 }
 
 .secondarySolid {
