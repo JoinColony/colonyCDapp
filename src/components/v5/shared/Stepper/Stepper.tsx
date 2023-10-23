@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { useMobile } from '~hooks';
@@ -21,6 +21,10 @@ function Stepper<TKey extends React.Key>({
   const withArrowsOnMobile =
     items.length > MIN_NUMBER_OF_STEPS_WITHOUT_MOBILE_NAVIGATION && isMobile;
   const openedItem = items.find(({ key }) => key === openItemIndex) || items[0];
+
+  useEffect(() => {
+    setOpenItemIndex(activeItemIndex);
+  }, [activeItemIndex]);
 
   return items.length ? (
     <>

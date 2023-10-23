@@ -24,6 +24,7 @@ export const useStakingWidgetUpdate = (
 
   useEffect(() => {
     const haveChanged = compareMotionStakes(prevStakes, motionStakes);
+
     if (haveChanged) {
       setIsRefetching(false);
       setPrevMotionStakes(motionStakes);

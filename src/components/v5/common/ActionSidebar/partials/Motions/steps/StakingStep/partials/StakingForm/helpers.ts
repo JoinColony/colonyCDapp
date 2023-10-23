@@ -4,6 +4,7 @@ import moveDecimal from 'move-decimal-point';
 import { Action, ActionTypes } from '~redux';
 import { SetStateFn } from '~types';
 import { mapPayload } from '~utils/actions';
+import { MotionVote } from '~utils/colonyMotions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 type StakeMotionPayload = Action<ActionTypes.MOTION_STAKE>['payload'];
@@ -43,3 +44,36 @@ export const getHandleStakeSuccessFn =
     startPollingMotion(1000);
     pollLockedTokenBalance();
   };
+
+export const getPredictedPercentage = (
+  voteTypeValue: MotionVote | undefined,
+  amount: string,
+  tokenDecimals: number,
+  supportRemaining: string,
+  opposeRemaining: string,
+) => {
+  let predictedPercentage = 0;
+
+  try {
+    predictedPercentage =
+      voteTypeValue !== undefined
+        ? BigNumber.from(
+            moveDecimal(amount, getTokenDecimalsWithFallback(tokenDecimals)) ||
+              '0',
+          )
+            .mul(100)
+            .div(
+              BigNumber.from(
+                voteTypeValue === MotionVote.Yay
+                  ? supportRemaining
+                  : opposeRemaining,
+              ),
+            )
+            .toNumber()
+        : 0;
+  } catch {
+    predictedPercentage = 0;
+  }
+
+  return predictedPercentage;
+};

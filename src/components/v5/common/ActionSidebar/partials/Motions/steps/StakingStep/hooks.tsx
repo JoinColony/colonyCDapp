@@ -73,86 +73,56 @@ export const useStakingInformation = (
     usersStakes.map((user) => user.address),
   );
 
-  const votesFor: UserInfoListItem[] =
-    usersStakes?.reduce((result, item) => {
-      if (!item || item.stakes?.raw?.yay === '0') {
-        return result;
-      }
+  const getVotesArray = (isNay?: boolean) => {
+    return (
+      usersStakes?.reduce((result, item) => {
+        if (
+          !item || isNay
+            ? item.stakes?.raw?.nay === '0'
+            : item.stakes?.raw?.yay === '0'
+        ) {
+          return result;
+        }
 
-      const userName = users?.length
-        ? users?.find((user) => {
-            const { walletAddress } = user || {};
-            return walletAddress === item.address;
-          })?.profile?.displayName
-        : undefined;
+        const userName = users?.length
+          ? users?.find((user) => {
+              const { walletAddress } = user || {};
+              return walletAddress === item.address;
+            })?.profile?.displayName
+          : undefined;
 
-      if (!userName) {
-        return result;
-      }
+        if (!userName) {
+          return result;
+        }
 
-      // @todo: add sorting
-      return [
-        ...result,
-        {
-          key: item.address,
-          info: formatText(
-            { id: 'motion.staking.staked' },
-            {
-              value: (
-                <Numeral
-                  value={item.stakes?.raw?.yay}
-                  decimals={tokenDecimals}
-                  suffix={tokenSymbol}
-                />
-              ),
+        // @todo: add sorting
+        return [
+          ...result,
+          {
+            key: item.address,
+            info: formatText(
+              { id: 'motion.staking.staked' },
+              {
+                value: (
+                  <Numeral
+                    value={item.stakes?.raw?.yay}
+                    decimals={tokenDecimals}
+                    suffix={tokenSymbol}
+                  />
+                ),
+              },
+            ),
+            userProps: {
+              userName,
             },
-          ),
-          userProps: {
-            userName,
           },
-        },
-      ];
-    }, []) || [];
+        ];
+      }, []) || []
+    );
+  };
 
-  const votesAgainst: UserInfoListItem[] =
-    usersStakes?.reduce((result, item) => {
-      if (!item || item.stakes?.raw?.nay === '0') {
-        return result;
-      }
-
-      const userName = users?.length
-        ? users?.find((user) => {
-            const { walletAddress } = user || {};
-            return walletAddress === item.address;
-          })?.profile?.displayName
-        : undefined;
-
-      if (!userName) {
-        return result;
-      }
-
-      return [
-        ...result,
-        {
-          key: item.address,
-          info: formatText(
-            { id: 'motion.staking.staked' },
-            {
-              value: (
-                <Numeral
-                  value={item.stakes?.raw?.nay}
-                  decimals={tokenDecimals}
-                  suffix={tokenSymbol}
-                />
-              ),
-            },
-          ),
-          userProps: {
-            userName,
-          },
-        },
-      ];
-    }, []) || [];
+  const votesFor = getVotesArray();
+  const votesAgainst = getVotesArray(true);
 
   return {
     votesFor,

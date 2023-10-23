@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import moveDecimal from 'move-decimal-point';
-import { BigNumber } from 'ethers';
 
 import { ActionTypes } from '~redux';
 import { ActionForm } from '~shared/Fields';
@@ -19,6 +18,7 @@ import { useMotionContext } from '../../../../partials/MotionProvider/hooks';
 import { useStakingForm } from './hooks';
 import { StakingFormProps, StakingFormValues } from './types';
 import StakingChart from '../StakingChart/StakingChart';
+import { getPredictedPercentage } from './helpers';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.StakingStep.partials.StakingForm';
@@ -61,30 +61,15 @@ const StakingForm: FC<StakingFormProps> = ({
     >
       {({ formState: { isSubmitting }, getValues, setValue }) => {
         const voteTypeValue = getValues('voteType');
-        let predictedPercentage = 0;
+        const amountValue = getValues('amount');
 
-        try {
-          predictedPercentage =
-            voteTypeValue !== undefined
-              ? BigNumber.from(
-                  moveDecimal(
-                    getValues('amount'),
-                    getTokenDecimalsWithFallback(tokenDecimals),
-                  ) || '0',
-                )
-                  .mul(100)
-                  .div(
-                    BigNumber.from(
-                      voteTypeValue === MotionVote.Yay
-                        ? supportRemaining
-                        : opposeRemaining,
-                    ),
-                  )
-                  .toNumber()
-              : 0;
-        } catch {
-          predictedPercentage = 0;
-        }
+        const predictedPercentage = getPredictedPercentage(
+          voteTypeValue,
+          amountValue,
+          tokenDecimals,
+          supportRemaining,
+          opposeRemaining,
+        );
 
         return (
           <>

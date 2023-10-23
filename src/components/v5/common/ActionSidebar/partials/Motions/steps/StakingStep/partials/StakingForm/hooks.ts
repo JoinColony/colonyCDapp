@@ -62,6 +62,7 @@ export const useStakingForm = () => {
               context.parent.voteType === MotionVote.Yay
                 ? supportRemaining
                 : opposeRemaining;
+
             try {
               const amount = BigNumber.from(
                 moveDecimal(value, getTokenDecimalsWithFallback(tokenDecimals)),
