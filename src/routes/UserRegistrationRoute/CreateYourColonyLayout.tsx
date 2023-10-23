@@ -18,7 +18,7 @@ const CreateYourColonyLayout: FC<PropsWithChildren> = ({ children }) => {
         </div>
         <main className="mt-5 pb-24">
           <div className="inner">
-            <div className="mt-9">{children}</div>
+            <div className="mt-9 flex flex-col justify-center">{children}</div>
           </div>
         </main>
       </div>
