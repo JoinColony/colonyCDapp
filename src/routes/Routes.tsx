@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Routes as RoutesSwitch, Navigate } from 'react-router-dom';
 
-import CreateUserWizard from '~common/CreateUserWizard';
 import ColonyHome from '~common/ColonyHome';
 import ColonyFunding from '~common/ColonyFunding';
 import FourOFour from '~frame/FourOFour';
@@ -72,6 +71,7 @@ import ColonyMembersRoute from './ColonyMembersRoute';
 import ColonySettingsRoute from './ColonySettingsRoute';
 import UserRoute from './UserRoute';
 import UserRegistrationRoute from './UserRegistrationRoute';
+import CreateUserForm from '~v5/common/CreateUserForm';
 
 const displayName = 'routes.Routes';
 
@@ -112,7 +112,7 @@ const Routes = () => {
         </Route>
 
         <Route element={<UserRegistrationRoute />}>
-          <Route path={CREATE_USER_ROUTE} element={<CreateUserWizard />} />
+          <Route path={CREATE_USER_ROUTE} element={<CreateUserForm />} />
         </Route>
 
         {/* Colony routes */}
