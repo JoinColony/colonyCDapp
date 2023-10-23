@@ -2,7 +2,7 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 
 import { usePopperTooltip } from 'react-popper-tooltip';
-import { useColonyContext, useGetNetworkToken, useMobile } from '~hooks';
+import { useColonyContext, useMobile } from '~hooks';
 import { LEARN_MORE_PAYMENTS } from '~constants';
 import Nav from './partials/Nav';
 import { getNavItems } from './partials/utils';
@@ -10,7 +10,6 @@ import { SubNavigationMobile } from '~v5/common/SubNavigation';
 import LearnMore from '~shared/Extensions/LearnMore';
 import Button from '~v5/shared/Button';
 import PopoverBase from '~v5/shared/PopoverBase';
-import NavigationTools from '../NavigationTools';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import Icon from '~shared/Icon';
 
@@ -22,7 +21,6 @@ const ColonyNavigation = () => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const navItems = getNavItems(name);
-  const nativeToken = useGetNetworkToken();
   const {
     actionSidebarToggle: [, { toggle: toggleActionSideBar }],
   } = useActionSidebarContext();
@@ -67,7 +65,6 @@ const ColonyNavigation = () => {
           classNames="w-full border-none shadow-none px-0 pt-0 pb-6 bg-base-white"
         >
           <div className="w-full pt-[5.5625rem] sm:pt-0">
-            <NavigationTools nativeToken={nativeToken} />
             <span className="divider mb-3" />
             <div className="px-6">
               <Nav items={navItems} />

@@ -3,14 +3,13 @@ import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import { useAppContext, useGetNetworkToken, useMobile } from '~hooks';
+import { useAppContext, useMobile } from '~hooks';
 import PopoverBase from '~v5/shared/PopoverBase';
 import { NETWORK_DATA } from '~constants';
 import { WatchListItem } from '~types';
 import { nonNullable } from '~utils/types';
 import { Network } from '~gql';
 
-import NavigationTools from '../NavigationTools';
 import ColoniesDropdown from './partials/ColoniesDropdown';
 import ColonyAvatarWrapper from './partials/ColonyAvatarWrapper';
 import ColonyDropdownMobile from './partials/ColonyDropdownMobile';
@@ -38,7 +37,6 @@ const ColonySwitcher: FC<ColonySwitcherProps> = ({
 }) => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
-  const nativeToken = useGetNetworkToken();
   const { userLoading, user } = useAppContext();
 
   const watchlist = useMemo(
@@ -148,7 +146,6 @@ const ColonySwitcher: FC<ColonySwitcherProps> = ({
               classNames="w-full border-none shadow-none px-0 pt-0 pb-6 bg-base-white"
             >
               <ColonyDropdownMobile isOpen={visible} userLoading={userLoading}>
-                <NavigationTools nativeToken={nativeToken} />
                 <span className="divider mb-6" />
                 {watchlist.length ? (
                   <ColoniesDropdown
