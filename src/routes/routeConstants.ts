@@ -24,7 +24,7 @@ export const COLONY_DECISIONS_PREVIEW_ROUTE = `decisions/preview`;
 export const DECISIONS_PAGE_ROUTE = `decisions/tx/:transactionHash`;
 export const ACTIONS_PAGE_ROUTE = 'tx/:transactionHash';
 
-export const COLONY_EXTENSION_SETUP_ROUTE = `/setup`;
+export const COLONY_EXTENSION_SETUP_ROUTE = `setup`;
 
 // User routes
 export const USER_HOME_ROUTE = '/my';
