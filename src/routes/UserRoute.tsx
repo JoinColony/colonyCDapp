@@ -3,7 +3,6 @@ import { Outlet } from 'react-router-dom';
 
 import Navigation from '~v5/common/Navigation';
 import TwoColumns from '~v5/frame/TwoColumns';
-import Spinner from '~v5/shared/Spinner';
 
 import {
   USER_ADVANCED_ROUTE,
@@ -34,12 +33,9 @@ const navigationItems = [
 
 const UserRoute = () => {
   return (
-    // @TODO: this is only temporary until we have a better way to define the loading text
-    <Spinner loading={false} loadingText="Loading">
-      <TwoColumns aside={<Navigation navigationItems={navigationItems} />}>
-        <Outlet />
-      </TwoColumns>
-    </Spinner>
+    <TwoColumns aside={<Navigation navigationItems={navigationItems} />}>
+      <Outlet />
+    </TwoColumns>
   );
 };
 
