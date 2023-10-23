@@ -12,6 +12,8 @@ import {
 import { multiLineTextEllipsis } from '~utils/strings';
 
 import styles from './shared.css';
+import { PreviousStep } from '~shared/Wizard/types';
+import { FormValues } from '../CreateColonyWizard';
 
 export const TruncatedName = (name: string, maxLength = 120) => (
   // Use JS to truncate string here, rather then CSS, to customise string's max length
@@ -53,13 +55,16 @@ export const HeaderRow = ({
 };
 
 interface ButtonRowProps {
-  previousStep: () => boolean;
+  previousStep: PreviousStep<FormValues>;
 }
 
 export const ButtonRow = ({ previousStep }: ButtonRowProps) => {
   const {
+    getValues,
     formState: { isValid, isSubmitting },
   } = useFormContext();
+
+  const values = getValues();
 
   const disabled = !isValid || isSubmitting;
   const loading = isSubmitting;
@@ -69,7 +74,7 @@ export const ButtonRow = ({ previousStep }: ButtonRowProps) => {
       <Button
         text={{ id: 'button.back' }}
         textValues={{ loading: 'test' }}
-        onClick={previousStep}
+        onClick={() => previousStep(values)}
         loading={loading}
         mode="primaryOutline"
       />

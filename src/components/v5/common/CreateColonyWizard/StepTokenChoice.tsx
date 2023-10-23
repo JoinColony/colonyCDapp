@@ -56,11 +56,15 @@ const TokenSelector = ({
 
 const StepTokenChoice = ({
   wizardForm: { initialValues: defaultValues },
+  wizardValues: { tokenChoice },
   previousStep,
   nextStep,
 }: Props) => {
   return (
-    <Form<Step2> onSubmit={nextStep} defaultValues={defaultValues}>
+    <Form<Step2>
+      onSubmit={nextStep}
+      defaultValues={{ tokenChoice: tokenChoice || defaultValues.tokenChoice }}
+    >
       <HeaderRow
         heading={{ id: 'createColonyWizard.step.selectToken.heading' }}
         description={{

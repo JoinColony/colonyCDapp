@@ -75,10 +75,19 @@ const withWizard =
         setStep((wizardStep) => wizardStep + 1);
       };
 
-      const prev = () => {
+      const prev = (vals: StepValues<F> | undefined) => {
         if (step === 0) {
           return false;
         }
+
+        if (vals) {
+          setStepsValues((currentVals) => {
+            const valsCopy = [...currentVals];
+            valsCopy[step] = vals;
+            return valsCopy;
+          });
+        }
+
         setStep((wizardStep) => (wizardStep === 0 ? 0 : wizardStep - 1));
         return true;
       };
