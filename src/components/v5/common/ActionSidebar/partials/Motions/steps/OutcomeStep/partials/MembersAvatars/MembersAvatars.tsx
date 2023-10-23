@@ -47,8 +47,8 @@ const MembersAvatars: FC<MembersAvatarsProps> = ({
             ))}
           {!!remainingAvatarsCount && (
             <li
-              className={`flex items-center justify-center w-[30px] h-[30px] border border-base-white rounded-full
-              bg-gray-50 text-xs font-semibold text-gray-700 -ml-3 z-10`}
+              className={`flex items-center justify-center w-[1.875rem] h-[1.875rem] border border-base-white
+              rounded-full bg-gray-50 text-xs font-semibold text-gray-700 -ml-3 z-10`}
             >
               {`+ ${remainingAvatarsCount}`}
             </li>
