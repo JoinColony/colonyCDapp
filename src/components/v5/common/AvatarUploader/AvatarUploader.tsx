@@ -35,9 +35,9 @@ const AvatarUploader: FC<AvatarUploaderProps> = ({
         <div className="sm:hidden text-gray-600 text-sm">{uploaderText}</div>
       </div>
       <div className="flex flex-col gap-2 w-full">
-        <div className="hidden sm:block text-gray-600 text-sm">
+        {/* <div className="hidden sm:block text-gray-600 text-sm">
           {uploaderText}
-        </div>
+        </div> */}
         <FileUpload
           dropzoneOptions={{
             disabled,
