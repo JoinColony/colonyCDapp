@@ -1340,6 +1340,8 @@
   "createColonyWizard.step.nativeToken.select": "Use an existing token",
   "createColonyWizard.step.nativeToken.tokenName": "Token name",
   "createColonyWizard.step.nativeToken.tokenSymbol": "Token symbol",
+  "createColonyWizard.step.nativeToken.tokenLogo": "Token logo (Optional)",
+  "createColonyWizard.step.nativeToken.tokenDescription": "The token logo will only exist on Colony and can be changed at anytime.",
   "createColonyWizard.step.nativeToken.existingToken": "Existing token address",
   "createColonyWizard.step.nativeToken.existingTokenSuccess": "Token found: {name} ({symbol}) on {chain}"
 }
