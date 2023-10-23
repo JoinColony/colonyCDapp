@@ -82,9 +82,10 @@ const Icon = ({
   return (
     <i
       title={title ? iconTitle : undefined}
-      className={
-        className || getMainClasses(multiColorAppearance || appearance, styles)
-      }
+      className={`${getMainClasses(
+        multiColorAppearance || appearance,
+        styles,
+      )} ${className || ''}`}
       {...props}
     >
       <svg viewBox={viewBoxOverride}>
