@@ -64,7 +64,7 @@ const Input: FC<InputProps> = ({
   );
 
   return (
-    <div className="flex relative flex-col gap-1">
+    <div className="flex relative flex-col gap-1 mb-9">
       {labelMessage && (
         <label
           className={clsx(labelClassName, 'flex flex-col text-1')}
