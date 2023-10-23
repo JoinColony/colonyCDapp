@@ -49,6 +49,18 @@ export const useAdjustInputWidth = (autoWidth: boolean) => {
   return inputRef;
 };
 
+const addWidthProperty = (
+  element: HTMLElement | null,
+  wrapperElement: HTMLElement | null,
+  propertyName: string,
+) => {
+  if (element && wrapperElement) {
+    const { width } = element.getBoundingClientRect();
+
+    wrapperElement.style.setProperty(`--${propertyName}-width`, `${width}px`);
+  }
+};
+
 export const useFormattedInput = (
   value: FormattedInputProps['value'],
   options?: FormattedInputProps['options'],
@@ -56,6 +68,7 @@ export const useFormattedInput = (
   const [cleave, setCleave] = useState<ReactInstanceWithCleave | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const customPrefixRef = useRef<HTMLDivElement | null>(null);
 
   const { prefix, tailPrefix } = options || {};
 
@@ -76,11 +89,12 @@ export const useFormattedInput = (
   }, [cleave, prefix, tailPrefix, value]);
 
   useEffect(() => {
-    if (buttonRef.current && wrapperRef.current) {
-      const { width } = buttonRef.current.getBoundingClientRect();
-
-      wrapperRef.current.style.setProperty('--button-width', `${width}px`);
-    }
+    addWidthProperty(buttonRef.current, wrapperRef.current, 'button');
+    addWidthProperty(
+      customPrefixRef.current,
+      wrapperRef.current,
+      'custom-prefix',
+    );
   }, []);
 
   // /*
@@ -96,5 +110,6 @@ export const useFormattedInput = (
     setCleave,
     wrapperRef,
     buttonRef,
+    customPrefixRef,
   };
 };

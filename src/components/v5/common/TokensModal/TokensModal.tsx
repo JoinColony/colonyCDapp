@@ -73,11 +73,7 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
               name="amount"
               customPrefix={
                 <>
-                  {nativeToken && (
-                    <div className="absolute top-0 left-0 px-3.5 py-3 h-full flex items-center justify-center">
-                      <TokenIcon token={nativeToken || {}} size="xxs" />
-                    </div>
-                  )}
+                  {nativeToken && <TokenIcon token={nativeToken} size="xxs" />}
                 </>
               }
               options={{

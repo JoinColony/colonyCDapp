@@ -25,8 +25,13 @@ const FormattedInput: FC<FormattedInputProps> = ({
   message,
   ...rest
 }) => {
-  const { dynamicCleaveOptionKey, setCleave, buttonRef, wrapperRef } =
-    useFormattedInput(value, options);
+  const {
+    dynamicCleaveOptionKey,
+    setCleave,
+    buttonRef,
+    wrapperRef,
+    customPrefixRef,
+  } = useFormattedInput(value, options);
 
   const stateClassNames = useStateClassNames(
     {
@@ -66,7 +71,14 @@ const FormattedInput: FC<FormattedInputProps> = ({
             {buttonLabel}
           </button>
         )}
-        {customPrefix && customPrefix}
+        {customPrefix && (
+          <div
+            className="absolute top-0 left-0 px-3.5 py-3 h-full flex items-center justify-center"
+            ref={customPrefixRef}
+          >
+            {customPrefix}
+          </div>
+        )}
         <Cleave
           {...rest}
           disabled={disabled}
@@ -87,7 +99,7 @@ const FormattedInput: FC<FormattedInputProps> = ({
               'bg-base-white rounded border py-3 pl-3.5 border-gray-300 focus:border-blue-200 focus:shadow-light-blue':
                 mode === 'primary',
               'border-none': mode === 'secondary',
-              'pl-10': customPrefix,
+              'pl-[var(--custom-prefix-width)]': customPrefix,
             },
           )}
         />
