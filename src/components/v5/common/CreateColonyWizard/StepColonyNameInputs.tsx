@@ -60,6 +60,10 @@ const StepColonyNameInputs = ({
             isDisabled={isSubmitting}
             defaultValue={wizardColonyName}
             maxCharNumber={MAX_COLONY_DISPLAY_NAME}
+            successfulMessage={formatText({
+              id: 'createColonyWizard.step.colonyName.urlSuccess',
+            })}
+            isDecoratedError={errors.colonyName?.type === 'isNameTaken'}
           />
         </div>
       </div>

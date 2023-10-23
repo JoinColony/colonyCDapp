@@ -1328,6 +1328,7 @@
   "createColonyWizard.step.colonyName.description": "Let’s set up your Colony. Enter a name for your Colony and a short description about your Colony’s mission and purpose.",
   "createColonyWizard.step.colonyName.url": "Custom Colony URL",
   "createColonyWizard.step.colonyName.urlSubLabel": "You can change your Colony’s name, but not the URL. Choose carefully.",
+  "createColonyWizard.step.colonyName.urlSuccess": "URL available",
   "createColonyWizard.step.selectToken.heading": "Creating a new native token or use existing?",
   "createColonyWizard.step.selectToken.description": "We highly recommend creating a new token, you will have greater control of your token going forward, support all features of Colony, and potential save a lot of cost if on another chain.",
   "createColonyWizard.step.selectToken.createOptionTitle": "Create a new token",
