@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import Modal from '../../Modal';
+import Modal from '../../shared/Modal/Modal';
 import Numeral from '~shared/Numeral';
 import { SpinnerLoader } from '~shared/Preloaders';
 import Button from '~v5/shared/Button';
@@ -48,57 +48,58 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
             <p className="text-md text-gray-600 mb-6">
               {formatText({ id: `tokensModal.${type}.description` })}
             </p>
-            <div className="mb-8">
-              <div className="flex items-center justify-between gap-2 mb-1">
-                <p className="text-1">
-                  {formatText({ id: `tokensModal.${type}.input` })}
-                </p>
-                <span className="text-sm text-gray-600 flex items-center gap-1">
-                  {formatText({ id: 'tokensModal.balance' })}
-                  {loading ? (
-                    <SpinnerLoader appearance={{ size: 'small' }} />
-                  ) : (
-                    <Numeral
-                      value={tokenBalanceData || 0}
-                      decimals={tokenDecimals}
-                      suffix={tokenSymbol}
-                    />
-                  )}
-                </span>
-              </div>
-              <FormFormattedInput
-                name="amount"
-                customPrefix={
-                  <>
-                    {nativeToken && (
-                      <div className="absolute top-0 left-0 px-3.5 py-3 h-full flex items-center justify-center">
-                        <TokenIcon token={nativeToken || {}} size="xxs" />
-                      </div>
-                    )}
-                  </>
-                }
-                options={{
-                  numeral: true,
-                  numeralDecimalScale: tokenDecimals,
-                  numeralPositiveOnly: true,
-                  rawValueTrimPrefix: true,
-                  prefix: tokenSymbol,
-                  tailPrefix: true,
-                }}
-                messageClassName="text-negative-400 text-sm mt-2"
-                buttonProps={{
-                  label: formatText({ id: 'button.max' }) || '',
-                  onClick: () => {
-                    setValue('amount', tokenBalanceInEthers, {
-                      shouldTouch: true,
-                      shouldValidate: true,
-                      shouldDirty: true,
-                    });
+            <div className="flex items-center justify-between gap-2 mb-1">
+              <p className="text-1">
+                {formatText({ id: `tokensModal.${type}.input` })}
+              </p>
+              <span className="text-sm text-gray-600 flex items-center gap-1">
+                {formatText(
+                  { id: 'tokensModal.balance' },
+                  {
+                    value: loading ? (
+                      <SpinnerLoader appearance={{ size: 'small' }} />
+                    ) : (
+                      <Numeral
+                        value={tokenBalanceData || 0}
+                        decimals={tokenDecimals}
+                        suffix={tokenSymbol}
+                      />
+                    ),
                   },
-                }}
-                wrapperClassName="mb-6"
-              />
+                )}
+              </span>
             </div>
+            <FormFormattedInput
+              name="amount"
+              customPrefix={
+                <>
+                  {nativeToken && (
+                    <div className="absolute top-0 left-0 px-3.5 py-3 h-full flex items-center justify-center">
+                      <TokenIcon token={nativeToken || {}} size="xxs" />
+                    </div>
+                  )}
+                </>
+              }
+              options={{
+                numeral: true,
+                numeralDecimalScale: tokenDecimals,
+                numeralPositiveOnly: true,
+                rawValueTrimPrefix: true,
+                prefix: tokenSymbol,
+                tailPrefix: true,
+              }}
+              buttonProps={{
+                label: formatText({ id: 'button.max' }) || '',
+                onClick: () => {
+                  setValue('amount', tokenBalanceInEthers, {
+                    shouldTouch: true,
+                    shouldValidate: true,
+                    shouldDirty: true,
+                  });
+                },
+              }}
+              wrapperClassName="mb-8"
+            />
             <div className="flex flex-col-reverse gap-3 sm:flex-row">
               <Button
                 mode="primaryOutline"

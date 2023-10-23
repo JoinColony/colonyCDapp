@@ -1,4 +1,4 @@
-import { ModalProps } from '../../types';
+import { ModalProps } from '../../shared/Modal/types';
 import { TOKENS_MODAL_TYPES } from './consts';
 
 export type TokensModalType =

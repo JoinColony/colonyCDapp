@@ -39,7 +39,7 @@ const FormattedInput: FC<FormattedInputProps> = ({
   const { label: buttonLabel, ...restButtonProps } = buttonProps || {};
 
   return (
-    <div className={wrapperClassName}>
+    <div className={clsx(wrapperClassName, 'w-full')}>
       <div className="relative w-full" ref={wrapperRef}>
         {buttonProps && (
           <button
@@ -92,7 +92,9 @@ const FormattedInput: FC<FormattedInputProps> = ({
           )}
         />
       </div>
-      <div className={messageClassName}>{message}</div>
+      <div className={clsx(messageClassName, 'text-negative-400 text-sm mt-2')}>
+        {message}
+      </div>
     </div>
   );
 };

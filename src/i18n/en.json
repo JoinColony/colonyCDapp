@@ -1117,7 +1117,7 @@
   "actionSidebar.toolip.distributionTypes": "The type of distribution for the split payment.",
   "button.addRecipient": "Add recipient",
   "button.max": "Max",
-  "tokensModal.balance": "Balance",
+  "tokensModal.balance": "Balance {value}",
   "tokensModal.activate.title": "Activate tokens to use for staking",
   "tokensModal.activate.description": "In order to stake on actions you first need to activate tokens.",
   "tokensModal.activate.input": "Enter amount to activate",

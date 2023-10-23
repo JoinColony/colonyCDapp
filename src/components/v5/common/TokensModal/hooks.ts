@@ -1,14 +1,15 @@
+import { useMemo } from 'react';
 import * as yup from 'yup';
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
-import { useMemo } from 'react';
+
 import { useColonyContext } from '~hooks';
+import { useUserTokenBalanceContext } from '~context';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { formatText } from '~utils/intl';
-import { TOKENS_MODAL_TYPES } from './consts';
 import { ActionTypes } from '~redux';
 import { pipe, mapPayload } from '~utils/actions';
-import { useUserTokenBalanceContext } from '~context';
+import { TOKENS_MODAL_TYPES } from './consts';
 import { TokensModalType } from './types';
 
 export const useTokensModal = (type: TokensModalType) => {
@@ -35,7 +36,7 @@ export const useTokensModal = (type: TokensModalType) => {
     .shape({
       amount: yup
         .string()
-        .required(() => formatText({ id: 'errors.zeroTokens' }))
+        .required(formatText({ id: 'errors.zeroTokens' }))
         .test(
           'amount-test',
           () => formatText({ id: 'errors.notEnoughTokens' }),

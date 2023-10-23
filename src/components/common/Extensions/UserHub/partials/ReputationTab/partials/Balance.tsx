@@ -12,7 +12,7 @@ import TitleLabel from '~v5/shared/TitleLabel';
 import Button from '~v5/shared/Button';
 import { formatText } from '~utils/intl';
 import { useTokensModalContext } from '~context/TokensModalContext';
-import { TOKENS_MODAL_TYPES } from '~v5/shared/Modal/partials/TokensModal/consts';
+import { TOKENS_MODAL_TYPES } from '~v5/common/TokensModal/consts';
 
 const displayName =
   'common.Extensions.UserHub.partials.ReputationTab.partials.Balance';
@@ -39,7 +39,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
     [nativeToken],
   );
 
-  const { toggleOnTeamSelect, setTokensModalType } = useTokensModalContext();
+  const { toggleOnTokensModal, setTokensModalType } = useTokensModalContext();
 
   return (
     <div>
@@ -73,7 +73,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
                     iconSize="extraTiny"
                     text={formatText({ id: 'button.activate' })}
                     onClick={() => {
-                      toggleOnTeamSelect();
+                      toggleOnTokensModal();
                       setTokensModalType(TOKENS_MODAL_TYPES.activate);
                     }}
                   />
@@ -84,7 +84,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
                     iconSize="extraTiny"
                     text={formatText({ id: 'button.deactivate' })}
                     onClick={() => {
-                      toggleOnTeamSelect();
+                      toggleOnTokensModal();
                       setTokensModalType(TOKENS_MODAL_TYPES.deactivate);
                     }}
                   />
@@ -108,6 +108,10 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
                 iconSize="extraTiny"
                 text={formatText({ id: 'button.activate' })}
                 isFullSize
+                onClick={() => {
+                  toggleOnTokensModal();
+                  setTokensModalType(TOKENS_MODAL_TYPES.activate);
+                }}
               />
               <Button
                 mode="primaryOutline"
@@ -116,6 +120,10 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
                 iconSize="extraTiny"
                 text={formatText({ id: 'button.deactivate' })}
                 isFullSize
+                onClick={() => {
+                  toggleOnTokensModal();
+                  setTokensModalType(TOKENS_MODAL_TYPES.deactivate);
+                }}
               />
             </div>
           )}

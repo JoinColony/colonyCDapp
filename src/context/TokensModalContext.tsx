@@ -8,13 +8,13 @@ import React, {
 } from 'react';
 import useToggle from '~hooks/useToggle';
 import noop from '~utils/noop';
-import TokensModal from '~v5/shared/Modal/partials/TokensModal';
-import { TokensModalType } from '~v5/shared/Modal/partials/TokensModal/types';
+import TokensModal from '~v5/common/TokensModal';
+import { TokensModalType } from '~v5/common/TokensModal/types';
 
 export const TokensModalContext = createContext<{
-  toggleOnTeamSelect: () => void;
+  toggleOnTokensModal: () => void;
   setTokensModalType: React.Dispatch<React.SetStateAction<TokensModalType>>;
-}>({ toggleOnTeamSelect: noop, setTokensModalType: noop });
+}>({ toggleOnTokensModal: noop, setTokensModalType: noop });
 
 export const TokensModalContextProvider: FC<PropsWithChildren> = ({
   children,
@@ -22,23 +22,23 @@ export const TokensModalContextProvider: FC<PropsWithChildren> = ({
   const [tokensModalType, setTokensModalType] =
     useState<TokensModalType>('activate');
   const [
-    isTeamSelectVisible,
-    { toggleOn: toggleOnTeamSelect, toggleOff: toggleTeamSelectOff },
+    isTokensModalOpen,
+    { toggleOn: toggleOnTokensModal, toggleOff: toggleOffTokensModal },
   ] = useToggle();
 
   const value = useMemo(
     () => ({
-      toggleOnTeamSelect,
+      toggleOnTokensModal,
       setTokensModalType,
     }),
-    [toggleOnTeamSelect, setTokensModalType],
+    [toggleOnTokensModal, setTokensModalType],
   );
 
   return (
-    <TokensModalContext.Provider {...{ value }}>
+    <TokensModalContext.Provider value={value}>
       <TokensModal
-        isOpen={isTeamSelectVisible}
-        onClose={toggleTeamSelectOff}
+        isOpen={isTokensModalOpen}
+        onClose={toggleOffTokensModal}
         icon="coin-vertical"
         buttonMode="primarySolid"
         type={tokensModalType}
