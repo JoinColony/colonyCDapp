@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 
 import clsx from 'clsx';
 import { RevealStepProps } from './types';
@@ -14,6 +14,7 @@ import RevealInformationList from './partials/RevealInformationList';
 import { useRevealStep } from './hooks';
 import MotionBadge from '../../partials/MotionBadge/MotionBadge';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
+import useToggle from '~hooks/useToggle';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.RevealStep';
@@ -24,7 +25,8 @@ const RevealStep: FC<RevealStepProps> = ({
   stopPollingAction,
   transactionId,
 }) => {
-  const [isInformationOpen, setIsInformationOpen] = useState(false);
+  const [isInformationAccordionOpen, { toggle: toggleInformationAccordion }] =
+    useToggle();
   const {
     hasUserVoted,
     handleSuccess,
@@ -95,17 +97,15 @@ const RevealStep: FC<RevealStepProps> = ({
                         status={isSupportVote ? 'support' : 'oppose'}
                       />
                     </div>
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-sm text-gray-600">
+                    <div className="flex items-center justify-between gap-2 text-sm">
+                      <p className="text-gray-600">
                         {formatText({ id: 'motion.revealStep.rewards' })}
-                      </span>
-                      <span className="text-sm">
-                        <Numeral
-                          value={voterReward || '0'}
-                          decimals={decimals}
-                          suffix={symbol}
-                        />
-                      </span>
+                      </p>
+                      <Numeral
+                        value={voterReward || '0'}
+                        decimals={decimals}
+                        suffix={symbol}
+                      />
                     </div>
                   </div>
                   {!userVoteRevealed && (
@@ -134,10 +134,10 @@ const RevealStep: FC<RevealStepProps> = ({
       footer={
         <AccordionItem
           className="text-sm text-gray-600"
-          isOpen={isInformationOpen}
-          onToggle={() => setIsInformationOpen((prevState) => !prevState)}
+          isOpen={isInformationAccordionOpen}
+          onToggle={toggleInformationAccordion}
           title={formatText({
-            id: isInformationOpen
+            id: isInformationAccordionOpen
               ? 'motion.revealStep.buttonHide'
               : 'motion.revealStep.buttonShow',
           })}
