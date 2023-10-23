@@ -44,7 +44,7 @@ const TokenSelector = ({
           type="radio"
           value={name}
           id={name}
-          className="mb-4 peer"
+          className="mb-4"
         />
         {icon}
         <span className="text-1 pt-4">{formatText({ id: title })}</span>

@@ -24,7 +24,7 @@ export type FormValues = {
   tokenAddress: string;
   token?: Token | null;
   colonyName: string;
-  tokenChoice: 'create' | 'select';
+  tokenChoice?: 'create' | 'select';
   displayName: string;
 };
 
@@ -36,7 +36,7 @@ export type Step1 = Pick<FormValues, 'colonyName' | 'displayName'>;
 export type Step2 = Pick<FormValues, 'tokenChoice'>;
 export type Step3 = Pick<
   FormValues,
-  'tokenAddress' | 'tokenName' | 'tokenSymbol' | 'token'
+  'tokenAddress' | 'tokenName' | 'tokenSymbol' | 'token' | 'tokenChoice'
 >;
 
 const initialValues: [Step1, Step2, Step3] = [

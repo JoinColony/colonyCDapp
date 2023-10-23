@@ -1,48 +1,31 @@
 import React from 'react';
-import { defineMessages } from 'react-intl';
 
 import { WizardStepProps } from '~shared/Wizard';
 import { Form } from '~shared/Fields';
-import { Heading3 } from '~shared/Heading';
 
 import {
   FormValues,
   Step3,
   createTokenValidationSchema as validationSchema,
-  switchTokenInputType,
-  LinkToOtherStep,
 } from '../CreateColonyWizard';
-import { SubmitFormButton, TruncatedName } from './shared';
+import { ButtonRow, HeaderRow } from './shared';
 import TokenInputs from './StepCreateTokenInputs';
-
-import styles from './StepCreateToken.css';
+import { TokenChoiceOptions } from './StepCreateTokenComponents';
+import ExistingInput from './StepExistingTokenInputs';
 
 const displayName = `common.CreateColonyWizard.StepCreateToken`;
 
-const MSG = defineMessages({
-  heading: {
-    id: `${displayName}.heading`,
-    defaultMessage: 'Create new token for {colony}',
-  },
-  link: {
-    id: `${displayName}.link`,
-    defaultMessage: 'I want to use an existing token',
-  },
-});
-
 type Props = Pick<
   WizardStepProps<FormValues, Step3>,
-  'nextStep' | 'wizardForm' | 'wizardValues' | 'setStepsValues'
+  'nextStep' | 'wizardForm' | 'wizardValues' | 'setStepsValues' | 'previousStep'
 >;
 
 const StepCreateToken = ({
   nextStep,
-  setStepsValues,
   wizardForm: { initialValues: defaultValues },
-  wizardValues: { displayName: colonyName },
+  wizardValues: { tokenChoice, tokenName, tokenSymbol, tokenAddress },
+  previousStep,
 }: Props) => {
-  const headingText = { colony: TruncatedName(colonyName) };
-  const goToSelectToken = () => switchTokenInputType('select', setStepsValues);
   const handleSubmit = (values: Step3) => {
     nextStep({ ...values, tokenAddress: '' });
   };
@@ -51,24 +34,33 @@ const StepCreateToken = ({
     <Form<Step3>
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
-      defaultValues={defaultValues}
+      defaultValues={{ ...defaultValues, tokenChoice }}
     >
-      {({ formState: { isSubmitting, isValid } }) => (
-        <section className={styles.main}>
-          <Heading3 text={MSG.heading} textValues={headingText} />
-          <TokenInputs
-            disabled={isSubmitting}
-            extra={
-              <LinkToOtherStep onClick={goToSelectToken} linkText={MSG.link} />
-            }
-          />
-          <SubmitFormButton
-            disabled={!isValid || isSubmitting}
-            loading={isSubmitting}
-            dataTest="definedTokenConfirm"
-          />
-        </section>
-      )}
+      {({ getValues }) => {
+        const currentTokenChoice = getValues('tokenChoice');
+
+        return (
+          <>
+            <HeaderRow
+              heading={{ id: 'createColonyWizard.step.nativeToken.heading' }}
+              description={{
+                id: 'createColonyWizard.step.nativeToken.description',
+              }}
+              descriptionValues={{ br: <br /> }}
+            />
+            <TokenChoiceOptions tokenChoiceOptions={['create', 'select']} />
+            {currentTokenChoice === 'create' ? (
+              <TokenInputs
+                wizardTokenName={tokenName || ''}
+                wizardTokenSymbol={tokenSymbol || ''}
+              />
+            ) : (
+              <ExistingInput wizardTokenAddress={tokenAddress} />
+            )}
+            <ButtonRow previousStep={previousStep} />
+          </>
+        );
+      }}
     </Form>
   );
 };

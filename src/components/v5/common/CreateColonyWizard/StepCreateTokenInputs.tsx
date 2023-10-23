@@ -1,74 +1,57 @@
 import React from 'react';
-import { defineMessages } from 'react-intl';
+import { useFormContext } from 'react-hook-form';
 
-import { Input } from '~shared/Fields';
-
-import styles from './StepCreateToken.css';
+import Input from '~v5/common/Fields/Input';
 
 const displayName = 'common.CreateColonyWizard.StepCreateTokenInputs';
 
-const MSG = defineMessages({
-  labelTokenName: {
-    id: `${displayName}.labelTokenName`,
-    defaultMessage: 'Token Name',
-  },
-  labelTokenSymbol: {
-    id: `${displayName}.labelTokenSymbol`,
-    defaultMessage: 'Token Symbol',
-  },
-  helpTokenSymbol: {
-    id: `${displayName}.helpTokenSymbol`,
-    defaultMessage: '(e.g., MAT, AMEX)',
-  },
-  helpTokenName: {
-    id: `${displayName}.helpTokenName`,
-    defaultMessage: '(e.g., My Awesome Token)',
-  },
-  link: {
-    id: `${displayName}.link`,
-    defaultMessage: 'I want to use an existing token',
-  },
-});
-
-const formatting = {
-  tokenSymbol: { uppercase: true, blocks: [5] },
-};
-
 interface StepCreateTokenInputsProps {
-  disabled: boolean;
-  extra: JSX.Element;
+  wizardTokenName: string;
+  wizardTokenSymbol: string;
 }
 
+const MAX_TOKEN_NAME = 30;
+const MAX_TOKEN_SYMBOL = 5;
+
 const StepCreateTokenInputs = ({
-  disabled,
-  extra,
-}: StepCreateTokenInputsProps) => (
-  <div className={styles.inputFields}>
-    <div className={styles.inputFieldWrapper}>
+  wizardTokenName,
+  wizardTokenSymbol,
+}: StepCreateTokenInputsProps) => {
+  const {
+    register,
+    formState: { errors, isSubmitting },
+  } = useFormContext();
+
+  const tokenNameError = errors.tokenName?.message as string | undefined;
+  const tokenSymbolError = errors.tokenSymbol?.message as string | undefined;
+
+  return (
+    <div className="flex gap-6">
       <Input
         name="tokenName"
-        appearance={{ theme: 'fat' }}
-        label={MSG.labelTokenName}
-        help={MSG.helpTokenName}
-        data-test="defineTokenName"
-        disabled={disabled}
-        extra={extra}
+        register={register}
+        isError={!!tokenNameError}
+        customErrorMessage={tokenNameError}
+        className="text-md border-gray-300"
+        maxCharNumber={MAX_TOKEN_NAME}
+        isDisabled={isSubmitting}
+        defaultValue={wizardTokenName}
+        labelMessage={{ id: 'createColonyWizard.step.nativeToken.tokenName' }}
       />
-    </div>
-    <div className={styles.inputFieldWrapper}>
       <Input
         name="tokenSymbol"
-        appearance={{ theme: 'fat' }}
-        maxLength={5}
-        data-test="defineTokenSymbol"
-        formattingOptions={formatting.tokenSymbol}
-        label={MSG.labelTokenSymbol}
-        help={MSG.helpTokenSymbol}
-        disabled={disabled}
+        register={register}
+        isError={!!tokenSymbolError}
+        customErrorMessage={tokenSymbolError}
+        className="text-md border-gray-300"
+        maxCharNumber={MAX_TOKEN_SYMBOL}
+        isDisabled={isSubmitting}
+        defaultValue={wizardTokenSymbol}
+        labelMessage={{ id: 'createColonyWizard.step.nativeToken.tokenSymbol' }}
       />
     </div>
-  </div>
-);
+  );
+};
 
 StepCreateTokenInputs.displayName = displayName;
 export default StepCreateTokenInputs;

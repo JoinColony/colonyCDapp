@@ -4,7 +4,11 @@ import { useFormContext } from 'react-hook-form';
 
 import Button from '~v5/shared/Button';
 import { Appearance, Heading3 } from '~shared/Heading';
-import { ComplexMessageValues, SimpleMessageValues } from '~types';
+import {
+  AnyMessageValues,
+  ComplexMessageValues,
+  SimpleMessageValues,
+} from '~types';
 import { multiLineTextEllipsis } from '~utils/strings';
 
 import styles from './shared.css';
@@ -20,12 +24,14 @@ interface HeaderRowProps {
   heading: MessageDescriptor | string;
   headingValues?: SimpleMessageValues;
   description: MessageDescriptor;
+  descriptionValues?: AnyMessageValues;
 }
 
 export const HeaderRow = ({
   heading,
   headingValues,
   description,
+  descriptionValues,
 }: HeaderRowProps) => {
   const { formatMessage } = useIntl();
 
@@ -36,7 +42,7 @@ export const HeaderRow = ({
   const subHeadingText =
     typeof description === 'string'
       ? description
-      : description && formatMessage(description);
+      : description && formatMessage(description, descriptionValues);
 
   return (
     <div className="pb-4 border-b border-gray300 mb-8">
