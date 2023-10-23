@@ -16,7 +16,7 @@ const InputPills: FC<PillProps> = ({ message, status }) => {
 
   return (
     <div
-      className={clsx(`${styles.inputMessage} absolute top-[4.52rem]`, {
+      className={clsx(`${styles.inputMessage} absolute top-[3.08rem]`, {
         'border-negative-200 text-negative-400': status === 'error',
         'border-success-200 text-success-400': status === 'success',
         'border-warning-400 text-warning-400': status === 'warning',
