@@ -10,9 +10,11 @@ import { formatText } from '~utils/intl';
 import { ActionTypes } from '~redux';
 import { pipe, mapPayload } from '~utils/actions';
 import { TOKENS_MODAL_TYPES } from './consts';
-import { TokensModalType } from './types';
+import { TokensModalType, UseTokensModalReturnType } from './types';
 
-export const useTokensModal = (type: TokensModalType) => {
+export const useTokensModal = (
+  type: TokensModalType,
+): UseTokensModalReturnType => {
   const { colony } = useColonyContext();
   const { nativeToken } = colony || {};
   const { symbol: tokenSymbol } = nativeToken || {};
