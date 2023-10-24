@@ -2,12 +2,13 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import { useController } from 'react-hook-form';
 import ActionSidebarRow from '~v5/common/ActionFormRow';
-import DefaultField from '../DefaultField';
 import { useColonyContext } from '~hooks';
 import ColonyAvatar from '~shared/ColonyAvatar';
 import ChangeColonyLogo from './partials/ChangeColonyLogo';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
+import { MAX_COLONY_DISPLAY_NAME } from '~constants';
 
 const displayName = 'v5.common.ActionsContent.partials.ColonyDetailsFields';
 
@@ -30,11 +31,14 @@ const ColonyDetailsFields: FC = () => {
         title={intl.formatMessage({ id: 'actionSidebar.colonyName' })}
         fieldName="colonyName"
       >
-        <DefaultField
+        <FormInputBase
           name="colonyName"
+          maxLength={MAX_COLONY_DISPLAY_NAME}
           placeholder={intl.formatMessage({
             id: 'actionSidebar.colonyName.placeholder',
           })}
+          mode="secondary"
+          readOnly={readonly}
         />
       </ActionSidebarRow>
       <ActionSidebarRow
@@ -67,11 +71,13 @@ const ColonyDetailsFields: FC = () => {
         title={intl.formatMessage({ id: 'actionSidebar.colonyDescription' })}
         fieldName="colonyDescription"
       >
-        <DefaultField
+        <FormInputBase
           name="colonyDescription"
           placeholder={intl.formatMessage({
             id: 'actionSidebar.colonyDescription.placeholder',
           })}
+          mode="secondary"
+          readOnly={readonly}
         />
       </ActionSidebarRow>
       <ChangeColonyLogo

@@ -1,20 +1,22 @@
 import React, { FC } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useCrateNewTeam } from './hooks';
 import { ActionFormBaseProps } from '../../../types';
 import ActionFormRow from '~v5/common/ActionFormRow';
-import DefaultField from '~v5/common/ActionSidebar/partials/DefaultField';
 import TeamColourField from '~v5/common/ActionSidebar/partials/TeamColourField';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField';
 import { DECISION_METHOD_OPTIONS } from '../../consts';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase';
+import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.common.ActionSidebar.partials.CreateNewTeamForm';
 
 const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  const intl = useIntl();
+  const { readonly } = useAdditionalFormOptionsContext();
 
   useCrateNewTeam(getFormOptions);
 
@@ -28,11 +30,13 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           <FormattedMessage id="actionSidebar.tooltip.createTeam.teamName" />
         }
       >
-        <DefaultField
+        <FormInputBase
           name="teamName"
-          placeholder={intl.formatMessage({
+          placeholder={formatText({
             id: 'actionSidebar.placeholder.teamName',
           })}
+          mode="secondary"
+          readOnly={readonly}
         />
       </ActionFormRow>
       <ActionFormRow
@@ -45,7 +49,7 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <FormTextareaBase
           name="domainPurpose"
-          placeholder={intl.formatMessage({
+          placeholder={formatText({
             id: 'actionSidebar.placeholder.purpose',
           })}
         />
@@ -77,7 +81,7 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <FormCardSelect
           name="decisionMethod"
           options={DECISION_METHOD_OPTIONS}
-          title={intl.formatMessage({ id: 'actionSidebar.decisionMethod' })}
+          title={formatText({ id: 'actionSidebar.decisionMethod' })}
         />
       </ActionFormRow>
       <ActionFormRow
