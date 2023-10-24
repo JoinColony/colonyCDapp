@@ -72,9 +72,9 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
             <FormFormattedInput
               name="amount"
               customPrefix={
-                <>
-                  {nativeToken && <TokenIcon token={nativeToken} size="xxs" />}
-                </>
+                nativeToken ? (
+                  <TokenIcon token={nativeToken} size="xxs" />
+                ) : undefined
               }
               options={{
                 numeral: true,

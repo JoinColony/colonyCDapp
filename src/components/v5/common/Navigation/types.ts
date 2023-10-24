@@ -10,4 +10,5 @@ export type NavigationName = 'members' | 'extensions' | 'profile';
 
 export interface NavigationProps {
   pageName: NavigationName;
+  className?: string;
 }

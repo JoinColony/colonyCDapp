@@ -2,12 +2,10 @@ import React, { FC, PropsWithChildren, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 
 import Header from '~frame/Extensions/Header';
-import Wallet from '~frame/RouteLayouts/UserNavigation/Wallet';
 import Navigation from '~v5/common/Navigation';
 import PageTitle from '~v5/common/PageTitle';
 import { useMobile } from '~hooks';
 import CalamityBanner from '~v5/shared/CalamityBanner';
-import Spinner from '~v5/shared/Spinner';
 import { applyTheme } from '../themes/utils';
 import { Theme } from '../themes/enum';
 import { usePageThemeContext } from '~context/PageThemeContext';
@@ -29,7 +27,6 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
   children,
   title,
   description,
-  loadingText,
   pageName,
 }) => {
   const isMobile = useMobile();
@@ -47,42 +44,34 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
 
   return (
     <TokensModalContextProvider>
-      <Spinner loading={false} loadingText={loadingText}>
-        {canUpgrade && <CalamityBanner items={calamityBannerItems} />}
-        <ToastContainer
-          className={styles.toastNotification}
-          autoClose={3000}
-          hideProgressBar
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          pauseOnHover
-          closeButton={CloseButton}
-        />
-        <UserTransactionContextProvider>
-          <Header />
-        </UserTransactionContextProvider>
-        {/* @TODO: Remove wallet component when we have a proper wallet */}
-        <div className="hidden">
-          <Wallet />
+      {canUpgrade && <CalamityBanner items={calamityBannerItems} />}
+      <ToastContainer
+        className={styles.toastNotification}
+        autoClose={3000}
+        hideProgressBar
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        pauseOnHover
+        closeButton={CloseButton}
+      />
+      <UserTransactionContextProvider>
+        <Header />
+      </UserTransactionContextProvider>
+      <main className="pt-5 pb-24">
+        <div className="inner">
+          {isMobile && (
+            <Navigation className="mb-9 sm:mb-0" pageName={pageName} />
+          )}
+          <PageTitle title={title} subtitle={description} />
+          <div className="mt-9">{children}</div>
         </div>
-        <main className="mt-5 pb-24">
-          <div className="inner">
-            {isMobile && (
-              <div className="mb-9">
-                <Navigation pageName={pageName} />
-              </div>
-            )}
-            <PageTitle title={title} subtitle={description} />
-            <div className="mt-9">{children}</div>
-          </div>
-        </main>
-        <ManageMemberModal
-          isOpen={isMemberModalOpen}
-          onClose={() => setIsMemberModalOpen(false)}
-          user={modalUser}
-        />
-      </Spinner>
+      </main>
+      <ManageMemberModal
+        isOpen={isMemberModalOpen}
+        onClose={() => setIsMemberModalOpen(false)}
+        user={modalUser}
+      />
     </TokensModalContextProvider>
   );
 };

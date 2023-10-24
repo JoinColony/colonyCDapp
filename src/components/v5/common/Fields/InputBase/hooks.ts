@@ -2,6 +2,7 @@ import { ReactInstanceWithCleave } from 'cleave.js/react/props';
 import noop from 'lodash/noop';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FormattedInputProps } from './types';
+import { addWidthProperty } from './utils';
 
 export const useAdjustInputWidth = (autoWidth: boolean) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -47,18 +48,6 @@ export const useAdjustInputWidth = (autoWidth: boolean) => {
   }, [autoWidth]);
 
   return inputRef;
-};
-
-const addWidthProperty = (
-  element: HTMLElement | null,
-  wrapperElement: HTMLElement | null,
-  propertyName: string,
-) => {
-  if (element && wrapperElement) {
-    const { width } = element.getBoundingClientRect();
-
-    wrapperElement.style.setProperty(`--${propertyName}-width`, `${width}px`);
-  }
 };
 
 export const useFormattedInput = (
