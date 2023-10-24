@@ -1423,7 +1423,7 @@ type Colony @model {
   """
   private: Boolean @default(value: "true")
 
-  colonyMemberInvite: ColonyMemberInvite
+  colonyMemberInvites: [ColonyMemberInvite!]
 }
 
 type ColonyMemberInvite {
@@ -1435,6 +1435,10 @@ type ColonyMemberInvite {
   Count of how many times this invite has been used
   """
   used: Int!
+  """
+  Whether the invite is still valid or not
+  """
+  valid: Boolean!
 }
 
 """
