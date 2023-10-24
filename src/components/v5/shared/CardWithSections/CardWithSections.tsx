@@ -11,7 +11,7 @@ const CardWithSections: React.FC<CardWithSectionsProps> = ({
   footerClassName,
 }) =>
   sections.length ? (
-    <Card className="w-full" withPadding={false}>
+    <Card className="w-full overflow-hidden" withPadding={false}>
       {sections.map(({ key, content, className }) => (
         <div
           key={key}

@@ -3,6 +3,8 @@ import { RadioButtonsBaseProps, RadioItem } from '../RadioButtonsBase/types';
 export interface ButtonRadioButtonItem<TValue>
   extends Omit<RadioItem<TValue>, 'children' | 'label'> {
   colorClassName: string;
+  hoverColorClassName: string;
+  iconClassName?: string;
   label: React.ReactNode;
   iconName?: string;
 }

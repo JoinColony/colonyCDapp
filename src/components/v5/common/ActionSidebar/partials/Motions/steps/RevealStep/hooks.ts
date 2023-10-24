@@ -68,6 +68,7 @@ export const useRevealStep = (
   const totalVoters = (voterRecord || []).length;
 
   return {
+    hasUserVoted,
     nativeToken,
     voterReward,
     userVoteRevealed,
