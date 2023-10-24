@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Id } from '@colony/colony-js';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import {
@@ -9,17 +9,18 @@ import { notNull } from '~utils/arrays';
 import UserAvatar from '~v5/shared/UserAvatar';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { MembersAvatarsProps } from './types';
+import { Watcher } from '~types';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.Motion.steps.OutcomeStep.partials.MembersAvatars';
 
-const MembersAvatars: FC<MembersAvatarsProps> = ({
+function MembersAvatars<TValue extends Watcher>({
   watchers,
   loading,
   currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
   maxAvatars = 4,
   className,
-}) => {
+}: MembersAvatarsProps<TValue>): JSX.Element {
   const remainingAvatarsCount = calculateRemainingItems(
     maxAvatars,
     watchers ?? [],
@@ -57,7 +58,7 @@ const MembersAvatars: FC<MembersAvatarsProps> = ({
       )}
     </div>
   );
-};
+}
 
 MembersAvatars.displayName = displayName;
 

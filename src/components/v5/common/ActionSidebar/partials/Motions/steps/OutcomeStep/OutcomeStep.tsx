@@ -6,6 +6,7 @@ import CardWithSections from '~v5/shared/CardWithSections';
 import MembersAvatars from '~v5/shared/MembersAvatars';
 import { OutcomeStepProps } from './types';
 import { useMemberAvatars, useOutcomeStep } from './hooks';
+import { Watcher } from '~types';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.Motion.steps.OutcomeStep';
@@ -38,7 +39,7 @@ const OutcomeStep: FC<OutcomeStepProps> = ({ motionData }) => {
                     progress={progress}
                     status={status}
                   >
-                    <MembersAvatars
+                    <MembersAvatars<Watcher>
                       className="flex items-end flex-1"
                       watchers={watchers}
                       loading={loading}
