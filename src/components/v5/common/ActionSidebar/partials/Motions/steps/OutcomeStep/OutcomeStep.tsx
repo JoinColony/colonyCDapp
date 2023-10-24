@@ -1,6 +1,4 @@
 import React, { FC, useMemo } from 'react';
-// import { ActionTypes } from '~redux';
-// import { ActionForm } from '~shared/Fields';
 import { formatText } from '~utils/intl';
 import { supportOption, opposeOption } from '../../consts';
 import VoteStatus from './partials/VoteStatus';
@@ -38,8 +36,6 @@ const OutcomeStep: FC<OutcomeStepProps> = ({ motionData }) => {
     ],
     [supportOption, yayPercent, nayPercent],
   );
-
-  console.log(motionData);
 
   return (
     <CardWithSections
