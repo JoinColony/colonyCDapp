@@ -3,6 +3,7 @@ import { ApolloClient } from '@apollo/client';
 import first from 'lodash/first';
 import { DeepPartial } from 'utility-types';
 import {
+  ColonyFragment,
   GetTokenByAddressDocument,
   GetTokenByAddressQuery,
   GetTokenByAddressQueryVariables,
@@ -51,21 +52,28 @@ const getAmountText = async (
   tokenId: string | undefined,
   recipientsCount: number,
   client: ApolloClient<object>,
+  colony: ColonyFragment | undefined,
 ): Promise<React.ReactNode> => {
   try {
     if (totalAmount === 0 || !tokenId) {
       return 'amount of tokens';
     }
 
-    const { data } = await client.query<
-      GetTokenByAddressQuery,
-      GetTokenByAddressQueryVariables
-    >({
-      query: GetTokenByAddressDocument,
-      variables: { address: tokenId },
-    });
+    let tokenSymbol = colony?.tokens?.items.find(
+      (colonyToken) => colonyToken?.token?.tokenAddress === tokenId,
+    )?.token?.symbol;
 
-    const tokenSymbol = first(data?.getTokenByAddress?.items)?.symbol;
+    if (!tokenSymbol) {
+      const { data } = await client.query<
+        GetTokenByAddressQuery,
+        GetTokenByAddressQueryVariables
+      >({
+        query: GetTokenByAddressDocument,
+        variables: { address: tokenId },
+      });
+
+      tokenSymbol = first(data?.getTokenByAddress?.items)?.symbol;
+    }
 
     if (!tokenSymbol) {
       return (
@@ -89,7 +97,10 @@ const getAmountText = async (
 
 export const simplePaymentDescriptionMetadataGetter: DescriptionMetadataGetter<
   DeepPartial<SimplePaymentFormValues>
-> = async ({ payments, recipient, amount }, { client, currentUser }) => {
+> = async (
+  { payments, recipient, amount },
+  { client, currentUser, colony },
+) => {
   const recipients = [
     recipient,
     ...(payments || []).map((payment) => payment.recipient),
@@ -108,14 +119,21 @@ export const simplePaymentDescriptionMetadataGetter: DescriptionMetadataGetter<
 
   const [recipientText, amountText] = await Promise.all([
     getRecipientText(recipients, client),
-    getAmountText(totalAmount, amount?.tokenAddress, recipients.length, client),
+    getAmountText(
+      totalAmount,
+      amount?.tokenAddress,
+      recipients.length,
+      client,
+      colony,
+    ),
   ]);
 
   return (
     <>
-      Pay {recipientText} {amountText}{' '}
+      Pay {recipientText} {amountText}
       {currentUser?.profile?.displayName && (
         <>
+          {' '}
           by{' '}
           <UserPopover
             userName={currentUser?.profile?.displayName}
@@ -123,7 +141,7 @@ export const simplePaymentDescriptionMetadataGetter: DescriptionMetadataGetter<
             aboutDescription={currentUser.profile?.bio || ''}
             user={currentUser}
           >
-            <span className="text-blue-400">
+            <span className="text-blue-400 font-medium">
               {currentUser.profile.displayName}
             </span>
           </UserPopover>

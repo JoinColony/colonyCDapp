@@ -58,7 +58,9 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           mode="secondary"
           message={false}
         />
-        <p className="text-gray-600 font-medium mt-2">{descriptionMetadata}</p>
+        <p className="text-gray-600 font-normal mt-2 text-md">
+          {descriptionMetadata}
+        </p>
         {/* @todo: add preview mode to the form */}
         <ActionTypeSelect className="mt-7 mb-3" />
         {/* @todo: add motion action type to each action */}
