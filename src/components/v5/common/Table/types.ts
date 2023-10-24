@@ -5,4 +5,5 @@ export interface TableProps<T>
   getCoreRowModel?: TableOptions<T>['getCoreRowModel'];
   className?: string;
   getRowClassName?: (row: Row<T>) => string | undefined;
+  verticalOnMobile?: boolean;
 }

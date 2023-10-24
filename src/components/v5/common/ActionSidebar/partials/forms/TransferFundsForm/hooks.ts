@@ -1,10 +1,9 @@
-import { useNavigate } from 'react-router-dom';
 import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
 import { DeepPartial } from 'utility-types';
 import { ActionTypes } from '~redux';
-import { mapPayload, pipe, withMeta } from '~utils/actions';
-import { useColonyContext } from '~hooks';
+import { mapPayload, pipe } from '~utils/actions';
+import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { getTransferFundsDialogPayload } from '~common/Dialogs/TransferFundsDialog/helpers';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
@@ -15,7 +14,7 @@ export const useTransferFunds = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
-  const navigate = useNavigate();
+  const { isVotingReputationEnabled } = useEnabledExtensions();
 
   useActionFormBaseHook({
     validationSchema,
@@ -33,7 +32,9 @@ export const useTransferFunds = (
       }),
       [colony?.nativeToken.tokenAddress],
     ),
-    actionType: ActionTypes.ACTION_MOVE_FUNDS,
+    actionType: isVotingReputationEnabled
+      ? ActionTypes.MOTION_MOVE_FUNDS
+      : ActionTypes.ACTION_MOVE_FUNDS,
     getFormOptions,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
@@ -55,9 +56,8 @@ export const useTransferFunds = (
 
           return null;
         }),
-        withMeta({ navigate }),
       ),
-      [colony, navigate],
+      [colony],
     ),
   });
 };

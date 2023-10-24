@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
@@ -7,9 +6,9 @@ import { sortDisabled } from '../../utils';
 import { SearchItemProps } from './types';
 import Avatar from '~v5/shared/Avatar';
 import { useMobile } from '~hooks';
-import Tooltip from '~shared/Extensions/Tooltip';
-import Icon from '~shared/Icon';
+import IconWithTooltip from '~v5/shared/IconWithTooltip';
 import TokenIcon from '~shared/TokenIcon';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.SearchSelect.partials.SearchItem';
 
@@ -18,7 +17,6 @@ const SearchItem: FC<SearchItemProps> = ({
   onChange,
   isLabelVisible = true,
 }) => {
-  const { formatMessage } = useIntl();
   const isMobile = useMobile();
 
   return (
@@ -39,13 +37,13 @@ const SearchItem: FC<SearchItemProps> = ({
           showAvatar,
           color,
           missingPermissions,
+          walletAddress = '',
           token,
         }) => {
           const firstDisabledOption = options.filter(
             (option) => option.isDisabled,
           )[0];
-          const labelText =
-            typeof label === 'string' ? label : formatMessage(label);
+          const labelText = formatText(label || '');
 
           const hasAvatar = showAvatar || !!color || !!token;
 
@@ -96,6 +94,7 @@ const SearchItem: FC<SearchItemProps> = ({
                   </div>
                 )}
                 {isLabelVisible && labelText}
+                {!label && <span className="truncate">{walletAddress}</span>}
                 {firstDisabledOption?.value === value && (
                   <ExtensionsStatusBadge
                     mode="coming-soon"
@@ -103,18 +102,11 @@ const SearchItem: FC<SearchItemProps> = ({
                   />
                 )}
                 {missingPermissions && (
-                  <Tooltip
-                    tooltipContent={
-                      <span>{formatMessage({ id: missingPermissions })}</span>
-                    }
-                  >
-                    <span className="text-warning-400">
-                      <Icon
-                        name="warning-circle"
-                        appearance={{ size: 'tiny' }}
-                      />
-                    </span>
-                  </Tooltip>
+                  <IconWithTooltip
+                    tooltipContent={formatText({ id: missingPermissions })}
+                    iconName="warning-circle"
+                    className="text-warning-400"
+                  />
                 )}
               </button>
             </li>

@@ -6,6 +6,7 @@ export interface NotificationBannerProps {
   title?: React.ReactNode;
   isFullSize?: boolean;
   isAlt?: boolean;
+  className?: string;
   action?: { actionText: React.ReactNode } & (
     | {
         type: 'copy';
@@ -20,6 +21,7 @@ export interface NotificationBannerProps {
         onClick?: () => void;
       }
   );
+  textAlign?: 'center' | 'left';
 }
 
 export interface CopyUrlProps {

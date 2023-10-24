@@ -1,11 +1,10 @@
-import { useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 import { DeepPartial } from 'utility-types';
 import { ActionTypes } from '~redux';
-import { mapPayload, pipe, withMeta } from '~utils/actions';
-import { useColonyContext } from '~hooks';
+import { mapPayload, pipe } from '~utils/actions';
+import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { getEditDomainDialogPayload } from '~common/Dialogs/EditDomainDialog/helpers';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
@@ -16,9 +15,9 @@ export const useEditTeam = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
-  const navigate = useNavigate();
   const { domains } = colony || {};
   const { watch, setValue } = useFormContext();
+  const { isVotingReputationEnabled } = useEnabledExtensions();
 
   const selectedTeamId = watch('team');
   const selectedTeam = domains?.items.find(
@@ -40,7 +39,9 @@ export const useEditTeam = (
   useActionFormBaseHook({
     getFormOptions,
     validationSchema,
-    actionType: ActionTypes.ACTION_DOMAIN_EDIT,
+    actionType: isVotingReputationEnabled
+      ? ActionTypes.MOTION_DOMAIN_CREATE_EDIT
+      : ActionTypes.ACTION_DOMAIN_EDIT,
     defaultValues: useMemo<DeepPartial<EditTeamFormValues>>(
       () => ({
         teamName: '',
@@ -72,9 +73,8 @@ export const useEditTeam = (
 
           return null;
         }),
-        withMeta({ navigate }),
       ),
-      [colony, navigate],
+      [colony],
     ),
   });
 };

@@ -14,8 +14,10 @@ const UserAvatar: FC<UserAvatarProps> = ({
   preferThumbnail = true,
   userName,
   size = 'xxs',
+  avatarSize,
   userStatus,
   isContributorsList,
+  className,
   ...rest
 }) => {
   const address = user?.walletAddress;
@@ -37,7 +39,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
         })}
       >
         <Avatar
-          size={size}
+          size={avatarSize || size}
           avatar={imageString}
           placeholderIcon="circle-person"
           seed={address && address.toLowerCase()}
@@ -47,7 +49,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
       </span>
       {userName && (
         <p
-          className={clsx('font-medium truncate', {
+          className={clsx(className, 'font-medium truncate', {
             'text-sm ml-1': size === 'xxs',
             'text-md ml-2': size === 'xs' || size === 'sm',
           })}

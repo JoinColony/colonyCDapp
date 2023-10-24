@@ -20,7 +20,7 @@ export const validationSchema = yup
       .required(),
     createdIn: yup.string().defined(),
     description: yup.string().max(MAX_ANNOTATION_LENGTH).notRequired(),
-    recipient: yup.string().required(),
+    recipient: yup.string().address().required(),
     from: yup.number().required(),
     decisionMethod: yup.string().defined(),
     payments: yup

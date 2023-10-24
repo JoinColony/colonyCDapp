@@ -18,6 +18,9 @@ module.exports = {
       '4xl': ['2.375rem', 1.2],
     },
     extend: {
+      height: {
+        screen: ['100vh /* fallback for Opera, IE and etc. */', '100dvh'],
+      },
       colors: {
         gray: {
           25: 'var(--color-gray-25)',

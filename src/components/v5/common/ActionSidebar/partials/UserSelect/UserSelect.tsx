@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 import { useController } from 'react-hook-form';
 
+import { isHexString } from 'ethers/lib/utils';
 import { useUserSelect } from './hooks';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
 import UserAvatar from '~v5/shared/UserAvatar';
@@ -10,11 +10,14 @@ import { useUserByAddress } from '~hooks';
 import useToggle from '~hooks/useToggle';
 import { UserSelectProps } from './types';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
+import Icon from '~shared/Icon';
+import NotificationBanner from '~common/Extensions/NotificationBanner';
+import { formatText } from '~utils/intl';
+import UserPopover from '~v5/shared/UserPopover';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
 const UserSelect: FC<UserSelectProps> = ({ name }) => {
-  const { formatMessage } = useIntl();
   const {
     field,
     fieldState: { error },
@@ -22,7 +25,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
     name,
   });
   const isError = !!error;
-  const usersOptions = useUserSelect();
+  const usersOptions = useUserSelect(field.value);
   const [
     isUserSelectVisible,
     {
@@ -31,8 +34,14 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
       registerContainerRef,
     },
   ] = useToggle();
-  const { user: userByAddress } = useUserByAddress(field.value);
-  const userDisplayName = userByAddress?.profile?.displayName;
+  const { user: userByAddress, loading: userByAddressLoading } =
+    useUserByAddress(field.value);
+
+  const userDisplayName =
+    (!userByAddressLoading && userByAddress?.profile?.displayName) ||
+    field.value;
+
+  const userWalletAddress = field.value;
 
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
@@ -40,7 +49,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
   >([isUserSelectVisible]);
 
   return (
-    <div className="sm:relative w-full">
+    <div className="sm:relative w-full flex items-center">
       <button
         type="button"
         ref={relativeElementRef}
@@ -52,16 +61,26 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
           },
         )}
         onClick={toggleUserSelect}
-        aria-label={formatMessage({ id: 'ariaLabel.selectUser' })}
+        aria-label={formatText({ id: 'ariaLabel.selectUser' })}
       >
-        {userByAddress ? (
-          <UserAvatar
-            user={userByAddress}
-            userName={userDisplayName}
-            size="xs"
-          />
+        {userByAddress || field.value ? (
+          <>
+            <UserAvatar
+              user={userByAddress || field.value}
+              userName={userDisplayName}
+              size="xs"
+              className={
+                usersOptions.isRecipientNotVerified ? 'text-warning-400' : ''
+              }
+            />
+            {usersOptions.isUserVerified && (
+              <span className="flex ml-2 text-blue-400">
+                <Icon name="verified" />
+              </span>
+            )}
+          </>
         ) : (
-          formatMessage({ id: 'actionSidebar.selectMember' })
+          formatText({ id: 'actionSidebar.selectMember' })
         )}
       </button>
       {isUserSelectVisible && (
@@ -70,16 +89,61 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
           isOpen={isUserSelectVisible}
           onToggle={toggleUserSelect}
           onSelect={(value) => {
-            field.onChange(value);
+            field.onChange(isHexString(value) ? value : undefined);
             toggleUserSelectOff();
+          }}
+          onSearch={(query) => {
+            field.onChange(isHexString(query) ? query : undefined);
           }}
           ref={(ref) => {
             registerContainerRef(ref);
             portalElementRef.current = ref;
           }}
-          isLoading={usersOptions.loading}
+          isLoading={usersOptions.isLoading}
           className="z-[60]"
+          showSearchValueAsOption
+          showEmptyContent={false}
         />
+      )}
+      {usersOptions.isRecipientNotVerified && (
+        <UserPopover
+          userName={userDisplayName}
+          walletAddress={userWalletAddress}
+          aboutDescription={userByAddress?.profile?.bio || ''}
+          user={userByAddress}
+          className={clsx(
+            usersOptions.isRecipientNotVerified,
+            'text-warning-400',
+          )}
+          size="xs"
+          additionalContent={
+            <NotificationBanner
+              status="warning"
+              title={formatText({ id: 'user.not.verified.warning' })}
+              isAlt
+              action={{
+                type: 'call-to-action',
+                actionText: formatText({ id: 'add.verified.member' }),
+                onClick: () => {}, // @TODO: add action
+              }}
+              className="mt-4"
+              textAlign="left"
+            >
+              {userByAddress?.walletAddress ||
+                (field.value && (
+                  <div className="mt-2 font-semibold break-words">
+                    {userByAddress?.walletAddress || field.value}
+                  </div>
+                ))}
+            </NotificationBanner>
+          }
+        >
+          <button type="button">
+            <span className="flex ml-2 text-warning-400">
+              <Icon name="warning-circle" />
+            </span>
+          </button>
+        </UserPopover>
       )}
     </div>
   );

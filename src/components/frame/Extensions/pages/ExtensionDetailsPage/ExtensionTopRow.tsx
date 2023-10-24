@@ -36,6 +36,7 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
     // @ts-expect-error
     address,
     isInitialized,
+    isDeprecated,
   } = extensionData;
 
   const isVotingReputationExtension =
@@ -44,6 +45,7 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
   // If the extension itself doesn't have the correct permissions, show the banner
   const showPermissionsBanner =
     isInitialized &&
+    !isDeprecated &&
     !addressHasRoles({
       requiredRolesDomains: [Id.RootDomain],
       colony,

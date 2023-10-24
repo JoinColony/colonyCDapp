@@ -9,5 +9,5 @@ input:checked + .toggle::after {
 }
 
 input:checked + .toggle {
-  @apply bg-blue-400 border-blue-400;
+  @apply bg-gray-900 border-gray-900;
 }

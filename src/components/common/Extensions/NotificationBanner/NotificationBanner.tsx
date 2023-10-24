@@ -15,13 +15,16 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   children,
   action,
   isAlt = false,
+  className,
+  textAlign = 'center',
 }) => {
   const { actionText } = action || {};
 
   return (
     <div
       className={clsx(
-        'border rounded-lg flex justify-between min-h-[2.75rem] flex-col md:flex-row md:items-center',
+        className,
+        'border rounded-lg flex justify-between min-h-[2.75rem] flex-col',
         `gap-2 ${
           isAlt
             ? 'rounded min-h-[3.75rem] p-4'
@@ -56,6 +59,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
           <div
             className={clsx('text-sm max-w-[50rem] mt-1.5', {
               'text-negative-400': status === 'error',
+              'text-warning-400': status === 'warning',
             })}
           >
             {children}
@@ -65,7 +69,8 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
       {action && (
         <div
           className={clsx('mt-2 md:mt-0 text-4', {
-            'md:self-center': isAlt,
+            'md:self-center': textAlign === 'center',
+            'md:self-start': textAlign === 'left',
             'ml-6 md:ml-2': !isAlt,
           })}
         >

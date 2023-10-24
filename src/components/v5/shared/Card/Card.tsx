@@ -28,6 +28,4 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ),
 );
 
-Card.displayName = displayName;
-
-export default Card;
+export default Object.assign(Card, { displayName });
