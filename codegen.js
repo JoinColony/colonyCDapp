@@ -8,6 +8,7 @@ const {
   printSchema,
 } = require('graphql');
 const fetch = require('node-fetch');
+const net = require('net');
 
 const SCHEMA_LOCATION = './tmp-schema.graphql';
 
@@ -30,7 +31,10 @@ const codegen = async () => {
   try {
     await fetchSchema();
 
-    const graphqlFiles = ['./src/graphql/**/*.graphql', './amplify/backend/api/colonycdapp/schema.graphql'];
+    const graphqlFiles = [
+      './src/graphql/**/*.graphql',
+      './amplify/backend/api/colonycdapp/schema.graphql',
+    ];
 
     generate({
       schema: SCHEMA_LOCATION,
@@ -60,4 +64,19 @@ const codegen = async () => {
   }
 };
 
-codegen();
+const waitForPortToOpen = () => {
+  const client = net.createConnection({ port: 9200, host: 'localhost' }, () => {
+    codegen();
+    client.end(); // Close the connection
+  });
+
+  client.on('error', (err) => {
+    if (err.code === 'ECONNREFUSED') {
+      setTimeout(waitForPortToOpen, 2000);  // Wait 1 second and try again
+    } else {
+      console.error('An error occurred:', err);
+    }
+  });
+};
+
+waitForPortToOpen();
