@@ -2712,7 +2712,7 @@ type Payment {
 """
 Represents an action performed within a Colony
 """
-type ColonyAction @model {
+type ColonyAction @model @searchable {
   """
   Unique identifier for the ColonyAction
   """
