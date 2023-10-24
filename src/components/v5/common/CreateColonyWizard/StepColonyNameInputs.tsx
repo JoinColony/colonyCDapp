@@ -47,16 +47,16 @@ const StepColonyNameInputs = ({
             })}
           </span>
         </label>
-        <div className="flex items-center">
-          <span className="mb-9 text-gray-500 border rounded-s border-gray-300 border-e-0 text-md p-3">
+        <div className="relative">
+          <div className="text-gray-500 border rounded-s border-gray-300 border-e-0 text-md p-3 absolute">
             app.colony.io/
-          </span>
+          </div>
           <Input
             name="colonyName"
             register={register}
             isError={!!colonyNameError}
             customErrorMessage={colonyNameError}
-            className="text-md border-gray-300 lowercase rounded-s-none"
+            className="text-md border-gray-300 lowercase rounded-s-none ml-[117px] w-[calc(100%-117px)]"
             isDisabled={isSubmitting}
             defaultValue={wizardColonyName}
             maxCharNumber={MAX_COLONY_DISPLAY_NAME}
