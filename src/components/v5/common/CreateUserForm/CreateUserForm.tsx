@@ -1,41 +1,64 @@
 import React from 'react';
-import { FormattedMessage, defineMessages } from 'react-intl';
+import { useFormContext } from 'react-hook-form';
 
-import { Form } from '~shared/Fields';
-import Heading from '~shared/Heading';
+import Button from '~v5/shared/Button';
+import { Input } from '~v5/common/Fields';
+import { formatText } from '~utils/intl';
 
-export const displayName = 'common.CreateUserForm';
+import CreateUserFormHeader from './CreateUserFormHeader';
+import { MAX_USERNAME_LENGTH } from './validation';
 
-const MSG = defineMessages({
-  heading: {
-    id: `${displayName}.heading`,
-    defaultMessage: 'Create your Colony profile',
-  },
-  description: {
-    id: `${displayName}.description`,
-    defaultMessage:
-      'Connecting an email address enhances your Colony experience, such as receiving notifications about activity, mentions, and comments.',
-  },
-});
+const displayName = 'common.CreateUserForm';
 
 const CreateUserForm = () => {
+  const {
+    register,
+    formState: { errors, isSubmitting, isValid, dirtyFields },
+  } = useFormContext();
+
+  const emailAddressError = errors.emailAddress?.message as string | undefined;
+
+  const usernameError = errors.username?.message as string | undefined;
+
   return (
-    <Form
-      className="max-w-lg border-b border-gray-200 pb-4"
-      defaultValues={{
-        username: '',
-        email: '',
-      }}
-      onSubmit={() => ({})}
-    >
-      <Heading
-        className="text-2xl mb-2 text-gray-900 font-semibold"
-        text={MSG.heading}
+    <>
+      <CreateUserFormHeader />
+      <Input
+        name="emailAddress"
+        register={register}
+        className="w-full text-md border-gray-300 "
+        labelMessage={{ id: 'label.email' }}
+        isError={!!emailAddressError}
+        customErrorMessage={emailAddressError}
+        isDisabled={isSubmitting}
       />
-      <p className="text-sm text-gray-600">
-        <FormattedMessage {...MSG.description} />
-      </p>
-    </Form>
+      <Input
+        name="username"
+        register={register}
+        className="w-full text-md border-gray-300"
+        maxCharNumber={MAX_USERNAME_LENGTH}
+        labelMessage={{ id: 'label.username' }}
+        isError={!!usernameError}
+        customErrorMessage={usernameError}
+        isDisabled={isSubmitting}
+        shouldNumberOfCharsBeVisible
+        successfulMessage={
+          dirtyFields.username
+            ? formatText({
+                id: 'success.userName',
+              })
+            : undefined
+        }
+        isDecoratedError={errors.username?.type === 'isUsernameTaken'}
+      />
+      <Button
+        text={{ id: 'button.continue' }}
+        type="submit"
+        mode="solidBlack"
+        disabled={!isValid || isSubmitting}
+        className="mt-12"
+      />
+    </>
   );
 };
 CreateUserForm.displayName = displayName;

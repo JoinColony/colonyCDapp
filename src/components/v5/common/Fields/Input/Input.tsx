@@ -42,7 +42,7 @@ const Input: FC<InputProps> = ({
   const isErrorStatus = isCharLenghtError || isError;
 
   const input = (
-    <div className="w-full">
+    <div className="w-full relative">
       <input
         {...registerField}
         type="text"
@@ -96,11 +96,12 @@ const Input: FC<InputProps> = ({
         input
       )}
 
-      {shouldNumberOfCharsBeVisible && isTyping && (
+      {shouldNumberOfCharsBeVisible && (
         <CharacterNumbers
           isError={isErrorStatus}
           currentCharNumber={currentCharNumber}
           maxCharNumber={maxCharNumber}
+          isShowingLabel={!!labelMessage}
         />
       )}
 

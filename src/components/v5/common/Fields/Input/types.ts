@@ -25,6 +25,7 @@ export type InputProps = {
 export type PillProps = {
   status: PillStatusType;
   message?: string;
+  isShowingLabel?: boolean;
 };
 
 type PillStatusType = 'success' | 'error' | 'warning';
@@ -35,4 +36,5 @@ export type CharacterNumbersProps = Pick<
 > & {
   isCharLenghtError?: boolean;
   currentCharNumber?: number;
+  isShowingLabel?: boolean;
 };
