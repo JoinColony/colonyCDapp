@@ -390,14 +390,12 @@ export const useSidebarActionForm = () => {
 };
 
 export const useActionFormProps = (
-  defaultMotionValues: ActionFormProps<any>['defaultValues'],
+  defaultValues: ActionFormProps<any>['defaultValues'],
   isReadyonly?: boolean,
 ) => {
   const [actionFormProps, setActionFormProps] = useState<ActionFormProps<any>>({
     actionType: ActionTypes.ACTION_EXPENDITURE_PAYMENT,
-    defaultValues: {
-      ...defaultMotionValues,
-    },
+    defaultValues,
     children: undefined,
   });
   const getFormOptions = useCallback<ActionFormBaseProps['getFormOptions']>(
@@ -415,19 +413,19 @@ export const useActionFormProps = (
         children: undefined,
       });
 
-      const { defaultValues } = formOptions || {};
+      const { defaultValues: formDefaultValues } = formOptions || {};
       const { title, [ACTION_TYPE_FIELD_NAME]: actionType } = form.getValues();
 
       form.reset({
-        ...(typeof defaultValues === 'function'
-          ? await defaultValues()
-          : defaultValues || {}),
-        ...(defaultMotionValues || {}),
+        ...(typeof formDefaultValues === 'function'
+          ? await formDefaultValues()
+          : formDefaultValues || {}),
+        ...(defaultValues || {}),
         title,
         [ACTION_TYPE_FIELD_NAME]: actionType,
       });
     },
-    [isReadyonly, defaultMotionValues],
+    [isReadyonly, defaultValues],
   );
 
   return {
@@ -591,21 +589,36 @@ export const useGetActionDefaultValues = (
       return undefined;
     }
 
+    const {
+      type,
+      amount,
+      token,
+      payments,
+      pendingColonyMetadata,
+      pendingDomainMetadata,
+      fromDomain,
+      toDomain,
+      motionData,
+      decisionData,
+      recipientAddress,
+      annotation,
+    } = action;
+
     const repeatableFields = {
-      createdIn: action.motionData?.motionDomain.nativeId.toString(),
-      description: action.annotation?.message,
+      createdIn: motionData?.motionDomain.nativeId.toString(),
+      description: annotation?.message,
       // @TODO: handle title and decision if it will be available in api
       // title: action.title,
       // decisionMethod: action.decisionMethod
     };
 
-    switch (action.type) {
+    switch (type) {
       case ColonyActionType.MintTokensMotion:
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.MINT_TOKENS,
           amount: {
-            amount: action?.amount,
-            tokenAddress: action.token?.tokenAddress,
+            amount,
+            tokenAddress: token?.tokenAddress,
           },
           ...repeatableFields,
         };
@@ -613,57 +626,60 @@ export const useGetActionDefaultValues = (
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
           amount: {
-            amount: action?.amount,
-            tokenAddress: action.token?.tokenAddress,
+            amount,
+            tokenAddress: token?.tokenAddress,
           },
-          from: action.fromDomain?.nativeId.toString(),
-          recipient: action.recipientAddress,
+          from: fromDomain?.nativeId.toString(),
+          recipient: recipientAddress,
           ...repeatableFields,
         };
-      case ColonyActionType.MultiplePaymentMotion:
+      case ColonyActionType.MultiplePaymentMotion: {
+        const [firstPayment, ...additionalPayments] = payments || [];
+
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
-          from: action.fromDomain?.nativeId.toString(),
+          from: fromDomain?.nativeId.toString(),
           amount: {
-            amount: action.payments?.[0]?.amount,
-            tokenAddress: action.payments?.[0]?.tokenAddress,
+            amount: firstPayment.amount,
+            tokenAddress: firstPayment.tokenAddress,
           },
-          recipient: action.payments?.[0]?.recipientAddress,
-          payments: action.payments
-            ?.slice(1, action.payments.length)
-            .map((payment) => {
-              return {
-                amount: {
-                  amount: payment.amount,
-                  tokenAddress: payment.tokenAddress,
-                },
-                recipient: payment.recipientAddress,
-              };
-            }),
+          recipient: firstPayment.recipientAddress,
+          payments: additionalPayments.map((additionalPayment) => {
+            return {
+              amount: {
+                amount: additionalPayment.amount,
+                tokenAddress: additionalPayment.tokenAddress,
+              },
+              recipient: additionalPayment.recipientAddress,
+            };
+          }),
           ...repeatableFields,
         };
+      }
       case ColonyActionType.MoveFundsMotion:
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.TRANSFER_FUNDS,
-          from: action.fromDomain?.nativeId.toString(),
-          to: action.toDomain?.nativeId.toString(),
+          from: fromDomain?.nativeId.toString(),
+          to: toDomain?.nativeId.toString(),
           amount: {
-            amount: action?.amount,
-            tokenAddress: action.token?.tokenAddress,
+            amount,
+            tokenAddress: token?.tokenAddress,
           },
-          recipient: action.recipientAddress,
+          recipient: recipientAddress,
           ...repeatableFields,
         };
       case ColonyActionType.ColonyEditMotion: {
         const modifiedTokens =
           action.pendingColonyMetadata?.modifiedTokenAddresses?.added?.map(
-            (token) => ({
-              token,
+            (addedToken) => ({
+              token: addedToken,
             }),
           );
-        const colonyTokens = action.colony.tokens?.items?.map((token) => ({
-          token: token?.token?.tokenAddress,
-        }));
+        const colonyTokens = action.colony.tokens?.items?.map(
+          (colonyToken) => ({
+            token: colonyToken?.token?.tokenAddress,
+          }),
+        );
         const allTokens = [...(colonyTokens || []), ...(modifiedTokens || [])];
         if (modifiedTokens && modifiedTokens?.length > 0) {
           return {
@@ -674,38 +690,37 @@ export const useGetActionDefaultValues = (
         }
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_COLONY_DETAILS,
-          colonyName: action.pendingColonyMetadata?.displayName,
+          colonyName: pendingColonyMetadata?.displayName,
           colonyAvatar:
-            action.pendingColonyMetadata?.avatar ||
-            action.pendingColonyMetadata?.thumbnail,
-          colonyDescription: action.pendingColonyMetadata?.description,
-          externalLinks: action.pendingColonyMetadata?.externalLinks,
+            pendingColonyMetadata?.avatar || pendingColonyMetadata?.thumbnail,
+          colonyDescription: pendingColonyMetadata?.description,
+          externalLinks: pendingColonyMetadata?.externalLinks,
           ...repeatableFields,
         };
       }
       case ColonyActionType.CreateDomainMotion:
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_NEW_TEAM,
-          teamName: action.pendingDomainMetadata?.name,
-          domainColor: action.pendingDomainMetadata?.color,
-          domainPurpose: action.pendingDomainMetadata?.description,
+          teamName: pendingDomainMetadata?.name,
+          domainColor: pendingDomainMetadata?.color,
+          domainPurpose: pendingDomainMetadata?.description,
           ...repeatableFields,
         };
       case ColonyActionType.EditDomainMotion:
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_EXISTING_TEAM,
-          team: action.motionData?.motionDomain?.nativeId?.toString(),
-          teamName: action.pendingDomainMetadata?.name,
-          domainColor: action.pendingDomainMetadata?.color,
-          domainPurpose: action.pendingDomainMetadata?.description,
+          team: motionData?.motionDomain?.nativeId?.toString(),
+          teamName: pendingDomainMetadata?.name,
+          domainColor: pendingDomainMetadata?.color,
+          domainPurpose: pendingDomainMetadata?.description,
           ...repeatableFields,
         };
       case ColonyActionType.CreateDecisionMotion:
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_DECISION,
-          createdIn: action.decisionData?.motionDomainId.toString(),
-          title: action.decisionData?.title,
-          description: action.decisionData?.description,
+          createdIn: decisionData?.motionDomainId.toString(),
+          title: decisionData?.title,
+          description: decisionData?.description,
         };
       default:
         return undefined;
