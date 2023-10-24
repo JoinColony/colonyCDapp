@@ -12,6 +12,7 @@ import { UserNavigationProps } from './types';
 export const displayName = 'common.Extensions.UserNavigation';
 
 const UserNavigation: FC<UserNavigationProps> = ({
+  extra = null,
   userHub,
   txButtons = null,
 }) => {
@@ -73,7 +74,6 @@ const UserNavigation: FC<UserNavigationProps> = ({
         isOpened={visible && isMobile}
         iconName={visible && isMobile ? 'close' : 'list'}
         setTriggerRef={setTriggerRef}
-        onClick={() => {}}
       />
       {visible && (
         <UserMenu
@@ -86,6 +86,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
         />
       )}
       {!isMobile && txButtons}
+      {extra}
     </div>
   );
 };

@@ -15,6 +15,7 @@ export type ColonyLayoutProps = Omit<
 >;
 
 export interface HeaderProps {
+  extra?: ReactNode;
   navBar?: ReactNode;
   txButtons?: ReactNode;
   userHub?: ReactNode;

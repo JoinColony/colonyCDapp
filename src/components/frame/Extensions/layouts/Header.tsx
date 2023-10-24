@@ -13,7 +13,12 @@ import { HeaderProps } from './types';
 
 const displayName = 'frame.Extensions.Header';
 
-const Header: FC<HeaderProps> = ({ navBar = null, txButtons, userHub }) => {
+const Header: FC<HeaderProps> = ({
+  extra,
+  navBar = null,
+  txButtons,
+  userHub,
+}) => {
   const isMobile = useMobile();
   const {
     actionSidebarToggle: [
@@ -41,7 +46,11 @@ const Header: FC<HeaderProps> = ({ navBar = null, txButtons, userHub }) => {
       </ActionSidebar>
     </ColonyAvatarProvider>
   ) : (
-    <UserNavigation txButtons={txButtons} userHub={userHubComponent} />
+    <UserNavigation
+      txButtons={txButtons}
+      userHub={userHubComponent}
+      extra={extra}
+    />
   );
 
   return (

@@ -30,7 +30,14 @@ const ColonyHeader = () => {
 
   const userHub = <UserHubButton />;
 
-  return <Header navBar={navBar} userHub={userHub} txButtons={txButtons} />;
+  return (
+    <Header
+      navBar={navBar}
+      userHub={userHub}
+      txButtons={txButtons}
+      extra={<div>BUTTON</div>}
+    />
+  );
 };
 
 ColonyHeader.displayName = displayName;
