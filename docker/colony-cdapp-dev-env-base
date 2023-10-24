@@ -29,6 +29,7 @@ ARG AMAZON_ARCH_FLAG
 RUN curl -LO https://corretto.aws/downloads/latest/amazon-corretto-11-$AMAZON_ARCH_FLAG-linux-jdk.deb
 RUN dpkg -i amazon-corretto-11-$AMAZON_ARCH_FLAG-linux-jdk.deb
 
+ENV JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto
 
 # Reconfigure locales
 RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
