@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { Id } from '@colony/colony-js';
-import { useMemberAvatars } from './hooks';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import {
   calculateLastSliceIndex,
@@ -15,11 +14,12 @@ const displayName =
   'v5.common.ActionSidebar.partials.motions.Motion.steps.OutcomeStep.partials.MembersAvatars';
 
 const MembersAvatars: FC<MembersAvatarsProps> = ({
+  watchers,
+  loading,
   currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
   maxAvatars = 4,
   className,
 }) => {
-  const { loading, watchers } = useMemberAvatars();
   const remainingAvatarsCount = calculateRemainingItems(
     maxAvatars,
     watchers ?? [],

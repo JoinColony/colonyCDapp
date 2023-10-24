@@ -3,15 +3,16 @@ import { formatText } from '~utils/intl';
 
 import VoteStatus from './partials/VoteStatus';
 import CardWithSections from '~v5/shared/CardWithSections';
-import MembersAvatars from './partials/MembersAvatars';
+import MembersAvatars from '~v5/shared/MembersAvatars';
 import { OutcomeStepProps } from './types';
-import { useOutcomeStep } from './hooks';
+import { useMemberAvatars, useOutcomeStep } from './hooks';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.Motion.steps.OutcomeStep';
 
 const OutcomeStep: FC<OutcomeStepProps> = ({ motionData }) => {
   const { yayPercent, nayPercent, voteStatuses } = useOutcomeStep(motionData);
+  const { loading, watchers } = useMemberAvatars();
 
   return (
     <CardWithSections
@@ -37,7 +38,11 @@ const OutcomeStep: FC<OutcomeStepProps> = ({ motionData }) => {
                     progress={progress}
                     status={status}
                   >
-                    <MembersAvatars className="flex items-end flex-1" />
+                    <MembersAvatars
+                      className="flex items-end flex-1"
+                      watchers={watchers}
+                      loading={loading}
+                    />
                   </VoteStatus>
                 ),
               )}
