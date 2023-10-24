@@ -10,11 +10,13 @@ import { useAppContext, useColonyContext } from '~hooks';
 
 export const UserTokenBalanceContext = createContext<{
   tokenBalanceData: GetUserTokenBalanceReturn | null | undefined;
+  loading: boolean;
   pollActiveTokenBalance: () => void;
   pollLockedTokenBalance: () => void;
   refetchTokenBalances: () => void;
 }>({
   tokenBalanceData: null,
+  loading: false,
   refetchTokenBalances: () => {},
   pollActiveTokenBalance: () => {},
   pollLockedTokenBalance: () => {},
@@ -29,7 +31,11 @@ export const UserTokenBalanceProvider = ({
   const { colony } = useColonyContext();
   const { colonyAddress, nativeToken } = colony || {};
 
-  const { data: tokenBalanceQueryData, refetch } = useGetUserTokenBalanceQuery({
+  const {
+    data: tokenBalanceQueryData,
+    refetch,
+    loading,
+  } = useGetUserTokenBalanceQuery({
     variables: {
       input: {
         walletAddress: wallet?.address ?? '',
@@ -78,11 +84,18 @@ export const UserTokenBalanceProvider = ({
   const value = useMemo(
     () => ({
       tokenBalanceData,
+      loading,
       refetchTokenBalances: refetch,
       pollActiveTokenBalance,
       pollLockedTokenBalance,
     }),
-    [tokenBalanceData, refetch, pollActiveTokenBalance, pollLockedTokenBalance],
+    [
+      tokenBalanceData,
+      refetch,
+      pollActiveTokenBalance,
+      pollLockedTokenBalance,
+      loading,
+    ],
   );
 
   return (
