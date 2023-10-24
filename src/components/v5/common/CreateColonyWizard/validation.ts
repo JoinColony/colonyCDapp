@@ -69,31 +69,36 @@ export const selectTokenValidationSchema = object({
               },
             ),
           ),
-      otherwise: (schema) => schema.nullable(),
+      otherwise: (schema) => schema.notRequired(),
     }),
   /**
    * The test below relies on the fact that token field will be null
    * if token data cannot be found. The message argument is empty since it won't show anywhere
    */
-  token: object<Token>().nullable().test('doesTokenExist', '', doesTokenExist),
+  token: object<Token>()
+    .nullable()
+    .when('tokenChoice', {
+      is: 'select',
+      then: (schema) =>
+        schema.nullable().test('doesTokenExist', '', doesTokenExist),
+      otherwise: (schema) => schema.notRequired(),
+    }),
 }).defined();
 
 export const createTokenValidationSchema = object({
-  tokenSymbol: string()
-    .default('')
-    .when('tokenChoice', {
-      is: 'create',
-      then: (schema) =>
-        schema
-          .max(5)
-          .required(formatMessage({ id: 'error.tokenSymbolRequired' }))
-          .test(
-            'isValidTokenSymbol',
-            formatMessage({ id: 'error.tokenSymbol' }),
-            isValidTokenSymbol,
-          ),
-      otherwise: (schema) => schema.nullable(),
-    }),
+  tokenSymbol: string().when('tokenChoice', {
+    is: 'create',
+    then: (schema) =>
+      schema
+        .max(5)
+        .required(formatMessage({ id: 'error.tokenSymbolRequired' }))
+        .test(
+          'isValidTokenSymbol',
+          formatMessage({ id: 'error.tokenSymbol' }),
+          isValidTokenSymbol,
+        ),
+    otherwise: (schema) => schema.notRequired(),
+  }),
   tokenName: string()
     .default('')
     .when('tokenChoice', {
@@ -102,7 +107,7 @@ export const createTokenValidationSchema = object({
         schema
           .max(255, formatMessage({ id: 'error.tokenNameLength' }))
           .required(formatMessage({ id: 'error.tokenNameRequired' })),
-      otherwise: (schema) => schema.nullable(),
+      otherwise: (schema) => schema.notRequired(),
     }),
 }).defined();
 
