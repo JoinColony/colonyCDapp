@@ -13,6 +13,7 @@ import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/Na
 export const displayName = 'common.Extensions.UserNavigation';
 
 const UserNavigation: FC<UserNavigationProps> = ({
+  extra = null,
   userHub,
   txButtons = null,
 }) => {
@@ -93,6 +94,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
         />
       )}
       {!isTablet && txButtons}
+      {extra}
     </div>
   );
 };
