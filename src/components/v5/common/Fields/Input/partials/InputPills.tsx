@@ -8,7 +8,7 @@ import { formatText } from '~utils/intl';
 
 const displayName = 'v5.common.Fields.Input.partials.InputPills';
 
-const InputPills: FC<PillProps> = ({ message, status }) => {
+const InputPills: FC<PillProps> = ({ message, status, isShowingLabel }) => {
   const iconType =
     (status === 'success' && 'check-circle') ||
     (status === 'error' && 'x-circle') ||
@@ -20,6 +20,8 @@ const InputPills: FC<PillProps> = ({ message, status }) => {
         'border-negative-200 text-negative-400': status === 'error',
         'border-success-200 text-success-400': status === 'success',
         'border-warning-400 text-warning-400': status === 'warning',
+        'top-[3.08rem]': !isShowingLabel,
+        'top-20': isShowingLabel,
       })}
     >
       <Icon name={iconType} appearance={{ size: 'small' }} />
