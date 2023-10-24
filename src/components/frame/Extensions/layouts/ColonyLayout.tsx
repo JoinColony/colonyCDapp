@@ -14,8 +14,9 @@ import { NOT_FOUND_ROUTE } from '~routes';
 import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
 import PageLayout from '~v5/frame/PageLayout';
 import { CompletedButton, PendingButton } from '~v5/shared/Button';
-import CalamityBanner from '~v5/shared/CalamityBanner';
 import ColonyCreatedModal from '~v5/common/Modals/ColonyCreatedModal';
+import JoinButton from '~v5/shared/Button/JoinButton';
+import CalamityBanner from '~v5/shared/CalamityBanner';
 
 import UserNavigationWrapper from './partials/UserNavigationWrapper';
 import { useCalamityBannerInfo } from './hooks';
@@ -98,7 +99,11 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
               }
             : undefined,
           userNavigation: (
-            <UserNavigationWrapper txButtons={txButtons} userHub={userHub} />
+            <UserNavigationWrapper
+              txButtons={txButtons}
+              userHub={userHub}
+              extra={<JoinButton />}
+            />
           ),
         }}
         sidebar={<ColonySidebar userHub={userHub} txButtons={txButtons} />}

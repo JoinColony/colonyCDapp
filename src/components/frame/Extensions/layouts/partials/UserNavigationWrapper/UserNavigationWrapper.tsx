@@ -15,6 +15,7 @@ const displayName = 'frame.Extensions.partials.UserNavigationWrapper';
 const UserNavigationWrapper: FC<UserNavigationWrapperProps> = ({
   userHub,
   txButtons,
+  extra,
 }) => {
   const {
     actionSidebarToggle: [
@@ -34,7 +35,11 @@ const UserNavigationWrapper: FC<UserNavigationWrapperProps> = ({
 
   const userHubComponent = userHub || <HeaderAvatar />;
   const userNavigation = (
-    <UserNavigation txButtons={txButtons} userHub={userHubComponent} />
+    <UserNavigation
+      txButtons={txButtons}
+      userHub={userHubComponent}
+      extra={extra}
+    />
   );
 
   return (

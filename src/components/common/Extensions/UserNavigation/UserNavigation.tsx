@@ -1,19 +1,20 @@
 import React, { FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import { useMatch } from 'react-router-dom';
 import { useAppContext, useGetNetworkToken, useTablet } from '~hooks';
+import { getLastWallet } from '~utils/autoLogin';
+import { formatText } from '~utils/intl';
+import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks';
 import Button, { Hamburger } from '~v5/shared/Button';
+
 import Token from './partials/Token';
 import UserMenu from './partials/UserMenu';
 import { UserNavigationProps } from './types';
-import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks';
-import { formatText } from '~utils/intl';
-import JoinButton from '~v5/shared/Button/JoinButton';
 
 export const displayName = 'common.Extensions.UserNavigation';
 
 const UserNavigation: FC<UserNavigationProps> = ({
+  extra = null,
   userHub,
   txButtons = null,
 }) => {
@@ -21,7 +22,6 @@ const UserNavigation: FC<UserNavigationProps> = ({
   const isTablet = useTablet();
   const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
   const [, { toggleOff }] = mobileMenuToggle;
-  const isOnColonyRoute = useMatch('/colony/:colonyName/*');
 
   const isWalletConnected = !!wallet?.address;
   const nativeToken = useGetNetworkToken();
@@ -87,7 +87,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
         />
       )}
       {!isTablet && txButtons}
-      {isOnColonyRoute && <JoinButton />}
+      {extra}
     </div>
   );
 };
