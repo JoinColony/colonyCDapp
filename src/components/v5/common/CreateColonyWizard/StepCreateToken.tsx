@@ -36,8 +36,8 @@ const StepCreateToken = ({
       validationSchema={validationSchema}
       defaultValues={{ ...defaultValues, tokenChoice }}
     >
-      {({ getValues }) => {
-        const currentTokenChoice = getValues('tokenChoice');
+      {({ watch }) => {
+        const currentTokenChoice = watch('tokenChoice');
 
         return (
           <>
