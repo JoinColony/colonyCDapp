@@ -6,7 +6,7 @@ import { Form } from '~shared/Fields';
 import {
   FormValues,
   Step3,
-  createTokenValidationSchema as validationSchema,
+  tokenValidationSchema as validationSchema,
 } from '../CreateColonyWizard';
 import { ButtonRow, HeaderRow } from './shared';
 import TokenInputs from './StepCreateTokenInputs';

@@ -1,7 +1,6 @@
 export { default, FormValues, Step1, Step2, Step3 } from './CreateColonyWizard';
 export {
-  selectTokenValidationSchema,
-  createTokenValidationSchema,
+  tokenValidationSchema,
   colonyNameValidationSchema,
 } from './validation';
 export { LinkToOtherStep, switchTokenInputType } from './StepSelectToken';

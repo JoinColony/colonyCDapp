@@ -32,7 +32,7 @@ const StepExistingTokenInputs = ({
 
   return (
     <Input
-      name="tokenName"
+      name="tokenAddress"
       register={register}
       isError={!!tokenAddressError}
       customErrorMessage={tokenAddressError}
