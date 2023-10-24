@@ -49,7 +49,6 @@ services:
     volumes:
       - '../amplify/backend:/colonyCDapp/amplify/backend'
       - '../amplify/mock-data:/colonyCDapp/amplify/mock-data'
-      - '../src/graphql:/colonyCDapp/src/graphql'
     depends_on:
       network-contracts:
         condition: service_healthy
