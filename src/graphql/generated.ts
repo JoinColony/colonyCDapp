@@ -113,7 +113,7 @@ export type Colony = {
   chainFundsClaim?: Maybe<ColonyChainFundsClaim>;
   /** Metadata related to the chain of the Colony */
   chainMetadata: ChainMetadata;
-  colonyMemberInvite?: Maybe<ColonyMemberInvite>;
+  colonyMemberInvites?: Maybe<Array<ColonyMemberInvite>>;
   createdAt: Scalars['AWSDateTime'];
   domains?: Maybe<ModelDomainConnection>;
   expenditures?: Maybe<ModelExpenditureConnection>;
@@ -643,11 +643,14 @@ export type ColonyMemberInvite = {
   code: Scalars['ID'];
   /** Count of how many times this invite has been used */
   used: Scalars['Int'];
+  /** Whether the invite is still valid or not */
+  valid: Scalars['Boolean'];
 };
 
 export type ColonyMemberInviteInput = {
   code: Scalars['ID'];
   used: Scalars['Int'];
+  valid: Scalars['Boolean'];
 };
 
 /** Represents metadata for a Colony */
@@ -1106,7 +1109,7 @@ export type CreateColonyInput = {
   balances?: InputMaybe<ColonyBalancesInput>;
   chainFundsClaim?: InputMaybe<ColonyChainFundsClaimInput>;
   chainMetadata: ChainMetadataInput;
-  colonyMemberInvite?: InputMaybe<ColonyMemberInviteInput>;
+  colonyMemberInvites?: InputMaybe<Array<ColonyMemberInviteInput>>;
   expendituresGlobalClaimDelay?: InputMaybe<Scalars['Int']>;
   id?: InputMaybe<Scalars['ID']>;
   lastUpdatedContributorsWithReputation?: InputMaybe<Scalars['AWSDateTime']>;
@@ -6781,7 +6784,7 @@ export type UpdateColonyInput = {
   balances?: InputMaybe<ColonyBalancesInput>;
   chainFundsClaim?: InputMaybe<ColonyChainFundsClaimInput>;
   chainMetadata?: InputMaybe<ChainMetadataInput>;
-  colonyMemberInvite?: InputMaybe<ColonyMemberInviteInput>;
+  colonyMemberInvites?: InputMaybe<Array<ColonyMemberInviteInput>>;
   expendituresGlobalClaimDelay?: InputMaybe<Scalars['Int']>;
   id: Scalars['ID'];
   lastUpdatedContributorsWithReputation?: InputMaybe<Scalars['AWSDateTime']>;
