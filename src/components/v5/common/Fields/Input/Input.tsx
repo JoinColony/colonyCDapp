@@ -64,7 +64,7 @@ const Input: FC<InputProps> = ({
   );
 
   return (
-    <div className="flex relative flex-col gap-1 mb-9">
+    <div className="flex flex-col gap-1">
       {labelMessage && (
         <label
           className={clsx(labelClassName, 'flex flex-col text-1')}
@@ -102,22 +102,25 @@ const Input: FC<InputProps> = ({
         />
       )}
 
-      {!isTyping && !isError && successfulMessage && (
-        <InputPills message={successfulMessage} status="success" />
-      )}
+      {/* This is to stop layout shift when error messages are shown */}
+      <div className="relative pb-9">
+        {!isTyping && !isError && successfulMessage && (
+          <InputPills message={successfulMessage} status="success" />
+        )}
 
-      {isErrorStatus && (
-        <>
-          {isDecoratedError && !isTyping ? (
-            <InputPills message={customErrorMessage} status="error" />
-          ) : (
-            <FormError isFullSize alignment="left">
-              {customErrorMessage ||
-                formatMessage({ id: 'too.many.characters' })}
-            </FormError>
-          )}
-        </>
-      )}
+        {isErrorStatus && (
+          <>
+            {isDecoratedError && !isTyping ? (
+              <InputPills message={customErrorMessage} status="error" />
+            ) : (
+              <FormError isFullSize alignment="left">
+                {customErrorMessage ||
+                  formatMessage({ id: 'too.many.characters' })}
+              </FormError>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 };
