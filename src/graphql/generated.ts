@@ -138,6 +138,7 @@ export type Colony = {
   roles?: Maybe<ModelColonyRoleConnection>;
   /** Status information for the Colony */
   status?: Maybe<ColonyStatus>;
+  streamingPayments?: Maybe<ModelStreamingPaymentConnection>;
   tokens?: Maybe<ModelColonyTokensConnection>;
   /** Type of the Colony (Regular or Metacolony) */
   type?: Maybe<ColonyType>;
@@ -199,6 +200,16 @@ export type ColonyFundsClaimsArgs = {
 /** Represents a Colony within the Colony Network */
 export type ColonyRolesArgs = {
   filter?: InputMaybe<ModelColonyRoleFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Represents a Colony within the Colony Network */
+export type ColonyStreamingPaymentsArgs = {
+  createdAt?: InputMaybe<ModelStringKeyConditionInput>;
+  filter?: InputMaybe<ModelStreamingPaymentFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
@@ -362,7 +373,7 @@ export enum ColonyActionType {
   CreateDomain = 'CREATE_DOMAIN',
   /** An action related to creating a domain within a Colony via a motion */
   CreateDomainMotion = 'CREATE_DOMAIN_MOTION',
-  /** An action related to the creation of a motion to start a streaming payment.  */
+  /** An action related to the creation of a motion to start a streaming payment. */
   CreateStreamingPaymentMotion = 'CREATE_STREAMING_PAYMENT_MOTION',
   /** An action related to editing a domain's details */
   EditDomain = 'EDIT_DOMAIN',
@@ -1290,6 +1301,7 @@ export type CreateReputationMiningCycleMetadataInput = {
 };
 
 export type CreateStreamingPaymentInput = {
+  colonyId: Scalars['ID'];
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   endTime: Scalars['AWSTimestamp'];
   id?: InputMaybe<Scalars['ID']>;
@@ -2990,6 +3002,7 @@ export enum ModelSortDirection {
 
 export type ModelStreamingPaymentConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelStreamingPaymentConditionInput>>>;
+  colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   endTime?: InputMaybe<ModelIntInput>;
   interval?: InputMaybe<ModelStringInput>;
@@ -3014,6 +3027,7 @@ export type ModelStreamingPaymentEndConditionInput = {
 
 export type ModelStreamingPaymentFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelStreamingPaymentFilterInput>>>;
+  colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   endTime?: InputMaybe<ModelIntInput>;
   id?: InputMaybe<ModelIdInput>;
@@ -3433,6 +3447,7 @@ export type ModelSubscriptionReputationMiningCycleMetadataFilterInput = {
 
 export type ModelSubscriptionStreamingPaymentFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionStreamingPaymentFilterInput>>>;
+  colonyId?: InputMaybe<ModelSubscriptionIdInput>;
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   endTime?: InputMaybe<ModelSubscriptionIntInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
@@ -4829,6 +4844,7 @@ export type Query = {
   getRoleByTargetAddressAndColony?: Maybe<ModelColonyRoleConnection>;
   getStreamingPayment?: Maybe<StreamingPayment>;
   getStreamingPaymentMetadata?: Maybe<StreamingPaymentMetadata>;
+  getStreamingPaymentsByColony?: Maybe<ModelStreamingPaymentConnection>;
   getToken?: Maybe<Token>;
   getTokenByAddress?: Maybe<ModelTokenConnection>;
   /** Fetch a token's information. Tries to get the data from the DB first, if that fails, resolves to get data from chain */
@@ -5333,6 +5349,17 @@ export type QueryGetStreamingPaymentMetadataArgs = {
 
 
 /** Root query type */
+export type QueryGetStreamingPaymentsByColonyArgs = {
+  colonyId: Scalars['ID'];
+  createdAt?: InputMaybe<ModelStringKeyConditionInput>;
+  filter?: InputMaybe<ModelStreamingPaymentFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
 export type QueryGetTokenArgs = {
   id: Scalars['ID'];
 };
@@ -5775,6 +5802,10 @@ export type StakerRewardsInput = {
 
 export type StreamingPayment = {
   __typename?: 'StreamingPayment';
+  /** The Colony to which the streaming payment belongs */
+  colony: Colony;
+  /** Colony ID (address) to which the streaming payment belongs */
+  colonyId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
   endTime: Scalars['AWSTimestamp'];
   id: Scalars['ID'];
@@ -6892,6 +6923,7 @@ export type UpdateReputationMiningCycleMetadataInput = {
 };
 
 export type UpdateStreamingPaymentInput = {
+  colonyId?: InputMaybe<Scalars['ID']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   endTime?: InputMaybe<Scalars['AWSTimestamp']>;
   id: Scalars['ID'];
@@ -7235,6 +7267,8 @@ export type ExpenditurePayoutFragment = { __typename?: 'ExpenditurePayout', toke
 
 export type ExpenditureStageFragment = { __typename?: 'ExpenditureStage', slotId: number, name: string, isReleased: boolean };
 
+export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: number, endTime: number, interval: string, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean }> | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, limitAmount?: string | null } | null };
+
 export type StreamingPaymentMetadataFragment = { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, limitAmount?: string | null };
 
 export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: number, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number, params?: { __typename?: 'ExtensionParams', votingReputation?: { __typename?: 'VotingReputationParams', maxVoteFraction: string, totalStakeFraction: string, voterRewardFraction: string, userMinStakeFraction: string, stakePeriod: string, submitPeriod: string, revealPeriod: string, escalationPeriod: string } | null, stakedExpenditure?: { __typename?: 'StakedExpenditureParams', stakeFraction: string } | null } | null };
@@ -7540,7 +7574,7 @@ export type GetColonyExpendituresQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyExpendituresQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, expenditures?: { __typename?: 'ModelExpenditureConnection', items: Array<{ __typename?: 'Expenditure', id: string, nativeId: number } | null> } | null } | null };
+export type GetColonyExpendituresQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, expenditures?: { __typename?: 'ModelExpenditureConnection', items: Array<{ __typename?: 'Expenditure', id: string, nativeId: number } | null> } | null, streamingPayments?: { __typename?: 'ModelStreamingPaymentConnection', items: Array<{ __typename?: 'StreamingPayment', id: string, nativeId: number } | null> } | null } | null };
 
 export type GetExpenditureQueryVariables = Exact<{
   expenditureId: Scalars['ID'];
@@ -7548,6 +7582,13 @@ export type GetExpenditureQueryVariables = Exact<{
 
 
 export type GetExpenditureQuery = { __typename?: 'Query', getExpenditure?: { __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, nativeDomainId: number, finalizedAt?: number | null, hasReclaimedStake?: boolean | null, type: ExpenditureType, isStaked: boolean, isStakeForfeited?: boolean | null, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', fundFromDomainNativeId: number, stakeAmount?: string | null, stages?: Array<{ __typename?: 'ExpenditureStage', slotId: number, name: string, isReleased: boolean }> | null } | null, balances?: Array<{ __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string, requiredAmount: string }> | null, motions?: { __typename?: 'ModelColonyMotionConnection', items: Array<{ __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, gasEstimate: string, transactionHash: string, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: number, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, initiatorUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null }> | null } | null } } | null> } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null> } | null } | null };
+
+export type GetStreamingPaymentQueryVariables = Exact<{
+  streamingPaymentId: Scalars['ID'];
+}>;
+
+
+export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayment?: { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: number, endTime: number, interval: string, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean }> | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, limitAmount?: string | null } | null } | null };
 
 export type GetColonyExtensionsByColonyAddressQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -8397,6 +8438,24 @@ export const ExpenditureFragmentDoc = gql`
     ${ExpenditureSlotFragmentDoc}
 ${ExpenditureStageFragmentDoc}
 ${ColonyMotionFragmentDoc}`;
+export const StreamingPaymentFragmentDoc = gql`
+    fragment StreamingPayment on StreamingPayment {
+  id
+  nativeId
+  recipientAddress
+  nativeDomainId
+  startTime
+  endTime
+  interval
+  payouts {
+    ...ExpenditurePayout
+  }
+  metadata {
+    ...StreamingPaymentMetadata
+  }
+}
+    ${ExpenditurePayoutFragmentDoc}
+${StreamingPaymentMetadataFragmentDoc}`;
 export const UserTokenBalanceDataFragmentDoc = gql`
     fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
   balance
@@ -9832,6 +9891,12 @@ export const GetColonyExpendituresDocument = gql`
         nativeId
       }
     }
+    streamingPayments {
+      items {
+        id
+        nativeId
+      }
+    }
   }
 }
     `;
@@ -9898,6 +9963,41 @@ export function useGetExpenditureLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetExpenditureQueryHookResult = ReturnType<typeof useGetExpenditureQuery>;
 export type GetExpenditureLazyQueryHookResult = ReturnType<typeof useGetExpenditureLazyQuery>;
 export type GetExpenditureQueryResult = Apollo.QueryResult<GetExpenditureQuery, GetExpenditureQueryVariables>;
+export const GetStreamingPaymentDocument = gql`
+    query GetStreamingPayment($streamingPaymentId: ID!) {
+  getStreamingPayment(id: $streamingPaymentId) {
+    ...StreamingPayment
+  }
+}
+    ${StreamingPaymentFragmentDoc}`;
+
+/**
+ * __useGetStreamingPaymentQuery__
+ *
+ * To run a query within a React component, call `useGetStreamingPaymentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetStreamingPaymentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetStreamingPaymentQuery({
+ *   variables: {
+ *      streamingPaymentId: // value for 'streamingPaymentId'
+ *   },
+ * });
+ */
+export function useGetStreamingPaymentQuery(baseOptions: Apollo.QueryHookOptions<GetStreamingPaymentQuery, GetStreamingPaymentQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetStreamingPaymentQuery, GetStreamingPaymentQueryVariables>(GetStreamingPaymentDocument, options);
+      }
+export function useGetStreamingPaymentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetStreamingPaymentQuery, GetStreamingPaymentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetStreamingPaymentQuery, GetStreamingPaymentQueryVariables>(GetStreamingPaymentDocument, options);
+        }
+export type GetStreamingPaymentQueryHookResult = ReturnType<typeof useGetStreamingPaymentQuery>;
+export type GetStreamingPaymentLazyQueryHookResult = ReturnType<typeof useGetStreamingPaymentLazyQuery>;
+export type GetStreamingPaymentQueryResult = Apollo.QueryResult<GetStreamingPaymentQuery, GetStreamingPaymentQueryVariables>;
 export const GetColonyExtensionsByColonyAddressDocument = gql`
     query GetColonyExtensionsByColonyAddress($colonyAddress: ID!) {
   getExtensionByColonyAndHash(colonyId: $colonyAddress) {

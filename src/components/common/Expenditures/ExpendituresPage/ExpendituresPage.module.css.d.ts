@@ -1,5 +1,6 @@
 declare namespace ExpendituresPageModuleCssNamespace {
   export interface IExpendituresPageModuleCss {
+    listWrapper: string;
     pageWrapper: string;
   }
 }

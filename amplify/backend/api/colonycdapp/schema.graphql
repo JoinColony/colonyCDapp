@@ -805,7 +805,7 @@ enum ColonyActionType {
   """
   CANCEL_STAKED_EXPENDITURE_MOTION
   """
-  An action related to the creation of a motion to start a streaming payment. 
+  An action related to the creation of a motion to start a streaming payment.
   """
   CREATE_STREAMING_PAYMENT_MOTION
 }
@@ -1412,6 +1412,8 @@ type Colony @model {
   reputation: String
 
   expenditures: [Expenditure] @hasMany(indexName: "byColony", fields: ["id"])
+  streamingPayments: [StreamingPayment]
+    @hasMany(indexName: "byColony", fields: ["id"])
   expendituresGlobalClaimDelay: Int
 }
 
@@ -2652,7 +2654,8 @@ type ColonyAction @model {
   """
   The type of action performed
   """
-  type: ColonyActionType! @index(name: "byType", queryField: "getColonyActionsByType")
+  type: ColonyActionType!
+    @index(name: "byType", queryField: "getColonyActionsByType")
   """
   The block number where the action was recorded
   """
@@ -3210,6 +3213,19 @@ type ExpenditureStage {
 
 type StreamingPayment @model {
   id: ID! # Self-managed, formatted as colonyId_nativeId
+  """
+  Colony ID (address) to which the streaming payment belongs
+  """
+  colonyId: ID!
+    @index(
+      name: "byColony"
+      queryField: "getStreamingPaymentsByColony"
+      sortKeyFields: ["createdAt"]
+    )
+  """
+  The Colony to which the streaming payment belongs
+  """
+  colony: Colony! @belongsTo(fields: ["colonyId"])
   nativeId: Int!
   createdAt: AWSDateTime!
   recipientAddress: String!

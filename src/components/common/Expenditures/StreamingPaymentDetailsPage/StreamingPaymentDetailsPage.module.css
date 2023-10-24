@@ -1,0 +1,15 @@
+.details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.payoutsContainer {
+  margin-top: 20px;
+}
+
+.payout {
+  display: flex;
+  gap: 10px;
+}

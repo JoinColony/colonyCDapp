@@ -171,7 +171,7 @@ export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.STREAMING_PAYMENT_CREATE,
       {
-        colonyAddress: Address;
+        colony: Colony;
         createdInDomain: Domain;
         recipientAddress: Address;
         tokenAddress: Address;

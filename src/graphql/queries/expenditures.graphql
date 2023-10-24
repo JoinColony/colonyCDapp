@@ -7,11 +7,23 @@ query GetColonyExpenditures($colonyAddress: ID!) {
         nativeId
       }
     }
+    streamingPayments {
+      items {
+        id
+        nativeId
+      }
+    }
   }
 }
 
 query GetExpenditure($expenditureId: ID!) {
   getExpenditure(id: $expenditureId) {
     ...Expenditure
+  }
+}
+
+query GetStreamingPayment($streamingPaymentId: ID!) {
+  getStreamingPayment(id: $streamingPaymentId) {
+    ...StreamingPayment
   }
 }

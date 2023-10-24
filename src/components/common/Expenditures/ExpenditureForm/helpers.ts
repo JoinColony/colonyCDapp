@@ -2,6 +2,7 @@ import { weiToEth } from '@web3-onboard/common';
 import { BigNumber } from 'ethers';
 
 import { Expenditure } from '~types';
+import { TEMP_convertEthToWei } from '~utils/expenditures';
 
 import {
   ExpenditurePayoutFieldValue,
@@ -44,7 +45,7 @@ export const getStagedExpenditurePayouts = (
   payload.stages.map((stage) => ({
     recipientAddress: payload.recipientAddress ?? '',
     tokenAddress: stage.tokenAddress,
-    amount: stage.amount,
+    amount: TEMP_convertEthToWei(stage.amount).toString(),
     claimDelay: 0,
   }));
 
