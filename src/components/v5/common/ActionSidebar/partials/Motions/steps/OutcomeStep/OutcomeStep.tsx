@@ -1,41 +1,17 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 import { formatText } from '~utils/intl';
-import { supportOption, opposeOption } from '../../consts';
+
 import VoteStatus from './partials/VoteStatus';
-import { MotionVote } from '~utils/colonyMotions';
 import CardWithSections from '~v5/shared/CardWithSections';
 import MembersAvatars from './partials/MembersAvatars';
 import { OutcomeStepProps } from './types';
+import { useOutcomeStep } from './hooks';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.Motion.steps.OutcomeStep';
 
 const OutcomeStep: FC<OutcomeStepProps> = ({ motionData }) => {
-  const {
-    motionStakes: {
-      percentage: { yay: yayPercent, nay: nayPercent },
-    },
-  } = motionData;
-
-  const voteStatuses = useMemo(
-    () => [
-      {
-        id: supportOption.id,
-        iconName: supportOption.iconName,
-        label: supportOption.label,
-        progress: yayPercent,
-        status: MotionVote.Yay,
-      },
-      {
-        id: opposeOption.id,
-        iconName: opposeOption.iconName,
-        label: opposeOption.label,
-        progress: nayPercent,
-        status: MotionVote.Nay,
-      },
-    ],
-    [supportOption, yayPercent, nayPercent],
-  );
+  const { yayPercent, nayPercent, voteStatuses } = useOutcomeStep(motionData);
 
   return (
     <CardWithSections
@@ -53,7 +29,7 @@ const OutcomeStep: FC<OutcomeStepProps> = ({ motionData }) => {
                 })}
               </h3>
               {voteStatuses.map(
-                ({ id, iconName, label = '', progress, status }) => (
+                ({ id, iconName, label = '', progress = '', status }) => (
                   <VoteStatus
                     key={id}
                     iconName={iconName}

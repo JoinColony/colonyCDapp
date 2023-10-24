@@ -37,7 +37,7 @@ const VoteStatus: FC<PropsWithChildren<VoteStatusProps>> = ({
           </span>
         </span>
         <ProgressBar
-          progress={progress}
+          progress={parseInt(progress, 2)}
           max={100}
           additionalText="%"
           className={clsx({

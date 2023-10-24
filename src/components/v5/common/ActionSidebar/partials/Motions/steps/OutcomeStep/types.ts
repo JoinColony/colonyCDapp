@@ -1,5 +1,5 @@
-import { ColonyMotion } from '~gql';
+import { ColonyMotion } from '~types';
 
 export interface OutcomeStepProps {
-  motionData: ColonyMotion;
+  motionData: ColonyMotion | undefined | null;
 }
