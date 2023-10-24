@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useMemo,
 } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useMatch, useParams } from 'react-router-dom';
 import { Id } from '@colony/colony-js';
 
 import { FilterContextProvider, useFilterContext } from './FilterContext';
@@ -26,6 +26,7 @@ import {
 } from '~constants';
 import { ColonyContributor } from '~types';
 import { useGetContributorCountQuery } from '~gql';
+import { COLONY_VERIFIED_ROUTE } from '~routes';
 
 const MemberContext = createContext<
   | {
@@ -50,17 +51,20 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const { colony } = useColonyContext();
   const { domains, colonyAddress = '' } = colony ?? {};
   const isMobile = useMobile();
-  const { pathname } = useLocation();
 
-  const isVerifiedPage = pathname.includes('verified');
+  const isVerifiedPage = useMatch({ path: COLONY_VERIFIED_ROUTE });
 
-  let pageSize = HOMEPAGE_MEMBERS_LIST_LIMIT;
+  const pageSize = useMemo(() => {
+    let itemsToShow = HOMEPAGE_MEMBERS_LIST_LIMIT;
 
-  if (isVerifiedPage) {
-    pageSize = VERIFIED_MEMBERS_LIST_LIMIT;
-  } else if (isMobile) {
-    pageSize = HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT;
-  }
+    if (isVerifiedPage) {
+      itemsToShow = VERIFIED_MEMBERS_LIST_LIMIT;
+    } else if (isMobile) {
+      itemsToShow = HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT;
+    }
+
+    return itemsToShow;
+  }, [isMobile, isVerifiedPage]);
 
   const {
     getFilterDomainIds: getDomainIds,
