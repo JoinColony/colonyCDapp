@@ -63,7 +63,8 @@ services:
       - 'reputation-monitor:reputation-monitor.docker'
     ports:
       - '20002:20002'
+      - '9200:9200'
     healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:20002']
+      test: ['CMD', 'curl', '-f', 'http://localhost:9200']
       interval: 5s
       retries: 1000
