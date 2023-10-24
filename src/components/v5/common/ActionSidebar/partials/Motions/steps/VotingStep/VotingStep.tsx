@@ -53,7 +53,7 @@ const VotingStep: FC<VotingStepProps> = ({
         iconAlignment: 'top',
         content: (
           <ProgressBar
-            progress={currentReputationPercent}
+            progress={currentReputationPercent || 0}
             threshold={thresholdPercent}
             additionalText={formatText({
               id: 'motion.votingStep.additionalText',
