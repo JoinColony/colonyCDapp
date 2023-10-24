@@ -26,7 +26,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         fieldName="team"
         title={<FormattedMessage id="actionSidebar.team" />}
         tooltip={
-          <FormattedMessage id="actionSidebar.toolip.editTeam.selectTeam" />
+          <FormattedMessage id="actionSidebar.tooltip.editTeam.selectTeam" />
         }
       >
         <TeamsSelect name="team" />
@@ -35,7 +35,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         fieldName="teamName"
         iconName="user-list"
         tooltip={
-          <FormattedMessage id="actionSidebar.toolip.editTeam.teamName" />
+          <FormattedMessage id="actionSidebar.tooltip.editTeam.teamName" />
         }
         title={<FormattedMessage id="actionSidebar.teamName" />}
       >
@@ -51,7 +51,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         fieldName="domainPurpose"
         title={<FormattedMessage id="actionSidebar.teamPurpose" />}
         tooltip={
-          <FormattedMessage id="actionSidebar.toolip.createTeam.teamPurpose" />
+          <FormattedMessage id="actionSidebar.tooltip.createTeam.teamPurpose" />
         }
       >
         <FormTextareaBase
@@ -66,7 +66,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         fieldName="domainColor"
         title={<FormattedMessage id="actionSidebar.teamColour" />}
         tooltip={
-          <FormattedMessage id="actionSidebar.toolip.createTeam.teamColour" />
+          <FormattedMessage id="actionSidebar.tooltip.createTeam.teamColour" />
         }
       >
         <TeamColourField name="domainColor" />
@@ -74,7 +74,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="house-line"
         fieldName="createdIn"
-        tooltip={<FormattedMessage id="actionSidebar.toolip.createdIn" />}
+        tooltip={<FormattedMessage id="actionSidebar.tooltip.createdIn" />}
         title={<FormattedMessage id="actionSidebar.createdIn" />}
       >
         <TeamsSelect name="createdIn" />
@@ -82,7 +82,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="scales"
         fieldName="decisionMethod"
-        tooltip={<FormattedMessage id="actionSidebar.toolip.decisionMethod" />}
+        tooltip={<FormattedMessage id="actionSidebar.tooltip.decisionMethod" />}
         title={<FormattedMessage id="actionSidebar.decisionMethod" />}
       >
         <FormCardSelect
@@ -94,7 +94,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="pencil"
         fieldName="description"
-        tooltip={<FormattedMessage id="actionSidebar.toolip.description" />}
+        tooltip={<FormattedMessage id="actionSidebar.tooltip.description" />}
         title={<FormattedMessage id="actionSidebar.description" />}
         isExpandable
       >

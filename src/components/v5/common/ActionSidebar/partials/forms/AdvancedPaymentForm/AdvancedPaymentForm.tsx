@@ -20,7 +20,7 @@ const AdvancedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="users-three"
         fieldName="from"
-        tooltip={formatText({ id: 'actionSidebar.toolip.paymentFrom' })}
+        tooltip={formatText({ id: 'actionSidebar.tooltip.paymentFrom' })}
         title={formatText({ id: 'actionSidebar.fundFrom' })}
       >
         <TeamsSelect name="from" />
@@ -28,7 +28,7 @@ const AdvancedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="scales"
         fieldName="decisionMethod"
-        tooltip={formatText({ id: 'actionSidebar.toolip.decisionMethod' })}
+        tooltip={formatText({ id: 'actionSidebar.tooltip.decisionMethod' })}
         title={formatText({ id: 'actionSidebar.decisionMethod' })}
       >
         <FormCardSelect
@@ -40,7 +40,7 @@ const AdvancedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="house-line"
         fieldName="createdIn"
-        tooltip={formatText({ id: 'actionSidebar.toolip.createdIn' })}
+        tooltip={formatText({ id: 'actionSidebar.tooltip.createdIn' })}
         title={formatText({ id: 'actionSidebar.createdIn' })}
       >
         <TeamsSelect name="createdIn" />
@@ -48,7 +48,7 @@ const AdvancedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="pencil"
         fieldName="description"
-        tooltip={formatText({ id: 'actionSidebar.toolip.description' })}
+        tooltip={formatText({ id: 'actionSidebar.tooltip.description' })}
         title={formatText({ id: 'actionSidebar.description' })}
         isExpandable
       >

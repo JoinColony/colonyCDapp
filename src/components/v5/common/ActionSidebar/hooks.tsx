@@ -60,6 +60,7 @@ import SplitPaymentForm from './partials/forms/SplitPaymentForm';
 import ManageTokensForm from './partials/forms/ManageTokensForm';
 import AdvancedPaymentForm from './partials/forms/AdvancedPaymentForm';
 import BatchPaymentForm from './partials/forms/BatchPaymentForm';
+import ManagePermissionsForm from './partials/forms/ManagePermissionsForm';
 import AsyncText from '~v5/shared/AsyncText';
 import { simplePaymentDescriptionMetadataGetter } from './partials/forms/SimplePaymentForm/utils';
 import { advancedPaymentDescriptionMetadataGetter } from './partials/forms/AdvancedPaymentForm/utils';
@@ -75,6 +76,7 @@ import { upgradeColonyDescriptionMetadataGetter } from './partials/forms/Upgrade
 import { enterRecoveryModeDescriptionMetadataGetter } from './partials/forms/EnterRecoveryModeForm/utils';
 import { createDecisionDescriptionMetadataGetter } from './partials/forms/CreateDecisionForm/utils';
 import { useGetColonyAction } from '~common/ColonyActions';
+import { managePermissionsDescriptionMetadataGetter } from './partials/forms/ManagePermissionsForm/utils';
 
 export const useActionsList = () => {
   const { colony } = useColonyContext();
@@ -363,6 +365,7 @@ export const useSidebarActionForm = () => {
       [ACTION.MANAGE_TOKENS]: ManageTokensForm,
       [ACTION.ADVANCED_PAYMENT]: AdvancedPaymentForm,
       [ACTION.BATCH_PAYMENT]: BatchPaymentForm,
+      [ACTION.MANAGE_PERMISSIONS]: ManagePermissionsForm,
     }),
     [],
   );
@@ -376,9 +379,7 @@ export const useSidebarActionForm = () => {
   useGlobalEventHandler<SetActionTypeCutomEventDetail>(
     GLOBAL_EVENTS.SET_ACTION_TYPE,
     (event) => {
-      form.setValue(ACTION_TYPE_FIELD_NAME, event.detail.actionType, {
-        shouldDirty: true,
-      });
+      form.setValue(ACTION_TYPE_FIELD_NAME, event.detail.actionType);
     },
   );
 
@@ -423,9 +424,8 @@ export const useActionFormProps = (
           : defaultValues || {}),
         ...(defaultMotionValues || {}),
         title,
+        [ACTION_TYPE_FIELD_NAME]: actionType,
       });
-
-      form.setValue(ACTION_TYPE_FIELD_NAME, actionType);
     },
     [isReadyonly, defaultMotionValues],
   );
@@ -549,6 +549,7 @@ const DESC_METADATA: Partial<Record<Action, DescriptionMetadataGetter>> = {
   [ACTION.UPGRADE_COLONY_VERSION]: upgradeColonyDescriptionMetadataGetter,
   [ACTION.ENTER_RECOVERY_MODE]: enterRecoveryModeDescriptionMetadataGetter,
   [ACTION.CREATE_DECISION]: createDecisionDescriptionMetadataGetter,
+  [ACTION.MANAGE_PERMISSIONS]: managePermissionsDescriptionMetadataGetter,
 };
 
 export const useActionDescriptionMetadata = () => {

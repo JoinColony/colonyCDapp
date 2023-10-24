@@ -22,7 +22,7 @@ const ColonyVersionField: FC = () => {
         iconName="browser"
         title={<FormattedMessage id="actionSidebar.currentVersion" />}
         tooltip={
-          <FormattedMessage id="actionSidebar.toolip.upgradeColonyVersion.currentVersion" />
+          <FormattedMessage id="actionSidebar.tooltip.upgradeColonyVersion.currentVersion" />
         }
       >
         <span className="text-md">{currentVersion}</span>
@@ -31,7 +31,7 @@ const ColonyVersionField: FC = () => {
         iconName="browsers"
         title={<FormattedMessage id="actionSidebar.newVersion" />}
         tooltip={
-          <FormattedMessage id="actionSidebar.toolip.upgradeColonyVersion.newVersion" />
+          <FormattedMessage id="actionSidebar.tooltip.upgradeColonyVersion.newVersion" />
         }
       >
         <span className="text-md">{nextVersion}</span>
