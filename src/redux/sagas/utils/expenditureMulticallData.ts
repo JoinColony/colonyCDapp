@@ -11,7 +11,6 @@ import {
   ColonyClientV9,
 } from '@colony/colony-js';
 import { BigNumber, BigNumberish, utils } from 'ethers';
-import { hexZeroPad, hexlify } from 'ethers/lib/utils';
 
 import { ExpenditurePayoutFieldValue } from '~common/Expenditures/ExpenditureForm';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
@@ -138,10 +137,7 @@ export const getMulticallDataForPayout = (
   return encodedMulticallData;
 };
 
-const convertNumberToBytes32 = (number: number) =>
-  hexZeroPad(hexlify(number), 32);
-
-const mask = [false, true];
+const releaseStagedExpenditureMask = [false, true];
 
 export const getMulticallDataForStageRelease = (
   expenditure: Expenditure,
@@ -151,7 +147,7 @@ export const getMulticallDataForStageRelease = (
   childSkillIndex: BigNumber,
   tokenAddresses: string[],
 ) => {
-  const keys = [convertNumberToBytes32(slotId), convertNumberToBytes32(1)];
+  const keys = [toB32(slotId), EXPENDITURESLOT_CLAIMDELAY];
 
   if (!isSupportedColonyClient(colonyClient)) {
     throw new Error('Colony client not supported');
@@ -164,10 +160,10 @@ export const getMulticallDataForStageRelease = (
       permissionDomainId,
       childSkillIndex,
       expenditure.nativeId,
-      26, // @NOTE: Memory slot of expenditure's slots
-      mask,
+      EXPENDITURESLOTS_SLOT, // @NOTE: Memory slot of expenditure's slots
+      releaseStagedExpenditureMask,
       keys,
-      convertNumberToBytes32(0),
+      toB32(0),
     ]),
   );
 
