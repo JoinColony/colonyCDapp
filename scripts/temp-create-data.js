@@ -411,6 +411,7 @@ const createColony = async (colonyName, tokenAddress, signerOrWallet) => {
         chainMetadata: {
           chainId: (await signerOrWallet.provider.getNetwork()).chainId,
         },
+        inviteCode: 'dev',
       },
     },
     GRAPHQL_URI,
