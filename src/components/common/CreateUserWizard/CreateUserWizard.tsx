@@ -21,7 +21,7 @@ const steps = [StepUserEmail, StepUserName];
 const CreateUserContainer = withWizard<FormValues>({
   initialValues,
   steps,
-})(WizardTemplate, { hideQR: true });
+})(WizardTemplate);
 
 interface UserStepTemplateProps {
   heading: MessageDescriptor | string;
