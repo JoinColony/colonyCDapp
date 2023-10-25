@@ -12,13 +12,13 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ) => (
     <div
       className={clsx(
-        className,
         'bg-base-white border border-gray-200 flex flex-col',
+        className,
         {
           'rounded-lg': rounded === 's',
           'rounded-xl': rounded === 'm',
           'shadow-default': hasShadow,
-          'p-6': withPadding,
+          'px-6 py-4': withPadding,
         },
       )}
       ref={ref}

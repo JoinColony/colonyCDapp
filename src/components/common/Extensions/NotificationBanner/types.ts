@@ -4,6 +4,7 @@ import { STATUS_TYPES } from '~v5/shared/StatusText/consts';
 export interface NotificationBannerProps {
   status: (typeof STATUS_TYPES)[keyof typeof STATUS_TYPES];
   title?: React.ReactNode;
+  iconName?: string;
   isFullSize?: boolean;
   isAlt?: boolean;
   className?: string;

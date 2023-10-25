@@ -14,6 +14,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   title,
   children,
   action,
+  iconName,
   isAlt = false,
   className,
 }) => {
@@ -49,6 +50,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
           <StatusText
             status={status}
             withIcon={!isAlt}
+            iconName={iconName}
             textClassName={isAlt ? 'text-sm' : undefined}
           >
             {title}

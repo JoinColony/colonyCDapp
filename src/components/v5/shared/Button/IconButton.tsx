@@ -7,7 +7,7 @@ import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
 import styles from './PendingButton.module.css';
 import { formatText } from '~utils/intl';
 
-const displayName = 'v5.Button.PendingButton';
+const displayName = 'v5.Button.IconButton';
 
 const IconButton: FC<PropsWithChildren<IconButtonProps>> = ({
   children,
