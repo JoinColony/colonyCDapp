@@ -9,7 +9,12 @@ import {
   useUserTransactionContext,
   TransactionGroupStates,
 } from '~context';
-import { useMobile, useColonyContext } from '~hooks';
+import {
+  useMobile,
+  useColonyContext,
+  useColonySubscription,
+  useAppContext,
+} from '~hooks';
 import { NOT_FOUND_ROUTE } from '~routes';
 import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
 import PageLayout from '~v5/frame/PageLayout';
@@ -36,7 +41,9 @@ const MSG = defineMessages({
 });
 
 const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
+  const { wallet, user, walletConnecting, userLoading } = useAppContext();
   const { colony, loading } = useColonyContext();
+  const { canWatch, handleWatch } = useColonySubscription();
   const { title: pageHeadingTitle, breadcrumbs = [] } = usePageHeadingContext();
   const isMobile = useMobile();
 
@@ -73,6 +80,10 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
 
   const userHub = <UserHubButton hideUserNameOnMobile />;
 
+  const noRegisteredUser = !user && !userLoading;
+  const noWalletConnected = !wallet && !walletConnecting;
+  const showJoinButton = canWatch || noWalletConnected || noRegisteredUser;
+
   return (
     <>
       <PageLayout
@@ -105,11 +116,14 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
               userHub={userHub}
               extra={
                 <>
-                  <Button
-                    className="ml-4 mr-2"
-                    mode="solidBlack"
-                    text={MSG.joinButtonText}
-                  />
+                  {showJoinButton && (
+                    <Button
+                      className="ml-4 mr-2"
+                      mode="solidBlack"
+                      text={MSG.joinButtonText}
+                      onClick={handleWatch}
+                    />
+                  )}
                   <Button
                     text={MSG.inviteMembers}
                     mode="primaryOutline"
