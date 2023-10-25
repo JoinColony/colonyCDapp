@@ -1,5 +1,6 @@
 import React, { FC, PropsWithChildren, useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
+import { defineMessages } from 'react-intl';
 
 import UserHubButton from '~common/Extensions/UserHubButton';
 import {
@@ -12,18 +13,28 @@ import {
 import { useMobile, useColonyContext } from '~hooks';
 import { NOT_FOUND_ROUTE } from '~routes';
 import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
-import PageLayout from '~v5/frame/PageLayout';
-import { CompletedButton, PendingButton } from '~v5/shared/Button';
 import ColonyCreatedModal from '~v5/common/Modals/ColonyCreatedModal';
-import JoinButton from '~v5/shared/Button/JoinButton';
+import PageLayout from '~v5/frame/PageLayout';
+import Button, { CompletedButton, PendingButton } from '~v5/shared/Button';
 import CalamityBanner from '~v5/shared/CalamityBanner';
+import JoinButton from '~v5/shared/Button/JoinButton';
 
+import ColonySidebar from './ColonySidebar';
 import UserNavigationWrapper from './partials/UserNavigationWrapper';
 import { useCalamityBannerInfo } from './hooks';
 
-import ColonySidebar from './ColonySidebar';
-
 const displayName = 'frame.Extensions.layouts.ColonyLayout';
+
+const MSG = defineMessages({
+  joinButtonText: {
+    id: `${displayName}.joinButtonText`,
+    defaultMessage: 'Join',
+  },
+  inviteMembers: {
+    id: `${displayName}.inviteMembers`,
+    defaultMessage: 'Invite members',
+  },
+});
 
 const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const { colony, loading } = useColonyContext();
@@ -102,7 +113,16 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
             <UserNavigationWrapper
               txButtons={txButtons}
               userHub={userHub}
-              extra={<JoinButton />}
+              extra={
+                <>
+                  <JoinButton />
+                  <Button
+                    text={MSG.inviteMembers}
+                    mode="primaryOutline"
+                    iconName="paper-plane-tilt"
+                  />
+                </>
+              }
             />
           ),
         }}
