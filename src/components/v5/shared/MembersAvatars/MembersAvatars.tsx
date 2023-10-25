@@ -15,10 +15,13 @@ const displayName =
 
 function MembersAvatars<TValue extends VoterRecordFragment>({
   items,
-  maxAvatars = 4,
+  maxAvatarsToShow = 4,
   className,
 }: MembersAvatarsProps<TValue>): JSX.Element {
-  const remainingAvatarsCount = calculateRemainingItems(maxAvatars, items);
+  const remainingAvatarsCount = calculateRemainingItems(
+    maxAvatarsToShow,
+    items,
+  );
   const { user } = useAppContext();
   const voterAddresses = useMemo(
     // We need a stable reference to this array to avoid an infinite loop in `useGetUsers`
@@ -32,8 +35,8 @@ function MembersAvatars<TValue extends VoterRecordFragment>({
           }
           return acc;
         }, [])
-        .slice(0, calculateLastSliceIndex(maxAvatars, items)),
-    [maxAvatars, items, user],
+        .slice(0, calculateLastSliceIndex(maxAvatarsToShow, items)),
+    [maxAvatarsToShow, items, user],
   );
 
   const registeredVoters = useGetUsers(voterAddresses);
@@ -46,7 +49,7 @@ function MembersAvatars<TValue extends VoterRecordFragment>({
             <UserAvatar
               user={registeredVoter}
               size="sm"
-              borderClassName="border-base-white border rounded-full"
+              className="border-base-white border rounded-full"
             />
           </li>
         ))}

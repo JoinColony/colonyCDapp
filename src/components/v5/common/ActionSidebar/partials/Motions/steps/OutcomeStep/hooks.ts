@@ -2,10 +2,10 @@ import { useMemo } from 'react';
 import { supportOption, opposeOption } from '../../consts';
 import { MotionVote } from '~utils/colonyMotions';
 import { ColonyMotion } from '~types';
-import { VoteStatuses } from './types';
+import { VoteStatusesProps } from './partials/VoteStatuses/types';
 
 export const useOutcomeStep = (motionData: ColonyMotion | null | undefined) => {
-  const voteStatuses: VoteStatuses[] = useMemo(() => {
+  const voteStatuses: VoteStatusesProps[] = useMemo(() => {
     if (!motionData) return [];
     const {
       motionStakes: {
@@ -15,14 +15,14 @@ export const useOutcomeStep = (motionData: ColonyMotion | null | undefined) => {
 
     return [
       {
-        id: supportOption.id,
+        key: supportOption.id,
         iconName: supportOption.iconName,
         label: supportOption.label || '',
         progress: Number(yayPercent),
         status: MotionVote.Yay,
       },
       {
-        id: opposeOption.id,
+        key: opposeOption.id,
         iconName: opposeOption.iconName,
         label: opposeOption.label || '',
         progress: Number(nayPercent),
