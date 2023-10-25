@@ -63,7 +63,7 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
           <FormattedMessage {...MSG.modalDescription} />
         </p>
       </div>
-      <div className="flex flex-col items-start px-6 py-4 mt-4 border border-gray-900 rounded">
+      <div className="flex flex-col items-start px-6 py-4 mt-4 mb-2 border border-gray-900 rounded">
         <span className="rounded-lg bg-gray-100 text-sm font-medium text-gray-900 p-2 mb-2">
           <FormattedMessage
             {...MSG.invitesUsed}

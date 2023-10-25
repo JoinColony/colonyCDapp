@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { useMobile } from '~hooks';
+import { useAppContext, useMobile } from '~hooks';
 import ColonyNavigation from '~common/Extensions/ColonyNavigation';
 import UserHubButton from '~common/Extensions/UserHubButton';
 import Button, { CompletedButton, PendingButton } from '~v5/shared/Button';
@@ -12,6 +12,7 @@ import {
 import { InviteMembersModal } from '~v5/common/Modals';
 
 import Header from './Header';
+import useColonySubscription from '~hooks/useColonySubscription';
 
 const displayName = 'frame.Extensions.ColonyHeader';
 
@@ -28,7 +29,9 @@ const MSG = defineMessages({
 
 const ColonyHeader = () => {
   const isMobile = useMobile();
+  const { wallet, user, walletConnecting, userLoading } = useAppContext();
   const { groupState } = useUserTransactionContext();
+  const { canWatch, handleWatch } = useColonySubscription();
   const [isInviteMembersModalOpen, setIsInviteMembersModalOpen] =
     useState(false);
 
@@ -45,6 +48,10 @@ const ColonyHeader = () => {
 
   const userHub = <UserHubButton />;
 
+  const noRegisteredUser = !user && !userLoading;
+  const noWalletConnected = !wallet && !walletConnecting;
+  const showJoinButton = canWatch || noWalletConnected || noRegisteredUser;
+
   return (
     <Header
       navBar={navBar}
@@ -52,11 +59,14 @@ const ColonyHeader = () => {
       txButtons={txButtons}
       extra={
         <>
-          <Button
-            className="ml-4 mr-2"
-            mode="solidBlack"
-            text={MSG.joinButtonText}
-          />
+          {showJoinButton && (
+            <Button
+              className="ml-4 mr-2"
+              mode="solidBlack"
+              text={MSG.joinButtonText}
+              onClick={handleWatch}
+            />
+          )}
           <Button
             text={MSG.inviteMembers}
             mode="primaryOutline"
