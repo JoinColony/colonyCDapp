@@ -9,6 +9,7 @@ export interface AvatarProps {
   size?: AvatarSize;
   title?: string | null;
   mode?: UserStatusMode;
+  borderClassName?: string;
 }
 
 export type AvatarSize =

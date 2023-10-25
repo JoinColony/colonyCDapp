@@ -32,20 +32,21 @@ function Stepper<TKey extends React.Key>({
           },
         )}
       >
-        {items.map(({ key, content, isSkipped, isHidden, heading }, index) => {
-          const { decor, ...restHeading } = heading;
-          const isNextStepOptional = items[index + 1]?.isOptional;
-          const isNextStepSkipped = items[index + 1]?.isSkipped;
+        {items.map(
+          ({ key, content, isSkipped, isHidden, heading, iconName }, index) => {
+            const { decor, ...restHeading } = heading;
+            const isNextStepOptional = items[index + 1]?.isOptional;
+            const isNextStepSkipped = items[index + 1]?.isSkipped;
 
-          return (
-            <motion.li
-              key={key}
-              initial="visible"
-              animate={isHidden ? 'hidden' : 'visible'}
-              variants={accordionAnimation}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
-              className={clsx(
-                `
+            return (
+              <motion.li
+                key={key}
+                initial="visible"
+                animate={isHidden ? 'hidden' : 'visible'}
+                variants={accordionAnimation}
+                transition={{ duration: 0.4, ease: 'easeOut' }}
+                className={clsx(
+                  `
                   relative
                   flex
                   flex-grow
@@ -78,62 +79,62 @@ function Stepper<TKey extends React.Key>({
                   sm:after:left-[.2813rem]
                   last:after:hidden
                 `,
-                {
-                  'sm:mb-4 sm:last-mb-0': !isHidden,
-                  'sm:before:bg-gray-900': index <= activeItemIndex,
-                  'sm:before:bg-white': index > activeItemIndex,
-                  'after:border-dashed': isNextStepOptional,
-                  'after:border-gray-400': isNextStepSkipped,
-                  'sm:before:border-gray-400': isSkipped,
-                  'sm:before:border-gray-900': !isSkipped,
-                  'w-1/4 flex-shrink-0': withArrowsOnMobile,
-                },
-              )}
-            >
-              <div className="flex flex-col sm:flex-row gap-[.375rem] items-center">
-                <StepperButton
-                  stage={
-                    (index < activeItemIndex &&
-                      !isSkipped &&
-                      STEP_STAGE.Completed) ||
-                    (index === activeItemIndex && STEP_STAGE.Current) ||
-                    (isSkipped && STEP_STAGE.Skipped) ||
-                    (index === activeItemIndex && STEP_STAGE.Passed) ||
-                    (index === activeItemIndex && STEP_STAGE.Failed) ||
-                    STEP_STAGE.Upcoming
-                  }
-                  onClick={() => {
-                    setOpenItemIndex(index);
-
-                    if (index > activeItemIndex) {
-                      setActiveStepKey(key);
+                  {
+                    'sm:mb-4 sm:last-mb-0': !isHidden,
+                    'sm:before:bg-gray-900': index <= activeItemIndex,
+                    'sm:before:bg-white': index > activeItemIndex,
+                    'after:border-dashed': isNextStepOptional,
+                    'after:border-gray-400': isNextStepSkipped,
+                    'sm:before:border-gray-400': isSkipped,
+                    'sm:before:border-gray-900': !isSkipped,
+                    'w-1/4 flex-shrink-0': withArrowsOnMobile,
+                  },
+                )}
+              >
+                <div className="flex flex-col sm:flex-row gap-[.375rem] items-center">
+                  <StepperButton
+                    stage={
+                      (index < activeItemIndex &&
+                        !isSkipped &&
+                        STEP_STAGE.Completed) ||
+                      (index === activeItemIndex && STEP_STAGE.Current) ||
+                      (isSkipped && STEP_STAGE.Skipped) ||
+                      STEP_STAGE.Upcoming
                     }
-                  }}
-                  className="relative z-[1]"
-                  disabled={index > activeItemIndex || isSkipped}
-                  isHighlighted={index === openItemIndex && !isSkipped}
-                  {...restHeading}
-                />
-                {decor || null}
-              </div>
-              {!isMobile && (
-                <div
-                  className={clsx(
-                    'grid transition-[grid-template-rows_0.5s_ease-in-out] w-full',
-                    {
-                      'grid-rows-[1fr]': index === openItemIndex,
-                      'grid-rows-[0fr]': index !== openItemIndex,
-                    },
-                  )}
-                >
-                  <div className="overflow-hidden w-full">
-                    <div className="pt-4 w-full">{content}</div>
-                  </div>
+                    onClick={() => {
+                      setOpenItemIndex(index);
+
+                      if (index > activeItemIndex) {
+                        setActiveStepKey(key);
+                      }
+                    }}
+                    iconName={iconName}
+                    className="relative z-[1]"
+                    disabled={index > activeItemIndex || isSkipped}
+                    isHighlighted={index === openItemIndex && !isSkipped}
+                    {...restHeading}
+                  />
+                  {decor || null}
                 </div>
-              )}
-            </motion.li>
-          );
-        })}
+                {!isMobile && (
+                  <div
+                    className={clsx(
+                      'grid transition-[grid-template-rows_0.5s_ease-in-out] w-full',
+                      {
+                        'grid-rows-[1fr]': index === openItemIndex,
+                        'grid-rows-[0fr]': index !== openItemIndex,
+                      },
+                    )}
+                  >
+                    <div className="overflow-hidden w-full">
+                      <div className="pt-4 w-full">{content}</div>
+                    </div>
+                  </div>
+                )}
+              </motion.li>
+            );
+          },
+        )}
       </ul>
       {isMobile && <div className="pt-4">{openedItem.content}</div>}
     </>

@@ -1,12 +1,10 @@
 import React, { FC } from 'react';
 import { formatText } from '~utils/intl';
 
-import VoteStatus from './partials/VoteStatus';
 import CardWithSections from '~v5/shared/CardWithSections';
-import MembersAvatars from '~v5/shared/MembersAvatars';
 import { OutcomeStepProps } from './types';
-import { useMemberAvatars, useOutcomeStep } from './hooks';
-import { Watcher } from '~types';
+import { useOutcomeStep } from './hooks';
+import VoteStatuses from './partials/VoteStatuses';
 import { MotionState } from '~utils/colonyMotions';
 
 const displayName =
@@ -14,7 +12,6 @@ const displayName =
 
 const OutcomeStep: FC<OutcomeStepProps> = ({ motionData, motionState }) => {
   const { voteStatuses } = useOutcomeStep(motionData);
-  const { loading, watchers } = useMemberAvatars();
 
   return (
     <CardWithSections
@@ -31,23 +28,7 @@ const OutcomeStep: FC<OutcomeStepProps> = ({ motionData, motionState }) => {
                       : 'motion.outcomeStep.lost.title',
                 })}
               </h3>
-              {voteStatuses.map(
-                ({ id, iconName, label = '', progress, status }) => (
-                  <VoteStatus
-                    key={id}
-                    iconName={iconName}
-                    label={label}
-                    progress={progress}
-                    status={status}
-                  >
-                    <MembersAvatars<Watcher>
-                      className="flex items-end flex-1"
-                      watchers={watchers}
-                      loading={loading}
-                    />
-                  </VoteStatus>
-                ),
-              )}
+              <VoteStatuses list={voteStatuses} />
             </div>
           ),
         },

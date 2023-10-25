@@ -18,6 +18,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
   userStatus,
   isContributorsList,
   className,
+  borderClassName,
   ...rest
 }) => {
   const address = user?.walletAddress;
@@ -44,7 +45,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
           placeholderIcon="circle-person"
           seed={address && address.toLowerCase()}
           title={profile?.displayName || address || ''}
-          className={className}
+          borderClassName={borderClassName}
           {...rest}
         />
       </span>

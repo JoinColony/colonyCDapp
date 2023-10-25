@@ -9,7 +9,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
   additionalText,
   threshold,
   max = 100,
-  className,
+  barColorClassName,
 }) => {
   if (progress > max || progress < 0) {
     throw new Error(`Progress bar value must be between between 0 and ${max}`);
@@ -25,7 +25,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
       >
         <span
           className={clsx(
-            className,
+            barColorClassName,
             'bg-blue-400 h-full absolute left-0 top-0',
             {
               'rounded-lg': isTall,

@@ -18,6 +18,7 @@ const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
   size = 'xs',
   title,
   mode = 'general',
+  borderClassName,
 }) => {
   // eslint-disable-next-line no-param-reassign
   title = title ?? '';
@@ -44,7 +45,11 @@ const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
 
   return (
     <figure
-      className={className ? `${mainClass} ${className}` : mainClass}
+      className={
+        className || borderClassName
+          ? `${borderClassName} ${mainClass} ${className}`
+          : mainClass
+      }
       title={title}
     >
       {source ? (
