@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, useEffect } from 'react';
+import React, { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 
@@ -18,10 +18,11 @@ import PageLayout from '~v5/frame/PageLayout';
 import Button, { CompletedButton, PendingButton } from '~v5/shared/Button';
 import CalamityBanner from '~v5/shared/CalamityBanner';
 import JoinButton from '~v5/shared/Button/JoinButton';
+import { InviteMembersModal } from '~v5/common/Modals';
 
+import { useCalamityBannerInfo } from './hooks';
 import ColonySidebar from './ColonySidebar';
 import UserNavigationWrapper from './partials/UserNavigationWrapper';
-import { useCalamityBannerInfo } from './hooks';
 
 const displayName = 'frame.Extensions.layouts.ColonyLayout';
 
@@ -49,6 +50,8 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
 
   const { isColonyCreatedModalOpen, setIsColonyCreatedModalOpen } =
     useColonyCreatedModalContext();
+  const [isInviteMembersModalOpen, setIsInviteMembersModalOpen] =
+    useState(false);
 
   const { calamityBannerItems, canUpgrade } = useCalamityBannerInfo();
 
@@ -120,6 +123,11 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
                     text={MSG.inviteMembers}
                     mode="primaryOutline"
                     iconName="paper-plane-tilt"
+                    onClick={() => setIsInviteMembersModalOpen(true)}
+                  />
+                  <InviteMembersModal
+                    isOpen={isInviteMembersModalOpen}
+                    onClose={() => setIsInviteMembersModalOpen(false)}
                   />
                 </>
               }
