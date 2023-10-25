@@ -10,3 +10,20 @@
   align-items: center;
   gap: 20px;
 }
+
+.stageItem {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.motionHistoryItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.motionHistoryItem > div:first-child {
+  width: 80px;
+}

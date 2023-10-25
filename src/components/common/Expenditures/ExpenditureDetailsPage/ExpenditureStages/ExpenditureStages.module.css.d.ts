@@ -1,6 +1,8 @@
 declare namespace ExpenditureStagesModuleCssNamespace {
   export interface IExpenditureStagesModuleCss {
+    motionHistoryItem: string;
     stage: string;
+    stageItem: string;
     stages: string;
   }
 }

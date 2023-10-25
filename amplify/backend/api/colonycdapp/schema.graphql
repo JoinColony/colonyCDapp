@@ -808,6 +808,10 @@ enum ColonyActionType {
   An action related to the creation of a motion to start a streaming payment.
   """
   CREATE_STREAMING_PAYMENT_MOTION
+  """
+  An action related to creating a motion to release an expenditure stage
+  """
+  SET_EXPENDITURE_STATE_MOTION
 }
 
 """
@@ -2423,6 +2427,10 @@ type ColonyMotion @model {
   """
   expenditureId: ID
     @index(name: "byExpenditureId", queryField: "getMotionByExpenditureId")
+  """
+  Id of the expenditure stage payment to be released if the motion pass
+  """
+  expenditureSlotId: Int
 
   action: ColonyAction @belongsTo(fields: ["transactionHash"])
 }

@@ -23,7 +23,7 @@ import { ADDRESS_ZERO } from '~constants';
 
 function* cancelStakedExpenditureMotion({
   meta,
-  meta: { navigate, setTxHash },
+  meta: { navigate, setTxHash, id },
   payload: {
     colonyAddress,
     colonyName,
@@ -55,7 +55,7 @@ function* cancelStakedExpenditureMotion({
   const batchId = 'motion-cancel-staked-expenditure';
   const { createMotion /* annotationMessage */ } = yield call(
     createTransactionChannels,
-    meta.id,
+    id,
     ['createMotion', 'annotateMotion'],
   );
 

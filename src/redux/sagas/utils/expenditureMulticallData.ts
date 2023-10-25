@@ -136,3 +136,46 @@ export const getMulticallDataForPayout = (
 
   return encodedMulticallData;
 };
+
+const releaseStagedExpenditureMask = [false, true];
+
+export const getMulticallDataForStageRelease = (
+  expenditure: Expenditure,
+  slotId: number,
+  colonyClient: AnyColonyClient,
+  permissionDomainId: BigNumber,
+  childSkillIndex: BigNumber,
+  tokenAddresses: string[],
+) => {
+  const keys = [toB32(slotId), EXPENDITURESLOT_CLAIMDELAY];
+
+  if (!isSupportedColonyClient(colonyClient)) {
+    throw new Error('Colony client not supported');
+  }
+
+  const encodedMulticallData: string[] = [];
+
+  encodedMulticallData.push(
+    colonyClient.interface.encodeFunctionData('setExpenditureState', [
+      permissionDomainId,
+      childSkillIndex,
+      expenditure.nativeId,
+      EXPENDITURESLOTS_SLOT, // @NOTE: Memory slot of expenditure's slots
+      releaseStagedExpenditureMask,
+      keys,
+      toB32(0),
+    ]),
+  );
+
+  for (const tokenAddress of tokenAddresses) {
+    encodedMulticallData.push(
+      colonyClient.interface.encodeFunctionData('claimExpenditurePayout', [
+        expenditure.nativeId,
+        slotId,
+        tokenAddress,
+      ]),
+    );
+  }
+
+  return encodedMulticallData;
+};
