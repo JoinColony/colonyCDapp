@@ -3,5 +3,4 @@ export {
   tokenValidationSchema,
   colonyNameValidationSchema,
 } from './validation';
-export { LinkToOtherStep, switchTokenInputType } from './StepSelectToken';
 export { default as ConfirmTransactions } from './ConfirmTransactions';
