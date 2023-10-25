@@ -1,100 +1,63 @@
-import { MessageDescriptor } from 'react-intl';
 import React from 'react';
 
-import Heading from '~shared/Heading';
-import { useAppContext } from '~hooks';
+import { WizardStepProps } from '~shared/Wizard';
+import { formatText } from '~utils/intl';
+import Button from '~v5/shared/Button';
+import Icon from '~shared/Icon';
 
 import { FormValues } from '../CreateColonyWizard';
 
-import styles from './CreateColonyCardRow.css';
-
-export type Row = GenericRow | TokenRow;
-
-interface GenericRow {
-  title: MessageDescriptor;
-  valueKey: string;
-}
-
-interface TokenRow extends Omit<GenericRow, 'valueKey'> {
-  valueKey: [string, string];
-}
-
-interface CardProps {
-  cardOptions: Row[];
-  values: FormValues;
-}
-
-const formatUsername = (username: string) => {
-  return (
-    <span title={`@${username}`} className={styles.username}>
-      {`@${username}`}
-    </span>
-  );
-};
-
-const formatColonyName = (values: FormValues, { valueKey }: GenericRow) => {
-  return (
-    <>
-      <span title={values.displayName} className={styles.firstValue}>
-        {values.displayName}
-      </span>
-      <span
-        title={`(colony.io/colony/${values[valueKey]})`}
-        className={styles.secondValue}
-      >
-        {`(colony.io/colony/${values[valueKey]})`}
-      </span>
-    </>
-  );
-};
-
-const formatToken = (values: FormValues, { valueKey }: TokenRow) => (
-  <>
-    <span title={values[valueKey[0]]} className={styles.tokenSymbol}>
-      {values[valueKey[0]] ?? values.token?.symbol}
-    </span>
-    <span title={`(${values[valueKey[1]]})`} className={styles.tokenName}>
-      {`(${values[valueKey[1]] ?? values.token?.name})`}
-    </span>
-  </>
-);
-
-const getHeadingPreviewText = (
-  option: Row,
-  values: CardProps['values'],
-  username: string,
-) => {
-  if (option.valueKey === 'colonyName') {
-    return formatColonyName(values, option as GenericRow);
-  }
-  if (option.valueKey === 'username') {
-    return formatUsername(username);
-  }
-  return formatToken(values, option as TokenRow);
-};
-
 const displayName = 'common.CreateColonyWizard.CardRow';
 
-const CardRow = ({ cardOptions, values }: CardProps) => {
-  const { user } = useAppContext();
-  const username = user?.profile?.displayName ?? '';
+interface CardRowProps {
+  updatedWizardValues: FormValues;
+  setStep: WizardStepProps<FormValues>['setStep'];
+}
+
+const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
+  const cards = [
+    {
+      title: 'colonyDetailsPage.title',
+      text: updatedWizardValues.displayName,
+      subText: `app.colony.io/${updatedWizardValues.colonyName}`,
+      step: 0,
+    },
+    {
+      title: 'createColonyWizard.step.confirm.nativeToken',
+      text: updatedWizardValues.tokenName,
+      subText: updatedWizardValues.tokenSymbol,
+      step: 2,
+      icon: <Icon name="circle-plus" appearance={{ size: 'medium' }} />,
+    },
+    /* Not yet implemented
+     * {
+     *   title: { id: 'createColonyWizard.step.confirm.blockchain' },
+     *   valueKey: 'blockChain',
+     * }, */
+  ];
 
   return (
-    <>
-      {cardOptions.map((option) => (
-        <div className={styles.cardRow} key={`option ${option.valueKey[0]}`}>
-          <Heading
-            appearance={{ size: 'tiny', weight: 'medium', margin: 'small' }}
-            text={option.title}
-          />
-          <Heading
-            appearance={{ size: 'normal', weight: 'thin', margin: 'none' }}
-          >
-            {getHeadingPreviewText(option, values, username)}
-          </Heading>
+    <div className="flex flex-col gap-6">
+      {cards.map((card) => (
+        <div className="flex flex-col gap-3.5" key={`option ${card.title}`}>
+          <h5 className="text-2">{formatText({ id: card.title })}</h5>
+          <div className="border border-gray-200 rounded px-6 py-4 flex place-content-between">
+            <div className="flex gap-5 items-center">
+              {card.icon && card.icon}
+              <div>
+                <p className="text-1 pb-1">{card.text}</p>
+                <p className="text-sm text-gray-600">{card.subText}</p>
+              </div>
+            </div>
+            <Button
+              text={{ id: 'button.edit' }}
+              onClick={() => setStep(card.step)}
+              mode="primaryOutline"
+            />
+          </div>
         </div>
       ))}
-    </>
+    </div>
   );
 };
 

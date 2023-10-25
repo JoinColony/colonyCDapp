@@ -117,6 +117,7 @@ const withWizard =
             stepCount={stepCount}
             nextStep={next}
             previousStep={prev}
+            setStep={setStep}
             resetWizard={reset}
             setStepsValues={setStepsValues}
             wizardValues={mergedValues}

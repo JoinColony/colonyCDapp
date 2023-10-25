@@ -1344,5 +1344,9 @@
   "createColonyWizard.step.nativeToken.tokenLogo": "Token logo (Optional)",
   "createColonyWizard.step.nativeToken.tokenDescription": "The token logo will only exist on Colony and can be changed at anytime.",
   "createColonyWizard.step.nativeToken.existingToken": "Existing token address",
-  "createColonyWizard.step.nativeToken.existingTokenSuccess": "Token found: {name} ({symbol}) on {chain}"
+  "createColonyWizard.step.nativeToken.existingTokenSuccess": "Token found: {name} ({symbol}) on {chain}",
+  "createColonyWizard.step.confirm.heading": "Confirm your Colony’s details",
+  "createColonyWizard.step.confirm.description": "Check to ensure your Colony’s details are correct as they can not be changed later.",
+  "createColonyWizard.step.confirm.nativeToken": "Native token",
+  "createColonyWizard.step.confirm.blockchain": "Blockchain"
 }

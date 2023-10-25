@@ -28,6 +28,7 @@ export interface WizardOuterProps<FormValues>
 export interface WizardStepProps<FormValues, StepVals = Partial<FormValues>>
   extends SharedWizardProps<FormValues> {
   setStepsValues: React.Dispatch<React.SetStateAction<StepsValues<FormValues>>>;
+  setStep: React.Dispatch<React.SetStateAction<number>>;
   wizardForm: {
     initialValues: StepVals;
     validateOnMount: boolean;

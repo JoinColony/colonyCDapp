@@ -1,62 +1,27 @@
 import React from 'react';
-import { defineMessages } from 'react-intl';
 
 import { WizardStepProps } from '~shared/Wizard';
 import { ActionForm } from '~shared/Fields';
-
 import { mergePayload } from '~utils/actions';
 import { ActionTypes } from '~redux/index';
 
 import { FormValues } from '../CreateColonyWizard';
-import { HeadingText, SubmitFormButton } from './shared';
-import CardRow, { Row } from './CreateColonyCardRow';
-
-import styles from './StepConfirmAllInput.css';
+import { ButtonRow, HeaderRow } from './shared';
+import CardRow from './CreateColonyCardRow';
 
 const displayName = 'common.CreateColonyWizard.StepConfirmAllInput';
 
-const MSG = defineMessages({
-  title: {
-    id: `${displayName}.title`,
-    defaultMessage: `Does this look right?`,
-  },
-  subtitle: {
-    id: `${displayName}.subtitle`,
-    defaultMessage: `Please double check that these details
-      are correct, they cannot be changed later.`,
-  },
-  userName: {
-    id: `${displayName}.userName`,
-    defaultMessage: `Your username`,
-  },
-  colonyName: {
-    id: `${displayName}.colonyName`,
-    defaultMessage: `Your colony`,
-  },
-  tokenName: {
-    id: `${displayName}.tokenName`,
-    defaultMessage: `Your colony's native token`,
-  },
-});
+type Props = Pick<
+  WizardStepProps<FormValues>,
+  'nextStep' | 'wizardValues' | 'previousStep' | 'setStep'
+>;
 
-const options: Row[] = [
-  {
-    title: MSG.userName,
-    valueKey: 'username',
-  },
-  {
-    title: MSG.colonyName,
-    valueKey: 'colonyName',
-  },
-  {
-    title: MSG.tokenName,
-    valueKey: ['tokenSymbol', 'tokenName'],
-  },
-];
-
-type Props = Pick<WizardStepProps<FormValues>, 'nextStep' | 'wizardValues'>;
-
-const StepConfirmAllInput = ({ nextStep, wizardValues }: Props) => {
+const StepConfirmAllInput = ({
+  nextStep,
+  wizardValues,
+  previousStep,
+  setStep,
+}: Props) => {
   const updatedWizardValues = {
     ...wizardValues,
     /**
@@ -64,7 +29,8 @@ const StepConfirmAllInput = ({ nextStep, wizardValues }: Props) => {
      * or get the values from token object if using an existing one
      */
     tokenName: wizardValues.tokenName || wizardValues.token?.name,
-    tokenSymbol: wizardValues.tokenSymbol || wizardValues.token?.symbol,
+    tokenSymbol:
+      wizardValues.tokenSymbol?.toUpperCase() || wizardValues.token?.symbol,
   };
 
   const transform = mergePayload(updatedWizardValues);
@@ -76,23 +42,17 @@ const StepConfirmAllInput = ({ nextStep, wizardValues }: Props) => {
       transform={transform}
       onSuccess={() => nextStep(wizardValues)}
     >
-      {({ formState: { isSubmitting } }) => (
-        <section className={styles.main}>
-          <HeadingText
-            appearance={{ margin: 'none' }}
-            text={MSG.title}
-            paragraph={MSG.subtitle}
-          />
-          <div className={styles.finalContainer}>
-            <CardRow cardOptions={options} values={updatedWizardValues} />
-          </div>
-          <SubmitFormButton
-            dataTest="userInputConfirm"
-            loading={isSubmitting}
-            disabled={isSubmitting}
-          />
-        </section>
-      )}
+      <section className="">
+        <HeaderRow
+          heading={{ id: 'createColonyWizard.step.confirm.heading' }}
+          description={{
+            id: 'createColonyWizard.step.confirm.description',
+          }}
+          descriptionValues={{ br: <br /> }}
+        />
+        <CardRow updatedWizardValues={updatedWizardValues} setStep={setStep} />
+        <ButtonRow previousStep={previousStep} />
+      </section>
     </ActionForm>
   );
 };
