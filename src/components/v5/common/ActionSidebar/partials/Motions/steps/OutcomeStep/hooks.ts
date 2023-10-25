@@ -1,11 +1,7 @@
 import { useMemo } from 'react';
-import { Id } from '@colony/colony-js';
 import { supportOption, opposeOption } from '../../consts';
 import { MotionVote } from '~utils/colonyMotions';
 import { ColonyMotion } from '~types';
-import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { useGetMembersForColonyQuery } from '~gql';
-import { useColonyContext } from '~hooks';
 import { VoteStatuses } from './types';
 
 export const useOutcomeStep = (motionData: ColonyMotion | null | undefined) => {
@@ -37,28 +33,5 @@ export const useOutcomeStep = (motionData: ColonyMotion | null | undefined) => {
 
   return {
     voteStatuses,
-  };
-};
-
-export const useMemberAvatars = (
-  currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
-) => {
-  const { colony } = useColonyContext();
-
-  const { data } = useGetMembersForColonyQuery({
-    skip: !colony?.colonyAddress,
-    variables: {
-      input: {
-        colonyAddress: colony?.colonyAddress ?? '',
-        domainId: currentDomainId || Id.RootDomain,
-      },
-    },
-    fetchPolicy: 'cache-and-network',
-  });
-
-  const watchers = data?.getMembersForColony?.watchers;
-
-  return {
-    watchers: watchers || [],
   };
 };

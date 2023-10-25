@@ -1,5 +1,7 @@
+import { VoterRecordFragment } from '~gql';
 import { VoteStatuses } from '../../types';
 
 export interface VoteStatusesProps {
-  list: VoteStatuses[];
+  items: VoteStatuses[];
+  voterRecord: VoterRecordFragment[];
 }
