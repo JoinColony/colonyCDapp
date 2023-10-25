@@ -56,4 +56,21 @@ module.exports = {
       }
     }
   `,
+  getInviteCodeValidity: /* GraphQL */ `
+    query GetInviteCodeValidity($id: ID!) {
+      getPrivateBetaInviteCode(id: $id) {
+        valid
+      }
+    }
+  `,
+  updateInviteCodeValidity: /* GraphQL */ `
+    mutation UpdateInviteCodeValidity(
+      $input: UpdatePrivateBetaInviteCodeInput!
+      $condition: ModelPrivateBetaInviteCodeConditionInput
+    ) {
+      updatePrivateBetaInviteCode(input: $input, condition: $condition) {
+        id
+      }
+    }
+  `,
 };

@@ -8,7 +8,13 @@ const { graphqlRequest } = require('./utils');
  * So that we can always ensure it follows the latest schema
  * (currently it's just saved statically)
  */
-const { getColony, createColony, getTokenByAddress } = require('./graphql');
+const {
+  getColony,
+  createColony,
+  getTokenByAddress,
+  getInviteCodeValidity,
+  updateInviteCodeValidity,
+} = require('./graphql');
 
 let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
@@ -36,7 +42,45 @@ exports.handler = async (event) => {
     version,
     chainMetadata,
     status,
+    inviteCode,
   } = event.arguments?.input || {};
+
+  /*
+   * Validate invite code
+   */
+  if (!(inviteCode === 'dev' && process.env.ENV === 'dev')) {
+    const inviteCodeQuery = await graphqlRequest(
+      getInviteCodeValidity,
+      { id: inviteCode },
+      graphqlURL,
+      apiKey,
+    );
+
+    const { valid } = inviteCodeQuery?.data?.getPrivateBetaInviteCode || {};
+
+    if (!valid) {
+      throw new Error(`Invite code is not valid`);
+    }
+
+    const inviteCodeMutation = await graphqlRequest(
+      updateInviteCodeValidity,
+      {
+        input: {
+          id: inviteCode,
+          valid: false,
+        },
+      },
+      graphqlURL,
+      apiKey,
+    );
+
+    if (inviteCodeMutation.errors || !inviteCodeMutation.data) {
+      const [error] = inviteCodeMutation.errors;
+      throw new Error(
+        error?.message || `Could not update ${inviteCode} validity`,
+      );
+    }
+  }
 
   /*
    * Validate Colony and Token addresses
