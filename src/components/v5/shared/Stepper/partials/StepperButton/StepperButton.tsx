@@ -38,10 +38,10 @@ const StepperButton: React.FC<StepperButtonProps> = ({
           lg:enabled:hover:text-white
         `,
         {
-          'border-gray-900 text-gray-900 bg-white':
+          'border-gray-900 text-gray-900 bg-base-white':
             !isHighlighted && stage !== 'skipped',
           'bg-gray-900 border-gray-900 text-white': isHighlighted,
-          'border-gray-400 text-gray-400 bg-white': stage === 'skipped',
+          'border-gray-400 text-gray-400 bg-base-white': stage === 'skipped',
         },
       )}
       {...rest}
