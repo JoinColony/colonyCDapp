@@ -29,7 +29,7 @@ const DefaultContent: FC<DefaultContentProps> = ({
         {
           'py-4': !isSimpleOnMobile,
           'py-2': isSimpleOnMobile,
-          'border-gray-200 bg-white-100': !isDragAccept,
+          'border-gray-200 bg-base-white': !isDragAccept,
           'border-blue-400 bg-blue-100': isDragAccept,
         },
       )}
