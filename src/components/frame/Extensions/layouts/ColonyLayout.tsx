@@ -14,14 +14,14 @@ import { useMobile, useColonyContext } from '~hooks';
 import { NOT_FOUND_ROUTE } from '~routes';
 import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
 import ColonyCreatedModal from '~v5/common/Modals/ColonyCreatedModal';
+import { InviteMembersModal } from '~v5/common/Modals';
 import PageLayout from '~v5/frame/PageLayout';
 import Button, { CompletedButton, PendingButton } from '~v5/shared/Button';
 import CalamityBanner from '~v5/shared/CalamityBanner';
 import JoinButton from '~v5/shared/Button/JoinButton';
-import { InviteMembersModal } from '~v5/common/Modals';
 
-import { useCalamityBannerInfo } from './hooks';
 import ColonySidebar from './ColonySidebar';
+import { useCalamityBannerInfo } from './hooks';
 import UserNavigationWrapper from './partials/UserNavigationWrapper';
 
 const displayName = 'frame.Extensions.layouts.ColonyLayout';

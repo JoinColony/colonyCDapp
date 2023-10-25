@@ -51,6 +51,7 @@ export { default as useRichTextEditor } from './useRichTextEditor';
 export { default as useExtensionData } from './useExtensionData';
 export { default as useExtensionsData } from './useExtensionsData';
 export { default as usePaginatedActions } from './usePaginatedActions';
+// @TODO: Put this into ~context
 export { default as useTokenActivationContext } from './useTokenActivationContext';
 export * from './useCanInteractWithColony';
 export { default as useColonyFundsClaims } from './useColonyFundsClaims';
@@ -69,6 +70,7 @@ export { default as useActiveInstalls } from './useActiveInstalls';
 export { default as useGetColonyMembers } from './useGetColonyMembers';
 export { default as useAllMembers } from './members/useAllMembers';
 export { default as useColonyContributors } from './members/useColonyContributors';
+export { default as useColonySubscription } from './useColonySubscription';
 export { default as useContributorBreakdown } from './members/useContributorBreakdown';
 export { default as useGlobalEventHandler } from './useGlobalEventHandler';
 export { default as useFlatFormErrors } from './useFlatFormErrors';
