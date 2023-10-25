@@ -46,6 +46,8 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     setActiveStepKey(networkMotionStateEnum);
   }, [networkMotionStateEnum]);
 
+  const isMotionPassed = motionStateEnum === MotionState.Passed;
+
   // @todo: add missing steps
   const items = useMemo(
     () =>
@@ -123,15 +125,31 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
             {
               // @todo: change to MotionState when the outcome is known and revealed
               key: NetworkMotionState.Finalizable,
-              content: <OutcomeStep motionData={motionData} />,
+              content: (
+                <OutcomeStep
+                  motionData={motionData}
+                  motionState={motionStateEnum}
+                />
+              ),
               heading: {
                 // @todo: chnage label and styling when the outcome is known and revealed
-                label: formatText({ id: 'motion.outcome.label' }) || '',
+                stage: isMotionPassed ? 'passed' : 'failed',
+                label:
+                  (isMotionPassed &&
+                    formatText({ id: 'motion.passed.label' })) ||
+                  (motionStateEnum === MotionState.Failed &&
+                    formatText({ id: 'motion.failed.label' })) ||
+                  formatText({ id: 'motion.outcome.label' }) ||
+                  '',
+                className: isMotionPassed
+                  ? '!bg-base-white !text-purple-400 border-purple-400'
+                  : '!bg-base-white !text-red-400 border-red-400',
               },
               // @todo: add a condition to be required if staking won't go directly to finalize step
               isOptional: true,
               // @todo: add a condition to hide when voting step is skipped
               isHidden: false,
+              iconName: isMotionPassed ? 'thumbs-up' : 'thumbs-down',
             },
             {
               key: NetworkMotionState.Finalized,
@@ -160,6 +178,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
       startPollingForAction,
       stopPollingForAction,
       transactionId,
+      isMotionPassed,
     ],
   );
 

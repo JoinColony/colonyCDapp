@@ -7,7 +7,6 @@ import {
 } from '~utils/avatars';
 import { notNull } from '~utils/arrays';
 import UserAvatar from '~v5/shared/UserAvatar';
-import { SpinnerLoader } from '~shared/Preloaders';
 import { MembersAvatarsProps } from './types';
 import { Watcher } from '~types';
 
@@ -15,34 +14,31 @@ const displayName =
   'v5.common.ActionSidebar.partials.motions.Motion.steps.OutcomeStep.partials.MembersAvatars';
 
 function MembersAvatars<TValue extends Watcher>({
-  watchers,
-  loading,
+  items,
   currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
   maxAvatars = 4,
   className,
 }: MembersAvatarsProps<TValue>): JSX.Element {
   const remainingAvatarsCount = calculateRemainingItems(
     maxAvatars,
-    watchers ?? [],
+    items ?? [],
     false,
   );
-
-  if (loading) return <SpinnerLoader appearance={{ size: 'small' }} />;
 
   return (
     <div className={className}>
       {(currentDomainId === Id.RootDomain ||
         currentDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID) && (
         <ul className="flex relative">
-          {watchers
-            .slice(0, calculateLastSliceIndex(maxAvatars, watchers, false))
+          {items
+            .slice(0, calculateLastSliceIndex(maxAvatars, items, false))
             .filter(notNull)
             .map((member) => (
               <li key={member.address} className="-ml-3">
                 <UserAvatar
                   user={member.user}
                   size="sm"
-                  className="border-base-white border rounded-full"
+                  borderClassName="border-base-white border rounded-full"
                 />
               </li>
             ))}

@@ -4,5 +4,5 @@ export interface ProgressBarProps {
   additionalText?: React.ReactNode;
   threshold?: number;
   max?: number;
-  className?: string;
+  barColorClassName?: string;
 }

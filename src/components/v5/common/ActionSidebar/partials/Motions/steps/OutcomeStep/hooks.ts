@@ -6,9 +6,10 @@ import { ColonyMotion } from '~types';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useGetMembersForColonyQuery } from '~gql';
 import { useColonyContext } from '~hooks';
+import { VoteStatuses } from './types';
 
 export const useOutcomeStep = (motionData: ColonyMotion | null | undefined) => {
-  const voteStatuses = useMemo(() => {
+  const voteStatuses: VoteStatuses[] = useMemo(() => {
     if (!motionData) return [];
     const {
       motionStakes: {
@@ -21,14 +22,14 @@ export const useOutcomeStep = (motionData: ColonyMotion | null | undefined) => {
         id: supportOption.id,
         iconName: supportOption.iconName,
         label: supportOption.label,
-        progress: yayPercent,
+        progress: Number(yayPercent),
         status: MotionVote.Yay,
       },
       {
         id: opposeOption.id,
         iconName: opposeOption.iconName,
         label: opposeOption.label,
-        progress: nayPercent,
+        progress: Number(nayPercent),
         status: MotionVote.Nay,
       },
     ];
@@ -36,8 +37,6 @@ export const useOutcomeStep = (motionData: ColonyMotion | null | undefined) => {
 
   return {
     voteStatuses,
-    yayPercent: motionData?.motionStakes?.percentage?.yay || '',
-    nayPercent: motionData?.motionStakes?.percentage?.nay || '',
   };
 };
 
@@ -46,7 +45,7 @@ export const useMemberAvatars = (
 ) => {
   const { colony } = useColonyContext();
 
-  const { data, loading } = useGetMembersForColonyQuery({
+  const { data } = useGetMembersForColonyQuery({
     skip: !colony?.colonyAddress,
     variables: {
       input: {
@@ -61,6 +60,5 @@ export const useMemberAvatars = (
 
   return {
     watchers: watchers || [],
-    loading,
   };
 };

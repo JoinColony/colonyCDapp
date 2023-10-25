@@ -1,23 +1,21 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { FC } from 'react';
 import clsx from 'clsx';
-
+import MembersAvatars from '~v5/shared/MembersAvatars';
+import { VoteStatusesProps } from './types';
+import { Watcher } from '~types';
+import { useMemberAvatars } from '../../hooks';
 import ProgressBar from '~v5/shared/ProgressBar';
 import Icon from '~shared/Icon';
-import { VoteStatusProps } from './types';
 import { MotionVote } from '~utils/colonyMotions';
 
 const displayName =
-  'v5.common.ActionSidebar.partials.motions.Motion.steps.OutcomeStep.partials.VoteStatus';
+  'v5.common.ActionSidebar.partials.Motion.steps.OutcomeStep.partials.VoteStatusesList';
 
-const VoteStatus: FC<PropsWithChildren<VoteStatusProps>> = ({
-  status,
-  iconName,
-  label,
-  progress,
-  children,
-}) => {
-  return (
-    <div className="flex items-center w-full gap-8">
+const VoteStatuses: FC<VoteStatusesProps> = ({ list }) => {
+  const { watchers } = useMemberAvatars();
+
+  return list.map(({ id, iconName, label = '', progress, status }) => (
+    <div key={id} className="flex items-center w-full gap-8">
       <div className="flex flex-col gap-1 w-full">
         <span className="flex items-start gap-[0.375rem]">
           <Icon
@@ -37,20 +35,23 @@ const VoteStatus: FC<PropsWithChildren<VoteStatusProps>> = ({
           </span>
         </span>
         <ProgressBar
-          progress={parseInt(progress, 2)}
+          progress={progress}
           max={100}
           additionalText="%"
-          className={clsx({
+          barColorClassName={clsx({
             'bg-purple-200': status === MotionVote.Yay,
             'bg-red-300': status === MotionVote.Nay,
           })}
         />
       </div>
-      {children}
+      <MembersAvatars<Watcher>
+        className="flex items-end flex-1"
+        items={watchers}
+      />
     </div>
-  );
+  ));
 };
 
-VoteStatus.displayName = displayName;
+VoteStatuses.displayName = displayName;
 
-export default VoteStatus;
+export default VoteStatuses;
