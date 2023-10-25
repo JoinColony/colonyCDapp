@@ -1,11 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import { useMemberContext } from '~context/MemberContext';
 import { useSearchContext } from '~context/SearchContext';
 import { searchMembers } from '~utils/members';
 
 export const useVerifiedPage = () => {
-  const [isSortedDesc, setIsSortedDesc] = useState(true);
   const { searchValue } = useSearchContext();
   const { verifiedMembers, loadingMembers } = useMemberContext();
 
@@ -14,22 +13,8 @@ export const useVerifiedPage = () => {
     [searchValue, verifiedMembers],
   );
 
-  const onSortReputationClick = () => {
-    setIsSortedDesc(!isSortedDesc);
-
-    searchedVerified.sort((a, b) => {
-      if (isSortedDesc) {
-        return a.colonyReputationPercentage - b.colonyReputationPercentage;
-      }
-
-      return b.colonyReputationPercentage - a.colonyReputationPercentage;
-    });
-  };
-
   return {
     verifiedMembers: searchedVerified,
     loadingMembers,
-    onSortReputationClick,
-    isSortedDesc,
   };
 };
