@@ -12,5 +12,4 @@ export interface UserAvatarProps {
   userStatus?: UserStatusMode | null;
   isContributorsList?: boolean;
   className?: string;
-  borderClassName?: string;
 }

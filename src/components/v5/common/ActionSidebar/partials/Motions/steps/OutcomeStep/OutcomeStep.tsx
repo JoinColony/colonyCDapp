@@ -28,7 +28,7 @@ const OutcomeStep: FC<OutcomeStepProps> = ({ motionData, motionState }) => {
                       : 'motion.outcomeStep.lost.title',
                 })}
               </h3>
-              <VoteStatuses list={voteStatuses} />
+              <VoteStatuses items={voteStatuses} />
             </div>
           ),
         },

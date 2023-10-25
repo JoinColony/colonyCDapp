@@ -6,7 +6,7 @@ import { ColonyMotion } from '~types';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useGetMembersForColonyQuery } from '~gql';
 import { useColonyContext } from '~hooks';
-import { VoteStatuses } from './types';
+import { VoteStatuses } from './partials/VoteStatuses/types';
 
 export const useOutcomeStep = (motionData: ColonyMotion | null | undefined) => {
   const voteStatuses: VoteStatuses[] = useMemo(() => {
@@ -19,14 +19,14 @@ export const useOutcomeStep = (motionData: ColonyMotion | null | undefined) => {
 
     return [
       {
-        id: supportOption.id,
+        key: supportOption.id,
         iconName: supportOption.iconName,
         label: supportOption.label || '',
         progress: Number(yayPercent),
         status: MotionVote.Yay,
       },
       {
-        id: opposeOption.id,
+        key: opposeOption.id,
         iconName: opposeOption.iconName,
         label: opposeOption.label || '',
         progress: Number(nayPercent),

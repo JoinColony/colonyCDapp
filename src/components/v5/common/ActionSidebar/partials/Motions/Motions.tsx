@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
+import clsx from 'clsx';
 import { getMotionState, MotionState } from '~utils/colonyMotions';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
@@ -46,7 +47,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     setActiveStepKey(networkMotionStateEnum);
   }, [networkMotionStateEnum]);
 
-  const isMotionPassed = motionStateEnum === MotionState.Passed;
+  const hasMotionPassed = motionStateEnum === MotionState.Passed;
 
   // @todo: add missing steps
   const items = useMemo(
@@ -132,23 +133,26 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                 />
               ),
               heading: {
-                stage: isMotionPassed ? 'passed' : 'failed',
+                stage: hasMotionPassed ? 'passed' : 'failed',
                 label:
-                  (isMotionPassed &&
+                  (hasMotionPassed &&
                     formatText({ id: 'motion.passed.label' })) ||
                   (motionStateEnum === MotionState.Failed &&
                     formatText({ id: 'motion.failed.label' })) ||
                   formatText({ id: 'motion.outcome.label' }) ||
                   '',
-                className: isMotionPassed
-                  ? '!bg-base-white !text-purple-400 border-purple-400'
-                  : '!bg-base-white !text-red-400 border-red-400',
+                className: clsx({
+                  '!bg-base-white !text-purple-400 border-purple-400':
+                    hasMotionPassed,
+                  '!bg-base-white !text-red-400 border-red-400':
+                    !hasMotionPassed,
+                }),
               },
               // @todo: add a condition to be required if staking won't go directly to finalize step
               isOptional: true,
               // @todo: add a condition to hide when voting step is skipped
               isHidden: false,
-              iconName: isMotionPassed ? 'thumbs-up' : 'thumbs-down',
+              iconName: hasMotionPassed ? 'thumbs-up' : 'thumbs-down',
             },
             {
               key: NetworkMotionState.Finalized,
@@ -177,7 +181,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
       startPollingForAction,
       stopPollingForAction,
       transactionId,
-      isMotionPassed,
+      hasMotionPassed,
     ],
   );
 

@@ -16,11 +16,11 @@ const displayName =
 function MembersAvatars<TValue extends Watcher>({
   items,
   currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
-  maxAvatars = 4,
+  maxAvatarsToShow = 4,
   className,
 }: MembersAvatarsProps<TValue>): JSX.Element {
   const remainingAvatarsCount = calculateRemainingItems(
-    maxAvatars,
+    maxAvatarsToShow,
     items ?? [],
     false,
   );
@@ -31,14 +31,14 @@ function MembersAvatars<TValue extends Watcher>({
         currentDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID) && (
         <ul className="flex relative">
           {items
-            .slice(0, calculateLastSliceIndex(maxAvatars, items, false))
+            .slice(0, calculateLastSliceIndex(maxAvatarsToShow, items, false))
             .filter(notNull)
             .map((member) => (
               <li key={member.address} className="-ml-3">
                 <UserAvatar
                   user={member.user}
                   size="sm"
-                  borderClassName="border-base-white border rounded-full"
+                  className="border-base-white border rounded-full"
                 />
               </li>
             ))}
