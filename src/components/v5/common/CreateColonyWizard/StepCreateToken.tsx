@@ -26,18 +26,14 @@ const StepCreateToken = ({
   wizardValues: { tokenChoice, tokenName, tokenSymbol, tokenAddress },
   previousStep,
 }: Props) => {
-  const handleSubmit = (values: Step3) => {
-    nextStep({ ...values, tokenAddress: '' });
-  };
-
   return (
     <Form<Step3>
-      onSubmit={handleSubmit}
+      onSubmit={nextStep}
       validationSchema={validationSchema}
-      defaultValues={{ ...defaultValues, tokenChoice }}
+      defaultValues={{ ...defaultValues, tokenChoiceVerify: tokenChoice }}
     >
       {({ watch }) => {
-        const currentTokenChoice = watch('tokenChoice');
+        const currentTokenChoice = watch('tokenChoiceVerify');
 
         return (
           <>

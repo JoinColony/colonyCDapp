@@ -112,7 +112,7 @@ export const createTokenValidationSchema = object({
 }).defined();
 
 export const tokenValidationSchema = object({
-  tokenChoice: string(),
+  tokenChoiceVerify: string(),
 })
   .concat(selectTokenValidationSchema)
   .concat(createTokenValidationSchema);

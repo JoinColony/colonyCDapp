@@ -22,7 +22,7 @@ export const TokenChoiceOptions = ({
           className="pb-6 flex gap-2 text-md text-gray-900"
         >
           <input
-            {...register('tokenChoice')}
+            {...register('tokenChoiceVerify')}
             type="radio"
             value={option}
             id={option}
