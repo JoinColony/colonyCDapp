@@ -1,26 +1,12 @@
 import React from 'react';
-import { FormattedMessage, MessageDescriptor, useIntl } from 'react-intl';
+import { MessageDescriptor, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
 import Button from '~v5/shared/Button';
-import { Appearance, Heading3 } from '~shared/Heading';
-import {
-  AnyMessageValues,
-  ComplexMessageValues,
-  SimpleMessageValues,
-} from '~types';
-import { multiLineTextEllipsis } from '~utils/strings';
-
-import styles from './shared.css';
+import { AnyMessageValues, SimpleMessageValues } from '~types';
 import { PreviousStep } from '~shared/Wizard/types';
-import { FormValues } from '../CreateColonyWizard';
 
-export const TruncatedName = (name: string, maxLength = 120) => (
-  // Use JS to truncate string here, rather then CSS, to customise string's max length
-  <span key={name} className={styles.truncated} title={name}>
-    {multiLineTextEllipsis(name, maxLength)}
-  </span>
-);
+import { FormValues } from '../CreateColonyWizard';
 
 interface HeaderRowProps {
   heading: MessageDescriptor | string;
@@ -88,24 +74,3 @@ export const ButtonRow = ({ previousStep }: ButtonRowProps) => {
     </div>
   );
 };
-
-interface HeadingTextProps {
-  text: MessageDescriptor;
-  textValues?: ComplexMessageValues;
-  paragraph: MessageDescriptor;
-  appearance: Partial<Appearance>;
-}
-
-export const HeadingText = ({
-  text,
-  textValues,
-  paragraph,
-  appearance,
-}: HeadingTextProps) => (
-  <>
-    <Heading3 appearance={appearance} text={text} textValues={textValues} />
-    <p className={styles.paragraph}>
-      <FormattedMessage {...paragraph} />
-    </p>
-  </>
-);
