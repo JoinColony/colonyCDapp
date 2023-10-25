@@ -89,7 +89,8 @@
     "categories": {
       "function": {
         "fetchExpenditureBalances": {},
-        "createPrivateBetaInvite": {}
+        "createPrivateBetaInvite": {},
+        "validateUserInvite": {}
       }
     }
   }
