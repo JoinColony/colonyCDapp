@@ -1,4 +1,11 @@
-export { default, FormValues, Step1, Step2, Step3 } from './CreateColonyWizard';
+export {
+  default,
+  FormValues,
+  Step1,
+  Step2,
+  Step3,
+  WizardProps,
+} from './CreateColonyWizard';
 export {
   tokenValidationSchema,
   colonyNameValidationSchema,

@@ -5,10 +5,9 @@ import { ActionForm } from '~shared/Fields';
 import { mergePayload } from '~utils/actions';
 import { ActionTypes } from '~redux/index';
 
-import { FormValues } from '../CreateColonyWizard';
+import { FormValues, WizardProps } from '../CreateColonyWizard';
 import { ButtonRow, HeaderRow } from './shared';
 import CardRow from './CreateColonyCardRow';
-import { WizardProps } from './CreateColonyWizard';
 
 const displayName = 'common.CreateColonyWizard.StepConfirmAllInput';
 

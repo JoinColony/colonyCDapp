@@ -5,13 +5,13 @@ import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
 
-import { FormValues } from '../CreateColonyWizard';
+import { FormValues, WizardProps } from '../CreateColonyWizard';
 
 const displayName = 'common.CreateColonyWizard.CardRow';
 
 interface CardRowProps {
   updatedWizardValues: FormValues;
-  setStep: WizardStepProps<FormValues>['setStep'];
+  setStep: WizardStepProps<FormValues, WizardProps>['setStep'];
 }
 
 const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {

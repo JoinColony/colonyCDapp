@@ -18,7 +18,7 @@ import { groupedTransactionsAndMessages } from '~redux/selectors';
 import { ActionTypes } from '~redux/index';
 import { useAppContext } from '~hooks';
 
-import { FormValues } from '../CreateColonyWizard';
+import { FormValues, WizardProps } from '../CreateColonyWizard';
 import ConfirmTransactions from './ConfirmTransactions';
 import { HeaderRow } from './shared';
 
@@ -61,7 +61,7 @@ const RecoverableDeploymentError = ({
   </div>
 );
 
-type Props = Pick<WizardStepProps<FormValues>, 'wizardValues'>;
+type Props = Pick<WizardStepProps<FormValues, WizardProps>, 'wizardValues'>;
 
 type NewestGroup = Array<{
   methodName: string;
