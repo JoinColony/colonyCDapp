@@ -38,10 +38,6 @@
   @apply bg-base-white text-gray-700 border border-gray-200 md:hover:bg-gray-900 md:hover:text-base-white md:hover:border-gray-900 disabled:text-gray-300;
 }
 
-.solidBlack {
-  @apply bg-base-black text-base-white md:hover:bg-gray-50 disabled:bg-gray-300;
-}
-
 /* State button */
 .completed {
   @apply bg-success-400 border-success-400 text-base-white;

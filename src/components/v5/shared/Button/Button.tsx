@@ -67,7 +67,6 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
               [styles.quaternary]: mode === 'quaternary',
               [styles.tertiary]: mode === 'tertiary' || size === 'large',
               [styles.septenary]: mode === 'septenary',
-              [styles.solidBlack]: mode === 'solidBlack',
               [styles.completed]: mode === 'completed',
               'pointer-events-none': disabled,
               'w-full': isFullSize,
