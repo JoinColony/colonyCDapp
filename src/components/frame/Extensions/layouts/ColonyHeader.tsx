@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useMobile } from '~hooks';
@@ -9,6 +9,7 @@ import {
   TransactionGroupStates,
   useUserTransactionContext,
 } from '~context/UserTransactionContext';
+import { InviteMembersModal } from '~v5/common/Modals';
 
 import Header from './Header';
 
@@ -28,6 +29,8 @@ const MSG = defineMessages({
 const ColonyHeader = () => {
   const isMobile = useMobile();
   const { groupState } = useUserTransactionContext();
+  const [isInviteMembersModalOpen, setIsInviteMembersModalOpen] =
+    useState(false);
 
   const txButtons = isMobile
     ? [
@@ -58,6 +61,11 @@ const ColonyHeader = () => {
             text={MSG.inviteMembers}
             mode="primaryOutline"
             iconName="paper-plane-tilt"
+            onClick={() => setIsInviteMembersModalOpen(true)}
+          />
+          <InviteMembersModal
+            isOpen={isInviteMembersModalOpen}
+            onClose={() => setIsInviteMembersModalOpen(false)}
           />
         </>
       }
