@@ -132,7 +132,6 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                 />
               ),
               heading: {
-                // @todo: chnage label and styling when the outcome is known and revealed
                 stage: isMotionPassed ? 'passed' : 'failed',
                 label:
                   (isMotionPassed &&
