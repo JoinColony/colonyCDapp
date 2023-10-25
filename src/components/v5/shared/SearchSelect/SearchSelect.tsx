@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import debounce from 'lodash/debounce';
 import clsx from 'clsx';
@@ -205,4 +205,6 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
   },
 );
 
-export default Object.assign(SearchSelect, { displayName });
+(SearchSelect as FC).displayName = displayName;
+
+export default SearchSelect;

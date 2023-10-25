@@ -20,6 +20,7 @@ import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
 import PermissionsPage from '~frame/Extensions/pages/PermissionsPage';
 import { ExtensionsContextProvider } from '~context/ExtensionsContext';
 import MembersPage from '~frame/v5/pages/MembersPage';
+import UserInvitePage from '~frame/v5/pages/UserInvitePage';
 import ColonyUsersPage from '~frame/v5/pages/ColonyUsersPage';
 import VerifiedPage from '~frame/v5/pages/VerifiedPage';
 import BalancePage from '~frame/v5/pages/BalancePage';
@@ -53,6 +54,7 @@ import {
   COLONY_DECISIONS_PREVIEW_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
   COLONY_EXTENSION_DETAILS_ROUTE,
+  USER_INVITE_ROUTE,
   COLONY_REPUTATION_ROUTE,
   COLONY_DETAILS_ROUTE,
   COLONY_PERMISSIONS_ROUTE,
@@ -96,6 +98,8 @@ const Routes = () => {
 
         {/* Main routes */}
         <Route element={<MainRoute />}>
+          <Route path={LANDING_PAGE_ROUTE} element={<LandingPage />} />
+          <Route path={USER_INVITE_ROUTE} element={<UserInvitePage />} />
           <Route
             path={USER_ROUTE}
             element={
