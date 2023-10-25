@@ -7,12 +7,13 @@ import MembersAvatars from '~v5/shared/MembersAvatars';
 import { OutcomeStepProps } from './types';
 import { useMemberAvatars, useOutcomeStep } from './hooks';
 import { Watcher } from '~types';
+import { MotionState } from '~utils/colonyMotions';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.Motion.steps.OutcomeStep';
 
-const OutcomeStep: FC<OutcomeStepProps> = ({ motionData }) => {
-  const { yayPercent, nayPercent, voteStatuses } = useOutcomeStep(motionData);
+const OutcomeStep: FC<OutcomeStepProps> = ({ motionData, motionState }) => {
+  const { voteStatuses } = useOutcomeStep(motionData);
   const { loading, watchers } = useMemberAvatars();
 
   return (
@@ -25,13 +26,13 @@ const OutcomeStep: FC<OutcomeStepProps> = ({ motionData }) => {
               <h3 className="text-center text-1 mb-2">
                 {formatText({
                   id:
-                    yayPercent > nayPercent
+                    motionState === MotionState.Passed
                       ? 'motion.outcomeStep.win.title'
                       : 'motion.outcomeStep.lost.title',
                 })}
               </h3>
               {voteStatuses.map(
-                ({ id, iconName, label = '', progress = '', status }) => (
+                ({ id, iconName, label = '', progress, status }) => (
                   <VoteStatus
                     key={id}
                     iconName={iconName}

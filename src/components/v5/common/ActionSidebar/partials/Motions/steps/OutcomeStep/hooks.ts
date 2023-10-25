@@ -36,8 +36,6 @@ export const useOutcomeStep = (motionData: ColonyMotion | null | undefined) => {
 
   return {
     voteStatuses,
-    yayPercent: motionData?.motionStakes?.percentage?.yay || '',
-    nayPercent: motionData?.motionStakes?.percentage?.nay || '',
   };
 };
 

@@ -98,6 +98,8 @@ function Stepper<TKey extends React.Key>({
                       STEP_STAGE.Completed) ||
                     (index === activeItemIndex && STEP_STAGE.Current) ||
                     (isSkipped && STEP_STAGE.Skipped) ||
+                    (index === activeItemIndex && STEP_STAGE.Passed) ||
+                    (index === activeItemIndex && STEP_STAGE.Failed) ||
                     STEP_STAGE.Upcoming
                   }
                   onClick={() => {

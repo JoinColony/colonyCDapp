@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
+import { BigNumber } from 'ethers';
 import { getMotionState, MotionState } from '~utils/colonyMotions';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
@@ -37,14 +38,40 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     NetworkMotionState.Null,
   );
 
-  const motionStateEnum = motionData
-    ? getMotionState(networkMotionStateEnum, motionData)
-    : MotionState.Staking;
   const [activeStepKey, setActiveStepKey] = useState(networkMotionStateEnum);
 
   useEffect(() => {
     setActiveStepKey(networkMotionStateEnum);
   }, [networkMotionStateEnum]);
+
+  const motionStateEnum: MotionState | undefined = useMemo(() => {
+    if (!motionData) return undefined;
+    // const remainingStakes = motionData?.remainingStakes;
+    const motionStakesPercentage = motionData?.motionStakes.percentage;
+    const revealedVotesPercentage = motionData?.revealedVotes.percentage;
+
+    if (
+      activeStepKey === NetworkMotionState.Finalizable &&
+      BigNumber.from(motionStakesPercentage?.nay) &&
+      BigNumber.from(motionStakesPercentage?.yay)
+      // BigNumber.from(motionStakesPercentage).gte(requiredStakes) &&
+      // BigNumber.from(motionStakesPercentage).gte(requiredStakes)
+    ) {
+      if (
+        BigNumber.from(revealedVotesPercentage?.yay).gt(
+          revealedVotesPercentage?.nay || '',
+        )
+      ) {
+        return MotionState.Passed;
+      }
+
+      return MotionState.Failed;
+    }
+
+    return motionData
+      ? getMotionState(networkMotionStateEnum, motionData)
+      : MotionState.Staking;
+  }, [motionData]);
 
   // @todo: add missing steps
   const items = useMemo(
@@ -123,10 +150,23 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
             {
               // @todo: change to MotionState when the outcome is known and revealed
               key: NetworkMotionState.Finalizable,
-              content: <OutcomeStep motionData={motionData} />,
+              content: (
+                <OutcomeStep
+                  motionData={motionData}
+                  motionState={motionStateEnum}
+                />
+              ),
               heading: {
                 // @todo: chnage label and styling when the outcome is known and revealed
-                label: formatText({ id: 'motion.outcome.label' }) || '',
+                stage:
+                  motionStateEnum === MotionState.Passed ? 'passed' : 'failed',
+                label:
+                  (motionStateEnum === MotionState.Passed &&
+                    formatText({ id: 'motion.passed.label' })) ||
+                  (motionStateEnum === MotionState.Failed &&
+                    formatText({ id: 'motion.failed.label' })) ||
+                  formatText({ id: 'motion.outcome.label' }) ||
+                  '',
               },
               // @todo: add a condition to be required if staking won't go directly to finalize step
               isOptional: true,
