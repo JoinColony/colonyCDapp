@@ -1,5 +1,6 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { Navigate } from 'react-router-dom';
+import { defineMessages } from 'react-intl';
 
 import UserHubButton from '~common/Extensions/UserHubButton';
 import {
@@ -12,7 +13,7 @@ import { useMobile, useColonyContext } from '~hooks';
 import { NOT_FOUND_ROUTE } from '~routes';
 import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
 import PageLayout from '~v5/frame/PageLayout';
-import { CompletedButton, PendingButton } from '~v5/shared/Button';
+import Button, { CompletedButton, PendingButton } from '~v5/shared/Button';
 import CalamityBanner from '~v5/shared/CalamityBanner';
 
 import UserNavigationWrapper from './partials/UserNavigationWrapper';
@@ -21,6 +22,17 @@ import { useCalamityBannerInfo } from './hooks';
 import ColonySidebar from './ColonySidebar';
 
 const displayName = 'frame.Extensions.layouts.ColonyLayout';
+
+const MSG = defineMessages({
+  joinButtonText: {
+    id: `${displayName}.joinButtonText`,
+    defaultMessage: 'Join',
+  },
+  inviteMembers: {
+    id: `${displayName}.inviteMembers`,
+    defaultMessage: 'Invite members',
+  },
+});
 
 const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const { colony, loading } = useColonyContext();
@@ -84,7 +96,24 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
               }
             : undefined,
           userNavigation: (
-            <UserNavigationWrapper txButtons={txButtons} userHub={userHub} />
+            <UserNavigationWrapper
+              txButtons={txButtons}
+              userHub={userHub}
+              extra={
+                <>
+                  <Button
+                    className="ml-4 mr-2"
+                    mode="solidBlack"
+                    text={MSG.joinButtonText}
+                  />
+                  <Button
+                    text={MSG.inviteMembers}
+                    mode="primaryOutline"
+                    iconName="paper-plane-tilt"
+                  />
+                </>
+              }
+            />
           ),
         }}
         sidebar={<ColonySidebar userHub={userHub} txButtons={txButtons} />}
