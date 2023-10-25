@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
+import clsx from 'clsx';
 
 import { UseFormRegister, FieldValues, useFormContext } from 'react-hook-form';
 
@@ -71,8 +72,13 @@ const TokenSelector = ({
   return (
     <label htmlFor={`id-${name}`}>
       <Card
-        className="flex flex-col items-center cursor-pointer text-center h-full md:hover:shadow-default md:hover:shadow-light-blue"
-        checked={checked}
+        className={clsx(
+          'flex flex-col items-center cursor-pointer text-center h-full md:hover:shadow-default',
+          {
+            'border-blue-400': checked,
+            'border-gray-200': !checked,
+          },
+        )}
       >
         <input
           {...registerField}

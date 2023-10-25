@@ -1,6 +1,7 @@
 import React, {
   ChangeEvent,
   ChangeEventHandler,
+  FC,
   useCallback,
   useMemo,
   useState,
@@ -203,4 +204,6 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
   },
 );
 
-export default Object.assign(SearchSelect, { displayName });
+(SearchSelect as FC).displayName = displayName;
+
+export default SearchSelect;

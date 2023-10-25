@@ -38,6 +38,7 @@ export const DECISIONS_PREVIEW_ROUTE_SUFFIX = '/preview';
 
 export const CREATE_COLONY_ROUTE = '/create-colony/:inviteCode';
 export const CREATE_USER_ROUTE = '/create-user';
+export const USER_INVITE_ROUTE = `/invite/:colonyName/:inviteCode`;
 export const USER_ROUTE = '/user/:username';
 export const NOT_FOUND_ROUTE = '/404';
 export const LANDING_PAGE_ROUTE = '/landing';
