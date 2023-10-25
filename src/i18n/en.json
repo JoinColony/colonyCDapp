@@ -1348,5 +1348,7 @@
   "createColonyWizard.step.confirm.heading": "Confirm your Colony’s details",
   "createColonyWizard.step.confirm.description": "Check to ensure your Colony’s details are correct as they can not be changed later.",
   "createColonyWizard.step.confirm.nativeToken": "Native token",
-  "createColonyWizard.step.confirm.blockchain": "Blockchain"
+  "createColonyWizard.step.confirm.blockchain": "Blockchain",
+  "createColonyWizard.step.transactions.heading": "Complete setup",
+  "createColonyWizard.step.transactiosn.description": "Deploying to the blockchain requires you to sign a transaction in your wallet for each step."
 }

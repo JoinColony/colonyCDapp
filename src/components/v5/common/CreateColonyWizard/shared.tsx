@@ -11,7 +11,7 @@ import { FormValues } from '../CreateColonyWizard';
 interface HeaderRowProps {
   heading: MessageDescriptor | string;
   headingValues?: SimpleMessageValues;
-  description: MessageDescriptor;
+  description: MessageDescriptor | string;
   descriptionValues?: AnyMessageValues;
 }
 

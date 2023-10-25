@@ -20,8 +20,7 @@ import { useAppContext } from '~hooks';
 
 import { FormValues } from '../CreateColonyWizard';
 import ConfirmTransactions from './ConfirmTransactions';
-
-import styles from './StepConfirmTransactions.css';
+import { HeaderRow } from './shared';
 
 const displayName = 'common.CreateColonyWizard.StepConfirmTransactions';
 
@@ -48,12 +47,12 @@ interface RecoverableDeploymentErrorProps {
 const RecoverableDeploymentError = ({
   colonyName,
 }: RecoverableDeploymentErrorProps) => (
-  <div className={styles.deploymentError}>
+  <div className="">
     <FormattedMessage
       {...MSG.deploymentFailed}
       values={{
         linkToColony: (
-          <NavLink className={styles.linkToColony} to={`/colony/${colonyName}`}>
+          <NavLink className="" to={`/colony/${colonyName}`}>
             <FormattedMessage {...MSG.keywordHere} />
           </NavLink>
         ),
@@ -138,11 +137,12 @@ const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
   );
 
   return (
-    <section className={styles.main}>
-      <ConfirmTransactions
-        transactionGroup={createColonyTxGroup}
-        headingText={MSG.heading}
+    <section className="">
+      <HeaderRow
+        heading={{ id: 'createColonyWizard.step.transactions.heading' }}
+        description={{ id: 'createColonyWizard.step.transactiosn.description' }}
       />
+      <ConfirmTransactions transactionGroup={createColonyTxGroup} />
       {existsRecoverableDeploymentError && (
         <RecoverableDeploymentError colonyName={colonyName} />
       )}
