@@ -40,7 +40,9 @@ const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
     <div className="flex flex-col gap-6">
       {cards.map((card) => (
         <div className="flex flex-col gap-3.5" key={`option ${card.title}`}>
-          <h5 className="text-2">{formatText({ id: card.title })}</h5>
+          <h5 className="text-2 lowercase first-letter:uppercase">
+            {formatText({ id: card.title })}
+          </h5>
           <div className="border border-gray-200 rounded px-6 py-4 flex place-content-between">
             <div className="flex gap-5 items-center">
               {card.icon && card.icon}
