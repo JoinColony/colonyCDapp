@@ -1332,9 +1332,9 @@
   "createColonyWizard.step.selectToken.heading": "Creating a new native token or use existing?",
   "createColonyWizard.step.selectToken.description": "We highly recommend creating a new token, you will have greater control of your token going forward, support all features of Colony, and potential save a lot of cost if on another chain.",
   "createColonyWizard.step.selectToken.createOptionTitle": "Create a new token",
-  "createColonyWizard.step.selectToken.createOptionDescription": "Quickest, easiest, and best option for greater control over your token using your Colony. ",
+  "createColonyWizard.step.selectToken.createOptionDescription": "Quickest, easiest, and best option for greater control over your token using your Colony.",
   "createColonyWizard.step.selectToken.selectOptionTitle": "Use an existing token",
-  "createColonyWizard.step.selectToken.selectOptionDescription": "Suitable for public tokens. Requires token to be on the same blockchain as the Colony. ",
+  "createColonyWizard.step.selectToken.selectOptionDescription": "Suitable for public tokens. Requires token to be on the same blockchain as the Colony.",
   "createColonyWizard.step.nativeToken.heading": "Your Colony’s native token",
   "createColonyWizard.step.nativeToken.description": "Your native token is your organization’s unit of ownership, and powers key features within your Colony.{br}{br}Tokens are initially locked and not transferable by recipients. You must unlock your token if you wish it to become tradable.",
   "createColonyWizard.step.nativeToken.create": "Create a new token",
