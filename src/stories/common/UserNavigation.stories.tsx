@@ -88,7 +88,7 @@ const UserNavigationWithData = () => {
         </div>
         {!isMobile && isOpen && (
           <div
-            className={`flex absolute right-[4.25rem] h-auto bg-white shadow-default
+            className={`flex absolute right-[4.25rem] h-auto bg-base-white shadow-default
             border border-gray-200 rounded-lg mt-2 w-[44.375rem]`}
             ref={setTooltipRef}
           >
