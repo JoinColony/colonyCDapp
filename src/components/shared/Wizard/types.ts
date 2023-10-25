@@ -23,7 +23,6 @@ export interface WizardOuterProps<FormValues>
   extends SharedWizardProps<FormValues> {
   children: JSX.Element;
   loggedInUser: AppContextValues['user'];
-  hideQR?: boolean;
 }
 
 export interface WizardStepProps<FormValues, StepVals = Partial<FormValues>>
