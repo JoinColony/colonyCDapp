@@ -185,6 +185,10 @@ input CreateUniqueColonyInput {
   Version of the currently deployed Colony contract
   """
   version: Int!
+  """
+  Invite Code to create Colony
+  """
+  inviteCode: ID!
 }
 
 """

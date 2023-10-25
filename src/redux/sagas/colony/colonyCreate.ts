@@ -75,6 +75,7 @@ function* colonyCreate({
     tokenChoice,
     tokenName,
     tokenSymbol,
+    inviteCode,
   },
 }: Action<ActionTypes.CREATE>) {
   const apolloClient = getContext(ContextModule.ApolloClient);
@@ -352,6 +353,7 @@ function* colonyCreate({
                 mintable: tokenChoice === 'create',
               },
             },
+            inviteCode,
           },
         },
       });

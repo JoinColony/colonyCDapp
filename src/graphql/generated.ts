@@ -1416,6 +1416,8 @@ export type CreateUniqueColonyInput = {
   colonyNativeTokenId: Scalars['ID'];
   /** Unique identifier for the Colony. This is the Colony's contract address */
   id: Scalars['ID'];
+  /** Invite Code to create Colony */
+  inviteCode: Scalars['ID'];
   /** Display name of the Colony */
   name: Scalars['String'];
   /** Status information for the Colony */

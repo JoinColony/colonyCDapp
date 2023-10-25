@@ -32,6 +32,7 @@ export type ColonyActionTypes =
         tokenName: string;
         tokenSymbol: string;
         username: string;
+        inviteCode: string;
       },
       object
     >

@@ -8,12 +8,13 @@ import { ActionTypes } from '~redux/index';
 import { FormValues } from '../CreateColonyWizard';
 import { ButtonRow, HeaderRow } from './shared';
 import CardRow from './CreateColonyCardRow';
+import { WizardProps } from './CreateColonyWizard';
 
 const displayName = 'common.CreateColonyWizard.StepConfirmAllInput';
 
 type Props = Pick<
-  WizardStepProps<FormValues>,
-  'nextStep' | 'wizardValues' | 'previousStep' | 'setStep'
+  WizardStepProps<FormValues, WizardProps>,
+  'nextStep' | 'wizardValues' | 'previousStep' | 'setStep' | 'wizardProps'
 >;
 
 const StepConfirmAllInput = ({
@@ -21,6 +22,7 @@ const StepConfirmAllInput = ({
   wizardValues,
   previousStep,
   setStep,
+  wizardProps,
 }: Props) => {
   const updatedWizardValues = {
     ...wizardValues,
@@ -31,6 +33,7 @@ const StepConfirmAllInput = ({
     tokenName: wizardValues.tokenName || wizardValues.token?.name,
     tokenSymbol:
       wizardValues.tokenSymbol?.toUpperCase() || wizardValues.token?.symbol,
+    inviteCode: wizardProps.inviteCode,
   };
 
   const transform = mergePayload(updatedWizardValues);
