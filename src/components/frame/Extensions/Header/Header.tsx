@@ -12,7 +12,6 @@ import { CloseButton, PendingButton } from '~v5/shared/Button';
 import { useHeader } from './hooks';
 import ActionSidebar from '~v5/common/ActionSidebar';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { ColonyAvatarProvider } from '~context/ColonyAvatarContext';
 import {
   TransactionGroupStates,
   useUserTransactionContext,
@@ -81,11 +80,9 @@ const Header: FC = () => {
     />
   );
   const userMenuComponent = isActionSidebarOpen ? (
-    <ColonyAvatarProvider>
-      <ActionSidebar transactionId={transactionId || undefined}>
-        {userNavigation}
-      </ActionSidebar>
-    </ColonyAvatarProvider>
+    <ActionSidebar transactionId={transactionId || undefined}>
+      {userNavigation}
+    </ActionSidebar>
   ) : (
     userNavigation
   );

@@ -4,8 +4,10 @@ import { MAX_ANNOTATION_LENGTH, MAX_COLONY_DISPLAY_NAME } from '~constants';
 export const validationSchema = yup
   .object()
   .shape({
-    colonyAvatarImage: yup.string().nullable().defined(),
-    colonyThumbnail: yup.string().nullable().defined(),
+    avatar: yup.object().nullable().shape({
+      image: yup.string().nullable().defined(),
+      thumbnail: yup.string().nullable().defined(),
+    }),
     colonyDisplayName: yup
       .string()
       .trim()

@@ -1,5 +1,6 @@
 import { FileUploadOptions } from '~v5/common/AvatarUploader/types';
 
-export interface ChangeColonyLogoProps {
+export interface ColonyAvatarFieldProps {
+  name: string;
   fileOptions: FileUploadOptions;
 }
