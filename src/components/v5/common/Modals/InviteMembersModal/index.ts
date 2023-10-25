@@ -1,1 +1,1 @@
-export { default } from './inviteMembersModal';
+export { default } from './InviteMembersModal';
