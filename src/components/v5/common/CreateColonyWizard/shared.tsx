@@ -69,7 +69,7 @@ export const ButtonRow = ({ previousStep }: ButtonRowProps) => {
         type="submit"
         disabled={disabled}
         loading={loading}
-        mode="solidBlack"
+        mode="primarySolid"
       />
     </div>
   );
