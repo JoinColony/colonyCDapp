@@ -34,7 +34,10 @@ const MSG = defineMessages({
   },
   buttonText: {
     id: `${displayName}.buttonText`,
-    defaultMessage: 'Copy link',
+    defaultMessage: `{isCopied, select,
+      true {Link copied}
+      other {Copy link}
+    }`,
   },
 });
 
@@ -46,7 +49,7 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
   const { colony } = useColonyContext();
   const inviteLink = `app.colony.io/${colony?.name}/invite`;
 
-  const { handleClipboardCopy } = useCopyToClipboard(inviteLink, 5000);
+  const { handleClipboardCopy, isCopied } = useCopyToClipboard(inviteLink);
 
   return (
     <Modal isOpen={isOpen} onClose={() => onClose()}>
@@ -77,10 +80,11 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
           </div>
           <Button
             text={MSG.buttonText}
-            mode="primaryOutline"
-            iconName="copy-simple"
+            mode={isCopied ? 'completed' : 'primaryOutline'}
+            iconName={isCopied ? undefined : 'copy-simple'}
             onClick={handleClipboardCopy}
             className="text-sm"
+            textValues={{ isCopied }}
           />
         </div>
       </div>
