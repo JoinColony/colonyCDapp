@@ -3,7 +3,7 @@ import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { Watcher } from '~types';
 import MembersAvatars from '~v5/shared/MembersAvatars';
 
-const watchers: Watcher[] = [
+const items: Watcher[] = [
   {
     __typename: 'Watcher',
     address: '0xb3816008946dD5EdDdf32393484d80b4f081E9f8',
@@ -140,10 +140,9 @@ const meta: Meta<typeof MembersAvatars> = {
   title: 'Shared/Members avatars',
   component: MembersAvatars,
   args: {
-    loading: false,
     currentDomainId: COLONY_TOTAL_BALANCE_DOMAIN_ID,
     maxAvatars: 4,
-    watchers,
+    items,
   },
 };
 

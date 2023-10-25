@@ -8,7 +8,7 @@ export interface OutcomeStepProps {
 export interface VoteStatuses {
   id: string;
   iconName: string;
-  label: string | undefined;
+  label: string;
   progress: number;
   status: MotionVote;
 }

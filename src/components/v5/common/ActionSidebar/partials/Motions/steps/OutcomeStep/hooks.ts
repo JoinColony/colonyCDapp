@@ -21,14 +21,14 @@ export const useOutcomeStep = (motionData: ColonyMotion | null | undefined) => {
       {
         id: supportOption.id,
         iconName: supportOption.iconName,
-        label: supportOption.label,
+        label: supportOption.label || '',
         progress: Number(yayPercent),
         status: MotionVote.Yay,
       },
       {
         id: opposeOption.id,
         iconName: opposeOption.iconName,
-        label: opposeOption.label,
+        label: opposeOption.label || '',
         progress: Number(nayPercent),
         status: MotionVote.Nay,
       },
