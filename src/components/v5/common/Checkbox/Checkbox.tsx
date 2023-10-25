@@ -43,9 +43,9 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
         />
         <span
           className={clsx(styles.checkboxBox, {
-            'border-blue-400 text-base-white bg-blue-400':
+            'border-gray-900 text-base-white bg-gray-900':
               isChecked && mode === 'primary',
-            'border-blue-400 text-blue-400 bg-base-white':
+            'border-gray-900 text-gray-900 bg-base-white':
               isChecked && mode === 'secondary',
             'border-gray-200 bg-base-white': !isChecked,
           })}
