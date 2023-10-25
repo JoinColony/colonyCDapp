@@ -681,6 +681,7 @@ export const useGetActionDefaultValues = (
           }),
         );
         const allTokens = [...(colonyTokens || []), ...(modifiedTokens || [])];
+
         if (modifiedTokens && modifiedTokens?.length > 0) {
           return {
             [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_TOKENS,
@@ -688,6 +689,7 @@ export const useGetActionDefaultValues = (
             ...repeatableFields,
           };
         }
+
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_COLONY_DETAILS,
           colonyName: pendingColonyMetadata?.displayName,
