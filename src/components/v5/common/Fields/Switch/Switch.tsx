@@ -36,6 +36,4 @@ const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
   },
 );
 
-Switch.displayName = displayName;
-
-export default Switch;
+export default Object.assign(Switch, { displayName });
