@@ -25,10 +25,14 @@ export interface WizardOuterProps<FormValues>
   loggedInUser: AppContextValues['user'];
 }
 
-export interface WizardStepProps<FormValues, StepVals = Partial<FormValues>>
-  extends SharedWizardProps<FormValues> {
+export interface WizardStepProps<
+  FormValues,
+  Props,
+  StepVals = Partial<FormValues>,
+> extends SharedWizardProps<FormValues> {
   setStepsValues: React.Dispatch<React.SetStateAction<StepsValues<FormValues>>>;
   setStep: React.Dispatch<React.SetStateAction<number>>;
+  wizardProps: Props;
   wizardForm: {
     initialValues: StepVals;
     validateOnMount: boolean;

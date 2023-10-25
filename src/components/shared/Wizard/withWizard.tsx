@@ -48,7 +48,7 @@ const withWizard =
   }: WizardArgs<F>) =>
   (
     OuterComponent: ComponentType<WizardOuterProps<F>>,
-    stepsProps?: WizardStepProps<F, Partial<F>>,
+    stepsProps?: WizardStepProps<F, P, Partial<F>>,
   ) => {
     const Wizard = (wizardProps: P) => {
       const { user } = useAppContext();
@@ -121,6 +121,7 @@ const withWizard =
             resetWizard={reset}
             setStepsValues={setStepsValues}
             wizardValues={mergedValues}
+            wizardProps={wizardProps}
             // Wizard form helpers to take some shortcuts if needed
             wizardForm={{
               // Get values just for this step

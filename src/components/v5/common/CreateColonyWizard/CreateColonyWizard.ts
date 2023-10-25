@@ -62,7 +62,7 @@ const initialValues: [Step1, Step2, Step3] = [
   },
 ];
 
-interface WizardProps {
+export interface WizardProps {
   inviteCode: string;
 }
 
