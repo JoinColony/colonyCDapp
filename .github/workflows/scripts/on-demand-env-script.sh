@@ -107,8 +107,42 @@ server {
         proxy_cache_bypass \$http_upgrade;
     }
 }
-EOL
 
+server {
+    listen 20003 ssl; # Nginx listens on this port
+    server_name _;
+
+    ssl_certificate /etc/nginx/ssl/nginx.crt;
+    ssl_certificate_key /etc/nginx/ssl/nginx.key;
+
+    location / {
+        proxy_pass http://localhost:20002; # Proxy to GraphQL service
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host \$host;
+        proxy_cache_bypass \$http_upgrade;
+    }
+}
+
+server {
+    listen 8546 ssl; # SSL for port 8546
+    server_name _;
+
+    # Specify the key and certificate file
+    ssl_certificate /etc/nginx/ssl/nginx.crt;
+    ssl_certificate_key /etc/nginx/ssl/nginx.key;
+
+    location / {
+        proxy_pass http://localhost:8545; 
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host \$host;
+        proxy_cache_bypass \$http_upgrade;
+    }
+}
+EOL
 
 # Enable the site and restart Nginx
 sudo ln -s /etc/nginx/sites-available/myapp /etc/nginx/sites-enabled
@@ -125,15 +159,15 @@ export NVM_DIR="$HOME/.nvm"
 nvm install 16
 nvm use 16
 
-# Set env vars
+# Set env vars (reputation endpoint is 3001 and graphql is 20002, but increasing number by 1 to serve from nginx)
 cat <<EOL > ./.env
 METATRANSACTIONS=true
-REPUTATION_ORACLE_ENDPOINT=http://${PUBLIC_IP}:3001/reputation/local
+REPUTATION_ORACLE_ENDPOINT=https://${PUBLIC_IP}:3002/reputation/local
 NETWORK_CONTRACT_ADDRESS=0x0000000000000000000000000000000000000000
-GANACHE_RPC_URL=http://${PUBLIC_IP}:8545
+GANACHE_RPC_URL=https://${PUBLIC_IP}:8546
 NETWORK=ganache
 AWS_APPSYNC_KEY=da2-fakeApiId123456
-AWS_APPSYNC_GRAPHQL_URL=http://${PUBLIC_IP}:20002/graphql
+AWS_APPSYNC_GRAPHQL_URL=https://${PUBLIC_IP}:20003/graphql
 EOL
 
 # Install appropriate npm version and dependencies
@@ -162,6 +196,6 @@ echo "Port 9091 is now open!"
 # Send notification on Discord
 curl -H "Content-Type: application/json" \
      -X POST \
-     -d '{"content":"Dev environment for '"$SOURCE_USED"' ready at [IP: '"$PUBLIC_IP"'](https://'"$PUBLIC_IP"') !"}' \
+     -d '{"content":"Hey @'"$DISCORD_USER_ID"', your dev environment for '"$SOURCE_USED"' is ready to use at [IP: '"$PUBLIC_IP"'](https://'"$PUBLIC_IP"') !"}' \
      $DISCORD_WEBHOOK
 echo "Completion message posted!"
