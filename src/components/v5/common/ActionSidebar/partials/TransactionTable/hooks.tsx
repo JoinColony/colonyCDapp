@@ -9,6 +9,7 @@ import AmountField from '../AmountField';
 
 export const useTransactionTableColumns = (
   name: string,
+  tokenAddress?: string,
 ): ColumnDef<TransactionTableModel, string>[] => {
   const columnHelper = useMemo(
     () => createColumnHelper<TransactionTableModel>(),
@@ -31,12 +32,12 @@ export const useTransactionTableColumns = (
           <AmountField
             key={row.id}
             name={`${name}.${row.index}.amount`}
-            tokenAddressDisabled
+            tokenAddress={tokenAddress}
           />
         ),
       }),
     ],
-    [columnHelper, name],
+    [columnHelper, name, tokenAddress],
   );
 
   return columns;

@@ -1,11 +1,6 @@
 import React, { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
-import {
-  useController,
-  useFieldArray,
-  useFormContext,
-  useWatch,
-} from 'react-hook-form';
+import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import clsx from 'clsx';
 
 import Button from '~v5/shared/Button/Button';
@@ -18,7 +13,10 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 
 const displayName = 'v5.common.ActionsContent.partials.TransactionTable';
 
-const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
+const TransactionTable: FC<TransactionTableProps> = ({
+  name,
+  tokenAddress,
+}) => {
   const fieldArrayMethods = useFieldArray({
     name,
   });
@@ -28,7 +26,7 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
     }),
   );
   const { readonly } = useAdditionalFormOptionsContext();
-  const columns = useTransactionTableColumns(name);
+  const columns = useTransactionTableColumns(name, tokenAddress);
   const isMobile = useMobile();
   const value = useWatch({ name });
   const getMenuProps = useGetTableMenuProps(
@@ -38,10 +36,6 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
   );
   const { getFieldState } = useFormContext();
   const fieldState = getFieldState(name);
-
-  const { field: tokenAddressController } = useController({
-    name: 'amount.tokenAddress',
-  });
 
   return (
     <div>
@@ -72,7 +66,6 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
             fieldArrayMethods.append({
               amount: {
                 amount: '0',
-                tokenAddress: tokenAddressController.value || '',
               },
             });
           }}
