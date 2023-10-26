@@ -6,15 +6,15 @@ import UserAvatar from '~shared/UserAvatar';
 import { useAppContext, useMobile } from '~hooks';
 import { removeValueUnits } from '~utils/css';
 import { SimpleMessageValues } from '~types/index';
-import { UserTokenBalanceData } from '~types';
+import { Colony, UserTokenBalanceData } from '~types';
+
 import AvatarDropdownPopover from './AvatarDropdownPopover';
 import AvatarDropdownPopoverMobile from './AvatarDropdownPopoverMobile';
 
 import styles from './AvatarDropdown.css';
-import { ColonyFragment } from '~gql';
 
 interface Props {
-  colony?: ColonyFragment;
+  colony?: Colony;
   preventTransactions?: boolean;
   spinnerMsg: SimpleMessageValues;
   tokenBalanceData?: UserTokenBalanceData;

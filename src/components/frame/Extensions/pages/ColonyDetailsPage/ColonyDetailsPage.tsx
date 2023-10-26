@@ -1,17 +1,17 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
-import { useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import styles from './ColonyDetailsPage.module.css';
 import { useColonyContext, useMobile } from '~hooks';
 import Avatar from '~v5/shared/Avatar';
 import Button, { TextButton } from '~v5/shared/Button';
 import ObjectiveBox from '~v5/common/ObjectiveBox';
+import ExternalLink from '~shared/Extensions/ExternalLink';
 
 const displayName = 'frame.Extensions.pages.ColonyDetailsPage';
 
 const ColonyDetailsPage: FC = () => {
-  const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { colony } = useColonyContext();
   const { name, metadata } = colony || {};
@@ -28,9 +28,9 @@ const ColonyDetailsPage: FC = () => {
         <div className="mb-6 flex gap-x-2">
           {externalLinks?.length ? (
             externalLinks.map(({ name: linkName, link }) => (
-              <a key={`${linkName}:${link}`} href={link}>
+              <ExternalLink href={link} key={`${linkName}:${link}`}>
                 {linkName}
-              </a>
+              </ExternalLink>
             ))
           ) : (
             <TextButton
@@ -56,13 +56,13 @@ const ColonyDetailsPage: FC = () => {
       >
         <div className="w-full sm:max-w-[32.875rem]">
           <h3 className="heading-4 mb-4">
-            {formatMessage({ id: 'colonyDetailsPage.objectiveTitle' })}
+            <FormattedMessage id="colonyDetailsPage.objectiveTitle" />
           </h3>
           <p className="text-md text-gray-600 mb-6">
-            {formatMessage(
-              { id: 'colonyDetailsPage.objectiveDescription' },
-              { br: <br /> },
-            )}
+            <FormattedMessage
+              id="colonyDetailsPage.objectiveDescription"
+              values={{ br: <br /> }}
+            />
           </p>
           {!isMobile && (
             <Button
@@ -73,7 +73,7 @@ const ColonyDetailsPage: FC = () => {
         </div>
         <div className="w-full sm:max-w-[20.375rem]">
           <h5 className="text-3 mb-2">
-            {formatMessage({ id: 'colonyDetailsPage.objectiveBoxTitle' })}
+            <FormattedMessage id="colonyDetailsPage.objectiveBoxTitle" />
           </h5>
           <ObjectiveBox progress={0} />
         </div>

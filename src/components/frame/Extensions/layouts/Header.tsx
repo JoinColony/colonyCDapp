@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
-
 import { useSearchParams } from 'react-router-dom';
+
 import { useMobile } from '~hooks';
 import UserNavigation from '~common/Extensions/UserNavigation';
 import { CloseButton } from '~v5/shared/Button';
@@ -70,4 +70,3 @@ const Header: FC<HeaderProps> = ({ navBar = null, txButtons, userHub }) => {
 Header.displayName = displayName;
 
 export default Header;
-

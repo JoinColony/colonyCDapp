@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import NotificationBanner from '~common/Extensions/NotificationBanner';
 import { useColonyContext, useColonyContractVersion, useMobile } from '~hooks';
@@ -10,7 +10,6 @@ import ColonyVersionWidget from '~v5/shared/ColonyVersionWidget';
 const displayName = 'frame.Extensions.pages.AdvancedPage';
 
 const AdvancedPage: FC = () => {
-  const { formatMessage } = useIntl();
   const { colony } = useColonyContext();
   const { version } = colony || {};
   const { colonyContractVersion } = useColonyContractVersion();
@@ -21,7 +20,7 @@ const AdvancedPage: FC = () => {
   return (
     <div>
       <h3 className="heading-4 mb-6">
-        {formatMessage({ id: 'advancedPage.colony.title' })}
+        <FormattedMessage id="advancedPage.colony.title" />
       </h3>
       <div className="mb-4">
         <NotificationBanner
@@ -44,10 +43,10 @@ const AdvancedPage: FC = () => {
       />
       <div className="divider my-6" />
       <h3 className="heading-4 mb-6">
-        {formatMessage({ id: 'advancedPage.recovery.title' })}
+        <FormattedMessage id="advancedPage.recovery.title" />
       </h3>
       <p className="text-md text-gray-600 mb-6">
-        {formatMessage({ id: 'advancedPage.recovery.description' })}
+        <FormattedMessage id="advancedPage.recovery.description" />
       </p>
       <div className="mb-6">
         <NotificationBanner

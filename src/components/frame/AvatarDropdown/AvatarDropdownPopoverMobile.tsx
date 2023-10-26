@@ -1,6 +1,12 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import UserTokenActivationDisplay from '~frame/UserTokenActivationButton/UserTokenActivationDisplay';
+import {
+  useAppContext,
+  useUserReputation,
+  useCanInteractWithNetwork,
+} from '~hooks';
 import Button from '~shared/Button';
 import DropdownMenu, {
   DropdownMenuSection,
@@ -8,20 +14,12 @@ import DropdownMenu, {
 } from '~shared/DropdownMenu';
 import MaskedAddress from '~shared/MaskedAddress';
 import MemberReputation from '~shared/MemberReputation';
-import {
-  useAppContext,
-  useUserReputation,
-  useCanInteractWithNetwork,
-} from '~hooks';
-import { SimpleMessageValues } from '~types/index';
-import { UserTokenBalanceData } from '~types';
-import UserTokenActivationDisplay from '~frame/UserTokenActivationButton/UserTokenActivationDisplay';
+import { Colony, SimpleMessageValues, UserTokenBalanceData } from '~types';
 
 import { TokenActivationPopover } from '../TokenActivation';
 import ItemContainer from './ItemContainer';
 
 import styles from './AvatarDropdownPopoverMobile.css';
-import { ColonyFragment } from '~gql';
 
 const displayName = 'frame.AvatarDropdown.AvatarDropdownPopoverMobile';
 
@@ -45,7 +43,7 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  colony?: ColonyFragment;
+  colony?: Colony;
   spinnerMsg: SimpleMessageValues;
   tokenBalanceData?: UserTokenBalanceData;
 }

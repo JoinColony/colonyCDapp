@@ -9,10 +9,8 @@ const VerifiedPage: FC = () => {
   const { verifiedMembers } = useVerifiedPage();
 
   return (
-    <div className="flex justify-between mt-6">
-      <div className="w-full">
-        <Table list={verifiedMembers} onReputationSortClick={() => {}} />
-      </div>
+    <div className="w-full mt-6">
+      <Table list={verifiedMembers} onReputationSortClick={() => {}} />
     </div>
   );
 };

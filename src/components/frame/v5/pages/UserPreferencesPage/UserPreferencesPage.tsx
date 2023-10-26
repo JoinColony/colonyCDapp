@@ -2,19 +2,22 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useCanEditProfile, useMobile } from '~hooks';
-import { useUserPreferencesPage } from './hooks';
-import LeftColumn from '../UserProfilePage/partials/LeftColumn';
 import Input from '~v5/common/Fields/Input';
-import styles from './UserPreferencesPage.module.css';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import Switch from '~v5/common/Fields/Switch';
 import { multiLineTextEllipsis } from '~utils/strings';
+
+import LeftColumn from '../UserProfilePage/partials/LeftColumn';
+import { useUserPreferencesPage } from './hooks';
 import { UserPreferencesPageProps } from './types';
+
+import styles from './UserPreferencesPage.module.css';
 
 const displayName = 'v5.pages.UserPreferencesPage';
 
+// @TODO: There is a lot of repetition in this file, we should try to refactor
 const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
   truncateLimit = 20,
 }) => {
