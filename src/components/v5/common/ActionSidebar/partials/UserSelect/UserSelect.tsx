@@ -90,7 +90,6 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
           onToggle={toggleUserSelect}
           onSelect={(value) => {
             field.onChange(value);
-            // field.onChange(isHexString(value) ? value : undefined);
             toggleUserSelectOff();
           }}
           onSearch={(query) => {
