@@ -102,8 +102,8 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           weight="fill"
           size={16}
           className={clsx(styles.icon, {
-            'text-blue-400': editor.isActive('strike'),
-            'text-gray-900': !editor.isActive('strike'),
+            'text-blue-400': editor.isActive('underline'),
+            'text-gray-900': !editor.isActive('underline'),
           })}
         />
       </button>
