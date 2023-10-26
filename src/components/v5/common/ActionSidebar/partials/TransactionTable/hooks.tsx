@@ -28,7 +28,11 @@ export const useTransactionTableColumns = (
         id: 'amount',
         header: () => formatText({ id: 'table.row.amount' }),
         cell: ({ row }) => (
-          <AmountField key={row.id} name={`${name}.${row.index}.amount`} />
+          <AmountField
+            key={row.id}
+            name={`${name}.${row.index}.amount`}
+            tokenAddressDisabled
+          />
         ),
       }),
     ],

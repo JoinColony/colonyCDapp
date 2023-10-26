@@ -21,7 +21,7 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 
 const displayName = 'v5.common.ActionsContent.partials.AmountField';
 
-const AmountField: FC<AmountFieldProps> = ({ name }) => {
+const AmountField: FC<AmountFieldProps> = ({ name, tokenAddressDisabled }) => {
   const { formatMessage } = useIntl();
   const { watch } = useFormContext();
   const {
@@ -103,6 +103,7 @@ const AmountField: FC<AmountFieldProps> = ({ name }) => {
             <button
               type="button"
               ref={relativeElementRef}
+              disabled={tokenAddressDisabled}
               className={clsx(
                 'flex items-center gap-2 transition-colors md:hover:text-blue-400',
                 {
