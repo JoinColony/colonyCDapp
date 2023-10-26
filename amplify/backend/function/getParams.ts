@@ -8,6 +8,7 @@ interface Resource {
 
 const AWS_SESSION_TOKEN = process.env.AWS_SESSION_TOKEN;
 const ENV = process.env.ENV;
+const AWS_PARAMS_ENDPOINT = 'localhost:2773';
 
 const ParamNames = {
   graphqlUrl: `%2Famplify%2Fcdapp%2F${ENV}%2Faws_appsync_graphql_url`,
@@ -36,7 +37,7 @@ export const getParam = async (paramName: keyof typeof ParamNames) => {
   // Retrieve param from Parameter Store
   try {
     const res = await fetch(
-      `http://localhost:2773/systemsmanager/parameters/get?name=${ParamNames[paramName]}${decrpytParam}`,
+      `http://${AWS_PARAMS_ENDPOINT}/systemsmanager/parameters/get?name=${ParamNames[paramName]}${decrpytParam}`,
       {
         headers: {
           'X-Aws-Parameters-Secrets-Token': AWS_SESSION_TOKEN,
