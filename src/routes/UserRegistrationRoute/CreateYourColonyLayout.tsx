@@ -16,10 +16,8 @@ const CreateYourColonyLayout: FC<PropsWithChildren> = ({ children }) => {
         <div className="hidden">
           <Wallet />
         </div>
-        <main className="mt-5 pb-24">
-          <div className="inner">
-            <div className="mt-9 flex flex-col justify-center">{children}</div>
-          </div>
+        <main className="mt-9 flex flex-col items-center pb-24">
+          {children}
         </main>
       </div>
     </div>

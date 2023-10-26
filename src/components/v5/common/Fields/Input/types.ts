@@ -25,7 +25,6 @@ export type InputProps = {
 export type PillProps = {
   status: PillStatusType;
   message?: string;
-  isShowingLabel?: boolean;
 };
 
 type PillStatusType = 'success' | 'error' | 'warning';
