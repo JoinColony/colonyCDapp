@@ -96,7 +96,7 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
       </button>
       <button
         type="button"
-        onClick={() => editor.chain().focus().toggleStrike().run()}
+        onClick={() => editor.chain().focus().toggleUnderline().run()}
       >
         <TextUnderline
           weight="fill"
