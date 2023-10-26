@@ -89,7 +89,9 @@ function CardSelect<TValue = string>({
     <div className="sm:relative w-full">
       {readonly ? (
         <span className="capitalize text-md text-gray-900">
-          {selectedOption?.label}
+          {renderSelectedValue
+            ? renderSelectedValue(selectedOption, selectPlaceholder)
+            : selectedOption?.label || selectPlaceholder}
         </span>
       ) : (
         <>

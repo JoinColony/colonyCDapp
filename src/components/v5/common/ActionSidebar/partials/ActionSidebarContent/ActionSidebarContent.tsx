@@ -61,9 +61,9 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           />
         )}
         <p className="text-gray-600 font-medium">{descriptionMetadata}</p>
-        {/* @todo: add preview mode to the form */}
+
         <ActionTypeSelect className="mt-7 mb-3" />
-        {/* @todo: add motion action type to each action */}
+
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
         {notificationBanner && (
           <div className="mt-7">
@@ -93,16 +93,17 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
   transactionId,
   formRef,
   defaultValues,
+  isMotion,
 }) => {
   const { getFormOptions, actionFormProps } = useActionFormProps(
     defaultValues,
-    !!transactionId,
+    isMotion,
   );
 
   return (
     <div
       className={clsx('flex w-full flex-grow overflow-hidden', {
-        'flex-col-reverse md:flex-row': transactionId,
+        'flex-col-reverse md:flex-row': isMotion,
       })}
     >
       <div className="flex-grow px-6 py-8">
@@ -113,11 +114,11 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
         >
           <ActionSidebarFormContent
             getFormOptions={getFormOptions}
-            isMotion={!!transactionId}
+            isMotion={isMotion}
           />
         </ActionForm>
       </div>
-      {transactionId && (
+      {isMotion && (
         <div
           className={`
                   w-full
@@ -134,7 +135,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
                   bg-gray-25
                 `}
         >
-          <Motions transactionId={transactionId} />
+          <Motions transactionId={transactionId || ''} />
         </div>
       )}
     </div>

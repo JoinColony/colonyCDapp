@@ -579,9 +579,7 @@ export const useActionDescriptionMetadata = () => {
   }, [JSON.stringify(formValues), selectedAction, apolloClient, colony]);
 };
 
-export const useGetActionDefaultValues = (
-  transactionId: string | undefined,
-) => {
+export const useGetActionData = (transactionId: string | undefined) => {
   const { action, loadingAction } = useGetColonyAction(transactionId);
 
   const defaultValues = useMemo(() => {
@@ -732,5 +730,6 @@ export const useGetActionDefaultValues = (
   return {
     defaultValues,
     loadingAction,
+    isMotion: action?.isMotion,
   };
 };

@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { useCloseSidebarClick, useGetActionDefaultValues } from './hooks';
+import { useCloseSidebarClick, useGetActionData } from './hooks';
 import useToggle from '~hooks/useToggle';
 import Modal from '~v5/shared/Modal';
 import { ActionSidebarProps } from './types';
@@ -19,7 +19,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   children,
   transactionId,
 }) => {
-  const { defaultValues, loadingAction } = useGetActionDefaultValues(
+  const { defaultValues, loadingAction, isMotion } = useGetActionData(
     transactionId || undefined,
   );
 
@@ -56,8 +56,8 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           flex-col
         `,
         {
-          'sm:max-w-[43.375rem]': !isSidebarFullscreen && !transactionId,
-          'sm:max-w-[67.3125rem]': !isSidebarFullscreen && transactionId,
+          'sm:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
+          'sm:max-w-[67.3125rem]': !isSidebarFullscreen && isMotion,
         },
       )}
       ref={registerContainerRef}
@@ -101,6 +101,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           transactionId={transactionId}
           formRef={formRef}
           defaultValues={defaultValues}
+          isMotion={isMotion || false}
         />
       )}
 
