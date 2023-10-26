@@ -5,6 +5,7 @@ import { useController } from 'react-hook-form';
 import RichText from '~v5/shared/RichText';
 import { accordionAnimation } from '~constants/accordionAnimation';
 import { DescriptionFieldProps } from './types';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 
 const DescriptionField: FC<DescriptionFieldProps> = ({
   isDecriptionFieldExpanded,
@@ -16,6 +17,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
     fieldState: { error },
   } = useController({ name: fieldName });
   const isError = !!error;
+  const { readonly } = useAdditionalFormOptionsContext();
 
   return (
     <div className="sm:relative w-full">
@@ -31,6 +33,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
         >
           <RichText
             name={fieldName}
+            isReadonly={readonly}
             isDecriptionFieldExpanded={isDecriptionFieldExpanded}
             toggleOffDecriptionSelect={toggleOffDecriptionSelect}
             toggleOnDecriptionSelect={toggleOnDecriptionSelect}
@@ -51,6 +54,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
             >
               <RichText
                 name={fieldName}
+                isReadonly={readonly}
                 isDecriptionFieldExpanded={isDecriptionFieldExpanded}
                 toggleOffDecriptionSelect={toggleOffDecriptionSelect}
                 toggleOnDecriptionSelect={toggleOnDecriptionSelect}

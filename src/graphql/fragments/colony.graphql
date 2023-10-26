@@ -110,6 +110,10 @@ fragment ColonyMetadata on ColonyMetadata {
   thumbnail
   isWhitelistActivated
   whitelistedAddresses
+  modifiedTokenAddresses {
+    added
+    removed
+  }
   changelog {
     transactionHash
     newDisplayName

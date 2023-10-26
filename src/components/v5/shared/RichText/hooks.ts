@@ -15,6 +15,7 @@ import { MAX_ANNOTATION_NUM } from './consts';
 export const useRichText = (
   name: string,
   isDecriptionFieldExpanded: boolean,
+  isReadonly?: boolean,
 ) => {
   const [notFormattedContent, setNotFormattedContent] = useState<string>('');
   const { field } = useController({
@@ -23,6 +24,7 @@ export const useRichText = (
 
   const editorContent = useEditor(
     {
+      editable: !isReadonly,
       extensions: [
         Document,
         Text,

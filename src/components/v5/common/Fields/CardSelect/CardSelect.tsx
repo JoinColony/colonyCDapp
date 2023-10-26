@@ -7,6 +7,7 @@ import { CardSelectOptionsGroup, CardSelectProps } from './types';
 import { FIELD_STATE } from '../consts';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 import Portal from '~v5/shared/Portal';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { formatText } from '~utils/intl';
 import { isFlatOptions } from './utils';
 import { OPTION_LIST_ITEM_CLASSES } from './consts';
@@ -29,6 +30,8 @@ function CardSelect<TValue = string>({
   cardClassName,
   footer,
 }: CardSelectProps<TValue>): JSX.Element {
+  const { readonly } = useAdditionalFormOptionsContext();
+
   const cardSelectToggle = useToggle();
   const [
     isSelectVisible,
@@ -84,78 +87,88 @@ function CardSelect<TValue = string>({
 
   return (
     <div className="sm:relative w-full">
-      <button
-        ref={relativeElementRef}
-        type="button"
-        className={clsx(
-          'flex text-md md:transition-colors md:hover:text-blue-400',
-          {
-            'text-gray-500': !state,
-            'text-gray-900': value,
-            'text-negative-400': state === FIELD_STATE.Error,
-          },
-        )}
-        onClick={toggleSelect}
-      >
-        {renderSelectedValue
-          ? renderSelectedValue(selectedOption, selectPlaceholder)
-          : selectedOption?.label || selectPlaceholder}
-      </button>
-      {isSelectVisible && (
-        <Portal>
-          <Card
-            ref={(ref) => {
-              registerContainerRef(ref);
-              portalElementRef.current = ref;
-            }}
-            className={clsx(cardClassName, 'p-6 absolute z-[60]')}
-            hasShadow
-            rounded="s"
+      {readonly ? (
+        <span className="capitalize text-md text-gray-900">
+          {renderSelectedValue
+            ? renderSelectedValue(selectedOption, selectPlaceholder)
+            : selectedOption?.label || selectPlaceholder}
+        </span>
+      ) : (
+        <>
+          <button
+            ref={relativeElementRef}
+            type="button"
+            className={clsx(
+              'flex text-md md:transition-colors md:hover:text-blue-400',
+              {
+                'text-gray-500': !state,
+                'text-gray-900': value,
+                'text-negative-400': state === FIELD_STATE.Error,
+              },
+            )}
+            onClick={toggleSelect}
           >
-            <ul>
-              {goupedOptions.map((group) => (
-                <li key={group.key} className={OPTION_LIST_ITEM_CLASSES}>
-                  {group.title && (
-                    <h5 className="text-4 text-gray-400 mb-2 uppercase">
-                      {group.title}
-                    </h5>
-                  )}
-                  {!!group.options.length && (
-                    <ul>
-                      {group.options.map(
-                        ({ label, value: optionValue, ariaLabel }) => (
-                          <li
-                            key={keyExtractor(optionValue)}
-                            className="mb-2 last:mb-0"
-                          >
-                            <button
-                              type="button"
-                              className="flex text-md md:transition-colors md:hover:text-blue-400"
-                              aria-label={ariaLabel}
-                              onClick={() => {
-                                onChange(optionValue);
-                                toggleSelectOff();
-                              }}
-                            >
-                              {label}
-                            </button>
-                          </li>
-                        ),
+            {renderSelectedValue
+              ? renderSelectedValue(selectedOption, selectPlaceholder)
+              : selectedOption?.label || selectPlaceholder}
+          </button>
+          {isSelectVisible && (
+            <Portal>
+              <Card
+                ref={(ref) => {
+                  registerContainerRef(ref);
+                  portalElementRef.current = ref;
+                }}
+                className={clsx(cardClassName, 'p-6 absolute z-[60]')}
+                hasShadow
+                rounded="s"
+              >
+                <ul>
+                  {goupedOptions.map((group) => (
+                    <li key={group.key} className={OPTION_LIST_ITEM_CLASSES}>
+                      {group.title && (
+                        <h5 className="text-4 text-gray-400 mb-2 uppercase">
+                          {group.title}
+                        </h5>
                       )}
-                    </ul>
+                      {!!group.options.length && (
+                        <ul>
+                          {group.options.map(
+                            ({ label, value: optionValue, ariaLabel }) => (
+                              <li
+                                key={keyExtractor(optionValue)}
+                                className="mb-2 last:mb-0"
+                              >
+                                <button
+                                  type="button"
+                                  className="flex text-md md:transition-colors md:hover:text-blue-400"
+                                  aria-label={ariaLabel}
+                                  onClick={() => {
+                                    onChange(optionValue);
+                                    toggleSelectOff();
+                                  }}
+                                >
+                                  {label}
+                                </button>
+                              </li>
+                            ),
+                          )}
+                        </ul>
+                      )}
+                    </li>
+                  ))}
+                  {footer && (
+                    <li className={OPTION_LIST_ITEM_CLASSES}>
+                      {typeof footer === 'function'
+                        ? footer(cardSelectToggle)
+                        : footer}
+                    </li>
                   )}
-                </li>
-              ))}
-              {footer && (
-                <li className={OPTION_LIST_ITEM_CLASSES}>
-                  {typeof footer === 'function'
-                    ? footer(cardSelectToggle)
-                    : footer}
-                </li>
-              )}
-            </ul>
-          </Card>
-        </Portal>
+                </ul>
+              </Card>
+            </Portal>
+          )}
+        </>
       )}
     </div>
   );
