@@ -8527,6 +8527,13 @@ export type DeleteWatchedColoniesMutationVariables = Exact<{
 
 export type DeleteWatchedColoniesMutation = { __typename?: 'Mutation', deleteWatchedColonies?: { __typename?: 'WatchedColonies', id: string } | null };
 
+export type ValidateUserInviteMutationVariables = Exact<{
+  input: ValidateUserInviteInput;
+}>;
+
+
+export type ValidateUserInviteMutation = { __typename?: 'Mutation', validateUserInvite?: boolean | null };
+
 export type UpdateContributorsWithReputationMutationVariables = Exact<{
   colonyAddress?: InputMaybe<Scalars['String']>;
 }>;
@@ -10129,6 +10136,37 @@ export function useDeleteWatchedColoniesMutation(baseOptions?: Apollo.MutationHo
 export type DeleteWatchedColoniesMutationHookResult = ReturnType<typeof useDeleteWatchedColoniesMutation>;
 export type DeleteWatchedColoniesMutationResult = Apollo.MutationResult<DeleteWatchedColoniesMutation>;
 export type DeleteWatchedColoniesMutationOptions = Apollo.BaseMutationOptions<DeleteWatchedColoniesMutation, DeleteWatchedColoniesMutationVariables>;
+export const ValidateUserInviteDocument = gql`
+    mutation ValidateUserInvite($input: ValidateUserInviteInput!) {
+  validateUserInvite(input: $input)
+}
+    `;
+export type ValidateUserInviteMutationFn = Apollo.MutationFunction<ValidateUserInviteMutation, ValidateUserInviteMutationVariables>;
+
+/**
+ * __useValidateUserInviteMutation__
+ *
+ * To run a mutation, you first call `useValidateUserInviteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useValidateUserInviteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [validateUserInviteMutation, { data, loading, error }] = useValidateUserInviteMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useValidateUserInviteMutation(baseOptions?: Apollo.MutationHookOptions<ValidateUserInviteMutation, ValidateUserInviteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ValidateUserInviteMutation, ValidateUserInviteMutationVariables>(ValidateUserInviteDocument, options);
+      }
+export type ValidateUserInviteMutationHookResult = ReturnType<typeof useValidateUserInviteMutation>;
+export type ValidateUserInviteMutationResult = Apollo.MutationResult<ValidateUserInviteMutation>;
+export type ValidateUserInviteMutationOptions = Apollo.BaseMutationOptions<ValidateUserInviteMutation, ValidateUserInviteMutationVariables>;
 export const UpdateContributorsWithReputationDocument = gql`
     mutation UpdateContributorsWithReputation($colonyAddress: String) {
   updateContributorsWithReputation(input: {colonyAddress: $colonyAddress})
