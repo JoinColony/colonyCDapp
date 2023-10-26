@@ -5,7 +5,6 @@ import { IconButtonProps } from './types';
 import Icon from '~shared/Icon';
 import IconButton from './IconButton';
 import { useMobile } from '~hooks';
-import { useUserTransactionContext } from '~context/UserTransactionContext';
 
 const displayName = 'v5.Button.PendingButton';
 
@@ -14,11 +13,9 @@ const PendingButton: FC<PropsWithChildren<Omit<IconButtonProps, 'icon'>>> = ({
   rounded,
 }) => {
   const isMobile = useMobile();
-  const { setIsUserHubOpen } = useUserTransactionContext();
   return (
     <IconButton
       className={className}
-      onClick={() => setIsUserHubOpen(true)}
       title={{ id: 'button.pending' }}
       text={{ id: 'button.pending' }}
       ariaLabel={{ id: 'button.pending' }}

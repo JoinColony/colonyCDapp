@@ -5,13 +5,7 @@ import { IntlProvider } from 'react-intl';
 import { ApolloProvider } from '@apollo/client';
 
 import { DialogProvider } from '~shared/Dialog';
-import {
-  AppContextProvider,
-  getContext,
-  ContextModule,
-  ColonyContextProvider,
-} from '~context';
-import { TokenActivationProvider } from '~shared/TokenActivationProvider';
+import { getContext, ContextModule, PageThemeContextProvider } from '~context';
 
 import messages from './i18n/en.json';
 import actionMessages from './i18n/en-actions';
@@ -47,19 +41,15 @@ const Entry = ({ store }: Props) => {
     >
       <ApolloProvider client={apolloClient}>
         <ReduxProvider store={store}>
-          <AppContextProvider>
+          <PageThemeContextProvider>
             <Router>
-              <ColonyContextProvider>
-                <DialogProvider>
-                  <TokenActivationProvider>
-                    <div className="h-full w-full bg-base-white min-h-screen flex flex-col">
-                      <Routes />
-                    </div>
-                  </TokenActivationProvider>
-                </DialogProvider>
-              </ColonyContextProvider>
+              <DialogProvider>
+                <div className="h-full w-full bg-base-white min-h-screen flex flex-col">
+                  <Routes />
+                </div>
+              </DialogProvider>
             </Router>
-          </AppContextProvider>
+          </PageThemeContextProvider>
         </ReduxProvider>
       </ApolloProvider>
     </IntlProvider>
