@@ -53,7 +53,7 @@ const AmountField: FC<AmountFieldProps> = ({ name, tokenAddress }) => {
     onInput,
     formattingOptions,
     selectedToken,
-  } = useAmountField(tokenAddressController.value);
+  } = useAmountField(tokenAddressController.value || tokenAddress);
 
   const handleCleaveChange = (e: CleaveChangeEvent) => {
     field.onChange(e.target.rawValue);
