@@ -22,7 +22,7 @@ import {
 } from './types';
 
 import { notificationBuilder } from './message';
-import { sendEmail } from './email';
+import { sendEmail } from './sendEmailNotifications';
 
 let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
