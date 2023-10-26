@@ -17,6 +17,7 @@ import {
   useUserTransactionContext,
 } from '~context/UserTransactionContext';
 import CompletedButton from '~v5/shared/Button/CompletedButton';
+import { TX_SEARCH_PARAM } from '~routes';
 
 const displayName = 'frame.Extensions.Header';
 
@@ -47,7 +48,7 @@ const Header: FC = () => {
     ],
   } = useActionSidebarContext();
   const [searchParams] = useSearchParams();
-  const transactionId = searchParams?.get('tx');
+  const transactionId = searchParams?.get(TX_SEARCH_PARAM);
 
   useEffect(() => {
     if (transactionId) {

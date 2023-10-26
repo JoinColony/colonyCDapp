@@ -38,3 +38,5 @@ export const DECISIONS_PREVIEW_ROUTE_SUFFIX = '/preview';
 export const ACTIONS_PAGE_ROUTE = 'colony/:colonyName/tx/:transactionHash';
 // export const UNWRAP_TOKEN_ROUTE = `${COLONY_HOME_ROUTE}/unwrap-tokens`;
 // export const CLAIM_TOKEN_ROUTE = `${COLONY_HOME_ROUTE}/claim-tokens`;
+
+export const TX_SEARCH_PARAM = 'tx';
