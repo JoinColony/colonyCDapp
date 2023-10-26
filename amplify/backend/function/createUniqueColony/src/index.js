@@ -214,11 +214,12 @@ exports.handler = async (event) => {
         chainMetadata,
         version,
         status,
-        colonyMemberInvites: [{
+        colonyMemberInvite: {
           code: crypto.randomUUID(),
-          used: 0,
+          invitesRemaining: 100,
           valid: true,
-        }],
+        },
+        whitelist: [],
       },
     },
     graphqlURL,

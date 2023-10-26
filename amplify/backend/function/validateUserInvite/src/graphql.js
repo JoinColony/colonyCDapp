@@ -1,9 +1,28 @@
 module.exports = {
-  createPrivateBetaInviteCode: /* GraphQL */ `
-    mutation CreatePrivateBetaInviteCode($shareableInvites: Int!) {
-      createPrivateBetaInviteCode(
-        input: { shareableInvites: $shareableInvites }
-      ) {
+  getColonyMemberInvite: /* GraphQL */ `
+    query GetColonyMemberInvite($id: ID!) {
+      getColonyByAddress(id: $id) {
+        items {
+          colonyMemberInvite {
+            code
+            invitesRemaining
+            valid
+          }
+          whitelist
+        }
+      }
+    }
+  `,
+  updateColony: /* GraphQL */ `
+    mutation UpdateColony($input: UpdateColonyInput!) {
+      updateColony(input: $input) {
+        id
+      }
+    }
+  `,
+  createColonyContributor: /* GraphQL */ `
+    mutation CreateColonyContributor($input: CreateColonyContributorInput!) {
+      createColonyContributor(input: $input) {
         id
       }
     }

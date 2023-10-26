@@ -963,6 +963,15 @@ type Mutation {
   updateContributorsWithReputation(
     input: UpdateContributorsWithReputationInput!
   ): Boolean @function(name: "updateContributorsWithReputation-${env}")
+
+  """
+  Dual purpose lambda
+  1) When passed a colony address and invite code validates the code
+  2) When passed a colony address, invite code and user address adds the user to the colony whitelist
+  and adds the user as a colony contributor
+  """
+  validateUserInvite(input: ValidateUserInviteInput!): Boolean
+    @function(name: "validateUserInvite-${env}")
 }
 
 """
@@ -1423,7 +1432,27 @@ type Colony @model {
   """
   private: Boolean @default(value: "true")
 
-  colonyMemberInvites: [ColonyMemberInvite!]
+  colonyMemberInvite: ColonyMemberInvite
+
+  """
+  An array of all whitelisted wallet addresses
+  """
+  whitelist: [ID!]!
+}
+
+input ValidateUserInviteInput {
+  """
+  The colony address
+  """
+  colonyAddress: ID!
+  """
+  The invite code
+  """
+  inviteCode: ID!
+  """
+  The user's wallet address
+  """
+  userAddress: ID
 }
 
 type ColonyMemberInvite {
@@ -1432,9 +1461,9 @@ type ColonyMemberInvite {
   """
   code: ID!
   """
-  Count of how many times this invite has been used
+  Decrementing count of how many times this invite has been used
   """
-  used: Int!
+  invitesRemaining: Int!
   """
   Whether the invite is still valid or not
   """
