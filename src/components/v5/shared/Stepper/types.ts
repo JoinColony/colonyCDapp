@@ -9,7 +9,6 @@ export interface StepperItem<TKey> {
   isOptional?: boolean;
   isSkipped?: boolean;
   isHidden?: boolean;
-  iconName?: string;
 }
 
 export interface StepperProps<TKey> {

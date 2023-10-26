@@ -167,6 +167,11 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                 />
               ),
               heading: {
+                iconName:
+                  (winningSide === MotionVote.Yay && 'thumbs-up') ||
+                  (hasMotionPassed && 'thumbs-up') ||
+                  (hasMotionFaild && 'thumbs-down') ||
+                  '',
                 label:
                   (hasMotionPassed &&
                     !votesHaveBeenRevealed &&
@@ -195,11 +200,6 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               isOptional: true,
               // @todo: add a condition to hide when voting step is skipped
               isHidden: false,
-              iconName:
-                (winningSide === MotionVote.Yay && 'thumbs-up') ||
-                (hasMotionPassed && 'thumbs-up') ||
-                (hasMotionFaild && 'thumbs-down') ||
-                '',
             },
             {
               key: NetworkMotionState.Finalized,
