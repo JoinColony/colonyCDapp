@@ -30,7 +30,7 @@ const OutcomeStep: FC<OutcomeStepProps> = ({ motionData, motionState }) => {
               </h3>
               <VoteStatuses
                 items={voteStatuses}
-                voterRecord={motionData?.voterRecord || []}
+                voters={motionData?.voterRecord || []}
               />
             </div>
           ),

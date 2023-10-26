@@ -1,16 +1,9 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { User } from '~types';
 import { VoterRecord } from '~gql';
-import {
-  calculateLastSliceIndex,
-  calculateRemainingItems,
-} from '~utils/avatars';
-import { useAppContext } from '~hooks';
+import { useUserAvatars } from '~hooks/useUserAvatars';
 import UserAvatar from '~shared/UserAvatar';
-
-import { useGetUsers } from './helpers';
-
 import styles from './VoterAvatars.css';
 
 interface VoterAvatarsProps {
@@ -22,30 +15,15 @@ const displayName =
   'common.ColonyActions.DefaultMotion.FinalizeMotion.VoteResults.VoterAvatars';
 
 const VoterAvatars = ({ voters, maxAvatars }: VoterAvatarsProps) => {
-  const remainingAvatarsCount = calculateRemainingItems(maxAvatars, voters);
-  const { user } = useAppContext();
-  const voterAddresses = useMemo(
-    // We need a stable reference to this array to avoid an infinite loop in `useGetUsers`
-    () =>
-      voters
-        .reduce<string[]>((acc, { address }) => {
-          if (address === user?.walletAddress) {
-            acc.unshift(address);
-          } else {
-            acc.push(address);
-          }
-          return acc;
-        }, [])
-        .slice(0, calculateLastSliceIndex(maxAvatars, voters)),
-    [maxAvatars, voters, user],
+  const { registeredUsers, remainingAvatarsCount } = useUserAvatars(
+    maxAvatars,
+    voters,
   );
-
-  const registeredVoters = useGetUsers(voterAddresses);
 
   return (
     <div className={styles.main}>
       <ul className={styles.voterAvatars}>
-        {registeredVoters.map((registeredVoter: User) => {
+        {registeredUsers.map((registeredVoter: User) => {
           return (
             <li
               className={styles.voterAvatar}

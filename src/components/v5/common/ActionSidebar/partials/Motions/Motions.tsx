@@ -3,7 +3,7 @@ import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
-import { getMotionState, MotionState } from '~utils/colonyMotions';
+import { getMotionState, MotionState, MotionVote } from '~utils/colonyMotions';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
 import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction';
@@ -31,7 +31,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     refetchAction,
   } = useGetColonyAction(transactionId);
   const { motionData } = action || {};
-  const { motionId = '', motionStakes } = motionData || {};
+  const { motionId = '', motionStakes, requiredStake = '' } = motionData || {};
 
   const networkMotionStateEnum = getEnumValueFromKey(
     NetworkMotionState,
@@ -47,20 +47,17 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
 
   const motionStateEnum: MotionState | undefined = useMemo(() => {
     if (!motionData) return undefined;
-    // const remainingStakes = motionData?.remainingStakes;
     const motionStakesPercentage = motionData?.motionStakes.percentage;
-    const revealedVotesPercentage = motionData?.revealedVotes.percentage;
+    const revealedVotesPercentage = motionData?.revealedVotes.percentage || '';
 
     if (
       activeStepKey === NetworkMotionState.Finalizable &&
-      BigNumber.from(motionStakesPercentage?.nay) &&
-      BigNumber.from(motionStakesPercentage?.yay)
-      // BigNumber.from(motionStakesPercentage).gte(requiredStakes) &&
-      // BigNumber.from(motionStakesPercentage).gte(requiredStakes)
+      BigNumber.from(motionStakesPercentage).gte(requiredStake) &&
+      BigNumber.from(motionStakesPercentage).gte(requiredStake)
     ) {
       if (
         BigNumber.from(revealedVotesPercentage?.yay).gt(
-          revealedVotesPercentage?.nay || '',
+          revealedVotesPercentage?.nay,
         )
       ) {
         return MotionState.Passed;
@@ -74,7 +71,17 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
       : MotionState.Staking;
   }, [motionData]);
 
+  const revealedVotes = motionData?.revealedVotes?.raw;
+  const winningSide: MotionVote = BigNumber.from(revealedVotes?.yay).gt(
+    revealedVotes?.nay || '',
+  )
+    ? MotionVote.Yay
+    : MotionVote.Nay;
+
+  const votesHaveBeenRevealed: boolean =
+    revealedVotes?.yay !== '0' || revealedVotes?.nay !== '0';
   const hasMotionPassed = motionStateEnum === MotionState.Passed;
+  const hasMotionFaild = motionStateEnum === MotionState.Failed;
 
   // @todo: add missing steps
   const items = useMemo(
@@ -160,26 +167,39 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                 />
               ),
               heading: {
-                stage: hasMotionPassed ? 'passed' : 'failed',
                 label:
                   (hasMotionPassed &&
+                    !votesHaveBeenRevealed &&
                     formatText({ id: 'motion.passed.label' })) ||
-                  (motionStateEnum === MotionState.Failed &&
+                  (hasMotionFaild &&
+                    !votesHaveBeenRevealed &&
                     formatText({ id: 'motion.failed.label' })) ||
+                  (winningSide === MotionVote.Yay &&
+                    votesHaveBeenRevealed &&
+                    formatText({ id: 'motion.support.wins.label' })) ||
+                  (winningSide === MotionVote.Nay &&
+                    votesHaveBeenRevealed &&
+                    formatText({ id: 'motion.oppose.wins.label' })) ||
                   formatText({ id: 'motion.outcome.label' }) ||
                   '',
                 className: clsx({
                   '!bg-base-white !text-purple-400 border-purple-400':
-                    hasMotionPassed,
+                    hasMotionPassed ||
+                    (winningSide === MotionVote.Yay && votesHaveBeenRevealed),
                   '!bg-base-white !text-red-400 border-red-400':
-                    !hasMotionPassed,
+                    (hasMotionFaild && !votesHaveBeenRevealed) ||
+                    winningSide === MotionVote.Nay,
                 }),
               },
               // @todo: add a condition to be required if staking won't go directly to finalize step
               isOptional: true,
               // @todo: add a condition to hide when voting step is skipped
               isHidden: false,
-              iconName: hasMotionPassed ? 'thumbs-up' : 'thumbs-down',
+              iconName:
+                (winningSide === MotionVote.Yay && 'thumbs-up') ||
+                (hasMotionPassed && 'thumbs-up') ||
+                (hasMotionFaild && 'thumbs-down') ||
+                '',
             },
             {
               key: NetworkMotionState.Finalized,

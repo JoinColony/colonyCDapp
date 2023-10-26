@@ -1,4 +1,4 @@
-import { VoterRecordFragment } from '~gql';
+import { VoterRecord } from '~gql';
 import { MotionVote } from '~utils/colonyMotions';
 
 export interface VoteStatuses {
@@ -11,5 +11,5 @@ export interface VoteStatuses {
 
 export interface VoteStatusesProps {
   items: VoteStatuses[];
-  voterRecord: VoterRecordFragment[];
+  voters: VoterRecord[];
 }

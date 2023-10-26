@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { VoterRecord } from '~gql';
-import MembersAvatars from '~v5/shared/MembersAvatars';
+import UserAvatars from '~v5/shared/UserAvatars';
 
 const items: VoterRecord[] = [
   {
@@ -15,15 +15,11 @@ const items: VoterRecord[] = [
     address: '0x7fDab0917F1E0A283afce9d9044F57dd15A9A9F5',
     voteCount: '1',
   },
-  {
-    address: '0x7fDab0917F1E0A283afce9d9044F57dd15A9A9F5',
-    voteCount: '1',
-  },
 ];
 
-const meta: Meta<typeof MembersAvatars> = {
-  title: 'Shared/Members avatars',
-  component: MembersAvatars,
+const meta: Meta<typeof UserAvatars> = {
+  title: 'Shared/User avatars',
+  component: UserAvatars,
   args: {
     maxAvatarsToShow: 4,
     items,
@@ -31,7 +27,7 @@ const meta: Meta<typeof MembersAvatars> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof MembersAvatars>;
+type Story = StoryObj<typeof UserAvatars>;
 
 export const Base: Story = {};
 
