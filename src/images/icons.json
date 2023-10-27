@@ -221,7 +221,12 @@
     "thumbs-up",
     "thumbs-down",
     "pie-chart",
-    "clock"
+    "clock",
+    "arrow-line-right",
+    "layout",
+    "handshake",
+    "gear-six",
+    "colony-placeholder"
   ],
   "multiColorIcons": [
     "circle-check-primary",

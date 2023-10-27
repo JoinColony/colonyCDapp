@@ -26,7 +26,7 @@ const Link: FC<LinkProps> = ({
       href={to}
       rel="nofollow noopener noreferrer"
       target="_blank"
-      className={`${className} transition-all duration-normal hover:text-blue-400`}
+      className={`${className} transition-all duration-normal md:hover:text-blue-400`}
       onClick={onClick}
     >
       {linkText || children}
@@ -35,7 +35,7 @@ const Link: FC<LinkProps> = ({
     <LinkComponent
       {...linkProps}
       to={to}
-      className={`${className} transition-all duration-normal hover:text-blue-400`}
+      className={`${className} transition-all duration-normal md:hover:text-blue-400`}
     >
       {linkText || children}
     </LinkComponent>
