@@ -14,12 +14,7 @@ const TableWithActionsHeader = <T,>({
   ...rest
 }: PropsWithChildren<TableWithActionsHeaderProps<T>>) => (
   <>
-    <div
-      className={clsx(
-        headerClassName,
-        'py-5 px-4 border border-b-0 border-gray-200 rounded-t-lg',
-      )}
-    >
+    <div className={clsx(headerClassName, 'py-3.5')}>
       <div className="flex sm:justify-between sm:items-center sm:flex-row flex-col">
         <div className="flex items-center">
           <h4 className="heading-5 mr-3">{title}</h4>

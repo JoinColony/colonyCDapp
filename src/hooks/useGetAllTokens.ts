@@ -13,7 +13,7 @@ export const useGetAllTokens = () => {
   );
 
   return useMemo(
-    () => [...predefinedTokens, ...colonyTokens],
+    () => [...colonyTokens, ...predefinedTokens],
     [colonyTokens, predefinedTokens],
   );
 };

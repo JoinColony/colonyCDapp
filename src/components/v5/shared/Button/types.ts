@@ -1,6 +1,8 @@
 import React, { ButtonHTMLAttributes } from 'react';
 import { MessageDescriptor } from 'react-intl';
+import { ActionTypes } from '~redux';
 import { SimpleMessageValues } from '~types';
+import { ActionTransformFnType } from '~utils/actions';
 import { LinkProps } from '../Link/types';
 
 export type ButtonMode =
@@ -80,6 +82,19 @@ export interface HamburgerProps extends CommonButtonProps {
 export interface CloseButtonProps extends CommonButtonProps {
   iconSize?: IconSize;
   className?: string;
+}
+
+export interface ActionButtonProps extends ButtonProps {
+  actionType: ActionTypes;
+  isLoading?: boolean;
+  error?: string;
+  onSuccess?: (result: any) => void;
+  onError?: (error: any) => void;
+  submit?: string;
+  success?: string;
+  text?: MessageDescriptor | string;
+  transform?: ActionTransformFnType;
+  values?: any;
 }
 
 export type ButtonLinkProps = Omit<

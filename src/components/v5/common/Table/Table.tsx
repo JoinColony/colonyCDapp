@@ -36,23 +36,13 @@ const Table = <T,>({
   )[0];
 
   return (
-    <>
-      <table
-        className={clsx(
-          className,
-          `
-            border
-            border-separate
-            border-spacing-0
-            border-1
-            w-full
-            rounded-lg
-            border-gray-200
-            overflow-hidden
-            table-fixed
-          `,
-        )}
-      >
+    <div
+      className={clsx(
+        className,
+        'border border-gray-200 rounded-lg overflow-hidden',
+      )}
+    >
+      <table className="border-separate border-spacing-0 overflow-hidden table-fixed w-full">
         {isMobile && verticalOnMobile ? (
           rows.map((row) => {
             const cells = row.getVisibleCells();
@@ -111,7 +101,7 @@ const Table = <T,>({
                     <th
                       key={header.id}
                       className={clsx(
-                        'text-left text-sm text-gray-600 bg-gray-50 font-normal px-[1.1rem] py-[0.7rem]',
+                        'text-left text-sm text-gray-600 bg-gray-50 font-normal px-[1.1rem] empty:p-0 py-[0.7rem]',
                         {
                           'cursor-pointer': header.column.getCanSort(),
                         },
@@ -119,8 +109,8 @@ const Table = <T,>({
                       onClick={header.column.getToggleSortingHandler()}
                       style={{
                         width:
-                          header.column.getSize() !== 0
-                            ? header.column.getSize()
+                          header.getSize() !== 150
+                            ? header.getSize()
                             : undefined,
                       }}
                     >
@@ -133,8 +123,9 @@ const Table = <T,>({
                       {header.column.getCanSort() && (
                         <Icon
                           name="arrow-down"
+                          appearance={{ size: 'extraTiny' }}
                           className={clsx(
-                            'inline-block ml-1 w-3 h-3 transition-transform',
+                            'ml-1.5 mb-0.5 transition-transform align-middle',
                             {
                               'rotate-180':
                                 header.column.getIsSorted() === 'asc',
@@ -189,8 +180,8 @@ const Table = <T,>({
         )}
       </table>
       {hasPagination && (
-        <div className="flex items-center justify-between mt-4 w-full">
-          <p className="text-3 text-gray-700">
+        <div className="flex items-center justify-end sm:justify-between pt-2 pb-6 w-full px-[1.125rem]">
+          <p className="text-3 text-gray-700 w-full sm:w-auto sm:text-left text-center">
             {formatText(
               { id: 'table.pageNumber' },
               {
@@ -203,20 +194,25 @@ const Table = <T,>({
             {table.getCanPreviousPage() && (
               <Button
                 onClick={() => table.previousPage()}
+                size="small"
                 mode="primaryOutline"
               >
                 {formatText({ id: 'table.previous' })}
               </Button>
             )}
             {table.getCanNextPage() && (
-              <Button onClick={() => table.nextPage()} mode="primaryOutline">
+              <Button
+                onClick={() => table.nextPage()}
+                size="small"
+                mode="primaryOutline"
+              >
                 {formatText({ id: 'table.next' })}
               </Button>
             )}
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

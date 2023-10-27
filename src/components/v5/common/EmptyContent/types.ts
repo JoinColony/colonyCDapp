@@ -8,4 +8,5 @@ export interface EmptyContentProps {
   onClick?: () => void;
   buttonText?: MessageDescriptor | string;
   withoutButtonIcon?: boolean;
+  className?: string;
 }

@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
-import styles from './FilterButton.module.css';
 import Icon from '~shared/Icon';
 import { FilterButtonProps } from './types';
 
@@ -20,9 +19,12 @@ const FilterButton: FC<FilterButtonProps> = ({
     <button
       type="button"
       aria-label={formatMessage({ id: 'ariaLabel.filter' })}
-      className={clsx(`text-3 ${styles.filterButton}`, {
-        'border border-gray-900 text-gray-900': isOpen,
-      })}
+      className={clsx(
+        'text-3 flex items-center gap-2 px-3 py-2 rounded-lg border sm:hover:border-gray-900 sm:hover:text-gray-900 transition-all duration-normal',
+        {
+          'border border-gray-900 text-gray-900': isOpen,
+        },
+      )}
       ref={setTriggerRef}
       onClick={onClick}
     >

@@ -82,7 +82,7 @@ export const useVerifiedTableColumns = (): ColumnDef<
       }),
       columnHelper.display({
         id: 'remove',
-        size: 20,
+        size: 60,
         cell: () => (
           <div className="flex">
             <button
