@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useWatch } from 'react-hook-form';
 import { useSimplePayment } from './hooks';
 import { ActionFormBaseProps } from '../../../types';
 import ActionFormRow from '~v5/common/ActionFormRow';
@@ -17,9 +16,8 @@ const displayName = 'v5.common.ActionSidebar.partials.SimplePaymentForm';
 
 const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const intl = useIntl();
-  const tokenAddress = useWatch({ name: 'amount.tokenAddress' });
 
-  useSimplePayment(getFormOptions);
+  const { tokenAddress } = useSimplePayment(getFormOptions);
 
   return (
     <>
