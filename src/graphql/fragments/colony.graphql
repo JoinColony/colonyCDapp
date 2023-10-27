@@ -49,6 +49,7 @@ fragment Colony on Colony {
   }
   reputation
   expendituresGlobalClaimDelay
+  private
 }
 
 fragment ColonyDisplay on Colony {
@@ -86,6 +87,7 @@ fragment WatchedColony on Colony {
   name
   chainMetadata {
     chainId
+    network
   }
   metadata {
     ...ColonyMetadata

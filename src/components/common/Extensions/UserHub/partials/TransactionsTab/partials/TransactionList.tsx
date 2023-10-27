@@ -14,11 +14,10 @@ const displayName =
   'common.Extensions.UserHub.partials.TransactionTab.partials.TransactionList';
 
 const TransactionList: FC = () => {
-  const { isUserHubOpen, transactionAndMessageGroups } =
-    useUserTransactionContext();
+  const { transactionAndMessageGroups } = useUserTransactionContext();
 
   const [groupId, setGroupId] = useState<string | undefined>(
-    isUserHubOpen ? getGroupId(transactionAndMessageGroups[0]) : undefined,
+    getGroupId(transactionAndMessageGroups[0]),
   );
 
   const handleSelectElement = useCallback((id: string) => {

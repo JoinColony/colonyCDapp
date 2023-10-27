@@ -17,7 +17,7 @@ const displayName = 'v5.common.ActionSidebar.partials.SimplePaymentForm';
 const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const intl = useIntl();
 
-  useSimplePayment(getFormOptions);
+  const { tokenAddress } = useSimplePayment(getFormOptions);
 
   return (
     <>
@@ -91,7 +91,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           />
         )}
       </ActionFormRow>
-      <TransactionTable name="payments" />
+      <TransactionTable name="payments" tokenAddress={tokenAddress} />
     </>
   );
 };

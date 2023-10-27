@@ -9,9 +9,6 @@ import {
 
 import { useColonyContext, useExtensionData } from '~hooks';
 import ExtensionDetails from './partials/ExtensionDetails';
-import Spinner from '~v5/shared/Spinner';
-import ThreeColumns from '~v5/frame/ThreeColumns';
-import Navigation from '~v5/common/Navigation';
 import ImageCarousel from '~common/Extensions/ImageCarousel';
 
 import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
@@ -38,7 +35,7 @@ const ExtensionDetailsPage: FC = () => {
   const { pathname } = useLocation();
   const { colony, refetchColony } = useColonyContext();
   const navigate = useNavigate();
-  const { extensionData, loading, refetchExtensionData } = useExtensionData(
+  const { extensionData, refetchExtensionData } = useExtensionData(
     extensionId ?? '',
   );
   const [waitingForEnableConfirmation, setWaitingForEnableConfirmation] =
@@ -85,29 +82,28 @@ const ExtensionDetailsPage: FC = () => {
   const SetupComponent = SetupComponentMap[extensionData.extensionId];
 
   return (
-    <Spinner
-      loading={loading}
-      loadingText={{ id: 'loading.colonyDetailsPage' }}
+    <ActionForm<typeof defaultValues>
+      actionType={ActionTypes.EXTENSION_ENABLE}
+      transform={transform}
+      validationSchema={schema}
+      defaultValues={defaultValues}
+      onSuccess={handleFormSuccess}
     >
-      <ActionForm<typeof defaultValues>
-        actionType={ActionTypes.EXTENSION_ENABLE}
-        transform={transform}
-        validationSchema={schema}
-        defaultValues={defaultValues}
-        onSuccess={handleFormSuccess}
-      >
-        <ThreeColumns
-          leftAside={<Navigation pageName="extensions" />}
-          topRow={
-            <ExtensionsTopRow
-              extensionData={extensionData}
-              isSetupRoute={isSetupRoute}
-              waitingForEnableConfirmation={waitingForEnableConfirmation}
-            />
-          }
-          withSlider={!isSetupRoute && <ImageCarousel />}
-          rightAside={<ExtensionDetails extensionData={extensionData} />}
-        >
+      <div className="grid grid-cols-6 gap-4">
+        <div className="order-1 col-span-6">
+          <ExtensionsTopRow
+            extensionData={extensionData}
+            isSetupRoute={isSetupRoute}
+            waitingForEnableConfirmation={waitingForEnableConfirmation}
+          />
+        </div>
+        <div className="order-2 col-span-6 lg:col-span-4">
+          {!isSetupRoute && <ImageCarousel />}
+        </div>
+        <div className="order-3 md:order-4 lg:order-3 col-span-6 md:col-span-2 lg:row-span-2">
+          <ExtensionDetails extensionData={extensionData} />
+        </div>
+        <div className="order-4 md:order-3 lg:order-4 col-span-6 md:col-span-4">
           <Routes>
             <Route
               path="/"
@@ -121,9 +117,9 @@ const ExtensionDetailsPage: FC = () => {
             )}
             <Route path="*" element={<NotFoundRoute />} />
           </Routes>
-        </ThreeColumns>
-      </ActionForm>
-    </Spinner>
+        </div>
+      </div>
+    </ActionForm>
   );
 };
 

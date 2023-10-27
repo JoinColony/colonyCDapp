@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useMemo,
 } from 'react';
-import { useParams } from 'react-router-dom';
+import { useMatch, useParams } from 'react-router-dom';
 import { Id } from '@colony/colony-js';
 
 import { FilterContextProvider, useFilterContext } from './FilterContext';
@@ -22,13 +22,16 @@ import { notNull } from '~utils/arrays';
 import {
   HOMEPAGE_MEMBERS_LIST_LIMIT,
   HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT,
+  VERIFIED_MEMBERS_LIST_LIMIT,
 } from '~constants';
 import { ColonyContributor } from '~types';
 import { useGetContributorCountQuery } from '~gql';
+import { COLONY_VERIFIED_ROUTE } from '~routes';
 
 const MemberContext = createContext<
   | {
       members: ColonyContributor[];
+      verifiedMembers: ColonyContributor[];
       totalMemberCount: number;
       contributors: ColonyContributor[];
       totalContributorCount: number;
@@ -49,9 +52,19 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const { domains, colonyAddress = '' } = colony ?? {};
   const isMobile = useMobile();
 
-  const pageSize = isMobile
-    ? HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT
-    : HOMEPAGE_MEMBERS_LIST_LIMIT;
+  const isVerifiedPage = useMatch({ path: COLONY_VERIFIED_ROUTE });
+
+  const pageSize = useMemo(() => {
+    let itemsToShow = HOMEPAGE_MEMBERS_LIST_LIMIT;
+
+    if (isVerifiedPage) {
+      itemsToShow = VERIFIED_MEMBERS_LIST_LIMIT;
+    } else if (isMobile) {
+      itemsToShow = HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT;
+    }
+
+    return itemsToShow;
+  }, [isMobile, isVerifiedPage]);
 
   const {
     getFilterDomainIds: getDomainIds,
@@ -132,6 +145,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const {
     members,
+    verifiedMembers,
     canLoadMore: moreMembers,
     loadMore: loadMoreMembers,
     loading: loadingMembers,
@@ -157,6 +171,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const value = useMemo(
     () => ({
       members,
+      verifiedMembers,
       totalMemberCount,
       contributors,
       totalContributorCount,
@@ -170,6 +185,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     }),
     [
       members,
+      verifiedMembers,
       totalMemberCount,
       contributors,
       totalContributorCount,

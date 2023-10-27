@@ -3,6 +3,7 @@ import StarterKit from '@tiptap/starter-kit';
 import Document from '@tiptap/extension-document';
 import Text from '@tiptap/extension-text';
 import Blockquote from '@tiptap/extension-blockquote';
+import Underline from '@tiptap/extension-underline';
 import Bold from '@tiptap/extension-bold';
 import Heading from '@tiptap/extension-heading';
 import { mergeAttributes } from '@tiptap/core';
@@ -11,6 +12,7 @@ import CharacterCount from '@tiptap/extension-character-count';
 import { useEffect, useState } from 'react';
 import { useController } from 'react-hook-form';
 import { MAX_ANNOTATION_NUM } from './consts';
+import { formatText } from '~utils/intl';
 
 export const useRichText = (
   name: string,
@@ -29,16 +31,19 @@ export const useRichText = (
         Document,
         Text,
         CharacterCount,
+        Underline,
         StarterKit.configure({
           heading: false,
         }),
         Placeholder.configure({
           placeholder: () => {
-            setNotFormattedContent('Enter a description');
-            return 'Enter a description';
+            setNotFormattedContent(
+              formatText({ id: 'placeholder.enterDescription' }) || '',
+            );
+            return formatText({ id: 'placeholder.enterDescription' }) || '';
           },
           showOnlyWhenEditable: false,
-          emptyNodeClass: `first:before:text-gray-500 md:first:before:hover:text-blue-400 first:before:content-[attr(data-placeholder)] first:before:pointer-events-none`,
+          emptyEditorClass: `text-gray-500 before:content-[attr(data-placeholder)] before:float-left before:h-0 before:pointer-events-none`,
         }),
         Heading.configure({ levels: [1, 2, 3] }).extend({
           levels: [1, 2],
@@ -97,7 +102,12 @@ export const useRichText = (
   useEffect(() => {
     if (field.value && editorContent && !isDecriptionFieldExpanded) {
       editorContent?.setEditable(false);
-      setNotFormattedContent(editorContent?.getText());
+      setNotFormattedContent(
+        (editorContent?.getText() && editorContent?.getText()) ||
+          (!editorContent?.getText() &&
+            formatText({ id: 'placeholder.enterDescription' })) ||
+          '',
+      );
     }
   }, [editorContent, isDecriptionFieldExpanded, field.value]);
 
