@@ -3,6 +3,7 @@ import StarterKit from '@tiptap/starter-kit';
 import Document from '@tiptap/extension-document';
 import Text from '@tiptap/extension-text';
 import Blockquote from '@tiptap/extension-blockquote';
+import Underline from '@tiptap/extension-underline';
 import Bold from '@tiptap/extension-bold';
 import Heading from '@tiptap/extension-heading';
 import { mergeAttributes } from '@tiptap/core';
@@ -29,6 +30,7 @@ export const useRichText = (
         Document,
         Text,
         CharacterCount,
+        Underline,
         StarterKit.configure({
           heading: false,
         }),
