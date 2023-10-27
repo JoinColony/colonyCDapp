@@ -1,8 +1,8 @@
 import fetch, { Request } from 'node-fetch';
 import { DocumentNode } from 'graphql';
 
-let devApiKey = 'da2-fakeApiId123456';
-let devGraphqlURL = 'http://localhost:20002/graphql';
+const devApiKey = 'da2-fakeApiId123456';
+const devGraphqlURL = 'http://localhost:20002/graphql';
 
 export interface QueryOrMutation<TData = Record<string, unknown>> {
   errors: Array<string>;

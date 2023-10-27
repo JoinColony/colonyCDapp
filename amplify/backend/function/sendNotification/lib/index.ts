@@ -7,7 +7,6 @@ import { graphqlRequest, notNull } from '../../utils';
 import { getParams } from '../../getParams';
 
 import {
-  Params,
   TriggerEvent,
   GetColonyName_SnQuery,
   GetColonyName_SnQueryVariables,
@@ -19,30 +18,18 @@ import {
   CreateNotification_SnMutation,
   CreateNotification_SnMutationVariables,
   CreateNotification_SnDocument,
+  SendMessageToUserParams,
+  CreateNotificationInDatabaseParams,
+  BroadcastToColonyParams,
 } from './types';
 
 import { notificationBuilder } from './message';
-import { sendEmail } from './sendEmailNotifications';
+import { sendUserEmail, sendColonyEmail } from './sendEmailNotifications';
 
-let apiKey = 'da2-fakeApiId123456';
-let graphqlURL = 'http://localhost:20002/graphql';
-let firebaseAdminConfig;
-let mailJetApiKey;
-let mailJetApiSecret;
-
-const setEnvVariables = async () => {
-  const ENV = process.env.ENV;
-  if (ENV === 'qa') {
-    [apiKey, graphqlURL, firebaseAdminConfig, mailJetApiKey, mailJetApiSecret] =
-      await getParams([
-        'appsyncApiKey',
-        'graphqlUrl',
-        'firebaseAdminConfig',
-        'mailJetApiKey',
-        'mailJetApiSecret',
-      ]);
-  }
-};
+let apiKey: string;
+let graphqlURL: string;
+let firebaseAdminConfig: string;
+let messaging: admin.messaging.Messaging;
 
 const removeInterpolationMarkers = (message: string) => {
   return message.replace(/[\[\]]/g, '');
@@ -50,20 +37,24 @@ const removeInterpolationMarkers = (message: string) => {
 
 export const handler: Handler<TriggerEvent> = async (event: TriggerEvent) => {
   try {
-    await setEnvVariables();
+    [apiKey, graphqlURL, firebaseAdminConfig] = await getParams([
+      'appsyncApiKey',
+      'graphqlUrl',
+      'firebaseAdminConfig',
+    ]);
   } catch (e) {
     throw new Error(`Unable to set environment variables. Reason: ${e}`);
   }
 
-  let params: Params = {
-    ...(event.arguments?.input || {}),
-    graphqlURL,
-    apiKey,
-    mailJetApiKey,
-    mailJetApiSecret,
-  };
-
-  const { userId, colonyId, customNotificationTitle } = params;
+  const {
+    userId,
+    colonyId,
+    customNotificationTitle,
+    type,
+    associatedUserId,
+    associatedActionId,
+    customNotificationText,
+  } = event.arguments?.input;
 
   const serviceAccount = JSON.parse(firebaseAdminConfig);
 
@@ -71,7 +62,7 @@ export const handler: Handler<TriggerEvent> = async (event: TriggerEvent) => {
     credential: admin.credential.cert(serviceAccount),
   });
 
-  const messaging = app.messaging();
+  messaging = app.messaging();
 
   const colonyQuery = await graphqlRequest<
     GetColonyName_SnQuery,
@@ -88,27 +79,31 @@ export const handler: Handler<TriggerEvent> = async (event: TriggerEvent) => {
   const title =
     customNotificationTitle || metadata?.displayName || name || colonyId;
 
-  params = { ...params, messaging, title };
-
   // NOTE: We are sending data web push messages and handling them
   // ourselves in the firebase web worker
-  const body = await notificationBuilder(params);
-
-  params = { ...params, body };
+  const body = await notificationBuilder({
+    type,
+    associatedUserId,
+    associatedActionId,
+    customNotificationText,
+  });
 
   if (userId) {
-    await sendMessageToUser(params);
-    await createNotificationInDatabase(params);
+    await sendMessageToUser({ userId, type, title, body });
+    await createNotificationInDatabase({ colonyId, userId, body, title });
   } else {
-    await broadcastToColony(params);
+    await broadcastToColony({ colonyId, title, body });
   }
 
   return true;
 };
 
-async function sendMessageToUser(params: Params) {
-  const { messaging, userId, type, title, body } = params;
-
+async function sendMessageToUser({
+  userId,
+  type,
+  title,
+  body,
+}: SendMessageToUserParams) {
   const userQuery = await graphqlRequest<
     GetUserDetails_SnQuery,
     GetUserDetails_SnQueryVariables
@@ -131,12 +126,6 @@ async function sendMessageToUser(params: Params) {
   const pushNotificationsEnabled = notificationTokens.length > 0;
 
   if (pushNotificationsEnabled) {
-    params = {
-      ...params,
-      userEmail: userEmail || '',
-      userName: userName || '',
-    };
-
     // Test for user preferences here
     // This will undoubtedly expand as we flesh out this feature
     if (
@@ -181,13 +170,15 @@ async function sendMessageToUser(params: Params) {
   }
 
   if (notificationSettings?.enableEmail) {
-    await sendEmail(params);
+    await sendUserEmail({ userEmail, userName, title, userId });
   }
 }
 
-async function broadcastToColony(params: Params) {
-  const { messaging, colonyId, title, body } = params;
-
+async function broadcastToColony({
+  colonyId,
+  title,
+  body,
+}: BroadcastToColonyParams) {
   const message = {
     data: { title: title || '', body: removeInterpolationMarkers(body || '') },
     topic: colonyId || '',
@@ -201,7 +192,7 @@ async function broadcastToColony(params: Params) {
     console.log('Error sending message:', error);
   }
 
-  await sendEmail(params);
+  await sendColonyEmail({ colonyId, title });
 }
 
 async function createNotificationInDatabase({
@@ -209,7 +200,7 @@ async function createNotificationInDatabase({
   userId,
   body,
   title,
-}: Params) {
+}: CreateNotificationInDatabaseParams) {
   const mutation = await graphqlRequest<
     CreateNotification_SnMutation,
     CreateNotification_SnMutationVariables

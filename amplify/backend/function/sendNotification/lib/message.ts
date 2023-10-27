@@ -1,24 +1,39 @@
 import { createIntl } from '@formatjs/intl';
 
+import { getParams } from '../../getParams';
 import { graphqlRequest } from '../../utils';
 
 import {
   GetDisplayName_SnDocument,
   GetDisplayName_SnQuery,
   GetDisplayName_SnQueryVariables,
+  NotificationBuilderParams,
   NotificationType,
-  Params,
 } from './types';
 
-export const notificationBuilder = async (params: Params): Promise<string> => {
-  const {
-    type,
-    associatedUserId,
-    associatedActionId,
-    customNotificationText,
-    graphqlURL,
-    apiKey,
-  } = params;
+let apiKey: string;
+let graphqlURL: string;
+
+const messageSetup = async () => {
+  try {
+    [apiKey, graphqlURL] = await getParams([
+      'appsyncApiKey',
+      'graphqlUrl',
+      'mailJetApiKey',
+      'mailJetApiSecret',
+    ]);
+  } catch (e) {
+    throw new Error(`Unable to set environment variables. Reason: ${e}`);
+  }
+};
+
+export const notificationBuilder = async ({
+  type,
+  associatedUserId,
+  associatedActionId,
+  customNotificationText,
+}: NotificationBuilderParams) => {
+  await messageSetup();
 
   const displayNameQuery = await graphqlRequest<
     GetDisplayName_SnQuery,

@@ -1,31 +1,43 @@
 import Mailjet from 'node-mailjet';
 
+import { getParams } from '../../getParams';
 import { notNull, graphqlRequest } from '../../utils';
 
 import {
   GetColonyContributors_SnDocument,
   GetColonyContributors_SnQuery,
   GetColonyContributors_SnQueryVariables,
-  Params,
 } from './types';
 
-export const sendEmail = async (params: Params) => {
-  const mailjet = new Mailjet({
-    apiKey: params.mailJetApiKey,
-    apiSecret: params.mailJetApiSecret,
-  });
+const emailSetup = async () => {
+  try {
+    const [apiKey, graphqlURL, mailJetApiKey, mailJetApiSecret] =
+      await getParams([
+        'appsyncApiKey',
+        'graphqlUrl',
+        'mailJetApiKey',
+        'mailJetApiSecret',
+      ]);
 
-  if (params.userEmail) {
-    await sendUserEmail({ ...params, mailjet });
-  } else {
-    await sendColonyEmail({ ...params, mailjet });
+    const mailjet = new Mailjet({
+      apiKey: mailJetApiKey,
+      apiSecret: mailJetApiSecret,
+    });
+
+    return {
+      apiKey,
+      graphqlURL,
+      mailjet,
+    };
+  } catch (e) {
+    throw new Error(`Unable to set environment variables. Reason: ${e}`);
   }
 };
 
-const sendUserEmail = async (params: Params & { mailjet: Mailjet }) => {
-  const { mailjet, userEmail, userName, title, userId } = params;
-
+export const sendUserEmail = async ({ userEmail, userName, title, userId }) => {
   try {
+    const { mailjet } = await emailSetup();
+
     const response = await mailjet.post('send', { version: 'v3.1' }).request({
       Messages: [
         constructMessage({
@@ -47,8 +59,8 @@ const sendUserEmail = async (params: Params & { mailjet: Mailjet }) => {
   }
 };
 
-const sendColonyEmail = async (params: Params & { mailjet: Mailjet }) => {
-  const { mailjet, colonyId, title, graphqlURL, apiKey } = params;
+export const sendColonyEmail = async ({ colonyId, title }) => {
+  const { apiKey, graphqlURL, mailjet } = await emailSetup();
 
   const contributorQuery = await graphqlRequest<
     GetColonyContributors_SnQuery,

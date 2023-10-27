@@ -22,9 +22,15 @@ const ParamNames = {
   mailJetApiSecret: `%2Famplify%2Fcdapp%2F${ENV}%2FmailJetApiSecret`,
 } as const;
 
-export const getParam = async (paramName: keyof typeof ParamNames) => {
+const paramsCache: { [key: string]: string } = {};
+
+const getParam = async (paramName: keyof typeof ParamNames) => {
   if (!(paramName in ParamNames)) {
     throw Error(`Invalid param name '${paramName}' provided.`);
+  }
+
+  if (paramsCache[paramName]) {
+    return paramsCache[paramName];
   }
 
   if (!AWS_SESSION_TOKEN) {
@@ -48,6 +54,9 @@ export const getParam = async (paramName: keyof typeof ParamNames) => {
     const {
       Parameter: { Value },
     } = resource;
+
+    paramsCache[paramName] = Value;
+
     return Value;
   } catch (e) {
     console.error(e);
@@ -55,22 +64,18 @@ export const getParam = async (paramName: keyof typeof ParamNames) => {
   }
 };
 
-export const getParams = async (params: Array<keyof typeof ParamNames>) => {
-  if (!Array.isArray(params)) {
-    console.error('Parameter names must be passed as an array of strings.');
-    return [];
+export const getParams = async (paramNames: Array<keyof typeof ParamNames>) => {
+  if (!Array.isArray(paramNames)) {
+    throw new Error(
+      `Parameter names must be passed as an array of strings. Not: ${paramNames}`,
+    );
   }
 
-  return Promise.all(params.map((param) => getParam(param)));
-};
-
-export const setEnvVariables = async (
-  params: Array<keyof typeof ParamNames>,
-) => {
   const ENV = process.env.ENV;
 
   if (ENV === 'qa') {
-    (await getParams(params)) || [];
+    const params = Promise.all(paramNames.map((name) => getParam(name)));
+    return params || [];
   }
 
   return [];

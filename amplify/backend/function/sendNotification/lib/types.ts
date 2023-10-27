@@ -1,5 +1,3 @@
-import type { messaging } from 'firebase-admin';
-
 import { SendNotificationInput } from '../../../../../src/graphql/generated';
 
 export {
@@ -21,20 +19,33 @@ export {
   GetColonyContributors_SnDocument,
 } from '../../../../../src/graphql/generated';
 
-export type Params = {
-  graphqlURL: string;
-  apiKey: string;
-  mailJetApiKey: string;
-  mailJetApiSecret: string;
-  messaging?: messaging.Messaging;
-  title?: string;
-  body?: string;
-  userEmail?: string;
-  userName?: string;
-} & SendNotificationInput;
-
 export interface TriggerEvent {
   arguments: {
     input: SendNotificationInput;
   };
 }
+
+type MessageComponents = {
+  title: string;
+  body: string;
+};
+
+export type NotificationBuilderParams = Pick<
+  SendNotificationInput,
+  'type' | 'associatedUserId' | 'associatedActionId' | 'customNotificationText'
+>;
+
+export type SendMessageToUserParams = Pick<
+  SendNotificationInput,
+  'type' | 'userId'
+> &
+  MessageComponents;
+
+export type CreateNotificationInDatabaseParams = Pick<
+  SendNotificationInput,
+  'colonyId' | 'userId'
+> &
+  MessageComponents;
+
+export type BroadcastToColonyParams = Pick<SendNotificationInput, 'colonyId'> &
+  MessageComponents;
