@@ -33,7 +33,9 @@ export const useActionFormProps = (
                 transform,
                 withMeta({
                   setTxHash: (txHash: string) => {
-                    navigate(`${window.location.pathname}?tx=${txHash}`);
+                    navigate(`${window.location.pathname}?tx=${txHash}`, {
+                      replace: true,
+                    });
                   },
                 }),
               ),
