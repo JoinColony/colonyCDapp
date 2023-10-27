@@ -36,11 +36,10 @@ export const useRichText = (
         }),
         Placeholder.configure({
           placeholder: () => {
-            setNotFormattedContent('Enter a description');
             return 'Enter a description';
           },
           showOnlyWhenEditable: false,
-          emptyNodeClass: `first-child:before:text-gray-500 md:first-child:before:hover:text-blue-400 first-child:before:content-[attr(data-placeholder)] first-child:before:pointer-events-none`,
+          emptyEditorClass: `text-gray-500 before:content-[attr(data-placeholder)] before:float-left before:h-0 before:pointer-events-none`,
         }),
         Heading.configure({ levels: [1, 2, 3] }).extend({
           levels: [1, 2],
