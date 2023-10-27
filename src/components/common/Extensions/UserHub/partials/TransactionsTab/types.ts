@@ -53,7 +53,8 @@ export interface GroupedTransactionProps {
   transactionGroup: TransactionType[];
   groupId?: string;
   isContentOpened: boolean;
-  onClick: (id?: string) => void;
+  onClick?: (id?: string) => void;
+  hideButton?: boolean;
 }
 
 export interface TransactionStatusProps {
