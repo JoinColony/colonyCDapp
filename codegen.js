@@ -30,7 +30,10 @@ const codegen = async () => {
   try {
     await fetchSchema();
 
-    const graphqlFiles = './src/graphql/**/*.graphql';
+    const graphqlFiles = [
+      './src/graphql/**/*.graphql',
+      './amplify/backend/function/**/*.graphql',
+    ];
 
     generate({
       schema: SCHEMA_LOCATION,
