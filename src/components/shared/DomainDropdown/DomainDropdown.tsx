@@ -101,6 +101,7 @@ const DomainDropdown = ({
             nativeSkillId: 0,
             metadata: {
               name: 'All Teams',
+              id: '',
               description: '',
               color: DomainColor.Yellow,
             },

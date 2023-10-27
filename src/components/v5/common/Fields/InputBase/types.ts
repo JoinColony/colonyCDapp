@@ -26,6 +26,8 @@ export interface FormattedInputProps
     label: string;
   };
   wrapperClassName?: string;
+  messageClassName?: string;
+  customPrefix?: React.ReactNode;
 }
 
 export interface FormFormattedInputProps

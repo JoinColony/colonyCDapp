@@ -3,11 +3,12 @@ import { useIntl } from 'react-intl';
 
 import BurgerMenu from '~v5/shared/BurgerMenu';
 import PopoverBase from '~v5/shared/PopoverBase';
-import SubNavigation from '../pages/MembersPage/partials/SubNavigation';
 import Filter from '~v5/common/Filter';
+import { useMemberModalContext } from '~context/MemberModalContext';
+
+import SubNavigation from '../pages/MembersPage/partials/SubNavigation';
 import { useHeader } from './hooks';
 import { HeaderProps } from './types';
-import { useMemberModalContext } from '~context/MemberModalContext';
 
 const displayName = 'v5.frame.Header';
 

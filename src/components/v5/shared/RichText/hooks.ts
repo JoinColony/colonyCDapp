@@ -3,6 +3,7 @@ import StarterKit from '@tiptap/starter-kit';
 import Document from '@tiptap/extension-document';
 import Text from '@tiptap/extension-text';
 import Blockquote from '@tiptap/extension-blockquote';
+import Underline from '@tiptap/extension-underline';
 import Bold from '@tiptap/extension-bold';
 import Heading from '@tiptap/extension-heading';
 import { mergeAttributes } from '@tiptap/core';
@@ -15,6 +16,7 @@ import { MAX_ANNOTATION_NUM } from './consts';
 export const useRichText = (
   name: string,
   isDecriptionFieldExpanded: boolean,
+  isReadonly?: boolean,
 ) => {
   const [notFormattedContent, setNotFormattedContent] = useState<string>('');
   const { field } = useController({
@@ -23,10 +25,12 @@ export const useRichText = (
 
   const editorContent = useEditor(
     {
+      editable: !isReadonly,
       extensions: [
         Document,
         Text,
         CharacterCount,
+        Underline,
         StarterKit.configure({
           heading: false,
         }),

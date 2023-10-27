@@ -13,7 +13,6 @@ import Link from '~v5/shared/Link';
 import UserSubmenu from '../UserSubmenu';
 import { userMenuItems } from './consts';
 import TitleLabel from '~v5/shared/TitleLabel';
-import NavigationTools from '~common/Extensions/NavigationTools';
 import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
 import { formatText } from '~utils/intl';
@@ -28,7 +27,6 @@ const UserMenu: FC<UserMenuProps> = ({
   user,
   isVerified,
   walletAddress,
-  nativeToken,
 }) => {
   const isMobile = useMobile();
   const { connectWallet, updateWallet } = useAppContext();
@@ -54,12 +52,6 @@ const UserMenu: FC<UserMenuProps> = ({
           '-translate-x-[100vw] absolute': activeSubmenu,
         })}
       >
-        {isMobile && (
-          <div>
-            <NavigationTools nativeToken={nativeToken} />
-            <span className="divider mb-6" />
-          </div>
-        )}
         {isWalletConnected ? (
           <div className="px-6">
             <WalletConnectedTopMenu

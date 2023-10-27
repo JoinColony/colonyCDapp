@@ -13,15 +13,25 @@ function ButtonRadioButtons<TValue = string>({
   ...rest
 }: ButtonRadioButtonsProps<TValue>): JSX.Element {
   const modifiedItems = items.map<RadioItem<TValue>>(
-    ({ label, iconName, colorClassName, ...item }) => ({
+    ({
+      label,
+      iconName,
+      colorClassName,
+      hoverColorClassName,
+      iconClassName,
+      ...item
+    }) => ({
       ...item,
       // eslint-disable-next-line react/no-unstable-nested-components
       children: ({ checked }) => (
         <span
           className={clsx(
+            className,
             colorClassName,
+            hoverColorClassName,
             `
               flex
+              group/wrapper
               items-center
               justify-center
               gap-1.5
@@ -41,16 +51,20 @@ function ButtonRadioButtons<TValue = string>({
         >
           {iconName && (
             <Icon
-              className={clsx('h-[1em] w-[1em] text-[1.125rem]', {
-                'text-white': checked,
-                'text-current': !checked,
-              })}
+              className={clsx(
+                iconClassName,
+                'h-[1em] w-[1em] text-[1.125rem]',
+                {
+                  'text-white': checked,
+                  'text-current': !checked,
+                },
+              )}
               name={iconName}
             />
           )}
           <span
             className={clsx('text-3', {
-              'text-gray-900': !checked,
+              'text-gray-900 md:group-hover/wrapper:text-current': !checked,
               'text-white': checked,
             })}
           >

@@ -2,6 +2,7 @@ import { ReactInstanceWithCleave } from 'cleave.js/react/props';
 import noop from 'lodash/noop';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FormattedInputProps } from './types';
+import { addWidthProperty } from './utils';
 
 export const useAdjustInputWidth = (autoWidth: boolean) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -56,6 +57,7 @@ export const useFormattedInput = (
   const [cleave, setCleave] = useState<ReactInstanceWithCleave | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const customPrefixRef = useRef<HTMLDivElement | null>(null);
 
   const { prefix, tailPrefix } = options || {};
 
@@ -76,11 +78,12 @@ export const useFormattedInput = (
   }, [cleave, prefix, tailPrefix, value]);
 
   useEffect(() => {
-    if (buttonRef.current && wrapperRef.current) {
-      const { width } = buttonRef.current.getBoundingClientRect();
-
-      wrapperRef.current.style.setProperty('--button-width', `${width}px`);
-    }
+    addWidthProperty(buttonRef.current, wrapperRef.current, 'button');
+    addWidthProperty(
+      customPrefixRef.current,
+      wrapperRef.current,
+      'custom-prefix',
+    );
   }, []);
 
   // /*
@@ -96,5 +99,6 @@ export const useFormattedInput = (
     setCleave,
     wrapperRef,
     buttonRef,
+    customPrefixRef,
   };
 };

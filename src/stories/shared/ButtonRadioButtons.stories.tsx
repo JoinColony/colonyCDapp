@@ -24,7 +24,9 @@ const ButtonRadioButtonsWithHooks = () => {
           label: 'Oppose',
           id: 'oppose',
           value: 'oppose',
-          colorClassName: 'text-red-500',
+          colorClassName: 'text-negative-300',
+          iconClassName: 'text-negative-400',
+          hoverColorClassName: 'md:hover:text-negative-400',
           iconName: 'thumbs-down',
         },
         {
@@ -32,6 +34,8 @@ const ButtonRadioButtonsWithHooks = () => {
           id: 'support',
           value: 'support',
           colorClassName: 'text-purple-200',
+          iconClassName: 'text-purple-400',
+          hoverColorClassName: 'md:hover:text-purple-400',
           iconName: 'thumbs-up',
         },
       ]}

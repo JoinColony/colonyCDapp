@@ -1,97 +1,28 @@
 import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
 
-import { useFormContext } from 'react-hook-form';
 import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import {
-  useActionDescriptionMetadata,
-  useActionFormProps,
-  useCloseSidebarClick,
-  useNotificationBanner,
-  useSidebarActionForm,
-  useUserHasPermissions,
-} from './hooks';
-import ActionButtons from './partials/ActionButtons';
-import NotificationBanner from '~common/Extensions/NotificationBanner';
-import ActionTypeSelect from './ActionTypeSelect';
-import PopularActions from './partials/PopularActions';
+import { useCloseSidebarClick, useGetActionData } from './hooks';
 import useToggle from '~hooks/useToggle';
-import { ACTION_TYPE_FIELD_NAME } from './consts';
 import Modal from '~v5/shared/Modal';
-import { ActionForm } from '~shared/Fields';
-import { ActionSidebarFormContentProps, ActionSidebarProps } from './types';
+import { ActionSidebarProps } from './types';
 import { formatText } from '~utils/intl';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
-import FormInputBase from '../Fields/InputBase/FormInputBase';
-import { FIELD_STATE } from '../Fields/consts';
-import Motions from './partials/Motions';
+import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent';
+import { SpinnerLoader } from '~shared/Preloaders';
 
 const displayName = 'v5.common.ActionSidebar';
-
-const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
-  getFormOptions,
-  isMotion,
-}) => {
-  const { formComponent: FormComponent, selectedAction } =
-    useSidebarActionForm();
-  const userHasPermissions = useUserHasPermissions();
-  const form = useFormContext();
-  const notificationBanner = useNotificationBanner();
-  const descriptionMetadata = useActionDescriptionMetadata();
-
-  return (
-    <>
-      <div className="flex-grow overflow-y-auto">
-        <FormInputBase
-          name="title"
-          placeholder={formatText({ id: 'placeholder.title' })}
-          stateClassNames={{
-            [FIELD_STATE.Error]: 'placeholder:text-red-400',
-          }}
-          className={`
-            heading-3
-            md:hover:text-blue-400 md:hover:placeholder:text-blue-400 text-gray-900
-            transition-colors
-          `}
-          mode="secondary"
-          message={false}
-        />
-        <p className="text-gray-600 font-medium mt-2">{descriptionMetadata}</p>
-        {/* @todo: add preview mode to the form */}
-        <ActionTypeSelect className="mt-7 mb-3" />
-        {/* @todo: add motion action type to each action */}
-        {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
-        {notificationBanner && (
-          <div className="mt-7">
-            <NotificationBanner {...notificationBanner} />
-          </div>
-        )}
-      </div>
-      {!isMotion && (
-        <div className="mt-auto">
-          {!selectedAction && (
-            <PopularActions
-              setSelectedAction={(action) =>
-                form.setValue(ACTION_TYPE_FIELD_NAME, action)
-              }
-            />
-          )}
-          <ActionButtons
-            isActionDisabled={!userHasPermissions || !selectedAction}
-          />
-        </div>
-      )}
-    </>
-  );
-};
 
 const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   children,
   transactionId,
 }) => {
-  const { getFormOptions, actionFormProps } = useActionFormProps();
+  const { defaultValues, loadingAction, isMotion } = useGetActionData(
+    transactionId || undefined,
+  );
+
   const {
     actionSidebarToggle: [
       isActionSidebarOpen,
@@ -125,8 +56,8 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           flex-col
         `,
         {
-          'sm:max-w-[43.375rem]': !isSidebarFullscreen && !transactionId,
-          'sm:max-w-[67.3125rem]': !isSidebarFullscreen && transactionId,
+          'sm:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
+          'sm:max-w-[67.3125rem]': !isSidebarFullscreen && isMotion,
         },
       )}
       ref={registerContainerRef}
@@ -158,44 +89,21 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         )}
         {children}
       </div>
-      <div
-        className={clsx('flex w-full flex-grow overflow-hidden', {
-          'flex-col-reverse md:flex-row': transactionId,
-        })}
-      >
-        <div className="flex-grow px-6 py-8">
-          <ActionForm
-            {...actionFormProps}
-            className="flex flex-col h-full"
-            ref={formRef}
-          >
-            <ActionSidebarFormContent
-              getFormOptions={getFormOptions}
-              isMotion={!!transactionId}
-            />
-          </ActionForm>
+      {loadingAction ? (
+        <div className="h-full flex items-center justify-center flex-col gap-4">
+          <SpinnerLoader appearance={{ size: 'huge' }} />
+          <p className="text-gray-600">
+            {formatText({ id: 'actionSidebar.loading' })}
+          </p>
         </div>
-        {transactionId && (
-          <div
-            className={`
-              w-full
-              md:w-[35%]
-              md:h-full
-              md:overflow-y-auto
-              px-6
-              py-8
-              border-b
-              border-b-gray-200
-              md:border-b-0
-              md:border-l
-              md:border-l-gray-200
-              bg-gray-25
-            `}
-          >
-            <Motions transactionId={transactionId} />
-          </div>
-        )}
-      </div>
+      ) : (
+        <ActionSidebarContent
+          transactionId={transactionId}
+          formRef={formRef}
+          defaultValues={defaultValues}
+          isMotion={isMotion || false}
+        />
+      )}
 
       <Modal
         title={formatText({ id: 'actionSidebar.cancelModal.title' })}

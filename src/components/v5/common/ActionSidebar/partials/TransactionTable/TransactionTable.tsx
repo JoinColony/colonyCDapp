@@ -4,16 +4,19 @@ import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import clsx from 'clsx';
 
 import Button from '~v5/shared/Button/Button';
-import { useColonyContext, useMobile } from '~hooks';
+import { useMobile } from '~hooks';
 import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
 import { useTransactionTableColumns, useGetTableMenuProps } from './hooks';
 import { TransactionTableModel, TransactionTableProps } from './types';
 import { formatText } from '~utils/intl';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 
 const displayName = 'v5.common.ActionsContent.partials.TransactionTable';
 
-const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
-  const { nativeToken } = useColonyContext().colony || {};
+const TransactionTable: FC<TransactionTableProps> = ({
+  name,
+  tokenAddress,
+}) => {
   const fieldArrayMethods = useFieldArray({
     name,
   });
@@ -22,10 +25,15 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
       key: id,
     }),
   );
-  const columns = useTransactionTableColumns(name);
+  const { readonly } = useAdditionalFormOptionsContext();
+  const columns = useTransactionTableColumns(name, tokenAddress);
   const isMobile = useMobile();
   const value = useWatch({ name });
-  const getMenuProps = useGetTableMenuProps(fieldArrayMethods, value);
+  const getMenuProps = useGetTableMenuProps(
+    fieldArrayMethods,
+    value,
+    !readonly,
+  );
   const { getFieldState } = useFormContext();
   const fieldState = getFieldState(name);
 
@@ -47,23 +55,24 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
           />
         </>
       )}
-      <Button
-        mode="primaryOutline"
-        iconName="plus"
-        size="small"
-        className="mt-6"
-        isFullSize={isMobile}
-        onClick={() => {
-          fieldArrayMethods.append({
-            amount: {
-              amount: '0',
-              tokenAddress: nativeToken?.tokenAddress || '',
-            },
-          });
-        }}
-      >
-        <FormattedMessage id="button.addTransaction" />
-      </Button>
+      {!readonly && (
+        <Button
+          mode="primaryOutline"
+          iconName="plus"
+          size="small"
+          className="mt-6"
+          isFullSize={isMobile}
+          onClick={() => {
+            fieldArrayMethods.append({
+              amount: {
+                amount: '0',
+              },
+            });
+          }}
+        >
+          <FormattedMessage id="button.addTransaction" />
+        </Button>
+      )}
     </div>
   );
 };

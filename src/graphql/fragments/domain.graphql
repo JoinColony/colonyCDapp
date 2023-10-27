@@ -15,6 +15,7 @@ fragment DomainMetadata on DomainMetadata {
   name
   color
   description
+  id
   changelog {
     transactionHash
     oldName

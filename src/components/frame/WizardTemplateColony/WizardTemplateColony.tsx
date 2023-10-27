@@ -7,7 +7,7 @@ import { WizardOuterProps } from '~shared/Wizard/types';
 import CopyableAddress from '~shared/CopyableAddress';
 
 import { HistoryNavigation } from '~frame/RouteLayouts';
-import { FormValues } from '~common/CreateColonyWizard/CreateColonyWizard';
+import { FormValues } from '~v5/common/CreateColonyWizard/CreateColonyWizard';
 import { LANDING_PAGE_ROUTE } from '~routes/index';
 import { useAppContext } from '~hooks';
 
@@ -32,12 +32,12 @@ const WizardTemplateColony = ({
   previousStep,
   hideQR = false,
 }: Props) => {
-  const { wallet } = useAppContext();
+  const { wallet, walletConnecting } = useAppContext();
   const walletAddress = wallet?.address || '';
 
   const customHandler = useCallback(() => previousStep(), [previousStep]);
 
-  if (!wallet) {
+  if (!wallet && !walletConnecting) {
     return <Navigate to={LANDING_PAGE_ROUTE} replace />;
   }
 

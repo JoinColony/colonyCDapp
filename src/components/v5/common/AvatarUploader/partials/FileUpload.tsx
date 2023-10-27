@@ -15,7 +15,7 @@ const FileUpload: FC<FileUploadProps> = ({
   handleFileRemove,
   errorCode,
   isAvatarUploaded,
-  isPropgressContentVisible,
+  isProgressContentVisible,
   isSimplified,
   fileOptions,
 }) => {
@@ -50,9 +50,9 @@ const FileUpload: FC<FileUploadProps> = ({
   );
 
   const shouldShowDefaultContent =
-    !isAvatarUploaded && !errorCode && !isPropgressContentVisible;
+    !isAvatarUploaded && !errorCode && !isProgressContentVisible;
   const shouldShowSuccessContent =
-    isAvatarUploaded && !errorCode && !isPropgressContentVisible;
+    isAvatarUploaded && !errorCode && !isProgressContentVisible;
 
   return (
     <div className="w-full">

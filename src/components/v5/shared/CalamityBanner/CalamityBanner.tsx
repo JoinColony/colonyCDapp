@@ -12,7 +12,7 @@ const CalamityBanner: FC<CalamityBannerProps> = ({ items }) => {
 
   return (
     <>
-      {showBanner && (
+      {showBanner && items.length ? (
         <div className="overflow-hidden relative min-h-[7.25rem] md:min-h-[4.25rem]">
           {items.map(({ id, ...item }, index) => (
             <CalamityBannerContent
@@ -26,7 +26,7 @@ const CalamityBanner: FC<CalamityBannerProps> = ({ items }) => {
             />
           ))}
         </div>
-      )}
+      ) : null}
     </>
   );
 };

@@ -24,7 +24,7 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         fieldName="amount"
         title={<FormattedMessage id="actionSidebar.value" />}
         tooltip={
-          <FormattedMessage id="actionSidebar.toolip.mintTokens.amount" />
+          <FormattedMessage id="actionSidebar.tooltip.mintTokens.amount" />
         }
       >
         <AmountField name="amount" />
@@ -33,14 +33,14 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         iconName="house-line"
         fieldName="createdIn"
         title={<FormattedMessage id="actionSidebar.createdIn" />}
-        tooltip={<FormattedMessage id="actionSidebar.toolip.createdIn" />}
+        tooltip={<FormattedMessage id="actionSidebar.tooltip.createdIn" />}
       >
         <TeamsSelect name="createdIn" />
       </ActionFormRow>
       <ActionFormRow
         iconName="scales"
         fieldName="decisionMethod"
-        tooltip={<FormattedMessage id="actionSidebar.toolip.decisionMethod" />}
+        tooltip={<FormattedMessage id="actionSidebar.tooltip.decisionMethod" />}
         title={<FormattedMessage id="actionSidebar.decisionMethod" />}
       >
         <FormCardSelect
@@ -52,7 +52,7 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="pencil"
         fieldName="description"
-        tooltip={<FormattedMessage id="actionSidebar.toolip.description" />}
+        tooltip={<FormattedMessage id="actionSidebar.tooltip.description" />}
         title={<FormattedMessage id="actionSidebar.description" />}
         isExpandable
       >

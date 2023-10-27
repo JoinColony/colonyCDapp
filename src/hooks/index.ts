@@ -54,6 +54,7 @@ export { default as useTokenActivationContext } from './useTokenActivationContex
 export * from './useCanInteractWithColony';
 export { default as useColonyFundsClaims } from './useColonyFundsClaims';
 export { default as useCurrentSelectedToken } from './useCurrentSelectedToken';
+export { default as useGetNetworkToken } from './useGetNetworkToken';
 export { default as useTokenTotalBalance } from './useTokenTotalBalance';
 export { default as useColonyContractVersion } from './useColonyContractVersion';
 export { default as useNetworkInverseFee } from './useNetworkInverseFee';
@@ -61,7 +62,6 @@ export { default as useUserByAddress } from './useUserByAddress';
 export { default as useUserByName } from './useUserByName';
 export { default as useUserByNameOrAddress } from './useUserByNameOrAddress';
 export { default as useDetectClickOutside } from './useDetectClickOutside';
-export { default as useSideNavigation } from './useSideNavigation';
 export { default as useCurrentPage } from './useCurrentPage';
 export { default as useFetchActiveInstallsExtension } from './useFetchActiveInstallsExtension';
 export { default as useActiveInstalls } from './useActiveInstalls';

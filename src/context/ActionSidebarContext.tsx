@@ -13,18 +13,15 @@ import { getPortalContainer } from '~v5/shared/Portal/utils';
 export const ActionSidebarContext = createContext<{
   actionSidebarToggle: UseToggleReturnType;
   cancelModalToggle: UseToggleReturnType;
-  avatarModalToggle: UseToggleReturnType;
 }>({
   actionSidebarToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
   cancelModalToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
-  avatarModalToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
 });
 
 export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
   const cancelModalToggle = useToggle();
-  const avatarModalToggle = useToggle();
   const actionSidebarToggle = useToggle();
   const [
     ,
@@ -54,9 +51,8 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
     () => ({
       actionSidebarToggle,
       cancelModalToggle,
-      avatarModalToggle,
     }),
-    [actionSidebarToggle, cancelModalToggle, avatarModalToggle],
+    [actionSidebarToggle, cancelModalToggle],
   );
 
   return (

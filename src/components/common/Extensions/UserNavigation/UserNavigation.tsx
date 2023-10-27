@@ -1,45 +1,26 @@
-import React, { FC, useLayoutEffect, useState } from 'react';
+import React, { FC, useLayoutEffect } from 'react';
+import { usePopperTooltip } from 'react-popper-tooltip';
 import { useIntl } from 'react-intl';
-import clsx from 'clsx';
 
-import { useAppContext, useMobile } from '~hooks';
-import Button, { Hamburger, PendingButton } from '~v5/shared/Button';
+import { useAppContext, useGetNetworkToken, useMobile } from '~hooks';
+import Button, { Hamburger } from '~v5/shared/Button';
 import Token from './partials/Token';
 import UserMenu from './partials/UserMenu';
 import { getLastWallet } from '~utils/autoLogin';
-import UserReputation from './partials/UserReputation';
 import { UserNavigationProps } from './types';
-import { useGetNetworkToken } from '~hooks/useGetNetworkToken';
-import {
-  TransactionGroupStates,
-  useUserTransactionContext,
-} from '~context/UserTransactionContext';
-import CompletedButton from '~v5/shared/Button/CompletedButton';
 
 export const displayName = 'common.Extensions.UserNavigation';
 
-// @TODO: change name to Wallet
 const UserNavigation: FC<UserNavigationProps> = ({
-  isWalletButtonVisible,
-  userMenuGetTooltipProps,
-  userMenuSetTooltipRef,
-  userMenuSetTriggerRef,
-  setWalletTriggerRef,
-  isUserMenuOpen,
-  isWalletOpen,
+  userHub,
+  txButtons = null,
 }) => {
   const { wallet, user, connectWallet } = useAppContext();
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
-  const [isUserNavigationButtonsVisible, setIsUserNavigationButtonsVisible] =
-    useState(true);
 
   const isWalletConnected = !!wallet?.address;
   const nativeToken = useGetNetworkToken();
-
-  if (!isMobile && !isUserNavigationButtonsVisible) {
-    setIsUserNavigationButtonsVisible(true);
-  }
 
   useLayoutEffect(() => {
     const isWalletSavedInLocalStorage = getLastWallet();
@@ -48,59 +29,63 @@ const UserNavigation: FC<UserNavigationProps> = ({
     }
   }, [connectWallet, wallet]);
 
-  const { groupState } = useUserTransactionContext();
+  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+    usePopperTooltip(
+      {
+        delayShow: isMobile ? 0 : 200,
+        delayHide: 0,
+        placement: isMobile ? 'bottom' : 'bottom-end',
+        trigger: 'click',
+        interactive: true,
+        onVisibleChange: () => {},
+      },
+      {
+        modifiers: [
+          {
+            name: 'offset',
+            options: {
+              offset: isMobile ? [0, -71] : [0, 8],
+            },
+          },
+        ],
+      },
+    );
 
   return (
     <div className="flex gap-1">
-      <div
-        className={clsx('flex gap-1', {
-          hidden: !isWalletConnected || !isUserNavigationButtonsVisible,
-        })}
-      >
-        {nativeToken && <Token nativeToken={nativeToken} />}
-        <UserReputation />
-      </div>
-      {isUserNavigationButtonsVisible && !isWalletConnected && (
+      {isWalletConnected ? (
+        <div className="flex gap-1">
+          {nativeToken && <Token nativeToken={nativeToken} />}
+          {userHub}
+        </div>
+      ) : (
         <Button
           mode="tertiary"
           isFullRounded
-          setTriggerRef={setWalletTriggerRef}
           onClick={connectWallet}
-          iconName={isWalletOpen && isMobile ? 'close' : 'cardholder'}
+          iconName={visible && isMobile ? 'close' : 'cardholder'}
           size="small"
         >
-          {isWalletButtonVisible && formatMessage({ id: 'connectWallet' })}
+          {formatMessage({ id: 'connectWallet' })}
         </Button>
       )}
-      {isWalletButtonVisible && (
-        <>
-          <Hamburger
-            isOpened={isUserMenuOpen && isMobile}
-            iconName={isUserMenuOpen && isMobile ? 'close' : 'list'}
-            setTriggerRef={userMenuSetTriggerRef}
-            onClick={() =>
-              isMobile &&
-              setIsUserNavigationButtonsVisible((prevState) => !prevState)
-            }
-          />
-          {isUserMenuOpen && (
-            <UserMenu
-              tooltipProps={userMenuGetTooltipProps}
-              setTooltipRef={userMenuSetTooltipRef}
-              isWalletConnected={isWalletConnected}
-              user={user}
-              walletAddress={user?.walletAddress}
-              nativeToken={nativeToken}
-            />
-          )}
-        </>
+      <Hamburger
+        isOpened={visible && isMobile}
+        iconName={visible && isMobile ? 'close' : 'list'}
+        setTriggerRef={setTriggerRef}
+        onClick={() => {}}
+      />
+      {visible && (
+        <UserMenu
+          tooltipProps={getTooltipProps}
+          setTooltipRef={setTooltipRef}
+          isWalletConnected={isWalletConnected}
+          user={user}
+          walletAddress={user?.walletAddress}
+          nativeToken={nativeToken}
+        />
       )}
-      {!isMobile && groupState === TransactionGroupStates.SomePending && (
-        <PendingButton />
-      )}
-      {!isMobile && groupState === TransactionGroupStates.AllCompleted && (
-        <CompletedButton />
-      )}
+      {!isMobile && txButtons}
     </div>
   );
 };

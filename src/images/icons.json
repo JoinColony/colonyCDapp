@@ -226,7 +226,13 @@
     "layout",
     "handshake",
     "gear-six",
-    "colony-placeholder"
+    "colony-placeholder",
+    "shield",
+    "signature",
+    "gear",
+    "sparkle",
+    "sliders",
+    "user-circle-minus"
   ],
   "multiColorIcons": [
     "circle-check-primary",

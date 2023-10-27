@@ -1,3 +1,0 @@
-.threeColumns {
-  @apply grid gap-y-6 grid-cols-1 sm:grid-cols-[10.4375rem_calc(100%-10.4375rem-17.625rem-3rem)_17.625rem] sm:gap-x-6 lg:grid-cols-[12.1875rem_calc(100%-12.1875rem-20.4375rem-6rem)_20.4375rem] lg:gap-x-12;
-}

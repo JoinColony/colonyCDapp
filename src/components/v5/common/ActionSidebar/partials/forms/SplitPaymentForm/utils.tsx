@@ -70,6 +70,7 @@ export const splitPaymentDescriptionMetadataGetter: DescriptionMetadataGetter<
     {getDistributionText(distributionMethod)} to multiple recipients
     {currentUser?.profile?.displayName && (
       <>
+        {' '}
         by{' '}
         <UserPopover
           userName={currentUser?.profile?.displayName}
@@ -77,7 +78,7 @@ export const splitPaymentDescriptionMetadataGetter: DescriptionMetadataGetter<
           aboutDescription={currentUser.profile?.bio || ''}
           user={currentUser}
         >
-          <span className="text-blue-400">
+          <span className="text-blue-400 font-medium">
             {currentUser.profile.displayName}
           </span>
         </UserPopover>

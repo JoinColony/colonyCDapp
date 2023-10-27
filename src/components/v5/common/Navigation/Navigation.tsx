@@ -1,15 +1,15 @@
 import React, { FC, useState } from 'react';
 
-import { useCurrentPage, useMobile, useSideNavigation } from '~hooks';
+import clsx from 'clsx';
+import { useCurrentPage, useMobile } from '~hooks';
 import NavItem from './partials/NavItem';
 import Select from '~v5/common/Fields/Select';
 import { NavigationProps } from './types';
 
 const displayName = 'v5.common.Navigation';
 
-const Navigation: FC<NavigationProps> = ({ pageName }) => {
+const Navigation: FC<NavigationProps> = ({ className, navigationItems }) => {
   const isMobile = useMobile();
-  const navigationItems = useSideNavigation(pageName);
   const navId = useCurrentPage(navigationItems);
 
   const [selectedElement, setSelectedElement] = useState(navId);
@@ -19,7 +19,7 @@ const Navigation: FC<NavigationProps> = ({ pageName }) => {
   };
 
   return (
-    <nav role="navigation" className="flex flex-col w-full">
+    <nav role="navigation" className={clsx(className, 'flex flex-col w-full')}>
       {isMobile ? (
         <Select
           list={navigationItems}

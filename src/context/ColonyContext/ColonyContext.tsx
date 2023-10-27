@@ -11,11 +11,8 @@ import {
 import { Colony } from '~types';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import { useAppContext, useCanInteractWithColony } from '~hooks';
-import { PageThemeContextProvider } from '../PageThemeContext';
-import { UserTokenBalanceProvider } from '../UserTokenBalanceContext';
-
-import { ColonyDecisionProvider } from '../ColonyDecisionContext';
 import { NOT_FOUND_ROUTE } from '~routes';
+
 import { useUpdateColonyReputation } from './useUpdateColonyReputation';
 import {
   METACOLONY_COLONY_NAME,
@@ -153,11 +150,7 @@ export const ColonyContextProvider = ({
 
   return (
     <ColonyContext.Provider value={colonyContext}>
-      <ColonyDecisionProvider colony={colony}>
-        <UserTokenBalanceProvider>
-          <PageThemeContextProvider>{children}</PageThemeContextProvider>
-        </UserTokenBalanceProvider>
-      </ColonyDecisionProvider>
+      {children}
     </ColonyContext.Provider>
   );
 };

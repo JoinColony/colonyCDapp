@@ -13,6 +13,7 @@ export const upgradeColonyDescriptionMetadataGetter: DescriptionMetadataGetter<
       {(colony?.version || 0) + 1}
       {currentUser?.profile?.displayName && (
         <>
+          {' '}
           by{' '}
           <UserPopover
             userName={currentUser?.profile?.displayName}
@@ -20,7 +21,7 @@ export const upgradeColonyDescriptionMetadataGetter: DescriptionMetadataGetter<
             aboutDescription={currentUser.profile?.bio || ''}
             user={currentUser}
           >
-            <span className="text-blue-400">
+            <span className="text-blue-400 font-medium">
               {currentUser.profile.displayName}
             </span>
           </UserPopover>
