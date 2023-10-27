@@ -1,12 +1,10 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
 
 import { Form } from '~shared/Fields';
 import SettingsRow from '~v5/common/SettingsRow';
 import { useFeesForm } from './hooks';
 
 const FeesForm = () => {
-  const { formatMessage } = useIntl();
   const {
     handleFeesOnChange,
     handleSubmit,
@@ -23,21 +21,16 @@ const FeesForm = () => {
       onSubmit={handleSubmit}
     >
       {({ register }) => (
-        <>
-          <h4 className="heading-4 mb-6">
-            {formatMessage({ id: 'userAdvancedPage.title' })}
-          </h4>
-          <div className="border-b border-gray-200">
-            <SettingsRow
-              title={{ id: 'advancedSettings.fees.title' }}
-              description={{ id: 'advancedSettings.fees.description' }}
-              tooltipMessage={{ id: 'advancedSettings.fees.tooltip' }}
-              id="metatransactionsEnabled"
-              onChange={handleFeesOnChange}
-              register={register}
-            />
-          </div>
-        </>
+        <div className="border-b border-gray-200">
+          <SettingsRow
+            title={{ id: 'advancedSettings.fees.title' }}
+            description={{ id: 'advancedSettings.fees.description' }}
+            tooltipMessage={{ id: 'advancedSettings.fees.tooltip' }}
+            id="metatransactionsEnabled"
+            onChange={handleFeesOnChange}
+            register={register}
+          />
+        </div>
       )}
     </Form>
   );

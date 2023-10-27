@@ -1,22 +1,20 @@
 import React, { createContext, useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import { useAppContext } from '~hooks';
+import { useAppContext, useColonyContext } from '~hooks';
 import { createDecisionAction } from '~redux/actionCreators';
-import { Colony } from '~types';
 import { getDraftDecisionFromLocalStorage } from '~utils/decisions';
 
 export const ColonyDecisionContext = createContext<void>(undefined);
 
 interface ColonyDecisionProviderProps {
   children: React.ReactNode;
-  colony?: Colony;
 }
 
 export const ColonyDecisionProvider = ({
-  colony,
   children,
 }: ColonyDecisionProviderProps) => {
   const { user } = useAppContext();
+  const { colony } = useColonyContext();
 
   /*
    * Get saved decision from local storage and, if it exists, add to the store.

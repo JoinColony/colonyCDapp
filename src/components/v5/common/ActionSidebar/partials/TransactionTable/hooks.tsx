@@ -9,6 +9,7 @@ import AmountField from '../AmountField';
 
 export const useTransactionTableColumns = (
   name: string,
+  tokenAddress?: string,
 ): ColumnDef<TransactionTableModel, string>[] => {
   const columnHelper = useMemo(
     () => createColumnHelper<TransactionTableModel>(),
@@ -28,39 +29,51 @@ export const useTransactionTableColumns = (
         id: 'amount',
         header: () => formatText({ id: 'table.row.amount' }),
         cell: ({ row }) => (
-          <AmountField key={row.id} name={`${name}.${row.index}.amount`} />
+          <AmountField
+            key={row.id}
+            name={`${name}.${row.index}.amount`}
+            tokenAddress={tokenAddress}
+          />
         ),
       }),
     ],
-    [columnHelper, name],
+    [columnHelper, name, tokenAddress],
   );
 
   return columns;
 };
 
-export const useGetTableMenuProps = ({ insert, remove }, data) =>
+export const useGetTableMenuProps = (
+  { insert, remove },
+  data,
+  shouldShowMenu?: boolean,
+) =>
   useCallback<
     TableWithMeatballMenuProps<TransactionTableModel>['getMenuProps']
   >(
-    ({ index }) => ({
-      cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
-      items: [
-        {
-          key: 'duplicate',
-          onClick: () =>
-            insert(index + 1, {
-              ...data[index],
-            }),
-          label: formatText({ id: 'table.row.duplicate' }),
-          iconName: 'copy-simple',
-        },
-        {
-          key: 'remove',
-          onClick: () => remove(index),
-          label: formatText({ id: 'table.row.remove' }),
-          iconName: 'trash',
-        },
-      ],
-    }),
-    [data, insert, remove],
+    ({ index }) => {
+      return shouldShowMenu
+        ? {
+            cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
+            items: [
+              {
+                key: 'duplicate',
+                onClick: () =>
+                  insert(index + 1, {
+                    ...data[index],
+                  }),
+                label: formatText({ id: 'table.row.duplicate' }),
+                iconName: 'copy-simple',
+              },
+              {
+                key: 'remove',
+                onClick: () => remove(index),
+                label: formatText({ id: 'table.row.remove' }),
+                iconName: 'trash',
+              },
+            ],
+          }
+        : undefined;
+    },
+    [data, insert, remove, shouldShowMenu],
   );

@@ -4,7 +4,6 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { useColonyContext, useExtensionData, useAppContext } from '~hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
-import NotFoundRoute from '~routes/NotFoundRoute';
 import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
 import { isInstalledExtensionData } from '~utils/extensions';
 import BreadCrumb, { Crumb } from '~shared/BreadCrumb';
@@ -94,7 +93,7 @@ const ExtensionDetails = () => {
       <div>
         <Routes>
           <Route
-            path="/"
+            index
             element={
               <div className={styles.extensionText}>
                 <Heading3
@@ -121,7 +120,6 @@ const ExtensionDetails = () => {
               element={<ExtensionSetup extensionData={extensionData} />}
             />
           )}
-          <Route path="*" element={<NotFoundRoute />} />
         </Routes>
       </div>
 

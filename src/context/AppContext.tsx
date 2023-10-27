@@ -16,6 +16,7 @@ import {
 } from '~gql';
 import { Address, ColonyWallet, User } from '~types';
 import { useAsyncFunction } from '~hooks';
+import { TokenActivationProvider } from '~shared/TokenActivationProvider';
 
 import { getContext, ContextModule } from './index';
 
@@ -187,6 +188,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   );
 
   return (
-    <AppContext.Provider value={appContext}>{children}</AppContext.Provider>
+    <AppContext.Provider value={appContext}>
+      <TokenActivationProvider>{children}</TokenActivationProvider>
+    </AppContext.Provider>
   );
 };

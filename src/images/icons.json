@@ -222,7 +222,13 @@
     "thumbs-up",
     "thumbs-down",
     "pie-chart",
-    "clock"
+    "clock",
+    "shield",
+    "signature",
+    "gear",
+    "sparkle",
+    "sliders",
+    "user-circle-minus"
   ],
   "multiColorIcons": [
     "circle-check-primary",

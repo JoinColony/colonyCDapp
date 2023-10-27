@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
-
 import { useController } from 'react-hook-form';
+
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+
 import { FormInputBaseProps } from './types';
 import { FIELD_STATE } from '../consts';
 import InputBase from './InputBase';
@@ -14,11 +16,13 @@ const FormInputBase: FC<FormInputBaseProps> = ({ name, type, ...rest }) => {
   } = useController({
     name,
   });
+  const { readonly } = useAdditionalFormOptionsContext();
 
   return (
     <InputBase
       message={error?.message}
       {...rest}
+      readOnly={readonly}
       type={type}
       value={value?.toString() || ''}
       onChange={(event) => {

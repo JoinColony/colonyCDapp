@@ -23,7 +23,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         iconName="users-three"
         fieldName="from"
         tooltip={
-          <FormattedMessage id="actionSidebar.toolip.transferFunds.from" />
+          <FormattedMessage id="actionSidebar.tooltip.transferFunds.from" />
         }
         title={<FormattedMessage id="actionSidebar.from" />}
       >
@@ -34,7 +34,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         fieldName="to"
         title={<FormattedMessage id="actionSidebar.recipent" />}
         tooltip={
-          <FormattedMessage id="actionSidebar.toolip.transferFunds.to" />
+          <FormattedMessage id="actionSidebar.tooltip.transferFunds.to" />
         }
       >
         <TeamsSelect name="to" />
@@ -44,7 +44,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         fieldName="amount"
         title={<FormattedMessage id="actionSidebar.amount" />}
         tooltip={
-          <FormattedMessage id="actionSidebar.toolip.transferFunds.amount" />
+          <FormattedMessage id="actionSidebar.tooltip.transferFunds.amount" />
         }
       >
         <AmountField name="amount" />
@@ -52,7 +52,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="house-line"
         fieldName="createdIn"
-        tooltip={<FormattedMessage id="actionSidebar.toolip.createdIn" />}
+        tooltip={<FormattedMessage id="actionSidebar.tooltip.createdIn" />}
         title={<FormattedMessage id="actionSidebar.createdIn" />}
       >
         <TeamsSelect name="createdIn" />
@@ -60,7 +60,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="scales"
         fieldName="decisionMethod"
-        tooltip={<FormattedMessage id="actionSidebar.toolip.decisionMethod" />}
+        tooltip={<FormattedMessage id="actionSidebar.tooltip.decisionMethod" />}
         title={<FormattedMessage id="actionSidebar.decisionMethod" />}
       >
         <FormCardSelect
@@ -72,7 +72,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="pencil"
         fieldName="description"
-        tooltip={<FormattedMessage id="actionSidebar.toolip.description" />}
+        tooltip={<FormattedMessage id="actionSidebar.tooltip.description" />}
         title={<FormattedMessage id="actionSidebar.description" />}
         isExpandable
       >

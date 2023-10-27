@@ -1,13 +1,16 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useId, useMemo, useState } from 'react';
 
 import clsx from 'clsx';
-import { useIntl } from 'react-intl';
 import useToggle from '~hooks/useToggle';
 import Card from '~v5/shared/Card';
-import { CardSelectProps } from './types';
+import { CardSelectOptionsGroup, CardSelectProps } from './types';
 import { FIELD_STATE } from '../consts';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 import Portal from '~v5/shared/Portal';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import { formatText } from '~utils/intl';
+import { isFlatOptions } from './utils';
+import { OPTION_LIST_ITEM_CLASSES } from './consts';
 
 const displayName = 'v5.common.Fields.CardSelect';
 
@@ -23,17 +26,41 @@ function CardSelect<TValue = string>({
   valueComparator = (v1, v2) => v1 === v2,
   state,
   placeholder,
+  renderSelectedValue,
+  cardClassName,
+  footer,
 }: CardSelectProps<TValue>): JSX.Element {
-  const intl = useIntl();
+  const { readonly } = useAdditionalFormOptionsContext();
 
+  const cardSelectToggle = useToggle();
   const [
     isSelectVisible,
     { toggle: toggleSelect, toggleOff: toggleSelectOff, registerContainerRef },
-  ] = useToggle();
+  ] = cardSelectToggle;
   const [uncontrolledValue, setUncontrolledValue] = useState<TValue>();
   const uncontrolledOnChange = useCallback((newValue: TValue) => {
     setUncontrolledValue(newValue);
   }, []);
+  const defaultGroupKey = useId();
+  const goupedOptions = useMemo<CardSelectOptionsGroup<TValue>[]>(() => {
+    if (isFlatOptions(options)) {
+      return [
+        {
+          key: defaultGroupKey,
+          title,
+          options,
+        },
+      ];
+    }
+
+    if (title) {
+      console.warn(
+        'CardSelect: title prop is ignored when options are grouped',
+      );
+    }
+
+    return options;
+  }, [defaultGroupKey, options, title]);
 
   const value = valueProp ?? uncontrolledValue;
   const onChange = onChangeProp ?? uncontrolledOnChange;
@@ -43,8 +70,10 @@ function CardSelect<TValue = string>({
       return undefined;
     }
 
-    return options.find((option) => valueComparator(option.value, value));
-  }, [options, value, valueComparator]);
+    return goupedOptions
+      .flatMap((group) => group.options)
+      .find((option) => valueComparator(option.value, value));
+  }, [goupedOptions, value, valueComparator]);
 
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
@@ -53,58 +82,93 @@ function CardSelect<TValue = string>({
     top: 8,
   });
 
+  const selectPlaceholder =
+    placeholder || formatText({ id: 'common.fields.cardSelect.placeholder' });
+
   return (
     <div className="sm:relative w-full">
-      <button
-        ref={relativeElementRef}
-        type="button"
-        className={clsx(
-          'flex capitalize text-md md:transition-colors md:hover:text-blue-400',
-          {
-            'text-gray-500': !state,
-            'text-gray-900': value,
-            'text-negative-400': state === FIELD_STATE.Error,
-          },
-        )}
-        onClick={toggleSelect}
-      >
-        {selectedOption?.label ||
-          placeholder ||
-          intl.formatMessage({ id: 'common.fields.cardSelect.placeholder' })}
-      </button>
-      {isSelectVisible && (
-        <Portal>
-          <Card
-            ref={(ref) => {
-              registerContainerRef(ref);
-              portalElementRef.current = ref;
-            }}
-            className="p-6 absolute z-[60]"
-            hasShadow
-            rounded="s"
-          >
-            {title && (
-              <h5 className="text-4 text-gray-400 mb-4 uppercase">{title}</h5>
+      {readonly ? (
+        <span className="capitalize text-md text-gray-900">
+          {renderSelectedValue
+            ? renderSelectedValue(selectedOption, selectPlaceholder)
+            : selectedOption?.label || selectPlaceholder}
+        </span>
+      ) : (
+        <>
+          <button
+            ref={relativeElementRef}
+            type="button"
+            className={clsx(
+              'flex text-md md:transition-colors md:hover:text-blue-400',
+              {
+                'text-gray-500': !state,
+                'text-gray-900': value,
+                'text-negative-400': state === FIELD_STATE.Error,
+              },
             )}
-            <ul>
-              {options.map(({ label, value: optionValue, ariaLabel }) => (
-                <li key={keyExtractor(optionValue)} className="mb-4 last:mb-0">
-                  <button
-                    type="button"
-                    className="flex text-md md:transition-colors md:hover:text-blue-400"
-                    aria-label={ariaLabel}
-                    onClick={() => {
-                      onChange(optionValue);
-                      toggleSelectOff();
-                    }}
-                  >
-                    {label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </Card>
-        </Portal>
+            onClick={toggleSelect}
+          >
+            {renderSelectedValue
+              ? renderSelectedValue(selectedOption, selectPlaceholder)
+              : selectedOption?.label || selectPlaceholder}
+          </button>
+          {isSelectVisible && (
+            <Portal>
+              <Card
+                ref={(ref) => {
+                  registerContainerRef(ref);
+                  portalElementRef.current = ref;
+                }}
+                className={clsx(cardClassName, 'p-6 absolute z-[60]')}
+                hasShadow
+                rounded="s"
+              >
+                <ul>
+                  {goupedOptions.map((group) => (
+                    <li key={group.key} className={OPTION_LIST_ITEM_CLASSES}>
+                      {group.title && (
+                        <h5 className="text-4 text-gray-400 mb-2 uppercase">
+                          {group.title}
+                        </h5>
+                      )}
+                      {!!group.options.length && (
+                        <ul>
+                          {group.options.map(
+                            ({ label, value: optionValue, ariaLabel }) => (
+                              <li
+                                key={keyExtractor(optionValue)}
+                                className="mb-2 last:mb-0"
+                              >
+                                <button
+                                  type="button"
+                                  className="flex text-md md:transition-colors md:hover:text-blue-400"
+                                  aria-label={ariaLabel}
+                                  onClick={() => {
+                                    onChange(optionValue);
+                                    toggleSelectOff();
+                                  }}
+                                >
+                                  {label}
+                                </button>
+                              </li>
+                            ),
+                          )}
+                        </ul>
+                      )}
+                    </li>
+                  ))}
+                  {footer && (
+                    <li className={OPTION_LIST_ITEM_CLASSES}>
+                      {typeof footer === 'function'
+                        ? footer(cardSelectToggle)
+                        : footer}
+                    </li>
+                  )}
+                </ul>
+              </Card>
+            </Portal>
+          )}
+        </>
       )}
     </div>
   );

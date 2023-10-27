@@ -14,6 +14,6 @@ export const Base: Story = {};
 
 export const Disabled: Story = {
   args: {
-    isDisabled: true,
+    disabled: true,
   },
 };

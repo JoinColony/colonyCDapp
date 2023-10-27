@@ -22,6 +22,7 @@ export const editTeamDescriptionMetadataGetter: DescriptionMetadataGetter<
       Change {currentTeamName ? `${currentTeamName} team` : 'team'} details
       {currentUser?.profile?.displayName && (
         <>
+          {' '}
           by{' '}
           <UserPopover
             userName={currentUser?.profile?.displayName}
@@ -29,7 +30,7 @@ export const editTeamDescriptionMetadataGetter: DescriptionMetadataGetter<
             aboutDescription={currentUser.profile?.bio || ''}
             user={currentUser}
           >
-            <span className="text-blue-400">
+            <span className="text-blue-400 font-medium">
               {currentUser.profile.displayName}
             </span>
           </UserPopover>

@@ -15,7 +15,7 @@ const EnterRecoveryModeForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     <ActionFormRow
       iconName="pencil"
       fieldName="description"
-      tooltip={<FormattedMessage id="actionSidebar.toolip.description" />}
+      tooltip={<FormattedMessage id="actionSidebar.tooltip.description" />}
       title={<FormattedMessage id="actionSidebar.description" />}
       isExpandable
     >

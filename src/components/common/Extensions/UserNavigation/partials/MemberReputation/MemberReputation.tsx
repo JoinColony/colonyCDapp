@@ -2,19 +2,29 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 
 import Icon from '~shared/Icon';
-import { MemberReputationProps } from './types';
 import { ZeroValue, calculatePercentageReputation } from '~utils/reputation';
 import Numeral from '~shared/Numeral';
+import { useUserReputation } from '~hooks';
+
+import { MemberReputationProps } from './types';
 
 export const displayName =
   'common.Extensions.UserNavigation.partials.MemberReputation';
 
 const MemberReputation: FC<MemberReputationProps> = ({
-  userReputation,
-  totalReputation,
+  colonyAddress,
+  domainId,
   hideOnMobile = true,
+  rootHash,
   textClassName = 'text-3',
+  walletAddress,
 }) => {
+  const { userReputation, totalReputation } = useUserReputation(
+    colonyAddress,
+    walletAddress,
+    domainId,
+    rootHash,
+  );
   const percentageReputation = calculatePercentageReputation(
     userReputation,
     totalReputation,

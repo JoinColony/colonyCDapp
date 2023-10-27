@@ -20,4 +20,4 @@ export const setLocalStorageVoteValue = (transactionId: string, vote: number) =>
   localStorage.setItem(`${transactionId}-vote`, `${vote}`);
 
 export const getLocalStorageVoteValue = (transactionId: string) =>
-  JSON.parse(localStorage.getItem(`${transactionId}-vote`) || '{}');
+  JSON.parse(localStorage.getItem(`${transactionId}-vote`) || 'null');

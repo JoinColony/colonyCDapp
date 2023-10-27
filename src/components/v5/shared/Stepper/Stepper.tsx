@@ -20,7 +20,7 @@ function Stepper<TKey extends React.Key>({
   const isMobile = useMobile();
   const withArrowsOnMobile =
     items.length > MIN_NUMBER_OF_STEPS_WITHOUT_MOBILE_NAVIGATION && isMobile;
-  const openedItem = items.find(({ key }) => key === openItemIndex) || items[0];
+  const openedItem = items[openItemIndex];
 
   useEffect(() => {
     setOpenItemIndex(activeItemIndex);

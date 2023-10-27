@@ -1,7 +1,9 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
-import { getMotionState, MotionState } from '~utils/colonyMotions';
+import clsx from 'clsx';
+import { BigNumber } from 'ethers';
+import { getMotionState, MotionState, MotionVote } from '~utils/colonyMotions';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
 import { MotionAction } from '~types/motions';
@@ -31,7 +33,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     refetchAction,
   } = useGetColonyAction(transactionId);
   const { motionData } = action || {};
-  const { motionId = '', motionStakes } = motionData || {};
+  const { motionId = '', motionStakes, requiredStake = '' } = motionData || {};
 
   const networkMotionStateEnum = getEnumValueFromKey(
     NetworkMotionState,
@@ -39,10 +41,6 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     NetworkMotionState.Null,
   );
 
-  const motionStateEnum = motionData
-    ? getMotionState(networkMotionStateEnum, motionData)
-    : MotionState.Staking;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [activeStepKey, setActiveStepKey] = useState(networkMotionStateEnum);
 
   useEffect(() => {
@@ -59,6 +57,44 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const isFullyStaked =
     objectingStakesPercentageValue === 100 &&
     supportingStakesPercentageValue === 100;
+
+  const motionStateEnum: MotionState | undefined = useMemo(() => {
+    if (!motionData) return undefined;
+    const motionStakesPercentage = motionData?.motionStakes.percentage;
+    const revealedVotesPercentage = motionData?.revealedVotes.percentage || '';
+
+    if (
+      activeStepKey === NetworkMotionState.Finalizable &&
+      BigNumber.from(motionStakesPercentage).gte(requiredStake) &&
+      BigNumber.from(motionStakesPercentage).gte(requiredStake)
+    ) {
+      if (
+        BigNumber.from(revealedVotesPercentage?.yay).gt(
+          revealedVotesPercentage?.nay,
+        )
+      ) {
+        return MotionState.Passed;
+      }
+
+      return MotionState.Failed;
+    }
+
+    return motionData
+      ? getMotionState(networkMotionStateEnum, motionData)
+      : MotionState.Staking;
+  }, [motionData]);
+
+  const revealedVotes = motionData?.revealedVotes?.raw;
+  const winningSide: MotionVote = BigNumber.from(revealedVotes?.yay).gt(
+    revealedVotes?.nay || '',
+  )
+    ? MotionVote.Yay
+    : MotionVote.Nay;
+
+  const votesHaveBeenRevealed: boolean =
+    revealedVotes?.yay !== '0' || revealedVotes?.nay !== '0';
+  const hasMotionPassed = motionStateEnum === MotionState.Passed;
+  const hasMotionFaild = motionStateEnum === MotionState.Failed;
 
   // @todo: add missing steps
   const items = useMemo(
@@ -141,10 +177,41 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
             {
               // @todo: change to MotionState when the outcome is known and revealed
               key: NetworkMotionState.Finalizable,
-              content: <OutcomeStep />,
+              content: (
+                <OutcomeStep
+                  motionData={motionData}
+                  motionState={motionStateEnum}
+                />
+              ),
               heading: {
-                // @todo: chnage label and styling when the outcome is known and revealed
-                label: formatText({ id: 'motion.outcome.label' }) || '',
+                iconName:
+                  (winningSide === MotionVote.Yay && 'thumbs-up') ||
+                  (hasMotionPassed && 'thumbs-up') ||
+                  (hasMotionFaild && 'thumbs-down') ||
+                  '',
+                label:
+                  (hasMotionPassed &&
+                    !votesHaveBeenRevealed &&
+                    formatText({ id: 'motion.passed.label' })) ||
+                  (hasMotionFaild &&
+                    !votesHaveBeenRevealed &&
+                    formatText({ id: 'motion.failed.label' })) ||
+                  (winningSide === MotionVote.Yay &&
+                    votesHaveBeenRevealed &&
+                    formatText({ id: 'motion.support.wins.label' })) ||
+                  (winningSide === MotionVote.Nay &&
+                    votesHaveBeenRevealed &&
+                    formatText({ id: 'motion.oppose.wins.label' })) ||
+                  formatText({ id: 'motion.outcome.label' }) ||
+                  '',
+                className: clsx({
+                  '!bg-base-white !text-purple-400 border-purple-400':
+                    hasMotionPassed ||
+                    (winningSide === MotionVote.Yay && votesHaveBeenRevealed),
+                  '!bg-base-white !text-red-400 border-red-400':
+                    (hasMotionFaild && !votesHaveBeenRevealed) ||
+                    winningSide === MotionVote.Nay,
+                }),
               },
               // @todo: add a condition to be required if staking won't go directly to finalize step
               isOptional: true,
@@ -167,24 +234,28 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
             },
           ],
     [
-      action,
-      activeStepKey,
-      isFullyStaked,
       loadingAction,
-      motionData,
-      motionId,
+      activeStepKey,
       motionStakes,
       motionStateEnum,
-      refetchAction,
+      motionId,
       refetchMotionState,
+      action,
       startPollingForAction,
       stopPollingForAction,
       transactionId,
+      isFullyStaked,
+      motionData,
+      winningSide,
+      hasMotionPassed,
+      hasMotionFaild,
+      votesHaveBeenRevealed,
+      refetchAction,
     ],
   );
 
   return loadingAction ? (
-    <SpinnerLoader />
+    <SpinnerLoader appearance={{ size: 'medium' }} />
   ) : (
     <MotionProvider
       motionAction={action as MotionAction}

@@ -8,10 +8,10 @@ import UserTokenActivationButton from '~frame/UserTokenActivationButton';
 import HamburgerDropdown from '~frame/HamburgerDropdown';
 import {
   useAppContext,
-  useColonyContext,
   useUserReputation,
   useMobile,
   useCanInteractWithNetwork,
+  useColonyContext,
 } from '~hooks';
 import { useUserTokenBalanceContext } from '~context';
 
