@@ -2,7 +2,7 @@ import * as admin from 'firebase-admin';
 import { Handler } from 'aws-lambda';
 
 import { graphqlRequest, notNull } from '../../utils';
-import { setEnvVariables } from '../../getParams';
+import { getParams } from '../../getParams';
 
 import {
   TriggerEvent,
@@ -14,13 +14,13 @@ import {
   UpdateColonyContributorDocument,
 } from './types';
 
-let apiKey = 'da2-fakeApiId123456';
-let graphqlURL = 'http://localhost:20002/graphql';
-let firebaseAdminConfig;
+let apiKey: string;
+let graphqlURL: string;
+let firebaseAdminConfig: string;
 
 export const handler: Handler<TriggerEvent> = async (event: TriggerEvent) => {
   try {
-    [apiKey, graphqlURL, firebaseAdminConfig] = await setEnvVariables([
+    [apiKey, graphqlURL, firebaseAdminConfig] = await getParams([
       'appsyncApiKey',
       'graphqlUrl',
       'firebaseAdminConfig',
@@ -34,7 +34,7 @@ export const handler: Handler<TriggerEvent> = async (event: TriggerEvent) => {
   const profileQuery = await graphqlRequest<
     GetProfile_StcpnQuery,
     GetProfile_StcpnQueryVariables
-  >(GetProfile_StcpnDocument, { id: userId || '' }, graphqlURL, apiKey);
+  >(GetProfile_StcpnDocument, { id: userId }, graphqlURL, apiKey);
 
   if (profileQuery.errors || !profileQuery.data) {
     const [error] = profileQuery.errors;
