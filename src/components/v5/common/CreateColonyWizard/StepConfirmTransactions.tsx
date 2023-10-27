@@ -137,7 +137,7 @@ const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
   );
 
   return (
-    <section className="">
+    <section>
       <HeaderRow
         heading={{ id: 'createColonyWizard.step.transactions.heading' }}
         description={{ id: 'createColonyWizard.step.transactiosn.description' }}
