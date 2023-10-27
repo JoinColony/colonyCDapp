@@ -3,6 +3,8 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
+import Logo from '~images/logo-new.svg';
+
 import PageLayout from '~v5/frame/PageLayout';
 
 const pageLayoutMeta: Meta<typeof PageLayout> = {
@@ -24,7 +26,7 @@ const pageLayoutMeta: Meta<typeof PageLayout> = {
     children: <div className="h-screen bg-blue-200">body</div>,
     headerContent: <p>header</p>,
     navigationSidebarProps: {
-      logo: <p>logo</p>,
+      logo: <Logo />,
       additionalMobileContent: <p>mobile content</p>,
       mobileBottomContent: <p>mobile bottom content</p>,
       hamburgerLabel: 'Menu',
