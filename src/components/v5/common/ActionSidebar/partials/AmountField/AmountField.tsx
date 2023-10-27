@@ -53,7 +53,7 @@ const AmountField: FC<AmountFieldProps> = ({ name, tokenAddress }) => {
     onInput,
     formattingOptions,
     selectedToken,
-  } = useAmountField(tokenAddressController.value);
+  } = useAmountField(tokenAddress || tokenAddressController.value);
 
   const handleCleaveChange = (e: CleaveChangeEvent) => {
     field.onChange(e.target.rawValue);
@@ -66,7 +66,7 @@ const AmountField: FC<AmountFieldProps> = ({ name, tokenAddress }) => {
     top: 8,
   });
 
-  const content = (
+  const selectedTokenContent = (
     <>
       <TokenIcon token={selectedToken || colonyTokens[0]} size="xs" />
       <span className="text-md">
@@ -85,7 +85,7 @@ const AmountField: FC<AmountFieldProps> = ({ name, tokenAddress }) => {
           <span className="text-gray-900">
             <Numeral value={field.value} decimals={selectedToken?.decimals} />
           </span>
-          <div className="flex items-center gap-2">{content}</div>
+          <div className="flex items-center gap-2">{selectedTokenContent}</div>
         </>
       ) : (
         <>
@@ -104,7 +104,9 @@ const AmountField: FC<AmountFieldProps> = ({ name, tokenAddress }) => {
             style={{ width: `${inputWidth || 0.65}rem` }}
           />
           {tokenAddress ? (
-            <div className="flex items-center gap-2">{content}</div>
+            <div className="flex items-center gap-2">
+              {selectedTokenContent}
+            </div>
           ) : (
             <div className="sm:relative w-full">
               <button
@@ -120,7 +122,7 @@ const AmountField: FC<AmountFieldProps> = ({ name, tokenAddress }) => {
                 onClick={toggleTokenSelect}
                 aria-label={formatMessage({ id: 'ariaLabel.selectToken' })}
               >
-                {content}
+                {selectedTokenContent}
               </button>
               {isTokenSelectVisible && (
                 <Portal>
