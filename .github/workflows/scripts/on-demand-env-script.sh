@@ -196,6 +196,6 @@ echo "Port 9091 is now open!"
 # Send notification on Discord
 curl -H "Content-Type: application/json" \
      -X POST \
-     -d '{"content":"Hey @'"$DISCORD_USER_ID"', your dev environment for '"$SOURCE_USED"' is ready to use at [IP: '"$PUBLIC_IP"'](https://'"$PUBLIC_IP"') !"}' \
+     -d '{"content":"Hey <@'"$DISCORD_USER_ID"'>, your dev environment for '"$SOURCE_USED"' is ready to use at [IP: '"$PUBLIC_IP"'](https://'"$PUBLIC_IP"') !"}' \
      $DISCORD_WEBHOOK
 echo "Completion message posted!"
