@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import { useWatch } from 'react-hook-form';
 import { Id } from '@colony/colony-js';
 import { DeepPartial } from 'utility-types';
 import { ActionTypes } from '~redux';
@@ -20,6 +21,7 @@ export const useSimplePayment = (
   const { networkInverseFee } = useNetworkInverseFee();
   const { colony } = useColonyContext();
   const { isVotingReputationEnabled } = useEnabledExtensions();
+  const tokenAddress: string = useWatch({ name: 'amount.tokenAddress' });
 
   useActionFormBaseHook({
     validationSchema,
@@ -74,4 +76,8 @@ export const useSimplePayment = (
       [colony, networkInverseFee],
     ),
   });
+
+  return {
+    tokenAddress,
+  };
 };

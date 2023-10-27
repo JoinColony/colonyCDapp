@@ -4,4 +4,5 @@ export interface TransactionTableModel {
 
 export interface TransactionTableProps {
   name: string;
+  tokenAddress?: string;
 }

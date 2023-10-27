@@ -4,7 +4,7 @@ import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import clsx from 'clsx';
 
 import Button from '~v5/shared/Button/Button';
-import { useColonyContext, useMobile } from '~hooks';
+import { useMobile } from '~hooks';
 import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
 import { useTransactionTableColumns, useGetTableMenuProps } from './hooks';
 import { TransactionTableModel, TransactionTableProps } from './types';
@@ -13,8 +13,10 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 
 const displayName = 'v5.common.ActionsContent.partials.TransactionTable';
 
-const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
-  const { nativeToken } = useColonyContext().colony || {};
+const TransactionTable: FC<TransactionTableProps> = ({
+  name,
+  tokenAddress,
+}) => {
   const fieldArrayMethods = useFieldArray({
     name,
   });
@@ -24,7 +26,7 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
     }),
   );
   const { readonly } = useAdditionalFormOptionsContext();
-  const columns = useTransactionTableColumns(name);
+  const columns = useTransactionTableColumns(name, tokenAddress);
   const isMobile = useMobile();
   const value = useWatch({ name });
   const getMenuProps = useGetTableMenuProps(
@@ -64,7 +66,6 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
             fieldArrayMethods.append({
               amount: {
                 amount: '0',
-                tokenAddress: nativeToken?.tokenAddress || '',
               },
             });
           }}

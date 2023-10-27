@@ -6,4 +6,5 @@ export interface AmountFieldProps {
   name: string;
   amount?: string;
   defaultToken?: string;
+  tokenAddress?: string;
 }
