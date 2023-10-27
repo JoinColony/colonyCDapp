@@ -40,7 +40,7 @@ export const useRichText = (
             return 'Enter a description';
           },
           showOnlyWhenEditable: false,
-          emptyNodeClass: `first-child:before:text-gray-500 md:first-child:before:hover:text-blue-400 first-child:before:content-[attr(data-placeholder)] first-child:before:pointer-events-none`,
+          emptyNodeClass: `first:before:text-gray-500 md:first:before:hover:text-blue-400 first:before:content-[attr(data-placeholder)] first:before:pointer-events-none`,
         }),
         Heading.configure({ levels: [1, 2, 3] }).extend({
           levels: [1, 2],
@@ -99,11 +99,7 @@ export const useRichText = (
   useEffect(() => {
     if (field.value && editorContent && !isDecriptionFieldExpanded) {
       editorContent?.setEditable(false);
-      setNotFormattedContent(
-        editorContent?.getText()
-          ? editorContent?.getText()
-          : 'Enter a description',
-      );
+      setNotFormattedContent(editorContent?.getText());
     }
   }, [editorContent, isDecriptionFieldExpanded, field.value]);
 
