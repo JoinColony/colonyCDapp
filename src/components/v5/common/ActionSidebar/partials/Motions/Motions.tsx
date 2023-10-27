@@ -12,7 +12,7 @@ import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyA
 import Stepper from '~v5/shared/Stepper';
 
 import MotionCountDownTimer from './partials/MotionCountDownTimer';
-import { MotionProvider } from './partials/MotionProvider/MotionProvider';
+import MotionProvider from './partials/MotionProvider/MotionProvider';
 import FinalizeStep from './steps/FinalizeStep';
 import OutcomeStep from './steps/OutcomeStep';
 import RevealStep from './steps/RevealStep';
