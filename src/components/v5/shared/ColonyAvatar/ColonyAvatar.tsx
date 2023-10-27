@@ -38,8 +38,9 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
           />
         )}
       </figure>
-      <figure
-        className={`
+      {chainImageProps?.src && (
+        <figure
+          className={`
           h-[0.5em]
           w-[0.5em]
           rounded-full
@@ -57,13 +58,14 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
           justify-center
           items-center
       `}
-      >
-        <img
-          {...chainImageProps}
-          alt={chainImageProps?.alt || 'Chain image'}
-          className="h-[96%] w-[96%] object-cover object-center rounded-full"
-        />
-      </figure>
+        >
+          <img
+            {...chainImageProps}
+            alt={chainImageProps?.alt || 'Chain image'}
+            className="h-[96%] w-[96%] object-cover object-center rounded-full"
+          />
+        </figure>
+      )}
     </div>
   );
 };
