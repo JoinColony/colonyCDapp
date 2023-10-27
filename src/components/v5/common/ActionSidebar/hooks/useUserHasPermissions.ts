@@ -7,7 +7,6 @@ import {
   useEnabledExtensions,
   useTransformer,
 } from '~hooks';
-import { Colony } from '~types';
 import { getAllUserRoles } from '~transformers';
 
 export const useUserHasPermissions = (): boolean => {
@@ -17,15 +16,14 @@ export const useUserHasPermissions = (): boolean => {
 
   const requiredRoles: ColonyRole[] = [ColonyRole.Root];
 
-  const hasReputation = useColonyHasReputation(colony?.colonyAddress as string);
-
+  const hasReputation = useColonyHasReputation(colony?.colonyAddress);
   const allUserRoles = useTransformer(getAllUserRoles, [
     colony,
     wallet?.address,
   ]);
 
   const [hasRoles] = useDialogActionPermissions(
-    colony as Colony,
+    colony,
     isVotingReputationEnabled,
     requiredRoles,
     allUserRoles,
