@@ -5,6 +5,7 @@ import TwoColumns from '~v5/frame/TwoColumns';
 import Spinner from '~v5/shared/Spinner';
 import Table from './partials/Table';
 import { useVerifiedPage } from './hooks';
+import FundsTable from '../FundsPage/partials/FundsTable';
 
 const displayName = 'v5.pages.VerifiedPage';
 
@@ -20,6 +21,7 @@ const VerifiedPage: FC = () => {
         <div className="flex justify-between mt-6">
           <div className="w-full">
             <Table list={verifiedMembers} onReputationSortClick={() => {}} />
+            <FundsTable />
           </div>
         </div>
       </TwoColumns>

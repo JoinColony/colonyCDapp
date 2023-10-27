@@ -604,6 +604,8 @@
   "verifiedPage.table.permission": "Permission",
   "verifiedPage.table.emptyTitle": "No results to display",
   "verifiedPage.table.emptyDescription": "There are no verified members in the Colony to display.",
+  "incomingFundsPage.table.amount": "Amount",
+  "incomingFundsPage.table.claim": "Claim",
   "teamsPage.title": "Teams",
   "teamsPage.description": "Teams of the Colony",
   "userProfilePage.title": "Profile",

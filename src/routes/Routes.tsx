@@ -166,20 +166,22 @@ const Routes = () => {
       <Route
         path={COLONY_VERIFIED_ROUTE}
         element={
-          <ExtensionsContextProvider>
-            <MemberContextProvider>
-              <ActionSidebarContextProvider>
-                <PageLayout
-                  loadingText="verified"
-                  title={{ id: 'verifiedPage.title' }}
-                  description={{ id: 'verifiedPage.description' }}
-                  pageName="members"
-                >
-                  <VerifiedPage />
-                </PageLayout>
-              </ActionSidebarContextProvider>
-            </MemberContextProvider>
-          </ExtensionsContextProvider>
+          <ColonyContextProvider>
+            <ExtensionsContextProvider>
+              <MemberContextProvider>
+                <ActionSidebarContextProvider>
+                  <PageLayout
+                    loadingText="verified"
+                    title={{ id: 'verifiedPage.title' }}
+                    description={{ id: 'verifiedPage.description' }}
+                    pageName="members"
+                  >
+                    <VerifiedPage />
+                  </PageLayout>
+                </ActionSidebarContextProvider>
+              </MemberContextProvider>
+            </ExtensionsContextProvider>
+          </ColonyContextProvider>
         }
       />
       <Route

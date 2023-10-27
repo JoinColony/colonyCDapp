@@ -1,6 +1,8 @@
 import React, { ButtonHTMLAttributes } from 'react';
 import { MessageDescriptor } from 'react-intl';
+import { ActionTypes } from '~redux';
 import { SimpleMessageValues } from '~types';
+import { ActionTransformFnType } from '~utils/actions';
 
 export type ButtonMode =
   | 'primarySolid'
@@ -74,4 +76,19 @@ export interface HamburgerProps extends CommonButtonProps {
 export interface CloseButtonProps extends CommonButtonProps {
   iconSize?: IconSize;
   className?: string;
+}
+
+export interface ActionButtonProps extends ButtonProps {
+  actionType: ActionTypes;
+  isLoading?: boolean;
+  confirmText?: any;
+  error?: string;
+  onConfirmToggled?: (...args: any[]) => void;
+  onSuccess?: (result: any) => void;
+  onError?: (error: any) => void;
+  submit?: string;
+  success?: string;
+  text?: MessageDescriptor | string;
+  transform?: ActionTransformFnType;
+  values?: any;
 }

@@ -31,6 +31,7 @@ const checksumAddresses = (listToken: ListToken): FormattedListToken => ({
 });
 
 const getTokenList = (): FormattedListToken[] => {
+  return mainnetTokenList.map(checksumAddresses);
   switch (DEFAULT_NETWORK) {
     case Network.Mainnet:
       return mainnetTokenList.map(checksumAddresses);

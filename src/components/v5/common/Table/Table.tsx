@@ -30,12 +30,29 @@ const Table = <T,>({
       .map((column) => column.column.columnDef)
       .some((columnDef) => columnDef.footer),
   )[0];
+  const hasHeader = headerGroups.map((headerGroup) =>
+    headerGroup.headers
+      .map((column) => column.column.columnDef)
+      .some((columnDef) => columnDef.header),
+  )[0];
+
+  console.log(headerGroups, 'hasHeader');
 
   return (
     <table
       className={clsx(
         className,
-        'border border-separate border-spacing-0 border-1 w-full rounded-lg border-gray-200 overflow-hidden',
+        `
+          border
+          border-separate
+          border-spacing-0
+          border-1
+          w-full
+          rounded-lg
+          border-gray-200
+          overflow-hidden
+          table-fixed
+        `,
       )}
     >
       {isMobile && verticalOnMobile ? (
@@ -89,26 +106,32 @@ const Table = <T,>({
         })
       ) : (
         <>
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    className={`text-left text-sm text-gray-600 bg-gray-50 font-normal
-                    px-[1.1rem] py-[0.7rem]`}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
+          {hasHeader && (
+            <thead>
+              {headerGroups.map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      className={`text-left text-sm text-gray-600 bg-gray-50 font-normal
+                      px-[1.1rem] py-[0.7rem]`}
+                      style={{
+                        width:
+                          header.getSize() !== 0 ? header.getSize() : 'auto',
+                      }}
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+          )}
           <tbody className="w-full">
             {rows.map((row) => (
               <tr key={row.id} className={getRowClassName(row)}>
