@@ -1,6 +1,5 @@
 // Unfortunatey we cannot destructure this library
 // https://github.com/firebase/firebase-admin-node/issues/593
-import * as admin from 'firebase-admin';
 import { Handler } from 'aws-lambda';
 
 import { graphqlRequest, notNull } from '../../utils';
@@ -25,25 +24,17 @@ import {
 
 import { notificationBuilder } from './message';
 import { sendUserEmail, sendColonyEmail } from './sendEmailNotifications';
+import { pushToColony, pushToUser } from './sendPushNotifications';
 
+// Config variables
 let apiKey: string;
 let graphqlURL: string;
-let firebaseAdminConfig: string;
-let messaging: admin.messaging.Messaging;
-
-const removeInterpolationMarkers = (message: string) => {
-  return message.replace(/[\[\]]/g, '');
-};
 
 export const handler: Handler<TriggerEvent> = async (event: TriggerEvent) => {
   try {
-    [apiKey, graphqlURL, firebaseAdminConfig] = await getParams([
-      'appsyncApiKey',
-      'graphqlUrl',
-      'firebaseAdminConfig',
-    ]);
+    [apiKey, graphqlURL] = await getParams(['appsyncApiKey', 'graphqlUrl']);
   } catch (e) {
-    throw new Error(`Unable to set environment variables. Reason: ${e}`);
+    throw new Error(`Unable to get environment variables. Reason: ${e}`);
   }
 
   const {
@@ -55,14 +46,6 @@ export const handler: Handler<TriggerEvent> = async (event: TriggerEvent) => {
     associatedActionId,
     customNotificationText,
   } = event.arguments?.input;
-
-  const serviceAccount = JSON.parse(firebaseAdminConfig);
-
-  const app = admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-  });
-
-  messaging = app.messaging();
 
   const colonyQuery = await graphqlRequest<
     GetColonyName_SnQuery,
@@ -76,11 +59,10 @@ export const handler: Handler<TriggerEvent> = async (event: TriggerEvent) => {
 
   const { name, metadata } = colonyQuery?.data?.getColony || {};
 
+  // Construct the message parts from the above colony queries
   const title =
     customNotificationTitle || metadata?.displayName || name || colonyId;
 
-  // NOTE: We are sending data web push messages and handling them
-  // ourselves in the firebase web worker
   const body = await notificationBuilder({
     type,
     associatedUserId,
@@ -107,7 +89,7 @@ async function sendMessageToUser({
   const userQuery = await graphqlRequest<
     GetUserDetails_SnQuery,
     GetUserDetails_SnQueryVariables
-  >(GetUserDetails_SnDocument, { id: userId ?? '' }, graphqlURL, apiKey);
+  >(GetUserDetails_SnDocument, { id: userId }, graphqlURL, apiKey);
 
   if (userQuery.errors || !userQuery.data) {
     const [error] = userQuery.errors;
@@ -136,37 +118,9 @@ async function sendMessageToUser({
       return false;
     }
 
-    const message = {
-      data: {
-        title: title || '',
-        body: removeInterpolationMarkers(body || ''),
-      },
-      tokens: notificationTokens.filter(notNull),
-    };
+    const tokens = notificationTokens.filter(notNull);
 
-    // Send a message to the device corresponding to the provided
-    // registration token.
-    try {
-      if (!messaging) {
-        return;
-      }
-
-      const response = await messaging.sendEachForMulticast(message);
-
-      if (response.failureCount > 0) {
-        const failedTokens = [];
-        response.responses.forEach((resp, idx) => {
-          if (!resp.success) {
-            //@ts-ignore
-            failedTokens.push(notificationTokens[idx]);
-          }
-        });
-        // Remove these from the db if they fail?
-        console.log('List of tokens that caused failures: ' + failedTokens);
-      }
-    } catch (error) {
-      console.log('Error sending message:', error);
-    }
+    await pushToUser({ title, body, tokens });
   }
 
   if (notificationSettings?.enableEmail) {
@@ -179,20 +133,14 @@ async function broadcastToColony({
   title,
   body,
 }: BroadcastToColonyParams) {
-  const message = {
-    data: { title: title || '', body: removeInterpolationMarkers(body || '') },
-    topic: colonyId || '',
-  };
-
-  // Send a message to devices subscribed to the provided topic.
-  try {
-    const response = await messaging?.send(message);
-    console.log(`Successfully sent message to topic ${colonyId}:`, response);
-  } catch (error) {
-    console.log('Error sending message:', error);
+  if (!colonyId) {
+    throw new Error('No colonyId found for colony broadcast');
   }
 
-  await sendColonyEmail({ colonyId, title });
+  await Promise.all([
+    pushToColony({ title, body, colonyId }),
+    sendColonyEmail({ colonyId, title }),
+  ]);
 }
 
 async function createNotificationInDatabase({
@@ -209,9 +157,9 @@ async function createNotificationInDatabase({
     {
       input: {
         colonyId,
-        userId: userId || '',
+        userId: userId,
         read: false,
-        text: body || '',
+        text: body,
         title: title,
       },
     },

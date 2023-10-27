@@ -11,19 +11,19 @@ import {
   NotificationType,
 } from './types';
 
-let apiKey: string;
-let graphqlURL: string;
-
 const messageSetup = async () => {
   try {
-    [apiKey, graphqlURL] = await getParams([
+    const [apiKey, graphqlURL] = await getParams([
       'appsyncApiKey',
       'graphqlUrl',
-      'mailJetApiKey',
-      'mailJetApiSecret',
     ]);
+
+    return {
+      apiKey,
+      graphqlURL,
+    };
   } catch (e) {
-    throw new Error(`Unable to set environment variables. Reason: ${e}`);
+    throw new Error(`Unable to get environment variables. Reason: ${e}`);
   }
 };
 
@@ -33,7 +33,7 @@ export const notificationBuilder = async ({
   associatedActionId,
   customNotificationText,
 }: NotificationBuilderParams) => {
-  await messageSetup();
+  const { apiKey, graphqlURL } = await messageSetup();
 
   const displayNameQuery = await graphqlRequest<
     GetDisplayName_SnQuery,
@@ -87,4 +87,14 @@ export const notificationBuilder = async ({
     default:
       throw new Error(`Notification type: ${type} is not defined`);
   }
+};
+
+/**
+ * Helper function to remove interpolation markers from a string.
+ * Colony name and actions are associated with their blockchain hash this is signified in the message save to the db
+ * with square brackets eg. [<colony-name-example>]. However this signification has no meaning when the notification
+ * is sent via the web notifications service so this helper function strips these interpolation markers.
+ */
+export const removeInterpolationMarkers = (message: string) => {
+  return message.replace(/[\[\]]/g, '');
 };

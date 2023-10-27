@@ -25,7 +25,7 @@ export interface TriggerEvent {
   };
 }
 
-type MessageComponents = {
+type Message = {
   title: string;
   body: string;
 };
@@ -35,17 +35,18 @@ export type NotificationBuilderParams = Pick<
   'type' | 'associatedUserId' | 'associatedActionId' | 'customNotificationText'
 >;
 
-export type SendMessageToUserParams = Pick<
-  SendNotificationInput,
-  'type' | 'userId'
-> &
-  MessageComponents;
+export type SendMessageToUserParams = Pick<SendNotificationInput, 'type'> &
+  Message & { userId: string };
 
 export type CreateNotificationInDatabaseParams = Pick<
   SendNotificationInput,
-  'colonyId' | 'userId'
+  'colonyId'
 > &
-  MessageComponents;
+  Message & { userId: string };
 
 export type BroadcastToColonyParams = Pick<SendNotificationInput, 'colonyId'> &
-  MessageComponents;
+  Message;
+
+export type PushToUserParams = Message & { tokens: Array<string> };
+
+export type PushToColonyParams = Message & { colonyId: string };

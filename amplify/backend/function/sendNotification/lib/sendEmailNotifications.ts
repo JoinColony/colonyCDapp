@@ -30,7 +30,7 @@ const emailSetup = async () => {
       mailjet,
     };
   } catch (e) {
-    throw new Error(`Unable to set environment variables. Reason: ${e}`);
+    throw new Error(`Unable to get environment variables. Reason: ${e}`);
   }
 };
 
