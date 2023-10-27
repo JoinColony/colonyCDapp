@@ -17,12 +17,12 @@ const HamburgerButton: FC<HamburgerButtonProps> = ({
         'text-gray-900': !isOpen,
       })}
     >
-      <span className="relative h-[10px] w-[14px] block">
+      <span className="relative h-2.5 w-3.5 block">
         <span
           className={clsx(
-            'absolute top-1/2 left-1/2 -translate-x-1/2 h-[1px] rounded-full w-full bg-current transition-all',
+            'absolute top-1/2 left-1/2 -translate-x-1/2 h-px rounded-full w-full bg-current transition-all',
             {
-              '-translate-y-[5px]': !isOpen,
+              '-translate-y-[5px]': !isOpen, // it doesn't work with rems
               'rotate-45 -translate-y-1/2': isOpen,
             },
           )}
@@ -35,7 +35,7 @@ const HamburgerButton: FC<HamburgerButtonProps> = ({
               left-1/2
               -translate-x-1/2
               -translate-y-1/2
-              h-[1px]
+              h-px
               rounded-full
               w-full
               bg-current
@@ -49,9 +49,9 @@ const HamburgerButton: FC<HamburgerButtonProps> = ({
         />
         <span
           className={clsx(
-            'absolute top-1/2 left-1/2 -translate-x-1/2 h-[1px] rounded-full w-full bg-current transition-all',
+            'absolute top-1/2 left-1/2 -translate-x-1/2 h-px rounded-full w-full bg-current transition-all',
             {
-              'translate-y-[4px]': !isOpen,
+              'translate-y-[4px]': !isOpen, // it doesn't work with rems or 1
               '-rotate-45 -translate-y-1/2': isOpen,
             },
           )}

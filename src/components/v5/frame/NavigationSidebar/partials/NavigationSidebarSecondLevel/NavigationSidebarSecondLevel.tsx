@@ -58,7 +58,7 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
         <Button
           {...restBottomActionProps}
           onClick={(e) => {
-            setOpenItemIndex(-1);
+            setOpenItemIndex(undefined);
             onClick?.(e);
           }}
           className="w-full"

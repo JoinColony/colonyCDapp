@@ -13,7 +13,4 @@ export interface NavigationSidebarItem extends NavigationSidebarButtonProps {
 
 export interface NavigationSidebarMainMenuProps {
   mainMenuItems: NavigationSidebarItem[];
-  openItemIndex: number;
-  setOpenItemIndex: (index: number) => void;
-  toggleOffThirdLevelMenu: VoidFunction;
 }

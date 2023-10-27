@@ -1,17 +1,7 @@
 import React from 'react';
 import { ColonyAvatarProps } from '~v5/shared/ColonyAvatar/types';
-import { NavigationSidebarButtonProps } from './partials/NavigationSidebarButton/types';
+import { NavigationSidebarMainMenuProps } from './partials/NavigationSidebarMainMenu/types';
 import { NavigationSidebarSecondLevelProps } from './partials/NavigationSidebarSecondLevel/types';
-import { NavigationSidebarThirdLevelProps } from './partials/NavigationSidebarThirdLevel/types';
-
-export interface NavigationSidebarItem extends NavigationSidebarButtonProps {
-  key: string;
-  secondLevelMenuProps: Omit<
-    NavigationSidebarSecondLevelProps,
-    'isExpanded' | 'onArrowClick'
-  >;
-  relatedActionsProps?: NavigationSidebarThirdLevelProps;
-}
 
 export interface NavigationSidebarColonySwitcherProps {
   avatarProps: ColonyAvatarProps;
@@ -22,7 +12,7 @@ export interface NavigationSidebarColonySwitcherProps {
 }
 
 export interface NavigationSidebarProps {
-  mainMenuItems: NavigationSidebarItem[];
+  mainMenuItems: NavigationSidebarMainMenuProps['mainMenuItems'];
   colonySwitcherProps: NavigationSidebarColonySwitcherProps;
   logo?: React.ReactNode;
   additionalMobileContent?: React.ReactNode;

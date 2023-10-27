@@ -1,14 +1,9 @@
+import { UseToggleReturnType } from '~hooks/useToggle/types';
+
 export interface NavigationSidebarContextValue {
-  openItemIndex: number;
-  setOpenItemIndex: (index: number) => void;
-  isMenuOpen: boolean;
-  toggleMenu: VoidFunction;
-  toggleOffMenu: VoidFunction;
-  isSecondLevelMenuOpen: boolean;
-  toggleOnSecondLevelMenu: VoidFunction;
-  toggleOffSecondLevelMenu: VoidFunction;
-  registerContainerRef: (ref: HTMLDivElement) => void;
-  isThirdLevelMenuOpen: boolean;
-  toggleThirdLevelMenu: VoidFunction;
-  toggleOffThirdLevelMenu: VoidFunction;
+  openItemIndex: number | undefined;
+  setOpenItemIndex: (index: number | undefined) => void;
+  mobileMenuToggle: UseToggleReturnType;
+  secondLevelMenuToggle: UseToggleReturnType;
+  thirdLevelMenuToggle: UseToggleReturnType;
 }

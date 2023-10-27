@@ -7,6 +7,7 @@ import { accordionAnimation } from '~constants/accordionAnimation';
 import NavigationSidebarButton from '../NavigationSidebarButton';
 import NavigationSidebarSecondLevel from '../NavigationSidebarSecondLevel';
 import NavigationSidebarThirdLevel from '../NavigationSidebarThirdLevel/NavigationSidebarThirdLevel';
+import useNavigationSidebarContext from '../NavigationSidebarContext/hooks';
 import { NavigationSidebarMainMenuProps } from './types';
 
 const displayName =
@@ -14,11 +15,11 @@ const displayName =
 
 const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
   mainMenuItems,
-  openItemIndex,
-  setOpenItemIndex,
-  toggleOffThirdLevelMenu,
 }) => {
   const isTablet = useTablet();
+  const { openItemIndex, setOpenItemIndex, thirdLevelMenuToggle } =
+    useNavigationSidebarContext();
+  const [, { toggleOff: toggleOffThirdLevelMenu }] = thirdLevelMenuToggle;
 
   return (
     <nav>
@@ -42,7 +43,7 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
                 <NavigationSidebarButton
                   onClick={() => {
                     if (isActive) {
-                      setOpenItemIndex(-1);
+                      setOpenItemIndex(undefined);
                     } else {
                       setOpenItemIndex(index + 1);
                     }

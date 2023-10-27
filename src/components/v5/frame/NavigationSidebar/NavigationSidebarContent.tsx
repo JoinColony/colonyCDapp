@@ -5,19 +5,19 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useTablet } from '~hooks';
 import ColonyAvatar from '~v5/shared/ColonyAvatar';
 import HamburgerButton from '~v5/shared/HamburgerButton';
+import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
 
 import NavigationSidebarSecondLevel from './partials/NavigationSidebarSecondLevel';
-import NavigationSidebarThirdLevel from './partials/NavigationSidebarThirdLevel/NavigationSidebarThirdLevel';
-import NavigationSidebarMainMenu from './partials/NavigationSidebarMainMenu/NavigationSidebarMainMenu';
+import NavigationSidebarThirdLevel from './partials/NavigationSidebarThirdLevel';
+import NavigationSidebarMainMenu from './partials/NavigationSidebarMainMenu';
 import useNavigationSidebarContext from './partials/NavigationSidebarContext/hooks';
-import NavigationSidebarMobileContentWrapper from './partials/NavigationSidebarMobileContentWrapper/NavigationSidebarMobileContentWrapper';
+import NavigationSidebarMobileContentWrapper from './partials/NavigationSidebarMobileContentWrapper';
 import { NavigationSidebarProps } from './types';
 import {
   secondLevelContentAnimation,
   secondLevelWrapperAnimation,
   thirdLevelWrapperAnimation,
 } from './consts';
-import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
 
 const displayName = 'v5.frame.NavigationSidebarContent';
 
@@ -32,23 +32,32 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
 }) => {
   const isTablet = useTablet();
   const {
-    isSecondLevelMenuOpen,
-    isThirdLevelMenuOpen,
     openItemIndex,
-    registerContainerRef,
     setOpenItemIndex,
-    isMenuOpen,
-    toggleMenu,
-    toggleOffMenu,
-    toggleOffThirdLevelMenu,
-    toggleThirdLevelMenu,
+    mobileMenuToggle,
+    secondLevelMenuToggle,
+    thirdLevelMenuToggle,
   } = useNavigationSidebarContext();
+  const [isMenuOpen, { toggle: toggleMenu, toggleOff: toggleOffMenu }] =
+    mobileMenuToggle;
+  const [isSecondLevelMenuOpen, { registerContainerRef }] =
+    secondLevelMenuToggle;
+  const [
+    isThirdLevelMenuOpen,
+    { toggle: toggleThirdLevelMenu, toggleOff: toggleOffThirdLevelMenu },
+  ] = thirdLevelMenuToggle;
 
   useDisableBodyScroll(
-    ((isMenuOpen && !!openItemIndex) || !openItemIndex) && isTablet,
+    ((isMenuOpen && !!openItemIndex) || openItemIndex === 0) && isTablet,
   );
 
-  const activeMainMenuItem = mainMenuItems[openItemIndex - 1] || {};
+  const activeMainMenuItem = openItemIndex
+    ? mainMenuItems[openItemIndex - 1]
+    : undefined;
+
+  const hasThirdLevel = activeMainMenuItem?.relatedActionsProps?.items.length;
+
+  const relatedActions = activeMainMenuItem?.relatedActionsProps;
 
   const {
     avatarProps: colonySwitcherAvatarProps,
@@ -56,12 +65,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
   } = colonySwitcherProps;
 
   const mainMenu = mainMenuItems.length ? (
-    <NavigationSidebarMainMenu
-      mainMenuItems={mainMenuItems}
-      openItemIndex={openItemIndex}
-      setOpenItemIndex={setOpenItemIndex}
-      toggleOffThirdLevelMenu={toggleOffThirdLevelMenu}
-    />
+    <NavigationSidebarMainMenu mainMenuItems={mainMenuItems} />
   ) : null;
 
   return (
@@ -112,7 +116,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                 type="button"
                 onClick={() => {
                   if (openItemIndex === 0) {
-                    setOpenItemIndex(-1);
+                    setOpenItemIndex(undefined);
                   } else {
                     setOpenItemIndex(0);
                   }
@@ -123,11 +127,14 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
 
                   toggleOffThirdLevelMenu();
                 }}
-                className={clsx('rounded-full border-[3px] transition-all', {
-                  'border-blue-400': openItemIndex === 0 && isTablet,
-                  'border-transparent':
-                    !isTablet || (openItemIndex !== 0 && isTablet),
-                })}
+                className={clsx(
+                  'rounded-full border-[.1875rem] transition-all',
+                  {
+                    'border-blue-400': openItemIndex === 0 && isTablet,
+                    'border-transparent':
+                      !isTablet || (openItemIndex !== 0 && isTablet),
+                  },
+                )}
               >
                 <ColonyAvatar {...colonySwitcherAvatarProps} />
               </button>
@@ -137,20 +144,20 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                 <HamburgerButton
                   onClick={() => {
                     toggleMenu();
-                    setOpenItemIndex(-1);
+                    setOpenItemIndex(undefined);
                   }}
                   isOpen={isMenuOpen}
                   label={hamburgerLabel}
                 />
                 <NavigationSidebarMobileContentWrapper
                   mobileBottomContent={mobileBottomContent}
-                  isOpen={isMenuOpen && !!openItemIndex}
+                  isOpen={isMenuOpen && openItemIndex !== 0}
                 >
                   {mainMenu}
                 </NavigationSidebarMobileContentWrapper>
                 <NavigationSidebarMobileContentWrapper
                   mobileBottomContent={mobileBottomContent}
-                  isOpen={!openItemIndex}
+                  isOpen={openItemIndex === 0}
                 >
                   <NavigationSidebarSecondLevel {...colonySwitcherContent} />
                 </NavigationSidebarMobileContentWrapper>
@@ -166,7 +173,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
         {logo && !isTablet && <div className="mt-auto">{logo}</div>}
       </div>
       <AnimatePresence>
-        {isSecondLevelMenuOpen && !isTablet && (
+        {isSecondLevelMenuOpen && !isTablet && openItemIndex !== undefined && (
           <>
             <motion.div
               variants={secondLevelWrapperAnimation}
@@ -179,24 +186,21 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                 variants={secondLevelContentAnimation}
                 className="h-full"
               >
-                <NavigationSidebarSecondLevel
-                  {...(openItemIndex
-                    ? activeMainMenuItem?.secondLevelMenuProps
-                    : colonySwitcherContent)}
-                  onArrowClick={
-                    activeMainMenuItem?.relatedActionsProps?.items.length
-                      ? toggleThirdLevelMenu
-                      : undefined
-                  }
-                  isExpanded={
-                    activeMainMenuItem?.relatedActionsProps?.items.length
-                      ? isThirdLevelMenuOpen
-                      : false
-                  }
-                />
+                {openItemIndex && activeMainMenuItem ? (
+                  <NavigationSidebarSecondLevel
+                    {...activeMainMenuItem.secondLevelMenuProps}
+                    onArrowClick={
+                      hasThirdLevel ? toggleThirdLevelMenu : undefined
+                    }
+                    isExpanded={hasThirdLevel ? isThirdLevelMenuOpen : false}
+                  />
+                ) : null}
+                {openItemIndex === 0 && (
+                  <NavigationSidebarSecondLevel {...colonySwitcherContent} />
+                )}
               </motion.div>
             </motion.div>
-            {!!activeMainMenuItem?.relatedActionsProps && (
+            {hasThirdLevel && (
               <motion.div
                 variants={thirdLevelWrapperAnimation}
                 initial="hidden"
@@ -204,10 +208,10 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                 animate={isThirdLevelMenuOpen ? 'visible' : 'hidden'}
                 className="absolute top-0 bottom-0 h-full left-[calc(100%-1rem)] -z-[1] overflow-hidden"
               >
-                <div className="p-6 pl-10 pt-[1.8125rem] bg-gray-900 text-white rounded-r-lg h-full overflow-auto">
+                <div className="pb-6 pr-6 pl-10 pt-[1.8125rem] bg-gray-900 text-white rounded-r-lg h-full overflow-auto">
                   <NavigationSidebarThirdLevel
-                    title={activeMainMenuItem?.relatedActionsProps?.title}
-                    items={activeMainMenuItem?.relatedActionsProps?.items || []}
+                    title={relatedActions?.title}
+                    items={relatedActions?.items || []}
                   />
                 </div>
               </motion.div>

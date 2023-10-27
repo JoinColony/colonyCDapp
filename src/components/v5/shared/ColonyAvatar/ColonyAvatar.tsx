@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 import Icon from '~shared/Icon';
+import { formatText } from '~utils/intl';
 import { ColonyAvatarProps } from './types';
 
 const displayName = 'v5.ColonyAvatar';
@@ -28,7 +29,10 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
         {colonyImageProps ? (
           <img
             {...colonyImageProps}
-            alt={colonyImageProps?.alt || 'Colony image'}
+            alt={
+              colonyImageProps?.alt ||
+              formatText({ id: 'colonyAvatar.colonyImage.alt' })
+            }
             className="h-full w-full object-cover object-center"
           />
         ) : (
@@ -61,7 +65,10 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
         >
           <img
             {...chainImageProps}
-            alt={chainImageProps?.alt || 'Chain image'}
+            alt={
+              chainImageProps?.alt ||
+              formatText({ id: 'colonyAvatar.chainImage.alt' })
+            }
             className="h-[96%] w-[96%] object-cover object-center rounded-full"
           />
         </figure>

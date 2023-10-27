@@ -67,7 +67,7 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
       </span>
       {isTablet && (
         <Icon
-          name="arrow-down"
+          name="caret-down"
           className={clsx(
             'h-[1em] w-[1em] text-[0.75rem] [&_svg]:fill-current transition-transform',
             {

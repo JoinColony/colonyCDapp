@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import { Link as LinkComponent } from 'react-router-dom';
+import clsx from 'clsx';
 
 import { isUrlExternal } from '~utils/isUrlExternal';
 import { LinkProps } from './types';
@@ -26,7 +27,10 @@ const Link: FC<LinkProps> = ({
       href={to}
       rel="nofollow noopener noreferrer"
       target="_blank"
-      className={`${className} transition-all duration-normal md:hover:text-blue-400`}
+      className={clsx(
+        className,
+        'transition-all duration-normal md:hover:text-blue-400',
+      )}
       onClick={onClick}
     >
       {linkText || children}
@@ -35,7 +39,10 @@ const Link: FC<LinkProps> = ({
     <LinkComponent
       {...linkProps}
       to={to}
-      className={`${className} transition-all duration-normal md:hover:text-blue-400`}
+      className={clsx(
+        className,
+        'transition-all duration-normal md:hover:text-blue-400',
+      )}
     >
       {linkText || children}
     </LinkComponent>
