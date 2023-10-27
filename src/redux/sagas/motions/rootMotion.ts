@@ -150,18 +150,10 @@ function* createRootMotionSaga({
       meta,
     });
 
-    if (colonyName) {
-      if (navigate) {
-        navigate(`/colony/${colonyName}/tx/${txHash}`, {
-          state: { isRedirect: true },
-        });
-      } else {
-        window.history.replaceState(
-          {},
-          '',
-          `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
-        );
-      }
+    if (colonyName && navigate) {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (caughtError) {
     putError(ActionTypes.ROOT_MOTION_ERROR, caughtError, meta);

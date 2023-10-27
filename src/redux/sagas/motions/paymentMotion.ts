@@ -232,18 +232,10 @@ function* createPaymentMotion({
       meta,
     });
 
-    if (colonyName) {
-      if (navigate) {
-        navigate(`/colony/${colonyName}/tx/${txHash}`, {
-          state: { isRedirect: true },
-        });
-      } else {
-        window.history.replaceState(
-          {},
-          '',
-          `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
-        );
-      }
+    if (navigate && colonyName) {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (caughtError) {
     putError(ActionTypes.MOTION_EXPENDITURE_PAYMENT_ERROR, caughtError, meta);

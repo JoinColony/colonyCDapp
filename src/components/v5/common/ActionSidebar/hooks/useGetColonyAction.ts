@@ -9,6 +9,7 @@ import {
 import { isTransactionFormat } from '~utils/web3';
 import { useColonyContext } from '~hooks';
 import { useUserTokenBalanceContext } from '~context';
+import noop from '~utils/noop';
 
 export type RefetchMotionState = ReturnType<
   typeof useGetMotionStateQuery
@@ -40,39 +41,44 @@ export const useGetColonyAction = (transactionHash?: string) => {
     pollInterval: 1000,
   });
 
+  const action = actionData?.getColonyAction;
+
   useEffect(() => {
-    /* Cancel polling if our loader times out. */
+    const shouldPool = !skipQuery && !action;
+
+    setIsPolling(shouldPool);
+
+    if (!shouldPool) {
+      if (action) {
+        if (action.type === ColonyActionType.Payment) {
+          refetchTokenBalances();
+        }
+
+        refetchColony();
+      }
+
+      return noop;
+    }
+
     const cancelPollingTimer = setTimeout(stopPollingForAction, pollingTimeout);
+
+    startPollingForAction(1000);
+
     return () => {
-      clearTimeout(cancelPollingTimer);
-      /*  Stop polling if user leaves ActionDetailsPage */
+      if (cancelPollingTimer) {
+        clearTimeout(cancelPollingTimer);
+      }
+
       stopPollingForAction();
     };
-  }, [stopPollingForAction]);
-
-  /** Refetch colony when the action loads to update
-   * any fields that might have been modified by the action
-   */
-  useEffect(() => {
-    if (!actionData?.getColonyAction) {
-      return;
-    }
-
-    if (actionData.getColonyAction.type === ColonyActionType.Payment) {
-      refetchTokenBalances();
-    }
-
-    refetchColony();
-  }, [actionData, refetchColony, refetchTokenBalances]);
-
-  /* Don't poll if we've not been redirected from the saga */
-  const action = actionData?.getColonyAction;
-  const shouldStopPolling = isPolling || (action && isPolling);
-
-  if (shouldStopPolling) {
-    stopPollingForAction();
-    setIsPolling(false);
-  }
+  }, [
+    action,
+    refetchColony,
+    refetchTokenBalances,
+    skipQuery,
+    startPollingForAction,
+    stopPollingForAction,
+  ]);
 
   const {
     data: motionStateData,

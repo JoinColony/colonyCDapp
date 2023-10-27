@@ -12,7 +12,7 @@ export const addressHasRoles = ({
   requiredRoles,
 }: {
   requiredRolesDomains: number[];
-  colony: Colony;
+  colony: Colony | undefined;
   address: string;
   requiredRoles: ColonyRole[];
 }) => {

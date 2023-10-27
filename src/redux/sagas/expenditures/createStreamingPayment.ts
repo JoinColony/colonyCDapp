@@ -107,6 +107,7 @@ function* createStreamingPayment({
     const {
       payload: { hash: txHash },
     } = yield takeFrom(txChannel, ActionTypes.TRANSACTION_HASH_RECEIVED);
+
     setTxHash?.(txHash);
 
     yield waitForTxResult(txChannel);
@@ -131,12 +132,6 @@ function* createStreamingPayment({
         },
       },
     });
-
-    window.history.replaceState(
-      {},
-      '',
-      `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
-    );
   } catch (error) {
     return yield putError(
       ActionTypes.STREAMING_PAYMENT_CREATE_ERROR,
