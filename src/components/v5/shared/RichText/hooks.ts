@@ -12,6 +12,7 @@ import CharacterCount from '@tiptap/extension-character-count';
 import { useEffect, useState } from 'react';
 import { useController } from 'react-hook-form';
 import { MAX_ANNOTATION_NUM } from './consts';
+import { formatText } from '~utils/intl';
 
 export const useRichText = (
   name: string,
@@ -36,8 +37,10 @@ export const useRichText = (
         }),
         Placeholder.configure({
           placeholder: () => {
-            setNotFormattedContent('Enter a description');
-            return 'Enter a description';
+            setNotFormattedContent(
+              formatText({ id: 'placeholder.enterDescription' }) || '',
+            );
+            return formatText({ id: 'placeholder.enterDescription' }) || '';
           },
           showOnlyWhenEditable: false,
           emptyEditorClass: `text-gray-500 before:content-[attr(data-placeholder)] before:float-left before:h-0 before:pointer-events-none`,
@@ -100,9 +103,10 @@ export const useRichText = (
     if (field.value && editorContent && !isDecriptionFieldExpanded) {
       editorContent?.setEditable(false);
       setNotFormattedContent(
-        editorContent?.getText()
-          ? editorContent?.getText()
-          : 'Enter a description',
+        (editorContent?.getText() && editorContent?.getText()) ||
+          (!editorContent?.getText() &&
+            formatText({ id: 'placeholder.enterDescription' })) ||
+          '',
       );
     }
   }, [editorContent, isDecriptionFieldExpanded, field.value]);
