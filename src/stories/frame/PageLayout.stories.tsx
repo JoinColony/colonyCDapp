@@ -22,7 +22,9 @@ const pageLayoutMeta: Meta<typeof PageLayout> = {
   },
   args: {
     children: <div className="h-screen bg-blue-200">body</div>,
+    headerContent: <p>header</p>,
     navigationSidebarProps: {
+      logo: <p>logo</p>,
       additionalMobileContent: <p>mobile content</p>,
       mobileBottomContent: <p>mobile bottom content</p>,
       hamburgerLabel: 'Menu',

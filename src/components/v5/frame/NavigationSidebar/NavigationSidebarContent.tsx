@@ -86,7 +86,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
     >
       <div
         className={clsx('md:h-full md:p-4 md:pb-6 w-full md:w-[5.125rem]', {
-          'flex flex-col items-center gap-4 justify-between': logo && isTablet,
+          'flex flex-col items-center gap-4 justify-between': logo && !isTablet,
           'inner h-full': isTablet,
         })}
       >
