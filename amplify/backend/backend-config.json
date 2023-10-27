@@ -30,6 +30,11 @@
       "providerPlugin": "awscloudformation",
       "service": "LambdaLayer"
     },
+    "createPrivateBetaInvite": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "createUniqueColony": {
       "build": true,
       "dependsOn": [

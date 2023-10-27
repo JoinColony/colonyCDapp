@@ -4,12 +4,7 @@ import { BigNumber } from 'ethers';
 import React from 'react';
 import { useVotingWidgetUpdate } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
 import { useGetVoterRewardsQuery } from '~gql';
-import {
-  useAppContext,
-  useColonyContext,
-  useExtensionData,
-  useUserReputation,
-} from '~hooks';
+import { useAppContext, useColonyContext, useExtensionData } from '~hooks';
 import { MotionVotePayload } from '~redux/sagas/motions/voteMotion';
 import { InstalledExtensionData } from '~types';
 import { mapPayload } from '~utils/actions';
@@ -43,12 +38,6 @@ export const useVotingStep = (
   const { hasUserVoted, setHasUserVoted } = useVotingWidgetUpdate(
     voterRecord,
     stopPollingAction,
-  );
-  const { userReputation, totalReputation } = useUserReputation(
-    colony?.colonyAddress ?? '',
-    user?.walletAddress ?? '',
-    Number(nativeMotionDomainId),
-    rootHash,
   );
 
   const { extensionData } = useExtensionData(Extension.VotingReputation);
@@ -116,9 +105,11 @@ export const useVotingStep = (
       label: formatText({ id: 'motion.votingStep.teamReputation' }),
       value: (
         <MemberReputation
-          userReputation={userReputation}
-          totalReputation={totalReputation}
+          colonyAddress={colony?.colonyAddress ?? ''}
+          domainId={Number(nativeMotionDomainId)}
+          rootHash={rootHash}
           textClassName="text-sm"
+          walletAddress={user?.walletAddress ?? ''}
         />
       ),
     },

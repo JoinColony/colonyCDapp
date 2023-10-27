@@ -6,7 +6,6 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 
 import UserHub from '~common/Extensions/UserHub';
 import UserNavigation from '~common/Extensions/UserNavigation';
-import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
 import Token from '~common/Extensions/UserNavigation/partials/Token';
 import { ContextModule, getContext } from '~context';
 import { useDetectClickOutside, useMobile } from '~hooks';
@@ -40,9 +39,6 @@ const UserNavigationWithData = () => {
     contractAddressLink: 'https://blockscout.com/poa/xdai/address',
     iconName: 'gnosis',
   };
-
-  const userReputation = '100';
-  const totalReputation = '1000';
 
   const { setTooltipRef } = usePopperTooltip({
     delayShow: 200,
@@ -79,10 +75,6 @@ const UserNavigationWithData = () => {
           >
             <div className="flex items-center gap-3">
               <UserAvatar userName="panda" size="xxs" />
-              <MemberReputation
-                userReputation={userReputation}
-                totalReputation={totalReputation}
-              />
             </div>
           </Button>
           <Button mode="tertiary" isFullRounded iconName="list" />
