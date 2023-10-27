@@ -88,7 +88,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <FormCardSelect
           name="role"
-          cardClassName="max-w-sm"
+          cardClassName="max-w-[calc(100vw-2.5rem)] md:max-w-sm"
           renderSelectedValue={(option, placeholder) =>
             getRoleLabel(option?.value) || placeholder
           }
