@@ -4,18 +4,19 @@ import clsx from 'clsx';
 import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import useToggle from '~hooks/useToggle';
+import Modal from '~v5/shared/Modal';
+import { formatText } from '~utils/intl';
+import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
+import { SpinnerLoader } from '~shared/Preloaders';
+
+import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent';
 import {
   useCloseSidebarClick,
   useGetActionData,
   useRemoveTxParamOnClose,
 } from './hooks';
-import useToggle from '~hooks/useToggle';
-import Modal from '~v5/shared/Modal';
 import { ActionSidebarProps } from './types';
-import { formatText } from '~utils/intl';
-import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
-import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent';
-import { SpinnerLoader } from '~shared/Preloaders';
 
 const displayName = 'v5.common.ActionSidebar';
 

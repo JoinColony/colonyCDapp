@@ -1,15 +1,18 @@
 import React from 'react';
 import clsx from 'clsx';
+
 import Icon from '~shared/Icon';
+
 import RadioButtonsBase from '../RadioButtonsBase';
-import { ButtonRadioButtonsProps } from './types';
 import { RadioItem } from '../RadioButtonsBase/types';
+import { ButtonRadioButtonsProps } from './types';
 
 const displayName = 'v5.common.ButtonRadioButtons';
 
 function ButtonRadioButtons<TValue = string>({
   items,
   className,
+  disabled,
   ...rest
 }: ButtonRadioButtonsProps<TValue>): JSX.Element {
   const modifiedItems = items.map<RadioItem<TValue>>(
@@ -45,7 +48,9 @@ function ButtonRadioButtons<TValue = string>({
               rounded-lg
             `,
             {
-              'bg-current': checked,
+              'bg-current': checked && !disabled,
+              [colorClassName]: !disabled,
+              'text-gray-300': disabled,
             },
           )}
         >
@@ -64,8 +69,10 @@ function ButtonRadioButtons<TValue = string>({
           )}
           <span
             className={clsx('text-3', {
-              'text-gray-900 md:group-hover/wrapper:text-current': !checked,
-              'text-white': checked,
+              'text-gray-900 md:group-hover/wrapper:text-current':
+                !checked && !disabled,
+              'text-gray-300': disabled,
+              'text-white': checked && !disabled,
             })}
           >
             {label}
