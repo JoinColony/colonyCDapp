@@ -8,6 +8,7 @@ import Checkbox from '~v5/common/Checkbox';
 import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
 import UserStatusComponent from '~v5/shared/CardWithBios/partials/UserStatus';
 import PermissionRow from '../PermissionRow';
+import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 
 export const useVerifiedTableColumns = (
   name: string,
@@ -47,12 +48,16 @@ export const useVerifiedTableColumns = (
         cell: ({ row }) => {
           const { type } = row.original;
 
-          const userStatus = (type?.toLowerCase() ??
-            null) as ContributorTypeFilter;
+          try {
+            const userStatus = getEnumValueFromKey(
+              ContributorTypeFilter,
+              type?.toLowerCase() || undefined,
+            );
 
-          return userStatus ? (
-            <UserStatusComponent userStatus={userStatus} />
-          ) : null;
+            return <UserStatusComponent userStatus={userStatus} />;
+          } catch {
+            return null;
+          }
         },
       }),
       columnHelper.accessor('colonyReputationPercentage', {

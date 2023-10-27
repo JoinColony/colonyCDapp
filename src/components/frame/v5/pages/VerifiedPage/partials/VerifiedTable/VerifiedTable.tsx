@@ -12,10 +12,9 @@ import { TableProps } from './types';
 import EmptyContent from '~v5/common/EmptyContent';
 import { useSearchContext } from '~context/SearchContext';
 import { useVerifiedTableColumns } from './hooks';
-import Table from '~v5/common/Table';
 import { useMobile } from '~hooks';
-import TableHeader from '~v5/common/TableHeader';
 import { formatText } from '~utils/intl';
+import TableWithActionsHeader from '~v5/common/TableWithActionsHeader';
 
 const displayName = 'v5.pages.VerifiedPage.partials.VerifiedTable';
 
@@ -33,76 +32,73 @@ const VerifiedTable: FC<TableProps> = ({ list, name }) => {
   const [rowSelection, setRowSelection] = useState({});
 
   return (
-    <>
-      <TableHeader
-        title={formatText({ id: 'verifiedPage.membersTitle' })}
-        additionalContent={
-          <span className="text-md text-blue-400">
-            {listLength} {formatMessage({ id: 'verifiedPage.members' })}
-          </span>
-        }
-      >
-        <>
-          {!!Object.keys(rowSelection).length && (
-            <Button
-              mode="quaternary"
-              iconName="trash"
-              size="small"
-              className="mr-2"
-            >
-              {formatMessage({ id: 'button.removeMembers' })}
-            </Button>
-          )}
-          {(!!listLength || !!searchValue) && <Filter />}
+    <TableWithActionsHeader
+      title={formatText({ id: 'verifiedPage.membersTitle' })}
+      additionalHeaderContent={
+        <span className="text-md text-blue-400">
+          {listLength} {formatMessage({ id: 'verifiedPage.members' })}
+        </span>
+      }
+      verticalOnMobile={false}
+      hasPagination
+      className="rounded-t-none"
+      getRowId={({ contributorAddress }) => contributorAddress}
+      columns={columns}
+      data={list}
+      state={{
+        sorting,
+        rowSelection,
+        columnVisibility: {
+          colonyReputationPercentage: !isMobile,
+          status: !isMobile,
+        },
+      }}
+      initialState={{
+        pagination: {
+          pageSize: 10,
+        },
+      }}
+      onSortingChange={setSorting}
+      onRowSelectionChange={setRowSelection}
+      getSortedRowModel={getSortedRowModel()}
+      getPaginationRowModel={getPaginationRowModel()}
+      emptyContent={
+        !listLength && (
+          <div className="border border-1 w-full rounded-b-lg border-gray-200">
+            <EmptyContent
+              icon="binoculars"
+              title={{ id: 'verifiedPage.table.emptyTitle' }}
+              description={{ id: 'verifiedPage.table.emptyDescription' }}
+              buttonText={{ id: 'button.addNewMember' }}
+              onClick={onAddClick}
+              withoutButtonIcon
+            />
+          </div>
+        )
+      }
+    >
+      <>
+        {!!Object.keys(rowSelection).length && (
           <Button
-            mode="primarySolid"
-            className="ml-2"
-            onClick={onAddClick}
+            mode="quaternary"
+            iconName="trash"
             size="small"
+            className="mr-2"
           >
-            {formatMessage({ id: 'button.addNewMember' })}
+            {formatMessage({ id: 'button.removeMembers' })}
           </Button>
-        </>
-      </TableHeader>
-      {listLength ? (
-        <Table
-          verticalOnMobile={false}
-          hasPagination
-          className="rounded-t-none"
-          getRowId={({ contributorAddress }) => contributorAddress}
-          columns={columns}
-          data={list}
-          state={{
-            sorting,
-            rowSelection,
-            columnVisibility: {
-              colonyReputationPercentage: !isMobile,
-              status: !isMobile,
-            },
-          }}
-          initialState={{
-            pagination: {
-              pageSize: 10,
-            },
-          }}
-          onSortingChange={setSorting}
-          onRowSelectionChange={setRowSelection}
-          getSortedRowModel={getSortedRowModel()}
-          getPaginationRowModel={getPaginationRowModel()}
-        />
-      ) : (
-        <div className="border border-1 w-full rounded-lg border-gray-200">
-          <EmptyContent
-            icon="binoculars"
-            title={{ id: 'verifiedPage.table.emptyTitle' }}
-            description={{ id: 'verifiedPage.table.emptyDescription' }}
-            buttonText={{ id: 'button.addNewMember' }}
-            onClick={onAddClick}
-            withoutButtonIcon
-          />
-        </div>
-      )}
-    </>
+        )}
+        {(!!listLength || !!searchValue) && <Filter />}
+        <Button
+          mode="primarySolid"
+          className="ml-2"
+          onClick={onAddClick}
+          size="small"
+        >
+          {formatMessage({ id: 'button.addNewMember' })}
+        </Button>
+      </>
+    </TableWithActionsHeader>
   );
 };
 

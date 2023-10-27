@@ -9,6 +9,8 @@ import { formatText } from '~utils/intl';
 import PermissionsBadge from '~v5/common/Pills/PermissionsBadge';
 import { PermissionRowProps } from './types';
 
+const displayName = 'v5.pages.VerifiedPage.partials.PermissionRow';
+
 const PermissionRow: FC<PermissionRowProps> = ({ contributorAddress }) => {
   const { colony } = useColonyContext();
   const allRoles = getAllUserRoles(colony, contributorAddress);
@@ -28,7 +30,13 @@ const PermissionRow: FC<PermissionRowProps> = ({ contributorAddress }) => {
                 <li key={permission}>{ColonyRole[permission]}</li>
               ))}
             </ul>
-            <a href="/">{formatText({ id: 'learn.more' })}</a>
+            <a
+              href="https://docs.colony.io/learn/advanced-concepts/permissions"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {formatText({ id: 'learn.more' })}
+            </a>
           </>
         }
       >
@@ -37,5 +45,7 @@ const PermissionRow: FC<PermissionRowProps> = ({ contributorAddress }) => {
     </div>
   );
 };
+
+PermissionRow.displayName = displayName;
 
 export default PermissionRow;
