@@ -18,14 +18,14 @@ import TableWithActionsHeader from '~v5/common/TableWithActionsHeader';
 
 const displayName = 'v5.pages.VerifiedPage.partials.VerifiedTable';
 
-const VerifiedTable: FC<TableProps> = ({ list, name }) => {
+const VerifiedTable: FC<TableProps> = ({ list }) => {
   // @TODO: Add action for adding new member, removing user from whitelist, handle pagination
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { searchValue } = useSearchContext();
 
   const onAddClick = () => {};
-  const columns = useVerifiedTableColumns(name);
+  const columns = useVerifiedTableColumns();
 
   const listLength = list.length;
   const [sorting, setSorting] = useState<SortingState>([]);

@@ -10,7 +10,7 @@ const VerifiedPage: FC = () => {
 
   return (
     <div className="w-full mt-6">
-      <VerifiedTable list={verifiedMembers} name="verified" />
+      <VerifiedTable list={verifiedMembers} />
     </div>
   );
 };

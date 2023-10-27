@@ -10,9 +10,10 @@ import UserStatusComponent from '~v5/shared/CardWithBios/partials/UserStatus';
 import PermissionRow from '../PermissionRow';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 
-export const useVerifiedTableColumns = (
-  name: string,
-): ColumnDef<ColonyContributorFragment, string>[] => {
+export const useVerifiedTableColumns = (): ColumnDef<
+  ColonyContributorFragment,
+  string
+>[] => {
   const columnHelper = useMemo(
     () => createColumnHelper<ColonyContributorFragment>(),
     [],
@@ -26,8 +27,6 @@ export const useVerifiedTableColumns = (
         size: 20,
         cell: ({ row }) => (
           <Checkbox
-            id={`verified-${row.original.contributorAddress}`}
-            name={`verified-${row.original.contributorAddress}`}
             isChecked={row.getIsSelected()}
             onChange={row.getToggleSelectedHandler()}
           />
@@ -99,7 +98,7 @@ export const useVerifiedTableColumns = (
       }),
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [columnHelper, name],
+    [columnHelper],
   );
 
   return columns;
