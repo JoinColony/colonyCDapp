@@ -6,4 +6,5 @@ export interface TableProps<T>
   className?: string;
   getRowClassName?: (row: Row<T>) => string | undefined;
   verticalOnMobile?: boolean;
+  hasPagination?: boolean;
 }
