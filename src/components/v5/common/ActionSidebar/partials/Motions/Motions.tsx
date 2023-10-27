@@ -60,13 +60,13 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
 
   const motionStateEnum: MotionState | undefined = useMemo(() => {
     if (!motionData) return undefined;
-    const motionStakesPercentage = motionData?.motionStakes.percentage;
+    const motionStakesRaw = motionData?.motionStakes?.raw;
     const revealedVotesPercentage = motionData?.revealedVotes.percentage || '';
 
     if (
       activeStepKey === NetworkMotionState.Finalizable &&
-      BigNumber.from(motionStakesPercentage).gte(requiredStake) &&
-      BigNumber.from(motionStakesPercentage).gte(requiredStake)
+      BigNumber.from(motionStakesRaw?.nay).gte(requiredStake) &&
+      BigNumber.from(motionStakesRaw?.yay).gte(requiredStake)
     ) {
       if (
         BigNumber.from(revealedVotesPercentage?.yay).gt(
