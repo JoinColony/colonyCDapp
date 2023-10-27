@@ -42,7 +42,12 @@ export enum ReputationSort {
 
 export type ReputationType = `${ReputationSort}`;
 
-export enum PermissionsFilter {
+export enum Permissions {
+  Mod = 'mod',
+  Payer = 'payer',
+  Admin = 'admin',
+  Owner = 'owner',
+  Custom = 'custom',
   Root = 'rootPermissions',
   Administration = 'administration',
   Arbitration = 'arbitration',
@@ -52,21 +57,15 @@ export enum PermissionsFilter {
 }
 
 export const PermissionToNetworkIdMap = {
-  [PermissionsFilter.Root]: ColonyRole.Root,
-  [PermissionsFilter.Administration]: ColonyRole.Administration,
-  [PermissionsFilter.Architecture]: ColonyRole.Architecture,
-  [PermissionsFilter.Funding]: ColonyRole.Funding,
-  [PermissionsFilter.Recovery]: ColonyRole.Recovery,
-  [PermissionsFilter.Arbitration]: ColonyRole.Arbitration,
+  [Permissions.Root]: ColonyRole.Root,
+  [Permissions.Administration]: ColonyRole.Administration,
+  [Permissions.Architecture]: ColonyRole.Architecture,
+  [Permissions.Funding]: ColonyRole.Funding,
+  [Permissions.Recovery]: ColonyRole.Recovery,
+  [Permissions.Arbitration]: ColonyRole.Arbitration,
 };
 
-export type PermissionsType =
-  | 'rootPermissions'
-  | 'administration'
-  | 'arbitration'
-  | 'architecture'
-  | 'funding'
-  | 'recovery';
+export type PermissionsType = `${Permissions}`;
 
 // @TODO: add more filter options and move it to global types
 export type FilterOption =
