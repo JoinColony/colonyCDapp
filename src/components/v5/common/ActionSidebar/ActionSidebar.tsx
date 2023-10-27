@@ -4,14 +4,19 @@ import clsx from 'clsx';
 import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { useCloseSidebarClick, useGetActionData } from './hooks';
 import useToggle from '~hooks/useToggle';
 import Modal from '~v5/shared/Modal';
-import { ActionSidebarProps } from './types';
 import { formatText } from '~utils/intl';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
-import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent';
 import { SpinnerLoader } from '~shared/Preloaders';
+
+import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent';
+import {
+  useCloseSidebarClick,
+  useGetActionData,
+  useRemoveTxParamOnClose,
+} from './hooks';
+import { ActionSidebarProps } from './types';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -19,9 +24,8 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   children,
   transactionId,
 }) => {
-  const { defaultValues, loadingAction, isMotion } = useGetActionData(
-    transactionId || undefined,
-  );
+  const { defaultValues, loadingAction, isMotion } =
+    useGetActionData(transactionId);
 
   const {
     actionSidebarToggle: [
@@ -36,6 +40,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   const isMobile = useMobile();
 
   useDisableBodyScroll(isActionSidebarOpen);
+  useRemoveTxParamOnClose();
 
   return (
     <div
@@ -101,7 +106,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           transactionId={transactionId}
           formRef={formRef}
           defaultValues={defaultValues}
-          isMotion={isMotion || false}
+          isMotion={!!isMotion}
         />
       )}
 

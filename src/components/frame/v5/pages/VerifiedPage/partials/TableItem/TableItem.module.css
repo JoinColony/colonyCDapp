@@ -1,3 +1,0 @@
-.tableItem {
-  @apply grid grid-cols-2 sm:grid-cols-[2fr_1fr_0.5fr_1fr_2rem] py-3 border-t border-gray-100 first:border-none;
-}

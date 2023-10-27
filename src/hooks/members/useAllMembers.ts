@@ -84,8 +84,14 @@ const useAllMembers = ({
     });
   }
 
+  const verifiedMembers = useMemo(
+    () => filteredMembers.filter(({ isVerified }) => isVerified),
+    [filteredMembers],
+  );
+
   return {
     members: filteredMembers.slice(0, visibleItems),
+    verifiedMembers: verifiedMembers.slice(0, visibleItems),
     canLoadMore: filteredMembers.length > visibleItems || !!nextToken,
     loadMore() {
       setPage((prevPage) => prevPage + 1);

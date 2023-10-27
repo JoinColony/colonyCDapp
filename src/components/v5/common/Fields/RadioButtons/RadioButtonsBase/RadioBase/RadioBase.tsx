@@ -9,6 +9,7 @@ const RadioBase: FC<RadioProps> = ({
   checked,
   disabled,
   id,
+  value,
   wrapperClassName,
   labelClassName,
   ...rest
@@ -16,6 +17,7 @@ const RadioBase: FC<RadioProps> = ({
   <div className={clsx(wrapperClassName, 'relative')}>
     <input
       {...rest}
+      value={value}
       type="radio"
       id={id}
       disabled={disabled}

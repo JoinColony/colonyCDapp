@@ -46,3 +46,5 @@ export const COLONY_DECISIONS_ROUTE = `/decisions`;
 // export const ACTIONS_PAGE_ROUTE = `${COLONY_HOME_ROUTE}/tx/:transactionHash`;
 // export const UNWRAP_TOKEN_ROUTE = `${COLONY_HOME_ROUTE}/unwrap-tokens`;
 // export const CLAIM_TOKEN_ROUTE = `${COLONY_HOME_ROUTE}/claim-tokens`;
+
+export const TX_SEARCH_PARAM = 'tx';

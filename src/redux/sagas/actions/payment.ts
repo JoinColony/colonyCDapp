@@ -152,12 +152,6 @@ function* createPaymentAction({
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
-    } else {
-      window.history.replaceState(
-        {},
-        '',
-        `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
-      );
     }
   } catch (error) {
     putError(ActionTypes.ACTION_EXPENDITURE_PAYMENT_ERROR, error, meta);

@@ -161,14 +161,10 @@ function* cancelStakedExpenditureMotion({
         meta,
       });
 
-      if (navigate) {
-        navigate(`/colony/${colonyName}/tx/${payload.transaction.hash}`);
-      } else {
-        window.history.replaceState(
-          {},
-          '',
-          `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
-        );
+      if (colonyName && navigate) {
+        navigate(`/colony/${colonyName}/tx/${payload.transaction.hash}`, {
+          state: { isRedirect: true },
+        });
       }
     }
   } catch (e) {

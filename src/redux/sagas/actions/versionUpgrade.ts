@@ -108,12 +108,6 @@ function* createVersionUpgradeAction({
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
-    } else {
-      window.history.replaceState(
-        {},
-        '',
-        `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
-      );
     }
   } catch (caughtError) {
     putError(ActionTypes.ACTION_VERSION_UPGRADE_ERROR, caughtError, meta);

@@ -159,14 +159,10 @@ function* createExpenditure({
       meta,
     });
 
-    if (navigate) {
-      navigate?.(`/colony/${colonyName}/expenditures/${expenditureId}`);
-    } else {
-      window.history.replaceState(
-        {},
-        '',
-        `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
-      );
+    if (colonyName && navigate) {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);

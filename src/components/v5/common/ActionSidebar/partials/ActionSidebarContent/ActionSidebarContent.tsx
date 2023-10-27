@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { ActionForm } from '~shared/Fields';
 import { formatText } from '~utils/intl';
 import { FIELD_STATE } from '~v5/common/Fields/consts';
@@ -36,30 +35,24 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const form = useFormContext();
   const notificationBanner = useNotificationBanner();
   const descriptionMetadata = useActionDescriptionMetadata();
-  const { readonly } = useAdditionalFormOptionsContext();
-  const title = form.watch('title');
 
   return (
     <>
       <div className="flex-grow overflow-y-auto">
-        {readonly ? (
-          <h2 className="heading-3 text-gray-900 mb-2">{title}</h2>
-        ) : (
-          <FormInputBase
-            name="title"
-            placeholder={formatText({ id: 'placeholder.title' })}
-            stateClassNames={{
-              [FIELD_STATE.Error]: 'placeholder:text-red-400',
-            }}
-            className={`
-              heading-3 mb-2
-              md:hover:text-blue-400 md:hover:placeholder:text-blue-400 text-gray-900
-              transition-colors
-            `}
-            mode="secondary"
-            message={false}
-          />
-        )}
+        <FormInputBase
+          name="title"
+          placeholder={formatText({ id: 'placeholder.title' })}
+          stateClassNames={{
+            [FIELD_STATE.Error]: 'placeholder:text-red-400',
+          }}
+          className={`
+            heading-3 mb-2
+            md:hover:text-blue-400 md:hover:placeholder:text-blue-400 text-gray-900
+            transition-colors
+          `}
+          mode="secondary"
+          message={false}
+        />
         <p className="text-gray-600 font-medium">{descriptionMetadata}</p>
 
         <ActionTypeSelect className="mt-7 mb-3" />
@@ -97,7 +90,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
 }) => {
   const { getFormOptions, actionFormProps } = useActionFormProps(
     defaultValues,
-    isMotion,
+    !!transactionId,
   );
 
   return (

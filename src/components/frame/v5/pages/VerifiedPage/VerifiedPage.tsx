@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
-import Table from './partials/Table';
 import { useVerifiedPage } from './hooks';
+import VerifiedTable from './partials/VerifiedTable';
 
 const displayName = 'v5.pages.VerifiedPage';
 
@@ -10,7 +10,7 @@ const VerifiedPage: FC = () => {
 
   return (
     <div className="w-full mt-6">
-      <Table list={verifiedMembers} onReputationSortClick={() => {}} />
+      <VerifiedTable list={verifiedMembers} />
     </div>
   );
 };
