@@ -41,22 +41,22 @@ const all = <T,>(values: StepsValues<T>) =>
   );
 
 const withWizard =
-  <T,>({
+  <F, P = Record<string, never>>({
     initialValues: initialValuesProp = [],
     steps,
     stepCount: maxSteps,
-  }: WizardArgs<T>) =>
+  }: WizardArgs<F>) =>
   (
-    OuterComponent: ComponentType<WizardOuterProps<T>>,
-    outerProps?: Pick<WizardOuterProps<T>, 'hideQR'>,
-    stepsProps?: WizardStepProps<T, Partial<T>>,
-  ): (() => JSX.Element) => {
-    const Wizard = () => {
+    OuterComponent: ComponentType<WizardOuterProps<F>>,
+    outerProps?: Pick<WizardOuterProps<F>, 'hideQR'>,
+    stepsProps?: WizardStepProps<F, Partial<F>>,
+  ) => {
+    const Wizard = (wizardProps: P) => {
       const { user } = useAppContext();
       const [step, setStep] = useState(0);
 
-      const [stepsValues, setStepsValues] = useState<StepsValues<T>>([]);
-      const mergedValues = all(stepsValues) as T;
+      const [stepsValues, setStepsValues] = useState<StepsValues<F>>([]);
+      const mergedValues = all(stepsValues) as F;
 
       const Step = getStep(steps, step, mergedValues, user);
       if (!Step) throw new Error('Step needs to be implemented!');
@@ -64,7 +64,7 @@ const withWizard =
       const displayedStep = step + 1;
       const stepCount = maxSteps || steps.length;
 
-      const next = (vals: StepValues<T> | undefined) => {
+      const next = (vals: StepValues<F> | undefined) => {
         if (vals) {
           setStepsValues((currentVals) => {
             const valsCopy = [...currentVals];
@@ -121,6 +121,7 @@ const withWizard =
               validateOnMount: !!stepsValues,
             }}
             {...stepsProps}
+            {...wizardProps}
           />
         </OuterComponent>
       );

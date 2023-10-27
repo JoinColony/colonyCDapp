@@ -26,6 +26,7 @@ function ButtonRadioButtons<TValue = string>({
       children: ({ checked }) => (
         <span
           className={clsx(
+            className,
             colorClassName,
             hoverColorClassName,
             `

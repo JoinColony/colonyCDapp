@@ -21,7 +21,7 @@ const FilterButton: FC<FilterButtonProps> = ({
       type="button"
       aria-label={formatMessage({ id: 'ariaLabel.filter' })}
       className={clsx(`text-3 ${styles.filterButton}`, {
-        'border border-blue-400 text-blue-400': isOpen,
+        'border border-gray-900 text-gray-900': isOpen,
       })}
       ref={setTriggerRef}
       onClick={onClick}
@@ -30,7 +30,7 @@ const FilterButton: FC<FilterButtonProps> = ({
       {formatMessage({ id: 'filter' })}
 
       {!!numberSelectedFilters && (
-        <span className="bg-blue-100 p-1 rounded-sm text-blue-400 text-6 h-3 flex items-center">
+        <span className="bg-blue-100 p-1 rounded-sm text-gray-900 text-6 h-3 flex items-center">
           {numberSelectedFilters}
         </span>
       )}

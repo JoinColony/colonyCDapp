@@ -8,6 +8,7 @@ import { TokensTableModel, TokensTableProps } from './types';
 import { formatText } from '~utils/intl';
 import { useMobile } from '~hooks';
 import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 
 const displayName = 'v5.common.ActionsContent.partials.TokensTable';
 
@@ -31,6 +32,7 @@ const TokensTable: FC<TokensTableProps> = ({
     value,
     shouldShowMenu,
   );
+  const { readonly } = useAdditionalFormOptionsContext();
 
   return (
     <div>
@@ -48,17 +50,19 @@ const TokensTable: FC<TokensTableProps> = ({
           getMenuProps={getMenuProps}
         />
       )}
-      <Button
-        mode="primaryOutline"
-        iconName="plus"
-        size="small"
-        isFullSize={isMobile}
-        onClick={() => {
-          fieldArrayMethods.append({});
-        }}
-      >
-        {formatText({ id: 'button.addToken' })}
-      </Button>
+      {!readonly && (
+        <Button
+          mode="primaryOutline"
+          iconName="plus"
+          size="small"
+          isFullSize={isMobile}
+          onClick={() => {
+            fieldArrayMethods.append({});
+          }}
+        >
+          {formatText({ id: 'button.addToken' })}
+        </Button>
+      )}
     </div>
   );
 };

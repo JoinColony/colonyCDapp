@@ -1,4 +1,5 @@
 const { utils } = require('ethers');
+const crypto = require('crypto');
 
 const { graphqlRequest } = require('./utils');
 
@@ -146,6 +147,10 @@ exports.handler = async (event) => {
         chainMetadata,
         version,
         status,
+        colonyMemberInvite: {
+          code: crypto.randomUUID(),
+          used: 0,
+        },
       },
     },
     graphqlURL,

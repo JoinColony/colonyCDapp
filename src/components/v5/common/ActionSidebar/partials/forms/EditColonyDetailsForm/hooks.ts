@@ -5,7 +5,6 @@ import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
 import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { getEditColonyDetailsDialogPayload } from '~common/Dialogs/EditColonyDetailsDialog/helpers';
-import { useColonyAvatarContext } from '~context/ColonyAvatarContext';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
 import { DECISION_METHOD_OPTIONS } from '../../consts';
@@ -16,7 +15,6 @@ export const useEditColonyDetails = (
 ) => {
   const { colony } = useColonyContext();
   const { metadata } = colony || {};
-  const { colonyAvatar, colonyThumbnail } = useColonyAvatarContext();
   const { isVotingReputationEnabled } = useEnabledExtensions();
 
   useActionFormBaseHook({
@@ -26,12 +24,14 @@ export const useEditColonyDetails = (
       () => ({
         decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
         colonyDisplayName: metadata?.displayName || '',
-        colonyAvatarImage: metadata?.avatar || '',
-        colonyThumbnail: metadata?.thumbnail || '',
+        avatar: {
+          image: metadata?.avatar,
+          thumbnail: metadata?.thumbnail,
+        },
         description: '',
         createdIn: Id.RootDomain.toString(),
       }),
-      [metadata],
+      [metadata?.avatar, metadata?.displayName, metadata?.thumbnail],
     ),
     actionType: isVotingReputationEnabled
       ? ActionTypes.MOTION_EDIT_COLONY
@@ -42,8 +42,8 @@ export const useEditColonyDetails = (
         mapPayload((payload: EditColonyDetailsFormValues) => {
           const values = {
             colonyDisplayName: payload.colonyDisplayName,
-            colonyAvatarImage: colonyAvatar || payload.colonyAvatarImage,
-            colonyThumbnail: colonyThumbnail || payload.colonyThumbnail,
+            colonyAvatarImage: payload.avatar?.image,
+            colonyThumbnail: payload.avatar?.thumbnail,
             motionDomainId: payload.createdIn,
             decisionMethod: payload.decisionMethod,
             annotationMessage: payload.description,
@@ -58,7 +58,7 @@ export const useEditColonyDetails = (
           return null;
         }),
       ),
-      [colony, colonyAvatar, colonyThumbnail],
+      [colony],
     ),
   });
 };

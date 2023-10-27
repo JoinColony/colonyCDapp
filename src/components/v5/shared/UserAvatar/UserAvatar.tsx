@@ -28,7 +28,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
     <span className={clsx(styles.main, 'items-center text-current')}>
       <span
         className={clsx('flex rounded-full', {
-          'border-2 border-blue-400 ':
+          'border-2 border-blue-400':
             userStatus === 'dedicated' && isContributorsList,
           'border-2 border-warning-400':
             userStatus === 'active' && isContributorsList,
@@ -44,6 +44,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
           placeholderIcon="circle-person"
           seed={address && address.toLowerCase()}
           title={profile?.displayName || address || ''}
+          className={className}
           {...rest}
         />
       </span>

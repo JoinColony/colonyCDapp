@@ -56,6 +56,7 @@ export const removeContext = <K extends keyof Context>(contextKey: K) => {
 export { AppContext, AppContextProvider } from './AppContext';
 export { ColonyManagerClass as ColonyManager };
 export { ColonyContext, ColonyContextProvider } from './ColonyContext';
+export { PageThemeContext, PageThemeContextProvider } from './PageThemeContext';
 export {
   UserTokenBalanceContext,
   UserTokenBalanceProvider,
