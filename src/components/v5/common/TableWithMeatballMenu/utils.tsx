@@ -9,6 +9,7 @@ export const makeMenuColumn = <T,>(
 ) =>
   helper.display({
     id: 'menu',
+    size: 20,
     cell: ({ row }) => {
       const props = getMenuProps(row);
 

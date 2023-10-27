@@ -97,16 +97,10 @@ function* tokenUnlockAction({
       meta,
     });
 
-    if (navigate) {
+    if (colonyName && navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
-    } else {
-      window.history.replaceState(
-        {},
-        '',
-        `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
-      );
     }
   } catch (error) {
     putError(ActionTypes.ACTION_UNLOCK_TOKEN_ERROR, error, meta);

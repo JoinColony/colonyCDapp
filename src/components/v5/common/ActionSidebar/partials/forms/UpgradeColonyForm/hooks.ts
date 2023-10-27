@@ -1,10 +1,9 @@
 import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
 import { DeepPartial } from 'utility-types';
-import { ActionTypes } from '~redux';
+import { ActionTypes, RootMotionMethodNames } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
 import { useColonyContext, useEnabledExtensions } from '~hooks';
-import { getUnlockTokenDialogPayload } from '~common/Dialogs/UnlockTokenDialog/helpers';
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
 import { DECISION_METHOD_OPTIONS } from '../../consts';
@@ -25,14 +24,15 @@ export const useUpgradeColony = (
     transform: useCallback(
       pipe(
         mapPayload((payload: UpgradeColonyFormValues) => {
-          const values = {
-            motionDomainId: payload.createdIn,
-            decisionMethod: payload.decisionMethod,
-            annotationMessage: payload.annotation,
-          };
-
           if (colony) {
-            return getUnlockTokenDialogPayload(colony, values);
+            return {
+              operationName: RootMotionMethodNames.Upgrade,
+              colonyAddress: colony.colonyAddress,
+              colonyName: colony.name,
+              version: colony.version,
+              motionParams: [colony.version + 1],
+              annotationMessage: payload.annotation,
+            };
           }
 
           return null;

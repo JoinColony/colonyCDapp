@@ -182,18 +182,13 @@ function* fundExpenditureMotion({
     setTxHash?.(txHash);
 
     const { type } = yield call(waitForTxResult, createMotion.channel);
+
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
       yield put<Action<ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS>>({
         type: ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS,
         meta,
       });
     }
-
-    window.history.replaceState(
-      {},
-      '',
-      `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
-    );
   } catch (e) {
     console.error(e);
     yield put<Action<ActionTypes.MOTION_EXPENDITURE_FUND_ERROR>>({

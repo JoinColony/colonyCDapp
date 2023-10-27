@@ -131,12 +131,6 @@ function* createMintTokensAction({
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
-    } else {
-      window.history.replaceState(
-        {},
-        '',
-        `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
-      );
     }
   } catch (caughtError) {
     putError(ActionTypes.ACTION_MINT_TOKENS_ERROR, caughtError, meta);
