@@ -1,13 +1,12 @@
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
-import { Action, ActionTypes } from '~redux';
 import { SetStateFn } from '~types';
 import { mapPayload } from '~utils/actions';
 import { MotionVote } from '~utils/colonyMotions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
-type StakeMotionPayload = Action<ActionTypes.MOTION_STAKE>['payload'];
+import { StakeMotionPayload } from './types';
 
 export const getStakingTransformFn = (
   userAddress: string,

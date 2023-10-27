@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
-
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
+
 import { getMotionState, MotionState, MotionVote } from '~utils/colonyMotions';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
@@ -82,7 +82,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     return motionData
       ? getMotionState(networkMotionStateEnum, motionData)
       : MotionState.Staking;
-  }, [motionData]);
+  }, [activeStepKey, motionData, networkMotionStateEnum, requiredStake]);
 
   const revealedVotes = motionData?.revealedVotes?.raw;
   const winningSide: MotionVote = BigNumber.from(revealedVotes?.yay).gt(
@@ -113,7 +113,8 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                 label: formatText({ id: 'motion.staking.label' }) || '',
                 decor:
                   activeStepKey === NetworkMotionState.Staking &&
-                  motionStakes ? (
+                  motionStakes &&
+                  motionStateEnum ? (
                     <MotionCountDownTimer
                       motionState={motionStateEnum}
                       motionId={motionId}

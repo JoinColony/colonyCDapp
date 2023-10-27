@@ -74,6 +74,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
                 ? 'motion.staking.status.text.locked'
                 : 'motion.staking.status.text',
             },
+            // @todo: update time when it will be available in the API
             { time: 'today at 3:14pm' },
           ),
           iconAlignment: 'top',

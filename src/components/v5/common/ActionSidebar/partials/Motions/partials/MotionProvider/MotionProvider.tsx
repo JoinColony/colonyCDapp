@@ -5,7 +5,7 @@ import { MotionProviderProps } from './types';
 
 import { useStakingWidgetUpdate } from './hooks';
 
-export const MotionProvider: FC<PropsWithChildren<MotionProviderProps>> = ({
+const MotionProvider: FC<PropsWithChildren<MotionProviderProps>> = ({
   children,
   motionAction,
   startPollingAction,
@@ -34,3 +34,5 @@ export const MotionProvider: FC<PropsWithChildren<MotionProviderProps>> = ({
     </MotionContext.Provider>
   );
 };
+
+export default MotionProvider;
