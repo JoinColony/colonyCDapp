@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
 import { EditorContent } from '@tiptap/react';
 
 import clsx from 'clsx';
@@ -12,6 +11,7 @@ import {
 import { TextButton } from '../Button';
 import { RichTextProps } from './types';
 import { useRichText } from './hooks';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.RichText';
 
@@ -24,7 +24,6 @@ const RichText: FC<RichTextProps> = ({
 }) => {
   const { editorContent, notFormattedContent, field, characterCount } =
     useRichText(name, isDecriptionFieldExpanded, isReadonly);
-  const { formatMessage } = useIntl();
 
   return (
     <>
@@ -58,7 +57,7 @@ const RichText: FC<RichTextProps> = ({
                     className="text-gray-400 ml-1"
                     onClick={toggleOnDecriptionSelect}
                   >
-                    {formatMessage({ id: 'button.expand' })}
+                    {formatText({ id: 'button.expand' })}
                   </TextButton>
                 )}
             </>
@@ -79,7 +78,7 @@ const RichText: FC<RichTextProps> = ({
                       className="text-gray-400"
                       onClick={toggleOffDecriptionSelect}
                     >
-                      {formatMessage({ id: 'button.show.less' })}
+                      {formatText({ id: 'button.show.less' })}
                     </TextButton>
                   )}
                   {characterCount >= 1000 && isDecriptionFieldExpanded && (
@@ -116,7 +115,7 @@ const RichText: FC<RichTextProps> = ({
                     className="text-gray-400 ml-1"
                     onClick={toggleOnDecriptionSelect}
                   >
-                    {formatMessage({ id: 'button.expand' })}
+                    {formatText({ id: 'button.expand' })}
                   </TextButton>
                 )}
             </>
