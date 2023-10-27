@@ -53,7 +53,7 @@ const ColonyUnclaimedTransfers = () => {
 
   const transform = mergePayload({
     colonyAddress: colony?.colonyAddress,
-    tokenAddress: firstItem?.token?.tokenAddress || '',
+    tokenAddresses: [firstItem?.token?.tokenAddress],
   });
 
   const claimsLength = claims?.length;

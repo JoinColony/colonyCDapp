@@ -221,6 +221,8 @@
   "transaction.ColonyClient.upgrade.description": "Colony Version Upgrade",
   "transaction.group.upgrade.title": "Colony Version Upgrade",
   "transaction.group.upgrade.description": "Colony Version Upgrade",
+  "transaction.group.claimColonyFunds.title": "Claim Pending Transactions",
+  "transaction.group.claimColonyFunds.description": "Claim Pending Transactions",
   "transaction.ColonyClient.claimColonyFunds.title": "Claim Pending Transactions",
   "transaction.ColonyClient.claimColonyFunds.description": "Claim Pending Transactions",
   "transaction.ColonyClient.moveFundsBetweenPotsWithProofs(uint256,uint256,uint256,address).title": "Move Funds Between Pots",

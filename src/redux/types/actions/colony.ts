@@ -10,13 +10,13 @@ import { ActionType, ErrorActionType, UniqueActionType } from './index';
 export type ColonyActionTypes =
   | UniqueActionType<
       ActionTypes.CLAIM_TOKEN,
-      { tokenAddress: Address; colonyAddress: Address },
+      { tokenAddresses: Address[]; colonyAddress: Address },
       object
     >
   | ErrorActionType<ActionTypes.CLAIM_TOKEN_ERROR, object>
   | UniqueActionType<
       ActionTypes.CLAIM_TOKEN_SUCCESS,
-      { params: { token: Address } },
+      { params: { tokenAddresses: Address[] } },
       object
     >
   | UniqueActionType<
