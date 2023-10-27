@@ -123,6 +123,11 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
 
                   toggleOffThirdLevelMenu();
                 }}
+                className={clsx('rounded-full border-[3px] transition-all', {
+                  'border-blue-400': openItemIndex === 0 && isTablet,
+                  'border-transparent':
+                    !isTablet || (openItemIndex !== 0 && isTablet),
+                })}
               >
                 <ColonyAvatar {...colonySwitcherAvatarProps} />
               </button>
