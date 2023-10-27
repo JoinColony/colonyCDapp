@@ -1,0 +1,8 @@
+query GetProfile_Stcpn($id: ID!) {
+  getProfile(id: $id) {
+    notificationSettings {
+      notificationTokens
+    }
+    email
+  }
+}

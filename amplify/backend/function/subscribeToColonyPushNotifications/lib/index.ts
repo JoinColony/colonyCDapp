@@ -1,60 +1,47 @@
-const admin = require('firebase-admin');
+import * as admin from 'firebase-admin';
+import { Handler } from 'aws-lambda';
 
-const { graphqlRequest } = require('./utils');
-const {
-  getProfile,
-  updateContributorNotificationSettings,
-} = require('./graphql');
+import { graphqlRequest, notNull } from '../../utils';
+import { getParams } from '../../getParams';
 
-let apiKey = 'da2-fakeApiId123456';
-let graphqlURL = 'http://localhost:20002/graphql';
-let firebaseAdminConfig;
+import {
+  TriggerEvent,
+  GetProfile_StcpnQuery,
+  GetProfile_StcpnQueryVariables,
+  GetProfile_StcpnDocument,
+  UpdateColonyContributorMutation,
+  UpdateColonyContributorMutationVariables,
+  UpdateColonyContributorDocument,
+} from './types';
 
-const setEnvVariables = async () => {
-  const ENV = process.env.ENV;
-  if (ENV === 'qa') {
-    const { getParams } = require('/opt/nodejs/getParams');
+let apiKey: string;
+let graphqlURL: string;
+let firebaseAdminConfig: string;
+
+export const handler: Handler<TriggerEvent> = async (event: TriggerEvent) => {
+  try {
     [apiKey, graphqlURL, firebaseAdminConfig] = await getParams([
       'appsyncApiKey',
       'graphqlUrl',
       'firebaseAdminConfig',
     ]);
-  }
-};
-
-/**
- * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
- */
-exports.handler = async (event) => {
-  try {
-    await setEnvVariables();
   } catch (e) {
-    throw new Error('Unable to set environment variables. Reason:', e);
+    throw new Error(`Unable to set environment variables. Reason: ${e}`);
   }
 
-  const { userId } = event.arguments?.input || {};
+  const { userId, colonyId, enable } = event.arguments?.input || {};
 
-  // This registration token comes from the client FCM SDKs.
-  const profileQuery = await graphqlRequest(
-    getProfile,
-    { id: userId },
-    graphqlURL,
-    apiKey,
-  );
+  const profileQuery = await graphqlRequest<
+    GetProfile_StcpnQuery,
+    GetProfile_StcpnQueryVariables
+  >(GetProfile_StcpnDocument, { id: userId }, graphqlURL, apiKey);
 
   if (profileQuery.errors || !profileQuery.data) {
     const [error] = profileQuery.errors;
-    throw new Error(
-      error?.message || 'Could not fetch user profile data from DynamoDB',
-    );
+    throw new Error(error || 'Could not fetch user profile data from DynamoDB');
   }
 
-  let params = {
-    ...(event.arguments?.input || {}),
-    ...(profileQuery?.data?.getProfile || {}),
-  };
-
-  const { notificationSettings } = params;
+  const { notificationSettings } = profileQuery?.data?.getProfile || {};
 
   const pushNotificationsEnabled =
     notificationSettings?.notificationTokens &&
@@ -64,14 +51,22 @@ exports.handler = async (event) => {
     return false;
   }
 
-  const success = await handleNotificationSubscriptions(params);
+  const success = await handleNotificationSubscriptions(
+    enable,
+    colonyId,
+    userId,
+    notificationSettings?.notificationTokens?.filter(notNull) || [],
+  );
 
   return success;
 };
 
-const handleNotificationSubscriptions = async (params) => {
-  const { enable, colonyId, userId, notificationSettings } = params;
-
+const handleNotificationSubscriptions = async (
+  enable: boolean,
+  colonyId: string,
+  userId: string,
+  notificationTokens: Array<string>,
+) => {
   const serviceAccount = JSON.parse(firebaseAdminConfig);
 
   const app = admin.initializeApp({
@@ -79,7 +74,6 @@ const handleNotificationSubscriptions = async (params) => {
   });
 
   const messaging = app.messaging();
-  const notificationTokens = notificationSettings?.notificationTokens;
 
   try {
     const response = enable
@@ -108,9 +102,16 @@ const handleNotificationSubscriptions = async (params) => {
   return true;
 };
 
-async function updateContributorPushSetting(colonyId, userId, enable) {
-  const mutation = await graphqlRequest(
-    updateContributorNotificationSettings,
+async function updateContributorPushSetting(
+  colonyId: string,
+  userId: string,
+  enable: boolean,
+) {
+  const mutation = await graphqlRequest<
+    UpdateColonyContributorMutation,
+    UpdateColonyContributorMutationVariables
+  >(
+    UpdateColonyContributorDocument,
     {
       input: {
         id: `${colonyId}_${userId}`,
@@ -126,7 +127,7 @@ async function updateContributorPushSetting(colonyId, userId, enable) {
   if (mutation.errors || !mutation.data) {
     const [error] = mutation.errors;
     throw new Error(
-      error?.message ||
+      error ||
         `Could not update colony watcher ${userId}'s push notification settings`,
     );
   }

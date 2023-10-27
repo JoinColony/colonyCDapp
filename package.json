@@ -30,7 +30,8 @@
     "postinstall": "./scripts/lambda-functions-dependencies.sh && npm run build-lambdas",
     "watch-lambdas": "./scripts/watch-lambdas.js",
     "build-lambdas": "npm-run-all \"amplify:*\"",
-    "amplify:sendNotification": "./scripts/bundle-lambda.sh \"$npm_lifecycle_event\""
+    "amplify:sendNotification": "./scripts/bundle-lambda.sh \"$npm_lifecycle_event\"",
+    "amplify:subscribeToColonyPushNotifications": "./scripts/bundle-lambda.sh \"$npm_lifecycle_event\""
   },
   "repository": {
     "type": "git",
