@@ -36,6 +36,7 @@ export const useRichText = (
         }),
         Placeholder.configure({
           placeholder: () => {
+            setNotFormattedContent('Enter a description');
             return 'Enter a description';
           },
           showOnlyWhenEditable: false,
