@@ -72,6 +72,7 @@ import ColonyMembersRoute from './ColonyMembersRoute';
 import ColonySettingsRoute from './ColonySettingsRoute';
 import UserRoute from './UserRoute';
 import WizardRoute from './WizardRoute';
+import LandingPageRoute from './LandingPageRoute';
 
 const displayName = 'routes.Routes';
 
@@ -86,7 +87,6 @@ const Routes = () => {
 
         {/* Main routes */}
         <Route element={<MainRoute />}>
-          <Route path={LANDING_PAGE_ROUTE} element={<LandingPage />} />
           <Route
             path={USER_ROUTE}
             element={
@@ -108,6 +108,10 @@ const Routes = () => {
             />
             <Route path={USER_ADVANCED_ROUTE} element={<UserAdvancedPage />} />
           </Route>
+        </Route>
+
+        <Route element={<LandingPageRoute />}>
+          <Route path={LANDING_PAGE_ROUTE} element={<LandingPage />} />
         </Route>
 
         <Route element={<WizardRoute />}>

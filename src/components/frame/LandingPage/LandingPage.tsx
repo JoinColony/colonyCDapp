@@ -1,124 +1,114 @@
-import React, { useEffect } from 'react';
-import {
-  defineMessages,
-  FormattedMessage,
-  MessageDescriptor,
-} from 'react-intl';
+import React from 'react';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
-import NavLink from '~shared/NavLink';
-import Icon from '~shared/Icon';
 import Heading from '~shared/Heading';
-import { SpinnerLoader } from '~shared/Preloaders';
-import ColonyAvatar from '~shared/ColonyAvatar';
 
-import { CREATE_COLONY_ROUTE, CREATE_USER_ROUTE } from '~routes';
-import { useGetMetacolonyQuery } from '~gql';
-import { useAppContext, useCanInteractWithNetwork } from '~hooks';
-
-import styles from './LandingPage.css';
+import LandingPageItem from './LandingPageItem';
 
 const displayName = 'frame.LandingPage';
 
 const MSG = defineMessages({
-  callToAction: {
+  headerTitle: {
     id: `${displayName}.callToAction`,
-    defaultMessage: 'Welcome, what would you like to do?',
+    defaultMessage: 'Welcome to Colony',
   },
-  createColony: {
-    id: `${displayName}.createColony`,
-    defaultMessage: 'Create a colony',
+  privateBetaLabel: {
+    id: `${displayName}.privateBetaLabel`,
+    defaultMessage: 'Private Beta',
   },
-  exploreColony: {
-    id: `${displayName}.exploreColony`,
-    defaultMessage: 'Explore the {colonyName}',
+  headerDescription: {
+    id: `${displayName}.headerDescription`,
+    defaultMessage:
+      'The best way to build your online organization. Create a new colony, create a profile so you can contribute to other colonies or start with exploring the Metacolony.',
   },
-  createUsername: {
-    id: `${displayName}.createUsername`,
-    defaultMessage: 'Create a username',
+  createColonyTitle: {
+    id: `${displayName}.createColonyTitle`,
+    defaultMessage: 'Create a Colony',
+  },
+  createColonyDescription: {
+    id: `${displayName}.createColonyDescription`,
+    defaultMessage:
+      'Assemble your team, distribute authority, manage the money.',
+  },
+  createColonyButtonText: {
+    id: `${displayName}.createColonyButtonText`,
+    defaultMessage: 'Get Started',
+  },
+  createUserProfileTitle: {
+    id: `${displayName}.createUserProfile`,
+    defaultMessage: 'Create a profile',
+  },
+  createUserProfileDescription: {
+    id: `${displayName}.createUserProfileDescription`,
+    defaultMessage:
+      'Define your identity, track your contributions, build your reputation.',
+  },
+  createUserProfileButtonText: {
+    id: `${displayName}.createUserProfileButtonText`,
+    defaultMessage: 'Create',
+  },
+  exploreMetacolonyTitle: {
+    id: `${displayName}.exploreMetacolony`,
+    defaultMessage: 'Explore the Metacolony',
+  },
+  exploreMetacolonyDescription: {
+    id: `${displayName}.exploreMetacolonyDescription`,
+    defaultMessage: 'The Colony using Colony to build Colony.',
+  },
+  exploreMetacolonyButtonText: {
+    id: `${displayName}.exploreMetacolonyButtonText`,
+    defaultMessage: 'Explore',
   },
 });
 
-interface LandingItemProps {
-  to: string;
-  message: MessageDescriptor;
-  onClick?: () => void;
-}
-
-const LandingItem = ({ to, message, onClick }: LandingItemProps) => (
-  <li className={styles.item}>
-    <NavLink to={to} onClick={onClick} className={styles.itemLink}>
-      <Icon className={styles.itemIcon} name="circle-plus" title={message} />
-      <span className={styles.itemTitle}>
-        <FormattedMessage {...message} />
-      </span>
-    </NavLink>
-  </li>
-);
+const landingPageItems = [
+  {
+    buttonText: MSG.createColonyButtonText,
+    headingText: MSG.createColonyTitle,
+    headingDescription: MSG.createColonyDescription,
+    iconName: 'layout',
+    onClick: () => {},
+  },
+  {
+    buttonText: MSG.createUserProfileButtonText,
+    headingText: MSG.createUserProfileTitle,
+    headingDescription: MSG.createUserProfileDescription,
+    iconName: 'user-circle',
+    onClick: () => {},
+  },
+  {
+    buttonText: MSG.exploreMetacolonyButtonText,
+    headingText: MSG.exploreMetacolonyTitle,
+    headingDescription: MSG.exploreMetacolonyDescription,
+    iconName: 'colony-icon',
+    onClick: () => {},
+  },
+];
 
 const LandingPage = () => {
-  /*
-   * Are the network contract deployed to the chain the user is connected
-   * so that they can create a new colony on it
-   */
-  const { wallet, updateUser, user, userLoading } = useAppContext();
-  const canInteractWithNetwork = useCanInteractWithNetwork();
-  const { data, loading } = useGetMetacolonyQuery();
-
-  const [metacolony] = data?.getColonyByType?.items || [];
-
-  /* Ensures username is up-to-date post create user flow. */
-  useEffect(() => {
-    if (updateUser) {
-      updateUser(wallet?.address, true);
-    }
-  }, [wallet, updateUser]);
-
   return (
-    <div className={styles.main}>
-      <div>
-        <div className={styles.title}>
+    <div className="w-full">
+      <div className="mb-8">
+        <div className="flex items-center mb-4">
           <Heading
-            text={MSG.callToAction}
-            appearance={{ size: 'medium', margin: 'none', theme: 'dark' }}
+            text={MSG.headerTitle}
+            className="font-semibold text-gray-900 text-3xl"
           />
+          <span className="font-medium text-blue-400 text-sm px-3 py-1 bg-blue-100 rounded-3xl ml-3">
+            <FormattedMessage {...MSG.privateBetaLabel} />
+          </span>
         </div>
-        <ul>
-          {wallet && !userLoading && !user && (
-            <LandingItem to={CREATE_USER_ROUTE} message={MSG.createUsername} />
-          )}
-          {canInteractWithNetwork && (
-            <LandingItem to={CREATE_COLONY_ROUTE} message={MSG.createColony} />
-          )}
-          {loading && (
-            <li className={styles.itemLoading}>
-              <SpinnerLoader appearance={{ size: 'medium' }} />
-            </li>
-          )}
-          {metacolony && (
-            <li className={styles.item}>
-              <NavLink
-                to={`/colony/${metacolony.name}`}
-                className={styles.itemLink}
-              >
-                <ColonyAvatar
-                  className={styles.itemIcon}
-                  colonyAddress={metacolony.colonyAddress}
-                  colony={metacolony}
-                  size="xl"
-                />
-                <span className={styles.itemTitle}>
-                  <FormattedMessage
-                    {...MSG.exploreColony}
-                    values={{
-                      colonyName:
-                        metacolony.metadata?.displayName || metacolony.name,
-                    }}
-                  />
-                </span>
-              </NavLink>
-            </li>
-          )}
-        </ul>
+        <p className="text-normal text-gray-600">
+          <FormattedMessage {...MSG.headerDescription} />
+        </p>
+      </div>
+      <div className="w-full flex justify-center gap-4">
+        <div className="w-1/2 flex flex-col gap-4">
+          {landingPageItems.map((item) => (
+            <LandingPageItem {...item} />
+          ))}
+        </div>
+        <div className="w-1/2 bg-gray-100 rounded-lg" />
       </div>
     </div>
   );
