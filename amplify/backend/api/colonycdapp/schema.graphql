@@ -956,6 +956,11 @@ type Mutation {
   """
   sendNotification(input: SendNotificationInput!): Boolean
     @function(name: "sendNotification-${env}")
+  """
+  Subscribe a user to all Colony Notifications
+  """
+  subscribeToColonyPushNotifications(input: SubscribeColonyPushNotificationInput!): Boolean
+    @function(name: "subscribeToColonyPushNotifications=${env}")
 }
 
 """
@@ -1891,6 +1896,25 @@ enum NotificationType {
   Notification does not fit defined types
   """
   CUSTOM
+}
+
+"""
+Input type for subscribing to a Colony Push Notifications
+"""
+input SubscribeColonyPushNotificationInput {
+  """
+  Unique identifier for the user who wants to subscribe
+  """
+  userId: ID!
+  """
+  Unique identifier for Colony where notifications originate
+  """
+  colonyId: ID!
+  """
+  Bool indicating whether the user is subscribing or unsubscribing to a Colony's push Notifications
+  True to subscribe, false to unsubscribe
+  """
+  enable: Boolean!
 }
 
 """

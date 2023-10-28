@@ -19,3 +19,9 @@ mutation UpdateUserProfile($input: UpdateProfileInput!) {
 mutation SendNotification($input: SendNotificationInput!) {
   sendNotification(input: $input)
 }
+
+mutation SubscribeToColonyPushNotifications(
+  $input: SubscribeColonyPushNotificationInput!
+) {
+  subscribeToColonyPushNotifications(input: $input)
+}
