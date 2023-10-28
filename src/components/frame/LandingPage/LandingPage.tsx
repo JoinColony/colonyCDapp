@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Heading from '~shared/Heading';
 import CreateAColonyBanner from '~images/create-colony-banner.png';
 import CreateAProfileBanner from '~images/create-profile-banner.png';
+import { useAppContext } from '~hooks';
 
 import LandingPageItem from './LandingPageItem';
 
@@ -41,14 +42,22 @@ const MSG = defineMessages({
     id: `${displayName}.createUserProfile`,
     defaultMessage: 'Create a profile',
   },
-  createUserProfileDescription: {
-    id: `${displayName}.createUserProfileDescription`,
-    defaultMessage:
-      'Define your identity, track your contributions, build your reputation.',
-  },
   createUserProfileButtonText: {
     id: `${displayName}.createUserProfileButtonText`,
     defaultMessage: 'Create',
+  },
+  viewUserProfileTitle: {
+    id: `${displayName}.viewUserProfile`,
+    defaultMessage: 'View profile',
+  },
+  viewUserProfileDescription: {
+    id: `${displayName}.viewUserProfileDescription`,
+    defaultMessage:
+      'Define your identity, track your contributions, build your reputation.',
+  },
+  viewUserProfileButtonText: {
+    id: `${displayName}.viewUserProfileButtonText`,
+    defaultMessage: 'View',
   },
   exploreMetacolonyTitle: {
     id: `${displayName}.exploreMetacolony`,
@@ -67,6 +76,7 @@ const MSG = defineMessages({
 const LandingPage = () => {
   const [hoveredItem, setHoveredItem] = useState<number>(0);
   const navigate = useNavigate();
+  const { wallet, user, userLoading } = useAppContext();
 
   const landingPageItems = [
     {
@@ -79,12 +89,15 @@ const LandingPage = () => {
       imgSrc: CreateAColonyBanner,
     },
     {
-      buttonText: MSG.createUserProfileButtonText,
-      headingText: MSG.createUserProfileTitle,
-      headingDescription: MSG.createUserProfileDescription,
+      buttonText: user
+        ? MSG.viewUserProfileButtonText
+        : MSG.createUserProfileButtonText,
+      headingText: user ? MSG.viewUserProfileTitle : MSG.createUserProfileTitle,
+      headingDescription: MSG.viewUserProfileDescription,
       iconName: 'user-circle',
-      onClick: () => navigate('/create-user'),
+      onClick: () => navigate(user ? '/my/profile' : '/create-user'),
       imgSrc: CreateAProfileBanner,
+      disabled: !!(!wallet || userLoading),
     },
     {
       buttonText: MSG.exploreMetacolonyButtonText,

@@ -36,7 +36,7 @@ const LandingPageItem = ({
         'group flex items-center justify-between p-6 rounded-lg border border-gray-200',
         { 'hover:border-blue-400': !disabled },
       )}
-      onMouseEnter={() => onHover(itemIndex)}
+      onMouseEnter={() => onHover(disabled ? 0 : itemIndex)}
       onMouseLeave={() => onHover(0)}
     >
       <div className="flex items-center">
