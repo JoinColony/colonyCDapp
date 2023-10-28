@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
 
 import Heading from '~shared/Heading';
+import CreateAColonyBanner from '~images/create-colony-banner.png';
+import CreateAProfileBanner from '~images/create-profile-banner.png';
 
 import LandingPageItem from './LandingPageItem';
 
@@ -61,32 +64,38 @@ const MSG = defineMessages({
   },
 });
 
-const landingPageItems = [
-  {
-    buttonText: MSG.createColonyButtonText,
-    headingText: MSG.createColonyTitle,
-    headingDescription: MSG.createColonyDescription,
-    iconName: 'layout',
-    onClick: () => {},
-  },
-  {
-    buttonText: MSG.createUserProfileButtonText,
-    headingText: MSG.createUserProfileTitle,
-    headingDescription: MSG.createUserProfileDescription,
-    iconName: 'user-circle',
-    onClick: () => {},
-  },
-  {
-    buttonText: MSG.exploreMetacolonyButtonText,
-    headingText: MSG.exploreMetacolonyTitle,
-    headingDescription: MSG.exploreMetacolonyDescription,
-    iconName: 'colony-icon',
-    onClick: () => {},
-    disabled: true,
-  },
-];
-
 const LandingPage = () => {
+  const [hoveredItem, setHoveredItem] = useState<number>(0);
+  const navigate = useNavigate();
+
+  const landingPageItems = [
+    {
+      buttonText: MSG.createColonyButtonText,
+      headingText: MSG.createColonyTitle,
+      headingDescription: MSG.createColonyDescription,
+      iconName: 'layout',
+      // @TODO: Connect with real invitation code
+      onClick: () => navigate('/create-colony/asd'),
+      imgSrc: CreateAColonyBanner,
+    },
+    {
+      buttonText: MSG.createUserProfileButtonText,
+      headingText: MSG.createUserProfileTitle,
+      headingDescription: MSG.createUserProfileDescription,
+      iconName: 'user-circle',
+      onClick: () => navigate('/create-user'),
+      imgSrc: CreateAProfileBanner,
+    },
+    {
+      buttonText: MSG.exploreMetacolonyButtonText,
+      headingText: MSG.exploreMetacolonyTitle,
+      headingDescription: MSG.exploreMetacolonyDescription,
+      iconName: 'colony-icon',
+      onClick: () => navigate('/colony/meta'),
+      disabled: true,
+    },
+  ];
+
   return (
     <div className="w-full">
       <div className="mb-8">
@@ -105,11 +114,23 @@ const LandingPage = () => {
       </div>
       <div className="w-full flex justify-center gap-4">
         <div className="w-1/2 flex flex-col gap-4">
-          {landingPageItems.map((item) => (
-            <LandingPageItem {...item} />
+          {landingPageItems.map((item, index) => (
+            <LandingPageItem
+              {...item}
+              itemIndex={index}
+              onHover={setHoveredItem}
+            />
           ))}
         </div>
-        <div className="w-1/2 bg-gray-100 rounded-lg" />
+        <div className="w-1/2 bg-gray-100 rounded-lg max-h-[440px]">
+          <img
+            src={
+              landingPageItems[hoveredItem].imgSrc ?? landingPageItems[0].imgSrc
+            }
+            className="w-full h-full"
+            alt=""
+          />
+        </div>
       </div>
     </div>
   );

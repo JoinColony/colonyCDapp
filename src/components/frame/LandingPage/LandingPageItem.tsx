@@ -15,6 +15,8 @@ interface Props {
   headingDescription: MessageDescriptor;
   buttonText: MessageDescriptor;
   onClick: () => void;
+  itemIndex: number;
+  onHover: (itemIndex: number) => void;
   disabled?: boolean;
 }
 
@@ -25,6 +27,8 @@ const LandingPageItem = ({
   buttonText,
   onClick,
   disabled,
+  onHover,
+  itemIndex,
 }: Props) => {
   return (
     <div
@@ -32,6 +36,8 @@ const LandingPageItem = ({
         'group flex items-center justify-between p-6 rounded-lg border border-gray-200',
         { 'hover:border-blue-400': !disabled },
       )}
+      onMouseEnter={() => onHover(itemIndex)}
+      onMouseLeave={() => onHover(0)}
     >
       <div className="flex items-center">
         <div
