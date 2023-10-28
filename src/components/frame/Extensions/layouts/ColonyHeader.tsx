@@ -62,7 +62,7 @@ const ColonyHeader = () => {
           {showJoinButton && (
             <Button
               className="ml-4 mr-2"
-              mode="solidBlack"
+              mode="primaryOutline"
               text={MSG.joinButtonText}
               onClick={handleWatch}
             />
