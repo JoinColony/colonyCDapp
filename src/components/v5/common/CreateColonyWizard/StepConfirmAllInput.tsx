@@ -28,6 +28,11 @@ const StepConfirmAllInput = ({
 
   const updatedWizardValues = {
     ...wizardValues,
+    tokenChoice: wizardValues.tokenChoiceVerify,
+    tokenAddress:
+      wizardValues.tokenChoiceVerify === 'create'
+        ? ''
+        : wizardValues.tokenAddress,
     /**
      * Use tokenName/tokenSymbol if creating a new token,
      * or get the values from token object if using an existing one
