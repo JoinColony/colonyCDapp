@@ -1,0 +1,53 @@
+query GetUserDetails_Sn($id: ID!) {
+  getProfile(id: $id) {
+    displayName
+    email
+    notificationSettings {
+      notificationTokens
+      enableEmail
+      enableMention
+      enableAssign
+    }
+  }
+}
+
+query GetDisplayName_Sn($id: ID!) {
+  getProfile(id: $id) {
+    displayName
+  }
+}
+
+query GetColonyName_Sn($id: ID!) {
+  getColony(id: $id) {
+    name
+    metadata {
+      displayName
+    }
+  }
+}
+
+query GetColonyContributors_Sn($colonyAddress: ID!) {
+  getContributorsByColony(colonyAddress: $colonyAddress) {
+    items {
+      notificationSettings {
+        enablePush
+        enableEmail
+        enableActions
+        enableDecisions
+      }
+      user {
+        profile {
+          id
+          displayName
+          email
+        }
+      }
+    }
+  }
+}
+
+mutation CreateNotification_Sn($input: CreateNotificationInput!) {
+  createNotification(input: $input) {
+    id
+  }
+}
