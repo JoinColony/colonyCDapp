@@ -59,7 +59,8 @@ module.exports = {
   getInviteCodeValidity: /* GraphQL */ `
     query GetInviteCodeValidity($id: ID!) {
       getPrivateBetaInviteCode(id: $id) {
-        valid
+        shareableInvites
+        userId
       }
     }
   `,
@@ -69,6 +70,13 @@ module.exports = {
       $condition: ModelPrivateBetaInviteCodeConditionInput
     ) {
       updatePrivateBetaInviteCode(input: $input, condition: $condition) {
+        id
+      }
+    }
+  `,
+  updateUser: /* GraphQL */ `
+    mutation UpdateUser($input: UpdateUserInput!) {
+      updateUser(input: $input) {
         id
       }
     }

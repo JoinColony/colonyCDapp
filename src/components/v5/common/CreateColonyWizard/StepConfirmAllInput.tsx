@@ -4,6 +4,7 @@ import { WizardStepProps } from '~shared/Wizard';
 import { ActionForm } from '~shared/Fields';
 import { mergePayload } from '~utils/actions';
 import { ActionTypes } from '~redux/index';
+import { useAppContext } from '~hooks';
 
 import { FormValues, WizardProps } from '../CreateColonyWizard';
 import { ButtonRow, HeaderRow } from './shared';
@@ -23,6 +24,8 @@ const StepConfirmAllInput = ({
   setStep,
   wizardProps,
 }: Props) => {
+  const { user } = useAppContext();
+
   const updatedWizardValues = {
     ...wizardValues,
     /**
@@ -33,6 +36,7 @@ const StepConfirmAllInput = ({
     tokenSymbol:
       wizardValues.tokenSymbol?.toUpperCase() || wizardValues.token?.symbol,
     inviteCode: wizardProps.inviteCode,
+    userId: user?.walletAddress || '',
   };
 
   const transform = mergePayload(updatedWizardValues);

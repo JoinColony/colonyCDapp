@@ -14,6 +14,7 @@ const {
   getTokenByAddress,
   getInviteCodeValidity,
   updateInviteCodeValidity,
+  updateUser,
 } = require('./graphql');
 
 let apiKey = 'da2-fakeApiId123456';
@@ -43,6 +44,7 @@ exports.handler = async (event) => {
     chainMetadata,
     status,
     inviteCode,
+    userId,
   } = event.arguments?.input || {};
 
   /*
@@ -56,9 +58,10 @@ exports.handler = async (event) => {
       apiKey,
     );
 
-    const { valid } = inviteCodeQuery?.data?.getPrivateBetaInviteCode || {};
+    const { shareableInvites, userId: inviteCodeUserId } =
+      inviteCodeQuery?.data?.getPrivateBetaInviteCode || {};
 
-    if (!valid) {
+    if (shareableInvites === 0) {
       throw new Error(`Invite code is not valid`);
     }
 
@@ -67,7 +70,8 @@ exports.handler = async (event) => {
       {
         input: {
           id: inviteCode,
-          valid: false,
+          shareableInvites: shareableInvites - 1,
+          userId: inviteCodeUserId || userId,
         },
       },
       graphqlURL,
@@ -79,6 +83,25 @@ exports.handler = async (event) => {
       throw new Error(
         error?.message || `Could not update ${inviteCode} validity`,
       );
+    }
+
+    if (!inviteCodeUserId) {
+      const userMutation = await graphqlRequest(
+        updateUser,
+        {
+          input: {
+            id: userId,
+            userPrivateBetaInviteCodeId: inviteCode,
+          },
+        },
+        graphqlURL,
+        apiKey,
+      );
+
+      if (userMutation.errors || !inviteCodeMutation.data) {
+        const [error] = userMutation.errors;
+        throw new Error(error?.message || `Could not update ${user} validity`);
+      }
     }
   }
 
