@@ -6,6 +6,7 @@ import Heading from '~shared/Heading';
 import CreateAColonyBanner from '~images/create-colony-banner.png';
 import CreateAProfileBanner from '~images/create-profile-banner.png';
 import { useAppContext } from '~hooks';
+import InvitationBlock from '~common/InvitationBlock';
 
 import LandingPageItem from './LandingPageItem';
 
@@ -70,6 +71,15 @@ const MSG = defineMessages({
   exploreMetacolonyButtonText: {
     id: `${displayName}.exploreMetacolonyButtonText`,
     defaultMessage: 'Explore',
+  },
+  inviteBlockTitle: {
+    id: `${displayName}.inviteBlockTitle`,
+    defaultMessage: 'Invite 1 person to create a Colony',
+  },
+  inviteBlockDescription: {
+    id: `${displayName}.inviteBlockDescription`,
+    defaultMessage:
+      'You can invite only one member to create a colony of their own using the new app during the private beta with this custom invite link: app.colony.io/createcolony/{invitationCode}',
   },
 });
 
@@ -145,6 +155,8 @@ const LandingPage = () => {
           />
         </div>
       </div>
+      {/* @TODO: Add real logic here to display the invitation block */}
+      {false && <InvitationBlock />}
     </div>
   );
 };
