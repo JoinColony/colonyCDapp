@@ -27,15 +27,31 @@ const LandingPageItem = ({
   disabled,
 }: Props) => {
   return (
-    <div className="flex items-center justify-between p-6 rounded-lg border border-gray-200">
+    <div
+      className={clsx(
+        'group flex items-center justify-between p-6 rounded-lg border border-gray-200',
+        { 'hover:border-blue-400': !disabled },
+      )}
+    >
       <div className="flex items-center">
-        <div className="flex items-center px-[23px] py-[25px] mr-4 bg-base-bg rounded-lg">
+        <div
+          className={clsx(
+            'flex items-center px-[23px] py-[25px] mr-4 bg-base-bg rounded-lg',
+            {
+              'group-hover:bg-blue-100': !disabled,
+            },
+          )}
+        >
           <Icon
             appearance={{ size: 'medium' }}
             name={iconName}
-            className={clsx('[&>svg]:w-7 [&>svg]:h-7', {
-              '[&>svg]:opacity-20': disabled,
-            })}
+            className={clsx(
+              '[&>svg]:w-7 [&>svg]:h-7 [&>svg]:group-hover:fill-blue-400',
+              {
+                '[&>svg]:fill-gray-300 [&>svg]:group-hover:fill-gray-300':
+                  disabled,
+              },
+            )}
           />
         </div>
         <div>
