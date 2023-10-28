@@ -8,7 +8,7 @@ const {
   printSchema,
 } = require('graphql');
 const fetch = require('node-fetch');
-const net = require('net');
+const http = require('http');
 
 const SCHEMA_LOCATION = './tmp-schema.graphql';
 
@@ -60,23 +60,36 @@ const codegen = async () => {
     });
   } catch {
     console.error('Error when fetching Amplify schema, retrying...');
-    setTimeout(codegen, 500);
+    setTimeout(codegen, 5000);
   }
 };
 
-const waitForPortToOpen = () => {
-  const client = net.createConnection({ port: 9200, host: 'localhost' }, () => {
-    codegen();
-    client.end(); // Close the connection
-  });
+const SERVICE_PORT = 20002;
 
-  client.on('error', (err) => {
-    if (err.code === 'ECONNREFUSED') {
-      setTimeout(waitForPortToOpen, 2000);  // Wait 1 second and try again
+function isServiceResponsive(callback) {
+  http
+    .get(`http://localhost:${SERVICE_PORT}`, (res) => {
+      if (res.statusCode === 200) {
+        callback(true);
+      } else {
+        callback(false);
+      }
+    })
+    .on('error', (err) => {
+      callback(false);
+    });
+}
+
+function waitForServiceToBeResponsive(callback) {
+  isServiceResponsive((isResponsive) => {
+    if (isResponsive) {
+      callback();
     } else {
-      console.error('An error occurred:', err);
+      setTimeout(() => {
+        waitForServiceToBeResponsive(callback);
+      }, 1000); // Check every second
     }
   });
-};
+}
 
-waitForPortToOpen();
+waitForServiceToBeResponsive(codegen);
