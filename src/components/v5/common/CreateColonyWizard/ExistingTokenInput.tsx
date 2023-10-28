@@ -1,20 +1,20 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+
 import { Token } from '~types';
 import { getNetworkByChainId } from '~utils/web3';
-
 import Input from '~v5/common/Fields/Input';
 
 const displayName = 'common.CreateColonyWizard.StepExistingTokenInputs';
 
-interface StepExistingTokenInputsProps {
+interface ExistingTokenInputProps {
   wizardTokenAddress: string;
 }
 
-const StepExistingTokenInputs = ({
+const ExistingTokenInput = ({
   wizardTokenAddress,
-}: StepExistingTokenInputsProps) => {
+}: ExistingTokenInputProps) => {
   const {
     register,
     watch,
@@ -52,5 +52,5 @@ const StepExistingTokenInputs = ({
   );
 };
 
-StepExistingTokenInputs.displayName = displayName;
-export default StepExistingTokenInputs;
+ExistingTokenInput.displayName = displayName;
+export default ExistingTokenInput;

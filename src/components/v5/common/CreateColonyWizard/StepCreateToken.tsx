@@ -11,7 +11,7 @@ import {
 import { ButtonRow, HeaderRow } from './shared';
 import TokenInputs from './StepCreateTokenInputs';
 import { TokenChoiceOptions } from './StepCreateTokenComponents';
-import ExistingInput from './StepExistingTokenInputs';
+import ExistingTokenInput from './ExistingTokenInput';
 
 const displayName = `common.CreateColonyWizard.StepCreateToken`;
 
@@ -51,7 +51,7 @@ const StepCreateToken = ({
                 wizardTokenSymbol={tokenSymbol || ''}
               />
             ) : (
-              <ExistingInput wizardTokenAddress={tokenAddress} />
+              <ExistingTokenInput wizardTokenAddress={tokenAddress} />
             )}
             <ButtonRow previousStep={previousStep} />
           </>
