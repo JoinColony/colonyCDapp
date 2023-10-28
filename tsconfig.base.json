@@ -39,7 +39,7 @@
     "downlevelIteration": true,
     "esModuleInterop": true,
     "jsx": "react",
-    "lib": ["dom", "es2019"],
+    "lib": ["dom", "es2019", "webworker"],
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmit": true,

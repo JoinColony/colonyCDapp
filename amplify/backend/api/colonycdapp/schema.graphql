@@ -998,11 +998,91 @@ type Profile @model {
   Metadata associated with the user's profile
   """
   meta: ProfileMetadata
-
   """
   The user associated with this profile
   """
   user: User! @belongsTo(fields: ["id"])
+  """
+  List of a user's notifications
+  """
+  notifications: [Notification] @hasMany
+  """
+  Notification settings
+  """
+  notificationSettings: NotificationSettings
+}
+
+"""
+An object holding the personal notification settings of a user
+"""
+type NotificationSettings {
+  """
+  Device registration tokens for push notifications
+  If this is null or the array is empty the user is not subscribed to push notifications
+  """
+  notificationTokens: [String!]
+  """
+  Indicates whether the user wants to be emailed
+  """
+  enableEmail: Boolean
+  """
+  Indicates whether the user wants to be notified on mentions
+  """
+  enableMention: Boolean
+  """
+  Indicates whether the user wants to be notified on assignments
+  """
+  enableAssign: Boolean
+}
+
+"""
+Notifications that a user may receive from a Colony
+"""
+type Notification @model {
+  """
+  User ID the Notification was sent to
+  """
+  userId: ID!
+    @index(
+      name: "byUser"
+      queryField: "getNotificationsByDate"
+      sortKeyFields: ["createdAt"]
+    )
+  """
+  The user object the notification was sent to
+  """
+  user: Profile! @hasOne(fields: ["userId"])
+  """
+  Colony ID associated with the Notification
+  """
+  colonyId: ID!
+  """
+  The colony the notification was sent from
+  """
+  colony: Colony! @hasOne(fields: ["colonyId"])
+  """
+  Timestamp when the notification was sent
+  """
+  createdAt: AWSDateTime!
+  """
+  Flag indicating whether the notification has been read by the user
+  """
+  read: Boolean!
+  """
+  The default title for a notification is the Colony Display name
+  This enables setting a different title and takes precedence if set
+  """
+  title: String
+  """
+  The text of the notification with indications which string portions are links
+  eg. 'This signifies a {link}'
+  """
+  text: String!
+  """
+  The links connected to what is signified in the text
+  The order matches what is in the string
+  """
+  links: [String!]
 }
 
 """

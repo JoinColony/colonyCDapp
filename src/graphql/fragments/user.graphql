@@ -63,3 +63,18 @@ fragment Watcher on Watcher {
     ...MemberUser
   }
 }
+
+fragment Notification on Notification {
+  colony {
+    id
+    name
+    metadata {
+      displayName
+    }
+  }
+  createdAt
+  read
+  title
+  text
+  links
+}

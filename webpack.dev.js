@@ -6,6 +6,22 @@ const ReactRefreshTypeScript = require('react-refresh-typescript');
 
 const webpackBaseConfig = require('./webpack.base').config;
 
+// Work around to enable web workers in dev mode
+// https://github.com/GoogleChrome/workbox/issues/1790#issuecomment-1241356293
+const workboxPluginInstance = webpackBaseConfig.plugins.find(
+  (plugin) => plugin.constructor.name === 'InjectManifest',
+);
+if (workboxPluginInstance) {
+  Object.defineProperty(workboxPluginInstance, 'alreadyCalled', {
+    get() {
+      return false;
+    },
+    set() {
+      // Do nothing; prevents the internals from setting it to true
+    },
+  });
+}
+
 module.exports = () => ({
   ...webpackBaseConfig,
   /*
