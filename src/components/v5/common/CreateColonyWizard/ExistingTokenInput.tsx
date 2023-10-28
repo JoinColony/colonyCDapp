@@ -4,17 +4,17 @@ import { useIntl } from 'react-intl';
 
 import { Token } from '~types';
 import { getNetworkByChainId } from '~utils/web3';
-import Input from '~v5/common/Fields/Input';
+import TokenSelector from '~v5/shared/TokenSelector';
 
-const displayName = 'common.CreateColonyWizard.StepExistingTokenInputs';
+const displayName = 'common.CreateColonyWizard.TokenSelector';
 
-interface ExistingTokenInputProps {
+interface TokenSelectorInputProps {
   wizardTokenAddress: string;
 }
 
-const ExistingTokenInput = ({
+const TokenSelectorInput = ({
   wizardTokenAddress,
-}: ExistingTokenInputProps) => {
+}: TokenSelectorInputProps) => {
   const {
     register,
     watch,
@@ -37,8 +37,7 @@ const ExistingTokenInput = ({
   );
 
   return (
-    <Input
-      name="tokenAddress"
+    <TokenSelector
       register={register}
       isError={!!tokenAddressError}
       customErrorMessage={tokenAddressError}
@@ -52,5 +51,5 @@ const ExistingTokenInput = ({
   );
 };
 
-ExistingTokenInput.displayName = displayName;
-export default ExistingTokenInput;
+TokenSelectorInput.displayName = displayName;
+export default TokenSelectorInput;
