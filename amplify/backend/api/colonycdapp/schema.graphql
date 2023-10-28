@@ -1943,6 +1943,11 @@ input SendNotificationInput {
   """
   associatedActionId: ID
   """
+  Custom title of notification this is usually the colonyName the notification originates from
+  Takes precedence if sent
+  """
+  customNotificationTitle: String
+  """
   Content of notification if a custom notification
   """
   customNotificationText: String

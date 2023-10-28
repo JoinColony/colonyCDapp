@@ -67,13 +67,13 @@ const bodyBuilder = async (arguments) => {
 };
 
 const notificationBuilder = async (arguments) => {
-  const { colonyName } = arguments;
+  const { title } = arguments;
 
   try {
     const body = await bodyBuilder(arguments);
 
     return {
-      title: colonyName,
+      title,
       body,
     };
   } catch (error) {

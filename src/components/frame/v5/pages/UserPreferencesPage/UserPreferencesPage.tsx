@@ -15,6 +15,7 @@ import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import Switch from '~v5/common/Fields/Switch';
 import { multiLineTextEllipsis } from '~utils/strings';
 import { UserPreferencesPageProps } from './types';
+import { useNotifications } from '~hooks/useNotifications';
 
 const displayName = 'v5.pages.UserPreferencesPage';
 
@@ -39,6 +40,13 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
     setIsEmailInputVisible,
     loading,
   } = useUserPreferencesPage();
+
+  const {
+    enablePushNotifications,
+    pushNotificationsEnabledForDevice,
+    emailEnabledForUser,
+    enableEmailNotifications,
+  } = useNotifications();
 
   if (!user) {
     return null;
@@ -138,14 +146,36 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
                 fieldTitle={{ id: 'field.browserNotification' }}
                 fieldDescription={{ id: 'description.browserNotification' }}
               />
-              <Switch id="browser-notification" />
+              <Switch
+                id="browser-notification"
+                onChange={async () => {
+                  try {
+                    await enablePushNotifications(
+                      !pushNotificationsEnabledForDevice,
+                    );
+                  } catch (e) {
+                    console.error(e);
+                  }
+                }}
+                isChecked={pushNotificationsEnabledForDevice}
+              />
             </div>
             <div className={styles.switchRow}>
               <LeftColumn
                 fieldTitle={{ id: 'field.emailNotification' }}
                 fieldDescription={{ id: 'description.emailNotification' }}
               />
-              <Switch id="email-notification" />
+              <Switch
+                id="email-notification"
+                onChange={async () => {
+                  try {
+                    await enableEmailNotifications(!emailEnabledForUser);
+                  } catch (e) {
+                    console.error(e);
+                  }
+                }}
+                isChecked={emailEnabledForUser}
+              />
             </div>
             <span className="divider" />
             <h5 className="heading-5">

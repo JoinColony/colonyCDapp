@@ -27,7 +27,7 @@ onBackgroundMessage(messaging, (payload) => {
   // Customize notification here
   const notificationTitle = payload?.data?.title || 'Colony Notification';
   const notificationOptions = {
-    body: payload?.notification?.body,
+    body: payload?.data?.body,
     icon: 'favicon.png',
     // We can pass in many more options here
     // https://developer.mozilla.org/en-US/docs/Web/API/notification

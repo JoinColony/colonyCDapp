@@ -48,7 +48,7 @@ exports.handler = async (event, context, callback) => {
     mailJetApiSecret,
   };
 
-  const { userId, colonyId } = params;
+  const { userId, colonyId, customNotificationTitle } = params;
 
   const serviceAccount = JSON.parse(firebaseAdminConfig);
 
@@ -74,9 +74,10 @@ exports.handler = async (event, context, callback) => {
 
   const { name, metadata } = colonyQuery?.data?.getColony || {};
 
-  const colonyName = metadata?.displayName || name || colonyId;
+  const title =
+    customNotificationTitle || metadata?.displayName || name || colonyId;
 
-  params = { ...params, messaging, colonyName };
+  params = { ...params, messaging, title };
 
   // NOTE: We are sending data web push messages and handling them
   // ourselves in the firebase web worker
@@ -161,7 +162,7 @@ async function sendMessageToUser(params) {
     }
   }
 
-  if (notificationSettings?.enableEmails) {
+  if (notificationSettings?.enableEmail) {
     await sendEmail(params);
   }
 }

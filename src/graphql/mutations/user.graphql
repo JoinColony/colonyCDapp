@@ -13,6 +13,12 @@ mutation UpdateUserProfile($input: UpdateProfileInput!) {
     location
     website
     email
+    notificationSettings {
+      notificationTokens
+      enableEmail
+      enableMention
+      enableAssign
+    }
   }
 }
 
@@ -24,4 +30,18 @@ mutation SubscribeToColonyPushNotifications(
   $input: SubscribeColonyPushNotificationInput!
 ) {
   subscribeToColonyPushNotifications(input: $input)
+}
+
+mutation UpdateUserNotificationToken($id: ID!, $notificationTokens: [String]!) {
+  updateProfile(
+    input: {
+      id: $id
+      notificationSettings: { notificationTokens: $notificationTokens }
+    }
+  ) {
+    id
+    notificationSettings {
+      notificationTokens
+    }
+  }
 }

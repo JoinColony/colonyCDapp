@@ -56,7 +56,7 @@ query GetUserNotifications($id: ID!, $colonyId: ID) {
   notificationsByDate(
     userId: $id
     filter: { colonyId: { eq: $colonyId } }
-    sortDirection: ASC
+    sortDirection: DESC
   ) {
     items {
       ...Notification

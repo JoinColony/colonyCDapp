@@ -39,6 +39,12 @@ fragment Profile on Profile {
     decentralizedModeEnabled
     customRpc
   }
+  notificationSettings {
+    notificationTokens
+    enableEmail
+    enableMention
+    enableAssign
+  }
 }
 
 fragment MemberUser on User {
