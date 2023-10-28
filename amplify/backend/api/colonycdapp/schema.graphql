@@ -951,6 +951,11 @@ type Mutation {
   updateContributorsWithReputation(
     input: UpdateContributorsWithReputationInput!
   ): Boolean @function(name: "updateContributorsWithReputation-${env}")
+  """
+  Send a notification to a user, this also creates a notification in the database
+  """
+  sendNotification(input: SendNotificationInput!): Boolean
+    @function(name: "sendNotification-${env}")
 }
 
 """
@@ -1075,7 +1080,7 @@ type Notification @model {
   title: String
   """
   The text of the notification with indications which string portions are links
-  eg. 'This signifies a {link}'
+  eg. 'This signifies a [link]'
   """
   text: String!
   """
@@ -1384,6 +1389,33 @@ type ColonyContributor @model {
   """
   roles: [ColonyRole]
     @hasMany(indexName: "byTargetAddress", fields: ["contributorAddress"])
+
+  """
+  Contributor notification settings
+  """
+  notificationSettings: ContributorNotificationSettings
+}
+
+"""
+Contributor Notification Settings
+"""
+type ContributorNotificationSettings {
+  """
+  Whether the user will receive push notifications
+  """
+  enablePush: Boolean
+  """
+  Whether the user will receive email notifications
+  """
+  enableEmail: Boolean
+  """
+  Whether the user will receive notifications about actions
+  """
+  enableActions: Boolean
+  """
+  Whether the user will receive notifications about decisions
+  """
+  enableDecisions: Boolean
 }
 
 """
@@ -1837,6 +1869,59 @@ type User @model {
   """
   transactionHistory: [Transaction!]
     @hasMany(indexName: "byInitiatorAddress", fields: ["id"])
+}
+
+"""
+The different types of notifications a user receives
+"""
+enum NotificationType {
+  """
+  Colony Action ready for further interaction
+  """
+  READY
+  """
+  User has been mentioned
+  """
+  MENTION
+  """
+  User is assigned a task in a Colony
+  """
+  ASSIGNMENT
+  """
+  Notification does not fit defined types
+  """
+  CUSTOM
+}
+
+"""
+Input type for sending a notification
+"""
+input SendNotificationInput {
+  """
+  Unique identifier for the user to send to.
+  If null a notification will be sent to anyone subscribed to the colony notifications
+  """
+  userId: ID
+  """
+  Unique identifier for Colony notification is sent from
+  """
+  colonyId: ID!
+  """
+  Type of notification
+  """
+  type: NotificationType!
+  """
+  Unique identifier for user associated with notification
+  """
+  associatedUserId: ID!
+  """
+  Unique identifier for Colony action associated with notification
+  """
+  associatedActionId: ID
+  """
+  Content of notification if a custom notification
+  """
+  customNotificationText: String
 }
 
 """

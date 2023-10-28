@@ -223,6 +223,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "sendNotification": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "setCurrentVersion": {
       "build": true,
       "dependsOn": [
