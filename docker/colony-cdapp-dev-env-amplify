@@ -3,29 +3,6 @@ FROM colony-cdapp-dev-env/base:latest
 # Declare volumes to set up metadata
 VOLUME [ "/colonyCDapp/amplify/backend", "/colonyCDapp/amplify/mock-data", "/colonyCDapp/src/graphql" ]
 
-# Amplify needs a specific version of python for opensearch
-RUN apt-get update &&\
-    apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends curl gcc g++ gnupg unixodbc-dev openssl git &&\
-    apt-get install -y software-properties-common ca-certificates &&\
-    apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libssl-dev libreadline-dev libffi-dev wget libbz2-dev libsqlite3-dev && \
-    update-ca-certificates && \
-    rm -rf /var/lib/apt/lists/*
-
-RUN mkdir /python && cd /python && \
-    wget https://www.python.org/ftp/python/3.8.18/Python-3.8.18.tgz && \
-    tar -zxvf Python-3.8.18.tgz && \
-    cd Python-3.8.18 && \
-    ls -lhR && \
-    ./configure --enable-optimizations && \
-    make install && \
-    rm -rf /python
-
-# Some more python dependencies for opensearch
-RUN apt-get update
-RUN apt-get install python3-pip -y
-RUN pip3 install pipenv
-
 # Open up ports to the docker image
 # Amplify
 EXPOSE 20002
@@ -55,8 +32,8 @@ ADD docker/files/amplify/amplify-meta.json.base /colonyCDappBackend/scripts/ampl
 ADD docker/files/amplify/config.base /home/node/.aws/config
 ADD docker/files/amplify/credentials.base /home/node/.aws/credentials
 
-RUN chown -R node:node /colonyCDapp
-RUN chown -R node:node /colonyCDappBackend
+RUN chown -R node:users /colonyCDapp
+RUN chown -R node:users /colonyCDappBackend
 
 # Opensearch cannot be run by root so we use the built in node user
 # We also add the node user to the users group so that the node user
