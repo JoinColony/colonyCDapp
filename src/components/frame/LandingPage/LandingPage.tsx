@@ -82,6 +82,7 @@ const landingPageItems = [
     headingDescription: MSG.exploreMetacolonyDescription,
     iconName: 'colony-icon',
     onClick: () => {},
+    disabled: true,
   },
 ];
 

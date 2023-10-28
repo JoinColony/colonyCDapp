@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormattedMessage, MessageDescriptor } from 'react-intl';
+import clsx from 'clsx';
 
 import Icon from '~shared/Icon';
 import Heading from '~shared/Heading';
@@ -14,6 +15,7 @@ interface Props {
   headingDescription: MessageDescriptor;
   buttonText: MessageDescriptor;
   onClick: () => void;
+  disabled?: boolean;
 }
 
 const LandingPageItem = ({
@@ -22,6 +24,7 @@ const LandingPageItem = ({
   headingDescription,
   buttonText,
   onClick,
+  disabled,
 }: Props) => {
   return (
     <div className="flex items-center justify-between p-6 rounded-lg border border-gray-200">
@@ -30,20 +33,35 @@ const LandingPageItem = ({
           <Icon
             appearance={{ size: 'medium' }}
             name={iconName}
-            className="[&>svg]:w-7 [&>svg]:h-7"
+            className={clsx('[&>svg]:w-7 [&>svg]:h-7', {
+              '[&>svg]:opacity-20': disabled,
+            })}
           />
         </div>
         <div>
           <Heading
             text={headingText}
-            className="text-normal font-semibold text-gray-900"
+            className={clsx('text-normal font-semibold', {
+              'text-gray-900': !disabled,
+              'text-gray-300': disabled,
+            })}
           />
-          <p className="text-sm text-gray-700 mt-1">
+          <p
+            className={clsx('text-sm mt-1', {
+              'text-gray-700': !disabled,
+              'text-gray-300': disabled,
+            })}
+          >
             <FormattedMessage {...headingDescription} />
           </p>
         </div>
       </div>
-      <Button text={buttonText} mode="primaryOutline" onClick={onClick} />
+      <Button
+        text={buttonText}
+        mode="primaryOutline"
+        onClick={onClick}
+        disabled={disabled}
+      />
     </div>
   );
 };
