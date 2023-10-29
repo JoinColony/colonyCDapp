@@ -116,6 +116,9 @@ fragment ColonyMetadata on ColonyMetadata {
     added
     removed
   }
+  objective {
+    ...ColonyObjective
+  }
   changelog {
     transactionHash
     newDisplayName
@@ -125,6 +128,7 @@ fragment ColonyMetadata on ColonyMetadata {
     haveTokensChanged
     hasDescriptionChanged
     haveExternalLinksChanged
+    hasObjectiveChanged
     newSafes {
       ...Safe
     }
@@ -192,4 +196,10 @@ fragment Safe on Safe {
   address
   chainId
   moduleContractAddress
+}
+
+fragment ColonyObjective on ColonyObjective {
+  title
+  description
+  percentage
 }

@@ -1503,6 +1503,21 @@ type ExternalLink {
   link: String!
 }
 
+type ColonyObjective {
+  """
+  Title of the objective
+  """
+  title: String!
+  """
+  Description of the objective with a limit of 120 characters
+  """
+  description: String!
+  """
+  Number representing how complete the objective is, must be between 0 and 100
+  """
+  percentage: Int!
+}
+
 """
 Represents metadata for a Colony
 """
@@ -1549,6 +1564,10 @@ type ColonyMetadata @model {
   """
   modifiedTokenAddresses: PendingModifiedTokenAddresses
   """
+  Colony Objective
+  """
+  objective: ColonyObjective
+  """
   List of safes that are used within the Colony
   """
   safes: [Safe!]
@@ -1591,9 +1610,11 @@ type ColonyMetadataChangelog {
   Whether the colony's external links have changed
   """
   haveExternalLinksChanged: Boolean
-
   """
-  "
+  Whether the colony's objective has changed
+  """
+  hasObjectiveChanged: Boolean
+  """
   Whether safes have been added or removed from the Colony's safe list
   """
   newSafes: [Safe!]
