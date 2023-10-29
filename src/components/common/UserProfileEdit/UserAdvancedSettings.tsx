@@ -40,22 +40,20 @@ const MSG = defineMessages({
 const validationSchema = object({
   metatransactionsEnabled: bool<boolean>(),
   decentralizedModeEnabled: bool<boolean>(),
-  customRpc: string()
-    .defined()
-    .when('decentralizedModeEnabled', {
-      is: true,
-      then: string()
-        .required(() => MSG.invalidURLError)
-        .url(() => MSG.invalidURLError)
-        .test(
-          'gnosisRpc',
-          () => MSG.invalidRPCError,
-          yupDebounce(validateCustomGnosisRPC, 200, {
-            isOptional: false,
-            circuitBreaker: isValidURL,
-          }),
-        ),
-    }),
+  customRpc: string().when('decentralizedModeEnabled', {
+    is: true,
+    then: string()
+      .required(() => MSG.invalidURLError)
+      .url(() => MSG.invalidURLError)
+      .test(
+        'gnosisRpc',
+        () => MSG.invalidRPCError,
+        yupDebounce(validateCustomGnosisRPC, 200, {
+          isOptional: false,
+          circuitBreaker: isValidURL,
+        }),
+      ),
+  }),
 }).defined();
 
 export type FormValues = InferType<typeof validationSchema>;
