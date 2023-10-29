@@ -47,6 +47,7 @@ export const getUpdatedColonyMetadataChangelog = (
   haveTokensChanged = false,
   hasDescriptionChanged = false,
   haveExternalLinksChanged = false,
+  hasObjectiveChanged = false,
   newSafes?: Safe[],
 ): ColonyMetadataChangelogInput[] => {
   const existingChangelog = getExistingChangelog(metadata.changelog);
@@ -67,6 +68,7 @@ export const getUpdatedColonyMetadataChangelog = (
       haveTokensChanged,
       hasDescriptionChanged,
       haveExternalLinksChanged,
+      hasObjectiveChanged,
       newSafes: newSafes ?? currentColonySafes,
       oldSafes: currentColonySafes,
     },

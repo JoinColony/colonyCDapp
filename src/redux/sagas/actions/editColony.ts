@@ -41,6 +41,7 @@ function* editColonyAction({
     colonyThumbnail,
     tokenAddresses,
     annotationMessage,
+    colonyObjective,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -176,6 +177,7 @@ function* editColonyAction({
             thumbnail: colonyThumbnail,
             description: colonyDescription,
             externalLinks: colonyExternalLinks,
+            objective: colonyObjective,
             // @TODO: refactor this function to take an object
             changelog: getUpdatedColonyMetadataChangelog(
               txHash,
@@ -186,6 +188,7 @@ function* editColonyAction({
               haveTokensChanged,
               metadata?.description !== colonyDescription,
               !isEqual(metadata?.externalLinks, colonyExternalLinks),
+              !isEqual(metadata?.objective, colonyObjective),
             ),
           },
         },

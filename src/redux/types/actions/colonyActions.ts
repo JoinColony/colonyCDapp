@@ -20,7 +20,7 @@ import {
   ActionTypeWithMeta,
   MetaWithSetter,
 } from './index';
-import { ExternalLink } from '~gql';
+import { ColonyObjective, ExternalLink } from '~gql';
 
 export type OneTxPaymentPayload = {
   colonyAddress: Address;
@@ -97,6 +97,7 @@ export type ColonyActionsActionTypes =
         colonyThumbnail?: string;
         tokenAddresses?: Address[];
         annotationMessage?: string;
+        colonyObjective?: ColonyObjective;
       },
       MetaWithSetter<object>
     >
