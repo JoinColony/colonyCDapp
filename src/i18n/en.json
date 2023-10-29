@@ -457,6 +457,8 @@
   "metatransaction.ColonyClient.initiateSafeTransaction.title": "{title}",
   "metatransaction.ColonyClient.initiateSafeTransaction.description": "Initiate Safe transaction",
   "metatransaction.ColonyClient.makeArbitraryTransactions.title": "{title}",
+  "metatransaction.group.enableExtension.title": "Enable Colony Extension",
+  "metatransaction.group.enableExtension.description": "Enable Colony Extension",
 
   "message.generic.title": "Generic Message",
   "message.generic.description": "This needs your wallet's signature",
