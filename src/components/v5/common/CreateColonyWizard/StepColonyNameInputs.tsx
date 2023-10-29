@@ -18,8 +18,15 @@ const StepColonyNameInputs = ({
 }: StepColonyNameInputsProps) => {
   const {
     register,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, dirtyFields },
   } = useFormContext();
+
+  const { colonyName: colonyNameDirty } = dirtyFields;
+  const showColonyNameMessage = colonyNameDirty && !errors.colonyName?.message;
+
+  const colonyNameSuccessMessage = formatText({
+    id: 'createColonyWizard.step.colonyName.urlSuccess',
+  });
 
   const displayNameError = errors.displayName?.message as string | undefined;
 
@@ -60,9 +67,9 @@ const StepColonyNameInputs = ({
             isDisabled={isSubmitting}
             defaultValue={wizardColonyName}
             maxCharNumber={MAX_COLONY_DISPLAY_NAME}
-            successfulMessage={formatText({
-              id: 'createColonyWizard.step.colonyName.urlSuccess',
-            })}
+            successfulMessage={
+              showColonyNameMessage && colonyNameSuccessMessage
+            }
             isDecoratedError={errors.colonyName?.type === 'isNameTaken'}
           />
         </div>
