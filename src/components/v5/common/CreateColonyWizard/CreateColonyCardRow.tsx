@@ -1,4 +1,5 @@
 import React from 'react';
+import { defineMessages } from 'react-intl';
 
 import { WizardStepProps } from '~shared/Wizard';
 import { formatText } from '~utils/intl';
@@ -14,6 +15,17 @@ interface CardRowProps {
   setStep: WizardStepProps<FormValues, WizardProps>['setStep'];
 }
 
+const MSG = defineMessages({
+  nativeToken: {
+    id: 'createColonyWizard.step.confirm.nativeToken',
+    defaultMessage: 'Native token',
+  },
+  blockchain: {
+    id: 'createColonyWizard.step.confirm.blockchain',
+    defaultMessage: 'Blockchain',
+  },
+});
+
 const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
   const cards = [
     {
@@ -23,7 +35,7 @@ const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
       step: 0,
     },
     {
-      title: 'createColonyWizard.step.confirm.nativeToken',
+      title: MSG.nativeToken,
       text: updatedWizardValues.tokenName,
       subText: updatedWizardValues.tokenSymbol,
       step: 2,
@@ -41,7 +53,9 @@ const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
       {cards.map((card) => (
         <div className="flex flex-col gap-3.5" key={`option ${card.title}`}>
           <h5 className="text-2 lowercase first-letter:uppercase">
-            {formatText({ id: card.title })}
+            {formatText(
+              typeof card.title === 'string' ? { id: card.title } : card.title,
+            )}
           </h5>
           <div className="border border-gray-200 rounded px-6 py-4 flex place-content-between">
             <div className="flex gap-5 items-center">

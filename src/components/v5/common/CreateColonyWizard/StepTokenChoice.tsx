@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import { defineMessages, MessageDescriptor } from 'react-intl';
 
 import { UseFormRegister, FieldValues, useFormContext } from 'react-hook-form';
 import Icon from '~shared/Icon';
@@ -21,10 +22,40 @@ type Props = Pick<
 interface TokenSelectorProps {
   name: string;
   icon: ReactNode;
-  title: string;
-  description: string;
+  title: MessageDescriptor | string;
+  description: MessageDescriptor | string;
   register?: UseFormRegister<FieldValues>;
 }
+
+export const MSG = defineMessages({
+  heading: {
+    id: 'createColonyWizard.step.selectToken.heading',
+    defaultMessage: 'Creating a new native token or use existing?',
+  },
+  description: {
+    id: 'createColonyWizard.step.selectToken.description',
+    defaultMessage:
+      'We highly recommend creating a new token, you will have greater control of your token going forward, support all features of Colony, and potential save a lot of cost if on another chain.',
+  },
+  createOptionTitle: {
+    id: 'createColonyWizard.step.selectToken.createOptionTitle',
+    defaultMessage: 'Create a new token',
+  },
+  createOptionDescription: {
+    id: 'createColonyWizard.step.selectToken.createOptionDescription',
+    defaultMessage:
+      'Quickest, easiest, and best option for greater control over your token using your Colony.',
+  },
+  selectOptionTitle: {
+    id: 'createColonyWizard.step.selectToken.selectOptionTitle',
+    defaultMessage: 'Use an existing token',
+  },
+  selectOptionDescription: {
+    id: 'createColonyWizard.step.selectToken.selectOptionDescription',
+    defaultMessage:
+      'Suitable for public tokens. Requires token to be on the same blockchain as the Colony.',
+  },
+});
 
 const TokenSelector = ({
   name,
@@ -47,8 +78,8 @@ const TokenSelector = ({
           className="mb-4"
         />
         {icon}
-        <span className="text-1 pt-4">{formatText({ id: title })}</span>
-        <span className="description-1">{formatText({ id: description })}</span>
+        <span className="text-1 pt-4">{formatText(title)}</span>
+        <span className="description-1">{formatText(description)}</span>
       </Card>
     </label>
   );
@@ -67,17 +98,12 @@ const StepTokenChoice = ({
         tokenChoice: tokenChoiceVerify || defaultValues.tokenChoice,
       }}
     >
-      <HeaderRow
-        heading={{ id: 'createColonyWizard.step.selectToken.heading' }}
-        description={{
-          id: 'createColonyWizard.step.selectToken.description',
-        }}
-      />
+      <HeaderRow heading={MSG.heading} description={MSG.description} />
       <div className="flex gap-6">
         <TokenSelector
           name="create"
-          title="createColonyWizard.step.selectToken.createOptionTitle"
-          description="createColonyWizard.step.selectToken.createOptionDescription"
+          title={MSG.createOptionTitle}
+          description={MSG.createOptionDescription}
           icon={
             <Icon
               style={{ transform: 'rotate(90deg)' }}
@@ -88,8 +114,8 @@ const StepTokenChoice = ({
         />
         <TokenSelector
           name="select"
-          title="createColonyWizard.step.selectToken.selectOptionTitle"
-          description="createColonyWizard.step.selectToken.selectOptionDescription"
+          title={MSG.selectOptionTitle}
+          description={MSG.selectOptionDescription}
           icon={<Icon name="hand-coins" appearance={{ size: 'medium' }} />}
         />
       </div>

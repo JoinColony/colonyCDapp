@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
+import { defineMessages } from 'react-intl';
 import { useSelector, useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
 import { WizardStepProps } from '~shared/Wizard';
-import NavLink from '~shared/NavLink';
-
 import {
   getGroupStatus,
   findTransactionGroupByKey,
@@ -26,40 +24,15 @@ const displayName = 'common.CreateColonyWizard.StepConfirmTransactions';
 
 const MSG = defineMessages({
   heading: {
-    id: `${displayName}.heading`,
-    defaultMessage: `Complete these transactions to deploy
-      your colony to the blockchain.`,
+    id: 'createColonyWizard.step.transactions.heading',
+    defaultMessage: 'Complete setup',
   },
-  deploymentFailed: {
-    id: `${displayName}.deploymentFailed`,
-    defaultMessage: `An error occurred. Click {linkToColony} to go to your colony and continue`,
-  },
-  keywordHere: {
-    id: `${displayName}.keywordHere`,
-    defaultMessage: `here`,
+  description: {
+    id: 'createColonyWizard.step.transactiosn.description',
+    defaultMessage:
+      'Deploying to the blockchain requires you to sign a transaction in your wallet for each step.',
   },
 });
-
-interface RecoverableDeploymentErrorProps {
-  colonyName: string;
-}
-
-const RecoverableDeploymentError = ({
-  colonyName,
-}: RecoverableDeploymentErrorProps) => (
-  <div className="">
-    <FormattedMessage
-      {...MSG.deploymentFailed}
-      values={{
-        linkToColony: (
-          <NavLink className="" to={`/colony/${colonyName}`}>
-            <FormattedMessage {...MSG.keywordHere} />
-          </NavLink>
-        ),
-      }}
-    />
-  </div>
-);
 
 type Props = Pick<WizardStepProps<FormValues, WizardProps>, 'wizardValues'>;
 
@@ -138,14 +111,8 @@ const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
 
   return (
     <section>
-      <HeaderRow
-        heading={{ id: 'createColonyWizard.step.transactions.heading' }}
-        description={{ id: 'createColonyWizard.step.transactiosn.description' }}
-      />
+      <HeaderRow heading={MSG.heading} description={MSG.description} />
       <ConfirmTransactions transactionGroup={createColonyTxGroup} />
-      {existsRecoverableDeploymentError && (
-        <RecoverableDeploymentError colonyName={colonyName} />
-      )}
     </section>
   );
 };

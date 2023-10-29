@@ -1,5 +1,6 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 
 import Input from '~v5/common/Fields/Input';
 import { MAX_COLONY_DISPLAY_NAME } from '~constants';
@@ -11,6 +12,22 @@ interface StepColonyNameInputsProps {
   displayName: string;
   colonyName: string;
 }
+
+const MSG = defineMessages({
+  url: {
+    id: 'createColonyWizard.step.colonyName.url',
+    defaultMessage: 'Custom Colony URL',
+  },
+  urlSubLabel: {
+    id: 'createColonyWizard.step.colonyName.urlSubLabel',
+    defaultMessage:
+      'You can change your Colony’s name, but not the URL. Choose carefully.',
+  },
+  urlSuccess: {
+    id: 'createColonyWizard.step.colonyName.urlSuccess',
+    defaultMessage: 'URL available',
+  },
+});
 
 const StepColonyNameInputs = ({
   displayName: wizardDisplayName,
@@ -24,9 +41,7 @@ const StepColonyNameInputs = ({
   const { colonyName: colonyNameDirty } = dirtyFields;
   const showColonyNameMessage = colonyNameDirty && !errors.colonyName?.message;
 
-  const colonyNameSuccessMessage = formatText({
-    id: 'createColonyWizard.step.colonyName.urlSuccess',
-  });
+  const colonyNameSuccessMessage = formatText(MSG.urlSuccess);
 
   const displayNameError = errors.displayName?.message as string | undefined;
 
@@ -47,11 +62,9 @@ const StepColonyNameInputs = ({
       />
       <div className="flex flex-col gap-1">
         <label className="flex flex-col text-1" htmlFor="colonyName">
-          {formatText({ id: 'createColonyWizard.step.colonyName.url' })}
+          {formatText(MSG.url)}
           <span className="text-xs text-gray-400">
-            {formatText({
-              id: 'createColonyWizard.step.colonyName.urlSubLabel',
-            })}
+            {formatText(MSG.urlSubLabel)}
           </span>
         </label>
         <div className="relative">

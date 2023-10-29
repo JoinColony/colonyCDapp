@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { useIntl } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 
 import Icon from '~shared/Icon';
 import Input from '~v5/common/Fields/Input';
@@ -16,6 +16,43 @@ interface StepCreateTokenInputsProps {
 
 const MAX_TOKEN_NAME = 30;
 const MAX_TOKEN_SYMBOL = 5;
+
+const MSG = defineMessages({
+  heading: {
+    id: 'createColonyWizard.step.nativeToken.heading',
+    defaultMessage: 'Your Colony’s native token',
+  },
+  description: {
+    id: 'createColonyWizard.step.nativeToken.description',
+    defaultMessage:
+      'Your native token is your organization’s unit of ownership, and powers key features within your Colony.{br}{br}Tokens are initially locked and not transferable by recipients. You must unlock your token if you wish it to become tradable.',
+  },
+  create: {
+    id: 'createColonyWizard.step.nativeToken.create',
+    defaultMessage: 'Create a new token',
+  },
+  select: {
+    id: 'createColonyWizard.step.nativeToken.select',
+    defaultMessage: 'Use an existing token',
+  },
+  tokenName: {
+    id: 'createColonyWizard.step.nativeToken.tokenName',
+    defaultMessage: 'Token name',
+  },
+  tokenSymbol: {
+    id: 'createColonyWizard.step.nativeToken.tokenSymbol',
+    defaultMessage: 'Token symbol',
+  },
+  tokenLogo: {
+    id: 'createColonyWizard.step.nativeToken.tokenLogo',
+    defaultMessage: 'Token logo (Optional)',
+  },
+  tokenDescription: {
+    id: 'createColonyWizard.step.nativeToken.tokenDescription',
+    defaultMessage:
+      'The token logo will only exist on Colony and can be changed at anytime.',
+  },
+});
 
 const StepCreateTokenInputs = ({
   wizardTokenName,
@@ -42,7 +79,7 @@ const StepCreateTokenInputs = ({
           maxCharNumber={MAX_TOKEN_NAME}
           isDisabled={isSubmitting}
           defaultValue={wizardTokenName}
-          labelMessage={{ id: 'createColonyWizard.step.nativeToken.tokenName' }}
+          labelMessage={MSG.tokenName}
         />
         <Input
           name="tokenSymbol"
@@ -53,20 +90,12 @@ const StepCreateTokenInputs = ({
           maxCharNumber={MAX_TOKEN_SYMBOL}
           isDisabled={isSubmitting}
           defaultValue={wizardTokenSymbol}
-          labelMessage={{
-            id: 'createColonyWizard.step.nativeToken.tokenSymbol',
-          }}
+          labelMessage={MSG.tokenSymbol}
         />
       </div>
-      <p className="text-1 pb-1">
-        {formatMessage({
-          id: 'createColonyWizard.step.nativeToken.tokenLogo',
-        })}
-      </p>
+      <p className="text-1 pb-1">{formatMessage(MSG.tokenLogo)}</p>
       <p className="text-sm text-gray-600 pb-2">
-        {formatMessage({
-          id: 'createColonyWizard.step.nativeToken.tokenDescription',
-        })}
+        {formatMessage(MSG.tokenDescription)}
       </p>
       <AvatarUploader
         avatarPlaceholder={

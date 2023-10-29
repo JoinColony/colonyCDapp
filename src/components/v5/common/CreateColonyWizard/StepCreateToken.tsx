@@ -12,6 +12,7 @@ import { ButtonRow, HeaderRow } from './shared';
 import TokenInputs from './StepCreateTokenInputs';
 import { TokenChoiceOptions } from './StepCreateTokenComponents';
 import ExistingTokenInput from './ExistingTokenInput';
+import { MSG } from './StepTokenChoice';
 
 const displayName = `common.CreateColonyWizard.StepCreateToken`;
 
@@ -38,10 +39,8 @@ const StepCreateToken = ({
         return (
           <>
             <HeaderRow
-              heading={{ id: 'createColonyWizard.step.nativeToken.heading' }}
-              description={{
-                id: 'createColonyWizard.step.nativeToken.description',
-              }}
+              heading={MSG.heading}
+              description={MSG.description}
               descriptionValues={{ br: <br /> }}
             />
             <TokenChoiceOptions tokenChoiceOptions={['create', 'select']} />

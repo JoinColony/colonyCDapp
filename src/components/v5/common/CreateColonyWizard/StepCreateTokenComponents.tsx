@@ -2,6 +2,8 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
+import { MSG } from './StepTokenChoice';
+
 interface TokenChoiceOptionsProps {
   tokenChoiceOptions: Array<string>;
 }
@@ -27,9 +29,7 @@ export const TokenChoiceOptions = ({
             value={option}
             id={option}
           />
-          {formatMessage({
-            id: `createColonyWizard.step.nativeToken.${option}`,
-          })}
+          {formatMessage(MSG[`${option}OptionTitle`])}
         </label>
       ))}
     </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { defineMessages } from 'react-intl';
 
 import { WizardStepProps } from '~shared/Wizard';
 import { Form } from '~shared/Fields';
@@ -22,6 +23,18 @@ type Props = Pick<
   'wizardForm' | 'nextStep' | 'wizardValues' | 'previousStep'
 >;
 
+const MSG = defineMessages({
+  heading: {
+    id: 'createColonyWizard.step.colonyName.heading',
+    defaultMessage: 'Welcome, {username}!',
+  },
+  description: {
+    id: 'createColonyWizard.step.colonyName.description',
+    defaultMessage:
+      'Let’s set up your Colony. Enter a name for your Colony and a short description about your Colony’s mission and purpose.',
+  },
+});
+
 const StepColonyName = ({
   wizardValues: {
     displayName: wizardDisplayName,
@@ -39,11 +52,9 @@ const StepColonyName = ({
     <Form<Step1> onSubmit={nextStep} validationSchema={validationSchema}>
       <section className="">
         <HeaderRow
-          heading={{ id: 'createColonyWizard.step.colonyName.heading' }}
+          heading={MSG.heading}
           headingValues={{ username }}
-          description={{
-            id: 'createColonyWizard.step.colonyName.description',
-          }}
+          description={MSG.description}
         />
         <NameInputs
           displayName={wizardDisplayName}

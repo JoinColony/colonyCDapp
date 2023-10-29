@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { useIntl } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 
 import { Token } from '~types';
 import { getNetworkByChainId } from '~utils/web3';
@@ -11,6 +11,17 @@ const displayName = 'common.CreateColonyWizard.TokenSelector';
 interface TokenSelectorInputProps {
   wizardTokenAddress: string;
 }
+
+const MSG = defineMessages({
+  existingToken: {
+    id: 'createColonyWizard.step.nativeToken.existingToken',
+    defaultMessage: 'Existing token address',
+  },
+  existingTokenSuccess: {
+    id: 'createColonyWizard.step.nativeToken.existingTokenSuccess',
+    defaultMessage: 'Token found: {name} ({symbol}) on {chain}',
+  },
+});
 
 const TokenSelectorInput = ({
   wizardTokenAddress,
@@ -25,16 +36,13 @@ const TokenSelectorInput = ({
   const token: Token | null = watch('token');
 
   const tokenAddressError = errors.tokenAddress?.message as string | undefined;
-  const successMessage = formatMessage(
-    { id: 'createColonyWizard.step.nativeToken.existingTokenSuccess' },
-    {
-      name: token?.name,
-      symbol: token?.symbol,
-      chain:
-        // Need to update this when multi chain is enabled
-        getNetworkByChainId(100)?.name || '',
-    },
-  );
+  const successMessage = formatMessage(MSG.existingTokenSuccess, {
+    name: token?.name,
+    symbol: token?.symbol,
+    chain:
+      // Need to update this when multi chain is enabled
+      getNetworkByChainId(100)?.name || '',
+  });
 
   return (
     <TokenSelector
@@ -44,7 +52,7 @@ const TokenSelectorInput = ({
       className="text-md border-gray-300"
       isDisabled={isSubmitting}
       defaultValue={wizardTokenAddress}
-      labelMessage={{ id: 'createColonyWizard.step.nativeToken.existingToken' }}
+      labelMessage={MSG.existingToken}
       successfulMessage={successMessage}
       isDecoratedError
     />

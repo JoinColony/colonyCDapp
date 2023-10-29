@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { defineMessages } from 'react-intl';
 import { WizardStepProps } from '~shared/Wizard';
 import { ActionForm } from '~shared/Fields';
 import { mergePayload } from '~utils/actions';
@@ -16,6 +17,18 @@ type Props = Pick<
   WizardStepProps<FormValues, WizardProps>,
   'nextStep' | 'wizardValues' | 'previousStep' | 'setStep' | 'wizardProps'
 >;
+
+const MSG = defineMessages({
+  heading: {
+    id: 'createColonyWizard.step.confirm.heading',
+    defaultMessage: 'Confirm your Colony’s details',
+  },
+  description: {
+    id: 'createColonyWizard.step.confirm.description',
+    defaultMessage:
+      'Check to ensure your Colony’s details are correct as they can not be changed later.',
+  },
+});
 
 const StepConfirmAllInput = ({
   nextStep,
@@ -57,10 +70,8 @@ const StepConfirmAllInput = ({
     >
       <section className="">
         <HeaderRow
-          heading={{ id: 'createColonyWizard.step.confirm.heading' }}
-          description={{
-            id: 'createColonyWizard.step.confirm.description',
-          }}
+          heading={MSG.heading}
+          description={MSG.description}
           descriptionValues={{ br: <br /> }}
         />
         <CardRow updatedWizardValues={updatedWizardValues} setStep={setStep} />
