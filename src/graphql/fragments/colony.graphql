@@ -50,6 +50,10 @@ fragment Colony on Colony {
   reputation
   expendituresGlobalClaimDelay
   private
+  colonyMemberInvite {
+    code
+    invitesRemaining
+  }
 }
 
 fragment ColonyDisplay on Colony {
