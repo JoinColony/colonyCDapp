@@ -1,7 +1,5 @@
-import { MessageDescriptor } from 'react-intl';
+import { ColonyObjective } from '~types';
 
 export interface ObjectiveBoxProps {
-  title?: MessageDescriptor;
-  description?: MessageDescriptor;
-  progress: number;
+  objective?: ColonyObjective | null;
 }

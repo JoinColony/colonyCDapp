@@ -15,7 +15,8 @@ const ColonyDetailsPage: FC = () => {
   const isMobile = useMobile();
   const { colony } = useColonyContext();
   const { name, metadata } = colony || {};
-  const { avatar, thumbnail, description, externalLinks } = metadata || {};
+  const { avatar, thumbnail, description, externalLinks, objective } =
+    metadata || {};
 
   return (
     <div>
@@ -75,7 +76,7 @@ const ColonyDetailsPage: FC = () => {
           <h5 className="text-3 mb-2">
             <FormattedMessage id="colonyDetailsPage.objectiveBoxTitle" />
           </h5>
-          <ObjectiveBox progress={0} />
+          <ObjectiveBox objective={objective} />
         </div>
         {isMobile && (
           // @TODO: Add functionality to create objective
