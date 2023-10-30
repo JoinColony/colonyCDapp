@@ -118,25 +118,7 @@ const UserAdvancedSettings = ({ user: { walletAddress, profile } }: Props) => {
         {({ formState: { isValid, isDirty, isValidating } }) => (
           <div className={styles.main}>
             {advancedSettingsRows.map((row) => (
-              <AdvancedSettingsRow
-                name={row.name}
-                paragraphText={row.paragraphText}
-                toggleDisabled={(() => {
-                  if (row.name === 'metatransactionsEnabled') {
-                    return !metatransactionsAvailable;
-                  }
-                  // Not implemented currently, so disable it outright
-                  if (row.name === 'decentralizedModeEnabled') {
-                    return true;
-                  }
-                  return true;
-                })()}
-                toggleLabel={row.toggleLabel}
-                tooltipText={row.tooltipText}
-                tooltipTextValues={row.tooltipTextValues}
-                extra={row.extra}
-                key={row.name}
-              />
+              <AdvancedSettingsRow key={row.name} {...row} />
             ))}
             <SaveForm
               disabled={
