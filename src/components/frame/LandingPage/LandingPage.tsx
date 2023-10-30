@@ -7,6 +7,7 @@ import CreateAColonyBanner from '~images/create-colony-banner.png';
 import CreateAProfileBanner from '~images/create-profile-banner.png';
 import { useAppContext } from '~hooks';
 import InvitationBlock from '~common/InvitationBlock';
+import { clearLastWallet } from '~utils/autoLogin';
 
 import LandingPageItem from './LandingPageItem';
 
@@ -86,7 +87,11 @@ const MSG = defineMessages({
 const LandingPage = () => {
   const [hoveredItem, setHoveredItem] = useState<number>(0);
   const navigate = useNavigate();
-  const { wallet, user, userLoading } = useAppContext();
+  const { user, connectWallet, wallet, userLoading } = useAppContext();
+  const onUserLogin = () => {
+    clearLastWallet();
+    connectWallet?.();
+  };
 
   const landingPageItems = [
     {
@@ -105,9 +110,11 @@ const LandingPage = () => {
       headingText: user ? MSG.viewUserProfileTitle : MSG.createUserProfileTitle,
       headingDescription: MSG.viewUserProfileDescription,
       iconName: 'user-circle',
-      onClick: () => navigate(user ? '/my/profile' : '/create-user'),
+      onClick: !wallet
+        ? onUserLogin
+        : () => navigate(user ? '/my/profile' : '/create-user'),
       imgSrc: CreateAProfileBanner,
-      disabled: !!(!wallet || userLoading),
+      disabled: userLoading,
     },
     {
       buttonText: MSG.exploreMetacolonyButtonText,
