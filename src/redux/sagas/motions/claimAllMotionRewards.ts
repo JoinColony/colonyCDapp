@@ -1,10 +1,15 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
-import { ClientType } from '@colony/colony-js';
+import {
+  ClientType,
+  getPermissionProofs,
+  ColonyRole,
+  Id,
+} from '@colony/colony-js';
 import { ApolloQueryResult } from '@apollo/client';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { getContext, ContextModule } from '~context';
+import { getContext, ContextModule, ColonyManager } from '~context';
 import { Address, ColonyMotion } from '~types';
 import {
   GetColonyMotionDocument,
@@ -19,18 +24,24 @@ import {
   getTxChannel,
 } from '../transactions';
 
-import { putError, takeFrom } from '../utils';
+import { putError, takeFrom, getColonyManager } from '../utils';
 
 export type ClaimAllMotionRewardsPayload =
   Action<ActionTypes.MOTION_CLAIM_ALL>['payload'];
 
 function* claimAllMotionRewards({
   meta,
-  payload: { userAddress, colonyAddress, motionIds: databaseMotionIds },
+  payload: {
+    userAddress,
+    colonyAddress,
+    extensionAddress,
+    motionIds: databaseMotionIds,
+  },
 }: Action<ActionTypes.MOTION_CLAIM_ALL>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
+    const colonyManager: ColonyManager = yield call(getColonyManager);
 
     const motions: ColonyMotion[] = [];
 
@@ -67,6 +78,11 @@ function* claimAllMotionRewards({
       throw new Error('A motion with claims needs to be provided');
     }
 
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
+
     const channelNames: string[] = [];
 
     for (let index = 0; index < allMotionClaims.length; index += 1) {
@@ -80,16 +96,35 @@ function* claimAllMotionRewards({
     );
 
     yield all(
-      Object.keys(channels).map((id) =>
-        createGroupTransaction(channels[id], 'claimMotionRewards', meta, {
-          context: ClientType.VotingReputationClient,
-          methodName: 'claimRewardWithProofs',
-          identifier: colonyAddress,
-          params: [
-            allMotionClaims[id],
-            userAddress,
-            parseInt(id, 10) > motionsWithYayClaim.length - 1 ? 0 : 1,
-          ],
+      yield Promise.all(
+        Object.keys(channels).map(async (id) => {
+          const currentMotion = motions.find(({ motionId }) => motionId === id);
+
+          const [permissionDomainId, childSkillIndex] =
+            await getPermissionProofs(
+              colonyClient,
+              currentMotion?.motionDomain.nativeId || Id.RootDomain,
+              ColonyRole.Arbitration,
+              extensionAddress,
+            );
+
+          return createGroupTransaction(
+            channels[id],
+            'claimMotionRewards',
+            meta,
+            {
+              context: ClientType.VotingReputationClient,
+              methodName: 'claimReward',
+              identifier: colonyAddress,
+              params: [
+                allMotionClaims[id],
+                permissionDomainId,
+                childSkillIndex,
+                userAddress,
+                parseInt(id, 10) > motionsWithYayClaim.length - 1 ? 0 : 1,
+              ],
+            },
+          );
         }),
       ),
     );

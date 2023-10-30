@@ -8,8 +8,17 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '../../actionCreators';
-import { putError, takeFrom, uploadAnnotation } from '../utils';
+import {
+  transactionReady,
+  transactionAddParams,
+  transactionPending,
+} from '../../actionCreators';
+import {
+  putError,
+  takeFrom,
+  uploadAnnotation,
+  getMoveFundsPermissionProofs,
+} from '../utils';
 
 function* createMoveFundsAction({
   payload: {
@@ -66,9 +75,9 @@ function* createMoveFundsAction({
     yield fork(createTransaction, moveFunds.id, {
       context: ClientType.ColonyClient,
       methodName:
-        'moveFundsBetweenPotsWithProofs(uint256,uint256,uint256,address)',
+        'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)',
       identifier: colonyAddress,
-      params: [fromPot, toPot, amount, tokenAddress],
+      params: [],
       group: {
         key: batchKey,
         id: metaId,
@@ -100,6 +109,23 @@ function* createMoveFundsAction({
         ActionTypes.TRANSACTION_CREATED,
       );
     }
+
+    yield put(transactionPending(moveFunds.id));
+
+    const [permissionDomainId, fromChildSkillIndex, toChildSkillIndex] =
+      yield getMoveFundsPermissionProofs(colonyAddress, fromPot, toPot);
+
+    yield put(
+      transactionAddParams(moveFunds.id, [
+        permissionDomainId,
+        fromChildSkillIndex,
+        toChildSkillIndex,
+        fromPot,
+        toPot,
+        amount,
+        tokenAddress,
+      ]),
+    );
 
     yield put(transactionReady(moveFunds.id));
 

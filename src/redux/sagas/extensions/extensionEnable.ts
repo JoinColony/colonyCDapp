@@ -1,6 +1,12 @@
 import { fork, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, Id } from '@colony/colony-js';
+import {
+  ClientType,
+  Id,
+  getPermissionProofs,
+  ColonyRole,
+} from '@colony/colony-js';
 
+import { ColonyManager } from '~context';
 import { intArrayToBytes32 } from '~utils/web3';
 import { transactionPending, transactionReady } from '~redux/actionCreators';
 
@@ -18,6 +24,7 @@ import {
   refreshEnabledExtension,
   removeOldExtensionClients,
   takeFrom,
+  getColonyManager,
 } from '../utils';
 
 function* extensionEnable({
@@ -47,6 +54,8 @@ function* extensionEnable({
     yield createTransactionChannels(meta.id, ['initialise', 'setUserRoles']);
 
   try {
+    const colonyManager: ColonyManager = yield getColonyManager();
+
     if (needsInitialisation) {
       const initParams = modifyParams(initializationParams, payload);
 
@@ -67,11 +76,22 @@ function* extensionEnable({
     }
 
     if (needsSettingRoles) {
+      const colonyClient = yield colonyManager.getClient(
+        ClientType.ColonyClient,
+        colonyAddress,
+      );
+
+      const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+        colonyClient,
+        Id.RootDomain,
+        ColonyRole.Root,
+      );
+
       const bytes32Roles = intArrayToBytes32(neededColonyPermissions);
 
       yield fork(createTransaction, setUserRoles.id, {
         context: ClientType.ColonyClient,
-        methodName: 'setUserRolesWithProofs',
+        methodName: 'setUserRoles',
         identifier: colonyAddress,
         ready: false,
         group: {
@@ -79,7 +99,13 @@ function* extensionEnable({
           id: meta.id,
           index: txIndex,
         },
-        params: [address, Id.RootDomain, bytes32Roles],
+        params: [
+          permissionDomainId,
+          childSkillIndex,
+          address,
+          Id.RootDomain,
+          bytes32Roles,
+        ],
       });
 
       txIndex += 1;

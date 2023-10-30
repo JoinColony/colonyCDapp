@@ -77,13 +77,14 @@ const MetatransactionsDisabled = ({
 
 export const getAdvancedSettingsRows = (
   metatransactionsAvailable: boolean,
-): Omit<SettingsRowProps, 'toggleDisabled'>[] => [
+): SettingsRowProps[] => [
   {
     name: 'metatransactionsEnabled',
     paragraphText: MSG.metaDescription,
     toggleLabel: MSG.labelMetaTx,
     tooltipText: MSG.metaTooltip,
     tooltipTextValues: { br: <br /> },
+    toggleDisabled: !metatransactionsAvailable,
     extra: (
       <MetatransactionsDisabled
         metatransactionsDisabled={!metatransactionsAvailable}
@@ -95,6 +96,7 @@ export const getAdvancedSettingsRows = (
     paragraphText: MSG.endpointsDescription,
     toggleLabel: MSG.customEndpoints,
     tooltipText: MSG.RPCTooltip,
+    toggleDisabled: true,
     extra: (
       <CustomEndpointInput
         label={MSG.labelRPC}
@@ -109,7 +111,7 @@ interface SettingsRowProps {
   extra: ReactElement;
   paragraphText: MessageDescriptor;
   name: string;
-  toggleDisabled: boolean;
+  toggleDisabled?: boolean;
   toggleLabel: MessageDescriptor;
   tooltipText: MessageDescriptor;
   tooltipTextValues?: UniversalMessageValues;

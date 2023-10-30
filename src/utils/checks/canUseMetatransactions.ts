@@ -13,6 +13,6 @@ export const canUseMetatransactions = (): boolean => {
   const networkSupportsMetatransactions = NETWORKS_WITH_METATRANSACTIONS.find(
     (network) => network === DEFAULT_NETWORK,
   );
-  const areMetaTransactionsEnabled = !!process.env.METATRANSACTIONS || false;
+  const areMetaTransactionsEnabled = process.env.METATRANSACTIONS === 'true';
   return !!networkSupportsMetatransactions && areMetaTransactionsEnabled;
 };

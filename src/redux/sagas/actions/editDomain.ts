@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { ClientType } from '@colony/colony-js';
+import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 
-import { ContextModule, getContext } from '~context';
+import { ContextModule, getContext, ColonyManager } from '~context';
 import { Action, ActionTypes, AllActions } from '~redux';
 import {
   GetFullColonyByNameDocument,
@@ -26,6 +26,7 @@ import {
   takeFrom,
   getUpdatedDomainMetadataChangelog,
   uploadAnnotation,
+  getColonyManager,
 } from '../utils';
 
 function* editDomainAction({
@@ -44,6 +45,7 @@ function* editDomainAction({
   let txChannel;
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
+    const colonyManager: ColonyManager = yield getColonyManager();
 
     if (!domain) {
       throw new Error('A domain object is required to edit domain');
@@ -62,7 +64,7 @@ function* editDomainAction({
 
     yield createGroupTransaction(editDomain, batchKey, meta, {
       context: ClientType.ColonyClient,
-      methodName: 'editDomainWithProofs',
+      methodName: 'editDomain',
       identifier: colonyAddress,
       params: [],
       ready: false,
@@ -87,12 +89,32 @@ function* editDomainAction({
     }
 
     yield put(transactionPending(editDomain.id));
-    /**
-     * @NOTE: In order for the DomainMetadata event (which is the only event associated with Edit Domain action) to be emitted,
-     * the second parameter must be non-empty.
-     * It will be replaced with the IPFS hash in due course.
-     */
-    yield put(transactionAddParams(editDomain.id, [domain.nativeId, '.']));
+
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
+
+    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient,
+      domain.nativeId,
+      ColonyRole.Architecture,
+    );
+
+    yield put(
+      transactionAddParams(editDomain.id, [
+        permissionDomainId,
+        childSkillIndex,
+        domain.nativeId,
+        /**
+         * @NOTE: In order for the DomainMetadata event (which is the only event associated with Edit Domain action) to be emitted,
+         * the second parameter must be non-empty.
+         * It will be replaced with the IPFS hash in due course.
+         */
+        '.',
+      ]),
+    );
+
     yield put(transactionReady(editDomain.id));
 
     const {
