@@ -40,6 +40,18 @@ const MSG = defineMessages({
     id: `${displayName}.footerLink`,
     defaultMessage: 'Visit our docs',
   },
+  details: {
+    id: `${displayName}.details`,
+    defaultMessage: 'Details',
+  },
+  nativeToken: {
+    id: `${displayName}.nativeToken`,
+    defaultMessage: 'Native Token',
+  },
+  confirmation: {
+    id: `${displayName}.confirmation`,
+    defaultMessage: 'Confirmation',
+  },
 });
 
 const CreateYourColonySidebar = () => {
@@ -59,7 +71,6 @@ const CreateYourColonySidebar = () => {
       />
       <div className="flex flex-col flex-1 content-between">
         <div className="flex flex-1 gap-4">
-          {/* @TODO: Add logic to change height and color of the line, dots, and text depending on the current step */}
           <div className="flex flex-col items-center">
             <div
               className={clsx('w-2.5 h-2.5 rounded-full', {
@@ -78,11 +89,16 @@ const CreateYourColonySidebar = () => {
                 'border border-gray-900': currentStep < 1,
               })}
             />
-            <div className="w-px h-6 bg-gray-900" />
+            <div
+              className={clsx('w-px bg-gray-900', {
+                'h-28': currentStep >= 1 && currentStep < 4,
+                'h-6': currentStep < 1 || currentStep > 3,
+              })}
+            />
             <div
               className={clsx('w-2.5 h-2.5 rounded-full', {
-                'bg-gray-900': currentStep >= 3,
-                'border border-gray-900': currentStep < 3,
+                'bg-blue-400': currentStep >= 4,
+                'border border-gray-900': currentStep < 4,
               })}
             />
           </div>
@@ -112,9 +128,41 @@ const CreateYourColonySidebar = () => {
               <span className="text-gray-900 text-sm font-semibold">
                 <FormattedMessage {...MSG.create} />
               </span>
+              <div
+                className={clsx('flex flex-col gap-2 mt-2 mb-4', {
+                  hidden: currentStep < 1 || currentStep > 3,
+                })}
+              >
+                <span
+                  className={clsx('text-xs', {
+                    'text-blue-400 font-semibold': currentStep === 1,
+                  })}
+                >
+                  <FormattedMessage {...MSG.details} />
+                </span>
+                <span
+                  className={clsx('text-xs', {
+                    'text-blue-400 font-semibold': currentStep === 2,
+                  })}
+                >
+                  <FormattedMessage {...MSG.nativeToken} />
+                </span>
+                <span
+                  className={clsx('text-xs', {
+                    'text-blue-400 font-semibold': currentStep === 3,
+                  })}
+                >
+                  <FormattedMessage {...MSG.confirmation} />
+                </span>
+              </div>
             </div>
             <div className="flex flex-col justify-start">
-              <span className="text-gray-900 text-sm font-semibold">
+              <span
+                className={clsx('text-sm font-semibold', {
+                  'text-gray-900': currentStep !== 4,
+                  'text-blue-400': currentStep === 4,
+                })}
+              >
                 <FormattedMessage {...MSG.complete} />
               </span>
             </div>

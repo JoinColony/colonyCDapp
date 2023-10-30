@@ -1,16 +1,17 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 
 import { UseFormRegister, FieldValues, useFormContext } from 'react-hook-form';
+
 import Icon from '~shared/Icon';
 import { WizardStepProps } from '~shared/Wizard';
 import { Form } from '~shared/Fields';
+import Card from '~v5/shared/Card';
+import { formatText } from '~utils/intl';
+import { useColonyCreationFlowContext } from '~routes/UserRegistrationRoute/CreateYourColonyLayout';
 
 import { FormValues, Step2 } from '../CreateColonyWizard';
 import { ButtonRow, HeaderRow } from './shared';
-
-import Card from '~v5/shared/Card';
-import { formatText } from '~utils/intl';
 
 const displayName = 'common.CreateColonyWizard.StepTokenChoice';
 
@@ -95,6 +96,12 @@ const StepTokenChoice = ({
   previousStep,
   nextStep,
 }: Props) => {
+  const { setCurrentStep } = useColonyCreationFlowContext();
+
+  useEffect(() => {
+    setCurrentStep(2);
+  }, [setCurrentStep]);
+
   return (
     <Form<Step2>
       onSubmit={nextStep}
