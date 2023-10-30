@@ -15,6 +15,7 @@ import { TransactionStatus } from '~gql';
 import { groupedTransactionsAndMessages } from '~redux/selectors';
 import { ActionTypes } from '~redux/index';
 import { useAppContext } from '~hooks';
+import { useColonyCreationFlowContext } from '~routes/UserRegistrationRoute/CreateYourColonyLayout';
 
 import { FormValues, WizardProps } from '../CreateColonyWizard';
 import ConfirmTransactions from './ConfirmTransactions';
@@ -61,6 +62,12 @@ const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
   ).toJS() as TransactionOrMessageGroups;
 
   const newestGroup = findNewestGroup(txGroups);
+
+  const { setCurrentStep } = useColonyCreationFlowContext();
+
+  useEffect(() => {
+    setCurrentStep(4);
+  }, [setCurrentStep]);
 
   useEffect(() => {
     /*
