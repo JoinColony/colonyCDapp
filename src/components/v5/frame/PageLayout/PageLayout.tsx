@@ -18,12 +18,25 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
 
   useEffect(() => {
     if (!topContentWrapperRef.current || !wrapperRef.current) {
-      return;
+      return undefined;
     }
 
-    const { height } = topContentWrapperRef.current.getBoundingClientRect();
+    const observer = new ResizeObserver(([entry]) => {
+      const {
+        contentRect: { height },
+      } = entry;
 
-    wrapperRef.current.style.setProperty('--top-content-height', `${height}px`);
+      wrapperRef?.current?.style.setProperty(
+        '--top-content-height',
+        `${height}px`,
+      );
+    });
+
+    observer.observe(topContentWrapperRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
   return (
@@ -43,7 +56,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
         <>
           {topContent && (
             <div className="flex-shrink-0" ref={topContentWrapperRef}>
-              calamity banner here
+              {topContent}
             </div>
           )}
           <div className="w-full md:h-[calc(100vh-var(--top-content-height))] md:pl-4 md:pt-4 md:flex md:gap-8">

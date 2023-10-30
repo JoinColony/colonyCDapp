@@ -165,3 +165,9 @@ const pageLayoutMeta: Meta<typeof PageLayout> = {
 export default pageLayoutMeta;
 
 export const Base: StoryObj<typeof PageLayout> = {};
+
+export const WithTopContent: StoryObj<typeof PageLayout> = {
+  args: {
+    topContent: <p>top content</p>,
+  },
+};
