@@ -35,7 +35,7 @@ const InvitationBlock = () => {
   const { handleClipboardCopy, isCopied } = useCopyToClipboard(inviteLink);
 
   return (
-    <div className="flex flex-col mt-6 rounded border border-gray-900 px-6 py-4">
+    <div className="flex flex-col mt-6 rounded border border-gray-900 px-6 py-4 max-w-[1286px]">
       <Icon name="ticket" appearance={{ size: 'medium' }} />
       <div className="flex justify-between items-center">
         <div>
