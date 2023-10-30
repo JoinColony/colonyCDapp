@@ -33,7 +33,7 @@ const LandingPageItem = ({
   return (
     <div
       className={clsx(
-        'group flex items-center justify-between p-6 rounded-lg border border-gray-200',
+        'group flex items-center justify-between px-6 py-5 rounded-lg border border-gray-200',
         { 'hover:border-blue-400': !disabled },
       )}
       onMouseEnter={() => onHover(disabled ? 0 : itemIndex)}

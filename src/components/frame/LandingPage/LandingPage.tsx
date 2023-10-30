@@ -135,7 +135,7 @@ const LandingPage = () => {
           <FormattedMessage {...MSG.headerDescription} />
         </p>
       </div>
-      <div className="w-full flex justify-center gap-4">
+      <div className="w-full flex justify-center gap-4  max-w-[1286px]">
         <div className="w-1/2 flex flex-col gap-4">
           {landingPageItems.map((item, index) => (
             <LandingPageItem
@@ -145,7 +145,7 @@ const LandingPage = () => {
             />
           ))}
         </div>
-        <div className="w-1/2 bg-gray-100 rounded-lg max-h-[440px]">
+        <div className="w-1/2 bg-gray-100 rounded-lg max-h-[395px]">
           <img
             src={
               landingPageItems[hoveredItem].imgSrc ?? landingPageItems[0].imgSrc
