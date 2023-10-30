@@ -29,29 +29,29 @@ interface TokenSelectorProps {
 
 export const MSG = defineMessages({
   heading: {
-    id: 'createColonyWizard.step.selectToken.heading',
+    id: `${displayName}.heading`,
     defaultMessage: 'Creating a new native token or use existing?',
   },
   description: {
-    id: 'createColonyWizard.step.selectToken.description',
+    id: `${displayName}.description`,
     defaultMessage:
       'We highly recommend creating a new token, you will have greater control of your token going forward, support all features of Colony, and potential save a lot of cost if on another chain.',
   },
   createOptionTitle: {
-    id: 'createColonyWizard.step.selectToken.createOptionTitle',
+    id: `${displayName}.createOptionTitle`,
     defaultMessage: 'Create a new token',
   },
   createOptionDescription: {
-    id: 'createColonyWizard.step.selectToken.createOptionDescription',
+    id: `${displayName}.createOptionDescription`,
     defaultMessage:
       'Quickest, easiest, and best option for greater control over your token using your Colony.',
   },
   selectOptionTitle: {
-    id: 'createColonyWizard.step.selectToken.selectOptionTitle',
+    id: `${displayName}.selectOptionTitle`,
     defaultMessage: 'Use an existing token',
   },
   selectOptionDescription: {
-    id: 'createColonyWizard.step.selectToken.selectOptionDescription',
+    id: `${displayName}.selectOptionDescription`,
     defaultMessage:
       'Suitable for public tokens. Requires token to be on the same blockchain as the Colony.',
   },

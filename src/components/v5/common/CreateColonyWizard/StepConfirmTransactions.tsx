@@ -24,11 +24,11 @@ const displayName = 'common.CreateColonyWizard.StepConfirmTransactions';
 
 const MSG = defineMessages({
   heading: {
-    id: 'createColonyWizard.step.transactions.heading',
+    id: `${displayName}.heading`,
     defaultMessage: 'Complete setup',
   },
   description: {
-    id: 'createColonyWizard.step.transactiosn.description',
+    id: `${displayName}.description`,
     defaultMessage:
       'Deploying to the blockchain requires you to sign a transaction in your wallet for each step.',
   },

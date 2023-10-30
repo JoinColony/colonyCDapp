@@ -17,11 +17,11 @@ interface CardRowProps {
 
 const MSG = defineMessages({
   nativeToken: {
-    id: 'createColonyWizard.step.confirm.nativeToken',
+    id: `${displayName}.nativeToken`,
     defaultMessage: 'Native token',
   },
   blockchain: {
-    id: 'createColonyWizard.step.confirm.blockchain',
+    id: `${displayName}.blockchain`,
     defaultMessage: 'Blockchain',
   },
 });

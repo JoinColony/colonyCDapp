@@ -25,11 +25,11 @@ type Props = Pick<
 
 const MSG = defineMessages({
   heading: {
-    id: 'createColonyWizard.step.colonyName.heading',
+    id: `${displayName}.heading`,
     defaultMessage: 'Welcome, {username}!',
   },
   description: {
-    id: 'createColonyWizard.step.colonyName.description',
+    id: `${displayName}.description`,
     defaultMessage:
       'Let’s set up your Colony. Enter a name for your Colony and a short description about your Colony’s mission and purpose.',
   },

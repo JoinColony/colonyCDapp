@@ -19,36 +19,36 @@ const MAX_TOKEN_SYMBOL = 5;
 
 const MSG = defineMessages({
   heading: {
-    id: 'createColonyWizard.step.nativeToken.heading',
+    id: `${displayName}.heading`,
     defaultMessage: 'Your Colony’s native token',
   },
   description: {
-    id: 'createColonyWizard.step.nativeToken.description',
+    id: `${displayName}.description`,
     defaultMessage:
       'Your native token is your organization’s unit of ownership, and powers key features within your Colony.{br}{br}Tokens are initially locked and not transferable by recipients. You must unlock your token if you wish it to become tradable.',
   },
   create: {
-    id: 'createColonyWizard.step.nativeToken.create',
+    id: `${displayName}.create`,
     defaultMessage: 'Create a new token',
   },
   select: {
-    id: 'createColonyWizard.step.nativeToken.select',
+    id: `${displayName}.select`,
     defaultMessage: 'Use an existing token',
   },
   tokenName: {
-    id: 'createColonyWizard.step.nativeToken.tokenName',
+    id: `${displayName}.tokenName`,
     defaultMessage: 'Token name',
   },
   tokenSymbol: {
-    id: 'createColonyWizard.step.nativeToken.tokenSymbol',
+    id: `${displayName}.tokenSymbol`,
     defaultMessage: 'Token symbol',
   },
   tokenLogo: {
-    id: 'createColonyWizard.step.nativeToken.tokenLogo',
+    id: `${displayName}.tokenLogo`,
     defaultMessage: 'Token logo (Optional)',
   },
   tokenDescription: {
-    id: 'createColonyWizard.step.nativeToken.tokenDescription',
+    id: `${displayName}.tokenDescription`,
     defaultMessage:
       'The token logo will only exist on Colony and can be changed at anytime.',
   },

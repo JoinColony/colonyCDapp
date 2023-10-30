@@ -15,16 +15,16 @@ interface StepColonyNameInputsProps {
 
 const MSG = defineMessages({
   url: {
-    id: 'createColonyWizard.step.colonyName.url',
+    id: `${displayName}.url`,
     defaultMessage: 'Custom Colony URL',
   },
   urlSubLabel: {
-    id: 'createColonyWizard.step.colonyName.urlSubLabel',
+    id: `${displayName}.urlSubLabel`,
     defaultMessage:
       'You can change your Colony’s name, but not the URL. Choose carefully.',
   },
   urlSuccess: {
-    id: 'createColonyWizard.step.colonyName.urlSuccess',
+    id: `${displayName}.urlSuccess`,
     defaultMessage: 'URL available',
   },
 });

@@ -20,11 +20,11 @@ type Props = Pick<
 
 const MSG = defineMessages({
   heading: {
-    id: 'createColonyWizard.step.confirm.heading',
+    id: `${displayName}.heading`,
     defaultMessage: 'Confirm your Colony’s details',
   },
   description: {
-    id: 'createColonyWizard.step.confirm.description',
+    id: `${displayName}.description`,
     defaultMessage:
       'Check to ensure your Colony’s details are correct as they can not be changed later.',
   },

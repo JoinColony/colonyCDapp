@@ -15,11 +15,11 @@ interface TokenSelectorInputProps {
 
 const MSG = defineMessages({
   existingToken: {
-    id: 'createColonyWizard.step.nativeToken.existingToken',
+    id: `${displayName}.existingToken`,
     defaultMessage: 'Existing token address',
   },
   existingTokenSuccess: {
-    id: 'createColonyWizard.step.nativeToken.existingTokenSuccess',
+    id: `${displayName}.existingTokenSuccess`,
     defaultMessage: 'Token found: {name} ({symbol}) on {chain}',
   },
 });
