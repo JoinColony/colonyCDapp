@@ -102,6 +102,7 @@ const LandingPage = () => {
       // @TODO: Connect with real invitation code
       onClick: () => navigate('/create-colony/asd'),
       imgSrc: CreateAColonyBanner,
+      disabled: true,
     },
     {
       buttonText: user
