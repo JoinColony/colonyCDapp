@@ -39,9 +39,9 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
     useUserByAddress(field.value);
   const { readonly } = useAdditionalFormOptionsContext();
 
-  const userDisplayName =
-    (!userByAddressLoading && userByAddress?.profile?.displayName) ||
-    field.value;
+  const userDisplayName = userByAddressLoading
+    ? formatText({ id: 'status.loading' }, { optionalText: '' })
+    : userByAddress?.profile?.displayName || field.value;
 
   const userWalletAddress = field.value;
 

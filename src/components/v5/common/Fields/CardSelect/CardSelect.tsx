@@ -42,7 +42,7 @@ function CardSelect<TValue = string>({
     setUncontrolledValue(newValue);
   }, []);
   const defaultGroupKey = useId();
-  const goupedOptions = useMemo<CardSelectOptionsGroup<TValue>[]>(() => {
+  const groupedOptions = useMemo<CardSelectOptionsGroup<TValue>[]>(() => {
     if (isFlatOptions(options)) {
       return [
         {
@@ -70,10 +70,10 @@ function CardSelect<TValue = string>({
       return undefined;
     }
 
-    return goupedOptions
+    return groupedOptions
       .flatMap((group) => group.options)
       .find((option) => valueComparator(option.value, value));
-  }, [goupedOptions, value, valueComparator]);
+  }, [groupedOptions, value, valueComparator]);
 
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
@@ -119,12 +119,15 @@ function CardSelect<TValue = string>({
                   registerContainerRef(ref);
                   portalElementRef.current = ref;
                 }}
-                className={clsx(cardClassName, 'p-6 absolute z-[60]')}
+                className={clsx(
+                  cardClassName,
+                  'p-6 absolute z-[60] overflow-auto',
+                )}
                 hasShadow
                 rounded="s"
               >
                 <ul>
-                  {goupedOptions.map((group) => (
+                  {groupedOptions.map((group) => (
                     <li key={group.key} className={OPTION_LIST_ITEM_CLASSES}>
                       {group.title && (
                         <h5 className="text-4 text-gray-400 mb-2 uppercase">

@@ -4,6 +4,7 @@ import { useGetColonyMembers } from '~v5/shared/MembersSelect/hooks';
 import { UserSelectHookProps } from './types';
 import { useGetVerifiedMembersQuery } from '~gql';
 import { SearchSelectOption } from '~v5/shared/SearchSelect/types';
+import { unionOfArraysToArrayOfUnions } from '~utils/arrays';
 
 export const useUserSelect = (inputValue: string): UserSelectHookProps => {
   const { colony } = useColonyContext();
@@ -14,26 +15,37 @@ export const useUserSelect = (inputValue: string): UserSelectHookProps => {
     variables: { colonyAddress },
     skip: !colonyAddress || !isWhitelistActivated,
   });
-
-  const verifiedUsers: SearchSelectOption[] = useMemo(
+  const options = useMemo(
     () =>
-      (data?.getContributorsByColony?.items ?? []).map((item, index) => ({
-        value: item?.user?.walletAddress || '',
-        label: item?.user?.profile?.displayName || '',
-        avatar:
-          item?.user?.profile?.avatar || item?.user?.profile?.thumbnail || '',
-        walletAddress: item?.user?.walletAddress,
-        id: index,
-        showAvatar: true,
-      })),
-    [data?.getContributorsByColony?.items],
+      unionOfArraysToArrayOfUnions(
+        isWhitelistActivated
+          ? data?.getContributorsByColony?.items.map(
+              (contributor) => contributor?.user,
+            ) || []
+          : members,
+      ).reduce<SearchSelectOption[]>((result, user) => {
+        if (!user) {
+          return result;
+        }
+
+        const { walletAddress, profile } = user;
+
+        return [
+          ...result,
+          {
+            value: walletAddress,
+            label: profile?.displayName || walletAddress,
+            avatar: profile?.thumbnail || profile?.avatar || '',
+            walletAddress,
+            id: result.length,
+            showAvatar: true,
+          },
+        ];
+      }, []),
+    [data?.getContributorsByColony?.items, isWhitelistActivated, members],
   );
 
-  const preparedUserOptions: SearchSelectOption[] = isWhitelistActivated
-    ? verifiedUsers
-    : members || [];
-
-  const isUserVerified = preparedUserOptions.some(
+  const isUserVerified = options.some(
     ({ walletAddress }) => walletAddress === inputValue,
   );
 
@@ -41,7 +53,7 @@ export const useUserSelect = (inputValue: string): UserSelectHookProps => {
 
   return {
     isLoading: loading || verifiedMembersLoading,
-    options: preparedUserOptions,
+    options,
     key: 'users',
     title: { id: 'actions.recipent' },
     isAccordion: false,
