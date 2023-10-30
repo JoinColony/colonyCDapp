@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
+import { nanoid } from 'nanoid';
 
 import Heading from '~shared/Heading';
 import CreateAColonyBanner from '~images/create-colony-banner.png';
@@ -85,7 +86,7 @@ const MSG = defineMessages({
 });
 
 const LandingPage = () => {
-  const [hoveredItem, setHoveredItem] = useState<number>(0);
+  const [, setHoveredItem] = useState<number>(0);
   const navigate = useNavigate();
   const { user, connectWallet, wallet, userLoading } = useAppContext();
   const onUserLogin = () => {
@@ -147,6 +148,7 @@ const LandingPage = () => {
         <div className="w-1/2 flex flex-col gap-4">
           {landingPageItems.map((item, index) => (
             <LandingPageItem
+              key={nanoid()}
               {...item}
               itemIndex={index}
               onHover={setHoveredItem}
@@ -155,10 +157,8 @@ const LandingPage = () => {
         </div>
         <div className="w-1/2 bg-gray-100 rounded-lg max-h-[395px]">
           <img
-            src={
-              landingPageItems[hoveredItem].imgSrc ?? landingPageItems[0].imgSrc
-            }
-            className="w-full h-full"
+            src={landingPageItems[1].imgSrc}
+            className="w-full h-full object-cover"
             alt=""
           />
         </div>
