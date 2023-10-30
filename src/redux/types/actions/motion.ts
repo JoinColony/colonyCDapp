@@ -103,6 +103,7 @@ export type MotionActionTypes =
       {
         userAddress: Address;
         colonyAddress: Address;
+        extensionAddress: Address;
         transactionHash: string;
       },
       MetaWithHistory<object>
@@ -117,6 +118,7 @@ export type MotionActionTypes =
       {
         userAddress: Address;
         colonyAddress: Address;
+        extensionAddress: Address;
         motionIds: string[];
       },
       MetaWithHistory<object>

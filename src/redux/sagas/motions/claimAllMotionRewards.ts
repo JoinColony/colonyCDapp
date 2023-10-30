@@ -1,7 +1,6 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 import {
   ClientType,
-  AnyVotingReputationClient,
   getPermissionProofs,
   ColonyRole,
   Id,
@@ -32,7 +31,12 @@ export type ClaimAllMotionRewardsPayload =
 
 function* claimAllMotionRewards({
   meta,
-  payload: { userAddress, colonyAddress, motionIds: databaseMotionIds },
+  payload: {
+    userAddress,
+    colonyAddress,
+    extensionAddress,
+    motionIds: databaseMotionIds,
+  },
 }: Action<ActionTypes.MOTION_CLAIM_ALL>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
@@ -79,12 +83,6 @@ function* claimAllMotionRewards({
       colonyAddress,
     );
 
-    const votingReputationClient: AnyVotingReputationClient = yield call(
-      [colonyManager, colonyManager.getClient],
-      ClientType.VotingReputationClient,
-      colonyAddress,
-    );
-
     const channelNames: string[] = [];
 
     for (let index = 0; index < allMotionClaims.length; index += 1) {
@@ -107,7 +105,7 @@ function* claimAllMotionRewards({
               colonyClient,
               currentMotion?.motionDomain.nativeId || Id.RootDomain,
               ColonyRole.Arbitration,
-              votingReputationClient.address,
+              extensionAddress,
             );
 
           return createGroupTransaction(

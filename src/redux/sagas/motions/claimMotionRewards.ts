@@ -1,10 +1,5 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
-import {
-  ClientType,
-  getPermissionProofs,
-  ColonyRole,
-  AnyVotingReputationClient,
-} from '@colony/colony-js';
+import { ClientType, getPermissionProofs, ColonyRole } from '@colony/colony-js';
 import { ApolloQueryResult } from '@apollo/client';
 import { BigNumber } from 'ethers';
 
@@ -31,7 +26,7 @@ export type ClaimMotionRewardsPayload =
 
 function* claimMotionRewards({
   meta,
-  payload: { userAddress, colonyAddress, transactionHash },
+  payload: { userAddress, colonyAddress, extensionAddress, transactionHash },
 }: Action<ActionTypes.MOTION_CLAIM>) {
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
@@ -90,17 +85,11 @@ function* claimMotionRewards({
       colonyAddress,
     );
 
-    const votingReputationClient: AnyVotingReputationClient = yield call(
-      [colonyManager, colonyManager.getClient],
-      ClientType.VotingReputationClient,
-      colonyAddress,
-    );
-
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
       colonyClient,
       motionData.motionDomain.nativeId,
       ColonyRole.Arbitration,
-      votingReputationClient.address,
+      extensionAddress,
     );
 
     yield all(
