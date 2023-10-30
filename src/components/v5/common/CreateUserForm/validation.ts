@@ -1,4 +1,4 @@
-import { object, string } from 'yup';
+import { array, object, string } from 'yup';
 
 import { GetProfileByEmailDocument, GetUserByNameDocument } from '~gql';
 import { intl } from '~utils/intl';
@@ -71,4 +71,5 @@ export const validationSchema = object({
       formatMessage({ id: 'error.emailAlreadyRegistered' }),
       isEmailAlreadyRegistered,
     ),
+  emailPermissions: array().defined().of(string().defined()),
 }).defined();
