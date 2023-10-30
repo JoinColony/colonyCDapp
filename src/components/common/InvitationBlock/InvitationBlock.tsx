@@ -5,6 +5,7 @@ import { Heading4 } from '~shared/Heading';
 import Icon from '~shared/Icon';
 import Button from '~v5/shared/Button';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+import { useAppContext } from '~hooks';
 
 const displayName = 'common.InvitationBlock';
 
@@ -27,10 +28,9 @@ const MSG = defineMessages({
   },
 });
 
-// @TODO: Replace with real invitation code
-const invitationCode = 'aaaa';
-
 const InvitationBlock = () => {
+  const { user } = useAppContext();
+  const invitationCode = user?.PrivateBetaInviteCode?.id;
   const inviteLink = `app.colony.io/createcolony/${invitationCode}`;
   const { handleClipboardCopy, isCopied } = useCopyToClipboard(inviteLink);
 
@@ -38,7 +38,7 @@ const InvitationBlock = () => {
     <div className="flex flex-col mt-6 rounded border border-gray-900 px-6 py-4 max-w-[1286px]">
       <Icon name="ticket" appearance={{ size: 'medium' }} />
       <div className="flex justify-between items-center">
-        <div>
+        <div className="max-w-[90%]">
           <Heading4
             text={MSG.inviteBlockTitle}
             className="font-medium text-gray-900 mt-2 text-md"

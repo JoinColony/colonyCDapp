@@ -9168,6 +9168,10 @@ export const UserFragmentDoc = gql`
       createdAt
     }
   }
+  PrivateBetaInviteCode {
+    id
+    shareableInvites
+  }
 }
     ${ProfileFragmentDoc}
 ${WatchedColonyFragmentDoc}`;

@@ -127,6 +127,8 @@ const LandingPage = () => {
       disabled: true,
     },
   ];
+  const hasShareableInvitationCode =
+    !!user?.PrivateBetaInviteCode?.shareableInvites;
 
   return (
     <div className="w-full">
@@ -163,8 +165,7 @@ const LandingPage = () => {
           />
         </div>
       </div>
-      {/* @TODO: Add real logic here to display the invitation block */}
-      {false && <InvitationBlock />}
+      {hasShareableInvitationCode && <InvitationBlock />}
     </div>
   );
 };
