@@ -1,10 +1,13 @@
 import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
+import clsx from 'clsx';
 import ExternalLink from '~shared/ExternalLink';
 import { Heading3 } from '~shared/Heading';
 
 import Icon from '~shared/Icon';
+
+import { useColonyCreationFlowContext } from './CreateYourColonyLayout';
 
 const displayName = 'frame.Extensions.CreateYourColonySidebar';
 
@@ -40,6 +43,8 @@ const MSG = defineMessages({
 });
 
 const CreateYourColonySidebar = () => {
+  const { currentStep } = useColonyCreationFlowContext();
+
   return (
     <nav className="flex flex-col border border-slate-300 rounded-lg p-6 h-full">
       <Icon
@@ -56,18 +61,50 @@ const CreateYourColonySidebar = () => {
         <div className="flex flex-1 gap-4">
           {/* @TODO: Add logic to change height and color of the line, dots, and text depending on the current step */}
           <div className="flex flex-col items-center">
-            <div className="w-2.5 h-2.5 rounded-full bg-gray-900" />
-            <div className="w-px h-14 bg-gray-900" />
-            <div className="w-2.5 h-2.5 rounded-full border border-gray-900" />
+            <div
+              className={clsx('w-2.5 h-2.5 rounded-full', {
+                'bg-gray-900': currentStep >= 0,
+              })}
+            />
+            <div
+              className={clsx('w-px bg-gray-900', {
+                'h-14': currentStep === 0,
+                'h-6': currentStep !== 0,
+              })}
+            />
+            <div
+              className={clsx('w-2.5 h-2.5 rounded-full', {
+                'bg-gray-900': currentStep >= 1,
+                'border border-gray-900': currentStep < 1,
+              })}
+            />
             <div className="w-px h-6 bg-gray-900" />
-            <div className="w-2.5 h-2.5 rounded-full border border-gray-900" />
+            <div
+              className={clsx('w-2.5 h-2.5 rounded-full', {
+                'bg-gray-900': currentStep >= 3,
+                'border border-gray-900': currentStep < 3,
+              })}
+            />
           </div>
           <div className="flex flex-col gap-4 -mt-1">
-            <div className="flex flex-col justify-start mb-2">
-              <span className="text-gray-900 text-sm font-semibold mb-2">
+            <div
+              className={clsx('flex flex-col justify-start', {
+                'mb-2': currentStep === 0,
+              })}
+            >
+              <span
+                className={clsx('text-gray-900 text-sm font-semibold', {
+                  'mb-2': currentStep === 0,
+                })}
+              >
                 <FormattedMessage {...MSG.account} />
               </span>
-              <span className="text-xs font-semibold text-blue-400">
+              <span
+                className={clsx('text-xs font-semibold', {
+                  'text-blue-400': currentStep === 0,
+                  hidden: currentStep !== 0,
+                })}
+              >
                 <FormattedMessage {...MSG.profile} />
               </span>
             </div>

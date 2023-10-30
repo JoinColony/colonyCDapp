@@ -1,26 +1,60 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, {
+  FC,
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 
 import Wallet from '~frame/RouteLayouts/UserNavigation/Wallet';
 import { Header } from '~frame/Extensions/layouts';
 
 import CreateYourColonySidebar from './CreateYourColonySidebar';
 
+interface ColonyCreationFlowContextValues {
+  currentStep: number;
+  setCurrentStep: (currentStep: number) => void;
+}
+
+const ColonyCreationFlowContext = createContext<
+  ColonyCreationFlowContextValues | undefined
+>(undefined);
+
+export const useColonyCreationFlowContext = () => {
+  const context = useContext(ColonyCreationFlowContext);
+
+  if (!context) {
+    throw new Error('Could not find ColonyCreationFlowContext');
+  }
+
+  return context;
+};
+
 const CreateYourColonyLayout: FC<PropsWithChildren> = ({ children }) => {
+  const [currentStep, setCurrentStep] = useState(0);
+  const colonyCreationFlowContextValues = useMemo(
+    () => ({ currentStep, setCurrentStep }),
+    [currentStep, setCurrentStep],
+  );
+
   return (
-    <div className="grid grid-cols-[280px,auto] gap-4 p-4">
-      <aside className="sticky top-4 h-[calc(100vh-2rem)]">
-        <CreateYourColonySidebar />
-      </aside>
-      <div className="">
-        <Header />
-        <div className="hidden">
-          <Wallet />
+    <ColonyCreationFlowContext.Provider value={colonyCreationFlowContextValues}>
+      <div className="grid grid-cols-[280px,auto] gap-4 p-4">
+        <aside className="sticky top-4 h-[calc(100vh-2rem)]">
+          <CreateYourColonySidebar />
+        </aside>
+        <div className="">
+          <Header />
+          <div className="hidden">
+            <Wallet />
+          </div>
+          <main className="mt-9 flex flex-col items-center pb-24">
+            {children}
+          </main>
         </div>
-        <main className="mt-9 flex flex-col items-center pb-24">
-          {children}
-        </main>
       </div>
-    </div>
+    </ColonyCreationFlowContext.Provider>
   );
 };
 

@@ -87,7 +87,6 @@ const Routes = () => {
         {/* Main routes */}
         <Route element={<MainRoute />}>
           <Route path={LANDING_PAGE_ROUTE} element={<LandingPage />} />
-          <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyPage />} />
           <Route
             path={USER_ROUTE}
             element={
@@ -112,7 +111,8 @@ const Routes = () => {
         </Route>
 
         <Route element={<UserRegistrationRoute />}>
-          <Route path={CREATE_USER_ROUTE} element={<CreateUserForm />} />
+          <Route path={CREATE_USER_ROUTE} element={<CreateUserPage />} />
+          <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyPage />} />
         </Route>
 
         {/* Colony routes */}
