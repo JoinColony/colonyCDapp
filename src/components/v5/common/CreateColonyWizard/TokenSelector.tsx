@@ -21,14 +21,16 @@ const TokenSelector = ({
 }: Props) => {
   const {
     watch,
-    /* formState: { isValid, isDirty, isValidating }, */
+    formState: { dirtyFields },
     setValue,
     clearErrors,
+    trigger,
   } = useFormContext();
   const tokenAddressField = watch(addressFieldName);
   const tokenAddress = isAddress(tokenAddressField)
     ? createAddress(tokenAddressField)
     : tokenAddressField;
+  const { [addressFieldName]: tokenAddressDirty } = dirtyFields;
 
   const {
     data,
@@ -46,12 +48,22 @@ const TokenSelector = ({
   const token = data?.getTokenFromEverywhere?.items?.[0] ?? null;
 
   useEffect(() => {
+    if (!tokenAddressDirty) {
+      return;
+    }
+
     // When token is updated (either found or null), clear errors and set the values in hook-form
     clearErrors(addressFieldName);
-    setValue(tokenFieldName, token, {
-      shouldValidate: true,
-    });
-  }, [addressFieldName, clearErrors, setValue, token, tokenFieldName]);
+    setValue(tokenFieldName, token);
+    trigger(addressFieldName);
+  }, [
+    tokenAddressField,
+    addressFieldName,
+    clearErrors,
+    setValue,
+    token,
+    tokenFieldName,
+  ]);
 
   /* const displayLoading =
    *   isFetchingAddress || (isValidating && isAddress(tokenAddress)); */

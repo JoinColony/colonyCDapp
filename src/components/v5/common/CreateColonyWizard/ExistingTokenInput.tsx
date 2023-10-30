@@ -4,7 +4,8 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { Token } from '~types';
 import { getNetworkByChainId } from '~utils/web3';
-import TokenSelector from '~v5/shared/TokenSelector';
+
+import TokenSelector from './TokenSelector';
 
 const displayName = 'common.CreateColonyWizard.TokenSelector';
 
@@ -53,7 +54,7 @@ const TokenSelectorInput = ({
       isDisabled={isSubmitting}
       defaultValue={wizardTokenAddress}
       labelMessage={MSG.existingToken}
-      successfulMessage={successMessage}
+      successfulMessage={token?.name ? successMessage : undefined}
       isDecoratedError
     />
   );
