@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 import { useColonyContext } from '~hooks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
@@ -41,13 +41,20 @@ const MSG = defineMessages({
   },
 });
 
-// @TODO: Add logic to get the real amount of invites available and used.
-const invitesAvailable = 100;
-const invitesUsed = 0;
-
 const InviteMembersModal = ({ isOpen, onClose }: Props) => {
   const { colony } = useColonyContext();
-  const inviteLink = `app.colony.io/create-colony/${colony?.colonyMemberInvite?.id}`;
+
+  const invitesAvailable = 100;
+  const [inviteLink, invitesUsed] = useMemo(
+    () => [
+      new URL(
+        `/invite/${colony?.name}/${colony?.colonyMemberInvite?.code}`,
+        window.document.baseURI,
+      ).href,
+      100 - (colony?.colonyMemberInvite?.invitesRemaining || 0),
+    ],
+    [colony],
+  );
 
   const { handleClipboardCopy, isCopied } = useCopyToClipboard(inviteLink);
 
