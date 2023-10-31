@@ -12,6 +12,14 @@ on:
       commitHash:
         description: 'Git Commit Hash'
         required: false
+      envExpiryTimeMinutes:
+        description: 'Minutes until environment is removed ( max 180 )'
+        required: false
+        default: '60'
+      discordUserId:
+        description: 'Discord ID to get tagged in the notification channel'
+        required: false
+
 
 jobs:
   deploy:
@@ -34,6 +42,7 @@ jobs:
         BRANCH=${{ github.event.inputs.branch }}
         COMMIT_HASH=${{ github.event.inputs.commitHash }}
         DISCORD_WEBHOOK=${{ secrets.DISCORD_WEBHOOK }}
+        DISCORD_USER_ID=${{ github.event.inputs.discordUserId }}
         
         # Make a copy of the original script
         cp ./.github/workflows/scripts/on-demand-env-script.sh ./temp-on-demand-env-script.sh
@@ -43,20 +52,56 @@ jobs:
         sed -i "3iexport BRANCH=$BRANCH" ./temp-on-demand-env-script.sh
         sed -i "4iexport COMMIT_HASH=$COMMIT_HASH" ./temp-on-demand-env-script.sh
         sed -i "5iexport DISCORD_WEBHOOK=$DISCORD_WEBHOOK" ./temp-on-demand-env-script.sh
+        sed -i "6iexport DISCORD_USER_ID=$DISCORD_USER_ID" ./temp-on-demand-env-script.sh
 
     - name: Provision EC2 instance
       run: |
-        INSTANCE_ID=$(aws ec2 run-instances \
-        --image-id ami-0eb260c4d5475b901 \
-        --count 1 \
-        --instance-type t3.2xlarge \
-        --iam-instance-profile Name=${{ vars.ON_DEMAND_ENV_EC2_INSTANCE_PROFILE_NAME }} \
-        --security-group-ids ${{ vars.ON_DEMAND_ENV_EC2_SG_ID }} \
-        --user-data "file://./temp-on-demand-env-script.sh" \
-        --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=dev-env-github-run-number-${{ github.run_number }}}]' \
-        --block-device-mappings '[{"DeviceName":"/dev/sda1","Ebs":{"VolumeSize":80}}]' \
-        --query 'Instances[0].InstanceId' --output text)
-        echo "INSTANCE_ID=$INSTANCE_ID" >> $GITHUB_ENV
+          INSTANCE_PROFILE=${{ vars.ON_DEMAND_ENV_EC2_INSTANCE_PROFILE_NAME }}
+          SECURITY_GROUP=${{ vars.ON_DEMAND_ENV_EC2_SG_ID }}
+          GITHUB_RUN_NUMBER=${{ github.run_number }}
+          ENV_DURATION=${{ github.event.inputs.envExpiryTimeMinutes }}
+          
+          LAUNCH_SPECIFICATION=$(cat <<EOF
+            {
+              "ImageId": "ami-0eb260c4d5475b901",
+              "InstanceType": "t3.2xlarge",
+              "IamInstanceProfile": {
+                  "Name": "${INSTANCE_PROFILE}"
+                },
+              "SecurityGroupIds": ["${SECURITY_GROUP}"],
+              "UserData": "$(base64 --wrap=0 ./temp-on-demand-env-script.sh)",
+              "BlockDeviceMappings": [
+                  {
+                      "DeviceName": "/dev/sda1",
+                      "Ebs": {
+                          "VolumeSize": 80
+                      }
+                  }
+              ]
+            }
+          EOF
+          )
+
+          SPOT_REQUEST_ID=$(aws ec2 request-spot-instances \
+              --spot-price "0.33" \
+              --instance-count 1 \
+              --type "one-time" \
+              --launch-specification "${LAUNCH_SPECIFICATION}" \
+              --query 'SpotInstanceRequests[0].SpotInstanceRequestId' --output text)
+          
+          INSTANCE_ID=""
+              while [ -z $INSTANCE_ID ]; do
+                  sleep 10  # Wait for a short period to ensure AWS has processed the request
+                  INSTANCE_ID=$(aws ec2 describe-spot-instance-requests \
+                      --spot-instance-request-ids $SPOT_REQUEST_ID \
+                      --query 'SpotInstanceRequests[0].InstanceId' --output text)
+              done
+          
+          echo "INSTANCE_ID=$INSTANCE_ID" >> $GITHUB_ENV
+
+          aws ec2 create-tags \
+              --resources $INSTANCE_ID \
+              --tags Key=Name,Value=dev-env-github-run-number-${GITHUB_RUN_NUMBER}-minutes-${ENV_DURATION}   
 
     - name: Fetch instance public IP
       run: |
