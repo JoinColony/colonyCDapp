@@ -47,7 +47,7 @@ const invitesUsed = 0;
 
 const InviteMembersModal = ({ isOpen, onClose }: Props) => {
   const { colony } = useColonyContext();
-  const inviteLink = `app.colony.io/${colony?.name}/invite`;
+  const inviteLink = `app.colony.io/create-colony/${colony?.colonyMemberInvites?.[0].code}`;
 
   const { handleClipboardCopy, isCopied } = useCopyToClipboard(inviteLink);
 
@@ -71,7 +71,7 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
           />
         </span>
         <div className="flex justify-between items-center w-full">
-          <div>
+          <div className="max-w-[65%]">
             <Heading4
               className="text-gray-900 font-medium text-md"
               text={MSG.inviteLinkHeading}
