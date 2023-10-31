@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 import clsx from 'clsx';
-
 import { UseFormRegister, FieldValues, useFormContext } from 'react-hook-form';
 
 import Icon from '~shared/Icon';
