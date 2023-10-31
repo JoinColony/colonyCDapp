@@ -9,6 +9,7 @@ import React, {
   useContext,
 } from 'react';
 import { useLocation } from 'react-router-dom';
+import { USER_ROLES } from '~constants/permissions';
 import { ModelSortDirection } from '~gql';
 import { useFilterOptions } from '~v5/common/Filter/consts';
 import {
@@ -90,7 +91,6 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const nestedFilter = event.target.id;
       const parentFilter = childParentFilterMap[nestedFilter];
-
       const isChecked = event.target.checked;
 
       if (isChecked) {
@@ -121,8 +121,6 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
           return updated;
         });
-
-        setSelectedFilterCount((prevCount) => prevCount + 1);
       } else {
         setSelectedFilters((prevState) => {
           const parentFilterMap = prevState[parentFilter];
@@ -133,6 +131,7 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
             [parentFilter]: new Map(parentFilterMap),
           };
         });
+
         setSelectedFilterCount((prevState) => prevState - 1);
       }
     },
@@ -171,25 +170,34 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
     setSelectedFilterCount((prevState) => prevState - removedFilters);
   }, []);
 
-  const getFilterDomainIds = useCallback(
-    () =>
+  const getFilterDomainIds = useCallback(() => {
+    return (
       [...selectedFilters[FilterTypes.Team].keys()]
         .map((filterId) => {
           const nativeDomainId = filterId.split('_').shift();
           return Number(nativeDomainId);
         })
         // ensure root comes first
-        .sort((a, b) => a - b),
-    [selectedFilters],
-  );
+        .sort((a, b) => a - b)
+    );
+  }, [selectedFilters]);
 
-  const getFilterPermissions = useCallback(
-    () =>
-      [...selectedFilters[FilterTypes.Permissions].keys()].map(
-        (permission) => PermissionToNetworkIdMap[permission],
-      ),
-    [selectedFilters],
-  );
+  const getFilterPermissions = useCallback(() => {
+    return [...selectedFilters[FilterTypes.Permissions].keys()].reduce(
+      (acc, permission) => {
+        const permissions = USER_ROLES.find(
+          ({ role }) => role === permission,
+        )?.permissions;
+
+        if (permissions) {
+          return [...acc, ...permissions];
+        }
+
+        return [...acc, PermissionToNetworkIdMap[permission]];
+      },
+      [],
+    );
+  }, [selectedFilters]);
 
   const getFilterStatus = useCallback(
     () =>

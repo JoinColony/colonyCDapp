@@ -10,6 +10,7 @@ import Header from './Header';
 import { useFilterContext } from '~context/FilterContext';
 import { formatText } from '~utils/intl';
 import PopoverBase from '~v5/shared/PopoverBase';
+import { NestedFilterOption } from '~v5/common/Filter/types';
 
 const displayName = 'v5.SubNavigationItem.partials.NestedOptions';
 
@@ -31,6 +32,25 @@ const NestedOptions: FC<NestedOptionsProps> = ({
 
   const filterTitle = `${parentOption}.type`;
 
+  const onChange = (
+    hasNestedOptions: boolean,
+    id: NestedFilterOption,
+    isChecked: boolean,
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    if (hasNestedOptions) {
+      if (isChecked) {
+        setCheckedParent(null);
+        return;
+      }
+
+      setCheckedParent(id);
+      return;
+    }
+
+    handleFilterSelect(event);
+  };
+
   return (
     <>
       {!isMobile && <Header title={{ id: filterTitle }} />}
@@ -39,9 +59,9 @@ const NestedOptions: FC<NestedOptionsProps> = ({
           'mt-1': isMobile,
         })}
       >
-        {(nestedFilters || []).map(({ id, title, icon, children }) => {
-          const hasChildren = children && children?.length > 0;
-          const isChecked = hasChildren
+        {(nestedFilters || []).map(({ id, title, icon, nestedOptions }) => {
+          const hasNestedOptions = !!nestedOptions && nestedOptions?.length > 0;
+          const isChecked = hasNestedOptions
             ? checkedParent === id
             : isFilterChecked(id);
 
@@ -59,17 +79,8 @@ const NestedOptions: FC<NestedOptionsProps> = ({
                   id={id}
                   name={formatText(title) ?? ''}
                   label={title}
-                  onChange={
-                    hasChildren
-                      ? () => {
-                          if (isChecked) {
-                            setCheckedParent(null);
-                            return;
-                          }
-
-                          setCheckedParent(id);
-                        }
-                      : handleFilterSelect
+                  onChange={(event) =>
+                    onChange(hasNestedOptions, id, isChecked, event)
                   }
                   isChecked={isChecked}
                   mode="secondary"
@@ -77,7 +88,7 @@ const NestedOptions: FC<NestedOptionsProps> = ({
                   {icon}
                 </Checkbox>
               </button>
-              {children && children.length > 0 && isChecked && (
+              {nestedOptions && nestedOptions.length > 0 && isChecked && (
                 <PopoverBase
                   setTooltipRef={setTooltipRef}
                   tooltipProps={getTooltipProps}
@@ -91,7 +102,7 @@ const NestedOptions: FC<NestedOptionsProps> = ({
                 >
                   <NestedOptions
                     parentOption={`custom.${parentOption}`}
-                    nestedFilters={children}
+                    nestedFilters={nestedOptions}
                   />
                 </PopoverBase>
               )}

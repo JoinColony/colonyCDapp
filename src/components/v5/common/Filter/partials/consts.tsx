@@ -66,7 +66,7 @@ export const permissionsFilters: FilterOptionProps[] = [
   {
     id: Permissions.Custom,
     title: { id: 'filter.option.custom' },
-    children: [
+    nestedOptions: [
       {
         id: Permissions.Root,
         title: { id: 'filter.option.rootPermissions' },

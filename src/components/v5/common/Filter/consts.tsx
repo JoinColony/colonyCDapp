@@ -67,19 +67,24 @@ const getFilterOptions = (teamsFilters: FilterOptionProps[]) => [
 // mapping of nested filters to their parent
 const getChildParentFilterMap = (filterOptions: ParentFilterOption[]) => {
   return filterOptions.reduce((acc, { filterType, content }) => {
-    const childToParentMap = content.reduce((mapping, { id, children }) => {
-      if (!children) {
-        return { ...mapping, [id]: filterType };
-      }
-      return {
-        ...mapping,
-        ...children.map(({ id: childId }) => {
-          return {
-            [childId]: filterType,
-          };
-        }),
-      };
-    }, {});
+    const childToParentMap = content.reduce(
+      (mapping, { id, nestedOptions }) => {
+        if (!nestedOptions) {
+          return { ...mapping, [id]: filterType };
+        }
+
+        return {
+          ...mapping,
+          ...nestedOptions.reduce((childrenMapping, { id: childId }) => {
+            return {
+              ...childrenMapping,
+              [childId]: filterType,
+            };
+          }, {}),
+        };
+      },
+      {},
+    );
 
     return {
       ...acc,
