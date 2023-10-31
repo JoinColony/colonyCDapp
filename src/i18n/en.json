@@ -84,7 +84,7 @@
     "button.deprecateExtension": "Deprecate extension",
     "button.socialLinks": "Add social links",
     "button.editColonyDetails": "Edit Colony details",
-    "button.createObjective": "Create current objective",
+    "button.manageObjective": "{existing, select, true {Manage} other {Create}} current objective",
     "button.updateEmail": "Update email",
     "button.saveEmail": "Save email",
     "button.connectDiscord": "Connect Discord",

@@ -8,6 +8,9 @@ import Avatar from '~v5/shared/Avatar';
 import Button, { TextButton } from '~v5/shared/Button';
 import ObjectiveBox from '~v5/common/ObjectiveBox';
 import ExternalLink from '~shared/Extensions/ExternalLink';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { ACTION } from '~constants/actions';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 
 const displayName = 'frame.Extensions.pages.ColonyDetailsPage';
 
@@ -17,6 +20,10 @@ const ColonyDetailsPage: FC = () => {
   const { name, metadata } = colony || {};
   const { avatar, thumbnail, description, externalLinks, objective } =
     metadata || {};
+
+  const {
+    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
+  } = useActionSidebarContext();
 
   return (
     <div>
@@ -42,11 +49,15 @@ const ColonyDetailsPage: FC = () => {
             />
           )}
         </div>
-        {/* @TODO: Add functionality to edit colony details */}
         <Button
           mode="primarySolid"
           text={{ id: 'button.editColonyDetails' }}
           isFullSize={isMobile}
+          onClick={() => {
+            toggleActionSidebarOn({
+              [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_COLONY_DETAILS,
+            });
+          }}
         />
       </div>
       <div
@@ -68,7 +79,13 @@ const ColonyDetailsPage: FC = () => {
           {!isMobile && (
             <Button
               mode="primarySolid"
-              text={{ id: 'button.createObjective' }}
+              text={{ id: 'button.manageObjective' }}
+              textValues={{ existing: !!objective?.title }}
+              onClick={() => {
+                toggleActionSidebarOn({
+                  [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_COLONY_OBJECTIVES,
+                });
+              }}
             />
           )}
         </div>
@@ -79,11 +96,16 @@ const ColonyDetailsPage: FC = () => {
           <ObjectiveBox objective={objective} />
         </div>
         {isMobile && (
-          // @TODO: Add functionality to create objective
+          // @TODO: Test functionality to create objective on mobile
           <Button
             mode="primarySolid"
             text={{ id: 'button.createObjective' }}
             isFullSize={isMobile}
+            onClick={() => {
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_COLONY_OBJECTIVES,
+              });
+            }}
           />
         )}
       </div>
