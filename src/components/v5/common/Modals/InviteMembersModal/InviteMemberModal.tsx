@@ -47,7 +47,7 @@ const invitesUsed = 0;
 
 const InviteMembersModal = ({ isOpen, onClose }: Props) => {
   const { colony } = useColonyContext();
-  const inviteLink = `app.colony.io/create-colony/${colony?.colonyMemberInvites?.[0].code}`;
+  const inviteLink = `app.colony.io/create-colony/${colony?.colonyMemberInvite?.code}`;
 
   const { handleClipboardCopy, isCopied } = useCopyToClipboard(inviteLink);
 
