@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 
-import { FormattedMessage } from 'react-intl';
 import { useEnterRecoveryMode } from './hooks';
 import { ActionFormBaseProps } from '../../../types';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.common.ActionSidebar.partials.EnterRecoveryModeForm';
 
@@ -15,8 +15,14 @@ const EnterRecoveryModeForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     <ActionFormRow
       iconName="pencil"
       fieldName="description"
-      tooltip={<FormattedMessage id="actionSidebar.tooltip.description" />}
-      title={<FormattedMessage id="actionSidebar.description" />}
+      tooltips={{
+        label: {
+          tooltipContent: formatText({
+            id: 'actionSidebar.tooltip.description',
+          }),
+        },
+      }}
+      title={formatText({ id: 'actionSidebar.description' })}
       isExpandable
     >
       {([
