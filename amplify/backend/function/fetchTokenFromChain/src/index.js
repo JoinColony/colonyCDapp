@@ -1,7 +1,12 @@
 const { constants, utils, providers, Contract } = require('ethers');
 
 const basicTokenAbi = require('./basicTokenAbi.json');
-const { graphqlRequest, getTokenType } = require('./utils');
+const {
+  graphqlRequest,
+  getTokenType,
+  getRpcUrlParamName,
+  getDevRpcUrl,
+} = require('./utils');
 
 /*
  * @TODO This needs to be imported properly into the project (maybe?)
@@ -12,7 +17,7 @@ const { createToken, getTokenByAddress } = require('./graphql');
 
 let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
-let rpcURL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let rpcURL;
 
 const baseToken = {
   __typename: 'Token',
@@ -24,28 +29,45 @@ const baseToken = {
   colonies: null,
 };
 
-const setEnvVariables = async () => {
+const setEnvVariables = async (network) => {
   const ENV = process.env.ENV;
-  if (ENV === 'qa') {
+  if (ENV === 'dev') {
+    rpcURL = getDevRpcUrl(network);
+  }
+
+  if (ENV === 'qa' || ENV === 'sc') {
+    let chainRpcParam = getRpcUrlParamName(network);
+
     const { getParams } = require('/opt/nodejs/getParams');
     [apiKey, graphqlURL, rpcURL] = await getParams([
       'appsyncApiKey',
       'graphqlUrl',
-      'chainRpcEndpoint',
+      chainRpcParam,
     ]);
   }
 };
 
 exports.handler = async (event) => {
+  const {
+    tokenAddress = constants.AddressZero,
+    network = undefined, // refers to the shortName in the NetworkInfo type
+  } =
+    // eslint-disable-next-line no-unsafe-optional-chaining
+    event?.arguments?.input;
+
   try {
-    await setEnvVariables();
+    await setEnvVariables(network);
   } catch (e) {
     throw new Error('Unable to set env variables. Reason:', e);
   }
 
-  const { tokenAddress = constants.AddressZero } =
-    // eslint-disable-next-line no-unsafe-optional-chaining
-    event?.arguments?.input;
+  /*
+   * We do not store native chain tokens in the database and the ethers logic
+   * fails with a native token so return null early
+   */
+  if (tokenAddress === constants.AddressZero) {
+    return null;
+  }
 
   const tokenQuery = await graphqlRequest(
     getTokenByAddress,

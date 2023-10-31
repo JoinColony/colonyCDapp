@@ -2,7 +2,10 @@ import { ClientType } from '@colony/colony-js';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { Action, ActionTypes, AllActions } from '~redux';
-import { transactionAddParams } from '~redux/actionCreators';
+import {
+  transactionAddParams,
+  transactionPending,
+} from '~redux/actionCreators';
 
 import {
   ChannelDefinition,
@@ -57,6 +60,7 @@ function* fundExpenditure({
         channels[tokenAddress].channel,
         ActionTypes.TRANSACTION_CREATED,
       );
+      yield put(transactionPending(channels[tokenAddress].id));
       yield put(
         transactionAddParams(channels[tokenAddress].id, [
           fromDomainFundingPotId,

@@ -231,6 +231,8 @@ function* editColonyMotion({
                   metadata?.externalLinks,
                   colonyExternalLinks,
                 ),
+                newSafes: colony.metadata.safes,
+                oldSafes: colony.metadata.safes,
               },
             ],
             modifiedTokenAddresses,

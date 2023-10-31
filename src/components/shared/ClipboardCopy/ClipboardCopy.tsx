@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
-import copyToClipboard from 'copy-to-clipboard';
 
 import Button, { ButtonAppearance } from '~shared/Button';
+import { useClipboardCopy } from '~hooks';
 
 interface Props {
   /** Appearance object for styling */
@@ -16,7 +16,7 @@ interface Props {
 const MSG = defineMessages({
   copyLabel: {
     id: 'ClipboardCopy.copyLabel',
-    defaultMessage: `{valueIsCopied, select,
+    defaultMessage: `{isCopied, select,
       true {Copied}
       false {Copy}
       other {}
@@ -31,29 +31,14 @@ const ClipboardCopy = ({
   value,
   text = MSG.copyLabel,
 }: Props) => {
-  const [valueIsCopied, setValueIsCopied] = useState(false);
-  const userFeedbackTimer = useRef<any>(null);
-  const handleClipboardCopy = () => {
-    setValueIsCopied(true);
-    copyToClipboard(value);
-    userFeedbackTimer.current = setTimeout(() => setValueIsCopied(false), 2000);
-  };
-  /*
-   * We need to wrap the call in a second function, since only the returned
-   * function gets called on unmount.
-   * The first one is only called on render.
-   */
-  useEffect(
-    () => () => clearTimeout(userFeedbackTimer.current),
-    [userFeedbackTimer],
-  );
+  const { isCopied, handleClipboardCopy } = useClipboardCopy(value);
   return (
     <Button
       appearance={appearance}
-      disabled={valueIsCopied}
+      disabled={isCopied}
       onClick={handleClipboardCopy}
       text={text}
-      textValues={{ valueIsCopied }}
+      textValues={{ isCopied }}
     />
   );
 };

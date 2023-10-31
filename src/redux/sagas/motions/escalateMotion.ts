@@ -1,6 +1,13 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, Id } from '@colony/colony-js';
-import { AddressZero } from '@ethersproject/constants';
+import {
+  ClientType,
+  Id,
+  AnyVotingReputationClient,
+  getChildIndex,
+} from '@colony/colony-js';
+import { BigNumber } from 'ethers';
+
+import { ColonyManager } from '~context';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
@@ -16,6 +23,10 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
+import {
+  transactionAddParams,
+  transactionPending,
+} from '~redux/actionCreators';
 
 export type EscalateMotionPayload =
   Action<ActionTypes.MOTION_ESCALATE>['payload'];
@@ -26,21 +37,19 @@ function* escalateMotion({
 }: Action<ActionTypes.MOTION_ESCALATE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const context = yield getColonyManager();
-    const colonyClient = yield context.getClient(
+    const colonyManager: ColonyManager = yield getColonyManager();
+
+    const { signer } = colonyManager;
+
+    const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );
 
-    const { skillId } = yield call(
-      [colonyClient, colonyClient.getDomain],
-      Id.RootDomain,
-    );
-
-    const { key, value, branchMask, siblings } = yield call(
-      colonyClient.getReputation,
-      skillId,
-      AddressZero,
+    const votingReputationClient: AnyVotingReputationClient = yield call(
+      [colonyManager, colonyManager.getClient],
+      ClientType.VotingReputationClient,
+      colonyAddress,
     );
 
     const { escalateMotionTransaction } = yield createTransactionChannels(
@@ -52,26 +61,62 @@ function* escalateMotion({
 
     yield createGroupTransaction(escalateMotionTransaction, batchKey, meta, {
       context: ClientType.VotingReputationClient,
-      methodName: 'escalateMotionWithProofs',
+      methodName: 'escalateMotion',
       identifier: colonyAddress,
-      params: [
-        motionId,
-        /*
-         * We can only escalate the motion in a parent domain, and all current
-         * sub-domains have ROOT as the parent domain
-         */
-        Id.RootDomain,
-        key,
-        value,
-        branchMask,
-        siblings,
-      ],
+      params: [],
       ready: false,
     });
 
     yield takeFrom(
       escalateMotionTransaction.channel,
       ActionTypes.TRANSACTION_CREATED,
+    );
+
+    yield put(transactionPending(escalateMotionTransaction.id));
+
+    const { domainId, rootHash } = yield call(
+      [votingReputationClient, votingReputationClient.getMotion],
+      motionId,
+    );
+
+    const { skillId } = yield call(
+      [colonyClient, colonyClient.getDomain],
+      Id.RootDomain,
+    );
+
+    const currentUserWalletAddress = yield signer.getAddress();
+
+    const { key, value, branchMask, siblings } = yield call(
+      colonyClient.getReputation,
+      skillId,
+      currentUserWalletAddress,
+      rootHash,
+    );
+
+    const motionDomainChildSkillIdIndex = yield getChildIndex(
+      colonyClient,
+      BigNumber.from(Id.RootDomain),
+      domainId,
+    );
+
+    if (motionDomainChildSkillIdIndex.toNumber() === -1) {
+      throw new Error('Child skill index could not be found');
+    }
+
+    yield put(
+      transactionAddParams(escalateMotionTransaction.id, [
+        motionId,
+        /*
+         * We can only escalate the motion in a parent domain, and all current
+         * sub-domains have ROOT as the parent domain
+         */
+        Id.RootDomain,
+        motionDomainChildSkillIdIndex,
+        key,
+        value,
+        branchMask,
+        siblings,
+      ]),
     );
 
     yield initiateTransaction({ id: escalateMotionTransaction.id });

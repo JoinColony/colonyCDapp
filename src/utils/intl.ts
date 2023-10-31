@@ -45,7 +45,9 @@ export const intl = <T = string>(
     cache,
   );
 
-const isMessageDescriptor = (message?: Message): message is MessageDescriptor =>
+export const isMessageDescriptor = (
+  message?: Message,
+): message is MessageDescriptor =>
   typeof message === 'object' &&
   ('id' in message || 'description' in message || 'defaultMessage' in message);
 

@@ -30,6 +30,13 @@ const eventsMessageDescriptors = {
         other {reward}
       }}
       other {{eventNameDecorated} emitted by {clientOrExtensionType}}
+      ${ColonyAndExtensionsEvents.SafeRemoved} {{initiator} removed {removedSafes} using the Root permission.}
+      ${ColonyAndExtensionsEvents.SafeAdded} {{initiator} added the Safe {safeAddress} from {chainName} using the Root permission.}
+      ${ColonyAndExtensionsEvents.SafeTransferFunds} {{safeName} made a payment using the Root permission to pay {safeTransactionAmount} to {recipient}}
+      ${ColonyAndExtensionsEvents.SafeRawTransaction} {{safeName} initiated a transaction with {recipient}}
+      ${ColonyAndExtensionsEvents.SafeTransferNft} {{safeName} made a payment using the Root permission to pay with NFT token called {nftToken} to {recipient}}
+      ${ColonyAndExtensionsEvents.SafeContractInteraction} {{safeName} called the {functionName} function on the {contractName} contract}
+      ${ColonyAndExtensionsEvents.SafeMultipleTransactions} {{safeName} initiated multiple transactions}
     }`,
   'eventList.event': `{eventName, select,
       ${ColonyAndExtensionsEvents.DomainAdded} {{agent} added Team: {domain}}

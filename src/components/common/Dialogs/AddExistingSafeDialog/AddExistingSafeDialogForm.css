@@ -1,0 +1,51 @@
+@value wideButton: 160px;
+
+.main {
+  display: flex;
+  flex-direction: column;
+  row-gap: 18px;
+}
+
+.main a {
+  color: var(--action-secondary);
+}
+
+.main i {
+  cursor: pointer;
+}
+
+.main input {
+  font-size: 14px;
+}
+
+.main label {
+  margin-bottom: 5px;
+}
+
+.headingContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 32px;
+}
+
+.copied use {
+  fill: var(--primary);
+}
+
+.tooltip {
+  width: 220px;
+}
+
+.instructions {
+  padding-bottom: 18px;
+  border-bottom: 1px solid color-mod(var(--grey-purple) alpha(15%));
+  font-size: var(--size-normal);
+  font-weight: var(--weight-normal);
+  color: var(--grey-purple);
+}
+
+.subtitle {
+  font-weight: var(--weight-bold);
+  color: var(--dark);
+}

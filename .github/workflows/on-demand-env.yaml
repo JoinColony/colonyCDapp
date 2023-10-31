@@ -1,0 +1,64 @@
+name: Deploy Development Environment
+
+on:
+  workflow_dispatch:
+    inputs:
+      prNumber:
+        description: 'Pull Request Number'
+        required: false
+      branch:
+        description: 'Git Branch'
+        required: false
+      commitHash:
+        description: 'Git Commit Hash'
+        required: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_QA }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_QA }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Prepare EC2 user data script with environment variables
+      run: |
+        PR_NUMBER=${{ github.event.inputs.prNumber }}
+        BRANCH=${{ github.event.inputs.branch }}
+        COMMIT_HASH=${{ github.event.inputs.commitHash }}
+        DISCORD_WEBHOOK=${{ secrets.DISCORD_WEBHOOK }}
+        
+        # Make a copy of the original script
+        cp ./.github/workflows/scripts/on-demand-env-script.sh ./temp-on-demand-env-script.sh
+        
+        # Insert env vars after the shebang line
+        sed -i "2iexport PR_NUMBER=$PR_NUMBER" ./temp-on-demand-env-script.sh
+        sed -i "3iexport BRANCH=$BRANCH" ./temp-on-demand-env-script.sh
+        sed -i "4iexport COMMIT_HASH=$COMMIT_HASH" ./temp-on-demand-env-script.sh
+        sed -i "5iexport DISCORD_WEBHOOK=$DISCORD_WEBHOOK" ./temp-on-demand-env-script.sh
+
+    - name: Provision EC2 instance
+      run: |
+        INSTANCE_ID=$(aws ec2 run-instances \
+        --image-id ami-0eb260c4d5475b901 \
+        --count 1 \
+        --instance-type t3.2xlarge \
+        --iam-instance-profile Name=${{ vars.ON_DEMAND_ENV_EC2_INSTANCE_PROFILE_NAME }} \
+        --security-group-ids ${{ vars.ON_DEMAND_ENV_EC2_SG_ID }} \
+        --user-data "file://./temp-on-demand-env-script.sh" \
+        --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=dev-env-github-run-number-${{ github.run_number }}}]' \
+        --block-device-mappings '[{"DeviceName":"/dev/sda1","Ebs":{"VolumeSize":80}}]' \
+        --query 'Instances[0].InstanceId' --output text)
+        echo "INSTANCE_ID=$INSTANCE_ID" >> $GITHUB_ENV
+
+    - name: Fetch instance public IP
+      run: |
+        INSTANCE_IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
+        echo "INSTANCE_IP=$INSTANCE_IP" >> $GITHUB_ENV

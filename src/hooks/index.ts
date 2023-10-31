@@ -70,9 +70,15 @@ export { default as useAllMembers } from './members/useAllMembers';
 export { default as useColonyContributors } from './members/useColonyContributors';
 export { default as useContributorBreakdown } from './members/useContributorBreakdown';
 export { default as useGlobalEventHandler } from './useGlobalEventHandler';
+export { default as useFlatFormErrors } from './useFlatFormErrors';
 export { default as useEnoughTokensForStaking } from './useEnoughTokensForStaking';
 export { default as useCurrentBlockTime } from './useCurrentBlockTime';
-export { default as useFlatFormErrors } from './useFlatFormErrors';
+export { default as useClipboardCopy } from './useClipboardCopy';
+export {
+  default as useSafeTransactionStatus,
+  TRANSACTION_STATUS,
+  MSG as SafeMSGs,
+} from './useSafeTransactionStatus';
 
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously

@@ -7,12 +7,19 @@ import { Id } from '@colony/colony-js';
 import UserAvatar from '~shared/UserAvatar';
 import ListItem, { ListItemStatus } from '~shared/ListItem';
 import { ColonyAction, Domain } from '~types';
-import { useColonyContext } from '~hooks';
+import {
+  useColonyContext,
+  TRANSACTION_STATUS,
+  SafeMSGs,
+  useSafeTransactionStatus,
+} from '~hooks';
 import {
   MotionState,
   useShouldDisplayMotionCountdownTime,
 } from '~utils/colonyMotions';
 import { formatText } from '~utils/intl';
+import Tag from '~shared/Tag';
+import { isEmpty } from '~utils/lodash';
 
 import CountDownTimer from '../CountDownTimer';
 import { getActionTitleValues } from '../helpers';
@@ -66,13 +73,14 @@ const getDomainName = (
 
 const ActionsListItem = ({
   item: {
-    fromDomain,
+    fromDomain: itemDomain,
     transactionHash,
     // commentCount = 0,
     // status = ListItemStatus.Defused,
     createdAt,
     isMotion,
     motionData,
+    safeTransaction,
   },
   item,
 }: Props) => {
@@ -89,6 +97,12 @@ const ActionsListItem = ({
     motionData,
   );
 
+  const safeTransactionStatus = useSafeTransactionStatus(item);
+  const isActionNeeded = !!safeTransactionStatus.find(
+    (transactionStatus) =>
+      transactionStatus === TRANSACTION_STATUS.ACTION_NEEDED,
+  );
+
   const MotionTag = useMotionTag(isMotion, motionState);
   const showMotionCountdownTimer =
     useShouldDisplayMotionCountdownTime(motionState);
@@ -97,7 +111,31 @@ const ActionsListItem = ({
     return null;
   }
 
-  const domainName = getDomainName(fromDomain, motionData?.motionDomain);
+  const domainName = getDomainName(itemDomain, motionData?.motionDomain);
+
+  const shouldDisplaySafeTransactionStatus =
+    safeTransaction && !isEmpty(safeTransactionStatus);
+
+  const ActionListItemTags = (
+    <>
+      <MotionTag />
+      {shouldDisplaySafeTransactionStatus && (
+        <Tag
+          text={
+            SafeMSGs[
+              isActionNeeded
+                ? TRANSACTION_STATUS.ACTION_NEEDED
+                : TRANSACTION_STATUS.COMPLETED
+            ]
+          }
+          appearance={{
+            theme: isActionNeeded ? 'golden' : 'primary',
+            colorSchema: 'fullColor',
+          }}
+        />
+      )}
+    </>
+  );
 
   return (
     <ListItem
@@ -124,7 +162,7 @@ const ActionsListItem = ({
       meta={<ActionsListItemMeta domainName={domainName} />}
       onClick={handleActionRedirect}
       status={status}
-      tag={<MotionTag />}
+      tag={ActionListItemTags}
       title={{ id: 'action.title' }}
       titleValues={getActionTitleValues(item, colony)}
     />

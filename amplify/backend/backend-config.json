@@ -186,6 +186,20 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "getSafeTransactionStatus": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "colonycdappSSMAccess"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "getUserReputation": {
       "build": true,
       "dependsOn": [
@@ -228,7 +242,7 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "setCurrentVersion": {
+    "updateContributorsWithReputation": {
       "build": true,
       "dependsOn": [
         {
@@ -242,7 +256,7 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "updateContributorsWithReputation": {
+    "setCurrentVersion": {
       "build": true,
       "dependsOn": [
         {

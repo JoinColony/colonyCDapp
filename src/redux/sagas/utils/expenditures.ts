@@ -11,6 +11,7 @@ import {
   CreateExpenditureMetadataDocument,
   CreateExpenditureMetadataMutation,
   CreateExpenditureMetadataMutationVariables,
+  ExpenditureType,
 } from '~gql';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
 
@@ -107,6 +108,7 @@ interface SaveExpenditureMetadataParams {
   colonyAddress: string;
   expenditureId: number;
   fundFromDomainId: number;
+  expenditureType: ExpenditureType;
   stages?: ExpenditureStageFieldValue[];
   stakeAmount?: string;
 }
@@ -115,6 +117,7 @@ export function* saveExpenditureMetadata({
   colonyAddress,
   expenditureId,
   fundFromDomainId,
+  expenditureType,
   stages,
   stakeAmount,
 }: SaveExpenditureMetadataParams) {
@@ -128,6 +131,7 @@ export function* saveExpenditureMetadata({
     variables: {
       input: {
         id: getExpenditureDatabaseId(colonyAddress, expenditureId),
+        type: expenditureType,
         fundFromDomainNativeId: fundFromDomainId,
         stages: stages?.map((stage, index) => ({
           name: stage.name,

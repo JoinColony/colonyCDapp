@@ -40,22 +40,20 @@ const MSG = defineMessages({
 const validationSchema = object({
   metatransactionsEnabled: bool<boolean>(),
   decentralizedModeEnabled: bool<boolean>(),
-  customRpc: string()
-    .defined()
-    .when('decentralizedModeEnabled', {
-      is: true,
-      then: string()
-        .required(() => MSG.invalidURLError)
-        .url(() => MSG.invalidURLError)
-        .test(
-          'gnosisRpc',
-          () => MSG.invalidRPCError,
-          yupDebounce(validateCustomGnosisRPC, 200, {
-            isOptional: false,
-            circuitBreaker: isValidURL,
-          }),
-        ),
-    }),
+  customRpc: string().when('decentralizedModeEnabled', {
+    is: true,
+    then: string()
+      .required(() => MSG.invalidURLError)
+      .url(() => MSG.invalidURLError)
+      .test(
+        'gnosisRpc',
+        () => MSG.invalidRPCError,
+        yupDebounce(validateCustomGnosisRPC, 200, {
+          isOptional: false,
+          circuitBreaker: isValidURL,
+        }),
+      ),
+  }),
 }).defined();
 
 export type FormValues = InferType<typeof validationSchema>;
@@ -120,16 +118,7 @@ const UserAdvancedSettings = ({ user: { walletAddress, profile } }: Props) => {
         {({ formState: { isValid, isDirty, isValidating } }) => (
           <div className={styles.main}>
             {advancedSettingsRows.map((row) => (
-              <AdvancedSettingsRow
-                name={row.name}
-                paragraphText={row.paragraphText}
-                toggleDisabled={!metatransactionsAvailable}
-                toggleLabel={row.toggleLabel}
-                tooltipText={row.tooltipText}
-                tooltipTextValues={row.tooltipTextValues}
-                extra={row.extra}
-                key={row.name}
-              />
+              <AdvancedSettingsRow key={row.name} {...row} />
             ))}
             <SaveForm
               disabled={

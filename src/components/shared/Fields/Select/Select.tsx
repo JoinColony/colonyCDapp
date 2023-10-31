@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { defineMessages } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 import { nanoid } from 'nanoid';
 import { useFormContext } from 'react-hook-form';
 
@@ -31,7 +31,7 @@ const MSG = defineMessages({
   },
 });
 
-const Select = <V,>({
+const Select = ({
   appearance,
   disabled,
   elementOnly,
@@ -50,7 +50,7 @@ const Select = <V,>({
   statusValues,
   dataTest,
   itemDataTest,
-}: SelectProps<V>) => {
+}: SelectProps) => {
   const [id] = useState<string>(idProp || nanoid());
   const {
     formState: { errors, touchedFields },
@@ -61,6 +61,8 @@ const Select = <V,>({
   const error = errors[name]?.message as Message | undefined;
   const touched = touchedFields[name];
   const value = watch(name);
+
+  const { formatMessage } = useIntl();
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -235,7 +237,7 @@ const Select = <V,>({
       return renderActiveOption(activeOption, activeOptionLabelText);
     }
     return <span>{activeOptionLabelText}</span>;
-  }, [checkedOption, options, placeholder, renderActiveOption]);
+  }, [checkedOption, options, placeholder, renderActiveOption, formatMessage]);
 
   const listboxId = `select-listbox-${id}`;
 

@@ -18,15 +18,6 @@
   max-width: 100%;
 }
 
-.address {
-  composes: inlineEllipsis from '~styles/text.css';
-  font-size: var(--size-smallish);
-  font-weight: var(--weight-bold);
-  line-height: 1;
-  color: var(--grey-purple);
-  cursor: pointer;
-}
-
 .username {
   composes: inlineEllipsis from '~styles/text.css';
   margin-top: -3px;

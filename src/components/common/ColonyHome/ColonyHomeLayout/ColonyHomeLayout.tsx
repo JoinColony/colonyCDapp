@@ -14,6 +14,7 @@ import ColonyMembersWidget from '../ColonyMembersWidget';
 import ColonyUnclaimedTransfers from '../ColonyUnclaimedTransfers';
 import ColonyUpgrade from '../ColonyUpgrade';
 import OneTxPaymentUpgrade from '../OneTxPaymentUpgrade';
+import ColonySafes from '../ColonySafes';
 
 import styles from './ColonyHomeLayout.css';
 
@@ -70,6 +71,7 @@ const ColonyHomeLayout = ({
             <ColonyDomainDescription currentDomainId={filteredDomainId} />
             <ColonyUnclaimedTransfers />
             <ColonyFundingWidget currentDomainId={filteredDomainId} />
+            <ColonySafes colony={colony} />
             <ColonyMembersWidget currentDomainId={filteredDomainId} />
             <ColonyExtensionsWidget />
           </aside>

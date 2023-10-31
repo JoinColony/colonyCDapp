@@ -23,6 +23,9 @@ fragment Extension on ColonyExtension {
     stakedExpenditure {
       stakeFraction
     }
+    stakedExpenditure {
+      stakeFraction
+    }
   }
 }
 

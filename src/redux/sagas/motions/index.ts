@@ -19,6 +19,7 @@ import {
   fundExpenditureMotionSaga,
   cancelStakedExpenditureMotionSaga,
 } from './expenditures';
+import initiateSafeTransactionMotionSaga from './initiateSafeTransactionMotion';
 
 export default function* actionsSagas() {
   yield all([
@@ -39,5 +40,6 @@ export default function* actionsSagas() {
     call(paymentMotionSaga),
     // call(escalateMotionSaga),
     call(manageReputationMotionSaga),
+    call(initiateSafeTransactionMotionSaga),
   ]);
 }

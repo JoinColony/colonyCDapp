@@ -10,6 +10,7 @@ export * from './graphql';
 export * from './rpcMethods';
 export * from './network';
 export * from './domains';
+export * from './safes';
 
 export type WithKey = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -58,7 +59,10 @@ export type ComplexMessageValues = Record<string, ReactNode>;
 /**
  * For messages that contain both JSX and Primitive values
  */
-export type AnyMessageValues = Record<string, PrimitiveType | ReactNode>;
+export type AnyMessageValues = Record<
+  string,
+  PrimitiveType | ReactNode | ((chunks: string[]) => JSX.Element)
+>;
 
 export type UniversalMessageValues =
   | SimpleMessageValues
@@ -79,3 +83,11 @@ export interface RecordToJS<T> {
 export type SetStateFn<T = any> = ReturnType<typeof useState<T>>[1];
 
 export type Falsy = undefined | null | false;
+
+export interface SelectedPickerItem {
+  id: Address;
+  profile: {
+    displayName: string;
+  };
+  walletAddress: Address;
+}

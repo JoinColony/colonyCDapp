@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { ColonyAction } from '~types';
+import { parseSafeTransactionType } from '~utils/safes';
+
 import { ACTIONS_EVENTS } from '../staticMaps';
 
 import { ActionsPageEvent } from './ActionDetailsPageEvent';
@@ -15,7 +17,7 @@ interface ActionsPageFeedProps {
 const ActionDetailsPageFeed = ({ actionData }: ActionsPageFeedProps) => {
   const events =
     JSON.parse(actionData.individualEvents as string) ||
-    ACTIONS_EVENTS[actionData.type];
+    ACTIONS_EVENTS[parseSafeTransactionType(actionData) || actionData.type];
 
   return (
     <>

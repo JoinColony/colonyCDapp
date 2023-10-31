@@ -1,12 +1,17 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, Id } from '@colony/colony-js';
+import {
+  ClientType,
+  Id,
+  getPermissionProofs,
+  ColonyRole,
+} from '@colony/colony-js';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 import {
   transactionAddParams,
   transactionPending,
 } from '~redux/actionCreators';
-import { ContextModule, getContext } from '~context';
+import { ContextModule, getContext, ColonyManager } from '~context';
 import {
   CreateDomainMetadataDocument,
   CreateDomainMetadataMutation,
@@ -25,6 +30,7 @@ import {
   putError,
   takeFrom,
   uploadAnnotation,
+  getColonyManager,
 } from '../utils';
 
 function* createDomainAction({
@@ -43,6 +49,7 @@ function* createDomainAction({
   let txChannel;
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
+    const colonyManager: ColonyManager = yield getColonyManager();
 
     /*
      * Validate the required values
@@ -64,7 +71,7 @@ function* createDomainAction({
 
     yield createGroupTransaction(createDomain, batchKey, meta, {
       context: ClientType.ColonyClient,
-      methodName: 'addDomainWithProofs(uint256)',
+      methodName: 'addDomain(uint256,uint256,uint256)',
       identifier: colonyAddress,
       params: [],
       ready: false,
@@ -89,7 +96,25 @@ function* createDomainAction({
     }
 
     yield put(transactionPending(createDomain.id));
-    yield put(transactionAddParams(createDomain.id, [parentId]));
+
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
+
+    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient,
+      parentId,
+      ColonyRole.Architecture,
+    );
+
+    yield put(
+      transactionAddParams(createDomain.id, [
+        permissionDomainId,
+        childSkillIndex,
+        parentId,
+      ]),
+    );
     yield initiateTransaction({ id: createDomain.id });
 
     const {
