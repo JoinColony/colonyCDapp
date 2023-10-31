@@ -5,7 +5,7 @@ import { WizardStepProps } from '~shared/Wizard';
 import { Form } from '~shared/Fields';
 import { useAppContext } from '~hooks';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
-import { useColonyCreationFlowContext } from '~routes/UserRegistrationRoute/CreateYourColonyLayout';
+import { useColonyCreationFlowContext } from '~routes/WizardRoute/WizardLayout';
 
 import { ButtonRow, HeaderRow } from './shared';
 

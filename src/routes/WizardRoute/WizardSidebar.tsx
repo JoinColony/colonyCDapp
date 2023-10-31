@@ -7,7 +7,7 @@ import { Heading3 } from '~shared/Heading';
 
 import Icon from '~shared/Icon';
 
-import { useColonyCreationFlowContext } from './CreateYourColonyLayout';
+import { useColonyCreationFlowContext } from './WizardLayout';
 
 const displayName = 'frame.Extensions.CreateYourColonySidebar';
 

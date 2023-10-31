@@ -15,7 +15,7 @@ import { TransactionStatus } from '~gql';
 import { groupedTransactionsAndMessages } from '~redux/selectors';
 import { ActionTypes } from '~redux/index';
 import { useAppContext } from '~hooks';
-import { useColonyCreationFlowContext } from '~routes/UserRegistrationRoute/CreateYourColonyLayout';
+import { useColonyCreationFlowContext } from '~routes/WizardRoute/WizardLayout';
 
 import { FormValues, WizardProps } from '../CreateColonyWizard';
 import ConfirmTransactions from './ConfirmTransactions';
