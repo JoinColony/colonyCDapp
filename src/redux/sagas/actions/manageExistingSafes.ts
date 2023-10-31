@@ -151,6 +151,8 @@ function* manageExistingSafesAction({
               undefined,
               false,
               false,
+              false,
+              false,
               updatedColonySafes,
             ),
           },
@@ -165,7 +167,7 @@ function* manageExistingSafesAction({
       meta,
     });
 
-    yield navigate(`/colony/${colonyName}/tx/${txHash}`, {
+    yield navigate?.(`/colony/${colonyName}/tx/${txHash}`, {
       state: {
         isRedirect: true,
       },

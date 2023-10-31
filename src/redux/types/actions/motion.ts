@@ -286,10 +286,10 @@ export type MotionActionTypes =
         annotationMessage: string | null;
         network: NetworkInfo;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >;

@@ -290,12 +290,12 @@ export type ColonyActionsActionTypes =
         annotationMessage?: string;
         isRemovingSafes?: boolean;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.ACTION_MANAGE_EXISTING_SAFES_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_MANAGE_EXISTING_SAFES_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION,
@@ -308,10 +308,10 @@ export type ColonyActionsActionTypes =
         annotationMessage: string | null;
         network: NetworkInfo;
       },
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION_SUCCESS,
-      MetaWithNavigate<object>
+      MetaWithSetter<object>
     >;

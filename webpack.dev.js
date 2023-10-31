@@ -67,5 +67,8 @@ module.exports = () => ({
     new webpack.DefinePlugin({
       WEBPACK_IS_PRODUCTION: JSON.stringify(false),
     }),
+    new webpack.DefinePlugin({
+      SAFE_ENABLED_LOCALLY: JSON.stringify(process.env.SAFE === 'enabled'),
+    }),
   ],
 });

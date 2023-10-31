@@ -19,7 +19,6 @@ import {
   saveExpenditureMetadata,
   initiateTransaction,
 } from '../utils';
-import { ExpenditureType } from '~gql';
 
 export type CreateExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_CREATE>['payload'];
@@ -151,7 +150,6 @@ function* createExpenditure({
       colonyAddress,
       expenditureId,
       fundFromDomainId,
-      expenditureType: ExpenditureType.Forced,
       stages: isStaged ? stages : undefined,
     });
 

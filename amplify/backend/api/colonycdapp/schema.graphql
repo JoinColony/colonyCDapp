@@ -810,7 +810,8 @@ enum ColonyActionType {
   An action related to a motion to cancel a staked expenditure
   """
   CANCEL_STAKED_EXPENDITURE_MOTION
-  """"
+  """
+  "
   An action related to the creation of safe transactions via Safe Control
   """
   MAKE_ARBITRARY_TRANSACTION
@@ -881,20 +882,6 @@ enum ContributorType {
 }
 
 """
-Describes the type of an expenditure
-"""
-enum ExpenditureType {
-  """
-  Expenditure created by user with Administration role
-  """
-  FORCED
-  """
-  Expenditure created by Staked Expenditure extension
-  """
-  STAKED
-}
-
-"""
 Root query type
 """
 type Query {
@@ -948,9 +935,7 @@ type Query {
   getTotalMemberCount(
     input: GetTotalMemberCountInput!
   ): GetTotalMemberCountReturn! @function(name: "getTotalMemberCount-${env}")
-  getSafeTransactionStatus(
-    input: GetSafeTransactionStatusInput
-  ): [String!]
+  getSafeTransactionStatus(input: GetSafeTransactionStatusInput): [String!]
     @function(name: "getSafeTransactionStatus-${env}")
 }
 
@@ -1591,7 +1576,8 @@ type ColonyMetadataChangelog {
   """
   haveExternalLinksChanged: Boolean
 
-   """"
+  """
+  "
   Whether safes have been added or removed from the Colony's safe list
   """
   newSafes: [Safe!]
@@ -1775,7 +1761,6 @@ type Transaction @model {
   Options associated with the transaction
   """
   options: String # JSON string
- 
 }
 
 """
@@ -2887,7 +2872,7 @@ type ColonyAction @model {
   """
   Safe transactions associated with the action
   """
-safeTransaction: SafeTransaction @hasOne(fields: ["id"])
+  safeTransaction: SafeTransaction @hasOne(fields: ["id"])
 }
 
 type ColonyDecision @model {
@@ -3321,18 +3306,6 @@ type PrivateBetaInviteCode @model {
   shareableInvites: Int
 }
 
-type ExpenditureBalance {
-  tokenAddress: ID!
-  amount: String!
-  requiredAmount: String! # Total amount required to cover all payouts for the given token
-}
-
-type ExpenditureStage {
-  slotId: Int!
-  name: String!
-  isReleased: Boolean!
-}
-
 type SimpleTargetProfile {
   avatarHash: String
   displayName: String
@@ -3383,7 +3356,8 @@ type SafeTransaction @model {
   id: ID!
   title: String!
   safe: Safe!
-  transactions: [SafeTransactionData] @hasMany(indexName: "byTransaction", fields: ["id"])
+  transactions: [SafeTransactionData]
+    @hasMany(indexName: "byTransaction", fields: ["id"])
 }
 
 type SafeTransactionData @model {

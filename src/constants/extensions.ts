@@ -138,6 +138,62 @@ export const votingReputationMessages = {
     id: `${votingReputationName}.param.escalationPeriod.description`,
     defaultMessage: `How long do you wish to allow for members to escalate a dispute to a higher team?\n\n<span>e.g. If the escalation phase is 72 hours, once the outcome of a vote is known, if the loser feels the outcome was for any reason incorrect, then they will have 72 hours in which to escalate the dispute to a higher team in the colony by increasing the stake to meet the required stake of that higher team.</span>`,
   },
+  votingReputationRequiredError: {
+    id: `${votingReputationName}.param.validation.requiredError`,
+    defaultMessage: 'Please enter a value.',
+  },
+  votingReputationLessThan50Error: {
+    id: `${votingReputationName}.param.validation.lessThan50Error`,
+    defaultMessage: 'Please enter a percentage less than or equal to 50%.',
+  },
+  votingReputationLessThan100Error: {
+    id: `${votingReputationName}.param.validation.lessThan100Error`,
+    defaultMessage: 'Please enter a percentage less than or equal to 100%.',
+  },
+  votingReputationLessThan1YearError: {
+    id: `${votingReputationName}.param.validation.lessThan50Error`,
+    defaultMessage: 'Please enter hours less than or equal to 1 year.',
+  },
+  votingReputationPositiveError: {
+    id: `${votingReputationName}.param.validation.positiveError`,
+    defaultMessage: 'Please enter a positive number',
+  },
+  votingReputationPermissionArchitecture: {
+    id: `${votingReputationName}.param.permission.architecture`,
+    defaultMessage: 'Architecture',
+  },
+  votingReputationPermissionArchitectureDescription: {
+    id: `${votingReputationName}.param.permission.architectureDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
+  votingReputationPermissionArbitration: {
+    id: `${votingReputationName}.param.permission.arbitration`,
+    defaultMessage: 'Arbitration',
+  },
+  votingReputationPermissionArbitrationDescription: {
+    id: `${votingReputationName}.param.permission.arbitrationDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
+  votingReputationPermissionRecovery: {
+    id: `${votingReputationName}.param.permission.recovery`,
+    defaultMessage: 'Recovery',
+  },
+  votingReputationPermissionRecoveryDescription: {
+    id: `${votingReputationName}.param.permission.recoveryDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
+  votingReputationPermissionFunding: {
+    id: `${votingReputationName}.param.permission.funding`,
+    defaultMessage: 'Funding',
+  },
+  votingReputationPermissionFundingDescription: {
+    id: `${votingReputationName}.param.permission.fundingDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
 };
 
 const stakedExpenditureMessages = {
