@@ -68,7 +68,7 @@ const SubMenu: FC<SubMenuProps> = ({ items }) => {
               <Button
                 text="Create new action"
                 mode="quinary"
-                onClick={toggleActionSideBar}
+                onClick={() => toggleActionSideBar()}
                 isFullSize={isMobile}
               />
             </div>
