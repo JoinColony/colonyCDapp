@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { WizardStepProps } from '~shared/Wizard';
 import { Form } from '~shared/Fields';
-import { useColonyCreationFlowContext } from '~routes/UserRegistrationRoute/CreateYourColonyLayout';
+import { useColonyCreationFlowContext } from '~routes/WizardRoute/WizardLayout';
 
 import {
   FormValues,

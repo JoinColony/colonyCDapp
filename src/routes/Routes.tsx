@@ -70,8 +70,7 @@ import ColonyRoute from './ColonyRoute';
 import ColonyMembersRoute from './ColonyMembersRoute';
 import ColonySettingsRoute from './ColonySettingsRoute';
 import UserRoute from './UserRoute';
-import UserRegistrationRoute from './UserRegistrationRoute';
-import CreateUserForm from '~v5/common/CreateUserForm';
+import WizardRoute from './WizardRoute';
 
 const displayName = 'routes.Routes';
 
@@ -110,7 +109,7 @@ const Routes = () => {
           </Route>
         </Route>
 
-        <Route element={<UserRegistrationRoute />}>
+        <Route element={<WizardRoute />}>
           <Route path={CREATE_USER_ROUTE} element={<CreateUserPage />} />
           <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyPage />} />
         </Route>

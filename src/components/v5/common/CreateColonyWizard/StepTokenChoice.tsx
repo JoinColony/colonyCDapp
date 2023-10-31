@@ -8,7 +8,7 @@ import { WizardStepProps } from '~shared/Wizard';
 import { Form } from '~shared/Fields';
 import Card from '~v5/shared/Card';
 import { formatText } from '~utils/intl';
-import { useColonyCreationFlowContext } from '~routes/UserRegistrationRoute/CreateYourColonyLayout';
+import { useColonyCreationFlowContext } from '~routes/WizardRoute/WizardLayout';
 
 import { FormValues, Step2 } from '../CreateColonyWizard';
 import { ButtonRow, HeaderRow } from './shared';

@@ -10,7 +10,7 @@ import React, {
 import Wallet from '~frame/RouteLayouts/UserNavigation/Wallet';
 import { Header } from '~frame/Extensions/layouts';
 
-import CreateYourColonySidebar from './CreateYourColonySidebar';
+import WizardSidebar from './WizardSidebar';
 
 interface ColonyCreationFlowContextValues {
   currentStep: number;
@@ -31,7 +31,7 @@ export const useColonyCreationFlowContext = () => {
   return context;
 };
 
-const CreateYourColonyLayout: FC<PropsWithChildren> = ({ children }) => {
+const WizardLayout: FC<PropsWithChildren> = ({ children }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const colonyCreationFlowContextValues = useMemo(
     () => ({ currentStep, setCurrentStep }),
@@ -42,7 +42,7 @@ const CreateYourColonyLayout: FC<PropsWithChildren> = ({ children }) => {
     <ColonyCreationFlowContext.Provider value={colonyCreationFlowContextValues}>
       <div className="grid grid-cols-[280px,auto] gap-4 p-4">
         <aside className="sticky top-4 h-[calc(100vh-2rem)]">
-          <CreateYourColonySidebar />
+          <WizardSidebar />
         </aside>
         <div className="">
           <Header />
@@ -58,4 +58,4 @@ const CreateYourColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   );
 };
 
-export default CreateYourColonyLayout;
+export default WizardLayout;

@@ -6,7 +6,7 @@ import { ActionForm } from '~shared/Fields';
 import { mergePayload } from '~utils/actions';
 import { ActionTypes } from '~redux/index';
 import { useAppContext } from '~hooks';
-import { useColonyCreationFlowContext } from '~routes/UserRegistrationRoute/CreateYourColonyLayout';
+import { useColonyCreationFlowContext } from '~routes/WizardRoute/WizardLayout';
 
 import { FormValues, WizardProps } from '../CreateColonyWizard';
 import { ButtonRow, HeaderRow } from './shared';
