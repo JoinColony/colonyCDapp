@@ -7,7 +7,6 @@ import { CardSelectOptionsGroup, CardSelectProps } from './types';
 import { FIELD_STATE } from '../consts';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 import Portal from '~v5/shared/Portal';
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { formatText } from '~utils/intl';
 import { isFlatOptions } from './utils';
 import { OPTION_LIST_ITEM_CLASSES } from './consts';
@@ -29,9 +28,9 @@ function CardSelect<TValue = string>({
   renderSelectedValue,
   cardClassName,
   footer,
+  disabled,
+  readonly,
 }: CardSelectProps<TValue>): JSX.Element {
-  const { readonly } = useAdditionalFormOptionsContext();
-
   const cardSelectToggle = useToggle();
   const [
     isSelectVisible,
@@ -87,8 +86,13 @@ function CardSelect<TValue = string>({
 
   return (
     <div className="sm:relative w-full">
-      {readonly ? (
-        <span className="capitalize text-md text-gray-900">
+      {readonly || disabled ? (
+        <span
+          className={clsx('capitalize text-md', {
+            'text-gray-400': disabled,
+            'text-gray-900': readonly,
+          })}
+        >
           {renderSelectedValue
             ? renderSelectedValue(selectedOption, selectPlaceholder)
             : selectedOption?.label || selectPlaceholder}

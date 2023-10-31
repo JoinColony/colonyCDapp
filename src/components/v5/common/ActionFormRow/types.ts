@@ -11,5 +11,9 @@ export interface ActionFormRowProps {
   children?:
     | ((props: UseToggleReturnType) => React.ReactNode)
     | React.ReactNode;
-  tooltip?: TooltipProps['tooltipContent'];
+  // tooltip?: TooltipProps['tooltipContent'];
+  tooltips?: {
+    label?: TooltipProps;
+    content?: TooltipProps;
+  };
 }

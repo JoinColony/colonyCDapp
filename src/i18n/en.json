@@ -1241,5 +1241,6 @@
   "actionSidebar.managePermissions.permissionsModal.mod.heading": "Actions that can be performed:",
   "actionSidebar.managePermissions.permissionsModal.admin.heading": "All of the actions within Payer, plus:",
   "actionSidebar.managePermissions.permissionsModal.payer.heading": "All of the actions within Mod, plus:",
-  "actionSidebar.managePermissions.permissionsModal.owner.heading": "All of the actions within Admin, plus:"
+  "actionSidebar.managePermissions.permissionsModal.owner.heading": "All of the actions within Admin, plus:",
+  "actionSidebar.managePermissions.authority.disbaledTooltip": "The Mod permission does not support multi-sig authority."
 }

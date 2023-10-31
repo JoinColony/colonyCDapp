@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { useColonyContext } from '~hooks';
+import { formatText } from '~utils/intl';
 
 import ActionFormRow from '~v5/common/ActionFormRow';
 
@@ -20,19 +20,27 @@ const ColonyVersionField: FC = () => {
     <>
       <ActionFormRow
         iconName="browser"
-        title={<FormattedMessage id="actionSidebar.currentVersion" />}
-        tooltip={
-          <FormattedMessage id="actionSidebar.tooltip.upgradeColonyVersion.currentVersion" />
-        }
+        title={formatText({ id: 'actionSidebar.currentVersion' })}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.upgradeColonyVersion.currentVersion',
+            }),
+          },
+        }}
       >
         <span className="text-md">{currentVersion}</span>
       </ActionFormRow>
       <ActionFormRow
         iconName="browsers"
-        title={<FormattedMessage id="actionSidebar.newVersion" />}
-        tooltip={
-          <FormattedMessage id="actionSidebar.tooltip.upgradeColonyVersion.newVersion" />
-        }
+        title={formatText({ id: 'actionSidebar.newVersion' })}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.upgradeColonyVersion.newVersion',
+            }),
+          },
+        }}
       >
         <span className="text-md">{nextVersion}</span>
       </ActionFormRow>
