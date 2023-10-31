@@ -4,8 +4,7 @@ import clsx from 'clsx';
 
 import Icon from '~shared/Icon';
 import Heading from '~shared/Heading';
-
-import Button from '~v5/shared/Button/Button';
+import Button from '~v5/shared/Button';
 
 const displayName = 'frame.LandingPage';
 
