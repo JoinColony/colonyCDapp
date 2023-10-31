@@ -22,6 +22,7 @@ const displayName = 'v5.common.ActionSidebar';
 
 const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   children,
+  initialValues,
   transactionId,
 }) => {
   const { defaultValues, loadingAction, isMotion } =
@@ -105,7 +106,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         <ActionSidebarContent
           transactionId={transactionId}
           formRef={formRef}
-          defaultValues={defaultValues}
+          defaultValues={defaultValues || initialValues}
           isMotion={!!isMotion}
         />
       )}
