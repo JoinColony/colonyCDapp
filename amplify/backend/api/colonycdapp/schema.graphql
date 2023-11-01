@@ -1812,7 +1812,7 @@ type User @model {
   """
   A user who has been invited by colony will be able to pass on the private beta invite
   """
-  PrivateBetaInviteCode: PrivateBetaInviteCode @hasOne
+  privateBetaInviteCode: PrivateBetaInviteCode @hasOne
 }
 
 """
