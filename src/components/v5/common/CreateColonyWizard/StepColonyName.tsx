@@ -4,9 +4,9 @@ import { defineMessages } from 'react-intl';
 import { WizardStepProps } from '~shared/Wizard';
 import { Form } from '~shared/Fields';
 import { useAppContext } from '~hooks';
+import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 import { ButtonRow, HeaderRow } from './shared';
-import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 import {
   FormValues,
