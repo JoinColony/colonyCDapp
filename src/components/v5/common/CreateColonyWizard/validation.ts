@@ -31,8 +31,7 @@ const { formatMessage } = intl({
   'error.addressZeroError':
     'You cannot use {symbol} token as a native token for colony.',
   'error.tokenAddressRequired': 'Enter a token address to continue',
-  'error.invalidToken':
-    'Not a valid token. Only ERC20 tokens with 18 decimals are supported.',
+  'error.invalidToken': 'Invalid address.',
   'error.tokenNotFound':
     'Token data not found. Please check the token contract address.',
   'error.tokenNameRequired': 'Enter a token name to continue',
