@@ -8518,7 +8518,7 @@ export type ColonyDecisionFragment = { __typename?: 'ColonyDecision', title: str
 
 export type ColonyFragment = { __typename?: 'Colony', name: string, version: number, reputation?: string | null, expendituresGlobalClaimDelay?: number | null, private?: boolean | null, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, chainMetadata: { __typename?: 'ChainMetadata', chainId: number }, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', colonyTokensId: string, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, motionsWithUnclaimedStakes?: Array<{ __typename?: 'ColonyUnclaimedStake', motionId: string, unclaimedRewards: Array<{ __typename?: 'StakerRewards', address: string, rewards: { __typename?: 'MotionStakeValues', nay: string, yay: string } }> }> | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: number, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null } | null> } | null, balances?: { __typename?: 'ColonyBalances', items?: Array<{ __typename?: 'ColonyBalance', id: string, balance: string, domain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: number, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null } | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> | null } | null, fundsClaims?: { __typename?: 'ModelColonyFundsClaimConnection', items: Array<{ __typename?: 'ColonyFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, chainFundsClaim?: { __typename?: 'ColonyChainFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string } | null, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, modifiedTokenAddresses?: { __typename?: 'PendingModifiedTokenAddresses', added?: Array<string> | null, removed?: Array<string> | null } | null, objective?: { __typename?: 'ColonyObjective', title: string, description: string, progress: number } | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null, hasObjectiveChanged?: boolean | null, newSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: number, moduleContractAddress: string }> | null, oldSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: number, moduleContractAddress: string }> | null }> | null, safes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: number, moduleContractAddress: string }> | null } | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', id: string, targetAddress: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, domain: { __typename?: 'Domain', id: string, nativeId: number } } | null> } | null, colonyMemberInvite?: { __typename?: 'ColonyMemberInvite', id: string, invitesRemaining?: number | null, valid?: boolean | null } | null };
 
-export type ColonyDisplayFragment = { __typename?: 'Colony', name: string, colonyAddress: string, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null } | null };
+export type PublicColonyFragment = { __typename?: 'Colony', name: string, colonyAddress: string, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null } | null };
 
 export type ColonyTokensConnectionFragment = { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', colonyTokensId: string, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> };
 
@@ -8894,12 +8894,26 @@ export type CheckColonyNameExistsQueryVariables = Exact<{
 
 export type CheckColonyNameExistsQuery = { __typename?: 'Query', getColonyByName?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', id: string } | null> } | null };
 
+export type GetPublicColonyByNameQueryVariables = Exact<{
+  name: Scalars['String'];
+}>;
+
+
+export type GetPublicColonyByNameQuery = { __typename?: 'Query', getColonyByName?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, colonyAddress: string, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null } | null } | null> } | null };
+
+export type GetColonyWhitelistByNameQueryVariables = Exact<{
+  name: Scalars['String'];
+}>;
+
+
+export type GetColonyWhitelistByNameQuery = { __typename?: 'Query', getColonyByName?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', whitelist: Array<string> } | null> } | null };
+
 export type GetColonyMemberInviteQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetColonyMemberInviteQuery = { __typename?: 'Query', getColonyMemberInvite?: { __typename?: 'ColonyMemberInvite', valid?: boolean | null, invitesRemaining?: number | null } | null };
+export type GetColonyMemberInviteQuery = { __typename?: 'Query', getColonyMemberInvite?: { __typename?: 'ColonyMemberInvite', valid?: boolean | null, invitesRemaining?: number | null, colony: { __typename?: 'Colony', name: string, colonyAddress: string, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null } | null } } | null };
 
 export type GetColonyContributorQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -9135,8 +9149,8 @@ export const UserDisplayFragmentDoc = gql`
   }
 }
     `;
-export const ColonyDisplayFragmentDoc = gql`
-    fragment ColonyDisplay on Colony {
+export const PublicColonyFragmentDoc = gql`
+    fragment PublicColony on Colony {
   colonyAddress: id
   name
   metadata {
@@ -9692,7 +9706,7 @@ export const ColonyActionFragmentDoc = gql`
     ...UserDisplay
   }
   initiatorColony {
-    ...ColonyDisplay
+    ...PublicColony
   }
   initiatorExtension {
     ...ExtensionDisplayFragment
@@ -9714,7 +9728,7 @@ export const ColonyActionFragmentDoc = gql`
     ...UserDisplay
   }
   recipientColony {
-    ...ColonyDisplay
+    ...PublicColony
   }
   recipientExtension {
     ...ExtensionDisplayFragment
@@ -9797,7 +9811,7 @@ export const ColonyActionFragmentDoc = gql`
   }
 }
     ${UserDisplayFragmentDoc}
-${ColonyDisplayFragmentDoc}
+${PublicColonyFragmentDoc}
 ${ExtensionDisplayFragmentFragmentDoc}
 ${TokenFragmentDoc}
 ${ColonyFragmentDoc}
@@ -11507,14 +11521,91 @@ export function useCheckColonyNameExistsLazyQuery(baseOptions?: Apollo.LazyQuery
 export type CheckColonyNameExistsQueryHookResult = ReturnType<typeof useCheckColonyNameExistsQuery>;
 export type CheckColonyNameExistsLazyQueryHookResult = ReturnType<typeof useCheckColonyNameExistsLazyQuery>;
 export type CheckColonyNameExistsQueryResult = Apollo.QueryResult<CheckColonyNameExistsQuery, CheckColonyNameExistsQueryVariables>;
+export const GetPublicColonyByNameDocument = gql`
+    query GetPublicColonyByName($name: String!) {
+  getColonyByName(name: $name) {
+    items {
+      ...PublicColony
+    }
+  }
+}
+    ${PublicColonyFragmentDoc}`;
+
+/**
+ * __useGetPublicColonyByNameQuery__
+ *
+ * To run a query within a React component, call `useGetPublicColonyByNameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPublicColonyByNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPublicColonyByNameQuery({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useGetPublicColonyByNameQuery(baseOptions: Apollo.QueryHookOptions<GetPublicColonyByNameQuery, GetPublicColonyByNameQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPublicColonyByNameQuery, GetPublicColonyByNameQueryVariables>(GetPublicColonyByNameDocument, options);
+      }
+export function useGetPublicColonyByNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPublicColonyByNameQuery, GetPublicColonyByNameQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPublicColonyByNameQuery, GetPublicColonyByNameQueryVariables>(GetPublicColonyByNameDocument, options);
+        }
+export type GetPublicColonyByNameQueryHookResult = ReturnType<typeof useGetPublicColonyByNameQuery>;
+export type GetPublicColonyByNameLazyQueryHookResult = ReturnType<typeof useGetPublicColonyByNameLazyQuery>;
+export type GetPublicColonyByNameQueryResult = Apollo.QueryResult<GetPublicColonyByNameQuery, GetPublicColonyByNameQueryVariables>;
+export const GetColonyWhitelistByNameDocument = gql`
+    query GetColonyWhitelistByName($name: String!) {
+  getColonyByName(name: $name) {
+    items {
+      whitelist
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetColonyWhitelistByNameQuery__
+ *
+ * To run a query within a React component, call `useGetColonyWhitelistByNameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetColonyWhitelistByNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetColonyWhitelistByNameQuery({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useGetColonyWhitelistByNameQuery(baseOptions: Apollo.QueryHookOptions<GetColonyWhitelistByNameQuery, GetColonyWhitelistByNameQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetColonyWhitelistByNameQuery, GetColonyWhitelistByNameQueryVariables>(GetColonyWhitelistByNameDocument, options);
+      }
+export function useGetColonyWhitelistByNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyWhitelistByNameQuery, GetColonyWhitelistByNameQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetColonyWhitelistByNameQuery, GetColonyWhitelistByNameQueryVariables>(GetColonyWhitelistByNameDocument, options);
+        }
+export type GetColonyWhitelistByNameQueryHookResult = ReturnType<typeof useGetColonyWhitelistByNameQuery>;
+export type GetColonyWhitelistByNameLazyQueryHookResult = ReturnType<typeof useGetColonyWhitelistByNameLazyQuery>;
+export type GetColonyWhitelistByNameQueryResult = Apollo.QueryResult<GetColonyWhitelistByNameQuery, GetColonyWhitelistByNameQueryVariables>;
 export const GetColonyMemberInviteDocument = gql`
     query GetColonyMemberInvite($id: ID!) {
   getColonyMemberInvite(id: $id) {
+    colony {
+      ...PublicColony
+    }
     valid
     invitesRemaining
   }
 }
-    `;
+    ${PublicColonyFragmentDoc}`;
 
 /**
  * __useGetColonyMemberInviteQuery__

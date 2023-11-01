@@ -8,7 +8,7 @@ fragment ColonyAction on ColonyAction {
     ...UserDisplay
   }
   initiatorColony {
-    ...ColonyDisplay
+    ...PublicColony
   }
   initiatorExtension {
     ...ExtensionDisplayFragment
@@ -32,7 +32,7 @@ fragment ColonyAction on ColonyAction {
     ...UserDisplay
   }
   recipientColony {
-    ...ColonyDisplay
+    ...PublicColony
   }
   recipientExtension {
     ...ExtensionDisplayFragment

@@ -46,11 +46,11 @@ exports.handler = async (event) => {
     throw new Error(error?.message || 'Could not create private beta invite');
   }
 
-  const { code, invitesRemaining, valid } =
+  const { id, invitesRemaining, valid } =
     getColonyMemberInviteDetails?.data?.getColonyByAddress?.items[0]
       .colonyMemberInvite;
 
-  const inviteCodeMatches = inviteCode === code;
+  const inviteCodeMatches = inviteCode === id;
   const invitesStillExist = invitesRemaining > 0;
 
   if (!(inviteCodeMatches && invitesStillExist && valid)) {
@@ -70,7 +70,7 @@ exports.handler = async (event) => {
           id: colonyAddress,
           whitelist: [...updatedWhitelist],
           colonyMemberInvite: {
-            code,
+            id,
             invitesRemaining: invitesRemaining - 1,
             valid,
           },

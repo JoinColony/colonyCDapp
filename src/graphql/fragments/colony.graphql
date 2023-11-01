@@ -57,7 +57,7 @@ fragment Colony on Colony {
   }
 }
 
-fragment ColonyDisplay on Colony {
+fragment PublicColony on Colony {
   colonyAddress: id
   name
   metadata {
