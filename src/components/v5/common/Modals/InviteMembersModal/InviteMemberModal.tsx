@@ -48,7 +48,7 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
   const [inviteLink, invitesUsed] = useMemo(
     () => [
       new URL(
-        `/invite/${colony?.name}/${colony?.colonyMemberInvite?.code}`,
+        `/invite/${colony?.name}/${colony?.colonyMemberInvite?.id}`,
         window.document.baseURI,
       ).href,
       100 - (colony?.colonyMemberInvite?.invitesRemaining || 0),

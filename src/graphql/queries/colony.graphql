@@ -80,8 +80,27 @@ query CheckColonyNameExists($name: String!) {
   }
 }
 
+query GetPublicColonyByName($name: String!) {
+  getColonyByName(name: $name) {
+    items {
+      ...PublicColony
+    }
+  }
+}
+
+query GetColonyWhitelistByName($name: String!) {
+  getColonyByName(name: $name) {
+    items {
+      whitelist
+    }
+  }
+}
+
 query GetColonyMemberInvite($id: ID!) {
   getColonyMemberInvite(id: $id) {
+    colony {
+      ...PublicColony
+    }
     valid
     invitesRemaining
   }

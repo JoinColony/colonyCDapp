@@ -4,7 +4,7 @@ module.exports = {
       getColonyByAddress(id: $id) {
         items {
           colonyMemberInvite {
-            code
+            id
             invitesRemaining
             valid
           }
