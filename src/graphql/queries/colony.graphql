@@ -79,3 +79,10 @@ query CheckColonyNameExists($name: String!) {
     }
   }
 }
+
+query GetColonyMemberInvite($id: ID!) {
+  getColonyMemberInvite(id: $id) {
+    valid
+    invitesRemaining
+  }
+}

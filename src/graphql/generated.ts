@@ -8894,6 +8894,13 @@ export type CheckColonyNameExistsQueryVariables = Exact<{
 
 export type CheckColonyNameExistsQuery = { __typename?: 'Query', getColonyByName?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', id: string } | null> } | null };
 
+export type GetColonyMemberInviteQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetColonyMemberInviteQuery = { __typename?: 'Query', getColonyMemberInvite?: { __typename?: 'ColonyMemberInvite', valid?: boolean | null, invitesRemaining?: number | null } | null };
+
 export type GetColonyContributorQueryVariables = Exact<{
   id: Scalars['ID'];
   colonyAddress: Scalars['ID'];
@@ -11500,6 +11507,42 @@ export function useCheckColonyNameExistsLazyQuery(baseOptions?: Apollo.LazyQuery
 export type CheckColonyNameExistsQueryHookResult = ReturnType<typeof useCheckColonyNameExistsQuery>;
 export type CheckColonyNameExistsLazyQueryHookResult = ReturnType<typeof useCheckColonyNameExistsLazyQuery>;
 export type CheckColonyNameExistsQueryResult = Apollo.QueryResult<CheckColonyNameExistsQuery, CheckColonyNameExistsQueryVariables>;
+export const GetColonyMemberInviteDocument = gql`
+    query GetColonyMemberInvite($id: ID!) {
+  getColonyMemberInvite(id: $id) {
+    valid
+    invitesRemaining
+  }
+}
+    `;
+
+/**
+ * __useGetColonyMemberInviteQuery__
+ *
+ * To run a query within a React component, call `useGetColonyMemberInviteQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetColonyMemberInviteQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetColonyMemberInviteQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetColonyMemberInviteQuery(baseOptions: Apollo.QueryHookOptions<GetColonyMemberInviteQuery, GetColonyMemberInviteQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetColonyMemberInviteQuery, GetColonyMemberInviteQueryVariables>(GetColonyMemberInviteDocument, options);
+      }
+export function useGetColonyMemberInviteLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyMemberInviteQuery, GetColonyMemberInviteQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetColonyMemberInviteQuery, GetColonyMemberInviteQueryVariables>(GetColonyMemberInviteDocument, options);
+        }
+export type GetColonyMemberInviteQueryHookResult = ReturnType<typeof useGetColonyMemberInviteQuery>;
+export type GetColonyMemberInviteLazyQueryHookResult = ReturnType<typeof useGetColonyMemberInviteLazyQuery>;
+export type GetColonyMemberInviteQueryResult = Apollo.QueryResult<GetColonyMemberInviteQuery, GetColonyMemberInviteQueryVariables>;
 export const GetColonyContributorDocument = gql`
     query GetColonyContributor($id: ID!, $colonyAddress: ID!) {
   getColonyContributor(id: $id) {
