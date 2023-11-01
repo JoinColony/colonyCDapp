@@ -6,6 +6,7 @@ import { ActionFormRowProps } from './types';
 import Icon from '~shared/Icon';
 import Tooltip from '~shared/Extensions/Tooltip';
 import useToggle from '~hooks/useToggle';
+import { LABEL_CLASSNAME } from './consts';
 
 const ActionSidebarRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
   (
@@ -15,7 +16,7 @@ const ActionSidebarRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
       children,
       isExpandable = false,
       fieldName,
-      tooltip,
+      tooltips = {},
       className,
     },
     ref,
@@ -26,6 +27,10 @@ const ActionSidebarRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
     const rowToggle = useToggle();
     const [isExpanded, { toggle }] = rowToggle;
     const isError = !!error;
+    const { label, content: contentTooltip } = tooltips;
+
+    const rowContent =
+      typeof children === 'function' ? children(rowToggle) : children;
 
     const content = (
       <>
@@ -37,7 +42,12 @@ const ActionSidebarRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
             'text-gray-400': !isError,
           })}
         />
-        <span className="text-md ml-2 min-w-[8rem] sm:min-w-[11.25rem] flex gap-4 items-center">
+        <span
+          className={clsx(
+            LABEL_CLASSNAME,
+            'text-md ml-2 flex gap-4 items-center',
+          )}
+        >
           {title}
           {isExpandable && (
             <span
@@ -87,17 +97,39 @@ const ActionSidebarRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
         })}
         ref={ref}
       >
-        {tooltip ? (
-          <Tooltip
-            tooltipContent={<span>{tooltip}</span>}
-            placement="bottom-start"
-          >
-            {tooltipContent}
-          </Tooltip>
-        ) : (
-          tooltipContent
-        )}
-        {typeof children === 'function' ? children(rowToggle) : children}
+        <div className="basis-1/3">
+          {label ? (
+            <Tooltip
+              {...label}
+              tooltipContent={<span>{label.tooltipContent}</span>}
+              selectTriggerRef={(triggerRef) => {
+                if (!triggerRef) {
+                  return null;
+                }
+
+                return triggerRef.querySelector(`.${LABEL_CLASSNAME}`);
+              }}
+              placement="bottom-start"
+            >
+              {tooltipContent}
+            </Tooltip>
+          ) : (
+            tooltipContent
+          )}
+        </div>
+        <div className="basis-2/3">
+          {contentTooltip ? (
+            <Tooltip
+              placement="bottom-start"
+              {...contentTooltip}
+              tooltipContent={<span>{contentTooltip.tooltipContent}</span>}
+            >
+              {rowContent}
+            </Tooltip>
+          ) : (
+            rowContent
+          )}
+        </div>
       </div>
     );
   },

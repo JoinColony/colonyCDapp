@@ -9,8 +9,7 @@ import styles from './DropdownContent.module.css';
 import LearnMore from '~shared/Extensions/LearnMore';
 import TitleLabel from '~v5/shared/TitleLabel';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import dispatchGlobalEvent from '~utils/browser/dispatchGlobalEvent';
-import { GLOBAL_EVENTS } from '~utils/browser/dispatchGlobalEvent/consts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 
 const displayName =
   'v5.common.SubNavigation.partials.DropdownContent.ManageDropdown';
@@ -18,7 +17,7 @@ const displayName =
 const ManageDropdown: FC<PropsWithChildren> = () => {
   const { formatMessage } = useIntl();
   const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarBarOn }],
+    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
 
   return (
@@ -33,11 +32,8 @@ const ManageDropdown: FC<PropsWithChildren> = () => {
             {...rest}
             key={action}
             onClick={() => {
-              toggleActionSidebarBarOn();
-              dispatchGlobalEvent(GLOBAL_EVENTS.SET_ACTION_TYPE, {
-                detail: {
-                  actionType: action,
-                },
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: action,
               });
             }}
           />

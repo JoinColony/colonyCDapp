@@ -76,7 +76,7 @@ const ColonyNavigation = () => {
                     text="Create new action"
                     mode="quinary"
                     isFullSize={isMobile}
-                    onClick={toggleActionSideBar}
+                    onClick={() => toggleActionSideBar()}
                   />
                 </div>
                 <LearnMore

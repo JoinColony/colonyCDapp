@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 
-import { FormattedMessage, useIntl } from 'react-intl';
 import { useMintToken } from './hooks';
 import { ActionFormBaseProps } from '../../../types';
 import ActionFormRow from '~v5/common/ActionFormRow';
@@ -9,12 +8,11 @@ import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import { DECISION_METHOD_OPTIONS } from '../../consts';
+import { formatMessage } from '~utils/yup/tests/helpers';
 
 const displayName = 'v5.common.ActionSidebar.partials.MintTokenForm';
 
 const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  const intl = useIntl();
-
   useMintToken(getFormOptions);
 
   return (
@@ -22,38 +20,60 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="coins"
         fieldName="amount"
-        title={<FormattedMessage id="actionSidebar.value" />}
-        tooltip={
-          <FormattedMessage id="actionSidebar.tooltip.mintTokens.amount" />
-        }
+        title={formatMessage({ id: 'actionSidebar.value' })}
+        tooltips={{
+          label: {
+            tooltipContent: formatMessage({
+              id: 'actionSidebar.tooltip.mintTokens.amount',
+            }),
+          },
+        }}
       >
         <AmountField name="amount" />
       </ActionFormRow>
       <ActionFormRow
         iconName="house-line"
         fieldName="createdIn"
-        title={<FormattedMessage id="actionSidebar.createdIn" />}
-        tooltip={<FormattedMessage id="actionSidebar.tooltip.createdIn" />}
+        title={formatMessage({ id: 'actionSidebar.createdIn' })}
+        tooltips={{
+          label: {
+            tooltipContent: formatMessage({
+              id: 'actionSidebar.tooltip.createdIn',
+            }),
+          },
+        }}
       >
         <TeamsSelect name="createdIn" />
       </ActionFormRow>
       <ActionFormRow
         iconName="scales"
         fieldName="decisionMethod"
-        tooltip={<FormattedMessage id="actionSidebar.tooltip.decisionMethod" />}
-        title={<FormattedMessage id="actionSidebar.decisionMethod" />}
+        tooltips={{
+          label: {
+            tooltipContent: formatMessage({
+              id: 'actionSidebar.tooltip.decisionMethod',
+            }),
+          },
+        }}
+        title={formatMessage({ id: 'actionSidebar.decisionMethod' })}
       >
         <FormCardSelect
           name="decisionMethod"
           options={DECISION_METHOD_OPTIONS}
-          title={intl.formatMessage({ id: 'actionSidebar.decisionMethod' })}
+          title={formatMessage({ id: 'actionSidebar.decisionMethod' })}
         />
       </ActionFormRow>
       <ActionFormRow
         iconName="pencil"
         fieldName="description"
-        tooltip={<FormattedMessage id="actionSidebar.tooltip.description" />}
-        title={<FormattedMessage id="actionSidebar.description" />}
+        tooltips={{
+          label: {
+            tooltipContent: formatMessage({
+              id: 'actionSidebar.tooltip.description',
+            }),
+          },
+        }}
+        title={formatMessage({ id: 'actionSidebar.description' })}
         isExpandable
       >
         {([
