@@ -7,7 +7,14 @@ const displayName = 'v5.Card';
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   (
-    { hasShadow, rounded = 's', children, className, withPadding = true },
+    {
+      hasShadow,
+      rounded = 's',
+      children,
+      className,
+      withPadding = true,
+      checked = false,
+    },
     ref,
   ) => (
     <div
@@ -19,6 +26,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
           'rounded-xl': rounded === 'm',
           'shadow-default': hasShadow,
           'p-6': withPadding,
+          'border-blue-600': checked,
         },
       )}
       ref={ref}
