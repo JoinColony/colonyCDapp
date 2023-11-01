@@ -12,11 +12,11 @@ import { FormValues } from './CreateColonyWizard';
  * The colony name regex is composed of
  * ^[A-Za-z0-9] starts with upper case, lower case or numerals
  * \w can include upper case, lower case, numerals or underscore
- * {0,254}$ match the preceding set at least 0 and at most 254 times from the end (so excluding the first char)
+ * we do not match length as that check is handled in a different component
  */
-const COLONY_NAME_REGEX = /^[A-Za-z0-9]\w{0,254}$/;
+const COLONY_NAME_REGEX = /^[A-Za-z0-9]\w+$/;
 
-const TOKEN_SYMBOL_REGEX = /^[A-Za-z0-9]{0,5}$/;
+const TOKEN_SYMBOL_REGEX = /^[A-Za-z0-9]+$/;
 
 const isNameTaken = createYupTestFromQuery({
   query: GetFullColonyByNameDocument,
@@ -90,13 +90,12 @@ export const createTokenValidationSchema = object({
     is: 'create',
     then: (schema) =>
       schema
-        .max(5)
-        .required(formatMessage({ id: 'error.tokenSymbolRequired' }))
         .test(
           'isValidTokenSymbol',
           formatMessage({ id: 'error.tokenSymbol' }),
           isValidTokenSymbol,
-        ),
+        )
+        .required(formatMessage({ id: 'error.tokenSymbolRequired' })),
     otherwise: (schema) => schema.notRequired(),
   }),
   tokenName: string()
@@ -104,9 +103,7 @@ export const createTokenValidationSchema = object({
     .when('tokenChoiceVerify', {
       is: 'create',
       then: (schema) =>
-        schema
-          .max(255, formatMessage({ id: 'error.tokenNameLength' }))
-          .required(formatMessage({ id: 'error.tokenNameRequired' })),
+        schema.required(formatMessage({ id: 'error.tokenNameRequired' })),
       otherwise: (schema) => schema.notRequired(),
     }),
 }).defined();

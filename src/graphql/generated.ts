@@ -7531,11 +7531,11 @@ export type UpdateWatchedColoniesInput = {
 /** Represents a User within the Colony Network */
 export type User = {
   __typename?: 'User';
-  /** A user who has been invited by colony will be able to pass on the private beta invite */
-  PrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   createdAt: Scalars['AWSDateTime'];
   /** Unique identifier for the user (wallet address) */
   id: Scalars['ID'];
+  /** A user who has been invited by colony will be able to pass on the private beta invite */
+  privateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   /** Profile information of the user */
   profile?: Maybe<Profile>;
   /** Profile ID associated with the user */
