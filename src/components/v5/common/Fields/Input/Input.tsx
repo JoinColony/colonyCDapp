@@ -15,6 +15,7 @@ const displayName = 'v5.common.Fields.Input';
 
 const Input: FC<InputProps> = ({
   maxCharNumber = DEFAULT_MAX_CHAR_NUMBER,
+  errorMaxChar = false,
   placeholder,
   shouldNumberOfCharsBeVisible = false,
   isError,
@@ -116,7 +117,12 @@ const Input: FC<InputProps> = ({
             ) : (
               <FormError isFullSize alignment="left">
                 {customErrorMessage ||
-                  formatMessage({ id: 'too.many.characters' })}
+                  (errorMaxChar
+                    ? formatMessage(
+                        { id: 'error.max.characters' },
+                        { maxCharNumber },
+                      )
+                    : formatMessage({ id: 'too.many.characters' }))}
               </FormError>
             )}
           </>

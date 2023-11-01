@@ -841,6 +841,7 @@
   "user.typing": "The user is actively typing....",
   "characters.remaining": "{maxCharNumber} characters remaining",
   "too.many.characters": "Too many characters",
+  "error.max.characters": "Max {maxCharNumber} characters allowed",
   "filter.search.title": "SEARCH FOR A COLONY MEMBER",
   "filter.input.placeholder": "Search members",
   "filter": "Filter",

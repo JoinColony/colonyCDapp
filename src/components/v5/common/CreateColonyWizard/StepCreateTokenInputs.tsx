@@ -80,6 +80,7 @@ const StepCreateTokenInputs = ({
           isDisabled={isSubmitting}
           defaultValue={wizardTokenName}
           labelMessage={MSG.tokenName}
+          errorMaxChar
         />
         <Input
           name="tokenSymbol"
@@ -91,6 +92,7 @@ const StepCreateTokenInputs = ({
           isDisabled={isSubmitting}
           defaultValue={wizardTokenSymbol}
           labelMessage={MSG.tokenSymbol}
+          errorMaxChar
         />
       </div>
       <p className="text-1 pb-1">{formatMessage(MSG.tokenLogo)}</p>

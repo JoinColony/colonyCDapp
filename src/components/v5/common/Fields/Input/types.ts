@@ -3,6 +3,7 @@ import { Message } from '~types';
 
 export type InputProps = {
   maxCharNumber?: number;
+  errorMaxChar?: boolean;
   placeholder?: string;
   shouldNumberOfCharsBeVisible?: boolean;
   isError?: boolean;
