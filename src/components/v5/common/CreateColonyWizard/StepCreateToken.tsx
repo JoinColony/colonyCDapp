@@ -33,8 +33,11 @@ const StepCreateToken = ({
       validationSchema={validationSchema}
       defaultValues={{ ...defaultValues, tokenChoiceVerify: tokenChoice }}
     >
-      {({ watch }) => {
+      {({ watch, formState: { errors } }) => {
         const currentTokenChoice = watch('tokenChoiceVerify');
+
+        const isTokenExistError =
+          errors.tokenAddress?.type === 'doesTokenExist';
 
         return (
           <>
@@ -52,7 +55,10 @@ const StepCreateToken = ({
             ) : (
               <ExistingTokenInput wizardTokenAddress={tokenAddress} />
             )}
-            <ButtonRow previousStep={previousStep} />
+            <ButtonRow
+              previousStep={previousStep}
+              continueButtonDisableOverride={!isTokenExistError}
+            />
           </>
         );
       }}

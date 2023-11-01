@@ -4,6 +4,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { Token } from '~types';
 import { getNetworkByChainId } from '~utils/web3';
+import Icon from '~shared/Icon';
 
 import TokenSelector from './TokenSelector';
 
@@ -21,6 +22,15 @@ const MSG = defineMessages({
   existingTokenSuccess: {
     id: `${displayName}.existingTokenSuccess`,
     defaultMessage: 'Token found: {name} ({symbol}) on {chain}',
+  },
+  definitelyCorrectTitle: {
+    id: `${displayName}.definitelyCorrectTitel`,
+    defaultMessage: 'Is the address definitely correct?',
+  },
+  definitelyCorrectMessage: {
+    id: `${displayName}.definitelyCorrectMessage`,
+    defaultMessage:
+      'If you are certain that the token address is correct, it may not exist on the Gnosis Chain, try switching your wallet’s connected blockchain or continue to the next step.',
   },
 });
 
@@ -45,18 +55,36 @@ const TokenSelectorInput = ({
       getNetworkByChainId(100)?.name || '',
   });
 
+  const doesTokenExistError = errors.tokenAddress?.type === 'doesTokenExist';
+
   return (
-    <TokenSelector
-      register={register}
-      isError={!!tokenAddressError}
-      customErrorMessage={tokenAddressError}
-      className="text-md border-gray-300"
-      isDisabled={isSubmitting}
-      defaultValue={wizardTokenAddress}
-      labelMessage={MSG.existingToken}
-      successfulMessage={token?.name ? successMessage : undefined}
-      isDecoratedError
-    />
+    <div className="flex flex-col gap-8">
+      <TokenSelector
+        register={register}
+        isError={!!tokenAddressError}
+        customErrorMessage={tokenAddressError}
+        className="text-md border-gray-300"
+        isDisabled={isSubmitting}
+        defaultValue={wizardTokenAddress}
+        labelMessage={MSG.existingToken}
+        successfulMessage={token?.name ? successMessage : undefined}
+        isDecoratedError
+      />
+
+      {doesTokenExistError && (
+        <div className="px-6 py-3 bg-warning-100 border rounded border-warning-200 text-gray-900">
+          <p className="flex self-start items-center gap-2 text-md pb-1">
+            <span className="text-warning-400 flex">
+              <Icon name="warning-circle" appearance={{ size: 'small' }} />
+            </span>
+            <span>{formatMessage(MSG.definitelyCorrectTitle)}</span>
+          </p>
+          <p className="text-sm">
+            {formatMessage(MSG.definitelyCorrectMessage)}
+          </p>
+        </div>
+      )}
+    </div>
   );
 };
 
