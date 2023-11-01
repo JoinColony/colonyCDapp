@@ -9,6 +9,10 @@ on:
   push:
     branches:
       - master # Automatically deploy on commits to master
+    paths-ignore:
+      - '.github/**'
+      - 'amplify/**'
+      - '**.md'
     
 
 concurrency:
