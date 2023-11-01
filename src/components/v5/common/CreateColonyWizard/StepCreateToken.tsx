@@ -36,8 +36,8 @@ const StepCreateToken = ({
       {({ watch, formState: { errors } }) => {
         const currentTokenChoice = watch('tokenChoiceVerify');
 
-        const isTokenExistError =
-          errors.tokenAddress?.type === 'doesTokenExist';
+        const continueOverride =
+          errors.tokenAddress?.type === 'doesTokenExist' ? false : undefined;
 
         return (
           <>
@@ -57,7 +57,7 @@ const StepCreateToken = ({
             )}
             <ButtonRow
               previousStep={previousStep}
-              continueButtonDisableOverride={!isTokenExistError}
+              continueButtonDisableOverride={continueOverride}
             />
           </>
         );
