@@ -59,6 +59,7 @@ const Input: FC<InputProps> = ({
           registerField?.onChange(e);
         }}
         disabled={isDisabled}
+        id={`id-${name}`}
       />
     </div>
   );
@@ -68,7 +69,7 @@ const Input: FC<InputProps> = ({
       {labelMessage && (
         <label
           className={clsx(labelClassName, 'flex flex-col text-1')}
-          htmlFor={name}
+          htmlFor={`id-${name}`}
         >
           {formatText(labelMessage)}
           {subLabelMessage && (

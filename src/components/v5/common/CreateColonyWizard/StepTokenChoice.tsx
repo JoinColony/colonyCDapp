@@ -69,7 +69,7 @@ const TokenSelector = ({
   const checked = name === watch('tokenChoice');
 
   return (
-    <label htmlFor={name}>
+    <label htmlFor={`id-${name}`}>
       <Card
         className="flex flex-col items-center cursor-pointer text-center h-full md:hover:shadow-default md:hover:shadow-light-blue"
         checked={checked}
@@ -78,7 +78,7 @@ const TokenSelector = ({
           {...registerField}
           type="radio"
           value={name}
-          id={name}
+          id={`id-${name}`}
           className="mb-4"
         />
         {icon}

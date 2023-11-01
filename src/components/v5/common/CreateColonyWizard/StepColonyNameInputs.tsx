@@ -62,7 +62,7 @@ const StepColonyNameInputs = ({
         labelMessage={{ id: 'colonyName' }}
       />
       <div className="flex flex-col gap-1">
-        <label className="flex flex-col text-1" htmlFor="colonyName">
+        <label className="flex flex-col text-1" htmlFor="id-colonyName">
           {formatText(MSG.url)}
           <span className="text-xs text-gray-600">
             {formatText(MSG.urlSubLabel)}
