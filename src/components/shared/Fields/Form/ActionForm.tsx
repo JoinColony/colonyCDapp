@@ -19,7 +19,7 @@ export type OnSuccess<V extends FieldValues> = (
   result: any,
 ) => void;
 
-interface Props<V extends Record<string, any>>
+export interface ActionFormProps<V extends Record<string, any>>
   extends Omit<FormProps<V>, 'onError' | 'onSubmit'> {
   /** Redux action type to dispatch on submit (e.g. CREATE_XXX) */
   actionType: ActionTypes;
@@ -46,17 +46,20 @@ interface Props<V extends Record<string, any>>
   transform?: ActionTransformFnType;
 }
 
-const ActionForm = <V extends Record<string, any>>({
-  onSuccess,
-  onError,
-  onSubmitError,
-  submit,
-  success,
-  error,
-  actionType,
-  transform,
-  ...props
-}: Props<V>) => {
+const ActionForm = <V extends Record<string, any>>(
+  {
+    onSuccess,
+    onError,
+    onSubmitError,
+    submit,
+    success,
+    error,
+    actionType,
+    transform,
+    ...props
+  }: ActionFormProps<V>,
+  ref: React.ForwardedRef<UseFormReturn<V, any, undefined>>,
+) => {
   const asyncFunction = useAsyncFunction({
     submit: submit || actionType,
     error: error || getFormAction(actionType, 'ERROR'),
@@ -73,9 +76,16 @@ const ActionForm = <V extends Record<string, any>>({
     }
   };
 
-  return <Form {...props} onSubmit={handleSubmit} onError={onSubmitError} />;
+  return (
+    <Form
+      {...props}
+      onSubmit={handleSubmit}
+      onError={onSubmitError}
+      ref={ref}
+    />
+  );
 };
 
 ActionForm.displayName = displayName;
 
-export default ActionForm;
+export default React.forwardRef(ActionForm);

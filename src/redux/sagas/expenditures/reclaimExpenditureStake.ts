@@ -8,7 +8,7 @@ import {
   getTxChannel,
   waitForTxResult,
 } from '../transactions';
-import { putError } from '../utils';
+import { initiateTransaction, putError } from '../utils';
 
 function* reclaimExpenditureStake({
   payload: { colonyAddress, nativeExpenditureId },
@@ -23,6 +23,8 @@ function* reclaimExpenditureStake({
       identifier: colonyAddress,
       params: [nativeExpenditureId],
     });
+
+    yield initiateTransaction({ id: meta.id });
 
     yield waitForTxResult(txChannel);
 

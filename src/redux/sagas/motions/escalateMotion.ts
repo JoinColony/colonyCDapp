@@ -11,7 +11,12 @@ import { ColonyManager } from '~context';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom, getColonyManager } from '../utils';
+import {
+  putError,
+  takeFrom,
+  getColonyManager,
+  initiateTransaction,
+} from '../utils';
 
 import {
   createGroupTransaction,
@@ -19,10 +24,9 @@ import {
   getTxChannel,
 } from '../transactions';
 import {
-  transactionReady,
   transactionAddParams,
   transactionPending,
-} from '../../actionCreators';
+} from '~redux/actionCreators';
 
 export type EscalateMotionPayload =
   Action<ActionTypes.MOTION_ESCALATE>['payload'];
@@ -115,7 +119,7 @@ function* escalateMotion({
       ]),
     );
 
-    yield put(transactionReady(escalateMotionTransaction.id));
+    yield initiateTransaction({ id: escalateMotionTransaction.id });
 
     yield takeFrom(
       escalateMotionTransaction.channel,

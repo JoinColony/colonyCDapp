@@ -10,7 +10,6 @@ import { Action, ActionTypes, AllActions } from '~redux';
 import {
   transactionAddParams,
   transactionPending,
-  transactionReady,
 } from '~redux/actionCreators';
 import { ContextModule, getContext, ColonyManager } from '~context';
 import {
@@ -27,6 +26,7 @@ import {
   getTxChannel,
 } from '../transactions';
 import {
+  initiateTransaction,
   putError,
   takeFrom,
   uploadAnnotation,
@@ -43,7 +43,7 @@ function* createDomainAction({
     annotationMessage,
     parentId = Id.RootDomain,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_DOMAIN_CREATE>) {
   let txChannel;
@@ -115,7 +115,7 @@ function* createDomainAction({
         parentId,
       ]),
     );
-    yield put(transactionReady(createDomain.id));
+    yield initiateTransaction({ id: createDomain.id });
 
     const {
       payload: {
@@ -123,6 +123,9 @@ function* createDomainAction({
         eventData,
       },
     } = yield takeFrom(createDomain.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    setTxHash?.(txHash);
+
     const { domainId } = eventData?.DomainAdded || {};
     const nativeDomainId = toNumber(domainId);
 
@@ -152,23 +155,12 @@ function* createDomainAction({
       });
     }
 
-    /*
-     * Update the colony object cache
-     */
-    // yield apolloClient.query<ColonyFromNameQuery, ColonyFromNameQueryVariables>(
-    //   {
-    //     query: ColonyFromNameDocument,
-    //     variables: { name: colonyName || '', address: colonyAddress },
-    //     fetchPolicy: 'network-only',
-    //   },
-    // );
-
     yield put<AllActions>({
       type: ActionTypes.ACTION_DOMAIN_CREATE_SUCCESS,
       meta,
     });
 
-    if (navigate) {
+    if (colonyName && navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });

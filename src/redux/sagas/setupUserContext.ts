@@ -20,9 +20,9 @@ import { setContext, ContextModule } from '~context';
 // import AppLoadingState from '~context/appLoadingState';
 
 import { getGasPrices, putError } from './utils';
-import setupOnBeforeUnload from './setupOnBeforeUnload';
 import setupWalletContext from './setupWalletContext';
 import getOnboard from './wallet/onboard';
+import { setupTransactionSagas } from './transactions';
 import expendituresSagas from './expenditures';
 // import { setupUserBalanceListener } from './setupUserBalanceListener';
 
@@ -38,6 +38,7 @@ function* setupContextDependentSagas() {
     // call(whitelistSagas),
     // call(vestingSagas),
     call(setupUsersSagas),
+    call(setupTransactionSagas),
     call(expendituresSagas),
     /**
      * We've loaded all the context sagas, so we can proceed with redering
@@ -88,8 +89,6 @@ export default function* setupUserContext() {
      * Get the network contract values from the resolver
      */
     // yield updateNetworkContracts();
-
-    setupOnBeforeUnload();
 
     yield put<AllActions>({
       type: ActionTypes.USER_CONTEXT_SETUP_SUCCESS,

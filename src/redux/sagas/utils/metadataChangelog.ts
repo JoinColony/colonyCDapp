@@ -45,6 +45,8 @@ export const getUpdatedColonyMetadataChangelog = (
   newAvatarImage?: string | null,
   hasWhitelistChanged = false,
   haveTokensChanged = false,
+  hasDescriptionChanged = false,
+  haveExternalLinksChanged = false,
   newSafes?: Safe[],
 ): ColonyMetadataChangelogInput[] => {
   const existingChangelog = getExistingChangelog(metadata.changelog);
@@ -63,6 +65,8 @@ export const getUpdatedColonyMetadataChangelog = (
           : newAvatarImage !== metadata.avatar,
       hasWhitelistChanged,
       haveTokensChanged,
+      hasDescriptionChanged,
+      haveExternalLinksChanged,
       newSafes: newSafes ?? currentColonySafes,
       oldSafes: currentColonySafes,
     },

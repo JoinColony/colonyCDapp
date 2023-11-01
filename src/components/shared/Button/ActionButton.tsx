@@ -8,33 +8,40 @@ import { ActionTypes } from '~redux';
 
 import { Props as DefaultButtonProps } from './Button';
 
-export interface ActionButtonProps<P> extends DefaultButtonProps {
+export interface ActionButtonProps<P = any, V = any>
+  extends DefaultButtonProps {
   /** The base (i.e. submit) redux action type */
   actionType: ActionTypes;
   button?: ElementType;
+  buttonProps?: P;
+  isLoading?: boolean;
   confirmText?: any;
   error?: string;
   onConfirmToggled?: (...args: any[]) => void;
   onSuccess?: (result: any) => void;
+  onError?: (error: any) => void;
   submit?: string;
   success?: string;
   text?: MessageDescriptor | string;
   transform?: ActionTransformFnType;
-  values?: P | (() => P | Promise<P>);
+  values?: V | (() => V | Promise<V>);
 }
 
-function ActionButton<P>({
+const ActionButton = <P = any, V = any>({
   actionType,
   button,
+  buttonProps,
+  isLoading,
   error,
   submit,
   success,
   onSuccess,
+  onError,
   // @todo Remove `values` once async transform functions are supported
   values,
   transform,
   ...props
-}: ActionButtonProps<P>) {
+}: ActionButtonProps<P, V>) => {
   const submitAction = submit || actionType;
   const errorAction = error || getFormAction(actionType, 'ERROR');
   const successAction = success || getFormAction(actionType, 'SUCCESS');
@@ -53,14 +60,14 @@ function ActionButton<P>({
     try {
       const asyncFuncValues =
         typeof values == 'function'
-          ? await (values as () => Promise<P> | P)()
+          ? await (values as () => Promise<V> | V)()
           : values;
       result = await asyncFunction(asyncFuncValues);
       if (isMountedRef.current) setLoading(false);
       if (typeof onSuccess == 'function') onSuccess(result);
     } catch (err) {
       setLoading(false);
-
+      onError?.(err);
       /**
        * @todo : display error somewhere
        */
@@ -68,7 +75,14 @@ function ActionButton<P>({
   };
 
   const Button = button || DefaultButton;
-  return <Button onClick={handleClick} loading={loading} {...props} />;
-}
+  return (
+    <Button
+      onClick={handleClick}
+      loading={loading || isLoading}
+      {...buttonProps}
+      {...props}
+    />
+  );
+};
 
 export default ActionButton;

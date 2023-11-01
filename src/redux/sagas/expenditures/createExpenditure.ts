@@ -3,12 +3,7 @@ import { takeEvery, fork, call, put } from 'redux-saga/effects';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 import { ColonyManager } from '~context';
-import {
-  transactionAddParams,
-  transactionPending,
-  transactionReady,
-} from '~redux/actionCreators';
-import { ExpenditureType } from '~gql';
+import { transactionAddParams } from '~redux/actionCreators';
 
 import {
   ChannelDefinition,
@@ -22,13 +17,14 @@ import {
   takeFrom,
   getSetExpenditureValuesFunctionParams,
   saveExpenditureMetadata,
+  initiateTransaction,
 } from '../utils';
 
 export type CreateExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_CREATE>['payload'];
 
 function* createExpenditure({
-  meta: { navigate },
+  meta: { navigate, setTxHash },
   meta,
   payload: {
     colony: { name: colonyName, colonyAddress },
@@ -108,8 +104,16 @@ function* createExpenditure({
     }
 
     yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_CREATED);
-    yield put(transactionPending(makeExpenditure.id));
-    yield put(transactionReady(makeExpenditure.id));
+    yield initiateTransaction({ id: makeExpenditure.id });
+    const {
+      payload: { hash: txHash },
+    } = yield takeFrom(
+      makeExpenditure.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
+
+    setTxHash?.(txHash);
+
     yield waitForTxResult(makeExpenditure.channel);
 
     const expenditureId = yield call(colonyClient.getExpenditureCount);
@@ -118,8 +122,6 @@ function* createExpenditure({
       setExpenditureValues.channel,
       ActionTypes.TRANSACTION_CREATED,
     );
-
-    yield put(transactionPending(setExpenditureValues.id));
     yield put(
       transactionAddParams(
         setExpenditureValues.id,
@@ -129,7 +131,7 @@ function* createExpenditure({
         ),
       ),
     );
-    yield put(transactionReady(setExpenditureValues.id));
+    yield initiateTransaction({ id: setExpenditureValues.id });
     yield waitForTxResult(setExpenditureValues.channel);
 
     if (isStaged) {
@@ -137,11 +139,10 @@ function* createExpenditure({
         setExpenditureStaged.channel,
         ActionTypes.TRANSACTION_CREATED,
       );
-      yield put(transactionPending(setExpenditureStaged.id));
       yield put(
         transactionAddParams(setExpenditureStaged.id, [expenditureId, true]),
       );
-      yield put(transactionReady(setExpenditureStaged.id));
+      yield initiateTransaction({ id: setExpenditureStaged.id });
       yield waitForTxResult(setExpenditureStaged.channel);
     }
 
@@ -149,7 +150,6 @@ function* createExpenditure({
       colonyAddress,
       expenditureId,
       fundFromDomainId,
-      expenditureType: ExpenditureType.Forced,
       stages: isStaged ? stages : undefined,
     });
 
@@ -159,7 +159,11 @@ function* createExpenditure({
       meta,
     });
 
-    navigate(`/colony/${colonyName}/expenditures/${expenditureId}`);
+    if (colonyName && navigate) {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
+    }
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   }

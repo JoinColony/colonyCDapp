@@ -117,13 +117,10 @@ export type ActionTypeString = AllActions['type'];
 
 export type TakeFilter = (action: AllActions) => boolean;
 
-// To be replaced with MetaWithNavigate and deleted
-export type MetaWithHistory<M> = {
-  history?: {
-    push: <A>(route: A) => void;
-  };
-} & M;
-
-export type MetaWithNavigate<M> = {
-  navigate: NavigateFunction;
+export type MetaWithSetter<M> = {
+  // Once new UI has been completed, 'navigate' can be removed.
+  // Keeping only to maintain compatibility with old UI while we transition.
+  navigate?: NavigateFunction;
+  // And setTxHash can become required
+  setTxHash?: (txHash: string) => void;
 } & M;

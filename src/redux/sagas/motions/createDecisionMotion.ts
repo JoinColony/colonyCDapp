@@ -4,13 +4,12 @@ import { AnyColonyClient, ClientType, getChildIndex } from '@colony/colony-js';
 import { Action, ActionTypes, AllActions } from '~redux/index';
 import { putError, takeFrom } from '~utils/saga/effects';
 import { ACTION_DECISION_MOTION_CODE, ADDRESS_ZERO } from '~constants';
-import { transactionReady } from '~redux/actionCreators';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { getColonyManager } from '../utils';
+import { getColonyManager, initiateTransaction } from '../utils';
 import {
   CreateColonyDecisionDocument,
   CreateColonyDecisionMutation,
@@ -25,7 +24,7 @@ function* createDecisionMotion({
     colonyAddress,
     draftDecision: { motionDomainId, title, description, walletAddress },
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_CREATE_DECISION>) {
   const txChannel = yield call(getTxChannel, metaId);
@@ -118,7 +117,7 @@ function* createDecisionMotion({
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
     // yield takeFrom(annotateMotion.channel, ActionTypes.TRANSACTION_CREATED);
 
-    yield put(transactionReady(createMotion.id));
+    yield initiateTransaction({ id: createMotion.id });
 
     const {
       payload: { hash: txHash },
@@ -126,6 +125,8 @@ function* createDecisionMotion({
       createMotion.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
 
     yield apolloClient.mutate<
       CreateColonyDecisionMutation,
@@ -164,8 +165,8 @@ function* createDecisionMotion({
       meta,
     });
 
-    if (colonyName) {
-      navigate(`/colony/${colonyName}/decisions/tx/${txHash}`, {
+    if (colonyName && navigate) {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
     }

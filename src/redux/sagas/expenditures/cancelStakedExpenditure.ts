@@ -9,7 +9,7 @@ import {
   getTxChannel,
   waitForTxResult,
 } from '../transactions';
-import { getColonyManager, putError } from '../utils';
+import { getColonyManager, initiateTransaction, putError } from '../utils';
 
 function* cancelStakedExpenditure({
   meta,
@@ -57,6 +57,8 @@ function* cancelStakedExpenditure({
         shouldPunish,
       ],
     });
+
+    yield initiateTransaction({ id: meta.id });
 
     const { type } = yield waitForTxResult(txChannel);
 

@@ -8,10 +8,9 @@ import {
 import {
   transactionAddParams,
   transactionPending,
-  transactionReady,
 } from '~redux/actionCreators';
 import { ipfsUploadAnnotation } from './ipfs';
-import { takeFrom } from './effects';
+import { initiateTransaction, takeFrom } from './effects';
 import { ActionTypes } from '~redux/actionTypes';
 import { TransactionChannel } from '../transactions';
 
@@ -74,7 +73,7 @@ export function* uploadAnnotation({
 
   yield put(transactionAddParams(txChannel.id, [txHash, ipfsHash]));
 
-  yield put(transactionReady(txChannel.id));
+  yield initiateTransaction({ id: txChannel.id });
 
   yield takeFrom(txChannel.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 }

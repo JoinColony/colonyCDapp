@@ -6,8 +6,6 @@ import {
   ColonyRole,
 } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
-import { BigNumber } from 'ethers';
-import moveDecimal from 'move-decimal-point';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
@@ -16,6 +14,7 @@ import {
   takeFrom,
   getColonyManager,
   uploadAnnotation,
+  initiateTransaction,
 } from '../utils';
 
 import {
@@ -23,19 +22,18 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '../../actionCreators';
+import { sortAndCombinePayments } from '../actions/payment';
 
 function* createPaymentMotion({
   payload: {
     colonyAddress,
     colonyName,
-    recipientAddress,
     domainId,
-    singlePayment,
+    payments,
     annotationMessage,
     motionDomainId,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_EXPENDITURE_PAYMENT>) {
   let txChannel;
@@ -43,25 +41,30 @@ function* createPaymentMotion({
     /*
      * Validate the required values for the payment
      */
-    if (!recipientAddress) {
-      throw new Error('Recipient not assigned for OneTxPayment transaction');
+
+    if (!motionDomainId) {
+      throw new Error('Motion domain id not set for OneTxPayment transaction');
     }
+
     if (!domainId) {
       throw new Error('Domain not set for OneTxPayment transaction');
     }
-    if (!singlePayment) {
+    if (!payments || !payments.length) {
       throw new Error('Payment details not set for OneTxPayment transaction');
     } else {
-      if (!singlePayment.amount) {
+      if (!payments.every(({ amount }) => !!amount)) {
         throw new Error('Payment amount not set for OneTxPayment transaction');
       }
-      if (!singlePayment.tokenAddress) {
+      if (!payments.every(({ tokenAddress }) => !!tokenAddress)) {
         throw new Error('Payment token not set for OneTxPayment transaction');
       }
-      if (!singlePayment.decimals) {
+      if (!payments.every(({ decimals }) => !!decimals)) {
         throw new Error(
           'Payment token decimals not set for OneTxPayment transaction',
         );
+      }
+      if (!payments.every(({ recipient }) => !!recipient)) {
+        throw new Error('Recipient not assigned for OneTxPayment transaction');
       }
     }
 
@@ -104,7 +107,17 @@ function* createPaymentMotion({
       votingReputationClient.address,
     );
 
-    const { amount, tokenAddress, decimals = 18 } = singlePayment;
+    const sortedCombinedPayments = sortAndCombinePayments(payments);
+
+    const tokenAddresses = sortedCombinedPayments.map(
+      ({ tokenAddress }) => tokenAddress,
+    );
+
+    const amounts = sortedCombinedPayments.map(({ amount }) => amount);
+
+    const recipientAddresses = sortedCombinedPayments.map(
+      ({ recipient }) => recipient,
+    );
 
     const encodedAction = oneTxPaymentClient.interface.encodeFunctionData(
       'makePaymentFundedFromDomain',
@@ -113,9 +126,9 @@ function* createPaymentMotion({
         extensionCSI,
         votingReputationPDID,
         votingReputationCSI,
-        [recipientAddress],
-        [tokenAddress],
-        [BigNumber.from(moveDecimal(amount, decimals))],
+        recipientAddresses,
+        tokenAddresses,
+        amounts,
         domainId,
         /*
          * NOTE Always make the payment in the global skill 0
@@ -194,7 +207,7 @@ function* createPaymentMotion({
       );
     }
 
-    yield put(transactionReady(createMotion.id));
+    yield initiateTransaction({ id: createMotion.id });
 
     const {
       payload: { hash: txHash },
@@ -202,6 +215,9 @@ function* createPaymentMotion({
       createMotion.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
@@ -216,7 +232,7 @@ function* createPaymentMotion({
       meta,
     });
 
-    if (colonyName) {
+    if (navigate && colonyName) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });

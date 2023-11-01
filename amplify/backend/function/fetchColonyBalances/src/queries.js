@@ -46,6 +46,8 @@ const domainFragment = /* GraphQL */ `
         newDescription
       }
     }
+    reputation
+    reputationPercentage
   }
 `;
 

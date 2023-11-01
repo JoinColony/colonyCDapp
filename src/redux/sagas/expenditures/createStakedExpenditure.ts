@@ -3,12 +3,7 @@ import { takeEvery, fork, call, put } from 'redux-saga/effects';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 import { ColonyManager } from '~context';
-import {
-  transactionAddParams,
-  transactionPending,
-  transactionReady,
-} from '~redux/actionCreators';
-import { ExpenditureType } from '~gql';
+import { transactionAddParams } from '~redux/actionCreators';
 
 import { ADDRESS_ZERO } from '~constants';
 
@@ -24,10 +19,11 @@ import {
   takeFrom,
   getSetExpenditureValuesFunctionParams,
   saveExpenditureMetadata,
+  initiateTransaction,
 } from '../utils';
 
 function* createStakedExpenditure({
-  meta: { navigate },
+  meta: { navigate, setTxHash },
   meta,
   payload: {
     colony: { name: colonyName, colonyAddress },
@@ -121,8 +117,7 @@ function* createStakedExpenditure({
     }
 
     yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_CREATED);
-    yield put(transactionPending(approveStake.id));
-    yield put(transactionReady(approveStake.id));
+    yield initiateTransaction({ id: approveStake.id });
     yield waitForTxResult(approveStake.channel);
 
     // Find a chill skill index as a proof the extension has permissions in the selected domain
@@ -145,7 +140,6 @@ function* createStakedExpenditure({
     );
 
     yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_CREATED);
-    yield put(transactionPending(makeExpenditure.id));
     yield put(
       transactionAddParams(makeExpenditure.id, [
         Id.RootDomain,
@@ -157,7 +151,15 @@ function* createStakedExpenditure({
         siblings,
       ]),
     );
-    yield put(transactionReady(makeExpenditure.id));
+    yield initiateTransaction({ id: makeExpenditure.id });
+    const {
+      payload: { hash: txHash },
+    } = yield takeFrom(
+      makeExpenditure.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
+
+    setTxHash?.(txHash);
     yield waitForTxResult(makeExpenditure.channel);
 
     const expenditureId = yield call(colonyClient.getExpenditureCount);
@@ -166,7 +168,6 @@ function* createStakedExpenditure({
       setExpenditureValues.channel,
       ActionTypes.TRANSACTION_CREATED,
     );
-    yield put(transactionPending(setExpenditureValues.id));
     yield put(
       transactionAddParams(
         setExpenditureValues.id,
@@ -176,7 +177,7 @@ function* createStakedExpenditure({
         ),
       ),
     );
-    yield put(transactionReady(setExpenditureValues.id));
+    yield initiateTransaction({ id: setExpenditureValues.id });
     yield waitForTxResult(setExpenditureValues.channel);
 
     if (isStaged) {
@@ -184,11 +185,10 @@ function* createStakedExpenditure({
         setExpenditureStaged.channel,
         ActionTypes.TRANSACTION_CREATED,
       );
-      yield put(transactionPending(setExpenditureStaged.id));
       yield put(
         transactionAddParams(setExpenditureStaged.id, [expenditureId, true]),
       );
-      yield put(transactionReady(setExpenditureStaged.id));
+      yield initiateTransaction({ id: setExpenditureStaged.id });
       yield waitForTxResult(setExpenditureStaged.channel);
     }
 
@@ -196,7 +196,6 @@ function* createStakedExpenditure({
       colonyAddress,
       expenditureId,
       fundFromDomainId,
-      expenditureType: ExpenditureType.Staked,
       stages: isStaged ? stages : undefined,
       stakeAmount,
     });
@@ -207,7 +206,11 @@ function* createStakedExpenditure({
       meta,
     });
 
-    navigate(`/colony/${colonyName}/expenditures/${expenditureId}`);
+    if (colonyName && navigate) {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
+    }
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   } finally {

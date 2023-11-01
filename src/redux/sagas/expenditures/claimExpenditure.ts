@@ -2,7 +2,6 @@ import { ClientType } from '@colony/colony-js';
 import { takeEvery, fork, put, all } from 'redux-saga/effects';
 
 import { Action, ActionTypes, AllActions } from '~redux';
-import { transactionPending, transactionReady } from '~redux/actionCreators';
 import { ExpenditurePayout } from '~types';
 
 import {
@@ -10,7 +9,7 @@ import {
   createTransactionChannels,
   waitForTxResult,
 } from '../transactions';
-import { putError, takeFrom } from '../utils';
+import { initiateTransaction, putError, takeFrom } from '../utils';
 
 type PayoutWithSlotId = ExpenditurePayout & {
   slotId: number;
@@ -41,7 +40,6 @@ function* claimExpenditure({
 
   try {
     // Create one claim transaction for each slot
-    // @TODO: We should create one transaction for each token address
     yield all(
       payoutsWithSlotIds.map((payout, index) =>
         fork(createTransaction, channels[getPayoutChannelId(payout)].id, {
@@ -65,8 +63,7 @@ function* claimExpenditure({
         channels[payoutChannelId].channel,
         ActionTypes.TRANSACTION_CREATED,
       );
-      yield put(transactionPending(channels[payoutChannelId].id));
-      yield put(transactionReady(channels[payoutChannelId].id));
+      yield initiateTransaction({ id: channels[payoutChannelId].id });
       yield waitForTxResult(channels[payoutChannelId].channel);
     }
 

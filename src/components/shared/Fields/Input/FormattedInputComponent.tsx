@@ -5,7 +5,6 @@ import {
   Props as CleaveProps,
   ReactInstanceWithCleave,
 } from 'cleave.js/react/props';
-import Decimal from 'decimal.js';
 import { useFormContext } from 'react-hook-form';
 
 import Button from '~shared/Button';
@@ -16,21 +15,6 @@ import styles from './InputComponent.css';
 type CleaveChangeEvent = React.ChangeEvent<
   HTMLInputElement & { rawValue: string }
 >;
-
-const setCleaveRawValue = (
-  cleave: ReactInstanceWithCleave,
-  maxAmount: string,
-  decimalPlaces = 5,
-) => {
-  const decimalValue = new Decimal(maxAmount);
-  if (decimalValue.lt(0.00001) && decimalValue.gt(0)) {
-    cleave.setRawValue(maxAmount);
-  } else {
-    cleave.setRawValue(
-      new Decimal(maxAmount).toDP(decimalPlaces, Decimal.ROUND_DOWN).toString(),
-    );
-  }
-};
 
 const displayName = 'FormattedInputComponent';
 
@@ -68,11 +52,13 @@ const FormattedInputComponent = ({
   name,
   onChange,
   disabled,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  value: _,
   ...restInputProps
 }: FormattedInputComponentProps) => {
-  const { setValue, watch } = useFormContext();
+  const { setValue, getValues } = useFormContext();
+  const value = getValues(name);
   const [cleave, setCleave] = useState<ReactInstanceWithCleave | null>(null);
-  const value = watch(name) || undefined;
 
   /*
    * @NOTE Coerce cleave into handling dynamically changing options
@@ -92,9 +78,6 @@ const FormattedInputComponent = ({
   ) => {
     setValue(name, maxAmount, options);
     customOnClickFn?.(e);
-    if (cleave) {
-      setCleaveRawValue(cleave, maxAmount);
-    }
   };
 
   /**
@@ -107,12 +90,12 @@ const FormattedInputComponent = ({
   };
 
   /**
-   * As the Cleave input is "detached" from hook-form, we need to set the default value,
-   * if any, when the component is mounted
+   * Sync the cleave raw value with hook-form value
+   * This is necessary for correctly setting the initial value
    */
   useEffect(() => {
-    setValue(name, value);
-  }, [name, setValue, value]);
+    cleave?.setRawValue(value);
+  }, [cleave, value]);
 
   return (
     <>
@@ -125,7 +108,6 @@ const FormattedInputComponent = ({
       <Cleave
         {...restInputProps}
         disabled={disabled}
-        value={value}
         name={name}
         key={dynamicCleaveOptionKey}
         /*

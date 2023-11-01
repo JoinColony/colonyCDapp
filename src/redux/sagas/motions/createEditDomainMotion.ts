@@ -26,6 +26,7 @@ import {
   getColonyManager,
   getUpdatedDomainMetadataChangelog,
   uploadAnnotation,
+  initiateTransaction,
 } from '../utils';
 
 import {
@@ -34,11 +35,6 @@ import {
   getTxChannel,
 } from '../transactions';
 // import { ipfsUpload } from '../ipfs';
-import {
-  transactionReady,
-  // transactionPending,
-  // transactionAddParams,
-} from '../../actionCreators';
 
 function* createEditDomainMotion({
   payload: {
@@ -53,11 +49,13 @@ function* createEditDomainMotion({
     parentId = Id.RootDomain,
     motionDomainId,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_DOMAIN_CREATE_EDIT>) {
   let txChannel;
   try {
+    const apolloClient = getContext(ContextModule.ApolloClient);
+
     /*
      * Validate the required values
      */
@@ -182,7 +180,7 @@ function* createEditDomainMotion({
       yield takeFrom(annotateMotion.channel, ActionTypes.TRANSACTION_CREATED);
     }
 
-    yield put(transactionReady(createMotion.id));
+    yield initiateTransaction({ id: createMotion.id });
 
     const {
       payload: { hash: txHash },
@@ -190,9 +188,10 @@ function* createEditDomainMotion({
       createMotion.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
-    yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    const apolloClient = getContext(ContextModule.ApolloClient);
+    setTxHash?.(txHash);
+
+    yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (isCreateDomain) {
       /**
@@ -249,7 +248,7 @@ function* createEditDomainMotion({
       meta,
     });
 
-    if (colonyName) {
+    if (colonyName && navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });

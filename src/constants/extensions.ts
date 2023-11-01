@@ -9,10 +9,17 @@ import {
   convertPeriodToSeconds,
 } from '~utils/extensions';
 
+export enum ExtensionCategory {
+  Payments = 'Payments',
+  DecisionMethods = 'Decision Methods',
+  Expenditures = 'Expenditures',
+}
+
 const oneTransactionPaymentName = 'extensions.OneTxPayment';
 const votingReputationName = 'extensions.VotingReputation';
 const stakedExpenditureName = 'extensions.StakedExpenditure';
 const stagedExpenditureName = 'extensions.StagedExpenditure';
+const streamingPaymentsName = 'extensions.StreamingPayments';
 
 const validationMessages = {
   requiredError: {
@@ -44,26 +51,28 @@ const oneTransactionPaymentMessages = {
   },
   oneTxPaymentDescriptionShort: {
     id: `${oneTransactionPaymentName}.description`,
-    defaultMessage: 'Pay a single account one type of token.',
+    defaultMessage:
+      'Make quick and simple payments to members or any address on the same network.',
   },
   oneTxPaymentDescriptionLong: {
     id: `${oneTransactionPaymentName}.descriptionLong`,
-    defaultMessage: 'Pay a single account one type of token.',
+    defaultMessage:
+      'Make quick and simple payments to members or any address on the same network.',
   },
 };
 
-const votingReputationMessages = {
+export const votingReputationMessages = {
   votingReputationName: {
     id: `${votingReputationName}.name`,
-    defaultMessage: 'Governance (Reputation Weighted)',
+    defaultMessage: 'Reputation Weighted (Lazy Consensus method)',
   },
   votingReputationDescriptionShort: {
     id: `${votingReputationName}.description`,
-    defaultMessage: `Reputation weighted decentralized governance with a minimum of voting.`,
+    defaultMessage: `Enable efficient and decentralized decision making for your colony. Allowing members to propose actions to be taken.`,
   },
   votingReputationDescriptionLong: {
     id: `${votingReputationName}.descriptionLong`,
-    defaultMessage: `This extension allows colonies to be governed by “lazy consensus” which enables decentralized decision making without voting on every decision.\n\n<h4>How it works</h4>A colony member may create a “motion” to take an action within the colony. e.g. Pay Alice 100 xDai.\n\nFor this motion to be valid, the motion must receive a specified “stake” in the colony's native token. This stake acts as a surety that the people who have staked the motion believe that the motion should pass (in this case, that Alice should be paid 100 xDai).\n\nIf the motion does not receive its full stake before the staking period ends, the motion will fail.\n\nAs long as nobody “objects” to the motion, the motion will automatically pass after a security delay, and Alice will be able to claim her 100 xDai.\n\nHowever, if someone believes that Alice should *not* be paid 100 xDai, and believes that a majority of the people in the colony will agree, they can object to the motion by staking in opposition to it, and cause a vote to take place.\n\nVotes are weighted by the voters reputation in the team in which the vote is taking place. Voters are incentivised to vote by being rewarded with a share of the stake of the losing side of the vote. The remainder of the losers stake is divided between the winning and losing stakers, proportional to the outcome of the vote.`,
+    defaultMessage: `<p>This extension allows colonies to be governed by “lazy consensus” which enables decentralized decision making without voting on every decision.</p><h4>How it works</h4><p>A colony member may create a “motion” to take an action within the colony. e.g. Pay Alice 100 xDai.</p><p>For this motion to be valid, the motion must receive a specified “stake” in the colony's native token. This stake acts as a surety that the people who have staked the motion believe that the motion should pass (in this case, that Alice should be paid 100 xDai).</p><p>If the motion does not receive its full stake before the staking period ends, the motion will fail.</p><p>As long as nobody “objects” to the motion, the motion will automatically pass after a security delay, and Alice will be able to claim her 100 xDai.</p><p>However, if someone believes that Alice should *not* be paid 100 xDai, and believes that a majority of the people in the colony will agree, they can object to the motion by staking in opposition to it, and cause a vote to take place.</p><p>Votes are weighted by the voters reputation in the team in which the vote is taking place. Voters are incentivised to vote by being rewarded with a share of the stake of the losing side of the vote. The remainder of the losers stake is divided between the winning and losing stakers, proportional to the outcome of the vote.</p>`,
   },
   votingReputationTotalStakeFractionTitle: {
     id: `${votingReputationName}.param.totalStakeFraction.title`,
@@ -129,6 +138,62 @@ const votingReputationMessages = {
     id: `${votingReputationName}.param.escalationPeriod.description`,
     defaultMessage: `How long do you wish to allow for members to escalate a dispute to a higher team?\n\n<span>e.g. If the escalation phase is 72 hours, once the outcome of a vote is known, if the loser feels the outcome was for any reason incorrect, then they will have 72 hours in which to escalate the dispute to a higher team in the colony by increasing the stake to meet the required stake of that higher team.</span>`,
   },
+  votingReputationRequiredError: {
+    id: `${votingReputationName}.param.validation.requiredError`,
+    defaultMessage: 'Please enter a value.',
+  },
+  votingReputationLessThan50Error: {
+    id: `${votingReputationName}.param.validation.lessThan50Error`,
+    defaultMessage: 'Please enter a percentage less than or equal to 50%.',
+  },
+  votingReputationLessThan100Error: {
+    id: `${votingReputationName}.param.validation.lessThan100Error`,
+    defaultMessage: 'Please enter a percentage less than or equal to 100%.',
+  },
+  votingReputationLessThan1YearError: {
+    id: `${votingReputationName}.param.validation.lessThan50Error`,
+    defaultMessage: 'Please enter hours less than or equal to 1 year.',
+  },
+  votingReputationPositiveError: {
+    id: `${votingReputationName}.param.validation.positiveError`,
+    defaultMessage: 'Please enter a positive number',
+  },
+  votingReputationPermissionArchitecture: {
+    id: `${votingReputationName}.param.permission.architecture`,
+    defaultMessage: 'Architecture',
+  },
+  votingReputationPermissionArchitectureDescription: {
+    id: `${votingReputationName}.param.permission.architectureDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
+  votingReputationPermissionArbitration: {
+    id: `${votingReputationName}.param.permission.arbitration`,
+    defaultMessage: 'Arbitration',
+  },
+  votingReputationPermissionArbitrationDescription: {
+    id: `${votingReputationName}.param.permission.arbitrationDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
+  votingReputationPermissionRecovery: {
+    id: `${votingReputationName}.param.permission.recovery`,
+    defaultMessage: 'Recovery',
+  },
+  votingReputationPermissionRecoveryDescription: {
+    id: `${votingReputationName}.param.permission.recoveryDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
+  votingReputationPermissionFunding: {
+    id: `${votingReputationName}.param.permission.funding`,
+    defaultMessage: 'Funding',
+  },
+  votingReputationPermissionFundingDescription: {
+    id: `${votingReputationName}.param.permission.fundingDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
 };
 
 const stakedExpenditureMessages = {
@@ -167,6 +232,57 @@ const stagedExpenditureMessages = {
     id: `${stagedExpenditureName}.descriptionLong`,
     defaultMessage: 'Staged Expenditure extension.',
   },
+  votingReputationPermissionArchitecture: {
+    id: `${votingReputationName}.param.permission.architecture`,
+    defaultMessage: 'Architecture',
+  },
+  votingReputationPermissionArchitectureDescription: {
+    id: `${votingReputationName}.param.permission.architectureDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
+  votingReputationPermissionArbitration: {
+    id: `${votingReputationName}.param.permission.arbitration`,
+    defaultMessage: 'Arbitration',
+  },
+  votingReputationPermissionArbitrationDescription: {
+    id: `${votingReputationName}.param.permission.arbitrationDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
+  votingReputationPermissionRecovery: {
+    id: `${votingReputationName}.param.permission.recovery`,
+    defaultMessage: 'Recovery',
+  },
+  votingReputationPermissionRecoveryDescription: {
+    id: `${votingReputationName}.param.permission.recoveryDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
+  votingReputationPermissionFunding: {
+    id: `${votingReputationName}.param.permission.funding`,
+    defaultMessage: 'Funding',
+  },
+  votingReputationPermissionFundingDescription: {
+    id: `${votingReputationName}.param.permission.fundingDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
+};
+
+const streamingPaymentsMessage = {
+  streamingPaymentsName: {
+    id: `${streamingPaymentsName}.name`,
+    defaultMessage: 'Streaming Payments',
+  },
+  streamingPaymentsDescriptionShort: {
+    id: `${streamingPaymentsName}.description`,
+    defaultMessage: 'Streaming Payments extension.',
+  },
+  streamingPaymentsDescriptionLong: {
+    id: `${streamingPaymentsName}.descriptionLong`,
+    defaultMessage: 'Streaming Payments extension.',
+  },
 };
 
 const MSG = defineMessages({
@@ -175,23 +291,28 @@ const MSG = defineMessages({
   ...votingReputationMessages,
   ...stakedExpenditureMessages,
   ...stagedExpenditureMessages,
+  ...streamingPaymentsMessage,
 });
 
 export const supportedExtensionsConfig: ExtensionConfig[] = [
   {
     extensionId: Extension.OneTxPayment,
+    category: ExtensionCategory.Payments,
     name: MSG.oneTxPaymentName,
     descriptionShort: MSG.oneTxPaymentDescriptionShort,
     descriptionLong: MSG.oneTxPaymentDescriptionLong,
+    icon: 'extension-one-transaction-payment',
     neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
     uninstallable: false,
     createdAt: 1557698400000,
   },
   {
     extensionId: Extension.VotingReputation,
+    category: ExtensionCategory.DecisionMethods,
     name: MSG.votingReputationName,
     descriptionShort: MSG.votingReputationDescriptionShort,
     descriptionLong: MSG.votingReputationDescriptionLong,
+    icon: 'extension-lazy-consensus',
     neededColonyPermissions: [
       ColonyRole.Root,
       ColonyRole.Administration,
@@ -349,6 +470,8 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     createdAt: 1603915271852,
   },
   {
+    icon: 'extension-advanced-payments',
+    category: ExtensionCategory.Expenditures,
     extensionId: Extension.StakedExpenditure,
     name: MSG.stakedExpenditureName,
     descriptionShort: MSG.stakedExpenditureDescriptionShort,
@@ -382,6 +505,8 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     ],
   },
   {
+    icon: 'extension-advanced-payments',
+    category: ExtensionCategory.Expenditures,
     extensionId: Extension.StagedExpenditure,
     name: MSG.stagedExpenditureName,
     descriptionShort: MSG.stagedExpenditureDescriptionShort,
@@ -391,6 +516,17 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       ColonyRole.Funding,
       ColonyRole.Arbitration,
     ],
+    uninstallable: true,
+    createdAt: 1692048380000,
+  },
+  {
+    icon: 'extension-advanced-payments',
+    category: ExtensionCategory.Expenditures,
+    extensionId: Extension.StreamingPayments,
+    name: MSG.streamingPaymentsName,
+    descriptionShort: MSG.streamingPaymentsDescriptionShort,
+    descriptionLong: MSG.streamingPaymentsDescriptionLong,
+    neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
     uninstallable: true,
     createdAt: 1692048380000,
   },

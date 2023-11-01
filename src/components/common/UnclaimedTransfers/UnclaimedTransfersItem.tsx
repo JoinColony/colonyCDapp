@@ -51,7 +51,7 @@ const UnclaimedTransfersItem = ({ claim }: Props) => {
 
   const transform = mergePayload({
     colonyAddress: colony?.colonyAddress,
-    tokenAddress: token?.tokenAddress,
+    tokenAddresses: [token?.tokenAddress],
   });
 
   const handleClaimSuccess = () => {

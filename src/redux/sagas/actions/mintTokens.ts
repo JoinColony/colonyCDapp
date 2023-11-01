@@ -3,13 +3,17 @@ import { ClientType } from '@colony/colony-js';
 
 import { ActionTypes, AllActions, Action } from '~redux';
 
-import { putError, takeFrom, uploadAnnotation } from '../utils';
+import {
+  initiateTransaction,
+  putError,
+  takeFrom,
+  uploadAnnotation,
+} from '../utils';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '../../actionCreators';
 
 function* createMintTokensAction({
   payload: {
@@ -19,7 +23,7 @@ function* createMintTokensAction({
     amount,
     annotationMessage,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_MINT_TOKENS>) {
   let txChannel;
@@ -92,7 +96,7 @@ function* createMintTokensAction({
       );
     }
 
-    yield put(transactionReady(mintTokens.id));
+    yield initiateTransaction({ id: mintTokens.id });
 
     const {
       payload: { hash: txHash },
@@ -100,8 +104,13 @@ function* createMintTokensAction({
       mintTokens.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(mintTokens.channel, ActionTypes.TRANSACTION_SUCCEEDED);
-    yield put(transactionReady(claimColonyFunds.id));
+
+    yield initiateTransaction({ id: claimColonyFunds.id });
+
     yield takeFrom(claimColonyFunds.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
@@ -118,7 +127,7 @@ function* createMintTokensAction({
     });
 
     // Redirect to actions page
-    if (colonyName) {
+    if (colonyName && navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });

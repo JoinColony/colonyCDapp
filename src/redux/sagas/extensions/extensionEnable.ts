@@ -8,7 +8,6 @@ import {
 
 import { ColonyManager } from '~context';
 import { intArrayToBytes32 } from '~utils/web3';
-import { transactionPending, transactionReady } from '~redux/actionCreators';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
@@ -21,10 +20,10 @@ import {
 import {
   modifyParams,
   putError,
-  refreshEnabledExtension,
   removeOldExtensionClients,
   takeFrom,
   getColonyManager,
+  initiateTransaction,
 } from '../utils';
 
 function* extensionEnable({
@@ -113,15 +112,13 @@ function* extensionEnable({
 
     if (needsInitialisation) {
       yield takeFrom(initialise.channel, ActionTypes.TRANSACTION_CREATED);
-      yield put(transactionPending(initialise.id));
-      yield put(transactionReady(initialise.id));
+      yield initiateTransaction({ id: initialise.id });
       yield waitForTxResult(initialise.channel);
     }
 
     if (needsSettingRoles) {
       yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_CREATED);
-      yield put(transactionPending(setUserRoles.id));
-      yield put(transactionReady(setUserRoles.id));
+      yield initiateTransaction({ id: setUserRoles.id });
       yield waitForTxResult(setUserRoles.channel);
     }
 
@@ -131,12 +128,11 @@ function* extensionEnable({
       meta,
     });
   } catch (error) {
+    console.error(error);
     return yield putError(ActionTypes.EXTENSION_ENABLE_ERROR, error, meta);
+  } finally {
+    [initialise, setUserRoles].map(({ channel }) => channel.close());
   }
-
-  refreshEnabledExtension(colonyAddress, extensionId);
-
-  [initialise, setUserRoles].map((channel) => channel.channel.close());
 
   return null;
 }

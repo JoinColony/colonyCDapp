@@ -5,7 +5,11 @@ import { BigNumber } from 'ethers';
 import { Action, ActionTypes, AllActions } from '~redux';
 import { ExpenditurePayoutFieldValue } from '~common/Expenditures/ExpenditureForm';
 
-import { putError, getSetExpenditureValuesFunctionParams } from '../utils';
+import {
+  putError,
+  getSetExpenditureValuesFunctionParams,
+  initiateTransaction,
+} from '../utils';
 import {
   createTransaction,
   getTxChannel,
@@ -79,6 +83,8 @@ function* editExpenditure({
         resolvedPayouts,
       ),
     });
+
+    yield initiateTransaction({ id: meta.id });
 
     const { type } = yield waitForTxResult(txChannel);
 

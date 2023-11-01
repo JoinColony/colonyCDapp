@@ -12,6 +12,8 @@ const safeLogoIconName = 'safe-logo';
 export const ACTION_TYPES_ICONS_MAP: Record<AnyActionType, string> = {
   [ColonyActionType.WrongColony]: 'forbidden-signal',
   [ColonyActionType.Payment]: 'emoji-dollar-stack',
+  [ColonyActionType.MultiplePayment]: 'emoji-dollar-stack',
+  [ColonyActionType.MultiplePaymentMotion]: 'emoji-dollar-stack',
   [ColonyActionType.Recovery]: 'emoji-alarm-lamp',
   [ColonyActionType.MoveFunds]: 'emoji-world-globe',
   [ColonyActionType.UnlockToken]: 'emoji-padlock',
@@ -36,6 +38,7 @@ export const ACTION_TYPES_ICONS_MAP: Record<AnyActionType, string> = {
   [ColonyActionType.UnlockTokenMotion]: 'emoji-padlock',
   [ColonyActionType.CreateDecisionMotion]: 'emoji-decisions',
   [ColonyActionType.FundExpenditureMotion]: 'emoji-world-globe',
+  [ColonyActionType.CancelStakedExpenditureMotion]: 'forbidden-signal',
   [ColonyActionType.NullMotion]: 'forbidden-signal',
   [ColonyActionType.Generic]: 'circle-check-primary',
   [ColonyActionType.MakeArbitraryTransaction]: '',

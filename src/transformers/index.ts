@@ -51,20 +51,22 @@ const convertRolesToArray = (rolesInDomain?: ColonyRoleFragment | null) =>
     .filter(notUndefined);
 
 export const getUserRolesForDomain = (
-  colony: ColonyFragment,
+  colony: ColonyFragment | undefined,
   userAddress: Address,
   domainId: number,
   excludeInherited = false,
 ): ColonyRole[] => {
-  if (!colony || !domainId || !userAddress) return [];
+  if (!colony) {
+    return [];
+  }
 
-  const userRolesInAnyDomain = colony.roles?.items.find(
+  const userRolesInAnyDomain = colony?.roles?.items.find(
     (domainRole) =>
       domainRole?.domain?.nativeId === domainId &&
       domainRole?.targetAddress === userAddress,
   );
 
-  const userRolesInRootDomain = colony.roles?.items.find(
+  const userRolesInRootDomain = colony?.roles?.items.find(
     (domainRole) =>
       domainRole?.domain?.nativeId === Id.RootDomain &&
       domainRole?.targetAddress === userAddress,

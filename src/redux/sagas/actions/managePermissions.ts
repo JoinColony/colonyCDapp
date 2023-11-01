@@ -12,6 +12,7 @@ import { intArrayToBytes32 } from '~utils/web3';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import {
+  initiateTransaction,
   putError,
   takeFrom,
   uploadAnnotation,
@@ -23,11 +24,7 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import {
-  transactionReady,
-  transactionAddParams,
-  transactionPending,
-} from '../../actionCreators';
+import { transactionAddParams, transactionPending } from '../../actionCreators';
 
 function* managePermissionsAction({
   payload: {
@@ -38,7 +35,7 @@ function* managePermissionsAction({
     colonyName,
     annotationMessage,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_USER_ROLES_SET>) {
   let txChannel;
@@ -133,7 +130,7 @@ function* managePermissionsAction({
         intArrayToBytes32(roleArray),
       ]),
     );
-    yield put(transactionReady(setUserRoles.id));
+    yield initiateTransaction({ id: setUserRoles.id });
 
     const {
       payload: { hash: txHash },
@@ -141,6 +138,8 @@ function* managePermissionsAction({
       setUserRoles.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
 
     yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
@@ -157,7 +156,7 @@ function* managePermissionsAction({
       meta,
     });
 
-    if (colonyName) {
+    if (colonyName && navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });

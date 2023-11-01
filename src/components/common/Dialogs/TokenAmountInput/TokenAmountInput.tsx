@@ -7,7 +7,7 @@ import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 import { notNull } from '~utils/arrays';
 import { toFinite } from '~utils/lodash';
 import { Colony } from '~types';
-import { Input, TokenSymbolSelector } from '~shared/Fields';
+import { Input, InputProps, TokenSymbolSelector } from '~shared/Fields';
 import EthUsd from '~shared/EthUsd';
 import NetworkFee from '~shared/NetworkFee';
 
@@ -25,21 +25,28 @@ const MSG = defineMessages({
     defaultMessage: 'Network fee: {fee} {symbol}',
   },
   token: {
-    id: `${displayName}.address`,
+    id: `${displayName}.token`,
     defaultMessage: 'Token',
   },
 });
 
-interface Props {
+interface Props extends Pick<InputProps, 'label'> {
   colony: Colony;
-  disabled: boolean;
+  disabled?: boolean;
   includeNetworkFee?: boolean;
+  tokenAddressFieldName?: string;
+  amountFieldName?: string;
+  disabledTokenAddress?: boolean;
 }
 
 const TokenAmountInput = ({
   colony,
   disabled,
   includeNetworkFee = false,
+  tokenAddressFieldName = 'tokenAddress',
+  amountFieldName = 'amount',
+  label,
+  disabledTokenAddress,
 }: Props) => {
   const { watch, trigger } = useFormContext();
   const { amount, tokenAddress } = watch();
@@ -65,8 +72,8 @@ const TokenAmountInput = ({
     <div className={styles.tokenAmount}>
       <div className={styles.tokenAmountInputContainer}>
         <Input
-          label={MSG.amount}
-          name="amount"
+          label={label ?? MSG.amount}
+          name={amountFieldName}
           appearance={{
             theme: 'minimal',
             align: 'right',
@@ -82,12 +89,12 @@ const TokenAmountInput = ({
           <TokenSymbolSelector
             label={MSG.token}
             tokens={colonyTokens}
-            name="tokenAddress"
+            name={tokenAddressFieldName}
             elementOnly
             appearance={{ alignOptions: 'right', theme: 'grey' }}
-            disabled={disabled}
+            disabled={disabled || !!disabledTokenAddress}
             onChange={() => {
-              trigger('amount');
+              trigger(amountFieldName);
             }}
           />
         </div>

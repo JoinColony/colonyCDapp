@@ -21,7 +21,6 @@ const AddressDetailsView = ({ item, isSafeItem }: Props) => {
        */
       'Address'
     : item?.profile?.displayName;
-  const username = item?.name;
 
   return (
     <div className={styles.main}>
@@ -32,7 +31,7 @@ const AddressDetailsView = ({ item, isSafeItem }: Props) => {
         placeholderIcon={isSafeItem ? 'safe-logo' : 'circle-person'}
         className={styles.avatar}
       />
-      <span className={styles.name}>{userDisplayName || `@${username}`}</span>
+      <span className={styles.name}>{userDisplayName}</span>
       <MaskedAddress address={item?.walletAddress || ADDRESS_ZERO} />
     </div>
   );

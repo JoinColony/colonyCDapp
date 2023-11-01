@@ -197,7 +197,7 @@ const TokensTab = ({ tokenBalanceData }: TokensTabProps) => {
                   <Icon
                     name="question-mark"
                     title={MSG.pendingError}
-                    appearance={{ size: 'small' }}
+                    appearance={{ size: 'extraSmall' }}
                   />
                 </TokenTooltip>
               </div>

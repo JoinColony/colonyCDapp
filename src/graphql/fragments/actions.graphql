@@ -76,6 +76,11 @@ fragment ColonyAction on ColonyAction {
   }
   individualEvents
   isMotion
+  payments {
+    amount
+    tokenAddress
+    recipientAddress
+  }
   motionData {
     ...ColonyMotion
   }
@@ -85,6 +90,9 @@ fragment ColonyAction on ColonyAction {
       nativeTokenDecimals: decimals
       nativeTokenSymbol: symbol
       tokenAddress: id
+    }
+    tokens {
+      ...ColonyTokensConnection
     }
     metadata {
       ...ColonyMetadata
@@ -186,6 +194,9 @@ fragment ColonyMotion on ColonyMotion {
   isDecision
   gasEstimate
   transactionHash
+  action {
+    type
+  }
 }
 
 fragment MotionMessage on MotionMessage {

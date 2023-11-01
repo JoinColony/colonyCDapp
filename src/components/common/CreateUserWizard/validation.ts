@@ -14,14 +14,14 @@ import { createYupTestFromQuery } from '~utils/yup/tests';
  * [\w-.] can include upper case, lower case, numerals, underscore, hyphen or period
  * {0,254}$ match the preceding set at least 0 and at most 254 times from the end (so excluding the first char)
  */
-const USERNAME_REGEX = /^[A-Za-z0-9][\w-.]{0,254}$/;
+export const USERNAME_REGEX = /^[A-Za-z0-9][\w-.]{0,254}$/;
 
 /*
  * Simple email validation regex. Used to stop test from running if email input is invalid.
  * Note that we could use yup's own regex here, but it's quite unreadable, and this is practically-speaking equivalent.
  */
 // eslint-disable-next-line no-useless-escape
-const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]+$/;
+export const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]+$/;
 
 const { formatMessage } = intl({
   'error.usernameRequired': 'Enter a username to continue',
@@ -34,12 +34,12 @@ const { formatMessage } = intl({
   'error.username': 'This is not a valid colony username',
 });
 
-const isEmailAlreadyRegistered = createYupTestFromQuery({
+export const isEmailAlreadyRegistered = createYupTestFromQuery({
   query: GetProfileByEmailDocument,
   isOptional: true,
   circuitBreaker: isValidEmail,
 });
-const isUsernameTaken = createYupTestFromQuery({
+export const isUsernameTaken = createYupTestFromQuery({
   query: GetUserByNameDocument,
   circuitBreaker: isValidUsername,
 });

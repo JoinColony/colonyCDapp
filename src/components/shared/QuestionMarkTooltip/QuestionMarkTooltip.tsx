@@ -58,7 +58,7 @@ const QuestionMarkTooltip = ({
       <div className={className}>
         <Icon
           name={invertedIcon ? 'question-mark-inverted' : 'question-mark'}
-          appearance={{ size: 'small' }}
+          appearance={{ size: 'extraSmall' }}
           title={iconTitle || ''}
         />
       </div>

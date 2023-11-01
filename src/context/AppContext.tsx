@@ -16,6 +16,7 @@ import {
 } from '~gql';
 import { Address, ColonyWallet, User } from '~types';
 import { useAsyncFunction } from '~hooks';
+import { TokenActivationProvider } from '~shared/TokenActivationProvider';
 
 import { getContext, ContextModule } from './index';
 
@@ -26,6 +27,7 @@ export interface AppContextValues {
   user?: User | null;
   userLoading?: boolean;
   connectWallet?: () => void;
+  disconnectWallet?: () => void;
   updateWallet?: () => void;
   updateUser?: (
     address?: string,
@@ -126,6 +128,24 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [setupUserContext, updateWallet, setWalletConnecting]);
 
+  const userLogout = useAsyncFunction({
+    submit: ActionTypes.USER_LOGOUT,
+    error: ActionTypes.USER_LOGOUT_ERROR,
+    success: ActionTypes.USER_LOGOUT_SUCCESS,
+  });
+
+  /*
+   * Handle wallet disconnection
+   */
+  const disconnectWallet = useCallback(async () => {
+    try {
+      await userLogout(undefined);
+      updateWallet();
+    } catch (error) {
+      console.error('Could not disconnect wallet', error);
+    }
+  }, [userLogout, updateWallet]);
+
   /*
    * When the user switches account in Metamask, re-initiate the wallet connect flow
    * so as to update their wallet details in the app's memory.
@@ -150,6 +170,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       user,
       userLoading,
       connectWallet,
+      disconnectWallet,
       updateWallet,
       updateUser,
     }),
@@ -160,12 +181,15 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       user,
       userLoading,
       connectWallet,
+      disconnectWallet,
       updateWallet,
       updateUser,
     ],
   );
 
   return (
-    <AppContext.Provider value={appContext}>{children}</AppContext.Provider>
+    <AppContext.Provider value={appContext}>
+      <TokenActivationProvider>{children}</TokenActivationProvider>
+    </AppContext.Provider>
   );
 };

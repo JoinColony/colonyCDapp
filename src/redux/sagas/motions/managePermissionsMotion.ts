@@ -12,9 +12,11 @@ import { ADDRESS_ZERO } from '~constants';
 import { Action, ActionTypes, AllActions } from '~redux/index';
 import { putError, takeFrom } from '~utils/saga/effects';
 
-import { transactionReady } from '../../actionCreators';
-
-import { getColonyManager, uploadAnnotation } from '../utils';
+import {
+  getColonyManager,
+  initiateTransaction,
+  uploadAnnotation,
+} from '../utils';
 import {
   createTransaction,
   createTransactionChannels,
@@ -31,7 +33,7 @@ function* managePermissionsMotion({
     annotationMessage,
     motionDomainId,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_USER_ROLES_SET>) {
   let txChannel;
@@ -153,7 +155,7 @@ function* managePermissionsMotion({
       );
     }
 
-    yield put(transactionReady(createMotion.id));
+    yield initiateTransaction({ id: createMotion.id });
 
     const {
       payload: { hash: txHash },
@@ -161,6 +163,8 @@ function* managePermissionsMotion({
       createMotion.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
@@ -176,7 +180,7 @@ function* managePermissionsMotion({
       meta,
     });
 
-    if (colonyName) {
+    if (colonyName && navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });

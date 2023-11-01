@@ -1,0 +1,31 @@
+.container {
+  @apply relative pb-[1.75rem];
+}
+
+.embla {
+  @apply overflow-hidden cursor-grab;
+}
+
+.emblaContainer {
+  @apply flex;
+}
+
+.emblaSlide {
+  @apply min-w-full sm:min-w-[31.875rem] sm:w-[31.875rem] sm:mr-4;
+}
+
+.image {
+  @apply aspect-[380/248] w-full sm:aspect-[510/248] object-cover;
+}
+
+.dots {
+  @apply w-full absolute bottom-0 flex justify-center m-0;
+}
+
+.dot {
+  @apply bg-gray-200 w-2 h-2 cursor-pointer rounded-full mx-1 transition-all duration-normal hover:bg-blue-400;
+}
+
+.dotSelected {
+  @apply bg-gray-500;
+}

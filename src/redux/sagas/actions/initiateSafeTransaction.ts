@@ -171,7 +171,7 @@ function* initiateSafeTransactionAction({
       meta,
     });
 
-    yield navigate(`/colony/${colonyName}/tx/${txHash}`, {
+    yield navigate?.(`/colony/${colonyName}/tx/${txHash}`, {
       state: {
         isRedirect: true,
       },

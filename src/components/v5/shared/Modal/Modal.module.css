@@ -1,0 +1,13 @@
+.inner {
+  @apply flex flex-col w-full flex-grow;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+.icon {
+  @apply flex items-center justify-center w-[2.5rem] h-[2.5rem] rounded border shadow-content mb-4;
+}
+
+.closeIcon {
+  @apply text-gray-400 hover:text-gray-600 absolute top-4 right-4;
+}

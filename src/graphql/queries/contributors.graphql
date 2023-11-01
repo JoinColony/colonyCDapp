@@ -1,0 +1,44 @@
+query GetColonyContributor($id: ID!, $colonyAddress: ID!) {
+  getColonyContributor(id: $id) {
+    ...ColonyContributor
+  }
+}
+
+query GetColonyContributors(
+  $colonyAddress: ID!
+  $sortDirection: ModelSortDirection = ASC
+  $limit: Int
+  $nextToken: String
+) {
+  getContributorsByColony(
+    colonyAddress: $colonyAddress
+    sortDirection: $sortDirection
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      ...ColonyContributor
+    }
+    nextToken
+  }
+}
+
+query GetContributorCount($input: GetTotalMemberCountInput!) {
+  getTotalMemberCount(input: $input) {
+    contributorCount
+    memberCount
+  }
+}
+
+query GetVerifiedMembers($colonyAddress: ID!) {
+  getContributorsByColony(
+    colonyAddress: $colonyAddress
+    filter: { isVerified: { eq: true } }
+  ) {
+    items {
+      user {
+        ...User
+      }
+    }
+  }
+}

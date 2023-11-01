@@ -12,14 +12,14 @@ import { defineMessages, useIntl, MessageDescriptor } from 'react-intl';
 import {
   CREATE_COLONY_ROUTE,
   CREATE_USER_ROUTE,
-  USER_EDIT_ROUTE,
+  USER_EDIT_PROFILE_ROUTE,
   NOT_FOUND_ROUTE,
   LANDING_PAGE_ROUTE,
   COLONY_HOME_ROUTE,
   COLONY_EVENTS_ROUTE,
   ACTIONS_PAGE_ROUTE,
   USER_ROUTE,
-  COLONY_EXTENSION_SETUP_ROUTE,
+  COLONY_EXTENSION_DETAILS_SETUP_ROUTE,
   COLONY_EXTENSION_DETAILS_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
   COLONY_FUNDING_ROUTE,
@@ -131,7 +131,7 @@ const COLONY_HOME_ROUTE_WITHOUT_WILDCARD = COLONY_HOME_ROUTE.slice(0, -2);
 const routeMessages: Record<string, MessageDescriptor> = {
   [CREATE_COLONY_ROUTE]: MSG.createColony,
   [CREATE_USER_ROUTE]: MSG.createUser,
-  [USER_EDIT_ROUTE]: MSG.editProfile,
+  [USER_EDIT_PROFILE_ROUTE]: MSG.editProfile,
   [NOT_FOUND_ROUTE]: MSG.notFound,
   [LANDING_PAGE_ROUTE]: MSG.landing,
   [COLONY_HOME_ROUTE]: MSG.colonyHome,
@@ -141,7 +141,7 @@ const routeMessages: Record<string, MessageDescriptor> = {
     MSG.colonyExtensions,
   [`${COLONY_HOME_ROUTE_WITHOUT_WILDCARD}${COLONY_EXTENSION_DETAILS_ROUTE}`]:
     MSG.colonyExtensionDetails,
-  [`${COLONY_HOME_ROUTE_WITHOUT_WILDCARD}${COLONY_EXTENSION_SETUP_ROUTE}`]:
+  [`${COLONY_HOME_ROUTE_WITHOUT_WILDCARD}${COLONY_EXTENSION_DETAILS_SETUP_ROUTE}`]:
     MSG.colonyExtensionSetup,
   [USER_ROUTE]: MSG.userProfile,
   [ACTIONS_PAGE_ROUTE]: MSG.transactionDetails,
@@ -193,6 +193,7 @@ export const useTitle = (title?: string) => {
       colonyName: colonyDisplayName,
     });
 
+  // @TODO: maybe use a more react-y way to set the title (like react helmet or hoofd)
   document.title = titleToSet;
 };
 

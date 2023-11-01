@@ -6,13 +6,13 @@ import { ColonyManager } from '~context';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { transactionReady } from '../../actionCreators';
 
 import {
   putError,
   takeFrom,
   getColonyManager,
   uploadAnnotation,
+  initiateTransaction,
 } from '../utils';
 import {
   createTransaction,
@@ -28,7 +28,7 @@ function* createRootMotionSaga({
     motionParams,
     annotationMessage,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ROOT_MOTION>) {
   let txChannel;
@@ -124,7 +124,7 @@ function* createRootMotionSaga({
       );
     }
 
-    yield put(transactionReady(createMotion.id));
+    yield initiateTransaction({ id: createMotion.id });
 
     const {
       payload: { hash: txHash },
@@ -132,6 +132,8 @@ function* createRootMotionSaga({
       createMotion.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
 
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
@@ -148,7 +150,7 @@ function* createRootMotionSaga({
       meta,
     });
 
-    if (colonyName) {
+    if (colonyName && navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });

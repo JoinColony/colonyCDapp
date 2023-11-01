@@ -1,6 +1,8 @@
 const webpack = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const Dotenv = require('dotenv-webpack');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const ReactRefreshTypeScript = require('react-refresh-typescript');
 
 const webpackBaseConfig = require('./webpack.base').config;
 
@@ -13,6 +15,9 @@ module.exports = () => ({
   devServer: {
     historyApiFallback: true,
     hot: true,
+    client: {
+      logging: 'error',
+    },
   },
   output: {
     filename: 'dev-[name].js',
@@ -33,6 +38,9 @@ module.exports = () => ({
             options: {
               transpileOnly: true,
               configFile: 'tsconfig.dev.json',
+              getCustomTransformers: () => ({
+                before: [ReactRefreshTypeScript()],
+              }),
             },
           },
         ],
@@ -44,6 +52,7 @@ module.exports = () => ({
     /*
      * Add the rest of the DEVELOPMENT environment required plugins here
      */
+    new ReactRefreshWebpackPlugin(),
     new Dotenv({
       systemvars: !!process.env.CI || !!process.env.DEV,
     }),
@@ -57,6 +66,9 @@ module.exports = () => ({
     }),
     new webpack.DefinePlugin({
       WEBPACK_IS_PRODUCTION: JSON.stringify(false),
+    }),
+    new webpack.DefinePlugin({
+      SAFE_ENABLED_LOCALLY: JSON.stringify(process.env.SAFE === 'enabled'),
     }),
   ],
 });

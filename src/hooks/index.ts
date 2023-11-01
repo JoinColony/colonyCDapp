@@ -39,6 +39,7 @@ export { default as useWindowSize } from './useWindowSize';
 export { default as useAppContext } from './useAppContext';
 export { default as useUserReputation } from './useUserReputation';
 export { default as useMobile } from './useMobile';
+export { default as useTablet } from './useTablet';
 export { default as useSortedContributors } from './useSortedContributors';
 export {
   default as useUserReputationForTopDomains,
@@ -53,13 +54,23 @@ export { default as useTokenActivationContext } from './useTokenActivationContex
 export * from './useCanInteractWithColony';
 export { default as useColonyFundsClaims } from './useColonyFundsClaims';
 export { default as useCurrentSelectedToken } from './useCurrentSelectedToken';
+export { default as useGetNetworkToken } from './useGetNetworkToken';
 export { default as useTokenTotalBalance } from './useTokenTotalBalance';
 export { default as useColonyContractVersion } from './useColonyContractVersion';
 export { default as useNetworkInverseFee } from './useNetworkInverseFee';
 export { default as useUserByAddress } from './useUserByAddress';
 export { default as useUserByName } from './useUserByName';
 export { default as useUserByNameOrAddress } from './useUserByNameOrAddress';
+export { default as useDetectClickOutside } from './useDetectClickOutside';
+export { default as useCurrentPage } from './useCurrentPage';
+export { default as useFetchActiveInstallsExtension } from './useFetchActiveInstallsExtension';
+export { default as useActiveInstalls } from './useActiveInstalls';
 export { default as useGetColonyMembers } from './useGetColonyMembers';
+export { default as useAllMembers } from './members/useAllMembers';
+export { default as useColonyContributors } from './members/useColonyContributors';
+export { default as useContributorBreakdown } from './members/useContributorBreakdown';
+export { default as useGlobalEventHandler } from './useGlobalEventHandler';
+export { default as useFlatFormErrors } from './useFlatFormErrors';
 export { default as useEnoughTokensForStaking } from './useEnoughTokensForStaking';
 export { default as useCurrentBlockTime } from './useCurrentBlockTime';
 export { default as useClipboardCopy } from './useClipboardCopy';

@@ -9,9 +9,9 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '../../actionCreators';
 import {
   getColonyManager,
+  initiateTransaction,
   putError,
   takeFrom,
   uploadAnnotation,
@@ -19,7 +19,7 @@ import {
 
 function* createVersionUpgradeAction({
   payload: { colonyAddress, colonyName, version, annotationMessage },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_VERSION_UPGRADE>) {
   let txChannel;
@@ -79,11 +79,13 @@ function* createVersionUpgradeAction({
       yield takeFrom(annotateUpgrade.channel, ActionTypes.TRANSACTION_CREATED);
     }
 
-    yield put(transactionReady(upgrade.id));
+    yield initiateTransaction({ id: upgrade.id });
 
     const {
       payload: { hash: txHash },
     } = yield takeFrom(upgrade.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
+
+    setTxHash?.(txHash);
 
     yield takeFrom(upgrade.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
@@ -102,7 +104,7 @@ function* createVersionUpgradeAction({
       meta,
     });
 
-    if (colonyName) {
+    if (colonyName && navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });

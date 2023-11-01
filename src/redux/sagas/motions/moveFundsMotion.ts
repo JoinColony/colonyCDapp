@@ -17,6 +17,7 @@ import {
   takeFrom,
   getColonyManager,
   uploadAnnotation,
+  initiateTransaction,
 } from '../utils';
 
 import {
@@ -24,7 +25,6 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '../../actionCreators';
 
 function* moveFundsMotion({
   payload: {
@@ -37,7 +37,7 @@ function* moveFundsMotion({
     tokenAddress,
     annotationMessage,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_MOVE_FUNDS>) {
   let txChannel;
@@ -188,7 +188,7 @@ function* moveFundsMotion({
       );
     }
 
-    yield put(transactionReady(createMotion.id));
+    yield initiateTransaction({ id: createMotion.id });
 
     const {
       payload: { hash: txHash },
@@ -196,6 +196,9 @@ function* moveFundsMotion({
       createMotion.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
@@ -211,7 +214,7 @@ function* moveFundsMotion({
       meta,
     });
 
-    if (colonyName) {
+    if (colonyName && navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });

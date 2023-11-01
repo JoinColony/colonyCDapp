@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
 import Card from '~shared/Card';
-import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
+import ExtensionStatusBadge from '~common/ExtensionStatusBadge';
 import { Heading4 } from '~shared/Heading';
 import Icon from '~shared/Icon';
 import Link from '~shared/Link';
@@ -33,7 +33,7 @@ const ExtensionCard = ({ extensionData }: Props) => {
               <Icon
                 name="colony-logo"
                 title={extensionData.name}
-                appearance={{ size: 'small' }}
+                appearance={{ size: 'extraSmall' }}
               />
             </div>
             <div>

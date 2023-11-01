@@ -62,7 +62,6 @@ const MembersListItem = ({
             address={walletAddress || ''}
             showInfo={showUserInfo}
             notSet={false}
-            // banned={isUserBanned}
             popperOptions={isMobile ? { placement: 'bottom' } : undefined}
           />
         </div>

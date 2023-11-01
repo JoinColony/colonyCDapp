@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useImperativeHandle } from 'react';
 import {
   useForm,
   UseFormProps,
@@ -9,6 +9,8 @@ import {
 } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Schema } from 'yup';
+import AdditionalFormOptionsContextProvider from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import { AdditionalFormOptionsContextValue } from '~context/AdditionalFormOptionsContext/types';
 
 const displayName = 'Form';
 
@@ -32,27 +34,35 @@ export interface FormProps<FormData extends FieldValues> {
   validationSchema?: Schema<FormData>;
   defaultValues?: UseFormProps<FormData>['defaultValues'];
   mode?: UseFormProps<FormData>['mode'];
-  options?: UseFormProps<FormData>;
+  options?: UseFormProps<FormData> & AdditionalFormOptionsContextValue;
   /** Pass true to reset the default values to latest values on form submission. This will reset the isDirty prop. */
   resetOnSubmit?: boolean;
+  className?: string;
 }
 
-const Form = <FormData extends FieldValues>({
-  children,
-  defaultValues,
-  mode = 'onTouched',
-  onSubmit,
-  onError,
-  options,
-  resetOnSubmit = false,
-  validationSchema,
-}: FormProps<FormData>) => {
+const Form = <FormData extends FieldValues>(
+  {
+    children,
+    defaultValues,
+    mode = 'onTouched',
+    onSubmit,
+    onError,
+    options,
+    resetOnSubmit = false,
+    validationSchema,
+    className,
+  }: FormProps<FormData>,
+  ref: React.ForwardedRef<UseFormReturn<FormData, any, undefined>>,
+) => {
+  const { readonly, ...formOptions } = options || {};
   const formHelpers = useForm({
     resolver: validationSchema ? yupResolver(validationSchema) : undefined,
     defaultValues,
     mode,
-    ...options,
+    ...formOptions,
   });
+
+  useImperativeHandle(ref, () => formHelpers);
 
   const {
     handleSubmit,
@@ -73,18 +83,22 @@ const Form = <FormData extends FieldValues>({
   }, [isSubmitting, values, resetOnSubmit, reset]);
 
   return (
-    <FormProvider {...formHelpers}>
-      <form
-        onSubmit={handleSubmit(
-          (data, e) => onSubmit(data, formHelpers, e),
-          (errors, e) => onError && onError(errors, formHelpers, e),
-        )}
-      >
-        {typeof children === 'function' ? children(formHelpers) : children}
-      </form>
-    </FormProvider>
+    <AdditionalFormOptionsContextProvider value={{ readonly }}>
+      <FormProvider {...formHelpers}>
+        <form
+          className={className}
+          onSubmit={handleSubmit(
+            (data, e) => onSubmit(data, formHelpers, e),
+            (errors, e) => onError && onError(errors, formHelpers, e),
+          )}
+        >
+          {typeof children === 'function' ? children(formHelpers) : children}
+        </form>
+      </FormProvider>
+    </AdditionalFormOptionsContextProvider>
   );
 };
 
 Form.displayName = displayName;
-export default Form;
+
+export default React.forwardRef(Form);

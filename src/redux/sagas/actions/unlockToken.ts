@@ -8,12 +8,16 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '~redux/actionCreators';
-import { putError, takeFrom, uploadAnnotation } from '../utils';
+import {
+  initiateTransaction,
+  putError,
+  takeFrom,
+  uploadAnnotation,
+} from '../utils';
 
 function* tokenUnlockAction({
   meta,
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   payload: { colonyAddress, annotationMessage, colonyName },
 }: Action<ActionTypes.ACTION_UNLOCK_TOKEN>) {
   let txChannel;
@@ -67,10 +71,7 @@ function* tokenUnlockAction({
       );
     }
 
-    /*
-     * Check for transaction and wait for response
-     */
-    yield put(transactionReady(tokenUnlock.id));
+    yield initiateTransaction({ id: tokenUnlock.id });
 
     const {
       payload: { hash: txHash },
@@ -78,6 +79,9 @@ function* tokenUnlockAction({
       tokenUnlock.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(tokenUnlock.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
@@ -93,7 +97,7 @@ function* tokenUnlockAction({
       meta,
     });
 
-    if (colonyName) {
+    if (colonyName && navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });

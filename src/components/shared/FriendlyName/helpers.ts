@@ -35,7 +35,7 @@ export const getAddressFromAgent = (
 
 export const getDisplayNameFromAgent = (
   agent: FriendlyNameProps['agent'],
-): string | undefined => {
+): string | null | undefined => {
   if (!agent) {
     return undefined;
   }
@@ -63,7 +63,7 @@ export const getDisplayNameFromAgent = (
     }
 
     case 'User': {
-      return agent.profile?.displayName || agent.name;
+      return agent.profile?.displayName;
     }
 
     default: {

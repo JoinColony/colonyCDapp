@@ -30,6 +30,11 @@
       "providerPlugin": "awscloudformation",
       "service": "LambdaLayer"
     },
+    "createPrivateBetaInvite": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "createUniqueColony": {
       "build": true,
       "dependsOn": [
@@ -88,6 +93,7 @@
     },
     "fetchExpenditureBalances": {
       "build": true,
+      "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
@@ -175,6 +181,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "getTotalMemberCount": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "getSafeTransactionStatus": {
       "build": true,
       "dependsOn": [
@@ -218,6 +229,20 @@
       "service": "Lambda"
     },
     "qaSSMtest": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "colonycdappSSMAccess"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "updateContributorsWithReputation": {
       "build": true,
       "dependsOn": [
         {

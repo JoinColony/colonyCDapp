@@ -2,7 +2,6 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 
 import { Action, ActionTypes, AllActions } from '~redux';
-import { ExpenditureType } from '~gql';
 import { ColonyManager } from '~context';
 
 import {
@@ -10,7 +9,7 @@ import {
   getTxChannel,
   waitForTxResult,
 } from '../transactions';
-import { getColonyManager, putError } from '../utils';
+import { getColonyManager, initiateTransaction, putError } from '../utils';
 
 function* cancelDraftExpenditure({
   meta,
@@ -25,10 +24,7 @@ function* cancelDraftExpenditure({
   const txChannel = yield call(getTxChannel, meta.id);
 
   try {
-    if (
-      expenditure.metadata?.type === ExpenditureType.Staked &&
-      stakedExpenditureAddress
-    ) {
+    if (expenditure.isStaked && stakedExpenditureAddress) {
       const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
         colonyClient,
         expenditure.nativeDomainId,
@@ -42,6 +38,7 @@ function* cancelDraftExpenditure({
         identifier: colonyAddress,
         params: [permissionDomainId, childSkillIndex, expenditure.nativeId],
       });
+      yield initiateTransaction({ id: meta.id });
     } else {
       yield fork(createTransaction, meta.id, {
         context: ClientType.ColonyClient,
@@ -49,6 +46,7 @@ function* cancelDraftExpenditure({
         identifier: colonyAddress,
         params: [expenditure.nativeId],
       });
+      yield initiateTransaction({ id: meta.id });
     }
     const { type } = yield waitForTxResult(txChannel);
 

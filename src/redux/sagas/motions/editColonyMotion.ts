@@ -1,8 +1,8 @@
 import { Id, getChildIndex, ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { isEqual } from '~utils/lodash';
 import { ActionTypes } from '~redux/actionTypes';
-import { transactionReady } from '~redux/actionCreators';
 import { Action, AllActions } from '~redux/types';
 import { ADDRESS_ZERO } from '~constants';
 import { ContextModule, getContext } from '~context';
@@ -15,6 +15,7 @@ import { getPendingMetadataDatabaseId } from '~utils/databaseId';
 
 import {
   getColonyManager,
+  initiateTransaction,
   putError,
   takeFrom,
   uploadAnnotation,
@@ -28,15 +29,17 @@ import { getPendingModifiedTokenAddresses } from '../utils/updateColonyTokens';
 
 function* editColonyMotion({
   payload: {
-    colony: { colonyAddress, name: colonyName },
+    colony: { colonyAddress, name: colonyName, metadata },
     colony,
     colonyDisplayName,
     colonyAvatarImage,
     colonyThumbnail,
     tokenAddresses,
+    colonyDescription,
+    colonyExternalLinks,
     annotationMessage,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_EDIT_COLONY>) {
   let txChannel;
@@ -167,7 +170,7 @@ function* editColonyMotion({
       );
     }
 
-    yield put(transactionReady(createMotion.id));
+    yield initiateTransaction({ id: createMotion.id });
 
     const {
       payload: { hash: txHash },
@@ -175,6 +178,8 @@ function* editColonyMotion({
       createMotion.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     const modifiedTokenAddresses = getPendingModifiedTokenAddresses(
@@ -202,6 +207,8 @@ function* editColonyMotion({
             displayName: colonyDisplayName ?? colony.metadata.displayName,
             avatar: colonyAvatarImage,
             thumbnail: colonyThumbnail,
+            description: colonyDescription,
+            externalLinks: colonyExternalLinks,
             isWhitelistActivated: colony.metadata.isWhitelistActivated,
             whitelistedAddresses: colony.metadata.whitelistedAddresses,
             // We only need a single entry here, as we'll be appending it to the colony's metadata
@@ -218,6 +225,12 @@ function* editColonyMotion({
                     : colonyAvatarImage !== colony.metadata.avatar,
                 hasWhitelistChanged: false,
                 haveTokensChanged,
+                hasDescriptionChanged:
+                  metadata?.description !== colonyDescription,
+                haveExternalLinksChanged: !isEqual(
+                  metadata?.externalLinks,
+                  colonyExternalLinks,
+                ),
                 newSafes: colony.metadata.safes,
                 oldSafes: colony.metadata.safes,
               },
@@ -241,7 +254,7 @@ function* editColonyMotion({
       meta,
     });
 
-    if (colonyName) {
+    if (colonyName && navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });

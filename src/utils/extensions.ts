@@ -1,5 +1,5 @@
+import { Extension, Id } from '@colony/colony-js';
 import Decimal from 'decimal.js';
-import { Id } from '@colony/colony-js';
 
 import {
   AnyExtensionData,
@@ -62,6 +62,17 @@ export const mapToInstalledExtensionData = (
   };
 };
 
+export const canExtensionBeInitialized = (extension: Extension) => {
+  switch (extension) {
+    case Extension.OneTxPayment: {
+      return false;
+    }
+
+    default: {
+      return true;
+    }
+  }
+};
 /**
  * For extensions accepting fraction parameter that the user enters as a percentage
  * while the contracts require the value to be in wei. This function converts the

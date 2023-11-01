@@ -36,6 +36,7 @@ export type NetworkInfo = {
    * Used when adding the network to Metamask
    */
   rpcUrl?: string;
+  iconName?: string;
   /*
    * These props are used when interacting with the Safe Control dialogs
    */
@@ -87,6 +88,7 @@ export const GNOSIS_NETWORK: NetworkInfo = {
   blockExplorerUrl: 'https://gnosis.blockscout.com/',
   tokenExplorerLink: 'https://gnosis.blockscout.com/tokens',
   contractAddressLink: 'https://gnosis.blockscout.com/address',
+  iconName: 'gnosis',
 };
 
 export const ETHEREUM_NETWORK: NetworkInfo = {
@@ -98,6 +100,7 @@ export const ETHEREUM_NETWORK: NetworkInfo = {
   displayENSDomain: 'joincolony.eth',
   tokenExplorerLink: 'https://etherscan.io/tokens',
   contractAddressLink: 'https://etherscan.io/address',
+  iconName: 'ethereum-icon',
   safeTxService: 'https://safe-transaction-mainnet.safe.global/api',
   rpcUrl: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
   apiUri: 'https://api.etherscan.io/api',
@@ -125,6 +128,7 @@ export const GANACHE_NETWORK: NetworkInfo = {
   displayENSDomain: 'joincolony.eth',
   tokenExplorerLink: 'http://localhost',
   contractAddressLink: 'http://localhost',
+  iconName: 'ganache',
   nativeToken: ETHER_TOKEN,
 };
 
@@ -196,9 +200,19 @@ export const isDev = process.env.NETWORK === 'ganache';
 
 export const CDAPP_VERSION = version;
 
+export const MAX_INSTALLED_NUMBER = 39;
+
 export const STAKING_THRESHOLD = 10;
 
+export const VERIFIED_MEMBERS_LIST_LIMIT = 10;
+export const HOMEPAGE_MEMBERS_LIST_LIMIT = 8;
+export const HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT = 5;
+export const MEMBERS_LIST_LIMIT = 12;
+export const MEMBERS_MOBILE_LIST_LIMIT = 6;
+
 export const MAX_COLONY_DISPLAY_NAME = 20;
+
+export const MAX_DOMAIN_PURPOSE_LENGTH = 90;
 
 export const MAX_ANNOTATION_LENGTH = 4000;
 
@@ -206,6 +220,7 @@ export const MIN_VOTING_REPUTATION_VERSION_FOR_DECISIONS = 7;
 
 export const ACTION_DECISION_MOTION_CODE = '0x12345678';
 
+export const VOTING_THRESHOLD = 40;
 export const SUPPORTED_SAFE_NETWORKS: NetworkInfo[] = [
   ETHEREUM_NETWORK,
   BINANCE_NETWORK,

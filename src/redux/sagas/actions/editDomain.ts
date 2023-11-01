@@ -16,16 +16,13 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+import { transactionPending, transactionAddParams } from '../../actionCreators';
 import {
   putError,
   takeFrom,
   getUpdatedDomainMetadataChangelog,
   uploadAnnotation,
+  initiateTransaction,
   getColonyManager,
 } from '../utils';
 
@@ -39,7 +36,7 @@ function* editDomainAction({
     domain,
     annotationMessage,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_DOMAIN_EDIT>) {
   let txChannel;
@@ -115,7 +112,7 @@ function* editDomainAction({
       ]),
     );
 
-    yield put(transactionReady(editDomain.id));
+    yield initiateTransaction({ id: editDomain.id });
 
     const {
       payload: { hash: txHash },
@@ -123,6 +120,9 @@ function* editDomainAction({
       editDomain.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(editDomain.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     /**
@@ -166,7 +166,7 @@ function* editDomainAction({
       meta,
     });
 
-    if (colonyName) {
+    if (colonyName && navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });

@@ -17,7 +17,12 @@ import {
   createTransactionChannels,
   waitForTxResult,
 } from '~redux/sagas/transactions';
-import { createInvalidParamsError, getColonyManager } from '~redux/sagas/utils';
+import {
+  createInvalidParamsError,
+  getColonyManager,
+  initiateTransaction,
+  takeFrom,
+} from '~redux/sagas/utils';
 import { Action } from '~redux/types';
 
 function* fundExpenditureMotion({
@@ -29,12 +34,13 @@ function* fundExpenditureMotion({
     fromDomainId,
     /* annotationMessage */
   },
+  meta: { setTxHash, id },
   meta,
 }: Action<ActionTypes.MOTION_EXPENDITURE_FUND>) {
   const batchId = 'motion-fund-expenditures';
   const { createMotion /* annotationMessage */ } = yield call(
     createTransactionChannels,
-    batchId,
+    id,
     ['createMotion', 'annotateMotion'],
   );
 
@@ -164,6 +170,17 @@ function* fundExpenditureMotion({
       },
     });
 
+    yield initiateTransaction({ id: createMotion.id });
+
+    const {
+      payload: { hash: txHash },
+    } = yield takeFrom(
+      createMotion.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
+
+    setTxHash?.(txHash);
+
     const { type } = yield call(waitForTxResult, createMotion.channel);
 
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
@@ -189,6 +206,6 @@ function* fundExpenditureMotion({
   // @todo add annotation logic post-rebase on master
 }
 
-export function* fundExpenditureMotionSaga() {
+export default function* fundExpenditureMotionSaga() {
   yield takeEvery(ActionTypes.MOTION_EXPENDITURE_FUND, fundExpenditureMotion);
 }

@@ -18,6 +18,22 @@ const cache = new InMemoryCache({
     ModelColonyConnection: {
       merge: false,
     },
+    Domain: {
+      fields: {
+        metadata: {
+          merge(existing, incoming) {
+            // If there's no existing metadata, use the incoming data
+            if (!existing) return incoming;
+
+            // Otherwise, merge the existing and incoming data
+            return {
+              ...existing,
+              ...incoming,
+            };
+          },
+        },
+      },
+    },
     Query: {
       fields: {
         getActionsByColony: {
@@ -49,6 +65,42 @@ const cache = new InMemoryCache({
               };
             }
             return undefined;
+          },
+        },
+        getColony: {
+          keyArgs: ['id'],
+          merge(existing = {}, incoming = {}) {
+            // Merge watchers
+            const watchers = existing.watchers
+              ? {
+                  ...existing.watchers,
+                  ...(incoming.watchers ?? {}),
+                  items: [
+                    ...(existing?.watchers?.items ?? []),
+                    ...(incoming?.watchers?.items ?? []),
+                  ],
+                }
+              : incoming.watchers;
+
+            // Merge extensions
+            const extensions = existing.extensions
+              ? {
+                  ...existing.extensions,
+                  ...(incoming.extensions ?? {}),
+                  items: [
+                    ...(existing?.extensions?.items ?? []),
+                    ...(incoming?.extensions?.items ?? []),
+                  ],
+                }
+              : incoming.extensions;
+
+            // Return the merged object
+            return {
+              ...existing,
+              ...incoming,
+              watchers,
+              extensions,
+            };
           },
         },
       },

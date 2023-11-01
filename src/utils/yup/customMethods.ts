@@ -1,4 +1,4 @@
-import { addMethod, string, TestOptionsMessage } from 'yup';
+import { addMethod, string, TestOptionsMessage, array } from 'yup';
 
 import { isAddress } from '~utils/web3';
 
@@ -39,6 +39,19 @@ function hasHexPrefix(msg?: TestOptionsMessage) {
   });
 }
 
+function unique(message, mapper = (a) => a) {
+  return this.test({
+    name: 'unique',
+    message,
+    test(list) {
+      if (!list) return true;
+
+      return list.length === new Set(list.map(mapper)).size;
+    },
+  });
+}
+
 addMethod(string, 'address', address);
 addMethod(string, 'hexString', hexString);
 addMethod(string, 'hasHexPrefix', hasHexPrefix);
+addMethod(array, 'unique', unique);

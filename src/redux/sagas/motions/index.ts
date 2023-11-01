@@ -15,7 +15,10 @@ import paymentMotionSaga from './paymentMotion';
 import manageReputationMotionSaga from './manageReputationMotion';
 import editColonyMotionSaga from './editColonyMotion';
 import createDecisionMotionSaga from './createDecisionMotion';
-import { fundExpenditureMotionSaga } from './expenditures';
+import {
+  fundExpenditureMotionSaga,
+  cancelStakedExpenditureMotionSaga,
+} from './expenditures';
 import initiateSafeTransactionMotionSaga from './initiateSafeTransactionMotion';
 
 export default function* actionsSagas() {
@@ -32,8 +35,8 @@ export default function* actionsSagas() {
     call(managePermissionsMotionSaga),
     call(editColonyMotionSaga),
     call(createDecisionMotionSaga),
-    // call(updateMotionStateSaga),
     call(fundExpenditureMotionSaga),
+    call(cancelStakedExpenditureMotionSaga),
     call(paymentMotionSaga),
     // call(escalateMotionSaga),
     call(manageReputationMotionSaga),

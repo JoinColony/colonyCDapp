@@ -8,6 +8,7 @@ import { useUserByAddress } from '~hooks';
 
 import sharedStyles from '../DetailsWidget.css';
 import styles from './UserDetail.css';
+import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 const displayName = 'DetailsWidget.UserDetail';
 
@@ -31,7 +32,6 @@ interface Props {
 const UserDetail = ({ walletAddress }: Props) => {
   const { user } = useUserByAddress(walletAddress);
   const userDisplayName = user?.profile?.displayName;
-  const username = user?.name;
 
   return (
     <div className={styles.main}>
@@ -43,9 +43,9 @@ const UserDetail = ({ walletAddress }: Props) => {
         popperOptions={userDetailPopoverOptions}
       />
       <div className={styles.textContainer}>
-        {(userDisplayName || username) && (
+        {(userDisplayName || splitWalletAddress(walletAddress)) && (
           <div className={styles.username}>
-            {userDisplayName || `@${username}`}
+            {userDisplayName || splitWalletAddress(walletAddress)}
           </div>
         )}
         <Address

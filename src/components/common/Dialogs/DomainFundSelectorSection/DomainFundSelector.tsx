@@ -18,6 +18,7 @@ interface Props {
   label: MessageDescriptor | string;
   onChange?: (val: any) => void;
   disabled?: boolean;
+  hideBalance?: boolean;
 }
 
 const DomainFundSelector = ({
@@ -26,6 +27,7 @@ const DomainFundSelector = ({
   name,
   label,
   onChange,
+  hideBalance,
 }: Props) => {
   const {
     formState: { isSubmitting, errors },
@@ -129,7 +131,7 @@ const DomainFundSelector = ({
         dataTest="domainIdSelector"
         itemDataTest="domainIdItem"
       />
-      {!errors[name] && (
+      {!errors[name] && !hideBalance && (
         <DomainBalance colony={colony} domainFieldName={name} />
       )}
     </div>

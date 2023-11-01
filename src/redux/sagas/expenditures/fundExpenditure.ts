@@ -5,7 +5,6 @@ import { Action, ActionTypes, AllActions } from '~redux';
 import {
   transactionAddParams,
   transactionPending,
-  transactionReady,
 } from '~redux/actionCreators';
 
 import {
@@ -14,7 +13,7 @@ import {
   createTransactionChannels,
   waitForTxResult,
 } from '../transactions';
-import { putError, takeFrom } from '../utils';
+import { initiateTransaction, putError, takeFrom } from '../utils';
 import { getExpenditureBalancesByTokenAddress } from '../utils/expenditures';
 
 function* fundExpenditure({
@@ -70,7 +69,7 @@ function* fundExpenditure({
           tokenAddress,
         ]),
       );
-      yield put(transactionReady(channels[tokenAddress].id));
+      yield initiateTransaction({ id: channels[tokenAddress].id });
       yield waitForTxResult(channels[tokenAddress].channel);
     }
 

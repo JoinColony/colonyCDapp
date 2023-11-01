@@ -28,6 +28,11 @@ import {
   UnclaimedStakesFragment,
   AnnotationFragment,
   ColonyDecisionFragment,
+  ColonyContributorFragment,
+  ContributorReputationFragment,
+  ContributorRolesFragment,
+  TransactionStatus,
+  TransactionFragment,
   ExpenditureFragment,
   ExpenditureSlotFragment,
   ExpenditurePayoutFragment,
@@ -42,6 +47,12 @@ import {
 export type AnnotationType = AnnotationFragment;
 
 export type ColonyDecision = ColonyDecisionFragment;
+
+export type ColonyContributor = ColonyContributorFragment;
+
+export type ContributorReputation = ContributorReputationFragment;
+
+export type ContributorRoles = ContributorRolesFragment;
 
 export type User = UserFragment;
 
@@ -63,6 +74,8 @@ export type MotionMessage = MotionMessageFragment;
 
 export type Token = TokenFragment;
 
+export type Transaction = TransactionFragment;
+
 export type WatchListItem = WatchListItemFragment;
 
 export type WatchedColony = WatchedColonyFragment;
@@ -78,6 +91,8 @@ export { ColonyActionType };
 export { ModelSortDirection as SortDirection };
 
 export { DomainColor };
+
+export { TransactionStatus };
 
 /*
  * Funds claims

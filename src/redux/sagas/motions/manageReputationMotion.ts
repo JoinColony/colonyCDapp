@@ -16,6 +16,7 @@ import {
   updateDomainReputation,
   getColonyManager,
   uploadAnnotation,
+  initiateTransaction,
 } from '../utils';
 
 import {
@@ -23,7 +24,6 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '../../actionCreators';
 
 export type ManageReputationMotionPayload =
   Action<ActionTypes.MOTION_MANAGE_REPUTATION>['payload'];
@@ -39,7 +39,7 @@ function* manageReputationMotion({
     motionDomainId,
     isSmitingReputation,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_MANAGE_REPUTATION>) {
   let txChannel;
@@ -171,7 +171,7 @@ function* manageReputationMotion({
       );
     }
 
-    yield put(transactionReady(createMotion.id));
+    yield initiateTransaction({ id: createMotion.id });
 
     const {
       payload: { hash: txHash },
@@ -179,6 +179,9 @@ function* manageReputationMotion({
       createMotion.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
@@ -199,7 +202,7 @@ function* manageReputationMotion({
       meta,
     });
 
-    if (colonyName) {
+    if (colonyName && navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });

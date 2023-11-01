@@ -4,14 +4,18 @@ import { utils } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom, getColonyManager } from '../utils';
+import {
+  putError,
+  takeFrom,
+  getColonyManager,
+  initiateTransaction,
+} from '../utils';
 
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '../../actionCreators';
 import { signMessage } from '../messages';
 
 export type MotionVotePayload = Action<ActionTypes.MOTION_VOTE>['payload'];
@@ -80,7 +84,7 @@ function* voteMotion({
       ActionTypes.TRANSACTION_CREATED,
     );
 
-    yield put(transactionReady(voteMotionTransaction.id));
+    yield initiateTransaction({ id: voteMotionTransaction.id });
 
     yield takeFrom(
       voteMotionTransaction.channel,

@@ -4,14 +4,15 @@ import { ClientType } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom } from '../utils';
+import { initiateTransaction, putError, takeFrom } from '../utils';
 
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions';
-import { transactionReady, transactionUpdateGas } from '../../actionCreators';
+import { transactionUpdateGas } from '../../actionCreators';
 import { DEFAULT_GAS_LIMIT } from '~constants';
 
 function* finalizeMotion({
@@ -50,17 +51,16 @@ function* finalizeMotion({
       }),
     );
 
-    yield put(transactionReady(finalizeMotionTransaction.id));
+    yield initiateTransaction({ id: finalizeMotionTransaction.id });
 
-    yield takeFrom(
-      finalizeMotionTransaction.channel,
-      ActionTypes.TRANSACTION_SUCCEEDED,
-    );
+    const { type } = yield waitForTxResult(finalizeMotionTransaction.channel);
 
-    yield put<AllActions>({
-      type: ActionTypes.MOTION_FINALIZE_SUCCESS,
-      meta,
-    });
+    if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
+      yield put<AllActions>({
+        type: ActionTypes.MOTION_FINALIZE_SUCCESS,
+        meta,
+      });
+    }
   } catch (error) {
     return yield putError(ActionTypes.MOTION_FINALIZE_ERROR, error, meta);
   } finally {

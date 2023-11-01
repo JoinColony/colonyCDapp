@@ -29,7 +29,7 @@ exports.handler = async (event) => {
     throw new Error('Unable to set environment variables. Reason:', e);
   }
 
-  const { id: walletAddress, name, profile } = event.arguments?.input || {};
+  const { id: walletAddress, profile } = event.arguments?.input || {};
 
   let checksummedWalletAddress;
   try {
@@ -40,7 +40,7 @@ exports.handler = async (event) => {
 
   const query = await graphqlRequest(
     getUser,
-    { id: checksummedWalletAddress, name },
+    { id: checksummedWalletAddress, name: profile.displayName },
     graphqlURL,
     apiKey,
   );
@@ -52,12 +52,12 @@ exports.handler = async (event) => {
     );
   }
 
-  const [existingUserWallet] = query?.data?.getUserByAddress?.items || {};
-  const [existingUserName] = query?.data?.getUserByName?.items || {};
+  const { id: existingUserWallet } = query?.data?.getProfile ?? {};
+  const [existingUserName] = query?.data?.getProfileByUsername?.items || {};
 
   if (existingUserWallet) {
     throw new Error(
-      `User with wallet address "${existingUserWallet.id}" is already registered`,
+      `User with wallet address "${existingUserWallet}" is already registered`,
     );
   }
 
@@ -76,6 +76,7 @@ exports.handler = async (event) => {
       input: {
         id: checksummedWalletAddress,
         ...profile,
+        displayNameChanged: new Date().toISOString(),
       },
     },
     graphqlURL,
@@ -90,7 +91,6 @@ exports.handler = async (event) => {
     {
       input: {
         id: checksummedWalletAddress,
-        name,
         profileId: checksummedWalletAddress,
       },
     },
@@ -102,7 +102,7 @@ exports.handler = async (event) => {
     const [error] = mutation.errors;
     throw new Error(
       error?.message ||
-        `Could not create user "${name}" with wallet address "${checksummedWalletAddress}"`,
+        `Could not create user "${profile.displayName}" with wallet address "${checksummedWalletAddress}"`,
     );
   }
 

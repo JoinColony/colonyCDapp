@@ -39,6 +39,7 @@ const config = {
         //   '~dialogs': path.resolve(__dirname, 'src/modules/dashboard/components/Dialogs')
         '~cache': path.resolve(__dirname, 'src/cache'),
         '~transformers': path.resolve(__dirname, 'src/transformers'),
+        '~v5': path.resolve(__dirname, 'src/components/v5'),
         assert: 'assert',
         buffer: 'buffer',
         crypto: 'crypto-browserify',
@@ -65,25 +66,48 @@ const config = {
     rules: [
       {
         test: /\.css$/,
-        include: [
-          path.resolve(__dirname, 'src', 'components'),
-          path.resolve(__dirname, 'src', 'styles'),
-        ],
-        use: [
-          'style-loader',
-          '@teamsupercell/typings-for-css-modules-loader',
+        oneOf: [
           {
-            loader: 'css-loader',
-            options: {
-              modules: {
-                mode: 'local',
-                exportLocalsConvention: 'camelCaseOnly',
-                localIdentName: '[name]_[local]_[contenthash:base64:8]',
+            test: /\.global\.css$/,
+            include: [
+              path.resolve(__dirname, 'src', 'components'),
+              path.resolve(__dirname, 'src', 'styles'),
+            ],
+            use: [
+              'style-loader',
+              '@teamsupercell/typings-for-css-modules-loader',
+              {
+                loader: 'css-loader',
+                options: {
+                  importLoaders: 1,
+                },
               },
-              importLoaders: 1,
-            },
+              'postcss-loader',
+            ],
           },
-          'postcss-loader',
+          {
+            test: /\.css$/,
+            include: [
+              path.resolve(__dirname, 'src', 'components'),
+              path.resolve(__dirname, 'src', 'styles'),
+            ],
+            use: [
+              'style-loader',
+              '@teamsupercell/typings-for-css-modules-loader',
+              {
+                loader: 'css-loader',
+                options: {
+                  modules: {
+                    mode: 'local',
+                    exportLocalsConvention: 'camelCaseOnly',
+                    localIdentName: '[name]_[local]_[contenthash:base64:8]',
+                  },
+                  importLoaders: 1,
+                },
+              },
+              'postcss-loader',
+            ],
+          },
         ],
       },
       {

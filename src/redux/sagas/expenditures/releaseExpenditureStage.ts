@@ -9,7 +9,7 @@ import {
   getTxChannel,
   waitForTxResult,
 } from '../transactions';
-import { getColonyManager, putError } from '../utils';
+import { getColonyManager, initiateTransaction, putError } from '../utils';
 
 function* releaseExpenditureStage({
   payload: {
@@ -50,6 +50,7 @@ function* releaseExpenditureStage({
       ],
     });
 
+    yield initiateTransaction({ id: meta.id });
     yield waitForTxResult(txChannel);
 
     yield put<AllActions>({

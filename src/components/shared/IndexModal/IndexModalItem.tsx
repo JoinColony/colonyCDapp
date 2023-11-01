@@ -63,7 +63,11 @@ const IndexModalItem = ({
       <div>
         <Paragraph className={styles.title}>
           <span className={styles.iconTitle}>
-            <Icon appearance={{ size: 'small' }} name={icon} title={title} />
+            <Icon
+              appearance={{ size: 'extraSmall' }}
+              name={icon}
+              title={title}
+            />
           </span>
           <FormattedMessage {...title} />
           {comingSoon && (

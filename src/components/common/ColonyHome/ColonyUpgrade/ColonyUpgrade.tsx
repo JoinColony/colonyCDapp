@@ -68,7 +68,7 @@ const ColonyUpgrade = () => {
     wallet?.address ?? '',
   ]);
 
-  const canUpgradeColony = user?.name && hasRoot(allUserRoles);
+  const canUpgradeColony = user?.profile?.displayName && hasRoot(allUserRoles);
 
   const mustUpgrade = mustColonyBeUpgraded(colony, colonyContractVersion);
   const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);

@@ -21,7 +21,7 @@ fragment Colony on Colony {
   motionsWithUnclaimedStakes {
     ...UnclaimedStakes
   }
-  domains {
+  domains(sortDirection: ASC) {
     items {
       ...Domain
     }
@@ -47,6 +47,9 @@ fragment Colony on Colony {
       ...ColonyRole
     }
   }
+  reputation
+  expendituresGlobalClaimDelay
+  private
 }
 
 fragment ColonyDisplay on Colony {
@@ -84,6 +87,7 @@ fragment WatchedColony on Colony {
   name
   chainMetadata {
     chainId
+    network
   }
   metadata {
     ...ColonyMetadata
@@ -100,9 +104,18 @@ fragment WatchListItem on WatchedColonies {
 fragment ColonyMetadata on ColonyMetadata {
   displayName
   avatar
+  description
+  externalLinks {
+    name
+    link
+  }
   thumbnail
   isWhitelistActivated
   whitelistedAddresses
+  modifiedTokenAddresses {
+    added
+    removed
+  }
   changelog {
     transactionHash
     newDisplayName
@@ -110,6 +123,8 @@ fragment ColonyMetadata on ColonyMetadata {
     hasAvatarChanged
     hasWhitelistChanged
     haveTokensChanged
+    hasDescriptionChanged
+    haveExternalLinksChanged
     newSafes {
       ...Safe
     }
@@ -159,6 +174,7 @@ fragment ChainFundsClaim on ColonyChainFundsClaim {
 fragment ColonyRole on ColonyRole {
   id
   domain {
+    id
     # @TODO Make a "Light" fragment out of this
     nativeId
   }

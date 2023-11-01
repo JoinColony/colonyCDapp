@@ -6,23 +6,22 @@ import { Colony } from '~types';
 import { addressHasRoles } from '~utils/checks';
 
 const useDialogActionPermissions = (
-  colony: Colony,
+  colony: Colony | undefined,
   isVotingExtensionEnabled: boolean,
   requiredRoles: ColonyRole[],
   requiredRolesDomains: number[],
   hasReputation: boolean,
 ): [boolean, boolean] => {
   const { wallet } = useAppContext();
-  const { watch } = useFormContext();
-  const forceAction = watch('forceAction');
+  const method = useFormContext();
+  const forceAction = method?.watch('forceAction');
 
   const hasRoles = addressHasRoles({
-    address: wallet?.address ?? '',
     colony,
-    requiredRolesDomains,
     requiredRoles,
+    requiredRolesDomains,
+    address: wallet?.address ?? '',
   });
-
   const onlyForceAction =
     isVotingExtensionEnabled && !hasReputation && !forceAction;
 

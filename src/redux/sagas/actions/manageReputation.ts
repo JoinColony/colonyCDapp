@@ -5,6 +5,7 @@ import { Action, ActionTypes, AllActions } from '~redux';
 import { ColonyManager } from '~context';
 
 import {
+  initiateTransaction,
   putError,
   takeFrom,
   uploadAnnotation,
@@ -17,7 +18,6 @@ import {
   getTxChannel,
 } from '../transactions';
 import {
-  transactionReady,
   transactionAddParams,
   transactionPending,
 } from '~redux/actionCreators';
@@ -32,7 +32,7 @@ function* manageReputationAction({
     isSmitingReputation,
     annotationMessage,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_MANAGE_REPUTATION>) {
   let txChannel;
@@ -125,7 +125,7 @@ function* manageReputationAction({
       );
     }
 
-    yield put(transactionReady(manageReputation.id));
+    yield initiateTransaction({ id: manageReputation.id });
 
     const {
       payload: { hash: txHash },
@@ -133,6 +133,8 @@ function* manageReputationAction({
       manageReputation.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
 
     yield takeFrom(manageReputation.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
@@ -149,7 +151,7 @@ function* manageReputationAction({
       meta,
     });
 
-    if (colonyName) {
+    if (colonyName && navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });

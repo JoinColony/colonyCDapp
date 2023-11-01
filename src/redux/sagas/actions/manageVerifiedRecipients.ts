@@ -3,9 +3,17 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { Action, AllActions, ActionTypes } from '~redux';
 import { ContextModule, getContext } from '~context';
-import { transactionPending, transactionReady } from '~redux/actionCreators';
 import {
+  CreateColonyContributorDocument,
+  CreateColonyContributorMutation,
+  CreateColonyContributorMutationVariables,
+  GetColonyContributorDocument,
+  GetColonyContributorQuery,
+  GetColonyContributorQueryVariables,
   GetFullColonyByNameDocument,
+  UpdateColonyContributorDocument,
+  UpdateColonyContributorMutation,
+  UpdateColonyContributorMutationVariables,
   UpdateColonyMetadataDocument,
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
@@ -18,27 +26,31 @@ import {
 } from '../transactions';
 import {
   getUpdatedColonyMetadataChangelog,
+  initiateTransaction,
   putError,
   takeFrom,
   uploadAnnotation,
 } from '../utils';
+import { getColonyContributorId } from '~utils/members';
 
 function* manageVerifiedRecipients({
   payload: {
     colony,
-    colony: { colonyAddress },
+    colony: { colonyAddress, name: colonyName },
     colonyDisplayName,
     // colonyAvatarHash,
     verifiedAddresses = [],
     // colonyTokens = [],
     annotationMessage,
     isWhitelistActivated,
+    removedAddresses,
     // colonySafes = [],
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE>) {
   let txChannel;
+
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
 
@@ -89,7 +101,7 @@ function* manageVerifiedRecipients({
       );
     }
 
-    yield put(transactionPending(editColony.id));
+    // yield put(transactionPending(editColony.id));
 
     /*
      * Upload colony metadata to IPFS
@@ -114,7 +126,7 @@ function* manageVerifiedRecipients({
     //   ]),
     // );
 
-    yield put(transactionReady(editColony.id));
+    yield initiateTransaction({ id: editColony.id });
 
     const {
       payload: { hash: txHash },
@@ -122,6 +134,9 @@ function* manageVerifiedRecipients({
       editColony.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
@@ -160,17 +175,80 @@ function* manageVerifiedRecipients({
       });
     }
 
+    yield Promise.all(
+      verifiedAddresses.map(async (address) => {
+        const { data } = await apolloClient.query<
+          GetColonyContributorQuery,
+          GetColonyContributorQueryVariables
+        >({
+          query: GetColonyContributorDocument,
+          variables: {
+            id: getColonyContributorId(colonyAddress, address),
+            colonyAddress,
+          },
+        });
+
+        const isAlreadyContributor = !!data.getColonyContributor;
+
+        if (isAlreadyContributor) {
+          await apolloClient.mutate<
+            UpdateColonyContributorMutation,
+            UpdateColonyContributorMutationVariables
+          >({
+            mutation: UpdateColonyContributorDocument,
+            variables: {
+              input: {
+                id: getColonyContributorId(colonyAddress, address),
+                isVerified: true,
+              },
+            },
+          });
+        } else {
+          await apolloClient.mutate<
+            CreateColonyContributorMutation,
+            CreateColonyContributorMutationVariables
+          >({
+            mutation: CreateColonyContributorDocument,
+            variables: {
+              input: {
+                id: getColonyContributorId(colonyAddress, address),
+                colonyAddress,
+                colonyReputationPercentage: 0,
+                contributorAddress: address,
+                isVerified: true,
+              },
+            },
+          });
+        }
+      }),
+    );
+
+    yield Promise.all(
+      removedAddresses.map(async (address) => {
+        await apolloClient.mutate<
+          UpdateColonyContributorMutation,
+          UpdateColonyContributorMutationVariables
+        >({
+          mutation: UpdateColonyContributorDocument,
+          variables: {
+            input: {
+              id: getColonyContributorId(colonyAddress, address),
+              isVerified: false,
+            },
+          },
+        });
+      }),
+    );
+
     yield put<AllActions>({
       type: ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_SUCCESS,
       payload: {},
       meta,
     });
 
-    if (colony.name && navigate) {
-      yield navigate(`/colony/${colony.name}/tx/${txHash}`, {
-        state: {
-          isRedirect: true,
-        },
+    if (colonyName && navigate) {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
       });
     }
   } catch (error) {

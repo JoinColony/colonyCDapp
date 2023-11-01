@@ -11,6 +11,17 @@ fragment Extension on ColonyExtension {
   params {
     votingReputation {
       maxVoteFraction
+      totalStakeFraction
+      voterRewardFraction
+      userMinStakeFraction
+      maxVoteFraction
+      stakePeriod
+      submitPeriod
+      revealPeriod
+      escalationPeriod
+    }
+    stakedExpenditure {
+      stakeFraction
     }
     stakedExpenditure {
       stakeFraction

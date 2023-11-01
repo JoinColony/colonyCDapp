@@ -1,0 +1,7 @@
+query GetColonyExtensionsByColonyAddress($colonyAddress: ID!) {
+  getExtensionByColonyAndHash(colonyId: $colonyAddress) {
+    items {
+      id
+    }
+  }
+}

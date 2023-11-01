@@ -5,7 +5,7 @@
   width: 100%;
   background-color: white;
   grid-template:
-    "left main right" 100%
+    'left main right' 100%
     / 2.2fr 900px 1fr;
 }
 
@@ -15,8 +15,8 @@
   column-gap: 100px;
   row-gap: 17px;
   grid-template:
-    "banner banner" 34px
-    "data details" 1fr
+    'banner banner' 34px
+    'data details' 1fr
     / 460px 340px;
 }
 
@@ -24,7 +24,7 @@
 @media (max-resolution: 2dppx) {
   .layout {
     grid-template:
-      "left main right" 100%
+      'left main right' 100%
       / 1fr 900px 1fr;
   }
 }

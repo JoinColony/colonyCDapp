@@ -40,7 +40,9 @@ const DecisionContent = ({
             popperOptions={userDetailPopoverOptions}
           />
           <div className={styles.nameAndTime}>
-            <span className={styles.userName}>{`@${user?.name}`}</span>
+            <span
+              className={styles.userName}
+            >{`@${user?.profile?.displayName}`}</span>
             {time}
           </div>
         </div>

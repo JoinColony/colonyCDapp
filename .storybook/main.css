@@ -1,0 +1,146 @@
+@import 'react-popper-tooltip/dist/styles.css';
+@import 'react-tabs/style/react-tabs.css';
+@import 'react-tabs-scrollable/dist/rts.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@value query850 from '~styles/queries.css';
+@value query1024 from '~styles/queries.css';
+
+@layer base {
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+  html {
+    @apply font-inter text-lg text-gray-900 min-h-full h-auto antialiased;
+  }
+
+  body {
+    @apply min-h-screen bg-base-white overflow-x-hidden;
+  }
+
+  svg:not([class]) {
+    @apply fill-current stroke-none;
+  }
+
+  #root {
+    @apply min-h-screen;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    @apply m-0;
+  }
+
+  /* hide arrows for Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+}
+
+@layer utilities {
+  .heading-1 {
+    @apply text-4xl font-semibold;
+  }
+
+  .heading-2 {
+    @apply text-3xl font-semibold;
+  }
+
+  .heading-3 {
+    @apply text-2xl font-semibold;
+  }
+
+  .heading-4 {
+    @apply text-xl font-semibold;
+  }
+
+  .heading-5 {
+    @apply text-lg font-semibold;
+  }
+
+  .text-1 {
+    @apply text-md font-medium;
+  }
+
+  .text-2 {
+    @apply text-md font-semibold;
+  }
+
+  .text-3 {
+    @apply text-sm font-medium;
+  }
+
+  .text-4 {
+    @apply text-xs font-medium;
+  }
+
+  .text-5 {
+    @apply text-xs font-semibold;
+  }
+
+  .text-6 {
+    @apply font-bold text-xs;
+  }
+};
+
+@layer components {
+  .inner {
+    @apply px-6 w-full max-w-[77.375rem] mx-auto;
+  }
+
+  .navigation-link {
+    @apply text-gray-700 w-full flex items-center transition-all duration-normal py-2 heading-5 hover:text-blue-400 sm:font-normal sm:text-md sm:text-gray-900;
+  }
+
+  .subnav-button {
+    @apply flex w-full items-center text-md transition-colors duration-normal hover:bg-gray-50 hover:font-medium rounded py-2 px-3.5;
+  }
+
+  .input-round {
+    @apply bg-base-white rounded border py-3 px-3.5;
+  }
+
+  .input {
+    @apply w-full text-gray-900 text-md outline-0 placeholder:text-gray-500 outline-none;
+  }
+
+  .divider {
+    @apply w-full h-px bg-gray-200;
+  }
+}
+
+.rts___tabs {
+  @apply py-0;
+}
+
+.rts___tab {
+  @apply shadow-none border-0 relative inline-flex items-center justify-center px-0 py-2 text-md font-medium cursor-pointer border-b border-transparent transition-colors duration-normal  ml-0 mr-6 last:mr-0 hover:text-blue-400 rounded-none;
+}
+
+.rts___tab___selected {
+  @apply shadow-none text-blue-400 border-blue-400;
+}
+
+.rts___nav___btn:hover {
+  @apply bg-gray-300;
+}
+
+button:disabled.rts___btn,
+.rts___nav___btn:disabled,
+button[disabled].rts___btn {
+  @apply invisible;
+}
+
+.rts___nav___btn > svg {
+  @apply w-[0.75rem];
+}
+
+.rts___nav___btn:hover > svg {
+  @apply stroke-none;
+}
+
+body.ReactModal__Body--open > #root {
+  @apply blur-[0.125rem];
+}

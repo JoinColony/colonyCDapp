@@ -86,7 +86,22 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "updateContributorsWithReputation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "fetchExpenditureBalances": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "getTotalMemberCount": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "createPrivateBetaInvite": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
