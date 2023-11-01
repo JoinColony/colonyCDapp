@@ -12,7 +12,12 @@ const ReputationTab = () => {
   const { formatMessage } = useIntl();
   const { colony } = useColonyContext();
   const { wallet } = useAppContext();
-  const { colonyAddress, nativeToken } = colony || {};
+
+  if (!colony || !wallet) {
+    return null;
+  }
+
+  const { colonyAddress, nativeToken } = colony;
 
   // @TODO: handle empty state <EmptyContent />
   return (
@@ -22,7 +27,11 @@ const ReputationTab = () => {
       </p>
       <Balance nativeToken={nativeToken} wallet={wallet} />
       <TotalReputation colonyAddress={colonyAddress} wallet={wallet} />
-      <PendingReputation />
+      <PendingReputation
+        colonyAddress={colonyAddress}
+        wallet={wallet}
+        nativeToken={nativeToken}
+      />
     </div>
   );
 };

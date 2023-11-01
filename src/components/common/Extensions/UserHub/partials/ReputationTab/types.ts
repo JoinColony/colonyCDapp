@@ -1,11 +1,17 @@
 import { Token, ColonyWallet } from '~types';
 
 export interface BalanceProps {
-  nativeToken?: Token;
-  wallet?: ColonyWallet | null;
+  nativeToken: Token;
+  wallet: ColonyWallet;
 }
 
-export interface ReputationProps {
-  colonyAddress?: string;
-  wallet?: ColonyWallet | null;
+export interface TotalReputationProps {
+  colonyAddress: string;
+  wallet: ColonyWallet;
+}
+
+export interface PendingReputationProps {
+  nativeToken: Token;
+  colonyAddress: string;
+  wallet: ColonyWallet;
 }
