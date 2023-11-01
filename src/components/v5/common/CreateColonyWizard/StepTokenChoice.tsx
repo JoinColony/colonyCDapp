@@ -35,7 +35,7 @@ export const MSG = defineMessages({
   description: {
     id: `${displayName}.description`,
     defaultMessage:
-      'We highly recommend creating a new token, you will have greater control of your token going forward, support all features of Colony, and potential save a lot of cost if on another chain.',
+      'We highly recommend creating a new token, you will have greater control of your token going forward, support all features of Colony, and potentially save a lot of cost if on another chain.',
   },
   createOptionTitle: {
     id: `${displayName}.createOptionTitle`,
