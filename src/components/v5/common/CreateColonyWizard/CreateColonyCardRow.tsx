@@ -4,7 +4,7 @@ import { defineMessages } from 'react-intl';
 import { WizardStepProps } from '~shared/Wizard';
 import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button';
-import Icon from '~shared/Icon';
+import Avatar from '~v5/shared/Avatar';
 
 import { FormValues, WizardProps } from '../CreateColonyWizard';
 
@@ -39,7 +39,13 @@ const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
       text: updatedWizardValues.tokenName,
       subText: updatedWizardValues.tokenSymbol,
       step: 2,
-      icon: <Icon name="circle-plus" appearance={{ size: 'medium' }} />,
+      icon: (
+        <Avatar
+          avatar={updatedWizardValues.tokenIcon}
+          seed={updatedWizardValues.tokenSymbol}
+          size="s"
+        />
+      ),
     },
     /* Not yet implemented
      * {
