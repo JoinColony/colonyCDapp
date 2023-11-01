@@ -104,7 +104,7 @@ const Input: FC<InputProps> = ({
 
       {/* This is to stop layout shift when error messages are shown */}
       <div className="relative pb-9">
-        {!isTyping && !isError && successfulMessage && (
+        {!isTyping && !isErrorStatus && successfulMessage && (
           <InputPills message={successfulMessage} status="success" />
         )}
 
