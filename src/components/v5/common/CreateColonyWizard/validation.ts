@@ -77,8 +77,8 @@ export const selectTokenValidationSchema = object({
    */
   token: object<Token>()
     .nullable()
-    .when('tokenChoiceVerify', {
-      is: 'select',
+    .when(['tokenChoiceVerify', 'tokenAddress'], {
+      is: (tokenChoiceVerify) => tokenChoiceVerify === 'select',
       then: (schema) =>
         schema.nullable().test('doesTokenExist', '', doesTokenExist),
       otherwise: (schema) => schema.notRequired(),
