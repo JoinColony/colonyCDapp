@@ -35,7 +35,7 @@ export const HeaderRow = ({
   return (
     <div className="pb-4 border-b border-gray300 mb-8">
       <h3 className="heading-3 pb-1">{headingText}</h3>
-      <p className="text-sm text-gray-400">{subHeadingText}</p>
+      <p className="text-sm text-gray-600">{subHeadingText}</p>
     </div>
   );
 };
