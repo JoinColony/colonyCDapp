@@ -15,6 +15,7 @@ const {
   getInviteCodeValidity,
   updateInviteCodeValidity,
   updateUser,
+  createColonyMemberInvite,
 } = require('./graphql');
 
 let apiKey = 'da2-fakeApiId123456';
@@ -200,10 +201,12 @@ exports.handler = async (event) => {
     );
   }
 
+  const memberInviteCode = crypto.randomUUID();
+
   /*
    * Create the colony
    */
-  const mutation = await graphqlRequest(
+  const colonyMutation = await graphqlRequest(
     createColony,
     {
       input: {
@@ -214,11 +217,7 @@ exports.handler = async (event) => {
         chainMetadata,
         version,
         status,
-        colonyMemberInvite: {
-          code: crypto.randomUUID(),
-          invitesRemaining: 100,
-          valid: true,
-        },
+        colonyMemberInviteCode: memberInviteCode,
         whitelist: [],
       },
     },
@@ -226,13 +225,33 @@ exports.handler = async (event) => {
     apiKey,
   );
 
-  if (mutation.errors || !mutation.data) {
-    const [error] = mutation.errors;
+  if (colonyMutation.errors || !colonyMutation.data) {
+    const [error] = colonyMutation.errors;
     throw new Error(
       error?.message ||
         `Could not create user "${name}" with wallet address "${checksummedAddress}"`,
     );
   }
 
-  return mutation?.data?.createColony || null;
+  /*
+   * Create the member invite
+   */
+  const inviteMutation = await graphqlRequest(
+    createColonyMemberInvite,
+    {
+      input: {
+        id: memberInviteCode,
+        colonyId: colonyMutation?.data?.createColony?.id,
+      },
+    },
+    graphqlURL,
+    apiKey,
+  );
+
+  if (inviteMutation.errors || !inviteMutation.data) {
+    const [error] = inviteMutation.errors;
+    throw new Error(error?.message || `Could not create private member invite`);
+  }
+
+  return colonyMutation?.data?.createColony || null;
 };

@@ -81,4 +81,14 @@ module.exports = {
       }
     }
   `,
+  createColonyMemberInvite: /* GraphQL */ `
+    mutation CreateColonyMemberInvite(
+      $input: CreateColonyMemberInviteInput!
+      $condition: ModelColonyMemberInviteConditionInput
+    ) {
+      createColonyMemberInvite(input: $input, condition: $condition) {
+        id
+      }
+    }
+  `,
 };
