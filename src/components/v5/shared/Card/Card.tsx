@@ -20,13 +20,13 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     <div
       className={clsx(
         className,
-        'bg-base-white border border-gray-200 flex flex-col',
+        'bg-base-white border flex flex-col',
+        checked ? 'border-blue-400' : 'border-gray-200',
         {
           'rounded-lg': rounded === 's',
           'rounded-xl': rounded === 'm',
           'shadow-default': hasShadow,
           'p-6': withPadding,
-          'border-blue-600': checked,
         },
       )}
       ref={ref}
