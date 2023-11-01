@@ -109,9 +109,9 @@ const Input: FC<InputProps> = ({
           <InputPills message={successfulMessage} status="success" />
         )}
 
-        {isErrorStatus && (
+        {isErrorStatus && !isTyping && (
           <>
-            {isDecoratedError && !isTyping ? (
+            {isDecoratedError ? (
               <InputPills message={customErrorMessage} status="error" />
             ) : (
               <FormError isFullSize alignment="left">
