@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import clsx from 'clsx';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -60,9 +61,9 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
 
   return (
     <li
-      className={`border-b border-gray-200 last:border-none ${
-        hideButton ? 'list-none' : ''
-      }`}
+      className={clsx(`border-b border-gray-200 last:border-none`, {
+        'list-none': hideButton,
+      })}
     >
       {!hideButton && (
         <button
