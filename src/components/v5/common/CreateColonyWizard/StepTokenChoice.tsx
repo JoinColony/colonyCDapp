@@ -63,13 +63,17 @@ const TokenSelector = ({
   title,
   description,
 }: TokenSelectorProps) => {
-  const { register } = useFormContext();
+  const { register, watch } = useFormContext();
 
   const registerField = register && register('tokenChoice');
+  const checked = name === watch('tokenChoice');
 
   return (
     <label htmlFor={name}>
-      <Card className="flex flex-col items-center cursor-pointer text-center h-full">
+      <Card
+        className="flex flex-col items-center cursor-pointer text-center h-full md:hover:shadow-default md:hover:shadow-light-blue"
+        checked={checked}
+      >
         <input
           {...registerField}
           type="radio"
