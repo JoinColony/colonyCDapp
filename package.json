@@ -26,7 +26,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "chromatic": "npx chromatic --project-token=f08326e25dbf",
-    "postinstall": "./scripts/lambda-functions-dependencies.sh",
+    "postinstall": "./scripts/lambda-functions-dependencies.sh && scripts/generate-amplify-local-config.sh",
     "upgrade-colony-js": "./scripts/upgrade-colony-js.sh"
   },
   "repository": {
