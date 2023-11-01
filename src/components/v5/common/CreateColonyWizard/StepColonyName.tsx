@@ -50,18 +50,16 @@ const StepColonyName = ({
 
   return (
     <Form<Step1> onSubmit={nextStep} validationSchema={validationSchema}>
-      <section className="">
-        <HeaderRow
-          heading={MSG.heading}
-          headingValues={{ username }}
-          description={MSG.description}
-        />
-        <NameInputs
-          displayName={wizardDisplayName}
-          colonyName={wizardColonyName}
-        />
-        <ButtonRow previousStep={previousStep} />
-      </section>
+      <HeaderRow
+        heading={MSG.heading}
+        headingValues={{ username }}
+        description={MSG.description}
+      />
+      <NameInputs
+        displayName={wizardDisplayName}
+        colonyName={wizardColonyName}
+      />
+      <ButtonRow previousStep={previousStep} />
     </Form>
   );
 };

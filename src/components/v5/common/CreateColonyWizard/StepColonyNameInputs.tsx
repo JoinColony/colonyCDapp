@@ -39,6 +39,7 @@ const StepColonyNameInputs = ({
   } = useFormContext();
 
   const { colonyName: colonyNameDirty } = dirtyFields;
+
   const showColonyNameMessage = colonyNameDirty && !errors.colonyName?.message;
 
   const colonyNameSuccessMessage = formatText(MSG.urlSuccess);
@@ -48,7 +49,7 @@ const StepColonyNameInputs = ({
   const colonyNameError = errors.colonyName?.message as string | undefined;
 
   return (
-    <div className="flex flex-col gap-12">
+    <>
       <Input
         name="displayName"
         register={register}
@@ -87,7 +88,7 @@ const StepColonyNameInputs = ({
           />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
