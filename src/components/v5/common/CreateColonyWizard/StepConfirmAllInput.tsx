@@ -68,15 +68,13 @@ const StepConfirmAllInput = ({
       transform={transform}
       onSuccess={() => nextStep(wizardValues)}
     >
-      <section className="">
-        <HeaderRow
-          heading={MSG.heading}
-          description={MSG.description}
-          descriptionValues={{ br: <br /> }}
-        />
-        <CardRow updatedWizardValues={updatedWizardValues} setStep={setStep} />
-        <ButtonRow previousStep={previousStep} />
-      </section>
+      <HeaderRow
+        heading={MSG.heading}
+        description={MSG.description}
+        descriptionValues={{ br: <br /> }}
+      />
+      <CardRow updatedWizardValues={updatedWizardValues} setStep={setStep} />
+      <ButtonRow previousStep={previousStep} />
     </ActionForm>
   );
 };
