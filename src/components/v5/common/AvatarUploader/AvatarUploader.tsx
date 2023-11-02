@@ -1,20 +1,27 @@
 import React, { FC } from 'react';
 
 import FileUpload from './partials/FileUpload';
-import { useAvatarUploader, useGetUploaderText } from './hooks';
+import {
+  useAvatarUploader,
+  useGetUploaderText,
+  UseAvatarUploaderProps,
+} from './hooks';
 import { AvatarUploaderProps } from './types';
 import ProgressContent from './partials/ProgressContent';
 import { getPlaceholder } from './utils';
 
 const displayName = 'v5.common.AvatarUploader';
 
-const AvatarUploader: FC<AvatarUploaderProps> = ({
+const AvatarUploader: FC<AvatarUploaderProps & UseAvatarUploaderProps> = ({
   avatarPlaceholder,
+  avatarPlaceholder: {
+    props: { avatar },
+  },
   disabled = false,
   fileOptions,
+  updateFn,
 }) => {
   const {
-    user,
     uploadAvatarError,
     isLoading,
     handleFileReject,
@@ -23,7 +30,7 @@ const AvatarUploader: FC<AvatarUploaderProps> = ({
     showPropgress,
     uploadProgress,
     file,
-  } = useAvatarUploader();
+  } = useAvatarUploader({ updateFn });
   const uploaderText = useGetUploaderText(fileOptions);
 
   return (
@@ -47,7 +54,7 @@ const AvatarUploader: FC<AvatarUploaderProps> = ({
           handleFileReject={handleFileReject}
           handleFileRemove={handleFileRemove}
           errorCode={uploadAvatarError}
-          isAvatarUploaded={user?.profile?.avatar !== null}
+          isAvatarUploaded={avatar}
           isProgressContentVisible={showPropgress}
         />
         {showPropgress && (
