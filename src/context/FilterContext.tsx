@@ -170,17 +170,17 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
     setSelectedFilterCount((prevState) => prevState - removedFilters);
   }, []);
 
-  const getFilterDomainIds = useCallback(() => {
-    return (
+  const getFilterDomainIds = useCallback(
+    () =>
       [...selectedFilters[FilterTypes.Team].keys()]
         .map((filterId) => {
           const nativeDomainId = filterId.split('_').shift();
           return Number(nativeDomainId);
         })
         // ensure root comes first
-        .sort((a, b) => a - b)
-    );
-  }, [selectedFilters]);
+        .sort((a, b) => a - b),
+    [selectedFilters],
+  );
 
   const getFilterPermissions = useCallback(() => {
     return [...selectedFilters[FilterTypes.Permissions].keys()].reduce(

@@ -41,13 +41,7 @@ const NestedOptions: FC<NestedOptionsProps> = ({
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     if (hasNestedOptions) {
-      if (isChecked) {
-        setCheckedParent(null);
-        return;
-      }
-
-      setCheckedParent(id);
-      return;
+      setCheckedParent(isChecked ? null : id);
     }
 
     handleFilterSelect(event);
