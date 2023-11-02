@@ -25,7 +25,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         tooltips={{
           label: {
             tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.paymentFrom',
+              id: 'actionSidebar.tooltip.singlePayment.from',
             }),
           },
         }}
@@ -39,7 +39,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         tooltips={{
           label: {
             tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.paymentRecipient',
+              id: 'actionSidebar.tooltip.singlePayment.recipient',
             }),
           },
         }}
@@ -53,7 +53,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         tooltips={{
           label: {
             tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.singlePaymentAmount',
+              id: 'actionSidebar.tooltip.singlePayment.amount',
             }),
           },
         }}
