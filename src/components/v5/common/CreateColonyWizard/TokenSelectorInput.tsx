@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -43,6 +43,7 @@ const TokenSelectorInput = ({
     formState: { errors, isSubmitting },
   } = useFormContext();
   const { formatMessage } = useIntl();
+  const [isLoading, setIsLoading] = useState(false);
 
   const token: Token | null = watch('token');
 
@@ -68,10 +69,11 @@ const TokenSelectorInput = ({
         defaultValue={wizardTokenAddress}
         labelMessage={MSG.existingToken}
         successfulMessage={token?.name ? successMessage : undefined}
+        setIsLoading={setIsLoading}
         isDecoratedError
       />
 
-      {doesTokenExistError && (
+      {doesTokenExistError && isLoading === false && (
         <div className="px-6 py-3 bg-warning-100 border rounded border-warning-200 text-gray-900">
           <p className="flex self-start items-center gap-2 text-md pb-1">
             <span className="text-warning-400 flex">

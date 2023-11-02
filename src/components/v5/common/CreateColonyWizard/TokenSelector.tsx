@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import Input, { InputProps } from '~v5/common/Fields/Input';
@@ -12,11 +12,14 @@ interface Props extends Omit<InputProps, 'name'> {
   addressFieldName?: string;
   /** Name of token field. Defaults to 'token' */
   tokenFieldName?: string;
+  /** Is loading state */
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 const TokenSelector = ({
   addressFieldName = 'tokenAddress',
   tokenFieldName = 'token',
+  setIsLoading,
   ...inputProps
 }: Props) => {
   const {
@@ -34,8 +37,8 @@ const TokenSelector = ({
 
   const {
     data,
-    /* loading: isFetchingAddress,
-     * error: fetchingTokenError, */
+    loading: isFetchingAddress,
+    /* error: fetchingTokenError, */
   } = useGetTokenFromEverywhereQuery({
     variables: {
       input: {
@@ -44,6 +47,10 @@ const TokenSelector = ({
     },
     skip: !isAddress(tokenAddress),
   });
+
+  useEffect(() => {
+    setIsLoading(isFetchingAddress);
+  }, [isFetchingAddress]);
 
   const token = data?.getTokenFromEverywhere?.items?.[0] ?? null;
 
