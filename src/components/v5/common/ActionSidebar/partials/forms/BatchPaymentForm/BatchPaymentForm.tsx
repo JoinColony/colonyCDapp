@@ -18,7 +18,7 @@ const BatchPaymentForm: FC<ActionFormBaseProps> = () => (
       tooltips={{
         label: {
           tooltipContent: formatText({
-            id: 'actionSidebar.tooltip.singlePayment.from',
+            id: 'actionSidebar.tooltip.simplePayment.from',
           }),
         },
       }}

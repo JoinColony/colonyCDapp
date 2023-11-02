@@ -49,7 +49,7 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         tooltips={{
           label: {
             tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.singlePayment.amount',
+              id: 'actionSidebar.tooltip.simplePayment.amount',
             }),
           },
         }}
@@ -63,7 +63,7 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         tooltips={{
           label: {
             tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.singlePayment.from',
+              id: 'actionSidebar.tooltip.simplePayment.from',
             }),
           },
         }}

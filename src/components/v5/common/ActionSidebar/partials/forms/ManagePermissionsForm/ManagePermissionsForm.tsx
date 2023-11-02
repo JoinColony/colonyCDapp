@@ -94,7 +94,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         tooltips={{
           label: {
             tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.permissions',
+              id: 'actionSidebar.tooltip.managePermissions.permissions',
             }),
           },
         }}
