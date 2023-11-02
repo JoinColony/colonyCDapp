@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import clsx from 'clsx';
 
-import { useWizardContext } from '../WizardLayout';
+import { useWizardContext } from '~context/WizardContext';
 
 import WizardSidebarSubItem, { WizardSubStep } from './WizardSidebarSubItem';
 import { WizardStep } from './WizardSidebar';

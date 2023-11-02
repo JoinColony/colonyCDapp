@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { useWizardContext } from '../WizardLayout';
+import { useWizardContext } from '~context/WizardContext';
 
 import { WizardSubStep } from './WizardSidebarSubItem';
 

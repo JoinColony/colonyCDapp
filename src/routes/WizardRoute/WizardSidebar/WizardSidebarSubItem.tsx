@@ -3,7 +3,8 @@ import { FormattedMessage } from 'react-intl';
 import clsx from 'clsx';
 import { Optional } from 'utility-types';
 
-import { useWizardContext } from '../WizardLayout';
+import { useWizardContext } from '~context/WizardContext';
+
 import { WizardStep } from './WizardSidebar';
 
 const displayName =
