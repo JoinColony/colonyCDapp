@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { defineMessages } from 'react-intl';
 import { WizardStepProps } from '~shared/Wizard';
@@ -6,7 +6,6 @@ import { ActionForm } from '~shared/Fields';
 import { mergePayload } from '~utils/actions';
 import { ActionTypes } from '~redux/index';
 import { useAppContext } from '~hooks';
-import { useColonyCreationFlowContext } from '~routes/WizardRoute/WizardLayout';
 
 import { FormValues, WizardProps } from '../CreateColonyWizard';
 import { ButtonRow, HeaderRow } from './shared';
@@ -39,11 +38,6 @@ const StepConfirmAllInput = ({
   wizardProps,
 }: Props) => {
   const { user } = useAppContext();
-  const { setCurrentStep } = useColonyCreationFlowContext();
-
-  useEffect(() => {
-    setCurrentStep(3);
-  }, [setCurrentStep]);
 
   const updatedWizardValues = {
     ...wizardValues,

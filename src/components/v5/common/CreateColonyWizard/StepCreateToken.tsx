@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { WizardStepProps } from '~shared/Wizard';
 import { Form } from '~shared/Fields';
-import { useColonyCreationFlowContext } from '~routes/WizardRoute/WizardLayout';
 
 import {
   FormValues,
@@ -28,12 +27,6 @@ const StepCreateToken = ({
   wizardValues: { tokenChoice, tokenName, tokenSymbol, tokenAddress },
   previousStep,
 }: Props) => {
-  const { setCurrentStep } = useColonyCreationFlowContext();
-
-  useEffect(() => {
-    setCurrentStep(2);
-  }, [setCurrentStep]);
-
   return (
     <Form<Step3>
       onSubmit={nextStep}

@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { WizardStepProps } from '~shared/Wizard';
 import { Form } from '~shared/Fields';
 import { useAppContext } from '~hooks';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
-import { useColonyCreationFlowContext } from '~routes/WizardRoute/WizardLayout';
 
 import { ButtonRow, HeaderRow } from './shared';
 
@@ -45,11 +44,6 @@ const StepColonyName = ({
   previousStep,
 }: Props) => {
   const { user } = useAppContext();
-  const { setCurrentStep } = useColonyCreationFlowContext();
-
-  useEffect(() => {
-    setCurrentStep(1);
-  }, [setCurrentStep]);
 
   const username =
     user?.profile?.displayName ?? splitWalletAddress(user?.walletAddress ?? '');
