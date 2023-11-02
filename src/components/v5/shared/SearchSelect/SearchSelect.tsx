@@ -108,7 +108,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
               {filteredList.length > 0 ? (
                 filteredList.map(({ options, title, isAccordion, key }) =>
                   isAccordion ? (
-                    <div className="mb-6 last:mb-0" key={key}>
+                    <div className="mb-[0.625rem] last:mb-0" key={key}>
                       <div className="flex items-center justify-between">
                         <h5 className="text-4 text-gray-400 mb-2 uppercase">
                           {formatText(title)}
@@ -116,6 +116,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                         {isAccordion && (
                           <button
                             type="button"
+                            className="text-gray-700"
                             onClick={() => handleAccordionClick(key)}
                           >
                             <Icon
@@ -145,7 +146,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                       </AnimatePresence>
                     </div>
                   ) : (
-                    <div key={key} className="mb-6 last:mb-0">
+                    <div key={key} className="mb-[0.625rem] last:mb-0">
                       <h5 className="text-4 text-gray-400 mb-2 uppercase">
                         {formatText(title)}
                       </h5>

@@ -19,7 +19,7 @@ export const createNewTeamDescriptionMetadataGetter: DescriptionMetadataGetter<
             aboutDescription={currentUser.profile?.bio || ''}
             user={currentUser}
           >
-            <span className="text-blue-400 font-medium">
+            <span className="text-gray-900">
               {currentUser.profile.displayName}
             </span>
           </UserPopover>

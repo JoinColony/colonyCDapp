@@ -32,10 +32,11 @@ export const useAmountField = (
   );
 
   const adjustInputWidth = (value: string) => {
-    const valueWithoutCommas = value.replace(/,/g, '');
-    const width = valueWithoutCommas.length * 0.65;
-
-    setInputWidth(width);
+    if (/^[\d,]*$/.test(value)) {
+      const valueWithoutCommas = value.replace(/,/g, '');
+      const width = Math.min(valueWithoutCommas.length * 0.65, 20);
+      setInputWidth(width);
+    }
   };
 
   useLayoutEffect(() => {

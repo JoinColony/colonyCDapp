@@ -8,13 +8,14 @@ import Tooltip from '~shared/Extensions/Tooltip';
 import useToggle from '~hooks/useToggle';
 import { LABEL_CLASSNAME } from './consts';
 
-const ActionSidebarRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
+const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
   (
     {
       iconName,
       title,
       children,
       isExpandable = false,
+      isMultiLine = false,
       fieldName,
       tooltips = {},
       className,
@@ -39,26 +40,29 @@ const ActionSidebarRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
           appearance={{ size: 'extraTiny' }}
           className={clsx('h-3 w-3', {
             'text-negative-400': isError,
-            'text-gray-400': !isError,
+            'text-gray-900': !isError,
           })}
         />
         <span
           className={clsx(
             LABEL_CLASSNAME,
-            'text-md ml-2 flex gap-4 items-center',
+            'text-md ml-2 text-gray-900 flex gap-2 items-center',
           )}
         >
           {title}
           {isExpandable && (
             <span
               className={clsx(
-                'flex text-gray-400 transition-all duration-normal group-hover:text-blue-400',
+                'flex text-gray-900 transition-all duration-normal group-hover:text-blue-400',
                 {
                   'rotate-90': isExpanded,
                 },
               )}
             >
-              <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
+              <Icon
+                name="caret-right"
+                appearance={{ size: 'extraExtraTiny' }}
+              />
             </span>
           )}
         </span>
@@ -91,13 +95,22 @@ const ActionSidebarRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
 
     return (
       <div
-        className={clsx(className, 'flex gap-2 relative mb-3 last:mb-0', {
-          'flex-col': isExpandable && isExpanded,
-          'items-center': !isExpandable,
-        })}
+        className={clsx(
+          className,
+          'flex gap-2 min-h-[1.875rem] justify-center relative mb-3 last:mb-0 ',
+          {
+            'flex-col items-start': isExpandable && isExpanded,
+            'items-start pt-[0.35rem]': isMultiLine || isExpandable,
+            'items-center': !isExpandable && !isMultiLine && !isExpanded,
+          },
+        )}
         ref={ref}
       >
-        <div className="basis-1/3">
+        <div
+          className={clsx(className, 'w-[10rem] sm:w-[12.5rem] flex-shrink-0', {
+            'min-h-[1.875rem]': isExpandable && isExpanded,
+          })}
+        >
           {label ? (
             <Tooltip
               {...label}
@@ -109,7 +122,7 @@ const ActionSidebarRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
 
                 return triggerRef.querySelector(`.${LABEL_CLASSNAME}`);
               }}
-              placement="bottom-start"
+              placement="top"
             >
               {tooltipContent}
             </Tooltip>
@@ -117,10 +130,10 @@ const ActionSidebarRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
             tooltipContent
           )}
         </div>
-        <div className="basis-2/3">
+        <div className="flex flex-grow items-center">
           {contentTooltip ? (
             <Tooltip
-              placement="bottom-start"
+              placement="top"
               {...contentTooltip}
               tooltipContent={<span>{contentTooltip.tooltipContent}</span>}
             >
@@ -135,4 +148,4 @@ const ActionSidebarRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
   },
 );
 
-export default ActionSidebarRow;
+export default ActionFormRow;

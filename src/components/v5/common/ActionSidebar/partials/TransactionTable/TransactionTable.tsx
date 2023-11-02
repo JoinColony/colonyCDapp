@@ -65,7 +65,7 @@ const TransactionTable: FC<TransactionTableProps> = ({
           onClick={() => {
             fieldArrayMethods.append({
               amount: {
-                amount: '0',
+                // amount: '0', // Disable default value
               },
             });
           }}

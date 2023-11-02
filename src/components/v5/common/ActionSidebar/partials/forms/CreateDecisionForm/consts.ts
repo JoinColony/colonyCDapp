@@ -6,11 +6,11 @@ export const validationSchema = yup
     title: yup
       .string()
       .trim()
-      .required(() => 'Please enter a title'),
+      .required(() => 'Please enter a title.'),
     createdIn: yup.string().defined(),
     description: yup
       .string()
-      .notOneOf(['<p></p>'], () => 'Please enter a description')
+      .notOneOf(['<p></p>'], () => 'Please enter a description.')
       .defined(),
     decisionMethod: yup.string().defined(),
     walletAddress: yup.string().address().required(),

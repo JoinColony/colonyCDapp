@@ -32,7 +32,7 @@ export const useSimplePayment = (
         description: '',
         payments: [],
         amount: {
-          amount: 0,
+          // amount: 0, // Disable default value
           tokenAddress: colony?.nativeToken.tokenAddress || '',
         },
       }),

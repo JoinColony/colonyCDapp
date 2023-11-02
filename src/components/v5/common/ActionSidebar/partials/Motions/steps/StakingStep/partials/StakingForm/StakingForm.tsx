@@ -51,9 +51,11 @@ const StakingForm: FC<StakingFormProps> = ({
 
   return (
     <ActionForm<StakingFormValues>
-      defaultValues={{
-        amount: '0',
-      }}
+      defaultValues={
+        {
+          // amount: '0', // Disable default value
+        }
+      }
       validationSchema={validationSchema}
       onSuccess={handleSuccess}
       transform={transform}

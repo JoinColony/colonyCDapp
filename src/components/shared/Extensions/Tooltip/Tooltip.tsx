@@ -45,7 +45,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   return (
     <>
       <div
-        className={clsx(className, 'flex cursor-pointer', {
+        className={clsx(className, 'flex', {
           'w-full': isFullWidthContent,
         })}
         ref={(ref) => {

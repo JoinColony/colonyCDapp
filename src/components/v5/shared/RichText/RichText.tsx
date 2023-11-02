@@ -72,7 +72,7 @@ const RichText: FC<RichTextProps> = ({
 
               {(characterCount || isDecriptionFieldExpanded) && (
                 <div className="flex items-center justify-between mt-4">
-                  {isDecriptionFieldExpanded && (
+                  {characterCount >= 1000 && isDecriptionFieldExpanded && (
                     <TextButton
                       mode="underlined"
                       className="text-gray-400"

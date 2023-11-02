@@ -66,13 +66,14 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="pencil"
         fieldName="description"
-        tooltips={{
-          label: {
-            tooltipContent: formatMessage({
-              id: 'actionSidebar.tooltip.description',
-            }),
-          },
-        }}
+        // Tooltip disabled to experiment with improving user experience
+        // tooltips={{
+        //   label: {
+        //     tooltipContent: formatMessage({
+        //       id: 'actionSidebar.tooltip.description',
+        //     }),
+        //   },
+        // }}
         title={formatMessage({ id: 'actionSidebar.description' })}
         isExpandable
       >

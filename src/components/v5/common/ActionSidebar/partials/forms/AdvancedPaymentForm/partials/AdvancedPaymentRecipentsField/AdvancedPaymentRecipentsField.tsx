@@ -60,7 +60,7 @@ const AdvancedPaymentRecipentsField: FC<AdvancedPaymentRecipentsFieldProps> = ({
         onClick={() => {
           fieldArrayMethods.append({
             amount: {
-              amount: '0',
+              // amount: '0', // Disable default value
               tokenAddress: nativeToken?.tokenAddress || '',
             },
             delay: 0,

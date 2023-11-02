@@ -61,6 +61,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         iconName="rocket"
         fieldName="domainPurpose"
         title={formatText({ id: 'actionSidebar.teamPurpose' })}
+        isMultiLine
         tooltips={{
           label: {
             tooltipContent: formatText({
@@ -125,13 +126,14 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="pencil"
         fieldName="description"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.description',
-            }),
-          },
-        }}
+        // Tooltip disabled to experiment with improving user experience
+        // tooltips={{
+        //   label: {
+        //     tooltipContent: formatText({
+        //       id: 'actionSidebar.tooltip.description',
+        //     }),
+        //   },
+        // }}
         title={formatText({ id: 'actionSidebar.description' })}
         isExpandable
       >

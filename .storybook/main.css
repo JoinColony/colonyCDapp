@@ -103,7 +103,7 @@
   }
 
   .input {
-    @apply w-full text-gray-900 text-md outline-0 placeholder:text-gray-500 outline-none;
+    @apply w-full text-gray-900 text-md outline-0 placeholder:text-gray-400 outline-none;
   }
 
   .divider {

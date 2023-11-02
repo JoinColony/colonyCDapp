@@ -10,6 +10,7 @@ import {
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
+import { formatText } from '~utils/intl';
 import Card from '~v5/shared/Card';
 import Numeral from '~shared/Numeral';
 import { useColonyContext } from '~hooks';
@@ -68,7 +69,7 @@ const AmountField: FC<AmountFieldProps> = ({ name, tokenAddress }) => {
 
   const selectedTokenContent = (
     <>
-      <TokenIcon token={selectedToken || colonyTokens[0]} size="xs" />
+      <TokenIcon token={selectedToken || colonyTokens[0]} size="xxs" />
       <span className="text-md">
         {selectedToken?.symbol || colonyTokens[0].symbol}
       </span>
@@ -85,7 +86,7 @@ const AmountField: FC<AmountFieldProps> = ({ name, tokenAddress }) => {
           <span className="text-gray-900">
             <Numeral value={field.value} decimals={selectedToken?.decimals} />
           </span>
-          <div className="flex items-center gap-2">{selectedTokenContent}</div>
+          <div className="flex items-center gap-1">{selectedTokenContent}</div>
         </>
       ) : (
         <>
@@ -93,18 +94,24 @@ const AmountField: FC<AmountFieldProps> = ({ name, tokenAddress }) => {
             name={name}
             key={dynamicCleaveOptionKey}
             options={formattingOptions}
-            className={clsx('text-gray-900', {
-              'placeholder:text-gray-500': !isError,
-              'placeholder:text-negative-400': isError,
+            className={clsx(
+              'flex-grow flex-shrink text-gray-900 outline-0 outline-none',
+              {
+                'placeholder:text-gray-400': !isError,
+                'placeholder:text-negative-400': isError,
+              },
+            )}
+            placeholder={formatText({
+              id: 'actionSidebar.enterAmount',
             })}
-            placeholder="0"
             onInput={onInput}
             value={field.value}
+            autoComplete="off"
             onChange={handleCleaveChange}
-            style={{ width: `${inputWidth || 0.65}rem` }}
+            style={{ width: `${inputWidth || 5.5}rem` }}
           />
           {tokenAddress ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               {selectedTokenContent}
             </div>
           ) : (
@@ -113,7 +120,7 @@ const AmountField: FC<AmountFieldProps> = ({ name, tokenAddress }) => {
                 type="button"
                 ref={relativeElementRef}
                 className={clsx(
-                  'flex items-center gap-2 transition-colors md:hover:text-blue-400',
+                  'flex-shrink-0 flex items-center gap-1 transition-colors md:hover:text-blue-400',
                   {
                     'text-gray-900': selectedToken?.symbol,
                     'text-gray-500': !selectedToken?.symbol,
@@ -153,7 +160,7 @@ const AmountField: FC<AmountFieldProps> = ({ name, tokenAddress }) => {
                           >
                             <button
                               type="button"
-                              className={`flex items-center gap-2 transition-colors md:hover:text-blue-400
+                              className={`flex items-center gap-1 transition-colors md:hover:text-blue-400
                           justify-between w-full`}
                               onClick={() => {
                                 tokenAddressController.onChange(
@@ -162,7 +169,7 @@ const AmountField: FC<AmountFieldProps> = ({ name, tokenAddress }) => {
                                 toggleTokenSelect();
                               }}
                             >
-                              <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-1">
                                 <TokenIcon token={colonyToken} size="xs" />
                                 <span className="text-md">
                                   {colonyToken.symbol}

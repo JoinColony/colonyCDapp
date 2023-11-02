@@ -41,7 +41,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
       delayShow: 200,
       delayHide: 200,
       placement: 'bottom-end',
-      trigger: ['click', 'hover'],
+      trigger: ['click'],
       interactive: true,
     });
 

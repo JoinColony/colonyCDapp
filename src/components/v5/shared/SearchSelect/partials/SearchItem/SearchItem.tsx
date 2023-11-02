@@ -58,7 +58,7 @@ const SearchItem: FC<SearchItemProps> = ({
               <button
                 type="button"
                 className={clsx(
-                  'w-full text-md transition-colors text-left flex items-center',
+                  'w-full text-md relative transition-colors text-left flex items-center',
                   {
                     'justify-between': !hasAvatar,
                     'justify-start': hasAvatar,
@@ -96,10 +96,12 @@ const SearchItem: FC<SearchItemProps> = ({
                 {isLabelVisible && labelText}
                 {!label && <span className="truncate">{walletAddress}</span>}
                 {firstDisabledOption?.value === value && (
-                  <ExtensionsStatusBadge
-                    mode="coming-soon"
-                    text="Coming soon"
-                  />
+                  <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
+                    <ExtensionsStatusBadge
+                      mode="coming-soon"
+                      text="Coming soon"
+                    />
+                  </div>
                 )}
                 {missingPermissions && (
                   <IconWithTooltip

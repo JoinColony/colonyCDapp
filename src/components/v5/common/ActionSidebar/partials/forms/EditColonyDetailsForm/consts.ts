@@ -12,7 +12,7 @@ export const validationSchema = yup
       .string()
       .trim()
       .max(MAX_COLONY_DISPLAY_NAME)
-      .required(() => 'Colony name is required'),
+      .required(() => 'Colony name is required.'),
     createdIn: yup.string().defined(),
     decisionMethod: yup.string().defined(),
     description: yup.string().max(MAX_ANNOTATION_LENGTH).defined(),
