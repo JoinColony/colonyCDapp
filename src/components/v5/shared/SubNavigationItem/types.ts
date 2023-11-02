@@ -16,7 +16,7 @@ export type SubNavigationItemProps = {
 };
 
 export type NestedOptionsProps = {
-  parentOption: FilterType;
+  parentOption: string;
   nestedFilters: FilterOptionProps[];
 };
 
