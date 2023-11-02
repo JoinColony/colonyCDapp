@@ -41,6 +41,14 @@ const StepConfirmAllInput = ({
 
   const updatedWizardValues = {
     ...wizardValues,
+    tokenAvatar:
+      wizardValues.tokenChoiceVerify === 'create'
+        ? wizardValues.tokenAvatar
+        : undefined,
+    tokenThumbnail:
+      wizardValues.tokenChoiceVerify === 'create'
+        ? wizardValues.tokenThumbnail
+        : undefined,
     token:
       wizardValues.tokenChoiceVerify === 'create' ? null : wizardValues.token,
     tokenChoice: wizardValues.tokenChoiceVerify,

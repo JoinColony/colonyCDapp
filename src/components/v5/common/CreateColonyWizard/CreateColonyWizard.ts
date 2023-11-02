@@ -27,7 +27,8 @@ export type FormValues = {
   tokenChoice?: 'create' | 'select';
   tokenChoiceVerify: 'create' | 'select';
   displayName: string;
-  tokenIcon: string;
+  tokenAvatar?: string;
+  tokenThumbnail?: string;
 };
 
 const stepFunction: StepsFn<any> = (step: number): ComponentType<any> => {
@@ -44,7 +45,8 @@ export type Step3 = Pick<
   | 'token'
   | 'tokenChoice'
   | 'tokenChoiceVerify'
-  | 'tokenIcon'
+  | 'tokenAvatar'
+  | 'tokenThumbnail'
 >;
 
 const initialValues: [Step1, Step2, Step3] = [
@@ -61,7 +63,6 @@ const initialValues: [Step1, Step2, Step3] = [
     tokenName: '',
     tokenSymbol: '',
     token: null,
-    tokenIcon: '',
   },
 ];
 

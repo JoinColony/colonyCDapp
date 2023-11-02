@@ -76,6 +76,8 @@ function* colonyCreate({
     tokenName,
     tokenSymbol,
     inviteCode,
+    tokenAvatar,
+    tokenThumbnail,
   },
 }: Action<ActionTypes.CREATE>) {
   const apolloClient = getContext(ContextModule.ApolloClient);
@@ -257,7 +259,11 @@ function* colonyCreate({
     >({
       query: GetTokenFromEverywhereDocument,
       variables: {
-        input: { tokenAddress },
+        input: {
+          tokenAddress,
+          avatar: tokenAvatar || null,
+          thumbnail: tokenThumbnail || null,
+        },
       },
     });
 

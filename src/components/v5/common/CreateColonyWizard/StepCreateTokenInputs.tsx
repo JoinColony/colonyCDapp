@@ -2,10 +2,11 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
-import Icon from '~shared/Icon';
 import Input from '~v5/common/Fields/Input';
+import Avatar from '~v5/shared/Avatar';
 
 import AvatarUploader from '../AvatarUploader';
+import { UseAvatarUploaderProps } from '../AvatarUploader/hooks';
 
 const displayName = 'common.CreateColonyWizard.StepCreateTokenInputs';
 
@@ -60,12 +61,33 @@ const StepCreateTokenInputs = ({
 }: StepCreateTokenInputsProps) => {
   const {
     register,
+    setValue,
+    watch,
     formState: { errors, isSubmitting },
   } = useFormContext();
   const { formatMessage } = useIntl();
 
   const tokenNameError = errors.tokenName?.message as string | undefined;
   const tokenSymbolError = errors.tokenSymbol?.message as string | undefined;
+
+  const tokenAvatarUrl = watch('tokenAvatar');
+
+  const updateFn: UseAvatarUploaderProps['updateFn'] = async (
+    avatar,
+    thumbnail,
+    setProgress,
+  ) => {
+    setProgress(0);
+
+    setValue('tokenAvatar', avatar);
+    setValue('tokenThumbnail', thumbnail);
+
+    if (avatar === null) {
+      return;
+    }
+
+    setProgress(100);
+  };
 
   return (
     <>
@@ -101,13 +123,19 @@ const StepCreateTokenInputs = ({
       </p>
       <AvatarUploader
         avatarPlaceholder={
-          <Icon name="circle-plus" appearance={{ size: 'medium' }} />
+          <Avatar
+            notSet={!tokenAvatarUrl}
+            placeholderIcon="circle-add"
+            size="ms"
+            avatar={tokenAvatarUrl}
+          />
         }
         fileOptions={{
           fileFormat: ['.PNG', '.JPG', '.SVG'],
           fileDimension: '250x250px',
           fileSize: '1MB',
         }}
+        updateFn={updateFn}
       />
     </>
   );

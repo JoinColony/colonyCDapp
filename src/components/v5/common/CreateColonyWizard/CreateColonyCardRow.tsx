@@ -41,8 +41,10 @@ const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
       step: 2,
       icon: (
         <Avatar
-          avatar={updatedWizardValues.tokenIcon}
-          seed={updatedWizardValues.tokenSymbol}
+          avatar={updatedWizardValues.tokenAvatar}
+          seed={
+            updatedWizardValues.tokenAddress || updatedWizardValues.tokenSymbol
+          }
           size="s"
         />
       ),
