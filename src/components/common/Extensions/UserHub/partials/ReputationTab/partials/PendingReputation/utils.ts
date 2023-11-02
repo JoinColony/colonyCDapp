@@ -16,3 +16,16 @@ export const getReputationDecayInNextDay = (
     .round()
     .toString();
 };
+
+const REPUTATION_CYCLE_DURATION_IN_HOURS = 1;
+
+/**
+ * Function calculating the date of the next reputation mining cycle, based on the date of the last completed cycle
+ */
+export const getNextMiningCycleDate = (lastCompletedAt: Date) => {
+  const nextCycleTime = new Date(lastCompletedAt);
+  nextCycleTime.setHours(
+    nextCycleTime.getHours() + REPUTATION_CYCLE_DURATION_IN_HOURS,
+  );
+  return nextCycleTime;
+};
