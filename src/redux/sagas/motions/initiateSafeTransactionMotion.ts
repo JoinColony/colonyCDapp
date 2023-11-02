@@ -66,6 +66,7 @@ function* initiateSafeTransactionMotion({
 
     const motionChildSkillIndex = yield call(
       getChildIndex,
+      colonyClient.networkClient,
       colonyClient,
       motionDomainId,
       Id.RootDomain,

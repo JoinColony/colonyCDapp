@@ -58,11 +58,13 @@ export function* getMoveFundsPermissionProofs(
     // moveFundsBetweenPots function AND nested domains
     if (hasFundingInRoot) {
       const rootFromChildSkillIndex = yield getChildIndex(
+        colonyClient.networkClient,
         colonyClient,
         Id.RootDomain,
         fromDomainId,
       );
       const rootToChildSkillIndex = yield getChildIndex(
+        colonyClient.networkClient,
         colonyClient,
         Id.RootDomain,
         toDomainId,
@@ -102,7 +104,13 @@ export function* getMultiPermissionProofs(
 
   const proofs = yield Promise.all(
     roles.map((role) =>
-      getPermissionProofs(colonyClient, domainId, role, customAddress),
+      getPermissionProofs(
+        colonyClient.networkClient,
+        colonyClient,
+        domainId,
+        role,
+        customAddress,
+      ),
     ),
   );
 

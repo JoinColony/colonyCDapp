@@ -91,6 +91,7 @@ function* claimMotionRewards({
     );
 
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient.networkClient,
       colonyClient,
       motionData.motionDomain.nativeId,
       ColonyRole.Arbitration,
