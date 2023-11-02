@@ -18,17 +18,9 @@ import {
   useRemoveTxParamOnClose,
 } from './hooks';
 import { ActionSidebarProps } from './types';
+import { actionSidebarAnimation } from './consts';
 
 const displayName = 'v5.common.ActionSidebar';
-
-const variants = {
-  hidden: {
-    x: '100%',
-  },
-  visible: {
-    x: 0,
-  },
-};
 
 const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   children,
@@ -58,7 +50,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       transition={{
         ease: 'easeInOut',
       }}
-      variants={variants}
+      variants={actionSidebarAnimation}
       exit="hidden"
       initial="hidden"
       animate="visible"
