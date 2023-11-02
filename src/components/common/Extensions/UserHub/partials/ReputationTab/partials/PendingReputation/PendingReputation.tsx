@@ -3,8 +3,10 @@ import { useIntl } from 'react-intl';
 
 import TitleLabel from '~v5/shared/TitleLabel';
 import { useUserReputation } from '~hooks';
+import { useGetReputationMiningCycleMetadataQuery } from '~gql';
+import TimeRelative from '~shared/TimeRelative';
 
-import { getReputationDecayInNextDay } from './utils';
+import { getNextMiningCycleDate, getReputationDecayInNextDay } from './utils';
 import { PendingReputationProps } from '../../types';
 
 import styles from '../../ReputationTab.module.css';
@@ -21,6 +23,12 @@ const PendingReputation: FC<PendingReputationProps> = ({
 
   const { userReputation } = useUserReputation(colonyAddress, wallet?.address);
 
+  const { data } = useGetReputationMiningCycleMetadataQuery();
+  const { lastCompletedAt } = data?.getReputationMiningCycleMetadata ?? {};
+  const nextMiningCycleDate = lastCompletedAt
+    ? getNextMiningCycleDate(new Date(lastCompletedAt ?? ''))
+    : null;
+
   return (
     <div className="pt-6 border-b border-gray-200 pb-6 sm:border-none sm:pb-0">
       <TitleLabel text={formatMessage({ id: 'userHub.pendingReputation' })} />
@@ -29,8 +37,13 @@ const PendingReputation: FC<PendingReputationProps> = ({
           <p className={styles.rowName}>
             {formatMessage({ id: 'userHub.reputationNextUpdate' })}
           </p>
-          {/* @TODO: implement data from API */}
-          <span className="text-sm">~14 mins</span>
+          <span className="text-sm">
+            {nextMiningCycleDate ? (
+              <TimeRelative value={nextMiningCycleDate} />
+            ) : (
+              '-'
+            )}
+          </span>
         </div>
         <div className={styles.row}>
           <p className={styles.rowName}>
