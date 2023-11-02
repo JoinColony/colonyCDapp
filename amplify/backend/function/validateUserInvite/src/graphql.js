@@ -20,6 +20,13 @@ module.exports = {
       }
     }
   `,
+  updateColonyMemberInvite: /* GraphQL */ `
+    mutation UpdateColonyMemberInvite($input: UpdateColonyMemberInviteInput!) {
+      updateColonyMemberInvite(input: $input) {
+        id
+      }
+    }
+  `,
   createColonyContributor: /* GraphQL */ `
     mutation CreateColonyContributor($input: CreateColonyContributorInput!) {
       createColonyContributor(input: $input) {

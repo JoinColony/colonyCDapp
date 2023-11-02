@@ -965,10 +965,8 @@ type Mutation {
   ): Boolean @function(name: "updateContributorsWithReputation-${env}")
 
   """
-  Dual purpose lambda
-  1) When passed a colony address and invite code validates the code
-  2) When passed a colony address, invite code and user address adds the user to the colony whitelist
-  and adds the user as a colony contributor
+  Validates the user invite code and adds the user to the colony whitelist
+  and as a colony contributor
   """
   validateUserInvite(input: ValidateUserInviteInput!): Boolean
     @function(name: "validateUserInvite-${env}")
@@ -1433,11 +1431,11 @@ type Colony @model {
   private: Boolean @default(value: "true")
 
   """
-  Profile ID associated with the user
+  Invite code ID associated with the invite
   """
   colonyMemberInviteCode: ID
   """
-  Profile information of the user
+  Colony MemberInvite
   """
   colonyMemberInvite: ColonyMemberInvite
     @hasOne(fields: ["colonyMemberInviteCode"])
@@ -1460,7 +1458,7 @@ input ValidateUserInviteInput {
   """
   The user's wallet address
   """
-  userAddress: ID
+  userAddress: ID!
 }
 
 type ColonyMemberInvite @model {

@@ -1,7 +1,8 @@
-const { graphqlRequest, getColonyContributorId } = require('./utils');
+const { graphqlRequest } = require('./utils');
 const {
   getColonyMemberInvite,
   updateColony,
+  updateColonyMemberInvite,
   createColonyContributor,
 } = require('./graphql');
 
@@ -61,7 +62,6 @@ exports.handler = async (event) => {
     const { whitelist } =
       getColonyMemberInviteDetails?.data?.getColonyByAddress?.items[0];
     const updatedWhitelist = new Set([...whitelist, userAddress]);
-    console.log({ whitelist, updatedWhitelist, userAddress });
 
     const colonyMutation = await graphqlRequest(
       updateColony,
@@ -69,11 +69,6 @@ exports.handler = async (event) => {
         input: {
           id: colonyAddress,
           whitelist: [...updatedWhitelist],
-          colonyMemberInvite: {
-            id,
-            invitesRemaining: invitesRemaining - 1,
-            valid,
-          },
         },
       },
       graphqlURL,
@@ -82,7 +77,24 @@ exports.handler = async (event) => {
 
     if (colonyMutation.errors || !colonyMutation.data) {
       const [error] = colonyMutation.errors;
-      throw new Error(error?.message || 'Could not create private beta invite');
+      throw new Error(error?.message || 'Could not update colony whitelist');
+    }
+
+    const colonyMemberInviteMutation = await graphqlRequest(
+      updateColonyMemberInvite,
+      {
+        input: {
+          id: inviteCode,
+          invitesRemaining: invitesRemaining - 1,
+        },
+      },
+      graphqlURL,
+      apiKey,
+    );
+
+    if (colonyMemberInviteMutation.errors || !colonyMemberInviteMutation.data) {
+      const [error] = colonyMemberInviteMutation.errors;
+      throw new Error(error?.message || 'Could not update private beta invite');
     }
 
     const colonyContributorMutation = await graphqlRequest(
@@ -93,8 +105,9 @@ exports.handler = async (event) => {
           colonyReputationPercentage: 0,
           contributorAddress: userAddress,
           isVerified: false,
-          id: getColonyContributorId(colonyAddress, userAddress),
           isWatching: true,
+          hasReputation: false,
+          type: 'NEW',
         },
       },
       graphqlURL,
