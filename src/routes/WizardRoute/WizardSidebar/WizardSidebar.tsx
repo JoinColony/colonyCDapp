@@ -4,10 +4,11 @@ import {
   MessageDescriptor,
   defineMessages,
 } from 'react-intl';
+import { Link } from 'react-router-dom';
 
 import ExternalLink from '~shared/ExternalLink';
 import { Heading3 } from '~shared/Heading';
-
+import { LANDING_PAGE_ROUTE } from '~routes/routeConstants';
 import Icon from '~shared/Icon';
 
 import WizardSidebarItem from './WizardSidebarItem';
@@ -39,7 +40,9 @@ interface Props {
 
 const WizardSidebar = ({ sidebarTitle, wizardSteps }: Props) => (
   <nav className="flex flex-col border border-slate-300 rounded-lg p-6 h-full">
-    <Icon name="colony-icon" appearance={{ size: 'large' }} className="mb-10" />
+    <Link to={LANDING_PAGE_ROUTE} className="w-fit h-fit mb-10">
+      <Icon name="colony-icon" appearance={{ size: 'large' }} />
+    </Link>
     <Heading3
       appearance={{ theme: 'dark' }}
       className="text-gray-900 text-xl font-semibold mb-6"
