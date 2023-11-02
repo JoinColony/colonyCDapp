@@ -12,6 +12,7 @@ export const createNewTeamDescriptionMetadataGetter: DescriptionMetadataGetter<
       Create new {teamName ? `${teamName} team` : 'team'}
       {currentUser?.profile?.displayName && (
         <>
+          {' '}
           by{' '}
           <UserPopover
             userName={currentUser?.profile?.displayName}
