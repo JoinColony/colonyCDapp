@@ -31,10 +31,6 @@ const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
   }
 };
 
-const getColonyContributorId = (colonyAddress, walletAddress) =>
-  `${colonyAddress}_${walletAddress}`;
-
 module.exports = {
   graphqlRequest,
-  getColonyContributorId,
 };
