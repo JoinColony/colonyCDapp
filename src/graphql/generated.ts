@@ -267,6 +267,8 @@ export type ColonyAction = {
   initiatorUser?: Maybe<User>;
   /** Will be true if the action is a motion */
   isMotion?: Maybe<Scalars['Boolean']>;
+  /** Metadata associated with the action (Eg. Custom action title) */
+  metadata?: Maybe<ColonyActionMetadata>;
   /** Expanded `ColonyMotion` for the corresponding `motionId` */
   motionData?: Maybe<ColonyMotion>;
   /** Corresponding domainId of the motion */
@@ -316,6 +318,14 @@ export type ColonyAction = {
   tokenAddress?: Maybe<Scalars['ID']>;
   /** The type of action performed */
   type: ColonyActionType;
+  updatedAt: Scalars['AWSDateTime'];
+};
+
+export type ColonyActionMetadata = {
+  __typename?: 'ColonyActionMetadata';
+  createdAt: Scalars['AWSDateTime'];
+  customTitle: Scalars['String'];
+  id: Scalars['ID'];
   updatedAt: Scalars['AWSDateTime'];
 };
 
@@ -1076,6 +1086,11 @@ export type CreateColonyActionInput = {
   type: ColonyActionType;
 };
 
+export type CreateColonyActionMetadataInput = {
+  customTitle: Scalars['String'];
+  id?: InputMaybe<Scalars['ID']>;
+};
+
 export type CreateColonyContributorInput = {
   colonyAddress: Scalars['ID'];
   colonyReputationPercentage: Scalars['Float'];
@@ -1516,6 +1531,10 @@ export type DeleteAnnotationInput = {
 };
 
 export type DeleteColonyActionInput = {
+  id: Scalars['ID'];
+};
+
+export type DeleteColonyActionMetadataInput = {
   id: Scalars['ID'];
 };
 
@@ -2284,6 +2303,27 @@ export type ModelColonyActionFilterInput = {
   toDomainId?: InputMaybe<ModelIdInput>;
   tokenAddress?: InputMaybe<ModelIdInput>;
   type?: InputMaybe<ModelColonyActionTypeInput>;
+};
+
+export type ModelColonyActionMetadataConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelColonyActionMetadataConditionInput>>>;
+  customTitle?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelColonyActionMetadataConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelColonyActionMetadataConditionInput>>>;
+};
+
+export type ModelColonyActionMetadataConnection = {
+  __typename?: 'ModelColonyActionMetadataConnection';
+  items: Array<Maybe<ColonyActionMetadata>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelColonyActionMetadataFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelColonyActionMetadataFilterInput>>>;
+  customTitle?: InputMaybe<ModelStringInput>;
+  id?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelColonyActionMetadataFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelColonyActionMetadataFilterInput>>>;
 };
 
 export type ModelColonyActionTypeInput = {
@@ -3368,6 +3408,13 @@ export type ModelSubscriptionColonyActionFilterInput = {
   type?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
+export type ModelSubscriptionColonyActionMetadataFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyActionMetadataFilterInput>>>;
+  customTitle?: InputMaybe<ModelSubscriptionStringInput>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyActionMetadataFilterInput>>>;
+};
+
 export type ModelSubscriptionColonyContributorFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyContributorFilterInput>>>;
   colonyAddress?: InputMaybe<ModelSubscriptionIdInput>;
@@ -4116,6 +4163,7 @@ export type Mutation = {
   createAnnotation?: Maybe<Annotation>;
   createColony?: Maybe<Colony>;
   createColonyAction?: Maybe<ColonyAction>;
+  createColonyActionMetadata?: Maybe<ColonyActionMetadata>;
   createColonyContributor?: Maybe<ColonyContributor>;
   createColonyDecision?: Maybe<ColonyDecision>;
   createColonyExtension?: Maybe<ColonyExtension>;
@@ -4156,6 +4204,7 @@ export type Mutation = {
   deleteAnnotation?: Maybe<Annotation>;
   deleteColony?: Maybe<Colony>;
   deleteColonyAction?: Maybe<ColonyAction>;
+  deleteColonyActionMetadata?: Maybe<ColonyActionMetadata>;
   deleteColonyContributor?: Maybe<ColonyContributor>;
   deleteColonyDecision?: Maybe<ColonyDecision>;
   deleteColonyExtension?: Maybe<ColonyExtension>;
@@ -4194,6 +4243,7 @@ export type Mutation = {
   updateAnnotation?: Maybe<Annotation>;
   updateColony?: Maybe<Colony>;
   updateColonyAction?: Maybe<ColonyAction>;
+  updateColonyActionMetadata?: Maybe<ColonyActionMetadata>;
   updateColonyContributor?: Maybe<ColonyContributor>;
   updateColonyDecision?: Maybe<ColonyDecision>;
   updateColonyExtension?: Maybe<ColonyExtension>;
@@ -4250,6 +4300,13 @@ export type MutationCreateColonyArgs = {
 export type MutationCreateColonyActionArgs = {
   condition?: InputMaybe<ModelColonyActionConditionInput>;
   input: CreateColonyActionInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreateColonyActionMetadataArgs = {
+  condition?: InputMaybe<ModelColonyActionMetadataConditionInput>;
+  input: CreateColonyActionMetadataInput;
 };
 
 
@@ -4518,6 +4575,13 @@ export type MutationDeleteColonyActionArgs = {
 
 
 /** Root mutation type */
+export type MutationDeleteColonyActionMetadataArgs = {
+  condition?: InputMaybe<ModelColonyActionMetadataConditionInput>;
+  input: DeleteColonyActionMetadataInput;
+};
+
+
+/** Root mutation type */
 export type MutationDeleteColonyContributorArgs = {
   condition?: InputMaybe<ModelColonyContributorConditionInput>;
   input: DeleteColonyContributorInput;
@@ -4772,6 +4836,13 @@ export type MutationUpdateColonyArgs = {
 export type MutationUpdateColonyActionArgs = {
   condition?: InputMaybe<ModelColonyActionConditionInput>;
   input: UpdateColonyActionInput;
+};
+
+
+/** Root mutation type */
+export type MutationUpdateColonyActionMetadataArgs = {
+  condition?: InputMaybe<ModelColonyActionMetadataConditionInput>;
+  input: UpdateColonyActionMetadataInput;
 };
 
 
@@ -5227,6 +5298,7 @@ export type Query = {
   getColony?: Maybe<Colony>;
   getColonyAction?: Maybe<ColonyAction>;
   getColonyActionByMotionId?: Maybe<ModelColonyActionConnection>;
+  getColonyActionMetadata?: Maybe<ColonyActionMetadata>;
   getColonyByAddress?: Maybe<ModelColonyConnection>;
   getColonyByName?: Maybe<ModelColonyConnection>;
   getColonyByType?: Maybe<ModelColonyConnection>;
@@ -5307,6 +5379,7 @@ export type Query = {
   getWatchedColonies?: Maybe<WatchedColonies>;
   listAnnotations?: Maybe<ModelAnnotationConnection>;
   listColonies?: Maybe<ModelColonyConnection>;
+  listColonyActionMetadata?: Maybe<ModelColonyActionMetadataConnection>;
   listColonyActions?: Maybe<ModelColonyActionConnection>;
   listColonyContributors?: Maybe<ModelColonyContributorConnection>;
   listColonyDecisions?: Maybe<ModelColonyDecisionConnection>;
@@ -5391,6 +5464,12 @@ export type QueryGetColonyActionByMotionIdArgs = {
   motionId: Scalars['ID'];
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
+export type QueryGetColonyActionMetadataArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -5947,6 +6026,14 @@ export type QueryListAnnotationsArgs = {
 /** Root query type */
 export type QueryListColoniesArgs = {
   filter?: InputMaybe<ModelColonyFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Root query type */
+export type QueryListColonyActionMetadataArgs = {
+  filter?: InputMaybe<ModelColonyActionMetadataFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
@@ -6616,6 +6703,7 @@ export type Subscription = {
   onCreateAnnotation?: Maybe<Annotation>;
   onCreateColony?: Maybe<Colony>;
   onCreateColonyAction?: Maybe<ColonyAction>;
+  onCreateColonyActionMetadata?: Maybe<ColonyActionMetadata>;
   onCreateColonyContributor?: Maybe<ColonyContributor>;
   onCreateColonyDecision?: Maybe<ColonyDecision>;
   onCreateColonyExtension?: Maybe<ColonyExtension>;
@@ -6652,6 +6740,7 @@ export type Subscription = {
   onDeleteAnnotation?: Maybe<Annotation>;
   onDeleteColony?: Maybe<Colony>;
   onDeleteColonyAction?: Maybe<ColonyAction>;
+  onDeleteColonyActionMetadata?: Maybe<ColonyActionMetadata>;
   onDeleteColonyContributor?: Maybe<ColonyContributor>;
   onDeleteColonyDecision?: Maybe<ColonyDecision>;
   onDeleteColonyExtension?: Maybe<ColonyExtension>;
@@ -6688,6 +6777,7 @@ export type Subscription = {
   onUpdateAnnotation?: Maybe<Annotation>;
   onUpdateColony?: Maybe<Colony>;
   onUpdateColonyAction?: Maybe<ColonyAction>;
+  onUpdateColonyActionMetadata?: Maybe<ColonyActionMetadata>;
   onUpdateColonyContributor?: Maybe<ColonyContributor>;
   onUpdateColonyDecision?: Maybe<ColonyDecision>;
   onUpdateColonyExtension?: Maybe<ColonyExtension>;
@@ -6736,6 +6826,11 @@ export type SubscriptionOnCreateColonyArgs = {
 
 export type SubscriptionOnCreateColonyActionArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyActionFilterInput>;
+};
+
+
+export type SubscriptionOnCreateColonyActionMetadataArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyActionMetadataFilterInput>;
 };
 
 
@@ -6919,6 +7014,11 @@ export type SubscriptionOnDeleteColonyActionArgs = {
 };
 
 
+export type SubscriptionOnDeleteColonyActionMetadataArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyActionMetadataFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteColonyContributorArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyContributorFilterInput>;
 };
@@ -7096,6 +7196,11 @@ export type SubscriptionOnUpdateColonyArgs = {
 
 export type SubscriptionOnUpdateColonyActionArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyActionFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateColonyActionMetadataArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyActionMetadataFilterInput>;
 };
 
 
@@ -7487,6 +7592,11 @@ export type UpdateColonyActionInput = {
   toDomainId?: InputMaybe<Scalars['ID']>;
   tokenAddress?: InputMaybe<Scalars['ID']>;
   type?: InputMaybe<ColonyActionType>;
+};
+
+export type UpdateColonyActionMetadataInput = {
+  customTitle?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
 };
 
 export type UpdateColonyContributorInput = {
@@ -9358,6 +9468,9 @@ export const ColonyActionFragmentDoc = gql`
   }
   safeTransaction {
     ...SafeTransaction
+  }
+  metadata {
+    customTitle
   }
 }
     ${UserDisplayFragmentDoc}
