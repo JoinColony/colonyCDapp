@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
 
@@ -19,6 +20,15 @@ import {
 import { ActionSidebarProps } from './types';
 
 const displayName = 'v5.common.ActionSidebar';
+
+const variants = {
+  hidden: {
+    x: '100%',
+  },
+  visible: {
+    x: 0,
+  },
+};
 
 const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   children,
@@ -44,24 +54,40 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   useRemoveTxParamOnClose();
 
   return (
-    <div
+    <motion.div
+      transition={{
+        ease: 'easeInOut',
+      }}
+      variants={variants}
+      exit="hidden"
+      initial="hidden"
+      animate="visible"
       className={clsx(
         `
+          transition-[max-width]
           fixed
           top-0
+          sm:top-4
+          bottom-4
+          sm:bottom-0
           right-0
-          h-screen
+          h-full
+          sm:h-[calc(100vh-2rem)]
           w-full
+          sm:w-[calc(100vw-8.125rem)]
           bg-base-white
           rounded-bl-lg
-          border-l
+          border
+          border-r-0
           border-gray-200
+          rounded-l-lg
           shadow-default
           z-[60]
           flex
           flex-col
         `,
         {
+          'sm:max-w-full': isSidebarFullscreen,
           'sm:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
           'sm:max-w-[67.3125rem]': !isSidebarFullscreen && isMotion,
         },
@@ -129,7 +155,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           id: 'button.continueAction',
         })}
       />
-    </div>
+    </motion.div>
   );
 };
 
