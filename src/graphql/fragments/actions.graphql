@@ -114,6 +114,9 @@ fragment ColonyAction on ColonyAction {
   safeTransaction {
     ...SafeTransaction
   }
+  metadata {
+    customTitle
+  }
 }
 
 fragment Annotation on Annotation {
