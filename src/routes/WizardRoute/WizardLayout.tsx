@@ -10,25 +10,24 @@ import { defineMessages } from 'react-intl';
 
 import Wallet from '~frame/RouteLayouts/UserNavigation/Wallet';
 import { Header } from '~frame/Extensions/layouts';
+import { CREATE_USER_ROUTE } from '~routes/routeConstants';
 
 import WizardSidebar from './WizardSidebar';
 
 const displayName = 'routes.WizardRoute.WizardLayout';
 
-interface ColonyCreationFlowContextValues {
+interface WizardContextValues {
   currentStep: number;
   setCurrentStep: (currentStep: number) => void;
 }
 
-const ColonyCreationFlowContext = createContext<
-  ColonyCreationFlowContextValues | undefined
->(undefined);
+const WizardContext = createContext<WizardContextValues | undefined>(undefined);
 
-export const useColonyCreationFlowContext = () => {
-  const context = useContext(ColonyCreationFlowContext);
+export const useWizardContext = () => {
+  const context = useContext(WizardContext);
 
   if (!context) {
-    throw new Error('Could not find ColonyCreationFlowContext');
+    throw new Error('Could not find WizardContext');
   }
 
   return context;
@@ -71,26 +70,29 @@ const MSG = defineMessages({
 
 const wizardSteps = [
   {
-    itemStep: 0,
+    itemStep: -1,
     itemText: MSG.account,
     subItems: [
       {
-        itemStep: 0,
+        itemStep: -1,
         itemText: MSG.profile,
       },
     ],
   },
   {
-    itemStep: 1,
+    itemStep: 0,
     itemText: MSG.create,
     subItems: [
       {
-        itemStep: 1,
+        itemStep: 0,
         itemText: MSG.details,
       },
       {
-        itemStep: 2,
+        itemStep: 1,
         itemText: MSG.nativeToken,
+      },
+      {
+        itemStep: 2,
       },
       {
         itemStep: 3,
@@ -105,14 +107,16 @@ const wizardSteps = [
 ];
 
 const WizardLayout: FC<PropsWithChildren> = ({ children }) => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const colonyCreationFlowContextValues = useMemo(
+  const [currentStep, setCurrentStep] = useState(
+    window.location.pathname === CREATE_USER_ROUTE ? -1 : 0,
+  );
+  const wizardContextValues = useMemo(
     () => ({ currentStep, setCurrentStep }),
     [currentStep, setCurrentStep],
   );
 
   return (
-    <ColonyCreationFlowContext.Provider value={colonyCreationFlowContextValues}>
+    <WizardContext.Provider value={wizardContextValues}>
       <div className="grid grid-cols-[280px,auto] gap-4 p-4">
         <aside className="sticky top-4 h-[calc(100vh-2rem)]">
           <WizardSidebar
@@ -130,7 +134,7 @@ const WizardLayout: FC<PropsWithChildren> = ({ children }) => {
           </main>
         </div>
       </div>
-    </ColonyCreationFlowContext.Provider>
+    </WizardContext.Provider>
   );
 };
 

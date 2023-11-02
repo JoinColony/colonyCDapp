@@ -1,7 +1,6 @@
 import React, { ComponentType, useState } from 'react';
 
-import { useAppContext } from '~hooks';
-import { User } from '~types';
+import { useWizardContext } from '~routes/WizardRoute/WizardLayout';
 
 import {
   InitialValuesProp,
@@ -23,13 +22,8 @@ interface WizardArgs<T> {
   steps: Steps;
 }
 
-const getStep = <T,>(
-  steps: Steps,
-  step: number,
-  values: T,
-  loggedInUser?: User | null,
-) =>
-  typeof steps === 'function' ? steps(step, values, loggedInUser) : steps[step];
+const getStep = <T,>(steps: Steps, step: number, values: T) =>
+  typeof steps === 'function' ? steps(step, values) : steps[step];
 
 const all = <T,>(values: StepsValues<T>) =>
   values.reduce(
@@ -51,57 +45,56 @@ const withWizard =
     stepsProps?: WizardStepProps<F, P, Partial<F>>,
   ) => {
     const Wizard = (wizardProps: P) => {
-      const { user } = useAppContext();
-      const [step, setStep] = useState(0);
+      const { currentStep, setCurrentStep } = useWizardContext();
 
       const [stepsValues, setStepsValues] = useState<StepsValues<F>>([]);
       const mergedValues = all(stepsValues) as F;
 
-      const Step = getStep(steps, step, mergedValues, user);
+      const Step = getStep(steps, currentStep, mergedValues);
       if (!Step) throw new Error('Step needs to be implemented!');
 
-      const displayedStep = step + 1;
+      const displayedStep = currentStep + 1;
       const stepCount = maxSteps || steps.length;
 
       const next = (vals: StepValues<F> | undefined) => {
         if (vals) {
           setStepsValues((currentVals) => {
             const valsCopy = [...currentVals];
-            valsCopy[step] = vals;
+            valsCopy[currentStep] = vals;
             return valsCopy;
           });
         }
-        setStep((wizardStep) => wizardStep + 1);
+        setCurrentStep(currentStep + 1);
       };
 
       const prev = (vals: StepValues<F> | undefined) => {
-        if (step === 0) {
+        if (currentStep === 0) {
           return false;
         }
 
         if (vals) {
           setStepsValues((currentVals) => {
             const valsCopy = [...currentVals];
-            valsCopy[step] = vals;
+            valsCopy[currentStep] = vals;
             return valsCopy;
           });
         }
 
-        setStep((wizardStep) => (wizardStep === 0 ? 0 : wizardStep - 1));
+        setCurrentStep(currentStep === 0 ? 0 : currentStep - 1);
         return true;
       };
 
       const reset = () => {
-        setStep(0);
         setStepsValues([]);
+        setCurrentStep(0);
       };
 
-      const stepValues = stepsValues[step];
+      const stepValues = stepsValues[currentStep];
       const initialValues =
         typeof initialValuesProp === 'function'
-          ? initialValuesProp(user)
+          ? initialValuesProp()
           : initialValuesProp;
-      const initialStepValues = initialValues[step];
+      const initialStepValues = initialValues[currentStep];
       return (
         <OuterComponent
           step={displayedStep}
@@ -110,14 +103,13 @@ const withWizard =
           previousStep={prev}
           resetWizard={reset}
           wizardValues={mergedValues}
-          loggedInUser={user}
         >
           <Step
             step={displayedStep}
             stepCount={stepCount}
             nextStep={next}
             previousStep={prev}
-            setStep={setStep}
+            setStep={setCurrentStep}
             resetWizard={reset}
             setStepsValues={setStepsValues}
             wizardValues={mergedValues}

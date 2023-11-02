@@ -1,5 +1,3 @@
-import { AppContextValues } from '~context/AppContext';
-
 export type StepValues<T> = Partial<T>;
 export type StepsValues<T> = StepValues<T>[];
 
@@ -22,7 +20,6 @@ interface SharedWizardProps<FormValues> {
 export interface WizardOuterProps<FormValues>
   extends SharedWizardProps<FormValues> {
   children: JSX.Element;
-  loggedInUser: AppContextValues['user'];
 }
 
 export interface WizardStepProps<

@@ -1,22 +1,36 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import clsx from 'clsx';
+import { Optional } from 'utility-types';
 
-import { useColonyCreationFlowContext } from '../WizardLayout';
+import { useWizardContext } from '../WizardLayout';
 import { WizardStep } from './WizardSidebar';
 
 const displayName =
   'routes.WizardRoute.WizardSidebar.WizardSidebarItem.WizardSidebarSubItem';
 
-export type WizardSubStep = Exclude<WizardStep, 'subItem'>;
+export type WizardSubStep = Optional<WizardStep, 'subItems' | 'itemText'>;
 
-const WizardSidebarSubItem = ({ itemStep, itemText }: WizardSubStep) => {
-  const { currentStep } = useColonyCreationFlowContext();
+interface Props extends Optional<WizardSubStep, 'itemText'> {
+  hasActiveMiniItem: boolean;
+}
+
+const WizardSidebarSubItem = ({
+  itemStep,
+  itemText,
+  hasActiveMiniItem,
+}: Props) => {
+  const { currentStep } = useWizardContext();
+
+  if (!itemText) {
+    return null;
+  }
 
   return (
     <span
-      className={clsx('text-xs', {
-        'text-blue-400 font-semibold': currentStep === itemStep,
+      className={clsx('text-xs ml-[26px]', {
+        'text-blue-400 font-semibold':
+          currentStep === itemStep || hasActiveMiniItem,
       })}
     >
       <FormattedMessage {...itemText} />
