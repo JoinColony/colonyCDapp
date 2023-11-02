@@ -22,73 +22,71 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
   const [, { toggleOff: toggleOffThirdLevelMenu }] = thirdLevelMenuToggle;
 
   return (
-    <nav>
-      <ul className="flex flex-col gap-2 md:w-[2.625rem] md:overflow-visible">
-        {mainMenuItems.map(
-          (
-            {
-              key,
-              iconName,
-              label,
-              secondLevelMenuProps,
-              relatedActionsProps,
-              isActive: isActiveProp,
-            },
-            index,
-          ) => {
-            const isActive = index + 1 === openItemIndex;
-
-            return (
-              <li key={key}>
-                <NavigationSidebarButton
-                  onClick={() => {
-                    if (isActive) {
-                      setOpenItemIndex(undefined);
-                    } else {
-                      setOpenItemIndex(index + 1);
-                    }
-
-                    toggleOffThirdLevelMenu();
-                  }}
-                  isActive={isActive || isActiveProp}
-                  label={label}
-                  iconName={iconName}
-                />
-                <AnimatePresence>
-                  {isTablet && secondLevelMenuProps && isActive && (
-                    <motion.div
-                      variants={accordionAnimation}
-                      initial="hidden"
-                      animate="visible"
-                      exit="hidden"
-                      className="overflow-hidden"
-                    >
-                      <NavigationSidebarSecondLevel
-                        {...secondLevelMenuProps}
-                        content={
-                          relatedActionsProps ? (
-                            <>
-                              {secondLevelMenuProps.content}
-                              <div className="mt-4">
-                                <NavigationSidebarThirdLevel
-                                  {...relatedActionsProps}
-                                />
-                              </div>
-                            </>
-                          ) : (
-                            secondLevelMenuProps.content
-                          )
-                        }
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </li>
-            );
+    <ul className="flex flex-col gap-2 md:w-[2.625rem] md:overflow-visible">
+      {mainMenuItems.map(
+        (
+          {
+            key,
+            iconName,
+            label,
+            secondLevelMenuProps,
+            relatedActionsProps,
+            isActive: isActiveProp,
           },
-        )}
-      </ul>
-    </nav>
+          index,
+        ) => {
+          const isActive = index + 1 === openItemIndex;
+
+          return (
+            <li key={key}>
+              <NavigationSidebarButton
+                onClick={() => {
+                  if (isActive) {
+                    setOpenItemIndex(undefined);
+                  } else {
+                    setOpenItemIndex(index + 1);
+                  }
+
+                  toggleOffThirdLevelMenu();
+                }}
+                isActive={isActive || isActiveProp}
+                label={label}
+                iconName={iconName}
+              />
+              <AnimatePresence>
+                {isTablet && secondLevelMenuProps && isActive && (
+                  <motion.div
+                    variants={accordionAnimation}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    className="overflow-hidden"
+                  >
+                    <NavigationSidebarSecondLevel
+                      {...secondLevelMenuProps}
+                      content={
+                        relatedActionsProps ? (
+                          <>
+                            {secondLevelMenuProps.content}
+                            <div className="mt-4">
+                              <NavigationSidebarThirdLevel
+                                {...relatedActionsProps}
+                              />
+                            </div>
+                          </>
+                        ) : (
+                          secondLevelMenuProps.content
+                        )
+                      }
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </li>
+          );
+        },
+      )}
+    </ul>
   );
 };
 

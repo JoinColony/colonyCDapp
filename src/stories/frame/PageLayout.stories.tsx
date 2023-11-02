@@ -24,7 +24,27 @@ const pageLayoutMeta: Meta<typeof PageLayout> = {
   },
   args: {
     children: <div className="h-screen bg-blue-200">body</div>,
-    headerContent: <p>header</p>,
+    headerProps: {
+      title: 'Members',
+      breadcrumbs: [
+        {
+          key: '1',
+          label: 'Metacolony',
+          href: '/',
+        },
+        {
+          key: '2',
+          dropdownOptions: [
+            {
+              label: 'All teams',
+              href: '/all-teams',
+            },
+          ],
+          selectedValue: '/all-teams',
+        },
+      ],
+      userNavigation: <p>user navigation</p>,
+    },
     navigationSidebarProps: {
       logo: <Logo />,
       additionalMobileContent: <p>mobile content</p>,

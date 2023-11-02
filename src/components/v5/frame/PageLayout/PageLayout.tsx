@@ -2,13 +2,15 @@ import React, { FC, PropsWithChildren, useEffect, useRef } from 'react';
 import { useTablet } from '~hooks';
 
 import NavigationSidebar from '../NavigationSidebar';
+import PageHeader from './partials/PageHeader';
+import PageHeading from './partials/PageHeading';
 import { PageLayoutProps } from './types';
 
 const displayName = 'v5.frame.PageLayout';
 
 const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
   navigationSidebarProps,
-  headerContent,
+  headerProps,
   topContent,
   children,
 }) => {
@@ -39,6 +41,8 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
     };
   }, []);
 
+  const { userNavigation, breadcrumbs, title } = headerProps;
+
   return (
     <div className="w-full md:h-screen md:flex md:flex-col" ref={wrapperRef}>
       {isTablet ? (
@@ -48,9 +52,19 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
             ref={topContentWrapperRef}
           >
             {topContent && <div className="flex-shrink-0">{topContent}</div>}
-            <NavigationSidebar {...navigationSidebarProps} />
+            <NavigationSidebar
+              {...navigationSidebarProps}
+              additionalMobileContent={userNavigation}
+            />
           </div>
-          <div className="inner pt-6">{children}</div>
+          <div className="inner pt-6">
+            <PageHeading
+              breadcrumbs={breadcrumbs}
+              title={title}
+              className="mb-6"
+            />
+            {children}
+          </div>
         </>
       ) : (
         <>
@@ -66,7 +80,9 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
               </div>
             </div>
             <div className="md:flex-grow flex flex-col gap-8">
-              <div className="flex-shrink-0 pt-5 pr-4">{headerContent}</div>
+              <div className="flex-shrink-0 pt-5 pr-4">
+                <PageHeader {...headerProps} />
+              </div>
               <div className="flex-grow overflow-auto pr-4">
                 <div className="max-w-[79.875rem] w-full mx-auto">
                   {children}

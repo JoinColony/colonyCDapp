@@ -69,7 +69,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
   ) : null;
 
   return (
-    <header
+    <nav
       className={clsx(
         className,
         `
@@ -219,7 +219,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
           </>
         )}
       </AnimatePresence>
-    </header>
+    </nav>
   );
 };
 

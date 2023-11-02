@@ -25,8 +25,10 @@ export interface CardSelectProps<TValue> extends BaseFieldProps {
   renderSelectedValue?: (
     option: CardSelectOption<TValue> | undefined,
     placeholder: React.ReactNode,
+    isSelectVisible?: boolean,
   ) => React.ReactNode;
   cardClassName?: string;
+  togglerClassName?: string;
   footer?: React.ReactNode | ((toggle: UseToggleReturnType) => React.ReactNode);
 }
 
