@@ -23,7 +23,7 @@ const AdvancedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         tooltips={{
           label: {
             tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.paymentFrom',
+              id: 'actionSidebar.tooltip.simplePayment.from',
             }),
           },
         }}

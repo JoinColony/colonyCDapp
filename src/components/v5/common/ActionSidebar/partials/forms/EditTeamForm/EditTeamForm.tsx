@@ -42,7 +42,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         tooltips={{
           label: {
             tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.editTeam.teamName',
+              id: 'actionSidebar.tooltip.editTeam.team.name',
             }),
           },
         }}
@@ -64,7 +64,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         tooltips={{
           label: {
             tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.createTeam.teamPurpose',
+              id: 'actionSidebar.tooltip.createNewTeam.team.purpose',
             }),
           },
         }}
@@ -83,7 +83,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         tooltips={{
           label: {
             tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.createTeam.teamColour',
+              id: 'actionSidebar.tooltip.createNewTeam.team.colour',
             }),
           },
         }}
