@@ -7,8 +7,8 @@ import { useAppContext, useMobile } from '~hooks';
 import PopoverBase from '~v5/shared/PopoverBase';
 import { NETWORK_DATA } from '~constants';
 import { WatchListItem } from '~types';
-import { nonNullable } from '~utils/types';
 import { Network } from '~gql';
+import { notNull } from '~utils/arrays';
 
 import ColoniesDropdown from './partials/ColoniesDropdown';
 import ColonyAvatarWrapper from './partials/ColonyAvatarWrapper';
@@ -42,7 +42,7 @@ const ColonySwitcher: FC<ColonySwitcherProps> = ({
   const watchlist = useMemo(
     // @TODO: Remove the mock
     () =>
-      (user?.watchlist?.items.filter(nonNullable) || watchListMock || []).sort(
+      (user?.watchlist?.items.filter(notNull) || watchListMock || []).sort(
         sortByDate,
       ),
     [user],
