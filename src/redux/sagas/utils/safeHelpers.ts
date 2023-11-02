@@ -45,37 +45,37 @@ export interface SelectedNFT extends SelectedSafe {
 /* eslint-disable prefer-destructuring, @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require */
 const LOCAL_HOME_BRIDGE_ADDRESS =
   // @ts-ignore
-  isDev && !WEBPACK_IS_PRODUCTION && SAFE_ENABLED_LOCALLY
+  isDev && !WEBPACK_IS_PRODUCTION && SAFE_ENABLED_LOCALLY === 'true'
     ? require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
         .LOCAL_HOME_BRIDGE_ADDRESS
     : null;
 const LOCAL_FOREIGN_BRIDGE_ADDRESS =
   // @ts-ignore
-  isDev && !WEBPACK_IS_PRODUCTION && SAFE_ENABLED_LOCALLY
+  isDev && !WEBPACK_IS_PRODUCTION && SAFE_ENABLED_LOCALLY === 'true'
     ? require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
         .LOCAL_FOREIGN_BRIDGE_ADDRESS
     : null;
 const LOCAL_ERC721_ADDRESS =
   // @ts-ignore
-  isDev && !WEBPACK_IS_PRODUCTION && SAFE_ENABLED_LOCALLY
+  isDev && !WEBPACK_IS_PRODUCTION && SAFE_ENABLED_LOCALLY === 'true'
     ? require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
         .LOCAL_ERC721_ADDRESS
     : null;
 const LOCAL_SAFE_ADDRESS =
   // @ts-ignore
-  isDev && !WEBPACK_IS_PRODUCTION && SAFE_ENABLED_LOCALLY
+  isDev && !WEBPACK_IS_PRODUCTION && SAFE_ENABLED_LOCALLY === 'true'
     ? require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
         .LOCAL_SAFE_ADDRESS
     : null;
 const LOCAL_SAFE_TOKEN_ADDRESS =
   // @ts-ignore
-  isDev && !WEBPACK_IS_PRODUCTION && SAFE_ENABLED_LOCALLY
+  isDev && !WEBPACK_IS_PRODUCTION && SAFE_ENABLED_LOCALLY === 'true'
     ? require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
         .LOCAL_SAFE_TOKEN_ADDRESS
     : null;
 export const ZODIAC_BRIDGE_MODULE_ADDRESS =
   // @ts-ignore
-  isDev && !WEBPACK_IS_PRODUCTION && SAFE_ENABLED_LOCALLY
+  isDev && !WEBPACK_IS_PRODUCTION && SAFE_ENABLED_LOCALLY === 'true'
     ? require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
         .ZODIAC_BRIDGE_MODULE_ADDRESS
     : null;
