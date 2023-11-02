@@ -1,6 +1,6 @@
 import React, { ComponentType, useState } from 'react';
 
-import { useWizardContext } from '~routes/WizardRoute/WizardLayout';
+import { useWizardContext } from '~context/WizardContext';
 
 import {
   InitialValuesProp,

@@ -1,12 +1,25 @@
-import React from 'react';
 import { Outlet } from 'react-router-dom';
+import React from 'react';
+import { MainLayout } from '~frame/Extensions/layouts';
 
-import WizardLayout from './WizardLayout';
+import WizardSidebar from './WizardSidebar';
+import { wizardSidebarMSGs, wizardSteps } from './utils';
+import WizardContextProvider from '~context/WizardContext';
 
 const WizardRoute = () => (
-  <WizardLayout>
-    <Outlet />
-  </WizardLayout>
+  <WizardContextProvider>
+    <MainLayout
+      sidebar={
+        <WizardSidebar
+          wizardSteps={wizardSteps}
+          sidebarTitle={wizardSidebarMSGs.sidebarTitle}
+        />
+      }
+      hasWideSidebar
+    >
+      <Outlet />
+    </MainLayout>
+  </WizardContextProvider>
 );
 
 export default WizardRoute;
