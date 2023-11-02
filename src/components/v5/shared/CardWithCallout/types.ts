@@ -1,9 +1,10 @@
 import type { ReactNode } from 'react';
-import type { MessageDescriptor } from 'react-intl';
 
 export interface CardWithCalloutProps {
   button?: ReactNode;
+  className?: string;
   iconName?: string;
-  title: MessageDescriptor;
-  subtitle?: MessageDescriptor;
+  title?: ReactNode;
+  subtitle?: ReactNode;
+  text?: ReactNode;
 }
