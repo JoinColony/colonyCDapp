@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import clsx from 'clsx';
 
 import { usePopperTooltip } from 'react-popper-tooltip';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useMobile } from '~hooks';
 import Checkbox from '~v5/common/Checkbox';
 
@@ -11,6 +12,7 @@ import { useFilterContext } from '~context/FilterContext';
 import { formatText } from '~utils/intl';
 import PopoverBase from '~v5/shared/PopoverBase';
 import { NestedFilterOption } from '~v5/common/Filter/types';
+import { accordionAnimation } from '~constants/accordionAnimation';
 
 const displayName = 'v5.SubNavigationItem.partials.NestedOptions';
 
@@ -88,24 +90,46 @@ const NestedOptions: FC<NestedOptionsProps> = ({
                   {icon}
                 </Checkbox>
               </button>
-              {nestedOptions && nestedOptions.length > 0 && isChecked && (
-                <PopoverBase
-                  setTooltipRef={setTooltipRef}
-                  tooltipProps={getTooltipProps}
-                  withTooltipStyles={false}
-                  cardProps={{
-                    rounded: 's',
-                    hasShadow: true,
-                    className: 'py-4 px-2',
-                  }}
-                  classNames="w-full sm:max-w-[17.375rem] mr-2"
-                >
-                  <NestedOptions
-                    parentOption={`custom.${parentOption}`}
-                    nestedFilters={nestedOptions}
-                  />
-                </PopoverBase>
-              )}
+              <AnimatePresence>
+                {nestedOptions &&
+                  nestedOptions.length > 0 &&
+                  isChecked &&
+                  (isMobile ? (
+                    <motion.div
+                      key="accordion-content"
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      variants={accordionAnimation}
+                      transition={{ duration: 0.4, ease: 'easeOut' }}
+                      className="overflow-hidden"
+                    >
+                      <div className="ml-5">
+                        <NestedOptions
+                          parentOption={`custom.${parentOption}`}
+                          nestedFilters={nestedFilters}
+                        />
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <PopoverBase
+                      setTooltipRef={setTooltipRef}
+                      tooltipProps={getTooltipProps}
+                      withTooltipStyles={false}
+                      cardProps={{
+                        rounded: 's',
+                        hasShadow: true,
+                        className: 'py-4 px-2',
+                      }}
+                      classNames="w-full sm:max-w-[17.375rem] mr-2"
+                    >
+                      <NestedOptions
+                        parentOption={`custom.${parentOption}`}
+                        nestedFilters={nestedOptions}
+                      />
+                    </PopoverBase>
+                  ))}
+              </AnimatePresence>
             </li>
           );
         })}
