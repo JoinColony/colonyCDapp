@@ -17,6 +17,14 @@ input TokenFromEverywhereArguments {
   """
   tokenAddress: String!
   network: String
+  """
+  The URL of the token image
+  """
+  avatar: String
+  """
+  The URL of the token thumbnail image
+  """
+  thumbnail: String
 }
 
 """
