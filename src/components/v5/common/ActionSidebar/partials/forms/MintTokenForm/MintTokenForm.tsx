@@ -32,20 +32,6 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <AmountField name="amount" />
       </ActionFormRow>
       <ActionFormRow
-        iconName="house-line"
-        fieldName="createdIn"
-        title={formatMessage({ id: 'actionSidebar.createdIn' })}
-        tooltips={{
-          label: {
-            tooltipContent: formatMessage({
-              id: 'actionSidebar.tooltip.createdIn',
-            }),
-          },
-        }}
-      >
-        <TeamsSelect name="createdIn" />
-      </ActionFormRow>
-      <ActionFormRow
         iconName="scales"
         fieldName="decisionMethod"
         tooltips={{
@@ -62,6 +48,20 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           options={DECISION_METHOD_OPTIONS}
           title={formatMessage({ id: 'actionSidebar.decisionMethod' })}
         />
+      </ActionFormRow>
+      <ActionFormRow
+        iconName="house-line"
+        fieldName="createdIn"
+        title={formatMessage({ id: 'actionSidebar.createdIn' })}
+        tooltips={{
+          label: {
+            tooltipContent: formatMessage({
+              id: 'actionSidebar.tooltip.createdIn',
+            }),
+          },
+        }}
+      >
+        <TeamsSelect name="createdIn" />
       </ActionFormRow>
       <ActionFormRow
         iconName="pencil"

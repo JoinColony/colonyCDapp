@@ -38,7 +38,7 @@ const RichText: FC<RichTextProps> = ({
                 onClick={toggleOnDecriptionSelect}
                 className={clsx('sm:hover:text-blue-400', {
                   'text-gray-900': characterCount,
-                  'text-gray-500': !characterCount,
+                  'text-gray-400': !characterCount,
                 })}
               >
                 <span
@@ -96,7 +96,7 @@ const RichText: FC<RichTextProps> = ({
                 onClick={toggleOnDecriptionSelect}
                 className={clsx('sm:hover:text-blue-400', {
                   'text-gray-900': characterCount,
-                  'text-gray-500': !characterCount,
+                  'text-gray-400': !characterCount,
                 })}
               >
                 <span

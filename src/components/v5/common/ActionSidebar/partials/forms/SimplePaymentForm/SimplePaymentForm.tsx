@@ -62,20 +62,6 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <AmountField name="amount" />
       </ActionFormRow>
       <ActionFormRow
-        iconName="house-line"
-        fieldName="createdIn"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.createdIn',
-            }),
-          },
-        }}
-        title={formatText({ id: 'actionSidebar.createdIn' })}
-      >
-        <TeamsSelect name="createdIn" />
-      </ActionFormRow>
-      <ActionFormRow
         iconName="scales"
         fieldName="decisionMethod"
         tooltips={{
@@ -92,6 +78,20 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           options={DECISION_METHOD_OPTIONS}
           title={formatText({ id: 'actionSidebar.decisionMethod' })}
         />
+      </ActionFormRow>
+      <ActionFormRow
+        iconName="house-line"
+        fieldName="createdIn"
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.createdIn',
+            }),
+          },
+        }}
+        title={formatText({ id: 'actionSidebar.createdIn' })}
+      >
+        <TeamsSelect name="createdIn" />
       </ActionFormRow>
       <ActionFormRow
         iconName="pencil"
