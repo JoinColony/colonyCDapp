@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react';
+import React, { FC } from 'react';
 
 import FileUpload from './partials/FileUpload';
 import { useAvatarUploader, useGetUploaderText } from './hooks';
@@ -24,7 +24,6 @@ const AvatarUploader: FC<AvatarUploaderProps> = ({
     uploadProgress,
     file,
   } = useAvatarUploader();
-  const dropzoneRef = useRef<{ open: () => void }>();
   const uploaderText = useGetUploaderText(fileOptions);
 
   return (
@@ -47,10 +46,9 @@ const AvatarUploader: FC<AvatarUploaderProps> = ({
           handleFileAccept={handleFileUpload}
           handleFileReject={handleFileReject}
           handleFileRemove={handleFileRemove}
-          forwardedRef={dropzoneRef}
           errorCode={uploadAvatarError}
           isAvatarUploaded={user?.profile?.avatar !== null}
-          isPropgressContentVisible={showPropgress}
+          isProgressContentVisible={showPropgress}
         />
         {showPropgress && (
           <ProgressContent

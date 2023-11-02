@@ -49,6 +49,7 @@ fragment Colony on Colony {
   }
   reputation
   expendituresGlobalClaimDelay
+  private
 }
 
 fragment ColonyDisplay on Colony {
@@ -86,6 +87,7 @@ fragment WatchedColony on Colony {
   name
   chainMetadata {
     chainId
+    network
   }
   metadata {
     ...ColonyMetadata
@@ -110,6 +112,10 @@ fragment ColonyMetadata on ColonyMetadata {
   thumbnail
   isWhitelistActivated
   whitelistedAddresses
+  modifiedTokenAddresses {
+    added
+    removed
+  }
   changelog {
     transactionHash
     newDisplayName
@@ -119,6 +125,15 @@ fragment ColonyMetadata on ColonyMetadata {
     haveTokensChanged
     hasDescriptionChanged
     haveExternalLinksChanged
+    newSafes {
+      ...Safe
+    }
+    oldSafes {
+      ...Safe
+    }
+  }
+  safes {
+    ...Safe
   }
 }
 
@@ -170,4 +185,11 @@ fragment ColonyRole on ColonyRole {
   role_3
   role_5
   role_6
+}
+
+fragment Safe on Safe {
+  name
+  address
+  chainId
+  moduleContractAddress
 }

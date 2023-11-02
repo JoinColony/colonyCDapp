@@ -1,0 +1,41 @@
+#!/bin/bash
+
+START_BLOCKCHAIN_SCRIPT=./scripts/start-blockchain-client.sh
+SETUP_FOREIGN_CHAIN_SCRIPT=./scripts/setup-foreign-chain.sh
+BRIDGING_CONTRACT_SCRIPT=./scripts/setup-bridging-contracts.js
+WRITE_ADDRESSES_FUNCTION='writeFileSync(
+    path.resolve(__dirname, "/colonyCDapp/amplify/mock-data/colonyNetworkArtifacts", "safe-addresses.json"),
+    JSON.stringify({
+      LOCAL_HOME_BRIDGE_ADDRESS: homeBridge.address,
+      LOCAL_FOREIGN_BRIDGE_ADDRESS: foreignBridge.address,
+      LOCAL_SAFE_ADDRESS: gnosisSafe.address,
+      ZODIAC_BRIDGE_MODULE_ADDRESS: zodiacBridge.address,
+      LOCAL_ERC721_ADDRESS: erc721.address,
+      LOCAL_SAFE_TOKEN_ADDRESS: token.address,
+    }),
+    {
+      encoding: "utf8",
+    },
+  );
+'
+FORMATTED_FUNCTION=$(echo "$WRITE_ADDRESSES_FUNCTION" | awk '{ printf "%s\\n", $0 }' ORS='')
+
+cd colonyNetwork
+
+# Setup foreign chain
+sed -i 's|--db $DBPATH|--db  $DBPATH --server.host "0.0.0.0"|g' $START_BLOCKCHAIN_SCRIPT
+bash $SETUP_FOREIGN_CHAIN_SCRIPT
+
+# Start bridging script
+
+# home rpc is the network docker container
+sed -i 's|http://127.0.0.1:8545|http://network-contracts:8545|g' $BRIDGING_CONTRACT_SCRIPT
+
+# foreign rpc set up previously in this script
+sed -i 's|http://127.0.0.1:8546|http://0.0.0.0:8546|g' $BRIDGING_CONTRACT_SCRIPT
+
+# write safe variables to file to parse in fronted during dev
+sed -i '1a\ const { writeFileSync } = require("fs");' $BRIDGING_CONTRACT_SCRIPT
+sed -i "/console.log(\`Token address: \${token.address}\`);/a $FORMATTED_FUNCTION" $BRIDGING_CONTRACT_SCRIPT
+
+node $BRIDGING_CONTRACT_SCRIPT start-bridging-environment

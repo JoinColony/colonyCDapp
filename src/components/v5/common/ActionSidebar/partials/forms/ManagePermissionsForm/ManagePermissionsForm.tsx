@@ -23,7 +23,7 @@ import { getRoleLabel } from './utils';
 const displayName = 'v5.common.ActionSidebar.partials.ManagePermissionsForm';
 
 const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  const { role } = useManagePermissions(getFormOptions);
+  const { role, isModeRoleSelected } = useManagePermissions(getFormOptions);
   const [
     isPermissionsModalOpen,
     {
@@ -63,9 +63,13 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="user-focus"
         fieldName="member"
-        tooltip={formatText({
-          id: 'actionSidebar.tooltip.managePermissions.member',
-        })}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.managePermissions.member',
+            }),
+          },
+        }}
         title={formatText({ id: 'actionSidebar.member' })}
       >
         <UserSelect name="member" />
@@ -73,9 +77,13 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="users-three"
         fieldName="team"
-        tooltip={formatText({
-          id: 'actionSidebar.tooltip.managePermissions.team',
-        })}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.managePermissions.team',
+            }),
+          },
+        }}
         title={formatText({ id: 'actionSidebar.managePermissions.team' })}
       >
         <TeamsSelect name="team" />
@@ -83,12 +91,18 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="shield"
         fieldName="role"
-        tooltip={formatText({ id: 'actionSidebar.tooltip.permissions' })}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.managePermissions.permissions',
+            }),
+          },
+        }}
         title={formatText({ id: 'actionSidebar.permissions' })}
       >
         <FormCardSelect
           name="role"
-          cardClassName="max-w-sm"
+          cardClassName="max-w-[calc(100vw-2.5rem)] md:max-w-sm"
           renderSelectedValue={(option, placeholder) =>
             getRoleLabel(option?.value) || placeholder
           }
@@ -103,10 +117,31 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="signature"
         fieldName="authority"
-        tooltip={formatText({ id: 'actionSidebar.tooltip.authority' })}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.authority',
+            }),
+          },
+          content: isModeRoleSelected
+            ? {
+                tooltipContent: formatText({
+                  id: 'actionSidebar.managePermissions.authority.disbaledTooltip',
+                }),
+                selectTriggerRef: (triggerRef) => {
+                  if (!triggerRef) {
+                    return null;
+                  }
+
+                  return triggerRef.querySelector('span');
+                },
+              }
+            : undefined,
+        }}
         title={formatText({ id: 'actionSidebar.authority' })}
       >
         <FormCardSelect
+          disabled={isModeRoleSelected}
           name="authority"
           options={AUTHORITY_OPTIONS}
           title={formatText({ id: 'actionSidebar.authority' })}
@@ -118,7 +153,13 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="scales"
         fieldName="decisionMethod"
-        tooltip={formatText({ id: 'actionSidebar.tooltip.decisionMethod' })}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.decisionMethod',
+            }),
+          },
+        }}
         title={formatText({ id: 'actionSidebar.decisionMethod' })}
       >
         <FormCardSelect
@@ -130,7 +171,13 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="pencil"
         fieldName="description"
-        tooltip={formatText({ id: 'actionSidebar.tooltip.description' })}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.description',
+            }),
+          },
+        }}
         title={formatText({ id: 'actionSidebar.description' })}
         isExpandable
       >

@@ -3,7 +3,16 @@ import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
 import { ActionTypes } from '~redux';
-import { Address, WithKey, DomainColor, Domain, Colony } from '~types';
+import {
+  Address,
+  WithKey,
+  DomainColor,
+  Domain,
+  Colony,
+  Safe,
+  SafeTransactionData,
+} from '~types';
+import { NetworkInfo } from '~constants';
 
 import {
   ErrorActionType,
@@ -272,4 +281,37 @@ export type ColonyActionsActionTypes =
       ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_SUCCESS,
       object,
       object
+    >
+  | UniqueActionType<
+      ActionTypes.ACTION_MANAGE_EXISTING_SAFES,
+      {
+        colony: Colony;
+        safes: Safe[];
+        annotationMessage?: string;
+        isRemovingSafes?: boolean;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.ACTION_MANAGE_EXISTING_SAFES_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.ACTION_MANAGE_EXISTING_SAFES_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION,
+      {
+        safe: Omit<Safe, 'safeName'>;
+        transactionsTitle: string;
+        transactions: SafeTransactionData[];
+        colonyAddress: Address;
+        colonyName: string;
+        annotationMessage: string | null;
+        network: NetworkInfo;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION_SUCCESS,
+      MetaWithSetter<object>
     >;

@@ -12,6 +12,7 @@ import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 import { formatText } from '~utils/intl';
 import Modal from '~v5/shared/Modal';
 import { ActionTypeSelectProps } from './types';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 
 const displayName = 'v5.common.ActionTypeSelect';
 
@@ -33,6 +34,7 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
     HTMLDivElement
   >([isSelectVisible]);
   const { formState, setValue } = useFormContext();
+  const { readonly } = useAdditionalFormOptionsContext();
 
   return (
     <div className={className}>
@@ -40,53 +42,69 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
         fieldName={ACTION_TYPE_FIELD_NAME}
         iconName="file-plus"
         title={formatText({ id: 'actionSidebar.actionType' })}
-        tooltip={formatText({ id: 'actionSidebar.tooltip.actionType' })}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.actionType',
+            }),
+          },
+        }}
       >
-        <button
-          type="button"
-          ref={relativeElementRef}
-          className={clsx(
-            'flex text-md transition-colors md:hover:text-blue-400',
-            {
-              'text-gray-600': !actionType,
-              'text-gray-900': actionType,
-            },
-          )}
-          onClick={toggleSelect}
-        >
-          {formatText({
-            id: actionType
-              ? translateAction(actionType)
-              : 'actionSidebar.chooseActionType',
-          })}
-        </button>
-        {isSelectVisible && (
-          <SearchSelect
-            hideSearchOnMobile
-            ref={(ref) => {
-              registerContainerRef(ref);
-              portalElementRef.current = ref;
-            }}
-            onToggle={toggleSelectOff}
-            items={actionsList}
-            isOpen={isSelectVisible}
-            className="z-[60]"
-            onSelect={(action) => {
-              toggleSelectOff();
+        {readonly ? (
+          <span className="text-md text-gray-900">
+            {formatText({
+              id: translateAction(actionType),
+            })}
+          </span>
+        ) : (
+          <>
+            <button
+              type="button"
+              ref={relativeElementRef}
+              className={clsx(
+                'flex text-md transition-colors md:hover:text-blue-400',
+                {
+                  'text-gray-600': !actionType,
+                  'text-gray-900': actionType,
+                },
+              )}
+              onClick={toggleSelect}
+            >
+              {formatText({
+                id: actionType
+                  ? translateAction(actionType)
+                  : 'actionSidebar.chooseActionType',
+              })}
+            </button>
+            {isSelectVisible && (
+              <SearchSelect
+                hideSearchOnMobile
+                ref={(ref) => {
+                  registerContainerRef(ref);
+                  portalElementRef.current = ref;
+                }}
+                onToggle={toggleSelectOff}
+                items={actionsList}
+                isOpen={isSelectVisible}
+                className="z-[60]"
+                onSelect={(action) => {
+                  toggleSelectOff();
 
-              if (action === actionType) {
-                return;
-              }
+                  if (action === actionType) {
+                    return;
+                  }
 
-              if (Object.keys(formState.dirtyFields).length > 0) {
-                setNextActionType(action);
+                  if (Object.keys(formState.dirtyFields).length > 0) {
+                    setNextActionType(action);
 
-                return;
-              }
+                    return;
+                  }
 
-              onChange(action);
-            }}
-          />
+                  onChange(action);
+                }}
+              />
+            )}
+          </>
         )}
       </ActionSidebarRow>
       <Modal

@@ -1,9 +1,9 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
-import { ClientType } from '@colony/colony-js';
+import { ClientType, getPermissionProofs, ColonyRole } from '@colony/colony-js';
 import { ApolloQueryResult } from '@apollo/client';
 import { BigNumber } from 'ethers';
 
-import { getContext, ContextModule } from '~context';
+import { getContext, ContextModule, ColonyManager } from '~context';
 import {
   GetColonyActionDocument,
   GetColonyActionQuery,
@@ -19,17 +19,24 @@ import {
   createTransactionChannels,
 } from '../transactions';
 
-import { initiateTransaction, putError, takeFrom } from '../utils';
+import {
+  initiateTransaction,
+  putError,
+  takeFrom,
+  getColonyManager,
+} from '../utils';
 
 export type ClaimMotionRewardsPayload =
   Action<ActionTypes.MOTION_CLAIM>['payload'];
 
 function* claimMotionRewards({
   meta,
-  payload: { userAddress, colonyAddress, transactionHash },
+  payload: { userAddress, colonyAddress, extensionAddress, transactionHash },
 }: Action<ActionTypes.MOTION_CLAIM>) {
-  const apolloClient = getContext(ContextModule.ApolloClient);
   try {
+    const apolloClient = getContext(ContextModule.ApolloClient);
+    const colonyManager: ColonyManager = yield call(getColonyManager);
+
     const {
       data: { getColonyAction },
     }: ApolloQueryResult<GetColonyActionQuery> = yield apolloClient.query<
@@ -78,13 +85,31 @@ function* claimMotionRewards({
 
     const BATCH_KEY = 'claimMotionRewards';
 
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
+
+    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient,
+      motionData.motionDomain.nativeId,
+      ColonyRole.Arbitration,
+      extensionAddress,
+    );
+
     yield all(
       Object.keys(channels).map((id) =>
         createGroupTransaction(channels[id], BATCH_KEY, meta, {
           context: ClientType.VotingReputationClient,
-          methodName: 'claimRewardWithProofs',
+          methodName: 'claimReward',
           identifier: colonyAddress,
-          params: [motionData.motionId, userAddress, id === YAY_ID ? 1 : 0],
+          params: [
+            motionData.motionId,
+            permissionDomainId,
+            childSkillIndex,
+            userAddress,
+            id === YAY_ID ? 1 : 0,
+          ],
         }),
       ),
     );

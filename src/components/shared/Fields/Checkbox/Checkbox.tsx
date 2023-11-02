@@ -15,7 +15,7 @@ import { CoreInputProps } from '../Input';
 import styles from './Checkbox.css';
 
 interface Appearance {
-  theme?: 'dark';
+  theme?: 'dark' | 'pink';
   direction?: 'horizontal' | 'vertical';
 }
 
@@ -55,7 +55,10 @@ const Checkbox = ({
   const [inputId] = useState(nanoid());
   const { getValues, register } = useFormContext();
   const isChecked = getValues(name).indexOf(value) >= 0;
-  const mainClasses = getMainClasses(appearance, styles);
+  const mainClasses = getMainClasses(appearance, styles, {
+    isChecked,
+    disabled,
+  });
 
   const toolTipContent = formatText(tooltipText, tooltipTextValues);
   const showTooltip = disabled && tooltipText;

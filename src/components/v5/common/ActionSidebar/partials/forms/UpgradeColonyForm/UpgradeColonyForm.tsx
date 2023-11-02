@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 
-import { FormattedMessage, useIntl } from 'react-intl';
 import { useUpgradeColony } from './hooks';
 import { ActionFormBaseProps } from '../../../types';
 import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField';
@@ -9,12 +8,11 @@ import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import ColonyVersionField from '~v5/common/ActionSidebar/partials/ColonyVersionField';
 import { DECISION_METHOD_OPTIONS } from '../../consts';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.common.ActionSidebar.partials.UpgradeColonyForm';
 
 const UpgradeColonyForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  const intl = useIntl();
-
   useUpgradeColony(getFormOptions);
 
   return (
@@ -23,28 +21,46 @@ const UpgradeColonyForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="house-line"
         fieldName="createdIn"
-        tooltip={<FormattedMessage id="actionSidebar.tooltip.createdIn" />}
-        title={<FormattedMessage id="actionSidebar.createdIn" />}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.createdIn',
+            }),
+          },
+        }}
+        title={formatText({ id: 'actionSidebar.createdIn' })}
       >
         <TeamsSelect name="createdIn" />
       </ActionFormRow>
       <ActionFormRow
         iconName="scales"
         fieldName="decisionMethod"
-        tooltip={<FormattedMessage id="actionSidebar.tooltip.decisionMethod" />}
-        title={<FormattedMessage id="actionSidebar.decisionMethod" />}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.decisionMethod',
+            }),
+          },
+        }}
+        title={formatText({ id: 'actionSidebar.decisionMethod' })}
       >
         <FormCardSelect
           name="decisionMethod"
           options={DECISION_METHOD_OPTIONS}
-          title={intl.formatMessage({ id: 'actionSidebar.decisionMethod' })}
+          title={formatText({ id: 'actionSidebar.decisionMethod' })}
         />
       </ActionFormRow>
       <ActionFormRow
         iconName="pencil"
         fieldName="description"
-        tooltip={<FormattedMessage id="actionSidebar.tooltip.description" />}
-        title={<FormattedMessage id="actionSidebar.description" />}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.description',
+            }),
+          },
+        }}
+        title={formatText({ id: 'actionSidebar.description' })}
         isExpandable
       >
         {([

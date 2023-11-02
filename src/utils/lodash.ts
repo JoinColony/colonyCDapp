@@ -12,3 +12,6 @@ export { default as uniqBy } from 'lodash/uniqBy';
 export { default as difference } from 'lodash/difference';
 export { default as get } from 'lodash/get';
 export { default as groupBy } from 'lodash/groupBy';
+export { default as isArray } from 'lodash/isArray';
+export { default as omit } from 'lodash/omit';
+export { default as fill } from 'lodash/fill';

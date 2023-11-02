@@ -81,9 +81,6 @@ const TokenAmountInput = ({
           formattingOptions={formattingOptions}
           disabled={disabled}
           dataTest="paymentAmountInput"
-          // @NOTE: If we don't explicitly pass the amount value here, the input will lose their value when a different token is selected.
-          // (Most likely to do with formattingOptions changing when the token changes?)
-          value={amount}
         />
         {includeNetworkFee && <NetworkFee colony={colony} />}
       </div>

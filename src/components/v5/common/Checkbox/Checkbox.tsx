@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { FC, PropsWithChildren } from 'react';
+import React, { FC, PropsWithChildren, useId } from 'react';
 import clsx from 'clsx';
 
 import { CheckboxProps } from './types';
@@ -21,6 +21,8 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
   children,
   mode = 'primary',
 }) => {
+  const generatedId = useId();
+
   return (
     <div
       className={clsx(classNames, {
@@ -35,7 +37,7 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
           type="checkbox"
           {...register?.(name)}
           name={name}
-          id={id}
+          id={id || generatedId}
           checked={isChecked}
           disabled={disabled}
           className="peer absolute top-0 left-0 overflow-hidden w-0 h-0 opacity-0"

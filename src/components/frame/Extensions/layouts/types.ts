@@ -1,9 +1,21 @@
-import { MessageDescriptor } from 'react-intl';
+import type { ReactNode } from 'react';
 
-export interface PageLayoutProps {
-  title: MessageDescriptor;
-  description: MessageDescriptor;
-  loadingText: MessageDescriptor | string;
-  pageName: 'members' | 'extensions' | 'profile';
+import type { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
+
+export interface MainLayoutProps {
+  calamityBannerItems?: CalamityBannerItemProps[];
+  header?: ReactNode;
   hideColonies?: boolean;
+  sidebar?: ReactNode;
+}
+
+export type ColonyLayoutProps = Omit<
+  MainLayoutProps,
+  'calamityBannerItems' | 'header' | 'sidebar'
+>;
+
+export interface HeaderProps {
+  navBar?: ReactNode;
+  txButtons?: ReactNode;
+  userHub?: ReactNode;
 }

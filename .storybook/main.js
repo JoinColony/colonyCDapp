@@ -4,6 +4,12 @@ const devWebpackConfig = require('../webpack.dev');
 
 const devConfig = devWebpackConfig();
 
+const svgoPlugins = [
+  { removeTitle: true },
+  { convertColors: { shorthex: false } },
+  { convertPathData: false },
+];
+
 module.exports = {
   core: {
     builder: 'webpack5',
@@ -14,7 +20,7 @@ module.exports = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
-    "storybook-addon-apollo-client",
+    'storybook-addon-apollo-client',
     'storybook-react-intl',
     {
       name: '@storybook/addon-styling',
@@ -50,23 +56,73 @@ module.exports = {
       ...devConfig.resolve.alias,
     };
 
-    const fileLoaderRule = config.module.rules.find((rule) => !Array.isArray(rule.test) && rule.test.test('.svg'));
-    fileLoaderRule.exclude = /\.svg$/;
+    config.module.rules = config.module.rules.filter(
+      ({ test }, index) =>
+        !test ||
+        (!test.test('test.css') &&
+          !test.test('test.scss') &&
+          !test.test('test.svg') &&
+          !test.test('test.tsx')),
+    );
 
+    /*
+     * To load svg icons and token icons to import
+     */
     config.module.rules.push({
-      test: /\.svg$/i,
-      loader: require.resolve('svg-sprite-loader'),
+      test: /\.svg$/,
+      exclude: [path.resolve(__dirname, '..', 'src', 'images', 'icons')],
+      use: '@svgr/webpack',
     });
 
-    config.module.rules = config.module.rules.filter(
-      ({ test }, index) => !test || (!test.test('test.css') && !test.test('test.scss') && !test.test('test.tsx')),
-    );
+    /*
+     * We are only parsing images inside `src/client/images/icons`. Doing so allows us to bundle the commonly-used icons.
+     * This loader also runs the images through a svg optimizer. See: https://github.com/svg/svgo#what-it-can-do
+     * To use with Icon component
+     */
+    config.module.rules.push({
+      test: /\.svg$/,
+      include: [path.resolve(__dirname, '..', 'src', 'images', 'icons')],
+      use: [
+        {
+          loader: 'svg-sprite-loader',
+        },
+        {
+          loader: 'svgo-loader',
+          options: {
+            plugins: svgoPlugins,
+          },
+        },
+      ],
+    });
+
+    config.module.rules.push({
+      test: /\.svg$/,
+      include: [path.resolve(__dirname, '..', 'src', 'images', 'tokens')],
+      use: [
+        {
+          loader: 'svgo-loader',
+          options: {
+            plugins: [
+              { removeTitle: true },
+              { convertColors: { shorthex: false } },
+              { convertPathData: false },
+              { removeViewBox: false },
+              { removeDimensions: true },
+            ],
+          },
+        },
+      ],
+    });
+
     config.module.rules.push({
       test: /\.css$/,
       oneOf: [
         {
           test: /\.global\.css$/,
-          include: [path.resolve(__dirname, '..', 'src', 'components'), path.resolve(__dirname, '..', 'src', 'styles')],
+          include: [
+            path.resolve(__dirname, '..', 'src', 'components'),
+            path.resolve(__dirname, '..', 'src', 'styles'),
+          ],
           use: [
             'style-loader',
             '@teamsupercell/typings-for-css-modules-loader',
@@ -81,7 +137,10 @@ module.exports = {
         },
         {
           test: /\.css$/,
-          include: [path.resolve(__dirname, '..', 'src', 'components'), path.resolve(__dirname, '..', 'src', 'styles')],
+          include: [
+            path.resolve(__dirname, '..', 'src', 'components'),
+            path.resolve(__dirname, '..', 'src', 'styles'),
+          ],
           use: [
             'style-loader',
             '@teamsupercell/typings-for-css-modules-loader',
@@ -124,13 +183,15 @@ module.exports = {
       ],
     });
 
-    const providePlugin = config.plugins.find((plugin) => plugin.constructor === webpack.ProvidePlugin);
+    const providePlugin = config.plugins.find(
+      (plugin) => plugin.constructor === webpack.ProvidePlugin,
+    );
 
     if (providePlugin) {
       providePlugin.definitions = {
         ...providePlugin.definitions,
         Buffer: ['buffer', 'Buffer'],
-      }
+      };
     } else {
       config.plugins.push(
         new webpack.ProvidePlugin({
@@ -139,7 +200,6 @@ module.exports = {
         }),
       );
     }
-
 
     return config;
   },

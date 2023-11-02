@@ -45,12 +45,13 @@ const FormattedInput: FC<FormattedInputProps> = ({
 
   return (
     <div className={clsx(wrapperClassName, 'w-full')}>
-      <div className="relative w-full" ref={wrapperRef}>
+      <div className="w-full relative" ref={wrapperRef}>
         {buttonProps && (
           <button
             {...restButtonProps}
             ref={buttonRef}
-            className={`
+            className={clsx(
+              `
               absolute
               top-0
               bottom-0
@@ -61,10 +62,14 @@ const FormattedInput: FC<FormattedInputProps> = ({
               px-3.5
               py-3
               text-1
-              text-blue-400
               transition-all
               md:hover:opacity-80
-            `}
+            `,
+              {
+                'text-negative-400': state === FIELD_STATE.Error,
+                'text-blue-400': state !== FIELD_STATE.Error,
+              },
+            )}
             type="button"
             disabled={disabled}
           >

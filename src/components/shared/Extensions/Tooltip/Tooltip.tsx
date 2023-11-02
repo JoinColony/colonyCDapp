@@ -21,6 +21,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   isSuccess = false,
   isFullWidthContent,
   className,
+  selectTriggerRef = (v) => v,
 }) => {
   const {
     getArrowProps,
@@ -47,7 +48,9 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
         className={clsx(className, 'flex cursor-pointer', {
           'w-full': isFullWidthContent,
         })}
-        ref={setTriggerRef}
+        ref={(ref) => {
+          setTriggerRef(selectTriggerRef(ref));
+        }}
       >
         {children}
       </div>

@@ -15,6 +15,8 @@ export interface CardSelectOptionsGroup<TValue> {
 }
 
 export interface CardSelectProps<TValue> extends BaseFieldProps {
+  disabled?: boolean;
+  readonly?: boolean;
   title?: string;
   value?: TValue;
   options: CardSelectOptionsGroup<TValue>[] | CardSelectOption<TValue>[];

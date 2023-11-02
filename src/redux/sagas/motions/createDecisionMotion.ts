@@ -165,18 +165,10 @@ function* createDecisionMotion({
       meta,
     });
 
-    if (colonyName) {
-      if (navigate) {
-        navigate(`/colony/${colonyName}/decisions/tx/${txHash}`, {
-          state: { isRedirect: true },
-        });
-      } else {
-        window.history.replaceState(
-          {},
-          '',
-          `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
-        );
-      }
+    if (colonyName && navigate) {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
 
     yield put({

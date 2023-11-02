@@ -3,14 +3,15 @@ import { ADDRESS_ZERO } from '~constants';
 import { useGetUserReputationQuery } from '~gql';
 
 const useColonyHasReputation = (
-  colonyAddress: string,
+  colonyAddress: string | undefined,
   reputationDomain?: number,
 ): boolean => {
   const { data, error, loading } = useGetUserReputationQuery({
+    skip: !colonyAddress,
     variables: {
       input: {
         walletAddress: ADDRESS_ZERO,
-        colonyAddress,
+        colonyAddress: colonyAddress || '',
         domainId: reputationDomain,
       },
     },

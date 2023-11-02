@@ -108,6 +108,18 @@ export enum ColonyAndExtensionsEvents {
    */
   UserApproved = 'UserApproved',
   AgreementSigned = 'AgreementSigned',
+  /*
+   * Safe events
+   */
+  SafeAdded = 'SafeAdded',
+  SafeRemoved = 'SafeRemoved',
+  // NOTE: these differ to allow easy mapping from the
+  // schema types to the action types
+  SafeTransferFunds = 'SAFE_TRANSFER_FUNDS',
+  SafeRawTransaction = 'SAFE_RAW_TRANSACTION',
+  SafeTransferNft = 'SAFE_TRANSFER_NFT',
+  SafeContractInteraction = 'SAFE_CONTRACT_INTERACTION',
+  SafeMultipleTransactions = 'SAFE_MULTIPLE_TRANSACTIONS',
 }
 
 export type ActionUserRoles = {
@@ -151,6 +163,18 @@ export interface FormattedEvent {
 export enum ExtendedColonyActionType {
   UpdateAddressBook = 'UPDATE_ADDRESS_BOOK',
   UpdateTokens = 'UPDATE_TOKENS',
+  RemoveSafe = 'REMOVE_SAFE',
+  AddSafe = 'ADD_SAFE',
+  SafeTransferFunds = 'SAFE_TRANSFER_FUNDS',
+  SafeRawTransaction = 'SAFE_RAW_TRANSACTION',
+  SafeTransferNft = 'SAFE_TRANSFER_NFT',
+  SafeContractInteraction = 'SAFE_CONTRACT_INTERACTION',
+  SafeMultipleTransactions = 'SAFE_MULTIPLE_TRANSACTIONS',
+  SafeTransferFundsMotion = 'SAFE_TRANSFER_FUNDS_MOTION',
+  SafeRawTransactionMotion = 'SAFE_RAW_TRANSACTION_MOTION',
+  SafeTransferNftMotion = 'SAFE_TRANSFER_NFT_MOTION',
+  SafeContractInteractionMotion = 'SAFE_CONTRACT_INTERACTION_MOTION',
+  SafeMultipleTransactionsMotion = 'SAFE_MULTIPLE_TRANSACTIONS_MOTION',
 }
 
 /**

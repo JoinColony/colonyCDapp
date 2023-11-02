@@ -1,4 +1,3 @@
-import { Ref } from 'react';
 import {
   DropEvent,
   DropzoneInputProps,
@@ -29,7 +28,6 @@ export interface FileUploadOptions {
 
 export interface FileUploadProps {
   dropzoneOptions: DropzoneOptions;
-  forwardedRef: Ref<unknown> | undefined;
   isAvatarUploaded: boolean;
   errorCode?: DropzoneErrors;
   handleFileAccept: HandleFileAccept;
@@ -38,7 +36,7 @@ export interface FileUploadProps {
     event: DropEvent,
   ) => void;
   handleFileRemove?: (...args: unknown[]) => Promise<unknown>;
-  isPropgressContentVisible?: boolean;
+  isProgressContentVisible?: boolean;
   isSimplified?: boolean;
   fileOptions: FileUploadOptions;
 }

@@ -79,7 +79,7 @@ const ActionDetailsPage = () => {
 
   if (isMotion) {
     return (
-      <Layout isMotion>
+      <Layout isMotion actionData={action}>
         <DefaultMotion
           // Safe castings since if it's a motion without motionState/data, we render TransactionNotFound.
           actionData={action as MotionAction}
@@ -94,7 +94,7 @@ const ActionDetailsPage = () => {
   }
 
   return (
-    <Layout>
+    <Layout actionData={action}>
       <DefaultAction actionData={action} />
     </Layout>
   );

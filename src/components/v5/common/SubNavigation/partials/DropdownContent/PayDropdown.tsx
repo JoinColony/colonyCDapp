@@ -9,8 +9,7 @@ import { MSG, PAY_DROPDOWN_ITEMS } from './consts';
 import LearnMore from '~shared/Extensions/LearnMore';
 import TitleLabel from '~v5/shared/TitleLabel';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { GLOBAL_EVENTS } from '~utils/browser/dispatchGlobalEvent/consts';
-import dispatchGlobalEvent from '~utils/browser/dispatchGlobalEvent';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 
 const displayName =
   'v5.common.SubNavigation.partials.DropdownContent.PayDropdown';
@@ -18,7 +17,7 @@ const displayName =
 const PayDropdown: FC<PropsWithChildren> = () => {
   const { formatMessage } = useIntl();
   const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSideBarOn }],
+    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
 
   return (
@@ -33,11 +32,8 @@ const PayDropdown: FC<PropsWithChildren> = () => {
             {...rest}
             key={action}
             onClick={() => {
-              toggleActionSideBarOn();
-              dispatchGlobalEvent(GLOBAL_EVENTS.SET_ACTION_TYPE, {
-                detail: {
-                  actionType: action,
-                },
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: action,
               });
             }}
           />

@@ -35,9 +35,12 @@ const AccordionItem: FC<PropsWithChildren<AccordionItemProps>> = ({
     >
       {title}
       <span
-        className={clsx('transition-transform duration-[400ms] ease-out', {
-          'rotate-180': isOpen,
-        })}
+        className={clsx(
+          'flex items-center flex-shrink-0 transition-transform duration-[400ms] ease-out',
+          {
+            'rotate-180': isOpen,
+          },
+        )}
       >
         <Icon name={iconName} appearance={{ size: 'extraTiny' }} />
       </span>

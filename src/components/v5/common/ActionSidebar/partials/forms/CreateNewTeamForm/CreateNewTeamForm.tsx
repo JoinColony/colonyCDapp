@@ -1,20 +1,21 @@
 import React, { FC } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { useCrateNewTeam } from './hooks';
 import { ActionFormBaseProps } from '../../../types';
 import ActionFormRow from '~v5/common/ActionFormRow';
-import DefaultField from '~v5/common/ActionSidebar/partials/DefaultField';
 import TeamColourField from '~v5/common/ActionSidebar/partials/TeamColourField';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField';
 import { DECISION_METHOD_OPTIONS } from '../../consts';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase';
+import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.common.ActionSidebar.partials.CreateNewTeamForm';
 
 const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  const intl = useIntl();
+  const { readonly } = useAdditionalFormOptionsContext();
 
   useCrateNewTeam(getFormOptions);
 
@@ -23,29 +24,39 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         fieldName="teamName"
         iconName="user-list"
-        title={<FormattedMessage id="actionSidebar.teamName" />}
-        tooltip={
-          <FormattedMessage id="actionSidebar.tooltip.createTeam.teamName" />
-        }
+        title={formatText({ id: 'actionSidebar.teamName' })}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.createNewTeam.team.name',
+            }),
+          },
+        }}
       >
-        <DefaultField
+        <FormInputBase
           name="teamName"
-          placeholder={intl.formatMessage({
+          placeholder={formatText({
             id: 'actionSidebar.placeholder.teamName',
           })}
+          mode="secondary"
+          readOnly={readonly}
         />
       </ActionFormRow>
       <ActionFormRow
         iconName="rocket"
         fieldName="domainPurpose"
-        title={<FormattedMessage id="actionSidebar.teamPurpose" />}
-        tooltip={
-          <FormattedMessage id="actionSidebar.tooltip.createTeam.teamPurpose" />
-        }
+        title={formatText({ id: 'actionSidebar.teamPurpose' })}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.createNewTeam.team.purpose',
+            }),
+          },
+        }}
       >
         <FormTextareaBase
           name="domainPurpose"
-          placeholder={intl.formatMessage({
+          placeholder={formatText({
             id: 'actionSidebar.placeholder.purpose',
           })}
         />
@@ -53,38 +64,60 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="paint"
         fieldName="domainColor"
-        title={<FormattedMessage id="actionSidebar.teamColour" />}
-        tooltip={
-          <FormattedMessage id="actionSidebar.tooltip.createTeam.teamColour" />
-        }
+        title={formatText({ id: 'actionSidebar.teamColour' })}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.createNewTeam.team.colour',
+            }),
+          },
+        }}
       >
         <TeamColourField name="domainColor" />
       </ActionFormRow>
       <ActionFormRow
         iconName="house-line"
         fieldName="createdIn"
-        tooltip={<FormattedMessage id="actionSidebar.tooltip.createdIn" />}
-        title={<FormattedMessage id="actionSidebar.createdIn" />}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.createdIn',
+            }),
+          },
+        }}
+        title={formatText({ id: 'actionSidebar.createdIn' })}
       >
         <TeamsSelect name="createdIn" />
       </ActionFormRow>
       <ActionFormRow
         iconName="scales"
         fieldName="decisionMethod"
-        tooltip={<FormattedMessage id="actionSidebar.tooltip.decisionMethod" />}
-        title={<FormattedMessage id="actionSidebar.decisionMethod" />}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.decisionMethod',
+            }),
+          },
+        }}
+        title={formatText({ id: 'actionSidebar.decisionMethod' })}
       >
         <FormCardSelect
           name="decisionMethod"
           options={DECISION_METHOD_OPTIONS}
-          title={intl.formatMessage({ id: 'actionSidebar.decisionMethod' })}
+          title={formatText({ id: 'actionSidebar.decisionMethod' })}
         />
       </ActionFormRow>
       <ActionFormRow
         iconName="pencil"
         fieldName="description"
-        tooltip={<FormattedMessage id="actionSidebar.tooltip.description" />}
-        title={<FormattedMessage id="actionSidebar.description" />}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.description',
+            }),
+          },
+        }}
+        title={formatText({ id: 'actionSidebar.description' })}
         isExpandable
       >
         {([

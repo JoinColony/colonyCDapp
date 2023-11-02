@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
 
 import Button from '~shared/Button';
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import { useAppContext, useColonyContext, useEnabledExtensions } from '~hooks';
 
 import { getUserRolesForDomain } from '~transformers';

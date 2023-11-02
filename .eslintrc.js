@@ -119,6 +119,7 @@ module.exports = {
         ignoreComments: true,
         tabWidth: 2,
         ignoreUrls: true,
+        ignoreStrings: true,
       },
     ],
     'react/function-component-definition': 'off',

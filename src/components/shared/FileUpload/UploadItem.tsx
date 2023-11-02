@@ -10,7 +10,7 @@ import { Tooltip } from '../Popover';
 import ProgressBar from '../ProgressBar';
 import {
   FileUploadFormValues,
-  HookFormUploadItemComponentProps,
+  FormUploadItemComponentProps,
   UploadFile,
 } from './types';
 import styles from './UploadItem.css';
@@ -31,7 +31,7 @@ const UploadItem = ({
   maxFileSize,
   name,
   upload,
-}: HookFormUploadItemComponentProps) => {
+}: FormUploadItemComponentProps) => {
   const { setError } = useFormContext();
   const { fields, update, remove } = useFieldArray<FileUploadFormValues>({
     name,

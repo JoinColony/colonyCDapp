@@ -33,7 +33,6 @@ const ExpenditureDetailsPage = () => {
 
   const { colony } = useColonyContext();
   const { colonyAddress = '' } = colony || {};
-
   const { data, loading } = useGetExpenditureQuery({
     variables: {
       expenditureId: getExpenditureDatabaseId(

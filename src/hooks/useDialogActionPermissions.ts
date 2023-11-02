@@ -6,7 +6,7 @@ import { Colony } from '~types';
 import { addressHasRoles } from '~utils/checks';
 
 const useDialogActionPermissions = (
-  colony: Colony,
+  colony: Colony | undefined,
   isVotingExtensionEnabled: boolean,
   requiredRoles: ColonyRole[],
   requiredRolesDomains: number[],

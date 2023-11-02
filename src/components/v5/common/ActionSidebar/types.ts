@@ -30,11 +30,8 @@ export type UseActionFormBaseHook = (
 ) => void;
 
 export interface ActionSidebarProps {
+  initialValues?: FieldValues;
   transactionId?: string;
-}
-
-export interface ActionSidebarFormContentProps extends ActionFormBaseProps {
-  isMotion?: boolean;
 }
 
 export type DescriptionMetadataGetter<TValues = FieldValues> = (

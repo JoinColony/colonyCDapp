@@ -1,10 +1,11 @@
 import React, { ReactNode } from 'react';
 import { PopperOptions } from 'react-popper-tooltip';
-import classNames from 'classnames';
+import classnames from 'classnames';
 
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 import { Message, UniversalMessageValues } from '~types';
 import { formatText } from '~utils/intl';
+import { isArray } from '~utils/lodash';
 
 import styles from './DetailItem.css';
 
@@ -30,7 +31,7 @@ const DetailItem = ({
   tooltipPopperOptions,
 }: DetailItemProps) => (
   <div className={styles.item}>
-    <div className={classNames(styles.label, labelStyles)}>
+    <div className={classnames(styles.label, labelStyles)}>
       {formatText(label, labelValues)}
       {tooltipText && (
         <QuestionMarkTooltip
@@ -40,7 +41,13 @@ const DetailItem = ({
         />
       )}
     </div>
-    <div className={styles.value}>{item}</div>
+    <div
+      className={classnames(styles.value, {
+        [styles.listValue]: isArray(item),
+      })}
+    >
+      {item}
+    </div>
   </div>
 );
 

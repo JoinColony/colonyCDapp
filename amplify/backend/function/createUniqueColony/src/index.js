@@ -1,4 +1,5 @@
 const { utils } = require('ethers');
+const crypto = require('crypto');
 
 const { graphqlRequest } = require('./utils');
 
@@ -14,7 +15,7 @@ let graphqlURL = 'http://localhost:20002/graphql';
 
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;
-  if (ENV === 'qa') {
+  if (ENV === 'qa' || ENV === 'sc') {
     const { getParams } = require('/opt/nodejs/getParams');
     [apiKey, graphqlURL] = await getParams(['appsyncApiKey', 'graphqlUrl']);
   }
@@ -146,6 +147,10 @@ exports.handler = async (event) => {
         chainMetadata,
         version,
         status,
+        colonyMemberInvite: {
+          code: crypto.randomUUID(),
+          used: 0,
+        },
       },
     },
     graphqlURL,

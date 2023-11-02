@@ -2,8 +2,18 @@ name: Build and deploy cdapp docker image
 
 on:
   workflow_dispatch: # Allows manual workflow trigger
+
   repository_dispatch: # Allows API workflow trigger
     types: [cdapp-frontend]
+
+  push:
+    branches:
+      - master # Automatically deploy on commits to master
+    paths-ignore:
+      - '.github/**'
+      - 'amplify/**'
+      - '**.md'
+    
 
 concurrency:
   group: cdapp-frontend

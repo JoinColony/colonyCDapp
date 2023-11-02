@@ -29,11 +29,7 @@ const Spinner: FC<PropsWithChildren<SpinnerProps>> = ({
     );
   }
 
-  return (
-    <div className="bg-base-white overflow-x-hidden sm:overflow-visible">
-      {children}
-    </div>
-  );
+  return <>{children}</>;
 };
 
 Spinner.displayName = displayName;

@@ -10,6 +10,7 @@ import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 import { formatText } from '~utils/intl';
 import { useTokenSelect } from './hooks';
 import { FIELD_STATE } from '~v5/common/Fields/consts';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 
 const displayName = 'v5.common.ActionsContent.partials.TokenSelect';
 
@@ -41,6 +42,7 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
     HTMLButtonElement,
     HTMLDivElement
   >([isTokenSelectVisible]);
+  const { readonly } = useAdditionalFormOptionsContext();
 
   useEffect(() => {
     if (!isTokenSelectVisible) {
@@ -50,62 +52,68 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
 
   return (
     <div className="sm:relative w-full">
-      <button
-        type="button"
-        ref={relativeElementRef}
-        className={clsx(
-          'flex text-md transition-colors md:hover:text-blue-400',
-          {
-            'text-gray-500': !isError,
-            'text-negative-400': isError,
-            'pointer-events-none': isNativeToken,
-          },
-        )}
-        onClick={toggleTokenSelect}
-        aria-label={formatText({ id: 'manageTokensTable.select' })}
-      >
-        {renderButtonContent()}
-      </button>
-      {isTokenSelectVisible && (
-        <SearchSelect
-          showEmptyContent={!isRemoteTokenAddress}
-          items={[
-            isRemoteTokenAddress
-              ? { ...tokenOptions, options: [] }
-              : tokenOptions,
-          ]}
-          state={searchError ? FIELD_STATE.Error : undefined}
-          message={
-            searchError ? (
-              <span className="text-sm text-negative-400">
-                {formatText({ id: 'manageTokensTable.error' })}
-              </span>
-            ) : undefined
-          }
-          onSearch={(query) => {
-            const isColonyNativeToken = colonyTokens.some(
-              (token) => token?.token.tokenAddress === query,
-            );
-            setSearchError(isColonyNativeToken);
+      {readonly ? (
+        <div className="flex text-md">{renderButtonContent()}</div>
+      ) : (
+        <>
+          <button
+            type="button"
+            ref={relativeElementRef}
+            className={clsx(
+              'flex text-md transition-colors md:hover:text-blue-400',
+              {
+                'text-gray-500': !isError,
+                'text-negative-400': isError,
+                'pointer-events-none': isNativeToken,
+              },
+            )}
+            onClick={toggleTokenSelect}
+            aria-label={formatText({ id: 'manageTokensTable.select' })}
+          >
+            {renderButtonContent()}
+          </button>
+          {isTokenSelectVisible && (
+            <SearchSelect
+              showEmptyContent={!isRemoteTokenAddress}
+              items={[
+                isRemoteTokenAddress
+                  ? { ...tokenOptions, options: [] }
+                  : tokenOptions,
+              ]}
+              state={searchError ? FIELD_STATE.Error : undefined}
+              message={
+                searchError ? (
+                  <span className="text-sm text-negative-400">
+                    {formatText({ id: 'manageTokensTable.error' })}
+                  </span>
+                ) : undefined
+              }
+              onSearch={(query) => {
+                const isColonyNativeToken = colonyTokens.some(
+                  (token) => token?.token.tokenAddress === query,
+                );
+                setSearchError(isColonyNativeToken);
 
-            if (isColonyNativeToken) {
-              return;
-            }
+                if (isColonyNativeToken) {
+                  return;
+                }
 
-            field.onChange(isAddress(query) ? query : undefined);
-          }}
-          isOpen={isTokenSelectVisible}
-          onToggle={toggleTokenSelect}
-          onSelect={(value) => {
-            field.onChange(value);
-            toggleTokenSelectOff();
-          }}
-          ref={(ref) => {
-            registerContainerRef(ref);
-            portalElementRef.current = ref;
-          }}
-          className="z-[60]"
-        />
+                field.onChange(isAddress(query) ? query : undefined);
+              }}
+              isOpen={isTokenSelectVisible}
+              onToggle={toggleTokenSelect}
+              onSelect={(value) => {
+                field.onChange(value);
+                toggleTokenSelectOff();
+              }}
+              ref={(ref) => {
+                registerContainerRef(ref);
+                portalElementRef.current = ref;
+              }}
+              className="z-[60]"
+            />
+          )}
+        </>
       )}
     </div>
   );

@@ -1,9 +1,14 @@
 import React from 'react';
+import { Extension } from '@colony/colony-js';
 
 import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux/actionTypes';
-import { Address, UnclaimedStakes } from '~types/index';
-import { useColonyContext, useTokenActivationContext } from '~hooks';
+import { Address, UnclaimedStakes, InstalledExtensionData } from '~types';
+import {
+  useColonyContext,
+  useTokenActivationContext,
+  useExtensionData,
+} from '~hooks';
 import { useUserTokenBalanceContext } from '~context';
 
 const displayName = 'frame.TokenActivation.StakesTab.ClaimAllButton';
@@ -22,12 +27,18 @@ const ClaimAllButton = ({
   const { startPolling, stopPolling } = useColonyContext();
   const { pollLockedTokenBalance } = useUserTokenBalanceContext();
   const { setIsOpen } = useTokenActivationContext();
+  const { extensionData: votingRepitationExtension } = useExtensionData(
+    Extension.VotingReputation,
+  );
+
   return (
     <ActionButton
       actionType={ActionTypes.MOTION_CLAIM_ALL}
       values={{
         colonyAddress,
         userAddress,
+        extensionAddress: (votingRepitationExtension as InstalledExtensionData)
+          ?.address,
         motionIds: unclaimedStakes.map(({ motionId }) => motionId),
       }}
       appearance={{ theme: 'primary', size: 'medium' }}
