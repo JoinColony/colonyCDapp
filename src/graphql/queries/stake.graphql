@@ -1,0 +1,7 @@
+query GetUserStakes($userAddress: ID!) {
+  getUserStakes(userAddress: $userAddress) {
+    items {
+      ...UserStake
+    }
+  }
+}

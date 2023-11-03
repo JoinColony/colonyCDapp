@@ -3447,3 +3447,14 @@ type ExtensionInstallationsCount @model {
   streamingPayments: Int!
   reputationWeighted: Int!
 }
+
+type UserStake @model {
+  id: ID!
+  userAddress: ID! @index(name: "byUserAddress", queryField: "getUserStakes")
+  user: User! @hasOne(fields: ["userAddress"])
+  amount: String!
+  isClaimed: Boolean!
+  actionId: ID!
+  action: ColonyAction @hasOne(fields: ["actionId"])
+  createdAt: AWSDateTime!
+}

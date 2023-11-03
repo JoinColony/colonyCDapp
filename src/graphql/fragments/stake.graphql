@@ -1,0 +1,9 @@
+fragment UserStake on UserStake {
+  id
+  amount
+  action {
+    type
+  }
+  isClaimed
+  createdAt
+}

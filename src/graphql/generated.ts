@@ -1486,6 +1486,15 @@ export type CreateUserInput = {
   userPrivateBetaInviteCodeId?: InputMaybe<Scalars['ID']>;
 };
 
+export type CreateUserStakeInput = {
+  actionId: Scalars['ID'];
+  amount: Scalars['String'];
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isClaimed: Scalars['Boolean'];
+  userAddress: Scalars['ID'];
+};
+
 export type CreateUserTokensInput = {
   id?: InputMaybe<Scalars['ID']>;
   tokenID: Scalars['ID'];
@@ -1662,6 +1671,10 @@ export type DeleteTransactionInput = {
 };
 
 export type DeleteUserInput = {
+  id: Scalars['ID'];
+};
+
+export type DeleteUserStakeInput = {
   id: Scalars['ID'];
 };
 
@@ -3852,6 +3865,17 @@ export type ModelSubscriptionUserFilterInput = {
   profileId?: InputMaybe<ModelSubscriptionIdInput>;
 };
 
+export type ModelSubscriptionUserStakeFilterInput = {
+  actionId?: InputMaybe<ModelSubscriptionIdInput>;
+  amount?: InputMaybe<ModelSubscriptionStringInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionUserStakeFilterInput>>>;
+  createdAt?: InputMaybe<ModelSubscriptionStringInput>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  isClaimed?: InputMaybe<ModelSubscriptionBooleanInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionUserStakeFilterInput>>>;
+  userAddress?: InputMaybe<ModelSubscriptionIdInput>;
+};
+
 export type ModelSubscriptionUserTokensFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionUserTokensFilterInput>>>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
@@ -3999,6 +4023,35 @@ export type ModelUserFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelUserFilterInput>>>;
   profileId?: InputMaybe<ModelIdInput>;
   userPrivateBetaInviteCodeId?: InputMaybe<ModelIdInput>;
+};
+
+export type ModelUserStakeConditionInput = {
+  actionId?: InputMaybe<ModelIdInput>;
+  amount?: InputMaybe<ModelStringInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelUserStakeConditionInput>>>;
+  createdAt?: InputMaybe<ModelStringInput>;
+  isClaimed?: InputMaybe<ModelBooleanInput>;
+  not?: InputMaybe<ModelUserStakeConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelUserStakeConditionInput>>>;
+  userAddress?: InputMaybe<ModelIdInput>;
+};
+
+export type ModelUserStakeConnection = {
+  __typename?: 'ModelUserStakeConnection';
+  items: Array<Maybe<UserStake>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelUserStakeFilterInput = {
+  actionId?: InputMaybe<ModelIdInput>;
+  amount?: InputMaybe<ModelStringInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelUserStakeFilterInput>>>;
+  createdAt?: InputMaybe<ModelStringInput>;
+  id?: InputMaybe<ModelIdInput>;
+  isClaimed?: InputMaybe<ModelBooleanInput>;
+  not?: InputMaybe<ModelUserStakeFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelUserStakeFilterInput>>>;
+  userAddress?: InputMaybe<ModelIdInput>;
 };
 
 export type ModelUserTokensConditionInput = {
@@ -4195,6 +4248,7 @@ export type Mutation = {
   /** Create a unique user within the Colony Network. Use this instead of the automatically generated `createUser` mutation */
   createUniqueUser?: Maybe<User>;
   createUser?: Maybe<User>;
+  createUserStake?: Maybe<UserStake>;
   createUserTokens?: Maybe<UserTokens>;
   createWatchedColonies?: Maybe<WatchedColonies>;
   deleteAnnotation?: Maybe<Annotation>;
@@ -4232,6 +4286,7 @@ export type Mutation = {
   deleteToken?: Maybe<Token>;
   deleteTransaction?: Maybe<Transaction>;
   deleteUser?: Maybe<User>;
+  deleteUserStake?: Maybe<UserStake>;
   deleteUserTokens?: Maybe<UserTokens>;
   deleteWatchedColonies?: Maybe<WatchedColonies>;
   /** Updates the latest available version of a Colony or an extension */
@@ -4273,6 +4328,7 @@ export type Mutation = {
   updateToken?: Maybe<Token>;
   updateTransaction?: Maybe<Transaction>;
   updateUser?: Maybe<User>;
+  updateUserStake?: Maybe<UserStake>;
   updateUserTokens?: Maybe<UserTokens>;
   updateWatchedColonies?: Maybe<WatchedColonies>;
 };
@@ -4536,6 +4592,13 @@ export type MutationCreateUserArgs = {
 
 
 /** Root mutation type */
+export type MutationCreateUserStakeArgs = {
+  condition?: InputMaybe<ModelUserStakeConditionInput>;
+  input: CreateUserStakeInput;
+};
+
+
+/** Root mutation type */
 export type MutationCreateUserTokensArgs = {
   condition?: InputMaybe<ModelUserTokensConditionInput>;
   input: CreateUserTokensInput;
@@ -4791,6 +4854,13 @@ export type MutationDeleteTransactionArgs = {
 export type MutationDeleteUserArgs = {
   condition?: InputMaybe<ModelUserConditionInput>;
   input: DeleteUserInput;
+};
+
+
+/** Root mutation type */
+export type MutationDeleteUserStakeArgs = {
+  condition?: InputMaybe<ModelUserStakeConditionInput>;
+  input: DeleteUserStakeInput;
 };
 
 
@@ -5062,6 +5132,13 @@ export type MutationUpdateTransactionArgs = {
 export type MutationUpdateUserArgs = {
   condition?: InputMaybe<ModelUserConditionInput>;
   input: UpdateUserInput;
+};
+
+
+/** Root mutation type */
+export type MutationUpdateUserStakeArgs = {
+  condition?: InputMaybe<ModelUserStakeConditionInput>;
+  input: UpdateUserStakeInput;
 };
 
 
@@ -5367,6 +5444,8 @@ export type Query = {
   /** Retrieve a user's reputation within a specific domain in a Colony */
   getUserReputation?: Maybe<Scalars['String']>;
   getUserReputationInColony?: Maybe<ModelContributorReputationConnection>;
+  getUserStake?: Maybe<UserStake>;
+  getUserStakes?: Maybe<ModelUserStakeConnection>;
   /** Retrieve a user's token balance for a specific token */
   getUserTokenBalance?: Maybe<GetUserTokenBalanceReturn>;
   getUserTokens?: Maybe<UserTokens>;
@@ -5407,6 +5486,7 @@ export type Query = {
   listStreamingPayments?: Maybe<ModelStreamingPaymentConnection>;
   listTokens?: Maybe<ModelTokenConnection>;
   listTransactions?: Maybe<ModelTransactionConnection>;
+  listUserStakes?: Maybe<ModelUserStakeConnection>;
   listUserTokens?: Maybe<ModelUserTokensConnection>;
   listUsers?: Maybe<ModelUserConnection>;
   listWatchedColonies?: Maybe<ModelWatchedColoniesConnection>;
@@ -5988,6 +6068,22 @@ export type QueryGetUserReputationInColonyArgs = {
 
 
 /** Root query type */
+export type QueryGetUserStakeArgs = {
+  id: Scalars['ID'];
+};
+
+
+/** Root query type */
+export type QueryGetUserStakesArgs = {
+  filter?: InputMaybe<ModelUserStakeFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+  userAddress: Scalars['ID'];
+};
+
+
+/** Root query type */
 export type QueryGetUserTokenBalanceArgs = {
   input?: InputMaybe<GetUserTokenBalanceInput>;
 };
@@ -6278,6 +6374,14 @@ export type QueryListTokensArgs = {
 /** Root query type */
 export type QueryListTransactionsArgs = {
   filter?: InputMaybe<ModelTransactionFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Root query type */
+export type QueryListUserStakesArgs = {
+  filter?: InputMaybe<ModelUserStakeFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
@@ -6730,6 +6834,7 @@ export type Subscription = {
   onCreateToken?: Maybe<Token>;
   onCreateTransaction?: Maybe<Transaction>;
   onCreateUser?: Maybe<User>;
+  onCreateUserStake?: Maybe<UserStake>;
   onCreateUserTokens?: Maybe<UserTokens>;
   onCreateWatchedColonies?: Maybe<WatchedColonies>;
   onDeleteAnnotation?: Maybe<Annotation>;
@@ -6767,6 +6872,7 @@ export type Subscription = {
   onDeleteToken?: Maybe<Token>;
   onDeleteTransaction?: Maybe<Transaction>;
   onDeleteUser?: Maybe<User>;
+  onDeleteUserStake?: Maybe<UserStake>;
   onDeleteUserTokens?: Maybe<UserTokens>;
   onDeleteWatchedColonies?: Maybe<WatchedColonies>;
   onUpdateAnnotation?: Maybe<Annotation>;
@@ -6804,6 +6910,7 @@ export type Subscription = {
   onUpdateToken?: Maybe<Token>;
   onUpdateTransaction?: Maybe<Transaction>;
   onUpdateUser?: Maybe<User>;
+  onUpdateUserStake?: Maybe<UserStake>;
   onUpdateUserTokens?: Maybe<UserTokens>;
   onUpdateWatchedColonies?: Maybe<WatchedColonies>;
 };
@@ -6981,6 +7088,11 @@ export type SubscriptionOnCreateTransactionArgs = {
 
 export type SubscriptionOnCreateUserArgs = {
   filter?: InputMaybe<ModelSubscriptionUserFilterInput>;
+};
+
+
+export type SubscriptionOnCreateUserStakeArgs = {
+  filter?: InputMaybe<ModelSubscriptionUserStakeFilterInput>;
 };
 
 
@@ -7169,6 +7281,11 @@ export type SubscriptionOnDeleteUserArgs = {
 };
 
 
+export type SubscriptionOnDeleteUserStakeArgs = {
+  filter?: InputMaybe<ModelSubscriptionUserStakeFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteUserTokensArgs = {
   filter?: InputMaybe<ModelSubscriptionUserTokensFilterInput>;
 };
@@ -7351,6 +7468,11 @@ export type SubscriptionOnUpdateTransactionArgs = {
 
 export type SubscriptionOnUpdateUserArgs = {
   filter?: InputMaybe<ModelSubscriptionUserFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateUserStakeArgs = {
+  filter?: InputMaybe<ModelSubscriptionUserStakeFilterInput>;
 };
 
 
@@ -7987,6 +8109,15 @@ export type UpdateUserInput = {
   userPrivateBetaInviteCodeId?: InputMaybe<Scalars['ID']>;
 };
 
+export type UpdateUserStakeInput = {
+  actionId?: InputMaybe<Scalars['ID']>;
+  amount?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  id: Scalars['ID'];
+  isClaimed?: InputMaybe<Scalars['Boolean']>;
+  userAddress?: InputMaybe<Scalars['ID']>;
+};
+
 export type UpdateUserTokensInput = {
   id: Scalars['ID'];
   tokenID?: InputMaybe<Scalars['ID']>;
@@ -8092,6 +8223,19 @@ export type UserStakesInput = {
   address: Scalars['String'];
   /** Stake values */
   stakes: MotionStakesInput;
+};
+
+export type UserStake = {
+  __typename?: 'UserStake';
+  action?: Maybe<ColonyAction>;
+  actionId: Scalars['ID'];
+  amount: Scalars['String'];
+  createdAt: Scalars['AWSDateTime'];
+  id: Scalars['ID'];
+  isClaimed: Scalars['Boolean'];
+  updatedAt: Scalars['AWSDateTime'];
+  user: User;
+  userAddress: Scalars['ID'];
 };
 
 export type UserTokens = {
@@ -8284,6 +8428,8 @@ export type FunctionParamFragment = { __typename?: 'FunctionParam', name: string
 export type SafeTransactionDataFragment = { __typename?: 'SafeTransactionData', transactionType: SafeTransactionType, amount?: string | null, rawAmount?: string | null, data?: string | null, abi?: string | null, contractFunction?: string | null, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, recipient?: { __typename?: 'SimpleTarget', id: string, walletAddress: string, profile: { __typename?: 'SimpleTargetProfile', avatarHash?: string | null, displayName?: string | null } } | null, contract?: { __typename?: 'SimpleTarget', id: string, walletAddress: string, profile: { __typename?: 'SimpleTargetProfile', avatarHash?: string | null, displayName?: string | null } } | null, nft?: { __typename?: 'NFT', id: string, walletAddress: string, profile: { __typename?: 'NFTProfile', displayName: string } } | null, nftData?: { __typename?: 'NFTData', address: string, description?: string | null, id: string, imageUri?: string | null, logoUri: string, name?: string | null, tokenName: string, tokenSymbol: string, uri: string } | null, functionParams?: Array<{ __typename?: 'FunctionParam', name: string, type: string, value: string } | null> | null };
 
 export type SafeTransactionFragment = { __typename?: 'SafeTransaction', id: string, safe: { __typename?: 'Safe', name: string, address: string, chainId: number, moduleContractAddress: string }, transactions?: { __typename?: 'ModelSafeTransactionDataConnection', items: Array<{ __typename?: 'SafeTransactionData', transactionType: SafeTransactionType, amount?: string | null, rawAmount?: string | null, data?: string | null, abi?: string | null, contractFunction?: string | null, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, recipient?: { __typename?: 'SimpleTarget', id: string, walletAddress: string, profile: { __typename?: 'SimpleTargetProfile', avatarHash?: string | null, displayName?: string | null } } | null, contract?: { __typename?: 'SimpleTarget', id: string, walletAddress: string, profile: { __typename?: 'SimpleTargetProfile', avatarHash?: string | null, displayName?: string | null } } | null, nft?: { __typename?: 'NFT', id: string, walletAddress: string, profile: { __typename?: 'NFTProfile', displayName: string } } | null, nftData?: { __typename?: 'NFTData', address: string, description?: string | null, id: string, imageUri?: string | null, logoUri: string, name?: string | null, tokenName: string, tokenSymbol: string, uri: string } | null, functionParams?: Array<{ __typename?: 'FunctionParam', name: string, type: string, value: string } | null> | null } | null> } | null };
+
+export type UserStakeFragment = { __typename?: 'UserStake', id: string, amount: string, isClaimed: boolean, createdAt: string, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null };
 
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
 
@@ -8700,6 +8846,13 @@ export type GetProfileByEmailQueryVariables = Exact<{
 
 
 export type GetProfileByEmailQuery = { __typename?: 'Query', getProfileByEmail?: { __typename?: 'ModelProfileConnection', items: Array<{ __typename?: 'Profile', id: string } | null> } | null };
+
+export type GetUserStakesQueryVariables = Exact<{
+  userAddress: Scalars['ID'];
+}>;
+
+
+export type GetUserStakesQuery = { __typename?: 'Query', getUserStakes?: { __typename?: 'ModelUserStakeConnection', items: Array<{ __typename?: 'UserStake', id: string, amount: string, isClaimed: boolean, createdAt: string, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null> } | null };
 
 export type GetTokenByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -9626,6 +9779,17 @@ export const ExpenditureFragmentDoc = gql`
     ${ExpenditureSlotFragmentDoc}
 ${ExpenditureStageFragmentDoc}
 ${ColonyMotionFragmentDoc}`;
+export const UserStakeFragmentDoc = gql`
+    fragment UserStake on UserStake {
+  id
+  amount
+  action {
+    type
+  }
+  isClaimed
+  createdAt
+}
+    `;
 export const UserTokenBalanceDataFragmentDoc = gql`
     fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
   balance
@@ -11696,6 +11860,43 @@ export function useGetProfileByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetProfileByEmailQueryHookResult = ReturnType<typeof useGetProfileByEmailQuery>;
 export type GetProfileByEmailLazyQueryHookResult = ReturnType<typeof useGetProfileByEmailLazyQuery>;
 export type GetProfileByEmailQueryResult = Apollo.QueryResult<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>;
+export const GetUserStakesDocument = gql`
+    query GetUserStakes($userAddress: ID!) {
+  getUserStakes(userAddress: $userAddress) {
+    items {
+      ...UserStake
+    }
+  }
+}
+    ${UserStakeFragmentDoc}`;
+
+/**
+ * __useGetUserStakesQuery__
+ *
+ * To run a query within a React component, call `useGetUserStakesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserStakesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserStakesQuery({
+ *   variables: {
+ *      userAddress: // value for 'userAddress'
+ *   },
+ * });
+ */
+export function useGetUserStakesQuery(baseOptions: Apollo.QueryHookOptions<GetUserStakesQuery, GetUserStakesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserStakesQuery, GetUserStakesQueryVariables>(GetUserStakesDocument, options);
+      }
+export function useGetUserStakesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserStakesQuery, GetUserStakesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserStakesQuery, GetUserStakesQueryVariables>(GetUserStakesDocument, options);
+        }
+export type GetUserStakesQueryHookResult = ReturnType<typeof useGetUserStakesQuery>;
+export type GetUserStakesLazyQueryHookResult = ReturnType<typeof useGetUserStakesLazyQuery>;
+export type GetUserStakesQueryResult = Apollo.QueryResult<GetUserStakesQuery, GetUserStakesQueryVariables>;
 export const GetTokenByAddressDocument = gql`
     query GetTokenByAddress($address: ID!) {
   getTokenByAddress(id: $address) {
