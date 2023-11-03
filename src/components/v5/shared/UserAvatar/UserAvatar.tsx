@@ -18,6 +18,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
   userStatus,
   isContributorsList,
   className,
+  hideUserNameOnMobile,
   ...rest
 }) => {
   const address = user?.walletAddress;
@@ -53,6 +54,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
           className={clsx(className, 'font-medium truncate', {
             'text-sm ml-1': size === 'xxs',
             'text-md ml-2': size === 'xs' || size === 'sm',
+            'hidden md:block': hideUserNameOnMobile,
           })}
         >
           {userName}

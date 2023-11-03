@@ -23,8 +23,6 @@ export const WithChainImage: StoryObj<typeof ColonyAvatar> = {
     colonyImageProps: {
       src: 'https://placekitten.com/200/200',
     },
-    chainImageProps: {
-      src: 'https://placekitten.com/20/20',
-    },
+    chainIconName: 'gnosis',
   },
 };

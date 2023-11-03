@@ -11,5 +11,6 @@ export interface UserAvatarProps {
   avatarSize?: AvatarSize;
   userStatus?: UserStatusMode | null;
   isContributorsList?: boolean;
+  hideUserNameOnMobile?: boolean;
   className?: string;
 }

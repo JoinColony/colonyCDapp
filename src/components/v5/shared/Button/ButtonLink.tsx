@@ -3,14 +3,15 @@ import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
-import { ButtonProps } from './types';
+import { ButtonLinkProps } from './types';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
 import styles from './Button.module.css';
+import Link from '../Link';
 import ButtonContent from './ButtonContent';
 
-const displayName = 'v5.Button';
+const displayName = 'v5.ButtonLink';
 
-const Button: FC<PropsWithChildren<ButtonProps>> = ({
+const ButtonLink: FC<PropsWithChildren<ButtonLinkProps>> = ({
   mode = 'primarySolid',
   size = 'default',
   children,
@@ -19,12 +20,9 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
   title,
   text,
   textValues,
-  type = 'button',
   className,
   isFullRounded = false,
-  ariaLabel,
   isFullSize,
-  setTriggerRef,
   iconName,
   iconSize = 'tiny',
   isIconRight,
@@ -34,17 +32,13 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
 
   const titleText =
     typeof title === 'string' ? title : title && formatMessage(title);
-  const ariaLabelText =
-    typeof ariaLabel === 'string'
-      ? ariaLabel
-      : ariaLabel && formatMessage(ariaLabel);
 
   return (
     <>
       {loading ? (
         <SpinnerLoader appearance={{ size: 'medium' }} />
       ) : (
-        <button
+        <Link
           className={clsx(
             'flex items-center justify-center font-medium transition-all duration-normal',
             `${isFullRounded ? 'rounded-full' : 'rounded-lg'}`,
@@ -66,19 +60,15 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
               [styles.tertiary]: mode === 'tertiary' || size === 'large',
               [styles.septenary]: mode === 'septenary',
               [styles.completed]: mode === 'completed',
-              'pointer-events-none': disabled,
+              'pointer-events-none': disabled || loading,
               'w-full': isFullSize,
               'border border-gray-300 !text-gray-300 !bg-base-white':
                 disabled && isIconRight,
             },
             className,
           )}
-          disabled={disabled || loading}
-          aria-label={ariaLabelText}
           aria-busy={loading}
           title={titleText}
-          type={type}
-          ref={setTriggerRef}
           {...rest}
         >
           <ButtonContent
@@ -91,12 +81,12 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
           >
             {children}
           </ButtonContent>
-        </button>
+        </Link>
       )}
     </>
   );
 };
 
-Button.displayName = displayName;
+ButtonLink.displayName = displayName;
 
-export default Button;
+export default ButtonLink;

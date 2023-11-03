@@ -1,12 +1,12 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { MainLayout } from '~frame/Extensions/layouts';
+// import { MainLayout } from '~frame/Extensions/layouts';
 
 const MainRoute = () => (
-  <MainLayout>
+  <div>
     <Outlet />
-  </MainLayout>
+  </div>
 );
 
 export default MainRoute;

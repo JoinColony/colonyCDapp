@@ -1,4 +1,4 @@
-import { ButtonProps } from '~v5/shared/Button/types';
+import { ButtonLinkProps, ButtonProps } from '~v5/shared/Button/types';
 
 export interface NavigationSidebarSecondLevelProps {
   title: string;
@@ -6,5 +6,5 @@ export interface NavigationSidebarSecondLevelProps {
   description?: string;
   onArrowClick?: VoidFunction;
   isExpanded?: boolean;
-  bottomActionProps?: ButtonProps;
+  bottomActionProps?: ButtonProps | ButtonLinkProps;
 }

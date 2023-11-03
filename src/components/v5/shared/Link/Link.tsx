@@ -22,7 +22,7 @@ const Link: FC<LinkProps> = ({
 
   const linkText =
     typeof text === 'string' ? text : text && formatMessage(text, textValues);
-  return IS_URL_EXTERNAL ? (
+  return IS_URL_EXTERNAL && typeof to === 'string' ? (
     <a
       href={to}
       rel="nofollow noopener noreferrer"

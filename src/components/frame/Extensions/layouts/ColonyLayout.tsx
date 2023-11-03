@@ -1,37 +1,30 @@
-import React, { FC, PropsWithChildren, useCallback } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
+import { ToastContainer } from 'react-toastify';
 
-import { NetworkContractUpgradeDialog } from '~common/Dialogs';
+import { CREATE_COLONY_ROUTE } from '~routes';
+import { useColonyContext } from '~hooks';
+import { LEARN_MORE_PAYMENTS, NETWORK_DATA } from '~constants';
+import Logo from '~images/logo-new.svg';
 import { useMemberModalContext } from '~context/MemberModalContext';
-import { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
+import styles from '~shared/Extensions/Toast/Toast.module.css';
+import LearnMore from '~shared/Extensions/LearnMore';
+import { formatText } from '~utils/intl';
 import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
-import { ColonyFragment } from '~gql';
-import {
-  useAppContext,
-  useColonyContext,
-  useColonyContractVersion,
-  useEnabledExtensions,
-  useTransformer,
-} from '~hooks';
-import { useDialog } from '~shared/Dialog';
-import { getAllUserRoles } from '~transformers';
-import { canColonyBeUpgraded, hasRoot } from '~utils/checks';
+import CalamityBanner from '~v5/shared/CalamityBanner';
+import PageLayout from '~v5/frame/PageLayout';
+import Button from '~v5/shared/Button';
 
-import type { ColonyLayoutProps } from './types';
-
-import MainLayout from './MainLayout';
-import ColonyHeader from './ColonyHeader';
-import MainSidebar from './MainSidebar';
+import UserNavigationWrapper from './UserNavigationWrapper';
+import { useCalamityBannerInfo, useMainMenuItems } from './hooks';
 
 const displayName = 'frame.Extensions.layouts.ColonyLayout';
 
-const ColonyLayout: FC<PropsWithChildren<ColonyLayoutProps>> = (props) => {
+const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const { colony } = useColonyContext();
-  const { colonyContractVersion } = useColonyContractVersion();
-  const { user, wallet } = useAppContext();
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    colony as ColonyFragment,
-    wallet?.address || '',
-  ]);
+
+  const mainMenuItems = useMainMenuItems();
 
   const {
     isMemberModalOpen,
@@ -39,50 +32,106 @@ const ColonyLayout: FC<PropsWithChildren<ColonyLayoutProps>> = (props) => {
     user: modalUser,
   } = useMemberModalContext();
 
-  const openUpgradeColonyDialog = useDialog(NetworkContractUpgradeDialog);
-  const enabledExtensionData = useEnabledExtensions();
-  const canUpgradeColony = user?.profile?.displayName && hasRoot(allUserRoles);
+  const {
+    actionSidebarToggle: [, { toggle: toggleActionSideBar }],
+  } = useActionSidebarContext();
 
-  const handleUpgradeColony = useCallback(
-    () =>
-      colony &&
-      openUpgradeColonyDialog({
-        colony,
-        enabledExtensionData,
-      }),
-    [colony, enabledExtensionData, openUpgradeColonyDialog],
-  );
+  const { calamityBannerItems, canUpgrade } = useCalamityBannerInfo();
 
-  const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);
+  const { metadata, chainMetadata } = colony || {};
+  const { chainId } = chainMetadata || {};
 
-  const calamityBannerItems: CalamityBannerItemProps[] = canUpgrade
-    ? [
-        {
-          id: '1',
-          linkUrl:
-            'https://docs.colony.io/use/advanced-features/upgrade-colony-and-extensions',
-          buttonName: 'button.upgrade',
-          linkName: 'learn.more',
-          isButtonDisabled: !canUpgradeColony,
-          mode: 'info',
-          onClick: handleUpgradeColony,
-          title: { id: 'calamityBanner.available' },
-        },
-      ]
-    : [];
-
-  const header = <ColonyHeader />;
-  const sidebar = <MainSidebar colony={colony} />;
+  const chainIcon = Object.values(NETWORK_DATA).find(
+    ({ chainId: id }) => id === chainId,
+  )?.iconName;
 
   return (
     <>
-      <MainLayout
-        {...props}
-        calamityBannerItems={calamityBannerItems}
-        header={header}
-        sidebar={sidebar}
+      <ToastContainer
+        className={styles.toastNotification}
+        autoClose={3000}
+        hideProgressBar
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        pauseOnHover
+        closeButton={CloseButton}
       />
-
+      <PageLayout
+        topContent={
+          canUpgrade ? (
+            <CalamityBanner items={calamityBannerItems} />
+          ) : undefined
+        }
+        // @todo: add context
+        headerProps={{
+          title: 'Members',
+          breadcrumbs: [
+            {
+              key: '1',
+              label: 'Metacolony',
+              href: '/',
+            },
+            {
+              key: '2',
+              dropdownOptions: [
+                {
+                  label: 'All teams',
+                  href: '/all-teams',
+                },
+              ],
+              selectedValue: '/all-teams',
+            },
+          ],
+          userNavigation: <UserNavigationWrapper />,
+        }}
+        navigationSidebarProps={{
+          logo: <Logo />,
+          additionalMobileContent: <UserNavigationWrapper />,
+          mobileBottomContent: (
+            <div className="w-full flex flex-col gap-6">
+              <Button
+                iconName="plus"
+                className="w-full"
+                onClick={() => toggleActionSideBar()}
+              >
+                {formatText({ id: 'button.createNewAction' })}
+              </Button>
+              <LearnMore
+                message={{
+                  id: `${displayName}.helpText`,
+                  defaultMessage:
+                    'Need help and guidance? <a>Visit our docs</a>',
+                }}
+                href={LEARN_MORE_PAYMENTS}
+              />
+            </div>
+          ),
+          hamburgerLabel: formatText({ id: 'menu' }),
+          colonySwitcherProps: {
+            avatarProps: {
+              colonyImageProps: metadata?.avatar
+                ? { src: metadata?.thumbnail || metadata?.avatar }
+                : undefined,
+              chainIconName: chainIcon,
+            },
+            content: {
+              title:
+                formatText({ id: 'navigation.colonySwitcher.title' }) || '',
+              // @todo: add colony switcher content
+              content: <p>colony</p>,
+              bottomActionProps: {
+                text: formatText({ id: 'button.createNewColony' }),
+                iconName: 'plus',
+                to: CREATE_COLONY_ROUTE,
+              },
+            },
+          },
+          mainMenuItems,
+        }}
+      >
+        {children}
+      </PageLayout>
       <ManageMemberModal
         isOpen={isMemberModalOpen}
         onClose={() => setIsMemberModalOpen(false)}

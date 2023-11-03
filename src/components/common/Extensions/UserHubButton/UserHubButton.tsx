@@ -23,6 +23,7 @@ export const displayName =
 
 const UserHubButton: FC<UserHubButtonProps> = ({
   hideMemberReputationOnMobile,
+  hideUserNameOnMobile,
 }) => {
   const isMobile = useMobile();
   const { colony } = useColonyContext();
@@ -78,6 +79,7 @@ const UserHubButton: FC<UserHubButtonProps> = ({
             userName={
               profile?.displayName ?? splitWalletAddress(walletAddress ?? '')
             }
+            hideUserNameOnMobile={hideUserNameOnMobile}
             size="xxs"
           />
           {walletAddress && (

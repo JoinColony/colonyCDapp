@@ -7,6 +7,7 @@ import Button from '~v5/shared/Button';
 
 import { NavigationSidebarSecondLevelProps } from './types';
 import useNavigationSidebarContext from '../NavigationSidebarContext/hooks';
+import ButtonLink from '~v5/shared/Button/ButtonLink';
 
 const displayName =
   'v5.frame.NavigationSidebar.partials.NavigationSidebarSecondLevel';
@@ -21,8 +22,6 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
 }) => {
   const isTablet = useTablet();
   const { setOpenItemIndex } = useNavigationSidebarContext();
-
-  const { onClick, ...restBottomActionProps } = bottomActionProps || {};
 
   return (
     <div className="md:p-6 md:pt-[1.625rem] h-full flex flex-col justify-between gap-4 md:overflow-auto">
@@ -54,15 +53,18 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
         )}
         {content}
       </div>
-      {bottomActionProps && !isTablet && (
+      {bottomActionProps && !isTablet && !('to' in bottomActionProps) && (
         <Button
-          {...restBottomActionProps}
+          {...bottomActionProps}
           onClick={(e) => {
             setOpenItemIndex(undefined);
-            onClick?.(e);
+            bottomActionProps.onClick?.(e);
           }}
           className="w-full"
         />
+      )}
+      {bottomActionProps && !isTablet && 'to' in bottomActionProps && (
+        <ButtonLink {...bottomActionProps} className="w-full" />
       )}
     </div>
   );
