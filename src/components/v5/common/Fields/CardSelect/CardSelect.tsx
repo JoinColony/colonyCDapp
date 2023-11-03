@@ -27,6 +27,7 @@ function CardSelect<TValue = string>({
   placeholder,
   renderSelectedValue,
   cardClassName,
+  togglerClassName,
   footer,
   disabled,
   readonly,
@@ -103,6 +104,7 @@ function CardSelect<TValue = string>({
             ref={relativeElementRef}
             type="button"
             className={clsx(
+              togglerClassName,
               'flex text-md md:transition-colors md:hover:text-blue-400',
               {
                 'text-gray-500': !state,
@@ -113,7 +115,11 @@ function CardSelect<TValue = string>({
             onClick={toggleSelect}
           >
             {renderSelectedValue
-              ? renderSelectedValue(selectedOption, selectPlaceholder)
+              ? renderSelectedValue(
+                  selectedOption,
+                  selectPlaceholder,
+                  isSelectVisible,
+                )
               : selectedOption?.label || selectPlaceholder}
           </button>
           {isSelectVisible && (

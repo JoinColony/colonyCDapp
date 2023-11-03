@@ -1,7 +1,8 @@
 import { NavigationSidebarProps } from '../NavigationSidebar/types';
+import { PageHeaderProps } from './partials/PageHeader/types';
 
 export interface PageLayoutProps {
   navigationSidebarProps: NavigationSidebarProps;
-  headerContent: React.ReactNode;
+  headerProps: PageHeaderProps;
   topContent?: React.ReactNode;
 }
