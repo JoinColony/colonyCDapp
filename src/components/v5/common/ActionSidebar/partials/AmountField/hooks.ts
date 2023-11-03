@@ -32,7 +32,6 @@ export const useAmountField = (
   );
 
   const adjustInputWidth = (value: string) => {
-
     // This regex matches strings that contain only digits and commas, preventing width breaking issues
     const digitsAndCommasRegex = /^[\d,]*$/;
 
