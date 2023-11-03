@@ -8,5 +8,6 @@ export const getRemoveSafeDialogPayload = (colony: Colony, payload: any) => {
     safes: safes.map((safe: string) => JSON.parse(safe)),
     annotationMessage,
     isRemovingSafes: true,
+    customActionTitle: '',
   };
 };

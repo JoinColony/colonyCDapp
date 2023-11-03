@@ -35,6 +35,7 @@ export const getPermissionManagementDialogPayload = ({
     ),
   annotationMessage,
   motionDomainId: parseInt(motionDomainId, 10),
+  customActionTitle: '',
 });
 
 export const useSelectedUserRoles = (

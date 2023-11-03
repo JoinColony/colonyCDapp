@@ -28,4 +28,5 @@ export const getEditColonyDetailsDialogPayload = (
     name,
   })),
   annotationMessage,
+  customActionTitle: '',
 });

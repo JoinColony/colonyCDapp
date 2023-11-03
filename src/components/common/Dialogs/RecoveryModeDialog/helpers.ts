@@ -9,4 +9,5 @@ export const getRecoveryModeDialogPayload = (
   colonyAddress: colony.colonyAddress,
   walletAddress: user?.walletAddress,
   annotationMessage,
+  customActionTitle: '',
 });
