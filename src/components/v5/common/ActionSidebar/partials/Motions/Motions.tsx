@@ -1,23 +1,24 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
-
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
+
 import { getMotionState, MotionState, MotionVote } from '~utils/colonyMotions';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
+import { MotionAction } from '~types/motions';
+import { SpinnerLoader } from '~shared/Preloaders';
 import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction';
 import Stepper from '~v5/shared/Stepper';
 
 import MotionCountDownTimer from './partials/MotionCountDownTimer';
+import MotionProvider from './partials/MotionProvider/MotionProvider';
 import FinalizeStep from './steps/FinalizeStep';
 import OutcomeStep from './steps/OutcomeStep';
 import RevealStep from './steps/RevealStep';
 import StakingStep from './steps/StakingStep';
 import VotingStep from './steps/VotingStep';
 import { MotionsProps } from './types';
-import { MotionAction } from '~types/motions';
-import { SpinnerLoader } from '~shared/Preloaders';
 
 const displayName = 'v5.common.ActionSidebar.partials.Motions';
 
@@ -43,18 +44,29 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const [activeStepKey, setActiveStepKey] = useState(networkMotionStateEnum);
 
   useEffect(() => {
+    startPollingForAction(1000);
     setActiveStepKey(networkMotionStateEnum);
-  }, [networkMotionStateEnum]);
+  }, [networkMotionStateEnum, startPollingForAction]);
+
+  const { percentage } = motionStakes || {};
+  const { nay, yay } = percentage || {};
+
+  const objectingStakesPercentageValue = Number(nay) || 0;
+  const supportingStakesPercentageValue = Number(yay) || 0;
+
+  const isFullyStaked =
+    objectingStakesPercentageValue === 100 &&
+    supportingStakesPercentageValue === 100;
 
   const motionStateEnum: MotionState | undefined = useMemo(() => {
     if (!motionData) return undefined;
-    const motionStakesPercentage = motionData?.motionStakes.percentage;
+    const motionStakesRaw = motionData?.motionStakes?.raw;
     const revealedVotesPercentage = motionData?.revealedVotes.percentage || '';
 
     if (
       activeStepKey === NetworkMotionState.Finalizable &&
-      BigNumber.from(motionStakesPercentage).gte(requiredStake) &&
-      BigNumber.from(motionStakesPercentage).gte(requiredStake)
+      BigNumber.from(motionStakesRaw?.nay).gte(requiredStake) &&
+      BigNumber.from(motionStakesRaw?.yay).gte(requiredStake)
     ) {
       if (
         BigNumber.from(revealedVotesPercentage?.yay).gt(
@@ -70,7 +82,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     return motionData
       ? getMotionState(networkMotionStateEnum, motionData)
       : MotionState.Staking;
-  }, [motionData]);
+  }, [activeStepKey, motionData, networkMotionStateEnum, requiredStake]);
 
   const revealedVotes = motionData?.revealedVotes?.raw;
   const winningSide: MotionVote = BigNumber.from(revealedVotes?.yay).gt(
@@ -92,11 +104,17 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         : [
             {
               key: NetworkMotionState.Staking,
-              content: <StakingStep />,
+              content: (
+                <StakingStep
+                  isActive={activeStepKey === NetworkMotionState.Staking}
+                />
+              ),
               heading: {
                 label: formatText({ id: 'motion.staking.label' }) || '',
                 decor:
-                  motionStateEnum === MotionState.Staking && motionStakes ? (
+                  activeStepKey === NetworkMotionState.Staking &&
+                  motionStakes &&
+                  motionStateEnum ? (
                     <MotionCountDownTimer
                       motionState={motionStateEnum}
                       motionId={motionId}
@@ -128,8 +146,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                     />
                   ) : undefined,
               },
-              // @todo: add a condition to be required if staking won't go directly to finalize step
-              isOptional: true,
+              isOptional: !isFullyStaked,
             },
             {
               key: NetworkMotionState.Reveal,
@@ -218,31 +235,40 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
             },
           ],
     [
-      action,
       loadingAction,
-      motionData,
-      motionId,
+      activeStepKey,
       motionStakes,
       motionStateEnum,
-      refetchAction,
+      motionId,
       refetchMotionState,
+      action,
       startPollingForAction,
       stopPollingForAction,
       transactionId,
+      isFullyStaked,
+      motionData,
+      winningSide,
       hasMotionPassed,
+      hasMotionFaild,
+      votesHaveBeenRevealed,
+      refetchAction,
     ],
   );
 
   return loadingAction ? (
-    <div>
-      <SpinnerLoader appearance={{ size: 'medium' }} />
-    </div>
+    <SpinnerLoader appearance={{ size: 'medium' }} />
   ) : (
-    <Stepper<NetworkMotionState>
-      activeStepKey={activeStepKey}
-      setActiveStepKey={setActiveStepKey}
-      items={items}
-    />
+    <MotionProvider
+      motionAction={action as MotionAction}
+      startPollingAction={startPollingForAction}
+      stopPollingAction={stopPollingForAction}
+    >
+      <Stepper<NetworkMotionState>
+        activeStepKey={activeStepKey}
+        setActiveStepKey={setActiveStepKey}
+        items={items}
+      />
+    </MotionProvider>
   );
 };
 

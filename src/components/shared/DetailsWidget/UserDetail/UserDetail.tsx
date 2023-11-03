@@ -6,6 +6,7 @@ import UserAvatar from '~shared/UserAvatar';
 import { Address as AddressType } from '~types';
 import { useUserByAddress } from '~hooks';
 
+import sharedStyles from '../DetailsWidget.css';
 import styles from './UserDetail.css';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
 
@@ -47,7 +48,10 @@ const UserDetail = ({ walletAddress }: Props) => {
             {userDisplayName || splitWalletAddress(walletAddress)}
           </div>
         )}
-        <Address address={walletAddress} maskedAddressStyles={styles.address} />
+        <Address
+          address={walletAddress}
+          maskedAddressStyles={sharedStyles.address}
+        />
       </div>
     </div>
   );

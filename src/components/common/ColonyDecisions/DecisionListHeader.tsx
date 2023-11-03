@@ -56,7 +56,7 @@ const DecisionListHeader = ({
 
       <div className={styles.filter}>
         <Form onSubmit={() => {}} defaultValues={{ filter: sortDirection }}>
-          <Select<ModelSortDirection>
+          <Select
             appearance={{
               alignOptions: 'left',
               theme: 'alt',
@@ -65,7 +65,7 @@ const DecisionListHeader = ({
             label={MSG.labelFilter}
             name="filter"
             options={SortSelectOptions}
-            onChange={setSortDirection}
+            onChange={(value) => setSortDirection(value as ModelSortDirection)}
           />
         </Form>
       </div>

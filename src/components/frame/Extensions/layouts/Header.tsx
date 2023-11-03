@@ -9,6 +9,7 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import HeaderAvatar from '~common/Extensions/UserNavigation/partials/HeaderAvatar';
 
 import { HeaderProps } from './types';
+import { TX_SEARCH_PARAM } from '~routes';
 
 const displayName = 'frame.Extensions.Header';
 
@@ -19,9 +20,10 @@ const Header: FC<HeaderProps> = ({ navBar = null, txButtons, userHub }) => {
       isActionSidebarOpen,
       { toggleOn: toggleActionSidebarOn },
     ],
+    actionSidebarInitialValues,
   } = useActionSidebarContext();
   const [searchParams] = useSearchParams();
-  const transactionId = searchParams?.get('tx');
+  const transactionId = searchParams?.get(TX_SEARCH_PARAM);
 
   useEffect(() => {
     if (transactionId) {
@@ -34,7 +36,10 @@ const Header: FC<HeaderProps> = ({ navBar = null, txButtons, userHub }) => {
   const userHubComponent = userHub || <HeaderAvatar />;
 
   const userMenuComponent = isActionSidebarOpen ? (
-    <ActionSidebar transactionId={transactionId || undefined}>
+    <ActionSidebar
+      transactionId={transactionId || undefined}
+      initialValues={actionSidebarInitialValues}
+    >
       <UserNavigation txButtons={txButtons} userHub={userHubComponent} />
     </ActionSidebar>
   ) : (

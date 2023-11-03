@@ -1,15 +1,18 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
-import { ClientType } from '@colony/colony-js';
+import { ClientType, ColonyRole } from '@colony/colony-js';
 
 import { ActionTypes, Action, AllActions } from '~redux';
+import { ColonyManager } from '~context';
 
 import {
   initiateTransaction,
   putError,
   takeFrom,
   uploadAnnotation,
+  getColonyManager,
+  getMultiPermissionProofs,
 } from '../utils';
 
 import {
@@ -18,6 +21,7 @@ import {
   getTxChannel,
 } from '../transactions';
 import { OneTxPaymentPayload } from '~redux/types/actions/colonyActions';
+import { transactionPending, transactionAddParams } from '../../actionCreators';
 
 function* createPaymentAction({
   payload: { colonyAddress, colonyName, domainId, payments, annotationMessage },
@@ -26,6 +30,8 @@ function* createPaymentAction({
 }: Action<ActionTypes.ACTION_EXPENDITURE_PAYMENT>) {
   let txChannel;
   try {
+    const colonyManager: ColonyManager = yield getColonyManager();
+
     /*
      * Validate the required values for the payment
      */
@@ -74,22 +80,12 @@ function* createPaymentAction({
         'paymentAction',
         'annotatePaymentAction',
       ]);
+
     yield fork(createTransaction, paymentAction.id, {
       context: ClientType.OneTxPaymentClient,
-      methodName: 'makePaymentFundedFromDomainWithProofs',
+      methodName: 'makePaymentFundedFromDomain',
       identifier: colonyAddress,
-      params: [
-        recipientAddresses,
-        tokenAddresses,
-        amounts,
-        domainId,
-        /*
-         * NOTE Always make the payment in the global skill 0
-         * This will make it so that the user only receives reputation in the
-         * above domain, but none in the skill itself.
-         */
-        0,
-      ],
+      params: [],
       group: {
         key: batchKey,
         id: metaId,
@@ -122,6 +118,44 @@ function* createPaymentAction({
       );
     }
 
+    yield put(transactionPending(paymentAction.id));
+
+    const oneTxPaymentClient = yield colonyManager.getClient(
+      ClientType.OneTxPaymentClient,
+      colonyAddress,
+    );
+
+    const [extensionPDID, extensionCSI] = yield getMultiPermissionProofs(
+      colonyAddress,
+      domainId,
+      [ColonyRole.Funding, ColonyRole.Administration],
+      oneTxPaymentClient.address,
+    );
+    const [userPDID, userCSI] = yield getMultiPermissionProofs(
+      colonyAddress,
+      domainId,
+      [ColonyRole.Funding, ColonyRole.Administration],
+    );
+
+    yield put(
+      transactionAddParams(paymentAction.id, [
+        extensionPDID,
+        extensionCSI,
+        userPDID,
+        userCSI,
+        recipientAddresses,
+        tokenAddresses,
+        amounts,
+        domainId,
+        /*
+         * NOTE Always make the payment in the global skill 0
+         * This will make it so that the user only receives reputation in the
+         * above domain, but none in the skill itself.
+         */
+        0,
+      ]),
+    );
+
     yield initiateTransaction({ id: paymentAction.id });
 
     const {
@@ -152,12 +186,6 @@ function* createPaymentAction({
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
-    } else {
-      window.history.replaceState(
-        {},
-        '',
-        `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
-      );
     }
   } catch (error) {
     putError(ActionTypes.ACTION_EXPENDITURE_PAYMENT_ERROR, error, meta);

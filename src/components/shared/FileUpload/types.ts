@@ -29,7 +29,7 @@ export interface UploadItemComponentProps {
   handleProcessingData?: (...args: any) => void;
 }
 
-export interface HookFormUploadItemComponentProps {
+export interface FormUploadItemComponentProps {
   accept: Accept;
   error?: string;
   key: string;
@@ -81,7 +81,7 @@ export interface FileUploadProps extends CoreInputProps {
   /** Hide the status component beneath the file uploader. Useful if you wish to display the status elsewhere, e.g. outside the component. */
   hideStatus?: boolean;
   /** The component to render each item to be uploaded */
-  itemComponent?: ComponentType<HookFormUploadItemComponentProps>;
+  itemComponent?: ComponentType<FormUploadItemComponentProps>;
   /** Maximum number of files to accept */
   maxFilesLimit?: number;
   /** Max file size */

@@ -72,7 +72,7 @@ async function getMetatransactionPromise(
      */
     case TRANSACTION_METHODS.DeployTokenAuthority: {
       normalizedClient = networkClient;
-      const [tokenAddress, allowedToTransfer] = params;
+      const [tokenAddress, , allowedToTransfer] = params;
       normalizedParams = [
         tokenAddress,
         clientAddress as string,
@@ -109,7 +109,7 @@ async function getMetatransactionPromise(
      * does not support neither vanilla metatransactions or eip2612 metransactions
      */
     lightTokenClient.tokenClientType = ExtendedClientType.LightTokenClient;
-    lightTokenClient.metatransactionVariation = MetatransactionFlavour.Vanilla;
+    lightTokenClient.metatransactionVariation = undefined;
 
     /*
      * See if the token supports Metatransactions
@@ -123,19 +123,22 @@ async function getMetatransactionPromise(
     } catch (error) {
       // silent error
     }
-    /*
-     * Otherwise, see if supports EIP-2612
-     * https://eips.ethereum.org/EIPS/eip-2612
-     */
-    try {
-      availableNonce = await lightTokenClient.nonces(userAddress);
-      lightTokenClient.metatransactionVariation =
-        MetatransactionFlavour.EIP2612;
-    } catch (error) {
-      // silent error
-    }
-    if (!availableNonce) {
-      throw new Error(generateMetatransactionErrorMessage(lightTokenClient));
+
+    if (!lightTokenClient.metatransactionVariation) {
+      /*
+       * Otherwise, see if supports EIP-2612
+       * https://eips.ethereum.org/EIPS/eip-2612
+       */
+      try {
+        availableNonce = await lightTokenClient.nonces(userAddress);
+        lightTokenClient.metatransactionVariation =
+          MetatransactionFlavour.EIP2612;
+      } catch (error) {
+        // silent error
+      }
+      if (!availableNonce) {
+        throw new Error(generateMetatransactionErrorMessage(lightTokenClient));
+      }
     }
   } else {
     /*
@@ -203,13 +206,11 @@ async function getMetatransactionPromise(
       throw new Error(error.message);
     }
   } else {
-    /*
-     * All the 'WithProofs' helpers don't really exist on chain, so we have to
-     * make sure we are calling the on-chain method, rather than our own helper
-     */
-    const encodedTransaction = await normalizedClient.interface.functions[
-      normalizedMethodName
-    ].encode([...normalizedParams]);
+    const encodedTransaction =
+      await normalizedClient.interface.encodeFunctionData(
+        normalizedMethodName,
+        [...normalizedParams],
+      );
 
     const { messageUint8: messageData } = await generateMetatransactionMessage(
       encodedTransaction,

@@ -1,10 +1,5 @@
-import React from 'react';
-import {
-  PermissionsFilter,
-  ReputationSort,
-} from '~v5/common/TableFiltering/types';
+import { Permissions, ReputationSort } from '~v5/common/TableFiltering/types';
 import { FilterOptionProps } from '../types';
-import Icon from '~shared/Icon/Icon';
 
 export const contributorFilters: FilterOptionProps[] = [
   {
@@ -53,38 +48,49 @@ export const reputationFilters: FilterOptionProps[] = [
 
 export const permissionsFilters: FilterOptionProps[] = [
   {
-    id: PermissionsFilter.Root,
-    title: { id: 'filter.option.rootPermissions' },
-    icon: <Icon name="app-window" appearance={{ size: 'extraSmall' }} />,
+    id: Permissions.Mod,
+    title: { id: 'filter.option.mod' },
   },
   {
-    id: PermissionsFilter.Administration,
-    title: { id: 'filter.option.administration' },
-    icon: <Icon name="clipboard-text" appearance={{ size: 'extraSmall' }} />,
+    id: Permissions.Payer,
+    title: { id: 'filter.option.payer' },
   },
   {
-    id: PermissionsFilter.Arbitration,
-    title: { id: 'filter.option.arbitration' },
-    icon: <Icon name="scales" appearance={{ size: 'extraSmall' }} />,
+    id: Permissions.Admin,
+    title: { id: 'filter.option.admin' },
   },
   {
-    id: PermissionsFilter.Architecture,
-    title: { id: 'filter.option.architecture' },
-    icon: <Icon name="buildings" appearance={{ size: 'extraSmall' }} />,
+    id: Permissions.Owner,
+    title: { id: 'filter.option.owner' },
   },
   {
-    id: PermissionsFilter.Funding,
-    title: { id: 'filter.option.funding' },
-    icon: <Icon name="bank" appearance={{ size: 'extraSmall' }} />,
-  },
-  {
-    id: PermissionsFilter.Recovery,
-    title: { id: 'filter.option.recovery' },
-    icon: (
-      <Icon
-        name="clock-counter-clockwise"
-        appearance={{ size: 'extraSmall' }}
-      />
-    ),
+    id: Permissions.Custom,
+    title: { id: 'filter.option.custom' },
+    nestedOptions: [
+      {
+        id: Permissions.Root,
+        title: { id: 'filter.option.rootPermissions' },
+      },
+      {
+        id: Permissions.Administration,
+        title: { id: 'filter.option.administration' },
+      },
+      {
+        id: Permissions.Arbitration,
+        title: { id: 'filter.option.arbitration' },
+      },
+      {
+        id: Permissions.Architecture,
+        title: { id: 'filter.option.architecture' },
+      },
+      {
+        id: Permissions.Funding,
+        title: { id: 'filter.option.funding' },
+      },
+      {
+        id: Permissions.Recovery,
+        title: { id: 'filter.option.recovery' },
+      },
+    ],
   },
 ];

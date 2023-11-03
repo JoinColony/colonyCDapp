@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 import { ReactNode } from 'react';
-import { isEmpty } from '~utils/lodash';
 
+import { isEmpty, isEqual } from '~utils/lodash';
 import {
   Address,
   Token,
@@ -16,6 +16,7 @@ import { ColonyActionRoles, ColonyActionType } from '~gql';
 
 import { formatText } from './intl';
 import { MotionVote } from './colonyMotions';
+import { parseSafeTransactionType } from './safes';
 
 export enum ActionPageDetails {
   Type = 'Type',
@@ -31,9 +32,21 @@ export enum ActionPageDetails {
   Author = 'Author',
   Generic = 'Generic',
   Motion = 'Motion',
+  Safe = 'Safe',
+  SafeName = 'SafeName',
+  ChainName = 'ChainName',
+  SafeAddress = 'SafeAddress',
+  ModuleAddress = 'ModuleAddress',
+  SafeTransaction = 'SafeTransaction',
 }
 
-type DetailsValuesMap = Partial<Record<ActionPageDetails, boolean>>;
+export const safeActionTypes = [
+  ExtendedColonyActionType.SafeTransferFunds,
+  ExtendedColonyActionType.SafeRawTransaction,
+  ExtendedColonyActionType.SafeTransferNft,
+  ExtendedColonyActionType.SafeContractInteraction,
+  ExtendedColonyActionType.SafeMultipleTransactions,
+];
 
 const MOTION_SUFFIX = 'MOTION';
 const isMotion = (actionType: AnyActionType) =>
@@ -82,7 +95,9 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
         ActionPageDetails.Description,
       ];
     }
-    case actionType.includes(ColonyActionType.ColonyEdit): {
+    case actionType.includes(ColonyActionType.ColonyEdit):
+    case actionType.includes(ExtendedColonyActionType.UpdateAddressBook):
+    case actionType.includes(ExtendedColonyActionType.UpdateTokens): {
       return [ActionPageDetails.Type, ActionPageDetails.Name];
     }
     case actionType.includes(ColonyActionType.EditDomain): {
@@ -118,6 +133,25 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
         ActionPageDetails.ToRecipient,
         ActionPageDetails.Domain,
         ActionPageDetails.ReputationChange,
+      ];
+    }
+    case actionType.includes(ExtendedColonyActionType.RemoveSafe): {
+      return [ActionPageDetails.Type, ActionPageDetails.Safe];
+    }
+    case actionType.includes(ExtendedColonyActionType.AddSafe): {
+      return [
+        ActionPageDetails.Type,
+        ActionPageDetails.ChainName,
+        ActionPageDetails.SafeName,
+        ActionPageDetails.SafeAddress,
+        ActionPageDetails.ModuleAddress,
+      ];
+    }
+    case safeActionTypes.some((type) => actionType.includes(type)): {
+      return [
+        ActionPageDetails.Type,
+        isMotion(actionType) ? ActionPageDetails.Motion : '',
+        ActionPageDetails.SafeTransaction,
       ];
     }
     case actionType.includes(ColonyActionType.Generic): {
@@ -164,23 +198,6 @@ export interface EventValues {
   reputationChange?: string;
   isSmiteAction?: boolean;
 }
-
-/*
- * Get colony action details for DetailsWidget based on action type and ActionPageDetails map
- */
-export const getDetailsForAction = (
-  actionType: AnyActionType,
-): DetailsValuesMap => {
-  const detailsForActionType = getDetailItemsKeys(actionType);
-  return Object.keys(ActionPageDetails).reduce((detailsMap, detailsKey) => {
-    return {
-      ...detailsMap,
-      [detailsKey]: detailsForActionType?.includes(
-        detailsKey as ActionPageDetails,
-      ),
-    };
-  }, {});
-};
 
 /*
  * Get values for action type based on action type
@@ -616,7 +633,21 @@ export const getExtendedActionType = (
     return ExtendedColonyActionType.UpdateAddressBook;
   }
 
-  // logic for Safe control actions can be added here
+  if (!isEqual(changelogItem?.newSafes, changelogItem?.oldSafes)) {
+    if (
+      (changelogItem?.newSafes?.length || 0) >
+      (changelogItem?.oldSafes?.length || 0)
+    ) {
+      return ExtendedColonyActionType.AddSafe;
+    }
+    return ExtendedColonyActionType.RemoveSafe;
+  }
+
+  const safeType = parseSafeTransactionType(actionData);
+
+  if (safeType) {
+    return safeType;
+  }
 
   return type;
 };

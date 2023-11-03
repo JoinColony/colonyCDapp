@@ -2,6 +2,7 @@ import React from 'react';
 
 import Dialog, { DialogSection } from '~shared/Dialog';
 import { Colony } from '~types';
+
 import { SpinnerLoader } from '~shared/Preloaders';
 import { useAppContext } from '~hooks';
 import { Heading3 } from '~shared/Heading';

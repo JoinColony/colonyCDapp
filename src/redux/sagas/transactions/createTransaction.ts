@@ -105,7 +105,7 @@ export type TransactionChannel = {
   id: string;
 };
 
-type TransactionChannelMap = Record<string, TransactionChannel>;
+export type TransactionChannelMap = Record<string, TransactionChannel>;
 
 export function* createTransactionChannels(
   batchId: string,

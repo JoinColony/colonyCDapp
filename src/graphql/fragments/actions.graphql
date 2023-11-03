@@ -94,6 +94,9 @@ fragment ColonyAction on ColonyAction {
     tokens {
       ...ColonyTokensConnection
     }
+    metadata {
+      ...ColonyMetadata
+    }
   }
   showInActionsList
   pendingDomainMetadata {
@@ -107,6 +110,9 @@ fragment ColonyAction on ColonyAction {
   }
   decisionData {
     ...ColonyDecision
+  }
+  safeTransaction {
+    ...SafeTransaction
   }
 }
 

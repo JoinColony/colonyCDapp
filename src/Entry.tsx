@@ -4,8 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import { ApolloProvider } from '@apollo/client';
 
-import { DialogProvider } from '~shared/Dialog';
-import { getContext, ContextModule, PageThemeContextProvider } from '~context';
+import { getContext, ContextModule } from '~context';
 
 import messages from './i18n/en.json';
 import actionMessages from './i18n/en-actions';
@@ -41,15 +40,9 @@ const Entry = ({ store }: Props) => {
     >
       <ApolloProvider client={apolloClient}>
         <ReduxProvider store={store}>
-          <PageThemeContextProvider>
-            <Router>
-              <DialogProvider>
-                <div className="h-full w-full bg-base-white min-h-screen flex flex-col">
-                  <Routes />
-                </div>
-              </DialogProvider>
-            </Router>
-          </PageThemeContextProvider>
+          <Router>
+            <Routes />
+          </Router>
         </ReduxProvider>
       </ApolloProvider>
     </IntlProvider>

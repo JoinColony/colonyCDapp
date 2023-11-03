@@ -30,6 +30,7 @@ export type UseActionFormBaseHook = (
 ) => void;
 
 export interface ActionSidebarProps {
+  initialValues?: FieldValues;
   transactionId?: string;
 }
 

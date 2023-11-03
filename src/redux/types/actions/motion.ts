@@ -1,7 +1,15 @@
 import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
-import { Address, Colony, Domain, DomainColor } from '~types';
+import {
+  Address,
+  Colony,
+  Domain,
+  DomainColor,
+  Safe,
+  SafeTransactionData,
+} from '~types';
+import { NetworkInfo } from '~constants';
 
 import { ActionTypes } from '../../actionTypes';
 
@@ -97,6 +105,7 @@ export type MotionActionTypes =
       {
         userAddress: Address;
         colonyAddress: Address;
+        extensionAddress: Address;
         transactionHash: string;
       },
       object
@@ -108,6 +117,7 @@ export type MotionActionTypes =
       {
         userAddress: Address;
         colonyAddress: Address;
+        extensionAddress: Address;
         motionIds: string[];
       },
       object
@@ -262,5 +272,24 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION,
+      {
+        safe: Omit<Safe, 'safeName'>;
+        transactionsTitle: string;
+        transactions: SafeTransactionData[];
+        colonyAddress: Address;
+        colonyName: string;
+        motionDomainId: string;
+        annotationMessage: string | null;
+        network: NetworkInfo;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION_SUCCESS,
       MetaWithSetter<object>
     >;

@@ -21,6 +21,10 @@ import {
   TokenManagementDialog,
   SmiteDialog,
   AwardDialog,
+  ManageSafeDialog,
+  AddExistingSafeDialog,
+  ControlSafeDialog,
+  RemoveSafeDialog,
 } from '../Dialogs';
 
 export const getWizardFlowConfig = (
@@ -149,6 +153,7 @@ export const getWizardFlowConfig = (
       nextStepRecovery: 'common.RecoveryModeDialog',
       nextStepEditDetails: 'common.EditColonyDetailsDialog',
       nextStepVersionUpgrade: 'common.NetworkContractUpgradeDialog',
+      nextStepManageSafe: 'common.ManageSafeDialog',
       colony,
       enabledExtensionData,
     },
@@ -208,6 +213,39 @@ export const getWizardFlowConfig = (
       prevStep: 'common.ManageFundsDialog',
       colony,
       enabledExtensionData,
+    },
+  },
+  {
+    component: ManageSafeDialog,
+    props: {
+      nextStepAddExistingSafe: 'common.AddExistingSafeDialog',
+      nextStepRemoveSafe: 'common.RemoveSafeDialog',
+      nextStepControlSafe: 'common.ControlSafeDialog',
+      prevStep: 'common.AdvancedDialog',
+      colony,
+      enabledExtensionData,
+    },
+  },
+  {
+    component: AddExistingSafeDialog,
+    props: {
+      prevStep: 'common.ManageSafeDialog',
+      colony,
+    },
+  },
+  {
+    component: ControlSafeDialog,
+    props: {
+      prevStep: 'common.ManageSafeDialog',
+      colony,
+      enabledExtensionData,
+    },
+  },
+  {
+    component: RemoveSafeDialog,
+    props: {
+      prevStep: 'common.ManageSafeDialog',
+      colony,
     },
   },
 ];

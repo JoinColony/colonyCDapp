@@ -103,11 +103,8 @@ export const getBlockExplorerLink = ({
   }
   if (network === Network.Ganache) {
     const xdaiLinkType = linkType === 'token' ? 'address' : linkType;
-    /**
-     * Using a network string template here since in the future we might wanna
-     * support xdai's test networks as well (eg: sokol)
-     */
-    return `https://blockscout.com/poa/${network}/${xdaiLinkType}/${addressOrHash}`;
+
+    return `https://gnosis.blockscout.com/${xdaiLinkType}/${addressOrHash}`;
   }
   const tld = network === 'tobalaba' ? 'com' : 'io';
 

@@ -1,6 +1,13 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { hexlify, hexZeroPad } from 'ethers/lib/utils';
-import { ClientType, ColonyRole } from '@colony/colony-js';
+import {
+  ClientType,
+  ColonyRole,
+  getPermissionProofs,
+  Id,
+} from '@colony/colony-js';
+
+import { ColonyManager } from '~context';
+import { intArrayToBytes32 } from '~utils/web3';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
@@ -9,6 +16,7 @@ import {
   putError,
   takeFrom,
   uploadAnnotation,
+  getColonyManager,
 } from '../utils';
 
 import {
@@ -16,6 +24,7 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
+import { transactionAddParams, transactionPending } from '../../actionCreators';
 
 function* managePermissionsAction({
   payload: {
@@ -31,6 +40,8 @@ function* managePermissionsAction({
 }: Action<ActionTypes.ACTION_USER_ROLES_SET>) {
   let txChannel;
   try {
+    const colonyManager: ColonyManager = yield getColonyManager();
+
     if (!userAddress) {
       throw new Error('User address not set for setUserRole transaction');
     }
@@ -59,24 +70,23 @@ function* managePermissionsAction({
         'annotateSetUserRoles',
       ]);
 
-    const roleArray = Object.values(roles).reverse();
-    /* Always make sure the Architecture Subdomain is false, it's deprecated */
-    roleArray.splice(2, 0, false);
-
-    let roleBitmask = '';
-
-    roleArray.forEach((role) => {
-      roleBitmask += role ? '1' : '0';
-    });
-
-    const hexString = hexlify(parseInt(roleBitmask, 2));
-    const zeroPadHexString = hexZeroPad(hexString, 32);
+    const roleArray = Object.keys(roles)
+      .map((roleId) => parseInt(roleId, 10))
+      .filter((roleId) => {
+        if (roleId === ColonyRole.ArchitectureSubdomain) {
+          return false;
+        }
+        if (!roles[roleId]) {
+          return false;
+        }
+        return true;
+      });
 
     yield createGroupTransaction(setUserRoles, batchKey, meta, {
       context: ClientType.ColonyClient,
-      methodName: 'setUserRolesWithProofs',
+      methodName: 'setUserRoles',
       identifier: colonyAddress,
-      params: [userAddress, domainId, zeroPadHexString],
+      params: [],
       ready: false,
     });
 
@@ -98,6 +108,28 @@ function* managePermissionsAction({
       );
     }
 
+    yield put(transactionPending(setUserRoles.id));
+
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
+
+    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient,
+      domainId,
+      domainId === Id.RootDomain ? ColonyRole.Root : ColonyRole.Architecture,
+    );
+
+    yield put(
+      transactionAddParams(setUserRoles.id, [
+        permissionDomainId,
+        childSkillIndex,
+        userAddress,
+        domainId,
+        intArrayToBytes32(roleArray),
+      ]),
+    );
     yield initiateTransaction({ id: setUserRoles.id });
 
     const {
@@ -124,16 +156,10 @@ function* managePermissionsAction({
       meta,
     });
 
-    if (navigate) {
+    if (colonyName && navigate) {
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
-    } else {
-      window.history.replaceState(
-        {},
-        '',
-        `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
-      );
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_USER_ROLES_SET_ERROR, error, meta);

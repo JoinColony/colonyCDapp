@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 import { Id } from '@colony/colony-js';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import { DEFAULT_TOKEN_DECIMALS, SAFE_NAMES_MAP } from '~constants';
 import Numeral from '~shared/Numeral';
 import TransactionLink from '~shared/TransactionLink';
 import {
@@ -19,6 +19,7 @@ import {
 } from '~utils/colonyActions';
 import { findDomainByNativeId } from '~utils/domains';
 import { splitTransactionHash } from '~utils/strings';
+import { getAddedSafe, getRemovedSafes } from '~utils/safes';
 
 import {
   UserDetail,
@@ -28,13 +29,18 @@ import {
   DomainDescriptionDetail,
   ReputationChangeDetail,
   RolesDetail,
+  SafeTransactionDetail,
 } from '../DetailsWidget';
+
+import SafeValueDetail from './SafeValueDetail';
+import SafeDetail from './SafeDetail';
+import AddressDetail from './AddressDetail';
 
 import styles from './DetailsWidget.css';
 
 const displayName = 'DetailsWidget';
 
-const MSG = defineMessages({
+export const MSG = defineMessages({
   actionType: {
     id: `${displayName}.actionType`,
     defaultMessage: 'Action Type',
@@ -86,6 +92,26 @@ const MSG = defineMessages({
     id: `${displayName}.author`,
     defaultMessage: 'Author',
   },
+  safe: {
+    id: `${displayName}.safe`,
+    defaultMessage: '{removedSafeCount, plural, one {Safe} other {Safes}}',
+  },
+  chain: {
+    id: `${displayName}.chain`,
+    defaultMessage: 'Chain',
+  },
+  safeAddress: {
+    id: `${displayName}.safeAddress`,
+    defaultMessage: 'Safe Address',
+  },
+  safeName: {
+    id: `${displayName}.safeName`,
+    defaultMessage: 'Safe Name',
+  },
+  moduleAddress: {
+    id: `${displayName}.moduleAddress`,
+    defaultMessage: 'Module Address',
+  },
 });
 
 const getShortenedHash = (transactionHash: string) => {
@@ -100,9 +126,10 @@ const getShortenedHash = (transactionHash: string) => {
 };
 
 interface DetailItemConfig {
-  label: MessageDescriptor;
-  labelValues?: UniversalMessageValues;
+  label?: MessageDescriptor;
   item: ReactNode;
+  isListItem?: boolean;
+  labelValues?: UniversalMessageValues;
 }
 
 const getDetailItemsMap = (
@@ -123,6 +150,7 @@ const getDetailItemsMap = (
     isMotion,
     pendingColonyMetadata,
     pendingDomainMetadata,
+    safeTransaction,
   } = actionData;
 
   const shortenedHash = getShortenedHash(transactionHash || '');
@@ -140,6 +168,8 @@ const getDetailItemsMap = (
     colony,
   );
   const domainMetadata = fromDomain?.metadata || pendingDomainMetadata;
+  const addedSafe = getAddedSafe(actionData);
+  const removedSafes = getRemovedSafes(actionData);
 
   return {
     [ActionPageDetails.Type]: {
@@ -238,6 +268,56 @@ const getDetailItemsMap = (
         />
       ),
     },
+    [ActionPageDetails.SafeAddress]: {
+      label: MSG.safeAddress,
+      labelValues: undefined,
+      item: !!addedSafe && <AddressDetail address={addedSafe.address} />,
+    },
+    [ActionPageDetails.SafeName]: {
+      label: MSG.safeName,
+      labelValues: undefined,
+      item: !!addedSafe && <SafeValueDetail safeValue={addedSafe.name} />,
+    },
+    [ActionPageDetails.ChainName]: {
+      label: MSG.chain,
+      labelValues: undefined,
+      item: !!addedSafe && (
+        <SafeValueDetail safeValue={SAFE_NAMES_MAP[addedSafe.chainId]} />
+      ),
+    },
+    [ActionPageDetails.ModuleAddress]: {
+      label: MSG.moduleAddress,
+      labelValues: undefined,
+      item: !!addedSafe && (
+        <AddressDetail address={addedSafe.moduleContractAddress} />
+      ),
+    },
+    [ActionPageDetails.Safe]: {
+      label: MSG.safe,
+      labelValues: {
+        removedSafeCount: removedSafes?.length,
+      },
+      item:
+        !!removedSafes &&
+        removedSafes.map((safe) => (
+          <SafeDetail
+            key={`${safe.chainId}-${safe.address}`}
+            removedSafe={safe}
+          />
+        )),
+      isListItem: true,
+    },
+    [ActionPageDetails.SafeTransaction]: {
+      label: undefined,
+      labelValues: undefined,
+      item: safeTransaction && (
+        <SafeTransactionDetail
+          key={safeTransaction.id}
+          actionData={actionData}
+        />
+      ),
+      isListItem: true,
+    },
   };
 };
 
@@ -246,7 +326,8 @@ const getDetailItems = (
   colony: Colony,
 ): DetailItemConfig[] => {
   const detailItemsMap = getDetailItemsMap(colony, actionData);
-  const detailItemKeys = getDetailItemsKeys(actionData.type);
+  const extendedActionType = getExtendedActionType(actionData, colony.metadata);
+  const detailItemKeys = getDetailItemsKeys(extendedActionType);
 
   const detailItems = detailItemKeys
     .map<DetailItemConfig | undefined>((itemKey) => detailItemsMap[itemKey])

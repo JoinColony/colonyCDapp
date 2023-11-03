@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { BigNumber } from 'ethers';
 import { useLocation } from 'react-router-dom';
+import { Extension } from '@colony/colony-js';
 
 import Numeral from '~shared/Numeral';
 import { intl } from '~utils/intl';
 import { ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards';
 import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
-import { useAppContext, useColonyContext } from '~hooks';
+import { useAppContext, useColonyContext, useExtensionData } from '~hooks';
 import { DetailItemProps } from '~shared/DetailsWidget';
 import { getTransactionHashFromPathName } from '~utils/urls';
-import { ColonyMotion } from '~types';
+import { ColonyMotion, InstalledExtensionData } from '~types';
 import { RefetchAction } from '~common/ColonyActions/ActionDetailsPage/useGetColonyAction';
 import { useUserTokenBalanceContext } from '~context';
 
@@ -33,6 +34,9 @@ const useClaimWidgetConfig = (
   const { user } = useAppContext();
   const { colony } = useColonyContext();
   const { pollLockedTokenBalance } = useUserTokenBalanceContext();
+  const { extensionData: votingRepitationExtension } = useExtensionData(
+    Extension.VotingReputation,
+  );
 
   const location = useLocation();
   const [isClaimed, setIsClaimed] = useState(false);
@@ -110,6 +114,8 @@ const useClaimWidgetConfig = (
   const claimPayload = {
     userAddress,
     colonyAddress,
+    extensionAddress: (votingRepitationExtension as InstalledExtensionData)
+      ?.address,
     transactionHash: getTransactionHashFromPathName(location.pathname),
   } as ClaimMotionRewardsPayload;
 

@@ -8,11 +8,13 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
+import { transactionAddParams, transactionPending } from '../../actionCreators';
 import {
-  initiateTransaction,
   putError,
   takeFrom,
   uploadAnnotation,
+  getMoveFundsPermissionProofs,
+  initiateTransaction,
 } from '../utils';
 
 function* createMoveFundsAction({
@@ -70,9 +72,9 @@ function* createMoveFundsAction({
     yield fork(createTransaction, moveFunds.id, {
       context: ClientType.ColonyClient,
       methodName:
-        'moveFundsBetweenPotsWithProofs(uint256,uint256,uint256,address)',
+        'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)',
       identifier: colonyAddress,
-      params: [fromPot, toPot, amount, tokenAddress],
+      params: [],
       group: {
         key: batchKey,
         id: metaId,
@@ -105,6 +107,23 @@ function* createMoveFundsAction({
       );
     }
 
+    yield put(transactionPending(moveFunds.id));
+
+    const [permissionDomainId, fromChildSkillIndex, toChildSkillIndex] =
+      yield getMoveFundsPermissionProofs(colonyAddress, fromPot, toPot);
+
+    yield put(
+      transactionAddParams(moveFunds.id, [
+        permissionDomainId,
+        fromChildSkillIndex,
+        toChildSkillIndex,
+        fromPot,
+        toPot,
+        amount,
+        tokenAddress,
+      ]),
+    );
+
     yield initiateTransaction({ id: moveFunds.id });
 
     const {
@@ -135,12 +154,6 @@ function* createMoveFundsAction({
       navigate(`/colony/${colonyName}/tx/${txHash}`, {
         state: { isRedirect: true },
       });
-    } else {
-      window.history.replaceState(
-        {},
-        '',
-        `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
-      );
     }
   } catch (caughtError) {
     putError(ActionTypes.ACTION_MOVE_FUNDS_ERROR, caughtError, meta);

@@ -25,7 +25,13 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="pie-chart"
         fieldName="distributionMethod"
-        tooltip={formatText({ id: 'actionSidebar.tooltip.distributionTypes' })}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.distributionTypes',
+            }),
+          },
+        }}
         title={formatText({ id: 'actionSidebar.distribution' })}
       >
         <FormCardSelect
@@ -40,9 +46,13 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="coins"
         fieldName="amount"
-        tooltip={formatText({
-          id: 'actionSidebar.tooltip.singlePaymentAmount',
-        })}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.simplePayment.amount',
+            }),
+          },
+        }}
         title={formatText({ id: 'actionSidebar.amount' })}
       >
         <AmountField name="amount" />
@@ -50,7 +60,13 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="users-three"
         fieldName="team"
-        tooltip={formatText({ id: 'actionSidebar.tooltip.paymentFrom' })}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.simplePayment.from',
+            }),
+          },
+        }}
         title={formatText({ id: 'team.type' })}
       >
         <TeamsSelect name="team" />
@@ -58,7 +74,13 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="scales"
         fieldName="decisionMethod"
-        tooltip={formatText({ id: 'actionSidebar.tooltip.decisionMethod' })}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.decisionMethod',
+            }),
+          },
+        }}
         title={formatText({ id: 'actionSidebar.decisionMethod' })}
       >
         <FormCardSelect
@@ -70,7 +92,13 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="house-line"
         fieldName="createdIn"
-        tooltip={formatText({ id: 'actionSidebar.tooltip.createdIn' })}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.createdIn',
+            }),
+          },
+        }}
         title={formatText({ id: 'actionSidebar.createdIn' })}
       >
         <TeamsSelect name="createdIn" />
@@ -78,7 +106,13 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="pencil"
         fieldName="description"
-        tooltip={formatText({ id: 'actionSidebar.tooltip.description' })}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.description',
+            }),
+          },
+        }}
         title={formatText({ id: 'actionSidebar.description' })}
         isExpandable
       >

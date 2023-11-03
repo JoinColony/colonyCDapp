@@ -36,6 +36,7 @@ export type FilterOptionProps = {
   id: NestedFilterOption;
   title: Message;
   icon?: JSX.Element;
+  nestedOptions?: FilterOptionProps[];
 };
 
 export type AccordionItemProps = {

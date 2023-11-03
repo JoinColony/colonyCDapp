@@ -4,6 +4,7 @@ import { takeEvery, fork, call, put } from 'redux-saga/effects';
 import { Action, ActionTypes, AllActions } from '~redux';
 import { ColonyManager } from '~context';
 import { transactionAddParams } from '~redux/actionCreators';
+
 import { ADDRESS_ZERO } from '~constants';
 
 import {
@@ -205,14 +206,10 @@ function* createStakedExpenditure({
       meta,
     });
 
-    if (navigate) {
-      navigate(`/colony/${colonyName}/expenditures/${expenditureId}`);
-    } else {
-      window.history.replaceState(
-        {},
-        '',
-        `${window.location.origin}${window.location.pathname}?tx=${txHash}`,
-      );
+    if (colonyName && navigate) {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);

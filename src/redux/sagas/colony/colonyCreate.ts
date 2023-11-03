@@ -1,5 +1,12 @@
 import { all, call, put } from 'redux-saga/effects';
-import { getExtensionHash, Extension, ClientType, Id } from '@colony/colony-js';
+import {
+  getExtensionHash,
+  Extension,
+  ClientType,
+  Id,
+  getPermissionProofs,
+  ColonyRole,
+} from '@colony/colony-js';
 import { poll } from 'ethers/lib/utils';
 import { utils } from 'ethers';
 import { Network as EthersNetwork } from '@ethersproject/networks';
@@ -175,7 +182,7 @@ function* colonyCreate({
       yield createGroupTransaction(setOneTxRoleAdministration, batchKey, meta, {
         context: ClientType.ColonyClient,
         methodContext: 'setOneTxRoles',
-        methodName: 'setAdministrationRoleWithProofs',
+        methodName: 'setAdministrationRole',
         ready: false,
       });
     }
@@ -184,7 +191,7 @@ function* colonyCreate({
       yield createGroupTransaction(setOneTxRoleFunding, batchKey, meta, {
         context: ClientType.ColonyClient,
         methodContext: 'setOneTxRoles',
-        methodName: 'setFundingRoleWithProofs',
+        methodName: 'setFundingRole',
         ready: false,
       });
     }
@@ -218,12 +225,21 @@ function* colonyCreate({
       yield initiateTransaction({ id: createToken.id });
 
       const {
-        payload: { deployedContractAddress },
+        payload: {
+          deployedContractAddress,
+          eventData: {
+            TokenDeployed: {
+              tokenAddress: metatransactionsDeployedContractAddress,
+            } = { tokenAddress: '' },
+          },
+        },
       } = yield takeFrom(
         createToken.channel,
         ActionTypes.TRANSACTION_SUCCEEDED,
       );
-      tokenAddress = createAddress(deployedContractAddress);
+      tokenAddress = createAddress(
+        deployedContractAddress || metatransactionsDeployedContractAddress,
+      );
     } else {
       if (!givenTokenAddress) {
         throw new Error('Token address not provided');
@@ -520,6 +536,31 @@ function* colonyCreate({
        */
       yield put(transactionPending(setOneTxRoleAdministration.id));
 
+      /*
+       * Generate proofs for setting permissions the the newly deployed OneTxPayment extension
+       */
+      const colonyClient = yield colonyManager.getClient(
+        ClientType.ColonyClient,
+        colonyAddress,
+      );
+
+      let oneTxPaymentRoleProofs;
+      // This has two potential permissions, so we try both of them
+      try {
+        oneTxPaymentRoleProofs = yield getPermissionProofs(
+          colonyClient,
+          Id.RootDomain,
+          ColonyRole.Architecture,
+        );
+      } catch (error) {
+        oneTxPaymentRoleProofs = yield getPermissionProofs(
+          colonyClient,
+          Id.RootDomain,
+          ColonyRole.Root,
+        );
+      }
+      const [permissionDomainId, childSkillIndex] = oneTxPaymentRoleProofs;
+
       const oneTxPaymentExtension = yield poll(
         async () => {
           try {
@@ -541,6 +582,8 @@ function* colonyCreate({
 
       yield put(
         transactionAddParams(setOneTxRoleAdministration.id, [
+          permissionDomainId,
+          childSkillIndex,
           extensionAddress,
           Id.RootDomain,
           true,
@@ -556,16 +599,17 @@ function* colonyCreate({
       /*
        * Set OneTx funding role
        */
+
       yield put(
         transactionAddParams(setOneTxRoleFunding.id, [
+          permissionDomainId,
+          childSkillIndex,
           extensionAddress,
           Id.RootDomain,
           true,
         ]),
       );
       yield initiateTransaction({ id: setOneTxRoleFunding.id });
-
-      yield colonyManager.setColonyClient(colonyAddress);
 
       yield takeFrom(
         setOneTxRoleFunding.channel,

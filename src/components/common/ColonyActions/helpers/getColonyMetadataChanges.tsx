@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { isEqual } from '~utils/lodash';
 import { Colony, ColonyAction, SimpleMessageValues } from '~types';
 import { formatText } from '~utils/intl';
 
@@ -13,6 +14,8 @@ export const getColonyMetadataChangesValue = (
     hasAvatarChanged,
     hasWhitelistChanged,
     haveTokensChanged,
+    newSafes,
+    oldSafes,
   } =
     colony?.metadata?.changelog?.find(
       (item) => item.transactionHash === transactionHash,
@@ -20,12 +23,13 @@ export const getColonyMetadataChangesValue = (
 
   const hasNameChanged =
     oldDisplayName && newDisplayName && newDisplayName !== oldDisplayName;
-
+  const haveSafesChanged = newSafes && oldSafes && !isEqual(newSafes, oldSafes);
   const hasNoChanges =
     !hasNameChanged &&
     !hasAvatarChanged &&
     !hasWhitelistChanged &&
-    !haveTokensChanged;
+    !haveTokensChanged &&
+    !haveSafesChanged;
 
   if (!colony || hasNoChanges) {
     return formatText({

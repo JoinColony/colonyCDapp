@@ -14,12 +14,13 @@ import {
   User,
   ColonyExtension,
   Token,
+  SafeTransactionData,
 } from '~types';
 import { useColonyContext, useUserReputation } from '~hooks';
 import { MotionVote } from '~utils/colonyMotions';
 import { intl } from '~utils/intl';
 import { formatReputationChange } from '~utils/reputation';
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import { DEFAULT_TOKEN_DECIMALS, SAFE_NAMES_MAP } from '~constants';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import {
   formatRolesTitle,
@@ -38,11 +39,18 @@ import { VoteResults } from '~common/ColonyActions/ActionDetailsPage/DefaultMoti
 import { VotingWidgetHeading } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
 import MemberReputation from '~shared/MemberReputation';
 import MaskedAddress from '~shared/MaskedAddress';
+import {
+  getAddedSafe,
+  getAddedSafeChainName,
+  getRemovedSafes,
+} from '~utils/safes';
+import { unknownContractMSG } from '~shared/DetailsWidget/SafeTransactionDetail';
 
 import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
 import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
 
 import styles from './itemStyles.css';
+import { SimpleTarget } from '~gql';
 
 const { formatMessage } = intl({
   unknownDomain: 'UnknownDomain',
@@ -67,10 +75,22 @@ const getDomainNameFromChangelog = (
 };
 
 const getRecipient = (actionData: ColonyAction) => {
-  const { recipientUser, recipientColony, recipientExtension, recipientToken } =
-    actionData;
+  const {
+    recipientUser,
+    recipientColony,
+    recipientExtension,
+    recipientToken,
+    safeTransaction,
+  } = actionData;
+  const safeRecipient = safeTransaction?.transactions?.items[0]?.recipient;
 
-  let recipient: User | Colony | ColonyExtension | Token | undefined;
+  let recipient:
+    | User
+    | Colony
+    | ColonyExtension
+    | Token
+    | SimpleTarget
+    | undefined;
 
   if (recipientUser) {
     recipient = recipientUser;
@@ -80,6 +100,8 @@ const getRecipient = (actionData: ColonyAction) => {
     recipient = recipientExtension;
   } else if (recipientToken) {
     recipient = recipientToken;
+  } else if (safeRecipient) {
+    recipient = safeRecipient;
   }
 
   return (
@@ -118,6 +140,68 @@ const getInitiator = (actionData: ColonyAction) => {
       )}
     </span>
   );
+};
+
+const getSafeAddress = (actionData: ColonyAction) => {
+  const addedSafe = getAddedSafe(actionData);
+
+  return addedSafe ? <MaskedAddress address={addedSafe.address} /> : null;
+};
+
+const getSafeName = (actionData: ColonyAction) => {
+  const transactionSafeName = actionData?.safeTransaction?.safe?.name;
+
+  return <span className={styles.user}>@{transactionSafeName}</span>;
+};
+
+const getSafeTransactionAmount = (
+  firstSafeTransaction?: SafeTransactionData,
+) => (
+  <>
+    <Numeral value={firstSafeTransaction?.amount || ''} />
+    <span> {firstSafeTransaction?.token?.symbol}</span>
+  </>
+);
+
+const getSafeTransactionNftToken = (
+  firstSafeTransaction?: SafeTransactionData,
+) => (
+  <span className={styles.user}>
+    {firstSafeTransaction?.nftData?.name ||
+      firstSafeTransaction?.nftData?.tokenName}
+  </span>
+);
+
+const getRemovedSafesString = (actionData: ColonyAction) => {
+  const removedSafes = getRemovedSafes(actionData);
+  let removedSafeFullMessage: JSX.Element | null = null;
+
+  removedSafes?.forEach((safe, index) => {
+    const removedSafe = (
+      <>
+        <span>{`${safe.name} (${SAFE_NAMES_MAP[safe.chainId]}) `}</span>
+        <MaskedAddress address={safe.address} />
+      </>
+    );
+
+    if (index === 0) {
+      removedSafeFullMessage = removedSafe;
+    } else if (index === removedSafes.length - 1) {
+      removedSafeFullMessage = (
+        <>
+          {removedSafeFullMessage} and {removedSafe}
+        </>
+      );
+    } else {
+      removedSafeFullMessage = (
+        <>
+          {removedSafeFullMessage}, {removedSafe}
+        </>
+      );
+    }
+  });
+
+  return removedSafeFullMessage;
 };
 
 export const mapColonyActionToExpectedFormat = (
@@ -161,6 +245,8 @@ export const mapColonyActionToExpectedFormat = (
       ),
     rolesChanged: formattedRolesTitle.roleTitle,
     newVersion: actionData.newColonyVersion,
+    chainName: getAddedSafeChainName(actionData),
+    safeTransactionTitle: actionData.safeTransaction?.title,
   };
 };
 
@@ -170,6 +256,9 @@ export const mapActionEventToExpectedFormat = (
   eventId?: string,
   colony?: Colony,
 ) => {
+  const firstSafeTransaction =
+    actionData?.safeTransaction?.transactions?.items[0] || undefined;
+
   return {
     amount: (
       <Numeral
@@ -209,6 +298,19 @@ export const mapActionEventToExpectedFormat = (
         value={actionData.amount}
         decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)}
       />
+    ),
+    chainName: getAddedSafeChainName(actionData),
+    safeAddress: getSafeAddress(actionData),
+    removedSafes: getRemovedSafesString(actionData),
+    safeName: getSafeName(actionData),
+    safeTransactionAmount: getSafeTransactionAmount(firstSafeTransaction),
+    nftToken: getSafeTransactionNftToken(firstSafeTransaction),
+    functionName: firstSafeTransaction?.contractFunction || '',
+    contractName:
+      firstSafeTransaction?.contract?.profile.displayName ||
+      formatMessage(unknownContractMSG),
+    isSafeTransactionRecipientUser: !(
+      firstSafeTransaction?.recipient?.id === 'filterValue'
     ),
   };
 };
