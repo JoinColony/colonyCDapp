@@ -24,5 +24,6 @@ export const getMintTokenDialogPayload = (
     motionParams: [amount],
     amount,
     annotationMessage,
+    customActionTitle: '',
   };
 };

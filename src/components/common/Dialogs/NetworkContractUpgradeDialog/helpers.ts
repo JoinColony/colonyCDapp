@@ -20,6 +20,7 @@ export const getNetworkContractUpgradeDialogPayload = (
     version,
     motionParams: [version + 1],
     annotationMessage,
+    customActionTitle: '',
   };
 };
 

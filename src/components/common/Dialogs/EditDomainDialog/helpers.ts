@@ -15,6 +15,7 @@ export const getEditDomainDialogPayload = (
   colonyAddress: colony.colonyAddress,
   colonyName: colony.name,
   isCreateDomain: false,
+  customActionTitle: '',
 });
 
 export const useEditDomainDialogStatus = (
