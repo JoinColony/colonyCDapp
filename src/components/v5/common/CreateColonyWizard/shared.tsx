@@ -1,62 +1,83 @@
 import React from 'react';
-import { FormattedMessage, MessageDescriptor } from 'react-intl';
+import { MessageDescriptor } from 'react-intl';
+import { useFormContext } from 'react-hook-form';
 
-import Button from '~shared/Button';
-import { Appearance, Heading3 } from '~shared/Heading';
-import { ComplexMessageValues } from '~types';
-import { multiLineTextEllipsis } from '~utils/strings';
+import Button from '~v5/shared/Button';
+import { AnyMessageValues, SimpleMessageValues } from '~types';
+import { PreviousStep } from '~shared/Wizard/types';
+import { formatText } from '~utils/intl';
 
-import styles from './shared.css';
+import { FormValues } from '../CreateColonyWizard';
 
-export const TruncatedName = (name: string, maxLength = 120) => (
-  // Use JS to truncate string here, rather then CSS, to customise string's max length
-  <span key={name} className={styles.truncated} title={name}>
-    {multiLineTextEllipsis(name, maxLength)}
-  </span>
-);
-
-interface SubmitFormButtonProps {
-  disabled: boolean;
-  loading: boolean;
-  dataTest: string;
-  className?: string;
+interface HeaderRowProps {
+  heading: MessageDescriptor | string;
+  headingValues?: SimpleMessageValues;
+  description: MessageDescriptor | string;
+  descriptionValues?: AnyMessageValues;
 }
 
-export const SubmitFormButton = ({
-  disabled,
-  loading,
-  dataTest,
-  className,
-}: SubmitFormButtonProps) => (
-  <div className={className || styles.submitButton}>
-    <Button
-      appearance={{ theme: 'primary', size: 'large' }}
-      text={{ id: 'button.continue' }}
-      type="submit"
-      data-test={dataTest}
-      disabled={disabled}
-      loading={loading}
-    />
-  </div>
-);
+export const HeaderRow = ({
+  heading,
+  headingValues,
+  description,
+  descriptionValues,
+}: HeaderRowProps) => {
+  const headingText =
+    typeof heading === 'string'
+      ? heading
+      : heading && formatText(heading, headingValues);
+  const subHeadingText =
+    typeof description === 'string'
+      ? description
+      : description && formatText(description, descriptionValues);
 
-interface HeadingTextProps {
-  text: MessageDescriptor;
-  textValues?: ComplexMessageValues;
-  paragraph: MessageDescriptor;
-  appearance: Partial<Appearance>;
+  return (
+    <div className="pb-4 border-b border-gray300 mb-8">
+      <h3 className="heading-3 pb-1">{headingText}</h3>
+      <p className="text-sm text-gray-600">{subHeadingText}</p>
+    </div>
+  );
+};
+
+interface ButtonRowProps {
+  previousStep: PreviousStep<FormValues>;
+  continueButtonDisableOverride?: boolean;
 }
 
-export const HeadingText = ({
-  text,
-  textValues,
-  paragraph,
-  appearance,
-}: HeadingTextProps) => (
-  <>
-    <Heading3 appearance={appearance} text={text} textValues={textValues} />
-    <p className={styles.paragraph}>
-      <FormattedMessage {...paragraph} />
-    </p>
-  </>
-);
+export const ButtonRow = ({
+  previousStep,
+  continueButtonDisableOverride,
+}: ButtonRowProps) => {
+  const {
+    getValues,
+    formState: { isValid, isSubmitting },
+  } = useFormContext();
+
+  const values = getValues();
+
+  const disabled =
+    continueButtonDisableOverride !== undefined
+      ? continueButtonDisableOverride
+      : !isValid || isSubmitting;
+
+  const loading = isSubmitting;
+
+  return (
+    <div className="pt-12 flex justify-between">
+      <Button
+        text={{ id: 'button.back' }}
+        textValues={{ loading: 'test' }}
+        onClick={() => previousStep(values)}
+        loading={loading}
+        mode="primaryOutline"
+      />
+      <Button
+        text={{ id: 'button.continue' }}
+        type="submit"
+        disabled={disabled}
+        loading={loading}
+        mode="primarySolid"
+      />
+    </div>
+  );
+};

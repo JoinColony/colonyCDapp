@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { FileRejection } from 'react-dropzone';
-import { toast } from 'react-toastify';
-import axios from 'axios';
 
 import { useIntl } from 'react-intl';
-import { useAppContext, useCanEditProfile } from '~hooks';
+import { useCanEditProfile } from '~hooks';
 import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
 import { getFileRejectionErrors } from '~shared/FileUpload/utils';
 import { FileReaderFile } from '~utils/fileReader/types';
@@ -12,16 +10,20 @@ import {
   getOptimisedAvatarUnder300KB,
   getOptimisedThumbnail,
 } from '~images/optimisation';
-import { useUpdateUserProfileMutation } from '~gql';
-import Toast from '~shared/Extensions/Toast';
 import { convertBytes } from '~utils/convertBytes';
 import { FileUploadOptions } from './types';
 
-export const useAvatarUploader = () => {
-  const { updateUser } = useAppContext();
+export interface UseAvatarUploaderProps {
+  updateFn: (
+    avatar: string | null,
+    thumbnail: string | null,
+    setProgress: Dispatch<SetStateAction<number>>,
+  ) => Promise<void>;
+}
+
+export const useAvatarUploader = ({ updateFn }: UseAvatarUploaderProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [uploadAvatarError, setUploadAvatarError] = useState<DropzoneErrors>();
-  const [updateAvatar] = useUpdateUserProfileMutation();
 
   const [showPropgress, setShowPropgress] = useState<boolean>();
   const [uploadProgress, setUploadProgress] = useState<number>(0);
@@ -36,9 +38,7 @@ export const useAvatarUploader = () => {
     }
 
     try {
-      const updatedAvatar = await getOptimisedAvatarUnder300KB(
-        avatarFile?.file,
-      );
+      const avatar = await getOptimisedAvatarUnder300KB(avatarFile?.file);
       setFileName({
         fileName: avatarFile?.file.name || '',
         fileSize: convertBytes(avatarFile?.file.size, 0),
@@ -46,53 +46,7 @@ export const useAvatarUploader = () => {
 
       const thumbnail = await getOptimisedThumbnail(avatarFile?.file);
 
-      if (avatarFile?.file) {
-        setShowPropgress(true);
-
-        const formData = new FormData();
-        formData.append('file', updatedAvatar || '');
-        setUploadProgress(0);
-        axios.post(
-          '',
-          {
-            variables: {
-              input: {
-                // @ts-ignore
-                id: user?.walletAddress,
-                thumbnail,
-              },
-            },
-          },
-          {
-            onUploadProgress: ({ loaded, total = 0 }) => {
-              setUploadProgress(Math.floor((loaded / total) * 100));
-            },
-          },
-        );
-      }
-
-      await updateAvatar({
-        variables: {
-          input: {
-            // @ts-ignore
-            id: user?.walletAddress,
-            avatar: updatedAvatar,
-            thumbnail,
-          },
-        },
-      });
-
-      await updateUser?.(user?.walletAddress, true);
-
-      toast.success(
-        <Toast
-          type="success"
-          title={{ id: 'upload.avatar.successfully.toast.title' }}
-          description={{
-            id: 'upload.avatar.successfully.toast.description',
-          }}
-        />,
-      );
+      await updateFn(avatar, thumbnail, setUploadProgress);
     } catch (e) {
       if (e.message.includes('exceeded the maximum')) {
         setUploadAvatarError(DropzoneErrors.TOO_LARGE);

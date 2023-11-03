@@ -15,6 +15,7 @@ const displayName = 'v5.common.Fields.Input';
 
 const Input: FC<InputProps> = ({
   maxCharNumber = DEFAULT_MAX_CHAR_NUMBER,
+  errorMaxChar = false,
   placeholder,
   shouldNumberOfCharsBeVisible = false,
   isError,
@@ -27,6 +28,9 @@ const Input: FC<InputProps> = ({
   successfulMessage,
   isDisabled,
   disabledTooltipMessage,
+  labelMessage,
+  labelClassName,
+  subLabelMessage,
 }) => {
   const { formatMessage } = useIntl();
   const { isTyping, isCharLenghtError, currentCharNumber, onChange } = useInput(
@@ -56,12 +60,27 @@ const Input: FC<InputProps> = ({
           registerField?.onChange(e);
         }}
         disabled={isDisabled}
+        id={`id-${name}`}
       />
     </div>
   );
 
   return (
-    <div className="flex relative flex-col gap-1">
+    <div className="flex flex-col gap-1">
+      {labelMessage && (
+        <label
+          className={clsx(labelClassName, 'flex flex-col text-1')}
+          htmlFor={`id-${name}`}
+        >
+          {formatText(labelMessage)}
+          {subLabelMessage && (
+            <span className="text-xs text-gray-400">
+              {formatText(subLabelMessage)}
+            </span>
+          )}
+        </label>
+      )}
+
       {isDisabled && disabledTooltipMessage ? (
         <Tooltip
           isFullWidthContent
@@ -85,22 +104,30 @@ const Input: FC<InputProps> = ({
         />
       )}
 
-      {!isTyping && !isError && successfulMessage && (
-        <InputPills message={successfulMessage} status="success" />
-      )}
+      {/* This is to stop layout shift when error messages are shown */}
+      <div className="relative pb-9">
+        {!isTyping && !isErrorStatus && successfulMessage && (
+          <InputPills message={successfulMessage} status="success" />
+        )}
 
-      {isErrorStatus && (
-        <>
-          {isDecoratedError && !isTyping ? (
-            <InputPills message={customErrorMessage} status="error" />
-          ) : (
-            <FormError isFullSize alignment="left">
-              {customErrorMessage ||
-                formatMessage({ id: 'too.many.characters' })}
-            </FormError>
-          )}
-        </>
-      )}
+        {isErrorStatus && !isTyping && (
+          <>
+            {isDecoratedError ? (
+              <InputPills message={customErrorMessage} status="error" />
+            ) : (
+              <FormError isFullSize alignment="left">
+                {customErrorMessage ||
+                  (errorMaxChar
+                    ? formatMessage(
+                        { id: 'error.max.characters' },
+                        { maxCharNumber },
+                      )
+                    : formatMessage({ id: 'too.many.characters' }))}
+              </FormError>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 };

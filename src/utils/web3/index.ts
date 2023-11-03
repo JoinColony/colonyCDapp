@@ -124,3 +124,10 @@ export const isMetatransactionErrorFromColonyContract = (
   }
   return isCorrectClient;
 };
+
+export function getNetworkByChainId(chainId: number) {
+  const matchedNetwork = Object.values(NETWORK_DATA).find(
+    (network) => network.chainId === chainId,
+  );
+  return matchedNetwork || null;
+}

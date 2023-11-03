@@ -1,160 +1,129 @@
-import React from 'react';
-import { defineMessages } from 'react-intl';
+import React, { ReactNode } from 'react';
+import { defineMessages, MessageDescriptor } from 'react-intl';
 
+import { UseFormRegister, FieldValues, useFormContext } from 'react-hook-form';
+import Icon from '~shared/Icon';
 import { WizardStepProps } from '~shared/Wizard';
-import DecisionHub from '~shared/DecisionHub';
 import { Form } from '~shared/Fields';
-import { Heading3, Heading4, Heading6 } from '~shared/Heading';
-import { SELECT_NATIVE_TOKEN_INFO as LEARN_MORE_URL } from '~constants';
-import ExternalLink from '~shared/ExternalLink';
 
 import { FormValues, Step2 } from '../CreateColonyWizard';
-import { TruncatedName } from './shared';
+import { ButtonRow, HeaderRow } from './shared';
 
-import styles from './StepTokenChoice.css';
+import Card from '~v5/shared/Card';
+import { formatText } from '~utils/intl';
 
 const displayName = 'common.CreateColonyWizard.StepTokenChoice';
 
-const MSG = defineMessages({
+type Props = Pick<
+  WizardStepProps<FormValues, Step2>,
+  'nextStep' | 'wizardForm' | 'wizardValues' | 'setStepsValues' | 'previousStep'
+>;
+
+interface TokenSelectorProps {
+  name: string;
+  icon: ReactNode;
+  title: MessageDescriptor | string;
+  description: MessageDescriptor | string;
+  register?: UseFormRegister<FieldValues>;
+}
+
+export const MSG = defineMessages({
   heading: {
     id: `${displayName}.heading`,
-    defaultMessage: 'Choose a native token for {colony}',
+    defaultMessage: 'Creating a new native token or use existing?',
   },
-  subtitle: {
-    id: `${displayName}.subtitle`,
-    defaultMessage: `You earn reputation in a colony when it pays you in its native token.`,
+  description: {
+    id: `${displayName}.description`,
+    defaultMessage:
+      'We highly recommend creating a new token, you will have greater control of your token going forward, support all features of Colony, and potentially save a lot of cost if on another chain.',
   },
-  subtitleWithExample: {
-    id: `${displayName}.subtitleWithExample`,
-    defaultMessage: `Leia completes a task for 5 FOX in the ShapeShift colony.
-      Because FOX is the native token of the ShapeShift colony,
-      she also earns 5 reputation in that colony.`,
-  },
-  notSure: {
-    id: `${displayName}.notSure`,
-    defaultMessage: 'Not sure?',
-  },
-  createTokenTitle: {
-    id: `${displayName}.newToken`,
+  createOptionTitle: {
+    id: `${displayName}.createOptionTitle`,
     defaultMessage: 'Create a new token',
   },
-  selectTokenTitle: {
-    id: `${displayName}.existingToken`,
-    defaultMessage: 'Use an existing ERC20 token',
+  createOptionDescription: {
+    id: `${displayName}.createOptionDescription`,
+    defaultMessage:
+      'Quickest, easiest, and best option for greater control over your token using your Colony.',
   },
-  createTokenSubtitle: {
-    id: `${displayName}.newTokenSubtitle`,
-    defaultMessage: 'For example: MyAwesomeToken',
+  selectOptionTitle: {
+    id: `${displayName}.selectOptionTitle`,
+    defaultMessage: 'Use an existing token',
   },
-  selectTokenSubtitle: {
-    id: `${displayName}.existingTokenSubtitle`,
-    defaultMessage: 'For example: UNI, SUSHI, & AAVE',
-  },
-  tooltipCreate: {
-    id: `${displayName}.tooltipCreate`,
-    defaultMessage: `Good for projects that don't already have a token or who want more control over their token`,
-  },
-  tooltipSelect: {
-    id: `${displayName}.tooltipSelect`,
-    defaultMessage: `Good for projects that already have their own token or want to use an existing one like DAI.`,
+  selectOptionDescription: {
+    id: `${displayName}.selectOptionDescription`,
+    defaultMessage:
+      'Suitable for public tokens. Requires token to be on the same blockchain as the Colony.',
   },
 });
 
-const options = [
-  {
-    value: 'create',
-    title: MSG.createTokenTitle,
-    subtitle: MSG.createTokenSubtitle,
-    icon: 'question-mark',
-    tooltip: MSG.tooltipCreate,
-    dataTest: 'createNewToken',
-  },
-  {
-    value: 'select',
-    title: MSG.selectTokenTitle,
-    subtitle: MSG.selectTokenSubtitle,
-    icon: 'question-mark',
-    tooltip: MSG.tooltipSelect,
-    dataTest: 'useExistingToken',
-  },
-];
+const TokenSelector = ({
+  name,
+  icon,
+  title,
+  description,
+}: TokenSelectorProps) => {
+  const { register, watch } = useFormContext();
 
-interface InstructionsProps {
-  colonyDisplayName: string;
-}
+  const registerField = register && register('tokenChoice');
+  const checked = name === watch('tokenChoice');
 
-const Instructions = ({ colonyDisplayName }: InstructionsProps) => {
-  const headingText = { colony: TruncatedName(colonyDisplayName) };
   return (
-    <div className={styles.instructions}>
-      <Heading3 text={MSG.heading} textValues={headingText} />
-      <Heading4 text={MSG.subtitle} />
-      <Heading4
-        text={MSG.subtitleWithExample}
-        className={styles.subtitleWithExample}
-      />
-    </div>
+    <label htmlFor={`id-${name}`}>
+      <Card
+        className="flex flex-col items-center cursor-pointer text-center h-full md:hover:shadow-default md:hover:shadow-light-blue"
+        checked={checked}
+      >
+        <input
+          {...registerField}
+          type="radio"
+          value={name}
+          id={`id-${name}`}
+          className="mb-4"
+        />
+        {icon}
+        <span className="text-1 pt-4">{formatText(title)}</span>
+        <span className="description-1">{formatText(description)}</span>
+      </Card>
+    </label>
   );
 };
 
-const LearnMore = () => (
-  <div className={styles.learnMore}>
-    <Heading6
-      appearance={{
-        margin: 'none',
-      }}
-      text={MSG.notSure}
-    />
-    <ExternalLink
-      className={styles.link}
-      text={{ id: 'text.learnMore' }}
-      href={LEARN_MORE_URL}
-    />
-  </div>
-);
-
-type Props = Pick<
-  WizardStepProps<FormValues, Step2>,
-  'nextStep' | 'wizardForm' | 'wizardValues' | 'setStepsValues'
->;
-
-const handleSubmit = (
-  values: Step2,
-  setStepsValues: Props['setStepsValues'],
-  nextStep: Props['nextStep'],
-) => {
-  setStepsValues((stepsValues) => {
-    const oldStep2: Partial<Step2> = stepsValues[1];
-    /*
-     * If we change choice, reset step 3 (index 2) form state.
-     * This is so the state from Select / Create token doesn't spill over into the other.
-     */
-    if (oldStep2 && oldStep2.tokenChoice !== values.tokenChoice) {
-      const steps = [...stepsValues];
-      steps[2] = {};
-      return steps;
-    }
-    return stepsValues;
-  });
-  nextStep(values);
-};
-
 const StepTokenChoice = ({
-  nextStep,
   wizardForm: { initialValues: defaultValues },
-  wizardValues: { displayName: colonyName },
-  setStepsValues,
+  wizardValues: { tokenChoiceVerify },
+  previousStep,
+  nextStep,
 }: Props) => {
   return (
     <Form<Step2>
-      onSubmit={(values) => handleSubmit(values, setStepsValues, nextStep)}
-      defaultValues={defaultValues}
+      onSubmit={nextStep}
+      defaultValues={{
+        tokenChoice: tokenChoiceVerify || defaultValues.tokenChoice,
+      }}
     >
-      <section className={styles.content}>
-        <Instructions colonyDisplayName={colonyName} />
-        <DecisionHub name="tokenChoice" options={options} />
-        <LearnMore />
-      </section>
+      <HeaderRow heading={MSG.heading} description={MSG.description} />
+      <div className="flex gap-6">
+        <TokenSelector
+          name="create"
+          title={MSG.createOptionTitle}
+          description={MSG.createOptionDescription}
+          icon={
+            <Icon
+              style={{ transform: 'rotate(90deg)' }}
+              name="coin-vertical"
+              appearance={{ size: 'medium' }}
+            />
+          }
+        />
+        <TokenSelector
+          name="select"
+          title={MSG.selectOptionTitle}
+          description={MSG.selectOptionDescription}
+          icon={<Icon name="hand-coins" appearance={{ size: 'medium' }} />}
+        />
+      </div>
+      <ButtonRow previousStep={previousStep} />
     </Form>
   );
 };

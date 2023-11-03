@@ -3,72 +3,63 @@ import { defineMessages } from 'react-intl';
 
 import { WizardStepProps } from '~shared/Wizard';
 import { Form } from '~shared/Fields';
-import { useAppContext, useMobile } from '~hooks';
+import { useAppContext } from '~hooks';
+import { splitWalletAddress } from '~utils/splitWalletAddress';
+
+import { ButtonRow, HeaderRow } from './shared';
 
 import {
   FormValues,
   Step1,
   colonyNameValidationSchema as validationSchema,
 } from '../CreateColonyWizard';
-import { HeadingText, SubmitFormButton, TruncatedName } from './shared';
-import NameInputs from './StepColonyNameInputs';
-import { splitWalletAddress } from '~utils/splitWalletAddress';
 
-import styles from './StepColonyName.css';
+import NameInputs from './StepColonyNameInputs';
 
 const displayName = 'common.CreateColonyWizard.StepColonyName';
+
+type Props = Pick<
+  WizardStepProps<FormValues, Step1>,
+  'wizardForm' | 'nextStep' | 'wizardValues' | 'previousStep'
+>;
 
 const MSG = defineMessages({
   heading: {
     id: `${displayName}.heading`,
-    defaultMessage: `Welcome @{username}, let's begin creating your colony.`,
+    defaultMessage: 'Welcome, {username}!',
   },
   description: {
     id: `${displayName}.description`,
-    defaultMessage: `What would you like to name your colony? Note, it is not possible to change it later.`,
+    defaultMessage:
+      'Let’s set up your Colony. Enter a name for your Colony and a short description about your Colony’s mission and purpose.',
   },
 });
 
-type Props = Pick<
-  WizardStepProps<FormValues, Step1>,
-  'wizardForm' | 'nextStep' | 'wizardValues'
->;
-
 const StepColonyName = ({
-  wizardForm: { initialValues: defaultValues },
+  wizardValues: {
+    displayName: wizardDisplayName,
+    colonyName: wizardColonyName,
+  },
   nextStep,
+  previousStep,
 }: Props) => {
   const { user } = useAppContext();
+
   const username =
     user?.profile?.displayName ?? splitWalletAddress(user?.walletAddress ?? '');
-  const isMobile = useMobile();
-  const headingText = { username: TruncatedName(username, 38) };
 
   return (
-    <Form<Step1>
-      onSubmit={nextStep}
-      validationSchema={validationSchema}
-      defaultValues={defaultValues}
-    >
-      {({ formState: { isValid, isSubmitting } }) => (
-        <section className={styles.main}>
-          <HeadingText
-            text={MSG.heading}
-            textValues={headingText}
-            paragraph={MSG.description}
-            appearance={{ weight: 'medium' }}
-          />
-          <div className={styles.nameForm}>
-            <NameInputs disabled={isSubmitting} isMobile={isMobile} />
-            <SubmitFormButton
-              disabled={!isValid || isSubmitting}
-              loading={isSubmitting}
-              dataTest="claimColonyNameConfirm"
-              className={styles.submitButton}
-            />
-          </div>
-        </section>
-      )}
+    <Form<Step1> onSubmit={nextStep} validationSchema={validationSchema}>
+      <HeaderRow
+        heading={MSG.heading}
+        headingValues={{ username }}
+        description={MSG.description}
+      />
+      <NameInputs
+        displayName={wizardDisplayName}
+        colonyName={wizardColonyName}
+      />
+      <ButtonRow previousStep={previousStep} />
     </Form>
   );
 };

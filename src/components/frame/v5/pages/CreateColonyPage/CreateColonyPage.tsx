@@ -12,7 +12,7 @@ const CreateColonyPage = () => {
     skip: !inviteCode,
     variables: { id: inviteCode || '' },
   });
-  const valid = !!data?.getPrivateBetaInviteCode?.valid;
+  const valid = (data?.getPrivateBetaInviteCode?.shareableInvites || 0) > 0;
 
   if (loading) {
     // @TODO: add a loading spinner
