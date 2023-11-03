@@ -1,10 +1,11 @@
 import React from 'react';
-import { MessageDescriptor, useIntl } from 'react-intl';
+import { MessageDescriptor } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
 import Button from '~v5/shared/Button';
 import { AnyMessageValues, SimpleMessageValues } from '~types';
 import { PreviousStep } from '~shared/Wizard/types';
+import { formatText } from '~utils/intl';
 
 import { FormValues } from '../CreateColonyWizard';
 
@@ -21,16 +22,14 @@ export const HeaderRow = ({
   description,
   descriptionValues,
 }: HeaderRowProps) => {
-  const { formatMessage } = useIntl();
-
   const headingText =
     typeof heading === 'string'
       ? heading
-      : heading && formatMessage(heading, headingValues);
+      : heading && formatText(heading, headingValues);
   const subHeadingText =
     typeof description === 'string'
       ? description
-      : description && formatMessage(description, descriptionValues);
+      : description && formatText(description, descriptionValues);
 
   return (
     <div className="pb-4 border-b border-gray300 mb-8">
