@@ -2158,7 +2158,7 @@ type MotionStakes {
 """
 Input used to modify the stakes of a user for a motion
 """
-input UserStakesInput {
+input UserMotionStakesInput {
   """
   The user's wallet address
   """
@@ -2172,7 +2172,7 @@ input UserStakesInput {
 """
 Stakes that a user has made for a motion
 """
-type UserStakes {
+type UserMotionStakes {
   """
   The user's wallet address
   """
@@ -2396,7 +2396,7 @@ type ColonyMotion @model {
   """
   List of stakes that users have made for a motion
   """
-  usersStakes: [UserStakes!]!
+  usersStakes: [UserMotionStakes!]!
   """
   List of staker rewards users will be receiving for a motion
   """
