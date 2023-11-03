@@ -39,38 +39,40 @@ export const wizardSidebarMSGs = defineMessages({
 
 export const wizardSteps = [
   {
-    itemStep: -1,
-    itemText: wizardSidebarMSGs.account,
+    id: -1,
+    text: wizardSidebarMSGs.account,
     subItems: [
       {
-        itemStep: -1,
-        itemText: wizardSidebarMSGs.profile,
+        id: -1,
+        text: wizardSidebarMSGs.profile,
       },
     ],
   },
   {
-    itemStep: 0,
-    itemText: wizardSidebarMSGs.create,
+    id: 0,
+    text: wizardSidebarMSGs.create,
     subItems: [
       {
-        itemStep: 0,
-        itemText: wizardSidebarMSGs.details,
+        id: 0,
+        text: wizardSidebarMSGs.details,
       },
       {
-        itemStep: 1,
-        itemText: wizardSidebarMSGs.nativeToken,
+        id: 1,
+        text: wizardSidebarMSGs.nativeToken,
       },
       {
-        itemStep: 2,
+        // @NOTE: This step corresponds to the step where we input the native token info.
+        // Due to this step not being present in the UI of the sidebar, we are just including it here for logic purposes.
+        id: 2,
       },
       {
-        itemStep: 3,
-        itemText: wizardSidebarMSGs.confirmation,
+        id: 3,
+        text: wizardSidebarMSGs.confirmation,
       },
     ],
   },
   {
-    itemStep: 4,
-    itemText: wizardSidebarMSGs.complete,
+    id: 4,
+    text: wizardSidebarMSGs.complete,
   },
 ];

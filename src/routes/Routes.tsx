@@ -27,7 +27,7 @@ import UserProfilePage from '~frame/v5/pages/UserProfilePage';
 import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
 import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
 import CreateColonyPage from '~frame/v5/pages/CreateColonyPage';
-import CreateUserPage from '~frame/v5/pages/CreateUserPage/CreateUserPage';
+import CreateUserPage from '~frame/v5/pages/CreateUserPage';
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 
 import {

@@ -28,8 +28,8 @@ const MSG = defineMessages({
 });
 
 export interface WizardStep {
-  itemStep: number;
-  itemText: MessageDescriptor;
+  id: number;
+  text: MessageDescriptor;
   subItems?: WizardSubStep[];
 }
 
@@ -53,7 +53,7 @@ const WizardSidebar = ({ sidebarTitle, wizardSteps }: Props) => (
         <div className="flex flex-col gap-4 -mt-1">
           {wizardSteps.map((step, i) => (
             <WizardSidebarItem
-              key={`step-${step.itemStep}`}
+              key={`step-${step.id}`}
               {...step}
               isLastItem={i + 1 === wizardSteps.length}
             />
