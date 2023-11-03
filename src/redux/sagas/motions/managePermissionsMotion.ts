@@ -16,6 +16,7 @@ import {
   getColonyManager,
   initiateTransaction,
   uploadAnnotation,
+  createActionMetadataInDB,
 } from '../utils';
 import {
   createTransaction,
@@ -32,6 +33,7 @@ function* managePermissionsMotion({
     colonyName,
     annotationMessage,
     motionDomainId,
+    customActionTitle,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -168,6 +170,8 @@ function* managePermissionsMotion({
 
     setTxHash?.(txHash);
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({

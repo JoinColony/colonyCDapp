@@ -24,6 +24,7 @@ import {
   uploadAnnotation,
   initiateTransaction,
   getColonyManager,
+  createActionMetadataInDB,
 } from '../utils';
 
 function* editDomainAction({
@@ -35,6 +36,7 @@ function* editDomainAction({
     domainPurpose,
     domain,
     annotationMessage,
+    customActionTitle,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -153,6 +155,8 @@ function* editDomainAction({
         refetchQueries: [GetFullColonyByNameDocument],
       });
     }
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({

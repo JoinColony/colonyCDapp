@@ -8309,6 +8309,13 @@ export type ContributorFragment = { __typename?: 'Contributor', address: string,
 
 export type WatcherFragment = { __typename?: 'Watcher', address: string, user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', emailPermissions: Array<string>, metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null };
 
+export type CreateColonyActionMetadataMutationVariables = Exact<{
+  input: CreateColonyActionMetadataInput;
+}>;
+
+
+export type CreateColonyActionMetadataMutation = { __typename?: 'Mutation', createColonyActionMetadata?: { __typename?: 'ColonyActionMetadata', id: string } | null };
+
 export type CreateAnnotationMutationVariables = Exact<{
   input: CreateAnnotationInput;
 }>;
@@ -9687,6 +9694,39 @@ export const WatcherFragmentDoc = gql`
   }
 }
     ${MemberUserFragmentDoc}`;
+export const CreateColonyActionMetadataDocument = gql`
+    mutation CreateColonyActionMetadata($input: CreateColonyActionMetadataInput!) {
+  createColonyActionMetadata(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateColonyActionMetadataMutationFn = Apollo.MutationFunction<CreateColonyActionMetadataMutation, CreateColonyActionMetadataMutationVariables>;
+
+/**
+ * __useCreateColonyActionMetadataMutation__
+ *
+ * To run a mutation, you first call `useCreateColonyActionMetadataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateColonyActionMetadataMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createColonyActionMetadataMutation, { data, loading, error }] = useCreateColonyActionMetadataMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateColonyActionMetadataMutation(baseOptions?: Apollo.MutationHookOptions<CreateColonyActionMetadataMutation, CreateColonyActionMetadataMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateColonyActionMetadataMutation, CreateColonyActionMetadataMutationVariables>(CreateColonyActionMetadataDocument, options);
+      }
+export type CreateColonyActionMetadataMutationHookResult = ReturnType<typeof useCreateColonyActionMetadataMutation>;
+export type CreateColonyActionMetadataMutationResult = Apollo.MutationResult<CreateColonyActionMetadataMutation>;
+export type CreateColonyActionMetadataMutationOptions = Apollo.BaseMutationOptions<CreateColonyActionMetadataMutation, CreateColonyActionMetadataMutationVariables>;
 export const CreateAnnotationDocument = gql`
     mutation CreateAnnotation($input: CreateAnnotationInput!) {
   createAnnotation(input: $input) {

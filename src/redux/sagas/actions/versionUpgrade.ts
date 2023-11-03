@@ -10,6 +10,7 @@ import {
   getTxChannel,
 } from '../transactions';
 import {
+  createActionMetadataInDB,
   getColonyManager,
   initiateTransaction,
   putError,
@@ -18,7 +19,13 @@ import {
 } from '../utils';
 
 function* createVersionUpgradeAction({
-  payload: { colonyAddress, colonyName, version, annotationMessage },
+  payload: {
+    colonyAddress,
+    colonyName,
+    version,
+    annotationMessage,
+    customActionTitle,
+  },
   meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_VERSION_UPGRADE>) {
@@ -88,6 +95,8 @@ function* createVersionUpgradeAction({
     setTxHash?.(txHash);
 
     yield takeFrom(upgrade.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (supportAnnotation) {
       yield uploadAnnotation({

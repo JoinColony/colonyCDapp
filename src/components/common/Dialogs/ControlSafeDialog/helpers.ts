@@ -19,7 +19,7 @@ export const getControlSafeDialogPayload = (colony: Colony, payload: any) => {
   const { name: colonyName, colonyAddress } = colony;
   const {
     safe,
-    transactionsTitle,
+    customActionTitle,
     transactions,
     annotation: annotationMessage,
     motionDomainId,
@@ -86,7 +86,7 @@ export const getControlSafeDialogPayload = (colony: Colony, payload: any) => {
 
   return {
     safe: transformedSafe,
-    transactionsTitle,
+    customActionTitle,
     transactions: transformedTransactions,
     annotationMessage,
     colonyAddress,

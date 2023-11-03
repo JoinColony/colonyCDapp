@@ -84,7 +84,7 @@ export const getValidationSchema = (
       }),
       ...(showPreview
         ? {
-            transactionsTitle: string()
+            customActionTitle: string()
               .trim()
               .required(() => MSG.requiredFieldError),
           }

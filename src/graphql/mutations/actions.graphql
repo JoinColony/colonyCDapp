@@ -1,0 +1,5 @@
+mutation CreateColonyActionMetadata($input: CreateColonyActionMetadataInput!) {
+  createColonyActionMetadata(input: $input) {
+    id
+  }
+}

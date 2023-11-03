@@ -17,6 +17,7 @@ import {
   takeFrom,
   uploadAnnotation,
   getColonyManager,
+  createActionMetadataInDB,
 } from '../utils';
 
 import {
@@ -34,6 +35,7 @@ function* managePermissionsAction({
     roles,
     colonyName,
     annotationMessage,
+    customActionTitle,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -143,6 +145,8 @@ function* managePermissionsAction({
     setTxHash?.(txHash);
 
     yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({

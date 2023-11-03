@@ -23,3 +23,4 @@ export * from './expenditures';
 //   Channel,
 // } from './enableExtensionHelpers';
 export { updateDomainReputation } from './updateDomainReputation';
+export { createActionMetadataInDB } from './createActionMetadata';
