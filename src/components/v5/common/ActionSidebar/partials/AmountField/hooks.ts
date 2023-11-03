@@ -1,9 +1,12 @@
-import { useMemo, useState } from 'react';
+import { useLayoutEffect, useMemo, useState } from 'react';
 import { useColonyContext } from '~hooks';
 import { notNull } from '~utils/arrays';
 import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 
-export const useAmountField = (selectedTokenAddress: string) => {
+export const useAmountField = (
+  selectedTokenAddress: string,
+  formValue: string | undefined,
+) => {
   const { colony } = useColonyContext();
   const [inputWidth, setInputWidth] = useState<number>();
 
@@ -28,12 +31,26 @@ export const useAmountField = (selectedTokenAddress: string) => {
     [selectedToken],
   );
 
-  const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
+  const adjustInputWidth = (value: string) => {
     const valueWithoutCommas = value.replace(/,/g, '');
     const width = valueWithoutCommas.length * 0.65;
 
     setInputWidth(width);
+  };
+
+  useLayoutEffect(() => {
+    if (!formValue) {
+      return;
+    }
+
+    adjustInputWidth(formValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+
+    adjustInputWidth(value);
   };
 
   const dynamicCleaveOptionKey = JSON.stringify(formattingOptions);
