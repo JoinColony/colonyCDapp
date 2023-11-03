@@ -4,7 +4,7 @@ import Icon from '~shared/Icon';
 import Checkbox from '~v5/common/Checkbox';
 import FilterButton from '~v5/shared/Filter/FilterButton';
 import PopoverBase from '~v5/shared/PopoverBase';
-import { FilterItemProps, FilterProps } from './types';
+import { FilterItemProps, FilterProps, FilterValue } from './types';
 
 const displayName = 'v5.pages.FundsPage.partials.Filter';
 
@@ -114,7 +114,11 @@ const FilterItem: FC<FilterItemProps> = ({
   );
 };
 
-const Filter: FC<FilterProps> = ({ items: rootItems, onChange, value }) => {
+function Filter<TValue extends FilterValue>({
+  items: rootItems,
+  onChange,
+  value,
+}: FilterProps<TValue>) {
   const {
     getTooltipProps,
     setTooltipRef,
@@ -157,7 +161,7 @@ const Filter: FC<FilterProps> = ({ items: rootItems, onChange, value }) => {
       )}
     </>
   );
-};
+}
 
 Filter.displayName = displayName;
 
