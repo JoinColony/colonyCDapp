@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import FundsTable from '../FundsPage/partials/FundsTable';
 
 import { useVerifiedPage } from './hooks';
 import VerifiedTable from './partials/VerifiedTable';
@@ -11,6 +12,7 @@ const VerifiedPage: FC = () => {
   return (
     <div className="w-full mt-6">
       <VerifiedTable list={verifiedMembers} />
+      <FundsTable />
     </div>
   );
 };

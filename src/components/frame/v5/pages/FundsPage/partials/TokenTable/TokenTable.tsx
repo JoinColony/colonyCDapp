@@ -12,21 +12,16 @@ import { TokenTableProps } from './types';
 
 const TokenTable: FC<TokenTableProps> = ({ token }) => {
   const { colony } = useColonyContext();
-  const { nativeToken, tokens } = colony || {};
+  const { nativeToken } = colony || {};
   const claims = useColonyFundsClaims();
   const currentClaims = claims.filter(
     ({ token: currentClaimToken }) => currentClaimToken?.name === token.name,
-  );
-  const isTokenApproved = tokens?.items.some(
-    (approvedToken) => approvedToken?.token.name === token.name,
   );
   const claimsAmount = currentClaims.reduce(
     (acc, { amount }) => acc.add(amount),
     BigNumber.from(0),
   );
-  const [isTableRowOpen, { toggle: toggleTableRowAccordion }] = useToggle({
-    defaultToggleState: isTokenApproved,
-  });
+  const [isTableRowOpen, { toggle: toggleTableRowAccordion }] = useToggle();
   const columns = useTokenTableColumns();
 
   return (
@@ -34,6 +29,7 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
       className="text-1 text-gray-900 w-full px-[1.125rem]"
       isOpen={isTableRowOpen}
       onToggle={toggleTableRowAccordion}
+      iconName="chevron-down"
       title={
         <div className="flex items-center justify-between w-full py-4">
           <div className="flex items-center gap-4">

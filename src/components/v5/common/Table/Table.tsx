@@ -34,13 +34,6 @@ const Table = <T,>({
       .map((column) => column.column.columnDef)
       .some((columnDef) => columnDef.footer),
   )[0];
-  const hasHeader = headerGroups.map((headerGroup) =>
-    headerGroup.headers
-      .map((column) => column.column.columnDef)
-      .some((columnDef) => columnDef.header),
-  )[0];
-
-  console.log(headerGroups, 'hasHeader');
 
   return (
     <>
@@ -52,7 +45,6 @@ const Table = <T,>({
             border-separate
             border-spacing-0
             border-1
-            w-full
             rounded-lg
             border-gray-200
             overflow-hidden
