@@ -147,7 +147,7 @@
     "button.addBatchPayments": "Add batch payments",
     "input.resetText": "Cancel",
     "label.amount": "Amount",
-    "label.name": "Name",
+    "label.username": "Username",
     "label.description": "Description",
     "label.optional": "Optional",
     "label.email": "Email address",
