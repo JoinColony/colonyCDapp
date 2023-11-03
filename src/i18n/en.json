@@ -248,7 +248,6 @@
   "transaction.ColonyClient.setUserRoles.description": "Assign permissions",
   "transaction.group.unistallExtensions.title": "Uninstall Colony Extension",
   "transaction.group.unistallExtensions.description": "Uninstall Colony Extension",
-  "transaction.VotingReputationClient.initialise.title": "Initialize Voting Reputation Extension",
   "transaction.StakedExpenditureClient.initialise.title": "Initialize Staked Expenditure Extension",
   "transaction.ColonyClient.uninstallExtension.title": "Uninstall Colony Extension",
   "transaction.ColonyClient.uninstallExtension.description": "Uninstall Colony Extension",
@@ -1323,5 +1322,6 @@
   "actionSidebar.managePermissions.permissionsModal.owner.heading": "All of the actions within Admin, plus:",
   "actionSidebar.managePermissions.authority.disbaledTooltip": "The Mod permission does not support multi-sig authority.",
   "colonyAvatar.colonyImage.alt": "Colony logo",
-  "colonyAvatar.chainImage.alt": "Chain logo"
+  "colonyAvatar.chainImage.alt": "Chain logo",
+  "errors.title.maxLength": "Exceeded max character limit {currentLength}/{maxLength}."
 }

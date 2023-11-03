@@ -4,6 +4,7 @@ import {
   MAX_COLONY_DISPLAY_NAME,
   MAX_DOMAIN_PURPOSE_LENGTH,
 } from '~constants';
+import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts';
 
 export const validationSchema = yup
   .object()
@@ -24,6 +25,7 @@ export const validationSchema = yup
     decisionMethod: yup.string().defined(),
     description: yup.string().max(MAX_ANNOTATION_LENGTH).notRequired(),
   })
-  .defined();
+  .defined()
+  .concat(ACTION_BASE_VALIDATION_SCHEMA);
 
 export type EditTeamFormValues = yup.InferType<typeof validationSchema>;

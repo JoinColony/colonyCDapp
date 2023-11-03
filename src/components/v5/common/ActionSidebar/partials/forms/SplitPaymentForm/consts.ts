@@ -1,6 +1,7 @@
 import * as yup from 'yup';
 import { MAX_ANNOTATION_NUM } from '~v5/shared/RichText/consts';
 import { toFinite } from '~utils/lodash';
+import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts';
 
 export const validationSchema = yup
   .object({
@@ -37,6 +38,7 @@ export const validationSchema = yup
       })
       .required(),
   })
-  .defined();
+  .defined()
+  .concat(ACTION_BASE_VALIDATION_SCHEMA);
 
 export type SplitPaymentFormValues = yup.InferType<typeof validationSchema>;

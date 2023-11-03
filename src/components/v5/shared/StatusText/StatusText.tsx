@@ -27,6 +27,7 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
   return (
     <div
       className={clsx(className, 'flex', {
+        'text-gray-900': status === STATUS_TYPES.INFO,
         'text-success-400': status === STATUS_TYPES.SUCCESS,
         'text-warning-400': status === STATUS_TYPES.WARNING,
         'text-negative-400': status === STATUS_TYPES.ERROR,
