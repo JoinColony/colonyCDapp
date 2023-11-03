@@ -12,7 +12,7 @@ fragment User on User {
       createdAt
     }
   }
-  PrivateBetaInviteCode {
+  privateBetaInviteCode {
     id
     shareableInvites
   }

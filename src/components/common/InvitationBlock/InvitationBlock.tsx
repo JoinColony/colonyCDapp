@@ -30,7 +30,7 @@ const MSG = defineMessages({
 
 const InvitationBlock = () => {
   const { user } = useAppContext();
-  const invitationCode = user?.PrivateBetaInviteCode?.id;
+  const invitationCode = user?.privateBetaInviteCode?.id;
   const inviteLink = `app.colony.io/createcolony/${invitationCode}`;
   const { handleClipboardCopy, isCopied } = useCopyToClipboard(inviteLink);
 

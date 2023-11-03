@@ -128,7 +128,7 @@ const LandingPage = () => {
     },
   ];
   const hasShareableInvitationCode =
-    !!user?.PrivateBetaInviteCode?.shareableInvites;
+    !!user?.privateBetaInviteCode?.shareableInvites;
 
   return (
     <div className="w-full">
