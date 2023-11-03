@@ -6956,7 +6956,11 @@ export type TokenUsersArgs = {
 
 /** Input data for fetching a token's information from DB or chain */
 export type TokenFromEverywhereArguments = {
+  /** The URL of the token image */
+  avatar?: InputMaybe<Scalars['String']>;
   network?: InputMaybe<Scalars['String']>;
+  /** The URL of the token thumbnail image */
+  thumbnail?: InputMaybe<Scalars['String']>;
   /** Address of the token on the blockchain */
   tokenAddress: Scalars['String'];
 };
