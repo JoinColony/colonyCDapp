@@ -66,13 +66,14 @@ const AdvancedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="pencil"
         fieldName="description"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.description',
-            }),
-          },
-        }}
+        // Tooltip disabled to experiment with improving user experience
+        // tooltips={{
+        //   label: {
+        //     tooltipContent: formatText({
+        //       id: 'actionSidebar.tooltip.description',
+        //     }),
+        //   },
+        // }}
         title={formatText({ id: 'actionSidebar.description' })}
         isExpandable
       >

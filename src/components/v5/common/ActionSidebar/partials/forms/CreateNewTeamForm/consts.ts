@@ -12,7 +12,7 @@ export const validationSchema = yup
       .string()
       .trim()
       .max(MAX_COLONY_DISPLAY_NAME)
-      .required(() => 'Team name required'),
+      .required(() => 'Team name required.'),
     domainPurpose: yup
       .string()
       .trim()

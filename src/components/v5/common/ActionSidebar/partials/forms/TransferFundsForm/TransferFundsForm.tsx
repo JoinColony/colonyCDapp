@@ -60,20 +60,6 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <AmountField name="amount" />
       </ActionFormRow>
       <ActionFormRow
-        iconName="house-line"
-        fieldName="createdIn"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.createdIn',
-            }),
-          },
-        }}
-        title={formatText({ id: 'actionSidebar.createdIn' })}
-      >
-        <TeamsSelect name="createdIn" />
-      </ActionFormRow>
-      <ActionFormRow
         iconName="scales"
         fieldName="decisionMethod"
         tooltips={{
@@ -92,15 +78,30 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        iconName="pencil"
-        fieldName="description"
+        iconName="house-line"
+        fieldName="createdIn"
         tooltips={{
           label: {
             tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.description',
+              id: 'actionSidebar.tooltip.createdIn',
             }),
           },
         }}
+        title={formatText({ id: 'actionSidebar.createdIn' })}
+      >
+        <TeamsSelect name="createdIn" />
+      </ActionFormRow>
+      <ActionFormRow
+        iconName="pencil"
+        fieldName="description"
+        // Tooltip disabled to experiment with improving user experience
+        // tooltips={{
+        //   label: {
+        //     tooltipContent: formatText({
+        //       id: 'actionSidebar.tooltip.description',
+        //     }),
+        //   },
+        // }}
         title={formatText({ id: 'actionSidebar.description' })}
         isExpandable
       >

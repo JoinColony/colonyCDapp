@@ -38,7 +38,7 @@ const RichText: FC<RichTextProps> = ({
                 onClick={toggleOnDecriptionSelect}
                 className={clsx('sm:hover:text-blue-400', {
                   'text-gray-900': characterCount,
-                  'text-gray-500': !characterCount,
+                  'text-gray-400': !characterCount,
                 })}
               >
                 <span
@@ -72,7 +72,7 @@ const RichText: FC<RichTextProps> = ({
 
               {(characterCount || isDecriptionFieldExpanded) && (
                 <div className="flex items-center justify-between mt-4">
-                  {isDecriptionFieldExpanded && (
+                  {characterCount >= 1000 && isDecriptionFieldExpanded && (
                     <TextButton
                       mode="underlined"
                       className="text-gray-400"
@@ -96,7 +96,7 @@ const RichText: FC<RichTextProps> = ({
                 onClick={toggleOnDecriptionSelect}
                 className={clsx('sm:hover:text-blue-400', {
                   'text-gray-900': characterCount,
-                  'text-gray-500': !characterCount,
+                  'text-gray-400': !characterCount,
                 })}
               >
                 <span

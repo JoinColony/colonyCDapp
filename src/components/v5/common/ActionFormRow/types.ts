@@ -6,6 +6,7 @@ export interface ActionFormRowProps {
   iconName: string;
   title: React.ReactNode;
   isExpandable?: boolean;
+  isMultiLine?: boolean;
   fieldName?: string;
   className?: string;
   children?:

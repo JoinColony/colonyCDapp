@@ -98,7 +98,7 @@ const FormattedInput: FC<FormattedInputProps> = ({
           className={clsx(
             className,
             state ? stateClassNames[state] : undefined,
-            'w-full text-md outline-0 placeholder:text-gray-500 pr-[var(--button-width)]',
+            'w-full text-md outline-0 placeholder:text-gray-400 pr-[var(--button-width)]',
             {
               'text-gray-400 pointer-events-none': disabled,
               'bg-base-white rounded border py-3 pl-3.5 border-gray-300 focus:border-blue-200 focus:shadow-light-blue':

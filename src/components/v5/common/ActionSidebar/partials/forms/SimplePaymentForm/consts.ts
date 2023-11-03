@@ -14,7 +14,7 @@ export const validationSchema = yup
           .number()
           .required(() => formatText({ id: 'errors.amount' }))
           .transform((value) => toFinite(value))
-          .moreThan(0, () => 'Amount must be greater than zero'),
+          .moreThan(0, () => 'Amount must be greater than zero.'),
         tokenAddress: yup.string().address().required(),
       })
       .required(),

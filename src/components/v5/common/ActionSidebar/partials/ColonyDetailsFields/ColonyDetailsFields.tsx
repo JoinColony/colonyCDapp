@@ -1,18 +1,26 @@
 import React, { FC } from 'react';
-import ActionSidebarRow from '~v5/common/ActionFormRow';
+import ActionFormRow from '~v5/common/ActionFormRow';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
 import { MAX_COLONY_DISPLAY_NAME } from '~constants';
 import ColonyAvatarField from './partials/ColonyAvatarField';
 import { formatText } from '~utils/intl';
+import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase';
 
 const displayName = 'v5.common.ActionsContent.partials.ColonyDetailsFields';
 
 const ColonyDetailsFields: FC = () => (
   <>
-    <ActionSidebarRow
+    <ActionFormRow
       iconName="pencil-circle"
-      title={formatText({ id: 'actionSidebar.colonyName' })}
       fieldName="colonyName"
+      title={formatText({ id: 'actionSidebar.colonyName' })}
+      tooltips={{
+        label: {
+          tooltipContent: formatText({
+            id: 'actionSidebar.tooltip.editColony.colonyName',
+          }),
+        },
+      }}
     >
       <FormInputBase
         name="colonyName"
@@ -22,11 +30,18 @@ const ColonyDetailsFields: FC = () => (
         })}
         mode="secondary"
       />
-    </ActionSidebarRow>
-    <ActionSidebarRow
+    </ActionFormRow>
+    <ActionFormRow
       iconName="image"
-      title={formatText({ id: 'actionSidebar.colonyLogo' })}
       fieldName="avatar"
+      title={formatText({ id: 'actionSidebar.colonyLogo' })}
+      tooltips={{
+        label: {
+          tooltipContent: formatText({
+            id: 'actionSidebar.tooltip.editColony.colonyLogo',
+          }),
+        },
+      }}
     >
       <div className="flex items-center">
         <ColonyAvatarField
@@ -38,20 +53,27 @@ const ColonyDetailsFields: FC = () => (
           }}
         />
       </div>
-    </ActionSidebarRow>
-    <ActionSidebarRow
+    </ActionFormRow>
+    <ActionFormRow
       iconName="file-text"
-      title={formatText({ id: 'actionSidebar.colonyDescription' })}
       fieldName="colonyDescription"
+      title={formatText({ id: 'actionSidebar.colonyDescription' })}
+      isMultiLine
+      tooltips={{
+        label: {
+          tooltipContent: formatText({
+            id: 'actionSidebar.tooltip.editColony.colonyDescription',
+          }),
+        },
+      }}
     >
-      <FormInputBase
+      <FormTextareaBase
         name="colonyDescription"
         placeholder={formatText({
           id: 'actionSidebar.colonyDescription.placeholder',
         })}
-        mode="secondary"
       />
-    </ActionSidebarRow>
+    </ActionFormRow>
   </>
 );
 

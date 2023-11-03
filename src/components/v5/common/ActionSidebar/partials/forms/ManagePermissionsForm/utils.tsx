@@ -88,9 +88,7 @@ export const managePermissionsDescriptionMetadataGetter: DescriptionMetadataGett
             aboutDescription={currentUser.profile?.bio || ''}
             user={currentUser}
           >
-            <span className="text-blue-400">
-              {currentUser.profile.displayName}
-            </span>
+            <span>{currentUser.profile.displayName}</span>
           </UserPopover>
         </>
       )}

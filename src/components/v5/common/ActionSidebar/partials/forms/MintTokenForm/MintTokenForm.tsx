@@ -32,20 +32,6 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <AmountField name="amount" />
       </ActionFormRow>
       <ActionFormRow
-        iconName="house-line"
-        fieldName="createdIn"
-        title={formatMessage({ id: 'actionSidebar.createdIn' })}
-        tooltips={{
-          label: {
-            tooltipContent: formatMessage({
-              id: 'actionSidebar.tooltip.createdIn',
-            }),
-          },
-        }}
-      >
-        <TeamsSelect name="createdIn" />
-      </ActionFormRow>
-      <ActionFormRow
         iconName="scales"
         fieldName="decisionMethod"
         tooltips={{
@@ -64,15 +50,30 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        iconName="pencil"
-        fieldName="description"
+        iconName="house-line"
+        fieldName="createdIn"
+        title={formatMessage({ id: 'actionSidebar.createdIn' })}
         tooltips={{
           label: {
             tooltipContent: formatMessage({
-              id: 'actionSidebar.tooltip.description',
+              id: 'actionSidebar.tooltip.createdIn',
             }),
           },
         }}
+      >
+        <TeamsSelect name="createdIn" />
+      </ActionFormRow>
+      <ActionFormRow
+        iconName="pencil"
+        fieldName="description"
+        // Tooltip disabled to experiment with improving user experience
+        // tooltips={{
+        //   label: {
+        //     tooltipContent: formatMessage({
+        //       id: 'actionSidebar.tooltip.description',
+        //     }),
+        //   },
+        // }}
         title={formatMessage({ id: 'actionSidebar.description' })}
         isExpandable
       >

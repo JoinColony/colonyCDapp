@@ -107,7 +107,7 @@ function CardSelect<TValue = string>({
               togglerClassName,
               'flex text-md md:transition-colors md:hover:text-blue-400',
               {
-                'text-gray-500': !state,
+                'text-gray-400': !state,
                 'text-gray-900': value,
                 'text-negative-400': state === FIELD_STATE.Error,
               },

@@ -32,10 +32,14 @@ export const useAmountField = (
   );
 
   const adjustInputWidth = (value: string) => {
-    const valueWithoutCommas = value.replace(/,/g, '');
-    const width = valueWithoutCommas.length * 0.65;
+    // This regex matches strings that contain only digits and commas, preventing width breaking issues
+    const digitsAndCommasRegex = /^[\d,]*$/;
 
-    setInputWidth(width);
+    if (digitsAndCommasRegex.test(value)) {
+      const valueWithoutCommas = value.replace(/,/g, '');
+      const width = Math.min(valueWithoutCommas.length * 0.65, 20);
+      setInputWidth(width);
+    }
   };
 
   useLayoutEffect(() => {

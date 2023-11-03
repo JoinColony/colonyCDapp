@@ -46,14 +46,6 @@ module.exports = {
           300: 'var(--color-blue-300)',
           400: 'var(--color-blue-400)',
         },
-        'blue-light': {
-          100: 'var(--color-blue-light-100)',
-          200: 'var(--color-blue-light-200)',
-        },
-        pink: {
-          100: 'var(--color-pink-100)',
-          200: 'var(--color-pink-200)',
-        },
         negative: {
           100: 'var(--color-negative-100)',
           200: 'var(--color-negative-200)',
