@@ -31,6 +31,7 @@ function* cancelStakedExpenditure({
   try {
     const [extensionPermissionDomainId, extensionChildSkillIndex] =
       yield getPermissionProofs(
+        colonyClient.networkClient,
         colonyClient,
         expenditure.nativeDomainId,
         ColonyRole.Arbitration,
@@ -39,6 +40,7 @@ function* cancelStakedExpenditure({
 
     const [userPermissionDomainId, userChildSkillIndex] =
       yield getPermissionProofs(
+        colonyClient.networkClient,
         colonyClient,
         expenditure.nativeDomainId,
         ColonyRole.Arbitration,

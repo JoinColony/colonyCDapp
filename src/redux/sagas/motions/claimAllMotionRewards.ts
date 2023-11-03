@@ -107,6 +107,7 @@ function* claimAllMotionRewards({
 
           const [permissionDomainId, childSkillIndex] =
             await getPermissionProofs(
+              colonyClient.networkClient,
               colonyClient,
               currentMotion?.motionDomain.nativeId || Id.RootDomain,
               ColonyRole.Arbitration,

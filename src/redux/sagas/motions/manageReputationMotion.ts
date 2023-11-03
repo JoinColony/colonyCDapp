@@ -76,6 +76,7 @@ function* manageReputationMotion({
 
     const [permissionDomainId, childSkillIndex] = yield call(
       getPermissionProofs,
+      colonyClient.networkClient,
       colonyClient,
       domainId,
       ColonyRole.Architecture,
@@ -84,6 +85,7 @@ function* manageReputationMotion({
 
     const motionChildSkillIndex = yield call(
       getChildIndex,
+      colonyClient.networkClient,
       colonyClient,
       motionDomainId,
       isSmitingReputation ? domainId : Id.RootDomain,

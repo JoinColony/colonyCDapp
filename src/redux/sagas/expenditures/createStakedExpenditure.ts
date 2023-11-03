@@ -122,6 +122,7 @@ function* createStakedExpenditure({
 
     // Find a chill skill index as a proof the extension has permissions in the selected domain
     const childSkillIndex = yield getChildIndex(
+      colonyClient.networkClient,
       colonyClient,
       // StakedExpenditure extension will always have its permissions assigned in the root domain
       Id.RootDomain,

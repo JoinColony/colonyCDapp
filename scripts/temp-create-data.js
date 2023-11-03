@@ -1,18 +1,11 @@
+const { utils, Wallet, providers, BigNumber } = require('ethers');
 const {
-  utils,
-  Wallet,
-  Contract,
-  ContractFactory,
-  providers,
-  BigNumber,
-} = require('ethers');
-
-const colonyJSIColonyNetwork = require('../node_modules/@colony/colony-js/dist/cjs/contracts/factories/IColonyNetwork__factory.js');
-const colonyJSIColony = require('../node_modules/@colony/colony-js/dist/cjs/contracts/IColony/9/factories/IColony__factory.js');
-const colonyJSMetaTxToken = require('../node_modules/@colony/colony-js/dist/cjs/tokens/contracts/factories/MetaTxToken__factory.js');
-const {
-  addAugmentsB,
-} = require('../node_modules/@colony/colony-js/dist/cjs/clients/Core/augments/AddDomain.js');
+  ColonyTokenFactory,
+  ColonyNetworkFactory,
+  ColonyFactory,
+  getPermissionProofs,
+  ColonyRole
+} = require('@colony/colony-js');
 
 /*
  * @NOTE To preserve time, I just re-used a script I wrote for one of the lambda functions
@@ -245,15 +238,9 @@ const addTokenToDB = async (tokenAddress) => {
   );
 };
 
-const createToken = async (symbol, singerOrWallet) => {
-  const { abi: TokenAbi, bytecode: TokenBytecode } =
-    colonyJSMetaTxToken.MetaTxToken__factory;
-  const tokenFactory = new ContractFactory(
-    TokenAbi,
-    TokenBytecode,
-    singerOrWallet,
-  );
-  const token = await tokenFactory.deploy(
+const createToken = async (symbol, signerOrWallet) => {
+  const Token = new ColonyTokenFactory(signerOrWallet);
+  const token = await Token.deploy(
     `Token ${symbol.toUpperCase()}`,
     symbol.toUpperCase(),
     18,
@@ -270,7 +257,7 @@ const createToken = async (symbol, singerOrWallet) => {
     `Creating token { name: "Token ${symbol.toUpperCase()}", symbol: "${symbol.toUpperCase()}", decimals: "18", address: "${tokenAddress}" }`,
   );
 
-  await addTokenToUserTokens(singerOrWallet.address, tokenAddress);
+  await addTokenToUserTokens(signerOrWallet.address, tokenAddress);
 
   return tokenAddress;
 };
@@ -279,23 +266,12 @@ const createToken = async (symbol, singerOrWallet) => {
  * Colony
  */
 const createMetacolony = async (signerOrWallet) => {
-  const { abi: IColonyNetworkAbi } =
-    colonyJSIColonyNetwork.IColonyNetwork__factory;
-  const { abi: IColonyAbi } = colonyJSIColony.IColony__factory;
-  const colonyNetwork = new Contract(
-    etherRouterAddress,
-    IColonyNetworkAbi,
-    signerOrWallet,
-  );
+  const colonyNetwork = ColonyNetworkFactory.connect(etherRouterAddress, signerOrWallet);
 
   const metacolonyAddress = await colonyNetwork['getMetaColony()']();
-  const metacolony = new Contract(
-    metacolonyAddress,
-    IColonyAbi,
-    signerOrWallet,
-  );
-  const metacolonyTokenAddress = await metacolony.getToken();
-  const metacolonyVersion = await metacolony.version();
+  const metaColony = ColonyFactory.connect(metacolonyAddress, signerOrWallet);
+  const metacolonyTokenAddress = await metaColony.getToken();
+  const metacolonyVersion = await metaColony.version();
 
   await addTokenToDB(utils.getAddress(metacolonyTokenAddress));
 
@@ -405,11 +381,8 @@ const createMetacolony = async (signerOrWallet) => {
 };
 
 const createColony = async (colonyName, tokenAddress, signerOrWallet) => {
-  const { abi: IColonyNetworkAbi } =
-    colonyJSIColonyNetwork.IColonyNetwork__factory;
-  const colonyNetwork = new Contract(
+  const colonyNetwork = ColonyNetworkFactory.connect(
     etherRouterAddress,
-    IColonyNetworkAbi,
     signerOrWallet,
   );
   const currentNetworkVersion = await colonyNetwork.getCurrentColonyVersion();
@@ -424,10 +397,7 @@ const createColony = async (colonyName, tokenAddress, signerOrWallet) => {
   );
   const colonyAddress = utils.getAddress(createColonyEvent.args.colonyAddress);
 
-  const { abi: IColonyAbi } = colonyJSIColony.IColony__factory;
-  const colony = new Contract(colonyAddress, IColonyAbi, signerOrWallet);
-
-  addAugmentsB(colony);
+  const colony = ColonyFactory.connect(colonyAddress, signerOrWallet);
 
   // create the colony
   const colonyQuery = await graphqlRequest(
@@ -534,9 +504,13 @@ const createColony = async (colonyName, tokenAddress, signerOrWallet) => {
     /*
      * First Domain
      */
-    const firstSubdomainDeployment = await colony[
-      'addDomainWithProofs(uint256)'
-    ](1);
+    const [permissionDomainId1, childSkillIndex1] =
+      await getPermissionProofs(colonyNetwork, colony, 1, ColonyRole.Architecture);
+    const firstSubdomainDeployment = await colony['addDomain(uint256,uint256,uint256)'](
+      permissionDomainId1,
+      childSkillIndex1,
+      1
+    );
     await delay();
     const firstSubdomainTransactions = await firstSubdomainDeployment.wait();
     await delay();
@@ -573,9 +547,13 @@ const createColony = async (colonyName, tokenAddress, signerOrWallet) => {
     /*
      * Second Domain
      */
-    const secondSubdomainDeployment = await colony[
-      'addDomainWithProofs(uint256)'
-    ](1);
+    const [permissionDomainId2, childSkillIndex2] =
+      await getPermissionProofs(colonyNetwork, colony, 1, ColonyRole.Architecture);
+    const secondSubdomainDeployment = await colony['addDomain(uint256,uint256,uint256)'](
+      permissionDomainId2,
+      childSkillIndex2,
+      1
+    );
     await delay();
     const secondSubdomainTransactions = await secondSubdomainDeployment.wait();
     await delay();

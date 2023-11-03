@@ -46,6 +46,7 @@ function* createRootMotionSaga({
 
     const childSkillIndex = yield call(
       getChildIndex,
+      colonyClient.networkClient,
       colonyClient,
       Id.RootDomain,
       Id.RootDomain,

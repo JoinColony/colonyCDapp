@@ -1,11 +1,11 @@
 import {
+  ClientType,
   ColonyRole,
   Id,
   getChildIndex,
   getPermissionProofs,
   getPotDomain,
 } from '@colony/colony-js';
-import { ClientType } from '@colony/colony-js/tokens';
 import { constants } from 'ethers';
 
 import { call, put, takeEvery } from 'redux-saga/effects';
@@ -82,6 +82,7 @@ function* fundExpenditureMotion({
 
     const childSkillIndex = yield call(
       getChildIndex,
+      colonyClient.networkClient,
       colonyClient,
       motionDomainId,
       fromDomainId,
@@ -107,6 +108,7 @@ function* fundExpenditureMotion({
 
     const [fromPermissionDomainId, fromChildSkillIndex] = yield call(
       getPermissionProofs,
+      colonyClient.networkClient,
       colonyClient,
       fromDomainId,
       [ColonyRole.Funding],

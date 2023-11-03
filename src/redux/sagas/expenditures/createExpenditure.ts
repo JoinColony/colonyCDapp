@@ -59,6 +59,7 @@ function* createExpenditure({
 
   try {
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient.networkClient,
       colonyClient,
       createdInDomain.nativeId,
       ColonyRole.Administration,

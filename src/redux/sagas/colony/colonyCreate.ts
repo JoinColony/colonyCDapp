@@ -548,12 +548,14 @@ function* colonyCreate({
       // This has two potential permissions, so we try both of them
       try {
         oneTxPaymentRoleProofs = yield getPermissionProofs(
+          colonyClient.networkClient,
           colonyClient,
           Id.RootDomain,
           ColonyRole.Architecture,
         );
       } catch (error) {
         oneTxPaymentRoleProofs = yield getPermissionProofs(
+          colonyClient.networkClient,
           colonyClient,
           Id.RootDomain,
           ColonyRole.Root,

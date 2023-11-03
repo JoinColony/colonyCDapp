@@ -93,6 +93,7 @@ function* editDomainAction({
     );
 
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient.networkClient,
       colonyClient,
       domain.nativeId,
       ColonyRole.Architecture,
