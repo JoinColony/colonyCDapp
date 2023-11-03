@@ -50,7 +50,7 @@ const TokenSelector = ({
 
   useEffect(() => {
     setIsLoading(isFetchingAddress);
-  }, [isFetchingAddress]);
+  }, [isFetchingAddress, setIsLoading]);
 
   const token = data?.getTokenFromEverywhere?.items?.[0] ?? null;
 
@@ -69,7 +69,9 @@ const TokenSelector = ({
     clearErrors,
     setValue,
     token,
+    tokenAddressDirty,
     tokenFieldName,
+    trigger,
   ]);
 
   /* const displayLoading =
