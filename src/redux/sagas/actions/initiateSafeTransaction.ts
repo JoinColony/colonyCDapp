@@ -134,7 +134,6 @@ function* initiateSafeTransactionAction({
       variables: {
         input: {
           id: txHash,
-          title,
           safe,
         },
       },

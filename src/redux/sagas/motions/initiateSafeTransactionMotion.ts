@@ -184,7 +184,6 @@ function* initiateSafeTransactionMotion({
       variables: {
         input: {
           id: txHash,
-          title: customActionTitle,
           safe,
         },
       },
