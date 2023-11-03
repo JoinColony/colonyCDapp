@@ -35,8 +35,8 @@ const LandingPageItem = ({
         'group flex items-center justify-between px-6 py-5 rounded-lg border border-gray-200',
         { 'hover:border-blue-400': !disabled },
       )}
-      onMouseEnter={() => onHover(disabled ? 0 : itemIndex)}
-      onMouseLeave={() => onHover(0)}
+      onMouseEnter={() => onHover(disabled ? 1 : itemIndex)}
+      onMouseLeave={() => onHover(1)}
     >
       <div className="flex items-center">
         <div
@@ -62,7 +62,7 @@ const LandingPageItem = ({
         <div>
           <Heading
             text={headingText}
-            className={clsx('text-normal font-semibold', {
+            className={clsx('text-md font-semibold', {
               'text-gray-900': !disabled,
               'text-gray-300': disabled,
             })}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
+import clsx from 'clsx';
 
 import Heading from '~shared/Heading';
 import CreateAColonyBanner from '~images/create-colony-banner.png';
@@ -86,7 +87,7 @@ const MSG = defineMessages({
 });
 
 const LandingPage = () => {
-  const [, setHoveredItem] = useState<number>(0);
+  const [hoveredItem, setHoveredItem] = useState<number>(1);
   const navigate = useNavigate();
   const { user, connectWallet, wallet, userLoading } = useAppContext();
   const onUserLogin = () => {
@@ -142,7 +143,7 @@ const LandingPage = () => {
             <FormattedMessage {...MSG.privateBetaLabel} />
           </span>
         </div>
-        <p className="text-normal text-gray-600">
+        <p className="text-md text-gray-600">
           <FormattedMessage {...MSG.headerDescription} />
         </p>
       </div>
@@ -157,11 +158,19 @@ const LandingPage = () => {
             />
           ))}
         </div>
-        <div className="w-1/2 bg-gray-100 rounded-lg max-h-[395px]">
+        <div
+          className={clsx(
+            'flex justify-center w-1/2 bg-gray-100 rounded-lg max-h-[395px] border border-gray-200 shadow-sm',
+            { 'pl-9 pt-7': hoveredItem === 0 },
+          )}
+        >
           <img
-            src={landingPageItems[1].imgSrc}
-            className="w-full h-full object-cover"
+            src={landingPageItems[1].imgSrc} // @TODO: Change to hoveredItem once we enable the create colony landing page item
             alt=""
+            className={clsx('object-cover relative', {
+              'rounded-br-[10px] rounded-tl-[10px]': hoveredItem === 0,
+              'left-3 top-7': hoveredItem === 1,
+            })}
           />
         </div>
       </div>
