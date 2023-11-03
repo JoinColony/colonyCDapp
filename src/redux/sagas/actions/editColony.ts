@@ -17,6 +17,7 @@ import {
   getTxChannel,
 } from '../transactions';
 import {
+  createActionMetadataInDB,
   getUpdatedColonyMetadataChangelog,
   initiateTransaction,
   putError,
@@ -42,6 +43,7 @@ function* editColonyAction({
     tokenAddresses,
     annotationMessage,
     colonyObjective,
+    customActionTitle,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -195,6 +197,8 @@ function* editColonyAction({
         refetchQueries: [GetFullColonyByNameDocument],
       });
     }
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({

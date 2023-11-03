@@ -15,6 +15,7 @@ import {
   uploadAnnotation,
   getMoveFundsPermissionProofs,
   initiateTransaction,
+  createActionMetadataInDB,
 } from '../utils';
 
 function* createMoveFundsAction({
@@ -26,6 +27,7 @@ function* createMoveFundsAction({
     amount,
     tokenAddress,
     annotationMessage,
+    customActionTitle,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -136,6 +138,8 @@ function* createMoveFundsAction({
     setTxHash?.(txHash);
 
     yield takeFrom(moveFunds.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({

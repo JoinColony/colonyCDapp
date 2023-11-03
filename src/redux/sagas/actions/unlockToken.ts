@@ -9,6 +9,7 @@ import {
   getTxChannel,
 } from '../transactions';
 import {
+  createActionMetadataInDB,
   initiateTransaction,
   putError,
   takeFrom,
@@ -18,7 +19,7 @@ import {
 function* tokenUnlockAction({
   meta,
   meta: { id: metaId, navigate, setTxHash },
-  payload: { colonyAddress, annotationMessage, colonyName },
+  payload: { colonyAddress, annotationMessage, colonyName, customActionTitle },
 }: Action<ActionTypes.ACTION_UNLOCK_TOKEN>) {
   let txChannel;
 
@@ -83,6 +84,8 @@ function* tokenUnlockAction({
     setTxHash?.(txHash);
 
     yield takeFrom(tokenUnlock.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({

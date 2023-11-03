@@ -10,6 +10,7 @@ import {
   takeFrom,
   uploadAnnotation,
   getColonyManager,
+  createActionMetadataInDB,
 } from '../utils';
 
 import {
@@ -31,6 +32,7 @@ function* manageReputationAction({
     amount,
     isSmitingReputation,
     annotationMessage,
+    customActionTitle,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -138,6 +140,8 @@ function* manageReputationAction({
     setTxHash?.(txHash);
 
     yield takeFrom(manageReputation.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({

@@ -15,6 +15,7 @@ import {
   getColonyManager,
   uploadAnnotation,
   initiateTransaction,
+  createActionMetadataInDB,
 } from '../utils';
 
 import {
@@ -32,6 +33,7 @@ function* createPaymentMotion({
     payments,
     annotationMessage,
     motionDomainId,
+    customActionTitle,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -222,6 +224,8 @@ function* createPaymentMotion({
     setTxHash?.(txHash);
 
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({

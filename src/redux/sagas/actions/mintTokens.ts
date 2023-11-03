@@ -4,6 +4,7 @@ import { ClientType } from '@colony/colony-js';
 import { ActionTypes, AllActions, Action } from '~redux';
 
 import {
+  createActionMetadataInDB,
   initiateTransaction,
   putError,
   takeFrom,
@@ -22,6 +23,7 @@ function* createMintTokensAction({
     nativeTokenAddress,
     amount,
     annotationMessage,
+    customActionTitle,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -112,6 +114,8 @@ function* createMintTokensAction({
     yield initiateTransaction({ id: claimColonyFunds.id });
 
     yield takeFrom(claimColonyFunds.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({

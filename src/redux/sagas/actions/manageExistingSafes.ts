@@ -20,7 +20,11 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { getUpdatedColonyMetadataChangelog, uploadAnnotation } from '../utils';
+import {
+  createActionMetadataInDB,
+  getUpdatedColonyMetadataChangelog,
+  uploadAnnotation,
+} from '../utils';
 
 function* manageExistingSafesAction({
   payload: {
@@ -29,6 +33,7 @@ function* manageExistingSafesAction({
     safes,
     annotationMessage,
     isRemovingSafes,
+    customActionTitle,
   },
   meta: { id: metaId, navigate },
   meta,
@@ -117,6 +122,8 @@ function* manageExistingSafesAction({
       manageExistingSafes.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({

@@ -13,6 +13,7 @@ import {
   uploadAnnotation,
   getColonyManager,
   getMultiPermissionProofs,
+  createActionMetadataInDB,
 } from '../utils';
 
 import {
@@ -24,7 +25,14 @@ import { OneTxPaymentPayload } from '~redux/types/actions/colonyActions';
 import { transactionPending, transactionAddParams } from '../../actionCreators';
 
 function* createPaymentAction({
-  payload: { colonyAddress, colonyName, domainId, payments, annotationMessage },
+  payload: {
+    colonyAddress,
+    colonyName,
+    domainId,
+    payments,
+    annotationMessage,
+    customActionTitle,
+  },
   meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_EXPENDITURE_PAYMENT>) {
@@ -168,6 +176,8 @@ function* createPaymentAction({
     setTxHash?.(txHash);
 
     yield takeFrom(paymentAction.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({

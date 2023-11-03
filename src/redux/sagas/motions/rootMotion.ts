@@ -13,6 +13,7 @@ import {
   getColonyManager,
   uploadAnnotation,
   initiateTransaction,
+  createActionMetadataInDB,
 } from '../utils';
 import {
   createTransaction,
@@ -27,6 +28,7 @@ function* createRootMotionSaga({
     colonyName,
     motionParams,
     annotationMessage,
+    customActionTitle,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -137,6 +139,8 @@ function* createRootMotionSaga({
     setTxHash?.(txHash);
 
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({

@@ -43,6 +43,7 @@ export const getCreatePaymentDialogPayload = (
     }),
     annotationMessage,
     motionDomainId,
+    customActionTitle: `One tx payment made successfully`, // @NOTE: Adding this here for testing while the UI is not hooked up
   };
 
   return transformedPayload;

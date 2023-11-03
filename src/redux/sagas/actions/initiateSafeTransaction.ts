@@ -25,17 +25,18 @@ import {
   getHomeBridgeByChain,
   getTransactionEncodedData,
 } from '../utils/safeHelpers';
-import { uploadAnnotation } from '../utils';
+import { createActionMetadataInDB, uploadAnnotation } from '../utils';
 
 function* initiateSafeTransactionAction({
   payload: {
     safe,
     transactions,
-    transactionsTitle: title,
+    customActionTitle: title,
     colonyAddress,
     colonyName,
     network,
     annotationMessage,
+    customActionTitle,
   },
   meta: { id: metaId, navigate },
   meta,
@@ -157,6 +158,8 @@ function* initiateSafeTransactionAction({
         },
       });
     }
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({
