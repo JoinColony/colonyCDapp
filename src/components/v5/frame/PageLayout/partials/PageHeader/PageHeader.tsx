@@ -10,21 +10,19 @@ const displayName = 'v5.frame.PageLayout.partials.PageHeader';
 const PageHeader: FC<PageHeaderProps> = ({
   userNavigation,
   className,
-  breadcrumbs,
-  title,
+  pageHeadingProps,
 }) => {
   return (
     <header
-      className={clsx(className, 'flex justify-between items-start gap-4')}
+      className={clsx(className, 'flex items-start', {
+        'justify-between gap-4': pageHeadingProps,
+        'justify-end': !pageHeadingProps,
+      })}
     >
-      <PageHeading
-        className="flex-grow"
-        breadcrumbs={breadcrumbs}
-        title={title}
-      />
-      <div className="flex-shrink-0">
-        <div>{userNavigation}</div>
-      </div>
+      {pageHeadingProps && (
+        <PageHeading className="flex-grow" {...pageHeadingProps} />
+      )}
+      <div className="ml-auto flex-shrink-0">{userNavigation}</div>
     </header>
   );
 };

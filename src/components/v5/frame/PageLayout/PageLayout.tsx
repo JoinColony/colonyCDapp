@@ -41,7 +41,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
     };
   }, []);
 
-  const { userNavigation, breadcrumbs, title } = headerProps;
+  const { userNavigation, pageHeadingProps } = headerProps;
 
   return (
     <div className="w-full md:h-screen md:flex md:flex-col" ref={wrapperRef}>
@@ -57,14 +57,12 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
               additionalMobileContent={userNavigation}
             />
           </div>
-          <div className="inner pt-6">
-            <PageHeading
-              breadcrumbs={breadcrumbs}
-              title={title}
-              className="mb-6"
-            />
-            {children}
-          </div>
+          {pageHeadingProps && (
+            <div className="inner pt-6">
+              <PageHeading {...pageHeadingProps} className="mb-6" />
+              {children}
+            </div>
+          )}
         </>
       ) : (
         <>

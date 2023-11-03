@@ -51,8 +51,10 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
     ((isMenuOpen && !!openItemIndex) || openItemIndex === 0) && isTablet,
   );
 
+  const withMainMenu = !!mainMenuItems?.length;
+
   const activeMainMenuItem = openItemIndex
-    ? mainMenuItems[openItemIndex - 1]
+    ? mainMenuItems?.[openItemIndex - 1]
     : undefined;
 
   const hasThirdLevel = activeMainMenuItem?.relatedActionsProps?.items.length;
@@ -64,7 +66,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
     content: colonySwitcherContent,
   } = colonySwitcherProps;
 
-  const mainMenu = mainMenuItems.length ? (
+  const mainMenu = withMainMenu ? (
     <NavigationSidebarMainMenu mainMenuItems={mainMenuItems} />
   ) : null;
 
@@ -141,20 +143,24 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
             </div>
             {isTablet ? (
               <>
-                <HamburgerButton
-                  onClick={() => {
-                    toggleMenu();
-                    setOpenItemIndex(undefined);
-                  }}
-                  isOpen={isMenuOpen}
-                  label={hamburgerLabel}
-                />
-                <NavigationSidebarMobileContentWrapper
-                  mobileBottomContent={mobileBottomContent}
-                  isOpen={isMenuOpen && openItemIndex !== 0}
-                >
-                  {mainMenu}
-                </NavigationSidebarMobileContentWrapper>
+                {withMainMenu && (
+                  <>
+                    <HamburgerButton
+                      onClick={() => {
+                        toggleMenu();
+                        setOpenItemIndex(undefined);
+                      }}
+                      isOpen={isMenuOpen}
+                      label={hamburgerLabel}
+                    />
+                    <NavigationSidebarMobileContentWrapper
+                      mobileBottomContent={mobileBottomContent}
+                      isOpen={isMenuOpen && openItemIndex !== 0}
+                    >
+                      {mainMenu}
+                    </NavigationSidebarMobileContentWrapper>
+                  </>
+                )}
                 <NavigationSidebarMobileContentWrapper
                   mobileBottomContent={mobileBottomContent}
                   isOpen={openItemIndex === 0}
