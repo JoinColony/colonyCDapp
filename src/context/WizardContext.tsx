@@ -27,6 +27,8 @@ export const useWizardContext = () => {
 
 const WizardContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [currentStep, setCurrentStep] = useState(
+    // @NOTE: With the create user step not being directly integrated into the colony creation flow,
+    // I had to add this hack to make sure the wizard sidebar starts at the correct step
     window.location.pathname === CREATE_USER_ROUTE ? -1 : 0,
   );
   const wizardContextValues = useMemo(

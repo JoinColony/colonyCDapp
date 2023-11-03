@@ -10,20 +10,20 @@ import { WizardStep } from './WizardSidebar';
 const displayName =
   'routes.WizardRoute.WizardSidebar.WizardSidebarItem.WizardSidebarSubItem';
 
-export type WizardSubStep = Optional<WizardStep, 'subItems' | 'itemText'>;
+export type WizardSubStep = Optional<WizardStep, 'subItems' | 'text'>;
 
-interface Props extends Optional<WizardSubStep, 'itemText'> {
-  hasActiveMiniItem: boolean;
+interface Props extends WizardSubStep {
+  hasActiveMiniStep: boolean;
 }
 
 const WizardSidebarSubItem = ({
-  itemStep,
-  itemText,
-  hasActiveMiniItem,
+  id: stepId,
+  text: stepText,
+  hasActiveMiniStep,
 }: Props) => {
   const { currentStep } = useWizardContext();
 
-  if (!itemText) {
+  if (!stepText) {
     return null;
   }
 
@@ -31,10 +31,10 @@ const WizardSidebarSubItem = ({
     <span
       className={clsx('text-xs ml-[26px]', {
         'text-blue-400 font-semibold':
-          currentStep === itemStep || hasActiveMiniItem,
+          currentStep === stepId || hasActiveMiniStep,
       })}
     >
-      <FormattedMessage {...itemText} />
+      <FormattedMessage {...stepText} />
     </span>
   );
 };
