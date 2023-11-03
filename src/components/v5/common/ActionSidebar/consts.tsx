@@ -1,3 +1,4 @@
+import { Variants } from 'framer-motion';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { ACTION, Action } from '~constants/actions';
@@ -13,4 +14,13 @@ export const ACTION_TYPE_NOTIFICATION: Partial<
   [ACTION.ENTER_RECOVERY_MODE]: (
     <FormattedMessage id="actionSidebar.enterRecoveryMode.error" />
   ),
+};
+
+export const actionSidebarAnimation: Variants = {
+  hidden: {
+    x: '100%',
+  },
+  visible: {
+    x: 0,
+  },
 };
