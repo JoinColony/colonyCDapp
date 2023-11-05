@@ -1,7 +1,8 @@
 import { TabItem } from '~shared/Extensions/Tabs/types';
+import { Token, UserStake } from '~types';
 import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types';
 
-export interface StakesProps {
+export interface StakesTabItemProps {
   key: string;
   title: string;
   date: string;
@@ -11,8 +12,11 @@ export interface StakesProps {
     ExtensionStatusBadgeMode,
     'staking' | 'finalizable' | 'claimed'
   >;
+  userStake: UserStake;
+  nativeToken: Token;
 }
 
+// @TODO: Rename this...
 export interface StakesTabItem extends Omit<TabItem, 'type'> {
   type: 'all' | 'finalized' | 'claimable';
 }

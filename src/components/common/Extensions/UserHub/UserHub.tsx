@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
@@ -14,7 +14,6 @@ import { tabList } from './consts';
 import UserHubMobile from './UserHubMobile';
 import { UserHubProps } from './types';
 import TitleLabel from '~v5/shared/TitleLabel';
-import { stakesMock } from './partials/StakesTab/consts';
 
 export const displayName = 'common.Extensions.UserHub.partials.UserHub';
 
@@ -23,10 +22,8 @@ const UserHub: FC<UserHubProps> = ({ isTransactionTabVisible = false }) => {
   const { formatMessage } = useIntl();
   const [selectedTab, setSelectedTab] = useState(0);
 
-  const claimedNotificationNumber = useMemo(
-    () => stakesMock.filter(({ status }) => status === 'claimed').length,
-    [],
-  );
+  // @TODO: Wire with stakes data
+  const claimedNotificationNumber = 1;
 
   const handleChange = (selectedOption: number) => {
     setSelectedTab(selectedOption);

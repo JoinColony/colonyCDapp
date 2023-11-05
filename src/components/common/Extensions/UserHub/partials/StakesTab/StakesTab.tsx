@@ -2,39 +2,39 @@ import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import StakesItems from './partials/StakesTabItem';
-import {
-  stakesMock,
-  tabsItems,
-} from '~common/Extensions/UserHub/partials/StakesTab/consts';
+import { tabsItems } from '~common/Extensions/UserHub/partials/StakesTab/consts';
 import Tabs from '~shared/Extensions/Tabs';
-import { useMobile } from '~hooks';
+import { useAppContext, useColonyContext, useMobile } from '~hooks';
 import EmptyContent from '~v5/common/EmptyContent';
 import { StakesTabProps } from './types';
+import { useGetUserStakesQuery } from '~gql';
+import { notNull } from '~utils/arrays';
+
+import StakesTabItem from './partials/StakesTabItem';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 
 const StakesTab: FC<StakesTabProps> = ({ claimedNotificationNumber }) => {
   const [activeTab, setActiveTab] = useState(0);
-  const [stakes, setStakesMock] = useState(stakesMock);
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
+  const { colony } = useColonyContext();
+  const { user } = useAppContext();
 
-  // @TODO: display data from API
+  const { walletAddress } = user ?? {};
 
-  const handleOnTabClick = useCallback(
-    (e, id: number) => {
-      setActiveTab(id);
-      const [...filteredData] = stakes.filter(
-        (item) =>
-          (id === 0 && stakesMock) ||
-          item.filterBy === e.target?.childNodes?.[0]?.data?.toLowerCase(),
-      );
-
-      setStakesMock(filteredData);
+  const { data } = useGetUserStakesQuery({
+    variables: {
+      userAddress: walletAddress ?? '',
     },
-    [stakes],
-  );
+    skip: !walletAddress,
+    fetchPolicy: 'cache-and-network',
+  });
+  const userStakes = data?.getUserStakes?.items.filter(notNull);
+
+  const handleOnTabClick = useCallback((e, id: number) => {
+    setActiveTab(id);
+  }, []);
 
   const updatedTabsItems = useMemo(
     () =>
@@ -47,6 +47,10 @@ const StakesTab: FC<StakesTabProps> = ({ claimedNotificationNumber }) => {
       ),
     [claimedNotificationNumber],
   );
+
+  if (!colony) {
+    return null;
+  }
 
   return (
     <div>
@@ -77,15 +81,17 @@ const StakesTab: FC<StakesTabProps> = ({ claimedNotificationNumber }) => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
             >
-              {stakes.length ? (
-                stakes.map(({ title, date, stake, transfer, status, key }) => (
-                  <StakesItems
-                    title={title}
-                    date={date}
-                    stake={stake}
-                    transfer={transfer}
-                    key={key}
-                    status={status}
+              {userStakes?.length ? (
+                userStakes.map((stake) => (
+                  <StakesTabItem
+                    key={stake.id}
+                    title={stake.action?.type.toString() ?? ''}
+                    date={stake.createdAt}
+                    stake={stake.amount}
+                    transfer=""
+                    status={stake.isClaimed ? 'claimed' : 'staking'}
+                    userStake={stake}
+                    nativeToken={colony.nativeToken}
                   />
                 ))
               ) : (
