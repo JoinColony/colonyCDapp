@@ -20,7 +20,7 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  dataTest: string;
+  dataTest?: string;
   tokenBalanceData: UserTokenBalanceData;
   nativeToken: Token;
 }
