@@ -42,6 +42,8 @@ const NestedOptions: FC<NestedOptionsProps> = ({
   ) => {
     if (hasNestedOptions) {
       setCheckedParent(isChecked ? null : id);
+
+      return;
     }
 
     handleFilterSelect(event);
