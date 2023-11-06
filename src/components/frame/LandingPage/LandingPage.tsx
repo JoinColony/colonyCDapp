@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
-import clsx from 'clsx';
 
 import Heading from '~shared/Heading';
 import CreateAColonyBanner from '~images/create-colony-banner.png';
@@ -148,7 +147,7 @@ const LandingPage = () => {
         </p>
       </div>
       <div className="w-full flex justify-center gap-4">
-        <div className="w-1/2 flex flex-col gap-4">
+        <div className="w-1/2 flex flex-col gap-[17px]">
           {landingPageItems.map((item, index) => (
             <LandingPageItem
               key={nanoid()}
@@ -158,17 +157,11 @@ const LandingPage = () => {
             />
           ))}
         </div>
-        <div
-          className={clsx(
-            'flex justify-center w-1/2 bg-gray-100 rounded-lg max-h-[392px] border border-gray-200 shadow-sm',
-          )}
-        >
-          <img
-            src={landingPageItems[1].imgSrc} // @TODO: Change to hoveredItem once we enable the create colony landing page item
-            alt=""
-            className="w-full h-full object-cover"
-          />
-        </div>
+        <img
+          src={landingPageItems[1].imgSrc} // @TODO: Change to hoveredItem once we enable the create colony landing page item
+          alt=""
+          className="w-1/2 border border-gray-200 rounded-lg shadow-sm object-cover"
+        />
       </div>
       {hasShareableInvitationCode && <InvitationBlock />}
     </div>
