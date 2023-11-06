@@ -1,5 +1,6 @@
 import * as yup from 'yup';
 import { MAX_ANNOTATION_LENGTH, MAX_COLONY_DISPLAY_NAME } from '~constants';
+import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts';
 
 export const validationSchema = yup
   .object()
@@ -17,7 +18,8 @@ export const validationSchema = yup
     decisionMethod: yup.string().defined(),
     description: yup.string().max(MAX_ANNOTATION_LENGTH).defined(),
   })
-  .defined();
+  .defined()
+  .concat(ACTION_BASE_VALIDATION_SCHEMA);
 
 export type EditColonyDetailsFormValues = yup.InferType<
   typeof validationSchema

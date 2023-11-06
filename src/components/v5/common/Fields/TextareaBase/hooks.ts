@@ -10,6 +10,7 @@ const useAutosizeTextArea = (
     if (!textAreaRef.current) {
       return noop;
     }
+
     const textArea = textAreaRef.current;
     textArea.style.height = '0px';
     const { scrollHeight } = textArea;

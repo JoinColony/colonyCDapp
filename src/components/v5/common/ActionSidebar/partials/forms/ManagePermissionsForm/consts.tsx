@@ -9,6 +9,7 @@ import {
   USER_ROLES,
 } from '~constants/permissions';
 import { formatText } from '~utils/intl';
+import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts';
 import {
   CardSelectOption,
   CardSelectOptionsGroup,
@@ -39,7 +40,8 @@ export const validationSchema = yup
     decisionMethod: yup.string().defined(),
     description: yup.string().max(MAX_ANNOTATION_LENGTH).defined(),
   })
-  .defined();
+  .defined()
+  .concat(ACTION_BASE_VALIDATION_SCHEMA);
 
 export type ManagePermissionsFormValues = yup.InferType<
   typeof validationSchema

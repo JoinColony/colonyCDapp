@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts';
 
 export const validationSchema = yup
   .object()
@@ -15,6 +16,7 @@ export const validationSchema = yup
     decisionMethod: yup.string().defined(),
     walletAddress: yup.string().address().required(),
   })
-  .defined();
+  .defined()
+  .concat(ACTION_BASE_VALIDATION_SCHEMA);
 
 export type CreateDecisionFormValues = yup.InferType<typeof validationSchema>;

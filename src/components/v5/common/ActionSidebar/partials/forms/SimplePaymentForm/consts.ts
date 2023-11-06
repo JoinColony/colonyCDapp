@@ -3,6 +3,7 @@ import { toFinite } from '~utils/lodash';
 import getLastIndexFromPath from '~utils/getLastIndexFromPath';
 import { formatText } from '~utils/intl';
 import { MAX_ANNOTATION_LENGTH } from '~constants';
+import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts';
 
 export const validationSchema = yup
   .object()
@@ -57,6 +58,7 @@ export const validationSchema = yup
       )
       .required(),
   })
-  .defined();
+  .defined()
+  .concat(ACTION_BASE_VALIDATION_SCHEMA);
 
 export type SimplePaymentFormValues = yup.InferType<typeof validationSchema>;

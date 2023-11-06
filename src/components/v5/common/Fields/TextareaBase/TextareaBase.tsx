@@ -13,12 +13,16 @@ const TextareaBase: FC<TextareaBaseProps> = ({
   state,
   disabled,
   value,
+  stateClassNames: stateClassNamesProp,
   ...rest
 }) => {
-  const stateClassNames = useStateClassNames({
-    [FIELD_STATE.Error]:
-      'border-negative-400 text-negative-400 focus:border-negative-400',
-  });
+  const stateClassNames = useStateClassNames(
+    {
+      [FIELD_STATE.Error]:
+        'border-negative-400 text-negative-400 focus:border-negative-400',
+    },
+    stateClassNamesProp,
+  );
 
   const textAreaRef = useAutosizeTextArea(value);
 
