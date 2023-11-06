@@ -79,7 +79,8 @@ const LandingPageItem = ({
       </div>
       <Button
         text={buttonText}
-        mode="primaryOutline"
+        size="small"
+        mode="quinary"
         onClick={onClick}
         disabled={disabled}
       />
