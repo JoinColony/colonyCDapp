@@ -27,9 +27,7 @@ const navigationSidebarMeta: Meta<typeof NavigationSidebar> = {
     hamburgerLabel: 'Menu',
     colonySwitcherProps: {
       avatarProps: {
-        chainImageProps: {
-          src: 'https://placehold.it/100x100',
-        },
+        chainIconName: 'gnosis',
       },
       content: {
         title: 'Select a Colony',
