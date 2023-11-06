@@ -6,7 +6,6 @@ import Button, { CloseButton } from '~v5/shared/Button';
 import Icon from '~shared/Icon';
 import { ModalProps } from './types';
 import ModalBase from './ModalBase';
-import styles from './Modal.module.css';
 
 const displayName = 'v5.Modal';
 
@@ -36,9 +35,12 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
     >
       {icon && (
         <span
-          className={clsx(styles.icon, 'border-gray-200', {
-            'border-red-200 text-negative-400': isWarning,
-          })}
+          className={clsx(
+            'flex items-center justify-center w-[2.5rem] h-[2.5rem] rounded border shadow-content mb-4 border-gray-200 flex-shrink-0',
+            {
+              'border-red-200 text-negative-400': isWarning,
+            },
+          )}
         >
           <Icon appearance={{ size: 'extraSmall' }} name={icon} />
         </span>
@@ -47,12 +49,15 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
         aria-label={formatMessage({ id: 'ariaLabel.closeModal' })}
         title={formatMessage({ id: 'button.cancel' })}
         onClick={onClose}
-        className={styles.closeIcon}
+        className="text-gray-400 hover:text-gray-600 absolute top-4 right-4"
       />
       <div
-        className={clsx(styles.inner, {
-          'pb-6 pr-6': !isTopSectionWithBackground,
-        })}
+        className={clsx(
+          'flex flex-col w-full flex-grow [-webkit-overflow-scrolling:touch]',
+          {
+            'pb-6 pr-6': !isTopSectionWithBackground,
+          },
+        )}
       >
         <div className="flex-grow">
           {title && <h4 className="heading-5 mb-2">{title}</h4>}
