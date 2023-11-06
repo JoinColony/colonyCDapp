@@ -1,26 +1,14 @@
 import React, { useMemo } from 'react';
-import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import EmptyContent from '~v5/common/EmptyContent';
 
 import StakeItem from './StakeItem';
-import { StakesFilterOption, StakesListProps } from '../types';
-
-const isFilterOptionDataLoading = (
-  filterOption: StakesFilterOption,
-  motionStatesLoading: boolean,
-) => {
-  switch (filterOption) {
-    case 'all':
-      return false;
-    case 'finalizable':
-    case 'claimable':
-      return motionStatesLoading;
-    default:
-      return false;
-  }
-};
+import { StakesListProps } from '../types';
+import {
+  filterStakeByFilterOption,
+  isFilterOptionDataLoading,
+} from '../helpers';
 
 const StakesList = ({
   loading,
@@ -29,36 +17,13 @@ const StakesList = ({
   filterOption,
   motionStatesMap,
   onMotionStateFetched,
+  motionStatesLoading,
 }: StakesListProps) => {
-  /**
-   * Count the number of stakes that stake on a motion and compare it to the number of motion
-   * states fetched to determine if the states are still loading.
-   */
-  const motionStakesCount = stakes.filter(
-    (stake) => !!stake.action?.motionData,
-  ).length;
-  const motionStatesLoading = motionStakesCount > motionStatesMap.size;
-
   const filteredStakes = useMemo(
     () =>
-      stakes.filter((stake) => {
-        if (filterOption === 'all') {
-          return true;
-        }
-        if (filterOption === 'finalizable') {
-          const motionState = motionStatesMap.get(stake.id);
-          return (
-            !stake.isClaimed && motionState === NetworkMotionState.Finalizable
-          );
-        }
-        if (filterOption === 'claimable') {
-          const motionState = motionStatesMap.get(stake.id);
-          return (
-            !stake.isClaimed && motionState === NetworkMotionState.Finalized
-          );
-        }
-        return false;
-      }),
+      stakes.filter((stake) =>
+        filterStakeByFilterOption(stake, filterOption, motionStatesMap),
+      ),
     [filterOption, motionStatesMap, stakes],
   );
 
@@ -66,7 +31,7 @@ const StakesList = ({
     return <SpinnerLoader appearance={{ size: 'small' }} />;
   }
 
-  if (!stakes.length) {
+  if (!filteredStakes.length) {
     return (
       <EmptyContent
         title={{ id: 'empty.content.title.stakes' }}

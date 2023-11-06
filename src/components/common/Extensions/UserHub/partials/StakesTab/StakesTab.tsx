@@ -1,20 +1,20 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
 import Tabs from '~shared/Extensions/Tabs';
 import { useAppContext, useColonyContext, useMobile } from '~hooks';
-import { StakesTabProps } from './types';
 import { useGetUserStakesQuery } from '~gql';
 import { notNull } from '~utils/arrays';
 
 import { tabsItems } from './consts';
 import StakesList from './partials/StakesList';
+import { getStakesTabItems } from './helpers';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 
-const StakesTab: FC<StakesTabProps> = ({ claimedNotificationNumber }) => {
+const StakesTab = () => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { colony } = useColonyContext();
@@ -44,28 +44,34 @@ const StakesTab: FC<StakesTabProps> = ({ claimedNotificationNumber }) => {
     [],
   );
 
+  /**
+   * Count the number of stakes that stake on a motion and compare it to the number of motion
+   * states fetched to determine if the states are still loading.
+   */
+  const motionStakesCount = userStakes.filter(
+    (stake) => !!stake.action?.motionData,
+  ).length;
+  const motionStatesLoading = motionStakesCount > motionStatesMap.size;
+
   // Tabs are being used for selecting filter option
   const handleOnTabClick = useCallback((_, id: number) => {
     setActiveTab(id);
   }, []);
 
-  const updatedTabsItems = useMemo(
-    () =>
-      tabsItems.map((item) =>
-        item.type === 'claimable'
-          ? Object.assign(item, {
-              notificationNumber: claimedNotificationNumber,
-            })
-          : item,
-      ),
-    [claimedNotificationNumber],
+  const filterOption = tabsItems[activeTab].type;
+
+  // Update tabs items with the number of stakes for each filter option
+  const updatedTabsItems = getStakesTabItems(
+    tabsItems,
+    userStakes,
+    filterOption,
+    motionStatesMap,
+    motionStatesLoading,
   );
 
   if (!colony) {
     return null;
   }
-
-  const filterOption = tabsItems[activeTab].type;
 
   return (
     <div>
@@ -103,6 +109,7 @@ const StakesTab: FC<StakesTabProps> = ({ claimedNotificationNumber }) => {
                 filterOption={filterOption}
                 motionStatesMap={motionStatesMap}
                 onMotionStateFetched={handleOnMotionStateFetched}
+                motionStatesLoading={motionStatesLoading}
               />
             </motion.div>
           </AnimatePresence>

@@ -22,9 +22,6 @@ const UserHub: FC<UserHubProps> = ({ isTransactionTabVisible = false }) => {
   const { formatMessage } = useIntl();
   const [selectedTab, setSelectedTab] = useState(0);
 
-  // @TODO: Wire with stakes data
-  const claimedNotificationNumber = 1;
-
   const handleChange = (selectedOption: number) => {
     setSelectedTab(selectedOption);
   };
@@ -108,11 +105,7 @@ const UserHub: FC<UserHubProps> = ({ isTransactionTabVisible = false }) => {
             transition={{ duration: 0.15 }}
           >
             {selectedTab === 0 && <ReputationTab />}
-            {selectedTab === 1 && (
-              <StakesTab
-                claimedNotificationNumber={claimedNotificationNumber}
-              />
-            )}
+            {selectedTab === 1 && <StakesTab />}
             {selectedTab === 2 && (
               <TransactionsTab appearance={{ interactive: true }} />
             )}

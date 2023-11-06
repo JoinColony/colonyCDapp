@@ -14,6 +14,7 @@ export interface StakesListProps {
     motionState: NetworkMotionState,
   ) => void;
   motionStatesMap: Map<string, NetworkMotionState>;
+  motionStatesLoading: boolean;
 }
 
 export interface StakeItemProps
@@ -36,8 +37,5 @@ export type StakesFilterOption = 'all' | 'finalizable' | 'claimable';
 
 export interface StakesTabItem extends TabItem {
   type: StakesFilterOption;
-}
-
-export interface StakesTabProps {
-  claimedNotificationNumber?: number;
+  showNotificationNumber?: boolean;
 }
