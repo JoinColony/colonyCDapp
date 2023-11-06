@@ -4,8 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
 import { ActionForm } from '~shared/Fields';
 import { formatText } from '~utils/intl';
-import { FIELD_STATE } from '~v5/common/Fields/consts';
-import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
+import { FormTextareaBase } from '~v5/common/Fields/TextareaBase';
 import ActionTypeSelect from '../../ActionTypeSelect';
 import { ACTION_TYPE_FIELD_NAME } from '../../consts';
 import {
@@ -33,24 +32,21 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
     useSidebarActionForm();
   const userHasPermissions = useUserHasPermissions();
   const form = useFormContext();
+  const { title: titleError } = form.formState.errors;
   const notificationBanner = useNotificationBanner();
   const descriptionMetadata = useActionDescriptionMetadata();
 
   return (
     <>
       <div className="flex-grow overflow-y-auto">
-        <FormInputBase
+        <FormTextareaBase
           name="title"
           placeholder={formatText({ id: 'placeholder.title' })}
-          stateClassNames={{
-            [FIELD_STATE.Error]: 'placeholder:text-red-400',
-          }}
           className={`
             heading-3 mb-2
             text-gray-900
             transition-colors
           `}
-          mode="secondary"
           message={false}
         />
         <p className="text-gray-900 text-md">{descriptionMetadata}</p>
@@ -58,8 +54,20 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         <ActionTypeSelect className="mt-7 mb-3 min-h-[1.875rem] flex flex-col justify-center" />
 
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
+        {titleError && (
+          <div className="mt-6">
+            <NotificationBanner
+              status="error"
+              title={
+                <span className="text-gray-900">
+                  {titleError.message?.toString()}
+                </span>
+              }
+            />
+          </div>
+        )}
         {notificationBanner && (
-          <div className="mt-7">
+          <div className="mt-6">
             <NotificationBanner {...notificationBanner} />
           </div>
         )}
@@ -114,19 +122,19 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
       {isMotion && (
         <div
           className={`
-                  w-full
-                  md:w-[35%]
-                  md:h-full
-                  md:overflow-y-auto
-                  px-6
-                  py-8
-                  border-b
-                  border-b-gray-200
-                  md:border-b-0
-                  md:border-l
-                  md:border-l-gray-200
-                  bg-gray-25
-                `}
+            w-full
+            md:w-[35%]
+            md:h-full
+            md:overflow-y-auto
+            px-6
+            py-8
+            border-b
+            border-b-gray-200
+            md:border-b-0
+            md:border-l
+            md:border-l-gray-200
+            bg-gray-25
+          `}
         >
           <Motions transactionId={transactionId || ''} />
         </div>

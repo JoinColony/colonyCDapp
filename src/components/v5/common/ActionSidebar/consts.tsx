@@ -1,7 +1,9 @@
+import * as yup from 'yup';
 import { Variants } from 'framer-motion';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { ACTION, Action } from '~constants/actions';
+import { formatText } from '~utils/intl';
 
 export const ACTION_TYPE_FIELD_NAME = 'actionType';
 
@@ -24,3 +26,21 @@ export const actionSidebarAnimation: Variants = {
     x: 0,
   },
 };
+
+export const ACTION_BASE_VALIDATION_SCHEMA = yup
+  .object()
+  .shape({
+    title: yup
+      .string()
+      .optional()
+      .max(60, ({ max, value }) =>
+        formatText(
+          { id: 'errors.title.maxLength' },
+          {
+            maxLength: max,
+            currentLength: value?.length || 0,
+          },
+        ),
+      ),
+  })
+  .defined();

@@ -17,10 +17,9 @@ const FormTextareaBase: FC<FormTextareaBaseProps> = ({ name, ...rest }) => {
   });
   const { readonly } = useAdditionalFormOptionsContext();
 
-  return readonly ? (
-    <p className="text-md text-gray-900">{field.value}</p>
-  ) : (
+  return (
     <TextareaBase
+      readOnly={readonly}
       message={error?.message}
       state={invalid ? FIELD_STATE.Error : undefined}
       {...{ ...rest, ...field }}

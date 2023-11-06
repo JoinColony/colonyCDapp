@@ -1345,5 +1345,6 @@
     "createColonyWizard.step.confirm.nativeToken": "Native token",
     "createColonyWizard.step.confirm.blockchain": "Blockchain",
     "createColonyWizard.step.transactions.heading": "Complete setup",
-    "createColonyWizard.step.transactiosn.description": "Deploying to the blockchain requires you to sign a transaction in your wallet for each step."
+    "createColonyWizard.step.transactiosn.description": "Deploying to the blockchain requires you to sign a transaction in your wallet for each step.",
+    "errors.title.maxLength": "Exceeded max character limit {currentLength}/{maxLength}."
 }

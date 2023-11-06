@@ -15,7 +15,9 @@ export const useNotificationBanner = ():
   const selectedAction: Action | undefined = useWatch({
     name: ACTION_TYPE_FIELD_NAME,
   });
-  const flatFormErrors = useFlatFormErrors(formState.errors);
+  const flatFormErrors = useFlatFormErrors(formState.errors).filter(
+    ({ key }) => key !== 'title',
+  );
 
   return useMemo(() => {
     const actionTypeNotificationTitle = selectedAction
@@ -33,7 +35,7 @@ export const useNotificationBanner = ():
       };
     }
 
-    if (!hasErrors) {
+    if (!hasErrors || !flatFormErrors.length) {
       return undefined;
     }
 
