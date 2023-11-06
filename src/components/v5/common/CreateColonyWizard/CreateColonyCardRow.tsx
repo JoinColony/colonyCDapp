@@ -27,24 +27,31 @@ const MSG = defineMessages({
 });
 
 const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
+  const {
+    displayName: colonyDisplayName,
+    tokenName,
+    tokenSymbol,
+    tokenAvatar,
+    tokenAddress,
+    colonyName,
+  } = updatedWizardValues;
+
   const cards = [
     {
       title: 'colonyDetailsPage.title',
-      text: updatedWizardValues.displayName,
-      subText: `app.colony.io/${updatedWizardValues.colonyName}`,
+      text: colonyDisplayName,
+      subText: `app.colony.io/${colonyName}`,
       step: 0,
     },
     {
       title: MSG.nativeToken,
-      text: updatedWizardValues.tokenName,
-      subText: updatedWizardValues.tokenSymbol,
+      text: tokenName,
+      subText: tokenSymbol,
       step: 2,
       icon: (
         <Avatar
-          avatar={updatedWizardValues.tokenAvatar}
-          seed={
-            updatedWizardValues.tokenAddress || updatedWizardValues.tokenSymbol
-          }
+          avatar={tokenAvatar}
+          seed={tokenAddress || tokenName}
           size="s"
         />
       ),
