@@ -94,6 +94,7 @@ function* escalateMotion({
     );
 
     const motionDomainChildSkillIdIndex = yield getChildIndex(
+      colonyClient.networkClient,
       colonyClient,
       BigNumber.from(Id.RootDomain),
       domainId,

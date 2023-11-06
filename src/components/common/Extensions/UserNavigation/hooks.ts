@@ -1,5 +1,5 @@
 import { ApolloQueryResult } from '@apollo/client';
-import { ClientType } from '@colony/colony-js/tokens';
+import { ClientTypeTokens } from '@colony/colony-js';
 import { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -80,7 +80,7 @@ const convertTransactionType = ({
     : undefined;
 
   return {
-    context: context as ClientType | ExtendedClientType,
+    context: context as ClientTypeTokens | ExtendedClientType,
     createdAt: new Date(createdAt),
     from,
     id,

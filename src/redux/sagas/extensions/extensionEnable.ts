@@ -81,6 +81,7 @@ function* extensionEnable({
       );
 
       const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+        colonyClient.networkClient,
         colonyClient,
         Id.RootDomain,
         ColonyRole.Root,

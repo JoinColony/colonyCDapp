@@ -18,7 +18,7 @@ export const validationSchema = yup
           })
           .required(),
       )
-      .unique('Duplicate tokens are not allowed', ({ token }) => token)
+      .unique('Duplicate tokens are not allowed.', ({ token }) => token)
       .defined(),
   })
   .defined()

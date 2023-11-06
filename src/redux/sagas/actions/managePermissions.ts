@@ -116,6 +116,7 @@ function* managePermissionsAction({
     );
 
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient.networkClient,
       colonyClient,
       domainId,
       domainId === Id.RootDomain ? ColonyRole.Root : ColonyRole.Architecture,

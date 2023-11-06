@@ -53,6 +53,7 @@ function* createDecisionMotion({
 
     const childSkillIndex = yield call(
       getChildIndex,
+      colonyClient.networkClient,
       colonyClient,
       motionDomainId,
       motionDomainId,

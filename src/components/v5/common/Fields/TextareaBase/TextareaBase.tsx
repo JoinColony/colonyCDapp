@@ -33,7 +33,7 @@ const TextareaBase: FC<TextareaBaseProps> = ({
       className={clsx(
         className,
         state ? stateClassNames[state] : undefined,
-        'text-md placeholder:text-gray-500 resize-none w-full outline-none',
+        'text-md placeholder:text-gray-400 resize-none w-full outline-none',
         {
           'text-gray-400 pointer-events-none': disabled,
         },

@@ -44,14 +44,14 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           placeholder={formatText({ id: 'placeholder.title' })}
           className={`
             heading-3 mb-2
-            md:hover:text-blue-400 md:hover:placeholder:text-blue-400 text-gray-900
+            text-gray-900
             transition-colors
           `}
           message={false}
         />
-        <p className="text-gray-600 font-medium">{descriptionMetadata}</p>
+        <p className="text-gray-900 text-md">{descriptionMetadata}</p>
 
-        <ActionTypeSelect className="mt-7 mb-3" />
+        <ActionTypeSelect className="mt-7 mb-3 min-h-[1.875rem] flex flex-col justify-center" />
 
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
         {titleError && (

@@ -11,7 +11,7 @@ export const validationSchema = yup
           .number()
           .required(() => 'required field')
           .transform((value) => toFinite(value))
-          .moreThan(0, () => 'Amount must be greater than zero'),
+          .moreThan(0, () => 'Amount must be greater than zero.'),
         tokenAddress: yup.string().address().required(),
       })
       .required(),
@@ -27,7 +27,7 @@ export const validationSchema = yup
           recipient: yup.string().required(),
         }),
       )
-      .test('sum', 'The sum of percentages must be 100', (value) => {
+      .test('sum', 'The sum of percentages must be 100.', (value) => {
         if (!value) {
           return false;
         }

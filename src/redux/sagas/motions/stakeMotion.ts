@@ -119,6 +119,7 @@ function* stakeMotion({
     yield put(transactionPending(stakeMotionTransaction.id));
 
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient.networkClient,
       colonyClient,
       domainId,
       ColonyRole.Arbitration,

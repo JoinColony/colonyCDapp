@@ -13,7 +13,7 @@ export const validationSchema = yup
           .number()
           .required(() => 'required field')
           .transform((value) => toFinite(value))
-          .moreThan(0, () => 'Amount must be greater than zero'),
+          .moreThan(0, () => 'Amount must be greater than zero.'),
         tokenAddress: yup.string().address().required(),
       })
       .required(),
@@ -23,7 +23,7 @@ export const validationSchema = yup
       .string()
       .required()
       .when('from', (from, schema) =>
-        schema.notOneOf([from], 'Cannot move to same team pot'),
+        schema.notOneOf([from], 'Cannot move to same team pot.'),
       ),
     decisionMethod: yup.string().defined(),
     description: yup.string().max(MAX_ANNOTATION_LENGTH).defined(),

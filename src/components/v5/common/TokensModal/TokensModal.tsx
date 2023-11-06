@@ -31,7 +31,7 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
     <Modal {...props} onClose={onClose}>
       <ActionForm
         actionType={actionType}
-        defaultValues={{ amount: '0' }}
+        // defaultValues={{ amount: '0' }} // Disable default value
         validationSchema={validationSchema}
         transform={transform}
         onSuccess={(_, { reset }) => {

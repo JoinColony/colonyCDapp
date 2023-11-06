@@ -103,6 +103,10 @@
   .text-6 {
     @apply font-bold text-xs;
   }
+
+  .description-1 {
+    @apply text-sm text-gray-700;
+  }
 }
 
 @layer components {
@@ -123,7 +127,7 @@
   }
 
   .input {
-    @apply w-full text-gray-900 text-md outline-0 placeholder:text-gray-500 outline-none;
+    @apply w-full text-gray-900 text-md outline-0 placeholder:text-gray-400 outline-none;
   }
 
   .selectButton {

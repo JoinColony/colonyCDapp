@@ -70,6 +70,7 @@ function* createStreamingPayment({
     // Get permissions proof of the caller's Funding permission
     const [fundingPermissionDomainId, fundingChildSkillIndex] =
       yield getPermissionProofs(
+        colonyClient.networkClient,
         colonyClient,
         createdInDomain.nativeId,
         ColonyRole.Arbitration,
@@ -78,6 +79,7 @@ function* createStreamingPayment({
     // Get permissions proof of the caller's Admin permission
     const [adminPermissionDomainId, adminChildSkillIndex] =
       yield getPermissionProofs(
+        colonyClient.networkClient,
         colonyClient,
         createdInDomain.nativeId,
         ColonyRole.Arbitration,

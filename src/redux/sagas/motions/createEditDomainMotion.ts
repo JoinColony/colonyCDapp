@@ -85,6 +85,7 @@ function* createEditDomainMotion({
 
     const [permissionDomainId, childSkillIndex] = yield call(
       getPermissionProofs,
+      colonyClient.networkClient,
       colonyClient,
       domainId,
       ColonyRole.Architecture,
@@ -93,6 +94,7 @@ function* createEditDomainMotion({
 
     const motionChildSkillIndex = yield call(
       getChildIndex,
+      colonyClient.networkClient,
       colonyClient,
       motionDomainId,
       domainId,

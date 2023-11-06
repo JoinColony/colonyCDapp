@@ -1,7 +1,10 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
-import { useAppContext, useMobile } from '~hooks';
+import Toast from '~shared/Extensions/Toast';
+import { useAppContext, useCanEditProfile, useMobile } from '~hooks';
 import Input from '~v5/common/Fields/Input';
 import styles from './UserProfilePage.module.css';
 import Textarea from '~v5/common/Fields/Textarea';
@@ -10,6 +13,8 @@ import AvatarUploader from '~v5/common/AvatarUploader';
 import Avatar from '~v5/shared/Avatar';
 import { formatText } from '~utils/intl';
 import { Form } from '~shared/Fields';
+import { useUpdateUserProfileMutation } from '~gql';
+import { UseAvatarUploaderProps } from '~v5/common/AvatarUploader/hooks';
 
 import { MAX_BIO_CHARS, MAX_DISPLAYNAME_CHARS } from './consts';
 import { useUserProfile } from './hooks';
@@ -20,10 +25,80 @@ const displayName = 'v5.pages.UserProfilePage';
 
 const UserProfilePage: FC = () => {
   const isMobile = useMobile();
-  const { user } = useAppContext();
+  const { user } = useCanEditProfile();
+  const { updateUser } = useAppContext();
+  const [updateAvatar] = useUpdateUserProfileMutation();
 
   const { handleSubmit, avatarUrl, canChangeUsername, daysTillUsernameChange } =
     useUserProfile();
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const axiosUpload: UseAvatarUploaderProps['updateFn'] = async (
+    _,
+    thumbnail,
+    setProgress,
+  ) => {
+    axios.post(
+      '',
+      {
+        variables: {
+          input: {
+            // @ts-ignore
+            id: user?.walletAddress,
+            thumbnail,
+          },
+        },
+      },
+      {
+        onUploadProgress: ({ loaded, total = 0 }) => {
+          setProgress(Math.floor((loaded / total) * 100));
+        },
+      },
+    );
+  };
+
+  const updateAvatarFn: UseAvatarUploaderProps['updateFn'] = async (
+    avatar,
+    thumbnail,
+    setProgress,
+  ) => {
+    const formData = new FormData();
+    formData.append('file', avatar || '');
+    setProgress(0);
+
+    /* Axios upload currently has no destination */
+    /* axiosUpload(avatar, thumbnail, setProgress); */
+
+    await updateAvatar({
+      variables: {
+        input: {
+          // @ts-ignore
+          id: user?.walletAddress,
+          avatar,
+          thumbnail,
+        },
+      },
+    });
+
+    await updateUser?.(user?.walletAddress, true);
+
+    toast.success(
+      <Toast
+        type="success"
+        title={{ id: 'upload.avatar.successfully.toast.title' }}
+        description={{
+          id: 'upload.avatar.successfully.toast.description',
+        }}
+      />,
+    );
+
+    if (avatar === null) {
+      setProgress(0);
+    } else {
+      /* Needed in order to signal the upload was successful */
+      setProgress(100);
+    }
+  };
 
   return (
     <Form<FormValues>
@@ -116,6 +191,7 @@ const UserProfilePage: FC = () => {
                     fileDimension: '250x250px',
                     fileSize: '1MB',
                   }}
+                  updateFn={updateAvatarFn}
                 />
               </div>
             </div>

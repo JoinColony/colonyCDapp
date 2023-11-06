@@ -56,7 +56,7 @@ const getAmountText = async (
 ): Promise<React.ReactNode> => {
   try {
     if (totalAmount === 0 || !tokenId) {
-      return 'amount of tokens';
+      return 'an amount of tokens';
     }
 
     let tokenSymbol = colony?.tokens?.items.find(
@@ -141,7 +141,7 @@ export const simplePaymentDescriptionMetadataGetter: DescriptionMetadataGetter<
             aboutDescription={currentUser.profile?.bio || ''}
             user={currentUser}
           >
-            <span className="text-blue-400 font-medium">
+            <span className="text-gray-900">
               {currentUser.profile.displayName}
             </span>
           </UserPopover>

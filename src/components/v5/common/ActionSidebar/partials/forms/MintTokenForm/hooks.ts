@@ -24,7 +24,7 @@ export const useMintToken = (
         description: '',
         decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
         amount: {
-          amount: 0,
+          // amount: 0, // Disable default value
           tokenAddress: colony?.nativeToken.tokenAddress || '',
         },
       }),

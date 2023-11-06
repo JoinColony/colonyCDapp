@@ -50,6 +50,7 @@ function* managePermissionsMotion({
 
     const [permissionDomainId, childSkillIndex] = yield call(
       getPermissionProofs,
+      colonyClient.networkClient,
       colonyClient,
       domainId,
       domainId === Id.RootDomain ? ColonyRole.Root : ColonyRole.Architecture,
@@ -58,6 +59,7 @@ function* managePermissionsMotion({
 
     const motionChildSkillIndex = yield call(
       getChildIndex,
+      colonyClient.networkClient,
       colonyClient,
       motionDomainId,
       domainId,

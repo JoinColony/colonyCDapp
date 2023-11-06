@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import clsx from 'clsx';
 
 import { useController, useFormContext, useWatch } from 'react-hook-form';
-import ActionSidebarRow from '../ActionFormRow';
+import ActionFormRow from '../ActionFormRow';
 import SearchSelect from '~v5/shared/SearchSelect';
 import { useActionsList } from './hooks';
 import { translateAction } from './utils';
@@ -38,17 +38,18 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
 
   return (
     <div className={className}>
-      <ActionSidebarRow
+      <ActionFormRow
         fieldName={ACTION_TYPE_FIELD_NAME}
         iconName="file-plus"
         title={formatText({ id: 'actionSidebar.actionType' })}
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.actionType',
-            }),
-          },
-        }}
+        // Disabled to improve user experience
+        // tooltips={{
+        //   label: {
+        //     tooltipContent: formatText({
+        //       id: 'actionSidebar.tooltip.actionType',
+        //     }),
+        //   },
+        // }}
       >
         {readonly ? (
           <span className="text-md text-gray-900">
@@ -64,7 +65,7 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
               className={clsx(
                 'flex text-md transition-colors md:hover:text-blue-400',
                 {
-                  'text-gray-600': !actionType,
+                  'text-gray-400': !actionType,
                   'text-gray-900': actionType,
                 },
               )}
@@ -106,7 +107,7 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
             )}
           </>
         )}
-      </ActionSidebarRow>
+      </ActionFormRow>
       <Modal
         title={formatText({ id: 'actionSidebar.changeActionModal.title' })}
         subTitle={formatText({

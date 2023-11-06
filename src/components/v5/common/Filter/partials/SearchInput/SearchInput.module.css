@@ -3,7 +3,7 @@
 }
 
 .searchInput {
-  @apply z-[1] min-h-[2.125rem] pr-3 pl-[2.125rem] py-1.5 w-full border rounded-lg border-gray-300 placeholder:text-gray-500;
+  @apply z-[1] min-h-[2.125rem] pr-3 pl-[2.125rem] py-1.5 w-full border rounded-lg border-gray-300 placeholder:text-gray-400;
 }
 
 .searchButton {

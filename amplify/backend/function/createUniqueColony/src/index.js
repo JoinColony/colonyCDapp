@@ -8,7 +8,14 @@ const { graphqlRequest } = require('./utils');
  * So that we can always ensure it follows the latest schema
  * (currently it's just saved statically)
  */
-const { getColony, createColony, getTokenByAddress } = require('./graphql');
+const {
+  getColony,
+  createColony,
+  getTokenByAddress,
+  getInviteCodeValidity,
+  updateInviteCodeValidity,
+  updateUser,
+} = require('./graphql');
 
 let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
@@ -36,7 +43,67 @@ exports.handler = async (event) => {
     version,
     chainMetadata,
     status,
+    inviteCode,
+    userId,
   } = event.arguments?.input || {};
+
+  /*
+   * Validate invite code
+   */
+  if (!(inviteCode === 'dev' && process.env.ENV === 'dev')) {
+    const inviteCodeQuery = await graphqlRequest(
+      getInviteCodeValidity,
+      { id: inviteCode },
+      graphqlURL,
+      apiKey,
+    );
+
+    const { shareableInvites, userId: inviteCodeUserId } =
+      inviteCodeQuery?.data?.getPrivateBetaInviteCode || {};
+
+    if (shareableInvites === 0) {
+      throw new Error(`Invite code is not valid`);
+    }
+
+    const inviteCodeMutation = await graphqlRequest(
+      updateInviteCodeValidity,
+      {
+        input: {
+          id: inviteCode,
+          shareableInvites: shareableInvites - 1,
+          userId: inviteCodeUserId || userId,
+        },
+      },
+      graphqlURL,
+      apiKey,
+    );
+
+    if (inviteCodeMutation.errors || !inviteCodeMutation.data) {
+      const [error] = inviteCodeMutation.errors;
+      throw new Error(
+        error?.message || `Could not update ${inviteCode} validity`,
+      );
+    }
+
+    if (!inviteCodeUserId) {
+      const userMutation = await graphqlRequest(
+        updateUser,
+        {
+          input: {
+            id: userId,
+            userPrivateBetaInviteCodeId: inviteCode,
+          },
+        },
+        graphqlURL,
+        apiKey,
+      );
+
+      if (userMutation.errors || !inviteCodeMutation.data) {
+        const [error] = userMutation.errors;
+        throw new Error(error?.message || `Could not update ${user} validity`);
+      }
+    }
+  }
 
   /*
    * Validate Colony and Token addresses

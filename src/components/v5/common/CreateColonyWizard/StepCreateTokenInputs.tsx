@@ -1,74 +1,145 @@
 import React from 'react';
-import { defineMessages } from 'react-intl';
+import { useFormContext } from 'react-hook-form';
+import { defineMessages, useIntl } from 'react-intl';
 
-import { Input } from '~shared/Fields';
+import Input from '~v5/common/Fields/Input';
+import Avatar from '~v5/shared/Avatar';
 
-import styles from './StepCreateToken.css';
+import AvatarUploader from '../AvatarUploader';
+import { UseAvatarUploaderProps } from '../AvatarUploader/hooks';
 
 const displayName = 'common.CreateColonyWizard.StepCreateTokenInputs';
 
+interface StepCreateTokenInputsProps {
+  wizardTokenName: string;
+  wizardTokenSymbol: string;
+}
+
+const MAX_TOKEN_NAME = 30;
+const MAX_TOKEN_SYMBOL = 5;
+
 const MSG = defineMessages({
-  labelTokenName: {
-    id: `${displayName}.labelTokenName`,
-    defaultMessage: 'Token Name',
+  heading: {
+    id: `${displayName}.heading`,
+    defaultMessage: 'Your Colony’s native token',
   },
-  labelTokenSymbol: {
-    id: `${displayName}.labelTokenSymbol`,
-    defaultMessage: 'Token Symbol',
+  description: {
+    id: `${displayName}.description`,
+    defaultMessage:
+      'Your native token is your organization’s unit of ownership, and powers key features within your Colony.{br}{br}Tokens are initially locked and not transferable by recipients. You must unlock your token if you wish it to become tradable.',
   },
-  helpTokenSymbol: {
-    id: `${displayName}.helpTokenSymbol`,
-    defaultMessage: '(e.g., MAT, AMEX)',
+  create: {
+    id: `${displayName}.create`,
+    defaultMessage: 'Create a new token',
   },
-  helpTokenName: {
-    id: `${displayName}.helpTokenName`,
-    defaultMessage: '(e.g., My Awesome Token)',
+  select: {
+    id: `${displayName}.select`,
+    defaultMessage: 'Use an existing token',
   },
-  link: {
-    id: `${displayName}.link`,
-    defaultMessage: 'I want to use an existing token',
+  tokenName: {
+    id: `${displayName}.tokenName`,
+    defaultMessage: 'Token name',
+  },
+  tokenSymbol: {
+    id: `${displayName}.tokenSymbol`,
+    defaultMessage: 'Token symbol',
+  },
+  tokenLogo: {
+    id: `${displayName}.tokenLogo`,
+    defaultMessage: 'Token logo (Optional)',
+  },
+  tokenDescription: {
+    id: `${displayName}.tokenDescription`,
+    defaultMessage:
+      'The token logo will only exist on Colony and can be changed at anytime.',
   },
 });
 
-const formatting = {
-  tokenSymbol: { uppercase: true, blocks: [5] },
-};
-
-interface StepCreateTokenInputsProps {
-  disabled: boolean;
-  extra: JSX.Element;
-}
-
 const StepCreateTokenInputs = ({
-  disabled,
-  extra,
-}: StepCreateTokenInputsProps) => (
-  <div className={styles.inputFields}>
-    <div className={styles.inputFieldWrapper}>
-      <Input
-        name="tokenName"
-        appearance={{ theme: 'fat' }}
-        label={MSG.labelTokenName}
-        help={MSG.helpTokenName}
-        data-test="defineTokenName"
-        disabled={disabled}
-        extra={extra}
+  wizardTokenName,
+  wizardTokenSymbol,
+}: StepCreateTokenInputsProps) => {
+  const {
+    register,
+    setValue,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useFormContext();
+  const { formatMessage } = useIntl();
+
+  const tokenNameError = errors.tokenName?.message as string | undefined;
+  const tokenSymbolError = errors.tokenSymbol?.message as string | undefined;
+
+  const tokenAvatarUrl = watch('tokenAvatar');
+
+  const updateFn: UseAvatarUploaderProps['updateFn'] = async (
+    avatar,
+    thumbnail,
+    setProgress,
+  ) => {
+    setProgress(0);
+
+    setValue('tokenAvatar', avatar);
+    setValue('tokenThumbnail', thumbnail);
+
+    if (avatar === null) {
+      return;
+    }
+
+    setProgress(100);
+  };
+
+  return (
+    <>
+      <div className="flex gap-6">
+        <Input
+          name="tokenName"
+          register={register}
+          isError={!!tokenNameError}
+          customErrorMessage={tokenNameError}
+          className="text-md border-gray-300"
+          maxCharNumber={MAX_TOKEN_NAME}
+          isDisabled={isSubmitting}
+          defaultValue={wizardTokenName}
+          labelMessage={MSG.tokenName}
+          errorMaxChar
+        />
+        <Input
+          name="tokenSymbol"
+          register={register}
+          isError={!!tokenSymbolError}
+          customErrorMessage={tokenSymbolError}
+          className="text-md border-gray-300 uppercase"
+          maxCharNumber={MAX_TOKEN_SYMBOL}
+          isDisabled={isSubmitting}
+          defaultValue={wizardTokenSymbol}
+          labelMessage={MSG.tokenSymbol}
+          errorMaxChar
+        />
+      </div>
+      <p className="text-1 pb-1">{formatMessage(MSG.tokenLogo)}</p>
+      <p className="text-sm text-gray-600 pb-2">
+        {formatMessage(MSG.tokenDescription)}
+      </p>
+      <AvatarUploader
+        avatarPlaceholder={
+          <Avatar
+            notSet={!tokenAvatarUrl}
+            placeholderIcon="circle-add"
+            size="ms"
+            avatar={tokenAvatarUrl}
+          />
+        }
+        fileOptions={{
+          fileFormat: ['.PNG', '.JPG', '.SVG'],
+          fileDimension: '250x250px',
+          fileSize: '1MB',
+        }}
+        updateFn={updateFn}
       />
-    </div>
-    <div className={styles.inputFieldWrapper}>
-      <Input
-        name="tokenSymbol"
-        appearance={{ theme: 'fat' }}
-        maxLength={5}
-        data-test="defineTokenSymbol"
-        formattingOptions={formatting.tokenSymbol}
-        label={MSG.labelTokenSymbol}
-        help={MSG.helpTokenSymbol}
-        disabled={disabled}
-      />
-    </div>
-  </div>
-);
+    </>
+  );
+};
 
 StepCreateTokenInputs.displayName = displayName;
 export default StepCreateTokenInputs;

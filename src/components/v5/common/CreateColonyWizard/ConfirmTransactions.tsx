@@ -1,37 +1,29 @@
 import React from 'react';
 
-import GasStationContent from '~frame/GasStation/GasStationContent';
+import GroupedTransaction from '~common/Extensions/UserHub/partials/TransactionsTab/partials/GroupedTransaction';
 import { TransactionOrMessageGroup } from '~frame/GasStation/transactionGroup';
-import Heading from '~shared/Heading';
-import { Message } from '~types';
-
-import styles from './ConfirmTransactions.css';
+import { TransactionType } from '~redux/immutable/Transaction';
 
 const displayName = 'common.CreateColonyWizard.ConfirmTransactions';
 
 interface ConfirmTransactionsProps {
   transactionGroup?: TransactionOrMessageGroup;
-  headingText: Message;
 }
 const ConfirmTransactions = ({
   transactionGroup,
-  headingText,
-}: ConfirmTransactionsProps) => (
-  <>
-    <Heading
-      appearance={{ size: 'medium', weight: 'medium' }}
-      text={headingText}
-    />
-    <div className={styles.container}>
-      {transactionGroup && (
-        <GasStationContent
-          appearance={{ interactive: false, required: true }}
-          transactionAndMessageGroups={[transactionGroup]}
-        />
-      )}
-    </div>
-  </>
-);
+}: ConfirmTransactionsProps) => {
+  if (transactionGroup) {
+    return (
+      <GroupedTransaction
+        transactionGroup={transactionGroup as TransactionType[]}
+        isContentOpened
+        hideButton
+      />
+    );
+  }
+
+  return null;
+};
 
 ConfirmTransactions.displayName = displayName;
 

@@ -51,6 +51,8 @@ exports.handler = async (event) => {
   const {
     tokenAddress = constants.AddressZero,
     network = undefined, // refers to the shortName in the NetworkInfo type
+    avatar,
+    thumbnail,
   } =
     // eslint-disable-next-line no-unsafe-optional-chaining
     event?.arguments?.input;
@@ -120,6 +122,8 @@ exports.handler = async (event) => {
             name,
             symbol,
             type,
+            avatar,
+            thumbnail,
             /*
              * @TODO These need to be properly added once Lambda Functions
              * have the concept of chains

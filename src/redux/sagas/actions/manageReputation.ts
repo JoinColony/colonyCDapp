@@ -101,6 +101,7 @@ function* manageReputationAction({
       );
 
       const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+        colonyClient.networkClient,
         colonyClient,
         domainId,
         ColonyRole.Arbitration,

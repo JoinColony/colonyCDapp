@@ -1,67 +1,26 @@
-import React, { useCallback } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-import QRCode from '~shared/QRCode';
 import { WizardOuterProps } from '~shared/Wizard/types';
-import CopyableAddress from '~shared/CopyableAddress';
 
-import { HistoryNavigation } from '~frame/RouteLayouts';
 import { FormValues } from '~v5/common/CreateColonyWizard/CreateColonyWizard';
 import { LANDING_PAGE_ROUTE } from '~routes/index';
 import { useAppContext } from '~hooks';
 
-import styles from './WizardTemplateColony.css';
-
 const displayName = 'frame.WizardTemplateColony';
 
-const MSG = defineMessages({
-  wallet: {
-    id: `${displayName}.wallet`,
-    defaultMessage: 'Hello ',
-  },
-});
+type Props = Pick<WizardOuterProps<FormValues>, 'children'>;
 
-type Props = Pick<
-  WizardOuterProps<FormValues>,
-  'children' | 'previousStep' | 'hideQR'
->;
-
-const WizardTemplateColony = ({
-  children,
-  previousStep,
-  hideQR = false,
-}: Props) => {
+const WizardTemplateColony = ({ children }: Props) => {
   const { wallet, walletConnecting } = useAppContext();
-  const walletAddress = wallet?.address || '';
-
-  const customHandler = useCallback(() => previousStep(), [previousStep]);
 
   if (!wallet && !walletConnecting) {
     return <Navigate to={LANDING_PAGE_ROUTE} replace />;
   }
 
   return (
-    <main className={styles.layoutMain}>
-      <header className={styles.header}>
-        <HistoryNavigation customHandler={customHandler} backText=" " />
-        {wallet && (
-          <div className={styles.headerWallet}>
-            <div className={styles.wallet}>
-              <div className={styles.address}>
-                <span className={styles.hello}>
-                  <FormattedMessage {...MSG.wallet} />
-                </span>
-                <span className={styles.copy}>
-                  <CopyableAddress>{walletAddress}</CopyableAddress>
-                </span>
-              </div>
-            </div>
-            {!hideQR && <QRCode address={walletAddress} width={60} />}
-          </div>
-        )}
-      </header>
-      <article className={styles.content}>{children}</article>
+    <main className="flex flex-col items-center">
+      <article className="max-w-[33.125rem]">{children}</article>
     </main>
   );
 };

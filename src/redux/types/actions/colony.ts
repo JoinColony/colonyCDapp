@@ -1,3 +1,4 @@
+import { Extension } from '@colony/colony-js';
 import { ActionTypes } from '~redux';
 import {
   Address,
@@ -30,7 +31,10 @@ export type ColonyActionTypes =
         tokenIcon: string;
         tokenName: string;
         tokenSymbol: string;
-        username: string;
+        userId: string;
+        inviteCode: string;
+        tokenAvatar?: string;
+        tokenThumbnail?: string;
       },
       object
     >
@@ -58,21 +62,25 @@ export type ColonyActionTypes =
   | ErrorActionType<ActionTypes.EXTENSION_ENABLE_ERROR, object>
   | UniqueActionType<
       ActionTypes.EXTENSION_DEPRECATE,
-      { colonyAddress: Address; extensionId: string; isToDeprecate: boolean },
+      {
+        colonyAddress: Address;
+        extensionId: Extension;
+        isToDeprecate: boolean;
+      },
       WithKey
     >
   | UniqueActionType<ActionTypes.EXTENSION_DEPRECATE_SUCCESS, object, object>
   | ErrorActionType<ActionTypes.EXTENSION_DEPRECATE_ERROR, object>
   | UniqueActionType<
       ActionTypes.EXTENSION_UNINSTALL,
-      { colonyAddress: Address; extensionId: string },
+      { colonyAddress: Address; extensionId: Extension },
       WithKey
     >
   | UniqueActionType<ActionTypes.EXTENSION_UNINSTALL_SUCCESS, object, object>
   | ErrorActionType<ActionTypes.EXTENSION_UNINSTALL_ERROR, object>
   | UniqueActionType<
       ActionTypes.EXTENSION_UPGRADE,
-      { colonyAddress: Address; extensionId: string; version: number },
+      { colonyAddress: Address; extensionId: Extension; version: number },
       WithKey
     >
   | UniqueActionType<ActionTypes.EXTENSION_UPGRADE_SUCCESS, object, object>

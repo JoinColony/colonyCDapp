@@ -103,6 +103,7 @@ function* createDomainAction({
     );
 
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient.networkClient,
       colonyClient,
       parentId,
       ColonyRole.Architecture,

@@ -86,6 +86,7 @@ function* createPaymentMotion({
 
     const childSkillIndex = yield call(
       getChildIndex,
+      colonyClient.networkClient,
       colonyClient,
       motionDomainId,
       domainId,
@@ -93,6 +94,7 @@ function* createPaymentMotion({
 
     const [extensionPDID, extensionCSI] = yield call(
       getPermissionProofs,
+      colonyClient.networkClient,
       colonyClient,
       domainId,
       [ColonyRole.Funding, ColonyRole.Administration],
@@ -101,6 +103,7 @@ function* createPaymentMotion({
 
     const [votingReputationPDID, votingReputationCSI] = yield call(
       getPermissionProofs,
+      colonyClient.networkClient,
       colonyClient,
       domainId,
       [ColonyRole.Funding, ColonyRole.Administration],
