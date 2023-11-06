@@ -21,7 +21,12 @@ const ModalBase: FC<ModalBaseProps> = ({
       isOpen={isOpen}
       role={role}
       overlayClassName={{
-        base: 'flex justify-center items-center fixed inset-0 z-[999] py-4 bg-base-sprite/50',
+        base: clsx(
+          'flex justify-center items-center fixed inset-0 z-[999] bg-base-sprite/50',
+          {
+            'py-4': !isFullOnMobile,
+          },
+        ),
         afterOpen: '',
         beforeClose: 'blur-none',
       }}
