@@ -1,38 +1,51 @@
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
+import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
-import { tabsItems } from '~common/Extensions/UserHub/partials/StakesTab/consts';
 import Tabs from '~shared/Extensions/Tabs';
 import { useAppContext, useColonyContext, useMobile } from '~hooks';
-import EmptyContent from '~v5/common/EmptyContent';
 import { StakesTabProps } from './types';
 import { useGetUserStakesQuery } from '~gql';
 import { notNull } from '~utils/arrays';
 
-import StakesTabItem from './partials/StakesTabItem';
+import { tabsItems } from './consts';
+import StakesList from './partials/StakesList';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 
 const StakesTab: FC<StakesTabProps> = ({ claimedNotificationNumber }) => {
-  const [activeTab, setActiveTab] = useState(0);
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-
   const { walletAddress } = user ?? {};
 
-  const { data } = useGetUserStakesQuery({
+  const [activeTab, setActiveTab] = useState(0);
+  const [motionStatesMap, setMotionStatesMap] = useState<
+    Map<string, NetworkMotionState>
+  >(new Map());
+
+  const { data, loading: stakesLoading } = useGetUserStakesQuery({
     variables: {
       userAddress: walletAddress ?? '',
     },
     skip: !walletAddress,
     fetchPolicy: 'cache-and-network',
   });
-  const userStakes = data?.getUserStakes?.items.filter(notNull);
+  const userStakes = data?.getUserStakes?.items.filter(notNull) ?? [];
 
-  const handleOnTabClick = useCallback((e, id: number) => {
+  const handleOnMotionStateFetched = useCallback(
+    (stakeId: string, motionState: NetworkMotionState) => {
+      setMotionStatesMap((existingMap) =>
+        new Map(existingMap).set(stakeId, motionState),
+      );
+    },
+    [],
+  );
+
+  // Tabs are being used for selecting filter option
+  const handleOnTabClick = useCallback((_, id: number) => {
     setActiveTab(id);
   }, []);
 
@@ -51,6 +64,8 @@ const StakesTab: FC<StakesTabProps> = ({ claimedNotificationNumber }) => {
   if (!colony) {
     return null;
   }
+
+  const filterOption = tabsItems[activeTab].type;
 
   return (
     <div>
@@ -81,27 +96,14 @@ const StakesTab: FC<StakesTabProps> = ({ claimedNotificationNumber }) => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
             >
-              {userStakes?.length ? (
-                userStakes.map((stake) => (
-                  <StakesTabItem
-                    key={stake.id}
-                    title={stake.action?.type.toString() ?? ''}
-                    date={stake.createdAt}
-                    stake={stake.amount}
-                    transfer=""
-                    status={stake.isClaimed ? 'claimed' : 'staking'}
-                    userStake={stake}
-                    nativeToken={colony.nativeToken}
-                    colonyAddress={colony.colonyAddress}
-                  />
-                ))
-              ) : (
-                <EmptyContent
-                  title={{ id: 'empty.content.title.stakes' }}
-                  description={{ id: 'empty.content.subtitle.stakes' }}
-                  icon="binoculars"
-                />
-              )}
+              <StakesList
+                stakes={userStakes}
+                loading={stakesLoading}
+                colony={colony}
+                filterOption={filterOption}
+                motionStatesMap={motionStatesMap}
+                onMotionStateFetched={handleOnMotionStateFetched}
+              />
             </motion.div>
           </AnimatePresence>
         </ul>

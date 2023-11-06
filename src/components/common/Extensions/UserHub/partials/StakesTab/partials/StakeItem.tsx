@@ -1,21 +1,21 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { FormattedDate } from 'react-intl';
 
 import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types';
 import Numeral from '~shared/Numeral';
 import { useGetMotionStateQuery } from '~gql';
-
-import { StakesTabItemProps } from '../types';
-
-import styles from './StakesTabItem.module.css';
 import { motionTags } from '~shared/Tag';
 import { getMotionState } from '~utils/colonyMotions';
+
+import { StakeItemProps } from '../types';
+
+import styles from './StakeItem.css';
 
 const displayName =
   'common.Extensions.UserHub.partials.StakesTab.partials.StakesTabItem';
 
-const StakesTabItem: FC<StakesTabItemProps> = ({
+const StakeItem: FC<StakeItemProps> = ({
   title,
   date,
   stake,
@@ -24,6 +24,7 @@ const StakesTabItem: FC<StakesTabItemProps> = ({
   nativeToken,
   userStake,
   colonyAddress,
+  onMotionStateFetched,
 }) => {
   const motionId = userStake.action?.motionData?.id;
   const { data } = useGetMotionStateQuery({
@@ -35,12 +36,22 @@ const StakesTabItem: FC<StakesTabItemProps> = ({
     },
     skip: !motionId,
   });
-  const motionState =
-    data?.getMotionState && userStake.action?.motionData
-      ? getMotionState(data.getMotionState, userStake.action.motionData)
-      : null;
+  const motionState = data?.getMotionState;
 
-  const MotionTag = motionState ? motionTags[motionState] : () => null;
+  // Sync motion state with the parent component
+  useEffect(() => {
+    if (!motionState) {
+      return;
+    }
+
+    onMotionStateFetched(userStake.id, motionState);
+  }, [motionState, onMotionStateFetched, userStake.action, userStake.id]);
+
+  const tagMotionState =
+    motionState && userStake.action?.motionData
+      ? getMotionState(motionState, userStake.action.motionData)
+      : undefined;
+  const MotionTag = tagMotionState ? motionTags[tagMotionState] : () => null;
 
   return (
     <li className={styles.stakesItem}>
@@ -73,6 +84,6 @@ const StakesTabItem: FC<StakesTabItemProps> = ({
   );
 };
 
-StakesTabItem.displayName = displayName;
+StakeItem.displayName = displayName;
 
-export default StakesTabItem;
+export default StakeItem;
