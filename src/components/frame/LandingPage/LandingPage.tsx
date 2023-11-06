@@ -87,7 +87,7 @@ const MSG = defineMessages({
 });
 
 const LandingPage = () => {
-  const [hoveredItem, setHoveredItem] = useState<number>(1);
+  const [, setHoveredItem] = useState<number>(1);
   const navigate = useNavigate();
   const { user, connectWallet, wallet, userLoading } = useAppContext();
   const onUserLogin = () => {
@@ -147,7 +147,7 @@ const LandingPage = () => {
           <FormattedMessage {...MSG.headerDescription} />
         </p>
       </div>
-      <div className="w-full flex justify-center gap-4  max-w-[1286px]">
+      <div className="w-full flex justify-center gap-4">
         <div className="w-1/2 flex flex-col gap-4">
           {landingPageItems.map((item, index) => (
             <LandingPageItem
@@ -160,17 +160,13 @@ const LandingPage = () => {
         </div>
         <div
           className={clsx(
-            'flex justify-center w-1/2 bg-gray-100 rounded-lg max-h-[395px] border border-gray-200 shadow-sm',
-            { 'pl-9 pt-7': hoveredItem === 0 },
+            'flex justify-center w-1/2 bg-gray-100 rounded-lg max-h-[392px] border border-gray-200 shadow-sm',
           )}
         >
           <img
             src={landingPageItems[1].imgSrc} // @TODO: Change to hoveredItem once we enable the create colony landing page item
             alt=""
-            className={clsx('object-cover relative', {
-              'rounded-br-[10px] rounded-tl-[10px]': hoveredItem === 0,
-              'left-3 top-7': hoveredItem === 1,
-            })}
+            className="w-full h-full object-cover"
           />
         </div>
       </div>

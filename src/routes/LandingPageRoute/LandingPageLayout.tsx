@@ -22,7 +22,7 @@ const LandingPageLayout: FC<PropsWithChildren> = ({ children }) => {
         <div className="hidden">
           <Wallet />
         </div>
-        <main className="w-full pr-4 flex flex-col items-center justify-center max-w-[1278px]">
+        <main className="w-full pr-4 flex flex-col items-center justify-center max-w-[1298px]">
           {children}
         </main>
       </div>
