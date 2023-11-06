@@ -4,10 +4,13 @@ import { FormattedDate } from 'react-intl';
 import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types';
 import Numeral from '~shared/Numeral';
+import { useGetMotionStateQuery } from '~gql';
 
 import { StakesTabItemProps } from '../types';
 
 import styles from './StakesTabItem.module.css';
+import { motionTags } from '~shared/Tag';
+import { getMotionState } from '~utils/colonyMotions';
 
 const displayName =
   'common.Extensions.UserHub.partials.StakesTab.partials.StakesTabItem';
@@ -19,7 +22,26 @@ const StakesTabItem: FC<StakesTabItemProps> = ({
   transfer,
   status,
   nativeToken,
+  userStake,
+  colonyAddress,
 }) => {
+  const motionId = userStake.action?.motionData?.id;
+  const { data } = useGetMotionStateQuery({
+    variables: {
+      input: {
+        colonyAddress,
+        databaseMotionId: motionId ?? '',
+      },
+    },
+    skip: !motionId,
+  });
+  const motionState =
+    data?.getMotionState && userStake.action?.motionData
+      ? getMotionState(data.getMotionState, userStake.action.motionData)
+      : null;
+
+  const MotionTag = motionState ? motionTags[motionState] : () => null;
+
   return (
     <li className={styles.stakesItem}>
       <div className="relative w-full">
@@ -34,6 +56,7 @@ const StakesTabItem: FC<StakesTabItemProps> = ({
             mode={status as ExtensionStatusBadgeMode}
             text={status as ExtensionStatusBadgeMode}
           />
+          <MotionTag />
         </div>
         <div className="flex text-xs">
           <div className="font-medium mr-2">

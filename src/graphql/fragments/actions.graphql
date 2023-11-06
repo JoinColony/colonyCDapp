@@ -167,14 +167,7 @@ fragment ColonyMotion on ColonyMotion {
     ...VoterRecord
   }
   revealedVotes {
-    raw {
-      yay
-      nay
-    }
-    percentage {
-      yay
-      nay
-    }
+    ...MotionStakes
   }
   skillRep
   repSubmitted

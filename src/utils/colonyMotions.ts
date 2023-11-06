@@ -44,7 +44,7 @@ export const getMotionState = (
     revealedVotes: {
       raw: { yay: yayVotes, nay: nayVotes },
     },
-  }: ColonyMotion,
+  }: Pick<ColonyMotion, 'motionStakes' | 'requiredStake' | 'revealedVotes'>,
 ) => {
   switch (motionState) {
     case NetworkMotionState.Staking: {

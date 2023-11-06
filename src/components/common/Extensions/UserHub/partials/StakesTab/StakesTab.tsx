@@ -92,6 +92,7 @@ const StakesTab: FC<StakesTabProps> = ({ claimedNotificationNumber }) => {
                     status={stake.isClaimed ? 'claimed' : 'staking'}
                     userStake={stake}
                     nativeToken={colony.nativeToken}
+                    colonyAddress={colony.colonyAddress}
                   />
                 ))
               ) : (

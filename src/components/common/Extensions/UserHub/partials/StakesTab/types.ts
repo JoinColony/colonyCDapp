@@ -14,6 +14,7 @@ export interface StakesTabItemProps {
   >;
   userStake: UserStake;
   nativeToken: Token;
+  colonyAddress: string;
 }
 
 // @TODO: Rename this...

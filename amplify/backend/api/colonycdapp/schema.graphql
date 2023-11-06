@@ -3449,6 +3449,9 @@ type ExtensionInstallationsCount @model {
 }
 
 type UserStake @model {
+  """
+  Self-managed, formatted as userAddress_transactionHash, where transactionHash is the hash of the transaction that is being staked for
+  """
   id: ID!
   userAddress: ID! @index(name: "byUserAddress", queryField: "getUserStakes")
   user: User! @hasOne(fields: ["userAddress"])

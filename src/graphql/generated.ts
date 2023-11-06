@@ -8231,6 +8231,7 @@ export type UserStake = {
   actionId: Scalars['ID'];
   amount: Scalars['String'];
   createdAt: Scalars['AWSDateTime'];
+  /** Self-managed, formatted as userAddress_transactionHash, where transactionHash is the hash of the transaction that is being staked for */
   id: Scalars['ID'];
   isClaimed: Scalars['Boolean'];
   updatedAt: Scalars['AWSDateTime'];
@@ -8429,7 +8430,7 @@ export type SafeTransactionDataFragment = { __typename?: 'SafeTransactionData', 
 
 export type SafeTransactionFragment = { __typename?: 'SafeTransaction', id: string, safe: { __typename?: 'Safe', name: string, address: string, chainId: number, moduleContractAddress: string }, transactions?: { __typename?: 'ModelSafeTransactionDataConnection', items: Array<{ __typename?: 'SafeTransactionData', transactionType: SafeTransactionType, amount?: string | null, rawAmount?: string | null, data?: string | null, abi?: string | null, contractFunction?: string | null, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, recipient?: { __typename?: 'SimpleTarget', id: string, walletAddress: string, profile: { __typename?: 'SimpleTargetProfile', avatarHash?: string | null, displayName?: string | null } } | null, contract?: { __typename?: 'SimpleTarget', id: string, walletAddress: string, profile: { __typename?: 'SimpleTargetProfile', avatarHash?: string | null, displayName?: string | null } } | null, nft?: { __typename?: 'NFT', id: string, walletAddress: string, profile: { __typename?: 'NFTProfile', displayName: string } } | null, nftData?: { __typename?: 'NFTData', address: string, description?: string | null, id: string, imageUri?: string | null, logoUri: string, name?: string | null, tokenName: string, tokenSymbol: string, uri: string } | null, functionParams?: Array<{ __typename?: 'FunctionParam', name: string, type: string, value: string } | null> | null } | null> } | null };
 
-export type UserStakeFragment = { __typename?: 'UserStake', id: string, amount: string, isClaimed: boolean, createdAt: string, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null };
+export type UserStakeFragment = { __typename?: 'UserStake', id: string, amount: string, isClaimed: boolean, createdAt: string, action?: { __typename?: 'ColonyAction', id: string, type: ColonyActionType, motionData?: { __typename?: 'ColonyMotion', id: string, requiredStake: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } } | null } | null };
 
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
 
@@ -8852,7 +8853,7 @@ export type GetUserStakesQueryVariables = Exact<{
 }>;
 
 
-export type GetUserStakesQuery = { __typename?: 'Query', getUserStakes?: { __typename?: 'ModelUserStakeConnection', items: Array<{ __typename?: 'UserStake', id: string, amount: string, isClaimed: boolean, createdAt: string, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null> } | null };
+export type GetUserStakesQuery = { __typename?: 'Query', getUserStakes?: { __typename?: 'ModelUserStakeConnection', items: Array<{ __typename?: 'UserStake', id: string, amount: string, isClaimed: boolean, createdAt: string, action?: { __typename?: 'ColonyAction', id: string, type: ColonyActionType, motionData?: { __typename?: 'ColonyMotion', id: string, requiredStake: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } } | null } | null } | null> } | null };
 
 export type GetTokenByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -9385,14 +9386,7 @@ export const ColonyMotionFragmentDoc = gql`
     ...VoterRecord
   }
   revealedVotes {
-    raw {
-      yay
-      nay
-    }
-    percentage {
-      yay
-      nay
-    }
+    ...MotionStakes
   }
   skillRep
   repSubmitted
@@ -9784,12 +9778,23 @@ export const UserStakeFragmentDoc = gql`
   id
   amount
   action {
+    id
     type
+    motionData {
+      id
+      motionStakes {
+        ...MotionStakes
+      }
+      requiredStake
+      revealedVotes {
+        ...MotionStakes
+      }
+    }
   }
   isClaimed
   createdAt
 }
-    `;
+    ${MotionStakesFragmentDoc}`;
 export const UserTokenBalanceDataFragmentDoc = gql`
     fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
   balance
