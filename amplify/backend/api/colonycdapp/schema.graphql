@@ -1515,7 +1515,7 @@ type ColonyObjective {
   """
   Number representing how complete the objective is, must be between 0 and 100
   """
-  percentage: Int!
+  progress: Int!
 }
 
 """

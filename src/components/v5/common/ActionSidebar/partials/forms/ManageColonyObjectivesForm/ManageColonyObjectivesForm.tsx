@@ -11,7 +11,7 @@ import { DECISION_METHOD_OPTIONS } from '../../consts';
 import { ActionFormBaseProps } from '../../../types';
 import { useManageColonyObjectives } from './hooks';
 
-export const displayName =
+const displayName =
   'v5.common.ActionSidebar.partials.ManageColonyObjectivesForm';
 
 const ManageColonyObjectivesForm: FC<ActionFormBaseProps> = ({

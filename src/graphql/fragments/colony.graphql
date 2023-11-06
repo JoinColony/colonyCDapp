@@ -201,5 +201,5 @@ fragment Safe on Safe {
 fragment ColonyObjective on ColonyObjective {
   title
   description
-  percentage
+  progress
 }

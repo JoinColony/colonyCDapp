@@ -43,7 +43,7 @@ export const useManageColonyObjectives = (
             colonyObjective: {
               title: payload.colonyObjectiveTitle,
               description: payload.colonyObjectiveDescription,
-              percentage: payload.colonyObjectiveProgress,
+              progress: payload.colonyObjectiveProgress,
             },
             motionDomainId: payload.createdIn,
             decisionMethod: payload.decisionMethod,

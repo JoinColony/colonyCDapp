@@ -19,7 +19,7 @@ const ObjectiveBox: FC<ObjectiveBoxProps> = ({ objective }) => {
         {objective?.description ||
           formatMessage({ id: 'colonyDetailsPage.noObjectiveBoxDescription' })}
       </p>
-      <ProgressBar progress={objective?.percentage || 0} additionalText="%" />
+      <ProgressBar progress={objective?.progress || 0} additionalText="%" />
     </div>
   );
 };
