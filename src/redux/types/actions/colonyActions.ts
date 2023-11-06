@@ -9,10 +9,12 @@ import {
   DomainColor,
   Domain,
   Colony,
+  ColonyObjective,
   Safe,
   SafeTransactionData,
 } from '~types';
 import { NetworkInfo } from '~constants';
+import { ExternalLink } from '~gql';
 
 import {
   ErrorActionType,
@@ -20,7 +22,6 @@ import {
   ActionTypeWithMeta,
   MetaWithSetter,
 } from './index';
-import { ColonyObjective, ExternalLink } from '~gql';
 
 export type OneTxPaymentPayload = {
   colonyAddress: Address;
