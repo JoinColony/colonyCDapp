@@ -1,13 +1,15 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
 import Button from '~v5/shared/Button';
-import { Input } from '~v5/common/Fields';
-import { formatText } from '~utils/intl';
+import { ActionTypes } from '~redux';
+import { ActionForm } from '~shared/Fields';
 
-import { MAX_USERNAME_LENGTH } from './validation';
 import { HeaderRow } from '../CreateColonyWizard/shared';
+
+import { validationSchema } from './validation';
+import { CreateUserFormValues } from './types';
+import CreateUserFormInputs from './CreateUserFormInputs';
 
 const displayName = 'common.CreateUserForm';
 
@@ -23,57 +25,33 @@ const MSG = defineMessages({
   },
 });
 
-const CreateUserForm = () => {
-  const {
-    register,
-    formState: { errors, isSubmitting, isValid, dirtyFields },
-  } = useFormContext();
-
-  const emailAddressError = errors.emailAddress?.message as string | undefined;
-
-  const usernameError = errors.username?.message as string | undefined;
-
-  return (
-    <>
-      <HeaderRow heading={MSG.heading} description={MSG.description} />
-      <Input
-        name="emailAddress"
-        register={register}
-        className="w-full text-md border-gray-300 "
-        labelMessage={{ id: 'label.email' }}
-        isError={!!emailAddressError}
-        customErrorMessage={emailAddressError}
-        isDisabled={isSubmitting}
-      />
-      <Input
-        name="username"
-        register={register}
-        className="w-full text-md border-gray-300"
-        maxCharNumber={MAX_USERNAME_LENGTH}
-        labelMessage={{ id: 'label.username' }}
-        isError={!!usernameError}
-        customErrorMessage={usernameError}
-        isDisabled={isSubmitting}
-        shouldNumberOfCharsBeVisible
-        successfulMessage={
-          dirtyFields.username
-            ? formatText({
-                id: 'success.userName',
-              })
-            : undefined
-        }
-        isDecoratedError={errors.username?.type === 'isUsernameTaken'}
-      />
-      <Button
-        text={{ id: 'button.continue' }}
-        type="submit"
-        mode="primarySolid"
-        disabled={!isValid || isSubmitting}
-        className="mt-3"
-      />
-    </>
-  );
-};
+const CreateUserForm = () => (
+  <ActionForm<CreateUserFormValues>
+    className="max-w-lg flex flex-col items-end"
+    validationSchema={validationSchema}
+    defaultValues={{
+      username: '',
+      emailAddress: '',
+      emailPermissions: [],
+    }}
+    mode="onChange"
+    actionType={ActionTypes.USERNAME_CREATE}
+  >
+    {({ formState: { isSubmitting, isValid } }) => (
+      <>
+        <HeaderRow heading={MSG.heading} description={MSG.description} />
+        <CreateUserFormInputs />
+        <Button
+          text={{ id: 'button.continue' }}
+          type="submit"
+          mode="primarySolid"
+          disabled={!isValid || isSubmitting}
+          className="mt-3"
+        />
+      </>
+    )}
+  </ActionForm>
+);
 CreateUserForm.displayName = displayName;
 
 export default CreateUserForm;
