@@ -1,70 +1,70 @@
 import React from 'react';
-import { defineMessages } from 'react-intl';
 
+import { defineMessages } from 'react-intl';
 import { WizardStepProps } from '~shared/Wizard';
 import { ActionForm } from '~shared/Fields';
-
 import { mergePayload } from '~utils/actions';
 import { ActionTypes } from '~redux/index';
+import { useAppContext } from '~hooks';
 
-import { FormValues } from '../CreateColonyWizard';
-import { HeadingText, SubmitFormButton } from './shared';
-import CardRow, { Row } from './CreateColonyCardRow';
-
-import styles from './StepConfirmAllInput.css';
+import { FormValues, WizardProps } from '../CreateColonyWizard';
+import { ButtonRow, HeaderRow } from './shared';
+import CardRow from './CreateColonyCardRow';
 
 const displayName = 'common.CreateColonyWizard.StepConfirmAllInput';
 
+type Props = Pick<
+  WizardStepProps<FormValues, WizardProps>,
+  'nextStep' | 'wizardValues' | 'previousStep' | 'setStep' | 'wizardProps'
+>;
+
 const MSG = defineMessages({
-  title: {
-    id: `${displayName}.title`,
-    defaultMessage: `Does this look right?`,
+  heading: {
+    id: `${displayName}.heading`,
+    defaultMessage: 'Confirm your Colony’s details',
   },
-  subtitle: {
-    id: `${displayName}.subtitle`,
-    defaultMessage: `Please double check that these details
-      are correct, they cannot be changed later.`,
-  },
-  userName: {
-    id: `${displayName}.userName`,
-    defaultMessage: `Your username`,
-  },
-  colonyName: {
-    id: `${displayName}.colonyName`,
-    defaultMessage: `Your colony`,
-  },
-  tokenName: {
-    id: `${displayName}.tokenName`,
-    defaultMessage: `Your colony's native token`,
+  description: {
+    id: `${displayName}.description`,
+    defaultMessage:
+      'Check to ensure your Colony’s details are correct as they can not be changed later.',
   },
 });
 
-const options: Row[] = [
-  {
-    title: MSG.userName,
-    valueKey: 'username',
-  },
-  {
-    title: MSG.colonyName,
-    valueKey: 'colonyName',
-  },
-  {
-    title: MSG.tokenName,
-    valueKey: ['tokenSymbol', 'tokenName'],
-  },
-];
+const StepConfirmAllInput = ({
+  nextStep,
+  wizardValues,
+  previousStep,
+  setStep,
+  wizardProps,
+}: Props) => {
+  const { user } = useAppContext();
 
-type Props = Pick<WizardStepProps<FormValues>, 'nextStep' | 'wizardValues'>;
-
-const StepConfirmAllInput = ({ nextStep, wizardValues }: Props) => {
   const updatedWizardValues = {
     ...wizardValues,
+    tokenAvatar:
+      wizardValues.tokenChoiceVerify === 'create'
+        ? wizardValues.tokenAvatar
+        : undefined,
+    tokenThumbnail:
+      wizardValues.tokenChoiceVerify === 'create'
+        ? wizardValues.tokenThumbnail
+        : undefined,
+    token:
+      wizardValues.tokenChoiceVerify === 'create' ? null : wizardValues.token,
+    tokenChoice: wizardValues.tokenChoiceVerify,
+    tokenAddress:
+      wizardValues.tokenChoiceVerify === 'create'
+        ? ''
+        : wizardValues.tokenAddress,
     /**
      * Use tokenName/tokenSymbol if creating a new token,
      * or get the values from token object if using an existing one
      */
     tokenName: wizardValues.tokenName || wizardValues.token?.name,
-    tokenSymbol: wizardValues.tokenSymbol || wizardValues.token?.symbol,
+    tokenSymbol:
+      wizardValues.tokenSymbol?.toUpperCase() || wizardValues.token?.symbol,
+    inviteCode: wizardProps.inviteCode,
+    userId: user?.walletAddress || '',
   };
 
   const transform = mergePayload(updatedWizardValues);
@@ -76,23 +76,13 @@ const StepConfirmAllInput = ({ nextStep, wizardValues }: Props) => {
       transform={transform}
       onSuccess={() => nextStep(wizardValues)}
     >
-      {({ formState: { isSubmitting } }) => (
-        <section className={styles.main}>
-          <HeadingText
-            appearance={{ margin: 'none' }}
-            text={MSG.title}
-            paragraph={MSG.subtitle}
-          />
-          <div className={styles.finalContainer}>
-            <CardRow cardOptions={options} values={updatedWizardValues} />
-          </div>
-          <SubmitFormButton
-            dataTest="userInputConfirm"
-            loading={isSubmitting}
-            disabled={isSubmitting}
-          />
-        </section>
-      )}
+      <HeaderRow
+        heading={MSG.heading}
+        description={MSG.description}
+        descriptionValues={{ br: <br /> }}
+      />
+      <CardRow updatedWizardValues={updatedWizardValues} setStep={setStep} />
+      <ButtonRow previousStep={previousStep} />
     </ActionForm>
   );
 };

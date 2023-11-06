@@ -18,7 +18,7 @@ const setEnvVariables = async () => {
 exports.handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
 
-  const { shareableInvites = 0 } = event.arguments?.input || {};
+  const { shareableInvites = 2 } = event.arguments?.input || {};
 
   try {
     await setEnvVariables();

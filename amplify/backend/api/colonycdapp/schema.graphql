@@ -17,6 +17,14 @@ input TokenFromEverywhereArguments {
   """
   tokenAddress: String!
   network: String
+  """
+  The URL of the token image
+  """
+  avatar: String
+  """
+  The URL of the token thumbnail image
+  """
+  thumbnail: String
 }
 
 """
@@ -185,6 +193,14 @@ input CreateUniqueColonyInput {
   Version of the currently deployed Colony contract
   """
   version: Int!
+  """
+  Invite Code to create Colony
+  """
+  inviteCode: ID!
+  """
+  User id of creator to associate with further invite codes
+  """
+  userId: ID!
 }
 
 """
@@ -1800,6 +1816,11 @@ type User @model {
   """
   transactionHistory: [Transaction!]
     @hasMany(indexName: "byInitiatorAddress", fields: ["id"])
+
+  """
+  A user who has been invited by colony will be able to pass on the private beta invite
+  """
+  privateBetaInviteCode: PrivateBetaInviteCode @hasOne
 }
 
 """
@@ -3297,13 +3318,14 @@ type PrivateBetaInviteCode @model {
   """
   id: ID!
   """
-  The invite code is a use once only affair
-  """
-  valid: Boolean @default(value: "true")
-  """
   This tracks the amount of invites this invite code is also allowed to generate
+  The default value relates to the initial user and their subsequent invitee
   """
-  shareableInvites: Int
+  shareableInvites: Int @default(value: "2")
+  """
+  User ID associated with the Invite
+  """
+  userId: ID
 }
 
 type SimpleTargetProfile {

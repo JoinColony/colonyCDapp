@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import clsx from 'clsx';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -24,6 +25,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
   groupId,
   isContentOpened,
   onClick,
+  hideButton = false,
 }) => {
   const { formatMessage } = useIntl();
 
@@ -58,34 +60,40 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
     ) || '';
 
   return (
-    <li className="border-b border-gray-200 last:border-none">
-      <button
-        type="button"
-        aria-label={formatMessage({ id: 'handle.unselect.transaction' })}
-        className="w-full"
-        onClick={() => onClick(groupId)}
-      >
-        <div className="flex items-center justify-between py-3.5">
-          <div className="flex flex-col items-start">
-            <h4 className="text-1">{value}</h4>
-            <p className="text-gray-600 text-xs">
-              <FormattedMessage
-                {...defaultTransactionGroupMessageDescriptorDescriptionId}
-                {...values.group?.description}
-                values={
-                  values.group?.descriptionValues ||
-                  arrayToObject(values.params)
-                }
-              />
-            </p>
+    <li
+      className={clsx(`border-b border-gray-200 last:border-none`, {
+        'list-none': hideButton,
+      })}
+    >
+      {!hideButton && (
+        <button
+          type="button"
+          aria-label={formatMessage({ id: 'handle.unselect.transaction' })}
+          className="w-full"
+          onClick={() => onClick && onClick(groupId)}
+        >
+          <div className="flex items-center justify-between py-3.5">
+            <div className="flex flex-col items-start">
+              <h4 className="text-1">{value}</h4>
+              <p className="text-gray-600 text-xs">
+                <FormattedMessage
+                  {...defaultTransactionGroupMessageDescriptorDescriptionId}
+                  {...values.group?.description}
+                  values={
+                    values.group?.descriptionValues ||
+                    arrayToObject(values.params)
+                  }
+                />
+              </p>
+            </div>
+            <TransactionStatus
+              groupCount={transactionGroup.length}
+              status={status}
+              date={transactionGroup?.[0].createdAt}
+            />
           </div>
-          <TransactionStatus
-            groupCount={transactionGroup.length}
-            status={status}
-            date={transactionGroup?.[0].createdAt}
-          />
-        </div>
-      </button>
+        </button>
+      )}
 
       <AnimatePresence>
         {isContentOpened && (

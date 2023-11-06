@@ -3,6 +3,7 @@ import { Message } from '~types';
 
 export type InputProps = {
   maxCharNumber?: number;
+  errorMaxChar?: boolean;
   placeholder?: string;
   shouldNumberOfCharsBeVisible?: boolean;
   isError?: boolean;
@@ -16,6 +17,9 @@ export type InputProps = {
   successfulMessage?: string;
   isDisabled?: boolean;
   disabledTooltipMessage?: Message;
+  labelMessage?: Message;
+  labelClassName?: string;
+  subLabelMessage?: Message;
 };
 
 export type PillProps = {

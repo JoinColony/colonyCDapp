@@ -103,6 +103,10 @@
   .text-6 {
     @apply font-bold text-xs;
   }
+
+  .description-1 {
+    @apply text-sm text-gray-700;
+  }
 }
 
 @layer components {

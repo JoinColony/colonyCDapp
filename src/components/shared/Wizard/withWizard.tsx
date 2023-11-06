@@ -48,8 +48,7 @@ const withWizard =
   }: WizardArgs<F>) =>
   (
     OuterComponent: ComponentType<WizardOuterProps<F>>,
-    outerProps?: Pick<WizardOuterProps<F>, 'hideQR'>,
-    stepsProps?: WizardStepProps<F, Partial<F>>,
+    stepsProps?: WizardStepProps<F, P, Partial<F>>,
   ) => {
     const Wizard = (wizardProps: P) => {
       const { user } = useAppContext();
@@ -75,10 +74,19 @@ const withWizard =
         setStep((wizardStep) => wizardStep + 1);
       };
 
-      const prev = () => {
+      const prev = (vals: StepValues<F> | undefined) => {
         if (step === 0) {
           return false;
         }
+
+        if (vals) {
+          setStepsValues((currentVals) => {
+            const valsCopy = [...currentVals];
+            valsCopy[step] = vals;
+            return valsCopy;
+          });
+        }
+
         setStep((wizardStep) => (wizardStep === 0 ? 0 : wizardStep - 1));
         return true;
       };
@@ -103,16 +111,17 @@ const withWizard =
           resetWizard={reset}
           wizardValues={mergedValues}
           loggedInUser={user}
-          {...outerProps}
         >
           <Step
             step={displayedStep}
             stepCount={stepCount}
             nextStep={next}
             previousStep={prev}
+            setStep={setStep}
             resetWizard={reset}
             setStepsValues={setStepsValues}
             wizardValues={mergedValues}
+            wizardProps={wizardProps}
             // Wizard form helpers to take some shortcuts if needed
             wizardForm={{
               // Get values just for this step

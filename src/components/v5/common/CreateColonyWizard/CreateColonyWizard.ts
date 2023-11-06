@@ -8,7 +8,6 @@ import StepColonyName from './StepColonyName';
 import StepConfirmAllInput from './StepConfirmAllInput';
 import StepConfirmTransactions from './StepConfirmTransactions';
 import StepCreateToken from './StepCreateToken';
-import StepSelectToken from './StepSelectToken';
 import StepTokenChoice from './StepTokenChoice';
 
 const stepArray: StepType[] = [
@@ -25,26 +24,14 @@ export type FormValues = {
   tokenAddress: string;
   token?: Token | null;
   colonyName: string;
-  tokenChoice: 'create' | 'select';
+  tokenChoice?: 'create' | 'select';
+  tokenChoiceVerify: 'create' | 'select';
   displayName: string;
+  tokenAvatar?: string;
+  tokenThumbnail?: string;
 };
 
-const pickTokenStep = (tokenChoice: FormValues['tokenChoice']) => {
-  if (tokenChoice === 'select') return StepSelectToken;
-  return StepCreateToken;
-};
-
-/*
- * This is a step function to allow the wizard flow to branch
- * off into two instead of just stepping through an array in a linear manner
- */
-const stepFunction: StepsFn<any> = (
-  step: number,
-  { tokenChoice }: Pick<FormValues, 'tokenChoice'>,
-): ComponentType<any> => {
-  if (step === 2) {
-    return pickTokenStep(tokenChoice);
-  }
+const stepFunction: StepsFn<any> = (step: number): ComponentType<any> => {
   return stepArray[step] as ComponentType<any>;
 };
 
@@ -52,7 +39,14 @@ export type Step1 = Pick<FormValues, 'colonyName' | 'displayName'>;
 export type Step2 = Pick<FormValues, 'tokenChoice'>;
 export type Step3 = Pick<
   FormValues,
-  'tokenAddress' | 'tokenName' | 'tokenSymbol' | 'token'
+  | 'tokenAddress'
+  | 'tokenName'
+  | 'tokenSymbol'
+  | 'token'
+  | 'tokenChoice'
+  | 'tokenChoiceVerify'
+  | 'tokenAvatar'
+  | 'tokenThumbnail'
 >;
 
 const initialValues: [Step1, Step2, Step3] = [
@@ -64,6 +58,7 @@ const initialValues: [Step1, Step2, Step3] = [
     tokenChoice: 'create',
   },
   {
+    tokenChoiceVerify: 'create',
     tokenAddress: '',
     tokenName: '',
     tokenSymbol: '',
@@ -71,7 +66,7 @@ const initialValues: [Step1, Step2, Step3] = [
   },
 ];
 
-interface WizardProps {
+export interface WizardProps {
   inviteCode: string;
 }
 

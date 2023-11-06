@@ -68,6 +68,6 @@ query GetMembersForColony($input: MembersForColonyInput!) {
 
 query GetPrivateBetaCodeInviteValidity($id: ID!) {
   getPrivateBetaInviteCode(id: $id) {
-    valid
+    shareableInvites
   }
 }
