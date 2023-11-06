@@ -169,6 +169,8 @@
     "@formatjs/intl-pluralrules": "^5.0.2",
     "@formatjs/intl-relativetimeformat": "^11.0.2",
     "@hookform/resolvers": "^2.9.10",
+    "@phosphor-icons/react": "^2.0.14",
+    "@piwikpro/react-piwik-pro": "^1.2.1",
     "@popperjs/core": "^2.3.3",
     "@storybook/addon-styling": "^1.0.0",
     "@tailwindcss/container-queries": "^0.1.1",

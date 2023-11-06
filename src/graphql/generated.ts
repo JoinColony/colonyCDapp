@@ -1344,7 +1344,7 @@ export type CreateMotionMessageInput = {
 export type CreatePrivateBetaInviteCodeInput = {
   id?: InputMaybe<Scalars['ID']>;
   shareableInvites?: InputMaybe<Scalars['Int']>;
-  userId?: InputMaybe<Scalars['ID']>;
+  valid?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type CreateProfileInput = {
@@ -1455,16 +1455,12 @@ export type CreateUniqueColonyInput = {
   colonyNativeTokenId: Scalars['ID'];
   /** Unique identifier for the Colony. This is the Colony's contract address */
   id: Scalars['ID'];
-  /** Invite Code to create Colony */
-  inviteCode: Scalars['ID'];
   /** Display name of the Colony */
   name: Scalars['String'];
   /** Status information for the Colony */
   status?: InputMaybe<ColonyStatusInput>;
   /** Type of the Colony (regular or MetaColony) */
   type?: InputMaybe<ColonyType>;
-  /** User id of creator to associate with further invite codes */
-  userId: Scalars['ID'];
   /** Version of the currently deployed Colony contract */
   version: Scalars['Int'];
 };
@@ -1480,7 +1476,6 @@ export type CreateUniqueUserInput = {
 export type CreateUserInput = {
   id?: InputMaybe<Scalars['ID']>;
   profileId?: InputMaybe<Scalars['ID']>;
-  userPrivateBetaInviteCodeId?: InputMaybe<Scalars['ID']>;
 };
 
 export type CreateUserStakeInput = {
@@ -3113,7 +3108,7 @@ export type ModelPrivateBetaInviteCodeConditionInput = {
   not?: InputMaybe<ModelPrivateBetaInviteCodeConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelPrivateBetaInviteCodeConditionInput>>>;
   shareableInvites?: InputMaybe<ModelIntInput>;
-  userId?: InputMaybe<ModelIdInput>;
+  valid?: InputMaybe<ModelBooleanInput>;
 };
 
 export type ModelPrivateBetaInviteCodeConnection = {
@@ -3128,7 +3123,7 @@ export type ModelPrivateBetaInviteCodeFilterInput = {
   not?: InputMaybe<ModelPrivateBetaInviteCodeFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelPrivateBetaInviteCodeFilterInput>>>;
   shareableInvites?: InputMaybe<ModelIntInput>;
-  userId?: InputMaybe<ModelIdInput>;
+  valid?: InputMaybe<ModelBooleanInput>;
 };
 
 export type ModelProfileConditionInput = {
@@ -3718,7 +3713,7 @@ export type ModelSubscriptionPrivateBetaInviteCodeFilterInput = {
   id?: InputMaybe<ModelSubscriptionIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionPrivateBetaInviteCodeFilterInput>>>;
   shareableInvites?: InputMaybe<ModelSubscriptionIntInput>;
-  userId?: InputMaybe<ModelSubscriptionIdInput>;
+  valid?: InputMaybe<ModelSubscriptionBooleanInput>;
 };
 
 export type ModelSubscriptionProfileFilterInput = {
@@ -3983,7 +3978,6 @@ export type ModelUserConditionInput = {
   not?: InputMaybe<ModelUserConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelUserConditionInput>>>;
   profileId?: InputMaybe<ModelIdInput>;
-  userPrivateBetaInviteCodeId?: InputMaybe<ModelIdInput>;
 };
 
 export type ModelUserConnection = {
@@ -3998,7 +3992,6 @@ export type ModelUserFilterInput = {
   not?: InputMaybe<ModelUserFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelUserFilterInput>>>;
   profileId?: InputMaybe<ModelIdInput>;
-  userPrivateBetaInviteCodeId?: InputMaybe<ModelIdInput>;
 };
 
 export type ModelUserStakeConditionInput = {
@@ -5246,14 +5239,11 @@ export type PrivateBetaInviteCode = {
   createdAt: Scalars['AWSDateTime'];
   /** The id functions as the invite code */
   id: Scalars['ID'];
-  /**
-   * This tracks the amount of invites this invite code is also allowed to generate
-   * The default value relates to the initial user and their subsequent invitee
-   */
+  /** This tracks the amount of invites this invite code is also allowed to generate */
   shareableInvites?: Maybe<Scalars['Int']>;
   updatedAt: Scalars['AWSDateTime'];
-  /** User ID associated with the Invite */
-  userId?: Maybe<Scalars['ID']>;
+  /** The invite code is a use once only affair */
+  valid?: Maybe<Scalars['Boolean']>;
 };
 
 /** Represents a user's profile within the Colony Network */
@@ -7486,11 +7476,7 @@ export type TokenUsersArgs = {
 
 /** Input data for fetching a token's information from DB or chain */
 export type TokenFromEverywhereArguments = {
-  /** The URL of the token image */
-  avatar?: InputMaybe<Scalars['String']>;
   network?: InputMaybe<Scalars['String']>;
-  /** The URL of the token thumbnail image */
-  thumbnail?: InputMaybe<Scalars['String']>;
   /** Address of the token on the blockchain */
   tokenAddress: Scalars['String'];
 };
@@ -7964,7 +7950,7 @@ export type UpdateMotionMessageInput = {
 export type UpdatePrivateBetaInviteCodeInput = {
   id: Scalars['ID'];
   shareableInvites?: InputMaybe<Scalars['Int']>;
-  userId?: InputMaybe<Scalars['ID']>;
+  valid?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type UpdateProfileInput = {
@@ -8070,7 +8056,6 @@ export type UpdateTransactionInput = {
 export type UpdateUserInput = {
   id: Scalars['ID'];
   profileId?: InputMaybe<Scalars['ID']>;
-  userPrivateBetaInviteCodeId?: InputMaybe<Scalars['ID']>;
 };
 
 export type UpdateUserStakeInput = {
@@ -8095,8 +8080,6 @@ export type User = {
   createdAt: Scalars['AWSDateTime'];
   /** Unique identifier for the user (wallet address) */
   id: Scalars['ID'];
-  /** A user who has been invited by colony will be able to pass on the private beta invite */
-  privateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   /** Profile information of the user */
   profile?: Maybe<Profile>;
   /** Profile ID associated with the user */

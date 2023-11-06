@@ -17,6 +17,8 @@ import PopoverBase from '~v5/shared/PopoverBase';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks';
 
 import { UserHubButtonProps } from './types';
+import styles from './UserHubButton.module.css';
+import { useAnalyticsContext } from '~context/AnalyticsContext';
 
 export const displayName =
   'common.Extensions.UserNavigation.partials.UserHubButton';
@@ -30,6 +32,7 @@ const UserHubButton: FC<UserHubButtonProps> = ({
   const { wallet, user } = useAppContext();
   const [isUserHubOpen, setIsUserHubOpen] = useState(false);
 
+  const { trackEvent } = useAnalyticsContext();
   const walletAddress = wallet?.address;
 
   const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
@@ -73,6 +76,11 @@ const UserHubButton: FC<UserHubButtonProps> = ({
     );
 
   useDisableBodyScroll(visible && isMobile);
+  const handleButtonClick = () => {
+    setOpenItemIndex(undefined);
+    trackEvent('User Interaction', 'Click', 'UserHub Button');
+    toggleOff();
+  };
 
   return (
     <div ref={ref}>
@@ -84,10 +92,7 @@ const UserHubButton: FC<UserHubButtonProps> = ({
         className={clsx({
           '!border-blue-400': visible && isMobile,
         })}
-        onClick={() => {
-          setOpenItemIndex(undefined);
-          toggleOff();
-        }}
+        onClick={handleButtonClick}
       >
         <div className="flex items-center gap-3">
           {/* If there's a user, there's a wallet */}

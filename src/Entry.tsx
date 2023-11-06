@@ -5,6 +5,7 @@ import { IntlProvider } from 'react-intl';
 import { ApolloProvider } from '@apollo/client';
 
 import { getContext, ContextModule } from '~context';
+import { AnalyticsContextProvider } from '~context/AnalyticsContext';
 
 import messages from './i18n/en.json';
 import actionMessages from './i18n/en-actions';
@@ -41,9 +42,11 @@ const Entry = ({ store }: Props) => {
     >
       <ApolloProvider client={apolloClient}>
         <ReduxProvider store={store}>
-          <Router>
-            <Routes />
-          </Router>
+          <AnalyticsContextProvider>
+            <Router>
+              <Routes />
+            </Router>
+          </AnalyticsContextProvider>
         </ReduxProvider>
       </ApolloProvider>
     </IntlProvider>
