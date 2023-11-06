@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 import { useController } from 'react-hook-form';
+import { SealCheck } from '@phosphor-icons/react';
 
 import { isHexString } from 'ethers/lib/utils';
 import { useUserSelect } from './hooks';
@@ -53,7 +54,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
   return (
     <div className="sm:relative w-full flex items-center">
       {readonly ? (
-        <>
+        <div className="flex items-center justify-center gap-1">
           <UserAvatar
             user={userByAddress || field.value}
             userName={userDisplayName}
@@ -63,11 +64,9 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
             }
           />
           {usersOptions.isUserVerified && (
-            <span className="flex ml-2 text-blue-400">
-              <Icon name="verified" />
-            </span>
+            <SealCheck className="text-blue-400" size={14} />
           )}
-        </>
+        </div>
       ) : (
         <>
           <button
@@ -76,7 +75,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
             className={clsx(
               'flex text-md transition-colors md:hover:text-blue-400',
               {
-                'text-gray-400': !isError,
+                'text-gray-900': !isError,
                 'text-negative-400': isError,
               },
             )}
@@ -84,7 +83,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
             aria-label={formatText({ id: 'ariaLabel.selectUser' })}
           >
             {userByAddress || field.value ? (
-              <>
+              <div className="flex items-center justify-center gap-1">
                 <UserAvatar
                   user={userByAddress || field.value}
                   userName={userDisplayName}
@@ -96,11 +95,9 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
                   }
                 />
                 {usersOptions.isUserVerified && (
-                  <span className="flex ml-2 text-blue-400">
-                    <Icon name="verified" />
-                  </span>
+                  <SealCheck className="text-blue-400" size={14} />
                 )}
-              </>
+              </div>
             ) : (
               formatText({ id: 'actionSidebar.selectMember' })
             )}
