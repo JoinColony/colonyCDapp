@@ -4,6 +4,7 @@ import { defineMessages } from 'react-intl';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
 import { formatText } from '~utils/intl';
+import { useColonyContext } from '~hooks';
 
 const displayName = 'v5.common.ActionsContent.partials.ColonyObjectiveFields';
 
@@ -30,50 +31,58 @@ const MSG = defineMessages({
   },
 });
 
-const ColonyObjectiveFields: FC = () => (
-  <>
-    <ActionFormRow
-      iconName="article"
-      title={formatText(MSG.title)}
-      fieldName="colonyObjectiveTitle"
-    >
-      <FormInputBase
-        name="colonyObjectiveTitle"
-        placeholder={formatText(MSG.titlePlaceholder)}
-        mode="secondary"
-        message={undefined}
-      />
-    </ActionFormRow>
-    <ActionFormRow
-      iconName="file-text"
-      title={formatText(MSG.description)}
-      fieldName="colonyObjectiveDescription"
-    >
-      <FormInputBase
-        name="colonyObjectiveDescription"
-        placeholder={formatText(MSG.descriptionPlaceholder)}
-        mode="secondary"
-        message={undefined}
-      />
-    </ActionFormRow>
-    <ActionFormRow
-      iconName="percent"
-      title={formatText(MSG.progress)}
-      fieldName="colonyObjectiveProgress"
-    >
-      <FormInputBase
-        type="number"
-        max={100}
-        name="colonyObjectiveProgress"
-        placeholder="0"
-        suffix={<span className="text-md">%</span>}
-        mode="secondary"
-        autoWidth
-        message={undefined}
-      />
-    </ActionFormRow>
-  </>
-);
+const ColonyObjectiveFields: FC = () => {
+  const { colony } = useColonyContext();
+  const { objective } = colony?.metadata || {};
+
+  return (
+    <>
+      <ActionFormRow
+        iconName="article"
+        title={formatText(MSG.title)}
+        fieldName="colonyObjectiveTitle"
+      >
+        <FormInputBase
+          name="colonyObjectiveTitle"
+          placeholder={formatText(MSG.titlePlaceholder)}
+          mode="secondary"
+          message={undefined}
+          value={objective?.title}
+        />
+      </ActionFormRow>
+      <ActionFormRow
+        iconName="file-text"
+        title={formatText(MSG.description)}
+        fieldName="colonyObjectiveDescription"
+      >
+        <FormInputBase
+          name="colonyObjectiveDescription"
+          placeholder={formatText(MSG.descriptionPlaceholder)}
+          mode="secondary"
+          message={undefined}
+          value={objective?.description}
+        />
+      </ActionFormRow>
+      <ActionFormRow
+        iconName="percent"
+        title={formatText(MSG.progress)}
+        fieldName="colonyObjectiveProgress"
+      >
+        <FormInputBase
+          type="number"
+          max={100}
+          name="colonyObjectiveProgress"
+          placeholder="0"
+          suffix={<span className="text-md">%</span>}
+          mode="secondary"
+          autoWidth
+          message={undefined}
+          value={objective?.progress}
+        />
+      </ActionFormRow>
+    </>
+  );
+};
 
 ColonyObjectiveFields.displayName = displayName;
 
