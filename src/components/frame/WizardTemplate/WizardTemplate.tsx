@@ -7,24 +7,20 @@ import { FormValues } from '~v5/common/CreateColonyWizard/CreateColonyWizard';
 import { LANDING_PAGE_ROUTE } from '~routes/index';
 import { useAppContext } from '~hooks';
 
-const displayName = 'frame.WizardTemplateColony';
+const displayName = 'frame.WizardTemplate';
 
 type Props = Pick<WizardOuterProps<FormValues>, 'children'>;
 
-const WizardTemplateColony = ({ children }: Props) => {
+const WizardTemplate = ({ children }: Props) => {
   const { wallet, walletConnecting } = useAppContext();
 
   if (!wallet && !walletConnecting) {
     return <Navigate to={LANDING_PAGE_ROUTE} replace />;
   }
 
-  return (
-    <main className="flex flex-col items-center">
-      <article className="max-w-[33.125rem]">{children}</article>
-    </main>
-  );
+  return <article className="mx-auto max-w-[33.125rem]">{children}</article>;
 };
 
-WizardTemplateColony.displayName = displayName;
+WizardTemplate.displayName = displayName;
 
-export default WizardTemplateColony;
+export default WizardTemplate;

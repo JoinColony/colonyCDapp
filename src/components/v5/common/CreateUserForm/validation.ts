@@ -1,8 +1,14 @@
 import { array, object, string } from 'yup';
 
-import { GetProfileByEmailDocument, GetUserByNameDocument } from '~gql';
+import {
+  EmailPermissions,
+  GetProfileByEmailDocument,
+  GetUserByNameDocument,
+} from '~gql';
 import { intl } from '~utils/intl';
 import { createYupTestFromQuery } from '~utils/yup/tests';
+
+import { UserEmailPermission } from './types';
 
 export const MAX_USERNAME_LENGTH = 30;
 
@@ -71,5 +77,14 @@ export const validationSchema = object({
       formatMessage({ id: 'error.emailAlreadyRegistered' }),
       isEmailAlreadyRegistered,
     ),
-  emailPermissions: array().defined().of(string().defined()),
+  emailPermissions: array()
+    .defined()
+    .of(
+      string()
+        .defined()
+        .oneOf<UserEmailPermission>([
+          EmailPermissions.IsHuman,
+          EmailPermissions.SendNotifications,
+        ]),
+    ),
 }).defined();

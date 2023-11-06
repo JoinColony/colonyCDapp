@@ -4,7 +4,7 @@ import { Props as FormattedMessageProps } from 'react-intl/src/components/messag
 
 import Heading from '~shared/Heading';
 import ColonyButton from '~shared/Button';
-import WizardTemplate from '~frame/WizardTemplateColony';
+import WizardTemplate from '~frame/WizardTemplate';
 import withWizard from '~shared/Wizard/withWizard';
 
 import {
