@@ -9,7 +9,12 @@ import InputBase from './InputBase';
 
 const displayName = 'v5.common.Fields.FormInputBase';
 
-const FormInputBase: FC<FormInputBaseProps> = ({ name, type, ...rest }) => {
+const FormInputBase: FC<FormInputBaseProps> = ({
+  name,
+  type,
+  value: initialValue,
+  ...rest
+}) => {
   const {
     field: { onChange, value },
     fieldState: { invalid, error },
@@ -24,7 +29,7 @@ const FormInputBase: FC<FormInputBaseProps> = ({ name, type, ...rest }) => {
       {...rest}
       readOnly={readonly}
       type={type}
-      value={value?.toString() || ''}
+      value={value?.toString() || initialValue}
       onChange={(event) => {
         const { value: inputValue, valueAsNumber } = event.target;
 

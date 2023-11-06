@@ -36,6 +36,7 @@ import {
   ExpenditureFragment,
   ExpenditureSlotFragment,
   ExpenditurePayoutFragment,
+  ColonyObjectiveFragment,
   SafeFragment,
   SafeTransactionDataFragment,
   SafeTransactionType,
@@ -151,3 +152,5 @@ export type NFTData = NftDataFragment;
 export type FunctionParam = FunctionParamFragment;
 
 export { SafeTransactionType };
+
+export type ColonyObjective = ColonyObjectiveFragment;
