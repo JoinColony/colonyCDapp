@@ -27,6 +27,7 @@ import { getFormSuccessFn } from './utils';
 import ExtensionInfo from './ExtensionInfo';
 import ExtensionsTopRow from './ExtensionTopRow';
 import { SetupComponentMap } from './consts';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
 
 const displayName = 'frame.Extensions.pages.ExtensionDetailsPage';
 
@@ -40,6 +41,8 @@ const ExtensionDetailsPage: FC = () => {
   );
   const [waitingForEnableConfirmation, setWaitingForEnableConfirmation] =
     useState(false);
+
+  useSetPageHeadingTitle(formatText({ id: 'extensionsPage.title' }));
 
   if (!colony || !extensionData) {
     return null;

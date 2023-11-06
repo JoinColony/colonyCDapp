@@ -6,15 +6,18 @@ import {
   UserTransactionContextProvider,
 } from '~context';
 import { MemberModalProvider } from '~context/MemberModalContext';
+import PageHeadingContextProvider from '~context/PageHeadingContext';
 import { SharedLayout } from '~frame/Extensions/layouts';
 
 const MainRoute = () => (
   <ColonyContextProvider>
     <MemberModalProvider>
       <UserTransactionContextProvider>
-        <SharedLayout>
-          <Outlet />
-        </SharedLayout>
+        <PageHeadingContextProvider>
+          <SharedLayout>
+            <Outlet />
+          </SharedLayout>
+        </PageHeadingContextProvider>
       </UserTransactionContextProvider>
     </MemberModalProvider>
   </ColonyContextProvider>

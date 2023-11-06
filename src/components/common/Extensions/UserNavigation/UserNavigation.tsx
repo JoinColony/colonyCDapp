@@ -2,12 +2,13 @@ import React, { FC, useLayoutEffect } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import { useIntl } from 'react-intl';
 
-import { useAppContext, useGetNetworkToken, useMobile } from '~hooks';
+import { useAppContext, useGetNetworkToken, useTablet } from '~hooks';
 import Button, { Hamburger } from '~v5/shared/Button';
 import Token from './partials/Token';
 import UserMenu from './partials/UserMenu';
 import { getLastWallet } from '~utils/autoLogin';
 import { UserNavigationProps } from './types';
+import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks';
 
 export const displayName = 'common.Extensions.UserNavigation';
 
@@ -17,7 +18,9 @@ const UserNavigation: FC<UserNavigationProps> = ({
 }) => {
   const { wallet, user, connectWallet } = useAppContext();
   const { formatMessage } = useIntl();
-  const isMobile = useMobile();
+  const isTablet = useTablet();
+  const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
+  const [, { toggleOff }] = mobileMenuToggle;
 
   const isWalletConnected = !!wallet?.address;
   const nativeToken = useGetNetworkToken();
@@ -32,9 +35,9 @@ const UserNavigation: FC<UserNavigationProps> = ({
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip(
       {
-        delayShow: isMobile ? 0 : 200,
+        delayShow: isTablet ? 0 : 200,
         delayHide: 0,
-        placement: isMobile ? 'bottom' : 'bottom-end',
+        placement: isTablet ? 'bottom' : 'bottom-end',
         trigger: 'click',
         interactive: true,
         onVisibleChange: () => {},
@@ -44,7 +47,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
           {
             name: 'offset',
             options: {
-              offset: isMobile ? [0, -71] : [0, 8],
+              offset: isTablet ? [0, 0] : [0, 8],
             },
           },
         ],
@@ -52,7 +55,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
     );
 
   return (
-    <div className="flex gap-1">
+    <div className="flex gap-1 md:relative">
       {isWalletConnected ? (
         <div className="flex gap-1">
           {nativeToken && <Token nativeToken={nativeToken} />}
@@ -63,17 +66,21 @@ const UserNavigation: FC<UserNavigationProps> = ({
           mode="tertiary"
           isFullRounded
           onClick={connectWallet}
-          iconName={visible && isMobile ? 'close' : 'cardholder'}
+          iconName={visible && isTablet ? 'close' : 'cardholder'}
           size="small"
         >
           {formatMessage({ id: 'connectWallet' })}
         </Button>
       )}
       <Hamburger
-        isOpened={visible && isMobile}
-        iconName={visible && isMobile ? 'close' : 'list'}
+        isOpened={visible && isTablet}
+        iconName={isTablet ? 'gear-six' : 'list'}
+        iconSize={isTablet ? 'small' : 'extraTiny'}
         setTriggerRef={setTriggerRef}
-        onClick={() => {}}
+        onClick={() => {
+          setOpenItemIndex(undefined);
+          toggleOff();
+        }}
       />
       {visible && (
         <UserMenu
@@ -85,7 +92,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
           nativeToken={nativeToken}
         />
       )}
-      {!isMobile && txButtons}
+      {!isTablet && txButtons}
     </div>
   );
 };

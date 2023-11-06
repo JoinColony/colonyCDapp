@@ -1,16 +1,18 @@
 import React, { FC, useMemo } from 'react';
-import { useIntl } from 'react-intl';
 
 import ExtensionItem from '~common/Extensions/ExtensionItem';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
 import { useExtensionsData } from '~hooks';
 import { AnyExtensionData } from '~types';
+import { formatText } from '~utils/intl';
 
 const displayName = 'frame.Extensions.pages.ExtensionsPage';
 
 const ExtensionsPage: FC = () => {
   const { availableExtensionsData, installedExtensionsData } =
     useExtensionsData();
-  const { formatMessage } = useIntl();
+
+  useSetPageHeadingTitle(formatText({ id: 'extensionsPage.title' }));
 
   const allExtensions: AnyExtensionData[] = useMemo(
     () => [...availableExtensionsData, ...installedExtensionsData],
@@ -18,22 +20,19 @@ const ExtensionsPage: FC = () => {
   );
 
   const categorizedExtensions: Record<string, AnyExtensionData[]> =
-    allExtensions.reduce(
-      (acc, extension) => {
-        if (!acc[extension.category]) {
-          acc[extension.category] = [];
-        }
+    allExtensions.reduce((acc, extension) => {
+      if (!acc[extension.category]) {
+        acc[extension.category] = [];
+      }
 
-        acc[extension.category].push(extension);
-        return acc;
-      },
-      {} as Record<string, AnyExtensionData[]>, // Type assertion here
-    );
+      acc[extension.category].push(extension);
+      return acc;
+    }, {});
 
   return (
     <div>
       <h4 className="heading-4 mb-6">
-        {formatMessage({ id: 'extensionsPage.availableExtensions' })}
+        {formatText({ id: 'extensionsPage.availableExtensions' })}
       </h4>
       {Object.entries(categorizedExtensions).map(([category, extensions]) => (
         <div

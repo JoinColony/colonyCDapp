@@ -11,13 +11,18 @@ const displayName = 'v5.ColonyAvatar';
 const ColonyAvatar: FC<ColonyAvatarProps> = ({
   chainIconName,
   colonyImageProps,
+  size = 'default',
   className,
 }) => {
   return (
     <div
       className={clsx(
         className,
-        'flex justify-center items-center flex-shrink-0 relative text-[2.25rem] h-[1em] w-[1em]',
+        'flex justify-center items-center flex-shrink-0 relative h-[1em] w-[1em]',
+        {
+          'text-[2.25rem]': size === 'default',
+          'text-[1.125rem]': size === 'small',
+        },
       )}
     >
       <figure

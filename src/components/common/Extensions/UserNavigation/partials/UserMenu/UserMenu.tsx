@@ -1,22 +1,24 @@
 import React, { FC, useState } from 'react';
 import clsx from 'clsx';
 
-import { UserMenuProps } from './types';
-import { useAppContext, useMobile } from '~hooks';
-import Button from '~v5/shared/Button';
-import Icon from '~shared/Icon';
-import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
-import styles from './UserMenu.module.css';
-import PopoverBase from '~v5/shared/PopoverBase';
-import WalletConnectedTopMenu from '../WalletConnectedTopMenu';
-import Link from '~v5/shared/Link';
-import UserSubmenu from '../UserSubmenu';
-import { userMenuItems } from './consts';
-import TitleLabel from '~v5/shared/TitleLabel';
-import { ActionButton } from '~shared/Button';
+import { useAppContext, useTablet } from '~hooks';
 import { ActionTypes } from '~redux';
 import { formatText } from '~utils/intl';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
+import { ActionButton } from '~shared/Button';
+import Icon from '~shared/Icon';
+import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
+import Button from '~v5/shared/Button';
+import PopoverBase from '~v5/shared/PopoverBase';
+import Link from '~v5/shared/Link';
+import TitleLabel from '~v5/shared/TitleLabel';
+
+import WalletConnectedTopMenu from '../WalletConnectedTopMenu';
+import UserSubmenu from '../UserSubmenu';
+
+import styles from './UserMenu.module.css';
+import { userMenuItems } from './consts';
+import { UserMenuProps } from './types';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserMenu';
 
@@ -28,26 +30,28 @@ const UserMenu: FC<UserMenuProps> = ({
   isVerified,
   walletAddress,
 }) => {
-  const isMobile = useMobile();
+  const isTablet = useTablet();
   const { connectWallet, updateWallet } = useAppContext();
   const { profile } = user || {};
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 
-  const iconName = isMobile ? 'caret-down' : 'caret-right';
-  const iconSize = isMobile ? 'small' : 'extraSmall';
+  const iconName = isTablet ? 'caret-down' : 'caret-right';
+  const iconSize = isTablet ? 'small' : 'extraSmall';
 
   return (
     <PopoverBase
       setTooltipRef={setTooltipRef}
       tooltipProps={tooltipProps}
-      withTooltipStyles
-      classNames={clsx(styles.userMenuPopup, 'shadow-default', {
-        'border-none shadow-none': isMobile,
-        'max-w-[20.125rem]': !isMobile,
-      })}
+      withTooltipStyles={!isTablet}
+      classNames={clsx(
+        'w-full px-0 py-6 bg-base-white h-[calc(100vh-var(--top-content-height)-1px)] md:h-auto !top-[calc(100%+1px)] md:!top-auto md:rounded-lg md:border md:border-gray-100 md:max-w-[20.125rem] md:shadow-default',
+        {
+          '!translate-y-0 overflow-hidden': isTablet,
+        },
+      )}
     >
       <div
-        className={clsx('transition-transform pt-[4.1625rem] sm:pt-0', {
+        className={clsx('transition-transform', {
           '-translate-x-0': !activeSubmenu,
           '-translate-x-[100vw] absolute': activeSubmenu,
         })}
@@ -142,7 +146,7 @@ const UserMenu: FC<UserMenuProps> = ({
         </div>
       </div>
       <div
-        className={clsx('transition-transform pt-[4.1625rem] sm:pt-0', {
+        className={clsx('transition-transform', {
           'translate-x-0': activeSubmenu,
           'translate-x-full': !activeSubmenu,
         })}

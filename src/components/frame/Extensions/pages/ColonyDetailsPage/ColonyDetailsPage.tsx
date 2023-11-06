@@ -8,12 +8,17 @@ import Avatar from '~v5/shared/Avatar';
 import Button, { TextButton } from '~v5/shared/Button';
 import ObjectiveBox from '~v5/common/ObjectiveBox';
 import ExternalLink from '~shared/Extensions/ExternalLink';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
+import { formatText } from '~utils/intl';
 
 const displayName = 'frame.Extensions.pages.ColonyDetailsPage';
 
 const ColonyDetailsPage: FC = () => {
   const isMobile = useMobile();
   const { colony } = useColonyContext();
+
+  useSetPageHeadingTitle(formatText({ id: 'colonyDetailsPage.title' }));
+
   const { name, metadata } = colony || {};
   const { avatar, thumbnail, description, externalLinks } = metadata || {};
 

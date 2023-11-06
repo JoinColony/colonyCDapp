@@ -72,6 +72,7 @@ export const useMainMenuItems = () => {
     actionSidebarToggle: [, { toggle: toggleActionSideBar }],
   } = useActionSidebarContext();
 
+  // @todo: update menu items with correct contents and related actions
   const mainMenuItems: NavigationSidebarItem[] = [
     {
       key: '1',

@@ -3,9 +3,9 @@ import { ToastContainer } from 'react-toastify';
 
 import { CREATE_COLONY_ROUTE } from '~routes';
 import { useColonyContext } from '~hooks';
-import { NETWORK_DATA } from '~constants';
 import Logo from '~images/logo-new.svg';
 import { useMemberModalContext } from '~context/MemberModalContext';
+import usePageHeadingContext from '~context/PageHeadingContext/hooks';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
 import styles from '~shared/Extensions/Toast/Toast.module.css';
 import { formatText } from '~utils/intl';
@@ -13,9 +13,11 @@ import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
 import CalamityBanner from '~v5/shared/CalamityBanner';
 import PageLayout from '~v5/frame/PageLayout';
 
-import UserNavigationWrapper from './UserNavigationWrapper';
+import UserNavigationWrapper from './partials/UserNavigationWrapper';
 import { useCalamityBannerInfo } from './hooks';
 import { SharedLayoutProps } from './types';
+import ColonySwitcherContent from './partials/ColonySwitcherContent';
+import { getChainIconName } from './utils';
 
 const displayName = 'frame.Extensions.layouts.SharedLayout';
 
@@ -26,6 +28,7 @@ const SharedLayout: FC<PropsWithChildren<SharedLayoutProps>> = ({
   mainMenuItems,
 }) => {
   const { colony } = useColonyContext();
+  const { title: pageHeadingTitle, breadcrumbs = [] } = usePageHeadingContext();
 
   const {
     isMemberModalOpen,
@@ -38,9 +41,7 @@ const SharedLayout: FC<PropsWithChildren<SharedLayoutProps>> = ({
   const { metadata, chainMetadata } = colony || {};
   const { chainId } = chainMetadata || {};
 
-  const chainIcon = Object.values(NETWORK_DATA).find(
-    ({ chainId: id }) => id === chainId,
-  )?.iconName;
+  const chainIcon = getChainIconName(chainId);
 
   return (
     <>
@@ -60,28 +61,24 @@ const SharedLayout: FC<PropsWithChildren<SharedLayoutProps>> = ({
             <CalamityBanner items={calamityBannerItems} />
           ) : undefined
         }
-        // @todo: add context
         headerProps={{
-          pageHeadingProps: {
-            title: 'Members',
-            breadcrumbs: [
-              {
-                key: '1',
-                label: 'Metacolony',
-                href: '/',
-              },
-              {
-                key: '2',
-                dropdownOptions: [
-                  {
-                    label: 'All teams',
-                    href: '/all-teams',
-                  },
+          pageHeadingProps: pageHeadingTitle
+            ? {
+                title: pageHeadingTitle,
+                breadcrumbs: [
+                  ...(colony?.name
+                    ? [
+                        {
+                          key: '1',
+                          href: `/colony/${colony?.name}`,
+                          label: colony?.name,
+                        },
+                      ]
+                    : []),
+                  ...breadcrumbs,
                 ],
-                selectedValue: '/all-teams',
-              },
-            ],
-          },
+              }
+            : undefined,
           userNavigation: <UserNavigationWrapper />,
         }}
         navigationSidebarProps={{
@@ -99,8 +96,7 @@ const SharedLayout: FC<PropsWithChildren<SharedLayoutProps>> = ({
             content: {
               title:
                 formatText({ id: 'navigation.colonySwitcher.title' }) || '',
-              // @todo: add colony switcher content
-              content: <p>colony</p>,
+              content: <ColonySwitcherContent />,
               bottomActionProps: {
                 text: formatText({ id: 'button.createNewColony' }),
                 iconName: 'plus',

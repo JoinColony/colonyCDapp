@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { MemberContextProviderWithSearchAndFilter as MemberContextProvider } from '~context/MemberContext';
+import usePageHeadingContext, {
+  useSetPageHeadingTitle,
+} from '~context/PageHeadingContext/hooks';
+import { formatText } from '~utils/intl';
 import Navigation from '~v5/common/Navigation';
 import TwoColumns from '~v5/frame/TwoColumns';
 
@@ -46,12 +50,38 @@ const navigationItems = [
   },
 ];
 
-const ColonyMembersRoute = () => (
-  <MemberContextProvider>
-    <TwoColumns aside={<Navigation navigationItems={navigationItems} />}>
-      <Outlet />
-    </TwoColumns>
-  </MemberContextProvider>
-);
+const ColonyMembersRoute = () => {
+  const { setBreadcrumbs } = usePageHeadingContext();
+
+  useSetPageHeadingTitle(formatText({ id: 'membersPage.title' }));
+
+  useEffect(() => {
+    setBreadcrumbs([
+      {
+        key: 'members',
+        // @todo: replace with actual teams
+        dropdownOptions: [
+          {
+            label: 'All members',
+            href: '/members',
+          },
+        ],
+        selectedValue: '/members',
+      },
+    ]);
+
+    return () => {
+      setBreadcrumbs([]);
+    };
+  }, []);
+
+  return (
+    <MemberContextProvider>
+      <TwoColumns aside={<Navigation navigationItems={navigationItems} />}>
+        <Outlet />
+      </TwoColumns>
+    </MemberContextProvider>
+  );
+};
 
 export default ColonyMembersRoute;

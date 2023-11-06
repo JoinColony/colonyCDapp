@@ -38,18 +38,11 @@ const Hamburger: FC<HamburgerProps> = ({
         <SpinnerLoader appearance={{ size: 'medium' }} />
       ) : (
         <button
-          className={clsx(
-            styles.hamburger,
-            'text-1',
-            `${
-              isOpened
-                ? 'border-base-white hover:border-base-white text-gray-400'
-                : 'border-gray-200 hover:border-blue-400 text-gray-700'
-            }`,
-            {
-              'pointer-events-none': disabled,
-            },
-          )}
+          className={clsx(styles.hamburger, 'text-1 text-gray-700', {
+            'pointer-events-none': disabled,
+            'border-blue-400 md:hover:border-base-white': isOpened,
+            'border-gray-200 md:hover:border-blue-400': !isOpened,
+          })}
           disabled={disabled || loading}
           aria-label={ariaLabelText}
           aria-busy={loading}
