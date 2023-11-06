@@ -47,3 +47,4 @@ query GetTotalColonyActions($colonyId: ID!) {
   searchColonyActions(filter: { colonyId: { eq: $colonyId } }) {
     total
   }
+}
