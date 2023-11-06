@@ -153,6 +153,7 @@ function* manageExistingSafesAction({
               false,
               false,
               false,
+              false,
               updatedColonySafes,
             ),
           },
