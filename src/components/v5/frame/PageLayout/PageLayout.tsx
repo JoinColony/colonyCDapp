@@ -1,7 +1,10 @@
 import React, { FC, PropsWithChildren, useEffect, useRef } from 'react';
+import { AnimatePresence } from 'framer-motion';
+
 import { useTablet } from '~hooks';
 
 import NavigationSidebar from '../NavigationSidebar';
+import NavigationSidebarContextProvider from '../NavigationSidebar/partials/NavigationSidebarContext';
 import PageHeader from './partials/PageHeader';
 import PageHeading from './partials/PageHeading';
 import { PageLayoutProps } from './types';
@@ -41,58 +44,62 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
     };
   }, []);
 
-  const { userNavigation, breadcrumbs, title } = headerProps;
+  const { userNavigation, pageHeadingProps } = headerProps;
 
   return (
-    <div className="w-full md:h-screen md:flex md:flex-col" ref={wrapperRef}>
-      {isTablet ? (
-        <>
-          <div
-            className="sticky top-0 left-0 right-0 w-full z-[1] bg-white"
-            ref={topContentWrapperRef}
-          >
-            {topContent && <div className="flex-shrink-0">{topContent}</div>}
-            <NavigationSidebar
-              {...navigationSidebarProps}
-              additionalMobileContent={userNavigation}
-            />
-          </div>
-          <div className="inner pt-6">
-            <PageHeading
-              breadcrumbs={breadcrumbs}
-              title={title}
-              className="mb-6"
-            />
-            {children}
-          </div>
-        </>
-      ) : (
-        <>
-          {topContent && (
-            <div className="flex-shrink-0" ref={topContentWrapperRef}>
-              {topContent}
-            </div>
-          )}
-          <div className="w-full md:h-[calc(100vh-var(--top-content-height))] md:pl-4 md:pt-4 md:flex md:gap-8">
-            <div className="md:w-[5.125rem] relative z-[1]">
-              <div className="md:absolute md:top-0 md:bottom-4 md:left-0">
-                <NavigationSidebar {...navigationSidebarProps} />
+    <NavigationSidebarContextProvider>
+      <div className="w-full md:h-screen md:flex md:flex-col" ref={wrapperRef}>
+        <AnimatePresence>
+          {isTablet ? (
+            <>
+              <div
+                className="sticky top-0 left-0 right-0 w-full z-[1] bg-white"
+                ref={topContentWrapperRef}
+              >
+                {topContent && (
+                  <div className="flex-shrink-0">{topContent}</div>
+                )}
+                <NavigationSidebar
+                  {...navigationSidebarProps}
+                  additionalMobileContent={userNavigation}
+                />
               </div>
-            </div>
-            <div className="md:flex-grow flex flex-col gap-8">
-              <div className="flex-shrink-0 pt-5 pr-4">
-                <PageHeader {...headerProps} />
+              <div className="inner pt-6">
+                {pageHeadingProps && (
+                  <PageHeading {...pageHeadingProps} className="mb-6" />
+                )}
+                {children}
               </div>
-              <div className="flex-grow overflow-auto pr-4">
-                <div className="max-w-[79.875rem] w-full mx-auto">
-                  {children}
+            </>
+          ) : (
+            <>
+              {topContent && (
+                <div className="flex-shrink-0" ref={topContentWrapperRef}>
+                  {topContent}
+                </div>
+              )}
+              <div className="w-full md:h-[calc(100vh-var(--top-content-height))] md:pl-4 md:pt-4 md:flex md:gap-8">
+                <div className="md:w-[5.125rem] relative z-[1]">
+                  <div className="md:absolute md:top-0 md:bottom-4 md:left-0">
+                    <NavigationSidebar {...navigationSidebarProps} />
+                  </div>
+                </div>
+                <div className="md:flex-grow flex flex-col gap-8">
+                  <div className="flex-shrink-0 pt-5 pr-4">
+                    <PageHeader {...headerProps} />
+                  </div>
+                  <div className="flex-grow overflow-auto pr-4">
+                    <div className="max-w-[79.875rem] w-full mx-auto">
+                      {children}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
+            </>
+          )}
+        </AnimatePresence>
+      </div>
+    </NavigationSidebarContextProvider>
   );
 };
 

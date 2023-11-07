@@ -1,21 +1,28 @@
-import clsx from 'clsx';
 import React, { FC } from 'react';
+import clsx from 'clsx';
+
 import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
+
 import { ColonyAvatarProps } from './types';
 
 const displayName = 'v5.ColonyAvatar';
 
 const ColonyAvatar: FC<ColonyAvatarProps> = ({
-  chainImageProps,
+  chainIconName,
   colonyImageProps,
+  size = 'default',
   className,
 }) => {
   return (
     <div
       className={clsx(
         className,
-        'flex justify-center items-center flex-shrink-0 relative text-[2.25rem] h-[1em] w-[1em]',
+        'flex justify-center items-center flex-shrink-0 relative h-[1em] w-[1em]',
+        {
+          'text-[2.25rem]': size === 'default',
+          'text-[1.125rem]': size === 'small',
+        },
       )}
     >
       <figure
@@ -42,7 +49,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
           />
         )}
       </figure>
-      {chainImageProps?.src && (
+      {chainIconName && (
         <figure
           className={`
           h-[0.5em]
@@ -63,14 +70,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
           items-center
       `}
         >
-          <img
-            {...chainImageProps}
-            alt={
-              chainImageProps?.alt ||
-              formatText({ id: 'colonyAvatar.chainImage.alt' })
-            }
-            className="h-[96%] w-[96%] object-cover object-center rounded-full"
-          />
+          <Icon name={chainIconName} className="h-[96%] w-[96%]" />
         </figure>
       )}
     </div>

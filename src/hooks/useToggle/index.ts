@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import {
   OnBeforeCloseCallback,
@@ -54,11 +55,15 @@ const documentClickHandler = (event: MouseEvent): void => {
 
 const useToggle = ({
   defaultToggleState = false,
+  closeOnRouteChange = false,
 }: {
   defaultToggleState?: boolean;
+  closeOnRouteChange?: boolean;
 } = {}): UseToggleReturnType => {
   const [toggleState, setToggleState] = useState(defaultToggleState);
   const onBeforeCloseCallbacksRef = useRef<OnBeforeCloseCallback[]>([]);
+  const hasMountedRef = useRef(false);
+  const { pathname } = useLocation();
 
   const toggle = useCallback(() => {
     setTimeout(() => {
@@ -84,6 +89,16 @@ const useToggle = ({
       document.addEventListener('click', documentClickHandler);
     }
   }, []);
+
+  useEffect(() => {
+    if (!hasMountedRef.current || !closeOnRouteChange) {
+      hasMountedRef.current = true;
+
+      return;
+    }
+
+    toggleOff();
+  }, [toggleOff, pathname, closeOnRouteChange]);
 
   const registerContainerRef = useCallback(
     (ref: HTMLElement | null): void => {

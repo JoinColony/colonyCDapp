@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { ButtonProps } from './types';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
 import styles from './Button.module.css';
-import Icon from '~shared/Icon';
+import ButtonContent from './ButtonContent';
 
 const displayName = 'v5.Button';
 
@@ -34,8 +34,6 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
 
   const titleText =
     typeof title === 'string' ? title : title && formatMessage(title);
-  const buttonText =
-    typeof text === 'string' ? text : text && formatMessage(text, textValues);
   const ariaLabelText =
     typeof ariaLabel === 'string'
       ? ariaLabel
@@ -49,7 +47,6 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
         <button
           className={clsx(
             'flex items-center justify-center font-medium transition-all duration-normal',
-            `${isFullRounded ? 'rounded-full' : 'rounded-lg'}`,
             {
               'text-md min-h-[2.5rem] px-4 py-2': size === 'default',
               'text-md min-h-[2.5rem] px-[0.875rem] py-[0.625rem]':
@@ -72,6 +69,8 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
               'w-full': isFullSize,
               'border border-gray-300 !text-gray-300 !bg-base-white':
                 disabled && isIconRight,
+              'rounded-full': isFullRounded,
+              'rounded-lg': !isFullRounded,
             },
             className,
           )}
@@ -83,32 +82,16 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
           ref={setTriggerRef}
           {...rest}
         >
-          {mode === 'completed' && (
-            <span className="flex shrink-0 mr-2">
-              <Icon name="check" appearance={{ size: 'extraTiny' }} />
-            </span>
-          )}
-          {iconName && !isIconRight && (
-            <span className="flex shrink-0">
-              <Icon name={iconName} appearance={{ size: iconSize }} />
-            </span>
-          )}
-          {(buttonText || children) && (
-            <>
-              {iconName ? (
-                <span className={isIconRight ? 'mr-2' : 'ml-2'}>
-                  {buttonText || children}
-                </span>
-              ) : (
-                buttonText || children
-              )}
-            </>
-          )}
-          {iconName && isIconRight && (
-            <span className="flex shrink-0">
-              <Icon name={iconName} appearance={{ size: iconSize }} />
-            </span>
-          )}
+          <ButtonContent
+            mode={mode}
+            iconName={iconName}
+            iconSize={iconSize}
+            isIconRight={isIconRight}
+            text={text}
+            textValues={textValues}
+          >
+            {children}
+          </ButtonContent>
         </button>
       )}
     </>

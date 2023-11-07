@@ -2,8 +2,10 @@ import React, { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import NotificationBanner from '~common/Extensions/NotificationBanner';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
 import { useColonyContext, useColonyContractVersion, useMobile } from '~hooks';
 import { canColonyBeUpgraded } from '~utils/checks';
+import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button';
 import ColonyVersionWidget from '~v5/shared/ColonyVersionWidget';
 
@@ -14,6 +16,8 @@ const AdvancedPage: FC = () => {
   const { version } = colony || {};
   const { colonyContractVersion } = useColonyContractVersion();
   const isMobile = useMobile();
+
+  useSetPageHeadingTitle(formatText({ id: 'advancedPage.title' }));
 
   const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);
 

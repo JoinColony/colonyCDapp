@@ -1,21 +1,13 @@
-import type { ReactNode } from 'react';
-
+import { NavigationSidebarProps } from '~v5/frame/NavigationSidebar/types';
 import type { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
 
-export interface MainLayoutProps {
-  calamityBannerItems?: CalamityBannerItemProps[];
-  header?: ReactNode;
-  hideColonies?: boolean;
-  sidebar?: ReactNode;
+export interface UseCalamityBannerInfoReturnType {
+  canUpgrade?: boolean;
+  calamityBannerItems: CalamityBannerItemProps[];
 }
 
-export type ColonyLayoutProps = Omit<
-  MainLayoutProps,
-  'calamityBannerItems' | 'header' | 'sidebar'
->;
-
-export interface HeaderProps {
-  navBar?: ReactNode;
-  txButtons?: ReactNode;
-  userHub?: ReactNode;
+export interface SharedLayoutProps {
+  mobileBottomContent?: NavigationSidebarProps['mobileBottomContent'];
+  hamburgerLabel?: NavigationSidebarProps['hamburgerLabel'];
+  mainMenuItems?: NavigationSidebarProps['mainMenuItems'];
 }

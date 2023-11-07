@@ -7,7 +7,6 @@ import {
 } from 'react-router-dom';
 
 import ColonyActions from '~common/ColonyActions';
-// import ColonyEvents from '~dashboard/ColonyEvents';
 
 import ColonyDecisions from '~common/ColonyDecisions';
 import { ColonyHomeProvider } from '~context/ColonyHomeContext';
@@ -24,11 +23,15 @@ import { useColonyContext } from '~hooks';
 import Expenditures from '~common/Expenditures';
 
 import ColonyHomeLayout from './ColonyHomeLayout';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
+import { formatText } from '~utils/intl';
 
 const displayName = 'common.ColonyHome';
 
 const ColonyHome = () => {
   const { colony } = useColonyContext();
+
+  useSetPageHeadingTitle(formatText({ id: 'colonyHome.title' }));
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);

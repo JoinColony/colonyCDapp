@@ -1,12 +1,26 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { MainLayout } from '~frame/Extensions/layouts';
+import {
+  ColonyContextProvider,
+  UserTransactionContextProvider,
+} from '~context';
+import { MemberModalProvider } from '~context/MemberModalContext';
+import PageHeadingContextProvider from '~context/PageHeadingContext';
+import { SharedLayout } from '~frame/Extensions/layouts';
 
 const MainRoute = () => (
-  <MainLayout>
-    <Outlet />
-  </MainLayout>
+  <ColonyContextProvider>
+    <MemberModalProvider>
+      <UserTransactionContextProvider>
+        <PageHeadingContextProvider>
+          <SharedLayout>
+            <Outlet />
+          </SharedLayout>
+        </PageHeadingContextProvider>
+      </UserTransactionContextProvider>
+    </MemberModalProvider>
+  </ColonyContextProvider>
 );
 
 export default MainRoute;

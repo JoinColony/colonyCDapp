@@ -25,9 +25,15 @@ const NavigationSidebarContextProvider: FC<PropsWithChildren> = ({
   const [openItemIndex, setOpenItemIndex] = useState<number | undefined>(
     undefined,
   );
-  const mobileMenuToggle = useToggle();
-  const secondLevelMenuToggle = useToggle();
-  const thirdLevelMenuToggle = useToggle();
+  const mobileMenuToggle = useToggle({
+    closeOnRouteChange: true,
+  });
+  const secondLevelMenuToggle = useToggle({
+    closeOnRouteChange: true,
+  });
+  const thirdLevelMenuToggle = useToggle({
+    closeOnRouteChange: true,
+  });
   const [
     isSecondLevelMenuOpen,
     { toggleOn: toggleOnSecondLevelMenu, toggleOff: toggleOffSecondLevelMenu },

@@ -1,6 +1,7 @@
 import React, { ButtonHTMLAttributes } from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { SimpleMessageValues } from '~types';
+import { LinkProps } from '../Link/types';
 
 export type ButtonMode =
   | 'primarySolid'
@@ -19,6 +20,15 @@ export type ButtonSize = 'default' | 'extraSmall' | 'small' | 'large';
 
 export type TextButtonMode = 'default' | 'medium' | 'underlined';
 
+export interface ButtonContentProps {
+  iconName?: string;
+  iconSize?: IconSize;
+  mode?: ButtonMode;
+  isIconRight?: boolean;
+  text?: MessageDescriptor | string;
+  textValues?: SimpleMessageValues;
+}
+
 export interface CommonButtonProps
   extends Omit<
     ButtonHTMLAttributes<HTMLButtonElement>,
@@ -32,20 +42,16 @@ export interface CommonButtonProps
   setTriggerRef?: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
 }
 
-export type IconSize = 'extraTiny' | 'tiny' | 'small' | 'extraSmall';
-
-export interface ButtonProps extends CommonButtonProps {
-  mode?: ButtonMode;
+export interface ButtonAppearanceCommonProps extends ButtonContentProps {
   size?: ButtonSize;
   isFullSize?: boolean;
   isFullRounded?: boolean;
-  iconName?: string;
-  iconSize?: IconSize;
-  isIconRight?: boolean;
   className?: string;
-  text?: MessageDescriptor | string;
-  textValues?: SimpleMessageValues;
 }
+
+export type IconSize = 'extraTiny' | 'tiny' | 'small' | 'extraSmall';
+
+export type ButtonProps = CommonButtonProps & ButtonAppearanceCommonProps;
 
 export interface TextButtonProps extends CommonButtonProps {
   mode?: TextButtonMode;
@@ -75,3 +81,10 @@ export interface CloseButtonProps extends CommonButtonProps {
   iconSize?: IconSize;
   className?: string;
 }
+
+export type ButtonLinkProps = Omit<
+  LinkProps,
+  'text' | 'textValues' | 'className'
+> &
+  ButtonAppearanceCommonProps &
+  Pick<CommonButtonProps, 'loading' | 'disabled'>;

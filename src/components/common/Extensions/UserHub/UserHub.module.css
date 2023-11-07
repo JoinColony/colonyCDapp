@@ -3,5 +3,5 @@
 }
 
 .wrapper {
-  @apply flex border-r border-gray-100 flex-col justify-between sm:w-[13.75rem] sm:min-h-[27.75rem] shrink-0;
+  @apply flex border-r border-gray-100 flex-col justify-between sm:w-[13.85rem] sm:min-h-[27.75rem] shrink-0;
 }

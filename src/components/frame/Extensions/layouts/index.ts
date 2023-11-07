@@ -1,4 +1,3 @@
-export { default as MainLayout } from './MainLayout';
 export { default as ColonyLayout } from './ColonyLayout';
-export { default as Header } from './Header';
-export { default as ColonyHeader } from './ColonyHeader';
+export { default as SharedLayout } from './SharedLayout';
+export { default as UserNavigationWrapper } from './partials/UserNavigationWrapper';
