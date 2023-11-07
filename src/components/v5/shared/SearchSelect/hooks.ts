@@ -11,13 +11,11 @@ export const useSearchSelect = (
       items.map((item) => ({
         ...item,
         options: item.options.filter((option) => {
-          const searchQuery = searchValue.toLowerCase();
-          const optionWalletAddress = option.walletAddress?.toLowerCase() || '';
+          const optionValue = option.value.replace('-', ' ').toLowerCase();
           const optionUserName = formatText(option.label)?.toLowerCase() || '';
 
-          return (
-            [optionUserName].some((value) => value.includes(searchQuery)) ||
-            optionWalletAddress.startsWith(searchQuery)
+          return [optionValue, optionUserName].some((value) =>
+            value.includes(searchValue),
           );
         }),
       })),
