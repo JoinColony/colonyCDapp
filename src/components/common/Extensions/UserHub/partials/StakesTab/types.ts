@@ -1,20 +1,17 @@
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
 import { TabItem } from '~shared/Extensions/Tabs/types';
-import { Token, UserStake, Colony } from '~types';
+import { Token, UserStake, Colony, UserStakeStatus } from '~types';
 import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types';
 
 export interface StakesListProps {
   loading: boolean;
   stakes: UserStake[];
   colony: Colony;
-  filterOption: StakesFilterOption;
   onMotionStateFetched: (
     stakeId: string,
     motionState: NetworkMotionState,
   ) => void;
-  motionStatesMap: Map<string, NetworkMotionState>;
-  motionStatesLoading: boolean;
 }
 
 export interface StakeItemProps
@@ -33,9 +30,13 @@ export interface StakeItemProps
   colonyAddress: string;
 }
 
-export type StakesFilterOption = 'all' | 'finalizable' | 'claimable';
+export type StakesFilterType = 'all' | 'finalizable' | 'claimable';
 
-export interface StakesTabItem extends TabItem {
-  type: StakesFilterOption;
+export interface StakesFilterOption extends TabItem {
+  id: number;
+  type: StakesFilterType;
+  title: string;
+  stakeStatuses: UserStakeStatus[];
   showNotificationNumber?: boolean;
+  requiresMotionState?: boolean;
 }

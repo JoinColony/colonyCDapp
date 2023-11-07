@@ -1,65 +1,26 @@
-import { MotionState as NetworkMotionState } from '@colony/colony-js';
-
 import { UserStake } from '~types';
 
-import { StakesFilterOption, StakesTabItem } from './types';
-
-export const filterStakeByFilterOption = (
-  stake: UserStake,
-  filterOption: StakesFilterOption,
-  motionStatesMap: Map<string, NetworkMotionState>,
-) => {
-  const motionState = motionStatesMap.get(stake.id);
-  switch (filterOption) {
-    case 'all':
-      return true;
-    case 'finalizable':
-      return !stake.isClaimed && motionState === NetworkMotionState.Finalizable;
-    case 'claimable':
-      return !stake.isClaimed && motionState === NetworkMotionState.Finalized;
-    default:
-      return false;
-  }
-};
-
-// Returns true if the selected filter option requires data which is still loading
-export const isFilterOptionDataLoading = (
-  filterOption: StakesFilterOption,
-  motionStatesLoading: boolean,
-) => {
-  switch (filterOption) {
-    case 'all':
-      return false;
-    case 'finalizable':
-    case 'claimable':
-      return motionStatesLoading;
-    default:
-      return false;
-  }
-};
+import { StakesFilterType } from './types';
+import { stakesFilterOptions } from './consts';
 
 export const getStakesTabItems = (
-  tabsItems: StakesTabItem[],
-  stakes: UserStake[],
-  filterOption: StakesFilterOption,
-  motionStatesMap: Map<string, NetworkMotionState>,
+  stakesByFilterType: Record<StakesFilterType, UserStake[]>,
   motionStatesLoading: boolean,
+  activeFilterType: StakesFilterType,
 ) =>
-  tabsItems.map((item) => {
+  stakesFilterOptions.map((option) => {
     if (
-      !item.showNotificationNumber ||
-      isFilterOptionDataLoading(item.type, motionStatesLoading)
+      !option.showNotificationNumber ||
+      (option.requiresMotionState && motionStatesLoading)
     ) {
-      return item;
+      return option;
     }
 
-    const notificationNumber = stakes.filter((stake) =>
-      filterStakeByFilterOption(stake, item.type, motionStatesMap),
-    ).length;
+    const notificationNumber = stakesByFilterType[option.type].length;
 
     return {
-      ...item,
+      ...option,
       notificationNumber,
-      active: item.type === filterOption,
+      active: option.type === activeFilterType,
     };
   });

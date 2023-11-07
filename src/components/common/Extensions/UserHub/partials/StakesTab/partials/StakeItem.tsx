@@ -4,13 +4,13 @@ import { FormattedDate } from 'react-intl';
 import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types';
 import Numeral from '~shared/Numeral';
-import { useGetMotionStateQuery } from '~gql';
 import { motionTags } from '~shared/Tag';
 import { getMotionState } from '~utils/colonyMotions';
 
 import { StakeItemProps } from '../types';
 
 import styles from './StakeItem.css';
+import { useNetworkMotionState } from '~hooks/useNetworkMotionState';
 
 const displayName =
   'common.Extensions.UserHub.partials.StakesTab.partials.StakesTabItem';
@@ -23,20 +23,11 @@ const StakeItem: FC<StakeItemProps> = ({
   status,
   nativeToken,
   userStake,
-  colonyAddress,
   onMotionStateFetched,
 }) => {
-  const motionId = userStake.action?.motionData?.id;
-  const { data } = useGetMotionStateQuery({
-    variables: {
-      input: {
-        colonyAddress,
-        databaseMotionId: motionId ?? '',
-      },
-    },
-    skip: !motionId,
-  });
-  const motionState = data?.getMotionState;
+  const motionState = useNetworkMotionState(
+    userStake.action?.motionData?.nativeMotionId ?? 0,
+  );
 
   // Sync motion state with the parent component
   useEffect(() => {

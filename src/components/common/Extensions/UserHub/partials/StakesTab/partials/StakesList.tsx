@@ -1,37 +1,22 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import EmptyContent from '~v5/common/EmptyContent';
 
 import StakeItem from './StakeItem';
 import { StakesListProps } from '../types';
-import {
-  filterStakeByFilterOption,
-  isFilterOptionDataLoading,
-} from '../helpers';
 
 const StakesList = ({
-  loading,
   stakes,
+  loading,
   colony,
-  filterOption,
-  motionStatesMap,
   onMotionStateFetched,
-  motionStatesLoading,
 }: StakesListProps) => {
-  const filteredStakes = useMemo(
-    () =>
-      stakes.filter((stake) =>
-        filterStakeByFilterOption(stake, filterOption, motionStatesMap),
-      ),
-    [filterOption, motionStatesMap, stakes],
-  );
-
-  if (loading || isFilterOptionDataLoading(filterOption, motionStatesLoading)) {
+  if (loading) {
     return <SpinnerLoader appearance={{ size: 'small' }} />;
   }
 
-  if (!filteredStakes.length) {
+  if (!stakes.length) {
     return (
       <EmptyContent
         title={{ id: 'empty.content.title.stakes' }}
@@ -43,7 +28,7 @@ const StakesList = ({
 
   return (
     <>
-      {filteredStakes.map((stake) => (
+      {stakes.map((stake) => (
         <StakeItem
           key={stake.id}
           title={stake.action?.type.toString() ?? ''}

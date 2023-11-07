@@ -7,10 +7,12 @@ import Tabs from '~shared/Extensions/Tabs';
 import { useAppContext, useColonyContext, useMobile } from '~hooks';
 import { useGetUserStakesQuery } from '~gql';
 import { notNull } from '~utils/arrays';
+import { UserStake, UserStakeStatus } from '~types';
 
-import { tabsItems } from './consts';
+import { stakesFilterOptions } from './consts';
 import StakesList from './partials/StakesList';
 import { getStakesTabItems } from './helpers';
+import { StakesFilterType } from './types';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 
@@ -44,6 +46,50 @@ const StakesTab = () => {
     [],
   );
 
+  const activeFilterOption = stakesFilterOptions[activeTab];
+
+  const getStakeStatus = (
+    stake: UserStake,
+    statesMap: Map<string, NetworkMotionState>,
+  ) => {
+    if (stake.isClaimed) {
+      return UserStakeStatus.Claimed;
+    }
+
+    const motionState = statesMap.get(stake.id);
+    if (!motionState) {
+      return UserStakeStatus.Unknown;
+    }
+
+    if (motionState === NetworkMotionState.Finalizable) {
+      return UserStakeStatus.Finalizable;
+    }
+    if (
+      motionState === NetworkMotionState.Finalized ||
+      motionState === NetworkMotionState.Failed
+    ) {
+      return UserStakeStatus.Claimable;
+    }
+
+    return UserStakeStatus.Unknown;
+  };
+
+  const stakesWithStatus = userStakes.map((stake) => ({
+    ...stake,
+    status: getStakeStatus(stake, motionStatesMap),
+  }));
+  const stakesByFilterType = stakesFilterOptions.reduce((stakes, option) => {
+    const updatedStakes = {
+      ...stakes,
+      [option.type]: stakesWithStatus.filter((stake) =>
+        option.stakeStatuses.includes(stake.status),
+      ),
+    };
+
+    return updatedStakes;
+  }, {} as Record<StakesFilterType, UserStake[]>);
+  const filteredStakes = stakesByFilterType[activeFilterOption.type];
+
   /**
    * Count the number of stakes that stake on a motion and compare it to the number of motion
    * states fetched to determine if the states are still loading.
@@ -58,15 +104,16 @@ const StakesTab = () => {
     setActiveTab(id);
   }, []);
 
-  const filterOption = tabsItems[activeTab].type;
-
   // Update tabs items with the number of stakes for each filter option
-  const updatedTabsItems = getStakesTabItems(
-    tabsItems,
-    userStakes,
-    filterOption,
-    motionStatesMap,
+  const tabItems = getStakesTabItems(
+    stakesByFilterType,
     motionStatesLoading,
+    activeFilterOption.type,
+  );
+
+  const filterDataLoading = !!(
+    stakesLoading ||
+    (activeFilterOption.requiresMotionState && motionStatesLoading)
   );
 
   if (!colony) {
@@ -89,7 +136,7 @@ const StakesTab = () => {
         )}
       </div>
       <Tabs
-        items={updatedTabsItems}
+        items={tabItems}
         activeTab={activeTab}
         onTabClick={handleOnTabClick}
       >
@@ -103,13 +150,10 @@ const StakesTab = () => {
               transition={{ duration: 0.15 }}
             >
               <StakesList
-                stakes={userStakes}
-                loading={stakesLoading}
+                stakes={filteredStakes}
+                loading={filterDataLoading}
                 colony={colony}
-                filterOption={filterOption}
-                motionStatesMap={motionStatesMap}
                 onMotionStateFetched={handleOnMotionStateFetched}
-                motionStatesLoading={motionStatesLoading}
               />
             </motion.div>
           </AnimatePresence>

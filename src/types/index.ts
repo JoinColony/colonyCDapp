@@ -11,6 +11,7 @@ export * from './rpcMethods';
 export * from './network';
 export * from './domains';
 export * from './safes';
+export * from './userStake';
 
 export type WithKey = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
