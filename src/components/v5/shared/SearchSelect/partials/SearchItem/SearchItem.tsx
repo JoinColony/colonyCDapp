@@ -50,20 +50,21 @@ const SearchItem: FC<SearchItemProps> = ({
           return (
             <li
               className={clsx({
-                'w-full mb-4': isLabelVisible,
-                'inline-flex w-1/4 px-2': !isLabelVisible,
+                'w-full mb-1': isLabelVisible,
+                'inline-flex w-1/4': !isLabelVisible,
               })}
               key={value}
             >
               <button
                 type="button"
                 className={clsx(
-                  'w-full text-md relative transition-colors text-left flex items-center',
+                  'w-full text-md relative transition-colors text-left flex items-center py-1.5 rounded px-2',
                   {
                     'justify-between': !hasAvatar,
                     'justify-start': hasAvatar,
                     'text-gray-400 pointer-events-none gap-1': isDisabled,
-                    'md:hover:text-blue-400': !missingPermissions,
+                    'md:hover:bg-gray-50 md:hover:font-medium':
+                      !missingPermissions,
                   },
                 )}
                 onClick={() => {
@@ -107,7 +108,7 @@ const SearchItem: FC<SearchItemProps> = ({
                   <IconWithTooltip
                     tooltipContent={formatText({ id: missingPermissions })}
                     iconName="warning-circle"
-                    className="text-warning-400"
+                    className="text-warning-400 h-4 w-4 p-[0.094rem]"
                   />
                 )}
               </button>

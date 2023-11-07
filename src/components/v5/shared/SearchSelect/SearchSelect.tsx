@@ -85,7 +85,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
     const content = (
       <>
         <div
-          className={clsx({
+          className={clsx('px-3.5', {
             'mb-6': filteredList.length > 0 && showEmptyContent,
           })}
         >
@@ -103,13 +103,13 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
           </div>
         )}
         {!isLoading && (
-          <div className="pr-1 w-full overflow-y-scroll max-h-[calc(100vh-12rem)] sm:max-h-full">
+          <div className="pr-1 w-full overflow-y-scroll max-h-[calc(100vh-12rem)] sm:max-h-full px-1.5">
             <div>
               {filteredList.length > 0 ? (
                 filteredList.map(({ options, title, isAccordion, key }) =>
                   isAccordion ? (
                     <div className="mb-[0.625rem] last:mb-0" key={key}>
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between px-2">
                         <h5 className="text-4 text-gray-400 mb-2 uppercase">
                           {formatText(title)}
                         </h5>
@@ -119,14 +119,16 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                             className="text-gray-700"
                             onClick={() => handleAccordionClick(key)}
                           >
-                            <Icon
-                              name={
-                                openedAccordions.includes(key)
-                                  ? 'caret-up'
-                                  : 'caret-down'
-                              }
-                              appearance={{ size: 'extraTiny' }}
-                            />
+                            <span className="text-gray-700 md:hover:text-blue-400">
+                              <Icon
+                                name={
+                                  openedAccordions.includes(key)
+                                    ? 'caret-up'
+                                    : 'caret-down'
+                                }
+                                appearance={{ size: 'extraTiny' }}
+                              />
+                            </span>
                           </button>
                         )}
                       </div>
