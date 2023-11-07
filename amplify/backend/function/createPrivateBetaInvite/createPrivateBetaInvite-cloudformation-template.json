@@ -31,11 +31,8 @@
         "LambdaPermission": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
-                "Sid": "FunctionURLAllowPublicAccess",
-                "Effect": "Allow",
-                "Principal": "*",
                 "Action": "lambda:InvokeFunctionUrl",
-                "Resource": {
+                "FunctionName": {
                     "Fn::Sub": [
                         "arn:aws:lambda:${region}:${account}:function:${lambda}",
                         {
@@ -45,11 +42,7 @@
                         }
                     ]
                 },
-                "Condition": {
-                    "StringEquals": {
-                        "lambda:FunctionUrlAuthType": "NONE"
-                    }
-                }
+                "Principal": "*"
             }
         },
         "LambdaFunction": {
