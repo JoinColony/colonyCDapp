@@ -5341,6 +5341,7 @@ export type Query = {
   listUserTokens?: Maybe<ModelUserTokensConnection>;
   listUsers?: Maybe<ModelUserConnection>;
   listWatchedColonies?: Maybe<ModelWatchedColoniesConnection>;
+  searchColonyActions?: Maybe<SearchableColonyActionConnection>;
 };
 
 
@@ -6222,6 +6223,17 @@ export type QueryListWatchedColoniesArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
 };
 
+
+/** Root query type */
+export type QuerySearchColonyActionsArgs = {
+  aggregates?: InputMaybe<Array<InputMaybe<SearchableColonyActionAggregationInput>>>;
+  filter?: InputMaybe<SearchableColonyActionFilterInput>;
+  from?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableColonyActionSortInput>>>;
+};
+
 export type ReputationMiningCycleMetadata = {
   __typename?: 'ReputationMiningCycleMetadata';
   createdAt: Scalars['AWSDateTime'];
@@ -6292,6 +6304,204 @@ export enum SafeTransactionType {
   TransferFunds = 'TRANSFER_FUNDS',
   TransferNft = 'TRANSFER_NFT'
 }
+
+export type SearchableAggregateBucketResult = {
+  __typename?: 'SearchableAggregateBucketResult';
+  buckets?: Maybe<Array<Maybe<SearchableAggregateBucketResultItem>>>;
+};
+
+export type SearchableAggregateBucketResultItem = {
+  __typename?: 'SearchableAggregateBucketResultItem';
+  doc_count: Scalars['Int'];
+  key: Scalars['String'];
+};
+
+export type SearchableAggregateGenericResult = SearchableAggregateBucketResult | SearchableAggregateScalarResult;
+
+export type SearchableAggregateResult = {
+  __typename?: 'SearchableAggregateResult';
+  name: Scalars['String'];
+  result?: Maybe<SearchableAggregateGenericResult>;
+};
+
+export type SearchableAggregateScalarResult = {
+  __typename?: 'SearchableAggregateScalarResult';
+  value: Scalars['Float'];
+};
+
+export enum SearchableAggregateType {
+  Avg = 'avg',
+  Max = 'max',
+  Min = 'min',
+  Sum = 'sum',
+  Terms = 'terms'
+}
+
+export type SearchableBooleanFilterInput = {
+  eq?: InputMaybe<Scalars['Boolean']>;
+  ne?: InputMaybe<Scalars['Boolean']>;
+};
+
+export enum SearchableColonyActionAggregateField {
+  Amount = 'amount',
+  AnnotationId = 'annotationId',
+  BlockNumber = 'blockNumber',
+  ColonyActionsId = 'colonyActionsId',
+  ColonyDecisionId = 'colonyDecisionId',
+  ColonyId = 'colonyId',
+  CreatedAt = 'createdAt',
+  FromDomainId = 'fromDomainId',
+  Id = 'id',
+  IndividualEvents = 'individualEvents',
+  InitiatorAddress = 'initiatorAddress',
+  IsMotion = 'isMotion',
+  MotionDomainId = 'motionDomainId',
+  MotionId = 'motionId',
+  NewColonyVersion = 'newColonyVersion',
+  PaymentId = 'paymentId',
+  PendingColonyMetadataId = 'pendingColonyMetadataId',
+  PendingDomainMetadataId = 'pendingDomainMetadataId',
+  RecipientAddress = 'recipientAddress',
+  ShowInActionsList = 'showInActionsList',
+  ToDomainId = 'toDomainId',
+  TokenAddress = 'tokenAddress',
+  Type = 'type',
+  UpdatedAt = 'updatedAt'
+}
+
+export type SearchableColonyActionAggregationInput = {
+  field: SearchableColonyActionAggregateField;
+  name: Scalars['String'];
+  type: SearchableAggregateType;
+};
+
+export type SearchableColonyActionConnection = {
+  __typename?: 'SearchableColonyActionConnection';
+  aggregateItems: Array<Maybe<SearchableAggregateResult>>;
+  items: Array<Maybe<ColonyAction>>;
+  nextToken?: Maybe<Scalars['String']>;
+  total?: Maybe<Scalars['Int']>;
+};
+
+export type SearchableColonyActionFilterInput = {
+  amount?: InputMaybe<SearchableStringFilterInput>;
+  and?: InputMaybe<Array<InputMaybe<SearchableColonyActionFilterInput>>>;
+  annotationId?: InputMaybe<SearchableIdFilterInput>;
+  blockNumber?: InputMaybe<SearchableIntFilterInput>;
+  colonyActionsId?: InputMaybe<SearchableIdFilterInput>;
+  colonyDecisionId?: InputMaybe<SearchableIdFilterInput>;
+  colonyId?: InputMaybe<SearchableIdFilterInput>;
+  createdAt?: InputMaybe<SearchableStringFilterInput>;
+  fromDomainId?: InputMaybe<SearchableIdFilterInput>;
+  id?: InputMaybe<SearchableIdFilterInput>;
+  individualEvents?: InputMaybe<SearchableStringFilterInput>;
+  initiatorAddress?: InputMaybe<SearchableIdFilterInput>;
+  isMotion?: InputMaybe<SearchableBooleanFilterInput>;
+  motionDomainId?: InputMaybe<SearchableIntFilterInput>;
+  motionId?: InputMaybe<SearchableIdFilterInput>;
+  newColonyVersion?: InputMaybe<SearchableIntFilterInput>;
+  not?: InputMaybe<SearchableColonyActionFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<SearchableColonyActionFilterInput>>>;
+  paymentId?: InputMaybe<SearchableIntFilterInput>;
+  pendingColonyMetadataId?: InputMaybe<SearchableIdFilterInput>;
+  pendingDomainMetadataId?: InputMaybe<SearchableIdFilterInput>;
+  recipientAddress?: InputMaybe<SearchableIdFilterInput>;
+  showInActionsList?: InputMaybe<SearchableBooleanFilterInput>;
+  toDomainId?: InputMaybe<SearchableIdFilterInput>;
+  tokenAddress?: InputMaybe<SearchableIdFilterInput>;
+  type?: InputMaybe<SearchableStringFilterInput>;
+  updatedAt?: InputMaybe<SearchableStringFilterInput>;
+};
+
+export type SearchableColonyActionSortInput = {
+  direction?: InputMaybe<SearchableSortDirection>;
+  field?: InputMaybe<SearchableColonyActionSortableFields>;
+};
+
+export enum SearchableColonyActionSortableFields {
+  Amount = 'amount',
+  AnnotationId = 'annotationId',
+  BlockNumber = 'blockNumber',
+  ColonyActionsId = 'colonyActionsId',
+  ColonyDecisionId = 'colonyDecisionId',
+  ColonyId = 'colonyId',
+  CreatedAt = 'createdAt',
+  FromDomainId = 'fromDomainId',
+  Id = 'id',
+  IndividualEvents = 'individualEvents',
+  InitiatorAddress = 'initiatorAddress',
+  IsMotion = 'isMotion',
+  MotionDomainId = 'motionDomainId',
+  MotionId = 'motionId',
+  NewColonyVersion = 'newColonyVersion',
+  PaymentId = 'paymentId',
+  PendingColonyMetadataId = 'pendingColonyMetadataId',
+  PendingDomainMetadataId = 'pendingDomainMetadataId',
+  RecipientAddress = 'recipientAddress',
+  ShowInActionsList = 'showInActionsList',
+  ToDomainId = 'toDomainId',
+  TokenAddress = 'tokenAddress',
+  UpdatedAt = 'updatedAt'
+}
+
+export type SearchableFloatFilterInput = {
+  eq?: InputMaybe<Scalars['Float']>;
+  gt?: InputMaybe<Scalars['Float']>;
+  gte?: InputMaybe<Scalars['Float']>;
+  lt?: InputMaybe<Scalars['Float']>;
+  lte?: InputMaybe<Scalars['Float']>;
+  ne?: InputMaybe<Scalars['Float']>;
+  range?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+};
+
+export type SearchableIdFilterInput = {
+  eq?: InputMaybe<Scalars['ID']>;
+  exists?: InputMaybe<Scalars['Boolean']>;
+  gt?: InputMaybe<Scalars['ID']>;
+  gte?: InputMaybe<Scalars['ID']>;
+  lt?: InputMaybe<Scalars['ID']>;
+  lte?: InputMaybe<Scalars['ID']>;
+  match?: InputMaybe<Scalars['ID']>;
+  matchPhrase?: InputMaybe<Scalars['ID']>;
+  matchPhrasePrefix?: InputMaybe<Scalars['ID']>;
+  multiMatch?: InputMaybe<Scalars['ID']>;
+  ne?: InputMaybe<Scalars['ID']>;
+  range?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  regexp?: InputMaybe<Scalars['ID']>;
+  wildcard?: InputMaybe<Scalars['ID']>;
+};
+
+export type SearchableIntFilterInput = {
+  eq?: InputMaybe<Scalars['Int']>;
+  gt?: InputMaybe<Scalars['Int']>;
+  gte?: InputMaybe<Scalars['Int']>;
+  lt?: InputMaybe<Scalars['Int']>;
+  lte?: InputMaybe<Scalars['Int']>;
+  ne?: InputMaybe<Scalars['Int']>;
+  range?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+};
+
+export enum SearchableSortDirection {
+  Asc = 'asc',
+  Desc = 'desc'
+}
+
+export type SearchableStringFilterInput = {
+  eq?: InputMaybe<Scalars['String']>;
+  exists?: InputMaybe<Scalars['Boolean']>;
+  gt?: InputMaybe<Scalars['String']>;
+  gte?: InputMaybe<Scalars['String']>;
+  lt?: InputMaybe<Scalars['String']>;
+  lte?: InputMaybe<Scalars['String']>;
+  match?: InputMaybe<Scalars['String']>;
+  matchPhrase?: InputMaybe<Scalars['String']>;
+  matchPhrasePrefix?: InputMaybe<Scalars['String']>;
+  multiMatch?: InputMaybe<Scalars['String']>;
+  ne?: InputMaybe<Scalars['String']>;
+  range?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  regexp?: InputMaybe<Scalars['String']>;
+  wildcard?: InputMaybe<Scalars['String']>;
+};
 
 /**
  * Input data to store the latest available version of the core Colony contract and available extensions
@@ -8195,6 +8405,13 @@ export type GetSafeTransactionStatusQueryVariables = Exact<{
 
 
 export type GetSafeTransactionStatusQuery = { __typename?: 'Query', getSafeTransactionStatus?: Array<string> | null };
+
+export type GetTotalColonyActionsQueryVariables = Exact<{
+  colonyId: Scalars['ID'];
+}>;
+
+
+export type GetTotalColonyActionsQuery = { __typename?: 'Query', searchColonyActions?: { __typename?: 'SearchableColonyActionConnection', total?: number | null } | null };
 
 export type GetFullColonyByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -10336,6 +10553,41 @@ export function useGetSafeTransactionStatusLazyQuery(baseOptions?: Apollo.LazyQu
 export type GetSafeTransactionStatusQueryHookResult = ReturnType<typeof useGetSafeTransactionStatusQuery>;
 export type GetSafeTransactionStatusLazyQueryHookResult = ReturnType<typeof useGetSafeTransactionStatusLazyQuery>;
 export type GetSafeTransactionStatusQueryResult = Apollo.QueryResult<GetSafeTransactionStatusQuery, GetSafeTransactionStatusQueryVariables>;
+export const GetTotalColonyActionsDocument = gql`
+    query GetTotalColonyActions($colonyId: ID!) {
+  searchColonyActions(filter: {colonyId: {eq: $colonyId}}) {
+    total
+  }
+}
+    `;
+
+/**
+ * __useGetTotalColonyActionsQuery__
+ *
+ * To run a query within a React component, call `useGetTotalColonyActionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTotalColonyActionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTotalColonyActionsQuery({
+ *   variables: {
+ *      colonyId: // value for 'colonyId'
+ *   },
+ * });
+ */
+export function useGetTotalColonyActionsQuery(baseOptions: Apollo.QueryHookOptions<GetTotalColonyActionsQuery, GetTotalColonyActionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTotalColonyActionsQuery, GetTotalColonyActionsQueryVariables>(GetTotalColonyActionsDocument, options);
+      }
+export function useGetTotalColonyActionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTotalColonyActionsQuery, GetTotalColonyActionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTotalColonyActionsQuery, GetTotalColonyActionsQueryVariables>(GetTotalColonyActionsDocument, options);
+        }
+export type GetTotalColonyActionsQueryHookResult = ReturnType<typeof useGetTotalColonyActionsQuery>;
+export type GetTotalColonyActionsLazyQueryHookResult = ReturnType<typeof useGetTotalColonyActionsLazyQuery>;
+export type GetTotalColonyActionsQueryResult = Apollo.QueryResult<GetTotalColonyActionsQuery, GetTotalColonyActionsQueryVariables>;
 export const GetFullColonyByAddressDocument = gql`
     query GetFullColonyByAddress($address: ID!) {
   getColonyByAddress(id: $address) {
