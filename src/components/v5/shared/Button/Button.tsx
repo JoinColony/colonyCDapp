@@ -47,7 +47,6 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
         <button
           className={clsx(
             'flex items-center justify-center font-medium transition-all duration-normal',
-            `${isFullRounded ? 'rounded-full' : 'rounded-lg'}`,
             {
               'text-md min-h-[2.5rem] px-4 py-2': size === 'default',
               'text-md min-h-[2.5rem] px-[0.875rem] py-[0.625rem]':
@@ -70,6 +69,8 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
               'w-full': isFullSize,
               'border border-gray-300 !text-gray-300 !bg-base-white':
                 disabled && isIconRight,
+              'rounded-full': isFullRounded,
+              'rounded-lg': !isFullRounded,
             },
             className,
           )}

@@ -7,15 +7,16 @@ import {
   useAppContext,
   useColonyContext,
   useDetectClickOutside,
-  useMobile,
+  useTablet,
 } from '~hooks';
-import Button from '~v5/shared/Button';
-import PopoverBase from '~v5/shared/PopoverBase';
-import UserAvatar from '~v5/shared/UserAvatar';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
-import { UserHubButtonProps } from './types';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
+import Button from '~v5/shared/Button';
+import UserAvatar from '~v5/shared/UserAvatar';
+import PopoverBase from '~v5/shared/PopoverBase';
+import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks';
 
+import { UserHubButtonProps } from './types';
 import styles from './UserHubButton.module.css';
 
 export const displayName =
@@ -25,14 +26,16 @@ const UserHubButton: FC<UserHubButtonProps> = ({
   hideMemberReputationOnMobile,
   hideUserNameOnMobile,
 }) => {
-  const isMobile = useMobile();
+  const isTablet = useTablet();
   const { colony } = useColonyContext();
   const { wallet, user } = useAppContext();
   const { profile } = user || {};
   const walletAddress = wallet?.address;
   const [isUserHubOpen, setIsUserHubOpen] = useState(false);
+  const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
+  const [, { toggleOff }] = mobileMenuToggle;
 
-  const popperTooltipOffset = isMobile ? [0, 1] : [0, 8];
+  const popperTooltipOffset = isTablet ? [0, 1] : [0, 8];
 
   const ref = useDetectClickOutside({
     onTriggered: (e) => {
@@ -46,9 +49,9 @@ const UserHubButton: FC<UserHubButtonProps> = ({
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip(
       {
-        delayShow: isMobile ? 0 : 200,
-        delayHide: isMobile ? 0 : 200,
-        placement: isMobile ? 'bottom' : 'bottom-end',
+        delayShow: isTablet ? 0 : 200,
+        delayHide: isTablet ? 0 : 200,
+        placement: isTablet ? 'bottom' : 'bottom-end',
         trigger: 'click',
         interactive: true,
         onVisibleChange: () => {},
@@ -72,6 +75,13 @@ const UserHubButton: FC<UserHubButtonProps> = ({
         size="large"
         isFullRounded
         setTriggerRef={setTriggerRef}
+        className={clsx({
+          '!border-blue-400': (visible || isUserHubOpen) && isTablet,
+        })}
+        onClick={() => {
+          setOpenItemIndex(undefined);
+          toggleOff();
+        }}
       >
         <div className="flex items-center gap-3">
           <UserAvatar
