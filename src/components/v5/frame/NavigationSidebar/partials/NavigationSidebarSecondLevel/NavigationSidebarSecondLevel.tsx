@@ -8,6 +8,7 @@ import Button from '~v5/shared/Button';
 import { NavigationSidebarSecondLevelProps } from './types';
 import useNavigationSidebarContext from '../NavigationSidebarContext/hooks';
 import ButtonLink from '~v5/shared/Button/ButtonLink';
+import NavigationSidebarLinksList from '../NavigationSidebarLinksList';
 
 const displayName =
   'v5.frame.NavigationSidebar.partials.NavigationSidebarSecondLevel';
@@ -16,12 +17,14 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
   title,
   description,
   content,
+  additionalContent,
   onArrowClick,
   isExpanded,
   bottomActionProps,
 }) => {
   const isTablet = useTablet();
   const { setOpenItemIndex } = useNavigationSidebarContext();
+  const isContentList = Array.isArray(content);
 
   return (
     <div className="md:p-6 md:pt-[1.625rem] h-full flex flex-col justify-between gap-4 md:overflow-auto">
@@ -51,7 +54,12 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
         {description && (
           <p className="md:mt-2 text-md text-gray-600">{description}</p>
         )}
-        {content}
+        {isContentList ? (
+          <NavigationSidebarLinksList className="mt-9" items={content} />
+        ) : (
+          content
+        )}
+        {additionalContent}
       </div>
       {bottomActionProps && !isTablet && !('to' in bottomActionProps) && (
         <Button

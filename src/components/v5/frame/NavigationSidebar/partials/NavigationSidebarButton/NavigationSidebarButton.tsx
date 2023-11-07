@@ -14,6 +14,7 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
   label,
   className,
   isActive,
+  isExpanded,
   ...rest
 }) => {
   const isTablet = useTablet();
@@ -71,7 +72,7 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
           className={clsx(
             'h-[1em] w-[1em] text-[0.75rem] [&_svg]:fill-current transition-transform',
             {
-              'rotate-180': isActive,
+              'rotate-180': isActive && isExpanded,
             },
           )}
         />

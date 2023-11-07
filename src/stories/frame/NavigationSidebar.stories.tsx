@@ -60,7 +60,34 @@ const navigationSidebarMeta: Meta<typeof NavigationSidebar> = {
         label: 'Members',
         secondLevelMenuProps: {
           title: 'Members',
-          content: <p>content</p>,
+          content: [
+            {
+              key: '1',
+              label: 'Members',
+              to: '/members',
+              iconName: 'users-three',
+            },
+            {
+              key: '2',
+              label: 'Verified members',
+              to: '/verified-members',
+              iconName: 'seal-check',
+              tagProps: {
+                text: 'New',
+                mode: 'new',
+              },
+            },
+            {
+              key: '3',
+              label: 'Teams',
+              to: '/teams',
+              iconName: 'users-four',
+              disabled: true,
+              tagProps: {
+                text: 'Coming soon',
+              },
+            },
+          ],
           description: 'View and manage all members of the Colony.',
         },
         relatedActionsProps: {

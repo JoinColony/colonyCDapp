@@ -50,6 +50,7 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
                   toggleOffThirdLevelMenu();
                 }}
                 isActive={isActive || isActiveProp}
+                isExpanded={isActive}
                 label={label}
                 iconName={iconName}
               />
@@ -64,19 +65,14 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
                   >
                     <NavigationSidebarSecondLevel
                       {...secondLevelMenuProps}
-                      content={
+                      additionalContent={
                         relatedActionsProps ? (
-                          <>
-                            {secondLevelMenuProps.content}
-                            <div className="mt-4">
-                              <NavigationSidebarThirdLevel
-                                {...relatedActionsProps}
-                              />
-                            </div>
-                          </>
-                        ) : (
-                          secondLevelMenuProps.content
-                        )
+                          <div className="mt-4">
+                            <NavigationSidebarThirdLevel
+                              {...relatedActionsProps}
+                            />
+                          </div>
+                        ) : undefined
                       }
                     />
                   </motion.div>

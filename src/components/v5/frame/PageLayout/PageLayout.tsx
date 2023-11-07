@@ -23,7 +23,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
   const isTablet = useTablet();
 
   useEffect(() => {
-    if (!topContentWrapperRef.current || !wrapperRef.current) {
+    if (!topContentWrapperRef?.current || !wrapperRef?.current) {
       return undefined;
     }
 

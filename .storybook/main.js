@@ -201,6 +201,12 @@ module.exports = {
       );
     }
 
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        SAFE_ENABLED_LOCALLY: JSON.stringify(process.env.SAFE === 'enabled'),
+      }),
+    );
+
     return config;
   },
 };

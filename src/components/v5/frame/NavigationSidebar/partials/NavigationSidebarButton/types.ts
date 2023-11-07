@@ -5,5 +5,6 @@ export interface NavigationSidebarButtonProps
   iconName: string;
   label: string;
   isActive?: boolean;
+  isExpanded?: boolean;
   className?: string;
 }

@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
+import { useMatch } from 'react-router-dom';
 
 import { ColonyFragment } from '~gql';
 import {
@@ -8,16 +9,19 @@ import {
   useEnabledExtensions,
   useTransformer,
 } from '~hooks';
+import { COLONY_HOME_ROUTE } from '~routes';
 import { getAllUserRoles } from '~transformers';
 import { NetworkContractUpgradeDialog } from '~common/Dialogs';
 import { useDialog } from '~shared/Dialog';
 import { canColonyBeUpgraded, hasRoot } from '~utils/checks';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { formatText } from '~utils/intl';
 import { NavigationSidebarItem } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarMainMenu/types';
 import { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
 
 import type { UseCalamityBannerInfoReturnType } from './types';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { adminMenu, agreementsMenu, financesMenu, membersMenu } from './consts';
+import { checkIfIsActive } from './utils';
 
 export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
   const { colony } = useColonyContext();
@@ -71,6 +75,8 @@ export const useMainMenuItems = () => {
   const {
     actionSidebarToggle: [, { toggle: toggleActionSideBar }],
   } = useActionSidebarContext();
+  const { params: { '*': currentPathname = undefined } = {} } =
+    useMatch(COLONY_HOME_ROUTE) || {};
 
   // @todo: update menu items with correct contents and related actions
   const mainMenuItems: NavigationSidebarItem[] = [
@@ -93,9 +99,10 @@ export const useMainMenuItems = () => {
       key: '2',
       iconName: 'user',
       label: formatText({ id: 'navigation.members' }) || '',
+      isActive: checkIfIsActive(currentPathname, membersMenu),
       secondLevelMenuProps: {
         title: formatText({ id: 'navigation.members.title' }) || '',
-        content: <p>content</p>,
+        content: membersMenu,
         description: formatText({ id: 'navigation.members.description' }),
       },
       relatedActionsProps: {
@@ -117,9 +124,10 @@ export const useMainMenuItems = () => {
       key: '3',
       iconName: 'bank',
       label: formatText({ id: 'navigation.finances' }) || '',
+      isActive: checkIfIsActive(currentPathname, financesMenu),
       secondLevelMenuProps: {
         title: formatText({ id: 'navigation.finances.title' }) || '',
-        content: <p>content</p>,
+        content: financesMenu,
         description: formatText({ id: 'navigation.finances.description' }),
       },
       relatedActionsProps: {
@@ -141,9 +149,10 @@ export const useMainMenuItems = () => {
       key: '4',
       iconName: 'handshake',
       label: formatText({ id: 'navigation.agreements' }) || '',
+      isActive: checkIfIsActive(currentPathname, agreementsMenu),
       secondLevelMenuProps: {
         title: formatText({ id: 'navigation.agreements.title' }) || '',
-        content: <p>content</p>,
+        content: agreementsMenu,
         description: formatText({ id: 'navigation.agreements.description' }),
       },
       relatedActionsProps: {
@@ -165,9 +174,10 @@ export const useMainMenuItems = () => {
       key: '5',
       iconName: 'gear-six',
       label: formatText({ id: 'navigation.admin' }) || '',
+      isActive: checkIfIsActive(currentPathname, adminMenu),
       secondLevelMenuProps: {
         title: formatText({ id: 'navigation.admin.title' }) || '',
-        content: <p>content</p>,
+        content: adminMenu,
         description: formatText({ id: 'navigation.admin.description' }),
       },
       relatedActionsProps: {
