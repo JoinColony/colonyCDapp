@@ -5,7 +5,6 @@ import { ActionSidebarContextProvider } from '~context/ActionSidebarContext';
 import { ColonyContextProvider } from '~context/ColonyContext';
 import { ColonyDecisionProvider } from '~context/ColonyDecisionContext';
 import { MemberModalProvider } from '~context/MemberModalContext';
-import PageHeadingContextProvider from '~context/PageHeadingContext';
 import { UserTokenBalanceProvider } from '~context/UserTokenBalanceContext';
 import { UserTransactionContextProvider } from '~context/UserTransactionContext';
 import { ColonyLayout } from '~frame/Extensions/layouts';
@@ -17,11 +16,9 @@ const ColonyRoute = () => (
         <UserTokenBalanceProvider>
           <MemberModalProvider>
             <UserTransactionContextProvider>
-              <PageHeadingContextProvider>
-                <ColonyLayout>
-                  <Outlet />
-                </ColonyLayout>
-              </PageHeadingContextProvider>
+              <ColonyLayout>
+                <Outlet />
+              </ColonyLayout>
             </UserTransactionContextProvider>
           </MemberModalProvider>
         </UserTokenBalanceProvider>
