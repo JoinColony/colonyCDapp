@@ -42,7 +42,8 @@
                         }
                     ]
                 },
-                "Principal": "*"
+                "Principal": "*",
+                "FunctionUrlAuthType": "NONE"
             }
         },
         "LambdaFunction": {
