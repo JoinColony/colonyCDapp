@@ -61,6 +61,7 @@ import {
   USER_PREFERENCES_ROUTE,
   USER_ADVANCED_ROUTE,
   USER_HOME_ROUTE,
+  COLONY_SPLASH_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -92,6 +93,7 @@ const Routes = () => {
           <Route path={LANDING_PAGE_ROUTE} element={<LandingPage />} />
           <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyPage />} />
           <Route path={USER_INVITE_ROUTE} element={<ColonyPreviewPage />} />
+          <Route path={COLONY_SPLASH_ROUTE} element={<ColonyPreviewPage />} />
           <Route
             path={USER_ROUTE}
             element={

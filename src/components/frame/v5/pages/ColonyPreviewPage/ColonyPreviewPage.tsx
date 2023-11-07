@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
 import CardWithCallout from '~v5/shared/CardWithCallout/CardWithCallout';
 import Spinner from '~v5/shared/Spinner';
@@ -71,11 +71,12 @@ const ColonyPreviewPage = () => {
     colonyName: string;
   }>();
   const { formatMessage } = useIntl();
-  const { connectWallet, user } = useAppContext();
+  const { connectWallet, user, userLoading, walletConnecting } =
+    useAppContext();
 
   const navigate = useNavigate();
 
-  const { data: dataInvite, loading: loadingInvite } =
+  const { data: inviteData, loading: inviteLoading } =
     useGetColonyMemberInviteQuery({
       variables: { id: inviteCode },
       skip: !inviteCode,
@@ -83,12 +84,12 @@ const ColonyPreviewPage = () => {
 
   // @TODO: This is terrible. Once we have auth, we need a method
   // to check whether the logged in user is a member of the Colony
-  const { data: dataWhitelist, loading: loadingWhitelist } =
+  const { data: whitelistData, loading: whitelistLoading } =
     useGetColonyWhitelistByNameQuery({
       variables: { name: colonyName },
     });
 
-  const { data: dataColony, loading: loadingColony } =
+  const { data: colonyData, loading: colonyLoading } =
     useGetPublicColonyByNameQuery({
       variables: { name: colonyName },
       skip: !colonyName,
@@ -96,7 +97,7 @@ const ColonyPreviewPage = () => {
 
   const [validate] = useValidateUserInviteMutation();
 
-  const colonyAddress = dataColony?.getColonyByName?.items[0]?.colonyAddress;
+  const colonyAddress = colonyData?.getColonyByName?.items[0]?.colonyAddress;
 
   const validateAndRedirect = useCallback(async () => {
     if (!colonyAddress || !inviteCode || !user?.walletAddress) return;
@@ -110,22 +111,27 @@ const ColonyPreviewPage = () => {
     }
   }, [colonyName, colonyAddress, user, validate, navigate, inviteCode]);
 
-  if (loadingInvite || loadingWhitelist || loadingColony) {
+  if (
+    userLoading ||
+    walletConnecting ||
+    inviteLoading ||
+    whitelistLoading ||
+    colonyLoading
+  ) {
     return <Spinner loading loadingText={MSG.loadingMessage} />;
   }
 
-  const isMember = !!dataWhitelist?.getColonyByName?.items[0]?.whitelist.some(
+  const isMember = !!whitelistData?.getColonyByName?.items[0]?.whitelist.some(
     (addr) => addr === user?.walletAddress,
   );
 
   if (isMember) {
-    navigate(`/colony/${colonyName}`);
-    return null;
+    return <Navigate to={`/colony/${colonyName}`} />;
   }
 
-  const inviteIsValid = !!dataInvite?.getColonyMemberInvite?.valid;
+  const inviteIsValid = !!inviteData?.getColonyMemberInvite?.valid;
   const colonyDisplayName =
-    dataColony?.getColonyByName?.items[0]?.metadata?.displayName || colonyName;
+    colonyData?.getColonyByName?.items[0]?.metadata?.displayName || colonyName;
 
   return (
     <div className="max-w-[34rem] mx-auto">

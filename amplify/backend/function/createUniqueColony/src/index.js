@@ -218,7 +218,7 @@ exports.handler = async (event) => {
         version,
         status,
         colonyMemberInviteCode: memberInviteCode,
-        whitelist: [],
+        whitelist: [userId],
       },
     },
     graphqlURL,
