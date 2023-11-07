@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
-import CardWithCallout from '~v5/shared/CardWithCallout/CardWithCallout';
+import CardWithCallout from '~v5/shared/CardWithCallout';
 import Spinner from '~v5/shared/Spinner';
 import Button from '~v5/shared/Button';
 import { useAppContext } from '~hooks';
@@ -164,9 +164,10 @@ const ColonyPreviewPage = () => {
             />
           }
           iconName="plugs"
-          subtitle={formatMessage(MSG.connectWalletTitle)}
-          text={formatMessage(MSG.connectWalletSubtitle)}
-        />
+          subtitle={<FormattedMessage {...MSG.connectWalletTitle} />}
+        >
+          <FormattedMessage {...MSG.connectWalletSubtitle} />
+        </CardWithCallout>
       )}
       <h2 className="text-md font-semibold mt-8 mb-3">
         <FormattedMessage
@@ -189,8 +190,9 @@ const ColonyPreviewPage = () => {
         }
         iconName="lock"
         title={colonyDisplayName}
-        text={formatMessage(MSG.restrictedAccessMessage)}
-      />
+      >
+        <FormattedMessage {...MSG.restrictedAccessMessage} />
+      </CardWithCallout>
     </div>
   );
 };

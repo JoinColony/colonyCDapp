@@ -1,17 +1,17 @@
-import React, { FC } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import Icon from '~shared/Icon';
 
 import Card from '../Card';
 
 import { CardWithCalloutProps } from './types';
 
-const CardWithCallout: FC<CardWithCalloutProps> = ({
+const CardWithCallout: FC<PropsWithChildren<CardWithCalloutProps>> = ({
   button,
   className = 'border-base-black',
   iconName,
   title = null,
   subtitle,
-  text,
+  children,
 }) => {
   const titleComponent =
     typeof title == 'string' ? (
@@ -29,7 +29,7 @@ const CardWithCallout: FC<CardWithCalloutProps> = ({
       <div className="flex items-center justify-between gap-y-3 gap-x-2 flex-wrap md:flex-nowrap md:gap-y-0">
         <div>
           {subtitle && <h2 className="text-md font-medium mb-1">{subtitle}</h2>}
-          {text && <p className="text-sm text-gray-600">{text}</p>}
+          {children && <p className="text-sm text-gray-600">{children}</p>}
         </div>
         {button}
       </div>
