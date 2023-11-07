@@ -8,15 +8,15 @@ import { IconWithTooltipProps } from './types';
 const displayName = 'v5.IconWithTooltip';
 
 const IconWithTooltip: FC<PropsWithChildren<IconWithTooltipProps>> = ({
-  iconName,
   tooltipContent,
   className,
   children,
+  iconProps,
 }) => (
   <Tooltip tooltipContent={tooltipContent} className="flex items-center">
     {children}
     <span className={clsx(className, 'flex')}>
-      <Icon name={iconName} />
+      <Icon {...iconProps} />
     </span>
   </Tooltip>
 );

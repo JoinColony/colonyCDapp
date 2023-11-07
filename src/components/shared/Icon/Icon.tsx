@@ -30,7 +30,7 @@ type Appearance = {
     | 'huge';
 };
 
-interface Props extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
+export interface IconProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   /** Appearance object */
   appearance?: Appearance;
 
@@ -71,7 +71,7 @@ const Icon = ({
   title,
   titleValues,
   ...props
-}: Props) => {
+}: IconProps) => {
   // Remove the theme if it's a multiColor icon
   const multiColorAppearance = multiColorIcons[name]
     ? { size: appearance.size || 'normal' }
