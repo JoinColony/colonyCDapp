@@ -13,17 +13,19 @@ const meta: Meta<typeof IconWithTooltip> = {
         type: 'text',
       },
     },
-    iconName: {
-      name: 'icon name',
+    iconProps: {
+      name: 'icon props',
       control: {
-        type: 'text',
+        type: 'object',
       },
     },
   },
   args: {
     children: 'User',
-    iconName: 'warning-circle',
     className: 'ml-2 text-warning-400',
+    iconProps: {
+      name: 'warning-circle',
+    },
   },
 };
 
