@@ -107,8 +107,11 @@ const SearchItem: FC<SearchItemProps> = ({
                 {missingPermissions && (
                   <IconWithTooltip
                     tooltipContent={formatText({ id: missingPermissions })}
-                    iconName="warning-circle"
-                    className="text-warning-400 h-4 w-4 p-[0.094rem]"
+                    className="text-warning-400 h-4 w-4 justify-center items-center"
+                    iconProps={{
+                      name: 'warning-circle',
+                      appearance: { size: 'tiny' },
+                    }}
                   />
                 )}
               </button>
