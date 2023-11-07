@@ -3,8 +3,9 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import { useColonyContext } from '~hooks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 
-import { Heading3, Heading4 } from '~shared/Heading';
+import { Heading3 } from '~shared/Heading';
 import Button from '~v5/shared/Button';
+import CardWithCallout from '~v5/shared/CardWithCallout';
 import Modal from '~v5/shared/Modal';
 
 const displayName = 'v5.common.Modals.InviteMembersModal';
@@ -60,7 +61,7 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
 
   return (
     <Modal isOpen={isOpen} onClose={() => onClose()}>
-      <div className="mt-10 flex flex-col items-center">
+      <div className="mt-10 flex flex-col items-center mb-2">
         <Heading3
           appearance={{ theme: 'dark' }}
           className="text-gray-900 font-semibold"
@@ -70,21 +71,17 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
           <FormattedMessage {...MSG.modalDescription} />
         </p>
       </div>
-      <div className="flex flex-col items-start px-6 py-4 mt-4 mb-2 border border-gray-900 rounded">
-        <span className="rounded-lg bg-gray-100 text-sm font-medium text-gray-900 p-2 mb-2">
-          <FormattedMessage
-            {...MSG.invitesUsed}
-            values={{ invitesAvailable, invitesUsed }}
-          />
-        </span>
-        <div className="flex justify-between items-center w-full">
-          <div className="max-w-[65%]">
-            <Heading4
-              className="text-gray-900 font-medium text-md"
-              text={MSG.inviteLinkHeading}
+      <CardWithCallout
+        title={
+          <span className="rounded-lg bg-gray-100 text-sm font-medium text-gray-900 p-2">
+            <FormattedMessage
+              {...MSG.invitesUsed}
+              values={{ invitesAvailable, invitesUsed }}
             />
-            <p className="text-sm text-gray-600 mt-1">{inviteLink}</p>
-          </div>
+          </span>
+        }
+        subtitle={<FormattedMessage {...MSG.inviteLinkHeading} />}
+        button={
           <Button
             text={MSG.buttonText}
             mode={isCopied ? 'completed' : 'primaryOutline'}
@@ -93,8 +90,10 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
             className="text-sm"
             textValues={{ isCopied }}
           />
-        </div>
-      </div>
+        }
+      >
+        {inviteLink}
+      </CardWithCallout>
     </Modal>
   );
 };
