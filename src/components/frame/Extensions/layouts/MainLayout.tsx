@@ -1,41 +1,22 @@
-import React, { FC, PropsWithChildren, useLayoutEffect } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { ToastContainer } from 'react-toastify';
 
 import { CREATE_COLONY_ROUTE } from '~routes';
-import { useAppContext } from '~hooks';
 import { usePageHeadingContext } from '~context';
 import Logo from '~images/logo-new.svg';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
 import styles from '~shared/Extensions/Toast/Toast.module.css';
 import { formatText } from '~utils/intl';
 import PageLayout from '~v5/frame/PageLayout';
-import { isBasicWallet } from '~types';
-import { getLastWallet } from '~utils/autoLogin';
 
 import UserNavigationWrapper from './partials/UserNavigationWrapper';
-import { SharedLayoutProps } from './types';
+import { MainLayoutProps } from './types';
 import ColonySwitcherContent from './partials/ColonySwitcherContent';
 
-const displayName = 'frame.Extensions.layouts.SharedLayout';
+const displayName = 'frame.Extensions.layouts.MainLayout';
 
-const SharedLayout: FC<PropsWithChildren<SharedLayoutProps>> = ({
-  children,
-  mobileBottomContent,
-  hamburgerLabel,
-  mainMenuItems,
-}) => {
-  const { wallet, connectWallet } = useAppContext();
+const MainLayout: FC<PropsWithChildren<MainLayoutProps>> = ({ children }) => {
   const { title: pageHeadingTitle, breadcrumbs = [] } = usePageHeadingContext();
-
-  useLayoutEffect(() => {
-    if (
-      (!wallet || isBasicWallet(wallet)) &&
-      connectWallet &&
-      getLastWallet()
-    ) {
-      connectWallet();
-    }
-  }, [connectWallet, wallet]);
 
   return (
     <>
@@ -62,8 +43,6 @@ const SharedLayout: FC<PropsWithChildren<SharedLayoutProps>> = ({
         navigationSidebarProps={{
           logo: <Logo />,
           additionalMobileContent: <UserNavigationWrapper />,
-          mobileBottomContent,
-          hamburgerLabel,
           colonySwitcherProps: {
             avatarProps: {},
             content: {
@@ -77,7 +56,6 @@ const SharedLayout: FC<PropsWithChildren<SharedLayoutProps>> = ({
               },
             },
           },
-          mainMenuItems,
         }}
       >
         {children}
@@ -86,6 +64,6 @@ const SharedLayout: FC<PropsWithChildren<SharedLayoutProps>> = ({
   );
 };
 
-SharedLayout.displayName = displayName;
+MainLayout.displayName = displayName;
 
-export default SharedLayout;
+export default MainLayout;
