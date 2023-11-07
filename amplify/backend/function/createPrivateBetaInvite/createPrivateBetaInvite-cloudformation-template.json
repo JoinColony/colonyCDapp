@@ -74,6 +74,19 @@
             "Timeout": 25
           }
         },
+        "LambdaUrl": {
+            "Type": "AWS::Lambda::Url",
+            "DependsOn": "LambdaFunction",
+            "Properties": {
+                "AuthType": "NONE",
+                "TargetFunctionArn": {
+                    "Fn::GetAtt": [
+                        "LambdaFunction",
+                        "Arn"
+                    ]
+                }
+            }
+        },
         "LambdaExecutionRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
