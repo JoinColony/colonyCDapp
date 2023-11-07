@@ -5,7 +5,8 @@ const displayName = 'routes.WizardRoute';
 export const wizardSidebarMSGs = defineMessages({
   sidebarTitle: {
     id: `${displayName}.sidebarTitle`,
-    defaultMessage: 'Create your new Colony',
+    defaultMessage:
+      'Create your new {isCreatingColony, select, true {Colony} other {profile}}',
   },
   account: {
     id: `${displayName}.account`,

@@ -10,6 +10,7 @@ import ExternalLink from '~shared/ExternalLink';
 import { Heading3 } from '~shared/Heading';
 import { LANDING_PAGE_ROUTE } from '~routes/routeConstants';
 import Icon from '~shared/Icon';
+import { UniversalMessageValues } from '~types';
 
 import WizardSidebarItem from './WizardSidebarItem';
 import { WizardSubStep } from './WizardSidebarSubItem';
@@ -36,9 +37,14 @@ export interface WizardStep {
 interface Props {
   wizardSteps: WizardStep[];
   sidebarTitle: MessageDescriptor;
+  sidebarTitleValues?: UniversalMessageValues;
 }
 
-const WizardSidebar = ({ sidebarTitle, wizardSteps }: Props) => (
+const WizardSidebar = ({
+  sidebarTitle,
+  sidebarTitleValues,
+  wizardSteps,
+}: Props) => (
   <nav className="flex flex-col border border-slate-300 rounded-lg p-6 h-full">
     <Link to={LANDING_PAGE_ROUTE} className="w-fit h-fit mb-10">
       <Icon name="colony-icon" appearance={{ size: 'large' }} />
@@ -47,6 +53,7 @@ const WizardSidebar = ({ sidebarTitle, wizardSteps }: Props) => (
       appearance={{ theme: 'dark' }}
       className="text-gray-900 text-xl font-semibold mb-6"
       text={sidebarTitle}
+      textValues={sidebarTitleValues}
     />
     <div className="flex flex-col flex-1 content-between">
       <div className="flex flex-1 gap-4 relative">

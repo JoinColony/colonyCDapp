@@ -14,6 +14,10 @@ const WizardRoute = () => (
         <WizardSidebar
           wizardSteps={wizardSteps}
           sidebarTitle={wizardSidebarMSGs.sidebarTitle}
+          sidebarTitleValues={{
+            isCreatingColony:
+              window.location.pathname.includes('/create-colony/'),
+          }}
         />
       }
       hasWideSidebar
