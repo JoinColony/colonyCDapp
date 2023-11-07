@@ -4,8 +4,8 @@
     "Parameters": {
         "CloudWatchRule": {
             "Type": "String",
-            "Default" : "NONE",
-            "Description" : " Schedule Expression"
+            "Default": "NONE",
+            "Description": " Schedule Expression"
         },
         "deploymentBucketName": {
             "Type": "String"
@@ -16,8 +16,6 @@
         "s3Key": {
             "Type": "String"
         }
-        
-    
     },
     "Conditions": {
         "ShouldNotCreateEnvResources": {
@@ -30,49 +28,75 @@
         }
     },
     "Resources": {
-        "LambdaFunction": {
-          "Type": "AWS::Lambda::Function",
-          "Metadata": {
-            "aws:asset:path": "./src",
-            "aws:asset:property": "Code"
-          },
-          "Properties": {
-            "Code": {
-                "S3Bucket": {
-                    "Ref": "deploymentBucketName"
+        "LambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+                "Sid": "FunctionURLAllowPublicAccess",
+                "Effect": "Allow",
+                "Principal": "*",
+                "Action": "lambda:InvokeFunctionUrl",
+                "Resource": {
+                    "Fn::Sub": [
+                        "arn:aws:lambda:${region}:${account}:function:${lambda}",
+                        {
+                            "region": { "Ref": "AWS::Region" },
+                            "account": { "Ref": "AWS::AccountId" },
+                            "lambda": { "Ref": "LambdaFunction" }
+                        }
+                    ]
                 },
-                "S3Key": {
-                    "Ref": "s3Key"
-                }
-            },
-            "Handler": "index.handler",
-            "FunctionName": {
-                "Fn::If": [
-                    "ShouldNotCreateEnvResources",
-                    "createPrivateBetaInvite",
-                    {
-
-                        "Fn::Join": [
-                            "",
-                            [
-                                "createPrivateBetaInvite",
-                                "-",
-                                {
-                                    "Ref": "env"
-                                }
-                            ]
-                        ]
+                "Condition": {
+                    "StringEquals": {
+                        "lambda:FunctionUrlAuthType": "NONE"
                     }
-                ]
+                }
+            }
+        },
+        "LambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Metadata": {
+                "aws:asset:path": "./src",
+                "aws:asset:property": "Code"
             },
-            "Environment": {
-                "Variables" : {"ENV":{"Ref":"env"},"REGION":{"Ref":"AWS::Region"}}
-            },
-            "Role": { "Fn::GetAtt": ["LambdaExecutionRole", "Arn"] },
-            "Runtime": "nodejs14.x",
-            "Layers": [],
-            "Timeout": 25
-          }
+            "Properties": {
+                "Code": {
+                    "S3Bucket": {
+                        "Ref": "deploymentBucketName"
+                    },
+                    "S3Key": {
+                        "Ref": "s3Key"
+                    }
+                },
+                "Handler": "index.handler",
+                "FunctionName": {
+                    "Fn::If": [
+                        "ShouldNotCreateEnvResources",
+                        "createPrivateBetaInvite",
+                        {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "createPrivateBetaInvite",
+                                    "-",
+                                    {
+                                        "Ref": "env"
+                                    }
+                                ]
+                            ]
+                        }
+                    ]
+                },
+                "Environment": {
+                    "Variables": {
+                        "ENV": { "Ref": "env" },
+                        "REGION": { "Ref": "AWS::Region" }
+                    }
+                },
+                "Role": { "Fn::GetAtt": ["LambdaExecutionRole", "Arn"] },
+                "Runtime": "nodejs14.x",
+                "Layers": [],
+                "Timeout": 25
+            }
         },
         "LambdaUrl": {
             "Type": "AWS::Lambda::Url",
@@ -80,10 +104,7 @@
             "Properties": {
                 "AuthType": "NONE",
                 "TargetFunctionArn": {
-                    "Fn::GetAtt": [
-                        "LambdaFunction",
-                        "Arn"
-                    ]
+                    "Fn::GetAtt": ["LambdaFunction", "Arn"]
                 }
             }
         },
@@ -95,7 +116,6 @@
                         "ShouldNotCreateEnvResources",
                         "colonycdappLambdaRole5041e354",
                         {
-
                             "Fn::Join": [
                                 "",
                                 [
@@ -115,19 +135,15 @@
                         {
                             "Effect": "Allow",
                             "Principal": {
-                                "Service": [
-                                    "lambda.amazonaws.com"
-                                ]
+                                "Service": ["lambda.amazonaws.com"]
                             },
-                            "Action": [
-                                "sts:AssumeRole"
-                            ]
+                            "Action": ["sts:AssumeRole"]
                         }
                     ]
                 }
             }
-        }
-        ,"lambdaexecutionpolicy": {
+        },
+        "lambdaexecutionpolicy": {
             "DependsOn": ["LambdaExecutionRole"],
             "Type": "AWS::IAM::Policy",
             "Properties": {
@@ -138,44 +154,43 @@
                     "Statement": [
                         {
                             "Effect": "Allow",
-                            "Action": ["logs:CreateLogGroup",
-                            "logs:CreateLogStream",
-                            "logs:PutLogEvents"],
-                            "Resource": { "Fn::Sub": [ "arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*", { "region": {"Ref": "AWS::Region"}, "account": {"Ref": "AWS::AccountId"}, "lambda": {"Ref": "LambdaFunction"}} ]}
-                        },
-                        {
-                            "Sid": "AllowUnauthenticatedInvoke",
-                            "Effect": "Allow",
-                            "Principal": "*",
-                            "Action": "lambda:InvokeFunctionUrl",
-                            "Resource": { "Fn::Sub": [ "arn:aws:lambda:${region}:${account}:function:${lambda}", { "region": {"Ref": "AWS::Region"}, "account": {"Ref": "AWS::AccountId"}, "lambda": {"Ref": "LambdaFunction"}} ]}
-                        },
-                        {
-                            "Effect": "Allow",
                             "Action": [
-                              "ssm:GetParameter",
-                              "kms:Decrypt"
+                                "logs:CreateLogGroup",
+                                "logs:CreateLogStream",
+                                "logs:PutLogEvents"
                             ],
                             "Resource": {
-                              "Fn::Sub": [
-                                "arn:aws:ssm:${region}:${account}:parameter/*",
-                                {
-                                  "region": {
-                                    "Ref": "AWS::Region"
-                                  },
-                                  "account": {
-                                    "Ref": "AWS::AccountId"
-                                  }
-                                }
-                              ]
+                                "Fn::Sub": [
+                                    "arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*",
+                                    {
+                                        "region": { "Ref": "AWS::Region" },
+                                        "account": { "Ref": "AWS::AccountId" },
+                                        "lambda": { "Ref": "LambdaFunction" }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": ["ssm:GetParameter", "kms:Decrypt"],
+                            "Resource": {
+                                "Fn::Sub": [
+                                    "arn:aws:ssm:${region}:${account}:parameter/*",
+                                    {
+                                        "region": {
+                                            "Ref": "AWS::Region"
+                                        },
+                                        "account": {
+                                            "Ref": "AWS::AccountId"
+                                        }
+                                    }
+                                ]
                             }
                         }
                     ]
                 }
             }
         }
-        
-        
     },
     "Outputs": {
         "Name": {
@@ -184,7 +199,7 @@
             }
         },
         "Arn": {
-            "Value": {"Fn::GetAtt": ["LambdaFunction", "Arn"]}
+            "Value": { "Fn::GetAtt": ["LambdaFunction", "Arn"] }
         },
         "Region": {
             "Value": {
@@ -196,6 +211,5 @@
                 "Ref": "LambdaExecutionRole"
             }
         }
-        
     }
 }
