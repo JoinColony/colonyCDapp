@@ -15,7 +15,7 @@ export const useSearchSelect = (
           const optionUserName = option.label || '';
 
           return (
-            optionValue.toLowerCase().startsWith(searchValue?.toLowerCase()) ||
+            optionValue.toLowerCase().includes(searchValue.toLowerCase()) ||
             optionWalletAddress
               .toLowerCase()
               .startsWith(searchValue?.toLowerCase() ?? '') ||
