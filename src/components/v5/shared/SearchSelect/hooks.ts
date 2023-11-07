@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { SearchSelectOptionProps } from './types';
+import { formatText } from '~utils/intl';
 
 export const useSearchSelect = (
   items: SearchSelectOptionProps[],
@@ -10,20 +11,13 @@ export const useSearchSelect = (
       items.map((item) => ({
         ...item,
         options: item.options.filter((option) => {
-          const optionValue = option.value.replace('-', ' ');
-          const optionWalletAddress = option.walletAddress || '';
-          const optionUserName = option.label || '';
+          const searchQuery = searchValue.toLowerCase();
+          const optionWalletAddress = option.walletAddress?.toLowerCase() || '';
+          const optionUserName = formatText(option.label)?.toLowerCase() || '';
 
           return (
-            optionValue.toLowerCase().includes(searchValue.toLowerCase()) ||
-            optionWalletAddress
-              .toLowerCase()
-              .startsWith(searchValue?.toLowerCase() ?? '') ||
-            (typeof optionUserName === 'string'
-              ? optionUserName
-                  .toLowerCase()
-                  .includes(searchValue?.toLowerCase())
-              : undefined)
+            [optionUserName].some((value) => value.includes(searchQuery)) ||
+            optionWalletAddress.startsWith(searchQuery)
           );
         }),
       })),
