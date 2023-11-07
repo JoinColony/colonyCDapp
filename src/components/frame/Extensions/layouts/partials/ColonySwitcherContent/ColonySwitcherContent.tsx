@@ -3,7 +3,7 @@ import React, { FC, useMemo } from 'react';
 import { useAppContext, useColonyContext } from '~hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
-import { nonNullable } from '~utils/types';
+import { notNull } from '~utils/arrays';
 
 import { getChainIconName } from '../../utils';
 import ColonySwitcherItem from '../ColonySwitcherItem';
@@ -22,7 +22,7 @@ const ColonySwitcherContent: FC = () => {
   const { colony } = useColonyContext();
 
   const userColonies = useMemo(
-    () => (user?.watchlist?.items.filter(nonNullable) || []).sort(sortByDate),
+    () => (user?.watchlist?.items.filter(notNull) || []).sort(sortByDate),
     [user],
   );
 

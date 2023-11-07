@@ -8321,6 +8321,11 @@ export type GetExtensionInstallationsCountQueryVariables = Exact<{
 
 export type GetExtensionInstallationsCountQuery = { __typename?: 'Query', getExtensionInstallationsCount?: { __typename?: 'ExtensionInstallationsCount', oneTxPayment: number, stakedExpenditure: number, stagedExpenditure: number, streamingPayments: number, reputationWeighted: number } | null };
 
+export type GetReputationMiningCycleMetadataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetReputationMiningCycleMetadataQuery = { __typename?: 'Query', getReputationMiningCycleMetadata?: { __typename?: 'ReputationMiningCycleMetadata', lastCompletedAt: string } | null };
+
 export type GetMotionStateQueryVariables = Exact<{
   input: GetMotionStateInput;
 }>;
@@ -11001,6 +11006,40 @@ export function useGetExtensionInstallationsCountLazyQuery(baseOptions?: Apollo.
 export type GetExtensionInstallationsCountQueryHookResult = ReturnType<typeof useGetExtensionInstallationsCountQuery>;
 export type GetExtensionInstallationsCountLazyQueryHookResult = ReturnType<typeof useGetExtensionInstallationsCountLazyQuery>;
 export type GetExtensionInstallationsCountQueryResult = Apollo.QueryResult<GetExtensionInstallationsCountQuery, GetExtensionInstallationsCountQueryVariables>;
+export const GetReputationMiningCycleMetadataDocument = gql`
+    query GetReputationMiningCycleMetadata {
+  getReputationMiningCycleMetadata(id: "REPUTATION_MINING_CYCLE_METADATA") {
+    lastCompletedAt
+  }
+}
+    `;
+
+/**
+ * __useGetReputationMiningCycleMetadataQuery__
+ *
+ * To run a query within a React component, call `useGetReputationMiningCycleMetadataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetReputationMiningCycleMetadataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetReputationMiningCycleMetadataQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetReputationMiningCycleMetadataQuery(baseOptions?: Apollo.QueryHookOptions<GetReputationMiningCycleMetadataQuery, GetReputationMiningCycleMetadataQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetReputationMiningCycleMetadataQuery, GetReputationMiningCycleMetadataQueryVariables>(GetReputationMiningCycleMetadataDocument, options);
+      }
+export function useGetReputationMiningCycleMetadataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetReputationMiningCycleMetadataQuery, GetReputationMiningCycleMetadataQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetReputationMiningCycleMetadataQuery, GetReputationMiningCycleMetadataQueryVariables>(GetReputationMiningCycleMetadataDocument, options);
+        }
+export type GetReputationMiningCycleMetadataQueryHookResult = ReturnType<typeof useGetReputationMiningCycleMetadataQuery>;
+export type GetReputationMiningCycleMetadataLazyQueryHookResult = ReturnType<typeof useGetReputationMiningCycleMetadataLazyQuery>;
+export type GetReputationMiningCycleMetadataQueryResult = Apollo.QueryResult<GetReputationMiningCycleMetadataQuery, GetReputationMiningCycleMetadataQueryVariables>;
 export const GetMotionStateDocument = gql`
     query GetMotionState($input: GetMotionStateInput!) {
   getMotionState(input: $input)
