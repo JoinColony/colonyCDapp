@@ -113,9 +113,9 @@ export type Colony = {
   chainFundsClaim?: Maybe<ColonyChainFundsClaim>;
   /** Metadata related to the chain of the Colony */
   chainMetadata: ChainMetadata;
-  /** Profile information of the user */
+  /** Colony MemberInvite */
   colonyMemberInvite?: Maybe<ColonyMemberInvite>;
-  /** Profile ID associated with the user */
+  /** Invite code ID associated with the invite */
   colonyMemberInviteCode?: Maybe<Scalars['ID']>;
   createdAt: Scalars['AWSDateTime'];
   domains?: Maybe<ModelDomainConnection>;
@@ -4392,10 +4392,8 @@ export type Mutation = {
   updateUserTokens?: Maybe<UserTokens>;
   updateWatchedColonies?: Maybe<WatchedColonies>;
   /**
-   * Dual purpose lambda
-   * 1) When passed a colony address and invite code validates the code
-   * 2) When passed a colony address, invite code and user address adds the user to the colony whitelist
-   * and adds the user as a colony contributor
+   * Validates the user invite code and adds the user to the colony whitelist
+   * and as a colony contributor
    */
   validateUserInvite?: Maybe<Scalars['Boolean']>;
 };
@@ -8391,7 +8389,7 @@ export type ValidateUserInviteInput = {
   /** The invite code */
   inviteCode: Scalars['ID'];
   /** The user's wallet address */
-  userAddress?: InputMaybe<Scalars['ID']>;
+  userAddress: Scalars['ID'];
 };
 
 /** A voter record of a user for a motion */

@@ -56,6 +56,7 @@ export const CREATE_COLONY_ROUTE_BASE = '/create-colony';
 export const CREATE_PROFILE_ROUTE = '/create-profile';
 export const CREATE_COLONY_ROUTE = `${CREATE_COLONY_ROUTE_BASE}/:inviteCode`;
 export const USER_INVITE_ROUTE = `/invite/:colonyName/:inviteCode`;
+export const COLONY_SPLASH_ROUTE = `/go/:colonyName`;
 export const USER_ROUTE = '/user/:username';
 export const NOT_FOUND_ROUTE = '/404';
 export const LANDING_PAGE_ROUTE = '/';
