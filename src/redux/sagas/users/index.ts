@@ -93,6 +93,7 @@ import {
 
 function* usernameCreate({
   meta,
+  meta: { navigate },
   payload: { username, email, emailPermissions },
 }: Action<ActionTypes.USERNAME_CREATE>) {
   const wallet = getContext(ContextModule.Wallet);
@@ -147,6 +148,10 @@ function* usernameCreate({
       },
       meta,
     });
+
+    if (navigate) {
+      navigate(`/my/profile`);
+    }
   } catch (error) {
     return yield putError(ActionTypes.USERNAME_CREATE_ERROR, error, meta);
   }

@@ -1,9 +1,11 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
 
 import Button from '~v5/shared/Button';
 import { ActionTypes } from '~redux';
 import { ActionForm } from '~shared/Fields';
+import { withMeta } from '~utils/actions';
 
 import { HeaderRow } from '../CreateColonyWizard/shared';
 
@@ -25,33 +27,37 @@ const MSG = defineMessages({
   },
 });
 
-const CreateUserForm = () => (
-  <ActionForm<CreateUserFormValues>
-    className="max-w-lg flex flex-col items-end"
-    validationSchema={validationSchema}
-    defaultValues={{
-      username: '',
-      emailAddress: '',
-      emailPermissions: [],
-    }}
-    mode="onChange"
-    actionType={ActionTypes.USERNAME_CREATE}
-  >
-    {({ formState: { isSubmitting, isValid } }) => (
-      <>
-        <HeaderRow heading={MSG.heading} description={MSG.description} />
-        <CreateUserFormInputs />
-        <Button
-          text={{ id: 'button.continue' }}
-          type="submit"
-          mode="primarySolid"
-          disabled={!isValid || isSubmitting}
-          className="mt-3"
-        />
-      </>
-    )}
-  </ActionForm>
-);
+const CreateUserForm = () => {
+  const navigate = useNavigate();
+  return (
+    <ActionForm<CreateUserFormValues>
+      className="max-w-lg flex flex-col items-end"
+      validationSchema={validationSchema}
+      defaultValues={{
+        username: '',
+        emailAddress: '',
+        emailPermissions: [],
+      }}
+      mode="onChange"
+      actionType={ActionTypes.USERNAME_CREATE}
+      transform={withMeta({ navigate })}
+    >
+      {({ formState: { isSubmitting, isValid } }) => (
+        <>
+          <HeaderRow heading={MSG.heading} description={MSG.description} />
+          <CreateUserFormInputs />
+          <Button
+            text={{ id: 'button.continue' }}
+            type="submit"
+            mode="primarySolid"
+            disabled={!isValid || isSubmitting}
+            className="mt-3"
+          />
+        </>
+      )}
+    </ActionForm>
+  );
+};
 CreateUserForm.displayName = displayName;
 
 export default CreateUserForm;
