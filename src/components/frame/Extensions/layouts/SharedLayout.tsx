@@ -1,8 +1,8 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { FC, PropsWithChildren, useLayoutEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 
 import { CREATE_COLONY_ROUTE } from '~routes';
-import { useColonyContext } from '~hooks';
+import { useAppContext, useColonyContext } from '~hooks';
 import Logo from '~images/logo-new.svg';
 import { useMemberModalContext } from '~context/MemberModalContext';
 import usePageHeadingContext from '~context/PageHeadingContext/hooks';
@@ -12,6 +12,8 @@ import { formatText } from '~utils/intl';
 import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
 import CalamityBanner from '~v5/shared/CalamityBanner';
 import PageLayout from '~v5/frame/PageLayout';
+import { isBasicWallet } from '~types';
+import { getLastWallet } from '~utils/autoLogin';
 
 import UserNavigationWrapper from './partials/UserNavigationWrapper';
 import { useCalamityBannerInfo } from './hooks';
@@ -27,6 +29,7 @@ const SharedLayout: FC<PropsWithChildren<SharedLayoutProps>> = ({
   hamburgerLabel,
   mainMenuItems,
 }) => {
+  const { wallet, connectWallet } = useAppContext();
   const { colony } = useColonyContext();
   const { title: pageHeadingTitle, breadcrumbs = [] } = usePageHeadingContext();
 
@@ -42,6 +45,16 @@ const SharedLayout: FC<PropsWithChildren<SharedLayoutProps>> = ({
   const { chainId } = chainMetadata || {};
 
   const chainIcon = getChainIconName(chainId);
+
+  useLayoutEffect(() => {
+    if (
+      (!wallet || isBasicWallet(wallet)) &&
+      connectWallet &&
+      getLastWallet()
+    ) {
+      connectWallet();
+    }
+  }, [connectWallet, wallet]);
 
   return (
     <>

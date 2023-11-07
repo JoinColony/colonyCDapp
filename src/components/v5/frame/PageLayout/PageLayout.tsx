@@ -1,21 +1,13 @@
-import React, {
-  FC,
-  PropsWithChildren,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-} from 'react';
+import React, { FC, PropsWithChildren, useEffect, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
-import { useAppContext, useTablet } from '~hooks';
+import { useTablet } from '~hooks';
 
 import NavigationSidebar from '../NavigationSidebar';
 import NavigationSidebarContextProvider from '../NavigationSidebar/partials/NavigationSidebarContext';
 import PageHeader from './partials/PageHeader';
 import PageHeading from './partials/PageHeading';
 import { PageLayoutProps } from './types';
-import { getLastWallet } from '~utils/autoLogin';
-import { isBasicWallet } from '~types';
 
 const displayName = 'v5.frame.PageLayout';
 
@@ -25,7 +17,6 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
   topContent,
   children,
 }) => {
-  const { wallet, connectWallet } = useAppContext();
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const topContentWrapperRef = useRef<HTMLDivElement | null>(null);
   const isTablet = useTablet();
@@ -52,16 +43,6 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
       observer.disconnect();
     };
   }, []);
-
-  useLayoutEffect(() => {
-    if (
-      (!wallet || isBasicWallet(wallet)) &&
-      connectWallet &&
-      getLastWallet()
-    ) {
-      connectWallet();
-    }
-  }, [connectWallet, wallet]);
 
   const { userNavigation, pageHeadingProps } = headerProps;
 
