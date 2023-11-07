@@ -58,7 +58,7 @@ const PendingReputation: FC<PendingReputationProps> = ({
                       userReputation,
                       nativeToken.decimals,
                     )
-                  : '-',
+                  : '0',
               },
             )}
           </span>
