@@ -193,7 +193,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
     ) : (
       <Portal>
         <Card
-          className="py-4 px-2.5 w-full sm:max-w-[20.375rem] z-[60] absolute max-h-[37.5rem]"
+          className="py-6 px-2.5 w-full sm:max-w-[20.375rem] z-[60] absolute max-h-[37.5rem]"
           hasShadow
           rounded="s"
           ref={ref}
