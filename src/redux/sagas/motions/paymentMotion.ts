@@ -243,7 +243,7 @@ function* createPaymentMotion({
   } catch (caughtError) {
     putError(ActionTypes.MOTION_EXPENDITURE_PAYMENT_ERROR, caughtError, meta);
   } finally {
-    txChannel.close();
+    txChannel?.close();
   }
 }
 
