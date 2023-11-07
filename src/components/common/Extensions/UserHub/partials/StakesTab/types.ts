@@ -1,21 +1,14 @@
-import { MotionState as NetworkMotionState } from '@colony/colony-js';
-
 import { TabItem } from '~shared/Extensions/Tabs/types';
-import { Token, UserStake, Colony, UserStakeStatus } from '~types';
+import { Token, Colony, UserStakeStatus, UserStakeWithStatus } from '~types';
 import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types';
 
 export interface StakesListProps {
   loading: boolean;
-  stakes: UserStake[];
+  stakes: UserStakeWithStatus[];
   colony: Colony;
-  onMotionStateFetched: (
-    stakeId: string,
-    motionState: NetworkMotionState,
-  ) => void;
 }
 
-export interface StakeItemProps
-  extends Pick<StakesListProps, 'onMotionStateFetched'> {
+export interface StakeItemProps {
   key: string;
   title: string;
   date: string;
@@ -25,7 +18,7 @@ export interface StakeItemProps
     ExtensionStatusBadgeMode,
     'staking' | 'finalizable' | 'claimed'
   >;
-  userStake: UserStake;
+  userStake: UserStakeWithStatus;
   nativeToken: Token;
   colonyAddress: string;
 }

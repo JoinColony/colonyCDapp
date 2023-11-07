@@ -1,17 +1,17 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
-import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
 import Tabs from '~shared/Extensions/Tabs';
 import { useAppContext, useColonyContext, useMobile } from '~hooks';
 import { useGetUserStakesQuery } from '~gql';
 import { notNull } from '~utils/arrays';
-import { UserStake, UserStakeStatus } from '~types';
+import { UserStakeWithStatus } from '~types';
+import { useNetworkMotionStates } from '~hooks/useNetworkMotionState';
 
 import { stakesFilterOptions } from './consts';
 import StakesList from './partials/StakesList';
-import { getStakesTabItems } from './helpers';
+import { getStakeStatus, getStakesTabItems } from './helpers';
 import { StakesFilterType } from './types';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
@@ -24,9 +24,7 @@ const StakesTab = () => {
   const { walletAddress } = user ?? {};
 
   const [activeTab, setActiveTab] = useState(0);
-  const [motionStatesMap, setMotionStatesMap] = useState<
-    Map<string, NetworkMotionState>
-  >(new Map());
+  const activeFilterOption = stakesFilterOptions[activeTab];
 
   const { data, loading: stakesLoading } = useGetUserStakesQuery({
     variables: {
@@ -35,44 +33,20 @@ const StakesTab = () => {
     skip: !walletAddress,
     fetchPolicy: 'cache-and-network',
   });
-  const userStakes = data?.getUserStakes?.items.filter(notNull) ?? [];
-
-  const handleOnMotionStateFetched = useCallback(
-    (stakeId: string, motionState: NetworkMotionState) => {
-      setMotionStatesMap((existingMap) =>
-        new Map(existingMap).set(stakeId, motionState),
-      );
-    },
-    [],
+  const userStakes = useMemo(
+    () => data?.getUserStakes?.items.filter(notNull) ?? [],
+    [data],
   );
 
-  const activeFilterOption = stakesFilterOptions[activeTab];
-
-  const getStakeStatus = (
-    stake: UserStake,
-    statesMap: Map<string, NetworkMotionState>,
-  ) => {
-    if (stake.isClaimed) {
-      return UserStakeStatus.Claimed;
-    }
-
-    const motionState = statesMap.get(stake.id);
-    if (!motionState) {
-      return UserStakeStatus.Unknown;
-    }
-
-    if (motionState === NetworkMotionState.Finalizable) {
-      return UserStakeStatus.Finalizable;
-    }
-    if (
-      motionState === NetworkMotionState.Finalized ||
-      motionState === NetworkMotionState.Failed
-    ) {
-      return UserStakeStatus.Claimable;
-    }
-
-    return UserStakeStatus.Unknown;
-  };
+  const motionIds = useMemo(
+    () =>
+      userStakes
+        .filter((stake) => !!stake.action?.motionData)
+        .map((stake) => stake.action?.motionData?.nativeMotionId ?? ''),
+    [userStakes],
+  );
+  const { motionStatesMap, loading: motionStatesLoading } =
+    useNetworkMotionStates(motionIds);
 
   const stakesWithStatus = userStakes.map((stake) => ({
     ...stake,
@@ -87,17 +61,7 @@ const StakesTab = () => {
     };
 
     return updatedStakes;
-  }, {} as Record<StakesFilterType, UserStake[]>);
-  const filteredStakes = stakesByFilterType[activeFilterOption.type];
-
-  /**
-   * Count the number of stakes that stake on a motion and compare it to the number of motion
-   * states fetched to determine if the states are still loading.
-   */
-  const motionStakesCount = userStakes.filter(
-    (stake) => !!stake.action?.motionData,
-  ).length;
-  const motionStatesLoading = motionStakesCount > motionStatesMap.size;
+  }, {} as Record<StakesFilterType, UserStakeWithStatus[]>);
 
   // Tabs are being used for selecting filter option
   const handleOnTabClick = useCallback((_, id: number) => {
@@ -111,6 +75,7 @@ const StakesTab = () => {
     activeFilterOption.type,
   );
 
+  const filteredStakes = stakesByFilterType[activeFilterOption.type];
   const filterDataLoading = !!(
     stakesLoading ||
     (activeFilterOption.requiresMotionState && motionStatesLoading)
@@ -153,7 +118,6 @@ const StakesTab = () => {
                 stakes={filteredStakes}
                 loading={filterDataLoading}
                 colony={colony}
-                onMotionStateFetched={handleOnMotionStateFetched}
               />
             </motion.div>
           </AnimatePresence>

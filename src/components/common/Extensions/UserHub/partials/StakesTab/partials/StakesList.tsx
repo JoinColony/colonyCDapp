@@ -6,12 +6,7 @@ import EmptyContent from '~v5/common/EmptyContent';
 import StakeItem from './StakeItem';
 import { StakesListProps } from '../types';
 
-const StakesList = ({
-  stakes,
-  loading,
-  colony,
-  onMotionStateFetched,
-}: StakesListProps) => {
+const StakesList = ({ stakes, loading, colony }: StakesListProps) => {
   if (loading) {
     return <SpinnerLoader appearance={{ size: 'small' }} />;
   }
@@ -39,7 +34,6 @@ const StakesList = ({
           userStake={stake}
           nativeToken={colony.nativeToken}
           colonyAddress={colony.colonyAddress}
-          onMotionStateFetched={onMotionStateFetched}
         />
       ))}
     </>

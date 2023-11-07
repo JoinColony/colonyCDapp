@@ -1,4 +1,7 @@
-import { UserStake } from '~types';
+import { MotionState as NetworkMotionState } from '@colony/colony-js';
+
+import { UserStake, UserStakeStatus } from '~types';
+import { MotionStatesMap } from '~hooks/useNetworkMotionState';
 
 import { StakesFilterType } from './types';
 import { stakesFilterOptions } from './consts';
@@ -24,3 +27,31 @@ export const getStakesTabItems = (
       active: option.type === activeFilterType,
     };
   });
+
+export const getStakeStatus = (
+  stake: UserStake,
+  statesMap: MotionStatesMap,
+) => {
+  if (stake.isClaimed) {
+    return UserStakeStatus.Claimed;
+  }
+
+  const motionState = statesMap.get(
+    stake.action?.motionData?.nativeMotionId ?? '',
+  );
+  if (!motionState) {
+    return UserStakeStatus.Unknown;
+  }
+
+  if (motionState === NetworkMotionState.Finalizable) {
+    return UserStakeStatus.Finalizable;
+  }
+  if (
+    motionState === NetworkMotionState.Finalized ||
+    motionState === NetworkMotionState.Failed
+  ) {
+    return UserStakeStatus.Claimable;
+  }
+
+  return UserStakeStatus.Unknown;
+};
