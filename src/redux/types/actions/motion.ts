@@ -4,6 +4,7 @@ import { ColonyRole } from '@colony/colony-js';
 import {
   Address,
   Colony,
+  ColonyObjective,
   Domain,
   DomainColor,
   Safe,
@@ -166,6 +167,7 @@ export type MotionActionTypes =
         colonyDescription?: string | null;
         colonyExternalLinks?: ExternalLink[] | null;
         annotationMessage?: string;
+        colonyObjective?: ColonyObjective;
       },
       MetaWithSetter<object>
     >

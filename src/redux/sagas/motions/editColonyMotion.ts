@@ -38,6 +38,7 @@ function* editColonyMotion({
     colonyDescription,
     colonyExternalLinks,
     annotationMessage,
+    colonyObjective,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -212,6 +213,7 @@ function* editColonyMotion({
             externalLinks: colonyExternalLinks,
             isWhitelistActivated: colony.metadata.isWhitelistActivated,
             whitelistedAddresses: colony.metadata.whitelistedAddresses,
+            objective: colonyObjective,
             // We only need a single entry here, as we'll be appending it to the colony's metadata
             // changelog if the motion succeeds.
             changelog: [
@@ -232,6 +234,10 @@ function* editColonyMotion({
                   metadata?.externalLinks,
                   colonyExternalLinks,
                 ),
+                hasObjectiveChanged:
+                  colonyObjective === undefined
+                    ? false
+                    : !isEqual(metadata?.objective, colonyObjective),
                 newSafes: colony.metadata.safes,
                 oldSafes: colony.metadata.safes,
               },

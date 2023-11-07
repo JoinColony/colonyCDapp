@@ -119,7 +119,7 @@
     "button.deprecateExtension": "Deprecate extension",
     "button.socialLinks": "Add social links",
     "button.editColonyDetails": "Edit Colony details",
-    "button.createObjective": "Create current objective",
+    "button.manageObjective": "{existing, select, true {Manage} other {Create}} current objective",
     "button.updateEmail": "Update email",
     "button.saveEmail": "Save email",
     "button.connectDiscord": "Connect Discord",
@@ -804,7 +804,7 @@
     "actions.upgradeColonyVersion": "Upgrade Colony version",
     "actions.enterRecoveryMode": "Enter recovery mode",
     "actions.createNewIntegration": "Create new integration",
-    "actions.manageColonyObjective": "Manage Colony objective",
+    "actions.manageColonyObjectives": "Manage Colony objective",
     "actions.userPermissions": "User permissions",
     "actions.recipent": "Colony members",
     "connectWallet": "Connect wallet",
@@ -1381,5 +1381,8 @@
     "createColonyWizard.step.confirm.blockchain": "Blockchain",
     "createColonyWizard.step.transactions.heading": "Complete setup",
     "createColonyWizard.step.transactiosn.description": "Deploying to the blockchain requires you to sign a transaction in your wallet for each step.",
-    "errors.title.maxLength": "Exceeded max character limit {currentLength}/{maxLength}."
+    "errors.title.maxLength": "Exceeded max character limit {currentLength}/{maxLength}.",
+    "errors.colonyObjective.title": "Colony objective title is required",
+    "errors.colonyObjective.description": "Colony objective description is required",
+    "errors.colonyObjective.progress": "Colony objective progress is required"
 }

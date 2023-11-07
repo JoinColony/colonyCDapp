@@ -21,6 +21,7 @@ import { upgradeColonyDescriptionMetadataGetter } from '../partials/forms/Upgrad
 import { enterRecoveryModeDescriptionMetadataGetter } from '../partials/forms/EnterRecoveryModeForm/utils';
 import { createDecisionDescriptionMetadataGetter } from '../partials/forms/CreateDecisionForm/utils';
 import { managePermissionsDescriptionMetadataGetter } from '../partials/forms/ManagePermissionsForm/utils';
+import { manageColonyObjectivesDescriptionMetadataGetter } from '../partials/forms/ManageColonyObjectivesForm/utils';
 
 const DESC_METADATA: Partial<Record<Action, DescriptionMetadataGetter>> = {
   [ACTION.SIMPLE_PAYMENT]: simplePaymentDescriptionMetadataGetter,
@@ -37,6 +38,8 @@ const DESC_METADATA: Partial<Record<Action, DescriptionMetadataGetter>> = {
   [ACTION.ENTER_RECOVERY_MODE]: enterRecoveryModeDescriptionMetadataGetter,
   [ACTION.CREATE_DECISION]: createDecisionDescriptionMetadataGetter,
   [ACTION.MANAGE_PERMISSIONS]: managePermissionsDescriptionMetadataGetter,
+  [ACTION.MANAGE_COLONY_OBJECTIVES]:
+    manageColonyObjectivesDescriptionMetadataGetter,
 };
 
 export const useActionDescriptionMetadata = () => {

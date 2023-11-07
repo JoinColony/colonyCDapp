@@ -13,6 +13,7 @@ import CreateDecisionForm from '../partials/forms/CreateDecisionForm';
 import EditTeamForm from '../partials/forms/EditTeamForm';
 import EnterRecoveryModeForm from '../partials/forms/EnterRecoveryModeForm';
 import EditColonyDetailsForm from '../partials/forms/EditColonyDetailsForm';
+import ManageColonyObjectivesForm from '../partials/forms/ManageColonyObjectivesForm';
 import { ACTION_TYPE_FIELD_NAME } from '../consts';
 import { ActionFormBaseProps } from '../types';
 import { GLOBAL_EVENTS } from '~utils/browser/dispatchGlobalEvent/consts';
@@ -38,6 +39,7 @@ export const useSidebarActionForm = () => {
       [ACTION.EDIT_EXISTING_TEAM]: EditTeamForm,
       [ACTION.ENTER_RECOVERY_MODE]: EnterRecoveryModeForm,
       [ACTION.EDIT_COLONY_DETAILS]: EditColonyDetailsForm,
+      [ACTION.MANAGE_COLONY_OBJECTIVES]: ManageColonyObjectivesForm,
       [ACTION.SPLIT_PAYMENT]: SplitPaymentForm,
       [ACTION.MANAGE_TOKENS]: ManageTokensForm,
       [ACTION.ADVANCED_PAYMENT]: AdvancedPaymentForm,

@@ -15,7 +15,7 @@ export interface InputBaseProps
 }
 
 export interface FormInputBaseProps
-  extends Omit<InputBaseProps, 'onChange' | 'value' | 'state'> {
+  extends Omit<InputBaseProps, 'onChange' | 'state'> {
   name: string;
 }
 

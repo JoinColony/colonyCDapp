@@ -2,7 +2,6 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { FileRejection } from 'react-dropzone';
 
 import { useIntl } from 'react-intl';
-import { useCanEditProfile } from '~hooks';
 import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
 import { getFileRejectionErrors } from '~shared/FileUpload/utils';
 import { FileReaderFile } from '~utils/fileReader/types';
@@ -11,6 +10,7 @@ import {
   getOptimisedThumbnail,
 } from '~images/optimisation';
 import { convertBytes } from '~utils/convertBytes';
+
 import { FileUploadOptions } from './types';
 
 export interface UseAvatarUploaderProps {
@@ -28,8 +28,6 @@ export const useAvatarUploader = ({ updateFn }: UseAvatarUploaderProps) => {
   const [showPropgress, setShowPropgress] = useState<boolean>();
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [file, setFileName] = useState({ fileName: '', fileSize: '' });
-
-  const { user } = useCanEditProfile();
 
   const handleFileUpload = async (avatarFile: FileReaderFile | null) => {
     if (avatarFile) {
@@ -70,7 +68,6 @@ export const useAvatarUploader = ({ updateFn }: UseAvatarUploaderProps) => {
   };
 
   return {
-    user,
     uploadAvatarError,
     isLoading,
     handleFileReject,
