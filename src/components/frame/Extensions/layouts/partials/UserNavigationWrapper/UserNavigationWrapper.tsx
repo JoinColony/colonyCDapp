@@ -8,12 +8,9 @@ import HeaderAvatar from '~common/Extensions/UserNavigation/partials/HeaderAvata
 import UserNavigation from '~common/Extensions/UserNavigation';
 import ActionSidebar from '~v5/common/ActionSidebar';
 
-const displayName = 'frame.Extensions.partials.UserNavigationWrapper';
+import { UserNavigationWrapperProps } from './types';
 
-interface UserNavigationWrapperProps {
-  txButtons?: React.ReactNode;
-  userHub?: React.ReactNode;
-}
+const displayName = 'frame.Extensions.partials.UserNavigationWrapper';
 
 const UserNavigationWrapper: FC<UserNavigationWrapperProps> = ({
   userHub,
