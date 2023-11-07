@@ -6,7 +6,7 @@ export interface UseCalamityBannerInfoReturnType {
   calamityBannerItems: CalamityBannerItemProps[];
 }
 
-export interface SharedLayoutProps {
+export interface MainLayoutProps {
   mobileBottomContent?: NavigationSidebarProps['mobileBottomContent'];
   hamburgerLabel?: NavigationSidebarProps['hamburgerLabel'];
   mainMenuItems?: NavigationSidebarProps['mainMenuItems'];

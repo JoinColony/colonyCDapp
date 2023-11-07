@@ -1,12 +1,12 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { SharedLayout } from '~frame/Extensions/layouts';
+import { MainLayout } from '~frame/Extensions/layouts';
 
 const MainRoute = () => (
-  <SharedLayout>
+  <MainLayout>
     <Outlet />
-  </SharedLayout>
+  </MainLayout>
 );
 
 export default MainRoute;
