@@ -200,7 +200,7 @@ export const isDev = process.env.NETWORK === 'ganache';
 
 export const CDAPP_VERSION = version;
 
-export const MAX_INSTALLED_NUMBER = 39;
+export const EXTENSIONS_COUNT_THRESHOLD = 39;
 
 export const STAKING_THRESHOLD = 10;
 
