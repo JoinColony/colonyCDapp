@@ -36,6 +36,7 @@ export { default as useTokenInfo, TokenInfoProvider } from './useTokenInfo';
 export { default as useUserAvatarImageFromIPFS } from './useUserAvatarImageFromIPFS';
 export { default as useCanEditProfile } from './useCanEditProfile';
 export { default as useWindowSize } from './useWindowSize';
+// @TODO: Put this into ~context
 export { default as useAppContext } from './useAppContext';
 export { default as useUserReputation } from './useUserReputation';
 export { default as useMobile } from './useMobile';
@@ -45,6 +46,7 @@ export {
   default as useUserReputationForTopDomains,
   UserDomainReputation,
 } from './useUserReputationForTopDomains';
+// @TODO: Put this into ~context
 export { default as useColonyContext } from './useColonyContext';
 export { default as useRichTextEditor } from './useRichTextEditor';
 export { default as useExtensionData } from './useExtensionData';

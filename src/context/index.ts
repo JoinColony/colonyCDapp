@@ -53,14 +53,13 @@ export const removeContext = <K extends keyof Context>(contextKey: K) => {
   context[contextKey] = undefined;
 };
 
-export { AppContext, AppContextProvider } from './AppContext';
+export * from './ActionSidebarContext';
+export * from './AppContext';
 export { ColonyManagerClass as ColonyManager };
-export { ColonyContext, ColonyContextProvider } from './ColonyContext';
-export { PageThemeContext, PageThemeContextProvider } from './PageThemeContext';
-export {
-  UserTokenBalanceContext,
-  UserTokenBalanceProvider,
-  useUserTokenBalanceContext,
-} from './UserTokenBalanceContext';
+export * from './ColonyContext';
 export * from './ColonyHomeContext';
+export * from './PageHeadingContext';
+export * from './PageThemeContext';
+export * from './MemberModalContext';
+export * from './UserTokenBalanceContext';
 export * from './UserTransactionContext';

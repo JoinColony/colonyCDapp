@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { MemberContextProviderWithSearchAndFilter as MemberContextProvider } from '~context/MemberContext';
-import usePageHeadingContext, {
+import {
+  usePageHeadingContext,
   useSetPageHeadingTitle,
 } from '~context/PageHeadingContext/hooks';
 import { formatText } from '~utils/intl';
@@ -73,7 +74,7 @@ const ColonyMembersRoute = () => {
     return () => {
       setBreadcrumbs([]);
     };
-  }, []);
+  }, [setBreadcrumbs]);
 
   return (
     <MemberContextProvider>

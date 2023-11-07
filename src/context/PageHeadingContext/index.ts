@@ -1,1 +1,2 @@
-export { default } from './PageHeadingContext';
+export * from './PageHeadingContext';
+export * from './hooks';
