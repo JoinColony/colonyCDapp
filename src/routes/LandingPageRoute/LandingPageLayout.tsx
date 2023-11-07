@@ -12,7 +12,7 @@ const LandingPageLayout: FC<PropsWithChildren> = ({ children }) => {
   const { user } = useAppContext();
 
   return (
-    <div className="grid grid-cols-[80px,auto] gap-8 p-4">
+    <div className="grid grid-cols-[80px,auto] gap-8 p-4 pr-8">
       <aside className="sticky top-4 h-[calc(100vh-2rem)]">
         {user ? <MainSidebar /> : <SimpleSidebar />}
       </aside>
@@ -22,7 +22,7 @@ const LandingPageLayout: FC<PropsWithChildren> = ({ children }) => {
         <div className="hidden">
           <Wallet />
         </div>
-        <main className="w-full pr-4 flex flex-col items-center justify-center max-w-[1298px]">
+        <main className="w-full flex flex-col items-center justify-center max-w-[1278px]">
           {children}
         </main>
       </div>
