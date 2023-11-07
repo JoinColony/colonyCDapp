@@ -150,6 +150,26 @@
                             "Action": "lambda:InvokeFunctionUrl",
                             "Resource": { "Fn::Sub": [ "arn:aws:lambda:${region}:${account}:function:${lambda}", { "region": {"Ref": "AWS::Region"}, "account": {"Ref": "AWS::AccountId"}, "lambda": {"Ref": "LambdaFunction"}} ]}
                         },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                              "ssm:GetParameter",
+                              "kms:Decrypt"
+                            ],
+                            "Resource": {
+                              "Fn::Sub": [
+                                "arn:aws:ssm:${region}:${account}:parameter/*",
+                                {
+                                  "region": {
+                                    "Ref": "AWS::Region"
+                                  },
+                                  "account": {
+                                    "Ref": "AWS::AccountId"
+                                  }
+                                }
+                              ]
+                            }
+                        }
                     ]
                 }
             }
