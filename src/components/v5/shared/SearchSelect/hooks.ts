@@ -12,12 +12,20 @@ export const useSearchSelect = (
         options: item.options.filter((option) => {
           const optionValue = option.value.replace('-', ' ');
           const optionWalletAddress = option.walletAddress || '';
+          const optionUserName = option.label || '';
 
           return (
-            optionValue.toLowerCase().includes(searchValue.toLowerCase()) ||
+            optionValue
+              .toLowerCase()
+              .startsWith(searchValue?.toLowerCase() ?? '') ||
             optionWalletAddress
               .toLowerCase()
-              .startsWith(searchValue?.toLowerCase() ?? '')
+              .startsWith(searchValue?.toLowerCase() ?? '') ||
+            (typeof optionUserName === 'string'
+              ? optionUserName
+                  .toLowerCase()
+                  .includes(searchValue?.toLowerCase())
+              : undefined)
           );
         }),
       })),
