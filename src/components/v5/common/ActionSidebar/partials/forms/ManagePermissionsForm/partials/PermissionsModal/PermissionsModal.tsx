@@ -12,7 +12,7 @@ const PermissionsModal: FC<PermissionsModalProps> = (props) => {
   const [showMore, { toggle: toggleShowMore }] = useToggle();
 
   return (
-    <Modal {...props} icon="shield">
+    <Modal {...props} isFullOnMobile icon="shield">
       <p className="font-semibold text-gray-900">
         {formatText({
           id: 'actionSidebar.managePermissions.permissionsModal.heading',

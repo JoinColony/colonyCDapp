@@ -21,12 +21,17 @@ const ModalBase: FC<ModalBaseProps> = ({
       isOpen={isOpen}
       role={role}
       overlayClassName={{
-        base: 'flex justify-center items-center fixed inset-0 z-[999] overflow-hidden bg-base-sprite/50',
+        base: clsx(
+          'flex justify-center items-center fixed inset-0 z-[999] bg-base-sprite/50',
+          {
+            'py-4': !isFullOnMobile,
+          },
+        ),
         afterOpen: '',
         beforeClose: 'blur-none',
       }}
       className={clsx(
-        `relative outline-0 overflow-hidden bg-base-white md:h-auto
+        `relative outline-0 overflow-auto max-h-full bg-base-white md:h-auto
         md:border md:border-gray-200 md:rounded-xl shadow-default flex flex-col md:w-[30.3125rem]`,
         {
           'w-screen h-full': isFullOnMobile,
