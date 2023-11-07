@@ -142,7 +142,14 @@
                             "logs:CreateLogStream",
                             "logs:PutLogEvents"],
                             "Resource": { "Fn::Sub": [ "arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*", { "region": {"Ref": "AWS::Region"}, "account": {"Ref": "AWS::AccountId"}, "lambda": {"Ref": "LambdaFunction"}} ]}
-                        }
+                        },
+                        {
+                            "Sid": "AllowUnauthenticatedInvoke",
+                            "Effect": "Allow",
+                            "Principal": "*",
+                            "Action": "lambda:InvokeFunctionUrl",
+                            "Resource": { "Fn::Sub": [ "arn:aws:lambda:${region}:${account}:function:${lambda}", { "region": {"Ref": "AWS::Region"}, "account": {"Ref": "AWS::AccountId"}, "lambda": {"Ref": "LambdaFunction"}} ]}
+                        },
                     ]
                 }
             }
