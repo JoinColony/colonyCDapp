@@ -42,3 +42,9 @@ query GetMotionTransactionHash($motionId: ID!) {
 query GetSafeTransactionStatus($input: GetSafeTransactionStatusInput!) {
   getSafeTransactionStatus(input: $input)
 }
+
+query GetTotalColonyActions($colonyId: ID!) {
+  searchColonyActions(filter: { colonyId: { eq: $colonyId } }) {
+    total
+  }
+}
