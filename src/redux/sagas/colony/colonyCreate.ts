@@ -197,8 +197,6 @@ function* colonyCreate({
       ? createAddress(givenTokenAddress)
       : ADDRESS_ZERO;
 
-    const tokenDecimals = givenTokenAddress ? DEFAULT_TOKEN_DECIMALS : 0;
-
     const currentColonyVersion = yield networkClient.getCurrentColonyVersion();
 
     yield put(
@@ -206,7 +204,7 @@ function* colonyCreate({
         usedTokenAddress,
         tokenName,
         tokenSymbol,
-        tokenDecimals,
+        DEFAULT_TOKEN_DECIMALS,
         currentColonyVersion,
         givenColonyName,
         '', // we aren't using ipfs to store metadata in the CDapp
