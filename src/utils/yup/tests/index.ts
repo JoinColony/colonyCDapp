@@ -34,6 +34,7 @@ export async function runQuery<Q, V>(
     const { data } = await apolloClient.query<Q, V>({
       query: queryDocument,
       variables,
+      fetchPolicy: 'no-cache',
     });
     return data;
   } catch (e) {

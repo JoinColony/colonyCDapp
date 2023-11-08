@@ -35,9 +35,6 @@ import {
   CreateWatchedColoniesMutation,
   CreateWatchedColoniesMutationVariables,
   DomainColor,
-  GetFullColonyByNameDocument,
-  GetFullColonyByNameQuery,
-  GetFullColonyByNameQueryVariables,
   GetTokenFromEverywhereDocument,
   GetTokenFromEverywhereQuery,
   GetTokenFromEverywhereQueryVariables,
@@ -315,18 +312,6 @@ function* colonyCreate({
           inviteCode,
         },
       },
-    });
-
-    /* Get the created Colony to fill apollo cache */
-    yield apolloClient.query<
-      GetFullColonyByNameQuery,
-      GetFullColonyByNameQueryVariables
-    >({
-      query: GetFullColonyByNameDocument,
-      variables: {
-        name: givenColonyName,
-      },
-      fetchPolicy: 'network-only',
     });
 
     /**
