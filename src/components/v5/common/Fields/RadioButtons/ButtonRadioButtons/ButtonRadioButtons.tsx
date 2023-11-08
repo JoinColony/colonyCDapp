@@ -20,6 +20,7 @@ function ButtonRadioButtons<TValue = string>({
       label,
       iconName,
       colorClassName,
+      checkedColorClassName,
       hoverColorClassName,
       iconClassName,
       ...item
@@ -48,7 +49,7 @@ function ButtonRadioButtons<TValue = string>({
               rounded-lg
             `,
             {
-              'bg-current': checked && !disabled,
+              [checkedColorClassName]: checked && !disabled,
               [colorClassName]: !disabled,
               'text-gray-300': disabled,
             },
