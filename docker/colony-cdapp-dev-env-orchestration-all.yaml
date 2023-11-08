@@ -49,7 +49,6 @@ services:
     volumes:
       - '../amplify/backend:/colonyCDapp/amplify/backend'
       - '../amplify/mock-data:/colonyCDapp/amplify/mock-data'
-      - '../src/graphql:/colonyCDapp/src/graphql'
     depends_on:
       safe-contracts:
         condition: service_healthy
@@ -63,8 +62,9 @@ services:
       - 'reputation-monitor:reputation-monitor.docker'
     ports:
       - '20002:20002'
+      - '9200:9200'
     healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:20002']
+      test: ['CMD', 'curl', '-f', 'http://localhost:9200']
       interval: 5s
       retries: 1000
 

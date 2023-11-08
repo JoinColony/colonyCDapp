@@ -8,6 +8,7 @@ const {
   printSchema,
 } = require('graphql');
 const fetch = require('node-fetch');
+const http = require('http');
 
 const SCHEMA_LOCATION = './tmp-schema.graphql';
 
@@ -56,8 +57,36 @@ const codegen = async () => {
     });
   } catch {
     console.error('Error when fetching Amplify schema, retrying...');
-    setTimeout(codegen, 500);
+    setTimeout(codegen, 5000);
   }
 };
 
-codegen();
+const SERVICE_PORT = 20002;
+
+function isServiceResponsive(callback) {
+  http
+    .get(`http://localhost:${SERVICE_PORT}`, (res) => {
+      if (res.statusCode === 200) {
+        callback(true);
+      } else {
+        callback(false);
+      }
+    })
+    .on('error', (err) => {
+      callback(false);
+    });
+}
+
+function waitForServiceToBeResponsive(callback) {
+  isServiceResponsive((isResponsive) => {
+    if (isResponsive) {
+      callback();
+    } else {
+      setTimeout(() => {
+        waitForServiceToBeResponsive(callback);
+      }, 1000); // Check every second
+    }
+  });
+}
+
+waitForServiceToBeResponsive(codegen);

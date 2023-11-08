@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import Decimal from 'decimal.js';
 
 import { useUserReputation } from '~hooks';
-import { ReputationProps } from '../types';
+import { TotalReputationProps } from '../types';
 import styles from '../ReputationTab.module.css';
 import { calculatePercentageReputation, ZeroValue } from '~utils/reputation';
 import Icon from '~shared/Icon';
@@ -15,7 +15,10 @@ import TitleLabel from '~v5/shared/TitleLabel';
 const displayName =
   'common.Extensions.UserHub.partials.ReputationTab.partials.TotalReputation';
 
-const TotalReputation: FC<ReputationProps> = ({ colonyAddress, wallet }) => {
+const TotalReputation: FC<TotalReputationProps> = ({
+  colonyAddress,
+  wallet,
+}) => {
   const { formatMessage } = useIntl();
   const { userReputation, totalReputation } = useUserReputation(
     colonyAddress,
