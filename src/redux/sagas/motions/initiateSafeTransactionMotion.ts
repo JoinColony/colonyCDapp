@@ -22,7 +22,11 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { getColonyManager, uploadAnnotation } from '../utils';
+import {
+  getColonyManager,
+  uploadAnnotation,
+  createActionMetadataInDB,
+} from '../utils';
 import {
   getHomeBridgeByChain,
   ZODIAC_BRIDGE_MODULE_ADDRESS,
@@ -33,12 +37,12 @@ function* initiateSafeTransactionMotion({
   payload: {
     safe,
     transactions,
-    transactionsTitle: title,
     colonyAddress,
     colonyName,
     annotationMessage,
     motionDomainId,
     network,
+    customActionTitle,
   },
   meta: { id: metaId, navigate },
   meta,
@@ -180,7 +184,6 @@ function* initiateSafeTransactionMotion({
       variables: {
         input: {
           id: txHash,
-          title,
           safe,
         },
       },
@@ -209,6 +212,8 @@ function* initiateSafeTransactionMotion({
       type: ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION_SUCCESS,
       meta,
     });
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({

@@ -26,5 +26,6 @@ export const getManageReputationDialogPayload = (
     annotationMessage: annotation,
     amount: BigNumber.from(reputationChangeAmount.toString()),
     isSmitingReputation: isSmiteAction,
+    customActionTitle: '',
   } as ManageReputationMotionPayload;
 };

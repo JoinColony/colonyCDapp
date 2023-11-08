@@ -31,6 +31,7 @@ import {
   takeFrom,
   uploadAnnotation,
   getColonyManager,
+  createActionMetadataInDB,
 } from '../utils';
 
 function* createDomainAction({
@@ -42,6 +43,7 @@ function* createDomainAction({
     domainPurpose,
     annotationMessage,
     parentId = Id.RootDomain,
+    customActionTitle,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -147,6 +149,8 @@ function* createDomainAction({
         },
       },
     });
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({

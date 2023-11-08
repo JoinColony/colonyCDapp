@@ -25,8 +25,8 @@ import {
 
 export type OneTxPaymentPayload = {
   colonyAddress: Address;
-  colonyName?: string;
   domainId: number;
+  customActionTitle: string;
   payments: {
     recipient: string;
     amount: string;
@@ -35,6 +35,7 @@ export type OneTxPaymentPayload = {
   }[];
   annotationMessage?: string;
   motionDomainId?: number;
+  colonyName?: string;
 };
 /*
  * @NOTE About naming
@@ -44,6 +45,7 @@ export type ColonyActionsActionTypes =
   | UniqueActionType<
       ActionTypes.ACTION_DOMAIN_CREATE,
       {
+        customActionTitle: string;
         colonyAddress: Address;
         colonyName: string;
         domainName: string;
@@ -65,6 +67,7 @@ export type ColonyActionsActionTypes =
         colonyAddress: Address;
         colonyName?: string;
         domain: Domain;
+        customActionTitle: string;
         domainName?: string;
         domainColor?: DomainColor;
         domainPurpose?: string;
@@ -91,6 +94,7 @@ export type ColonyActionsActionTypes =
       ActionTypes.ACTION_EDIT_COLONY,
       {
         colony: Colony;
+        customActionTitle: string;
         colonyDisplayName?: string;
         colonyDescription?: string | null;
         colonyExternalLinks?: ExternalLink[] | null;
@@ -111,6 +115,7 @@ export type ColonyActionsActionTypes =
       ActionTypes.ACTION_MOVE_FUNDS,
       {
         colonyAddress: Address;
+        customActionTitle: string;
         colonyName?: string;
         tokenAddress: Address;
         fromDomain: Domain;
@@ -129,6 +134,7 @@ export type ColonyActionsActionTypes =
       ActionTypes.ACTION_MINT_TOKENS,
       {
         colonyAddress: Address;
+        customActionTitle: string;
         colonyName?: string;
         nativeTokenAddress: Address;
         amount: BigNumber;
@@ -145,6 +151,7 @@ export type ColonyActionsActionTypes =
       ActionTypes.ACTION_VERSION_UPGRADE,
       {
         colonyAddress: Address;
+        customActionTitle: string;
         version: string;
         colonyName?: string;
         annotationMessage?: string;
@@ -160,6 +167,7 @@ export type ColonyActionsActionTypes =
       ActionTypes.ACTION_USER_ROLES_SET,
       {
         colonyAddress: Address;
+        customActionTitle: string;
         colonyName: string;
         domainId: number;
         userAddress: Address;
@@ -177,6 +185,7 @@ export type ColonyActionsActionTypes =
       ActionTypes.ACTION_UNLOCK_TOKEN,
       {
         colonyAddress: Address;
+        customActionTitle: string;
         colonyName: string;
         annotationMessage?: string;
       },
@@ -191,6 +200,7 @@ export type ColonyActionsActionTypes =
       ActionTypes.ACTION_RECOVERY,
       {
         colonyAddress: Address;
+        customActionTitle: string;
         walletAddress: Address;
         colonyName: string;
         annotationMessage?: string;
@@ -206,6 +216,7 @@ export type ColonyActionsActionTypes =
       ActionTypes.ACTION_RECOVERY_SET_SLOT,
       {
         colonyAddress: Address;
+        customActionTitle: string;
         walletAddress: Address;
         startBlock: number;
         storageSlotLocation: string;
@@ -222,6 +233,7 @@ export type ColonyActionsActionTypes =
       ActionTypes.ACTION_RECOVERY_APPROVE,
       {
         colonyAddress: Address;
+        customActionTitle: string;
         walletAddress: Address;
         startBlock: number;
         scrollToRef: RefObject<HTMLInputElement>;
@@ -237,6 +249,7 @@ export type ColonyActionsActionTypes =
       ActionTypes.ACTION_RECOVERY_EXIT,
       {
         colonyAddress: Address;
+        customActionTitle: string;
         startBlock: number;
         scrollToRef: RefObject<HTMLInputElement>;
       },
@@ -251,6 +264,7 @@ export type ColonyActionsActionTypes =
       ActionTypes.ACTION_MANAGE_REPUTATION,
       {
         colonyAddress: Address;
+        customActionTitle: string;
         colonyName: string;
         domainId: number;
         userAddress: Address;
@@ -272,6 +286,7 @@ export type ColonyActionsActionTypes =
         colonyDisplayName: string;
         verifiedAddresses: Address[];
         colonyTokenAddresses: Address[];
+        customActionTitle: string;
         annotationMessage?: string;
         isWhitelistActivated: boolean;
         removedAddresses: Address[];
@@ -288,6 +303,7 @@ export type ColonyActionsActionTypes =
       ActionTypes.ACTION_MANAGE_EXISTING_SAFES,
       {
         colony: Colony;
+        customActionTitle: string;
         safes: Safe[];
         annotationMessage?: string;
         isRemovingSafes?: boolean;
@@ -303,9 +319,9 @@ export type ColonyActionsActionTypes =
       ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION,
       {
         safe: Omit<Safe, 'safeName'>;
-        transactionsTitle: string;
         transactions: SafeTransactionData[];
         colonyAddress: Address;
+        customActionTitle: string;
         colonyName: string;
         annotationMessage: string | null;
         network: NetworkInfo;

@@ -6,4 +6,5 @@ export const getCreateDomainDialogPayload = (colony: Colony, payload) => ({
   isCreateDomain: true,
   colonyAddress: colony.colonyAddress,
   colonyName: colony.name,
+  customActionTitle: '',
 });

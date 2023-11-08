@@ -13,6 +13,7 @@ export const getUnlockTokenDialogPayload = (
   operationName: RootMotionMethodNames.UnlockToken,
   motionParams: [],
   colonyName: colony?.name,
+  customActionTitle: '',
 });
 
 export const useUnlockTokenDialogStatus = (

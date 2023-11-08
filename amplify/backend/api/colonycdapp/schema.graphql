@@ -2915,6 +2915,15 @@ type ColonyAction @model @searchable {
   Safe transactions associated with the action
   """
   safeTransaction: SafeTransaction @hasOne(fields: ["id"])
+  """
+    Metadata associated with the action (Eg. Custom action title)
+  """
+  metadata: ColonyActionMetadata @hasOne(fields: ["id"])
+}
+
+type ColonyActionMetadata @model {
+  id: ID!
+  customTitle: String!
 }
 
 type ColonyDecision @model {
@@ -3397,7 +3406,6 @@ enum SafeTransactionType {
 
 type SafeTransaction @model {
   id: ID!
-  title: String!
   safe: Safe!
   transactions: [SafeTransactionData]
     @hasMany(indexName: "byTransaction", fields: ["id"])

@@ -60,5 +60,7 @@ export const getManageWhitelistDialogPayload = (
     isWhitelistActivated: whitelistActivated,
     annotationMessage,
     removedAddresses,
+    // @TODO: Connect with real title value
+    customActionTitle: '',
   };
 };

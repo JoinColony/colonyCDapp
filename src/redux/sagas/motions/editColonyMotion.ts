@@ -14,6 +14,7 @@ import {
 import { getPendingMetadataDatabaseId } from '~utils/databaseId';
 
 import {
+  createActionMetadataInDB,
   getColonyManager,
   initiateTransaction,
   putError,
@@ -39,6 +40,7 @@ function* editColonyMotion({
     colonyExternalLinks,
     annotationMessage,
     colonyObjective,
+    customActionTitle,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -247,6 +249,8 @@ function* editColonyMotion({
         },
       });
     }
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({

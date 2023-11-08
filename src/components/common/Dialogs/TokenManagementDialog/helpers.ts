@@ -35,5 +35,6 @@ export const getTokenManagementDialogPayload = (
     colony,
     tokenAddresses: addresses,
     annotationMessage,
+    customActionTitle: '',
   };
 };

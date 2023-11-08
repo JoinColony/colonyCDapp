@@ -349,7 +349,7 @@ const SafeTransactionPreview = ({
           <Input
             appearance={{ colorSchema: 'grey', theme: 'fat' }}
             label={MSG.transactionsTitle}
-            name="transactionsTitle"
+            name="customActionTitle"
             disabled={disabledInput}
           />
         </DialogSection>

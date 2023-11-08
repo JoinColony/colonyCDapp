@@ -25,6 +25,7 @@ import {
   getTxChannel,
 } from '../transactions';
 import {
+  createActionMetadataInDB,
   getUpdatedColonyMetadataChangelog,
   initiateTransaction,
   putError,
@@ -45,6 +46,7 @@ function* manageVerifiedRecipients({
     isWhitelistActivated,
     removedAddresses,
     // colonySafes = [],
+    customActionTitle,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -138,6 +140,8 @@ function* manageVerifiedRecipients({
     setTxHash?.(txHash);
 
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({

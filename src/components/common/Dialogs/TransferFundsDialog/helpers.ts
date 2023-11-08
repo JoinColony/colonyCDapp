@@ -45,6 +45,7 @@ export const getTransferFundsDialogPayload = (
     toDomain,
     amount,
     annotationMessage,
+    customActionTitle: '',
   };
 };
 

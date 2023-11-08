@@ -17,6 +17,7 @@ import {
   getColonyManager,
   uploadAnnotation,
   initiateTransaction,
+  createActionMetadataInDB,
 } from '../utils';
 
 import {
@@ -38,6 +39,7 @@ function* manageReputationMotion({
     annotationMessage,
     motionDomainId,
     isSmitingReputation,
+    customActionTitle,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -185,6 +187,8 @@ function* manageReputationMotion({
     setTxHash?.(txHash);
 
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({

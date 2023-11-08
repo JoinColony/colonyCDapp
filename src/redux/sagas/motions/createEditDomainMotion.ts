@@ -27,6 +27,7 @@ import {
   getUpdatedDomainMetadataChangelog,
   uploadAnnotation,
   initiateTransaction,
+  createActionMetadataInDB,
 } from '../utils';
 
 import {
@@ -48,6 +49,7 @@ function* createEditDomainMotion({
     isCreateDomain,
     parentId = Id.RootDomain,
     motionDomainId,
+    customActionTitle,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -236,6 +238,8 @@ function* createEditDomainMotion({
         },
       });
     }
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({

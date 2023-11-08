@@ -131,6 +131,7 @@ export type MotionActionTypes =
         colonyAddress: Address;
         isCreateDomain: boolean;
         motionDomainId: number;
+        customActionTitle: string;
         domain?: Domain;
         colonyName?: string;
         domainName: string;
@@ -160,6 +161,7 @@ export type MotionActionTypes =
       ActionTypes.MOTION_EDIT_COLONY,
       {
         colony: Colony;
+        customActionTitle: string;
         colonyDisplayName?: string;
         colonyAvatarImage?: string;
         colonyThumbnail?: string;
@@ -180,6 +182,7 @@ export type MotionActionTypes =
       ActionTypes.MOTION_MOVE_FUNDS,
       {
         colonyAddress: Address;
+        customActionTitle: string;
         colonyName?: string;
         colonyVersion: number;
         tokenAddress: Address;
@@ -199,6 +202,7 @@ export type MotionActionTypes =
       ActionTypes.ROOT_MOTION,
       {
         operationName: RootMotionMethodNames;
+        customActionTitle: string;
         colonyAddress: Address;
         colonyName?: string;
         motionParams: [BigNumber] | [string];
@@ -212,6 +216,7 @@ export type MotionActionTypes =
       ActionTypes.MOTION_USER_ROLES_SET,
       {
         colonyAddress: Address;
+        customActionTitle: string;
         colonyName: string;
         domainId: number;
         userAddress: Address;
@@ -241,6 +246,7 @@ export type MotionActionTypes =
       ActionTypes.MOTION_MANAGE_REPUTATION,
       {
         colonyAddress: Address;
+        customActionTitle: string;
         colonyName?: string;
         domainId: number;
         userAddress: Address;
@@ -280,7 +286,7 @@ export type MotionActionTypes =
       ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION,
       {
         safe: Omit<Safe, 'safeName'>;
-        transactionsTitle: string;
+        customActionTitle: string;
         transactions: SafeTransactionData[];
         colonyAddress: Address;
         colonyName: string;
