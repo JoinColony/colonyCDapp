@@ -57,7 +57,7 @@ export const useAdvancedPayment = (
             {
               fromDomainId: payload.from,
               payments: [],
-              description: payload.description,
+              annotation: payload.description,
               motionDomainId: payload.createdIn,
             },
             networkInverseFee,

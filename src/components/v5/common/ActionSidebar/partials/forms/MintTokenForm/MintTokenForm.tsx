@@ -5,10 +5,10 @@ import { ActionFormBaseProps } from '../../../types';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import AmountField from '~v5/common/ActionSidebar/partials/AmountField';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
-import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import { DECISION_METHOD_OPTIONS } from '../../consts';
 import { formatMessage } from '~utils/yup/tests/helpers';
+import DescriptionRow from '../../DescriptionRow';
 
 const displayName = 'v5.common.ActionSidebar.partials.MintTokenForm';
 
@@ -63,35 +63,7 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <TeamsSelect name="createdIn" />
       </ActionFormRow>
-      <ActionFormRow
-        iconName="pencil"
-        fieldName="description"
-        // Tooltip disabled to experiment with improving user experience
-        // tooltips={{
-        //   label: {
-        //     tooltipContent: formatMessage({
-        //       id: 'actionSidebar.tooltip.description',
-        //     }),
-        //   },
-        // }}
-        title={formatMessage({ id: 'actionSidebar.description' })}
-        isExpandable
-      >
-        {([
-          isDecriptionFieldExpanded,
-          {
-            toggleOff: toggleOffDecriptionSelect,
-            toggleOn: toggleOnDecriptionSelect,
-          },
-        ]) => (
-          <DescriptionField
-            isDecriptionFieldExpanded={isDecriptionFieldExpanded}
-            toggleOffDecriptionSelect={toggleOffDecriptionSelect}
-            toggleOnDecriptionSelect={toggleOnDecriptionSelect}
-            fieldName="description"
-          />
-        )}
-      </ActionFormRow>
+      <DescriptionRow />
     </>
   );
 };

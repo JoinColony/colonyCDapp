@@ -2,7 +2,6 @@ import React, { FC, useCallback } from 'react';
 import { useManagePermissions } from './hooks';
 import { ActionFormBaseProps } from '../../../types';
 import ActionFormRow from '~v5/common/ActionFormRow';
-import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField';
 import UserSelect from '../../UserSelect';
 import TeamsSelect from '../../TeamsSelect';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
@@ -19,6 +18,7 @@ import useToggle from '~hooks/useToggle';
 import Icon from '~shared/Icon';
 import { CardSelectProps } from '~v5/common/Fields/CardSelect/types';
 import { getRoleLabel } from './utils';
+import DescriptionRow from '../../DescriptionRow';
 
 const displayName = 'v5.common.ActionSidebar.partials.ManagePermissionsForm';
 
@@ -182,35 +182,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <TeamsSelect name="createdIn" />
       </ActionFormRow>
-      <ActionFormRow
-        iconName="pencil"
-        fieldName="description"
-        // Tooltip disabled to experiment with improving user experience
-        // tooltips={{
-        //   label: {
-        //     tooltipContent: formatText({
-        //       id: 'actionSidebar.tooltip.description',
-        //     }),
-        //   },
-        // }}
-        title={formatText({ id: 'actionSidebar.description' })}
-        isExpandable
-      >
-        {([
-          isDecriptionFieldExpanded,
-          {
-            toggleOff: toggleOffDecriptionSelect,
-            toggleOn: toggleOnDecriptionSelect,
-          },
-        ]) => (
-          <DescriptionField
-            isDecriptionFieldExpanded={isDecriptionFieldExpanded}
-            toggleOffDecriptionSelect={toggleOffDecriptionSelect}
-            toggleOnDecriptionSelect={toggleOnDecriptionSelect}
-            fieldName="description"
-          />
-        )}
-      </ActionFormRow>
+      <DescriptionRow />
       {role !== REMOVE_ROLE_OPTION_VALUE && (
         <PermissionsTable name="permissions" role={role} />
       )}
