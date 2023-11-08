@@ -1,6 +1,6 @@
 import { ComponentType } from 'react';
 
-import WizardTemplate from '~frame/WizardTemplateColony';
+import WizardTemplate from '~frame/WizardTemplate';
 import withWizard, { StepsFn, StepType } from '~shared/Wizard/withWizard';
 import { Token } from '~types';
 

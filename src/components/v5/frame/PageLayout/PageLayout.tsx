@@ -1,9 +1,9 @@
 import React, { FC, PropsWithChildren, useEffect, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
+import clsx from 'clsx';
 
 import { useTablet } from '~hooks';
 
-import NavigationSidebar from '../NavigationSidebar';
 import NavigationSidebarContextProvider from '../NavigationSidebar/partials/NavigationSidebarContext';
 import PageHeader from './partials/PageHeader';
 import PageHeading from './partials/PageHeading';
@@ -12,10 +12,11 @@ import { PageLayoutProps } from './types';
 const displayName = 'v5.frame.PageLayout';
 
 const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
-  navigationSidebarProps,
+  sidebar,
   headerProps,
   topContent,
   children,
+  hasWideSidebar,
 }) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const topContentWrapperRef = useRef<HTMLDivElement | null>(null);
@@ -44,7 +45,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
     };
   }, []);
 
-  const { userNavigation, pageHeadingProps } = headerProps;
+  const { pageHeadingProps } = headerProps;
 
   return (
     <NavigationSidebarContextProvider>
@@ -59,10 +60,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
                 {topContent && (
                   <div className="flex-shrink-0">{topContent}</div>
                 )}
-                <NavigationSidebar
-                  {...navigationSidebarProps}
-                  additionalMobileContent={userNavigation}
-                />
+                {sidebar}
               </div>
               <div className="inner pt-6">
                 {pageHeadingProps && (
@@ -79,9 +77,19 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
                 </div>
               )}
               <div className="w-full md:h-[calc(100vh-var(--top-content-height))] md:pl-4 md:pt-4 md:flex md:gap-8">
-                <div className="md:w-[5.125rem] relative z-[1]">
-                  <div className="md:absolute md:top-0 md:bottom-4 md:left-0">
-                    <NavigationSidebar {...navigationSidebarProps} />
+                <div
+                  className={clsx('relative z-[1]', {
+                    'md:w-[5.125rem]': !hasWideSidebar,
+                    'md:w-[17.5rem]': hasWideSidebar,
+                  })}
+                >
+                  <div
+                    className={clsx(
+                      'md:absolute md:top-0 md:bottom-4 md:left-0',
+                      { 'w-full': hasWideSidebar },
+                    )}
+                  >
+                    {sidebar}
                   </div>
                 </div>
                 <div className="md:flex-grow flex flex-col gap-8">

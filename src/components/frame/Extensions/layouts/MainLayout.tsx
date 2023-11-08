@@ -1,22 +1,24 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { ToastContainer } from 'react-toastify';
 
-import { CREATE_COLONY_ROUTE } from '~routes';
 import { usePageHeadingContext } from '~context';
-import Logo from '~images/logo-new.svg';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
 import styles from '~shared/Extensions/Toast/Toast.module.css';
-import { formatText } from '~utils/intl';
 import PageLayout from '~v5/frame/PageLayout';
 
 import UserNavigationWrapper from './partials/UserNavigationWrapper';
 import { MainLayoutProps } from './types';
-import ColonySwitcherContent from './partials/ColonySwitcherContent';
+import MainSidebar from './MainSidebar';
 
 const displayName = 'frame.Extensions.layouts.MainLayout';
 
-const MainLayout: FC<PropsWithChildren<MainLayoutProps>> = ({ children }) => {
+const MainLayout: FC<PropsWithChildren<MainLayoutProps>> = ({
+  children,
+  sidebar,
+  hasWideSidebar,
+}) => {
   const { title: pageHeadingTitle, breadcrumbs = [] } = usePageHeadingContext();
+  const Sidebar = sidebar || <MainSidebar />;
 
   return (
     <>
@@ -40,23 +42,8 @@ const MainLayout: FC<PropsWithChildren<MainLayoutProps>> = ({ children }) => {
             : undefined,
           userNavigation: <UserNavigationWrapper />,
         }}
-        navigationSidebarProps={{
-          logo: <Logo />,
-          additionalMobileContent: <UserNavigationWrapper />,
-          colonySwitcherProps: {
-            avatarProps: {},
-            content: {
-              title:
-                formatText({ id: 'navigation.colonySwitcher.title' }) || '',
-              content: <ColonySwitcherContent />,
-              bottomActionProps: {
-                text: formatText({ id: 'button.createNewColony' }),
-                iconName: 'plus',
-                to: CREATE_COLONY_ROUTE,
-              },
-            },
-          },
-        }}
+        sidebar={Sidebar}
+        hasWideSidebar={hasWideSidebar}
       >
         {children}
       </PageLayout>

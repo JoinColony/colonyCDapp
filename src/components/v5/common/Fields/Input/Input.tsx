@@ -42,7 +42,7 @@ const Input: FC<InputProps> = ({
   const isErrorStatus = isCharLenghtError || isError;
 
   const input = (
-    <div className="w-full">
+    <div className="w-full relative">
       <input
         {...registerField}
         type="text"
@@ -66,7 +66,7 @@ const Input: FC<InputProps> = ({
   );
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex w-full relative flex-col gap-1">
       {labelMessage && (
         <label
           className={clsx(labelClassName, 'flex flex-col text-1')}
@@ -96,11 +96,12 @@ const Input: FC<InputProps> = ({
         input
       )}
 
-      {shouldNumberOfCharsBeVisible && isTyping && (
+      {shouldNumberOfCharsBeVisible && (
         <CharacterNumbers
           isError={isErrorStatus}
           currentCharNumber={currentCharNumber}
           maxCharNumber={maxCharNumber}
+          isShowingLabel={!!labelMessage}
         />
       )}
 

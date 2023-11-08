@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Routes as RoutesSwitch, Navigate } from 'react-router-dom';
 
-import CreateUserWizard from '~common/CreateUserWizard';
 import ColonyHome from '~common/ColonyHome';
 import ColonyFunding from '~common/ColonyFunding';
 import FourOFour from '~frame/FourOFour';
@@ -28,6 +27,7 @@ import UserProfilePage from '~frame/v5/pages/UserProfilePage';
 import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
 import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
 import CreateColonyPage from '~frame/v5/pages/CreateColonyPage';
+import CreateUserPage from '~frame/v5/pages/CreateUserPage';
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 
 import {
@@ -71,6 +71,7 @@ import ColonyRoute from './ColonyRoute';
 import ColonyMembersRoute from './ColonyMembersRoute';
 import ColonySettingsRoute from './ColonySettingsRoute';
 import UserRoute from './UserRoute';
+import WizardRoute from './WizardRoute';
 
 const displayName = 'routes.Routes';
 
@@ -86,8 +87,6 @@ const Routes = () => {
         {/* Main routes */}
         <Route element={<MainRoute />}>
           <Route path={LANDING_PAGE_ROUTE} element={<LandingPage />} />
-          <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyPage />} />
-          <Route path={CREATE_USER_ROUTE} element={<CreateUserWizard />} />
           <Route
             path={USER_ROUTE}
             element={
@@ -109,6 +108,11 @@ const Routes = () => {
             />
             <Route path={USER_ADVANCED_ROUTE} element={<UserAdvancedPage />} />
           </Route>
+        </Route>
+
+        <Route element={<WizardRoute />}>
+          <Route path={CREATE_USER_ROUTE} element={<CreateUserPage />} />
+          <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyPage />} />
         </Route>
 
         {/* Colony routes */}

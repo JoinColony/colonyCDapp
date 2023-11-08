@@ -35,4 +35,5 @@ export type CharacterNumbersProps = Pick<
 > & {
   isCharLenghtError?: boolean;
   currentCharNumber?: number;
+  isShowingLabel?: boolean;
 };

@@ -3,19 +3,24 @@ import { FormValues as CreateUserWizardFormValues } from '~common/CreateUserWiza
 
 import { ActionTypes } from '../../actionTypes';
 
-import { ActionType, ErrorActionType, UniqueActionType } from './index';
+import {
+  ActionType,
+  ErrorActionType,
+  MetaWithSetter,
+  UniqueActionType,
+} from './index';
 
 export type UserActionTypes =
   | UniqueActionType<
       ActionTypes.USERNAME_CREATE,
       CreateUserWizardFormValues,
-      object
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.USERNAME_CREATE_ERROR, object>
   | UniqueActionType<
       ActionTypes.USERNAME_CREATE_SUCCESS,
       CreateUserWizardFormValues,
-      object
+      MetaWithSetter<object>
     >
   | UniqueActionType<ActionTypes.USER_AVATAR_REMOVE, object, object>
   | ErrorActionType<ActionTypes.USER_AVATAR_REMOVE_ERROR, object>

@@ -10,11 +10,14 @@ const CharacterNumbers: FC<CharacterNumbersProps> = ({
   maxCharNumber = DEFAULT_MAX_CHAR_NUMBER,
   isError,
   currentCharNumber,
+  isShowingLabel,
 }) => (
   <div
-    className={clsx('text-4 flex absolute right-3 top-4', {
+    className={clsx('text-4 flex absolute right-3', {
       'text-negative-400': isError,
       'text-gray-500': !isError,
+      'top-10': isShowingLabel,
+      'top-4': !isShowingLabel,
     })}
   >
     {currentCharNumber}/{maxCharNumber}

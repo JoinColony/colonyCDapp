@@ -45,7 +45,10 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
         ) : (
           <Icon
             name="colony-placeholder"
-            className="h-full w-full text-white"
+            className="text-white"
+            appearance={{
+              size: size === 'default' ? 'extraBig' : size,
+            }}
           />
         )}
       </figure>
