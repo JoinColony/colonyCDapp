@@ -1,11 +1,28 @@
 import { ReactInstanceWithCleave } from 'cleave.js/react/props';
 import noop from 'lodash/noop';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import {
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import { FormattedInputProps } from './types';
 import { addWidthProperty } from './utils';
 
-export const useAdjustInputWidth = (autoWidth: boolean) => {
+export const useAdjustInputWidth = (
+  autoWidth: boolean,
+  externalInputRef: React.ForwardedRef<HTMLInputElement>,
+) => {
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useImperativeHandle(externalInputRef, () => {
+    if (!inputRef.current) {
+      throw new Error('Input ref is not available');
+    }
+
+    return inputRef.current;
+  });
 
   useLayoutEffect(() => {
     if (!inputRef.current || !autoWidth) {
