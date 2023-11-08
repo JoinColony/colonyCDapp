@@ -52,7 +52,7 @@ const InvitationBlock = () => {
         </div>
         <Button
           text={MSG.buttonText}
-          mode={isCopied ? 'completed' : 'primaryOutline'}
+          mode={isCopied ? 'completed' : 'quinary'}
           iconName={isCopied ? undefined : 'copy-simple'}
           onClick={handleClipboardCopy}
           className="text-sm"
