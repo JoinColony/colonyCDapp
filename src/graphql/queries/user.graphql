@@ -29,21 +29,6 @@ query GetUserByName($name: String!) {
   }
 }
 
-query CombinedUser($name: String!, $address: ID!) {
-  getUserByAddress(id: $address) {
-    items {
-      ...User
-    }
-  }
-  getProfileByUsername(displayName: $name) {
-    items {
-      user {
-        ...User
-      }
-    }
-  }
-}
-
 query GetUsers($filter: ModelUserFilterInput, $limit: Int) {
   listUsers(filter: $filter, limit: $limit) {
     items {

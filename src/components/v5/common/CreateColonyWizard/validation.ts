@@ -1,7 +1,7 @@
 import { string, object } from 'yup';
 
 import { ADDRESS_ZERO, DEFAULT_NETWORK_TOKEN } from '~constants';
-import { GetFullColonyByNameDocument } from '~gql';
+import { CheckColonyNameExistsDocument } from '~gql';
 import { intl } from '~utils/intl';
 import { createYupTestFromQuery } from '~utils/yup/tests';
 import { Token } from '~types';
@@ -19,7 +19,7 @@ const COLONY_NAME_REGEX = /^[A-Za-z0-9]\w+$/;
 const TOKEN_SYMBOL_REGEX = /^[A-Za-z0-9]+$/;
 
 const isNameTaken = createYupTestFromQuery({
-  query: GetFullColonyByNameDocument,
+  query: CheckColonyNameExistsDocument,
   circuitBreaker: isValidName,
 });
 
