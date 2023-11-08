@@ -22,7 +22,11 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 
 const displayName = 'v5.common.ActionsContent.partials.AmountField';
 
-const AmountField: FC<AmountFieldProps> = ({ name, tokenAddress }) => {
+const AmountField: FC<AmountFieldProps> = ({
+  name,
+  tokenAddress,
+  maxWidth,
+}) => {
   const { formatMessage } = useIntl();
   const { watch } = useFormContext();
   const {
@@ -50,14 +54,19 @@ const AmountField: FC<AmountFieldProps> = ({ name, tokenAddress }) => {
   const {
     colonyTokens,
     dynamicCleaveOptionKey,
-    inputWidth,
-    onInput,
     formattingOptions,
     selectedToken,
-  } = useAmountField(tokenAddress || tokenAddressController.value, field.value);
+    inputRef,
+    adjustInputWidth,
+  } = useAmountField(
+    tokenAddress || tokenAddressController.value,
+    name,
+    maxWidth,
+  );
 
   const handleCleaveChange = (e: CleaveChangeEvent) => {
     field.onChange(e.target.rawValue);
+    adjustInputWidth();
   };
 
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
@@ -82,25 +91,24 @@ const AmountField: FC<AmountFieldProps> = ({ name, tokenAddress }) => {
       ref={registerContainerRef}
     >
       <Cleave
+        htmlRef={(ref) => {
+          inputRef.current = ref;
+          adjustInputWidth();
+        }}
         readOnly={readonly}
         name={name}
         key={dynamicCleaveOptionKey}
         options={formattingOptions}
-        className={clsx(
-          'flex-grow flex-shrink text-gray-900 outline-0 outline-none',
-          {
-            'placeholder:text-gray-400': !isError,
-            'placeholder:text-negative-400': isError,
-          },
-        )}
+        className={clsx('flex-shrink text-gray-900 outline-0 outline-none', {
+          'placeholder:text-gray-400': !isError,
+          'placeholder:text-negative-400': isError,
+        })}
         placeholder={formatText({
           id: 'actionSidebar.enterAmount',
         })}
-        onInput={onInput}
         value={field.value}
         autoComplete="off"
         onChange={handleCleaveChange}
-        style={{ width: `${inputWidth || 5.5}rem` }}
       />
       {tokenAddress ? (
         <div className="flex items-center gap-1">{selectedTokenContent}</div>

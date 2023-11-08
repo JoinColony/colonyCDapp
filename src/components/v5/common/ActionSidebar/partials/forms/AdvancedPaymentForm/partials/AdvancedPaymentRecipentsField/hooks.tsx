@@ -58,7 +58,7 @@ export const useRecipientsFieldTableColumns = (
             <FormInputBase
               message={false}
               autoWidth
-              wrapperClassName="flex-row flex"
+              wrapperClassName="flex-row flex items-center"
               min={0}
               key={row.id}
               name={`${name}.${row.index}.delay`}

@@ -2,11 +2,12 @@ import { ReactInstanceWithCleave } from 'cleave.js/react/props';
 import noop from 'lodash/noop';
 import {
   useEffect,
-  useImperativeHandle,
   useLayoutEffect,
   useRef,
   useState,
+  useImperativeHandle,
 } from 'react';
+import { getInputTextWidth } from '~utils/elements';
 import { FormattedInputProps } from './types';
 import { addWidthProperty } from './utils';
 
@@ -29,36 +30,15 @@ export const useAdjustInputWidth = (
       return noop;
     }
 
-    const textMeasureContainer = document.createElement('span');
-
-    document.body.appendChild(textMeasureContainer);
-
     const input = inputRef.current;
     const changeHandler = () => {
-      Object.entries(
-        document.defaultView?.getComputedStyle(input) || {},
-      ).forEach(([key, value]) => {
-        if (!key.startsWith('font') || !(key in textMeasureContainer.style)) {
-          return;
-        }
-
-        textMeasureContainer.style[key] = value;
-      });
-
-      textMeasureContainer.innerHTML =
-        (input.type === 'number' && !Number.isNaN(input.valueAsNumber)
-          ? input.valueAsNumber.toString()
-          : input.value) || '0';
-      input.style.width = `${
-        textMeasureContainer.getBoundingClientRect().width + 2
-      }px`;
+      input.style.width = `${getInputTextWidth(input)}px`;
     };
 
     input.addEventListener('input', changeHandler);
     changeHandler();
 
     return () => {
-      textMeasureContainer.remove();
       input.removeEventListener('input', changeHandler);
       input.style.width = '';
     };
