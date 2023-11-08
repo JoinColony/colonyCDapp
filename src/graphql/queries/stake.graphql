@@ -1,5 +1,8 @@
-query GetUserStakes($userAddress: ID!) {
-  getUserStakes(userAddress: $userAddress) {
+query GetUserStakes($userAddress: ID!, $colonyAddress: ID!) {
+  getUserStakes(
+    userAddress: $userAddress
+    filter: { colonyAddress: { eq: $colonyAddress } }
+  ) {
     items {
       ...UserStake
     }

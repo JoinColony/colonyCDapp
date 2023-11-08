@@ -29,8 +29,9 @@ const StakesTab = () => {
   const { data, loading: stakesLoading } = useGetUserStakesQuery({
     variables: {
       userAddress: walletAddress ?? '',
+      colonyAddress: colony?.colonyAddress ?? '',
     },
-    skip: !walletAddress,
+    skip: !walletAddress || !colony?.colonyAddress,
     fetchPolicy: 'cache-and-network',
   });
   const userStakes = useMemo(

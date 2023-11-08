@@ -3453,8 +3453,14 @@ type UserStake @model {
   Self-managed, formatted as userAddress_transactionHash, where transactionHash is the hash of the transaction that is being staked for
   """
   id: ID!
-  userAddress: ID! @index(name: "byUserAddress", queryField: "getUserStakes")
+  userAddress: ID!
+    @index(
+      name: "byUserAndColony"
+      queryField: "getUserStakes"
+      sortKeyFields: ["colonyAddress"]
+    )
   user: User! @hasOne(fields: ["userAddress"])
+  colonyAddress: ID!
   amount: String!
   isClaimed: Boolean!
   actionId: ID!

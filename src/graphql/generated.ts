@@ -1489,6 +1489,7 @@ export type CreateUserInput = {
 export type CreateUserStakeInput = {
   actionId: Scalars['ID'];
   amount: Scalars['String'];
+  colonyAddress: Scalars['ID'];
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   id?: InputMaybe<Scalars['ID']>;
   isClaimed: Scalars['Boolean'];
@@ -3869,6 +3870,7 @@ export type ModelSubscriptionUserStakeFilterInput = {
   actionId?: InputMaybe<ModelSubscriptionIdInput>;
   amount?: InputMaybe<ModelSubscriptionStringInput>;
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionUserStakeFilterInput>>>;
+  colonyAddress?: InputMaybe<ModelSubscriptionIdInput>;
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   isClaimed?: InputMaybe<ModelSubscriptionBooleanInput>;
@@ -4029,6 +4031,7 @@ export type ModelUserStakeConditionInput = {
   actionId?: InputMaybe<ModelIdInput>;
   amount?: InputMaybe<ModelStringInput>;
   and?: InputMaybe<Array<InputMaybe<ModelUserStakeConditionInput>>>;
+  colonyAddress?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   isClaimed?: InputMaybe<ModelBooleanInput>;
   not?: InputMaybe<ModelUserStakeConditionInput>;
@@ -4046,6 +4049,7 @@ export type ModelUserStakeFilterInput = {
   actionId?: InputMaybe<ModelIdInput>;
   amount?: InputMaybe<ModelStringInput>;
   and?: InputMaybe<Array<InputMaybe<ModelUserStakeFilterInput>>>;
+  colonyAddress?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   id?: InputMaybe<ModelIdInput>;
   isClaimed?: InputMaybe<ModelBooleanInput>;
@@ -8112,6 +8116,7 @@ export type UpdateUserInput = {
 export type UpdateUserStakeInput = {
   actionId?: InputMaybe<Scalars['ID']>;
   amount?: InputMaybe<Scalars['String']>;
+  colonyAddress?: InputMaybe<Scalars['ID']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   id: Scalars['ID'];
   isClaimed?: InputMaybe<Scalars['Boolean']>;
@@ -8230,6 +8235,7 @@ export type UserStake = {
   action?: Maybe<ColonyAction>;
   actionId: Scalars['ID'];
   amount: Scalars['String'];
+  colonyAddress: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
   /** Self-managed, formatted as userAddress_transactionHash, where transactionHash is the hash of the transaction that is being staked for */
   id: Scalars['ID'];
@@ -8850,6 +8856,7 @@ export type GetProfileByEmailQuery = { __typename?: 'Query', getProfileByEmail?:
 
 export type GetUserStakesQueryVariables = Exact<{
   userAddress: Scalars['ID'];
+  colonyAddress: Scalars['ID'];
 }>;
 
 
@@ -11867,8 +11874,11 @@ export type GetProfileByEmailQueryHookResult = ReturnType<typeof useGetProfileBy
 export type GetProfileByEmailLazyQueryHookResult = ReturnType<typeof useGetProfileByEmailLazyQuery>;
 export type GetProfileByEmailQueryResult = Apollo.QueryResult<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>;
 export const GetUserStakesDocument = gql`
-    query GetUserStakes($userAddress: ID!) {
-  getUserStakes(userAddress: $userAddress) {
+    query GetUserStakes($userAddress: ID!, $colonyAddress: ID!) {
+  getUserStakes(
+    userAddress: $userAddress
+    filter: {colonyAddress: {eq: $colonyAddress}}
+  ) {
     items {
       ...UserStake
     }
@@ -11889,6 +11899,7 @@ export const GetUserStakesDocument = gql`
  * const { data, loading, error } = useGetUserStakesQuery({
  *   variables: {
  *      userAddress: // value for 'userAddress'
+ *      colonyAddress: // value for 'colonyAddress'
  *   },
  * });
  */
