@@ -1386,5 +1386,7 @@
     "errors.title.maxLength": "Exceeded max character limit {currentLength}/{maxLength}.",
     "errors.colonyObjective.title": "Colony objective title is required",
     "errors.colonyObjective.description": "Colony objective description is required",
-    "errors.colonyObjective.progress": "Colony objective progress is required"
+    "errors.colonyObjective.progress": "Colony objective progress is required",
+    "colony.emptyState.title": "No results to display",
+    "colony.emptyState.subtitle": "There are no Colony's that match your search. Try searching again"
 }

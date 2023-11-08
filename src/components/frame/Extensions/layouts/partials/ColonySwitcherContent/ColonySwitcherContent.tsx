@@ -1,70 +1,32 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 
-import { useAppContext } from '~hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
-import { notNull } from '~utils/arrays';
 
-import { getChainIconName } from '../../utils';
 import ColonySwitcherItem from '../ColonySwitcherItem';
 import ColonySwitcherList from '../ColonySwitcherList';
-import { ColonySwitcherListItem } from '../ColonySwitcherList/types';
-import { ColonySwitcherContentProps } from './types';
-import { sortByDate } from './utils';
+
+import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput';
+import EmptyContent from '~v5/common/EmptyContent';
+import { useColonySwitcherContent } from './hooks';
 
 const displayName = 'frame.Extensions.partials.ColonySwitcherContent';
 
 // There's just a base logic added here, so that we can see other colonies and navigate between them.
 // The rest of the functionality will be added in the next PRs.
-// @todo: sreach, empty list indicator, etc.
-const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
-  const { userLoading, user } = useAppContext();
-
-  const userColonies = useMemo(
-    () => (user?.watchlist?.items.filter(notNull) || []).sort(sortByDate),
-    [user],
-  );
+const ColonySwitcherContent: FC = () => {
+  const {
+    userLoading,
+    filteredColony,
+    name,
+    chainIcon,
+    onInput,
+    joinedColonies,
+    colony,
+    searchValue,
+  } = useColonySwitcherContent();
 
   const titleClassName = 'uppercase text-4 text-gray-400 mb-3';
-
-  const { name, chainMetadata, metadata, colonyAddress } = colony || {};
-  const { chainId } = chainMetadata || {};
-
-  const chainIcon = getChainIconName(chainId);
-
-  const joinedColonies: ColonySwitcherListItem[] = userColonies.reduce(
-    (result, item) => {
-      if (!item) {
-        return result;
-      }
-
-      const { colony: itemColony, id } = item;
-
-      if (colonyAddress === itemColony.colonyAddress) {
-        return result;
-      }
-
-      return [
-        ...result,
-        {
-          key: id,
-          name: itemColony.name,
-          to: `/colony/${itemColony.name}`,
-          avatarProps: {
-            chainIconName: getChainIconName(itemColony.chainMetadata.chainId),
-            colonyImageProps: itemColony.metadata?.avatar
-              ? {
-                  src:
-                    itemColony.metadata?.thumbnail ||
-                    itemColony.metadata?.avatar,
-                }
-              : undefined,
-          },
-        },
-      ];
-    },
-    [],
-  );
 
   const joinedMoreColonies = !!joinedColonies?.length;
 
@@ -80,8 +42,11 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
           <ColonySwitcherItem
             name={name || ''}
             avatarProps={{
-              colonyImageProps: metadata?.avatar
-                ? { src: metadata?.thumbnail || metadata?.avatar }
+              colonyImageProps: colony?.metadata?.avatar
+                ? {
+                    src:
+                      colony?.metadata?.thumbnail || colony?.metadata?.avatar,
+                  }
                 : undefined,
               chainIconName: chainIcon,
             }}
@@ -91,12 +56,21 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
       )}
       {joinedMoreColonies && (
         <div className="border-t border-t-gray-200 pt-6 flex flex-col gap-6">
-          {/* <div>add search here</div> */}
+          <SearchInput onInput={onInput} />
           <div>
             <h3 className={titleClassName}>
               {formatText({ id: 'navigation.colonySwitcher.joinedColonys' })}
             </h3>
-            <ColonySwitcherList items={joinedColonies} />
+            <ColonySwitcherList
+              items={searchValue ? filteredColony : joinedColonies}
+            />
+            {!filteredColony.length && (
+              <EmptyContent
+                icon="binoculars"
+                title={{ id: 'colony.emptyState.title' }}
+                description={{ id: 'colony.emptyState.subtitle' }}
+              />
+            )}
           </div>
         </div>
       )}
