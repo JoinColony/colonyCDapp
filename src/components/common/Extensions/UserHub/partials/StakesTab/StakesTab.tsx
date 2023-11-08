@@ -1,18 +1,14 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import Tabs from '~shared/Extensions/Tabs';
-import { useAppContext, useColonyContext, useMobile } from '~hooks';
-import { useGetUserStakesQuery } from '~gql';
-import { notNull } from '~utils/arrays';
-import { UserStakeWithStatus } from '~types';
-import { useNetworkMotionStates } from '~hooks/useNetworkMotionState';
+import { useColonyContext, useMobile } from '~hooks';
 
 import { stakesFilterOptions } from './consts';
 import StakesList from './partials/StakesList';
-import { getStakeStatus, getStakesTabItems } from './helpers';
-import { StakesFilterType } from './types';
+import { getStakesTabItems } from './helpers';
+import { useStakesByFilterType } from './useStakesByFilterType';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 
@@ -20,49 +16,11 @@ const StakesTab = () => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { colony } = useColonyContext();
-  const { user } = useAppContext();
-  const { walletAddress } = user ?? {};
 
   const [activeTab, setActiveTab] = useState(0);
   const activeFilterOption = stakesFilterOptions[activeTab];
 
-  const { data, loading: stakesLoading } = useGetUserStakesQuery({
-    variables: {
-      userAddress: walletAddress ?? '',
-      colonyAddress: colony?.colonyAddress ?? '',
-    },
-    skip: !walletAddress || !colony?.colonyAddress,
-    fetchPolicy: 'cache-and-network',
-  });
-  const userStakes = useMemo(
-    () => data?.getUserStakes?.items.filter(notNull) ?? [],
-    [data],
-  );
-
-  const motionIds = useMemo(
-    () =>
-      userStakes
-        .filter((stake) => !!stake.action?.motionData)
-        .map((stake) => stake.action?.motionData?.nativeMotionId ?? ''),
-    [userStakes],
-  );
-  const { motionStatesMap, loading: motionStatesLoading } =
-    useNetworkMotionStates(motionIds);
-
-  const stakesWithStatus = userStakes.map((stake) => ({
-    ...stake,
-    status: getStakeStatus(stake, motionStatesMap),
-  }));
-  const stakesByFilterType = stakesFilterOptions.reduce((stakes, option) => {
-    const updatedStakes = {
-      ...stakes,
-      [option.type]: stakesWithStatus.filter((stake) =>
-        option.stakeStatuses.includes(stake.status),
-      ),
-    };
-
-    return updatedStakes;
-  }, {} as Record<StakesFilterType, UserStakeWithStatus[]>);
+  const { stakesByFilterType, filtersDataLoading } = useStakesByFilterType();
 
   // Tabs are being used for selecting filter option
   const handleOnTabClick = useCallback((_, id: number) => {
@@ -72,15 +30,12 @@ const StakesTab = () => {
   // Update tabs items with the number of stakes for each filter option
   const tabItems = getStakesTabItems(
     stakesByFilterType,
-    motionStatesLoading,
+    filtersDataLoading,
     activeFilterOption.type,
   );
 
   const filteredStakes = stakesByFilterType[activeFilterOption.type];
-  const filterDataLoading = !!(
-    stakesLoading ||
-    (activeFilterOption.requiresMotionState && motionStatesLoading)
-  );
+  const filterDataLoading = filtersDataLoading[activeFilterOption.type];
 
   if (!colony) {
     return null;

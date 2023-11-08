@@ -8,7 +8,11 @@ import { StakesListProps } from '../types';
 
 const StakesList = ({ stakes, loading, colony }: StakesListProps) => {
   if (loading) {
-    return <SpinnerLoader appearance={{ size: 'small' }} />;
+    return (
+      <div className="mx-auto w-fit">
+        <SpinnerLoader appearance={{ size: 'small' }} />
+      </div>
+    );
   }
 
   if (!stakes.length) {

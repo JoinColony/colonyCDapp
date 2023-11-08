@@ -8,14 +8,11 @@ import { stakesFilterOptions } from './consts';
 
 export const getStakesTabItems = (
   stakesByFilterType: Record<StakesFilterType, UserStake[]>,
-  motionStatesLoading: boolean,
+  filtersDataLoading: Record<StakesFilterType, boolean>,
   activeFilterType: StakesFilterType,
 ) =>
   stakesFilterOptions.map((option) => {
-    if (
-      !option.showNotificationNumber ||
-      (option.requiresMotionState && motionStatesLoading)
-    ) {
+    if (!option.showNotificationNumber || filtersDataLoading[option.type]) {
       return option;
     }
 
@@ -53,5 +50,5 @@ export const getStakeStatus = (
     return UserStakeStatus.Claimable;
   }
 
-  return UserStakeStatus.Unknown;
+  return UserStakeStatus.Staking;
 };
