@@ -17,7 +17,9 @@ export const PageHeadingContext = createContext<PageHeadingContextValue>({
   setBreadcrumbs: () => {},
 });
 
-const PageHeadingContextProvider: FC<PropsWithChildren> = ({ children }) => {
+export const PageHeadingContextProvider: FC<PropsWithChildren> = ({
+  children,
+}) => {
   const [title, setTitle] = useState<string | undefined>(undefined);
   const [breadcrumbs, setBreadcrumbs] = useState<
     PageHeadingProps['breadcrumbs'] | undefined
@@ -39,5 +41,3 @@ const PageHeadingContextProvider: FC<PropsWithChildren> = ({ children }) => {
     </PageHeadingContext.Provider>
   );
 };
-
-export default PageHeadingContextProvider;

@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
 
-import { useAppContext, useColonyContext } from '~hooks';
+import { useAppContext } from '~hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
 import { notNull } from '~utils/arrays';
@@ -9,7 +9,7 @@ import { getChainIconName } from '../../utils';
 import ColonySwitcherItem from '../ColonySwitcherItem';
 import ColonySwitcherList from '../ColonySwitcherList';
 import { ColonySwitcherListItem } from '../ColonySwitcherList/types';
-
+import { ColonySwitcherContentProps } from './types';
 import { sortByDate } from './utils';
 
 const displayName = 'frame.Extensions.partials.ColonySwitcherContent';
@@ -17,9 +17,8 @@ const displayName = 'frame.Extensions.partials.ColonySwitcherContent';
 // There's just a base logic added here, so that we can see other colonies and navigate between them.
 // The rest of the functionality will be added in the next PRs.
 // @todo: sreach, empty list indicator, etc.
-const ColonySwitcherContent: FC = () => {
+const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
   const { userLoading, user } = useAppContext();
-  const { colony } = useColonyContext();
 
   const userColonies = useMemo(
     () => (user?.watchlist?.items.filter(notNull) || []).sort(sortByDate),
