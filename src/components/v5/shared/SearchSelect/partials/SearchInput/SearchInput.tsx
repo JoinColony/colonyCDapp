@@ -22,7 +22,7 @@ const SearchInput: FC<SearchInputProps> = ({
         onChange={(e) => {
           onChange?.(e.target.value);
         }}
-        className="px-[2.125rem] rounded-lg w-full text-3 peer focus:placeholder:text-gray-900 focus:shadow-[0px_0px_0px_3px_#EFF8FF]"
+        className="px-[2.125rem] rounded-lg w-full text-3 peer focus:shadow-[0px_0px_0px_3px_#EFF8FF]"
         placeholder={placeholder}
         value={value}
         ref={searchInputRef}
