@@ -6,13 +6,15 @@ import ActionFormRow from '~v5/common/ActionFormRow';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import AdvancedPaymentRecipentsField from './partials/AdvancedPaymentRecipentsField';
-import { DECISION_METHOD_OPTIONS } from '../../consts';
 import { formatText } from '~utils/intl';
 import DescriptionRow from '../../DescriptionRow';
+import { useDecisionMethods } from '../../../hooks';
 
 const displayName = 'v5.common.ActionSidebar.partials.AdvancedPaymentForm';
 
 const AdvancedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+  const { decisionMethods } = useDecisionMethods();
+
   useAdvancedPayment(getFormOptions);
 
   return (
@@ -45,7 +47,10 @@ const AdvancedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <FormCardSelect
           name="decisionMethod"
-          options={DECISION_METHOD_OPTIONS}
+          options={decisionMethods}
+          placeholder={formatText({
+            id: 'actionSidebar.decisionMethod.placeholder',
+          })}
           title={formatText({ id: 'actionSidebar.decisionMethod' })}
         />
       </ActionFormRow>

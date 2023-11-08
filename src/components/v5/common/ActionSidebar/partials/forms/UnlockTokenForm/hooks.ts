@@ -1,30 +1,38 @@
 import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
 import { DeepPartial } from 'utility-types';
+import { useWatch } from 'react-hook-form';
+
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
-import { useColonyContext, useEnabledExtensions } from '~hooks';
+import { useColonyContext } from '~hooks';
 import { getUnlockTokenDialogPayload } from '~common/Dialogs/UnlockTokenDialog/helpers';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+
 import { ActionFormBaseProps } from '../../../types';
-import { useActionFormBaseHook } from '../../../hooks';
-import { DECISION_METHOD_OPTIONS } from '../../consts';
+import {
+  DecisionMethod,
+  DECISION_METHOD,
+  useActionFormBaseHook,
+} from '../../../hooks';
 import { UnlockTokenFormValues, validationSchema } from './consts';
 
 export const useUnlockToken = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
-  const { isVotingReputationEnabled } = useEnabledExtensions();
+  const decisionMethod: DecisionMethod | undefined = useWatch({
+    name: DECISION_METHOD_FIELD_NAME,
+  });
 
   useActionFormBaseHook({
     getFormOptions,
-    actionType: isVotingReputationEnabled
-      ? ActionTypes.ROOT_MOTION
-      : ActionTypes.ACTION_UNLOCK_TOKEN,
+    actionType:
+      decisionMethod === DECISION_METHOD.Permissions
+        ? ActionTypes.ACTION_UNLOCK_TOKEN
+        : ActionTypes.ROOT_MOTION,
     defaultValues: useMemo<DeepPartial<UnlockTokenFormValues>>(
       () => ({
-        decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
-        annotation: '',
         createdIn: Id.RootDomain.toString(),
       }),
       [],
@@ -38,9 +46,11 @@ export const useUnlockToken = (
             decisionMethod: payload.decisionMethod,
             annotationMessage: payload.annotation,
           };
+
           if (colony) {
             return getUnlockTokenDialogPayload(colony, values);
           }
+
           return null;
         }),
       ),

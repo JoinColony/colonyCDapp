@@ -24,7 +24,7 @@ export const useActionFormBaseHook: UseActionFormBaseHook = ({
       form,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [defaultValues, validationSchema]);
+  }, [defaultValues, validationSchema, actionType]);
 
   useUnmountEffect(() => {
     getFormOptions(undefined, form);

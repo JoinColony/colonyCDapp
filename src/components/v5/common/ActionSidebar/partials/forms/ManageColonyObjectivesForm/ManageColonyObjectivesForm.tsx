@@ -6,8 +6,8 @@ import ActionFormRow from '~v5/common/ActionFormRow';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField';
 import { formatText } from '~utils/intl';
+import { useDecisionMethods } from '~v5/common/ActionSidebar/hooks';
 
-import { DECISION_METHOD_OPTIONS } from '../../consts';
 import { ActionFormBaseProps } from '../../../types';
 import { useManageColonyObjectives } from './hooks';
 
@@ -17,6 +17,8 @@ const displayName =
 const ManageColonyObjectivesForm: FC<ActionFormBaseProps> = ({
   getFormOptions,
 }) => {
+  const { decisionMethods } = useDecisionMethods();
+
   useManageColonyObjectives(getFormOptions);
 
   return (
@@ -50,7 +52,10 @@ const ManageColonyObjectivesForm: FC<ActionFormBaseProps> = ({
       >
         <FormCardSelect
           name="decisionMethod"
-          options={DECISION_METHOD_OPTIONS}
+          options={decisionMethods}
+          placeholder={formatText({
+            id: 'actionSidebar.decisionMethod.placeholder',
+          })}
           title={formatText({ id: 'actionSidebar.decisionMethod' })}
         />
       </ActionFormRow>

@@ -1,18 +1,21 @@
 import React, { FC } from 'react';
 
-import { useTransferFunds } from './hooks';
-import { ActionFormBaseProps } from '../../../types';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import AmountField from '~v5/common/ActionSidebar/partials/AmountField';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
-import { DECISION_METHOD_OPTIONS } from '../../consts';
 import { formatText } from '~utils/intl';
+
+import { useTransferFunds } from './hooks';
+import { ActionFormBaseProps } from '../../../types';
+import { useDecisionMethods } from '../../../hooks';
 import DescriptionRow from '../../DescriptionRow';
 
 const displayName = 'v5.common.ActionSidebar.partials.TransferFundsForm';
 
 const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+  const { decisionMethods } = useDecisionMethods();
+
   useTransferFunds(getFormOptions);
 
   return (
@@ -73,7 +76,10 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <FormCardSelect
           name="decisionMethod"
-          options={DECISION_METHOD_OPTIONS}
+          options={decisionMethods}
+          placeholder={formatText({
+            id: 'actionSidebar.decisionMethod.placeholder',
+          })}
           title={formatText({ id: 'actionSidebar.decisionMethod' })}
         />
       </ActionFormRow>

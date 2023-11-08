@@ -1,17 +1,19 @@
 import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
 import { DeepPartial } from 'utility-types';
+import { useWatch } from 'react-hook-form';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
-import {
-  useColonyContext,
-  useEnabledExtensions,
-  useNetworkInverseFee,
-} from '~hooks';
+import { useColonyContext, useNetworkInverseFee } from '~hooks';
 import { getCreatePaymentDialogPayload } from '~common/Dialogs/CreatePaymentDialog/helpers';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+
 import { ActionFormBaseProps } from '../../../types';
-import { useActionFormBaseHook } from '../../../hooks';
-import { DECISION_METHOD_OPTIONS } from '../../consts';
+import {
+  DecisionMethod,
+  DECISION_METHOD,
+  useActionFormBaseHook,
+} from '../../../hooks';
 import { AdvancedPaymentFormValues, validationSchema } from './consts';
 
 export const useAdvancedPayment = (
@@ -19,15 +21,15 @@ export const useAdvancedPayment = (
 ) => {
   const { networkInverseFee } = useNetworkInverseFee();
   const { colony } = useColonyContext();
-  const { isVotingReputationEnabled } = useEnabledExtensions();
+  const decisionMethod: DecisionMethod | undefined = useWatch({
+    name: DECISION_METHOD_FIELD_NAME,
+  });
 
   useActionFormBaseHook({
     validationSchema,
     defaultValues: useMemo<DeepPartial<AdvancedPaymentFormValues>>(
       () => ({
         createdIn: Id.RootDomain.toString(),
-        decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
-        description: '',
         payments: [
           {
             delay: 0,
@@ -40,9 +42,10 @@ export const useAdvancedPayment = (
       }),
       [colony?.nativeToken?.tokenAddress],
     ),
-    actionType: isVotingReputationEnabled
-      ? ActionTypes.MOTION_EXPENDITURE_PAYMENT
-      : ActionTypes.ACTION_EXPENDITURE_PAYMENT,
+    actionType:
+      decisionMethod === DECISION_METHOD.Permissions
+        ? ActionTypes.ACTION_EXPENDITURE_PAYMENT
+        : ActionTypes.MOTION_EXPENDITURE_PAYMENT,
     getFormOptions,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(

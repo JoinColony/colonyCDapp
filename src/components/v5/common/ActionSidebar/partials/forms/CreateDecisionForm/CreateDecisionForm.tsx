@@ -1,17 +1,20 @@
 import React, { FC } from 'react';
 
-import { useCreateDecision } from './hooks';
-import { ActionFormBaseProps } from '../../../types';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
-import { DECISION_METHOD_OPTIONS } from '../../consts';
 import { formatText } from '~utils/intl';
+
+import { useCreateDecision } from './hooks';
+import { ActionFormBaseProps } from '../../../types';
 import DescriptionRow from '../../DescriptionRow';
+import { useDecisionMethods } from '../../../hooks';
 
 const displayName = 'v5.common.ActionSidebar.partials.SinglePaymentForm';
 
 const CreateDecisionForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+  const { decisionMethods } = useDecisionMethods();
+
   useCreateDecision(getFormOptions);
 
   return (
@@ -30,7 +33,10 @@ const CreateDecisionForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <FormCardSelect
           name="decisionMethod"
-          options={DECISION_METHOD_OPTIONS}
+          placeholder={formatText({
+            id: 'actionSidebar.decisionMethod.placeholder',
+          })}
+          options={decisionMethods}
           title={formatText({ id: 'actionSidebar.decisionMethod' })}
         />
       </ActionFormRow>

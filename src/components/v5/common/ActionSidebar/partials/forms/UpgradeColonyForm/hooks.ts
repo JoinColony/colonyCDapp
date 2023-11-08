@@ -1,24 +1,34 @@
 import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
 import { DeepPartial } from 'utility-types';
+import { useWatch } from 'react-hook-form';
+
 import { ActionTypes, RootMotionMethodNames } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
-import { useColonyContext, useEnabledExtensions } from '~hooks';
+import { useColonyContext } from '~hooks';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+
 import { ActionFormBaseProps } from '../../../types';
-import { useActionFormBaseHook } from '../../../hooks';
-import { DECISION_METHOD_OPTIONS } from '../../consts';
+import {
+  DecisionMethod,
+  DECISION_METHOD,
+  useActionFormBaseHook,
+} from '../../../hooks';
 import { validationSchema, UpgradeColonyFormValues } from './consts';
 
 export const useUpgradeColony = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
-  const { isVotingReputationEnabled } = useEnabledExtensions();
+  const decisionMethod: DecisionMethod | undefined = useWatch({
+    name: DECISION_METHOD_FIELD_NAME,
+  });
 
   useActionFormBaseHook({
-    actionType: isVotingReputationEnabled
-      ? ActionTypes.ROOT_MOTION
-      : ActionTypes.ACTION_VERSION_UPGRADE,
+    actionType:
+      decisionMethod === DECISION_METHOD.Permissions
+        ? ActionTypes.ACTION_VERSION_UPGRADE
+        : ActionTypes.ROOT_MOTION,
     getFormOptions,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
@@ -42,8 +52,6 @@ export const useUpgradeColony = (
     ),
     defaultValues: useMemo<DeepPartial<UpgradeColonyFormValues>>(
       () => ({
-        decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
-        annotation: '',
         createdIn: Id.RootDomain.toString(),
       }),
       [],

@@ -11,3 +11,4 @@ export * from './useRemoveTxParamOnClose';
 export * from './useSidebarActionForm';
 export * from './useSidebarActionForm';
 export * from './useUserHasPermissions';
+export * from './useDecisionMethods';

@@ -1,16 +1,17 @@
 import React, { FC } from 'react';
 
-import { useEditTeam } from './hooks';
-import { ActionFormBaseProps } from '../../../types';
+import { formatText } from '~utils/intl';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import TeamColourField from '~v5/common/ActionSidebar/partials/TeamColourField';
-import { DECISION_METHOD_OPTIONS } from '../../consts';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { formatText } from '~utils/intl';
+
+import { useEditTeam } from './hooks';
+import { ActionFormBaseProps } from '../../../types';
+import { useDecisionMethods } from '../../../hooks';
 import DescriptionRow from '../../DescriptionRow';
 import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
 
@@ -18,6 +19,7 @@ const displayName = 'v5.common.ActionSidebar.partials.EditTeamForm';
 
 const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const { readonly } = useAdditionalFormOptionsContext();
+  const { decisionMethods } = useDecisionMethods();
 
   useEditTeam(getFormOptions);
 
@@ -107,7 +109,10 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <FormCardSelect
           name="decisionMethod"
-          options={DECISION_METHOD_OPTIONS}
+          options={decisionMethods}
+          placeholder={formatText({
+            id: 'actionSidebar.decisionMethod.placeholder',
+          })}
           title={formatText({ id: 'actionSidebar.decisionMethod' })}
         />
       </ActionFormRow>

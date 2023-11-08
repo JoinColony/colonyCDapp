@@ -2,12 +2,15 @@ import { useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useMemo } from 'react';
 import { DeepPartial } from 'utility-types';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { Id } from '@colony/colony-js';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
 import { useAppContext, useColonyContext } from '~hooks';
 import { ActionFormBaseProps } from '../../../types';
-import { useActionFormBaseHook } from '../../../hooks';
+import {
+  DecisionMethod,
+  DECISION_METHOD,
+  useActionFormBaseHook,
+} from '../../../hooks';
 import {
   AUTHORITY,
   ManagePermissionsFormValues,
@@ -16,11 +19,14 @@ import {
 } from './consts';
 import { UserRole, USER_ROLE } from '~constants/permissions';
 import { getPermissionsMap } from './utils';
-import { DECISION_METHOD_OPTIONS } from '../../consts';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 
 export const useManagePermissions = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
+  const decisionMethod: DecisionMethod | undefined = useWatch({
+    name: DECISION_METHOD_FIELD_NAME,
+  });
   const { setValue } = useFormContext<ManagePermissionsFormValues>();
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -41,13 +47,12 @@ export const useManagePermissions = (
   useActionFormBaseHook({
     getFormOptions,
     validationSchema,
-    actionType: ActionTypes.ACTION_USER_ROLES_SET,
+    actionType:
+      decisionMethod === DECISION_METHOD.Permissions
+        ? ActionTypes.ACTION_USER_ROLES_SET
+        : ActionTypes.MOTION_USER_ROLES_SET,
     defaultValues: useMemo<DeepPartial<ManagePermissionsFormValues>>(
-      () => ({
-        description: '',
-        createdIn: Id.RootDomain.toString(),
-        decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
-      }),
+      () => ({}),
       [],
     ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
