@@ -1,5 +1,5 @@
-import { ChangeEvent } from 'react';
+import { InputBaseProps } from '~v5/common/Fields/InputBase/types';
 
-export interface SearchInputProps {
-  onInput: (e: ChangeEvent<HTMLInputElement>) => void;
+export interface SearchInputProps extends Omit<InputBaseProps, 'onChange'> {
+  onChange?: (value: string) => void;
 }
