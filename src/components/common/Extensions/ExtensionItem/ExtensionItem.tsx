@@ -37,7 +37,7 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
   );
 
   return (
-    <div className="mt-5 flex flex-col items-end sm:block">
+    <div className="flex flex-col items-end sm:block">
       <div className="flex flex-col sm:flex-row items-center w-full gap-6 sm:gap-12">
         <Link
           to={extensionUrl}
