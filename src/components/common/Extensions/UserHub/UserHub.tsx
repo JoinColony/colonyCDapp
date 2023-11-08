@@ -93,7 +93,7 @@ const UserHub: FC<UserHubProps> = ({ isTransactionTabVisible = false }) => {
         className={clsx({
           'min-w-full px-6': isMobile,
           'w-full py-6 pl-6 pr-2 relative': !isMobile && selectedTab === 2,
-          'w-full p-6 relative': !isMobile && selectedTab !== 2,
+          'w-full p-6 relative min-w-0': !isMobile && selectedTab !== 2,
         })}
       >
         <AnimatePresence>

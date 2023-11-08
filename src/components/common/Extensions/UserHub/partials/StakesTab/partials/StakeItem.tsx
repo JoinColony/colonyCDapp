@@ -15,9 +15,9 @@ const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake }) => (
   <li className={styles.stakesItem}>
     <div className="relative w-full">
       <div className="flex justify-between items-center">
-        <div className="flex items-center mr-2 flex-grow">
+        <div className="flex items-center mr-2 min-w-0">
           {/* @TODO: Replace with action custom title */}
-          <p className="text-1 mr-2">{stake.action?.type}</p>
+          <p className="text-1 mr-2 truncate min-w-0">{stake.action?.type}</p>
           <span className="text-gray-400 text-xs">
             <FormattedDate value={stake.createdAt} />
           </span>
