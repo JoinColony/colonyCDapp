@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { useGetUserStakesQuery } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
-import { useNetworkMotionStates } from '~hooks/useNetworkMotionState';
+import { useNetworkMotionStates } from '~hooks/useNetworkMotionStates';
 import { notNull } from '~utils/arrays';
 import { UserStakeWithStatus } from '~types';
 
