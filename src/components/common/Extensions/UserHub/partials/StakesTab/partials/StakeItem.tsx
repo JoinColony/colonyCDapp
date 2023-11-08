@@ -1,9 +1,8 @@
 import React, { FC } from 'react';
 import { FormattedDate } from 'react-intl';
 
-import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
-import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types';
 import Numeral from '~shared/Numeral';
+import UserStakeStatusBadge from '~v5/common/Pills/UserStakeStatusBadge';
 
 import { StakeItemProps } from '../types';
 
@@ -12,39 +11,29 @@ import styles from './StakeItem.css';
 const displayName =
   'common.Extensions.UserHub.partials.StakesTab.partials.StakeItem';
 
-const StakeItem: FC<StakeItemProps> = ({
-  title,
-  date,
-  stake,
-  transfer,
-  status,
-  nativeToken,
-  userStake,
-}) => (
+const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake }) => (
   <li className={styles.stakesItem}>
     <div className="relative w-full">
       <div className="flex justify-between items-center">
         <div className="flex items-center mr-2 flex-grow">
-          <p className="text-1 mr-2">{title}</p>
+          {/* @TODO: Replace with action custom title */}
+          <p className="text-1 mr-2">{stake.action?.type}</p>
           <span className="text-gray-400 text-xs">
-            <FormattedDate value={date} />
+            <FormattedDate value={stake.createdAt} />
           </span>
         </div>
-        <ExtensionsStatusBadge
-          mode={status as ExtensionStatusBadgeMode}
-          text={status as ExtensionStatusBadgeMode}
-        />
-        {userStake.status}
+        <UserStakeStatusBadge status={stake.status} />
       </div>
       <div className="flex text-xs">
         <div className="font-medium mr-2">
           <Numeral
-            value={stake}
+            value={stake.amount}
             decimals={nativeToken.decimals}
             suffix={nativeToken.symbol}
           />
         </div>
-        <div className="text-gray-600">{transfer}</div>
+        {/* @TODO: Replace with action metadata title */}
+        <div className="text-gray-600">Pay X 1,000 ETH</div>
       </div>
     </div>
   </li>

@@ -1,6 +1,5 @@
 import { TabItem } from '~shared/Extensions/Tabs/types';
 import { Token, Colony, UserStakeStatus, UserStakeWithStatus } from '~types';
-import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types';
 
 export interface StakesListProps {
   loading: boolean;
@@ -9,16 +8,7 @@ export interface StakesListProps {
 }
 
 export interface StakeItemProps {
-  key: string;
-  title: string;
-  date: string;
-  stake: string;
-  transfer: string;
-  status?: Omit<
-    ExtensionStatusBadgeMode,
-    'staking' | 'finalizable' | 'claimed'
-  >;
-  userStake: UserStakeWithStatus;
+  stake: UserStakeWithStatus;
   nativeToken: Token;
   colonyAddress: string;
 }

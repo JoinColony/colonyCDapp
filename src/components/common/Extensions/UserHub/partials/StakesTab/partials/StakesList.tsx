@@ -30,12 +30,7 @@ const StakesList = ({ stakes, loading, colony }: StakesListProps) => {
       {stakes.map((stake) => (
         <StakeItem
           key={stake.id}
-          title={stake.action?.type.toString() ?? ''}
-          date={stake.createdAt}
-          stake={stake.amount}
-          transfer=""
-          status={stake.isClaimed ? 'claimed' : 'staking'}
-          userStake={stake}
+          stake={stake}
           nativeToken={colony.nativeToken}
           colonyAddress={colony.colonyAddress}
         />
