@@ -61,5 +61,8 @@ export * from './ColonyHomeContext';
 export * from './PageHeadingContext';
 export * from './PageThemeContext';
 export * from './MemberModalContext';
+export * from './ColonyCreatedModalContext';
 export * from './UserTokenBalanceContext';
 export * from './UserTransactionContext';
+export * from './ColonyDecisionContext';
+export * from './TokensModalContext';
