@@ -89,7 +89,7 @@ function CardSelect<TValue = string>({
     <div className="sm:relative w-full">
       {readonly || disabled ? (
         <span
-          className={clsx('capitalize text-md', {
+          className={clsx('text-md', {
             'text-gray-400': disabled,
             'text-gray-900': readonly,
           })}
