@@ -1,18 +1,22 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
+import { useIntl } from 'react-intl';
 
 import { useGetUserStakesQuery } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
 import { useNetworkMotionStates } from '~hooks/useNetworkMotionStates';
 import { notNull } from '~utils/arrays';
-import { UserStakeWithStatus } from '~types';
+import Numeral from '~shared/Numeral';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
+import { StakesTabContentListItem } from './partials/StakesTabContentList/types';
 import { getStakeStatus } from './helpers';
 import { stakesFilterOptions } from './consts';
-import { StakesFilterType } from './types';
+import { StakesFilterType, UseStakesByFilterTypeReturnType } from './types';
 
-export const useStakesByFilterType = () => {
+export const useStakesByFilterType = (): UseStakesByFilterTypeReturnType => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
+  const intl = useIntl();
   const { walletAddress } = user ?? {};
 
   const {
@@ -42,13 +46,28 @@ export const useStakesByFilterType = () => {
   const { motionStatesMap, loading: motionStatesLoading } =
     useNetworkMotionStates(motionIds);
 
-  const stakesWithStatus = useMemo(
+  const { nativeToken } = colony || {};
+
+  const stakesWithStatus: StakesTabContentListItem[] = useMemo(
     () =>
       userStakes.map((stake) => ({
-        ...stake,
+        key: stake.id,
+        // @TODO: Replace with action custom title
+        title: stake.action?.type || '',
+        date: intl.formatDate(stake.createdAt),
+        stake: (
+          <Numeral
+            value={stake.amount}
+            decimals={getTokenDecimalsWithFallback(nativeToken?.decimals)}
+            suffix={nativeToken?.symbol}
+          />
+        ),
         status: getStakeStatus(stake, motionStatesMap),
+        // @TODO: Replace with action metadata title
+        transfer: 'Pay X 1,000 ETH',
+        motionDataId: stake.action?.motionData?.id ?? '',
       })),
-    [userStakes, motionStatesMap],
+    [userStakes, intl, nativeToken, motionStatesMap],
   );
 
   const stakesByFilterType = stakesFilterOptions.reduce((stakes, option) => {
@@ -60,7 +79,7 @@ export const useStakesByFilterType = () => {
     };
 
     return updatedStakes;
-  }, {} as Record<StakesFilterType, UserStakeWithStatus[]>);
+  }, {} as Record<StakesFilterType, StakesTabContentListItem[]>);
 
   const filtersDataLoading = stakesFilterOptions.reduce((loading, option) => {
     const isFilterDataLoading =

@@ -5,9 +5,10 @@ import { MotionStatesMap } from '~hooks/useNetworkMotionStates';
 
 import { StakesFilterType } from './types';
 import { stakesFilterOptions } from './consts';
+import { StakesTabContentListItem } from './partials/StakesTabContentList/types';
 
 export const getStakesTabItems = (
-  stakesByFilterType: Record<StakesFilterType, UserStake[]>,
+  stakesByFilterType: Record<StakesFilterType, StakesTabContentListItem[]>,
   filtersDataLoading: Record<StakesFilterType, boolean>,
   activeFilterType: StakesFilterType,
 ) =>

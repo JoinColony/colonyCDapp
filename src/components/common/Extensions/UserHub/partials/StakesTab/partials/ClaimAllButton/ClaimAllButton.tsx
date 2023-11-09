@@ -1,25 +1,18 @@
-import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
+import React, { FC, useState } from 'react';
 
 import { useAppContext, useAsyncFunction, useEnabledExtensions } from '~hooks';
 import { ActionTypes } from '~redux';
-import { UserStakeWithStatus } from '~types';
+import { formatText } from '~utils/intl';
+
+import { ClaimAllButtonProps } from './types';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 
-interface ClaimAllButtonProps {
-  colonyAddress: string;
-  claimableStakes: UserStakeWithStatus[];
-  updateClaimedStakesCache: (stakesIds: string[]) => void;
-}
-
-const ClaimAllButton = ({
+const ClaimAllButton: FC<ClaimAllButtonProps> = ({
   colonyAddress,
   claimableStakes,
   updateClaimedStakesCache,
-}: ClaimAllButtonProps) => {
-  const { formatMessage } = useIntl();
-
+}) => {
   const { user } = useAppContext();
   const { votingReputationAddress } = useEnabledExtensions();
 
@@ -38,11 +31,9 @@ const ClaimAllButton = ({
         userAddress: user?.walletAddress ?? '',
         colonyAddress,
         extensionAddress: votingReputationAddress ?? '',
-        motionIds: claimableStakes.map(
-          (stake) => stake.action?.motionData?.id ?? '',
-        ),
+        motionIds: claimableStakes.map((stake) => stake.motionDataId),
       });
-      updateClaimedStakesCache(claimableStakes.map((stake) => stake.id));
+      updateClaimedStakesCache(claimableStakes.map((stake) => stake.key));
     } catch {
       //
     }
@@ -58,11 +49,11 @@ const ClaimAllButton = ({
     <button
       type="button"
       className="text-blue-400 text-4 enabled:hover:text-gray-900 disabled:text-gray-900 transition-all duration-normal"
-      aria-label={formatMessage({ id: 'claimStakes' })}
+      aria-label={formatText({ id: 'claimStakes' })}
       disabled={isLoading}
       onClick={handleClick}
     >
-      {formatMessage({ id: 'claimStakes' })}
+      {formatText({ id: 'claimStakes' })}
     </button>
   );
 };

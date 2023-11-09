@@ -76,7 +76,7 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
         <Icon
           name="caret-down"
           appearance={{ size: 'extraTiny' }}
-          className={clsx('[&_svg]:fill-current transition-transform', {
+          className={clsx('transition-transform', {
             'rotate-180': isActive && isExpanded,
           })}
         />

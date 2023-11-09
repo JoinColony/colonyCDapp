@@ -1,24 +1,24 @@
-import React, { useCallback, useState } from 'react';
-import { useIntl } from 'react-intl';
-import { AnimatePresence, motion } from 'framer-motion';
+import React, { FC, useCallback, useState } from 'react';
 
-import Tabs from '~shared/Extensions/Tabs';
 import { useColonyContext, useMobile } from '~hooks';
+import { formatText } from '~utils/intl';
+import { SpinnerLoader } from '~shared/Preloaders';
+import { stakesFilterOptions } from '~common/Extensions/UserHub/partials/StakesTab/consts';
+import Tabs from '~shared/Extensions/Tabs';
+import EmptyContent from '~v5/common/EmptyContent';
 
-import { stakesFilterOptions } from './consts';
-import StakesList from './partials/StakesList';
-import { getStakesTabItems } from './helpers';
+import StakesTabContentList from './partials/StakesTabContentList';
+import ClaimAllButton from './partials/ClaimAllButton/ClaimAllButton';
 import { useStakesByFilterType } from './useStakesByFilterType';
-import ClaimAllButton from './partials/ClaimAllButton';
+import { getStakesTabItems } from './helpers';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 
-const StakesTab = () => {
-  const { formatMessage } = useIntl();
+const StakesTab: FC = () => {
+  const [activeTab, setActiveTab] = useState(0);
   const isMobile = useMobile();
   const { colony } = useColonyContext();
 
-  const [activeTab, setActiveTab] = useState(0);
   const activeFilterOption = stakesFilterOptions[activeTab];
 
   const { stakesByFilterType, filtersDataLoading, updateClaimedStakesCache } =
@@ -48,7 +48,7 @@ const StakesTab = () => {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <p className="heading-5">{formatMessage({ id: 'stakes' })}</p>
+        <p className="heading-5">{formatText({ id: 'stakes' })}</p>
         {!isMobile && (
           <ClaimAllButton
             colonyAddress={colony.colonyAddress}
@@ -61,24 +61,25 @@ const StakesTab = () => {
         items={tabItems}
         activeTab={activeTab}
         onTabClick={handleOnTabClick}
+        className="!pt-0"
       >
-        <ul className="flex flex-col">
-          <AnimatePresence>
-            <motion.div
-              key="stakes-tab"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-            >
-              <StakesList
-                stakes={filteredStakes}
-                loading={filterDataLoading}
-                colony={colony}
+        {filterDataLoading ? (
+          <div className="mx-auto w-fit">
+            <SpinnerLoader appearance={{ size: 'small' }} />
+          </div>
+        ) : (
+          <>
+            {filteredStakes.length ? (
+              <StakesTabContentList items={filteredStakes} />
+            ) : (
+              <EmptyContent
+                title={{ id: 'empty.content.title.stakes' }}
+                description={{ id: 'empty.content.subtitle.stakes' }}
+                icon="binoculars"
               />
-            </motion.div>
-          </AnimatePresence>
-        </ul>
+            )}
+          </>
+        )}
       </Tabs>
     </div>
   );

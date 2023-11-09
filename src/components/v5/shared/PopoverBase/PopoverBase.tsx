@@ -1,4 +1,5 @@
 import React, { FC, PropsWithChildren } from 'react';
+import { motion } from 'framer-motion';
 import clsx from 'clsx';
 
 import { PopoverBaseProps } from './types';
@@ -14,28 +15,52 @@ const PopoverBase: FC<PropsWithChildren<PopoverBaseProps>> = ({
   cardProps,
   withTooltipStyles = true,
   isTopSectionWithBackground,
-}) => (
-  <div
-    ref={setTooltipRef}
-    {...tooltipProps({
-      className: clsx(`${classNames} z-10`, {
-        'tooltip-container': withTooltipStyles,
-      }),
-    })}
-  >
-    {cardProps ? (
-      <Card
-        className="w-full"
-        {...cardProps}
-        withPadding={isTopSectionWithBackground}
-      >
-        {children}
-      </Card>
-    ) : (
-      children
-    )}
-  </div>
-);
+  withMotionAnimation,
+}) => {
+  const content = (
+    <>
+      {cardProps ? (
+        <Card
+          className="w-full"
+          {...cardProps}
+          withPadding={isTopSectionWithBackground}
+        >
+          {children}
+        </Card>
+      ) : (
+        children
+      )}
+    </>
+  );
+
+  return withMotionAnimation ? (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      ref={setTooltipRef}
+      {...tooltipProps({
+        className: clsx(classNames, 'z-10', {
+          'tooltip-container': withTooltipStyles,
+        }),
+      })}
+    >
+      {content}
+    </motion.div>
+  ) : (
+    <div
+      ref={setTooltipRef}
+      {...tooltipProps({
+        className: clsx(classNames, 'z-10', {
+          'tooltip-container': withTooltipStyles,
+        }),
+      })}
+    >
+      {content}
+    </div>
+  );
+};
+
 PopoverBase.displayName = displayName;
 
 export default PopoverBase;

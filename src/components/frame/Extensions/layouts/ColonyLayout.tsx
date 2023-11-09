@@ -1,7 +1,7 @@
 import React, { FC, PropsWithChildren, useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
-import UserHubButton from '~common/Extensions/UserHubButton';
+import UserHub from '~common/Extensions/UserHub';
 import {
   useMemberModalContext,
   usePageHeadingContext,
@@ -69,7 +69,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
       ]
     : null;
 
-  const userHub = <UserHubButton hideUserNameOnMobile />;
+  const userHub = <UserHub hideUserNameOnMobile />;
 
   return (
     <>

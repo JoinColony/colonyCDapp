@@ -1,10 +1,10 @@
 import React, { HTMLAttributes } from 'react';
 import { MessageDescriptor } from 'react-intl';
+import clsx from 'clsx';
 
 import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 import { formatText } from '~utils/intl';
-
 import {
   icons as iconNames,
   multiColorIcons as multiColorIconNames,
@@ -84,10 +84,11 @@ const Icon = ({
   return (
     <i
       title={title ? iconTitle : undefined}
-      className={`${getMainClasses(
-        multiColorAppearance || appearance,
-        styles,
-      )} ${className || ''}`}
+      className={clsx(
+        'h-[1em] w-[1em]',
+        className,
+        getMainClasses(multiColorAppearance || appearance, styles),
+      )}
       {...props}
     >
       <svg viewBox={viewBoxOverride}>

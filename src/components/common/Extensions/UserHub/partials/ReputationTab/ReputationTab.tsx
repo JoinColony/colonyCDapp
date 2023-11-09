@@ -1,7 +1,7 @@
-import React from 'react';
-import { useIntl } from 'react-intl';
+import React, { FC } from 'react';
 
 import { useAppContext, useColonyContext } from '~hooks';
+import { formatText } from '~utils/intl';
 
 import Balance from './partials/Balance';
 import PendingReputation from './partials/PendingReputation';
@@ -10,8 +10,7 @@ import { ReputationTabProps } from './types';
 
 const displayName = 'common.Extensions.UserHub.partials.ReputationTab';
 
-const ReputationTab = ({ onTabChange }: ReputationTabProps) => {
-  const { formatMessage } = useIntl();
+const ReputationTab: FC<ReputationTabProps> = ({ onTabChange }) => {
   const { colony } = useColonyContext();
   const { wallet } = useAppContext();
 
@@ -25,14 +24,19 @@ const ReputationTab = ({ onTabChange }: ReputationTabProps) => {
   return (
     <div>
       <p className="heading-5 mb-6 md:mb-4">
-        {formatMessage({ id: 'reputation' })}
+        {formatText({ id: 'reputation' })}
       </p>
       <Balance
         nativeToken={nativeToken}
         wallet={wallet}
+        className="mb-6 pb-6 border-b border-b-gray-200"
         onTabChange={onTabChange}
       />
-      <TotalReputation colonyAddress={colonyAddress} wallet={wallet} />
+      <TotalReputation
+        colonyAddress={colonyAddress}
+        wallet={wallet}
+        className="mb-6 pb-6 border-b border-b-gray-200"
+      />
       <PendingReputation
         colonyAddress={colonyAddress}
         wallet={wallet}

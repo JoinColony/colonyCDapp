@@ -1,6 +1,6 @@
-import { UserHubTabList, UserHubTabs } from './types';
+import { UserHubNavigationItem, UserHubTabs } from './types';
 
-export const tabList: UserHubTabList = [
+export const tabList: UserHubNavigationItem[] = [
   {
     id: UserHubTabs.Overview,
     label: 'Your overview',

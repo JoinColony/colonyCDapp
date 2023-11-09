@@ -44,10 +44,15 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ items, className }) => {
                 value={item.selectedValue}
                 renderSelectedValue={(option, placeholder, isSelectVisible) => {
                   const { label } = option || {};
+                  let labelContent = label;
+
+                  if (React.isValidElement(label)) {
+                    labelContent = label.props.children;
+                  }
 
                   return (
                     <span className="flex items-center">
-                      {label || placeholder}{' '}
+                      {labelContent || placeholder}{' '}
                       <Icon
                         name="caret-down"
                         appearance={{ size: 'extraExtraTiny' }}
