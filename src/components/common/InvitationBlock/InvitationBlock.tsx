@@ -1,6 +1,7 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import clsx from 'clsx';
 import { Heading4 } from '~shared/Heading';
 import Icon from '~shared/Icon';
 import Button from '~v5/shared/Button';
@@ -23,22 +24,35 @@ const MSG = defineMessages({
   },
   inviteBlockDescription: {
     id: `${displayName}.inviteBlockDescription`,
-    defaultMessage:
-      'You can invite only one member to create a colony of their own using the new app during the private beta with this custom invite link: app.colony.io/createcolony/{invitationCode}',
+    /* eslint-disable max-len */
+    defaultMessage: `{showDescription, select,
+        true {You can invite only one member to create a colony of their own using the new app during the private beta with this custom invite link: }
+        other {}
+      }{inviteLink}`,
+    /* eslint-enable max-len */
   },
 });
 
-const InvitationBlock = () => {
+interface Props {
+  showDescription?: boolean;
+}
+
+const InvitationBlock = ({ showDescription = true }: Props) => {
   const { user } = useAppContext();
   const invitationCode = user?.privateBetaInviteCode?.id;
-  const inviteLink = `app.colony.io/createcolony/${invitationCode}`;
+  const inviteLink = `app.colony.io/create-colony/${invitationCode}`;
   const { handleClipboardCopy, isCopied } = useCopyToClipboard(inviteLink);
 
   return (
     <div className="flex flex-col mt-6 rounded border border-gray-900 px-6 py-4 max-w-[1286px]">
       <Icon name="ticket" appearance={{ size: 'medium' }} />
       <div className="flex justify-between items-center">
-        <div className="max-w-[90%]">
+        <div
+          className={clsx({
+            'max-w-[90%]': showDescription,
+            'max-w-[70%]': !showDescription,
+          })}
+        >
           <Heading4
             text={MSG.inviteBlockTitle}
             className="font-medium text-gray-900 mt-2 text-md"
@@ -46,7 +60,7 @@ const InvitationBlock = () => {
           <p className="text-sm text-gray-600 mt-1">
             <FormattedMessage
               {...MSG.inviteBlockDescription}
-              values={{ invitationCode }}
+              values={{ inviteLink, showDescription }}
             />
           </p>
         </div>
@@ -57,6 +71,7 @@ const InvitationBlock = () => {
           onClick={handleClipboardCopy}
           className="text-sm"
           textValues={{ isCopied }}
+          size="small"
         />
       </div>
     </div>

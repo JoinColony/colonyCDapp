@@ -1,6 +1,7 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import InvitationBlock from '~common/InvitationBlock';
 import Icon from '~shared/Icon';
 import Button from '~v5/shared/Button';
 
@@ -49,13 +50,14 @@ const ColonyCreatedModal = ({ isOpen, onClose }: Props) => {
         </p>
         <Button mode="primarySolid" text={MSG.modalButton} onClick={onClose} />
       </div>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center mb-4">
         <h4 className="heading-5 mb-2">
           <FormattedMessage {...MSG.modalSubtitle} />
         </h4>
-        <p className="text-gray-600 text-md mb-6 text-center">
+        <p className="text-gray-600 text-md mb-2 text-center">
           <FormattedMessage {...MSG.modalSubtitleDescription} />
         </p>
+        <InvitationBlock showDescription={false} />
       </div>
     </Modal>
   );
