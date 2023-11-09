@@ -40,7 +40,11 @@ import {
   GetTokenFromEverywhereQueryVariables,
 } from '~gql';
 import { ColonyManager, ContextModule, getContext } from '~context';
-import { ADDRESS_ZERO, DEFAULT_TOKEN_DECIMALS } from '~constants';
+import {
+  ADDRESS_ZERO,
+  DEFAULT_TOKEN_DECIMALS,
+  supportedExtensionsConfig,
+} from '~constants';
 import { ActionTypes, Action, AllActions } from '~redux/index';
 import { createAddress } from '~utils/web3';
 import { toNumber } from '~utils/numbers';
@@ -482,13 +486,16 @@ function* colonyCreate({
         [ColonyRole.Architecture, ColonyRole.Root],
       );
 
+      const extensionConfig = supportedExtensionsConfig.find(
+        (config) => config.extensionId === Extension.OneTxPayment,
+      );
       yield put(
         transactionAddParams(setOneTxRoles.id, [
           permissionDomainId,
           childSkillIndex,
           oneTxPaymentExtension.address,
           Id.RootDomain,
-          colonyRoles2Hex([ColonyRole.Administration, ColonyRole.Funding]),
+          colonyRoles2Hex(extensionConfig?.neededColonyPermissions ?? []),
         ]),
       );
       yield initiateTransaction({ id: setOneTxRoles.id });
