@@ -28,7 +28,7 @@ const CalamityBannerContent: FC<CalamityBannerContentProps> = ({
 
   const CloseButtonComponent = (
     <CloseButton
-      className="text-base-white hover:text-gray-300 sm:-mr-4"
+      className="text-gray-900 hover:text-blue-400 sm:-mr-4"
       onClick={() => setShowBanner(false)}
     />
   );
@@ -36,12 +36,12 @@ const CalamityBannerContent: FC<CalamityBannerContentProps> = ({
   return (
     <div
       className={clsx(
-        'relative sm:absolute inset-0 w-full px-6 py-4 transition-all duration-normal',
+        'relative inset-0 w-full px-6 py-4 transition-all duration-normal',
         {
-          'bg-blue-400': mode === 'info',
+          'bg-gray-100': mode === 'info',
         },
         {
-          'bg-negative-400': mode === 'error',
+          'bg-negative-300': mode === 'error',
         },
         {
           'block sm:opacity-100 sm:visible': activeElement === index,
@@ -53,7 +53,7 @@ const CalamityBannerContent: FC<CalamityBannerContentProps> = ({
     >
       <div className={styles.calamityBannerInner}>
         <div className={clsx(styles.calamityBannerRow, 'items-start')}>
-          <div className="text-base-white text-1">{formatMessage(title)}</div>
+          <div className="text-gray-900 text-1">{formatMessage(title)}</div>
           {isTablet && CloseButtonComponent}
         </div>
         <div
@@ -65,13 +65,14 @@ const CalamityBannerContent: FC<CalamityBannerContentProps> = ({
           <div className="flex items-center">
             <Link
               to={linkUrl}
-              className="text-2 text-base-white underline !hover:text-base-white hover:no-underline"
+              className="text-2 text-gray-900 underline !hover:text-base-white hover:no-underline"
             >
               {formatMessage({ id: linkName })}
             </Link>
             <Button
               className="md:mr-7 ml-4"
-              mode="primaryOutline"
+              mode="primarySolid"
+              size="small"
               disabled={isButtonDisabled}
               onClick={onClick}
             >
@@ -83,7 +84,7 @@ const CalamityBannerContent: FC<CalamityBannerContentProps> = ({
             <button
               type="button"
               className="flex items-center justify-center p-2 ml-4 
-                        text-base-white transition-colors hover:text-gray-300"
+                        text-gray-900 transition-colors hover:text-blue-400"
               aria-label={formatMessage({
                 id: 'ariaLabel.calamityBanner',
               })}
