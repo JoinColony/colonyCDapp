@@ -116,7 +116,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                         {isAccordion && (
                           <button
                             type="button"
-                            className="text-gray-700"
+                            className="text-gray-700 w-4 h-4 justify-center items-end flex"
                             onClick={() => handleAccordionClick(key)}
                           >
                             <span className="text-gray-700 md:hover:text-blue-400">
