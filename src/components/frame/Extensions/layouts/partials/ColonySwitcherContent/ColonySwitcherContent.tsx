@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import clsx from 'clsx';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
@@ -56,7 +57,13 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
       )}
       {joinedMoreColonies && (
         <div className="border-t border-t-gray-200 pt-6 flex flex-col gap-6">
-          <SearchInput onInput={onInput} />
+          <SearchInput
+            onInput={onInput}
+            className={clsx({
+              'text-gray-900': searchValue.length,
+              'text-gray-400': !searchValue.length,
+            })}
+          />
           <div>
             <h3 className={titleClassName}>
               {formatText({ id: 'navigation.colonySwitcher.joinedColonys' })}
