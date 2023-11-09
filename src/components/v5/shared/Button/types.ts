@@ -34,8 +34,6 @@ export interface CommonButtonProps
     ButtonHTMLAttributes<HTMLButtonElement>,
     'title' | 'aria-label'
   > {
-  disabled?: boolean;
-  type?: 'submit' | 'reset' | 'button';
   loading?: boolean;
   title?: MessageDescriptor | string;
   ariaLabel?: MessageDescriptor | string;
@@ -51,7 +49,8 @@ export interface ButtonAppearanceCommonProps extends ButtonContentProps {
 
 export type IconSize = 'extraTiny' | 'tiny' | 'small' | 'extraSmall';
 
-export type ButtonProps = CommonButtonProps & ButtonAppearanceCommonProps;
+export type ButtonProps = Omit<CommonButtonProps, 'setTriggerRef'> &
+  ButtonAppearanceCommonProps;
 
 export interface TextButtonProps extends CommonButtonProps {
   mode?: TextButtonMode;

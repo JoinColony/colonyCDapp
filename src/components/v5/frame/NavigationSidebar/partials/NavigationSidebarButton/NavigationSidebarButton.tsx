@@ -51,7 +51,7 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
       {!isTablet && (
         <Icon
           name={iconName}
-          className="h-[1em] w-[1em] text-[1.375rem] [&_svg]:fill-current"
+          className="!text-[1.375rem] [&_svg]:fill-current"
         />
       )}
       <span

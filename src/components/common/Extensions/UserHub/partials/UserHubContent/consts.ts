@@ -1,4 +1,6 @@
-export const tabList = [
+import { UserHubNavigationItem } from './types';
+
+export const tabList: UserHubNavigationItem[] = [
   {
     id: 0,
     label: 'Your overview',

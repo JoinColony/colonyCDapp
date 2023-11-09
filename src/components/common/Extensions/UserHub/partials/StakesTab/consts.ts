@@ -1,5 +1,3 @@
-import { StakesTabItem } from './types';
-
 export const stakesMock = [
   {
     key: '1',
@@ -48,7 +46,7 @@ export const stakesMock = [
   },
 ];
 
-export const tabsItems: StakesTabItem[] = [
+export const tabsItems: any[] = [
   { id: 0, type: 'all', title: 'All' },
   { id: 1, type: 'finalized', title: 'Finalized' },
   { id: 2, type: 'claimable', title: 'Claimable' },
