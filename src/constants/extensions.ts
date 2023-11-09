@@ -9,6 +9,13 @@ import {
   convertPeriodToSeconds,
 } from '~utils/extensions';
 
+import oneTransactionHero from '~images/assets/extensions/one-transaction-hero.png';
+import oneTransactionInterface from '~images/assets/extensions/one-transaction-interface.png';
+import reputationHero from '~images/assets/extensions/reputation-hero.png';
+import reputationInterface from '~images/assets/extensions/reputation-interface.png';
+import advancedHero from '~images/assets/extensions/advanced-hero.png';
+import advancedInterface from '~images/assets/extensions/advanced-interface.png';
+
 export enum ExtensionCategory {
   Payments = 'Payments',
   DecisionMethods = 'Decision Methods',
@@ -307,6 +314,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       ColonyRole.Funding,
       ColonyRole.Arbitration,
     ],
+    imageURLs: [oneTransactionHero, oneTransactionInterface],
     uninstallable: false,
     createdAt: 1557698400000,
   },
@@ -317,6 +325,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     descriptionShort: MSG.votingReputationDescriptionShort,
     descriptionLong: MSG.votingReputationDescriptionLong,
     icon: 'extension-lazy-consensus',
+    imageURLs: [reputationHero, reputationInterface],
     neededColonyPermissions: [
       ColonyRole.Root,
       ColonyRole.Administration,
@@ -475,6 +484,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
   },
   {
     icon: 'extension-advanced-payments',
+    imageURLs: [advancedHero, advancedInterface],
     category: ExtensionCategory.Expenditures,
     extensionId: Extension.StakedExpenditure,
     name: MSG.stakedExpenditureName,
@@ -510,6 +520,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
   },
   {
     icon: 'extension-advanced-payments',
+    imageURLs: [advancedHero, advancedInterface],
     category: ExtensionCategory.Expenditures,
     extensionId: Extension.StagedExpenditure,
     name: MSG.stagedExpenditureName,
@@ -525,6 +536,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
   },
   {
     icon: 'extension-advanced-payments',
+    imageURLs: [advancedHero, advancedInterface],
     category: ExtensionCategory.Expenditures,
     extensionId: Extension.StreamingPayments,
     name: MSG.streamingPaymentsName,

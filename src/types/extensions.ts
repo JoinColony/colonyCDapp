@@ -43,6 +43,7 @@ export interface ExtensionConfig {
   uninstallable: boolean;
   createdAt: number;
   icon: string;
+  imageURLs: string[];
 }
 
 export type InstalledExtensionData = ExtensionConfig &

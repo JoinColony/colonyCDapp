@@ -100,7 +100,9 @@ const ExtensionDetailsPage: FC = () => {
           />
         </div>
         <div className="order-2 col-span-6 lg:col-span-4">
-          {!isSetupRoute && <ImageCarousel />}
+          {!isSetupRoute && (
+            <ImageCarousel slideUrls={extensionData.imageURLs} />
+          )}
         </div>
         <div className="order-3 md:order-4 lg:order-3 col-span-6 md:col-span-2 lg:row-span-2">
           <ExtensionDetails extensionData={extensionData} />
