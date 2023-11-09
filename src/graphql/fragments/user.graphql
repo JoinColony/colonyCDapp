@@ -12,6 +12,10 @@ fragment User on User {
       createdAt
     }
   }
+  privateBetaInviteCode {
+    id
+    shareableInvites
+  }
 }
 
 fragment UserDisplay on User {
