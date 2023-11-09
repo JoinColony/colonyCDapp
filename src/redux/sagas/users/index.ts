@@ -150,7 +150,7 @@ function* usernameCreate({
     });
 
     if (navigate) {
-      navigate(`/my/profile`);
+      navigate(`/my/profile`, { state: { isRedirect: true } });
     }
   } catch (error) {
     return yield putError(ActionTypes.USERNAME_CREATE_ERROR, error, meta);
