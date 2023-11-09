@@ -6,7 +6,7 @@ const displayName = 'frame.Extensions.partials.ColonySwitcherList';
 
 const ColonySwitcherList: FC<ColonySwitcherListProps> = ({ items }) =>
   items.length ? (
-    <ul className="w-full flex flex-col gap-6">
+    <ul className="w-full flex flex-col gap-3">
       {items.map(({ key, ...item }) => (
         <li key={key}>
           <ColonySwitcherItem {...item} />

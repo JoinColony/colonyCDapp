@@ -40,19 +40,21 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
           <h3 className={titleClassName}>
             {formatText({ id: 'navigation.colonySwitcher.currentColony' })}
           </h3>
-          <ColonySwitcherItem
-            name={name || ''}
-            avatarProps={{
-              colonyImageProps: colony?.metadata?.avatar
-                ? {
-                    src:
-                      colony?.metadata?.thumbnail || colony?.metadata?.avatar,
-                  }
-                : undefined,
-              chainIconName: chainIcon,
-            }}
-            to={`/colony/${name}`}
-          />
+          <div className="-mx-2">
+            <ColonySwitcherItem
+              name={name || ''}
+              avatarProps={{
+                colonyImageProps: colony?.metadata?.avatar
+                  ? {
+                      src:
+                        colony?.metadata?.thumbnail || colony?.metadata?.avatar,
+                    }
+                  : undefined,
+                chainIconName: chainIcon,
+              }}
+              to={`/colony/${name}`}
+            />
+          </div>
         </div>
       )}
       {joinedMoreColonies && (
@@ -68,9 +70,11 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
             <h3 className={titleClassName}>
               {formatText({ id: 'navigation.colonySwitcher.joinedColonys' })}
             </h3>
-            <ColonySwitcherList
-              items={searchValue ? filteredColony : joinedColonies}
-            />
+            <div className="-mx-2">
+              <ColonySwitcherList
+                items={searchValue ? filteredColony : joinedColonies}
+              />
+            </div>
             {!filteredColony.length && (
               <EmptyContent
                 icon="binoculars"
