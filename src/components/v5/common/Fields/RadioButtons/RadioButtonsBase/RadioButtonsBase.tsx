@@ -20,25 +20,29 @@ function RadioButtonsBase<TValue = string>({
 }: RadioButtonsBaseProps<TValue>): JSX.Element {
   return (
     <ul className={className}>
-      {items.map(({ value: itemValue, disabled: itemDisabled, ...rest }) => (
-        <li key={keyExtractor(itemValue)}>
-          <RadioBase
-            {...rest}
-            name={name}
-            checked={valueComparator(itemValue, value)}
-            onChange={(event): void => {
-              const { target } = event;
+      {items.map(({ value: itemValue, disabled: itemDisabled, ...rest }) => {
+        const checked = valueComparator(itemValue, value);
 
-              if (!(target instanceof HTMLInputElement)) {
-                return;
-              }
+        return (
+          <li key={keyExtractor(itemValue)}>
+            <RadioBase
+              {...rest}
+              name={name}
+              checked={checked}
+              onChange={(event): void => {
+                const { target } = event;
 
-              onChange(target.checked ? itemValue : undefined);
-            }}
-            disabled={disabled || itemDisabled}
-          />
-        </li>
-      ))}
+                if (!(target instanceof HTMLInputElement)) {
+                  return;
+                }
+
+                onChange(target.checked ? itemValue : undefined);
+              }}
+              disabled={disabled || itemDisabled || checked}
+            />
+          </li>
+        );
+      })}
     </ul>
   );
 }

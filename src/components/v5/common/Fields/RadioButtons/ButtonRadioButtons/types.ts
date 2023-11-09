@@ -4,6 +4,7 @@ export interface ButtonRadioButtonItem<TValue>
   extends Omit<RadioItem<TValue>, 'children' | 'label'> {
   colorClassName: string;
   hoverColorClassName: string;
+  checkedColorClassName: string;
   iconClassName?: string;
   label: React.ReactNode;
   iconName?: string;
