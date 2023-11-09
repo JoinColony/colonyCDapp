@@ -1,5 +1,5 @@
-import React, { createContext, useMemo, ReactNode, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { createContext, useMemo, ReactNode } from 'react';
+import { useParams } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 import { ApolloQueryResult } from '@apollo/client';
 
@@ -10,15 +10,10 @@ import {
 } from '~gql';
 import { Colony } from '~types';
 import LoadingTemplate from '~frame/LoadingTemplate';
-import { useAppContext, useCanInteractWithColony } from '~hooks';
-import { NOT_FOUND_ROUTE } from '~routes';
+import { useCanInteractWithColony } from '~hooks';
+import { NotFoundRoute } from '~routes';
 
 import { useUpdateColonyReputation } from './useUpdateColonyReputation';
-import {
-  METACOLONY_COLONY_NAME,
-  usePreviousColonyName,
-} from './usePreviousColonyName';
-import { usePreviousColony } from './usePreviousColony';
 
 export type RefetchColonyFn = (
   variables?:
@@ -51,31 +46,13 @@ const MSG = defineMessages({
 });
 
 const MIN_SUPPORTED_COLONY_VERSION = 5;
-export const PREV_COLONY_LOCAL_STORAGE_KEY = 'prevColonyName';
-
-export const removePrevColonyFromLocalStorage = (address: string) => {
-  localStorage.removeItem(`${PREV_COLONY_LOCAL_STORAGE_KEY}:${address}`);
-};
-
-const getColonyNameFromPath = (path: string) => {
-  const pathFragments = path.split('/');
-  const idx = pathFragments.indexOf('colony') + 1;
-  return pathFragments[idx];
-};
 
 export const ColonyContextProvider = ({
   children,
 }: {
   children: ReactNode;
 }) => {
-  const { pathname } = useLocation();
-  const colonyName = getColonyNameFromPath(pathname);
-  const navigate = useNavigate();
-  const { user } = useAppContext();
-  const { hideLoader, prevColonyName, setPrevColonyName } =
-    usePreviousColonyName({
-      colonyName,
-    });
+  const { colonyName = '' } = useParams();
 
   const {
     data,
@@ -86,14 +63,13 @@ export const ColonyContextProvider = ({
     stopPolling,
   } = useGetFullColonyByNameQuery({
     variables: {
-      name: colonyName || prevColonyName,
+      name: colonyName,
     },
     fetchPolicy: 'network-only',
     nextFetchPolicy: 'cache-first',
   });
 
   const colony = data?.getColonyByName?.items?.[0] ?? undefined;
-  const { prevColony } = usePreviousColony({ colony });
   useUpdateColonyReputation(colony?.colonyAddress);
 
   const canInteractWithColony = useCanInteractWithColony(colony);
@@ -102,7 +78,7 @@ export const ColonyContextProvider = ({
 
   const colonyContext = useMemo<ColonyContextValue>(
     () => ({
-      colony: colony ?? prevColony,
+      colony,
       loading: loadingColony,
       canInteractWithColony,
       refetchColony,
@@ -112,7 +88,6 @@ export const ColonyContextProvider = ({
     }),
     [
       colony,
-      prevColony,
       loadingColony,
       canInteractWithColony,
       refetchColony,
@@ -122,30 +97,12 @@ export const ColonyContextProvider = ({
     ],
   );
 
-  const colonyNotFound = !colony || error;
-
-  useEffect(() => {
-    if (!loadingColony && colonyNotFound) {
-      if (colonyName) {
-        navigate(NOT_FOUND_ROUTE, { replace: true });
-      } else {
-        setPrevColonyName(METACOLONY_COLONY_NAME);
-        if (user) {
-          removePrevColonyFromLocalStorage(user.walletAddress);
-        }
-      }
-    }
-  }, [
-    loadingColony,
-    colonyNotFound,
-    colonyName,
-    navigate,
-    setPrevColonyName,
-    user,
-  ]);
-
-  if (loadingColony && !hideLoader) {
+  if (loadingColony) {
     return <LoadingTemplate loadingText={MSG.loadingText} />;
+  }
+
+  if (!colony || error) {
+    return <NotFoundRoute />;
   }
 
   return (

@@ -71,3 +71,11 @@ query GetPrivateBetaCodeInviteValidity($id: ID!) {
     shareableInvites
   }
 }
+
+query CheckColonyNameExists($name: String!) {
+  getColonyByName(name: $name) {
+    items {
+      id
+    }
+  }
+}
