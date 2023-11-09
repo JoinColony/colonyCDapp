@@ -14,6 +14,7 @@ import {
   calculateLastSliceIndex,
   calculateRemainingItems,
 } from '~utils/avatars';
+import { COLONY_MEMBERS_ROUTE } from '~routes';
 
 import styles from './ColonyMembersWidget.css';
 
@@ -87,7 +88,7 @@ const MembersSubsection = ({
     false,
   );
 
-  const BASE_MEMBERS_ROUTE = `/colony/${name}/members`;
+  const BASE_MEMBERS_ROUTE = `/${name}/${COLONY_MEMBERS_ROUTE}`;
   const membersPageRoute =
     currentDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID
       ? BASE_MEMBERS_ROUTE

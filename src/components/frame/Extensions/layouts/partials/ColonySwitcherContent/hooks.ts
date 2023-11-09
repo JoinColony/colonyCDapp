@@ -1,5 +1,4 @@
 import { useMemo, useCallback, useState } from 'react';
-import { generatePath } from 'react-router';
 import debounce from 'lodash/debounce';
 import { useAppContext } from '~hooks';
 import { notNull } from '~utils/arrays';
@@ -9,7 +8,6 @@ import { ColonySwitcherListItem } from '../ColonySwitcherList/types';
 
 import { sortByDate } from './utils';
 import { UseColonySwitcherContentReturnType } from './types';
-import { COLONY_HOME_ROUTE } from '~routes';
 
 export const useColonySwitcherContent = (
   colony,
@@ -44,10 +42,7 @@ export const useColonySwitcherContent = (
         {
           key: id,
           name: itemColony.metadata?.displayName || name || '',
-          to: generatePath(COLONY_HOME_ROUTE, {
-            colonyName: itemColony.name,
-            '*': '',
-          }),
+          to: `/${itemColony.name}`,
           avatarProps: {
             chainIconName: getChainIconName(itemColony.chainMetadata.chainId),
             colonyImageProps: itemColony.metadata?.avatar

@@ -165,7 +165,7 @@ function* cancelStakedExpenditureMotion({
       });
 
       if (colonyName && navigate) {
-        navigate(`/colony/${colonyName}/tx/${payload.transaction.hash}`, {
+        navigate(`/${colonyName}?tx=${payload.transaction.hash}`, {
           state: { isRedirect: true },
         });
       }

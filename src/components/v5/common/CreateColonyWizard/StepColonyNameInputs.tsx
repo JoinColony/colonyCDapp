@@ -5,6 +5,7 @@ import { defineMessages } from 'react-intl';
 import Input from '~v5/common/Fields/Input';
 import { MAX_COLONY_DISPLAY_NAME } from '~constants';
 import { formatText } from '~utils/intl';
+import { HOST } from '~routes';
 
 import { getInputError } from './shared';
 
@@ -23,7 +24,7 @@ const MSG = defineMessages({
   urlSubLabel: {
     id: `${displayName}.urlSubLabel`,
     defaultMessage:
-      'You can change your Colony’s name, but not the URL. Choose carefully.',
+      "You can change your Colony's name, but not the URL. Choose carefully.",
   },
   urlSuccess: {
     id: `${displayName}.urlSuccess`,
@@ -73,7 +74,7 @@ const StepColonyNameInputs = ({
         </label>
         <div className="relative">
           <div className="text-gray-500 border rounded-s border-gray-300 border-e-0 text-md p-3 absolute">
-            app.colony.io/
+            {HOST}
           </div>
           <Input
             name="colonyName"

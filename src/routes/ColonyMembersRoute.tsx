@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 import { MemberContextProviderWithSearchAndFilter as MemberContextProvider } from '~context/MemberContext';
 import { usePageHeadingContext } from '~context/PageHeadingContext/hooks';
+import { COLONY_MEMBERS_ROUTE } from './routeConstants';
 
 const ColonyMembersRoute = () => {
   const { setBreadcrumbs } = usePageHeadingContext();
@@ -15,10 +16,10 @@ const ColonyMembersRoute = () => {
         dropdownOptions: [
           {
             label: 'All members',
-            href: '/members',
+            href: COLONY_MEMBERS_ROUTE,
           },
         ],
-        selectedValue: '/members',
+        selectedValue: COLONY_MEMBERS_ROUTE,
       },
     ]);
 

@@ -7,7 +7,6 @@ import {
   DecisionDialog,
   RemoveExistingDecisionDialog,
 } from '~common/ColonyDecisions';
-import { ColonyHomeLayoutProps } from '~common/ColonyHome/ColonyHomeLayout';
 import { getDraftDecisionFromStore } from '~utils/decisions';
 import {
   useAppContext,
@@ -15,16 +14,14 @@ import {
   useColonyContext,
   useEnabledExtensions,
 } from '~hooks';
+import { useColonyHomeContext } from '~context';
 
 const displayName = 'common.ColonyDecisions.NewDecisionButton';
 
-type NewDecisionButtonProps = Pick<ColonyHomeLayoutProps, 'filteredDomainId'>;
-
-const NewDecisionButton = ({
-  filteredDomainId: domainId,
-}: NewDecisionButtonProps) => {
+const NewDecisionButton = () => {
   const { user, walletConnecting, userLoading } = useAppContext();
   const { colony } = useColonyContext();
+  const { domainIdFilter: domainId } = useColonyHomeContext();
   const { isVotingReputationEnabled, loading: isLoadingExtensions } =
     useEnabledExtensions();
   const canInteractWithNetwork = useCanInteractWithNetwork();

@@ -8,7 +8,7 @@ import {
   useGetColonyContributorQuery,
   useUpdateColonyContributorMutation,
 } from '~gql';
-import { CREATE_USER_ROUTE } from '~routes';
+import { CREATE_PROFILE_ROUTE } from '~routes';
 import { useAppContext, useCanJoinColony, useColonyContext } from '~hooks';
 import { getWatchedColony } from '~utils/watching';
 import { handleNewUser } from '~utils/newUser';
@@ -98,7 +98,7 @@ const useColonySubscription = () => {
     } else if (wallet && !user) {
       handleNewUser();
       // TO Do: update to new user modal
-      navigate(CREATE_USER_ROUTE);
+      navigate(CREATE_PROFILE_ROUTE);
     } else {
       connectWallet();
     }

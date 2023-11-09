@@ -5,6 +5,7 @@ import { useGetColonyExpendituresQuery } from '~gql';
 import { useColonyContext } from '~hooks';
 import { notNull } from '~utils/arrays';
 import Link from '~shared/Link';
+import { COLONY_EXPENDITURES_ROUTE } from '~routes';
 
 // import { CreateExpenditureForm } from '../ExpenditureForm';
 import CreateExpenditure from '../ExpenditureForm/CreateExpenditure';
@@ -34,7 +35,7 @@ const ExpendituresPage = () => {
           .map((expenditure) => (
             <li key={expenditure.id}>
               <Link
-                to={`/colony/${colony.name}/expenditures/${expenditure.nativeId}`}
+                to={`/${colony.name}/${COLONY_EXPENDITURES_ROUTE}/${expenditure.nativeId}`}
               >
                 Expenditure ID: {expenditure.nativeId}
               </Link>

@@ -12,6 +12,7 @@ import { ActionTypes } from '~redux';
 import { useColonyContext, useColonyFundsClaims } from '~hooks';
 import { mergePayload } from '~utils/actions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { COLONY_INCOMING_ROUTE } from '~routes';
 
 import styles from './ColonyUnclaimedTransfers.css';
 
@@ -72,7 +73,7 @@ const ColonyUnclaimedTransfers = () => {
   return claimsLength ? (
     <div className={styles.main}>
       <Heading appearance={{ size: 'normal', weight: 'bold' }}>
-        <NavLink to={`/colony/${colony?.name}/funds`}>
+        <NavLink to={`/${colony?.name}/${COLONY_INCOMING_ROUTE}`}>
           <FormattedMessage {...MSG.title} />
         </NavLink>
       </Heading>
@@ -126,7 +127,7 @@ const ColonyUnclaimedTransfers = () => {
           <li>
             <Link
               className={styles.manageFundsLink}
-              to={`/colony/${colony?.name}/funds`}
+              to={`/${colony?.name}/${COLONY_INCOMING_ROUTE}`}
               data-test="manageFunds"
             >
               <div className={styles.tokenItem}>

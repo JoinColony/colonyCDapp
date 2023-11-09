@@ -12,6 +12,7 @@ import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button/Button';
 import { waitForDbAfterExtensionAction } from '../ExtensionDetailsPage/utils';
 import { ExtensionMethods } from '~hooks/useExtensionData';
+import { COLONY_EXTENSIONS_ROUTE, COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
 
 interface InstallButtonProps {
   extensionData: AnyExtensionData;
@@ -48,7 +49,7 @@ const InstallButton = ({ extensionData }: InstallButtonProps) => {
     );
     if (extensionData.extensionId === Extension.VotingReputation) {
       navigate(
-        `/colony/${colonyName}/extensions/${extensionData?.extensionId}/setup`,
+        `/${colonyName}/${COLONY_EXTENSIONS_ROUTE}/${extensionData?.extensionId}/${COLONY_EXTENSION_SETUP_ROUTE}`,
       );
     }
   };

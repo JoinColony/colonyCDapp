@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
+import { COLONY_EXTENSIONS_ROUTE, COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
 import { ActionButton } from '~shared/Button';
 import Button from '~shared/Button/Button';
 import { InstalledExtensionData } from '~types';
@@ -35,7 +36,7 @@ const EnableButton = ({ extensionData, inputDisabled, stopPolling }: Props) => {
 
   const handleEnableButtonClick = () => {
     navigate(
-      `/colony/${colony.name}/extensions/${extensionData.extensionId}/setup`,
+      `/${colony.name}/${COLONY_EXTENSIONS_ROUTE}/${extensionData.extensionId}/${COLONY_EXTENSION_SETUP_ROUTE}`,
     );
   };
 

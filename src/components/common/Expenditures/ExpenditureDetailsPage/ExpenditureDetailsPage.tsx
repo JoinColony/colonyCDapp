@@ -162,15 +162,13 @@ const ExpenditureDetailsPage = () => {
         {oldFundingMotions?.map(({ transactionHash }, idx) => (
           <Link
             key={transactionHash}
-            to={`/colony/${colony.name}/tx/${transactionHash}`}
+            to={`/${colony.name}?tx=${transactionHash}`}
           >
             Funding motion {idx + 1}
           </Link>
         ))}
         {latestFundingMotionState && (
-          <Link
-            to={`/colony/${colony.name}/tx/${latestExpenditureFundingMotionHash}`}
-          >
+          <Link to={`/${colony.name}?tx=${latestExpenditureFundingMotionHash}`}>
             Current funding motion status: <FundingMotionTag />
           </Link>
         )}
@@ -178,15 +176,13 @@ const ExpenditureDetailsPage = () => {
         {oldCancelMotions?.map(({ transactionHash }, idx) => (
           <Link
             key={transactionHash}
-            to={`/colony/${colony.name}/tx/${transactionHash}`}
+            to={`/${colony.name}?tx=${transactionHash}`}
           >
             Cancel motion {idx + 1}
           </Link>
         ))}
         {latestCancelMotionState && (
-          <Link
-            to={`/colony/${colony.name}/tx/${latestExpenditureCancelMotionHash}`}
-          >
+          <Link to={`/${colony.name}?tx=${latestExpenditureCancelMotionHash}`}>
             Current cancel expenditure motion status: <CancelMotionTag />
           </Link>
         )}

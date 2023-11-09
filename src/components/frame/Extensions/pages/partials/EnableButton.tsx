@@ -81,7 +81,7 @@ const EnableButton = ({
           type="button"
           onClick={(e) => {
             e.preventDefault();
-            navigate(`${pathname}${COLONY_EXTENSION_SETUP_ROUTE}`);
+            navigate(`${pathname}/${COLONY_EXTENSION_SETUP_ROUTE}`);
           }}
           isFullSize={isMobile}
         >

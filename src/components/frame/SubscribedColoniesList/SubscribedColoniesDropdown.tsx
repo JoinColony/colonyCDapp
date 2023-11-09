@@ -58,7 +58,7 @@ const SubscribedColoniesDropdown = ({ watchlist }: Props) => {
           isActive ? styles.activeColony : styles.itemLink
         }
         title={colonyToDisplay?.name}
-        to={`/colony/${colonyToDisplay?.name}`}
+        to={`/${colonyToDisplay?.name}`}
       >
         <div className={styles.itemImage}>
           <ColonyAvatar

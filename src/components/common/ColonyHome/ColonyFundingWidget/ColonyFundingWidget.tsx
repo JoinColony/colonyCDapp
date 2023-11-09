@@ -7,6 +7,8 @@ import NavLink from '~shared/NavLink';
 import { useColonyContext } from '~hooks';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { notNull } from '~utils/arrays';
+import { useColonyHomeContext } from '~context';
+import { COLONY_INCOMING_ROUTE } from '~routes';
 
 import TokenBalanceItem from './TokenBalanceItem';
 
@@ -21,14 +23,10 @@ const MSG = defineMessages({
   },
 });
 
-interface Props {
-  currentDomainId?: number;
-}
-
-const ColonyFundingWidget = ({
-  currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
-}: Props) => {
+const ColonyFundingWidget = () => {
   const { colony } = useColonyContext();
+  const { domainIdFilter: currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID } =
+    useColonyHomeContext();
   const {
     balances,
     name,
@@ -87,7 +85,10 @@ const ColonyFundingWidget = ({
   return (
     <div className={styles.main}>
       <Heading appearance={{ size: 'normal', weight: 'bold' }}>
-        <NavLink className={styles.fundsLink} to={`/colony/${name}/funds`}>
+        <NavLink
+          className={styles.fundsLink}
+          to={`/${name}/${COLONY_INCOMING_ROUTE}`}
+        >
           <FormattedMessage {...MSG.title} />
         </NavLink>
       </Heading>

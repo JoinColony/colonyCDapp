@@ -58,7 +58,7 @@ const TransactionNotFound = ({
       <Button
         title={MSG.returnToColony}
         text={MSG.returnToColony}
-        linkTo={`/colony/${colonyName}`}
+        linkTo={`/${colonyName}`}
         appearance={{
           theme: 'primary',
           size: 'large',

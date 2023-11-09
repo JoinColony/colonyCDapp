@@ -14,6 +14,7 @@ import {
 import { OnSuccess } from '~shared/Fields';
 import Toast from '~shared/Extensions/Toast/Toast';
 import { RefetchColonyFn } from '~context/ColonyContext';
+import { COLONY_EXTENSIONS_ROUTE } from '~routes';
 
 export const waitForColonyPermissions = ({
   refetchColony,
@@ -159,7 +160,9 @@ export const getFormSuccessFn =
         />,
       );
       reset();
-      navigate(`/colony/${colonyName}/extensions/${extensionData.extensionId}`);
+      navigate(
+        `/${colonyName}/${COLONY_EXTENSIONS_ROUTE}/${extensionData.extensionId}`,
+      );
     } catch (error) {
       toast.error(
         <Toast

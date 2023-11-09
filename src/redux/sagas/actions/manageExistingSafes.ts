@@ -175,7 +175,7 @@ function* manageExistingSafesAction({
       meta,
     });
 
-    yield navigate?.(`/colony/${colonyName}/tx/${txHash}`, {
+    yield navigate?.(`/${colonyName}?=${txHash}`, {
       state: {
         isRedirect: true,
       },

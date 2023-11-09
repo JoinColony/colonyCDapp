@@ -11,19 +11,31 @@ import { defineMessages, useIntl, MessageDescriptor } from 'react-intl';
 
 import {
   CREATE_COLONY_ROUTE,
-  CREATE_USER_ROUTE,
+  CREATE_PROFILE_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
   NOT_FOUND_ROUTE,
-  LANDING_PAGE_ROUTE,
   COLONY_HOME_ROUTE,
   COLONY_EVENTS_ROUTE,
-  ACTIONS_PAGE_ROUTE,
+  ACTIONS_QUERY_STRING,
   USER_ROUTE,
   COLONY_EXTENSION_DETAILS_SETUP_ROUTE,
   COLONY_EXTENSION_DETAILS_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
-  COLONY_FUNDING_ROUTE,
+  COLONY_INCOMING_ROUTE,
   COLONY_MEMBERS_ROUTE,
+  USER_HOME_ROUTE,
+  USER_PREFERENCES_ROUTE,
+  USER_ADVANCED_ROUTE,
+  COLONY_CONTRIBUTORS_ROUTE,
+  COLONY_TEAMS_ROUTE,
+  COLONY_VERIFIED_ROUTE,
+  COLONY_DETAILS_ROUTE,
+  COLONY_REPUTATION_ROUTE,
+  COLONY_PERMISSIONS_ROUTE,
+  COLONY_INTEGRATIONS_ROUTE,
+  COLONY_INCORPORATION_ROUTE,
+  COLONY_ADVANCED_ROUTE,
+  COLONY_BALANCES_ROUTE,
 } from '~routes/routeConstants';
 import { SimpleMessageValues } from '~types';
 import { notNull } from '~utils/arrays';
@@ -34,17 +46,27 @@ const displayName = 'utils.hooks';
 const MSG = defineMessages({
   createColony: {
     id: `${displayName}.useTitle.createColony`,
-    defaultMessage: `Create Colony | Colony`,
+    defaultMessage: `Create a Colony | Colony`,
   },
 
-  createUser: {
-    id: `${displayName}.useTitle.createUser`,
-    defaultMessage: `Create User | Colony`,
+  createProfile: {
+    id: `${displayName}.useTitle.createProfile`,
+    defaultMessage: `Create a Profile | Colony`,
   },
 
   editProfile: {
     id: `${displayName}.useTitle.editProfile`,
-    defaultMessage: `Edit Profile | Colony`,
+    defaultMessage: `Account Profile | Colony`,
+  },
+
+  editPreferences: {
+    id: `${displayName}.useTitle.editPreferences`,
+    defaultMessage: `Account Preferences | Colony`,
+  },
+
+  advancedSettings: {
+    id: `${displayName}.useTitle.advancedSettings`,
+    defaultMessage: `Advanced Settings | Colony`,
   },
 
   notFound: {
@@ -59,7 +81,7 @@ const MSG = defineMessages({
 
   colonyHome: {
     id: `${displayName}.useTitle.colonyHome`,
-    defaultMessage: `Actions | Colony - {colonyName}`,
+    defaultMessage: `{colonyName} | Colony`,
   },
 
   colonyEvents: {
@@ -67,9 +89,14 @@ const MSG = defineMessages({
     defaultMessage: `Transactions Log | Colony - {colonyName}`,
   },
 
-  colonyFunds: {
-    id: `${displayName}.useTitle.colonyFunds`,
-    defaultMessage: `Funds | Colony - {colonyName}`,
+  colonyIncoming: {
+    id: `${displayName}.useTitle.colonyIncoming`,
+    defaultMessage: `Incoming | Colony - {colonyName}`,
+  },
+
+  colonyBalances: {
+    id: `${displayName}.useTitle.colonyBalances`,
+    defaultMessage: `Balances | Colony - {colonyName}`,
   },
 
   colonyExtensions: {
@@ -79,20 +106,26 @@ const MSG = defineMessages({
 
   colonyExtensionDetails: {
     id: `${displayName}.useTitle.colonyExtensionDetails`,
-    defaultMessage: `Extensions > {extensionId, select,
+    defaultMessage: `{extensionId, select,
       VotingReputation {Governance}
       OneTxPayment {One Transaction Payment}
+      StakedExpenditure {Staked Expenditure}
+      StagedExpenditure {Staged Expenditure}
+      StreamingPayments {Streaming Payments}
       other {{extensionId}}
-      } | Colony - {colonyName}`,
+      } Extension | Colony - {colonyName}`,
   },
 
   colonyExtensionSetup: {
     id: `${displayName}.useTitle.colonyExtensionSetup`,
-    defaultMessage: `Extensions > {extensionId, select,
+    defaultMessage: `{extensionId, select,
       VotingReputation {Governance}
       OneTxPayment {One Transaction Payment}
+      StakedExpenditure {Staked Expenditure}
+      StagedExpenditure {Staged Expenditure}
+      StreamingPayments {Streaming Payments}
       other {{extensionId}}
-      } > Setup | Colony - {colonyName}`,
+      } Extension Setup | Colony - {colonyName}`,
   },
 
   colonyMembers: {
@@ -100,24 +133,68 @@ const MSG = defineMessages({
     defaultMessage: `Members | Colony - {colonyName}`,
   },
 
+  colonyContributors: {
+    id: `${displayName}.useTitle.colonyContributors`,
+    defaultMessage: `Contributors | Colony - {colonyName}`,
+  },
+
+  colonyVerified: {
+    id: `${displayName}.useTitle.colonyVerified`,
+    defaultMessage: `Verified Members | Colony - {colonyName}`,
+  },
+
+  colonyTeams: {
+    id: `${displayName}.useTitle.colonyTeams`,
+    defaultMessage: `Teams | Colony - {colonyName}`,
+  },
+
+  colonyDetails: {
+    id: `${displayName}.useTitle.colonyDetails`,
+    defaultMessage: `Details | Colony - {colonyName}`,
+  },
+
+  colonyReputation: {
+    id: `${displayName}.useTitle.colonyReputation`,
+    defaultMessage: `Reputation | Colony - {colonyName}`,
+  },
+
+  colonyPermissions: {
+    id: `${displayName}.useTitle.colonyPermissions`,
+    defaultMessage: `Permissions | Colony - {colonyName}`,
+  },
+
+  colonyIntegrations: {
+    id: `${displayName}.useTitle.colonyIntegrations`,
+    defaultMessage: `Integrations | Colony - {colonyName}`,
+  },
+
+  colonyIncorporation: {
+    id: `${displayName}.useTitle.colonyIncorporation`,
+    defaultMessage: `Incorporation | Colony - {colonyName}`,
+  },
+
+  colonyAdvanced: {
+    id: `${displayName}.useTitle.colonyAdvanced`,
+    defaultMessage: `Advanced Settings | Colony`,
+  },
+
   userProfile: {
     id: `${displayName}.useTitle.userProfile`,
-    defaultMessage: `Users > {username} | Colony`,
+    defaultMessage: `{username} | Colony`,
   },
 
   transactionDetails: {
     id: `${displayName}.useTitle.transactionDetails`,
-    defaultMessage: `Transaction - {transactionHash} | Colony - {colonyName}`,
+    defaultMessage: `Transaction - {transactionHash} | Colony`,
   },
 
   buyTokens: {
     id: `${displayName}.useTitle.buyTokens`,
     defaultMessage: `Buy Tokens | Colony - {colonyName}`,
   },
-
   fallbackTitle: {
     id: `${displayName}.useTitle.fallbackTitle`,
-    defaultMessage: `Colony`,
+    defaultMessage: `Colony App`,
   },
 });
 
@@ -126,49 +203,69 @@ interface MessageWithValues {
   values?: SimpleMessageValues;
 }
 
-const COLONY_HOME_ROUTE_WITHOUT_WILDCARD = COLONY_HOME_ROUTE.slice(0, -2);
-
 const routeMessages: Record<string, MessageDescriptor> = {
   [CREATE_COLONY_ROUTE]: MSG.createColony,
-  [CREATE_USER_ROUTE]: MSG.createUser,
-  [USER_EDIT_PROFILE_ROUTE]: MSG.editProfile,
-  [NOT_FOUND_ROUTE]: MSG.notFound,
-  [LANDING_PAGE_ROUTE]: MSG.landing,
+  [CREATE_PROFILE_ROUTE]: MSG.createProfile,
+  [`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`]: MSG.editProfile,
+  [`${USER_HOME_ROUTE}/${USER_PREFERENCES_ROUTE}`]: MSG.editPreferences,
+  [`${USER_HOME_ROUTE}/${USER_ADVANCED_ROUTE}`]: MSG.advancedSettings,
+
+  '/': MSG.landing,
   [COLONY_HOME_ROUTE]: MSG.colonyHome,
-  [COLONY_EVENTS_ROUTE]: MSG.colonyEvents,
-  [COLONY_FUNDING_ROUTE]: MSG.colonyFunds,
-  [`${COLONY_HOME_ROUTE_WITHOUT_WILDCARD}${COLONY_EXTENSIONS_ROUTE}`]:
-    MSG.colonyExtensions,
-  [`${COLONY_HOME_ROUTE_WITHOUT_WILDCARD}${COLONY_EXTENSION_DETAILS_ROUTE}`]:
+  [`${COLONY_HOME_ROUTE}${COLONY_EVENTS_ROUTE}`]: MSG.colonyEvents,
+  [`${COLONY_HOME_ROUTE}${COLONY_INCOMING_ROUTE}`]: MSG.colonyIncoming,
+  [`${COLONY_HOME_ROUTE}${COLONY_EXTENSIONS_ROUTE}`]: MSG.colonyExtensions,
+  [`${COLONY_HOME_ROUTE}${COLONY_EXTENSION_DETAILS_ROUTE}`]:
     MSG.colonyExtensionDetails,
-  [`${COLONY_HOME_ROUTE_WITHOUT_WILDCARD}${COLONY_EXTENSION_DETAILS_SETUP_ROUTE}`]:
+  [`${COLONY_HOME_ROUTE}${COLONY_EXTENSION_DETAILS_SETUP_ROUTE}`]:
     MSG.colonyExtensionSetup,
   [USER_ROUTE]: MSG.userProfile,
-  [ACTIONS_PAGE_ROUTE]: MSG.transactionDetails,
-  [COLONY_MEMBERS_ROUTE]: MSG.colonyMembers,
-  '/': MSG.fallbackTitle,
+  [ACTIONS_QUERY_STRING]: MSG.transactionDetails,
+  [`${COLONY_HOME_ROUTE}${COLONY_MEMBERS_ROUTE}`]: MSG.colonyMembers,
+  [`${COLONY_HOME_ROUTE}${COLONY_CONTRIBUTORS_ROUTE}`]: MSG.colonyContributors,
+  [`${COLONY_HOME_ROUTE}${COLONY_BALANCES_ROUTE}`]: MSG.colonyBalances,
+  [`${COLONY_HOME_ROUTE}${COLONY_VERIFIED_ROUTE}`]: MSG.colonyVerified,
+  [`${COLONY_HOME_ROUTE}${COLONY_TEAMS_ROUTE}`]: MSG.colonyTeams,
+  [`${COLONY_HOME_ROUTE}${COLONY_DETAILS_ROUTE}`]: MSG.colonyDetails,
+  [`${COLONY_HOME_ROUTE}${COLONY_REPUTATION_ROUTE}`]: MSG.colonyReputation,
+  [`${COLONY_HOME_ROUTE}${COLONY_PERMISSIONS_ROUTE}`]: MSG.colonyPermissions,
+  [`${COLONY_HOME_ROUTE}${COLONY_INTEGRATIONS_ROUTE}`]: MSG.colonyIntegrations,
+  [`${COLONY_HOME_ROUTE}${COLONY_INCORPORATION_ROUTE}`]:
+    MSG.colonyIncorporation,
+  [`${COLONY_HOME_ROUTE}${COLONY_ADVANCED_ROUTE}`]: MSG.colonyAdvanced,
+
+  [NOT_FOUND_ROUTE]: MSG.notFound,
 };
 
 const allRoutes = Object.keys(routeMessages);
 
-const getMessageAndValues = (locationPath: string): MessageWithValues => {
+const getMessageAndValues = (
+  locationPath: string,
+  search: string,
+): MessageWithValues => {
+  // If route includes tx search query
+  if (search && /\?tx=[a-zA-F0-9]{66}/.test(search)) {
+    return {
+      msg: routeMessages[ACTIONS_QUERY_STRING],
+      values: { transactionHash: search.split('=')[1] },
+    };
+  }
   const filteredRoutes = allRoutes.filter((routePattern) =>
     notNull(matchPath(routePattern, locationPath)),
   );
 
   // Fallback when no route matches
   // For example before an invalid route get redirected to 404
-  const matchedRoute = filteredRoutes.at(-1) || '/';
-
+  const matchedRoute = filteredRoutes.at(-1) ?? '';
   const values = matchPath(matchedRoute, locationPath)?.params; // this can be empty {}
 
-  return { msg: routeMessages[matchedRoute], values };
+  return { msg: routeMessages[matchedRoute] ?? MSG.fallbackTitle, values };
 };
 
 export const useTitle = (title?: string) => {
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const { formatMessage } = useIntl();
-  const { msg, values } = getMessageAndValues(pathname);
+  const { msg, values } = getMessageAndValues(pathname, search);
 
   const colonyENSName = (values?.colonyName as string) ?? '';
 
@@ -185,7 +282,6 @@ export const useTitle = (title?: string) => {
     data?.getColonyByName?.items?.[0]?.metadata?.displayName;
 
   const colonyDisplayName = queryDisplayName || colonyENSName;
-
   const titleToSet =
     title ||
     formatMessage(msg, {

@@ -88,7 +88,7 @@ const ActionsListItem = ({
   const navigate = useNavigate();
 
   const handleActionRedirect = () =>
-    navigate(`/colony/${colony?.name}/tx/${transactionHash}`);
+    navigate(`/${colony?.name}?tx=${transactionHash}`);
 
   const status = ListItemStatus.Defused;
 

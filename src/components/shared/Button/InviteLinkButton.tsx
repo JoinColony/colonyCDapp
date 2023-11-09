@@ -31,7 +31,7 @@ interface Props {
 
 const InviteLinkButton = ({ colonyName, buttonAppearance }: Props) => {
   const [copied, setCopied] = useState(false);
-  const colonyURL = `${window.location.origin}/colony/${colonyName}`;
+  const colonyURL = `${window.location.origin}/${colonyName}`;
   const handleClipboardCopy = useCallback(() => {
     setCopied(true);
     copyToClipboard(colonyURL);

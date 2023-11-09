@@ -6,6 +6,7 @@ import { MiniSpinnerLoader } from '~shared/Preloaders';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useColonyContext } from '~hooks';
 import { useGetMembersForColonyQuery } from '~gql';
+import { useColonyHomeContext } from '~context';
 
 import MembersSubsection from './MembersSubsection';
 
@@ -24,16 +25,13 @@ const MSG = defineMessages({
   },
 });
 interface Props {
-  currentDomainId?: number;
   maxAvatars?: number;
 }
 
-const ColonyMembersWidget = ({
-  currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
-  maxAvatars,
-}: Props) => {
+const ColonyMembersWidget = ({ maxAvatars }: Props) => {
   const { colony } = useColonyContext();
-
+  const { domainIdFilter: currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID } =
+    useColonyHomeContext();
   const { data, loading: loadingMembers } = useGetMembersForColonyQuery({
     skip: !colony?.colonyAddress,
     variables: {

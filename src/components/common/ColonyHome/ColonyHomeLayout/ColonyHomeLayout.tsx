@@ -23,8 +23,6 @@ const isExtensionsRoute = (pathname: string) => {
 };
 
 export type ColonyHomeLayoutProps = {
-  filteredDomainId: number;
-  onDomainChange?: (domainId: number) => void;
   /*
    * This component should only be used with a child to render,
    * otherwise it has no point
@@ -34,11 +32,7 @@ export type ColonyHomeLayoutProps = {
 
 const displayName = 'common.ColonyHome.ColonyHomeLayout';
 
-const ColonyHomeLayout = ({
-  children,
-  filteredDomainId,
-  onDomainChange = () => null,
-}: ColonyHomeLayoutProps) => {
+const ColonyHomeLayout = ({ children }: ColonyHomeLayoutProps) => {
   const { colony } = useColonyContext();
   const { pathname } = useLocation();
 
@@ -58,21 +52,18 @@ const ColonyHomeLayout = ({
           {!isExtensions && (
             <>
               <ColonyTotalFunds />
-              <ActionsPanel
-                onDomainChange={onDomainChange}
-                filteredDomainId={filteredDomainId}
-              />
+              <ActionsPanel />
             </>
           )}
           {children}
         </div>
         {!isExtensions && (
           <aside className={styles.rightAside}>
-            <ColonyDomainDescription currentDomainId={filteredDomainId} />
+            <ColonyDomainDescription />
             <ColonyUnclaimedTransfers />
-            <ColonyFundingWidget currentDomainId={filteredDomainId} />
+            <ColonyFundingWidget />
             <ColonySafes colony={colony} />
-            <ColonyMembersWidget currentDomainId={filteredDomainId} />
+            <ColonyMembersWidget />
             <ColonyExtensionsWidget />
           </aside>
         )}

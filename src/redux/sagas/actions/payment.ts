@@ -192,8 +192,10 @@ function* createPaymentAction({
       meta,
     });
 
+    // @TODO: In new UI, confirm that the navigate function isn't being passed into the saga
+    // and if not, remove these conditional (and do so for all actions/motions sagas)
     if (colonyName && navigate) {
-      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+      navigate(`/${colonyName}?tx=${txHash}`, {
         state: { isRedirect: true },
       });
     }

@@ -7,6 +7,7 @@ import { useColonyContext } from '~hooks';
 import { useMemberContext } from '~context/MemberContext';
 import { useSetPageHeadingTitle } from '~context';
 import { formatText } from '~utils/intl';
+import { COLONY_CONTRIBUTORS_ROUTE, COLONY_FOLLOWERS_ROUTE } from '~routes';
 
 const displayName = 'v5.pages.MembersPage';
 
@@ -19,8 +20,8 @@ const MembersPage: FC = () => {
   } = useMemberContext();
   const { colony } = useColonyContext();
   const { name } = colony || {};
-  const followersURL = `/colony/${name}/followers`;
-  const contributorsURL = `/colony/${name}/contributors`;
+  const followersURL = `/${name}/${COLONY_FOLLOWERS_ROUTE}`;
+  const contributorsURL = `/${name}/${COLONY_CONTRIBUTORS_ROUTE}`;
 
   useSetPageHeadingTitle(formatText({ id: 'membersPage.title' }));
 

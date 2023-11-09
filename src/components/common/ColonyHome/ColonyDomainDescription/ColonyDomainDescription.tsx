@@ -5,18 +5,15 @@ import ColorTag from '~shared/ColorTag';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useColonyContext } from '~hooks';
 import { findDomainByNativeId } from '~utils/domains';
+import { useColonyHomeContext } from '~context';
 
 import styles from './ColonyDomainDescription.css';
 
-interface Props {
-  currentDomainId: number;
-}
-
 const displayName = 'common.ColonyHome.ColonyDomainDescription';
 
-const ColonyDomainDescription = ({ currentDomainId }: Props) => {
+const ColonyDomainDescription = () => {
   const { colony } = useColonyContext();
-
+  const { domainIdFilter: currentDomainId } = useColonyHomeContext();
   if (!colony || currentDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID) {
     return null;
   }

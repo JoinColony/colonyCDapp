@@ -21,7 +21,7 @@ const ColonyListItem = ({ colony }: Props) => {
           isActive ? styles.activeColony : undefined
         }
         title={colony.name}
-        to={`/colony/${colony.name}`}
+        to={`/${colony.name}`}
       >
         <div className={styles.dropdownItem}>
           <div className={styles.itemImage}>
