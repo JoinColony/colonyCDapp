@@ -87,6 +87,7 @@ function ButtonRadioButtons<TValue = string>({
       {...rest}
       className={clsx(className, 'flex w-full gap-2 [&>li]:flex-1')}
       items={modifiedItems}
+      disabled={disabled}
     />
   );
 }
