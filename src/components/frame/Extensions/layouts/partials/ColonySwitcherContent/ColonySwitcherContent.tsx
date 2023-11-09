@@ -9,12 +9,13 @@ import ColonySwitcherList from '../ColonySwitcherList';
 import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput';
 import EmptyContent from '~v5/common/EmptyContent';
 import { useColonySwitcherContent } from './hooks';
+import { ColonySwitcherContentProps } from './types';
 
 const displayName = 'frame.Extensions.partials.ColonySwitcherContent';
 
 // There's just a base logic added here, so that we can see other colonies and navigate between them.
 // The rest of the functionality will be added in the next PRs.
-const ColonySwitcherContent: FC = () => {
+const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
   const {
     userLoading,
     filteredColony,
@@ -22,7 +23,6 @@ const ColonySwitcherContent: FC = () => {
     chainIcon,
     onInput,
     joinedColonies,
-    colony,
     searchValue,
   } = useColonySwitcherContent();
 

@@ -1,6 +1,10 @@
 import { ColonyFragment } from '~gql';
 import { ColonySwitcherListItem } from '../ColonySwitcherList/types';
 
+export interface ColonySwitcherContentProps {
+  colony?: ColonyFragment;
+}
+
 export interface UseColonySwitcherContentReturnType {
   userLoading?: boolean;
   filteredColony: ColonySwitcherListItem[];

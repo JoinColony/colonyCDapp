@@ -95,7 +95,6 @@ export const useColonySwitcherContent =
       name,
       chainIcon,
       joinedColonies,
-      colony,
       searchValue,
       onInput,
     };
