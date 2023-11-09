@@ -19,5 +19,9 @@ mkdir --parents /colonyCDapp/amplify/\#current-cloud-backend
 cp /colonyCDappBackend/scripts/amplify-meta.json.base /colonyCDapp/amplify/backend/amplify-meta.json
 cp /colonyCDappBackend/scripts/amplify-meta.json.base /colonyCDapp/amplify/\#current-cloud-backend/amplify-meta.json
 
-# Liftoff!
-npm run amplify mock
+# Fix permissions for mounted volumes
+chown -R node:users /colonyCDapp
+chown -R node:users /colonyCDappBackend
+
+# Liftoff (now, drop privileges and run the main process as 'node' user)
+gosu node:users bash -c 'npm run amplify mock'

@@ -32,14 +32,12 @@ ADD docker/files/amplify/amplify-meta.json.base /colonyCDappBackend/scripts/ampl
 ADD docker/files/amplify/config.base /home/node/.aws/config
 ADD docker/files/amplify/credentials.base /home/node/.aws/credentials
 
-RUN chown -R node:users /colonyCDapp
-RUN chown -R node:users /colonyCDappBackend
-
 # Opensearch cannot be run by root so we use the built in node user
 # We also add the node user to the users group so that the node user
 # can run commands on the mounted files and folders
 RUN usermod -aG users node
-USER node
+# Install gosu to allow us to run as the node user
+RUN apt-get update && apt-get install -y gosu
 
 #
 # Amplify
