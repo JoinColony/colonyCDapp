@@ -302,7 +302,11 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     descriptionShort: MSG.oneTxPaymentDescriptionShort,
     descriptionLong: MSG.oneTxPaymentDescriptionLong,
     icon: 'extension-one-transaction-payment',
-    neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
+    neededColonyPermissions: [
+      ColonyRole.Administration,
+      ColonyRole.Funding,
+      ColonyRole.Arbitration,
+    ],
     uninstallable: false,
     createdAt: 1557698400000,
   },
