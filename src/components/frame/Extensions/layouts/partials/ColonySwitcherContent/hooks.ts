@@ -31,7 +31,7 @@ export const useColonySwitcherContent =
       [user],
     );
 
-    const { name, chainMetadata, colonyAddress } = colony || {};
+    const { chainMetadata, colonyAddress } = colony || {};
     const { chainId } = chainMetadata || {};
 
     const chainIcon = getChainIconName(chainId);
@@ -52,7 +52,7 @@ export const useColonySwitcherContent =
           ...result,
           {
             key: id,
-            name: itemColony.name,
+            name: itemColony.metadata?.displayName || '',
             to: `/colony/${itemColony.name}`,
             avatarProps: {
               chainIconName: getChainIconName(itemColony.chainMetadata.chainId),
@@ -85,14 +85,17 @@ export const useColonySwitcherContent =
 
     useEffect(() => {
       setFilteredColony(
-        joinedColonies.filter((item) => item.name.includes(searchValue)),
+        joinedColonies.filter((item) =>
+          item.name.toLowerCase().includes(searchValue.toLowerCase()),
+        ),
       );
-    }, [setFilteredColony, joinedColonies, searchValue]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchValue]);
 
     return {
       userLoading,
       filteredColony,
-      name,
+      name: colony?.metadata?.displayName,
       chainIcon,
       joinedColonies,
       searchValue,
