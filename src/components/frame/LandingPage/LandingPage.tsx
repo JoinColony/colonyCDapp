@@ -147,7 +147,7 @@ const LandingPage = () => {
         </p>
       </div>
       <div className="w-full flex justify-center gap-4">
-        <div className="w-1/2 flex flex-col gap-[17px]">
+        <div className="w-1/2 flex flex-col gap-5">
           {landingPageItems.map((item, index) => (
             <LandingPageItem
               key={nanoid()}

@@ -40,12 +40,9 @@ const LandingPageItem = ({
     >
       <div className="flex items-center">
         <div
-          className={clsx(
-            'flex items-center px-[23px] py-[25px] mr-4 bg-base-bg rounded-lg',
-            {
-              'group-hover:bg-blue-100': !disabled,
-            },
-          )}
+          className={clsx('flex items-center p-6 mr-4 bg-base-bg rounded-lg', {
+            'group-hover:bg-blue-100': !disabled,
+          })}
         >
           <Icon
             appearance={{ size: 'medium' }}
