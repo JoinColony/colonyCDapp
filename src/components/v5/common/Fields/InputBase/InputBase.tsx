@@ -8,7 +8,7 @@ import { useAdjustInputWidth } from './hooks';
 
 const displayName = 'v5.common.Fields.InputBase';
 
-const InputBase = React.forwardRef<HTMLInputElement | null, InputBaseProps>(
+const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
   (
     {
       className,
