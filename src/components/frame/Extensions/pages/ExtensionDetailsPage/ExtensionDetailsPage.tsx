@@ -91,7 +91,7 @@ const ExtensionDetailsPage: FC = () => {
       defaultValues={defaultValues}
       onSuccess={handleFormSuccess}
     >
-      <div className="grid grid-cols-6 gap-4 md:gap-x-12 md:gap-y-6">
+      <div className="grid grid-cols-6 gap-4 pb-6 md:gap-x-12 md:gap-y-6">
         <div className="order-1 col-span-6">
           <ExtensionsTopRow
             extensionData={extensionData}

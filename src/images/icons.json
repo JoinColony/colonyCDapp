@@ -218,6 +218,7 @@
     "extension-incorporation",
     "extension-lazy-consensus",
     "extension-advanced-payments",
+    "extension-streaming-payments",
     "extension-one-transaction-payment",
     "star-not-filled",
     "bold",

@@ -13,8 +13,15 @@ const HeadingChunks = (chunks: React.ReactNode[]) => (
 );
 
 const ParagraphChunks = (chunks: React.ReactNode[]) => (
-  <h4 className="my-4">{chunks}</h4>
+  <p className="my-4">{chunks}</p>
 );
+const BoldChunks = (chunks: React.ReactNode[]) => (
+  <b className="text-gray-900">{chunks}</b>
+);
+const ListChunks = (chunks: React.ReactNode[]) => (
+  <ul className="my-4 ml-4 list-disc">{chunks}</ul>
+);
+const ListItemChunks = (chunks: React.ReactNode[]) => <li>{chunks}</li>;
 
 interface TabContentProps {
   extensionData: AnyExtensionData;
@@ -34,6 +41,9 @@ const TabContent: FC<TabContentProps> = ({ extensionData }) => {
           values={{
             h4: HeadingChunks,
             p: ParagraphChunks,
+            b: BoldChunks,
+            ul: ListChunks,
+            li: ListItemChunks,
           }}
         />
       </div>

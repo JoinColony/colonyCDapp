@@ -49,8 +49,9 @@ export const METATRANSACTIONS_LEARN_MORE = `https://docs.colony.io/use/advanced-
  *  Supporting documents
  */
 export const LAZY_CONSENSUS = `https://docs.colony.io/learn/governance/lazy-consensus`;
+export const LAZY_CONSENSUS_EXTENSION = `https://docs.colony.io/use/governance/motions-and-disputes`;
 export const PAYMENTS = `https://docs.colony.io/use/making-payments/payments`;
-export const MOTIONS_AND_DISPUTES = `https://docs.colony.io/use/governance/motions-and-disputes/`;
+export const STREAMING_PAYMENTS = `https://docs.colony.io/use/making-payments/streaming-payments`;
 
 /*
  * Navigation
