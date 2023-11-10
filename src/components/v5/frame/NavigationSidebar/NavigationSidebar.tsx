@@ -131,10 +131,9 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                   'rounded-full border-[.1875rem] transition-all sm:hover:border-blue-400',
                   {
                     'border-blue-400':
-                      (openItemIndex === 0 && isTablet) ||
-                      (openItemIndex === 0 && isSecondLevelMenuOpen),
+                      openItemIndex === 0 && isSecondLevelMenuOpen,
                     'border-transparent':
-                      (!isTablet && !isSecondLevelMenuOpen) ||
+                      (!isTablet && openItemIndex !== 0) ||
                       (openItemIndex !== 0 && isTablet),
                   },
                 )}

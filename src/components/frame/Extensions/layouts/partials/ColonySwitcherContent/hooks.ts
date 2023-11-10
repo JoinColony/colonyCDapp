@@ -4,7 +4,6 @@ import {
   ChangeEventHandler,
   ChangeEvent,
   useState,
-  useEffect,
 } from 'react';
 
 import debounce from 'lodash/debounce';
@@ -79,18 +78,15 @@ export const useColonySwitcherContent =
       (e: ChangeEvent<HTMLInputElement>) => {
         const { value: inputValue } = e.target;
         handleSearch(inputValue);
-      },
-      [handleSearch],
-    );
 
-    useEffect(() => {
-      setFilteredColony(
-        joinedColonies.filter((item) =>
-          item.name.toLowerCase().includes(searchValue.toLowerCase()),
-        ),
-      );
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchValue]);
+        setFilteredColony(
+          joinedColonies.filter((item) =>
+            item.name.toLowerCase().includes(inputValue.toLowerCase()),
+          ),
+        );
+      },
+      [handleSearch, setFilteredColony, joinedColonies],
+    );
 
     return {
       userLoading,

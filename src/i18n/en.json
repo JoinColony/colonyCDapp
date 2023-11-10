@@ -16,7 +16,7 @@
     "button.createNewAction": "Create new action",
     "navigation.colonySwitcher.title": "Select a Colony",
     "navigation.colonySwitcher.currentColony": "Current colony",
-    "navigation.colonySwitcher.joinedColonys": "Joined colonies",
+    "navigation.colonySwitcher.joinedColonies": "Joined colonies",
     "navigation.dashboard": "Dashboard",
     "navigation.dashboard.title": "MetaColony",
     "navigation.dashboard.description": "The Metacolony is the DAO that will build, maintain, and support the Colony ecosystem, and you can be part of it.",

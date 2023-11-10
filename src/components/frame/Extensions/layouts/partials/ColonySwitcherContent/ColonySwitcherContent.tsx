@@ -68,14 +68,16 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
           />
           <div>
             <h3 className={titleClassName}>
-              {formatText({ id: 'navigation.colonySwitcher.joinedColonys' })}
+              {formatText({ id: 'navigation.colonySwitcher.joinedColonies' })}
             </h3>
-            <div className="-mx-2">
-              <ColonySwitcherList
-                items={searchValue ? filteredColony : joinedColonies}
-              />
-            </div>
-            {!filteredColony.length && (
+            {(filteredColony.length || joinedColonies) && (
+              <div className="-mx-2">
+                <ColonySwitcherList
+                  items={searchValue ? filteredColony : joinedColonies}
+                />
+              </div>
+            )}
+            {filteredColony.length === 0 && searchValue && (
               <EmptyContent
                 icon="binoculars"
                 title={{ id: 'colony.emptyState.title' }}
