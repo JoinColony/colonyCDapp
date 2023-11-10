@@ -1,7 +1,8 @@
 import React from 'react';
+import { IconProps } from '~shared/Icon/Icon';
 
 export interface IconWithTooltipProps {
-  iconName: string;
   tooltipContent: React.ReactNode;
+  iconProps: IconProps;
   className?: string;
 }
