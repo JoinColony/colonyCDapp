@@ -11878,7 +11878,7 @@ export const GetUserStakesDocument = gql`
     query GetUserStakes($userAddress: ID!, $colonyAddress: ID!) {
   getUserStakes(
     userAddress: $userAddress
-    filter: {colonyAddress: {eq: $colonyAddress}}
+    colonyAddress: {eq: $colonyAddress}
     limit: 10000
   ) {
     items {
