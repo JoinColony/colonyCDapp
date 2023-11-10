@@ -27,7 +27,7 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
     searchValue,
   } = useColonySwitcherContent();
 
-  const titleClassName = 'uppercase text-4 text-gray-400 mb-3';
+  const titleClassName = 'uppercase text-4 text-gray-400';
 
   const joinedMoreColonies = !!joinedColonies?.length;
 
@@ -37,7 +37,7 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
     <div className="pt-6 w-full flex flex-col gap-6">
       {colony && (
         <div>
-          <h3 className={titleClassName}>
+          <h3 className={clsx(titleClassName, 'mb-3')}>
             {formatText({ id: 'navigation.colonySwitcher.currentColony' })}
           </h3>
           <div className="-mx-2">
@@ -67,7 +67,7 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
             })}
           />
           <div>
-            <h3 className={titleClassName}>
+            <h3 className={clsx(titleClassName, 'mb-0.5')}>
               {formatText({ id: 'navigation.colonySwitcher.joinedColonies' })}
             </h3>
             {(filteredColony.length || joinedColonies) && (
