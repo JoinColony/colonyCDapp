@@ -1,7 +1,7 @@
 import React, { FC, useLayoutEffect } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
-import { useIntl } from 'react-intl';
 
+import { useMatch } from 'react-router-dom';
 import { useAppContext, useGetNetworkToken, useTablet } from '~hooks';
 import Button, { Hamburger } from '~v5/shared/Button';
 import Token from './partials/Token';
@@ -9,6 +9,8 @@ import UserMenu from './partials/UserMenu';
 import { getLastWallet } from '~utils/autoLogin';
 import { UserNavigationProps } from './types';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks';
+import { formatText } from '~utils/intl';
+import JoinButton from '~v5/shared/Button/JoinButton';
 
 export const displayName = 'common.Extensions.UserNavigation';
 
@@ -17,10 +19,10 @@ const UserNavigation: FC<UserNavigationProps> = ({
   txButtons = null,
 }) => {
   const { wallet, user, connectWallet } = useAppContext();
-  const { formatMessage } = useIntl();
   const isTablet = useTablet();
   const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
   const [, { toggleOff }] = mobileMenuToggle;
+  const isOnColonyRoute = useMatch('/colony/:colonyName/*');
 
   const isWalletConnected = !!wallet?.address;
   const nativeToken = useGetNetworkToken();
@@ -69,7 +71,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
           iconName={visible && isTablet ? 'close' : 'cardholder'}
           size="small"
         >
-          {formatMessage({ id: 'connectWallet' })}
+          {formatText({ id: 'connectWallet' })}
         </Button>
       )}
       <Hamburger
@@ -93,6 +95,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
         />
       )}
       {!isTablet && txButtons}
+      {isOnColonyRoute && <JoinButton />}
     </div>
   );
 };
