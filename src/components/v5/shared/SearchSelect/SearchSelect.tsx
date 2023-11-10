@@ -1,10 +1,4 @@
-import React, {
-  ChangeEvent,
-  ChangeEventHandler,
-  useCallback,
-  useMemo,
-  useState,
-} from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import debounce from 'lodash/debounce';
 import clsx from 'clsx';
@@ -44,8 +38,9 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
     ref,
   ) => {
     const [searchValue, setSearchValue] = useState('');
+    const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
     const isMobile = useMobile();
-    const filteredList = useSearchSelect(items, searchValue);
+    const filteredList = useSearchSelect(items, debouncedSearchValue);
 
     const defaultOpenedAccordions = useMemo(
       () =>
@@ -58,16 +53,20 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
     );
 
     const handleSearch = useMemo(
-      () => debounce(setSearchValue, 500),
-      [setSearchValue],
+      () => debounce(setDebouncedSearchValue, 500),
+      [setDebouncedSearchValue],
     );
 
-    const onInput: ChangeEventHandler<HTMLInputElement> = useCallback(
-      (e: ChangeEvent<HTMLInputElement>) => {
-        const { value: inputValue } = e.target;
+    const onChange = useCallback(
+      (value: string) => {
+        onSearch?.(value);
+        setSearchValue(value);
 
-        onSearch?.(inputValue);
-        handleSearch(inputValue);
+        if (value) {
+          handleSearch(value);
+        } else {
+          setDebouncedSearchValue('');
+        }
       },
       [handleSearch, onSearch],
     );
@@ -86,7 +85,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
       <>
         <div
           className={clsx('px-3.5', {
-            'mb-6': filteredList.length > 0 && showEmptyContent,
+            'mb-5': filteredList.length > 0 || showEmptyContent,
           })}
         >
           {isMobile && hideSearchOnMobile ? (
@@ -94,7 +93,15 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
               {formatText({ id: 'actions.selectActionType' })}
             </p>
           ) : (
-            <SearchInput onInput={onInput} state={state} message={message} />
+            <SearchInput
+              onChange={onChange}
+              state={state}
+              message={message}
+              value={searchValue}
+              placeholder={formatText({
+                id: 'placeholder.searchOrAddWalletAddress',
+              })}
+            />
           )}
         </div>
         {isLoading && (
