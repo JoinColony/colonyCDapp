@@ -23,14 +23,14 @@ export const useTokensModal = (
     pollActiveTokenBalance,
     loading,
   } = useUserTokenBalanceContext();
-  const { inactiveBalance, lockedBalance } = tokenData || {};
+  const { inactiveBalance, activeBalance } = tokenData || {};
   const isActivate = type === TOKENS_MODAL_TYPES.activate;
 
   const tokenDecimals = useMemo(
     () => getTokenDecimalsWithFallback(nativeToken?.decimals),
     [nativeToken],
   );
-  const tokenBalanceData = isActivate ? inactiveBalance : lockedBalance;
+  const tokenBalanceData = isActivate ? inactiveBalance : activeBalance;
   const tokenBalanceInEthers = moveDecimal(tokenBalanceData, -tokenDecimals);
 
   const validationSchema = yup
