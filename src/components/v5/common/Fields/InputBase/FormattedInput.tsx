@@ -14,6 +14,7 @@ const FormattedInput: FC<FormattedInputProps> = ({
   onChange,
   disabled,
   value,
+  placeholder,
   className,
   state,
   mode = 'primary',
@@ -88,6 +89,7 @@ const FormattedInput: FC<FormattedInputProps> = ({
           {...rest}
           disabled={disabled}
           key={dynamicCleaveOptionKey}
+          placeholder={placeholder || ''}
           /*
            * @NOTE: If formattingOptions is not either memoized or defined outside of the ancestor Input component,
            * it will cause Cleave to be re-mounted and thus lose its state and focus.

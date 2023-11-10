@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useIntl } from 'react-intl';
 
 import Modal from '../../shared/Modal/Modal';
 import Numeral from '~shared/Numeral';
@@ -26,6 +27,7 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
     tokenBalanceInEthers,
     loading,
   } = useTokensModal(type);
+  const { formatMessage } = useIntl();
 
   return (
     <Modal {...props} onClose={onClose}>
@@ -71,6 +73,7 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
             </div>
             <FormFormattedInput
               name="amount"
+              placeholder={formatMessage({ id: 'tokensModal.placeholder' })}
               customPrefix={
                 nativeToken ? (
                   <TokenIcon token={nativeToken} size="xxs" />
@@ -81,7 +84,6 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
                 numeralDecimalScale: tokenDecimals,
                 numeralPositiveOnly: true,
                 rawValueTrimPrefix: true,
-                prefix: tokenSymbol,
                 tailPrefix: true,
               }}
               buttonProps={{

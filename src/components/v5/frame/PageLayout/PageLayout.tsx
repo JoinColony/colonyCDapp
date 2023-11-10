@@ -1,6 +1,7 @@
 import React, { FC, PropsWithChildren, useEffect, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
+import { ToastContainer } from 'react-toastify';
 
 import { useTablet } from '~hooks';
 
@@ -8,6 +9,8 @@ import NavigationSidebarContextProvider from '../NavigationSidebar/partials/Navi
 import PageHeader from './partials/PageHeader';
 import PageHeading from './partials/PageHeading';
 import { PageLayoutProps } from './types';
+import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
+import styles from '~shared/Extensions/Toast/Toast.module.css';
 
 const displayName = 'v5.frame.PageLayout';
 
@@ -49,6 +52,16 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
 
   return (
     <NavigationSidebarContextProvider>
+      <ToastContainer
+        className={styles.toastNotification}
+        autoClose={3000}
+        hideProgressBar
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        pauseOnHover
+        closeButton={CloseButton}
+      />
       <div className="w-full md:h-screen md:flex md:flex-col" ref={wrapperRef}>
         <AnimatePresence>
           {isTablet ? (
