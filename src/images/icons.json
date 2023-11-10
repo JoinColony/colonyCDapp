@@ -247,7 +247,14 @@
     "user-circle-minus",
     "wallet",
     "ether",
-    "share"
+    "share",
+    "users-four",
+    "chart-bar",
+    "chats-circle",
+    "intersect",
+    "list-checks",
+    "puzzle-piece",
+    "chart-line"
   ],
   "multiColorIcons": [
     "circle-check-primary",

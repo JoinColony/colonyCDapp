@@ -30,7 +30,7 @@ const NavLink: FC<PropsWithChildren<NavLinkProps>> = ({
     <NavLinkComponent
       className={clsx(
         className,
-        'transition-all duration-normal hover:text-blue-400',
+        'transition-all duration-normal md:hover:text-blue-400',
       )}
       to={to}
       title={titleText}

@@ -10,10 +10,11 @@ const ExtensionStatusBadge: FC<PropsWithChildren<PillsProps>> = ({
   mode = 'coming-soon',
   children,
   text,
+  className,
   ...rest
 }) => (
   <PillsBase
-    className={clsx({
+    className={clsx(className, {
       'text-indigo-400 bg-indigo-100': mode === 'coming-soon',
       'text-blue-400 bg-blue-100':
         mode === 'not-installed' ||
