@@ -1,4 +1,4 @@
-import { LAZY_CONSENSUS, PAYMENTS, MOTIONS_AND_DISPUTES } from '~constants';
+import { LAZY_CONSENSUS, PAYMENTS, LAZY_CONSENSUS_EXTENSION } from '~constants';
 
 export const singleLink = [
   {
@@ -13,7 +13,7 @@ export const doubleLink = [
     text: 'supporting.documents.link2',
   },
   {
-    url: MOTIONS_AND_DISPUTES,
+    url: LAZY_CONSENSUS_EXTENSION,
     text: 'supporting.documents.link3',
   },
 ];
