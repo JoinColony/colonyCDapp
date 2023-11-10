@@ -128,11 +128,13 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                   toggleOffThirdLevelMenu();
                 }}
                 className={clsx(
-                  'rounded-full border-[.1875rem] transition-all',
+                  'rounded-full border-[.1875rem] transition-all sm:hover:border-blue-400',
                   {
-                    'border-blue-400': openItemIndex === 0 && isTablet,
+                    'border-blue-400':
+                      openItemIndex === 0 && isSecondLevelMenuOpen,
                     'border-transparent':
-                      !isTablet || (openItemIndex !== 0 && isTablet),
+                      (!isTablet && openItemIndex !== 0) ||
+                      (openItemIndex !== 0 && isTablet),
                   },
                 )}
               >

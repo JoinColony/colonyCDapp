@@ -17,9 +17,12 @@ const ColonySwitcherItem: FC<ColonySwitcherItemProps> = ({
   return (
     <Link
       title={name}
-      className={clsx('flex items-center gap-4 text-gray-900', {
-        'justify-between': chainIconName,
-      })}
+      className={clsx(
+        'flex items-center gap-4 text-gray-900 py-[0.625rem] px-2 group md:hover:bg-gray-900 md:hover:text-base-white rounded-lg',
+        {
+          'justify-between': chainIconName,
+        },
+      )}
       {...rest}
     >
       <div className="flex items-center gap-2">
