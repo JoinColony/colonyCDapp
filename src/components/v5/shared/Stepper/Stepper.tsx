@@ -85,7 +85,7 @@ function Stepper<TKey extends React.Key>({
                 {
                   'sm:mb-4 sm:last-mb-0': !isHidden,
                   'sm:before:bg-gray-900': index <= activeItemIndex,
-                  'sm:before:bg-white': index > activeItemIndex,
+                  'sm:before:bg-base-white': index > activeItemIndex,
                   'after:border-dashed': isNextStepOptional,
                   'after:border-gray-400': isNextStepSkipped,
                   'sm:before:border-gray-400': isSkipped,

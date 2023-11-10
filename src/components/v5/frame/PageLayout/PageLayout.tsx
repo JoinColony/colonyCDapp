@@ -67,7 +67,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
           {isTablet ? (
             <>
               <div
-                className="sticky top-0 left-0 right-0 w-full z-[1] bg-white"
+                className="sticky top-0 left-0 right-0 w-full z-[1] bg-base-white"
                 ref={topContentWrapperRef}
               >
                 {topContent && (

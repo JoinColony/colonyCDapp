@@ -60,7 +60,7 @@ const NavigationSidebarThirdLevel: FC<NavigationSidebarThirdLevelProps> = ({
     <div
       className={`
         bg-gray-900
-        text-white
+        text-base-white
         md:bg-transparent
         md:text-inherit
         px-4 py-2

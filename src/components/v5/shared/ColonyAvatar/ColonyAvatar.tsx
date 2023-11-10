@@ -45,7 +45,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
         ) : (
           <Icon
             name="colony-placeholder"
-            className="text-white"
+            className="text-base-white"
             appearance={{
               size: size === 'default' ? 'extraBig' : size,
             }}
@@ -60,9 +60,8 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
           rounded-full
           border
           border-gray-200
-          bg-white
+          bg-base-white
           overflow-hidden
-          p-[2%]
           absolute
           top-0
           right-0

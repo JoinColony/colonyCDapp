@@ -78,7 +78,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
           h-[5.625rem]
           md:h-full
           md:rounded-lg
-          bg-white
+          bg-base-white
           border-b
           md:border
           border-gray-200

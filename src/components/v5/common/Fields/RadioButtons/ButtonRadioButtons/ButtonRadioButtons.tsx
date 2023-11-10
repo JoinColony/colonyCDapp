@@ -60,7 +60,7 @@ function ButtonRadioButtons<TValue = string>({
                 iconClassName,
                 'h-[1em] w-[1em] text-[1.125rem]',
                 {
-                  'text-white': checked,
+                  'text-base-white': checked,
                   'text-current': !checked,
                 },
               )}
@@ -72,7 +72,7 @@ function ButtonRadioButtons<TValue = string>({
               'text-gray-900 md:group-hover/wrapper:text-current':
                 !checked && !disabled,
               'text-gray-300': disabled,
-              'text-white': checked && !disabled,
+              'text-base-white': checked && !disabled,
             })}
           >
             {label}
