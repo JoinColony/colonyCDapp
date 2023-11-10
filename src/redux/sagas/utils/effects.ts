@@ -16,6 +16,7 @@ import {
   transactionEstimateGas,
   transactionReady,
   transactionSend,
+  messageSign,
 } from '~redux/actionCreators';
 import { getCanUserSendMetatransactions } from './getCanUserSendMetatransactions';
 /*
@@ -126,4 +127,8 @@ export function* initiateTransaction({
   } else {
     yield put(transactionEstimateGas(id));
   }
+}
+
+export function* initiateMessageSigning(id: string) {
+  yield put(messageSign(id));
 }
