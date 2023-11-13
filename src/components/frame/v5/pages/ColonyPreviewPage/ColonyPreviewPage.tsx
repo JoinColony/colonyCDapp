@@ -12,6 +12,7 @@ import {
   useValidateUserInviteMutation,
   useGetPublicColonyByNameQuery,
 } from '~gql';
+import { CREATE_USER_ROUTE } from '~routes';
 
 const displayName = 'pages.ColonyPreviewPage';
 
@@ -75,7 +76,7 @@ const ColonyPreviewPage = () => {
     colonyName: string;
   }>();
   const { formatMessage } = useIntl();
-  const { connectWallet, user, userLoading, walletConnecting } =
+  const { connectWallet, wallet, user, userLoading, walletConnecting } =
     useAppContext();
 
   const navigate = useNavigate();
@@ -125,6 +126,10 @@ const ColonyPreviewPage = () => {
     return <Spinner loading loadingText={MSG.loadingMessage} />;
   }
 
+  if (wallet && !user) {
+    return <Navigate to={CREATE_USER_ROUTE} />;
+  }
+
   const isMember = !!whitelistData?.getColonyByName?.items[0]?.whitelist.some(
     (addr) => addr === user?.walletAddress,
   );
@@ -168,7 +173,7 @@ const ColonyPreviewPage = () => {
           title={formatMessage(MSG.invalidBannerTitle)}
         />
       )}
-      {user ? null : (
+      {wallet ? null : (
         <CardWithCallout
           button={
             <Button
