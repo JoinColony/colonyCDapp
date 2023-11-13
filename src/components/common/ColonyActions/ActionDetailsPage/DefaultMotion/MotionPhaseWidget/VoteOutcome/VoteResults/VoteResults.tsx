@@ -1,8 +1,9 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { MotionStakes, VoterRecord } from '~types';
+import { MotionStakes } from '~types';
 import { MotionVote } from '~utils/colonyMotions';
+import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
 
 import VoteResultsItem from './VoteResultsItem';
 
@@ -28,7 +29,7 @@ const MSG = defineMessages({
 
 interface VoteResultsProps {
   revealedVotes: MotionStakes;
-  voterRecord: VoterRecord[];
+  voterRecord: UserAvatarsItem[];
 }
 
 const VoteResults = ({

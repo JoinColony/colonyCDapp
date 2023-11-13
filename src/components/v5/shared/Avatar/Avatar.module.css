@@ -18,6 +18,10 @@
   @apply flex items-center relative w-[2.125rem] h-[2.125rem];
 }
 
+.xms {
+  @apply inline-block relative w-[2.375rem] h-[2.375rem];
+}
+
 .ms {
   @apply inline-block relative w-[2.75rem] h-[2.75rem];
 }

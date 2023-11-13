@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { VoterRecord } from '~gql';
 import UserAvatars from '~v5/shared/UserAvatars';
+import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
 
-const items: VoterRecord[] = [
+const items: UserAvatarsItem[] = [
   {
     address: '0xD8Bb3F612902EaF1c858e5663d36081DDbD80C79',
     voteCount: '2',

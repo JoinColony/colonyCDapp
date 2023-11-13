@@ -41,7 +41,9 @@ const CreatePaymentDialog = ({
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
-  const allColonyMembers = useGetColonyMembers(colony.colonyAddress);
+  const { allMembers: allColonyMembers } = useGetColonyMembers(
+    colony.colonyAddress,
+  );
 
   const { isVotingReputationEnabled } = enabledExtensionData;
   const { networkInverseFee } = useNetworkInverseFee();

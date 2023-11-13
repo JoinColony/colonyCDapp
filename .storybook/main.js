@@ -65,6 +65,12 @@ module.exports = {
           !test.test('test.tsx')),
     );
 
+    config.module.rules.push({
+      test: /\.(woff|woff2|png|jpe?g|gif)$/,
+      include: [path.resolve(__dirname, '..', 'src')],
+      type: 'asset/resource',
+    });
+
     /*
      * To load svg icons and token icons to import
      */

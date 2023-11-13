@@ -1,5 +1,5 @@
-import { VoterRecord } from '~gql';
 import { MotionVote } from '~utils/colonyMotions';
+import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
 
 export interface VoteStatuses {
   key: string;
@@ -11,5 +11,5 @@ export interface VoteStatuses {
 
 export interface VoteStatusesProps {
   items: VoteStatuses[];
-  voters: VoterRecord[];
+  voters: UserAvatarsItem[];
 }

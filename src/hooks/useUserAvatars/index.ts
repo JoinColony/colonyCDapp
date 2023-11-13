@@ -3,11 +3,15 @@ import {
   calculateLastSliceIndex,
   calculateRemainingItems,
 } from '~utils/avatars';
-import useAppContext from './useAppContext';
 import { useGetUsers } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VoteOutcome/VoteResults/helpers';
-import { VoterRecord } from '~gql';
+import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
+import useAppContext from '../useAppContext';
+import { UseUserAvatarsReturnType } from './types';
 
-export const useUserAvatars = (maxAvatars: number, items: VoterRecord[]) => {
+export const useUserAvatars = (
+  maxAvatars: number,
+  items: UserAvatarsItem[],
+): UseUserAvatarsReturnType => {
   const remainingAvatarsCount = calculateRemainingItems(maxAvatars, items);
   const { user } = useAppContext();
   const voterAddresses = useMemo(

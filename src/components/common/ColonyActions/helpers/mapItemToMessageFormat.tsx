@@ -365,7 +365,13 @@ export const useMapMotionEventToExpectedFormat = (
         />
         <VoteResults
           revealedVotes={motionData.revealedVotes}
-          voterRecord={motionData.voterRecord}
+          voterRecord={
+            motionData.voterRecord.map((voter) => ({
+              address: voter.address,
+              voteCount: voter.voteCount,
+              vote: voter.vote ?? undefined,
+            })) || []
+          }
         />
       </div>
     ),

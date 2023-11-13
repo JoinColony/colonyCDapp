@@ -1,90 +1,87 @@
-import React, { useState } from 'react';
-import {
-  Outlet,
-  Route,
-  Routes as RoutesSwitch,
-  useLocation,
-} from 'react-router-dom';
-
-import ColonyActions from '~common/ColonyActions';
-
-import ColonyDecisions from '~common/ColonyDecisions';
-import { ColonyHomeProvider } from '~context/ColonyHomeContext';
-import {
-  COLONY_DECISIONS_ROUTE,
-  COLONY_EVENTS_ROUTE,
-  COLONY_EXTENSIONS_ROUTE,
-  COLONY_EXTENSION_DETAILS_ROUTE,
-  NotFoundRoute,
-} from '~routes';
-import ColonyExtensions from '~common/ColonyExtensions';
-import ExtensionDetails from '~common/Extensions/ExtensionDetails';
+import React from 'react';
 import { useColonyContext } from '~hooks';
-import Expenditures from '~common/Expenditures';
-
-import ColonyHomeLayout from './ColonyHomeLayout';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
 import { formatText } from '~utils/intl';
+import WidgetBoxList from '~v5/common/WidgetBoxList';
+import UserAvatars from '~v5/shared/UserAvatars';
+import { COLONY_MEMBERS_ROUTE } from '~routes';
+import { useGetHomeWidget } from './hooks';
+import Numeral from '~shared/Numeral';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 const displayName = 'common.ColonyHome';
 
 const ColonyHome = () => {
   const { colony } = useColonyContext();
+  // @TODO: Add selected team filter
+  const selectedTeam = undefined;
+  const {
+    activeActions,
+    allMembers,
+    teamColor,
+    currentTokenBalance,
+    membersLoading,
+    nativeToken,
+  } = useGetHomeWidget();
 
   useSetPageHeadingTitle(formatText({ id: 'colonyHome.title' }));
-
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const queryDomainIdFilter = searchParams.get('domainFilter');
-  const [domainIdFilter, setDomainIdFilter] = useState<number>(
-    Number(queryDomainIdFilter),
-  );
 
   if (!colony) {
     return null;
   }
 
   return (
-    <RoutesSwitch>
-      <Route
-        path={COLONY_EVENTS_ROUTE}
-        element={
-          <ColonyHomeLayout
-            filteredDomainId={domainIdFilter}
-            onDomainChange={setDomainIdFilter}
-          >
-            {/* <ColonyEvents colony={colony} ethDomainId={filteredDomainId} /> */}
-            <div>Events (Transactions Log)</div>
-          </ColonyHomeLayout>
-        }
+    <div>
+      <WidgetBoxList
+        items={[
+          {
+            key: '1',
+            title: formatText({ id: 'colonyHome.actions' }),
+            value: <h4 className="heading-4">{activeActions}</h4>,
+            className: `${
+              selectedTeam
+                ? teamColor
+                : 'text-base-white bg-gray-900 border-gray-900'
+            } text-base-white`,
+            href: '/',
+          },
+          {
+            key: '2',
+            title: formatText({ id: 'colonyHome.members' }),
+            value: (
+              <h4 className="heading-4">
+                {membersLoading ? '-' : allMembers.length}
+              </h4>
+            ),
+            className: 'bg-base-bg border-base-bg text-gray-900',
+            href: COLONY_MEMBERS_ROUTE,
+            additionalContent: (
+              <UserAvatars
+                maxAvatarsToShow={4}
+                size="xms"
+                items={allMembers}
+                showRemainingAvatars={false}
+              />
+            ),
+          },
+          {
+            key: '3',
+            title: formatText({ id: 'colonyHome.funds' }),
+            value: (
+              <div className="flex items-center gap-2 heading-4">
+                <Numeral
+                  value={currentTokenBalance}
+                  decimals={getTokenDecimalsWithFallback(nativeToken?.decimals)}
+                />
+                <span className="text-1">{nativeToken?.symbol}</span>
+              </div>
+            ),
+            className: 'bg-base-bg border-base-bg text-gray-900',
+            href: '/',
+          },
+        ]}
       />
-      <Route
-        element={
-          <ColonyHomeProvider>
-            <ColonyHomeLayout
-              filteredDomainId={domainIdFilter}
-              onDomainChange={setDomainIdFilter}
-            >
-              <Outlet />
-            </ColonyHomeLayout>
-          </ColonyHomeProvider>
-        }
-      >
-        <Route path="/" element={<ColonyActions />} />
-        <Route path={COLONY_EXTENSIONS_ROUTE} element={<ColonyExtensions />} />
-        <Route
-          path={COLONY_EXTENSION_DETAILS_ROUTE}
-          element={<ExtensionDetails />}
-        />
-        <Route
-          path={COLONY_DECISIONS_ROUTE}
-          element={<ColonyDecisions domainId={domainIdFilter} />}
-        />
-        <Route path="/expenditures/*" element={<Expenditures />} />
-      </Route>
-
-      <Route path="*" element={<NotFoundRoute />} />
-    </RoutesSwitch>
+    </div>
   );
 };
 

@@ -12,6 +12,8 @@ const UserAvatars: FC<UserAvatarsProps> = ({
   items,
   maxAvatarsToShow = 4,
   className,
+  showRemainingAvatars = true,
+  size = 'sm',
 }) => {
   const { registeredUsers, remainingAvatarsCount } = useUserAvatars(
     maxAvatarsToShow,
@@ -24,15 +26,22 @@ const UserAvatars: FC<UserAvatarsProps> = ({
         <li key={registeredVoter.walletAddress} className="-ml-3">
           <UserAvatar
             user={registeredVoter}
-            size="sm"
-            className="border-base-white border rounded-full"
+            size={size}
+            className={clsx('border-base-white border rounded-full', {
+              'border-2': size === 'xms',
+            })}
           />
         </li>
       ))}
-      {!!remainingAvatarsCount && (
+      {!!remainingAvatarsCount && showRemainingAvatars && (
         <li
-          className={`flex items-center justify-center w-[1.875rem] h-[1.875rem] border border-base-white
-              rounded-full bg-gray-50 text-xs font-semibold text-gray-700 -ml-3 z-10`}
+          className={clsx(
+            'flex items-center justify-center border border-base-white rounded-full bg-gray-50 text-5 text-gray-700 -ml-3 z-10',
+            {
+              'w-[1.875rem] h-[1.875rem]': size === 'sm',
+              'w-[2.375rem] h-[2.375rem]': size === 'xms',
+            },
+          )}
         >
           {`+ ${remainingAvatarsCount}`}
         </li>
