@@ -31,6 +31,8 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
             label,
             secondLevelMenuProps,
             relatedActionsProps,
+            onClick,
+            customClassName,
             isActive: isActiveProp,
           },
           index,
@@ -41,18 +43,18 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
             <li key={key}>
               <NavigationSidebarButton
                 onClick={() => {
-                  if (isActive) {
-                    setOpenItemIndex(undefined);
-                  } else {
-                    setOpenItemIndex(index + 1);
+                  if (onClick) {
+                    onClick();
+                    return;
                   }
-
+                  setOpenItemIndex(isActive ? undefined : index + 1);
                   toggleOffThirdLevelMenu();
                 }}
                 isActive={isActive || isActiveProp}
                 isExpanded={isActive}
                 label={label}
                 iconName={iconName}
+                className={customClassName}
               />
               <AnimatePresence>
                 {isTablet && secondLevelMenuProps && isActive && (

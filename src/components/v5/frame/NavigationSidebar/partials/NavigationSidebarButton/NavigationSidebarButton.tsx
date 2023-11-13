@@ -23,7 +23,6 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
     <button
       type="button"
       className={clsx(
-        className,
         `
           group/navigation-button
           w-full
@@ -46,6 +45,7 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
           'text-gray-900 md:bg-white md:hover:bg-gray-900 md:hover:text-white':
             !isActive,
         },
+        className,
       )}
       {...rest}
     >

@@ -91,6 +91,13 @@ export const useMainMenuItems = () => {
   // @todo: update menu items with correct contents and related actions
   const mainMenuItems: NavigationSidebarItem[] = [
     {
+      key: '0',
+      iconName: 'file-plus',
+      label: formatText({ id: 'navigation.newAction' }) || '',
+      onClick: () => toggleActionSideBar(),
+      customClassName: 'md:bg-base-bg',
+    },
+    {
       key: '1',
       iconName: 'layout',
       label: formatText({ id: 'navigation.dashboard' }) || '',

@@ -4,11 +4,13 @@ import { NavigationSidebarThirdLevelProps } from '../NavigationSidebarThirdLevel
 
 export interface NavigationSidebarItem extends NavigationSidebarButtonProps {
   key: string;
-  secondLevelMenuProps: Omit<
+  secondLevelMenuProps?: Omit<
     NavigationSidebarSecondLevelProps,
     'isExpanded' | 'onArrowClick'
   >;
   relatedActionsProps?: NavigationSidebarThirdLevelProps;
+  onClick?: () => void;
+  customClassName?: string;
 }
 
 export interface NavigationSidebarMainMenuProps {
