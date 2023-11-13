@@ -130,6 +130,7 @@ export const useFundsTable = (): UseFundsTableProps => {
   const filters: FilterProps<FundsTableFilters> = {
     onChange: setValue,
     onSearch: setSearchValue,
+    searchValue,
     value,
     items: [
       {

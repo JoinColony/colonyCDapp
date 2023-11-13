@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ChangeEventHandler, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import get from 'lodash/get';
 import set from 'lodash/set';
 import cloneDeep from 'lodash/cloneDeep';
@@ -203,6 +203,7 @@ function Filter<TValue extends FilterValue>({
   onChange,
   value,
   onSearch,
+  searchValue,
 }: FilterProps<TValue>) {
   const {
     getTooltipProps,
@@ -220,10 +221,8 @@ function Filter<TValue extends FilterValue>({
   const [isModalOpen, { toggleOff: toggleModalOff, toggleOn: toggleModalOn }] =
     useToggle();
 
-  const onInput: ChangeEventHandler<HTMLInputElement> = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      const { value: inputValue } = e.target;
-
+  const onInputChange = useCallback(
+    (inputValue: string) => {
       onSearch(inputValue);
     },
     [onSearch],
@@ -278,7 +277,7 @@ function Filter<TValue extends FilterValue>({
               classNames="w-full sm:max-w-[20.375rem]"
             >
               <div className="px-3.5 mb-6">
-                <SearchInput onInput={onInput} />
+                <SearchInput onChange={onInputChange} value={searchValue} />
               </div>
               <Header title={{ id: 'filters' }} />
               {RootItems}

@@ -23,6 +23,7 @@ export interface FilterProps<TValue extends FilterValue> {
   items: RootItem<TValue>[];
   value: Partial<TValue>;
   onChange: (value: Partial<TValue>) => void;
+  searchValue: string;
   onSearch: (value: string) => void;
 }
 
