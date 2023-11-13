@@ -18,7 +18,10 @@
     },
     "CreateLambdaUrl": {
       "Type": "String",
-      "AllowedValues": ["true", "false"],
+      "AllowedValues": [
+        "true",
+        "false"
+      ],
       "Default": "false",
       "Description": "Specifies whether to create the Lambda function URL"
     }
@@ -34,7 +37,9 @@
     },
     "ShouldCreateLambdaUrl": {
       "Fn::Equals": [
-        { "Ref": "CreateLambdaUrl" },
+        {
+          "Ref": "CreateLambdaUrl"
+        },
         "true"
       ]
     }
@@ -116,6 +121,7 @@
         },
         "Runtime": "nodejs14.x",
         "Layers": [
+          "arn:aws:lambda:eu-west-2:204031746016:layer:colonycdappSSMAccess-qa:204",
           "arn:aws:lambda:eu-west-2:133256977650:layer:AWS-Parameters-and-Secrets-Lambda-Extension:4"
         ],
         "Timeout": 25
@@ -208,26 +214,6 @@
                     },
                     "lambda": {
                       "Ref": "LambdaFunction"
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "ssm:GetParameter",
-                "kms:Decrypt"
-              ],
-              "Resource": {
-                "Fn::Sub": [
-                  "arn:aws:ssm:${region}:${account}:parameter/*",
-                  {
-                    "region": {
-                      "Ref": "AWS::Region"
-                    },
-                    "account": {
-                      "Ref": "AWS::AccountId"
                     }
                   }
                 ]
