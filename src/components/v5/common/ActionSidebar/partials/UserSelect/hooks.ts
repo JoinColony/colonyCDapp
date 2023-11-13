@@ -2,26 +2,24 @@ import { useMemo } from 'react';
 import { useColonyContext } from '~hooks';
 import { useGetColonyMembers } from '~v5/shared/MembersSelect/hooks';
 import { UserSelectHookProps } from './types';
-import { useGetVerifiedMembersQuery } from '~gql';
 import { SearchSelectOption } from '~v5/shared/SearchSelect/types';
 import { unionOfArraysToArrayOfUnions } from '~utils/arrays';
+import { getVerifiedUsers, isUserVerified } from '~utils/verifiedUsers';
+import { Address } from '~types';
 
-export const useUserSelect = (inputValue: string): UserSelectHookProps => {
+export const useUserSelect = (): UserSelectHookProps => {
   const { colony } = useColonyContext();
   const { colonyAddress = '', metadata } = colony ?? {};
   const { members, loading } = useGetColonyMembers(colonyAddress);
   const isWhitelistActivated = metadata?.isWhitelistActivated;
-  const { data, loading: verifiedMembersLoading } = useGetVerifiedMembersQuery({
-    variables: { colonyAddress },
-    skip: !colonyAddress || !isWhitelistActivated,
-  });
   const options = useMemo(
     () =>
       unionOfArraysToArrayOfUnions(
         isWhitelistActivated
-          ? data?.getContributorsByColony?.items.map(
-              (contributor) => contributor?.user,
-            ) || []
+          ? getVerifiedUsers(
+              colony?.metadata?.whitelistedAddresses || [],
+              members,
+            )
           : members,
       ).reduce<SearchSelectOption[]>((result, user) => {
         if (!user) {
@@ -42,22 +40,23 @@ export const useUserSelect = (inputValue: string): UserSelectHookProps => {
           },
         ];
       }, []),
-    [data?.getContributorsByColony?.items, isWhitelistActivated, members],
+    [colony?.metadata?.whitelistedAddresses, isWhitelistActivated, members],
   );
-
-  const isUserVerified = options.some(
-    ({ walletAddress }) => walletAddress === inputValue,
-  );
-
-  const isRecipientNotVerified: boolean = !!inputValue && !isUserVerified;
 
   return {
-    isLoading: loading || verifiedMembersLoading,
+    isLoading: loading,
     options,
     key: 'users',
     title: { id: 'actions.recipent' },
-    isAccordion: false,
-    isUserVerified,
-    isRecipientNotVerified,
   };
+};
+
+export const useIsUserVerified = (
+  userAddress: Address | undefined,
+): boolean => {
+  const { colony } = useColonyContext();
+
+  return userAddress
+    ? isUserVerified(userAddress, colony?.metadata?.whitelistedAddresses || [])
+    : false;
 };

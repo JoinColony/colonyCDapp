@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { useController } from 'react-hook-form';
 
 import { isHexString } from 'ethers/lib/utils';
-import { useUserSelect } from './hooks';
+import { useIsUserVerified, useUserSelect } from './hooks';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
 import UserAvatar from '~v5/shared/UserAvatar';
 import { useUserByAddress } from '~hooks';
@@ -26,7 +26,8 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
     name,
   });
   const isError = !!error;
-  const usersOptions = useUserSelect(field.value);
+  const usersOptions = useUserSelect();
+  const isUserVerified = useIsUserVerified(field.value);
   const [
     isUserSelectVisible,
     {
@@ -58,11 +59,11 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
             user={userByAddress || field.value}
             userName={userDisplayName}
             size="xs"
-            className={
-              usersOptions.isRecipientNotVerified ? 'text-warning-400' : ''
-            }
+            className={clsx({
+              'text-warning-400': !isUserVerified,
+            })}
           />
-          {usersOptions.isUserVerified && (
+          {isUserVerified && (
             <span className="flex ml-2 text-blue-400">
               <Icon name="verified" />
             </span>
@@ -89,13 +90,12 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
                   user={userByAddress || field.value}
                   userName={userDisplayName}
                   size="xs"
-                  className={
-                    usersOptions.isRecipientNotVerified
-                      ? 'text-warning-400'
-                      : ''
-                  }
+                  className={clsx({
+                    'text-warning-400': !isUserVerified,
+                    'text-gray-900': isUserVerified,
+                  })}
                 />
-                {usersOptions.isUserVerified && (
+                {isUserVerified && (
                   <span className="flex ml-2 text-blue-400">
                     <Icon name="verified" />
                   </span>
@@ -127,16 +127,13 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
               showEmptyContent={false}
             />
           )}
-          {usersOptions.isRecipientNotVerified && (
+          {!isUserVerified && field.value && (
             <UserPopover
               userName={userDisplayName}
               walletAddress={userWalletAddress}
               aboutDescription={userByAddress?.profile?.bio || ''}
               user={userByAddress}
-              className={clsx(
-                usersOptions.isRecipientNotVerified,
-                'text-warning-400',
-              )}
+              className="text-warning-400"
               size="xs"
               additionalContent={
                 <NotificationBanner
