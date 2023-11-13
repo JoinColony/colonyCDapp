@@ -173,10 +173,11 @@ const ColonyPreviewPage = () => {
           button={
             <Button
               className="w-full md:w-auto"
-              mode="tertiary"
+              mode="quinary"
               iconName="cardholder"
               text={MSG.connectWalletButton}
               onClick={connectWallet}
+              size="small"
             />
           }
           iconName="plugs"
@@ -198,9 +199,10 @@ const ColonyPreviewPage = () => {
           inviteIsValid ? (
             <Button
               className="w-full md:w-auto"
-              mode="tertiary"
+              mode="quinary"
               text={MSG.joinColonyButton}
               onClick={validateAndRedirect}
+              size="small"
             />
           ) : null
         }
