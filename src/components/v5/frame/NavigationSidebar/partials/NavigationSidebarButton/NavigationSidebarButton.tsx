@@ -30,6 +30,7 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
           md:w-auto
           text-left
           md:rounded-lg
+          px-2
           md:px-2.5
           py-2
           flex
@@ -51,7 +52,8 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
       {!isTablet && (
         <Icon
           name={iconName}
-          className="h-[1em] w-[1em] text-[1.375rem] [&_svg]:fill-current"
+          // Important added to overwrite default icon dimensions
+          className="!h-[1.375rem] !w-[1.375rem] [&_svg]:fill-current"
         />
       )}
       <span
@@ -69,12 +71,10 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
       {isTablet && (
         <Icon
           name="caret-down"
-          className={clsx(
-            'h-[1em] w-[1em] text-[0.75rem] [&_svg]:fill-current transition-transform',
-            {
-              'rotate-180': isActive && isExpanded,
-            },
-          )}
+          appearance={{ size: 'extraTiny' }}
+          className={clsx('[&_svg]:fill-current transition-transform', {
+            'rotate-180': isActive && isExpanded,
+          })}
         />
       )}
     </button>

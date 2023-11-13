@@ -20,10 +20,18 @@ import { NavigationSidebarItem } from '~v5/frame/NavigationSidebar/partials/Navi
 import { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
 
 import type { UseCalamityBannerInfoReturnType } from './types';
-import { adminMenu, agreementsMenu, financesMenu, membersMenu } from './consts';
+import {
+  adminMenu,
+  agreementsMenu,
+  dashboardMainMenu,
+  dashboardMenu,
+  financesMenu,
+  membersMenu,
+} from './consts';
 import { checkIfIsActive } from './utils';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import { ACTION } from '~constants/actions';
+import DashboardContent from './partials/DashboardContent';
 
 export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
   const { colony } = useColonyContext();
@@ -86,9 +94,13 @@ export const useMainMenuItems = () => {
       key: '1',
       iconName: 'layout',
       label: formatText({ id: 'navigation.dashboard' }) || '',
+      isActive: checkIfIsActive(currentPathname, [
+        ...dashboardMainMenu,
+        ...dashboardMenu,
+      ]),
       secondLevelMenuProps: {
         title: formatText({ id: 'navigation.dashboard.title' }) || '',
-        content: <p>content</p>,
+        content: <DashboardContent />,
         description: formatText({ id: 'navigation.dashboard.description' }),
         bottomActionProps: {
           text: formatText({ id: 'button.createNewAction' }),

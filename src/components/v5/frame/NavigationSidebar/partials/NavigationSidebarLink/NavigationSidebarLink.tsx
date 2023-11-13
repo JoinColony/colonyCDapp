@@ -29,8 +29,9 @@ const NavigationSidebarLink: FC<
   >
     <span className="flex items-center gap-2">
       <Icon
+        appearance={{ size: 'extraSmall' }}
         name={iconName}
-        className="h-[1em] w-[1em] text-[1rem] text-current flex-shrink-0"
+        className="text-current flex-shrink-0"
       />
       {children}
     </span>

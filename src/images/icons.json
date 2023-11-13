@@ -256,7 +256,9 @@
     "intersect",
     "list-checks",
     "puzzle-piece",
-    "chart-line"
+    "chart-line",
+    "presentation-chart",
+    "book-open-text"
   ],
   "multiColorIcons": [
     "circle-check-primary",
