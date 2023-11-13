@@ -77,8 +77,9 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
             className={clsx(
               'flex text-md transition-colors md:hover:text-blue-400',
               {
-                'text-gray-400': !isError,
+                'text-gray-400': !isError && !isUserSelectVisible,
                 'text-negative-400': isError,
+                'text-blue-400': isUserSelectVisible,
               },
             )}
             onClick={toggleUserSelect}

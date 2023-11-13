@@ -19,6 +19,7 @@ import { AmountFieldProps, CleaveChangeEvent } from './types';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 import Portal from '~v5/shared/Portal';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import HoverWidthWrapper from '~v5/shared/HoverWidthWrapper';
 
 const displayName = 'v5.common.ActionsContent.partials.AmountField';
 
@@ -133,7 +134,7 @@ const AmountField: FC<AmountFieldProps> = ({
           {isTokenSelectVisible && (
             <Portal>
               <Card
-                className="absolute z-[60]"
+                className="absolute z-[60] px-2 py-6"
                 hasShadow
                 rounded="s"
                 ref={(ref) => {
@@ -141,7 +142,7 @@ const AmountField: FC<AmountFieldProps> = ({
                   portalElementRef.current = ref;
                 }}
               >
-                <h5 className="text-4 text-gray-400 mb-4 uppercase">
+                <h5 className="text-4 text-gray-400 mb-4 uppercase ml-4">
                   {formatMessage({ id: 'actionSidebar.availableTokens' })}
                 </h5>
                 <ul>
@@ -155,41 +156,48 @@ const AmountField: FC<AmountFieldProps> = ({
                     return (
                       <li
                         key={colonyToken.tokenAddress}
-                        className="mb-4 last:mb-0"
+                        className="mb-1 last:mb-0"
                       >
-                        <button
-                          type="button"
-                          className={`flex items-center gap-1 transition-colors md:hover:text-blue-400
+                        <HoverWidthWrapper hoverClassName="font-medium block">
+                          <button
+                            type="button"
+                            className={`flex items-center gap-1 transition-colors 
+                          md:hover:font-medium md:hover:bg-gray-50 py-2 px-4 rounded-lg
                           justify-between w-full`}
-                          onClick={() => {
-                            tokenAddressController.onChange(
-                              colonyToken.tokenAddress,
-                            );
-                            toggleTokenSelect();
-                          }}
-                        >
-                          <div className="flex items-center gap-1">
-                            <TokenIcon token={colonyToken} size="xs" />
-                            <span className="text-md">
-                              {colonyToken.symbol}
-                            </span>
-                          </div>
-                          {tokenBalance && (
-                            <span className="text-sm text-gray-400">
-                              {formatMessage({
-                                id: 'actionSidebar.availableFunds',
-                              })}
-                              {': '}
-                              <Numeral
-                                value={tokenBalance}
-                                decimals={getTokenDecimalsWithFallback(
-                                  colonyToken?.decimals,
-                                )}
-                              />{' '}
-                              {colonyToken.symbol}
-                            </span>
-                          )}
-                        </button>
+                            onClick={() => {
+                              tokenAddressController.onChange(
+                                colonyToken.tokenAddress,
+                              );
+                              toggleTokenSelect();
+                            }}
+                          >
+                            <div className="flex items-center gap-1">
+                              <TokenIcon
+                                token={colonyToken}
+                                size="xs"
+                                className="mr-1.5"
+                              />
+                              <span className="text-md">
+                                {colonyToken.symbol}
+                              </span>
+                            </div>
+                            {tokenBalance && (
+                              <span className="text-sm text-gray-400 whitespace-nowrap ml-2">
+                                {formatMessage({
+                                  id: 'actionSidebar.availableFunds',
+                                })}
+                                {': '}
+                                <Numeral
+                                  value={tokenBalance}
+                                  decimals={getTokenDecimalsWithFallback(
+                                    colonyToken?.decimals,
+                                  )}
+                                />{' '}
+                                {colonyToken.symbol}
+                              </span>
+                            )}
+                          </button>
+                        </HoverWidthWrapper>
                       </li>
                     );
                   })}

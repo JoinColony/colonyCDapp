@@ -10,6 +10,7 @@ import Portal from '~v5/shared/Portal';
 import { formatText } from '~utils/intl';
 import { isFlatOptions } from './utils';
 import { OPTION_LIST_ITEM_CLASSES } from './consts';
+import HoverWidthWrapper from '~v5/shared/HoverWidthWrapper';
 
 const displayName = 'v5.common.Fields.CardSelect';
 
@@ -107,9 +108,10 @@ function CardSelect<TValue = string>({
               togglerClassName,
               'flex text-md md:transition-colors md:hover:text-blue-400',
               {
-                'text-gray-400': !state,
-                'text-gray-900': value,
+                'text-gray-400': !state && !isSelectVisible,
+                'text-gray-900': value && !isSelectVisible,
                 'text-negative-400': state === FIELD_STATE.Error,
+                'text-blue-400': isSelectVisible,
               },
             )}
             onClick={toggleSelect}
@@ -131,7 +133,7 @@ function CardSelect<TValue = string>({
                 }}
                 className={clsx(
                   cardClassName,
-                  'p-6 absolute z-[60] overflow-auto',
+                  'py-6 px-2 absolute z-[60] overflow-auto',
                 )}
                 hasShadow
                 rounded="s"
@@ -140,7 +142,7 @@ function CardSelect<TValue = string>({
                   {groupedOptions.map((group) => (
                     <li key={group.key} className={OPTION_LIST_ITEM_CLASSES}>
                       {group.title && (
-                        <h5 className="text-4 text-gray-400 mb-2 uppercase">
+                        <h5 className="text-4 text-gray-400 mb-2 uppercase px-4">
                           {group.title}
                         </h5>
                       )}
@@ -148,21 +150,23 @@ function CardSelect<TValue = string>({
                         <ul>
                           {group.options.map(
                             ({ label, value: optionValue, ariaLabel }) => (
-                              <li
-                                key={keyExtractor(optionValue)}
-                                className="mb-2 last:mb-0"
-                              >
-                                <button
-                                  type="button"
-                                  className="flex text-md md:transition-colors md:hover:text-blue-400"
-                                  aria-label={ariaLabel}
-                                  onClick={() => {
-                                    onChange(optionValue);
-                                    toggleSelectOff();
-                                  }}
+                              <li key={keyExtractor(optionValue)}>
+                                <HoverWidthWrapper
+                                  hoverClassName="font-medium block"
+                                  hoverElement="div"
                                 >
-                                  {label}
-                                </button>
+                                  <button
+                                    type="button"
+                                    className="flex text-md md:transition-colors md:hover:font-medium md:hover:bg-gray-50 rounded px-4 py-2 w-full"
+                                    aria-label={ariaLabel}
+                                    onClick={() => {
+                                      onChange(optionValue);
+                                      toggleSelectOff();
+                                    }}
+                                  >
+                                    {label}
+                                  </button>
+                                </HoverWidthWrapper>
                               </li>
                             ),
                           )}
