@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import Logo from '~images/logo-new.svg';
 
@@ -153,15 +152,6 @@ const SideBar = () => (
 const pageLayoutMeta: Meta<typeof PageLayout> = {
   title: 'Frame/Page Layout',
   component: PageLayout,
-  decorators: [
-    (StoryContent) => (
-      <MemoryRouter>
-        <Routes>
-          <Route path="/*" element={<StoryContent />} />
-        </Routes>
-      </MemoryRouter>
-    ),
-  ],
   parameters: {
     layout: 'fullscreen',
   },

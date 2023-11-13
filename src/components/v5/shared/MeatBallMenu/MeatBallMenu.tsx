@@ -1,13 +1,14 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import useToggle from '~hooks/useToggle';
 import Icon from '~shared/Icon';
+import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
+import { formatText } from '~utils/intl';
+import Portal from '~v5/shared/Portal';
+
 import Card from '../Card';
 import { MeatBallMenuProps } from './types';
-import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
-import Portal from '~v5/shared/Portal';
 
 const displayName = 'v5.MeatBallMenu';
 
@@ -16,7 +17,6 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
   buttonClassName,
   className,
 }) => {
-  const { formatMessage } = useIntl();
   const [
     isMenuOpen,
     { toggle: toggleMenu, toggleOff: toggleMenuOff, registerContainerRef },
@@ -36,7 +36,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
         type="button"
         ref={relativeElementRef}
         onClick={toggleMenu}
-        aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
+        aria-label={formatText({ id: 'ariaLabel.openMenu' })}
         className={clsx(
           buttonClassName,
           'p-[0.1875rem] transition-all duration-normal cursor-pointer md:hover:text-blue-400 flex justify-center items-center',

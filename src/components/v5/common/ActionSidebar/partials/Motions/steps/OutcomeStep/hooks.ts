@@ -1,7 +1,9 @@
 import { useMemo } from 'react';
-import { supportOption, opposeOption } from '../../consts';
-import { MotionVote } from '~utils/colonyMotions';
+
 import { ColonyMotion } from '~types';
+import { MotionVote } from '~utils/colonyMotions';
+
+import { supportOption, opposeOption } from '../../consts';
 import { VoteStatuses } from './partials/VoteStatuses/types';
 
 export const useOutcomeStep = (motionData: ColonyMotion | null | undefined) => {
@@ -29,7 +31,7 @@ export const useOutcomeStep = (motionData: ColonyMotion | null | undefined) => {
         status: MotionVote.Nay,
       },
     ];
-  }, [supportOption, motionData]);
+  }, [motionData]);
 
   return {
     voteStatuses,

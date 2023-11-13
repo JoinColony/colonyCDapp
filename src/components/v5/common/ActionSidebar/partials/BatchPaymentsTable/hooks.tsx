@@ -2,12 +2,14 @@ import { useCallback, useMemo } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
 
 import { formatText } from '~utils/intl';
-import { BatchPaymentsTableModel } from './types';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
 
-export const useBatchPaymentsTableColumns = (
-  name: string,
-): ColumnDef<BatchPaymentsTableModel, string>[] => {
+import { BatchPaymentsTableModel } from './types';
+
+export const useBatchPaymentsTableColumns = (): ColumnDef<
+  BatchPaymentsTableModel,
+  string
+>[] => {
   const columnHelper = useMemo(
     () => createColumnHelper<BatchPaymentsTableModel>(),
     [],
@@ -37,7 +39,7 @@ export const useBatchPaymentsTableColumns = (
         },
       }),
     ],
-    [columnHelper, name],
+    [columnHelper],
   );
 
   return columns;

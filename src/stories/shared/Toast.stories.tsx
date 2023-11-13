@@ -1,6 +1,5 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { BrowserRouter as Router } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
 import Toast from '~shared/Extensions/Toast';
@@ -20,7 +19,7 @@ const ToastWithHooks = (args) => {
   const notify = () => toast[type](<Toast {...args} />);
 
   return (
-    <Router>
+    <>
       <button type="button" aria-label="Open toast" onClick={notify}>
         Notify!
       </button>
@@ -34,7 +33,7 @@ const ToastWithHooks = (args) => {
         pauseOnHover
         closeButton={CloseButton}
       />
-    </Router>
+    </>
   );
 };
 

@@ -50,8 +50,9 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ items, className }) => {
                       {label || placeholder}{' '}
                       <Icon
                         name="caret-down"
+                        appearance={{ size: 'extraExtraTiny' }}
                         className={clsx(
-                          'h-[1em] w-[1em] text-[.625rem] fill-current ml-2 transition-transform',
+                          'fill-current ml-2 transition-transform',
                           {
                             'rotate-180': isSelectVisible,
                           },

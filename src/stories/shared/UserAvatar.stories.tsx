@@ -1,19 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
 
 import UserAvatar from '~v5/shared/UserAvatar';
 
 const meta: Meta<typeof UserAvatar> = {
   title: 'Shared/User Avatar',
   component: UserAvatar,
-  decorators: [
-    (Story) => (
-      <Router>
-        <Story />
-      </Router>
-    ),
-  ],
   parameters: {
     reactRouter: {
       routePath: '/user/:userId',

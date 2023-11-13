@@ -49,7 +49,10 @@ const StepperButton: React.FC<StepperButtonProps> = ({
       {icon && (
         <Icon
           name={icon}
-          className="h-[.625rem] w-[.625rem] mr-1 flex-shrink-0"
+          appearance={{
+            size: 'extraExtraTiny',
+          }}
+          className="mr-1 flex-shrink-0"
         />
       )}
       {label}
