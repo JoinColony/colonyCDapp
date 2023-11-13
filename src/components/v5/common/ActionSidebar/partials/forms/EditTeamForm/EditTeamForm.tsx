@@ -12,6 +12,7 @@ import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { formatText } from '~utils/intl';
 import DescriptionRow from '../../DescriptionRow';
+import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
 
 const displayName = 'v5.common.ActionSidebar.partials.EditTeamForm';
 
@@ -75,6 +76,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           placeholder={formatText({
             id: 'actionSidebar.placeholder.purpose',
           })}
+          maxCharNumber={MAX_DOMAIN_PURPOSE_LENGTH}
         />
       </ActionFormRow>
       <ActionFormRow
