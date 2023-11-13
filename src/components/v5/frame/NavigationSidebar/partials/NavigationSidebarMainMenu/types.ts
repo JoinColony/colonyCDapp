@@ -10,6 +10,7 @@ export interface NavigationSidebarItem extends NavigationSidebarButtonProps {
   >;
   relatedActionsProps?: NavigationSidebarThirdLevelProps;
   onClick?: () => void;
+  hideMobile?: boolean;
   customClassName?: string;
 }
 

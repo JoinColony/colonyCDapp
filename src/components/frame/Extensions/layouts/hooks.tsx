@@ -91,14 +91,15 @@ export const useMainMenuItems = () => {
   // @todo: update menu items with correct contents and related actions
   const mainMenuItems: NavigationSidebarItem[] = [
     {
-      key: '0',
+      key: '1',
       iconName: 'file-plus',
       label: formatText({ id: 'navigation.newAction' }) || '',
       onClick: () => toggleActionSideBar(),
+      hideMobile: true,
       customClassName: 'md:bg-base-bg',
     },
     {
-      key: '1',
+      key: '2',
       iconName: 'layout',
       label: formatText({ id: 'navigation.dashboard' }) || '',
       isActive: checkIfIsActive(currentPathname, [
@@ -117,7 +118,7 @@ export const useMainMenuItems = () => {
       },
     },
     {
-      key: '2',
+      key: '3',
       iconName: 'user',
       label: formatText({ id: 'navigation.members' }) || '',
       isActive: checkIfIsActive(currentPathname, membersMenu),
@@ -163,7 +164,7 @@ export const useMainMenuItems = () => {
       },
     },
     {
-      key: '3',
+      key: '4',
       iconName: 'bank',
       label: formatText({ id: 'navigation.finances' }) || '',
       isActive: checkIfIsActive(currentPathname, financesMenu),
@@ -254,7 +255,7 @@ export const useMainMenuItems = () => {
       },
     },
     {
-      key: '4',
+      key: '5',
       iconName: 'handshake',
       label: formatText({ id: 'navigation.agreements' }) || '',
       isActive: checkIfIsActive(currentPathname, agreementsMenu),
@@ -286,7 +287,7 @@ export const useMainMenuItems = () => {
       },
     },
     {
-      key: '5',
+      key: '6',
       iconName: 'gear-six',
       label: formatText({ id: 'navigation.admin' }) || '',
       isActive: checkIfIsActive(currentPathname, adminMenu),

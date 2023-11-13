@@ -32,6 +32,7 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
             secondLevelMenuProps,
             relatedActionsProps,
             onClick,
+            hideMobile,
             customClassName,
             isActive: isActiveProp,
           },
@@ -45,6 +46,7 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
                 onClick={() => {
                   if (onClick) {
                     onClick();
+                    setOpenItemIndex(undefined);
                     return;
                   }
                   setOpenItemIndex(isActive ? undefined : index + 1);
@@ -54,6 +56,8 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
                 isExpanded={isActive}
                 label={label}
                 iconName={iconName}
+                hideMobile={hideMobile}
+                secondLevelMenuProps={secondLevelMenuProps}
                 className={customClassName}
               />
               <AnimatePresence>
