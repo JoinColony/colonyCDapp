@@ -158,12 +158,78 @@ export const useMainMenuItems = () => {
         items: [
           {
             key: '1',
-            label: 'Finances 1',
-            href: '/',
+            label: formatText({ id: 'actions.simplePayment' }) || '',
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
+              }),
           },
           {
             key: '2',
-            label: 'Finances 2',
+            label: formatText({ id: 'actions.advancedPayment' }) || '',
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.ADVANCED_PAYMENT,
+              }),
+          },
+          {
+            key: '3',
+            label: formatText({ id: 'actions.streamingPayment' }) || '',
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.STREAMING_PAYMENT,
+              }),
+            disabled: true,
+          },
+          {
+            key: '4',
+            label: formatText({ id: 'actions.splitPayment' }) || '',
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.SPLIT_PAYMENT,
+              }),
+          },
+          {
+            key: '5',
+            label: formatText({ id: 'actions.batchPayment' }) || '',
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.BATCH_PAYMENT,
+              }),
+            disabled: true,
+          },
+          {
+            key: '6',
+            label: formatText({ id: 'actions.stagedPayment' }) || '',
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.STAGED_PAYMENT,
+              }),
+            disabled: true,
+          },
+          {
+            key: '7',
+            label: formatText({ id: 'actions.transferFunds' }) || '',
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.TRANSFER_FUNDS,
+              }),
+          },
+          {
+            key: '8',
+            label: formatText({ id: 'actions.manageTokens' }) || '',
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_TOKENS,
+              }),
+          },
+          {
+            key: '9',
+            label: formatText({ id: 'actions.mintTokens' }) || '',
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.MINT_TOKENS,
+              }),
           },
         ],
       },
