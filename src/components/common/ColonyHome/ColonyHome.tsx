@@ -1,10 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { useColonyContext } from '~hooks';
-import {
-  useSetPageBreadcrumbs,
-  useSetPageHeadingTitle,
-} from '~context/PageHeadingContext/hooks';
+import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/hooks';
 import { formatText } from '~utils/intl';
 import {
   COLONY_MEMBERS_ROUTE,
@@ -25,12 +22,14 @@ import TitleWithNumber from '~v5/shared/TitleWithNumber';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import TeamReputationSummaryRow from '~v5/common/TeamReputationSummary/partials/TeamReputationSummaryRow';
 import DonutChart from '~v5/common/DonutChart';
-import { useGetHomeWidget } from './hooks';
+import ColonyDashboardHeader from '~v5/common/ColonyDashboardHeader';
+import { useDashboardHeader, useGetHomeWidget } from './hooks';
 import {
   useCreateTeamBreadcrumbs,
   useGetSelectedTeamFilter,
 } from '~hooks/useTeamsBreadcrumbs';
 
+// @TODO: add page components
 const displayName = 'common.ColonyHome';
 
 const ColonyHome = () => {
@@ -57,7 +56,8 @@ const ColonyHome = () => {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
 
-  useSetPageHeadingTitle(formatText({ id: 'colonyHome.title' }));
+  const headerProps = useDashboardHeader();
+
   useSetPageBreadcrumbs(teamsBreadcrumbs);
 
   if (!colony) {
@@ -71,7 +71,8 @@ const ColonyHome = () => {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-[2.5rem]">
+      <ColonyDashboardHeader {...headerProps} />
       <WidgetBoxList
         items={[
           {

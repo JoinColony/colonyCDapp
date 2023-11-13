@@ -231,7 +231,7 @@
     "bullets",
     "numbers",
     "quotes",
-    "rocket",
+    "rocket-logo",
     "paint",
     "smile",
     "edit-pencil",
@@ -267,7 +267,15 @@
     "hourglass-medium",
     "transfer",
     "add",
-    "piggy-bank"
+    "piggy-bank",
+    "custom-logo",
+    "whitepaper-logo",
+    "bell-ringing",
+    "door",
+    "rocket",
+    "telegram-logo",
+    "smile",
+    "instagram-logo"
   ],
   "multiColorIcons": [
     "circle-check-primary",

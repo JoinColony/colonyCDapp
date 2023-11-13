@@ -75,7 +75,7 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ items, className }) => {
                         name="caret-down"
                         appearance={{ size: 'extraExtraTiny' }}
                         className={clsx(
-                          'fill-current ml-2 transition-transform',
+                          '!h-[0.75rem] !w-[0.75rem] text-[.625rem] fill-current ml-2 transition-transform',
                           {
                             'rotate-180': isSelectVisible,
                           },
