@@ -15,6 +15,12 @@
     },
     "s3Key": {
       "Type": "String"
+    },
+    "CreateLambdaUrl": {
+      "Type": "String",
+      "AllowedValues": ["true", "false"],
+      "Default": "false",
+      "Description": "Specifies whether to create the Lambda function URL"
     }
   },
   "Conditions": {
@@ -24,6 +30,12 @@
           "Ref": "env"
         },
         "NONE"
+      ]
+    },
+    "ShouldCreateLambdaUrl": {
+      "Fn::Equals": [
+        { "Ref": "CreateLambdaUrl" },
+        "true"
       ]
     }
   },
@@ -111,6 +123,7 @@
     },
     "LambdaUrl": {
       "Type": "AWS::Lambda::Url",
+      "Condition": "ShouldCreateLambdaUrl",
       "DependsOn": "LambdaFunction",
       "Properties": {
         "AuthType": "NONE",
