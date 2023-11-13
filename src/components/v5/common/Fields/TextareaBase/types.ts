@@ -5,6 +5,7 @@ export interface TextareaBaseProps
   extends TextareaHTMLAttributes<HTMLTextAreaElement>,
     BaseFieldProps {
   className?: string;
+  maxCharNumber?: number;
 }
 
 export interface FormTextareaBaseProps extends TextareaBaseProps {
