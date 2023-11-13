@@ -5,8 +5,7 @@ import clsx from 'clsx';
 import { Heading4 } from '~shared/Heading';
 import Icon from '~shared/Icon';
 import Button from '~v5/shared/Button';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import { useAppContext } from '~hooks';
+import { useClipboardCopy, useInvitationLink } from '~hooks';
 
 const displayName = 'common.InvitationBlock';
 
@@ -38,10 +37,8 @@ interface Props {
 }
 
 const InvitationBlock = ({ showDescription = true }: Props) => {
-  const { user } = useAppContext();
-  const invitationCode = user?.privateBetaInviteCode?.id;
-  const inviteLink = `app.colony.io/create-colony/${invitationCode}`;
-  const { handleClipboardCopy, isCopied } = useCopyToClipboard(inviteLink);
+  const inviteLink = useInvitationLink();
+  const { handleClipboardCopy, isCopied } = useClipboardCopy(inviteLink);
 
   return (
     <div className="flex flex-col mt-6 rounded border border-gray-900 px-6 py-4 max-w-[1286px]">
