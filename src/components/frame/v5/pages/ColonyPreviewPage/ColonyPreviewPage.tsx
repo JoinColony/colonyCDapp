@@ -42,6 +42,10 @@ const MSG = defineMessages({
     defaultMessage:
       'You have been invited to join {colonyName} for the private beta.',
   },
+  invalidBannerTitle: {
+    id: `${displayName}.invalidBannerTitle`,
+    defaultMessage: 'The invite code is invalid',
+  },
   connectWalletButton: {
     id: `${displayName}.connectWalletButton`,
     defaultMessage: 'Connect wallet',
@@ -129,7 +133,11 @@ const ColonyPreviewPage = () => {
     return <Navigate to={`/colony/${colonyName}`} />;
   }
 
-  const inviteIsValid = !!inviteData?.getColonyMemberInvite?.valid;
+  const inviteIsValid =
+    inviteData?.getColonyMemberInvite?.valid &&
+    inviteData.getColonyMemberInvite.invitesRemaining > 0 &&
+    inviteData.getColonyMemberInvite.colony.name === colonyName;
+  const inviteIsInvalid = inviteCode && !inviteIsValid;
   const colonyDisplayName =
     colonyData?.getColonyByName?.items[0]?.metadata?.displayName || colonyName;
 
@@ -150,6 +158,14 @@ const ColonyPreviewPage = () => {
           title={formatMessage(MSG.notificationBannerTitle, {
             colonyName: colonyDisplayName,
           })}
+        />
+      )}
+      {inviteIsInvalid && (
+        <NotificationBanner
+          iconName="thumbs-down"
+          status="error"
+          className="my-8"
+          title={formatMessage(MSG.invalidBannerTitle)}
         />
       )}
       {user ? null : (
