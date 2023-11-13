@@ -50,7 +50,6 @@ export const validationSchema = yup
                       { paymentIndex: index + 1 },
                     );
                   }),
-                tokenAddress: yup.string().address().required(),
               })
               .required(),
           })
