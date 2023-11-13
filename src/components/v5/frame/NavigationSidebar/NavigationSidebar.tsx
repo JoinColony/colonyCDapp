@@ -210,9 +210,9 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                 initial="hidden"
                 exit="hidden"
                 animate={isThirdLevelMenuOpen ? 'visible' : 'hidden'}
-                className="absolute top-0 bottom-0 h-full left-[calc(100%-1rem)] -z-[1] overflow-hidden"
+                className="absolute top-0 bottom-0 h-full left-[calc(100%-.625rem)] -z-[1] overflow-hidden"
               >
-                <div className="pb-6 pr-6 pl-10 pt-[1.8125rem] bg-gray-900 text-white rounded-r-lg h-full overflow-auto">
+                <div className="pb-6 pr-6 pl-9 pt-[1.8125rem] bg-gray-900 text-white rounded-r-lg h-full overflow-auto">
                   <NavigationSidebarThirdLevel
                     title={relatedActions?.title}
                     items={relatedActions?.items || []}

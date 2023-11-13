@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import useToggle from '~hooks/useToggle';
 import { DEFAULT_USE_TOGGLE_RETURN_VALUE } from '~hooks/useToggle/consts';
+import { getPortalContainer } from '~v5/shared/Portal/utils';
 import { NavigationSidebarContextValue } from './types';
 
 export const NavigationSidebarContext =
@@ -36,9 +37,33 @@ const NavigationSidebarContextProvider: FC<PropsWithChildren> = ({
   });
   const [
     isSecondLevelMenuOpen,
-    { toggleOn: toggleOnSecondLevelMenu, toggleOff: toggleOffSecondLevelMenu },
+    {
+      toggleOn: toggleOnSecondLevelMenu,
+      toggleOff: toggleOffSecondLevelMenu,
+      useRegisterOnBeforeCloseCallback:
+        secondLevelMenuUseRegisterOnBeforeCloseCallback,
+    },
   ] = secondLevelMenuToggle;
-  const [, { toggleOff: toggleOffThirdLevelMenu }] = thirdLevelMenuToggle;
+  const [
+    ,
+    { toggleOff: toggleOffThirdLevelMenu, toggleOn: toggleOnThirdLevelMenu },
+  ] = thirdLevelMenuToggle;
+
+  secondLevelMenuUseRegisterOnBeforeCloseCallback((element) => {
+    const reactModalPortals = Array.from(
+      document.querySelectorAll('.ReactModalPortal'),
+    );
+
+    // Element inside the modal or in the portal container
+    if (
+      getPortalContainer().contains(element) ||
+      reactModalPortals.some((portal) => portal.contains(element))
+    ) {
+      return false;
+    }
+
+    return undefined;
+  });
 
   useEffect(() => {
     if (!isSecondLevelMenuOpen) {
@@ -50,10 +75,16 @@ const NavigationSidebarContextProvider: FC<PropsWithChildren> = ({
   useEffect(() => {
     if (openItemIndex !== undefined) {
       toggleOnSecondLevelMenu();
+      toggleOnThirdLevelMenu();
     } else {
       toggleOffSecondLevelMenu();
     }
-  }, [openItemIndex, toggleOffSecondLevelMenu, toggleOnSecondLevelMenu]);
+  }, [
+    openItemIndex,
+    toggleOffSecondLevelMenu,
+    toggleOnSecondLevelMenu,
+    toggleOnThirdLevelMenu,
+  ]);
 
   const value = useMemo(
     () => ({

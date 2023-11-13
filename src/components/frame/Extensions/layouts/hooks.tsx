@@ -22,6 +22,8 @@ import { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
 import type { UseCalamityBannerInfoReturnType } from './types';
 import { adminMenu, agreementsMenu, financesMenu, membersMenu } from './consts';
 import { checkIfIsActive } from './utils';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+import { ACTION } from '~constants/actions';
 
 export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
   const { colony } = useColonyContext();
@@ -73,7 +75,7 @@ export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
 
 export const useMainMenuItems = () => {
   const {
-    actionSidebarToggle: [, { toggle: toggleActionSideBar }],
+    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
   const { params: { '*': currentPathname = undefined } = {} } =
     useMatch(COLONY_HOME_ROUTE) || {};
@@ -91,7 +93,7 @@ export const useMainMenuItems = () => {
         bottomActionProps: {
           text: formatText({ id: 'button.createNewAction' }),
           iconName: 'plus',
-          onClick: () => toggleActionSideBar(),
+          onClick: () => toggleActionSidebarOn(),
         },
       },
     },
@@ -110,12 +112,33 @@ export const useMainMenuItems = () => {
         items: [
           {
             key: '1',
-            label: 'Members 1',
-            href: '/',
+            label: formatText({ id: 'actions.managePermissions' }) || '',
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_PERMISSIONS,
+              }),
           },
           {
             key: '2',
-            label: 'Members 2',
+            label: formatText({ id: 'actions.manageReputation' }) || '',
+            // @todo: update action type when manage reputation is implemented
+            onClick: () => {},
+          },
+          {
+            key: '3',
+            label: formatText({ id: 'actions.editExistingTeam' }) || '',
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_EXISTING_TEAM,
+              }),
+          },
+          {
+            key: '4',
+            label: formatText({ id: 'actions.createNewTeam' }) || '',
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_NEW_TEAM,
+              }),
           },
         ],
       },

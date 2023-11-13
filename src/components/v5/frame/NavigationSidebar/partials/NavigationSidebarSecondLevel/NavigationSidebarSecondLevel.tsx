@@ -40,8 +40,11 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
               >
                 <Icon
                   name="arrow-line-right"
+                  appearance={{
+                    size: 'extraSmall',
+                  }}
                   className={clsx(
-                    'h-[1em] w-[1em] text-[1rem] fill-current inline-block transition-transform',
+                    'fill-current inline-block transition-transform',
                     {
                       'rotate-180': isExpanded,
                     },
