@@ -61,8 +61,12 @@ const MSG = defineMessages({
   },
   restrictedAccessMessage: {
     id: `${displayName}.restrictedAccessMessage`,
-    defaultMessage:
-      'This Colony has restricted access during the private beta test. Only members who have been invited can access the Colony during this time. To request access to this Colony, you can contact them via their social accounts above.',
+    defaultMessage: `
+    This Colony has restricted access during the private beta test.
+      {invited, select,
+      true {}
+      other {To request access to this Colony, you can contact them via their social accounts above.}
+    }`,
   },
   joinColonyButton: {
     id: `${displayName}.joinColonyButton`,
@@ -139,7 +143,7 @@ const ColonyPreviewPage = () => {
   }
 
   const inviteIsValid =
-    inviteData?.getColonyMemberInvite?.valid &&
+    !!inviteData?.getColonyMemberInvite?.valid &&
     inviteData.getColonyMemberInvite.invitesRemaining > 0 &&
     inviteData.getColonyMemberInvite.colony.name === colonyName;
   const inviteIsInvalid = inviteCode && !inviteIsValid;
@@ -214,7 +218,10 @@ const ColonyPreviewPage = () => {
         iconName="lock"
         title={colonyDisplayName}
       >
-        <FormattedMessage {...MSG.restrictedAccessMessage} />
+        <FormattedMessage
+          {...MSG.restrictedAccessMessage}
+          values={{ invited: inviteIsValid }}
+        />
       </CardWithCallout>
     </div>
   );
