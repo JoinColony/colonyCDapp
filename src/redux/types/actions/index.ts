@@ -123,4 +123,10 @@ export type MetaWithSetter<M> = {
   navigate?: NavigateFunction;
   // And setTxHash can become required
   setTxHash?: (txHash: string) => void;
+  updateUser?:
+    | ((
+        address?: string | undefined,
+        shouldBackgroundUpdate?: boolean | undefined,
+      ) => Promise<void>)
+    | undefined;
 } & M;

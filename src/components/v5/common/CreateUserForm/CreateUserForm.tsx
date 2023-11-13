@@ -12,6 +12,7 @@ import { HeaderRow } from '../CreateColonyWizard/shared';
 import { validationSchema } from './validation';
 import { CreateUserFormValues } from './types';
 import CreateUserFormInputs from './CreateUserFormInputs';
+import { useAppContext } from '~hooks';
 
 const displayName = 'common.CreateUserForm';
 
@@ -29,6 +30,8 @@ const MSG = defineMessages({
 
 const CreateUserForm = () => {
   const navigate = useNavigate();
+  const { updateUser } = useAppContext();
+
   return (
     <ActionForm<CreateUserFormValues>
       className="max-w-lg flex flex-col items-end"
@@ -40,7 +43,7 @@ const CreateUserForm = () => {
       }}
       mode="onChange"
       actionType={ActionTypes.USERNAME_CREATE}
-      transform={withMeta({ navigate })}
+      transform={withMeta({ navigate, updateUser })}
     >
       {({ formState: { isSubmitting, isValid } }) => (
         <>
