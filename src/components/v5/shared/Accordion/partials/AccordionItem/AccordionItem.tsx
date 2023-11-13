@@ -17,7 +17,7 @@ const AccordionItem: FC<PropsWithChildren<AccordionItemProps>> = ({
   className,
   children,
 }) => (
-  <div className={clsx(className, 'w-full')}>
+  <div className={clsx(className, 'w-full overflow-hidden')}>
     <button
       type="button"
       onClick={onToggle}

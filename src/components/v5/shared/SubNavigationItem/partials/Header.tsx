@@ -7,12 +7,12 @@ import TitleLabel from '~v5/shared/TitleLabel';
 
 const displayName = 'v5.SubNavigationItem.partials.Header';
 
-const Header: FC<HeaderProps> = ({ title }) => {
+const Header: FC<HeaderProps> = ({ title, className }) => {
   const isMobile = useMobile();
 
   return (
     <TitleLabel
-      className={clsx({
+      className={clsx(className, {
         'ml-3.5': !isMobile,
         'mb-4': isMobile,
       })}

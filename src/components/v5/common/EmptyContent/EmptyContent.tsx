@@ -16,6 +16,7 @@ const EmptyContent: FC<EmptyContentProps> = ({
   onClick,
   buttonText,
   withBorder,
+  className,
   withoutButtonIcon = false,
 }) => {
   const { formatMessage } = useIntl();
@@ -30,6 +31,7 @@ const EmptyContent: FC<EmptyContentProps> = ({
   return (
     <div
       className={clsx(
+        className,
         'p-4 flex flex-col justify-center items-center w-full text-center',
         {
           'border border-gray-200 rounded-lg': withBorder,
