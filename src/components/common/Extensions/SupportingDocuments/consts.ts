@@ -10,23 +10,23 @@ export const links = {
   [Extension.OneTxPayment]: [
     {
       url: PAYMENTS,
-      text: 'supporting.documents.link2',
+      text: 'supporting.documents.singleTransacion.paymentsDocumentsLink',
     },
   ],
   [Extension.VotingReputation]: [
     {
       url: LAZY_CONSENSUS,
-      text: 'supporting.documents.link1',
+      text: 'supporting.documents.votingReputation.lazyConsensusLink',
     },
     {
       url: LAZY_CONSENSUS_EXTENSION,
-      text: 'supporting.documents.link3',
+      text: 'supporting.documents.votingReputation.lazyConsensusExtensionLink',
     },
   ],
   [Extension.StreamingPayments]: [
     {
       url: STREAMING_PAYMENTS,
-      text: 'supporting.documents.link4',
+      text: 'supporting.documents.streamingPayments.streamingPaymensLink',
     },
   ],
 };
