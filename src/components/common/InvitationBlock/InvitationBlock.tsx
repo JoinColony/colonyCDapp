@@ -46,11 +46,11 @@ const InvitationBlock = ({ showDescription = true }: Props) => {
   return (
     <div className="flex flex-col mt-6 rounded border border-gray-900 px-6 py-4 max-w-[1286px]">
       <Icon name="ticket" appearance={{ size: 'medium' }} />
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center">
         <div
           className={clsx({
-            'max-w-[90%]': showDescription,
-            'max-w-[70%]': !showDescription,
+            'md:max-w-[90%]': showDescription,
+            'md:max-w-[70%]': !showDescription,
           })}
         >
           <Heading4
@@ -69,7 +69,7 @@ const InvitationBlock = ({ showDescription = true }: Props) => {
           mode={isCopied ? 'completed' : 'quinary'}
           iconName={isCopied ? undefined : 'copy-simple'}
           onClick={handleClipboardCopy}
-          className="text-sm"
+          className="text-sm mt-4 md:mt-0"
           textValues={{ isCopied }}
           size="small"
         />

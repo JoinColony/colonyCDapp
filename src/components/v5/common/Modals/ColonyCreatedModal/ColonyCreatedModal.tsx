@@ -39,9 +39,13 @@ interface Props {
 
 const ColonyCreatedModal = ({ isOpen, onClose }: Props) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="mt-16 flex flex-col items-center pb-8 border-b border-b-gray-200 mb-8">
-        <Icon className="mb-3" name="confetti" appearance={{ size: 'large' }} />
+    <Modal isOpen={isOpen} onClose={onClose} isFullOnMobile={false}>
+      <div className="md:mt-10 flex flex-col items-center pb-6 md:pb-8 border-b border-b-gray-200 mb-6 md:mb-8">
+        <Icon
+          className="mb-3 [&>svg]:fill-gray-900"
+          name="confetti"
+          appearance={{ size: 'large' }}
+        />
         <h3 className="heading-3 mb-2">
           <FormattedMessage {...MSG.modalTitle} />
         </h3>
@@ -50,11 +54,11 @@ const ColonyCreatedModal = ({ isOpen, onClose }: Props) => {
         </p>
         <Button mode="primarySolid" text={MSG.modalButton} onClick={onClose} />
       </div>
-      <div className="flex flex-col items-center mb-4">
+      <div className="flex flex-col items-center md:mb-4">
         <h4 className="heading-5 mb-2">
           <FormattedMessage {...MSG.modalSubtitle} />
         </h4>
-        <p className="text-gray-600 text-md mb-2 text-center">
+        <p className="text-gray-600 text-sm text-center">
           <FormattedMessage {...MSG.modalSubtitleDescription} />
         </p>
         <InvitationBlock showDescription={false} />
