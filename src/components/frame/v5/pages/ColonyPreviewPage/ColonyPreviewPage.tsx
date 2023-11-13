@@ -13,57 +13,57 @@ import {
   useGetPublicColonyByNameQuery,
 } from '~gql';
 
+const displayName = 'pages.ColonyPreviewPage';
+
 const MSG = defineMessages({
   loadingMessage: {
-    id: 'ColonyInvitePage.loadingMessage',
+    id: `${displayName}.loadingMessage`,
     defaultMessage: 'Checking your access...',
   },
   heading: {
-    id: 'ColonyInvitePage.heading',
+    id: `${displayName}.heading`,
     defaultMessage: 'Welcome to Colony’s private beta',
   },
   description: {
-    id: 'ColonyInvitePage.description',
+    id: `${displayName}.description`,
     defaultMessage:
       'The Colony app is in private beta, allowing invited members and Colony’s to test out the new features before launch.',
   },
   connectWalletTitle: {
-    id: 'ColonyInvitePage.connectWalletTitle',
+    id: `${displayName}.connectWalletTitle`,
     defaultMessage: 'Connect your wallet to check your accesss',
   },
   connectWalletSubtitle: {
-    id: 'ColonyInvitePage.connectWalletSubtitle',
+    id: `${displayName}.connectWalletSubtitle`,
     defaultMessage: 'You might have private beta access already available.',
   },
   notificationBannerTitle: {
-    id: 'ColonyInvitePage.notificationBannerTitle',
+    id: `${displayName}.notificationBannerTitle`,
     defaultMessage:
       'You have been invited to join {colonyName} for the private beta.',
   },
   connectWalletButton: {
-    id: 'ColonyInvitePage.connectWalletButton',
+    id: `${displayName}.connectWalletButton`,
     defaultMessage: 'Connect wallet',
   },
   requestAccessHeading: {
-    id: 'ColonyInvitePage.connectWalletButton',
+    id: `${displayName}.connectWalletButton`,
     defaultMessage: 'Request access',
   },
   privateAccessHeading: {
-    id: 'ColonyInvitePage.privateAccessHeading',
+    id: `${displayName}.privateAccessHeading`,
     defaultMessage: 'Private access only',
   },
   restrictedAccessMessage: {
-    id: 'ColonyInvitePage.restrictedAccessMessage',
+    id: `${displayName}.restrictedAccessMessage`,
     defaultMessage:
       'This Colony has restricted access during the private beta test. Only members who have been invited can access the Colony during this time. To request access to this Colony, you can contact them via their social accounts above.',
   },
   joinColonyButton: {
-    id: 'ColonyInvitePage.joinColonyButton',
+    id: `${displayName}.joinColonyButton`,
     defaultMessage: 'Join the Colony',
   },
 });
-
-const displayName = 'pages.ColonyPreviewPage';
 
 const ColonyPreviewPage = () => {
   const { inviteCode = '', colonyName = '' } = useParams<{
