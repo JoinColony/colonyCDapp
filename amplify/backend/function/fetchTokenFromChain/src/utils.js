@@ -85,7 +85,7 @@ const getDevRpcUrl = (network) => {
       return 'https://eth.drpc.org';
     case GANACHE_NETWORK.shortName:
     default:
-      return 'http://network-contracts.docker:8545'; // default for local testing
+      return 'http://network-contracts:8545'; // default for local testing
   }
 };
 

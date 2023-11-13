@@ -6,11 +6,11 @@ const {
   getBlockTime,
 } = require('@colony/colony-js');
 
-let rpcURL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let rpcURL = 'http://network-contracts:8545'; // this needs to be extended to all supported networks
 let networkAddress;
 let network = Network.Custom;
 let reputationOracleEndpoint =
-  'http://reputation-monitor.docker:3001/reputation/local';
+  'http://reputation-monitor:3001/reputation/local';
 
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;

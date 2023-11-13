@@ -24,8 +24,6 @@ services:
     depends_on:
       network-contracts:
         condition: service_healthy
-    links:
-      - 'network-contracts:network-contracts.docker'
 
   block-ingestor:
     container_name: 'ingestor'
@@ -39,9 +37,6 @@ services:
         condition: service_healthy
       amplify:
         condition: service_healthy
-    links:
-      - 'network-contracts:network-contracts.docker'
-      - 'amplify:amplify.docker'
 
   amplify:
     container_name: 'amplify'
@@ -57,12 +52,10 @@ services:
       DEBUG_COLORS: 'true'
       TERM: xterm-256color
       COLORTERM: truecolor
-    links:
-      - 'network-contracts:network-contracts.docker'
-      - 'reputation-monitor:reputation-monitor.docker'
     ports:
       - '20002:20002'
       - '9200:9200'
+    userns_mode: 'keep-id'
     healthcheck:
       test: ['CMD', 'curl', '-f', 'http://localhost:9200']
       interval: 5s

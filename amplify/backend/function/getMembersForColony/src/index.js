@@ -15,9 +15,9 @@ const { getWatchersInColony, getUserByAddress } = require('./graphql');
 
 let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
-let rpcURL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let rpcURL = 'http://network-contracts:8545'; // this needs to be extended to all supported networks
 let reputationOracleEndpoint =
-  'http://reputation-monitor.docker:3001/reputation/local';
+  'http://reputation-monitor:3001/reputation/local';
 let network = Network.Custom;
 let networkAddress;
 
