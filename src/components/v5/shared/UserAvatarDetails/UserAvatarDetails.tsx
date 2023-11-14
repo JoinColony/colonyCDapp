@@ -6,8 +6,8 @@ import Icon from '~shared/Icon';
 import { UserAvatarDetailsProps } from './types';
 import UserStatus from '~v5/common/Pills/UserStatus';
 import { UserStatusMode } from '~v5/common/Pills/types';
-import { splitWalletAddress } from '~utils/splitWalletAddress';
 import { formatText } from '~utils/intl';
+import CopyableAddressV2 from '~shared/CopyableAddressV2';
 
 const displayName = 'v5.UserAvatarDetails';
 
@@ -74,7 +74,9 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
           )}
         </div>
         <p className="text-sm text-gray-600">
-          {walletAddress && splitWalletAddress(walletAddress)}
+          {walletAddress && (
+            <CopyableAddressV2>{walletAddress}</CopyableAddressV2>
+          )}
         </p>
       </div>
     </div>

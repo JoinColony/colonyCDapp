@@ -1,6 +1,7 @@
 import React, { RefObject, forwardRef } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import clsx from 'clsx';
 import { splitAddress, AddressElements } from '~utils/strings';
 
 import { Address } from '~types';
@@ -26,6 +27,11 @@ interface Props {
   mask?: string;
 
   /*
+   * Custom classname
+   */
+  className?: string;
+
+  /*
    * In some instances we want to show the full address
    * Ironic, no? A full "masked" address :)
    */
@@ -41,7 +47,7 @@ interface Props {
  */
 const MaskedAddress = forwardRef(
   (
-    { address, mask = '...', full = false, dataTest }: Props,
+    { address, mask = '...', full = false, dataTest, className }: Props,
     ref: RefObject<any>,
   ) => {
     const cutAddress: AddressElements | Error = splitAddress(address);
@@ -51,7 +57,7 @@ const MaskedAddress = forwardRef(
     if (!full) {
       return (
         <span
-          className={styles.address}
+          className={clsx(styles.address, className)}
           title={address}
           ref={ref}
           data-test={dataTest}
@@ -62,7 +68,7 @@ const MaskedAddress = forwardRef(
     }
     return (
       <span
-        className={styles.address}
+        className={clsx(styles.address, className)}
         title={address}
         ref={ref}
         data-test={dataTest}
