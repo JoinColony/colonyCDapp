@@ -2,6 +2,7 @@ import React, {
   createContext,
   FC,
   PropsWithChildren,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -27,11 +28,13 @@ type ActionSidebarToggle = [
   },
 ];
 
-export const ActionSidebarContext = createContext<{
-  actionSidebarInitialValues?: FieldValues;
+interface ActionSidebarContextValue {
   actionSidebarToggle: ActionSidebarToggle;
   cancelModalToggle: UseToggleReturnType;
-}>({
+  actionSidebarInitialValues?: FieldValues;
+}
+
+export const ActionSidebarContext = createContext<ActionSidebarContextValue>({
   actionSidebarToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
   cancelModalToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
 });
@@ -76,47 +79,56 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
     }
   }, [isActionSidebarOpen]);
 
-  const actionSidebarToggle = useMemo<ActionSidebarToggle>(
-    () => [
-      isActionSidebarOpen,
-      {
-        toggleOn: (initialValues) => {
-          setActionSidebarInitialValues(initialValues);
+  const toggleOn = useCallback(
+    (initialValues) => {
+      setActionSidebarInitialValues(initialValues);
 
-          return toggleActionSidebarOn();
-        },
-        toggleOff: () => {
-          return toggleActionSidebarOff();
-        },
-        toggle: (initialValues) => {
-          if (!isActionSidebarOpen) {
-            setActionSidebarInitialValues(initialValues);
-          }
-
-          return toggleActionSidebar();
-        },
-        useRegisterOnBeforeCloseCallback:
-          actionSidebarUseRegisterOnBeforeCloseCallback,
-        registerContainerRef: actionSidebarRegisterContainerRef,
-      },
-    ],
-    [
-      actionSidebarRegisterContainerRef,
-      actionSidebarUseRegisterOnBeforeCloseCallback,
-      isActionSidebarOpen,
-      toggleActionSidebar,
-      toggleActionSidebarOff,
-      toggleActionSidebarOn,
-    ],
+      return toggleActionSidebarOn();
+    },
+    [toggleActionSidebarOn],
   );
 
-  const value = useMemo(
+  const toggleOff = useCallback(() => {
+    return toggleActionSidebarOff();
+  }, [toggleActionSidebarOff]);
+
+  const toggle = useCallback(
+    (initialValues) => {
+      if (!isActionSidebarOpen) {
+        setActionSidebarInitialValues(initialValues);
+      }
+
+      return toggleActionSidebar();
+    },
+    [isActionSidebarOpen, toggleActionSidebar],
+  );
+
+  const value = useMemo<ActionSidebarContextValue>(
     () => ({
-      actionSidebarToggle,
+      actionSidebarToggle: [
+        isActionSidebarOpen,
+        {
+          toggleOn,
+          toggleOff,
+          toggle,
+          useRegisterOnBeforeCloseCallback:
+            actionSidebarUseRegisterOnBeforeCloseCallback,
+          registerContainerRef: actionSidebarRegisterContainerRef,
+        },
+      ],
       cancelModalToggle,
       actionSidebarInitialValues,
     }),
-    [actionSidebarInitialValues, actionSidebarToggle, cancelModalToggle],
+    [
+      actionSidebarInitialValues,
+      actionSidebarRegisterContainerRef,
+      actionSidebarUseRegisterOnBeforeCloseCallback,
+      cancelModalToggle,
+      isActionSidebarOpen,
+      toggle,
+      toggleOff,
+      toggleOn,
+    ],
   );
 
   return (

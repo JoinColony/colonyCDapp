@@ -91,7 +91,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
               )}
               <div className="w-full md:h-[calc(100vh-var(--top-content-height))] md:pl-4 md:pt-4 md:flex md:gap-8">
                 <div
-                  className={clsx('relative z-[1]', {
+                  className={clsx('relative z-[61]', {
                     'md:w-[5.125rem]': !hasWideSidebar,
                     'md:w-[17.5rem]': hasWideSidebar,
                   })}
