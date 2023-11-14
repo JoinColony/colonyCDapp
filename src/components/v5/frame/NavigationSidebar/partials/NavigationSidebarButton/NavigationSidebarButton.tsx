@@ -32,7 +32,7 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
           md:rounded-lg
           px-2
           md:px-2.5
-          py-2
+          py-2.5
           flex
           items-center
           justify-between
@@ -67,7 +67,9 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
           md:transition-[max-width]
         `}
       >
-        <span className="md:pl-2 md:whitespace-nowrap">{label}</span>
+        <span className="align-middle md:pl-2 md:whitespace-nowrap">
+          {label}
+        </span>
       </span>
       {isTablet && hasSecondLevel && (
         <Icon
