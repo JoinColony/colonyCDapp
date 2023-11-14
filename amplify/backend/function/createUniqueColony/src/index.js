@@ -242,6 +242,8 @@ exports.handler = async (event) => {
       input: {
         id: memberInviteCode,
         colonyId: colonyMutation?.data?.createColony?.id,
+        invitesRemaining: 100,
+        valid: true,
       },
     },
     graphqlURL,
