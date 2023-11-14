@@ -7,7 +7,7 @@ const {
 
 Logger.setLogLevel(Logger.levels.ERROR);
 
-let rpcURL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let rpcURL = 'http://network-contracts:8545'; // this needs to be extended to all supported networks
 let network = Network.Custom;
 let networkAddress;
 
