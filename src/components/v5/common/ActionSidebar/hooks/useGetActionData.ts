@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
+import moveDecimal from 'move-decimal-point';
 import { ACTION } from '~constants/actions';
 import { ColonyActionType } from '~gql';
 import { ACTION_TYPE_FIELD_NAME } from '../consts';
 import { useGetColonyAction } from './useGetColonyAction';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 export const useGetActionData = (transactionId: string | undefined) => {
   const { action, loadingAction } = useGetColonyAction(transactionId);
@@ -50,7 +52,10 @@ export const useGetActionData = (transactionId: string | undefined) => {
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
           amount: {
-            amount,
+            amount: moveDecimal(
+              amount,
+              -getTokenDecimalsWithFallback(token?.decimals),
+            ),
             tokenAddress: token?.tokenAddress,
           },
           from: fromDomain?.nativeId.toString(),
@@ -64,14 +69,20 @@ export const useGetActionData = (transactionId: string | undefined) => {
           [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
           from: fromDomain?.nativeId.toString(),
           amount: {
-            amount: firstPayment.amount,
+            amount: moveDecimal(
+              firstPayment.amount,
+              -getTokenDecimalsWithFallback(token?.decimals),
+            ),
             tokenAddress: firstPayment.tokenAddress,
           },
           recipient: firstPayment.recipientAddress,
           payments: additionalPayments.map((additionalPayment) => {
             return {
               amount: {
-                amount: additionalPayment.amount,
+                amount: moveDecimal(
+                  additionalPayment.amount,
+                  -getTokenDecimalsWithFallback(token?.decimals),
+                ),
                 tokenAddress: additionalPayment.tokenAddress,
               },
               recipient: additionalPayment.recipientAddress,

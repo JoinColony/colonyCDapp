@@ -62,7 +62,7 @@ export const useSimplePayment = (
                 },
                 ...payload.payments.map(({ amount, recipient }) => ({
                   amount: amount.amount,
-                  tokenAddress: amount.tokenAddress,
+                  tokenAddress: payload.amount.tokenAddress,
                   recipient: { walletAddress: recipient },
                 })),
               ],

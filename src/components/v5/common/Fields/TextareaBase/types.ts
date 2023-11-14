@@ -6,6 +6,7 @@ export interface TextareaBaseProps
     BaseFieldProps {
   className?: string;
   maxCharNumber?: number;
+  wrapperClassName?: string;
 }
 
 export interface FormTextareaBaseProps extends TextareaBaseProps {

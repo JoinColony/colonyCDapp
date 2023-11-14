@@ -81,126 +81,115 @@ const AmountField: FC<AmountFieldProps> = ({ name, tokenAddress }) => {
       className="flex items-center gap-3 w-full text-md"
       ref={registerContainerRef}
     >
-      {readonly ? (
-        <>
-          <span className="text-gray-900">
-            <Numeral value={field.value} decimals={selectedToken?.decimals} />
-          </span>
-          <div className="flex items-center gap-1">{selectedTokenContent}</div>
-        </>
+      <Cleave
+        readOnly={readonly}
+        name={name}
+        key={dynamicCleaveOptionKey}
+        options={formattingOptions}
+        className={clsx(
+          'flex-grow flex-shrink text-gray-900 outline-0 outline-none',
+          {
+            'placeholder:text-gray-400': !isError,
+            'placeholder:text-negative-400': isError,
+          },
+        )}
+        placeholder={formatText({
+          id: 'actionSidebar.enterAmount',
+        })}
+        onInput={onInput}
+        value={field.value}
+        autoComplete="off"
+        onChange={handleCleaveChange}
+        style={{ width: `${inputWidth || 5.5}rem` }}
+      />
+      {tokenAddress ? (
+        <div className="flex items-center gap-1">{selectedTokenContent}</div>
       ) : (
-        <>
-          <Cleave
-            name={name}
-            key={dynamicCleaveOptionKey}
-            options={formattingOptions}
+        <div className="sm:relative w-full">
+          <button
+            type="button"
+            ref={relativeElementRef}
             className={clsx(
-              'flex-grow flex-shrink text-gray-900 outline-0 outline-none',
+              'flex-shrink-0 flex items-center gap-1 transition-colors',
               {
-                'placeholder:text-gray-400': !isError,
-                'placeholder:text-negative-400': isError,
+                'text-gray-900': selectedToken?.symbol,
+                'text-gray-500': !selectedToken?.symbol,
+                'md:hover:text-blue-400': !readonly,
               },
             )}
-            placeholder={formatText({
-              id: 'actionSidebar.enterAmount',
-            })}
-            onInput={onInput}
-            value={field.value}
-            autoComplete="off"
-            onChange={handleCleaveChange}
-            style={{ width: `${inputWidth || 5.5}rem` }}
-          />
-          {tokenAddress ? (
-            <div className="flex items-center gap-1">
-              {selectedTokenContent}
-            </div>
-          ) : (
-            <div className="sm:relative w-full">
-              <button
-                type="button"
-                ref={relativeElementRef}
-                className={clsx(
-                  'flex-shrink-0 flex items-center gap-1 transition-colors md:hover:text-blue-400',
-                  {
-                    'text-gray-900': selectedToken?.symbol,
-                    'text-gray-500': !selectedToken?.symbol,
-                  },
-                )}
-                onClick={toggleTokenSelect}
-                aria-label={formatMessage({ id: 'ariaLabel.selectToken' })}
+            onClick={readonly ? undefined : toggleTokenSelect}
+            aria-label={formatMessage({ id: 'ariaLabel.selectToken' })}
+          >
+            {selectedTokenContent}
+          </button>
+          {isTokenSelectVisible && (
+            <Portal>
+              <Card
+                className="absolute z-[60]"
+                hasShadow
+                rounded="s"
+                ref={(ref) => {
+                  registerContainerRef(ref);
+                  portalElementRef.current = ref;
+                }}
               >
-                {selectedTokenContent}
-              </button>
-              {isTokenSelectVisible && (
-                <Portal>
-                  <Card
-                    className="absolute z-[60]"
-                    hasShadow
-                    rounded="s"
-                    ref={(ref) => {
-                      registerContainerRef(ref);
-                      portalElementRef.current = ref;
-                    }}
-                  >
-                    <h5 className="text-4 text-gray-400 mb-4 uppercase">
-                      {formatMessage({ id: 'actionSidebar.availableTokens' })}
-                    </h5>
-                    <ul>
-                      {colonyTokens.map((colonyToken) => {
-                        const tokenBalance = getBalanceForTokenAndDomain(
-                          colony?.balances,
-                          colonyToken.tokenAddress,
-                          selectedTeam,
-                        );
+                <h5 className="text-4 text-gray-400 mb-4 uppercase">
+                  {formatMessage({ id: 'actionSidebar.availableTokens' })}
+                </h5>
+                <ul>
+                  {colonyTokens.map((colonyToken) => {
+                    const tokenBalance = getBalanceForTokenAndDomain(
+                      colony?.balances,
+                      colonyToken.tokenAddress,
+                      selectedTeam,
+                    );
 
-                        return (
-                          <li
-                            key={colonyToken.tokenAddress}
-                            className="mb-4 last:mb-0"
-                          >
-                            <button
-                              type="button"
-                              className={`flex items-center gap-1 transition-colors md:hover:text-blue-400
+                    return (
+                      <li
+                        key={colonyToken.tokenAddress}
+                        className="mb-4 last:mb-0"
+                      >
+                        <button
+                          type="button"
+                          className={`flex items-center gap-1 transition-colors md:hover:text-blue-400
                           justify-between w-full`}
-                              onClick={() => {
-                                tokenAddressController.onChange(
-                                  colonyToken.tokenAddress,
-                                );
-                                toggleTokenSelect();
-                              }}
-                            >
-                              <div className="flex items-center gap-1">
-                                <TokenIcon token={colonyToken} size="xs" />
-                                <span className="text-md">
-                                  {colonyToken.symbol}
-                                </span>
-                              </div>
-                              {tokenBalance && (
-                                <span className="text-sm text-gray-400">
-                                  {formatMessage({
-                                    id: 'actionSidebar.availableFunds',
-                                  })}
-                                  {': '}
-                                  <Numeral
-                                    value={tokenBalance}
-                                    decimals={getTokenDecimalsWithFallback(
-                                      colonyToken?.decimals,
-                                    )}
-                                  />{' '}
-                                  {colonyToken.symbol}
-                                </span>
-                              )}
-                            </button>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </Card>
-                </Portal>
-              )}
-            </div>
+                          onClick={() => {
+                            tokenAddressController.onChange(
+                              colonyToken.tokenAddress,
+                            );
+                            toggleTokenSelect();
+                          }}
+                        >
+                          <div className="flex items-center gap-1">
+                            <TokenIcon token={colonyToken} size="xs" />
+                            <span className="text-md">
+                              {colonyToken.symbol}
+                            </span>
+                          </div>
+                          {tokenBalance && (
+                            <span className="text-sm text-gray-400">
+                              {formatMessage({
+                                id: 'actionSidebar.availableFunds',
+                              })}
+                              {': '}
+                              <Numeral
+                                value={tokenBalance}
+                                decimals={getTokenDecimalsWithFallback(
+                                  colonyToken?.decimals,
+                                )}
+                              />{' '}
+                              {colonyToken.symbol}
+                            </span>
+                          )}
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </Card>
+            </Portal>
           )}
-        </>
+        </div>
       )}
     </div>
   );
