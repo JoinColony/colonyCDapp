@@ -9,7 +9,7 @@ const useAutosizeTextArea = (
 
   useImperativeHandle(externalInputRef, () => {
     if (!textAreaRef.current) {
-      throw new Error('Input ref is not available');
+      throw new Error('Textarea ref is not available');
     }
 
     return textAreaRef.current;
