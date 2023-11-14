@@ -45,7 +45,7 @@ const WizardSidebar = ({
   sidebarTitleValues,
   wizardSteps,
 }: Props) => (
-  <nav className="flex flex-col border border-slate-300 rounded-lg p-6 h-full">
+  <nav className="flex flex-col border border-gray-200 rounded-lg p-6 h-full">
     <Link to={LANDING_PAGE_ROUTE} className="w-fit h-fit mb-10">
       <Icon name="colony-icon" appearance={{ size: 'large' }} />
     </Link>
@@ -72,7 +72,10 @@ const WizardSidebar = ({
         <div className="text-gray-900">
           <FormattedMessage {...MSG.guidance} />
         </div>
-        <ExternalLink href="https://docs.colony.io/" className="text-gray-900">
+        <ExternalLink
+          href="https://docs.colony.io/"
+          className="text-gray-900 hover:text-blue-400 underline"
+        >
           <FormattedMessage {...MSG.footerLink} />
         </ExternalLink>
       </div>
