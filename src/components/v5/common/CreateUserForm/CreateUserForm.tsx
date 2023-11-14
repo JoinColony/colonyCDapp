@@ -6,13 +6,13 @@ import Button from '~v5/shared/Button';
 import { ActionTypes } from '~redux';
 import { ActionForm } from '~shared/Fields';
 import { withMeta } from '~utils/actions';
+import { useAppContext } from '~hooks';
 
 import { HeaderRow } from '../CreateColonyWizard/shared';
 
 import { validationSchema } from './validation';
 import { CreateUserFormValues } from './types';
 import CreateUserFormInputs from './CreateUserFormInputs';
-import { useAppContext } from '~hooks';
 
 const displayName = 'common.CreateUserForm';
 
