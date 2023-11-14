@@ -1,6 +1,6 @@
 import { ApolloQueryResult } from '@apollo/client';
 import { ClientTypeTokens } from '@colony/colony-js';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { TransactionOrMessageGroups } from '~frame/GasStation/transactionGroup';
@@ -169,9 +169,11 @@ export const useGroupedTransactionsAndMessages = (): {
     ];
   }, [items, currentTransactionsAndMessages]);
 
-  if (mergedTransactions.length < visibleItems && nextToken) {
-    fetchMore({ variables: { nextToken }, updateQuery });
-  }
+  useEffect(() => {
+    if (mergedTransactions.length < visibleItems && nextToken) {
+      fetchMore({ variables: { nextToken }, updateQuery });
+    }
+  }, [mergedTransactions, visibleItems, nextToken, fetchMore]);
 
   const visibleTransactions = useMemo(
     () => mergedTransactions.slice(0, visibleItems),
