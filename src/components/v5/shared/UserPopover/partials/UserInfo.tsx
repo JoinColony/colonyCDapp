@@ -41,7 +41,12 @@ const UserInfo: FC<UserInfoProps> = ({
           'bg-base-white': !isTopContributorType,
         })}
       >
-        <div className="mb-6">
+        <div
+          className={clsx({
+            'mb-[2.4375rem]': userStatus && userStatus !== 'general',
+            'mb-6': !userStatus || userStatus === 'general',
+          })}
+        >
           <UserAvatarDetails
             userName={userName}
             walletAddress={walletAddress}
@@ -70,7 +75,7 @@ const UserInfo: FC<UserInfoProps> = ({
         <>
           <TitleLabel
             className={clsx('mb-2', {
-              'px-6': isTopContributorType,
+              'px-6 pt-6': isTopContributorType,
             })}
             text={formatText({ id: 'userInfo.about.section' })}
           />
@@ -87,7 +92,8 @@ const UserInfo: FC<UserInfoProps> = ({
       {domains?.length ? (
         <div
           className={clsx({
-            'px-6 pb-6 pt-2': isTopContributorType,
+            'px-6 pb-6': isTopContributorType,
+            'pt-6': !aboutDescriptionText && isTopContributorType,
           })}
         >
           <TitleLabel
@@ -95,7 +101,7 @@ const UserInfo: FC<UserInfoProps> = ({
               id: 'userInfo.teamBreakdown.section',
             })}
           />
-          <ul className="flex flex-col gap-2">
+          <ul className="flex flex-col gap-2 pt-2">
             {domains.map(
               ({
                 domainId,

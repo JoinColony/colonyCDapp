@@ -26,6 +26,7 @@ const UserStatus: FC<PropsWithChildren<PillsProps>> = ({
       'text-negative-400 bg-negative-100': mode === 'banned',
     })}
     iconName={getIconName(mode)}
+    pillSize="small"
     {...rest}
   >
     {text || children}
