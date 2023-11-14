@@ -1,3 +1,12 @@
 {
-  "lambdaLayers": []
+  "lambdaLayers": [
+    {
+      "type": "ExternalLayer",
+      "arn": "arn:aws:lambda:eu-west-2:204031746016:layer:colonycdappSSMAccess-qa:204"
+    },
+    {
+      "type": "ExternalLayer",
+      "arn": "arn:aws:lambda:eu-west-2:133256977650:layer:AWS-Parameters-and-Secrets-Lambda-Extension:4"
+    }
+  ]
 }
