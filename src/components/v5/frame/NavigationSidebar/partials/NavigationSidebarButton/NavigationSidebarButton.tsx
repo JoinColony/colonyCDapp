@@ -13,18 +13,12 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
   iconName,
   label,
   className,
-  secondLevelMenuProps,
-  hideMobile,
+  hasSecondLevel,
   isActive,
   isExpanded,
   ...rest
 }) => {
   const isTablet = useTablet();
-
-  // Don't show item if hideMobile is true and we're on mobile
-  if (isTablet && hideMobile) {
-    return null;
-  }
 
   return (
     <button
@@ -75,7 +69,7 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
       >
         <span className="md:pl-2 md:whitespace-nowrap">{label}</span>
       </span>
-      {isTablet && secondLevelMenuProps && (
+      {isTablet && hasSecondLevel && (
         <Icon
           name="caret-down"
           appearance={{ size: 'extraTiny' }}

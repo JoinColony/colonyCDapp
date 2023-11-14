@@ -1,5 +1,4 @@
 import { ButtonHTMLAttributes } from 'react';
-import { NavigationSidebarSecondLevelProps } from '../NavigationSidebarSecondLevel/types';
 
 export interface NavigationSidebarButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -8,6 +7,6 @@ export interface NavigationSidebarButtonProps
   isActive?: boolean;
   isExpanded?: boolean;
   hideMobile?: boolean;
-  secondLevelMenuProps?: NavigationSidebarSecondLevelProps;
+  hasSecondLevel?: boolean;
   className?: string;
 }

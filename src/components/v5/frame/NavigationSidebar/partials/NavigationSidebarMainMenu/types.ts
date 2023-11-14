@@ -9,9 +9,7 @@ export interface NavigationSidebarItem extends NavigationSidebarButtonProps {
     'isExpanded' | 'onArrowClick'
   >;
   relatedActionsProps?: NavigationSidebarThirdLevelProps;
-  onClick?: () => void;
   hideMobile?: boolean;
-  customClassName?: string;
 }
 
 export interface NavigationSidebarMainMenuProps {

@@ -32,20 +32,26 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
             secondLevelMenuProps,
             relatedActionsProps,
             onClick,
+            hasSecondLevel = true,
             hideMobile,
-            customClassName,
+            className,
             isActive: isActiveProp,
           },
           index,
         ) => {
+          // Don't show item if hideMobile is true and we're on mobile
+          if (isTablet && hideMobile) {
+            return null;
+          }
+
           const isActive = index + 1 === openItemIndex;
 
           return (
             <li key={key}>
               <NavigationSidebarButton
-                onClick={() => {
+                onClick={(e) => {
                   if (onClick) {
-                    onClick();
+                    onClick(e);
                     setOpenItemIndex(undefined);
                     return;
                   }
@@ -57,8 +63,8 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
                 label={label}
                 iconName={iconName}
                 hideMobile={hideMobile}
-                secondLevelMenuProps={secondLevelMenuProps}
-                className={customClassName}
+                hasSecondLevel={hasSecondLevel}
+                className={className}
               />
               <AnimatePresence>
                 {isTablet && secondLevelMenuProps && isActive && (

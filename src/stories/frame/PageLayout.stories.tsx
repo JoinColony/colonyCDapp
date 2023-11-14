@@ -32,7 +32,7 @@ const SideBar = () => (
         key: '0',
         iconName: 'file-plus',
         label: 'New action',
-        customClassName: 'md:bg-base-bg',
+        className: 'md:bg-base-bg',
         hideMobile: true,
       },
       {
