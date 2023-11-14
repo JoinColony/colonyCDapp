@@ -1308,6 +1308,7 @@
     "role.custom": "Custom",
     "role.payer": "Payer",
     "role.description": "This member has the {role} permission bundle that includes the following permissions:",
+    "incomingFundsPage.title": "Incoming funds",
     "incomingFundsPage.table.title": "Incoming funds",
     "incomingFundsPage.table.amount": "Amount",
     "incomingFundsPage.table.claim": "Claim",

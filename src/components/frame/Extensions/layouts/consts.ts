@@ -2,6 +2,7 @@ import {
   COLONY_ADVANCED_ROUTE,
   COLONY_DETAILS_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
+  COLONY_FUNDING_ROUTE,
   COLONY_INCORPORATION_ROUTE,
   COLONY_INTEGRATIONS_ROUTE,
   COLONY_MEMBERS_ROUTE,
@@ -61,7 +62,7 @@ export const financesMenu: NavigationSidebarLinksListProps['items'] = [
   {
     key: '3',
     label: formatText({ id: 'navigation.finances.incomingFunds' }) || '',
-    to: '/incoming-funds',
+    to: COLONY_FUNDING_ROUTE,
     iconName: 'arrow-down-right',
   },
   {
