@@ -3,7 +3,14 @@ import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import Tabs from '~shared/Extensions/Tabs';
-import { useColonyContext, useMobile } from '~hooks';
+import {
+  useAppContext,
+  useAsyncFunction,
+  useColonyContext,
+  useEnabledExtensions,
+  useMobile,
+} from '~hooks';
+import { ActionTypes } from '~redux';
 
 import { stakesFilterOptions } from './consts';
 import StakesList from './partials/StakesList';
@@ -16,6 +23,8 @@ const StakesTab = () => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { colony } = useColonyContext();
+  const { user } = useAppContext();
+  const { votingReputationAddress } = useEnabledExtensions();
 
   const [activeTab, setActiveTab] = useState(0);
   const activeFilterOption = stakesFilterOptions[activeTab];
@@ -37,6 +46,14 @@ const StakesTab = () => {
   const filteredStakes = stakesByFilterType[activeFilterOption.type];
   const filterDataLoading = filtersDataLoading[activeFilterOption.type];
 
+  const claimableStakes = stakesByFilterType.claimable;
+
+  const claimAll = useAsyncFunction({
+    submit: ActionTypes.MOTION_CLAIM_ALL,
+    error: ActionTypes.MOTION_CLAIM_ALL_ERROR,
+    success: ActionTypes.MOTION_CLAIM_ALL_SUCCESS,
+  });
+
   if (!colony) {
     return null;
   }
@@ -50,8 +67,17 @@ const StakesTab = () => {
             type="button"
             className="text-blue-400 text-4 hover:text-gray-900 transition-all duration-normal"
             aria-label={formatMessage({ id: 'claimStakes' })}
+            onClick={() =>
+              claimAll({
+                userAddress: user?.walletAddress ?? '',
+                colonyAddress: colony.colonyAddress,
+                extensionAddress: votingReputationAddress ?? '',
+                motionIds: claimableStakes.map(
+                  (stake) => stake.action?.motionData?.id ?? '',
+                ),
+              })
+            }
           >
-            {/* @TODO handle action here */}
             {formatMessage({ id: 'claimStakes' })}
           </button>
         )}
