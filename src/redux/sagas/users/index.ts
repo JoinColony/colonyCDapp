@@ -13,6 +13,7 @@ import {
   GetProfileByEmailDocument,
   GetUserByNameDocument,
 } from '~gql';
+import { LANDING_PAGE_ROUTE } from '~routes';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action, AllActions } from '../../types/actions';
@@ -93,7 +94,7 @@ import {
 
 function* usernameCreate({
   meta,
-  meta: { navigate },
+  meta: { navigate, updateUser },
   payload: { username, email, emailPermissions },
 }: Action<ActionTypes.USERNAME_CREATE>) {
   const wallet = getContext(ContextModule.Wallet);
@@ -149,8 +150,12 @@ function* usernameCreate({
       meta,
     });
 
+    if (updateUser) {
+      updateUser(walletAddress, true);
+    }
+
     if (navigate) {
-      navigate(`/my/profile`);
+      navigate(LANDING_PAGE_ROUTE);
     }
   } catch (error) {
     return yield putError(ActionTypes.USERNAME_CREATE_ERROR, error, meta);

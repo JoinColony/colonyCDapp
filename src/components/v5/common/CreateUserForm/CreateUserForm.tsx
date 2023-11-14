@@ -6,6 +6,7 @@ import Button from '~v5/shared/Button';
 import { ActionTypes } from '~redux';
 import { ActionForm } from '~shared/Fields';
 import { withMeta } from '~utils/actions';
+import { useAppContext } from '~hooks';
 
 import { HeaderRow } from '../CreateColonyWizard/shared';
 
@@ -29,6 +30,8 @@ const MSG = defineMessages({
 
 const CreateUserForm = () => {
   const navigate = useNavigate();
+  const { updateUser } = useAppContext();
+
   return (
     <ActionForm<CreateUserFormValues>
       className="max-w-lg flex flex-col items-end"
@@ -40,7 +43,7 @@ const CreateUserForm = () => {
       }}
       mode="onChange"
       actionType={ActionTypes.USERNAME_CREATE}
-      transform={withMeta({ navigate })}
+      transform={withMeta({ navigate, updateUser })}
     >
       {({ formState: { isSubmitting, isValid } }) => (
         <>
