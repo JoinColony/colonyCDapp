@@ -15,7 +15,7 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ items, className }) => {
     <ul
       className={clsx(
         className,
-        'flex flex-wrap items-center uppercase text-gray-900 text-3',
+        'flex flex-wrap items-center uppercase tracking-[.075rem] text-gray-900 text-3',
       )}
     >
       {items.map(({ key, ...item }) => {
@@ -39,7 +39,7 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ items, className }) => {
               </Link>
             ) : (
               <CardSelect<string>
-                togglerClassName="text-inherit uppercase !text-gray-900 text-3 md:hover:!text-blue-400"
+                togglerClassName="text-inherit uppercase !text-gray-900 tracking-[.075rem] text-3 md:hover:!text-blue-400"
                 options={options}
                 value={item.selectedValue}
                 renderSelectedValue={(option, placeholder, isSelectVisible) => {
@@ -50,8 +50,9 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ items, className }) => {
                       {label || placeholder}{' '}
                       <Icon
                         name="caret-down"
+                        appearance={{ size: 'extraExtraTiny' }}
                         className={clsx(
-                          'h-[1em] w-[1em] text-[.625rem] fill-current ml-2 transition-transform',
+                          'fill-current ml-2 transition-transform',
                           {
                             'rotate-180': isSelectVisible,
                           },
