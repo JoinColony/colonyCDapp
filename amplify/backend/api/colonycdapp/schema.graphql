@@ -1477,11 +1477,11 @@ type ColonyMemberInvite @model {
   """
   Decrementing count of how many times this invite has been used
   """
-  invitesRemaining: Int! @default(value: "100")
+  invitesRemaining: Int @default(value: "100")
   """
   Whether the invite is still valid or not
   """
-  valid: Boolean! @default(value: "true")
+  valid: Boolean @default(value: "true")
 }
 
 """
