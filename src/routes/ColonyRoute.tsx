@@ -1,13 +1,16 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { ActionSidebarContextProvider } from '~context/ActionSidebarContext';
-import { ColonyContextProvider } from '~context/ColonyContext';
-import { ColonyDecisionProvider } from '~context/ColonyDecisionContext';
-import { MemberModalProvider } from '~context/MemberModalContext';
-import { TokensModalContextProvider } from '~context/TokensModalContext';
-import { UserTokenBalanceProvider } from '~context/UserTokenBalanceContext';
-import { UserTransactionContextProvider } from '~context/UserTransactionContext';
+import {
+  ColonyCreatedModalProvider,
+  ActionSidebarContextProvider,
+  ColonyContextProvider,
+  ColonyDecisionProvider,
+  MemberModalProvider,
+  UserTokenBalanceProvider,
+  UserTransactionContextProvider,
+  TokensModalContextProvider,
+} from '~context';
 import { ColonyLayout } from '~frame/Extensions/layouts';
 
 const ColonyRoute = () => (
@@ -16,13 +19,15 @@ const ColonyRoute = () => (
       <ColonyDecisionProvider>
         <UserTokenBalanceProvider>
           <MemberModalProvider>
-            <UserTransactionContextProvider>
-              <TokensModalContextProvider>
-                <ColonyLayout>
-                  <Outlet />
-                </ColonyLayout>
-              </TokensModalContextProvider>
-            </UserTransactionContextProvider>
+            <ColonyCreatedModalProvider>
+              <UserTransactionContextProvider>
+                <TokensModalContextProvider>
+                  <ColonyLayout>
+                    <Outlet />
+                  </ColonyLayout>
+                </TokensModalContextProvider>
+              </UserTransactionContextProvider>
+            </ColonyCreatedModalProvider>
           </MemberModalProvider>
         </UserTokenBalanceProvider>
       </ColonyDecisionProvider>
