@@ -4,7 +4,6 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { SpinnerLoader } from '~shared/Preloaders';
 import ActionsList from '~shared/ActionsList';
 import { useActivityFeed, useColonyContext } from '~hooks';
-import { ColonyActionType } from '~types';
 import Button from '~shared/Button';
 
 import { ActionsListHeading } from '.';
@@ -49,9 +48,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
     goToNextPage,
     goToPreviousPage,
     pageNumber,
-  } = useActivityFeed({
-    actionTypes: [ColonyActionType.MintTokens],
-  });
+  } = useActivityFeed({});
 
   if (!colony) {
     return null;

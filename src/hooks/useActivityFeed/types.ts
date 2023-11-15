@@ -8,6 +8,8 @@ import { MotionState } from '~utils/colonyMotions';
 export interface ActivityFeedFilters {
   actionTypes?: ColonyActionType[];
   motionStates?: MotionState[];
+  dateFrom?: Date;
+  dateTo?: Date;
 }
 
 export interface UseActivityFeedReturn {
