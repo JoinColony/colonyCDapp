@@ -75,7 +75,7 @@ read -r -d '' PAYLOAD << EOM
   "embeds": [
     {
       "title": "Dev Environment Setup",
-      "description": "Hey <@$DISCORD_USER_ID>, your dev environment for $SOURCE_USED is getting ready, you can keep an eye on it [here]($CLOUDWATCH_URL).",
+      "description": "Hey <@$DISCORD_USER_ID>, your dev environment is getting ready, you can keep an eye on it [here]($CLOUDWATCH_URL).",
       "color": 5814783
     }
   ]
