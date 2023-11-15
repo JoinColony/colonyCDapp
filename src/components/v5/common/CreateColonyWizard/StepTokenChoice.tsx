@@ -71,7 +71,8 @@ const TokenSelector = ({
   return (
     <label htmlFor={`id-${name}`}>
       <Card
-        className="flex flex-col items-center cursor-pointer text-center h-full md:hover:shadow-default md:hover:shadow-light-blue"
+        className="flex flex-col items-center cursor-pointer text-center h-full
+                   md:hover:shadow-default md:hover:shadow-light-blue md:hover:border-blue-200"
         checked={checked}
       >
         <input
