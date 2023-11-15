@@ -2,10 +2,10 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { SpinnerLoader } from '~shared/Preloaders';
-import LoadMoreButton from '~shared/LoadMoreButton';
 import ActionsList from '~shared/ActionsList';
 import { useActivityFeed, useColonyContext } from '~hooks';
-import { SortDirection } from '~types';
+import { ColonyActionType, SortDirection } from '~types';
+import Button from '~shared/Button';
 
 import { ActionsListHeading } from '.';
 
@@ -44,18 +44,19 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
     actions,
     loading,
     changeSortDirection,
-    hasMoreActions,
-    loadMoreActions,
-    isFetchingMore,
+    hasNextPage,
+    goToNextPage,
+    goToPreviousPage,
+    pageNumber,
   } = useActivityFeed({
-    // actionTypes: [ColonyActionType.MintTokens],
+    actionTypes: [ColonyActionType.MintTokens],
   });
 
   if (!colony) {
     return null;
   }
 
-  if (loading) {
+  if (loading && !actions.length) {
     return (
       <div className={styles.loadingSpinner}>
         <SpinnerLoader
@@ -75,12 +76,21 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
             onSortChange={changeSortDirection}
           />
           <ActionsList items={actions} />
-          {hasMoreActions && (
-            <LoadMoreButton
-              onClick={loadMoreActions}
-              isLoadingData={loading || isFetchingMore} // oneTxActionsLoading || eventsActionsLoading}
-            />
-          )}
+          <div className={styles.pagination}>
+            Page {pageNumber}
+            <div>
+              {pageNumber > 1 && (
+                <Button onClick={goToPreviousPage} loading={loading}>
+                  Previous
+                </Button>
+              )}
+              {hasNextPage && (
+                <Button onClick={goToNextPage} loading={loading}>
+                  Next
+                </Button>
+              )}
+            </div>
+          </div>
         </>
       ) : (
         <div className={styles.emptyState}>

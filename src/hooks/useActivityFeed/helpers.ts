@@ -30,3 +30,13 @@ export const filterActionByMotionState = (
   const motionState = getMotionState(networkMotionState, action.motionData);
   return motionStates.includes(motionState);
 };
+
+export const getActionsByPageNumber = (
+  actions: ColonyAction[],
+  pageNumber: number,
+  itemsPerPage: number,
+) => {
+  const startIndex = (pageNumber - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  return actions.slice(startIndex, endIndex);
+};
