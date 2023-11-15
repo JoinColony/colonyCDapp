@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Update and install required dependencies
-sudo apt-get update -y
-sudo apt-get install -y ca-certificates curl gnupg awscli
-sudo apt-get install -y nodejs npm git nginx apache2-utils netcat
-
 # Add official Docker GPG key
 sudo install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
@@ -16,6 +11,11 @@ echo \
   "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
+# Update and install required dependencies
+sudo apt-get update -y
+sudo apt-get install -y ca-certificates curl gnupg awscli
+sudo apt-get install -y nodejs npm git nginx apache2-utils netcat
+
 # Install docker dependencies
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
@@ -26,26 +26,36 @@ sudo apt-get -y install docker-compose-plugin
 sudo usermod -aG docker ubuntu
 sudo systemctl start docker
 
-# Download and install the CloudWatch Logs agent
-curl https://aws-cloudwatch.s3.amazonaws.com/downloads/latest/awslogs-agent-setup.py -O
-python3 ./awslogs-agent-setup.py --region eu-west-2 --non-interactive --configfile=/etc/awslogs/awslogs.conf
+# Install CloudWatch Agent
+sudo apt-get install -y amazon-cloudwatch-agent
 
-# Configure AWS CloudWatch Logs Agent
-# /var/log/cloud-init.log and /var/log/cloud-init-output.log are typical cloud-init log files
-cat > /etc/awslogs/awslogs.conf << EOF
+# Create a directory for the CloudWatch Agent configuration file
+mkdir -p /opt/aws/amazon-cloudwatch-agent/etc
 
-[/var/log/cloud-init-output.log]
-file = /var/log/cloud-init-output.log
-log_group_name = on-demand-envs
-log_stream_name = {instance_id}/cloud-init-output.log
-datetime_format = %b %d %H:%M:%S
+# Write CloudWatch Agent configuration file
+cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json << EOF
+{
+    "logs": {
+        "logs_collected": {
+            "files": {
+                "collect_list": [
+                    {
+                        "file_path": "/var/log/cloud-init-output.log",
+                        "log_group_name": "on-demand-envs",
+                        "log_stream_name": "{instance_id}/cloud-init-output.log"
+                    }
+                ]
+            }
+        }
+    }
+}
 EOF
 
-# Start the CloudWatch Logs agent
-sudo systemctl start awslogsd
+# Start the CloudWatch Agent
+sudo systemctl start amazon-cloudwatch-agent
 
-# Enable awslogs service to start on boot
-sudo systemctl enable awslogs
+# Enable the CloudWatch Agent to start on boot
+sudo systemctl enable amazon-cloudwatch-agent
 
 # Clone the repo
 git clone https://github.com/JoinColony/colonyCDapp.git ~/app
