@@ -11,7 +11,11 @@ import { useNetworkMotionStates } from '~hooks';
 import { MotionState } from '~utils/colonyMotions';
 
 import useColonyContext from '../useColonyContext';
-import { filterActionByActionType, filterActionByMotionState } from './helpers';
+import {
+  filterActionByActionType,
+  filterActionByMotionState,
+  getActionsByPageNumber,
+} from './helpers';
 
 interface ActivityFeedFilters {
   actionTypes?: ColonyActionType[];
@@ -23,9 +27,10 @@ interface UseActivityFeedReturn {
   actions: ColonyAction[];
   sortDirection: SearchableSortDirection;
   changeSortDirection: SortDirectionChangeHandler;
-  hasMoreActions: boolean;
-  loadMoreActions: () => void;
-  isFetchingMore: boolean;
+  hasNextPage: boolean;
+  goToNextPage: () => void;
+  goToPreviousPage: () => void;
+  pageNumber: number;
 }
 
 type SortDirectionChangeHandler = (
@@ -42,9 +47,8 @@ const useActivityFeed = (
   const [sortDirection, setSortDirection] = useState<SearchableSortDirection>(
     SearchableSortDirection.Desc,
   );
-  const [visibleActionsCount, setVisibleActionsCount] =
-    useState(ITEMS_PER_PAGE);
-  const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
+  const requestedActionsCount = ITEMS_PER_PAGE * pageNumber;
 
   const { data, fetchMore, loading } = useSearchActionsQuery({
     variables: {
@@ -89,16 +93,11 @@ const useActivityFeed = (
       filterActionByMotionState(action, motionStatesMap, filters?.motionStates),
     );
 
-  const hasMoreActions =
-    visibleActionsCount < filteredActions.length || !!nextToken;
   const fetchMoreActions =
-    nextToken && filteredActions.length < visibleActionsCount;
+    !!nextToken && filteredActions.length < requestedActionsCount;
   useEffect(() => {
     if (fetchMoreActions) {
-      setIsFetchingMore(true);
       fetchMore({ variables: { nextToken } });
-    } else {
-      setIsFetchingMore(false);
     }
   }, [fetchMore, fetchMoreActions, nextToken]);
 
@@ -108,20 +107,44 @@ const useActivityFeed = (
     setSortDirection(newSortDirection);
   };
 
-  const loadMoreActions = () => {
-    setVisibleActionsCount((count) => count + ITEMS_PER_PAGE);
+  const hasNextPage =
+    requestedActionsCount < filteredActions.length || !!nextToken;
+
+  const goToNextPage = () => {
+    if (!hasNextPage) {
+      return;
+    }
+    setPageNumber((number) => number + 1);
   };
 
-  const visibleActions = filteredActions.slice(0, visibleActionsCount);
+  const goToPreviousPage = () => {
+    if (pageNumber === 1) {
+      return;
+    }
+    setPageNumber((number) => number - 1);
+  };
+
+  const isNextPageLoading = pageNumber > 1 && fetchMoreActions;
+  const resolvedPageNumber = isNextPageLoading ? pageNumber - 1 : pageNumber;
+  const currentPageActions = getActionsByPageNumber(
+    filteredActions,
+    resolvedPageNumber,
+    ITEMS_PER_PAGE,
+  );
+
+  if (!currentPageActions.length && pageNumber > 1) {
+    setPageNumber((number) => number - 1);
+  }
 
   return {
-    loading,
-    actions: visibleActions,
+    loading: loading || fetchMoreActions,
+    actions: currentPageActions,
     sortDirection,
     changeSortDirection,
-    hasMoreActions,
-    loadMoreActions,
-    isFetchingMore,
+    hasNextPage,
+    goToNextPage,
+    goToPreviousPage,
+    pageNumber: resolvedPageNumber,
   };
 };
 

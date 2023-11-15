@@ -5,6 +5,7 @@ declare namespace ColonyActionsCssNamespace {
     main: string;
     mappings: string;
     names: string;
+    pagination: string;
     query700: string;
     sourceRoot: string;
     sources: string;
