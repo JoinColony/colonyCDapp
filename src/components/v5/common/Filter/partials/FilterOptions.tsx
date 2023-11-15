@@ -32,6 +32,7 @@ const FilterOptions: FC = () => {
               title={title}
               option={filterType}
               nestedFilters={content}
+              iconSize="tiny"
             />
           ))}
         </ul>

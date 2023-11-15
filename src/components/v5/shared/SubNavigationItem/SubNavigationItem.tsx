@@ -20,6 +20,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
   isCopyTriggered,
   nestedFilters,
   onClick,
+  iconSize = 'extraSmall',
 }) => {
   const { formatMessage } = useIntl();
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
@@ -28,7 +29,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
 
   const tooltipContent = (
     <>
-      <Icon name={iconName} appearance={{ size: 'extraSmall' }} />
+      <Icon name={iconName} appearance={{ size: iconSize }} />
       <span className="ml-2">{formatMessage({ id: title })}</span>
     </>
   );
