@@ -81,7 +81,6 @@ const NestedOptions: FC<NestedOptionsProps> = ({
                     onChange(hasNestedOptions, id, isChecked, event)
                   }
                   isChecked={isChecked}
-                  mode="secondary"
                 >
                   {icon}
                 </Checkbox>
