@@ -28,7 +28,7 @@ const NavigationSidebarThirdLevel: FC<NavigationSidebarThirdLevelProps> = ({
   }
 
   const ctaClassName =
-    'text-md md:text-3 text-inherit transition-colors md:hover:text-blue-500 block w-full text-left py-2 md:whitespace-nowrap';
+    'text-md md:text-3 text-inherit transition-colors md:enabled:hover:underline block w-full text-left py-2 md:whitespace-nowrap disabled:opacity-50';
 
   const list = (
     <ul className="flex flex-col gap-0.5">

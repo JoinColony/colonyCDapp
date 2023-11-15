@@ -2,14 +2,14 @@ export const secondLevelWrapperAnimation = {
   hidden: {
     width: 0,
     transition: {
-      delay: 0.25,
+      delay: 0.1,
       staggerDirection: -1,
     },
   },
   visible: {
     width: '19.8125rem',
     transition: {
-      delayChildren: 0.25,
+      delayChildren: 0.1,
     },
   },
 };
@@ -18,15 +18,15 @@ export const thirdLevelWrapperAnimation = {
   hidden: {
     width: 0,
     transition: {
-      delay: 0.25,
+      delay: 0.1,
       staggerDirection: -1,
     },
   },
   visible: {
     width: 'auto',
     transition: {
-      delayChildren: 0.25,
-      staggerChildren: 0.25,
+      delayChildren: 0.1,
+      staggerChildren: 0.1,
     },
   },
 };
