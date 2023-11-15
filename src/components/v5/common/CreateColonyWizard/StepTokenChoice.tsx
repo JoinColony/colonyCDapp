@@ -112,7 +112,7 @@ const StepTokenChoice = ({
             <Icon
               style={{ transform: 'rotate(90deg)' }}
               name="coin-vertical"
-              appearance={{ size: 'medium' }}
+              appearance={{ size: 'mediumSmall' }}
             />
           }
         />
@@ -120,7 +120,7 @@ const StepTokenChoice = ({
           name="select"
           title={MSG.selectOptionTitle}
           description={MSG.selectOptionDescription}
-          icon={<Icon name="hand-coins" appearance={{ size: 'medium' }} />}
+          icon={<Icon name="hand-coins" appearance={{ size: 'mediumSmall' }} />}
         />
       </div>
       <ButtonRow previousStep={previousStep} />
