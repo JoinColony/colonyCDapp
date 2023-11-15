@@ -94,7 +94,7 @@ export const useMainMenuItems = () => {
       key: '1',
       iconName: 'file-plus',
       label: formatText({ id: 'navigation.newAction' }) || '',
-      onClick: () => toggleActionSideBar(),
+      onClick: () => toggleActionSidebarOn(),
       hideMobile: true,
       hasSecondLevel: false,
       className: 'md:bg-base-bg',

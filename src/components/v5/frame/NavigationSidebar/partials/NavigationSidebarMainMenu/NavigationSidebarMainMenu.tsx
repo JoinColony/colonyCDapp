@@ -62,7 +62,6 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
                 isExpanded={isActive}
                 label={label}
                 iconName={iconName}
-                hideMobile={hideMobile}
                 hasSecondLevel={hasSecondLevel}
                 className={className}
               />

@@ -41,12 +41,13 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
           md:gap-0
           md:transition-all
         `,
-        {
-          'text-blue-400 md:text-white md:bg-gray-900': isActive,
-          'text-gray-900 md:bg-white md:hover:bg-gray-900 md:hover:text-white':
-            !isActive,
-        },
-        className,
+        // Conditional classes for when the item is active
+        isActive && 'text-blue-400 md:text-white md:bg-gray-900',
+        // Conditional classes for when the item is not active
+        !isActive && [
+          'text-gray-900 md:hover:bg-gray-900 md:hover:text-white',
+          className, // custom className
+        ],
       )}
       {...rest}
     >
