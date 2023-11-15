@@ -8,15 +8,14 @@ import Avatar from '~v5/shared/Avatar';
 import AvatarUploader from '../AvatarUploader';
 import { UseAvatarUploaderProps } from '../AvatarUploader/hooks';
 
+import { MAX_TOKEN_NAME, MAX_TOKEN_SYMBOL } from './validation';
+
 const displayName = 'common.CreateColonyWizard.StepCreateTokenInputs';
 
 interface StepCreateTokenInputsProps {
   wizardTokenName: string;
   wizardTokenSymbol: string;
 }
-
-const MAX_TOKEN_NAME = 30;
-const MAX_TOKEN_SYMBOL = 5;
 
 const MSG = defineMessages({
   heading: {

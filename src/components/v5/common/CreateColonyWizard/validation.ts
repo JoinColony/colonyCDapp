@@ -12,6 +12,9 @@ import { Token } from '~types';
 
 import { FormValues } from './CreateColonyWizard';
 
+export const MAX_TOKEN_NAME = 30;
+export const MAX_TOKEN_SYMBOL = 5;
+
 /*
  * The colony name regex is composed of
  * ^[A-Za-z0-9] starts with upper case, lower case or numerals
@@ -95,6 +98,7 @@ export const createTokenValidationSchema = object({
     is: 'create',
     then: (schema) =>
       schema
+        .max(MAX_TOKEN_SYMBOL, '')
         .test(
           'isValidTokenSymbol',
           formatMessage({ id: 'error.tokenSymbol' }),
@@ -108,7 +112,9 @@ export const createTokenValidationSchema = object({
     .when('tokenChoiceVerify', {
       is: 'create',
       then: (schema) =>
-        schema.required(formatMessage({ id: 'error.tokenNameRequired' })),
+        schema
+          .max(MAX_TOKEN_NAME, '')
+          .required(formatMessage({ id: 'error.tokenNameRequired' })),
       otherwise: (schema) => schema.notRequired(),
     }),
 }).defined();
