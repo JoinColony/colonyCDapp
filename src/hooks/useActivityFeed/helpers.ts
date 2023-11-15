@@ -42,12 +42,17 @@ export const getSearchActionsFilterVariable = (
     colonyDecisionId: {
       exists: false,
     },
-
-    or: [
-      ...(filters?.actionTypes?.map((actionType) => ({
-        type: { eq: actionType },
-      })) ?? []),
-    ],
+    or: filters?.actionTypes?.length
+      ? filters.actionTypes.map((actionType) => ({
+          type: { eq: actionType },
+        }))
+      : undefined,
+    createdAt: {
+      range: [
+        filters?.dateFrom?.toISOString() ?? null,
+        filters?.dateTo?.toISOString() ?? null,
+      ],
+    },
   };
 };
 
