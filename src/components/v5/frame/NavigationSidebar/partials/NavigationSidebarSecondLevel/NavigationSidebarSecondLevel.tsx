@@ -30,7 +30,7 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
     <div className="md:p-6 md:pt-[1.625rem] h-full flex flex-col justify-between gap-4 md:overflow-auto">
       <div>
         {!isTablet && (
-          <div className="flex justify-between gap-4">
+          <div className="flex justify-between gap-4 px-2 md:px-0">
             <h2 className="heading-5 text-gray-900">{title}</h2>
             {onArrowClick && (
               <button
@@ -55,10 +55,15 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
           </div>
         )}
         {description && (
-          <p className="md:mt-2 text-md text-gray-600">{description}</p>
+          <p className="md:mt-1 text-md text-gray-600 px-2 md:px-0">
+            {description}
+          </p>
         )}
         {isContentList ? (
-          <NavigationSidebarLinksList className="mt-9" items={content} />
+          <NavigationSidebarLinksList
+            className="mt-9 md:-mx-2.5 md:w-[calc(100%+1.25rem)]"
+            items={content}
+          />
         ) : (
           content
         )}

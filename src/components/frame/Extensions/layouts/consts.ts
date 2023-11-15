@@ -2,6 +2,7 @@ import {
   COLONY_ADVANCED_ROUTE,
   COLONY_DETAILS_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
+  COLONY_FUNDING_ROUTE,
   COLONY_INCORPORATION_ROUTE,
   COLONY_INTEGRATIONS_ROUTE,
   COLONY_MEMBERS_ROUTE,
@@ -61,7 +62,7 @@ export const financesMenu: NavigationSidebarLinksListProps['items'] = [
   {
     key: '3',
     label: formatText({ id: 'navigation.finances.incomingFunds' }) || '',
-    to: '/incoming-funds',
+    to: COLONY_FUNDING_ROUTE,
     iconName: 'arrow-down-right',
   },
   {
@@ -136,5 +137,31 @@ export const adminMenu: NavigationSidebarLinksListProps['items'] = [
     label: formatText({ id: 'navigation.admin.advancedSettings' }) || '',
     to: COLONY_ADVANCED_ROUTE,
     iconName: 'wrench',
+  },
+];
+
+// @todo: update routes when pages will be ready
+export const dashboardMainMenu: NavigationSidebarLinksListProps['items'] = [
+  {
+    key: '1',
+    label: formatText({ id: 'navigation.dashboard.dashboard' }) || '',
+    to: 'dashboard',
+    iconName: 'layout',
+  },
+];
+
+// @todo: update routes when pages will be ready
+export const dashboardMenu: NavigationSidebarLinksListProps['items'] = [
+  {
+    key: '1',
+    label: formatText({ id: 'navigation.dashboard.activityFeed' }) || '',
+    to: 'activity-feed',
+    iconName: 'presentation-chart',
+  },
+  {
+    key: '2',
+    label: formatText({ id: 'navigation.dashboard.about' }) || '',
+    to: 'about',
+    iconName: 'book-open-text',
   },
 ];
