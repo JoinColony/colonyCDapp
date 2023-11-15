@@ -25,8 +25,11 @@ sudo apt-get -y install docker-compose-plugin
 sudo usermod -aG docker ubuntu
 sudo systemctl start docker
 
-# Install CloudWatch Agent
-sudo apt-get install -y amazon-cloudwatch-agent
+# Download the CloudWatch agent
+wget https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
+
+# Install the CloudWatch agent
+dpkg -i -E ./amazon-cloudwatch-agent.deb
 
 # Create a directory for the CloudWatch Agent configuration file
 mkdir -p /opt/aws/amazon-cloudwatch-agent/etc
