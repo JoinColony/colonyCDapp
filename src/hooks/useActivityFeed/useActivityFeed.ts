@@ -5,37 +5,20 @@ import {
   SearchableSortDirection,
   useSearchActionsQuery,
 } from '~gql';
-import { ColonyAction, ColonyActionType } from '~types';
 import { notNull } from '~utils/arrays';
 import { useNetworkMotionStates } from '~hooks';
-import { MotionState } from '~utils/colonyMotions';
 
 import useColonyContext from '../useColonyContext';
 import {
-  filterActionByActionType,
   filterActionByMotionState,
   getActionsByPageNumber,
+  getSearchActionsFilterVariable,
 } from './helpers';
-
-interface ActivityFeedFilters {
-  actionTypes?: ColonyActionType[];
-  motionStates?: MotionState[];
-}
-
-interface UseActivityFeedReturn {
-  loading: boolean;
-  actions: ColonyAction[];
-  sortDirection: SearchableSortDirection;
-  changeSortDirection: SortDirectionChangeHandler;
-  hasNextPage: boolean;
-  goToNextPage: () => void;
-  goToPreviousPage: () => void;
-  pageNumber: number;
-}
-
-type SortDirectionChangeHandler = (
-  newSortDirection: SearchableSortDirection,
-) => void;
+import {
+  ActivityFeedFilters,
+  SortDirectionChangeHandler,
+  UseActivityFeedReturn,
+} from './types';
 
 const ITEMS_PER_PAGE = 1;
 
@@ -52,17 +35,10 @@ const useActivityFeed = (
 
   const { data, fetchMore, loading } = useSearchActionsQuery({
     variables: {
-      filter: {
-        colonyId: {
-          eq: colony?.colonyAddress ?? '',
-        },
-        showInActionsList: {
-          eq: true,
-        },
-        colonyDecisionId: {
-          exists: false,
-        },
-      },
+      filter: getSearchActionsFilterVariable(
+        colony?.colonyAddress ?? '',
+        filters,
+      ),
       sort: [
         {
           field: SearchableColonyActionSortableFields.CreatedAt,
@@ -87,11 +63,9 @@ const useActivityFeed = (
   );
   const { motionStatesMap } = useNetworkMotionStates(motionIds);
 
-  const filteredActions = actions
-    .filter((action) => filterActionByActionType(action, filters?.actionTypes))
-    .filter((action) =>
-      filterActionByMotionState(action, motionStatesMap, filters?.motionStates),
-    );
+  const filteredActions = actions.filter((action) =>
+    filterActionByMotionState(action, motionStatesMap, filters?.motionStates),
+  );
 
   const fetchMoreActions =
     !!nextToken && filteredActions.length < requestedActionsCount;
