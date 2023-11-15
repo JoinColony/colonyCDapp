@@ -133,7 +133,7 @@ const StepCreateTokenInputs = ({
         avatarPlaceholder={
           <Avatar
             notSet={!tokenAvatarUrl}
-            placeholderIcon="circle-add"
+            placeholderIcon="grey-circle-plus"
             size="ms"
             avatar={tokenAvatarUrl}
           />
