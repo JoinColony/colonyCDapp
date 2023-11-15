@@ -22,7 +22,6 @@ const RadioBase: FC<RadioBaseProps> = ({
     item as RadioItemProps;
 
   const labelText = formatText(label);
-  const descriptionText = formatText(description);
 
   return (
     <div className={styles.wrapper}>
@@ -68,8 +67,10 @@ const RadioBase: FC<RadioBaseProps> = ({
                 </div>
               )}
             </div>
-            {descriptionText && (
-              <span className={styles.description}>{descriptionText}</span>
+            {description && (
+              <span className={styles.description}>
+                {formatText(description)}
+              </span>
             )}
           </div>
           {badge && (

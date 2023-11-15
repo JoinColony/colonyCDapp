@@ -52,7 +52,7 @@ const Heading = ({
       tiny: 'h6',
     }[size || 'huge'];
 
-  const value = formatText(text, textValues) || '';
+  const value = text ? formatText(text, textValues) : '';
   return (
     <HeadingElement // If `value` is of type `Node` (i.e. children prop), don't add broken title.
       title={typeof value === 'string' ? value : null}

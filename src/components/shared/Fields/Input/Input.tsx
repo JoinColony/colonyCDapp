@@ -67,7 +67,6 @@ const Input = ({
 
   const inputValue = watch(name);
   const { error, isTouched: touched } = getFieldState(name);
-  const extensionStringText = formatText(extensionString);
   const errorMessage = error?.message;
 
   const containerClasses = classnames(styles.container, {
@@ -97,12 +96,14 @@ const Input = ({
           aria-invalid={!!error && !isLoading && touched}
           id={id}
           name={name}
-          placeholder={formatText(placeholder, placeholderValues)}
+          placeholder={
+            placeholder ? formatText(placeholder, placeholderValues) : undefined
+          }
           inputValueLength={inputValue?.length || 0}
           {...restInputProps}
         />
-        {extensionStringText && (
-          <div className={styles.extension}>{extensionStringText}</div>
+        {extensionString && (
+          <div className={styles.extension}>{formatText(extensionString)}</div>
         )}
       </div>
       {!elementOnly && (

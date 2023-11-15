@@ -40,8 +40,8 @@ const NavLink = ({
   to,
   ...linkProps
 }: Props) => {
-  const linkText = formatText(text, textValues);
-  const titleText = formatText(title, titleValues);
+  const linkText = text ? formatText(text, textValues) : undefined;
+  const titleText = title ? formatText(title, titleValues) : undefined;
 
   return (
     <NavLinkComponent

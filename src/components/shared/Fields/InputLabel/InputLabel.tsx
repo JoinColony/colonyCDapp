@@ -45,7 +45,6 @@ const InputLabel = ({
   labelValues,
   screenReaderOnly = false,
 }: Props) => {
-  const helpText = formatText(help, helpValues);
   const labelText = formatText(inputLabel, labelValues);
 
   return (
@@ -58,7 +57,9 @@ const InputLabel = ({
     >
       <div>
         <span className={styles.labelText}>{labelText}</span>
-        {helpText && <span className={styles.help}>{helpText}</span>}
+        {help && (
+          <span className={styles.help}>{formatText(help, helpValues)}</span>
+        )}
       </div>
       {extra && <span>{extra}</span>}
     </label>

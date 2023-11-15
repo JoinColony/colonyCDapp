@@ -25,9 +25,9 @@ const IconButton: FC<PropsWithChildren<IconButtonProps>> = ({
   isFullSize,
   ...rest
 }) => {
-  const titleText = formatText(title);
-  const buttonText = formatText(text, textValues);
-  const ariaLabelText = formatText(ariaLabel);
+  const titleText = title ? formatText(title) : undefined;
+  const buttonText = text ? formatText(text, textValues) : undefined;
+  const ariaLabelText = ariaLabel ? formatText(ariaLabel) : undefined;
 
   return (
     <>

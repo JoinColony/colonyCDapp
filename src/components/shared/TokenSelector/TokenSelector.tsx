@@ -4,7 +4,6 @@ import { useFormContext } from 'react-hook-form';
 
 import { Input, InputProps } from '~shared/Fields';
 import { createAddress, isAddress } from '~utils/web3';
-import { formatText } from '~utils/intl';
 import { useGetTokenFromEverywhereQuery } from '~gql';
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { Token } from '~types';
@@ -113,7 +112,7 @@ const TokenSelector = ({
     <div className={styles.inputWrapper}>
       <Input
         name={addressFieldName}
-        label={formatText(label) || MSG.label}
+        label={label || MSG.label}
         extra={extra}
         {...getStatusText({
           isDirty,

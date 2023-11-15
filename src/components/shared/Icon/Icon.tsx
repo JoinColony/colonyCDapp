@@ -81,10 +81,10 @@ const Icon = ({
     : null;
   const icon = icons[name] || multiColorIcons[name];
   const iconHref = typeof icon === 'object' ? `#${icon.default.id}` : icon;
-  const iconTitle = formatText(title, titleValues);
+  const iconTitle = title ? formatText(title, titleValues) : undefined;
   return (
     <i
-      title={title ? iconTitle : undefined}
+      title={iconTitle}
       className={`${getMainClasses(
         multiColorAppearance || appearance,
         styles,

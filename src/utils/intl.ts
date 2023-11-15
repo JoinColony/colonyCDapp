@@ -75,24 +75,24 @@ const addKeyToFormattedMessage = (
 
 // Overloads. Ensures return type is correctly inferred from type of messageValues.
 export function formatText(
-  message?: Message,
+  message: Message,
   messageValues?: SimpleMessageValues,
 ): string | undefined;
 export function formatText(
-  message?: Message,
+  message: Message,
   messageValues?: ComplexMessageValues,
 ): ReactNode;
 export function formatText(
-  message?: Message,
+  message: Message,
   messageValues?: UniversalMessageValues,
 ): ReactNode;
 export function formatText(
-  message?: Message,
+  message: Message,
   messageValues?: AnyMessageValues,
 ): ReactNode;
 // Implementation
 export function formatText(
-  message?: Message,
+  message: Message,
   messageValues?: UniversalMessageValues,
 ) {
   if (isMessageDescriptor(message)) {

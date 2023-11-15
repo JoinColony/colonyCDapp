@@ -25,7 +25,7 @@ const InputPills: FC<PillProps> = ({ message, status }) => {
       )}
     >
       <Icon name={iconType} appearance={{ size: 'tiny' }} />
-      <span>{formatText(message)}</span>
+      {message && <span className="ml-1">{formatText(message)}</span>}
     </div>
   );
 };
