@@ -2916,7 +2916,7 @@ type ColonyAction @model @searchable {
   """
   safeTransaction: SafeTransaction @hasOne(fields: ["id"])
   """
-    Metadata associated with the action (Eg. Custom action title)
+  Metadata associated with the action (Eg. Custom action title)
   """
   metadata: ColonyActionMetadata @hasOne(fields: ["id"])
 }
@@ -3457,7 +3457,7 @@ type UserStake @model {
     @index(
       name: "byUserAndColony"
       queryField: "getUserStakes"
-      sortKeyFields: ["colonyAddress"]
+      sortKeyFields: ["createdAt"]
     )
   user: User! @hasOne(fields: ["userAddress"])
   colonyAddress: ID!

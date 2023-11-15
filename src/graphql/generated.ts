@@ -6079,7 +6079,7 @@ export type QueryGetUserStakeArgs = {
 
 /** Root query type */
 export type QueryGetUserStakesArgs = {
-  colonyAddress?: InputMaybe<ModelIdKeyConditionInput>;
+  createdAt?: InputMaybe<ModelStringKeyConditionInput>;
   filter?: InputMaybe<ModelUserStakeFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
@@ -11878,8 +11878,9 @@ export const GetUserStakesDocument = gql`
     query GetUserStakes($userAddress: ID!, $colonyAddress: ID!) {
   getUserStakes(
     userAddress: $userAddress
-    colonyAddress: {eq: $colonyAddress}
+    filter: {colonyAddress: {eq: $colonyAddress}}
     limit: 10000
+    sortDirection: DESC
   ) {
     items {
       ...UserStake
