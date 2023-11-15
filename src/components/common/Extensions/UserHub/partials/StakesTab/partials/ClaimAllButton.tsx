@@ -10,11 +10,13 @@ const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 interface ClaimAllButtonProps {
   colonyAddress: string;
   claimableStakes: UserStakeWithStatus[];
+  updateClaimedStakesCache: (stakesIds: string[]) => void;
 }
 
 const ClaimAllButton = ({
   colonyAddress,
   claimableStakes,
+  updateClaimedStakesCache,
 }: ClaimAllButtonProps) => {
   const { formatMessage } = useIntl();
 
@@ -31,14 +33,20 @@ const ClaimAllButton = ({
 
   const handleClick = async () => {
     setIsLoading(true);
-    await claimAll({
-      userAddress: user?.walletAddress ?? '',
-      colonyAddress,
-      extensionAddress: votingReputationAddress ?? '',
-      motionIds: claimableStakes.map(
-        (stake) => stake.action?.motionData?.id ?? '',
-      ),
-    });
+    try {
+      await claimAll({
+        userAddress: user?.walletAddress ?? '',
+        colonyAddress,
+        extensionAddress: votingReputationAddress ?? '',
+        motionIds: claimableStakes.map(
+          (stake) => stake.action?.motionData?.id ?? '',
+        ),
+      });
+      updateClaimedStakesCache(claimableStakes.map((stake) => stake.id));
+    } catch {
+      //
+    }
+
     setIsLoading(false);
   };
 

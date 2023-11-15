@@ -15,7 +15,11 @@ export const useStakesByFilterType = () => {
   const { user } = useAppContext();
   const { walletAddress } = user ?? {};
 
-  const { data, loading: stakesLoading } = useGetUserStakesQuery({
+  const {
+    data,
+    loading: stakesLoading,
+    updateQuery,
+  } = useGetUserStakesQuery({
     variables: {
       userAddress: walletAddress ?? '',
       colonyAddress: colony?.colonyAddress ?? '',
@@ -67,5 +71,29 @@ export const useStakesByFilterType = () => {
     };
   }, {} as Record<StakesFilterType, boolean>);
 
-  return { stakesByFilterType, filtersDataLoading };
+  /**
+   * Function updating Apollo cache after some stakes have been claimed
+   * We cannot simply refetch the query as it won't have the updated claimed status yet
+   */
+  const updateClaimedStakesCache = (claimedStakesIds: string[]) => {
+    updateQuery((queryData) => ({
+      ...queryData,
+      getUserStakes: {
+        ...queryData.getUserStakes,
+        items:
+          queryData.getUserStakes?.items.filter(notNull).map((stake) => {
+            const isClaimed = claimedStakesIds.includes(stake.id);
+            if (!isClaimed) {
+              return stake;
+            }
+            return {
+              ...stake,
+              isClaimed: true,
+            };
+          }) ?? [],
+      },
+    }));
+  };
+
+  return { stakesByFilterType, filtersDataLoading, updateClaimedStakesCache };
 };

@@ -21,7 +21,8 @@ const StakesTab = () => {
   const [activeTab, setActiveTab] = useState(0);
   const activeFilterOption = stakesFilterOptions[activeTab];
 
-  const { stakesByFilterType, filtersDataLoading } = useStakesByFilterType();
+  const { stakesByFilterType, filtersDataLoading, updateClaimedStakesCache } =
+    useStakesByFilterType();
 
   // Tabs are being used for selecting filter option
   const handleOnTabClick = useCallback((_, id: number) => {
@@ -52,6 +53,7 @@ const StakesTab = () => {
           <ClaimAllButton
             colonyAddress={colony.colonyAddress}
             claimableStakes={claimableStakes}
+            updateClaimedStakesCache={updateClaimedStakesCache}
           />
         )}
       </div>
