@@ -8,7 +8,7 @@ export const displayName = 'common.Extensions.UserHub.partials.UserHubMobile';
 
 const UserHubMobile: FC<UserHubMobileProps> = ({
   selectedTab,
-  handleChange,
+  onTabChange,
   tabList,
 }) => {
   const isMobile = useMobile();
@@ -18,7 +18,7 @@ const UserHubMobile: FC<UserHubMobileProps> = ({
       <Select
         list={tabList}
         selectedElement={selectedTab}
-        handleChange={handleChange}
+        handleChange={onTabChange}
       />
     </div>
   );

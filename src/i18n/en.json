@@ -852,6 +852,7 @@
     "total.balance": "Total balance",
     "active": "Active",
     "staked": "Staked",
+    "button.viewStaked": "View",
     "copyColony": "Copy shareable Colony link",
     "copiedColony": "Shareable invite link copied",
     "balance.in.colony": "Balance in this Colony",

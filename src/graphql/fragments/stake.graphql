@@ -1,0 +1,21 @@
+fragment UserStake on UserStake {
+  id
+  amount
+  action {
+    id
+    type
+    motionData {
+      id
+      nativeMotionId
+      motionStakes {
+        ...MotionStakes
+      }
+      requiredStake
+      revealedVotes {
+        ...MotionStakes
+      }
+    }
+  }
+  isClaimed
+  createdAt
+}

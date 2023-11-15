@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
@@ -12,9 +12,8 @@ import Icon from '~shared/Icon';
 import styles from './UserHub.module.css';
 import { tabList } from './consts';
 import UserHubMobile from './UserHubMobile';
-import { UserHubProps } from './types';
+import { UserHubProps, UserHubTabs } from './types';
 import TitleLabel from '~v5/shared/TitleLabel';
-import { stakesMock } from './partials/StakesTab/consts';
 
 export const displayName = 'common.Extensions.UserHub.partials.UserHub';
 
@@ -23,18 +22,13 @@ const UserHub: FC<UserHubProps> = ({ isTransactionTabVisible = false }) => {
   const { formatMessage } = useIntl();
   const [selectedTab, setSelectedTab] = useState(0);
 
-  const claimedNotificationNumber = useMemo(
-    () => stakesMock.filter(({ status }) => status === 'claimed').length,
-    [],
-  );
-
-  const handleChange = (selectedOption: number) => {
-    setSelectedTab(selectedOption);
+  const handleTabChange = (newTab: UserHubTabs) => {
+    setSelectedTab(newTab);
   };
 
   useEffect(() => {
     if (isTransactionTabVisible) {
-      setSelectedTab(2);
+      setSelectedTab(UserHubTabs.Transactions);
     }
   }, [isTransactionTabVisible]);
 
@@ -44,7 +38,7 @@ const UserHub: FC<UserHubProps> = ({ isTransactionTabVisible = false }) => {
         {isMobile ? (
           <UserHubMobile
             selectedTab={selectedTab}
-            handleChange={handleChange}
+            onTabChange={handleTabChange}
             tabList={tabList}
           />
         ) : (
@@ -98,8 +92,10 @@ const UserHub: FC<UserHubProps> = ({ isTransactionTabVisible = false }) => {
       <div
         className={clsx({
           'min-w-full px-6': isMobile,
-          'w-full py-6 pl-6 pr-2 relative': !isMobile && selectedTab === 2,
-          'w-full p-6 relative': !isMobile && selectedTab !== 2,
+          'w-full py-6 pl-6 pr-2 relative':
+            !isMobile && selectedTab === UserHubTabs.Transactions,
+          'w-full p-6 relative min-w-0':
+            !isMobile && selectedTab !== UserHubTabs.Transactions,
         })}
       >
         <AnimatePresence>
@@ -110,13 +106,11 @@ const UserHub: FC<UserHubProps> = ({ isTransactionTabVisible = false }) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            {selectedTab === 0 && <ReputationTab />}
-            {selectedTab === 1 && (
-              <StakesTab
-                claimedNotificationNumber={claimedNotificationNumber}
-              />
+            {selectedTab === UserHubTabs.Overview && (
+              <ReputationTab onTabChange={handleTabChange} />
             )}
-            {selectedTab === 2 && (
+            {selectedTab === UserHubTabs.Stakes && <StakesTab />}
+            {selectedTab === UserHubTabs.Transactions && (
               <TransactionsTab appearance={{ interactive: true }} />
             )}
           </motion.div>

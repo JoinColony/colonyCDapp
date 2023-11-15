@@ -10,6 +10,8 @@ import {
 
 import { getWizardFlowConfig } from './wizardConfig';
 import { DialogButton } from '~shared/Button';
+import { useGetUserTokenBalanceQuery } from '~gql';
+import UserTokenActivationButton from '~frame/UserTokenActivationButton';
 
 // import {
 //   colonyMustBeUpgraded,
@@ -63,22 +65,44 @@ const NewActionButton = ({ filteredDomainId }: Props) => {
   // const mustUpgrade = colonyMustBeUpgraded(colony, networkVersion as string);
   const isLoadingData = loadingExtensions || !!walletConnecting;
 
+  const { data: tokenBalanceQueryData } = useGetUserTokenBalanceQuery({
+    variables: {
+      input: {
+        walletAddress: user?.walletAddress ?? '',
+        tokenAddress: colony?.nativeToken?.tokenAddress ?? '',
+        colonyAddress: colony?.colonyAddress ?? '',
+      },
+    },
+    skip: !user?.walletAddress || !colony,
+  });
+  const tokenBalanceData = tokenBalanceQueryData?.getUserTokenBalance;
+
   if (!colony) {
     return null;
   }
 
   return (
-    <DialogButton
-      loading={isLoadingData}
-      text={{ id: 'button.newAction' }}
-      handleClick={() => startWizardFlow('common.ColonyActionsDialog')}
-      disabled={
-        !hasRegisteredProfile
-        //   mustUpgrade ||
-        //   mustUpgradeOneTx ||
-      }
-      dataTest="newActionButton"
-    />
+    <>
+      <DialogButton
+        loading={isLoadingData}
+        text={{ id: 'button.newAction' }}
+        handleClick={() => startWizardFlow('common.ColonyActionsDialog')}
+        disabled={
+          !hasRegisteredProfile
+          //   mustUpgrade ||
+          //   mustUpgradeOneTx ||
+        }
+        dataTest="newActionButton"
+      />
+      {/* Temporary way of activating tokens, to be deleted once the User Hub
+  token activation is wired in */}
+      {tokenBalanceData && colony?.nativeToken && (
+        <UserTokenActivationButton
+          nativeToken={colony?.nativeToken}
+          tokenBalanceData={tokenBalanceData}
+        />
+      )}
+    </>
   );
 };
 

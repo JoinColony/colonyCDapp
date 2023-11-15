@@ -1,18 +1,20 @@
-export const tabList = [
+import { UserHubTabList, UserHubTabs } from './types';
+
+export const tabList: UserHubTabList = [
   {
-    id: 0,
+    id: UserHubTabs.Overview,
     label: 'Your overview',
     value: 'overview',
     icon: 'user',
   },
   {
-    id: 1,
+    id: UserHubTabs.Stakes,
     label: 'Stakes',
     value: 'stakes',
     icon: 'coin-vertical',
   },
   {
-    id: 2,
+    id: UserHubTabs.Transactions,
     label: 'Transactions',
     value: 'transactions',
     icon: 'receipt',

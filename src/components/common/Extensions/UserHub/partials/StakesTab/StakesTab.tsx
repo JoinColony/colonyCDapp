@@ -1,70 +1,64 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import StakesItems from './partials/StakesTabItem';
-import {
-  stakesMock,
-  tabsItems,
-} from '~common/Extensions/UserHub/partials/StakesTab/consts';
 import Tabs from '~shared/Extensions/Tabs';
-import { useMobile } from '~hooks';
-import EmptyContent from '~v5/common/EmptyContent';
-import { StakesTabProps } from './types';
+import { useColonyContext, useMobile } from '~hooks';
+
+import { stakesFilterOptions } from './consts';
+import StakesList from './partials/StakesList';
+import { getStakesTabItems } from './helpers';
+import { useStakesByFilterType } from './useStakesByFilterType';
+import ClaimAllButton from './partials/ClaimAllButton';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 
-const StakesTab: FC<StakesTabProps> = ({ claimedNotificationNumber }) => {
-  const [activeTab, setActiveTab] = useState(0);
-  const [stakes, setStakesMock] = useState(stakesMock);
+const StakesTab = () => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
+  const { colony } = useColonyContext();
 
-  // @TODO: display data from API
+  const [activeTab, setActiveTab] = useState(0);
+  const activeFilterOption = stakesFilterOptions[activeTab];
 
-  const handleOnTabClick = useCallback(
-    (e, id: number) => {
-      setActiveTab(id);
-      const [...filteredData] = stakes.filter(
-        (item) =>
-          (id === 0 && stakesMock) ||
-          item.filterBy === e.target?.childNodes?.[0]?.data?.toLowerCase(),
-      );
+  const { stakesByFilterType, filtersDataLoading, updateClaimedStakesCache } =
+    useStakesByFilterType();
 
-      setStakesMock(filteredData);
-    },
-    [stakes],
+  // Tabs are being used for selecting filter option
+  const handleOnTabClick = useCallback((_, id: number) => {
+    setActiveTab(id);
+  }, []);
+
+  // Update tabs items with the number of stakes for each filter option
+  const tabItems = getStakesTabItems(
+    stakesByFilterType,
+    filtersDataLoading,
+    activeFilterOption.type,
   );
 
-  const updatedTabsItems = useMemo(
-    () =>
-      tabsItems.map((item) =>
-        item.type === 'claimable'
-          ? Object.assign(item, {
-              notificationNumber: claimedNotificationNumber,
-            })
-          : item,
-      ),
-    [claimedNotificationNumber],
-  );
+  const filteredStakes = stakesByFilterType[activeFilterOption.type];
+  const filterDataLoading = filtersDataLoading[activeFilterOption.type];
+
+  const claimableStakes = stakesByFilterType.claimable;
+
+  if (!colony) {
+    return null;
+  }
 
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
         <p className="heading-5">{formatMessage({ id: 'stakes' })}</p>
         {!isMobile && (
-          <button
-            type="button"
-            className="text-blue-400 text-4 hover:text-gray-900 transition-all duration-normal"
-            aria-label={formatMessage({ id: 'claimStakes' })}
-          >
-            {/* @TODO handle action here */}
-            {formatMessage({ id: 'claimStakes' })}
-          </button>
+          <ClaimAllButton
+            colonyAddress={colony.colonyAddress}
+            claimableStakes={claimableStakes}
+            updateClaimedStakesCache={updateClaimedStakesCache}
+          />
         )}
       </div>
       <Tabs
-        items={updatedTabsItems}
+        items={tabItems}
         activeTab={activeTab}
         onTabClick={handleOnTabClick}
       >
@@ -77,24 +71,11 @@ const StakesTab: FC<StakesTabProps> = ({ claimedNotificationNumber }) => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
             >
-              {stakes.length ? (
-                stakes.map(({ title, date, stake, transfer, status, key }) => (
-                  <StakesItems
-                    title={title}
-                    date={date}
-                    stake={stake}
-                    transfer={transfer}
-                    key={key}
-                    status={status}
-                  />
-                ))
-              ) : (
-                <EmptyContent
-                  title={{ id: 'empty.content.title.stakes' }}
-                  description={{ id: 'empty.content.subtitle.stakes' }}
-                  icon="binoculars"
-                />
-              )}
+              <StakesList
+                stakes={filteredStakes}
+                loading={filterDataLoading}
+                colony={colony}
+              />
             </motion.div>
           </AnimatePresence>
         </ul>

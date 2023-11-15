@@ -1,15 +1,25 @@
-import { tabList } from './consts';
 import { Appearance } from './partials/TransactionsTab/types';
 
 export interface UserHubMobileProps {
-  selectedTab: number;
-  handleChange: (id: number) => void;
-  tabList: TabListProps;
+  selectedTab: UserHubTabs;
+  onTabChange: (newTab: UserHubTabs) => void;
+  tabList: UserHubTabList;
 }
 
-export type TabListProps = typeof tabList;
+export type UserHubTabList = {
+  id: UserHubTabs;
+  label: string;
+  value: string;
+  icon: string;
+}[];
 
 export interface UserHubProps {
   appearance?: Appearance;
   isTransactionTabVisible: boolean;
+}
+
+export enum UserHubTabs {
+  Overview = 0,
+  Stakes = 1,
+  Transactions = 2,
 }

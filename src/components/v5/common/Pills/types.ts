@@ -1,3 +1,4 @@
+import { UserStakeStatus } from '~types';
 import { ContributorType } from '../TableFiltering/types';
 
 export type ExtensionStatusBadgeMode =
@@ -28,7 +29,7 @@ export type IconSize = 'extraTiny' | 'tiny';
 
 export type PillSize = 'medium' | 'small';
 
-export type PillsProps = {
+export interface PillsProps {
   mode?: ExtensionStatusBadgeMode | UserStatusMode;
   text?: React.ReactNode;
   iconName?: string;
@@ -37,4 +38,8 @@ export type PillsProps = {
   className?: string;
   teamName?: string;
   isIconVisible?: boolean;
-};
+}
+
+export interface UserStakeStatusBadgeProps extends Omit<PillsProps, 'mode'> {
+  status: UserStakeStatus;
+}

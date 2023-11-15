@@ -2158,7 +2158,7 @@ type MotionStakes {
 """
 Input used to modify the stakes of a user for a motion
 """
-input UserStakesInput {
+input UserMotionStakesInput {
   """
   The user's wallet address
   """
@@ -2172,7 +2172,7 @@ input UserStakesInput {
 """
 Stakes that a user has made for a motion
 """
-type UserStakes {
+type UserMotionStakes {
   """
   The user's wallet address
   """
@@ -2396,7 +2396,7 @@ type ColonyMotion @model {
   """
   List of stakes that users have made for a motion
   """
-  usersStakes: [UserStakes!]!
+  usersStakes: [UserMotionStakes!]!
   """
   List of staker rewards users will be receiving for a motion
   """
@@ -2916,7 +2916,7 @@ type ColonyAction @model @searchable {
   """
   safeTransaction: SafeTransaction @hasOne(fields: ["id"])
   """
-    Metadata associated with the action (Eg. Custom action title)
+  Metadata associated with the action (Eg. Custom action title)
   """
   metadata: ColonyActionMetadata @hasOne(fields: ["id"])
 }
@@ -3446,4 +3446,24 @@ type ExtensionInstallationsCount @model {
   stagedExpenditure: Int!
   streamingPayments: Int!
   reputationWeighted: Int!
+}
+
+type UserStake @model {
+  """
+  Self-managed, formatted as userAddress_transactionHash, where transactionHash is the hash of the transaction that is being staked for
+  """
+  id: ID!
+  userAddress: ID!
+    @index(
+      name: "byUserAndColony"
+      queryField: "getUserStakes"
+      sortKeyFields: ["createdAt"]
+    )
+  user: User! @hasOne(fields: ["userAddress"])
+  colonyAddress: ID!
+  amount: String!
+  isClaimed: Boolean!
+  actionId: ID!
+  action: ColonyAction @hasOne(fields: ["actionId"])
+  createdAt: AWSDateTime!
 }

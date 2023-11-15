@@ -43,6 +43,7 @@ import {
   NftDataFragment,
   FunctionParamFragment,
   SafeTransactionFragment,
+  UserStakeFragment,
 } from '~gql';
 
 export type AnnotationType = AnnotationFragment;
@@ -154,3 +155,5 @@ export type FunctionParam = FunctionParamFragment;
 export { SafeTransactionType };
 
 export type ColonyObjective = ColonyObjectiveFragment;
+
+export type UserStake = UserStakeFragment;
