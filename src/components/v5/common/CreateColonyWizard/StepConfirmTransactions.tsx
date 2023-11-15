@@ -113,10 +113,10 @@ const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
   );
 
   return (
-    <section>
+    <>
       <HeaderRow heading={MSG.heading} description={MSG.description} />
       <ConfirmTransactions transactionGroup={createColonyTxGroup} />
-    </section>
+    </>
   );
 };
 
