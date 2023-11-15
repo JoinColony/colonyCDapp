@@ -28,7 +28,7 @@ const NavigationSidebarThirdLevel: FC<NavigationSidebarThirdLevelProps> = ({
   }
 
   const ctaClassName =
-    'text-md md:text-3 text-inherit transition-colors md:hover:text-blue-500 block w-full text-left py-2';
+    'text-md md:text-3 text-inherit transition-colors md:hover:text-blue-500 block w-full text-left py-2 md:whitespace-nowrap';
 
   const list = (
     <ul className="flex flex-col gap-0.5">
@@ -72,7 +72,7 @@ const NavigationSidebarThirdLevel: FC<NavigationSidebarThirdLevelProps> = ({
       {title && !isTablet && (
         <motion.h3
           variants={thirdLevelContentAnimation}
-          className="mb-4 text-4 md:uppercase text-inherit"
+          className="mb-4 text-4 md:uppercase text-inherit md:whitespace-nowrap"
         >
           {title}
         </motion.h3>

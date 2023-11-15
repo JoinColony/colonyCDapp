@@ -23,7 +23,7 @@ export const thirdLevelWrapperAnimation = {
     },
   },
   visible: {
-    width: '11.25rem',
+    width: 'auto',
     transition: {
       delayChildren: 0.25,
       staggerChildren: 0.25,
