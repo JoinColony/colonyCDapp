@@ -79,7 +79,7 @@ const Input: FC<InputProps> = ({
         >
           {formatText(labelMessage)}
           {subLabelMessage && (
-            <span className="text-xs text-gray-400">
+            <span className="text-sm text-gray-600">
               {formatText(subLabelMessage)}
             </span>
           )}
