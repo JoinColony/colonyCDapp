@@ -13,8 +13,7 @@ echo \
 
 # Update and install required dependencies
 sudo apt-get update -y
-sudo apt-get install -y ca-certificates curl gnupg awscli
-sudo apt-get install -y nodejs npm git nginx apache2-utils netcat
+sudo apt-get install -y ca-certificates curl gnupg awscli nodejs npm git nginx apache2-utils netcat unzip wget
 
 # Install docker dependencies
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
@@ -42,7 +41,7 @@ cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json << EOF
                     {
                         "file_path": "/var/log/cloud-init-output.log",
                         "log_group_name": "on-demand-envs",
-                        "log_stream_name": "{instance_id}/cloud-init-output.log"
+                        "log_stream_name": "{instance_id}"
                     }
                 ]
             }
@@ -57,17 +56,37 @@ sudo systemctl start amazon-cloudwatch-agent
 # Enable the CloudWatch Agent to start on boot
 sudo systemctl enable amazon-cloudwatch-agent
 
+# URL-encode the log group and log stream names
+LOG_GROUP_NAME="on-demand-envs"
+INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+ENCODED_LOG_GROUP_NAME=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$LOG_GROUP_NAME'))")
+ENCODED_LOG_STREAM_NAME=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$INSTANCE_ID'))")
+
+# Construct the CloudWatch Logs URL
+REGION="eu-west-2"
+CLOUDWATCH_URL="https://console.aws.amazon.com/cloudwatch/home?region=$REGION#logsV2:log-groups/log-group/$ENCODED_LOG_GROUP_NAME/log-events/$ENCODED_LOG_STREAM_NAME"
+
+# Create JSON payload for the Discord notification with embed, because of how long the CW URL would be
+read -r -d '' PAYLOAD << EOM
+{
+  "embeds": [
+    {
+      "title": "Dev Environment Setup",
+      "description": "Hey <@$DISCORD_USER_ID>, your dev environment for $SOURCE_USED is getting ready, you can keep an eye on it [here]($CLOUDWATCH_URL).",
+      "color": 5814783
+    }
+  ]
+}
+EOM
+
+# Send initial notification on Discord
+curl -H "Content-Type: application/json" \
+     -X POST \
+     -d "$PAYLOAD" \
+     $DISCORD_WEBHOOK
+
 # Clone the repo
 git clone https://github.com/JoinColony/colonyCDapp.git ~/app
-
-# Checkout specific PR (use the passed PR number)
-cd ~/app
-git checkout env/temp-environments
-# git fetch origin pull/$PR_NUMBER/head:pr-branch
-# git checkout pr-branch
-
-# Clone the repo
-git clone https://github.com/Org/repo.git ~/app
 cd ~/app
 
 # Check and apply the correct git action based on the input
@@ -208,6 +227,7 @@ npm i
 # Build and run Docker images
 npm run dev &
 
+# Wait for graphql service to come up
 while ! nc -z localhost 20002; do
   sleep 10
 done
@@ -218,13 +238,14 @@ node ./scripts/temp-create-data.js
 # Start frontend
 npm run webpack &
 
+# Wait for frontend service to come up
 while ! nc -zv localhost 9091; do
   echo "Waiting for port 9091 to be open..."
   sleep 10
 done
 echo "Port 9091 is now open!"
 
-# Send notification on Discord
+# Send completion notification on Discord
 curl -H "Content-Type: application/json" \
      -X POST \
      -d '{"content":"Hey <@'"$DISCORD_USER_ID"'>, your dev environment for '"$SOURCE_USED"' is ready to use at [IP: '"$PUBLIC_IP"'](https://'"$PUBLIC_IP"') !"}' \
