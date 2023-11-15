@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 // import { useColonyContext } from '~hooks';
 // import Link from '~shared/Link';
 import SortControls from '~shared/SortControls';
-import { SetStateFn, SortDirection } from '~types';
+import { SearchableSortDirection, SetStateFn } from '~types';
 
 import styles from './ActionsListHeading.css';
 
@@ -22,7 +22,7 @@ const MSG = defineMessages({
 });
 
 interface ActionsListHeadingProps {
-  sortDirection: SortDirection;
+  sortDirection: SearchableSortDirection;
   onSortChange: SetStateFn;
 }
 
