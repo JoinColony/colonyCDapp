@@ -825,6 +825,7 @@
     "actions.manageColonyObjectives": "Manage Colony objective",
     "actions.userPermissions": "User permissions",
     "actions.recipent": "Colony members",
+    "actions.manageReputation": "Manage reputation",
     "connectWallet": "Connect wallet",
     "copyWalletAddress": "Copy wallet address",
     "copy.address": "Copy address",
