@@ -85,7 +85,7 @@ const CreatePaymentDialogForm = ({
     showPermissionErrors,
   } = useCreatePaymentDialogStatus(colony, requiredRoles, enabledExtensionData);
 
-  const { fields, append } = useFieldArray({
+  const { fields /* append */ } = useFieldArray({
     name: 'payments',
   });
 
@@ -128,7 +128,8 @@ const CreatePaymentDialogForm = ({
           disabled={disabledInput}
         />
       ))}
-      <DialogSection>
+      {/* Disabling the ability to add more payments for the launch */}
+      {/* <DialogSection>
         <button
           type="button"
           onClick={() => {
@@ -141,7 +142,7 @@ const CreatePaymentDialogForm = ({
         >
           Add another payment
         </button>
-      </DialogSection>
+      </DialogSection> */}
       <DialogSection>
         <Annotations
           label={MSG.annotation}
