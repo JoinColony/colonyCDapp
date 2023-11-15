@@ -1,12 +1,9 @@
+import { QuerySearchColonyActionsArgs } from '~gql';
 import { MotionStatesMap } from '~hooks';
-import { ColonyAction, ColonyActionType } from '~types';
+import { ColonyAction } from '~types';
 import { MotionState, getMotionState } from '~utils/colonyMotions';
 
-export const filterActionByActionType = (
-  action: ColonyAction,
-  actionTypes?: ColonyActionType[],
-) =>
-  !actionTypes || actionTypes.length === 0 || actionTypes.includes(action.type);
+import { ActivityFeedFilters } from './types';
 
 export const filterActionByMotionState = (
   action: ColonyAction,
@@ -29,6 +26,29 @@ export const filterActionByMotionState = (
 
   const motionState = getMotionState(networkMotionState, action.motionData);
   return motionStates.includes(motionState);
+};
+
+export const getSearchActionsFilterVariable = (
+  colonyAddress: string,
+  filters?: ActivityFeedFilters,
+): QuerySearchColonyActionsArgs['filter'] => {
+  return {
+    colonyId: {
+      eq: colonyAddress,
+    },
+    showInActionsList: {
+      eq: true,
+    },
+    colonyDecisionId: {
+      exists: false,
+    },
+
+    or: [
+      ...(filters?.actionTypes?.map((actionType) => ({
+        type: { eq: actionType },
+      })) ?? []),
+    ],
+  };
 };
 
 export const getActionsByPageNumber = (
