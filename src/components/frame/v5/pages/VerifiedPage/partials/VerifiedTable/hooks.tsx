@@ -23,19 +23,17 @@ export const useVerifiedTableColumns = (): ColumnDef<
   const columns: ColumnDef<ColonyContributorFragment, string>[] = useMemo(
     () => [
       columnHelper.display({
-        id: 'checkbox',
-        size: 20,
-        cell: ({ row }) => (
-          <Checkbox
-            isChecked={row.getIsSelected()}
-            onChange={row.getToggleSelectedHandler()}
-          />
-        ),
-      }),
-      columnHelper.display({
         id: 'member',
         header: () => formatText({ id: 'verifiedPage.table.member' }),
-        cell: ({ row }) => <MemberAvatar member={row.original} />,
+        cell: ({ row }) => (
+          <div className="flex items-center">
+            <Checkbox
+              isChecked={row.getIsSelected()}
+              onChange={row.getToggleSelectedHandler()}
+            />
+            <MemberAvatar member={row.original} />
+          </div>
+        ),
       }),
       columnHelper.display({
         id: 'status',
