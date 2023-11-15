@@ -215,12 +215,35 @@ export const useMainMenuItems = () => {
         items: [
           {
             key: '1',
-            label: 'Admin 1',
-            href: '/',
+            label: formatText({ id: 'actions.editColonyDetails' }) || '',
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_COLONY_DETAILS,
+              }),
           },
           {
             key: '2',
-            label: 'Admin 2',
+            label: formatText({ id: 'actions.upgradeColonyVersion' }) || '',
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.UPGRADE_COLONY_VERSION,
+              }),
+          },
+          {
+            key: '3',
+            label: formatText({ id: 'actions.enterRecoveryMode' }) || '',
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.ENTER_RECOVERY_MODE,
+              }),
+          },
+          {
+            key: '4',
+            label: formatText({ id: 'actions.unlockToken' }) || '',
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.UNLOCK_TOKEN,
+              }),
           },
         ],
       },
