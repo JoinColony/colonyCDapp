@@ -41,7 +41,6 @@ const VerifiedTable: FC<TableProps> = ({ list }) => {
       }
       verticalOnMobile={false}
       hasPagination
-      className="rounded-t-none"
       getRowId={({ contributorAddress }) => contributorAddress}
       columns={columns}
       data={list}
