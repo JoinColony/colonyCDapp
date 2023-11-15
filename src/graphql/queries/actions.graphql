@@ -48,3 +48,23 @@ query GetTotalColonyActions($colonyId: ID!) {
     total
   }
 }
+
+query SearchActions(
+  $nextToken: String
+  $limit: Int
+  $filter: SearchableColonyActionFilterInput
+  $sort: [SearchableColonyActionSortInput]
+) {
+  searchColonyActions(
+    limit: $limit
+    nextToken: $nextToken
+    sort: $sort
+    filter: $filter
+    from: 0
+  ) {
+    items {
+      ...ColonyAction
+    }
+    nextToken
+  }
+}
