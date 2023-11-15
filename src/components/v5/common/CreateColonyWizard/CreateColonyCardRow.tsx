@@ -83,7 +83,7 @@ const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
             <Button
               text={{ id: 'button.edit' }}
               onClick={() => setStep(card.step)}
-              mode="primaryOutline"
+              mode="quinary"
             />
           </div>
         </div>
