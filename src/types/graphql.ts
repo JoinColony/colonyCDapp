@@ -44,6 +44,7 @@ import {
   FunctionParamFragment,
   SafeTransactionFragment,
   UserStakeFragment,
+  SearchableSortDirection,
 } from '~gql';
 
 export type AnnotationType = AnnotationFragment;
@@ -90,7 +91,7 @@ export type UserTokenBalanceData = UserTokenBalanceDataFragment;
 
 export { ColonyActionType };
 
-export { ModelSortDirection as SortDirection };
+export { ModelSortDirection as SortDirection, SearchableSortDirection };
 
 export { DomainColor };
 
