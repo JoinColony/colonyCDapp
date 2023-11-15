@@ -1,16 +1,16 @@
 import React from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 import { AddressZero } from '@ethersproject/constants';
 
-import CopyableAddress from '~shared/CopyableAddress';
-import TokenLink from '~shared/TokenLink';
-import Button from '~shared/Button';
-import TokenIcon from '~shared/TokenIcon';
 import { RpcMethods, Token } from '~types';
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { TokenType } from '~gql';
 
-import styles from './TokenInfoPopover.css';
+import CopyableAddressV2 from '~shared/CopyableAddressV2';
+import Avatar from '~v5/shared/Avatar';
+import Button from '~v5/shared/Button';
+import { getBlockExplorerLink } from '~utils/external';
+import Icon from '~shared/Icon';
 
 const displayName = 'TokenInfoPopover.TokenInfo';
 
@@ -35,7 +35,8 @@ const MSG = defineMessages({
 });
 
 const TokenInfo = ({ token, isTokenNative }: Props) => {
-  const { name, symbol, tokenAddress, decimals, thumbnail } = token;
+  const { avatar, name, symbol, tokenAddress, decimals, thumbnail } = token;
+  const { formatMessage } = useIntl();
 
   const handleAddAssetToMetamask = () => {
     // https://docs.metamask.io/wallet/how-to/register-token/
@@ -61,47 +62,45 @@ const TokenInfo = ({ token, isTokenNative }: Props) => {
   };
 
   return (
-    <div className={styles.main}>
-      <div className={styles.section}>
-        {name && (
-          <div title={name} className={styles.displayName}>
-            <TokenIcon token={token} size="xxs" />
-            {name}
-          </div>
-        )}
-        {symbol && (
-          <p title={symbol} className={styles.symbol}>
-            {symbol}
-          </p>
-        )}
-        <div title={tokenAddress} className={styles.address}>
-          <CopyableAddress full>{tokenAddress}</CopyableAddress>
-        </div>
-        {isTokenNative && (
-          <p className={styles.nativeTokenMessage}>
-            <FormattedMessage {...MSG.nativeTokenMessage} />
-          </p>
-        )}
-      </div>
-      <div className={styles.section}>
-        <TokenLink
-          className={styles.etherscanLink}
-          tokenAddress={tokenAddress}
-          text={MSG.viewOnEtherscan}
-          textValues={{
-            blockExplorerName: DEFAULT_NETWORK_INFO.blockExplorerName,
-          }}
+    <div className="flex flex-col items-center bg-base-white p-6 gap-6 w-80 text-gray-900">
+      <div className="flex flex-row items-center w-full gap-4">
+        <Avatar
+          size="m"
+          title={name}
+          avatar={thumbnail || avatar}
+          className="flex-shrink-0"
         />
-        {tokenAddress !== AddressZero && (
-          <span className={styles.addToWallet}>
-            <Button
-              appearance={{ theme: 'blue' }}
-              text={MSG.addToWallet}
-              onClick={handleAddAssetToMetamask}
-            />
-          </span>
-        )}
+        <div className="flex flex-col flex-1 min-w-0">
+          <h4 className="font-bold text-xl overflow-hidden text-ellipsis whitespace-nowrap">
+            {name} ({symbol})
+          </h4>
+          <CopyableAddressV2>{tokenAddress}</CopyableAddressV2>
+        </div>
       </div>
+      {isTokenNative && <p>{formatMessage(MSG.nativeTokenMessage)}</p>}
+      {tokenAddress !== AddressZero && (
+        <Button
+          isFullSize
+          mode="primaryOutline"
+          text={MSG.addToWallet}
+          onClick={handleAddAssetToMetamask}
+        />
+      )}
+      <hr className="w-full" />
+      <a
+        className="flex flex-row items-center self-start gap-2 text-md"
+        target="_blank"
+        rel="noreferrer noopener"
+        href={getBlockExplorerLink({
+          linkType: 'token',
+          addressOrHash: tokenAddress,
+        })}
+      >
+        <Icon name="arrow-square-out" appearance={{ size: 'extraTiny' }} />
+        {formatMessage(MSG.viewOnEtherscan, {
+          blockExplorerName: DEFAULT_NETWORK_INFO.blockExplorerName,
+        })}
+      </a>
     </div>
   );
 };

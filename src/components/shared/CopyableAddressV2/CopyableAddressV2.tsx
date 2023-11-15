@@ -42,8 +42,8 @@ const CopyableAddressV2 = ({
     <button
       type="button"
       className={clsx(
-        'flex flex-row items-center gap-1 hover:text-blue-500',
-        isCopied && 'text-green-500 hover:text-green-500',
+        'flex flex-row items-center gap-1 hover:text-blue-400',
+        isCopied && 'text-success-400 hover:text-success-400',
       )}
       onClick={handleClipboardCopy}
     >
