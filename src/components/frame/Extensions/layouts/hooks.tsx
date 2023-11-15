@@ -183,12 +183,19 @@ export const useMainMenuItems = () => {
         items: [
           {
             key: '1',
-            label: 'Agreements 1',
-            href: '/',
+            label: formatText({ id: 'actions.createAgreement' }) || '',
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_DECISION,
+              }),
           },
           {
             key: '2',
-            label: 'Agreements 2',
+            label: formatText({ id: 'actions.simpleDiscussion' }) || '',
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_DISCUSSION,
+              }),
           },
         ],
       },
