@@ -74,6 +74,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         }}
       >
         <FormTextareaBase
+          message={false}
           name="domainPurpose"
           placeholder={formatText({
             id: 'actionSidebar.placeholder.purpose',

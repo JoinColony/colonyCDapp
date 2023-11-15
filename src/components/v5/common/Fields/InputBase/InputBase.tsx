@@ -28,7 +28,7 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
     const stateClassNames = useStateClassNames(
       {
         [FIELD_STATE.Error]:
-          'border-negative-400 text-negative-400 focus:border-negative-400',
+          'border-negative-400 text-negative-400 focus:border-negative-400 placeholder:!text-negative-400',
       },
       stateClassNamesProp,
     );

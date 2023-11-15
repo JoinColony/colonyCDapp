@@ -68,6 +68,7 @@ const ColonyDetailsFields: FC = () => (
       }}
     >
       <FormTextareaBase
+        message={false}
         name="colonyDescription"
         placeholder={formatText({
           id: 'actionSidebar.colonyDescription.placeholder',

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
@@ -6,28 +6,27 @@ import { ACTION_TYPE_FIELD_NAME } from '../consts';
 import { ActionFormBaseProps } from '../types';
 import { ActionFormProps } from '~shared/Fields/Form/ActionForm';
 import { ActionTypes } from '~redux';
+import { Action } from '~constants/actions';
 
 export const useActionFormProps = (
   defaultValues: ActionFormProps<any>['defaultValues'],
   isReadonly?: boolean,
 ) => {
+  const prevActionTypeRef = useRef<Action | undefined>();
   const navigate = useNavigate();
   const [actionFormProps, setActionFormProps] = useState<ActionFormProps<any>>({
     actionType: ActionTypes.ACTION_EXPENDITURE_PAYMENT,
     defaultValues,
     children: undefined,
   });
+
   const getFormOptions = useCallback<ActionFormBaseProps['getFormOptions']>(
     async (formOptions, form) => {
       if (!formOptions) {
         return;
       }
 
-      const {
-        defaultValues: formDefaultValues,
-        transform,
-        actionType: formAction,
-      } = formOptions;
+      const { defaultValues: formDefaultValues, transform } = formOptions;
 
       setActionFormProps({
         ...formOptions,
@@ -56,11 +55,13 @@ export const useActionFormProps = (
         children: undefined,
       });
 
-      if (actionFormProps.actionType !== formAction) {
+      const { title, [ACTION_TYPE_FIELD_NAME]: actionType } = form.getValues();
+
+      if (prevActionTypeRef.current === actionType) {
         return;
       }
 
-      const { title, [ACTION_TYPE_FIELD_NAME]: actionType } = form.getValues();
+      prevActionTypeRef.current = actionType;
 
       form.reset({
         ...(typeof formDefaultValues === 'function'
@@ -71,7 +72,7 @@ export const useActionFormProps = (
         [ACTION_TYPE_FIELD_NAME]: actionType,
       });
     },
-    [isReadonly, actionFormProps.actionType, defaultValues, navigate],
+    [isReadonly, defaultValues, navigate],
   );
 
   return {
