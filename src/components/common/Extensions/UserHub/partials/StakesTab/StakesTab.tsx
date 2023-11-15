@@ -3,19 +3,13 @@ import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import Tabs from '~shared/Extensions/Tabs';
-import {
-  useAppContext,
-  useAsyncFunction,
-  useColonyContext,
-  useEnabledExtensions,
-  useMobile,
-} from '~hooks';
-import { ActionTypes } from '~redux';
+import { useColonyContext, useMobile } from '~hooks';
 
 import { stakesFilterOptions } from './consts';
 import StakesList from './partials/StakesList';
 import { getStakesTabItems } from './helpers';
 import { useStakesByFilterType } from './useStakesByFilterType';
+import ClaimAllButton from './partials/ClaimAllButton';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 
@@ -23,8 +17,6 @@ const StakesTab = () => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { colony } = useColonyContext();
-  const { user } = useAppContext();
-  const { votingReputationAddress } = useEnabledExtensions();
 
   const [activeTab, setActiveTab] = useState(0);
   const activeFilterOption = stakesFilterOptions[activeTab];
@@ -48,12 +40,6 @@ const StakesTab = () => {
 
   const claimableStakes = stakesByFilterType.claimable;
 
-  const claimAll = useAsyncFunction({
-    submit: ActionTypes.MOTION_CLAIM_ALL,
-    error: ActionTypes.MOTION_CLAIM_ALL_ERROR,
-    success: ActionTypes.MOTION_CLAIM_ALL_SUCCESS,
-  });
-
   if (!colony) {
     return null;
   }
@@ -63,23 +49,10 @@ const StakesTab = () => {
       <div className="flex items-center justify-between mb-4">
         <p className="heading-5">{formatMessage({ id: 'stakes' })}</p>
         {!isMobile && (
-          <button
-            type="button"
-            className="text-blue-400 text-4 hover:text-gray-900 transition-all duration-normal"
-            aria-label={formatMessage({ id: 'claimStakes' })}
-            onClick={() =>
-              claimAll({
-                userAddress: user?.walletAddress ?? '',
-                colonyAddress: colony.colonyAddress,
-                extensionAddress: votingReputationAddress ?? '',
-                motionIds: claimableStakes.map(
-                  (stake) => stake.action?.motionData?.id ?? '',
-                ),
-              })
-            }
-          >
-            {formatMessage({ id: 'claimStakes' })}
-          </button>
+          <ClaimAllButton
+            colonyAddress={colony.colonyAddress}
+            claimableStakes={claimableStakes}
+          />
         )}
       </div>
       <Tabs
