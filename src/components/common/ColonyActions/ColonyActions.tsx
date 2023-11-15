@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { SpinnerLoader } from '~shared/Preloaders';
 import ActionsList from '~shared/ActionsList';
 import { useActivityFeed, useColonyContext } from '~hooks';
-import { ColonyActionType, SortDirection } from '~types';
+import { ColonyActionType } from '~types';
 import Button from '~shared/Button';
 
 import { ActionsListHeading } from '.';
@@ -43,6 +43,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
   const {
     actions,
     loading,
+    sortDirection,
     changeSortDirection,
     hasNextPage,
     goToNextPage,
@@ -72,7 +73,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
       {actions.length ? (
         <>
           <ActionsListHeading
-            sortDirection={SortDirection.Desc}
+            sortDirection={sortDirection}
             onSortChange={changeSortDirection}
           />
           <ActionsList items={actions} />
@@ -80,9 +81,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
             Page {pageNumber}
             <div>
               {pageNumber > 1 && (
-                <Button onClick={goToPreviousPage} loading={loading}>
-                  Previous
-                </Button>
+                <Button onClick={goToPreviousPage}>Previous</Button>
               )}
               {hasNextPage && (
                 <Button onClick={goToNextPage} loading={loading}>
