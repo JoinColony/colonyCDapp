@@ -11,9 +11,11 @@ interface TokenChoiceOptionsProps {
 export const TokenChoiceOptions = ({
   tokenChoiceOptions,
 }: TokenChoiceOptionsProps) => {
-  const { register } = useFormContext();
+  const { register, clearErrors } = useFormContext();
 
   const { formatMessage } = useIntl();
+
+  const { onChange } = register('tokenChoiceVerify');
 
   return (
     <div className="flex gap-4">
@@ -25,6 +27,10 @@ export const TokenChoiceOptions = ({
         >
           <input
             {...register('tokenChoiceVerify')}
+            onChange={(event) => {
+              clearErrors();
+              onChange(event);
+            }}
             type="radio"
             value={option}
             id={option}

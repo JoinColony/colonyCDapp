@@ -33,11 +33,8 @@ const StepCreateToken = ({
       validationSchema={validationSchema}
       defaultValues={{ ...defaultValues, tokenChoiceVerify: tokenChoice }}
     >
-      {({ watch, formState: { errors } }) => {
+      {({ watch }) => {
         const currentTokenChoice = watch('tokenChoiceVerify');
-
-        const continueOverride =
-          errors.tokenAddress?.type === 'doesTokenExist' ? false : undefined;
 
         return (
           <>
@@ -55,10 +52,7 @@ const StepCreateToken = ({
             ) : (
               <TokenSelectorInput wizardTokenAddress={tokenAddress} />
             )}
-            <ButtonRow
-              previousStep={previousStep}
-              continueButtonDisableOverride={continueOverride}
-            />
+            <ButtonRow previousStep={previousStep} />
           </>
         );
       }}

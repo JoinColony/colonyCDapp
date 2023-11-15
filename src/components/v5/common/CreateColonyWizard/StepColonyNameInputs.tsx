@@ -35,7 +35,7 @@ const StepColonyNameInputs = ({
 }: StepColonyNameInputsProps) => {
   const {
     register,
-    formState: { errors, isSubmitting, dirtyFields },
+    formState: { errors, isSubmitting, dirtyFields, submitCount },
   } = useFormContext();
 
   const { colonyName: colonyNameDirty } = dirtyFields;
@@ -45,15 +45,23 @@ const StepColonyNameInputs = ({
   const colonyNameSuccessMessage = formatText(MSG.urlSuccess);
 
   const displayNameError = errors.displayName?.message as string | undefined;
+  const showDisplayNameError =
+    errors.displayName?.type === 'required' && submitCount === 0
+      ? false
+      : displayNameError;
 
   const colonyNameError = errors.colonyName?.message as string | undefined;
+  const showColonyNameError =
+    errors.colonyName?.type === 'required' && submitCount === 0
+      ? false
+      : colonyNameError;
 
   return (
     <>
       <Input
         name="displayName"
         register={register}
-        isError={!!displayNameError}
+        isError={!!showDisplayNameError}
         customErrorMessage={displayNameError}
         className="text-md border-gray-300"
         maxCharNumber={MAX_COLONY_DISPLAY_NAME}
@@ -75,7 +83,7 @@ const StepColonyNameInputs = ({
           <Input
             name="colonyName"
             register={register}
-            isError={!!colonyNameError}
+            isError={!!showColonyNameError}
             customErrorMessage={colonyNameError}
             className="text-md border-gray-300 lowercase rounded-s-none ml-[117px] w-[calc(100%-117px)]"
             isDisabled={isSubmitting}

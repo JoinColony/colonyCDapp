@@ -41,24 +41,15 @@ export const HeaderRow = ({
 
 interface ButtonRowProps {
   previousStep: PreviousStep<FormValues>;
-  continueButtonDisableOverride?: boolean;
 }
 
-export const ButtonRow = ({
-  previousStep,
-  continueButtonDisableOverride,
-}: ButtonRowProps) => {
+export const ButtonRow = ({ previousStep }: ButtonRowProps) => {
   const {
     getValues,
-    formState: { isValid, isSubmitting },
+    formState: { isSubmitting },
   } = useFormContext();
 
   const values = getValues();
-
-  const disabled =
-    continueButtonDisableOverride !== undefined
-      ? continueButtonDisableOverride
-      : !isValid || isSubmitting;
 
   const loading = isSubmitting;
 
@@ -74,7 +65,6 @@ export const ButtonRow = ({
       <Button
         text={{ id: 'button.continue' }}
         type="submit"
-        disabled={disabled}
         loading={loading}
         mode="primarySolid"
       />
