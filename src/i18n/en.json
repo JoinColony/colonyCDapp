@@ -826,6 +826,8 @@
     "actions.userPermissions": "User permissions",
     "actions.recipent": "Colony members",
     "actions.manageReputation": "Manage reputation",
+    "actions.createAgreement": "Create agreement",
+    "actions.simpleDiscussion": "Simple Discussion",
     "connectWallet": "Connect wallet",
     "copyWalletAddress": "Copy wallet address",
     "copy.address": "Copy address",
