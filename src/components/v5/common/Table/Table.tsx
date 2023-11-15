@@ -70,7 +70,10 @@ const Table = <T,>({
               >
                 {headerGroups.map((headerGroup) =>
                   headerGroup.headers.map((header, index) => (
-                    <tr key={row.id + headerGroup.id + header.id}>
+                    <tr
+                      key={row.id + headerGroup.id + header.id}
+                      className="[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100"
+                    >
                       <th
                         className={`
                           bg-gray-50
@@ -154,7 +157,13 @@ const Table = <T,>({
             </thead>
             <tbody className="w-full">
               {rows.map((row) => (
-                <tr key={row.id} className={getRowClassName(row)}>
+                <tr
+                  key={row.id}
+                  className={clsx(
+                    getRowClassName(row),
+                    '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100',
+                  )}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <td
                       key={cell?.id}
