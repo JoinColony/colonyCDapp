@@ -4,7 +4,6 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import Card from '~shared/Card';
 import EthUsd from '~shared/EthUsd';
 import Numeral from '~shared/Numeral';
-import CopyableAddress from '~shared/CopyableAddress';
 import TokenInfoPopover from '~shared/TokenInfoPopover';
 import TokenIcon from '~shared/TokenIcon';
 import IconTooltip from '~shared/IconTooltip';
@@ -17,6 +16,7 @@ import { useColonyContext } from '~hooks';
 import { ADDRESS_ZERO } from '~constants';
 
 import styles from './TokenCard.css';
+import CopyableAddressV2 from '~shared/CopyableAddressV2';
 
 interface Props {
   domainId: number;
@@ -68,7 +68,7 @@ const TokenCard = ({ domainId, token }: Props) => {
             ) : (
               <>
                 <FormattedMessage {...MSG.unknownToken} />
-                <CopyableAddress>{token.tokenAddress}</CopyableAddress>
+                <CopyableAddressV2>{token.tokenAddress}</CopyableAddressV2>
               </>
             )}
             {token.tokenAddress === nativeToken?.tokenAddress &&
