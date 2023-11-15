@@ -2,17 +2,19 @@ import { useCallback, useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { Id } from '@colony/colony-js';
 import { DeepPartial } from 'utility-types';
+
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
-import {
-  useColonyContext,
-  useEnabledExtensions,
-  useNetworkInverseFee,
-} from '~hooks';
+import { useColonyContext, useNetworkInverseFee } from '~hooks';
 import { getCreatePaymentDialogPayload } from '~common/Dialogs/CreatePaymentDialog/helpers';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+
 import { ActionFormBaseProps } from '../../../types';
-import { useActionFormBaseHook } from '../../../hooks';
-import { DECISION_METHOD_OPTIONS } from '../../consts';
+import {
+  DecisionMethod,
+  DECISION_METHOD,
+  useActionFormBaseHook,
+} from '../../../hooks';
 import { SimplePaymentFormValues, validationSchema } from './consts';
 
 export const useSimplePayment = (
@@ -20,7 +22,9 @@ export const useSimplePayment = (
 ) => {
   const { networkInverseFee } = useNetworkInverseFee();
   const { colony } = useColonyContext();
-  const { isVotingReputationEnabled } = useEnabledExtensions();
+  const decisionMethod: DecisionMethod | undefined = useWatch({
+    name: DECISION_METHOD_FIELD_NAME,
+  });
   const tokenAddress: string = useWatch({ name: 'amount.tokenAddress' });
 
   useActionFormBaseHook({
@@ -28,19 +32,17 @@ export const useSimplePayment = (
     defaultValues: useMemo<DeepPartial<SimplePaymentFormValues>>(
       () => ({
         createdIn: Id.RootDomain.toString(),
-        decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
-        description: '',
         payments: [],
         amount: {
-          // amount: 0, // Disable default value
-          tokenAddress: colony?.nativeToken.tokenAddress || '',
+          tokenAddress: colony?.nativeToken.tokenAddress,
         },
       }),
       [colony?.nativeToken.tokenAddress],
     ),
-    actionType: isVotingReputationEnabled
-      ? ActionTypes.MOTION_EXPENDITURE_PAYMENT
-      : ActionTypes.ACTION_EXPENDITURE_PAYMENT,
+    actionType:
+      decisionMethod === DECISION_METHOD.Permissions
+        ? ActionTypes.ACTION_EXPENDITURE_PAYMENT
+        : ActionTypes.MOTION_EXPENDITURE_PAYMENT,
     getFormOptions,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(

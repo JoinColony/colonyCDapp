@@ -1,18 +1,21 @@
 import React, { FC } from 'react';
 
-import { useEditColonyDetails } from './hooks';
-import { ActionFormBaseProps } from '../../../types';
+import { formatText } from '~utils/intl';
 import ColonyDetailsFields from '~v5/common/ActionSidebar/partials/ColonyDetailsFields';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
-import { DECISION_METHOD_OPTIONS } from '../../consts';
-import { formatText } from '~utils/intl';
+
+import { useEditColonyDetails } from './hooks';
+import { ActionFormBaseProps } from '../../../types';
+import { useDecisionMethods } from '../../../hooks';
 import DescriptionRow from '../../DescriptionRow';
 
 const displayName = 'v5.common.ActionSidebar.partials.EditColonyDetailsForm';
 
 const EditColonyDetailsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+  const { decisionMethods } = useDecisionMethods();
+
   useEditColonyDetails(getFormOptions);
 
   return (
@@ -32,7 +35,10 @@ const EditColonyDetailsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <FormCardSelect
           name="decisionMethod"
-          options={DECISION_METHOD_OPTIONS}
+          options={decisionMethods}
+          placeholder={formatText({
+            id: 'actionSidebar.decisionMethod.placeholder',
+          })}
           title={formatText({ id: 'actionSidebar.decisionMethod' })}
         />
       </ActionFormRow>

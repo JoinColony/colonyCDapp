@@ -1,14 +1,15 @@
 import { useDispatch } from 'react-redux';
 import { Id } from '@colony/colony-js';
 import { useCallback, useMemo } from 'react';
+
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
 import { useAppContext, useColonyContext } from '~hooks';
 import { DecisionDialogValues } from '~common/ColonyDecisions/DecisionDialog';
 import { createDecisionAction } from '~redux/actionCreators';
+
 import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
-import { DECISION_METHOD_OPTIONS } from '../../consts';
 import { validationSchema, CreateDecisionFormValues } from './consts';
 
 export const useCreateDecision = (
@@ -42,10 +43,7 @@ export const useCreateDecision = (
     defaultValues: useMemo(
       () => ({
         createdIn: Id.RootDomain.toString(),
-        title: '',
-        description: '',
         walletAddress,
-        decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
       }),
       [walletAddress],
     ),

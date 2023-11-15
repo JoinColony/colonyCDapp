@@ -1,18 +1,22 @@
 import React, { FC } from 'react';
 
-import { useMintToken } from './hooks';
-import { ActionFormBaseProps } from '../../../types';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import AmountField from '~v5/common/ActionSidebar/partials/AmountField';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
-import { DECISION_METHOD_OPTIONS } from '../../consts';
-import { formatMessage } from '~utils/yup/tests/helpers';
+
+import { formatText } from '~utils/intl';
+
+import { useMintToken } from './hooks';
+import { ActionFormBaseProps } from '../../../types';
+import { useDecisionMethods } from '../../../hooks';
 import DescriptionRow from '../../DescriptionRow';
 
 const displayName = 'v5.common.ActionSidebar.partials.MintTokenForm';
 
 const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+  const { decisionMethods } = useDecisionMethods();
+
   useMintToken(getFormOptions);
 
   return (
@@ -20,10 +24,10 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         iconName="coins"
         fieldName="amount"
-        title={formatMessage({ id: 'actionSidebar.value' })}
+        title={formatText({ id: 'actionSidebar.value' })}
         tooltips={{
           label: {
-            tooltipContent: formatMessage({
+            tooltipContent: formatText({
               id: 'actionSidebar.tooltip.mintTokens.amount',
             }),
           },
@@ -36,26 +40,29 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         fieldName="decisionMethod"
         tooltips={{
           label: {
-            tooltipContent: formatMessage({
+            tooltipContent: formatText({
               id: 'actionSidebar.tooltip.decisionMethod',
             }),
           },
         }}
-        title={formatMessage({ id: 'actionSidebar.decisionMethod' })}
+        title={formatText({ id: 'actionSidebar.decisionMethod' })}
       >
         <FormCardSelect
           name="decisionMethod"
-          options={DECISION_METHOD_OPTIONS}
-          title={formatMessage({ id: 'actionSidebar.decisionMethod' })}
+          options={decisionMethods}
+          title={formatText({ id: 'actionSidebar.decisionMethod' })}
+          placeholder={formatText({
+            id: 'actionSidebar.decisionMethod.placeholder',
+          })}
         />
       </ActionFormRow>
       <ActionFormRow
         iconName="house-line"
         fieldName="createdIn"
-        title={formatMessage({ id: 'actionSidebar.createdIn' })}
+        title={formatText({ id: 'actionSidebar.createdIn' })}
         tooltips={{
           label: {
-            tooltipContent: formatMessage({
+            tooltipContent: formatText({
               id: 'actionSidebar.tooltip.createdIn',
             }),
           },

@@ -1,22 +1,22 @@
 import React, { FC } from 'react';
 
-import { useSplitPayment } from './hooks';
-import { ActionFormBaseProps } from '../../../types';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import AmountField from '~v5/common/ActionSidebar/partials/AmountField';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
-import {
-  DECISION_METHOD_OPTIONS,
-  DISTRIBUTION_METHOD_OPTIONS,
-} from '../../consts';
+import { useDecisionMethods } from '~v5/common/ActionSidebar/hooks';
 import { formatText } from '~utils/intl';
+
+import { useSplitPayment } from './hooks';
+import { ActionFormBaseProps } from '../../../types';
 import SplitPaymentRecipientsField from './partials/SplitPaymentRecipientsField';
 import DescriptionRow from '../../DescriptionRow';
 
 const displayName = 'v5.common.ActionSidebar.partials.SplitPaymentForm';
 
 const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+  const { decisionMethods } = useDecisionMethods();
+
   const { currentToken, distributionMethod, amount } =
     useSplitPayment(getFormOptions);
 
@@ -36,7 +36,7 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <FormCardSelect
           name="distributionMethod"
-          options={DISTRIBUTION_METHOD_OPTIONS}
+          options={decisionMethods}
           placeholder={formatText({
             id: 'actionSidebar.distributionPlaceholder',
           })}
@@ -85,7 +85,10 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <FormCardSelect
           name="decisionMethod"
-          options={DECISION_METHOD_OPTIONS}
+          options={decisionMethods}
+          placeholder={formatText({
+            id: 'actionSidebar.decisionMethod.placeholder',
+          })}
           title={formatText({ id: 'actionSidebar.decisionMethod' })}
         />
       </ActionFormRow>

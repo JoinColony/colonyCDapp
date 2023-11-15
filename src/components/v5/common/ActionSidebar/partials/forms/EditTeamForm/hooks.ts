@@ -1,14 +1,20 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { DeepPartial } from 'utility-types';
+
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
-import { useColonyContext, useEnabledExtensions } from '~hooks';
+import { useColonyContext } from '~hooks';
 import { getEditDomainDialogPayload } from '~common/Dialogs/EditDomainDialog/helpers';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+
 import { ActionFormBaseProps } from '../../../types';
-import { useActionFormBaseHook } from '../../../hooks';
-import { DECISION_METHOD_OPTIONS } from '../../consts';
+import {
+  DecisionMethod,
+  DECISION_METHOD,
+  useActionFormBaseHook,
+} from '../../../hooks';
 import { validationSchema, EditTeamFormValues } from './consts';
 
 export const useEditTeam = (
@@ -17,7 +23,9 @@ export const useEditTeam = (
   const { colony } = useColonyContext();
   const { domains } = colony || {};
   const { watch, setValue } = useFormContext();
-  const { isVotingReputationEnabled } = useEnabledExtensions();
+  const decisionMethod: DecisionMethod | undefined = useWatch({
+    name: DECISION_METHOD_FIELD_NAME,
+  });
 
   const selectedTeamId = watch('team');
   const selectedTeam = domains?.items.find(
@@ -39,17 +47,13 @@ export const useEditTeam = (
   useActionFormBaseHook({
     getFormOptions,
     validationSchema,
-    actionType: isVotingReputationEnabled
-      ? ActionTypes.MOTION_DOMAIN_CREATE_EDIT
-      : ActionTypes.ACTION_DOMAIN_EDIT,
+    actionType:
+      decisionMethod === DECISION_METHOD.Permissions
+        ? ActionTypes.ACTION_DOMAIN_EDIT
+        : ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
     defaultValues: useMemo<DeepPartial<EditTeamFormValues>>(
       () => ({
-        teamName: '',
-        domainPurpose: '',
-        domainColor: '',
         createdIn: Id.RootDomain.toString(),
-        decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
-        description: '',
       }),
       [],
     ),

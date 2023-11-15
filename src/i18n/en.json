@@ -980,6 +980,7 @@
     "actionSidebar.availableTokens": "Available tokens",
     "actionSidebar.availableDecisions": "Available decision methods",
     "actionSidebar.decisionMethod": "Decision method",
+    "actionSidebar.decisionMethod.placeholder": "Select method",
     "actionSidebar.team": "Select team",
     "actionSidebar.teamPurpose": "Team purpose",
     "actionSidebar.teamName": "Team name",
@@ -1417,5 +1418,6 @@
     "errors.title.maxLength": "Exceeded max character limit {currentLength}/{maxLength}.",
     "errors.colonyObjective.title": "Colony objective title is required",
     "errors.colonyObjective.description": "Colony objective description is required",
-    "errors.colonyObjective.progress": "Colony objective progress is required"
+    "errors.colonyObjective.progress": "Colony objective progress is required",
+    "errors.title.required": "Title is required"
 }

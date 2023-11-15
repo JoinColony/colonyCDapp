@@ -1,18 +1,21 @@
 import React, { FC } from 'react';
 
-import { useUpgradeColony } from './hooks';
-import { ActionFormBaseProps } from '../../../types';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import ColonyVersionField from '~v5/common/ActionSidebar/partials/ColonyVersionField';
-import { DECISION_METHOD_OPTIONS } from '../../consts';
 import { formatText } from '~utils/intl';
+
+import { useUpgradeColony } from './hooks';
+import { ActionFormBaseProps } from '../../../types';
+import { useDecisionMethods } from '../../../hooks';
 import DescriptionRow from '../../DescriptionRow';
 
 const displayName = 'v5.common.ActionSidebar.partials.UpgradeColonyForm';
 
 const UpgradeColonyForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+  const { decisionMethods } = useDecisionMethods();
+
   useUpgradeColony(getFormOptions);
 
   return (
@@ -32,7 +35,10 @@ const UpgradeColonyForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <FormCardSelect
           name="decisionMethod"
-          options={DECISION_METHOD_OPTIONS}
+          options={decisionMethods}
+          placeholder={formatText({
+            id: 'actionSidebar.decisionMethod.placeholder',
+          })}
           title={formatText({ id: 'actionSidebar.decisionMethod' })}
         />
       </ActionFormRow>

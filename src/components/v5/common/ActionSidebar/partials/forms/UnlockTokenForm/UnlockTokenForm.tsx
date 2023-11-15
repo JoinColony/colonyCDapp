@@ -1,17 +1,20 @@
 import React, { FC } from 'react';
 
-import { useUnlockToken } from './hooks';
-import { ActionFormBaseProps } from '../../../types';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
-import { DECISION_METHOD_OPTIONS } from '../../consts';
 import { formatText } from '~utils/intl';
+
+import { useUnlockToken } from './hooks';
+import { ActionFormBaseProps } from '../../../types';
+import { useDecisionMethods } from '../../../hooks';
 import DescriptionRow from '../../DescriptionRow';
 
 const displayName = 'v5.common.ActionSidebar.partials.UnlockTokenForm';
 
 const UnlockTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+  const { decisionMethods } = useDecisionMethods();
+
   useUnlockToken(getFormOptions);
 
   return (
@@ -30,7 +33,10 @@ const UnlockTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <FormCardSelect
           name="decisionMethod"
-          options={DECISION_METHOD_OPTIONS}
+          options={decisionMethods}
+          placeholder={formatText({
+            id: 'actionSidebar.decisionMethod.placeholder',
+          })}
           title={formatText({ id: 'actionSidebar.decisionMethod' })}
         />
       </ActionFormRow>

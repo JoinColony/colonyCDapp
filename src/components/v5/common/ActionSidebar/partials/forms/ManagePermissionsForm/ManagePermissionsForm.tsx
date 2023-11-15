@@ -1,12 +1,17 @@
 import React, { FC, useCallback } from 'react';
+
+import ActionFormRow from '~v5/common/ActionFormRow';
+import { formatText } from '~utils/intl';
+import { FormCardSelect } from '~v5/common/Fields/CardSelect';
+import useToggle from '~hooks/useToggle';
+import Icon from '~shared/Icon';
+import { CardSelectProps } from '~v5/common/Fields/CardSelect/types';
+
 import { useManagePermissions } from './hooks';
 import { ActionFormBaseProps } from '../../../types';
-import ActionFormRow from '~v5/common/ActionFormRow';
 import UserSelect from '../../UserSelect';
 import TeamsSelect from '../../TeamsSelect';
-import { FormCardSelect } from '~v5/common/Fields/CardSelect';
-import { DECISION_METHOD_OPTIONS } from '../../consts';
-import { formatText } from '~utils/intl';
+import { useDecisionMethods } from '../../../hooks';
 import PermissionsTable from './partials/PermissionsTable';
 import {
   AUTHORITY_OPTIONS,
@@ -14,15 +19,13 @@ import {
   REMOVE_ROLE_OPTION_VALUE,
 } from './consts';
 import PermissionsModal from './partials/PermissionsModal';
-import useToggle from '~hooks/useToggle';
-import Icon from '~shared/Icon';
-import { CardSelectProps } from '~v5/common/Fields/CardSelect/types';
 import { getRoleLabel } from './utils';
 import DescriptionRow from '../../DescriptionRow';
 
 const displayName = 'v5.common.ActionSidebar.partials.ManagePermissionsForm';
 
 const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+  const { decisionMethods } = useDecisionMethods();
   const { role, isModeRoleSelected } = useManagePermissions(getFormOptions);
   const [
     isPermissionsModalOpen,
@@ -164,7 +167,10 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <FormCardSelect
           name="decisionMethod"
-          options={DECISION_METHOD_OPTIONS}
+          options={decisionMethods}
+          placeholder={formatText({
+            id: 'actionSidebar.decisionMethod.placeholder',
+          })}
           title={formatText({ id: 'actionSidebar.decisionMethod' })}
         />
       </ActionFormRow>

@@ -6,6 +6,7 @@ import { ACTION, Action } from '~constants/actions';
 import { formatText } from '~utils/intl';
 
 export const ACTION_TYPE_FIELD_NAME = 'actionType';
+export const DECISION_METHOD_FIELD_NAME = 'decisionMethod';
 
 export const ACTION_TYPE_NOTIFICATION: Partial<
   Record<Action, React.ReactNode>
@@ -32,7 +33,7 @@ export const ACTION_BASE_VALIDATION_SCHEMA = yup
   .shape({
     title: yup
       .string()
-      .optional()
+      .required(formatText({ id: 'errors.title.required' }))
       .max(60, ({ max, value }) =>
         formatText(
           { id: 'errors.title.maxLength' },

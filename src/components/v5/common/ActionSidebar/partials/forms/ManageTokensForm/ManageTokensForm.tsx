@@ -1,18 +1,21 @@
 import React, { FC } from 'react';
 
-import { useManageTokens } from './hooks';
-import { ActionFormBaseProps } from '../../../types';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField';
-import { DECISION_METHOD_OPTIONS } from '../../consts';
-import TokensTable from '../../TokensTable/TokensTable';
 import { formatText } from '~utils/intl';
+
+import { useManageTokens } from './hooks';
+import { ActionFormBaseProps } from '../../../types';
+import { useDecisionMethods } from '../../../hooks';
+import TokensTable from '../../TokensTable/TokensTable';
 
 const displayName = 'v5.common.ActionSidebar.partials.ManageTokensForm';
 
 const ManageTokensForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+  const { decisionMethods } = useDecisionMethods();
+
   const { shouldShowMenu } = useManageTokens(getFormOptions);
 
   return (
@@ -31,7 +34,10 @@ const ManageTokensForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <FormCardSelect
           name="decisionMethod"
-          options={DECISION_METHOD_OPTIONS}
+          options={decisionMethods}
+          placeholder={formatText({
+            id: 'actionSidebar.decisionMethod.placeholder',
+          })}
           title={formatText({ id: 'actionSidebar.decisionMethod' })}
         />
       </ActionFormRow>

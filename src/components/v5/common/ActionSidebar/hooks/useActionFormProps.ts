@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { pipe, withMeta } from '~utils/actions';
+import { mapPayload, pipe, withMeta } from '~utils/actions';
 import { ACTION_TYPE_FIELD_NAME } from '../consts';
 import { ActionFormBaseProps } from '../types';
 import { ActionFormProps } from '~shared/Fields/Form/ActionForm';
@@ -23,7 +23,11 @@ export const useActionFormProps = (
         return;
       }
 
-      const { defaultValues: formDefaultValues, transform } = formOptions;
+      const {
+        defaultValues: formDefaultValues,
+        transform,
+        actionType: formAction,
+      } = formOptions;
 
       setActionFormProps({
         ...formOptions,
@@ -31,6 +35,10 @@ export const useActionFormProps = (
           ? {
               transform: pipe(
                 transform,
+                mapPayload((payload) => ({
+                  ...(payload || {}),
+                  customActionTitle: form.getValues('title') || '',
+                })),
                 withMeta({
                   setTxHash: (txHash: string) => {
                     navigate(`${window.location.pathname}?tx=${txHash}`, {
@@ -47,6 +55,11 @@ export const useActionFormProps = (
         },
         children: undefined,
       });
+
+      if (actionFormProps.actionType !== formAction) {
+        return;
+      }
+
       const { title, [ACTION_TYPE_FIELD_NAME]: actionType } = form.getValues();
 
       form.reset({
@@ -58,7 +71,7 @@ export const useActionFormProps = (
         [ACTION_TYPE_FIELD_NAME]: actionType,
       });
     },
-    [isReadonly, defaultValues, navigate],
+    [isReadonly, actionFormProps.actionType, defaultValues, navigate],
   );
 
   return {

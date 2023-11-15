@@ -1,20 +1,29 @@
 import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
 import { DeepPartial } from 'utility-types';
+import { useWatch } from 'react-hook-form';
+
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
-import { useColonyContext, useEnabledExtensions } from '~hooks';
+import { useColonyContext } from '~hooks';
 import { getTransferFundsDialogPayload } from '~common/Dialogs/TransferFundsDialog/helpers';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+
 import { ActionFormBaseProps } from '../../../types';
-import { useActionFormBaseHook } from '../../../hooks';
-import { DECISION_METHOD_OPTIONS } from '../../consts';
+import {
+  DecisionMethod,
+  DECISION_METHOD,
+  useActionFormBaseHook,
+} from '../../../hooks';
 import { validationSchema, TransferFundsFormValues } from './consts';
 
 export const useTransferFunds = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
-  const { isVotingReputationEnabled } = useEnabledExtensions();
+  const decisionMethod: DecisionMethod | undefined = useWatch({
+    name: DECISION_METHOD_FIELD_NAME,
+  });
 
   useActionFormBaseHook({
     validationSchema,
@@ -23,18 +32,16 @@ export const useTransferFunds = (
         createdIn: Id.RootDomain.toString(),
         to: Id.RootDomain.toString(),
         from: Id.RootDomain.toString(),
-        decisionMethod: DECISION_METHOD_OPTIONS[0]?.value,
-        description: '',
         amount: {
-          amount: 0,
-          tokenAddress: colony?.nativeToken.tokenAddress || '',
+          tokenAddress: colony?.nativeToken.tokenAddress,
         },
       }),
       [colony?.nativeToken.tokenAddress],
     ),
-    actionType: isVotingReputationEnabled
-      ? ActionTypes.MOTION_MOVE_FUNDS
-      : ActionTypes.ACTION_MOVE_FUNDS,
+    actionType:
+      decisionMethod === DECISION_METHOD.Permissions
+        ? ActionTypes.ACTION_MOVE_FUNDS
+        : ActionTypes.MOTION_MOVE_FUNDS,
     getFormOptions,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(

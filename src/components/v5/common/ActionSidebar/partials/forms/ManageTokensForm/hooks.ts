@@ -1,14 +1,22 @@
 import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
+import { useWatch } from 'react-hook-form';
+
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
-import { useAppContext, useColonyContext, useEnabledExtensions } from '~hooks';
-import { ActionFormBaseProps } from '../../../types';
-import { useActionFormBaseHook } from '../../../hooks';
+import { useAppContext, useColonyContext } from '~hooks';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import { getTokenManagementDialogPayload } from '~common/Dialogs/TokenManagementDialog/helpers';
-import { notNull } from '~utils/arrays';
-import { validationSchema, ManageTokensFormValues } from './consts';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import { notNull } from '~utils/arrays';
+
+import { ActionFormBaseProps } from '../../../types';
+import {
+  DecisionMethod,
+  DECISION_METHOD,
+  useActionFormBaseHook,
+} from '../../../hooks';
+import { validationSchema, ManageTokensFormValues } from './consts';
 
 export const useManageTokens = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -16,7 +24,9 @@ export const useManageTokens = (
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const { readonly } = useAdditionalFormOptionsContext();
-  const { isVotingReputationEnabled } = useEnabledExtensions();
+  const decisionMethod: DecisionMethod | undefined = useWatch({
+    name: DECISION_METHOD_FIELD_NAME,
+  });
 
   const colonyTokens = useMemo(
     () => colony?.tokens?.items.filter(notNull) || [],
@@ -39,16 +49,15 @@ export const useManageTokens = (
   useActionFormBaseHook({
     getFormOptions,
     validationSchema,
-    actionType: isVotingReputationEnabled
-      ? ActionTypes.MOTION_EDIT_COLONY
-      : ActionTypes.ACTION_EDIT_COLONY,
+    actionType:
+      decisionMethod === DECISION_METHOD.Permissions
+        ? ActionTypes.ACTION_EDIT_COLONY
+        : ActionTypes.MOTION_EDIT_COLONY,
     defaultValues: useMemo(
       () => ({
-        decisionMethod: '',
-        annotation: '',
         createdIn: Id.RootDomain.toString(),
-        selectedTokenAddresses: colonyTokens.map((token) => ({
-          token: token?.token.tokenAddress,
+        selectedTokenAddresses: colonyTokens.map(({ token }) => ({
+          token: token.tokenAddress,
         })),
       }),
       [colonyTokens],
