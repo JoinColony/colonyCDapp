@@ -6,6 +6,9 @@ import EmptyContent from '~v5/common/EmptyContent';
 import StakeItem from './StakeItem';
 import { StakesListProps } from '../types';
 
+const displayName =
+  'common.Extensions.UserHub.partials.StakesTab.partials.StakeItem';
+
 const StakesList = ({ stakes, loading, colony }: StakesListProps) => {
   if (loading) {
     return (
@@ -38,5 +41,7 @@ const StakesList = ({ stakes, loading, colony }: StakesListProps) => {
     </>
   );
 };
+
+StakesList.displayName = displayName;
 
 export default StakesList;
