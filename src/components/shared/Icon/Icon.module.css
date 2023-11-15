@@ -30,6 +30,10 @@
   @apply w-[1.25rem] h-[1.25rem];
 }
 
+.sizeMediumSmall {
+  @apply w-[1.375rem] h-[1.375rem];
+}
+
 .sizeMedium {
   @apply w-[1.75rem] h-[1.75rem];
 }
