@@ -73,7 +73,11 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
           items-center
       `}
         >
-          <Icon name={chainIconName} className="h-[96%] w-[96%]" />
+          <Icon
+            name={chainIconName}
+            appearance={{ size: 'tiny' }}
+            className="h-[96%] w-[96%]"
+          />
         </figure>
       )}
     </div>

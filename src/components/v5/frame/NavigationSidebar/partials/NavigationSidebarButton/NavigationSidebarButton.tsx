@@ -13,6 +13,7 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
   iconName,
   label,
   className,
+  hasSecondLevel,
   isActive,
   isExpanded,
   ...rest
@@ -23,7 +24,6 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
     <button
       type="button"
       className={clsx(
-        className,
         `
           group/navigation-button
           w-full
@@ -32,7 +32,7 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
           md:rounded-lg
           px-2
           md:px-2.5
-          py-2
+          py-2.5
           flex
           items-center
           justify-between
@@ -41,11 +41,13 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
           md:gap-0
           md:transition-all
         `,
-        {
-          'text-blue-400 md:text-white md:bg-gray-900': isActive,
-          'text-gray-900 md:bg-white md:hover:bg-gray-900 md:hover:text-white':
-            !isActive,
-        },
+        // Conditional classes for when the item is active
+        isActive && 'text-blue-400 md:text-white md:bg-gray-900',
+        // Conditional classes for when the item is not active
+        !isActive && [
+          'text-gray-900 md:hover:bg-gray-900 md:hover:text-white',
+          className, // custom className
+        ],
       )}
       {...rest}
     >
@@ -66,9 +68,11 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
           md:transition-[max-width]
         `}
       >
-        <span className="md:pl-2 md:whitespace-nowrap">{label}</span>
+        <span className="align-middle md:pl-2 md:whitespace-nowrap">
+          {label}
+        </span>
       </span>
-      {isTablet && (
+      {isTablet && hasSecondLevel && (
         <Icon
           name="caret-down"
           appearance={{ size: 'extraTiny' }}

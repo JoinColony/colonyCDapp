@@ -190,7 +190,9 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                 variants={secondLevelContentAnimation}
                 className="h-full"
               >
-                {openItemIndex && activeMainMenuItem ? (
+                {openItemIndex &&
+                activeMainMenuItem &&
+                activeMainMenuItem?.secondLevelMenuProps ? (
                   <NavigationSidebarSecondLevel
                     {...activeMainMenuItem.secondLevelMenuProps}
                     onArrowClick={

@@ -6,5 +6,7 @@ export interface NavigationSidebarButtonProps
   label: string;
   isActive?: boolean;
   isExpanded?: boolean;
+  hideMobile?: boolean;
+  hasSecondLevel?: boolean;
   className?: string;
 }

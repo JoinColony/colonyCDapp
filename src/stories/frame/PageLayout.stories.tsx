@@ -29,6 +29,13 @@ const SideBar = () => (
     }}
     mainMenuItems={[
       {
+        key: '0',
+        iconName: 'file-plus',
+        label: 'New action',
+        className: 'md:bg-base-bg',
+        hideMobile: true,
+      },
+      {
         key: '1',
         iconName: 'layout',
         label: 'Dashboard',
