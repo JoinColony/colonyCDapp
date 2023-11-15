@@ -1,8 +1,19 @@
 import { Token, ColonyWallet } from '~types';
 
-export interface BalanceProps {
+import { UserHubTabs } from '../../types';
+
+export interface ReputationTabProps {
+  onTabChange: (newTab: UserHubTabs) => void;
+}
+
+export interface BalanceProps extends Pick<ReputationTabProps, 'onTabChange'> {
   nativeToken: Token;
   wallet: ColonyWallet;
+}
+
+export interface ViewStakedButtonProps {
+  isFullSize?: boolean;
+  onClick: () => void;
 }
 
 export interface TotalReputationProps {

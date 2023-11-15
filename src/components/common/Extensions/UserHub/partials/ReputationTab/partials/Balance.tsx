@@ -4,20 +4,37 @@ import { useIntl } from 'react-intl';
 import { useGetUserTokenBalanceQuery } from '~gql';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import Numeral from '~shared/Numeral';
-import styles from '../ReputationTab.module.css';
-import { BalanceProps } from '../types';
-import PopoverButton from '~shared/Extensions/PopoverButton';
 import { useColonyContext, useMobile } from '~hooks';
 import TitleLabel from '~v5/shared/TitleLabel';
 import Button from '~v5/shared/Button';
 import { formatText } from '~utils/intl';
 import { useTokensModalContext } from '~context/TokensModalContext';
 import { TOKENS_MODAL_TYPES } from '~v5/common/TokensModal/consts';
+import { UserHubTabs } from '~common/Extensions/UserHub/types';
+
+import { BalanceProps, ViewStakedButtonProps } from '../types';
+
+import styles from '../ReputationTab.module.css';
 
 const displayName =
   'common.Extensions.UserHub.partials.ReputationTab.partials.Balance';
 
-const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
+const ViewStakedButton: FC<ViewStakedButtonProps> = ({
+  isFullSize,
+  onClick,
+}) => (
+  <Button
+    mode="primaryOutline"
+    size="extraSmall"
+    iconName="eye"
+    iconSize="extraTiny"
+    isFullSize={isFullSize}
+    text={formatText({ id: 'button.viewStaked' })}
+    onClick={onClick}
+  />
+);
+
+const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
   const { colony } = useColonyContext();
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
@@ -136,7 +153,11 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
               <span className={styles.rowName}>
                 {formatMessage({ id: 'staked' })}
               </span>
-              {!isMobile && <PopoverButton type="view" />}
+              {!isMobile && (
+                <ViewStakedButton
+                  onClick={() => onTabChange(UserHubTabs.Stakes)}
+                />
+              )}
             </div>
             <Numeral
               className={styles.numeral}
@@ -148,7 +169,10 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
           </div>
           {isMobile && (
             <div className="mt-3">
-              <PopoverButton type="view" isFullSize />
+              <ViewStakedButton
+                onClick={() => onTabChange(UserHubTabs.Stakes)}
+                isFullSize
+              />
             </div>
           )}
         </div>

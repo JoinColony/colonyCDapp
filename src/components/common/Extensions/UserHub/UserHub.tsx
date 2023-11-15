@@ -38,7 +38,7 @@ const UserHub: FC<UserHubProps> = ({ isTransactionTabVisible = false }) => {
         {isMobile ? (
           <UserHubMobile
             selectedTab={selectedTab}
-            handleChange={handleTabChange}
+            onTabChange={handleTabChange}
             tabList={tabList}
           />
         ) : (
@@ -92,8 +92,10 @@ const UserHub: FC<UserHubProps> = ({ isTransactionTabVisible = false }) => {
       <div
         className={clsx({
           'min-w-full px-6': isMobile,
-          'w-full py-6 pl-6 pr-2 relative': !isMobile && selectedTab === 2,
-          'w-full p-6 relative min-w-0': !isMobile && selectedTab !== 2,
+          'w-full py-6 pl-6 pr-2 relative':
+            !isMobile && selectedTab === UserHubTabs.Transactions,
+          'w-full p-6 relative min-w-0':
+            !isMobile && selectedTab !== UserHubTabs.Transactions,
         })}
       >
         <AnimatePresence>
@@ -104,7 +106,9 @@ const UserHub: FC<UserHubProps> = ({ isTransactionTabVisible = false }) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            {selectedTab === UserHubTabs.Overview && <ReputationTab />}
+            {selectedTab === UserHubTabs.Overview && (
+              <ReputationTab onTabChange={handleTabChange} />
+            )}
             {selectedTab === UserHubTabs.Stakes && <StakesTab />}
             {selectedTab === UserHubTabs.Transactions && (
               <TransactionsTab appearance={{ interactive: true }} />

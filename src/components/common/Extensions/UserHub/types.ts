@@ -1,8 +1,8 @@
 import { Appearance } from './partials/TransactionsTab/types';
 
 export interface UserHubMobileProps {
-  selectedTab: number;
-  handleChange: (id: number) => void;
+  selectedTab: UserHubTabs;
+  onTabChange: (newTab: UserHubTabs) => void;
   tabList: UserHubTabList;
 }
 
