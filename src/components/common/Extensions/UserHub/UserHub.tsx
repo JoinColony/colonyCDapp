@@ -12,7 +12,7 @@ import Icon from '~shared/Icon';
 import styles from './UserHub.module.css';
 import { tabList } from './consts';
 import UserHubMobile from './UserHubMobile';
-import { UserHubProps } from './types';
+import { UserHubProps, UserHubTabs } from './types';
 import TitleLabel from '~v5/shared/TitleLabel';
 
 export const displayName = 'common.Extensions.UserHub.partials.UserHub';
@@ -22,13 +22,13 @@ const UserHub: FC<UserHubProps> = ({ isTransactionTabVisible = false }) => {
   const { formatMessage } = useIntl();
   const [selectedTab, setSelectedTab] = useState(0);
 
-  const handleChange = (selectedOption: number) => {
-    setSelectedTab(selectedOption);
+  const handleTabChange = (newTab: UserHubTabs) => {
+    setSelectedTab(newTab);
   };
 
   useEffect(() => {
     if (isTransactionTabVisible) {
-      setSelectedTab(2);
+      setSelectedTab(UserHubTabs.Transactions);
     }
   }, [isTransactionTabVisible]);
 
@@ -38,7 +38,7 @@ const UserHub: FC<UserHubProps> = ({ isTransactionTabVisible = false }) => {
         {isMobile ? (
           <UserHubMobile
             selectedTab={selectedTab}
-            handleChange={handleChange}
+            handleChange={handleTabChange}
             tabList={tabList}
           />
         ) : (
@@ -104,9 +104,9 @@ const UserHub: FC<UserHubProps> = ({ isTransactionTabVisible = false }) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            {selectedTab === 0 && <ReputationTab />}
-            {selectedTab === 1 && <StakesTab />}
-            {selectedTab === 2 && (
+            {selectedTab === UserHubTabs.Overview && <ReputationTab />}
+            {selectedTab === UserHubTabs.Stakes && <StakesTab />}
+            {selectedTab === UserHubTabs.Transactions && (
               <TransactionsTab appearance={{ interactive: true }} />
             )}
           </motion.div>
