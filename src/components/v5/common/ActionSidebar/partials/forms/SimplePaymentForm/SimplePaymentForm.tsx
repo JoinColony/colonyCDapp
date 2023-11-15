@@ -62,7 +62,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         }}
         title={formatText({ id: 'actionSidebar.amount' })}
       >
-        <AmountField name="amount" />
+        <AmountField name="amount" maxWidth={270} />
       </ActionFormRow>
       <ActionFormRow
         iconName="scales"

@@ -1,14 +1,16 @@
-import { useLayoutEffect, useMemo, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import { useColonyContext } from '~hooks';
 import { notNull } from '~utils/arrays';
+import { getInputTextWidth } from '~utils/elements';
 import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 
 export const useAmountField = (
   selectedTokenAddress: string,
-  formValue: string | undefined,
+  name: string,
+  maxWidth: number | undefined,
 ) => {
+  const inputRef = useRef<HTMLInputElement>();
   const { colony } = useColonyContext();
-  const [inputWidth, setInputWidth] = useState<number>();
 
   const colonyTokens =
     colony?.tokens?.items
@@ -21,6 +23,7 @@ export const useAmountField = (
 
   const formattingOptions = useMemo(
     () => ({
+      name,
       delimiter: ',',
       numeral: true,
       numeralPositiveOnly: true,
@@ -28,42 +31,27 @@ export const useAmountField = (
         selectedToken?.decimals,
       ),
     }),
-    [selectedToken],
+    [selectedToken, name],
   );
 
-  const adjustInputWidth = (value: string) => {
-    // This regex matches strings that contain only digits and commas, preventing width breaking issues
-    const digitsAndCommasRegex = /^[\d,]*$/;
-
-    if (digitsAndCommasRegex.test(value)) {
-      const valueWithoutCommas = value.replace(/,/g, '');
-      const width = Math.min(valueWithoutCommas.length * 0.65, 20);
-      setInputWidth(width);
-    }
-  };
-
-  useLayoutEffect(() => {
-    if (!formValue) {
+  const adjustInputWidth = () => {
+    if (!inputRef.current) {
       return;
     }
 
-    adjustInputWidth(formValue);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-
-    adjustInputWidth(value);
+    inputRef.current.style.width = `${Math.min(
+      getInputTextWidth(inputRef.current, { usePlaceholderAsFallback: true }),
+      maxWidth || 120,
+    )}px`;
   };
 
   const dynamicCleaveOptionKey = JSON.stringify(formattingOptions);
 
   return {
+    inputRef,
     colonyTokens,
-    onInput,
+    adjustInputWidth,
     dynamicCleaveOptionKey,
-    inputWidth,
     formattingOptions,
     selectedToken,
   };

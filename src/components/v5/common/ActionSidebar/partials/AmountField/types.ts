@@ -7,4 +7,5 @@ export interface AmountFieldProps {
   amount?: string;
   defaultToken?: string;
   tokenAddress?: string;
+  maxWidth?: number;
 }

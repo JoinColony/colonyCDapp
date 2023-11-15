@@ -60,7 +60,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
       >
-        <AmountField name="amount" />
+        <AmountField name="amount" maxWidth={270} />
       </ActionFormRow>
       <ActionFormRow
         iconName="scales"
