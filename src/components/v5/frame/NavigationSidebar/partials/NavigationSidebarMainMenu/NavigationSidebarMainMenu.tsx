@@ -32,7 +32,6 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
             secondLevelMenuProps,
             relatedActionsProps,
             onClick,
-            hasSecondLevel = true,
             hideMobile,
             className,
             isActive: isActiveProp,
@@ -62,7 +61,7 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
                 isExpanded={isActive}
                 label={label}
                 iconName={iconName}
-                hasSecondLevel={hasSecondLevel}
+                hasSecondLevel={!!secondLevelMenuProps}
                 className={className}
               />
               <AnimatePresence>

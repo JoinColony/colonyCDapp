@@ -24,6 +24,7 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
     <button
       type="button"
       className={clsx(
+        className,
         `
           group/navigation-button
           w-full
@@ -41,13 +42,10 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
           md:gap-0
           md:transition-all
         `,
-        // Conditional classes for when the item is active
-        isActive && 'text-blue-400 md:text-white md:bg-gray-900',
-        // Conditional classes for when the item is not active
-        !isActive && [
-          'text-gray-900 md:hover:bg-gray-900 md:hover:text-white',
-          className, // custom className
-        ],
+        {
+          'text-blue-400 md:text-white md:bg-gray-900': isActive && !isTablet,
+          'text-gray-900 md:hover:bg-gray-900 md:hover:text-white': !isActive,
+        },
       )}
       {...rest}
     >

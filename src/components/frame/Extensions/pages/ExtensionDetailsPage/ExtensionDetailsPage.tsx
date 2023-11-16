@@ -10,24 +10,23 @@ import {
 import { useColonyContext, useExtensionData } from '~hooks';
 import ExtensionDetails from './partials/ExtensionDetails';
 import ImageCarousel from '~common/Extensions/ImageCarousel';
-
 import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
 import NotFoundRoute from '~routes/NotFoundRoute';
 import { ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
 import { mapPayload, mergePayload, pipe } from '~utils/actions';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
 import {
   createExtensionSetupInitialValues,
   mapExtensionActionPayload,
 } from '~common/Extensions/ExtensionSetup/utils';
 import { formatText } from '~utils/intl';
-import { getValidationSchema } from './validation';
 
+import { getValidationSchema } from './validation';
 import { getFormSuccessFn } from './utils';
 import ExtensionInfo from './ExtensionInfo';
 import ExtensionsTopRow from './ExtensionTopRow';
 import { SetupComponentMap } from './consts';
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
 
 const displayName = 'frame.Extensions.pages.ExtensionDetailsPage';
 
@@ -92,7 +91,7 @@ const ExtensionDetailsPage: FC = () => {
       defaultValues={defaultValues}
       onSuccess={handleFormSuccess}
     >
-      <div className="grid grid-cols-6 gap-4">
+      <div className="grid grid-cols-6 gap-4 md:gap-x-12 md:gap-y-6">
         <div className="order-1 col-span-6">
           <ExtensionsTopRow
             extensionData={extensionData}
