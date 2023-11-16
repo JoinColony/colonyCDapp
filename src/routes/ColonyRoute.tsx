@@ -12,26 +12,29 @@ import {
   TokensModalContextProvider,
 } from '~context';
 import { ColonyLayout } from '~frame/Extensions/layouts';
+import { MemberContextProviderWithSearchAndFilter as MemberContextProvider } from '~context/MemberContext';
 
 const ColonyRoute = () => (
   <ColonyContextProvider>
-    <ActionSidebarContextProvider>
-      <ColonyDecisionProvider>
-        <UserTokenBalanceProvider>
-          <MemberModalProvider>
-            <ColonyCreatedModalProvider>
-              <UserTransactionContextProvider>
-                <TokensModalContextProvider>
-                  <ColonyLayout>
-                    <Outlet />
-                  </ColonyLayout>
-                </TokensModalContextProvider>
-              </UserTransactionContextProvider>
-            </ColonyCreatedModalProvider>
-          </MemberModalProvider>
-        </UserTokenBalanceProvider>
-      </ColonyDecisionProvider>
-    </ActionSidebarContextProvider>
+    <MemberContextProvider>
+      <ActionSidebarContextProvider>
+        <ColonyDecisionProvider>
+          <UserTokenBalanceProvider>
+            <MemberModalProvider>
+              <ColonyCreatedModalProvider>
+                <UserTransactionContextProvider>
+                  <TokensModalContextProvider>
+                    <ColonyLayout>
+                      <Outlet />
+                    </ColonyLayout>
+                  </TokensModalContextProvider>
+                </UserTransactionContextProvider>
+              </ColonyCreatedModalProvider>
+            </MemberModalProvider>
+          </UserTokenBalanceProvider>
+        </ColonyDecisionProvider>
+      </ActionSidebarContextProvider>
+    </MemberContextProvider>
   </ColonyContextProvider>
 );
 

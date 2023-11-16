@@ -1,8 +1,5 @@
 import { useMemo } from 'react';
-import {
-  calculateLastSliceIndex,
-  calculateRemainingItems,
-} from '~utils/avatars';
+import { calculateRemainingItems } from '~utils/avatars';
 import { useGetUsers } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VoteOutcome/VoteResults/helpers';
 import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
 import useAppContext from '../useAppContext';
@@ -16,17 +13,15 @@ export const useUserAvatars = (
   const { user } = useAppContext();
   const voterAddresses = useMemo(
     () =>
-      items
-        .reduce<string[]>((acc, { address }) => {
-          if (address === user?.walletAddress) {
-            acc.unshift(address);
-          } else {
-            acc.push(address);
-          }
-          return acc;
-        }, [])
-        .slice(0, calculateLastSliceIndex(maxAvatars, items)),
-    [maxAvatars, items, user],
+      items.reduce<string[]>((acc, { address }) => {
+        if (address === user?.walletAddress) {
+          acc.unshift(address);
+        } else {
+          acc.push(address);
+        }
+        return acc;
+      }, []),
+    [items, user],
   );
 
   const registeredUsers = useGetUsers(voterAddresses);

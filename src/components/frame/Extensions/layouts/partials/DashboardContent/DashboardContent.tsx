@@ -1,19 +1,20 @@
 import React, { FC } from 'react';
+import { useMemberContext } from '~context/MemberContext';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
 import NavigationSidebarLinksList from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLinksList';
 
 import { dashboardMainMenu, dashboardMenu } from '../../consts';
-import { useGetColonyMembers } from './hooks';
 
 const DashboardContent: FC = () => {
-  const { contributorsCount, allMembersCount, loading } = useGetColonyMembers();
+  const { totalContributorCount, totalMemberCount, memberCountLoading } =
+    useMemberContext();
 
   return (
     <div className="w-full pt-2 md:pt-4">
       <div className="w-full flex items-center gap-4 mb-4 md:mb-7 text-sm text-gray-900 px-2 md:px-0">
-        {loading ? (
+        {memberCountLoading ? (
           <SpinnerLoader />
         ) : (
           <>
@@ -23,7 +24,7 @@ const DashboardContent: FC = () => {
                 {
                   count: (
                     <strong className="font-semibold">
-                      {Intl.NumberFormat().format(contributorsCount)}
+                      {Intl.NumberFormat().format(totalContributorCount)}
                     </strong>
                   ),
                 },
@@ -35,7 +36,7 @@ const DashboardContent: FC = () => {
                 {
                   count: (
                     <strong className="font-semibold">
-                      {Intl.NumberFormat().format(allMembersCount)}
+                      {Intl.NumberFormat().format(totalMemberCount)}
                     </strong>
                   ),
                 },

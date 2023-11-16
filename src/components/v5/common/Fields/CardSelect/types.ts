@@ -32,6 +32,15 @@ export interface CardSelectProps<TValue> extends BaseFieldProps {
   cardClassName?: string;
   togglerClassName?: string;
   footer?: React.ReactNode | ((toggle: UseToggleReturnType) => React.ReactNode);
+  itemClassName?: string;
+  renderOptionWrapper?: (
+    props: {
+      className?: string;
+      onClick?: () => void;
+      'aria-label'?: string;
+    },
+    children: React.ReactNode,
+  ) => React.ReactElement | null | undefined;
 }
 
 export interface FormCardSelectProps<TValue>

@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import UserAvatar from '~v5/shared/UserAvatar';
 import { UserAvatarsProps } from './types';
 import { User } from '~types';
-import { useUserAvatars } from '~hooks/useUserAvatars';
+import { calculateLastSliceIndex } from '~utils/avatars';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.Motion.steps.OutcomeStep.partials.MembersAvatars';
@@ -13,23 +13,27 @@ const UserAvatars: FC<UserAvatarsProps> = ({
   maxAvatarsToShow = 4,
   className,
   showRemainingAvatars = true,
+  remainingAvatarsCount,
   size = 'sm',
 }) => {
-  const { registeredUsers, remainingAvatarsCount } = useUserAvatars(
-    maxAvatarsToShow,
-    items,
+  const slicedAvatars = items.slice(
+    0,
+    calculateLastSliceIndex(maxAvatarsToShow, items),
   );
 
   return (
     <ul className={clsx(className, 'flex')}>
-      {registeredUsers?.map((registeredVoter: User) => (
-        <li key={registeredVoter.walletAddress} className="-ml-3">
+      {slicedAvatars?.map((slicedAvatar: User) => (
+        <li key={slicedAvatar.walletAddress} className="-ml-3">
           <UserAvatar
-            user={registeredVoter}
+            user={slicedAvatar}
             size={size}
-            className={clsx('border-base-white border rounded-full', {
-              'border-2': size === 'xms',
-            })}
+            className={clsx(
+              'border-base-white bg-base-white border rounded-full',
+              {
+                'border-2': size === 'xms',
+              },
+            )}
           />
         </li>
       ))}

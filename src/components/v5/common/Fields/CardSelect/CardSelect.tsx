@@ -33,6 +33,12 @@ function CardSelect<TValue = string>({
   footer,
   disabled,
   readonly,
+  itemClassName = 'group flex text-md md:transition-colors md:hover:font-medium md:hover:bg-gray-50 rounded px-4 py-2 w-full cursor-pointer',
+  renderOptionWrapper = (props, children) => (
+    <button type="button" {...props}>
+      {children}
+    </button>
+  ),
 }: CardSelectProps<TValue>): JSX.Element {
   const cardSelectToggle = useToggle();
   const [
@@ -156,17 +162,17 @@ function CardSelect<TValue = string>({
                                   hoverClassName="font-medium block"
                                   hoverElement="div"
                                 >
-                                  <button
-                                    type="button"
-                                    className="flex text-md md:transition-colors md:hover:font-medium md:hover:bg-gray-50 rounded px-4 py-2 w-full"
-                                    aria-label={ariaLabel}
-                                    onClick={() => {
-                                      onChange(optionValue);
-                                      toggleSelectOff();
-                                    }}
-                                  >
-                                    {label}
-                                  </button>
+                                  {renderOptionWrapper(
+                                    {
+                                      className: itemClassName,
+                                      'aria-label': ariaLabel,
+                                      onClick: () => {
+                                        onChange(optionValue);
+                                        toggleSelectOff();
+                                      },
+                                    },
+                                    label,
+                                  )}
                                 </HoverWidthWrapper>
                               </li>
                             ),

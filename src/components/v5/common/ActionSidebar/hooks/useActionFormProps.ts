@@ -7,6 +7,7 @@ import { ActionFormBaseProps } from '../types';
 import { ActionFormProps } from '~shared/Fields/Form/ActionForm';
 import { ActionTypes } from '~redux';
 import { Action } from '~constants/actions';
+import { setQueryParamOnUrl } from '~utils/urls';
 
 export const useActionFormProps = (
   defaultValues: ActionFormProps<any>['defaultValues'],
@@ -40,9 +41,16 @@ export const useActionFormProps = (
                 })),
                 withMeta({
                   setTxHash: (txHash: string) => {
-                    navigate(`${window.location.pathname}?tx=${txHash}`, {
-                      replace: true,
-                    });
+                    navigate(
+                      setQueryParamOnUrl(
+                        window.location.pathname,
+                        'tx',
+                        txHash,
+                      ),
+                      {
+                        replace: true,
+                      },
+                    );
                   },
                 }),
               ),

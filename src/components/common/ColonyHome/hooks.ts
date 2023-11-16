@@ -1,13 +1,57 @@
-import { useColonyContext, useGetColonyMembers } from '~hooks';
+import { useMemo } from 'react';
+import { useGetColonyContributorsQuery } from '~gql';
+import { useColonyContext } from '~hooks';
+import { notNull } from '~utils/arrays';
 import { getBalanceForTokenAndDomain } from '~utils/tokens';
 import { useActionsList } from '~v5/common/ActionSidebar/hooks';
 import { setTeamColor } from './consts';
 import { UseGetHomeWidgetReturnType } from './types';
 
+export const useGetAllColonyMembers = (
+  colonyAddress: string,
+  team?: number,
+) => {
+  const { data, loading } = useGetColonyContributorsQuery({
+    variables: {
+      colonyAddress,
+    },
+    skip: !colonyAddress,
+  });
+
+  const { items } = data?.getContributorsByColony || {};
+
+  const allMembers = useMemo(
+    () =>
+      items
+        ?.filter(notNull)
+        .filter(
+          ({ isVerified, hasPermissions, hasReputation, isWatching }) =>
+            isWatching || hasPermissions || hasReputation || isVerified,
+        ) ?? [],
+    [items],
+  );
+
+  const filteredMembers = useMemo(
+    () =>
+      team
+        ? allMembers.filter(
+            ({ roles, reputation }) =>
+              roles?.items?.find((role) => role?.domain.nativeId === team) ||
+              reputation?.items?.find((rep) => rep?.domain.nativeId === team),
+          )
+        : allMembers,
+    [allMembers, team],
+  );
+
+  return {
+    colonyMembers: filteredMembers,
+    loading,
+  };
+};
+
 export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
   const { colony } = useColonyContext();
-  const { domains, colonyAddress, nativeToken } = colony || {};
-  const { balances } = colony || {};
+  const { domains, colonyAddress, nativeToken, balances } = colony || {};
 
   const currentTokenBalance =
     getBalanceForTokenAndDomain(
@@ -16,8 +60,10 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
       team,
     ) || 0;
 
-  const { allMembers, loading: membersLoading } =
-    useGetColonyMembers(colonyAddress);
+  const { colonyMembers, loading: membersLoading } = useGetAllColonyMembers(
+    colonyAddress || '',
+    team,
+  );
 
   const actionsList = useActionsList();
   const activeActions = actionsList
@@ -30,16 +76,23 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
   )?.metadata?.color;
 
   const teamColor = setTeamColor(selectedTeamColor);
-  const mappedMembers = allMembers
-    .map((member) => ({
-      address: member.walletAddress,
-      ...member,
-    }))
-    .filter(
-      (member, index, self) =>
-        index === self.findIndex((m) => m.address === member.address),
-    )
-    .sort(() => Math.random() - 0.5);
+  const mappedMembers = useMemo(
+    () =>
+      colonyMembers
+        .filter(
+          (member, index, self) =>
+            index ===
+            self.findIndex(
+              (m) => m.contributorAddress === member.contributorAddress,
+            ),
+        )
+        .map((member) => ({
+          walletAddress: member.contributorAddress,
+          ...member.user,
+        }))
+        .sort(() => Math.random() - 0.5),
+    [colonyMembers],
+  );
 
   return {
     activeActions,
