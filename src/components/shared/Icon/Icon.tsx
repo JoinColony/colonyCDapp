@@ -14,20 +14,22 @@ import styles from './Icon.module.css';
 
 const displayName = 'Icon';
 
+export type IconSize =
+  | 'extraExtraTiny'
+  | 'extraTiny'
+  | 'tiny'
+  | 'extraSmall'
+  | 'small'
+  | 'normal'
+  | 'medium'
+  | 'big'
+  | 'extraBig'
+  | 'large'
+  | 'huge';
+
 type Appearance = {
   theme?: 'primary' | 'invert';
-  size?:
-    | 'extraExtraTiny'
-    | 'extraTiny'
-    | 'tiny'
-    | 'extraSmall'
-    | 'small'
-    | 'normal'
-    | 'medium'
-    | 'big'
-    | 'extraBig'
-    | 'large'
-    | 'huge';
+  size?: IconSize;
 };
 
 export interface IconProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
