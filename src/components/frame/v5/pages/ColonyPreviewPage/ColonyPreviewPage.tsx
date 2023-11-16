@@ -46,7 +46,7 @@ const MSG = defineMessages({
   },
   invalidBannerTitle: {
     id: `${displayName}.invalidBannerTitle`,
-    defaultMessage: 'The invite code is invalid',
+    defaultMessage: 'Sorry, your invite code is not valid. Please check again.',
   },
   connectWalletButton: {
     id: `${displayName}.connectWalletButton`,
@@ -58,12 +58,14 @@ const MSG = defineMessages({
   },
   restrictedAccessMessage: {
     id: `${displayName}.restrictedAccessMessage`,
+    /* eslint-disable max-len */
     defaultMessage: `
-    This Colony has restricted access during the private beta test.
-      {invited, select,
-      true {}
-      other {To request access to this Colony, you can contact them via their social accounts above.}
+    This Colony has restricted access during the private beta test. Only members who have been invited can access the Colony.
+      {needsToRequestAccess, select,
+      true {To request access to this Colony, you can contact them via their social accounts above.}
+      other {}
     }`,
+    /* eslint-enable max-len */
   },
   joinColonyButton: {
     id: `${displayName}.joinColonyButton`,
@@ -147,6 +149,7 @@ const ColonyPreviewPage = () => {
   const inviteIsInvalid = inviteCode && !inviteIsValid;
   const colonyDisplayName =
     colonyData?.getColonyByName?.items[0]?.metadata?.displayName || colonyName;
+  const colonyHasSocialLinks = false;
 
   return (
     <div className="max-w-[34rem] mx-auto">
@@ -169,7 +172,7 @@ const ColonyPreviewPage = () => {
       )}
       {inviteIsInvalid && (
         <NotificationBanner
-          iconName="thumbs-down"
+          iconName="hand-waving"
           status="error"
           className="my-8"
           title={formatMessage(MSG.invalidBannerTitle)}
@@ -227,7 +230,9 @@ const ColonyPreviewPage = () => {
       >
         <FormattedMessage
           {...MSG.restrictedAccessMessage}
-          values={{ invited: inviteIsValid }}
+          values={{
+            needsToRequestAccess: !inviteIsValid && colonyHasSocialLinks,
+          }}
         />
       </CardWithCallout>
     </div>

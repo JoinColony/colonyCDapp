@@ -38,6 +38,7 @@ import ColonyHomeRoutes from '~common/ColonyHome/ColonyHomeRoutes';
 
 import LandingPageRoute from './LandingPageRoute';
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
+import ActivityPage from '~frame/v5/pages/ActivityPage';
 
 import {
   COLONY_BALANCES_ROUTE,
