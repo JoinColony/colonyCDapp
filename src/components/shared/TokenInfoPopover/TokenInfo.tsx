@@ -70,7 +70,7 @@ const TokenInfo = ({ token, isTokenNative }: Props) => {
           avatar={thumbnail || avatar}
           className="flex-shrink-0"
         />
-        <div className="flex flex-col flex-1 min-w-0">
+        <div className="flex flex-col flex-1 min-w-0 gap-1">
           <h4 className="font-bold text-xl overflow-hidden text-ellipsis whitespace-nowrap">
             {name} ({symbol})
           </h4>
