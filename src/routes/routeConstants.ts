@@ -3,6 +3,8 @@
 
 // Colony rooutes
 export const COLONY_HOME_ROUTE = '/colony/:colonyName/*';
+// @todo remove when going live
+export const COLONY_OLD_HOME_ROUTE = '/old/:colonyName/*';
 export const COLONY_DETAILS_ROUTE = `details`;
 export const COLONY_ADMIN_ROUTE = `admin`;
 export const COLONY_REPUTATION_ROUTE = `reputation`;

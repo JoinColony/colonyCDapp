@@ -33,6 +33,7 @@ import CreateUserPage from '~frame/v5/pages/CreateUserPage';
 import {
   COLONY_FUNDING_ROUTE,
   COLONY_HOME_ROUTE,
+  COLONY_OLD_HOME_ROUTE,
   COLONY_MEMBERS_ROUTE,
   COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
   CREATE_COLONY_ROUTE,
@@ -190,6 +191,79 @@ const Routes = () => {
           <Route path={ACTIONS_PAGE_ROUTE} element={<ActionDetailsPage />} />
           <Route path={DECISIONS_PAGE_ROUTE} element={<ActionDetailsPage />} />
         </Route>
+
+        {/* OLD Colony routes -- remove when going live */}
+        <Route path={COLONY_OLD_HOME_ROUTE} element={<ColonyRoute />}>
+          <Route index element={<ColonyHome />} />
+          <Route path={COLONY_FUNDING_ROUTE} element={<ColonyFunding />} />
+          <Route element={<ColonyMembersRoute />}>
+            <Route path={COLONY_MEMBERS_ROUTE} element={<MembersPage />} />
+            <Route
+              path={COLONY_MEMBERS_WITH_DOMAIN_ROUTE}
+              element={<MembersPage />}
+            />
+            <Route
+              path={COLONY_CONTRIBUTORS_ROUTE}
+              element={<ColonyUsersPage pageName="contributors" />}
+            />
+            <Route
+              path={COLONY_FOLLOWERS_ROUTE}
+              element={<ColonyUsersPage pageName="followers" />}
+            />
+            <Route path={COLONY_VERIFIED_ROUTE} element={<VerifiedPage />} />
+            <Route path={COLONY_TEAMS_ROUTE} element={<TeamsPage />} />
+          </Route>
+          <Route
+            path={COLONY_DECISIONS_PREVIEW_ROUTE}
+            element={
+              <NavBar>
+                <DecisionPreview />
+              </NavBar>
+            }
+          />
+
+          {/* Colony settings routes */}
+          <Route element={<ColonySettingsRoute />}>
+            <Route
+              path={COLONY_DETAILS_ROUTE}
+              element={<ColonyDetailsPage />}
+            />
+            <Route
+              path={COLONY_REPUTATION_ROUTE}
+              element={<ReputationPage />}
+            />
+            <Route
+              path={COLONY_PERMISSIONS_ROUTE}
+              element={<PermissionsPage />}
+            />
+            <Route
+              path={COLONY_EXTENSIONS_ROUTE}
+              element={<ExtensionsPage />}
+            />
+            <Route
+              path={COLONY_EXTENSION_DETAILS_ROUTE}
+              element={
+                /* I am not sure why this needs a provider, but I guess we'll find out soon enough */
+                <ExtensionsContextProvider>
+                  <ExtensionDetailsPage />
+                </ExtensionsContextProvider>
+              }
+            />
+            <Route
+              path={COLONY_INTEGRATIONS_ROUTE}
+              element={<IntegrationsPage />}
+            />
+            <Route
+              path={COLONY_INCORPORATION_ROUTE}
+              element={<IncorporationPage />}
+            />
+            <Route path={COLONY_ADVANCED_ROUTE} element={<AdvancedPage />} />
+          </Route>
+
+          <Route path={ACTIONS_PAGE_ROUTE} element={<ActionDetailsPage />} />
+          <Route path={DECISIONS_PAGE_ROUTE} element={<ActionDetailsPage />} />
+        </Route>
+
         {/*
       <AlwaysAccesibleRoute
         path={UNWRAP_TOKEN_ROUTE}
