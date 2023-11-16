@@ -90,8 +90,8 @@ const useAllMembers = ({
   );
 
   return {
-    members: filteredMembers.slice(0, visibleItems),
-    verifiedMembers: verifiedMembers.slice(0, visibleItems),
+    members: filteredMembers,
+    verifiedMembers,
     canLoadMore: filteredMembers.length > visibleItems || !!nextToken,
     loadMore() {
       setPage((prevPage) => prevPage + 1);
