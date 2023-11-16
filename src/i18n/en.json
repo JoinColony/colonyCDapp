@@ -76,6 +76,8 @@
     "role.remove": "removed",
     "role.to": "to",
     "role.from": "from",
+    "button.join": "Join",
+    "button.joined": "Joined",
     "button.accept": "Accept",
     "button.activate": "Activate",
     "button.deactivate": "Withdraw",

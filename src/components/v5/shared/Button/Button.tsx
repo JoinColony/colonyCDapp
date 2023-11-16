@@ -54,6 +54,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
                 size === 'extraSmall',
               'text-sm min-h-[2.125rem] px-3 py-2': size === 'small',
               [styles.primarySolid]: mode === 'primarySolid',
+              [styles.primarySolidFull]: mode === 'primarySolidFull',
               [styles.primaryOutline]: mode === 'primaryOutline',
               [styles.primaryOutlineFull]: mode === 'primaryOutlineFull',
               [styles.secondarySolid]: mode === 'secondarySolid',

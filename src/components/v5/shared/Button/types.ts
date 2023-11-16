@@ -7,6 +7,7 @@ import { LinkProps } from '../Link/types';
 
 export type ButtonMode =
   | 'primarySolid'
+  | 'primarySolidFull'
   | 'primaryOutline'
   | 'primaryOutlineFull'
   | 'secondarySolid'
