@@ -123,6 +123,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
                     text={MSG.inviteMembers}
                     mode="primaryOutline"
                     iconName="paper-plane-tilt"
+                    size="small"
                     onClick={() => setIsInviteMembersModalOpen(true)}
                   />
                   <InviteMembersModal
