@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import styles from './ColonyDetailsPage.module.css';
 import { useColonyContext, useMobile } from '~hooks';
@@ -13,16 +13,18 @@ import { formatText } from '~utils/intl';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { ACTION } from '~constants/actions';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+import CopyableAddressV2 from '~shared/CopyableAddressV2';
 
 const displayName = 'frame.Extensions.pages.ColonyDetailsPage';
 
 const ColonyDetailsPage: FC = () => {
+  const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { colony } = useColonyContext();
 
   useSetPageHeadingTitle(formatText({ id: 'colonyDetailsPage.title' }));
 
-  const { name, metadata } = colony || {};
+  const { name, metadata, colonyAddress, nativeToken } = colony || {};
   const { avatar, thumbnail, description, externalLinks, objective } =
     metadata || {};
 
@@ -33,11 +35,22 @@ const ColonyDetailsPage: FC = () => {
   return (
     <div>
       <div className={clsx('pt-[4.375rem] px-6 pb-6 mt-10', styles.box)}>
-        <div className="absolute left-6 -top-11 rounded-full border-4 border-gray-100 flex">
+        <div className="flex flex-row items-center">
           <Avatar size="md" avatar={avatar || thumbnail || ''} />
+          <div className="flex flex-col items-start gap-2 ml-4">
+            <div className="flex flex-row items-end gap-3">
+              <h2 className="heading-2">{name}</h2>
+              {nativeToken && <span>{nativeToken.name}</span>}
+            </div>
+            {colonyAddress && (
+              <CopyableAddressV2>{colonyAddress}</CopyableAddressV2>
+            )}
+          </div>
         </div>
-        <h2 className="heading-2 mb-1">{name}</h2>
-        <p className="text-md text-gray-600 mb-5">{description}</p>
+        <p className="text-md text-gray-600 mt-4 mb-6">
+          {description ??
+            formatMessage({ id: 'colonyDetailsPage.descriptionPlaceholder' })}
+        </p>
         <div className="mb-6 flex gap-x-2">
           {externalLinks?.length ? (
             externalLinks.map(({ name: linkName, link }) => (

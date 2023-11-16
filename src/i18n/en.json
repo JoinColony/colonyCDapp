@@ -741,7 +741,7 @@
     "advancedSettings.delete.modal.textarea.label": "Help us improve Colony (Optional)",
     "advancedSettings.delete.modal.checkbox.label": "I understand that deleted accounts aren't recoverable",
     "colonyDetailsPage.title": "Colony Details",
-    "colonyDetailsPage.description": "Change the details of the Colony",
+    "colonyDetailsPage.descriptionPlaceholder": "Enter a short description about your Colony’s main purpose.",
     "colonyDetailsPage.objectiveTitle": "Current Colony Objective",
     "colonyDetailsPage.objectiveDescription": "Colony objectives area the main goal or mission of the Colony all member’s are contributing towards. The objective appears on the main Dashboard of the Colony and progress of the goal is visible. {br} {br} Each update requires a motion progress or the correct Colony wide permissions.",
     "colonyDetailsPage.objectiveBoxTitle": "Current Colony objective:",
