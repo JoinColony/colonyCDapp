@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
+import { NavLink } from 'react-router-dom';
 import Icon from '~shared/Icon';
 import ColonyAvatar from '~v5/shared/ColonyAvatar';
-import Link from '~v5/shared/Link';
 import { ColonySwitcherItemProps } from './types';
 
 const displayName = 'frame.Extensions.partials.ColonySwitcherItem';
@@ -15,16 +15,19 @@ const ColonySwitcherItem: FC<ColonySwitcherItemProps> = ({
   const { chainIconName, ...restAvatarProps } = avatarProps || {};
 
   return (
-    <Link
+    <NavLink
       title={name}
-      className={clsx('flex items-center gap-4 text-gray-900', {
-        'justify-between': chainIconName,
-      })}
+      className={clsx(
+        'flex items-center gap-4 text-2 px-2 rounded-lg transition-all bg-base-white md:hover:bg-gray-900 md:hover:text-base-white min-h-[2.25rem] -mx-2',
+        {
+          'justify-between': chainIconName,
+        },
+      )}
       {...rest}
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 truncate">
         <ColonyAvatar size="small" {...restAvatarProps} />
-        <p className="text-2">{name}</p>
+        <p className="text-2 truncate max-w-[13.313rem]">{name}</p>
       </div>
       {chainIconName && (
         <Icon
@@ -34,7 +37,7 @@ const ColonySwitcherItem: FC<ColonySwitcherItemProps> = ({
           }}
         />
       )}
-    </Link>
+    </NavLink>
   );
 };
 

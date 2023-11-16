@@ -1,102 +1,82 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
+import clsx from 'clsx';
 
-import { useAppContext } from '~hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
-import { notNull } from '~utils/arrays';
 
-import { getChainIconName } from '../../utils';
 import ColonySwitcherItem from '../ColonySwitcherItem';
 import ColonySwitcherList from '../ColonySwitcherList';
-import { ColonySwitcherListItem } from '../ColonySwitcherList/types';
+
+import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput';
+import EmptyContent from '~v5/common/EmptyContent';
+import { useColonySwitcherContent } from './hooks';
 import { ColonySwitcherContentProps } from './types';
-import { sortByDate } from './utils';
 
 const displayName = 'frame.Extensions.partials.ColonySwitcherContent';
 
 // There's just a base logic added here, so that we can see other colonies and navigate between them.
 // The rest of the functionality will be added in the next PRs.
-// @todo: sreach, empty list indicator, etc.
 const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
-  const { userLoading, user } = useAppContext();
+  const {
+    userLoading,
+    filteredColony,
+    currentColonyProps: { name, colonyDisplayName, chainIconName },
+    onChange,
+    joinedColonies,
+    searchValue,
+  } = useColonySwitcherContent(colony);
 
-  const userColonies = useMemo(
-    () => (user?.watchlist?.items.filter(notNull) || []).sort(sortByDate),
-    [user],
-  );
-
-  const titleClassName = 'uppercase text-4 text-gray-400 mb-3';
-
-  const { name, chainMetadata, metadata, colonyAddress } = colony || {};
-  const { chainId } = chainMetadata || {};
-
-  const chainIcon = getChainIconName(chainId);
-
-  const joinedColonies: ColonySwitcherListItem[] = userColonies.reduce(
-    (result, item) => {
-      if (!item) {
-        return result;
-      }
-
-      const { colony: itemColony, id } = item;
-
-      if (colonyAddress === itemColony.colonyAddress) {
-        return result;
-      }
-
-      return [
-        ...result,
-        {
-          key: id,
-          name: itemColony.name,
-          to: `/colony/${itemColony.name}`,
-          avatarProps: {
-            chainIconName: getChainIconName(itemColony.chainMetadata.chainId),
-            colonyImageProps: itemColony.metadata?.avatar
-              ? {
-                  src:
-                    itemColony.metadata?.thumbnail ||
-                    itemColony.metadata?.avatar,
-                }
-              : undefined,
-          },
-        },
-      ];
-    },
-    [],
-  );
+  const titleClassName = 'uppercase text-4 text-gray-400 mb-1';
 
   const joinedMoreColonies = !!joinedColonies?.length;
 
   return userLoading ? (
     <SpinnerLoader />
   ) : (
-    <div className="pt-6 w-full flex flex-col gap-6">
+    <div className="pt-6 w-full flex flex-col gap-4">
       {colony && (
         <div>
           <h3 className={titleClassName}>
             {formatText({ id: 'navigation.colonySwitcher.currentColony' })}
           </h3>
           <ColonySwitcherItem
-            name={name || ''}
+            name={colonyDisplayName || ''}
             avatarProps={{
-              colonyImageProps: metadata?.avatar
-                ? { src: metadata?.thumbnail || metadata?.avatar }
+              colonyImageProps: colony?.metadata?.avatar
+                ? {
+                    src:
+                      colony?.metadata?.thumbnail || colony?.metadata?.avatar,
+                  }
                 : undefined,
-              chainIconName: chainIcon,
+              chainIconName,
             }}
             to={`/colony/${name}`}
           />
         </div>
       )}
       {joinedMoreColonies && (
-        <div className="border-t border-t-gray-200 pt-6 flex flex-col gap-6">
-          {/* <div>add search here</div> */}
+        <div
+          className={clsx('flex flex-col gap-6', {
+            'pt-6 border-t border-t-gray-200': colony,
+          })}
+        >
+          <SearchInput onChange={onChange} />
           <div>
             <h3 className={titleClassName}>
-              {formatText({ id: 'navigation.colonySwitcher.joinedColonys' })}
+              {formatText({ id: 'navigation.colonySwitcher.heading' })}
             </h3>
-            <ColonySwitcherList items={joinedColonies} />
+            {(filteredColony.length || joinedColonies.length) && (
+              <ColonySwitcherList
+                items={searchValue ? filteredColony : joinedColonies}
+              />
+            )}
+            {filteredColony.length === 0 && searchValue && (
+              <EmptyContent
+                icon="binoculars"
+                title={{ id: 'colony.emptyState.title' }}
+                description={{ id: 'colony.emptyState.subtitle' }}
+              />
+            )}
           </div>
         </div>
       )}
