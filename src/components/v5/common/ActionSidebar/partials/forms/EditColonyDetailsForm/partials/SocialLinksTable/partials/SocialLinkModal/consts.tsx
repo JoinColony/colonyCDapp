@@ -8,8 +8,8 @@ import {
   TwitterLogo,
   TelegramLogo,
   GithubLogo,
-  // FacebookLogo,
   InstagramLogo,
+  FacebookLogo,
 } from 'phosphor-react';
 import clsx from 'clsx';
 import { TileRadioButtonItem } from '~v5/common/Fields/RadioButtons/TileRadioButtons/types';
@@ -47,10 +47,9 @@ export const LINK_TYPE_TO_LABEL_MAP: Record<ExternalLinks, string | undefined> =
     [ExternalLinks.Instagram]: formatText({
       id: 'editColony.socialLinks.instagram',
     }),
-    // Uncomment when Facebook is added to ExternalLinks enum
-    // [ExternalLinks.Facebook]: formatText({
-    //   id: 'editColony.socialLinks.facebook',
-    // }),
+    [ExternalLinks.Facebook]: formatText({
+      id: 'editColony.socialLinks.facebook',
+    }),
   };
 
 export const LINK_TYPE_RADIO_BUTTONS: TileRadioButtonItem<ExternalLinks>[] = [
@@ -112,15 +111,14 @@ export const LINK_TYPE_RADIO_BUTTONS: TileRadioButtonItem<ExternalLinks>[] = [
     icon: <GithubLogo size={18} />,
     value: ExternalLinks.Github,
   },
-  // Uncomment when Facebook is added to ExternalLinks enum
-  // {
-  //   id: ExternalLinks.Facebook,
-  //   label: ExternalLinks.Facebook,
-  //   icon: ({ checked }) => (
-  //     <FacebookLogo size={18} className={clsx({ 'text-blue-400': !checked })} />
-  //   ),
-  //   value: ExternalLinks.Facebook,
-  // },
+  {
+    id: ExternalLinks.Facebook,
+    label: ExternalLinks.Facebook,
+    icon: ({ checked }) => (
+      <FacebookLogo size={18} className={clsx({ 'text-blue-400': !checked })} />
+    ),
+    value: ExternalLinks.Facebook,
+  },
   {
     id: ExternalLinks.Instagram,
     label: ExternalLinks.Instagram,
