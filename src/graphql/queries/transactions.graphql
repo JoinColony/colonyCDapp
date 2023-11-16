@@ -1,6 +1,6 @@
 query GetUserTransactions(
   $userAddress: ID!
-  $colonyAddress: ID!
+  $colonyAddress: ID
   $transactionsOlderThan: String
   $nextToken: String
   $limit: Int

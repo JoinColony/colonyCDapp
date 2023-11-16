@@ -148,7 +148,6 @@ export const useGroupedTransactionsAndMessages = (): {
 
   const { data, fetchMore, refetch } = useGetUserTransactionsQuery({
     variables: {
-      colonyAddress,
       userAddress: walletAddress,
       transactionsOlderThan,
       limit: TRANSACTION_LIST_PAGE_SIZE * 3,
