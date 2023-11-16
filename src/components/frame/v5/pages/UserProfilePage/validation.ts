@@ -1,14 +1,16 @@
 import { InferType, boolean, object, string } from 'yup';
+
+import {
+  USERNAME_REGEX,
+  isUsernameTaken,
+} from '~common/Onboarding/wizardSteps/StepCreateUser/validation';
 import { formatText } from '~utils/intl';
+
 import {
   MAX_BIO_CHARS,
   MAX_DISPLAYNAME_CHARS,
   MAX_LOCATION_CHARS,
 } from './consts';
-import {
-  USERNAME_REGEX,
-  isUsernameTaken,
-} from '~common/CreateUserWizard/validation';
 import { UserProfileFormProps } from './types';
 
 export const validationSchema = object<UserProfileFormProps>({

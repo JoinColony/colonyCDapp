@@ -33,9 +33,6 @@ module.exports = {
           location
           website
           email
-          meta {
-            emailPermissions
-          }
         }
         watchlist {
           nextToken

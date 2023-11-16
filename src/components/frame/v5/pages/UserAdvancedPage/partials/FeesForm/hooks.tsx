@@ -15,12 +15,8 @@ export const useFeesForm = () => {
   const metatransactionsAvailable = canUseMetatransactions();
 
   const { user } = useAppContext();
-  const {
-    metatransactionsEnabled,
-    emailPermissions,
-    customRpc,
-    decentralizedModeEnabled,
-  } = user?.profile?.meta ?? { emailPermissions: [] };
+  const { metatransactionsEnabled, customRpc, decentralizedModeEnabled } =
+    user?.profile?.meta ?? {};
 
   const [editUser] = useUpdateUserProfileMutation();
 
@@ -34,7 +30,6 @@ export const useFeesForm = () => {
         input: {
           id: user?.walletAddress ?? '',
           meta: {
-            emailPermissions,
             customRpc,
             decentralizedModeEnabled,
             ...values,

@@ -95,7 +95,7 @@ import {
 function* usernameCreate({
   meta,
   meta: { navigate, updateUser },
-  payload: { username, email, emailPermissions },
+  payload: { username, emailAddress },
 }: Action<ActionTypes.USERNAME_CREATE>) {
   const wallet = getContext(ContextModule.Wallet);
   const walletAddress = utils.getAddress(wallet.address);
@@ -111,10 +111,10 @@ function* usernameCreate({
       },
     ];
 
-    if (email) {
+    if (emailAddress) {
       refetchQueries.push({
         query: GetProfileByEmailDocument,
-        variables: { email },
+        variables: { email: emailAddress },
       });
     }
     /*
@@ -130,10 +130,7 @@ function* usernameCreate({
           id: walletAddress,
           profile: {
             displayName: username,
-            email: email || undefined,
-            meta: {
-              emailPermissions,
-            },
+            email: emailAddress || undefined,
           },
         },
       },
@@ -143,9 +140,8 @@ function* usernameCreate({
     yield put<AllActions>({
       type: ActionTypes.USERNAME_CREATE_SUCCESS,
       payload: {
-        email,
+        emailAddress,
         username,
-        emailPermissions,
       },
       meta,
     });
