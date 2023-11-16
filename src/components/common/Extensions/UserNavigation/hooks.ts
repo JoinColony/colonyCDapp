@@ -7,7 +7,7 @@ import { TransactionOrMessageGroups } from '~frame/GasStation/transactionGroup';
 import { GetUserTransactionsQuery, useGetUserTransactionsQuery } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
 import { TransactionType } from '~redux/immutable';
-import { groupedTransactionsAndMessages } from '~redux/selectors';
+import { groupedTransactions as groupedTransactionsSelector } from '~redux/selectors';
 import { ExtendedClientType, Transaction } from '~types';
 import { notNull } from '~utils/arrays';
 import { groupBy, unionBy } from '~utils/lodash';
@@ -131,18 +131,16 @@ export const useGroupedTransactionsAndMessages = (): {
   const { walletAddress = '' } = user ?? {};
   const { colonyAddress = '' } = colony ?? {};
 
-  const transactionAndMessageGroups = useSelector(
-    groupedTransactionsAndMessages,
-  );
+  const transactionGroups = useSelector(groupedTransactionsSelector);
 
   // @ts-ignore
-  const currentTransactionsAndMessages: TransactionOrMessageGroups = useMemo(
-    () => transactionAndMessageGroups.toJS(),
-    [transactionAndMessageGroups],
+  const currentTransactions: TransactionOrMessageGroups = useMemo(
+    () => transactionGroups.toJS(),
+    [transactionGroups],
   );
 
   // This is the oldest transaction in a user's session
-  const transactionsOlderThan = currentTransactionsAndMessages
+  const transactionsOlderThan = currentTransactions
     .at(-1)?.[0]
     ?.createdAt?.toISOString();
 
@@ -161,12 +159,12 @@ export const useGroupedTransactionsAndMessages = (): {
     const transactions = items?.filter(notNull) ?? [];
     const groupedHistoricTransactions = sortAndGroupTransactions(transactions);
     return [
-      ...currentTransactionsAndMessages,
+      ...currentTransactions,
       ...groupedHistoricTransactions.map((group) =>
         group.map(convertTransactionType),
       ),
     ];
-  }, [items, currentTransactionsAndMessages]);
+  }, [items, currentTransactions]);
 
   useEffect(() => {
     if (mergedTransactions.length < visibleItems && nextToken) {
