@@ -20,7 +20,7 @@ import {
   UseActivityFeedReturn,
 } from './types';
 
-const ITEMS_PER_PAGE = 1;
+const ITEMS_PER_PAGE = 2;
 
 const useActivityFeed = (
   filters?: ActivityFeedFilters,
@@ -31,7 +31,11 @@ const useActivityFeed = (
     SearchableSortDirection.Desc,
   );
   const [pageNumber, setPageNumber] = useState(1);
-  const requestedActionsCount = ITEMS_PER_PAGE * pageNumber;
+  const requestedActionsCount = ITEMS_PER_PAGE * (pageNumber + 1);
+
+  useEffect(() => {
+    setPageNumber(1);
+  }, [filters]);
 
   const { data, fetchMore, loading } = useSearchActionsQuery({
     variables: {
@@ -45,7 +49,7 @@ const useActivityFeed = (
           direction: sortDirection,
         },
       ],
-      limit: ITEMS_PER_PAGE,
+      limit: ITEMS_PER_PAGE * 2,
     },
     fetchPolicy: 'network-only',
     skip: !colony,
@@ -82,10 +86,10 @@ const useActivityFeed = (
   };
 
   const hasNextPage =
-    requestedActionsCount < filteredActions.length || !!nextToken;
+    pageNumber * ITEMS_PER_PAGE < filteredActions.length || fetchMoreActions;
 
   const goToNextPage = () => {
-    if (!hasNextPage) {
+    if (loading || fetchMoreActions) {
       return;
     }
     setPageNumber((number) => number + 1);
@@ -98,27 +102,23 @@ const useActivityFeed = (
     setPageNumber((number) => number - 1);
   };
 
-  const isNextPageLoading = pageNumber > 1 && fetchMoreActions;
-  const resolvedPageNumber = isNextPageLoading ? pageNumber - 1 : pageNumber;
-  const currentPageActions = getActionsByPageNumber(
+  const visibleActions = getActionsByPageNumber(
     filteredActions,
-    resolvedPageNumber,
+    pageNumber,
     ITEMS_PER_PAGE,
   );
 
-  if (!currentPageActions.length && pageNumber > 1) {
-    setPageNumber((number) => number - 1);
-  }
-
   return {
-    loading: loading || fetchMoreActions,
-    actions: currentPageActions,
+    loading:
+      (loading || fetchMoreActions) && visibleActions.length < ITEMS_PER_PAGE,
+    loadingNextPage: loading || fetchMoreActions,
+    actions: visibleActions,
     sortDirection,
     changeSortDirection,
     hasNextPage,
     goToNextPage,
     goToPreviousPage,
-    pageNumber: resolvedPageNumber,
+    pageNumber,
   };
 };
 
