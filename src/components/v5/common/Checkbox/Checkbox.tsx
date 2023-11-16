@@ -19,7 +19,6 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
   classNames,
   isChecked,
   children,
-  mode = 'primary',
 }) => {
   const generatedId = useId();
 
@@ -45,16 +44,17 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
         />
         <span
           className={clsx(styles.checkboxBox, {
-            'border-blue-400 text-blue-400 bg-base-white':
-              isChecked && mode === 'primary',
-            'border-gray-900 text-gray-900 bg-base-white':
-              isChecked && mode === 'secondary',
+            'border-blue-400 text-blue-400 bg-base-white': isChecked,
             'border-gray-200 bg-base-white': !isChecked,
           })}
         >
           {isChecked && (
             <span className="absolute">
-              <Icon name="check" appearance={{ size: 'extraExtraTiny' }} />
+              <Icon
+                name="check"
+                appearance={{ size: 'extraExtraTiny' }}
+                className="text-blue-400"
+              />
             </span>
           )}
         </span>
