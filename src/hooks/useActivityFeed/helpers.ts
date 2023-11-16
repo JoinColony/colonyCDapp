@@ -3,7 +3,7 @@ import { MotionStatesMap } from '~hooks';
 import { ColonyAction } from '~types';
 import { MotionState, getMotionState } from '~utils/colonyMotions';
 
-import { ActivityFeedFilters } from './types';
+import { ActivityDecisionMethod, ActivityFeedFilters } from './types';
 
 export const filterActionByMotionState = (
   action: ColonyAction,
@@ -52,6 +52,16 @@ export const getSearchActionsFilterVariable = (
         filters?.dateFrom?.toISOString() ?? null,
         filters?.dateTo?.toISOString() ?? null,
       ],
+    },
+    isMotion: {
+      eq:
+        filters?.decisionMethod === ActivityDecisionMethod.Reputation
+          ? true
+          : undefined,
+      ne:
+        filters?.decisionMethod === ActivityDecisionMethod.Permissions
+          ? true
+          : undefined,
     },
   };
 };
