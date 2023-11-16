@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import clsx from 'clsx';
 import { FormattedMessage } from 'react-intl';
 
 import SupportingDocuments from '~common/Extensions/SupportingDocuments';
@@ -13,10 +12,10 @@ const HeadingChunks = (chunks: React.ReactNode[]) => (
 );
 
 const ParagraphChunks = (chunks: React.ReactNode[]) => (
-  <p className="my-4">{chunks}</p>
+  <p className="mb-4">{chunks}</p>
 );
 const BoldChunks = (chunks: React.ReactNode[]) => (
-  <b className="text-gray-900">{chunks}</b>
+  <b className="text-gray-900 font-medium">{chunks}</b>
 );
 const ListChunks = (chunks: React.ReactNode[]) => (
   <ul className="my-4 ml-4 list-disc">{chunks}</ul>
@@ -27,14 +26,10 @@ interface TabContentProps {
   extensionData: AnyExtensionData;
 }
 const TabContent: FC<TabContentProps> = ({ extensionData }) => {
-  const { isEnabled, uninstallable, descriptionLong } = extensionData;
+  const { descriptionLong } = extensionData;
 
   return (
-    <div
-      className={clsx({
-        'mt-4': isEnabled && uninstallable,
-      })}
-    >
+    <div>
       <div className="text-md text-gray-600">
         <FormattedMessage
           {...descriptionLong}
