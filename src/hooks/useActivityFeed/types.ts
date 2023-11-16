@@ -19,8 +19,9 @@ export interface ActivityFeedFilters {
 }
 
 export interface UseActivityFeedReturn {
-  loading: boolean;
   actions: ColonyAction[];
+  loading: boolean;
+  loadingNextPage: boolean;
   sortDirection: SearchableSortDirection;
   changeSortDirection: SortDirectionChangeHandler;
   hasNextPage: boolean;
