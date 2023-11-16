@@ -61,13 +61,13 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
 
   return (
     <Modal isOpen={isOpen} onClose={() => onClose()}>
-      <div className="mt-10 flex flex-col items-center mb-2">
+      <div className="mt-10 flex flex-col items-center mb-8">
         <Heading3
           appearance={{ theme: 'dark' }}
           className="text-gray-900 font-semibold"
           text={MSG.modalTitle}
         />
-        <p className="mt-1 text-center text-md text-gray-600">
+        <p className="mt-1 text-center text-sm text-gray-600">
           <FormattedMessage {...MSG.modalDescription} />
         </p>
       </div>
@@ -84,10 +84,10 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
         button={
           <Button
             text={MSG.buttonText}
-            mode={isCopied ? 'completed' : 'primaryOutline'}
+            mode={isCopied ? 'completed' : 'quinary'}
             iconName={isCopied ? undefined : 'copy-simple'}
             onClick={handleClipboardCopy}
-            className="text-sm"
+            size="small"
             textValues={{ isCopied }}
           />
         }
