@@ -1,0 +1,41 @@
+import React from 'react';
+import clsx from 'clsx';
+
+import { Address } from '~types';
+import MaskedAddress from '~shared/MaskedAddress';
+import useClipboardCopy from '~hooks/useClipboardCopy';
+import Icon from '~shared/Icon';
+
+interface Props {
+  /** Address to display */
+  address: Address;
+  /** Indicates that the full address should be shown instead of an abbreviated one */
+  full?: boolean;
+}
+
+const displayName = 'CopyableAddress';
+
+const CopyableAddress = ({ address, full }: Props) => {
+  const { isCopied, handleClipboardCopy } = useClipboardCopy(address);
+
+  return (
+    <button
+      type="button"
+      className={clsx(
+        'flex flex-row items-center gap-1 hover:text-blue-400',
+        isCopied && 'text-success-400 hover:text-success-400',
+      )}
+      onClick={handleClipboardCopy}
+    >
+      <MaskedAddress className="font-normal" address={address} full={full} />
+      <Icon
+        name={isCopied ? 'check' : 'copy-simple'}
+        appearance={{ size: 'extraTiny' }}
+      />
+    </button>
+  );
+};
+
+CopyableAddress.displayName = displayName;
+
+export default CopyableAddress;

@@ -6,9 +6,9 @@ import { RpcMethods, Token } from '~types';
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { TokenType } from '~gql';
 
-import CopyableAddressV2 from '~shared/CopyableAddressV2';
 import Avatar from '~v5/shared/Avatar';
 import Button from '~v5/shared/Button';
+import CopyableAddress from '~v5/shared/CopyableAddress';
 import { getBlockExplorerLink } from '~utils/external';
 import Icon from '~shared/Icon';
 
@@ -74,7 +74,7 @@ const TokenInfo = ({ token, isTokenNative }: Props) => {
           <h4 className="font-bold text-xl overflow-hidden text-ellipsis whitespace-nowrap">
             {name} ({symbol})
           </h4>
-          <CopyableAddressV2>{tokenAddress}</CopyableAddressV2>
+          <CopyableAddress address={tokenAddress} />
         </div>
       </div>
       {isTokenNative && <p>{formatMessage(MSG.nativeTokenMessage)}</p>}

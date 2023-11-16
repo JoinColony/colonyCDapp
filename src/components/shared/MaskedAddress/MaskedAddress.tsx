@@ -1,12 +1,9 @@
 import React, { RefObject, forwardRef } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-
 import clsx from 'clsx';
+
 import { splitAddress, AddressElements } from '~utils/strings';
-
 import { Address } from '~types';
-
-import styles from './MaskedAddress.css';
 
 const MSG = defineMessages({
   wrongAddressFormat: {
@@ -51,31 +48,24 @@ const MaskedAddress = forwardRef(
     ref: RefObject<any>,
   ) => {
     const cutAddress: AddressElements | Error = splitAddress(address);
+
     if (cutAddress instanceof Error) {
       return <FormattedMessage {...MSG.wrongAddressFormat} />;
     }
-    if (!full) {
-      return (
-        <span
-          className={clsx(styles.address, className)}
-          title={address}
-          ref={ref}
-          data-test={dataTest}
-        >
-          {`${cutAddress.header}${cutAddress.start}${mask}${cutAddress.end}`}
-        </span>
-      );
-    }
+
     return (
       <span
-        className={clsx(styles.address, className)}
+        className={clsx(
+          'font-techie font-bold text-sm leading-none',
+          className,
+        )}
         title={address}
         ref={ref}
         data-test={dataTest}
       >
         {cutAddress.header}
         {cutAddress.start}
-        <span className={styles.middleSection}>{cutAddress.middle}</span>
+        {full ? <span className="mx-1">{cutAddress.middle}</span> : mask}
         {cutAddress.end}
       </span>
     );
