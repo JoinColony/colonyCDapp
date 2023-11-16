@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import clsx from 'clsx';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
@@ -23,7 +24,7 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
     onChange,
     joinedColonies,
     searchValue,
-  } = useColonySwitcherContent();
+  } = useColonySwitcherContent(colony);
 
   const titleClassName = 'uppercase text-4 text-gray-400 mb-1';
 
@@ -54,7 +55,11 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
         </div>
       )}
       {joinedMoreColonies && (
-        <div className="border-t border-t-gray-200 pt-6 flex flex-col gap-6">
+        <div
+          className={clsx('flex flex-col gap-6', {
+            'pt-6 border-t border-t-gray-200': colony,
+          })}
+        >
           <SearchInput onChange={onChange} />
           <div>
             <h3 className={titleClassName}>
