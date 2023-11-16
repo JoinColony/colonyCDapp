@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import styles from './ColonyDetailsPage.module.css';
 import { useColonyContext, useMobile } from '~hooks';
 import Avatar from '~v5/shared/Avatar';
 import Button, { TextButton } from '~v5/shared/Button';
@@ -13,7 +12,10 @@ import { formatText } from '~utils/intl';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { ACTION } from '~constants/actions';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
-import CopyableAddressV2 from '~shared/CopyableAddressV2';
+import CopyableAddress from '~v5/shared/CopyableAddress';
+import Icon from '~shared/Icon';
+
+import styles from './ColonyDetailsPage.module.css';
 
 const displayName = 'frame.Extensions.pages.ColonyDetailsPage';
 
@@ -24,9 +26,10 @@ const ColonyDetailsPage: FC = () => {
 
   useSetPageHeadingTitle(formatText({ id: 'colonyDetailsPage.title' }));
 
-  const { name, metadata, colonyAddress, nativeToken } = colony || {};
+  const { name, metadata, colonyAddress, nativeToken, status } = colony || {};
   const { avatar, thumbnail, description, externalLinks, objective } =
     metadata || {};
+  const isNativeTokenLocked = !status?.nativeToken?.unlocked;
 
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
@@ -34,17 +37,28 @@ const ColonyDetailsPage: FC = () => {
 
   return (
     <div>
-      <div className={clsx('pt-[4.375rem] px-6 pb-6 mt-10', styles.box)}>
+      <div className={clsx('p-6 mt-8', styles.box)}>
         <div className="flex flex-row items-center">
           <Avatar size="md" avatar={avatar || thumbnail || ''} />
           <div className="flex flex-col items-start gap-2 ml-4">
             <div className="flex flex-row items-end gap-3">
               <h2 className="heading-2">{name}</h2>
-              {nativeToken && <span>{nativeToken.name}</span>}
+              {nativeToken && (
+                <div className="flex flex-row items-center p-2 border border-gray-200 rounded-lg bg-base-white">
+                  <span className="text-sm font-medium">
+                    {nativeToken.symbol}
+                  </span>
+                  {isNativeTokenLocked && (
+                    <Icon
+                      name="lock"
+                      appearance={{ size: 'extraTiny' }}
+                      className="ml-1"
+                    />
+                  )}
+                </div>
+              )}
             </div>
-            {colonyAddress && (
-              <CopyableAddressV2>{colonyAddress}</CopyableAddressV2>
-            )}
+            {colonyAddress && <CopyableAddress address={colonyAddress} />}
           </div>
         </div>
         <p className="text-md text-gray-600 mt-4 mb-6">
