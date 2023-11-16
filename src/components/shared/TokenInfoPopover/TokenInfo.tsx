@@ -57,7 +57,7 @@ const TokenInfo = ({ token, isTokenNative }: Props) => {
 
       <div className="flex flex-row items-center w-full">
         <a
-          className="flex flex-row items-center gap-2 text-md"
+          className="flex flex-row items-center gap-2 text-md hover:text-blue-400"
           target="_blank"
           rel="noreferrer noopener"
           href={getBlockExplorerLink({
