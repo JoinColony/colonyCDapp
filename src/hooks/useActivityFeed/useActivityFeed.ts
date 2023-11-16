@@ -65,14 +65,19 @@ const useActivityFeed = (
         .filter(Boolean),
     [actions],
   );
-  const { motionStatesMap } = useNetworkMotionStates(motionIds);
+  const { motionStatesMap, loading: motionStatesLoading } =
+    useNetworkMotionStates(motionIds);
+  const loadingMotionStateFilter =
+    !!filters?.motionStates?.length && motionStatesLoading;
 
   const filteredActions = actions.filter((action) =>
     filterActionByMotionState(action, motionStatesMap, filters?.motionStates),
   );
 
   const fetchMoreActions =
-    !!nextToken && filteredActions.length < requestedActionsCount;
+    !!nextToken &&
+    filteredActions.length < requestedActionsCount &&
+    (!loadingMotionStateFilter || actions.length < requestedActionsCount);
   useEffect(() => {
     if (fetchMoreActions) {
       fetchMore({ variables: { nextToken } });
@@ -86,10 +91,12 @@ const useActivityFeed = (
   };
 
   const hasNextPage =
-    pageNumber * ITEMS_PER_PAGE < filteredActions.length || fetchMoreActions;
+    pageNumber * ITEMS_PER_PAGE < filteredActions.length ||
+    fetchMoreActions ||
+    loadingMotionStateFilter;
 
   const goToNextPage = () => {
-    if (loading || fetchMoreActions) {
+    if (loading || fetchMoreActions || loadingMotionStateFilter) {
       return;
     }
     setPageNumber((number) => number + 1);
