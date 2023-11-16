@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
+import { number, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useIntl } from 'react-intl';
 
@@ -20,28 +20,22 @@ type Story = StoryObj<typeof SpecialInput>;
 const SpecialPercentageInputWithHooks = (args) => {
   const { formatMessage } = useIntl();
   const maxValue = 50;
-  const validationSchema = yup
-    .object({
-      percentage: yup
-        .number()
-        .positive('')
-        .required('')
-        .typeError(
-          formatMessage({ id: 'special.percentage.input.error.min.value' }),
-        )
-        .min(
-          1,
-          formatMessage({ id: 'special.percentage.input.error.min.value' }),
-        )
-        .max(
-          maxValue,
-          formatMessage(
-            { id: 'special.percentage.input.error.max.value' },
-            { maxValue },
-          ),
+  const validationSchema = object({
+    percentage: number()
+      .positive('')
+      .required('')
+      .typeError(
+        formatMessage({ id: 'special.percentage.input.error.min.value' }),
+      )
+      .min(1, formatMessage({ id: 'special.percentage.input.error.min.value' }))
+      .max(
+        maxValue,
+        formatMessage(
+          { id: 'special.percentage.input.error.max.value' },
+          { maxValue },
         ),
-    })
-    .required('');
+      ),
+  }).required('');
 
   const {
     register,

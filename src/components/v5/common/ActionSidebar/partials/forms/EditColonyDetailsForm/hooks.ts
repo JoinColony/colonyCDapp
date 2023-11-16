@@ -37,8 +37,18 @@ export const useEditColonyDetails = (
           thumbnail: metadata?.thumbnail,
         },
         createdIn: Id.RootDomain.toString(),
+        externalLinks:
+          metadata?.externalLinks?.map(({ name, link }) => ({
+            url: link,
+            linkType: name,
+          })) || [],
       }),
-      [metadata?.avatar, metadata?.displayName, metadata?.thumbnail],
+      [
+        metadata?.avatar,
+        metadata?.displayName,
+        metadata?.externalLinks,
+        metadata?.thumbnail,
+      ],
     ),
     actionType:
       decisionMethod === DECISION_METHOD.Permissions
@@ -49,14 +59,19 @@ export const useEditColonyDetails = (
       pipe(
         mapPayload((payload: EditColonyDetailsFormValues) => {
           const values = {
-            colonyDisplayName: payload.colonyDisplayName,
+            colonyDisplayName: payload.colonyName,
             colonyAvatarImage: payload.avatar?.image,
             colonyThumbnail: payload.avatar?.thumbnail,
             motionDomainId: payload.createdIn,
             decisionMethod: payload.decisionMethod,
             annotationMessage: payload.description,
-            externalLinks: [], // @todo: wire into form
-            colonyDescription: '', // @todo: wire into form
+            externalLinks: payload.externalLinks.map(
+              ({ linkType, ...link }) => ({
+                ...link,
+                name: linkType,
+              }),
+            ),
+            colonyDescription: payload.colonyDescription,
           };
 
           if (colony) {

@@ -1,4 +1,4 @@
-import * as yup from 'yup';
+import { object, string } from 'yup';
 import { Variants } from 'framer-motion';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -28,11 +28,9 @@ export const actionSidebarAnimation: Variants = {
   },
 };
 
-export const ACTION_BASE_VALIDATION_SCHEMA = yup
-  .object()
+export const ACTION_BASE_VALIDATION_SCHEMA = object()
   .shape({
-    title: yup
-      .string()
+    title: string()
       .required(formatText({ id: 'errors.title.required' }))
       .max(60, ({ max, value }) =>
         formatText(

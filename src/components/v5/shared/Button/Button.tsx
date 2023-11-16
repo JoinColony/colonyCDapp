@@ -31,7 +31,6 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
   ...rest
 }) => {
   const { formatMessage } = useIntl();
-
   const titleText =
     typeof title === 'string' ? title : title && formatMessage(title);
   const ariaLabelText =
@@ -67,8 +66,11 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
               [styles.completed]: mode === 'completed',
               'pointer-events-none': disabled,
               'w-full': isFullSize,
+              'bg-blue-400 text-base-white': mode === 'filled',
               'border border-gray-300 !text-gray-300 !bg-base-white':
                 disabled && isIconRight,
+              'bg-base-white border border-gray-300 text-gray-700 sm:hover:bg-blue-400 sm:hover:text-base-white sm:hover:border-blue-400':
+                mode === 'notFilled',
               'rounded-full': isFullRounded,
               'rounded-lg': !isFullRounded,
             },

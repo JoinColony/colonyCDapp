@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
+import { number, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useIntl } from 'react-intl';
 
@@ -20,23 +20,20 @@ type Story = StoryObj<typeof SpecialInput>;
 const SpecialHourInputWithHooks = (args) => {
   const { formatMessage } = useIntl();
   const maxValue = 8766;
-  const validationSchema = yup
-    .object({
-      hours: yup
-        .number()
-        .positive('')
-        .required('')
-        .typeError(formatMessage({ id: 'special.hour.input.error.min.value' }))
-        .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
-        .max(
-          maxValue,
-          formatMessage(
-            { id: 'special.hour.input.error.max.value' },
-            { maxValue },
-          ),
+  const validationSchema = object({
+    hours: number()
+      .positive('')
+      .required('')
+      .typeError(formatMessage({ id: 'special.hour.input.error.min.value' }))
+      .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
+      .max(
+        maxValue,
+        formatMessage(
+          { id: 'special.hour.input.error.max.value' },
+          { maxValue },
         ),
-    })
-    .required('');
+      ),
+  }).required('');
 
   const {
     register,

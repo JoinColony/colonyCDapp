@@ -16,7 +16,9 @@ export type ButtonMode =
   | 'quinary'
   | 'senary'
   | 'septenary'
-  | 'completed';
+  | 'completed'
+  | 'filled'
+  | 'notFilled';
 
 export type ButtonSize = 'default' | 'extraSmall' | 'small' | 'large';
 

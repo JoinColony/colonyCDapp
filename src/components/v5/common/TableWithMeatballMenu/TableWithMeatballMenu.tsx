@@ -9,12 +9,16 @@ const displayName = 'v5.common.TableWithMeatballMenu';
 const TableWithMeatballMenu = <T,>({
   getMenuProps,
   columns,
+  meatBallMenuSize,
   ...rest
 }: TableWithMeatballMenuProps<T>) => {
   const helper = useMemo(() => createColumnHelper<T>(), []);
   const columnsWithMenu = useMemo(
-    () => [...columns, makeMenuColumn<T>(helper, getMenuProps)],
-    [columns, helper, getMenuProps],
+    () => [
+      ...columns,
+      makeMenuColumn<T>(helper, getMenuProps, meatBallMenuSize),
+    ],
+    [columns, helper, getMenuProps, meatBallMenuSize],
   );
 
   return (

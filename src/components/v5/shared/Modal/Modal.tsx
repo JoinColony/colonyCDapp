@@ -42,7 +42,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
             },
           )}
         >
-          <Icon appearance={{ size: 'extraSmall' }} name={icon} />
+          <Icon className="!w-6 !h-6" name={icon} />
         </span>
       )}
       <CloseButton

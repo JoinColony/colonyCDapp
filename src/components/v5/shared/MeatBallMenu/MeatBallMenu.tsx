@@ -39,7 +39,11 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
         aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
         className={clsx(
           buttonClassName,
-          'text-gray-400 p-[0.1875rem] transition-all duration-normal cursor-pointer md:hover:text-blue-400',
+          'p-[0.1875rem] transition-all duration-normal cursor-pointer md:hover:text-blue-400 flex justify-center items-center',
+          {
+            'text-gray-400': !isMenuOpen,
+            'text-blue-400': isMenuOpen,
+          },
         )}
       >
         <Icon name="dots-three" appearance={{ size: 'extraTiny' }} />
@@ -60,8 +64,19 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
                 <li key={key} className="flex-shrink-0">
                   <button
                     type="button"
-                    className="flex w-full items-center text-md transition-colors
-                    duration-normal md:hover:bg-gray-50 rounded py-2 px-3.5 gap-2"
+                    className={`
+                      flex w-full
+                      items-center
+                      text-md
+                      transition-colors
+                      duration-normal
+                      md:hover:bg-gray-50
+                      hover:font-medium
+                      rounded
+                      py-2
+                      px-3.5
+                      gap-2
+                    `}
                     onClick={() => {
                       onClick();
                       toggleMenuOff();

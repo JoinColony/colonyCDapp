@@ -19,6 +19,7 @@ const Table = <T,>({
   getRowClassName = () => undefined,
   verticalOnMobile = true,
   hasPagination = false,
+  sizeUnit = 'px',
   ...rest
 }: TableProps<T>) => {
   const isMobile = useMobile();
@@ -42,7 +43,18 @@ const Table = <T,>({
         'border border-gray-200 rounded-lg overflow-hidden',
       )}
     >
-      <table className="border-separate border-spacing-0 overflow-hidden table-fixed w-full">
+      <table
+        className={clsx(
+          className,
+          `
+            border-separate
+            border-spacing-0
+            overflow-hidden
+            table-fixed
+            w-full
+          `,
+        )}
+      >
         {isMobile && verticalOnMobile ? (
           rows.map((row) => {
             const cells = row.getVisibleCells();
@@ -61,14 +73,14 @@ const Table = <T,>({
                     <tr key={row.id + headerGroup.id + header.id}>
                       <th
                         className={`
-                            bg-gray-50
-                            p-4
-                            text-left
-                            text-sm
-                            font-normal
-                            border-r
-                            border-gray-200
-                          `}
+                          bg-gray-50
+                          p-4
+                          text-left
+                          text-sm
+                          font-normal
+                          border-r
+                          border-gray-200
+                        `}
                       >
                         {header.isPlaceholder
                           ? null
@@ -101,7 +113,7 @@ const Table = <T,>({
                     <th
                       key={header.id}
                       className={clsx(
-                        'text-left text-sm text-gray-600 bg-gray-50 font-normal px-[1.1rem] empty:p-0 py-[0.7rem]',
+                        'text-left text-sm text-gray-600 bg-gray-50 font-normal px-[1.1rem] empty:p-0 py-[0.7rem] border-b border-b-gray-200',
                         {
                           'cursor-pointer': header.column.getCanSort(),
                         },
@@ -110,7 +122,7 @@ const Table = <T,>({
                       style={{
                         width:
                           header.getSize() !== 150
-                            ? header.getSize()
+                            ? `${header.column.getSize()}${sizeUnit}`
                             : undefined,
                       }}
                     >

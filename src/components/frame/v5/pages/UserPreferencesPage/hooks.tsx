@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import * as yup from 'yup';
+import { object, string } from 'yup';
 import { toast } from 'react-toastify';
 
 import { useUpdateUserProfileMutation } from '~gql';
@@ -18,9 +18,8 @@ export const useUserPreferencesPage = () => {
   const { user, loadingProfile } = useCanEditProfile();
   const [isEmailInputVisible, setIsEmailInputVisible] = useState(false);
 
-  const validationSchema = yup.object<UserPreferencesFormProps>({
-    email: yup
-      .string()
+  const validationSchema = object<UserPreferencesFormProps>({
+    email: string()
       .email(formatMessage({ id: 'error.validEmail' }))
       .test(
         'isEmailAlreadyRegistered',
