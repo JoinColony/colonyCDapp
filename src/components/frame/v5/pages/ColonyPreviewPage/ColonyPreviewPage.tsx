@@ -13,6 +13,7 @@ import {
   useGetPublicColonyByNameQuery,
 } from '~gql';
 import { CREATE_USER_ROUTE } from '~routes';
+import ColonyAvatar from '~v5/shared/ColonyAvatar';
 
 const displayName = 'pages.ColonyPreviewPage';
 
@@ -32,7 +33,7 @@ const MSG = defineMessages({
   },
   connectWalletTitle: {
     id: `${displayName}.connectWalletTitle`,
-    defaultMessage: 'Connect your wallet to check your accesss',
+    defaultMessage: 'Connect your wallet to check your access',
   },
   connectWalletSubtitle: {
     id: `${displayName}.connectWalletSubtitle`,
@@ -50,10 +51,6 @@ const MSG = defineMessages({
   connectWalletButton: {
     id: `${displayName}.connectWalletButton`,
     defaultMessage: 'Connect wallet',
-  },
-  requestAccessHeading: {
-    id: `${displayName}.connectWalletButton`,
-    defaultMessage: 'Request access',
   },
   privateAccessHeading: {
     id: `${displayName}.privateAccessHeading`,
@@ -107,6 +104,7 @@ const ColonyPreviewPage = () => {
   const [validate] = useValidateUserInviteMutation();
 
   const colonyAddress = colonyData?.getColonyByName?.items[0]?.colonyAddress;
+  const colonyMetadata = colonyData?.getColonyByName?.items[0]?.metadata;
 
   const validateAndRedirect = useCallback(async () => {
     if (!colonyAddress || !inviteCode || !user?.walletAddress) return;
@@ -155,10 +153,10 @@ const ColonyPreviewPage = () => {
       <h1 className="text-2xl mb-2 font-semibold">
         <FormattedMessage {...MSG.heading} />
       </h1>
-      <p className="text-sm mb-5">
+      <p className="text-sm mb-5 text-gray-600">
         <FormattedMessage {...MSG.description} />
       </p>
-      <hr />
+      <hr className="mb-8" />
       {inviteIsValid && (
         <NotificationBanner
           iconName="hands-clapping"
@@ -196,11 +194,7 @@ const ColonyPreviewPage = () => {
         </CardWithCallout>
       )}
       <h2 className="text-md font-semibold mt-8 mb-3">
-        <FormattedMessage
-          {...(inviteIsValid
-            ? MSG.privateAccessHeading
-            : MSG.requestAccessHeading)}
-        />
+        <FormattedMessage {...MSG.privateAccessHeading} />
       </h2>
       <CardWithCallout
         className="border-grey-200"
@@ -215,8 +209,21 @@ const ColonyPreviewPage = () => {
             />
           ) : null
         }
-        iconName="lock"
-        title={colonyDisplayName}
+        title={
+          <>
+            <ColonyAvatar
+              colonyImageProps={
+                colonyMetadata?.avatar
+                  ? {
+                      src: colonyMetadata?.thumbnail || colonyMetadata?.avatar,
+                    }
+                  : undefined
+              }
+              size="medium"
+            />
+            <h1 className="text-md font-medium inline">{colonyDisplayName}</h1>
+          </>
+        }
       >
         <FormattedMessage
           {...MSG.restrictedAccessMessage}

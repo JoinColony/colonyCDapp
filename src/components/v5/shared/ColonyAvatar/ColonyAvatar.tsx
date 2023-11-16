@@ -11,7 +11,7 @@ const displayName = 'v5.ColonyAvatar';
 const ColonyAvatar: FC<ColonyAvatarProps> = ({
   chainIconName,
   colonyImageProps,
-  size = 'default',
+  size = 'extraBig',
   className,
 }) => {
   return (
@@ -20,7 +20,8 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
         className,
         'flex justify-center items-center flex-shrink-0 relative h-[1em] w-[1em]',
         {
-          'text-[2.25rem]': size === 'default',
+          'text-[2.25rem]': size === 'extraBig',
+          'text-[1.75rem]': size === 'medium',
           'text-[1.125rem]': size === 'small',
         },
       )}
@@ -47,7 +48,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
             name="colony-placeholder"
             className="text-base-white"
             appearance={{
-              size: size === 'default' ? 'extraBig' : size,
+              size: size === 'extraBig' ? 'extraBig' : size,
             }}
           />
         )}
