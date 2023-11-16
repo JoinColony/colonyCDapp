@@ -73,9 +73,9 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
             </span>
           )}
         </div>
-        <p className="text-sm text-gray-600">
+        <div className="py-1">
           {walletAddress && <CopyableAddress address={walletAddress} />}
-        </p>
+        </div>
       </div>
     </div>
   );

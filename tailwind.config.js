@@ -6,7 +6,6 @@ module.exports = {
   theme: {
     fontFamily: {
       inter: ['Inter', 'sans-serif'],
-      techie: ['"IBM Plex Mono"', 'sans-serif'],
     },
     fontSize: {
       xs: ['0.625rem', 1.6],
