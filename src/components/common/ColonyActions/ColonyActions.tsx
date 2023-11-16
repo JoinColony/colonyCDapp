@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { SpinnerLoader } from '~shared/Preloaders';
@@ -9,6 +9,10 @@ import Button from '~shared/Button';
 import { ActionsListHeading } from '.';
 
 import styles from './ColonyActions.css';
+import {
+  ActivityDecisionMethod,
+  ActivityFeedFilters,
+} from '~hooks/useActivityFeed/types';
 
 const displayName = 'common.ColonyActions';
 
@@ -27,34 +31,43 @@ const MSG = defineMessages({
 //   ethDomainId?: number;
 // };
 
+const decisionMethodOptions = [
+  {
+    label: 'Decision Method',
+    value: undefined,
+  },
+  {
+    label: 'Permissions',
+    value: ActivityDecisionMethod.Permissions,
+  },
+  {
+    label: 'Reputation',
+    value: ActivityDecisionMethod.Reputation,
+  },
+];
+
 const ColonyActions = (/* { ethDomainId }: Props */) => {
   const { colony } = useColonyContext();
 
-  // const {
-  //   loading,
-  //   actions,
-  //   sortDirection,
-  //   onSortDirectionChange: changeSortDirection,
-  //   hasMoreActions,
-  //   loadMoreActions,
-  // } = usePaginatedActions();
+  const [filters, setFilters] = useState<ActivityFeedFilters>({});
 
   const {
     actions,
     loading,
+    loadingNextPage,
     sortDirection,
     changeSortDirection,
     hasNextPage,
     goToNextPage,
     goToPreviousPage,
     pageNumber,
-  } = useActivityFeed({});
+  } = useActivityFeed(filters);
 
   if (!colony) {
     return null;
   }
 
-  if (loading && !actions.length) {
+  if (loading) {
     return (
       <div className={styles.loadingSpinner}>
         <SpinnerLoader
@@ -69,6 +82,25 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
     <div className={styles.main}>
       {actions.length ? (
         <>
+          <div>
+            <select
+              value={filters.decisionMethod}
+              onChange={(event) => {
+                setFilters({
+                  ...filters,
+                  decisionMethod: event.target.value as
+                    | ActivityDecisionMethod
+                    | undefined,
+                });
+              }}
+            >
+              {decisionMethodOptions.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+          </div>
           <ActionsListHeading
             sortDirection={sortDirection}
             onSortChange={changeSortDirection}
@@ -81,7 +113,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
                 <Button onClick={goToPreviousPage}>Previous</Button>
               )}
               {hasNextPage && (
-                <Button onClick={goToNextPage} loading={loading}>
+                <Button onClick={goToNextPage} loading={loadingNextPage}>
                   Next
                 </Button>
               )}
