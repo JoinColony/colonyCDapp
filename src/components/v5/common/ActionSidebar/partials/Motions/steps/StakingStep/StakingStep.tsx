@@ -132,7 +132,10 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
                 />
               ) : (
                 <StakingForm
-                  disableForm={!enoughReputationToStakeMinimum}
+                  disableForm={
+                    !enoughReputationToStakeMinimum ||
+                    !enoughTokensToStakeMinimum
+                  }
                   userActivatedTokens={userActivatedTokens}
                 />
               ),
