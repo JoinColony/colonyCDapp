@@ -5,4 +5,5 @@ export interface ProgressBarProps {
   threshold?: number;
   max?: number;
   barClassName?: string;
+  className?: string;
 }

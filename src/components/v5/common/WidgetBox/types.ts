@@ -1,5 +1,5 @@
 export interface WidgetBoxProps {
-  title: React.ReactNode;
+  title?: React.ReactNode;
   value: React.ReactNode;
   additionalContent?: React.ReactNode;
   className?: string;
@@ -7,4 +7,6 @@ export interface WidgetBoxProps {
   iconName?: string;
   iconClassName?: string;
   contentClassName?: string;
+  titleClassName?: string;
+  onClick?: () => void;
 }

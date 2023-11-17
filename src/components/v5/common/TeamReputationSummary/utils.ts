@@ -39,6 +39,45 @@ export const setTeamColor = (color?: DomainColor) => {
   }
 };
 
+export const setHexTeamColor = (color?: DomainColor) => {
+  switch (color) {
+    case DomainColor.Purple:
+      return '#7A5AF8';
+    case DomainColor.LightPink:
+      return '#EE46BC';
+    case DomainColor.Yellow:
+      return '#FD853A';
+    case DomainColor.Blue:
+      return '#444CE7';
+    case DomainColor.Green:
+      return '#039855';
+    case DomainColor.Aqua:
+      return '#0694A2';
+    case DomainColor.Black:
+      return '#415A77';
+    case DomainColor.BlueGrey:
+      return '#ECEFF1';
+    case DomainColor.EmeraldGreen:
+      return '#0FA98A';
+    case DomainColor.Gold:
+      return '#FFF6ED';
+    case DomainColor.Magenta:
+      return '#A11043';
+    case DomainColor.Orange:
+      return '#C4320A';
+    case DomainColor.Pink:
+      return '#C11574';
+    case DomainColor.Periwinkle:
+      return '#4E5BA6';
+    case DomainColor.PurpleGrey:
+      return '#7A5AF8';
+    case DomainColor.Red:
+      return '#E31B54';
+    default:
+      return '#7A5AF8';
+  }
+};
+
 export const setTeamBadge = (color?: DomainColor) => {
   switch (color) {
     case DomainColor.Purple:

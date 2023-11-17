@@ -6,4 +6,5 @@ export interface WidthBoxItem extends WidgetBoxProps {
 
 export interface WidgetBoxListProps {
   items: WidthBoxItem[];
+  className?: string;
 }
