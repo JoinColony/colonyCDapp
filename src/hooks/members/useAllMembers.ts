@@ -90,7 +90,7 @@ const useAllMembers = ({
   );
 
   return {
-    members: filteredMembers,
+    members: filteredMembers.slice(0, visibleItems),
     verifiedMembers,
     canLoadMore: filteredMembers.length > visibleItems || !!nextToken,
     loadMore() {
