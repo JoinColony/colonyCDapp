@@ -21,7 +21,11 @@ const useNetworkMotionStates = (nativeMotionIds: string[]) => {
 
   useEffect(() => {
     const { ethersProvider } = wallet || {};
-    if (!votingReputationAddress || !ethersProvider) {
+    if (
+      !nativeMotionIds.length ||
+      !votingReputationAddress ||
+      !ethersProvider
+    ) {
       return;
     }
 
@@ -32,9 +36,14 @@ const useNetworkMotionStates = (nativeMotionIds: string[]) => {
 
     const fetchMotionStates = async () => {
       setLoading(true);
-      const statesMap = new Map();
+
+      const newMotionIds = nativeMotionIds.filter(
+        (nativeMotionId) => !motionStatesMap.has(nativeMotionId),
+      );
+
+      const statesMap = new Map(motionStatesMap);
       await Promise.all(
-        nativeMotionIds.map(async (nativeMotionId) => {
+        newMotionIds.map(async (nativeMotionId) => {
           try {
             const motionState = await votingRepClient.getMotionState(
               nativeMotionId,
@@ -46,12 +55,19 @@ const useNetworkMotionStates = (nativeMotionIds: string[]) => {
         }),
       );
 
+      const deletedMotionIds = Array.from(motionStatesMap.keys()).filter(
+        (nativeMotionId) => !nativeMotionIds.includes(nativeMotionId),
+      );
+      deletedMotionIds.forEach((nativeMotionId) =>
+        statesMap.delete(nativeMotionId),
+      );
+
       setMotionStatesMap(statesMap);
       setLoading(false);
     };
 
     fetchMotionStates();
-  }, [nativeMotionIds, votingReputationAddress, wallet]);
+  }, [motionStatesMap, nativeMotionIds, votingReputationAddress, wallet]);
 
   return { motionStatesMap, loading };
 };
