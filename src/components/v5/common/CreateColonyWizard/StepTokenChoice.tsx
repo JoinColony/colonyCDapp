@@ -84,7 +84,7 @@ const TokenSelector = ({
         />
         {icon}
         <span className="text-1 pt-4">{formatText(title)}</span>
-        <span className="description-1">{formatText(description)}</span>
+        <span className="description-1 pt-1">{formatText(description)}</span>
       </Card>
     </label>
   );
