@@ -2,12 +2,12 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 
 import { CardSelect } from '~v5/common/Fields/CardSelect';
+import Icon from '~shared/Icon';
+import { formatText } from '~utils/intl';
 
 import Link from '../Link';
 
 import { BreadcrumbsProps } from './types';
-import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
 
 const displayName = 'v5.Breadcrumbs';
 

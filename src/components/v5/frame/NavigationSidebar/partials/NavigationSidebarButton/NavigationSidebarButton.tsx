@@ -53,7 +53,7 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
         <Icon
           name={iconName}
           // Important added to overwrite default icon dimensions
-          className="!h-[1.375rem] !w-[1.375rem] [&_svg]:fill-current"
+          className="!h-[1.375rem] !w-[1.375rem]"
         />
       )}
       <span
@@ -74,7 +74,7 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
         <Icon
           name="caret-down"
           appearance={{ size: 'extraTiny' }}
-          className={clsx('[&_svg]:fill-current transition-transform', {
+          className={clsx('transition-transform', {
             'rotate-180': isActive && isExpanded,
           })}
         />

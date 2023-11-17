@@ -4,13 +4,13 @@ import clsx from 'clsx';
 import { ToastContainer } from 'react-toastify';
 
 import { useTablet } from '~hooks';
+import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
+import styles from '~shared/Extensions/Toast/Toast.module.css';
 
 import NavigationSidebarContextProvider from '../NavigationSidebar/partials/NavigationSidebarContext';
 import PageHeader from './partials/PageHeader';
 import PageHeading from './partials/PageHeading';
 import { PageLayoutProps } from './types';
-import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
-import styles from '~shared/Extensions/Toast/Toast.module.css';
 
 const displayName = 'v5.frame.PageLayout';
 
@@ -63,60 +63,52 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
         closeButton={CloseButton}
       />
       <div className="w-full md:h-screen md:flex md:flex-col" ref={wrapperRef}>
+        {/* This div has to always be rendered, otherwise the height of the top content wrapper won't be calculated correctly */}
+        <div
+          className="sticky top-0 left-0 right-0 w-full z-[1] bg-base-white md:static md:top-auto md:left-auto md:right-auto md:bg-transparent"
+          ref={topContentWrapperRef}
+        >
+          <div className="w-full relative">
+            {topContent && <div className="flex-shrink-0">{topContent}</div>}
+            {isTablet && sidebar}
+          </div>
+        </div>
         <AnimatePresence>
           {isTablet ? (
-            <>
-              <div
-                className="sticky top-0 left-0 right-0 w-full z-[1] bg-base-white"
-                ref={topContentWrapperRef}
-              >
-                {topContent && (
-                  <div className="flex-shrink-0">{topContent}</div>
-                )}
-                {sidebar}
-              </div>
-              <div className="inner py-6">
-                {pageHeadingProps && (
-                  <PageHeading {...pageHeadingProps} className="mb-6" />
-                )}
-                {children}
-              </div>
-            </>
-          ) : (
-            <>
-              {topContent && (
-                <div className="flex-shrink-0" ref={topContentWrapperRef}>
-                  {topContent}
-                </div>
+            <div className="inner py-6">
+              {pageHeadingProps && (
+                <PageHeading {...pageHeadingProps} className="mb-6" />
               )}
-              <div className="w-full md:h-[calc(100vh-var(--top-content-height))] md:pl-4 md:pt-4 md:flex md:gap-8">
+              {children}
+            </div>
+          ) : (
+            <div className="w-full md:h-[calc(100vh-var(--top-content-height))] md:pl-4 md:pt-4 md:flex md:gap-8">
+              <div
+                className={clsx('relative z-[61]', {
+                  'md:w-[5.125rem]': !hasWideSidebar,
+                  'md:w-[17.5rem]': hasWideSidebar,
+                })}
+              >
                 <div
-                  className={clsx('relative z-[61]', {
-                    'md:w-[5.125rem]': !hasWideSidebar,
-                    'md:w-[17.5rem]': hasWideSidebar,
-                  })}
+                  className={clsx(
+                    'md:absolute md:top-0 md:bottom-4 md:left-0',
+                    { 'w-full': hasWideSidebar },
+                  )}
                 >
-                  <div
-                    className={clsx(
-                      'md:absolute md:top-0 md:bottom-4 md:left-0',
-                      { 'w-full': hasWideSidebar },
-                    )}
-                  >
-                    {sidebar}
-                  </div>
+                  {sidebar}
                 </div>
-                <div className="md:flex-grow flex flex-col gap-8">
-                  <div className="flex-shrink-0 pt-5 pr-4">
-                    <PageHeader {...headerProps} />
-                  </div>
-                  <div className="flex-grow overflow-auto pr-4">
-                    <div className="max-w-[79.875rem] w-full mx-auto pb-4">
-                      {children}
-                    </div>
+              </div>
+              <div className="md:flex-grow flex flex-col gap-8">
+                <div className="flex-shrink-0 pt-5 pr-4">
+                  <PageHeader {...headerProps} />
+                </div>
+                <div className="flex-grow overflow-auto pr-4 pb-4">
+                  <div className="max-w-[79.875rem] w-full mx-auto">
+                    {children}
                   </div>
                 </div>
               </div>
-            </>
+            </div>
           )}
         </AnimatePresence>
       </div>

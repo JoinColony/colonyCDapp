@@ -1,12 +1,9 @@
 @value query700 from "~styles/queries.css";
 
 .transactionsListContainer {
-  padding-right: 5px;
-  height: 60vh;
-  max-height: 356px;
+  height: 100%;
   width: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  overflow: auto;
 }
 
 /* The scrollbar itself */
