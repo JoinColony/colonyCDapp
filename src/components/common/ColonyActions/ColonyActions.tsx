@@ -13,6 +13,7 @@ import {
   ActivityDecisionMethod,
   ActivityFeedFilters,
 } from '~hooks/useActivityFeed/types';
+import { MotionState } from '~utils/colonyMotions';
 
 const displayName = 'common.ColonyActions';
 
@@ -34,7 +35,7 @@ const MSG = defineMessages({
 const decisionMethodOptions = [
   {
     label: 'Decision Method',
-    value: undefined,
+    value: '',
   },
   {
     label: 'Permissions',
@@ -43,6 +44,33 @@ const decisionMethodOptions = [
   {
     label: 'Reputation',
     value: ActivityDecisionMethod.Reputation,
+  },
+];
+
+const motionStateOptions = [
+  {
+    label: 'Status',
+    value: '',
+  },
+  {
+    label: 'Forced',
+    value: MotionState.Forced,
+  },
+  {
+    label: 'Staking',
+    value: MotionState.Staking,
+  },
+  {
+    label: 'Staked',
+    value: MotionState.Staked,
+  },
+  {
+    label: 'Passed',
+    value: MotionState.Passed,
+  },
+  {
+    label: 'Failed',
+    value: MotionState.Failed,
   },
 ];
 
@@ -80,27 +108,46 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
 
   return (
     <div className={styles.main}>
+      <div>
+        <select
+          value={filters.decisionMethod}
+          onChange={(event) => {
+            setFilters({
+              ...filters,
+              decisionMethod: event.target.value
+                ? (event.target.value as ActivityDecisionMethod)
+                : undefined,
+            });
+          }}
+        >
+          {decisionMethodOptions.map((item) => (
+            <option key={item.value} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={filters.motionStates?.[0]}
+          onChange={(event) => {
+            setFilters({
+              ...filters,
+              motionStates: event.target.value
+                ? [event.target.value as MotionState]
+                : undefined,
+            });
+          }}
+        >
+          {motionStateOptions.map((item) => (
+            <option key={item.value} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
       {actions.length ? (
         <>
-          <div>
-            <select
-              value={filters.decisionMethod}
-              onChange={(event) => {
-                setFilters({
-                  ...filters,
-                  decisionMethod: event.target.value as
-                    | ActivityDecisionMethod
-                    | undefined,
-                });
-              }}
-            >
-              {decisionMethodOptions.map((item) => (
-                <option key={item.value} value={item.value}>
-                  {item.label}
-                </option>
-              ))}
-            </select>
-          </div>
           <ActionsListHeading
             sortDirection={sortDirection}
             onSortChange={changeSortDirection}
