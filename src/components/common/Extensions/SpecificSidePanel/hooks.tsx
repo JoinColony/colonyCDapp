@@ -77,7 +77,7 @@ export const useSpecificSidePanel = (extensionData: AnyExtensionData) => {
         },
         installedBy: {
           title: formatMessage({ id: 'installed.by' }),
-          component: <UserAvatar user={user} />,
+          component: user ? <UserAvatar user={user} /> : null,
           user,
         },
         versionInstalled: {

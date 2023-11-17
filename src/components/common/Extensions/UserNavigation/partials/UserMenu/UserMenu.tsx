@@ -54,7 +54,7 @@ const UserMenu: FC<UserMenuProps> = ({
           '-translate-x-[100vw] absolute': activeSubmenu,
         })}
       >
-        {isWalletConnected ? (
+        {walletAddress ? (
           <div className="px-6">
             <WalletConnectedTopMenu
               userName={

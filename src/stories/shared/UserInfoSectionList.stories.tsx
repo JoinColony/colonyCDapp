@@ -16,21 +16,30 @@ const userInfoSectionListMeta: Meta<typeof UserInfoSectionList> = {
             key: '1',
             info: 'Staked 5.67 CLNY',
             userProps: {
-              userName: 'JohnnyBravo',
+              user: {
+                profile: { displayName: 'JohnnyBravo' },
+                walletAddress: '0x0',
+              },
             },
           },
           {
             key: '2',
             info: 'Staked 4.95 CLNY',
             userProps: {
-              userName: 'ChuckieChuckie',
+              user: {
+                profile: { displayName: 'ChuckieChukie' },
+                walletAddress: '0x1',
+              },
             },
           },
           {
             key: '3',
             info: 'Staked 1.23 CLNY',
             userProps: {
-              userName: 'Reallylongusername',
+              user: {
+                profile: { displayName: 'Reallylongusername' },
+                walletAddress: '0x2',
+              },
             },
           },
         ],
@@ -45,21 +54,30 @@ const userInfoSectionListMeta: Meta<typeof UserInfoSectionList> = {
             key: '1',
             info: 'Staked 5.67 CLNY',
             userProps: {
-              userName: 'JohnnyBravo',
+              user: {
+                profile: { displayName: 'JohnnyBravo' },
+                walletAddress: '0x0',
+              },
             },
           },
           {
             key: '2',
             info: 'Staked 4.95 CLNY',
             userProps: {
-              userName: 'ChuckieChuckie',
+              user: {
+                profile: { displayName: 'ChuckieChukie' },
+                walletAddress: '0x1',
+              },
             },
           },
           {
             key: '3',
             info: 'Staked 1.23 CLNY',
             userProps: {
-              userName: 'Reallylongusername',
+              user: {
+                profile: { displayName: 'Reallylongusername' },
+                walletAddress: '0x2',
+              },
             },
           },
         ],

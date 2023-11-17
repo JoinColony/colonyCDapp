@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { ColonyRole } from '@colony/colony-js';
 
 import { AnyExtensionData } from '~types';
@@ -21,7 +22,7 @@ export type SidePanelDataProps = {
   };
   installedBy: {
     title: string;
-    component: JSX.Element;
+    component: ReactNode;
   };
   versionInstalled: {
     title: string;

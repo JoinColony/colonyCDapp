@@ -4,7 +4,7 @@ import { UserStatusMode } from '~v5/common/Pills/types';
 export interface UserAvatarDetailsProps extends AvatarProps {
   userName?: string | null;
   isVerified?: boolean;
-  walletAddress?: string;
+  walletAddress: string;
   userStatus?: UserStatusMode | null;
   isContributorsList?: boolean;
   isBordered?: boolean;
