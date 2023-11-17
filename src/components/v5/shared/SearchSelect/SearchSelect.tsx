@@ -156,7 +156,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                     </div>
                   ) : (
                     <div key={key} className="mb-[0.625rem] last:mb-0">
-                      <h5 className="text-4 text-gray-400 mb-2 uppercase">
+                      <h5 className="text-4 text-gray-400 mb-2 uppercase pl-2">
                         {formatText(title)}
                       </h5>
                       <SearchItem options={options} onChange={onSelect} />
@@ -168,8 +168,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                   {showSearchValueAsOption && (
                     <button
                       type="button"
-                      className="text-sm md:hover:text-blue-400 flex items-center gap-2 min-h-[3.125rem]
-                      "
+                      className="text-sm md:hover:text-blue-400 flex items-center gap-2 min-h-[3.125rem] justify-center"
                       onClick={() => onSelect?.(searchValue)}
                     >
                       <Avatar />

@@ -90,7 +90,7 @@ const SearchItem: FC<SearchItemProps> = ({
                   <span className={clsx(color, 'mr-2 w-3.5 h-3.5 rounded')} />
                 )}
                 {showAvatar && (
-                  <div className="mr-2">
+                  <div className="mr-2 items-center justify-center flex">
                     <Avatar avatar={avatar} />
                   </div>
                 )}

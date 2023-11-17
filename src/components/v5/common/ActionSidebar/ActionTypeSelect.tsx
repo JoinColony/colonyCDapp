@@ -65,8 +65,9 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
               className={clsx(
                 'flex text-md transition-colors md:hover:text-blue-400',
                 {
-                  'text-gray-400': !actionType,
-                  'text-gray-900': actionType,
+                  'text-gray-400': !actionType && !isSelectVisible,
+                  'text-gray-900': actionType && !isSelectVisible,
+                  'text-blue-400': isSelectVisible,
                 },
               )}
               onClick={toggleSelect}

@@ -60,8 +60,9 @@ const TeamsSelect: FC<TeamSelectProps> = ({ name }) => {
             className={clsx(
               'flex text-md transition-colors md:hover:text-blue-400',
               {
-                'text-gray-400': !isError,
+                'text-gray-400': !isError && !isTeamSelectVisible,
                 'text-negative-400': isError,
+                'text-blue-400': isTeamSelectVisible,
               },
             )}
             onClick={toggleTeamSelect}
