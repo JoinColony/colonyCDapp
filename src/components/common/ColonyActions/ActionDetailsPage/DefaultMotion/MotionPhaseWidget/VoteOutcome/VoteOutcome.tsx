@@ -7,6 +7,7 @@ import { Heading4 } from '~shared/Heading';
 import { MotionVote } from '~utils/colonyMotions';
 import { formatActionType, getExtendedActionType } from '~utils/colonyActions';
 import { MotionAction } from '~types/motions';
+import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
 
 import { voteTitleMsg } from '../VotingWidget';
 import { VoteResults } from './VoteResults';
@@ -51,6 +52,13 @@ const VoteOutcome = ({
     return null;
   }
 
+  const voters: UserAvatarsItem[] =
+    voterRecord.map((voter) => ({
+      address: voter.address,
+      voteCount: voter.voteCount,
+      vote: voter.vote ?? undefined,
+    })) || [];
+
   const currentUserRecord = voterRecord.find(
     ({ address }) => address === user?.walletAddress,
   );
@@ -84,7 +92,7 @@ const VoteOutcome = ({
         }}
         appearance={{ weight: 'bold', theme: 'dark' }}
       />
-      <VoteResults revealedVotes={revealedVotes} voterRecord={voterRecord} />
+      <VoteResults revealedVotes={revealedVotes} voterRecord={voters} />
     </div>
   );
 };

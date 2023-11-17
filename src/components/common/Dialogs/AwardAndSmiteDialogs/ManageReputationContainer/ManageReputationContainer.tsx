@@ -37,7 +37,9 @@ const ManageReputationContainer = ({
   const [isForce, setIsForce] = useState(false);
   const [schemaUserReputation, setSchemaUserReputation] = useState(0);
   const navigate = useNavigate();
-  const allColonyMembers = useGetColonyMembers(colony.colonyAddress);
+  const { allMembers: allColonyMembers } = useGetColonyMembers(
+    colony.colonyAddress,
+  );
 
   const verifiedUsers = getVerifiedUsers(
     colony.metadata?.whitelistedAddresses ?? [],

@@ -18,6 +18,7 @@ export type AvatarSize =
   | 'sm'
   | 's'
   | 'ms'
+  | 'xms'
   | 'm'
   | 'xm'
   | 'md'

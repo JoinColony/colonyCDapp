@@ -6,12 +6,20 @@ import { OutcomeStepProps } from './types';
 import { useOutcomeStep } from './hooks';
 import VoteStatuses from './partials/VoteStatuses';
 import { MotionState } from '~utils/colonyMotions';
+import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.Motion.steps.OutcomeStep';
 
 const OutcomeStep: FC<OutcomeStepProps> = ({ motionData, motionState }) => {
   const { voteStatuses } = useOutcomeStep(motionData);
+
+  const voters: UserAvatarsItem[] =
+    motionData?.voterRecord.map((voter) => ({
+      address: voter.address,
+      voteCount: voter.voteCount,
+      vote: voter.vote ?? undefined,
+    })) || [];
 
   return (
     <CardWithSections
@@ -28,10 +36,7 @@ const OutcomeStep: FC<OutcomeStepProps> = ({ motionData, motionState }) => {
                       : 'motion.outcomeStep.lost.title',
                 })}
               </h3>
-              <VoteStatuses
-                items={voteStatuses}
-                voters={motionData?.voterRecord || []}
-              />
+              <VoteStatuses items={voteStatuses} voters={voters} />
             </div>
           ),
         },

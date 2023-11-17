@@ -4,7 +4,7 @@ import { MessageDescriptor } from 'react-intl';
 import { getMainClasses } from '~utils/css';
 import Icon from '~shared/Icon';
 import ProgressBar from '~shared/ProgressBar';
-import { VoterRecord } from '~gql';
+import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
 
 import ItemHeading from './VoterResultsItemHeading';
 import VoterAvatars from './VoterAvatars';
@@ -21,7 +21,7 @@ interface Props {
   maxValue: number;
   maxPercentage?: number;
   title: string | MessageDescriptor;
-  voters?: VoterRecord[];
+  voters?: UserAvatarsItem[];
   maxAvatars?: number;
 }
 

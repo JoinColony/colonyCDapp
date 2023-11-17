@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { User } from '~types';
-import { VoterRecord } from '~gql';
 import { useUserAvatars } from '~hooks/useUserAvatars';
 import UserAvatar from '~shared/UserAvatar';
+import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
 import styles from './VoterAvatars.css';
 
 interface VoterAvatarsProps {
-  voters: VoterRecord[];
+  voters: UserAvatarsItem[];
   maxAvatars: number;
 }
 
