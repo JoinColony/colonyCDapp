@@ -336,8 +336,8 @@ function* updateTransactionInDb({
     }
   } catch (e) {
     console.error(
-      `Unable to update transaction with id: ${id} in db. 
-       Action type: ${type}. 
+      `Unable to update transaction with id: ${id} in db.
+       Action type: ${type}.
        Reason: ${e}`,
     );
   }
