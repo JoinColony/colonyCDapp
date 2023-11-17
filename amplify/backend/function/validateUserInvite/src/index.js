@@ -1,4 +1,4 @@
-const { graphqlRequest } = require('./utils');
+const { graphqlRequest, getColonyContributorId } = require('./utils');
 const {
   getColonyMemberInvite,
   updateColony,
@@ -107,6 +107,7 @@ exports.handler = async (event) => {
           isVerified: false,
           isWatching: true,
           hasReputation: false,
+          id: getColonyContributorId(colonyAddress, userAddress),
           type: 'NEW',
         },
       },

@@ -1,5 +1,7 @@
 const { default: fetch, Request } = require('node-fetch');
 
+const getColonyContributorId = (colonyAddress, walletAddress) => `${colonyAddress}_${walletAddress}`;
+
 const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
   const options = {
     method: 'POST',
@@ -33,4 +35,5 @@ const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
 
 module.exports = {
   graphqlRequest,
+  getColonyContributorId,
 };
