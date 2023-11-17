@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 
 import Icon from '~shared/Icon';
-import styles from '../Input.module.css';
 import { PillProps } from '../types';
 import { formatText } from '~utils/intl';
 
@@ -16,14 +15,14 @@ const InputPills: FC<PillProps> = ({ message, status }) => {
 
   return (
     <div
-      className={clsx(`${styles.inputMessage} absolute`, {
-        'border-negative-200 text-negative-400': status === 'error',
-        'border-success-200 text-success-400': status === 'success',
-        'border-warning-400 text-warning-400': status === 'warning',
+      className={clsx(`flex self-start text-3 absolute gap-1`, {
+        'text-negative-400': status === 'error',
+        'text-success-400': status === 'success',
+        'text-warning-400': status === 'warning',
       })}
     >
       <Icon name={iconType} appearance={{ size: 'small' }} />
-      <span className="ml-1">{formatText(message)}</span>
+      <span>{formatText(message)}</span>
     </div>
   );
 };

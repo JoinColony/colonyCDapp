@@ -10,7 +10,7 @@ const FormError: FC<PropsWithChildren<FormErrorProps>> = ({
   children,
 }) => (
   <div
-    className={clsx(`flex mt-1 w-[8.75rem] absolute`, {
+    className={clsx(`flex w-[8.75rem] absolute`, {
       'w-full': isFullSize,
       'text-right justify-end': alignment === 'right',
       'text-left justify-start': alignment === 'left',
