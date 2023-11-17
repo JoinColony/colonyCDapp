@@ -39,12 +39,15 @@ export interface FileUploadProps {
   isProgressContentVisible?: boolean;
   isSimplified?: boolean;
   fileOptions: FileUploadOptions;
+  useSucessState: boolean;
 }
 
 export interface AvatarUploaderProps {
   avatarPlaceholder: React.ReactElement;
   disabled?: boolean;
   fileOptions: FileUploadOptions;
+  useSucessState?: boolean;
+  showUploaderText?: boolean;
 }
 
 export interface DefaultContentProps extends Pick<ErrorContentProps, 'open'> {

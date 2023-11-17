@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 
 import useDropzoneWithFileReader from '~hooks/useDropzoneWithFileReader';
 import SuccessContent from './SuccessContent';
@@ -18,7 +18,9 @@ const FileUpload: FC<FileUploadProps> = ({
   isProgressContentVisible,
   isSimplified,
   fileOptions,
+  useSucessState,
 }) => {
+  const [showDefault, setShowDefault] = useState(false);
   const {
     getInputProps,
     getRootProps,
@@ -31,13 +33,32 @@ const FileUpload: FC<FileUploadProps> = ({
       maxFiles: 1,
       ...dropzoneOptions,
     },
-    handleFileAccept,
+    handleFileAccept: (event) => {
+      setShowDefault(false);
+      handleFileAccept(event);
+    },
     handleFileReject,
   });
 
+  const shouldShowDefaultContent =
+    showDefault ||
+    !isAvatarUploaded ||
+    (!useSucessState && !errorCode && !isProgressContentVisible);
+
+  const shouldShowSuccessContent =
+    !showDefault &&
+    isAvatarUploaded &&
+    !errorCode &&
+    !isProgressContentVisible &&
+    useSucessState;
+
   const successContent = (
-    <SuccessContent open={open} handleFileRemove={handleFileRemove} />
+    <SuccessContent
+      open={() => setShowDefault(true)}
+      handleFileRemove={handleFileRemove}
+    />
   );
+
   const defaultContent = (
     <DefaultContent
       isSimplified={isSimplified}
@@ -55,11 +76,6 @@ const FileUpload: FC<FileUploadProps> = ({
       fileRejections={fileRejections?.[0]?.file?.name}
     />
   );
-
-  const shouldShowDefaultContent =
-    !isAvatarUploaded && !errorCode && !isProgressContentVisible;
-  const shouldShowSuccessContent =
-    isAvatarUploaded && !errorCode && !isProgressContentVisible;
 
   return (
     <div className="w-full">

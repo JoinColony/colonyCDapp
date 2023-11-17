@@ -143,6 +143,8 @@ const StepCreateTokenInputs = ({
           fileSize: '1MB',
         }}
         updateFn={updateFn}
+        useSucessState={false}
+        showUploaderText={false}
       />
     </>
   );
