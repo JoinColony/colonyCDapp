@@ -45,7 +45,7 @@ const CreateUserForm = () => {
       actionType={ActionTypes.USERNAME_CREATE}
       transform={withMeta({ navigate, updateUser })}
     >
-      {({ formState: { isSubmitting, isValid } }) => (
+      {({ formState: { isSubmitting } }) => (
         <>
           <HeaderRow heading={MSG.heading} description={MSG.description} />
           <CreateUserFormInputs />
@@ -53,7 +53,7 @@ const CreateUserForm = () => {
             text={{ id: 'button.continue' }}
             type="submit"
             mode="primarySolid"
-            disabled={!isValid || isSubmitting}
+            disabled={isSubmitting}
             className="mt-3"
           />
         </>
