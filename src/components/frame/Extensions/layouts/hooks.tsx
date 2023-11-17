@@ -6,18 +6,17 @@ import {
   useAppContext,
   useColonyContext,
   useColonyContractVersion,
-  useEnabledExtensions,
   useTransformer,
 } from '~hooks';
 import { COLONY_HOME_ROUTE } from '~routes';
 import { getAllUserRoles } from '~transformers';
-import { NetworkContractUpgradeDialog } from '~common/Dialogs';
-import { useDialog } from '~shared/Dialog';
 import { canColonyBeUpgraded, hasRoot } from '~utils/checks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { formatText } from '~utils/intl';
+import { ACTION } from '~constants/actions';
 import { NavigationSidebarItem } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarMainMenu/types';
 import { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 
 import type { UseCalamityBannerInfoReturnType } from './types';
 import {
@@ -29,8 +28,6 @@ import {
   membersMenu,
 } from './consts';
 import { checkIfIsActive } from './utils';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
-import { ACTION } from '~constants/actions';
 import DashboardContent from './partials/DashboardContent';
 
 export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
@@ -42,18 +39,18 @@ export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
     wallet?.address || '',
   ]);
 
-  const openUpgradeColonyDialog = useDialog(NetworkContractUpgradeDialog);
-  const enabledExtensionData = useEnabledExtensions();
+  const {
+    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
+  } = useActionSidebarContext();
+
   const canUpgradeColony = user?.profile?.displayName && hasRoot(allUserRoles);
 
   const handleUpgradeColony = useCallback(
     () =>
-      colony &&
-      openUpgradeColonyDialog({
-        colony,
-        enabledExtensionData,
+      toggleActionSidebarOn({
+        [ACTION_TYPE_FIELD_NAME]: ACTION.UPGRADE_COLONY_VERSION,
       }),
-    [colony, enabledExtensionData, openUpgradeColonyDialog],
+    [toggleActionSidebarOn],
   );
 
   const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);
