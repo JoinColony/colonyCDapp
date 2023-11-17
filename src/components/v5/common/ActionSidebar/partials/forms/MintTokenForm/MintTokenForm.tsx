@@ -68,7 +68,7 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
       >
-        <TeamsSelect name="createdIn" />
+        <TeamsSelect name="createdIn" readonly />
       </ActionFormRow>
       <DescriptionRow />
     </>
