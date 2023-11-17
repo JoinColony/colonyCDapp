@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes as RoutesSwitch, Navigate } from 'react-router-dom';
 
-import ColonyHome from '~common/ColonyHome';
+import ColonyHome, { ColonyHomeOLD } from '~common/ColonyHome';
 import ColonyFunding from '~common/ColonyFunding';
 import FourOFour from '~frame/FourOFour';
 import UserProfile from '~common/UserProfile';
@@ -183,7 +183,7 @@ const Routes = () => {
 
         {/* OLD Colony routes -- remove when going live */}
         <Route path={COLONY_OLD_HOME_ROUTE} element={<ColonyRoute />}>
-          <Route index element={<ColonyHome />} />
+          <Route index element={<ColonyHomeOLD />} />
           <Route path={COLONY_FUNDING_ROUTE} element={<ColonyFunding />} />
           <Route element={<ColonyMembersRoute />}>
             <Route path={COLONY_MEMBERS_ROUTE} element={<MembersPage />} />
