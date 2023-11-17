@@ -52,10 +52,15 @@ const getAmountText = async (
 
 export const mintTokenDescriptionMetadataGetter: DescriptionMetadataGetter<
   DeepPartial<MintTokenFormValues>
-> = async ({ amount }, { client, currentUser }) => {
+> = async ({ amount }, { client, currentUser, colony }) => {
   return (
     <>
-      Mint {await getAmountText(amount?.amount, amount?.tokenAddress, client)}{' '}
+      Mint{' '}
+      {await getAmountText(
+        amount?.amount,
+        colony?.nativeToken.tokenAddress,
+        client,
+      )}{' '}
       tokens
       {currentUser?.profile?.displayName && (
         <>
