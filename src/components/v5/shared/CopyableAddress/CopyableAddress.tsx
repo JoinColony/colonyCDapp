@@ -27,10 +27,10 @@ const CopyableAddress = ({ address, full }: Props) => {
       )}
       onClick={handleClipboardCopy}
     >
-      <MaskedAddress className="font-normal" address={address} full={full} />
+      <MaskedAddress address={address} full={full} />
       <Icon
         name={isCopied ? 'check-mark' : 'copy-simple'}
-        appearance={{ size: 'tiny' }}
+        appearance={{ size: 'extraTiny' }}
       />
     </button>
   );

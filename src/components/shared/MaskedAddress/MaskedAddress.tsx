@@ -55,7 +55,7 @@ const MaskedAddress = forwardRef(
 
     return (
       <span
-        className={clsx('font-bold text-sm leading-none', className)}
+        className={clsx('text-sm font-normal leading-none', className)}
         title={address}
         ref={ref}
         data-test={dataTest}
