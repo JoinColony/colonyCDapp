@@ -45,23 +45,25 @@ const StepColonyNameInputs = ({
   const colonyNameSuccessMessage = formatText(MSG.urlSuccess);
 
   const displayNameError = errors.displayName?.message as string | undefined;
-  const showDisplayNameError =
+  const showDisplayNameError = Boolean(
     errors.displayName?.type === 'required' && submitCount === 0
       ? false
-      : displayNameError;
+      : displayNameError,
+  );
 
   const colonyNameError = errors.colonyName?.message as string | undefined;
-  const showColonyNameError =
+  const showColonyNameError = Boolean(
     errors.colonyName?.type === 'required' && submitCount === 0
       ? false
-      : colonyNameError;
+      : colonyNameError,
+  );
 
   return (
     <>
       <Input
         name="displayName"
         register={register}
-        isError={!!showDisplayNameError}
+        isError={showDisplayNameError}
         customErrorMessage={displayNameError}
         className="text-md border-gray-300"
         maxCharNumber={MAX_COLONY_DISPLAY_NAME}
@@ -83,7 +85,7 @@ const StepColonyNameInputs = ({
           <Input
             name="colonyName"
             register={register}
-            isError={!!showColonyNameError}
+            isError={showColonyNameError}
             customErrorMessage={colonyNameError}
             className="text-md border-gray-300 lowercase rounded-s-none ml-[117px] w-[calc(100%-117px)]"
             isDisabled={isSubmitting}

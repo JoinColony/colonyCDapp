@@ -67,15 +67,17 @@ const StepCreateTokenInputs = ({
   const { formatMessage } = useIntl();
 
   const tokenNameError = errors.tokenName?.message as string | undefined;
-  const showTokenNameError =
+  const showTokenNameError = Boolean(
     errors.tokenName?.type === 'required' && submitCount === 0
       ? false
-      : tokenNameError;
+      : tokenNameError,
+  );
   const tokenSymbolError = errors.tokenSymbol?.message as string | undefined;
-  const showTokenSymbolError =
+  const showTokenSymbolError = Boolean(
     errors.tokenSymbol?.type === 'required' && submitCount === 0
       ? false
-      : tokenSymbolError;
+      : tokenSymbolError,
+  );
 
   const tokenAvatarUrl = watch('tokenAvatar');
 
@@ -102,7 +104,7 @@ const StepCreateTokenInputs = ({
         <Input
           name="tokenName"
           register={register}
-          isError={!!showTokenNameError}
+          isError={showTokenNameError}
           customErrorMessage={tokenNameError}
           className="text-md border-gray-300"
           maxCharNumber={MAX_TOKEN_NAME}
@@ -114,7 +116,7 @@ const StepCreateTokenInputs = ({
         <Input
           name="tokenSymbol"
           register={register}
-          isError={!!showTokenSymbolError}
+          isError={showTokenSymbolError}
           customErrorMessage={tokenSymbolError}
           className="text-md border-gray-300 uppercase"
           maxCharNumber={MAX_TOKEN_SYMBOL}
