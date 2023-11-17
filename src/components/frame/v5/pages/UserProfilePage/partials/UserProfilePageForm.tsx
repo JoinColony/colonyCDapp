@@ -143,15 +143,15 @@ const UserProfilePageForm = ({
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col">
       <h4 className="heading-4 mb-6">{formatText({ id: 'profile.page' })}</h4>
-      <div className={`${styles.row} mb-3`}>
+      <div className={styles.row}>
         <LeftColumn
           fieldTitle={{ id: 'field.username' }}
           fieldDescription={{ id: 'description.username' }}
         />
         <div
-          className={clsx('w-full', {
+          className={clsx('w-full pb-0.5', {
             'mb-6': showNameMessage,
           })}
         >
@@ -180,7 +180,7 @@ const UserProfilePageForm = ({
           />
         </div>
       </div>
-      <div className={styles.row}>
+      <div className={`${styles.row} pb-6`}>
         <LeftColumn
           fieldTitle={{ id: 'field.avatar' }}
           fieldDescription={{ id: 'description.avatar' }}
@@ -206,7 +206,7 @@ const UserProfilePageForm = ({
 
       <span className="divider" />
 
-      <div className={styles.row}>
+      <div className={`${styles.row} pt-6 pb-0.5`}>
         <LeftColumn
           fieldTitle={{ id: 'field.website' }}
           fieldDescription={{ id: 'description.website' }}
@@ -223,7 +223,7 @@ const UserProfilePageForm = ({
 
       <span className="divider" />
 
-      <div className={styles.row}>
+      <div className={`${styles.row} pt-6 pb-5`}>
         <LeftColumn
           fieldTitle={{ id: 'field.bio' }}
           fieldDescription={{ id: 'description.bio' }}
@@ -241,7 +241,7 @@ const UserProfilePageForm = ({
 
       <span className="divider" />
 
-      <div className={styles.row}>
+      <div className={`${styles.row} pt-6 pb-0.5`}>
         <LeftColumn
           fieldTitle={{ id: 'field.location' }}
           fieldDescription={{ id: 'description.location' }}
