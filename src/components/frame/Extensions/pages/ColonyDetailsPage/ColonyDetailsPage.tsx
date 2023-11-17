@@ -14,10 +14,10 @@ import { ACTION } from '~constants/actions';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import CopyableAddress from '~v5/shared/CopyableAddress';
 import Icon from '~shared/Icon';
-
-import styles from './ColonyDetailsPage.module.css';
 import { COLONY_LINK_CONFIG } from '~constants/colony';
 import { truncateText } from '~utils/string';
+
+import styles from './ColonyDetailsPage.module.css';
 
 const displayName = 'frame.Extensions.pages.ColonyDetailsPage';
 const MAX_DESCRIPTION_LENGTH = 250;
@@ -74,7 +74,7 @@ const ColonyDetailsPage: FC = () => {
             : formatMessage({ id: 'colonyDetailsPage.descriptionPlaceholder' })}
         </p>
         {externalLinks?.length && (
-          <div className="mb-6 flex flex-col sm:flex-row flex-wrap items-center gap-4">
+          <div className="mb-6 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4">
             {externalLinks.map(({ name: linkName, link }) => {
               const { label, LinkIcon } = COLONY_LINK_CONFIG[linkName];
 

@@ -45,14 +45,14 @@ export const COLONY_LINK_CONFIG: Record<ExternalLinks, ColonyLink> = {
     label: formatText({ id: 'socialLinks.twitter' }),
   },
   [ExternalLinks.Telegram]: {
-    id: ExternalLinks.Twitter,
+    id: ExternalLinks.Telegram,
     LinkIcon: TelegramLogo,
     label: formatText({ id: 'socialLinks.telegram' }),
   },
   [ExternalLinks.Github]: {
-    id: ExternalLinks.Twitter,
+    id: ExternalLinks.Github,
     LinkIcon: GithubLogo,
-    label: formatText({ id: 'socialLinks.custom' }),
+    label: formatText({ id: 'socialLinks.github' }),
   },
   /* Uncomment when Facebook is added to ExternalLinks enum
   [ExternalLinks.Facebook]: {
