@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { useColonyContext, useMobile } from '~hooks';
 import Avatar from '~v5/shared/Avatar';
-import Button, { TextButton } from '~v5/shared/Button';
+import Button from '~v5/shared/Button';
 import ObjectiveBox from '~v5/common/ObjectiveBox';
 import ExternalLink from '~shared/Extensions/ExternalLink';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
@@ -16,8 +16,11 @@ import CopyableAddress from '~v5/shared/CopyableAddress';
 import Icon from '~shared/Icon';
 
 import styles from './ColonyDetailsPage.module.css';
+import { COLONY_LINK_CONFIG } from '~constants/colony';
+import { truncateText } from '~utils/string';
 
 const displayName = 'frame.Extensions.pages.ColonyDetailsPage';
+const MAX_DESCRIPTION_LENGTH = 250;
 
 const ColonyDetailsPage: FC = () => {
   const { formatMessage } = useIntl();
@@ -37,10 +40,15 @@ const ColonyDetailsPage: FC = () => {
 
   return (
     <div>
-      <div className={clsx('p-6 mt-8', styles.box)}>
-        <div className="flex flex-row items-center">
-          <Avatar size="md" avatar={avatar || thumbnail || ''} />
-          <div className="flex flex-col items-start gap-2 ml-4">
+      <div
+        className={clsx(
+          'p-6 mt-6 sm:mt-8 flex flex-col items-start',
+          styles.box,
+        )}
+      >
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-4">
+          <Avatar size="m" avatar={avatar || thumbnail || ''} />
+          <div className="flex flex-col items-start gap-2">
             <div className="flex flex-row items-end gap-3">
               <h2 className="heading-2">{name}</h2>
               {nativeToken && (
@@ -62,25 +70,28 @@ const ColonyDetailsPage: FC = () => {
           </div>
         </div>
         <p className="text-md text-gray-600 mt-4 mb-6">
-          {description ??
-            formatMessage({ id: 'colonyDetailsPage.descriptionPlaceholder' })}
+          {description
+            ? truncateText(description, MAX_DESCRIPTION_LENGTH)
+            : formatMessage({ id: 'colonyDetailsPage.descriptionPlaceholder' })}
         </p>
-        <div className="mb-6 flex gap-x-2">
-          {externalLinks?.length ? (
-            externalLinks.map(({ name: linkName, link }) => (
-              <ExternalLink href={link} key={`${linkName}:${link}`}>
-                {linkName}
-              </ExternalLink>
-            ))
-          ) : (
-            <TextButton
-              iconName="plus"
-              iconSize="tiny"
-              text={{ id: 'button.socialLinks' }}
-              mode="medium"
-            />
-          )}
-        </div>
+        {externalLinks?.length && (
+          <div className="mb-6 flex flex-col sm:flex-row flex-wrap items-center gap-4">
+            {externalLinks.map(({ name: linkName, link }) => {
+              const { label, LinkIcon } = COLONY_LINK_CONFIG[linkName];
+
+              return (
+                <ExternalLink
+                  href={link}
+                  key={`${linkName}:${link}`}
+                  className="flex items-center gap-2 text-gray-900 text-md"
+                >
+                  <LinkIcon size={18} />
+                  {label}
+                </ExternalLink>
+              );
+            })}
+          </div>
+        )}
         <Button
           mode="primarySolid"
           text={{ id: 'button.editColonyDetails' }}
@@ -94,15 +105,15 @@ const ColonyDetailsPage: FC = () => {
       </div>
       <div
         className={clsx(
-          'p-6 mt-12 flex flex-col justify-between items-center gap-6 sm:flex-row sm:gap-12',
+          'p-6 mt-6 sm:mt-9 flex flex-col items-start gap-6 sm:flex-row sm:gap-12',
           styles.box,
         )}
       >
-        <div className="w-full sm:max-w-[32.875rem]">
+        <div className="flex-1">
           <h3 className="heading-4 mb-4">
             <FormattedMessage id="colonyDetailsPage.objectiveTitle" />
           </h3>
-          <p className="text-md text-gray-600 mb-6">
+          <p className="text-md text-gray-600 sm:mb-6">
             <FormattedMessage
               id="colonyDetailsPage.objectiveDescription"
               values={{ br: <br /> }}
@@ -131,8 +142,9 @@ const ColonyDetailsPage: FC = () => {
           // @TODO: Test functionality to create objective on mobile
           <Button
             mode="primarySolid"
-            text={{ id: 'button.createObjective' }}
-            isFullSize={isMobile}
+            text={{ id: 'button.manageObjective' }}
+            textValues={{ existing: !!objective?.title }}
+            isFullSize
             onClick={() => {
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_COLONY_OBJECTIVES,
