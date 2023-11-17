@@ -8,7 +8,6 @@ import CreateAColonyBanner from '~images/create-colony-banner.png';
 import CreateAProfileBanner from '~images/create-profile-banner.png';
 import { useAppContext } from '~hooks';
 import InvitationBlock from '~common/InvitationBlock';
-import { clearLastWallet } from '~utils/autoLogin';
 
 import LandingPageItem from './LandingPageItem';
 
@@ -89,10 +88,6 @@ const LandingPage = () => {
   const [, setHoveredItem] = useState<number>(1);
   const navigate = useNavigate();
   const { user, connectWallet, wallet, userLoading } = useAppContext();
-  const onUserLogin = () => {
-    clearLastWallet();
-    connectWallet?.();
-  };
 
   const landingPageItems = [
     {
@@ -113,7 +108,7 @@ const LandingPage = () => {
       headingDescription: MSG.viewUserProfileDescription,
       iconName: 'user-circle',
       onClick: !wallet
-        ? onUserLogin
+        ? () => connectWallet()
         : () => navigate(user ? '/my/profile' : '/create-user'),
       imgSrc: CreateAProfileBanner,
       disabled: userLoading,

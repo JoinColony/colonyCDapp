@@ -2,10 +2,8 @@ import React, { FC, useState } from 'react';
 import clsx from 'clsx';
 
 import { useAppContext, useTablet } from '~hooks';
-import { ActionTypes } from '~redux';
 import { formatText } from '~utils/intl';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
-import { ActionButton } from '~shared/Button';
 import Icon from '~shared/Icon';
 import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
 import Button from '~v5/shared/Button';
@@ -31,7 +29,7 @@ const UserMenu: FC<UserMenuProps> = ({
   walletAddress,
 }) => {
   const isTablet = useTablet();
-  const { connectWallet, updateWallet } = useAppContext();
+  const { connectWallet, disconnectWallet } = useAppContext();
   const { profile } = user || {};
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 
@@ -132,13 +130,13 @@ const UserMenu: FC<UserMenuProps> = ({
               <TitleLabel text={formatText({ id: 'userMenu.other' })} />
               <div className="navigation-link">
                 <Icon name="plugs" appearance={{ size: iconSize }} />
-                <ActionButton
+                <button
+                  type="button"
                   className="ml-2"
-                  appearance={{ theme: 'no-style' }}
-                  text={{ id: 'userMenu.disconnectWalletTitle' }}
-                  actionType={ActionTypes.USER_LOGOUT}
-                  onSuccess={updateWallet}
-                />
+                  onClick={disconnectWallet}
+                >
+                  {formatText({ id: 'userMenu.disconnectWalletTitle' })}
+                </button>
               </div>
             </div>
           )}

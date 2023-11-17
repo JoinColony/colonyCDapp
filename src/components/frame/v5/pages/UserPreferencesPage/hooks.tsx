@@ -5,17 +5,17 @@ import { useIntl } from 'react-intl';
 import { object, string } from 'yup';
 import { toast } from 'react-toastify';
 
-import { useUpdateUserProfileMutation } from '~gql';
-import { UserPreferencesFormProps } from './types';
-import { useAppContext, useCanEditProfile } from '~hooks';
-import Toast from '~shared/Extensions/Toast';
 import { isEmailAlreadyRegistered } from '~common/CreateUserWizard/validation';
+import { useUpdateUserProfileMutation } from '~gql';
+import { useAppContext } from '~hooks';
+import Toast from '~shared/Extensions/Toast';
+
+import { UserPreferencesFormProps } from './types';
 
 export const useUserPreferencesPage = () => {
   const { formatMessage } = useIntl();
-  const { updateUser } = useAppContext();
+  const { updateUser, user } = useAppContext();
   const [editUser] = useUpdateUserProfileMutation();
-  const { user, loadingProfile } = useCanEditProfile();
   const [isEmailInputVisible, setIsEmailInputVisible] = useState(false);
 
   const validationSchema = object<UserPreferencesFormProps>({
@@ -91,6 +91,5 @@ export const useUserPreferencesPage = () => {
     isEmailInputVisible,
     setIsEmailInputVisible,
     errors,
-    loading: !!loadingProfile,
   };
 };

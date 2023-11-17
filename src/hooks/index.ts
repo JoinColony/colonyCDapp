@@ -34,7 +34,6 @@ export { default as useSelectedUser } from './useSelectedUser';
 export { default as useTitle } from './useTitle';
 export { default as useTokenInfo, TokenInfoProvider } from './useTokenInfo';
 export { default as useUserAvatarImageFromIPFS } from './useUserAvatarImageFromIPFS';
-export { default as useCanEditProfile } from './useCanEditProfile';
 export { default as useWindowSize } from './useWindowSize';
 // @TODO: Put this into ~context
 export { default as useAppContext } from './useAppContext';
@@ -142,7 +141,7 @@ export const useAsyncFunction = <P, R>({
   }
   // Automatically unsubscribe on unmount
   useEffect(() => () => asyncFunc.unsubscribe(), [asyncFunc]);
-  return asyncFunc.asyncFunction as any;
+  return asyncFunc.asyncFunction;
 };
 
 /*

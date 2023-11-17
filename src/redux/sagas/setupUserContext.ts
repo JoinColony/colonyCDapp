@@ -16,6 +16,7 @@ import { ActionTypes } from '../actionTypes';
 import { AllActions } from '../types/actions';
 
 import { setContext, ContextModule } from '~context';
+import { clearLastWallet } from '~utils/autoLogin';
 
 // import AppLoadingState from '~context/appLoadingState';
 
@@ -55,6 +56,8 @@ function* setupContextDependentSagas() {
  */
 export default function* setupUserContext() {
   try {
+    clearLastWallet();
+
     /* Instantiate the onboard object and load into context */
     const onboard = yield getOnboard();
     setContext(ContextModule.Onboard, onboard);

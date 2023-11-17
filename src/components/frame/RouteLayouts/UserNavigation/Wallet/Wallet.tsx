@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 import { useSelector } from 'react-redux';
 
@@ -13,8 +13,6 @@ import {
 
 import { groupedTransactionsAndMessages } from '~redux/selectors';
 import { useAppContext, useMobile } from '~hooks';
-import { getLastWallet, clearLastWallet } from '~utils/autoLogin';
-import { isBasicWallet } from '~types';
 
 import styles from './Wallet.css';
 
@@ -27,7 +25,7 @@ const MSG = defineMessages({
   },
   walletAutologin: {
     id: `${displayName}.walletAutologin`,
-    defaultMessage: `Connecting{isMobile, select, 
+    defaultMessage: `Connecting{isMobile, select,
         true {}
         other { wallet}
         }...`,
@@ -48,12 +46,6 @@ const Wallet = () => {
     [transactionAndMessageGroups],
   );
 
-  useLayoutEffect(() => {
-    if ((!wallet && getLastWallet()) || isBasicWallet(wallet)) {
-      connectWallet?.();
-    }
-  }, [connectWallet, wallet]);
-
   return (
     <>
       {!wallet && walletConnecting && (
@@ -73,10 +65,7 @@ const Wallet = () => {
               : styles.connectWalletButton
           }
           text={MSG.connectWallet}
-          onClick={() => {
-            clearLastWallet();
-            connectWallet?.();
-          }}
+          onClick={connectWallet}
         />
       )}
       <span>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 
-import { useAppContext, useCanEditProfile } from '~hooks';
+import { useAppContext } from '~hooks';
 import { useUpdateUserProfileMutation } from '~gql';
 import Toast from '~shared/Extensions/Toast';
 import { formatText } from '~utils/intl';
@@ -31,7 +31,6 @@ const calculateUsernameChangePeriod = (displayNameChanged?: string | null) => {
 export const useUserProfile = () => {
   const { user, updateUser } = useAppContext();
   const [editUser] = useUpdateUserProfileMutation();
-  const { loadingProfile } = useCanEditProfile();
   const { profile } = user || {};
   const avatarUrl = profile?.avatar || profile?.thumbnail;
 
@@ -81,7 +80,6 @@ export const useUserProfile = () => {
   return {
     handleSubmit,
     avatarUrl,
-    loading: !!loadingProfile,
     canChangeUsername,
     daysTillUsernameChange:
       daysTillUsernameChange < 0 ? 0 : daysTillUsernameChange,

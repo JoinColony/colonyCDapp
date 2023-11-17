@@ -1,10 +1,9 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { ActionButton } from '~shared/Button';
-import { DropdownMenuItem, DropdownMenuSection } from '~shared/DropdownMenu';
-import { ActionTypes } from '~redux/actionTypes';
 import { useAppContext } from '~hooks';
+import { DropdownMenuItem, DropdownMenuSection } from '~shared/DropdownMenu';
+import { formatText } from '~utils/intl';
 
 const displayName = 'PopoverSection.MetaSection';
 
@@ -16,17 +15,14 @@ const MSG = defineMessages({
 });
 
 const MetaSection = () => {
-  const { updateWallet } = useAppContext();
+  const { disconnectWallet } = useAppContext();
 
   return (
     <DropdownMenuSection separator>
       <DropdownMenuItem>
-        <ActionButton
-          appearance={{ theme: 'no-style' }}
-          text={MSG.signOut}
-          actionType={ActionTypes.USER_LOGOUT}
-          onSuccess={updateWallet}
-        />
+        <button type="button" className="ml-2" onClick={disconnectWallet}>
+          {formatText(MSG.signOut)}
+        </button>
       </DropdownMenuItem>
     </DropdownMenuSection>
   );
