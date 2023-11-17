@@ -99,8 +99,6 @@ export const useMainMenuItems = () => {
       label: formatText({ id: 'navigation.newAction' }) || '',
       onClick: () => toggleActionSidebarOn(),
       hideMobile: true,
-      hasSecondLevel: false,
-      className: 'md:bg-base-bg',
     },
     {
       key: '2',

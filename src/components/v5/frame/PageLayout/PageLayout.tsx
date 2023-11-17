@@ -75,7 +75,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
                 )}
                 {sidebar}
               </div>
-              <div className="inner pt-6">
+              <div className="inner py-6">
                 {pageHeadingProps && (
                   <PageHeading {...pageHeadingProps} className="mb-6" />
                 )}

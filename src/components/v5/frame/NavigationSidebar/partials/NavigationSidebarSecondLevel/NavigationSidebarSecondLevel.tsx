@@ -27,7 +27,7 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
   const isContentList = Array.isArray(content);
 
   return (
-    <div className="md:p-6 md:pt-[1.625rem] h-full flex flex-col justify-between gap-4 md:overflow-auto">
+    <div className="pb-8 md:p-6 md:pt-[1.625rem] h-full flex flex-col justify-between gap-4 md:overflow-auto">
       <div>
         {!isTablet && (
           <div className="flex justify-between gap-4 px-2 md:px-0">
@@ -61,7 +61,7 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
         )}
         {isContentList ? (
           <NavigationSidebarLinksList
-            className="mt-9 md:-mx-2.5 md:w-[calc(100%+1.25rem)]"
+            className="mt-4 md:mt-9 md:-mx-2.5 md:w-[calc(100%+1.25rem)]"
             items={content}
           />
         ) : (

@@ -26,20 +26,21 @@ const ExtensionsPage: FC = () => {
       }
 
       acc[extension.category].push(extension);
+
       return acc;
     }, {});
 
   return (
     <div>
-      <h4 className="heading-4 mb-6">
+      <h2 className="heading-4 mb-6">
         {formatText({ id: 'extensionsPage.availableExtensions' })}
-      </h4>
+      </h2>
       {Object.entries(categorizedExtensions).map(([category, extensions]) => (
         <div
           key={category}
           className="border-b border-gray-100 last:border-none mb-6 last:mb-0"
         >
-          <h5 className="text-2 mb-4">{category}</h5>
+          <h3 className="text-2 mb-4">{category}</h3>
           <ul className="flex flex-col gap-y-6 pb-6">
             {extensions.map((extension) => (
               <li key={extension.extensionId} className="pb-2">

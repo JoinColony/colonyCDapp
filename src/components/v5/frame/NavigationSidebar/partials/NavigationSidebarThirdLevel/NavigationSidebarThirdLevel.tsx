@@ -86,12 +86,12 @@ const NavigationSidebarThirdLevel: FC<NavigationSidebarThirdLevelProps> = ({
           {title}
           <Icon
             name="caret-down"
-            className={clsx(
-              'h-[1em] w-[1em] text-[0.75rem] [&_svg]:fill-current transition-transform',
-              {
-                'rotate-180': isOpen,
-              },
-            )}
+            appearance={{
+              size: 'extraTiny',
+            }}
+            className={clsx('transition-transform', {
+              'rotate-180': isOpen,
+            })}
           />
         </button>
       )}
