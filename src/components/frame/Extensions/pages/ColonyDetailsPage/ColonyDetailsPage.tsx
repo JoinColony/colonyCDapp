@@ -41,7 +41,7 @@ const ColonyDetailsPage: FC = () => {
   return (
     <div>
       <div className={clsx('p-6 flex flex-col items-start', styles.box)}>
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <Avatar size="m" avatar={avatar || thumbnail || ''} />
           <div className="flex flex-col items-start gap-2">
             <div className="flex flex-row items-end gap-3">
@@ -64,7 +64,11 @@ const ColonyDetailsPage: FC = () => {
             {colonyAddress && <CopyableAddress address={colonyAddress} />}
           </div>
         </div>
-        <p className="text-md text-gray-600 mt-4 mb-6">
+        <p
+          className={clsx('text-md text-gray-600 mt-4 mb-6', {
+            'text-gray-700': !!description,
+          })}
+        >
           {description
             ? truncateText(description, MAX_DESCRIPTION_LENGTH)
             : formatMessage({ id: 'colonyDetailsPage.descriptionPlaceholder' })}
