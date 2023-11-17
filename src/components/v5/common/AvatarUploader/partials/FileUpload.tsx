@@ -19,15 +19,21 @@ const FileUpload: FC<FileUploadProps> = ({
   isSimplified,
   fileOptions,
 }) => {
-  const { getInputProps, getRootProps, open, isDragReject, fileRejections } =
-    useDropzoneWithFileReader({
-      dropzoneOptions: {
-        maxFiles: 1,
-        ...dropzoneOptions,
-      },
-      handleFileAccept,
-      handleFileReject,
-    });
+  const {
+    getInputProps,
+    getRootProps,
+    open,
+    isDragReject,
+    fileRejections,
+    isDragAccept,
+  } = useDropzoneWithFileReader({
+    dropzoneOptions: {
+      maxFiles: 1,
+      ...dropzoneOptions,
+    },
+    handleFileAccept,
+    handleFileReject,
+  });
 
   const successContent = (
     <SuccessContent open={open} handleFileRemove={handleFileRemove} />
@@ -37,6 +43,7 @@ const FileUpload: FC<FileUploadProps> = ({
       isSimplified={isSimplified}
       open={open}
       fileOptions={fileOptions}
+      isDragAccept={isDragAccept}
     />
   );
   const errorContent = (

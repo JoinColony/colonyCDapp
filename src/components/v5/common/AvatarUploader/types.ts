@@ -49,6 +49,7 @@ export interface AvatarUploaderProps {
 
 export interface DefaultContentProps extends Pick<ErrorContentProps, 'open'> {
   isSimplified?: boolean;
+  isDragAccept: boolean;
   fileOptions: FileUploadOptions;
 }
 
