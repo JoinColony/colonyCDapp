@@ -47,7 +47,7 @@ const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
       title: MSG.nativeToken,
       text: tokenName,
       subText: tokenSymbol,
-      step: 1,
+      step: 2,
       icon: (
         <Avatar
           avatar={tokenAvatar}

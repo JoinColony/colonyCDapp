@@ -36,14 +36,23 @@ type Props = Pick<
 const StepCreateToken = ({
   nextStep,
   wizardForm: { initialValues: defaultValues },
-  wizardValues: { tokenChoice, tokenName, tokenSymbol, tokenAddress },
+  wizardValues: {
+    tokenChoice,
+    tokenName,
+    tokenSymbol,
+    tokenAddress,
+    tokenChoiceVerify,
+  },
   previousStep,
 }: Props) => {
   return (
     <Form<Step3>
       onSubmit={nextStep}
       validationSchema={validationSchema}
-      defaultValues={{ ...defaultValues, tokenChoiceVerify: tokenChoice }}
+      defaultValues={{
+        ...defaultValues,
+        tokenChoiceVerify: tokenChoiceVerify || tokenChoice,
+      }}
     >
       {({ watch }) => {
         const currentTokenChoice = watch('tokenChoiceVerify');
