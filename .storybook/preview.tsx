@@ -1,6 +1,7 @@
 import React from 'react';
-import type { Preview } from '@storybook/react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { MockedProvider } from '@apollo/client/testing';
+import type { Preview } from '@storybook/react';
 
 import '~utils/yup/customMethods';
 import '../src/styles/main.global.css';
@@ -37,7 +38,11 @@ export const decorators = [
     applyTheme('light');
 
     return (
-      <Story />
+      <MemoryRouter>
+        <Routes>
+          <Route path="/*" element={<Story />} />
+        </Routes>
+      </MemoryRouter>
     );
   },
 ];

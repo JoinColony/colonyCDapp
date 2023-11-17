@@ -1,27 +1,16 @@
-import { MessageDescriptor } from 'react-intl';
+import { CalamityBannerContentProps } from './partials/types';
+
+export interface CalamityBannerItemProps extends CalamityBannerContentProps {
+  // linkName: string;
+  // linkUrl: string;
+  // buttonName: string;
+  // isButtonDisabled?: boolean;
+  // onClick: () => void;
+  // mode: CalamityBannerMode;
+  // title: MessageDescriptor;
+  key: string;
+}
 
 export interface CalamityBannerProps {
   items: CalamityBannerItemProps[];
-}
-
-export type CalamityBannerMode = 'error' | 'info';
-
-export interface CalamityBannerItemProps {
-  linkName: string;
-  linkUrl: string;
-  buttonName: string;
-  isButtonDisabled?: boolean;
-  onClick: () => void;
-  mode: CalamityBannerMode;
-  title: MessageDescriptor;
-  id: string;
-}
-
-export interface CalamityBannerContentProps
-  extends Omit<CalamityBannerItemProps, 'id'> {
-  index: number;
-  activeElement: number;
-  handleBannerChange: () => void;
-  setShowBanner: React.Dispatch<React.SetStateAction<boolean>>;
-  itemsLength: number;
 }

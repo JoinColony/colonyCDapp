@@ -61,15 +61,18 @@ export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
   const calamityBannerItems: CalamityBannerItemProps[] = useMemo(
     () => [
       {
-        id: '1',
-        linkUrl:
-          'https://docs.colony.io/use/advanced-features/upgrade-colony-and-extensions',
-        buttonName: 'button.upgrade',
-        linkName: 'learn.more',
-        isButtonDisabled: !canUpgradeColony,
+        key: '1',
+        linkProps: {
+          to: 'https://docs.colony.io/use/advanced-features/upgrade-colony-and-extensions',
+          text: formatText({ id: 'learn.more' }) || '',
+        },
+        buttonProps: {
+          onClick: handleUpgradeColony,
+          text: formatText({ id: 'button.upgrade' }) || '',
+          disabled: !canUpgradeColony,
+        },
         mode: 'info',
-        onClick: handleUpgradeColony,
-        title: { id: 'calamityBanner.available' },
+        title: formatText({ id: 'calamityBanner.available' }) || '',
       },
     ],
     [canUpgradeColony, handleUpgradeColony],

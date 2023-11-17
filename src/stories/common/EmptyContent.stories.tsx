@@ -55,6 +55,11 @@ export const Base: Story = {
 };
 
 export const WithButton: Story = {
+  argTypes: {
+    onClick: {
+      action: 'clicked',
+    },
+  },
   args: {
     title: 'No results available',
     description:
@@ -62,7 +67,6 @@ export const WithButton: Story = {
     icon: 'smiley-meh',
     withBorder: true,
     buttonText: 'Invite members',
-    onClick: () => alert('Clicked'),
   },
 };
 

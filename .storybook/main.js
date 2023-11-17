@@ -57,13 +57,19 @@ module.exports = {
     };
 
     config.module.rules = config.module.rules.filter(
-      ({ test }, index) =>
+      ({ test }) =>
         !test ||
         (!test.test('test.css') &&
           !test.test('test.scss') &&
           !test.test('test.svg') &&
           !test.test('test.tsx')),
     );
+
+    config.module.rules.push({
+      test: /\.(woff|woff2|png|jpe?g|gif)$/,
+      include: [path.resolve(__dirname, '..', 'src')],
+      type: 'asset/resource',
+    });
 
     /*
      * To load svg icons and token icons to import

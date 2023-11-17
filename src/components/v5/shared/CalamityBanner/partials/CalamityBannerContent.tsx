@@ -1,94 +1,78 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
-import { useIntl } from 'react-intl';
 
 import Link from '~v5/shared/Link';
-import styles from '../CalamityBanner.module.css';
 import Button, { CloseButton } from '~v5/shared/Button';
 import Icon from '~shared/Icon';
-import { CalamityBannerContentProps } from '../types';
 import { useTablet } from '~hooks';
 
+import { CalamityBannerContentProps } from './types';
+import { formatText } from '~utils/intl';
+
 const CalamityBannerContent: FC<CalamityBannerContentProps> = ({
-  buttonName,
-  linkName,
-  linkUrl,
-  mode,
-  onClick,
   title,
-  isButtonDisabled,
-  activeElement,
-  setShowBanner,
-  handleBannerChange,
-  index,
-  itemsLength,
+  mode,
+  linkProps,
+  buttonProps,
+  onCaretClick,
+  onCloseClick,
+  className,
 }) => {
   const isTablet = useTablet();
-  const { formatMessage } = useIntl();
 
-  const CloseButtonComponent = (
+  const closeButtonComponent = (
     <CloseButton
       className="text-gray-900 hover:text-blue-400 sm:-mr-4"
-      onClick={() => setShowBanner(false)}
+      onClick={onCloseClick}
     />
   );
 
   return (
     <div
       className={clsx(
-        'relative inset-0 w-full px-6 py-4 transition-all duration-normal',
+        className,
+        'relative w-full px-6 py-4 transition-all duration-normal',
         {
           'bg-gray-100': mode === 'info',
-        },
-        {
           'bg-negative-300': mode === 'error',
-        },
-        {
-          'block sm:opacity-100 sm:visible': activeElement === index,
-        },
-        {
-          'hidden sm:block sm:opacity-0 sm:invisible': activeElement !== index,
         },
       )}
     >
-      <div className={styles.calamityBannerInner}>
-        <div className={clsx(styles.calamityBannerRow, 'items-start')}>
-          <div className="text-gray-900 text-1">{formatMessage(title)}</div>
-          {isTablet && CloseButtonComponent}
+      <div className="max-w-[90rem] mx-auto flex flex-col md:flex-row items-center justify-normal md:justify-between">
+        <div
+          className={clsx(
+            'flex justify-between w-full md:w-auto md:justify-normal items-start',
+          )}
+        >
+          <div className="text-gray-900 text-1">{title}</div>
+          {isTablet && closeButtonComponent}
         </div>
         <div
           className={clsx(
-            styles.calamityBannerRow,
-            'items-center mt-2 md:mt-0',
+            'flex justify-between w-full md:w-auto md:justify-normal items-center mt-2 md:mt-0',
           )}
         >
           <div className="flex items-center">
             <Link
-              to={linkUrl}
-              className="text-2 text-gray-900 underline !hover:text-base-white hover:no-underline"
-            >
-              {formatMessage({ id: linkName })}
-            </Link>
+              {...linkProps}
+              className="text-2 text-gray-900 underline !hover:text-base-white sm:hover:no-underline"
+            />
             <Button
+              {...buttonProps}
               className="md:mr-7 ml-4"
               mode="primarySolid"
               size="small"
-              disabled={isButtonDisabled}
-              onClick={onClick}
-            >
-              {formatMessage({ id: buttonName })}
-            </Button>
+            />
           </div>
-          {!isTablet && CloseButtonComponent}
-          {itemsLength > 1 && (
+          {!isTablet && closeButtonComponent}
+          {onCaretClick && (
             <button
               type="button"
-              className="flex items-center justify-center p-2 ml-4 
-                        text-gray-900 transition-colors hover:text-blue-400"
-              aria-label={formatMessage({
+              className="flex items-center justify-center p-2 ml-4 text-gray-900 transition-colors sm:hover:text-blue-400"
+              aria-label={formatText({
                 id: 'ariaLabel.calamityBanner',
               })}
-              onClick={handleBannerChange}
+              onClick={onCaretClick}
             >
               <Icon name="caret-right" appearance={{ size: 'tiny' }} />
             </button>

@@ -3,11 +3,12 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import clsx from 'clsx';
 
 import Button from '~v5/shared/Button';
-import { useBatchPaymentsTableColumns, useGetTableMenuProps } from './hooks';
-import { BatchPaymentsTableModel, BatchPaymentsTableProps } from './types';
+import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
 import { formatText } from '~utils/intl';
 import { useMobile } from '~hooks';
-import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
+
+import { useBatchPaymentsTableColumns, useGetTableMenuProps } from './hooks';
+import { BatchPaymentsTableModel, BatchPaymentsTableProps } from './types';
 
 const displayName = 'v5.common.ActionsContent.partials.BatchPaymentsTable';
 
@@ -23,7 +24,7 @@ const BatchPaymentsTable: FC<BatchPaymentsTableProps> = ({ name }) => {
   );
   const { getFieldState } = useFormContext();
   const fieldState = getFieldState(name);
-  const columns = useBatchPaymentsTableColumns(name);
+  const columns = useBatchPaymentsTableColumns();
   const getMenuProps = useGetTableMenuProps(fieldArrayMethods);
 
   return (
