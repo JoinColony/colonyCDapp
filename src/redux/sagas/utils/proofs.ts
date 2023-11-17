@@ -30,6 +30,7 @@ export function* getMoveFundsPermissionProofs(
   const toDomainId = yield getPotDomain(colonyClient, toPotId);
   const [fromPermissionDomainId, fromChildSkillIndex] =
     yield getPermissionProofs(
+      colonyClient.networkClient,
       colonyClient,
       fromDomainId,
       ColonyRole.Funding,
@@ -38,6 +39,7 @@ export function* getMoveFundsPermissionProofs(
   // @TODO: once getPermissionProofs is more expensive we can just check the domain here
   // with userHasRole and then immediately get the permission proofs
   const [toPermissionDomainId, toChildSkillIndex] = yield getPermissionProofs(
+    colonyClient.networkClient,
     colonyClient,
     toDomainId,
     ColonyRole.Funding,
