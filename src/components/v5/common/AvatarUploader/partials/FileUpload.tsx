@@ -18,7 +18,7 @@ const FileUpload: FC<FileUploadProps> = ({
   isProgressContentVisible,
   isSimplified,
   fileOptions,
-  useSucessState,
+  useSucessState = true,
 }) => {
   const [showDefault, setShowDefault] = useState(false);
   const {

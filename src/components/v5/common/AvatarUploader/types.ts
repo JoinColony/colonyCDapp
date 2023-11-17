@@ -39,7 +39,7 @@ export interface FileUploadProps {
   isProgressContentVisible?: boolean;
   isSimplified?: boolean;
   fileOptions: FileUploadOptions;
-  useSucessState: boolean;
+  useSucessState?: boolean;
 }
 
 export interface AvatarUploaderProps {
