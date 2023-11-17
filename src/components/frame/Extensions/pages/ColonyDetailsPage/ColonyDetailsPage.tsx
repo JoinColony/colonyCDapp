@@ -40,12 +40,7 @@ const ColonyDetailsPage: FC = () => {
 
   return (
     <div>
-      <div
-        className={clsx(
-          'p-6 mt-6 sm:mt-8 flex flex-col items-start',
-          styles.box,
-        )}
-      >
+      <div className={clsx('p-6 flex flex-col items-start', styles.box)}>
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-4">
           <Avatar size="m" avatar={avatar || thumbnail || ''} />
           <div className="flex flex-col items-start gap-2">
