@@ -51,7 +51,7 @@ const MotionPhaseWidget = ({
   const isDecision = !!actionData.decisionData;
 
   switch (motionState) {
-    case MotionState.Staked:
+    case MotionState.Supported:
     case MotionState.Staking: {
       return (
         <StakingWidgetProvider motionData={motionData} {...rest}>

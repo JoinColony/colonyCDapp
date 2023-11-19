@@ -22,14 +22,14 @@ const getCurrentStatePeriodInMs = (
 ) => {
   switch (motionState) {
     case MotionState.Staking:
-    case MotionState.Staked:
-    case MotionState.Objection:
+    case MotionState.Supported:
+    case MotionState.Objected:
       return motionTimeoutPeriods.timeLeftToStake;
     case MotionState.Voting:
       return motionTimeoutPeriods.timeLeftToVote;
     case MotionState.Reveal:
       return motionTimeoutPeriods.timeLeftToReveal;
-    case MotionState.Escalation:
+    case MotionState.Escalated:
       return motionTimeoutPeriods.timeLeftToEscalate;
     default:
       return '-1';
@@ -84,8 +84,8 @@ export const useMotionCountdown = (
   const prevStateRef: MutableRefObject<MotionState | null> = useRef(null);
   const isStakingPhaseState =
     state === MotionState.Staking ||
-    state === MotionState.Staked ||
-    state === MotionState.Objection;
+    state === MotionState.Supported ||
+    state === MotionState.Objected;
 
   /*
    * Set the initial timeout

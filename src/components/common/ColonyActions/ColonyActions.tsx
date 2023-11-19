@@ -61,8 +61,8 @@ const motionStateOptions = [
     value: MotionState.Staking,
   },
   {
-    label: 'Staked',
-    value: MotionState.Staked,
+    label: 'Supported',
+    value: MotionState.Supported,
   },
   {
     label: 'Passed',

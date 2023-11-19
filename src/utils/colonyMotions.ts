@@ -13,17 +13,18 @@ export enum MotionVote {
 export const noMotionsVotingReputationVersion = 4;
 
 export enum MotionState {
-  Staked = 'Staked',
+  Supported = 'Supported',
   Staking = 'Staking',
   Voting = 'Voting',
   Reveal = 'Reveal',
-  Objection = 'Objection',
-  Motion = 'Motion',
+  Objected = 'Objected',
+  Motion = 'Motion', // @TODO: This was used by the old MotionTag component and should be removed
   Failed = 'Failed',
+  Finalizable = 'Finalizable',
   Passed = 'Passed',
   FailedNotFinalizable = 'FailedNotFinalizable',
   Invalid = 'Invalid',
-  Escalation = 'Escalation',
+  Escalated = 'Escalated',
   Forced = 'Forced',
   Draft = 'Draft',
 }
@@ -50,7 +51,7 @@ export const getMotionState = (
     case NetworkMotionState.Staking: {
       return BigNumber.from(yayStakes).gte(requiredStake) &&
         BigNumber.from(nayStakes).isZero()
-        ? MotionState.Staked
+        ? MotionState.Supported
         : MotionState.Staking;
     }
     case NetworkMotionState.Submit: {
@@ -60,10 +61,10 @@ export const getMotionState = (
       return MotionState.Reveal;
     }
     case NetworkMotionState.Closed: {
-      return MotionState.Escalation;
+      return MotionState.Escalated;
     }
-    case NetworkMotionState.Finalizable:
-    case NetworkMotionState.Finalized: {
+    // @TODO: Confirm the logic for Finalizable and Finalized
+    case NetworkMotionState.Finalizable: {
       /*
        * Both sides staked fully, we go to a vote
        *
@@ -79,7 +80,7 @@ export const getMotionState = (
          * If the votes are equal, it fails
          */
         if (BigNumber.from(yayVotes).gt(nayVotes)) {
-          return MotionState.Passed;
+          return MotionState.Finalizable;
         }
 
         if (
@@ -98,10 +99,12 @@ export const getMotionState = (
       }
 
       if (BigNumber.from(yayStakes).eq(requiredStake)) {
-        return MotionState.Passed;
+        return MotionState.Finalizable;
       }
       return MotionState.Failed;
     }
+    case NetworkMotionState.Finalized:
+      return MotionState.Passed;
     case NetworkMotionState.Failed:
       return MotionState.FailedNotFinalizable;
     default:
