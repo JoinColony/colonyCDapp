@@ -29,6 +29,16 @@ const useNetworkMotionStates = (nativeMotionIds: string[]) => {
       return;
     }
 
+    const newMotionIds = nativeMotionIds.filter(
+      (nativeMotionId) => !motionStatesMap.has(nativeMotionId),
+    );
+    const deletedMotionIds = Array.from(motionStatesMap.keys()).filter(
+      (nativeMotionId) => !nativeMotionIds.includes(nativeMotionId),
+    );
+    if (!newMotionIds.length && !deletedMotionIds.length) {
+      return;
+    }
+
     const votingRepClient = VotingReputationFactory.connect(
       votingReputationAddress,
       ethersProvider,
@@ -36,10 +46,6 @@ const useNetworkMotionStates = (nativeMotionIds: string[]) => {
 
     const fetchMotionStates = async () => {
       setLoading(true);
-
-      const newMotionIds = nativeMotionIds.filter(
-        (nativeMotionId) => !motionStatesMap.has(nativeMotionId),
-      );
 
       const statesMap = new Map(motionStatesMap);
       await Promise.all(
@@ -55,9 +61,6 @@ const useNetworkMotionStates = (nativeMotionIds: string[]) => {
         }),
       );
 
-      const deletedMotionIds = Array.from(motionStatesMap.keys()).filter(
-        (nativeMotionId) => !nativeMotionIds.includes(nativeMotionId),
-      );
       deletedMotionIds.forEach((nativeMotionId) =>
         statesMap.delete(nativeMotionId),
       );
