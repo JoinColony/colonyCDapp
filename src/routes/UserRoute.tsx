@@ -1,4 +1,5 @@
 import React from 'react';
+import { defineMessages } from 'react-intl';
 import { Outlet } from 'react-router-dom';
 import { SelectOption } from '~v5/common/Fields/Select/types';
 
@@ -10,21 +11,37 @@ import {
   USER_EDIT_PROFILE_ROUTE,
   USER_PREFERENCES_ROUTE,
 } from './routeConstants';
+import { formatText } from '~utils/intl';
+
+const accountNavMsgs = defineMessages({
+  profile: {
+    id: 'Account.Tabs.Profile',
+    defaultMessage: 'Profile',
+  },
+  prefences: {
+    id: 'Account.Tabs.Preferences',
+    defaultMessage: 'Preferences',
+  },
+  advanced: {
+    id: 'Account.Tabs.Advanced',
+    defaultMessage: 'Advanced',
+  },
+});
 
 const navigationItems: SelectOption[] = [
   {
-    to: USER_EDIT_PROFILE_ROUTE,
-    label: 'Profile',
+    linkTo: USER_EDIT_PROFILE_ROUTE,
+    label: formatText(accountNavMsgs.profile),
     value: 0,
   },
   {
-    to: USER_PREFERENCES_ROUTE,
-    label: 'Preferences',
+    linkTo: USER_PREFERENCES_ROUTE,
+    label: formatText(accountNavMsgs.prefences),
     value: 1,
   },
   {
-    to: USER_ADVANCED_ROUTE,
-    label: 'Advanced',
+    linkTo: USER_ADVANCED_ROUTE,
+    label: formatText(accountNavMsgs.advanced),
     value: 2,
   },
 ];

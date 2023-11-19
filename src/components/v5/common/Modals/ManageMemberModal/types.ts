@@ -1,3 +1,4 @@
+import { MessageDescriptor } from 'react-intl';
 import { User } from '~types';
 
 export interface ManageMemberModalProps {
@@ -8,7 +9,7 @@ export interface ManageMemberModalProps {
 
 export interface ManageMemberListProps {
   id: number;
-  label: string;
+  label: MessageDescriptor;
   value: MemberActionType;
 }
 

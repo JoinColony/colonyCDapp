@@ -6,64 +6,65 @@ import React, {
   useEffect,
   useMemo,
 } from 'react';
-import PiwikPro, {
-  CustomEvent,
-  PageViews,
-  DownloadAndOutlink,
-  GoalConversions,
-} from '@piwikpro/react-piwik-pro';
 
 // Define the shape of the analytics context
+interface AnalyticsEvent {
+  event: string;
+  category: string;
+  action: string;
+  label?: string;
+  value?: number;
+}
+
 interface AnalyticsContextValue {
-  trackEvent: (
-    category: string,
-    action: string,
-    name?: string,
-    value?: number,
-  ) => void;
-  trackPageView: (customTitle?: string) => void;
-  enableLinkTracking: () => void;
-  trackGoal: (id: string | number, revenue: number) => void;
+  trackEvent: (event: AnalyticsEvent) => void;
+  trackPageView: (path: string) => void;
 }
 
 // Create a context with a default implementation (no operation)
 export const AnalyticsContext = createContext<AnalyticsContextValue>({
   trackEvent: () => {},
   trackPageView: () => {},
-  enableLinkTracking: () => {},
-  trackGoal: () => {},
 });
 
 // AnalyticsContextProvider component
 export const AnalyticsContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
-  const containerId = process.env.REACT_APP_PIWIK_CONTAINER_ID || '';
-  const containerUrl = process.env.REACT_APP_PIWIK_CONTAINER_URL || '';
+  const gtmId = process.env.GOOGLE_TAG_MANAGER_ID; // GTM ID from environment variable
 
   useEffect(() => {
-    if (containerId && containerUrl) {
-      PiwikPro.initialize(containerId, containerUrl);
+    // Inject GTM script only if gtmId is available
+    if (gtmId && (!window.dataLayer || window.dataLayer.length === 0)) {
+      const script = document.createElement('script');
+      script.innerHTML = `
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer', '${gtmId}');
+      `;
+      document.head.appendChild(script);
     }
-  }, [containerId, containerUrl]);
+  }, [gtmId]);
 
   const contextValue = useMemo(
     () => ({
-      trackPageView: (customTitle) => {
-        PageViews.trackPageView(customTitle);
+      trackPageView: (path) => {
+        if (gtmId && window.dataLayer) {
+          window.dataLayer.push({
+            event: 'pageview',
+            path,
+          });
+        }
       },
-      trackEvent: (category, action, name, value) => {
-        CustomEvent.trackEvent(category, action, name, value);
-      },
-      enableLinkTracking: () => {
-        DownloadAndOutlink.enableLinkTracking(true);
-      },
-      trackGoal: (id, revenue) => {
-        GoalConversions.trackGoal(id, revenue);
+      trackEvent: (event: AnalyticsEvent) => {
+        if (gtmId && window.dataLayer) {
+          window.dataLayer.push(event);
+        }
       },
     }),
-    // Dependencies array should be empty as these functions are not expected to change over time
-    [],
+    [gtmId],
   );
 
   return (

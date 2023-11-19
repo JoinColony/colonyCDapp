@@ -17,7 +17,6 @@ import PopoverBase from '~v5/shared/PopoverBase';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks';
 
 import { UserHubButtonProps } from './types';
-import styles from './UserHubButton.module.css';
 import { useAnalyticsContext } from '~context/AnalyticsContext';
 
 export const displayName =
@@ -78,7 +77,12 @@ const UserHubButton: FC<UserHubButtonProps> = ({
   useDisableBodyScroll(visible && isMobile);
   const handleButtonClick = () => {
     setOpenItemIndex(undefined);
-    trackEvent('User Interaction', 'Click', 'UserHub Button');
+    trackEvent({
+      event: 'custom_event',
+      category: 'User',
+      action: 'Click',
+      label: 'Open UserHub',
+    });
     toggleOff();
   };
 
