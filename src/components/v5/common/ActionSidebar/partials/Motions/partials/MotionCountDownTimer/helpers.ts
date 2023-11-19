@@ -14,14 +14,14 @@ export const getCurrentStatePeriodInMs = (
 ) => {
   switch (motionState) {
     case MotionState.Staking:
-    case MotionState.Staked:
-    case MotionState.Objection:
+    case MotionState.Supported:
+    case MotionState.Objected:
       return motionTimeoutPeriods.timeLeftToStake;
     case MotionState.Voting:
       return motionTimeoutPeriods.timeLeftToVote;
     case MotionState.Reveal:
       return motionTimeoutPeriods.timeLeftToReveal;
-    case MotionState.Escalation:
+    case MotionState.Escalated:
       return motionTimeoutPeriods.timeLeftToEscalate;
     default:
       return '-1';

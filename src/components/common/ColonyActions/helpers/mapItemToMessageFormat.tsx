@@ -29,7 +29,7 @@ import {
 import {
   AmountTag,
   Motion as MotionTag,
-  Objection as ObjectionTag,
+  Objected as ObjectionTag,
   Voting as VotingTag,
   Failed as FailedTag,
   Reveal as RevealTag,

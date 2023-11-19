@@ -38,7 +38,7 @@ const MotionCountdown = ({
   const showVotingProgress = motionState === MotionState.Voting;
   const showEscalateButton =
     !!user &&
-    motionState === MotionState.Escalation &&
+    motionState === MotionState.Escalated &&
     Number(nativeMotionDomainId) !== Id.RootDomain;
 
   return (

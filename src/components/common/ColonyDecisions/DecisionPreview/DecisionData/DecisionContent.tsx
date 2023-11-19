@@ -7,7 +7,7 @@ import { userDetailPopoverOptions } from '~shared/DetailsWidget';
 import { useAppContext } from '~hooks';
 
 import { getMainClasses } from '~utils/css';
-import { Objection as ObjectionTag } from '~shared/Tag';
+import { Objected as ObjectionTag } from '~shared/Tag';
 
 import styles from './DecisionContent.css';
 

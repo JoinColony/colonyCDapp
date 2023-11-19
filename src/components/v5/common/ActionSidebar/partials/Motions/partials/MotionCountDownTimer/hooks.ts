@@ -55,8 +55,8 @@ export const useMotionCountdown = (
   const prevStateRef: MutableRefObject<MotionState | null> = useRef(null);
   const isStakingPhaseState =
     state === MotionState.Staking ||
-    state === MotionState.Staked ||
-    state === MotionState.Objection;
+    state === MotionState.Supported ||
+    state === MotionState.Objected;
 
   /*
    * Set the initial timeout
