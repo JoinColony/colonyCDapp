@@ -31,6 +31,10 @@ const useActivityFeed = (
     SearchableSortDirection.Desc,
   );
   const [pageNumber, setPageNumber] = useState(1);
+  /**
+   * Requested actions count is the total number of actions we want to fetch
+   * It's set one page ahead to prefetch the next page actions
+   */
   const requestedActionsCount = ITEMS_PER_PAGE * (pageNumber + 1);
 
   useEffect(() => {
@@ -66,9 +70,9 @@ const useActivityFeed = (
     [actions],
   );
   const { motionStatesMap, loading: motionStatesLoading } =
-    useNetworkMotionStates(motionIds);
+    useNetworkMotionStates(motionIds, !filters?.motionStates?.length);
   const loadingMotionStateFilter =
-    !!filters?.motionStates?.length && motionStatesLoading;
+    motionStatesLoading && !!filters?.motionStates?.length;
 
   const filteredActions = actions.filter((action) =>
     filterActionByMotionState(action, motionStatesMap, filters?.motionStates),
@@ -77,7 +81,7 @@ const useActivityFeed = (
   const fetchMoreActions =
     !!nextToken &&
     filteredActions.length < requestedActionsCount &&
-    (!loadingMotionStateFilter || actions.length < requestedActionsCount);
+    !loadingMotionStateFilter;
   useEffect(() => {
     if (fetchMoreActions) {
       fetchMore({ variables: { nextToken } });
@@ -114,11 +118,22 @@ const useActivityFeed = (
     pageNumber,
     ITEMS_PER_PAGE,
   );
+  const nextPageActions = getActionsByPageNumber(
+    filteredActions,
+    pageNumber + 1,
+    ITEMS_PER_PAGE,
+  );
+
+  const loadingFirstPage =
+    (loading || fetchMoreActions || loadingMotionStateFilter) &&
+    visibleActions.length < ITEMS_PER_PAGE;
+  const loadingNextPage =
+    (loading || fetchMoreActions || loadingMotionStateFilter) &&
+    nextPageActions.length < ITEMS_PER_PAGE;
 
   return {
-    loading:
-      (loading || fetchMoreActions) && visibleActions.length < ITEMS_PER_PAGE,
-    loadingNextPage: loading || fetchMoreActions,
+    loadingFirstPage,
+    loadingNextPage,
     actions: visibleActions,
     sortDirection,
     changeSortDirection,

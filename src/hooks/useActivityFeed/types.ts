@@ -20,7 +20,7 @@ export interface ActivityFeedFilters {
 
 export interface UseActivityFeedReturn {
   actions: ColonyAction[];
-  loading: boolean;
+  loadingFirstPage: boolean;
   loadingNextPage: boolean;
   sortDirection: SearchableSortDirection;
   changeSortDirection: SortDirectionChangeHandler;

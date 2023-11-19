@@ -81,7 +81,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
 
   const {
     actions,
-    loading,
+    loadingFirstPage,
     loadingNextPage,
     sortDirection,
     changeSortDirection,
@@ -95,7 +95,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
     return null;
   }
 
-  if (loading) {
+  if (loadingFirstPage) {
     return (
       <div className={styles.loadingSpinner}>
         <SpinnerLoader

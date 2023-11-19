@@ -8,15 +8,15 @@ import { ActivityDecisionMethod, ActivityFeedFilters } from './types';
 export const filterActionByMotionState = (
   action: ColonyAction,
   motionStatesMap: MotionStatesMap,
-  motionStates?: MotionState[],
+  motionStatesFilter?: MotionState[],
 ) => {
-  if (!motionStates) {
+  if (!motionStatesFilter) {
     return true;
   }
 
   // If action is not a motion, we treat it as if it had a "Forced" state
   if (!action.motionData) {
-    return motionStates.includes(MotionState.Forced);
+    return motionStatesFilter.includes(MotionState.Forced);
   }
 
   const networkMotionState = motionStatesMap.get(action.motionData.motionId);
@@ -25,7 +25,7 @@ export const filterActionByMotionState = (
   }
 
   const motionState = getMotionState(networkMotionState, action.motionData);
-  return motionStates.includes(motionState);
+  return motionStatesFilter.includes(motionState);
 };
 
 export const getSearchActionsFilterVariable = (
