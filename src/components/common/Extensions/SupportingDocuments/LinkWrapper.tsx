@@ -13,8 +13,8 @@ const LinkWrapper: FC = () => {
 
   return (
     <>
-      {links[extensionId ?? '']?.map(({ url, text }) => (
-        <li key={text} className="mb-2 last:mb-0">
+      {links[extensionId ?? '']?.map(({ url, message }) => (
+        <li key={message.id} className="mb-2 last:mb-0">
           <Link
             key={url}
             to={url}
@@ -27,7 +27,7 @@ const LinkWrapper: FC = () => {
                 title={{ id: 'file-text' }}
               />
             </span>
-            {formatText({ id: text })}
+            {formatText(message)}
           </Link>
         </li>
       ))}

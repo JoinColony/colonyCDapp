@@ -1,21 +1,52 @@
 import { Extension } from '@colony/colony-js';
-import { LAZY_CONSENSUS, PAYMENTS, MOTIONS_AND_DISPUTES } from '~constants';
+import { defineMessages } from 'react-intl';
+import {
+  LAZY_CONSENSUS,
+  PAYMENTS,
+  LAZY_CONSENSUS_EXTENSION,
+  STREAMING_PAYMENTS,
+} from '~constants';
+
+const supportingDocumentsMessages = defineMessages({
+  oneTxPaymentLink: {
+    id: 'SupportingDocuments.OneTxPayment.paymentsLink',
+    defaultMessage: 'Single Transaction Payments',
+  },
+  lazyConsensusLink: {
+    id: 'SupportingDocuments.VotingReputation.consensusLink',
+    defaultMessage: 'Understanding Lazy Consensus',
+  },
+  lazyConsensusExtensionLink: {
+    id: 'SupportingDocuments.VotingReputation.lazyConsensusExtensionLink',
+    defaultMessage: 'Lazy Consensus Extension',
+  },
+  streamingPaymentsLink: {
+    id: 'SupportingDocuments.StreamingPayments.paymentsLink',
+    defaultMessage: 'Streaming Payments',
+  },
+});
 
 export const links = {
   [Extension.OneTxPayment]: [
     {
       url: PAYMENTS,
-      text: 'supporting.documents.link2',
+      message: supportingDocumentsMessages.oneTxPaymentLink,
     },
   ],
   [Extension.VotingReputation]: [
     {
       url: LAZY_CONSENSUS,
-      text: 'supporting.documents.link1',
+      message: supportingDocumentsMessages.lazyConsensusLink,
     },
     {
-      url: MOTIONS_AND_DISPUTES,
-      text: 'supporting.documents.link3',
+      url: LAZY_CONSENSUS_EXTENSION,
+      message: supportingDocumentsMessages.lazyConsensusExtensionLink,
+    },
+  ],
+  [Extension.StreamingPayments]: [
+    {
+      url: STREAMING_PAYMENTS,
+      message: supportingDocumentsMessages.streamingPaymentsLink,
     },
   ],
 };

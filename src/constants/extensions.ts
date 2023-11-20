@@ -9,6 +9,15 @@ import {
   convertPeriodToSeconds,
 } from '~utils/extensions';
 
+import oneTransactionHero from '~images/assets/extensions/one-transaction-hero.png';
+import oneTransactionInterface from '~images/assets/extensions/one-transaction-interface.png';
+import reputationHero from '~images/assets/extensions/reputation-hero.png';
+import reputationInterface from '~images/assets/extensions/reputation-interface.png';
+import advancedHero from '~images/assets/extensions/advanced-hero.png';
+import advancedInterface from '~images/assets/extensions/advanced-interface.png';
+import streamingHero from '~images/assets/extensions/streaming-hero.png';
+import streamingInterface from '~images/assets/extensions/streaming-interface.png';
+
 export enum ExtensionCategory {
   Payments = 'Payments',
   DecisionMethods = 'Decision Methods',
@@ -56,8 +65,7 @@ const oneTransactionPaymentMessages = {
   },
   oneTxPaymentDescriptionLong: {
     id: `${oneTransactionPaymentName}.descriptionLong`,
-    defaultMessage:
-      'Make quick and simple payments to members or any address on the same network.',
+    defaultMessage: `<p>The One Transaction Payment Extension allows payments to a single account at a time with one type of token.</p><p>Note: This extension is installed and enabled by default and can not be removed.</p><h4>How the extension works</h4><ul><li>A DAO creates a payment Action (or Motion, if enabled) to make a payment to a selected recipient, e.g. “Pay Alice 100 xDAI”.</li><li>You can pay any member or address any availble funds from the Colony.</li><li>You are also able to select the specific team funds will be paid from.</li></ul><h4>Useful for:</h4><ul><li>Paying contributors to the DAO.</li><li>Paying for services, or transferring funds externally.</li></ul>`,
   },
 };
 
@@ -72,7 +80,8 @@ export const votingReputationMessages = {
   },
   votingReputationDescriptionLong: {
     id: `${votingReputationName}.descriptionLong`,
-    defaultMessage: `<p>This extension allows colonies to be governed by “lazy consensus” which enables decentralized decision making without voting on every decision.</p><h4>How it works</h4><p>A colony member may create a “motion” to take an action within the colony. e.g. Pay Alice 100 xDai.</p><p>For this motion to be valid, the motion must receive a specified “stake” in the colony's native token. This stake acts as a surety that the people who have staked the motion believe that the motion should pass (in this case, that Alice should be paid 100 xDai).</p><p>If the motion does not receive its full stake before the staking period ends, the motion will fail.</p><p>As long as nobody “objects” to the motion, the motion will automatically pass after a security delay, and Alice will be able to claim her 100 xDai.</p><p>However, if someone believes that Alice should *not* be paid 100 xDai, and believes that a majority of the people in the colony will agree, they can object to the motion by staking in opposition to it, and cause a vote to take place.</p><p>Votes are weighted by the voters reputation in the team in which the vote is taking place. Voters are incentivised to vote by being rewarded with a share of the stake of the losing side of the vote. The remainder of the losers stake is divided between the winning and losing stakers, proportional to the outcome of the vote.</p>`,
+    // @TODO: implement markdown parsing on ExtensionDetailsPage instead of inlining HTML
+    defaultMessage: `<p>Provides a democratic, permissionless decision-making tool for your Colony. This extension enables any member to propose actions, which can only pass with total support and no total opposition.</p><p>To support a proposed action, members need to stake their tokens - essentially placing them at risk in favor of the decision. If the required stake, as defined by the Colony, is met and no one opposes by staking against it, the action can proceed safely through a mechanism known as "Lazy Consensus."</p><p>A security delay or "Staking Phase Duration," determined during the extension installation, provides a window of opportunity for DAO members to support or oppose the proposed action. This feature can be used for any Action type, from managing funds and teams to making payments.</p><h4>How the extension works</h4><ul><li>A member proposes an Action, for example, "Pay Alice 100 xDAI," using the Reputation Decision method.</li><li>A staking period commences, during which the DAOs native token can be used to back the Action.</li><li>If the Action garners adequate staking without opposition, it passes and can be finalized on the blockchain.</li><li>Opposition, however, triggers the voting process, where reputation is used to determine voting weight.</li><li>The voting outcome will decide which side wins and whether the action can proceed safely or not.</li><li>Depending on how they voted and the outcome, voters may be rewarded or docked a portion of their staked tokens.</li><li>Additionally an extra security window can be defined for actions being proposed in teams where the outcome can be opposed further and escalated to higher teams for additional input.</li></ul><h4>Useful for:</h4><ul><li>Facilitating decisions and actions within a DAO in a permissionless, decentralized manner, while maintaining efficiency and minimizing collective decision-making efforts.</li><li>Encouraging further decentralization in the DAO, which fosters more democratic and inclusive governance.</li></ul>`,
   },
   votingReputationTotalStakeFractionTitle: {
     id: `${votingReputationName}.param.totalStakeFraction.title`,
@@ -281,7 +290,7 @@ const streamingPaymentsMessage = {
   },
   streamingPaymentsDescriptionLong: {
     id: `${streamingPaymentsName}.descriptionLong`,
-    defaultMessage: 'Streaming Payments extension.',
+    defaultMessage: `<p>Enables continuous token streaming to recipients, with streamed tokens able to be claimed at any time. Perfect for emulating salaries to contributors, paying for subscription services, and more.</p><h4>Features include:</h4><b>Flexible streaming</b><p>Stream any amount of tokens and select your preferred period to set the ideal rate.</p><b>No Locking of Funds</b><p>Initiate streams without the hassle of locking up funds upfront.</p><b>Instant Claims</b><p>Recipients can claim their tokens anytime, ensuring flexibility and accessibility.</p><b>Customizable Conditions</b><p>Define start dates and end conditions according to your needs, whether it's indefinitely, a specific date, or when a total amount is streamed.</p><h4>How the extension works</h4><ul><li>Select a recipient for the streaming payment.</li><li>Specify start date and end condition, which can be a indefinite, at a certain date, or a total amount.</li><li>Specify the amount, period and token. For example '2,000 CLNY per month'.</li><li>The process of starting the stream will depend on the decision method used.</li><li>On approval, the stream will start and the recipient will be able to claim their earned funds at any time.</li></ul><h4>Userful for:</h4><ul><li>Emulating a salary to members of the organisation.</li><li>Payment for subscription services.</li><li>Providing income security to members.</li></ul>`,
   },
 };
 
@@ -307,6 +316,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       ColonyRole.Funding,
       ColonyRole.Arbitration,
     ],
+    imageURLs: [oneTransactionHero, oneTransactionInterface],
     uninstallable: false,
     createdAt: 1557698400000,
   },
@@ -317,6 +327,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     descriptionShort: MSG.votingReputationDescriptionShort,
     descriptionLong: MSG.votingReputationDescriptionLong,
     icon: 'extension-lazy-consensus',
+    imageURLs: [reputationHero, reputationInterface],
     neededColonyPermissions: [
       ColonyRole.Root,
       ColonyRole.Administration,
@@ -475,6 +486,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
   },
   {
     icon: 'extension-advanced-payments',
+    imageURLs: [advancedHero, advancedInterface],
     category: ExtensionCategory.Expenditures,
     extensionId: Extension.StakedExpenditure,
     name: MSG.stakedExpenditureName,
@@ -510,6 +522,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
   },
   {
     icon: 'extension-advanced-payments',
+    imageURLs: [advancedHero, advancedInterface],
     category: ExtensionCategory.Expenditures,
     extensionId: Extension.StagedExpenditure,
     name: MSG.stagedExpenditureName,
@@ -524,7 +537,8 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     createdAt: 1692048380000,
   },
   {
-    icon: 'extension-advanced-payments',
+    icon: 'extension-streaming-payments',
+    imageURLs: [streamingHero, streamingInterface],
     category: ExtensionCategory.Expenditures,
     extensionId: Extension.StreamingPayments,
     name: MSG.streamingPaymentsName,

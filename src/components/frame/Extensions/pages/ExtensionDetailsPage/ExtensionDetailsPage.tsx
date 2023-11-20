@@ -91,7 +91,7 @@ const ExtensionDetailsPage: FC = () => {
       defaultValues={defaultValues}
       onSuccess={handleFormSuccess}
     >
-      <div className="grid grid-cols-6 gap-4 md:gap-x-12 md:gap-y-6">
+      <div className="grid grid-cols-6 gap-4 pb-6 md:gap-x-12 md:gap-y-6">
         <div className="order-1 col-span-6">
           <ExtensionsTopRow
             extensionData={extensionData}
@@ -100,12 +100,14 @@ const ExtensionDetailsPage: FC = () => {
           />
         </div>
         <div className="order-2 col-span-6 lg:col-span-4">
-          {!isSetupRoute && <ImageCarousel />}
+          {!isSetupRoute && (
+            <ImageCarousel slideUrls={extensionData.imageURLs} />
+          )}
         </div>
         <div className="order-3 md:order-4 lg:order-3 col-span-6 md:col-span-2 lg:row-span-2">
           <ExtensionDetails extensionData={extensionData} />
         </div>
-        <div className="order-4 md:order-3 lg:order-4 col-span-6 md:col-span-4">
+        <div className="order-4 lg:mt-6 md:order-3 lg:order-4 col-span-6 md:col-span-4">
           <Routes>
             <Route
               path="/"
