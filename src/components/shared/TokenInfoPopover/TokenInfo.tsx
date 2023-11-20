@@ -40,8 +40,7 @@ const TokenInfo = ({ token, isTokenNative }: Props) => {
         <div className="flex flex-col flex-1 gap-1 min-w-0">
           <div className="w-full flex items-center">
             <h4 className="heading-4 truncate">
-              {name} ({symbol}){name} ({symbol}){name} ({symbol}){name} (
-              {symbol})
+              {name} ({symbol})
             </h4>
             {isTokenNative && (
               <Icon
