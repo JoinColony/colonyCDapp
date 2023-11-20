@@ -12,10 +12,11 @@ import SearchInput from './partials/SearchInput';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
 import { useFilterContext } from '~context/FilterContext';
+import { FilterButtonProps } from './types';
 
 const displayName = 'v5.common.Filter';
 
-const Filter: FC = () => {
+const Filter: FC<FilterButtonProps> = ({ customLabel }) => {
   const { formatMessage } = useIntl();
   const [isOpened, setOpened] = useState(false);
   const [isSearchOpened, setIsSearchOpened] = useState(false);
@@ -82,6 +83,7 @@ const Filter: FC = () => {
             <FilterButton
               isOpen={isFiltersOpen}
               setTriggerRef={setTriggerRef}
+              customLabel={customLabel}
             />
           </div>
           {isFiltersOpen && (

@@ -10,7 +10,6 @@ import Filter from '~v5/common/Filter';
 import Button from '~v5/shared/Button';
 import { TableProps } from './types';
 import EmptyContent from '~v5/common/EmptyContent';
-import { useSearchContext } from '~context/SearchContext';
 import { useVerifiedTableColumns } from './hooks';
 import { useMobile } from '~hooks';
 import { formatText } from '~utils/intl';
@@ -22,7 +21,6 @@ const VerifiedTable: FC<TableProps> = ({ list }) => {
   // @TODO: Add action for adding new member, removing user from whitelist, handle pagination
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
-  const { searchValue } = useSearchContext();
 
   const onAddClick = () => {};
   const columns = useVerifiedTableColumns();
@@ -33,6 +31,7 @@ const VerifiedTable: FC<TableProps> = ({ list }) => {
 
   return (
     <TableWithActionsHeader
+      className="w-full"
       title={formatText({ id: 'verifiedPage.membersTitle' })}
       additionalHeaderContent={
         <span className="text-md text-blue-400">
@@ -87,7 +86,7 @@ const VerifiedTable: FC<TableProps> = ({ list }) => {
             {formatMessage({ id: 'button.removeMembers' })}
           </Button>
         )}
-        {(!!listLength || !!searchValue) && <Filter />}
+        <Filter customLabel={formatMessage({ id: 'allFilters' })} />
         <Button
           mode="primarySolid"
           className="ml-2"

@@ -44,3 +44,7 @@ export type AccordionItemProps = {
   option: FilterType;
   nestedFilters: FilterOptionProps[];
 };
+
+export interface FilterButtonProps {
+  customLabel?: string;
+}

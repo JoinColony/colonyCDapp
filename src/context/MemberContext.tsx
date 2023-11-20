@@ -67,7 +67,6 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [isMobile, isVerifiedPage]);
 
   const {
-    getFilterDomainIds: getDomainIds,
     getSortingMethod,
     getFilterStatus,
     getFilterPermissions,
@@ -105,18 +104,12 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [domainId, domains, handleFilterSelect]);
 
   const nativeDomainIds = useMemo(() => {
-    const ids = getDomainIds();
-    if (ids.length) {
-      return ids;
-    }
-
-    // if no ids selected, default to all available domains
     return (
       domains?.items.filter(notNull).map(({ nativeId }) => nativeId) ?? [
         Id.RootDomain,
       ]
     );
-  }, [getDomainIds, domains]);
+  }, [domains]);
 
   const filterStatus = useMemo(() => getFilterStatus(), [getFilterStatus]);
   const sortingMethod = useMemo(() => getSortingMethod(), [getSortingMethod]);
