@@ -29,7 +29,7 @@ const TokenInfo = ({ token, isTokenNative }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <div className="flex flex-col items-center bg-base-white p-6 gap-6 w-80 text-gray-900 border border-gray-200 rounded-lg shadow-default">
+    <div className="flex flex-col items-center p-6 gap-6 w-80 text-gray-900">
       <div className="flex flex-row items-center w-full gap-4">
         <Avatar
           size="m"
