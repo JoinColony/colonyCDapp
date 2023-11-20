@@ -2,21 +2,21 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import debounce from 'lodash/debounce';
 import clsx from 'clsx';
-import Portal from '~v5/shared/Portal';
 
-import { SearchSelectProps } from './types';
-import Card from '../Card';
 import { useMobile } from '~hooks';
-import Modal from '../Modal';
-import { useSearchSelect } from './hooks';
-import SearchInput from './partials/SearchInput';
-import SearchItem from './partials/SearchItem';
 import { accordionAnimation } from '~constants/accordionAnimation';
 import Icon from '~shared/Icon';
 import { SpinnerLoader } from '~shared/Preloaders';
-import Avatar from '~v5/shared/Avatar';
-import EmptyContent from '~v5/common/EmptyContent';
 import { formatText } from '~utils/intl';
+import Avatar from '~v5/shared/Avatar';
+import Portal from '~v5/shared/Portal';
+import EmptyContent from '~v5/common/EmptyContent';
+
+import Card from '../Card';
+import SearchInput from './partials/SearchInput';
+import SearchItem from './partials/SearchItem';
+import { useSearchSelect } from './hooks';
+import { SearchSelectProps } from './types';
 
 const displayName = 'v5.SearchSelect';
 
@@ -24,8 +24,6 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
   (
     {
       items,
-      onToggle,
-      isOpen,
       onSelect,
       isLoading,
       hideSearchOnMobile,
@@ -110,7 +108,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
           </div>
         )}
         {!isLoading && (
-          <div className="pr-1 w-full overflow-y-scroll max-h-[calc(100vh-12rem)] sm:max-h-full px-1.5">
+          <div className="pr-1 sm:w-full overflow-y-scroll max-h-[calc(100vh-12rem)] sm:max-h-full px-1.5">
             <div>
               {filteredList.length > 0 ? (
                 filteredList.map(({ options, title, isAccordion, key }) =>
@@ -192,14 +190,10 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
       </>
     );
 
-    return isMobile ? (
-      <Modal isOpen={isOpen} onClose={onToggle} isFullOnMobile={false}>
-        {content}
-      </Modal>
-    ) : (
+    return (
       <Portal>
         <Card
-          className="py-6 px-2.5 w-full sm:max-w-[20.375rem] z-[60] absolute max-h-[37.5rem]"
+          className="py-6 px-2.5 w-full max-w-[calc(100%-2.25rem)] sm:max-w-[20.375rem] z-[60] absolute max-h-[37.5rem]"
           hasShadow
           rounded="s"
           ref={ref}

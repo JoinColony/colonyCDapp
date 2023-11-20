@@ -1,16 +1,17 @@
 import React, { useCallback, useId, useMemo, useState } from 'react';
-
 import clsx from 'clsx';
+
 import useToggle from '~hooks/useToggle';
-import Card from '~v5/shared/Card';
-import { CardSelectOptionsGroup, CardSelectProps } from './types';
-import { FIELD_STATE } from '../consts';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
-import Portal from '~v5/shared/Portal';
 import { formatText } from '~utils/intl';
+import Portal from '~v5/shared/Portal';
+import Card from '~v5/shared/Card';
+import HoverWidthWrapper from '~v5/shared/HoverWidthWrapper';
+
+import { FIELD_STATE } from '../consts';
 import { isFlatOptions } from './utils';
 import { OPTION_LIST_ITEM_CLASSES } from './consts';
-import HoverWidthWrapper from '~v5/shared/HoverWidthWrapper';
+import { CardSelectOptionsGroup, CardSelectProps } from './types';
 
 const displayName = 'v5.common.Fields.CardSelect';
 
@@ -133,7 +134,7 @@ function CardSelect<TValue = string>({
                 }}
                 className={clsx(
                   cardClassName,
-                  'py-6 px-2 absolute z-[60] overflow-auto',
+                  'py-6 px-2 w-full max-w-[calc(100%-2.25rem)] sm:w-auto sm:max-w-none absolute z-[60] overflow-auto',
                 )}
                 hasShadow
                 rounded="s"

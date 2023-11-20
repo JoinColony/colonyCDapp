@@ -134,7 +134,7 @@ const AmountField: FC<AmountFieldProps> = ({
           {isTokenSelectVisible && (
             <Portal>
               <Card
-                className="absolute z-[60] px-2 py-6"
+                className="absolute z-[60] px-2 py-6 w-full max-w-[calc(100%-2.25rem)] sm:w-auto sm:max-w-none"
                 hasShadow
                 rounded="s"
                 ref={(ref) => {
@@ -161,7 +161,7 @@ const AmountField: FC<AmountFieldProps> = ({
                         <HoverWidthWrapper hoverClassName="font-medium block">
                           <button
                             type="button"
-                            className={`flex items-center gap-1 transition-colors 
+                            className={`flex items-center gap-1 transition-colors
                           md:hover:font-medium md:hover:bg-gray-50 py-2 px-4 rounded-lg
                           justify-between w-full`}
                             onClick={() => {

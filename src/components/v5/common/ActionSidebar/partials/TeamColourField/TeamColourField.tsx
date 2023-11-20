@@ -1,17 +1,18 @@
 import React, { FC } from 'react';
 import { useController, useWatch } from 'react-hook-form';
-
 import clsx from 'clsx';
+
 import useToggle from '~hooks/useToggle';
-import Card from '~v5/shared/Card';
-import SearchItem from '~v5/shared/SearchSelect/partials/SearchItem/SearchItem';
-import TeamColourBadge from './partials/TeamColourBadge';
-import { TeamColourFieldProps } from './types';
 import { useColors } from '~hooks/useColors';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
-import Portal from '~v5/shared/Portal';
 import { formatText } from '~utils/intl';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import Card from '~v5/shared/Card';
+import SearchItem from '~v5/shared/SearchSelect/partials/SearchItem/SearchItem';
+import Portal from '~v5/shared/Portal';
+
+import TeamColourBadge from './partials/TeamColourBadge';
+import { TeamColourFieldProps } from './types';
 
 const displayName = 'v5.common.ActionsContent.partials.TeamColourField';
 
@@ -79,7 +80,7 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
                   registerContainerRef(ref);
                   portalElementRef.current = ref;
                 }}
-                className="p-6 absolute z-[60]"
+                className="p-6 absolute z-[60] w-full max-w-[calc(100%-2.25rem)] sm:w-auto sm:max-w-none"
                 hasShadow
                 rounded="s"
               >

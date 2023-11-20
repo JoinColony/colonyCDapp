@@ -1,20 +1,21 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 import { useController } from 'react-hook-form';
-
 import { isHexString } from 'ethers/lib/utils';
-import { useIsUserVerified, useUserSelect } from './hooks';
-import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
-import UserAvatar from '~v5/shared/UserAvatar';
+
 import { useUserByAddress } from '~hooks';
 import useToggle from '~hooks/useToggle';
-import { UserSelectProps } from './types';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 import Icon from '~shared/Icon';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
 import { formatText } from '~utils/intl';
-import UserPopover from '~v5/shared/UserPopover';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
+import UserAvatar from '~v5/shared/UserAvatar';
+import UserPopover from '~v5/shared/UserPopover';
+
+import { useIsUserVerified, useUserSelect } from './hooks';
+import { UserSelectProps } from './types';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
@@ -109,8 +110,6 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
           {isUserSelectVisible && (
             <SearchSelect
               items={[usersOptions]}
-              isOpen={isUserSelectVisible}
-              onToggle={toggleUserSelect}
               onSelect={(value) => {
                 field.onChange(isHexString(value) ? value : undefined);
                 toggleUserSelectOff();
