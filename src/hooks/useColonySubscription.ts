@@ -100,7 +100,7 @@ const useColonySubscription = () => {
       // TO Do: update to new user modal
       navigate(CREATE_USER_ROUTE);
     } else {
-      connectWallet?.();
+      connectWallet();
     }
   };
 

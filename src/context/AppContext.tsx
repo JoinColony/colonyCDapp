@@ -14,47 +14,38 @@ import {
   GetUserByAddressQuery,
   GetUserByAddressQueryVariables,
 } from '~gql';
-import { Address, ColonyWallet, User } from '~types';
-import { useAsyncFunction } from '~hooks';
+import { ColonyWallet, User } from '~types';
+import { useAsyncFunction, usePrevious } from '~hooks';
 import { TokenActivationProvider } from '~shared/TokenActivationProvider';
 
 import { getContext, ContextModule } from './index';
+import { getLastWallet } from '~utils/autoLogin';
 
 export interface AppContextValues {
   wallet?: ColonyWallet | null;
-  walletConnecting?: boolean;
-  setWalletConnecting?: React.Dispatch<React.SetStateAction<boolean>>;
+  walletConnecting: boolean;
+  setWalletConnecting: React.Dispatch<React.SetStateAction<boolean>>;
   user?: User | null;
-  userLoading?: boolean;
-  connectWallet?: () => void;
-  disconnectWallet?: () => void;
-  updateWallet?: () => void;
-  updateUser?: (
+  userLoading: boolean;
+  connectWallet: () => void;
+  disconnectWallet: () => void;
+  updateUser: (
     address?: string,
     shouldBackgroundUpdate?: boolean,
   ) => Promise<void>;
 }
 
-export const AppContext = createContext<AppContextValues>({});
+export const AppContext = createContext<AppContextValues | undefined>(
+  undefined,
+);
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
-  let initialWallet: ColonyWallet | undefined;
-
-  /*
-   * Wallet
-   */
-  try {
-    initialWallet = getContext(ContextModule.Wallet);
-  } catch (error) {
-    // silent
-    // It means that it was not set in context yet
-  }
-
-  const [wallet, setWallet] =
-    useState<AppContextValues['wallet']>(initialWallet);
-  const [user, setUser] = useState<User | null | undefined>();
+  const [wallet, setWallet] = useState<AppContextValues['wallet']>();
+  const [user, setUser] = useState<AppContextValues['user']>();
   const [userLoading, setUserLoading] = useState(false);
-  const [walletConnecting, setWalletConnecting] = useState(false);
+  // We need to start with true here as we can't know whethere we are going to try to connect
+  // and the first render is important here
+  const [walletConnecting, setWalletConnecting] = useState(true);
 
   const updateUser = useCallback(
     async (address?: string, shouldBackgroundUpdate = false) => {
@@ -88,7 +79,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     [],
   );
 
-  const updateWallet = useCallback((): void => {
+  const updateWallet = useCallback(() => {
     try {
       const updatedWallet = getContext(ContextModule.Wallet);
       updatedWallet.address = utils.getAddress(updatedWallet.address);
@@ -98,11 +89,6 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
         updateUser(updatedWallet.address);
       }
     } catch (error) {
-      if (wallet) {
-        // It means that the user logged out
-        setWallet(null);
-        setUser(null);
-      }
       // It means that it was not set in context yet
     }
   }, [updateUser, wallet]);
@@ -111,6 +97,12 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     submit: ActionTypes.WALLET_OPEN,
     error: ActionTypes.WALLET_OPEN_ERROR,
     success: ActionTypes.WALLET_OPEN_SUCCESS,
+  });
+
+  const userLogout = useAsyncFunction({
+    submit: ActionTypes.USER_LOGOUT,
+    error: ActionTypes.USER_LOGOUT_ERROR,
+    success: ActionTypes.USER_LOGOUT_SUCCESS,
   });
 
   /*
@@ -128,39 +120,66 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [setupUserContext, updateWallet, setWalletConnecting]);
 
-  const userLogout = useAsyncFunction({
-    submit: ActionTypes.USER_LOGOUT,
-    error: ActionTypes.USER_LOGOUT_ERROR,
-    success: ActionTypes.USER_LOGOUT_SUCCESS,
-  });
-
   /*
    * Handle wallet disconnection
    */
   const disconnectWallet = useCallback(async () => {
     try {
       await userLogout(undefined);
-      updateWallet();
     } catch (error) {
       console.error('Could not disconnect wallet', error);
+      return;
     }
-  }, [userLogout, updateWallet]);
+    setWallet(null);
+    setUser(null);
+  }, [setWallet, setUser, userLogout]);
 
   /*
    * When the user switches account in Metamask, re-initiate the wallet connect flow
    * so as to update their wallet details in the app's memory.
    */
-  useEffect(() => {
-    if (window.ethereum) {
-      // @ts-ignore
-      window.ethereum.on('accountsChanged', (accounts: Address[]) => {
-        const loggedInAccount = accounts[0];
-        if (loggedInAccount) {
-          connectWallet();
-        }
-      });
+  const handleAccountChange = useCallback(() => {
+    // @ts-ignore
+    const loggedInAccount = window.ethereum?.selectedAddress;
+    if (loggedInAccount) {
+      connectWallet();
     }
   }, [connectWallet]);
+
+  const previousAccountChange = usePrevious(handleAccountChange);
+
+  useEffect(() => {
+    if (window.ethereum) {
+      if (previousAccountChange) {
+        // @ts-ignore
+        window.ethereum.removeListener(
+          'accountsChanged',
+          previousAccountChange,
+        );
+      }
+      // @ts-ignore
+      window.ethereum.on('accountsChanged', handleAccountChange);
+    }
+
+    return () => {
+      if (window.ethereum) {
+        // @ts-ignore
+        window.ethereum.removeListener('accountsChanged', handleAccountChange);
+      }
+    };
+  }, [handleAccountChange, previousAccountChange]);
+
+  useEffect(() => {
+    if (getLastWallet()) {
+      connectWallet();
+    } else {
+      setWalletConnecting(false);
+    }
+
+    // NOTE: We really want this to run exactly once (when the app starts)
+    // connectWallet is dependent on the wallet itself, so this is to avoid an infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const appContext = useMemo<AppContextValues>(
     () => ({
@@ -171,7 +190,6 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       userLoading,
       connectWallet,
       disconnectWallet,
-      updateWallet,
       updateUser,
     }),
     [
@@ -182,7 +200,6 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       userLoading,
       connectWallet,
       disconnectWallet,
-      updateWallet,
       updateUser,
     ],
   );

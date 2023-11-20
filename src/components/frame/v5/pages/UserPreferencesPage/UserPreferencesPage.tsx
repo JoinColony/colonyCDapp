@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
+import { Navigate } from 'react-router-dom';
+import { defineMessages, useIntl } from 'react-intl';
 
-import { useCanEditProfile, useMobile } from '~hooks';
+import { useAppContext, useMobile } from '~hooks';
 import Input from '~v5/common/Fields/Input';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
@@ -14,14 +15,23 @@ import { useUserPreferencesPage } from './hooks';
 import { UserPreferencesPageProps } from './types';
 
 import styles from './UserPreferencesPage.module.css';
+import LoadingTemplate from '~frame/LoadingTemplate';
+import { LANDING_PAGE_ROUTE } from '~routes';
 
 const displayName = 'v5.pages.UserPreferencesPage';
+
+const MSG = defineMessages({
+  loadingText: {
+    id: `${displayName}.loadingText`,
+    defaultMessage: 'Fetching user preferences',
+  },
+});
 
 // @TODO: There is a lot of repetition in this file, we should try to refactor
 const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
   truncateLimit = 20,
 }) => {
-  const { user } = useCanEditProfile();
+  const { user, userLoading, walletConnecting } = useAppContext();
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
   const { handleClipboardCopy, isCopied } = useCopyToClipboard(
@@ -39,8 +49,12 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
     setIsEmailInputVisible,
   } = useUserPreferencesPage();
 
+  if (userLoading || walletConnecting) {
+    return <LoadingTemplate loadingText={MSG.loadingText} />;
+  }
+
   if (!user) {
-    return null;
+    return <Navigate to={LANDING_PAGE_ROUTE} />;
   }
 
   const emailValue = getValues('email');

@@ -1,4 +1,4 @@
-import React, { FC, useLayoutEffect } from 'react';
+import React, { FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useMatch } from 'react-router-dom';
@@ -6,7 +6,6 @@ import { useAppContext, useGetNetworkToken, useTablet } from '~hooks';
 import Button, { Hamburger } from '~v5/shared/Button';
 import Token from './partials/Token';
 import UserMenu from './partials/UserMenu';
-import { getLastWallet } from '~utils/autoLogin';
 import { UserNavigationProps } from './types';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks';
 import { formatText } from '~utils/intl';
@@ -26,13 +25,6 @@ const UserNavigation: FC<UserNavigationProps> = ({
 
   const isWalletConnected = !!wallet?.address;
   const nativeToken = useGetNetworkToken();
-
-  useLayoutEffect(() => {
-    const isWalletSavedInLocalStorage = getLastWallet();
-    if (!wallet && isWalletSavedInLocalStorage) {
-      connectWallet?.();
-    }
-  }, [connectWallet, wallet]);
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip(
