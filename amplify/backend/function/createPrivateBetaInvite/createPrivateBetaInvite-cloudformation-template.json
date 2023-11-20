@@ -121,7 +121,7 @@
         },
         "Runtime": "nodejs14.x",
         "Layers": [
-          "arn:aws:lambda:eu-west-2:204031746016:layer:colonycdappSSMAccess-qa:204",
+          "arn:aws:lambda:eu-west-2:204031746016:layer:colonycdappSSMAccess-qa:244",
           "arn:aws:lambda:eu-west-2:133256977650:layer:AWS-Parameters-and-Secrets-Lambda-Extension:4"
         ],
         "Timeout": 25
