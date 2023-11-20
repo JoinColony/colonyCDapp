@@ -71,7 +71,12 @@ const Input: FC<InputProps> = ({
   );
 
   return (
-    <div className="flex w-full relative flex-col gap-1">
+    <div
+      className={clsx('flex w-full relative flex-col', {
+        'gap-1.5': !subLabelMessage,
+        'gap-2': subLabelMessage,
+      })}
+    >
       {labelMessage && (
         <label
           className={clsx(labelClassName, 'flex flex-col text-1')}
@@ -79,7 +84,7 @@ const Input: FC<InputProps> = ({
         >
           {formatText(labelMessage)}
           {subLabelMessage && (
-            <span className="text-sm text-gray-600">
+            <span className="text-sm font-normal text-gray-600">
               {formatText(subLabelMessage)}
             </span>
           )}
