@@ -3,5 +3,8 @@ export interface WidgetBoxProps {
   value: React.ReactNode;
   additionalContent?: React.ReactNode;
   className?: string;
-  href: string;
+  href?: string;
+  iconName?: string;
+  iconClassName?: string;
+  contentClassName?: string;
 }

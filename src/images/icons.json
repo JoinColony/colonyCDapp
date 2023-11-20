@@ -260,7 +260,9 @@
     "puzzle-piece",
     "chart-line",
     "presentation-chart",
-    "book-open-text"
+    "book-open-text",
+    "calendar-check",
+    "hourglass-medium"
   ],
   "multiColorIcons": [
     "circle-check-primary",
