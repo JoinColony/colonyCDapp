@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { useColonyContext, useMobile } from '~hooks';
 import Avatar from '~v5/shared/Avatar';
@@ -16,11 +16,21 @@ import CopyableAddress from '~v5/shared/CopyableAddress';
 import Icon from '~shared/Icon';
 import { COLONY_LINK_CONFIG } from '~constants/colony';
 import { truncateText } from '~utils/string';
+import Tooltip from '~shared/Extensions/Tooltip';
 
 import styles from './ColonyDetailsPage.module.css';
 
 const displayName = 'frame.Extensions.pages.ColonyDetailsPage';
+
 const MAX_DESCRIPTION_LENGTH = 250;
+
+const MSG = defineMessages({
+  lockedToken: {
+    id: `${displayName}.locked-token`,
+    defaultMessage:
+      'This token is locked. Colony native tokens are locked and non-transferrable by default to avoid unwanted project token transfer outside of the colony.',
+  },
+});
 
 const ColonyDetailsPage: FC = () => {
   const { formatMessage } = useIntl();
@@ -52,11 +62,17 @@ const ColonyDetailsPage: FC = () => {
                     {nativeToken.symbol}
                   </span>
                   {isNativeTokenLocked && (
-                    <Icon
-                      name="lock"
-                      appearance={{ size: 'extraTiny' }}
-                      className="ml-1"
-                    />
+                    <Tooltip
+                      tooltipContent={
+                        <span>{formatText(MSG.lockedToken)}</span>
+                      }
+                    >
+                      <Icon
+                        name="lock-key"
+                        appearance={{ size: 'extraExtraTiny' }}
+                        className="ml-1"
+                      />
+                    </Tooltip>
                   )}
                 </div>
               )}
