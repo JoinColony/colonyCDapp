@@ -64,7 +64,7 @@
                 ]
             },
             "Environment": {
-                "Variables" : {"ENV":{"Ref":"env"},"REGION":{"Ref":"AWS::Region"}, "APPSYNC_API_ID": "nyc3o2a3i5by7hdrgoihsqfszm"}
+                "Variables" : {"ENV":{"Ref":"env"},"REGION":{"Ref":"AWS::Region"}, "APPSYNC_API_ID": "j4tejwfujzcydjwmcvk2zzio6q"}
             },
             "Role": { "Fn::GetAtt": ["LambdaExecutionRole", "Arn"] },
             "Runtime": "nodejs18.x",
