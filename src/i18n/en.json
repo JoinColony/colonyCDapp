@@ -630,6 +630,7 @@
     "ariaLabel.selectDecisionMethod": "Select decision method",
     "ariaLabel.selectToken": "Select token",
     "ariaLabel.selectTeamColour": "Select team colour",
+    "ariaLabel.sortBalace": "Sort by balance",
     "userInfo.about.section": "about",
     "userInfo.teamBreakdown.section": "Team Breakdown",
     "userInfo.permissions.section": "Permissions",
@@ -1304,6 +1305,8 @@
     "table.row.url": "URL",
     "table.row.edit.link": "Edit link",
     "table.row.recipent": "Recipient",
+    "table.row.asset": "Asset",
+    "table.row.balance": "Balance",
     "user.not.verified.warning": "This member has not yet been verified. Ensure you know who this member and the address is correct.",
     "actionSidebar.distribution": "Distribution",
     "actionSidebar.distributionPlaceholder": "Select split type",
@@ -1472,5 +1475,13 @@
     "activityPage.activeActions": "Active actions",
     "activityPage.recentActions": "Recent actions",
     "activityPage.recentActions.pastMonth": "{value}<span> past month</span>",
-    "activityPage.mostActiveTeam": "Most active<span> team</span>"
+    "activityPage.mostActiveTeam": "Most active<span> team</span>",
+    "balancePage.title": "Balance",
+    "balancePage.description": "Overview of the Colony's balance by token",
+    "balancePage.table.title": "Colony token balance",
+    "balancePage.table.addFunds": "Add funds to the Colony",
+    "balancePage.table.emptyTitle": "No results to display",
+    "balancePage.table.emptyDescription": "There are no tokens in the Colony that match your search. Try searching again",
+    "token.type.native": "Native",
+    "token.type.reputation": "Reputation"
 }

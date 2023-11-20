@@ -7,13 +7,10 @@ import Decimal from 'decimal.js';
 import { getMainClasses } from '~utils/css';
 
 import numbroLanguage from './numbroLanguage';
-import {
-  adjustConvertedValue,
-  convertToDecimalOrNull,
-  getFormattedNumeralValue,
-} from './helpers';
+import { getFormattedNumeralValue } from './helpers';
 
 import styles from './Numeral.css';
+import { convertToDecimal } from '~utils/convertToDecimal';
 
 // needed for capitalized abbreviations
 numbro.registerLanguage(numbroLanguage);
@@ -48,10 +45,7 @@ const Numeral = ({
   appearance,
   ...rest
 }: Props) => {
-  let convertedValue = convertToDecimalOrNull(value);
-  if (convertedValue && decimals) {
-    convertedValue = adjustConvertedValue(convertedValue, decimals);
-  }
+  const convertedValue = convertToDecimal(value, decimals || 0);
 
   const formattedValue = getFormattedNumeralValue(convertedValue, value);
   return (

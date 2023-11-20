@@ -16,6 +16,7 @@ import {
   COLONY_MEMBERS_ROUTE,
   COLONY_TEAMS_ROUTE,
   COLONY_VERIFIED_ROUTE,
+  COLONY_BALANCE_ROUTE,
 } from './routeConstants';
 
 const navigationItems = [
@@ -48,6 +49,12 @@ const navigationItems = [
     linkTo: COLONY_TEAMS_ROUTE,
     label: 'Teams',
     value: 'teams',
+  },
+  {
+    id: 5,
+    linkTo: COLONY_BALANCE_ROUTE,
+    label: 'Balance',
+    value: 'balance',
   },
 ];
 

@@ -263,7 +263,9 @@
     "presentation-chart",
     "book-open-text",
     "calendar-check",
-    "hourglass-medium"
+    "hourglass-medium",
+    "transfer",
+    "add"
   ],
   "multiColorIcons": [
     "circle-check-primary",
