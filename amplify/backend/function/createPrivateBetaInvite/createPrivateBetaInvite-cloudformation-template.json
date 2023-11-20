@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Lambda Function resource stack creation using Amplify CLI",
+  "Description": "{\"createdOn\":\"Linux\",\"createdBy\":\"Amplify\",\"createdWith\":\"10.8.1\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -20,15 +20,6 @@
       "Type": "String",
       "Default": "functioncolonycdappSSMAccessArn"
     }
-    "CreateLambdaUrl": {
-      "Type": "String",
-      "AllowedValues": [
-        "true",
-        "false"
-      ],
-      "Default": "false",
-      "Description": "Specifies whether to create the Lambda function URL"
-    }
   },
   "Conditions": {
     "ShouldNotCreateEnvResources": {
@@ -38,41 +29,9 @@
         },
         "NONE"
       ]
-    },
-    "ShouldCreateLambdaUrl": {
-      "Fn::Equals": [
-        {
-          "Ref": "CreateLambdaUrl"
-        },
-        "true"
-      ]
     }
   },
   "Resources": {
-    "LambdaPermission": {
-      "Type": "AWS::Lambda::Permission",
-      "Properties": {
-        "Action": "lambda:InvokeFunctionUrl",
-        "FunctionName": {
-          "Fn::Sub": [
-            "arn:aws:lambda:${region}:${account}:function:${lambda}",
-            {
-              "region": {
-                "Ref": "AWS::Region"
-              },
-              "account": {
-                "Ref": "AWS::AccountId"
-              },
-              "lambda": {
-                "Ref": "LambdaFunction"
-              }
-            }
-          ]
-        },
-        "Principal": "*",
-        "FunctionUrlAuthType": "NONE"
-      }
-    },
     "LambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Metadata": {
@@ -127,24 +86,9 @@
         "Layers": [
           {
             "Ref": "functioncolonycdappSSMAccessArn"
-          },
-          "arn:aws:lambda:eu-west-2:133256977650:layer:AWS-Parameters-and-Secrets-Lambda-Extension:4"
+          }
         ],
         "Timeout": 25
-      }
-    },
-    "LambdaUrl": {
-      "Type": "AWS::Lambda::Url",
-      "Condition": "ShouldCreateLambdaUrl",
-      "DependsOn": "LambdaFunction",
-      "Properties": {
-        "AuthType": "NONE",
-        "TargetFunctionArn": {
-          "Fn::GetAtt": [
-            "LambdaFunction",
-            "Arn"
-          ]
-        }
       }
     },
     "LambdaExecutionRole": {
@@ -153,12 +97,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "colonycdappLambdaRole5041e354",
+            "colonycdappLambdaRole7ac3816d",
             {
               "Fn::Join": [
                 "",
                 [
-                  "colonycdappLambdaRole5041e354",
+                  "colonycdappLambdaRole7ac3816d",
                   "-",
                   {
                     "Ref": "env"
@@ -224,26 +168,6 @@
                   }
                 ]
               }
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "ssm:GetParameter",
-                "kms:Decrypt"
-              ],
-              "Resource": {
-                "Fn::Sub": [
-                  "arn:aws:ssm:${region}:${account}:parameter/*",
-                  {
-                    "region": {
-                      "Ref": "AWS::Region"
-                    },
-                    "account": {
-                      "Ref": "AWS::AccountId"
-                    }
-                  }
-                ]
-              }
             }
           ]
         }
@@ -272,6 +196,14 @@
     "LambdaExecutionRole": {
       "Value": {
         "Ref": "LambdaExecutionRole"
+      }
+    },
+    "LambdaExecutionRoleArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "LambdaExecutionRole",
+          "Arn"
+        ]
       }
     }
   }
