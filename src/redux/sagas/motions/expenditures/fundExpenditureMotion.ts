@@ -123,6 +123,7 @@ function* fundExpenditureMotion({
 
     const [, toChildSkillIndex] = yield call(
       getPermissionProofs,
+      colonyClient.networkClient,
       colonyClient,
       expenditurePotDomain,
       [ColonyRole.Funding],
