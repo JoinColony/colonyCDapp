@@ -1,13 +1,22 @@
 import { useCallback, useMemo } from 'react';
-import { useWatch } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { Id } from '@colony/colony-js';
 import { DeepPartial } from 'utility-types';
+import { array, InferType, number, object, string } from 'yup';
 
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
 import { useColonyContext, useNetworkInverseFee } from '~hooks';
 import { getCreatePaymentDialogPayload } from '~common/Dialogs/CreatePaymentDialog/helpers';
-import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+import { formatText } from '~utils/intl';
+import { toFinite } from '~utils/lodash';
+import { MAX_ANNOTATION_LENGTH } from '~constants';
+import getLastIndexFromPath from '~utils/getLastIndexFromPath';
+import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation';
+import {
+  ACTION_BASE_VALIDATION_SCHEMA,
+  DECISION_METHOD_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts';
 
 import { ActionFormBaseProps } from '../../../types';
 import {
@@ -15,7 +24,84 @@ import {
   DECISION_METHOD,
   useActionFormBaseHook,
 } from '../../../hooks';
-import { SimplePaymentFormValues, validationSchema } from './consts';
+
+export const useValidationSchema = () => {
+  const { colony } = useColonyContext();
+  const { watch } = useFormContext();
+  const selectedTeam: string | undefined = watch('from');
+
+  const validationSchema = useMemo(
+    () =>
+      object()
+        .shape({
+          amount: object()
+            .shape({
+              amount: number()
+                .required(() => formatText({ id: 'errors.amount' }))
+                .transform((value) => toFinite(value))
+                .moreThan(0, () =>
+                  formatText({ id: 'errors.amount.greaterThanZero' }),
+                )
+                .test(
+                  'enough-tokens',
+                  formatText({ id: 'errors.amount.notEnoughTokens' }) || '',
+                  (value, context) =>
+                    hasEnoughFundsValidation(
+                      value,
+                      context,
+                      selectedTeam,
+                      colony,
+                    ),
+                ),
+              tokenAddress: string().address().required(),
+            })
+            .required()
+            .defined(),
+          createdIn: string().defined(),
+          description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
+          recipient: string().address().required(),
+          from: number().required(),
+          decisionMethod: string().defined(),
+          payments: array()
+            .of(
+              object()
+                .shape({
+                  recipient: string().required(),
+                  amount: object()
+                    .shape({
+                      amount: number()
+                        .required(() => formatText({ id: 'errors.amount' }))
+                        .transform((value) => toFinite(value))
+                        .moreThan(0, ({ path }) => {
+                          const index = getLastIndexFromPath(path);
+
+                          if (index === undefined) {
+                            return formatText({ id: 'errors.amount' });
+                          }
+
+                          return formatText(
+                            { id: 'errors.payments.amount' },
+                            { paymentIndex: index + 1 },
+                          );
+                        }),
+                    })
+                    .required(),
+                })
+                .required(),
+            )
+            .required(),
+        })
+        .defined()
+        .concat(ACTION_BASE_VALIDATION_SCHEMA),
+    [colony, selectedTeam],
+  );
+
+  return validationSchema;
+};
+
+export type SimplePaymentFormValues = InferType<
+  ReturnType<typeof useValidationSchema>
+>;
 
 export const useSimplePayment = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -26,6 +112,7 @@ export const useSimplePayment = (
     name: DECISION_METHOD_FIELD_NAME,
   });
   const tokenAddress: string = useWatch({ name: 'amount.tokenAddress' });
+  const validationSchema = useValidationSchema();
 
   useActionFormBaseHook({
     validationSchema,

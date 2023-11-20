@@ -1,19 +1,92 @@
 import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
-import { useWatch } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
+import { array, InferType, number, object, string } from 'yup';
+
 import { ActionTypes } from '~redux';
-import { mapPayload, pipe } from '~utils/actions';
 import { useColonyContext, useNetworkInverseFee } from '~hooks';
+import { mapPayload, pipe } from '~utils/actions';
+import { notNull } from '~utils/arrays';
+import { toFinite } from '~utils/lodash';
+import { formatText } from '~utils/intl';
+import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation';
 import { getCreatePaymentDialogPayload } from '~common/Dialogs/CreatePaymentDialog/helpers';
+import {
+  ACTION_BASE_VALIDATION_SCHEMA,
+  DECISION_METHOD_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts';
+import { MAX_ANNOTATION_NUM } from '~v5/shared/RichText/consts';
+
 import { ActionFormBaseProps } from '../../../types';
 import {
   DecisionMethod,
   DECISION_METHOD,
   useActionFormBaseHook,
 } from '../../../hooks';
-import { notNull } from '~utils/arrays';
-import { SplitPaymentFormValues, validationSchema } from './consts';
-import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+
+export const useValidationSchema = () => {
+  const { colony } = useColonyContext();
+  const { watch } = useFormContext();
+  const selectedTeam = watch('team');
+
+  const validationSchema = useMemo(
+    () =>
+      object({
+        amount: object({
+          amount: number()
+            .required(() => formatText({ id: 'validation.required' }))
+            .transform((value) => toFinite(value))
+            .moreThan(0, () =>
+              formatText({ id: 'errors.amount.greaterThanZero' }),
+            )
+            .test(
+              'enough-tokens',
+              formatText({ id: 'errors.amount.notEnoughTokens' }) || '',
+              (value, context) =>
+                hasEnoughFundsValidation(value, context, selectedTeam, colony),
+            ),
+          tokenAddress: string().address().required(),
+        }).required(),
+        createdIn: string().defined(),
+        description: string().max(MAX_ANNOTATION_NUM).notRequired(),
+        team: string().required(),
+        decisionMethod: string().defined(),
+        distributionMethod: string().defined(),
+        payments: array(
+          object().shape({
+            percent: number().required(),
+            recipient: string().required(),
+          }),
+        )
+          .test(
+            'sum',
+            formatText({ id: 'errors.sumOfPercentageMustBe100' }) || '',
+            (value) => {
+              if (!value) {
+                return false;
+              }
+
+              const sum = value.reduce(
+                (acc, curr) => acc + (curr?.percent || 0),
+                0,
+              );
+
+              return sum === 100;
+            },
+          )
+          .required(),
+      })
+        .defined()
+        .concat(ACTION_BASE_VALIDATION_SCHEMA),
+    [colony, selectedTeam],
+  );
+
+  return validationSchema;
+};
+
+export type SplitPaymentFormValues = InferType<
+  ReturnType<typeof useValidationSchema>
+>;
 
 export const useSplitPayment = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -39,6 +112,7 @@ export const useSplitPayment = (
     [amount?.tokenAddress, colonyTokens],
   );
   const distributionMethod = useWatch({ name: 'distributionMethod' });
+  const validationSchema = useValidationSchema();
 
   useActionFormBaseHook({
     validationSchema,

@@ -1,18 +1,20 @@
 import React, { useMemo, useCallback } from 'react';
 import pick from 'lodash/pick';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
+import { useFormContext } from 'react-hook-form';
+
 import { formatText } from '~utils/intl';
+import { useColonyContext } from '~hooks';
+import useWrapWithRef from '~hooks/useWrapWithRef';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
+import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect';
+import AmountField from '~v5/common/ActionSidebar/partials/AmountField';
+import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
 
 import {
   AdvancedPaymentRecipentsFieldModel,
   AdvancedPaymentRecipentsTableModel,
 } from './types';
-import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect';
-import AmountField from '~v5/common/ActionSidebar/partials/AmountField';
-import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
-import { useColonyContext } from '~hooks';
-import useWrapWithRef from '~hooks/useWrapWithRef';
 
 export const useRecipientsFieldTableColumns = (
   name: string,
@@ -33,6 +35,8 @@ export const useRecipientsFieldTableColumns = (
 
     return expendituresGlobalClaimDelay / (60 * 60);
   }, [colony]);
+  const { watch } = useFormContext();
+  const selectedTeam = watch('from');
 
   const columns: ColumnDef<AdvancedPaymentRecipentsTableModel, string>[] =
     useMemo(
@@ -48,7 +52,11 @@ export const useRecipientsFieldTableColumns = (
           id: 'amount',
           header: () => formatText({ id: 'table.row.amount' }),
           cell: ({ row }) => (
-            <AmountField key={row.id} name={`${name}.${row.index}.amount`} />
+            <AmountField
+              key={row.id}
+              name={`${name}.${row.index}.amount`}
+              teamId={selectedTeam}
+            />
           ),
         }),
         columnHelper.display({

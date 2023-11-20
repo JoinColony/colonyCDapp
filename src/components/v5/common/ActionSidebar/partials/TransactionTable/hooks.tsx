@@ -1,16 +1,21 @@
 import React, { useMemo, useCallback } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
+import { useFormContext } from 'react-hook-form';
+
 import { formatText } from '~utils/intl';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
 
-import { TransactionTableModel } from './types';
 import UserSelect from '../UserSelect';
 import AmountField from '../AmountField';
+import { TransactionTableModel } from './types';
 
 export const useTransactionTableColumns = (
   name: string,
   tokenAddress?: string,
 ): ColumnDef<TransactionTableModel, string>[] => {
+  const { watch } = useFormContext();
+  const selectedTeam = watch('from');
+
   const columnHelper = useMemo(
     () => createColumnHelper<TransactionTableModel>(),
     [],
@@ -33,11 +38,12 @@ export const useTransactionTableColumns = (
             key={row.id}
             name={`${name}.${row.index}.amount`}
             tokenAddress={tokenAddress}
+            teamId={selectedTeam}
           />
         ),
       }),
     ],
-    [columnHelper, name, tokenAddress],
+    [columnHelper, name, selectedTeam, tokenAddress],
   );
 
   return columns;

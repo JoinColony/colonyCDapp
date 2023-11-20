@@ -1,12 +1,14 @@
+import React, { FC } from 'react';
 import { useApolloClient } from '@apollo/client';
 import clsx from 'clsx';
-import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
+
 import NotificationBanner from '~v5/shared/NotificationBanner';
 import { SearchActionsDocument } from '~gql';
 import { ActionForm } from '~shared/Fields';
 import { formatText } from '~utils/intl';
 import { FormTextareaBase } from '~v5/common/Fields/TextareaBase';
+
 import ActionTypeSelect from '../../ActionTypeSelect';
 import { ACTION_TYPE_FIELD_NAME } from '../../consts';
 import {

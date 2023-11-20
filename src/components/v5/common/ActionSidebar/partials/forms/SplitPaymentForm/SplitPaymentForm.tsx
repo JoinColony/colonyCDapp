@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import ActionFormRow from '~v5/common/ActionFormRow';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
@@ -19,6 +20,9 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
 
   const { currentToken, distributionMethod, amount } =
     useSplitPayment(getFormOptions);
+
+  const { watch } = useFormContext();
+  const selectedTeam = watch('team');
 
   return (
     <>
@@ -55,7 +59,7 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         }}
         title={formatText({ id: 'actionSidebar.amount' })}
       >
-        <AmountField name="amount" maxWidth={270} />
+        <AmountField name="amount" maxWidth={270} teamId={selectedTeam} />
       </ActionFormRow>
       <ActionFormRow
         iconName="users-three"

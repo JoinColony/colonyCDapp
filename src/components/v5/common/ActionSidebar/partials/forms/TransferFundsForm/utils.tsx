@@ -1,13 +1,15 @@
 import moveDecimal from 'move-decimal-point';
 import { DeepPartial } from 'utility-types';
+
 import { ColonyActionType } from '~gql';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { DECISION_METHOD } from '~v5/common/ActionSidebar/hooks';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
-import { tryGetToken, getTeam } from '../utils';
-import { TransferFundsFormValues } from './consts';
 import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
 import { formatText } from '~utils/intl';
+
+import { tryGetToken, getTeam } from '../utils';
+import { TransferFundsFormValues } from './hooks';
 
 export const trasferFundsDescriptionMetadataGetter: DescriptionMetadataGetter<
   DeepPartial<TransferFundsFormValues>
