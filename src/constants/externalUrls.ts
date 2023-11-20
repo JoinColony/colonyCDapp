@@ -1,8 +1,16 @@
 import { GNOSIS_AMB_BRIDGES } from '~constants';
 
-export const FEEDBACK = `https://portal.productboard.com/colony/1-colony-portal/tabs/4-bugs`;
+export const FEEDBACK = `https://news.colony.io/ideas/en`;
+export const COLONY_DEV_DOCS = `https://docs.colony.io/develop`;
+export const COLONY_DISCORD = `https://discord.gg/feVZWwysqM`;
+export const COLONY_DOCS = `https://docs.colony.io/`;
+export const COLONY_GITHUB = `https://github.com/joincolony`;
+export const COLONY_TWITTER = `https://twitter.com/joincolony`;
+export const FEATURES_BUGS = `https://news.colony.io/ideas/en`;
+export const WHATS_NEW = `https://news.colony.io/en`;
 export const HELP = `https://docs.colony.io/colonynetwork/tldr/colony/`;
 export const BETA_DISCLAIMER = `https://docs.colony.io/use/beta/`;
+export const PRIVACY_POLICY = `https://colony.io/terms-of-service#pivacy-policy`;
 export const TERMS_AND_CONDITIONS = `https://colony.io/terms-of-service`;
 export const ADVANCED_SETTINGS = `https://docs.colony.io/use/advanced-features/`;
 
