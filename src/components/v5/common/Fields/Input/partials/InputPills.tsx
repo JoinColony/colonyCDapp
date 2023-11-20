@@ -16,7 +16,7 @@ const InputPills: FC<PillProps> = ({ message, status }) => {
   return (
     <div
       className={clsx(
-        `flex self-start items-center text-sm font-normal absolute gap-1`,
+        `flex self-start items-center text-sm font-normal absolute gap-1 pt-1`,
         {
           'text-negative-400': status === 'error',
           'text-success-400': status === 'success',

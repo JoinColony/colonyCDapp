@@ -71,15 +71,13 @@ const Input: FC<InputProps> = ({
   );
 
   return (
-    <div
-      className={clsx('flex w-full relative flex-col', {
-        'gap-1.5': !subLabelMessage,
-        'gap-2': subLabelMessage,
-      })}
-    >
+    <>
       {labelMessage && (
         <label
-          className={clsx(labelClassName, 'flex flex-col text-1')}
+          className={clsx(labelClassName, 'flex flex-col text-1', {
+            'pb-1.5': !subLabelMessage,
+            'pb-2': subLabelMessage,
+          })}
           htmlFor={`id-${name}`}
         >
           {formatText(labelMessage)}
@@ -116,7 +114,7 @@ const Input: FC<InputProps> = ({
       )}
 
       {/* This is to stop layout shift when error messages are shown */}
-      <div className="relative pb-[1.125rem]">
+      <div className="relative">
         {!isTyping && !isErrorStatus && successfulMessage && (
           <InputPills message={successfulMessage} status="success" />
         )}
@@ -139,7 +137,7 @@ const Input: FC<InputProps> = ({
           </>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

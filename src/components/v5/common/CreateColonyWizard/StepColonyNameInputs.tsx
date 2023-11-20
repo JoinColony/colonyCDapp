@@ -71,7 +71,7 @@ const StepColonyNameInputs = ({
         defaultValue={wizardDisplayName}
         labelMessage={{ id: 'colonyName' }}
       />
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 pt-6">
         <label className="flex flex-col text-1" htmlFor="id-colonyName">
           {formatText(MSG.url)}
           <span className="text-sm font-normal text-gray-600">

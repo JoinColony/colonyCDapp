@@ -59,7 +59,7 @@ const TokenSelectorInput = ({
   const doesTokenExistError = errors.tokenAddress?.type === 'doesTokenExist';
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col">
       <TokenSelector
         register={register}
         isError={!!tokenAddressError}
@@ -74,7 +74,7 @@ const TokenSelectorInput = ({
       />
 
       {doesTokenExistError && isLoading === false && (
-        <div className="px-6 py-3 bg-warning-100 border rounded border-warning-200 text-gray-900">
+        <div className="mt-14 px-6 py-3 bg-warning-100 border rounded border-warning-200 text-gray-900">
           <p className="flex self-start items-center gap-2 text-md pb-1">
             <span className="text-warning-400 flex">
               <Icon name="warning-circle" appearance={{ size: 'small' }} />
