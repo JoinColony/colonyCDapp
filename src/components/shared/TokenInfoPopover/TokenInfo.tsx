@@ -18,6 +18,10 @@ interface Props {
 }
 
 const MSG = defineMessages({
+  nativeToken: {
+    id: `${displayName}.nativeToken`,
+    defaultMessage: 'Native',
+  },
   viewOnEtherscan: {
     id: `${displayName}.viewOnEtherscan`,
     defaultMessage: 'View on {blockExplorerName}',
@@ -72,7 +76,7 @@ const TokenInfo = ({ token, isTokenNative }: Props) => {
         {isTokenNative && (
           <PillsBase className="ml-auto bg-base-white border border-blue-100">
             <span className="text-sm font-medium text-blue-400">
-              {formatMessage({ id: 'tokenInfoPopover.tokenInfo.nativeToken' })}
+              {formatMessage(MSG.nativeToken)}
             </span>
           </PillsBase>
         )}
