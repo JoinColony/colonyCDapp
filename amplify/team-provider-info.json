@@ -88,8 +88,7 @@
   "dev": {
     "categories": {
       "function": {
-        "fetchExpenditureBalances": {},
-        "createPrivateBetaInvite": {}
+        "fetchExpenditureBalances": {}
       }
     }
   }
