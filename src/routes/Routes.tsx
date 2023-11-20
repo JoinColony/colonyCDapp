@@ -60,6 +60,7 @@ import {
   USER_PREFERENCES_ROUTE,
   USER_ADVANCED_ROUTE,
   USER_HOME_ROUTE,
+  COLONY_ACTIVITY_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -73,6 +74,7 @@ import ColonyMembersRoute from './ColonyMembersRoute';
 import UserRoute from './UserRoute';
 import WizardRoute from './WizardRoute';
 import LandingPageRoute from './LandingPageRoute';
+import ActivityPage from '~frame/v5/pages/ActivityPage';
 
 const displayName = 'routes.Routes';
 
@@ -123,6 +125,7 @@ const Routes = () => {
         <Route path={COLONY_HOME_ROUTE} element={<ColonyRoute />}>
           <Route index element={<ColonyHome />} />
           <Route path={COLONY_FUNDING_ROUTE} element={<ColonyFunding />} />
+          <Route path={COLONY_ACTIVITY_ROUTE} element={<ActivityPage />} />
           <Route element={<ColonyMembersRoute />}>
             <Route path={COLONY_MEMBERS_ROUTE} element={<MembersPage />} />
             <Route

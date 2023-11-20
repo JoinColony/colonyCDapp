@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { useColonyContext } from '~hooks';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
 import { formatText } from '~utils/intl';
@@ -38,11 +39,10 @@ const ColonyHome = () => {
             key: '1',
             title: formatText({ id: 'colonyHome.actions' }),
             value: <h4 className="heading-4">{activeActions}</h4>,
-            className: `${
-              selectedTeam
-                ? teamColor
-                : 'text-base-white bg-gray-900 border-gray-900'
-            } text-base-white`,
+            className: clsx('text-base-white', {
+              [teamColor]: selectedTeam,
+              'bg-gray-900 border-gray-900': !selectedTeam,
+            }),
             href: '/',
           },
           {
@@ -53,7 +53,6 @@ const ColonyHome = () => {
                 {membersLoading ? '-' : allMembers.length}
               </h4>
             ),
-            className: 'bg-base-bg border-base-bg text-gray-900',
             href: COLONY_MEMBERS_ROUTE,
             additionalContent: (
               <UserAvatars
@@ -76,7 +75,6 @@ const ColonyHome = () => {
                 <span className="text-1">{nativeToken?.symbol}</span>
               </div>
             ),
-            className: 'bg-base-bg border-base-bg text-gray-900',
             href: '/',
           },
         ]}

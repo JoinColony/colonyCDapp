@@ -25,6 +25,7 @@ export const COLONY_TEAMS_ROUTE = `teams`;
 export const COLONY_DECISIONS_PREVIEW_ROUTE = `decisions/preview`;
 export const DECISIONS_PAGE_ROUTE = `decisions/tx/:transactionHash`;
 export const ACTIONS_PAGE_ROUTE = 'tx/:transactionHash';
+export const COLONY_ACTIVITY_ROUTE = `activity`;
 
 export const COLONY_EXTENSION_SETUP_ROUTE = `setup`;
 
