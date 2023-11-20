@@ -36,6 +36,7 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
           title={userName}
           avatar={avatar}
           mode={userStatus}
+          seed={walletAddress.toLowerCase()}
         />
       ) : (
         <div className="flex relative justify-center">
@@ -55,6 +56,7 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
               title={userName}
               avatar={avatar}
               mode={userStatus ?? 'general'}
+              seed={walletAddress.toLowerCase()}
             />
           </div>
           {!!userStatus && userStatus !== 'general' && isContributorsList && (
