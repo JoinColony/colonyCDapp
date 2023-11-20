@@ -43,9 +43,9 @@ const DefaultContent: FC<DefaultContentProps> = ({
         </button>
       ) : (
         <>
-          <div className="w-10 mb-2">
-            <div className="p-[0.25rem] rounded-full flex items-start justify-center">
-              <div className="p-[0.25rem] rounded-full flex items-start justify-center">
+          <div className="w-9 h-9 mb-2">
+            <div className="bg-gray-50 p-[0.25rem] rounded-full flex items-start justify-center">
+              <div className="bg-gray-200 p-[0.25rem] rounded-full flex items-start justify-center">
                 <Icon name="cloud-arrow-up" appearance={{ size: 'small' }} />
               </div>
             </div>
