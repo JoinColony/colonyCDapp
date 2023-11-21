@@ -3,9 +3,7 @@ import { TokenFragment } from '~gql';
 import { BaseFieldProps } from '~v5/common/Fields/types';
 
 export interface SearchSelectProps extends BaseFieldProps {
-  onToggle: () => void;
   items: SearchSelectOptionProps[];
-  isOpen: boolean;
   onSelect?: (value: string) => void;
   isLoading?: boolean;
   showSearchValueAsOption?: boolean;

@@ -1,14 +1,15 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 
-import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
-import { sortDisabled } from '../../utils';
-import { SearchItemProps } from './types';
-import Avatar from '~v5/shared/Avatar';
 import { useMobile } from '~hooks';
-import IconWithTooltip from '~v5/shared/IconWithTooltip';
 import TokenIcon from '~shared/TokenIcon';
 import { formatText } from '~utils/intl';
+import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
+import Avatar from '~v5/shared/Avatar';
+import IconWithTooltip from '~v5/shared/IconWithTooltip';
+
+import { sortDisabled } from '../../utils';
+import { SearchItemProps } from './types';
 
 const displayName = 'v5.SearchSelect.partials.SearchItem';
 
@@ -23,9 +24,9 @@ const SearchItem: FC<SearchItemProps> = ({
     <ul
       className={clsx({
         'w-full': isLabelVisible,
-        'flex -mx-2 items-center flex-wrap w-[8.75rem] gap-y-4':
+        'flex -mx-2 items-center flex-wrap sm:w-[8.75rem] gap-y-4':
           !isLabelVisible,
-        'w-[12.75rem]': !isLabelVisible && isMobile,
+        'sm:w-[12.75rem]': !isLabelVisible && isMobile,
       })}
     >
       {sortDisabled(options).map(
@@ -65,6 +66,7 @@ const SearchItem: FC<SearchItemProps> = ({
                     'text-gray-400 pointer-events-none gap-1': isDisabled,
                     'md:hover:bg-gray-50 md:hover:font-medium':
                       !missingPermissions,
+                    'justify-center': !isLabelVisible,
                   },
                 )}
                 onClick={() => {

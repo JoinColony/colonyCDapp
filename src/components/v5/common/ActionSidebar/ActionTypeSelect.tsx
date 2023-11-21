@@ -1,18 +1,19 @@
 import React, { FC, useState } from 'react';
 import clsx from 'clsx';
-
 import { useController, useFormContext, useWatch } from 'react-hook-form';
-import ActionFormRow from '../ActionFormRow';
-import SearchSelect from '~v5/shared/SearchSelect';
-import { useActionsList } from './hooks';
-import { translateAction } from './utils';
+
 import useToggle from '~hooks/useToggle';
-import { ACTION_TYPE_FIELD_NAME } from './consts';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 import { formatText } from '~utils/intl';
-import Modal from '~v5/shared/Modal';
-import { ActionTypeSelectProps } from './types';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import SearchSelect from '~v5/shared/SearchSelect';
+import Modal from '~v5/shared/Modal';
+
+import ActionFormRow from '../ActionFormRow';
+import { useActionsList } from './hooks';
+import { translateAction } from './utils';
+import { ACTION_TYPE_FIELD_NAME } from './consts';
+import { ActionTypeSelectProps } from './types';
 
 const displayName = 'v5.common.ActionTypeSelect';
 
@@ -85,9 +86,7 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
                   registerContainerRef(ref);
                   portalElementRef.current = ref;
                 }}
-                onToggle={toggleSelectOff}
                 items={actionsList}
-                isOpen={isSelectVisible}
                 className="z-[60]"
                 onSelect={(action) => {
                   toggleSelectOff();

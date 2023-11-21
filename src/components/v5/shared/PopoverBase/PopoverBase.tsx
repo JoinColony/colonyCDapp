@@ -1,8 +1,9 @@
 import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
 
-import { PopoverBaseProps } from './types';
 import Card from '~v5/shared/Card';
+
+import { PopoverBaseProps } from './types';
 
 const displayName = 'v5.PopoverBase';
 

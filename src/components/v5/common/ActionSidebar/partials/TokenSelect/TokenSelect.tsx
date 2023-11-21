@@ -1,16 +1,17 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useController } from 'react-hook-form';
-
 import { isAddress } from 'ethers/lib/utils';
 import clsx from 'clsx';
-import { TokenSelectProps } from './types';
+
 import useToggle from '~hooks/useToggle';
-import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
 import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 import { formatText } from '~utils/intl';
-import { useTokenSelect } from './hooks';
-import { FIELD_STATE } from '~v5/common/Fields/consts';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
+import { FIELD_STATE } from '~v5/common/Fields/consts';
+
+import { useTokenSelect } from './hooks';
+import { TokenSelectProps } from './types';
 
 const displayName = 'v5.common.ActionsContent.partials.TokenSelect';
 
@@ -100,8 +101,6 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
 
                 field.onChange(isAddress(query) ? query : undefined);
               }}
-              isOpen={isTokenSelectVisible}
-              onToggle={toggleTokenSelect}
               onSelect={(value) => {
                 field.onChange(value);
                 toggleTokenSelectOff();
@@ -110,7 +109,6 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
                 registerContainerRef(ref);
                 portalElementRef.current = ref;
               }}
-              className="z-[60]"
             />
           )}
         </>
