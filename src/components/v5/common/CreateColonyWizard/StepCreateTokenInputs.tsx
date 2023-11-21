@@ -94,30 +94,34 @@ const StepCreateTokenInputs = ({
   return (
     <>
       <div className="flex gap-6 pb-6">
-        <Input
-          name="tokenName"
-          register={register}
-          isError={showTokenNameError}
-          customErrorMessage={tokenNameError}
-          className="text-md border-gray-300"
-          maxCharNumber={MAX_TOKEN_NAME}
-          isDisabled={isSubmitting}
-          defaultValue={wizardTokenName}
-          labelMessage={MSG.tokenName}
-          errorMaxChar
-        />
-        <Input
-          name="tokenSymbol"
-          register={register}
-          isError={showTokenSymbolError}
-          customErrorMessage={tokenSymbolError}
-          className="text-md border-gray-300 uppercase"
-          maxCharNumber={MAX_TOKEN_SYMBOL}
-          isDisabled={isSubmitting}
-          defaultValue={wizardTokenSymbol}
-          labelMessage={MSG.tokenSymbol}
-          errorMaxChar
-        />
+        <div className="flex-1">
+          <Input
+            name="tokenName"
+            register={register}
+            isError={showTokenNameError}
+            customErrorMessage={tokenNameError}
+            className="text-md border-gray-300"
+            maxCharNumber={MAX_TOKEN_NAME}
+            isDisabled={isSubmitting}
+            defaultValue={wizardTokenName}
+            labelMessage={MSG.tokenName}
+            errorMaxChar
+          />
+        </div>
+        <div className="flex-1">
+          <Input
+            name="tokenSymbol"
+            register={register}
+            isError={showTokenSymbolError}
+            customErrorMessage={tokenSymbolError}
+            className="text-md border-gray-300 uppercase"
+            maxCharNumber={MAX_TOKEN_SYMBOL}
+            isDisabled={isSubmitting}
+            defaultValue={wizardTokenSymbol}
+            labelMessage={MSG.tokenSymbol}
+            errorMaxChar
+          />
+        </div>
       </div>
       <p className="text-1 pb-1">{formatMessage(MSG.tokenLogo)}</p>
       <p className="text-sm text-gray-600 pb-2">
