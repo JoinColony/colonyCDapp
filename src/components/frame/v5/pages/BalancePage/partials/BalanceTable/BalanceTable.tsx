@@ -109,9 +109,6 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
           <p className="text-md text-gray-600 mb-6">
             {formatText({ id: 'balancePage.modal.subtitle' })}
           </p>
-          <p className="flex text-1 mb-2">
-            {formatText({ id: 'balancePage.send.funds' })}
-          </p>
           <CopyWallet
             isCopied={isCopied}
             handleClipboardCopy={handleClipboardCopy}
