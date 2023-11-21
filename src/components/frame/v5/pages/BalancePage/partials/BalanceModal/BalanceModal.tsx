@@ -17,7 +17,7 @@ const BalanceModal: FC<PropsWithChildren<BalanceModalProps>> = ({
   return (
     <Modal icon="piggy-bank" {...props} onClose={onClose}>
       <ActionForm
-        actionType={ActionTypes.USER_DEPOSIT_TOKEN}
+        actionType={ActionTypes.USER_DEPOSIT_TOKEN} // @TODO: add correct action
         onSuccess={(_, { reset }) => {
           reset();
           onClose();
