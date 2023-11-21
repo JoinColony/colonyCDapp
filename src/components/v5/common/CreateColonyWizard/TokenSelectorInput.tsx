@@ -40,7 +40,7 @@ const TokenSelectorInput = ({
   const {
     register,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, submitCount },
   } = useFormContext();
   const { formatMessage } = useIntl();
   const [isLoading, setIsLoading] = useState(false);
@@ -48,6 +48,11 @@ const TokenSelectorInput = ({
   const token: Token | null = watch('token');
 
   const tokenAddressError = errors.tokenAddress?.message as string | undefined;
+  const showTokenAddressError = Boolean(
+    errors.tokenAddress?.type === 'required' && submitCount === 0
+      ? false
+      : tokenAddressError,
+  );
   const successMessage = formatMessage(MSG.existingTokenSuccess, {
     name: token?.name,
     symbol: token?.symbol,
@@ -62,7 +67,7 @@ const TokenSelectorInput = ({
     <div className="flex flex-col">
       <TokenSelector
         register={register}
-        isError={!!tokenAddressError}
+        isError={showTokenAddressError}
         customErrorMessage={tokenAddressError}
         className="text-md border-gray-300"
         isDisabled={isSubmitting}
