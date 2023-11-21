@@ -1,16 +1,14 @@
 import React from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
-import { AddressZero } from '@ethersproject/constants';
+import { defineMessages, useIntl } from 'react-intl';
 
-import CopyableAddress from '~shared/CopyableAddress';
-import TokenLink from '~shared/TokenLink';
-import Button from '~shared/Button';
-import TokenIcon from '~shared/TokenIcon';
-import { RpcMethods, Token } from '~types';
+import { Token } from '~types';
 import { DEFAULT_NETWORK_INFO } from '~constants';
-import { TokenType } from '~gql';
 
-import styles from './TokenInfoPopover.css';
+import Avatar from '~v5/shared/Avatar';
+import CopyableAddress from '~v5/shared/CopyableAddress';
+import { getBlockExplorerLink } from '~utils/external';
+import Icon from '~shared/Icon';
+import PillsBase from '~v5/common/Pills/PillsBase';
 
 const displayName = 'TokenInfoPopover.TokenInfo';
 
@@ -20,86 +18,67 @@ interface Props {
 }
 
 const MSG = defineMessages({
-  nativeTokenMessage: {
-    id: `${displayName}.nativeTokenMessage`,
-    defaultMessage: "*This is the colony's native token",
+  nativeToken: {
+    id: `${displayName}.nativeToken`,
+    defaultMessage: 'Native',
   },
   viewOnEtherscan: {
     id: `${displayName}.viewOnEtherscan`,
     defaultMessage: 'View on {blockExplorerName}',
   },
-  addToWallet: {
-    id: `${displayName}.addToWallet`,
-    defaultMessage: 'Add token to Metamask',
-  },
 });
 
 const TokenInfo = ({ token, isTokenNative }: Props) => {
-  const { name, symbol, tokenAddress, decimals, thumbnail } = token;
-
-  const handleAddAssetToMetamask = () => {
-    // https://docs.metamask.io/wallet/how-to/register-token/
-    if (window.ethereum) {
-      window.ethereum
-        // @ts-ignore
-        .request({
-          method: RpcMethods.WatchAsset,
-          params: {
-            type: TokenType.Erc20,
-            options: {
-              address: tokenAddress,
-              symbol,
-              decimals,
-              image: thumbnail,
-            },
-          },
-        })
-        .catch((e) => {
-          console.error(e);
-        });
-    }
-  };
+  const { avatar, name, symbol, tokenAddress, thumbnail } = token;
+  const { formatMessage } = useIntl();
 
   return (
-    <div className={styles.main}>
-      <div className={styles.section}>
-        {name && (
-          <div title={name} className={styles.displayName}>
-            <TokenIcon token={token} size="xxs" />
-            {name}
-          </div>
-        )}
-        {symbol && (
-          <p title={symbol} className={styles.symbol}>
-            {symbol}
-          </p>
-        )}
-        <div title={tokenAddress} className={styles.address}>
-          <CopyableAddress full>{tokenAddress}</CopyableAddress>
-        </div>
-        {isTokenNative && (
-          <p className={styles.nativeTokenMessage}>
-            <FormattedMessage {...MSG.nativeTokenMessage} />
-          </p>
-        )}
-      </div>
-      <div className={styles.section}>
-        <TokenLink
-          className={styles.etherscanLink}
-          tokenAddress={tokenAddress}
-          text={MSG.viewOnEtherscan}
-          textValues={{
-            blockExplorerName: DEFAULT_NETWORK_INFO.blockExplorerName,
-          }}
+    <div className="flex flex-col items-center p-6 gap-6 w-80 text-gray-900">
+      <div className="flex flex-row items-center w-full gap-4">
+        <Avatar
+          size="m"
+          title={name}
+          avatar={thumbnail || avatar}
+          className="flex-shrink-0"
         />
-        {tokenAddress !== AddressZero && (
-          <span className={styles.addToWallet}>
-            <Button
-              appearance={{ theme: 'blue' }}
-              text={MSG.addToWallet}
-              onClick={handleAddAssetToMetamask}
-            />
-          </span>
+        <div className="flex flex-col flex-1 gap-1 min-w-0">
+          <div className="w-full flex items-center">
+            <h4 className="heading-4 truncate" title={`${name} (${symbol})`}>
+              {name} ({symbol})
+            </h4>
+            {isTokenNative && (
+              <Icon
+                name="verified"
+                appearance={{ size: 'small' }}
+                className="shrink-0 text-blue-400 ml-1"
+              />
+            )}
+          </div>
+          <CopyableAddress address={tokenAddress} />
+        </div>
+      </div>
+
+      <div className="flex flex-row items-center w-full">
+        <a
+          className="flex flex-row items-center gap-2 text-md hover:text-blue-400"
+          target="_blank"
+          rel="noreferrer noopener"
+          href={getBlockExplorerLink({
+            linkType: 'token',
+            addressOrHash: tokenAddress,
+          })}
+        >
+          <Icon name="arrow-square-out" appearance={{ size: 'tiny' }} />
+          {formatMessage(MSG.viewOnEtherscan, {
+            blockExplorerName: DEFAULT_NETWORK_INFO.blockExplorerName,
+          })}
+        </a>
+        {isTokenNative && (
+          <PillsBase className="ml-auto bg-base-white border border-blue-100">
+            <span className="text-sm font-medium text-blue-400">
+              {formatMessage(MSG.nativeToken)}
+            </span>
+          </PillsBase>
         )}
       </div>
     </div>

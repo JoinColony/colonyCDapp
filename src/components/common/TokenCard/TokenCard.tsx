@@ -2,9 +2,9 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import Card from '~shared/Card';
+import CopyableAddress from '~v5/shared/CopyableAddress';
 import EthUsd from '~shared/EthUsd';
 import Numeral from '~shared/Numeral';
-import CopyableAddress from '~shared/CopyableAddress';
 import TokenInfoPopover from '~shared/TokenInfoPopover';
 import TokenIcon from '~shared/TokenIcon';
 import IconTooltip from '~shared/IconTooltip';
@@ -68,7 +68,7 @@ const TokenCard = ({ domainId, token }: Props) => {
             ) : (
               <>
                 <FormattedMessage {...MSG.unknownToken} />
-                <CopyableAddress>{token.tokenAddress}</CopyableAddress>
+                <CopyableAddress address={token.tokenAddress} />
               </>
             )}
             {token.tokenAddress === nativeToken?.tokenAddress &&

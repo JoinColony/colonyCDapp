@@ -1,6 +1,6 @@
 @value arrowSize: 8px;
 @value arrowBorder: 1px;
-@value backgroundColor: rgb(251, 251, 251); /* --colony-white */
+@value backgroundColor: rgb(255, 255, 255); /* --colony-white */
 @value themeDarkBackgroundColor: rgb(58, 58, 58); /* --dark-grey */
 @value themeGreyBackgroundColor: var(--light-grey-blue);
 
@@ -11,10 +11,12 @@
 
 .main {
   z-index: calc(var(--z-index-notification) + 1);
-  border-radius: var(--radius-normal);
+  overflow: hidden;
+  border: 1px solid var(--color-gray-200);
+  border-radius: 8px;
   background-color: backgroundColor;
   color: var(--grey);
-  box-shadow: 0 2px 11px 0px var(--drop-shadow);
+  box-shadow: 0px 10px 30px 0px rgba(0, 0, 0, 0.05);
 }
 
 .arrow {

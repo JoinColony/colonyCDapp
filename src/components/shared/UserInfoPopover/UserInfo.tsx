@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CopyableAddress from '~shared/CopyableAddress';
+import CopyableAddress from '~v5/shared/CopyableAddress';
 import Heading from '~shared/Heading';
 import UserMention from '~shared/UserMention';
 import UserAvatar from '~shared/UserAvatar';
@@ -39,7 +39,7 @@ const UserInfo = ({ user }: Props) => {
           </p>
         )}
         <div className={styles.address}>
-          <CopyableAddress full>{user.walletAddress}</CopyableAddress>
+          <CopyableAddress full address={user.walletAddress} />
         </div>
       </div>
     </div>

@@ -87,7 +87,7 @@ const ColonyFundingWidget = ({
   return (
     <div className={styles.main}>
       <Heading appearance={{ size: 'normal', weight: 'bold' }}>
-        <NavLink to={`/colony/${name}/funds`}>
+        <NavLink className={styles.fundsLink} to={`/colony/${name}/funds`}>
           <FormattedMessage {...MSG.title} />
         </NavLink>
       </Heading>

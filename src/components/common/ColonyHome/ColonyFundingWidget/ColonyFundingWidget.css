@@ -2,14 +2,8 @@
   margin-bottom: 10px;
 }
 
-.main h4 {
-  font-size: var(--size-smallish);
-  color: var(--dark);
-  letter-spacing: var(--spacing-medium);
-}
-
-.main a:hover,
-.main a:active {
+.main .fundsLink:hover,
+.main .fundsLink:active {
   text-decoration: underline;
   color: var(--colony-blue);
 }

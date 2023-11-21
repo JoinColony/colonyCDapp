@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 
 import Avatar from '~v5/shared/Avatar';
+import CopyableAddress from '~v5/shared/CopyableAddress';
 import Icon from '~shared/Icon';
 import { UserAvatarDetailsProps } from './types';
 import UserStatus from '~v5/common/Pills/UserStatus';
 import { UserStatusMode } from '~v5/common/Pills/types';
-import { splitWalletAddress } from '~utils/splitWalletAddress';
 import { formatText } from '~utils/intl';
 
 const displayName = 'v5.UserAvatarDetails';
@@ -73,9 +73,9 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
             </span>
           )}
         </div>
-        <p className="text-sm text-gray-600">
-          {walletAddress && splitWalletAddress(walletAddress)}
-        </p>
+        <div className="py-1">
+          {walletAddress && <CopyableAddress address={walletAddress} />}
+        </div>
       </div>
     </div>
   );
