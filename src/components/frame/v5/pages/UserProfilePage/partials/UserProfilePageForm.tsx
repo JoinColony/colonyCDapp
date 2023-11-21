@@ -19,6 +19,9 @@ import styles from '../UserProfilePage.module.css';
 import { MAX_BIO_CHARS, MAX_DISPLAYNAME_CHARS } from '../consts';
 
 import LeftColumn from './LeftColumn';
+import { useGetUploaderText } from './hooks';
+import { profileFileOptions } from './consts';
+import SuccessContent from './SuccessContent';
 
 const displayName = 'v5.pages.UserProfilePage';
 
@@ -142,6 +145,8 @@ const UserProfilePageForm = ({
     });
   }
 
+  const uploaderText = useGetUploaderText(profileFileOptions);
+
   return (
     <div className="flex flex-col gap-6">
       <h4 className="heading-4 mb-6">{formatText({ id: 'profile.page' })}</h4>
@@ -188,18 +193,15 @@ const UserProfilePageForm = ({
         <div className="w-full">
           <AvatarUploader
             avatarPlaceholder={
-              <Avatar
-                size="xm"
+              <Avatar size="xm"
                 avatar={avatarUrl}
                 seed={wallet?.address.toLowerCase()}
               />
             }
-            fileOptions={{
-              fileFormat: ['.PNG', '.JPG', '.SVG'],
-              fileDimension: '250x250px',
-              fileSize: '1MB',
-            }}
+            fileOptions={profileFileOptions}
             updateFn={updateAvatarFn}
+            uploaderText={uploaderText}
+            SuccessComponent={SuccessContent}
           />
         </div>
       </div>

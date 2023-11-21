@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
+import { SuccessContentProps } from '~v5/common/AvatarUploader/types';
 import Button from '~v5/shared/Button';
-import { SuccessContentProps } from '../types';
 
 const displayName = 'v5.common.AvatarUploader.partials.SuccessContent';
 
