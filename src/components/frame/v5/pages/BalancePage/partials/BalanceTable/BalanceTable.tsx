@@ -16,8 +16,8 @@ import EmptyContent from '~v5/common/EmptyContent';
 import TableWithHeaderAndMeatballMenu from '~v5/common/TableWithHeaderAndMeatballMenu';
 import useToggle from '~hooks/useToggle';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import Modal from '~v5/shared/Modal';
 import CopyWallet from '~v5/shared/CopyWallet';
+import BalanceModal from '../BalanceModal';
 
 const displayName = 'v5.pages.BalancePage.partials.BalaceTable';
 
@@ -98,27 +98,28 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
           </Button>
         </>
       </TableWithHeaderAndMeatballMenu>
-      <Modal
+      <BalanceModal
         isOpen={isAddFundsModalOpened}
         onClose={toggleAddFundsModalOff}
-        buttonMode="primarySolid"
-        icon="piggy-bank"
       >
-        <h5 className="heading-5 mb-1.5">
-          {formatText({ id: 'balancePage.modal.title' })}
-        </h5>
-        <p className="text-md text-gray-600 mb-6">
-          {formatText({ id: 'balancePage.modal.subtitle' })}
-        </p>
-        <p className="flex text-1 mb-2">
-          {formatText({ id: 'balancePage.send.funds' })}
-        </p>
-        <CopyWallet
-          isCopied={isCopied}
-          handleClipboardCopy={handleClipboardCopy}
-          value={colonyAddress || ''}
-        />
-      </Modal>
+        <>
+          <h5 className="heading-5 mb-1.5">
+            {formatText({ id: 'balancePage.modal.title' })}
+          </h5>
+          <p className="text-md text-gray-600 mb-6">
+            {formatText({ id: 'balancePage.modal.subtitle' })}
+          </p>
+          <p className="flex text-1 mb-2">
+            {formatText({ id: 'balancePage.send.funds' })}
+          </p>
+          <CopyWallet
+            isCopied={isCopied}
+            handleClipboardCopy={handleClipboardCopy}
+            value={colonyAddress || ''}
+          />
+          <div className="h-[1px] bg-gray-200 w-full my-6" />
+        </>
+      </BalanceModal>
     </>
   );
 };

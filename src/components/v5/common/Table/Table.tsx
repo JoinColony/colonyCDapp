@@ -37,32 +37,18 @@ const Table = <T,>({
   )[0];
 
   return (
-<<<<<<< HEAD
     <div
       className={clsx(
         className,
         'border border-gray-200 rounded-lg overflow-hidden',
       )}
     >
-=======
-    <>
->>>>>>> 9ac463794 (update structure of table)
       <table
         className={clsx(
           className,
           `
-<<<<<<< HEAD
             border-separate
             border-spacing-0
-=======
-            border-t border-l border-r
-            border-separate
-            border-spacing-0
-            border-1
-            w-full
-            rounded-t-lg
-            border-gray-200
->>>>>>> 9ac463794 (update structure of table)
             overflow-hidden
             table-fixed
             w-full
@@ -84,7 +70,6 @@ const Table = <T,>({
               >
                 {headerGroups.map((headerGroup) =>
                   headerGroup.headers.map((header, index) => (
-<<<<<<< HEAD
                     <tr
                       key={row.id + headerGroup.id + header.id}
                       className="[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100"
@@ -99,19 +84,6 @@ const Table = <T,>({
                           border-r
                           border-gray-200
                         `}
-=======
-                    <tr key={row.id + headerGroup.id + header.id}>
-                      <th
-                        className={`
-                            bg-gray-50
-                            p-4
-                            text-left
-                            text-sm
-                            font-normal
-                            border-r
-                            border-gray-200
-                          `}
->>>>>>> 9ac463794 (update structure of table)
                       >
                         {header.isPlaceholder
                           ? null
@@ -144,11 +116,7 @@ const Table = <T,>({
                     <th
                       key={header.id}
                       className={clsx(
-<<<<<<< HEAD
                         'text-left text-sm text-gray-600 bg-gray-50 font-normal px-[1.1rem] empty:p-0 py-[0.7rem] border-b border-b-gray-200',
-=======
-                        'text-left text-sm text-gray-600 bg-gray-50 font-normal px-[1.1rem] py-[0.7rem]',
->>>>>>> 9ac463794 (update structure of table)
                         {
                           'cursor-pointer': header.column.getCanSort(),
                         },
@@ -156,13 +124,8 @@ const Table = <T,>({
                       onClick={header.column.getToggleSortingHandler()}
                       style={{
                         width:
-<<<<<<< HEAD
                           header.getSize() !== 150
                             ? `${header.column.getSize()}${sizeUnit}`
-=======
-                          header.column.getSize() !== 0
-                            ? header.column.getSize()
->>>>>>> 9ac463794 (update structure of table)
                             : undefined,
                       }}
                     >
@@ -175,14 +138,9 @@ const Table = <T,>({
                       {header.column.getCanSort() && (
                         <Icon
                           name="arrow-down"
-<<<<<<< HEAD
                           appearance={{ size: 'extraTiny' }}
                           className={clsx(
                             'ml-1.5 !w-[0.55rem] !h-[0.55rem] mb-0.5 transition-transform align-middle',
-=======
-                          className={clsx(
-                            'inline-block ml-1 w-3 h-3 transition-transform',
->>>>>>> 9ac463794 (update structure of table)
                             {
                               'rotate-180':
                                 header.column.getIsSorted() === 'asc',
@@ -199,7 +157,6 @@ const Table = <T,>({
             </thead>
             <tbody className="w-full">
               {rows.map((row) => (
-<<<<<<< HEAD
                 <tr
                   key={row.id}
                   className={clsx(
@@ -207,9 +164,6 @@ const Table = <T,>({
                     '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100',
                   )}
                 >
-=======
-                <tr key={row.id} className={getRowClassName(row)}>
->>>>>>> 9ac463794 (update structure of table)
                   {row.getVisibleCells().map((cell) => (
                     <td
                       key={cell?.id}
@@ -247,16 +201,8 @@ const Table = <T,>({
         )}
       </table>
       {hasPagination && (
-<<<<<<< HEAD
         <div className="flex items-center justify-end sm:justify-between pt-2 pb-6 w-full px-[1.125rem]">
           <p className="text-3 text-gray-700 w-full sm:w-auto sm:text-left text-center">
-=======
-        <div
-          className="flex items-center justify-between pt-4 w-full min-w-max px-[1.1rem] pb-8 border-b border-l border-r
-        border-1 rounded-b-lg border-gray-200"
-        >
-          <p className="text-3 text-gray-700">
->>>>>>> 9ac463794 (update structure of table)
             {formatText(
               { id: 'table.pageNumber' },
               {
@@ -287,11 +233,7 @@ const Table = <T,>({
           </div>
         </div>
       )}
-<<<<<<< HEAD
     </div>
-=======
-    </>
->>>>>>> 9ac463794 (update structure of table)
   );
 };
 
