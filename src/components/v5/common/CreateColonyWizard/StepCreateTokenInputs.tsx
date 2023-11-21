@@ -131,22 +131,13 @@ const StepCreateTokenInputs = ({
         {formatMessage(MSG.tokenDescription)}
       </p>
       <AvatarUploader
-        avatarPlaceholder={
-          <Avatar
-            notSet={!tokenAvatarUrl}
-            placeholderIcon="grey-circle-plus"
-            size="ms"
-            avatar={tokenAvatarUrl}
-          />
-        }
+        avatarPlaceholder={<Avatar size="xm" avatar={tokenAvatarUrl} />}
         fileOptions={{
           fileFormat: ['.PNG', '.JPG', '.SVG'],
           fileDimension: '250x250px',
           fileSize: '1MB',
         }}
         updateFn={updateFn}
-        useSucessState={false}
-        showUploaderText={false}
       />
     </>
   );
