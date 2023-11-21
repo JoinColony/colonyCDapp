@@ -72,22 +72,20 @@ const UserInfo: FC<UserInfoProps> = ({
         )}
       </div>
       {aboutDescriptionText && (
-        <>
+        <div
+          className={clsx({
+            'pt-6 px-6': isTopContributorType,
+          })}
+        >
           <TitleLabel
-            className={clsx('mb-2', {
-              'px-6 pt-6': isTopContributorType,
-            })}
+            className={clsx('mb-2')}
             text={formatText({ id: 'userInfo.about.section' })}
           />
-          <p
-            className={clsx('text-md text-gray-600', {
-              'px-6': isTopContributorType,
-            })}
-          >
+          <p className={clsx('text-md text-gray-600', {})}>
             {aboutDescriptionText}
           </p>
-          <div className="my-6 border-t border-gray-200" />
-        </>
+          <div className={clsx('my-6 border-t border-gray-200', {})} />
+        </div>
       )}
       {domains?.length ? (
         <div
