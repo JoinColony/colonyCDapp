@@ -12,10 +12,10 @@ const meta: Meta<typeof UserAvatar> = {
     },
   },
   argTypes: {
-    userName: {
-      name: 'User name',
+    user: {
+      name: 'User',
       control: {
-        type: 'text',
+        type: 'object',
       },
     },
     isLink: {
@@ -33,7 +33,10 @@ const meta: Meta<typeof UserAvatar> = {
     },
   },
   args: {
-    userName: 'Panda',
+    user: {
+      profile: { displayName: 'Panda' },
+      walletAddress: '0x0',
+    },
     isLink: false,
   },
 };

@@ -5,24 +5,28 @@ import styles from './UserAvatar.module.css';
 import { UserAvatarProps } from './types';
 import Avatar from '~v5/shared/Avatar';
 import Link from '~v5/shared/Link';
+import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 const displayName = 'v5.UserAvatar';
 
 const UserAvatar: FC<UserAvatarProps> = ({
-  user,
+  avatarSize,
+  className,
+  isContributorsList,
   isLink = false,
   preferThumbnail = true,
-  userName,
+  showUsername = false,
   size = 'xxs',
-  avatarSize,
+  user,
   userStatus,
-  isContributorsList,
-  className,
-  hideUserNameOnMobile,
   ...rest
 }) => {
-  const address = user?.walletAddress;
-  const { profile } = user || {};
+  const address = typeof user == 'string' ? user : user.walletAddress;
+  const profile = typeof user == 'string' ? null : user.profile;
+  const username =
+    typeof user != 'string'
+      ? user.profile?.displayName
+      : splitWalletAddress(address);
   const imageString = preferThumbnail ? profile?.thumbnail : profile?.avatar;
 
   const avatar = (
@@ -49,17 +53,16 @@ const UserAvatar: FC<UserAvatarProps> = ({
           {...rest}
         />
       </span>
-      {userName && (
+      {showUsername ? (
         <p
           className={clsx(className, 'font-medium truncate', {
             'text-sm ml-1': size === 'xxs',
             'text-md ml-2': size === 'xs' || size === 'sm',
-            'hidden md:block': hideUserNameOnMobile,
           })}
         >
-          {userName}
+          {username}
         </p>
-      )}
+      ) : null}
     </span>
   );
 

@@ -91,12 +91,10 @@ export const useStakingInformation = (
         return result;
       }
 
-      const userName = users?.length
-        ? users?.find((user) => user?.walletAddress === item.address)?.profile
-            ?.displayName
-        : undefined;
+      const user = users?.find((u) => u?.walletAddress === item.address)
+        ?.profile?.displayName;
 
-      if (!userName) {
+      if (!user) {
         return result;
       }
 
@@ -117,7 +115,7 @@ export const useStakingInformation = (
             },
           ),
           userProps: {
-            userName,
+            user,
           },
         },
       ];

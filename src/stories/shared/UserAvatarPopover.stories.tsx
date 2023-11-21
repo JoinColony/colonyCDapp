@@ -6,10 +6,10 @@ const meta: Meta<typeof UserAvatarPopover> = {
   title: 'Shared/User Avatar Popover',
   component: UserAvatarPopover,
   argTypes: {
-    userName: {
-      name: 'User name',
+    user: {
+      name: 'User',
       control: {
-        type: 'text',
+        type: 'object',
       },
     },
     walletAddress: {
@@ -26,7 +26,10 @@ const meta: Meta<typeof UserAvatarPopover> = {
     },
   },
   args: {
-    userName: 'Panda',
+    user: {
+      profile: { displayName: 'Panda' },
+      walletAddress: '0x0',
+    },
     walletAddress: '0x155....1051',
     aboutDescription: `Passionate about sustainability and living a zero-waste lifestyle. Lover of all things vintage and retro. High-tops are my everything.`,
   },

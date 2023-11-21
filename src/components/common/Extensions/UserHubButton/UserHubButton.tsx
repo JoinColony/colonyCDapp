@@ -7,10 +7,10 @@ import {
   useAppContext,
   useColonyContext,
   useDetectClickOutside,
+  useMobile,
   useTablet,
 } from '~hooks';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
-import { splitWalletAddress } from '~utils/splitWalletAddress';
 import Button from '~v5/shared/Button';
 import UserAvatar from '~v5/shared/UserAvatar';
 import PopoverBase from '~v5/shared/PopoverBase';
@@ -27,9 +27,9 @@ const UserHubButton: FC<UserHubButtonProps> = ({
   hideUserNameOnMobile,
 }) => {
   const isTablet = useTablet();
+  const isMobile = useMobile();
   const { colony } = useColonyContext();
   const { wallet, user } = useAppContext();
-  const { profile } = user || {};
   const walletAddress = wallet?.address;
   const [isUserHubOpen, setIsUserHubOpen] = useState(false);
   const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
@@ -84,21 +84,21 @@ const UserHubButton: FC<UserHubButtonProps> = ({
         }}
       >
         <div className="flex items-center gap-3">
-          <UserAvatar
-            user={user}
-            userName={
-              profile?.displayName ?? splitWalletAddress(walletAddress ?? '')
-            }
-            hideUserNameOnMobile={hideUserNameOnMobile}
-            size="xxs"
-          />
-          {walletAddress && (
-            <MemberReputation
-              colonyAddress={colony?.colonyAddress}
-              hideOnMobile={hideMemberReputationOnMobile}
-              walletAddress={walletAddress}
-            />
-          )}
+          {/* If there's a user, there's a wallet */}
+          {walletAddress ? (
+            <>
+              <UserAvatar
+                user={user || walletAddress}
+                showUsername={!(hideUserNameOnMobile && isMobile)}
+                size="xxs"
+              />
+              <MemberReputation
+                colonyAddress={colony?.colonyAddress}
+                hideOnMobile={hideMemberReputationOnMobile}
+                walletAddress={walletAddress}
+              />
+            </>
+          ) : null}
         </div>
       </Button>
       {(visible || isUserHubOpen) && (

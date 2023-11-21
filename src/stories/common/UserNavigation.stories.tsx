@@ -74,7 +74,13 @@ const UserNavigationWithData = () => {
             onClick={() => setIsOpen(!isOpen)}
           >
             <div className="flex items-center gap-3">
-              <UserAvatar userName="panda" size="xxs" />
+              <UserAvatar
+                user={{
+                  profile: { displayName: 'Panda' },
+                  walletAddress: '0x',
+                }}
+                size="xxs"
+              />
             </div>
           </Button>
           <Button mode="tertiary" isFullRounded iconName="list" />

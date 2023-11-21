@@ -42,7 +42,7 @@ const UserProfilePageForm = ({
     getValues,
     reset,
   } = useFormContext();
-  const { updateUser } = useAppContext();
+  const { updateUser, wallet } = useAppContext();
   const [updateAvatar] = useUpdateUserProfileMutation();
   const isMobile = useMobile();
   const { displayName: displayNameDirty } = dirtyFields;
@@ -187,7 +187,13 @@ const UserProfilePageForm = ({
         />
         <div className="w-full">
           <AvatarUploader
-            avatarPlaceholder={<Avatar size="xm" avatar={avatarUrl} />}
+            avatarPlaceholder={
+              <Avatar
+                size="xm"
+                avatar={avatarUrl}
+                seed={wallet?.address.toLowerCase()}
+              />
+            }
             fileOptions={{
               fileFormat: ['.PNG', '.JPG', '.SVG'],
               fileDimension: '250x250px',
