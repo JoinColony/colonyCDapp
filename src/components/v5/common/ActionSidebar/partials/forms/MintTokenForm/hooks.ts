@@ -2,10 +2,13 @@ import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
 import { DeepPartial } from 'utility-types';
 import { useWatch } from 'react-hook-form';
+
 import { ActionTypes } from '~redux';
-import { mapPayload, pipe } from '~utils/actions';
 import { useColonyContext } from '~hooks';
+import { mapPayload, pipe } from '~utils/actions';
 import { getMintTokenDialogPayload } from '~common/Dialogs/MintTokenDialog/helpers';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+
 import { ActionFormBaseProps } from '../../../types';
 import {
   DecisionMethod,
@@ -13,7 +16,6 @@ import {
   useActionFormBaseHook,
 } from '../../../hooks';
 import { MintTokenFormValues, validationSchema } from './consts';
-import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 
 export const useMintToken = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -45,7 +47,7 @@ export const useMintToken = (
         mapPayload((payload: MintTokenFormValues) => {
           const values = {
             mintAmount: payload.amount.amount,
-            motionDomainId: payload.createdIn,
+            motionDomainId: Id.RootDomain.toString(),
             decisionMethod: payload.decisionMethod,
             annotation: payload.description,
           };

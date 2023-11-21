@@ -14,7 +14,6 @@ export const validationSchema = object()
         tokenAddress: string().address().required(),
       })
       .required(),
-    createdIn: string().defined(),
     decisionMethod: string().defined(),
     description: string().max(MAX_ANNOTATION_LENGTH).defined(),
   })

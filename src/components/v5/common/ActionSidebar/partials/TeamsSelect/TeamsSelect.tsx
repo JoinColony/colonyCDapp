@@ -13,7 +13,7 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 
 const displayName = 'v5.common.ActionsContent.partials.TeamsSelect';
 
-const TeamsSelect: FC<TeamSelectProps> = ({ name }) => {
+const TeamsSelect: FC<TeamSelectProps> = ({ name, readonly: readonlyProp }) => {
   const {
     field,
     fieldState: { error },
@@ -44,7 +44,7 @@ const TeamsSelect: FC<TeamSelectProps> = ({ name }) => {
 
   return (
     <div className="sm:relative w-full">
-      {readonly ? (
+      {readonly || readonlyProp ? (
         <TeamBadge
           teamName={
             typeof selectedOption?.label === 'object'
