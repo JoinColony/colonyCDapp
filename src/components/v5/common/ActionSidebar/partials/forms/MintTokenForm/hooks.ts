@@ -30,11 +30,9 @@ export const useMintToken = (
     defaultValues: useMemo<DeepPartial<MintTokenFormValues>>(
       () => ({
         createdIn: Id.RootDomain.toString(),
-        amount: {
-          tokenAddress: colony?.nativeToken.tokenAddress,
-        },
+        amount: {},
       }),
-      [colony?.nativeToken.tokenAddress],
+      [],
     ),
     actionType:
       decisionMethod === DECISION_METHOD.Permissions

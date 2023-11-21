@@ -11,7 +11,6 @@ export const validationSchema = object()
           .required(() => 'required field')
           .transform((value) => toFinite(value))
           .moreThan(0, () => 'Amount must be greater than zero.'),
-        tokenAddress: string().address().required(),
       })
       .required(),
     decisionMethod: string().defined(),
