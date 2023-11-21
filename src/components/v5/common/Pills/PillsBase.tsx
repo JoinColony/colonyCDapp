@@ -26,11 +26,20 @@ const PillsBase: FC<PropsWithChildren<PillsProps>> = ({
       <span className="flex shrink-0">
         <Icon
           name={iconName}
-          appearance={{ size: pillSize === 'medium' ? 'tiny' : 'extraTiny' }}
+          appearance={{
+            size: pillSize === 'medium' ? 'tiny' : 'extraTiny',
+          }}
         />
       </span>
     )}
-    <span className={iconName ? 'ml-2' : ''}>{text || children}</span>
+    <span
+      className={clsx({
+        'ml-2': iconName && pillSize !== 'small',
+        'ml-1': iconName && pillSize === 'small',
+      })}
+    >
+      {text || children}
+    </span>
   </span>
 );
 

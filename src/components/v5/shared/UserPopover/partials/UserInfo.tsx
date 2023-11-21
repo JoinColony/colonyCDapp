@@ -41,7 +41,12 @@ const UserInfo: FC<UserInfoProps> = ({
           'bg-base-white': !isTopContributorType,
         })}
       >
-        <div className="mb-6">
+        <div
+          className={clsx({
+            'mb-[2.4375rem]': userStatus && userStatus !== 'general',
+            'mb-6': !userStatus || userStatus === 'general',
+          })}
+        >
           <UserAvatarDetails
             userName={userName}
             walletAddress={walletAddress}
@@ -67,27 +72,26 @@ const UserInfo: FC<UserInfoProps> = ({
         )}
       </div>
       {aboutDescriptionText && (
-        <>
+        <div
+          className={clsx({
+            'pt-6 px-6': isTopContributorType,
+          })}
+        >
           <TitleLabel
-            className={clsx('mb-2', {
-              'px-6': isTopContributorType,
-            })}
+            className={clsx('mb-2')}
             text={formatText({ id: 'userInfo.about.section' })}
           />
-          <p
-            className={clsx('text-md text-gray-600', {
-              'px-6': isTopContributorType,
-            })}
-          >
+          <p className={clsx('text-md text-gray-600', {})}>
             {aboutDescriptionText}
           </p>
-          <div className="my-6 border-t border-gray-200" />
-        </>
+          <div className={clsx('my-6 border-t border-gray-200', {})} />
+        </div>
       )}
       {domains?.length ? (
         <div
           className={clsx({
-            'px-6 pb-6 pt-2': isTopContributorType,
+            'px-6 pb-6': isTopContributorType,
+            'pt-6': !aboutDescriptionText && isTopContributorType,
           })}
         >
           <TitleLabel
@@ -95,7 +99,7 @@ const UserInfo: FC<UserInfoProps> = ({
               id: 'userInfo.teamBreakdown.section',
             })}
           />
-          <ul className="flex flex-col gap-2">
+          <ul className="flex flex-col gap-2 pt-2">
             {domains.map(
               ({
                 domainId,

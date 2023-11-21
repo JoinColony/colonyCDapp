@@ -59,7 +59,11 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
           </div>
           {!!userStatus && userStatus !== 'general' && isContributorsList && (
             <span className="absolute bottom-[-0.9375rem]">
-              <UserStatus mode={mode} text={formatText({ id: userStatus })} />
+              <UserStatus
+                mode={mode}
+                text={formatText({ id: userStatus })}
+                pillSize="small"
+              />
             </span>
           )}
         </div>
