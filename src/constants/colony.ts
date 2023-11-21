@@ -45,12 +45,10 @@ const MSG = defineMessages({
     id: `${linksPrefix}.github`,
     defaultMessage: 'Github',
   },
-  /* Uncomment when Facebook is added to ExternalLinks enum
   [ExternalLinks.Facebook]: {
     id: `${linksPrefix}.facebook`,
     defaultMessage: 'Facebook',
   },
-  */
   [ExternalLinks.Instagram]: {
     id: `${linksPrefix}.instagram`,
     defaultMessage: 'Instagram',
