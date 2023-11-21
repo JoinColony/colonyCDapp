@@ -1,10 +1,11 @@
 import React, { FC, useState } from 'react';
 
 import useDropzoneWithFileReader from '~hooks/useDropzoneWithFileReader';
-import SuccessContent from './SuccessContent';
+
+import { FileUploadProps } from '../types';
+
 import ErrorContent from './ErrorContent';
 import DefaultContent from './DefaultContent';
-import { FileUploadProps } from '../types';
 
 const displayName = 'v5.common.AvatarUploader.partials.partials.FileUpload';
 
@@ -18,7 +19,7 @@ const FileUpload: FC<FileUploadProps> = ({
   isProgressContentVisible,
   isSimplified,
   fileOptions,
-  useSucessState = true,
+  SuccessComponent,
 }) => {
   const [showDefault, setShowDefault] = useState(false);
   const {
@@ -41,23 +42,10 @@ const FileUpload: FC<FileUploadProps> = ({
   });
 
   const shouldShowDefaultContent =
-    showDefault ||
-    !isAvatarUploaded ||
-    (!useSucessState && !errorCode && !isProgressContentVisible);
+    (showDefault && !errorCode) ||
+    (!isAvatarUploaded && !errorCode && !isProgressContentVisible);
 
-  const shouldShowSuccessContent =
-    !showDefault &&
-    isAvatarUploaded &&
-    !errorCode &&
-    !isProgressContentVisible &&
-    useSucessState;
-
-  const successContent = (
-    <SuccessContent
-      open={() => setShowDefault(true)}
-      handleFileRemove={handleFileRemove}
-    />
-  );
+  const shouldShowSuccessContent = !shouldShowDefaultContent && !errorCode;
 
   const defaultContent = (
     <DefaultContent
@@ -67,6 +55,16 @@ const FileUpload: FC<FileUploadProps> = ({
       isDragAccept={isDragAccept}
     />
   );
+
+  const successContent = SuccessComponent ? (
+    <SuccessComponent
+      open={() => setShowDefault(true)}
+      handleFileRemove={handleFileRemove}
+    />
+  ) : (
+    defaultContent
+  );
+
   const errorContent = (
     <ErrorContent
       errorCode={errorCode}

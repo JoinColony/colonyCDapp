@@ -2,11 +2,7 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 
 import FileUpload from './partials/FileUpload';
-import {
-  useAvatarUploader,
-  UseAvatarUploaderProps,
-  useGetUploaderText,
-} from './hooks';
+import { useAvatarUploader, UseAvatarUploaderProps } from './hooks';
 import { AvatarUploaderProps } from './types';
 import ProgressContent from './partials/ProgressContent';
 import { getPlaceholder } from './utils';
@@ -21,8 +17,8 @@ const AvatarUploader: FC<AvatarUploaderProps & UseAvatarUploaderProps> = ({
   disabled = false,
   fileOptions,
   updateFn,
-  useSucessState = true,
-  showUploaderText = true,
+  SuccessComponent,
+  uploaderText,
 }) => {
   const {
     uploadAvatarError,
@@ -35,24 +31,22 @@ const AvatarUploader: FC<AvatarUploaderProps & UseAvatarUploaderProps> = ({
     file,
   } = useAvatarUploader({ updateFn });
 
-  const uploaderText = useGetUploaderText(fileOptions);
-
   return (
     <div className="flex sm:flex-row flex-col gap-4">
       <div
         className={clsx('flex items-center sm:items-start', {
-          'gap-4': showUploaderText,
+          'gap-4': uploaderText,
         })}
       >
         <div className="flex-shrink-0">
           {getPlaceholder(isLoading, avatarPlaceholder)}
         </div>
-        {showUploaderText && (
+        {uploaderText && (
           <div className="sm:hidden text-gray-600 text-sm">{uploaderText}</div>
         )}
       </div>
       <div className="flex flex-col gap-2 w-full">
-        {showUploaderText && (
+        {uploaderText && (
           <div className="hidden sm:block text-gray-600 text-sm">
             {uploaderText}
           </div>
@@ -68,7 +62,7 @@ const AvatarUploader: FC<AvatarUploaderProps & UseAvatarUploaderProps> = ({
           errorCode={uploadAvatarError}
           isAvatarUploaded={avatar}
           isProgressContentVisible={showPropgress}
-          useSucessState={useSucessState}
+          SuccessComponent={SuccessComponent}
         />
         {showPropgress && (
           <ProgressContent

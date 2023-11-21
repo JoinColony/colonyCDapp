@@ -11,8 +11,6 @@ import {
 } from '~images/optimisation';
 import { convertBytes } from '~utils/convertBytes';
 
-import { FileUploadOptions } from './types';
-
 export interface UseAvatarUploaderProps {
   updateFn: (
     avatar: string | null,
@@ -95,21 +93,4 @@ export const useFormatFormats = (fileFormats: string[]) => {
       return format;
     })
     .join(', ');
-};
-
-export const useGetUploaderText = (fileOptions: FileUploadOptions) => {
-  const { formatMessage } = useIntl();
-
-  const { fileDimension, fileFormat, fileSize } = fileOptions;
-
-  const formattedFormats = useFormatFormats(fileFormat);
-
-  return formatMessage(
-    { id: 'avatar.uploader.info' },
-    {
-      format: formattedFormats,
-      dimension: fileDimension,
-      size: fileSize,
-    },
-  );
 };
