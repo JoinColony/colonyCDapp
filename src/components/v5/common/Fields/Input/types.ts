@@ -1,3 +1,4 @@
+import React from 'react';
 import { UseFormRegister, FieldValues } from 'react-hook-form';
 import { Message } from '~types';
 
@@ -20,6 +21,7 @@ export type InputProps = {
   labelMessage?: Message;
   labelClassName?: string;
   subLabelMessage?: Message;
+  setIsTyping?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type PillProps = {

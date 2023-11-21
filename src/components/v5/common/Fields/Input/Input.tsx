@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
@@ -31,6 +31,7 @@ const Input: FC<InputProps> = ({
   labelMessage,
   labelClassName,
   subLabelMessage,
+  setIsTyping,
 }) => {
   const { formatMessage } = useIntl();
   const { isTyping, isCharLenghtError, currentCharNumber, onChange } = useInput(
@@ -40,6 +41,12 @@ const Input: FC<InputProps> = ({
   const registerField = register && register(name);
 
   const isErrorStatus = isCharLenghtError || isError;
+
+  useEffect(() => {
+    if (setIsTyping) {
+      setIsTyping(isTyping);
+    }
+  }, [isTyping]);
 
   const input = (
     <div className="w-full relative">
