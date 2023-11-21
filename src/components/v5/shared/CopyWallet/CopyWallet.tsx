@@ -30,6 +30,7 @@ const CopyWallet: FC<CopyWalletProps> = ({
         <Button
           mode="completed"
           text={formatText({ id: 'copy.addressCopied' })}
+          className="font-medium"
         />
       ) : (
         <Button
