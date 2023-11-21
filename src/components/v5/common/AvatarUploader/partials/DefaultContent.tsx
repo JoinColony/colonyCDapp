@@ -23,12 +23,15 @@ const DefaultContent: FC<DefaultContentProps> = ({
 
   return (
     <div
-      className={clsx('flex-col items-center flex px-6 rounded border w-full', {
-        'py-4': !isSimpleOnMobile,
-        'py-2': isSimpleOnMobile,
-        'border-gray-200 bg-white-100': !isDragAccept,
-        'border-blue-400 bg-blue-100': isDragAccept,
-      })}
+      className={clsx(
+        'flex-col items-center flex px-6 rounded border w-full hover:border-blue-400 hover:bg-blue-100',
+        {
+          'py-4': !isSimpleOnMobile,
+          'py-2': isSimpleOnMobile,
+          'border-gray-200 bg-white-100': !isDragAccept,
+          'border-blue-400 bg-blue-100': isDragAccept,
+        },
+      )}
     >
       {isSimpleOnMobile ? (
         <button
