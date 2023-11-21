@@ -71,7 +71,7 @@ const Input: FC<InputProps> = ({
   );
 
   return (
-    <>
+    <div>
       {labelMessage && (
         <label
           className={clsx(labelClassName, 'flex flex-col text-1', {
@@ -137,7 +137,7 @@ const Input: FC<InputProps> = ({
           </>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
