@@ -15,7 +15,7 @@ export const getCurrentStatePeriodInMs = (
   switch (motionState) {
     case MotionState.Staking:
     case MotionState.Supported:
-    case MotionState.Objected:
+    case MotionState.Opposed:
       return motionTimeoutPeriods.timeLeftToStake;
     case MotionState.Voting:
       return motionTimeoutPeriods.timeLeftToVote;

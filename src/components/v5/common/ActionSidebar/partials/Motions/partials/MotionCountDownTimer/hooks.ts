@@ -56,7 +56,7 @@ export const useMotionCountdown = (
   const isStakingPhaseState =
     state === MotionState.Staking ||
     state === MotionState.Supported ||
-    state === MotionState.Objected;
+    state === MotionState.Opposed;
 
   /*
    * Set the initial timeout

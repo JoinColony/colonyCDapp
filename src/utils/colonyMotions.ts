@@ -17,7 +17,7 @@ export enum MotionState {
   Staking = 'Staking',
   Voting = 'Voting',
   Reveal = 'Reveal',
-  Objected = 'Objected',
+  Opposed = 'Opposed',
   Motion = 'Motion', // @TODO: This was used by the old MotionTag component and should be removed
   Failed = 'Failed',
   Finalizable = 'Finalizable',
@@ -63,8 +63,9 @@ export const getMotionState = (
     case NetworkMotionState.Closed: {
       return MotionState.Escalated;
     }
-    // @TODO: Confirm the logic for Finalizable and Finalized
-    case NetworkMotionState.Finalizable: {
+    case NetworkMotionState.Finalizable:
+      return MotionState.Finalizable;
+    case NetworkMotionState.Finalized: {
       /*
        * Both sides staked fully, we go to a vote
        *
@@ -80,31 +81,17 @@ export const getMotionState = (
          * If the votes are equal, it fails
          */
         if (BigNumber.from(yayVotes).gt(nayVotes)) {
-          return MotionState.Finalizable;
-        }
-
-        if (
-          BigNumber.from(yayVotes).isZero() &&
-          BigNumber.from(nayVotes).isZero()
-        ) {
-          /*
-           * If the motion is finalizable, and we have voted, and the revealed votes haven't yet been populated to the db,
-           * we shouldn't display a passed/failed tag as we don't yet know the vote outcome.
-           * Instead, we show the previous stage's tag, until the vote outcome is updated in the db.
-           */
-          return MotionState.Reveal;
+          return MotionState.Passed;
         }
 
         return MotionState.Failed;
       }
 
       if (BigNumber.from(yayStakes).eq(requiredStake)) {
-        return MotionState.Finalizable;
+        return MotionState.Passed;
       }
       return MotionState.Failed;
     }
-    case NetworkMotionState.Finalized:
-      return MotionState.Passed;
     case NetworkMotionState.Failed:
       return MotionState.FailedNotFinalizable;
     default:

@@ -24,7 +24,7 @@ const getCurrentStatePeriodInMs = (
   switch (motionState) {
     case MotionState.Staking:
     case MotionState.Supported:
-    case MotionState.Objected:
+    case MotionState.Opposed:
       return motionTimeoutPeriods.timeLeftToStake;
     case MotionState.Voting:
       return motionTimeoutPeriods.timeLeftToVote;
@@ -86,7 +86,7 @@ export const useMotionCountdown = (
   const isStakingPhaseState =
     state === MotionState.Staking ||
     state === MotionState.Supported ||
-    state === MotionState.Objected;
+    state === MotionState.Opposed;
 
   /*
    * Set the initial timeout
