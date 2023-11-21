@@ -84,10 +84,10 @@
         },
         "Runtime": "nodejs14.x",
         "Layers": [
+          "arn:aws:lambda:eu-west-2:133256977650:layer:AWS-Parameters-and-Secrets-Lambda-Extension:4",
           {
             "Ref": "functioncolonycdappSSMAccessArn"
-          },
-          "arn:aws:lambda:eu-west-2:133256977650:layer:AWS-Parameters-and-Secrets-Lambda-Extension:4"
+          }
         ],
         "Timeout": 25
       }
@@ -98,12 +98,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "colonycdappLambdaRole7ac3816d",
+            "colonycdappLambdaRole253f4eca",
             {
               "Fn::Join": [
                 "",
                 [
-                  "colonycdappLambdaRole7ac3816d",
+                  "colonycdappLambdaRole253f4eca",
                   "-",
                   {
                     "Ref": "env"
