@@ -11,7 +11,10 @@ import Button from '~v5/shared/Button';
 import AvatarUploader from '~v5/common/AvatarUploader';
 import Avatar from '~v5/shared/Avatar';
 import { formatText } from '~utils/intl';
-import { UseAvatarUploaderProps } from '~v5/common/AvatarUploader/hooks';
+import {
+  UseAvatarUploaderProps,
+  useGetUploaderText,
+} from '~v5/common/AvatarUploader/hooks';
 import { useAppContext, useMobile } from '~hooks';
 import { UserFragment, useUpdateUserProfileMutation } from '~gql';
 
@@ -19,7 +22,6 @@ import styles from '../UserProfilePage.module.css';
 import { MAX_BIO_CHARS, MAX_DISPLAYNAME_CHARS } from '../consts';
 
 import LeftColumn from './LeftColumn';
-import { useGetUploaderText } from './hooks';
 import { profileFileOptions } from './consts';
 import SuccessContent from './SuccessContent';
 
