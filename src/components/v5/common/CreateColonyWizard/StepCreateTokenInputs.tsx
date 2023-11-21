@@ -8,6 +8,7 @@ import Avatar from '~v5/shared/Avatar';
 import AvatarUploader from '../AvatarUploader';
 import { UseAvatarUploaderProps } from '../AvatarUploader/hooks';
 
+import { getInputError } from './shared';
 import { MAX_TOKEN_NAME, MAX_TOKEN_SYMBOL } from './validation';
 
 const displayName = 'common.CreateColonyWizard.StepCreateTokenInputs';
@@ -66,18 +67,10 @@ const StepCreateTokenInputs = ({
   } = useFormContext();
   const { formatMessage } = useIntl();
 
-  const tokenNameError = errors.tokenName?.message as string | undefined;
-  const showTokenNameError = Boolean(
-    errors.tokenName?.type === 'required' && submitCount === 0
-      ? false
-      : tokenNameError,
-  );
-  const tokenSymbolError = errors.tokenSymbol?.message as string | undefined;
-  const showTokenSymbolError = Boolean(
-    errors.tokenSymbol?.type === 'required' && submitCount === 0
-      ? false
-      : tokenSymbolError,
-  );
+  const { error: tokenNameError, showError: showTokenNameError } =
+    getInputError(errors, 'tokenName', submitCount);
+  const { error: tokenSymbolError, showError: showTokenSymbolError } =
+    getInputError(errors, 'tokenSymbol', submitCount);
 
   const tokenAvatarUrl = watch('tokenAvatar');
 

@@ -7,6 +7,7 @@ import { getNetworkByChainId } from '~utils/web3';
 import Icon from '~shared/Icon';
 
 import TokenSelector from './TokenSelector';
+import { getInputError } from './shared';
 
 const displayName = 'common.CreateColonyWizard.TokenSelector';
 
@@ -47,12 +48,9 @@ const TokenSelectorInput = ({
 
   const token: Token | null = watch('token');
 
-  const tokenAddressError = errors.tokenAddress?.message as string | undefined;
-  const showTokenAddressError = Boolean(
-    errors.tokenAddress?.type === 'required' && submitCount === 0
-      ? false
-      : tokenAddressError,
-  );
+  const { error: tokenAddressError, showError: showTokenAddressError } =
+    getInputError(errors, 'tokenAddress', submitCount);
+
   const successMessage = formatMessage(MSG.existingTokenSuccess, {
     name: token?.name,
     symbol: token?.symbol,

@@ -6,6 +6,8 @@ import Input from '~v5/common/Fields/Input';
 import { MAX_COLONY_DISPLAY_NAME } from '~constants';
 import { formatText } from '~utils/intl';
 
+import { getInputError } from './shared';
+
 const displayName = 'common.CreateColonyWizard.StepColonyNameInputs';
 
 interface StepColonyNameInputsProps {
@@ -44,19 +46,10 @@ const StepColonyNameInputs = ({
 
   const colonyNameSuccessMessage = formatText(MSG.urlSuccess);
 
-  const displayNameError = errors.displayName?.message as string | undefined;
-  const showDisplayNameError = Boolean(
-    errors.displayName?.type === 'required' && submitCount === 0
-      ? false
-      : displayNameError,
-  );
-
-  const colonyNameError = errors.colonyName?.message as string | undefined;
-  const showColonyNameError = Boolean(
-    errors.colonyName?.type === 'required' && submitCount === 0
-      ? false
-      : colonyNameError,
-  );
+  const { error: displayNameError, showError: showDisplayNameError } =
+    getInputError(errors, 'displayName', submitCount);
+  const { error: colonyNameError, showError: showColonyNameError } =
+    getInputError(errors, 'colonyName', submitCount);
 
   return (
     <>
