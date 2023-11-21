@@ -19,12 +19,11 @@ const displayName = `common.CreateColonyWizard.StepCreateToken`;
 export const MSG = defineMessages({
   heading: {
     id: `${displayName}.heading`,
-    defaultMessage: 'Your Colony’s native token',
+    defaultMessage: `Your Colony's native token`,
   },
   description: {
     id: `${displayName}.description`,
-    defaultMessage:
-      'Your native token is your organization’s unit of ownership, and powers key features within your Colony.{br}{br}Tokens are initially locked and not transferable by recipients. You must unlock your token if you wish it to become tradable.',
+    defaultMessage: `Your native token is your organization's unit of ownership, and powers key features within your Colony.{br}{br}Tokens are initially locked and not transferable by recipients. You must unlock your token if you wish it to become tradable.`,
   },
 });
 
