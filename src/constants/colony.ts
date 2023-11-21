@@ -1,5 +1,6 @@
 import {
   DiscordLogo,
+  FacebookLogo,
   GithubLogo,
   GlobeHemisphereEast,
   IconProps,
@@ -97,13 +98,11 @@ export const COLONY_LINK_CONFIG: Record<ExternalLinks, ColonyLink> = {
     LinkIcon: GithubLogo,
     label: formatText(MSG[ExternalLinks.Github]),
   },
-  /* Uncomment when Facebook is added to ExternalLinks enum
   [ExternalLinks.Facebook]: {
     id: ExternalLinks.Facebook,
     LinkIcon: FacebookLogo,
     label: formatText(MSG[ExternalLinks.Facebook]),
   },
-  */
   [ExternalLinks.Instagram]: {
     id: ExternalLinks.Instagram,
     LinkIcon: InstagramLogo,
