@@ -11,7 +11,7 @@ const CalamityBanner: FC<CalamityBannerProps> = ({ items }) => {
   const { showBanner, setShowBanner, activeElement, handleBannerChange } =
     useCalamityBanner(items);
 
-  if (!showBanner && !items.length) {
+  if (!showBanner || !items.length) {
     return null;
   }
 
@@ -23,9 +23,8 @@ const CalamityBanner: FC<CalamityBannerProps> = ({ items }) => {
           key={key}
           onCloseClick={() => setShowBanner(false)}
           className={clsx({
-            'block sm:opacity-100 sm:visible': activeElement === index,
-            'hidden sm:block sm:opacity-0 sm:invisible':
-              activeElement !== index,
+            block: activeElement === index,
+            hidden: activeElement !== index,
           })}
           onCaretClick={items.length > 1 ? handleBannerChange : undefined}
         />

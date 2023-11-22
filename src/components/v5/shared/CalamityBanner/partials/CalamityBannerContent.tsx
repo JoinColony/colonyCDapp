@@ -38,7 +38,7 @@ const CalamityBannerContent: FC<CalamityBannerContentProps> = ({
         },
       )}
     >
-      <div className="max-w-[90rem] mx-auto flex flex-col md:flex-row items-center justify-normal md:justify-between">
+      <div className="flex flex-col md:flex-row items-center justify-normal md:justify-between">
         <div
           className={clsx(
             'flex justify-between w-full md:w-auto md:justify-normal items-start',
