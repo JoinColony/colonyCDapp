@@ -13,7 +13,7 @@ const VerifiedPage: FC = () => {
   useSetPageHeadingTitle(formatText({ id: 'verifiedPage.title' }));
 
   return (
-    <div className="w-full mx-0">
+    <div className="w-full">
       <VerifiedTable list={verifiedMembers} />
     </div>
   );
