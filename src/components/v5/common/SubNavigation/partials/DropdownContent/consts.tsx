@@ -147,7 +147,7 @@ export const MANAGE_DROPDOWN_ITEMS = [
     description: MSG.manageTeamsDescription,
   },
   {
-    action: ACTION.AWARD_REPUTATION,
+    action: ACTION.MANAGE_REPUTATION,
     title: MSG.manageReputation,
     description: MSG.manageReputationDescription,
   },
