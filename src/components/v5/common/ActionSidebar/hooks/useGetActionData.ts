@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 import moveDecimal from 'move-decimal-point';
-import { BigNumber } from 'ethers';
 
 import { ACTION } from '~constants/actions';
 import { ColonyActionType } from '~gql';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { useNetworkInverseFee } from '~hooks';
+import { getAmountLessFee } from '~utils/networkFee';
 
 import { ACTION_TYPE_FIELD_NAME } from '../consts';
 import { useGetColonyAction } from './useGetColonyAction';
@@ -54,13 +54,8 @@ export const useGetActionData = (transactionId: string | undefined) => {
         };
       case ColonyActionType.Payment:
       case ColonyActionType.PaymentMotion: {
-        const feePercentage = networkInverseFee
-          ? BigNumber.from(100).div(networkInverseFee)
-          : null;
-        const amountLessFee = feePercentage
-          ? BigNumber.from(amount)
-              .mul(BigNumber.from(100).sub(feePercentage))
-              .div(100)
+        const amountLessFee = networkInverseFee
+          ? getAmountLessFee(amount ?? 0, networkInverseFee)
           : amount;
 
         return {
