@@ -25,15 +25,17 @@ export const useVerifiedTableColumns = (): ColumnDef<
       columnHelper.display({
         id: 'member',
         header: () => formatText({ id: 'verifiedPage.table.member' }),
-        cell: ({ row }) => (
-          <div className="flex items-center">
-            <Checkbox
-              isChecked={row.getIsSelected()}
-              onChange={row.getToggleSelectedHandler()}
-            />
-            <MemberAvatar member={row.original} />
-          </div>
-        ),
+        cell: ({ row }) => {
+          return (
+            <div className="flex items-center">
+              <Checkbox
+                isChecked={row.getIsSelected()}
+                onChange={row.getToggleSelectedHandler()}
+              />
+              <MemberAvatar member={row.original} />
+            </div>
+          );
+        },
       }),
       columnHelper.display({
         id: 'status',
@@ -51,16 +53,24 @@ export const useVerifiedTableColumns = (): ColumnDef<
               type?.toLowerCase() || undefined,
             );
 
-            return <UserStatusComponent userStatus={userStatus} />;
+            if (userStatus === ContributorTypeFilter.General) {
+              return null;
+            }
+
+            return (
+              <UserStatusComponent userStatus={userStatus} pillSize="medium" />
+            );
           } catch {
             return null;
           }
         },
+        size: 130,
       }),
       columnHelper.accessor('colonyReputationPercentage', {
+        id: 'reputation',
         header: () => formatText({ id: 'verifiedPage.table.reputation' }),
         cell: ({ row }) => (
-          <div className="hidden sm:flex items-center">
+          <div className="hidden sm:flex items-center justify-end w-full">
             <Icon name="star" appearance={{ size: 'small' }} />
             <span className="ml-1 text-sm text-gray-600">
               {Number.isInteger(row.original.colonyReputationPercentage)
@@ -70,22 +80,23 @@ export const useVerifiedTableColumns = (): ColumnDef<
             </span>
           </div>
         ),
+        size: 120,
       }),
       columnHelper.display({
-        id: 'reputation',
+        id: 'permission',
         header: () => formatText({ id: 'verifiedPage.table.permission' }),
         cell: ({ row }) => (
           <PermissionRow contributorAddress={row.original.contributorAddress} />
         ),
+        size: 110,
       }),
       columnHelper.display({
         id: 'remove',
-        size: 60,
         cell: () => (
           <div className="flex">
             <button
               type="button"
-              className="ml-auto flex items-center hover:text-negative-400 transition-colors duration-normal"
+              className="ml-auto flex items-center text-gray-600 hover:text-negative-400 transition-colors duration-normal"
               aria-label={formatText({ id: 'ariaLabel.deleteMember' })}
               onClick={onDeleteClick}
             >
@@ -93,6 +104,7 @@ export const useVerifiedTableColumns = (): ColumnDef<
             </button>
           </div>
         ),
+        size: 60,
       }),
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps

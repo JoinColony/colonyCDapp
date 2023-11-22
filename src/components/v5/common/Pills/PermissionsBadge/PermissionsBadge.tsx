@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { FC } from 'react';
 
 import PillsBase from '../PillsBase';
@@ -5,9 +6,14 @@ import { PillsProps } from '../types';
 
 const displayName = 'v5.common.Pills.PermissionsBadge';
 
-const PermissionsBadge: FC<PillsProps> = ({ text, iconName, ...rest }) => (
+const PermissionsBadge: FC<PillsProps> = ({
+  text,
+  iconName,
+  className,
+  ...rest
+}) => (
   <PillsBase
-    className="bg-base-white border border-gray-100"
+    className={clsx('bg-base-white border border-gray-100', className)}
     iconName={iconName}
     {...rest}
   >

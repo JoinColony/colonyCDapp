@@ -6,6 +6,7 @@ import {
   getSortedRowModel,
   SortingState,
 } from '@tanstack/react-table';
+import clsx from 'clsx';
 import Filter from '~v5/common/Filter';
 import Button from '~v5/shared/Button';
 import { TableProps } from './types';
@@ -27,14 +28,19 @@ const VerifiedTable: FC<TableProps> = ({ list }) => {
   const columns = useVerifiedTableColumns();
 
   const listLength = list.length;
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([
+    {
+      id: 'reputation',
+      desc: true,
+    },
+  ]);
   const [rowSelection, setRowSelection] = useState({});
 
   return (
     <TableWithActionsHeader<ColonyContributorFragment>
       title={formatText({ id: 'verifiedPage.membersTitle' })}
       additionalHeaderContent={
-        <span className="text-md text-blue-400">
+        <span className="text-sm text-blue-400">
           {listLength} {formatMessage({ id: 'verifiedPage.members' })}
         </span>
       }
@@ -76,6 +82,13 @@ const VerifiedTable: FC<TableProps> = ({ list }) => {
         onRowSelectionChange: setRowSelection,
         getSortedRowModel: getSortedRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
+        enableSortingRemoval: false,
+        enableSorting: true,
+        sortDescFirst: false,
+        sizeUnit: 'px',
+        renderCellWrapper: (classNames, content) => (
+          <div className={clsx(classNames, 'py-3.5')}>{content}</div>
+        ),
       }}
     >
       <>

@@ -135,7 +135,7 @@ const Table = <T,>({
                     <th
                       key={header.id}
                       className={clsx(
-                        'text-left text-sm text-gray-600 bg-gray-50 font-normal px-[1.1rem] empty:p-0 py-[0.7rem] border-b border-b-gray-200',
+                        'text-left text-sm text-gray-600 bg-gray-50 font-normal px-[1.125rem] empty:p-0 py-[0.7rem] border-b border-b-gray-200',
                         {
                           'cursor-pointer': header.column.getCanSort(),
                         },
@@ -160,7 +160,7 @@ const Table = <T,>({
                           name="arrow-down"
                           appearance={{ size: 'extraTiny' }}
                           className={clsx(
-                            'ml-1.5 mb-0.5 transition-[transform,opacity] align-middle',
+                            'ml-1 mb-0.5 transition-[transform,opacity] align-middle',
                             {
                               'rotate-180':
                                 header.column.getIsSorted() === 'asc',
@@ -218,7 +218,7 @@ const Table = <T,>({
                 {footerGroup.headers.map((column) => (
                   <td
                     key={column.id}
-                    className="text-md text-gray-500 p-[1.1rem] sm:border-t border-gray-200"
+                    className="text-md text-gray-500 px-[1.125rem] sm:border-t border-gray-200"
                   >
                     {flexRender(
                       column.column.columnDef.footer,
