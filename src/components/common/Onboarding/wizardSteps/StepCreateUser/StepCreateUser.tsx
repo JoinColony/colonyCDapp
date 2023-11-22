@@ -48,7 +48,9 @@ const StepCreateUser = ({
       }}
       mode="onChange"
       actionType={ActionTypes.USERNAME_CREATE}
-      transform={withMeta({ updateUser })}
+      transform={withMeta({
+        updateUser,
+      })}
       onSuccess={nextStep}
     >
       {({ formState: { isSubmitting } }) => (

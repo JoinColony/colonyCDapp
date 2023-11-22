@@ -129,4 +129,5 @@ export type MetaWithSetter<M> = {
         shouldBackgroundUpdate?: boolean | undefined,
       ) => Promise<void>)
     | undefined;
+  colonyName?: string;
 } & M;

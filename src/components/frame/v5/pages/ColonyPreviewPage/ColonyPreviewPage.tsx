@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
@@ -108,17 +108,36 @@ const ColonyPreviewPage = () => {
   const colonyAddress = colonyData?.getColonyByName?.items[0]?.colonyAddress;
   const colonyMetadata = colonyData?.getColonyByName?.items[0]?.metadata;
 
-  const validateAndRedirect = useCallback(async () => {
-    if (!colonyAddress || !inviteCode || !user?.walletAddress) return;
-    const valid = await validate({
-      variables: {
-        input: { colonyAddress, inviteCode, userAddress: user.walletAddress },
-      },
-    });
-    if (valid.data?.validateUserInvite) {
-      navigate(`/colony/${colonyName}`);
+  const validateInviteCode = useCallback(
+    async (redirectToUserRegistration = false) => {
+      if (!colonyAddress || !inviteCode || !wallet) return;
+      const valid = await validate({
+        variables: {
+          input: { colonyAddress, inviteCode, userAddress: wallet.address },
+        },
+      });
+
+      if (valid.data?.validateUserInvite) {
+        navigate(
+          redirectToUserRegistration
+            ? CREATE_PROFILE_ROUTE
+            : `/colony/${colonyName}`,
+          {
+            state: {
+              colonyName: redirectToUserRegistration ? colonyName : undefined,
+            },
+          },
+        );
+      }
+    },
+    [colonyName, colonyAddress, wallet, validate, navigate, inviteCode],
+  );
+
+  useEffect(() => {
+    if (wallet && !user && !userLoading) {
+      validateInviteCode(true);
     }
-  }, [colonyName, colonyAddress, user, validate, navigate, inviteCode]);
+  }, [wallet, user, validateInviteCode, userLoading]);
 
   if (
     userLoading ||
@@ -128,10 +147,6 @@ const ColonyPreviewPage = () => {
     colonyLoading
   ) {
     return <Spinner loading loadingText={MSG.loadingMessage} />;
-  }
-
-  if (wallet && !user) {
-    return <Navigate to={CREATE_PROFILE_ROUTE} />;
   }
 
   const isMember = !!whitelistData?.getColonyByName?.items[0]?.whitelist.some(
@@ -207,7 +222,7 @@ const ColonyPreviewPage = () => {
               className="w-full md:w-auto"
               mode="quinary"
               text={MSG.joinColonyButton}
-              onClick={validateAndRedirect}
+              onClick={() => validateAndRedirect()}
               size="small"
             />
           ) : null
