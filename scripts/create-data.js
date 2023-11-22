@@ -43,6 +43,7 @@ const {
 } = require('./tempColonyData');
 
 
+const DEFAULT_TIMEOUT = 100;
 
 const API_KEY = 'da2-fakeApiId123456';
 const GRAPHQL_URI =
@@ -199,7 +200,7 @@ const getColonyContributors = /* GraphQL */ `
 /*
  * Helper methods
  */
-const delay = (ms = 300, verbose = false) =>
+const delay = (ms = DEFAULT_TIMEOUT, verbose = false) =>
   new Promise((resolve) =>
     setTimeout(() => {
       if (verbose) {
