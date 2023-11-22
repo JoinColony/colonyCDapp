@@ -22,30 +22,27 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   const { actionText } = action || {};
 
   return (
-    <div
-      className={clsx(
-        className,
-        'border rounded-lg flex justify-between min-h-[2.75rem] flex-col',
-        `gap-2 ${
-          isAlt
-            ? 'rounded min-h-[3.75rem] p-4'
-            : 'rounded-lg min-h-[2.75rem] py-3 px-6'
-        }`,
-        {
-          'bg-success-100 border-success-200': status === 'success',
-          'bg-warning-100 border-warning-200': status === 'warning',
-          'bg-negative-100 border-negative-200': status === 'error',
-          'bg-gray-50 border-gray-200 text-gray-600 text-sm': status === 'info',
-          'text-success-400': isAlt && status === 'success',
-          'text-warning-400': isAlt && status === 'warning',
-          'text-negative-400': isAlt && status === 'error',
-        },
-      )}
-    >
+    <div className="@container">
       <div
-        className={clsx('flex flex-col', {
-          'flex-row': !children || isAlt,
-        })}
+        className={clsx(
+          className,
+          'border rounded-lg flex justify-between min-h-[2.75rem] flex-col items-start @[600px]:flex-row @[600px]:items-center',
+          `gap-2 ${
+            isAlt
+              ? 'rounded min-h-[3.75rem] p-4'
+              : 'rounded-lg min-h-[2.75rem] py-3 px-6'
+          }`,
+          {
+            'bg-success-100 border-success-200': status === 'success',
+            'bg-warning-100 border-warning-200': status === 'warning',
+            'bg-negative-100 border-negative-200': status === 'error',
+            'bg-gray-50 border-gray-200 text-gray-600 text-sm':
+              status === 'info',
+            'text-success-400': isAlt && status === 'success',
+            'text-warning-400': isAlt && status === 'warning',
+            'text-negative-400': isAlt && status === 'error',
+          },
+        )}
       >
         <div className="flex md:items-center">
           <StatusText
@@ -57,57 +54,47 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
             {title}
           </StatusText>
         </div>
-        {children && (
+        {action && (
           <div
-            className={clsx('text-sm max-w-[50rem] mt-1.5', {
-              'text-negative-400': status === 'error',
-              'text-warning-400': status === 'warning',
+            className={clsx('text-4', {
+              'md:self-center': textAlign === 'center',
+              'md:self-start': textAlign === 'left',
+              'ml-8 md:ml-2': !isAlt,
             })}
           >
-            {children}
+            {(() => {
+              switch (action?.type) {
+                case 'copy': {
+                  return <CopyUrl actionText={action.copyContent} />;
+                }
+                case 'redirect': {
+                  return (
+                    <Link
+                      to={action.href}
+                      className="underline md:hover:no-underline"
+                    >
+                      {actionText}
+                    </Link>
+                  );
+                }
+                case 'call-to-action': {
+                  return (
+                    <button
+                      type="button"
+                      className="underline md:hover:no-underline"
+                      onClick={action.onClick}
+                    >
+                      {actionText}
+                    </button>
+                  );
+                }
+                default:
+                  return null;
+              }
+            })()}
           </div>
         )}
       </div>
-      {action && (
-        <div
-          className={clsx('mt-2 md:mt-0 text-4', {
-            'md:self-center': textAlign === 'center',
-            'md:self-start': textAlign === 'left',
-            'ml-6 md:ml-2': !isAlt,
-          })}
-        >
-          {(() => {
-            switch (action?.type) {
-              case 'copy': {
-                return <CopyUrl actionText={action.copyContent} />;
-              }
-              case 'redirect': {
-                return (
-                  <Link
-                    to={action.href}
-                    className="underline md:hover:no-underline"
-                  >
-                    {actionText}
-                  </Link>
-                );
-              }
-              case 'call-to-action': {
-                return (
-                  <button
-                    type="button"
-                    className="underline md:hover:no-underline"
-                    onClick={action.onClick}
-                  >
-                    {actionText}
-                  </button>
-                );
-              }
-              default:
-                return null;
-            }
-          })()}
-        </div>
-      )}
     </div>
   );
 };
