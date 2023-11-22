@@ -14,7 +14,7 @@ import { ACTION } from '~constants/actions';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import CopyableAddress from '~v5/shared/CopyableAddress';
 import Icon from '~shared/Icon';
-import { COLONY_LINK_CONFIG } from '~constants/colony';
+import { COLONY_LINK_CONFIG } from '~constants/colonyLinks';
 import Tooltip from '~shared/Extensions/Tooltip';
 
 import styles from './ColonyDetailsPage.module.css';
