@@ -1,12 +1,13 @@
 import React, { FC } from 'react';
 import { useTokensModalContext } from '~context';
 import { formatText } from '~utils/intl';
+import { TOKENS_MODAL_TYPES } from '~v5/common/TokensModal/consts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.StakingStep.partials.NotEnoughTokensInfo';
 
 const NotEnoughTokensInfo: FC = () => {
-  const { toggleOnTokensModal } = useTokensModalContext();
+  const { toggleOnTokensModal, setTokensModalType } = useTokensModalContext();
 
   return (
     <>
@@ -18,7 +19,10 @@ const NotEnoughTokensInfo: FC = () => {
       <button
         type="button"
         className="text-4 underline transition-all md:hover:opacity-80"
-        onClick={() => toggleOnTokensModal()}
+        onClick={() => {
+          toggleOnTokensModal();
+          setTokensModalType(TOKENS_MODAL_TYPES.activate);
+        }}
       >
         {formatText({
           id: 'motion.staking.activateTokens',
