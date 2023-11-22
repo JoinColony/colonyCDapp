@@ -103,8 +103,10 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
 
   return (
     <div
-      className={clsx('flex w-full flex-grow overflow-hidden', {
-        'flex-col-reverse md:flex-row': isMotion,
+      className={clsx('flex w-full flex-grow', {
+        'flex-col-reverse overflow-auto sm:overflow-hidden md:flex-row':
+          isMotion,
+        'overflow-hidden': !isMotion,
       })}
     >
       <div className="flex-grow px-6 py-8">
