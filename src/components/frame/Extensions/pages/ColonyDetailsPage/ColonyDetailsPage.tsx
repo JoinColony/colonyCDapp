@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 
 import { useColonyContext, useMobile } from '~hooks';
 import Avatar from '~v5/shared/Avatar';
@@ -15,20 +15,42 @@ import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import CopyableAddress from '~v5/shared/CopyableAddress';
 import Icon from '~shared/Icon';
 import { COLONY_LINK_CONFIG } from '~constants/colony';
-import { truncateText } from '~utils/string';
 import Tooltip from '~shared/Extensions/Tooltip';
 
 import styles from './ColonyDetailsPage.module.css';
+import { multiLineTextEllipsis } from '~utils/strings';
 
 const displayName = 'frame.Extensions.pages.ColonyDetailsPage';
 
 const MAX_DESCRIPTION_LENGTH = 250;
 
 const MSG = defineMessages({
+  title: {
+    id: `${displayName}.title`,
+    defaultMessage: 'Colony Details',
+  },
   lockedToken: {
-    id: `${displayName}.locked-token`,
+    id: `${displayName}.lockedToken`,
     defaultMessage:
       'This token is locked. Colony native tokens are locked and non-transferrable by default to avoid unwanted project token transfer outside of the colony.',
+  },
+  descriptionPlaceholder: {
+    id: `${displayName}.desciptionPlaceholder`,
+    defaultMessage:
+      'Enter a short description about your Colony’s main purpose.',
+  },
+  objectiveTitle: {
+    id: `${displayName}.objectiveTitle`,
+    defaultMessage: 'Current Colony Objective',
+  },
+  objectiveDescription: {
+    id: `${displayName}.objectiveDescription`,
+    defaultMessage:
+      'Colony objectives area the main goal or mission of the Colony all member’s are contributing towards. The objective appears on the main Dashboard of the Colony and progress of the goal is visible. {br} {br} Each update requires a motion progress or the correct Colony wide permissions.',
+  },
+  objectiveBoxTitle: {
+    id: `${displayName}.objectiveBoxTitle`,
+    defaultMessage: 'Current Colony objective:',
   },
 });
 
@@ -37,7 +59,7 @@ const ColonyDetailsPage: FC = () => {
   const isMobile = useMobile();
   const { colony } = useColonyContext();
 
-  useSetPageHeadingTitle(formatText({ id: 'colonyDetailsPage.title' }));
+  useSetPageHeadingTitle(formatMessage(MSG.title));
 
   const { name, metadata, colonyAddress, nativeToken, status } = colony || {};
   const { avatar, thumbnail, description, externalLinks, objective } =
@@ -49,7 +71,7 @@ const ColonyDetailsPage: FC = () => {
   } = useActionSidebarContext();
 
   return (
-    <div>
+    <div className="pb-6">
       <div className={clsx('p-6 flex flex-col items-start', styles.box)}>
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <Avatar size="m" avatar={avatar || thumbnail || ''} />
@@ -86,13 +108,17 @@ const ColonyDetailsPage: FC = () => {
           })}
         >
           {description
-            ? truncateText(description, MAX_DESCRIPTION_LENGTH)
-            : formatMessage({ id: 'colonyDetailsPage.descriptionPlaceholder' })}
+            ? multiLineTextEllipsis(description, MAX_DESCRIPTION_LENGTH)
+            : formatMessage(MSG.descriptionPlaceholder)}
         </p>
-        {externalLinks?.length && (
+        {externalLinks && externalLinks.length > 0 ? (
           <div className="mb-6 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4">
             {externalLinks.map(({ name: linkName, link }) => {
               const { label, LinkIcon } = COLONY_LINK_CONFIG[linkName];
+
+              if (!label || !LinkIcon) {
+                return null;
+              }
 
               return (
                 <ExternalLink
@@ -106,7 +132,7 @@ const ColonyDetailsPage: FC = () => {
               );
             })}
           </div>
-        )}
+        ) : null}
         <Button
           mode="primarySolid"
           text={{ id: 'button.editColonyDetails' }}
@@ -126,13 +152,10 @@ const ColonyDetailsPage: FC = () => {
       >
         <div className="flex-1">
           <h3 className="heading-4 mb-4">
-            <FormattedMessage id="colonyDetailsPage.objectiveTitle" />
+            {formatMessage(MSG.objectiveTitle)}
           </h3>
           <p className="text-md text-gray-600 sm:mb-6">
-            <FormattedMessage
-              id="colonyDetailsPage.objectiveDescription"
-              values={{ br: <br /> }}
-            />
+            {formatMessage(MSG.objectiveDescription, { br: <br /> })}
           </p>
           {!isMobile && (
             <Button
@@ -149,7 +172,7 @@ const ColonyDetailsPage: FC = () => {
         </div>
         <div className="w-full sm:max-w-[20.375rem]">
           <h5 className="text-3 mb-2">
-            <FormattedMessage id="colonyDetailsPage.objectiveBoxTitle" />
+            {formatMessage(MSG.objectiveBoxTitle)}
           </h5>
           <ObjectiveBox objective={objective} />
         </div>
