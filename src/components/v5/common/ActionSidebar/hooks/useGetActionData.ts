@@ -1,13 +1,18 @@
 import { useMemo } from 'react';
 import moveDecimal from 'move-decimal-point';
+import { BigNumber } from 'ethers';
+
 import { ACTION } from '~constants/actions';
 import { ColonyActionType } from '~gql';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { useNetworkInverseFee } from '~hooks';
+
 import { ACTION_TYPE_FIELD_NAME } from '../consts';
 import { useGetColonyAction } from './useGetColonyAction';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 export const useGetActionData = (transactionId: string | undefined) => {
   const { action, loadingAction } = useGetColonyAction(transactionId);
+  const { networkInverseFee } = useNetworkInverseFee();
 
   const defaultValues = useMemo(() => {
     if (!action) {
@@ -48,12 +53,21 @@ export const useGetActionData = (transactionId: string | undefined) => {
           ...repeatableFields,
         };
       case ColonyActionType.Payment:
-      case ColonyActionType.PaymentMotion:
+      case ColonyActionType.PaymentMotion: {
+        const feePercentage = networkInverseFee
+          ? BigNumber.from(100).div(networkInverseFee)
+          : null;
+        const amountLessFee = feePercentage
+          ? BigNumber.from(amount)
+              .mul(BigNumber.from(100).sub(feePercentage))
+              .div(100)
+          : amount;
+
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
           amount: {
             amount: moveDecimal(
-              amount,
+              amountLessFee,
               -getTokenDecimalsWithFallback(token?.decimals),
             ),
             tokenAddress: token?.tokenAddress,
@@ -62,6 +76,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
           recipient: recipientAddress,
           ...repeatableFields,
         };
+      }
       case ColonyActionType.MultiplePaymentMotion: {
         const [firstPayment, ...additionalPayments] = payments || [];
 
@@ -162,7 +177,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
       default:
         return undefined;
     }
-  }, [action]);
+  }, [action, networkInverseFee]);
 
   return {
     defaultValues,
