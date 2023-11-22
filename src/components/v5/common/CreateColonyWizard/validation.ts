@@ -1,12 +1,19 @@
 import { string, object } from 'yup';
 
-import { ADDRESS_ZERO, DEFAULT_NETWORK_TOKEN } from '~constants';
+import {
+  ADDRESS_ZERO,
+  DEFAULT_NETWORK_TOKEN,
+  MAX_COLONY_DISPLAY_NAME,
+} from '~constants';
 import { CheckColonyNameExistsDocument } from '~gql';
 import { intl } from '~utils/intl';
 import { createYupTestFromQuery } from '~utils/yup/tests';
 import { Token } from '~types';
 
 import { FormValues } from './CreateColonyWizard';
+
+export const MAX_TOKEN_NAME = 30;
+export const MAX_TOKEN_SYMBOL = 5;
 
 /*
  * The colony name regex is composed of
@@ -43,9 +50,11 @@ const { formatMessage } = intl({
 export const colonyNameValidationSchema = object({
   displayName: string()
     .trim()
+    .max(MAX_COLONY_DISPLAY_NAME, '')
     .required(formatMessage({ id: 'error.colonyNameRequired' })),
   colonyName: string()
     .required(formatMessage({ id: 'error.colonyURLRequired' }))
+    .max(MAX_COLONY_DISPLAY_NAME, '')
     .test('isValidName', formatMessage({ id: 'error.colonyURL' }), isValidName)
     .test('isNameTaken', formatMessage({ id: 'error.urlTaken' }), isNameTaken),
 }).defined();
@@ -89,6 +98,7 @@ export const createTokenValidationSchema = object({
     is: 'create',
     then: (schema) =>
       schema
+        .max(MAX_TOKEN_SYMBOL, '')
         .test(
           'isValidTokenSymbol',
           formatMessage({ id: 'error.tokenSymbol' }),
@@ -102,7 +112,9 @@ export const createTokenValidationSchema = object({
     .when('tokenChoiceVerify', {
       is: 'create',
       then: (schema) =>
-        schema.required(formatMessage({ id: 'error.tokenNameRequired' })),
+        schema
+          .max(MAX_TOKEN_NAME, '')
+          .required(formatMessage({ id: 'error.tokenNameRequired' })),
       otherwise: (schema) => schema.notRequired(),
     }),
 }).defined();

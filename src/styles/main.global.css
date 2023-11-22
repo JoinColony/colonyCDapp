@@ -135,7 +135,7 @@
   }
 
   .divider {
-    @apply w-full h-px bg-gray-200 block;
+    @apply w-full border border-gray-200;
   }
 }
 

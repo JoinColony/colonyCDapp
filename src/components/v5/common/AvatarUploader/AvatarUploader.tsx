@@ -1,11 +1,8 @@
 import React, { FC } from 'react';
+import clsx from 'clsx';
 
 import FileUpload from './partials/FileUpload';
-import {
-  useAvatarUploader,
-  useGetUploaderText,
-  UseAvatarUploaderProps,
-} from './hooks';
+import { useAvatarUploader, UseAvatarUploaderProps } from './hooks';
 import { AvatarUploaderProps } from './types';
 import ProgressContent from './partials/ProgressContent';
 import { getPlaceholder } from './utils';
@@ -20,6 +17,8 @@ const AvatarUploader: FC<AvatarUploaderProps & UseAvatarUploaderProps> = ({
   disabled = false,
   fileOptions,
   updateFn,
+  SuccessComponent,
+  uploaderText,
 }) => {
   const {
     uploadAvatarError,
@@ -31,20 +30,27 @@ const AvatarUploader: FC<AvatarUploaderProps & UseAvatarUploaderProps> = ({
     uploadProgress,
     file,
   } = useAvatarUploader({ updateFn });
-  const uploaderText = useGetUploaderText(fileOptions);
 
   return (
-    <div className="flex sm:flex-row flex-col gap-4 sm:gap-2">
-      <div className="flex items-center gap-4 sm:items-start sm:w-16 mr-4">
+    <div className="flex sm:flex-row flex-col gap-4">
+      <div
+        className={clsx('flex items-center sm:items-start', {
+          'gap-4': uploaderText,
+        })}
+      >
         <div className="flex-shrink-0">
           {getPlaceholder(isLoading, avatarPlaceholder)}
         </div>
-        <div className="sm:hidden text-gray-600 text-sm">{uploaderText}</div>
+        {uploaderText && (
+          <div className="sm:hidden text-gray-600 text-sm">{uploaderText}</div>
+        )}
       </div>
       <div className="flex flex-col gap-2 w-full">
-        {/* <div className="hidden sm:block text-gray-600 text-sm">
-          {uploaderText}
-        </div> */}
+        {uploaderText && (
+          <div className="hidden sm:block text-gray-600 text-sm">
+            {uploaderText}
+          </div>
+        )}
         <FileUpload
           dropzoneOptions={{
             disabled,
@@ -56,6 +62,7 @@ const AvatarUploader: FC<AvatarUploaderProps & UseAvatarUploaderProps> = ({
           errorCode={uploadAvatarError}
           isAvatarUploaded={avatar}
           isProgressContentVisible={showPropgress}
+          SuccessComponent={SuccessComponent}
         />
         {showPropgress && (
           <ProgressContent

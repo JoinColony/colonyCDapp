@@ -21,6 +21,7 @@ export type IconSize =
   | 'extraSmall'
   | 'small'
   | 'normal'
+  | 'mediumSmall'
   | 'medium'
   | 'big'
   | 'extraBig'

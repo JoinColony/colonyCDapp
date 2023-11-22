@@ -11,10 +11,22 @@ const displayName = 'common.CreateUserFormInputs';
 const CreateUserFormInputs = () => {
   const {
     register,
-    formState: { errors, isSubmitting, dirtyFields },
+    formState: { errors, isSubmitting, dirtyFields, submitCount },
   } = useFormContext();
   const emailAddressError = errors.emailAddress?.message as string | undefined;
+  const showEmailAddressError = Boolean(
+    errors.emailAddress?.type === 'required' && submitCount === 0
+      ? false
+      : emailAddressError,
+  );
+
   const usernameError = errors.username?.message as string | undefined;
+  const showUsernameError = Boolean(
+    errors.username?.type === 'required' && submitCount === 0
+      ? false
+      : usernameError,
+  );
+
   return (
     <>
       <Input
@@ -22,7 +34,7 @@ const CreateUserFormInputs = () => {
         register={register}
         className="w-full text-md border-gray-300 "
         labelMessage={{ id: 'label.email' }}
-        isError={!!emailAddressError}
+        isError={showEmailAddressError}
         customErrorMessage={emailAddressError}
         isDisabled={isSubmitting}
       />
@@ -32,7 +44,7 @@ const CreateUserFormInputs = () => {
         className="w-full text-md border-gray-300"
         maxCharNumber={MAX_USERNAME_LENGTH}
         labelMessage={{ id: 'label.username' }}
-        isError={!!usernameError}
+        isError={showUsernameError}
         customErrorMessage={usernameError}
         isDisabled={isSubmitting}
         shouldNumberOfCharsBeVisible

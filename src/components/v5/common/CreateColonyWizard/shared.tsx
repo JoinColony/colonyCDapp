@@ -1,6 +1,6 @@
 import React from 'react';
 import { MessageDescriptor } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
+import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form';
 
 import Button from '~v5/shared/Button';
 import { AnyMessageValues, SimpleMessageValues } from '~types';
@@ -41,24 +41,15 @@ export const HeaderRow = ({
 
 interface ButtonRowProps {
   previousStep: PreviousStep<FormValues>;
-  continueButtonDisableOverride?: boolean;
 }
 
-export const ButtonRow = ({
-  previousStep,
-  continueButtonDisableOverride,
-}: ButtonRowProps) => {
+export const ButtonRow = ({ previousStep }: ButtonRowProps) => {
   const {
     getValues,
-    formState: { isValid, isSubmitting },
+    formState: { isSubmitting },
   } = useFormContext();
 
   const values = getValues();
-
-  const disabled =
-    continueButtonDisableOverride !== undefined
-      ? continueButtonDisableOverride
-      : !isValid || isSubmitting;
 
   const loading = isSubmitting;
 
@@ -74,10 +65,23 @@ export const ButtonRow = ({
       <Button
         text={{ id: 'button.continue' }}
         type="submit"
-        disabled={disabled}
         loading={loading}
         mode="primarySolid"
       />
     </div>
   );
+};
+
+export const getInputError = (
+  errors: FieldErrors<FieldValues>,
+  errorName: string,
+  submitCount: number,
+) => {
+  const error = errors[errorName]?.message as string | undefined;
+
+  const showError = Boolean(
+    errors[errorName]?.type === 'required' && submitCount === 0 ? false : error,
+  );
+
+  return { error, showError };
 };

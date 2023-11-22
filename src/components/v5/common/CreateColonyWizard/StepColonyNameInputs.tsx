@@ -6,6 +6,8 @@ import Input from '~v5/common/Fields/Input';
 import { MAX_COLONY_DISPLAY_NAME } from '~constants';
 import { formatText } from '~utils/intl';
 
+import { getInputError } from './shared';
+
 const displayName = 'common.CreateColonyWizard.StepColonyNameInputs';
 
 interface StepColonyNameInputsProps {
@@ -35,7 +37,7 @@ const StepColonyNameInputs = ({
 }: StepColonyNameInputsProps) => {
   const {
     register,
-    formState: { errors, isSubmitting, dirtyFields },
+    formState: { errors, isSubmitting, dirtyFields, submitCount },
   } = useFormContext();
 
   const { colonyName: colonyNameDirty } = dirtyFields;
@@ -44,16 +46,17 @@ const StepColonyNameInputs = ({
 
   const colonyNameSuccessMessage = formatText(MSG.urlSuccess);
 
-  const displayNameError = errors.displayName?.message as string | undefined;
-
-  const colonyNameError = errors.colonyName?.message as string | undefined;
+  const { error: displayNameError, showError: showDisplayNameError } =
+    getInputError(errors, 'displayName', submitCount);
+  const { error: colonyNameError, showError: showColonyNameError } =
+    getInputError(errors, 'colonyName', submitCount);
 
   return (
     <>
       <Input
         name="displayName"
         register={register}
-        isError={!!displayNameError}
+        isError={showDisplayNameError}
         customErrorMessage={displayNameError}
         className="text-md border-gray-300"
         maxCharNumber={MAX_COLONY_DISPLAY_NAME}
@@ -61,10 +64,10 @@ const StepColonyNameInputs = ({
         defaultValue={wizardDisplayName}
         labelMessage={{ id: 'colonyName' }}
       />
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-2 pt-6">
         <label className="flex flex-col text-1" htmlFor="id-colonyName">
           {formatText(MSG.url)}
-          <span className="text-xs text-gray-600">
+          <span className="text-sm font-normal text-gray-600">
             {formatText(MSG.urlSubLabel)}
           </span>
         </label>
@@ -75,7 +78,7 @@ const StepColonyNameInputs = ({
           <Input
             name="colonyName"
             register={register}
-            isError={!!colonyNameError}
+            isError={showColonyNameError}
             customErrorMessage={colonyNameError}
             className="text-md border-gray-300 lowercase rounded-s-none ml-[117px] w-[calc(100%-117px)]"
             isDisabled={isSubmitting}

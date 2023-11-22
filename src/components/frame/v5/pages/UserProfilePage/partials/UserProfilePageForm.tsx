@@ -11,7 +11,10 @@ import Button from '~v5/shared/Button';
 import AvatarUploader from '~v5/common/AvatarUploader';
 import Avatar from '~v5/shared/Avatar';
 import { formatText } from '~utils/intl';
-import { UseAvatarUploaderProps } from '~v5/common/AvatarUploader/hooks';
+import {
+  UseAvatarUploaderProps,
+  useGetUploaderText,
+} from '~v5/common/AvatarUploader/hooks';
 import { useAppContext, useMobile } from '~hooks';
 import { UserFragment, useUpdateUserProfileMutation } from '~gql';
 
@@ -19,6 +22,8 @@ import styles from '../UserProfilePage.module.css';
 import { MAX_BIO_CHARS, MAX_DISPLAYNAME_CHARS } from '../consts';
 
 import LeftColumn from './LeftColumn';
+import { profileFileOptions } from './consts';
+import IconSuccessContent from './IconSuccessContent';
 
 const displayName = 'v5.pages.UserProfilePage';
 
@@ -142,6 +147,8 @@ const UserProfilePageForm = ({
     });
   }
 
+  const uploaderText = useGetUploaderText(profileFileOptions);
+
   return (
     <div className="flex flex-col gap-6">
       <h4 className="heading-4 mb-6">{formatText({ id: 'profile.page' })}</h4>
@@ -194,12 +201,10 @@ const UserProfilePageForm = ({
                 seed={wallet?.address.toLowerCase()}
               />
             }
-            fileOptions={{
-              fileFormat: ['.PNG', '.JPG', '.SVG'],
-              fileDimension: '250x250px',
-              fileSize: '1MB',
-            }}
+            fileOptions={profileFileOptions}
             updateFn={updateAvatarFn}
+            uploaderText={uploaderText}
+            SuccessComponent={IconSuccessContent}
           />
         </div>
       </div>

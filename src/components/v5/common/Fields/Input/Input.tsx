@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
@@ -31,6 +31,7 @@ const Input: FC<InputProps> = ({
   labelMessage,
   labelClassName,
   subLabelMessage,
+  setIsTyping,
 }) => {
   const { formatMessage } = useIntl();
   const { isTyping, isCharLenghtError, currentCharNumber, onChange } = useInput(
@@ -41,6 +42,12 @@ const Input: FC<InputProps> = ({
 
   const isErrorStatus = isCharLenghtError || isError;
 
+  useEffect(() => {
+    if (setIsTyping) {
+      setIsTyping(isTyping);
+    }
+  }, [isTyping, setIsTyping]);
+
   const input = (
     <div className="w-full relative">
       <input
@@ -48,12 +55,17 @@ const Input: FC<InputProps> = ({
         type="text"
         name={name}
         placeholder={placeholder}
-        className={clsx(className, 'input-round input', {
-          'border-gray-300': !isTyping,
-          'border-blue-200 shadow-light-blue': isTyping,
-          'border-negative-400': isErrorStatus,
-          'text-gray-400': isDisabled,
-        })}
+        className={clsx(
+          className,
+          'input-round input focus:border-blue-200 focus:shadow-light-blue',
+          {
+            'border-gray-300': !isTyping,
+            'border-blue-200 shadow-light-blue': isTyping,
+            'focus:border-negative-400 border-negative-400 focus:shadow-none':
+              isErrorStatus,
+            'text-gray-400': isDisabled,
+          },
+        )}
         defaultValue={defaultValue}
         onChange={(e) => {
           onChange(e);
@@ -66,15 +78,18 @@ const Input: FC<InputProps> = ({
   );
 
   return (
-    <div className="flex w-full relative flex-col gap-1">
+    <div>
       {labelMessage && (
         <label
-          className={clsx(labelClassName, 'flex flex-col text-1')}
+          className={clsx(labelClassName, 'flex flex-col text-1', {
+            'pb-1.5': !subLabelMessage,
+            'pb-2': subLabelMessage,
+          })}
           htmlFor={`id-${name}`}
         >
           {formatText(labelMessage)}
           {subLabelMessage && (
-            <span className="text-xs text-gray-400">
+            <span className="text-sm font-normal text-gray-600">
               {formatText(subLabelMessage)}
             </span>
           )}
@@ -106,7 +121,7 @@ const Input: FC<InputProps> = ({
       )}
 
       {/* This is to stop layout shift when error messages are shown */}
-      <div className="relative pb-9">
+      <div className="relative">
         {!isTyping && !isErrorStatus && successfulMessage && (
           <InputPills message={successfulMessage} status="success" />
         )}

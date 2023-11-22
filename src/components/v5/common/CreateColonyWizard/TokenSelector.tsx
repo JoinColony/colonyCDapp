@@ -48,14 +48,10 @@ const TokenSelector = ({
     skip: !isAddress(tokenAddress),
   });
 
-  useEffect(() => {
-    setIsLoading(isFetchingAddress);
-  }, [isFetchingAddress, setIsLoading]);
-
   const token = data?.getTokenFromEverywhere?.items?.[0] ?? null;
 
   useEffect(() => {
-    if (!tokenAddressDirty) {
+    if (isFetchingAddress) {
       return;
     }
 
@@ -72,12 +68,12 @@ const TokenSelector = ({
     tokenAddressDirty,
     tokenFieldName,
     trigger,
+    isFetchingAddress,
   ]);
 
-  /* const displayLoading =
-   *   isFetchingAddress || (isValidating && isAddress(tokenAddress)); */
-
-  return <Input name={addressFieldName} {...inputProps} />;
+  return (
+    <Input name={addressFieldName} {...inputProps} setIsTyping={setIsLoading} />
+  );
 };
 
 TokenSelector.displayName = displayName;

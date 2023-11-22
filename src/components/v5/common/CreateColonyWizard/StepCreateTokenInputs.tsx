@@ -4,9 +4,12 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import Input from '~v5/common/Fields/Input';
 import Avatar from '~v5/shared/Avatar';
+import AvatarUploader from '~v5/common/AvatarUploader';
+import { UseAvatarUploaderProps } from '~v5/common/AvatarUploader/hooks';
 
-import AvatarUploader from '../AvatarUploader';
-import { UseAvatarUploaderProps } from '../AvatarUploader/hooks';
+import IconSuccessContent from './IconSuccessContent';
+import { getInputError } from './shared';
+import { MAX_TOKEN_NAME, MAX_TOKEN_SYMBOL } from './validation';
 
 const displayName = 'common.CreateColonyWizard.StepCreateTokenInputs';
 
@@ -14,9 +17,6 @@ interface StepCreateTokenInputsProps {
   wizardTokenName: string;
   wizardTokenSymbol: string;
 }
-
-const MAX_TOKEN_NAME = 30;
-const MAX_TOKEN_SYMBOL = 5;
 
 const MSG = defineMessages({
   heading: {
@@ -63,12 +63,14 @@ const StepCreateTokenInputs = ({
     register,
     setValue,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, submitCount },
   } = useFormContext();
   const { formatMessage } = useIntl();
 
-  const tokenNameError = errors.tokenName?.message as string | undefined;
-  const tokenSymbolError = errors.tokenSymbol?.message as string | undefined;
+  const { error: tokenNameError, showError: showTokenNameError } =
+    getInputError(errors, 'tokenName', submitCount);
+  const { error: tokenSymbolError, showError: showTokenSymbolError } =
+    getInputError(errors, 'tokenSymbol', submitCount);
 
   const tokenAvatarUrl = watch('tokenAvatar');
 
@@ -91,51 +93,49 @@ const StepCreateTokenInputs = ({
 
   return (
     <>
-      <div className="flex gap-6">
-        <Input
-          name="tokenName"
-          register={register}
-          isError={!!tokenNameError}
-          customErrorMessage={tokenNameError}
-          className="text-md border-gray-300"
-          maxCharNumber={MAX_TOKEN_NAME}
-          isDisabled={isSubmitting}
-          defaultValue={wizardTokenName}
-          labelMessage={MSG.tokenName}
-          errorMaxChar
-        />
-        <Input
-          name="tokenSymbol"
-          register={register}
-          isError={!!tokenSymbolError}
-          customErrorMessage={tokenSymbolError}
-          className="text-md border-gray-300 uppercase"
-          maxCharNumber={MAX_TOKEN_SYMBOL}
-          isDisabled={isSubmitting}
-          defaultValue={wizardTokenSymbol}
-          labelMessage={MSG.tokenSymbol}
-          errorMaxChar
-        />
+      <div className="flex gap-6 pb-6">
+        <div className="flex-1">
+          <Input
+            name="tokenName"
+            register={register}
+            isError={showTokenNameError}
+            customErrorMessage={tokenNameError}
+            className="text-md border-gray-300"
+            maxCharNumber={MAX_TOKEN_NAME}
+            isDisabled={isSubmitting}
+            defaultValue={wizardTokenName}
+            labelMessage={MSG.tokenName}
+            errorMaxChar
+          />
+        </div>
+        <div className="flex-1">
+          <Input
+            name="tokenSymbol"
+            register={register}
+            isError={showTokenSymbolError}
+            customErrorMessage={tokenSymbolError}
+            className="text-md border-gray-300 uppercase"
+            maxCharNumber={MAX_TOKEN_SYMBOL}
+            isDisabled={isSubmitting}
+            defaultValue={wizardTokenSymbol}
+            labelMessage={MSG.tokenSymbol}
+            errorMaxChar
+          />
+        </div>
       </div>
       <p className="text-1 pb-1">{formatMessage(MSG.tokenLogo)}</p>
       <p className="text-sm text-gray-600 pb-2">
         {formatMessage(MSG.tokenDescription)}
       </p>
       <AvatarUploader
-        avatarPlaceholder={
-          <Avatar
-            notSet={!tokenAvatarUrl}
-            placeholderIcon="circle-add"
-            size="ms"
-            avatar={tokenAvatarUrl}
-          />
-        }
+        avatarPlaceholder={<Avatar size="xm" avatar={tokenAvatarUrl} />}
         fileOptions={{
           fileFormat: ['.PNG', '.JPG', '.SVG'],
           fileDimension: '250x250px',
           fileSize: '1MB',
         }}
         updateFn={updateFn}
+        SuccessComponent={IconSuccessContent}
       />
     </>
   );

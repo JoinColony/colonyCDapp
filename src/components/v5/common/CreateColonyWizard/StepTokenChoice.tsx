@@ -71,7 +71,8 @@ const TokenSelector = ({
   return (
     <label htmlFor={`id-${name}`}>
       <Card
-        className="flex flex-col items-center cursor-pointer text-center h-full md:hover:shadow-default md:hover:shadow-light-blue"
+        className="flex flex-col items-center cursor-pointer text-center h-full
+                   md:hover:shadow-default md:hover:shadow-light-blue md:hover:border-blue-200"
         checked={checked}
       >
         <input
@@ -83,7 +84,7 @@ const TokenSelector = ({
         />
         {icon}
         <span className="text-1 pt-4">{formatText(title)}</span>
-        <span className="description-1">{formatText(description)}</span>
+        <span className="description-1 pt-1">{formatText(description)}</span>
       </Card>
     </label>
   );
@@ -112,7 +113,7 @@ const StepTokenChoice = ({
             <Icon
               style={{ transform: 'rotate(90deg)' }}
               name="coin-vertical"
-              appearance={{ size: 'medium' }}
+              appearance={{ size: 'mediumSmall' }}
             />
           }
         />
@@ -120,7 +121,7 @@ const StepTokenChoice = ({
           name="select"
           title={MSG.selectOptionTitle}
           description={MSG.selectOptionDescription}
-          icon={<Icon name="hand-coins" appearance={{ size: 'medium' }} />}
+          icon={<Icon name="hand-coins" appearance={{ size: 'mediumSmall' }} />}
         />
       </div>
       <ButtonRow previousStep={previousStep} />

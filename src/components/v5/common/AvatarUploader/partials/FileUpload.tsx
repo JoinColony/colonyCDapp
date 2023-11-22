@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 
 import useDropzoneWithFileReader from '~hooks/useDropzoneWithFileReader';
-import SuccessContent from './SuccessContent';
+
+import { FileUploadProps } from '../types';
+
 import ErrorContent from './ErrorContent';
 import DefaultContent from './DefaultContent';
-import { FileUploadProps } from '../types';
 
 const displayName = 'v5.common.AvatarUploader.partials.partials.FileUpload';
 
@@ -18,27 +19,52 @@ const FileUpload: FC<FileUploadProps> = ({
   isProgressContentVisible,
   isSimplified,
   fileOptions,
+  SuccessComponent,
 }) => {
-  const { getInputProps, getRootProps, open, isDragReject, fileRejections } =
-    useDropzoneWithFileReader({
-      dropzoneOptions: {
-        maxFiles: 1,
-        ...dropzoneOptions,
-      },
-      handleFileAccept,
-      handleFileReject,
-    });
+  const [showDefault, setShowDefault] = useState(false);
+  const {
+    getInputProps,
+    getRootProps,
+    open,
+    isDragReject,
+    fileRejections,
+    isDragAccept,
+  } = useDropzoneWithFileReader({
+    dropzoneOptions: {
+      maxFiles: 1,
+      ...dropzoneOptions,
+    },
+    handleFileAccept: (event) => {
+      setShowDefault(false);
+      handleFileAccept(event);
+    },
+    handleFileReject,
+  });
 
-  const successContent = (
-    <SuccessContent open={open} handleFileRemove={handleFileRemove} />
-  );
+  const shouldShowDefaultContent =
+    (showDefault && !errorCode) ||
+    (!isAvatarUploaded && !errorCode && !isProgressContentVisible);
+
+  const shouldShowSuccessContent = !shouldShowDefaultContent && !errorCode;
+
   const defaultContent = (
     <DefaultContent
       isSimplified={isSimplified}
       open={open}
       fileOptions={fileOptions}
+      isDragAccept={isDragAccept}
     />
   );
+
+  const successContent = SuccessComponent ? (
+    <SuccessComponent
+      open={() => setShowDefault(true)}
+      handleFileRemove={handleFileRemove}
+    />
+  ) : (
+    defaultContent
+  );
+
   const errorContent = (
     <ErrorContent
       errorCode={errorCode}
@@ -48,11 +74,6 @@ const FileUpload: FC<FileUploadProps> = ({
       fileRejections={fileRejections?.[0]?.file?.name}
     />
   );
-
-  const shouldShowDefaultContent =
-    !isAvatarUploaded && !errorCode && !isProgressContentVisible;
-  const shouldShowSuccessContent =
-    isAvatarUploaded && !errorCode && !isProgressContentVisible;
 
   return (
     <div className="w-full">

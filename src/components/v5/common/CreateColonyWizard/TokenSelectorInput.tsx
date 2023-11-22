@@ -7,6 +7,7 @@ import { getNetworkByChainId } from '~utils/web3';
 import Icon from '~shared/Icon';
 
 import TokenSelector from './TokenSelector';
+import { getInputError } from './shared';
 
 const displayName = 'common.CreateColonyWizard.TokenSelector';
 
@@ -40,14 +41,16 @@ const TokenSelectorInput = ({
   const {
     register,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, submitCount },
   } = useFormContext();
   const { formatMessage } = useIntl();
   const [isLoading, setIsLoading] = useState(false);
 
   const token: Token | null = watch('token');
 
-  const tokenAddressError = errors.tokenAddress?.message as string | undefined;
+  const { error: tokenAddressError, showError: showTokenAddressError } =
+    getInputError(errors, 'tokenAddress', submitCount);
+
   const successMessage = formatMessage(MSG.existingTokenSuccess, {
     name: token?.name,
     symbol: token?.symbol,
@@ -59,10 +62,10 @@ const TokenSelectorInput = ({
   const doesTokenExistError = errors.tokenAddress?.type === 'doesTokenExist';
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col">
       <TokenSelector
         register={register}
-        isError={!!tokenAddressError}
+        isError={showTokenAddressError}
         customErrorMessage={tokenAddressError}
         className="text-md border-gray-300"
         isDisabled={isSubmitting}
@@ -74,7 +77,7 @@ const TokenSelectorInput = ({
       />
 
       {doesTokenExistError && isLoading === false && (
-        <div className="px-6 py-3 bg-warning-100 border rounded border-warning-200 text-gray-900">
+        <div className="mt-14 px-6 py-3 bg-warning-100 border rounded border-warning-200 text-gray-900">
           <p className="flex self-start items-center gap-2 text-md pb-1">
             <span className="text-warning-400 flex">
               <Icon name="warning-circle" appearance={{ size: 'small' }} />

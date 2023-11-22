@@ -12,6 +12,7 @@ const displayName = 'v5.common.AvatarUploader.partials.DefaultContent';
 const DefaultContent: FC<DefaultContentProps> = ({
   open,
   isSimplified,
+  isDragAccept,
   fileOptions: { fileFormat, fileDimension, fileSize },
 }) => {
   const { formatMessage } = useIntl();
@@ -23,10 +24,12 @@ const DefaultContent: FC<DefaultContentProps> = ({
   return (
     <div
       className={clsx(
-        'flex-col items-center bg-white-100 border-gray-200 flex px-6 rounded border w-full',
+        'flex-col items-center flex px-6 rounded border w-full hover:border-blue-400 hover:bg-blue-100',
         {
           'py-4': !isSimpleOnMobile,
           'py-2': isSimpleOnMobile,
+          'border-gray-200 bg-white-100': !isDragAccept,
+          'border-blue-400 bg-blue-100': isDragAccept,
         },
       )}
     >
@@ -43,9 +46,9 @@ const DefaultContent: FC<DefaultContentProps> = ({
         </button>
       ) : (
         <>
-          <div className="w-10 mb-2">
-            <div className="p-[0.25rem] rounded-full flex items-start justify-center">
-              <div className="p-[0.25rem] rounded-full flex items-start justify-center">
+          <div className="w-9 h-9 mb-2">
+            <div className="bg-gray-50 p-[0.25rem] rounded-full flex items-start justify-center">
+              <div className="bg-gray-200 p-[0.25rem] rounded-full flex items-start justify-center">
                 <Icon name="cloud-arrow-up" appearance={{ size: 'small' }} />
               </div>
             </div>
