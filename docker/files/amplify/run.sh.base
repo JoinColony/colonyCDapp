@@ -4,7 +4,6 @@
 
 # Cleanup
 rm --recursive --force /colonyCDapp/amplify/backend/api/colonycdapp/build
-rm --recursive --force /colonyCDapp/amplify/backend/api/colonycdapp/resolvers/*
 rm --recursive --force /colonyCDapp/amplify/mock-data/dynamodb
 
 # Make sure the build folder exists
