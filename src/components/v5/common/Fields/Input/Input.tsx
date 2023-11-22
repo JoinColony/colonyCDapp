@@ -46,7 +46,7 @@ const Input: FC<InputProps> = ({
     if (setIsTyping) {
       setIsTyping(isTyping);
     }
-  }, [isTyping]);
+  }, [isTyping, setIsTyping]);
 
   const input = (
     <div className="w-full relative">
