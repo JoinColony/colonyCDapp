@@ -2,6 +2,7 @@ import React, { FC, PropsWithChildren, useCallback, useState } from 'react';
 import { noop } from 'lodash';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
+import clsx from 'clsx';
 import { UserPopoverProps } from './types';
 import { useMobile } from '~hooks';
 import Modal from '~v5/shared/Modal';
@@ -93,11 +94,16 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
             <PopoverBase
               setTooltipRef={setTooltipRef}
               tooltipProps={getTooltipProps}
-              classNames="max-w-[20rem] shadow-default"
+              classNames="max-w-[20rem]"
               withTooltipStyles={false}
               cardProps={{
                 rounded: 's',
-                className: !isTopSectionWithBackground ? 'p-6' : '',
+                className: clsx({
+                  'p-6': !isTopSectionWithBackground,
+                  'border-2 border-purple-200 overflow-hidden ':
+                    userStatus === 'top',
+                }),
+                hasShadow: true,
               }}
               isTopSectionWithBackground={
                 isTopSectionWithBackground && isMobile
