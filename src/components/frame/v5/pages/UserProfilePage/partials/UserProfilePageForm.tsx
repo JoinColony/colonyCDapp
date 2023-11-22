@@ -23,7 +23,7 @@ import { MAX_BIO_CHARS, MAX_DISPLAYNAME_CHARS } from '../consts';
 
 import LeftColumn from './LeftColumn';
 import { profileFileOptions } from './consts';
-import SuccessContent from './SuccessContent';
+import IconSuccessContent from './IconSuccessContent';
 
 const displayName = 'v5.pages.UserProfilePage';
 
@@ -195,7 +195,8 @@ const UserProfilePageForm = ({
         <div className="w-full">
           <AvatarUploader
             avatarPlaceholder={
-              <Avatar size="xm"
+              <Avatar
+                size="xm"
                 avatar={avatarUrl}
                 seed={wallet?.address.toLowerCase()}
               />
@@ -203,7 +204,7 @@ const UserProfilePageForm = ({
             fileOptions={profileFileOptions}
             updateFn={updateAvatarFn}
             uploaderText={uploaderText}
-            SuccessComponent={SuccessContent}
+            SuccessComponent={IconSuccessContent}
           />
         </div>
       </div>

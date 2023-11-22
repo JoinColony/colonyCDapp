@@ -4,10 +4,10 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import Input from '~v5/common/Fields/Input';
 import Avatar from '~v5/shared/Avatar';
+import AvatarUploader from '~v5/common/AvatarUploader';
+import { UseAvatarUploaderProps } from '~v5/common/AvatarUploader/hooks';
 
-import AvatarUploader from '../AvatarUploader';
-import { UseAvatarUploaderProps } from '../AvatarUploader/hooks';
-
+import IconSuccessContent from './IconSuccessContent';
 import { getInputError } from './shared';
 import { MAX_TOKEN_NAME, MAX_TOKEN_SYMBOL } from './validation';
 
@@ -135,6 +135,7 @@ const StepCreateTokenInputs = ({
           fileSize: '1MB',
         }}
         updateFn={updateFn}
+        SuccessComponent={IconSuccessContent}
       />
     </>
   );

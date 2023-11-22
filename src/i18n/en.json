@@ -1178,7 +1178,6 @@
     "avatar.uploader.info": "Must be {format}, at least {dimension} in size and can not exceed {size}.",
     "avatar.uploader.text": "{format}, {dimension} and max file size {size}",
     "avatar.uploader.or": "or",
-    "button.change.avatar": "Change avatar",
     "button.delete.avatar": "Remove",
     "button.try.again": "Try again",
     "click.to.upload": "Click to upload",

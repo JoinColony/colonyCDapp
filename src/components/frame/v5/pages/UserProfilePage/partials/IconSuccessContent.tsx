@@ -1,12 +1,19 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
+import { useIntl, defineMessages } from 'react-intl';
 
 import { SuccessContentProps } from '~v5/common/AvatarUploader/types';
 import Button from '~v5/shared/Button';
 
-const displayName = 'v5.common.AvatarUploader.partials.SuccessContent';
+const displayName = 'v5.pages.UserProfilePage.AvatarSuccessContent';
 
-const SuccessContent: FC<SuccessContentProps> = ({
+const MSG = defineMessages({
+  change: {
+    id: `${displayName}.changeAvatar`,
+    defaultMessage: 'Change Avatar',
+  },
+});
+
+const IconSuccessContent: FC<SuccessContentProps> = ({
   open,
   handleFileRemove,
 }) => {
@@ -15,7 +22,7 @@ const SuccessContent: FC<SuccessContentProps> = ({
   return (
     <div className="flex items-center gap-2">
       <Button mode="primarySolid" onClick={open}>
-        {formatMessage({ id: 'button.change.avatar' })}
+        {formatMessage(MSG.change)}
       </Button>
       <Button onClick={handleFileRemove} mode="tertiary">
         {formatMessage({
@@ -26,6 +33,6 @@ const SuccessContent: FC<SuccessContentProps> = ({
   );
 };
 
-SuccessContent.displayName = displayName;
+IconSuccessContent.displayName = displayName;
 
-export default SuccessContent;
+export default IconSuccessContent;
