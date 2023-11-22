@@ -1,9 +1,9 @@
 const { utils, Wallet, providers, BigNumber, constants, Contract } = require('ethers');
 const { poll } = require('ethers/lib/utils');
-
+const fs = require('fs');
+const path = require('path');
 const fetch = require('node-fetch');
-
-
+const { compareVersions } = require('compare-versions');
 const {
   ColonyTokenFactory,
   ColonyNetworkFactory,
@@ -14,11 +14,9 @@ const {
   colonyRoles2Hex,
   getChildIndex,
 } = require('@colony/colony-js');
-
 const {
   abi: OneTxAbi,
 } = require('@colony/abis/versions/glwss4/OneTxPayment');
-
 /*
  * @NOTE To preserve time, I just re-used a script I wrote for one of the lambda functions
  * So if that lambda function gets removed, this script will stop working
@@ -43,6 +41,8 @@ const {
   colonies: coloniesTempData,
   users: usersTempData,
 } = require('./tempColonyData');
+
+
 
 const API_KEY = 'da2-fakeApiId123456';
 const GRAPHQL_URI =
@@ -208,6 +208,15 @@ const delay = (ms = 300, verbose = false) =>
       resolve();
     }, ms),
   );
+
+const readFile = (path) => {
+  try {
+    const data = fs.readFileSync(path, 'utf8');
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 /*
  * User
@@ -1335,6 +1344,21 @@ const createUserAndColonyData = async () => {
 
 };
 
+const checkNodeVersion = () => {
+  const requiredVersion = readFile(path.resolve(__dirname, '..', '.nvmrc')).trim();
+  const currentVersion = process.version;
+  if (compareVersions(currentVersion, requiredVersion) < 0) {
+    console.log();
+    console.log(`Please use the correct node version when running the CDapp. Anything less than "v${requiredVersion}" and this script won't work properly.`);
+    console.log(`Current version: ${currentVersion} Required version: v${requiredVersion}`);
+    console.log();
+    process.exit(0);
+  } else {
+    console.log();
+    console.log(`Using node ${currentVersion}`);
+  }
+};
+
 const pressKeyToContinue = async () => {
   console.log();
   console.log(`Only run this script on blank databases and chain state`);
@@ -1350,6 +1374,8 @@ const pressKeyToContinue = async () => {
     }),
   );
 }
+
+checkNodeVersion();
 
 pressKeyToContinue().then(() => {
   createUserAndColonyData();
