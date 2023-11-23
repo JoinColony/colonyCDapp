@@ -12,7 +12,7 @@ const PopularActions: FC<PopularActionsProps> = ({ setSelectedAction }) => {
 
   return (
     <div className="px-6">
-      <h4 className="text-1 pb-2 border-b border-b-gray-200 mb-2">
+      <h4 className="text-1 pb-2 border-b border-b-gray-200 mb-4">
         {formatMessage({ id: 'actionSidebar.popularActions' })}
       </h4>
       <ul>
