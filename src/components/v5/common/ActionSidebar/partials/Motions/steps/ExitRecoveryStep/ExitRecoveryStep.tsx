@@ -76,13 +76,11 @@ const ExitRecoveryStep: FC = () => {
             key: '1',
             className: 'px-0 py-0',
             content: (
-              <NotificationBanner
-                status="error"
-                title={formatText({
+              <NotificationBanner status="error" isAlt>
+                {formatText({
                   id: 'motion.exitRecovery.storageSlots.warning',
                 })}
-                isAlt
-              />
+              </NotificationBanner>
             ),
           },
           {

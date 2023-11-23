@@ -96,13 +96,14 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
       </div>
       {failed && error && (
         <div className="mt-2 md:max-w-[24rem]">
+          {/* @TODO check how this one looks before the rework */}
           <NotificationBanner
             status="error"
-            action={{
-              type: 'call-to-action',
-              actionText: <FormattedMessage id="retry" />,
-              onClick: handleRetryAction,
-            }}
+            callToAction={
+              <button type="button" onClick={handleRetryAction}>
+                <FormattedMessage id="retry" />
+              </button>
+            }
             isAlt
           >
             <FormattedMessage

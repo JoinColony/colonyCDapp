@@ -136,22 +136,23 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
               additionalContent={
                 <NotificationBanner
                   status="warning"
-                  title={formatText({ id: 'user.not.verified.warning' })}
-                  isAlt
-                  action={{
-                    type: 'call-to-action',
-                    actionText: formatText({ id: 'add.verified.member' }),
-                    onClick: () => {}, // @TODO: add action
-                  }}
-                  className="mt-4"
-                  textAlign="left"
-                >
-                  {userByAddress?.walletAddress ||
+                  description={
+                    userByAddress?.walletAddress ||
                     (field.value && (
                       <div className="mt-2 font-semibold break-words">
                         {userByAddress?.walletAddress || field.value}
                       </div>
-                    ))}
+                    ))
+                  }
+                  callToAction={
+                    <button type="button">
+                      {formatText({ id: 'add.verified.member' })}
+                    </button>
+                  }
+                  className="mt-4 text-left"
+                  isAlt
+                >
+                  {formatText({ id: 'user.not.verified.warning' })}
                 </NotificationBanner>
               }
             >

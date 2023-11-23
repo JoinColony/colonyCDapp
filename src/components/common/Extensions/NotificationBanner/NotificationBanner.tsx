@@ -1,99 +1,65 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { FC } from 'react';
 import clsx from 'clsx';
 
-import Link from '~v5/shared/Link';
-
-import CopyUrl from './CopyUrl';
 import { NotificationBannerProps } from './types';
-import StatusText from '~v5/shared/StatusText';
+import Icon from '~shared/Icon';
 
 const displayName = 'common.Extensions.NotificationBanner';
 
-const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
-  status,
-  title,
-  children,
-  action,
-  iconName,
-  isAlt = false,
+const NotificationBanner: FC<NotificationBannerProps> = ({
   className,
-  textAlign = 'center',
+  isAlt = false,
+  status,
+  icon,
+  children,
+  description,
+  callToAction,
 }) => {
-  const { actionText } = action || {};
-
   return (
-    <div className="@container">
+    <div className="@container/notificationBanner">
       <div
         className={clsx(
-          className,
-          'border rounded-lg flex justify-between min-h-[2.75rem] flex-col items-start @[600px]:flex-row @[600px]:items-center',
-          `gap-2 ${
-            isAlt
-              ? 'rounded min-h-[3.75rem] p-4'
-              : 'rounded-lg min-h-[2.75rem] py-3 px-6'
-          }`,
+          'border rounded-lg flex gap-2 justify-between flex-col items-start @[600px]/notificationBanner:flex-row @[600px]/notificationBanner:items-center text-gray-900',
+          isAlt ? 'rounded p-4' : 'rounded-lg py-3 px-6',
           {
-            'bg-success-100 border-success-200': status === 'success',
+            'bg-success-100 border-success-200-200': status === 'success',
             'bg-warning-100 border-warning-200': status === 'warning',
             'bg-negative-100 border-negative-200': status === 'error',
-            'bg-gray-50 border-gray-200 text-gray-600 text-sm':
-              status === 'info',
-            'text-success-400': isAlt && status === 'success',
-            'text-warning-400': isAlt && status === 'warning',
-            'text-negative-400': isAlt && status === 'error',
+            'bg-gray-50 border-gray-200': status === 'info',
           },
+          className,
         )}
       >
-        <div className="flex md:items-center">
-          <StatusText
-            status={status}
-            withIcon={!isAlt}
-            iconName={iconName}
-            textClassName={isAlt ? 'text-sm' : undefined}
-          >
-            {title}
-          </StatusText>
-        </div>
-        {action && (
-          <div
-            className={clsx('text-4', {
-              'md:self-center': textAlign === 'center',
-              'md:self-start': textAlign === 'left',
-              'ml-8 md:ml-2': !isAlt,
-            })}
-          >
-            {(() => {
-              switch (action?.type) {
-                case 'copy': {
-                  return <CopyUrl actionText={action.copyContent} />;
-                }
-                case 'redirect': {
-                  return (
-                    <Link
-                      to={action.href}
-                      className="underline md:hover:no-underline"
-                    >
-                      {actionText}
-                    </Link>
-                  );
-                }
-                case 'call-to-action': {
-                  return (
-                    <button
-                      type="button"
-                      className="underline md:hover:no-underline"
-                      onClick={action.onClick}
-                    >
-                      {actionText}
-                    </button>
-                  );
-                }
-                default:
-                  return null;
-              }
-            })()}
+        <div className="flex flex-col gap-1">
+          <div className="flex flex-row gap-2 items-center text-md">
+            {icon ? (
+              <Icon
+                appearance={{ size: 'extraSmall' }}
+                name={icon}
+                className={clsx('flex-shrink-0', {
+                  'text-success-400': status === 'success',
+                  'text-warning-400': status === 'warning',
+                  'text-negative-400': status === 'error',
+                  'text-gray-900': status === 'info',
+                })}
+              />
+            ) : null}
+            {children}
           </div>
-        )}
+          {description ? (
+            <div className="text-sm text-gray-600">{description}</div>
+          ) : null}
+        </div>
+        {callToAction ? (
+          <div
+            className={clsx(
+              'flex-shrink-0 underline font-medium text-xs @[600px]/notificationBanner:ml-0 md:hover:no-underline',
+              !!icon && 'ml-[calc(1rem+8px)]', // if we have an icon we need to offset the CTA to align vertically to the main text
+            )}
+          >
+            {callToAction}
+          </div>
+        ) : null}
       </div>
     </div>
   );

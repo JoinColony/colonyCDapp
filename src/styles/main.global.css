@@ -40,6 +40,10 @@
     @apply min-h-screen;
   }
 
+  button {
+    text-decoration: inherit;
+  }
+
   input[type='number']::-webkit-inner-spin-button,
   input[type='number']::-webkit-outer-spin-button {
     @apply m-0;

@@ -1,30 +1,11 @@
-import React from 'react';
-import { STATUS_TYPES } from '~v5/shared/StatusText/consts';
+import { PropsWithChildren, ReactNode } from 'react';
 
-export interface NotificationBannerProps {
-  status: (typeof STATUS_TYPES)[keyof typeof STATUS_TYPES];
-  title?: React.ReactNode;
-  iconName?: string;
-  isFullSize?: boolean;
-  isAlt?: boolean;
+type BannerStatus = 'success' | 'error' | 'warning' | 'info';
+export type NotificationBannerProps = PropsWithChildren<{
   className?: string;
-  action?: { actionText: React.ReactNode } & (
-    | {
-        type: 'copy';
-        copyContent: string;
-      }
-    | {
-        type: 'redirect';
-        href: string;
-      }
-    | {
-        type: 'call-to-action';
-        onClick?: () => void;
-      }
-  );
-  textAlign?: 'center' | 'left';
-}
-
-export interface CopyUrlProps {
-  actionText: string;
-}
+  status: BannerStatus;
+  icon?: string;
+  description?: ReactNode;
+  callToAction?: ReactNode;
+  isAlt?: boolean;
+}>;

@@ -12,13 +12,13 @@ import { ACTION_TYPE_FIELD_NAME } from '../../consts';
 import {
   useActionDescriptionMetadata,
   useActionFormProps,
-  useNotificationBanner,
   useSidebarActionForm,
   useUserHasPermissions,
 } from '../../hooks';
 import ActionButtons from '../ActionButtons';
 import Motions from '../Motions';
 import PopularActions from '../PopularActions';
+import { SidebarBanner } from './partials/SidebarBanner';
 import {
   ActionSidebarContentProps,
   ActionSidebarFormContentProps,
@@ -35,7 +35,6 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const userHasPermissions = useUserHasPermissions();
   const form = useFormContext();
   const { title: titleError } = form.formState.errors;
-  const notificationBanner = useNotificationBanner();
   const descriptionMetadata = useActionDescriptionMetadata();
 
   return (
@@ -60,21 +59,12 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
         {titleError && (
           <div className="mt-6">
-            <NotificationBanner
-              status="error"
-              title={
-                <span className="text-gray-900">
-                  {titleError.message?.toString()}
-                </span>
-              }
-            />
+            <NotificationBanner icon="warning-circle" status="error">
+              {titleError.message?.toString()}
+            </NotificationBanner>
           </div>
         )}
-        {notificationBanner && (
-          <div className="mt-6">
-            <NotificationBanner {...notificationBanner} />
-          </div>
-        )}
+        <SidebarBanner />
       </div>
       {!isMotion && (
         <div className="mt-auto">

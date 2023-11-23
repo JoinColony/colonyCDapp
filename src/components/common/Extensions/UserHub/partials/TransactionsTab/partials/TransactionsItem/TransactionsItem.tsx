@@ -129,14 +129,15 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
                       <div className="mt-2">
                         <NotificationBanner
                           status="error"
-                          title={notificationInfo}
-                          action={{
-                            type: 'redirect',
-                            actionText: <FormattedMessage id="retry" />,
-                            href: '',
-                          }}
+                          callToAction={
+                            <button type="button">
+                              <FormattedMessage id="retry" />
+                            </button>
+                          }
                           isAlt
-                        />
+                        >
+                          {notificationInfo}
+                        </NotificationBanner>
                       </div>
                     )}
                   </div>
