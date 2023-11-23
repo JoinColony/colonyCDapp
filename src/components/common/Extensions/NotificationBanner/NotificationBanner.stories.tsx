@@ -1,6 +1,6 @@
 import { Meta, StoryFn } from '@storybook/react';
 import React from 'react';
-import { NotificationBanner } from './NotificationBanner';
+import NotificationBanner from './NotificationBanner';
 import { NotificationBannerProps } from './types';
 
 const meta: Meta<typeof NotificationBanner> = {
