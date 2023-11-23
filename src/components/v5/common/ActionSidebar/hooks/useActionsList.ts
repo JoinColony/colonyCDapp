@@ -77,6 +77,7 @@ export const useActionsList = () => {
           {
             label: { id: 'actions.advancedPayment' },
             value: ACTION.ADVANCED_PAYMENT,
+            isDisabled: true,
           },
           {
             label: { id: 'actions.batchPayment' },
@@ -86,6 +87,7 @@ export const useActionsList = () => {
           {
             label: { id: 'actions.splitPayment' },
             value: ACTION.SPLIT_PAYMENT,
+            isDisabled: true,
           },
           {
             label: { id: 'actions.stagedPayment' },
@@ -183,18 +185,12 @@ export const useActionsList = () => {
         title: { id: 'actions.admin' },
         options: [
           {
-            label: { id: 'actions.awardReputation' },
-            value: ACTION.AWARD_REPUTATION,
-            missingPermissions: !canAwardReputation
-              ? 'actionSidebar.missingPermissions.awardReputation'
-              : undefined,
-          },
-          {
-            label: { id: 'actions.removeReputation' },
-            value: ACTION.REMOVE_REPUTATION,
-            missingPermissions: !canSmiteReputation
-              ? 'actionSidebar.missingPermissions.smiteReputation'
-              : undefined,
+            label: { id: 'actions.manageReputation' },
+            value: ACTION.MANAGE_REPUTATION,
+            missingPermissions:
+              !canAwardReputation || !canSmiteReputation
+                ? 'actionSidebar.missingPermissions.manageReputation'
+                : undefined,
           },
           {
             label: { id: 'actions.managePermissions' },
@@ -231,15 +227,14 @@ export const useActionsList = () => {
               : undefined,
           },
           {
-            label: { id: 'actions.createNewIntegration' },
-            value: ACTION.CREATE_NEW_INTEGRATION,
-            isDisabled: true,
-          },
-          {
-            label: { id: 'actions.manageColonyObjective' },
+            label: { id: 'actions.manageColonyObjectives' },
             value: ACTION.MANAGE_COLONY_OBJECTIVES,
-            isDisabled: true,
           },
+          // {
+          //   label: { id: 'actions.createNewIntegration' },
+          //   value: ACTION.CREATE_NEW_INTEGRATION,
+          //   isDisabled: true,
+          // },
         ],
       },
     ],

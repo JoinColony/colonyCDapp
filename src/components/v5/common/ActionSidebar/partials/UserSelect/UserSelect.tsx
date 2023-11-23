@@ -59,6 +59,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
           <UserAvatar
             user={userByAddress || field.value}
             size="xs"
+            showUsername
             className={clsx({
               'text-warning-400': !isUserVerified,
             })}
@@ -90,6 +91,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
                 <UserAvatar
                   user={userByAddress || field.value}
                   size="xs"
+                  showUsername
                   className={clsx({
                     'text-warning-400': !isUserVerified,
                     'text-gray-900': isUserVerified,

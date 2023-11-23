@@ -18,7 +18,7 @@ const SUBMIT_BUTTON_TEXT_MAP: Partial<Record<Action, string>> = {
   [ACTION.EDIT_COLONY_DETAILS]: 'button.editDetails',
   [ACTION.EDIT_EXISTING_TEAM]: 'button.editTeam',
   [ACTION.CREATE_NEW_TEAM]: 'button.createTeam',
-  [ACTION.AWARD_REPUTATION]: 'button.changeReputation',
+  [ACTION.MANAGE_REPUTATION]: 'button.changeReputation',
   [ACTION.MANAGE_PERMISSIONS]: 'button.changePermissions',
   [ACTION.UPGRADE_COLONY_VERSION]: 'button.upgradeVersion',
   [ACTION.ENTER_RECOVERY_MODE]: 'button.enterRecovery',
