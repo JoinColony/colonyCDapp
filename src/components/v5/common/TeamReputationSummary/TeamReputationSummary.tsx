@@ -55,7 +55,7 @@ const TeamReputationSummary: FC = () => {
               return (
                 index < 5 && (
                   <li key={nativeId} className="flex items-center text-sm mb-3">
-                    <TeamReputationSummaryRow team={team} />
+                    <TeamReputationSummaryRow team={team} suffix="%" />
                   </li>
                 )
               );
