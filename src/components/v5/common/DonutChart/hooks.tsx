@@ -246,10 +246,10 @@ export const useDonutChart = (
         <g
           key={item.id}
           onMouseOver={(event) => handleMouseOver(event, item)}
-          onMouseMove={(event) => handleMouseOver(event, hoveredSegment)}
+          onMouseMove={(event) => handleMouseOver(event, item)}
           onMouseOut={() => setHoveredSegment(null)}
           onTouchStart={(event) => handleTouch(event, item)}
-          onTouchMove={(event) => handleTouch(event, hoveredSegment)}
+          onTouchMove={(event) => handleTouch(event, item)}
           onTouchEnd={() => setHoveredSegment(null)}
         >
           <path
