@@ -16,16 +16,18 @@ const CreateUserFormInputs = () => {
   const emailAddressError = errors.emailAddress?.message as string | undefined;
   const usernameError = errors.username?.message as string | undefined;
   return (
-    <>
-      <Input
-        name="emailAddress"
-        register={register}
-        className="w-full text-md border-gray-300 "
-        labelMessage={{ id: 'label.email' }}
-        isError={!!emailAddressError}
-        customErrorMessage={emailAddressError}
-        isDisabled={isSubmitting}
-      />
+    <div className="w-full">
+      <div className="pb-6">
+        <Input
+          name="emailAddress"
+          register={register}
+          className="w-full text-md border-gray-300"
+          labelMessage={{ id: 'label.email' }}
+          isError={!!emailAddressError}
+          customErrorMessage={emailAddressError}
+          isDisabled={isSubmitting}
+        />
+      </div>
       <Input
         name="username"
         register={register}
@@ -45,7 +47,7 @@ const CreateUserFormInputs = () => {
         }
         isDecoratedError={errors.username?.type === 'isUsernameTaken'}
       />
-    </>
+    </div>
   );
 };
 

@@ -60,7 +60,7 @@ const StepCreateUser = ({
             type="submit"
             mode="primarySolid"
             disabled={!isValid || isSubmitting}
-            className="mt-3"
+            className="mt-12"
           />
         </>
       )}
