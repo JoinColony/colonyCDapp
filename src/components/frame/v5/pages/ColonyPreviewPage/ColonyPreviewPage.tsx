@@ -12,7 +12,7 @@ import {
   useValidateUserInviteMutation,
   useGetPublicColonyByNameQuery,
 } from '~gql';
-import { CREATE_USER_ROUTE } from '~routes';
+import { CREATE_PROFILE_ROUTE } from '~routes';
 import ColonyAvatar from '~v5/shared/ColonyAvatar';
 
 const displayName = 'pages.ColonyPreviewPage';
@@ -131,7 +131,7 @@ const ColonyPreviewPage = () => {
   }
 
   if (wallet && !user) {
-    return <Navigate to={CREATE_USER_ROUTE} />;
+    return <Navigate to={CREATE_PROFILE_ROUTE} />;
   }
 
   const isMember = !!whitelistData?.getColonyByName?.items[0]?.whitelist.some(

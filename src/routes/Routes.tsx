@@ -38,7 +38,6 @@ import ColonyHomeRoutes from '~common/ColonyHome/ColonyHomeRoutes';
 
 import LandingPageRoute from './LandingPageRoute';
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
-import ActivityPage from '~frame/v5/pages/ActivityPage';
 
 import {
   COLONY_BALANCES_ROUTE,
@@ -103,7 +102,6 @@ const Routes = () => {
 
         {/* Main routes */}
         <Route element={<MainRoute />}>
-          <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyPage />} />
           <Route path={USER_INVITE_ROUTE} element={<ColonyPreviewPage />} />
           <Route path={COLONY_SPLASH_ROUTE} element={<ColonyPreviewPage />} />
           <Route

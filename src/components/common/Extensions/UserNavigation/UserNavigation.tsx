@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useAppContext, useGetNetworkToken, useTablet } from '~hooks';
-import { getLastWallet } from '~utils/autoLogin';
 import { formatText } from '~utils/intl';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks';
 import Button, { Hamburger } from '~v5/shared/Button';
