@@ -23,7 +23,7 @@ const PopularActions: FC<PopularActionsProps> = ({ setSelectedAction }) => {
               iconName={iconName}
               iconSize="extraSmall"
               mode="medium"
-              className="text-gray-600 font-normal"
+              className="text-gray-900 font-normal"
               onClick={() => setSelectedAction(action)}
             />
           </li>
