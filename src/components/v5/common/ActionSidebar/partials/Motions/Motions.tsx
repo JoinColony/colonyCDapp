@@ -38,7 +38,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const networkMotionStateEnum = getEnumValueFromKey(
     NetworkMotionState,
     motionState,
-    NetworkMotionState.Null,
+    undefined,
   );
 
   const [activeStepKey, setActiveStepKey] = useState(networkMotionStateEnum);
@@ -176,8 +176,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               isOptional: true,
             },
             {
-              // @todo: change to MotionState when the outcome is known and revealed
-              key: NetworkMotionState.Finalizable,
+              key: 'nonexistentmotionstate-votingresults' as unknown as NetworkMotionState,
               content: (
                 <OutcomeStep
                   motionData={motionData}
@@ -214,13 +213,11 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                     winningSide === MotionVote.Nay,
                 }),
               },
-              // @todo: add a condition to be required if staking won't go directly to finalize step
               isOptional: true,
-              // @todo: add a condition to hide when voting step is skipped
               isHidden: false,
             },
             {
-              key: NetworkMotionState.Finalized,
+              key: NetworkMotionState.Finalizable,
               content: (
                 <FinalizeStep
                   actionData={action as MotionAction}
