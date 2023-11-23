@@ -43,7 +43,15 @@ const {
 } = require('./tempColonyData');
 
 
-const DEFAULT_TIMEOUT = 100;
+// fetch command line arguments
+const timeoutArg = process.argv.indexOf('--timeout');
+const timeoutArgValue = process.argv[timeoutArg + 1];
+
+const coloniesArg = process.argv.indexOf('--coloniesCount');
+const coloniesArgValue = process.argv[coloniesArg + 1];
+
+const DEFAULT_COLONIES = parseInt(coloniesArgValue, 10) || 2;
+const DEFAULT_TIMEOUT = parseInt(timeoutArgValue, 10) || 300;
 
 const API_KEY = 'da2-fakeApiId123456';
 const GRAPHQL_URI =
@@ -670,7 +678,7 @@ const createColony = async (
 
   if (!metadataMutation.errors) {
     console.log(
-      `Creating colony metadata { displayName: "Colony ${colonyName.toUpperCase()}" }`,
+      `Creating colony metadata { displayName: "${colonyDisplayName || 'Colony ' + colonyName.toUpperCase()}" }`,
     );
   }
 
@@ -1195,7 +1203,7 @@ const createUserAndColonyData = async () => {
     delay(100);
   }));
 
-  const colonyNamesToCreate = Object.keys(coloniesTempData);
+  const colonyNamesToCreate = Object.keys(coloniesTempData).slice(0, DEFAULT_COLONIES);
   for (let index = 0; index < colonyNamesToCreate.length; index++) {
 
     const colonyData = coloniesTempData[colonyNamesToCreate[index]];
@@ -1345,6 +1353,26 @@ const createUserAndColonyData = async () => {
 
 };
 
+const checkArguments = () => {
+  const maxColoniesCount = Object.keys(coloniesTempData).length;
+
+  console.log();
+  if (DEFAULT_COLONIES > maxColoniesCount) {
+    console.log(`Number of colonies to create is higher than available data.`);
+    console.log(`Please use --coloniesCount <number> to select a more reasonable number. (Max available colonies: ${maxColoniesCount})`);
+    process.exit(0);
+  }
+
+  if (DEFAULT_TIMEOUT < 1) {
+    console.log(`You've chosen to not create any colonies. You must have at least one colony for this script to work properly.`);
+    console.log(`Please use --coloniesCount <number> to select a more reasonable number. (Max available colonies: ${maxColoniesCount})`);
+    process.exit(0);
+  }
+
+  console.log(`Starting data creation script with ${DEFAULT_COLONIES} colonies and a timeout of ${DEFAULT_TIMEOUT} ms.`);
+  console.log(`If you wish to change these values, please pass --coloniesCount <number> and --timeout <number> respectively to this script.`);
+};
+
 const checkNodeVersion = () => {
   const requiredVersion = readFile(path.resolve(__dirname, '..', '.nvmrc')).trim();
   const currentVersion = process.version;
@@ -1367,6 +1395,7 @@ const pressKeyToContinue = async () => {
   console.log(`Not doing so, will most likely break your currently running CDapp`);
   console.log(`Press "return" to confirm you understood this!`);
   console.log();
+
   process.stdin.setRawMode(true);
   return new Promise((resolve) =>
     process.stdin.once('data', () => {
@@ -1375,6 +1404,8 @@ const pressKeyToContinue = async () => {
     }),
   );
 }
+
+checkArguments();
 
 checkNodeVersion();
 
