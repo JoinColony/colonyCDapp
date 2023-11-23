@@ -35,7 +35,6 @@ export const FilterContext = createContext<
       getSelectedFilterLabels: () => SelectedFilterLabel[];
       handleClearFilters: (parents?: FilterType[]) => void;
       handleFilterSelect: (event: React.ChangeEvent<HTMLInputElement>) => void;
-      getFilterDomainIds: () => number[];
       getSortingMethod: () => ModelSortDirection;
       getFilterPermissions: () => number[];
       getFilterStatus: () => StatusType | undefined;
@@ -170,18 +169,6 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
     setSelectedFilterCount((prevState) => prevState - removedFilters);
   }, []);
 
-  const getFilterDomainIds = useCallback(
-    () =>
-      [...selectedFilters[FilterTypes.Team].keys()]
-        .map((filterId) => {
-          const nativeDomainId = filterId.split('_').shift();
-          return Number(nativeDomainId);
-        })
-        // ensure root comes first
-        .sort((a, b) => a - b),
-    [selectedFilters],
-  );
-
   const getFilterPermissions = useCallback(() => {
     return [...selectedFilters[FilterTypes.Permissions].keys()].reduce(
       (acc, permission) => {
@@ -227,7 +214,6 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
     if (isFollowersPage) {
       handleClearFilters([
         'contributor',
-        'team',
         'reputation',
         'permissions',
         'latest',
@@ -241,7 +227,6 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
       handleClearFilters,
       handleFilterSelect,
       filterOptions,
-      getFilterDomainIds,
       getSortingMethod,
       getFilterPermissions,
       getFilterStatus,
@@ -254,7 +239,6 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
       handleClearFilters,
       handleFilterSelect,
       filterOptions,
-      getFilterDomainIds,
       getSortingMethod,
       getFilterPermissions,
       getFilterStatus,

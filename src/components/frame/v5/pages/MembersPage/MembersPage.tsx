@@ -5,6 +5,8 @@ import TeamReputationSummary from '~v5/common/TeamReputationSummary';
 import Header from '~frame/v5/Header';
 import { useColonyContext } from '~hooks';
 import { useMemberContext } from '~context/MemberContext';
+import { useSetPageHeadingTitle } from '~context';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.pages.MembersPage';
 
@@ -19,6 +21,8 @@ const MembersPage: FC = () => {
   const { name } = colony || {};
   const followersURL = `/colony/${name}/followers`;
   const contributorsURL = `/colony/${name}/contributors`;
+
+  useSetPageHeadingTitle(formatText({ id: 'membersPage.title' }));
 
   return (
     <div>

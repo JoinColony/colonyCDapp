@@ -12,6 +12,7 @@ const FilterButton: FC<FilterButtonProps> = ({
   numberSelectedFilters,
   setTriggerRef,
   onClick,
+  customLabel,
 }) => {
   const { formatMessage } = useIntl();
 
@@ -29,7 +30,7 @@ const FilterButton: FC<FilterButtonProps> = ({
       onClick={onClick}
     >
       <Icon name="funnel-simple" appearance={{ size: 'tiny' }} />
-      {formatMessage({ id: 'filter' })}
+      {customLabel || formatMessage({ id: 'filter' })}
 
       {!!numberSelectedFilters && (
         <span className="bg-blue-100 p-1 rounded-sm text-gray-900 text-6 h-3 flex items-center">
