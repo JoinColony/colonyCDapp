@@ -36,8 +36,8 @@ export const useDonutChart = (
               id: '1',
               label: '',
               value: 100,
-              color: '#F9FBFC',
-              stroke: '#F9FBFC',
+              color: '--color-base-bg',
+              stroke: '--color-base-white',
             },
           ],
     [data, summedChartValues],
@@ -197,7 +197,7 @@ export const useDonutChart = (
           cx={size / 2}
           cy={size / 2}
           r={outerRadius}
-          fill={chartData[0]?.color}
+          fill={`var(${chartData[0].color}`}
         />
         <circle
           cx={size / 2}
@@ -239,8 +239,8 @@ export const useDonutChart = (
     return chartData.map((item, index) => {
       // Calculate the path for this segment
       const path = calculatePath(item.value, totalValue, index);
-      const fillColor = item.color;
-      const strokeColor = '#ffffff';
+      const fillColor = `var(${item.color})`;
+      const strokeColor = `var(--color-base-white)`;
 
       return (
         <g

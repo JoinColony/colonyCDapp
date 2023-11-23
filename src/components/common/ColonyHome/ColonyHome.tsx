@@ -10,6 +10,7 @@ import {
   COLONY_MEMBERS_ROUTE,
   COLONY_DETAILS_ROUTE,
   COLONY_TEAMS_ROUTE,
+  COLONY_AGREEMENTS_ROUTE,
 } from '~routes';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { useActionSidebarContext } from '~context';
@@ -179,7 +180,12 @@ const ColonyHome = () => {
                   </div>
                   {allTeams?.length ? (
                     <div className="w-full min-w-[10rem] sm:min-w-[15.438rem]">
-                      <ul>
+                      <ul
+                        className={clsx({
+                          'flex flex-col justify-center min-h-[6.25rem]':
+                            allTeams?.length < 4,
+                        })}
+                      >
                         {allTeams.map((team, index) => {
                           const { nativeId } = team;
                           return (
@@ -187,7 +193,7 @@ const ColonyHome = () => {
                               <li
                                 key={nativeId}
                                 className={clsx(
-                                  'flex items-center text-sm mb-3',
+                                  'flex items-center text-sm [&:not(:last-child)]:mb-3',
                                   {
                                     'transition-all font-semibold':
                                       hoveredSegment?.id === team.id,
@@ -204,7 +210,7 @@ const ColonyHome = () => {
                         })}
                       </ul>
                       {!!otherTeamsReputation && (
-                        <div className="flex items-center text-sm">
+                        <div className="flex items-center text-sm mt-3">
                           <span className="flex items-center flex-grow">
                             <span className="flex rounded-full w-[0.625rem] h-[0.625rem] mr-2 bg-gray-100" />
                             <span
@@ -263,17 +269,11 @@ const ColonyHome = () => {
             value: agreements ? (
               <div className="flex flex-col gap-[0.375rem]">
                 <div className="flex items-start justify-between gap-2">
-                  <span className="text-3">
-                    Should Multi-Sig permissions be enabled within the
-                    MetaColony from next Quarter?
-                  </span>
+                  <span className="text-3">{agreements}</span>
                   <MessageNumber message={1} />
                 </div>
                 <p className="text-sm text-gray-600 line-clamp-3">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea velt.
+                  {agreements}
                 </p>
               </div>
             ) : (
@@ -293,7 +293,7 @@ const ColonyHome = () => {
             contentClassName: 'w-full',
             className:
               'flex-col p-6 bg-base-white h-[11.25rem] sm:cursor-pointer',
-            href: agreements ? '/' : undefined,
+            href: agreements ? COLONY_AGREEMENTS_ROUTE : undefined,
           },
         ]}
       />

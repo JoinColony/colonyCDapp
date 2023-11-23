@@ -42,39 +42,39 @@ export const setTeamColor = (color?: DomainColor) => {
 export const setHexTeamColor = (color?: DomainColor) => {
   switch (color) {
     case DomainColor.Purple:
-      return '#7A5AF8';
+      return '--color-teams-purple-400';
     case DomainColor.LightPink:
-      return '#EE46BC';
+      return '--color-teams-pink-400';
     case DomainColor.Yellow:
-      return '#FD853A';
+      return '--color-teams-yellow-500';
     case DomainColor.Blue:
-      return '#444CE7';
+      return '--color-indigo-400';
     case DomainColor.Green:
-      return '#039855';
+      return '--color-teams-green-500';
     case DomainColor.Aqua:
-      return '#0694A2';
+      return '--color-teams-teal-500';
     case DomainColor.Black:
-      return '#415A77';
+      return '--color-teams-grey-500';
     case DomainColor.BlueGrey:
-      return '#ECEFF1';
+      return '--color-teams-grey-100';
     case DomainColor.EmeraldGreen:
-      return '#0FA98A';
+      return '--color-teams-green-400';
     case DomainColor.Gold:
-      return '#FFF6ED';
+      return '--color-teams-yellow-100';
     case DomainColor.Magenta:
-      return '#A11043';
+      return '--color-teams-pink-600';
     case DomainColor.Orange:
-      return '#C4320A';
+      return '--color-teams-red-400';
     case DomainColor.Pink:
-      return '#C11574';
+      return '--color-teams-pink-500';
     case DomainColor.Periwinkle:
-      return '#4E5BA6';
+      return '--color-teams-indigo-500';
     case DomainColor.PurpleGrey:
-      return '#7A5AF8';
+      return '--color-teams-purple-400';
     case DomainColor.Red:
-      return '#E31B54';
+      return '--color-teams-red-600';
     default:
-      return '#7A5AF8';
+      return '--color-teams-purple-400';
   }
 };
 
