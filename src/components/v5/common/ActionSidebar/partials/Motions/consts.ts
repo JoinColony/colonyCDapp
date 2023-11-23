@@ -26,6 +26,6 @@ export const opposeOption = {
 };
 
 export const STAKING_RADIO_BUTTONS: ButtonRadioButtonItem<MotionVote>[] = [
-  supportOption,
   opposeOption,
+  supportOption,
 ];
