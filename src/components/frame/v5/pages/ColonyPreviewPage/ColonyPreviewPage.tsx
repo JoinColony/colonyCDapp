@@ -222,7 +222,7 @@ const ColonyPreviewPage = () => {
               className="w-full md:w-auto"
               mode="quinary"
               text={MSG.joinColonyButton}
-              onClick={() => validateAndRedirect()}
+              onClick={() => validateInviteCode()}
               size="small"
             />
           ) : null
