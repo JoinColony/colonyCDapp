@@ -59,4 +59,4 @@ const DonutChart: FC<DonutChartProps> = ({
 
 DonutChart.displayName = displayName;
 
-export default React.memo(DonutChart);
+export default DonutChart;
