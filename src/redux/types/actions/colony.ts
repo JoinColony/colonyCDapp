@@ -31,7 +31,6 @@ export type ColonyActionTypes =
         tokenIcon: string;
         tokenName: string;
         tokenSymbol: string;
-        userId: string;
         inviteCode: string;
         tokenAvatar?: string;
         tokenThumbnail?: string;
