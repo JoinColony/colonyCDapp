@@ -1,7 +1,12 @@
-import { STATUS_TYPES } from './consts';
+export enum StatusType {
+  SUCCESS = 'success',
+  WARNING = 'warning',
+  ERROR = 'error',
+  INFO = 'info',
+}
 
 export interface StatusTextProps {
-  status: (typeof STATUS_TYPES)[keyof typeof STATUS_TYPES];
+  status: StatusType;
   className?: string;
   iconName?: string;
   iconClassName?: string;

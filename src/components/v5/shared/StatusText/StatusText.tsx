@@ -1,9 +1,8 @@
 import React, { FC, PropsWithChildren } from 'react';
 
 import clsx from 'clsx';
-import { StatusTextProps } from './types';
+import { StatusType, StatusTextProps } from './types';
 import Icon from '~shared/Icon';
-import { STATUS_TYPES } from './consts';
 
 const displayName = 'v5.shared.StatusText';
 
@@ -18,19 +17,19 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
   iconAlignment = 'center',
 }) => {
   const iconName = {
-    [STATUS_TYPES.SUCCESS]: 'check-circle',
-    [STATUS_TYPES.WARNING]: 'warning-circle',
-    [STATUS_TYPES.ERROR]: 'warning-circle',
-    [STATUS_TYPES.INFO]: 'info',
+    [StatusType.SUCCESS]: 'check-circle',
+    [StatusType.WARNING]: 'warning-circle',
+    [StatusType.ERROR]: 'warning-circle',
+    [StatusType.INFO]: 'info',
   };
 
   return (
     <div
       className={clsx(className, 'flex', {
-        'text-gray-900': status === STATUS_TYPES.INFO,
-        'text-success-400': status === STATUS_TYPES.SUCCESS,
-        'text-warning-400': status === STATUS_TYPES.WARNING,
-        'text-negative-400': status === STATUS_TYPES.ERROR,
+        'text-gray-900': status === StatusType.INFO,
+        'text-success-400': status === StatusType.SUCCESS,
+        'text-warning-400': status === StatusType.WARNING,
+        'text-negative-400': status === StatusType.ERROR,
         'gap-2': withIcon,
         'items-center': iconAlignment === 'center',
         'items-start': iconAlignment === 'top',
