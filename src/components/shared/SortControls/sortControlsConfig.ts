@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-import { SortDirection } from '~types';
+import { SearchableSortDirection } from '~types';
 
 const SORT_MSG = defineMessages({
   newest: {
@@ -16,10 +16,10 @@ const SORT_MSG = defineMessages({
 export const SortSelectOptions = [
   {
     label: SORT_MSG.newest,
-    value: SortDirection.Desc,
+    value: SearchableSortDirection.Desc,
   },
   {
     label: SORT_MSG.oldest,
-    value: SortDirection.Asc,
+    value: SearchableSortDirection.Asc,
   },
 ];

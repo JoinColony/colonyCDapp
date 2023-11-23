@@ -82,6 +82,11 @@ export {
   TRANSACTION_STATUS,
   MSG as SafeMSGs,
 } from './useSafeTransactionStatus';
+export { default as useActivityFeed } from './useActivityFeed';
+export {
+  default as useNetworkMotionStates,
+  MotionStatesMap,
+} from './useNetworkMotionStates';
 
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously

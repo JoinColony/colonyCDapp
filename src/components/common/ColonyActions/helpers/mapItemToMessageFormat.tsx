@@ -29,7 +29,7 @@ import {
 import {
   AmountTag,
   Motion as MotionTag,
-  Objection as ObjectionTag,
+  Opposed as OpposedTag,
   Voting as VotingTag,
   Failed as FailedTag,
   Reveal as RevealTag,
@@ -349,10 +349,10 @@ export const useMapMotionEventToExpectedFormat = (
       Number(motionMessageData?.vote) === MotionVote.Yay ? (
         <MotionTag />
       ) : (
-        <ObjectionTag />
+        <OpposedTag />
       ),
     motionTag: <MotionTag />,
-    objectionTag: <ObjectionTag />,
+    objectionTag: <OpposedTag />,
     votingTag: <VotingTag />,
     failedTag: <FailedTag />,
     revealTag: <RevealTag />,

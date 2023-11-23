@@ -11,8 +11,9 @@ export enum TagName {
   StakingTag = 'StakingTag',
   VotingTag = 'VotingTag',
   RevealTag = 'RevealTag',
-  ObjectionTag = 'ObjectionTag',
+  OpposedTag = 'OpposedTag',
   FailedTag = 'FailedTag',
+  FinalizableTag = 'FinalizableTag',
   PassedTag = 'PassedTag',
   InvalidTag = 'InvalidTag',
   EscalateTag = 'EscalateTag',
@@ -21,16 +22,17 @@ export enum TagName {
 }
 
 enum TagText {
-  Staked = 'Staked',
+  Staked = 'Supported',
   Staking = 'Staking',
   Voting = 'Voting',
   Reveal = 'Reveal',
-  Objection = 'Objection',
+  Opposed = 'Opposed',
   Motion = 'Motion',
   Failed = 'Failed',
+  Finalizable = 'Finalizable',
   Passed = 'Passed',
   Invalid = 'Invalid',
-  Escalate = 'Escalate',
+  Escalate = 'Escalated',
   Forced = 'Forced',
   Draft = 'Draft',
 }
@@ -40,9 +42,10 @@ const { formatMessage } = intl({
   [TagName.StakingTag]: TagText.Staking,
   [TagName.VotingTag]: TagText.Voting,
   [TagName.RevealTag]: TagText.Reveal,
-  [TagName.ObjectionTag]: TagText.Objection,
+  [TagName.OpposedTag]: TagText.Opposed,
   [TagName.MotionTag]: TagText.Motion,
   [TagName.FailedTag]: TagText.Failed,
+  [TagName.FinalizableTag]: TagText.Finalizable,
   [TagName.PassedTag]: TagText.Passed,
   [TagName.InvalidTag]: TagText.Invalid,
   [TagName.EscalateTag]: TagText.Escalate,
@@ -60,7 +63,7 @@ export interface MotionStyles {
 export const MOTION_TAG_MAP: {
   [key in keyof typeof MotionState]: MotionStyles;
 } = {
-  [MotionState.Staked]: {
+  [MotionState.Supported]: {
     theme: TagTheme.Primary,
     colorSchema: TagColorSchema.FullColor,
     text: formatMessage({ id: TagName.StakedTag }) as TagText,
@@ -84,11 +87,11 @@ export const MOTION_TAG_MAP: {
     text: formatMessage({ id: TagName.RevealTag }) as TagText,
     tagName: TagName.RevealTag,
   },
-  [MotionState.Objection]: {
+  [MotionState.Opposed]: {
     theme: TagTheme.Pink,
     colorSchema: TagColorSchema.FullColor,
-    text: formatMessage({ id: TagName.ObjectionTag }) as TagText,
-    tagName: TagName.ObjectionTag,
+    text: formatMessage({ id: TagName.OpposedTag }) as TagText,
+    tagName: TagName.OpposedTag,
   },
   [MotionState.Motion]: {
     theme: TagTheme.Primary,
@@ -108,6 +111,12 @@ export const MOTION_TAG_MAP: {
     text: formatMessage({ id: TagName.FailedTag }) as TagText,
     tagName: TagName.FailedTag,
   },
+  [MotionState.Finalizable]: {
+    theme: TagTheme.Primary,
+    colorSchema: TagColorSchema.Plain,
+    text: formatMessage({ id: TagName.PassedTag }) as TagText,
+    tagName: TagName.PassedTag,
+  },
   [MotionState.Passed]: {
     theme: TagTheme.Primary,
     colorSchema: TagColorSchema.Plain,
@@ -120,7 +129,7 @@ export const MOTION_TAG_MAP: {
     text: formatMessage({ id: TagName.InvalidTag }) as TagText,
     tagName: TagName.InvalidTag,
   },
-  [MotionState.Escalation]: {
+  [MotionState.Escalated]: {
     theme: TagTheme.DangerGhost,
     colorSchema: TagColorSchema.Plain,
     text: formatMessage({ id: TagName.EscalateTag }) as TagText,
@@ -154,12 +163,13 @@ export const motionTags = Object.entries(MOTION_TAG_MAP).reduce<TagsRecord>(
 );
 
 export const {
-  Escalation,
+  Escalated,
   Failed,
   Forced,
   Invalid,
   Motion,
-  Objection,
+  Opposed,
+  Finalizable,
   Passed,
   Reveal,
   Staking,

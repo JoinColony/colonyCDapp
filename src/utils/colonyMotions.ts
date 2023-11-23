@@ -13,17 +13,18 @@ export enum MotionVote {
 export const noMotionsVotingReputationVersion = 4;
 
 export enum MotionState {
-  Staked = 'Staked',
+  Supported = 'Supported',
   Staking = 'Staking',
   Voting = 'Voting',
   Reveal = 'Reveal',
-  Objection = 'Objection',
-  Motion = 'Motion',
+  Opposed = 'Opposed',
+  Motion = 'Motion', // @TODO: This was used by the old MotionTag component and should be removed
   Failed = 'Failed',
+  Finalizable = 'Finalizable',
   Passed = 'Passed',
   FailedNotFinalizable = 'FailedNotFinalizable',
   Invalid = 'Invalid',
-  Escalation = 'Escalation',
+  Escalated = 'Escalated',
   Forced = 'Forced',
   Draft = 'Draft',
 }
@@ -50,7 +51,7 @@ export const getMotionState = (
     case NetworkMotionState.Staking: {
       return BigNumber.from(yayStakes).gte(requiredStake) &&
         BigNumber.from(nayStakes).isZero()
-        ? MotionState.Staked
+        ? MotionState.Supported
         : MotionState.Staking;
     }
     case NetworkMotionState.Submit: {
@@ -60,9 +61,10 @@ export const getMotionState = (
       return MotionState.Reveal;
     }
     case NetworkMotionState.Closed: {
-      return MotionState.Escalation;
+      return MotionState.Escalated;
     }
     case NetworkMotionState.Finalizable:
+      return MotionState.Finalizable;
     case NetworkMotionState.Finalized: {
       /*
        * Both sides staked fully, we go to a vote
@@ -80,18 +82,6 @@ export const getMotionState = (
          */
         if (BigNumber.from(yayVotes).gt(nayVotes)) {
           return MotionState.Passed;
-        }
-
-        if (
-          BigNumber.from(yayVotes).isZero() &&
-          BigNumber.from(nayVotes).isZero()
-        ) {
-          /*
-           * If the motion is finalizable, and we have voted, and the revealed votes haven't yet been populated to the db,
-           * we shouldn't display a passed/failed tag as we don't yet know the vote outcome.
-           * Instead, we show the previous stage's tag, until the vote outcome is updated in the db.
-           */
-          return MotionState.Reveal;
         }
 
         return MotionState.Failed;

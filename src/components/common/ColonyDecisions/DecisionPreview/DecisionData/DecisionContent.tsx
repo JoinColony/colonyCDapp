@@ -7,7 +7,7 @@ import { userDetailPopoverOptions } from '~shared/DetailsWidget';
 import { useAppContext } from '~hooks';
 
 import { getMainClasses } from '~utils/css';
-import { Objection as ObjectionTag } from '~shared/Tag';
+import { Opposed as OpposedTag } from '~shared/Tag';
 
 import styles from './DecisionContent.css';
 
@@ -46,7 +46,7 @@ const DecisionContent = ({
             {time}
           </div>
         </div>
-        {isObjection && <ObjectionTag />}
+        {isObjection && <OpposedTag />}
       </div>
       {title && (
         <Heading3 appearance={{ margin: 'none', theme: 'dark' }} text={title} />

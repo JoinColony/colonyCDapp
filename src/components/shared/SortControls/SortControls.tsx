@@ -2,7 +2,7 @@ import { defineMessages } from '@formatjs/intl';
 import React from 'react';
 
 import { Form, Select } from '~shared/Fields';
-import { SortDirection } from '~types';
+import { SearchableSortDirection } from '~types';
 
 import { SortSelectOptions } from './sortControlsConfig';
 
@@ -21,8 +21,8 @@ type Options = typeof SortSelectOptions;
 
 interface SortControlsProps {
   options?: Options;
-  onChange: (optionValue: SortDirection) => void;
-  sortDirection: SortDirection;
+  onChange: (optionValue: SearchableSortDirection) => void;
+  sortDirection: SearchableSortDirection;
 }
 
 const SortControls = ({
