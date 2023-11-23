@@ -5,13 +5,26 @@ import UserAvatars from '~v5/shared/UserAvatars';
 import Icon from '~shared/Icon';
 import { VoteStatusesProps } from './types';
 import { MotionVote } from '~utils/colonyMotions';
+import { useUserAvatars } from '~hooks/useUserAvatars';
 
 const displayName =
   'v5.common.ActionSidebar.partials.Motion.steps.OutcomeStep.partials.VoteStatuses';
 
 const VoteStatuses: FC<VoteStatusesProps> = ({ items, voters }) => {
-  const yayVoters = voters.filter(({ vote }) => vote === MotionVote.Yay);
-  const nayVoters = voters.filter(({ vote }) => vote === MotionVote.Nay);
+  const {
+    registeredUsers: yayVoters,
+    remainingAvatarsCount: remainingYayVoters,
+  } = useUserAvatars(
+    3,
+    voters.filter(({ vote }) => vote === MotionVote.Yay),
+  );
+  const {
+    registeredUsers: nayVoters,
+    remainingAvatarsCount: remainingNayVoters,
+  } = useUserAvatars(
+    3,
+    voters.filter(({ vote }) => vote === MotionVote.Nay),
+  );
 
   return (
     <>
@@ -49,6 +62,11 @@ const VoteStatuses: FC<VoteStatusesProps> = ({ items, voters }) => {
             <UserAvatars
               className="flex shrink"
               items={status === MotionVote.Yay ? yayVoters : nayVoters}
+              remainingAvatarsCount={
+                status === MotionVote.Yay
+                  ? remainingYayVoters
+                  : remainingNayVoters
+              }
               maxAvatarsToShow={3}
             />
           )}

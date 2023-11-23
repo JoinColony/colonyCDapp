@@ -1,3 +1,4 @@
+import { UserFragment } from '~gql';
 import { AvatarSize } from '../Avatar/types';
 
 export interface UserAvatarsItem {
@@ -9,7 +10,8 @@ export interface UserAvatarsItem {
 export interface UserAvatarsProps {
   maxAvatarsToShow?: number;
   className?: string;
-  items: UserAvatarsItem[];
+  items: UserFragment[];
   size?: AvatarSize;
   showRemainingAvatars?: boolean;
+  remainingAvatarsCount?: number;
 }

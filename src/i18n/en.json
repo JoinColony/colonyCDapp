@@ -1452,5 +1452,7 @@
     "balancePage.modal.subtitle": "Send funds to the Colony's treasury.",
     "balancePage.send.funds": "Send funds to the Colony",
     "balanceModal.modal.addFundsToWallet": "Add funds directly from your wallet",
-    "balanceModal.modal.addFundsToWallet.label": "Enter amount"
+    "balanceModal.modal.addFundsToWallet.label": "Enter amount",
+    "breadcrumbs.teams": "Teams",
+    "breadcrumbs.allTeams": "All teams"
 }

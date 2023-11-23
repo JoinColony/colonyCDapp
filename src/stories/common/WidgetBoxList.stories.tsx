@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
 
 import WidgetBoxList from '~v5/common/WidgetBoxList';
 import UserAvatars from '~v5/shared/UserAvatars';
@@ -14,9 +13,7 @@ const widgetBoxListMeta: Meta<typeof WidgetBoxList> = {
   decorators: [
     (Story) => (
       <div className="w-full">
-        <Router>
-          <Story />
-        </Router>
+        <Story />
       </div>
     ),
   ],
@@ -55,16 +52,13 @@ export const Base: StoryObj<typeof WidgetBoxList> = {
           <UserAvatars
             items={[
               {
-                address: '0xD8Bb3F612902EaF1c858e5663d36081DDbD80C79',
-                voteCount: '2',
+                walletAddress: '0xD8Bb3F612902EaF1c858e5663d36081DDbD80C79',
               },
               {
-                address: '0x37842D3196cDA643252B125def5D89a78C03b5b7',
-                voteCount: '3',
+                walletAddress: '0x37842D3196cDA643252B125def5D89a78C03b5b7',
               },
               {
-                address: '0x7fDab0917F1E0A283afce9d9044F57dd15A9A9F5',
-                voteCount: '1',
+                walletAddress: '0x7fDab0917F1E0A283afce9d9044F57dd15A9A9F5',
               },
             ]}
           />

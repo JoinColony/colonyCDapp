@@ -7,6 +7,7 @@ import Link from '../Link';
 
 import { BreadcrumbsProps } from './types';
 import Icon from '~shared/Icon';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.Breadcrumbs';
 
@@ -21,8 +22,21 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ items, className }) => {
       {items.map(({ key, ...item }) => {
         const options =
           'dropdownOptions' in item
-            ? item.dropdownOptions.map(({ href, label, ...option }) => ({
-                label: <Link to={href}>{label}</Link>,
+            ? item.dropdownOptions.map(({ href, label, color, ...option }) => ({
+                label: (
+                  <Link
+                    to={href}
+                    className={clsx({
+                      'flex items-center w-full gap-2 px-4 py-2 transition-none duration-0 sm:hover:!text-gray-900':
+                        !!color,
+                    })}
+                  >
+                    {color && (
+                      <span className={clsx(color, 'w-3.5 h-3.5 rounded')} />
+                    )}
+                    {label}
+                  </Link>
+                ),
                 value: href,
                 ...option,
               }))
@@ -39,15 +53,24 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ items, className }) => {
               </Link>
             ) : (
               <CardSelect<string>
-                togglerClassName="text-inherit uppercase !text-gray-900 tracking-[.075rem] text-3 md:hover:!text-blue-400"
+                togglerClassName="uppercase tracking-[.075rem] text-3 md:hover:!text-blue-400"
                 options={options}
+                title={formatText({ id: 'breadcrumbs.teams' })}
                 value={item.selectedValue}
-                renderSelectedValue={(option, placeholder, isSelectVisible) => {
-                  const { label } = option || {};
+                cardClassName="sm:!max-w-[13.5rem] !w-full"
+                renderOptionWrapper={(props, label) => (
+                  <div {...props}>{label}</div>
+                )}
+                itemClassName="text-md md:transition-colors md:hover:font-medium md:hover:bg-gray-50 rounded w-full cursor-pointer"
+                renderSelectedValue={(_, placeholder, isSelectVisible) => {
+                  const { dropdownOptions } = item;
+                  const selectedOption = dropdownOptions?.find(
+                    ({ href }) => href === item.selectedValue,
+                  )?.label;
 
                   return (
                     <span className="flex items-center">
-                      {label || placeholder}{' '}
+                      {selectedOption || placeholder}{' '}
                       <Icon
                         name="caret-down"
                         appearance={{ size: 'extraExtraTiny' }}

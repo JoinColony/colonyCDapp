@@ -1,10 +1,9 @@
 import { BigNumber } from 'ethers';
-import { Token } from '~types';
-import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
+import { Token, User } from '~types';
 
 export interface UseGetHomeWidgetReturnType {
   activeActions: number;
-  allMembers: UserAvatarsItem[];
+  allMembers: User[];
   teamColor: string;
   currentTokenBalance: BigNumber;
   nativeToken: Token | undefined;

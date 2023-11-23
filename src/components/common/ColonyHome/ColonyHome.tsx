@@ -1,7 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
 import { useColonyContext } from '~hooks';
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
+import {
+  useSetPageBreadcrumbs,
+  useSetPageHeadingTitle,
+} from '~context/PageHeadingContext/hooks';
 import { formatText } from '~utils/intl';
 import WidgetBoxList from '~v5/common/WidgetBoxList';
 import UserAvatars from '~v5/shared/UserAvatars';
@@ -9,13 +12,16 @@ import { COLONY_MEMBERS_ROUTE } from '~routes';
 import { useGetHomeWidget } from './hooks';
 import Numeral from '~shared/Numeral';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import {
+  useCreateTeamBreadcrumbs,
+  useGetSelectedTeamFilter,
+} from '~hooks/useTeamsBreadcrumbs';
 
 const displayName = 'common.ColonyHome';
 
 const ColonyHome = () => {
   const { colony } = useColonyContext();
-  // @TODO: Add selected team filter
-  const selectedTeam = undefined;
+  const selectedTeam = useGetSelectedTeamFilter();
   const {
     activeActions,
     allMembers,
@@ -23,9 +29,11 @@ const ColonyHome = () => {
     currentTokenBalance,
     membersLoading,
     nativeToken,
-  } = useGetHomeWidget();
+  } = useGetHomeWidget(selectedTeam?.nativeId);
+  const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
 
   useSetPageHeadingTitle(formatText({ id: 'colonyHome.title' }));
+  useSetPageBreadcrumbs(teamsBreadcrumbs);
 
   if (!colony) {
     return null;

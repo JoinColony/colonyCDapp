@@ -35,6 +35,7 @@ const MemberContext = createContext<
       totalMemberCount: number;
       contributors: ColonyContributor[];
       totalContributorCount: number;
+      memberCountLoading: boolean;
       loadingContributors: boolean;
       loadingMembers: boolean;
       loadMoreContributors: () => void;
@@ -151,10 +152,11 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     pageSize,
   });
 
-  const { data: { getTotalMemberCount } = {} } = useGetContributorCountQuery({
-    variables: { input: { colonyAddress } },
-    skip: !colonyAddress,
-  });
+  const { data: { getTotalMemberCount } = {}, loading: memberCountLoading } =
+    useGetContributorCountQuery({
+      variables: { input: { colonyAddress } },
+      skip: !colonyAddress,
+    });
 
   const {
     contributorCount: totalContributorCount = 0,
@@ -168,6 +170,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       totalMemberCount,
       contributors,
       totalContributorCount,
+      memberCountLoading,
       moreContributors,
       moreMembers,
       loadMoreContributors,
@@ -182,6 +185,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       totalMemberCount,
       contributors,
       totalContributorCount,
+      memberCountLoading,
       pageSize,
       moreContributors,
       loadingContributors,

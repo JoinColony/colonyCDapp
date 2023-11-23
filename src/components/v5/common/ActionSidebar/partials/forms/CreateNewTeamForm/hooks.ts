@@ -43,7 +43,7 @@ export const useCrateNewTeam = (
       pipe(
         mapPayload((payload: CreateNewTeamFormValues) => {
           const values = {
-            domainName: payload.teamName,
+            teamName: payload.teamName,
             domainPurpose: payload.domainPurpose,
             domainColor: payload.domainColor,
             motionDomainId: payload.createdIn,
