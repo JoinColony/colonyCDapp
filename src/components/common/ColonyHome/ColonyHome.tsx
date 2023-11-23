@@ -208,30 +208,30 @@ const ColonyHome = () => {
                             )
                           );
                         })}
-                      </ul>
-                      {!!otherTeamsReputation && (
-                        <div className="flex items-center text-sm mt-3">
-                          <span className="flex items-center flex-grow">
-                            <span className="flex rounded-full w-[0.625rem] h-[0.625rem] mr-2 bg-gray-100" />
-                            <span
-                              className={clsx({
-                                'transition-all font-semibold':
-                                  hoveredSegment?.id === '4',
-                              })}
-                            >
-                              {formatText({
-                                id: 'label.allOther',
-                              })}
+                        {!!otherTeamsReputation && (
+                          <div className="flex items-center text-sm">
+                            <span className="flex items-center flex-grow">
+                              <span className="flex rounded-full w-[0.625rem] h-[0.625rem] mr-2 bg-gray-100" />
+                              <span
+                                className={clsx({
+                                  'transition-all font-semibold':
+                                    hoveredSegment?.id === '4',
+                                })}
+                              >
+                                {formatText({
+                                  id: 'label.allOther',
+                                })}
+                              </span>
                             </span>
-                          </span>
-                          <span className="font-medium">
-                            <Numeral
-                              value={Number(otherTeamsReputation).toFixed(1)}
-                              suffix="%"
-                            />
-                          </span>
-                        </div>
-                      )}
+                            <span className="font-medium">
+                              <Numeral
+                                value={Number(otherTeamsReputation).toFixed(1)}
+                                suffix="%"
+                              />
+                            </span>
+                          </div>
+                        )}
+                      </ul>
                     </div>
                   ) : (
                     <EmptyWidgetState
