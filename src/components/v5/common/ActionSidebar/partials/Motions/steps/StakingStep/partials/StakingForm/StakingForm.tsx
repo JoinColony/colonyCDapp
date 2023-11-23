@@ -146,7 +146,6 @@ const StakingForm: FC<StakingFormProps> = ({
                         getTokenDecimalsWithFallback(tokenDecimals),
                       numeralPositiveOnly: true,
                       rawValueTrimPrefix: true,
-                      prefix: tokenSymbol,
                       tailPrefix: true,
                     }}
                     buttonProps={{
