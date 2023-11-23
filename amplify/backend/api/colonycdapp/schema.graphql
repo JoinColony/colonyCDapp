@@ -28,28 +28,6 @@ input TokenFromEverywhereArguments {
 }
 
 """
-Input data for fetching the list of members for a specific Colony
-"""
-input MembersForColonyInput {
-  """
-  Address of the Colony
-  """
-  colonyAddress: String!
-  """
-  Root hash for the reputation state
-  """
-  rootHash: String
-  """
-  ID of the domain within the Colony
-  """
-  domainId: Int
-  """
-  Sorting method to apply to the member list
-  """
-  sortingMethod: SortingMethod
-}
-
-"""
 Input data for creating a unique user within the Colony Network Use this instead of the automatically generated `CreateUserInput` input type
 """
 input CreateUniqueUserInput {
@@ -510,25 +488,6 @@ type GetMotionTimeoutPeriodsReturn {
 }
 
 """
-A return type representing the members of a Colony
-
-Definitions:
-* Member = User watching a Colony, with or without reputation
-* Contributor = User watching a Colony WITH reputation
-* Watcher = User watching a Colony WITHOUT reputation
-"""
-type MembersForColonyReturn {
-  """
-  User watching a Colony WITH reputation
-  """
-  contributors: [Contributor!]
-  """
-  User watching a Colony WITHOUT reputation
-  """
-  watchers: [Watcher!]
-}
-
-"""
 A return type that contains the voting reward for a user and a motion
 `min` and `max` specify the potential reward range when the actual reward is unknown (before the _reveal_ phase)
 """
@@ -908,11 +867,6 @@ type Query {
     input: GetUserTokenBalanceInput
   ): GetUserTokenBalanceReturn @function(name: "getUserTokenBalance-${env}")
   """
-  Fetch the list of members for a specific Colony
-  """
-  getMembersForColony(input: MembersForColonyInput): MembersForColonyReturn
-    @function(name: "getMembersForColony-${env}")
-  """
   Get the state of a motion (i.e. the current period)
   """
   getMotionState(input: GetMotionStateInput): Int!
@@ -1106,46 +1060,6 @@ type ProfileMetadata {
 }
 
 """
-Represents a contributor within the Colony Network
-
-A contributor is a Colony member who has reputation
-"""
-type Contributor {
-  """
-  Wallet address of the contributor
-  """
-  address: String!
-  """
-  User data associated with the contributor
-  """
-  user: User
-  """
-  Reputation percentage of the contributor (of all reputation within the Colony)
-  """
-  reputationPercentage: String
-  """
-  Reputation amount of the contributor (as an absolute number)
-  """
-  reputationAmount: String
-}
-
-"""
-Represents a watcher within the Colony Network
-
-A watcher is a Colony member who doesn't have reputation or permissions
-"""
-type Watcher {
-  """
-  Wallet address of the watcher
-  """
-  address: String!
-  """
-  User data associated with the watcher
-  """
-  user: User
-}
-
-"""
 Represents an ERC20-compatible token that is used by Colonies and users
 """
 type Token @model {
@@ -1237,11 +1151,6 @@ type ContributorReputation @model {
   The percentage of the contributor's reputation in the domain
   """
   reputationPercentage: Float!
-}
-
-enum MemberTotalType {
-  ALL
-  CONTRIBUTORS
 }
 
 """
@@ -1354,10 +1263,6 @@ type Colony @model {
   List of domains of the Colony
   """
   domains: [Domain] @hasMany(indexName: "byColony", fields: ["id"])
-  """
-  List of users watching the Colony
-  """
-  watchers: [User] @manyToMany(relationName: "WatchedColonies")
   """
   List of Colony funds claims for all ERC20 tokens
   """
@@ -1846,10 +1751,6 @@ type User @model {
   Profile information of the user
   """
   profile: Profile @hasOne(fields: ["profileId"])
-  """
-  List of Colonies the user is watching
-  """
-  watchlist: [Colony] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
   """
   List of stakes the User made
   """

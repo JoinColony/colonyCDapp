@@ -1,11 +1,7 @@
 import {
   UserFragment,
   ColonyFragment,
-  ContributorFragment,
-  WatcherFragment,
   TokenFragment,
-  WatchListItemFragment,
-  WatchedColonyFragment,
   ExtensionFragment,
   FundsClaimFragment,
   ChainFundsClaimFragment,
@@ -17,7 +13,6 @@ import {
   DomainMetadataFragment,
   ColonyMetadataFragment,
   UserTokenBalanceDataFragment,
-  MemberUserFragment,
   ColonyBalanceFragment,
   ColonyBalancesFragment,
   ColonyTokensConnectionFragment,
@@ -63,10 +58,6 @@ export type Colony = ColonyFragment;
 
 export type ColonyMetadata = ColonyMetadataFragment;
 
-export type Contributor = ContributorFragment;
-
-export type Watcher = WatcherFragment;
-
 export type Domain = DomainFragment;
 
 export type DomainMetadata = DomainMetadataFragment;
@@ -78,10 +69,6 @@ export type MotionMessage = MotionMessageFragment;
 export type Token = TokenFragment;
 
 export type Transaction = TransactionFragment;
-
-export type WatchListItem = WatchListItemFragment;
-
-export type WatchedColony = WatchedColonyFragment;
 
 export type ColonyExtension = ExtensionFragment;
 
@@ -109,10 +96,6 @@ export type ColonyChainClaimWithToken = ChainFundsClaimFragment & {
 };
 
 export type ColonyClaims = ColonyERC20Claims | ColonyChainClaimWithToken;
-
-export type Member = Contributor | Watcher;
-
-export type MemberUser = MemberUserFragment;
 
 export type ColonyBalances = ColonyBalancesFragment;
 

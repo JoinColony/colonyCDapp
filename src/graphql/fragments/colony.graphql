@@ -91,25 +91,6 @@ fragment UnclaimedStakes on ColonyUnclaimedStake {
   }
 }
 
-fragment WatchedColony on Colony {
-  colonyAddress: id
-  name
-  chainMetadata {
-    chainId
-    network
-  }
-  metadata {
-    ...ColonyMetadata
-  }
-}
-
-fragment WatchListItem on WatchedColonies {
-  colony {
-    ...WatchedColony
-  }
-  createdAt
-}
-
 fragment ColonyMetadata on ColonyMetadata {
   displayName
   avatar
