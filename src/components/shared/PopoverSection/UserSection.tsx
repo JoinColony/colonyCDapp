@@ -4,7 +4,7 @@ import { defineMessages } from 'react-intl';
 import { DropdownMenuItem, DropdownMenuSection } from '~shared/DropdownMenu';
 import NavLink from '~shared/NavLink';
 import {
-  CREATE_USER_ROUTE,
+  CREATE_PROFILE_ROUTE,
   USER_HOME_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
 } from '~routes/routeConstants';
@@ -56,7 +56,7 @@ const UserSection = () => {
         </>
       ) : (
         <DropdownMenuItem>
-          <NavLink to={CREATE_USER_ROUTE} text={MSG.buttonGetStarted} />
+          <NavLink to={CREATE_PROFILE_ROUTE} text={MSG.buttonGetStarted} />
         </DropdownMenuItem>
       )}
     </DropdownMenuSection>

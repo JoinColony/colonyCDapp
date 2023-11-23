@@ -11,6 +11,7 @@ import { mapPayload, mergePayload, pipe } from '~utils/actions';
 import { IconButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
 import { useColonyHomeContext } from '~context';
+import { COLONY_EXTENSIONS_ROUTE } from '~routes';
 
 import {
   createExtensionSetupInitialValues,
@@ -59,7 +60,7 @@ const ExtensionSetup = ({
 
   const handleFormSuccess = useCallback(async () => {
     shortPollExtensions();
-    navigate(`/colony/${colony?.name}/extensions/${extensionId}`);
+    navigate(`/${colony?.name}/${COLONY_EXTENSIONS_ROUTE}/${extensionId}`);
   }, [colony?.name, extensionId, navigate, shortPollExtensions]);
 
   const initialValues = useMemo(() => {
@@ -74,7 +75,11 @@ const ExtensionSetup = ({
   }
 
   if (isInitialized || isDeprecated || !initializationParams) {
-    return <Navigate to={`/colony/${colony.name}/extensions/${extensionId}`} />;
+    return (
+      <Navigate
+        to={`/${colony.name}/${COLONY_EXTENSIONS_ROUTE}/${extensionId}`}
+      />
+    );
   }
 
   const schema = createExtensionSetupValidationSchema(initializationParams);

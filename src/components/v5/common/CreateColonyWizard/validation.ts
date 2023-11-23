@@ -9,6 +9,7 @@ import { CheckColonyNameExistsDocument } from '~gql';
 import { intl } from '~utils/intl';
 import { createYupTestFromQuery } from '~utils/yup/tests';
 import { Token } from '~types';
+import { RESERVED_ROUTES } from '~routes';
 
 import { FormValues } from './CreateColonyWizard';
 
@@ -127,7 +128,11 @@ export const tokenValidationSchema = object({
   .concat(createTokenValidationSchema);
 
 function isValidName(name: string) {
-  return name ? new RegExp(COLONY_NAME_REGEX).test(name) : true;
+  return name
+    ? new RegExp(COLONY_NAME_REGEX).test(name) &&
+        // disallow names that conflict with base routes
+        !RESERVED_ROUTES.has(`/${name.toLowerCase()}`)
+    : true;
 }
 
 function isValidTokenSymbol(symbol: string) {

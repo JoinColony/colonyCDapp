@@ -156,7 +156,7 @@ function* createRootMotionSaga({
     });
 
     if (colonyName && navigate) {
-      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+      navigate(`/${colonyName}?tx=${txHash}`, {
         state: { isRedirect: true },
       });
     }

@@ -101,7 +101,7 @@ const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
     updateUser?.(user?.walletAddress, true);
     return (
       <Navigate
-        to={`/colony/${colonyName}`}
+        to={`/${colonyName}`}
         state={{ isRedirect: true, hasRecentlyCreatedColony: true }}
       />
     );

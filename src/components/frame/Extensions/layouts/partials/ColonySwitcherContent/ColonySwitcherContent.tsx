@@ -50,7 +50,7 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
                 : undefined,
               chainIconName,
             }}
-            to={`/colony/${name}`}
+            to={`/${name}`}
           />
         </div>
       )}

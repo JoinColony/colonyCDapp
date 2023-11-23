@@ -9,6 +9,7 @@ import Icon from '~shared/Icon';
 import Link from '~shared/Link';
 import { AnyExtensionData } from '~types';
 import { isInstalledExtensionData } from '~utils/extensions';
+import { COLONY_EXTENSIONS_ROUTE } from '~routes';
 
 import styles from './ExtensionCard.css';
 
@@ -25,7 +26,7 @@ const ExtensionCard = ({ extensionData }: Props) => {
   return (
     <div className={styles.main}>
       <Link
-        to={`/colony/${colonyName}/extensions/${extensionData.extensionId}`}
+        to={`/${colonyName}/${COLONY_EXTENSIONS_ROUTE}/${extensionData.extensionId}`}
       >
         <Card className={styles.card}>
           <div className={styles.header}>

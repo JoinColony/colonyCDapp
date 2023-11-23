@@ -4,6 +4,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import Icon from '~shared/Icon';
 import Link from '~shared/Link';
 import { useColonyContext } from '~hooks';
+import { COLONY_INCOMING_ROUTE } from '~routes';
 
 import styles from './ManageFundsLink.css';
 
@@ -22,7 +23,7 @@ const ManageFundsLink = () => {
   return (
     <Link
       className={styles.manageFundsLink}
-      to={`/colony/${colony?.name}/funds`}
+      to={`/${colony?.name}/${COLONY_INCOMING_ROUTE}`}
       data-test="manageFunds"
     >
       <Icon

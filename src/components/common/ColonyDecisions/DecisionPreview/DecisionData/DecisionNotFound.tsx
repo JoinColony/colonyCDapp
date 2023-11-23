@@ -1,6 +1,6 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { Id } from '@colony/colony-js';
+import { Extension, Id } from '@colony/colony-js';
 import { Link } from 'react-router-dom';
 
 import Button from '~shared/Button';
@@ -8,6 +8,7 @@ import { useDialog } from '~shared/Dialog';
 import { DecisionDialog } from '~common/ColonyDecisions';
 
 import { useColonyContext, useEnabledExtensions } from '~hooks';
+import { COLONY_EXTENSIONS_ROUTE } from '~routes';
 
 import styles from './DecisionNotFound.css';
 
@@ -39,7 +40,9 @@ const extensionLinkMsgValues = (colonyName: string) => {
   return {
     link: (...chunks: any[]) => (
       <span className={styles.governanceLink}>
-        <Link to={`/colony/${colonyName}/extensions/VotingReputation`}>
+        <Link
+          to={`/${colonyName}/${COLONY_EXTENSIONS_ROUTE}/${Extension.VotingReputation}`}
+        >
           {chunks}
         </Link>
       </span>

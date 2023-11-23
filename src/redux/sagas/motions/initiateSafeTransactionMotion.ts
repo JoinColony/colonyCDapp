@@ -223,7 +223,7 @@ function* initiateSafeTransactionMotion({
       });
     }
 
-    yield navigate?.(`/colony/${colonyName}/tx/${txHash}`, {
+    yield navigate?.(`/${colonyName}?tx=${txHash}`, {
       state: {
         isRedirect: true,
       },

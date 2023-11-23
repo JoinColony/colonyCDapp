@@ -1,10 +1,15 @@
 // @NOTE: While adding or modifying a route here make sure you
 // also modify the document title hook at src/utils/hooks/useTitle.ts
 
+// Also make sure that if you add a new base route, you add it to the `RESERVED_ROUTES` array at the bottom of this file
+// so that users can't create colonies whose names clash with a base route. Also ensure no existing colony names clash with the proposed
+// addition.
+
+export const METACOLONY_HOME_ROUTE = '/meta';
 // Colony rooutes
-export const COLONY_HOME_ROUTE = '/colony/:colonyName/*';
 // @todo remove when going live
 export const COLONY_OLD_HOME_ROUTE = '/old/:colonyName/*';
+export const COLONY_HOME_ROUTE = ':colonyName/';
 export const COLONY_DETAILS_ROUTE = `details`;
 export const COLONY_ADMIN_ROUTE = `admin`;
 export const COLONY_REPUTATION_ROUTE = `reputation`;
@@ -13,43 +18,189 @@ export const COLONY_EXTENSIONS_ROUTE = `extensions`;
 export const COLONY_INTEGRATIONS_ROUTE = `integrations`;
 export const COLONY_INCORPORATION_ROUTE = `incorporation`;
 export const COLONY_ADVANCED_ROUTE = `advanced`;
-export const COLONY_EXTENSION_DETAILS_ROUTE = `extensions/:extensionId/*`;
-export const COLONY_EXTENSION_DETAILS_SETUP_ROUTE = `extensions/:extensionId/setup`;
-export const COLONY_FUNDING_ROUTE = `funds`;
+export const COLONY_EXTENSION_DETAILS_ROUTE = `${COLONY_EXTENSIONS_ROUTE}/:extensionId/*`;
+export const COLONY_EXTENSION_SETUP_ROUTE = `setup`;
+export const COLONY_EXTENSION_DETAILS_SETUP_ROUTE = `${COLONY_EXTENSIONS_ROUTE}/:extensionId/${COLONY_EXTENSION_SETUP_ROUTE}`;
+export const COLONY_INCOMING_ROUTE = `incoming`;
+export const COLONY_BALANCES_ROUTE = `balances`;
 export const COLONY_MEMBERS_ROUTE = `members`;
 export const COLONY_MEMBERS_WITH_DOMAIN_ROUTE = `members/:domainId`;
 export const COLONY_CONTRIBUTORS_ROUTE = `contributors`;
 export const COLONY_FOLLOWERS_ROUTE = `followers`;
 export const COLONY_VERIFIED_ROUTE = `verified`;
-export const COLONY_BALANCE_ROUTE = `balance`;
 export const COLONY_TEAMS_ROUTE = `teams`;
+export const COLONY_AGREEMENTS_ROUTE = `agreements`;
+export const COLONY_DECISIONS_ROUTE = `decisions`;
 export const COLONY_DECISIONS_PREVIEW_ROUTE = `decisions/preview`;
 export const DECISIONS_PAGE_ROUTE = `decisions/tx/:transactionHash`;
-export const ACTIONS_PAGE_ROUTE = 'tx/:transactionHash';
 export const COLONY_ACTIVITY_ROUTE = `activity`;
 
-export const COLONY_EXTENSION_SETUP_ROUTE = `setup`;
+export const COLONY_EXPENDITURES_ROUTE = 'expenditures';
+export const COLONY_EXPENDITURES_DETAILS_ROUTE = `${COLONY_EXPENDITURES_ROUTE}/*`;
+export const ACTIONS_QUERY_STRING = '?tx=:transactionHash';
+// Remove when no longer needed
+export const OLD_ACTIONS_PAGE_ROUTE = 'tx/:transactionHash';
 
 // User routes
-export const USER_HOME_ROUTE = '/my';
+export const USER_HOME_ROUTE = '/account';
 export const USER_EDIT_PROFILE_ROUTE = 'profile';
-export const USER_ADVANCED_ROUTE = 'advanced-settings';
+export const USER_ADVANCED_ROUTE = 'advanced';
 export const USER_PREFERENCES_ROUTE = 'preferences';
 
 // UNUSED?
-export const COLONY_EVENTS_ROUTE = `/events`;
+export const COLONY_EVENTS_ROUTE = `events`;
 export const DECISIONS_PREVIEW_ROUTE_SUFFIX = '/preview';
 
 export const CREATE_COLONY_ROUTE_BASE = '/create-colony';
 export const CREATE_COLONY_ROUTE = `${CREATE_COLONY_ROUTE_BASE}/:inviteCode`;
-export const CREATE_USER_ROUTE = '/create-user';
+export const CREATE_PROFILE_ROUTE = '/create-profile';
 export const USER_ROUTE = '/user/:username';
 export const NOT_FOUND_ROUTE = '/404';
-export const LANDING_PAGE_ROUTE = '/landing';
-export const COLONY_DECISIONS_ROUTE = `/decisions`;
+export const LANDING_PAGE_ROUTE = '/';
 
 // export const ACTIONS_PAGE_ROUTE = `${COLONY_HOME_ROUTE}/tx/:transactionHash`;
 // export const UNWRAP_TOKEN_ROUTE = `${COLONY_HOME_ROUTE}/unwrap-tokens`;
 // export const CLAIM_TOKEN_ROUTE = `${COLONY_HOME_ROUTE}/claim-tokens`;
 
 export const TX_SEARCH_PARAM = 'tx';
+
+export const HOST = window.location.host;
+
+// Note all base routes begin with a '/'
+
+export const RESERVED_ROUTES = new Set([
+  NOT_FOUND_ROUTE,
+  METACOLONY_HOME_ROUTE,
+  USER_HOME_ROUTE,
+  '/account',
+  '/accounts',
+  '/activity',
+  '/activityfeed',
+  '/about',
+  '/admin',
+  '/adminpanel',
+  '/advanced',
+  '/affiliate',
+  '/analytics',
+  '/api',
+  '/app',
+  '/beta',
+  '/billing',
+  '/blog',
+  '/careers',
+  '/cdapp',
+  '/cdn',
+  '/changelog',
+  '/chat',
+  '/clny',
+  '/colony',
+  '/colonystaff',
+  '/colonyteam',
+  '/community',
+  '/company',
+  '/complaints',
+  '/conditions',
+  '/config',
+  '/contract',
+  '/contribute',
+  '/contributes',
+  '/create',
+  '/dao',
+  '/daoclub',
+  '/dapp',
+  '/dashboard',
+  '/data',
+  '/delete',
+  '/dev',
+  '/developer',
+  '/docs',
+  '/documentation',
+  '/edit',
+  '/email',
+  '/embed',
+  '/enterprise',
+  '/faq',
+  '/faqs',
+  '/features',
+  '/feedback',
+  '/file',
+  '/finance',
+  '/finances',
+  '/forum',
+  '/gateway',
+  '/general',
+  '/global',
+  '/help',
+  '/helpcenter',
+  '/home',
+  '/info',
+  '/integrations',
+  '/invalid',
+  '/invest',
+  '/jobs',
+  '/landing',
+  '/law',
+  '/legal',
+  '/legalnotice',
+  '/login',
+  '/logout',
+  '/management',
+  '/marketplace',
+  '/media',
+  '/metacolony',
+  '/metrics',
+  '/news',
+  '/notifications',
+  '/onboarding',
+  '/partner',
+  '/payment',
+  '/payments',
+  '/press',
+  '/pricing',
+  '/privacy',
+  '/privacypolicy',
+  '/private',
+  '/process',
+  '/product',
+  '/profile',
+  '/profileuser',
+  '/project',
+  '/projects',
+  '/promo',
+  '/promotion',
+  '/public',
+  '/query',
+  '/register',
+  '/report',
+  '/roadmap',
+  '/root',
+  '/sales',
+  '/search',
+  '/security',
+  '/services',
+  '/settings',
+  '/shop',
+  '/sitemap',
+  '/staff',
+  '/status',
+  '/streaming',
+  '/support',
+  '/team',
+  '/terms',
+  '/test',
+  '/tests',
+  '/tools',
+  '/tracking',
+  '/transaction',
+  '/transactions',
+  '/translate',
+  '/updates',
+  '/upload',
+  '/user',
+  '/userpanel',
+  '/verified',
+  '/webhooks',
+  '/welcome',
+  '/whitepaper',
+  '/work',
+]);

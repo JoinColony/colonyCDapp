@@ -1,7 +1,7 @@
 import React from 'react';
-import { Route, Routes as RoutesSwitch, Navigate } from 'react-router-dom';
+import { Route, Routes as RoutesSwitch } from 'react-router-dom';
 
-import ColonyHome, { ColonyHomeOLD } from '~common/ColonyHome';
+import ColonyHome from '~common/ColonyHome';
 import ColonyFunding from '~common/ColonyFunding';
 import FourOFour from '~frame/FourOFour';
 import UserProfile from '~common/UserProfile';
@@ -29,23 +29,28 @@ import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
 import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
 import CreateColonyPage from '~frame/v5/pages/CreateColonyPage';
 import CreateUserPage from '~frame/v5/pages/CreateUserPage';
+import ActivityPage from '~frame/v5/pages/ActivityPage';
+
+import ColonyActions from '~common/ColonyActions';
+import ColonyDecisions from '~common/ColonyDecisions';
+import Expenditures from '~common/Expenditures';
+import ColonyHomeRoutes from '~common/ColonyHome/ColonyHomeRoutes';
+import LandingPageRoute from './LandingPageRoute';
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 
 import {
-  COLONY_FUNDING_ROUTE,
+  COLONY_BALANCES_ROUTE,
   COLONY_HOME_ROUTE,
   COLONY_OLD_HOME_ROUTE,
   COLONY_MEMBERS_ROUTE,
   COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
   CREATE_COLONY_ROUTE,
-  CREATE_USER_ROUTE,
+  CREATE_PROFILE_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
   USER_ROUTE,
-  LANDING_PAGE_ROUTE,
   NOT_FOUND_ROUTE,
   DECISIONS_PAGE_ROUTE,
   COLONY_DECISIONS_PREVIEW_ROUTE,
-  ACTIONS_PAGE_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
   COLONY_EXTENSION_DETAILS_ROUTE,
   COLONY_REPUTATION_ROUTE,
@@ -57,15 +62,15 @@ import {
   COLONY_CONTRIBUTORS_ROUTE,
   COLONY_FOLLOWERS_ROUTE,
   COLONY_VERIFIED_ROUTE,
-  COLONY_BALANCE_ROUTE,
   COLONY_TEAMS_ROUTE,
   USER_PREFERENCES_ROUTE,
   USER_ADVANCED_ROUTE,
   USER_HOME_ROUTE,
   COLONY_ACTIVITY_ROUTE,
-  // ACTIONS_PAGE_ROUTE,
-  // UNWRAP_TOKEN_ROUTE,
-  // CLAIM_TOKEN_ROUTE,
+  COLONY_DECISIONS_ROUTE,
+  COLONY_EXPENDITURES_DETAILS_ROUTE,
+  OLD_ACTIONS_PAGE_ROUTE,
+  COLONY_INCOMING_ROUTE,
 } from './routeConstants';
 
 import RootRoute from './RootRoute';
@@ -75,8 +80,6 @@ import ColonyRoute from './ColonyRoute';
 import ColonyMembersRoute from './ColonyMembersRoute';
 import UserRoute from './UserRoute';
 import WizardRoute from './WizardRoute';
-import LandingPageRoute from './LandingPageRoute';
-import ActivityPage from '~frame/v5/pages/ActivityPage';
 
 const displayName = 'routes.Routes';
 
@@ -86,7 +89,10 @@ const Routes = () => {
   return (
     <RoutesSwitch>
       <Route path="/" element={<RootRoute />}>
-        <Route index element={<Navigate to={LANDING_PAGE_ROUTE} />} />
+        <Route element={<LandingPageRoute />}>
+          <Route index element={<LandingPage />} />
+        </Route>
+
         <Route path={NOT_FOUND_ROUTE} element={<FourOFour />} />
 
         {/* Main routes */}
@@ -114,26 +120,23 @@ const Routes = () => {
           </Route>
         </Route>
 
-        <Route element={<LandingPageRoute />}>
-          <Route path={LANDING_PAGE_ROUTE} element={<LandingPage />} />
-        </Route>
-
         <Route element={<WizardRoute />}>
-          <Route path={CREATE_USER_ROUTE} element={<CreateUserPage />} />
+          <Route path={CREATE_PROFILE_ROUTE} element={<CreateUserPage />} />
           <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyPage />} />
         </Route>
 
         {/* Colony routes */}
         <Route path={COLONY_HOME_ROUTE} element={<ColonyRoute />}>
           <Route index element={<ColonyHome />} />
-          <Route path={COLONY_FUNDING_ROUTE} element={<ColonyFunding />} />
           <Route path={COLONY_ACTIVITY_ROUTE} element={<ActivityPage />} />
+
+          <Route path={COLONY_INCOMING_ROUTE} element={<ColonyFunding />} />
           <Route element={<ColonyMembersRoute />}>
-            <Route path={COLONY_MEMBERS_ROUTE} element={<MembersPage />} />
-            <Route
-              path={COLONY_MEMBERS_WITH_DOMAIN_ROUTE}
-              element={<MembersPage />}
-            />
+            {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map(
+              (path) => (
+                <Route path={path} element={<MembersPage />} key={path} />
+              ),
+            )}
             <Route
               path={COLONY_CONTRIBUTORS_ROUTE}
               element={<ColonyUsersPage pageName="contributors" />}
@@ -143,27 +146,45 @@ const Routes = () => {
               element={<ColonyUsersPage pageName="followers" />}
             />
             <Route path={COLONY_VERIFIED_ROUTE} element={<VerifiedPage />} />
-            <Route path={COLONY_BALANCE_ROUTE} element={<BalancePage />} />
+            <Route path={COLONY_BALANCES_ROUTE} element={<BalancePage />} />
             <Route path={COLONY_TEAMS_ROUTE} element={<TeamsPage />} />
-            <Route path={COLONY_BALANCE_ROUTE} element={<BalancePage />} />
           </Route>
-          <Route
-            path={COLONY_DECISIONS_PREVIEW_ROUTE}
-            element={
-              <NavBar>
-                <DecisionPreview />
-              </NavBar>
-            }
-          />
 
           {/* Colony settings routes */}
-
           <Route path={COLONY_DETAILS_ROUTE} element={<ColonyDetailsPage />} />
-          <Route path={COLONY_REPUTATION_ROUTE} element={<ReputationPage />} />
-          <Route
-            path={COLONY_PERMISSIONS_ROUTE}
-            element={<PermissionsPage />}
-          />
+
+          {/* Enable the following routes in dev mode */}
+          {/* @ts-ignore */}
+          {!WEBPACK_IS_PRODUCTION && (
+            <Route
+              path={COLONY_REPUTATION_ROUTE}
+              element={<ReputationPage />}
+            />
+          )}
+
+          {/* @ts-ignore */}
+          {!WEBPACK_IS_PRODUCTION && (
+            <Route
+              path={COLONY_PERMISSIONS_ROUTE}
+              element={<PermissionsPage />}
+            />
+          )}
+
+          {/* @ts-ignore */}
+          {!WEBPACK_IS_PRODUCTION && (
+            <Route
+              path={COLONY_INTEGRATIONS_ROUTE}
+              element={<IntegrationsPage />}
+            />
+          )}
+
+          {/* @ts-ignore */}
+          {!WEBPACK_IS_PRODUCTION && (
+            <Route
+              path={COLONY_INCORPORATION_ROUTE}
+              element={<IncorporationPage />}
+            />
+          )}
           <Route path={COLONY_EXTENSIONS_ROUTE} element={<ExtensionsPage />} />
           <Route
             path={COLONY_EXTENSION_DETAILS_ROUTE}
@@ -174,24 +195,35 @@ const Routes = () => {
               </ExtensionsContextProvider>
             }
           />
-          <Route
-            path={COLONY_INTEGRATIONS_ROUTE}
-            element={<IntegrationsPage />}
-          />
-          <Route
-            path={COLONY_INCORPORATION_ROUTE}
-            element={<IncorporationPage />}
-          />
           <Route path={COLONY_ADVANCED_ROUTE} element={<AdvancedPage />} />
-
-          <Route path={ACTIONS_PAGE_ROUTE} element={<ActionDetailsPage />} />
-          <Route path={DECISIONS_PAGE_ROUTE} element={<ActionDetailsPage />} />
         </Route>
 
         {/* OLD Colony routes -- remove when going live */}
         <Route path={COLONY_OLD_HOME_ROUTE} element={<ColonyRoute />}>
-          <Route index element={<ColonyHomeOLD />} />
-          <Route path={COLONY_FUNDING_ROUTE} element={<ColonyFunding />} />
+          {/* <Route
+            path={COLONY_EVENTS_ROUTE}
+            element={
+              <ColonyHomeLayout
+                filteredDomainId={domainIdFilter}
+                onDomainChange={setDomainIdFilter}
+              >
+                {/* <ColonyEvents colony={colony} ethDomainId={filteredDomainId} /> }
+                <div>Events (Transactions Log)</div>
+              </ColonyHomeLayout>
+            }
+          /> */}
+          <Route element={<ColonyHomeRoutes />}>
+            <Route index element={<ColonyActions />} />
+            <Route
+              path={COLONY_DECISIONS_ROUTE}
+              element={<ColonyDecisions />}
+            />
+            <Route
+              path={COLONY_EXPENDITURES_DETAILS_ROUTE}
+              element={<Expenditures />}
+            />
+          </Route>
+          <Route path={COLONY_INCOMING_ROUTE} element={<ColonyFunding />} />
           <Route element={<ColonyMembersRoute />}>
             <Route path={COLONY_MEMBERS_ROUTE} element={<MembersPage />} />
             <Route
@@ -208,7 +240,7 @@ const Routes = () => {
             />
             <Route path={COLONY_VERIFIED_ROUTE} element={<VerifiedPage />} />
             <Route path={COLONY_TEAMS_ROUTE} element={<TeamsPage />} />
-            <Route path={COLONY_BALANCE_ROUTE} element={<BalancePage />} />
+            <Route path={COLONY_BALANCES_ROUTE} element={<BalancePage />} />
           </Route>
           <Route
             path={COLONY_DECISIONS_PREVIEW_ROUTE}
@@ -247,7 +279,10 @@ const Routes = () => {
           />
           <Route path={COLONY_ADVANCED_ROUTE} element={<AdvancedPage />} />
 
-          <Route path={ACTIONS_PAGE_ROUTE} element={<ActionDetailsPage />} />
+          <Route
+            path={OLD_ACTIONS_PAGE_ROUTE}
+            element={<ActionDetailsPage />}
+          />
           <Route path={DECISIONS_PAGE_ROUTE} element={<ActionDetailsPage />} />
         </Route>
 

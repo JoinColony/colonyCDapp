@@ -84,7 +84,7 @@ const DecisionItem = ({
           />
         )
       }
-      onClick={() => navigate(`${pathname}/tx/${actionId}`)}
+      onClick={() => navigate(`${pathname}?tx=${actionId}`)}
       tag={<MotionTag />}
       title={title}
       status={ListItemStatus.Defused}

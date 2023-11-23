@@ -3,6 +3,12 @@ import { defineMessages } from 'react-intl';
 import { MIN_VOTING_REPUTATION_VERSION_FOR_DECISIONS } from '~constants';
 import { useColonyHomeContext } from '~context';
 
+import {
+  COLONY_EXTENSIONS_ROUTE,
+  COLONY_EXPENDITURES_ROUTE,
+  COLONY_DECISIONS_ROUTE,
+} from '~routes';
+
 import { NavItemProps as NavigationItem } from './NavItem';
 
 export const displayName = 'common.ColonyHome.ColonyNavigation';
@@ -50,18 +56,18 @@ const useGetNavigationItems = (colonyName?: string) => {
 
   const navigationItems: NavigationItem[] = [
     {
-      linkTo: `/colony/${colonyName}`,
+      linkTo: `/${colonyName}`,
       showDot: hasNewActions,
       text: MSG.linkTextActions,
     },
     {
-      linkTo: `/colony/${colonyName}/extensions`,
+      linkTo: `/${colonyName}/${COLONY_EXTENSIONS_ROUTE}`,
       showDot: hasNewExtensions,
       text: MSG.linkTextExtensions,
       dataTest: 'extensionsNavigationButton',
     },
     {
-      linkTo: `/colony/${colonyName}/expenditures`,
+      linkTo: `/${colonyName}/${COLONY_EXPENDITURES_ROUTE}`,
       text: MSG.linkTextExpenditures,
       dataTest: 'expendituresNavigationButton',
     },
@@ -74,7 +80,7 @@ const useGetNavigationItems = (colonyName?: string) => {
 
   if (decisionsSupported) {
     navigationItems.splice(1, 0, {
-      linkTo: `/colony/${colonyName}/decisions`,
+      linkTo: `/${colonyName}/${COLONY_DECISIONS_ROUTE}`,
       showDot: hasNewDecisions,
       text: MSG.linkTextDecisions,
       dataTest: 'decisionsNavigationButton',

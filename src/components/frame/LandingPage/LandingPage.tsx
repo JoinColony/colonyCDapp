@@ -9,6 +9,14 @@ import CreateAProfileBanner from '~images/create-profile-banner.png';
 import { useAppContext } from '~hooks';
 import InvitationBlock from '~common/InvitationBlock';
 
+import {
+  CREATE_COLONY_ROUTE_BASE,
+  CREATE_PROFILE_ROUTE,
+  METACOLONY_HOME_ROUTE,
+  USER_EDIT_PROFILE_ROUTE,
+  USER_HOME_ROUTE,
+} from '~routes';
+
 import LandingPageItem from './LandingPageItem';
 
 const displayName = 'frame.LandingPage';
@@ -95,8 +103,7 @@ const LandingPage = () => {
       headingText: MSG.createColonyTitle,
       headingDescription: MSG.createColonyDescription,
       iconName: 'layout',
-      // @TODO: Connect with real invitation code
-      onClick: () => navigate('/create-colony/asd'),
+      onClick: () => navigate(CREATE_COLONY_ROUTE_BASE),
       imgSrc: CreateAColonyBanner,
       disabled: true,
     },
@@ -109,7 +116,12 @@ const LandingPage = () => {
       iconName: 'user-circle',
       onClick: !wallet
         ? () => connectWallet()
-        : () => navigate(user ? '/my/profile' : '/create-user'),
+        : () =>
+            navigate(
+              user
+                ? `${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`
+                : `${CREATE_PROFILE_ROUTE}`,
+            ),
       imgSrc: CreateAProfileBanner,
       disabled: userLoading,
     },
@@ -118,7 +130,7 @@ const LandingPage = () => {
       headingText: MSG.exploreMetacolonyTitle,
       headingDescription: MSG.exploreMetacolonyDescription,
       iconName: 'colony-icon',
-      onClick: () => navigate('/colony/meta'),
+      onClick: () => navigate(METACOLONY_HOME_ROUTE),
       disabled: true,
     },
   ];

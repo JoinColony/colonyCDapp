@@ -88,7 +88,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
                     ? [
                         {
                           key: '1',
-                          href: `/colony/${colony?.name}`,
+                          href: `/${colony?.name}`,
                           label: colony?.name,
                         },
                       ]

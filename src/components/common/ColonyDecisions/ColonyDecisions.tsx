@@ -8,6 +8,7 @@ import { getDraftDecisionFromStore } from '~utils/decisions';
 import { ModelSortDirection, useGetColonyDecisionsQuery } from '~gql';
 import { notNull } from '~utils/arrays';
 import LoadMoreButton from '~shared/LoadMoreButton/LoadMoreButton';
+import { useColonyHomeContext } from '~context';
 
 import DraftDecisionItem from './DraftDecisionItem';
 import DecisionItem from './DecisionItem';
@@ -38,12 +39,10 @@ const MSG = defineMessages({
   },
 });
 
-interface ColonyDecisionsProps {
-  domainId: number;
-}
-
-const ColonyDecisions = ({ domainId }: ColonyDecisionsProps) => {
+const ColonyDecisions = () => {
   const { colony } = useColonyContext();
+  const { domainIdFilter: domainId } = useColonyHomeContext();
+
   const [sortDirection, setSortDirection] = useState<ModelSortDirection>(
     ModelSortDirection.Desc,
   );

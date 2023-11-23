@@ -1,8 +1,9 @@
 import {
   COLONY_ADVANCED_ROUTE,
+  COLONY_BALANCES_ROUTE,
   COLONY_DETAILS_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
-  COLONY_FUNDING_ROUTE,
+  COLONY_INCOMING_ROUTE,
   COLONY_INCORPORATION_ROUTE,
   COLONY_INTEGRATIONS_ROUTE,
   COLONY_MEMBERS_ROUTE,
@@ -56,13 +57,13 @@ export const financesMenu: NavigationSidebarLinksListProps['items'] = [
   {
     key: '2',
     label: formatText({ id: 'navigation.finances.balance' }) || '',
-    to: '/balance',
+    to: COLONY_BALANCES_ROUTE,
     iconName: 'chart-bar',
   },
   {
     key: '3',
     label: formatText({ id: 'navigation.finances.incomingFunds' }) || '',
-    to: COLONY_FUNDING_ROUTE,
+    to: COLONY_INCOMING_ROUTE,
     iconName: 'arrow-down-right',
   },
   {

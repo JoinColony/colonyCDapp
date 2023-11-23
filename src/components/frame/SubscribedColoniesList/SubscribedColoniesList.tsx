@@ -77,7 +77,7 @@ const SubscribedColoniesList = () => {
                   activeClassName={styles.activeColony}
                   className={styles.itemLink}
                   title={name}
-                  to={`/colony/${name}`}
+                  to={`/${name}`}
                 >
                   <div className={styles.itemImage}>
                     <ColonyAvatar

@@ -1,3 +1,8 @@
+import {
+  COLONY_DETAILS_ROUTE,
+  COLONY_MEMBERS_ROUTE,
+  COLONY_TEAMS_ROUTE,
+} from '~routes';
 import { NavItem } from './types';
 
 export const getNavItems = (name: string | undefined): NavItem[] => [
@@ -9,7 +14,7 @@ export const getNavItems = (name: string | undefined): NavItem[] => [
   {
     label: 'Members',
     key: '2',
-    href: `/colony/${name}/members`,
+    href: `/${name}/${COLONY_MEMBERS_ROUTE}`,
   },
   {
     label: 'Decisions',
@@ -33,18 +38,18 @@ export const getNavItems = (name: string | undefined): NavItem[] => [
       },
       {
         label: 'Admin',
-        href: `/colony/${name}/details`,
+        href: `/${name}/${COLONY_DETAILS_ROUTE}`,
         description: 'View and manage how this Colony works and operates.',
       },
       {
         label: 'Members',
-        href: `/colony/${name}/members`,
+        href: `/${name}/${COLONY_MEMBERS_ROUTE}`,
         description:
           'View and manage contributors and followers in this colony.',
       },
       {
         label: 'Teams',
-        href: '/teams',
+        href: `/${name}/${COLONY_TEAMS_ROUTE}`,
         description: 'View the structure of work groups and teams.',
       },
       {

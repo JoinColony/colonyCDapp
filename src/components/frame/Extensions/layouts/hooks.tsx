@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { useMatch } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { ColonyFragment } from '~gql';
 import {
@@ -8,7 +8,6 @@ import {
   useColonyContractVersion,
   useTransformer,
 } from '~hooks';
-import { COLONY_HOME_ROUTE } from '~routes';
 import { getAllUserRoles } from '~transformers';
 import { canColonyBeUpgraded, hasRoot } from '~utils/checks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
@@ -85,8 +84,8 @@ export const useMainMenuItems = () => {
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
-  const { params: { '*': currentPathname = undefined } = {} } =
-    useMatch(COLONY_HOME_ROUTE) || {};
+  const { pathname } = useLocation();
+  const nestedColonyPathname = pathname.split('/').slice(2).join('/');
 
   // @todo: update menu items with correct contents and related actions
   const mainMenuItems: NavigationSidebarItem[] = [
@@ -102,7 +101,7 @@ export const useMainMenuItems = () => {
       key: '2',
       iconName: 'layout',
       label: formatText({ id: 'navigation.dashboard' }) || '',
-      isActive: checkIfIsActive(currentPathname, [
+      isActive: checkIfIsActive(nestedColonyPathname, [
         ...dashboardMainMenu,
         ...dashboardMenu,
       ]),
@@ -121,7 +120,7 @@ export const useMainMenuItems = () => {
       key: '3',
       iconName: 'user',
       label: formatText({ id: 'navigation.members' }) || '',
-      isActive: checkIfIsActive(currentPathname, membersMenu),
+      isActive: checkIfIsActive(nestedColonyPathname, membersMenu),
       secondLevelMenuProps: {
         title: formatText({ id: 'navigation.members.title' }) || '',
         content: membersMenu,
@@ -167,7 +166,7 @@ export const useMainMenuItems = () => {
       key: '4',
       iconName: 'bank',
       label: formatText({ id: 'navigation.finances' }) || '',
-      isActive: checkIfIsActive(currentPathname, financesMenu),
+      isActive: checkIfIsActive(nestedColonyPathname, financesMenu),
       secondLevelMenuProps: {
         title: formatText({ id: 'navigation.finances.title' }) || '',
         content: financesMenu,
@@ -258,7 +257,7 @@ export const useMainMenuItems = () => {
       key: '5',
       iconName: 'handshake',
       label: formatText({ id: 'navigation.agreements' }) || '',
-      isActive: checkIfIsActive(currentPathname, agreementsMenu),
+      isActive: checkIfIsActive(nestedColonyPathname, agreementsMenu),
       secondLevelMenuProps: {
         title: formatText({ id: 'navigation.agreements.title' }) || '',
         content: agreementsMenu,
@@ -290,7 +289,7 @@ export const useMainMenuItems = () => {
       key: '6',
       iconName: 'gear-six',
       label: formatText({ id: 'navigation.admin' }) || '',
-      isActive: checkIfIsActive(currentPathname, adminMenu),
+      isActive: checkIfIsActive(nestedColonyPathname, adminMenu),
       secondLevelMenuProps: {
         title: formatText({ id: 'navigation.admin.title' }) || '',
         content: adminMenu,

@@ -240,7 +240,7 @@ function* createPaymentMotion({
     });
 
     if (navigate && colonyName) {
-      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+      navigate(`/${colonyName}?tx=${txHash}`, {
         state: { isRedirect: true },
       });
     }
