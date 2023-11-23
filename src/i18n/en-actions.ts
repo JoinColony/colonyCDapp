@@ -7,31 +7,34 @@ const safeActionTitle = '{Safe transaction: {safeTransactionTitle}}';
 const actionsMessageDescriptors = {
   'action.title': `{actionType, select,
       ${ColonyActionType.WrongColony} {Unknown Action}
-      ${ColonyActionType.Payment} {Pay {recipient} {amount} {tokenSymbol}}
-      ${ColonyActionType.PaymentMotion} {Pay {recipient} {amount} {tokenSymbol}}
-      ${ColonyActionType.MoveFunds} {Move {amount} {tokenSymbol} from {fromDomain} to {toDomain}}
-      ${ColonyActionType.MoveFundsMotion} {Move {amount} {tokenSymbol} from {fromDomain} to {toDomain}}
-      ${ColonyActionType.UnlockToken} {Unlock native token {tokenSymbol}}
-      ${ColonyActionType.UnlockTokenMotion} {Unlock native token {tokenSymbol}}
-      ${ColonyActionType.MintTokens} {Mint {amount} {tokenSymbol}}
-      ${ColonyActionType.MintTokensMotion} {Mint {amount} {tokenSymbol}}
-      ${ColonyActionType.CreateDomain} {New team: {fromDomain}}
-      ${ColonyActionType.CreateDomainMotion} {New team: {fromDomain}}
-      ${ColonyActionType.VersionUpgrade} {Upgrade Colony to Version {newVersion}!}
-      ${ColonyActionType.VersionUpgradeMotion} {Upgrade Colony to Version {newVersion}!}
-      ${ColonyActionType.ColonyEdit} {Colony details changed}
-      ${ColonyActionType.ColonyEditMotion} {Change colony details}
-      ${ColonyActionType.EditDomain} {{fromDomain} team details edited}
-      ${ColonyActionType.EditDomainMotion} {Edit {fromDomain} team details}
-      ${ColonyActionType.Recovery} {Recovery mode activated by {initiator}}
+      ${ColonyActionType.Payment} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
+      ${ColonyActionType.PaymentMotion} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
+      ${ColonyActionType.MultiplePayment} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
+      ${ColonyActionType.MultiplePaymentMotion} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
+      ${ColonyActionType.CreateDecisionMotion} {New decision by {initiator}}
+      ${ColonyActionType.MoveFunds} {Move {amount} {tokenSymbol} from {fromDomain} to {toDomain} by {initiator}}
+      ${ColonyActionType.MoveFundsMotion} {Move {amount} {tokenSymbol} from {fromDomain} to {toDomain} by {initiator}}
+      ${ColonyActionType.UnlockToken} {Unlock native token {tokenSymbol} by {initiator}}
+      ${ColonyActionType.UnlockTokenMotion} {Unlock native token {tokenSymbol} by {initiator}}
+      ${ColonyActionType.MintTokens} {Mint {amount} {tokenSymbol} by {initiator}}
+      ${ColonyActionType.MintTokensMotion} {Mint {amount} {tokenSymbol} by {initiator}}
+      ${ColonyActionType.CreateDomain} {Create new team {fromDomain} by {initiator}}
+      ${ColonyActionType.CreateDomainMotion} {Create new team {fromDomain} by {initiator}}
+      ${ColonyActionType.VersionUpgrade} {Upgrade Colony version from v{version} to {newVersion}v by {initiator}}
+      ${ColonyActionType.VersionUpgradeMotion} {Upgrade Colony version from v{version} to {newVersion}v by {initiator}}
+      ${ColonyActionType.ColonyEdit} {Edit details of the Colony by {initiator}}
+      ${ColonyActionType.ColonyEditMotion} {Edit details of the Colony by {initiator}}
+      ${ColonyActionType.EditDomain} {Change {fromDomain} team details by {initiator}}
+      ${ColonyActionType.EditDomainMotion} {Change {fromDomain} team details by {initiator}}
+      ${ColonyActionType.Recovery} {Enter recovery mode by {initiator}}
       ${ColonyActionType.EmitDomainReputationPenalty} {Smite {recipient} with a {reputationChangeNumeral} {reputationChange, plural, one {pt} other {pts}} reputation penalty}
       ${ColonyActionType.EmitDomainReputationPenaltyMotion} {Smite {recipient} with a {reputationChangeNumeral} {reputationChange, plural, one {pt} other {pts}} reputation penalty}
       ${ColonyActionType.EmitDomainReputationReward} {Award {recipient} with a {reputationChangeNumeral} {reputationChange, plural, one {pt} other {pts}} reputation reward}
       ${ColonyActionType.EmitDomainReputationRewardMotion} {Award {recipient} with a {reputationChangeNumeral} {reputationChange, plural, one {pt} other {pts}} reputation reward}
-      ${ColonyActionType.SetUserRoles} {{rolesChanged} in {fromDomain} {direction} {recipient}}
-      ${ColonyActionType.SetUserRolesMotion} {{rolesChanged} in {fromDomain} {direction} {recipient}}
+      ${ColonyActionType.SetUserRoles} {{direction} {rolesChanged} permissions for {recipient} in {fromDomain} by {initiator}}
+      ${ColonyActionType.SetUserRolesMotion} {{direction} {rolesChanged} permissions for {recipient} in {fromDomain} by {initiator}}
       ${ExtendedColonyActionType.UpdateAddressBook} {Address book was updated}
-      ${ExtendedColonyActionType.UpdateTokens} {Colony tokens were updated}    
+      ${ExtendedColonyActionType.UpdateTokens} {Manage approved tokens by {initiator}}
       ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       ${ExtendedColonyActionType.SafeMultipleTransactions} ${safeActionTitle}
@@ -44,6 +47,7 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.SafeRawTransactionMotion} ${safeActionTitle}
       ${ExtendedColonyActionType.SafeContractInteraction} ${safeActionTitle}
       ${ExtendedColonyActionType.SafeContractInteractionMotion} ${safeActionTitle}
+      ${ExtendedColonyActionType.UpdateColonyObjective} {Manage Colony Objective by {initiator}}
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,

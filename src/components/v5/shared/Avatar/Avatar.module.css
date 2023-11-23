@@ -10,6 +10,10 @@
   @apply inline-block relative w-[1.25rem] h-[1.25rem];
 }
 
+.xsm {
+  @apply inline-block relative w-[1.625rem] h-[1.625rem];
+}
+
 .sm {
   @apply flex items-center relative w-[1.875rem] h-[1.875rem];
 }

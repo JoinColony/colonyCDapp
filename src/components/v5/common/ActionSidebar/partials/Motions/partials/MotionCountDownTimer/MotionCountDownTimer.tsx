@@ -11,6 +11,7 @@ const MotionCountDownTimer: FC<MotionCountDownTimerProps> = ({
   motionStakes,
   motionState,
   refetchMotionState,
+  ...rest
 }) => {
   const { countdown, isLoading } = useMotionCountdown(
     motionState,
@@ -19,7 +20,9 @@ const MotionCountDownTimer: FC<MotionCountDownTimerProps> = ({
     motionStakes,
   );
 
-  return <CountDownTimer countdown={countdown} isLoading={isLoading} />;
+  return (
+    <CountDownTimer countdown={countdown} isLoading={isLoading} {...rest} />
+  );
 };
 
 MotionCountDownTimer.displayName = displayName;

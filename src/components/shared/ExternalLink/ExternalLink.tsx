@@ -44,7 +44,7 @@ const ExternalLink = ({
   const linkText = children || typeOfText || href;
   return (
     <a
-      className={`font-semibold text-blue-400 text-sm ${className}`}
+      className={className}
       href={href}
       target="_blank"
       rel="noreferrer noopener"

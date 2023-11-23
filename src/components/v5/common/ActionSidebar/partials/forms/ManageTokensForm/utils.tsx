@@ -1,31 +1,26 @@
-import React from 'react';
 import { DeepPartial } from 'utility-types';
+import { ADDRESS_ZERO } from '~constants';
+import { ColonyActionType, ColonyMetadataChangelog } from '~gql';
+import { DECISION_METHOD } from '~v5/common/ActionSidebar/hooks';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
-import UserPopover from '~v5/shared/UserPopover';
 import { ManageTokensFormValues } from './consts';
 
 export const manageTokensDescriptionMetadataGetter: DescriptionMetadataGetter<
   DeepPartial<ManageTokensFormValues>
-> = async (_, { currentUser }) => {
-  return (
-    <>
-      Manage approved token
-      {currentUser?.profile?.displayName && (
-        <>
-          {' '}
-          by{' '}
-          <UserPopover
-            userName={currentUser?.profile?.displayName}
-            walletAddress={currentUser.walletAddress}
-            aboutDescription={currentUser.profile?.bio || ''}
-            user={currentUser}
-          >
-            <span className="text-gray-900">
-              {currentUser.profile.displayName}
-            </span>
-          </UserPopover>
-        </>
-      )}
-    </>
-  );
+> = async ({ decisionMethod }, { getActionTitleValues }) => {
+  const changelogItem: Partial<ColonyMetadataChangelog> = {
+    haveTokensChanged: true,
+    transactionHash: ADDRESS_ZERO,
+  };
+
+  return getActionTitleValues({
+    type:
+      decisionMethod === DECISION_METHOD.Permissions
+        ? ColonyActionType.ColonyEdit
+        : ColonyActionType.ColonyEditMotion,
+    pendingColonyMetadata: {
+      changelog: [changelogItem],
+    },
+    isMotion: true,
+  });
 };

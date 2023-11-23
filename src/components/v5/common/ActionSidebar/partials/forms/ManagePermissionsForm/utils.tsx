@@ -1,51 +1,22 @@
-import { ApolloClient } from '@apollo/client';
 import { ColonyRole } from '@colony/colony-js';
-import { first } from 'lodash';
-import React from 'react';
 import { DeepPartial } from 'utility-types';
+import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
 import {
   CUSTOM_USER_ROLE,
   USER_ROLE,
   USER_ROLES,
 } from '~constants/permissions';
-import {
-  GetUserByAddressQuery,
-  GetUserByAddressQueryVariables,
-  GetUserByAddressDocument,
-  ColonyFragment,
-} from '~gql';
+import { ColonyActionType, ColonyActionRoles } from '~gql';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
+import { DECISION_METHOD } from '~v5/common/ActionSidebar/hooks';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
-import UserPopover from '~v5/shared/UserPopover';
+import { getTeam, tryGetUser } from '../utils';
 import {
   AVAILABLE_ROLES,
   ManagePermissionsFormValues,
   REMOVE_ROLE_OPTION_VALUE,
 } from './consts';
-
-const getMemberText = async (
-  userAddress: string | undefined,
-  client: ApolloClient<object>,
-): Promise<string> => {
-  try {
-    if (!userAddress) {
-      return 'user';
-    }
-
-    const { data } = await client.query<
-      GetUserByAddressQuery,
-      GetUserByAddressQueryVariables
-    >({
-      query: GetUserByAddressDocument,
-      variables: { address: userAddress },
-    });
-
-    return first(data?.getUserByAddress?.items)?.profile?.displayName || 'user';
-  } catch {
-    return 'user';
-  }
-};
 
 export const getRoleLabel = (role: string | undefined) => {
   return [
@@ -58,42 +29,6 @@ export const getRoleLabel = (role: string | undefined) => {
       }),
     },
   ].find(({ role: userRole }) => userRole === role)?.name;
-};
-
-const getTeamName = (
-  teamId: string | undefined,
-  colony: ColonyFragment | undefined,
-): string | undefined =>
-  colony?.domains?.items.find((domain) => domain?.nativeId === Number(teamId))
-    ?.metadata?.name;
-
-export const managePermissionsDescriptionMetadataGetter: DescriptionMetadataGetter<
-  DeepPartial<ManagePermissionsFormValues>
-> = async ({ member, role, team }, { currentUser, client, colony }) => {
-  const teamName = getTeamName(team, colony);
-  const isRemoveRoleAction = role === REMOVE_ROLE_OPTION_VALUE;
-
-  return (
-    <>
-      {isRemoveRoleAction ? 'Remove permissions for' : 'Assign'}{' '}
-      {await getMemberText(member, client)}{' '}
-      {!isRemoveRoleAction && <>{getRoleLabel(role)} permissions </>}
-      {teamName && `in ${teamName} `}
-      {currentUser?.profile?.displayName && (
-        <>
-          by{' '}
-          <UserPopover
-            userName={currentUser?.profile?.displayName}
-            walletAddress={currentUser.walletAddress}
-            aboutDescription={currentUser.profile?.bio || ''}
-            user={currentUser}
-          >
-            <span>{currentUser.profile.displayName}</span>
-          </UserPopover>
-        </>
-      )}
-    </>
-  );
 };
 
 export const getPermissionsMap = (
@@ -141,5 +76,46 @@ export const getPermissionsMap = (
       [permission]: permissionsList.includes(permission),
     }),
     {},
+  );
+};
+
+export const managePermissionsDescriptionMetadataGetter: DescriptionMetadataGetter<
+  DeepPartial<ManagePermissionsFormValues>
+> = async (
+  { member, role, team: teamId, decisionMethod, permissions },
+  { getActionTitleValues, colony, client },
+) => {
+  const team = getTeam(teamId, colony);
+  const recipientUser = member ? await tryGetUser(member, client) : undefined;
+
+  return getActionTitleValues(
+    {
+      type:
+        decisionMethod === DECISION_METHOD.Permissions
+          ? ColonyActionType.SetUserRoles
+          : ColonyActionType.SetUserRolesMotion,
+      fromDomain: team,
+      recipientUser,
+      recipientAddress: member,
+      roles: role
+        ? Object.entries(
+            getPermissionsMap(permissions || {}, role),
+          ).reduce<ColonyActionRoles>(
+            (result, [key, value]) => ({
+              ...result,
+              [`role_${key}`]: value,
+            }),
+            {},
+          )
+        : {},
+    },
+    {
+      [ActionTitleMessageKeys.FromDomain]: formatText({
+        id: 'actionSidebar.metadataDescription.team',
+      }),
+      [ActionTitleMessageKeys.Recipient]: formatText({
+        id: 'actionSidebar.metadataDescription.user',
+      }),
+    },
   );
 };

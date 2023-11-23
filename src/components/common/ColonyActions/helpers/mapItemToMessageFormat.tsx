@@ -45,12 +45,15 @@ import {
   getRemovedSafes,
 } from '~utils/safes';
 import { unknownContractMSG } from '~shared/DetailsWidget/SafeTransactionDetail';
+import { SimpleTarget } from '~gql';
+import { notMaybe } from '~utils/arrays';
 
 import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
 import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
 
 import styles from './itemStyles.css';
-import { SimpleTarget } from '~gql';
+import { ActionTitleMessageKeys } from './getActionTitleValues';
+import { getAmountLessFee } from '~utils/networkFee';
 
 const { formatMessage } = intl({
   unknownDomain: 'UnknownDomain',
@@ -74,66 +77,80 @@ const getDomainNameFromChangelog = (
   return changelogItem.newName;
 };
 
-const getRecipient = (actionData: ColonyAction) => {
+const getRecipientData = (
+  actionData: ColonyAction,
+):
+  | User
+  | Colony
+  | ColonyExtension
+  | Token
+  | SimpleTarget
+  | string
+  | undefined => {
   const {
     recipientUser,
     recipientColony,
     recipientExtension,
     recipientToken,
     safeTransaction,
+    recipientAddress,
   } = actionData;
   const safeRecipient = safeTransaction?.transactions?.items[0]?.recipient;
 
-  let recipient:
-    | User
-    | Colony
-    | ColonyExtension
-    | Token
-    | SimpleTarget
-    | undefined;
+  return (
+    [
+      recipientUser,
+      recipientColony,
+      recipientExtension,
+      recipientToken,
+      safeRecipient,
+      recipientAddress,
+    ].find(notMaybe) || undefined
+  );
+};
 
-  if (recipientUser) {
-    recipient = recipientUser;
-  } else if (recipientColony) {
-    recipient = recipientColony;
-  } else if (recipientExtension) {
-    recipient = recipientExtension;
-  } else if (recipientToken) {
-    recipient = recipientToken;
-  } else if (safeRecipient) {
-    recipient = safeRecipient;
-  }
+const getRecipient = (actionData: ColonyAction) => {
+  const recipient = getRecipientData(actionData);
 
   return (
-    <span className={styles.userDecoration}>
-      {recipient ? (
+    <span>
+      {typeof recipient !== 'string' ? (
         <FriendlyName agent={recipient} autoShrinkAddress />
       ) : (
-        <MaskedAddress address={actionData.recipientAddress || AddressZero} />
+        <MaskedAddress address={recipient || AddressZero} />
       )}
     </span>
   );
 };
 
-const getInitiator = (actionData: ColonyAction) => {
-  const { initiatorUser, initiatorColony, initiatorExtension, initiatorToken } =
-    actionData;
-
-  let initiator: User | Colony | ColonyExtension | Token | undefined;
-
-  if (initiatorUser) {
-    initiator = initiatorUser;
-  } else if (initiatorColony) {
-    initiator = initiatorColony;
-  } else if (initiatorExtension) {
-    initiator = initiatorExtension;
-  } else if (initiatorToken) {
-    initiator = initiatorToken;
-  }
+const getInitiatorData = (
+  actionData: ColonyAction,
+): User | Colony | ColonyExtension | Token | string | undefined => {
+  const {
+    initiatorUser,
+    initiatorColony,
+    initiatorExtension,
+    initiatorToken,
+    initiatorAddress,
+  } = actionData;
 
   return (
-    <span className={styles.userDecoration}>
-      {initiator ? (
+    [
+      initiatorUser,
+      initiatorColony,
+      initiatorExtension,
+      initiatorToken,
+      initiatorAddress,
+    ].find(notMaybe) || undefined
+  );
+};
+
+const getInitiator = (actionData: ColonyAction) => {
+  const initiator = getInitiatorData(actionData);
+
+  return (
+    <span>
+      {typeof initiator !== 'string' ? (
         <FriendlyName agent={initiator} autoShrinkAddress />
       ) : (
         <MaskedAddress address={actionData.initiatorAddress || AddressZero} />
@@ -206,47 +223,124 @@ const getRemovedSafesString = (actionData: ColonyAction) => {
 
 export const mapColonyActionToExpectedFormat = (
   actionData: ColonyAction,
-  colony?: Colony,
+  colony: Colony,
+  networkInverseFee: string | undefined,
+  keyFallbackValues: Partial<
+    Record<ActionTitleMessageKeys, React.ReactNode>
+  > = {},
 ) => {
+  const displayActionData: ColonyAction = {
+    ...actionData,
+    amount:
+      notMaybe(actionData.amount) && networkInverseFee
+        ? getAmountLessFee(actionData.amount, networkInverseFee).toString()
+        : actionData.amount,
+  };
   //  // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
-  const formattedRolesTitle = formatRolesTitle(actionData.roles);
+  const formattedRolesTitle = formatRolesTitle(displayActionData.roles);
+
+  const getFormattedValueWithFallback = (
+    value: React.ReactNode,
+    fallbackKey: ActionTitleMessageKeys,
+    condition: boolean,
+  ) => {
+    if (condition || !(fallbackKey in keyFallbackValues)) {
+      return value;
+    }
+
+    return keyFallbackValues[fallbackKey];
+  };
 
   return {
-    ...actionData,
-    amount: (
+    ...displayActionData,
+    [ActionTitleMessageKeys.Amount]: getFormattedValueWithFallback(
       <Numeral
-        value={actionData.amount ?? 0} // @TODO: getAmount(item.actionType, item.amount)
-        decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
-      />
+        value={displayActionData?.amount || 0} // @TODO: getAmount(item.actionType, item.amount)
+        decimals={getTokenDecimalsWithFallback(
+          displayActionData.token?.decimals,
+        )}
+      />,
+      ActionTitleMessageKeys.Amount,
+      notMaybe(displayActionData?.amount),
     ),
-    direction: formattedRolesTitle.direction,
-    fromDomain:
+    [ActionTitleMessageKeys.Direction]: formattedRolesTitle.direction,
+    [ActionTitleMessageKeys.FromDomain]: getFormattedValueWithFallback(
       getDomainNameFromChangelog(
-        actionData.transactionHash,
-        actionData.fromDomain?.metadata || actionData.pendingDomainMetadata,
+        displayActionData.transactionHash,
+        displayActionData.fromDomain?.metadata ||
+          displayActionData.pendingDomainMetadata,
       ) ?? formatMessage({ id: 'unknownDomain' }),
-    initiator: getInitiator(actionData),
-    recipient: getRecipient(actionData),
-    toDomain:
-      actionData.toDomain?.metadata?.name ??
-      formatMessage({ id: 'unknownDomain' }),
-    tokenSymbol: actionData.token?.symbol,
-    reputationChangeNumeral: actionData.amount && (
-      <Numeral
-        value={new Decimal(actionData.amount).abs()}
-        decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)}
-      />
-    ),
-    reputationChange:
-      actionData.amount &&
-      formatReputationChange(
-        actionData.amount,
-        getTokenDecimalsWithFallback(colony?.nativeToken.decimals),
+      ActionTitleMessageKeys.FromDomain,
+      notMaybe(
+        displayActionData.fromDomain?.metadata ||
+          displayActionData.pendingDomainMetadata,
       ),
-    rolesChanged: formattedRolesTitle.roleTitle,
-    newVersion: actionData.newColonyVersion,
-    chainName: getAddedSafeChainName(actionData),
-    safeTransactionTitle: actionData.metadata?.customTitle,
+    ),
+    [ActionTitleMessageKeys.Initiator]: getFormattedValueWithFallback(
+      getInitiator(displayActionData),
+      ActionTitleMessageKeys.Initiator,
+      notMaybe(getInitiatorData(displayActionData)),
+    ),
+    [ActionTitleMessageKeys.Recipient]: getFormattedValueWithFallback(
+      getRecipient(displayActionData),
+      ActionTitleMessageKeys.Recipient,
+      notMaybe(getRecipientData(displayActionData)),
+    ),
+    [ActionTitleMessageKeys.ToDomain]: getFormattedValueWithFallback(
+      displayActionData.toDomain?.metadata?.name ??
+        formatMessage({ id: 'unknownDomain' }),
+      ActionTitleMessageKeys.ToDomain,
+      notMaybe(displayActionData.toDomain?.metadata?.name),
+    ),
+    [ActionTitleMessageKeys.TokenSymbol]: getFormattedValueWithFallback(
+      displayActionData.token?.symbol,
+      ActionTitleMessageKeys.TokenSymbol,
+      notMaybe(displayActionData.token?.symbol),
+    ),
+    [ActionTitleMessageKeys.ReputationChangeNumeral]:
+      getFormattedValueWithFallback(
+        displayActionData.amount && (
+          <Numeral
+            value={new Decimal(displayActionData.amount).abs()}
+            decimals={getTokenDecimalsWithFallback(
+              colony?.nativeToken.decimals,
+            )}
+          />
+        ),
+        ActionTitleMessageKeys.ReputationChangeNumeral,
+        notMaybe(displayActionData.amount),
+      ),
+    [ActionTitleMessageKeys.ReputationChange]: getFormattedValueWithFallback(
+      displayActionData.amount &&
+        formatReputationChange(
+          displayActionData.amount,
+          getTokenDecimalsWithFallback(colony?.nativeToken.decimals),
+        ),
+      ActionTitleMessageKeys.ReputationChange,
+      notMaybe(displayActionData.amount),
+    ),
+    [ActionTitleMessageKeys.RolesChanged]: formattedRolesTitle.roleTitle,
+    [ActionTitleMessageKeys.NewVersion]: getFormattedValueWithFallback(
+      displayActionData.newColonyVersion,
+      ActionTitleMessageKeys.NewVersion,
+      notMaybe(displayActionData.newColonyVersion),
+    ),
+    [ActionTitleMessageKeys.Version]: getFormattedValueWithFallback(
+      (displayActionData.newColonyVersion ?? 1) - 1,
+      ActionTitleMessageKeys.Version,
+      notMaybe(displayActionData.newColonyVersion),
+    ),
+    [ActionTitleMessageKeys.ChainName]: getFormattedValueWithFallback(
+      getAddedSafeChainName(displayActionData),
+      ActionTitleMessageKeys.ChainName,
+      getAddedSafeChainName(displayActionData),
+    ),
+    [ActionTitleMessageKeys.SafeTransactionTitle]:
+      getFormattedValueWithFallback(
+        displayActionData.metadata?.customTitle,
+        ActionTitleMessageKeys.SafeTransactionTitle,
+        notMaybe(displayActionData.metadata?.customTitle),
+      ),
   };
 };
 

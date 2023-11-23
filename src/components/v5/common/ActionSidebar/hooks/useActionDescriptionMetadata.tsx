@@ -1,12 +1,18 @@
 import React, { useMemo } from 'react';
-
+import merge from 'lodash/merge';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useApolloClient } from '@apollo/client';
+
 import { ACTION, Action } from '~constants/actions';
 import { useAppContext, useColonyContext } from '~hooks';
-import { ACTION_TYPE_FIELD_NAME } from '../consts';
-import { DescriptionMetadataGetter } from '../types';
 import AsyncText from '~v5/shared/AsyncText';
+import { ColonyAction } from '~types';
+import { ADDRESS_ZERO } from '~constants';
+import { getActionTitleValues } from '~common/ColonyActions';
+import { formatText } from '~utils/intl';
+import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
+import UserPopover from '~v5/shared/UserPopover';
+
 import { simplePaymentDescriptionMetadataGetter } from '../partials/forms/SimplePaymentForm/utils';
 import { advancedPaymentDescriptionMetadataGetter } from '../partials/forms/AdvancedPaymentForm/utils';
 import { splitPaymentDescriptionMetadataGetter } from '../partials/forms/SplitPaymentForm/utils';
@@ -22,6 +28,8 @@ import { enterRecoveryModeDescriptionMetadataGetter } from '../partials/forms/En
 import { createDecisionDescriptionMetadataGetter } from '../partials/forms/CreateDecisionForm/utils';
 import { managePermissionsDescriptionMetadataGetter } from '../partials/forms/ManagePermissionsForm/utils';
 import { manageColonyObjectivesDescriptionMetadataGetter } from '../partials/forms/ManageColonyObjectivesForm/utils';
+import { ACTION_TYPE_FIELD_NAME } from '../consts';
+import { DescriptionMetadataGetter } from '../types';
 
 const DESC_METADATA: Partial<Record<Action, DescriptionMetadataGetter>> = {
   [ACTION.SIMPLE_PAYMENT]: simplePaymentDescriptionMetadataGetter,
@@ -52,21 +60,84 @@ export const useActionDescriptionMetadata = () => {
   const { colony } = useColonyContext();
 
   return useMemo(() => {
-    if (!selectedAction) {
+    if (!selectedAction || !colony || !user) {
       return undefined;
     }
 
+    const commonActionData: Omit<ColonyAction, 'type'> = {
+      initiatorAddress: user.walletAddress,
+      initiatorUser: user,
+      blockNumber: 0,
+      createdAt: new Date().toISOString(),
+      colony: {
+        ...colony,
+        nativeToken: {
+          ...colony.nativeToken,
+          nativeTokenDecimals: colony.nativeToken.decimals,
+          nativeTokenSymbol: colony.nativeToken.symbol,
+          tokenAddress: colony.nativeToken.tokenAddress,
+        },
+      },
+      colonyAddress: colony.colonyAddress,
+      showInActionsList: true,
+      transactionHash: ADDRESS_ZERO,
+    };
+
     return (
       <AsyncText
-        text={async () =>
-          DESC_METADATA[selectedAction]?.(formValues, {
-            client: apolloClient,
-            currentUser: user,
-            colony,
-          })
-        }
+        text={async () => {
+          const actionTitleValues = await DESC_METADATA[selectedAction]?.(
+            formValues,
+            {
+              client: apolloClient,
+              colony,
+              getActionTitleValues: (action, keyFallbackValues) =>
+                getActionTitleValues(
+                  merge({}, commonActionData, action),
+                  colony,
+                  '0',
+                  keyFallbackValues,
+                ),
+            },
+          );
+
+          if (!actionTitleValues) {
+            return undefined;
+          }
+
+          if (!(ActionTitleMessageKeys.Initiator in actionTitleValues)) {
+            return formatText({ id: 'action.title' }, actionTitleValues);
+          }
+
+          const initiator = actionTitleValues[ActionTitleMessageKeys.Initiator];
+
+          return formatText(
+            { id: 'action.title' },
+            {
+              ...actionTitleValues,
+              [ActionTitleMessageKeys.Initiator]: (
+                <UserPopover
+                  userName={user.profile?.displayName}
+                  walletAddress={user.walletAddress}
+                  aboutDescription={user.profile?.bio || ''}
+                  user={user}
+                >
+                  <span className="text-gray-900">
+                    {React.isValidElement(initiator) ? initiator : null}
+                  </span>
+                </UserPopover>
+              ),
+            },
+          );
+        }}
       />
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(formValues), selectedAction, apolloClient, colony]);
+  }, [
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(formValues),
+    selectedAction,
+    apolloClient,
+    colony,
+  ]);
 };

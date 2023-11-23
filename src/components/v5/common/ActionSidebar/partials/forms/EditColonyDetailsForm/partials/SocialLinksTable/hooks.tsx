@@ -66,13 +66,13 @@ export const useGetTableMenuProps = (
             setSocialLinkIndex(index);
           },
           label: formatText({ id: 'table.row.edit.link' }),
-          iconName: 'edit-pencil',
+          icon: 'edit-pencil',
         },
         {
           key: 'remove',
           onClick: () => remove(index),
           label: formatText({ id: 'button.delete' }),
-          iconName: 'trash',
+          icon: 'trash',
         },
       ],
     }),

@@ -1,7 +1,9 @@
+import { useApolloClient } from '@apollo/client';
 import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
+import { SearchActionsDocument } from '~gql';
 import { ActionForm } from '~shared/Fields';
 import { formatText } from '~utils/intl';
 import { FormTextareaBase } from '~v5/common/Fields/TextareaBase';
@@ -100,6 +102,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
     defaultValues,
     !!transactionId,
   );
+  const client = useApolloClient();
 
   return (
     <div
@@ -114,6 +117,11 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
           {...actionFormProps}
           className="flex flex-col h-full"
           ref={formRef}
+          onSuccess={() => {
+            client.refetchQueries({
+              include: [SearchActionsDocument],
+            });
+          }}
         >
           <ActionSidebarFormContent
             getFormOptions={getFormOptions}

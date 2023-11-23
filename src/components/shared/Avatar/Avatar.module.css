@@ -1,37 +1,37 @@
 .main {
-  @apply h-[2.8125rem] w-[2.8125rem] relative;
+  @apply h-[2.8125rem] w-[2.8125rem] relative rounded-full;
 }
 
 .xxxs {
-  @apply relative w-[1rem] h-[1rem];
+  @apply relative w-[1rem] h-[1rem] rounded-full;
 }
 
 .xxs {
-  @apply relative w-[1.125rem] h-[1.125rem];
+  @apply relative w-[1.125rem] h-[1.125rem] rounded-full;
 }
 
 .xs {
-  @apply h-[1.625rem] w-[1.625rem] relative;
+  @apply h-[1.625rem] w-[1.625rem] relative rounded-full;
 }
 
 .s {
-  @apply h-[2.125rem] w-[2.125rem] relative;
+  @apply h-[2.125rem] w-[2.125rem] relative rounded-full;
 }
 
 .sm {
-  @apply h-[2.25rem] w-[2.25rem] relative;
+  @apply h-[2.25rem] w-[2.25rem] relative rounded-full;
 }
 
 .m {
-  @apply h-[3.75rem] w-[3.75rem] relative;
+  @apply h-[3.75rem] w-[3.75rem] relative rounded-full;
 }
 
 .l {
-  @apply h-[7.5rem] w-[7.5rem] relative;
+  @apply h-[7.5rem] w-[7.5rem] relative rounded-full;
 }
 
 .xl {
-  @apply h-[10rem] w-[10rem] relative;
+  @apply h-[10rem] w-[10rem] relative rounded-full;
 }
 
 .placeholderIcon {

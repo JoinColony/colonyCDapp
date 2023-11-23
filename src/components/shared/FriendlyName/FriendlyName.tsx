@@ -44,8 +44,8 @@ const FriendlyName = ({
   }, [addressRef, autoShrinkAddress]);
 
   return (
-    <div className={styles.main}>
-      <div className={styles.name}>
+    <span className={styles.main}>
+      <span className={styles.name}>
         {agentDisplayName || (
           <MaskedAddress
             address={getAddressFromAgent(agent) ?? AddressZero}
@@ -53,8 +53,8 @@ const FriendlyName = ({
             ref={addressRef}
           />
         )}
-      </div>
-    </div>
+      </span>
+    </span>
   );
 };
 

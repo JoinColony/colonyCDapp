@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   ColonyAction,
   ColonyActionType,
@@ -10,12 +11,13 @@ import { getExtendedActionType, safeActionTypes } from '~utils/colonyActions';
 import { generateMessageValues } from './getEventTitleValues';
 import { mapColonyActionToExpectedFormat } from './mapItemToMessageFormat';
 
-enum ActionTitleMessageKeys {
+export enum ActionTitleMessageKeys {
   Amount = 'amount',
   Direction = 'direction',
   FromDomain = 'fromDomain',
   Initiator = 'initiator',
   NewVersion = 'newVersion',
+  Version = 'version',
   Recipient = 'recipient',
   ReputationChange = 'reputationChange',
   ReputationChangeNumeral = 'reputationChangeNumeral',
@@ -34,6 +36,7 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
         ActionTitleMessageKeys.Recipient,
         ActionTitleMessageKeys.Amount,
         ActionTitleMessageKeys.TokenSymbol,
+        ActionTitleMessageKeys.Initiator,
       ];
     case actionType.includes(ColonyActionType.MoveFunds):
       return [
@@ -41,20 +44,37 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
         ActionTitleMessageKeys.TokenSymbol,
         ActionTitleMessageKeys.FromDomain,
         ActionTitleMessageKeys.ToDomain,
+        ActionTitleMessageKeys.Initiator,
       ];
     case actionType.includes(ColonyActionType.UnlockToken):
-      return [ActionTitleMessageKeys.TokenSymbol];
+      return [
+        ActionTitleMessageKeys.TokenSymbol,
+        ActionTitleMessageKeys.Initiator,
+      ];
     case actionType.includes(ColonyActionType.MintTokens):
       return [
         ActionTitleMessageKeys.Amount,
         ActionTitleMessageKeys.TokenSymbol,
+        ActionTitleMessageKeys.Initiator,
       ];
     case actionType.includes(ColonyActionType.CreateDomain):
-      return [ActionTitleMessageKeys.FromDomain];
+      return [
+        ActionTitleMessageKeys.FromDomain,
+        ActionTitleMessageKeys.Initiator,
+      ];
     case actionType.includes(ColonyActionType.VersionUpgrade):
-      return [ActionTitleMessageKeys.NewVersion];
+      return [
+        ActionTitleMessageKeys.NewVersion,
+        ActionTitleMessageKeys.Version,
+        ActionTitleMessageKeys.Initiator,
+      ];
     case actionType.includes(ColonyActionType.EditDomain):
-      return [ActionTitleMessageKeys.FromDomain];
+      return [
+        ActionTitleMessageKeys.FromDomain,
+        ActionTitleMessageKeys.Initiator,
+      ];
+    case actionType.includes(ColonyActionType.ColonyEdit):
+      return [ActionTitleMessageKeys.Initiator];
     case actionType.includes(ColonyActionType.Recovery):
       return [ActionTitleMessageKeys.Initiator];
     case actionType.includes(ColonyActionType.EmitDomainReputationPenalty):
@@ -75,9 +95,16 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
         ActionTitleMessageKeys.Direction,
         ActionTitleMessageKeys.FromDomain,
         ActionTitleMessageKeys.Recipient,
+        ActionTitleMessageKeys.Initiator,
       ];
     case actionType.includes(ExtendedColonyActionType.AddSafe):
       return [ActionTitleMessageKeys.ChainName];
+    case actionType.includes(ColonyActionType.CreateDecisionMotion):
+      return [ActionTitleMessageKeys.Initiator];
+    case actionType.includes(ExtendedColonyActionType.UpdateColonyObjective):
+      return [ActionTitleMessageKeys.Initiator];
+    case actionType.includes(ExtendedColonyActionType.UpdateTokens):
+      return [ActionTitleMessageKeys.Initiator];
     case safeActionTypes.some((type) => actionType.includes(type)):
       return [ActionTitleMessageKeys.SafeTransactionTitle];
     default:
@@ -86,10 +113,20 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
 };
 
 /* Returns the correct message values according to the action type. */
-const getActionTitleValues = (actionData: ColonyAction, colony: Colony) => {
+const getActionTitleValues = (
+  actionData: ColonyAction,
+  colony: Colony,
+  networkInverseFee: string | undefined,
+  keyFallbackValues?: Partial<Record<ActionTitleMessageKeys, React.ReactNode>>,
+) => {
   const { isMotion, pendingColonyMetadata } = actionData;
 
-  const updatedItem = mapColonyActionToExpectedFormat(actionData, colony);
+  const updatedItem = mapColonyActionToExpectedFormat(
+    actionData,
+    colony,
+    networkInverseFee,
+    keyFallbackValues,
+  );
   const actionType = getExtendedActionType(
     actionData,
     isMotion ? pendingColonyMetadata : colony.metadata,

@@ -15,6 +15,7 @@ import colonyMessages from '../i18n/en.json';
 import actionMessages from '../i18n/en-actions';
 import eventsMessages from '../i18n/en-events';
 import systemMessages from '../i18n/en-system-messages';
+import motionStatesMessages from '../i18n/en-motion-states';
 
 // https://formatjs.io/docs/intl
 
@@ -38,6 +39,7 @@ export const intl = <T = string>(
         ...actionMessages,
         ...eventsMessages,
         ...systemMessages,
+        ...motionStatesMessages,
         ...messages,
       },
       locale,

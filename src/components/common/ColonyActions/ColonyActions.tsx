@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { SpinnerLoader } from '~shared/Preloaders';
@@ -14,6 +14,10 @@ import {
   ActivityFeedFilters,
 } from '~hooks/useActivityFeed/types';
 import { MotionState } from '~utils/colonyMotions';
+import {
+  SearchableColonyActionSortableFields,
+  SearchableSortDirection,
+} from '~gql';
 
 const displayName = 'common.ColonyActions';
 
@@ -78,18 +82,28 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
   const { colony } = useColonyContext();
 
   const [filters, setFilters] = useState<ActivityFeedFilters>({});
+  const [sortDirection, setSortDirection] = useState<SearchableSortDirection>(
+    SearchableSortDirection.Desc,
+  );
 
   const {
     actions,
     loadingFirstPage,
     loadingNextPage,
-    sortDirection,
-    changeSortDirection,
     hasNextPage,
     goToNextPage,
     goToPreviousPage,
     pageNumber,
-  } = useActivityFeed(filters);
+  } = useActivityFeed(
+    filters,
+    useMemo(
+      () => ({
+        direction: sortDirection,
+        field: SearchableColonyActionSortableFields.CreatedAt,
+      }),
+      [sortDirection],
+    ),
+  );
 
   if (!colony) {
     return null;
@@ -150,7 +164,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         <>
           <ActionsListHeading
             sortDirection={sortDirection}
-            onSortChange={changeSortDirection}
+            onSortChange={setSortDirection}
           />
           <ActionsList items={actions} />
           <div className={styles.pagination}>

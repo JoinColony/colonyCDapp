@@ -10,6 +10,7 @@ import TableWithActionsHeader from '~v5/common/TableWithActionsHeader';
 import AcceptButton from '../AcceptButton';
 import Filter from '../Filter';
 import { useFundsTable, useFundsTableColumns } from './hooks';
+import { FundsTableModel } from './types';
 
 const displayName = 'pages.FundsPage.partials.FundsTable';
 
@@ -22,20 +23,23 @@ const FundsTable: FC = () => {
   );
 
   return (
-    <TableWithActionsHeader
-      title={formatText({ id: 'incomingFundsPage.table.title' })}
-      data={searchedTokens}
-      columns={columns}
-      verticalOnMobile={false}
-      hasPagination
-      initialState={{
-        pagination: {
-          pageSize: 10,
+    <TableWithActionsHeader<FundsTableModel>
+      tableProps={{
+        data: searchedTokens,
+        columns,
+        verticalOnMobile: false,
+        hasPagination: true,
+        initialState: {
+          pagination: {
+            pageSize: 10,
+          },
         },
+        getFilteredRowModel: getFilteredRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        className:
+          '[&_td]:border-b [&_td]:border-gray-100 [&_tr:last-child>td]:border-0 [&_td>div]:p-0 [&_th:last-child]:text-right w-full [&_th:empty]:border-none',
       }}
-      getFilteredRowModel={getFilteredRowModel()}
-      getPaginationRowModel={getPaginationRowModel()}
-      className="[&_td]:border-b [&_td]:border-gray-100 [&_tr:last-child>td]:border-0 [&_td]:p-0 [&_th:last-child]:text-right w-full"
+      title={formatText({ id: 'incomingFundsPage.table.title' })}
       emptyContent={
         (!searchedTokens.length || claims.length <= 0) && (
           <div className="border w-full rounded-lg border-gray-200">

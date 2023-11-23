@@ -3,29 +3,38 @@ import { MotionStatesMap } from '~hooks';
 import { ColonyAction } from '~types';
 import { MotionState, getMotionState } from '~utils/colonyMotions';
 
-import { ActivityDecisionMethod, ActivityFeedFilters } from './types';
+import {
+  ActivityDecisionMethod,
+  ActivityFeedFilters,
+  ActivityFeedColonyAction,
+} from './types';
 
-export const filterActionByMotionState = (
+const getActivityFeedMotionState = (
   action: ColonyAction,
   motionStatesMap: MotionStatesMap,
+): MotionState | undefined => {
+  if (!action.motionData) {
+    return MotionState.Passed;
+  }
+
+  const networkMotionState = motionStatesMap.get(action.motionData.motionId);
+
+  return networkMotionState
+    ? getMotionState(networkMotionState, action.motionData)
+    : undefined;
+};
+
+export const filterActionByMotionState = (
+  action: ActivityFeedColonyAction,
   motionStatesFilter?: MotionState[],
 ) => {
   if (!motionStatesFilter) {
     return true;
   }
 
-  // If action is not a motion, we treat it as if it had a "Forced" state
-  if (!action.motionData) {
-    return motionStatesFilter.includes(MotionState.Forced);
-  }
-
-  const networkMotionState = motionStatesMap.get(action.motionData.motionId);
-  if (!networkMotionState) {
-    return false;
-  }
-
-  const motionState = getMotionState(networkMotionState, action.motionData);
-  return motionStatesFilter.includes(motionState);
+  return !action.motionState
+    ? false
+    : motionStatesFilter.includes(action.motionState);
 };
 
 export const getSearchActionsFilterVariable = (
@@ -75,3 +84,10 @@ export const getActionsByPageNumber = (
   const endIndex = startIndex + itemsPerPage;
   return actions.slice(startIndex, endIndex);
 };
+
+export const makeWithMotionStateMapper =
+  (motionStatesMap: MotionStatesMap) =>
+  (action: ColonyAction): ActivityFeedColonyAction => ({
+    ...action,
+    motionState: getActivityFeedMotionState(action, motionStatesMap),
+  });

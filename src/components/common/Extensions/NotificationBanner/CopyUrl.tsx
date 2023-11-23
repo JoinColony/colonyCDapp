@@ -10,8 +10,8 @@ const CopyUrl: FC<CopyUrlProps> = ({ actionText }) => {
 
   return (
     <button
-      onClick={handleClipboardCopy}
-      onKeyPress={handleClipboardCopy}
+      onClick={() => handleClipboardCopy()}
+      onKeyPress={() => handleClipboardCopy}
       type="button"
     >
       {actionText}

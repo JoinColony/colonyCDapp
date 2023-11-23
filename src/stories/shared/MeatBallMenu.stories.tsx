@@ -26,14 +26,12 @@ export const Base: StoryObj<typeof MeatBallMenu> = {
       {
         key: '1',
         label: 'Add token',
-        iconName: 'coin-vertical',
-        onClick: () => {},
+        icon: 'coin-vertical',
       },
       {
         key: '2',
         label: 'Duplicate row',
-        iconName: 'copy-simple',
-        onClick: () => {},
+        icon: 'copy-simple',
       },
     ],
   },
@@ -45,12 +43,10 @@ export const MenuWithoutIcons: StoryObj<typeof MeatBallMenu> = {
       {
         key: '1',
         label: 'Add token',
-        onClick: () => {},
       },
       {
         key: '2',
         label: 'Duplicate row',
-        onClick: () => {},
       },
     ],
   },
@@ -62,42 +58,34 @@ export const MenuWithScroll: StoryObj<typeof MeatBallMenu> = {
       {
         key: '1',
         label: 'Add token',
-        onClick: () => {},
       },
       {
         key: '2',
         label: 'Duplicate row',
-        onClick: () => {},
       },
       {
         key: '3',
         label: 'Add token',
-        onClick: () => {},
       },
       {
         key: '4',
         label: 'Duplicate row',
-        onClick: () => {},
       },
       {
         key: '5',
         label: 'Add token',
-        onClick: () => {},
       },
       {
         key: '6',
         label: 'Duplicate row',
-        onClick: () => {},
       },
       {
         key: '7',
         label: 'Add token',
-        onClick: () => {},
       },
       {
         key: '8',
         label: 'Duplicate row',
-        onClick: () => {},
       },
     ],
   },

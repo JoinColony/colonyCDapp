@@ -9,6 +9,7 @@ import { getAmountLessFee } from '~utils/networkFee';
 
 import { ACTION_TYPE_FIELD_NAME } from '../consts';
 import { useGetColonyAction } from './useGetColonyAction';
+import { DECISION_METHOD } from './useDecisionMethods';
 
 export const useGetActionData = (transactionId: string | undefined) => {
   const { action, loadingAction } = useGetColonyAction(transactionId);
@@ -37,12 +38,14 @@ export const useGetActionData = (transactionId: string | undefined) => {
     const repeatableFields = {
       createdIn: motionData?.motionDomain.nativeId.toString(),
       description: annotation?.message,
-      // @TODO: handle title and decision if it will be available in api
-      // title: action.title,
-      // decisionMethod: action.decisionMethod
+      title: action.metadata?.customTitle,
+      decisionMethod: action.isMotion
+        ? DECISION_METHOD.Reputation
+        : DECISION_METHOD.Permissions,
     };
 
     switch (type) {
+      case ColonyActionType.MintTokens:
       case ColonyActionType.MintTokensMotion:
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.MINT_TOKENS,
@@ -72,6 +75,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
           ...repeatableFields,
         };
       }
+      case ColonyActionType.MultiplePayment:
       case ColonyActionType.MultiplePaymentMotion: {
         const [firstPayment, ...additionalPayments] = payments || [];
 
@@ -101,6 +105,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
           ...repeatableFields,
         };
       }
+      case ColonyActionType.MoveFunds:
       case ColonyActionType.MoveFundsMotion:
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.TRANSFER_FUNDS,
@@ -113,6 +118,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
           recipient: recipientAddress,
           ...repeatableFields,
         };
+      case ColonyActionType.ColonyEdit:
       case ColonyActionType.ColonyEditMotion: {
         const modifiedTokens =
           action.pendingColonyMetadata?.modifiedTokenAddresses?.added?.map(
@@ -145,6 +151,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
           ...repeatableFields,
         };
       }
+      case ColonyActionType.CreateDomain:
       case ColonyActionType.CreateDomainMotion:
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_NEW_TEAM,
@@ -153,6 +160,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
           domainPurpose: pendingDomainMetadata?.description,
           ...repeatableFields,
         };
+      case ColonyActionType.EditDomain:
       case ColonyActionType.EditDomainMotion:
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_EXISTING_TEAM,

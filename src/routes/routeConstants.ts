@@ -34,6 +34,7 @@ export const COLONY_DECISIONS_ROUTE = `decisions`;
 export const COLONY_DECISIONS_PREVIEW_ROUTE = `decisions/preview`;
 export const DECISIONS_PAGE_ROUTE = `decisions/tx/:transactionHash`;
 export const COLONY_ACTIVITY_ROUTE = `activity`;
+export const ACTIONS_PAGE_ROUTE = 'tx/:transactionHash';
 
 export const COLONY_EXPENDITURES_ROUTE = 'expenditures';
 export const COLONY_EXPENDITURES_DETAILS_ROUTE = `${COLONY_EXPENDITURES_ROUTE}/*`;

@@ -1,102 +1,42 @@
-import { ApolloClient } from '@apollo/client';
-import first from 'lodash/first';
-import React from 'react';
+import moveDecimal from 'move-decimal-point';
 import { DeepPartial } from 'utility-types';
-import {
-  ColonyFragment,
-  GetTokenByAddressDocument,
-  GetTokenByAddressQuery,
-  GetTokenByAddressQueryVariables,
-} from '~gql';
-import Numeral from '~shared/Numeral';
+import { ColonyActionType } from '~gql';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { DECISION_METHOD } from '~v5/common/ActionSidebar/hooks';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
-import UserPopover from '~v5/shared/UserPopover';
+import { tryGetToken, getTeam } from '../utils';
 import { TransferFundsFormValues } from './consts';
-
-const getTeamName = (
-  teamId: string | undefined,
-  colony: ColonyFragment | undefined,
-): string | undefined =>
-  colony?.domains?.items.find((domain) => domain?.nativeId === Number(teamId))
-    ?.metadata?.name;
-
-const getAmountText = async (
-  amount: number | undefined,
-  tokenId: string | undefined,
-  client: ApolloClient<object>,
-): Promise<React.ReactNode> => {
-  try {
-    if (!amount || !tokenId) {
-      return 'funds';
-    }
-
-    const { data } = await client.query<
-      GetTokenByAddressQuery,
-      GetTokenByAddressQueryVariables
-    >({
-      query: GetTokenByAddressDocument,
-      variables: { address: tokenId },
-    });
-
-    const tokenSymbol = first(data?.getTokenByAddress?.items)?.symbol;
-
-    if (!tokenSymbol) {
-      return (
-        <>
-          <Numeral value={amount} /> tokens
-        </>
-      );
-    }
-
-    return (
-      <>
-        <Numeral value={amount} /> {tokenSymbol}
-      </>
-    );
-  } catch {
-    return 'funds';
-  }
-};
-
-const getFromToText = (
-  from: string | undefined,
-  to: string | undefined,
-  colony: ColonyFragment | undefined,
-): string => {
-  const fromTeamName = getTeamName(from, colony);
-  const toTeamName = getTeamName(to, colony);
-
-  if (!fromTeamName || !toTeamName) {
-    return 'between teams';
-  }
-
-  return `from ${fromTeamName} to ${toTeamName}`;
-};
+import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
+import { formatText } from '~utils/intl';
 
 export const trasferFundsDescriptionMetadataGetter: DescriptionMetadataGetter<
   DeepPartial<TransferFundsFormValues>
-> = async ({ amount, from, to }, { currentUser, client, colony }) => {
-  return (
-    <>
-      Transfer{' '}
-      {await getAmountText(amount?.amount, amount?.tokenAddress, client)}{' '}
-      {getFromToText(from, to, colony)}
-      {currentUser?.profile?.displayName && (
-        <>
-          {' '}
-          by{' '}
-          <UserPopover
-            userName={currentUser?.profile?.displayName}
-            walletAddress={currentUser.walletAddress}
-            aboutDescription={currentUser.profile?.bio || ''}
-            user={currentUser}
-          >
-            <span className="text-gray-900">
-              {currentUser.profile.displayName}
-            </span>
-          </UserPopover>
-        </>
-      )}
-    </>
+> = async (
+  { decisionMethod, amount, from, to },
+  { getActionTitleValues, client, colony },
+) => {
+  const token = await tryGetToken(amount?.tokenAddress, client, colony);
+
+  return getActionTitleValues(
+    {
+      token: amount?.amount ? token : undefined,
+      type:
+        decisionMethod === DECISION_METHOD.Permissions
+          ? ColonyActionType.MoveFunds
+          : ColonyActionType.MoveFundsMotion,
+      amount: amount?.amount
+        ? moveDecimal(
+            amount.amount.toString(),
+            getTokenDecimalsWithFallback(token?.decimals),
+          )
+        : undefined,
+      fromDomain: getTeam(from, colony),
+      toDomain: getTeam(to, colony),
+    },
+    {
+      [ActionTitleMessageKeys.Amount]: formatText({
+        id: 'actionSidebar.metadataDescription.funds',
+      }),
+    },
   );
 };

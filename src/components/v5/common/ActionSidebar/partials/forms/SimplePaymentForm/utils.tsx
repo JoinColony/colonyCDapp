@@ -1,152 +1,78 @@
-import React from 'react';
 import { ApolloClient } from '@apollo/client';
 import first from 'lodash/first';
 import { DeepPartial } from 'utility-types';
+import moveDecimal from 'move-decimal-point';
 import {
-  ColonyFragment,
-  GetTokenByAddressDocument,
-  GetTokenByAddressQuery,
-  GetTokenByAddressQueryVariables,
+  ColonyActionType,
   GetUserByAddressDocument,
   GetUserByAddressQuery,
   GetUserByAddressQueryVariables,
 } from '~gql';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
 import { SimplePaymentFormValues } from './consts';
-import Numeral from '~shared/Numeral';
-import UserPopover from '~v5/shared/UserPopover';
+import { Address, User } from '~types';
+import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { DECISION_METHOD } from '~v5/common/ActionSidebar/hooks';
+import { tryGetToken } from '../utils';
+import { formatText } from '~utils/intl';
 
-const getRecipientText = async (
-  recipients: string[],
+const tryGetRecipient = async (
+  recipientAddress: Address,
   client: ApolloClient<object>,
-): Promise<string> => {
+): Promise<User | null> => {
   try {
-    if (recipients.length > 1) {
-      return `${recipients.length} recipients`;
-    }
-
-    const [firstRecipient] = recipients;
-
-    if (!firstRecipient) {
-      return 'recipient';
-    }
-
     const { data } = await client.query<
       GetUserByAddressQuery,
       GetUserByAddressQueryVariables
     >({
       query: GetUserByAddressDocument,
-      variables: { address: firstRecipient || '' },
+      variables: { address: recipientAddress },
     });
 
-    return (
-      first(data?.getUserByAddress?.items)?.profile?.displayName || 'recipient'
-    );
+    return first(data?.getUserByAddress?.items) || null;
   } catch {
-    return 'recipient';
-  }
-};
-
-const getAmountText = async (
-  totalAmount: number,
-  tokenId: string | undefined,
-  recipientsCount: number,
-  client: ApolloClient<object>,
-  colony: ColonyFragment | undefined,
-): Promise<React.ReactNode> => {
-  try {
-    if (totalAmount === 0 || !tokenId) {
-      return 'an amount of tokens';
-    }
-
-    let tokenSymbol = colony?.tokens?.items.find(
-      (colonyToken) => colonyToken?.token?.tokenAddress === tokenId,
-    )?.token?.symbol;
-
-    if (!tokenSymbol) {
-      const { data } = await client.query<
-        GetTokenByAddressQuery,
-        GetTokenByAddressQueryVariables
-      >({
-        query: GetTokenByAddressDocument,
-        variables: { address: tokenId },
-      });
-
-      tokenSymbol = first(data?.getTokenByAddress?.items)?.symbol;
-    }
-
-    if (!tokenSymbol) {
-      return (
-        <>
-          {recipientsCount > 1 && 'a total of'}
-          <Numeral value={totalAmount} /> tokens
-        </>
-      );
-    }
-
-    return (
-      <>
-        {recipientsCount > 1 && 'a total of '}
-        <Numeral value={totalAmount} /> {tokenSymbol}
-      </>
-    );
-  } catch {
-    return 'amount of tokens';
+    return null;
   }
 };
 
 export const simplePaymentDescriptionMetadataGetter: DescriptionMetadataGetter<
   DeepPartial<SimplePaymentFormValues>
 > = async (
-  { payments, recipient, amount },
-  { client, currentUser, colony },
+  { recipient, amount, decisionMethod },
+  { client, colony, getActionTitleValues },
 ) => {
-  const recipients = [
-    recipient,
-    ...(payments || []).map((payment) => payment.recipient),
-  ].filter((recipientItem): recipientItem is string => !!recipientItem);
+  const recipientUser = recipient
+    ? await tryGetRecipient(recipient, client)
+    : null;
+  const token = await tryGetToken(amount?.tokenAddress, client, colony);
 
-  const totalAmount = [
-    amount?.amount,
-    ...(payments || []).map((payment) => payment.amount?.amount),
-  ].reduce<number>((result, subAmount) => {
-    if (!subAmount) {
-      return result;
-    }
-
-    return result + Number(subAmount);
-  }, 0);
-
-  const [recipientText, amountText] = await Promise.all([
-    getRecipientText(recipients, client),
-    getAmountText(
-      totalAmount,
-      amount?.tokenAddress,
-      recipients.length,
-      client,
-      colony,
-    ),
-  ]);
-
-  return (
-    <>
-      Pay {recipientText} {amountText}
-      {currentUser?.profile?.displayName && (
-        <>
-          {' '}
-          by{' '}
-          <UserPopover
-            userName={currentUser?.profile?.displayName}
-            walletAddress={currentUser.walletAddress}
-            aboutDescription={currentUser.profile?.bio || ''}
-            user={currentUser}
-          >
-            <span className="text-gray-900">
-              {currentUser.profile.displayName}
-            </span>
-          </UserPopover>
-        </>
-      )}
-    </>
+  return getActionTitleValues(
+    {
+      type:
+        decisionMethod === DECISION_METHOD.Permissions
+          ? ColonyActionType.Payment
+          : ColonyActionType.PaymentMotion,
+      recipientUser,
+      recipientAddress: recipient,
+      amount: amount?.amount
+        ? moveDecimal(
+            amount.amount.toString(),
+            getTokenDecimalsWithFallback(token?.decimals),
+          )
+        : undefined,
+      token,
+    },
+    {
+      [ActionTitleMessageKeys.Amount]: formatText({
+        id: 'actionSidebar.metadataDescription.anAmount',
+      }),
+      [ActionTitleMessageKeys.Recipient]: formatText({
+        id: 'actionSidebar.metadataDescription.recipient',
+      }),
+      [ActionTitleMessageKeys.TokenSymbol]: formatText({
+        id: 'actionSidebar.metadataDescription.tokens',
+      }),
+    },
   );
 };

@@ -20,14 +20,19 @@ const MSG = defineMessages({
   },
 });
 
-interface Props {
-  splitTime: any;
+export interface TimerValueProps {
+  splitTime?: {
+    days: number;
+    hours: number;
+    minutes: number;
+    seconds: number;
+  };
 }
 
 const displayName = 'TimerValue';
 
-const TimerValue = ({ splitTime }: Props) => {
-  if (splitTime === undefined) {
+const TimerValue = ({ splitTime }: TimerValueProps) => {
+  if (!splitTime) {
     return null;
   }
 

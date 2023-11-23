@@ -59,7 +59,7 @@ export const useGetTableMenuProps = (
                 key: 'remove',
                 onClick: () => remove(index),
                 label: formatText({ id: 'table.row.remove' }),
-                iconName: 'trash',
+                icon: 'trash',
               },
             ],
           }

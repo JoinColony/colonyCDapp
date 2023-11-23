@@ -5,7 +5,7 @@ import { Placement } from '@popperjs/core';
 import ListItem, { ListItemStatus } from '~shared/ListItem';
 import UserAvatar from '~shared/UserAvatar';
 import { ColonyDecision } from '~types';
-import { useUserByAddress } from '~hooks';
+import { useUserByAddress, useShouldDisplayMotionCountdownTime } from '~hooks';
 
 import { useGetColonyActionQuery } from '~gql';
 import {
@@ -13,10 +13,7 @@ import {
   useMotionTag,
 } from '~common/ColonyActions/ActionsListItem/helpers';
 import CountDownTimer from '~common/ColonyActions/CountDownTimer/CountDownTimer';
-import {
-  MotionState,
-  useShouldDisplayMotionCountdownTime,
-} from '~utils/colonyMotions';
+import { MotionState } from '~utils/colonyMotions';
 
 const displayName = 'common.ColonyDecisions.DecisionItem';
 

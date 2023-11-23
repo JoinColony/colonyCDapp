@@ -31,7 +31,7 @@ const ContractAddress: FC<PanelTypeProps> = ({ title, description }) => {
             type="button"
             aria-label={formatMessage({ id: 'copy.address' })}
             className="font-normal text-md justify-start text-ellipsis overflow-hidden"
-            onClick={handleClipboardCopy}
+            onClick={() => handleClipboardCopy()}
           >
             {splitWalletAddress(description)}
           </button>
