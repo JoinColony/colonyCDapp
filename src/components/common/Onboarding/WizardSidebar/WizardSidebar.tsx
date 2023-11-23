@@ -60,14 +60,21 @@ const WizardSidebar = ({
     <div className="flex flex-col flex-1 content-between">
       <div className="flex flex-1 gap-4 relative">
         <div className="flex flex-col gap-4 -mt-1">
-          {wizardSteps.map((step, i) => (
-            <WizardSidebarItem
-              currentStep={currentStep}
-              key={`step-${step.id}`}
-              {...step}
-              isLastItem={i + 1 === wizardSteps.length}
-            />
-          ))}
+          {wizardSteps.map((step, i) => {
+            const previousSteps = wizardSteps[i - 1]?.subItems?.length
+              ? wizardSteps[i - 1].subItems.length - 1
+              : 0;
+            const id = i + previousSteps;
+            return (
+              <WizardSidebarItem
+                currentStep={currentStep}
+                key={`step-${step.text.id}`}
+                id={id}
+                {...step}
+                isLastItem={i + 1 === wizardSteps.length}
+              />
+            );
+          })}
         </div>
       </div>
       <div className="text-sm text-gray-400">

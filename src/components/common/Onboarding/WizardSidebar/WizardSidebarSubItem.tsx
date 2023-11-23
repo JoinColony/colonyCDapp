@@ -14,16 +14,10 @@ export type WizardSidebarSubStep = Optional<
 >;
 
 interface Props extends WizardSidebarSubStep {
-  currentStep: number;
-  hasActiveMiniStep: boolean;
+  isActive: boolean;
 }
 
-const WizardSidebarSubItem = ({
-  currentStep,
-  id: stepId,
-  text: stepText,
-  hasActiveMiniStep,
-}: Props) => {
+const WizardSidebarSubItem = ({ text: stepText, isActive }: Props) => {
   if (!stepText) {
     return null;
   }
@@ -31,8 +25,7 @@ const WizardSidebarSubItem = ({
   return (
     <span
       className={clsx('text-xs ml-[26px]', {
-        'text-blue-400 font-semibold':
-          currentStep === stepId || hasActiveMiniStep,
+        'text-blue-400 font-semibold': isActive,
       })}
     >
       <FormattedMessage {...stepText} />

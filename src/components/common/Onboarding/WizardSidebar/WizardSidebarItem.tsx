@@ -2,9 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import clsx from 'clsx';
 
-import WizardSidebarSubItem, {
-  WizardSidebarSubStep,
-} from './WizardSidebarSubItem';
+import WizardSidebarSubItem from './WizardSidebarSubItem';
 import { WizardSidebarStep } from './WizardSidebar';
 import WizardSidebarItemFlowLine from './WizardSidebarItemFlowLine';
 
@@ -15,21 +13,6 @@ interface Props extends WizardSidebarStep {
   isLastItem: boolean;
 }
 
-const getLatestSubItemOnDisplay = (
-  currentStepId: number,
-  subItems: WizardSidebarSubStep[],
-): WizardSidebarSubStep | undefined => {
-  const latestSubItem = subItems.find(
-    (subItem) => currentStepId - 1 === subItem.id,
-  );
-
-  if (!latestSubItem && currentStepId > -1) {
-    return getLatestSubItemOnDisplay(currentStepId - 1, subItems);
-  }
-
-  return latestSubItem;
-};
-
 const WizardSidebarItem = ({
   currentStep,
   id: stepId,
@@ -37,12 +20,9 @@ const WizardSidebarItem = ({
   subItems,
   isLastItem,
 }: Props) => {
-  const isStepOnDisplay = !!subItems?.find((subid) => currentStep === subid.id)
-    ?.text;
-  const latestSubItem = !isStepOnDisplay
-    ? getLatestSubItemOnDisplay(currentStep, subItems || [])
-    : undefined;
   const hasSubItems = subItems && subItems.length;
+
+  const hideSubItems = currentStep >= stepId + (subItems?.length || 0);
 
   return (
     <div className="flex flex-col justify-start relative">
@@ -62,36 +42,37 @@ const WizardSidebarItem = ({
           })}
         />
         <span
-          className={clsx('text-sm font-semibold ml-4', {
-            'text-blue-400': !hasSubItems && currentStep === stepId,
-            'text-gray-900': hasSubItems && currentStep === stepId,
-          })}
+          className={clsx(
+            'text-sm font-semibold ml-4',
+            currentStep === stepId && !hasSubItems
+              ? 'text-blue-400'
+              : 'text-gray-900',
+          )}
         >
           <FormattedMessage {...stepText} />
         </span>
       </div>
       <div
         className={clsx('flex flex-col gap-2 mt-2 mb-2', {
-          /*
-           * @NOTE: This logic looks menacing, but we are just checking if
-           * the current step is between the range of the item's id or subitem's ids. If it is not,
-           * we hide the subitems section.
-           */
-          hidden:
-            currentStep < stepId ||
-            currentStep >
-              (subItems?.[(subItems?.length || 0) - 1]?.id || stepId),
+          hidden: hideSubItems,
         })}
       >
-        {subItems?.map((subItem) => (
-          <WizardSidebarSubItem
-            currentStep={currentStep}
-            key={`subItem-${subItem.id}`}
-            {...subItem}
-            subItems={subItems}
-            hasActiveMiniStep={latestSubItem?.id === subItem.id}
-          />
-        ))}
+        {subItems?.map((subItem, i) => {
+          const activatePrevious =
+            currentStep === stepId + i + 1 &&
+            subItems[i + 1]?.text === undefined;
+          const activateCurrent = currentStep === stepId + i;
+
+          return (
+            <WizardSidebarSubItem
+              currentStep={currentStep}
+              key={`subItem-${stepId + i}`}
+              {...subItem}
+              subItems={subItems}
+              isActive={activateCurrent || activatePrevious}
+            />
+          );
+        })}
       </div>
     </div>
   );
