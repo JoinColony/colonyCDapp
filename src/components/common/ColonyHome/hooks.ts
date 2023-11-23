@@ -119,8 +119,8 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
     id: '4',
     label: formatText({ id: 'label.allOther' }) ?? '',
     value: otherTeamsReputation ?? 0,
-    color: '#F2F4F7',
-    stroke: '#F2F4F7',
+    color: '--color-teams-grey-100',
+    stroke: '--color-teams-grey-100',
   };
 
   const firstThreeTeams = allTeams?.length
