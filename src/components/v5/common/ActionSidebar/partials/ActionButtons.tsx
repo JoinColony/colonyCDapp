@@ -35,7 +35,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
   return (
     <div
       className="flex items-center flex-col-reverse sm:flex-row
-        justify-end gap-2 pt-6 mt-6 border-t border-gray-200"
+        justify-end gap-2 pt-6 mt-8 border-t border-gray-200 px-6"
     >
       <Button
         mode="primaryOutline"

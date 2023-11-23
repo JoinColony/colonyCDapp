@@ -11,7 +11,7 @@ const PopularActions: FC<PopularActionsProps> = ({ setSelectedAction }) => {
   const { formatMessage } = useIntl();
 
   return (
-    <div>
+    <div className="px-6">
       <h4 className="text-1 pb-2 border-b border-b-gray-200 mb-2">
         {formatMessage({ id: 'actionSidebar.popularActions' })}
       </h4>
