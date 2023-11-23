@@ -10,7 +10,7 @@ export const useOutcomeStep = (motionData: ColonyMotion | null | undefined) => {
   const voteStatuses: VoteStatuses[] = useMemo(() => {
     if (!motionData) return [];
     const {
-      motionStakes: {
+      revealedVotes: {
         percentage: { yay: yayPercent, nay: nayPercent },
       },
     } = motionData;
