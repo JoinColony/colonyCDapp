@@ -140,6 +140,7 @@ const StakingForm: FC<StakingFormProps> = ({
                   <FormFormattedInput
                     id="amount-field"
                     name="amount"
+                    placeholder="0"
                     options={{
                       numeral: true,
                       numeralDecimalScale:
