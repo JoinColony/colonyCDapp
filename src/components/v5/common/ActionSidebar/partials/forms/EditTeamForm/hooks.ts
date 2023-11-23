@@ -10,11 +10,7 @@ import { getEditDomainDialogPayload } from '~common/Dialogs/EditDomainDialog/hel
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 
 import { ActionFormBaseProps } from '../../../types';
-import {
-  DecisionMethod,
-  DECISION_METHOD,
-  useActionFormBaseHook,
-} from '../../../hooks';
+import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 import { validationSchema, EditTeamFormValues } from './consts';
 
 export const useEditTeam = (
@@ -48,7 +44,7 @@ export const useEditTeam = (
     getFormOptions,
     validationSchema,
     actionType:
-      decisionMethod === DECISION_METHOD.Permissions
+      decisionMethod === DecisionMethod.Permissions
         ? ActionTypes.ACTION_DOMAIN_EDIT
         : ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
     defaultValues: useMemo<DeepPartial<EditTeamFormValues>>(

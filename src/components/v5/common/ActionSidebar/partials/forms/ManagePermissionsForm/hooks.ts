@@ -6,11 +6,7 @@ import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
 import { useAppContext, useColonyContext } from '~hooks';
 import { ActionFormBaseProps } from '../../../types';
-import {
-  DecisionMethod,
-  DECISION_METHOD,
-  useActionFormBaseHook,
-} from '../../../hooks';
+import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 import {
   AUTHORITY,
   ManagePermissionsFormValues,
@@ -48,7 +44,7 @@ export const useManagePermissions = (
     getFormOptions,
     validationSchema,
     actionType:
-      decisionMethod === DECISION_METHOD.Permissions
+      decisionMethod === DecisionMethod.Permissions
         ? ActionTypes.ACTION_USER_ROLES_SET
         : ActionTypes.MOTION_USER_ROLES_SET,
     defaultValues: useMemo<DeepPartial<ManagePermissionsFormValues>>(
