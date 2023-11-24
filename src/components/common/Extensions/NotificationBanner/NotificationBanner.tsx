@@ -31,11 +31,13 @@ const NotificationBanner: FC<NotificationBannerProps> = ({
         <Icon
           appearance={{ size: 'extraSmall' }}
           name={icon}
-          className={clsx('flex-shrink-0', {
+          className={clsx('flex-shrink-0 mt-[.125rem]', {
+            // due to line height, the text has top padding, then this doesn't look centered, hence the 2px margin top
             'text-success-400': status === 'success',
             'text-warning-400': status === 'warning',
             'text-negative-400': status === 'error',
             'text-gray-900': status === 'info',
+            hidden: true,
           })}
         />
       ) : null}
