@@ -96,7 +96,6 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
       </div>
       {failed && error && (
         <div className="mt-2 md:max-w-[24rem]">
-          {/* @TODO check how this one looks before the rework */}
           <NotificationBanner
             status="error"
             callToAction={
