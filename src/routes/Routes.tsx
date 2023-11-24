@@ -27,8 +27,6 @@ import TeamsPage from '~frame/v5/pages/TeamsPage';
 import UserProfilePage from '~frame/v5/pages/UserProfilePage';
 import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
 import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
-import CreateColonyPage from '~frame/v5/pages/CreateColonyPage';
-import CreateUserPage from '~frame/v5/pages/CreateUserPage';
 import ActivityPage from '~frame/v5/pages/ActivityPage';
 import OnboardingPage from '~frame/v5/pages/OnboardingPage';
 
@@ -36,6 +34,7 @@ import ColonyActions from '~common/ColonyActions';
 import ColonyDecisions from '~common/ColonyDecisions';
 import Expenditures from '~common/Expenditures';
 import ColonyHomeRoutes from '~common/ColonyHome/ColonyHomeRoutes';
+
 import LandingPageRoute from './LandingPageRoute';
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 
@@ -80,8 +79,6 @@ import MainRoute from './MainRoute';
 import ColonyRoute from './ColonyRoute';
 import ColonyMembersRoute from './ColonyMembersRoute';
 import UserRoute from './UserRoute';
-import LandingPageRoute from './LandingPageRoute';
-import ActivityPage from '~frame/v5/pages/ActivityPage';
 
 const displayName = 'routes.Routes';
 
@@ -120,10 +117,6 @@ const Routes = () => {
             />
             <Route path={USER_ADVANCED_ROUTE} element={<UserAdvancedPage />} />
           </Route>
-        </Route>
-
-        <Route element={<LandingPageRoute />}>
-          <Route path={LANDING_PAGE_ROUTE} element={<LandingPage />} />
         </Route>
 
         <Route
@@ -304,7 +297,7 @@ const Routes = () => {
         layout={NavBar}
         routeProps={({ colonyName }) => ({
           backText: ColonyBackText,
-          backRoute: `/colony/${colonyName}`,
+          backRoute: `/${colonyName}`,
         })}
       />
       <AlwaysAccesibleRoute
@@ -313,7 +306,7 @@ const Routes = () => {
         layout={NavBar}
         routeProps={({ colonyName }) => ({
           backText: ColonyBackText,
-          backRoute: `/colony/${colonyName}`,
+          backRoute: `/${colonyName}`,
         })}
       />
 

@@ -52,6 +52,7 @@ export const COLONY_EVENTS_ROUTE = `events`;
 export const DECISIONS_PREVIEW_ROUTE_SUFFIX = '/preview';
 
 export const CREATE_COLONY_ROUTE_BASE = '/create-colony';
+export const CREATE_PROFILE_ROUTE = '/create-profile';
 export const CREATE_COLONY_ROUTE = `${CREATE_COLONY_ROUTE_BASE}/:inviteCode`;
 export const CREATE_USER_ROUTE = '/create-user/:inviteCode';
 export const USER_ROUTE = '/user/:username';

@@ -46,7 +46,7 @@ const StakesListItem = ({
     <li className={styles.stakesListItem}>
       <Link
         replace={isMotionPage}
-        to={txHash ? `/colony/${colonyName}/tx/${txHash}` : ''}
+        to={txHash ? `/${colonyName}/tx/${txHash}` : ''}
       >
         <div
           role="button"
