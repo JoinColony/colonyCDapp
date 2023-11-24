@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 
-import { NotificationBannerProps } from './types';
 import Icon from '~shared/Icon';
+import { NotificationBannerProps } from './types';
 
 const displayName = 'common.Extensions.NotificationBanner';
 

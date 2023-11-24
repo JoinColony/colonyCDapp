@@ -28,18 +28,15 @@ const AdvancedPage: FC = () => {
         <FormattedMessage id="advancedPage.colony.title" />
       </h3>
       <div className="mb-4">
-        <NotificationBanner
-          icon={canUpgrade ? 'warning-circle' : 'check-circle'}
-          status={canUpgrade ? 'warning' : 'success'}
-        >
-          <FormattedMessage
-            id={
-              canUpgrade
-                ? 'advancedPage.version.warning'
-                : 'advancedPage.version.success'
-            }
-          />
-        </NotificationBanner>
+        {canUpgrade ? (
+          <NotificationBanner icon="warning-circle" status="warning">
+            <FormattedMessage id="advancedPage.version.warning" />
+          </NotificationBanner>
+        ) : (
+          <NotificationBanner icon="check-circle" status="success">
+            <FormattedMessage id="advancedPage.version.success" />
+          </NotificationBanner>
+        )}
       </div>
       <ColonyVersionWidget
         currentVersion={colonyContractVersion}

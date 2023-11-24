@@ -7,33 +7,50 @@ const displayName = 'frame.Extensions.PermissionsNeededBanner';
 const PermissionsNeededBanner = () => {
   // @TODO: Change extension missing permissions functionality
   const [isPermissionEnabled, setIsPermissionEnabled] = useState(false);
-  const enablePermissionsButton = (
-    <button type="button" onClick={() => setIsPermissionEnabled(true)}>
-      {isPermissionEnabled ? (
-        <FormattedMessage id="extension.notification.permissions.enabled" />
-      ) : (
-        <FormattedMessage id="extension.notification.permissions.enable" />
-      )}
-    </button>
-  );
 
-  return (
-    <div className="mb-6">
-      <NotificationBanner
-        icon={isPermissionEnabled ? 'check-circle' : 'warning-circle'}
-        status={isPermissionEnabled ? 'success' : 'warning'}
-        callToAction={enablePermissionsButton}
-      >
-        <FormattedMessage
-          id={
-            isPermissionEnabled
-              ? 'extension.notification.permissions.updated'
-              : 'extension.notification.permissions.missing'
+  function getBanner() {
+    if (isPermissionEnabled) {
+      return (
+        <NotificationBanner
+          icon="check-circle"
+          status="success"
+          callToAction={
+            <button
+              type="button"
+              onClick={() => {
+                setIsPermissionEnabled(true);
+              }}
+            >
+              <FormattedMessage id="extension.notification.permissions.enabled" />
+            </button>
           }
-        />
+        >
+          <FormattedMessage id="extension.notification.permissions.updated" />
+        </NotificationBanner>
+      );
+    }
+
+    return (
+      <NotificationBanner
+        icon="warning-circle"
+        status="warning"
+        callToAction={
+          <button
+            type="button"
+            onClick={() => {
+              setIsPermissionEnabled(true);
+            }}
+          >
+            <FormattedMessage id="extension.notification.permissions.enable" />
+          </button>
+        }
+      >
+        <FormattedMessage id="extension.notification.permissions.missing" />
       </NotificationBanner>
-    </div>
-  );
+    );
+  }
+
+  return <div className="mb-6">{getBanner()}</div>;
 };
 
 PermissionsNeededBanner.displayName = displayName;
