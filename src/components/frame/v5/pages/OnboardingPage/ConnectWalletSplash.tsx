@@ -1,5 +1,6 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
+import clsx from 'clsx';
 
 import { HeaderRow } from '~common/Onboarding/wizardSteps/shared';
 import { MainLayout, MainSidebar } from '~frame/Extensions/layouts';
@@ -45,11 +46,18 @@ const ConnectWalletSplash = ({ validInvite }: Props) => {
           heading={{ id: 'colonyWelcome' }}
           description={MSG.privateBeta}
         />
-        <div className="flex gap-2 items-center px-6 py-3 bg-success-100 border border-success-200 mb-6 rounded-lg">
+        <div
+          className={clsx(
+            'flex gap-2 items-center px-6 py-3 border mb-6 rounded-lg',
+            validInvite
+              ? 'bg-success-100 border-success-200'
+              : 'bg-negative-100 border-negative-200',
+          )}
+        >
           <Icon
             name="hand-waving"
             appearance={{ size: 'small' }}
-            className="text-success-400"
+            className={validInvite ? 'text-success-400' : 'text-negative-400'}
           />
           <span className="text-md font-normal text-gray-900">
             {validInvite
