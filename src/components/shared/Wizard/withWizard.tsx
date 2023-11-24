@@ -63,7 +63,29 @@ const withWizard =
         if (vals) {
           setStepsValues((currentVals) => {
             const valsCopy = [...currentVals];
+
+            // Update current step values
             valsCopy[currentStep] = vals;
+
+            // Check if next step exists
+            if (currentStep + 1 < valsCopy.length) {
+              // Get keys of the current vals object
+              const keys = Object.keys(vals);
+
+              // Update values in the next step if they have the same key as in the current step
+              keys.forEach((key) => {
+                if (
+                  Object.prototype.hasOwnProperty.call(vals, key) &&
+                  Object.prototype.hasOwnProperty.call(
+                    valsCopy[currentStep + 1],
+                    key,
+                  )
+                ) {
+                  valsCopy[currentStep + 1][key] = vals[key];
+                }
+              });
+            }
+
             return valsCopy;
           });
         }
@@ -78,7 +100,28 @@ const withWizard =
         if (vals) {
           setStepsValues((currentVals) => {
             const valsCopy = [...currentVals];
+
+            // Update current step values
             valsCopy[currentStep] = vals;
+
+            // Check if previous step exists
+            if (currentStep - 1 >= 0) {
+              // Get keys of the current vals object
+              const keys = Object.keys(vals);
+
+              // Update values in the previous step if they have the same key as in the current step
+              keys.forEach((key) => {
+                if (
+                  Object.prototype.hasOwnProperty.call(vals, key) &&
+                  Object.prototype.hasOwnProperty.call(
+                    valsCopy[currentStep - 1],
+                    key,
+                  )
+                ) {
+                  valsCopy[currentStep - 1][key] = vals[key];
+                }
+              });
+            }
             return valsCopy;
           });
         }
