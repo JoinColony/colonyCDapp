@@ -90,13 +90,13 @@ const userInitialValues = {
 };
 
 export interface WizardProps {
-  inviteCode: string;
+  inviteCode?: string;
 }
 
 export const createWizard = (
   user: User | null | undefined,
   flow: Flow,
-  inviteCode: string,
+  inviteCode?: string,
 ) => {
   if (user && flow === 'user') {
     return withWizard<WizardProps>({

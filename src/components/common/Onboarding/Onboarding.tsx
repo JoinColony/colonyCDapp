@@ -7,7 +7,7 @@ import { createWizard, displayName } from './consts';
 
 interface Props {
   flow: Flow;
-  inviteCode: string;
+  inviteCode?: string;
 }
 
 const Onboarding = ({ flow, inviteCode }: Props) => {
@@ -22,7 +22,7 @@ const Onboarding = ({ flow, inviteCode }: Props) => {
   );
 
   return (
-    // FIXME: factor in WizardcontextProvider (into withWizard)
+    // FIX: factor in WizardcontextProvider (into withWizard)
     <Wizard inviteCode={inviteCode} />
   );
 };

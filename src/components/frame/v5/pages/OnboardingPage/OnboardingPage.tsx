@@ -5,7 +5,7 @@ import { useAppContext } from '~hooks';
 import { LANDING_PAGE_ROUTE } from '~routes';
 import Onboarding from '~common/Onboarding';
 import { Flow } from '~common/Onboarding/types';
-/* import { useGetPrivateBetaCodeInviteValidityQuery } from '~gql'; */
+import { useGetPrivateBetaCodeInviteValidityQuery } from '~gql';
 
 const displayName = 'frame.v5.OnboardingPage';
 
@@ -18,28 +18,23 @@ const OnboardingPage = ({ flow }: Props) => {
 
   const { inviteCode } = useParams<{ inviteCode: string }>();
   // @TODO: handle errors, fix the stupid hook problem
-  // Uncomment when rebased onto of private user invite
-  /* const { data, loading } = useGetPrivateBetaCodeInviteValidityQuery({
-   *   skip: !inviteCode,
-   *   variables: { id: inviteCode || '' },
-   * }); */
-  const valid = true; // (data?.getPrivateBetaInviteCode?.shareableInvites || 0) > 0;
+  const { data, loading } = useGetPrivateBetaCodeInviteValidityQuery({
+    skip: !inviteCode,
+    variables: { id: inviteCode || '' },
+  });
+  const valid = (data?.getPrivateBetaInviteCode?.shareableInvites || 0) > 0;
 
-  if (!inviteCode || !valid) {
+  if (flow === 'colony' && (!inviteCode || !valid)) {
     return <Navigate to={LANDING_PAGE_ROUTE} />;
   }
 
-  if (
-    walletConnecting ||
-    userLoading
-    /* || loading */
-  ) {
-    // FIXME: add loading spinner
+  if (walletConnecting || userLoading || loading) {
+    // FIX: add loading spinner
     return null;
   }
 
   if (!wallet) {
-    // FIXME: navigate to splash
+    // FIX: navigate to splash
     return <p>Connect to me</p>;
   }
 
