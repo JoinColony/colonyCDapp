@@ -19,7 +19,7 @@ const BurgerMenu: FC<BurgerMenuProps> = ({
       type="button"
       className={clsx(
         className,
-        'flex text-gray-400 sm:hover:text-blue-400 p-[0.1875rem] transition-all duration-normal cursor-pointer',
+        'text-gray-400 md:hover:text-blue-400 p-[0.1875rem] transition-all duration-normal cursor-pointer flex justify-center items-center',
       )}
       aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
       ref={setTriggerRef}

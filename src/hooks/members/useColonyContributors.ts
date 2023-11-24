@@ -1,4 +1,3 @@
-import { ColonyRole } from '@colony/colony-js';
 import { useMemo, useState } from 'react';
 
 import { useGetColonyContributorsQuery } from '~gql';
@@ -9,6 +8,8 @@ import {
   ContributorTypeFilter,
   StatusType,
 } from '~v5/common/TableFiltering/types';
+import { UserRole } from '~constants/permissions';
+
 import { updateQuery } from './utils';
 import useMemberFilters from './useMemberFilters';
 
@@ -20,7 +21,7 @@ const useColonyContributors = ({
   sortDirection,
   pageSize,
 }: {
-  filterPermissions: ColonyRole[];
+  filterPermissions: Record<UserRole, number[]>;
   nativeDomainIds: number[];
   filterStatus: StatusType | undefined;
   contributorTypes: Set<ContributorTypeFilter>;
@@ -34,17 +35,22 @@ const useColonyContributors = ({
 
   const visibleItems = page * pageSize;
 
-  const { data, fetchMore, loading } = useGetColonyContributorsQuery({
-    variables: {
-      colonyAddress,
-      sortDirection,
-      limit: pageSize * 3,
-    },
-    skip: !colonyAddress,
-    fetchPolicy: 'cache-and-network',
-  });
+  const { data, previousData, fetchMore, loading } =
+    useGetColonyContributorsQuery({
+      variables: {
+        colonyAddress,
+        sortDirection,
+        limit: pageSize * 3,
+      },
+      skip: !colonyAddress,
+      fetchPolicy: 'cache-and-network',
+    });
 
-  const { items, nextToken } = data?.getContributorsByColony || {};
+  const { nextToken } = data?.getContributorsByColony || {};
+  const { items } =
+    data?.getContributorsByColony ||
+    previousData?.getContributorsByColony ||
+    {};
 
   /*
    * To be considered a contributor, you must:

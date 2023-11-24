@@ -7,6 +7,7 @@ import {
   TeamType,
 } from '../TableFiltering/types';
 import { Message } from '~types';
+import { FilterOptionsProps } from './partials/types';
 
 export type AccordionProps = {
   items: ParentFilterOption[];
@@ -45,6 +46,6 @@ export type AccordionItemProps = {
   nestedFilters: FilterOptionProps[];
 };
 
-export interface FilterButtonProps {
+export interface FilterProps extends FilterOptionsProps {
   customLabel?: string;
 }

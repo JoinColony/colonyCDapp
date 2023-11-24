@@ -4,19 +4,19 @@ export const tabList: UserHubTabList = [
   {
     id: UserHubTabs.Overview,
     label: 'Your overview',
-    value: 'overview',
+    value: UserHubTabs.Overview,
     icon: 'user',
   },
   {
     id: UserHubTabs.Stakes,
     label: 'Stakes',
-    value: 'stakes',
+    value: UserHubTabs.Stakes,
     icon: 'coin-vertical',
   },
   {
     id: UserHubTabs.Transactions,
     label: 'Transactions',
-    value: 'transactions',
+    value: UserHubTabs.Transactions,
     icon: 'receipt',
   },
 ];

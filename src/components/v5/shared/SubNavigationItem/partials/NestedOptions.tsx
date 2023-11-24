@@ -1,18 +1,18 @@
 import React, { FC, useState } from 'react';
 import clsx from 'clsx';
-
 import { usePopperTooltip } from 'react-popper-tooltip';
 import { AnimatePresence, motion } from 'framer-motion';
+
 import { useMobile } from '~hooks';
 import Checkbox from '~v5/common/Checkbox';
-
-import { NestedOptionsProps } from '../types';
-import Header from './Header';
 import { useFilterContext } from '~context/FilterContext';
 import { formatText } from '~utils/intl';
 import PopoverBase from '~v5/shared/PopoverBase';
 import { NestedFilterOption } from '~v5/common/Filter/types';
 import { accordionAnimation } from '~constants/accordionAnimation';
+
+import { NestedOptionsProps } from '../types';
+import Header from './Header';
 
 const displayName = 'v5.SubNavigationItem.partials.NestedOptions';
 
@@ -30,6 +30,7 @@ const NestedOptions: FC<NestedOptionsProps> = ({
     placement: 'left-start',
     trigger: 'click',
     interactive: true,
+    offset: [0, 16],
   });
 
   const filterTitle = `${parentOption}.type`;
@@ -65,11 +66,10 @@ const NestedOptions: FC<NestedOptionsProps> = ({
 
           return (
             <li key={id}>
-              <button
+              <div
                 className={clsx('subnav-button', {
                   'px-0': isMobile,
                 })}
-                type="button"
                 aria-label={formatText({ id: 'checkbox.select.filter' })}
                 ref={setTriggerRef}
               >
@@ -81,10 +81,11 @@ const NestedOptions: FC<NestedOptionsProps> = ({
                     onChange(hasNestedOptions, id, isChecked, event)
                   }
                   isChecked={isChecked}
+                  classNames="w-full"
                 >
                   {icon}
                 </Checkbox>
-              </button>
+              </div>
               <AnimatePresence>
                 {nestedOptions &&
                   nestedOptions.length > 0 &&
@@ -116,7 +117,7 @@ const NestedOptions: FC<NestedOptionsProps> = ({
                         hasShadow: true,
                         className: 'py-4 px-2',
                       }}
-                      classNames="w-full sm:max-w-[17.375rem] mr-2"
+                      classNames="w-full sm:max-w-[17.375rem]"
                     >
                       <NestedOptions
                         parentOption={`custom.${parentOption}`}

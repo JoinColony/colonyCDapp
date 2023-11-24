@@ -35,9 +35,7 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
     isAddFundsModalOpened,
     { toggleOn: toggleAddFundsModalOn, toggleOff: toggleAddFundsModalOff },
   ] = useToggle();
-  const { handleClipboardCopy, isCopied } = useCopyToClipboard(
-    colonyAddress || '',
-  );
+  const { handleClipboardCopy, isCopied } = useCopyToClipboard();
 
   const columns = useBalanceTableColumns(
     nativeToken,
@@ -111,7 +109,7 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
           </p>
           <CopyWallet
             isCopied={isCopied}
-            handleClipboardCopy={handleClipboardCopy}
+            handleClipboardCopy={() => handleClipboardCopy(colonyAddress || '')}
             value={colonyAddress || ''}
           />
         </>

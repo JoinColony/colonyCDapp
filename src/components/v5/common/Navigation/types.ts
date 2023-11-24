@@ -1,4 +1,5 @@
 import { MessageDescriptor } from 'react-intl';
+import { SelectOption } from '../Fields/Select/types';
 
 export interface NavItemProps {
   disabled?: boolean;
@@ -6,14 +7,9 @@ export interface NavItemProps {
   label: MessageDescriptor | string;
 }
 
+export type NavigationItem = SelectOption;
+
 export interface NavigationProps {
   className?: string;
   navigationItems: NavigationItem[];
-}
-
-export interface NavigationItem {
-  id: number;
-  linkTo: string;
-  label: string;
-  value: string;
 }

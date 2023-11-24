@@ -12,7 +12,7 @@ export const USER_ROLE = {
 
 export type UserRole = (typeof USER_ROLE)[keyof typeof USER_ROLE];
 
-interface UserRoleMeta {
+export interface UserRoleMeta {
   name: string;
   role: UserRole;
   permissions: ColonyRole[];

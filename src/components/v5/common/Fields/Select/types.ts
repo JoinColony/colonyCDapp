@@ -1,12 +1,19 @@
-import { MessageDescriptor } from 'react-intl';
+import { Props as ReactSelectProps } from 'react-select';
 
-export interface SelectProps<T> {
-  selectedElement?: number;
-  handleChange: (id: number) => void;
-  list: T;
-  isLoading?: boolean;
-  placeholderText?: MessageDescriptor | string;
-  isListRelative?: boolean;
-  showAvatar?: boolean;
-  openButtonClass?: string;
+export interface SelectBaseOption {
+  label: string;
+  value: string | number;
 }
+
+export interface SelectBaseProps<T extends SelectBaseOption>
+  extends Omit<ReactSelectProps<T, false>, 'value' | 'defaultValue'> {
+  className?: string;
+  value?: SelectBaseOption['value'];
+  defaultValue?: SelectBaseOption['value'];
+}
+
+export interface SelectOption extends SelectBaseOption {
+  to?: string;
+}
+
+export type SelectProps = SelectBaseProps<SelectOption>;

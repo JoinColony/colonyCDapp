@@ -24,10 +24,13 @@ export default meta;
 type Story = StoryObj<typeof NotificationBanner>;
 
 const NotificationBannerWithHooks = (args) => {
-  const { handleClipboardCopy } = useCopyToClipboard('text');
+  const { handleClipboardCopy } = useCopyToClipboard();
 
   return (
-    <NotificationBanner {...args} handleClipboardCopy={handleClipboardCopy} />
+    <NotificationBanner
+      {...args}
+      handleClipboardCopy={() => handleClipboardCopy('text')}
+    />
   );
 };
 

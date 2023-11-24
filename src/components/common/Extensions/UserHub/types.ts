@@ -1,7 +1,7 @@
 export type UserHubTabList = {
   id: UserHubTabs;
   label: string;
-  value: string;
+  value: UserHubTabs;
   icon: string;
 }[];
 

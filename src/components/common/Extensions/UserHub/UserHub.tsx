@@ -45,9 +45,12 @@ const UserHub: FC = () => {
       <div className="sticky top-0 left-0 right-0 bg-base-white sm:bg-transparent border-b border-b-gray-200 sm:border-b-0 sm:static sm:top-auto sm:left-auto sm:right-auto flex sm:border-r sm:border-gray-100 flex-col justify-between sm:w-[13.85rem] shrink-0 px-6 pb-6 pt-4 sm:px-6 sm:p-6">
         {isMobile ? (
           <Select
-            list={tabList}
-            selectedElement={selectedTab}
-            handleChange={handleTabChange}
+            options={tabList}
+            defaultValue={selectedTab}
+            value={selectedTab}
+            onChange={(value) => handleTabChange(value?.value as UserHubTabs)}
+            className="w-full"
+            hideSelectedOptions
           />
         ) : (
           <>

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { ColonyRole, Id } from '@colony/colony-js';
+import { Id } from '@colony/colony-js';
 
 import { hasSomeRole } from './utils';
 import {
@@ -12,6 +12,7 @@ import { searchMembers } from '~utils/members';
 import { useSearchContext } from '~context/SearchContext';
 import { ColonyContributor } from '~types';
 import { notNull } from '~utils/arrays';
+import { UserRole } from '~constants/permissions';
 
 const useMemberFilters = ({
   nativeDomainIds,
@@ -23,7 +24,7 @@ const useMemberFilters = ({
 }: {
   members: ColonyContributor[];
   nativeDomainIds: number[];
-  filterPermissions: ColonyRole[];
+  filterPermissions: Record<UserRole, number[]>;
   isContributorList?: boolean;
   contributorTypes: Set<ContributorTypeFilter>;
   filterStatus?: StatusType;
@@ -66,7 +67,7 @@ const useMemberFilters = ({
       ...databaseDomainIds,
     ]);
 
-    if (!filterPermissions.length) {
+    if (!Object.keys(filterPermissions).length) {
       if (!isContributorList) {
         // Don't filter allMembers list by domain selected.
         return filteredByType;
@@ -84,7 +85,8 @@ const useMemberFilters = ({
             ) ||
             filteredRoles.some(
               ({ domainId, ...rest }) =>
-                permissionsDomainIds.has(domainId) && hasSomeRole(rest, []),
+                permissionsDomainIds.has(domainId) &&
+                hasSomeRole(rest, undefined),
             )
           );
         }) ?? []
@@ -103,6 +105,8 @@ const useMemberFilters = ({
       );
     });
   }, [
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(filterPermissions),
     filterPermissions,
     colonyAddress,
     filteredByType,

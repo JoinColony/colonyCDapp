@@ -19,8 +19,11 @@ import IncorporationPage from '~frame/Extensions/pages/IncorporationPage';
 import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
 import PermissionsPage from '~frame/Extensions/pages/PermissionsPage';
 import { ExtensionsContextProvider } from '~context/ExtensionsContext';
-import MembersPage from '~frame/v5/pages/MembersPage';
 import ColonyPreviewPage from '~frame/v5/pages/ColonyPreviewPage';
+import MembersPage, {
+  AllMembersPage,
+  ContributorsPage,
+} from '~frame/v5/pages/MembersPage';
 import ColonyUsersPage from '~frame/v5/pages/ColonyUsersPage';
 import VerifiedPage from '~frame/v5/pages/VerifiedPage';
 import BalancePage from '~frame/v5/pages/BalancePage';
@@ -144,15 +147,17 @@ const Routes = () => {
 
           <Route path={COLONY_INCOMING_ROUTE} element={<ColonyFunding />} />
           <Route element={<ColonyMembersRoute />}>
-            {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map(
-              (path) => (
-                <Route path={path} element={<MembersPage />} key={path} />
-              ),
-            )}
-            <Route
-              path={COLONY_CONTRIBUTORS_ROUTE}
-              element={<ColonyUsersPage pageName="contributors" />}
-            />
+            <Route element={<MembersPage />}>
+              {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map(
+                (path) => (
+                  <Route path={path} element={<AllMembersPage />} key={path} />
+                ),
+              )}
+              <Route
+                path={COLONY_CONTRIBUTORS_ROUTE}
+                element={<ContributorsPage />}
+              />
+            </Route>
             <Route
               path={COLONY_FOLLOWERS_ROUTE}
               element={<ColonyUsersPage pageName="followers" />}
@@ -236,24 +241,6 @@ const Routes = () => {
             />
           </Route>
           <Route path={COLONY_INCOMING_ROUTE} element={<ColonyFunding />} />
-          <Route element={<ColonyMembersRoute />}>
-            <Route path={COLONY_MEMBERS_ROUTE} element={<MembersPage />} />
-            <Route
-              path={COLONY_MEMBERS_WITH_DOMAIN_ROUTE}
-              element={<MembersPage />}
-            />
-            <Route
-              path={COLONY_CONTRIBUTORS_ROUTE}
-              element={<ColonyUsersPage pageName="contributors" />}
-            />
-            <Route
-              path={COLONY_FOLLOWERS_ROUTE}
-              element={<ColonyUsersPage pageName="followers" />}
-            />
-            <Route path={COLONY_VERIFIED_ROUTE} element={<VerifiedPage />} />
-            <Route path={COLONY_TEAMS_ROUTE} element={<TeamsPage />} />
-            <Route path={COLONY_BALANCES_ROUTE} element={<BalancePage />} />
-          </Route>
           <Route
             path={COLONY_DECISIONS_PREVIEW_ROUTE}
             element={

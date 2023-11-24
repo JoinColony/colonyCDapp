@@ -1,11 +1,11 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { Tabs as ReactTabs, Tab, TabScreen } from 'react-tabs-scrollable';
-import { useIntl } from 'react-intl';
 import { clsx } from 'clsx';
 
 import { TabsProps } from './types';
 import styles from './Tabs.module.css';
 import Icon from '~shared/Icon';
+import { formatText } from '~utils/intl';
 
 const displayName = 'Extensions.Tabs';
 
@@ -16,8 +16,6 @@ const Tabs: FC<PropsWithChildren<TabsProps>> = ({
   className,
   children,
 }) => {
-  const { formatMessage } = useIntl();
-
   return (
     <>
       <ReactTabs
@@ -39,7 +37,9 @@ const Tabs: FC<PropsWithChildren<TabsProps>> = ({
       >
         {items.map(({ id, title, notificationNumber }) => (
           <Tab key={id}>
-            {formatMessage({ id: `tabs.${id}`, defaultMessage: `${title}` })}
+            <span className="text-md leading-5">
+              {formatText({ id: `tabs.${id}`, defaultMessage: `${title}` })}
+            </span>
             {!!notificationNumber && (
               <span className={styles.notificationNumber}>
                 <span>{notificationNumber}</span>

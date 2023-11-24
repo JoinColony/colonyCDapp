@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 
 import { tabList } from '~common/Extensions/UserHub/consts';
+import { UserHubTabs } from '~common/Extensions/UserHub/types';
 import Select from '~v5/common/Fields/Select';
 
 const meta: Meta<typeof Select> = {
@@ -15,15 +16,12 @@ type Story = StoryObj<typeof Select>;
 const SelectWithLogic = () => {
   const [selectedTab, setSelectedTab] = useState(0);
 
-  const handleChange = (selectedOption: number) => {
-    setSelectedTab(selectedOption);
-  };
-
   return (
     <Select
-      list={tabList}
-      selectedElement={selectedTab}
-      handleChange={handleChange}
+      options={tabList}
+      defaultValue={selectedTab}
+      value={selectedTab}
+      onChange={(value) => setSelectedTab(value?.value as UserHubTabs)}
     />
   );
 };

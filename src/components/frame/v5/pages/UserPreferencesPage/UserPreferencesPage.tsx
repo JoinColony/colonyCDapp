@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Navigate } from 'react-router-dom';
-import { defineMessages, useIntl } from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 import { useAppContext, useMobile } from '~hooks';
 import Input from '~v5/common/Fields/Input';
@@ -9,14 +9,14 @@ import Icon from '~shared/Icon';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import Switch from '~v5/common/Fields/Switch';
 import { multiLineTextEllipsis } from '~utils/strings';
+import LoadingTemplate from '~frame/LoadingTemplate';
+import { LANDING_PAGE_ROUTE } from '~routes';
+import { formatText } from '~utils/intl';
 
 import LeftColumn from '../UserProfilePage/partials/LeftColumn';
 import { useUserPreferencesPage } from './hooks';
 import { UserPreferencesPageProps } from './types';
-
 import styles from './UserPreferencesPage.module.css';
-import LoadingTemplate from '~frame/LoadingTemplate';
-import { LANDING_PAGE_ROUTE } from '~routes';
 
 const displayName = 'v5.pages.UserPreferencesPage';
 
@@ -33,11 +33,7 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
 }) => {
   const { user, userLoading, walletConnecting } = useAppContext();
   const isMobile = useMobile();
-  const { formatMessage } = useIntl();
-  const { handleClipboardCopy, isCopied } = useCopyToClipboard(
-    user?.walletAddress || '',
-    5000,
-  );
+  const { handleClipboardCopy, isCopied } = useCopyToClipboard(5000);
 
   const {
     errors,
@@ -63,7 +59,7 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-6">
         <h4 className="heading-4">
-          {formatMessage({ id: 'userPreferencesPage.accountPreferences' })}
+          {formatText({ id: 'userPreferencesPage.accountPreferences' })}
         </h4>
         <div className={styles.row}>
           <LeftColumn
@@ -116,7 +112,7 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
               mode={isCopied ? 'completed' : 'septenary'}
               iconName={isCopied ? '' : 'copy-simple'}
               isFullSize={isMobile}
-              onClick={() => handleClipboardCopy()}
+              onClick={() => handleClipboardCopy(user?.walletAddress || '')}
               text={{
                 id: isCopied ? 'copy.addressCopied' : 'copy.address',
               }}
@@ -125,7 +121,7 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
         </div>
         <span className="divider" />
         <h5 className="heading-5">
-          {formatMessage({
+          {formatText({
             id: 'userPreferencesPage.notificationPreferences',
           })}
         </h5>
@@ -157,7 +153,7 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
         </div>
         <span className="divider" />
         <h5 className="heading-5">
-          {formatMessage({
+          {formatText({
             id: 'userPreferencesPage.notificationFor',
           })}
         </h5>
@@ -177,7 +173,7 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
         </div>
         <span className="divider" />
         <h5 className="heading-5">
-          {formatMessage({
+          {formatText({
             id: 'userPreferencesPage.displayPreferences',
           })}
         </h5>

@@ -199,11 +199,11 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
   const items = useExternalLinks();
   const { pathname } = useLocation();
   const colonyUrl = `${window.location.host}${pathname}`;
-  const { handleClipboardCopy, isCopied } = useCopyToClipboard(colonyUrl, 5000);
+  const { handleClipboardCopy, isCopied } = useCopyToClipboard(5000);
   const {
     handleClipboardCopy: itemHandleClipboardCopy,
     isCopied: itemIsCopied,
-  } = useCopyToClipboard(colonyUrl, 5000);
+  } = useCopyToClipboard(5000);
   const isMobile = useMobile();
   const { handleUnwatch } = useColonySubscription();
 
@@ -265,7 +265,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
               label:
                 formatText({ id: 'dashboard.burgerMenu.item.share' }) || '',
               icon: ShareNetwork,
-              onClick: () => itemHandleClipboardCopy(),
+              onClick: () => itemHandleClipboardCopy(colonyUrl),
               tooltipProps: {
                 tooltipContent:
                   formatText({
@@ -311,6 +311,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
       ].filter((menuItem) => menuItem.items.length !== 0),
     [
       colony?.name,
+      colonyUrl,
       handleUnwatch,
       isUserInColony,
       itemHandleClipboardCopy,
@@ -330,7 +331,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
         {
           key: 'share-url',
           icon: ShareNetwork,
-          onClick: () => handleClipboardCopy(),
+          onClick: () => handleClipboardCopy(colonyUrl),
           tooltipProps: {
             tooltipContent: formatText({
               id: 'colony.tooltip.url.copied',

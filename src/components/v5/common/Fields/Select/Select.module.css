@@ -1,19 +1,63 @@
-.container {
-  @apply w-full relative;
+.wrapper :global(.select__control) {
+  @apply border-gray-300 rounded-s rounded-e text-gray-900 font-medium text-md;
 }
 
-.button {
-  @apply w-full pl-3.5 pr-4 py-3 rounded bg-base-white flex justify-between items-center text-md font-normal transition-all duration-normal border;
+.wrapper :global(.select__control--is-focused) {
+  @apply border-blue-200 shadow-[0rem_0rem_0rem_.1875rem_#EFF8FF];
 }
 
-.options {
-  @apply border-gray-200 hidden;
+.wrapper :global(.select__placeholder) {
+  @apply text-gray-900;
 }
 
-.show {
-  @apply flex flex-col py-2 px-2 border border-gray-300 rounded relative z-[1] bg-base-white w-full mt-1 max-h-[12.5rem] overflow-y-auto;
+.wrapper :global(.select__value-container) {
+  @apply px-3.5 py-3;
 }
 
-.li {
-  @apply flex items-center justify-between text-md cursor-pointer px-1.5 rounded hover:bg-gray-50;
+.wrapper :global(.select__single-value) {
+  @apply m-0;
+}
+
+.wrapper :global(.select__indicator) {
+  @apply px-3.5 py-3 transition-all text-gray-400;
+}
+
+.wrapper :global(.select__control--menu-is-open .select__indicator) {
+  @apply rotate-180;
+}
+
+.wrapper :global(.select__menu) {
+  @apply bg-red-500;
+}
+
+.menu {
+  @apply my-1 shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)] rounded-s rounded-e border border-gray-300;
+}
+
+.menu :global(.select__menu-list) {
+  @apply py-2 px-1.5;
+}
+
+.menu :global(.select__option) {
+  @apply rounded-s rounded-e text-gray-900 cursor-pointer transition-all;
+}
+
+.menu :global(.select__option:not(.with-link)) {
+  @apply p-2;
+}
+
+.menu :global(.select__option.with-link) {
+  @apply p-0;
+}
+
+.menu :global(.select__option.with-link a) {
+  @apply p-2 block;
+}
+
+.menu :global(.select__option--is-selected) {
+  @apply text-blue-400 font-medium bg-transparent;
+}
+
+.menu :global(.select__option--is-focused) {
+  @apply bg-transparent sm:bg-gray-200;
 }

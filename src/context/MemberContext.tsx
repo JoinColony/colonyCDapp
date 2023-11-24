@@ -2,6 +2,7 @@ import React, {
   createContext,
   FC,
   PropsWithChildren,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -20,7 +21,9 @@ import {
 import { SearchContextProvider } from './SearchContext';
 import { notNull } from '~utils/arrays';
 import {
-  HOMEPAGE_MEMBERS_LIST_LIMIT,
+  ALL_MEMBERS_LIST_LIMIT,
+  ALL_MEMBERS_LOAD_MORE_LIST_LIMIT,
+  CONTRIBUTORS_MEMBERS_LIST_LIMIT,
   HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT,
   VERIFIED_MEMBERS_LIST_LIMIT,
 } from '~constants';
@@ -54,8 +57,8 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const isMobile = useMobile();
   const isVerifiedPage = useMatch(`${colonyName}/${COLONY_VERIFIED_ROUTE}`);
 
-  const pageSize = useMemo(() => {
-    let itemsToShow = HOMEPAGE_MEMBERS_LIST_LIMIT;
+  const contributorsPageSize = useMemo(() => {
+    let itemsToShow = CONTRIBUTORS_MEMBERS_LIST_LIMIT;
 
     if (isVerifiedPage) {
       itemsToShow = VERIFIED_MEMBERS_LIST_LIMIT;
@@ -65,6 +68,21 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
     return itemsToShow;
   }, [isMobile, isVerifiedPage]);
+
+  const getAllMembersPageSize = useCallback(
+    (desktopPageSize: number, mobilePageSize?: number) => {
+      let itemsToShow = desktopPageSize;
+
+      if (isVerifiedPage) {
+        itemsToShow = VERIFIED_MEMBERS_LIST_LIMIT;
+      } else if (isMobile && mobilePageSize) {
+        itemsToShow = mobilePageSize;
+      }
+
+      return itemsToShow;
+    },
+    [isMobile, isVerifiedPage],
+  );
 
   const {
     getSortingMethod,
@@ -133,7 +151,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     filterStatus,
     nativeDomainIds,
     sortDirection: sortingMethod,
-    pageSize,
+    pageSize: contributorsPageSize,
   });
 
   const {
@@ -148,7 +166,16 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     filterStatus,
     nativeDomainIds,
     sortDirection: sortingMethod,
-    pageSize,
+    pageSize: (pageNumber) => {
+      const isFirstPage = pageNumber === 1;
+      const desktopPageSize = isFirstPage
+        ? ALL_MEMBERS_LIST_LIMIT
+        : ALL_MEMBERS_LOAD_MORE_LIST_LIMIT;
+      const mobilePageSize = isFirstPage
+        ? HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT
+        : undefined;
+      return getAllMembersPageSize(desktopPageSize, mobilePageSize);
+    },
   });
 
   const { data: { getTotalMemberCount } = {}, loading: memberCountLoading } =
@@ -176,7 +203,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       loadMoreMembers,
       loadingContributors,
       loadingMembers,
-      membersLimit: pageSize,
+      membersLimit: getAllMembersPageSize(ALL_MEMBERS_LIST_LIMIT),
     }),
     [
       members,
@@ -185,13 +212,13 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       contributors,
       totalContributorCount,
       memberCountLoading,
-      pageSize,
       moreContributors,
-      loadingContributors,
-      loadMoreContributors,
       moreMembers,
-      loadingMembers,
+      loadMoreContributors,
       loadMoreMembers,
+      loadingContributors,
+      loadingMembers,
+      getAllMembersPageSize,
     ],
   );
 

@@ -19,17 +19,12 @@ const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
   title,
   mode = 'general',
 }) => {
-  // eslint-disable-next-line no-param-reassign
-  title = title ?? '';
-  const source = notSet ? null : avatar || getIcon(seed || title);
+  const source = notSet ? null : avatar || getIcon(seed || title || '');
   const mainClass = size ? styles[size] : styles.main;
 
   if (children) {
     return (
-      <figure
-        className={className ? `${mainClass} ${className}` : mainClass}
-        title={title}
-      >
+      <figure className={clsx(className, mainClass)} title={title ?? undefined}>
         {children}
       </figure>
     );
@@ -43,31 +38,28 @@ const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
     : {};
 
   return (
-    <figure
-      className={className ? `${mainClass} ${className}` : mainClass}
-      title={title}
-    >
-      {source ? (
-        <div
-          className={clsx('w-full h-full rounded-full bg-cover border-2', {
-            'border-purple-400': mode === 'top',
-            'border-warning-400': mode === 'active',
-            'border-blue-400': mode === 'dedicated',
-            'border-green-400': mode === 'new',
-            'border-none': mode === 'general',
-          })}
-          style={imageStyle}
-        />
-      ) : (
-        <Icon
-          className={
-            notSet ? styles.placeholderIconNotSet : styles.placeholderIcon
-          }
-          name={placeholderIcon}
-          title={title}
-          data-test="avatar"
-        />
-      )}
+    <figure className={clsx(className, mainClass)} title={title ?? undefined}>
+      <div
+        className={clsx('w-full h-full rounded-full bg-cover', {
+          'border-purple-400': mode === 'top',
+          'border-warning-400': mode === 'active',
+          'border-blue-400': mode === 'dedicated',
+          'border-success-400': mode === 'new',
+          'border-2': mode !== 'general',
+        })}
+        style={source ? imageStyle : undefined}
+      >
+        {!source && (
+          <Icon
+            className={
+              notSet ? styles.placeholderIconNotSet : styles.placeholderIcon
+            }
+            name={placeholderIcon}
+            title={title ?? undefined}
+            data-test="avatar"
+          />
+        )}
+      </div>
     </figure>
   );
 };

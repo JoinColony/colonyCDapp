@@ -11,7 +11,7 @@ export type SubNavigationItemProps = {
   option?: FilterType;
   shouldBeTooltipVisible?: boolean;
   isCopyTriggered?: boolean;
-  tooltipText?: string[];
+  tooltipText?: string;
   nestedFilters?: FilterOptionProps[];
   onClick?: (e: React.SyntheticEvent) => void;
   iconSize?: IconSize;

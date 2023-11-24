@@ -1,17 +1,18 @@
 import React, { FC } from 'react';
 
-import { CopyUrlProps } from './types';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+
+import { CopyUrlProps } from './types';
 
 const displayName = 'common.Extensions.CopyUrl';
 
 const CopyUrl: FC<CopyUrlProps> = ({ actionText }) => {
-  const { handleClipboardCopy } = useCopyToClipboard(actionText);
+  const { handleClipboardCopy } = useCopyToClipboard();
 
   return (
     <button
-      onClick={() => handleClipboardCopy()}
-      onKeyPress={() => handleClipboardCopy}
+      onClick={() => handleClipboardCopy(actionText)}
+      onKeyPress={() => handleClipboardCopy(actionText)}
       type="button"
     >
       {actionText}

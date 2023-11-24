@@ -8,7 +8,7 @@ export const useMembersSubNavigation = () => {
   const { name } = colony || {};
   const colonyURL = `${window.location.origin}/${name}`;
 
-  const { handleClipboardCopy, isCopied } = useCopyToClipboard(colonyURL);
+  const { handleClipboardCopy, isCopied } = useCopyToClipboard();
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({
@@ -16,10 +16,11 @@ export const useMembersSubNavigation = () => {
       delayHide: 200,
       placement: 'left-start',
       interactive: true,
+      offset: [0, 16],
     });
 
   return {
-    handleClick: () => handleClipboardCopy(),
+    handleClick: () => handleClipboardCopy(colonyURL),
     isCopyTriggered: isCopied,
     getTooltipProps,
     setTooltipRef,

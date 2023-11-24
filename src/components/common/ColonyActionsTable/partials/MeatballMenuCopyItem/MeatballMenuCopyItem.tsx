@@ -9,7 +9,7 @@ import { MeatballMenuCopyItemProps } from './types';
 const MeatballMenuCopyItem: FC<
   PropsWithChildren<MeatballMenuCopyItemProps>
 > = ({ textToCopy, className, children, onClick }) => {
-  const { handleClipboardCopy, isCopied } = useCopyToClipboard(textToCopy);
+  const { handleClipboardCopy, isCopied } = useCopyToClipboard();
 
   return (
     <Tooltip
@@ -22,7 +22,7 @@ const MeatballMenuCopyItem: FC<
         className={className}
         onClick={() => {
           onClick?.();
-          handleClipboardCopy();
+          handleClipboardCopy(textToCopy);
         }}
       >
         {children}

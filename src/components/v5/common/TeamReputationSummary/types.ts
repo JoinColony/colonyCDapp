@@ -13,5 +13,6 @@ export interface TeamPointsProps {
 }
 
 export interface TeamReputationSummaryProps {
-  teams: TeamPointsProps[];
+  teams?: TeamPointsProps[];
+  className?: string;
 }

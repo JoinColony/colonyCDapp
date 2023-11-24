@@ -1,15 +1,17 @@
-import { ColonyRole } from '@colony/colony-js';
 import { useMemo, useState } from 'react';
 
 import { useGetColonyContributorsQuery } from '~gql';
 import { notNull } from '~utils/arrays';
+import { range } from '~utils/lodash';
 import {
   ContributorTypeFilter,
   StatusType,
 } from '~v5/common/TableFiltering/types';
+import { SortDirection } from '~types';
+import { UserRole } from '~constants/permissions';
+
 import useColonyContext from '../useColonyContext';
 import useMemberFilters from './useMemberFilters';
-import { SortDirection } from '~types';
 import { updateQuery } from './utils';
 
 const useAllMembers = ({
@@ -20,30 +22,43 @@ const useAllMembers = ({
   sortDirection,
   pageSize,
 }: {
-  filterPermissions: ColonyRole[];
+  filterPermissions: Record<UserRole, number[]>;
   nativeDomainIds: number[];
   filterStatus: StatusType | undefined;
   contributorTypes: Set<ContributorTypeFilter>;
   sortDirection: SortDirection;
-  pageSize: number;
+  pageSize: number | ((pageNumber: number) => number);
 }) => {
   const { colony } = useColonyContext();
   const { colonyAddress = '' } = colony ?? {};
 
   const [page, setPage] = useState<number>(1);
 
-  const visibleItems = page * pageSize;
+  const getPageSizeNumber = (pageNumber: number) =>
+    typeof pageSize === 'function' ? pageSize(pageNumber) : pageSize;
 
-  const { data, fetchMore, loading } = useGetColonyContributorsQuery({
-    variables: {
-      colonyAddress,
-      sortDirection,
-      limit: pageSize * 3,
-    },
-    skip: !colonyAddress,
-  });
+  const pageSizeNumber = getPageSizeNumber(page);
 
-  const { items, nextToken } = data?.getContributorsByColony || {};
+  const visibleItems = range(1, page + 1).reduce(
+    (acc, pageNumber) => getPageSizeNumber(pageNumber) + acc,
+    0,
+  );
+
+  const { data, previousData, fetchMore, loading } =
+    useGetColonyContributorsQuery({
+      variables: {
+        colonyAddress,
+        sortDirection,
+        limit: visibleItems + pageSizeNumber,
+      },
+      skip: !colonyAddress,
+    });
+
+  const { nextToken } = data?.getContributorsByColony || {};
+  const { items } =
+    data?.getContributorsByColony ||
+    previousData?.getContributorsByColony ||
+    {};
 
   /*
    * To be considered a member, you must either:

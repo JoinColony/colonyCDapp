@@ -13,6 +13,7 @@ import { canColonyBeUpgraded, hasRoot } from '~utils/checks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { formatText } from '~utils/intl';
 import { ACTION } from '~constants/actions';
+import { COLONY_MEMBERS_ROUTE } from '~routes/routeConstants';
 import { NavigationSidebarItem } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarMainMenu/types';
 import { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
@@ -120,7 +121,9 @@ export const useMainMenuItems = () => {
       key: '3',
       iconName: 'user',
       label: formatText({ id: 'navigation.members' }) || '',
-      isActive: checkIfIsActive(nestedColonyPathname, membersMenu),
+      isActive:
+        checkIfIsActive(nestedColonyPathname, membersMenu) ||
+        nestedColonyPathname === COLONY_MEMBERS_ROUTE,
       secondLevelMenuProps: {
         title: formatText({ id: 'navigation.members.title' }) || '',
         content: membersMenu,
