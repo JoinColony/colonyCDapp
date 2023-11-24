@@ -4,6 +4,7 @@ import {
   ClientType,
   getPermissionProofs,
   ColonyRole,
+  TokenLockingClient,
 } from '@colony/colony-js';
 
 import { ColonyManager } from '~context';
@@ -33,6 +34,9 @@ function* stakeMotion({
     amount,
     annotationMessage,
     actionId,
+    tokenAddress,
+    activateTokens,
+    activeAmount,
   },
 }: Action<ActionTypes.MOTION_STAKE>) {
   const txChannel = yield call(getTxChannel, meta.id);
@@ -52,14 +56,47 @@ function* stakeMotion({
       colonyAddress,
     );
 
-    const { approveStake, stakeMotionTransaction, annotateStaking } =
-      yield call(createTransactionChannels, meta.id, [
-        'approveStake',
-        'stakeMotionTransaction',
-        'annotateStaking',
-      ]);
+    const tokenLockingClient: TokenLockingClient =
+      yield colonyManager.getClient(
+        ClientType.TokenLockingClient,
+        colonyAddress,
+      );
+
+    const {
+      approve,
+      deposit,
+      approveStake,
+      stakeMotionTransaction,
+      annotateStaking,
+    } = yield call(createTransactionChannels, meta.id, [
+      'approve',
+      'deposit',
+      'approveStake',
+      'stakeMotionTransaction',
+      'annotateStaking',
+    ]);
 
     const batchKey = 'stakeMotion';
+
+    if (activateTokens) {
+      const missingActiveTokens = amount.sub(activeAmount);
+
+      yield createGroupTransaction(approve, batchKey, meta, {
+        context: ClientType.TokenClient,
+        methodName: 'approve',
+        identifier: tokenAddress,
+        params: [tokenLockingClient.address, missingActiveTokens],
+        ready: false,
+      });
+
+      yield createGroupTransaction(deposit, batchKey, meta, {
+        context: ClientType.TokenLockingClient,
+        methodName: 'deposit(address,uint256,bool)',
+        identifier: colonyAddress,
+        params: [tokenAddress, missingActiveTokens, false],
+        ready: false,
+      });
+    }
 
     yield createGroupTransaction(approveStake, batchKey, meta, {
       context: ClientType.ColonyClient,
@@ -87,6 +124,12 @@ function* stakeMotion({
       });
     }
 
+    if (activateTokens) {
+      yield takeFrom(approve.channel, ActionTypes.TRANSACTION_CREATED);
+
+      yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_CREATED);
+    }
+
     yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_CREATED);
     yield takeFrom(
       stakeMotionTransaction.channel,
@@ -111,6 +154,16 @@ function* stakeMotion({
         amount,
       ]),
     );
+
+    if (activateTokens) {
+      yield initiateTransaction({ id: approve.id });
+
+      yield takeFrom(approve.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+      yield initiateTransaction({ id: deposit.id });
+
+      yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    }
 
     yield initiateTransaction({ id: approveStake.id });
 

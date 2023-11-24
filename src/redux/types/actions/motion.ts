@@ -65,6 +65,9 @@ export type MotionActionTypes =
         motionId: BigNumber;
         vote: number;
         amount: BigNumber;
+        activateTokens: boolean;
+        activeAmount: string;
+        tokenAddress: Address;
         actionId?: string;
         annotationMessage?: string;
       },

@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { defineMessages } from 'react-intl';
 import { useTokensModalContext } from '~context';
 import { formatText } from '~utils/intl';
 import { TOKENS_MODAL_TYPES } from '~v5/common/TokensModal/consts';
@@ -6,16 +7,23 @@ import { TOKENS_MODAL_TYPES } from '~v5/common/TokensModal/consts';
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.StakingStep.partials.NotEnoughTokensInfo';
 
+const MSG = defineMessages({
+  notEnoughTokens: {
+    id: `${displayName}.notEnoughTokens`,
+    defaultMessage: `You don’t have enough tokens to be able to stake!`,
+  },
+  activateTokens: {
+    id: `${displayName}.activateTokens`,
+    defaultMessage: 'Activate tokens',
+  },
+});
+
 const NotEnoughTokensInfo: FC = () => {
   const { toggleOnTokensModal, setTokensModalType } = useTokensModalContext();
 
   return (
     <>
-      <p className="text-sm mb-1">
-        {formatText({
-          id: 'motion.staking.notEnoughTokens',
-        })}
-      </p>
+      <p className="text-sm mb-1">{formatText(MSG.notEnoughTokens)}</p>
       <button
         type="button"
         className="text-4 underline transition-all md:hover:opacity-80"
@@ -24,9 +32,7 @@ const NotEnoughTokensInfo: FC = () => {
           setTokensModalType(TOKENS_MODAL_TYPES.activate);
         }}
       >
-        {formatText({
-          id: 'motion.staking.activateTokens',
-        })}
+        {formatText(MSG.activateTokens)}
       </button>
     </>
   );

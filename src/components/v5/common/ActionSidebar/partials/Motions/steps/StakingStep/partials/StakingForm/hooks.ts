@@ -14,14 +14,15 @@ import { formatText } from '~utils/intl';
 
 export const useStakingForm = () => {
   const { user } = useAppContext();
-  const { pollLockedTokenBalance } = useUserTokenBalanceContext();
+  const { pollLockedTokenBalance, tokenBalanceData } =
+    useUserTokenBalanceContext();
   const { motionAction, setIsRefetching, startPollingAction } =
     useMotionContext();
 
   const { token, colony, motionData } = motionAction || {};
   const { decimals } = token || {};
   const { nativeToken } = colony || {};
-  const { nativeTokenDecimals } = nativeToken || {};
+  const { nativeTokenDecimals, tokenAddress } = nativeToken || {};
   const tokenDecimals = decimals || nativeTokenDecimals || 0;
 
   const { motionId, remainingStakes } = motionData;
@@ -85,6 +86,8 @@ export const useStakingForm = () => {
     colony?.colonyAddress ?? '',
     motionId,
     tokenDecimals,
+    tokenAddress,
+    tokenBalanceData?.activeBalance ?? '0',
   );
 
   const handleSuccess = getHandleStakeSuccessFn(
