@@ -82,6 +82,7 @@ export { default as useToggle } from './useToggle';
 export { default as useRelativePortalElement } from './useRelativePortalElement';
 export { default as useColors } from './useColors';
 export { default as useTeams } from './useTeams';
+export { default as useUsersByAddresses } from './useUsersByAddresses';
 
 export {
   default as useSafeTransactionStatus,
