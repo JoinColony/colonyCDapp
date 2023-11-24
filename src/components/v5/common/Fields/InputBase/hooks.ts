@@ -6,6 +6,7 @@ import {
   useRef,
   useState,
   useImperativeHandle,
+  useCallback,
 } from 'react';
 import { getInputTextWidth } from '~utils/elements';
 import { FormattedInputProps } from './types';
@@ -53,10 +54,9 @@ export const useFormattedInput = (
 ) => {
   const [cleave, setCleave] = useState<ReactInstanceWithCleave | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const customPrefixRef = useRef<HTMLDivElement | null>(null);
-
-  const { prefix, tailPrefix } = options || {};
 
   /**
    * Sync the cleave raw value with value prop
@@ -67,12 +67,8 @@ export const useFormattedInput = (
       return;
     }
 
-    cleave?.setRawValue(
-      `${prefix && !tailPrefix ? prefix : ''}${value}${
-        prefix && tailPrefix ? ` ${prefix}` : ''
-      }`,
-    );
-  }, [cleave, prefix, tailPrefix, value]);
+    cleave?.setRawValue(value);
+  }, [cleave, value]);
 
   useEffect(() => {
     addWidthProperty(buttonRef.current, wrapperRef.current, 'button');
@@ -81,6 +77,18 @@ export const useFormattedInput = (
       wrapperRef.current,
       'custom-prefix',
     );
+  }, []);
+
+  const handlePrefixTrim = useCallback((prefix?: string) => {
+    if (inputRef.current) {
+      const input = inputRef.current;
+      const prefixLength = prefix?.length ?? 0;
+
+      input.setSelectionRange(
+        input.value.length,
+        input.value.length - prefixLength,
+      );
+    }
   }, []);
 
   // /*
@@ -97,5 +105,7 @@ export const useFormattedInput = (
     wrapperRef,
     buttonRef,
     customPrefixRef,
+    inputRef,
+    handlePrefixTrim,
   };
 };

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import { useMatch } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useAppContext, useGetNetworkToken, useTablet } from '~hooks';
 import Button, { Hamburger } from '~v5/shared/Button';
 import Token from './partials/Token';
@@ -21,7 +21,8 @@ const UserNavigation: FC<UserNavigationProps> = ({
   const isTablet = useTablet();
   const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
   const [, { toggleOff }] = mobileMenuToggle;
-  const isOnColonyRoute = useMatch('/colony/:colonyName/*');
+  const { colonyName = '' } = useParams();
+  const isOnColonyRoute = colonyName !== '';
 
   const isWalletConnected = !!wallet?.address;
   const nativeToken = useGetNetworkToken();

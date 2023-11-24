@@ -146,9 +146,11 @@ const StakingForm: FC<StakingFormProps> = ({
                         getTokenDecimalsWithFallback(tokenDecimals),
                       numeralPositiveOnly: true,
                       rawValueTrimPrefix: true,
-                      prefix: tokenSymbol,
+                      prefix: ` ${tokenSymbol}`,
                       tailPrefix: true,
+                      noImmediatePrefix: true,
                     }}
+                    placeholder="0"
                     buttonProps={{
                       label: formatText({ id: 'button.max' }) || '',
                       onClick: () => {

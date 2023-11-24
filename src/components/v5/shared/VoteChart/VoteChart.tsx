@@ -43,9 +43,13 @@ const VoteChart: FC<VoteChartProps> = ({
       predictPercentageVotesAgainst
     : undefined;
 
+  const shouldHideIndicator =
+    !(predictedForValue && threshold && predictedForValue > threshold) ||
+    (threshold && forValue > threshold);
+
   return (
     <div className={clsx(className, 'w-full')}>
-      {!!threshold && (
+      {!!threshold && shouldHideIndicator && (
         <p className="text-xs font-medium text-center mb-1 text-blue-400">
           {thresholdLabel ||
             formatText(
@@ -63,7 +67,7 @@ const VoteChart: FC<VoteChartProps> = ({
           <VoteChartBar
             value={againstValue}
             barBackgroundClassName="bg-negative-300"
-            predictionBarClassName="border-negative-300 bg-negative-100"
+            predictionBarClassName="border-negative-300 bg-negative-300"
             predictedValue={predictedAgainstValue}
             direction={VOTE_CHART_BAR_DIRECTION.Left}
           />
@@ -79,7 +83,7 @@ const VoteChart: FC<VoteChartProps> = ({
         </div>
         <div className="flex flex-1 flex-col items-center gap-1">
           <div className="relative w-full">
-            {!!threshold && (
+            {shouldHideIndicator && !!threshold && (
               <div
                 className="absolute top-0 bottom-0 h-full z-[3]"
                 style={{
@@ -93,15 +97,14 @@ const VoteChart: FC<VoteChartProps> = ({
               value={forValue}
               predictedValue={predictedForValue}
               barBackgroundClassName="bg-purple-200"
-              predictionBarClassName="border-purple-200 bg-purple-100"
+              predictionBarClassName="border-purple-200 bg-purple-200"
               direction={VOTE_CHART_BAR_DIRECTION.Right}
             />
           </div>
           <span
             className={clsx('text-xs text-center transition', {
-              'text-purple-400 font-medium':
-                predictedAgainstValue || forValue > 0,
-              'text-gray-500': forValue === 0 && !predictedAgainstValue,
+              'text-purple-400 font-medium': predictedForValue || forValue > 0,
+              'text-gray-500': forValue === 0 && !predictedForValue,
             })}
           >
             {predictedForValue || forValue}% {forLabel}

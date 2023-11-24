@@ -198,7 +198,7 @@
     "bn.js": "^5.1.1",
     "camelcase": "^6.0.0",
     "classnames": "^2.2.6",
-    "cleave.js": "1.4.10",
+    "cleave.js": "^1.6.0",
     "clsx": "^1.2.1",
     "constants-browserify": "^1.0.0",
     "copy-to-clipboard": "^3.0.8",

@@ -32,6 +32,8 @@ const FormattedInput: FC<FormattedInputProps> = ({
     buttonRef,
     wrapperRef,
     customPrefixRef,
+    handlePrefixTrim,
+    inputRef,
   } = useFormattedInput(value, options);
 
   const stateClassNames = useStateClassNames(
@@ -87,6 +89,9 @@ const FormattedInput: FC<FormattedInputProps> = ({
         )}
         <Cleave
           {...rest}
+          htmlRef={(ref) => {
+            inputRef.current = ref;
+          }}
           disabled={disabled}
           key={dynamicCleaveOptionKey}
           placeholder={placeholder || ''}
@@ -96,7 +101,10 @@ const FormattedInput: FC<FormattedInputProps> = ({
            */
           options={options}
           onInit={(cleaveInstance) => setCleave(cleaveInstance)}
-          onChange={onChange}
+          onChange={(e) => {
+            handlePrefixTrim(options.prefix);
+            onChange?.(e);
+          }}
           className={clsx(
             className,
             state ? stateClassNames[state] : undefined,
