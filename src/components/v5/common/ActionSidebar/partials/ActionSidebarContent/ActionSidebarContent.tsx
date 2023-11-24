@@ -38,7 +38,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
 
   return (
     <>
-      <div className="flex-grow overflow-y-auto">
+      <div className="flex-grow overflow-y-auto px-6">
         <FormTextareaBase
           name="title"
           placeholder={formatText({ id: 'placeholder.title' })}
@@ -109,7 +109,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
         'overflow-hidden': !isMotion,
       })}
     >
-      <div className="flex-grow px-6 py-8">
+      <div className="flex-grow pb-6 pt-8">
         <ActionForm
           {...actionFormProps}
           className="flex flex-col h-full"
