@@ -77,6 +77,7 @@ export { default as useCurrentBlockTime } from './useCurrentBlockTime';
 export { default as useClipboardCopy } from './useClipboardCopy';
 export { default as useInvitationLink } from './useInvitationLink';
 export { default as useShouldDisplayMotionCountdownTime } from './useShouldDisplayMotionCountdownTime';
+export { default as useUsersByAddresses } from './useUsersByAddresses';
 
 export {
   default as useSafeTransactionStatus,
