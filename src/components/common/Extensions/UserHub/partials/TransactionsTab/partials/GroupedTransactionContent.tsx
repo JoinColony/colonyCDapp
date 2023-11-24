@@ -104,7 +104,6 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
                 <FormattedMessage id="retry" />
               </button>
             }
-            isAlt
           >
             <FormattedMessage
               {...MSG.failedTx}

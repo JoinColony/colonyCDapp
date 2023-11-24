@@ -7,5 +7,4 @@ export type NotificationBannerProps = PropsWithChildren<{
   icon?: string;
   description?: ReactNode;
   callToAction?: ReactNode;
-  isAlt?: boolean;
 }>;

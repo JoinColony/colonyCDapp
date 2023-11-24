@@ -8,7 +8,6 @@ const displayName = 'common.Extensions.NotificationBanner';
 
 const NotificationBanner: FC<NotificationBannerProps> = ({
   className,
-  isAlt = false,
   status,
   icon,
   children,
@@ -19,8 +18,7 @@ const NotificationBanner: FC<NotificationBannerProps> = ({
     <div className="@container/notificationBanner">
       <div
         className={clsx(
-          'border rounded-lg flex gap-2 justify-between flex-col items-start @[600px]/notificationBanner:flex-row @[600px]/notificationBanner:items-center text-gray-900',
-          isAlt ? 'rounded p-4' : 'rounded-lg py-3 px-6',
+          'border rounded-lg py-3 px-[1.125rem] flex gap-2 justify-between flex-col items-start @[600px]/notificationBanner:flex-row @[600px]/notificationBanner:items-center text-gray-900',
           {
             'bg-success-100 border-success-200-200': status === 'success',
             'bg-warning-100 border-warning-200': status === 'warning',

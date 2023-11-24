@@ -30,15 +30,8 @@ const meta: Meta<typeof NotificationBanner> = {
       name: 'Call to Action',
       control: 'text',
     },
-    isAlt: {
-      name: 'Is Alt?',
-      control: {
-        type: 'boolean',
-      },
-    },
   },
   args: {
-    isAlt: false,
     status: 'success',
     children: 'This is a test title',
     icon: 'check-circle',

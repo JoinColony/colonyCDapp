@@ -134,7 +134,6 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
                               <FormattedMessage id="retry" />
                             </button>
                           }
-                          isAlt
                         >
                           {notificationInfo}
                         </NotificationBanner>

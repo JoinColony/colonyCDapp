@@ -64,7 +64,6 @@ const AdvancedPage: FC = () => {
               <FormattedMessage id="text.learnMore" />
             </Link>
           }
-          isAlt
         >
           <FormattedMessage id="advancedPage.recovery.notification" />
         </NotificationBanner>

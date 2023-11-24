@@ -150,7 +150,6 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
                     </button>
                   }
                   className="mt-4 text-left"
-                  isAlt
                 >
                   {formatText({ id: 'user.not.verified.warning' })}
                 </NotificationBanner>
