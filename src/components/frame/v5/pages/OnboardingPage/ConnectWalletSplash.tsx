@@ -69,7 +69,7 @@ const ConnectWalletSplash = ({ validInvite }: Props) => {
               </span>
             </div>
             <Button
-              mode="tertiary"
+              mode="quinary"
               iconName="cardholder"
               size="small"
               onClick={connectWallet}
