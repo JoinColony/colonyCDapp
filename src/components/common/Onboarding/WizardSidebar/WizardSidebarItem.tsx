@@ -65,10 +65,8 @@ const WizardSidebarItem = ({
 
           return (
             <WizardSidebarSubItem
-              currentStep={currentStep}
               key={`subItem-${stepId + i}`}
-              {...subItem}
-              subItems={subItems}
+              text={subItem.text}
               isActive={activateCurrent || activatePrevious}
             />
           );

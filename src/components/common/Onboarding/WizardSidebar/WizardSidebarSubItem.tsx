@@ -13,7 +13,7 @@ export type WizardSidebarSubStep = Optional<
   'subItems' | 'text'
 >;
 
-interface Props extends WizardSidebarSubStep {
+interface Props extends Pick<WizardSidebarSubStep, 'text'> {
   isActive: boolean;
 }
 
