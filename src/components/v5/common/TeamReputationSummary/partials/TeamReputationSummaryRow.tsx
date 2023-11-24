@@ -1,19 +1,16 @@
 import React, { FC } from 'react';
-import Decimal from 'decimal.js';
 
 import { setTeamColor } from '../utils';
 import { TeamPointsRowProps } from '../types';
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import Numeral from '~shared/Numeral';
-import { useColonyContext } from '~hooks';
 
 const displayName =
   'v5.common.TeamReputationSummary.partials.TeamReputationSummaryRow';
 
 const TeamReputationSummaryRow: FC<TeamPointsRowProps> = ({
-  team: { reputation: totalReputation, metadata },
+  team: { reputationPercentage, metadata },
+  suffix,
 }) => {
-  const { colony } = useColonyContext();
   const { color, name } = metadata ?? {};
 
   return (
@@ -24,12 +21,14 @@ const TeamReputationSummaryRow: FC<TeamPointsRowProps> = ({
             color,
           )}`}
         />
-        {name}
+        <span className="truncate max-w-[6.25rem] sm:max-w-[9.375rem]">
+          {name}
+        </span>
       </span>
       <span className="font-medium">
         <Numeral
-          value={new Decimal(totalReputation ?? '0').abs().toString()}
-          decimals={colony?.nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS}
+          value={Number(reputationPercentage).toFixed(1)}
+          suffix={suffix}
         />
       </span>
     </>

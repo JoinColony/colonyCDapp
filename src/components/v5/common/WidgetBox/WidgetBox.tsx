@@ -15,13 +15,14 @@ const WidgetBox: FC<WidgetBoxProps> = ({
   iconName,
   iconClassName = 'text-blue-400',
   contentClassName = 'block',
+  titleClassName,
 }) => {
   const wrapperClassName =
     'rounded-lg p-6 w-full flex items-center justify-between gap-2 border';
   const baseContent = (
     <>
       <span className={contentClassName}>
-        <h3 className="text-1">{title}</h3>
+        <h3 className={clsx(titleClassName, 'text-1')}>{title}</h3>
         {value}
       </span>
       {additionalContent}
@@ -47,19 +48,24 @@ const WidgetBox: FC<WidgetBoxProps> = ({
     </>
   );
 
+  const hoverStyles = 'transition-all sm:hover:border-gray-900';
+
   return href ? (
     <Link
       className={clsx(
         className,
         wrapperClassName,
-        'transition-all sm:hover:text-gray-900 sm:hover:bg-base-white sm:hover:border-gray-900 sm:hover:cursor-pointer',
+        hoverStyles,
+        'sm:hover:text-gray-900 sm:hover:bg-base-white',
       )}
       to={href}
     >
       {content}
     </Link>
   ) : (
-    <div className={clsx(className, wrapperClassName)}>{content}</div>
+    <div className={clsx(className, wrapperClassName, hoverStyles)}>
+      {content}
+    </div>
   );
 };
 

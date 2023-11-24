@@ -39,6 +39,45 @@ export const setTeamColor = (color?: DomainColor) => {
   }
 };
 
+export const setHexTeamColor = (color?: DomainColor) => {
+  switch (color) {
+    case DomainColor.Purple:
+      return '--color-teams-purple-400';
+    case DomainColor.LightPink:
+      return '--color-teams-pink-400';
+    case DomainColor.Yellow:
+      return '--color-teams-yellow-500';
+    case DomainColor.Blue:
+      return '--color-indigo-400';
+    case DomainColor.Green:
+      return '--color-teams-green-500';
+    case DomainColor.Aqua:
+      return '--color-teams-teal-500';
+    case DomainColor.Black:
+      return '--color-teams-grey-500';
+    case DomainColor.BlueGrey:
+      return '--color-teams-grey-100';
+    case DomainColor.EmeraldGreen:
+      return '--color-teams-green-400';
+    case DomainColor.Gold:
+      return '--color-teams-yellow-100';
+    case DomainColor.Magenta:
+      return '--color-teams-pink-600';
+    case DomainColor.Orange:
+      return '--color-teams-red-400';
+    case DomainColor.Pink:
+      return '--color-teams-pink-500';
+    case DomainColor.Periwinkle:
+      return '--color-teams-indigo-500';
+    case DomainColor.PurpleGrey:
+      return '--color-teams-purple-400';
+    case DomainColor.Red:
+      return '--color-teams-red-600';
+    default:
+      return '--color-teams-purple-400';
+  }
+};
+
 export const setTeamBadge = (color?: DomainColor) => {
   switch (color) {
     case DomainColor.Purple:

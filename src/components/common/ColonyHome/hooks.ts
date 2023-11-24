@@ -1,11 +1,16 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { Id } from '@colony/colony-js';
 import { useGetColonyContributorsQuery } from '~gql';
 import { useColonyContext } from '~hooks';
 import { notNull } from '~utils/arrays';
 import { getBalanceForTokenAndDomain } from '~utils/tokens';
+import { formatText } from '~utils/intl';
 import { useActionsList } from '~v5/common/ActionSidebar/hooks';
-import { setTeamColor } from './consts';
-import { UseGetHomeWidgetReturnType } from './types';
+import {
+  setHexTeamColor,
+  setTeamColor,
+} from '~v5/common/TeamReputationSummary/utils';
+import { ChartData, UseGetHomeWidgetReturnType } from './types';
 
 export const useGetAllColonyMembers = (
   colonyAddress: string,
@@ -51,7 +56,11 @@ export const useGetAllColonyMembers = (
 
 export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
   const { colony } = useColonyContext();
-  const { domains, colonyAddress, nativeToken, balances } = colony || {};
+  const { domains, colonyAddress, nativeToken } = colony || {};
+  const { balances } = colony || {};
+  const [hoveredSegment, setHoveredSegment] = useState<
+    ChartData | undefined | null
+  >();
 
   const currentTokenBalance =
     getBalanceForTokenAndDomain(
@@ -94,6 +103,42 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
     [colonyMembers],
   );
 
+  const allTeams = domains?.items
+    .filter(notNull)
+    .filter(({ nativeId }) => nativeId !== Id.RootDomain)
+    .sort(
+      (a, b) => Number(b.reputationPercentage) - Number(a.reputationPercentage),
+    );
+
+  const otherTeamsReputation = allTeams
+    ?.slice(3, allTeams.length)
+    .filter((item) => item.reputationPercentage !== null)
+    .reduce((acc, item) => acc + Number(item.reputationPercentage), 0);
+
+  const otherTeams = {
+    id: '4',
+    label: formatText({ id: 'label.allOther' }) ?? '',
+    value: otherTeamsReputation ?? 0,
+    color: '--color-teams-grey-100',
+    stroke: '--color-teams-grey-100',
+  };
+
+  const firstThreeTeams = allTeams?.length
+    ? allTeams
+        .map(({ id, metadata, reputationPercentage }) => {
+          return {
+            id,
+            label: metadata?.name || '',
+            value: Number(reputationPercentage),
+            color: setHexTeamColor(metadata?.color),
+            stroke: setHexTeamColor(metadata?.color),
+          };
+        })
+        .slice(0, 3)
+    : [];
+
+  const chartData = allTeams?.length ? [...firstThreeTeams, otherTeams] : [];
+
   return {
     activeActions,
     allMembers: mappedMembers,
@@ -101,5 +146,10 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
     currentTokenBalance,
     nativeToken,
     membersLoading,
+    chartData,
+    allTeams,
+    otherTeamsReputation,
+    hoveredSegment,
+    setHoveredSegment,
   };
 };
