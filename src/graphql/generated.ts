@@ -2019,6 +2019,7 @@ export type ExternalLinkInput = {
 export enum ExternalLinks {
   Custom = 'Custom',
   Discord = 'Discord',
+  Facebook = 'Facebook',
   Github = 'Github',
   Instagram = 'Instagram',
   Telegram = 'Telegram',
