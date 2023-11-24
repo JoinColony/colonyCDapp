@@ -6,6 +6,9 @@ import { LANDING_PAGE_ROUTE } from '~routes';
 import Onboarding from '~common/Onboarding';
 import { Flow } from '~common/Onboarding/types';
 import { useGetPrivateBetaCodeInviteValidityQuery } from '~gql';
+import Spinner from '~v5/shared/Spinner';
+
+import ConnectWalletSplash from './ConnectWalletSplash';
 
 const displayName = 'frame.v5.OnboardingPage';
 
@@ -33,12 +36,22 @@ const OnboardingPage = ({ flow }: Props) => {
     return <Navigate to={LANDING_PAGE_ROUTE} />;
   }
 
-  if (!wallet) {
-    // FIX: navigate to splash
-    return <p>Connect to me</p>;
-  }
-
-  return <Onboarding flow={flow} inviteCode={inviteCode} />;
+  return (
+    <Spinner
+      loading={
+        walletConnecting || userLoading
+        /* || loading */
+      }
+    >
+      <>
+        {!wallet ? (
+          <ConnectWalletSplash validInvite={valid} />
+        ) : (
+          <Onboarding flow={flow} inviteCode={inviteCode} />
+        )}
+      </>
+    </Spinner>
+  );
 };
 
 OnboardingPage.displayName = displayName;
