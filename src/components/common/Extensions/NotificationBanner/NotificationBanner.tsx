@@ -20,7 +20,7 @@ const NotificationBanner: FC<NotificationBannerProps> = ({
         className={clsx(
           'border rounded-lg py-3 px-[1.125rem] flex gap-2 justify-between flex-col items-start @[600px]/notificationBanner:flex-row @[600px]/notificationBanner:items-center text-gray-900',
           {
-            'bg-success-100 border-success-200-200': status === 'success',
+            'bg-success-100 border-success-200': status === 'success',
             'bg-warning-100 border-warning-200': status === 'warning',
             'bg-negative-100 border-negative-200': status === 'error',
             'bg-gray-50 border-gray-200': status === 'info',
