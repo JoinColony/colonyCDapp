@@ -3,26 +3,27 @@ import { FormattedMessage } from 'react-intl';
 import clsx from 'clsx';
 import { Optional } from 'utility-types';
 
-import { useWizardContext } from '~context/WizardContext';
-
-import { WizardStep } from './WizardSidebar';
+import { WizardSidebarStep } from './WizardSidebar';
 
 const displayName =
   'routes.WizardRoute.WizardSidebar.WizardSidebarItem.WizardSidebarSubItem';
 
-export type WizardSubStep = Optional<WizardStep, 'subItems' | 'text'>;
+export type WizardSidebarSubStep = Optional<
+  WizardSidebarStep,
+  'subItems' | 'text'
+>;
 
-interface Props extends WizardSubStep {
+interface Props extends WizardSidebarSubStep {
+  currentStep: number;
   hasActiveMiniStep: boolean;
 }
 
 const WizardSidebarSubItem = ({
+  currentStep,
   id: stepId,
   text: stepText,
   hasActiveMiniStep,
 }: Props) => {
-  const { currentStep } = useWizardContext();
-
   if (!stepText) {
     return null;
   }

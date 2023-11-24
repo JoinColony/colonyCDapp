@@ -1,20 +1,22 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { useWizardContext } from '~context/WizardContext';
-
-import { WizardSubStep } from './WizardSidebarSubItem';
+import { WizardSidebarSubStep } from './WizardSidebarSubItem';
 
 const displayName =
   'routes.WizardRoute.WizardSidebar.WizardSidebarItem.WizardSidebarItemFlowLine';
 
 interface Props {
+  currentStep: number;
   stepId: number;
-  subItems?: WizardSubStep[];
+  subItems?: WizardSidebarSubStep[];
 }
 
-const WizardSidebarItemFlowLine = ({ stepId, subItems }: Props) => {
-  const { currentStep } = useWizardContext();
+const WizardSidebarItemFlowLine = ({
+  currentStep,
+  stepId,
+  subItems,
+}: Props) => {
   const lastSubid = subItems ? subItems[subItems.length - 1].id : 0;
 
   return (

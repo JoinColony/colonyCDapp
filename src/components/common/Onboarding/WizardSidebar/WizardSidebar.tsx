@@ -13,7 +13,7 @@ import Icon from '~shared/Icon';
 import { UniversalMessageValues } from '~types';
 
 import WizardSidebarItem from './WizardSidebarItem';
-import { WizardSubStep } from './WizardSidebarSubItem';
+import { WizardSidebarSubStep } from './WizardSidebarSubItem';
 
 const displayName = 'routes.WizardRoute.WizardSidebar';
 
@@ -28,19 +28,21 @@ const MSG = defineMessages({
   },
 });
 
-export interface WizardStep {
+export interface WizardSidebarStep {
   id: number;
   text: MessageDescriptor;
-  subItems?: WizardSubStep[];
+  subItems?: WizardSidebarSubStep[];
 }
 
 interface Props {
-  wizardSteps: WizardStep[];
+  currentStep: number;
+  wizardSteps: WizardSidebarStep[];
   sidebarTitle: MessageDescriptor;
   sidebarTitleValues?: UniversalMessageValues;
 }
 
 const WizardSidebar = ({
+  currentStep,
   sidebarTitle,
   sidebarTitleValues,
   wizardSteps,
@@ -60,6 +62,7 @@ const WizardSidebar = ({
         <div className="flex flex-col gap-4 -mt-1">
           {wizardSteps.map((step, i) => (
             <WizardSidebarItem
+              currentStep={currentStep}
               key={`step-${step.id}`}
               {...step}
               isLastItem={i + 1 === wizardSteps.length}
