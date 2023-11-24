@@ -45,7 +45,7 @@ import {
   COLONY_OLD_HOME_ROUTE,
   COLONY_MEMBERS_ROUTE,
   COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
-  // CREATE_COLONY_ROUTE,
+  CREATE_COLONY_ROUTE,
   CREATE_USER_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
   USER_ROUTE,
@@ -126,11 +126,15 @@ const Routes = () => {
           <Route path={LANDING_PAGE_ROUTE} element={<LandingPage />} />
         </Route>
 
-        <Route path={CREATE_USER_ROUTE} element={<OnboardingPage />} />
+        <Route
+          path={CREATE_USER_ROUTE}
+          element={<OnboardingPage flow="user" />}
+        />
 
-        {/* <Route element={<WizardRoute />}> */}
-        {/*   <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyPage />} /> */}
-        {/* </Route> */}
+        <Route
+          path={CREATE_COLONY_ROUTE}
+          element={<OnboardingPage flow="colony" />}
+        />
 
         {/* Colony routes */}
         <Route path={COLONY_HOME_ROUTE} element={<ColonyRoute />}>
