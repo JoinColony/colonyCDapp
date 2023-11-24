@@ -5,141 +5,68 @@ on:
   repository_dispatch: # Allows API workflow trigger
     types: [cdapp-amplify]
 
+  push:
+    paths:
+      - 'amplify/**'
+
 concurrency:
   group: cdapp-amplify
   cancel-in-progress: true
 
 # Set global env variables
 env:
-  AWS_REGION: eu-west-2
+  AWS_REGION: ${{ vars.AWS_REGION }}
 
 jobs:
+
   # Deploy cdapp amplify to QA environment
   deployQA:
     runs-on: ubuntu-latest
 
-    # Set required variables for amplify script which pulls existing AWS amplify environment
     env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_QA }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_QA }}
-      AMPLIFY_PROJECT_NAME: 'colonyCDapp'
-      AMPLIFY_APP_ID: 'd3m1tc7wq9w6vf'
-      AMPLIFY_ENV_NAME: 'qa'
-      # AWS region is set as a global env var at the start of the workflow
+      AWS_AMPLIFY_WEBHOOK_QA: ${{ vars.AWS_AMPLIFY_WEBHOOK_QA }}
+      AWS_AMPLIFY_APP_ID_QA: ${{ vars.AWS_AMPLIFY_APP_ID_QA }}
 
     steps:
-      - name: Echo Env Vars through Context
+      - name: Trigger Amplify AWS Pipeline
         run: |
-          echo "$GITHUB_CONTEXT"
-
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - name: Checkout relevant branch
-        run: git checkout ${{ github.event.client_payload.COMMIT_HASH != null && github.event.client_payload.COMMIT_HASH || github.sha }}
-
-      - name: Install Amplify CLI
-        run: npm install -g @aws-amplify/cli
-
-      - name: Pull existing AWS Amplify env
+          curl -X POST -d {} "${AWS_AMPLIFY_WEBHOOK_QA}&operation=startbuild" -H "Content-Type:application/json"
+      
+      - name: Post AWS Amplify console link in GH summary
         run: |
-          # Allow execution permissions on the script
-          chmod +x ./.github/workflows/scripts/amplify_script.sh
-
-          # Rename existing amplify folder to be able to run amplify pull, required to get the agent connected to the AWS environment
-          mv ./amplify ./amplify-changes
-
-          # Run script to pull existing AWS Amplify environment, which generates folders with currently deployed resources
-          ./.github/workflows/scripts/amplify_script.sh
-
-      - name: Remove AWS Amplify generated directories
-        working-directory: .github/workflows/scripts
-        run: |
-          rm -rf ./amplify/backend/api
-          rm -rf ./amplify/backend/custom
-          rm -rf ./amplify/backend/function
-          rm -rf ./amplify/backend/types
-
-      - name: Copy latest changes and push to Amplify
-        run: |
-          # Need to only copy over resource folders. If whole folder gets overwritten, amplify complains about missing environment
-          cp -r ./amplify-changes/backend/api ./amplify/backend/
-          cp -r ./amplify-changes/backend/custom ./amplify/backend/
-          cp -r ./amplify-changes/backend/function ./amplify/backend/
-          cp -r ./amplify-changes/backend/types ./amplify/backend/
-          amplify push --yes
+          echo "### AWS Amplify pipeline" >> $GITHUB_STEP_SUMMARY
+          echo "Amplify build triggered, progress can be tracked in the [AWS Console](https://${AWS_REGION}.console.aws.amazon.com/amplify/home?region=${AWS_REGION}#/${AWS_AMPLIFY_APP_ID_QA})." >> $GITHUB_STEP_SUMMARY
 
       - uses: sarisia/actions-status-discord@c193626e5ce172002b8161e116aa897de7ab5383
         if: always()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          title: 'Deploy cdapp amplify to ${{ env.AMPLIFY_ENV_NAME }}'
+          title: 'Deploy cdapp amplify to QA'
 
   # Deploy cdapp amplify to prod environment
   deployProd:
     needs: deployQA
 
-    environment: prod
+    # environment: prod # disabled for now
 
     runs-on: ubuntu-latest
 
-    # Set required variables for amplify script which pulls existing AWS amplify environment
     env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_PROD }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }}
-      AMPLIFY_PROJECT_NAME: 'colonyCDapp'
-      AMPLIFY_APP_ID: 'd2xpoa8d768hdt'
-      AMPLIFY_ENV_NAME: 'prod'
-      # AWS region is set as a global env var at the start of the workflow
+      AWS_AMPLIFY_WEBHOOK_PROD: ${{ vars.AWS_AMPLIFY_WEBHOOK_PROD }}
+      AWS_AMPLIFY_APP_ID_PROD: ${{ vars.AWS_AMPLIFY_APP_ID_PROD }}
 
     steps:
-      - name: Echo Env Vars through Context
+      - name: Trigger Amplify AWS Pipeline
         run: |
-          echo "$GITHUB_CONTEXT"
+          curl -X POST -d {} "${AWS_AMPLIFY_WEBHOOK_PROD}&operation=startbuild" -H "Content-Type:application/json"
 
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - name: Checkout relevant branch
-        run: git checkout ${{ github.event.client_payload.COMMIT_HASH != null && github.event.client_payload.COMMIT_HASH || github.sha }}
-
-      - name: Install Amplify CLI
-        run: npm install -g @aws-amplify/cli
-
-      - name: Pull existing AWS Amplify env
+      - name: Post AWS Amplify console link in GH summary
         run: |
-          # Allow execution permissions on the script
-          chmod +x ./.github/workflows/scripts/amplify_script.sh
-
-          # Rename existing amplify folder to be able to run amplify pull, required to get the agent connected to the AWS environment
-          mv ./amplify ./amplify-changes
-
-          # Run script to pull existing AWS Amplify environment, which generates folders with currently deployed resources
-          ./.github/workflows/scripts/amplify_script.sh
-
-      - name: Remove AWS Amplify generated directories
-        working-directory: .github/workflows/scripts
-        run: |
-          rm -rf ./amplify/backend/api
-          rm -rf ./amplify/backend/custom
-          rm -rf ./amplify/backend/function
-          rm -rf ./amplify/backend/types
-
-      - name: Copy latest changes and push to Amplify
-        run: |
-          # Need to only copy over resource folders. If whole folder gets overwritten, amplify complains about missing environment
-          cp -r ./amplify-changes/backend/api ./amplify/backend/
-          cp -r ./amplify-changes/backend/custom ./amplify/backend/
-          cp -r ./amplify-changes/backend/function ./amplify/backend/
-          cp -r ./amplify-changes/backend/types ./amplify/backend/
-          amplify push --yes
+          echo "### AWS Amplify pipeline" >> $GITHUB_STEP_SUMMARY
+          echo "Amplify build triggered, progress can be tracked in the [AWS Console](https://${AWS_REGION}.console.aws.amazon.com/amplify/home?region=${AWS_REGION}#/${AWS_AMPLIFY_APP_ID_PROD})." >> $GITHUB_STEP_SUMMARY
 
       - uses: sarisia/actions-status-discord@c193626e5ce172002b8161e116aa897de7ab5383
         if: always()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          title: 'Deploy cdapp amplify to ${{ env.AMPLIFY_ENV_NAME }}'
+          title: 'Deploy cdapp amplify to prod'
