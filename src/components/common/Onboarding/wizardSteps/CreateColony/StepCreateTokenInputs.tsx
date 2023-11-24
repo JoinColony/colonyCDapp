@@ -7,8 +7,9 @@ import Avatar from '~v5/shared/Avatar';
 import AvatarUploader from '~v5/common/AvatarUploader';
 import { UseAvatarUploaderProps } from '~v5/common/AvatarUploader/hooks';
 
+import { getInputError } from '../shared';
+
 import IconSuccessContent from './IconSuccessContent';
-import { getInputError } from './shared';
 import { MAX_TOKEN_NAME, MAX_TOKEN_SYMBOL } from './validation';
 
 const displayName = 'common.CreateColonyWizard.StepCreateTokenInputs';

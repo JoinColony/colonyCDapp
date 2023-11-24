@@ -6,7 +6,7 @@ import Input from '~v5/common/Fields/Input';
 import { MAX_COLONY_DISPLAY_NAME } from '~constants';
 import { formatText } from '~utils/intl';
 
-import { getInputError } from './shared';
+import { getInputError } from '../shared';
 
 const displayName = 'common.CreateColonyWizard.StepColonyNameInputs';
 

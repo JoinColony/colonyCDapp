@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
-
-import { UseFormRegister, FieldValues, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 import Icon from '~shared/Icon';
 import { WizardStepProps } from '~shared/Wizard';
@@ -9,8 +8,9 @@ import { Form } from '~shared/Fields';
 import Card from '~v5/shared/Card';
 import { formatText } from '~utils/intl';
 
+import { ButtonRow, HeaderRow } from '../shared';
+
 import { FormValues, Step2 } from './CreateColonyWizard';
-import { ButtonRow, HeaderRow } from './shared';
 
 const displayName = 'common.CreateColonyWizard.StepTokenChoice';
 
@@ -24,7 +24,6 @@ interface TokenSelectorProps {
   icon: ReactNode;
   title: MessageDescriptor | string;
   description: MessageDescriptor | string;
-  register?: UseFormRegister<FieldValues>;
 }
 
 export const MSG = defineMessages({
@@ -92,42 +91,40 @@ const TokenSelector = ({
 
 const StepTokenChoice = ({
   wizardForm: { initialValues: defaultValues },
-  wizardValues: { tokenChoiceVerify },
+  wizardValues: { tokenChoice },
   previousStep,
   nextStep,
-}: Props) => {
-  return (
-    <Form<Step2>
-      onSubmit={nextStep}
-      defaultValues={{
-        tokenChoice: tokenChoiceVerify || defaultValues.tokenChoice,
-      }}
-    >
-      <HeaderRow heading={MSG.heading} description={MSG.description} />
-      <div className="flex gap-6">
-        <TokenSelector
-          name="create"
-          title={MSG.createOptionTitle}
-          description={MSG.createOptionDescription}
-          icon={
-            <Icon
-              style={{ transform: 'rotate(90deg)' }}
-              name="coin-vertical"
-              appearance={{ size: 'mediumSmall' }}
-            />
-          }
-        />
-        <TokenSelector
-          name="select"
-          title={MSG.selectOptionTitle}
-          description={MSG.selectOptionDescription}
-          icon={<Icon name="hand-coins" appearance={{ size: 'mediumSmall' }} />}
-        />
-      </div>
-      <ButtonRow previousStep={previousStep} />
-    </Form>
-  );
-};
+}: Props) => (
+  <Form<Step2>
+    onSubmit={nextStep}
+    defaultValues={{
+      tokenChoice: tokenChoice || defaultValues.tokenChoice,
+    }}
+  >
+    <HeaderRow heading={MSG.heading} description={MSG.description} />
+    <div className="flex gap-6">
+      <TokenSelector
+        name="create"
+        title={MSG.createOptionTitle}
+        description={MSG.createOptionDescription}
+        icon={
+          <Icon
+            style={{ transform: 'rotate(90deg)' }}
+            name="coin-vertical"
+            appearance={{ size: 'mediumSmall' }}
+          />
+        }
+      />
+      <TokenSelector
+        name="select"
+        title={MSG.selectOptionTitle}
+        description={MSG.selectOptionDescription}
+        icon={<Icon name="hand-coins" appearance={{ size: 'mediumSmall' }} />}
+      />
+    </div>
+    <ButtonRow previousStep={previousStep} />
+  </Form>
+);
 
 StepTokenChoice.displayName = displayName;
 

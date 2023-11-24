@@ -4,15 +4,13 @@ import { defineMessages } from 'react-intl';
 import { WizardStepProps } from '~shared/Wizard';
 import { Form } from '~shared/Fields';
 
-import {
-  FormValues,
-  Step3,
-  tokenValidationSchema as validationSchema,
-} from './CreateColonyWizard';
-import { ButtonRow, HeaderRow } from './shared';
+import { ButtonRow, HeaderRow } from '../shared';
+
+import { FormValues, Step3 } from './CreateColonyWizard';
 import TokenInputs from './StepCreateTokenInputs';
 import { TokenChoiceOptions } from './StepCreateTokenComponents';
 import TokenSelectorInput from './TokenSelectorInput';
+import { tokenValidationSchema as validationSchema } from './validation';
 
 const displayName = `common.CreateColonyWizard.StepCreateToken`;
 
@@ -34,49 +32,39 @@ type Props = Pick<
 
 const StepCreateToken = ({
   nextStep,
-  wizardValues: {
-    tokenChoice,
-    tokenName,
-    tokenSymbol,
-    tokenAddress,
-    tokenChoiceVerify,
-  },
+  wizardValues: { tokenChoice, tokenName, tokenSymbol, tokenAddress },
   previousStep,
-}: Props) => {
-  return (
-    <Form<Step3>
-      onSubmit={nextStep}
-      validationSchema={validationSchema}
-      defaultValues={{
-        tokenChoiceVerify: tokenChoice || tokenChoiceVerify,
-      }}
-    >
-      {({ watch }) => {
-        const currentTokenChoice = watch('tokenChoiceVerify');
+}: Props) => (
+  <Form<Step3>
+    onSubmit={nextStep}
+    validationSchema={validationSchema}
+    defaultValues={{ tokenChoice }}
+  >
+    {({ watch }) => {
+      const currentTokenChoice = watch('tokenChoice');
 
-        return (
-          <>
-            <HeaderRow
-              heading={MSG.heading}
-              description={MSG.description}
-              descriptionValues={{ br: <br /> }}
+      return (
+        <>
+          <HeaderRow
+            heading={MSG.heading}
+            description={MSG.description}
+            descriptionValues={{ br: <br /> }}
+          />
+          <TokenChoiceOptions tokenChoiceOptions={['create', 'select']} />
+          {currentTokenChoice === 'create' ? (
+            <TokenInputs
+              wizardTokenName={tokenName || ''}
+              wizardTokenSymbol={tokenSymbol || ''}
             />
-            <TokenChoiceOptions tokenChoiceOptions={['create', 'select']} />
-            {currentTokenChoice === 'create' ? (
-              <TokenInputs
-                wizardTokenName={tokenName || ''}
-                wizardTokenSymbol={tokenSymbol || ''}
-              />
-            ) : (
-              <TokenSelectorInput wizardTokenAddress={tokenAddress} />
-            )}
-            <ButtonRow previousStep={previousStep} />
-          </>
-        );
-      }}
-    </Form>
-  );
-};
+          ) : (
+            <TokenSelectorInput wizardTokenAddress={tokenAddress} />
+          )}
+          <ButtonRow previousStep={previousStep} />
+        </>
+      );
+    }}
+  </Form>
+);
 
 StepCreateToken.displayName = displayName;
 

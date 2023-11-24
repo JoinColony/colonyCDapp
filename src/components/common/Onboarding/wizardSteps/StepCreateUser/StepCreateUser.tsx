@@ -6,13 +6,13 @@ import { ActionTypes } from '~redux';
 import { ActionForm } from '~shared/Fields';
 import { withMeta } from '~utils/actions';
 import { useAppContext } from '~hooks';
+import { WizardStepProps } from '~shared/Wizard';
 
 import { HeaderRow } from '../shared';
 
 import { validationSchema } from './validation';
 import { CreateUserFormValues } from './types';
 import CreateUserFormInputs from './CreateUserFormInputs';
-import { WizardStepProps } from '~shared/Wizard';
 
 const displayName = 'common.Onboarding.StepCreateUser';
 

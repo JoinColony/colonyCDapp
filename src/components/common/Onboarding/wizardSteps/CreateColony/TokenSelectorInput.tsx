@@ -6,8 +6,9 @@ import { Token } from '~types';
 import { getNetworkByChainId } from '~utils/web3';
 import Icon from '~shared/Icon';
 
+import { getInputError } from '../shared';
+
 import TokenSelector from './TokenSelector';
-import { getInputError } from './shared';
 
 const displayName = 'common.CreateColonyWizard.TokenSelector';
 

@@ -6,13 +6,10 @@ import { Form } from '~shared/Fields';
 import { useAppContext } from '~hooks';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
 
-import { ButtonRow, HeaderRow } from './shared';
+import { ButtonRow, HeaderRow } from '../shared';
 
-import {
-  FormValues,
-  Step1,
-  colonyNameValidationSchema as validationSchema,
-} from './CreateColonyWizard';
+import { FormValues, Step1 } from './CreateColonyWizard';
+import { colonyNameValidationSchema as validationSchema } from './validation';
 
 import NameInputs from './StepColonyNameInputs';
 

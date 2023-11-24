@@ -15,7 +15,7 @@ export const TokenChoiceOptions = ({
 
   const { formatMessage } = useIntl();
 
-  const { onChange } = register('tokenChoiceVerify');
+  const { onChange } = register('tokenChoice');
 
   return (
     <div className="flex gap-4">
@@ -26,7 +26,7 @@ export const TokenChoiceOptions = ({
           className="pb-6 flex gap-2 text-md text-gray-900"
         >
           <input
-            {...register('tokenChoiceVerify')}
+            {...register('tokenChoice')}
             onChange={(event) => {
               clearErrors();
               onChange(event);

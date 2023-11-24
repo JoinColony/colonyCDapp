@@ -1,6 +1,7 @@
 import React from 'react';
+import clsx from 'clsx';
 import { MessageDescriptor } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
+import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form';
 
 import Button from '~v5/shared/Button';
 import { AnyMessageValues, SimpleMessageValues } from '~types';
@@ -39,43 +40,58 @@ export const HeaderRow = ({
 
 interface ButtonRowProps {
   previousStep: PreviousStep;
-  continueButtonDisableOverride?: boolean;
+  showBackButton?: boolean;
 }
 
 export const ButtonRow = ({
   previousStep,
-  continueButtonDisableOverride,
+  showBackButton = true,
 }: ButtonRowProps) => {
   const {
     getValues,
-    formState: { isValid, isSubmitting },
+    formState: { isSubmitting },
   } = useFormContext();
 
   const values = getValues();
 
-  const disabled =
-    continueButtonDisableOverride !== undefined
-      ? continueButtonDisableOverride
-      : !isValid || isSubmitting;
-
   const loading = isSubmitting;
 
   return (
-    <div className="pt-12 flex justify-between">
-      <Button
-        text={{ id: 'button.back' }}
-        textValues={{ loading: 'test' }}
-        onClick={() => previousStep(values)}
-        loading={loading}
-        mode="primaryOutline"
-      />
+    <div
+      className={clsx(
+        'pt-12 flex',
+        showBackButton ? 'justify-between' : 'justify-end',
+      )}
+    >
+      {showBackButton && (
+        <Button
+          text={{ id: 'button.back' }}
+          textValues={{ loading: 'test' }}
+          onClick={() => previousStep(values)}
+          loading={loading}
+          mode="primaryOutline"
+        />
+      )}
       <Button
         text={{ id: 'button.continue' }}
         type="submit"
-        disabled={disabled}
         loading={loading}
         mode="primarySolid"
       />
     </div>
   );
+};
+
+export const getInputError = (
+  errors: FieldErrors<FieldValues>,
+  errorName: string,
+  submitCount: number,
+) => {
+  const error = errors[errorName]?.message as string | undefined;
+
+  const showError = Boolean(
+    errors[errorName]?.type === 'required' && submitCount === 0 ? false : error,
+  );
+
+  return { error, showError };
 };

@@ -62,7 +62,7 @@ export const colonyNameValidationSchema = object({
 export const selectTokenValidationSchema = object({
   tokenAddress: string()
     .default('')
-    .when('tokenChoiceVerify', {
+    .when('tokenChoice', {
       is: 'select',
       then: (schema) =>
         schema
@@ -85,8 +85,8 @@ export const selectTokenValidationSchema = object({
    */
   token: object<Token>()
     .nullable()
-    .when(['tokenChoiceVerify', 'tokenAddress'], {
-      is: (tokenChoiceVerify) => tokenChoiceVerify === 'select',
+    .when(['tokenChoice', 'tokenAddress'], {
+      is: (tokenChoice) => tokenChoice === 'select',
       then: (schema) =>
         schema.nullable().test('doesTokenExist', '', doesTokenExist),
       otherwise: (schema) => schema.notRequired(),
@@ -94,7 +94,7 @@ export const selectTokenValidationSchema = object({
 }).defined();
 
 export const createTokenValidationSchema = object({
-  tokenSymbol: string().when('tokenChoiceVerify', {
+  tokenSymbol: string().when('tokenChoice', {
     is: 'create',
     then: (schema) =>
       schema
@@ -109,7 +109,7 @@ export const createTokenValidationSchema = object({
   }),
   tokenName: string()
     .default('')
-    .when('tokenChoiceVerify', {
+    .when('tokenChoice', {
       is: 'create',
       then: (schema) =>
         schema
@@ -120,7 +120,7 @@ export const createTokenValidationSchema = object({
 }).defined();
 
 export const tokenValidationSchema = object({
-  tokenChoiceVerify: string(),
+  tokenChoice: string(),
   tokenIcon: string(),
 })
   .concat(selectTokenValidationSchema)

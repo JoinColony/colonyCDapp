@@ -22,7 +22,6 @@ export type FormValues = {
   token?: Token | null;
   colonyName: string;
   tokenChoice?: 'create' | 'select';
-  tokenChoiceVerify: 'create' | 'select';
   displayName: string;
   tokenAvatar?: string;
   tokenThumbnail?: string;
@@ -37,7 +36,6 @@ export type Step3 = Pick<
   | 'tokenSymbol'
   | 'token'
   | 'tokenChoice'
-  | 'tokenChoiceVerify'
   | 'tokenAvatar'
   | 'tokenThumbnail'
 >;
@@ -46,7 +44,6 @@ export const initialValues = {
   colonyName: '',
   displayName: '',
   tokenChoice: 'create',
-  tokenChoiceVerify: 'create',
   tokenAddress: '',
   tokenName: '',
   tokenSymbol: '',

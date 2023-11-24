@@ -16,9 +16,10 @@ import { groupedTransactionsAndMessages } from '~redux/selectors';
 import { ActionTypes } from '~redux/index';
 import { useAppContext } from '~hooks';
 
-import { FormValues, WizardProps } from './CreateColonyWizard';
+import { HeaderRow } from '../shared';
+
+import { FormValues } from './CreateColonyWizard';
 import ConfirmTransactions from './ConfirmTransactions';
-import { HeaderRow } from './shared';
 
 const displayName = 'common.CreateColonyWizard.StepConfirmTransactions';
 
@@ -34,7 +35,7 @@ const MSG = defineMessages({
   },
 });
 
-type Props = Pick<WizardStepProps<FormValues, WizardProps>, 'wizardValues'>;
+type Props = Pick<WizardStepProps<FormValues>, 'wizardValues'>;
 
 type NewestGroup = Array<{
   methodName: string;

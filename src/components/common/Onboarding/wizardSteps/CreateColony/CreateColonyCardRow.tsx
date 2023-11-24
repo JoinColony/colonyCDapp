@@ -6,13 +6,13 @@ import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button';
 import Avatar from '~v5/shared/Avatar';
 
-import { FormValues, WizardProps } from './CreateColonyWizard';
+import { FormValues } from './CreateColonyWizard';
 
 const displayName = 'common.CreateColonyWizard.CardRow';
 
 interface CardRowProps {
   updatedWizardValues: FormValues;
-  setStep: WizardStepProps<FormValues, WizardProps>['setStep'];
+  setStep: WizardStepProps<FormValues>['setStep'];
 }
 
 const MSG = defineMessages({
