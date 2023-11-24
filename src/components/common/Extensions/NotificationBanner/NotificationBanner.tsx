@@ -15,44 +15,41 @@ const NotificationBanner: FC<NotificationBannerProps> = ({
   callToAction,
 }) => {
   return (
-    <div className="@container/notificationBanner">
-      <div
-        className={clsx(
-          'border rounded-lg py-3 px-[1.125rem] flex gap-2 justify-between flex-col items-start @[600px]/notificationBanner:flex-row @[600px]/notificationBanner:items-center text-gray-900',
-          {
-            'bg-success-100 border-success-200': status === 'success',
-            'bg-warning-100 border-warning-200': status === 'warning',
-            'bg-negative-100 border-negative-200': status === 'error',
-            'bg-gray-50 border-gray-200': status === 'info',
-          },
-          className,
-        )}
-      >
-        <div className="flex flex-col gap-1">
-          <div className="flex flex-row gap-2 items-center text-md">
-            {icon ? (
-              <Icon
-                appearance={{ size: 'extraSmall' }}
-                name={icon}
-                className={clsx('flex-shrink-0', {
-                  'text-success-400': status === 'success',
-                  'text-warning-400': status === 'warning',
-                  'text-negative-400': status === 'error',
-                  'text-gray-900': status === 'info',
-                })}
-              />
-            ) : null}
-            {children}
-          </div>
+    <div
+      className={clsx(
+        '@container/notificationBanner border rounded-lg py-3 px-[1.125rem] flex gap-2 flex-row items-start text-gray-900',
+        {
+          'bg-success-100 border-success-200': status === 'success',
+          'bg-warning-100 border-warning-200': status === 'warning',
+          'bg-negative-100 border-negative-200': status === 'error',
+          'bg-gray-50 border-gray-200': status === 'info',
+        },
+        className,
+      )}
+    >
+      {icon ? (
+        <Icon
+          appearance={{ size: 'extraSmall' }}
+          name={icon}
+          className={clsx('flex-shrink-0', {
+            'text-success-400': status === 'success',
+            'text-warning-400': status === 'warning',
+            'text-negative-400': status === 'error',
+            'text-gray-900': status === 'info',
+          })}
+        />
+      ) : null}
+      <div className="flex flex-1 gap-2 flex-col items-start @[600px]/notificationBanner:flex-row @[600px]/notificationBanner:items-center">
+        <div className="flex flex-1 flex-col gap-1 items-start text-md">
+          {children}
           {description ? (
-            <div className="text-sm text-gray-600">{description}</div>
+            <div className="text-sm text-gray-900">{description}</div>
           ) : null}
         </div>
         {callToAction ? (
           <div
             className={clsx(
-              'flex-shrink-0 underline font-medium text-xs @[600px]/notificationBanner:ml-0 md:hover:no-underline',
-              !!icon && 'ml-[calc(1rem+8px)]', // if we have an icon we need to offset the CTA to align vertically to the main text
+              'flex-shrink-0 underline font-medium text-xs md:hover:no-underline',
             )}
           >
             {callToAction}
