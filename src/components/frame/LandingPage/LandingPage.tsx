@@ -22,10 +22,6 @@ import LandingPageItem from './LandingPageItem';
 const displayName = 'frame.LandingPage';
 
 const MSG = defineMessages({
-  headerTitle: {
-    id: `${displayName}.callToAction`,
-    defaultMessage: 'Welcome to Colony',
-  },
   privateBetaLabel: {
     id: `${displayName}.privateBetaLabel`,
     defaultMessage: 'Private Beta',
@@ -142,7 +138,7 @@ const LandingPage = () => {
       <div className="mb-8">
         <div className="flex items-center mb-4">
           <Heading
-            text={MSG.headerTitle}
+            text={{ id: 'colonyWelcome' }}
             className="font-semibold text-gray-900 text-3xl"
           />
           <span className="font-medium text-blue-400 text-sm px-3 py-1 bg-blue-100 rounded-3xl ml-3">
