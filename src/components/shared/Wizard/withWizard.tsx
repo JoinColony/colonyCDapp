@@ -70,7 +70,7 @@ const withWizard =
             // Check if next step exists
             if (currentStep + 1 < valsCopy.length) {
               // Get keys of the current vals object
-              const keys = Object.keys(vals);
+              const keys = Object.keys(vals) as Array<keyof Partial<F>>;
 
               // Update values in the next step if they have the same key as in the current step
               keys.forEach((key) => {
@@ -107,7 +107,7 @@ const withWizard =
             // Check if previous step exists
             if (currentStep - 1 >= 0) {
               // Get keys of the current vals object
-              const keys = Object.keys(vals);
+              const keys = Object.keys(vals) as Array<keyof Partial<F>>;
 
               // Update values in the previous step if they have the same key as in the current step
               keys.forEach((key) => {
