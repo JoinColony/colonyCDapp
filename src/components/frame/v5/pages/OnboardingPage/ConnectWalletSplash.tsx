@@ -57,10 +57,10 @@ const ConnectWalletSplash = ({ validInvite }: Props) => {
               : formatText(MSG.invalidInvite)}
           </span>
         </div>
-        <div className="px-6 py-4 border border-gray-900 rounded">
+        <div className="px-6 py-4 border border-gray-900 rounded flex flex-col gap-1.5">
           <Icon name="plugs" appearance={{ size: 'mediumSmall' }} />
-          <div className="flex place-content-between">
-            <div className="flex flex-col">
+          <div className="flex items-center place-content-between">
+            <div className="flex flex-col gap-1">
               <span className="text-md font-medium text-gray-900">
                 {formatText({ id: 'connectWallet' })}
               </span>
