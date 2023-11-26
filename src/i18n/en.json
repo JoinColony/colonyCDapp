@@ -833,7 +833,7 @@
     "actions.upgradeColonyVersion": "Upgrade Colony version",
     "actions.enterRecoveryMode": "Enter recovery mode",
     "actions.createNewIntegration": "Create new integration",
-    "actions.manageColonyObjective": "Manage Colony objective",
+    "actions.manageColonyObjectives": "Manage Colony objective",
     "actions.userPermissions": "User permissions",
     "actions.recipent": "Colony members",
     "actions.manageReputation": "Manage reputation",

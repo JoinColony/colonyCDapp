@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Chat } from 'phosphor-react';
+import { Chat } from '@phosphor-icons/react';
 import { MessageNumberProps } from './types';
 
 const displayName = 'v5.MessageNumber';
