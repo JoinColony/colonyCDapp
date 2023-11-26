@@ -18,7 +18,7 @@ import OutcomeStep from './steps/OutcomeStep';
 import RevealStep from './steps/RevealStep';
 import StakingStep from './steps/StakingStep';
 import VotingStep from './steps/VotingStep';
-import { MotionsProps } from './types';
+import { MotionsProps, Steps, CustomStep } from './types';
 
 const displayName = 'v5.common.ActionSidebar.partials.Motions';
 
@@ -33,7 +33,12 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     refetchAction,
   } = useGetColonyAction(transactionId);
   const { motionData } = action || {};
-  const { motionId = '', motionStakes, requiredStake = '' } = motionData || {};
+  const {
+    motionId = '',
+    motionStakes,
+    requiredStake = '',
+    motionStateHistory,
+  } = motionData || {};
 
   const networkMotionStateEnum = getEnumValueFromKey(
     NetworkMotionState,
@@ -41,7 +46,9 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     undefined,
   );
 
-  const [activeStepKey, setActiveStepKey] = useState(networkMotionStateEnum);
+  const [activeStepKey, setActiveStepKey] = useState<Steps>(
+    networkMotionStateEnum,
+  );
 
   useEffect(() => {
     startPollingForAction(1000);
@@ -96,6 +103,10 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const hasMotionPassed = motionStateEnum === MotionState.Passed;
   const hasMotionFaild = motionStateEnum === MotionState.Failed;
 
+  const motionStakedAndFinalizable =
+    motionState === NetworkMotionState.Finalizable &&
+    !motionStateHistory?.hasVoted;
+
   // @todo: add missing steps
   const items = useMemo(
     () =>
@@ -147,6 +158,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                   ) : undefined,
               },
               isOptional: !isFullyStaked,
+              isHidden: motionStakedAndFinalizable,
             },
             {
               key: NetworkMotionState.Reveal,
@@ -170,13 +182,37 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                     />
                   ) : undefined,
               },
-              // @todo: add a condition to show when voting step is active
-              isHidden: false,
+              isHidden: motionStakedAndFinalizable,
               // @todo: chnage to false when visible
               isOptional: true,
             },
             {
-              key: 'nonexistentmotionstate-votingresults' as unknown as NetworkMotionState,
+              key: CustomStep.StakedMotionOutcome,
+              content: <div />,
+              heading: {
+                iconName:
+                  (motionStateHistory?.hasPassed && 'thumbs-up') ||
+                  (motionStateHistory?.hasFailed && 'thumbs-down') ||
+                  '',
+                label:
+                  (motionStateHistory?.hasPassed &&
+                    formatText({ id: 'motion.passed.label' })) ||
+                  (motionStateHistory?.hasFailed &&
+                    formatText({ id: 'motion.failed.label' })) ||
+                  formatText({ id: 'motion.outcome.label' }) ||
+                  '',
+                className: clsx({
+                  '!bg-base-white !text-purple-400 border-purple-400':
+                    motionStateHistory?.hasPassed,
+                  '!bg-base-white !text-red-400 border-red-400':
+                    motionStateHistory?.hasFailed,
+                }),
+              },
+              isSkipped: motionStakedAndFinalizable,
+              isHidden: !motionStakedAndFinalizable,
+            },
+            {
+              key: CustomStep.VotedMotionOutcome,
               content: (
                 <OutcomeStep
                   motionData={motionData}
@@ -190,12 +226,6 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                   (hasMotionFaild && 'thumbs-down') ||
                   '',
                 label:
-                  (hasMotionPassed &&
-                    !votesHaveBeenRevealed &&
-                    formatText({ id: 'motion.passed.label' })) ||
-                  (hasMotionFaild &&
-                    !votesHaveBeenRevealed &&
-                    formatText({ id: 'motion.failed.label' })) ||
                   (winningSide === MotionVote.Yay &&
                     votesHaveBeenRevealed &&
                     formatText({ id: 'motion.support.wins.label' })) ||
@@ -214,7 +244,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                 }),
               },
               isOptional: true,
-              isHidden: false,
+              isHidden: motionStakedAndFinalizable,
             },
             {
               key: NetworkMotionState.Finalizable,
@@ -243,11 +273,13 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
       stopPollingForAction,
       transactionId,
       isFullyStaked,
+      motionStakedAndFinalizable,
       motionData,
-      winningSide,
+      motionStateHistory,
       hasMotionPassed,
-      hasMotionFaild,
+      winningSide,
       votesHaveBeenRevealed,
+      hasMotionFaild,
       refetchAction,
     ],
   );
@@ -260,7 +292,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
       startPollingAction={startPollingForAction}
       stopPollingAction={stopPollingForAction}
     >
-      <Stepper<NetworkMotionState>
+      <Stepper<Steps>
         activeStepKey={activeStepKey}
         setActiveStepKey={setActiveStepKey}
         items={items}
