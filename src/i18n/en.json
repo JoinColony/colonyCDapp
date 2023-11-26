@@ -1234,7 +1234,7 @@
     "motion.voting.label": "Voting",
     "motion.reveal.label": "Reveal",
     "motion.outcome.label": "Outcome",
-    "motion.passed.label": "Passed",
+    "motion.passed.label": "Supported",
     "motion.failed.label": "Failed",
     "motion.support.wins.label": "Support wins",
     "motion.oppose.wins.label": "Oppose wins",
