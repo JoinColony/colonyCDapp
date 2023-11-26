@@ -1,1 +1,1 @@
-// @TODO
+export { default } from './PillsBase';
