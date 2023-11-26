@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { BigNumber } from 'ethers';
-import { useLocation } from 'react-router-dom';
+import { Extension } from '@colony/colony-js';
+
 import { ColonyActionType } from '~gql';
-import { useAppContext, useColonyContext } from '~hooks';
+import { useAppContext, useColonyContext, useExtensionData } from '~hooks';
 import { mapPayload } from '~utils/actions';
 import { formatText } from '~utils/intl';
 import Numeral from '~shared/Numeral';
@@ -11,7 +12,6 @@ import { MotionFinalizePayload } from '~redux/types/actions/motion';
 import { DescriptionListItem } from '../VotingStep/partials/DescriptionList/types';
 import { MotionAction } from '~types/motions';
 import { useUserTokenBalanceContext } from '~context';
-import { getTransactionHashFromPathName } from '~utils/urls';
 import { ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards';
 import { RefetchAction } from '~common/ColonyActions/ActionDetailsPage/useGetColonyAction';
 
@@ -72,12 +72,13 @@ export const useClaimConfig = (
       databaseMotionId,
       remainingStakes,
     },
+    transactionHash,
   } = actionData;
   const { user } = useAppContext();
   const { colony } = useColonyContext();
+  const { extensionData } = useExtensionData(Extension.VotingReputation);
   const { pollLockedTokenBalance } = useUserTokenBalanceContext();
 
-  const location = useLocation();
   const [isClaimed, setIsClaimed] = useState(false);
 
   const userAddress = user?.walletAddress;
@@ -150,11 +151,15 @@ export const useClaimConfig = (
     pollLockedTokenBalance();
   };
 
-  const claimPayload = {
-    userAddress,
-    colonyAddress,
-    transactionHash: getTransactionHashFromPathName(location.pathname),
-  } as ClaimMotionRewardsPayload;
+  const claimPayload = mapPayload(
+    (): ClaimMotionRewardsPayload => ({
+      userAddress: userAddress || '',
+      colonyAddress: colonyAddress || '',
+      transactionHash: transactionHash || '',
+      // @ts-ignore It exists, TS is just being a little bitch
+      extensionAddress: extensionData?.address || '',
+    }),
+  );
 
   const items: DescriptionListItem[] = [
     {

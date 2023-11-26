@@ -7,12 +7,10 @@ import { ActionForm } from '~shared/Fields';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
 import DescriptionList from '../VotingStep/partials/DescriptionList';
 import { useClaimConfig, useFinalizeStep } from './hooks';
-import { FinalizeStepProps } from './types';
-// import TeamBadge from '~v5/common/Pills/TeamBadge';
+import { FinalizeStepProps, FinalizeStepSections } from './types';
+import PillsBase from '~v5/common/Pills';
 import { useAppContext, useColonyContext } from '~hooks';
-import Icon from '~shared/Icon';
-
-import { ActionButton } from '~shared/Button';
+// import Icon from '~shared/Icon';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.FinalizeStep';
@@ -26,12 +24,13 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const { user } = useAppContext();
   const [isPolling, setIsPolling] = useState(false);
   const { refetchColony } = useColonyContext();
-  const { isFinalizable, transform } = useFinalizeStep(actionData);
+  const { isFinalizable, transform: finalizePayload } =
+    useFinalizeStep(actionData);
   const {
     items,
     isClaimed,
     buttonTextId,
-    remainingStakesNumber,
+    // remainingStakesNumber,
     handleClaimSuccess,
     claimPayload,
     canClaimStakes,
@@ -46,6 +45,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   useEffect(() => {
     if (isClaimed) {
       stopPollingAction();
+      setIsPolling(false);
     }
     return stopPollingAction;
   }, [isClaimed, stopPollingAction]);
@@ -57,6 +57,19 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     }
   }, [actionData.motionData.isFinalized, refetchColony]);
 
+  let action = {
+    actionType: ActionTypes.MOTION_FINALIZE,
+    transform: finalizePayload,
+    onSuccess: handleSuccess,
+  };
+  if (actionData.motionData.isFinalized) {
+    action = {
+      actionType: ActionTypes.MOTION_CLAIM,
+      transform: claimPayload,
+      onSuccess: handleClaimSuccess,
+    };
+  }
+
   return (
     <MenuWithStatusText
       statusTextSectionProps={{
@@ -65,57 +78,63 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
         textClassName: 'text-4',
         iconAlignment: 'top',
         content: (
-          <div className="flex items-center text-4 gap-2">
-            <span className="flex text-blue-400 mr-2">
-              <Icon name="arrows-clockwise" appearance={{ size: 'tiny' }} />
-            </span>
-            {formatText(
-              { id: 'motion.finalizeStep.transactions.remaining' },
-              { transactions: remainingStakesNumber },
-            )}
-          </div>
+          <div />
+          /*
+           * @TODO This needs to refactored
+           * When the claim single / claim for everyone multicall logic gets wired in
+           */
+          // <div className="flex items-center text-4 gap-2">
+          //   <span className="flex text-blue-400 mr-2">
+          //     <Icon name="arrows-clockwise" appearance={{ size: 'tiny' }} />
+          //   </span>
+          //   {formatText(
+          //     { id: 'motion.finalizeStep.transactions.remaining' },
+          //     { transactions: remainingStakesNumber },
+          //   )}
+          // </div>
         ),
       }}
       sections={[
         {
-          key: '1',
+          key: FinalizeStepSections.Finalize,
           content: (
-            <ActionForm
-              actionType={ActionTypes.MOTION_FINALIZE}
-              transform={transform}
-              onSuccess={handleSuccess}
-            >
+            <ActionForm {...action} onSuccess={handleSuccess}>
               <div className="mb-2">
                 <h4 className="text-1 mb-3 flex justify-between items-center">
                   {formatText({ id: 'motion.finalizeStep.title' })}
-                  {/* @TODO: use MotionBadge component */}
-                  {/* <TeamBadge
-                    mode="claimed"
-                    teamName={formatText({ id: pillTextId })}
-                  /> */}
-                  {/* @TODO: implement new logic according to the updated designs */}
-                  <ActionButton
-                    actionType={ActionTypes.MOTION_CLAIM}
-                    values={claimPayload}
-                    appearance={{ theme: 'primary', size: 'medium' }}
-                    text={{ id: buttonTextId }}
-                    disabled={!canClaimStakes}
-                    onSuccess={handleClaimSuccess}
-                  />
+                  {isClaimed && (
+                    <PillsBase className="bg-teams-pink-100 text-teams-pink-500">
+                      {formatText({ id: 'motion.finalizeStep.claimed' })}
+                    </PillsBase>
+                  )}
                 </h4>
               </div>
               {items && <DescriptionList items={items} className="mb-6" />}
-              {isPolling ? (
-                <PendingButton className="w-full" rounded="s" />
-              ) : (
-                <Button
-                  mode="primarySolid"
-                  disabled={!user || !isFinalizable}
-                  isFullSize
-                  text={formatText({ id: 'motion.finalizeStep.submit' })}
-                  type="submit"
-                />
-              )}
+              {isPolling && <PendingButton className="w-full" rounded="s" />}
+              {!isPolling &&
+                !actionData.motionData.isFinalized &&
+                isFinalizable && (
+                  <Button
+                    mode="primarySolid"
+                    disabled={!user || !isFinalizable}
+                    isFullSize
+                    text={formatText({ id: 'motion.finalizeStep.submit' })}
+                    type="submit"
+                  />
+                )}
+              {!isPolling &&
+                actionData.motionData.isFinalized &&
+                !isClaimed && (
+                  <Button
+                    mode="primarySolid"
+                    disabled={!user || !canClaimStakes}
+                    isFullSize
+                    text={formatText({
+                      id: buttonTextId,
+                    })}
+                    type="submit"
+                  />
+                )}
             </ActionForm>
           ),
         },
