@@ -75,9 +75,9 @@ export const useStakingInformation = (
     usersStakes.map((user) => user.address),
   );
 
-  const sortedUsersStakes = usersStakes?.sort((a, b) => {
-    const aStakeNumber = BigNumber.from(a.stakes?.raw?.yay);
-    const bStakeNumber = BigNumber.from(b.stakes?.raw?.yay);
+  const sortedUsersStakes = [...usersStakes].sort((a, b) => {
+    const aStakeNumber = BigNumber.from(a.stakes.raw.yay);
+    const bStakeNumber = BigNumber.from(b.stakes.raw.yay);
 
     if (aStakeNumber.eq(bStakeNumber)) {
       return 0;
