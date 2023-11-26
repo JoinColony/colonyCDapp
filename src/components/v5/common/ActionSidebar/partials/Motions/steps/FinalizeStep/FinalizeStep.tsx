@@ -21,7 +21,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   stopPollingAction,
   refetchAction,
 }) => {
-  const { user } = useAppContext();
+  const { wallet, user } = useAppContext();
   const [isPolling, setIsPolling] = useState(false);
   const { refetchColony } = useColonyContext();
   const { isFinalizable, transform: finalizePayload } =
@@ -70,6 +70,8 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     };
   }
 
+  const canInteract = !!wallet && !!user;
+
   return (
     <MenuWithStatusText
       statusTextSectionProps={{
@@ -110,31 +112,38 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                 </h4>
               </div>
               {items && <DescriptionList items={items} className="mb-6" />}
-              {isPolling && <PendingButton className="w-full" rounded="s" />}
-              {!isPolling &&
-                !actionData.motionData.isFinalized &&
-                isFinalizable && (
-                  <Button
-                    mode="primarySolid"
-                    disabled={!user || !isFinalizable}
-                    isFullSize
-                    text={formatText({ id: 'motion.finalizeStep.submit' })}
-                    type="submit"
-                  />
-                )}
-              {!isPolling &&
-                actionData.motionData.isFinalized &&
-                !isClaimed && (
-                  <Button
-                    mode="primarySolid"
-                    disabled={!user || !canClaimStakes}
-                    isFullSize
-                    text={formatText({
-                      id: buttonTextId,
-                    })}
-                    type="submit"
-                  />
-                )}
+              {canInteract && (
+                <>
+                  {isPolling && (
+                    <PendingButton className="w-full" rounded="s" />
+                  )}
+                  {!isPolling &&
+                    !actionData.motionData.isFinalized &&
+                    isFinalizable && (
+                      <Button
+                        mode="primarySolid"
+                        disabled={!isFinalizable}
+                        isFullSize
+                        text={formatText({ id: 'motion.finalizeStep.submit' })}
+                        type="submit"
+                      />
+                    )}
+                  {!isPolling &&
+                    actionData.motionData.isFinalized &&
+                    !isClaimed &&
+                    canClaimStakes && (
+                      <Button
+                        mode="primarySolid"
+                        disabled={!canClaimStakes}
+                        isFullSize
+                        text={formatText({
+                          id: buttonTextId,
+                        })}
+                        type="submit"
+                      />
+                    )}
+                </>
+              )}
             </ActionForm>
           ),
         },

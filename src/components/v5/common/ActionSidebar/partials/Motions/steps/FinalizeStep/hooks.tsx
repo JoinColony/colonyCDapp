@@ -144,7 +144,7 @@ export const useClaimConfig = (
   // Else, return full widget
   const buttonTextId = isClaimed ? 'button.claimed' : 'button.claim';
   const remainingStakesNumber = remainingStakes.length;
-  const canClaimStakes = !totals?.isZero() && !isClaimed;
+  const canClaimStakes = totals ? !totals.isZero() : false;
   const handleClaimSuccess = () => {
     setIsClaimed(true);
     startPollingAction(1000);
