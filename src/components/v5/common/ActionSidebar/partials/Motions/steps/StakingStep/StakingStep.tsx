@@ -3,14 +3,16 @@ import React, { FC, useState } from 'react';
 import useToggle from '~hooks/useToggle';
 
 import { SpinnerLoader } from '~shared/Preloaders';
-import { formatText } from '~utils/intl';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
 import CardWithStatusText from '~v5/shared/CardWithStatusText';
 import StatusText from '~v5/shared/StatusText';
 import UserInfoSectionList from '~v5/shared/UserInfoSectionList';
+
+import { useAppContext } from '~hooks';
+import { formatText } from '~utils/intl';
+
 import { useMotionContext } from '../../partials/MotionProvider/hooks';
 import { useStakingInformation, useStakingStep } from './hooks';
-
 import NotEnoughTokensInfo from './partials/NotEnoughTokensInfo';
 import StakingChart from './partials/StakingChart/StakingChart';
 import StakingForm from './partials/StakingForm';
@@ -20,6 +22,7 @@ const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.StakingStep';
 
 const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
+  const { wallet, user } = useAppContext();
   const { motionAction } = useMotionContext();
   const [isAccordionOpen, { toggle: toggleAccordion }] = useToggle();
   const [showMoreUsers, setShowMoreUsers] = useState(false);
@@ -32,6 +35,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
   const { motionData, colony, token } = motionAction;
   const { usersStakes, motionStakes, requiredStake } = motionData;
 
+  const canInteract = !!wallet && !!user;
   const { nativeToken } = colony;
   const { nativeTokenDecimals, nativeTokenSymbol } = nativeToken;
   const { decimals, symbol } = token || {};
@@ -93,7 +97,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
           status: 'info',
         }}
         sections={[
-          ...(!enoughReputationToStakeMinimum
+          ...(!enoughReputationToStakeMinimum && canInteract
             ? [
                 {
                   key: '1',
@@ -108,7 +112,9 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
                 },
               ]
             : []),
-          ...(!enoughTokensToStakeMinimum && enoughReputationToStakeMinimum
+          ...(!enoughTokensToStakeMinimum &&
+          enoughReputationToStakeMinimum &&
+          canInteract
             ? [
                 {
                   key: '1',
