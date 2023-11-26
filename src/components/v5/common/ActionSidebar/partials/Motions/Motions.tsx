@@ -104,185 +104,190 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const hasMotionFaild = motionStateEnum === MotionState.Failed;
 
   const motionStakedAndFinalizable =
-    motionState === NetworkMotionState.Finalizable &&
+    (motionState === NetworkMotionState.Finalizable ||
+      motionState === NetworkMotionState.Finalized) &&
     !motionStateHistory?.hasVoted;
 
   // @todo: add missing steps
-  const items = useMemo(
-    () =>
-      loadingAction
-        ? []
-        : [
-            {
-              key: NetworkMotionState.Staking,
-              content: (
-                <StakingStep
-                  isActive={activeStepKey === NetworkMotionState.Staking}
-                />
-              ),
-              heading: {
-                label: formatText({ id: 'motion.staking.label' }) || '',
-                decor:
-                  activeStepKey === NetworkMotionState.Staking &&
-                  motionStakes &&
-                  motionStateEnum ? (
-                    <MotionCountDownTimer
-                      motionState={motionStateEnum}
-                      motionId={motionId}
-                      motionStakes={motionStakes}
-                      refetchMotionState={refetchMotionState}
-                    />
-                  ) : undefined,
-              },
-            },
-            {
-              key: NetworkMotionState.Submit,
-              content: (
-                <VotingStep
-                  actionData={action as MotionAction}
-                  startPollingAction={startPollingForAction}
-                  stopPollingAction={stopPollingForAction}
-                  transactionId={transactionId}
-                />
-              ),
-              heading: {
-                label: formatText({ id: 'motion.voting.label' }) || '',
-                decor:
-                  motionStateEnum === MotionState.Voting && motionStakes ? (
-                    <MotionCountDownTimer
-                      motionState={motionStateEnum}
-                      motionId={motionId}
-                      motionStakes={motionStakes}
-                      refetchMotionState={refetchMotionState}
-                    />
-                  ) : undefined,
-              },
-              isOptional: !isFullyStaked,
-              isHidden: motionStakedAndFinalizable,
-            },
-            {
-              key: NetworkMotionState.Reveal,
-              content: (
-                <RevealStep
-                  motionData={motionData}
-                  startPollingAction={startPollingForAction}
-                  stopPollingAction={stopPollingForAction}
-                  transactionId={transactionId}
-                />
-              ),
-              heading: {
-                label: formatText({ id: 'motion.reveal.label' }) || '',
-                decor:
-                  motionStateEnum === MotionState.Reveal && motionStakes ? (
-                    <MotionCountDownTimer
-                      motionState={motionStateEnum}
-                      motionId={motionId}
-                      motionStakes={motionStakes}
-                      refetchMotionState={refetchMotionState}
-                    />
-                  ) : undefined,
-              },
-              isHidden: motionStakedAndFinalizable,
-              // @todo: chnage to false when visible
-              isOptional: true,
-            },
-            {
-              key: CustomStep.StakedMotionOutcome,
-              content: <div />,
-              heading: {
-                iconName:
-                  (motionStateHistory?.hasPassed && 'thumbs-up') ||
-                  (motionStateHistory?.hasFailed && 'thumbs-down') ||
-                  '',
-                label:
-                  (motionStateHistory?.hasPassed &&
-                    formatText({ id: 'motion.passed.label' })) ||
-                  (motionStateHistory?.hasFailed &&
-                    formatText({ id: 'motion.failed.label' })) ||
-                  formatText({ id: 'motion.outcome.label' }) ||
-                  '',
-                className: clsx({
-                  '!bg-base-white !text-purple-400 border-purple-400':
-                    motionStateHistory?.hasPassed,
-                  '!bg-base-white !text-red-400 border-red-400':
-                    motionStateHistory?.hasFailed,
-                }),
-              },
-              isSkipped: motionStakedAndFinalizable,
-              isHidden: !motionStakedAndFinalizable,
-            },
-            {
-              key: CustomStep.VotedMotionOutcome,
-              content: (
-                <OutcomeStep
-                  motionData={motionData}
-                  motionState={motionStateEnum}
-                />
-              ),
-              heading: {
-                iconName:
-                  (winningSide === MotionVote.Yay && 'thumbs-up') ||
-                  (hasMotionPassed && 'thumbs-up') ||
-                  (hasMotionFaild && 'thumbs-down') ||
-                  '',
-                label:
-                  (winningSide === MotionVote.Yay &&
-                    votesHaveBeenRevealed &&
-                    formatText({ id: 'motion.support.wins.label' })) ||
-                  (winningSide === MotionVote.Nay &&
-                    votesHaveBeenRevealed &&
-                    formatText({ id: 'motion.oppose.wins.label' })) ||
-                  formatText({ id: 'motion.outcome.label' }) ||
-                  '',
-                className: clsx({
-                  '!bg-base-white !text-purple-400 border-purple-400':
-                    hasMotionPassed ||
-                    (winningSide === MotionVote.Yay && votesHaveBeenRevealed),
-                  '!bg-base-white !text-red-400 border-red-400':
-                    (hasMotionFaild && !votesHaveBeenRevealed) ||
-                    winningSide === MotionVote.Nay,
-                }),
-              },
-              isOptional: true,
-              isHidden: motionStakedAndFinalizable,
-            },
-            {
-              key: NetworkMotionState.Finalizable,
-              content: (
-                <FinalizeStep
-                  actionData={action as MotionAction}
-                  startPollingAction={startPollingForAction}
-                  stopPollingAction={stopPollingForAction}
-                  refetchAction={refetchAction}
-                />
-              ),
-              heading: {
-                label: formatText({ id: 'motion.finalize.label' }) || '',
-              },
-            },
-          ],
-    [
-      loadingAction,
-      activeStepKey,
-      motionStakes,
-      motionStateEnum,
-      motionId,
-      refetchMotionState,
-      action,
-      startPollingForAction,
-      stopPollingForAction,
-      transactionId,
-      isFullyStaked,
-      motionStakedAndFinalizable,
-      motionData,
-      motionStateHistory,
-      hasMotionPassed,
-      winningSide,
-      votesHaveBeenRevealed,
-      hasMotionFaild,
-      refetchAction,
-    ],
-  );
+  const items = useMemo(() => {
+    if (loadingAction) {
+      return [];
+    }
+    const itemsEntries = [
+      {
+        key: NetworkMotionState.Staking,
+        content: (
+          <StakingStep
+            isActive={activeStepKey === NetworkMotionState.Staking}
+          />
+        ),
+        heading: {
+          label: formatText({ id: 'motion.staking.label' }) || '',
+          decor:
+            activeStepKey === NetworkMotionState.Staking &&
+            motionStakes &&
+            motionStateEnum ? (
+              <MotionCountDownTimer
+                motionState={motionStateEnum}
+                motionId={motionId}
+                motionStakes={motionStakes}
+                refetchMotionState={refetchMotionState}
+              />
+            ) : undefined,
+        },
+      },
+      {
+        key: NetworkMotionState.Submit,
+        content: (
+          <VotingStep
+            actionData={action as MotionAction}
+            startPollingAction={startPollingForAction}
+            stopPollingAction={stopPollingForAction}
+            transactionId={transactionId}
+          />
+        ),
+        heading: {
+          label: formatText({ id: 'motion.voting.label' }) || '',
+          decor:
+            motionStateEnum === MotionState.Voting && motionStakes ? (
+              <MotionCountDownTimer
+                motionState={motionStateEnum}
+                motionId={motionId}
+                motionStakes={motionStakes}
+                refetchMotionState={refetchMotionState}
+              />
+            ) : undefined,
+        },
+        isOptional: !isFullyStaked,
+        isHidden: motionStakedAndFinalizable,
+      },
+      {
+        key: NetworkMotionState.Reveal,
+        content: (
+          <RevealStep
+            motionData={motionData}
+            startPollingAction={startPollingForAction}
+            stopPollingAction={stopPollingForAction}
+            transactionId={transactionId}
+          />
+        ),
+        heading: {
+          label: formatText({ id: 'motion.reveal.label' }) || '',
+          decor:
+            motionStateEnum === MotionState.Reveal && motionStakes ? (
+              <MotionCountDownTimer
+                motionState={motionStateEnum}
+                motionId={motionId}
+                motionStakes={motionStakes}
+                refetchMotionState={refetchMotionState}
+              />
+            ) : undefined,
+        },
+        isHidden: motionStakedAndFinalizable,
+        // @todo: chnage to false when visible
+        isOptional: true,
+      },
+      {
+        key: CustomStep.StakedMotionOutcome,
+        content: <div />,
+        heading: {
+          iconName:
+            (motionStateHistory?.hasPassed && 'thumbs-up') ||
+            (motionStateHistory?.hasFailed && 'thumbs-down') ||
+            '',
+          label:
+            (motionStateHistory?.hasPassed &&
+              formatText({ id: 'motion.passed.label' })) ||
+            (motionStateHistory?.hasFailed &&
+              formatText({ id: 'motion.failed.label' })) ||
+            formatText({ id: 'motion.outcome.label' }) ||
+            '',
+          className: clsx({
+            '!bg-base-white !text-purple-400 border-purple-400':
+              motionStateHistory?.hasPassed,
+            '!bg-base-white !text-red-400 border-red-400':
+              motionStateHistory?.hasFailed,
+          }),
+        },
+        isSkipped: motionStakedAndFinalizable,
+        isHidden: !motionStakedAndFinalizable,
+      },
+      {
+        key: CustomStep.VotedMotionOutcome,
+        content: (
+          <OutcomeStep motionData={motionData} motionState={motionStateEnum} />
+        ),
+        heading: {
+          iconName:
+            (winningSide === MotionVote.Yay && 'thumbs-up') ||
+            (hasMotionPassed && 'thumbs-up') ||
+            (hasMotionFaild && 'thumbs-down') ||
+            '',
+          label:
+            (winningSide === MotionVote.Yay &&
+              votesHaveBeenRevealed &&
+              formatText({ id: 'motion.support.wins.label' })) ||
+            (winningSide === MotionVote.Nay &&
+              votesHaveBeenRevealed &&
+              formatText({ id: 'motion.oppose.wins.label' })) ||
+            formatText({ id: 'motion.outcome.label' }) ||
+            '',
+          className: clsx({
+            '!bg-base-white !text-purple-400 border-purple-400':
+              hasMotionPassed ||
+              (winningSide === MotionVote.Yay && votesHaveBeenRevealed),
+            '!bg-base-white !text-red-400 border-red-400':
+              (hasMotionFaild && !votesHaveBeenRevealed) ||
+              winningSide === MotionVote.Nay,
+          }),
+        },
+        isOptional: true,
+        isHidden: motionStakedAndFinalizable,
+      },
+    ];
+    if (
+      networkMotionStateEnum === NetworkMotionState.Finalizable ||
+      networkMotionStateEnum === NetworkMotionState.Finalized
+    ) {
+      itemsEntries.push({
+        key: networkMotionStateEnum,
+        content: (
+          <FinalizeStep
+            actionData={action as MotionAction}
+            startPollingAction={startPollingForAction}
+            stopPollingAction={stopPollingForAction}
+            refetchAction={refetchAction}
+          />
+        ),
+        heading: {
+          label: formatText({ id: 'motion.finalize.label' }) || '',
+          decor: undefined,
+        },
+      });
+    }
+    return itemsEntries;
+  }, [
+    loadingAction,
+    activeStepKey,
+    motionStakes,
+    motionStateEnum,
+    motionId,
+    refetchMotionState,
+    action,
+    startPollingForAction,
+    stopPollingForAction,
+    transactionId,
+    isFullyStaked,
+    motionStakedAndFinalizable,
+    motionData,
+    motionStateHistory,
+    winningSide,
+    hasMotionPassed,
+    hasMotionFaild,
+    votesHaveBeenRevealed,
+    networkMotionStateEnum,
+    refetchAction,
+  ]);
 
   return loadingAction ? (
     <SpinnerLoader appearance={{ size: 'medium' }} />
