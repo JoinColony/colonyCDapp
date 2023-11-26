@@ -6,12 +6,13 @@ import {
   COLONY_DOCS,
   COLONY_GITHUB,
   COLONY_TWITTER,
-  FEATURE_REQUEST,
+  FEATURES_BUGS,
+  WHATS_NEW,
   PRIVACY_POLICY,
-  REPORT_BUGS,
   TERMS_AND_CONDITIONS,
 } from '~constants';
 import { UserSubmenuItems } from './types';
+import { useFeaturesBugs, useWhatsNew } from '~hooks/useBeamer';
 
 export const menuMessages = defineMessages({
   getHelp: {
@@ -52,34 +53,6 @@ export const menuMessages = defineMessages({
   },
 });
 
-const handleWhatsNewClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-  // Ignored undefined third party script, this should be implemented better in future
-  // @ts-ignore
-  // eslint-disable-next-line no-undef
-  if (Beamer) {
-    event.preventDefault();
-    // Ignored undefined third party script, this should be implemented better in future
-    // @ts-ignore
-    // eslint-disable-next-line no-undef
-    window.Beamer.show();
-  }
-};
-
-const handleFeaturesBugsClick = (
-  event: React.MouseEvent<HTMLAnchorElement>,
-) => {
-  // Ignored undefined third party script, this should be implemented better in future
-  // @ts-ignore
-  // eslint-disable-next-line no-undef
-  if (Beamer) {
-    event.preventDefault();
-    // Ignored undefined third party script, this should be implemented better in future
-    // @ts-ignore
-    // eslint-disable-next-line no-undef
-    Beamer.showIdeas(true);
-  }
-};
-
 export const userSubmenuItems: UserSubmenuItems = {
   'userMenu.contactAndSupportTitle': [
     {
@@ -92,19 +65,19 @@ export const userSubmenuItems: UserSubmenuItems = {
     {
       id: 'featureRequest',
       label: menuMessages.whatsNew,
-      url: FEATURE_REQUEST,
+      url: WHATS_NEW,
       icon: 'star',
-      onClick: handleWhatsNewClick,
+      onClick: useWhatsNew,
       external: true,
       className: 'beamerTrigger',
     },
     {
       id: 'reportBugs',
       label: menuMessages.featureBugs,
-      url: REPORT_BUGS,
+      url: FEATURES_BUGS,
       icon: 'bug',
-      onClick: handleFeaturesBugsClick,
-      // external: true,
+      onClick: useFeaturesBugs,
+      external: true,
     },
     {
       id: 'discord',

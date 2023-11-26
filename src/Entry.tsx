@@ -13,6 +13,8 @@ import eventsMessages from './i18n/en-events';
 import systemMessages from './i18n/en-system-messages';
 import motionStatesMessages from './i18n/en-motion-states';
 import Routes from './routes';
+import RouteTracker from '~routes/RouteTracker';
+
 // @ts-ignore
 if (!Intl.RelativeTimeFormat) {
   /* eslint-disable global-require */
@@ -44,6 +46,7 @@ const Entry = ({ store }: Props) => {
         <ReduxProvider store={store}>
           <AnalyticsContextProvider>
             <Router>
+              <RouteTracker />
               <Routes />
             </Router>
           </AnalyticsContextProvider>

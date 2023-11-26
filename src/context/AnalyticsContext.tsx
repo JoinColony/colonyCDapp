@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useMemo,
 } from 'react';
+import { useBeamer } from '~hooks/useBeamer';
 
 // Define the shape of the analytics context
 interface AnalyticsEvent {
@@ -32,6 +33,7 @@ export const AnalyticsContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
   const gtmId = process.env.GOOGLE_TAG_MANAGER_ID; // GTM ID from environment variable
+  useBeamer();
 
   useEffect(() => {
     // Inject GTM script only if gtmId is available
