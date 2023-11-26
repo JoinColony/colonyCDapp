@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 
 import Heading from '~shared/Heading';
-import CreateAColonyBanner from '~images/create-colony-banner.png';
-import CreateAProfileBanner from '~images/create-profile-banner.png';
+import CreateAColonyBanner from '~images/assets/landing/create-colony-banner.png';
+import CreateAProfileBanner from '~images/assets/landing/create-profile-banner.png';
 import { useAppContext } from '~hooks';
 import InvitationBlock from '~common/InvitationBlock';
 
@@ -117,11 +117,11 @@ const LandingPage = () => {
       onClick: !wallet
         ? () => connectWallet()
         : () =>
-            navigate(
-              user
-                ? `${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`
-                : `${CREATE_PROFILE_ROUTE}`,
-            ),
+          navigate(
+            user
+              ? `${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`
+              : `${CREATE_PROFILE_ROUTE}`,
+          ),
       imgSrc: CreateAProfileBanner,
       disabled: userLoading,
     },
