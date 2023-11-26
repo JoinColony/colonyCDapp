@@ -16,6 +16,7 @@ import {
   UseToggleReturnType,
 } from '~hooks/useToggle/types';
 import { getPortalContainer } from '~v5/shared/Portal/utils';
+import { useAnalyticsContext } from './AnalyticsContext';
 
 type ActionSidebarToggle = [
   boolean,
@@ -56,6 +57,7 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
       registerContainerRef: actionSidebarRegisterContainerRef,
     },
   ] = useToggle();
+  const { trackEvent } = useAnalyticsContext();
 
   actionSidebarUseRegisterOnBeforeCloseCallback((element) => {
     const reactModalPortals = Array.from(
@@ -82,10 +84,16 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
   const toggleOn = useCallback(
     (initialValues) => {
       setActionSidebarInitialValues(initialValues);
-
+      // Track the event when the action panel is opened
+      trackEvent({
+        event: 'custom_event',
+        category: 'Actions',
+        action: 'Click',
+        label: 'Open Action panel',
+      });
       return toggleActionSidebarOn();
     },
-    [toggleActionSidebarOn],
+    [toggleActionSidebarOn, trackEvent],
   );
 
   const toggleOff = useCallback(() => {
