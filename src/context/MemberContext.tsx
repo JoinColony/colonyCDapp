@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useMemo,
 } from 'react';
-import { useParams } from 'react-router-dom';
+import { useMatch, useParams } from 'react-router-dom';
 import { Id } from '@colony/colony-js';
 
 import { FilterContextProvider, useFilterContext } from './FilterContext';
@@ -48,12 +48,11 @@ const MemberContext = createContext<
 >(undefined);
 
 const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
-  const { domainId, '*': colonyPathname } = useParams();
+  const { domainId, colonyName } = useParams();
   const { colony } = useColonyContext();
   const { domains, colonyAddress = '' } = colony ?? {};
   const isMobile = useMobile();
-
-  const isVerifiedPage = colonyPathname === COLONY_VERIFIED_ROUTE;
+  const isVerifiedPage = useMatch(`${colonyName}/${COLONY_VERIFIED_ROUTE}`);
 
   const pageSize = useMemo(() => {
     let itemsToShow = HOMEPAGE_MEMBERS_LIST_LIMIT;
