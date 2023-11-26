@@ -1,7 +1,7 @@
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
+import { Star, Trash } from 'phosphor-react';
 import { formatText } from '~utils/intl';
-import Icon from '~shared/Icon';
 import { ColonyContributorFragment } from '~gql';
 import MemberAvatar from '../MemberAvatar';
 import Checkbox from '~v5/common/Checkbox';
@@ -70,9 +70,9 @@ export const useVerifiedTableColumns = (): ColumnDef<
         id: 'reputation',
         header: () => formatText({ id: 'verifiedPage.table.reputation' }),
         cell: ({ row }) => (
-          <div className="hidden sm:flex items-center justify-end w-full">
-            <Icon name="star" appearance={{ size: 'small' }} />
-            <span className="ml-1 text-sm text-gray-600">
+          <div className="hidden sm:flex items-center justify-end w-full text-gray-600">
+            <Star size={18} />
+            <span className="ml-1 text-sm">
               {Number.isInteger(row.original.colonyReputationPercentage)
                 ? row.original.colonyReputationPercentage
                 : row.original.colonyReputationPercentage.toFixed(2)}
@@ -100,7 +100,7 @@ export const useVerifiedTableColumns = (): ColumnDef<
               aria-label={formatText({ id: 'ariaLabel.deleteMember' })}
               onClick={onDeleteClick}
             >
-              <Icon name="trash" appearance={{ size: 'small' }} />
+              <Trash size={18} />
             </button>
           </div>
         ),
