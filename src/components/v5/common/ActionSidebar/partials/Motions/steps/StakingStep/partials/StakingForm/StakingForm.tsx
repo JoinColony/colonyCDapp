@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import moveDecimal from 'move-decimal-point';
 
+import { useAppContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import { ActionForm } from '~shared/Fields';
 import Numeral from '~shared/Numeral';
@@ -27,7 +28,9 @@ const StakingForm: FC<StakingFormProps> = ({
   userActivatedTokens,
   disableForm,
 }) => {
+  const { wallet, user } = useAppContext();
   const { motionAction } = useMotionContext();
+  const canInteract = !!wallet && !!user;
 
   const thresholdPercentValue = 10;
 
@@ -98,11 +101,13 @@ const StakingForm: FC<StakingFormProps> = ({
               }}
             />
             <div>
-              <FormButtonRadioButtons
-                name="voteType"
-                items={STAKING_RADIO_BUTTONS}
-                disabled={disableForm}
-              />
+              {canInteract && (
+                <FormButtonRadioButtons
+                  name="voteType"
+                  items={STAKING_RADIO_BUTTONS}
+                  disabled={disableForm}
+                />
+              )}
             </div>
             <AnimatePresence>
               {voteTypeValue !== undefined && (
