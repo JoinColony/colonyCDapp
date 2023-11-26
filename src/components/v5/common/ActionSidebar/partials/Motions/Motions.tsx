@@ -3,13 +3,16 @@ import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
 
-import { getMotionState, MotionState, MotionVote } from '~utils/colonyMotions';
-import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
-import { formatText } from '~utils/intl';
-import { MotionAction } from '~types/motions';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction';
 import Stepper from '~v5/shared/Stepper';
+import { StepperItem } from '~v5/shared/Stepper/types';
+
+import { getMotionState, MotionState, MotionVote } from '~utils/colonyMotions';
+import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
+import { formatText } from '~utils/intl';
+import { useAppContext } from '~hooks';
+import { MotionAction } from '~types/motions';
 
 import MotionCountDownTimer from './partials/MotionCountDownTimer';
 import MotionProvider from './partials/MotionProvider/MotionProvider';
@@ -23,6 +26,8 @@ import { MotionsProps, Steps, CustomStep } from './types';
 const displayName = 'v5.common.ActionSidebar.partials.Motions';
 
 const Motions: FC<MotionsProps> = ({ transactionId }) => {
+  const { wallet, user } = useAppContext();
+  const canInteract = !!wallet && !!user;
   const {
     action,
     motionState,
@@ -108,12 +113,11 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
       motionState === NetworkMotionState.Finalized) &&
     !motionStateHistory?.hasVoted;
 
-  // @todo: add missing steps
   const items = useMemo(() => {
     if (loadingAction) {
       return [];
     }
-    const itemsEntries = [
+    const itemsEntries: StepperItem<Steps>[] = [
       {
         key: NetworkMotionState.Staking,
         content: (
@@ -184,8 +188,6 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
             ) : undefined,
         },
         isHidden: motionStakedAndFinalizable,
-        // @todo: chnage to false when visible
-        isOptional: true,
       },
       {
         key: CustomStep.StakedMotionOutcome,
@@ -263,6 +265,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
           label: formatText({ id: 'motion.finalize.label' }) || '',
           decor: undefined,
         },
+        isSkipped: !canInteract,
       });
     }
     return itemsEntries;
@@ -287,6 +290,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     votesHaveBeenRevealed,
     networkMotionStateEnum,
     refetchAction,
+    canInteract,
   ]);
 
   return loadingAction ? (

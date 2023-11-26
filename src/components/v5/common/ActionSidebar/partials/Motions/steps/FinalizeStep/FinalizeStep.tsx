@@ -21,7 +21,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   stopPollingAction,
   refetchAction,
 }) => {
-  const { user } = useAppContext();
+  const { wallet, user } = useAppContext();
   const [isPolling, setIsPolling] = useState(false);
   const { refetchColony } = useColonyContext();
   const { isFinalizable, transform: finalizePayload } =
@@ -70,6 +70,8 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     };
   }
 
+  const canInteract = !!wallet && !!user;
+
   return (
     <MenuWithStatusText
       statusTextSectionProps={{
@@ -110,16 +112,33 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                 </h4>
               </div>
               {items && <DescriptionList items={items} className="mb-6" />}
-              {isPolling && <TxButton
-                  className="w-full"
-                  rounded="s"
-                  text={{ id: 'button.pending' }}
-                  icon={
-                    <span className="flex shrink-0 ml-1.5">
-                      <Icon
-                        name="spinner-gap"
-                        className="animate-spin"
-                        appearance={{ size: 'tiny' }}
+              {canInteract && (
+                <>
+                  {isPolling && (
+                    <TxButton
+                          className="w-full"
+                          rounded="s"
+                          text={{ id: 'button.pending' }}
+                          icon={
+                            <span className="flex shrink-0 ml-1.5">
+                              <Icon
+                                name="spinner-gap"
+                                className="animate-spin"
+                                appearance={{ size: 'tiny' }}
+                              />
+                            </span>
+                          }
+                        />
+                  )}
+                  {!isPolling &&
+                    !actionData.motionData.isFinalized &&
+                    isFinalizable && (
+                      <Button
+                        mode="primarySolid"
+                        disabled={!isFinalizable}
+                        isFullSize
+                        text={formatText({ id: 'motion.finalizeStep.submit' })}
+                        type="submit"
                       />
                     </span>
                   }
