@@ -36,7 +36,7 @@ export interface PillsProps {
   iconSize?: IconSize;
   pillSize?: PillSize;
   className?: string;
-  teamName?: string;
+  textClassName?: string;
   isIconVisible?: boolean;
 }
 

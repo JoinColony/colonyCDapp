@@ -56,7 +56,7 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
         getSortedRowModel={getSortedRowModel()}
         verticalOnMobile={false}
         columns={columns}
-        className="border-0 rounded-none -mx-[1.125rem] px-[1.125rem] w-[calc(100%+2.25rem)] [&_td]:px-[1.125rem] [&_th]:border-y border-gray-200 [&_td]:py-4"
+        className="border-0 rounded-none -mx-[1.125rem] px-[1.125rem] !w-[calc(100%+2.25rem)] [&_td]:px-[1.125rem] [&_th]:border-y border-gray-200 [&_td]:py-4"
       />
     </AccordionItem>
   ) : null;

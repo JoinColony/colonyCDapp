@@ -1,9 +1,10 @@
+import React from 'react';
+import { TimerValueProps } from '~shared/TimerValue/TimerValue';
+
 export interface CountDownTimerProps {
-  countdown: {
-    days: number;
-    hours: number;
-    minutes: number;
-    seconds: number;
-  };
+  countdown: Exclude<TimerValueProps['splitTime'], undefined>;
   isLoading: boolean;
+  className?: string;
+  timerClassName?: string;
+  prefix?: React.ReactNode;
 }

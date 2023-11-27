@@ -3,17 +3,15 @@ import React from 'react';
 import { getActionTitleValues } from '~common/ColonyActions/helpers';
 import { Heading3 } from '~shared/Heading';
 import { Colony, ColonyAction } from '~types';
+import { DecisionContent } from '~common/ColonyDecisions/DecisionPreview/DecisionData';
+import TimeRelative from '~shared/TimeRelative/TimeRelative';
+import { useNetworkInverseFee } from '~hooks';
 
 import {
   ActionDetailsPageFeed,
   MotionDetailsPageFeed,
 } from '../ActionDetailsPageFeed';
-
-import { DecisionContent } from '~common/ColonyDecisions/DecisionPreview/DecisionData';
-import TimeRelative from '~shared/TimeRelative/TimeRelative';
-
 import ActionAnnotation from './ActionAnnotation';
-
 import styles from './DefaultActionContent.css';
 
 const displayName =
@@ -29,6 +27,7 @@ const DefaultActionContent = ({
   actionData,
   colony,
 }: DefaultActionContentProps) => {
+  const { networkInverseFee } = useNetworkInverseFee();
   const { objectionAnnotation } = motionData ?? {};
 
   if (decisionData) {
@@ -65,7 +64,7 @@ const DefaultActionContent = ({
         className={styles.heading}
         data-test="actionHeading"
         text={{ id: 'action.title' }}
-        textValues={getActionTitleValues(actionData, colony)}
+        textValues={getActionTitleValues(actionData, colony, networkInverseFee)}
       />
       <div className={styles.annotations}>
         {annotation && <ActionAnnotation annotation={annotation} />}

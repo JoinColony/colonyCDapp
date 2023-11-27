@@ -1,9 +1,10 @@
 import { ApolloClient } from '@apollo/client';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
+import { DeepPartial } from 'utility-types';
+import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
 import { Action } from '~constants/actions';
-import { ColonyFragment } from '~gql';
 import { ActionFormProps } from '~shared/Fields/Form/ActionForm';
-import { User } from '~types';
+import { AnyMessageValues, Colony, ColonyAction } from '~types';
 
 export interface ActionButtonsProps {
   isActionDisabled?: boolean;
@@ -38,10 +39,16 @@ export type DescriptionMetadataGetter<TValues = FieldValues> = (
   formData: TValues,
   meta: {
     client: ApolloClient<object>;
-    currentUser: User | null | undefined;
-    colony: ColonyFragment | undefined;
+    colony: Colony;
+    getActionTitleValues: (
+      actionData: DeepPartial<Omit<ColonyAction, 'type'>> &
+        Pick<ColonyAction, 'type'>,
+      keyFallbackValues?: Partial<
+        Record<ActionTitleMessageKeys, React.ReactNode>
+      >,
+    ) => AnyMessageValues;
   },
-) => Promise<React.ReactNode>;
+) => Promise<AnyMessageValues>;
 
 export interface ActionTypeSelectProps {
   className?: string;

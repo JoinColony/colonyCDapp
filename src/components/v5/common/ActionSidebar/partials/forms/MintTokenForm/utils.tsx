@@ -1,83 +1,35 @@
-import React from 'react';
-import { ApolloClient } from '@apollo/client';
-import first from 'lodash/first';
+import moveDecimal from 'move-decimal-point';
 import { DeepPartial } from 'utility-types';
-import {
-  GetTokenByAddressDocument,
-  GetTokenByAddressQuery,
-  GetTokenByAddressQueryVariables,
-} from '~gql';
+import { ColonyActionType } from '~gql';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
 import { MintTokenFormValues } from './consts';
-import Numeral from '~shared/Numeral';
-import UserPopover from '~v5/shared/UserPopover';
-
-const getAmountText = async (
-  amount: number | undefined,
-  tokenId: string | undefined,
-  client: ApolloClient<object>,
-): Promise<React.ReactNode> => {
-  try {
-    if (!amount || !tokenId) {
-      return 'native';
-    }
-
-    const { data } = await client.query<
-      GetTokenByAddressQuery,
-      GetTokenByAddressQueryVariables
-    >({
-      query: GetTokenByAddressDocument,
-      variables: { address: tokenId },
-    });
-
-    const tokenSymbol = first(data?.getTokenByAddress?.items)?.symbol;
-
-    if (!tokenSymbol) {
-      return (
-        <>
-          <Numeral value={amount} /> native tokens
-        </>
-      );
-    }
-
-    return (
-      <>
-        <Numeral value={amount} /> {tokenSymbol}
-      </>
-    );
-  } catch {
-    return 'native';
-  }
-};
+import { DECISION_METHOD } from '~v5/common/ActionSidebar/hooks';
+import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { formatText } from '~utils/intl';
 
 export const mintTokenDescriptionMetadataGetter: DescriptionMetadataGetter<
   DeepPartial<MintTokenFormValues>
-> = async ({ amount }, { client, currentUser, colony }) => {
-  return (
-    <>
-      Mint{' '}
-      {await getAmountText(
-        amount?.amount,
-        colony?.nativeToken.tokenAddress,
-        client,
-      )}{' '}
-      tokens
-      {currentUser?.profile?.displayName && (
-        <>
-          {' '}
-          by{' '}
-          <UserPopover
-            userName={currentUser?.profile?.displayName}
-            walletAddress={currentUser.walletAddress}
-            aboutDescription={currentUser.profile?.bio || ''}
-            user={currentUser}
-          >
-            <span className="text-gray-900">
-              {currentUser.profile.displayName}
-            </span>
-          </UserPopover>
-        </>
-      )}
-    </>
+> = async ({ amount, decisionMethod }, { getActionTitleValues, colony }) => {
+  return getActionTitleValues(
+    {
+      token: amount?.amount ? colony?.nativeToken : undefined,
+      type:
+        decisionMethod === DECISION_METHOD.Permissions
+          ? ColonyActionType.MintTokens
+          : ColonyActionType.MintTokensMotion,
+      amount: amount?.amount
+        ? moveDecimal(
+            amount.amount.toString(),
+            getTokenDecimalsWithFallback(colony?.nativeToken?.decimals),
+          )
+        : undefined,
+    },
+    {
+      [ActionTitleMessageKeys.Amount]: '',
+      [ActionTitleMessageKeys.TokenSymbol]: formatText({
+        id: 'actionSidebar.metadataDescription.nativeTokens',
+      }),
+    },
   );
 };

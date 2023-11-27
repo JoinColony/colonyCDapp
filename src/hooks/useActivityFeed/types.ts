@@ -1,3 +1,4 @@
+import { SearchActionsQueryVariables } from '~gql';
 import {
   ColonyAction,
   ColonyActionType,
@@ -18,16 +19,27 @@ export interface ActivityFeedFilters {
   decisionMethod?: ActivityDecisionMethod;
 }
 
+export type ActivityFeedSort = SearchActionsQueryVariables['sort'];
+
+export interface ActivityFeedOptions {
+  pageSize?: number;
+}
+
+export interface ActivityFeedColonyAction extends ColonyAction {
+  motionState?: MotionState;
+}
+
 export interface UseActivityFeedReturn {
-  actions: ColonyAction[];
+  actions: ActivityFeedColonyAction[];
   loadingFirstPage: boolean;
   loadingNextPage: boolean;
-  sortDirection: SearchableSortDirection;
-  changeSortDirection: SortDirectionChangeHandler;
+  loadingMotionStates: boolean;
   hasNextPage: boolean;
   goToNextPage: () => void;
   goToPreviousPage: () => void;
   pageNumber: number;
+  hasPrevPage: boolean;
+  refetchMotionStates: VoidFunction;
 }
 
 export type SortDirectionChangeHandler = (

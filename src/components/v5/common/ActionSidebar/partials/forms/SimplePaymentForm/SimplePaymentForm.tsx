@@ -7,7 +7,6 @@ import AmountField from '~v5/common/ActionSidebar/partials/AmountField';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import { formatText } from '~utils/intl';
 
-import TransactionTable from '../../TransactionTable';
 import { useSimplePayment } from './hooks';
 import { ActionFormBaseProps } from '../../../types';
 import { useDecisionMethods } from '../../../hooks';
@@ -18,7 +17,7 @@ const displayName = 'v5.common.ActionSidebar.partials.SimplePaymentForm';
 const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const { decisionMethods } = useDecisionMethods();
 
-  const { tokenAddress } = useSimplePayment(getFormOptions);
+  useSimplePayment(getFormOptions);
 
   return (
     <>
@@ -100,7 +99,8 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="createdIn" />
       </ActionFormRow>
       <DescriptionRow />
-      <TransactionTable name="payments" tokenAddress={tokenAddress} />
+      {/* Disabled for now */}
+      {/* <TransactionTable name="payments" tokenAddress={tokenAddress} /> */}
     </>
   );
 };

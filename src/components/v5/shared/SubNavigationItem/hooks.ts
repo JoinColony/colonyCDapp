@@ -19,7 +19,7 @@ export const useMembersSubNavigation = () => {
     });
 
   return {
-    handleClick: handleClipboardCopy,
+    handleClick: () => handleClipboardCopy(),
     isCopyTriggered: isCopied,
     getTooltipProps,
     setTooltipRef,

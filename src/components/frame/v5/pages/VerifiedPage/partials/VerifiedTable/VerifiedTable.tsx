@@ -14,6 +14,7 @@ import { useVerifiedTableColumns } from './hooks';
 import { useMobile } from '~hooks';
 import { formatText } from '~utils/intl';
 import TableWithActionsHeader from '~v5/common/TableWithActionsHeader';
+import { ColonyContributorFragment } from '~gql';
 
 const displayName = 'v5.pages.VerifiedPage.partials.VerifiedTable';
 
@@ -30,36 +31,13 @@ const VerifiedTable: FC<TableProps> = ({ list }) => {
   const [rowSelection, setRowSelection] = useState({});
 
   return (
-    <TableWithActionsHeader
-      className="w-full"
+    <TableWithActionsHeader<ColonyContributorFragment>
       title={formatText({ id: 'verifiedPage.membersTitle' })}
       additionalHeaderContent={
         <span className="text-md text-blue-400">
           {listLength} {formatMessage({ id: 'verifiedPage.members' })}
         </span>
       }
-      verticalOnMobile={false}
-      hasPagination
-      getRowId={({ contributorAddress }) => contributorAddress}
-      columns={columns}
-      data={list}
-      state={{
-        sorting,
-        rowSelection,
-        columnVisibility: {
-          colonyReputationPercentage: !isMobile,
-          status: !isMobile,
-        },
-      }}
-      initialState={{
-        pagination: {
-          pageSize: 10,
-        },
-      }}
-      onSortingChange={setSorting}
-      onRowSelectionChange={setRowSelection}
-      getSortedRowModel={getSortedRowModel()}
-      getPaginationRowModel={getPaginationRowModel()}
       emptyContent={
         !listLength && (
           <div className="border border-1 w-full rounded-b-lg border-gray-200">
@@ -74,6 +52,31 @@ const VerifiedTable: FC<TableProps> = ({ list }) => {
           </div>
         )
       }
+      tableProps={{
+        className: 'w-full',
+        verticalOnMobile: false,
+        hasPagination: true,
+        getRowId: ({ contributorAddress }) => contributorAddress,
+        columns,
+        data: list,
+        state: {
+          sorting,
+          rowSelection,
+          columnVisibility: {
+            colonyReputationPercentage: !isMobile,
+            status: !isMobile,
+          },
+        },
+        initialState: {
+          pagination: {
+            pageSize: 10,
+          },
+        },
+        onSortingChange: setSorting,
+        onRowSelectionChange: setRowSelection,
+        getSortedRowModel: getSortedRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+      }}
     >
       <>
         {!!Object.keys(rowSelection).length && (

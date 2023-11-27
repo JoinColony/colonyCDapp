@@ -10,6 +10,7 @@ import { useMobile } from '~hooks';
 import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button';
+import { getDefaultRenderCellWrapper } from './utils';
 
 const displayName = 'v5.common.Table';
 
@@ -20,6 +21,14 @@ const Table = <T,>({
   verticalOnMobile = true,
   hasPagination = false,
   sizeUnit = 'px',
+  canNextPage,
+  canPreviousPage,
+  previousPage,
+  nextPage,
+  showPageNumber = true,
+  showTotalPagesNumber = true,
+  paginationDisabled,
+  renderCellWrapper = getDefaultRenderCellWrapper<T>(),
   ...rest
 }: TableProps<T>) => {
   const isMobile = useMobile();
@@ -35,6 +44,14 @@ const Table = <T,>({
       .map((column) => column.column.columnDef)
       .some((columnDef) => columnDef.footer),
   )[0];
+  const goToNextPage = nextPage || table.nextPage;
+  const goToPreviousPage = previousPage || table.previousPage;
+  const canGoToNextPage =
+    canNextPage === undefined ? table.getCanNextPage() : canNextPage;
+  const canGoToPreviousPage =
+    canPreviousPage === undefined
+      ? table.getCanPreviousPage()
+      : canPreviousPage;
 
   return (
     <div
@@ -54,6 +71,8 @@ const Table = <T,>({
             w-full
           `,
         )}
+        cellPadding="0"
+        cellSpacing="0"
       >
         {isMobile && verticalOnMobile ? (
           rows.map((row) => {
@@ -124,9 +143,10 @@ const Table = <T,>({
                       onClick={header.column.getToggleSortingHandler()}
                       style={{
                         width:
-                          header.getSize() !== 150
+                          header.column.columnDef.staticSize ||
+                          (header.getSize() !== 150
                             ? `${header.column.getSize()}${sizeUnit}`
-                            : undefined,
+                            : undefined),
                       }}
                     >
                       {header.isPlaceholder
@@ -140,12 +160,14 @@ const Table = <T,>({
                           name="arrow-down"
                           appearance={{ size: 'extraTiny' }}
                           className={clsx(
-                            'ml-1.5 !w-[0.55rem] !h-[0.55rem] mb-0.5 transition-transform align-middle',
+                            'ml-1.5 mb-0.5 transition-[transform,opacity] align-middle',
                             {
                               'rotate-180':
                                 header.column.getIsSorted() === 'asc',
                               'rotate-0':
                                 header.column.getIsSorted() === 'desc',
+                              'opacity-0':
+                                header.column.getIsSorted() === false,
                             },
                           )}
                         />
@@ -164,17 +186,26 @@ const Table = <T,>({
                     '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100',
                   )}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <td
-                      key={cell?.id}
-                      className="text-md text-gray-500 p-[1.1rem]"
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </td>
-                  ))}
+                  {row.getVisibleCells().map((cell) => {
+                    const renderCellWrapperCommonArgs = [
+                      'text-md text-gray-500 p-[1.1rem] flex h-full flex-col justify-center items-start',
+                      flexRender(cell.column.columnDef.cell, cell.getContext()),
+                    ] as const;
+
+                    return (
+                      <td key={cell?.id} className="h-[1px]">
+                        {renderCellWrapper(...renderCellWrapperCommonArgs, {
+                          cell,
+                          row,
+                          renderDefault: () =>
+                            getDefaultRenderCellWrapper<T>()(
+                              ...renderCellWrapperCommonArgs,
+                              { cell, row, renderDefault: () => null },
+                            ),
+                        })}
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>
@@ -200,39 +231,50 @@ const Table = <T,>({
           </tfoot>
         )}
       </table>
-      {hasPagination && (
-        <div className="flex items-center justify-end sm:justify-between pt-2 pb-6 w-full px-[1.125rem]">
-          <p className="text-3 text-gray-700 w-full sm:w-auto sm:text-left text-center">
-            {formatText(
-              { id: 'table.pageNumber' },
-              {
-                actualPage: table.getState().pagination.pageIndex + 1,
-                pageNumber: table.getPageCount(),
-              },
+      {hasPagination &&
+        (showPageNumber || canGoToPreviousPage || canGoToNextPage) && (
+          <div className="flex items-center justify-end sm:justify-between pt-2 pb-6 w-full px-[1.125rem]">
+            {showPageNumber && (
+              <p className="text-3 text-gray-700 w-full sm:w-auto sm:text-left text-center">
+                {formatText(
+                  {
+                    id: showTotalPagesNumber
+                      ? 'table.pageNumberWithTotal'
+                      : 'table.pageNumber',
+                  },
+                  {
+                    actualPage: table.getState().pagination.pageIndex + 1,
+                    pageNumber: table.getPageCount(),
+                  },
+                )}
+              </p>
             )}
-          </p>
-          <div className="flex items-center gap-2">
-            {table.getCanPreviousPage() && (
-              <Button
-                onClick={() => table.previousPage()}
-                size="small"
-                mode="primaryOutline"
-              >
-                {formatText({ id: 'table.previous' })}
-              </Button>
-            )}
-            {table.getCanNextPage() && (
-              <Button
-                onClick={() => table.nextPage()}
-                size="small"
-                mode="primaryOutline"
-              >
-                {formatText({ id: 'table.next' })}
-              </Button>
+            {(canGoToPreviousPage || canGoToNextPage || paginationDisabled) && (
+              <div className="flex items-center gap-2 ml-auto">
+                {canGoToPreviousPage && (
+                  <Button
+                    onClick={goToPreviousPage}
+                    size="small"
+                    mode="primaryOutline"
+                    disabled={paginationDisabled}
+                  >
+                    {formatText({ id: 'table.previous' })}
+                  </Button>
+                )}
+                {canGoToNextPage && (
+                  <Button
+                    onClick={goToNextPage}
+                    size="small"
+                    mode="primaryOutline"
+                    disabled={paginationDisabled}
+                  >
+                    {formatText({ id: 'table.next' })}
+                  </Button>
+                )}
+              </div>
             )}
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 };

@@ -5,4 +5,5 @@ import { TableProps } from '../Table/types';
 export interface TableWithMeatballMenuProps<T> extends TableProps<T> {
   getMenuProps: (row: Row<T>) => MeatBallMenuProps | undefined;
   meatBallMenuSize?: number;
+  meatBallMenuStaticSize?: string;
 }

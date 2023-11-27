@@ -1,5 +1,4 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
-import { RefetchMotionState } from '~common/ColonyActions';
 
 import { MotionStakes, useGetMotionTimeoutPeriodsQuery } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
@@ -30,7 +29,7 @@ const useMotionTimeoutPeriods = (colonyAddress = '', motionId: string) => {
 export const useMotionCountdown = (
   state: MotionState,
   motionId: string,
-  refetchMotionState: RefetchMotionState,
+  refetchMotionState: VoidFunction,
   motionStakes: MotionStakes,
 ): CountDownTimerProps => {
   const { colony } = useColonyContext();

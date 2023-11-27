@@ -13,6 +13,7 @@ import {
   ActionUserRoles,
 } from '~types';
 import { ColonyActionRoles, ColonyActionType } from '~gql';
+import { getRole } from '~constants/permissions';
 
 import { formatText } from './intl';
 import { MotionVote } from './colonyMotions';
@@ -535,66 +536,36 @@ export const normalizeRolesForAction = (
     { id: 5, setTo: roles.role_5 },
     { id: 6, setTo: roles.role_6 },
   ];
+
   return extractedRoles.filter(
-    ({ setTo }) => setTo !== null && setTo !== undefined,
-    /*
-     * Have to force cast it, since TS doesn't pick up the above filter
-     */
-  ) as ActionUserRoles[];
-};
-
-const getFormattedRoleList = (
-  roleGroupA: ActionUserRoles[],
-  roleGroupB: ActionUserRoles[] | null,
-) => {
-  let roleList = '';
-
-  roleGroupA.forEach((role: ActionUserRoles, i: number) => {
-    const roleNameMessage = { id: `role.${role.id}` };
-    const formattedRole = formatText(roleNameMessage) as string;
-    roleList += ` ${formattedRole.toLowerCase()}`;
-
-    if (
-      i < roleGroupA.length - 1 ||
-      (i === roleGroupA.length - 1 && !isEmpty(roleGroupB))
-    ) {
-      roleList += ',';
-    }
-  });
-
-  return roleList;
+    (role): role is ActionUserRoles =>
+      role.setTo !== null && role.setTo !== undefined,
+  );
 };
 
 export const formatRolesTitle = (roles?: ColonyActionRoles | null) => {
-  let roleTitle = '';
-  let direction = '';
-
-  if (roles) {
-    const normalizedRoles = normalizeRolesForAction(roles);
-
-    const assignedRoles = normalizedRoles.filter((role) => role.setTo);
-    const unassignedRoles = normalizedRoles.filter((role) => !role.setTo);
-
-    if (!isEmpty(assignedRoles)) {
-      direction = 'to';
-      roleTitle += `Assign the${getFormattedRoleList(
-        assignedRoles,
-        unassignedRoles,
-      )}`;
-    }
-
-    if (!isEmpty(unassignedRoles)) {
-      direction += direction ? '/from' : 'from';
-      roleTitle += roleTitle ? ' and remove the' : 'Remove the';
-      roleTitle += getFormattedRoleList(unassignedRoles, null);
-    }
-
-    roleTitle += normalizedRoles.length > 1 ? ' permissions' : ' permission';
+  if (!roles) {
+    return {
+      direction: '',
+      roleTitle: '',
+    };
   }
 
+  const normalizedRoles = normalizeRolesForAction(roles);
+  const assignedRoles = normalizedRoles.filter((role) => role.setTo);
+
+  if (isEmpty(assignedRoles)) {
+    return {
+      direction: formatText({ id: 'action.title.rolesDirection.remove' }),
+      roleTitle: '',
+    };
+  }
+
+  const role = getRole(assignedRoles.map(({ id }) => id));
+
   return {
-    roleTitle,
-    direction,
+    direction: formatText({ id: 'action.title.rolesDirection.assign' }),
+    roleTitle: role.name,
   };
 };
 
@@ -624,6 +595,10 @@ export const getExtendedActionType = (
 ): AnyActionType => {
   const { type } = actionData;
   const changelogItem = getChangelogItem(actionData, metadata);
+
+  if (changelogItem?.hasObjectiveChanged) {
+    return ExtendedColonyActionType.UpdateColonyObjective;
+  }
 
   if (changelogItem?.haveTokensChanged) {
     return ExtendedColonyActionType.UpdateTokens;

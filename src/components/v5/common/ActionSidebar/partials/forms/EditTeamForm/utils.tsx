@@ -1,41 +1,29 @@
-import React from 'react';
 import { DeepPartial } from 'utility-types';
-import { ColonyFragment } from '~gql';
+import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
+import { ColonyActionType } from '~gql';
+import { DECISION_METHOD } from '~v5/common/ActionSidebar/hooks';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
-import UserPopover from '~v5/shared/UserPopover';
+import { getTeam } from '../utils';
 import { EditTeamFormValues } from './consts';
-
-const getTeamName = (
-  teamId: string | undefined,
-  colony: ColonyFragment | undefined,
-): string | undefined =>
-  colony?.domains?.items.find((domain) => domain?.nativeId === Number(teamId))
-    ?.metadata?.name;
 
 export const editTeamDescriptionMetadataGetter: DescriptionMetadataGetter<
   DeepPartial<EditTeamFormValues>
-> = async ({ team }, { currentUser, colony }) => {
-  const currentTeamName = getTeamName(team, colony);
+> = async (
+  { team: teamId, decisionMethod },
+  { getActionTitleValues, colony },
+) => {
+  const team = getTeam(teamId, colony);
 
-  return (
-    <>
-      Change {currentTeamName ? `${currentTeamName} team` : 'team'} details
-      {currentUser?.profile?.displayName && (
-        <>
-          {' '}
-          by{' '}
-          <UserPopover
-            userName={currentUser?.profile?.displayName}
-            walletAddress={currentUser.walletAddress}
-            aboutDescription={currentUser.profile?.bio || ''}
-            user={currentUser}
-          >
-            <span className="text-gray-900">
-              {currentUser.profile.displayName}
-            </span>
-          </UserPopover>
-        </>
-      )}
-    </>
+  return getActionTitleValues(
+    {
+      type:
+        decisionMethod === DECISION_METHOD.Permissions
+          ? ColonyActionType.EditDomain
+          : ColonyActionType.EditDomainMotion,
+      fromDomain: team,
+    },
+    {
+      [ActionTitleMessageKeys.FromDomain]: '',
+    },
   );
 };

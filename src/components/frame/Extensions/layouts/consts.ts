@@ -1,4 +1,5 @@
 import {
+  COLONY_ACTIVITY_ROUTE,
   COLONY_ADVANCED_ROUTE,
   COLONY_BALANCES_ROUTE,
   COLONY_DETAILS_ROUTE,
@@ -156,7 +157,7 @@ export const dashboardMenu: NavigationSidebarLinksListProps['items'] = [
   {
     key: '1',
     label: formatText({ id: 'navigation.dashboard.activityFeed' }) || '',
-    to: 'activity-feed',
+    to: COLONY_ACTIVITY_ROUTE,
     iconName: 'presentation-chart',
   },
   {

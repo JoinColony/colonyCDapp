@@ -73,7 +73,13 @@ const useNetworkMotionStates = (nativeMotionIds: string[], skip?: boolean) => {
     fetchMotionStates();
   }, [motionStatesMap, nativeMotionIds, skip, votingReputationAddress, wallet]);
 
-  return { motionStatesMap, loading };
+  return {
+    motionStatesMap,
+    loading,
+    refetch: () => {
+      setMotionStatesMap(new Map());
+    },
+  };
 };
 
 export default useNetworkMotionStates;

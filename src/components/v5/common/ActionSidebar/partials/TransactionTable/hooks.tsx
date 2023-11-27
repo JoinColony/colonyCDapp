@@ -63,13 +63,13 @@ export const useGetTableMenuProps = (
                     ...data[index],
                   }),
                 label: formatText({ id: 'table.row.duplicate' }),
-                iconName: 'copy-simple',
+                icon: 'copy-simple',
               },
               {
                 key: 'remove',
                 onClick: () => remove(index),
                 label: formatText({ id: 'table.row.remove' }),
-                iconName: 'trash',
+                icon: 'trash',
               },
             ],
           }

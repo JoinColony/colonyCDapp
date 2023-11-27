@@ -57,4 +57,5 @@ export const ACTION_TYPES_ICONS_MAP: Record<AnyActionType, string> = {
   [ExtendedColonyActionType.SafeMultipleTransactionsMotion]: safeLogoIconName,
   [ExtendedColonyActionType.SafeTransferNftMotion]: safeLogoIconName,
   [ExtendedColonyActionType.SafeRawTransactionMotion]: safeLogoIconName,
+  [ExtendedColonyActionType.UpdateColonyObjective]: 'emoji-pencil-note',
 };

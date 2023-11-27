@@ -3,12 +3,9 @@ import classNames from 'classnames';
 import { Id } from '@colony/colony-js';
 
 import CountDownTimer from '~common/ColonyActions/CountDownTimer';
-import {
-  MotionState,
-  useShouldDisplayMotionCountdownTime,
-} from '~utils/colonyMotions';
+import { MotionState } from '~utils/colonyMotions';
 import { ColonyMotion } from '~types';
-import { useAppContext } from '~hooks';
+import { useAppContext, useShouldDisplayMotionCountdownTime } from '~hooks';
 
 import { RefetchMotionState } from '../../useGetColonyAction';
 import VotingProgress from './VotingProgress';

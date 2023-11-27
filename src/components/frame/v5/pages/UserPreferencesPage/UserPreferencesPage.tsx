@@ -116,7 +116,7 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
               mode={isCopied ? 'completed' : 'septenary'}
               iconName={isCopied ? '' : 'copy-simple'}
               isFullSize={isMobile}
-              onClick={handleClipboardCopy}
+              onClick={() => handleClipboardCopy()}
               text={{
                 id: isCopied ? 'copy.addressCopied' : 'copy.address',
               }}

@@ -11,6 +11,12 @@
 @value query850 from '~styles/queries.css';
 @value query1024 from '~styles/queries.css';
 
+@keyframes shine {
+  to {
+    background-position: right -2.5rem top 0;
+  }
+}
+
 @layer base {
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
@@ -106,6 +112,25 @@
 
   .description-1 {
     @apply text-sm text-gray-700;
+  }
+
+  .skeleton {
+    position: relative;
+    pointer-events: none;
+  }
+
+  .skeleton::before {
+    @apply absolute -top-px -bottom-px -left-px -right-px content-[""] z-10 bg-gray-200 bg-no-repeat min-h-[1em];
+
+    background-image: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0)
+    );
+    background-size: 2.5rem 100%;
+    background-position: left -2.5rem top 0;
+    animation: shine 1.125s ease infinite;
   }
 }
 

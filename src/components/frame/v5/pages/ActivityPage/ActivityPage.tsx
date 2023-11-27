@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { useSetPageHeadingTitle } from '~context';
 import { formatText } from '~utils/intl';
 import WidgetBoxList from '~v5/common/WidgetBoxList';
+import ColonyActionsTable from '~common/ColonyActionsTable';
 
 import { useActivityFeedWidgets } from './hooks';
 
@@ -16,7 +17,9 @@ const ActivityPage: FC = () => {
   return (
     <div className="flex flex-col gap-4 sm:gap-[1.125rem] w-full">
       <WidgetBoxList items={widgets} />
-      <div>add table here</div>
+      <div>
+        <ColonyActionsTable />
+      </div>
     </div>
   );
 };

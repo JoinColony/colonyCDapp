@@ -110,7 +110,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
                     <PageHeader {...headerProps} />
                   </div>
                   <div className="flex-grow overflow-auto pr-4">
-                    <div className="max-w-[79.875rem] w-full mx-auto">
+                    <div className="max-w-[79.875rem] w-full mx-auto pb-4">
                       {children}
                     </div>
                   </div>
