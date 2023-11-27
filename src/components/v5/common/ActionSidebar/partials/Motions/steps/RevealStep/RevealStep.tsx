@@ -1,20 +1,23 @@
 import React, { FC } from 'react';
-
 import clsx from 'clsx';
-import { RevealStepProps } from './types';
+
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
 import ProgressBar from '~v5/shared/ProgressBar';
-import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button';
-import { ActionForm } from '~shared/Fields';
-import { ActionTypes } from '~redux';
 import StatusText from '~v5/shared/StatusText';
 import Numeral from '~shared/Numeral';
+import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
+
+import useToggle from '~hooks/useToggle';
+import { useAppContext } from '~hooks';
+import { formatText } from '~utils/intl';
+import { ActionForm } from '~shared/Fields';
+import { ActionTypes } from '~redux';
+
 import RevealInformationList from './partials/RevealInformationList';
 import { useRevealStep } from './hooks';
 import MotionBadge from '../../partials/MotionBadge/MotionBadge';
-import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
-import useToggle from '~hooks/useToggle';
+import { RevealStepProps } from './types';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.RevealStep';
@@ -25,6 +28,7 @@ const RevealStep: FC<RevealStepProps> = ({
   stopPollingAction,
   transactionId,
 }) => {
+  const { wallet, user } = useAppContext();
   const [isInformationAccordionOpen, { toggle: toggleInformationAccordion }] =
     useToggle();
   const {
@@ -47,6 +51,14 @@ const RevealStep: FC<RevealStepProps> = ({
 
   const { decimals, symbol } = nativeToken || {};
 
+  const canInteract = !!wallet && !!user;
+
+  const revealPhaseEnded =
+    hasUserVoted &&
+    userVoteRevealed &&
+    (motionData?.motionStateHistory.hasFailed ||
+      motionData?.motionStateHistory.hasPassed);
+
   return (
     <MenuWithStatusText
       statusTextSectionProps={{
@@ -65,7 +77,7 @@ const RevealStep: FC<RevealStepProps> = ({
                     : 'motion.revealStep.votesRevealed',
               })}
             />
-            {hasUserVoted && (
+            {!revealPhaseEnded && canInteract && (
               <StatusText
                 status="warning"
                 textClassName="text-4 text-gray-900"
