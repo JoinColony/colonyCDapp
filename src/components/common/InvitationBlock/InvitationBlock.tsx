@@ -54,7 +54,7 @@ const InvitationBlock = ({ showDescription = true }: Props) => {
             text={MSG.buttonText}
             mode={isCopied ? 'completed' : 'quinary'}
             iconName={isCopied ? undefined : 'copy-simple'}
-            onClick={handleClipboardCopy}
+            onClick={() => handleClipboardCopy()}
             textValues={{ isCopied }}
             size="small"
           />

@@ -80,7 +80,7 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
             text={MSG.buttonText}
             mode={isCopied ? 'completed' : 'quinary'}
             iconName={isCopied ? undefined : 'copy-simple'}
-            onClick={handleClipboardCopy}
+            onClick={() => handleClipboardCopy()}
             size="small"
             textValues={{ isCopied }}
           />
