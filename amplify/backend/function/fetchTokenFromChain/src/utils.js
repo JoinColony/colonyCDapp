@@ -5,6 +5,19 @@ const TokenType = {
   ERC20: 'ERC20',
 };
 
+// These are a subsection of the constants in the main project
+// that should be imported when this is enabled via a different
+// lambda build system
+const ETHEREUM_NETWORK = {
+  shortName: 'ETH',
+};
+const BINANCE_NETWORK = {
+  shortName: 'BNB',
+};
+const GANACHE_NETWORK = {
+  shortName: 'Ganache',
+};
+
 const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
   const options = {
     method: 'POST',
@@ -48,7 +61,37 @@ const getTokenType = async (client) => {
   }
 };
 
+const getRpcUrlParamName = (network) => {
+  let chainRpcParam;
+
+  switch (network) {
+    case BINANCE_NETWORK.shortName:
+      chainRpcParam = 'bnbRpcEndpoint';
+      break;
+    case ETHEREUM_NETWORK.shortName:
+    default:
+      chainRpcParam = 'ethRpcEndpoint';
+      break;
+  }
+
+  return chainRpcParam;
+};
+
+const getDevRpcUrl = (network) => {
+  switch (network) {
+    case BINANCE_NETWORK.shortName:
+      return 'https://bsc.meowrpc.com';
+    case ETHEREUM_NETWORK.shortName:
+      return 'https://eth.drpc.org';
+    case GANACHE_NETWORK.shortName:
+    default:
+      return 'http://network-contracts:8545'; // default for local testing
+  }
+};
+
 module.exports = {
   graphqlRequest,
   getTokenType,
+  getRpcUrlParamName,
+  getDevRpcUrl,
 };

@@ -10,14 +10,26 @@ const { graphqlRequest } = require('./utils');
  */
 const { getUser, createUser, createProfile } = require('./graphql');
 
-/*
- * @TODO These values need to be imported properly, and differentiate based on environment
- */
-const API_KEY = 'da2-fakeApiId123456';
-const GRAPHQL_URI = 'http://localhost:20002/graphql';
+let apiKey = 'da2-fakeApiId123456';
+let graphqlURL = 'http://localhost:20002/graphql';
+
+const setEnvVariables = async () => {
+  const ENV = process.env.ENV;
+
+  if (ENV === 'qa' || ENV === 'sc') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [apiKey, graphqlURL] = await getParams(['appsyncApiKey', 'graphqlUrl']);
+  }
+};
 
 exports.handler = async (event) => {
-  const { id: walletAddress, name, profile } = event.arguments?.input || {};
+  try {
+    await setEnvVariables();
+  } catch (e) {
+    throw new Error('Unable to set environment variables. Reason:', e);
+  }
+
+  const { id: walletAddress, profile } = event.arguments?.input || {};
 
   let checksummedWalletAddress;
   try {
@@ -28,9 +40,9 @@ exports.handler = async (event) => {
 
   const query = await graphqlRequest(
     getUser,
-    { id: checksummedWalletAddress, name },
-    GRAPHQL_URI,
-    API_KEY,
+    { id: checksummedWalletAddress, name: profile.displayName },
+    graphqlURL,
+    apiKey,
   );
 
   if (query.errors || !query.data) {
@@ -40,12 +52,12 @@ exports.handler = async (event) => {
     );
   }
 
-  const [existingUserWallet] = query?.data?.getUserByAddress?.items || {};
-  const [existingUserName] = query?.data?.getUserByName?.items || {};
+  const { id: existingUserWallet } = query?.data?.getProfile ?? {};
+  const [existingUserName] = query?.data?.getProfileByUsername?.items || {};
 
   if (existingUserWallet) {
     throw new Error(
-      `User with wallet address "${existingUserWallet.id}" is already registered`,
+      `User with wallet address "${existingUserWallet}" is already registered`,
     );
   }
 
@@ -64,10 +76,11 @@ exports.handler = async (event) => {
       input: {
         id: checksummedWalletAddress,
         ...profile,
+        displayNameChanged: new Date().toISOString(),
       },
     },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   /*
@@ -78,19 +91,18 @@ exports.handler = async (event) => {
     {
       input: {
         id: checksummedWalletAddress,
-        name,
         profileId: checksummedWalletAddress,
       },
     },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   if (mutation.errors || !mutation.data) {
     const [error] = mutation.errors;
     throw new Error(
       error?.message ||
-        `Could not create user "${name}" with wallet address "${checksummedWalletAddress}"`,
+        `Could not create user "${profile.displayName}" with wallet address "${checksummedWalletAddress}"`,
     );
   }
 

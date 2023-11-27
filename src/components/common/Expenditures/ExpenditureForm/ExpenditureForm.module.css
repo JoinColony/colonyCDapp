@@ -1,0 +1,46 @@
+.field {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.field > div {
+  margin-bottom: 0 !important;
+}
+
+.amountField {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.amountField > div {
+  margin-bottom: 0 !important;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.cancelButton {
+  margin-right: auto;
+}
+
+.domainSelection {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 10px;
+}
+
+.typeTabs {
+  margin-bottom: 20px;
+}
+
+.dateTime {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 10px;
+}

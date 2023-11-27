@@ -1,0 +1,10 @@
+.main {
+  display: flex;
+  align-items: flex-start;
+  padding: 11px 16px 11px 0;
+  width: 100%;
+}
+
+.main > span:first-child {
+  margin: 0 9px 0 25px;
+}

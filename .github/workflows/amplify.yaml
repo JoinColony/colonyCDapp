@@ -1,0 +1,72 @@
+name: Deploy amplify
+
+on:
+  workflow_dispatch: # Allows manual workflow trigger
+  repository_dispatch: # Allows API workflow trigger
+    types: [cdapp-amplify]
+
+  push:
+    paths:
+      - 'amplify/**'
+
+concurrency:
+  group: cdapp-amplify
+  cancel-in-progress: true
+
+# Set global env variables
+env:
+  AWS_REGION: ${{ vars.AWS_REGION }}
+
+jobs:
+
+  # Deploy cdapp amplify to QA environment
+  deployQA:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_AMPLIFY_WEBHOOK_QA: ${{ vars.AWS_AMPLIFY_WEBHOOK_QA }}
+      AWS_AMPLIFY_APP_ID_QA: ${{ vars.AWS_AMPLIFY_APP_ID_QA }}
+
+    steps:
+      - name: Trigger Amplify AWS Pipeline
+        run: |
+          curl -X POST -d {} "${AWS_AMPLIFY_WEBHOOK_QA}&operation=startbuild" -H "Content-Type:application/json"
+      
+      - name: Post AWS Amplify console link in GH summary
+        run: |
+          echo "### AWS Amplify pipeline" >> $GITHUB_STEP_SUMMARY
+          echo "Amplify build triggered, progress can be tracked in the [AWS Console](https://${AWS_REGION}.console.aws.amazon.com/amplify/home?region=${AWS_REGION}#/${AWS_AMPLIFY_APP_ID_QA})." >> $GITHUB_STEP_SUMMARY
+
+      - uses: sarisia/actions-status-discord@c193626e5ce172002b8161e116aa897de7ab5383
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: 'Deploy cdapp amplify to QA'
+
+  # Deploy cdapp amplify to prod environment
+  deployProd:
+    needs: deployQA
+
+    # environment: prod # disabled for now
+
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_AMPLIFY_WEBHOOK_PROD: ${{ vars.AWS_AMPLIFY_WEBHOOK_PROD }}
+      AWS_AMPLIFY_APP_ID_PROD: ${{ vars.AWS_AMPLIFY_APP_ID_PROD }}
+
+    steps:
+      - name: Trigger Amplify AWS Pipeline
+        run: |
+          curl -X POST -d {} "${AWS_AMPLIFY_WEBHOOK_PROD}&operation=startbuild" -H "Content-Type:application/json"
+
+      - name: Post AWS Amplify console link in GH summary
+        run: |
+          echo "### AWS Amplify pipeline" >> $GITHUB_STEP_SUMMARY
+          echo "Amplify build triggered, progress can be tracked in the [AWS Console](https://${AWS_REGION}.console.aws.amazon.com/amplify/home?region=${AWS_REGION}#/${AWS_AMPLIFY_APP_ID_PROD})." >> $GITHUB_STEP_SUMMARY
+
+      - uses: sarisia/actions-status-discord@c193626e5ce172002b8161e116aa897de7ab5383
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: 'Deploy cdapp amplify to prod'

@@ -1,0 +1,28 @@
+.copyable {
+  composes: colorSchemaGrey from '~shared/Fields/Input/InputComponent.css';
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 11px;
+  font-size: 14px;
+  line-height: normal;
+}
+
+.fat {
+  composes: themeFat from '~shared/Fields/Input/InputComponent.css';
+}
+
+.copyableContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+}
+
+.copyable use {
+  fill: var(--grey-purple);
+}
+
+.subtitle {
+  font-weight: var(--weight-bold);
+  color: var(--dark);
+}

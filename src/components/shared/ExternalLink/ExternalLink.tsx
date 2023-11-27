@@ -3,8 +3,6 @@ import React, { ReactNode } from 'react';
 
 import { SimpleMessageValues } from '~types';
 
-import styles from './ExternalLink.css';
-
 interface Props {
   /** Render a react-node into the link */
   children?: ReactNode;
@@ -46,7 +44,7 @@ const ExternalLink = ({
   const linkText = children || typeOfText || href;
   return (
     <a
-      className={`${className} ${styles.main}`}
+      className={className}
       href={href}
       target="_blank"
       rel="noreferrer noopener"

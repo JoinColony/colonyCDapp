@@ -1,29 +1,13 @@
 import { BigNumberish, utils, providers, TypedDataField } from 'ethers';
 
-import { Address, Network } from '~types';
+import { Address, isFullWallet } from '~types';
 
-import { DEFAULT_NETWORK, DEFAULT_NETWORK_INFO } from '~constants';
+import { DEFAULT_NETWORK_INFO } from '~constants';
 import { ContextModule, getContext } from '~context';
 
 import { generateBroadcasterHumanReadableError } from './errorMessages';
 
-export async function getChainId(): Promise<number> {
-  /*
-   * @NOTE Short-circuit early, skip making an unnecessary RPC call
-   */
-  if (DEFAULT_NETWORK === Network.Ganache) {
-    /*
-     * Due to ganache internals shannanigans, when on the local ganache network
-     * we must use chainId 1, otherwise the broadcaster (and the underlying contracts)
-     * wont't be able to verify the signature (due to a chainId miss-match)
-     *
-     * This issue is only valid for ganache networks, as in production the chain id
-     * is returned properly
-     */
-    return 1;
-  }
-  return DEFAULT_NETWORK_INFO.chainId;
-}
+export const getChainId = (): number => DEFAULT_NETWORK_INFO.chainId;
 
 export const signTypedData = async ({
   domain,
@@ -40,6 +24,11 @@ export const signTypedData = async ({
   v?: number;
 }> => {
   const wallet = getContext(ContextModule.Wallet);
+
+  if (!isFullWallet(wallet)) {
+    throw new Error('Background login not yet completed.');
+  }
+
   const walletProvider = new providers.Web3Provider(wallet.provider);
   const signer = walletProvider.getSigner();
   // eslint-disable-next-line no-underscore-dangle
@@ -100,23 +89,8 @@ export const generateMetatransactionMessage = async (
     ['uint256', 'address', 'uint256', 'bytes'],
     [nonce.toString(), contractAddress, chainId, encodedTransaction],
   );
-  const messageBuffer = Buffer.from(
-    message.slice(2), // remove the `0x` prefix
-    'hex',
-  );
 
-  const messageUint8 = Array.from(messageBuffer) as unknown as Uint8Array;
-  /*
-   * Purser validator expects either a string or a Uint8Array. We convert this
-   * to a an array to make Metamask happy when signing the buffer.
-   *
-   * So in order to actually pass validation, both for Software and Metamask
-   * wallets we need to "fake" the array as actually being a Uint.
-   *
-   * Note this not affect the format of the data passed in to be signed,
-   * or the signature.
-   */
-  messageUint8.constructor = Uint8Array;
+  const messageUint8 = utils.arrayify(message);
 
   return {
     message,

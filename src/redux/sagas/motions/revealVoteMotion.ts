@@ -1,4 +1,4 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, AnyVotingReputationClient } from '@colony/colony-js';
 import { utils } from 'ethers';
 
@@ -7,17 +7,19 @@ import { AllActions, Action } from '../../types/actions';
 import {
   putError,
   takeFrom,
-  updateMotionValues,
   getColonyManager,
+  initiateTransaction,
 } from '../utils';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '../../actionCreators';
 import { signMessage } from '../messages';
+
+export type RevealMotionPayload =
+  Action<ActionTypes.MOTION_REVEAL_VOTE>['payload'];
 
 function* revealVoteMotion({
   meta,
@@ -65,14 +67,10 @@ function* revealVoteMotion({
     const salt = utils.keccak256(signature);
 
     /*
-     * Infferr which side the user voted based on the same salt
+     * Infer which side the user voted based on the same salt
      */
     let sideVoted;
     try {
-      /*
-       * @NOTE For some reason colonyJS doesn't export types for the estimate methods
-       */
-      // @ts-ignore
       yield votingReputationClient.estimateGas.revealVote(
         motionId,
         salt,
@@ -86,18 +84,13 @@ function* revealVoteMotion({
     } catch (error) {
       /*
        * We don't want to handle the error here as we are doing this to
-       * inferr the user's voting choice
+       * infer the user's voting choice
        *
        * This is a "cheaper" alternative to looking through events, since
        * this doesn't use so many requests
        */
-      // silent error
     }
     try {
-      /*
-       * @NOTE For some reason colonyJS doesn't export types for the estimate methods
-       */
-      // @ts-ignore
       yield votingReputationClient.estimateGas.revealVote(
         motionId,
         salt,
@@ -109,14 +102,7 @@ function* revealVoteMotion({
       );
       sideVoted = 1;
     } catch (error) {
-      /*
-       * We don't want to handle the error here as we are doing this to
-       * inferr the user's voting choice
-       *
-       * This is a "cheaper" alternative to looking through events, since
-       * this doesn't use so many requests
-       */
-      // silent error
+      // Same as above. Silent error
     }
     if (sideVoted !== undefined) {
       const { revealVoteMotionTransaction } = yield createTransactionChannels(
@@ -124,42 +110,29 @@ function* revealVoteMotion({
         ['revealVoteMotionTransaction'],
       );
 
-      const batchKey = 'revealVoteMotion';
-
-      const createGroupTransaction = ({ id, index }, config) =>
-        fork(createTransaction, id, {
-          ...config,
-          group: {
-            key: batchKey,
-            id: meta.id,
-            index,
-          },
-        });
-
-      yield createGroupTransaction(revealVoteMotionTransaction, {
-        context: ClientType.VotingReputationClient,
-        methodName: 'revealVote',
-        identifier: colonyAddress,
-        params: [motionId, salt, sideVoted, key, value, branchMask, siblings],
-        ready: false,
-      });
+      yield createGroupTransaction(
+        revealVoteMotionTransaction,
+        'revealVoteMotion',
+        meta,
+        {
+          context: ClientType.VotingReputationClient,
+          methodName: 'revealVote',
+          identifier: colonyAddress,
+          params: [motionId, salt, sideVoted, key, value, branchMask, siblings],
+          ready: false,
+        },
+      );
 
       yield takeFrom(
         revealVoteMotionTransaction.channel,
         ActionTypes.TRANSACTION_CREATED,
       );
 
-      yield put(transactionReady(revealVoteMotionTransaction.id));
-
+      yield initiateTransaction({ id: revealVoteMotionTransaction.id });
       yield takeFrom(
         revealVoteMotionTransaction.channel,
         ActionTypes.TRANSACTION_SUCCEEDED,
       );
-
-      /*
-       * Update motion page values
-       */
-      yield fork(updateMotionValues, colonyAddress, userAddress, motionId);
 
       return yield put<AllActions>({
         type: ActionTypes.MOTION_REVEAL_VOTE_SUCCESS,

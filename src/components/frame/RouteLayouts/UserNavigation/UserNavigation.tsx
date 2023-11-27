@@ -4,15 +4,16 @@ import { defineMessages, useIntl } from 'react-intl';
 import MemberReputation from '~shared/MemberReputation';
 import { Tooltip } from '~shared/Popover';
 import { AvatarDropdown } from '~frame/AvatarDropdown';
-// import UserTokenActivationButton from '~users/UserTokenActivationButton';
+import UserTokenActivationButton from '~frame/UserTokenActivationButton';
 import HamburgerDropdown from '~frame/HamburgerDropdown';
 import {
   useAppContext,
-  useColonyContext,
   useUserReputation,
   useMobile,
-  // useCanInteractWithNetwork,
+  useCanInteractWithNetwork,
+  useColonyContext,
 } from '~hooks';
+import { useUserTokenBalanceContext } from '~context';
 
 import Wallet from './Wallet';
 
@@ -37,15 +38,15 @@ const MSG = defineMessages({
 const UserNavigation = () => {
   const { colony } = useColonyContext();
   const { wallet } = useAppContext();
+  const { tokenBalanceData } = useUserTokenBalanceContext();
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
+  const canInteractWithNetwork = useCanInteractWithNetwork();
 
-  // const userLock = userData?.user.userLock;
-  // const nativeToken = userLock?.nativeToken;
-  // const canInteractWithNetwork = useCanInteractWithNetwork();
+  const { colonyAddress } = colony || {};
 
   const { userReputation, totalReputation } = useUserReputation(
-    colony?.colonyAddress,
+    colonyAddress,
     wallet?.address,
   );
 
@@ -75,21 +76,20 @@ const UserNavigation = () => {
           </div>
         </Tooltip>
       )}
-      {/*
+      {canInteractWithNetwork && colony?.nativeToken && tokenBalanceData && (
         <div className={`${styles.elementWrapper} ${styles.walletWrapper}`}>
-          {canInteractWithNetwork && nativeToken && userLock && (
-            <UserTokenActivationButton
-              nativeToken={nativeToken}
-              userLock={userLock}
-              colony={colonyData?.processedColony}
-              walletAddress={walletAddress}
-              dataTest="tokenActivationButton"
-            />
-          )}
+          <UserTokenActivationButton
+            nativeToken={colony.nativeToken}
+            tokenBalanceData={tokenBalanceData}
+            dataTest="tokenActivationButton"
+          />
         </div>
-      */}
+      )}
       <Wallet />
-      <AvatarDropdown spinnerMsg={MSG.walletAutologin} />
+      <AvatarDropdown
+        spinnerMsg={MSG.walletAutologin}
+        tokenBalanceData={tokenBalanceData ?? undefined}
+      />
       <HamburgerDropdown />
     </div>
   );

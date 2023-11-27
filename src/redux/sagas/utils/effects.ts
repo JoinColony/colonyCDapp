@@ -12,6 +12,13 @@ import {
 } from 'redux-saga/effects';
 
 import { ErrorActionType, TakeFilter, Action } from '../../types/actions';
+import {
+  transactionEstimateGas,
+  transactionReady,
+  transactionSend,
+  messageSign,
+} from '~redux/actionCreators';
+import { getCanUserSendMetatransactions } from './getCanUserSendMetatransactions';
 /*
  * Effect to take a specific action from a channel.
  */
@@ -104,11 +111,24 @@ export const takeLatestCancellable = (
   ]);
 };
 
-export function* routeRedirect(
-  route: string,
-  historyObject, // Apparently react-router doesn't export proper types for this :(
-) {
-  if (route && historyObject) {
-    yield call(historyObject.push, route);
+export function* initiateTransaction({
+  id,
+  metatransaction,
+}: {
+  id: string;
+  metatransaction?: boolean;
+}) {
+  const shouldSendMetatransaction = yield getCanUserSendMetatransactions();
+
+  yield put(transactionReady(id));
+
+  if (metatransaction ?? shouldSendMetatransaction) {
+    yield put(transactionSend(id));
+  } else {
+    yield put(transactionEstimateGas(id));
   }
+}
+
+export function* initiateMessageSigning(id: string) {
+  yield put(messageSign(id));
 }

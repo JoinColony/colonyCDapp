@@ -1,53 +1,34 @@
-import React, { ReactNode, SyntheticEvent, useState, useCallback } from 'react';
-import { MessageDescriptor } from 'react-intl';
+import React, { InputHTMLAttributes, useState } from 'react';
 import { nanoid } from 'nanoid';
 import { PopperOptions } from 'react-popper-tooltip';
+import { useFormContext } from 'react-hook-form';
+import classNames from 'classnames';
 
 import InputLabel from '~shared/Fields/InputLabel';
 import { Tooltip } from '~shared/Popover';
-import asFieldArray, {
-  AsFieldArrayEnhancedProps,
-} from '~shared/Fields/asFieldArray';
-import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
+import { Message, UniversalMessageValues } from '~types';
+import { formatText } from '~utils/intl';
+
+import { CoreInputProps } from '../Input';
 
 import styles from './Checkbox.css';
 
 interface Appearance {
-  theme: 'dark';
-  direction: 'vertical' | 'horizontal';
+  theme?: 'dark' | 'pink';
+  direction?: 'horizontal' | 'vertical';
 }
 
-interface Props {
-  /** Appearance object */
+export interface Props
+  extends Omit<CoreInputProps, 'placeholder' | 'placeholderValues'>,
+    Omit<InputHTMLAttributes<HTMLInputElement>, 'name' | 'placeholder'> {
   appearance?: Appearance;
-  /** Children to render in place of the default label */
-  children?: ReactNode;
-  /** Additional className for customizing styles */
-  className?: string;
-  /** Disable the input */
-  disabled: boolean;
-  /** Display the element without label */
-  elementOnly?: boolean;
-  /** Help text (will appear next to label text) */
-  help?: string | MessageDescriptor;
-  /** Values for help text (react-intl interpolation) */
-  helpValues?: SimpleMessageValues;
-  /** Label text */
-  label?: string | MessageDescriptor;
-  /** Values for label text (react-intl interpolation) */
-  labelValues?: SimpleMessageValues;
-  /** Input field name (form variable) */
-  name: string;
-  /** Standard input field property */
-  onChange?: (event: { [s: string]: any }) => void;
-  /** Input field value */
-  value: string;
   /**  Text for the checkbox tooltip */
-  tooltipText?: string;
+  tooltipText?: Message;
+  /** Text values for tooltip */
+  tooltipTextValues?: UniversalMessageValues;
   /** Options to pass to the underlying PopperJS element. See here for more: https://popper.js.org/docs/v2/constructors/#options. */
   tooltipPopperOptions?: PopperOptions;
-  dataTest?: string;
 }
 
 const displayName = 'Checkbox';
@@ -56,79 +37,73 @@ const Checkbox = ({
   appearance,
   children,
   className,
-  disabled,
-  elementOnly,
-  form: { values },
+  disabled = false,
+  elementOnly = false,
+  name,
   help,
   helpValues,
   label,
   labelValues,
-  name,
   onChange,
-  push,
-  remove,
   value,
   tooltipText,
+  tooltipTextValues,
   tooltipPopperOptions,
   dataTest,
-}: AsFieldArrayEnhancedProps<Props>) => {
-  const [inputId] = useState<string>(nanoid());
-
-  const handleOnChange = useCallback(
-    (e: SyntheticEvent<HTMLInputElement>) => {
-      const idx = values[name].indexOf(value);
-      if (idx >= 0) {
-        remove(idx);
-      } else {
-        push(value);
-      }
-      if (onChange) {
-        onChange(e);
-      }
-    },
-    [name, onChange, push, remove, value, values],
-  );
-
-  const isChecked = values[name].indexOf(value) >= 0;
+  ...checkboxProps
+}: Props) => {
+  const [inputId] = useState(nanoid());
+  const { getValues, register } = useFormContext();
+  const isChecked = getValues(name).indexOf(value) >= 0;
   const mainClasses = getMainClasses(appearance, styles, {
     isChecked,
     disabled,
   });
-  const classNames = className ? `${mainClasses} ${className}` : mainClasses;
 
-  const checkboxInputContent = (
-    <>
-      <input
-        id={inputId}
-        className={styles.delegate}
-        name={name}
-        type="checkbox"
-        disabled={disabled}
-        onChange={handleOnChange}
-        aria-disabled={disabled}
-        aria-checked={isChecked}
-        data-test={dataTest}
-      />
-      <span className={styles.checkbox}>
-        <span className={styles.checkmark} />
-      </span>
-    </>
+  const toolTipContent = tooltipText
+    ? formatText(tooltipText, tooltipTextValues)
+    : null;
+  const showTooltip = disabled && tooltipText;
+  const showLabel = !elementOnly && label;
+
+  const { onChange: hookFormOnChange, ...helpers } = register(name);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    hookFormOnChange(e);
+    onChange?.(e);
+  };
+
+  const checkboxInput = (
+    <input
+      {...helpers}
+      id={inputId}
+      className={styles.checkbox}
+      type="checkbox"
+      value={value}
+      onChange={handleChange}
+      aria-disabled={disabled}
+      aria-checked={isChecked}
+      data-test={dataTest}
+      {...checkboxProps}
+    />
   );
 
   return (
-    <label className={classNames} htmlFor={elementOnly ? inputId : undefined}>
-      {disabled && tooltipText ? (
+    <fieldset
+      className={classNames(mainClasses, className)}
+      disabled={disabled}
+    >
+      {showTooltip ? (
         <Tooltip
-          content={tooltipText}
+          content={toolTipContent}
           placement="bottom"
           popperOptions={tooltipPopperOptions}
         >
-          <div>{checkboxInputContent}</div>
+          {checkboxInput}
         </Tooltip>
       ) : (
-        checkboxInputContent
+        checkboxInput
       )}
-      {!elementOnly && !!label ? (
+      {showLabel ? (
         <InputLabel
           inputId={inputId}
           label={label}
@@ -138,21 +113,12 @@ const Checkbox = ({
           appearance={{ direction: 'horizontal' }}
         />
       ) : (
-        label || children
+        children
       )}
-    </label>
+    </fieldset>
   );
 };
 
 Checkbox.displayName = displayName;
 
-Checkbox.defaultProps = {
-  appearance: {
-    direction: 'vertical',
-  },
-  checked: false,
-  disabled: false,
-  elementOnly: false,
-};
-
-export default asFieldArray<Props>(Checkbox);
+export default Checkbox;

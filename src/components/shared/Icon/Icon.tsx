@@ -1,30 +1,40 @@
 import React, { HTMLAttributes } from 'react';
-import { MessageDescriptor, useIntl } from 'react-intl';
+import { MessageDescriptor } from 'react-intl';
 
 import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
+import { formatText } from '~utils/intl';
 
 import {
   icons as iconNames,
   multiColorIcons as multiColorIconNames,
 } from '~images/icons.json';
-import styles from './Icon.css';
+
+import styles from './Icon.module.css';
 
 const displayName = 'Icon';
 
+export type IconSize =
+  | 'extraExtraTiny'
+  | 'extraTiny'
+  | 'tiny'
+  | 'extraSmall'
+  | 'small'
+  | 'normal'
+  | 'mediumSmall'
+  | 'medium'
+  | 'big'
+  | 'extraBig'
+  | 'largeSmall'
+  | 'large'
+  | 'huge';
+
 type Appearance = {
   theme?: 'primary' | 'invert';
-  size?:
-    | 'extraTiny'
-    | 'tiny'
-    | 'small'
-    | 'normal'
-    | 'medium'
-    | 'large'
-    | 'huge';
+  size?: IconSize;
 };
 
-interface Props extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
+export interface IconProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   /** Appearance object */
   appearance?: Appearance;
 
@@ -65,22 +75,21 @@ const Icon = ({
   title,
   titleValues,
   ...props
-}: Props) => {
-  const { formatMessage } = useIntl();
+}: IconProps) => {
   // Remove the theme if it's a multiColor icon
   const multiColorAppearance = multiColorIcons[name]
     ? { size: appearance.size || 'normal' }
     : null;
   const icon = icons[name] || multiColorIcons[name];
   const iconHref = typeof icon === 'object' ? `#${icon.default.id}` : icon;
-  const iconTitle =
-    typeof title === 'object' ? formatMessage(title, titleValues) : title;
+  const iconTitle = title ? formatText(title, titleValues) : undefined;
   return (
     <i
-      title={title ? iconTitle : undefined}
-      className={
-        className || getMainClasses(multiColorAppearance || appearance, styles)
-      }
+      title={iconTitle}
+      className={`${getMainClasses(
+        multiColorAppearance || appearance,
+        styles,
+      )} ${className || ''}`}
       {...props}
     >
       <svg viewBox={viewBoxOverride}>

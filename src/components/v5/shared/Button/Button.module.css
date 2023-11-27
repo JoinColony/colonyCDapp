@@ -1,0 +1,48 @@
+.primarySolid {
+  @apply bg-gray-900 text-base-white md:hover:text-gray-900 md:hover:bg-base-white border border-gray-900 disabled:bg-gray-300 disabled:border-gray-300;
+}
+
+.primaryOutline {
+  @apply bg-base-white text-gray-700 border border-gray-300 md:hover:text-gray-900 md:hover:border-gray-900 md:hover:bg-base-white disabled:text-gray-300;
+}
+
+.primarySolidFull {
+  @apply bg-gray-900 text-base-white border border-gray-900 disabled:bg-gray-300 disabled:border-none;
+}
+
+.primaryOutlineFull {
+  @apply bg-base-white text-gray-700 border border-gray-100 md:hover:bg-gray-900 md:hover:border-gray-900 md:hover:text-base-white disabled:text-gray-300;
+}
+
+.secondarySolid {
+  @apply bg-negative-400 text-base-white md:hover:bg-negative-300 disabled:bg-gray-300;
+}
+
+.secondaryOutline {
+  @apply bg-base-white text-negative-400 border border-negative-400 md:hover:bg-negative-400 md:hover:text-base-white disabled:text-gray-300 disabled:border-gray-300;
+}
+
+.quaternary {
+  @apply bg-base-white text-negative-400 border border-negative-200 md:hover:bg-negative-400 md:hover:text-base-white disabled:text-gray-300 disabled:border-gray-300;
+}
+
+.tertiary {
+  @apply bg-base-white text-gray-700 border border-gray-200 md:hover:border-gray-900 disabled:text-gray-300;
+}
+
+.quinary {
+  @apply bg-base-white text-gray-900 border border-gray-900 md:hover:bg-gray-900 md:hover:border-gray-900 md:hover:text-base-white disabled:text-gray-300 disabled:border-gray-300;
+}
+
+.senary {
+  @apply w-full justify-start py-2 px-4 md:hover:bg-gray-50 md:hover:font-medium rounded text-md;
+}
+
+.septenary {
+  @apply bg-base-white text-gray-700 border border-gray-200 md:hover:bg-gray-900 md:hover:text-base-white md:hover:border-gray-900 disabled:text-gray-300;
+}
+
+/* State button */
+.completed {
+  @apply bg-success-400 border-success-400 text-base-white;
+}

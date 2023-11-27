@@ -3,29 +3,35 @@ import classnames from 'classnames';
 
 import Popover from '~shared/Popover';
 import UserAvatar from '~shared/UserAvatar';
-import { useAppContext, useColonyContext, useMobile } from '~hooks';
+import { useAppContext, useMobile } from '~hooks';
 import { removeValueUnits } from '~utils/css';
 import { SimpleMessageValues } from '~types/index';
-// import { UserTokenBalanceData } from '~types/tokens';
+import { Colony, UserTokenBalanceData } from '~types';
+
 import AvatarDropdownPopover from './AvatarDropdownPopover';
 import AvatarDropdownPopoverMobile from './AvatarDropdownPopoverMobile';
 
 import styles from './AvatarDropdown.css';
 
 interface Props {
+  colony?: Colony;
   preventTransactions?: boolean;
   spinnerMsg: SimpleMessageValues;
-  // tokenBalanceData: UserTokenBalanceData;
+  tokenBalanceData?: UserTokenBalanceData;
 }
 
 const displayName = 'frame.AvatarDropdown';
 
 const { refWidth, horizontalOffset, verticalOffset } = styles;
 
-const AvatarDropdown = ({ preventTransactions = false, spinnerMsg }: Props) => {
+const AvatarDropdown = ({
+  colony,
+  preventTransactions = false,
+  spinnerMsg,
+  tokenBalanceData,
+}: Props) => {
   const isMobile = useMobile();
   const { wallet, user } = useAppContext();
-  const { colony } = useColonyContext();
 
   /*
    * @NOTE Offset Calculations
@@ -48,13 +54,13 @@ const AvatarDropdown = ({ preventTransactions = false, spinnerMsg }: Props) => {
 
   const popoverContent = isMobile
     ? () =>
-        user?.name &&
-        wallet?.address &&
-        colony && (
+        user?.profile?.displayName &&
+        wallet?.address && (
           <AvatarDropdownPopoverMobile
             {...{
+              colony,
               spinnerMsg,
-              // tokenBalanceData,
+              tokenBalanceData,
             }}
           />
         )
@@ -94,12 +100,7 @@ const AvatarDropdown = ({ preventTransactions = false, spinnerMsg }: Props) => {
           type="button"
           data-test="avatarDropdown"
         >
-          <UserAvatar
-            address={wallet?.address || ''}
-            size="s"
-            user={user}
-            notSet={!wallet}
-          />
+          <UserAvatar size="s" user={user} notSet={!wallet} />
         </button>
       )}
     </Popover>

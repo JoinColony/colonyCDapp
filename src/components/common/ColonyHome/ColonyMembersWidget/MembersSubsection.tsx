@@ -1,17 +1,20 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import NavLink from '~shared/NavLink';
 import { Tooltip } from '~shared/Popover';
 import UserAvatar from '~shared/UserAvatar';
-// import Icon from '~shared/Icon';
 import ClickableHeading from '~shared/ClickableHeading';
 import InviteLinkButton from '~shared/Button/InviteLinkButton';
-
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { useAvatarDisplayCounter } from '~hooks';
-import { Colony, User } from '~types';
+import { Colony, Member } from '~types';
 import { notNull } from '~utils/arrays';
+// import Icon from '~shared/Icon';
+import {
+  calculateLastSliceIndex,
+  calculateRemainingItems,
+} from '~utils/avatars';
+import { COLONY_MEMBERS_ROUTE } from '~routes';
 
 import styles from './ColonyMembersWidget.css';
 
@@ -45,9 +48,9 @@ const MSG = defineMessages({
   tooltipText: {
     id: `${displayName}.tooltipText`,
     defaultMessage: `{isContributorsSubsection, select,
-      true {Contributors are members of the Colony who have earned reputation.}
+      true {Contributors are members of the Colony who have reputation or permissions.}
       other { Watchers are members of the Colony
-         who currently don't have any reputation. }
+         who currently don't have any reputation or permissions. }
     }`,
   },
   viewMore: {
@@ -60,35 +63,32 @@ interface Props {
   colony: Colony;
   currentDomainId?: number;
   maxAvatars?: number;
-  // members?: ColonyContributor[] | ColonyWatcher[];
+  members?: Member[] | null;
   isContributorsSubsection: boolean;
 }
 
 const MAX_AVATARS = 12;
 
 const MembersSubsection = ({
-  colony: { name, watchers },
-  // members,
+  colony: { name },
+  members,
   isContributorsSubsection,
-  colony,
   currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
   maxAvatars = MAX_AVATARS,
 }: Props) => {
-  const colonyWatchers = useMemo(
-    () => (watchers?.items || []).filter(notNull),
-    [watchers],
-  );
   // const { user } = useAppContext();
-  // const userHasAccountRegistered = useUserAccountRegistered();
   // const hasRegisteredProfile = user?.name;
   // const canAdministerComments =
   //   userHasAccountRegistered &&
   //   (hasRoot(allUserRoles) || canAdminister(allUserRoles));
 
-  const { avatarsDisplaySplitRules, remainingAvatarsCount } =
-    useAvatarDisplayCounter(maxAvatars, colonyWatchers, false);
+  const remainingAvatarsCount = calculateRemainingItems(
+    maxAvatars,
+    members ?? [],
+    false,
+  );
 
-  const BASE_MEMBERS_ROUTE = `/colony/${name}/members`;
+  const BASE_MEMBERS_ROUTE = `/${name}/${COLONY_MEMBERS_ROUTE}`;
   const membersPageRoute =
     currentDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID
       ? BASE_MEMBERS_ROUTE
@@ -114,7 +114,7 @@ const MembersSubsection = ({
             <FormattedMessage
               {...MSG.title}
               values={{
-                count: colonyWatchers?.length,
+                count: members?.length,
                 hasCounter,
                 isContributorsSubsection,
               }}
@@ -129,10 +129,10 @@ const MembersSubsection = ({
         )}
       </div>
     ),
-    [isContributorsSubsection, membersPageRoute, colonyWatchers, name],
+    [isContributorsSubsection, membersPageRoute, members, name],
   );
 
-  if (!colonyWatchers.length) {
+  if (!members) {
     return (
       <div className={styles.main}>
         {setHeading(false)}
@@ -150,18 +150,17 @@ const MembersSubsection = ({
     <div className={styles.main}>
       {setHeading(true)}
       <ul className={styles.userAvatars}>
-        {(colonyWatchers as { user: User }[])
-          .slice(0, avatarsDisplaySplitRules)
-          .map(({ user }) => (
-            <li className={styles.userAvatar} key={user.walletAddress}>
+        {members
+          .slice(0, calculateLastSliceIndex(maxAvatars, members, false))
+          .filter(notNull)
+          .map((member) => (
+            <li className={styles.userAvatar} key={member.address}>
               <UserAvatar
                 size="xs"
-                address={user.walletAddress}
                 // banned={canAdministerComments && banned}
-                banned={false}
                 showInfo
-                colony={colony}
-                user={user}
+                user={member.user}
+                address={member.address}
                 popperOptions={{
                   placement: 'bottom',
                   showArrow: false,

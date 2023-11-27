@@ -6,8 +6,7 @@ import { SimpleMessageValues } from '~types';
 import { getBlockExplorerLink } from '~utils/external';
 
 interface Props {
-  /*
-   * Allows for link style customization (Eg: we need to disquise the link as a button)
+  /** Allows for link style customization (Eg: we need to disguise the link as a button)
    * Don't abuse it!
    */
   className?: string;
@@ -21,9 +20,7 @@ interface Props {
   /** Values for text (react-intl interpolation) */
   textValues?: SimpleMessageValues;
 
-  /*
-   * Show a title over the element, on hover. This is browser native.
-   */
+  /**  Show a title over the element, on hover. This is browser native. */
   title?: string;
 }
 

@@ -1,41 +1,77 @@
 import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
+import {
+  Address,
+  Colony,
+  ColonyObjective,
+  Domain,
+  DomainColor,
+  Safe,
+  SafeTransactionData,
+} from '~types';
+import { NetworkInfo } from '~constants';
+
 import { ActionTypes } from '../../actionTypes';
-import { Address, Color } from '~types';
 
 import {
   ErrorActionType,
   UniqueActionType,
-  UniqueActionTypeWithoutPayload,
   ActionTypeWithMeta,
-  MetaWithHistory,
+  MetaWithSetter,
+  UniqueActionTypeWithoutPayload,
 } from './index';
+import { ExternalLink } from '~gql';
+import { OneTxPaymentPayload } from './colonyActions';
+import {
+  ExpenditureFundPayload,
+  StakedExpenditureCancelPayload,
+} from './expenditures';
 
-export enum RootMotionOperationNames {
-  MINT_TOKENS = 'mintTokens',
-  UPGRADE = 'upgrade',
-  UNLOCK_TOKEN = 'unlockToken',
+export enum RootMotionMethodNames {
+  MintTokens = 'mintTokens',
+  Upgrade = 'upgrade',
+  UnlockToken = 'unlockToken',
 }
+
+type MotionExpenditureBase = {
+  fromDomainId: number;
+  motionDomainId: number;
+};
+export type ExpenditureFundMotionPayload = Omit<
+  ExpenditureFundPayload,
+  'colonyAddress'
+> &
+  MotionExpenditureBase & {
+    colony: Colony;
+  };
+
+export type StakedExpenditureCancelMotionPayload =
+  StakedExpenditureCancelPayload &
+    MotionExpenditureBase & { colonyName: string };
+
+export type MotionFinalizePayload = {
+  userAddress: Address;
+  colonyAddress: Address;
+  motionId: string;
+  gasEstimate: string;
+};
 
 export type MotionActionTypes =
   | UniqueActionType<
       ActionTypes.MOTION_STAKE,
       {
-        userAddress: Address;
         colonyAddress: Address;
         motionId: BigNumber;
         vote: number;
         amount: BigNumber;
+        actionId?: string;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      object
     >
   | ErrorActionType<ActionTypes.MOTION_STAKE_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_STAKE_SUCCESS,
-      MetaWithHistory<object>
-    >
+  | UniqueActionTypeWithoutPayload<ActionTypes.MOTION_STAKE_SUCCESS, object>
   | UniqueActionType<
       ActionTypes.MOTION_VOTE,
       {
@@ -44,10 +80,10 @@ export type MotionActionTypes =
         motionId: BigNumber;
         vote: number;
       },
-      MetaWithHistory<object>
+      object
     >
   | ErrorActionType<ActionTypes.MOTION_VOTE_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.MOTION_VOTE_SUCCESS, MetaWithHistory<object>>
+  | UniqueActionTypeWithoutPayload<ActionTypes.MOTION_VOTE_SUCCESS, object>
   | UniqueActionType<
       ActionTypes.MOTION_REVEAL_VOTE,
       {
@@ -55,169 +91,145 @@ export type MotionActionTypes =
         colonyAddress: Address;
         motionId: BigNumber;
       },
-      MetaWithHistory<object>
+      object
     >
   | ErrorActionType<ActionTypes.MOTION_REVEAL_VOTE_ERROR, object>
-  | ActionTypeWithMeta<
+  | UniqueActionTypeWithoutPayload<
       ActionTypes.MOTION_REVEAL_VOTE_SUCCESS,
-      MetaWithHistory<object>
+      object
     >
-  | UniqueActionType<
-      ActionTypes.MOTION_FINALIZE,
-      {
-        userAddress: Address;
-        colonyAddress: Address;
-        motionId: BigNumber;
-      },
-      MetaWithHistory<object>
-    >
+  | UniqueActionType<ActionTypes.MOTION_FINALIZE, MotionFinalizePayload, object>
   | ErrorActionType<ActionTypes.MOTION_FINALIZE_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_FINALIZE_SUCCESS,
-      MetaWithHistory<object>
-    >
+  | UniqueActionTypeWithoutPayload<ActionTypes.MOTION_FINALIZE_SUCCESS, object>
   | UniqueActionType<
       ActionTypes.MOTION_CLAIM,
       {
         userAddress: Address;
         colonyAddress: Address;
-        motionIds: Array<BigNumber>;
+        extensionAddress: Address;
+        transactionHash: string;
       },
-      MetaWithHistory<object>
+      object
     >
   | ErrorActionType<ActionTypes.MOTION_CLAIM_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_CLAIM_SUCCESS,
-      MetaWithHistory<object>
+  | UniqueActionTypeWithoutPayload<ActionTypes.MOTION_CLAIM_SUCCESS, object>
+  | UniqueActionType<
+      ActionTypes.MOTION_CLAIM_ALL,
+      {
+        userAddress: Address;
+        colonyAddress: Address;
+        extensionAddress: Address;
+        motionIds: string[];
+      },
+      object
     >
+  | ErrorActionType<ActionTypes.MOTION_CLAIM_ALL_ERROR, object>
+  | UniqueActionTypeWithoutPayload<ActionTypes.MOTION_CLAIM_ALL_SUCCESS, object>
   | UniqueActionType<
       ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
       {
         colonyAddress: Address;
+        isCreateDomain: boolean;
+        motionDomainId: number;
+        customActionTitle: string;
+        domain?: Domain;
         colonyName?: string;
         domainName: string;
-        domainColor?: Color;
+        domainColor?: DomainColor;
         domainPurpose?: string;
         annotationMessage?: string;
         parentId?: number;
-        domainId?: number;
-        isCreateDomain: boolean;
-        motionDomainId: string;
       },
-      MetaWithHistory<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_DOMAIN_CREATE_EDIT_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_DOMAIN_CREATE_EDIT_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.MOTION_EXPENDITURE_PAYMENT,
-      {
-        colonyAddress: Address;
-        colonyName?: string;
-        recipientAddress: Address;
-        domainId: number;
-        singlePayment: {
-          amount: BigNumber;
-          tokenAddress: Address;
-          decimals: number;
-        };
-        annotationMessage?: string;
-        motionDomainId: string;
-      },
-      MetaWithHistory<object>
+      OneTxPaymentPayload,
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_PAYMENT_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_EXPENDITURE_PAYMENT_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.MOTION_EDIT_COLONY,
       {
-        colonyAddress: Address;
-        colonyName: string;
-        colonyDisplayName: string;
+        colony: Colony;
+        customActionTitle: string;
+        colonyDisplayName?: string;
         colonyAvatarImage?: string;
-        colonyAvatarHash?: string;
-        hasAvatarChanged?: boolean;
-        colonyTokens?: Address[];
+        colonyThumbnail?: string;
+        tokenAddresses?: Address[];
+        colonyDescription?: string | null;
+        colonyExternalLinks?: ExternalLink[] | null;
         annotationMessage?: string;
-        /*
-         * @TODO I think this will also store the subscribed-to tokens list
-         */
+        colonyObjective?: ColonyObjective;
       },
-      MetaWithHistory<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_EDIT_COLONY_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_EDIT_COLONY_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.MOTION_MOVE_FUNDS,
       {
         colonyAddress: Address;
+        customActionTitle: string;
         colonyName?: string;
-        version: string;
+        colonyVersion: number;
         tokenAddress: Address;
-        fromDomainId: number;
-        toDomainId: number;
+        fromDomain: Domain;
+        toDomain: Domain;
         amount: BigNumber;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_MOVE_FUNDS_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_MOVE_FUNDS_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.ROOT_MOTION,
       {
-        operationName: RootMotionOperationNames;
+        operationName: RootMotionMethodNames;
+        customActionTitle: string;
         colonyAddress: Address;
         colonyName?: string;
         motionParams: [BigNumber] | [string];
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.ROOT_MOTION_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.ROOT_MOTION_SUCCESS, MetaWithHistory<object>>
+  | ActionTypeWithMeta<ActionTypes.ROOT_MOTION_SUCCESS, MetaWithSetter<object>>
   | UniqueActionType<
       ActionTypes.MOTION_USER_ROLES_SET,
       {
         colonyAddress: Address;
+        customActionTitle: string;
         colonyName: string;
         domainId: number;
         userAddress: Address;
         roles: Record<ColonyRole, boolean>;
-        annotationMessage?: string;
         motionDomainId: string;
+        annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_USER_ROLES_SET_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_USER_ROLES_SET_SUCCESS,
-      MetaWithHistory<object>
-    >
-  | UniqueActionType<
-      ActionTypes.MOTION_STATE_UPDATE,
-      {
-        colonyAddress: Address;
-        motionId: BigNumber;
-        userAddress: Address;
-      },
-      object
-    >
-  | ErrorActionType<ActionTypes.MOTION_STATE_UPDATE_ERROR, object>
-  | UniqueActionTypeWithoutPayload<
-      ActionTypes.MOTION_STATE_UPDATE_SUCCESS,
-      object
+      MetaWithSetter<object>
     >
   | UniqueActionType<
       ActionTypes.MOTION_ESCALATE,
@@ -226,29 +238,66 @@ export type MotionActionTypes =
         colonyAddress: Address;
         motionId: BigNumber;
       },
-      MetaWithHistory<object>
+      object
     >
   | ErrorActionType<ActionTypes.MOTION_ESCALATE_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_ESCALATE_SUCCESS,
-      MetaWithHistory<object>
-    >
+  | UniqueActionTypeWithoutPayload<ActionTypes.MOTION_ESCALATE_SUCCESS, object>
   | UniqueActionType<
       ActionTypes.MOTION_MANAGE_REPUTATION,
       {
         colonyAddress: Address;
+        customActionTitle: string;
         colonyName?: string;
         domainId: number;
         userAddress: Address;
         amount: BigNumber;
-        motionDomainId: string;
+        motionDomainId: number;
         annotationMessage?: string;
         isSmitingReputation?: boolean;
       },
-      MetaWithHistory<object>
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_MANAGE_REPUTATION_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_MANAGE_REPUTATION_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_EXPENDITURE_FUND,
+      ExpenditureFundMotionPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_FUND_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL,
+      StakedExpenditureCancelMotionPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION,
+      {
+        safe: Omit<Safe, 'safeName'>;
+        customActionTitle: string;
+        transactions: SafeTransactionData[];
+        colonyAddress: Address;
+        colonyName: string;
+        motionDomainId: string;
+        annotationMessage: string | null;
+        network: NetworkInfo;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION_SUCCESS,
+      MetaWithSetter<object>
     >;

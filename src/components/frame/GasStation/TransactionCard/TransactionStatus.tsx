@@ -8,7 +8,7 @@ import { SpinnerLoader } from '~shared/Preloaders';
 import Icon from '~shared/Icon';
 
 import { DEFAULT_NETWORK_INFO } from '~constants';
-import { TRANSACTION_STATUSES } from '~types';
+import { TransactionStatus as TransactionStatusEnum } from '~gql';
 
 import styles from './TransactionStatus.css';
 
@@ -36,7 +36,7 @@ const MSG = defineMessages({
 interface Props {
   groupCount?: number;
   hash?: string;
-  status: TRANSACTION_STATUSES;
+  status: TransactionStatusEnum;
   loadingRelated?: boolean;
 }
 
@@ -48,7 +48,7 @@ const TransactionStatus = ({
 }: Props) => (
   <div
     className={classnames(styles.main, {
-      [styles.mainStatusReady]: TRANSACTION_STATUSES.READY === status,
+      [styles.mainStatusReady]: TransactionStatusEnum.Ready === status,
     })}
   >
     {hash && (
@@ -83,15 +83,15 @@ const TransactionStatus = ({
       <div
         className={classnames(styles.statusIconContainer, {
           [styles.statusIconContainerReady]:
-            TRANSACTION_STATUSES.READY === status,
+            TransactionStatusEnum.Ready === status,
         })}
       >
-        {groupCount && status === TRANSACTION_STATUSES.READY && (
+        {groupCount && status === TransactionStatusEnum.Ready && (
           <span className={styles.counter}>
             <span>{groupCount}</span>
           </span>
         )}
-        {status === TRANSACTION_STATUSES.SUCCEEDED && !loadingRelated && (
+        {status === TransactionStatusEnum.Succeeded && !loadingRelated && (
           <span
             className={styles.completed}
             data-test="gasStationTransactionSucceeded"
@@ -107,12 +107,12 @@ const TransactionStatus = ({
             />
           </span>
         )}
-        {(status === TRANSACTION_STATUSES.PENDING || loadingRelated) && (
+        {(status === TransactionStatusEnum.Pending || loadingRelated) && (
           <div data-test="gasStationTransactionPending">
             <SpinnerLoader appearance={{ size: 'small', theme: 'primary' }} />
           </div>
         )}
-        {status === TRANSACTION_STATUSES.FAILED && (
+        {status === TransactionStatusEnum.Failed && (
           <span className={styles.failed}>!</span>
         )}
       </div>

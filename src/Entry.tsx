@@ -4,18 +4,14 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import { ApolloProvider } from '@apollo/client';
 
-import layout from '~styles/layout.css';
-import '~utils/yup/customMethods'; // ensures custom yup methods are available when components load
-import { DialogProvider } from '~shared/Dialog';
-// import { TokenActivationProvider } from '~users/TokenActivationProvider';
+import { getContext, ContextModule } from '~context';
 
 import messages from './i18n/en.json';
 import actionMessages from './i18n/en-actions';
 import eventsMessages from './i18n/en-events';
-import motionMessages from './i18n/en-motions';
 import systemMessages from './i18n/en-system-messages';
+import motionStatesMessages from './i18n/en-motion-states';
 import Routes from './routes';
-import { AppContextProvider, getContext, ContextModule } from '~context';
 
 // @ts-ignore
 if (!Intl.RelativeTimeFormat) {
@@ -41,22 +37,14 @@ const Entry = ({ store }: Props) => {
         ...actionMessages,
         ...eventsMessages,
         ...systemMessages,
-        ...motionMessages,
+        ...motionStatesMessages,
       }}
     >
       <ApolloProvider client={apolloClient}>
         <ReduxProvider store={store}>
-          <AppContextProvider>
-            <Router>
-              <DialogProvider>
-                {/* <TokenActivationProvider> */}
-                <div className={layout.stretch}>
-                  <Routes />
-                </div>
-                {/* </TokenActivationProvider> */}
-              </DialogProvider>
-            </Router>
-          </AppContextProvider>
+          <Router>
+            <Routes />
+          </Router>
         </ReduxProvider>
       </ApolloProvider>
     </IntlProvider>

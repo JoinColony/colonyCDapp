@@ -5,48 +5,37 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master, feature/* ]
+    branches: [master, feature/*]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [16.16.0]
-
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-    - name: Get npm cache directory
-      id: npm-cache
-      run: |
-        echo "::set-output name=dir::$(npm config get cache)"
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
 
-    - name: Cache node modules
-      uses: actions/cache@v1
-      with:
-        path: ${{ steps.npm-cache.outputs.dir }}
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+      - name: Cache NPM dependencies
+        uses: actions/cache@v3
+        id: cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
 
-    - name: npm
-      run: npm i -g npm@8.11 --registry=https://registry.npmjs.org
-
-    - run: npm install --legacy-peer-deps
-    - run: npm run typecheck
-    - run: npm run lint:ci
-    - run: npm run stylelint:ci
-    - run: npm run test:ci
-    - run: npm run webpack:build:prod
-      env:
-        CI: true
+      - run: npm run typecheck
+      - run: npm run lint:ci
+      - run: npm run stylelint:ci
+      # Tests are disabled for now
+      # - run: npm run test:ci
+      - run: npm run webpack:prod

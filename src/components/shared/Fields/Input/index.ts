@@ -1,6 +1,8 @@
-export { default } from './Input';
+export { InputComponentAppearance } from './types';
+export { default as FormattedInput } from './FormattedInputComponent';
+export { default as Input, InputProps } from './Input';
 export {
   default as InputComponent,
-  Props as InputComponentProps,
+  InputComponentProps,
 } from './InputComponent';
-export { InputComponentAppearance } from './types';
+export * from './types';

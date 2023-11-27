@@ -21,7 +21,7 @@ const ColonyListItem = ({ colony }: Props) => {
           isActive ? styles.activeColony : undefined
         }
         title={colony.name}
-        to={`/colony/${colony.name}`}
+        to={`/${colony.name}`}
       >
         <div className={styles.dropdownItem}>
           <div className={styles.itemImage}>
@@ -31,7 +31,7 @@ const ColonyListItem = ({ colony }: Props) => {
               size="xs"
             />
           </div>
-          <div>{colony.profile?.displayName || colony.name}</div>
+          <div>{colony.metadata?.displayName || colony.name}</div>
         </div>
       </NavLink>
     </DropdownMenuItem>

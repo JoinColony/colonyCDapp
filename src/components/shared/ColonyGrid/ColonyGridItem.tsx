@@ -16,18 +16,18 @@ const displayName = 'common.ColonyGrid.ColonyGridItem';
 
 const ColonyGridItem = ({
   colony,
-  colony: { name, profile, colonyAddress },
+  colony: { name, metadata, colonyAddress },
 }: Props) => {
   return (
     <div className={styles.main}>
-      <Link to={`/colony/${name}`}>
+      <Link to={`/${name}`}>
         <ColonyAvatar colonyAddress={colonyAddress} colony={colony} />
         <Heading appearance={{ size: 'small' }}>
           <span
-            title={profile?.displayName || name}
+            title={metadata?.displayName || name}
             className={styles.displayName}
           >
-            {profile?.displayName || name}
+            {metadata?.displayName || name}
           </span>
         </Heading>
       </Link>

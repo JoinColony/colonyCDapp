@@ -15,7 +15,7 @@ import { getMainClasses } from '~utils/css';
 //   isGasStationMetatransactionError,
 //   isMetatransactionErrorFromColonyContract,
 // } from '~utils/web3';
-import { TRANSACTION_STATUSES } from '~types';
+import { TransactionStatus as TransactionStatusEnum } from '~gql';
 // import { METATRANSACTIONS_LEARN_MORE } from '~constants/externalUrls';
 
 import { Appearance } from '../GasStationContent';
@@ -151,9 +151,9 @@ const GroupedTransactionCard = ({
   //   updateTransactionAlert,
   // ]);
 
-  const ready = status === TRANSACTION_STATUSES.READY;
-  const failed = status === TRANSACTION_STATUSES.FAILED;
-  const succeeded = status === TRANSACTION_STATUSES.SUCCEEDED;
+  const ready = status === TransactionStatusEnum.Ready;
+  const failed = status === TransactionStatusEnum.Failed;
+  const succeeded = status === TransactionStatusEnum.Succeeded;
 
   // Only transactions that can be signed can be cancelled
   const canBeSigned = selected && ready;

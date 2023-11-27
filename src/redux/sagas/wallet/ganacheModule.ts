@@ -11,7 +11,7 @@ type CustomJsonRpcProvider = providers.JsonRpcProvider & {
   request: (args) => void;
 };
 
-const ganacheWalletModule = (privateKey, optionalAccountIndex = 1) => {
+const ganacheWalletModule = (privateKey: string, optionalAccountIndex = 1) => {
   const initWallet = () => {
     return {
       label: `Dev Wallet ${optionalAccountIndex}`,
@@ -48,8 +48,11 @@ const ganacheWalletModule = (privateKey, optionalAccountIndex = 1) => {
             const balance = await ganacheProvider.getBalance(address, block);
             return balance.toString();
           },
-          [RpcMethods.PersonalSign]: async ({ params: [message] }) =>
-            ganacheWallet.signMessage(message),
+          [RpcMethods.PersonalSign]: async ({ params: [message] }) => {
+            // Convert the signature to bytes before signing it
+            const messageUint8 = utils.arrayify(message);
+            return ganacheWallet.signMessage(messageUint8);
+          },
           [RpcMethods.SignTypedData]: async ({ params: [, typedData] }) =>
             ganacheProvider.send(RpcMethods.SignTypedData, [
               currentWalletAddress,

@@ -1,0 +1,11 @@
+.text {
+  @apply flex gap-1 items-center justify-center;
+}
+
+.value {
+  @apply heading-5;
+}
+
+.wrapper {
+  @apply text-center justify-center text-gray-500 text-1 min-w-[20rem] flex flex-col;
+}

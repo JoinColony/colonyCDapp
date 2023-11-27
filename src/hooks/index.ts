@@ -21,33 +21,73 @@ export type Given = (
 export {
   default as useNaiveBranchingDialogWizard,
   WizardDialogType,
-} from './naiveBranchingDialogWizardHook';
+} from './useNaiveBranchingDialogWizard';
 
-export { default as useAvatarDisplayCounter } from './useAvatarDisplayCounter';
-export { default as useColonyReputation } from './useColonyReputation';
+export { default as useColonyHasReputation } from './useColonyHasReputation';
 export { default as useDialogActionPermissions } from './useDialogActionPermissions';
-export { default as useEnabledExtensions } from './useEnabledExtensions';
-export { default as useFormatRolesTitle } from './useFormatRolesTitle';
+export { default as useActionDialogStatus } from './useActionDialogStatus';
+export {
+  default as useEnabledExtensions,
+  EnabledExtensionData,
+} from './useEnabledExtensions';
 export { default as useSelectedUser } from './useSelectedUser';
-export { default as useSplitTime } from './useSplitTime';
 export { default as useTitle } from './useTitle';
 export { default as useTokenInfo, TokenInfoProvider } from './useTokenInfo';
 export { default as useUserAvatarImageFromIPFS } from './useUserAvatarImageFromIPFS';
-export { default as useUserSettings, SlotKey } from './useUserSettings';
-export { default as useCanEditProfile } from './useCanEditProfile';
 export { default as useWindowSize } from './useWindowSize';
+// @TODO: Put this into ~context
 export { default as useAppContext } from './useAppContext';
 export { default as useUserReputation } from './useUserReputation';
 export { default as useMobile } from './useMobile';
+export { default as useTablet } from './useTablet';
+export { default as useSortedContributors } from './useSortedContributors';
 export {
   default as useUserReputationForTopDomains,
   UserDomainReputation,
 } from './useUserReputationForTopDomains';
+// @TODO: Put this into ~context
 export { default as useColonyContext } from './useColonyContext';
-export { default as useUserByNameOrAddress } from './useUserByNameOrAddress';
+export { default as useRichTextEditor } from './useRichTextEditor';
 export { default as useExtensionData } from './useExtensionData';
 export { default as useExtensionsData } from './useExtensionsData';
+export { default as usePaginatedActions } from './usePaginatedActions';
+export { default as useTokenActivationContext } from './useTokenActivationContext';
 export * from './useCanInteractWithColony';
+export { default as useColonyFundsClaims } from './useColonyFundsClaims';
+export { default as useCurrentSelectedToken } from './useCurrentSelectedToken';
+export { default as useGetNetworkToken } from './useGetNetworkToken';
+export { default as useTokenTotalBalance } from './useTokenTotalBalance';
+export { default as useColonyContractVersion } from './useColonyContractVersion';
+export { default as useNetworkInverseFee } from './useNetworkInverseFee';
+export { default as useUserByAddress } from './useUserByAddress';
+export { default as useUserByName } from './useUserByName';
+export { default as useUserByNameOrAddress } from './useUserByNameOrAddress';
+export { default as useDetectClickOutside } from './useDetectClickOutside';
+export { default as useCurrentPage } from './useCurrentPage';
+export { default as useFetchActiveInstallsExtension } from './useFetchActiveInstallsExtension';
+export { default as useActiveInstalls } from './useActiveInstalls';
+export { default as useGetColonyMembers } from './useGetColonyMembers';
+export { default as useAllMembers } from './members/useAllMembers';
+export { default as useColonyContributors } from './members/useColonyContributors';
+export { default as useContributorBreakdown } from './members/useContributorBreakdown';
+export { default as useGlobalEventHandler } from './useGlobalEventHandler';
+export { default as useFlatFormErrors } from './useFlatFormErrors';
+export { default as useEnoughTokensForStaking } from './useEnoughTokensForStaking';
+export { default as useCurrentBlockTime } from './useCurrentBlockTime';
+export { default as useClipboardCopy } from './useClipboardCopy';
+export { default as useInvitationLink } from './useInvitationLink';
+export { default as useShouldDisplayMotionCountdownTime } from './useShouldDisplayMotionCountdownTime';
+
+export {
+  default as useSafeTransactionStatus,
+  TRANSACTION_STATUS,
+  MSG as SafeMSGs,
+} from './useSafeTransactionStatus';
+export { default as useActivityFeed } from './useActivityFeed';
+export {
+  default as useNetworkMotionStates,
+  MotionStatesMap,
+} from './useNetworkMotionStates';
 
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously
@@ -107,7 +147,7 @@ export const useAsyncFunction = <P, R>({
   }
   // Automatically unsubscribe on unmount
   useEffect(() => () => asyncFunc.unsubscribe(), [asyncFunc]);
-  return asyncFunc.asyncFunction as any;
+  return asyncFunc.asyncFunction;
 };
 
 /*

@@ -6,10 +6,9 @@ import {
 } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
-import { HookFormToggle as Toggle } from '~shared/Fields';
+import { Toggle } from '~shared/Fields';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 import { UniversalMessageValues } from '~types';
-import { SlotKey } from '~hooks';
 
 import CustomEndpointInput from './CustomEndpointInput';
 
@@ -78,13 +77,14 @@ const MetatransactionsDisabled = ({
 
 export const getAdvancedSettingsRows = (
   metatransactionsAvailable: boolean,
-): Omit<SettingsRowProps, 'toggleDisabled'>[] => [
+): SettingsRowProps[] => [
   {
-    name: SlotKey.Metatransactions,
+    name: 'metatransactionsEnabled',
     paragraphText: MSG.metaDescription,
     toggleLabel: MSG.labelMetaTx,
     tooltipText: MSG.metaTooltip,
     tooltipTextValues: { br: <br /> },
+    toggleDisabled: !metatransactionsAvailable,
     extra: (
       <MetatransactionsDisabled
         metatransactionsDisabled={!metatransactionsAvailable}
@@ -92,15 +92,16 @@ export const getAdvancedSettingsRows = (
     ),
   },
   {
-    name: SlotKey.DecentralizedMode,
+    name: 'decentralizedModeEnabled',
     paragraphText: MSG.endpointsDescription,
     toggleLabel: MSG.customEndpoints,
     tooltipText: MSG.RPCTooltip,
+    toggleDisabled: true,
     extra: (
       <CustomEndpointInput
         label={MSG.labelRPC}
-        inputName={SlotKey.CustomRPC}
-        toggleName={SlotKey.DecentralizedMode}
+        inputName="customRpc"
+        toggleName="decentralizedModeEnabled"
       />
     ),
   },
@@ -110,7 +111,7 @@ interface SettingsRowProps {
   extra: ReactElement;
   paragraphText: MessageDescriptor;
   name: string;
-  toggleDisabled: boolean;
+  toggleDisabled?: boolean;
   toggleLabel: MessageDescriptor;
   tooltipText: MessageDescriptor;
   tooltipTextValues?: UniversalMessageValues;

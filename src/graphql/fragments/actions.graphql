@@ -1,0 +1,232 @@
+fragment ColonyAction on ColonyAction {
+  transactionHash: id
+  colonyAddress: colonyId
+  type
+  blockNumber
+  initiatorAddress
+  initiatorUser {
+    ...UserDisplay
+  }
+  initiatorColony {
+    ...ColonyDisplay
+  }
+  initiatorExtension {
+    ...ExtensionDisplayFragment
+  }
+  initiatorToken {
+    # NOTE: Token doesn't have a lightweight Display-only Fragment, as the props
+    # on that fragment are just 2 less than the actual "full" version of the Fragment
+    ...Token
+  }
+  initiatorColony {
+    ...Colony
+  }
+  initiatorExtension {
+    ...Extension
+  }
+  initiatorToken {
+    ...Token
+  }
+  recipientAddress
+  recipientUser {
+    ...UserDisplay
+  }
+  recipientColony {
+    ...ColonyDisplay
+  }
+  recipientExtension {
+    ...ExtensionDisplayFragment
+  }
+  recipientToken {
+    # NOTE: Token doesn't have a lightweight Display-only Fragment, as the props
+    # on that fragment are just 2 less than the actual "full" version of the Fragment
+    ...Token
+  }
+  recipientColony {
+    ...Colony
+  }
+  recipientExtension {
+    ...Extension
+  }
+  recipientToken {
+    ...Token
+  }
+  amount
+  tokenAddress
+  token {
+    # NOTE: Token doesn't have a lightweight Display-only Fragment, as the props
+    # on that fragment are just 2 less than the actual "full" version of the Fragment
+    ...Token
+  }
+  fromDomain {
+    ...Domain
+  }
+  toDomain {
+    ...Domain
+  }
+  createdAt
+  newColonyVersion
+  roles {
+    role_0
+    role_1
+    role_2
+    role_3
+    role_5
+    role_6
+  }
+  individualEvents
+  isMotion
+  payments {
+    amount
+    tokenAddress
+    recipientAddress
+  }
+  motionData {
+    ...ColonyMotion
+  }
+  colony {
+    colonyAddress: id
+    nativeToken {
+      nativeTokenDecimals: decimals
+      nativeTokenSymbol: symbol
+      tokenAddress: id
+    }
+    tokens {
+      ...ColonyTokensConnection
+    }
+    metadata {
+      ...ColonyMetadata
+    }
+  }
+  showInActionsList
+  pendingDomainMetadata {
+    ...DomainMetadata
+  }
+  pendingColonyMetadata {
+    ...ColonyMetadata
+  }
+  annotation {
+    ...Annotation
+  }
+  decisionData {
+    ...ColonyDecision
+  }
+  safeTransaction {
+    ...SafeTransaction
+  }
+  metadata {
+    customTitle
+  }
+}
+
+fragment Annotation on Annotation {
+  createdAt
+  message
+}
+
+fragment MotionStakeValues on MotionStakeValues {
+  yay
+  nay
+}
+
+fragment ColonyMotion on ColonyMotion {
+  databaseMotionId: id
+  motionId: nativeMotionId
+  motionStakes {
+    ...MotionStakes
+  }
+  usersStakes {
+    address
+    stakes {
+      raw {
+        ...MotionStakeValues
+      }
+      percentage {
+        ...MotionStakeValues
+      }
+    }
+  }
+  remainingStakes
+  userMinStake
+  requiredStake
+  rootHash
+  motionDomain {
+    ...Domain
+  }
+  nativeMotionDomainId
+  stakerRewards {
+    address
+    rewards {
+      yay
+      nay
+    }
+    isClaimed
+  }
+  isFinalized
+  voterRecord {
+    ...VoterRecord
+  }
+  revealedVotes {
+    ...MotionStakes
+  }
+  skillRep
+  repSubmitted
+  hasObjection
+  motionStateHistory {
+    hasVoted
+    hasPassed
+    hasFailed
+    hasFailedNotFinalizable
+    inRevealPhase
+  }
+  messages {
+    items {
+      ...MotionMessage
+    }
+  }
+  objectionAnnotation {
+    ...Annotation
+  }
+  isDecision
+  gasEstimate
+  transactionHash
+  action {
+    type
+  }
+}
+
+fragment MotionMessage on MotionMessage {
+  initiatorAddress
+  name
+  messageKey
+  initiatorUser {
+    ...User
+  }
+  vote
+  amount
+}
+
+fragment VoterRecord on VoterRecord {
+  address
+  voteCount
+  vote
+}
+
+fragment MotionStakes on MotionStakes {
+  raw {
+    ...MotionStakeValues
+  }
+  percentage {
+    ...MotionStakeValues
+  }
+}
+
+fragment ColonyDecision on ColonyDecision {
+  title
+  description
+  motionDomainId
+  walletAddress
+  createdAt
+  actionId
+  colonyAddress
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { MiniSpinnerLoader } from '~shared/Preloaders';
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import { useAppContext } from '~hooks';
 
 import styles from './AvatarDropdownPopoverMobile.css';

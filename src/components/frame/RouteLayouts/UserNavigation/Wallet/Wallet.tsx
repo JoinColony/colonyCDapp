@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 import { useSelector } from 'react-redux';
 
@@ -11,10 +11,8 @@ import {
   TransactionOrMessageGroups,
 } from '~frame/GasStation/transactionGroup';
 
-import { ActionTypes } from '~redux';
 import { groupedTransactionsAndMessages } from '~redux/selectors';
-import { useAppContext, useAsyncFunction, useMobile } from '~hooks';
-import { getLastWallet } from '~utils/autoLogin';
+import { useAppContext, useMobile } from '~hooks';
 
 import styles from './Wallet.css';
 
@@ -27,35 +25,16 @@ const MSG = defineMessages({
   },
   walletAutologin: {
     id: `${displayName}.walletAutologin`,
-    defaultMessage: 'Connecting wallet...',
+    defaultMessage: `Connecting{isMobile, select,
+        true {}
+        other { wallet}
+        }...`,
   },
 });
 
 const Wallet = () => {
-  const { wallet, updateWallet, walletConnecting, setWalletConnecting } =
-    useAppContext();
+  const { wallet, walletConnecting, connectWallet } = useAppContext();
   const isMobile = useMobile();
-
-  const asyncFunction = useAsyncFunction({
-    submit: ActionTypes.WALLET_OPEN,
-    error: ActionTypes.WALLET_OPEN_ERROR,
-    success: ActionTypes.WALLET_OPEN_SUCCESS,
-  });
-
-  const handleConnectWallet = useCallback(async () => {
-    setWalletConnecting?.(true);
-    let walletConnectSuccess = false;
-    try {
-      await asyncFunction(undefined);
-      walletConnectSuccess = true;
-    } catch (error) {
-      console.error('Could not connect wallet', error);
-    }
-    if (updateWallet && walletConnectSuccess) {
-      updateWallet();
-    }
-    setWalletConnecting?.(false);
-  }, [asyncFunction, updateWallet, setWalletConnecting]);
 
   const transactionAndMessageGroups = useSelector(
     groupedTransactionsAndMessages,
@@ -67,17 +46,15 @@ const Wallet = () => {
     [transactionAndMessageGroups],
   );
 
-  useLayoutEffect(() => {
-    if (!wallet && getLastWallet()) {
-      handleConnectWallet();
-    }
-  }, [handleConnectWallet, wallet]);
-
   return (
     <>
-      {walletConnecting && (
+      {!wallet && walletConnecting && (
         <div className={styles.walletAutoLogin}>
-          <MiniSpinnerLoader title={MSG.walletAutologin} />
+          <MiniSpinnerLoader
+            title={MSG.walletAutologin}
+            titleTextValues={{ isMobile }}
+            className={styles.walletLoader}
+          />
         </div>
       )}
       {!wallet?.address && (
@@ -88,7 +65,7 @@ const Wallet = () => {
               : styles.connectWalletButton
           }
           text={MSG.connectWallet}
-          onClick={handleConnectWallet}
+          onClick={connectWallet}
         />
       )}
       <span>

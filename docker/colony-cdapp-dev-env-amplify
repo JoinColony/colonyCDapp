@@ -3,12 +3,17 @@ FROM colony-cdapp-dev-env/base:latest
 # Declare volumes to set up metadata
 VOLUME [ "/colonyCDapp/amplify/backend", "/colonyCDapp/amplify/mock-data", "/colonyCDapp/src/graphql" ]
 
+# Open up ports to the docker image
+# Amplify
+EXPOSE 20002
+# Opensearch
+EXPOSE 9200
+
 WORKDIR /colonyCDapp
 
 # Add dependencies from the host
 ADD package.json /colonyCDapp/package.colonyCDapp.json
 ADD amplify /colonyCDapp/amplify
-ADD codegen.js /colonyCDapp/codegen.js
 
 # Note: these are listed individually so that if they change, they won't affect
 # the build of the other images
@@ -24,8 +29,24 @@ ADD docker/files/amplify/.graphqlconfig.yml.base /colonyCDapp/.graphqlconfig.yml
 
 # This still needs to be saved as a "template" since it will only be moved to it's final location at runtime
 ADD docker/files/amplify/amplify-meta.json.base /colonyCDappBackend/scripts/amplify-meta.json.base
-ADD docker/files/amplify/config.base /root/.aws/config
-ADD docker/files/amplify/credentials.base /root/.aws/credentials
+ADD docker/files/amplify/config.base /home/node/.aws/config
+ADD docker/files/amplify/credentials.base /home/node/.aws/credentials
+
+# Opensearch cannot be run by root so we use the built in node user
+# We also add the node user to the users group so that the node user
+# can run commands on the mounted files and folders
+ARG USER_ID
+ARG USER_GROUP
+
+RUN getent group ${USER_GROUP} || groupadd --gid ${USER_GROUP} fuckamplify
+
+RUN usermod -u ${USER_ID} node
+RUN usermod -g ${USER_GROUP} node
+
+RUN chown -R ${USER_ID}:${USER_GROUP} /colonyCDapp
+RUN chown -R ${USER_ID}:${USER_GROUP} /colonyCDappBackend
+
+USER node
 
 #
 # Amplify
@@ -40,10 +61,6 @@ RUN npm install
 
 # Actually download the amplify tarball (don't ask me, it's how it works)
 RUN npm run amplify
-
-# Open up ports to the docker image
-# Amplify
-EXPOSE 20002
 
 # Make the run script executable
 RUN chmod +x /colonyCDappBackend/run.sh

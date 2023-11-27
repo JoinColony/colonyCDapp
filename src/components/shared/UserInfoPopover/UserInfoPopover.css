@@ -20,6 +20,7 @@
 
 .section:last-of-type {
   padding-bottom: 0;
+  border-bottom: none;
 }
 
 .loadingSpinnerContainer {

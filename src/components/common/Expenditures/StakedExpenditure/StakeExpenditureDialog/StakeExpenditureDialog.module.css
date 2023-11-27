@@ -1,0 +1,10 @@
+.loader {
+  margin: auto;
+  width: fit-content;
+}
+
+.requiredStake {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

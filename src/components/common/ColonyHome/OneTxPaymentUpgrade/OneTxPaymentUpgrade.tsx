@@ -7,6 +7,7 @@ import Alert from '~shared/Alert';
 import Button from '~shared/Button';
 import { useColonyContext, useExtensionData } from '~hooks';
 import { isInstalledExtensionData } from '~utils/extensions';
+import { COLONY_EXTENSIONS_ROUTE } from '~routes';
 
 import styles from './OneTxPaymentUpgrade.css';
 
@@ -63,7 +64,7 @@ const OneTxPaymentUpgrade = () => {
               <Button
                 appearance={{ theme: 'primary', size: 'medium' }}
                 text={MSG.goToExtensionButton}
-                linkTo={`/colony/${name}/extensions/${Extension.OneTxPayment}`}
+                linkTo={`/${name}/${COLONY_EXTENSIONS_ROUTE}/${Extension.OneTxPayment}`}
               />
             </div>
           )}

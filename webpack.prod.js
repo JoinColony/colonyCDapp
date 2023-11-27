@@ -28,9 +28,9 @@ module.exports = () => ({
           test: /[\\/]src\/lib[\\/]/,
           idHint: 'libs',
           chunks: 'all',
-        }
-      }
-    }
+        },
+      },
+    },
   },
   module: {
     rules: [
@@ -58,5 +58,11 @@ module.exports = () => ({
      * Add the rest of the PRODUCTION environment required plugins here
      */
     new CleanWebpackPlugin(),
+    new webpack.DefinePlugin({
+      WEBPACK_IS_PRODUCTION: JSON.stringify(true),
+    }),
+    new webpack.DefinePlugin({
+      SAFE_ENABLED_LOCALLY: JSON.stringify(false),
+    }),
   ],
 });

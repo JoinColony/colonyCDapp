@@ -1,0 +1,35 @@
+query GetUserTransactions(
+  $userAddress: ID!
+  $colonyAddress: ID
+  $transactionsOlderThan: String
+  $nextToken: String
+  $limit: Int
+) {
+  getTransactionsByUser(
+    from: $userAddress
+    createdAt: { lt: $transactionsOlderThan }
+    filter: { colonyAddress: { eq: $colonyAddress }, deleted: { ne: true } }
+    sortDirection: DESC
+    nextToken: $nextToken
+    limit: $limit
+  ) {
+    items {
+      ...Transaction
+    }
+    nextToken
+  }
+}
+
+query GetTransactionsByGroup($from: ID!, $groupId: ID!) {
+  getTransactionsByUserAndGroup(groupId: $groupId, from: { eq: $from }) {
+    items {
+      ...Transaction
+    }
+  }
+}
+
+query GetTransaction($id: ID!) {
+  getTransaction(id: $id) {
+    ...Transaction
+  }
+}

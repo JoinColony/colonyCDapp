@@ -3,12 +3,13 @@ import { MessageDescriptor, FormattedMessage } from 'react-intl';
 import { nanoid } from 'nanoid';
 
 import Dialog, { DialogProps } from '~shared/Dialog';
-import Heading from '~shared/Heading';
-import IndexModalItem from './IndexModalItem';
+import { Heading3 } from '~shared/Heading';
 import Button from '~shared/Button';
 import Icon from '~shared/Icon';
 
 import { UniversalMessageValues } from '~types';
+
+import IndexModalItem from './IndexModalItem';
 
 import styles from './IndexModal.css';
 
@@ -44,11 +45,9 @@ const IndexModal = ({ title, cancel, items, back }: Props) => {
   return (
     <Dialog cancel={cancel}>
       <div className={styles.header}>
-        <Heading
+        <Heading3
           appearance={{
             margin: 'none',
-            size: 'medium',
-            weight: 'bold',
             theme: 'dark',
           }}
           text={title}

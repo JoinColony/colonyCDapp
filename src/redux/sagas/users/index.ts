@@ -1,7 +1,8 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, fork, put, takeLatest } from 'redux-saga/effects';
+import { BigNumber, utils } from 'ethers';
 // import { BigNumber } from 'ethers';
-import { utils } from 'ethers';
 import { QueryOptions } from '@apollo/client';
+import { ClientType, TokenLockingClient } from '@colony/colony-js';
 
 import { ContextModule, getContext, removeContext } from '~context';
 import { clearLastWallet } from '~utils/autoLogin';
@@ -12,21 +13,24 @@ import {
   GetProfileByEmailDocument,
   GetUserByNameDocument,
 } from '~gql';
+import { LANDING_PAGE_ROUTE } from '~routes';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action, AllActions } from '../../types/actions';
 import {
+  getColonyManager,
+  initiateTransaction,
   putError,
-  // getColonyManager
+  takeFrom,
 } from '../utils';
-import { getWallet } from '../wallet';
+import {
+  createGroupTransaction,
+  createTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 
 // import { transactionLoadRelated, transactionReady } from '../../actionCreators';
-// import {
-//   createTransactionChannels,
-//   createTransaction,
-//   getTxChannel,
-// } from '../transactions';
 
 // function* userAvatarRemove({ meta }: Action<ActionTypes.USER_AVATAR_REMOVE>) {
 //   try {
@@ -90,10 +94,11 @@ import { getWallet } from '../wallet';
 
 function* usernameCreate({
   meta,
-  payload: { username, email, emailPermissions },
+  meta: { navigate, updateUser },
+  payload: { username, emailAddress },
 }: Action<ActionTypes.USERNAME_CREATE>) {
-  const wallet = yield call(getWallet);
-  const walletAddress = utils.getAddress(wallet?.address);
+  const wallet = getContext(ContextModule.Wallet);
+  const walletAddress = utils.getAddress(wallet.address);
 
   const apolloClient = getContext(ContextModule.ApolloClient);
 
@@ -106,10 +111,10 @@ function* usernameCreate({
       },
     ];
 
-    if (email) {
+    if (emailAddress) {
       refetchQueries.push({
         query: GetProfileByEmailDocument,
-        variables: { email },
+        variables: { email: emailAddress },
       });
     }
     /*
@@ -123,12 +128,9 @@ function* usernameCreate({
       variables: {
         input: {
           id: walletAddress,
-          name: username,
           profile: {
-            email: email || undefined,
-            meta: {
-              emailPermissions,
-            },
+            displayName: username,
+            email: emailAddress || undefined,
           },
         },
       },
@@ -138,23 +140,37 @@ function* usernameCreate({
     yield put<AllActions>({
       type: ActionTypes.USERNAME_CREATE_SUCCESS,
       payload: {
-        email,
+        emailAddress,
         username,
-        emailPermissions,
       },
       meta,
     });
+
+    if (updateUser) {
+      updateUser(walletAddress, true);
+    }
+
+    if (navigate) {
+      navigate(LANDING_PAGE_ROUTE);
+    }
   } catch (error) {
     return yield putError(ActionTypes.USERNAME_CREATE_ERROR, error, meta);
   }
   return null;
 }
 
+export const disconnectWallet = (walletLabel: string) => {
+  const onboard = getContext(ContextModule.Onboard);
+  onboard.disconnectWallet({ label: walletLabel });
+  removeContext(ContextModule.Wallet);
+  clearLastWallet();
+};
+
 function* userLogout() {
   try {
-    removeContext(ContextModule.Wallet);
-    clearLastWallet();
-
+    removeContext(ContextModule.ColonyManager);
+    const wallet = getContext(ContextModule.Wallet);
+    disconnectWallet(wallet.label);
     yield put<AllActions>({
       type: ActionTypes.USER_LOGOUT_SUCCESS,
     });
@@ -164,156 +180,115 @@ function* userLogout() {
   return null;
 }
 
-// function* userDepositToken({
-//   meta,
-//   payload: { tokenAddress, amount, colonyAddress },
-// }: Action<ActionTypes.USER_DEPOSIT_TOKEN>) {
-//   const txChannel = yield call(getTxChannel, meta.id);
-//   try {
-//     const apolloClient = getContext(ContextModule.ApolloClient);
-//     const colonyManager = yield getColonyManager();
-//     const { walletAddress } = yield getLoggedInUser();
+function* userDepositToken({
+  meta,
+  payload: { tokenAddress, amount, colonyAddress },
+}: Action<ActionTypes.USER_DEPOSIT_TOKEN>) {
+  const txChannel = yield call(getTxChannel, meta.id);
+  try {
+    const colonyManager = yield getColonyManager();
 
-//     const tokenLockingClient: TokenLockingClient =
-//       yield colonyManager.getClient(
-//         ClientType.TokenLockingClient,
-//         colonyAddress,
-//       );
+    const tokenLockingClient: TokenLockingClient =
+      yield colonyManager.getClient(
+        ClientType.TokenLockingClient,
+        colonyAddress,
+      );
 
-//     const batchKey = 'deposit';
+    const batchKey = 'deposit';
 
-//     const { approve, deposit } = yield createTransactionChannels(meta.id, [
-//       'approve',
-//       'deposit',
-//     ]);
+    const { approve, deposit } = yield createTransactionChannels(meta.id, [
+      'approve',
+      'deposit',
+    ]);
 
-//     const createGroupTransaction = ({ id, index }, config) =>
-//       fork(createTransaction, id, {
-//         ...config,
-//         group: {
-//           key: batchKey,
-//           id: meta.id,
-//           index,
-//         },
-//       });
+    yield createGroupTransaction(approve, batchKey, meta, {
+      context: ClientType.TokenClient,
+      methodName: 'approve',
+      identifier: tokenAddress,
+      params: [tokenLockingClient.address, BigNumber.from(amount)],
+      ready: false,
+    });
 
-//     yield createGroupTransaction(approve, {
-//       context: ClientType.TokenClient,
-//       methodName: 'approve',
-//       identifier: tokenAddress,
-//       params: [tokenLockingClient.address, BigNumber.from(amount)],
-//       ready: false,
-//     });
+    yield createGroupTransaction(deposit, batchKey, meta, {
+      context: ClientType.TokenLockingClient,
+      methodName: 'deposit(address,uint256,bool)',
+      identifier: colonyAddress,
+      params: [tokenAddress, BigNumber.from(amount), false],
+      ready: false,
+    });
 
-//     yield createGroupTransaction(deposit, {
-//       context: ClientType.TokenLockingClient,
-//       methodName: 'deposit',
-//       identifier: colonyAddress,
-//       params: [tokenAddress, BigNumber.from(amount), false],
-//       ready: false,
-//     });
+    yield takeFrom(approve.channel, ActionTypes.TRANSACTION_CREATED);
 
-//     yield takeFrom(approve.channel, ActionTypes.TRANSACTION_CREATED);
+    yield initiateTransaction({ id: approve.id });
 
-//     yield put(transactionReady(approve.id));
+    yield takeFrom(approve.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-//     yield takeFrom(approve.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_CREATED);
 
-//     yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_CREATED);
+    yield initiateTransaction({ id: deposit.id });
 
-//     yield put(transactionReady(deposit.id));
+    yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-//     yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield put({
+      type: ActionTypes.USER_DEPOSIT_TOKEN_SUCCESS,
+      meta,
+    });
+  } catch (error) {
+    return yield putError(ActionTypes.USER_DEPOSIT_TOKEN_ERROR, error, meta);
+  } finally {
+    txChannel.close();
+  }
+  return null;
+}
 
-//     yield apolloClient.query<
-//       UserBalanceWithLockQuery,
-//       UserBalanceWithLockQueryVariables
-//     >({
-//       query: UserBalanceWithLockDocument,
-//       variables: {
-//         address: walletAddress,
-//         tokenAddress,
-//         colonyAddress,
-//       },
-//       fetchPolicy: 'network-only',
-//     });
+function* userWithdrawToken({
+  meta,
+  payload: { tokenAddress, amount, colonyAddress },
+}: Action<ActionTypes.USER_WITHDRAW_TOKEN>) {
+  const txChannel = yield call(getTxChannel, meta.id);
+  try {
+    const { withdraw } = yield createTransactionChannels(meta.id, ['withdraw']);
 
-//     yield put({
-//       type: ActionTypes.USER_DEPOSIT_TOKEN_SUCCESS,
-//       meta,
-//     });
-//   } catch (error) {
-//     return yield putError(ActionTypes.USER_DEPOSIT_TOKEN_ERROR, error, meta);
-//   } finally {
-//     txChannel.close();
-//   }
-//   return null;
-// }
+    yield fork(createTransaction, withdraw.id, {
+      context: ClientType.TokenLockingClient,
+      methodName: 'withdraw(address,uint256,bool)',
+      identifier: colonyAddress,
+      params: [tokenAddress, BigNumber.from(amount), false],
+      ready: false,
+      group: {
+        key: 'withdraw',
+        id: meta.id,
+        index: 0,
+      },
+    });
 
-// function* userWithdrawToken({
-//   meta,
-//   payload: { tokenAddress, amount, colonyAddress },
-// }: Action<ActionTypes.USER_WITHDRAW_TOKEN>) {
-//   const txChannel = yield call(getTxChannel, meta.id);
-//   try {
-//     const apolloClient = getContext(ContextModule.ApolloClient);
-//     const { walletAddress } = yield getLoggedInUser();
+    yield takeFrom(withdraw.channel, ActionTypes.TRANSACTION_CREATED);
 
-//     const { withdraw } = yield createTransactionChannels(meta.id, ['withdraw']);
+    yield initiateTransaction({ id: withdraw.id });
 
-//     yield fork(createTransaction, withdraw.id, {
-//       context: ClientType.TokenLockingClient,
-//       methodName: 'withdraw',
-//       identifier: colonyAddress,
-//       params: [tokenAddress, BigNumber.from(amount), false],
-//       ready: false,
-//       group: {
-//         key: 'withdraw',
-//         id: meta.id,
-//         index: 0,
-//       },
-//     });
+    yield takeFrom(withdraw.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-//     yield takeFrom(withdraw.channel, ActionTypes.TRANSACTION_CREATED);
-
-//     yield put(transactionReady(withdraw.id));
-
-//     yield takeFrom(withdraw.channel, ActionTypes.TRANSACTION_SUCCEEDED);
-
-//     yield apolloClient.query<
-//       UserBalanceWithLockQuery,
-//       UserBalanceWithLockQueryVariables
-//     >({
-//       query: UserBalanceWithLockDocument,
-//       variables: {
-//         address: walletAddress,
-//         tokenAddress,
-//         colonyAddress,
-//       },
-//       fetchPolicy: 'network-only',
-//     });
-
-//     yield put<AllActions>({
-//       type: ActionTypes.USER_WITHDRAW_TOKEN_SUCCESS,
-//       meta,
-//       payload: {
-//         tokenAddress,
-//         amount,
-//       },
-//     });
-//   } catch (error) {
-//     return yield putError(ActionTypes.USER_WITHDRAW_TOKEN_ERROR, error, meta);
-//   } finally {
-//     txChannel.close();
-//   }
-//   return null;
-// }
+    yield put<AllActions>({
+      type: ActionTypes.USER_WITHDRAW_TOKEN_SUCCESS,
+      meta,
+      payload: {
+        tokenAddress,
+        amount,
+      },
+    });
+  } catch (error) {
+    return yield putError(ActionTypes.USER_WITHDRAW_TOKEN_ERROR, error, meta);
+  } finally {
+    txChannel.close();
+  }
+  return null;
+}
 
 export function* setupUsersSagas() {
   // yield takeLatest(ActionTypes.USER_AVATAR_REMOVE, userAvatarRemove);
   // yield takeLatest(ActionTypes.USER_AVATAR_UPLOAD, userAvatarUpload);
   yield takeLatest(ActionTypes.USER_LOGOUT, userLogout);
   yield takeLatest(ActionTypes.USERNAME_CREATE, usernameCreate);
-  // yield takeLatest(ActionTypes.USER_DEPOSIT_TOKEN, userDepositToken);
-  // yield takeLatest(ActionTypes.USER_WITHDRAW_TOKEN, userWithdrawToken);
+  yield takeLatest(ActionTypes.USER_DEPOSIT_TOKEN, userDepositToken);
+  yield takeLatest(ActionTypes.USER_WITHDRAW_TOKEN, userWithdrawToken);
 }

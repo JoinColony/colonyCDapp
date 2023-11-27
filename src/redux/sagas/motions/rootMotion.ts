@@ -2,26 +2,24 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, Id, getChildIndex } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
+import { ColonyManager } from '~context';
+
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
+
 import {
   putError,
   takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
   getColonyManager,
+  uploadAnnotation,
+  initiateTransaction,
+  createActionMetadataInDB,
 } from '../utils';
-
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
 
 function* createRootMotionSaga({
   payload: {
@@ -30,8 +28,9 @@ function* createRootMotionSaga({
     colonyName,
     motionParams,
     annotationMessage,
+    customActionTitle,
   },
-  meta: { id: metaId, history },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ROOT_MOTION>) {
   let txChannel;
@@ -40,7 +39,8 @@ function* createRootMotionSaga({
       throw new Error('Parameters not set for rootMotion transaction');
     }
 
-    const colonyManager = yield getColonyManager();
+    const colonyManager: ColonyManager = yield getColonyManager();
+
     const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
@@ -48,6 +48,7 @@ function* createRootMotionSaga({
 
     const childSkillIndex = yield call(
       getChildIndex,
+      colonyClient.networkClient,
       colonyClient,
       Id.RootDomain,
       Id.RootDomain,
@@ -126,7 +127,7 @@ function* createRootMotionSaga({
       );
     }
 
-    yield put(transactionReady(createMotion.id));
+    yield initiateTransaction({ id: createMotion.id });
 
     const {
       payload: { hash: txHash },
@@ -134,31 +135,30 @@ function* createRootMotionSaga({
       createMotion.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
+    yield createActionMetadataInDB(txHash, customActionTitle);
+
     if (annotationMessage) {
-      yield put(transactionPending(annotateRootMotion.id));
-
-      const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
-
-      yield put(
-        transactionAddParams(annotateRootMotion.id, [txHash, ipfsHash]),
-      );
-
-      yield put(transactionReady(annotateRootMotion.id));
-
-      yield takeFrom(
-        annotateRootMotion.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
+      yield uploadAnnotation({
+        txChannel: annotateRootMotion,
+        message: annotationMessage,
+        txHash,
+      });
     }
+
     yield put<AllActions>({
       type: ActionTypes.ROOT_MOTION_SUCCESS,
       meta,
     });
 
-    if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+    if (colonyName && navigate) {
+      navigate(`/${colonyName}?tx=${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (caughtError) {
     putError(ActionTypes.ROOT_MOTION_ERROR, caughtError, meta);

@@ -3,11 +3,13 @@
 
 .container {
   display: flex;
+  align-items: center;
   position: relative;
 }
 
 .container label {
   margin-right: 6px;
+  margin-bottom: 0;
   width: fit-content;
 }
 
@@ -22,6 +24,10 @@
 
 .delegate:disabled {
   cursor: initial;
+}
+
+.checkboxContainer {
+  height: toggleHeight;
 }
 
 .toggle {
@@ -73,6 +79,11 @@
 
 .icon {
   margin-left: 11px;
+  height: 16px;
+}
+
+.icon svg {
+  vertical-align: baseline;
 }
 
 .main {

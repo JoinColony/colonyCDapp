@@ -1,21 +1,26 @@
 import { Address } from '~types';
-import { FormValues as CreateUserWizardFormValues } from '~common/CreateUserWizard/validation';
+import { CreateUserFormValues } from '~common/Onboarding/wizardSteps/StepCreateUser/types';
 
 import { ActionTypes } from '../../actionTypes';
 
-import { ActionType, ErrorActionType, UniqueActionType } from './index';
+import {
+  ActionType,
+  ErrorActionType,
+  MetaWithSetter,
+  UniqueActionType,
+} from './index';
 
 export type UserActionTypes =
   | UniqueActionType<
       ActionTypes.USERNAME_CREATE,
-      CreateUserWizardFormValues,
-      object
+      CreateUserFormValues,
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.USERNAME_CREATE_ERROR, object>
   | UniqueActionType<
       ActionTypes.USERNAME_CREATE_SUCCESS,
-      CreateUserWizardFormValues,
-      object
+      CreateUserFormValues,
+      MetaWithSetter<object>
     >
   | UniqueActionType<ActionTypes.USER_AVATAR_REMOVE, object, object>
   | ErrorActionType<ActionTypes.USER_AVATAR_REMOVE_ERROR, object>

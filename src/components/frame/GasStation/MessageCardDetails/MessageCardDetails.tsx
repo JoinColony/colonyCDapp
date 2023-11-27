@@ -9,7 +9,7 @@ import Card from '~shared/Card';
 import { getMainClasses } from '~utils/css';
 import { messageCancel } from '~redux/actionCreators';
 import { MessageType } from '~redux/immutable';
-import { TRANSACTION_STATUSES } from '~types';
+import { TransactionStatus } from '~gql';
 
 import { MessageCardStatus } from '../MessageCard';
 import MessageCardControls from './MessageCardControls';
@@ -47,7 +47,7 @@ const MessageCardDetails = ({
     () => dispatch(messageCancel(id)),
     [dispatch, id],
   );
-  const canBeCancelled = status === TRANSACTION_STATUSES.CREATED;
+  const canBeCancelled = status === TransactionStatus.Created;
   return (
     <div>
       <TransactionBackToList onClose={onClose} />
@@ -68,8 +68,8 @@ const MessageCardDetails = ({
               { theme: 'message' },
               styles as unknown as { [k: string]: string },
               {
-                failed: status === TRANSACTION_STATUSES.FAILED,
-                succeeded: status === TRANSACTION_STATUSES.SUCCEEDED,
+                failed: status === TransactionStatus.Failed,
+                succeeded: status === TransactionStatus.Succeeded,
                 isShowingCancelConfirmation,
               },
             )}
@@ -108,12 +108,12 @@ const MessageCardDetails = ({
                 </div>
               )}
             </span>
-            {messageContent}
+            <span className={styles.messageContent}>{messageContent}</span>
           </div>
         </Card>
       </CardList>
-      {(status === TRANSACTION_STATUSES.CREATED ||
-        status === TRANSACTION_STATUSES.PENDING) && (
+      {(status === TransactionStatus.Created ||
+        status === TransactionStatus.Pending) && (
         <MessageCardControls message={message} />
       )}
     </div>

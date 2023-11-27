@@ -1,10 +1,8 @@
 import React, { useMemo } from 'react';
 
-import Select from '~shared/Fields/Select';
+import { Select, SelectProps } from '~shared/Fields';
 import TokenIcon from '~shared/TokenIcon';
 import { Token } from '~types';
-
-import { Props as SelectProps } from '../Select/types';
 
 import styles from './TokenSymbolSelector.css';
 

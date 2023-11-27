@@ -1,244 +1,322 @@
-import React, { useMemo } from 'react';
-import {
-  Route,
-  Routes as RoutesSwitch,
-  Navigate,
-  Outlet,
-} from 'react-router-dom';
-import { defineMessages } from 'react-intl';
+import React from 'react';
+import { Route, Routes as RoutesSwitch } from 'react-router-dom';
 
-import CreateUserWizard from '~common/CreateUserWizard';
 import ColonyHome from '~common/ColonyHome';
 import ColonyFunding from '~common/ColonyFunding';
-import ColonyMembers from '~common/ColonyMembers';
 import FourOFour from '~frame/FourOFour';
 import UserProfile from '~common/UserProfile';
-import UserProfileEdit from '~common/UserProfileEdit';
-import {
-  // NavBar, Plain, SimpleNav,
-  Default,
-  UserLayout,
-} from '~frame/RouteLayouts';
-import ColonyBackText from '~frame/ColonyBackText';
-// import LoadingTemplate from '~root/LoadingTemplate';
+import DecisionPreview from '~common/ColonyDecisions/DecisionPreview';
+import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
+import { NavBar, UserLayout } from '~frame/RouteLayouts';
 import LandingPage from '~frame/LandingPage';
-// import ActionsPage from '~dashboard/ActionsPage';
+import { useTitle } from '~hooks';
+import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage';
+import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage';
+import ReputationPage from '~frame/Extensions/pages/ReputationPage';
+import ExtensionsPage from '~frame/Extensions/pages/ExtensionsPage';
+import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage';
+import IncorporationPage from '~frame/Extensions/pages/IncorporationPage';
+import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
+import PermissionsPage from '~frame/Extensions/pages/PermissionsPage';
+import { ExtensionsContextProvider } from '~context/ExtensionsContext';
+import MembersPage from '~frame/v5/pages/MembersPage';
+import ColonyUsersPage from '~frame/v5/pages/ColonyUsersPage';
+import VerifiedPage from '~frame/v5/pages/VerifiedPage';
+import BalancePage from '~frame/v5/pages/BalancePage';
+import TeamsPage from '~frame/v5/pages/TeamsPage';
+import UserProfilePage from '~frame/v5/pages/UserProfilePage';
+import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
+import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
+import ActivityPage from '~frame/v5/pages/ActivityPage';
+import OnboardingPage from '~frame/v5/pages/OnboardingPage';
+
+import ColonyActions from '~common/ColonyActions';
+import ColonyDecisions from '~common/ColonyDecisions';
+import Expenditures from '~common/Expenditures';
+import ColonyHomeRoutes from '~common/ColonyHome/ColonyHomeRoutes';
+
+import LandingPageRoute from './LandingPageRoute';
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 
-// import appLoadingContext from '~context/appLoadingState';
-import { useAppContext, useMobile } from '~hooks';
-
 import {
-  COLONY_FUNDING_ROUTE,
+  COLONY_BALANCES_ROUTE,
   COLONY_HOME_ROUTE,
+  COLONY_OLD_HOME_ROUTE,
   COLONY_MEMBERS_ROUTE,
   COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
   CREATE_COLONY_ROUTE,
   CREATE_USER_ROUTE,
-  USER_EDIT_ROUTE,
+  USER_EDIT_PROFILE_ROUTE,
   USER_ROUTE,
-  LANDING_PAGE_ROUTE,
   NOT_FOUND_ROUTE,
-  // ACTIONS_PAGE_ROUTE,
-  // UNWRAP_TOKEN_ROUTE,
-  // CLAIM_TOKEN_ROUTE,
+  DECISIONS_PAGE_ROUTE,
+  COLONY_DECISIONS_PREVIEW_ROUTE,
+  COLONY_EXTENSIONS_ROUTE,
+  COLONY_EXTENSION_DETAILS_ROUTE,
+  COLONY_REPUTATION_ROUTE,
+  COLONY_DETAILS_ROUTE,
+  COLONY_PERMISSIONS_ROUTE,
+  COLONY_INTEGRATIONS_ROUTE,
+  COLONY_INCORPORATION_ROUTE,
+  COLONY_ADVANCED_ROUTE,
+  COLONY_CONTRIBUTORS_ROUTE,
+  COLONY_FOLLOWERS_ROUTE,
+  COLONY_VERIFIED_ROUTE,
+  COLONY_TEAMS_ROUTE,
+  USER_PREFERENCES_ROUTE,
+  USER_ADVANCED_ROUTE,
+  USER_HOME_ROUTE,
+  COLONY_ACTIVITY_ROUTE,
+  COLONY_DECISIONS_ROUTE,
+  COLONY_EXPENDITURES_DETAILS_ROUTE,
+  OLD_ACTIONS_PAGE_ROUTE,
+  COLONY_INCOMING_ROUTE,
 } from './routeConstants';
-import NotFoundRoute from './NotFoundRoute';
-import { ColonyContextProvider } from '~context/ColonyContext';
-import CreateColonyWizard from '~common/CreateColonyWizard';
 
-// import useTitle from '~hooks/useTitle';
+import RootRoute from './RootRoute';
+import NotFoundRoute from './NotFoundRoute';
+import MainRoute from './MainRoute';
+import ColonyRoute from './ColonyRoute';
+import ColonyMembersRoute from './ColonyMembersRoute';
+import UserRoute from './UserRoute';
 
 const displayName = 'routes.Routes';
 
-const MSG = defineMessages({
-  userProfileEditBack: {
-    id: `${displayName}.userProfileEditBack`,
-    defaultMessage: 'Go to profile',
-  },
-  // loadingAppMessage: {
-  //   id: 'routes.Routes.loadingAppMessage',
-  //   defaultMessage: 'Loading App',
-  // },
-});
-
 const Routes = () => {
-  const { user, wallet } = useAppContext();
-  const isMobile = useMobile();
-  // const isAppLoading = appLoadingContext.getIsLoading();
+  useTitle();
 
-  // disabling rules to silence eslint warnings
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const isConnected = wallet?.address;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const didClaimProfile = user?.name;
+  return (
+    <RoutesSwitch>
+      <Route path="/" element={<RootRoute />}>
+        <Route element={<LandingPageRoute />}>
+          <Route index element={<LandingPage />} />
+        </Route>
 
-  // useTitle();
-
-  /**
-   * @NOTE Memoized Switch
-   *
-   * We need to memoize the entire route switch to prevent re-renders at not
-   * so oportune times.
-   *
-   * The `balance` value, accessible through (no longer isLoggedInUser), even if we don't
-   * use it here directly, will cause a re-render of the `<Routes />` component
-   * every time it changes (using the subscription).
-   *
-   * To prevent this, we memoize the whole routes logic, to only render it again
-   * when the user connects a new wallet.
-   *
-   * This was particularly problematic when creating a new colony, and after
-   * the first TX, the balance would change and as a result everything would
-   * re-render, reseting the wizard.
-   */
-  const MemoizedSwitch = useMemo(
-    () => (
-      <RoutesSwitch>
-        <Route path="/" element={<Navigate to={LANDING_PAGE_ROUTE} />} />
         <Route path={NOT_FOUND_ROUTE} element={<FourOFour />} />
 
-        <Route
-          path={LANDING_PAGE_ROUTE}
-          element={
-            <Default routeProps={{ hasBackLink: false }}>
-              <LandingPage />
-            </Default>
-          }
-        />
+        {/* Main routes */}
+        <Route element={<MainRoute />}>
+          <Route
+            path={USER_ROUTE}
+            element={
+              <UserLayout routeProps={{ hasBackLink: false }}>
+                <UserProfile />
+              </UserLayout>
+            }
+          />
 
-        <Route
-          element={
-            <ColonyContextProvider>
-              <Default
-                routeProps={{
-                  backText: ColonyBackText,
-                  backRoute: ({ colonyName }) => `/colony/${colonyName}`,
-                  hasSubscribedColonies: false,
-                }}
-              >
-                <Outlet />
-              </Default>
-            </ColonyContextProvider>
-          }
-        >
-          <Route path={COLONY_FUNDING_ROUTE} element={<ColonyFunding />} />
-          {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map(
-            (path) => (
-              <Route key={path} path={path} element={<ColonyMembers />} />
-            ),
-          )}
+          {/* User routes */}
+          <Route path={USER_HOME_ROUTE} element={<UserRoute />}>
+            <Route
+              path={USER_EDIT_PROFILE_ROUTE}
+              element={<UserProfilePage />}
+            />
+            <Route
+              path={USER_PREFERENCES_ROUTE}
+              element={<UserPreferencesPage />}
+            />
+            <Route path={USER_ADVANCED_ROUTE} element={<UserAdvancedPage />} />
+          </Route>
         </Route>
+
         <Route
-          path={COLONY_HOME_ROUTE}
-          element={
-            <ColonyContextProvider>
-              <Default routeProps={{ hasBackLink: false }}>
-                <ColonyHome />
-              </Default>
-            </ColonyContextProvider>
-          }
-        />
-        <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyWizard />} />
-        <Route path={CREATE_USER_ROUTE} element={<CreateUserWizard />} />
-        <Route
-          path={USER_ROUTE}
-          element={
-            <UserLayout routeProps={{ hasBackLink: false }}>
-              <UserProfile />
-            </UserLayout>
-          }
-        />
-        <Route
-          path={USER_EDIT_ROUTE}
-          element={
-            <Default
-              routeProps={{
-                hasBackLink: true,
-                hasSubscribedColonies: isMobile,
-                backText: MSG.userProfileEditBack,
-                backRoute: `/user/${user?.name}`,
-              }}
-            >
-              <UserProfileEdit />
-            </Default>
-          }
-        />
-        {/* <WalletRequiredRoute
-          isConnected={isConnected}
-          didClaimProfile={didClaimProfile}
           path={CREATE_USER_ROUTE}
-          component={CreateUserWizard}
-          layout={Plain}
-        />
-        <WalletRequiredRoute
-          isConnected={isConnected}
-          didClaimProfile={didClaimProfile}
-          path={CREATE_COLONY_ROUTE}
-          component={CreateColonyWizard}
-          layout={Plain}
+          element={<OnboardingPage flow="user" />}
         />
 
-        <AlwaysAccesibleRoute
-          path={USER_ROUTE}
-          component={UserProfile}
-          layout={SimpleNav}
-          routeProps={{
-            hasBackLink: false,
-          }}
+        <Route
+          path={CREATE_COLONY_ROUTE}
+          element={<OnboardingPage flow="colony" />}
         />
-        <AlwaysAccesibleRoute
-          path={USER_EDIT_ROUTE}
-          component={UserProfileEdit}
-          layout={Default}
-          routeProps={{
-            hasSubscribedColonies: false,
-            backText: MSG.userProfileEditBack,
-            backRoute: `/user/${username}`,
-          }}
-        />
-        <AlwaysAccesibleRoute
-          exact
-          path={ACTIONS_PAGE_ROUTE}
-          component={ActionsPage}
-          layout={NavBar}
-          routeProps={({ colonyName }) => ({
-            backText: '',
-            backRoute: `/colony/${colonyName}`,
-          })}
-        />
-        <AlwaysAccesibleRoute
-          path={UNWRAP_TOKEN_ROUTE}
-          component={UnwrapTokensPage}
-          layout={NavBar}
-          routeProps={({ colonyName }) => ({
-            backText: ColonyBackText,
-            backRoute: `/colony/${colonyName}`,
-          })}
-        />
-        <AlwaysAccesibleRoute
-          path={CLAIM_TOKEN_ROUTE}
-          component={ClaimTokensPage}
-          layout={NavBar}
-          routeProps={({ colonyName }) => ({
-            backText: ColonyBackText,
-            backRoute: `/colony/${colonyName}`,
-          })}
-        />
+
+        {/* Colony routes */}
+        <Route path={COLONY_HOME_ROUTE} element={<ColonyRoute />}>
+          <Route index element={<ColonyHome />} />
+          <Route path={COLONY_ACTIVITY_ROUTE} element={<ActivityPage />} />
+
+          <Route path={COLONY_INCOMING_ROUTE} element={<ColonyFunding />} />
+          <Route element={<ColonyMembersRoute />}>
+            {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map(
+              (path) => (
+                <Route path={path} element={<MembersPage />} key={path} />
+              ),
+            )}
+            <Route
+              path={COLONY_CONTRIBUTORS_ROUTE}
+              element={<ColonyUsersPage pageName="contributors" />}
+            />
+            <Route
+              path={COLONY_FOLLOWERS_ROUTE}
+              element={<ColonyUsersPage pageName="followers" />}
+            />
+            <Route path={COLONY_VERIFIED_ROUTE} element={<VerifiedPage />} />
+            <Route path={COLONY_BALANCES_ROUTE} element={<BalancePage />} />
+            <Route path={COLONY_TEAMS_ROUTE} element={<TeamsPage />} />
+          </Route>
+
+          {/* Colony settings routes */}
+          <Route path={COLONY_DETAILS_ROUTE} element={<ColonyDetailsPage />} />
+
+          {/* Enable the following routes in dev mode */}
+          {/* @ts-ignore */}
+          {!WEBPACK_IS_PRODUCTION && (
+            <Route
+              path={COLONY_REPUTATION_ROUTE}
+              element={<ReputationPage />}
+            />
+          )}
+
+          {/* @ts-ignore */}
+          {!WEBPACK_IS_PRODUCTION && (
+            <Route
+              path={COLONY_PERMISSIONS_ROUTE}
+              element={<PermissionsPage />}
+            />
+          )}
+
+          {/* @ts-ignore */}
+          {!WEBPACK_IS_PRODUCTION && (
+            <Route
+              path={COLONY_INTEGRATIONS_ROUTE}
+              element={<IntegrationsPage />}
+            />
+          )}
+
+          {/* @ts-ignore */}
+          {!WEBPACK_IS_PRODUCTION && (
+            <Route
+              path={COLONY_INCORPORATION_ROUTE}
+              element={<IncorporationPage />}
+            />
+          )}
+          <Route path={COLONY_EXTENSIONS_ROUTE} element={<ExtensionsPage />} />
+          <Route
+            path={COLONY_EXTENSION_DETAILS_ROUTE}
+            element={
+              /* I am not sure why this needs a provider, but I guess we'll find out soon enough */
+              <ExtensionsContextProvider>
+                <ExtensionDetailsPage />
+              </ExtensionsContextProvider>
+            }
+          />
+          <Route path={COLONY_ADVANCED_ROUTE} element={<AdvancedPage />} />
+        </Route>
+
+        {/* OLD Colony routes -- remove when going live */}
+        <Route path={COLONY_OLD_HOME_ROUTE} element={<ColonyRoute />}>
+          {/* <Route
+            path={COLONY_EVENTS_ROUTE}
+            element={
+              <ColonyHomeLayout
+                filteredDomainId={domainIdFilter}
+                onDomainChange={setDomainIdFilter}
+              >
+                {/* <ColonyEvents colony={colony} ethDomainId={filteredDomainId} /> }
+                <div>Events (Transactions Log)</div>
+              </ColonyHomeLayout>
+            }
+          /> */}
+          <Route element={<ColonyHomeRoutes />}>
+            <Route index element={<ColonyActions />} />
+            <Route
+              path={COLONY_DECISIONS_ROUTE}
+              element={<ColonyDecisions />}
+            />
+            <Route
+              path={COLONY_EXPENDITURES_DETAILS_ROUTE}
+              element={<Expenditures />}
+            />
+          </Route>
+          <Route path={COLONY_INCOMING_ROUTE} element={<ColonyFunding />} />
+          <Route element={<ColonyMembersRoute />}>
+            <Route path={COLONY_MEMBERS_ROUTE} element={<MembersPage />} />
+            <Route
+              path={COLONY_MEMBERS_WITH_DOMAIN_ROUTE}
+              element={<MembersPage />}
+            />
+            <Route
+              path={COLONY_CONTRIBUTORS_ROUTE}
+              element={<ColonyUsersPage pageName="contributors" />}
+            />
+            <Route
+              path={COLONY_FOLLOWERS_ROUTE}
+              element={<ColonyUsersPage pageName="followers" />}
+            />
+            <Route path={COLONY_VERIFIED_ROUTE} element={<VerifiedPage />} />
+            <Route path={COLONY_TEAMS_ROUTE} element={<TeamsPage />} />
+            <Route path={COLONY_BALANCES_ROUTE} element={<BalancePage />} />
+          </Route>
+          <Route
+            path={COLONY_DECISIONS_PREVIEW_ROUTE}
+            element={
+              <NavBar>
+                <DecisionPreview />
+              </NavBar>
+            }
+          />
+
+          {/* Colony settings routes */}
+
+          <Route path={COLONY_DETAILS_ROUTE} element={<ColonyDetailsPage />} />
+          <Route path={COLONY_REPUTATION_ROUTE} element={<ReputationPage />} />
+          <Route
+            path={COLONY_PERMISSIONS_ROUTE}
+            element={<PermissionsPage />}
+          />
+          <Route path={COLONY_EXTENSIONS_ROUTE} element={<ExtensionsPage />} />
+          <Route
+            path={COLONY_EXTENSION_DETAILS_ROUTE}
+            element={
+              /* I am not sure why this needs a provider, but I guess we'll find out soon enough */
+              <ExtensionsContextProvider>
+                <ExtensionDetailsPage />
+              </ExtensionsContextProvider>
+            }
+          />
+          <Route
+            path={COLONY_INTEGRATIONS_ROUTE}
+            element={<IntegrationsPage />}
+          />
+          <Route
+            path={COLONY_INCORPORATION_ROUTE}
+            element={<IncorporationPage />}
+          />
+          <Route path={COLONY_ADVANCED_ROUTE} element={<AdvancedPage />} />
+
+          <Route
+            path={OLD_ACTIONS_PAGE_ROUTE}
+            element={<ActionDetailsPage />}
+          />
+          <Route path={DECISIONS_PAGE_ROUTE} element={<ActionDetailsPage />} />
+        </Route>
 
         {/*
-         * Redirect anything else that's not found to the 404 route
-         */}
-        <Route path="*" element={<NotFoundRoute />} />
-      </RoutesSwitch>
-    ),
-    [user],
-  );
+      <AlwaysAccesibleRoute
+        path={UNWRAP_TOKEN_ROUTE}
+        component={UnwrapTokensPage}
+        layout={NavBar}
+        routeProps={({ colonyName }) => ({
+          backText: ColonyBackText,
+          backRoute: `/${colonyName}`,
+        })}
+      />
+      <AlwaysAccesibleRoute
+        path={CLAIM_TOKEN_ROUTE}
+        component={ClaimTokensPage}
+        layout={NavBar}
+        routeProps={({ colonyName }) => ({
+          backText: ColonyBackText,
+          backRoute: `/${colonyName}`,
+        })}
+      />
 
-  // if (isAppLoading) {
-  //   return <LoadingTemplate loadingText={MSG.loadingAppMessage} />;
-  // }
-  return MemoizedSwitch;
+      /*
+       * Redirect anything else that's not found to the 404 route
+       */}
+        <Route path="*" element={<NotFoundRoute />} />
+      </Route>
+    </RoutesSwitch>
+  );
 };
 
 Routes.displayName = displayName;

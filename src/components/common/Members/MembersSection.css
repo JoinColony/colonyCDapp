@@ -1,0 +1,58 @@
+@value query700 from '~styles/queries.css';
+
+.bar {
+  display: flex;
+  align-items: baseline;
+  margin-top: 25px;
+  margin-bottom: 13px;
+}
+
+.title {
+  font-size: var(--size-smallish);
+  font-weight: var(--weight-bold);
+  color: var(--dark);
+}
+
+.contributorsTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.description {
+  margin-left: 9px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  color: var(--grey-purple);
+}
+
+.noResults {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 36px;
+  margin-bottom: 48px;
+}
+
+.membersList > ul {
+  box-shadow: none;
+}
+
+@media screen and query700 {
+  .bar {
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .title {
+    padding: 0 14px;
+  }
+
+  .description {
+    margin-left: 0px;
+    padding: 0 14px;
+  }
+}

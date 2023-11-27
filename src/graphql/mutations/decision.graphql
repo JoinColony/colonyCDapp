@@ -1,0 +1,5 @@
+mutation CreateColonyDecision($input: CreateColonyDecisionInput!) {
+  createColonyDecision(input: $input) {
+    id
+  }
+}

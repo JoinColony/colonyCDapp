@@ -11,12 +11,12 @@ import {
   RecordToJS,
   SimpleMessageValues,
   ExtendedClientType,
-  TRANSACTION_ERRORS,
-  TRANSACTION_STATUSES,
+  TransactionStatus,
+  TransactionErrors,
 } from '~types';
 
 export interface TransactionError {
-  type: TRANSACTION_ERRORS;
+  type: TransactionErrors;
   message: string;
 }
 
@@ -48,7 +48,7 @@ export interface TransactionRecordProps {
   options: Overrides;
   params: MethodParams;
   receipt?: TransactionReceipt;
-  status: TRANSACTION_STATUSES;
+  status: TransactionStatus;
   loadingRelated?: boolean;
   metatransaction: boolean;
   title?: MessageDescriptor;

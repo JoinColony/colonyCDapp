@@ -1,24 +1,51 @@
 import { Extension } from '@colony/colony-js';
 
+import { Address } from '~types';
+
 import useExtensionsData from './useExtensionsData';
 
-type EnabledExtensionKey = `is${Extension}Enabled`;
-type EnabledExtensions = Partial<Record<EnabledExtensionKey, boolean>>;
+export interface EnabledExtensionData {
+  loading: boolean;
+  isOneTxPaymentEnabled: boolean;
+  isVotingReputationEnabled: boolean;
+  votingReputationVersion: number | undefined;
+  votingReputationAddress: Address | undefined;
+  shortPollExtensions: () => void;
+  isStakedExpenditureEnabled: boolean;
+  isStagedExpenditureEnabled: boolean;
+  isStreamingPaymentsEnabled: boolean;
+}
 
-const useEnabledExtensions = () => {
-  const { installedExtensionsData, loading } = useExtensionsData();
+const useEnabledExtensions = (): EnabledExtensionData => {
+  const { installedExtensionsData, loading, shortPollExtensions } =
+    useExtensionsData();
 
-  const enabledExtensions = installedExtensionsData.reduce<EnabledExtensions>(
-    (extensions, extension) => ({
-      ...extensions,
-      [`is${extension.extensionId}Enabled`]: extension.isEnabled,
-    }),
-    {},
+  const oneTxPaymentExtension = installedExtensionsData.find(
+    (extension) => extension.extensionId === Extension.OneTxPayment,
+  );
+  const votingReputationExtension = installedExtensionsData.find(
+    (extension) => extension.extensionId === Extension.VotingReputation,
+  );
+  const stakedExpenditureExtension = installedExtensionsData.find(
+    (extension) => extension.extensionId === Extension.StakedExpenditure,
+  );
+  const stagedExpenditureExtension = installedExtensionsData.find(
+    (extension) => extension.extensionId === Extension.StagedExpenditure,
+  );
+  const streamingPaymentsExtension = installedExtensionsData.find(
+    (extension) => extension.extensionId === Extension.StreamingPayments,
   );
 
   return {
     loading,
-    enabledExtensions,
+    isOneTxPaymentEnabled: !!oneTxPaymentExtension?.isEnabled,
+    isVotingReputationEnabled: !!votingReputationExtension?.isEnabled,
+    votingReputationVersion: votingReputationExtension?.currentVersion,
+    votingReputationAddress: votingReputationExtension?.address,
+    isStakedExpenditureEnabled: !!stakedExpenditureExtension?.isEnabled,
+    isStagedExpenditureEnabled: !!stagedExpenditureExtension?.isEnabled,
+    isStreamingPaymentsEnabled: !!streamingPaymentsExtension?.isEnabled,
+    shortPollExtensions,
   };
 };
 

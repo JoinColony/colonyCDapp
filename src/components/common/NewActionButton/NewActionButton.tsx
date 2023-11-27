@@ -1,78 +1,39 @@
 import React from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
-import { useColonyContext } from '~hooks';
+import {
+  useAppContext,
+  useColonyContext,
+  useEnabledExtensions,
+  useNaiveBranchingDialogWizard,
+} from '~hooks';
 // import { Extension } from '@colony/colony-js';
 // import { useSelector } from 'react-redux';
 
-import Button from '~shared/Button';
-import { Tooltip } from '~shared/Popover';
-import { SpinnerLoader } from '~shared/Preloaders';
+import { getWizardFlowConfig } from './wizardConfig';
+import { DialogButton } from '~shared/Button';
+import { useGetUserTokenBalanceQuery } from '~gql';
+import UserTokenActivationButton from '~frame/UserTokenActivationButton';
 
-// import ColonyActionsDialog from '~dialogs/ColonyActionsDialog';
-// import ExpendituresDialog from '~dialogs/ExpendituresDialog';
-// import CreateDomainDialog from '~dialogs/CreateDomainDialog';
-// import EditDomainDialog from '~dialogs/EditDomainDialog';
-// import CreatePaymentDialog from '~dialogs/CreatePaymentDialog';
-// import ManageDomainsDialog from '~dialogs/ManageDomainsDialog';
-// import ManageFundsDialog from '~dialogs/ManageFundsDialog';
-// import UnlockTokenDialog from '~dialogs/UnlockTokenDialog';
-// import TransferFundsDialog from '~dialogs/TransferFundsDialog';
-// import AdvancedDialog from '~dialogs/AdvancedDialog';
-// import PermissionManagementDialog from '~dialogs/PermissionManagementDialog';
-// import RecoveryModeDialog from '~dialogs/RecoveryModeDialog';
-// import ManageWhitelistDialog from '~dialogs/ManageWhitelistDialog';
-// import TokenMintDialog from '~dialogs/TokenMintDialog';
-// import NetworkContractUpgradeDialog from '~dialogs/NetworkContractUpgradeDialog';
-// import EditColonyDetailsDialog from '~dialogs/EditColonyDetailsDialog';
-// import ManageReputationDialog from '~dialogs/ManageReputationDialog';
-// import ColonyTokenManagementDialog from '~dialogs/ColonyTokenManagementDialog';
-// import { SmiteDialog, AwardDialog } from '~dialogs/AwardAndSmiteDialogs';
-
-// import { useEnabledExtensions } from '~utils/hooks/useEnabledExtensions';
-
-// import { useNaiveBranchingDialogWizard } from '~utils/hooks';
 // import {
 //   colonyMustBeUpgraded,
 //   oneTxMustBeUpgraded,
 // } from '~modules/dashboard/checks';
 
-import styles from './NewActionButton.css';
+const displayName = 'common.ColonyHome.NewActionButton';
 
-const displayName = 'commmon.ColonyHome.NewActionButton';
+interface Props {
+  filteredDomainId: number;
+}
 
-const MSG = defineMessages({
-  newAction: {
-    id: `${displayName}.newAction`,
-    defaultMessage: 'New Action',
-  },
-  walletNotConnectedWarning: {
-    id: `${displayName}.walletNotConnectedWarning`,
-    defaultMessage: `To interact with a Colony you must have your wallet connected, have a user profile registered, and be on the same network as the specific colony.`,
-  },
-});
-
-// interface Props {
-//   ethDomainId?: number;
-// }
-
-// interface RootState {
-//   users: {
-//     wallet: {
-//       isUserConnected: boolean;
-//     };
-//   };
-// }
-
-const NewActionButton = (/* { colony, ethDomainId }: Props */) => {
-  const canInteractWithColony = useColonyContext();
+const NewActionButton = ({ filteredDomainId }: Props) => {
+  const { colony } = useColonyContext();
+  const { user, walletConnecting } = useAppContext();
 
   // const { version: networkVersion } = useNetworkContracts();
 
   // const [isLoadingUser, setIsLoadingUser] = useState<boolean>(!ethereal);
 
-  // const { isLoadingExtensions } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const enabledExtensionData = useEnabledExtensions();
+  const { loading: loadingExtensions } = enabledExtensionData;
 
   // const { data } = useColonyExtensionsQuery({
   //   variables: { address: colony.colonyAddress },
@@ -87,172 +48,9 @@ const NewActionButton = (/* { colony, ethDomainId }: Props */) => {
   //   }
   // });
 
-  // const startWizardFlow = useNaiveBranchingDialogWizard([
-  //   {
-  //     component: ColonyActionsDialog,
-  //     props: {
-  //       nextStepExpenditure: 'dashboard.ExpendituresDialog',
-  //       nextStepManageFunds: 'dashboard.ManageFundsDialog',
-  //       nextStepManageDomains: 'dashboard.ManageDomainsDialog',
-  //       nextStepAdvanced: 'dashboard.AdvancedDialog',
-  //       nextStepManageReputation: 'dashboard.ManageReputationDialog',
-  //     },
-  //   },
-  //   {
-  //     component: ExpendituresDialog,
-  //     props: {
-  //       nextStep: 'dashboard.CreatePaymentDialog',
-  //       prevStep: 'dashboard.ColonyActionsDialog',
-  //       colony,
-  //     },
-  //   },
-  //   {
-  //     component: CreatePaymentDialog,
-  //     props: {
-  //       colony,
-  //       prevStep: 'dashboard.ExpendituresDialog',
-  //       ethDomainId,
-  //     },
-  //   },
-  //   {
-  //     component: ManageFundsDialog,
-  //     props: {
-  //       nextStepTransferFunds: 'dashboard.TransferFundsDialog',
-  //       nextStepMintTokens: 'dashboard.TokenMintDialog',
-  //       nextStepManageTokens: 'dashboard.ColonyTokenManagementDialog',
-  //       nextStepUnlockToken: 'dashboard.UnlockTokenDialog',
-  //       prevStep: 'dashboard.ColonyActionsDialog',
-  //       colony,
-  //     },
-  //   },
-  //   {
-  //     component: TransferFundsDialog,
-  //     props: {
-  //       prevStep: 'dashboard.ManageFundsDialog',
-  //       colony,
-  //       ethDomainId,
-  //     },
-  //   },
-  //   {
-  //     component: UnlockTokenDialog,
-  //     props: {
-  //       prevStep: 'dashboard.ManageFundsDialog',
-  //       colony,
-  //     },
-  //   },
-  //   {
-  //     component: ManageDomainsDialog,
-  //     props: {
-  //       prevStep: 'dashboard.ColonyActionsDialog',
-  //       nextStep: 'dashboard.CreateDomainDialog',
-  //       nextStepEdit: 'dashboard.EditDomainDialog',
-  //       nextStepManageWhitelist: 'dashboard.ManageWhitelistDialog',
-  //       colony,
-  //     },
-  //   },
-  //   {
-  //     component: CreateDomainDialog,
-  //     props: {
-  //       prevStep: 'dashboard.ManageDomainsDialog',
-  //       colony,
-  //     },
-  //   },
-  //   {
-  //     component: EditDomainDialog,
-  //     props: {
-  //       prevStep: 'dashboard.ManageDomainsDialog',
-  //       colony,
-  //       ethDomainId,
-  //     },
-  //   },
-  //   {
-  //     component: ManageReputationDialog,
-  //     props: {
-  //       nextStepAwardReputation: 'dashboard.AwardDialog',
-  //       nextStepSmiteReputation: 'dashboard.SmiteDialog',
-  //       prevStep: 'dashboard.ColonyActionsDialog',
-  //       colony,
-  //     },
-  //   },
-  //   {
-  //     component: AwardDialog,
-  //     props: {
-  //       prevStep: 'dashboard.ManageReputationDialog',
-  //       colony,
-  //       ethDomainId,
-  //     },
-  //   },
-  //   {
-  //     component: SmiteDialog,
-  //     props: {
-  //       prevStep: 'dashboard.ManageReputationDialog',
-  //       colony,
-  //       ethDomainId,
-  //     },
-  //   },
-  //   {
-  //     component: AdvancedDialog,
-  //     props: {
-  //       prevStep: 'dashboard.ColonyActionsDialog',
-  //       nextStepPermissionManagement: 'dashboard.PermissionManagementDialog',
-  //       nextStepRecovery: 'dashboard.RecoveryModeDialog',
-  //       nextStepEditDetails: 'dashboard.EditColonyDetailsDialog',
-  //       nextStepVersionUpgrade: 'dashboard.NetworkContractUpgradeDialog',
-  //       colony,
-  //     },
-  //   },
-  //   {
-  //     component: PermissionManagementDialog,
-  //     props: {
-  //       prevStep: 'dashboard.AdvancedDialog',
-  //       colony,
-  //       ethDomainId,
-  //     },
-  //   },
-  //   {
-  //     component: RecoveryModeDialog,
-  //     props: {
-  //       prevStep: 'dashboard.AdvancedDialog',
-  //       colony,
-  //     },
-  //   },
-  //   {
-  //     component: ManageWhitelistDialog,
-  //     props: {
-  //       prevStep: 'dashboard.ManageDomainsDialog',
-  //       colony,
-  //     },
-  //   },
-  //   {
-  //     component: NetworkContractUpgradeDialog,
-  //     props: {
-  //       prevStep: 'dashboard.AdvancedDialog',
-  //       colony,
-  //     },
-  //   },
-  //   {
-  //     component: EditColonyDetailsDialog,
-  //     props: {
-  //       prevStep: 'dashboard.AdvancedDialog',
-  //       colony,
-  //     },
-  //   },
-  //   {
-  //     component: TokenMintDialog,
-  //     props: {
-  //       prevStep: 'dashboard.ManageFundsDialog',
-  //       colony,
-  //     },
-  //   },
-  //   {
-  //     component: ColonyTokenManagementDialog,
-  //     props: {
-  //       prevStep: 'dashboard.ManageFundsDialog',
-  //       colony,
-  //     },
-  //   },
-  // ]);
-  const startWizardFlow = (...args) => args;
+  const startWizardFlow = useNaiveBranchingDialogWizard(
+    getWizardFlowConfig(colony, filteredDomainId, enabledExtensionData),
+  );
 
   // const oneTxPaymentExtension = data?.processedColony?.installedExtensions.find(
   //   ({ details, extensionId: extensionName }) =>
@@ -260,36 +58,49 @@ const NewActionButton = (/* { colony, ethDomainId }: Props */) => {
   //     !details?.missingPermissions.length &&
   //     extensionName === Extension.OneTxPayment,
   // );
+
   // const mustUpgradeOneTx = oneTxMustBeUpgraded(oneTxPaymentExtension);
-  // const hasRegisteredProfile = !!username && !ethereal;
+  const hasRegisteredProfile =
+    !!user?.profile?.displayName && !!user.walletAddress;
   // const mustUpgrade = colonyMustBeUpgraded(colony, networkVersion as string);
-  // const isLoadingData = isLoadingExtensions || isLoadingUser;
-  const isLoadingData = false;
+  const isLoadingData = loadingExtensions || !!walletConnecting;
+
+  const { data: tokenBalanceQueryData } = useGetUserTokenBalanceQuery({
+    variables: {
+      input: {
+        walletAddress: user?.walletAddress ?? '',
+        tokenAddress: colony?.nativeToken?.tokenAddress ?? '',
+        colonyAddress: colony?.colonyAddress ?? '',
+      },
+    },
+    skip: !user?.walletAddress || !colony,
+  });
+  const tokenBalanceData = tokenBalanceQueryData?.getUserTokenBalance;
+
+  if (!colony) {
+    return null;
+  }
 
   return (
     <>
-      {isLoadingData && <SpinnerLoader appearance={{ size: 'medium' }} />}
-      {!isLoadingData && (
-        <Tooltip
-          trigger={!canInteractWithColony ? 'hover' : null}
-          content={
-            <span className={styles.tooltipWrapper}>
-              <FormattedMessage {...MSG.walletNotConnectedWarning} />
-            </span>
-          }
-        >
-          <Button
-            appearance={{ theme: 'primary', size: 'large' }}
-            text={MSG.newAction}
-            onClick={() => startWizardFlow('dashboard.ColonyActionsDialog')}
-            // disabled={
-            //   mustUpgrade ||
-            //   mustUpgradeOneTx
-            // }
-            disabled={!canInteractWithColony}
-            data-test="newActionButton"
-          />
-        </Tooltip>
+      <DialogButton
+        loading={isLoadingData}
+        text={{ id: 'button.newAction' }}
+        handleClick={() => startWizardFlow('common.ColonyActionsDialog')}
+        disabled={
+          !hasRegisteredProfile
+          //   mustUpgrade ||
+          //   mustUpgradeOneTx ||
+        }
+        dataTest="newActionButton"
+      />
+      {/* Temporary way of activating tokens, to be deleted once the User Hub
+  token activation is wired in */}
+      {tokenBalanceData && colony?.nativeToken && (
+        <UserTokenActivationButton
+          nativeToken={colony?.nativeToken}
+          tokenBalanceData={tokenBalanceData}
+        />
       )}
     </>
   );

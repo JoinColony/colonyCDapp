@@ -1,4 +1,4 @@
-@value query700 from "~styles/queries.css";
+@value query850 from "~styles/queries.css";
 @value navHeight: 43px;
 
 .main {
@@ -8,6 +8,7 @@
 .content {
   display: flex;
   height: 100%;
+  min-height: 100vh;
 }
 
 .coloniesList {
@@ -46,7 +47,7 @@
   left: 0;
 }
 
-@media screen and query700 {
+@media screen and query850 {
   .content {
     flex-direction: column;
   }

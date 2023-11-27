@@ -1,37 +1,29 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 
-import { ContextModule, getContext } from '~context';
+import { Action, ActionTypes, AllActions } from '~redux';
+
 import {
-  ProcessedColonyQuery,
-  ProcessedColonyQueryVariables,
-  ProcessedColonyDocument,
-} from '~data/index';
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
-import { putError, routeRedirect, takeFrom } from '../utils';
-import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { ipfsUpload } from '../ipfs';
 import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+  createActionMetadataInDB,
+  initiateTransaction,
+  putError,
+  takeFrom,
+  uploadAnnotation,
+} from '../utils';
 
 function* tokenUnlockAction({
   meta,
-  meta: { id: metaId, history },
-  payload: { colonyAddress, annotationMessage, colonyName },
+  meta: { id: metaId, navigate, setTxHash },
+  payload: { colonyAddress, annotationMessage, colonyName, customActionTitle },
 }: Action<ActionTypes.ACTION_UNLOCK_TOKEN>) {
   let txChannel;
 
   try {
-    const apolloClient = getContext(ContextModule.ApolloClient);
-
     txChannel = yield call(getTxChannel, metaId);
 
     const batchKey = 'tokenUnlockAction';
@@ -44,23 +36,9 @@ function* tokenUnlockAction({
     ]);
 
     /*
-     * Create a grouped transaction
-     */
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-        },
-      });
-
-    /*
      * Add the tokenUnlock transaction to the group
      */
-
-    yield createGroupTransaction(tokenUnlock, {
+    yield createGroupTransaction(tokenUnlock, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: 'unlockToken',
       identifier: colonyAddress,
@@ -71,9 +49,8 @@ function* tokenUnlockAction({
     /*
      * If annotation message exists add the transaction to the group
      */
-
     if (annotationMessage) {
-      yield createGroupTransaction(annotateTokenUnlock, {
+      yield createGroupTransaction(annotateTokenUnlock, batchKey, meta, {
         context: ClientType.ColonyClient,
         methodName: 'annotateTransaction',
         identifier: colonyAddress,
@@ -95,11 +72,7 @@ function* tokenUnlockAction({
       );
     }
 
-    /*
-     * Check for transaction and wait for response
-     */
-
-    yield put(transactionReady(tokenUnlock.id));
+    yield initiateTransaction({ id: tokenUnlock.id });
 
     const {
       payload: { hash: txHash },
@@ -107,55 +80,30 @@ function* tokenUnlockAction({
       tokenUnlock.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(tokenUnlock.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
+    yield createActionMetadataInDB(txHash, customActionTitle);
+
     if (annotationMessage) {
-      yield put(transactionPending(annotateTokenUnlock.id));
-
-      /*
-       * Upload annotation metadata to IPFS
-       */
-      let annotationMessageIpfsHash = null;
-      annotationMessageIpfsHash = yield call(
-        ipfsUpload,
-        JSON.stringify({
-          annotationMessage,
-        }),
-      );
-
-      yield put(
-        transactionAddParams(annotateTokenUnlock.id, [
-          txHash,
-          annotationMessageIpfsHash,
-        ]),
-      );
-
-      yield put(transactionReady(annotateTokenUnlock.id));
-
-      yield takeFrom(
-        annotateTokenUnlock.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
+      yield uploadAnnotation({
+        txChannel: annotateTokenUnlock,
+        message: annotationMessage,
+        txHash,
+      });
     }
-
-    yield apolloClient.query<
-      ProcessedColonyQuery,
-      ProcessedColonyQueryVariables
-    >({
-      query: ProcessedColonyDocument,
-      variables: {
-        address: colonyAddress,
-      },
-      fetchPolicy: 'network-only',
-    });
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_UNLOCK_TOKEN_SUCCESS,
       meta,
     });
 
-    if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+    if (colonyName && navigate) {
+      navigate(`/${colonyName}?tx=${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (error) {
     putError(ActionTypes.ACTION_UNLOCK_TOKEN_ERROR, error, meta);

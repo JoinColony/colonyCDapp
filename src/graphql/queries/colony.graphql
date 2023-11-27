@@ -1,7 +1,25 @@
+query GetFullColonyByAddress($address: ID!) {
+  getColonyByAddress(id: $address) {
+    items {
+      ...Colony
+    }
+  }
+}
+
 query GetFullColonyByName($name: String!) {
   getColonyByName(name: $name) {
     items {
       ...Colony
+    }
+  }
+}
+
+query GetDisplayNameByColonyName($name: String!) {
+  getColonyByName(name: $name) {
+    items {
+      metadata {
+        displayName
+      }
     }
   }
 }
@@ -16,6 +34,7 @@ query GetMetacolony {
 
 query GetColonyExtensions($colonyAddress: ID!) {
   getColony(id: $colonyAddress) {
+    id
     extensions(filter: { isDeleted: { eq: false } }) {
       items {
         ...Extension
@@ -32,6 +51,31 @@ query GetColonyExtension($colonyAddress: ID!, $extensionHash: String!) {
   ) {
     items {
       ...Extension
+    }
+  }
+}
+
+query GetMembersForColony($input: MembersForColonyInput!) {
+  getMembersForColony(input: $input) {
+    contributors {
+      ...Contributor
+    }
+    watchers {
+      ...Watcher
+    }
+  }
+}
+
+query GetPrivateBetaCodeInviteValidity($id: ID!) {
+  getPrivateBetaInviteCode(id: $id) {
+    shareableInvites
+  }
+}
+
+query CheckColonyNameExists($name: String!) {
+  getColonyByName(name: $name) {
+    items {
+      id
     }
   }
 }

@@ -4,7 +4,6 @@
 
 # Cleanup
 rm --recursive --force /colonyCDapp/amplify/backend/api/colonycdapp/build
-rm --recursive --force /colonyCDapp/amplify/backend/api/colonycdapp/resolvers/*.vtl
 rm --recursive --force /colonyCDapp/amplify/mock-data/dynamodb
 
 # Make sure the build folder exists
@@ -20,7 +19,4 @@ cp /colonyCDappBackend/scripts/amplify-meta.json.base /colonyCDapp/amplify/backe
 cp /colonyCDappBackend/scripts/amplify-meta.json.base /colonyCDapp/amplify/\#current-cloud-backend/amplify-meta.json
 
 # Liftoff!
-npm run amplify mock &
-
-# Enable codegen
-node codegen
+npm run amplify mock

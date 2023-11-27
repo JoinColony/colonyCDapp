@@ -1,0 +1,11 @@
+mutation CreateSafeTransaction($input: CreateSafeTransactionInput!) {
+  createSafeTransaction(input: $input) {
+    id
+  }
+}
+
+mutation CreateSafeTransactionData($input: CreateSafeTransactionDataInput!) {
+  createSafeTransactionData(input: $input) {
+    id
+  }
+}

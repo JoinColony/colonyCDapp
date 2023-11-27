@@ -1,0 +1,43 @@
+.contractFunctionSelectorContainer label {
+  color: var(--dark);
+}
+
+.singleUserPickerContainer div[class*='inputContainer'] {
+  column-gap: 10px;
+}
+
+.abiContainer {
+  position: relative;
+}
+
+.fetchFailedErrorContainer {
+  margin-top: 19px;
+}
+
+/* @NOTE: Ensures noUsefulMethods error sits in between
+ * text area and  AddNewItem button */
+.noUsefulMethods > section {
+  padding: 1px 20px 20px;
+}
+
+/*
+ * @NOTE: I can't think of any other way of overriding the theme styles
+ * right now without adding another theme or prop just to change the color
+ */
+.inputParamContainer label span,
+.inputParamContainer input::placeholder {
+  color: var(--grey-purple) !important;
+}
+
+.inputParamContainer p {
+  margin-bottom: 10px;
+}
+
+.attributionMessage {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-size: var(--size-tiny);
+  line-height: 18px;
+  color: var(--dark);
+}

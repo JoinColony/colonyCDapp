@@ -1,26 +1,26 @@
 import React from 'react';
 
-import CopyableAddress from '~shared/CopyableAddress';
+import CopyableAddress from '~v5/shared/CopyableAddress';
 import Heading from '~shared/Heading';
 import UserMention from '~shared/UserMention';
 import UserAvatar from '~shared/UserAvatar';
 
-import { User } from '~types';
+import { MemberUser, User } from '~types';
 
 import styles from './UserInfo.css';
 
 interface Props {
-  user: User;
+  user: User | MemberUser;
 }
 
 const displayName = 'UserInfoPopover.UserInfo';
 
 const UserInfo = ({ user }: Props) => {
-  const { displayName: userDisplayName } = user.profile || {};
+  const userDisplayName = user.profile?.displayName;
 
   return (
     <div className={styles.container}>
-      <UserAvatar size="s" address={user.walletAddress} user={user} />
+      <UserAvatar size="s" user={user} />
       <div className={styles.textContainer}>
         {userDisplayName && (
           <Heading
@@ -39,7 +39,7 @@ const UserInfo = ({ user }: Props) => {
           </p>
         )}
         <div className={styles.address}>
-          <CopyableAddress full>{user.walletAddress}</CopyableAddress>
+          <CopyableAddress full address={user.walletAddress} />
         </div>
       </div>
     </div>

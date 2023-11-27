@@ -4,6 +4,7 @@ import {
   all,
   call,
   cancel,
+  fork,
   put,
   take,
   takeEvery,
@@ -98,13 +99,19 @@ export interface ChannelDefinition {
   id: string;
 }
 
+export type TransactionChannel = {
+  channel: Channel<any>;
+  index: number;
+  id: string;
+};
+
+export type TransactionChannelMap = Record<string, TransactionChannel>;
+
 export function* createTransactionChannels(
   batchId: string,
   ids: string[],
   customIndex = 0,
-): IterableIterator<{
-  [id: string]: { channel: Channel<any>; index: number; id: string };
-}> {
+): IterableIterator<TransactionChannelMap> {
   const txIds = ids.map((id) => `${batchId}-${id}`);
   const channels = yield all(txIds.map((id) => call(getTxChannel, id))) as any;
   return ids.reduce(
@@ -130,4 +137,22 @@ export function* waitForTxResult(channel: Channel<any>) {
   if (result.type === ActionTypes.TRANSACTION_ERROR) {
     throw new Error('Transaction failed');
   }
+
+  return result;
 }
+
+export const createGroupTransaction = (
+  { id, index }: { id: string; index: number },
+  key: string,
+  meta: { id: string },
+  config: Omit<TxConfig, 'group'> & { group?: Partial<TxConfig['group']> },
+) =>
+  fork(createTransaction, id, {
+    ...config,
+    group: {
+      ...config.group,
+      key,
+      id: meta.id,
+      index,
+    },
+  });

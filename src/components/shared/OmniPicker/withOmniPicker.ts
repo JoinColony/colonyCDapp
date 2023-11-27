@@ -19,7 +19,12 @@ const defaultProps = {
 
 export interface Props extends Partial<DefaultProps> {
   data: ((arg0: any) => any) | any[];
-  filter: (data: any, filterStr: string) => OmniPickerData[];
+  filter: (
+    data: any,
+    filterStr: string,
+    excludeFilterValue?: boolean,
+  ) => OmniPickerData[];
+  excludeFilterValue?: boolean;
 }
 
 type DefaultProps = Readonly<typeof defaultProps>;
@@ -62,10 +67,10 @@ const getClass = (WrappedComponent) => {
     };
 
     getFilteredData = () => {
-      const { data, filter, ...props } = this.props;
+      const { data, filter, excludeFilterValue, ...props } = this.props;
       const { filterValue } = this.state;
       const result = typeof data === 'function' ? data(props) : data;
-      return filter(result, filterValue);
+      return filter(result, filterValue, excludeFilterValue);
     };
 
     open = () => {
@@ -295,7 +300,7 @@ const getClass = (WrappedComponent) => {
   return OmniPickerBase;
 };
 
-const withOmniPicker = () => (WrappedComponent: ComponentType<any>) =>
+const withOmniPicker = (WrappedComponent: ComponentType<any>) =>
   getClass(WrappedComponent);
 
 export default withOmniPicker;

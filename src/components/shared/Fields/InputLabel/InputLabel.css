@@ -40,7 +40,8 @@
   color: var(--dark);
 }
 
-.error, .help {
+.error,
+.help {
   display: inline-block;
   margin-left: 5px;
   font-size: var(--size-tiny);

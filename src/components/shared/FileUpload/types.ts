@@ -1,4 +1,3 @@
-import { FieldArrayRenderProps } from 'formik';
 import {
   Accept,
   DropzoneOptions,
@@ -23,21 +22,14 @@ export interface UploadFile {
 }
 
 export interface UploadItemComponentProps {
-  accept: { [key: string]: string[] };
-  error?: string;
-  key: string;
-  idx: number;
-  maxFileSize: number;
+  error?: Message;
   name: string;
-  remove: FieldArrayRenderProps['remove'];
-  reset: FieldArrayRenderProps['form']['resetForm'];
   upload: UploadFn;
-  handleError?: (...args: any[]) => Promise<any>;
   processingData?: boolean;
   handleProcessingData?: (...args: any) => void;
 }
 
-export interface HookFormUploadItemComponentProps {
+export interface FormUploadItemComponentProps {
   accept: Accept;
   error?: string;
   key: string;
@@ -85,11 +77,11 @@ export interface FileUploadProps extends CoreInputProps {
     disabled?: string;
   };
   /** Options for the dropzone provider */
-  dropzoneOptions: DropzoneOptions;
+  dropzoneOptions?: DropzoneOptions;
   /** Hide the status component beneath the file uploader. Useful if you wish to display the status elsewhere, e.g. outside the component. */
   hideStatus?: boolean;
   /** The component to render each item to be uploaded */
-  itemComponent?: ComponentType<HookFormUploadItemComponentProps>;
+  itemComponent?: ComponentType<FormUploadItemComponentProps>;
   /** Maximum number of files to accept */
   maxFilesLimit?: number;
   /** Max file size */

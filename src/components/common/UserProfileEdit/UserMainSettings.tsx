@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { string, object, InferType } from 'yup';
 
-import {
-  FieldSet,
-  HookForm as Form,
-  HookFormInput as Input,
-  HookFormTextArea as Textarea,
-} from '~shared/Fields';
+import { FieldSet, Form, Input, Textarea } from '~shared/Fields';
 
 import { useUpdateUserProfileMutation } from '~gql';
 import { User } from '~types';
@@ -91,6 +86,7 @@ const UserMainSettings = ({
           id: walletAddress,
           ...updatedProfile,
           email: updatedProfile.email || null,
+          website: updatedProfile.website || null,
         },
       },
     });
@@ -115,7 +111,6 @@ const UserMainSettings = ({
                 name="email"
                 dataTest="userSettingsEmail"
                 formattingOptions={noSpaces}
-                value={defaultValues.email}
               />
               <Input
                 label={MSG.labelName}
@@ -134,7 +129,6 @@ const UserMainSettings = ({
                 name="website"
                 dataTest="userSettingsWebsite"
                 formattingOptions={noSpaces}
-                value={defaultValues.website}
               />
               <Input
                 label={MSG.labelLocation}

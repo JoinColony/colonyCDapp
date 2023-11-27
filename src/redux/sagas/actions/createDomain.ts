@@ -1,32 +1,38 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, Id } from '@colony/colony-js';
+import { call, put, takeEvery } from 'redux-saga/effects';
+import {
+  ClientType,
+  Id,
+  getPermissionProofs,
+  ColonyRole,
+} from '@colony/colony-js';
 
-import { ContextModule, getContext } from '~context';
+import { Action, ActionTypes, AllActions } from '~redux';
 import {
-  ColonyFromNameDocument,
-  ColonyFromNameQuery,
-  ColonyFromNameQueryVariables,
-} from '~data/index';
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
+  transactionAddParams,
+  transactionPending,
+} from '~redux/actionCreators';
+import { ContextModule, getContext, ColonyManager } from '~context';
 import {
-  putError,
-  takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
-} from '../utils';
+  CreateDomainMetadataDocument,
+  CreateDomainMetadataMutation,
+  CreateDomainMetadataMutationVariables,
+} from '~gql';
+import { getDomainDatabaseId } from '~utils/databaseId';
+import { toNumber } from '~utils/numbers';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { ipfsUpload } from '../ipfs';
 import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+  initiateTransaction,
+  putError,
+  takeFrom,
+  uploadAnnotation,
+  getColonyManager,
+  createActionMetadataInDB,
+} from '../utils';
 
 function* createDomainAction({
   payload: {
@@ -37,13 +43,16 @@ function* createDomainAction({
     domainPurpose,
     annotationMessage,
     parentId = Id.RootDomain,
+    customActionTitle,
   },
-  meta: { id: metaId, history },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_DOMAIN_CREATE>) {
   let txChannel;
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
+    const colonyManager: ColonyManager = yield getColonyManager();
+
     /*
      * Validate the required values
      */
@@ -62,26 +71,16 @@ function* createDomainAction({
       'annotateCreateDomainAction',
     ]);
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(createDomain, {
+    yield createGroupTransaction(createDomain, batchKey, meta, {
       context: ClientType.ColonyClient,
-      methodName: 'addDomainWithProofs',
+      methodName: 'addDomain(uint256,uint256,uint256)',
       identifier: colonyAddress,
       params: [],
       ready: false,
     });
 
     if (annotationMessage) {
-      yield createGroupTransaction(annotateCreateDomain, {
+      yield createGroupTransaction(annotateCreateDomain, batchKey, meta, {
         context: ClientType.ColonyClient,
         methodName: 'annotateTransaction',
         identifier: colonyAddress,
@@ -100,80 +99,76 @@ function* createDomainAction({
 
     yield put(transactionPending(createDomain.id));
 
-    /*
-     * Upload domain metadata to IPFS
-     */
-    let domainMetadataIpfsHash = null;
-    domainMetadataIpfsHash = yield call(
-      ipfsUpload,
-      JSON.stringify({
-        domainName,
-        domainColor,
-        domainPurpose,
-      }),
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
+
+    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient.networkClient,
+      colonyClient,
+      parentId,
+      ColonyRole.Architecture,
     );
 
     yield put(
       transactionAddParams(createDomain.id, [
+        permissionDomainId,
+        childSkillIndex,
         parentId,
-        domainMetadataIpfsHash as unknown as string,
       ]),
     );
-
-    yield put(transactionReady(createDomain.id));
+    yield initiateTransaction({ id: createDomain.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      createDomain.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
-    yield takeFrom(createDomain.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+      payload: {
+        receipt: { transactionHash: txHash },
+        eventData,
+      },
+    } = yield takeFrom(createDomain.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    setTxHash?.(txHash);
+
+    const { domainId } = eventData?.DomainAdded || {};
+    const nativeDomainId = toNumber(domainId);
+
+    /**
+     * Save domain metadata in the database
+     */
+    yield apolloClient.mutate<
+      CreateDomainMetadataMutation,
+      CreateDomainMetadataMutationVariables
+    >({
+      mutation: CreateDomainMetadataDocument,
+      variables: {
+        input: {
+          id: getDomainDatabaseId(colonyAddress, nativeDomainId),
+          name: domainName,
+          color: domainColor,
+          description: domainPurpose,
+        },
+      },
+    });
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
-      yield put(transactionPending(annotateCreateDomain.id));
-
-      /*
-       * Upload domain metadata to IPFS
-       */
-      const annotationMessageIpfsHash = yield call(
-        uploadIfpsAnnotation,
-        annotationMessage,
-      );
-
-      yield put(
-        transactionAddParams(annotateCreateDomain.id, [
-          txHash,
-          annotationMessageIpfsHash,
-        ]),
-      );
-
-      yield put(transactionReady(annotateCreateDomain.id));
-
-      yield takeFrom(
-        annotateCreateDomain.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
+      yield uploadAnnotation({
+        txChannel: annotateCreateDomain,
+        message: annotationMessage,
+        txHash,
+      });
     }
-
-    /*
-     * Update the colony object cache
-     */
-    yield apolloClient.query<ColonyFromNameQuery, ColonyFromNameQueryVariables>(
-      {
-        query: ColonyFromNameDocument,
-        variables: { name: colonyName || '', address: colonyAddress },
-        fetchPolicy: 'network-only',
-      },
-    );
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_DOMAIN_CREATE_SUCCESS,
       meta,
     });
 
-    if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+    if (colonyName && navigate) {
+      navigate(`/${colonyName}?tx=${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_DOMAIN_CREATE_ERROR, error, meta);

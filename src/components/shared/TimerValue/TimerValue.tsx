@@ -1,7 +1,7 @@
 import React from 'react';
-import { FormattedMessage, defineMessage } from 'react-intl';
+import { FormattedMessage, defineMessages } from 'react-intl';
 
-const MSG = defineMessage({
+const MSG = defineMessages({
   days: {
     id: 'TimerValue.days',
     defaultMessage: ' {days}d',
@@ -20,14 +20,19 @@ const MSG = defineMessage({
   },
 });
 
-interface Props {
-  splitTime: any;
+export interface TimerValueProps {
+  splitTime?: {
+    days: number;
+    hours: number;
+    minutes: number;
+    seconds: number;
+  };
 }
 
 const displayName = 'TimerValue';
 
-const TimerValue = ({ splitTime }: Props) => {
-  if (splitTime === undefined) {
+const TimerValue = ({ splitTime }: TimerValueProps) => {
+  if (!splitTime) {
     return null;
   }
 

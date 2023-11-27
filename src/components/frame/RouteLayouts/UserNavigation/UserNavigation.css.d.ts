@@ -10,6 +10,7 @@ declare namespace UserNavigationCssNamespace {
     sources: string;
     sourcesContent: string;
     version: string;
+    walletWrapper: string;
   }
 }
 

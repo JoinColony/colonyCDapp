@@ -1,7 +1,12 @@
 const { constants, utils, providers, Contract } = require('ethers');
 
 const basicTokenAbi = require('./basicTokenAbi.json');
-const { graphqlRequest, getTokenType } = require('./utils');
+const {
+  graphqlRequest,
+  getTokenType,
+  getRpcUrlParamName,
+  getDevRpcUrl,
+} = require('./utils');
 
 /*
  * @TODO This needs to be imported properly into the project (maybe?)
@@ -10,12 +15,9 @@ const { graphqlRequest, getTokenType } = require('./utils');
  */
 const { createToken, getTokenByAddress } = require('./graphql');
 
-/*
- * @TODO These values need to be imported properly, and differentiate based on environment
- */
-const API_KEY = 'da2-fakeApiId123456';
-const GRAPHQL_URI = 'http://localhost:20002/graphql';
-const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let apiKey = 'da2-fakeApiId123456';
+let graphqlURL = 'http://localhost:20002/graphql';
+let rpcURL;
 
 const baseToken = {
   __typename: 'Token',
@@ -27,16 +29,53 @@ const baseToken = {
   colonies: null,
 };
 
+const setEnvVariables = async (network) => {
+  const ENV = process.env.ENV;
+  if (ENV === 'dev') {
+    rpcURL = getDevRpcUrl(network);
+  }
+
+  if (ENV === 'qa' || ENV === 'sc') {
+    let chainRpcParam = getRpcUrlParamName(network);
+
+    const { getParams } = require('/opt/nodejs/getParams');
+    [apiKey, graphqlURL, rpcURL] = await getParams([
+      'appsyncApiKey',
+      'graphqlUrl',
+      chainRpcParam,
+    ]);
+  }
+};
+
 exports.handler = async (event) => {
-  const { tokenAddress = constants.AddressZero } =
+  const {
+    tokenAddress = constants.AddressZero,
+    network = undefined, // refers to the shortName in the NetworkInfo type
+    avatar,
+    thumbnail,
+  } =
     // eslint-disable-next-line no-unsafe-optional-chaining
     event?.arguments?.input;
+
+  try {
+    await setEnvVariables(network);
+  } catch (e) {
+    throw new Error('Unable to set env variables. Reason:', e);
+  }
+
+  /*
+   * We do not store native chain tokens in the database and the ethers logic
+   * fails with a native token so return null early
+   */
+  if (tokenAddress === constants.AddressZero) {
+    return null;
+  }
 
   const tokenQuery = await graphqlRequest(
     getTokenByAddress,
     { id: tokenAddress },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   // eslint-disable-next-line no-unsafe-optional-chaining
@@ -59,7 +98,7 @@ exports.handler = async (event) => {
        * Attempt to fetch it from the chain
        */
       const checksummedAddress = utils.getAddress(tokenAddress);
-      const provider = new providers.JsonRpcProvider(RPC_URL);
+      const provider = new providers.JsonRpcProvider(rpcURL);
       const tokenFromChain = new Contract(
         checksummedAddress,
         basicTokenAbi,
@@ -83,18 +122,19 @@ exports.handler = async (event) => {
             name,
             symbol,
             type,
+            avatar,
+            thumbnail,
             /*
              * @TODO These need to be properly added once Lambda Functions
              * have the concept of chains
              */
-            meta: {
-              chainId: 2656691,
-              network: 'GANACHE',
+            chainMetadata: {
+              chainId: (await provider.getNetwork()).chainId,
             },
           },
         },
-        GRAPHQL_URI,
-        API_KEY,
+        graphqlURL,
+        apiKey,
       );
 
       const { createdAt = new Date(), updatedAt = new Date() } =

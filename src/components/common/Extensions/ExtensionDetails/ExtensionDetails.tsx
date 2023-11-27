@@ -4,8 +4,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { useColonyContext, useExtensionData, useAppContext } from '~hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
-import NotFoundRoute from '~routes/NotFoundRoute';
-import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
+import { COLONY_EXTENSIONS_ROUTE, COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
 import { isInstalledExtensionData } from '~utils/extensions';
 import BreadCrumb, { Crumb } from '~shared/BreadCrumb';
 import { Heading3, Heading4 } from '~shared/Heading';
@@ -40,7 +39,9 @@ const ExtensionDetails = () => {
   const { extensionId } = useParams();
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const { extensionData, loading } = useExtensionData(extensionId ?? '');
+  const { extensionData, loading, ...pollingControls } = useExtensionData(
+    extensionId ?? '',
+  );
   const { pathname } = useLocation();
 
   if (loading) {
@@ -60,9 +61,9 @@ const ExtensionDetails = () => {
   }
 
   const isSetupRoute = pathname.replace(/\/$/, '').endsWith('setup');
-  const extensionUrl = `/colony/${colony.name}/extensions/${extensionId}`;
+  const extensionUrl = `/${colony.name}/${COLONY_EXTENSIONS_ROUTE}/${extensionId}`;
   const breadCrumbs: Crumb[] = [
-    [MSG.title, `/colony/${colony.name}/extensions`],
+    [MSG.title, `/${colony.name}/${COLONY_EXTENSIONS_ROUTE}`],
     [extensionData.name, isSetupRoute ? extensionUrl : ''],
   ];
   if (isSetupRoute) {
@@ -92,7 +93,7 @@ const ExtensionDetails = () => {
       <div>
         <Routes>
           <Route
-            path="/"
+            index
             element={
               <div className={styles.extensionText}>
                 <Heading3
@@ -119,7 +120,6 @@ const ExtensionDetails = () => {
               element={<ExtensionSetup extensionData={extensionData} />}
             />
           )}
-          <Route path="*" element={<NotFoundRoute />} />
         </Routes>
       </div>
 
@@ -127,6 +127,7 @@ const ExtensionDetails = () => {
         extensionData={extensionData}
         canBeDeprecated={canExtensionBeDeprecated}
         canBeUninstalled={canExtensionBeUninstalled}
+        pollingControls={pollingControls}
       />
     </div>
   );

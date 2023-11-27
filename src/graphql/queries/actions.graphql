@@ -1,0 +1,70 @@
+query GetColonyActions(
+  $colonyAddress: ID!
+  $nextToken: String
+  $limit: Int
+  $sortDirection: ModelSortDirection
+  $filter: ModelColonyActionFilterInput
+) {
+  getActionsByColony(
+    colonyId: $colonyAddress
+    nextToken: $nextToken
+    limit: $limit
+    sortDirection: $sortDirection
+    filter: $filter
+  ) {
+    items {
+      ...ColonyAction
+    }
+    nextToken
+  }
+}
+
+query GetColonyAction($transactionHash: ID!) {
+  getColonyAction(id: $transactionHash) {
+    ...ColonyAction
+  }
+}
+
+query GetColonyMotion($id: ID!) {
+  getColonyMotion(id: $id) {
+    ...ColonyMotion
+  }
+}
+
+query GetMotionTransactionHash($motionId: ID!) {
+  getColonyActionByMotionId(motionId: $motionId) {
+    items {
+      id
+    }
+  }
+}
+
+query GetSafeTransactionStatus($input: GetSafeTransactionStatusInput!) {
+  getSafeTransactionStatus(input: $input)
+}
+
+query GetTotalColonyActions($colonyId: ID!) {
+  searchColonyActions(filter: { colonyId: { eq: $colonyId } }) {
+    total
+  }
+}
+
+query SearchActions(
+  $nextToken: String
+  $limit: Int
+  $filter: SearchableColonyActionFilterInput
+  $sort: [SearchableColonyActionSortInput]
+) {
+  searchColonyActions(
+    limit: $limit
+    nextToken: $nextToken
+    sort: $sort
+    filter: $filter
+    from: 0
+  ) {
+    items {
+      ...ColonyAction
+    }
+    nextToken
+  }
+}

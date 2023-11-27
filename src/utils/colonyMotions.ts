@@ -1,153 +1,101 @@
-import { defineMessage } from 'react-intl';
 import { BigNumber } from 'ethers';
 import { Decimal } from 'decimal.js';
-import { isNil } from 'lodash';
-import { ColonyRoles } from '@colony/colony-js';
+import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
-import { getRolesForUserAndDomain } from '~redux/transformers';
-import { AnyUser } from '~data/index';
-import { ActionUserRoles } from '~types';
-
-export enum MotionState {
-  Staked = 'Staked',
-  Staking = 'Staking',
-  Voting = 'Voting',
-  Reveal = 'Reveal',
-  Objection = 'Objection',
-  Motion = 'Motion',
-  Failed = 'Failed',
-  Passed = 'Passed',
-  FailedNoFinalizable = 'FailedNoFinalizable',
-  Invalid = 'Invalid',
-  Escalation = 'Escalation',
-  Forced = 'Forced',
-}
+import { ColonyMotion } from '~types';
 
 export enum MotionVote {
   Yay = 1,
   Nay = 0,
 }
 
-const MSG = defineMessage({
-  stakedTag: {
-    id: 'dashboard.ActionsPage.stakedTag',
-    defaultMessage: 'Staked',
-  },
-  stakingTag: {
-    id: 'dashboard.ActionsPage.stakingTag',
-    defaultMessage: 'Staking',
-  },
-  votingTag: {
-    id: 'dashboard.ActionsPage.votingTag',
-    defaultMessage: 'Voting',
-  },
-  revealTag: {
-    id: 'dashboard.ActionsPage.revealTag',
-    defaultMessage: 'Reveal',
-  },
-  objectionTag: {
-    id: 'dashboard.ActionsPage.objectionTag',
-    defaultMessage: 'Objection',
-  },
-  motionTag: {
-    id: 'dashboard.ActionsPage.motionTag',
-    defaultMessage: 'Motion',
-  },
-  failedTag: {
-    id: 'dashboard.ActionsPage.failedTag',
-    defaultMessage: 'Failed',
-  },
-  passedTag: {
-    id: 'dashboard.ActionsPage.passedTag',
-    defaultMessage: 'Passed',
-  },
-  invalidTag: {
-    id: 'dashboard.ActionsPage.invalidTag',
-    defaultMessage: 'Invalid',
-  },
-  escalateTag: {
-    id: 'dashboard.ActionsPage.escalateTag',
-    defaultMessage: 'Escalate',
-  },
-  forcedTag: {
-    id: 'dashboard.ActionsPage.forcedTag',
-    defaultMessage: 'Forced',
-  },
-});
+export const noMotionsVotingReputationVersion = 4;
 
-export const MOTION_TAG_MAP = {
-  [MotionState.Staked]: {
-    theme: 'primary',
-    colorSchema: 'fullColor',
-    name: MSG.stakedTag,
-    tagName: 'motionTag',
-  },
-  [MotionState.Staking]: {
-    theme: 'pink',
-    colorSchema: 'inverted',
-    name: MSG.stakingTag,
-    tagName: 'stakingTag',
-  },
-  [MotionState.Voting]: {
-    theme: 'golden',
-    colorSchema: 'fullColor',
-    name: MSG.votingTag,
-    tagName: 'votingTag',
-  },
-  [MotionState.Reveal]: {
-    theme: 'blue',
-    colorSchema: 'fullColor',
-    name: MSG.revealTag,
-    tagName: 'revealTag',
-  },
-  [MotionState.Objection]: {
-    theme: 'pink',
-    colorSchema: 'fullColor',
-    name: MSG.objectionTag,
-    tagName: 'objectionTag',
-  },
-  [MotionState.Motion]: {
-    theme: 'primary',
-    colorSchema: 'fullColor',
-    name: MSG.motionTag,
-    tagName: 'motionTag',
-  },
-  [MotionState.Failed]: {
-    theme: 'pink',
-    colorSchema: 'plain',
-    name: MSG.failedTag,
-    tagName: 'failedTag',
-  },
-  [MotionState.FailedNoFinalizable]: {
-    theme: 'pink',
-    colorSchema: 'plain',
-    name: MSG.failedTag,
-    tagName: 'failedTag',
-  },
-  [MotionState.Passed]: {
-    theme: 'primary',
-    colorSchema: 'plain',
-    name: MSG.passedTag,
-    tagName: 'passedTag',
-  },
-  [MotionState.Invalid]: {
-    theme: 'pink',
-    colorSchema: 'plain',
-    name: MSG.invalidTag,
-    tagName: 'invalidTag',
-  },
-  [MotionState.Escalation]: {
-    theme: 'dangerGhost',
-    colorSchema: 'plain',
-    name: MSG.escalateTag,
-    tagName: 'escalateTag',
-  },
-  [MotionState.Forced]: {
-    theme: 'blue',
-    colorSchema: 'inverted',
-    name: MSG.forcedTag,
-    tagName: 'forcedTag',
-  },
+export enum MotionState {
+  Supported = 'Supported',
+  Staking = 'Staking',
+  Voting = 'Voting',
+  Reveal = 'Reveal',
+  Opposed = 'Opposed',
+  Motion = 'Motion', // @TODO: This was used by the old MotionTag component and should be removed
+  Failed = 'Failed',
+  Finalizable = 'Finalizable',
+  Passed = 'Passed',
+  FailedNotFinalizable = 'FailedNotFinalizable',
+  Invalid = 'Invalid',
+  Escalated = 'Escalated',
+  Forced = 'Forced',
+  Draft = 'Draft',
+}
+
+export const getMotionDatabaseId = (
+  chainId: number,
+  votingRepExtnAddress: string,
+  nativeMotionId: BigNumber,
+): string => `${chainId}-${votingRepExtnAddress}_${nativeMotionId}`;
+
+export const getMotionState = (
+  motionState: NetworkMotionState,
+  {
+    motionStakes: {
+      raw: { yay: yayStakes, nay: nayStakes },
+    },
+    requiredStake,
+    revealedVotes: {
+      raw: { yay: yayVotes, nay: nayVotes },
+    },
+  }: Pick<ColonyMotion, 'motionStakes' | 'requiredStake' | 'revealedVotes'>,
+) => {
+  switch (motionState) {
+    case NetworkMotionState.Staking: {
+      return BigNumber.from(yayStakes).gte(requiredStake) &&
+        BigNumber.from(nayStakes).isZero()
+        ? MotionState.Supported
+        : MotionState.Staking;
+    }
+    case NetworkMotionState.Submit: {
+      return MotionState.Voting;
+    }
+    case NetworkMotionState.Reveal: {
+      return MotionState.Reveal;
+    }
+    case NetworkMotionState.Closed: {
+      return MotionState.Escalated;
+    }
+    case NetworkMotionState.Finalizable:
+      return MotionState.Finalizable;
+    case NetworkMotionState.Finalized: {
+      /*
+       * Both sides staked fully, we go to a vote
+       *
+       * @TODO We're using gte as opposed to just eq to counteract a bug on the contracts
+       * Once that is fixed, we can switch this back to equals
+       */
+      if (
+        BigNumber.from(nayStakes).gte(requiredStake) &&
+        BigNumber.from(yayStakes).gte(requiredStake)
+      ) {
+        /*
+         * It only passes if the yay votes outnumber the nay votes
+         * If the votes are equal, it fails
+         */
+        if (BigNumber.from(yayVotes).gt(nayVotes)) {
+          return MotionState.Passed;
+        }
+
+        return MotionState.Failed;
+      }
+
+      if (BigNumber.from(yayStakes).eq(requiredStake)) {
+        return MotionState.Passed;
+      }
+      return MotionState.Failed;
+    }
+    case NetworkMotionState.Failed:
+      return MotionState.FailedNotFinalizable;
+    default:
+      return MotionState.Invalid;
+  }
 };
 
 export const getMotionRequiredStake = (
@@ -169,7 +117,7 @@ export const getEarlierEventTimestamp = (
   return currentTimestamp - subTime;
 };
 
-export const shouldDisplayMotion = (
+export const shouldDisplayMotionInActionsList = (
   currentStake: string,
   requiredStake: string,
 ): boolean => {
@@ -184,26 +132,26 @@ export interface MotionValue {
   motionId: number;
 }
 
-export const getUpdatedDecodedMotionRoles = (
-  recipient: AnyUser,
-  fromDomain: number,
-  currentRoles: ColonyRoles = [],
-  setRoles: ActionUserRoles[],
-) => {
-  const currentUserRoles = getRolesForUserAndDomain(
-    currentRoles,
-    recipient.id,
-    fromDomain,
-  );
-  const updatedRoles = setRoles.filter((role) => {
-    const foundCurrentRole = currentUserRoles.find(
-      (currentRole) => currentRole === role.id,
-    );
-    if (!isNil(foundCurrentRole)) {
-      return !role.setTo;
-    }
-    return role.setTo;
-  });
+// export const getUpdatedDecodedMotionRoles = (
+//   recipient: User,
+//   fromDomain: number,
+//   currentRoles: ColonyRoles = [],
+//   setRoles: ActionUserRoles[],
+// ) => {
+//   const currentUserRoles = getRolesForUserAndDomain(
+//     currentRoles,
+//     recipient.walletAddress,
+//     fromDomain,
+//   );
+//   const updatedRoles = setRoles.filter((role) => {
+//     const foundCurrentRole = currentUserRoles.find(
+//       (currentRole) => currentRole === role.id,
+//     );
+//     if (!isNil(foundCurrentRole)) {
+//       return !role.setTo;
+//     }
+//     return role.setTo;
+//   });
 
-  return updatedRoles;
-};
+//   return updatedRoles;
+// };

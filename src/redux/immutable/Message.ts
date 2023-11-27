@@ -1,6 +1,6 @@
 import { Record } from 'immutable';
 
-import { DefaultValues, RecordToJS, TRANSACTION_STATUSES } from '~types';
+import { DefaultValues, RecordToJS, TransactionStatus } from '~types';
 
 interface Shared {
   id: string;
@@ -13,7 +13,7 @@ interface Shared {
   purpose?: string;
   message: string;
   signature?: string;
-  status?: TRANSACTION_STATUSES;
+  status?: TransactionStatus;
 }
 
 export type MessageType = Readonly<Shared>;
@@ -24,7 +24,7 @@ const defaultValues: DefaultValues<Shared> = {
   purpose: 'generic',
   message: undefined,
   signature: undefined,
-  status: TRANSACTION_STATUSES.CREATED,
+  status: TransactionStatus.Created,
 };
 
 export class MessageRecord

@@ -1,0 +1,3 @@
+.main {
+  @apply grid grid-cols-[auto,1fr] rounded-full;
+}

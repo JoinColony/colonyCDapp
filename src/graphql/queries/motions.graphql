@@ -1,0 +1,28 @@
+query GetMotionState($input: GetMotionStateInput!) {
+  getMotionState(input: $input)
+}
+
+query GetVoterRewards($input: GetVoterRewardsInput!) {
+  getVoterRewards(input: $input) {
+    min
+    max
+    reward
+  }
+}
+
+query GetMotionByTransactionHash($transactionHash: ID!) {
+  getMotionByTransactionHash(transactionHash: $transactionHash) {
+    items {
+      ...ColonyMotion
+    }
+  }
+}
+
+query GetMotionTimeoutPeriods($input: GetMotionTimeoutPeriodsInput!) {
+  getMotionTimeoutPeriods(input: $input) {
+    timeLeftToStake
+    timeLeftToVote
+    timeLeftToReveal
+    timeLeftToEscalate
+  }
+}

@@ -1,12 +1,11 @@
-import React, { ReactNode, useCallback } from 'react';
+import React, { ComponentType, ReactNode, useCallback } from 'react';
 import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
-import compose from 'recompose/compose';
 import classnames from 'classnames';
+import { useFormContext } from 'react-hook-form';
 
-import { useField } from 'formik';
-import { AnyUser } from '~data/index';
-import { Address, SimpleMessageValues } from '~types';
+import { SelectedPickerItem, SimpleMessageValues, User } from '~types';
 import { getMainClasses } from '~utils/css';
+import UserAvatar from '~shared/UserAvatar';
 
 import {
   ItemDataType,
@@ -14,38 +13,37 @@ import {
   WrappedComponentProps,
 } from '../OmniPicker';
 import { Props as WithOmnipickerInProps } from '../OmniPicker/withOmniPicker';
-import { InputLabel } from '../Fields';
+import { InputLabel, InputStatus } from '../Fields';
 import Icon from '../Icon';
 import Button from '../Button';
-import UserAvatar from '~shared/UserAvatar';
 import ItemDefault from './ItemDefault';
 
 import styles from './SingleUserPicker.css';
 
-type AvatarRenderFn = (
-  address: Address,
-  user?: ItemDataType<AnyUser>,
-) => ReactNode;
+export type AvatarRenderFn = (user?: ItemDataType<User>) => ReactNode;
+export type OnSelectedFn = (user: SelectedPickerItem) => void;
+
+const displayName = 'SingleUserPicker';
 
 const MSG = defineMessages({
   selectMember: {
-    id: 'SingleUserPicker.selectMember',
+    id: `${displayName}.selectMember`,
     defaultMessage: 'Select member',
   },
   emptyMessage: {
-    id: 'SingleUserPicker.emptyMessage',
+    id: `${displayName}.emptyMessage`,
     defaultMessage: 'No Colony members match that search.',
   },
   remove: {
-    id: 'SingleUserPicker.remove',
+    id: `${displayName}.remove`,
     defaultMessage: 'Remove',
   },
   closedCaret: {
-    id: 'SingleUserPicker.closedCaret',
+    id: `${displayName}.closedCaret`,
     defaultMessage: 'Closed user picker',
   },
   openedCaret: {
-    id: 'SingleUserPicker.openedCaret',
+    id: `${displayName}.openedCaret`,
     defaultMessage: 'Opened user picker',
   },
 });
@@ -86,16 +84,19 @@ interface Props extends WithOmnipickerInProps {
   /** Status text */
   placeholder?: string | MessageDescriptor;
 
+  /** icon name for the avatar placeholder */
+  placeholderIconName?: string;
+
   /** Override avatar rendering */
   renderAvatar: AvatarRenderFn;
 
   /** Item component for omnipicker listbox */
-  renderItem?: (user: ItemDataType<AnyUser>, selected?: boolean) => ReactNode;
+  renderItem?: (user: ItemDataType<User>, selected?: boolean) => ReactNode;
 
   /** Callback for things that happend after selection  */
-  onSelected?: (user: AnyUser) => void;
+  onSelected?: OnSelectedFn;
 
-  value?: AnyUser;
+  value?: User;
 
   /** Provides value for data-test prop in the input used on cypress testing */
   dataTest?: string;
@@ -106,10 +107,6 @@ interface Props extends WithOmnipickerInProps {
   /** Provides value for data-test prop in the value of the input used on cypress testing */
   valueDataTest?: string;
 }
-
-interface EnhancedProps extends Props, WrappedComponentProps {}
-
-const displayName = 'SingleUserPicker';
 
 const SingleUserPicker = ({
   appearance,
@@ -128,43 +125,47 @@ const SingleUserPicker = ({
   onSelected,
   openOmniPicker,
   placeholder,
+  placeholderIconName = 'filled-circle-person',
   registerInputNode,
-  renderAvatar = (address: Address, item?: ItemDataType<AnyUser>) => (
-    <UserAvatar address={address} user={item} size="xs" />
+  renderAvatar = (item?: ItemDataType<User>) => (
+    <UserAvatar user={item} size="xs" />
   ),
   renderItem: renderItemProp,
   dataTest,
   itemDataTest,
   valueDataTest,
-}: EnhancedProps) => {
-  const [, { error, touched, value }, { setValue }] = useField<AnyUser | null>(
-    name,
-  );
+}: Props & WrappedComponentProps) => {
+  const {
+    formState: { errors, touchedFields },
+    setValue,
+    watch,
+  } = useFormContext();
+  const value = watch(name);
   const { formatMessage } = useIntl();
 
   const handleActiveUserClick = useCallback(() => {
     if (!disabled) {
-      setValue(null);
+      setValue(name, undefined, { shouldTouch: true, shouldValidate: true });
       openOmniPicker();
     }
-  }, [disabled, openOmniPicker, setValue]);
+  }, [disabled, openOmniPicker, setValue, name]);
   const handlePick = useCallback(
-    (user: AnyUser) => {
-      if (setValue) setValue(user);
+    (user: SelectedPickerItem) => {
+      setValue(name, user, { shouldValidate: true });
       if (onSelected) onSelected(user);
     },
-    [onSelected, setValue],
+    [onSelected, setValue, name],
   );
   const resetSelection = useCallback(() => {
     if (!disabled && setValue) {
-      setValue(null);
+      setValue(name, undefined, { shouldValidate: true });
     }
-  }, [disabled, setValue]);
+  }, [disabled, setValue, name]);
   // Use custom render prop for item or the default one with the given renderAvatar function
   const renderItem =
     renderItemProp || // eslint-disable-next-line react-hooks/rules-of-hooks
     useCallback(
-      (user: ItemDataType<AnyUser>) => (
+      (user: ItemDataType<User>) => (
         <ItemDefault
           itemData={user}
           renderAvatar={renderAvatar}
@@ -198,13 +199,11 @@ const SingleUserPicker = ({
             screenReaderOnly={elementOnly}
           />
           {value ? (
-            <div className={styles.avatarContainer}>
-              {renderAvatar(value.profile.walletAddress, value)}
-            </div>
+            <div className={styles.avatarContainer}>{renderAvatar(value)}</div>
           ) : (
             <Icon
               className={omniPickerIsOpen ? styles.focusIcon : styles.icon}
-              name="filled-circle-person"
+              name={placeholderIconName}
               title={MSG.selectMember}
             />
           )}
@@ -221,25 +220,36 @@ const SingleUserPicker = ({
                   disabled={disabled}
                   data-test={valueDataTest}
                 >
-                  {value.profile.displayName ||
-                    value.profile.username ||
-                    value.profile.walletAddress}
+                  {value.profile?.displayName ||
+                    value.name ||
+                    value.walletAddress}
                 </button>
               )
             }
             {/* eslint-enable jsx-a11y/click-events-have-key-events */}
             <input
               disabled={disabled}
-              className={touched && error ? styles.inputInvalid : styles.input}
+              className={classnames(styles.input, {
+                [styles.inputInvalid]: touchedFields[name] && errors[name],
+              })}
               {...inputProps}
               placeholder={placeholderText}
               hidden={!!value}
               ref={registerInputNode}
               data-test={dataTest}
             />
-            {error && appearance && appearance.direction === 'horizontal' && (
-              <span className={styles.errorHorizontal}>{error}</span>
-            )}
+            <div className={styles.inputStatusContainer}>
+              <InputStatus
+                appearance={{ theme: 'minimal' }}
+                error={
+                  errors[name]?.message as
+                    | MessageDescriptor
+                    | string
+                    | undefined
+                }
+                touched={touchedFields[name]}
+              />
+            </div>
             <div className={styles.omniPickerContainer}>
               <OmniPicker renderItem={renderItem} onPick={handlePick} />
             </div>
@@ -269,6 +279,7 @@ const SingleUserPicker = ({
 
 SingleUserPicker.displayName = displayName;
 
-const enhance = compose<EnhancedProps, Props>(withOmniPicker());
-
-export default enhance(SingleUserPicker);
+/** @NOTE I don't like it either, but digging through the HOC types seems counter productive considering we'll refactor it soon */
+export default withOmniPicker(
+  SingleUserPicker,
+) as unknown as ComponentType<Props>;

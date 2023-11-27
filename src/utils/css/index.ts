@@ -1,4 +1,4 @@
-import { capitalize } from '../strings';
+import { capitalizeFirstLetter } from '../strings';
 
 /**
  * This function maps an appearance object onto CSS modules classes
@@ -23,15 +23,20 @@ import { capitalize } from '../strings';
  */
 export const getMainClasses = (
   { theme, ...modifiers }: any = {},
-  styleObject: { [k: string]: string } = {},
+  /** @NOTE This is temporary typing until a proper type for CSS modules imports can be figured out */
+  styleObject: any = {},
   state: { [k: string]: boolean } = {},
 ) => {
-  const styles = [styleObject[theme ? `theme${capitalize(theme)}` : 'main']];
+  const styles = [
+    styleObject[theme ? `theme${capitalizeFirstLetter(theme)}` : 'main'],
+  ];
   const modifierClasses = Object.keys(modifiers)
-    .map((key) => styleObject[`${key}${capitalize(modifiers[key])}`])
+    .map((key) => styleObject[`${key}${capitalizeFirstLetter(modifiers[key])}`])
     .filter(Boolean);
   const stateClasses = Object.keys(state)
-    .map((key) => (state[key] ? styleObject[`state${capitalize(key)}`] : ''))
+    .map((key) =>
+      state[key] ? styleObject[`state${capitalizeFirstLetter(key)}`] : '',
+    )
     .filter(Boolean);
   return [...styles, ...modifierClasses, ...stateClasses].join(' ');
 };
@@ -61,7 +66,7 @@ export const removeValueUnits = (valueWithUnit: string): number => {
      * Percent char is escaped for sanity
      */
     // eslint-disable-next-line no-useless-escape, prettier/prettier
-    '\%',
+    '%',
   ];
   return parseInt(
     valueWithUnit.replace(

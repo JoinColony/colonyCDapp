@@ -1,0 +1,13 @@
+.modalHeading {
+  padding: 32px 0 20px;
+}
+
+.motionVoteDomain {
+  margin: 6px 0;
+}
+
+.headingContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

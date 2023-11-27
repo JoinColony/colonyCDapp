@@ -1,0 +1,50 @@
+[
+    {
+        "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "symbol": "USDC",
+        "name": "USD Coin",
+        "decimals": 6
+    },
+    {
+        "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        "symbol": "USDT",
+        "name": "Tether",
+        "decimals": 6
+    },
+    {
+        "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
+        "symbol": "DAI",
+        "name": "Dai",
+        "decimals": 18
+    },
+    {
+        "address": "0x3e828ac5c480069d4765654fb4b8733b910b13b2",
+        "symbol": "CLNY",
+        "name": "Colony Network Token",
+        "decimals": 18
+    },
+    {
+        "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
+        "symbol": "LINK",
+        "name": "Chainlink",
+        "decimals": 18
+    },
+    {
+        "address": "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0",
+        "symbol": "MATIC",
+        "name": "Matic Network",
+        "decimals": 18
+    },
+    {
+        "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+        "symbol": "WBTC",
+        "name": "Wrapped Bitcoin",
+        "decimals": 8
+    },
+    {
+        "address": "0x6810e776880c02933d47db1b9fc05908e5386b96",
+        "symbol": "GNO",
+        "name": "Gnosis",
+        "decimals": 18
+    }
+]

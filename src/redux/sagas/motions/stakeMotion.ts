@@ -1,70 +1,59 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import { AnyVotingReputationClient, ClientType } from '@colony/colony-js';
+import { call, put, takeEvery } from 'redux-saga/effects';
+import {
+  AnyVotingReputationClient,
+  ClientType,
+  getPermissionProofs,
+  ColonyRole,
+} from '@colony/colony-js';
 
+import { ColonyManager } from '~context';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import {
   putError,
   takeFrom,
-  updateMotionValues,
   getColonyManager,
+  uploadAnnotation,
+  initiateTransaction,
 } from '../utils';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
-import { ipfsUpload } from '../ipfs';
+import { transactionAddParams, transactionPending } from '../../actionCreators';
 
 function* stakeMotion({
   meta,
   payload: {
-    userAddress,
     colonyAddress,
     motionId,
     vote,
     amount,
     annotationMessage,
+    actionId,
   },
 }: Action<ActionTypes.MOTION_STAKE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const colonyManager = yield getColonyManager();
+    const colonyManager: ColonyManager = yield call(getColonyManager);
+
+    const { signer } = colonyManager;
+
     const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );
 
-    const votingReputationClient: AnyVotingReputationClient =
-      yield colonyManager.getClient(
-        ClientType.VotingReputationClient,
-        colonyAddress,
-      );
-
-    const { domainId, rootHash } = yield votingReputationClient.getMotion(
-      motionId,
-    );
-
-    const { skillId } = yield call(
-      [colonyClient, colonyClient.getDomain],
-      domainId,
-    );
-
-    const { key, value, branchMask, siblings } = yield call(
-      colonyClient.getReputation,
-      skillId,
-      userAddress,
-      rootHash,
+    const votingReputationClient: AnyVotingReputationClient = yield call(
+      [colonyManager, colonyManager.getClient],
+      ClientType.VotingReputationClient,
+      colonyAddress,
     );
 
     const { approveStake, stakeMotionTransaction, annotateStaking } =
-      yield createTransactionChannels(meta.id, [
+      yield call(createTransactionChannels, meta.id, [
         'approveStake',
         'stakeMotionTransaction',
         'annotateStaking',
@@ -72,34 +61,24 @@ function* stakeMotion({
 
     const batchKey = 'stakeMotion';
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: meta.id,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(approveStake, {
+    yield createGroupTransaction(approveStake, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: 'approveStake',
       identifier: colonyAddress,
-      params: [votingReputationClient.address, domainId, amount],
+      params: [],
       ready: false,
     });
 
-    yield createGroupTransaction(stakeMotionTransaction, {
+    yield createGroupTransaction(stakeMotionTransaction, batchKey, meta, {
       context: ClientType.VotingReputationClient,
-      methodName: 'stakeMotionWithProofs',
+      methodName: 'stakeMotion',
       identifier: colonyAddress,
-      params: [motionId, vote, amount, key, value, branchMask, siblings],
+      params: [],
       ready: false,
     });
 
     if (annotationMessage) {
-      yield createGroupTransaction(annotateStaking, {
+      yield createGroupTransaction(annotateStaking, batchKey, meta, {
         context: ClientType.ColonyClient,
         methodName: 'annotateTransaction',
         identifier: colonyAddress,
@@ -118,11 +97,64 @@ function* stakeMotion({
       yield takeFrom(annotateStaking.channel, ActionTypes.TRANSACTION_CREATED);
     }
 
-    yield put(transactionReady(approveStake.id));
+    yield put(transactionPending(approveStake.id));
+
+    const { domainId, rootHash } = yield call(
+      [votingReputationClient, votingReputationClient.getMotion],
+      motionId,
+    );
+
+    yield put(
+      transactionAddParams(approveStake.id, [
+        votingReputationClient.address,
+        domainId,
+        amount,
+      ]),
+    );
+
+    yield initiateTransaction({ id: approveStake.id });
 
     yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    yield put(transactionReady(stakeMotionTransaction.id));
+    yield put(transactionPending(stakeMotionTransaction.id));
+
+    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient.networkClient,
+      colonyClient,
+      domainId,
+      ColonyRole.Arbitration,
+      votingReputationClient.address,
+    );
+
+    const { skillId } = yield call(
+      [colonyClient, colonyClient.getDomain],
+      domainId,
+    );
+
+    const currentUserWalletAddress = yield signer.getAddress();
+
+    const { key, value, branchMask, siblings } =
+      yield colonyClient.getReputation(
+        skillId,
+        currentUserWalletAddress,
+        rootHash,
+      );
+
+    yield put(
+      transactionAddParams(stakeMotionTransaction.id, [
+        motionId,
+        permissionDomainId,
+        childSkillIndex,
+        vote,
+        amount,
+        key,
+        value,
+        branchMask,
+        siblings,
+      ]),
+    );
+
+    yield initiateTransaction({ id: stakeMotionTransaction.id });
 
     const {
       payload: { hash: txHash },
@@ -137,38 +169,13 @@ function* stakeMotion({
     );
 
     if (annotationMessage) {
-      yield put(transactionPending(annotateStaking.id));
-
-      /*
-       * Upload annotation metadata to IPFS
-       */
-      let annotationMessageIpfsHash = null;
-      annotationMessageIpfsHash = yield call(
-        ipfsUpload,
-        JSON.stringify({
-          annotationMessage,
-        }),
-      );
-
-      yield put(
-        transactionAddParams(annotateStaking.id, [
-          txHash,
-          annotationMessageIpfsHash,
-        ]),
-      );
-
-      yield put(transactionReady(annotateStaking.id));
-
-      yield takeFrom(
-        annotateStaking.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
+      yield uploadAnnotation({
+        txChannel: annotateStaking,
+        message: annotationMessage,
+        txHash,
+        actionId,
+      });
     }
-
-    /*
-     * Update motion page values
-     */
-    yield fork(updateMotionValues, colonyAddress, userAddress, motionId);
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_STAKE_SUCCESS,

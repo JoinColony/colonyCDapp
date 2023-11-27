@@ -8,14 +8,26 @@ import {
 } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
+import { ContextModule, getContext } from '~context';
+import {
+  CreateDomainMetadataDocument,
+  CreateDomainMetadataMutation,
+  CreateDomainMetadataMutationVariables,
+  DomainColor,
+} from '~gql';
+import { getPendingMetadataDatabaseId } from '~utils/databaseId';
+
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import {
   putError,
   takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
+  // uploadIfpsAnnotation,
   getColonyManager,
+  getUpdatedDomainMetadataChangelog,
+  uploadAnnotation,
+  initiateTransaction,
+  createActionMetadataInDB,
 } from '../utils';
 
 import {
@@ -23,12 +35,7 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { ipfsUpload } from '../ipfs';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+// import { ipfsUpload } from '../ipfs';
 
 function* createEditDomainMotion({
   payload: {
@@ -38,16 +45,19 @@ function* createEditDomainMotion({
     domainColor,
     domainPurpose,
     annotationMessage,
-    domainId: editDomainId,
+    domain,
     isCreateDomain,
     parentId = Id.RootDomain,
     motionDomainId,
+    customActionTitle,
   },
-  meta: { id: metaId, history },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_DOMAIN_CREATE_EDIT>) {
   let txChannel;
   try {
+    const apolloClient = getContext(ContextModule.ApolloClient);
+
     /*
      * Validate the required values
      */
@@ -55,11 +65,15 @@ function* createEditDomainMotion({
       throw new Error('A domain name is required to create a new domain');
     }
 
-    if (!isCreateDomain && !editDomainId) {
+    if (!isCreateDomain && !domain?.id) {
       throw new Error('A domain id is required to edit domain');
     }
+
+    txChannel = yield call(getTxChannel, metaId);
+
     /* additional editDomain check is for the TS to not ring alarm in getPermissionProofs */
-    const domainId = !isCreateDomain && editDomainId ? editDomainId : parentId;
+    const domainId =
+      !isCreateDomain && domain?.nativeId ? domain.nativeId : parentId;
 
     const context = yield getColonyManager();
     const colonyClient = yield context.getClient(
@@ -73,6 +87,7 @@ function* createEditDomainMotion({
 
     const [permissionDomainId, childSkillIndex] = yield call(
       getPermissionProofs,
+      colonyClient.networkClient,
       colonyClient,
       domainId,
       ColonyRole.Architecture,
@@ -81,6 +96,7 @@ function* createEditDomainMotion({
 
     const motionChildSkillIndex = yield call(
       getChildIndex,
+      colonyClient.networkClient,
       colonyClient,
       motionDomainId,
       domainId,
@@ -97,8 +113,6 @@ function* createEditDomainMotion({
       AddressZero,
     );
 
-    txChannel = yield call(getTxChannel, metaId);
-
     // setup batch ids and channels
     const batchKey = 'createMotion';
 
@@ -110,21 +124,21 @@ function* createEditDomainMotion({
     /*
      * Upload domain metadata to IPFS
      */
-    let domainMetadataIpfsHash = null;
-    domainMetadataIpfsHash = yield call(
-      ipfsUpload,
-      JSON.stringify({
-        domainName,
-        domainColor,
-        domainPurpose,
-      }),
-    );
+    // let domainMetadataIpfsHash = null;
+    // domainMetadataIpfsHash = yield call(
+    //   ipfsUpload,
+    //   JSON.stringify({
+    //     domainName,
+    //     domainColor,
+    //     domainPurpose,
+    //   }),
+    // );
 
     const encodedAction = colonyClient.interface.encodeFunctionData(
       isCreateDomain
         ? 'addDomain(uint256,uint256,uint256,string)'
         : 'editDomain',
-      [permissionDomainId, childSkillIndex, domainId, domainMetadataIpfsHash],
+      [permissionDomainId, childSkillIndex, domainId, '.'], // domainMetadataIpfsHash
     );
 
     // create transactions
@@ -170,7 +184,7 @@ function* createEditDomainMotion({
       yield takeFrom(annotateMotion.channel, ActionTypes.TRANSACTION_CREATED);
     }
 
-    yield put(transactionReady(createMotion.id));
+    yield initiateTransaction({ id: createMotion.id });
 
     const {
       payload: { hash: txHash },
@@ -178,25 +192,72 @@ function* createEditDomainMotion({
       createMotion.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    if (annotationMessage) {
-      const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
-      yield put(transactionPending(annotateMotion.id));
-
-      yield put(transactionAddParams(annotateMotion.id, [txHash, ipfsHash]));
-
-      yield put(transactionReady(annotateMotion.id));
-
-      yield takeFrom(annotateMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    if (isCreateDomain) {
+      /**
+       * Save domain metadata in the database
+       */
+      yield apolloClient.mutate<
+        CreateDomainMetadataMutation,
+        CreateDomainMetadataMutationVariables
+      >({
+        mutation: CreateDomainMetadataDocument,
+        variables: {
+          input: {
+            id: getPendingMetadataDatabaseId(colonyAddress, txHash),
+            name: domainName,
+            color: domainColor || DomainColor.LightPink,
+            description: domainPurpose || '',
+          },
+        },
+      });
+    } else if (domain?.metadata) {
+      yield apolloClient.mutate<
+        CreateDomainMetadataMutation,
+        CreateDomainMetadataMutationVariables
+      >({
+        mutation: CreateDomainMetadataDocument,
+        variables: {
+          input: {
+            id: getPendingMetadataDatabaseId(colonyAddress, txHash),
+            name: domainName,
+            color: domainColor || domain.metadata.color,
+            description: domainPurpose || domain.metadata.description,
+            changelog: getUpdatedDomainMetadataChangelog(
+              txHash,
+              domain.metadata,
+              domainName,
+              domainColor,
+              domainPurpose,
+            ),
+          },
+        },
+      });
     }
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
+
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateMotion,
+        message: annotationMessage,
+        txHash,
+      });
+    }
+
     yield put<AllActions>({
       type: ActionTypes.MOTION_DOMAIN_CREATE_EDIT_SUCCESS,
       meta,
     });
 
-    if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+    if (colonyName && navigate) {
+      navigate(`/${colonyName}?tx=${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (caughtError) {
     putError(ActionTypes.MOTION_DOMAIN_CREATE_EDIT_ERROR, caughtError, meta);

@@ -1,0 +1,30 @@
+.helpProgressBar {
+  align-self: flex-end;
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+.tooltip {
+  width: 220px;
+}
+
+.progressBarContainer {
+  margin-left: 2px;
+  padding-top: 5px;
+  width: 116px;
+}
+
+.progressBarContainer > div > div {
+  top: -21.5px;
+}
+
+.text {
+  margin: 0 6px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  color: var(--grey-purple);
+}
+
+.progressStateContainer {
+  display: flex;
+}

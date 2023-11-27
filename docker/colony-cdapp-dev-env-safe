@@ -1,0 +1,49 @@
+FROM colony-cdapp-dev-env/base:latest
+
+ENV NETWORK_HASH=6d4cc5033b7b9fd20048b8d298818965dc4c69a4
+
+# Declare volumes to set up metadata
+VOLUME [ "/colonyCDapp/amplify/mock-data" ]
+
+#
+# Colony Network
+#
+
+WORKDIR /colonyCDappBackend
+
+# Clone the network repo
+RUN git clone https://github.com/JoinColony/colonyNetwork.git --depth 1
+WORKDIR /colonyCDappBackend/colonyNetwork
+
+# Fetch the correct network repo commit/branch/tag
+RUN git fetch origin $NETWORK_HASH --depth 1
+RUN git checkout $NETWORK_HASH
+RUN git submodule update --init --recursive --depth 1
+
+# Install required network dependencies
+RUN npm i --build-from-source
+
+# Install required safe submodule network dependencies
+RUN npm i --build-from-source --prefix ./lib/safe-contracts
+
+# Compile network contracts
+RUN DISABLE_DOCKER=true yarn provision:token:contracts
+
+RUN DISABLE_DOCKER=true npm run provision:safe:contracts
+
+WORKDIR /colonyCDappBackend
+
+# Open up ports to the docker image
+EXPOSE 8546
+
+# Add dependencies from the host
+# Note: these are listed individually so that if they change, they won't affect
+# the build of the other images
+# they are also at the end of the file to speed up iterations
+ADD docker/files/safe/run.sh.base /colonyCDappBackend/run.sh
+
+# Make the run script executable
+RUN chmod +x ./run.sh
+
+# Battlecruiser Operational!
+CMD [ "./run.sh" ]

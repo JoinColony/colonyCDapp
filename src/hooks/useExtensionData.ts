@@ -1,8 +1,11 @@
-import { getExtensionHash } from '@colony/colony-js';
+import { getExtensionHash, Extension } from '@colony/colony-js';
 import { useMemo } from 'react';
+import { ApolloQueryResult } from '@apollo/client';
 
 import { supportedExtensionsConfig } from '~constants';
 import {
+  Exact,
+  GetColonyExtensionQuery,
   useGetColonyExtensionQuery,
   useGetCurrentExtensionVersionQuery,
 } from '~gql';
@@ -14,9 +17,31 @@ import {
 
 import useColonyContext from './useColonyContext';
 
+export enum ExtensionMethods {
+  INSTALL = 'installExtension',
+  UNINSTALL = 'uninstallExtension',
+  UPGRADE = 'upgradeExtension',
+  DEPRECATE = 'deprecateExtension',
+  REENABLE = 'reenableExtension',
+  ENABLE = 'enableExtension',
+}
+
+export type RefetchExtensionDataFn = (
+  variables?:
+    | Partial<
+        Exact<{
+          colonyAddress: string;
+          extensionHash: string;
+        }>
+      >
+    | undefined,
+) => Promise<ApolloQueryResult<GetColonyExtensionQuery>>;
 interface UseExtensionDataReturn {
   extensionData: AnyExtensionData | null;
   loading: boolean;
+  startPolling: (interval: number) => void;
+  stopPolling: () => void;
+  refetchExtensionData: RefetchExtensionDataFn;
 }
 
 /**
@@ -26,15 +51,21 @@ interface UseExtensionDataReturn {
 const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
   const { colony } = useColonyContext();
 
-  const extensionHash = getExtensionHash(extensionId);
+  const extensionHash = getExtensionHash(extensionId as Extension);
 
-  const { data, loading: extensionLoading } = useGetColonyExtensionQuery({
+  const {
+    data,
+    loading: extensionLoading,
+    startPolling,
+    stopPolling,
+    refetch,
+  } = useGetColonyExtensionQuery({
     variables: {
       colonyAddress: colony?.colonyAddress ?? '',
       extensionHash,
     },
     skip: !colony,
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
   });
   const colonyExtension = data?.getExtensionByColonyAndHash?.items?.[0];
 
@@ -43,6 +74,7 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
       variables: {
         extensionHash,
       },
+      skip: !colony,
       fetchPolicy: 'cache-and-network',
     });
   const { version } = versionData?.getCurrentVersionByKey?.items?.[0] || {};
@@ -52,12 +84,13 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
   );
 
   const extensionData = useMemo<AnyExtensionData | null>(() => {
-    if (!version || !extensionConfig) {
+    if (!version || !extensionConfig || !colony) {
       return null;
     }
 
     if (colonyExtension) {
       return mapToInstalledExtensionData(
+        colony,
         extensionConfig,
         colonyExtension,
         version,
@@ -65,11 +98,14 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
     }
 
     return mapToInstallableExtensionData(extensionConfig, version);
-  }, [colonyExtension, extensionConfig, version]);
+  }, [colony, colonyExtension, extensionConfig, version]);
 
   return {
     extensionData,
     loading: extensionLoading || versionLoading,
+    startPolling,
+    stopPolling,
+    refetchExtensionData: refetch,
   };
 };
 

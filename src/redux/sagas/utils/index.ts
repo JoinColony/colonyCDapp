@@ -7,7 +7,11 @@ export * from './metatransactions';
 export * from './errorMessages';
 export * from './effects';
 export * from './enableExtensionHelpers';
-export * from './refreshExtension';
+export * from './metadataChangelog';
+export * from './ipfs';
+export * from './annotations';
+export * from './proofs';
+export * from './expenditures';
 
 // export * from './updateColonyDisplayCache';
 // export { updateMotionValues } from './updateMotionValues';
@@ -18,4 +22,5 @@ export * from './refreshExtension';
 //   setupEnablingGroupTransactions,
 //   Channel,
 // } from './enableExtensionHelpers';
-// export { updateDomainReputation } from './updateDomainReputation';
+export { updateDomainReputation } from './updateDomainReputation';
+export { createActionMetadataInDB } from './createActionMetadata';

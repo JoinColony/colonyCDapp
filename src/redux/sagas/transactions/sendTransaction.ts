@@ -9,7 +9,7 @@ import { selectAsJS, getColonyManager } from '../utils';
 import { mergePayload } from '~utils/actions';
 import { TransactionRecord } from '../../immutable';
 import {
-  TRANSACTION_STATUSES,
+  TransactionStatus,
   TRANSACTION_METHODS,
   ExtendedClientType,
 } from '~types';
@@ -37,7 +37,7 @@ export default function* sendTransaction({
   const { status, context, identifier, metatransaction, methodName } =
     transaction;
 
-  if (status !== TRANSACTION_STATUSES.READY) {
+  if (status !== TransactionStatus.Ready) {
     throw new Error('Transaction is not ready to send.');
   }
   const colonyManager = yield getColonyManager();

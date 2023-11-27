@@ -1,0 +1,27 @@
+fragment Transaction on Transaction {
+  id
+  context
+  createdAt
+  from
+  colonyAddress
+  params
+  groupId
+  group {
+    id
+    groupId
+    key
+    index
+    description
+    descriptionValues
+    title
+    titleValues
+  }
+  hash
+  methodContext
+  methodName
+  status
+  metatransaction
+  title
+  titleValues
+  options
+}

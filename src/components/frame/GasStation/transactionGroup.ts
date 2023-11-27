@@ -1,5 +1,5 @@
 import { TransactionType, MessageType } from '~redux/immutable';
-import { TRANSACTION_STATUSES } from '~types';
+import { TransactionStatus } from '~gql';
 
 export type TransactionOrMessageGroup = (TransactionType | MessageType)[];
 
@@ -56,13 +56,13 @@ export const findNewestGroup = (txGroups: TransactionOrMessageGroups) => {
 export const getActiveTransactionIdx = (txGroup: TransactionOrMessageGroup) => {
   // Select the pending selection so that the user can't sign the next one
   const pendingTransactionIdx = txGroup.findIndex(
-    (tx) => tx.status === TRANSACTION_STATUSES.PENDING,
+    (tx) => tx.status === TransactionStatus.Pending,
   );
   if (pendingTransactionIdx > -1) return pendingTransactionIdx;
   return txGroup.findIndex(
     (tx) =>
-      tx.status === TRANSACTION_STATUSES.READY ||
-      tx.status === TRANSACTION_STATUSES.FAILED,
+      tx.status === TransactionStatus.Ready ||
+      tx.status === TransactionStatus.Failed,
   );
 };
 
@@ -73,14 +73,14 @@ export const getGroupValues = <T>(
 
 // Get the joint status of the group
 export const getGroupStatus = (txGroup: TransactionOrMessageGroup) => {
-  if (txGroup.some((tx) => tx.status === TRANSACTION_STATUSES.FAILED))
-    return TRANSACTION_STATUSES.FAILED;
+  if (txGroup.some((tx) => tx.status === TransactionStatus.Failed))
+    return TransactionStatus.Failed;
 
-  if (txGroup.some((tx) => tx.status === TRANSACTION_STATUSES.PENDING))
-    return TRANSACTION_STATUSES.PENDING;
-  if (txGroup.every((tx) => tx.status === TRANSACTION_STATUSES.SUCCEEDED))
-    return TRANSACTION_STATUSES.SUCCEEDED;
-  return TRANSACTION_STATUSES.READY;
+  if (txGroup.some((tx) => tx.status === TransactionStatus.Pending))
+    return TransactionStatus.Pending;
+  if (txGroup.every((tx) => tx.status === TransactionStatus.Succeeded))
+    return TransactionStatus.Succeeded;
+  return TransactionStatus.Ready;
 };
 
 // Get count of all transactions in the redux store
@@ -92,7 +92,9 @@ export const transactionCount = (
  * @NOTE Determine if we're dealing with a group of Transactions or a group of Messages to be signed.
  * @BODY Based on this we either show a `<TransactionCard />` or a `<MessageCard />`
  */
-export const isTxGroup = (txOrMessageGroup: TransactionOrMessageGroup) =>
+export const isTxGroup = (
+  txOrMessageGroup: TransactionOrMessageGroup,
+): txOrMessageGroup is TransactionType[] =>
   /**
    * @NOTE Uses `hasOwnProperty` because if the transaction group contains only one transaction
    * the `context` prop will be set to `undefined`. Typescript will be happy this way
@@ -107,8 +109,8 @@ export const readyTransactionsCount = (
   txOrMessageGroups.map((txOrMessageGroup) =>
     txOrMessageGroup.map((txOrMessage) => {
       if (
-        txOrMessage.status === TRANSACTION_STATUSES.READY ||
-        txOrMessage.status === TRANSACTION_STATUSES.PENDING
+        txOrMessage.status === TransactionStatus.Ready ||
+        txOrMessage.status === TransactionStatus.Pending
       ) {
         readyTransactions += 1;
       }

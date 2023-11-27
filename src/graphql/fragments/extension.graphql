@@ -8,4 +8,28 @@ fragment Extension on ColonyExtension {
   isDeprecated
   isDeleted
   isInitialized
+  params {
+    votingReputation {
+      maxVoteFraction
+      totalStakeFraction
+      voterRewardFraction
+      userMinStakeFraction
+      maxVoteFraction
+      stakePeriod
+      submitPeriod
+      revealPeriod
+      escalationPeriod
+    }
+    stakedExpenditure {
+      stakeFraction
+    }
+    stakedExpenditure {
+      stakeFraction
+    }
+  }
+}
+
+fragment ExtensionDisplayFragment on ColonyExtension {
+  address: id
+  hash
 }

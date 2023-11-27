@@ -1,0 +1,17 @@
+.contractAddressContainer {
+  position: relative;
+}
+
+.contractAddressContainer input {
+  font-size: var(--size-normal);
+}
+
+.contractAddressContainer figure {
+  position: absolute;
+  right: 10px;
+  bottom: 28px;
+}
+
+.contractAddressContainer > div {
+  margin-bottom: 0;
+}

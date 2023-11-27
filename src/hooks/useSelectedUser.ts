@@ -1,27 +1,18 @@
-// import { useMemo } from 'react';
+import { User } from '~types';
+import useAppContext from './useAppContext';
 
-// import { AnyUser, useLoggedInUser } from '~data/index';
+const useSelectedUser = (colonyUsers: User[]) => {
+  const { user } = useAppContext();
 
-/*
- * @TODO This needs to be addressed and either refactored or removed
- */
+  const [firstSubscriber, secondSubscriber] = colonyUsers;
 
-// export const useSelectedUser = (colonyUsers: AnyUser[]) => {
-//   const { walletAddress: loggedInUserWalletAddress } = useLoggedInUser();
+  if (!secondSubscriber) {
+    return firstSubscriber;
+  }
 
-//   return useMemo(() => {
-//     const [firstSubscriber, secondSubscriber] = colonyUsers;
-
-//     if (!secondSubscriber) {
-//       return firstSubscriber;
-//     }
-
-//     return firstSubscriber.profile.walletAddress === loggedInUserWalletAddress
-//       ? secondSubscriber
-//       : firstSubscriber;
-//   }, [colonyUsers, loggedInUserWalletAddress]);
-// };
-
-const useSelectedUser = (...args) => args;
+  return firstSubscriber?.walletAddress === user?.walletAddress
+    ? secondSubscriber
+    : firstSubscriber;
+};
 
 export default useSelectedUser;

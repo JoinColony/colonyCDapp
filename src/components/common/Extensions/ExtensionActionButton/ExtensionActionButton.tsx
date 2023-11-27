@@ -1,62 +1,47 @@
 import React from 'react';
-import { defineMessages } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
+import { ColonyRole, Id } from '@colony/colony-js';
 
 import { useAppContext, useColonyContext } from '~hooks';
-import { ActionTypes } from '~redux';
-import Button, { ActionButton, IconButton } from '~shared/Button';
-import { AnyExtensionData } from '~types';
 import { isInstalledExtensionData } from '~utils/extensions';
-import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
+import { getUserRolesForDomain } from '~transformers';
+
+import { ExtensionDetailsAsideProps } from '../ExtensionDetails';
+import InstallButton from './ExtensionInstallButton';
+import EnableButton from './ExtensionEnableButton';
 
 const displayName = 'common.Extensions.ExtensionActionButton';
 
-const MSG = defineMessages({
-  install: {
-    id: `${displayName}.install`,
-    defaultMessage: 'Install',
-  },
-  enable: {
-    id: `${displayName}.enable`,
-    defaultMessage: 'Enable',
-  },
-});
+type Props = Pick<
+  ExtensionDetailsAsideProps,
+  'extensionData' | 'pollingControls'
+>;
 
-interface Props {
-  extensionData: AnyExtensionData;
-}
-
-const ExtensionActionButton = ({ extensionData }: Props) => {
-  const navigate = useNavigate();
-  const { colony } = useColonyContext();
-  const { user } = useAppContext();
+const ExtensionActionButton = ({
+  extensionData,
+  pollingControls: { startPolling, stopPolling },
+}: Props) => {
+  const { colony, isSupportedColonyVersion } = useColonyContext();
+  const { user, wallet } = useAppContext();
 
   if (!colony || !user) {
     return null;
   }
 
-  const handleEnableButtonClick = () => {
-    navigate(
-      `/colony/${colony.name}/extensions/${extensionData.extensionId}/setup`,
-    );
-  };
+  const userDomainRoles = getUserRolesForDomain(
+    colony,
+    wallet?.address || '',
+    Id.RootDomain,
+  );
 
-  const isSupportedColonyVersion =
-    colony.version >= MIN_SUPPORTED_COLONY_VERSION;
+  const inputDisabled =
+    !isSupportedColonyVersion || !userDomainRoles.includes(ColonyRole.Root);
 
   if (!isInstalledExtensionData(extensionData)) {
     return (
-      <ActionButton
-        button={IconButton}
-        submit={ActionTypes.EXTENSION_INSTALL}
-        error={ActionTypes.EXTENSION_INSTALL_ERROR}
-        success={ActionTypes.EXTENSION_INSTALL_SUCCESS}
-        values={{
-          colonyAddress: colony.colonyAddress,
-          extensionData,
-        }}
-        text={MSG.install}
-        disabled={!isSupportedColonyVersion}
+      <InstallButton
+        extensionData={extensionData}
+        inputDisabled={inputDisabled}
+        startPolling={startPolling}
       />
     );
   }
@@ -65,18 +50,18 @@ const ExtensionActionButton = ({ extensionData }: Props) => {
     return null;
   }
 
-  if (!extensionData.isInitialized) {
+  if (
+    !extensionData.isInitialized ||
+    extensionData.missingColonyPermissions.length
+  ) {
     return (
-      <Button
-        appearance={{ theme: 'primary', size: 'medium' }}
-        onClick={handleEnableButtonClick}
-        text={MSG.enable}
-        disabled={!isSupportedColonyVersion}
+      <EnableButton
+        extensionData={extensionData}
+        inputDisabled={inputDisabled}
+        stopPolling={stopPolling}
       />
     );
   }
-
-  // @TODO: Handle missing permissions
 
   return null;
 };

@@ -1,0 +1,63 @@
+.main {
+  @apply inline-block relative w-[2.8125rem] h-[2.8125rem];
+}
+
+.xxs {
+  @apply inline-block relative w-[1rem] h-[1rem];
+}
+
+.xs {
+  @apply inline-block relative w-[1.25rem] h-[1.25rem];
+}
+
+.xsm {
+  @apply inline-block relative w-[1.625rem] h-[1.625rem];
+}
+
+.sm {
+  @apply flex items-center relative w-[1.875rem] h-[1.875rem];
+}
+
+.s {
+  @apply flex items-center relative w-[2.125rem] h-[2.125rem];
+}
+
+.xms {
+  @apply inline-block relative w-[2.375rem] h-[2.375rem];
+}
+
+.ms {
+  @apply inline-block relative w-[2.75rem] h-[2.75rem];
+}
+
+.xm {
+  @apply inline-block relative w-16 h-16;
+}
+
+.m {
+  @apply inline-block relative w-[4.375rem] h-[4.375rem];
+}
+
+.md {
+  @apply inline-block relative w-[5.625rem] h-[5.625rem];
+}
+
+.l {
+  @apply inline-block relative w-[7.5rem] h-[7.5rem];
+}
+
+.xl {
+  @apply inline-block relative w-[10rem] h-[10rem];
+}
+
+.placeholderIcon {
+  @apply w-full h-full opacity-50;
+}
+
+.placeholderIconNotSet {
+  @apply w-full h-full opacity-100;
+}
+
+.image {
+  @apply w-full h-full absolute top-0 left-0 rounded-full bg-cover;
+}

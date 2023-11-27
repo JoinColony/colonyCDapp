@@ -1,10 +1,9 @@
-import { fork } from 'redux-saga/effects';
 import { BigNumber } from 'ethers';
 
 import { TxConfig } from '~types';
 import { ContextModule, getContext, setContext } from '~context';
 
-import { createTransaction, createTransactionChannels } from '~redux/sagas';
+import { createTransactionChannels } from '~redux/sagas';
 
 export type Channel = Omit<TxConfig, 'methodName'>;
 
@@ -53,20 +52,10 @@ export function* setupEnablingGroupTransactions(
       metaId,
       Object.keys(channels),
     );
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: 'enableExtension',
-          id: metaId,
-          index,
-        },
-      });
 
     return {
       channels,
       transactionChannels,
-      createGroupTransaction,
     };
   } catch (error) {
     console.error(error);

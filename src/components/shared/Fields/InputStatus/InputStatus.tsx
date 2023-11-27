@@ -1,25 +1,25 @@
-import { MessageDescriptor, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import React from 'react';
 
-import { isNil } from 'lodash';
-import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
+import { formatText } from '~utils/intl';
+import { InputProps } from '~shared/Fields/Input';
+import { UniversalMessageValues, Message } from '~types';
 
-import { InputComponentAppearance as Appearance } from '../Input';
 import styles from './InputStatus.css';
 
-interface Props {
-  /** Appearance object */
-  appearance?: Appearance;
-
+interface InputStatusProps
+  extends Pick<
+    InputProps,
+    'appearance' | 'status' | 'statusValues' | 'isLoading' | 'loadingAnnotation'
+  > {
   /** Error text (if applicable) */
-  error?: string | MessageDescriptor;
+  error?: Message;
 
-  /** Status text (if applicable) */
-  status?: string | MessageDescriptor;
+  /** Error message vaulues (if applicable) */
+  errorValues?: UniversalMessageValues;
 
-  /** Values for status text (react-intl interpolation) (if applicable) */
-  statusValues?: SimpleMessageValues;
+  /** Has input field been touched? */
   touched?: boolean;
 }
 
@@ -28,24 +28,31 @@ const displayName = 'InputStatus';
 const InputStatus = ({
   appearance = {},
   error,
+  errorValues,
+  isLoading,
+  loadingAnnotation = '',
   status,
   statusValues,
   touched,
-}: Props) => {
+}: InputStatusProps) => {
   const { formatMessage } = useIntl();
-  const errorText = typeof error === 'object' ? formatMessage(error) : error;
-  const statusText =
-    typeof status === 'object' ? formatMessage(status, statusValues) : status;
-  const text = errorText || statusText;
+  const errorText = error ? formatText(error, errorValues) : undefined;
+  const statusText = status ? formatText(status, statusValues) : undefined;
+  const loadingText = formatMessage(
+    { id: 'status.loading' },
+    { optionalText: formatText(loadingAnnotation) },
+  );
+  const text = errorText || statusText || '';
   const Element = appearance.direction === 'horizontal' ? 'span' : 'p';
+
   return (
     <Element
       className={getMainClasses(appearance, styles, {
-        error: !!error,
-        hidden: !text || (!!error && !isNil(touched) && !touched),
+        error: !!error && !isLoading,
+        hidden: (!text && !isLoading) || (!!error && !touched),
       })}
     >
-      {text}
+      {isLoading ? loadingText : text}
     </Element>
   );
 };

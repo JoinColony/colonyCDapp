@@ -1,95 +1,91 @@
-import { FormikBag, FormikConfig } from 'formik';
 import React from 'react';
-import { defineMessages } from 'react-intl';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
 
-import { ActionTypeString } from '~redux';
-import { ActionTransformFnType } from '~utils/actions';
+import { ActionTypes, ActionTypeString } from '~redux';
+import { ActionTransformFnType, getFormAction } from '~utils/actions';
 import { useAsyncFunction } from '~hooks';
-import Form from './Form';
 
-const MSG = defineMessages({
-  defaultError: {
-    id: 'ActionForm.defaultError',
-    defaultMessage:
-      "Something went wrong with the thing you just wanted to do. It's not your fault. Promise!",
-  },
-});
+import Form, {
+  CustomSubmitErrorHandler,
+  CustomSubmitHandler,
+  FormProps,
+} from './Form';
 
 const displayName = 'Form.ActionForm';
 
-export type OnError = (
-  error: any,
-  bag: FormikBag<any, any>,
-  values?: any,
-) => void;
-export type OnSuccess = (
+export type OnSuccess<V extends FieldValues> = (
+  values: V,
+  formHelpers: UseFormReturn<V, any>,
   result: any,
-  bag: FormikBag<any, any>,
-  values: any,
 ) => void;
 
-interface Props<V> extends Omit<FormikConfig<V>, 'onSubmit'> {
+export interface ActionFormProps<V extends Record<string, any>>
+  extends Omit<FormProps<V>, 'onError' | 'onSubmit'> {
+  /** Redux action type to dispatch on submit (e.g. CREATE_XXX) */
+  actionType: ActionTypes;
+
   /** Redux action to dispatch on submit (e.g. CREATE_XXX) */
-  submit: ActionTypeString;
+  submit?: ActionTypeString;
 
   /** Redux action listener for successful action (e.g. CREATE_XXX_SUCCESS) */
-  success: ActionTypeString;
+  success?: ActionTypeString;
 
   /** Redux action listener for unsuccessful action (e.g. CREATE_XXX_ERROR) */
-  error: ActionTypeString;
+  error?: ActionTypeString;
 
   /** Function to call after successful action was dispatched */
-  onSuccess?: OnSuccess;
+  onSuccess?: OnSuccess<V>;
 
   /** Function to call after error action was dispatched */
-  onError?: OnError;
+  onError?: CustomSubmitErrorHandler<V>;
+
+  /** Function to call in the event that the form submit errors */
+  onSubmitError?: CustomSubmitErrorHandler<V>;
 
   /** A function to transform the action after the form data was passed in (as payload) */
   transform?: ActionTransformFnType;
 }
 
-const defaultOnError: OnError = (err, { setStatus }) => {
-  console.error(err);
-  setStatus({ error: MSG.defaultError });
-};
-
-const defaultOnSuccess: OnSuccess = (err, { setStatus }) => {
-  setStatus({});
-};
-
-const ActionForm = <V,>({
-  submit,
-  success,
-  error,
-  onSuccess = defaultOnSuccess,
-  onError = defaultOnError,
-  transform,
-  ...props
-}: Props<V>) => {
-  const asyncFunction = useAsyncFunction({
+const ActionForm = <V extends Record<string, any>>(
+  {
+    onSuccess,
+    onError,
+    onSubmitError,
     submit,
-    error,
     success,
+    error,
+    actionType,
+    transform,
+    ...props
+  }: ActionFormProps<V>,
+  ref: React.ForwardedRef<UseFormReturn<V, any, undefined>>,
+) => {
+  const asyncFunction = useAsyncFunction({
+    submit: submit || actionType,
+    error: error || getFormAction(actionType, 'ERROR'),
+    success: success || getFormAction(actionType, 'SUCCESS'),
     transform,
   });
-  const handleSubmit = (values, formikBag) => {
-    formikBag.setStatus({});
-    asyncFunction(values).then(
-      (res) => {
-        formikBag.setSubmitting(false);
-        if (typeof onSuccess === 'function') {
-          onSuccess(res, formikBag, values);
-        }
-      },
-      (err) => {
-        formikBag.setSubmitting(false);
-        if (typeof onError === 'function') onError(err, formikBag, values);
-      },
-    );
+  const handleSubmit: CustomSubmitHandler<V> = async (values, formHelpers) => {
+    try {
+      const res = await asyncFunction(values);
+      onSuccess?.(values, formHelpers, res);
+    } catch (e) {
+      console.error(e);
+      onError?.(e, formHelpers);
+    }
   };
-  return <Form {...props} onSubmit={handleSubmit} />;
+
+  return (
+    <Form
+      {...props}
+      onSubmit={handleSubmit}
+      onError={onSubmitError}
+      ref={ref}
+    />
+  );
 };
 
 ActionForm.displayName = displayName;
 
-export default ActionForm;
+export default React.forwardRef(ActionForm);

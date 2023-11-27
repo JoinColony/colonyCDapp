@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { MessageDescriptor } from 'react-intl';
 
-import { HookFormInput as Input } from '~shared/Fields';
+import { Input } from '~shared/Fields';
 import { noSpaces } from '~utils/cleave';
 
 import styles from './CustomEndpointInput.css';
@@ -23,7 +23,6 @@ const CustomEndpointInput = ({
   const { watch } = useFormContext();
 
   const toggleOn: boolean = watch(toggleName);
-  const inputValue: string = watch(inputName);
 
   return (
     <div className={styles.main}>
@@ -33,7 +32,6 @@ const CustomEndpointInput = ({
         name={inputName}
         disabled={!toggleOn}
         formattingOptions={noSpaces}
-        value={inputValue}
       />
     </div>
   );

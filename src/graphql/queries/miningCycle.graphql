@@ -1,0 +1,5 @@
+query GetReputationMiningCycleMetadata {
+  getReputationMiningCycleMetadata(id: "REPUTATION_MINING_CYCLE_METADATA") {
+    lastCompletedAt
+  }
+}

@@ -1,14 +1,25 @@
 const { constants, providers, Contract } = require('ethers');
 const basicColonyAbi = require('./basicColonyAbi.json');
 
-/*
- * @TODO These values need to be imported properly, and differentiate based on environment
- */
-const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let rpcURL = 'http://network-contracts:8545'; // this needs to be extended to all supported networks
 
-const provider = new providers.JsonRpcProvider(RPC_URL);
+const setEnvVariables = async () => {
+  const ENV = process.env.ENV;
+  if (ENV === 'qa' || ENV === 'sc') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [rpcURL] = await getParams(['chainRpcEndpoint']);
+  }
+};
 
 exports.handler = async ({ source: { id: colonyAddress } }) => {
+  try {
+    await setEnvVariables();
+  } catch (e) {
+    throw new Error('Unable to set environment variables. Reason:', e);
+  }
+
+  const provider = new providers.JsonRpcProvider(rpcURL);
+
   const { chainId } = await provider.getNetwork();
   const block = await provider.getBlockNumber();
   const now = new Date();

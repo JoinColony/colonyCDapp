@@ -1,77 +1,73 @@
 import React from 'react';
-// import { defineMessages } from 'react-intl';
-// import { ROOT_DOMAIN_ID } from '@colony/colony-js';
+import { Id } from '@colony/colony-js';
+import { defineMessages } from 'react-intl';
 
-// import { MiniSpinnerLoader } from '~shared/Preloaders';
-// import { Colony, useContributorsAndWatchersQuery } from '~data/index';
+import { MiniSpinnerLoader } from '~shared/Preloaders';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useColonyContext } from '~hooks';
+import { useGetMembersForColonyQuery } from '~gql';
+import { useColonyHomeContext } from '~context';
 
-// import styles from './ColonyMembersWidget.css';
 import MembersSubsection from './MembersSubsection';
+
+import styles from './ColonyMembersWidget.css';
 
 const displayName = 'common.ColonyHome.ColonyMembersWidget';
 
-// const MSG = defineMessages({
-//   title: {
-//     id: `${displayName}.title`,
-//     defaultMessage: 'Members',
-//   },
-//   loadingData: {
-//     id: `${displayName}.loadingData`,
-//     defaultMessage: 'Loading members information...',
-//   },
-// });
-
+const MSG = defineMessages({
+  title: {
+    id: `${displayName}.title`,
+    defaultMessage: 'Members',
+  },
+  loadingData: {
+    id: `${displayName}.loadingData`,
+    defaultMessage: 'Loading members information...',
+  },
+});
 interface Props {
-  currentDomainId?: number;
   maxAvatars?: number;
 }
 
-const ColonyMembersWidget = ({
-  currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
-  maxAvatars,
-}: Props) => {
+const ColonyMembersWidget = ({ maxAvatars }: Props) => {
   const { colony } = useColonyContext();
+  const { domainIdFilter: currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID } =
+    useColonyHomeContext();
+  const { data, loading: loadingMembers } = useGetMembersForColonyQuery({
+    skip: !colony?.colonyAddress,
+    variables: {
+      input: {
+        colonyAddress: colony?.colonyAddress ?? '',
+        domainId: currentDomainId || Id.RootDomain,
+      },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+  if (!colony) return null;
 
-  if (!colony) {
-    return null;
+  const contributors = data?.getMembersForColony?.contributors;
+  const watchers = data?.getMembersForColony?.watchers;
+
+  if (loadingMembers) {
+    return (
+      <MiniSpinnerLoader
+        className={styles.main}
+        title={MSG.title}
+        loadingText={MSG.loadingData}
+        titleTextValues={{ hasCounter: false }}
+      />
+    );
   }
-
-  // const {
-  //   data: members,
-  //   loading: loadingMembers,
-  // } = useContributorsAndWatchersQuery({
-  //   variables: {
-  //     colonyAddress,
-  //     colonyName,
-  //     domainId: currentDomainId,
-  //   },
-  // });
-
-  // if (loadingMembers) {
-  //   return (
-  //     <MiniSpinnerLoader
-  //       className={styles.main}
-  //       title={MSG.title}
-  //       loadingText={MSG.loadingData}
-  //       titleTextValues={{ hasCounter: false }}
-  //     />
-  //   );
-  // }
-
   return (
     <>
-      {/* <MembersSubsection
-        members={members?.contributorsAndWatchers?.contributors}
+      <MembersSubsection
+        members={contributors}
         colony={colony}
         isContributorsSubsection
-      /> */}
-      {/* {(currentDomainId === ROOT_DOMAIN_ID || */}
-      {(currentDomainId === 0 ||
+      />
+      {(currentDomainId === Id.RootDomain ||
         currentDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID) && (
         <MembersSubsection
-          // members={members?.contributorsAndWatchers?.watchers}
+          members={watchers}
           colony={colony}
           maxAvatars={maxAvatars}
           isContributorsSubsection={false}

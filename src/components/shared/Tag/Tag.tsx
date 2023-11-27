@@ -1,56 +1,69 @@
-import React, { HTMLAttributes } from 'react';
-import { FormattedMessage, MessageDescriptor } from 'react-intl';
+import React, { HTMLAttributes, ReactNode } from 'react';
 
 import Icon from '~shared/Icon';
 import { useMainClasses } from '~hooks';
+import { formatText } from '~utils/intl';
 
 import styles from './Tag.css';
+import { Message, UniversalMessageValues } from '~types';
 
-export interface Appearance {
-  /* "light" is default */
-  theme:
-    | 'primary'
-    | 'light'
-    | 'golden'
-    | 'danger'
-    | 'pink'
-    | 'blue'
-    | 'dangerGhost'
-    | 'banned';
+export enum TagTheme {
+  Primary = 'primary',
+  Light = 'light',
+  Golden = 'golden',
+  Danger = 'danger',
+  Pink = 'pink',
+  Blue = 'blue',
+  DangerGhost = 'dangerGhost',
+  Banned = 'banned',
+}
+
+export enum TagColorSchema {
+  FullColor = 'fullColor',
+  Inverted = 'inverted',
+  Plain = 'plain',
+}
+
+export interface TagAppearance {
+  theme: `${TagTheme}`;
   fontSize?: 'tiny' | 'small';
-  /* "fullColor" is default */
-  colorSchema?: 'fullColor' | 'inverted' | 'plain';
+  colorSchema?: `${TagColorSchema}`;
   margin?: 'none';
 }
 
 interface Props extends HTMLAttributes<HTMLSpanElement> {
   /** Appearance object */
-  appearance?: Appearance;
+  appearance?: TagAppearance;
+  /** Child to render instead of passing text as prop */
+  children?: ReactNode;
   /** Text to display in the tag */
-  text: MessageDescriptor | string;
+  text?: Message;
   /** Text values for intl interpolation */
-  textValues?: { [key: string]: string };
+  textValues?: UniversalMessageValues;
 }
 
 const displayName = 'Tag';
 
-const Tag = ({ appearance, className, text, textValues, ...rest }: Props) => {
+const Tag = ({
+  appearance,
+  children,
+  className,
+  text,
+  textValues,
+  ...rest
+}: Props) => {
   const classNames = useMainClasses(appearance, styles, className);
   return (
     <span className={classNames} {...rest}>
       {appearance?.theme === 'banned' && (
         <Icon
-          title={text || ''}
+          title={text}
           name="emoji-goblin"
           appearance={{ size: 'normal' }}
           className={styles.icon}
         />
       )}
-      {typeof text === 'string' ? (
-        text
-      ) : (
-        <FormattedMessage {...text} values={textValues} />
-      )}
+      {text ? formatText(text, textValues) : children}
     </span>
   );
 };

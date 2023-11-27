@@ -1,0 +1,9 @@
+.main {
+  display: flex;
+  justify-content: center;
+}
+
+.main > div {
+  padding-bottom: 15px;
+  width: 341px;
+}

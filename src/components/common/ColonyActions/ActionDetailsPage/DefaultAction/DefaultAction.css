@@ -1,0 +1,38 @@
+@value query700 from '~styles/queries.css';
+
+.main {
+  height: 100%;
+  width: 100%;
+}
+
+.main > span:first-child {
+  align-items: baseline;
+  margin-bottom: 13px;
+}
+
+.container {
+  display: grid;
+  border-top: 1px solid color-mod(var(--grey-purple) alpha(15%));
+  grid-template:
+    'feed details' 100%
+    / minmax(51%, 460px) minmax(38%, 340px);
+  column-gap: 11%;
+}
+
+@media screen and query700 {
+  .main {
+    padding-top: 0px;
+  }
+
+  .main > span:first-child {
+    margin-left: 14px;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0 14px;
+    border-top: 0px transparent;
+  }
+}

@@ -1,80 +1,57 @@
 import React, { useEffect, SyntheticEvent, useCallback } from 'react';
 import { defineMessages } from 'react-intl';
-import { useField } from 'formik';
+import { useFormContext } from 'react-hook-form';
 
 import { UploadItemComponentProps } from '~shared/FileUpload/types';
-import { UploadFile } from '~shared/FileUpload';
 import { SpinnerLoader } from '~shared/Preloaders';
+import Button from '~shared/Button';
+import { FileReaderFile } from '~utils/fileReader/types';
 
 import styles from './CSVUploaderItem.css';
 
-import Button from '~shared/Button';
-
-const displayName = 'dashboard.Whitelist.CSVUploader.CSVUploaderItem';
+const displayName = 'CSVUploader.CSVUploaderItem';
 
 const MSG = defineMessages({
   removeCSVText: {
-    id: 'dashboard.Whitelist.CSVUploader.CSVUploaderItem.removeCSVText',
+    id: `${displayName}.removeCSVText`,
     defaultMessage: 'Remove',
   },
   processingText: {
-    id: 'dashboard.Whitelist.CSVUploader.CSVUploaderItem.processingText',
+    id: `${displayName}.processingText`,
     defaultMessage: 'Processing',
   },
 });
 
 const CSVUploaderItem = ({
   error,
-  idx,
   name,
-  remove,
   upload,
-  handleError,
   processingData,
   handleProcessingData,
 }: UploadItemComponentProps) => {
-  const [
-    ,
-    {
-      value: { file, uploaded },
-      value,
-    },
-    { setValue },
-  ] = useField<UploadFile>(name);
+  const { watch } = useFormContext();
+  const uploaderValue: FileReaderFile = watch(name);
 
   const handleRemoveClick = useCallback(
     (evt: SyntheticEvent<HTMLButtonElement>) => {
       evt.stopPropagation();
       upload(null);
-      remove(idx);
     },
-    [remove, idx, upload],
+    [upload],
   );
 
   useEffect(() => {
-    if (file && !error && !uploaded) {
-      if (handleProcessingData) {
-        handleProcessingData(true);
-      }
-      upload(value.file);
-      setValue({ ...value, uploaded: true });
+    if (
+      !uploaderValue?.file &&
+      !error &&
+      handleProcessingData &&
+      !processingData
+    ) {
+      handleProcessingData(true);
     }
+  }, [error, uploaderValue, handleProcessingData, processingData]);
 
-    if (error && handleError) {
-      handleError();
-    }
-  }, [
-    file,
-    error,
-    value,
-    handleProcessingData,
-    handleError,
-    upload,
-    setValue,
-    uploaded,
-  ]);
-
-  if (processingData || !file) {
+  if (processingData || !uploaderValue?.file) {
     return (
       <div className={styles.loadingSpinnerContainer}>
         <SpinnerLoader
@@ -87,7 +64,7 @@ const CSVUploaderItem = ({
 
   return (
     <div className={styles.main}>
-      <span className={styles.fileName}>{file.name}</span>
+      <span className={styles.fileName}>{uploaderValue?.file.name}</span>
       <div>
         <Button
           type="button"

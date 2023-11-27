@@ -1,0 +1,44 @@
+import { DeepPartial } from 'utility-types';
+import moveDecimal from 'move-decimal-point';
+
+import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
+import { ColonyActionType } from '~gql';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { DECISION_METHOD } from '~v5/common/ActionSidebar/hooks';
+import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
+
+import { SplitPaymentFormValues } from './consts';
+import { tryGetToken } from '../utils';
+import { formatText } from '~utils/intl';
+
+export const splitPaymentDescriptionMetadataGetter: DescriptionMetadataGetter<
+  DeepPartial<SplitPaymentFormValues>
+> = async (
+  { amount, decisionMethod },
+  { getActionTitleValues, client, colony },
+) => {
+  const token = await tryGetToken(amount?.tokenAddress, client, colony);
+
+  return getActionTitleValues(
+    {
+      type:
+        decisionMethod === DECISION_METHOD.Permissions
+          ? ColonyActionType.Payment
+          : ColonyActionType.PaymentMotion,
+      amount: amount?.amount
+        ? moveDecimal(
+            amount.amount.toString(),
+            getTokenDecimalsWithFallback(token?.decimals),
+          )
+        : undefined,
+      token,
+    },
+    {
+      [ActionTitleMessageKeys.Recipient]: '',
+      [ActionTitleMessageKeys.Amount]: formatText({
+        id: 'actionSidebar.metadataDescription.unspecifiedAmount',
+      }),
+      [ActionTitleMessageKeys.TokenSymbol]: '',
+    },
+  );
+};

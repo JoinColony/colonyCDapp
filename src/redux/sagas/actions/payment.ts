@@ -1,103 +1,88 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
-import { ClientType } from '@colony/colony-js';
+import { ClientType, ColonyRole } from '@colony/colony-js';
 
-import { ContextModule, getContext } from '~context';
+import { ActionTypes, Action, AllActions } from '~redux';
+import { ColonyManager } from '~context';
+
 import {
-  TokenBalancesForDomainsDocument,
-  TokenBalancesForDomainsQuery,
-  TokenBalancesForDomainsQueryVariables,
-  UserBalanceWithLockQuery,
-  UserBalanceWithLockQueryVariables,
-  UserBalanceWithLockDocument,
-  getLoggedInUser,
-} from '~data/index';
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
-import {
+  initiateTransaction,
   putError,
   takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
+  uploadAnnotation,
+  getColonyManager,
+  getMultiPermissionProofs,
+  createActionMetadataInDB,
 } from '../utils';
-import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+import { OneTxPaymentPayload } from '~redux/types/actions/colonyActions';
+import { transactionPending, transactionAddParams } from '../../actionCreators';
 
 function* createPaymentAction({
   payload: {
     colonyAddress,
     colonyName,
-    recipientAddress,
     domainId,
-    singlePayment,
+    payments,
     annotationMessage,
+    customActionTitle,
   },
-  meta: {
-    id: metaId,
-    /*
-     * @NOTE About the react router history object
-     *
-     * Apparently this is considered a best practice when needing to change
-     * the route from inside a redux saga, to pass in the history object from
-     * the component itself.
-     *
-     * See:
-     * https://reactrouter.com/web/guides/deep-redux-integration
-     */
-    history,
-  },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_EXPENDITURE_PAYMENT>) {
   let txChannel;
   try {
-    const apolloClient = getContext(ContextModule.ApolloClient);
+    const colonyManager: ColonyManager = yield getColonyManager();
 
     /*
      * Validate the required values for the payment
      */
-    if (!recipientAddress) {
-      throw new Error('Recipient not assigned for OneTxPayment transaction');
-    }
+
     if (!domainId) {
       throw new Error('Domain not set for OneTxPayment transaction');
     }
-    if (!singlePayment) {
+    if (!payments || !payments.length) {
       throw new Error('Payment details not set for OneTxPayment transaction');
     } else {
-      if (!singlePayment.amount) {
+      if (!payments.every(({ amount }) => !!amount)) {
         throw new Error('Payment amount not set for OneTxPayment transaction');
       }
-      if (!singlePayment.tokenAddress) {
+      if (!payments.every(({ tokenAddress }) => !!tokenAddress)) {
         throw new Error('Payment token not set for OneTxPayment transaction');
       }
-      if (!singlePayment.decimals) {
+      if (!payments.every(({ decimals }) => !!decimals)) {
         throw new Error(
           'Payment token decimals not set for OneTxPayment transaction',
         );
       }
+      if (!payments.every(({ recipient }) => !!recipient)) {
+        throw new Error('Recipient not assigned for OneTxPayment transaction');
+      }
     }
 
-    const { amount, tokenAddress, decimals = 18 } = singlePayment;
-    const { walletAddress } = yield getLoggedInUser();
+    const sortedCombinedPayments = sortAndCombinePayments(payments);
+
+    const tokenAddresses = sortedCombinedPayments.map(
+      ({ tokenAddress }) => tokenAddress,
+    );
+
+    const amounts = sortedCombinedPayments.map(({ amount }) => amount);
+
+    const recipientAddresses = sortedCombinedPayments.map(
+      ({ recipient }) => recipient,
+    );
 
     txChannel = yield call(getTxChannel, metaId);
-
     /*
      * setup batch ids and channels
      */
     const batchKey = 'paymentAction';
-
     const { paymentAction, annotatePaymentAction } =
       yield createTransactionChannels(metaId, [
         'paymentAction',
@@ -106,20 +91,9 @@ function* createPaymentAction({
 
     yield fork(createTransaction, paymentAction.id, {
       context: ClientType.OneTxPaymentClient,
-      methodName: 'makePaymentFundedFromDomainWithProofs',
+      methodName: 'makePaymentFundedFromDomain',
       identifier: colonyAddress,
-      params: [
-        [recipientAddress],
-        [tokenAddress],
-        [BigNumber.from(moveDecimal(amount, decimals))],
-        domainId,
-        /*
-         * NOTE Always make the payment in the global skill 0
-         * This will make it so that the user only receives reputation in the
-         * above domain, but none in the skill itself.
-         */
-        0,
-      ],
+      params: [],
       group: {
         key: batchKey,
         id: metaId,
@@ -144,6 +118,7 @@ function* createPaymentAction({
     }
 
     yield takeFrom(paymentAction.channel, ActionTypes.TRANSACTION_CREATED);
+
     if (annotationMessage) {
       yield takeFrom(
         annotatePaymentAction.channel,
@@ -151,7 +126,45 @@ function* createPaymentAction({
       );
     }
 
-    yield put(transactionReady(paymentAction.id));
+    yield put(transactionPending(paymentAction.id));
+
+    const oneTxPaymentClient = yield colonyManager.getClient(
+      ClientType.OneTxPaymentClient,
+      colonyAddress,
+    );
+
+    const [extensionPDID, extensionCSI] = yield getMultiPermissionProofs(
+      colonyAddress,
+      domainId,
+      [ColonyRole.Funding, ColonyRole.Administration],
+      oneTxPaymentClient.address,
+    );
+    const [userPDID, userCSI] = yield getMultiPermissionProofs(
+      colonyAddress,
+      domainId,
+      [ColonyRole.Funding, ColonyRole.Administration],
+    );
+
+    yield put(
+      transactionAddParams(paymentAction.id, [
+        extensionPDID,
+        extensionCSI,
+        userPDID,
+        userCSI,
+        recipientAddresses,
+        tokenAddresses,
+        amounts,
+        domainId,
+        /*
+         * NOTE Always make the payment in the global skill 0
+         * This will make it so that the user only receives reputation in the
+         * above domain, but none in the skill itself.
+         */
+        0,
+      ]),
+    );
+
+    yield initiateTransaction({ id: paymentAction.id });
 
     const {
       payload: { hash: txHash },
@@ -159,73 +172,115 @@ function* createPaymentAction({
       paymentAction.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(paymentAction.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
+    yield createActionMetadataInDB(txHash, customActionTitle);
+
     if (annotationMessage) {
-      yield put(transactionPending(annotatePaymentAction.id));
-
-      const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
-
-      yield put(
-        transactionAddParams(annotatePaymentAction.id, [txHash, ipfsHash]),
-      );
-
-      yield put(transactionReady(annotatePaymentAction.id));
-
-      yield takeFrom(
-        annotatePaymentAction.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
+      yield uploadAnnotation({
+        txChannel: annotatePaymentAction,
+        message: annotationMessage,
+        txHash,
+      });
     }
-
-    // Refetch token balances for the domains involved
-    yield apolloClient.query<
-      TokenBalancesForDomainsQuery,
-      TokenBalancesForDomainsQueryVariables
-    >({
-      query: TokenBalancesForDomainsDocument,
-      variables: {
-        colonyAddress,
-        tokenAddresses: [tokenAddress],
-        /*
-         * @NOTE Also update the value in "All Domains"
-         */
-        domainIds: [COLONY_TOTAL_BALANCE_DOMAIN_ID, domainId],
-      },
-      // Force resolvers to update, as query resolvers are only updated on a cache miss
-      // See #4: https://www.apollographql.com/docs/link/links/state/#resolvers
-      // Also: https://www.apollographql.com/docs/react/api/react-apollo/#optionsfetchpolicy
-      fetchPolicy: 'network-only',
-    });
-
-    yield apolloClient.query<
-      UserBalanceWithLockQuery,
-      UserBalanceWithLockQueryVariables
-    >({
-      query: UserBalanceWithLockDocument,
-      variables: {
-        address: walletAddress,
-        tokenAddress,
-        colonyAddress,
-      },
-      fetchPolicy: 'network-only',
-    });
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_EXPENDITURE_PAYMENT_SUCCESS,
       meta,
     });
 
-    if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+    // @TODO: In new UI, confirm that the navigate function isn't being passed into the saga
+    // and if not, remove these conditional (and do so for all actions/motions sagas)
+    if (colonyName && navigate) {
+      navigate(`/${colonyName}?tx=${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (error) {
     putError(ActionTypes.ACTION_EXPENDITURE_PAYMENT_ERROR, error, meta);
   } finally {
-    txChannel.close();
+    txChannel?.close();
   }
 }
 
 export default function* paymentActionSaga() {
   yield takeEvery(ActionTypes.ACTION_EXPENDITURE_PAYMENT, createPaymentAction);
+}
+
+function sortPayments(
+  { recipient: recipientA, tokenAddress: tokenA },
+  { recipient: recipientB, tokenAddress: tokenB },
+) {
+  if (recipientA < recipientB) {
+    return -1;
+  }
+  if (recipientA > recipientB) {
+    return 1;
+  }
+
+  // If the recipients are the same, sort by token address
+
+  if (tokenA < tokenB) {
+    return -1;
+  }
+
+  if (tokenA > tokenB) {
+    return 1;
+  }
+
+  return 0;
+}
+
+// This returns the format expected by the contracts:
+// recipients in "ascending" order (per string sorting convention)
+// and tokens in ascending order where recipients are the same.
+// We also combine duplicate user / token combos, if they exist.
+
+export function sortAndCombinePayments(
+  payments: OneTxPaymentPayload['payments'],
+): {
+  recipient: string;
+  amount: BigNumber;
+  tokenAddress: string;
+  decimals: number;
+}[] {
+  return payments.sort(sortPayments).reduce(
+    (acc, payment) => {
+      const { recipient, tokenAddress, amount, decimals } = payment;
+      const convertedAmount = BigNumber.from(moveDecimal(amount, decimals));
+
+      const {
+        recipient: prevRecipient,
+        tokenAddress: prevToken,
+        amount: prevAmount,
+      } = acc.at(-1) ?? {};
+
+      const updatedAcc = [...acc, { ...payment, amount: convertedAmount }];
+
+      if (recipient !== prevRecipient || tokenAddress !== prevToken) {
+        return updatedAcc;
+      }
+
+      acc.pop(); // remove previous payment
+
+      return [
+        ...acc,
+        {
+          ...payment,
+          // prev amount is only not defined if idx is 0, in which case recipient !== prevRecipient
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          amount: convertedAmount.add(prevAmount!),
+        },
+      ];
+    },
+    [] as {
+      recipient: string;
+      amount: BigNumber;
+      tokenAddress: string;
+      decimals: number;
+    }[],
+  );
 }

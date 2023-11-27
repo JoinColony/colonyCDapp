@@ -1,4 +1,4 @@
-query GetCurrentUser($address: ID!) {
+query GetUserByAddress($address: ID!) {
   getUserByAddress(id: $address) {
     items {
       ...User
@@ -20,20 +20,17 @@ query GetReputationForTopDomains($input: GetReputationForTopDomainsInput!) {
 }
 
 query GetUserByName($name: String!) {
-  getUserByName(name: $name) {
+  getProfileByUsername(displayName: $name) {
     items {
-      id
+      user {
+        ...User
+      }
     }
   }
 }
 
-query CombinedUser($name: String!, $address: ID!) {
-  getUserByAddress(id: $address) {
-    items {
-      ...User
-    }
-  }
-  getUserByName(name: $name) {
+query GetUsers($filter: ModelUserFilterInput, $limit: Int) {
+  listUsers(filter: $filter, limit: $limit) {
     items {
       ...User
     }

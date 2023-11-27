@@ -1,0 +1,19 @@
+.container {
+  @apply w-full relative;
+}
+
+.button {
+  @apply w-full pl-3.5 pr-4 py-3 rounded bg-base-white flex justify-between items-center text-md font-normal transition-all duration-normal border;
+}
+
+.options {
+  @apply border-gray-200 hidden;
+}
+
+.show {
+  @apply flex flex-col py-2 px-2 border border-gray-300 rounded relative z-[1] bg-base-white w-full mt-1 max-h-[12.5rem] overflow-y-auto;
+}
+
+.li {
+  @apply flex items-center justify-between text-md cursor-pointer px-1.5 rounded hover:bg-gray-50;
+}

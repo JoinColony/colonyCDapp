@@ -1,22 +1,8 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
 
-import { ContextModule, getContext } from '~context';
-import {
-  ProcessedColonyQuery,
-  ProcessedColonyQueryVariables,
-  ProcessedColonyDocument,
-  getNetworkContracts,
-} from '~data/index';
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
-  getColonyManager,
-} from '../utils';
+import { Action, ActionTypes, AllActions } from '~redux';
 
 import {
   createTransaction,
@@ -24,29 +10,38 @@ import {
   getTxChannel,
 } from '../transactions';
 import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+  createActionMetadataInDB,
+  getColonyManager,
+  initiateTransaction,
+  putError,
+  takeFrom,
+  uploadAnnotation,
+} from '../utils';
 
 function* createVersionUpgradeAction({
-  payload: { colonyAddress, colonyName, version, annotationMessage },
-  meta: { id: metaId, history },
+  payload: {
+    colonyAddress,
+    colonyName,
+    version,
+    annotationMessage,
+    customActionTitle,
+  },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_VERSION_UPGRADE>) {
   let txChannel;
   try {
-    const apolloClient = getContext(ContextModule.ApolloClient);
     const colonyManager = yield getColonyManager();
+    const { networkClient } = colonyManager;
 
-    const { version: newestVersion } = yield getNetworkContracts();
-    const currentVersion = parseInt(version, 10);
-    const nextVersion = currentVersion + 1;
-    if (nextVersion > parseInt(newestVersion, 10)) {
+    const newestVersion = yield networkClient.getCurrentColonyVersion();
+    const nextVersion = BigNumber.from(version).add(1);
+
+    if (nextVersion.gt(newestVersion)) {
       throw new Error('Colony has the newest version');
     }
 
-    const supportAnnotation = currentVersion >= 5 && annotationMessage;
+    const supportAnnotation = Number(version) >= 5 && annotationMessage;
 
     txChannel = yield call(getTxChannel, metaId);
 
@@ -91,40 +86,25 @@ function* createVersionUpgradeAction({
       yield takeFrom(annotateUpgrade.channel, ActionTypes.TRANSACTION_CREATED);
     }
 
-    yield put(transactionReady(upgrade.id));
+    yield initiateTransaction({ id: upgrade.id });
 
     const {
       payload: { hash: txHash },
     } = yield takeFrom(upgrade.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
 
+    setTxHash?.(txHash);
+
     yield takeFrom(upgrade.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    /* need to check for annotaiton message here again because there is a TS error when pushing */
-    if (annotationMessage && supportAnnotation) {
-      yield put(transactionPending(annotateUpgrade.id));
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
-      const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
-
-      yield put(transactionAddParams(annotateUpgrade.id, [txHash, ipfsHash]));
-
-      yield put(transactionReady(annotateUpgrade.id));
-
-      yield takeFrom(
-        annotateUpgrade.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
+    if (supportAnnotation) {
+      yield uploadAnnotation({
+        txChannel: annotateUpgrade,
+        message: annotationMessage,
+        txHash,
+      });
     }
-
-    yield apolloClient.query<
-      ProcessedColonyQuery,
-      ProcessedColonyQueryVariables
-    >({
-      query: ProcessedColonyDocument,
-      variables: {
-        address: colonyAddress,
-      },
-      fetchPolicy: 'network-only',
-    });
 
     yield colonyManager.setColonyClient(colonyAddress);
 
@@ -133,8 +113,10 @@ function* createVersionUpgradeAction({
       meta,
     });
 
-    if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+    if (colonyName && navigate) {
+      navigate(`/${colonyName}?tx=${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (caughtError) {
     putError(ActionTypes.ACTION_VERSION_UPGRADE_ERROR, caughtError, meta);

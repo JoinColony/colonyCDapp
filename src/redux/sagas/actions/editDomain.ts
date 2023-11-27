@@ -1,32 +1,31 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import { ClientType } from '@colony/colony-js';
+import { call, put, takeEvery } from 'redux-saga/effects';
+import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 
-import { ContextModule, getContext } from '~context';
+import { ContextModule, getContext, ColonyManager } from '~context';
+import { Action, ActionTypes, AllActions } from '~redux';
 import {
-  ColonyFromNameDocument,
-  ColonyFromNameQuery,
-  ColonyFromNameQueryVariables,
-} from '~data/index';
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
-} from '../utils';
+  GetFullColonyByNameDocument,
+  UpdateDomainMetadataDocument,
+  UpdateDomainMetadataMutation,
+  UpdateDomainMetadataMutationVariables,
+} from '~gql';
+import { getDomainDatabaseId } from '~utils/databaseId';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { ipfsUpload } from '../ipfs';
+import { transactionPending, transactionAddParams } from '../../actionCreators';
 import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+  putError,
+  takeFrom,
+  getUpdatedDomainMetadataChangelog,
+  uploadAnnotation,
+  initiateTransaction,
+  getColonyManager,
+  createActionMetadataInDB,
+} from '../utils';
 
 function* editDomainAction({
   payload: {
@@ -35,18 +34,20 @@ function* editDomainAction({
     domainName,
     domainColor,
     domainPurpose,
+    domain,
     annotationMessage,
-    domainId,
+    customActionTitle,
   },
-  meta: { id: metaId, history },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_DOMAIN_EDIT>) {
   let txChannel;
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
+    const colonyManager: ColonyManager = yield getColonyManager();
 
-    if (!domainId) {
-      throw new Error('A domain id is required to edit domain');
+    if (!domain) {
+      throw new Error('A domain object is required to edit domain');
     }
 
     txChannel = yield call(getTxChannel, metaId);
@@ -60,26 +61,16 @@ function* editDomainAction({
       'annotateEditDomainAction',
     ]);
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(editDomain, {
+    yield createGroupTransaction(editDomain, batchKey, meta, {
       context: ClientType.ColonyClient,
-      methodName: 'editDomainWithProofs',
+      methodName: 'editDomain',
       identifier: colonyAddress,
       params: [],
       ready: false,
     });
 
     if (annotationMessage) {
-      yield createGroupTransaction(annotateEditDomain, {
+      yield createGroupTransaction(annotateEditDomain, batchKey, meta, {
         context: ClientType.ColonyClient,
         methodName: 'annotateTransaction',
         identifier: colonyAddress,
@@ -98,27 +89,33 @@ function* editDomainAction({
 
     yield put(transactionPending(editDomain.id));
 
-    /*
-     * Upload domain metadata to IPFS
-     */
-    let domainMetadataIpfsHash = null;
-    domainMetadataIpfsHash = yield call(
-      ipfsUpload,
-      JSON.stringify({
-        domainName,
-        domainColor,
-        domainPurpose,
-      }),
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
+
+    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient.networkClient,
+      colonyClient,
+      domain.nativeId,
+      ColonyRole.Architecture,
     );
 
     yield put(
       transactionAddParams(editDomain.id, [
-        domainId,
-        domainMetadataIpfsHash as unknown as string,
+        permissionDomainId,
+        childSkillIndex,
+        domain.nativeId,
+        /**
+         * @NOTE: In order for the DomainMetadata event (which is the only event associated with Edit Domain action) to be emitted,
+         * the second parameter must be non-empty.
+         * It will be replaced with the IPFS hash in due course.
+         */
+        '.',
       ]),
     );
 
-    yield put(transactionReady(editDomain.id));
+    yield initiateTransaction({ id: editDomain.id });
 
     const {
       payload: { hash: txHash },
@@ -126,52 +123,58 @@ function* editDomainAction({
       editDomain.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(editDomain.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    if (annotationMessage) {
-      yield put(transactionPending(annotateEditDomain.id));
-
-      /*
-       * Upload annotationMessage to IPFS
-       */
-      const annotationMessageIpfsHash = yield call(
-        uploadIfpsAnnotation,
-        annotationMessage,
-      );
-
-      yield put(
-        transactionAddParams(annotateEditDomain.id, [
-          txHash,
-          annotationMessageIpfsHash,
-        ]),
-      );
-
-      yield put(transactionReady(annotateEditDomain.id));
-
-      yield takeFrom(
-        annotateEditDomain.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
+    /**
+     * Save the updated metadata in the database
+     */
+    if (domain.metadata) {
+      yield apolloClient.mutate<
+        UpdateDomainMetadataMutation,
+        UpdateDomainMetadataMutationVariables
+      >({
+        mutation: UpdateDomainMetadataDocument,
+        variables: {
+          input: {
+            id: getDomainDatabaseId(colonyAddress, domain.nativeId),
+            name: domainName,
+            color: domainColor,
+            description: domainPurpose,
+            changelog: getUpdatedDomainMetadataChangelog(
+              txHash,
+              domain.metadata,
+              domainName,
+              domainColor,
+              domainPurpose,
+            ),
+          },
+        },
+        refetchQueries: [GetFullColonyByNameDocument],
+      });
     }
 
-    /*
-     * Update the colony object cache
-     */
-    yield apolloClient.query<ColonyFromNameQuery, ColonyFromNameQueryVariables>(
-      {
-        query: ColonyFromNameDocument,
-        variables: { name: colonyName || '', address: colonyAddress },
-        fetchPolicy: 'network-only',
-      },
-    );
+    yield createActionMetadataInDB(txHash, customActionTitle);
+
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateEditDomain,
+        message: annotationMessage,
+        txHash,
+      });
+    }
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_DOMAIN_EDIT_SUCCESS,
       meta,
     });
 
-    if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+    if (colonyName && navigate) {
+      navigate(`/${colonyName}?tx=${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_DOMAIN_EDIT_ERROR, error, meta);

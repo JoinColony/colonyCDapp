@@ -2,11 +2,10 @@ import { ComponentType } from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { Params } from 'react-router-dom';
 
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 
 export { default as NavBar } from './NavBar';
 export { default as SimpleNav } from './SimpleNav';
-export { default as Plain } from './Plain';
 export { default as Default } from './Default';
 export { default as UserLayout } from './UserLayout';
 

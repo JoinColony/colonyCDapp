@@ -5,6 +5,7 @@ declare namespace CheckboxCssNamespace {
     delegate: string;
     directionHorizontal: string;
     directionVertical: string;
+    focusVisible: string;
     main: string;
     mappings: string;
     names: string;
@@ -12,9 +13,9 @@ declare namespace CheckboxCssNamespace {
     sourceRoot: string;
     sources: string;
     sourcesContent: string;
-    stateDisabled: string;
     stateIsChecked: string;
     themeDark: string;
+    themePink: string;
     version: string;
   }
 }

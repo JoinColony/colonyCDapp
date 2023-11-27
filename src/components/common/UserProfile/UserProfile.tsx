@@ -14,10 +14,8 @@ import styles from './UserProfile.css';
 const displayName = 'common.UserProfile';
 
 const UserProfile = () => {
-  const { usernameOrAddress } = useParams();
-  const { user, loading, error } = useUserByNameOrAddress(
-    usernameOrAddress || '',
-  );
+  const { username } = useParams();
+  const { user, error, loading } = useUserByNameOrAddress(username || '');
 
   if (loading) {
     return <UserProfileSpinner />;

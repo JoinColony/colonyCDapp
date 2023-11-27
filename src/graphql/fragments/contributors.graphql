@@ -1,0 +1,60 @@
+fragment ContributorReputation on ContributorReputation {
+  reputationPercentage
+  reputationRaw
+  domainId
+  domain {
+    id
+    metadata {
+      name
+    }
+    nativeId
+  }
+  id
+}
+
+fragment ContributorRoles on ColonyRole {
+  domainId
+  domain {
+    id
+    metadata {
+      name
+    }
+    nativeId
+  }
+  role_0
+  role_1
+  role_2
+  role_3
+  role_5
+  role_6
+  id
+}
+
+fragment ColonyContributor on ColonyContributor {
+  contributorAddress
+  isVerified
+  hasPermissions
+  hasReputation
+  isWatching
+  colonyReputationPercentage
+  roles(colonyAddress: { eq: $colonyAddress }) {
+    items {
+      ...ContributorRoles
+    }
+  }
+  reputation(
+    colonyAddress: { eq: $colonyAddress }
+    filter: { reputationRaw: { ne: "0" } }
+  ) {
+    items {
+      ...ContributorReputation
+    }
+  }
+  user {
+    walletAddress: id
+    profile {
+      ...Profile
+    }
+  }
+  type
+}

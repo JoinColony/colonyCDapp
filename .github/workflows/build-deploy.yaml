@@ -1,0 +1,211 @@
+name: Build and deploy cdapp docker image
+
+on:
+  workflow_dispatch: # Allows manual workflow trigger
+
+  repository_dispatch: # Allows API workflow trigger
+    types: [cdapp-frontend]
+
+  push:
+    branches:
+      - master # Automatically deploy on commits to master
+    paths-ignore:
+      - '.github/**'
+      - 'amplify/**'
+      - '**.md'
+    
+
+concurrency:
+  group: cdapp-frontend
+  cancel-in-progress: true
+
+# Set global env variables
+env:
+  AWS_REGION: eu-west-2
+  ECR_REPOSITORY: ${{ secrets.AWS_ACCOUNT_ID_QA }}.dkr.ecr.eu-west-2.amazonaws.com/cdapp/frontend
+  COMMIT_HASH: ${{ github.event.client_payload.COMMIT_HASH != null && github.event.client_payload.COMMIT_HASH || github.sha }}
+
+jobs:
+  # # Build cdapp frontend and push to AWS ECR
+  buildAndPush:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Echo Env Vars through Context
+        run: |
+          echo "$GITHUB_CONTEXT"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_QA }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_QA }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Checkout relevant branch
+        run: git checkout ${{ github.event.client_payload.COMMIT_HASH != null && github.event.client_payload.COMMIT_HASH || github.sha }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: ${{ github.workspace }}
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ${{ env.ECR_REPOSITORY }}:run-${{ github.run_number }}
+            ${{ env.ECR_REPOSITORY }}:${{ env.COMMIT_HASH }}
+
+      - uses: sarisia/actions-status-discord@c193626e5ce172002b8161e116aa897de7ab5383
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: 'Build and push cdapp'
+
+  # Deploy cdapp frontend to QA environment
+  deployQA:
+    needs: buildAndPush
+
+    runs-on: ubuntu-latest
+
+    env:
+      NAMESPACE: cdapp
+      CLUSTER_NAME: qa-cluster
+      ENVIRONMENT_TAG: qa
+      REPOSITORY_NAME: cdapp/frontend
+
+    steps:
+      - name: Configure AWS credentials for ECR
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_QA }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_QA }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Echo current image and tag new image
+        run: |
+          echo -e "Getting image info...\n"
+
+          echo -e "###### Current image being used ######\n"
+          SHA256=$(aws ecr batch-get-image --repository-name ${{ env.REPOSITORY_NAME }} --image-ids imageTag=${{ env.ENVIRONMENT_TAG }} --output json | jq '.images[].imageId.imageDigest')
+          aws ecr batch-get-image --repository-name ${{ env.REPOSITORY_NAME }} --image-ids imageDigest=$SHA256 --output json | jq '.images[].imageId'
+
+          echo -e "\n###### Tagging new image with environment tag ######"
+          MANIFEST=$(aws ecr batch-get-image --repository-name ${{ env.REPOSITORY_NAME }} --image-ids imageTag=${{ env.COMMIT_HASH }} --output json | jq --raw-output --join-output '.images[0].imageManifest')
+          aws ecr put-image --repository-name ${{ env.REPOSITORY_NAME }} --image-tag ${{ env.ENVIRONMENT_TAG }} --image-manifest "$MANIFEST"
+
+          echo -e "\n###### New image being used ######\n"
+          SHA256=$(aws ecr batch-get-image --repository-name ${{ env.REPOSITORY_NAME }} --image-ids imageTag=${{ env.ENVIRONMENT_TAG }} --output json | jq '.images[].imageId.imageDigest')
+          aws ecr batch-get-image --repository-name ${{ env.REPOSITORY_NAME }} --image-ids imageDigest=$SHA256 --output json | jq '.images[].imageId'
+
+      - name: Configure AWS credentials for EKS
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_QA }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_QA }}
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID_QA }}:role/eks-admin
+          role-session-name: github-cicd
+          role-duration-seconds: 1200
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Configure AWS EKS
+        run: |
+          aws eks --region ${{ env.AWS_REGION }} update-kubeconfig --name ${{ env.CLUSTER_NAME }}
+
+      - name: Deploy to Kubernetes cluster
+        run: |
+          kubectl rollout restart deployment/cdapp-frontend-${{ env.ENVIRONMENT_TAG }} -n ${{ env.NAMESPACE }}
+
+      - name: Validate Kubernetes deployment
+        run: |
+          kubectl rollout status deployment/cdapp-frontend-${{ env.ENVIRONMENT_TAG }} -n ${{ env.NAMESPACE }}
+
+      - uses: sarisia/actions-status-discord@c193626e5ce172002b8161e116aa897de7ab5383
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: 'Deploy cdapp to ${{ env.ENVIRONMENT_TAG }}'
+
+  deployProd:
+    needs: deployQA
+
+    environment: prod
+
+    runs-on: ubuntu-latest
+
+    env:
+      NAMESPACE: cdapp
+      CLUSTER_NAME: prod-cluster
+      ENVIRONMENT_TAG: prod
+      REPOSITORY_NAME: cdapp/frontend
+
+    steps:
+      - name: Configure AWS credentials for ECR
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_QA }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_QA }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Echo current image and tag new image
+        run: |
+          echo -e "Getting image info...\n"
+
+          echo -e "###### Current image being used ######\n"
+          SHA256=$(aws ecr batch-get-image --repository-name ${{ env.REPOSITORY_NAME }} --image-ids imageTag=${{ env.ENVIRONMENT_TAG }} --output json | jq '.images[].imageId.imageDigest')
+          aws ecr batch-get-image --repository-name ${{ env.REPOSITORY_NAME }} --image-ids imageDigest=$SHA256 --output json | jq '.images[].imageId'
+
+          echo -e "\n###### Tagging new image with environment tag ######"
+          MANIFEST=$(aws ecr batch-get-image --repository-name ${{ env.REPOSITORY_NAME }} --image-ids imageTag=${{ env.COMMIT_HASH }} --output json | jq --raw-output --join-output '.images[0].imageManifest')
+          aws ecr put-image --repository-name ${{ env.REPOSITORY_NAME }} --image-tag ${{ env.ENVIRONMENT_TAG }} --image-manifest "$MANIFEST"
+
+          echo -e "\n###### New image being used ######\n"
+          SHA256=$(aws ecr batch-get-image --repository-name ${{ env.REPOSITORY_NAME }} --image-ids imageTag=${{ env.ENVIRONMENT_TAG }} --output json | jq '.images[].imageId.imageDigest')
+          aws ecr batch-get-image --repository-name ${{ env.REPOSITORY_NAME }} --image-ids imageDigest=$SHA256 --output json | jq '.images[].imageId'
+
+      - name: Configure AWS credentials for EKS
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_PROD }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }}
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID_PROD }}:role/eks-admin
+          role-session-name: github-cicd
+          role-duration-seconds: 1200
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Configure AWS EKS
+        run: |
+          aws eks --region ${{ env.AWS_REGION }} update-kubeconfig --name ${{ env.CLUSTER_NAME }}
+
+      - name: Deploy to Kubernetes cluster
+        run: |
+          kubectl rollout restart deployment/cdapp-frontend-${{ env.ENVIRONMENT_TAG }} -n ${{ env.NAMESPACE }}
+
+      - name: Validate Kubernetes deployment
+        run: |
+          kubectl rollout status deployment/cdapp-frontend-${{ env.ENVIRONMENT_TAG }} -n ${{ env.NAMESPACE }}
+
+      - uses: sarisia/actions-status-discord@c193626e5ce172002b8161e116aa897de7ab5383
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: 'Deploy cdapp to ${{ env.ENVIRONMENT_TAG }}'

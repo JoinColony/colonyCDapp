@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import Icon from '~shared/Icon';
@@ -22,16 +22,9 @@ const MSG = defineMessages({
 });
 
 const SubscribedColoniesList = () => {
-  const { user, userLoading, updateUser } = useAppContext();
+  const { user, userLoading } = useAppContext();
   const canInteractWithNetwork = useCanInteractWithNetwork();
   const isMobile = useMobile();
-
-  /* Ensures colony list is up-to-date post create colony flow. */
-  useEffect(() => {
-    if (updateUser) {
-      updateUser(user?.walletAddress);
-    }
-  }, [user, updateUser]);
 
   const { items: watchlist = [] } = user?.watchlist || {};
 
@@ -84,13 +77,14 @@ const SubscribedColoniesList = () => {
                   activeClassName={styles.activeColony}
                   className={styles.itemLink}
                   title={name}
-                  to={`/colony/${name}`}
+                  to={`/${name}`}
                 >
                   <div className={styles.itemImage}>
                     <ColonyAvatar
                       colony={item?.colony}
                       colonyAddress={colonyAddress}
                       size="s"
+                      preferThumbnail={false}
                     />
                   </div>
                 </NavLink>

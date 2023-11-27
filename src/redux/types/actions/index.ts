@@ -1,3 +1,5 @@
+import { NavigateFunction } from 'react-router-dom';
+
 import { ColonyActionTypes } from './colony';
 import { ColonyActionsActionTypes } from './colonyActions';
 import { MotionActionTypes } from './motion';
@@ -7,8 +9,11 @@ import { MessageActionTypes } from './message';
 import { UserActionTypes } from './user';
 import { MetacolonyVestingTypes } from './vesting';
 import { WalletActionTypes } from './wallet';
+import { DecisionActionTypes } from './decisions';
+import { IpfsActionTypes } from './ipfs';
+import { ExpendituresActionTypes } from './expenditures';
 
-export { RootMotionOperationNames } from './motion';
+export { RootMotionMethodNames } from './motion';
 
 /*
  * Type that represents an action (bare minimum).
@@ -50,11 +55,8 @@ export interface ActionTypeWithMeta<
  * P: the action payload, e.g. `{| tokenAddress: string |}`
  * M: any additional `meta` properties, e.g. `key: *`
  */
-export interface ActionTypeWithPayloadAndMeta<
-  T extends string,
-  P,
-  M extends Record<string, unknown>,
-> extends ActionType<T> {
+export interface ActionTypeWithPayloadAndMeta<T extends string, P, M>
+  extends ActionType<T> {
   type: T;
   meta: M;
   payload: P;
@@ -84,7 +86,7 @@ export interface UniqueActionTypeWithoutPayload<T extends string, M> {
 /*
  * Type that represents an error action.
  */
-export interface ErrorActionType<T extends string, M>
+export interface ErrorActionType<T extends string, M extends object>
   extends ActionTypeWithPayloadAndMeta<T, Error, M> {
   error: true;
 }
@@ -96,12 +98,15 @@ export type AllActions =
   | ColonyActionTypes
   | ColonyActionsActionTypes
   | GasPricesActionTypes
+  | IpfsActionTypes
   | TransactionActionTypes
   | MessageActionTypes
   | UserActionTypes
   | MotionActionTypes
   | MetacolonyVestingTypes
-  | WalletActionTypes;
+  | WalletActionTypes
+  | DecisionActionTypes
+  | ExpendituresActionTypes;
 
 export type Action<T extends AllActions['type']> = Extract<
   AllActions,
@@ -112,8 +117,16 @@ export type ActionTypeString = AllActions['type'];
 
 export type TakeFilter = (action: AllActions) => boolean;
 
-export type MetaWithHistory<M> = {
-  history?: {
-    push: <A>(route: A) => void;
-  };
+export type MetaWithSetter<M> = {
+  // Once new UI has been completed, 'navigate' can be removed.
+  // Keeping only to maintain compatibility with old UI while we transition.
+  navigate?: NavigateFunction;
+  // And setTxHash can become required
+  setTxHash?: (txHash: string) => void;
+  updateUser?:
+    | ((
+        address?: string | undefined,
+        shouldBackgroundUpdate?: boolean | undefined,
+      ) => Promise<void>)
+    | undefined;
 } & M;

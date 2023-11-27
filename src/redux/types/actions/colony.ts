@@ -1,17 +1,23 @@
+import { Extension } from '@colony/colony-js';
 import { ActionTypes } from '~redux';
-import { Address, InstallableExtensionData, WithKey } from '~types';
+import {
+  Address,
+  InstallableExtensionData,
+  InstalledExtensionData,
+  WithKey,
+} from '~types';
 import { ActionType, ErrorActionType, UniqueActionType } from './index';
 
 export type ColonyActionTypes =
   | UniqueActionType<
       ActionTypes.CLAIM_TOKEN,
-      { tokenAddress: Address; colonyAddress: Address },
+      { tokenAddresses: Address[]; colonyAddress: Address },
       object
     >
   | ErrorActionType<ActionTypes.CLAIM_TOKEN_ERROR, object>
   | UniqueActionType<
       ActionTypes.CLAIM_TOKEN_SUCCESS,
-      { params: { token: Address } },
+      { params: { tokenAddresses: Address[] } },
       object
     >
   | UniqueActionType<
@@ -25,7 +31,9 @@ export type ColonyActionTypes =
         tokenIcon: string;
         tokenName: string;
         tokenSymbol: string;
-        username: string;
+        inviteCode: string;
+        tokenAvatar?: string;
+        tokenThumbnail?: string;
       },
       object
     >
@@ -41,26 +49,37 @@ export type ColonyActionTypes =
     >
   | UniqueActionType<ActionTypes.EXTENSION_INSTALL_SUCCESS, object, object>
   | ErrorActionType<ActionTypes.EXTENSION_INSTALL_ERROR, object>
-  | UniqueActionType<ActionTypes.EXTENSION_ENABLE, any, WithKey>
+  | UniqueActionType<
+      ActionTypes.EXTENSION_ENABLE,
+      {
+        colonyAddress: Address;
+        extensionData: InstalledExtensionData;
+      },
+      WithKey
+    >
   | UniqueActionType<ActionTypes.EXTENSION_ENABLE_SUCCESS, object, object>
   | ErrorActionType<ActionTypes.EXTENSION_ENABLE_ERROR, object>
   | UniqueActionType<
       ActionTypes.EXTENSION_DEPRECATE,
-      { colonyAddress: Address; extensionId: string; isToDeprecate: boolean },
+      {
+        colonyAddress: Address;
+        extensionId: Extension;
+        isToDeprecate: boolean;
+      },
       WithKey
     >
   | UniqueActionType<ActionTypes.EXTENSION_DEPRECATE_SUCCESS, object, object>
   | ErrorActionType<ActionTypes.EXTENSION_DEPRECATE_ERROR, object>
   | UniqueActionType<
       ActionTypes.EXTENSION_UNINSTALL,
-      { colonyAddress: Address; extensionId: string },
+      { colonyAddress: Address; extensionId: Extension },
       WithKey
     >
   | UniqueActionType<ActionTypes.EXTENSION_UNINSTALL_SUCCESS, object, object>
   | ErrorActionType<ActionTypes.EXTENSION_UNINSTALL_ERROR, object>
   | UniqueActionType<
       ActionTypes.EXTENSION_UPGRADE,
-      { colonyAddress: Address; extensionId: string; version: number },
+      { colonyAddress: Address; extensionId: Extension; version: number },
       WithKey
     >
   | UniqueActionType<ActionTypes.EXTENSION_UPGRADE_SUCCESS, object, object>

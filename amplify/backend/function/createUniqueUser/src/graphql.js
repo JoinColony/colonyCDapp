@@ -1,16 +1,14 @@
 module.exports = {
   getUser: /* GraphQL */ `
     query GetUser($id: ID!, $name: String!) {
-      getUserByAddress(id: $id) {
-        items {
-          id
-          name
-        }
+      getProfile(id: $id) {
+        id
+        displayName
       }
-      getUserByName(name: $name) {
+      getProfileByUsername(displayName: $name) {
         items {
           id
-          name
+          displayName
         }
       }
     }
@@ -22,7 +20,6 @@ module.exports = {
     ) {
       createUser(input: $input, condition: $condition) {
         id
-        name
         tokens {
           nextToken
         }
@@ -36,9 +33,6 @@ module.exports = {
           location
           website
           email
-          meta {
-            emailPermissions
-          }
         }
         watchlist {
           nextToken

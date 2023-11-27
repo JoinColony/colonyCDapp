@@ -1,5 +1,6 @@
 declare namespace ColonyFundingWidgetCssNamespace {
   export interface IColonyFundingWidgetCss {
+    fundsLink: string;
     main: string;
     tokenBalance: string;
     tokenItem: string;

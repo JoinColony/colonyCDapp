@@ -14,7 +14,7 @@ interface Props {
 
 const displayName = 'InfoPopover.UserInfo';
 
-const UserInfo = ({ user: { walletAddress, name, profile }, user }: Props) => {
+const UserInfo = ({ user: { walletAddress, profile }, user }: Props) => {
   /*
    * @NOTE We have to fetch our avatar base64 data from IPFS because if we
    * use the "normal" HookedUserAvar we cause a circular call which will
@@ -22,7 +22,7 @@ const UserInfo = ({ user: { walletAddress, name, profile }, user }: Props) => {
    */
   return (
     <div className={styles.container}>
-      <UserAvatar size="s" address={walletAddress} user={user} />
+      <UserAvatar size="s" user={user} />
       <div className={styles.textContainer}>
         {profile?.displayName && (
           <Heading
@@ -30,7 +30,7 @@ const UserInfo = ({ user: { walletAddress, name, profile }, user }: Props) => {
             text={profile?.displayName}
           />
         )}
-        {name && (
+        {profile?.displayName && (
           /*
            * @NOTE Potential recurrsion loop here.
            *

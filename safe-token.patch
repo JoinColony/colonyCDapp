@@ -1,0 +1,33 @@
+From 88f6ea1540fd7c49681e71c7c9f1303095395d1b Mon Sep 17 00:00:00 2001
+From: thomassdk <thomassdk@pm.me>
+Date: Tue, 29 Aug 2023 13:12:54 +0200
+Subject: [PATCH] patch
+
+---
+ .../backend/function/fetchTokenFromChain/src/index.js  | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/amplify/backend/function/fetchTokenFromChain/src/index.js b/amplify/backend/function/fetchTokenFromChain/src/index.js
+index e79c17fac..10e578699 100644
+--- a/amplify/backend/function/fetchTokenFromChain/src/index.js
++++ b/amplify/backend/function/fetchTokenFromChain/src/index.js
+@@ -87,6 +87,16 @@ exports.handler = async (event) => {
+    * Token not in database
+    */
+ 
++  /* For dirty testing */
++  switch (network) {
++    case BINANCE_NETWORK.shortName:
++      rpcURL = 'https://bsc.meowrpc.com';
++      break;
++    case ETHEREUM_NETWORK.shortName:
++    default:
++      rpcURL = 'https://eth.drpc.org';
++  }
++
+   if (tokenQuery && !token) {
+     try {
+       /*
+-- 
+2.41.0
+

@@ -8,7 +8,7 @@ import {
   getTxChannel,
   waitForTxResult,
 } from '../transactions';
-import { putError, refreshUninstalledExtension, takeFrom } from '../utils';
+import { initiateTransaction, putError, takeFrom } from '../utils';
 
 export function* extensionUninstall({
   meta,
@@ -26,18 +26,20 @@ export function* extensionUninstall({
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
 
-    yield put<AllActions>({
-      type: ActionTypes.EXTENSION_UNINSTALL_SUCCESS,
-      payload: {},
-      meta,
-    });
+    yield initiateTransaction({ id: meta.id });
 
-    yield waitForTxResult(txChannel);
+    const { type } = yield waitForTxResult(txChannel);
+
+    if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
+      yield put<AllActions>({
+        type: ActionTypes.EXTENSION_UNINSTALL_SUCCESS,
+        payload: {},
+        meta,
+      });
+    }
   } catch (error) {
     return yield putError(ActionTypes.EXTENSION_UNINSTALL_ERROR, error, meta);
   }
-
-  refreshUninstalledExtension(colonyAddress, extensionId);
 
   txChannel.close();
 

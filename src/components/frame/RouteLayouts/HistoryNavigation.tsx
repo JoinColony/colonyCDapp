@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Icon from '~shared/Icon';
 import NavLink from '~shared/NavLink';
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 
 import styles from './HistoryNavigation.css';
 

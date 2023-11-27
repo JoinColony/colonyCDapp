@@ -1,0 +1,18 @@
+query getColonyDecisions(
+  $colonyAddress: String!
+  $sortDirection: ModelSortDirection = ASC
+  $filter: ModelColonyDecisionFilterInput
+  $limit: Int = 10
+) {
+  getColonyDecisionByColonyAddress(
+    colonyAddress: $colonyAddress
+    filter: $filter
+    sortDirection: $sortDirection
+    limit: $limit
+  ) {
+    items {
+      ...ColonyDecision
+    }
+    nextToken
+  }
+}

@@ -1,36 +1,49 @@
 import { AddressZero } from '@ethersproject/constants';
 
 import { ContextModule, getContext } from '~context';
-import {
-  UserReputationQuery,
-  UserReputationQueryVariables,
-  UserReputationDocument,
-} from '~data/index';
 import { Address } from '~types';
+import {
+  GetUserReputationDocument,
+  GetUserReputationQuery,
+  GetUserReputationQueryVariables,
+} from '~gql';
 
 export function* updateDomainReputation(
   colonyAddress: Address,
-  userAddress: Address,
+  walletAddress: Address,
   domainId: number,
+  rootHash?: string,
 ) {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
-  yield apolloClient.query<UserReputationQuery, UserReputationQueryVariables>({
-    query: UserReputationDocument,
+  yield apolloClient.query<
+    GetUserReputationQuery,
+    GetUserReputationQueryVariables
+  >({
+    query: GetUserReputationDocument,
     variables: {
-      colonyAddress,
-      address: userAddress,
-      domainId,
+      input: {
+        colonyAddress: colonyAddress ?? '',
+        walletAddress: walletAddress ?? '',
+        domainId,
+        rootHash,
+      },
     },
     fetchPolicy: 'network-only',
   });
 
-  yield apolloClient.query<UserReputationQuery, UserReputationQueryVariables>({
-    query: UserReputationDocument,
+  yield apolloClient.query<
+    GetUserReputationQuery,
+    GetUserReputationQueryVariables
+  >({
+    query: GetUserReputationDocument,
     variables: {
-      colonyAddress,
-      address: AddressZero,
-      domainId,
+      input: {
+        colonyAddress: colonyAddress ?? '',
+        walletAddress: AddressZero,
+        domainId,
+        rootHash,
+      },
     },
     fetchPolicy: 'network-only',
   });

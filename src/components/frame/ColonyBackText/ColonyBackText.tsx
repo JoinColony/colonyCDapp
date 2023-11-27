@@ -23,7 +23,7 @@ const ColonyBackText = () => {
     return null;
   }
 
-  const { displayName } = colony.profile || {};
+  const { displayName } = colony.metadata || {};
 
   return <FormattedMessage {...MSG.backText} values={{ displayName }} />;
 };

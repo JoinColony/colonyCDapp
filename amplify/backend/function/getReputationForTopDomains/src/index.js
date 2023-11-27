@@ -1,4 +1,4 @@
-const { getColonyNetworkClient, Network } = require('@colony/colony-js');
+const { getColonyNetworkClient, Network, Id } = require('@colony/colony-js');
 const {
   providers,
   utils: { Logger },
@@ -9,8 +9,30 @@ const { Decimal } = require('decimal.js');
 
 Logger.setLogLevel(Logger.levels.ERROR);
 
-const ROOT_DOMAIN_ID = 1; // this used to be exported from @colony/colony-js but isn't anymore
-const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let rpcURL = 'http://network-contracts:8545'; // this needs to be extended to all supported networks
+let reputationOracleEndpoint =
+  'http://reputation-monitor:3001/reputation/local';
+let network = Network.Custom;
+let networkAddress;
+
+const setEnvVariables = async () => {
+  const ENV = process.env.ENV;
+  if (ENV === 'qa' || ENV === 'sc') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [rpcURL, networkAddress, reputationOracleEndpoint, network] =
+      await getParams([
+        'chainRpcEndpoint',
+        'networkContractAddress',
+        'reputationEndpoint',
+        'chainNetwork',
+      ]);
+  } else {
+    const {
+      etherRouterAddress,
+    } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+    networkAddress = etherRouterAddress;
+  }
+};
 
 const ZeroValue = {
   Zero: '0',
@@ -53,20 +75,22 @@ const calculatePercentageReputation = (
  * @type {import('aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
+  try {
+    await setEnvVariables();
+  } catch (e) {
+    throw new Error('Unable to set env variables. Reason:', e);
+  }
+
   const { colonyAddress, walletAddress, rootHash } =
     event.arguments?.input || {};
 
-  const provider = new providers.JsonRpcProvider(RPC_URL);
+  const provider = new providers.JsonRpcProvider(rpcURL);
 
-  const {
-    etherRouterAddress: networkAddress,
-  } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
-
-  const networkClient = getColonyNetworkClient(Network.Custom, provider, {
+  const networkClient = getColonyNetworkClient(network, provider, {
     networkAddress,
-    reputationOracleEndpoint:
-      'http://reputation-monitor.docker:3001/reputation/local',
+    reputationOracleEndpoint,
   });
+
   const colonyClient = await networkClient.getColonyClient(colonyAddress);
 
   try {
@@ -82,7 +106,7 @@ exports.handler = async (event) => {
            * If we have the "All Teams" domain selected, fetch reputation values from "Root"
            */
           userReputation.domainId === COLONY_TOTAL_BALANCE_DOMAIN_ID
-            ? ROOT_DOMAIN_ID
+            ? Id.RootDomain
             : userReputation.domainId,
         );
 
@@ -145,7 +169,7 @@ exports.handler = async (event) => {
         }
         if (
           safeReputationB.lt(safeReputationA) &&
-          reputationB.domainId !== ROOT_DOMAIN_ID
+          reputationB.domainId !== Id.RootDomain
         ) {
           return -1;
         }

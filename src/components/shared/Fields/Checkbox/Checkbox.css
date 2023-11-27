@@ -1,21 +1,14 @@
 @value query700 from '~styles/queries.css';
 
 .main {
-  display: block;
-  cursor: pointer;
-}
-
-.delegate {
-  height: 16px;
-  width: 16px;
-  position: absolute;
-  opacity: 0;
+  display: flex;
+  align-items: center;
+  border: none;
+  background: none;
+  column-gap: 10px;
 }
 
 .checkbox {
-  display: inline-block;
-  flex: 0 0 auto;
-  margin: 0 5px 0 3px; /* left margin to fix box-shadow on focus in overflow situations */
   height: 18px;
   width: 18px;
   position: relative;
@@ -23,30 +16,54 @@
   border-radius: 2px;
   background-color: var(--colony-white);
   box-shadow: 0 0 0 2px color-mod(var(--light-purple) alpha(25%));
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
 }
 
-.stateIsChecked .checkbox {
-  border: 1px solid var(--primary);
-  box-shadow: 0 0 0 2px color-mod(var(--primary) alpha(25%));
-}
-
-.delegate:focus + .checkbox {
-  box-shadow: 0 0 3px 1px var(--primary);
-}
-
-.checkmark {
+.checkbox:checked::before {
   display: inline-block;
   height: 80%;
   width: 80%;
   position: absolute;
-  top: -20%;
-  transform: rotate(45deg);
+  right: 1px;
+  bottom: 4px;
+  content: url('check-mark-primary');
+}
+
+.checkbox:checked {
+  border: 1px solid var(--primary);
+  box-shadow: 0 0 0 2px color-mod(var(--primary) alpha(25%));
+}
+
+.checkbox:focus-visible,
+.checkbox:focus {
+  box-shadow: 0 0 3px 1px var(--primary);
+  outline: 0px transparent;
 }
 
 /* Theme */
 
 .themeDark .checkbox {
   background-color: var(--dark-grey);
+}
+
+.themePink:not(.stateIsChecked) .checkbox {
+  border: 1px solid var(--grey-blue);
+  box-shadow: 0 0 0 3px color-mod(var(--grey-blue) alpha(25%));
+}
+
+.themePink.delegate:not(:focus) + .checkbox {
+  box-shadow: 0 0 0 3px color-mod(var(--grey-blue) alpha(25%));
+}
+
+.themePink.stateIsChecked .checkbox {
+  border: 1px solid var(--pink);
+  box-shadow: 0 0 0 3px color-mod(var(--pink) alpha(25%));
+}
+
+.themePink.delegate:focus + .checkbox {
+  box-shadow: 0 0 0 3px color-mod(var(--pink) alpha(25%));
 }
 
 /* Direction */
@@ -59,45 +76,27 @@
   display: block;
 }
 
-/* State */
-
-.stateIsChecked .checkbox .checkmark::before {
-  height: 80%;
-  width: 1px;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  background-color: var(--primary);
-  content: '';
-}
-
-.stateIsChecked .checkbox .checkmark::after {
-  height: 1px;
-  width: 40%;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  background-color: var(--primary);
-  content: '';
-}
-
-.stateDisabled {
+.checkbox:disabled,
+.checkbox[readonly] {
+  border-color: var(--text-disabled);
+  box-shadow: 0 0 0 2px color-mod(var(--text-disabled) alpha(25%));
   cursor: default;
 }
 
-.stateDisabled .checkbox {
-  border-color: var(--text-disabled);
-  box-shadow: 0 0 0 2px color-mod(var(--text-disabled) alpha(25%));
-}
-
-.stateDisabled .checkbox .checkmark::before,
-.stateDisabled .checkbox .checkmark::after {
-  background-color: var(--text-disabled);
+.checkbox[readonly] {
+  pointer-events: none;
 }
 
 @media screen and query700 {
-  .main {
-    display: flex;
-    align-items: center;
+  .checkbox:checked::before {
+    bottom: 5px;
   }
+}
+
+.themePink.stateIsChecked .checkbox .checkmark::before {
+  background-color: var(--pink);
+}
+
+.themePink.stateIsChecked .checkbox .checkmark::after {
+  background-color: var(--pink);
 }

@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { InferType } from 'yup';
 
 import { useColonyContext } from '~hooks';
 import { ActionForm } from '~shared/Fields';
@@ -9,6 +10,8 @@ import { InstalledExtensionData } from '~types';
 import { mapPayload, mergePayload, pipe } from '~utils/actions';
 import { IconButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
+import { useColonyHomeContext } from '~context';
+import { COLONY_EXTENSIONS_ROUTE } from '~routes';
 
 import {
   createExtensionSetupInitialValues,
@@ -47,17 +50,18 @@ const ExtensionSetup = ({
 }: Props) => {
   const navigate = useNavigate();
   const { colony } = useColonyContext();
-
+  const { shortPollExtensions } = useColonyHomeContext();
   const transform = pipe(
     mapPayload((payload) =>
-      mapExtensionActionPayload(extensionId, payload, initializationParams),
+      mapExtensionActionPayload(payload, initializationParams),
     ),
     mergePayload({ colonyAddress: colony?.colonyAddress, extensionData }),
   );
 
-  const handleFormSuccess = useCallback(() => {
-    navigate(`/colony/${colony?.name}/extensions/${extensionId}`);
-  }, [colony?.name, extensionId, navigate]);
+  const handleFormSuccess = useCallback(async () => {
+    shortPollExtensions();
+    navigate(`/${colony?.name}/${COLONY_EXTENSIONS_ROUTE}/${extensionId}`);
+  }, [colony?.name, extensionId, navigate, shortPollExtensions]);
 
   const initialValues = useMemo(() => {
     if (!initializationParams) {
@@ -71,22 +75,25 @@ const ExtensionSetup = ({
   }
 
   if (isInitialized || isDeprecated || !initializationParams) {
-    return <Navigate to={`/colony/${colony.name}/extensions/${extensionId}`} />;
+    return (
+      <Navigate
+        to={`/${colony.name}/${COLONY_EXTENSIONS_ROUTE}/${extensionId}`}
+      />
+    );
   }
 
+  const schema = createExtensionSetupValidationSchema(initializationParams);
+  type FormValues = InferType<typeof schema>;
+
   return (
-    <ActionForm
-      initialValues={initialValues}
-      validationSchema={createExtensionSetupValidationSchema(
-        initializationParams,
-      )}
-      submit={ActionTypes.EXTENSION_ENABLE}
-      error={ActionTypes.EXTENSION_ENABLE_ERROR}
-      success={ActionTypes.EXTENSION_ENABLE_SUCCESS}
+    <ActionForm<FormValues>
+      defaultValues={initialValues}
+      validationSchema={schema}
+      actionType={ActionTypes.EXTENSION_ENABLE}
       onSuccess={handleFormSuccess}
       transform={transform}
     >
-      {({ isSubmitting, isValid, status }) => {
+      {({ formState: { isValid, isSubmitting } }) => {
         return (
           <div>
             <Heading
@@ -104,11 +111,7 @@ const ExtensionSetup = ({
               appearance={{ theme: 'primary', size: 'large' }}
               text={{ id: 'button.confirm' }}
               loading={isSubmitting}
-              disabled={
-                !isValid ||
-                Object.values(status || {}).some((value) => !!value) ||
-                isSubmitting
-              }
+              disabled={!isValid || isSubmitting}
             />
           </div>
         );

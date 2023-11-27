@@ -70,7 +70,7 @@ const DecisionOptionIcon = ({
         }
       >
         <div className={styles.rowIcon}>
-          <Icon name={icon} title={title} appearance={{ size: 'small' }} />
+          <Icon name={icon} title={title} appearance={{ size: 'extraSmall' }} />
         </div>
       </Tooltip>
     ) : (

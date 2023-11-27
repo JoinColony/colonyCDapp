@@ -1,0 +1,3 @@
+export const MAX_ANNOTATION_NUM = 4000;
+export const MIN_ANNOTATION_NUM = 58;
+export const NUMBER_OF_CHARS_IN_TWO_LINES = 190;

@@ -80,7 +80,7 @@
     border: 2px solid var(--primary);
     border-left: 2px solid transparent;
     border-radius: 50%;
-    content: "";
+    content: '';
     transform: rotate(45deg);
   }
 }

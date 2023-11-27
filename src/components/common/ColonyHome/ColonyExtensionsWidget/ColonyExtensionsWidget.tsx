@@ -4,7 +4,8 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 import Heading from '~shared/Heading';
 import NavLink from '~shared/NavLink';
-import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
+import ExtensionStatusBadge from '~common/ExtensionStatusBadge';
+import { COLONY_EXTENSIONS_ROUTE } from '~routes';
 
 import { useColonyContext, useExtensionsData } from '~hooks';
 
@@ -60,7 +61,7 @@ const ColonyExtensions = () => {
               <li key={address} className={styles.extension}>
                 <NavLink
                   className={styles.invisibleLink}
-                  to={`/colony/${colony?.name}/extensions/${extensionId}`}
+                  to={`/${colony?.name}/${COLONY_EXTENSIONS_ROUTE}/${extensionId}`}
                   text={extension.name}
                 />
                 <ExtensionStatusBadge

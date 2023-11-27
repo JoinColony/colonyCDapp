@@ -1,11 +1,12 @@
 import React from 'react';
+import { Navigate } from 'react-router-dom';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { Tab, TabList, TabPanel, Tabs } from '~shared/Tabs';
 
 import ProfileTemplate from '~frame/ProfileTemplate';
 
-import { useCanEditProfile } from '~hooks';
+import { useAppContext } from '~hooks';
 
 import UserProfileSpinner from '../UserProfile/UserProfileSpinner';
 import {
@@ -28,15 +29,14 @@ const MSG = defineMessages({
 });
 
 const UserProfileEdit = () => {
-  const { loadingProfile, user } = useCanEditProfile();
+  const { user, userLoading, walletConnecting } = useAppContext();
 
-  if (loadingProfile) {
+  if (userLoading || walletConnecting) {
     return <UserProfileSpinner />;
   }
 
-  // By this point, if user is null or undefined, we'll be redirected to /landing by useCanEditProfile.
   if (!user) {
-    return null;
+    return <Navigate to="/landing" />;
   }
 
   return (
@@ -57,7 +57,7 @@ const UserProfileEdit = () => {
           <UserMainSettings user={user} />
         </TabPanel>
         <TabPanel>
-          <UserAdvancedSettings />
+          <UserAdvancedSettings user={user} />
         </TabPanel>
       </Tabs>
     </ProfileTemplate>

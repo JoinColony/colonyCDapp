@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { Collection, Map as ImmutableMap, List } from 'immutable';
 
-import { TRANSACTION_STATUSES } from '~types';
+import { TransactionStatus } from '~types';
 
 import { TransactionRecord } from '../immutable';
 
@@ -74,7 +74,7 @@ export const pendingTransactions = createSelector(
   allTransactions,
   (transactions) =>
     transactions
-      .filter((tx) => tx.status === TRANSACTION_STATUSES.PENDING)
+      .filter((tx) => tx.status === TransactionStatus.Pending)
       .sort(createdAtDesc),
 );
 

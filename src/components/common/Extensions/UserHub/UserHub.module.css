@@ -1,0 +1,7 @@
+.li {
+  @apply flex items-center justify-between text-gray-900 font-normal text-md leading-5 rounded pl-4 pr-[1.125rem] cursor-pointer transition-all hover:bg-gray-50 p-1 py-2;
+}
+
+.wrapper {
+  @apply flex border-r border-gray-100 flex-col justify-between sm:w-[13.85rem] sm:min-h-[27.75rem] shrink-0;
+}

@@ -1,21 +1,68 @@
 fragment User on User {
   profile {
-    avatar
-    bio
-    displayName
-    email
-    location
-    thumbnail
-    website
+    ...Profile
   }
   walletAddress: id
-  name
   watchlist {
     items {
+      id
       colony {
         ...WatchedColony
       }
       createdAt
     }
+  }
+  privateBetaInviteCode {
+    id
+    shareableInvites
+  }
+}
+
+fragment UserDisplay on User {
+  walletAddress: id
+  profile {
+    displayName
+    displayNameChanged
+    avatar
+    thumbnail
+  }
+}
+
+fragment Profile on Profile {
+  avatar
+  bio
+  displayName
+  displayNameChanged
+  email
+  location
+  thumbnail
+  website
+  meta {
+    metatransactionsEnabled
+    decentralizedModeEnabled
+    customRpc
+  }
+}
+
+fragment MemberUser on User {
+  walletAddress: id
+  profile {
+    ...Profile
+  }
+}
+
+fragment Contributor on Contributor {
+  address
+  user {
+    ...MemberUser
+  }
+  reputationPercentage
+  reputationAmount
+}
+
+fragment Watcher on Watcher {
+  address
+  user {
+    ...MemberUser
   }
 }

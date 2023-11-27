@@ -1,6 +1,7 @@
 declare namespace NumeralCssNamespace {
   export interface INumeralCss {
     main: string;
+    sizeSmall: string;
     themeDark: string;
   }
 }

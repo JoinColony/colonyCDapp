@@ -1,8 +1,11 @@
 {
   "src/**/*.{ts,tsx}": [
-    "eslint --fix"
+    "eslint --fix",
+    "prettier --write --ignore-unknown"
   ],
   "src/**/*.css": [
-    "stylelint --fix"
-  ]
+    "stylelint --fix",
+    "prettier --write --ignore-unknown"
+  ],
+  "src/**/*.graphql": "prettier --write --ignore-unknown"
 }

@@ -13,17 +13,17 @@
   outline: none;
 }
 
-.main[aria-checked="true"] {
+.main[aria-checked='true'] {
   color: var(--primary);
   pointer-events: none;
 }
 
-.main[aria-disabled="true"] {
+.main[aria-disabled='true'] {
   color: color-mod(var(--dark) alpha(50%));
   pointer-events: none;
 }
 
-.main[data-checked="true"] {
+.main[data-checked='true'] {
   color: var(--primary);
 }
 

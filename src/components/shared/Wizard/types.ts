@@ -1,38 +1,38 @@
-import { AppContextValues } from '~context/AppContext';
-import { Values } from '~types';
+import { PropsWithChildren } from 'react';
 
-type WizardValues<T> = Record<string, Values<T>>;
-export type StepValues<T> = Partial<WizardValues<T>>;
-export type StepsValues<T> = StepValues<T>[];
+export type StepValues<F> = Partial<F>;
+export type StepsValues<F> = StepValues<F>[];
 
-type StepsValuesFn<T> = (props?: any) => StepsValues<T>;
-export type InitialValuesProp<T> = StepsValues<T> | StepsValuesFn<T>;
+export type InitialValuesProp<F> = F | ((props?: any) => F);
 
-type NextStep<T> = (values?: StepValues<T>) => void;
-type PreviousStep = () => boolean;
+type NextStep = (values?: Record<string, any>) => void;
+export type PreviousStep = (values?: Record<string, any>) => boolean;
 type WizardReset = () => void;
 
-interface SharedWizardProps<FormValues> {
+interface SharedWizardProps<F> {
   step: number;
   stepCount: number;
-  nextStep: NextStep<FormValues>;
+  nextStep: NextStep;
   previousStep: PreviousStep;
   resetWizard: WizardReset;
-  wizardValues: FormValues;
+  wizardValues: F;
 }
 
-export interface WizardOuterProps<FormValues>
-  extends SharedWizardProps<FormValues> {
-  children: JSX.Element;
-  loggedInUser: AppContextValues['user'];
-  hideQR?: boolean;
+export interface WizardOuterProps<
+  F extends Record<string, any>,
+  T extends Record<string, any>,
+> extends PropsWithChildren<SharedWizardProps<F>> {
+  templateProps: T;
 }
 
-export interface WizardStepProps<FormValues, StepVals = Partial<FormValues>>
-  extends SharedWizardProps<FormValues> {
-  setStepsValues: React.Dispatch<
-    React.SetStateAction<StepsValues<Values<FormValues>>>
-  >;
+export interface WizardStepProps<
+  F,
+  Props = Record<string, never>,
+  StepVals = Partial<F>,
+> extends SharedWizardProps<F> {
+  setStepsValues: React.Dispatch<React.SetStateAction<StepsValues<F>>>;
+  setStep: React.Dispatch<React.SetStateAction<number>>;
+  wizardProps: Props;
   wizardForm: {
     initialValues: StepVals;
     validateOnMount: boolean;

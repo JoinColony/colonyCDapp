@@ -14,4 +14,5 @@ export enum RpcMethods {
   PersonalSign = 'personal_sign',
   SignTypedData = 'eth_signTypedData',
   SignTypedDataV4 = 'eth_signTypedData_v4', // Only available via Metamask
+  WatchAsset = 'wallet_watchAsset', // Metamask method
 }

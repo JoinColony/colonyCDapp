@@ -2,16 +2,15 @@ import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { string, bool, object, InferType } from 'yup';
 
-import { HookForm as Form } from '~shared/Fields';
+import { Form } from '~shared/Fields';
 import { Heading3 } from '~shared/Heading';
 import ExternalLink from '~shared/ExternalLink';
 import { ADVANCED_SETTINGS } from '~constants';
-import useUserSettings, {
-  SlotKey,
-  UserSettingsHook,
-} from '~hooks/useUserSettings';
 import { canUseMetatransactions } from '~utils/checks';
 import { yupDebounce } from '~utils/yup/tests';
+import { useAppContext } from '~hooks';
+import { useUpdateUserProfileMutation } from '~gql';
+import { User } from '~types';
 
 import AdvancedSettingsRow, {
   getAdvancedSettingsRows,
@@ -39,36 +38,25 @@ const MSG = defineMessages({
 });
 
 const validationSchema = object({
-  [SlotKey.Metatransactions]: bool<boolean>(),
-  [SlotKey.DecentralizedMode]: bool<boolean>(),
-  [SlotKey.CustomRPC]: string()
-    .defined()
-    .when(`${SlotKey.DecentralizedMode}`, {
-      is: true,
-      then: string()
-        .required(() => MSG.invalidURLError)
-        .url(() => MSG.invalidURLError)
-        .test(
-          'gnosisRpc',
-          () => MSG.invalidRPCError,
-          yupDebounce(validateCustomGnosisRPC, 200, {
-            isOptional: false,
-            circuitBreaker: isValidURL,
-          }),
-        ),
-    }),
+  metatransactionsEnabled: bool<boolean>(),
+  decentralizedModeEnabled: bool<boolean>(),
+  customRpc: string().when('decentralizedModeEnabled', {
+    is: true,
+    then: string()
+      .required(() => MSG.invalidURLError)
+      .url(() => MSG.invalidURLError)
+      .test(
+        'gnosisRpc',
+        () => MSG.invalidRPCError,
+        yupDebounce(validateCustomGnosisRPC, 200, {
+          isOptional: false,
+          circuitBreaker: isValidURL,
+        }),
+      ),
+  }),
 }).defined();
 
 export type FormValues = InferType<typeof validationSchema>;
-
-const setFormValuesToLocalStorage = (
-  values: FormValues,
-  setSettingsKey: UserSettingsHook['setSettingsKey'],
-) => {
-  Object.entries(values).forEach(([key, value]: [SlotKey, string | boolean]) =>
-    setSettingsKey(key, value),
-  );
-};
 
 const metatransactionsAvailable = canUseMetatransactions();
 const advancedSettingsRows = getAdvancedSettingsRows(metatransactionsAvailable);
@@ -83,23 +71,32 @@ const headingTextValues = {
   ),
 };
 
-const UserAdvancedSettings = () => {
+interface Props {
+  user: User;
+}
+
+const UserAdvancedSettings = ({ user: { walletAddress, profile } }: Props) => {
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
-  const {
-    settings: {
-      metatransactions: metatransactionsSetting,
-      decentralizedModeEnabled,
-      customRpc,
-    },
-    setSettingsKey,
-  } = useUserSettings();
+  const { updateUser } = useAppContext();
+  const [editUser, { error }] = useUpdateUserProfileMutation();
 
-  const metatransasctionsDefault = metatransactionsAvailable
-    ? metatransactionsSetting
-    : false;
+  const defaultValues: FormValues = {
+    metatransactionsEnabled: Boolean(profile?.meta?.metatransactionsEnabled),
+    decentralizedModeEnabled: Boolean(profile?.meta?.decentralizedModeEnabled),
+    customRpc: profile?.meta?.customRpc || '',
+  };
 
-  const handleSubmit = (values: FormValues) => {
-    setFormValuesToLocalStorage(values, setSettingsKey);
+  const handleSubmit = async (updatedMetaSettings: FormValues) => {
+    await editUser({
+      variables: {
+        input: {
+          id: walletAddress,
+          meta: updatedMetaSettings,
+        },
+      },
+    });
+
+    updateUser?.(walletAddress, true);
   };
 
   return (
@@ -110,11 +107,7 @@ const UserAdvancedSettings = () => {
         textValues={headingTextValues}
       />
       <Form<FormValues>
-        defaultValues={{
-          [SlotKey.Metatransactions]: metatransasctionsDefault,
-          [SlotKey.DecentralizedMode]: decentralizedModeEnabled,
-          [SlotKey.CustomRPC]: customRpc,
-        }}
+        defaultValues={defaultValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
         resetOnSubmit
@@ -122,16 +115,7 @@ const UserAdvancedSettings = () => {
         {({ formState: { isValid, isDirty, isValidating } }) => (
           <div className={styles.main}>
             {advancedSettingsRows.map((row) => (
-              <AdvancedSettingsRow
-                name={row.name}
-                paragraphText={row.paragraphText}
-                toggleDisabled={!metatransactionsAvailable}
-                toggleLabel={row.toggleLabel}
-                tooltipText={row.tooltipText}
-                tooltipTextValues={row.tooltipTextValues}
-                extra={row.extra}
-                key={row.name}
-              />
+              <AdvancedSettingsRow key={row.name} {...row} />
             ))}
             <SaveForm
               disabled={
@@ -140,6 +124,7 @@ const UserAdvancedSettings = () => {
                 !isDirty ||
                 isValidating
               }
+              error={error}
               setShowSnackbar={setShowSnackbar}
               showSnackbar={showSnackbar}
             />

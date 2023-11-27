@@ -6,206 +6,300 @@
 // remains same (for example, when multiple dialogue boxes can
 // be present on the same route.)
 
-/*
- * @TODO This needs to be addressed and either refactored or removed
- */
+import { useLocation, matchPath } from 'react-router-dom';
+import { defineMessages, useIntl, MessageDescriptor } from 'react-intl';
 
-// import { useLocation, matchPath } from 'react-router-dom';
-// import { useEffect } from 'react';
-// import { defineMessages, useIntl, MessageDescriptor } from 'react-intl';
-// import {
-//   CREATE_COLONY_ROUTE,
-//   CREATE_USER_ROUTE,
-//   INBOX_ROUTE,
-//   USER_EDIT_ROUTE,
-//   WALLET_ROUTE,
-//   NOT_FOUND_ROUTE,
-//   LANDING_PAGE_ROUTE,
-//   COLONY_HOME_ROUTE,
-//   COLONY_EVENTS_ROUTE,
-//   ACTIONS_PAGE_ROUTE,
-//   USER_ROUTE,
-//   MEMBERS_ROUTE,
-//   COLONY_EXTENSION_SETUP_ROUTE,
-//   COLONY_EXTENSION_DETAILS_ROUTE,
-//   COLONY_EXTENSIONS_ROUTE,
-//   COLONY_FUNDING_ROUTE,
-// } from '~routes/routeConstants';
-// import { SimpleMessageValues } from '~types/index';
-// import { useColonyFromNameQuery } from '~data/index';
+import {
+  CREATE_COLONY_ROUTE,
+  CREATE_PROFILE_ROUTE,
+  CREATE_USER_ROUTE,
+  USER_EDIT_PROFILE_ROUTE,
+  NOT_FOUND_ROUTE,
+  COLONY_HOME_ROUTE,
+  COLONY_EVENTS_ROUTE,
+  ACTIONS_QUERY_STRING,
+  USER_ROUTE,
+  COLONY_EXTENSION_DETAILS_SETUP_ROUTE,
+  COLONY_EXTENSION_DETAILS_ROUTE,
+  COLONY_EXTENSIONS_ROUTE,
+  COLONY_INCOMING_ROUTE,
+  COLONY_MEMBERS_ROUTE,
+  USER_HOME_ROUTE,
+  USER_PREFERENCES_ROUTE,
+  USER_ADVANCED_ROUTE,
+  COLONY_CONTRIBUTORS_ROUTE,
+  COLONY_TEAMS_ROUTE,
+  COLONY_VERIFIED_ROUTE,
+  COLONY_DETAILS_ROUTE,
+  COLONY_REPUTATION_ROUTE,
+  COLONY_PERMISSIONS_ROUTE,
+  COLONY_INTEGRATIONS_ROUTE,
+  COLONY_INCORPORATION_ROUTE,
+  COLONY_ADVANCED_ROUTE,
+  COLONY_BALANCES_ROUTE,
+} from '~routes/routeConstants';
+import { SimpleMessageValues } from '~types';
+import { notNull } from '~utils/arrays';
+import { useGetDisplayNameByColonyNameQuery } from '~gql';
 
-// const MSG = defineMessages({
-//   createColony: {
-//     id: 'utils.hooks.useTitle.creatColony',
-//     defaultMessage: `Create Colony | Colony`,
-//   },
+const displayName = 'utils.hooks';
 
-//   createUser: {
-//     id: 'utils.hooks.useTitle.creatUser',
-//     defaultMessage: `Create User | Colony`,
-//   },
+const MSG = defineMessages({
+  createColony: {
+    id: `${displayName}.useTitle.createColony`,
+    defaultMessage: `Create a Colony | Colony`,
+  },
 
-//   inbox: {
-//     id: 'utils.hooks.useTitle.inbox',
-//     defaultMessage: `Inbox | Colony`,
-//   },
+  createUser: {
+    id: `${displayName}.useTitle.createUser`,
+    defaultMessage: `Create a User | Colony`,
+  },
 
-//   editProfile: {
-//     id: 'utils.hooks.useTitle.editProfile',
-//     defaultMessage: `Edit Profile | Colony`,
-//   },
+  createProfile: {
+    id: `${displayName}.useTitle.createProfile`,
+    defaultMessage: `Create a Profile | Colony`,
+  },
 
-//   wallet: {
-//     id: 'utils.hooks.useTitle.wallet',
-//     defaultMessage: `Wallet | Colony`,
-//   },
+  editProfile: {
+    id: `${displayName}.useTitle.editProfile`,
+    defaultMessage: `Account Profile | Colony`,
+  },
 
-//   notFound: {
-//     id: 'utils.hooks.useTitle.notFound',
-//     defaultMessage: `404 - Not Found | Colony`,
-//   },
+  editPreferences: {
+    id: `${displayName}.useTitle.editPreferences`,
+    defaultMessage: `Account Preferences | Colony`,
+  },
 
-//   landing: {
-//     id: 'utils.hooks.useTitle.landing',
-//     defaultMessage: `Welcome to Colony`,
-//   },
+  advancedSettings: {
+    id: `${displayName}.useTitle.advancedSettings`,
+    defaultMessage: `Advanced Settings | Colony`,
+  },
 
-//   colonyHome: {
-//     id: 'utils.hooks.useTitle.colonyHome',
-//     defaultMessage: `Actions | Colony - {colonyName}`,
-//   },
+  notFound: {
+    id: `${displayName}.useTitle.notFound`,
+    defaultMessage: `404 - Not Found | Colony`,
+  },
 
-//   colonyEvents: {
-//     id: 'utils.hooks.useTitle.colonyEvents',
-//     defaultMessage: `Transactions Log | Colony - {colonyName}`,
-//   },
+  landing: {
+    id: `${displayName}.useTitle.landing`,
+    defaultMessage: `Welcome to Colony`,
+  },
 
-//   colonyFunds: {
-//     id: 'utils.hooks.useTitle.colonyFunds',
-//     defaultMessage: `Funds | Colony - {colonyName}`,
-//   },
+  colonyHome: {
+    id: `${displayName}.useTitle.colonyHome`,
+    defaultMessage: `{colonyName} | Colony`,
+  },
 
-//   colonyExtensions: {
-//     id: 'utils.hooks.useTitle.colonyExtensions',
-//     defaultMessage: `Extensions | Colony - {colonyName}`,
-//   },
+  colonyEvents: {
+    id: `${displayName}.useTitle.colonyEvents`,
+    defaultMessage: `Transactions Log | Colony - {colonyName}`,
+  },
 
-//   colonyExtensionDetails: {
-//     id: 'utils.hooks.useTitle.colonyExtensionDetails',
-//     defaultMessage: `Extensions > {extensionId, select,
-//       VotingReputation {Governance}
-//       OneTxPayment {One Transaction Payment}
-//       other {{extensionId}}
-//       } | Colony - {colonyName}`,
-//   },
+  colonyIncoming: {
+    id: `${displayName}.useTitle.colonyIncoming`,
+    defaultMessage: `Incoming | Colony - {colonyName}`,
+  },
 
-//   colonyExtensionSetup: {
-//     id: 'utils.hooks.useTitle.colonyExtensionSetup',
-//     defaultMessage: `Extensions > {extensionId, select,
-//       VotingReputation {Governance}
-//       OneTxPayment {One Transaction Payment}
-//       other {{extensionId}}
-//       } > Setup | Colony - {colonyName}`,
-//   },
+  colonyBalances: {
+    id: `${displayName}.useTitle.colonyBalances`,
+    defaultMessage: `Balances | Colony - {colonyName}`,
+  },
 
-//   colonyMembers: {
-//     id: 'utils.hooks.useTitle.colonyMembers',
-//     defaultMessage: `Members | Colony - {colonyName}`,
-//   },
+  colonyExtensions: {
+    id: `${displayName}.useTitle.colonyExtensions`,
+    defaultMessage: `Extensions | Colony - {colonyName}`,
+  },
 
-//   userProfile: {
-//     id: 'utils.hooks.useTitle.userProfile',
-//     defaultMessage: `Users > {username} | Colony`,
-//   },
+  colonyExtensionDetails: {
+    id: `${displayName}.useTitle.colonyExtensionDetails`,
+    defaultMessage: `{extensionId, select,
+      VotingReputation {Governance}
+      OneTxPayment {One Transaction Payment}
+      StakedExpenditure {Staked Expenditure}
+      StagedExpenditure {Staged Expenditure}
+      StreamingPayments {Streaming Payments}
+      other {{extensionId}}
+      } Extension | Colony - {colonyName}`,
+  },
 
-//   transactionDetails: {
-//     id: 'utils.hooks.useTitle.transactionDetails',
-//     defaultMessage: `Transaction - {transactionHash} | Colony - {colonyName}`,
-//   },
-//   buyTokens: {
-//     id: 'utils.hooks.useTitle.buyTokens',
-//     defaultMessage: `Buy Tokens | Colony - {colonyName}`,
-//   },
-//   fallbackTitle: {
-//     id: 'utils.hooks.useTitle.fallbackTitle',
-//     defaultMessage: `Colony`,
-//   },
-// });
+  colonyExtensionSetup: {
+    id: `${displayName}.useTitle.colonyExtensionSetup`,
+    defaultMessage: `{extensionId, select,
+      VotingReputation {Governance}
+      OneTxPayment {One Transaction Payment}
+      StakedExpenditure {Staked Expenditure}
+      StagedExpenditure {Staged Expenditure}
+      StreamingPayments {Streaming Payments}
+      other {{extensionId}}
+      } Extension Setup | Colony - {colonyName}`,
+  },
 
-// interface MessageWithValues {
-//   msg: MessageDescriptor;
-//   values?: SimpleMessageValues;
-// }
+  colonyMembers: {
+    id: `${displayName}.useTitle.colonyMembers`,
+    defaultMessage: `Members | Colony - {colonyName}`,
+  },
 
-// const routeMessages: Record<string, MessageDescriptor> = {
-//   [CREATE_COLONY_ROUTE]: MSG.createColony,
-//   [CREATE_USER_ROUTE]: MSG.createUser,
-//   [INBOX_ROUTE]: MSG.inbox,
-//   [USER_EDIT_ROUTE]: MSG.editProfile,
-//   [WALLET_ROUTE]: MSG.wallet,
-//   [NOT_FOUND_ROUTE]: MSG.notFound,
-//   [LANDING_PAGE_ROUTE]: MSG.landing,
-//   [COLONY_HOME_ROUTE]: MSG.colonyHome,
-//   [COLONY_EVENTS_ROUTE]: MSG.colonyEvents,
-//   [COLONY_FUNDING_ROUTE]: MSG.colonyFunds,
-//   [COLONY_EXTENSIONS_ROUTE]: MSG.colonyExtensions,
-//   [COLONY_EXTENSION_DETAILS_ROUTE]: MSG.colonyExtensionDetails,
-//   [COLONY_EXTENSION_SETUP_ROUTE]: MSG.colonyExtensionSetup,
-//   [MEMBERS_ROUTE]: MSG.colonyMembers,
-//   [USER_ROUTE]: MSG.userProfile,
-//   [ACTIONS_PAGE_ROUTE]: MSG.transactionDetails,
-//   '/': MSG.fallbackTitle,
-// };
+  colonyContributors: {
+    id: `${displayName}.useTitle.colonyContributors`,
+    defaultMessage: `Contributors | Colony - {colonyName}`,
+  },
 
-// const allRoutes = Object.keys(routeMessages);
+  colonyVerified: {
+    id: `${displayName}.useTitle.colonyVerified`,
+    defaultMessage: `Verified Members | Colony - {colonyName}`,
+  },
 
-// const getMessageAndValues = (locationPath: string): MessageWithValues => {
-//   const filteredRoutes = allRoutes.filter((routePattern) =>
-//     matchPath(locationPath, { path: routePattern, exact: true }),
-//   );
+  colonyTeams: {
+    id: `${displayName}.useTitle.colonyTeams`,
+    defaultMessage: `Teams | Colony - {colonyName}`,
+  },
 
-//   // Fallback when no route matches
-//   // For example before an invalid route get redirected to 404
-//   const matchedRoute = filteredRoutes.length > 0 ? filteredRoutes[0] : '/';
+  colonyDetails: {
+    id: `${displayName}.useTitle.colonyDetails`,
+    defaultMessage: `Details | Colony - {colonyName}`,
+  },
 
-//   const values = matchPath(locationPath, {
-//     path: matchedRoute,
-//     exact: true,
-//   })?.params; // this can be empty {}
+  colonyReputation: {
+    id: `${displayName}.useTitle.colonyReputation`,
+    defaultMessage: `Reputation | Colony - {colonyName}`,
+  },
 
-//   return { msg: routeMessages[matchedRoute], values };
-// };
+  colonyPermissions: {
+    id: `${displayName}.useTitle.colonyPermissions`,
+    defaultMessage: `Permissions | Colony - {colonyName}`,
+  },
 
-// export const useTitle = (title?: string) => {
-//   const location = useLocation().pathname;
-//   const { formatMessage } = useIntl();
-//   const { msg, values } = getMessageAndValues(location);
+  colonyIntegrations: {
+    id: `${displayName}.useTitle.colonyIntegrations`,
+    defaultMessage: `Integrations | Colony - {colonyName}`,
+  },
 
-//   const colonyENSName = (values?.colonyName as string) ?? ''; // HACK as we cannot call the below hook conditionally
+  colonyIncorporation: {
+    id: `${displayName}.useTitle.colonyIncorporation`,
+    defaultMessage: `Incorporation | Colony - {colonyName}`,
+  },
 
-//   const { data, error } = useColonyFromNameQuery({
-//     // We have to define an empty address here for type safety, will be replaced by the query
-//     fetchPolicy: 'cache-first',
-//     variables: { name: colonyENSName, address: '' },
-//   });
+  colonyAdvanced: {
+    id: `${displayName}.useTitle.colonyAdvanced`,
+    defaultMessage: `Advanced Settings | Colony`,
+  },
 
-//   if (error) console.error(error);
-//   const colonyDisplayName = data?.processedColony?.displayName
-//     ? data.processedColony.displayName
-//     : colonyENSName;
+  userProfile: {
+    id: `${displayName}.useTitle.userProfile`,
+    defaultMessage: `{username} | Colony`,
+  },
 
-//   return useEffect(() => {
-//     const titleToSet =
-//       title ||
-//       formatMessage(msg, {
-//         ...values,
-//         colonyName: colonyDisplayName,
-//       });
+  transactionDetails: {
+    id: `${displayName}.useTitle.transactionDetails`,
+    defaultMessage: `Transaction - {transactionHash} | Colony`,
+  },
 
-//     document.title = titleToSet;
-//   });
-// };
+  buyTokens: {
+    id: `${displayName}.useTitle.buyTokens`,
+    defaultMessage: `Buy Tokens | Colony - {colonyName}`,
+  },
+  fallbackTitle: {
+    id: `${displayName}.useTitle.fallbackTitle`,
+    defaultMessage: `Colony App`,
+  },
+});
 
-const useTitle = (...args) => args;
+interface MessageWithValues {
+  msg: MessageDescriptor;
+  values?: SimpleMessageValues;
+}
+
+const routeMessages: Record<string, MessageDescriptor> = {
+  [`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`]: MSG.editProfile,
+  [`${USER_HOME_ROUTE}/${USER_PREFERENCES_ROUTE}`]: MSG.editPreferences,
+  [`${USER_HOME_ROUTE}/${USER_ADVANCED_ROUTE}`]: MSG.advancedSettings,
+
+  '/': MSG.landing,
+  [COLONY_HOME_ROUTE]: MSG.colonyHome,
+  [`${COLONY_HOME_ROUTE}${COLONY_EVENTS_ROUTE}`]: MSG.colonyEvents,
+  [`${COLONY_HOME_ROUTE}${COLONY_INCOMING_ROUTE}`]: MSG.colonyIncoming,
+  [`${COLONY_HOME_ROUTE}${COLONY_EXTENSIONS_ROUTE}`]: MSG.colonyExtensions,
+  [`${COLONY_HOME_ROUTE}${COLONY_EXTENSION_DETAILS_ROUTE}`]:
+    MSG.colonyExtensionDetails,
+  [`${COLONY_HOME_ROUTE}${COLONY_EXTENSION_DETAILS_SETUP_ROUTE}`]:
+    MSG.colonyExtensionSetup,
+  [USER_ROUTE]: MSG.userProfile,
+  [ACTIONS_QUERY_STRING]: MSG.transactionDetails,
+  [`${COLONY_HOME_ROUTE}${COLONY_MEMBERS_ROUTE}`]: MSG.colonyMembers,
+  [`${COLONY_HOME_ROUTE}${COLONY_CONTRIBUTORS_ROUTE}`]: MSG.colonyContributors,
+  [`${COLONY_HOME_ROUTE}${COLONY_BALANCES_ROUTE}`]: MSG.colonyBalances,
+  [`${COLONY_HOME_ROUTE}${COLONY_VERIFIED_ROUTE}`]: MSG.colonyVerified,
+  [`${COLONY_HOME_ROUTE}${COLONY_TEAMS_ROUTE}`]: MSG.colonyTeams,
+  [`${COLONY_HOME_ROUTE}${COLONY_DETAILS_ROUTE}`]: MSG.colonyDetails,
+  [`${COLONY_HOME_ROUTE}${COLONY_REPUTATION_ROUTE}`]: MSG.colonyReputation,
+  [`${COLONY_HOME_ROUTE}${COLONY_PERMISSIONS_ROUTE}`]: MSG.colonyPermissions,
+  [`${COLONY_HOME_ROUTE}${COLONY_INTEGRATIONS_ROUTE}`]: MSG.colonyIntegrations,
+  [`${COLONY_HOME_ROUTE}${COLONY_INCORPORATION_ROUTE}`]:
+    MSG.colonyIncorporation,
+  [`${COLONY_HOME_ROUTE}${COLONY_ADVANCED_ROUTE}`]: MSG.colonyAdvanced,
+
+  /* NOTE: All routes should be added at the bottom to avoid being
+   * clobbered by the COLONY_HOME_ROUTE */
+  [NOT_FOUND_ROUTE]: MSG.notFound,
+  [CREATE_COLONY_ROUTE]: MSG.createColony,
+  [CREATE_PROFILE_ROUTE]: MSG.createProfile,
+  [CREATE_USER_ROUTE]: MSG.createUser,
+};
+
+const allRoutes = Object.keys(routeMessages);
+
+const getMessageAndValues = (
+  locationPath: string,
+  search: string,
+): MessageWithValues => {
+  // If route includes tx search query
+  if (search && /\?tx=[a-zA-F0-9]{66}/.test(search)) {
+    return {
+      msg: routeMessages[ACTIONS_QUERY_STRING],
+      values: { transactionHash: search.split('=')[1] },
+    };
+  }
+  const filteredRoutes = allRoutes.filter((routePattern) =>
+    notNull(matchPath(routePattern, locationPath)),
+  );
+
+  // Fallback when no route matches
+  // For example before an invalid route get redirected to 404
+  const matchedRoute = filteredRoutes.at(-1) ?? '';
+  const values = matchPath(matchedRoute, locationPath)?.params; // this can be empty {}
+
+  return { msg: routeMessages[matchedRoute] ?? MSG.fallbackTitle, values };
+};
+
+export const useTitle = (title?: string) => {
+  const { pathname, search } = useLocation();
+  const { formatMessage } = useIntl();
+  const { msg, values } = getMessageAndValues(pathname, search);
+
+  const colonyENSName = (values?.colonyName as string) ?? '';
+
+  const { data, error } = useGetDisplayNameByColonyNameQuery({
+    variables: { name: colonyENSName },
+    skip: colonyENSName === '',
+  });
+
+  if (error) {
+    console.error(error);
+  }
+
+  const queryDisplayName =
+    data?.getColonyByName?.items?.[0]?.metadata?.displayName;
+
+  const colonyDisplayName = queryDisplayName || colonyENSName;
+  const titleToSet =
+    title ||
+    formatMessage(msg, {
+      ...values,
+      colonyName: colonyDisplayName,
+    });
+
+  // @TODO: maybe use a more react-y way to set the title (like react helmet or hoofd)
+  document.title = titleToSet;
+};
 
 export default useTitle;

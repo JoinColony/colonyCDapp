@@ -1,58 +1,56 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 
 import { ContextModule, getContext } from '~context';
+import { Action, ActionTypes, AllActions } from '~redux';
 import {
-  ColonyFromNameDocument,
-  ColonyFromNameQuery,
-  ColonyFromNameQueryVariables,
-} from '~data/index';
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
+  GetFullColonyByNameDocument,
+  UpdateColonyMetadataDocument,
+  UpdateColonyMetadataMutation,
+  UpdateColonyMetadataMutationVariables,
+} from '~gql';
+import { isEqual } from '~utils/lodash';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { ipfsUpload } from '../ipfs';
 import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
-import {
-  updateColonyDisplayCache,
-  uploadIfpsAnnotation,
+  createActionMetadataInDB,
+  getUpdatedColonyMetadataChangelog,
+  initiateTransaction,
   putError,
   takeFrom,
-  routeRedirect,
+  uploadAnnotation,
 } from '../utils';
+import { transactionAddParams, transactionPending } from '../../actionCreators';
+import {
+  getExistingTokenAddresses,
+  getModifiedTokenAddresses,
+  updateColonyTokens,
+} from '../utils/updateColonyTokens';
 
 function* editColonyAction({
   payload: {
-    colonyAddress,
-    colonyName,
+    colony,
+    colony: { colonyAddress, name: colonyName, metadata },
     colonyDisplayName,
+    colonyDescription,
     colonyAvatarImage,
-    colonyAvatarHash,
-    hasAvatarChanged,
-    colonyTokens = [],
+    colonyExternalLinks,
+    colonyThumbnail,
+    tokenAddresses,
     annotationMessage,
+    colonyObjective,
+    customActionTitle,
   },
-  meta: { id: metaId, history },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_EDIT_COLONY>) {
   let txChannel;
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
-
-    /*
-     * Validate the required values for the payment
-     */
-    if (!colonyDisplayName && colonyDisplayName !== null) {
-      throw new Error('A colony name is required in order to edit the colony');
-    }
 
     txChannel = yield call(getTxChannel, metaId);
 
@@ -65,17 +63,7 @@ function* editColonyAction({
       'annotateEditColonyAction',
     ]);
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(editColony, {
+    yield createGroupTransaction(editColony, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: 'editColony',
       identifier: colonyAddress,
@@ -84,7 +72,7 @@ function* editColonyAction({
     });
 
     if (annotationMessage) {
-      yield createGroupTransaction(annotateEditColony, {
+      yield createGroupTransaction(annotateEditColony, batchKey, meta, {
         context: ClientType.ColonyClient,
         methodName: 'annotateTransaction',
         identifier: colonyAddress,
@@ -104,46 +92,46 @@ function* editColonyAction({
 
     yield put(transactionPending(editColony.id));
 
-    /*
-     * Upload colony metadata to IPFS
-     *
-     * @NOTE Only (re)upload the avatar if it has changed, otherwise just use
-     * the old hash.
-     * This cuts down on some transaction signing wait time, since IPFS uplaods
-     * tend to be on the slower side :(
+    // /*
+    //  * Upload colony metadata to IPFS
+    //  *
+    //  * @NOTE Only (re)upload the avatar if it has changed, otherwise just use
+    //  * the old hash.
+    //  * This cuts down on some transaction signing wait time, since IPFS uplaods
+    //  * tend to be on the slower side :(
+    //  */
+    // let colonyAvatarIpfsHash = null;
+    // if (colonyAvatarImage && hasAvatarChanged) {
+    //   colonyAvatarIpfsHash = yield call(
+    //     ipfsUpload,
+    //     JSON.stringify({
+    //       image: colonyAvatarImage,
+    //     }),
+    //   );
+    // }
+
+    // /*
+    //  * Upload colony metadata to IPFS
+    //  */
+    // let colonyMetadataIpfsHash = null;
+    // colonyMetadataIpfsHash = yield call(
+    //   ipfsUpload,
+    //   JSON.stringify({
+    //     colonyDisplayName,
+    //     colonyAvatarHash: hasAvatarChanged
+    //       ? colonyAvatarIpfsHash
+    //       : colonyAvatarHash,
+    //     colonyTokens,
+    //   }),
+    // );
+
+    /**
+     * @NOTE: In order for the ColonyMetadata event (which is the only event associated with Colony Edit action) to be emitted,
+     * the second parameter must be non-empty.
+     * It will be replaced with the IPFS hash in due course.
      */
-    let colonyAvatarIpfsHash = null;
-    if (colonyAvatarImage && hasAvatarChanged) {
-      colonyAvatarIpfsHash = yield call(
-        ipfsUpload,
-        JSON.stringify({
-          image: colonyAvatarImage,
-        }),
-      );
-    }
-
-    /*
-     * Upload colony metadata to IPFS
-     */
-    let colonyMetadataIpfsHash = null;
-    colonyMetadataIpfsHash = yield call(
-      ipfsUpload,
-      JSON.stringify({
-        colonyDisplayName,
-        colonyAvatarHash: hasAvatarChanged
-          ? colonyAvatarIpfsHash
-          : colonyAvatarHash,
-        colonyTokens,
-      }),
-    );
-
-    yield put(
-      transactionAddParams(editColony.id, [
-        colonyMetadataIpfsHash as unknown as string,
-      ]),
-    );
-
-    yield put(transactionReady(editColony.id));
+    yield put(transactionAddParams(editColony.id, ['.']));
+    yield initiateTransaction({ id: editColony.id });
 
     const {
       payload: { hash: txHash },
@@ -151,63 +139,84 @@ function* editColonyAction({
       editColony.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    if (annotationMessage) {
-      yield put(transactionPending(annotateEditColony.id));
+    const existingTokenAddresses = getExistingTokenAddresses(colony);
+    const modifiedTokenAddresses = getModifiedTokenAddresses(
+      colony.nativeToken.tokenAddress,
+      existingTokenAddresses,
+      tokenAddresses,
+    );
+    const haveTokensChanged = !!(
+      tokenAddresses && modifiedTokenAddresses.length
+    );
 
-      /*
-       * Upload annotation metadata to IPFS
-       */
-      const annotationMessageIpfsHash = yield call(
-        uploadIfpsAnnotation,
-        annotationMessage,
-      );
-
-      yield put(
-        transactionAddParams(annotateEditColony.id, [
-          txHash,
-          annotationMessageIpfsHash,
-        ]),
-      );
-
-      yield put(transactionReady(annotateEditColony.id));
-
-      yield takeFrom(
-        annotateEditColony.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
+    if (haveTokensChanged) {
+      yield updateColonyTokens(
+        colony,
+        existingTokenAddresses,
+        modifiedTokenAddresses,
       );
     }
 
-    /*
-     * Update the colony object cache
+    /**
+     * Save the updated metadata in the database
      */
-    yield apolloClient.query<ColonyFromNameQuery, ColonyFromNameQueryVariables>(
-      {
-        query: ColonyFromNameDocument,
-        variables: { name: colonyName || '', address: colonyAddress },
-        fetchPolicy: 'network-only',
-      },
-    );
+    if (colony.metadata) {
+      yield apolloClient.mutate<
+        UpdateColonyMetadataMutation,
+        UpdateColonyMetadataMutationVariables
+      >({
+        mutation: UpdateColonyMetadataDocument,
+        variables: {
+          input: {
+            id: colonyAddress,
+            displayName: colonyDisplayName,
+            avatar: colonyAvatarImage,
+            thumbnail: colonyThumbnail,
+            description: colonyDescription,
+            externalLinks: colonyExternalLinks,
+            objective: colonyObjective,
+            // @TODO: refactor this function to take an object
+            changelog: getUpdatedColonyMetadataChangelog(
+              txHash,
+              colony.metadata,
+              colonyDisplayName,
+              colonyAvatarImage,
+              false,
+              haveTokensChanged,
+              metadata?.description !== colonyDescription,
+              !isEqual(metadata?.externalLinks, colonyExternalLinks),
+              !isEqual(metadata?.objective, colonyObjective),
+            ),
+          },
+        },
+        refetchQueries: [GetFullColonyByNameDocument],
+      });
+    }
 
-    /*
-     * Update apollo's cache for the current colony to reflect the recently
-     * made changes
-     */
-    yield updateColonyDisplayCache(
-      colonyAddress,
-      colonyDisplayName,
-      colonyAvatarIpfsHash,
-      colonyAvatarImage as string | null,
-    );
+    yield createActionMetadataInDB(txHash, customActionTitle);
+
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateEditColony,
+        message: annotationMessage,
+        txHash,
+      });
+    }
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_EDIT_COLONY_SUCCESS,
       meta,
     });
 
-    if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+    if (colonyName && navigate) {
+      navigate(`/${colonyName}?tx=${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_EDIT_COLONY_ERROR, error, meta);

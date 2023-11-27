@@ -7,6 +7,7 @@ import { ConfirmDialog } from '~shared/Dialog';
 import { Table, TableBody, TableRow, TableCell } from '~shared/Table';
 import { AnyExtensionData, InstalledExtensionData } from '~types';
 import { useColonyContext } from '~hooks';
+import { useColonyHomeContext } from '~context';
 
 import ExtensionActionButton from '../ExtensionActionButton';
 import ExtensionUpgradeButton from '../ExtensionUpgradeButton';
@@ -56,18 +57,26 @@ const MSG = defineMessages({
   },
 });
 
-interface Props {
+interface PollingControls {
+  startPolling: (interval: number) => void;
+  stopPolling: () => void;
+}
+
+export interface ExtensionDetailsAsideProps {
   extensionData: AnyExtensionData;
   canBeDeprecated: boolean;
   canBeUninstalled: boolean;
+  pollingControls: PollingControls;
 }
 
 const ExtensionDetailsAside = ({
   extensionData,
   canBeDeprecated,
   canBeUninstalled,
-}: Props) => {
+  pollingControls,
+}: ExtensionDetailsAsideProps) => {
   const { colony } = useColonyContext();
+  const { shortPollExtensions } = useColonyHomeContext();
 
   if (!colony) {
     return null;
@@ -79,7 +88,10 @@ const ExtensionDetailsAside = ({
   return (
     <aside>
       <div className={styles.buttonWrapper}>
-        <ExtensionActionButton extensionData={extensionData} />
+        <ExtensionActionButton
+          extensionData={extensionData}
+          pollingControls={pollingControls}
+        />
         <ExtensionUpgradeButton
           extensionData={extensionData as InstalledExtensionData}
         />
@@ -87,7 +99,7 @@ const ExtensionDetailsAside = ({
 
       <Table appearance={{ theme: 'lined' }}>
         <TableBody>
-          {getTableData(extensionData, colony).map(
+          {getTableData(extensionData).map(
             ({
               label,
               value,
@@ -112,10 +124,9 @@ const ExtensionDetailsAside = ({
             heading: MSG.headingDeprecate,
             children: <FormattedMessage {...MSG.textDeprecate} />,
           }}
+          onSuccess={shortPollExtensions}
           appearance={{ theme: 'blue' }}
-          submit={ActionTypes.EXTENSION_DEPRECATE}
-          error={ActionTypes.EXTENSION_DEPRECATE_ERROR}
-          success={ActionTypes.EXTENSION_DEPRECATE_SUCCESS}
+          actionType={ActionTypes.EXTENSION_DEPRECATE}
           text={MSG.buttonDeprecate}
           values={{
             colonyAddress,
@@ -132,10 +143,9 @@ const ExtensionDetailsAside = ({
               heading: MSG.headingReEnable,
               children: <FormattedMessage {...MSG.textReEnable} />,
             }}
+            onSuccess={shortPollExtensions}
             appearance={{ theme: 'blue' }}
-            submit={ActionTypes.EXTENSION_DEPRECATE}
-            error={ActionTypes.EXTENSION_DEPRECATE_ERROR}
-            success={ActionTypes.EXTENSION_DEPRECATE_SUCCESS}
+            actionType={ActionTypes.EXTENSION_DEPRECATE}
             text={MSG.buttonReEnable}
             values={{
               colonyAddress,
@@ -150,9 +160,7 @@ const ExtensionDetailsAside = ({
               children: <FormattedMessage {...MSG.textUninstall} />,
             }}
             appearance={{ theme: 'blue' }}
-            submit={ActionTypes.EXTENSION_UNINSTALL}
-            error={ActionTypes.EXTENSION_UNINSTALL_ERROR}
-            success={ActionTypes.EXTENSION_UNINSTALL_SUCCESS}
+            actionType={ActionTypes.EXTENSION_UNINSTALL}
             values={{
               colonyAddress,
               extensionId,

@@ -1,4 +1,4 @@
-﻿# This "input" configures a global authorization rule to enable public access to
+# This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
 input AMPLIFY {
   globalAuthRule: AuthRule = { allow: public }
@@ -8,373 +8,3441 @@ input AMPLIFY {
 # https://docs.amplify.aws/cli-legacy/graphql-transformer/overview/#api-category-project-structure
 # but I never could get it to work
 
+"""
+Input data for fetching a token's information from DB or chain
+"""
 input TokenFromEverywhereArguments {
+  """
+  Address of the token on the blockchain
+  """
   tokenAddress: String!
+  network: String
+  """
+  The URL of the token image
+  """
+  avatar: String
+  """
+  The URL of the token thumbnail image
+  """
+  thumbnail: String
 }
 
+"""
+Input data for fetching the list of members for a specific Colony
+"""
+input MembersForColonyInput {
+  """
+  Address of the Colony
+  """
+  colonyAddress: String!
+  """
+  Root hash for the reputation state
+  """
+  rootHash: String
+  """
+  ID of the domain within the Colony
+  """
+  domainId: Int
+  """
+  Sorting method to apply to the member list
+  """
+  sortingMethod: SortingMethod
+}
+
+"""
+Input data for creating a unique user within the Colony Network Use this instead of the automatically generated `CreateUserInput` input type
+"""
 input CreateUniqueUserInput {
+  """
+  Unique identifier for the user. This is the user's wallet address
+  """
   id: ID!
-  name: String!
-  profile: ProfileInput
+  """
+  Profile data for the user
+  """
+  profile: ProfileInput!
 }
 
-enum EmailPermissions {
-  sendNotifications
-  isHuman
-}
-
+"""
+Input data for a user's profile metadata
+"""
 input ProfileMetadataInput {
-  emailPermissions: [String!]!
+  """
+  A flag to indicate whether the user has enabled metatransactions
+  """
+  metatransactionsEnabled: Boolean
+  """
+  A flag to indicate whether the user has enabled the decentralized mode
+  """
+  decentralizedModeEnabled: Boolean
+  """
+  The URL of the user's custom RPC node
+  """
+  customRpc: String
 }
 
-input MetadataInput {
+"""
+Input data for relevant chain metadata of a Colony (if applicable)
+"""
+input ChainMetadataInput {
+  """
+  The network the Colony is deployed on
+  """
   network: Network
-  chainId: Int
+  """
+  The chain ID of the network
+  """
+  chainId: Int!
+  """
+  The transaction hash of the creation transaction
+  """
   transactionHash: String
+  """
+  The log index of the creation transaction
+  """
   logIndex: Int
+  """
+  The block number of the creation transaction
+  """
   blockNumber: Int
 }
 
+"""
+Input data for the status of a Colony's native token
+
+Colonies can have different types of native tokens in various modes. Here we define some important properties that the dApp uses to enable or disable certain features or views. This is set when a Colony is created and can be changed later
+"""
 input NativeTokenStatusInput {
+  """
+  Whether the native token is unlocked
+  """
   unlocked: Boolean
+  """
+  Whether the native token is mintable
+  """
   mintable: Boolean
+  """
+  Whether the native token can be unlocked
+  """
   unlockable: Boolean
 }
 
+"""
+Input data for a Colony's status information
+
+This is set when a Colony is created and can be changed later
+"""
 input ColonyStatusInput {
+  """
+  Status information for the Colony's native token
+  """
   nativeToken: NativeTokenStatusInput
+  """
+  Whether the Colony is in recovery mode
+  """
   recovery: Boolean
 }
 
+"""
+Input data for creating a unique Colony within the Colony Network. Use this instead of the automatically generated `CreateColonyInput` input type
+"""
 input CreateUniqueColonyInput {
+  """
+  Unique identifier for the Colony. This is the Colony's contract address
+  """
   id: ID!
+  """
+  Display name of the Colony
+  """
   name: String!
+  """
+  Unique identifier for the Colony's native token (this is its address)
+  """
   colonyNativeTokenId: ID!
-  profile: ProfileInput
+  """
+  Type of the Colony (regular or MetaColony)
+  """
   type: ColonyType
+  """
+  Status information for the Colony
+  """
   status: ColonyStatusInput
-  meta: MetadataInput
+  """
+  Metadata related to the Colony's creation on the blockchain
+  """
+  chainMetadata: ChainMetadataInput!
+  """
+  Version of the currently deployed Colony contract
+  """
   version: Int!
+  """
+  Invite Code to create Colony
+  """
+  inviteCode: ID!
+  """
+  User id of creator to associate with further invite codes
+  """
+  userId: ID!
 }
 
+"""
+Input data to use when creating or changing a user profile
+"""
 input ProfileInput {
-  id: ID # nullable since resolver will use User / Colony id by default
+  """
+  The unique identifier for the user profile
+  """
+  id: ID
+  """
+  The URL of the user's avatar image
+  """
   avatar: String
+  """
+  The URL of the user's thumbnail image
+  """
   thumbnail: String
+  """
+  The display name of the user
+  """
   displayName: String
+  """
+  A short description or biography of the user.
+  """
   bio: String
+  """
+  The user's location (e.g., city or country)
+  """
   location: String
+  """
+  The user's personal or professional website
+  """
   website: AWSURL
+  """
+  The user's email address
+  """
   email: AWSEmail
+  """
+  Any additional metadata or settings related to the user profile
+  """
   meta: ProfileMetadataInput
 }
 
-input CreateUniqueDomainInput {
-  colonyAddress: ID!
-  parentId: ID
-  name: String
-  description: String
-  color: DomainColor
-}
-
+"""
+Input data for a user's reputation within a Domain in a Colony. If no `domainId` is passed, the Root Domain is used
+A `rootHash` can be provided, to get reputation at a certain point in the past
+"""
 input GetUserReputationInput {
+  """
+  The Ethereum wallet address of the user
+  """
   walletAddress: String!
+  """
+  The Ethereum address of the Colony
+  """
   colonyAddress: String!
+  """
+  The ID of the Domain within the Colony. If not provided, defaults to the Root Domain
+  """
   domainId: Int
+  """
+  The root hash of the reputation tree at a specific point in time
+  """
   rootHash: String
 }
 
+input UpdateContributorsWithReputationInput {
+  """
+  The colony address
+  """
+  colonyAddress: String # allow undefined
+}
+
+"""
+Input data for updating an extension's information within a Colony, based on the Colony ID and extension hash
+The hash is generated like so: `keccak256(toUtf8Bytes(extensionName))`, where `extensionName` is the name of the extension contract file in the Colony Network
+"""
 input UpdateExtensionByColonyAndHashInput {
+  """
+  The unique identifier for the Colony
+  """
   colonyId: ID!
+  """
+  The hash of the extension to be updated
+  """
   hash: String!
+  """
+  A flag to indicate whether the extension is deprecated
+  """
   isDeprecated: Boolean
+  """
+  A flag to indicate whether the extension is deleted
+  """
   isDeleted: Boolean
+  """
+  A flag to indicate whether the extension is initialized
+  """
   isInitialized: Boolean
+  """
+  The version of the extension
+  """
   version: Int
+  """
+  The Ethereum address of the user who installed the extension
+  """
   installedBy: String
+  """
+  The timestamp when the extension was installed
+  """
   installedAt: AWSTimestamp
 }
 
+input GetSafeTransactionStatusInput {
+  transactionHash: String!
+  chainId: Int!
+}
+
+"""
+Input data to store the latest available version of the core Colony contract and available extensions
+
+The extension hash is generated like so: `keccak256(toUtf8Bytes(extensionName))`, where `extensionName` is the name of the extension contract file in the Colony Network (e.g. `VotingReputation`)
+"""
 input SetCurrentVersionInput {
+  """
+  COLONY for the Colony contract, extension hash for extensions
+  """
   key: String!
+  """
+  Latest available version
+  """
   version: Int!
 }
 
+"""
+Return type for tokens gotten from DB or from chain
+"""
 type TokenFromEverywhereReturn {
+  """
+  List of tokens found
+  """
   items: [Token]
 }
 
+"""
+Input data for retrieving a user's reputation within the top domains of a Colony
+"""
 input GetReputationForTopDomainsInput {
+  """
+  The wallet address of the user
+  """
   walletAddress: String!
+  """
+  The address of the Colony
+  """
   colonyAddress: String!
+  """
+  The root hash of the reputation tree at a specific point in time
+  """
   rootHash: String
 }
 
+"""
+Input data for retrieving a user's token balance for a specific token
+"""
+input GetUserTokenBalanceInput {
+  """
+  The wallet address of the user
+  """
+  walletAddress: String!
+  """
+  The Colony address
+  """
+  colonyAddress: String!
+  """
+  The address of the token
+  """
+  tokenAddress: String!
+}
+
+"""
+Input data for retrieving the state of a motion (i.e. the current period)
+"""
+input GetMotionStateInput {
+  """
+  The Ethereum address of the Colony
+  """
+  colonyAddress: String!
+  """
+  The internal id of the motion in the database
+  """
+  databaseMotionId: String!
+}
+
+"""
+Input data for retrieving the voting rewards for a user within a finished motion
+"""
+input GetVoterRewardsInput {
+  """
+  The Ethereum address of the user who voted
+  """
+  voterAddress: String!
+  """
+  The Ethereum address of the Colony
+  """
+  colonyAddress: String!
+  """
+  The on chain id of the domain in which the motion was created
+  """
+  nativeMotionDomainId: String!
+  """
+  The on chain id of the motion
+  """
+  motionId: String!
+  """
+  The root hash of the reputation tree at the time the motion was created
+  """
+  rootHash: String!
+}
+
+"""
+Input data for retrieving the timeout of the current period the motion is in
+"""
+input GetMotionTimeoutPeriodsInput {
+  """
+  The on chain id of the motion
+  """
+  motionId: String!
+  """
+  The Ethereum address of the user who voted
+  """
+  colonyAddress: String!
+}
+
+"""
+The type of input of the getTotalMemberCount lambda
+"""
+input GetTotalMemberCountInput {
+  colonyAddress: ID!
+}
+
+"""
+The return type of the getTotalMemberCount lambda
+"""
+type GetTotalMemberCountReturn {
+  contributorCount: Int!
+  memberCount: Int!
+}
+
+"""
+A type representing a user's reputation within a domain
+"""
 type UserDomainReputation {
+  """
+  The integer ID of the Domain within the Colony
+  """
   domainId: Int!
+  """
+  The user's reputation within the domain, represented as a percentage
+  """
   reputationPercentage: String!
 }
 
+"""
+A return type that contains an array of UserDomainReputation items
+"""
 type GetReputationForTopDomainsReturn {
+  """
+  An array of UserDomainReputation items
+  """
   items: [UserDomainReputation!]
 }
 
+"""
+A return type representing the breakdown of a user's token balance
+"""
+type GetUserTokenBalanceReturn {
+  """
+  The total token balance, including inactive, locked, and active balances
+  """
+  balance: String
+  """
+  The inactive portion of the user's token balance
+  This is the balance of a token that is in a users wallet but can't be used by the Colony Network (e.g. for governance)
+  """
+  inactiveBalance: String
+  """
+  The locked portion of the user's token balance
+  This is the balance of a token that is staked (e.g. in motions)
+  """
+  lockedBalance: String
+  """
+  The active portion of the user's token balance
+  This is the balance that is approved for the Colony Network to use (e.g. for governance)
+  """
+  activeBalance: String
+  """
+  The pending portion of the user's token balance
+  These are tokens that have been sent to the wallet, but are inaccessible until all locks are cleared and then these tokens are claimed
+  """
+  pendingBalance: String
+}
+
+"""
+A return type that contains the timeout periods the motion can be in
+Represented via a string-integer in milliseconds. Will report 0 for periods that are elapsed and will show the accumulated time for later periods
+"""
+type GetMotionTimeoutPeriodsReturn {
+  """
+  Time left in staking period
+  """
+  timeLeftToStake: String!
+  """
+  Time left in voting period
+  """
+  timeLeftToVote: String!
+  """
+  Time left in reveal period
+  """
+  timeLeftToReveal: String!
+  """
+  Time left in escalation period
+  """
+  timeLeftToEscalate: String!
+}
+
+"""
+A return type representing the members of a Colony
+
+Definitions:
+* Member = User watching a Colony, with or without reputation
+* Contributor = User watching a Colony WITH reputation
+* Watcher = User watching a Colony WITHOUT reputation
+"""
+type MembersForColonyReturn {
+  """
+  User watching a Colony WITH reputation
+  """
+  contributors: [Contributor!]
+  """
+  User watching a Colony WITHOUT reputation
+  """
+  watchers: [Watcher!]
+}
+
+"""
+A return type that contains the voting reward for a user and a motion
+`min` and `max` specify the potential reward range when the actual reward is unknown (before the _reveal_ phase)
+"""
+type VoterRewardsReturn {
+  """
+  The minimum possible reward amount
+  Only useful before the _reveal_ phase, when the actual amount is known
+  """
+  min: String!
+  """
+  The maximum possible reward amount
+  Only useful before the _reveal_ phase, when the actual amount is known
+  """
+  max: String!
+  """
+  The actual reward amount
+  """
+  reward: String!
+}
+
+"""
+Variants of different token types a Colony can use
+As Colonies can use multiple tokens and even own tokens (BYOT), we need to differentiate
+"""
 enum TokenType {
+  """
+  A (ERC20-compatible) token that was deployed with Colony. It has a few more features, like minting through the Colony itself
+  """
   COLONY
+  """
+  An ERC20-compatible token
+  """
   ERC20
+  """
+  The native token of the Chain used (e.g. ETH on mainnet or xDAI on Gnosis-Chain)
+  """
   CHAIN_NATIVE
 }
 
+"""
+Variants of supported Ethereum networks
+"""
 enum Network {
+  """
+  Local development network using Ganache
+  """
   GANACHE
+  """
+  Ethereum Mainnet
+  """
   MAINNET
+  """
+  Ethereum Goerli test network
+  """
   GOERLI
+  """
+  Gnosis Chain network
+  """
   GNOSIS
+  """
+  Fork of Gnosis Chain for QA purposes
+  """
   GNOSISFORK
 }
 
+"""
+Variants of available domain colors as used in the dApp
+"""
 enum DomainColor {
-  LIGHTPINK
+  """
+  A light pink color
+  """
+  LIGHT_PINK
+  """
+  A pink color
+  """
   PINK
+  """
+  A black color
+  """
   BLACK
-  EMERALDGREEN
+  """
+  An emerald green color
+  """
+  EMERALD_GREEN
+  """
+  A blue color
+  """
   BLUE
+  """
+  A yellow color
+  """
   YELLOW
+  """
+  A red color
+  """
   RED
+  """
+  A green color
+  """
   GREEN
+  """
+  A pale indigo color
+  """
   PERIWINKLE
+  """
+  A gold color
+  """
   GOLD
+  """
+  An aqua color
+  """
   AQUA
-  BLUEGREY
+  """
+  A blue-grey(ish) color
+  """
+  BLUE_GREY
+  """
+  A purple color
+  """
   PURPLE
+  """
+  An orange color
+  """
   ORANGE
+  """
+  A magenta color
+  """
   MAGENTA
-  PURPLEGREY
+  """
+  A purple-grey(ish) color
+  """
+  PURPLE_GREY
 }
 
+"""
+Variants of Colony types
+"""
 enum ColonyType {
+  """
+  A regular Colony
+  """
   COLONY
+  """
+  The MetaColony, which governs the entire Colony Network
+  """
   METACOLONY
 }
 
+"""
+Variants of Colony Network blockchain events
+
+These can all happen in a Colony and will be interpreted by the dApp according to their types
+"""
+enum ColonyActionType {
+  """
+  A generic or unspecified Colony action
+  """
+  GENERIC
+  """
+  An motion action placeholder that should not be used
+  """
+  NULL_MOTION
+  """
+  An action unrelated to the currently viewed Colony
+  """
+  WRONG_COLONY
+  """
+  An action related to a payment within a Colony
+  """
+  PAYMENT
+  """
+  An action related to making multiple payments within a Colony
+  """
+  MULTIPLE_PAYMENT
+  """
+  An action related to a payment that was created via a motion within a Colony
+  """
+  PAYMENT_MOTION
+  """
+  An action related to making multiple payments within a Colony
+  """
+  MULTIPLE_PAYMENT_MOTION
+  """
+  An action related to the recovery functionality of a Colony
+  """
+  RECOVERY
+  """
+  An action related to moving funds between domains
+  """
+  MOVE_FUNDS
+  """
+  An action related to moving funds between domains via a motion
+  """
+  MOVE_FUNDS_MOTION
+  """
+  An action related to unlocking a token within a Colony
+  """
+  UNLOCK_TOKEN
+  """
+  An action related to unlocking a token within a Colony via a motion
+  """
+  UNLOCK_TOKEN_MOTION
+  """
+  An action related to minting tokens within a Colony
+  """
+  MINT_TOKENS
+  """
+  An action related to minting tokens within a Colony via a motion
+  """
+  MINT_TOKENS_MOTION
+  """
+  An action related to creating a domain within a Colony
+  """
+  CREATE_DOMAIN
+  """
+  An action related to creating a domain within a Colony via a motion
+  """
+  CREATE_DOMAIN_MOTION
+  """
+  An action related to upgrading a Colony's version
+  """
+  VERSION_UPGRADE
+  """
+  An action related to upgrading a Colony's version via a motion
+  """
+  VERSION_UPGRADE_MOTION
+  """
+  An action related to editing a Colony's details
+  """
+  COLONY_EDIT
+  """
+  An action related to editing a Colony's details via a motion
+  """
+  COLONY_EDIT_MOTION
+  """
+  An action related to editing a domain's details
+  """
+  EDIT_DOMAIN
+  """
+  An action related to editing a domain's details via a motion
+  """
+  EDIT_DOMAIN_MOTION
+  """
+  An action related to setting user roles within a Colony
+  """
+  SET_USER_ROLES
+  """
+  An action related to setting user roles within a Colony via a motion
+  """
+  SET_USER_ROLES_MOTION
+  """
+  An action related to a domain reputation penalty within a Colony (smite)
+  """
+  EMIT_DOMAIN_REPUTATION_PENALTY
+  """
+  An action related to a domain reputation penalty within a Colony (smite) via a motion
+  """
+  EMIT_DOMAIN_REPUTATION_PENALTY_MOTION
+  """
+  An action related to a domain reputation reward within a Colony
+  """
+  EMIT_DOMAIN_REPUTATION_REWARD
+  """
+  An action related to a domain reputation reward within a Colony via a motion
+  """
+  EMIT_DOMAIN_REPUTATION_REWARD_MOTION
+  """
+  An action related to a creating a Decision within a Colony via a motion
+  """
+  CREATE_DECISION_MOTION
+  """
+  An action related to creating a motion for funding an expenditure
+  """
+  FUND_EXPENDITURE_MOTION
+  """
+  An action related to a motion to cancel a staked expenditure
+  """
+  CANCEL_STAKED_EXPENDITURE_MOTION
+  """
+  "
+  An action related to the creation of safe transactions via Safe Control
+  """
+  MAKE_ARBITRARY_TRANSACTION
+  MAKE_ARBITRARY_TRANSACTIONS_MOTION
+}
+
+"""
+Variants of sorting methods for a member list
+"""
+enum SortingMethod {
+  """
+  Sort members by highest reputation
+  """
+  BY_HIGHEST_REP
+  """
+  Sort members by lowest reputation
+  """
+  BY_LOWEST_REP
+  """
+  Sort members by having more permissions
+  """
+  BY_MORE_PERMISSIONS
+  """
+  Sort members by having fewer permissions
+  """
+  BY_LESS_PERMISSIONS
+}
+
+enum FilteringMethod {
+  """
+  Apply a union filter
+  """
+  UNION
+
+  """
+  Apply an intersection filter
+  """
+  INTERSECTION
+}
+
+enum ExpenditureStatus {
+  DRAFT
+  LOCKED
+  FINALIZED
+  CANCELLED
+}
+
+enum ExpenditureType {
+  PAYMENT_BUILDER
+  STAGED
+}
+
+enum StreamingPaymentEndCondition {
+  WHEN_CANCELLED
+  LIMIT_REACHED
+  FIXED_TIME
+}
+
+"""
+The types of contributor a user can be in a colony
+"""
+enum ContributorType {
+  TOP
+  DEDICATED
+  ACTIVE
+  NEW
+  GENERAL
+}
+
+"""
+Root query type
+"""
 type Query {
+  """
+  Fetch a token's information. Tries to get the data from the DB first, if that fails, resolves to get data from chain
+  """
   getTokenFromEverywhere(
     input: TokenFromEverywhereArguments
-  ): TokenFromEverywhereReturn @function(name: "fetchTokenFromChain")
+  ): TokenFromEverywhereReturn @function(name: "fetchTokenFromChain-${env}")
+  """
+  Retrieve a user's reputation within the top domains of a Colony
+  """
   getReputationForTopDomains(
     input: GetReputationForTopDomainsInput
   ): GetReputationForTopDomainsReturn
-    @function(name: "getReputationForTopDomains")
+    @function(name: "getReputationForTopDomains-${env}")
+  """
+  Retrieve a user's reputation within a specific domain in a Colony
+  """
   getUserReputation(input: GetUserReputationInput): String
-    @function(name: "getUserReputation")
+    @function(name: "getUserReputation-${env}")
+  """
+  Retrieve a user's token balance for a specific token
+  """
+  getUserTokenBalance(
+    input: GetUserTokenBalanceInput
+  ): GetUserTokenBalanceReturn @function(name: "getUserTokenBalance-${env}")
+  """
+  Fetch the list of members for a specific Colony
+  """
+  getMembersForColony(input: MembersForColonyInput): MembersForColonyReturn
+    @function(name: "getMembersForColony-${env}")
+  """
+  Get the state of a motion (i.e. the current period)
+  """
+  getMotionState(input: GetMotionStateInput): Int!
+    @function(name: "fetchMotionState-${env}")
+  """
+  Get the voting reward for a user and a motion
+  """
+  getVoterRewards(input: GetVoterRewardsInput): VoterRewardsReturn
+    @function(name: "fetchVoterRewards-${env}")
+  """
+  Get the timeout for the current period of a motion
+  """
+  getMotionTimeoutPeriods(
+    input: GetMotionTimeoutPeriodsInput
+  ): GetMotionTimeoutPeriodsReturn
+    @function(name: "fetchMotionTimeoutPeriods-${env}")
+
+  getTotalMemberCount(
+    input: GetTotalMemberCountInput!
+  ): GetTotalMemberCountReturn! @function(name: "getTotalMemberCount-${env}")
+  getSafeTransactionStatus(input: GetSafeTransactionStatusInput): [String!]
+    @function(name: "getSafeTransactionStatus-${env}")
 }
 
+"""
+Root mutation type
+"""
 type Mutation {
+  """
+  Create a unique user within the Colony Network. Use this instead of the automatically generated `createUser` mutation
+  """
   createUniqueUser(input: CreateUniqueUserInput): User
-    @function(name: "createUniqueUser")
+    @function(name: "createUniqueUser-${env}")
+  """
+  Create a unique Colony within the Colony Network. Use this instead of the automatically generated `createColony` mutation
+  """
   createUniqueColony(input: CreateUniqueColonyInput): Colony
-    @function(name: "createUniqueColony")
-  createUniqueDomain(input: CreateUniqueDomainInput): Domain
-    @function(name: "createUniqueDomain")
+    @function(name: "createUniqueColony-${env}")
+  """
+  Updates the latest available version of a Colony or an extension
+  """
   setCurrentVersion(input: SetCurrentVersionInput): Boolean
-    @function(name: "setCurrentVersion")
-  updateExtensionByColonyAndHash(
-    input: UpdateExtensionByColonyAndHashInput
-  ): ColonyExtension @function(name: "updateExtensionByColonyAndHash")
+    @function(name: "setCurrentVersion-${env}")
+
+  """
+  Update contributors with reputation in the database for a colony
+  """
+  updateContributorsWithReputation(
+    input: UpdateContributorsWithReputationInput!
+  ): Boolean @function(name: "updateContributorsWithReputation-${env}")
 }
 
-# Applies to both Users and Colonies
-# Might need to separate it into two later down the line
+"""
+Represents a user's profile within the Colony Network
+"""
 type Profile @model {
+  """
+  Unique identifier for the user's profile
+  """
   id: ID!
+  """
+  URL of the user's avatar image
+  """
   avatar: String
+  """
+  URL of the user's thumbnail image
+  """
   thumbnail: String
+  """
+  Display name of the user
+  """
   displayName: String
+    @index(name: "byDisplayName", queryField: "getProfileByUsername")
+  """
+  Date displayName was changed
+  """
+  displayNameChanged: AWSDateTime
+  """
+  User's bio information
+  """
   bio: String
+  """
+  User's location information
+  """
   location: String
+  """
+  URL of the user's website
+  """
   website: AWSURL
+  """
+  User's email address
+  """
   email: AWSEmail @index(name: "byEmail", queryField: "getProfileByEmail")
+  """
+  Metadata associated with the user's profile
+  """
   meta: ProfileMetadata
+
+  """
+  The user associated with this profile
+  """
+  user: User! @belongsTo(fields: ["id"])
 }
 
+"""
+Represents the status of a Colony's native token
+Colonies can have different types of native tokens in various modes. Here we define some important properties that the dApp uses to enable or disable certain features or views. This is set when a Colony is created and can be changed later
+"""
 type NativeTokenStatus {
-  unlocked: Boolean # If it's already unlocked
-  mintable: Boolean # User has permissions to mint new tokens
-  unlockable: Boolean # Token can be unlocked
+  """
+  Whether the native token is unlocked
+  """
+  unlocked: Boolean
+  """
+  Whether the user has permissions to mint new tokens
+  """
+  mintable: Boolean
+  """
+  Whether the native token can be unlocked
+  """
+  unlockable: Boolean
 }
 
+"""
+Represents the status of a Colony
+
+This contains important meta information about the Colony's token and other fundamental settings
+"""
 type ColonyStatus {
+  """
+  Status information for the Colony's native token
+  """
   nativeToken: NativeTokenStatus
-  recovery: Boolean # if it's in recovery mode
+  """
+  Whether the Colony is in recovery mode
+  """
+  recovery: Boolean
 }
 
-# Applies to both Colonies Tokens and Events, but not all fields are revlant to all
-# It does not apply to user accounts as they can live on all networks
-type Metadata {
+"""
+Represents metadata related to a blockchain event
+Applies to Colonies, Tokens and Events, but not all fields are revlant to all
+It does not apply to user accounts as they can live on all networks
+"""
+type ChainMetadata {
+  """
+  The network the event occurred on
+  """
   network: Network
-  chainId: Int
+  """
+  The chain ID of the event
+  """
+  chainId: Int!
+  """
+  The transaction hash of the event
+  """
   transactionHash: String
+  """
+  The log index of the event
+  """
   logIndex: Int
+  """
+  The block number of the event
+  """
   blockNumber: Int
 }
 
+"""
+Represents metadata for a user's profile. Mostly user specific settings
+"""
 type ProfileMetadata {
-  emailPermissions: [String!]!
+  """
+  A flag to indicate whether the user has enabled metatransactions
+  """
+  metatransactionsEnabled: Boolean
+  """
+  A flag to indicate whether the user has enabled the decentralized mode
+  """
+  decentralizedModeEnabled: Boolean
+  """
+  The URL of the user's custom RPC node
+  """
+  customRpc: String
 }
 
+"""
+Represents a contributor within the Colony Network
+
+A contributor is a Colony member who has reputation
+"""
+type Contributor {
+  """
+  Wallet address of the contributor
+  """
+  address: String!
+  """
+  User data associated with the contributor
+  """
+  user: User
+  """
+  Reputation percentage of the contributor (of all reputation within the Colony)
+  """
+  reputationPercentage: String
+  """
+  Reputation amount of the contributor (as an absolute number)
+  """
+  reputationAmount: String
+}
+
+"""
+Represents a watcher within the Colony Network
+
+A watcher is a Colony member who doesn't have reputation or permissions
+"""
+type Watcher {
+  """
+  Wallet address of the watcher
+  """
+  address: String!
+  """
+  User data associated with the watcher
+  """
+  user: User
+}
+
+"""
+Represents an ERC20-compatible token that is used by Colonies and users
+"""
 type Token @model {
+  """
+  Unique identifier for the token (contract address)
+  """
   id: ID!
     @index(name: "byAddress", queryField: "getTokenByAddress")
     @index(sortKeyFields: ["createdAt"]) # contract address
+  """
+  Name of the token
+  """
   name: String!
+  """
+  Symbol of the token
+  """
   symbol: String!
+  """
+  Decimal precision of the token
+  """
   decimals: Int!
+  """
+  Type of the token. See `TokenType` for more information
+  """
   type: TokenType @index(name: "byType", queryField: "getTokensByType")
+  """
+  List of colonies using the token
+  """
   colonies: [Colony] @manyToMany(relationName: "ColonyTokens")
+  """
+  List of users using the token
+  """
   users: [User] @manyToMany(relationName: "UserTokens")
+  """
+  URL of the token's avatar image (logo)
+  """
   avatar: String
+  """
+  URL of the token's thumbnail image (Small logo)
+  """
   thumbnail: String
-  meta: Metadata
+  """
+  Metadata related to the chain of the token
+  """
+  chainMetadata: ChainMetadata!
+  """
+  Timestamp of the token model's creation in the database
+  """
   createdAt: AWSDateTime!
 }
 
-type ColonyID {
+type ContributorReputation @model {
+  """
+  Unique identifier
+  Format: `<colonyAddress>_<domainNativeId>_<contributorAddress>`
+  """
   id: ID!
+  """
+  The address of the contributor
+  """
+  contributorAddress: ID!
+    @index(
+      name: "byContributorAddress"
+      queryField: "getUserReputationInColony"
+      sortKeyFields: ["colonyAddress"]
+    )
+
+  """
+  The colony the reputation was earned in
+  """
+  colonyAddress: ID!
+
+  """
+  The domain id in which the contributor has reputation
+  """
+  domainId: ID!
+
+  """
+  The associated Domain model
+  """
+  domain: Domain! @hasOne(fields: ["domainId"])
+
+  """
+  The raw value of the contributor's reputation in the domain
+  """
+  reputationRaw: String!
+
+  """
+  The percentage of the contributor's reputation in the domain
+  """
+  reputationPercentage: Float!
 }
 
+enum MemberTotalType {
+  ALL
+  CONTRIBUTORS
+}
+
+"""
+The ColonyContributor model represents a contributor to the Colony.
+"""
+type ColonyContributor @model {
+  """
+  Unique identifier
+  Format: <colonyAddress>_<contributorAddress>
+  """
+  id: ID!
+
+  """
+  The address of the contributor
+  """
+  contributorAddress: ID!
+    @index(
+      name: "byAddress"
+      queryField: "getContributorByAddress"
+      sortKeyFields: ["colonyReputationPercentage"]
+    )
+
+  """
+  The type of the contributor
+  """
+  type: ContributorType
+
+  """
+  Is the contributor a member of the colony's whitelist?
+  """
+  isVerified: Boolean!
+
+  """
+  Is the contributor watching the colony
+  """
+  isWatching: Boolean
+
+  """
+  Does the contributor have any permission in any domain the colony?
+  """
+  hasPermissions: Boolean
+
+  """
+  Does the contributor have any reputation the colony?
+  """
+  hasReputation: Boolean
+
+  """
+  The contributor's reputation in the domains in which they have reputation
+  """
+  reputation: [ContributorReputation!]
+    @hasMany(indexName: "byContributorAddress", fields: ["contributorAddress"])
+
+  """
+  The contributor's reputation percentage in the colony
+  """
+  colonyReputationPercentage: Float!
+  """
+  Associated user, if any
+  """
+  user: User @hasOne(fields: ["contributorAddress"])
+
+  """
+  Address of the colony the contributor is under
+  """
+  colonyAddress: ID!
+    @index(
+      name: "byColonyAddress"
+      queryField: "getContributorsByColony"
+      sortKeyFields: ["colonyReputationPercentage"]
+    )
+
+  """
+  A list of roles associated with the contributor
+  """
+  roles: [ColonyRole]
+    @hasMany(indexName: "byTargetAddress", fields: ["contributorAddress"])
+}
+
+"""
+Represents a Colony within the Colony Network
+"""
 type Colony @model {
-  id: ID! @index(name: "byAddress", queryField: "getColonyByAddress") # contract address
+  """
+  Unique identifier for the Colony (contract address)
+  """
+  id: ID! @index(name: "byAddress", queryField: "getColonyByAddress")
+  """
+  (Short) name of the Colony
+  """
   name: String! @index(name: "byName", queryField: "getColonyByName")
-  nativeToken: Token! @hasOne
+  """
+  The unique address of the native token of the Colony
+  """
+  nativeTokenId: ID!
+    @index(name: "byNativeTokenId", queryField: "getColoniesByNativeTokenId")
+  """
+  The native token of the Colony
+  """
+  nativeToken: Token! @hasOne(fields: ["nativeTokenId"])
+  """
+  List of tokens that are used within the Colony
+  """
   tokens: [Token] @manyToMany(relationName: "ColonyTokens")
-  profileId: ID
-  profile: Profile @hasOne(fields: ["profileId"])
+  """
+  Status information for the Colony
+  """
   status: ColonyStatus
-  domains: [Domain] @hasMany
-  watchers: [User] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
+  """
+  List of domains of the Colony
+  """
+  domains: [Domain] @hasMany(indexName: "byColony", fields: ["id"])
+  """
+  List of users watching the Colony
+  """
+  watchers: [User] @manyToMany(relationName: "WatchedColonies")
+  """
+  List of Colony funds claims for all ERC20 tokens
+  """
   # NOTE: Could not merge these two fields properly
   # Ideally we would merge data from these two into one field, but I couldn't do that
   # meaning we'll have to merge this data in-app (or not at all, works either way)
-  # If you have a better idea, on how to merged them, I'll all ears...
-  fundsClaims: [ColonyFundsClaim] @hasMany # All ERC20 token claims
-  # Native chain token claims (eg: Token 0x0000...0000)
+  # If you have a better idea, on how to merged them, I'll all ears..
+  fundsClaims: [ColonyFundsClaim] @hasMany
+  """
+  List of native chain token claims (e.g., Token 0x0000...0000: ETH, xDAI, etc.)
+  """
   # This is not an array since only a single token type can be returned
   chainFundsClaim: ColonyChainFundsClaim
-    @function(name: "fetchColonyNativeFundsClaim")
+    @function(name: "fetchColonyNativeFundsClaim-${env}")
+  """
+  Type of the Colony (Regular or Metacolony)
+  """
   type: ColonyType @index(name: "byType", queryField: "getColonyByType")
-  # Returns a list token balances for each domain and each token that the colony has
-  balances: ColonyBalances @function(name: "fetchColonyBalances")
-  meta: Metadata
+  """
+  Returns a list token balances for each domain and each token that the colony has
+  """
+  balances: ColonyBalances @function(name: "fetchColonyBalances-${env}")
+  """
+  Metadata related to the chain of the Colony
+  """
+  chainMetadata: ChainMetadata!
+  """
+  List of extensions installed in the Colony
+  """
   extensions: [ColonyExtension!] @hasMany(indexName: "byColony", fields: ["id"])
+  """
+  Version of the Colony
+  """
   version: Int!
+  """
+  List of actions that happened within the Colony
+  """
+  actions: [ColonyAction] @hasMany
+  """
+  List of motions within the Colony that have unclaimed stakes
+  """
+  motionsWithUnclaimedStakes: [ColonyUnclaimedStake!]
+  """
+  Metadata of the Colony
+  """
+  metadata: ColonyMetadata @hasOne(fields: ["id"])
+  """
+  List of all roles within the Colony
+  """
+  # @TODO This should not be fetched upfront
+  # It should be retrieved on demand at the earliest occasion it's needed
+  # ie: when opening a UAC modal
+  roles: [ColonyRole] @hasMany
+
+  """
+  Time at which the contributors with reputation in the colony were last updated
+  """
+  lastUpdatedContributorsWithReputation: AWSDateTime
+
+  """
+  The total reputation amount in the colony
+  """
+  reputation: String
+
+  expenditures: [Expenditure] @hasMany(indexName: "byColony", fields: ["id"])
+  expendituresGlobalClaimDelay: Int
+
+  """
+  A flag to indicate whether the colony is private
+  """
+  private: Boolean @default(value: "true")
+
+  colonyMemberInvite: ColonyMemberInvite
 }
 
-type User @model {
-  id: ID! @index(name: "byAddress", queryField: "getUserByAddress") # wallet address
-  name: String! @index(name: "byName", queryField: "getUserByName")
-  tokens: [Token] @manyToMany(relationName: "UserTokens")
-  profileId: ID
-  profile: Profile @hasOne(fields: ["profileId"])
-  watchlist: [Colony] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
+type ColonyMemberInvite {
+  """
+  The uuid invite code generated by crypto.randomUUID()
+  """
+  code: ID!
+  """
+  Count of how many times this invite has been used
+  """
+  used: Int!
 }
 
-type Domain @model {
-  id: ID! @index(name: "byNativeId", sortKeyFields: ["nativeId"]) # colonyAddress_nativeId
-  nativeId: Int!
-  nativeFundingPotId: Int!
-  nativeSkillId: Int!
-  name: String
-  description: String
-  color: DomainColor
-  parent: Domain @hasOne
+"""
+Unclaimed staking rewards for a motion
+"""
+type ColonyUnclaimedStake {
+  """
+  The on chain id of the motion
+  """
+  motionId: String!
+  """
+  List of unclaimed staking rewards for that motion
+  """
+  unclaimedRewards: [StakerRewards!]!
 }
 
-type ColonyFundsClaim @model {
-  id: ID! @index(sortKeyFields: ["createdAt"])
-  token: Token! @hasOne
-  createdAtBlock: Int!
-  createdAt: AWSDateTime!
-  amount: String!
+"""
+Colony token modifications that are stored temporarily and commited to the database once the corresponding motion passes
+"""
+type PendingModifiedTokenAddresses {
+  """
+  List of tokens that were added to the Colony's token list
+  """
+  added: [String!]
+  """
+  List of tokens that were removed from the Colony's token list
+  """
+  removed: [String!]
 }
 
-# This is really not elegant, but there's no other proper solution, as you can't
-# return the Token @hadOne relationship from the lambda function
-# Note that we don't need token details for the values that we're fetching (since
-# it's implied), but it would have been nice not to have to basically repeat the type
-type ColonyChainFundsClaim {
+enum ExternalLinks {
+  Custom
+  Whitepaper
+  Youtube
+  Discord
+  Telegram
+  Github
+  Twitter
+  Facebook
+  Instagram
+}
+
+type ExternalLink {
+  name: ExternalLinks!
+  link: String!
+}
+
+type ColonyObjective {
+  """
+  Title of the objective
+  """
+  title: String!
+  """
+  Description of the objective with a limit of 120 characters
+  """
+  description: String!
+  """
+  Number representing how complete the objective is, must be between 0 and 100
+  """
+  progress: Int!
+}
+
+"""
+Represents metadata for a Colony
+"""
+type ColonyMetadata @model {
+  """
+  Unique identifier for the Colony (contract address)
+  """
   id: ID!
-  createdAtBlock: Int!
+  """
+  Display name of the Colony
+  """
+  displayName: String!
+  """
+  Description of the colony
+  """
+  description: String
+  """
+  An array of external links to related pages
+  """
+  externalLinks: [ExternalLink!]
+  """
+  URL of the Colony's avatar image
+  """
+  avatar: String
+  """
+  URL of the Colony's thumbnail image
+  """
+  thumbnail: String
+  """
+  List of Colony metadata changelog entries
+  """
+  changelog: [ColonyMetadataChangelog!]
+  """
+  The address book feature (aka Whitelist is active for this Colony)
+  """
+  isWhitelistActivated: Boolean
+  """
+  List of addresses that are in the address book
+  """
+  whitelistedAddresses: [String!]
+  """
+  Token addresses that were modified in a previous action (motion)
+  Only present on pendingColonyMetadata for consumption in block ingestor
+  """
+  modifiedTokenAddresses: PendingModifiedTokenAddresses
+  """
+  Colony Objective
+  """
+  objective: ColonyObjective
+  """
+  List of safes that are used within the Colony
+  """
+  safes: [Safe!]
+}
+
+"""
+Represents a changelog entry for Colony metadata
+This is used to traverse through the history of metadata values and consolidate them into a final state
+"""
+type ColonyMetadataChangelog {
+  """
+  Transaction hash associated with the changelog entry
+  """
+  transactionHash: String!
+  """
+  Display name of the Colony before the change
+  """
+  oldDisplayName: String!
+  """
+  Display name of the Colony after the change
+  """
+  newDisplayName: String!
+  """
+  Indicates whether the avatar has changed
+  """
+  hasAvatarChanged: Boolean!
+  """
+  Whether entries in the address book (whitelist) have changed
+  """
+  hasWhitelistChanged: Boolean!
+  """
+  Whether tokens have been added or removed from the Colony's token list
+  """
+  haveTokensChanged: Boolean!
+  """
+  Whether the colony description has changed
+  """
+  hasDescriptionChanged: Boolean
+  """
+  Whether the colony's external links have changed
+  """
+  haveExternalLinksChanged: Boolean
+  """
+  Whether the colony's objective has changed
+  """
+  hasObjectiveChanged: Boolean
+  """
+  Whether safes have been added or removed from the Colony's safe list
+  """
+  newSafes: [Safe!]
+  oldSafes: [Safe!]
+}
+
+enum ClientType {
+  # Styling like this on purpose to maintain ease of compatibility with typescript equivalent
+  CoinMachineClient
+  ColonyClient
+  EvaluatedExpenditureClient
+  FundingQueueClient
+  MotionTargetClient
+  NetworkClient
+  OneTxPaymentClient
+  ReputationBootstrapperClient
+  StakedExpenditureClient
+  StagedExpenditureClient
+  StreamingPaymentsClient
+  TokenSupplierClient
+  TokenClient
+  TokenLockingClient
+  VotingReputationClient
+  WhitelistClient
+  WrappedTokenClient
+  VestingSimpleClient
+  LightTokenClient
+}
+
+enum TransactionStatus {
+  CREATED
+  READY
+  PENDING
+  FAILED
+  SUCCEEDED
+}
+
+type TransactionGroup {
+  id: String!
+  groupId: String!
+  index: Int!
+  key: String!
+  title: String # JSON string
+  titleValues: String # JSON string
+  description: String # JSON string
+  descriptionValues: String # JSON string
+}
+
+enum TransactionErrors {
+  ESTIMATE
+  EVENT_DATA
+  RECEIPT
+  SEND
+  UNSUCCESSFUL
+}
+
+type TransactionError {
+  type: TransactionErrors!
+  message: String!
+}
+
+"""
+Represents a transaction made in a colony by a user
+"""
+type Transaction @model {
+  """
+  Transaction id
+  """
+  id: ID!
+  """
+  The contract the transaction was made on
+  """
+  context: ClientType!
+  """
+  Time the transaction was created
+  """
   createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
+  """
+  The sender of the transaction
+  """
+  from: ID!
+    @index(
+      name: "byInitiatorAddress"
+      queryField: "getTransactionsByUser"
+      sortKeyFields: ["createdAt"]
+    )
+  """
+  The colony the transaction was made in
+  """
+  colonyAddress: ID!
+  """
+  The id of the group to which the transaction belongs, if any
+  """
+  groupId: ID
+    @index(
+      name: "byGroup"
+      queryField: "getTransactionsByUserAndGroup"
+      sortKeyFields: ["from"]
+    )
+  """
+  The group to which the transaction belongs, if any
+  """
+  group: TransactionGroup
+  """
+  The transaction hash
+  """
+  hash: String
+  """
+  The block number of the transaction
+  """
+  blockNumber: Int
+  """
+  The block hash of the transaction
+  """
+  blockHash: String
+  """
+  The error associated with the transaction, if any
+  """
+  error: TransactionError
+  """
+  The params the transaction was called with
+  """
+  params: String # a JSON stringified array
+  """
+  Context in which method is used e.g. setOneTxRole
+  """
+  methodContext: String
+  """
+  The name of the contract method used
+  """
+  methodName: String!
+  """
+  The current status of the transaction
+  """
+  status: TransactionStatus!
+  """
+  True if the transaction is a metatransaction
+  """
+  metatransaction: Boolean!
+  """
+  A title to show in the UI
+  """
+  title: String # JSON string
+  """
+  Title values for FormatJS interpolation
+  """
+  titleValues: String # JSON string
+  """
+  The transaction's gas limit
+  """
+  gasLimit: String
+  """
+  The transaction's gas price
+  """
+  gasPrice: String
+  """
+  An identifier for the transaction
+  """
+  identifier: String
+  """
+  Event data associated with a successful transaction
+  """
+  eventData: String # JSON string
+  """
+  A contract address associated with a successful transaction
+  """
+  deployedContractAddress: String
+  """
+  True if a related transaction is loading
+  """
+  loadingRelated: Boolean
+  """
+  Transaction receipt
+  """
+  receipt: String # JSON string
+  """
+  Is the transaction cancelled?
+  """
+  deleted: Boolean
+  """
+  Options associated with the transaction
+  """
+  options: String # JSON string
+}
+
+"""
+Represents a User within the Colony Network
+"""
+type User @model {
+  """
+  Unique identifier for the user (wallet address)
+  """
+  id: ID! @index(name: "byAddress", queryField: "getUserByAddress")
+  """
+  List of tokens the user is using
+  """
+  tokens: [Token] @manyToMany(relationName: "UserTokens")
+  """
+  Profile ID associated with the user
+  """
+  profileId: ID
+  """
+  Profile information of the user
+  """
+  profile: Profile @hasOne(fields: ["profileId"])
+  """
+  List of Colonies the user is watching
+  """
+  watchlist: [Colony] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
+  """
+  List of stakes the User made
+  """
+  stakes: [ColonyStake!]! @hasMany(indexName: "byUserAddress", fields: ["id"])
+  """
+  List of domains with the user's permissions in each domain
+  """
+  roles: [ColonyRole] @hasMany(indexName: "byTargetAddress", fields: ["id"])
+  """
+  A user's transaction history, broken down by colony
+  """
+  transactionHistory: [Transaction!]
+    @hasMany(indexName: "byInitiatorAddress", fields: ["id"])
+
+  """
+  A user who has been invited by colony will be able to pass on the private beta invite
+  """
+  privateBetaInviteCode: PrivateBetaInviteCode @hasOne
+}
+
+"""
+Keeps track of the current amount a user has staked in a colony
+When a user stakes, totalAmount increases. When a user reclaims their stake, totalAmount decreases.
+"""
+type ColonyStake @model {
+  """
+  Unique identifier for the stake
+  Format: `<userId>_<colonyId>`
+  """
+  id: ID! #
+  """
+  Unique identifier for the user
+  """
+  userId: ID!
+    @index(
+      name: "byUserAddress"
+      queryField: "getColonyStakeByUserAddress"
+      sortKeyFields: ["colonyId"]
+    )
+  """
+  Unique identifier for the Colony
+  """
+  colonyId: ID!
+  """
+  Total staked amount
+  """
+  totalAmount: String!
+}
+
+"""
+Represents a Domain within the Colony Network
+"""
+type Domain @model {
+  """
+  Unique identifier for the Domain
+  This should be in the following format: `colonyAddress_nativeId`
+  The native id is the auto-incrementing integer that is assigned to a domain from the contract on creation
+  """
+  # Has to be self-managed
+  id: ID!
+  """
+  Colony ID associated with the Domain
+  """
+  colonyId: ID! @index(name: "byColony", sortKeyFields: ["nativeId"])
+  """
+  Colony associated with the Domain
+  """
+  colony: Colony! @belongsTo(fields: ["colonyId"])
+  """
+  Native ID of the Domain
+  The native id is the auto-incrementing integer that is assigned to a domain from the contract on creation
+  """
+  nativeId: Int!
+  """
+  Native funding pot ID of the Domain
+  The native funding pot ID is assigned to a domain from the contract on creation
+  """
+  nativeFundingPotId: Int!
+  """
+  Native skill ID of the Domain
+  The native skill ID is assigned to a domain from the contract on creation
+  """
+  nativeSkillId: Int!
+  """
+  Indicates whether the Domain is the root domain (ID 1)
+  """
+  isRoot: Boolean!
+  """
+  Metadata of the Domain
+  """
+  metadata: DomainMetadata @hasOne(fields: ["id"])
+
+  """
+  The amount of reputation in the domain
+  """
+  reputation: String
+
+  """
+  The amount of reputation in the domain, as a percentage of the total in the colony
+  """
+  reputationPercentage: String
+}
+
+"""
+Represents metadata for a Domain
+"""
+type DomainMetadata @model {
+  """
+  Unique identifier for the Domain metadata
+  This field is referenced by Domain id, so has to be in the same format: colonyAddress_nativeId
+  """
+  id: ID!
+  """
+  Name of the Domain
+  """
+  name: String!
+  """
+  Description of the Domain
+  """
+  description: String!
+  """
+  Color associated with the Domain
+  """
+  color: DomainColor!
+  """
+  List of Domain metadata changelog entries
+  """
+  changelog: [DomainMetadataChangelog!]
+}
+
+"""
+Represents a changelog entry for Domain metadata
+"""
+type DomainMetadataChangelog {
+  """
+  Transaction hash associated with the changelog entry
+  """
+  transactionHash: String!
+  """
+  Name of the Domain before the change
+  """
+  oldName: String!
+  """
+  Name of the Domain after the change
+  """
+  newName: String!
+  """
+  Color of the Domain before the change
+  """
+  oldColor: DomainColor!
+  """
+  Color of the Domain after the change
+  """
+  newColor: DomainColor!
+  """
+  Description of the Domain before the change
+  """
+  oldDescription: String!
+  """
+  Description of the Domain after the change
+  """
+  newDescription: String!
+}
+
+"""
+Represents a Colony Funds Claim for all ERC20 tokens (except native chain tokens)
+"""
+type ColonyFundsClaim @model {
+  """
+  Unique identifier for the Colony Funds Claim
+  """
+  id: ID! @index(sortKeyFields: ["createdAt"])
+  """
+  Token associated with the Colony Funds Claim
+  """
+  token: Token! @hasOne
+  """
+  Block number when the Funds Claim was created
+  """
+  createdAtBlock: Int!
+  """
+  Timestamp when the Funds Claim was created
+  """
+  createdAt: AWSDateTime!
+  """
+  Amount claimed in the Colony Funds Claim
+  """
   amount: String!
 }
 
-# This is not a @model since it will only be returned by a lambda function
-# so don't need to create tables for them
+# This is really not elegant, but there's no other proper solution, as you can't # return the Token @hadOne relationship from the lambda function # Note that we don't need token details for the values that we're fetching (since # it's implied), but it would have been nice not to have to basically repeat the type
+"""
+Represents a native Colony Chain Funds Claim
+E.g., Token 0x0000...0000: ETH, xDAI, etc
+"""
+type ColonyChainFundsClaim {
+  """
+  Unique identifier for the Colony Chain Funds Claim
+  """
+  id: ID!
+  """
+  Block number when the Chain Funds Claim was created
+  """
+  createdAtBlock: Int!
+  """
+  Timestamp when the Chain Funds Claim was created
+  """
+  createdAt: AWSDateTime!
+  """
+  Timestamp when the Chain Funds Claim was last updated
+  """
+  updatedAt: AWSDateTime!
+  """
+  Amount claimed in the Colony Chain Funds Claim
+  """
+  amount: String!
+}
+
+# This is not a @model since it will only be returned by a lambda function # so don't need to create tables for them
 # Note that we also need input types since it treats the `balances` as available
 # to "write" to at creation time, even though, even if you were to write to
-# you'd never actually be able to read that data since the return is overwritten
-# by the lambda function
+# you'd never actually be able to read that data since the return is overwritten # by the lambda function
+"""
+Represents a Colony balance for a specific domain and token
+"""
 type ColonyBalance {
+  """
+  Unique identifier for the Colony Balance
+  """
   id: ID!
+  """
+  Balance of the specific token in the domain
+  """
   balance: String!
-  domain: Domain!
-  # Note that for the chain native token, name and symbol are empty
+  """
+  Domain associated with the Colony Balance
+  """
+  domain: Domain
+  """
+  Token associated with the Colony Balance
+  Note that for the chain native token, name and symbol are empty
+  """
   token: Token!
 }
+
+"""
+Represents a collection of Colony balances
+"""
 type ColonyBalances {
+  """
+  List of Colony balances
+  """
   items: [ColonyBalance]
 }
+
+"""
+Input type for specifying a Domain
+"""
 input DomainInput {
-  id: ID!
-}
-input TokenInput {
+  """
+  Unique identifier for the Domain
+  """
   id: ID!
 }
 
-# This will store the relevant events we care about for a particular colony
-# Altough it might also hold events emmited by other clients (eg: network or token)
-# but are event pertaining to a colony
-# Generally you'd want to use this from a block ingenstor, after you've processed
-# data from an event, also save that even for future use
+"""
+Input type for specifying a Token
+"""
+input TokenInput {
+  """
+  Unique identifier for the Token
+  """
+  id: ID!
+}
+
+"""
+Input type for modifying the staked side of a motion
+"""
+input MotionStakeValuesInput {
+  """
+  Number of votes for this motion
+  """
+  yay: String!
+  """
+  Number of votes against this motion
+  """
+  nay: String!
+}
+
+"""
+Staked sides of a motion
+"""
+type MotionStakeValues {
+  """
+  Number of votes for this motion
+  """
+  yay: String!
+  """
+  Number of votes against this motion
+  """
+  nay: String!
+}
+
+"""
+Input used to modify the staked sides of a motion
+"""
+input MotionStakesInput {
+  """
+  Absolute values denominated in the native token
+  """
+  raw: MotionStakeValuesInput!
+  """
+  Values in percentage of the total stakes
+  """
+  percentage: MotionStakeValuesInput!
+}
+
+"""
+Staked sides of a motion
+"""
+type MotionStakes {
+  """
+  Absolute values denominated in the native token
+  """
+  raw: MotionStakeValues!
+  """
+  Values in percentage of the total stakes
+  """
+  percentage: MotionStakeValues!
+}
+
+"""
+Input used to modify the stakes of a user for a motion
+"""
+input UserMotionStakesInput {
+  """
+  The user's wallet address
+  """
+  address: String!
+  """
+  Stake values
+  """
+  stakes: MotionStakesInput!
+}
+
+"""
+Stakes that a user has made for a motion
+"""
+type UserMotionStakes {
+  """
+  The user's wallet address
+  """
+  address: String!
+  """
+  Stake values
+  """
+  stakes: MotionStakes!
+}
+
+"""
+Input used to modify the staker rewards of a user for a motion
+"""
+input StakerRewardsInput {
+  """
+  The user's wallet address
+  """
+  address: String!
+  """
+  Rewards associated with the staked sides of a motion
+  """
+  rewards: MotionStakeValuesInput!
+  """
+  Whether the voter reward is already claimed or not
+  """
+  isClaimed: Boolean!
+}
+
+"""
+Staker rewards of a user for a motion
+"""
+type StakerRewards {
+  """
+  The user's wallet address
+  """
+  address: String!
+  """
+  Rewards associated with the staked sides of a motion
+  """
+  rewards: MotionStakeValues!
+  """
+  Whether the voter reward is already claimed or not
+  """
+  isClaimed: Boolean!
+}
+
+"""
+Input used to modify a voter record of a user for a motion
+"""
+input VoterRecordInput {
+  """
+  The user's wallet address
+  """
+  address: String!
+  """
+  The voting weight denominated by the user's reputation
+  """
+  voteCount: String!
+  """
+  The actual vote (yay or nay)
+  nullable since we don't know the vote until it's revealed
+  """
+  vote: Int
+}
+
+"""
+A voter record of a user for a motion
+"""
+type VoterRecord {
+  """
+  The user's wallet address
+  """
+  address: String!
+  """
+  The voting weight denominated by the user's reputation
+  """
+  voteCount: String!
+  """
+  The actual vote (yay or nay)
+  nullable since we don't know the vote until it's revealed
+  """
+  vote: Int
+}
+
+"""
+Input used to create a motion status update message
+"""
+input MotionMessageInput {
+  """
+  Wallet address of the initiator of the status update
+  The zero address is used for messages that don't have an initiator (system messages)
+  """
+  initiatorAddress: String!
+  """
+  Internal name of the status update event (e.g. `MotionCreated`, `MotionStaked`, etc.)
+  """
+  name: String!
+  """
+  Unique id for the message
+  """
+  messageKey: String!
+  """
+  Cast vote attached to the status update (if applicable)
+  """
+  vote: String
+  """
+  Token amount relevant to the status update (if applicable)
+  """
+  amount: String
+}
+
+"""
+A status update message for a motion (will appear in the motion's timeline)
+"""
+type MotionMessage @model {
+  """
+  Wallet address of the initiator of the status update
+  The zero address is used for messages that don't have an initiator (system messages)
+  """
+  initiatorAddress: ID!
+  """
+  Internal name of the status update event (e.g. `MotionCreated`, `MotionStaked`, etc.)
+  """
+  name: String!
+  """
+  Unique id for the message
+  """
+  messageKey: String!
+  """
+  The internal database id of the motion
+  """
+  motionId: ID!
+    @index(
+      name: "byMotionId"
+      queryField: "getMotionMessageByMotionId"
+      sortKeyFields: ["createdAt"]
+    )
+  """
+  Extended user object for given initiatorAddress
+  """
+  initiatorUser: User @hasOne(fields: ["initiatorAddress"])
+  """
+  Cast vote attached to the status update (if applicable)
+  """
+  vote: String
+  """
+  Token amount relevant to the status update (if applicable)
+  """
+  amount: String
+  """
+  Timestamp of when the status update was created in the database
+  """
+  createdAt: AWSDateTime!
+}
+
+"""
+Input used to change the current state of a motion
+"""
+input MotionStateHistoryInput {
+  """
+  Voting period is elapsed
+  """
+  hasVoted: Boolean!
+  """
+  Whether the motion has passed
+  """
+  hasPassed: Boolean!
+  """
+  Whether the motion has failed
+  """
+  hasFailed: Boolean!
+  """
+  Whether the motion has failed and cannot be finalized (e.g. if it doesn't get staked)
+  """
+  hasFailedNotFinalizable: Boolean!
+  """
+  Motion is in reveal phase (votes are being revealed)
+  """
+  inRevealPhase: Boolean!
+}
+
+"""
+Quick access flages to check the current state of a motion in its lifecycle
+"""
+type MotionStateHistory {
+  """
+  Voting period is elapsed
+  """
+  hasVoted: Boolean!
+  """
+  Whether the motion has passed
+  """
+  hasPassed: Boolean!
+  """
+  Whether the motion has failed
+  """
+  hasFailed: Boolean!
+  """
+  Whether the motion has failed and cannot be finalized (e.g. if it doesn't get staked)
+  """
+  hasFailedNotFinalizable: Boolean!
+  """
+  Motion is in reveal phase (votes are being revealed)
+  """
+  inRevealPhase: Boolean!
+}
+
+"""
+Represents a Motion within a Colony
+"""
+type ColonyMotion @model {
+  """
+  The internal database id of the motion
+  To ensure uniqueness, we format as: `chainId-votingRepExtnAddress_nativeMotionId`
+  """
+  id: ID!
+  """
+  The on chain id of the motion
+  """
+  nativeMotionId: String!
+  """
+  List of stakes that users have made for a motion
+  """
+  usersStakes: [UserMotionStakes!]!
+  """
+  List of staker rewards users will be receiving for a motion
+  """
+  stakerRewards: [StakerRewards!]!
+  """
+  Staked sides of a motion
+  """
+  motionStakes: MotionStakes!
+  """
+  Stakes remaining to activate either side of the motion
+  It's a tuple: `[nayRemaining, yayRemaining]`
+  """
+  remainingStakes: [String!]!
+  """
+  The minimum stake that a user has to provide for it to be accepted
+  """
+  userMinStake: String!
+  """
+  The total required stake for one side to be activated
+  """
+  requiredStake: String!
+  """
+  Unique identifier of the motions domain in the database
+  """
+  motionDomainId: ID!
+  """
+  Expanded domain in which the motion was created
+  """
+  motionDomain: Domain! @hasOne(fields: ["motionDomainId"])
+  """
+  The reputation root hash at the time of the creation of the motion
+  Used for calculating a user's max stake in client
+  """
+  rootHash: String!
+  """
+  The on chain id of the domain associated with the motion
+  """
+  nativeMotionDomainId: String! # native domain id
+  """
+  Whether the motion was finalized or not
+  """
+  isFinalized: Boolean!
+  """
+  Address of the VotingReputation extension
+  Useful to check if we're viewing a "read-only" motion
+  """
+  createdBy: String!
+  """
+  A list of all of the votes cast within in the motion
+  """
+  voterRecord: [VoterRecord!]!
+  """
+  Total voting outcome for the motion (accumulated votes)
+  """
+  revealedVotes: MotionStakes! ## I.e. MotionVotes (same type)
+  """
+  The amount of reputation that has submitted a vote
+  """
+  repSubmitted: String!
+  """
+  The total amount of reputation (among all users) that can vote for this motion
+  """
+  skillRep: String!
+  """
+  Simple flag indicating whether both sides of staking have been activated
+  """
+  hasObjection: Boolean!
+  """
+  Quick access flages to check the current state of a motion in its lifecycle
+  """
+  motionStateHistory: MotionStateHistory!
+  """
+  List of motion status update messages
+  """
+  messages: [MotionMessage!]! @hasMany(indexName: "byMotionId", fields: ["id"])
+
+  """
+  Id of the associated objection annotation, if any
+  """
+  objectionAnnotationId: ID
+  """
+  The annotation object associated with the objection to the motion, if any
+  """
+  objectionAnnotation: Annotation @hasOne(fields: ["objectionAnnotationId"])
+  """
+  Whether the motion is a Simple Decision
+  """
+  isDecision: Boolean!
+  """
+  The transaction hash of the createMotion action
+  """
+  transactionHash: ID!
+    @index(name: "byTransactionHash", queryField: "getMotionByTransactionHash")
+
+  """
+  An option to manually specify the amount of gas to estimate for the finalization of this motion.
+  Particularly useful for "heavy" actions, such as a multicall.
+  """
+  gasEstimate: String!
+
+  """
+  Expenditure associated with the motion, if any
+  """
+  expenditureId: ID
+    @index(name: "byExpenditureId", queryField: "getMotionByExpenditureId")
+
+  action: ColonyAction @belongsTo(fields: ["transactionHash"])
+}
+
+"""
+Represents an event triggered by a smart contract within the Colony Network
+""" # This will store the relevant events we care about for a particular colony # Altough it might also hold events emmited by other clients (eg: network or token) # but are event pertaining to a colony # Generally you'd want to use this from a block ingenstor, after you've processed # data from an event, also save that even for future use
 type ContractEvent @model {
-  id: ID! #chainID_transactionHash_logIndex
+  """
+  Unique identifier for the Contract Event, in the format chainID_transactionHash_logIndex
+  """
+  id: ID!
+  """
+  Name of the event
+  """
   # i'm debating if this should be a enum or not, but this was you don't have to
   # update this schema every time you want to start tracking a new event
   name: String!
+  """
+  The unique signature of the event
+  """
   signature: String!
-  meta: Metadata!
-  # Note that they are not required, meaning that at any point, one or more, even
-  # all of them might not be set
+  """
+  Metadata associated with the event's chain
+  """
+  chainMetadata: ChainMetadata!
+  """
+  Optional association with a Colony
+  """
   colony: Colony @hasOne
+  """
+  Optional association with a Token
+  """
   token: Token @hasOne
+  """
+  Optional association with a Domain
+  """
   domain: Domain @hasOne
+  """
+  Optional association with a User
+  """
   user: User @hasOne
-  agent: String! # who initiated the event
-  target: String! # who was on the receiving end of it
-  encodedArguments: String # basically a JSON string
+  """
+  Address of the agent who initiated the event
+  """
+  agent: String!
+  """
+  Address of the target contract on the receiving end of the event
+  """
+  target: String!
+  """
+  Optional encoded arguments as a JSON string
+  """
+  encodedArguments: String
 }
 
+"""
+Parameters that were set when installing the VotingReputation extension
+For more info see [here](https://docs.colony.io/colonysdk/api/classes/VotingReputation#extension-parameters)
+"""
+type VotingReputationParams {
+  """
+  Percentage of the team's reputation that needs to be staked ot activate either side of the motion
+  """
+  totalStakeFraction: String!
+  """
+  Percentage of the losing side's stake that is awarded to the voters
+  """
+  voterRewardFraction: String!
+  """
+  Minimum percentage of the total stake that each user has to provide
+  """
+  userMinStakeFraction: String!
+  """
+  Percentage of the total reputation that voted should end the voting period
+  """
+  maxVoteFraction: String!
+  """
+  Time that the staking period will last (in seconds)
+  """
+  stakePeriod: String!
+  """
+  Time that the voting period will last (in seconds)
+  """
+  submitPeriod: String!
+  """
+  Time that the reveal period will last (in seconds)
+  """
+  revealPeriod: String!
+  """
+  Time that the escalation period will last (in seconds)
+  """
+  escalationPeriod: String!
+}
+
+type StakedExpenditureParams {
+  stakeFraction: String!
+}
+
+"""
+Map of parameters that extensions are initialised with
+"""
+type ExtensionParams {
+  """
+  Initialization parameters for the `VotingReputation` extension
+  """
+  votingReputation: VotingReputationParams
+  """
+  Initialization parameters for the `StakedExpenditure` extension
+  """
+  stakedExpenditure: StakedExpenditureParams
+}
+
+"""
+Represents a single extension installation in a Colony
+"""
 type ColonyExtension @model {
+  """
+  Unique identifier for the ColonyExtension
+  """
   id: ID!
+  """
+  The identifier of the Colony that the extension belongs to (the Colony's address)
+  """
   colonyId: ID!
     @index(
       name: "byColony"
       sortKeyFields: ["hash"]
       queryField: "getExtensionByColonyAndHash"
     )
+  """
+  The Colony that the extension belongs to
+  """
   colony: Colony! @belongsTo(fields: ["colonyId"])
-  hash: String!
+  """
+  The unique hash of the extension
+  The hash is generated like so: `keccak256(toUtf8Bytes(extensionName))`, where `extensionName` is the name of the extension contract file in the Colony Network
+  """
+  hash: String! @index(name: "byHash", queryField: "getExtensionsByHash")
+  """
+  The address of the user who installed the extension
+  """
   installedBy: String!
+  """
+  The timestamp when the extension was installed
+  """
   installedAt: AWSTimestamp!
+  """
+  Indicates whether the extension is deprecated
+  """
   isDeprecated: Boolean!
+  """
+  Indicates whether the extension has been removed
+  """
   isDeleted: Boolean!
+  """
+  Indicates whether the extension has been initialized
+  """
   isInitialized: Boolean!
+  """
+  The version number of the extension
+  """
+  version: Int!
+  """
+  Map of parameters that extension was initialised with
+  """
+  params: ExtensionParams
+}
+
+"""
+Represents the current version of an entity in the system
+"""
+type CurrentVersion @model {
+  """
+  Unique identifier for the CurrentVersion
+  """
+  id: ID!
+  """
+  The key used to look up the current version
+  """
+  key: String! @index(name: "byKey", queryField: "getCurrentVersionByKey")
+  """
+  The current version number
+  """
   version: Int!
 }
 
-type CurrentVersion @model {
+"""
+The current inverse of the network fee (in wei)
+(divide 1 by it and get the actual network fee)
+"""
+type CurrentNetworkInverseFee @model {
+  """
+  Unique identifier for the network fee
+  """
   id: ID!
-  key: String! @index(name: "byKey", queryField: "getCurrentVersionByKey")
-  version: Int!
+  """
+  The inverse fee
+  """
+  inverseFee: String!
+}
+
+type Payment {
+  amount: String!
+  tokenAddress: String!
+  recipientAddress: String!
+}
+"""
+Represents an action performed within a Colony
+"""
+type ColonyAction @model @searchable {
+  """
+  Unique identifier for the ColonyAction
+  """
+  id: ID!
+  """
+  The identifier of the Colony that the action belongs to
+  """
+  colonyId: ID!
+    @index(
+      name: "byColony"
+      queryField: "getActionsByColony"
+      sortKeyFields: ["createdAt"]
+    )
+  """
+  The Colony that the action belongs to
+  """
+  colony: Colony! @belongsTo(fields: ["colonyId"])
+  """
+  The type of action performed
+  """
+  type: ColonyActionType!
+  """
+  The block number where the action was recorded
+  """
+  blockNumber: Int!
+  """
+  Will be true if the action is a motion
+  """
+  isMotion: Boolean
+  """
+  The internal database id of the motion
+  """
+  motionId: ID
+    @index(name: "byMotionId", queryField: "getColonyActionByMotionId")
+  """
+  Expanded `ColonyMotion` for the corresponding `motionId`
+  """
+  motionData: ColonyMotion @hasOne(fields: ["motionId"])
+  """
+  Whether to show the motion in the actions list
+  True for (forced) actions. True for motions if staked above 10%
+  """
+  showInActionsList: Boolean!
+  """
+  The timestamp when the action was created
+  """
+  createdAt: AWSDateTime!
+  """
+  The Ethereum address of the action initiator. Can be a user, extension or colony
+  """
+  initiatorAddress: ID!
+
+  # Action type specific fields which might be null
+
+  # Amplify will automatically populate one of the following fields with related model if there is an initiator
+  """
+  The User who initiated the action, if applicable
+  """
+  initiatorUser: User @hasOne(fields: ["initiatorAddress"])
+  """
+  The ColonyExtension that initiated the action, if applicable
+  """
+  initiatorExtension: ColonyExtension @hasOne(fields: ["initiatorAddress"])
+  """
+  The Colony that initiated the action, if applicable
+  """
+  initiatorColony: Colony @hasOne(fields: ["initiatorAddress"])
+  """
+  The Token contract that initiated the action, if applicable
+  """
+  initiatorToken: Token @hasOne(fields: ["initiatorAddress"])
+
+  # Amplify will automatically populate one of the following fields with related model if there is an recipient
+  """
+  The address of the action recipient, if applicable
+  """
+  recipientAddress: ID
+  """
+  The User who received the action, if applicable
+  """
+  recipientUser: User @hasOne(fields: ["recipientAddress"])
+  """
+  The corresponding Colony which was involved the action, if applicable
+  """
+  recipientColony: Colony @hasOne(fields: ["recipientAddress"])
+  """
+  The corresponding extension which was involved the action, if applicable
+  """
+  recipientExtension: ColonyExtension @hasOne(fields: ["recipientAddress"])
+  """
+  The address of the token that was received the action, if applicable
+  """
+  recipientToken: Token @hasOne(fields: ["recipientAddress"])
+  """
+  The amount involved in the action, if applicable
+  """
+  amount: String
+  """
+  The Ethereum address of the token involved in the action, if applicable
+  """
+  tokenAddress: ID
+  """
+  The Token involved in the action, if applicable
+  """
+  token: Token @hasOne(fields: ["tokenAddress"])
+  """
+  The source Domain identifier, if applicable
+  """
+  fromDomainId: ID
+  """
+  The source Domain of the action, if applicable
+  """
+  fromDomain: Domain @hasOne(fields: ["fromDomainId"])
+  """
+  The target Domain identifier, if applicable
+  """
+  toDomainId: ID
+  """
+  The target Domain of the action, if applicable
+  """
+  toDomain: Domain @hasOne(fields: ["toDomainId"])
+  """
+  The native id of the payment
+  """
+  paymentId: Int
+  """
+  The resulting new Colony version, if applicable
+  """
+  newColonyVersion: Int
+  """
+  Identifier of domain metadata that is stored temporarily and commited to the database once the corresponding motion passes
+  """
+  pendingDomainMetadataId: ID
+  """
+  Domain metadata that is stored temporarily and commited to the database once the corresponding motion passes
+  """
+  pendingDomainMetadata: DomainMetadata
+    @hasOne(fields: ["pendingDomainMetadataId"])
+  """
+  Identifier of Colony metadata that is stored temporarily and commited to the database once the corresponding motion passes
+  """
+  pendingColonyMetadataId: ID
+  """
+  Colony metadata that is stored temporarily and commited to the database once the corresponding motion passes
+  """
+  pendingColonyMetadata: ColonyMetadata
+    @hasOne(fields: ["pendingColonyMetadataId"])
+  """
+  The id of the associated annotation, if there is one
+  """
+  annotationId: ID
+  """
+  The annotation associated with the action, if there is one
+  """
+  annotation: Annotation @hasOne(fields: ["annotationId"])
+  """
+  Corresponding domainId of the motion
+  """
+  motionDomainId: Int
+  """
+  If the action is a Simple Decision, it will have an id that corresponds to a ColonyDecision entry in the database.
+  """
+  colonyDecisionId: ID
+  """
+  Corresponding Decision data, if action is a Simple Decision
+  """
+  decisionData: ColonyDecision @hasOne(fields: ["colonyDecisionId"])
+  """
+  Payment data for multiple OneTxPayments
+  """
+  payments: [Payment!]
+  """
+  Colony roles that are associated with the action
+  """
+  roles: ColonyActionRoles
+
+  # Required since some actions might have multiple event entries in the list
+  # which need to be iterated over and exposed individually
+  #
+  # This should be a list/array, but this is yet another thing Amplify is bad at
+  # The official response from them is to use DynamoDB directly:
+  # https://stackoverflow.com/questions/50992106/append-item-to-list-using-aws-appsync-to-dynamodb
+  # Which is just freaking great!
+  #
+  # As such, I've decided to simplify this, an just pass a stringified JSON around
+  # since this is for display purpouses only.
+  #
+  # If anyone has a better idea on how to handle this, I'll gladly change it!
+  #
+  # When / if you decide to use it, just be mindful of what format other people
+  # are using, and follow suit.
+  #
+  # Roles Types:
+  # [{ id: String, type: String, role: Number, setTo: boolean }]
+  """
+  JSON string to pass custom, dynamic event data
+  """
+  individualEvents: String
+  """
+  Safe transactions associated with the action
+  """
+  safeTransaction: SafeTransaction @hasOne(fields: ["id"])
+  """
+  Metadata associated with the action (Eg. Custom action title)
+  """
+  metadata: ColonyActionMetadata @hasOne(fields: ["id"])
+}
+
+type ColonyActionMetadata @model {
+  id: ID!
+  customTitle: String!
+}
+
+type ColonyDecision @model {
+  id: ID!
+  actionId: ID!
+    @index(name: "byActionId", queryField: "getColonyDecisionByActionId")
+  action: ColonyAction @belongsTo(fields: ["actionId"])
+  title: String!
+  colonyAddress: String!
+    @index(
+      name: "byColonyAddress"
+      queryField: "getColonyDecisionByColonyAddress"
+      sortKeyFields: ["createdAt"]
+    )
+  createdAt: AWSDateTime!
+  description: String!
+  motionDomainId: Int!
+  walletAddress: String!
+  showInDecisionsList: Boolean!
+}
+
+"""
+Colony Roles that can be involved in an action
+""" # Roles have been set as role_<number> so we can more easily map them to their # actual contract counterpart on the client and block ingestor side(s)
+type ColonyActionRoles {
+  """
+  Recovery role
+  """
+  role_0: Boolean
+  """
+  Root role
+  """
+  role_1: Boolean
+  """
+  Arbitration role
+  """
+  role_2: Boolean
+  """
+  Architecture role
+  """
+  role_3: Boolean
+  """
+  Funding role
+  """
+  role_5: Boolean
+  """
+  Administration role
+  """
+  role_6: Boolean
+}
+
+"""
+A snapshot of the current set of permissions a given address has in a given domain within a Colony
+"""
+type ColonyRole @model {
+  """
+  Unique identifier for the role snapshot
+  Format: `<colonyAddress>_<domainNativeId>_<userAddress>_roles`
+  """
+  id: ID! @index
+  """
+  Unique identifier of the domain
+  """
+  domainId: ID!
+    @index(
+      name: "byDomainId"
+      queryField: "getRoleByDomainAndColony"
+      sortKeyFields: ["colonyAddress"]
+    )
+  """
+  Expanded `Domain` model, based on the `domainId` given
+  """
+  domain: Domain! @hasOne(fields: ["domainId"])
+
+  # Amplify will automatically populate one of the following fields with related model if it finds one
+  """
+  Address of the agent the permission was set for
+  """
+  targetAddress: ID!
+    @index(
+      name: "byTargetAddress"
+      queryField: "getRoleByTargetAddressAndColony"
+      sortKeyFields: ["colonyAddress"]
+    )
+
+  """
+  Will expand to a `User` model if permission was set for a user
+  """
+  targetUser: User @hasOne(fields: ["targetAddress"])
+  """
+  Will expand to a `Colony` model if permission was set for another Colony
+  """
+  targetColony: Colony @hasOne(fields: ["targetAddress"])
+  """
+  Will expand to a `ColonyExtension` model if permission was set for a Colony extension
+  """
+  targetExtension: ColonyExtension @hasOne(fields: ["targetAddress"])
+  """
+  Will expand to a `Token` model if permission was set for a Token contract
+  """
+  targetToken: Token @hasOne(fields: ["targetAddress"])
+
+  """
+  The colony in which the role was set
+  """
+  colonyAddress: ID!
+  """
+  Block at which permissions were update last
+  """
+  latestBlock: Int!
+  """
+  Recovery role
+  """
+  role_0: Boolean
+  """
+  Root role
+  """
+  role_1: Boolean
+  """
+  Arbitration role
+  """
+  role_2: Boolean
+  """
+  Architecture role
+  """
+  role_3: Boolean
+  """
+  Funding role
+  """
+  role_5: Boolean
+  """
+  Administration role
+  """
+  role_6: Boolean
+}
+
+"""
+Snapshot of the user's full roles/permissions at a specific block
+""" # it's a model, not a type since this is designed to work outside of the main # colony model, or colony role model, as, by design it should be only used # in very specific cases
+type ColonyHistoricRole @model {
+  """
+  Unique identifier for the role snapshot
+  Format: `colonyAddress_domainNativeId_userAddress_blockNumber_roles`
+  """
+  id: ID! #
+  """
+  Used for amplify sorting. Set to `SortedHistoricRole`
+  """
+  # I HATE AMPLIFY SORTING! MAY IT DIE A THOUSAND DEATHS!
+  #
+  # @NOTE Always set to `type` to "SortedHistoricRole" to enable Amplify sorting, it DOES NOT WORK with `id`
+  #
+  # Apparently, it can only filter non-primary fields, meaning that if we sort by `blockNumber` then that
+  # field is considered primary, so it won't allow us to filter by it.
+  # To overcome this we've sorted by creation date, which is not really correct from a block chain
+  # point of view, but due to the nature of the block ingestor, it works for our use case
+  type: String!
+    @index(
+      name: "getColonyHistoricRoleByDate"
+      queryField: "getColonyHistoricRoleByDate"
+      sortKeyFields: ["createdAt"]
+    )
+
+  """
+  Unique identifier of the domain
+  """
+  domainId: ID!
+  """
+  Expanded `Domain` model, based on the `domainId` given
+  """
+  domain: Domain! @hasOne(fields: ["domainId"])
+  """
+  Unique identifier of the Colony
+  """
+  colonyId: ID!
+  """
+  Expanded `Colony` model, based on the `colonyId` given
+  """
+  colony: Colony! @hasOne(fields: ["colonyId"])
+
+  # Amplify will automatically populate one of the following fields with related model if it finds one
+  """
+  Address of the agent the permission was set for
+  """
+  targetAddress: ID
+  """
+  Will expand to a `User` model if permission was set for a user
+  """
+  targetUser: User @hasOne(fields: ["targetAddress"])
+  """
+  Will expand to a `Colony` model if permission was set for another Colony
+  """
+  targetColony: Colony @hasOne(fields: ["targetAddress"])
+  """
+  Will expand to a `ColonyExtension` model if permission was set for a Colony extension
+  """
+  targetExtension: ColonyExtension @hasOne(fields: ["targetAddress"])
+  """
+  Will expand to a `Token` model if permission was set for a Token contract
+  """
+  targetToken: Token @hasOne(fields: ["targetAddress"])
+
+  """
+  Block at which the snapshot was taken
+  """
+  blockNumber: Int!
+  """
+  Recovery role
+  """
+  role_0: Boolean
+  """
+  Root role
+  """
+  role_1: Boolean
+  """
+  Arbitration role
+  """
+  role_2: Boolean
+  """
+  Architecture role
+  """
+  role_3: Boolean
+  """
+  Funding role
+  """
+  role_5: Boolean
+  """
+  Administration role
+  """
+  role_6: Boolean
+  """
+  Timestamp at which the database entry was created
+  """
+  createdAt: AWSDateTime!
+}
+
+"""
+Model storing block ingestor stats, as key-value entries
+"""
+type IngestorStats @model {
+  """
+  Unique identifier of the ingestor stats
+  """
+  id: ID!
+  """
+  JSON string to pass custom, dynamic values
+  """
+  value: String!
+}
+
+type Expenditure @model {
+  """
+  Unique identifier for the role snapshot
+  Self-managed, format: `colonyId_nativeExpenditureId`
+  """
+  id: ID!
+  """
+  Native (contract) ID of the expenditure
+  """
+  nativeId: Int!
+  createdAt: AWSDateTime!
+  """
+  Colony ID (address) to which the expenditure belongs
+  """
+  colonyId: ID!
+    @index(
+      name: "byColony"
+      queryField: "getExpendituresByColony"
+      sortKeyFields: ["createdAt"]
+    )
+  """
+  The Colony to which the expenditure belongs
+  """
+  colony: Colony! @belongsTo(fields: ["colonyId"])
+  """
+  Address of the expenditure owner, it can be a user or an extension
+  """
+  ownerAddress: ID!
+  """
+  Status of the expenditure
+  """
+  status: ExpenditureStatus!
+  """
+  Array containing expenditure slots
+  """
+  slots: [ExpenditureSlot!]!
+  """
+  Native (contract) ID of the funding pot of the expenditure
+  """
+  nativeFundingPotId: Int!
+    @index(
+      name: "byNativeFundingPotId"
+      queryField: "getExpendituresByNativeFundingPotIdAndColony"
+      sortKeyFields: ["colonyId"]
+    )
+  """
+  Native (contract) ID of the expenditure domain
+  """
+  nativeDomainId: Int!
+  """
+  Optional metadata linked to the expenditure
+  It contains client-side data that is not stored on chain
+  """
+  metadata: ExpenditureMetadata @hasOne(fields: ["id"])
+  """
+  Array containing expenditure balances
+  """
+  balances: [ExpenditureBalance!]
+    @function(name: "fetchExpenditureBalances-${env}")
+  """
+  The timestamp at which the expenditure was finalized
+  """
+  finalizedAt: AWSTimestamp
+  """
+  The motions created that relate to this expenditure, if there are any
+  """
+  motions: [ColonyMotion] @hasMany(indexName: "byExpenditureId", fields: ["id"])
+  """
+  Indicates whether the expenditure was staked for
+  """
+  isStaked: Boolean!
+  """
+  Indicates if the creator's stake was forfeited when staked expenditure was cancelled
+  """
+  isStakeForfeited: Boolean
+  """
+  Indicates whether the expenditure stake has been reclaimed
+  """
+  hasReclaimedStake: Boolean
+  type: ExpenditureType!
+}
+
+"""
+Represents a slot of an expenditure
+Each expenditure can have multiple slots, with a single recipients and multiple payouts (in different token addresses)
+"""
+type ExpenditureSlot {
+  id: Int!
+  recipientAddress: String
+  claimDelay: Int
+  payoutModifier: Int
+  payouts: [ExpenditurePayout!]
+}
+
+type ExpenditurePayout {
+  tokenAddress: ID!
+  amount: String!
+  isClaimed: Boolean!
+}
+
+type ExpenditureMetadata @model {
+  id: ID! # Self-managed, formatted as colonyId_nativeId
+  fundFromDomainNativeId: Int!
+  stages: [ExpenditureStage!]
+  stakeAmount: String
+}
+
+type ExpenditureBalance {
+  tokenAddress: ID!
+  amount: String!
+  requiredAmount: String! # Total amount required to cover all payouts for the given token
+}
+
+type ExpenditureStage {
+  slotId: Int!
+  name: String!
+  isReleased: Boolean!
+}
+
+type StreamingPayment @model {
+  id: ID! # Self-managed, formatted as colonyId_nativeId
+  nativeId: Int!
+  createdAt: AWSDateTime!
+  recipientAddress: String!
+  nativeDomainId: Int!
+  startTime: AWSTimestamp!
+  endTime: AWSTimestamp!
+  interval: String!
+  payouts: [ExpenditurePayout!]
+  metadata: StreamingPaymentMetadata @hasOne(fields: ["id"])
+}
+
+type StreamingPaymentMetadata @model {
+  id: ID! # Self-managed, formatted as colonyId_nativeId
+  endCondition: StreamingPaymentEndCondition!
+  limitAmount: String
+}
+
+"""
+Defines an annotation for actions, motions and decisions
+"""
+type Annotation @model {
+  """
+  The id of the annotation.
+  """
+  id: ID!
+  """
+  The id of the action it annotates
+  """
+  actionId: ID!
+  """
+  The actual annotation message
+  """
+  message: String!
+  """
+  The IPFS hash, if the annotation was also uploaded to IPFS
+  """
+  ipfsHash: String
+}
+
+type ReputationMiningCycleMetadata @model {
+  id: ID! # A constant, since we only need one entry in the database: "REPUTATION_MINING_CYCLE_METADATA"
+  """
+  The timestamp of the most recent reputation mining cycle completion.
+  """
+  lastCompletedAt: AWSDateTime! # We're using this to determine whether to re-calculate colony-wide user reputation (updateContributorsWithReputation)
+}
+
+type PrivateBetaInviteCode @model {
+  """
+  The id functions as the invite code
+  """
+  id: ID!
+  """
+  This tracks the amount of invites this invite code is also allowed to generate
+  The default value relates to the initial user and their subsequent invitee
+  """
+  shareableInvites: Int @default(value: "2")
+  """
+  User ID associated with the Invite
+  """
+  userId: ID
+}
+
+type SimpleTargetProfile {
+  avatarHash: String
+  displayName: String
+}
+
+type SimpleTarget {
+  id: String!
+  profile: SimpleTargetProfile!
+  walletAddress: String!
+}
+
+type NFT {
+  id: String!
+  profile: NFTProfile!
+  walletAddress: String!
+}
+
+type NFTProfile {
+  displayName: String!
+}
+
+type FunctionParam {
+  name: String!
+  type: String!
+  value: String!
+}
+
+type NFTData {
+  address: String!
+  description: String
+  id: String!
+  imageUri: String
+  logoUri: String!
+  name: String
+  tokenName: String!
+  tokenSymbol: String!
+  uri: String!
+}
+
+enum SafeTransactionType {
+  TRANSFER_FUNDS
+  TRANSFER_NFT
+  CONTRACT_INTERACTION
+  RAW_TRANSACTION
+}
+
+type SafeTransaction @model {
+  id: ID!
+  safe: Safe!
+  transactions: [SafeTransactionData]
+    @hasMany(indexName: "byTransaction", fields: ["id"])
+}
+
+type SafeTransactionData @model {
+  id: ID!
+  tokenAddress: ID
+  token: Token @hasOne(fields: ["tokenAddress"])
+  amount: String
+  rawAmount: String
+  recipient: SimpleTarget
+  data: String
+  contract: SimpleTarget
+  abi: String
+  contractFunction: String
+  nft: NFT
+  nftData: NFTData
+  functionParams: [FunctionParam]
+  transactionType: SafeTransactionType!
+  transactionHash: ID! @index(name: "byTransaction", sortKeyFields: ["id"])
+}
+
+type Safe {
+  name: String!
+  address: String!
+  chainId: Int!
+  moduleContractAddress: String!
+}
+
+type ExtensionInstallationsCount @model {
+  """
+  The model id. It's the chain id the of the colony the extension belongs to
+  """
+  id: ID!
+  oneTxPayment: Int!
+  stakedExpenditure: Int!
+  stagedExpenditure: Int!
+  streamingPayments: Int!
+  reputationWeighted: Int!
+}
+
+type UserStake @model {
+  """
+  Self-managed, formatted as userAddress_transactionHash, where transactionHash is the hash of the transaction that is being staked for
+  """
+  id: ID!
+  userAddress: ID!
+    @index(
+      name: "byUserAndColony"
+      queryField: "getUserStakes"
+      sortKeyFields: ["createdAt"]
+    )
+  user: User! @hasOne(fields: ["userAddress"])
+  colonyAddress: ID!
+  amount: String!
+  isClaimed: Boolean!
+  actionId: ID!
+  action: ColonyAction @hasOne(fields: ["actionId"])
+  createdAt: AWSDateTime!
 }

@@ -1,25 +1,47 @@
-import { isAddress } from 'ethers/lib/utils';
+import { useGetUserByNameQuery, useGetUserByAddressQuery } from '~gql';
+import { isAddress as isAddressFunction } from '~utils/web3';
 
-import { useCombinedUserQuery } from '~gql';
+/*
+ * Can't conditionally call the codegen query hooks so querying GraphQL directly
+ */
+const useUserByNameOrAddress = (userIdentifier: string) => {
+  const isAddress = isAddressFunction(userIdentifier);
 
-const useUserByNameOrAddress = (usernameOrAddress: string) => {
-  const { data, error, loading } = useCombinedUserQuery({
+  const {
+    data: userData,
+    error: userError,
+    loading: userLoading,
+  } = useGetUserByNameQuery({
     variables: {
-      name: usernameOrAddress,
-      address: usernameOrAddress,
+      name: userIdentifier,
     },
     fetchPolicy: 'cache-and-network',
+    skip: isAddress,
   });
 
-  const user = isAddress(usernameOrAddress)
-    ? data?.getUserByAddress?.items[0]
-    : data?.getUserByName?.items[0];
+  const {
+    data: addressData,
+    error: addressError,
+    loading: addressLoading,
+  } = useGetUserByAddressQuery({
+    variables: {
+      address: userIdentifier,
+    },
+    fetchPolicy: 'cache-and-network',
+    skip: !isAddress,
+  });
 
-  return {
-    user,
-    loading,
-    error,
-  };
+  return isAddress
+    ? {
+        user: addressData?.getUserByAddress?.items[0],
+        error: addressError,
+        loading: addressLoading,
+      }
+    : {
+        user: userData?.getProfileByUsername?.items[0]?.user,
+        error: userError,
+        loading: userLoading,
+      };
 };
 
 export default useUserByNameOrAddress;

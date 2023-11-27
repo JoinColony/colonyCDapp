@@ -1,15 +1,29 @@
-import { all, call, put, takeEvery } from 'redux-saga/effects';
+import { fork, put, takeEvery } from 'redux-saga/effects';
+import {
+  ClientType,
+  Id,
+  getPermissionProofs,
+  ColonyRole,
+} from '@colony/colony-js';
+
+import { ColonyManager } from '~context';
+import { intArrayToBytes32 } from '~utils/web3';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
-import { getTxChannel } from '../transactions';
+import {
+  ChannelDefinition,
+  createTransaction,
+  createTransactionChannels,
+  waitForTxResult,
+} from '../transactions';
 import {
   modifyParams,
   putError,
-  refreshEnabledExtension,
   removeOldExtensionClients,
-  setupEnablingGroupTransactions,
   takeFrom,
+  getColonyManager,
+  initiateTransaction,
 } from '../utils';
 
 function* extensionEnable({
@@ -17,64 +31,109 @@ function* extensionEnable({
   payload,
   payload: {
     colonyAddress,
-    extensionData: { extensionId, isInitialized, initializationParams },
+    extensionData: {
+      extensionId,
+      isInitialized,
+      initializationParams,
+      neededColonyPermissions,
+      missingColonyPermissions,
+      address,
+    },
   },
 }: Action<ActionTypes.EXTENSION_ENABLE>) {
-  const initChannelName = `${meta.id}-initialise`;
+  const batchKey = 'enableExtension';
+  let txIndex = 0;
 
   yield removeOldExtensionClients(colonyAddress, extensionId);
 
-  const initChannel = yield call(getTxChannel, initChannelName);
+  const needsInitialisation = !isInitialized && initializationParams;
+  const needsSettingRoles = missingColonyPermissions.length;
+
+  const { initialise, setUserRoles }: Record<string, ChannelDefinition> =
+    yield createTransactionChannels(meta.id, ['initialise', 'setUserRoles']);
 
   try {
-    if (!isInitialized && initializationParams) {
+    const colonyManager: ColonyManager = yield getColonyManager();
+
+    if (needsInitialisation) {
       const initParams = modifyParams(initializationParams, payload);
 
-      const {
-        channels,
-        transactionChannels,
-        transactionChannels: { initialise },
-        createGroupTransaction,
-      } = yield setupEnablingGroupTransactions(
-        meta.id,
-        initParams,
-        extensionId,
-      );
-
-      yield all(
-        Object.keys(transactionChannels).map((channelName) =>
-          createGroupTransaction(transactionChannels[channelName], {
-            identifier: colonyAddress,
-            methodName: channelName,
-            ...channels[channelName],
-          }),
-        ),
-      );
-
-      yield all(
-        Object.keys(transactionChannels).map((id) =>
-          takeFrom(
-            transactionChannels[id].channel,
-            ActionTypes.TRANSACTION_CREATED,
-          ),
-        ),
-      );
-
-      yield takeFrom(initialise.channel, ActionTypes.TRANSACTION_SUCCEEDED);
-
-      yield put({
-        type: ActionTypes.EXTENSION_ENABLE_SUCCESS,
-        payload: {},
-        meta,
+      yield fork(createTransaction, initialise.id, {
+        context: `${extensionId}Client`,
+        methodName: 'initialise',
+        identifier: colonyAddress,
+        ready: false,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 0,
+        },
+        params: initParams,
       });
+
+      txIndex += 1;
     }
+
+    if (needsSettingRoles) {
+      const colonyClient = yield colonyManager.getClient(
+        ClientType.ColonyClient,
+        colonyAddress,
+      );
+
+      const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+        colonyClient.networkClient,
+        colonyClient,
+        Id.RootDomain,
+        ColonyRole.Root,
+      );
+
+      const bytes32Roles = intArrayToBytes32(neededColonyPermissions);
+
+      yield fork(createTransaction, setUserRoles.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'setUserRoles',
+        identifier: colonyAddress,
+        ready: false,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: txIndex,
+        },
+        params: [
+          permissionDomainId,
+          childSkillIndex,
+          address,
+          Id.RootDomain,
+          bytes32Roles,
+        ],
+      });
+
+      txIndex += 1;
+    }
+
+    if (needsInitialisation) {
+      yield takeFrom(initialise.channel, ActionTypes.TRANSACTION_CREATED);
+      yield initiateTransaction({ id: initialise.id });
+      yield waitForTxResult(initialise.channel);
+    }
+
+    if (needsSettingRoles) {
+      yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_CREATED);
+      yield initiateTransaction({ id: setUserRoles.id });
+      yield waitForTxResult(setUserRoles.channel);
+    }
+
+    yield put({
+      type: ActionTypes.EXTENSION_ENABLE_SUCCESS,
+      payload: {},
+      meta,
+    });
   } catch (error) {
+    console.error(error);
     return yield putError(ActionTypes.EXTENSION_ENABLE_ERROR, error, meta);
+  } finally {
+    [initialise, setUserRoles].map(({ channel }) => channel.close());
   }
-
-  refreshEnabledExtension(colonyAddress, extensionId);
-
-  initChannel.close();
 
   return null;
 }

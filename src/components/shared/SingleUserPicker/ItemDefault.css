@@ -8,7 +8,7 @@
   cursor: pointer;
 }
 
-[aria-selected="true"] > .main {
+[aria-selected='true'] > .main {
   background-color: var(--colony-light-blue);
 }
 

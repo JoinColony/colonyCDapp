@@ -1,64 +1,70 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom } from '../utils';
+import { initiateTransaction, putError, takeFrom } from '../utils';
 
-import { ContextModule, getContext } from '~context';
-
-import { createTransaction, getTxChannel } from '../transactions';
+import {
+  TransactionChannelMap,
+  createTransaction,
+  createTransactionChannels,
+  waitForTxResult,
+} from '../transactions';
 
 export { default as colonyCreateSaga } from './colonyCreate';
 
 function* colonyClaimToken({
-  payload: { colonyAddress, tokenAddress },
+  payload: { colonyAddress, tokenAddresses },
   meta,
 }: Action<ActionTypes.CLAIM_TOKEN>) {
-  let txChannel;
+  let txChannels: TransactionChannelMap = {};
+  const batchKey = 'claimColonyFunds';
+  const uniqueTokenAddresses = [...new Set(tokenAddresses)];
   try {
-    const apolloClient = getContext(ContextModule.ApolloClient);
-
-    txChannel = yield call(getTxChannel, meta.id);
-    yield fork(createTransaction, meta.id, {
-      context: ClientType.ColonyClient,
-      methodName: 'claimColonyFunds',
-      identifier: colonyAddress,
-      params: [tokenAddress],
-    });
-
-    const { payload } = yield takeFrom(
-      txChannel,
-      ActionTypes.TRANSACTION_SUCCEEDED,
+    txChannels = yield call(
+      createTransactionChannels,
+      meta.id,
+      uniqueTokenAddresses,
     );
+
+    yield all(
+      uniqueTokenAddresses.map((tokenAddress, index) =>
+        fork(createTransaction, txChannels[tokenAddress].id, {
+          context: ClientType.ColonyClient,
+          methodName: 'claimColonyFunds',
+          identifier: colonyAddress,
+          params: [tokenAddress],
+          group: {
+            key: batchKey,
+            id: meta.id,
+            index,
+          },
+        }),
+      ),
+    );
+
+    for (const tokenAddress of uniqueTokenAddresses) {
+      const { channel: txChannel, id } = txChannels[tokenAddress];
+
+      yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
+
+      yield initiateTransaction({ id });
+
+      yield waitForTxResult(txChannel);
+    }
 
     yield put<AllActions>({
       type: ActionTypes.CLAIM_TOKEN_SUCCESS,
-      payload,
+      payload: { params: { tokenAddresses: uniqueTokenAddresses } },
       meta,
-    });
-
-    // Refresh relevant values
-    yield apolloClient.query<
-      ColonyTransfersQuery,
-      ColonyTransfersQueryVariables
-    >({
-      query: ColonyTransfersDocument,
-      variables: { address: colonyAddress },
-      fetchPolicy: 'network-only',
-    });
-    yield apolloClient.query<
-      TokenBalancesForDomainsQuery,
-      TokenBalancesForDomainsQueryVariables
-    >({
-      query: TokenBalancesForDomainsDocument,
-      variables: { colonyAddress, tokenAddresses: [tokenAddress] },
-      fetchPolicy: 'network-only',
     });
   } catch (error) {
     return yield putError(ActionTypes.CLAIM_TOKEN_ERROR, error, meta);
   } finally {
-    if (txChannel) txChannel.close();
+    for (const { channel: txChannel } of Object.values(txChannels)) {
+      txChannel.close();
+    }
   }
   return null;
 }

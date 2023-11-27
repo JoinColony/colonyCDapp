@@ -11,15 +11,16 @@ import { AnyExtensionData } from '~types';
 import { ActionTypes } from '~redux/index';
 import { mapPayload } from '~utils/actions';
 import { useAppContext, useColonyContext } from '~hooks';
-import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
 import { isInstalledExtensionData } from '~utils/extensions';
+import { hasRoot } from '~utils/checks';
+import { getAllUserRoles } from '~transformers';
 
 interface Props {
   extensionData: AnyExtensionData;
 }
 
 const ExtensionUpgradeButton = ({ extensionData }: Props) => {
-  const { colony } = useColonyContext();
+  const { colony, isSupportedColonyVersion } = useColonyContext();
   const { user } = useAppContext();
 
   if (
@@ -39,9 +40,6 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
     return null;
   }
 
-  const isSupportedColonyVersion =
-    colony.version >= MIN_SUPPORTED_COLONY_VERSION;
-
   const extensionCompatible = isExtensionCompatible(
     Extension[extensionData.extensionId],
     extensionData.availableVersion as ExtensionVersion,
@@ -51,15 +49,12 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
   if (!user || extensionData.isDeprecated || !extensionData.isInitialized) {
     return null;
   }
-  // @TODO check user permissions for canUpgrade - hasRoot(allUserRoles)
-  const canUpgrade = true;
+  const canUpgrade = hasRoot(getAllUserRoles(colony, user.walletAddress));
 
   return (
     <ActionButton
       appearance={{ theme: 'primary', size: 'medium' }}
-      submit={ActionTypes.EXTENSION_UPGRADE}
-      error={ActionTypes.EXTENSION_UPGRADE_ERROR}
-      success={ActionTypes.EXTENSION_UPGRADE_SUCCESS}
+      actionType={ActionTypes.EXTENSION_UPGRADE}
       transform={transform}
       text={{ id: 'button.upgrade' }}
       disabled={

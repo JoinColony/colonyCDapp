@@ -1,31 +1,20 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 
-import { ContextModule, getContext } from '~context';
+import { ActionTypes, AllActions, Action } from '~redux';
+
 import {
-  TokenBalancesForDomainsDocument,
-  TokenBalancesForDomainsQuery,
-  TokenBalancesForDomainsQueryVariables,
-} from '~data/index';
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
-import {
+  createActionMetadataInDB,
+  initiateTransaction,
   putError,
   takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
+  uploadAnnotation,
 } from '../utils';
-
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
 
 function* createMintTokensAction({
   payload: {
@@ -34,14 +23,13 @@ function* createMintTokensAction({
     nativeTokenAddress,
     amount,
     annotationMessage,
+    customActionTitle,
   },
-  meta: { id: metaId, history },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_MINT_TOKENS>) {
   let txChannel;
   try {
-    const apolloClient = getContext(ContextModule.ApolloClient);
-
     if (!amount) {
       throw new Error('Amount to mint not set for mintTokens transaction');
     }
@@ -71,6 +59,7 @@ function* createMintTokensAction({
       },
       ready: false,
     });
+
     yield fork(createTransaction, claimColonyFunds.id, {
       context: ClientType.ColonyClient,
       methodName: 'claimColonyFunds',
@@ -101,6 +90,7 @@ function* createMintTokensAction({
 
     yield takeFrom(mintTokens.channel, ActionTypes.TRANSACTION_CREATED);
     yield takeFrom(claimColonyFunds.channel, ActionTypes.TRANSACTION_CREATED);
+
     if (annotationMessage) {
       yield takeFrom(
         annotateMintTokens.channel,
@@ -108,7 +98,7 @@ function* createMintTokensAction({
       );
     }
 
-    yield put(transactionReady(mintTokens.id));
+    yield initiateTransaction({ id: mintTokens.id });
 
     const {
       payload: { hash: txHash },
@@ -116,46 +106,35 @@ function* createMintTokensAction({
       mintTokens.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
+
+    setTxHash?.(txHash);
+
     yield takeFrom(mintTokens.channel, ActionTypes.TRANSACTION_SUCCEEDED);
-    yield put(transactionReady(claimColonyFunds.id));
+
+    yield initiateTransaction({ id: claimColonyFunds.id });
+
     yield takeFrom(claimColonyFunds.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
+    yield createActionMetadataInDB(txHash, customActionTitle);
+
     if (annotationMessage) {
-      yield put(transactionPending(annotateMintTokens.id));
-
-      const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
-
-      yield put(
-        transactionAddParams(annotateMintTokens.id, [txHash, ipfsHash]),
-      );
-
-      yield put(transactionReady(annotateMintTokens.id));
-
-      yield takeFrom(
-        annotateMintTokens.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
+      yield uploadAnnotation({
+        txChannel: annotateMintTokens,
+        message: annotationMessage,
+        txHash,
+      });
     }
-
-    yield apolloClient.query<
-      TokenBalancesForDomainsQuery,
-      TokenBalancesForDomainsQueryVariables
-    >({
-      query: TokenBalancesForDomainsDocument,
-      variables: {
-        colonyAddress,
-        tokenAddresses: [nativeTokenAddress],
-      },
-      fetchPolicy: 'network-only',
-    });
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_MINT_TOKENS_SUCCESS,
       meta,
     });
 
-    if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+    // Redirect to actions page
+    if (colonyName && navigate) {
+      navigate(`/${colonyName}?tx=${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (caughtError) {
     putError(ActionTypes.ACTION_MINT_TOKENS_ERROR, caughtError, meta);

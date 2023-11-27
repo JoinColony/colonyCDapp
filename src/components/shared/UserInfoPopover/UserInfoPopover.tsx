@@ -6,8 +6,12 @@ import React from 'react';
 import Tag from '~shared/Tag';
 // import { getAllUserRoles } from '~redux/transformers';
 import NotAvailableMessage from '../NotAvailableMessage/NotAvailableMessage';
-import { User, Colony } from '~types';
-import { useAppContext, useUserReputationForTopDomains } from '~hooks';
+import { MemberUser, User } from '~types';
+import {
+  useAppContext,
+  useColonyContext,
+  useUserReputationForTopDomains,
+} from '~hooks';
 
 // import UserPermissions from './UserPermissions';
 // import UserTokens from './UserTokens';
@@ -17,21 +21,17 @@ import UserInfo from './UserInfo';
 import styles from './UserInfoPopover.css';
 
 interface Props {
-  colony?: Colony;
-  user?: User | null;
+  user?: User | MemberUser | null;
   banned?: boolean;
+  address?: string;
 }
 
 const displayName = 'UserInfoPopover';
 
-const UserInfoPopover = ({
-  // colony: { colonyAddress },
-  colony,
-  user,
-  banned = false,
-}: Props) => {
+const UserInfoPopover = ({ user, banned = false, address }: Props) => {
+  const { colony } = useColonyContext();
   const { wallet } = useAppContext();
-  const { walletAddress } = user || {};
+  const walletAddress = user?.walletAddress || address;
 
   // const { data: nativeTokenAddressData, loading: loadingNativeTokenAddress } =
   //   useColonyNativeTokenQuery({
@@ -92,7 +92,6 @@ const UserInfoPopover = ({
   // const lockedBalance = BigNumber.from(userLock?.totalObligation || 0);
   // const activeBalance = BigNumber.from(userLock?.activeTokens || 0);
   // const totalBalance = inactiveBalance.add(activeBalance).add(lockedBalance);
-
   return (
     <div>
       {banned && (

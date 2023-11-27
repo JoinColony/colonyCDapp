@@ -1,43 +1,58 @@
-import { Channel } from 'redux-saga';
-import { all, call, fork, put } from 'redux-saga/effects';
-import { getExtensionHash, Extension, ClientType, Id } from '@colony/colony-js';
+import { all, call, put } from 'redux-saga/effects';
+import {
+  getExtensionHash,
+  Extension,
+  ClientType,
+  Id,
+  getPermissionProofs,
+  ColonyRole,
+  colonyRoles2Hex,
+} from '@colony/colony-js';
 import { poll } from 'ethers/lib/utils';
+import { utils } from 'ethers';
+import { Network as EthersNetwork } from '@ethersproject/networks';
 
 import {
+  CreateColonyMetadataDocument,
+  CreateColonyMetadataMutation,
+  CreateColonyMetadataMutationVariables,
   CreateColonyTokensDocument,
   CreateColonyTokensMutation,
   CreateColonyTokensMutationVariables,
+  CreateDomainDocument,
+  CreateDomainMetadataDocument,
+  CreateDomainMetadataMutation,
+  CreateDomainMetadataMutationVariables,
+  CreateDomainMutation,
+  CreateDomainMutationVariables,
   CreateUniqueColonyDocument,
   CreateUniqueColonyMutation,
   CreateUniqueColonyMutationVariables,
-  CreateUniqueDomainDocument,
-  CreateUniqueDomainMutation,
-  CreateUniqueDomainMutationVariables,
   CreateUserTokensDocument,
   CreateUserTokensMutation,
   CreateUserTokensMutationVariables,
   CreateWatchedColoniesDocument,
   CreateWatchedColoniesMutation,
   CreateWatchedColoniesMutationVariables,
+  DomainColor,
   GetTokenFromEverywhereDocument,
   GetTokenFromEverywhereQuery,
   GetTokenFromEverywhereQueryVariables,
 } from '~gql';
 import { ColonyManager, ContextModule, getContext } from '~context';
 import {
+  ADDRESS_ZERO,
   DEFAULT_TOKEN_DECIMALS,
-  LATEST_ONE_TX_PAYMENT_VERSION,
+  supportedExtensionsConfig,
 } from '~constants';
 import { ActionTypes, Action, AllActions } from '~redux/index';
 import { createAddress } from '~utils/web3';
-import { TxConfig } from '~types';
 import { toNumber } from '~utils/numbers';
+import { getDomainDatabaseId } from '~utils/databaseId';
 
 import {
   transactionAddParams,
   transactionAddIdentifier,
-  transactionReady,
-  transactionLoadRelated,
   transactionPending,
 } from '../../actionCreators';
 import {
@@ -45,14 +60,15 @@ import {
   takeFrom,
   takeLatestCancellable,
   getColonyManager,
+  initiateTransaction,
 } from '../utils';
-import { createTransaction, createTransactionChannels } from '../transactions';
-
-interface ChannelDefinition {
-  channel: Channel<any>;
-  index: number;
-  id: string;
-}
+import {
+  ChannelDefinition,
+  createGroupTransaction,
+  createTransactionChannels,
+} from '../transactions';
+import { getOneTxPaymentVersion } from '../utils/extensionVersion';
+import { updateTransaction } from '../transactions/transactionsToDb';
 
 function* colonyCreate({
   meta,
@@ -61,13 +77,16 @@ function* colonyCreate({
     displayName,
     tokenAddress: givenTokenAddress,
     tokenChoice,
-    tokenName,
-    tokenSymbol,
+    tokenName = '',
+    tokenSymbol = '',
+    inviteCode,
+    tokenAvatar,
+    tokenThumbnail,
   },
 }: Action<ActionTypes.CREATE>) {
   const apolloClient = getContext(ContextModule.ApolloClient);
   const wallet = getContext(ContextModule.Wallet);
-  const walletAddress = wallet?.address;
+  const walletAddress = utils.getAddress(wallet.address);
   const colonyManager: ColonyManager = yield getColonyManager();
   const { networkClient } = colonyManager;
   const channelNames: string[] = [];
@@ -75,22 +94,17 @@ function* colonyCreate({
   /*
    * If the user opted to create a token, define a tx to create the token.
    */
-  if (tokenChoice === 'create') {
-    channelNames.push('createToken');
-  }
   channelNames.push('createColony');
   /*
    * If the user opted to create a token, define txs to manage the token.
    */
   if (tokenChoice === 'create') {
-    channelNames.push('deployTokenAuthority');
     channelNames.push('setTokenAuthority');
     channelNames.push('setOwner');
   }
 
   channelNames.push('deployOneTx');
-  channelNames.push('setOneTxRoleAdministration');
-  channelNames.push('setOneTxRoleFunding');
+  channelNames.push('setOneTxRoles');
 
   /*
    * Define a manifest of transaction ids and their respective channels.
@@ -101,60 +115,35 @@ function* colonyCreate({
     meta.id,
     channelNames,
   );
+
   const {
     createColony,
-    createToken,
     deployOneTx,
-    setOneTxRoleAdministration,
-    setOneTxRoleFunding,
-    deployTokenAuthority,
+    setOneTxRoles,
     setTokenAuthority,
     setOwner,
   } = channels;
 
-  const createGroupedTransaction = (
-    { id, index }: ChannelDefinition,
-    config: TxConfig,
-  ) =>
-    fork(createTransaction, id, {
-      ...config,
-      group: {
-        key: 'createColony',
-        id: meta.id,
-        index,
-      },
-    });
+  const batchKey = 'createColony';
+
+  if (!givenTokenAddress && (!tokenName || !tokenSymbol)) {
+    throw new Error(
+      'Token address not given or no token name or symbol provided',
+    );
+  }
 
   /*
    * Create all transactions for the group.
    */
   try {
-    if (createToken) {
-      yield createGroupedTransaction(createToken, {
-        context: ClientType.NetworkClient,
-        methodName: 'deployToken',
-        params: [tokenName, tokenSymbol, DEFAULT_TOKEN_DECIMALS],
-      });
-    }
-
-    if (createColony) {
-      yield createGroupedTransaction(createColony, {
-        context: ClientType.NetworkClient,
-        methodName: 'createColony(address,uint256,string,string)',
-        ready: false,
-      });
-    }
-
-    if (deployTokenAuthority) {
-      yield createGroupedTransaction(deployTokenAuthority, {
-        context: ClientType.NetworkClient,
-        methodName: 'deployTokenAuthority',
-        ready: false,
-      });
-    }
+    yield createGroupTransaction(createColony, batchKey, meta, {
+      context: ClientType.NetworkClient,
+      methodName: 'createColonyForFrontend',
+      ready: false,
+    });
 
     if (setTokenAuthority) {
-      yield createGroupedTransaction(setTokenAuthority, {
+      yield createGroupTransaction(setTokenAuthority, batchKey, meta, {
         context: ClientType.TokenClient,
         methodName: 'setAuthority',
         ready: false,
@@ -162,7 +151,7 @@ function* colonyCreate({
     }
 
     if (setOwner) {
-      yield createGroupedTransaction(setOwner, {
+      yield createGroupTransaction(setOwner, batchKey, meta, {
         context: ClientType.TokenClient,
         methodName: 'setOwner',
         ready: false,
@@ -170,27 +159,18 @@ function* colonyCreate({
     }
 
     if (deployOneTx) {
-      yield createGroupedTransaction(deployOneTx, {
+      yield createGroupTransaction(deployOneTx, batchKey, meta, {
         context: ClientType.ColonyClient,
         methodName: 'installExtension',
         ready: false,
       });
     }
 
-    if (setOneTxRoleAdministration) {
-      yield createGroupedTransaction(setOneTxRoleAdministration, {
+    if (setOneTxRoles) {
+      yield createGroupTransaction(setOneTxRoles, batchKey, meta, {
         context: ClientType.ColonyClient,
         methodContext: 'setOneTxRoles',
-        methodName: 'setAdministrationRoleWithProofs',
-        ready: false,
-      });
-    }
-
-    if (setOneTxRoleFunding) {
-      yield createGroupedTransaction(setOneTxRoleFunding, {
-        context: ClientType.ColonyClient,
-        methodContext: 'setOneTxRoles',
-        methodName: 'setFundingRoleWithProofs',
+        methodName: 'setUserRoles',
         ready: false,
       });
     }
@@ -198,7 +178,7 @@ function* colonyCreate({
     /*
      * Wait until all transactions are created.
      */
-    yield all(
+    const transactionCreatedActions = yield all(
       Object.keys(channels).map((id) =>
         takeFrom(channels[id].channel, ActionTypes.TRANSACTION_CREATED),
       ),
@@ -214,26 +194,66 @@ function* colonyCreate({
       payload: undefined,
     });
 
+    const usedTokenAddress = givenTokenAddress
+      ? createAddress(givenTokenAddress)
+      : ADDRESS_ZERO;
+
+    const currentColonyVersion = yield networkClient.getCurrentColonyVersion();
+
+    yield put(
+      transactionAddParams(createColony.id, [
+        usedTokenAddress,
+        tokenName,
+        tokenSymbol,
+        DEFAULT_TOKEN_DECIMALS,
+        currentColonyVersion,
+        givenColonyName,
+        '', // we aren't using ipfs to store metadata in the CDapp
+      ]),
+    );
+    yield initiateTransaction({ id: createColony.id });
+
+    const {
+      payload: { eventData },
+    } = yield takeFrom(createColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    const colonyAddress = eventData.ColonyAdded?.colonyAddress;
+    const tokenAddress =
+      eventData.TokenDeployed?.tokenAddress || usedTokenAddress;
+    const tokenAuthorityAddress =
+      eventData.TokenAuthorityDeployed?.tokenAuthorityAddress;
+
     /*
-     * For transactions that rely on the receipt/event data of previous transactions,
-     * wait for these transactions to succeed, collect the data, and apply it to
-     * the pending transactions.
+     * Update transactions saved in the db with the new colony address
+     * This is so that the Create Colony action group persists in the user's transaction history
      */
-    let tokenAddress: string;
-    if (createToken) {
-      const {
-        payload: { deployedContractAddress },
-      } = yield takeFrom(
-        createToken.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
+    yield all(
+      transactionCreatedActions.map(({ meta: { id } }) =>
+        updateTransaction({ id, colonyAddress }),
+      ),
+    );
+
+    if (!colonyAddress) {
+      return yield putError(
+        ActionTypes.CREATE_ERROR,
+        new Error('Colony address not provided'),
+        meta,
       );
-      tokenAddress = createAddress(deployedContractAddress);
-    } else {
-      if (!givenTokenAddress) {
-        throw new Error('Token address not provided');
-      }
-      tokenAddress = createAddress(givenTokenAddress);
     }
+    if (tokenAddress === ADDRESS_ZERO) {
+      return yield putError(
+        ActionTypes.CREATE_ERROR,
+        new Error('Token address not provided'),
+        meta,
+      );
+    }
+    const network: EthersNetwork = yield colonyManager.provider.getNetwork();
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
+    const isTokenLocked = yield colonyClient.tokenClient.locked();
+
     /*
      * Add token to db.
      * The query is resolved by "fetchTokenFromChain", which handles the mutation.
@@ -244,7 +264,11 @@ function* colonyCreate({
     >({
       query: GetTokenFromEverywhereDocument,
       variables: {
-        input: { tokenAddress },
+        input: {
+          tokenAddress,
+          avatar: tokenAvatar || null,
+          thumbnail: tokenThumbnail || null,
+        },
       },
     });
 
@@ -264,123 +288,129 @@ function* colonyCreate({
       },
     });
 
-    let colonyAddress;
-    if (createColony) {
-      const currentColonyVersion =
-        yield networkClient.getCurrentColonyVersion();
-
-      yield put(
-        transactionAddParams(createColony.id, [
-          tokenAddress,
-          currentColonyVersion,
-          givenColonyName,
-          '', // we aren't using ipfs to store metadata in the CDapp
-        ]),
-      );
-      yield put(transactionReady(createColony.id));
-
-      const {
-        payload: {
-          eventData: {
-            ColonyAdded: { colonyAddress: createdColonyAddress },
+    /*
+     * Create colony in db
+     */
+    yield apolloClient.mutate<
+      CreateUniqueColonyMutation,
+      CreateUniqueColonyMutationVariables
+    >({
+      mutation: CreateUniqueColonyDocument,
+      variables: {
+        input: {
+          id: colonyAddress,
+          name: givenColonyName,
+          colonyNativeTokenId: tokenAddress,
+          version: toNumber(currentColonyVersion),
+          chainMetadata: {
+            chainId: network.chainId,
           },
-        },
-      } = yield takeFrom(
-        createColony.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
-      colonyAddress = createdColonyAddress;
-
-      /*
-       * Create colony in db
-       */
-      yield apolloClient.mutate<
-        CreateUniqueColonyMutation,
-        CreateUniqueColonyMutationVariables
-      >({
-        mutation: CreateUniqueColonyDocument,
-        variables: {
-          input: {
-            id: colonyAddress,
-            name: givenColonyName,
-            colonyNativeTokenId: tokenAddress,
-            profile: { displayName },
-            version: toNumber(currentColonyVersion),
+          status: {
+            nativeToken: {
+              unlockable: tokenChoice === 'create',
+              unlocked: !isTokenLocked,
+              mintable: tokenChoice === 'create',
+            },
           },
+          userId: walletAddress,
+          inviteCode,
         },
-      });
+      },
+    });
 
-      /*
-       * Add token to colony's token list
-       */
-      yield apolloClient.mutate<
-        CreateColonyTokensMutation,
-        CreateColonyTokensMutationVariables
-      >({
-        mutation: CreateColonyTokensDocument,
-        variables: {
-          input: {
-            colonyID: colonyAddress,
-            tokenID: tokenAddress,
-          },
+    /**
+     * Save colony metadata to the db
+     */
+    yield apolloClient.mutate<
+      CreateColonyMetadataMutation,
+      CreateColonyMetadataMutationVariables
+    >({
+      mutation: CreateColonyMetadataDocument,
+      variables: {
+        input: {
+          id: colonyAddress,
+          displayName,
+          isWhitelistActivated: false,
         },
-      });
+      },
+    });
 
-      /*
-       * Subscribe user to colony
-       */
-      yield apolloClient.mutate<
-        CreateWatchedColoniesMutation,
-        CreateWatchedColoniesMutationVariables
-      >({
-        mutation: CreateWatchedColoniesDocument,
-        variables: {
-          input: {
-            colonyID: colonyAddress,
-            userID: walletAddress,
-          },
+    /*
+     * Add token to colony's token list
+     */
+    yield apolloClient.mutate<
+      CreateColonyTokensMutation,
+      CreateColonyTokensMutationVariables
+    >({
+      mutation: CreateColonyTokensDocument,
+      variables: {
+        input: {
+          colonyID: colonyAddress,
+          tokenID: tokenAddress,
         },
-      });
+      },
+    });
 
-      /*
-       * Create root domain
-       */
-      yield apolloClient.mutate<
-        CreateUniqueDomainMutation,
-        CreateUniqueDomainMutationVariables
-      >({
-        mutation: CreateUniqueDomainDocument,
-        variables: {
-          input: {
-            colonyAddress,
-          },
+    /*
+     * Subscribe user to colony
+     */
+    yield apolloClient.mutate<
+      CreateWatchedColoniesMutation,
+      CreateWatchedColoniesMutationVariables
+    >({
+      mutation: CreateWatchedColoniesDocument,
+      variables: {
+        input: {
+          colonyID: colonyAddress,
+          userID: walletAddress,
         },
-      });
+      },
+    });
 
-      if (!colonyAddress) {
-        return yield putError(
-          ActionTypes.CREATE_ERROR,
-          new Error('Missing colony address'),
-          meta,
-        );
-      }
+    /*
+     * Save root domain metadata to the database
+     */
+    yield apolloClient.mutate<
+      CreateDomainMetadataMutation,
+      CreateDomainMetadataMutationVariables
+    >({
+      mutation: CreateDomainMetadataDocument,
+      variables: {
+        input: {
+          id: getDomainDatabaseId(colonyAddress, Id.RootDomain),
+          color: DomainColor.LightPink,
+          name: 'Root',
+          description: '',
+        },
+      },
+    });
+    /**
+     * Create root domain in the database
+     * @NOTE: This is a temporary solution and this mutation should be called by block-ingestor on ColonyAdded event
+     */
+    const [skillId, fundingPotId] = yield colonyClient.getDomain(Id.RootDomain);
+    yield apolloClient.mutate<
+      CreateDomainMutation,
+      CreateDomainMutationVariables
+    >({
+      mutation: CreateDomainDocument,
+      variables: {
+        input: {
+          id: getDomainDatabaseId(colonyAddress, Id.RootDomain),
+          colonyId: colonyAddress,
+          isRoot: true,
+          nativeId: Id.RootDomain,
+          nativeSkillId: toNumber(skillId),
+          nativeFundingPotId: toNumber(fundingPotId),
+        },
+      },
+    });
 
-      yield put(transactionLoadRelated(createColony.id, true));
-    }
-
-    if (createColony) {
-      yield put(transactionLoadRelated(createColony.id, false));
-    }
     /*
      * Add a colonyAddress identifier to all pending transactions.
      */
     yield all(
-      [
-        deployTokenAuthority,
-        deployOneTx,
-        setOneTxRoleAdministration,
-        setOneTxRoleFunding,
-      ]
+      [deployOneTx, setOneTxRoles]
         .filter(Boolean)
         .map(({ id }) => put(transactionAddIdentifier(id, colonyAddress))),
     );
@@ -390,39 +420,15 @@ function* colonyCreate({
         .map(({ id }) => put(transactionAddIdentifier(id, tokenAddress))),
     );
 
-    if (deployTokenAuthority) {
-      /*
-       * Deploy TokenAuthority
-       */
-      const tokenLockingAddress = yield networkClient.getTokenLocking();
-      yield put(
-        transactionAddParams(deployTokenAuthority.id, [
-          tokenAddress,
-          colonyAddress,
-          [tokenLockingAddress],
-        ]),
-      );
-      yield put(transactionReady(deployTokenAuthority.id));
-      const {
-        payload: {
-          eventData: {
-            TokenAuthorityDeployed: {
-              tokenAuthorityAddress: deployedContractAddress,
-            },
-          },
-        },
-      } = yield takeFrom(
-        deployTokenAuthority.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
-
+    if (tokenAuthorityAddress) {
       /*
        * Set Token authority (to deployed TokenAuthority)
        */
       yield put(
-        transactionAddParams(setTokenAuthority.id, [deployedContractAddress]),
+        transactionAddParams(setTokenAuthority.id, [tokenAuthorityAddress]),
       );
-      yield put(transactionReady(setTokenAuthority.id));
+      yield initiateTransaction({ id: setTokenAuthority.id });
+
       yield takeFrom(
         setTokenAuthority.channel,
         ActionTypes.TRANSACTION_SUCCEEDED,
@@ -431,7 +437,7 @@ function* colonyCreate({
 
     if (setOwner) {
       yield put(transactionAddParams(setOwner.id, [colonyAddress]));
-      yield put(transactionReady(setOwner.id));
+      yield initiateTransaction({ id: setOwner.id });
       yield takeFrom(setOwner.channel, ActionTypes.TRANSACTION_SUCCEEDED);
     }
 
@@ -439,21 +445,19 @@ function* colonyCreate({
       /*
        * Deploy OneTx
        */
+      const oneTxHash = getExtensionHash(Extension.OneTxPayment);
+      const oneTxVersion = yield call(getOneTxPaymentVersion);
       yield put(
-        transactionAddParams(deployOneTx.id, [
-          getExtensionHash(Extension.OneTxPayment),
-          /* @TODO: get latest version of OneTxPayment extn programatically */
-          LATEST_ONE_TX_PAYMENT_VERSION || 0,
-        ]),
+        transactionAddParams(deployOneTx.id, [oneTxHash, oneTxVersion]),
       );
-      yield put(transactionReady(deployOneTx.id));
+      yield initiateTransaction({ id: deployOneTx.id });
 
       yield takeFrom(deployOneTx.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
       /*
        * Set OneTx administration role
        */
-      yield put(transactionPending(setOneTxRoleAdministration.id));
+      yield put(transactionPending(setOneTxRoles.id));
 
       const oneTxPaymentExtension = yield poll(
         async () => {
@@ -472,39 +476,31 @@ function* colonyCreate({
         },
       );
 
-      const extensionAddress = oneTxPaymentExtension.address;
-
-      yield put(
-        transactionAddParams(setOneTxRoleAdministration.id, [
-          extensionAddress,
-          Id.RootDomain,
-          true,
-        ]),
-      );
-      yield put(transactionReady(setOneTxRoleAdministration.id));
-      yield takeFrom(
-        setOneTxRoleAdministration.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
-
       /*
-       * Set OneTx funding role
+       * Generate proofs for setting permissions the the newly deployed OneTxPayment extension
        */
+      const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+        colonyClient.networkClient,
+        colonyClient,
+        Id.RootDomain,
+        [ColonyRole.Architecture, ColonyRole.Root],
+      );
+
+      const extensionConfig = supportedExtensionsConfig.find(
+        (config) => config.extensionId === Extension.OneTxPayment,
+      );
       yield put(
-        transactionAddParams(setOneTxRoleFunding.id, [
-          extensionAddress,
+        transactionAddParams(setOneTxRoles.id, [
+          permissionDomainId,
+          childSkillIndex,
+          oneTxPaymentExtension.address,
           Id.RootDomain,
-          true,
+          colonyRoles2Hex(extensionConfig?.neededColonyPermissions ?? []),
         ]),
       );
-      yield put(transactionReady(setOneTxRoleFunding.id));
+      yield initiateTransaction({ id: setOneTxRoles.id });
 
-      yield colonyManager.setColonyClient(colonyAddress);
-
-      yield takeFrom(
-        setOneTxRoleFunding.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
+      yield takeFrom(setOneTxRoles.channel, ActionTypes.TRANSACTION_SUCCEEDED);
     }
 
     return null;

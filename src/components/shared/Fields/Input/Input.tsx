@@ -1,154 +1,81 @@
-import React, { ReactNode, RefObject, useState } from 'react';
-import cx from 'classnames';
-import { CleaveOptions } from 'cleave.js/options';
-import { MessageDescriptor, useIntl } from 'react-intl';
-import { useField } from 'formik';
+import React, { InputHTMLAttributes, useState } from 'react';
+import classnames from 'classnames';
 import { nanoid } from 'nanoid';
+import { useFormContext } from 'react-hook-form';
+import { isConfusing } from '@colony/unicode-confusables-noascii';
+import { CleaveOptions } from 'cleave.js/options';
 
-import { SimpleMessageValues } from '~types';
+import { formatText } from '~utils/intl';
+import ConfusableWarning from '~shared/ConfusableWarning';
+import { Message } from '~types';
 
 import InputLabel from '../InputLabel';
 import InputStatus from '../InputStatus';
-import {
-  InputComponentAppearance as Appearance,
-  InputComponent,
-  InputComponentProps,
-} from '../Input';
+import { InputComponentAppearance } from '../Input';
+import InputComponent from './InputComponent';
+import { CoreInputProps, MaxButtonParams } from './types';
 
 import styles from './Input.css';
 
-export interface Props extends Omit<InputComponentProps, 'placeholder'> {
+export interface InputProps
+  extends CoreInputProps,
+    Omit<InputHTMLAttributes<HTMLInputElement>, 'placeholder' | 'name'> {
   /** Appearance object */
-  appearance?: Appearance;
-
-  /** Should display the input with the label hidden */
-  elementOnly?: boolean;
-
+  appearance?: InputComponentAppearance;
   /** Add extension of input to the right of it, i.e. for ENS name */
-  extensionString?: string | MessageDescriptor;
-
-  /** Extra node to render on the top right in the label */
-  extra?: ReactNode;
-
-  /** Options for cleave.js formatting (see [this list](https://github.com/nosir/cleave.js/blob/master/doc/options.md)) */
+  extensionString?: Message;
+  /** Memomized options object for cleave.js formatting (see [this list](https://github.com/nosir/cleave.js/blob/master/doc/options.md)). Be sure to ensure the object is either memoized or defined outside of the component. */
   formattingOptions?: CleaveOptions;
-
-  /** Help text */
-  help?: string | MessageDescriptor;
-
-  /** Help text values for intl interpolation */
-  helpValues?: SimpleMessageValues;
-
-  /** Html `id` for label & input */
-  id?: string;
-
-  /** Pass a ref to the `<input>` element */
-  innerRef?: RefObject<any> | ((ref: HTMLElement | null) => void);
-
-  /** Label text */
-  label?: string | MessageDescriptor;
-
-  /** Label text values for intl interpolation */
-  labelValues?: SimpleMessageValues;
-
-  /** Placeholder text */
-  placeholder?: string | MessageDescriptor;
-
-  /** Placeholder text values for intl interpolation */
-  placeholderValues?: SimpleMessageValues;
-
-  /** Status text */
-  status?: string | MessageDescriptor;
-
-  /** Status text values for intl interpolation */
-  statusValues?: SimpleMessageValues;
-
-  /** Set the input field to a disabled state */
-  disabled?: boolean;
-
-  /*
-   * Force the input component into an error state.
-   *
-   * This is to circumvent a issue in Formik where the fieldErrors object
-   * gets constantly overwritten, so you cannot actually do custom validaton,
-   * while also having a validationSchema declared.
-   *
-   * Note that this is visual only, it doesn't actually hook into the Form's state,
-   * this just "makes" the input field look like it has an error.
-   * Any error states need to be maintained externally of this.
-   *
-   * See: https://github.com/formium/formik/issues/706
-   */
-  forcedFieldError?: MessageDescriptor | string;
-
-  /** External on change hook */
-  onChange?: (e: React.ChangeEvent<any>) => void;
-  /** Testing */
-  dataTest?: string;
+  /** Will show a loading status beneath input if true. Takes priority over error and status. */
+  isLoading?: boolean;
+  /** Text displayed after the word "Loading", i.e. "Loading{annotation}...". */
+  loadingAnnotation?: Message;
+  /** Pass params to a max button - implemented only in Cleave options */
+  maxButtonParams?: MaxButtonParams;
+  /** Show ConfusableWarning based on user input */
+  showConfusable?: boolean;
 }
+
+const displayName = 'Input';
 
 const Input = ({
   appearance = {},
-  disabled,
   elementOnly,
   extensionString,
   extra,
-  formattingOptions,
   help,
   helpValues,
-  innerRef,
   id: idProp,
+  isLoading,
   label,
   labelValues,
+  loadingAnnotation,
   name,
-  placeholder: placeholderProp,
+  placeholder,
   placeholderValues,
+  showConfusable = false,
   status,
   statusValues,
-  forcedFieldError,
-  maxLength,
-  maxButtonParams,
-  dataTest,
-  onChange,
-}: Props) => {
+  ...restInputProps
+}: InputProps) => {
   const [id] = useState(idProp || nanoid());
-  const { formatMessage } = useIntl();
-  const [inputFieldProps, { error, touched }] = useField<string>(name);
+  const {
+    formState: { isValid },
+    watch,
+    getFieldState,
+  } = useFormContext();
 
-  const placeholder =
-    typeof placeholderProp === 'object'
-      ? formatMessage(placeholderProp, placeholderValues)
-      : placeholderProp;
+  const inputValue = watch(name);
+  const { error, isTouched: touched } = getFieldState(name);
+  const errorMessage = error?.message;
 
-  const inputProps: InputComponentProps = {
-    ...inputFieldProps,
-    appearance,
-    'aria-invalid': (!!error || !!forcedFieldError) && touched,
-    formattingOptions,
-    id,
-    innerRef,
-    name,
-    placeholder,
-    disabled,
-    maxLength,
-    maxButtonParams,
-    dataTest,
-    onChange: (event) => {
-      inputFieldProps.onChange(event);
-      if (onChange) {
-        onChange(event);
-      }
-    },
-  };
-
-  const extensionStringText: string | undefined =
-    !extensionString || typeof extensionString === 'string'
-      ? extensionString
-      : formatMessage(extensionString);
-
-  const containerClasses = cx(styles.container, {
+  const containerClasses = classnames(styles.container, {
     [styles.containerHorizontal]: appearance.direction === 'horizontal',
   });
+
+  const showConfusableWarning =
+    showConfusable && isConfusing(inputValue || '') && isValid && touched;
+
   return (
     <div className={containerClasses}>
       {label && (
@@ -164,24 +91,37 @@ const Input = ({
         />
       )}
       <div className={styles.extensionContainer}>
-        <InputComponent {...inputProps} />
-        {extensionStringText && (
-          <div className={styles.extension}>{extensionStringText}</div>
+        <InputComponent
+          appearance={appearance}
+          aria-invalid={!!error && !isLoading && touched}
+          id={id}
+          name={name}
+          placeholder={
+            placeholder ? formatText(placeholder, placeholderValues) : undefined
+          }
+          inputValueLength={inputValue?.length || 0}
+          {...restInputProps}
+        />
+        {extensionString && (
+          <div className={styles.extension}>{formatText(extensionString)}</div>
         )}
       </div>
       {!elementOnly && (
         <InputStatus
           appearance={appearance}
+          error={errorMessage}
+          isLoading={isLoading}
+          loadingAnnotation={loadingAnnotation}
           status={status}
           statusValues={statusValues}
-          error={error || forcedFieldError}
           touched={touched}
         />
       )}
+      {showConfusableWarning && <ConfusableWarning />}
     </div>
   );
 };
 
-Input.displayName = 'Input';
+Input.displayName = displayName;
 
 export default Input;

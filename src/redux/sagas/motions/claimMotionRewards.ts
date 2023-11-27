@@ -1,153 +1,115 @@
-import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, ExtensionClient } from '@colony/colony-js';
-import { $Values } from 'utility-types';
+import { all, call, put, takeEvery } from 'redux-saga/effects';
+import { ClientType, getPermissionProofs, ColonyRole } from '@colony/colony-js';
+import { ApolloQueryResult } from '@apollo/client';
 import { BigNumber } from 'ethers';
-import { isEmpty } from 'lodash';
+
+import { getContext, ContextModule, ColonyManager } from '~context';
+import {
+  GetColonyActionDocument,
+  GetColonyActionQuery,
+  GetColonyActionQueryVariables,
+} from '~gql';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { getContext, ContextModule } from '~context';
-import { TxConfig } from '~types';
-import {
-  ClaimableStakedMotionsDocument,
-  ClaimableStakedMotionsQuery,
-  ClaimableStakedMotionsQueryVariables,
-  UserBalanceWithLockDocument,
-  UserBalanceWithLockQuery,
-  UserBalanceWithLockQueryVariables,
-} from '~data/generated';
 
 import {
   ChannelDefinition,
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
-  getTxChannel,
 } from '../transactions';
 
 import {
-  updateMotionValues,
+  initiateTransaction,
   putError,
   takeFrom,
   getColonyManager,
 } from '../utils';
 
+export type ClaimMotionRewardsPayload =
+  Action<ActionTypes.MOTION_CLAIM>['payload'];
+
 function* claimMotionRewards({
   meta,
-  payload: { userAddress, colonyAddress, motionIds },
+  payload: { userAddress, colonyAddress, extensionAddress, transactionHash },
 }: Action<ActionTypes.MOTION_CLAIM>) {
-  const txChannel = yield call(getTxChannel, meta.id);
-  const apolloClient = getContext(ContextModule.ApolloClient);
-
   try {
-    const colonyManager = yield getColonyManager();
-    const votingReputationClient: ExtensionClient =
-      yield colonyManager.getClient(
-        ClientType.VotingReputationClient,
-        colonyAddress,
-      );
+    const apolloClient = getContext(ContextModule.ApolloClient);
+    const colonyManager: ColonyManager = yield call(getColonyManager);
+
+    const {
+      data: { getColonyAction },
+    }: ApolloQueryResult<GetColonyActionQuery> = yield apolloClient.query<
+      GetColonyActionQuery,
+      GetColonyActionQueryVariables
+    >({
+      query: GetColonyActionDocument,
+      variables: {
+        transactionHash,
+      },
+    });
+
+    const motionData = getColonyAction?.motionData;
+
+    if (!motionData) {
+      throw new Error('Could not retrieve motion from database');
+    }
+
+    const userRewards = motionData.stakerRewards.find(
+      ({ address }) => address === userAddress,
+    );
+
+    if (!userRewards) {
+      throw new Error('Could not find rewards for given user address');
+    }
+
+    const {
+      rewards: { yay, nay },
+    } = userRewards;
+
+    const hasYayClaim = !BigNumber.from(yay).isZero();
+    const hasNayClaim = !BigNumber.from(nay).isZero();
+
+    if (!hasYayClaim && !hasNayClaim) {
+      throw new Error('A motion with claims needs to be provided');
+    }
+
+    const YAY_ID = 'yayClaim';
+    const NAY_ID = 'nayClaim';
+
+    const channels: { [id: string]: ChannelDefinition } = yield call(
+      createTransactionChannels,
+      meta.id,
+      [...(hasYayClaim ? [YAY_ID] : []), ...(hasNayClaim ? [NAY_ID] : [])],
+    );
+
+    const BATCH_KEY = 'claimMotionRewards';
+
     const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );
 
-    /*
-     * We need to do the claim reward transaction, potentially for both sides,
-     * Once for yay and once of nay (if the user staked both sides)
-     *
-     * To do that we try to estimate both transactions, and the one that fails,
-     * we know there are no rewards to be claimed on that side
-     */
-    const motionWithYAYClaims: BigNumber[] = [];
-    const motionWithNAYClaims: BigNumber[] = [];
-
-    yield Promise.all(
-      motionIds.map(async (motionId) => {
-        try {
-          /*
-           * @NOTE For some reason colonyJS doesn't export types for the estimate methods
-           */
-          // @ts-ignore
-          await votingReputationClient.estimateGas.claimRewardWithProofs(
-            motionId,
-            userAddress,
-            1,
-          );
-          motionWithYAYClaims.push(motionId);
-        } catch (error) {
-          /*
-           * We don't want to handle the error here as we are doing this to
-           * inferr the user's reward
-           *
-           * This is a "cheaper" alternative to looking through events, since
-           * this doesn't use so many requests
-           */
-          // silent error
-        }
-        try {
-          /*
-           * @NOTE For some reason colonyJS doesn't export types for the estimate methods
-           */
-          // @ts-ignore
-          await votingReputationClient.estimateGas.claimRewardWithProofs(
-            motionId,
-            userAddress,
-            0,
-          );
-          motionWithNAYClaims.push(motionId);
-        } catch (error) {
-          /*
-           * We don't want to handle the error here as we are doing this to
-           * inferr the user's reward
-           *
-           * This is a "cheaper" alternative to looking through events, since
-           * this doesn't use so many requests
-           */
-          // silent error
-        }
-      }),
+    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient.networkClient,
+      colonyClient,
+      motionData.motionDomain.nativeId,
+      ColonyRole.Arbitration,
+      extensionAddress,
     );
-
-    const allMotionClaims = motionWithYAYClaims.concat(motionWithNAYClaims);
-
-    if (isEmpty(allMotionClaims)) {
-      throw new Error('A motion with claims needs to be provided');
-    }
-
-    const channelNames: string[] = [];
-
-    for (let index = 0; index < allMotionClaims.length; index += 1) {
-      channelNames.push(String(index));
-    }
-
-    const channels: { [id: string]: ChannelDefinition } = yield call(
-      createTransactionChannels,
-      meta.id,
-      channelNames,
-    );
-
-    const createGroupTransaction = (
-      { id, index }: $Values<typeof channels>,
-      config: TxConfig,
-    ) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: 'claimMotionRewards',
-          id: meta.id,
-          index,
-        },
-      });
 
     yield all(
       Object.keys(channels).map((id) =>
-        createGroupTransaction(channels[id], {
+        createGroupTransaction(channels[id], BATCH_KEY, meta, {
           context: ClientType.VotingReputationClient,
-          methodName: 'claimRewardWithProofs',
+          methodName: 'claimReward',
           identifier: colonyAddress,
           params: [
-            allMotionClaims[id],
+            motionData.motionId,
+            permissionDomainId,
+            childSkillIndex,
             userAddress,
-            parseInt(id, 10) > motionWithYAYClaims.length - 1 ? 0 : 1,
+            id === YAY_ID ? 1 : 0,
           ],
         }),
       ),
@@ -161,41 +123,15 @@ function* claimMotionRewards({
 
     yield all(
       Object.keys(channels).map((id) =>
-        takeFrom(channels[id].channel, ActionTypes.TRANSACTION_SUCCEEDED),
+        initiateTransaction({ id: channels[id].id }),
       ),
     );
 
     yield all(
-      [...new Set([...motionWithYAYClaims, ...motionWithNAYClaims])].map(
-        (motionId) =>
-          fork(updateMotionValues, colonyAddress, userAddress, motionId),
+      Object.keys(channels).map((id) =>
+        takeFrom(channels[id].channel, ActionTypes.TRANSACTION_SUCCEEDED),
       ),
     );
-
-    yield apolloClient.query<
-      ClaimableStakedMotionsQuery,
-      ClaimableStakedMotionsQueryVariables
-    >({
-      query: ClaimableStakedMotionsDocument,
-      variables: {
-        colonyAddress: colonyAddress.toLowerCase(),
-        walletAddress: userAddress.toLowerCase(),
-      },
-      fetchPolicy: 'network-only',
-    });
-
-    yield apolloClient.query<
-      UserBalanceWithLockQuery,
-      UserBalanceWithLockQueryVariables
-    >({
-      query: UserBalanceWithLockDocument,
-      variables: {
-        colonyAddress: colonyAddress.toLowerCase(),
-        address: userAddress.toLowerCase(),
-        tokenAddress: colonyClient.tokenClient.address.toLowerCase(),
-      },
-      fetchPolicy: 'network-only',
-    });
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_CLAIM_SUCCESS,
@@ -203,9 +139,8 @@ function* claimMotionRewards({
     });
   } catch (error) {
     return yield putError(ActionTypes.MOTION_CLAIM_ERROR, error, meta);
-  } finally {
-    txChannel.close();
   }
+
   return null;
 }
 

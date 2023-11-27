@@ -1,22 +1,21 @@
+import { BigNumber } from 'ethers';
 import { DocumentNode, OperationDefinitionNode } from 'graphql';
 import { TestContext, ValidationError, TestFunction } from 'yup';
+import moveDecimal from 'move-decimal-point';
 
 import { ContextModule, getContext } from '~context';
+import { Colony } from '~types';
+import { notNull } from '~utils/arrays';
 import { now } from '~utils/lodash';
-
 import {
-  cancelEarly,
-  cleanQueryName,
-  createUnknownError,
-  formatMessage,
-} from './helpers';
+  calculateFee,
+  getSelectedToken,
+  getTokenDecimalsWithFallback,
+} from '~utils/tokens';
+
+import { cancelEarly, createUnknownError, formatMessage } from './helpers';
 
 const apolloClient = getContext(ContextModule.ApolloClient);
-
-/* Map custom query names to actual query names */
-export const customQueries: Record<string, string> = {
-  GetFullColonyByName: 'getColonyByName',
-};
 
 /**
  * Run a query inside a TestFunction
@@ -35,6 +34,7 @@ export async function runQuery<Q, V>(
     const { data } = await apolloClient.query<Q, V>({
       query: queryDocument,
       variables,
+      fetchPolicy: 'no-cache',
     });
     return data;
   } catch (e) {
@@ -116,7 +116,7 @@ export function createYupTestFromQuery({
       );
     }
 
-    const result = await runQuery(
+    const result: object = await runQuery(
       query,
       {
         [variableKey]: value,
@@ -128,7 +128,7 @@ export function createYupTestFromQuery({
       return result;
     }
 
-    return !!(result as object)[cleanQueryName(queryName)]?.items.length;
+    return Object.keys(result).every((key) => !!result[key].items.length);
   }
 }
 
@@ -250,3 +250,40 @@ export function yupDebounce(
 
   return caller as TestFunction;
 }
+
+export const getHasEnoughBalanceTestFn = (
+  colony: Colony,
+  networkInverseFee?: string | undefined,
+) => {
+  const colonyBalances = colony.balances?.items?.filter(notNull) || [];
+  return (value: number | undefined, context: TestContext) => {
+    if (!value) {
+      return true;
+    }
+
+    const { fromDomainId, tokenAddress } = context.parent;
+    const selectedDomainBalance = colonyBalances.find(
+      (balance) =>
+        balance.token.tokenAddress === tokenAddress &&
+        balance.domain?.nativeId === fromDomainId,
+    );
+    const selectedToken = getSelectedToken(colony, tokenAddress);
+
+    if (!selectedDomainBalance || !selectedToken) {
+      return true;
+    }
+
+    const tokenDecimals = getTokenDecimalsWithFallback(selectedToken.decimals);
+
+    const amountWithFeesIncluded = networkInverseFee
+      ? calculateFee(value.toString(), networkInverseFee, tokenDecimals)
+          .totalToPay
+      : value;
+
+    const convertedAmount = BigNumber.from(
+      moveDecimal(amountWithFeesIncluded, tokenDecimals),
+    );
+
+    return convertedAmount.lte(selectedDomainBalance.balance);
+  };
+};

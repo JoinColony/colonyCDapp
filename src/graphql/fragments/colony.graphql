@@ -4,15 +4,6 @@ fragment Colony on Colony {
   nativeToken {
     ...Token
   }
-  profile {
-    avatar
-    bio
-    displayName
-    email
-    location
-    thumbnail
-    website
-  }
   status {
     recovery
     nativeToken {
@@ -21,47 +12,72 @@ fragment Colony on Colony {
       unlocked
     }
   }
-  meta {
+  chainMetadata {
     chainId
-    network
   }
   tokens {
+    ...ColonyTokensConnection
+  }
+  motionsWithUnclaimedStakes {
+    ...UnclaimedStakes
+  }
+  domains(sortDirection: ASC) {
     items {
-      token {
-        ...Token
-      }
+      ...Domain
     }
   }
-  domains {
+  balances {
+    ...ColonyBalances
+  }
+  fundsClaims {
     items {
-      color
-      description
-      id
-      name
-      nativeId
-      parentId: domainParentId
+      ...FundsClaim
     }
   }
-  watchers {
-    items {
-      ...Watcher
-    }
+  chainFundsClaim {
+    # For native chain tokens. Eg: Eth/Xdai
+    ...ChainFundsClaim
   }
   version
+  metadata {
+    ...ColonyMetadata
+  }
+  roles {
+    items {
+      ...ColonyRole
+    }
+  }
+  reputation
+  expendituresGlobalClaimDelay
+  private
 }
 
-fragment Watcher on WatchedColonies {
-  user {
-    walletAddress: id
-    name
-    profile {
-      avatar
-      bio
-      displayName
-      email
-      location
-      website
-      thumbnail
+fragment ColonyDisplay on Colony {
+  colonyAddress: id
+  name
+  metadata {
+    displayName
+    avatar
+    thumbnail
+  }
+}
+
+fragment ColonyTokensConnection on ModelColonyTokensConnection {
+  items {
+    colonyTokensId: id
+    token {
+      ...Token
+    }
+  }
+}
+
+fragment UnclaimedStakes on ColonyUnclaimedStake {
+  motionId
+  unclaimedRewards {
+    address
+    rewards {
+      nay
+      yay
     }
   }
 }
@@ -69,14 +85,12 @@ fragment Watcher on WatchedColonies {
 fragment WatchedColony on Colony {
   colonyAddress: id
   name
-  profile {
-    avatar
-    displayName
-    thumbnail
-  }
-  meta {
+  chainMetadata {
     chainId
     network
+  }
+  metadata {
+    ...ColonyMetadata
   }
 }
 
@@ -85,4 +99,107 @@ fragment WatchListItem on WatchedColonies {
     ...WatchedColony
   }
   createdAt
+}
+
+fragment ColonyMetadata on ColonyMetadata {
+  displayName
+  avatar
+  description
+  externalLinks {
+    name
+    link
+  }
+  thumbnail
+  isWhitelistActivated
+  whitelistedAddresses
+  modifiedTokenAddresses {
+    added
+    removed
+  }
+  objective {
+    ...ColonyObjective
+  }
+  changelog {
+    transactionHash
+    newDisplayName
+    oldDisplayName
+    hasAvatarChanged
+    hasWhitelistChanged
+    haveTokensChanged
+    hasDescriptionChanged
+    haveExternalLinksChanged
+    hasObjectiveChanged
+    newSafes {
+      ...Safe
+    }
+    oldSafes {
+      ...Safe
+    }
+  }
+  safes {
+    ...Safe
+  }
+}
+
+fragment ColonyBalances on ColonyBalances {
+  items {
+    ...ColonyBalance
+  }
+}
+
+fragment ColonyBalance on ColonyBalance {
+  id
+  balance
+  domain {
+    ...Domain
+  }
+  token {
+    ...Token
+  }
+}
+
+fragment FundsClaim on ColonyFundsClaim {
+  id
+  token {
+    ...Token
+  }
+  createdAtBlock
+  createdAt
+  amount
+}
+
+fragment ChainFundsClaim on ColonyChainFundsClaim {
+  id
+  createdAtBlock
+  createdAt
+  amount
+}
+
+fragment ColonyRole on ColonyRole {
+  id
+  domain {
+    id
+    # @TODO Make a "Light" fragment out of this
+    nativeId
+  }
+  targetAddress
+  role_0
+  role_1
+  role_2
+  role_3
+  role_5
+  role_6
+}
+
+fragment Safe on Safe {
+  name
+  address
+  chainId
+  moduleContractAddress
+}
+
+fragment ColonyObjective on ColonyObjective {
+  title
+  description
+  progress
 }

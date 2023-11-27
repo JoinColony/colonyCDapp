@@ -1,4 +1,5 @@
 const { utils } = require('ethers');
+const crypto = require('crypto');
 
 const { graphqlRequest } = require('./utils');
 
@@ -11,24 +12,98 @@ const {
   getColony,
   createColony,
   getTokenByAddress,
-  createProfile,
+  getInviteCodeValidity,
+  updateInviteCodeValidity,
+  updateUser,
 } = require('./graphql');
 
-/*
- * @TODO These values need to be imported properly, and differentiate based on environment
- */
-const API_KEY = 'da2-fakeApiId123456';
-const GRAPHQL_URI = 'http://localhost:20002/graphql';
+let apiKey = 'da2-fakeApiId123456';
+let graphqlURL = 'http://localhost:20002/graphql';
+
+const setEnvVariables = async () => {
+  const ENV = process.env.ENV;
+  if (ENV === 'qa' || ENV === 'sc') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [apiKey, graphqlURL] = await getParams(['appsyncApiKey', 'graphqlUrl']);
+  }
+};
 
 exports.handler = async (event) => {
+  try {
+    await setEnvVariables();
+  } catch (e) {
+    throw new Error('Unable to set environment variables. Reason:', e);
+  }
+
   const {
     id: colonyAddress,
     name,
-    profile,
     colonyNativeTokenId,
     type = 'COLONY',
     version,
+    chainMetadata,
+    status,
+    inviteCode,
+    userId,
   } = event.arguments?.input || {};
+
+  /*
+   * Validate invite code
+   */
+  if (!(inviteCode === 'dev' && process.env.ENV === 'dev')) {
+    const inviteCodeQuery = await graphqlRequest(
+      getInviteCodeValidity,
+      { id: inviteCode },
+      graphqlURL,
+      apiKey,
+    );
+
+    const { shareableInvites, userId: inviteCodeUserId } =
+      inviteCodeQuery?.data?.getPrivateBetaInviteCode || {};
+
+    if (shareableInvites === 0) {
+      throw new Error(`Invite code is not valid`);
+    }
+
+    const inviteCodeMutation = await graphqlRequest(
+      updateInviteCodeValidity,
+      {
+        input: {
+          id: inviteCode,
+          shareableInvites: shareableInvites - 1,
+          userId: inviteCodeUserId || userId,
+        },
+      },
+      graphqlURL,
+      apiKey,
+    );
+
+    if (inviteCodeMutation.errors || !inviteCodeMutation.data) {
+      const [error] = inviteCodeMutation.errors;
+      throw new Error(
+        error?.message || `Could not update ${inviteCode} validity`,
+      );
+    }
+
+    if (!inviteCodeUserId) {
+      const userMutation = await graphqlRequest(
+        updateUser,
+        {
+          input: {
+            id: userId,
+            userPrivateBetaInviteCodeId: inviteCode,
+          },
+        },
+        graphqlURL,
+        apiKey,
+      );
+
+      if (userMutation.errors || !inviteCodeMutation.data) {
+        const [error] = userMutation.errors;
+        throw new Error(error?.message || `Could not update ${user} validity`);
+      }
+    }
+  }
 
   /*
    * Validate Colony and Token addresses
@@ -63,8 +138,8 @@ exports.handler = async (event) => {
   const colonyQuery = await graphqlRequest(
     getColony,
     { id: checksummedAddress, name },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   if (colonyQuery.errors || !colonyQuery.data) {
@@ -105,8 +180,8 @@ exports.handler = async (event) => {
   const tokenQuery = await graphqlRequest(
     getTokenByAddress,
     { id: checksummedToken },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   if (tokenQuery.errors || !tokenQuery.data) {
@@ -126,21 +201,6 @@ exports.handler = async (event) => {
   }
 
   /*
-   * Create the colony profile
-   */
-  await graphqlRequest(
-    createProfile,
-    {
-      input: {
-        id: checksummedAddress,
-        ...profile,
-      },
-    },
-    GRAPHQL_URI,
-    API_KEY,
-  );
-
-  /*
    * Create the colony
    */
   const mutation = await graphqlRequest(
@@ -148,23 +208,20 @@ exports.handler = async (event) => {
     {
       input: {
         id: checksummedAddress,
-        colonyNativeTokenId: checksummedToken,
+        nativeTokenId: checksummedToken,
         name,
         type,
-        profileId: checksummedAddress,
-        /*
-         * @TODO These need to be properly added once Lambda Functions
-         * have the concept of chains
-         */
-        meta: {
-          chainId: 2656691,
-          network: 'GANACHE',
-        },
+        chainMetadata,
         version,
+        status,
+        colonyMemberInvite: {
+          code: crypto.randomUUID(),
+          used: 0,
+        },
       },
     },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   if (mutation.errors || !mutation.data) {

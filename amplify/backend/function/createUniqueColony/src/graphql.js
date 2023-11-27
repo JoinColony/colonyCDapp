@@ -56,14 +56,29 @@ module.exports = {
       }
     }
   `,
-  createProfile: /* GraphQL */ `
-    mutation CreateProfile(
-      $input: CreateProfileInput!
-      $condition: ModelProfileConditionInput
+  getInviteCodeValidity: /* GraphQL */ `
+    query GetInviteCodeValidity($id: ID!) {
+      getPrivateBetaInviteCode(id: $id) {
+        shareableInvites
+        userId
+      }
+    }
+  `,
+  updateInviteCodeValidity: /* GraphQL */ `
+    mutation UpdateInviteCodeValidity(
+      $input: UpdatePrivateBetaInviteCodeInput!
+      $condition: ModelPrivateBetaInviteCodeConditionInput
     ) {
-      createProfile(input: $input, condition: $condition) {
+      updatePrivateBetaInviteCode(input: $input, condition: $condition) {
         id
       }
-    } 
+    }
+  `,
+  updateUser: /* GraphQL */ `
+    mutation UpdateUser($input: UpdateUserInput!) {
+      updateUser(input: $input) {
+        id
+      }
+    }
   `,
 };

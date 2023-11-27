@@ -8,7 +8,7 @@ import { providers } from 'ethers';
 
 import { DEFAULT_NETWORK } from '~constants';
 import { ContextModule, getContext } from '~context';
-import { Network, ColonyJSNetworkMapping } from '~types';
+import { ColonyJSNetworkMapping, Network, isFullWallet } from '~types';
 
 /*
  * Return an initialized ColonyNetworkClient instance.
@@ -16,7 +16,9 @@ import { Network, ColonyJSNetworkMapping } from '~types';
 export default function* getNetworkClient() {
   const wallet = getContext(ContextModule.Wallet);
 
-  if (!wallet) throw new Error('No wallet in context');
+  if (!isFullWallet(wallet)) {
+    throw new Error('Background login not yet completed.');
+  }
 
   const network = DEFAULT_NETWORK;
 
@@ -24,17 +26,20 @@ export default function* getNetworkClient() {
 
   const signer = walletProvider.getSigner();
 
-  let reputationOracleUrl = new URL(`/reputation`, window.location.origin);
+  const reputationOracleUrl = process.env.REPUTATION_ORACLE_ENDPOINT
+    ? new URL(process.env.REPUTATION_ORACLE_ENDPOINT)
+    : new URL(`/reputation`, window.location.origin);
 
-  if (DEFAULT_NETWORK === Network.Ganache) {
-    reputationOracleUrl = new URL(`/reputation`, 'http://localhost:3001');
+  // @ts-ignore
+  if (!WEBPACK_IS_PRODUCTION && process.env.NETWORK === Network.Ganache) {
+    const localOracle = new URL(`/reputation/local`, 'http://localhost:3001');
     const {
       etherRouterAddress: networkAddress,
       // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
     } = require('../../../../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
     return yield call(getColonyNetworkClient, ColonyJSNetwork.Custom, signer, {
       networkAddress,
-      reputationOracleEndpoint: reputationOracleUrl.href,
+      reputationOracleEndpoint: localOracle.href,
     });
   }
 

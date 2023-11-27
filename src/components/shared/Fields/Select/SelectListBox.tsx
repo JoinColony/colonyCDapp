@@ -9,11 +9,11 @@ import styles from './SelectListBox.css';
 
 const displayName = 'SelectListBox';
 
-interface Props {
+interface Props<V = string | number> {
   appearance?: Appearance;
   checkedOption: number;
   listboxId: string;
-  options: SelectOptionType[];
+  options: SelectOptionType<V>[];
   optionsFooter?: ReactNode;
   selectedOption: number;
   name: string;
@@ -25,7 +25,7 @@ interface Props {
 const getOptionId = (name, idx) =>
   idx >= 0 ? `${name}-listbox-entry-${idx}` : '';
 
-const SelectListBox = ({
+const SelectListBox = <V,>({
   appearance,
   listboxId,
   options,
@@ -36,7 +36,7 @@ const SelectListBox = ({
   onClick,
   name,
   dataTest,
-}: Props) => {
+}: Props<V>) => {
   const activeDescendantOption = options.find(
     (_, idx) => selectedOption === idx,
   );

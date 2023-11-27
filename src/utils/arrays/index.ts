@@ -159,8 +159,27 @@ export const arrayToObject = (arr: any[]) =>
 // To filter arrays
 export const notUndefined = <T>(x: T | undefined): x is T => x !== undefined;
 export const notNull = <T>(x: T | null): x is T => x !== null;
+export const notMaybe = <T>(x: T | null | undefined): x is T =>
+  x !== null && x !== undefined;
 
 export const immutableSort = <T>(
   arr: T[],
   sortFn?: (a: T, b: T) => number,
 ): any[] => [...arr].sort(sortFn);
+
+/**
+ * ItemType
+ * @desc From array type `T` get type of single item
+ * @example
+ *    type ItemsArray = { name: string; age: number }[];
+ *
+ *    // Expect: { name: string; age: number }
+ *    type Item = ItemType<ItemsArray>;
+ */
+export type ItemType<ArrayType extends unknown[]> = ArrayType[number];
+
+export type UnionOfArraysToArrayOfUnions<T extends unknown[]> = ItemType<T>[];
+
+export const unionOfArraysToArrayOfUnions = <T extends unknown[]>(
+  array: T,
+): UnionOfArraysToArrayOfUnions<T> => array;

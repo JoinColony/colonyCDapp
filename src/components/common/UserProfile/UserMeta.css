@@ -43,7 +43,7 @@
 
 .avatar {
   border-radius: 50%;
-  box-shadow: 0 0 20px var(--temp-grey-blue-2);
+  box-shadow: 0 0 20px var(--light-grey);
 }
 
 @media screen and query700 {

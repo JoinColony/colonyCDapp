@@ -1,0 +1,55 @@
+fragment Expenditure on Expenditure {
+  id
+  nativeId
+  ownerAddress
+  status
+  slots {
+    ...ExpenditureSlot
+  }
+  nativeFundingPotId
+  nativeDomainId
+  metadata {
+    fundFromDomainNativeId
+    stages {
+      ...ExpenditureStage
+    }
+    stakeAmount
+  }
+  balances {
+    tokenAddress
+    amount
+    requiredAmount
+  }
+  finalizedAt
+  hasReclaimedStake
+  motions {
+    items {
+      ...ColonyMotion
+    }
+  }
+  type
+  isStaked
+  isStakeForfeited
+}
+
+fragment ExpenditureSlot on ExpenditureSlot {
+  id
+  recipientAddress
+  claimDelay
+  payoutModifier
+  payouts {
+    ...ExpenditurePayout
+  }
+}
+
+fragment ExpenditurePayout on ExpenditurePayout {
+  tokenAddress
+  amount
+  isClaimed
+}
+
+fragment ExpenditureStage on ExpenditureStage {
+  slotId
+  name
+  isReleased
+}

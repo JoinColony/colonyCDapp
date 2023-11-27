@@ -1,0 +1,17 @@
+query GetColonyExtensionsByColonyAddress($colonyAddress: ID!) {
+  getExtensionByColonyAndHash(colonyId: $colonyAddress) {
+    items {
+      id
+    }
+  }
+}
+
+query GetExtensionInstallationsCount($id: ID!) {
+  getExtensionInstallationsCount(id: $id) {
+    oneTxPayment
+    stakedExpenditure
+    stagedExpenditure
+    streamingPayments
+    reputationWeighted
+  }
+}

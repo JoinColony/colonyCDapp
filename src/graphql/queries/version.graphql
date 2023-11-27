@@ -15,3 +15,11 @@ query GetCurrentExtensionVersion($extensionHash: String!) {
     }
   }
 }
+
+query GetCurrentColonyVersion {
+  getCurrentVersionByKey(key: "colony") {
+    items {
+      version
+    }
+  }
+}

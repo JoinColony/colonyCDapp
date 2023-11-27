@@ -17,6 +17,7 @@ export interface Props
 
   /** Use the thumbnail instead of the avatar image */
   preferThumbnail?: boolean;
+  externalAvatar?: string;
 }
 
 const displayName = 'ColonyAvatar';
@@ -25,23 +26,26 @@ const ColonyAvatar = ({
   colonyAddress,
   colony,
   showLink,
+  externalAvatar,
   preferThumbnail = true,
   ...avatarProps
 }: Props) => {
-  const { profile, name } = colony || {};
-  const imageString = preferThumbnail ? profile?.thumbnail : profile?.avatar;
+  const { metadata, name } = colony || {};
+  const imageString = preferThumbnail ? metadata?.thumbnail : metadata?.avatar;
   const colonyAvatar = (
     <Avatar
-      avatar={imageString}
+      avatar={externalAvatar || imageString}
       placeholderIcon="at-sign-circle"
       seed={colonyAddress && colonyAddress.toLowerCase()}
-      title={profile?.displayName || name || colonyAddress}
+      title={metadata?.displayName || name || colonyAddress}
       {...avatarProps}
     />
   );
+
   if (showLink && name) {
-    return <NavLink to={`/colony/${name}`}>{colonyAvatar}</NavLink>;
+    return <NavLink to={`/${name}`}>{colonyAvatar}</NavLink>;
   }
+
   return colonyAvatar;
 };
 

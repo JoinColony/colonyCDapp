@@ -3,13 +3,13 @@ import { TransactionReceipt } from '@ethersproject/providers';
 import {
   MethodParams,
   TxConfig,
-  TRANSACTION_STATUSES,
-  TRANSACTION_ERRORS,
+  TransactionErrors,
+  TransactionStatus,
 } from '~types';
-
 import { ActionTypes } from '../actionTypes';
 import { AllActions } from '../types/actions';
 import { GasPricesProps, TransactionError } from '../immutable';
+import { TransactionSucceededPayload } from '~redux/types/actions/transaction';
 
 export const createTransactionAction = (
   id: string,
@@ -40,9 +40,7 @@ export const createTransactionAction = (
     options,
     params,
     status:
-      ready === false
-        ? TRANSACTION_STATUSES.CREATED
-        : TRANSACTION_STATUSES.READY,
+      ready === false ? TransactionStatus.Created : TransactionStatus.Ready,
     metatransaction,
     title,
     titleValues,
@@ -68,27 +66,27 @@ const transactionError = (
 
 export const transactionEstimateError = transactionError.bind(
   null,
-  TRANSACTION_ERRORS.ESTIMATE,
+  TransactionErrors.Estimate,
 );
 
 export const transactionEventDataError = transactionError.bind(
   null,
-  TRANSACTION_ERRORS.EVENT_DATA,
+  TransactionErrors.EventData,
 );
 
 export const transactionReceiptError = transactionError.bind(
   null,
-  TRANSACTION_ERRORS.RECEIPT,
+  TransactionErrors.Receipt,
 );
 
 export const transactionSendError = transactionError.bind(
   null,
-  TRANSACTION_ERRORS.SEND,
+  TransactionErrors.Send,
 );
 
 export const transactionUnsuccessfulError = transactionError.bind(
   null,
-  TRANSACTION_ERRORS.UNSUCCESSFUL,
+  TransactionErrors.Unsuccessful,
 );
 
 export const transactionReceiptReceived = (
@@ -121,12 +119,7 @@ export const transactionHashReceived = (
 
 export const transactionSucceeded = (
   id: string,
-  payload: {
-    eventData: object;
-    params: MethodParams;
-    receipt: TransactionReceipt;
-    deployedContractAddress?: string;
-  },
+  payload: TransactionSucceededPayload,
   metatransaction = false,
 ): AllActions => ({
   type: ActionTypes.TRANSACTION_SUCCEEDED,
@@ -164,6 +157,11 @@ export const transactionPending = (id: string): AllActions => ({
 
 export const transactionEstimateGas = (id: string): AllActions => ({
   type: ActionTypes.TRANSACTION_ESTIMATE_GAS,
+  meta: { id },
+});
+
+export const transactionRetry = (id: string): AllActions => ({
+  type: ActionTypes.TRANSACTION_RETRY,
   meta: { id },
 });
 

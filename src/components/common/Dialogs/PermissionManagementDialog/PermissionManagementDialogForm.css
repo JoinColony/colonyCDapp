@@ -1,0 +1,30 @@
+.singleUserContainer {
+  margin-top: 20px;
+  margin-bottom: 48px;
+}
+
+.singleUserContainer label {
+  margin-bottom: 15px;
+  color: var(--dark);
+}
+
+.singleUserContainer > div {
+  padding-left: 0;
+}
+
+.domainSelectContainer {
+  margin-bottom: 25px;
+}
+
+.domainSelectContainer label {
+  color: var(--dark);
+}
+
+.domainSelectContainer > div > div > ul {
+  z-index: var(--z-index-positioning);
+}
+
+.permissionChoiceContainer {
+  margin-bottom: 50px;
+  border-top: 1px solid color-mod(var(--dark-grey) alpha(15%));
+}

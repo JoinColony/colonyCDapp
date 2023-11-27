@@ -24,6 +24,7 @@ interface Props extends NumeralProps {
 
   /** Should the suffix be visible? */
   showSuffix?: boolean;
+  placeholder?: string;
 
   /** Ether unit the number is notated in (e.g. 'ether' = 10^18 wei) */
   unit?: string;
@@ -36,7 +37,9 @@ const EthUsd = ({
   showPrefix = true,
   showSuffix = true,
   unit = 'ether',
+  placeholder,
   value,
+  className,
   ...rest
 }: Props) => {
   const [valueUsd, setValueUsd] = useState<number | undefined>();
@@ -47,6 +50,10 @@ const EthUsd = ({
   const suffixText = formatMessage(MSG.usdAbbreviation);
 
   useEffect(() => {
+    if (!value) {
+      return () => {};
+    }
+
     let didCancel = false;
 
     setIsLoading(true);
@@ -86,9 +93,10 @@ const EthUsd = ({
 
   return (
     <Numeral
+      className={className}
       prefix={showPrefix && valueUsd ? '~ ' : ''}
       suffix={showSuffix ? ` ${suffixText}` : ''}
-      value={valueUsd || '-'}
+      value={valueUsd || placeholder || '-'}
       {...rest}
     />
   );

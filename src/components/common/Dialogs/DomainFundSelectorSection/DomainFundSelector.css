@@ -1,0 +1,33 @@
+.domainPotBalance {
+  height: 0px;
+  position: relative;
+  bottom: 14px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  text-align: right;
+  color: var(--grey-purple);
+}
+
+.selectDomainContainer label {
+  font-size: var(--size-smallish);
+  color: var(--dark);
+}
+
+.transferIcon {
+  align-self: center;
+  height: 26px;
+  width: 26px;
+  position: relative;
+  top: 0;
+  justify-self: center;
+}
+
+.transferIcon svg {
+  fill: var(--grey-purple);
+}
+
+.selectBetweenDomainsContainer {
+  display: grid;
+  width: 100%;
+  grid-template-columns: calc(50% - 25px) 50px calc(50% - 25px);
+}

@@ -1,15 +1,26 @@
-export const newInfoBlue: string;
-export const main: string;
-export const closeButton: string;
-export const themePrimary: string;
-export const themeInfo: string;
-export const themeDanger: string;
-export const themePinky: string;
-export const sizeSmall: string;
-export const borderRadiusSmall: string;
-export const borderRadiusMedium: string;
-export const borderRadiusLarge: string;
-export const borderRadiusRound: string;
-export const borderRadiusNone: string;
-export const marginDefault: string;
-export const marginNone: string;
+declare namespace AlertCssNamespace {
+  export interface IAlertCss {
+    borderRadiusLarge: string;
+    borderRadiusMedium: string;
+    borderRadiusNone: string;
+    borderRadiusRound: string;
+    borderRadiusSmall: string;
+    closeButton: string;
+    main: string;
+    marginDefault: string;
+    marginNone: string;
+    newInfoBlue: string;
+    sizeSmall: string;
+    themeDanger: string;
+    themeInfo: string;
+    themePinky: string;
+    themePrimary: string;
+  }
+}
+
+declare const AlertCssModule: AlertCssNamespace.IAlertCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: AlertCssNamespace.IAlertCss;
+};
+
+export = AlertCssModule;

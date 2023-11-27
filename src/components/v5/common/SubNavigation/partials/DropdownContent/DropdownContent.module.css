@@ -1,0 +1,11 @@
+.listWrapper {
+  @apply my-4 sm:mt-2;
+}
+
+.buttonWrapper {
+  @apply flex justify-center pt-6 mx-6 border-t border-gray-200;
+}
+
+.infoWrapper {
+  @apply flex items-center justify-center mt-6 mb-6;
+}
