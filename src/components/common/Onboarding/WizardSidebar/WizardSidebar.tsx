@@ -49,7 +49,7 @@ const WizardSidebar = ({
 }: Props) => (
   <nav className="flex flex-col border border-gray-200 rounded-lg p-6 h-full">
     <Link to={LANDING_PAGE_ROUTE} className="w-fit h-fit mb-10">
-      <Icon name="colony-icon" appearance={{ size: 'large' }} />
+      <Icon name="colony-icon" appearance={{ size: 'largeSmall' }} />
     </Link>
     <Heading3
       appearance={{ theme: 'dark' }}
@@ -86,7 +86,11 @@ const WizardSidebar = ({
         </div>
       </div>
       <div className="text-sm text-gray-400">
-        <Icon name="question" className="mb-1.5 [&>svg]:fill-gray-900" />
+        <Icon
+          name="question"
+          className="mb-1.5 [&>svg]:fill-gray-900"
+          appearance={{ size: 'small' }}
+        />
         <div className="text-gray-900">
           <FormattedMessage {...MSG.guidance} />
         </div>
