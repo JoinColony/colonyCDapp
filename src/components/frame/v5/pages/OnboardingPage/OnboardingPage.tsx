@@ -19,18 +19,18 @@ const OnboardingPage = ({ flow }: Props) => {
   const { inviteCode } = useParams<{ inviteCode: string }>();
   // @TODO: handle errors, fix the stupid hook problem
   const { data, loading } = useGetPrivateBetaCodeInviteValidityQuery({
-    skip: !inviteCode,
+    skip: !inviteCode || flow === 'user',
     variables: { id: inviteCode || '' },
   });
   const valid = (data?.getPrivateBetaInviteCode?.shareableInvites || 0) > 0;
 
-  if (flow === 'colony' && (!inviteCode || !valid)) {
-    return <Navigate to={LANDING_PAGE_ROUTE} />;
-  }
-
   if (walletConnecting || userLoading || loading) {
     // FIX: add loading spinner
     return null;
+  }
+
+  if (flow === 'colony' && !valid) {
+    return <Navigate to={LANDING_PAGE_ROUTE} />;
   }
 
   if (!wallet) {
