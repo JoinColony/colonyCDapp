@@ -46,7 +46,6 @@ import {
   COLONY_MEMBERS_ROUTE,
   COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
   CREATE_COLONY_ROUTE,
-  CREATE_USER_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
   USER_ROUTE,
   NOT_FOUND_ROUTE,
@@ -74,6 +73,7 @@ import {
   OLD_ACTIONS_PAGE_ROUTE,
   COLONY_INCOMING_ROUTE,
   COLONY_SPLASH_ROUTE,
+  CREATE_PROFILE_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -128,7 +128,7 @@ const Routes = () => {
         </Route>
 
         <Route
-          path={CREATE_USER_ROUTE}
+          path={CREATE_PROFILE_ROUTE}
           element={<OnboardingPage flow="user" />}
         />
 
