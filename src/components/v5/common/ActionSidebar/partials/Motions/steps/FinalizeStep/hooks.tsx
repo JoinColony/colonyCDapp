@@ -17,7 +17,12 @@ import { RefetchAction } from '~common/ColonyActions/ActionDetailsPage/useGetCol
 
 export const useFinalizeStep = (actionData: MotionAction) => {
   const {
-    motionData: { nativeMotionDomainId, motionId, gasEstimate },
+    motionData: {
+      nativeMotionDomainId,
+      motionId,
+      gasEstimate,
+      motionStateHistory,
+    },
     type,
     amount,
     fromDomain,
@@ -41,9 +46,10 @@ export const useFinalizeStep = (actionData: MotionAction) => {
     type !== ColonyActionType.EmitDomainReputationRewardMotion;
 
   const isFinalizable =
-    !requiresDomainFunds ||
-    // Safe casting since if requiresDomainFunds is true, we know amount is a string
-    BigNumber.from(domainBalance ?? '0').gte(amount as string);
+    (!requiresDomainFunds ||
+      // Safe casting since if requiresDomainFunds is true, we know amount is a string
+      BigNumber.from(domainBalance ?? '0').gte(amount as string)) &&
+    !motionStateHistory.hasFailedNotFinalizable;
 
   const transform = mapPayload(
     (): MotionFinalizePayload => ({

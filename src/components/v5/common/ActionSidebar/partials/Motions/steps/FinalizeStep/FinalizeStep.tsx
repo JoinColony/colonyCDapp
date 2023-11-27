@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { ActionTypes } from '~redux';
 
 import { formatText } from '~utils/intl';
-import Button, { TxButton } from '~v5/shared/Button';
+import Button, { PendingButton } from '~v5/shared/Button';
 import { ActionForm } from '~shared/Fields';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
 import DescriptionList from '../VotingStep/partials/DescriptionList';
@@ -10,7 +10,7 @@ import { useClaimConfig, useFinalizeStep } from './hooks';
 import { FinalizeStepProps, FinalizeStepSections } from './types';
 import PillsBase from '~v5/common/Pills';
 import { useAppContext, useColonyContext } from '~hooks';
-import Icon from '~shared/Icon';
+// import Icon from '~shared/Icon';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.FinalizeStep';
@@ -62,7 +62,10 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     transform: finalizePayload,
     onSuccess: handleSuccess,
   };
-  if (actionData.motionData.isFinalized) {
+  if (
+    actionData.motionData.isFinalized ||
+    actionData.motionData.motionStateHistory.hasFailedNotFinalizable
+  ) {
     action = {
       actionType: ActionTypes.MOTION_CLAIM,
       transform: claimPayload,
@@ -140,33 +143,25 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                         text={formatText({ id: 'motion.finalizeStep.submit' })}
                         type="submit"
                       />
-                    </span>
-                  }
-                />}
-              {!isPolling &&
-                !actionData.motionData.isFinalized &&
-                isFinalizable && (
-                  <Button
-                    mode="primarySolid"
-                    disabled={!user || !isFinalizable}
-                    isFullSize
-                    text={formatText({ id: 'motion.finalizeStep.submit' })}
-                    type="submit"
-                  />
-                )}
-              {!isPolling &&
-                actionData.motionData.isFinalized &&
-                !isClaimed && (
-                  <Button
-                    mode="primarySolid"
-                    disabled={!user || !canClaimStakes}
-                    isFullSize
-                    text={formatText({
-                      id: buttonTextId,
-                    })}
-                    type="submit"
-                  />
-                )}
+                    )}
+                  {!isPolling &&
+                    (actionData.motionData.isFinalized ||
+                      actionData.motionData.motionStateHistory
+                        .hasFailedNotFinalizable) &&
+                    !isClaimed &&
+                    canClaimStakes && (
+                      <Button
+                        mode="primarySolid"
+                        disabled={!canClaimStakes}
+                        isFullSize
+                        text={formatText({
+                          id: buttonTextId,
+                        })}
+                        type="submit"
+                      />
+                    )}
+                </>
+              )}
             </ActionForm>
           ),
         },
