@@ -1,16 +1,5 @@
 import { defineMessages } from 'react-intl';
 
-import withWizard from '~shared/Wizard/withWizard';
-import { User } from '~types';
-
-import { Flow, WizardType } from './types';
-import WizardTemplate from './WizardTemplate';
-import {
-  initialValues as colonyInitialValues,
-  stepArray as stepsCreateColony,
-} from './wizardSteps/CreateColony/CreateColonyWizard';
-import { stepsCreateUser } from './wizardSteps/StepCreateUser/consts';
-
 export const displayName = 'common.Onboarding';
 
 const wizardSidebarMSGs = defineMessages({
@@ -49,7 +38,13 @@ const wizardSidebarMSGs = defineMessages({
   },
 });
 
-const userSidebarValues = [
+export const completeSideBarValue = [
+  {
+    text: wizardSidebarMSGs.complete,
+  },
+];
+
+export const userSidebarValues = [
   {
     text: wizardSidebarMSGs.account,
     subItems: [
@@ -60,7 +55,7 @@ const userSidebarValues = [
   },
 ];
 
-const colonySidebarValues = [
+export const colonySidebarValues = [
   {
     text: wizardSidebarMSGs.create,
     subItems: [
@@ -81,13 +76,7 @@ const colonySidebarValues = [
   },
 ];
 
-const completeSideBarValue = [
-  {
-    text: wizardSidebarMSGs.complete,
-  },
-];
-
-const userInitialValues = {
+export const userInitialValues = {
   username: '',
   emailAddress: '',
 };
@@ -95,44 +84,3 @@ const userInitialValues = {
 export interface WizardProps {
   inviteCode?: string;
 }
-
-export const createWizard = (
-  user: User | null | undefined,
-  flow: Flow,
-  inviteCode?: string,
-) => {
-  if (flow === 'user') {
-    return withWizard<WizardProps>({
-      initialValues: userInitialValues,
-      steps: stepsCreateUser,
-      templateProps: {
-        sidebarValues: [...userSidebarValues, ...completeSideBarValue],
-        wizardType: WizardType.CreateUser,
-      },
-    })(WizardTemplate);
-  }
-
-  if (user && flow === 'colony') {
-    return withWizard<WizardProps>({
-      initialValues: colonyInitialValues,
-      steps: stepsCreateColony,
-      templateProps: {
-        sidebarValues: [...colonySidebarValues, ...completeSideBarValue],
-        wizardType: WizardType.CreateColony,
-      },
-    })(WizardTemplate);
-  }
-
-  return withWizard<WizardProps>({
-    initialValues: { ...userInitialValues, ...colonyInitialValues, inviteCode },
-    steps: [stepsCreateUser[0], ...stepsCreateColony],
-    templateProps: {
-      sidebarValues: [
-        ...userSidebarValues,
-        ...colonySidebarValues,
-        ...completeSideBarValue,
-      ],
-      wizardType: WizardType.CreateUserAndColony,
-    },
-  })(WizardTemplate);
-};

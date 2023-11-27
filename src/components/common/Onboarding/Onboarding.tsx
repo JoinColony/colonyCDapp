@@ -3,7 +3,8 @@ import React, { useMemo } from 'react';
 import { useAppContext } from '~hooks';
 
 import { Flow } from './types';
-import { createWizard, displayName } from './consts';
+import { displayName } from './consts';
+import { createWizard } from './helpers';
 
 interface Props {
   flow: Flow;
