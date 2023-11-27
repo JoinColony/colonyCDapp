@@ -5,6 +5,7 @@ import { defineMessages } from 'react-intl';
 import Input from '~v5/common/Fields/Input';
 import { MAX_COLONY_DISPLAY_NAME } from '~constants';
 import { formatText } from '~utils/intl';
+import { HOST } from '~routes';
 
 import { getInputError } from '../shared';
 
@@ -71,24 +72,26 @@ const StepColonyNameInputs = ({
             {formatText(MSG.urlSubLabel)}
           </span>
         </label>
-        <div className="relative">
-          <div className="text-gray-500 border rounded-s border-gray-300 border-e-0 text-md p-3 absolute">
-            app.colony.io/
+        <div className="flex">
+          <div className="text-gray-500 border rounded-s border-gray-300 border-e-0 text-md p-3">
+            {HOST}/
           </div>
-          <Input
-            name="colonyName"
-            register={register}
-            isError={showColonyNameError}
-            customErrorMessage={colonyNameError}
-            className="text-md border-gray-300 lowercase rounded-s-none ml-[117px] w-[calc(100%-117px)]"
-            isDisabled={isSubmitting}
-            defaultValue={wizardColonyName}
-            maxCharNumber={MAX_COLONY_DISPLAY_NAME}
-            successfulMessage={
-              showColonyNameMessage && colonyNameSuccessMessage
-            }
-            isDecoratedError={errors.colonyName?.type === 'isNameTaken'}
-          />
+          <div className="grow">
+            <Input
+              name="colonyName"
+              register={register}
+              isError={showColonyNameError}
+              customErrorMessage={colonyNameError}
+              className="text-md border-gray-300 lowercase rounded-s-none"
+              isDisabled={isSubmitting}
+              defaultValue={wizardColonyName}
+              maxCharNumber={MAX_COLONY_DISPLAY_NAME}
+              successfulMessage={
+                showColonyNameMessage && colonyNameSuccessMessage
+              }
+              isDecoratedError={errors.colonyName?.type === 'isNameTaken'}
+            />
+          </div>
         </div>
       </div>
     </>
