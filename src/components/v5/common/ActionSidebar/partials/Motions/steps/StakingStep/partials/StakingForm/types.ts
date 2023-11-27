@@ -5,6 +5,7 @@ import { Action, ActionTypes } from '~redux';
 
 export interface StakingFormProps {
   userActivatedTokens: BigNumber;
+  userInactivatedTokens: BigNumber;
   disableForm?: boolean;
 }
 

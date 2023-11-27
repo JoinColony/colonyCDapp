@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import moveDecimal from 'move-decimal-point';
+import { BigNumber } from 'ethers';
 
 import { useAppContext } from '~hooks';
 import { ActionTypes } from '~redux';
@@ -26,6 +27,7 @@ const displayName =
 
 const StakingForm: FC<StakingFormProps> = ({
   userActivatedTokens,
+  userInactivatedTokens,
   disableForm,
 }) => {
   const { canInteract } = useAppContext();
@@ -43,6 +45,20 @@ const StakingForm: FC<StakingFormProps> = ({
   const { requiredStake, motionStakes, remainingStakes } = motionData;
 
   const [opposeRemaining, supportRemaining] = remainingStakes || [];
+
+  const userAvailableBalance = BigNumber.from(userActivatedTokens).add(
+    userInactivatedTokens,
+  );
+  const userOpposeRemaining = BigNumber.from(opposeRemaining).gt(
+    userAvailableBalance,
+  )
+    ? userAvailableBalance.toString()
+    : opposeRemaining;
+  const userSupportRemaining = BigNumber.from(supportRemaining).gt(
+    userAvailableBalance,
+  )
+    ? userAvailableBalance.toString()
+    : supportRemaining;
 
   const { handleSuccess, transform, validationSchema } = useStakingForm();
 
@@ -63,7 +79,7 @@ const StakingForm: FC<StakingFormProps> = ({
       transform={transform}
       actionType={ActionTypes.MOTION_STAKE}
     >
-      {({ formState: { isSubmitting }, getValues, setValue }) => {
+      {({ formState: { isSubmitting, isValid }, getValues, setValue }) => {
         const voteTypeValue = getValues('voteType');
         const amountValue = getValues('amount');
 
@@ -71,8 +87,8 @@ const StakingForm: FC<StakingFormProps> = ({
           voteTypeValue,
           amountValue,
           tokenDecimals,
-          supportRemaining,
-          opposeRemaining,
+          userSupportRemaining,
+          userOpposeRemaining,
         );
 
         return (
@@ -160,11 +176,11 @@ const StakingForm: FC<StakingFormProps> = ({
                           'amount',
                           voteTypeValue === MotionVote.Yay
                             ? moveDecimal(
-                                supportRemaining,
+                                userSupportRemaining,
                                 -getTokenDecimalsWithFallback(tokenDecimals),
                               )
                             : moveDecimal(
-                                opposeRemaining,
+                                userOpposeRemaining,
                                 -getTokenDecimalsWithFallback(tokenDecimals),
                               ),
                           {
@@ -177,7 +193,11 @@ const StakingForm: FC<StakingFormProps> = ({
                     }}
                     wrapperClassName="mb-6"
                   />
-                  <Button isFullSize disabled={isSubmitting} type="submit">
+                  <Button
+                    isFullSize
+                    disabled={isSubmitting || !isValid}
+                    type="submit"
+                  >
                     {formatText({ id: 'motion.staking.button.submit' })}
                   </Button>
                 </motion.div>

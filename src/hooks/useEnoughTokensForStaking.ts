@@ -34,6 +34,7 @@ const useEnoughTokensForStaking = (
     loadingUserTokenBalance,
     hasEnoughTokens,
     userActivatedTokens,
+    userInactivatedTokens,
   };
 };
 

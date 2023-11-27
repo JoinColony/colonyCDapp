@@ -1220,8 +1220,6 @@
     "motion.staking.staked": "Staked {value}",
     "motion.staking.input.label": "Stake amount",
     "motion.staking.input.label.balance": "Balance {balance}",
-    "motion.staking.input.error.amountRequired": "A stake amount is required",
-    "motion.staking.input.error.moreThanRemaining": "You can't stake more than remaining stake",
     "ariaLabel.openModal": "Open modal",
     "motion.staking.label": "Staking",
     "button.stake.oppose": "Oppose",

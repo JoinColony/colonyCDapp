@@ -1,6 +1,7 @@
 import { BigNumber } from 'ethers';
 import { number, object, ObjectSchema, string } from 'yup';
 import moveDecimal from 'move-decimal-point';
+import { defineMessages } from 'react-intl';
 
 import { useAppContext } from '~hooks';
 import { useUserTokenBalanceContext } from '~context';
@@ -11,6 +12,21 @@ import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { useMotionContext } from '../../../../partials/MotionProvider/hooks';
 import { MotionVote } from '~utils/colonyMotions';
 import { formatText } from '~utils/intl';
+
+const MSG = defineMessages({
+  amountRequired: {
+    id: 'v5.common.ActionSidebar.Motions.StakingStep.StakingForm.amountRequired',
+    defaultMessage: 'A stake amount is required',
+  },
+  lessThanRemaining: {
+    id: 'v5.common.ActionSidebar.Motions.StakingStep.StakingForm.lessThanRemaining',
+    defaultMessage: "You can't stake more than remaining stake",
+  },
+  moreThanBalance: {
+    id: 'v5.common.ActionSidebar.Motions.StakingStep.StakingForm.moreThanBalance',
+    defaultMessage: "You can't stake more than your balance",
+  },
+});
 
 export const useStakingForm = () => {
   const { user } = useAppContext();
@@ -27,13 +43,16 @@ export const useStakingForm = () => {
 
   const { motionId, remainingStakes } = motionData;
   const [opposeRemaining, supportRemaining] = remainingStakes || [];
+  const userAvailableTokens = BigNumber.from(
+    tokenBalanceData?.activeBalance ?? 0,
+  ).add(tokenBalanceData?.inactiveBalance ?? 0);
 
   const validationSchema: ObjectSchema<StakingFormValues> = object()
     .shape({
       amount: string()
         .test(
           'amount-more-than-zero',
-          formatText({ id: 'motion.staking.input.error.amountRequired' }),
+          formatText(MSG.amountRequired),
           (value) => {
             if (!value) {
               return false;
@@ -52,7 +71,7 @@ export const useStakingForm = () => {
         )
         .test(
           'amount-less-than-remaining',
-          formatText({ id: 'motion.staking.input.error.moreThanRemaining' }),
+          formatText(MSG.lessThanRemaining),
           (value, context) => {
             if (!value) {
               return false;
@@ -74,9 +93,26 @@ export const useStakingForm = () => {
             }
           },
         )
-        .required(
-          formatText({ id: 'motion.staking.input.error.amountRequired' }),
-        ),
+        .test(
+          'amount-more-than-balance',
+          formatText(MSG.moreThanBalance),
+          (value) => {
+            if (!value) {
+              return false;
+            }
+
+            try {
+              const amount = BigNumber.from(
+                moveDecimal(value, getTokenDecimalsWithFallback(tokenDecimals)),
+              );
+
+              return amount.lte(userAvailableTokens);
+            } catch {
+              return false;
+            }
+          },
+        )
+        .required(formatText(MSG.amountRequired)),
       voteType: number().required(),
     })
     .defined();

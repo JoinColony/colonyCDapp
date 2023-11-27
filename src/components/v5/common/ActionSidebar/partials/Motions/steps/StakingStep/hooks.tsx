@@ -25,6 +25,7 @@ export const useStakingStep = () => {
     hasEnoughTokens: enoughTokensToStakeMinimum,
     loadingUserTokenBalance,
     userActivatedTokens,
+    userInactivatedTokens,
   } = useEnoughTokensForStaking(
     tokenAddress,
     user?.walletAddress ?? '',
@@ -59,6 +60,7 @@ export const useStakingStep = () => {
     enoughTokensToStakeMinimum,
     enoughReputationToStakeMinimum,
     userActivatedTokens,
+    userInactivatedTokens,
   };
 };
 
