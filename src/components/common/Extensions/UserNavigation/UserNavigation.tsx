@@ -17,7 +17,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
   userHub,
   txButtons = null,
 }) => {
-  const { wallet, user, connectWallet } = useAppContext();
+  const { wallet, connectWallet } = useAppContext();
   const isTablet = useTablet();
   const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
   const [, { toggleOff }] = mobileMenuToggle;
@@ -79,9 +79,6 @@ const UserNavigation: FC<UserNavigationProps> = ({
         <UserMenu
           tooltipProps={getTooltipProps}
           setTooltipRef={setTooltipRef}
-          isWalletConnected={isWalletConnected}
-          user={user}
-          walletAddress={user?.walletAddress}
           nativeToken={nativeToken}
         />
       )}
