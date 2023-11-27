@@ -1,4 +1,20 @@
-import { DomainColor } from '~gql';
+import { ComponentType } from 'react';
+import {
+  DiscordLogo,
+  FacebookLogo,
+  GithubLogo,
+  Globe,
+  IconProps,
+  InstagramLogo,
+  Scroll,
+  TelegramLogo,
+  TwitterLogo,
+  YoutubeLogo,
+} from 'phosphor-react';
+
+import { DomainColor, ExternalLinks } from '~gql';
+
+export const MAX_TEXT_LENGTH = 250;
 
 export const setTeamColor = (color?: DomainColor) => {
   switch (color) {
@@ -37,4 +53,16 @@ export const setTeamColor = (color?: DomainColor) => {
     default:
       return 'bg-teams-purple-400 border-teams-purple-400';
   }
+};
+
+export const iconMappings: Record<ExternalLinks, ComponentType<IconProps>> = {
+  [ExternalLinks.Custom]: Globe,
+  [ExternalLinks.Whitepaper]: Scroll,
+  [ExternalLinks.Github]: GithubLogo,
+  [ExternalLinks.Discord]: DiscordLogo,
+  [ExternalLinks.Twitter]: TwitterLogo,
+  [ExternalLinks.Telegram]: TelegramLogo,
+  [ExternalLinks.Youtube]: YoutubeLogo,
+  [ExternalLinks.Facebook]: FacebookLogo,
+  [ExternalLinks.Instagram]: InstagramLogo,
 };

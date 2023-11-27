@@ -71,7 +71,10 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
         >
           {iconName && (
             <span className="flex shrink-0 mr-2">
-              <Icon name={iconName} appearance={{ size: iconSize }} />
+              <Icon
+                name={iconName}
+                appearance={iconSize ? { size: iconSize } : undefined}
+              />
             </span>
           )}
           {buttonText || children}

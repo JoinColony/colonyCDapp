@@ -633,6 +633,7 @@
     "ariaLabel.selectToken": "Select token",
     "ariaLabel.selectTeamColour": "Select team colour",
     "ariaLabel.sortBalace": "Sort by balance",
+    "ariaLabel.openTabNotfication": "Open tab notification",
     "userInfo.about.section": "about",
     "userInfo.teamBreakdown.section": "Team Breakdown",
     "userInfo.permissions.section": "Permissions",
@@ -1491,5 +1492,13 @@
     "actionSidebar.metadataDescription.anAmount": "an amount of",
     "actionSidebar.metadataDescription.team": "team",
     "actionSidebar.metadataDescription.user": "user",
-    "actionSidebar.metadataDescription.funds": "funds"
+    "actionSidebar.metadataDescription.funds": "funds",
+    "colony.description": "Add a description to your Colony to help others understand it's mission and purpose.",
+    "colony.tooltip.lockedToken": "This token is locked. Colony native tokens are locked and non-transferrable by default to avoid unwanted project token transfer outside of the colony.",
+    "colony.tooltip.url.copied": "URL copied!",
+    "dashboard.burgerMenu.item.aboutColony": "About this colony",
+    "dashboard.burgerMenu.item.share": "Share",
+    "dashboard.burgerMenu.item.notifications": "Notifications",
+    "dashboard.burgerMenu.item.leaveColony": "Leave this colony",
+    "dashboard.burgerMenu.item.externalLinks": "External links"
 }

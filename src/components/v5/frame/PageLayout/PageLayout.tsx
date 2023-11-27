@@ -3,9 +3,11 @@ import { AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { ToastContainer } from 'react-toastify';
 
+import { useMatch } from 'react-router-dom';
 import { useTablet } from '~hooks';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
 import styles from '~shared/Extensions/Toast/Toast.module.css';
+import { COLONY_HOME_ROUTE } from '~routes';
 
 import NavigationSidebarContextProvider from '../NavigationSidebar/partials/NavigationSidebarContext';
 import PageHeader from './partials/PageHeader';
@@ -24,6 +26,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const topContentWrapperRef = useRef<HTMLDivElement | null>(null);
   const isTablet = useTablet();
+  const isOnColonyRoute = useMatch(COLONY_HOME_ROUTE);
 
   useEffect(() => {
     if (!topContentWrapperRef?.current || !wrapperRef?.current) {
@@ -98,12 +101,25 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
                   {sidebar}
                 </div>
               </div>
-              <div className="md:flex-grow flex flex-col gap-8">
+              <div
+                className={clsx('md:flex-grow flex flex-col', {
+                  'gap-[1.125rem]': isOnColonyRoute,
+                  'gap-8': !isOnColonyRoute,
+                })}
+              >
                 <div className="flex-shrink-0 pt-5 pr-4">
-                  <PageHeader {...headerProps} />
+                  <PageHeader
+                    {...headerProps}
+                    className={clsx({ '!items-center': isOnColonyRoute })}
+                  />
                 </div>
                 <div className="flex-grow overflow-auto pr-4 pb-4">
-                  <div className="max-w-[79.875rem] w-full mx-auto">
+                  <div
+                    className={clsx('w-full mx-auto', {
+                      'max-w-[79.875rem]': !isOnColonyRoute,
+                      'max-w-[85rem]': isOnColonyRoute,
+                    })}
+                  >
                     {children}
                   </div>
                 </div>
