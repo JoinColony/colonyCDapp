@@ -79,6 +79,9 @@ const colonySidebarValues = [
       },
     ],
   },
+];
+
+const completeSideBarValue = [
   {
     text: wizardSidebarMSGs.complete,
   },
@@ -98,12 +101,12 @@ export const createWizard = (
   flow: Flow,
   inviteCode?: string,
 ) => {
-  if (user && flow === 'user') {
+  if (flow === 'user') {
     return withWizard<WizardProps>({
       initialValues: userInitialValues,
       steps: stepsCreateUser,
       templateProps: {
-        sidebarValues: userSidebarValues,
+        sidebarValues: [...userSidebarValues, ...completeSideBarValue],
         wizardType: WizardType.CreateUser,
       },
     })(WizardTemplate);
@@ -114,7 +117,7 @@ export const createWizard = (
       initialValues: colonyInitialValues,
       steps: stepsCreateColony,
       templateProps: {
-        sidebarValues: colonySidebarValues,
+        sidebarValues: [...colonySidebarValues, ...completeSideBarValue],
         wizardType: WizardType.CreateColony,
       },
     })(WizardTemplate);
@@ -124,7 +127,11 @@ export const createWizard = (
     initialValues: { ...userInitialValues, ...colonyInitialValues, inviteCode },
     steps: [stepsCreateUser[0], ...stepsCreateColony],
     templateProps: {
-      sidebarValues: [...userSidebarValues, ...colonySidebarValues],
+      sidebarValues: [
+        ...userSidebarValues,
+        ...colonySidebarValues,
+        ...completeSideBarValue,
+      ],
       wizardType: WizardType.CreateUserAndColony,
     },
   })(WizardTemplate);
