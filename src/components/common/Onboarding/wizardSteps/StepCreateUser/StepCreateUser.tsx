@@ -51,7 +51,7 @@ const StepCreateUser = ({
       transform={withMeta({ updateUser })}
       onSuccess={nextStep}
     >
-      {({ formState: { isSubmitting, isValid } }) => (
+      {({ formState: { isSubmitting } }) => (
         <>
           <HeaderRow heading={MSG.heading} description={MSG.description} />
           <CreateUserFormInputs />
@@ -59,7 +59,7 @@ const StepCreateUser = ({
             text={{ id: 'button.continue' }}
             type="submit"
             mode="primarySolid"
-            disabled={!isValid || isSubmitting}
+            disabled={isSubmitting}
             className="mt-12"
           />
         </>
