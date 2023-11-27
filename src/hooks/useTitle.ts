@@ -12,6 +12,7 @@ import { defineMessages, useIntl, MessageDescriptor } from 'react-intl';
 import {
   CREATE_COLONY_ROUTE,
   CREATE_PROFILE_ROUTE,
+  CREATE_USER_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
   NOT_FOUND_ROUTE,
   COLONY_HOME_ROUTE,
@@ -47,6 +48,11 @@ const MSG = defineMessages({
   createColony: {
     id: `${displayName}.useTitle.createColony`,
     defaultMessage: `Create a Colony | Colony`,
+  },
+
+  createUser: {
+    id: `${displayName}.useTitle.createUser`,
+    defaultMessage: `Create a User | Colony`,
   },
 
   createProfile: {
@@ -204,8 +210,6 @@ interface MessageWithValues {
 }
 
 const routeMessages: Record<string, MessageDescriptor> = {
-  [CREATE_COLONY_ROUTE]: MSG.createColony,
-  [CREATE_PROFILE_ROUTE]: MSG.createProfile,
   [`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`]: MSG.editProfile,
   [`${USER_HOME_ROUTE}/${USER_PREFERENCES_ROUTE}`]: MSG.editPreferences,
   [`${USER_HOME_ROUTE}/${USER_ADVANCED_ROUTE}`]: MSG.advancedSettings,
@@ -234,7 +238,12 @@ const routeMessages: Record<string, MessageDescriptor> = {
     MSG.colonyIncorporation,
   [`${COLONY_HOME_ROUTE}${COLONY_ADVANCED_ROUTE}`]: MSG.colonyAdvanced,
 
+  /* NOTE: All routes should be added at the bottom to avoid being
+   * clobbered by the COLONY_HOME_ROUTE */
   [NOT_FOUND_ROUTE]: MSG.notFound,
+  [CREATE_COLONY_ROUTE]: MSG.createColony,
+  [CREATE_PROFILE_ROUTE]: MSG.createProfile,
+  [CREATE_USER_ROUTE]: MSG.createUser,
 };
 
 const allRoutes = Object.keys(routeMessages);
