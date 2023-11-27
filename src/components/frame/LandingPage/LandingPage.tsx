@@ -117,11 +117,11 @@ const LandingPage = () => {
       onClick: !wallet
         ? () => connectWallet()
         : () =>
-          navigate(
-            user
-              ? `${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`
-              : `${CREATE_PROFILE_ROUTE}`,
-          ),
+            navigate(
+              user
+                ? `${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`
+                : `${CREATE_PROFILE_ROUTE}`,
+            ),
       imgSrc: CreateAProfileBanner,
       disabled: userLoading,
     },
