@@ -1,0 +1,38 @@
+@value query700 from "~styles/queries.css";
+
+.stakesListContainer {
+  padding-right: 5px;
+  height: 60vh;
+  max-height: 356px;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+/* The scrollbar itself */
+.stakesListContainer::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* The container (or track) of the scrollbar */
+.stakesListContainer::-webkit-scrollbar-track {
+  width: 0.3125rem;
+  background-color: transparent;
+}
+
+/* The actual scrollbar handle */
+.stakesListContainer::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background-color: var(--color-gray-100);
+}
+
+/* When the scrollbar is being hovered or clicked */
+.stakesListContainer::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-gray-300);
+}
+
+@media screen and query700 {
+  .stakesListContainer {
+    max-height: 60vh;
+  }
+}

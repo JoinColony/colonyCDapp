@@ -1,5 +1,5 @@
 import { createIntl, createIntlCache } from '@formatjs/intl';
-import { MessageDescriptor } from 'react-intl';
+import { MessageDescriptor, useIntl } from 'react-intl';
 import { ReactNode } from 'react';
 
 import { nanoid } from 'nanoid';
@@ -104,3 +104,20 @@ export function formatText(
 
   return message;
 }
+
+// Handle labels that are either strings or message descriptors
+export const useFormattedText = () => {
+  const { formatMessage } = useIntl();
+
+  const getFormattedText = (label) => {
+    if (typeof label === 'string') {
+      return label;
+    }
+    if (label) {
+      return formatMessage(label);
+    }
+    return '';
+  };
+
+  return getFormattedText;
+};
