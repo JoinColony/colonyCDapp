@@ -62,7 +62,10 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     transform: finalizePayload,
     onSuccess: handleSuccess,
   };
-  if (actionData.motionData.isFinalized) {
+  if (
+    actionData.motionData.isFinalized ||
+    actionData.motionData.motionStateHistory.hasFailedNotFinalizable
+  ) {
     action = {
       actionType: ActionTypes.MOTION_CLAIM,
       transform: claimPayload,
@@ -129,7 +132,9 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                       />
                     )}
                   {!isPolling &&
-                    actionData.motionData.isFinalized &&
+                    (actionData.motionData.isFinalized ||
+                      actionData.motionData.motionStateHistory
+                        .hasFailedNotFinalizable) &&
                     !isClaimed &&
                     canClaimStakes && (
                       <Button

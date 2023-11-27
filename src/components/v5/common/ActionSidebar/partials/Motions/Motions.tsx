@@ -110,7 +110,8 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
 
   const motionStakedAndFinalizable =
     (motionState === NetworkMotionState.Finalizable ||
-      motionState === NetworkMotionState.Finalized) &&
+      motionState === NetworkMotionState.Finalized ||
+      motionState === NetworkMotionState.Failed) &&
     !motionStateHistory?.hasVoted;
 
   const items = useMemo(() => {
@@ -196,11 +197,14 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
           iconName:
             (motionStateHistory?.hasPassed && 'thumbs-up') ||
             (motionStateHistory?.hasFailed && 'thumbs-down') ||
+            (motionStateHistory?.hasFailedNotFinalizable && 'thumbs-down') ||
             '',
           label:
             (motionStateHistory?.hasPassed &&
               formatText({ id: 'motion.passed.label' })) ||
             (motionStateHistory?.hasFailed &&
+              formatText({ id: 'motion.failed.label' })) ||
+            (motionStateHistory?.hasFailedNotFinalizable &&
               formatText({ id: 'motion.failed.label' })) ||
             formatText({ id: 'motion.outcome.label' }) ||
             '',
@@ -208,7 +212,8 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
             '!bg-base-white !text-purple-400 border-purple-400':
               motionStateHistory?.hasPassed,
             '!bg-base-white !text-red-400 border-red-400':
-              motionStateHistory?.hasFailed,
+              motionStateHistory?.hasFailed ||
+              motionStateHistory?.hasFailedNotFinalizable,
           }),
         },
         isSkipped: motionStakedAndFinalizable,
@@ -249,7 +254,8 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     ];
     if (
       networkMotionStateEnum === NetworkMotionState.Finalizable ||
-      networkMotionStateEnum === NetworkMotionState.Finalized
+      networkMotionStateEnum === NetworkMotionState.Finalized ||
+      networkMotionStateEnum === NetworkMotionState.Failed
     ) {
       itemsEntries.push({
         key: networkMotionStateEnum,
