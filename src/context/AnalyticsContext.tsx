@@ -5,6 +5,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useState,
 } from 'react';
 import { useBeamer } from '~hooks/useBeamer';
 
@@ -22,52 +23,60 @@ interface AnalyticsContextValue {
   trackPageView: (path: string) => void;
 }
 
-// Create a context with a default implementation (no operation)
-export const AnalyticsContext = createContext<AnalyticsContextValue>({
+const defaultAnalyticsContext = {
   trackEvent: () => {},
   trackPageView: () => {},
-});
+};
+
+// Create a context with a default implementation (no operation)
+export const AnalyticsContext = createContext<AnalyticsContextValue>(
+  defaultAnalyticsContext,
+);
 
 // AnalyticsContextProvider component
 export const AnalyticsContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
+  const [isAnalyticsActive, setIsAnalyticsActive] = useState(false);
   const gtmId = process.env.GOOGLE_TAG_MANAGER_ID; // GTM ID from environment variable
   useBeamer();
 
   useEffect(() => {
-    // Inject GTM script only if gtmId is available
-    if (gtmId && (!window.dataLayer || window.dataLayer.length === 0)) {
-      const script = document.createElement('script');
-      script.innerHTML = `
-        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer', '${gtmId}');
-      `;
-      document.head.appendChild(script);
+    setIsAnalyticsActive(!!gtmId);
+    if (gtmId) {
+      // Inject GTM script only if gtmId is available
+      if (!window.dataLayer || window.dataLayer.length === 0) {
+        const script = document.createElement('script');
+        script.innerHTML = `
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer', '${gtmId}');
+        `;
+        document.head.appendChild(script);
+      }
     }
   }, [gtmId]);
 
-  const contextValue = useMemo(
-    () => ({
+  const contextValue = useMemo(() => {
+    if (!isAnalyticsActive) {
+      return defaultAnalyticsContext;
+    }
+
+    return {
       trackPageView: (path) => {
-        if (gtmId && window.dataLayer) {
-          window.dataLayer.push({
-            event: 'pageview',
-            path,
-          });
+        if (window.dataLayer) {
+          window.dataLayer.push({ event: 'pageview', path });
         }
       },
       trackEvent: (event: AnalyticsEvent) => {
-        if (gtmId && window.dataLayer) {
+        if (window.dataLayer) {
           window.dataLayer.push(event);
         }
       },
-    }),
-    [gtmId],
-  );
+    };
+  }, [isAnalyticsActive]);
 
   return (
     <AnalyticsContext.Provider value={contextValue}>
