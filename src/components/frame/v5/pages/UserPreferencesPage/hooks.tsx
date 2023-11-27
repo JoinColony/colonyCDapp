@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 import { object, string } from 'yup';
 import { toast } from 'react-toastify';
 
-import { isEmailAlreadyRegistered } from '~common/CreateUserWizard/validation';
+import { isEmailAlreadyRegistered } from '~common/Onboarding/wizardSteps/StepCreateUser/validation';
 import { useUpdateUserProfileMutation } from '~gql';
 import { useAppContext } from '~hooks';
 import Toast from '~shared/Extensions/Toast';

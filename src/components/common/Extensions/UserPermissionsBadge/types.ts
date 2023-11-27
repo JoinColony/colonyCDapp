@@ -4,9 +4,9 @@ import { SimpleMessageValues } from '~types';
 
 export interface UserPermissionsBadgeProps
   extends Omit<TooltipProps, 'tooltipContent'> {
-  text?: MessageDescriptor | string;
+  text: MessageDescriptor | string;
   textValues?: SimpleMessageValues;
-  description?: MessageDescriptor | string;
+  description: MessageDescriptor | string;
   descriptionValues?: SimpleMessageValues;
   name: string;
 }

@@ -27,14 +27,14 @@ import TeamsPage from '~frame/v5/pages/TeamsPage';
 import UserProfilePage from '~frame/v5/pages/UserProfilePage';
 import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
 import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
-import CreateColonyPage from '~frame/v5/pages/CreateColonyPage';
-import CreateUserPage from '~frame/v5/pages/CreateUserPage';
 import ActivityPage from '~frame/v5/pages/ActivityPage';
+import OnboardingPage from '~frame/v5/pages/OnboardingPage';
 
 import ColonyActions from '~common/ColonyActions';
 import ColonyDecisions from '~common/ColonyDecisions';
 import Expenditures from '~common/Expenditures';
 import ColonyHomeRoutes from '~common/ColonyHome/ColonyHomeRoutes';
+
 import LandingPageRoute from './LandingPageRoute';
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 
@@ -45,7 +45,7 @@ import {
   COLONY_MEMBERS_ROUTE,
   COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
   CREATE_COLONY_ROUTE,
-  CREATE_PROFILE_ROUTE,
+  CREATE_USER_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
   USER_ROUTE,
   NOT_FOUND_ROUTE,
@@ -79,7 +79,6 @@ import MainRoute from './MainRoute';
 import ColonyRoute from './ColonyRoute';
 import ColonyMembersRoute from './ColonyMembersRoute';
 import UserRoute from './UserRoute';
-import WizardRoute from './WizardRoute';
 
 const displayName = 'routes.Routes';
 
@@ -120,10 +119,15 @@ const Routes = () => {
           </Route>
         </Route>
 
-        <Route element={<WizardRoute />}>
-          <Route path={CREATE_PROFILE_ROUTE} element={<CreateUserPage />} />
-          <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyPage />} />
-        </Route>
+        <Route
+          path={CREATE_USER_ROUTE}
+          element={<OnboardingPage flow="user" />}
+        />
+
+        <Route
+          path={CREATE_COLONY_ROUTE}
+          element={<OnboardingPage flow="colony" />}
+        />
 
         {/* Colony routes */}
         <Route path={COLONY_HOME_ROUTE} element={<ColonyRoute />}>
@@ -293,7 +297,7 @@ const Routes = () => {
         layout={NavBar}
         routeProps={({ colonyName }) => ({
           backText: ColonyBackText,
-          backRoute: `/colony/${colonyName}`,
+          backRoute: `/${colonyName}`,
         })}
       />
       <AlwaysAccesibleRoute
@@ -302,7 +306,7 @@ const Routes = () => {
         layout={NavBar}
         routeProps={({ colonyName }) => ({
           backText: ColonyBackText,
-          backRoute: `/colony/${colonyName}`,
+          backRoute: `/${colonyName}`,
         })}
       />
 

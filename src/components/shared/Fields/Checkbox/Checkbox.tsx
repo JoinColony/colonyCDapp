@@ -60,7 +60,9 @@ const Checkbox = ({
     disabled,
   });
 
-  const toolTipContent = formatText(tooltipText, tooltipTextValues);
+  const toolTipContent = tooltipText
+    ? formatText(tooltipText, tooltipTextValues)
+    : null;
   const showTooltip = disabled && tooltipText;
   const showLabel = !elementOnly && label;
 

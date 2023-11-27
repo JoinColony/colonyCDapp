@@ -57,7 +57,9 @@ const Textarea = ({
   const { error } = getFieldState(name);
   const length = value?.length || 0;
 
-  const placeholder = formatText(placeholderProp, placeholderValues);
+  const placeholder = placeholderProp
+    ? formatText(placeholderProp, placeholderValues)
+    : undefined;
 
   return (
     <div className={styles.container}>

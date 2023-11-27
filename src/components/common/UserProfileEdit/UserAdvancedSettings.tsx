@@ -91,10 +91,7 @@ const UserAdvancedSettings = ({ user: { walletAddress, profile } }: Props) => {
       variables: {
         input: {
           id: walletAddress,
-          meta: {
-            emailPermissions: profile?.meta?.emailPermissions || [],
-            ...updatedMetaSettings,
-          },
+          meta: updatedMetaSettings,
         },
       },
     });

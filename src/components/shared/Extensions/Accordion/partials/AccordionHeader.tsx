@@ -13,7 +13,7 @@ const AccordionHeader: FC<AccordionHeaderProps> = ({
   onClick,
   onKeyUp,
 }) => {
-  const titleText = formatText(title);
+  const titleText = title ? formatText(title) : null;
 
   return (
     <button

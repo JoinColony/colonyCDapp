@@ -1,5 +1,5 @@
 import { Address } from '~types';
-import { FormValues as CreateUserWizardFormValues } from '~common/CreateUserWizard/validation';
+import { CreateUserFormValues } from '~common/Onboarding/wizardSteps/StepCreateUser/types';
 
 import { ActionTypes } from '../../actionTypes';
 
@@ -13,13 +13,13 @@ import {
 export type UserActionTypes =
   | UniqueActionType<
       ActionTypes.USERNAME_CREATE,
-      CreateUserWizardFormValues,
+      CreateUserFormValues,
       MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.USERNAME_CREATE_ERROR, object>
   | UniqueActionType<
       ActionTypes.USERNAME_CREATE_SUCCESS,
-      CreateUserWizardFormValues,
+      CreateUserFormValues,
       MetaWithSetter<object>
     >
   | UniqueActionType<ActionTypes.USER_AVATAR_REMOVE, object, object>

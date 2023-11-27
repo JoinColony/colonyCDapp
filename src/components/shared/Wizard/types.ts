@@ -1,33 +1,36 @@
-export type StepValues<T> = Partial<T>;
-export type StepsValues<T> = StepValues<T>[];
+import { PropsWithChildren } from 'react';
 
-type StepsValuesFn<T> = (props?: any) => StepsValues<T>;
-export type InitialValuesProp<T> = StepsValues<T> | StepsValuesFn<T>;
+export type StepValues<F> = Partial<F>;
+export type StepsValues<F> = StepValues<F>[];
 
-type NextStep<T> = (values?: StepValues<T>) => void;
-export type PreviousStep<T> = (values?: StepValues<T>) => boolean;
+export type InitialValuesProp<F> = F | ((props?: any) => F);
+
+type NextStep = (values?: Record<string, any>) => void;
+export type PreviousStep = (values?: Record<string, any>) => boolean;
 type WizardReset = () => void;
 
-interface SharedWizardProps<FormValues> {
+interface SharedWizardProps<F> {
   step: number;
   stepCount: number;
-  nextStep: NextStep<FormValues>;
-  previousStep: PreviousStep<FormValues>;
+  nextStep: NextStep;
+  previousStep: PreviousStep;
   resetWizard: WizardReset;
-  wizardValues: FormValues;
+  wizardValues: F;
 }
 
-export interface WizardOuterProps<FormValues>
-  extends SharedWizardProps<FormValues> {
-  children: JSX.Element;
+export interface WizardOuterProps<
+  F extends Record<string, any>,
+  T extends Record<string, any>,
+> extends PropsWithChildren<SharedWizardProps<F>> {
+  templateProps: T;
 }
 
 export interface WizardStepProps<
-  FormValues,
-  Props,
-  StepVals = Partial<FormValues>,
-> extends SharedWizardProps<FormValues> {
-  setStepsValues: React.Dispatch<React.SetStateAction<StepsValues<FormValues>>>;
+  F,
+  Props = Record<string, never>,
+  StepVals = Partial<F>,
+> extends SharedWizardProps<F> {
+  setStepsValues: React.Dispatch<React.SetStateAction<StepsValues<F>>>;
   setStep: React.Dispatch<React.SetStateAction<number>>;
   wizardProps: Props;
   wizardForm: {

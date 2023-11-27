@@ -36,13 +36,13 @@ const InputStatus = ({
   touched,
 }: InputStatusProps) => {
   const { formatMessage } = useIntl();
-  const errorText = formatText(error, errorValues);
-  const statusText = formatText(status, statusValues);
+  const errorText = error ? formatText(error, errorValues) : undefined;
+  const statusText = status ? formatText(status, statusValues) : undefined;
   const loadingText = formatMessage(
     { id: 'status.loading' },
     { optionalText: formatText(loadingAnnotation) },
   );
-  const text = errorText || statusText;
+  const text = errorText || statusText || '';
   const Element = appearance.direction === 'horizontal' ? 'span' : 'p';
 
   return (

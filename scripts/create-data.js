@@ -337,7 +337,6 @@ const createUser = async (
           profile: {
             displayName: username,
             email: `${username}@colony.io`,
-            meta: { emailPermissions: [] },
             ...metadata,
           },
         },
@@ -355,7 +354,7 @@ const createUser = async (
       );
     } else {
       console.log(
-        `Creating user { walletAddress: "${userAddress}", profile: { displayName: "${username}", email: "${username}@colony.io", emailPermissions: "[]" } }`,
+        `Creating user { walletAddress: "${userAddress}", profile: { displayName: "${username}", email: "${username}@colony.io" } }`,
       );
     }
   } catch (error) {

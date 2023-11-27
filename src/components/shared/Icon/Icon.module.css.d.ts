@@ -8,6 +8,7 @@ declare namespace IconModuleCssNamespace {
     sizeExtraTiny: string;
     sizeHuge: string;
     sizeLarge: string;
+    sizeLargeSmall: string;
     sizeMedium: string;
     sizeMediumSmall: string;
     sizeNormal: string;

@@ -31,12 +31,8 @@ export const useRpcForm = () => {
   }).defined();
 
   const { user } = useAppContext();
-  const {
-    metatransactionsEnabled,
-    emailPermissions,
-    customRpc,
-    decentralizedModeEnabled,
-  } = user?.profile?.meta ?? { emailPermissions: [] };
+  const { metatransactionsEnabled, customRpc, decentralizedModeEnabled } =
+    user?.profile?.meta ?? {};
 
   const [isInputVisible, setIsInputVisible] = useState(
     !!decentralizedModeEnabled,
@@ -54,7 +50,6 @@ export const useRpcForm = () => {
           id: user?.walletAddress ?? '',
           meta: {
             metatransactionsEnabled,
-            emailPermissions,
             customRpc,
             ...values,
           },

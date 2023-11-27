@@ -64,27 +64,9 @@ input CreateUniqueUserInput {
 }
 
 """
-**Deprecated** Extra permissions for a user, stored during the registration process
-"""
-enum EmailPermissions {
-  """
-  Permission to send notifications to the user
-  """
-  sendNotifications
-  """
-  Person is registered and solved the captcha, they can use gasless transactions
-  """
-  isHuman
-}
-
-"""
 Input data for a user's profile metadata
 """
 input ProfileMetadataInput {
-  """
-  List of email permissions for the user
-  """
-  emailPermissions: [String!]!
   """
   A flag to indicate whether the user has enabled metatransactions
   """
@@ -1102,10 +1084,6 @@ type ChainMetadata {
 Represents metadata for a user's profile. Mostly user specific settings
 """
 type ProfileMetadata {
-  """
-  List of email permissions for the user
-  """
-  emailPermissions: [String!]!
   """
   A flag to indicate whether the user has enabled metatransactions
   """
