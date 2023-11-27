@@ -13,7 +13,7 @@ export const MAX_USERNAME_LENGTH = 30;
  * [\w-.] can include upper case, lower case, numerals, underscore, hyphen or period
  * {0,254}$ match the preceding set at least 0 and at most 254 times from the end (so excluding the first char)
  */
-export const USERNAME_REGEX = /^[A-Za-z0-9][\w-.]{0,254}$/;
+export const USERNAME_REGEX = /^[A-Za-z0-9][\w-.]+$/;
 
 /*
  * Simple email validation regex. Used to stop test from running if email input is invalid.
