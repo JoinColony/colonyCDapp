@@ -25,7 +25,7 @@ export const useVotingStep = (
 ) => {
   const { colony } = useColonyContext();
   const { nativeToken } = colony || {};
-  const { user } = useAppContext();
+  const { wallet, user } = useAppContext();
   const { motionData } = actionData;
   const {
     motionId,
@@ -93,41 +93,50 @@ export const useVotingStep = (
     })
     .defined();
 
-  const items: DescriptionListItem[] = [
+  let items: DescriptionListItem[] = [
     {
       key: '1',
       label: formatText({ id: 'motion.votingStep.votingMethod' }),
       value: formatText({ id: 'motion.votingStep.method' }),
     },
-    {
-      key: '2',
-      label: formatText({ id: 'motion.votingStep.teamReputation' }),
-      value: (
-        <MemberReputation
-          colonyAddress={colony?.colonyAddress ?? ''}
-          domainId={Number(nativeMotionDomainId)}
-          rootHash={rootHash}
-          textClassName="text-sm"
-          walletAddress={user?.walletAddress ?? ''}
-        />
-      ),
-    },
-    {
-      key: '3',
-      label: formatText({ id: 'motion.votingStep.rewardRange' }),
-      value: (
-        <div>
-          <Numeral value={minReward || '0'} decimals={nativeToken?.decimals} />
-          {' - '}
-          <Numeral
-            value={maxReward || '0'}
-            decimals={nativeToken?.decimals}
-            suffix={nativeToken?.symbol}
-          />
-        </div>
-      ),
-    },
   ];
+
+  if (!!wallet && !!user) {
+    items = [
+      ...items,
+      {
+        key: '2',
+        label: formatText({ id: 'motion.votingStep.teamReputation' }),
+        value: (
+          <MemberReputation
+            colonyAddress={colony?.colonyAddress ?? ''}
+            domainId={Number(nativeMotionDomainId)}
+            rootHash={rootHash}
+            textClassName="text-sm"
+            walletAddress={user?.walletAddress ?? ''}
+          />
+        ),
+      },
+      {
+        key: '3',
+        label: formatText({ id: 'motion.votingStep.rewardRange' }),
+        value: (
+          <div>
+            <Numeral
+              value={minReward || '0'}
+              decimals={nativeToken?.decimals}
+            />
+            {' - '}
+            <Numeral
+              value={maxReward || '0'}
+              decimals={nativeToken?.decimals}
+              suffix={nativeToken?.symbol}
+            />
+          </div>
+        ),
+      },
+    ];
+  }
 
   return {
     hasUserVoted,

@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 
 import FormButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/FormButtonRadioButtons';
 import { ActionTypes } from '~redux';
+import { useAppContext } from '~hooks';
 import { MotionVote } from '~utils/colonyMotions';
 import { formatText } from '~utils/intl';
 import { ActionForm } from '~shared/Fields';
@@ -40,6 +41,9 @@ const VotingStep: FC<VotingStepProps> = ({
     transactionId,
   );
 
+  const { wallet, user } = useAppContext();
+  const canVote = !!wallet && !!user;
+
   const isSupportVote = currentUserVote === MotionVote.Yay;
 
   return (
@@ -74,7 +78,7 @@ const VotingStep: FC<VotingStepProps> = ({
               defaultValues={{ vote: undefined }}
             >
               <div className="mb-6 pb-6 border-b border-gray-200">
-                {hasUserVoted && currentUserVote ? (
+                {hasUserVoted && currentUserVote && (
                   <div className="mb-3">
                     <div className="flex items-center justify-between gap-2 mb-4">
                       <h4 className="text-2">
@@ -93,26 +97,31 @@ const VotingStep: FC<VotingStepProps> = ({
                       })}
                     </p>
                   </div>
-                ) : (
-                  <h4 className="text-1 mb-3 text-center">
-                    {formatText({ id: 'motion.votingStep.title' })}
-                  </h4>
                 )}
-                <FormButtonRadioButtons
-                  items={renderVoteRadioButtons(
-                    hasUserVoted,
-                    currentUserVote || 0,
-                  )}
-                  name="vote"
-                />
+                {canVote && (
+                  <>
+                    <h4 className="text-1 mb-3 text-center">
+                      {formatText({ id: 'motion.votingStep.title' })}
+                    </h4>
+                    <FormButtonRadioButtons
+                      items={renderVoteRadioButtons(
+                        hasUserVoted,
+                        currentUserVote || 0,
+                      )}
+                      name="vote"
+                    />
+                  </>
+                )}
               </div>
               <DescriptionList items={items} className="mb-6" />
-              <Button
-                mode="primarySolid"
-                isFullSize
-                type="submit"
-                text={formatText({ id: 'motion.votingStep.submit' })}
-              />
+              {canVote && (
+                <Button
+                  mode="primarySolid"
+                  isFullSize
+                  type="submit"
+                  text={formatText({ id: 'motion.votingStep.submit' })}
+                />
+              )}
             </ActionForm>
           ),
         },
