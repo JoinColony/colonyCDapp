@@ -14,7 +14,7 @@ export const useBeamer = (): void => {
   }, []);
 };
 
-export const useWhatsNew = (
+export const openWhatsNew = (
   event: React.MouseEvent<HTMLAnchorElement>,
 ): void => {
   if (typeof Beamer !== 'undefined') {
@@ -23,7 +23,7 @@ export const useWhatsNew = (
   }
 };
 
-export const useFeaturesBugs = (
+export const openFeaturesBugs = (
   event: React.MouseEvent<HTMLAnchorElement>,
 ): void => {
   if (typeof Beamer !== 'undefined') {

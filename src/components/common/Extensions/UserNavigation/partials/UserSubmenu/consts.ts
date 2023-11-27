@@ -12,7 +12,7 @@ import {
   TERMS_AND_CONDITIONS,
 } from '~constants';
 import { UserSubmenuItems } from './types';
-import { useFeaturesBugs, useWhatsNew } from '~hooks/useBeamer';
+import { openFeaturesBugs, openWhatsNew } from '~hooks/useBeamer';
 
 export const menuMessages = defineMessages({
   getHelp: {
@@ -67,7 +67,7 @@ export const userSubmenuItems: UserSubmenuItems = {
       label: menuMessages.whatsNew,
       url: WHATS_NEW,
       icon: 'star',
-      onClick: useWhatsNew,
+      onClick: openWhatsNew,
       external: true,
       className: 'beamerTrigger',
     },
@@ -76,7 +76,7 @@ export const userSubmenuItems: UserSubmenuItems = {
       label: menuMessages.featureBugs,
       url: FEATURES_BUGS,
       icon: 'bug',
-      onClick: useFeaturesBugs,
+      onClick: openFeaturesBugs,
       external: true,
     },
     {
