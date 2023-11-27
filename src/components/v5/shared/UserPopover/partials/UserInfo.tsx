@@ -11,6 +11,7 @@ import Tooltip from '~shared/Extensions/Tooltip/Tooltip';
 import { getRole } from '~constants/permissions';
 import PermissionsBadge from '~v5/common/Pills/PermissionsBadge';
 import Numeral from '~shared/Numeral';
+import { multiLineTextEllipsis } from '~utils/strings';
 
 const displayName = 'v5.UserAvatarPopover.partials.UserInfo';
 
@@ -64,9 +65,18 @@ const UserInfo: FC<UserInfoProps> = ({
               text={formatText({ id: 'userInfo.top.contributor.in' })}
             />
             <div className="flex gap-1">
-              {domains?.map(({ domainName, domainId }) => (
-                <UserStatus key={domainId} mode="team" text={domainName} />
+              {domains?.slice(0, 3).map(({ domainName, domainId }) => (
+                <UserStatus
+                  key={domainId}
+                  mode="team"
+                  text={multiLineTextEllipsis(domainName, 7)}
+                />
               ))}
+              {domains?.length > 3 && (
+                <UserStatus mode="team" className="!max-w-none !w-auto">
+                  +{domains.length - 3}
+                </UserStatus>
+              )}
             </div>
           </>
         )}
