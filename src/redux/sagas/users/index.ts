@@ -151,7 +151,7 @@ function* usernameCreate({
     }
 
     if (navigate) {
-      navigate(colonyName ? `/colony/${colonyName}` : LANDING_PAGE_ROUTE);
+      navigate(colonyName ? `/${colonyName}` : LANDING_PAGE_ROUTE);
     }
   } catch (error) {
     return yield putError(ActionTypes.USERNAME_CREATE_ERROR, error, meta);

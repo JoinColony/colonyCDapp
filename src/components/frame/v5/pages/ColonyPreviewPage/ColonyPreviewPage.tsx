@@ -119,9 +119,7 @@ const ColonyPreviewPage = () => {
 
       if (valid.data?.validateUserInvite) {
         navigate(
-          redirectToUserRegistration
-            ? CREATE_PROFILE_ROUTE
-            : `/colony/${colonyName}`,
+          redirectToUserRegistration ? CREATE_PROFILE_ROUTE : `/${colonyName}`,
           {
             state: {
               colonyName: redirectToUserRegistration ? colonyName : undefined,
@@ -154,7 +152,7 @@ const ColonyPreviewPage = () => {
   );
 
   if (isMember) {
-    return <Navigate to={`/colony/${colonyName}`} />;
+    return <Navigate to={`/${colonyName}`} />;
   }
 
   const inviteIsValid =
