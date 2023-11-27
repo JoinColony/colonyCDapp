@@ -9,8 +9,8 @@ import AsyncText from '~v5/shared/AsyncText';
 import { ColonyAction } from '~types';
 import { ADDRESS_ZERO } from '~constants';
 import { getActionTitleValues } from '~common/ColonyActions';
-import { formatText } from '~utils/intl';
 import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
+import { formatText } from '~utils/intl';
 import UserPopover from '~v5/shared/UserPopover';
 
 import { simplePaymentDescriptionMetadataGetter } from '../partials/forms/SimplePaymentForm/utils';

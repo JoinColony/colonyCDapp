@@ -37,7 +37,6 @@ const MemberCard: FC<MemberCardProps> = ({
       >
         <UserPopover
           {...userAvatarProps}
-          userStatus={mode}
           withVerifiedBadge={false}
           isContributorsList={!isSimple}
           className={clsx('flex items-center text-gray-900', {

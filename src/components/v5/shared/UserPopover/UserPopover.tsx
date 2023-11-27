@@ -3,26 +3,25 @@ import { noop } from 'lodash';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import clsx from 'clsx';
 
-import { useMobile } from '~hooks';
+import { useColonyContext, useContributorBreakdown, useMobile } from '~hooks';
 import Modal from '~v5/shared/Modal';
 import PopoverBase from '~v5/shared/PopoverBase';
 import Icon from '~shared/Icon';
 
 import UserInfo from './partials/UserInfo';
 import { UserPopoverProps } from './types';
+import { useGetColonyContributorQuery } from '~gql';
+import { getColonyContributorId } from '~utils/members';
+import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
 
 const displayName = 'v5.UserPopover';
 
 const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   userName,
   walletAddress,
-  isVerified,
   aboutDescription,
   user,
-  userStatus,
   size,
-  domains,
-  isContributorsList,
   children,
   additionalContent,
   popperOptions,
@@ -34,6 +33,23 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   const [isOpen, setIsOpen] = useState(false);
   const { profile } = user || {};
   const { avatar, thumbnail } = profile || {};
+
+  const { colony } = useColonyContext();
+  const colonyAddress = colony?.colonyAddress ?? '';
+
+  const { data: colonyContributorData } = useGetColonyContributorQuery({
+    variables: {
+      id: getColonyContributorId(colonyAddress || '', walletAddress || ''),
+      colonyAddress: colonyAddress || '',
+    },
+  });
+
+  const contributor = colonyContributorData?.getColonyContributor;
+  const { isVerified } = contributor || {};
+  const domains = useContributorBreakdown(contributor);
+
+  const userStatus = (contributor?.type?.toLowerCase() ??
+    null) as ContributorTypeFilter | null;
 
   const onOpenModal = useCallback(() => {
     setIsOpen(true);
@@ -94,11 +110,11 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
       avatar={thumbnail || avatar || ''}
       userStatus={userStatus}
       domains={domains}
-      isContributorsList={isContributorsList}
     />
   );
 
-  const isTopSectionWithBackground = userStatus === 'top' && isContributorsList;
+  const isTopSectionWithBackground = userStatus === 'top';
+
   return (
     <>
       {button}

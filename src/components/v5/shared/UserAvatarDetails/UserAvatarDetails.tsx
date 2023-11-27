@@ -17,7 +17,6 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
   userStatus,
   isVerified,
   avatar,
-  isContributorsList,
   isBordered = false,
   size = 'm',
 }) => {
@@ -43,12 +42,10 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
           <div
             className={clsx('rounded-full flex', {
               'border-2': isBordered,
-              'border-success-400': userStatus === 'new' && isContributorsList,
-              'border-warning-400':
-                userStatus === 'active' && isContributorsList,
-              'border-blue-400':
-                userStatus === 'dedicated' && isContributorsList,
-              'border-purple-400': userStatus === 'top' && isContributorsList,
+              'border-success-400': userStatus === 'new',
+              'border-warning-400': userStatus === 'active',
+              'border-blue-400': userStatus === 'dedicated',
+              'border-purple-400': userStatus === 'top',
             })}
           >
             <Avatar
@@ -59,7 +56,7 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
               seed={walletAddress.toLowerCase()}
             />
           </div>
-          {!!userStatus && userStatus !== 'general' && isContributorsList && (
+          {!!userStatus && userStatus !== 'general' && (
             <span className="absolute bottom-[-0.9375rem]">
               <UserStatus
                 mode={mode}

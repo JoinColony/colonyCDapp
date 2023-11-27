@@ -25,11 +25,10 @@ const UserInfo: FC<UserInfoProps> = ({
   avatar,
   userStatus,
   domains,
-  isContributorsList,
   size,
 }) => {
   const aboutDescriptionText = formatText(aboutDescription);
-  const isTopContributorType = userStatus === 'top' && isContributorsList;
+  const isTopContributorType = userStatus === 'top';
 
   return (
     <div
@@ -56,7 +55,6 @@ const UserInfo: FC<UserInfoProps> = ({
             size={size}
             isVerified={isVerified}
             userStatus={userStatus}
-            isContributorsList={isContributorsList}
           />
         </div>
         {isTopContributorType && domains && (
