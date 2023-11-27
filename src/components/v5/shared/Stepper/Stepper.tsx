@@ -89,8 +89,10 @@ function Stepper<TKey extends React.Key>({
                   'sm:before:bg-base-white': index > activeItemIndex,
                   'after:border-dashed': isNextStepOptional,
                   'after:border-gray-400': isNextStepSkipped,
-                  'sm:before:border-gray-400': isSkipped,
-                  'sm:before:border-gray-900': !isSkipped,
+                  'sm:before:border-gray-400 sm:before:shadow-gray-400':
+                    isSkipped,
+                  'sm:before:border-gray-900 sm:before:shadow-gray-900':
+                    !isSkipped,
                   'w-1/4 flex-shrink-0': withArrowsOnMobile,
                 },
               )}

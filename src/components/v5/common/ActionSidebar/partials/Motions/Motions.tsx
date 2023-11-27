@@ -111,11 +111,15 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   }, [activeStepKey, motionData, networkMotionStateEnum, requiredStake]);
 
   const revealedVotes = motionData?.revealedVotes?.raw;
-  const winningSide: MotionVote = BigNumber.from(revealedVotes?.yay).gt(
-    revealedVotes?.nay || '',
-  )
-    ? MotionVote.Yay
-    : MotionVote.Nay;
+
+  let winningSide: MotionVote | null = null;
+  if (revealedVotes?.yay !== '0' && revealedVotes?.nay !== '0') {
+    winningSide = BigNumber.from(revealedVotes?.yay).gt(
+      revealedVotes?.nay || '',
+    )
+      ? MotionVote.Yay
+      : MotionVote.Nay;
+  }
 
   const votesHaveBeenRevealed: boolean =
     revealedVotes?.yay !== '0' || revealedVotes?.nay !== '0';
@@ -202,6 +206,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               />
             ) : null,
         },
+        isOptional: !isFullyStaked,
         isHidden: motionStakedAndFinalizable,
       },
       {
@@ -222,10 +227,10 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               formatText({ id: 'motion.failed.label' })) ||
             formatText({ id: 'motion.outcome.label' }) ||
             '',
-          className: clsx({
-            '!bg-base-white !text-purple-400 border-purple-400':
+          className: clsx('text-gray-900 border-gray-900 shadow-gray-900', {
+            '!bg-base-white !text-purple-400 border-purple-400 shadow-purple-400':
               motionStateHistory?.hasPassed,
-            '!bg-base-white !text-red-400 border-red-400':
+            '!bg-base-white !text-negative-400 border-negative-400 shadow-negative-400':
               motionStateHistory?.hasFailed ||
               motionStateHistory?.hasFailedNotFinalizable,
           }),
@@ -253,11 +258,11 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               formatText({ id: 'motion.oppose.wins.label' })) ||
             formatText({ id: 'motion.outcome.label' }) ||
             '',
-          className: clsx({
-            '!bg-base-white !text-purple-400 border-purple-400':
+          className: clsx('text-gray-900 border-gray-900 shadow-gray-900', {
+            '!bg-base-white text-purple-400 border-purple-400 shadow-purple-400':
               hasMotionPassed ||
               (winningSide === MotionVote.Yay && votesHaveBeenRevealed),
-            '!bg-base-white !text-red-400 border-red-400':
+            '!bg-base-white text-negative-400 border-negative-400 shadow-negative-400':
               (hasMotionFaild && !votesHaveBeenRevealed) ||
               winningSide === MotionVote.Nay,
           }),
