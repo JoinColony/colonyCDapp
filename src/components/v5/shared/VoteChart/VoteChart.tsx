@@ -43,9 +43,7 @@ const VoteChart: FC<VoteChartProps> = ({
       predictPercentageVotesAgainst
     : undefined;
 
-  const shouldHideIndicator =
-    !(predictedForValue && threshold && predictedForValue > threshold) ||
-    (threshold && forValue > threshold);
+  const shouldHideIndicator = !(threshold && forValue > threshold);
 
   return (
     <div className={clsx(className, 'w-full')}>
