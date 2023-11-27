@@ -1,15 +1,14 @@
 import React, { FC } from 'react';
 
-import { setTeamColor } from '../utils';
+import Tooltip from '~shared/Extensions/Tooltip';
+import { formatPercentage, setTeamColor } from '../utils';
 import { TeamPointsRowProps } from '../types';
-import Numeral from '~shared/Numeral';
 
 const displayName =
   'v5.common.TeamReputationSummary.partials.TeamReputationSummaryRow';
 
 const TeamReputationSummaryRow: FC<TeamPointsRowProps> = ({
-  team: { reputationPercentage, metadata },
-  suffix,
+  team: { reputationPercentage: totalReputation, metadata },
 }) => {
   const { color, name } = metadata ?? {};
 
@@ -21,14 +20,13 @@ const TeamReputationSummaryRow: FC<TeamPointsRowProps> = ({
             color,
           )}`}
         />
-        <p className="truncate max-w-[6.25rem] sm:max-w-[9.375rem]">{name}</p>
+        <span className="truncate max-w-[8.5rem] sm:max-w-[7.25rem]">
+          {name}
+        </span>
       </div>
-      <div className="font-medium">
-        <Numeral
-          value={Number(reputationPercentage).toFixed(1)}
-          suffix={suffix}
-        />
-      </div>
+      <Tooltip tooltipContent={`${totalReputation || '0.00'}%`} placement="top">
+        <span className="font-medium">{formatPercentage(totalReputation)}</span>
+      </Tooltip>
     </>
   );
 };

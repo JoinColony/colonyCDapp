@@ -2,7 +2,6 @@ import { Domain } from '~types';
 
 export interface TeamPointsRowProps {
   team: Domain;
-  suffix?: string;
 }
 
 export interface TeamPointsProps {
@@ -13,6 +12,5 @@ export interface TeamPointsProps {
 }
 
 export interface TeamReputationSummaryProps {
-  teams?: TeamPointsProps[];
   className?: string;
 }

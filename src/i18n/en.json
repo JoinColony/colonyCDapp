@@ -187,7 +187,7 @@
     "label.banned": "Banned",
     "label.loading": "Loading",
     "label.waiting": "Waiting",
-    "label.pointsPerTeam": "Points per team",
+    "label.influenceByTeam": "Influence by team",
     "placeholder.email": "handle@domain.com",
     "placeholder.password": "Password",
     "placeholder.title": "Enter title",
