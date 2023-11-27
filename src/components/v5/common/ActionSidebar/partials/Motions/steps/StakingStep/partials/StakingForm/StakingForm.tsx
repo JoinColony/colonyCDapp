@@ -87,8 +87,8 @@ const StakingForm: FC<StakingFormProps> = ({
           voteTypeValue,
           amountValue,
           tokenDecimals,
-          userSupportRemaining,
-          userOpposeRemaining,
+          supportRemaining,
+          opposeRemaining,
         );
 
         return (
