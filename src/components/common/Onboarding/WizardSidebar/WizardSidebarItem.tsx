@@ -22,7 +22,11 @@ const WizardSidebarItem = ({
 }: Props) => {
   const hasSubItems = subItems && subItems.length;
 
-  const hideSubItems = currentStep >= stepId + (subItems?.length || 0);
+  /* @NOTE: This logic looks menacing, but we are just checking if
+   * the current step is between the range of the item's id or subitem's ids. If it is not,
+   * we hide the subitems section. */
+  const hideSubItems =
+    currentStep < stepId || currentStep >= stepId + (subItems?.length || 0);
 
   return (
     <div className="flex flex-col justify-start relative">
