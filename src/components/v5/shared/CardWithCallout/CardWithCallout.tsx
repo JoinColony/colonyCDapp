@@ -23,7 +23,7 @@ const CardWithCallout: FC<PropsWithChildren<CardWithCalloutProps>> = ({
   return (
     <Card className={className}>
       <div className="flex items-center gap-x-2 mb-1.5">
-        {iconName && <Icon name={iconName} />}
+        {iconName && <Icon name={iconName} appearance={{ size: 'medium' }} />}
         {titleComponent}
       </div>
       <div className="flex items-center justify-between gap-y-3 gap-x-4 flex-wrap md:flex-nowrap md:gap-y-0">

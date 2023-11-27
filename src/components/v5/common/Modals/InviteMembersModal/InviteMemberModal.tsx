@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
-import { useColonyContext } from '~hooks';
+import { useBaseUrl, useColonyContext } from '~hooks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 
 import { Heading3 } from '~shared/Heading';
@@ -46,16 +46,10 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
   const { colony } = useColonyContext();
 
   const invitesAvailable = 100;
-  const [inviteLink, invitesUsed] = useMemo(
-    () => [
-      new URL(
-        `/invite/${colony?.name}/${colony?.colonyMemberInvite?.id}`,
-        window.document.baseURI,
-      ).href,
-      100 - (colony?.colonyMemberInvite?.invitesRemaining || 0),
-    ],
-    [colony],
+  const inviteLink = useBaseUrl(
+    `/invite/${colony?.name}/${colony?.colonyMemberInvite?.id}`,
   );
+  const invitesUsed = 100 - (colony?.colonyMemberInvite?.invitesRemaining || 0);
 
   const { handleClipboardCopy, isCopied } = useCopyToClipboard(inviteLink);
 

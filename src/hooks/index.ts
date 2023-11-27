@@ -77,7 +77,6 @@ export { default as useFlatFormErrors } from './useFlatFormErrors';
 export { default as useEnoughTokensForStaking } from './useEnoughTokensForStaking';
 export { default as useCurrentBlockTime } from './useCurrentBlockTime';
 export { default as useClipboardCopy } from './useClipboardCopy';
-export { default as useInvitationLink } from './useInvitationLink';
 export { default as useShouldDisplayMotionCountdownTime } from './useShouldDisplayMotionCountdownTime';
 
 export {
@@ -176,3 +175,10 @@ export const useMainClasses = (
     () => className || getMainClasses(appearance, styles),
     [appearance, className, styles],
   );
+
+export const useBaseUrl = (path?: string) => {
+  return useMemo(
+    () => new URL(path || '/', window.document.baseURI).href,
+    [path],
+  );
+};
