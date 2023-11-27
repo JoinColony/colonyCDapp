@@ -8,7 +8,7 @@ import { ActionTypes } from '~redux/index';
 
 import { ButtonRow, HeaderRow } from '../shared';
 
-import { FormValues } from './CreateColonyWizard';
+import { FormValues, TokenChoice } from './types';
 import CardRow from './CreateColonyCardRow';
 
 const displayName = 'common.CreateColonyWizard.StepConfirmAllInput';
@@ -48,10 +48,11 @@ const StepConfirmAllInput = ({
 }: Props) => {
   const updatedWizardValues = {
     ...wizardValues,
-    tokenAvatar: tokenChoice === 'create' ? tokenAvatar : undefined,
-    tokenThumbnail: tokenChoice === 'create' ? tokenThumbnail : undefined,
-    token: tokenChoice === 'create' ? null : token,
-    tokenAddress: tokenChoice === 'create' ? '' : tokenAddress,
+    tokenAvatar: tokenChoice === TokenChoice.Create ? tokenAvatar : undefined,
+    tokenThumbnail:
+      tokenChoice === TokenChoice.Create ? tokenThumbnail : undefined,
+    token: tokenChoice === TokenChoice.Create ? null : token,
+    tokenAddress: tokenChoice === TokenChoice.Create ? '' : tokenAddress,
     /**
      * Use tokenName/tokenSymbol if creating a new token,
      * or get the values from token object if using an existing one

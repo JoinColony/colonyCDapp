@@ -1,6 +1,6 @@
 import { StepType } from '~shared/Wizard/withWizard';
-import { Token } from '~types';
 
+import { TokenChoice } from './types';
 import StepColonyName from './StepColonyName';
 import StepConfirmAllInput from './StepConfirmAllInput';
 import StepConfirmTransactions from './StepConfirmTransactions';
@@ -15,35 +15,10 @@ export const stepArray: StepType[] = [
   StepConfirmTransactions,
 ];
 
-export type FormValues = {
-  tokenName?: string;
-  tokenSymbol?: string;
-  tokenAddress: string;
-  token?: Token | null;
-  colonyName: string;
-  tokenChoice?: 'create' | 'select';
-  displayName: string;
-  tokenAvatar?: string;
-  tokenThumbnail?: string;
-};
-
-export type Step1 = Pick<FormValues, 'colonyName' | 'displayName'>;
-export type Step2 = Pick<FormValues, 'tokenChoice'>;
-export type Step3 = Pick<
-  FormValues,
-  | 'tokenAddress'
-  | 'tokenName'
-  | 'tokenSymbol'
-  | 'token'
-  | 'tokenChoice'
-  | 'tokenAvatar'
-  | 'tokenThumbnail'
->;
-
 export const initialValues = {
   colonyName: '',
   displayName: '',
-  tokenChoice: 'create',
+  tokenChoice: TokenChoice.Create,
   tokenAddress: '',
   tokenName: '',
   tokenSymbol: '',

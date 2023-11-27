@@ -6,7 +6,7 @@ import { Form } from '~shared/Fields';
 
 import { ButtonRow, HeaderRow } from '../shared';
 
-import { FormValues, Step3 } from './CreateColonyWizard';
+import { FormValues, Step3, TokenChoice } from './types';
 import TokenInputs from './StepCreateTokenInputs';
 import { TokenChoiceOptions } from './StepCreateTokenComponents';
 import TokenSelectorInput from './TokenSelectorInput';
@@ -50,8 +50,10 @@ const StepCreateToken = ({
             description={MSG.description}
             descriptionValues={{ br: <br /> }}
           />
-          <TokenChoiceOptions tokenChoiceOptions={['create', 'select']} />
-          {currentTokenChoice === 'create' ? (
+          <TokenChoiceOptions
+            tokenChoiceOptions={[TokenChoice.Create, TokenChoice.Select]}
+          />
+          {currentTokenChoice === TokenChoice.Create ? (
             <TokenInputs
               wizardTokenName={tokenName || ''}
               wizardTokenSymbol={tokenSymbol || ''}

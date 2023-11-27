@@ -10,7 +10,7 @@ import { formatText } from '~utils/intl';
 
 import { ButtonRow, HeaderRow } from '../shared';
 
-import { FormValues, Step2 } from './CreateColonyWizard';
+import { FormValues, Step2 } from './types';
 
 const displayName = 'common.CreateColonyWizard.StepTokenChoice';
 

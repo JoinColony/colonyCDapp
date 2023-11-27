@@ -10,7 +10,7 @@ import { intl } from '~utils/intl';
 import { createYupTestFromQuery } from '~utils/yup/tests';
 import { Token } from '~types';
 
-import { FormValues } from './CreateColonyWizard';
+import { FormValues, TokenChoice } from './types';
 
 export const MAX_TOKEN_NAME = 30;
 export const MAX_TOKEN_SYMBOL = 5;
@@ -63,7 +63,7 @@ export const selectTokenValidationSchema = object({
   tokenAddress: string()
     .default('')
     .when('tokenChoice', {
-      is: 'select',
+      is: TokenChoice.Select,
       then: (schema) =>
         schema
           .required(formatMessage({ id: 'error.tokenAddressRequired' }))
@@ -86,7 +86,7 @@ export const selectTokenValidationSchema = object({
   token: object<Token>()
     .nullable()
     .when(['tokenChoice', 'tokenAddress'], {
-      is: (tokenChoice) => tokenChoice === 'select',
+      is: (tokenChoice) => tokenChoice === TokenChoice.Select,
       then: (schema) =>
         schema.nullable().test('doesTokenExist', '', doesTokenExist),
       otherwise: (schema) => schema.notRequired(),
@@ -95,7 +95,7 @@ export const selectTokenValidationSchema = object({
 
 export const createTokenValidationSchema = object({
   tokenSymbol: string().when('tokenChoice', {
-    is: 'create',
+    is: TokenChoice.Create,
     then: (schema) =>
       schema
         .max(MAX_TOKEN_SYMBOL, '')
@@ -110,7 +110,7 @@ export const createTokenValidationSchema = object({
   tokenName: string()
     .default('')
     .when('tokenChoice', {
-      is: 'create',
+      is: TokenChoice.Create,
       then: (schema) =>
         schema
           .max(MAX_TOKEN_NAME, '')

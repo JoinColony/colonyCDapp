@@ -57,15 +57,19 @@ const WizardSidebarItem = ({
           hidden: hideSubItems,
         })}
       >
-        {subItems?.map((subItem, i) => {
+        {subItems?.map((subItem, index) => {
           const activatePrevious =
-            currentStep === stepId + i + 1 &&
-            subItems[i + 1]?.text === undefined;
-          const activateCurrent = currentStep === stepId + i;
+            currentStep === stepId + index + 1 &&
+            subItems[index + 1]?.text === undefined;
+          const activateCurrent = currentStep === stepId + index;
+
+          if (subItem.text === undefined) {
+            return null;
+          }
 
           return (
             <WizardSidebarSubItem
-              key={`subItem-${stepId + i}`}
+              key={`subItem-${stepId + index}`}
               text={subItem.text}
               isActive={activateCurrent || activatePrevious}
             />

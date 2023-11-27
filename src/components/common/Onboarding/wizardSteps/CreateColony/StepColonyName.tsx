@@ -8,7 +8,7 @@ import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 import { ButtonRow, HeaderRow } from '../shared';
 
-import { FormValues, Step1 } from './CreateColonyWizard';
+import { FormValues, Step1 } from './types';
 import { colonyNameValidationSchema as validationSchema } from './validation';
 
 import NameInputs from './StepColonyNameInputs';

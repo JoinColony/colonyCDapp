@@ -17,21 +17,15 @@ interface Props extends Pick<WizardSidebarSubStep, 'text'> {
   isActive: boolean;
 }
 
-const WizardSidebarSubItem = ({ text: stepText, isActive }: Props) => {
-  if (!stepText) {
-    return null;
-  }
-
-  return (
-    <span
-      className={clsx('text-xs ml-[26px]', {
-        'text-blue-400 font-semibold': isActive,
-      })}
-    >
-      <FormattedMessage {...stepText} />
-    </span>
-  );
-};
+const WizardSidebarSubItem = ({ text: stepText, isActive }: Props) => (
+  <span
+    className={clsx('text-xs ml-[26px]', {
+      'text-blue-400 font-semibold': isActive,
+    })}
+  >
+    <FormattedMessage {...stepText} />
+  </span>
+);
 
 WizardSidebarSubItem.displayName = displayName;
 

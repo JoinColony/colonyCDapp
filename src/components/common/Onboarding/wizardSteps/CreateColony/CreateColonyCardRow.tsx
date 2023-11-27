@@ -6,7 +6,7 @@ import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button';
 import Avatar from '~v5/shared/Avatar';
 
-import { FormValues } from './CreateColonyWizard';
+import { FormValues } from './types';
 
 const displayName = 'common.CreateColonyWizard.CardRow';
 

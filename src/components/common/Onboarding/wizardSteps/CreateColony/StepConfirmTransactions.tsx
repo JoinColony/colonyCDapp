@@ -18,7 +18,7 @@ import { useAppContext } from '~hooks';
 
 import { HeaderRow } from '../shared';
 
-import { FormValues } from './CreateColonyWizard';
+import { FormValues } from './types';
 import ConfirmTransactions from './ConfirmTransactions';
 
 const displayName = 'common.CreateColonyWizard.StepConfirmTransactions';
