@@ -1,34 +1,30 @@
 import { ColonyRole } from '@colony/colony-js';
-import {
-  useAppContext,
-  useColonyContext,
-  useColonyHasReputation,
-  useDialogActionPermissions,
-  useEnabledExtensions,
-  useTransformer,
-} from '~hooks';
-import { getAllUserRoles } from '~transformers';
+import { ColonyActionType } from '~gql';
+import { useAppContext, useColonyContext } from '~hooks';
+import { addressHasRoles } from '~utils/checks';
 
-export const useUserHasPermissions = (): boolean => {
-  const { isVotingReputationEnabled } = useEnabledExtensions();
+const permissionsByActionType = {
+  [ColonyActionType.CreateDomain]: [ColonyRole.Architecture],
+};
+
+export const useUserHasPermissions = (
+  actionType: ColonyActionType,
+  domainId: number,
+): boolean => {
   const { colony } = useColonyContext();
   const { wallet } = useAppContext();
 
-  const requiredRoles: ColonyRole[] = [ColonyRole.Root];
+  const requiredRoles = permissionsByActionType[actionType];
+  if (!requiredRoles) {
+    return false;
+  }
 
-  const hasReputation = useColonyHasReputation(colony?.colonyAddress);
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
-    wallet?.address,
-  ]);
-
-  const [hasRoles] = useDialogActionPermissions(
-    colony,
-    isVotingReputationEnabled,
+  const hasRoles = addressHasRoles({
     requiredRoles,
-    allUserRoles,
-    hasReputation,
-  );
+    requiredRolesDomains: [domainId],
+    colony,
+    address: wallet?.address ?? '',
+  });
 
-  return hasRoles || isVotingReputationEnabled;
+  return hasRoles;
 };

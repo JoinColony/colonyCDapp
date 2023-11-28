@@ -42,6 +42,10 @@ const MSG = defineMessages({
     defaultMessage:
       'If you have the necessary permissions you can bypass the governance process.',
   },
+  noPermissionsErrorTitle: {
+    id: `${displayName}.noPermissionsErrorTitle`,
+    defaultMessage: `You don't have the right permissions to create this action type. Choose another action.`,
+  },
 });
 
 const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
@@ -53,12 +57,24 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const { colony } = useColonyContext();
   const { formComponent: FormComponent, selectedAction } =
     useSidebarActionForm();
-  const userHasPermissions = useUserHasPermissions();
-  const { formState, watch, setValue } = useFormContext();
   const descriptionMetadata = useActionDescriptionMetadata();
-  const { title: titleError } = formState.errors;
 
-  const { decisionMethod, createdInDomainId } = watch();
+  const {
+    setValue,
+    formState: {
+      errors: { title: titleError },
+    },
+    watch,
+  } = useFormContext();
+  const { decisionMethod, createdInDomainId, actionType } = watch();
+
+  const userHasPermissions = useUserHasPermissions(
+    actionType,
+    createdInDomainId,
+  );
+  const noPermissionsError =
+    !userHasPermissions && decisionMethod === DecisionMethod.Permissions;
+
   const colonyHasReputation = useColonyHasReputation(
     colony?.colonyAddress,
     Number(createdInDomainId),
@@ -86,6 +102,14 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         <ActionTypeSelect className="mt-7 mb-3 min-h-[1.875rem] flex flex-col justify-center" />
 
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
+
+        {noPermissionsError && (
+          <div className="mt-6">
+            <NotificationBanner status="warning" icon="check-circle">
+              {formatMessage(MSG.noPermissionsErrorTitle)}
+            </NotificationBanner>
+          </div>
+        )}
         {noReputationError && (
           <div className="mt-6">
             <NotificationBanner
@@ -121,7 +145,10 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           )}
           <ActionButtons
             isActionDisabled={
-              !userHasPermissions || !selectedAction || noReputationError
+              !userHasPermissions ||
+              !selectedAction ||
+              noReputationError ||
+              noPermissionsError
             }
           />
         </div>
