@@ -21,7 +21,7 @@ const MSG = {
 };
 
 const NavigationFeedbackWidget = () => (
-  <div className="rounded-lg px-2.5 py-3 bg-blue-100 text-blue-400 md:mb-5">
+  <div className="rounded-lg px-2.5 py-3 bg-blue-100 text-blue-400">
     <h4 className="text-2 mb-2">
       <FormattedMessage {...MSG.widgetTitle} />
     </h4>
