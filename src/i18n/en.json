@@ -1317,7 +1317,7 @@
     "actionSidebar.distributionTypes.unequal": "Unequal",
     "actionSidebar.distributionTypes.reputationPercentage": "Reputation percentage",
     "actionSidebar.toolip.distributionTypes": "The type of distribution for the split payment.",
-    "actionSidebar.loading": "Loading motion...",
+    "actionSidebar.loading": "Loading...",
     "button.addRecipient": "Add recipient",
     "button.max": "Max",
     "button.loadMore": "Load more",
