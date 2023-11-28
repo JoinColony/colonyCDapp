@@ -3,6 +3,10 @@ import { FormattedMessage } from 'react-intl';
 
 import Icon from '~shared/Icon';
 
+interface Props {
+  onClick: () => void;
+}
+
 const MSG = {
   label: {
     id: 'FeedbackWidget.label',
@@ -10,10 +14,11 @@ const MSG = {
   },
 };
 
-const FeedbackButton = () => (
+const FeedbackButton = ({ onClick }: Props) => (
   <button
     type="button"
-    className="md:transition-all mt-auto flex items-center bg-blue-100 rounded-lg py-2 px-2.5 text-blue-400 group/feedback-button"
+    className="md:transition-all mt-auto flex items-center bg-blue-100 rounded-lg py-2 px-2.5 text-blue-400 group/feedback-button z-10"
+    onClick={onClick}
   >
     <Icon name="chats-circle" appearance={{ size: 'mediumSmall' }} />
     <span
