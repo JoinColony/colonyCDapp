@@ -1,6 +1,7 @@
 import React, { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
+import { PaperPlaneTilt } from 'phosphor-react';
 
 import UserHubButton from '~common/Extensions/UserHubButton';
 import {
@@ -128,7 +129,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
                       className="ml-1"
                       text={MSG.inviteMembers}
                       mode="quinary"
-                      iconName="paper-plane-tilt"
+                      iconName={<PaperPlaneTilt />}
                       size="small"
                       onClick={() => setIsInviteMembersModalOpen(true)}
                     />

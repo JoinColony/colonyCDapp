@@ -20,9 +20,11 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
         className,
         'flex justify-center items-center flex-shrink-0 relative h-[1em] w-[1em]',
         {
-          'text-[2.25rem]': size === 'extraBig',
-          'text-[1.75rem]': size === 'medium',
-          'text-[1.125rem]': size === 'small',
+          'text-4xl': size === 'extraBig',
+          'text-3xl': size === 'medium',
+          'text-2xl':
+            size === 'mediumSmallMediumLargeSmallTinyBigMediumLargeSmall',
+          'text-lg': size === 'small',
         },
       )}
     >
@@ -47,9 +49,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
           <Icon
             name="colony-placeholder"
             className="text-base-white"
-            appearance={{
-              size: size === 'extraBig' ? 'extraBig' : size,
-            }}
+            appearance={{ size }}
           />
         )}
       </figure>

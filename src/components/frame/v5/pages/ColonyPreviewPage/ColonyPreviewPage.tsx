@@ -231,7 +231,7 @@ const ColonyPreviewPage = () => {
                     }
                   : undefined
               }
-              size="medium"
+              size="mediumSmallMediumLargeSmallTinyBigMediumLargeSmall"
             />
             <h1 className="text-md font-medium inline">{colonyDisplayName}</h1>
           </>

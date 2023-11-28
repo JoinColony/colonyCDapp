@@ -2,6 +2,12 @@
   @apply inline-block;
 }
 
+/* HACK: Just temporary for phosphor transition */
+.main svg {
+  height: 100%;
+  width: 100%;
+}
+
 .main[role='button'] {
   @apply cursor-pointer active:outline-none hover:outline-none;
 }
@@ -32,6 +38,11 @@
 
 .sizeMediumSmall {
   @apply w-[1.375rem] h-[1.375rem];
+}
+
+/* Yes, this is to raise awareness */
+.sizeMediumSmallMediumLargeSmallTinyBigMediumLargeSmall {
+  @apply w-[1.5rem] h-[1.5rem];
 }
 
 .sizeMedium {

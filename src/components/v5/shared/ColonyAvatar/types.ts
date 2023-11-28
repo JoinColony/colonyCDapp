@@ -4,5 +4,9 @@ export interface ColonyAvatarProps {
   chainIconName?: string;
   colonyImageProps?: ImgHTMLAttributes<HTMLImageElement>;
   className?: string;
-  size?: 'extraBig' | 'medium' | 'small';
+  size?:
+    | 'extraBig'
+    | 'medium'
+    | 'mediumSmallMediumLargeSmallTinyBigMediumLargeSmall'
+    | 'small';
 }
