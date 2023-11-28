@@ -70,22 +70,28 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
         )}
         {additionalContent}
       </div>
-      <div className="flex flex-col gap-5">
-        {!isTablet && <NavigationFeedbackWidget />}
-        {bottomActionProps && !isTablet && !('to' in bottomActionProps) && (
-          <Button
-            {...bottomActionProps}
-            onClick={(e) => {
-              setOpenItemIndex(undefined);
-              bottomActionProps.onClick?.(e);
-            }}
-            className="w-full"
-          />
-        )}
-        {bottomActionProps && !isTablet && 'to' in bottomActionProps && (
-          <ButtonLink {...bottomActionProps} className="w-full" />
-        )}
-      </div>
+      {!isTablet && (
+        <div className="flex flex-col gap-5">
+          <NavigationFeedbackWidget />
+          {bottomActionProps && (
+            <>
+              {!('to' in bottomActionProps) && (
+                <Button
+                  {...bottomActionProps}
+                  onClick={(e) => {
+                    setOpenItemIndex(undefined);
+                    bottomActionProps.onClick?.(e);
+                  }}
+                  className="w-full"
+                />
+              )}
+              {'to' in bottomActionProps && (
+                <ButtonLink {...bottomActionProps} className="w-full" />
+              )}
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 };
