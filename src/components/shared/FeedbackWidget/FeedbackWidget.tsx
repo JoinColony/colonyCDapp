@@ -1,33 +1,36 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import ExternalLink from '~shared/ExternalLink';
-import { FEEDBACK } from '~constants/externalUrls';
-
-import styles from './FeedbackWidget.css';
+import Icon from '~shared/Icon';
 
 const MSG = {
-  loveFeedback: {
-    id: 'FeedbackWidget.loveFeedback',
-    defaultMessage: 'We {heart} feedback!',
+  label: {
+    id: 'FeedbackWidget.label',
+    defaultMessage: 'Beta feedback',
   },
 };
 
 const FeedbackWidget = () => (
-  <div className={styles.main}>
-    <ExternalLink className={styles.link} href={FEEDBACK}>
-      <FormattedMessage
-        {...MSG.loveFeedback}
-        values={{
-          heart: (
-            <span role="img" className={styles.heart} aria-label="">
-              ♥️
-            </span>
-          ),
-        }}
-      />
-    </ExternalLink>
-  </div>
+  <button
+    type="button"
+    className="md:transition-all mt-auto flex items-center bg-blue-100 rounded-lg py-2 px-2.5 text-blue-400 group/feedback-button"
+  >
+    <Icon name="chats-circle" appearance={{ size: 'mediumSmall' }} />
+    <span
+      className={`
+        heading-5
+        md:text-2
+        md:max-w-0
+        md:overflow-hidden
+        md:group-hover/feedback-button:max-w-xs
+        md:transition-[max-width]
+      `}
+    >
+      <span className="align-middle md:pl-2 md:whitespace-nowrap">
+        <FormattedMessage {...MSG.label} />
+      </span>
+    </span>
+  </button>
 );
 
 export default FeedbackWidget;
