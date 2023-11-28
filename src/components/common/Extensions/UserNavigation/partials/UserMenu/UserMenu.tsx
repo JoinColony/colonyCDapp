@@ -40,7 +40,7 @@ const UserMenu: FC<UserMenuProps> = ({
       tooltipProps={tooltipProps}
       withTooltipStyles={!isTablet}
       classNames={clsx(
-        'w-full p-6 bg-base-white md:rounded-lg md:border md:border-gray-100 md:max-w-[20.125rem] md:shadow-default',
+        'w-full p-6 bg-base-white md:rounded-lg md:border md:border-gray-100 md:w-80 md:shadow-default',
         {
           '!translate-y-0 !top-full h-[calc(100dvh-var(--top-content-height))] overflow-auto':
             isTablet,
@@ -92,7 +92,7 @@ const UserMenu: FC<UserMenuProps> = ({
             </div>
           </>
         )}
-        <div className="w-full pb-4 mb-6 border-b border-b-gray-200 sm:pb-3">
+        <div className="w-full pb-4 mb-5 border-b border-b-gray-200 sm:pb-3">
           <TitleLabel text={formatText({ id: 'userMenu.optionsTitle' })} />
           <ul className="text-left">
             {userMenuItems.map(({ id, link, icon, name: itemName }) => (
@@ -121,27 +121,19 @@ const UserMenu: FC<UserMenuProps> = ({
             ))}
           </ul>
         </div>
-        <div className="">
-          {wallet && (
-            <div>
-              <TitleLabel text={formatText({ id: 'userMenu.other' })} />
-              <div className="navigation-link">
-                <Icon name="plugs" appearance={{ size: iconSize }} />
-                <button
-                  type="button"
-                  className="ml-2"
-                  onClick={disconnectWallet}
-                >
-                  {formatText({ id: 'userMenu.disconnectWalletTitle' })}
-                </button>
-              </div>
+        {wallet && (
+          <div className="w-full mb-4 sm:mb-3">
+            <TitleLabel text={formatText({ id: 'userMenu.other' })} />
+            <div className="navigation-link">
+              <Icon name="plugs" appearance={{ size: iconSize }} />
+              <button type="button" className="ml-2" onClick={disconnectWallet}>
+                {formatText({ id: 'userMenu.disconnectWalletTitle' })}
+              </button>
             </div>
-          )}
-          {/* @BETA: Disabled for now */}
-          {/* <div className="mt-4 sm:mt-3"> */}
-          {/*   <ThemeSwitcher /> */}
-          {/* </div> */}
-        </div>
+          </div>
+        )}
+        {/* @BETA: Disabled for now */}
+        {/* <ThemeSwitcher /> */}
       </div>
       <div
         className={clsx('transition-transform', {
