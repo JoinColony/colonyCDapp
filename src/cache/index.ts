@@ -43,6 +43,11 @@ const cache = new InMemoryCache({
            * with the next set of paginated actions
            */
           merge(existing = {}, incoming, { readField, args }) {
+            /** If the query does not contain any items do not cache it */
+            if (!incoming?.items) {
+              return existing;
+            }
+
             const { nextToken } = args || {};
             const items = existing && nextToken ? { ...existing.items } : {};
             incoming.items.forEach((item) => {
@@ -58,7 +63,7 @@ const cache = new InMemoryCache({
             };
           },
           read(existing) {
-            if (existing) {
+            if (existing && existing.items) {
               return {
                 ...existing,
                 items: Object.values(existing.items),
