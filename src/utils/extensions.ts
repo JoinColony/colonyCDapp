@@ -85,8 +85,12 @@ export const convertFractionToWei = (percentage: number) =>
  * For extensions accepting period parameter that the user enters in hours,
  * this function converts it to seconds.
  */
-export const convertPeriodToSeconds = (periodInHours: number) =>
-  new Decimal(periodInHours)
+export const convertPeriodToSeconds = (periodInHours: number) => {
+  if (!periodInHours) {
+    return '0';
+  }
+  return new Decimal(periodInHours)
     .mul(3600)
     .toFixed(0, Decimal.ROUND_HALF_UP)
     .toString();
+};

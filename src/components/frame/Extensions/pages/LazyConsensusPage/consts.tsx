@@ -35,7 +35,7 @@ export const defaultGovernanceOptions = {
     stakePeriod: 72,
     submitPeriod: 72,
     revealPeriod: 72,
-    escalationPeriod: 72,
+    // escalationPeriod: 72, @TODO Re-enable once Motion escalation is implemented
   },
   [GovernanceOptions.SPEED_OVER_SECURITY]: {
     totalStakeFraction: 1,
@@ -45,7 +45,7 @@ export const defaultGovernanceOptions = {
     stakePeriod: 72,
     submitPeriod: 72,
     revealPeriod: 42,
-    escalationPeriod: 48,
+    // escalationPeriod: 48, @TODO Re-enable once Motion escalation is implemented
   },
   [GovernanceOptions.SECURITY_OVER_SPEED]: {
     totalStakeFraction: 1,
@@ -55,7 +55,7 @@ export const defaultGovernanceOptions = {
     stakePeriod: 120,
     submitPeriod: 120,
     revealPeriod: 72,
-    escalationPeriod: 72,
+    // escalationPeriod: 72, @TODO Re-enable once Motion escalation is implemented
   },
   [GovernanceOptions.TESTING_GOVERNANCE]: {
     totalStakeFraction: 1,
@@ -65,7 +65,7 @@ export const defaultGovernanceOptions = {
     stakePeriod: 0.083,
     submitPeriod: 0.083,
     revealPeriod: 0.083,
-    escalationPeriod: 0.083,
+    // escalationPeriod: 0.083, @TODO Re-enable once Motion escalation is implemented
   },
 };
 
@@ -237,29 +237,32 @@ export const initialExtensionContent = [
           },
         ],
       },
-      {
-        id: 'escalationPeriod',
-        textItem: (
-          <ContentTypeText
-            title="Escalation Phase Duration"
-            subTitle="How long do you wish to allow for members to escalate a dispute to a higher team?"
-          />
-        ),
-        inputData: {
-          inputType: 'hours',
-          name: 'params.escalationPeriod',
-          min: 0.01,
-          max: 8760,
-          step: 0.001,
-        },
-        accordionItem: [
-          {
-            id: 'step-0-8',
-            header: 'Example scenario',
-            content: `If the escalation phase is 72 hours, once the outcome of a vote is known, if the loser feels the outcome was for any reason incorrect, then they will have 72 hours in which to escalate the dispute to a higher team in the colony by increasing the stake to meet the required stake of that higher team.`,
-          },
-        ],
-      },
+      /*
+       * @TODO Re-enable once Motion escalation is implemented
+       */
+      // {
+      //   id: 'escalationPeriod',
+      //   textItem: (
+      //     <ContentTypeText
+      //       title="Escalation Phase Duration"
+      //       subTitle="How long do you wish to allow for members to escalate a dispute to a higher team?"
+      //     />
+      //   ),
+      //   inputData: {
+      //     inputType: 'hours',
+      //     name: 'params.escalationPeriod',
+      //     min: 0.01,
+      //     max: 8760,
+      //     step: 0.001,
+      //   },
+      //   accordionItem: [
+      //     {
+      //       id: 'step-0-8',
+      //       header: 'Example scenario',
+      //       content: `If the escalation phase is 72 hours, once the outcome of a vote is known, if the loser feels the outcome was for any reason incorrect, then they will have 72 hours in which to escalate the dispute to a higher team in the colony by increasing the stake to meet the required stake of that higher team.`,
+      //     },
+      //   ],
+      // },
     ],
   },
 ];
