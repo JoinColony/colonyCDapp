@@ -70,7 +70,7 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
         )}
         {additionalContent}
       </div>
-      <div>
+      <div className="flex flex-col gap-5">
         {!isTablet && <NavigationFeedbackWidget />}
         {bottomActionProps && !isTablet && !('to' in bottomActionProps) && (
           <Button
