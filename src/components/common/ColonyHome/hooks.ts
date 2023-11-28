@@ -10,12 +10,11 @@ import {
 } from 'phosphor-react';
 import { useLocation } from 'react-router-dom';
 
-import { useGetColonyContributorsQuery } from '~gql';
+import { useGetActiveMotionsQuery, useGetColonyContributorsQuery } from '~gql';
 import { useAppContext, useColonyContext, useMobile } from '~hooks';
 import { notNull } from '~utils/arrays';
 import { getBalanceForTokenAndDomain } from '~utils/tokens';
 import { formatText } from '~utils/intl';
-import { useActionsList } from '~v5/common/ActionSidebar/hooks';
 import {
   setHexTeamColor,
   setTeamColor,
@@ -79,8 +78,7 @@ export const useGetAllColonyMembers = (
 
 export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
   const { colony } = useColonyContext();
-  const { domains, colonyAddress, nativeToken } = colony || {};
-  const { balances } = colony || {};
+  const { domains, colonyAddress, nativeToken, balances } = colony || {};
   const [hoveredSegment, setHoveredSegment] = useState<
     ChartData | undefined | null
   >();
@@ -97,11 +95,13 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
     team,
   );
 
-  const actionsList = useActionsList();
-  const activeActions = actionsList
-    .map((action) => action.options)
-    .flat()
-    .filter((option) => !option.isDisabled).length;
+  const { data: motionData } = useGetActiveMotionsQuery({
+    variables: {
+      colonyId: colonyAddress ?? '',
+    },
+  });
+
+  const activeActions = motionData?.getActiveMotions?.total ?? 0;
 
   const selectedTeamColor = domains?.items.find(
     (domain) => domain?.nativeId === team,
