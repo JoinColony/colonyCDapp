@@ -19,6 +19,7 @@ import {
 } from '~gql';
 import { CREATE_PROFILE_ROUTE } from '~routes';
 import ColonyAvatar from '~v5/shared/ColonyAvatar';
+import SocialLinks from '~v5/shared/SocialLinks';
 
 const displayName = 'pages.ColonyPreviewPage';
 
@@ -158,7 +159,8 @@ const ColonyPreviewPage = () => {
   const inviteIsInvalid = inviteCode && !inviteIsValid;
   const colonyDisplayName =
     colonyData?.getColonyByName?.items[0]?.metadata?.displayName || colonyName;
-  const colonyHasSocialLinks = false;
+  const socialLinks =
+    colonyData?.getColonyByName?.items[0]?.metadata?.externalLinks || [];
 
   return (
     <div className="max-w-[34rem] mx-auto">
@@ -222,7 +224,7 @@ const ColonyPreviewPage = () => {
           ) : null
         }
         title={
-          <>
+          <div className="flex items-center gap-4 w-full">
             <ColonyAvatar
               colonyImageProps={
                 colonyMetadata?.avatar
@@ -234,13 +236,14 @@ const ColonyPreviewPage = () => {
               size="mediumSmallMediumLargeSmallTinyBigMediumLargeSmall"
             />
             <h1 className="text-md font-medium inline">{colonyDisplayName}</h1>
-          </>
+            <SocialLinks className="ml-auto" externalLinks={socialLinks} />
+          </div>
         }
       >
         <FormattedMessage
           {...MSG.restrictedAccessMessage}
           values={{
-            needsToRequestAccess: !inviteIsValid && colonyHasSocialLinks,
+            needsToRequestAccess: !!(!inviteIsValid && socialLinks.length),
           }}
         />
       </CardWithCallout>

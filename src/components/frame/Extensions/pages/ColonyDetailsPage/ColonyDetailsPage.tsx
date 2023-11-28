@@ -2,23 +2,22 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 import { defineMessages, useIntl } from 'react-intl';
 
+import { ACTION } from '~constants/actions';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
 import { useColonyContext, useMobile } from '~hooks';
+import Icon from '~shared/Icon';
+import Tooltip from '~shared/Extensions/Tooltip';
+import { formatText } from '~utils/intl';
+import { multiLineTextEllipsis } from '~utils/strings';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+import ObjectiveBox from '~v5/common/ObjectiveBox';
 import Avatar from '~v5/shared/Avatar';
 import Button from '~v5/shared/Button';
-import ObjectiveBox from '~v5/common/ObjectiveBox';
-import ExternalLink from '~shared/Extensions/ExternalLink';
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
-import { formatText } from '~utils/intl';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { ACTION } from '~constants/actions';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import CopyableAddress from '~v5/shared/CopyableAddress';
-import Icon from '~shared/Icon';
-import { COLONY_LINK_CONFIG } from '~constants/colonyLinks';
-import Tooltip from '~shared/Extensions/Tooltip';
+import SocialLinks from '~v5/shared/SocialLinks';
 
 import styles from './ColonyDetailsPage.module.css';
-import { multiLineTextEllipsis } from '~utils/strings';
 
 const displayName = 'frame.Extensions.pages.ColonyDetailsPage';
 
@@ -111,27 +110,12 @@ const ColonyDetailsPage: FC = () => {
             ? multiLineTextEllipsis(description, MAX_DESCRIPTION_LENGTH)
             : formatMessage(MSG.descriptionPlaceholder)}
         </p>
-        {externalLinks && externalLinks.length > 0 ? (
-          <div className="mb-6 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4">
-            {externalLinks.map(({ name: linkName, link }) => {
-              const { label, LinkIcon } = COLONY_LINK_CONFIG[linkName];
-
-              if (!label || !LinkIcon) {
-                return null;
-              }
-
-              return (
-                <ExternalLink
-                  href={link}
-                  key={`${linkName}:${link}`}
-                  className="flex items-center gap-2 text-gray-900 text-md"
-                >
-                  <LinkIcon size={18} />
-                  {label}
-                </ExternalLink>
-              );
-            })}
-          </div>
+        {externalLinks && externalLinks.length ? (
+          <SocialLinks
+            className="mb-6"
+            externalLinks={externalLinks}
+            showLabels
+          />
         ) : null}
         <Button
           mode="primarySolid"

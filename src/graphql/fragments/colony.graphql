@@ -61,8 +61,12 @@ fragment PublicColony on Colony {
   colonyAddress: id
   name
   metadata {
-    displayName
     avatar
+    displayName
+    externalLinks {
+      link
+      name
+    }
     thumbnail
   }
 }
