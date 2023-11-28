@@ -180,7 +180,15 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
         {!isTablet && (
           <>
             <div className="w-11 px-px mt-auto flex justify-start">
-              <FeedbackButton />
+              <FeedbackButton
+                onClick={() => {
+                  if (openItemIndex === 0) {
+                    setOpenItemIndex(undefined);
+                  } else {
+                    setOpenItemIndex(0);
+                  }
+                }}
+              />
             </div>
             {logo ?? logo}
           </>
