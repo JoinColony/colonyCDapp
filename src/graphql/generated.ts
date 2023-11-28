@@ -5595,7 +5595,6 @@ export type Query = {
   listWatchedColonies?: Maybe<ModelWatchedColoniesConnection>;
   searchColonyActions?: Maybe<SearchableColonyActionConnection>;
   searchColonyMotions?: Maybe<SearchableColonyMotionConnection>;
-  searchDomains?: Maybe<SearchableDomainConnection>;
 };
 
 
@@ -6552,17 +6551,6 @@ export type QuerySearchColonyMotionsArgs = {
   sort?: InputMaybe<Array<InputMaybe<SearchableColonyMotionSortInput>>>;
 };
 
-
-/** Root query type */
-export type QuerySearchDomainsArgs = {
-  aggregates?: InputMaybe<Array<InputMaybe<SearchableDomainAggregationInput>>>;
-  filter?: InputMaybe<SearchableDomainFilterInput>;
-  from?: InputMaybe<Scalars['Int']>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableDomainSortInput>>>;
-};
-
 export type ReputationMiningCycleMetadata = {
   __typename?: 'ReputationMiningCycleMetadata';
   createdAt: Scalars['AWSDateTime'];
@@ -6864,67 +6852,6 @@ export enum SearchableColonyMotionSortableFields {
   TransactionHash = 'transactionHash',
   UpdatedAt = 'updatedAt',
   UserMinStake = 'userMinStake'
-}
-
-export enum SearchableDomainAggregateField {
-  ColonyId = 'colonyId',
-  CreatedAt = 'createdAt',
-  Id = 'id',
-  IsRoot = 'isRoot',
-  NativeFundingPotId = 'nativeFundingPotId',
-  NativeId = 'nativeId',
-  NativeSkillId = 'nativeSkillId',
-  Reputation = 'reputation',
-  ReputationPercentage = 'reputationPercentage',
-  UpdatedAt = 'updatedAt'
-}
-
-export type SearchableDomainAggregationInput = {
-  field: SearchableDomainAggregateField;
-  name: Scalars['String'];
-  type: SearchableAggregateType;
-};
-
-export type SearchableDomainConnection = {
-  __typename?: 'SearchableDomainConnection';
-  aggregateItems: Array<Maybe<SearchableAggregateResult>>;
-  items: Array<Maybe<Domain>>;
-  nextToken?: Maybe<Scalars['String']>;
-  total?: Maybe<Scalars['Int']>;
-};
-
-export type SearchableDomainFilterInput = {
-  and?: InputMaybe<Array<InputMaybe<SearchableDomainFilterInput>>>;
-  colonyId?: InputMaybe<SearchableIdFilterInput>;
-  createdAt?: InputMaybe<SearchableStringFilterInput>;
-  id?: InputMaybe<SearchableIdFilterInput>;
-  isRoot?: InputMaybe<SearchableBooleanFilterInput>;
-  nativeFundingPotId?: InputMaybe<SearchableIntFilterInput>;
-  nativeId?: InputMaybe<SearchableIntFilterInput>;
-  nativeSkillId?: InputMaybe<SearchableIntFilterInput>;
-  not?: InputMaybe<SearchableDomainFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<SearchableDomainFilterInput>>>;
-  reputation?: InputMaybe<SearchableStringFilterInput>;
-  reputationPercentage?: InputMaybe<SearchableStringFilterInput>;
-  updatedAt?: InputMaybe<SearchableStringFilterInput>;
-};
-
-export type SearchableDomainSortInput = {
-  direction?: InputMaybe<SearchableSortDirection>;
-  field?: InputMaybe<SearchableDomainSortableFields>;
-};
-
-export enum SearchableDomainSortableFields {
-  ColonyId = 'colonyId',
-  CreatedAt = 'createdAt',
-  Id = 'id',
-  IsRoot = 'isRoot',
-  NativeFundingPotId = 'nativeFundingPotId',
-  NativeId = 'nativeId',
-  NativeSkillId = 'nativeSkillId',
-  Reputation = 'reputation',
-  ReputationPercentage = 'reputationPercentage',
-  UpdatedAt = 'updatedAt'
 }
 
 export type SearchableFloatFilterInput = {

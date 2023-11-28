@@ -101,7 +101,7 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
     },
   });
 
-  const activeActions = motionData?.getActiveMotions?.total ?? 0;
+  const activeActions = motionData?.searchColonyMotions?.total ?? 0;
 
   const selectedTeamColor = domains?.items.find(
     (domain) => domain?.nativeId === team,

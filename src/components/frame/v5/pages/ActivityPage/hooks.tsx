@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { subDays, startOfDay } from 'date-fns';
 
+import { notNull } from '~utils/arrays';
 import {
   useGetActiveMotionsQuery,
   useGetTotalColonyActionsQuery,
@@ -26,7 +27,7 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
     },
   });
 
-  const activeActionsNumber = motionData?.getActiveMotions?.total ?? 0;
+  const activeActionsNumber = motionData?.searchColonyMotions?.total ?? 0;
 
   const { data: actionData } = useGetTotalColonyActionsQuery({
     variables: {
@@ -44,16 +45,19 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
   });
 
   const domainsActionCount =
-    domainData?.searchColonyActions?.aggregateItems?.[0]?.result?.buckets ?? [];
+    // Buckets exists on this type but for some reason typescript is not
+    // recognising this
+    // @ts-ignore
+    domainData?.searchColonyActions?.aggregateItems[0]?.result?.buckets ?? [];
 
   const domainWithMaxActions = domainsActionCount.reduce(
     (max, item) => (item.doc_count > (max?.doc_count ?? 0) ? item : max),
     null,
   );
 
-  const mostActiveDomain = domains?.items?.find(
-    (domain) => domain.id === domainWithMaxActions?.key || '',
-  );
+  const mostActiveDomain = domains?.items
+    .filter(notNull)
+    .find((domain) => domain.id === domainWithMaxActions?.key || '');
 
   const mostActiveDomainName = mostActiveDomain?.metadata?.name || '~';
 
