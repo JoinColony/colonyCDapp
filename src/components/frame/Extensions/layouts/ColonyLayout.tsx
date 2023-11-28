@@ -9,6 +9,7 @@ import {
   useUserTransactionContext,
   TransactionGroupStates,
   useColonyCreatedModalContext,
+  useActionSidebarContext,
 } from '~context';
 import { useMobile, useColonyContext } from '~hooks';
 import { NOT_FOUND_ROUTE } from '~routes';
@@ -40,6 +41,9 @@ const MSG = defineMessages({
 const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const { colony, loading } = useColonyContext();
   const { title: pageHeadingTitle, breadcrumbs = [] } = usePageHeadingContext();
+  // @TODO: Eventually we want the action sidebar context to be better intergrated in the layout (maybe only used here and not in UserNavigation(Wrapper))
+  const { actionSidebarToggle } = useActionSidebarContext();
+  const [isActionSidebarOpen] = actionSidebarToggle;
   const isMobile = useMobile();
 
   const {
@@ -119,17 +123,16 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
               extra={
                 <>
                   <JoinButton />
-                  <Button
-                    text={MSG.inviteMembers}
-                    mode="primaryOutline"
-                    iconName="paper-plane-tilt"
-                    size="small"
-                    onClick={() => setIsInviteMembersModalOpen(true)}
-                  />
-                  <InviteMembersModal
-                    isOpen={isInviteMembersModalOpen}
-                    onClose={() => setIsInviteMembersModalOpen(false)}
-                  />
+                  {!isActionSidebarOpen ? (
+                    <Button
+                      className="ml-1"
+                      text={MSG.inviteMembers}
+                      mode="quinary"
+                      iconName="paper-plane-tilt"
+                      size="small"
+                      onClick={() => setIsInviteMembersModalOpen(true)}
+                    />
+                  ) : null}
                 </>
               }
             />
@@ -147,6 +150,10 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
       <ColonyCreatedModal
         isOpen={isColonyCreatedModalOpen}
         onClose={() => setIsColonyCreatedModalOpen(false)}
+      />
+      <InviteMembersModal
+        isOpen={isInviteMembersModalOpen}
+        onClose={() => setIsInviteMembersModalOpen(false)}
       />
     </>
   );
