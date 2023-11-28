@@ -6,6 +6,7 @@ import { useTablet } from '~hooks';
 import ColonyAvatar from '~v5/shared/ColonyAvatar';
 import HamburgerButton from '~v5/shared/HamburgerButton';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
+import FeedbackWidget from '~shared/FeedbackWidget';
 
 import NavigationSidebarSecondLevel from './partials/NavigationSidebarSecondLevel';
 import NavigationSidebarThirdLevel from './partials/NavigationSidebarThirdLevel';
@@ -176,7 +177,14 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
             <div>{additionalMobileContent}</div>
           )}
         </div>
-        {logo && !isTablet && <div className="mt-auto">{logo}</div>}
+        {!isTablet && (
+          <>
+            <div className="w-11 px-px mt-auto flex justify-start">
+              <FeedbackWidget />
+            </div>
+            {logo ?? logo}
+          </>
+        )}
       </div>
       <AnimatePresence>
         {isSecondLevelMenuOpen && !isTablet && openItemIndex !== undefined && (

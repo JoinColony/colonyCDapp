@@ -52,8 +52,8 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
       {!isTablet && (
         <Icon
           name={iconName}
-          // Important added to overwrite default icon dimensions
-          className="!h-[1.375rem] !w-[1.375rem] [&_svg]:fill-current"
+          appearance={{ size: 'mediumSmall' }}
+          className="[&_svg]:fill-current"
         />
       )}
       <span
