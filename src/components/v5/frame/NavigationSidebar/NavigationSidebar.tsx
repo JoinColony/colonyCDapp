@@ -6,7 +6,7 @@ import { useTablet } from '~hooks';
 import ColonyAvatar from '~v5/shared/ColonyAvatar';
 import HamburgerButton from '~v5/shared/HamburgerButton';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
-import FeedbackWidget from '~shared/FeedbackWidget';
+import FeedbackButton from '~shared/FeedbackButton';
 
 import NavigationSidebarSecondLevel from './partials/NavigationSidebarSecondLevel';
 import NavigationSidebarThirdLevel from './partials/NavigationSidebarThirdLevel';
@@ -179,7 +179,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
         {!isTablet && (
           <>
             <div className="w-11 px-px mt-auto flex justify-start">
-              <FeedbackWidget />
+              <FeedbackButton />
             </div>
             {logo ?? logo}
           </>
