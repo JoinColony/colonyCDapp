@@ -43,6 +43,7 @@ export interface CommonButtonProps
   title?: MessageDescriptor | string;
   ariaLabel?: MessageDescriptor | string;
   setTriggerRef?: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+  onTrackClick?: () => void; // For analytics tracking
 }
 
 export interface ButtonAppearanceCommonProps extends ButtonContentProps {

@@ -9,17 +9,61 @@ import React, {
 } from 'react';
 import { useBeamer } from '~hooks/useBeamer';
 
-// Define the shape of the analytics context
-interface AnalyticsEvent {
-  event: string;
-  category: string;
-  action: string;
-  label?: string;
+export enum AnalyticsEventType {
+  CUSTOM_EVENT = 'custom_event',
+}
+
+export enum AnalyticsEventCategory {
+  USER = 'user',
+  ACTION_PANEL = 'action_panel',
+  ADMIN = 'admin',
+}
+
+export enum AnalyticsEventAction {
+  CLICK = 'CLICK',
+  TRIGGER = 'TRIGGER',
+  TRANSACTION = 'TRANSACTION',
+}
+
+export enum AnalyticsEventLabel {
+  OPEN_USER_HUB = 'Open user hub',
+  OPEN_ACTION_PANEL = 'Open action panel',
+}
+
+// Analytics event
+export interface AnalyticsEvent {
+  event: AnalyticsEventType;
+  category: AnalyticsEventCategory;
+  action: AnalyticsEventAction;
+  label?: AnalyticsEventLabel;
   value?: number;
 }
 
+// Helper function to create an analytics event
+const createAnalyticsEvent = (
+  eventType: AnalyticsEventType,
+  eventCategory: AnalyticsEventCategory,
+  eventAction: AnalyticsEventAction,
+  eventLabel: AnalyticsEventLabel,
+  value?: number,
+): AnalyticsEvent => {
+  return {
+    event: eventType,
+    category: eventCategory,
+    action: eventAction,
+    label: eventLabel,
+    value,
+  };
+};
+
 interface AnalyticsContextValue {
-  trackEvent: (event: AnalyticsEvent) => void;
+  trackEvent: (
+    eventType: AnalyticsEventType,
+    eventCategory: AnalyticsEventCategory,
+    eventAction: AnalyticsEventAction,
+    eventLabel: AnalyticsEventLabel,
+    value?: number,
+  ) => void;
   trackPageView: (path: string) => void;
 }
 
@@ -28,12 +72,12 @@ const defaultAnalyticsContext = {
   trackPageView: () => {},
 };
 
-// Create a context with a default implementation (no operation)
+// Create a context with a default implementation
 export const AnalyticsContext = createContext<AnalyticsContextValue>(
   defaultAnalyticsContext,
 );
 
-// AnalyticsContextProvider component
+// AnalyticsContextProvider
 export const AnalyticsContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
@@ -60,22 +104,33 @@ export const AnalyticsContextProvider: FC<PropsWithChildren> = ({
   }, [gtmId]);
 
   const contextValue = useMemo(() => {
-    if (!isAnalyticsActive) {
-      return defaultAnalyticsContext;
-    }
-
-    return {
-      trackPageView: (path) => {
-        if (window.dataLayer) {
-          window.dataLayer.push({ event: 'pageview', path });
+    return isAnalyticsActive
+      ? {
+          trackEvent: (
+            eventType,
+            eventCategory,
+            eventAction,
+            eventLabel,
+            value,
+          ) => {
+            const event = createAnalyticsEvent(
+              eventType,
+              eventCategory,
+              eventAction,
+              eventLabel,
+              value,
+            );
+            if (window.dataLayer) {
+              window.dataLayer.push(event);
+            }
+          },
+          trackPageView: (path) => {
+            if (window.dataLayer) {
+              window.dataLayer.push({ event: 'pageview', path });
+            }
+          },
         }
-      },
-      trackEvent: (event: AnalyticsEvent) => {
-        if (window.dataLayer) {
-          window.dataLayer.push(event);
-        }
-      },
-    };
+      : defaultAnalyticsContext;
   }, [isAnalyticsActive]);
 
   return (
@@ -85,5 +140,4 @@ export const AnalyticsContextProvider: FC<PropsWithChildren> = ({
   );
 };
 
-// Custom hook to use the analytics context
 export const useAnalyticsContext = () => useContext(AnalyticsContext);

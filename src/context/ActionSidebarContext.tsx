@@ -16,7 +16,13 @@ import {
   UseToggleReturnType,
 } from '~hooks/useToggle/types';
 import { getPortalContainer } from '~v5/shared/Portal/utils';
-import { useAnalyticsContext } from './AnalyticsContext';
+import {
+  useAnalyticsContext,
+  AnalyticsEventType,
+  AnalyticsEventCategory,
+  AnalyticsEventAction,
+  AnalyticsEventLabel,
+} from './AnalyticsContext';
 
 type ActionSidebarToggle = [
   boolean,
@@ -85,12 +91,12 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
     (initialValues) => {
       setActionSidebarInitialValues(initialValues);
       // Track the event when the action panel is opened
-      trackEvent({
-        event: 'custom_event',
-        category: 'Actions',
-        action: 'Click',
-        label: 'Open Action panel',
-      });
+      trackEvent(
+        AnalyticsEventType.CUSTOM_EVENT,
+        AnalyticsEventCategory.ACTION_PANEL,
+        AnalyticsEventAction.TRIGGER,
+        AnalyticsEventLabel.OPEN_ACTION_PANEL,
+      );
       return toggleActionSidebarOn();
     },
     [toggleActionSidebarOn, trackEvent],
