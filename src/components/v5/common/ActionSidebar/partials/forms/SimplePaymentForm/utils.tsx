@@ -1,5 +1,4 @@
 import { ApolloClient } from '@apollo/client';
-import first from 'lodash/first';
 import { DeepPartial } from 'utility-types';
 import moveDecimal from 'move-decimal-point';
 
@@ -32,7 +31,7 @@ const tryGetRecipient = async (
       variables: { address: recipientAddress },
     });
 
-    return first(data?.getUserByAddress?.items) || null;
+    return data?.getUserByAddress?.items?.[0] ?? null;
   } catch {
     return null;
   }
