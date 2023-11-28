@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
-import { useIntl, defineMessages } from 'react-intl';
+import { defineMessages } from 'react-intl';
+import { formatText } from '~utils/intl';
 
 import { SuccessContentProps } from '~v5/common/AvatarUploader/types';
 import Button from '~v5/shared/Button';
@@ -16,22 +17,18 @@ const MSG = defineMessages({
 const IconSuccessContent: FC<SuccessContentProps> = ({
   open,
   handleFileRemove,
-}) => {
-  const { formatMessage } = useIntl();
-
-  return (
-    <div className="flex items-center gap-2">
-      <Button mode="primarySolid" onClick={open}>
-        {formatMessage(MSG.change)}
-      </Button>
-      <Button onClick={handleFileRemove} mode="tertiary">
-        {formatMessage({
-          id: 'button.delete.avatar',
-        })}
-      </Button>
-    </div>
-  );
-};
+}) => (
+  <div className="flex items-center gap-2">
+    <Button mode="primarySolid" onClick={open}>
+      {formatText(MSG.change)}
+    </Button>
+    <Button onClick={handleFileRemove} mode="tertiary">
+      {formatText({
+        id: 'button.delete.avatar',
+      })}
+    </Button>
+  </div>
+);
 
 IconSuccessContent.displayName = displayName;
 

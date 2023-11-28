@@ -1,59 +1,88 @@
-import React, { FC } from 'react';
-import { defineMessages } from 'react-intl';
-import { Navigate } from 'react-router-dom';
-
-import LoadingTemplate from '~frame/LoadingTemplate';
-import { useAppContext } from '~hooks';
-import { LANDING_PAGE_ROUTE } from '~routes';
-import { Form } from '~shared/Fields';
-
-import { useUserProfile } from './hooks';
-import UserProfilePageForm from './partials/UserProfilePageForm';
-import { FormValues, validationSchema } from './validation';
+import React, { FC, useEffect, useState } from 'react';
+import {
+  Outlet,
+  useLocation,
+  useNavigate,
+  useResolvedPath,
+} from 'react-router-dom';
+import { formatText } from '~utils/intl';
+import { usePageHeadingContext, useSetPageHeadingTitle } from '~context';
+import {
+  USER_ADVANCED_ROUTE,
+  USER_EDIT_PROFILE_ROUTE,
+  USER_PREFERENCES_ROUTE,
+} from '~routes';
+import Tabs from '~shared/Extensions/Tabs';
+import { tabRoutes } from './consts';
+import { TabId } from './types';
 
 const displayName = 'v5.pages.UserProfilePage';
 
-const MSG = defineMessages({
-  loadingText: {
-    id: `${displayName}.loadingText`,
-    defaultMessage: 'Loading user profile...',
-  },
-});
-
 const UserProfilePage: FC = () => {
-  const { user, userLoading, walletConnecting } = useAppContext();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const resolvedEditProfilePath = useResolvedPath(USER_EDIT_PROFILE_ROUTE);
+  const resolvedPreferencesPath = useResolvedPath(USER_PREFERENCES_ROUTE);
+  const resolvedAdvancedPath = useResolvedPath(USER_ADVANCED_ROUTE);
+  const [activeTab, setActiveTab] = useState<TabId>(TabId.Tab0);
 
-  const { handleSubmit, avatarUrl, canChangeUsername, daysTillUsernameChange } =
-    useUserProfile();
+  const { setBreadcrumbs } = usePageHeadingContext();
 
-  if (userLoading || walletConnecting) {
-    return <LoadingTemplate loadingText={MSG.loadingText} />;
-  }
+  useEffect(() => {
+    setBreadcrumbs([
+      {
+        key: 'landing-page',
+        label: 'Colony App',
+        href: '/',
+      },
+    ]);
+  }, [setBreadcrumbs]);
 
-  if (!user) {
-    return <Navigate to={LANDING_PAGE_ROUTE} />;
-  }
+  useSetPageHeadingTitle(formatText({ id: 'userProfile.title' }));
+
+  useEffect(() => {
+    switch (pathname) {
+      case resolvedEditProfilePath.pathname:
+        setActiveTab(TabId.Tab0);
+        break;
+      case resolvedPreferencesPath.pathname:
+        setActiveTab(TabId.Tab1);
+        break;
+      case resolvedAdvancedPath.pathname:
+        setActiveTab(TabId.Tab2);
+        break;
+      default:
+        break;
+    }
+  }, [
+    pathname,
+    resolvedPreferencesPath.pathname,
+    resolvedEditProfilePath.pathname,
+    resolvedAdvancedPath.pathname,
+  ]);
 
   return (
-    <Form<FormValues>
-      onSubmit={handleSubmit}
-      validationSchema={validationSchema}
-      defaultValues={{
-        hasDisplayNameChanged: false,
-        bio: user?.profile?.bio || '',
-        displayName: user?.profile?.displayName || '',
-        location: user?.profile?.location || '',
-        website: user?.profile?.website || '',
-      }}
-      resetOnSubmit
-    >
-      <UserProfilePageForm
-        user={user}
-        avatarUrl={avatarUrl}
-        canChangeUsername={canChangeUsername}
-        daysTillUsernameChange={daysTillUsernameChange}
-      />
-    </Form>
+    <Tabs
+      activeTab={activeTab}
+      onTabClick={(_, id) => navigate(tabRoutes[id])}
+      items={[
+        {
+          id: TabId.Tab0,
+          title: formatText({ id: 'userProfilePage.title' }) || '',
+          content: <Outlet />,
+        },
+        {
+          id: TabId.Tab1,
+          title: formatText({ id: 'userPreferencesPage.title' }) || '',
+          content: <Outlet />,
+        },
+        {
+          id: TabId.Tab2,
+          title: formatText({ id: 'userAdvancedPage.title' }) || '',
+          content: <Outlet />,
+        },
+      ]}
+    />
   );
 };
 

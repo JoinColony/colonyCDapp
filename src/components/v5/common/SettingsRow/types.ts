@@ -17,4 +17,7 @@ export interface SettingsRowProps<
   buttonMode?: ButtonMode;
   id?: TFieldName;
   register?: UseFormRegister<TFieldValues>;
+  className?: string;
+  titleClassName?: string;
+  additionalContent?: string;
 }

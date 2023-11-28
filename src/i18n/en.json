@@ -703,7 +703,8 @@
     "table.previous": "Previous",
     "teamsPage.title": "Teams",
     "teamsPage.description": "Teams of the Colony",
-    "userProfilePage.title": "Profile",
+    "userProfile.title": "Account",
+    "userProfilePage.title": "User account",
     "userProfilePage.description": "Edit and update your account information",
     "userProfilePage.website.error": "Enter a valid URL",
     "userPreferencesPage.title": "Preferences",
@@ -712,7 +713,7 @@
     "userPreferencesPage.notificationPreferences": "Notification preferences",
     "userPreferencesPage.notificationFor": "Get notifications for",
     "userPreferencesPage.displayPreferences": "Display preferences",
-    "userAdvancedPage.title": "Advanced settings",
+    "userAdvancedPage.title": "Advanced",
     "userAdvancedPage.description": "Customise and control your Colony account",
     "advancedSettings.fees.title": "Colony pays my gas fees",
     "advancedSettings.fees.description": "Enable this to have the Metacolony cover your gas fees when performing actions on Colony. All you need to do is sign it. This is currently supported on select chains.",
@@ -1522,5 +1523,9 @@
     "membersPage.memberNav.manageMember": "Manage member",
     "membersPage.memberNav.makePayment": "Make payment",
     "membersPage.memberNav.copyWalletAddress": "Copy wallet address",
-    "widget.totalActions": "Total actions"
+    "widget.totalActions": "Total actions",
+    "useProfile.advancedTab.title": "Advanced",
+    "profilePage.customRpc": "Gnosis Chain Custom RPC",
+    "wallet.information": "Wallet information",
+    "advancedSettings.title": "Advanced settings"
 }

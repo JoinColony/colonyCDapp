@@ -28,6 +28,7 @@ const FeesForm = () => {
           id="metatransactionsEnabled"
           handleOnChange={handleFeesOnChange}
           register={register}
+          className="pt-0"
         />
       )}
     </Form>

@@ -1,7 +1,0 @@
-.row {
-  @apply flex md:items-center md:justify-between flex-col md:flex-row gap-6 md:gap-[6.5rem];
-}
-
-.switchRow {
-  @apply flex justify-between md:gap-[6.5rem];
-}

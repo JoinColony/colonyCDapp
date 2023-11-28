@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Form } from '~shared/Fields';
+import { formatText } from '~utils/intl';
 import SettingsInputRow from '~v5/common/SettingsInputRow';
 import SettingsRow from '~v5/common/SettingsRow';
 import { useRpcForm } from './hooks';
@@ -32,6 +33,9 @@ const RpcForm = () => {
             tooltipMessage={{ id: 'advancedSettings.rpc.tooltip' }}
             id="decentralizedModeEnabled"
             handleOnChange={handleDecentarlizedOnChange}
+            className="pt-0 items-end"
+            titleClassName="!font-semibold !text-lg"
+            additionalContent={formatText({ id: 'profilePage.customRpc' })}
           />
           <SettingsInputRow
             isOpen={isInputVisible}

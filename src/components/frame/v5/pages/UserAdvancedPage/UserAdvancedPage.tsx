@@ -4,6 +4,8 @@ import { Navigate } from 'react-router-dom';
 
 import LoadingTemplate from '~frame/LoadingTemplate';
 import { useAppContext } from '~hooks';
+import { useSetPageHeadingTitle } from '~context';
+import { formatText } from '~utils/intl';
 import { LANDING_PAGE_ROUTE } from '~routes';
 
 import UserAdvancedSettings from './partials/UserAdvancedSettings';
@@ -19,6 +21,8 @@ const MSG = defineMessages({
 
 const UserAdvancedPage = () => {
   const { user, userLoading, walletConnecting } = useAppContext();
+
+  useSetPageHeadingTitle(formatText({ id: 'userProfile.title' }));
 
   if (userLoading || walletConnecting) {
     return <LoadingTemplate loadingText={MSG.loadingText} />;
