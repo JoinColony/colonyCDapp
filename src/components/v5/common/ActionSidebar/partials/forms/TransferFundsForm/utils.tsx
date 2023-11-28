@@ -3,7 +3,7 @@ import { DeepPartial } from 'utility-types';
 
 import { ColonyActionType } from '~gql';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { DECISION_METHOD } from '~v5/common/ActionSidebar/hooks';
+import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
 import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
 import { formatText } from '~utils/intl';
@@ -23,7 +23,7 @@ export const trasferFundsDescriptionMetadataGetter: DescriptionMetadataGetter<
     {
       token: amount?.amount ? token : undefined,
       type:
-        decisionMethod === DECISION_METHOD.Permissions
+        decisionMethod === DecisionMethod.Permissions
           ? ColonyActionType.MoveFunds
           : ColonyActionType.MoveFundsMotion,
       amount: amount?.amount

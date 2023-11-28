@@ -4,7 +4,7 @@ import moveDecimal from 'move-decimal-point';
 import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
 import { ColonyActionType } from '~gql';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { DECISION_METHOD } from '~v5/common/ActionSidebar/hooks';
+import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
 import { formatText } from '~utils/intl';
 
@@ -22,7 +22,7 @@ export const splitPaymentDescriptionMetadataGetter: DescriptionMetadataGetter<
   return getActionTitleValues(
     {
       type:
-        decisionMethod === DECISION_METHOD.Permissions
+        decisionMethod === DecisionMethod.Permissions
           ? ColonyActionType.Payment
           : ColonyActionType.PaymentMotion,
       amount: amount?.amount

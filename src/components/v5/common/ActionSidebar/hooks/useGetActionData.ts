@@ -8,7 +8,7 @@ import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import { ACTION_TYPE_FIELD_NAME } from '../consts';
 import { useGetColonyAction } from './useGetColonyAction';
-import { DECISION_METHOD } from './useDecisionMethods';
+import { DecisionMethod } from './useDecisionMethods';
 
 export const useGetActionData = (transactionId: string | undefined) => {
   const { action, loadingAction } = useGetColonyAction(transactionId);
@@ -38,8 +38,8 @@ export const useGetActionData = (transactionId: string | undefined) => {
       description: annotation?.message,
       title: action.metadata?.customTitle,
       decisionMethod: action.isMotion
-        ? DECISION_METHOD.Reputation
-        : DECISION_METHOD.Permissions,
+        ? DecisionMethod.Reputation
+        : DecisionMethod.Permissions,
     };
 
     switch (type) {
