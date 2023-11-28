@@ -107,13 +107,6 @@ const createUserTokens = /* GraphQL */ `
     }
   }
 `;
-const createWatchedColonies = /* GraphQL */ `
-  mutation CreateWatchedColonies($input: CreateWatchedColoniesInput!) {
-    createWatchedColonies(input: $input) {
-      id
-    }
-  }
-`;
 const createDomain = /* GraphQL */ `
   mutation CreateDomain($input: CreateDomainInput!) {
     createDomain(input: $input) {
@@ -254,34 +247,6 @@ const subscribeUserToColony = async (userAddress, colonyAddress) => {
   );
 };
 
-
-const joinColony = async (userAddress, colonyAddress) => {
-  try {
-    const { errors } = await graphqlRequest(
-      createWatchedColonies,
-      {
-        input: {
-          colonyID: colonyAddress,
-          userID: userAddress,
-        },
-      },
-      GRAPHQL_URI,
-      API_KEY,
-    );
-    await delay();
-
-    if (errors) {
-      console.error(errors)
-    }
-
-    console.log(
-      `Joining user { address: "${userAddress}" } to colony { address: "${colonyAddress}" }`,
-    );
-  } catch (error) {
-    console.log('Join Colony');
-    console.error(error);
-  }
-};
 
 const createUser = async (
   {
@@ -685,11 +650,6 @@ const createColony = async (
   await subscribeUserToColony(utils.getAddress(Object.keys(ganacheAddresses)[0]), colonyAddress);
   await subscribeUserToColony(utils.getAddress(Object.keys(ganacheAddresses)[1]), colonyAddress);
   await subscribeUserToColony(utils.getAddress(Object.keys(ganacheAddresses)[2]), colonyAddress);
-
-  // join colony (only main accounts)
-  await joinColony(utils.getAddress(Object.keys(ganacheAddresses)[0]), colonyAddress);
-  await joinColony(utils.getAddress(Object.keys(ganacheAddresses)[1]), colonyAddress);
-  await joinColony(utils.getAddress(Object.keys(ganacheAddresses)[2]), colonyAddress);
 
   /*
    * Domains
