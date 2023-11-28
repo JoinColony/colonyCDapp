@@ -4,6 +4,8 @@ const {
   updateColony,
   updateColonyMemberInvite,
   createColonyContributor,
+  getUser,
+  getColonyContributor,
 } = require('./graphql');
 
 let apiKey = 'da2-fakeApiId123456';
@@ -32,6 +34,20 @@ exports.handler = async (event) => {
     throw new Error('Unable to set environment variables. Reason:', e);
   }
 
+  const userExistenceCheckQuery = await graphqlRequest(
+    getUser,
+    { id: userAddress },
+    graphqlURL,
+    apiKey,
+  );
+
+  if (userExistenceCheckQuery.errors || !userExistenceCheckQuery.data) {
+    const [error] = userExistenceCheckQuery.errors;
+    throw new Error(
+      error?.message || 'Could not fetch user data from DynamoDB',
+    );
+  }
+
   const getColonyMemberInviteDetails = await graphqlRequest(
     getColonyMemberInvite,
     { id: colonyAddress },
@@ -55,70 +71,85 @@ exports.handler = async (event) => {
   const invitesStillExist = invitesRemaining > 0;
 
   if (!(inviteCodeMatches && invitesStillExist && valid)) {
-    return false;
+    throw new Error('Invite code is not valid');
   }
 
-  if (userAddress) {
-    const { whitelist } =
-      getColonyMemberInviteDetails?.data?.getColonyByAddress?.items[0];
-    const updatedWhitelist = new Set([...whitelist, userAddress]);
+  const { whitelist } =
+    getColonyMemberInviteDetails?.data?.getColonyByAddress?.items[0];
+  const updatedWhitelist = new Set([...whitelist, userAddress]);
 
-    const colonyMutation = await graphqlRequest(
-      updateColony,
-      {
-        input: {
-          id: colonyAddress,
-          whitelist: [...updatedWhitelist],
-        },
+  const colonyMutation = await graphqlRequest(
+    updateColony,
+    {
+      input: {
+        id: colonyAddress,
+        whitelist: [...updatedWhitelist],
       },
-      graphqlURL,
-      apiKey,
-    );
+    },
+    graphqlURL,
+    apiKey,
+  );
 
-    if (colonyMutation.errors || !colonyMutation.data) {
-      const [error] = colonyMutation.errors;
-      throw new Error(error?.message || 'Could not update colony whitelist');
-    }
+  if (colonyMutation.errors || !colonyMutation.data) {
+    const [error] = colonyMutation.errors;
+    throw new Error(error?.message || 'Could not update colony whitelist');
+  }
 
-    const colonyMemberInviteMutation = await graphqlRequest(
-      updateColonyMemberInvite,
-      {
-        input: {
-          id: inviteCode,
-          invitesRemaining: invitesRemaining - 1,
-        },
+  const colonyMemberInviteMutation = await graphqlRequest(
+    updateColonyMemberInvite,
+    {
+      input: {
+        id: inviteCode,
+        invitesRemaining: invitesRemaining - 1,
       },
-      graphqlURL,
-      apiKey,
+    },
+    graphqlURL,
+    apiKey,
+  );
+
+  if (colonyMemberInviteMutation.errors || !colonyMemberInviteMutation.data) {
+    const [error] = colonyMemberInviteMutation.errors;
+    throw new Error(error?.message || 'Could not update private beta invite');
+  }
+
+  const contributorExistenceCheckQuery = await graphqlRequest(
+    getColonyContributor,
+    { id: userAddress },
+    graphqlURL,
+    apiKey,
+  );
+
+  if (
+    contributorExistenceCheckQuery.errors ||
+    !contributorExistenceCheckQuery.data
+  ) {
+    const [error] = contributorExistenceCheckQuery.errors;
+    throw new Error(
+      error?.message || 'Could not fetch user data from DynamoDB',
     );
+  }
 
-    if (colonyMemberInviteMutation.errors || !colonyMemberInviteMutation.data) {
-      const [error] = colonyMemberInviteMutation.errors;
-      throw new Error(error?.message || 'Could not update private beta invite');
-    }
-
-    const colonyContributorMutation = await graphqlRequest(
-      createColonyContributor,
-      {
-        input: {
-          colonyAddress,
-          colonyReputationPercentage: 0,
-          contributorAddress: userAddress,
-          isVerified: false,
-          isWatching: true,
-          hasReputation: false,
-          id: getColonyContributorId(colonyAddress, userAddress),
-          type: 'NEW',
-        },
+  const colonyContributorMutation = await graphqlRequest(
+    createColonyContributor,
+    {
+      input: {
+        colonyAddress,
+        colonyReputationPercentage: 0,
+        contributorAddress: userAddress,
+        isVerified: false,
+        isWatching: true,
+        hasReputation: false,
+        id: getColonyContributorId(colonyAddress, userAddress),
+        type: 'NEW',
       },
-      graphqlURL,
-      apiKey,
-    );
+    },
+    graphqlURL,
+    apiKey,
+  );
 
-    if (colonyContributorMutation.errors || !colonyContributorMutation.data) {
-      const [error] = colonyContributorMutation.errors;
-      throw new Error(error?.message || 'Could not create private beta invite');
-    }
+  if (colonyContributorMutation.errors || !colonyContributorMutation.data) {
+    const [error] = colonyContributorMutation.errors;
+    throw new Error(error?.message || 'Could not create private beta invite');
   }
 
   return true;

@@ -34,4 +34,25 @@ module.exports = {
       }
     }
   `,
+  getUser: /* GraphQL */ `
+    query GetUser($id: ID!, $name: String!) {
+      getProfile(id: $id) {
+        id
+        displayName
+      }
+      getProfileByUsername(displayName: $name) {
+        items {
+          id
+          displayName
+        }
+      }
+    }
+  `,
+  getColonyContributor: /* GraphQL */ `
+    query GetColonyContributor($id: ID!) {
+      getColonyContributor(id: $id) {
+        id
+      }
+    }
+  `,
 };
