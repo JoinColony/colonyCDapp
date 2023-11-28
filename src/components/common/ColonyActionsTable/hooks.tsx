@@ -2,7 +2,7 @@ import { createColumnHelper, SortingState } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useCallback, useMemo, useState } from 'react';
-import { FilePlus, ArrowSquareOut, ShareNetwork } from 'phosphor-react';
+import { FilePlus, ArrowSquareOut, ShareNetwork } from '@phosphor-icons/react';
 
 import { generatePath, Link, useNavigate } from 'react-router-dom';
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge';

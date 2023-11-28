@@ -10,7 +10,7 @@ import {
   ListNumbers,
   ListBullets,
   Quotes,
-} from '@phosphor-icons/react';
+} from 'phosphor-react';
 import clsx from 'clsx';
 
 import { MenuBarProps } from '../types';

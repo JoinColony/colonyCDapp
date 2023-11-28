@@ -10,7 +10,7 @@ import {
   GithubLogo,
   InstagramLogo,
   FacebookLogo,
-} from '@phosphor-icons/react';
+} from 'phosphor-react';
 import clsx from 'clsx';
 import { TileRadioButtonItem } from '~v5/common/Fields/RadioButtons/TileRadioButtons/types';
 import { ExternalLinks } from '~gql';
