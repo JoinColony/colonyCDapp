@@ -26,3 +26,11 @@ query GetMotionTimeoutPeriods($input: GetMotionTimeoutPeriodsInput!) {
     timeLeftToEscalate
   }
 }
+
+query GetActiveMotions($colonyId: ID!) {
+  searchColonyMotions(
+    filter: { motionDomainId: { match: $colonyId }, isFinalized: { eq: false } }
+  ) {
+    total
+  }
+}
