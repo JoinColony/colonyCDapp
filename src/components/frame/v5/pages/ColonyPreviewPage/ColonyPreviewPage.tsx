@@ -1,6 +1,11 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import {
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
 import CardWithCallout from '~v5/shared/CardWithCallout';
 import Spinner from '~v5/shared/Spinner';
@@ -78,6 +83,7 @@ const ColonyPreviewPage = () => {
     inviteCode: string;
     colonyName: string;
   }>();
+  const { pathname } = useLocation();
   const { formatMessage } = useIntl();
   const { connectWallet, wallet, user, userLoading, walletConnecting } =
     useAppContext();
@@ -108,34 +114,18 @@ const ColonyPreviewPage = () => {
   const colonyAddress = colonyData?.getColonyByName?.items[0]?.colonyAddress;
   const colonyMetadata = colonyData?.getColonyByName?.items[0]?.metadata;
 
-  const validateInviteCode = useCallback(
-    async (redirectToUserRegistration = false) => {
-      if (!colonyAddress || !inviteCode || !wallet) return;
-      const valid = await validate({
-        variables: {
-          input: { colonyAddress, inviteCode, userAddress: wallet.address },
-        },
-      });
+  const validateInviteCode = useCallback(async () => {
+    if (!colonyAddress || !inviteCode || !wallet) return;
+    const valid = await validate({
+      variables: {
+        input: { colonyAddress, inviteCode, userAddress: wallet.address },
+      },
+    });
 
-      if (valid.data?.validateUserInvite) {
-        navigate(
-          redirectToUserRegistration ? CREATE_PROFILE_ROUTE : `/${colonyName}`,
-          {
-            state: {
-              colonyName: redirectToUserRegistration ? colonyName : undefined,
-            },
-          },
-        );
-      }
-    },
-    [colonyName, colonyAddress, wallet, validate, navigate, inviteCode],
-  );
-
-  useEffect(() => {
-    if (wallet && !user && !userLoading) {
-      validateInviteCode(true);
+    if (valid.data?.validateUserInvite) {
+      navigate(`/${colonyName}`);
     }
-  }, [wallet, user, validateInviteCode, userLoading]);
+  }, [colonyName, colonyAddress, wallet, validate, navigate, inviteCode]);
 
   if (
     userLoading ||
@@ -145,6 +135,12 @@ const ColonyPreviewPage = () => {
     colonyLoading
   ) {
     return <Spinner loading loadingText={MSG.loadingMessage} />;
+  }
+
+  if (wallet && !user) {
+    return (
+      <Navigate to={CREATE_PROFILE_ROUTE} state={{ redirectTo: pathname }} />
+    );
   }
 
   const isMember = !!whitelistData?.getColonyByName?.items[0]?.whitelist.some(
@@ -215,7 +211,7 @@ const ColonyPreviewPage = () => {
       <CardWithCallout
         className="border-grey-200"
         button={
-          inviteIsValid ? (
+          user && inviteIsValid ? (
             <Button
               className="w-full md:w-auto"
               mode="quinary"
