@@ -11,10 +11,11 @@ const UserStatus: FC<PropsWithChildren<PillsProps>> = ({
   mode,
   children,
   text,
+  className,
   ...rest
 }) => (
   <PillsBase
-    className={clsx({
+    className={clsx(className, {
       'text-blue-400 bg-blue-100': mode === 'dedicated',
       'text-base-white bg-blue-400': mode === 'dedicated-filled',
       'text-warning-400 bg-warning-100': mode === 'active',
@@ -24,6 +25,7 @@ const UserStatus: FC<PropsWithChildren<PillsProps>> = ({
       'text-purple-400 bg-purple-100': mode === 'top',
       'text-base-white bg-purple-400': mode === 'top-filled' || mode === 'team',
       'text-negative-400 bg-negative-100': mode === 'banned',
+      'max-w-[4.5rem] w-full justify-center truncate': mode === 'team',
     })}
     iconName={getIconName(mode)}
     pillSize="small"
