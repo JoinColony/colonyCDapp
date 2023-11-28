@@ -10,7 +10,7 @@ const MSG = {
   },
 };
 
-const FeedbackWidget = () => (
+const FeedbackButton = () => (
   <button
     type="button"
     className="md:transition-all mt-auto flex items-center bg-blue-100 rounded-lg py-2 px-2.5 text-blue-400 group/feedback-button"
@@ -33,4 +33,4 @@ const FeedbackWidget = () => (
   </button>
 );
 
-export default FeedbackWidget;
+export default FeedbackButton;
