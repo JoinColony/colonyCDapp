@@ -52,10 +52,10 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
   );
 
   const mostActiveDomain = domains?.items?.find(
-    (domain) => domain.id === domainWithMaxActions.key,
+    (domain) => domain.id === domainWithMaxActions?.key || '',
   );
 
-  const mostActiveDomainName = mostActiveDomain?.metadata?.name;
+  const mostActiveDomainName = mostActiveDomain?.metadata?.name || '~';
 
   const tileClassName = 'text-gray-400';
   const contentClassName =
