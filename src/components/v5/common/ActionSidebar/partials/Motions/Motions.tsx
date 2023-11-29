@@ -6,7 +6,6 @@ import { BigNumber } from 'ethers';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction';
 import Stepper from '~v5/shared/Stepper';
-import { StepperItem } from '~v5/shared/Stepper/types';
 
 import { getMotionState, MotionState, MotionVote } from '~utils/colonyMotions';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
@@ -115,13 +114,15 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     (motionState === NetworkMotionState.Finalizable ||
       motionState === NetworkMotionState.Finalized ||
       motionState === NetworkMotionState.Failed) &&
-    !motionStateHistory?.hasVoted;
+    motionData?.remainingStakes
+      .reduce((totalStakes, stake) => totalStakes.add(stake), BigNumber.from(0))
+      .gt(0);
 
   const items = useMemo(() => {
     if (loadingAction) {
       return [];
     }
-    const itemsEntries: StepperItem<Steps>[] = [
+    return [
       {
         key: NetworkMotionState.Staking,
         content: (
@@ -254,13 +255,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         isOptional: true,
         isHidden: motionStakedAndFinalizable,
       },
-    ];
-    if (
-      networkMotionStateEnum === NetworkMotionState.Finalizable ||
-      networkMotionStateEnum === NetworkMotionState.Finalized ||
-      networkMotionStateEnum === NetworkMotionState.Failed
-    ) {
-      itemsEntries.push({
+      {
         key: networkMotionStateEnum,
         content: (
           <FinalizeStep
@@ -268,6 +263,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
             startPollingAction={startPollingForAction}
             stopPollingAction={stopPollingForAction}
             refetchAction={refetchAction}
+            motionState={motionStateEnum}
           />
         ),
         heading: {
@@ -275,9 +271,8 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
           decor: undefined,
         },
         isSkipped: !canInteract,
-      });
-    }
-    return itemsEntries;
+      },
+    ];
   }, [
     loadingAction,
     activeStepKey,
