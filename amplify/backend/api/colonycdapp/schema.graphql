@@ -1467,11 +1467,11 @@ type ColonyMemberInvite @model {
   """
   id: ID!
   """
-  Colony ID associated with the Domain
+  Colony ID associated with the ColonyMemberInvite
   """
   colonyId: ID!
   """
-  Colony associated with the Domain
+  Colony associated with the ColonyMemberInvite
   """
   colony: Colony! @belongsTo(fields: ["colonyId"])
   """

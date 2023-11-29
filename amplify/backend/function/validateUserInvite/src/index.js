@@ -23,8 +23,6 @@ const setEnvVariables = async () => {
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-  console.log(`EVENT: ${JSON.stringify(event)}`);
-
   const { colonyAddress, inviteCode, userAddress } =
     event.arguments?.input || {};
 

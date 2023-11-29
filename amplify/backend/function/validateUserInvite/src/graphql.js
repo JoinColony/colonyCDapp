@@ -1,7 +1,7 @@
 module.exports = {
   getColonyMemberInvite: /* GraphQL */ `
-    query GetColonyMemberInvite($id: ID!) {
-      getColonyByAddress(id: $id) {
+    query GetColonyMemberInvite($colonyAddress: ID!) {
+      getColonyByAddress(id: $colonyAddress) {
         items {
           colonyMemberInvite {
             id
