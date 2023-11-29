@@ -18,7 +18,9 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
     throw new Error('Unable to set environment variables. Reason:', e);
   }
 
+  console.log({ rpcURL, colonyAddress });
   const provider = new providers.JsonRpcProvider(rpcURL);
+  console.log({ provider });
 
   const { chainId } = await provider.getNetwork();
   const block = await provider.getBlockNumber();
@@ -29,6 +31,8 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
     basicColonyAbi,
     provider,
   );
+  console.log({ lightColonyClient });
+
   const balance = await provider.getBalance(colonyAddress);
 
   /*
