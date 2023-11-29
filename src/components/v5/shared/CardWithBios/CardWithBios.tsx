@@ -62,11 +62,6 @@ const CardWithBios: FC<CardWithBiosProps> = ({
               avatarSize="sm"
               isContributorsList={isContributorsList}
             />
-            {isVerified && (
-              <span className="ml-1 flex shrink-0 text-blue-400">
-                <Icon name="verified" appearance={{ size: 'tiny' }} />
-              </span>
-            )}
           </div>
 
           <div className="flex gap-2">

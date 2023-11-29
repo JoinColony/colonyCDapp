@@ -8,6 +8,7 @@ import { useMobile } from '~hooks';
 import Modal from '~v5/shared/Modal';
 import UserInfo from './partials/UserInfo';
 import PopoverBase from '~v5/shared/PopoverBase';
+import Icon from '~shared/Icon';
 
 const displayName = 'v5.UserPopover';
 
@@ -23,6 +24,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   isContributorsList,
   children,
   additionalContent,
+  popperOptions,
 }) => {
   const isMobile = useMobile();
   const [isOpen, setIsOpen] = useState(false);
@@ -41,22 +43,31 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
     usePopperTooltip({
       delayShow: 200,
       delayHide: 200,
-      placement: 'bottom-end',
+      placement: popperOptions?.placement || 'bottom-end',
       trigger: ['click'],
       interactive: true,
     });
 
   const button = (
-    <button
-      onClick={isMobile ? onOpenModal : noop}
-      onMouseEnter={isMobile ? noop : () => onOpenModal()}
-      onMouseLeave={isMobile ? noop : () => onCloseModal()}
-      type="button"
-      ref={setTriggerRef}
-      className="inline-flex transition-all duration-normal hover:text-blue-400"
-    >
-      {children}
-    </button>
+    <div className="items-center flex">
+      <button
+        onClick={isMobile ? onOpenModal : noop}
+        onMouseEnter={isMobile ? noop : () => onOpenModal()}
+        onMouseLeave={isMobile ? noop : () => onCloseModal()}
+        type="button"
+        ref={setTriggerRef}
+        className="inline-flex transition-all duration-normal hover:text-blue-400"
+      >
+        {children}
+      </button>
+      {isVerified && (
+        <Icon
+          name="verified"
+          appearance={{ size: 'tiny' }}
+          className="text-blue-400 ml-1"
+        />
+      )}
+    </div>
   );
 
   const content = (

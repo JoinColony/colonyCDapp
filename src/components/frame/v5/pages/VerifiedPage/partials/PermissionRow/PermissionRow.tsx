@@ -40,7 +40,11 @@ const PermissionRow: FC<PermissionRowProps> = ({ contributorAddress }) => {
           </>
         }
       >
-        <PermissionsBadge iconName="user" text={permissionRole.name} />
+        <PermissionsBadge
+          iconName="user"
+          text={permissionRole.name}
+          className="!py-1.5 text-gray-900"
+        />
       </Tooltip>
     </div>
   );

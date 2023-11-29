@@ -1,5 +1,5 @@
 import { ColonyContributor, User } from '~types';
-import { UserStatusMode } from '~v5/common/Pills/types';
+import { PillSize, UserStatusMode } from '~v5/common/Pills/types';
 
 export type Permissions = {
   key: string;
@@ -24,6 +24,7 @@ export type CardWithBiosProps = {
 
 export type UserStatusComponentProps = {
   userStatus?: UserStatusMode;
+  pillSize?: PillSize;
 };
 
 export type UserStatusTooltipDetailsProps = {

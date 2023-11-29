@@ -15,7 +15,10 @@ import { formatText } from '~utils/intl';
 
 const displayName = 'v5.CardWithBios.partials.UserStatusComponent';
 
-const UserStatusComponent: FC<UserStatusComponentProps> = ({ userStatus }) => {
+const UserStatusComponent: FC<UserStatusComponentProps> = ({
+  userStatus,
+  pillSize,
+}) => {
   const { formatMessage } = useIntl();
   const percentNum = useMemo(
     () =>
@@ -33,14 +36,14 @@ const UserStatusComponent: FC<UserStatusComponentProps> = ({ userStatus }) => {
         <>
           <span className="mb-2.5">
             <span
-              className="flex items-center text-center px-3 py-1.5 
+              className="flex items-center text-center text-sm px-3 py-1.5 
             rounded-3xl border border-base-white h-[1.875rem] shrink-0 capitalize"
             >
               <Icon
                 name={getIconName(userStatus)}
                 appearance={{ size: 'extraTiny' }}
               />
-              <span className="ml-1.5">{userStatus}</span>
+              <span className="ml-1.5 text-sm">{userStatus}</span>
             </span>
           </span>
           <span className="text-left normal-case">
@@ -49,7 +52,11 @@ const UserStatusComponent: FC<UserStatusComponentProps> = ({ userStatus }) => {
         </>
       }
     >
-      <UserStatus mode={userStatus} text={formatText({ id: userStatus })}>
+      <UserStatus
+        mode={userStatus}
+        text={formatText({ id: userStatus })}
+        pillSize={pillSize}
+      >
         {userStatus}
       </UserStatus>
     </Tooltip>
