@@ -55,7 +55,9 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
 
   return (
     <>
-      {!isSetupRoute && showPermissionsBanner && <PermissionsNeededBanner />}
+      {!isSetupRoute && showPermissionsBanner && (
+        <PermissionsNeededBanner extensionData={extensionData} />
+      )}
       <div className="flex justify-between flex-col flex-wrap sm:items-center sm:flex-row sm:gap-6">
         <div className={styles.topContainer}>
           <ActionButtons
