@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
+import { isEmpty } from 'lodash';
 
 import { useTablet } from '~hooks';
 import ColonyAvatar from '~v5/shared/ColonyAvatar';
@@ -8,6 +9,7 @@ import HamburgerButton from '~v5/shared/HamburgerButton';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
 import FeedbackButton from '~shared/FeedbackButton';
 import ColonyLogo from '~images/logo-new.svg';
+import Icon from '~shared/Icon';
 
 import NavigationSidebarSecondLevel from './partials/NavigationSidebarSecondLevel';
 import NavigationSidebarThirdLevel from './partials/NavigationSidebarThirdLevel';
@@ -138,7 +140,16 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                   },
                 )}
               >
-                <ColonyAvatar {...colonySwitcherAvatarProps} />
+                {!isEmpty(colonySwitcherAvatarProps) ? (
+                  <ColonyAvatar {...colonySwitcherAvatarProps} />
+                ) : (
+                  <div className="w-9 h-9">
+                    <Icon
+                      name="colony-icon"
+                      appearance={{ size: 'largeSmall' }}
+                    />
+                  </div>
+                )}
               </button>
             </div>
             {isTablet ? (

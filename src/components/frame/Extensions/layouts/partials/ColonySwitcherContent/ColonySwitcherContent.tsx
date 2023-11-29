@@ -49,6 +49,7 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
                   }
                 : undefined,
               chainIconName,
+              colonyAddress: colony.colonyAddress,
             }}
             to={`/${name}`}
           />

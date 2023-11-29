@@ -63,6 +63,7 @@ const ColonySidebar = ({ txButtons, userHub }: Props) => {
             ? { src: metadata?.thumbnail || metadata?.avatar }
             : undefined,
           chainIconName: chainIcon,
+          colonyAddress: colony?.colonyAddress,
         },
         content: {
           title: formatText({ id: 'navigation.colonySwitcher.title' }),

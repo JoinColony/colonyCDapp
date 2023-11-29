@@ -4,11 +4,14 @@ import clsx from 'clsx';
 import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
 
+import Avatar from '../Avatar';
+
 import { ColonyAvatarProps } from './types';
 
 const displayName = 'v5.ColonyAvatar';
 
 const ColonyAvatar: FC<ColonyAvatarProps> = ({
+  colonyAddress,
   chainIconName,
   colonyImageProps,
   size = 'extraBig',
@@ -28,12 +31,9 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
         },
       )}
     >
-      <figure
+      <div
         className={clsx(
           'h-full w-full rounded-full overflow-hidden flex justify-center items-center',
-          {
-            'bg-gray-900': !colonyImageProps,
-          },
         )}
       >
         {colonyImageProps ? (
@@ -46,16 +46,12 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
             className="h-full w-full object-cover object-center"
           />
         ) : (
-          <span className="text-base-white flex items-center justify-center">
-            <Icon
-              name="colony-placeholder"
-              appearance={{
-                size,
-              }}
-            />
-          </span>
+          <Avatar
+            size={size === 'default' ? 's' : 'xxs'}
+            seed={colonyAddress.toLowerCase()}
+          />
         )}
-      </figure>
+      </div>
       {chainIconName && (
         <figure
           className={`
