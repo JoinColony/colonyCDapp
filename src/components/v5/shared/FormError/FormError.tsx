@@ -8,14 +8,19 @@ const FormError: FC<PropsWithChildren<FormErrorProps>> = ({
   alignment = 'right',
   isFullSize,
   children,
+  allowLayoutShift = true,
 }) => (
   <div
-    className={clsx(`flex w-[8.75rem] absolute`, {
-      'w-full': isFullSize,
-      'text-right justify-end': alignment === 'right',
-      'text-left justify-start': alignment === 'left',
-      'text-center justify-center': alignment === 'center',
-    })}
+    className={clsx(
+      `flex w-[8.75rem]`,
+      allowLayoutShift ? 'mt-1' : 'absolute',
+      {
+        'w-full': isFullSize,
+        'text-right justify-end': alignment === 'right',
+        'text-left justify-start': alignment === 'left',
+        'text-center justify-center': alignment === 'center',
+      },
+    )}
   >
     <span className="font-normal text-sm text-negative-400">{children}</span>
   </div>

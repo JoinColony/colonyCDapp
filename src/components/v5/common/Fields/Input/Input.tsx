@@ -131,7 +131,7 @@ const Input: FC<InputProps> = ({
             {isDecoratedError ? (
               <InputPills message={customErrorMessage} status="error" />
             ) : (
-              <FormError isFullSize alignment="left">
+              <FormError isFullSize alignment="left" allowLayoutShift={false}>
                 {customErrorMessage ||
                   (errorMaxChar
                     ? formatMessage(
