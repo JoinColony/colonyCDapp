@@ -47,7 +47,7 @@ const ColonyHome = () => {
   const selectedTeam = useGetSelectedTeamFilter();
   const agreements = undefined;
   const {
-    activeActions,
+    totalActions,
     allMembers,
     teamColor,
     currentTokenBalance,
@@ -85,8 +85,8 @@ const ColonyHome = () => {
         items={[
           {
             key: '1',
-            title: formatText({ id: 'colonyHome.actions' }),
-            value: <h4 className="heading-4">{activeActions}</h4>,
+            title: formatText({ id: 'widget.totalActions' }),
+            value: <h4 className="heading-4">{totalActions}</h4>,
             className: clsx('text-base-white', {
               [teamColor]: selectedTeam,
               'bg-gray-900 border-gray-900': !selectedTeam,

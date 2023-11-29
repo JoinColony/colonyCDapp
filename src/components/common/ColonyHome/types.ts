@@ -11,7 +11,7 @@ export interface ChartData {
 }
 
 export interface UseGetHomeWidgetReturnType {
-  activeActions: number;
+  totalActions: number;
   allMembers: User[];
   teamColor: string;
   currentTokenBalance: BigNumber;

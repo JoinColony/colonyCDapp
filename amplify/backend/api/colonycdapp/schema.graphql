@@ -2409,7 +2409,7 @@ type MotionStateHistory {
 """
 Represents a Motion within a Colony
 """
-type ColonyMotion @model @searchable {
+type ColonyMotion @model {
   """
   The internal database id of the motion
   To ensure uniqueness, we format as: `chainId-votingRepExtnAddress_nativeMotionId`

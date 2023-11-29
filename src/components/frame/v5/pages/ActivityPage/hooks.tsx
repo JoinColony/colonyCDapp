@@ -4,7 +4,6 @@ import { subDays, startOfDay } from 'date-fns';
 
 import { notNull } from '~utils/arrays';
 import {
-  useGetActiveMotionsQuery,
   useGetTotalColonyActionsQuery,
   useGetTotalColonyDomainActionsQuery,
 } from '~gql';
@@ -21,22 +20,24 @@ const getThirtyDaysAgoIso = () => {
 export const useActivityFeedWidgets = (): WidthBoxItem[] => {
   const { colony } = useColonyContext();
   const { domains, colonyAddress = '' } = colony ?? {};
-  const { data: motionData } = useGetActiveMotionsQuery({
+
+  const { data: totalActionData } = useGetTotalColonyActionsQuery({
     variables: {
       colonyId: colonyAddress ?? '',
+      since: null,
     },
   });
 
-  const activeActionsNumber = motionData?.searchColonyMotions?.total ?? 0;
+  const totalActions = totalActionData?.searchColonyActions?.total ?? 0;
 
-  const { data: actionData } = useGetTotalColonyActionsQuery({
+  const { data: recentActionData } = useGetTotalColonyActionsQuery({
     variables: {
       colonyId: colonyAddress ?? '',
       since: getThirtyDaysAgoIso(),
     },
   });
 
-  const recentActionsCount = actionData?.searchColonyActions?.total ?? 0;
+  const recentActions = recentActionData?.searchColonyActions?.total ?? 0;
 
   const { data: domainData } = useGetTotalColonyDomainActionsQuery({
     variables: {
@@ -68,10 +69,10 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
   return [
     {
       key: '1',
-      title: formatText({ id: 'activityPage.activeActions' }),
+      title: formatText({ id: 'widget.totalActions' }),
       value: (
         <span className="heading-4 text-gray-900">
-          {activeActionsNumber > 1000 ? '999+' : activeActionsNumber}
+          {totalActions > 1000 ? '999+' : totalActions}
         </span>
       ),
       className: tileClassName,
@@ -86,7 +87,7 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
           {formatText(
             { id: 'activityPage.recentActions.pastMonth' },
             {
-              value: recentActionsCount > 1000 ? '999+' : recentActionsCount,
+              value: recentActions > 1000 ? '999+' : recentActions,
               span: (chunks) => (
                 <span className="text-1 hidden sm:inline">{chunks}</span>
               ),

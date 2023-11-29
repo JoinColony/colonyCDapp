@@ -58,7 +58,6 @@
     "navigation.relatedActions": "Related actions",
     "colonyHome.title": "Colony",
     "colonyHome.members": "Members",
-    "colonyHome.actions": "Active actions",
     "colonyHome.funds": "Total funds",
     "home": "Home",
     "wallet": "Wallet",
@@ -1445,7 +1444,6 @@
     "colony.emptyState.title": "No results to display",
     "colony.emptyState.subtitle": "There are no Colony's that match your search. Try searching again",
     "activityPage.title": "Latest activity",
-    "activityPage.activeActions": "Active actions",
     "activityPage.recentActions": "Recent actions",
     "activityPage.recentActions.pastMonth": "{value}<span> past month</span>",
     "activityPage.mostActiveTeam": "Most active<span> team</span>",
@@ -1527,5 +1525,6 @@
     "membersPage.memberNav.viewOn": "View on {networkName}",
     "membersPage.memberNav.manageMember": "Manage member",
     "membersPage.memberNav.makePayment": "Make payment",
-    "membersPage.memberNav.copyWalletAddress": "Copy wallet address"
+    "membersPage.memberNav.copyWalletAddress": "Copy wallet address",
+    "widget.totalActions": "Total actions"
 }

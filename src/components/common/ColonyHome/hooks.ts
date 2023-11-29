@@ -10,7 +10,7 @@ import {
 } from 'phosphor-react';
 import { useLocation } from 'react-router-dom';
 
-import { useGetActiveMotionsQuery, useGetColonyContributorsQuery } from '~gql';
+import { useGetTotalColonyActionsQuery, useGetColonyContributorsQuery } from '~gql';
 import { useAppContext, useColonyContext, useMobile } from '~hooks';
 import { notNull } from '~utils/arrays';
 import { getBalanceForTokenAndDomain } from '~utils/tokens';
@@ -95,13 +95,14 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
     team,
   );
 
-  const { data: motionData } = useGetActiveMotionsQuery({
+  const { data: totalActionData } = useGetTotalColonyActionsQuery({
     variables: {
       colonyId: colonyAddress ?? '',
+      since: null,
     },
   });
 
-  const activeActions = motionData?.searchColonyMotions?.total ?? 0;
+  const totalActions = totalActionData?.searchColonyActions?.total ?? 0;
 
   const selectedTeamColor = domains?.items.find(
     (domain) => domain?.nativeId === team,
@@ -163,7 +164,7 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
   const chartData = allTeams?.length ? [...firstThreeTeams, otherTeams] : [];
 
   return {
-    activeActions,
+    totalActions,
     allMembers: mappedMembers,
     teamColor,
     currentTokenBalance,
