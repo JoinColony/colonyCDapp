@@ -15,8 +15,6 @@ import Button from '~v5/shared/Button';
 import UserAvatar from '~v5/shared/UserAvatar';
 import PopoverBase from '~v5/shared/PopoverBase';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks';
-
-import { UserHubButtonProps } from './types';
 import {
   AnalyticsEventAction,
   AnalyticsEventCategory,
@@ -24,6 +22,9 @@ import {
   AnalyticsEventType,
   useAnalyticsContext,
 } from '~context/AnalyticsContext';
+
+import { UserHubButtonProps } from './types';
+
 
 export const displayName =
   'common.Extensions.UserNavigation.partials.UserHubButton';
@@ -43,12 +44,14 @@ const UserHubButton: FC<UserHubButtonProps> = ({
   const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
 
   const [, { toggleOff }] = mobileMenuToggle;
-  const trackUserHubClick = () => trackEvent(
-    AnalyticsEventType.CUSTOM_EVENT,
-    AnalyticsEventCategory.USER,
-    AnalyticsEventAction.CLICK,
-    AnalyticsEventLabel.OPEN_USER_HUB,
-  );
+  const trackUserHubClick = () => {
+    trackEvent(
+      AnalyticsEventType.CUSTOM_EVENT,
+      AnalyticsEventCategory.USER,
+      AnalyticsEventAction.CLICK,
+      AnalyticsEventLabel.OPEN_USER_HUB,
+    );
+  };
 
   const popperTooltipOffset = isMobile ? [0, 1] : [0, 8];
 
@@ -88,8 +91,8 @@ const UserHubButton: FC<UserHubButtonProps> = ({
 
   useDisableBodyScroll(visible && isMobile);
   const handleButtonClick = () => {
-    setOpenItemIndex(undefined);
     trackUserHubClick()
+    setOpenItemIndex(undefined);
     toggleOff();
   };
 
