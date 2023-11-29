@@ -83,7 +83,6 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
           md:border
           border-gray-200
           flex
-          relative
         `,
       )}
       ref={registerContainerRef}

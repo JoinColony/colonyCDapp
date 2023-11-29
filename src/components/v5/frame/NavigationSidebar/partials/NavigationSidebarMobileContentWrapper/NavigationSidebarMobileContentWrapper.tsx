@@ -21,11 +21,11 @@ const NavigationSidebarMobileContentWrapper: FC<
     className={clsx(
       `
         absolute
-        top-[calc(100%+1px)]
+        top-full
         left-0
         right-0
         w-full
-        h-[calc(100vh-var(--top-content-height)-1px)]
+        h-[calc(100vh-var(--top-content-height))]
         bg-base-white
         overflow-hidden
       `,

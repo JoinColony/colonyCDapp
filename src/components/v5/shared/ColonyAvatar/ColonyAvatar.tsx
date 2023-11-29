@@ -46,11 +46,14 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
             className="h-full w-full object-cover object-center"
           />
         ) : (
-          <Icon
-            name="colony-placeholder"
-            className="text-base-white"
-            appearance={{ size }}
-          />
+          <span className="text-base-white flex items-center justify-center">
+            <Icon
+              name="colony-placeholder"
+              appearance={{
+                size,
+              }}
+            />
+          </span>
         )}
       </figure>
       {chainIconName && (

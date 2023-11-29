@@ -36,7 +36,7 @@ const TotalReputation: FC<TotalReputationProps> = ({
   );
 
   return (
-    <div className="border-b border-gray-100 pt-6">
+    <div className="border-b border-gray-200 pt-6">
       <div className="flex items-center justify-between">
         <TitleLabel text={formatMessage({ id: 'reputation.in.colony' })} />
         {/* @TODO: add action */}

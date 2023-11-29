@@ -1,23 +1,17 @@
+import React, { FC } from 'react';
 import clsx from 'clsx';
-import React, { FC, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import UserHub from '~common/Extensions/UserHub';
-import {
-  useAppContext,
-  useColonyContext,
-  useDetectClickOutside,
-  useMobile,
-  useTablet,
-} from '~hooks';
+import { useAppContext, useColonyContext, useMobile } from '~hooks';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
+import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
 import Button from '~v5/shared/Button';
 import UserAvatar from '~v5/shared/UserAvatar';
 import PopoverBase from '~v5/shared/PopoverBase';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks';
 
 import { UserHubButtonProps } from './types';
-import styles from './UserHubButton.module.css';
 
 export const displayName =
   'common.Extensions.UserNavigation.partials.UserHubButton';
@@ -26,35 +20,28 @@ const UserHubButton: FC<UserHubButtonProps> = ({
   hideMemberReputationOnMobile,
   hideUserNameOnMobile,
 }) => {
-  const isTablet = useTablet();
   const isMobile = useMobile();
   const { colony } = useColonyContext();
   const { wallet, user } = useAppContext();
+
   const walletAddress = wallet?.address;
-  const [isUserHubOpen, setIsUserHubOpen] = useState(false);
+
   const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
+
   const [, { toggleOff }] = mobileMenuToggle;
 
-  const popperTooltipOffset = isTablet ? [0, 1] : [0, 8];
-
-  const ref = useDetectClickOutside({
-    onTriggered: (e) => {
-      // This stops the hub closing when clicking the pending button (which is outside)
-      if (!(e.target as HTMLElement)?.getAttribute('data-openhubifclicked')) {
-        setIsUserHubOpen?.(false);
-      }
-    },
-  });
+  const popperTooltipOffset = isMobile ? [0, 1] : [0, 8];
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip(
       {
-        delayShow: isTablet ? 0 : 200,
-        delayHide: isTablet ? 0 : 200,
-        placement: isTablet ? 'bottom' : 'bottom-end',
+        delayShow: isMobile ? 0 : 200,
+        delayHide: isMobile ? 0 : 200,
+        placement: isMobile ? 'bottom' : 'bottom-end',
         trigger: 'click',
         interactive: true,
         onVisibleChange: () => {},
+        closeOnOutsideClick: true,
       },
       {
         modifiers: [
@@ -68,15 +55,17 @@ const UserHubButton: FC<UserHubButtonProps> = ({
       },
     );
 
+  useDisableBodyScroll(visible && isMobile);
+
   return (
-    <div ref={ref}>
+    <div>
       <Button
         mode="tertiary"
         size="large"
         isFullRounded
-        setTriggerRef={setTriggerRef}
+        ref={setTriggerRef}
         className={clsx({
-          '!border-blue-400': (visible || isUserHubOpen) && isTablet,
+          '!border-blue-400': visible && isMobile,
         })}
         onClick={() => {
           setOpenItemIndex(undefined);
@@ -101,18 +90,19 @@ const UserHubButton: FC<UserHubButtonProps> = ({
           ) : null}
         </div>
       </Button>
-      {(visible || isUserHubOpen) && (
+      {visible && (
         <PopoverBase
           setTooltipRef={setTooltipRef}
           tooltipProps={getTooltipProps}
-          classNames={clsx(styles.popover)}
+          classNames={clsx(
+            'w-full p-0 border-none shadow-none sm:border z-50 sm:border-solid sm:border-gray-200 sm:shadow-default sm:rounded-lg sm:w-auto',
+            {
+              '!translate-y-0 !translate-x-0 !top-[calc(var(--top-content-height)-1.5rem)] h-[calc(100dvh-var(--top-content-height)+1.5rem)]':
+                isMobile,
+            },
+          )}
         >
-          <div
-            className="w-full sm:w-[42.625rem] pt-4 sm:pt-0"
-            ref={setTooltipRef}
-          >
-            <UserHub isTransactionTabVisible={isUserHubOpen} />
-          </div>
+          <UserHub />
         </PopoverBase>
       )}
     </div>

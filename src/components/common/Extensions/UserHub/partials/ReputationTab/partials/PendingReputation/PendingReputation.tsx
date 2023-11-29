@@ -30,7 +30,7 @@ const PendingReputation: FC<PendingReputationProps> = ({
     : null;
 
   return (
-    <div className="pt-6 border-b border-gray-200 pb-6 sm:border-none sm:pb-0">
+    <div className="pt-6">
       <TitleLabel text={formatMessage({ id: 'userHub.pendingReputation' })} />
       <div className="flex flex-col gap-4 pt-2">
         <div className={styles.row}>

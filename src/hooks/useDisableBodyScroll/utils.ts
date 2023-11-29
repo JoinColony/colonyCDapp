@@ -12,6 +12,11 @@ export const isVerticalScrollBarVisible = () => {
 
 export const enableScrollOnBody = (): void => {
   const { body } = document;
+
+  if (!body.style.top) {
+    return;
+  }
+
   const scrollY = parseInt(body.style.top, 10);
 
   body.style.position = '';
@@ -33,9 +38,7 @@ export const disableScrollOnBody = (): void => {
   body.style.position = 'fixed';
   body.style.width = '100%';
 
-  if (scrollY !== '0px') {
-    body.style.top = `-${scrollY}`;
-  }
+  body.style.top = scrollY ? `-${scrollY}` : '0px';
 
   if (!scrollVisible) {
     return;
