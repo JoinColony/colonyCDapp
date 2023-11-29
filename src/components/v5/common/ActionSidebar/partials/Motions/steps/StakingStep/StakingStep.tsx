@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import { useAppContext } from '~hooks';
 import useToggle from '~hooks/useToggle';
@@ -64,7 +64,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
     objectingStakesPercentageValue !== 100 &&
     supportingStakesPercentageValue === 100;
 
-  const cardTitleText = useMemo(() => {
+  const cardTitleText = (() => {
     if (isFullyStaked) {
       return 'motion.staking.status.text.locked';
     }
@@ -76,11 +76,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
     }
 
     return 'motion.staking.status.text';
-  }, [
-    isFullyStaked,
-    objectingStakesPercentageValue,
-    supportingStakesPercentageValue,
-  ]);
+  })();
 
   return isLoading ? (
     <SpinnerLoader />
