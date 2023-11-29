@@ -10,6 +10,7 @@ import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
 import { useAppContext, useColonyContext } from '~hooks';
 import { formatText } from '~utils/intl';
 import { getSafePollingInterval } from '~utils/queries';
+import { MotionState } from '~utils/colonyMotions';
 
 import { FinalizeStepProps, FinalizeStepSections } from './types';
 import { useClaimConfig, useFinalizeStep } from './hooks';
@@ -23,6 +24,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   startPollingAction,
   stopPollingAction,
   refetchAction,
+  motionState,
 }) => {
   const { wallet, user } = useAppContext();
   const [isPolling, setIsPolling] = useState(false);
@@ -77,6 +79,12 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   }
 
   const canInteract = !!wallet && !!user;
+  /*
+   * @NOTE This is just needed until we properly save motion data in the db
+   * For now, we just fetch it live from chain, so when we uninstall the extension
+   * that state check will fail, and old motions cannot be interacted with anymore
+   */
+  const wrongMotionState = !motionState || motionState === MotionState.Invalid;
 
   return (
     <MenuWithStatusText
@@ -128,7 +136,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                     isFinalizable && (
                       <Button
                         mode="primarySolid"
-                        disabled={!isFinalizable}
+                        disabled={!isFinalizable || wrongMotionState}
                         isFullSize
                         text={formatText({ id: 'motion.finalizeStep.submit' })}
                         type="submit"
@@ -142,7 +150,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                     canClaimStakes && (
                       <Button
                         mode="primarySolid"
-                        disabled={!canClaimStakes}
+                        disabled={!canClaimStakes || wrongMotionState}
                         isFullSize
                         text={formatText({
                           id: buttonTextId,
