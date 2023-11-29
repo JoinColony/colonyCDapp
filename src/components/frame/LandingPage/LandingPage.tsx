@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
@@ -8,6 +8,7 @@ import CreateAColonyBanner from '~images/create-colony-banner.png';
 import CreateAProfileBanner from '~images/create-profile-banner.png';
 import { useAppContext } from '~hooks';
 import InvitationBlock from '~common/InvitationBlock';
+import { usePageHeadingContext } from '~context';
 
 import {
   CREATE_COLONY_ROUTE_BASE,
@@ -96,6 +97,17 @@ const LandingPage = () => {
   const [, setHoveredItem] = useState<number>(1);
   const navigate = useNavigate();
   const { user, connectWallet, wallet, userLoading } = useAppContext();
+  const { setBreadcrumbs } = usePageHeadingContext();
+
+  useEffect(() => {
+    setBreadcrumbs([
+      {
+        key: 'landing-page',
+        label: 'Colony App',
+        href: '/',
+      },
+    ]);
+  }, [setBreadcrumbs]);
 
   const landingPageItems = [
     {

@@ -1,4 +1,6 @@
 import React, { FC } from 'react';
+import clsx from 'clsx';
+
 import Breadcrumbs from '~v5/shared/Breadcrumbs';
 import { PageHeadingProps } from './types';
 
@@ -10,8 +12,8 @@ const PageHeading: FC<PageHeadingProps> = ({
   className,
 }) => (
   <div className={className}>
-    <Breadcrumbs className="mb-2" items={breadcrumbs} />
-    <h1 className="heading-3 text-gray-900">{title}</h1>
+    <Breadcrumbs className={clsx({ 'mb-2': title })} items={breadcrumbs} />
+    {title && <h1 className="heading-3 text-gray-900">{title}</h1>}
   </div>
 );
 

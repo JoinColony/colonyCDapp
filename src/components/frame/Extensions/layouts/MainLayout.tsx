@@ -20,12 +20,13 @@ const MainLayout: FC<PropsWithChildren<MainLayoutProps>> = ({
   return (
     <PageLayout
       headerProps={{
-        pageHeadingProps: pageHeadingTitle
-          ? {
-              title: pageHeadingTitle,
-              breadcrumbs,
-            }
-          : undefined,
+        pageHeadingProps:
+          pageHeadingTitle || breadcrumbs.length
+            ? {
+                title: pageHeadingTitle,
+                breadcrumbs,
+              }
+            : undefined,
         userNavigation: <UserNavigationWrapper />,
       }}
       sidebar={Sidebar}
