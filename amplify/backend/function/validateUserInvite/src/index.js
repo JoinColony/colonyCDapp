@@ -39,11 +39,9 @@ exports.handler = async (event) => {
     apiKey,
   );
 
-  if (userExistenceCheckQuery.errors || !userExistenceCheckQuery.data) {
+  if (userExistenceCheckQuery?.data) {
     const [error] = userExistenceCheckQuery.errors;
-    throw new Error(
-      error?.message || 'Could not fetch user data from DynamoDB',
-    );
+    throw new Error('User already exists!');
   }
 
   const getColonyMemberInviteDetails = await graphqlRequest(
