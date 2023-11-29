@@ -1,13 +1,17 @@
 import { BigNumber } from 'ethers';
 import { useMemo } from 'react';
-import { useRevealWidgetUpdate } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/RevealWidget/useRevealWidgetUpdate';
-import { useGetVoterRewardsQuery } from '~gql';
-import { useAppContext, useColonyContext } from '~hooks';
+
 import { OnSuccess } from '~shared/Fields';
+
+import { useGetVoterRewardsQuery } from '~gql';
+import { useRevealWidgetUpdate } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/RevealWidget/useRevealWidgetUpdate';
+import { useAppContext, useColonyContext } from '~hooks';
 import { mapPayload } from '~utils/actions';
-import { getLocalStorageVoteValue } from '../VotingStep/utils';
 import { MotionVote } from '~utils/colonyMotions';
+import { getSafePollingInterval } from '~utils/queries';
 import { ColonyMotion } from '~types';
+
+import { getLocalStorageVoteValue } from '../VotingStep/utils';
 
 export const useRevealStep = (
   motionData: ColonyMotion | undefined | null,
@@ -46,7 +50,7 @@ export const useRevealStep = (
 
   const handleSuccess: OnSuccess<Record<string, number>> = (_, { reset }) => {
     reset();
-    startPollingAction(1000);
+    startPollingAction(getSafePollingInterval());
     setUserVoteRevealed(true);
   };
 

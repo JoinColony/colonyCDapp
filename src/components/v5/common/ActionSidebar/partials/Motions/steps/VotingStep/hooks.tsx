@@ -2,20 +2,24 @@ import { Extension } from '@colony/colony-js';
 import { number, object } from 'yup';
 import { BigNumber } from 'ethers';
 import React from 'react';
-import { useVotingWidgetUpdate } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
+
+import Numeral from '~shared/Numeral';
+import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
+
 import { useGetVoterRewardsQuery } from '~gql';
 import { useAppContext, useColonyContext, useExtensionData } from '~hooks';
-import { MotionVotePayload } from '~redux/sagas/motions/voteMotion';
-import { InstalledExtensionData } from '~types';
+import { useVotingWidgetUpdate } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
 import { mapPayload } from '~utils/actions';
-import { DescriptionListItem } from './partials/DescriptionList/types';
 import { formatText } from '~utils/intl';
-import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
-import Numeral from '~shared/Numeral';
-import { VotingFormValues } from './types';
+import { getSafePollingInterval } from '~utils/queries';
 import { OnSuccess } from '~shared/Fields';
-import { getLocalStorageVoteValue, setLocalStorageVoteValue } from './utils';
+import { InstalledExtensionData } from '~types';
 import { MotionAction } from '~types/motions';
+import { MotionVotePayload } from '~redux/sagas/motions/voteMotion';
+
+import { VotingFormValues } from './types';
+import { DescriptionListItem } from './partials/DescriptionList/types';
+import { getLocalStorageVoteValue, setLocalStorageVoteValue } from './utils';
 
 export const useVotingStep = (
   actionData: MotionAction,
@@ -84,7 +88,7 @@ export const useVotingStep = (
     setLocalStorageVoteValue(transactionId, vote.vote);
     setHasUserVoted(true);
     reset();
-    startPollingAction(1000);
+    startPollingAction(getSafePollingInterval());
   };
 
   const validationSchema = object()
