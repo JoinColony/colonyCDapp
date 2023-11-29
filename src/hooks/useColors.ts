@@ -1,7 +1,7 @@
 import { DomainColor } from '~gql';
 import { setTeamColor } from '~v5/common/TeamReputationSummary/utils';
 
-export const useColors = () => {
+const useColors = () => {
   const colors = Object.values(DomainColor).map((color) => {
     return {
       label: color,
@@ -18,3 +18,5 @@ export const useColors = () => {
     isAccordion: false,
   };
 };
+
+export default useColors;

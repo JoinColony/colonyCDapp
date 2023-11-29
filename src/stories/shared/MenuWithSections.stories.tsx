@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import CardWithSections from '~v5/shared/CardWithSections';
+import MenuWithSections from '~v5/shared/MenuWithSections';
 
-const cardWithSectionsMeta: Meta<typeof CardWithSections> = {
+const cardWithSectionsMeta: Meta<typeof MenuWithSections> = {
   title: 'Shared/Card/With Sections',
-  component: CardWithSections,
+  component: MenuWithSections,
   args: {
     sections: [
       {
@@ -21,9 +21,9 @@ const cardWithSectionsMeta: Meta<typeof CardWithSections> = {
 
 export default cardWithSectionsMeta;
 
-export const Base: StoryObj<typeof CardWithSections> = {};
+export const Base: StoryObj<typeof MenuWithSections> = {};
 
-export const WithCustomClasses: StoryObj<typeof CardWithSections> = {
+export const WithCustomClasses: StoryObj<typeof MenuWithSections> = {
   args: {
     sections: [
       {

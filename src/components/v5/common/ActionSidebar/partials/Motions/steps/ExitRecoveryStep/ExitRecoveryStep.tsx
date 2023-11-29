@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button';
 
-import CardWithStatusText from '~v5/shared/CardWithStatusText';
+import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
 import ProgressBar from '~v5/shared/ProgressBar';
 import { ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
@@ -17,7 +17,7 @@ const displayName =
 const ExitRecoveryStep: FC = () => {
   return (
     <div className="flex flex-col gap-4">
-      <CardWithStatusText
+      <MenuWithStatusText
         statusTextSectionProps={{
           status: 'info',
           children: formatText(
@@ -62,7 +62,7 @@ const ExitRecoveryStep: FC = () => {
           },
         ]}
       />
-      <CardWithStatusText
+      <MenuWithStatusText
         statusTextSectionProps={{
           status: 'info',
           children: formatText({

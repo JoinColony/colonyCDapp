@@ -2,16 +2,17 @@ import React, { FC } from 'react';
 import { Id } from '@colony/colony-js';
 import Decimal from 'decimal.js';
 
-import Card from '~v5/shared/Card';
-import Icon from '~shared/Icon';
-import { TextButton } from '~v5/shared/Button';
-import TitleLabel from '~v5/shared/TitleLabel';
-import TeamReputationSummaryRow from './partials/TeamReputationSummaryRow';
-import { useColonyContext } from '~hooks';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import { useColonyContext } from '~hooks';
+import { TextButton } from '~v5/shared/Button';
+import Icon from '~shared/Icon';
 import Numeral from '~shared/Numeral';
+import MenuContainer from '~v5/shared/MenuContainer';
+import TitleLabel from '~v5/shared/TitleLabel';
 import { notNull } from '~utils/arrays';
 import { formatText } from '~utils/intl';
+
+import TeamReputationSummaryRow from './partials/TeamReputationSummaryRow';
 
 const displayName = 'v5.common.TeamReputationSummary';
 
@@ -27,7 +28,7 @@ const TeamReputationSummary: FC = () => {
   const showOthers = teams && teams?.length > 5;
 
   return (
-    <Card className="w-full">
+    <MenuContainer className="w-full">
       <span className="flex text-blue-400 mb-2">
         <Icon name="users-three" appearance={{ size: 'big' }} />
       </span>
@@ -89,7 +90,7 @@ const TeamReputationSummary: FC = () => {
           </TextButton>
         </>
       )}
-    </Card>
+    </MenuContainer>
   );
 };
 

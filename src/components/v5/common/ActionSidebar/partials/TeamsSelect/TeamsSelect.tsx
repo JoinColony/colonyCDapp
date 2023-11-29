@@ -3,9 +3,7 @@ import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 import { useController } from 'react-hook-form';
 
-import useToggle from '~hooks/useToggle';
-import { useTeams } from '~hooks/useTeams';
-import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
+import { useRelativePortalElement, useTeams, useToggle } from '~hooks';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import SearchSelect from '~v5/shared/SearchSelect';
 import TeamBadge from '~v5/common/Pills/TeamBadge';

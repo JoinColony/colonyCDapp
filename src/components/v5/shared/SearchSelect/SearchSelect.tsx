@@ -12,7 +12,7 @@ import Avatar from '~v5/shared/Avatar';
 import Portal from '~v5/shared/Portal';
 import EmptyContent from '~v5/common/EmptyContent';
 
-import Card from '../Card';
+import MenuContainer from '../MenuContainer';
 import SearchInput from './partials/SearchInput';
 import SearchItem from './partials/SearchItem';
 import { useSearchSelect } from './hooks';
@@ -192,14 +192,14 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
 
     return (
       <Portal>
-        <Card
+        <MenuContainer
           className="py-6 px-2.5 w-full bg-base-white max-w-[calc(100%-2.25rem)] sm:max-w-[20.375rem] z-[60] absolute max-h-[37.5rem]"
           hasShadow
           rounded="s"
           ref={ref}
         >
           {content}
-        </Card>
+        </MenuContainer>
       </Portal>
     );
   },

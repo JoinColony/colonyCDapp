@@ -2,14 +2,12 @@ import React, { FC } from 'react';
 import { useController, useWatch } from 'react-hook-form';
 import clsx from 'clsx';
 
-import useToggle from '~hooks/useToggle';
-import { useColors } from '~hooks/useColors';
-import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
-import { formatText } from '~utils/intl';
+import { useColors, useRelativePortalElement, useToggle } from '~hooks';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import Card from '~v5/shared/Card';
-import SearchItem from '~v5/shared/SearchSelect/partials/SearchItem/SearchItem';
+import { formatText } from '~utils/intl';
+import MenuContainer from '~v5/shared/MenuContainer';
 import Portal from '~v5/shared/Portal';
+import SearchItem from '~v5/shared/SearchSelect/partials/SearchItem/SearchItem';
 
 import TeamColourBadge from './partials/TeamColourBadge';
 import { TeamColourFieldProps } from './types';
@@ -75,7 +73,7 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
           </button>
           {isTeamColourSelectVisible && (
             <Portal>
-              <Card
+              <MenuContainer
                 ref={(ref) => {
                   registerContainerRef(ref);
                   portalElementRef.current = ref;
@@ -92,7 +90,7 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
                   }}
                   isLabelVisible={false}
                 />
-              </Card>
+              </MenuContainer>
             </Portal>
           )}
         </>

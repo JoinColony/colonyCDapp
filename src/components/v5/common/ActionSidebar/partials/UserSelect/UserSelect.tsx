@@ -1,18 +1,16 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 import { useController } from 'react-hook-form';
-import { isHexString } from 'ethers/lib/utils';
+import { utils } from 'ethers';
 
-import { useUserByAddress } from '~hooks';
-import useToggle from '~hooks/useToggle';
-import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
-import Icon from '~shared/Icon';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
-import { formatText } from '~utils/intl';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
+import { useRelativePortalElement, useUserByAddress, useToggle } from '~hooks';
+import { formatText } from '~utils/intl';
+import Icon from '~shared/Icon';
 import UserAvatar from '~v5/shared/UserAvatar';
 import UserPopover from '~v5/shared/UserPopover';
+import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
 
 import { useIsUserVerified, useUserSelect } from './hooks';
 import { UserSelectProps } from './types';
@@ -111,11 +109,11 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
             <SearchSelect
               items={[usersOptions]}
               onSelect={(value) => {
-                field.onChange(isHexString(value) ? value : undefined);
+                field.onChange(utils.isHexString(value) ? value : undefined);
                 toggleUserSelectOff();
               }}
               onSearch={(query) => {
-                field.onChange(isHexString(query) ? query : undefined);
+                field.onChange(utils.isHexString(query) ? query : undefined);
               }}
               ref={(ref) => {
                 registerContainerRef(ref);

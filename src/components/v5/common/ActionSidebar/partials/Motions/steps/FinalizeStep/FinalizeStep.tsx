@@ -4,7 +4,7 @@ import { ActionTypes } from '~redux';
 import { formatText } from '~utils/intl';
 import Button, { PendingButton } from '~v5/shared/Button';
 import { ActionForm } from '~shared/Fields';
-import CardWithStatusText from '~v5/shared/CardWithStatusText';
+import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
 import DescriptionList from '../VotingStep/partials/DescriptionList';
 import { useClaimConfig, useFinalizeStep } from './hooks';
 import { FinalizeStepProps } from './types';
@@ -58,7 +58,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   }, [actionData.motionData.isFinalized, refetchColony]);
 
   return (
-    <CardWithStatusText
+    <MenuWithStatusText
       statusTextSectionProps={{
         status: 'info',
         children: formatText({ id: 'motion.finalizeStep.statusText' }),

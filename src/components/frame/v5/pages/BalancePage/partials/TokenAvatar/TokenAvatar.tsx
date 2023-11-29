@@ -1,15 +1,15 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
-import { useMobile } from '~hooks';
-import TokenIcon from '~shared/TokenIcon';
+
+import { useMobile, useRelativePortalElement, useToggle } from '~hooks';
 import CopyableAddress from '~shared/CopyableAddress';
 import IconTooltip from '~shared/IconTooltip';
-import { TokenAvatarProps } from './types';
+import TokenIcon from '~shared/TokenIcon';
 import Modal from '~v5/shared/Modal';
-import useToggle from '~hooks/useToggle';
+import MenuContainer from '~v5/shared/MenuContainer';
 import Portal from '~v5/shared/Portal';
-import Card from '~v5/shared/Card';
-import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
+
+import { TokenAvatarProps } from './types';
 
 const displayName = 'v5.pages.BalancePage.partials.TokenAvatar';
 // @TODO: implement token popover according to the design
@@ -85,7 +85,7 @@ const TokenAvatar: FC<TokenAvatarProps> = ({
       ) : (
         isTokenVisible && (
           <Portal>
-            <Card
+            <MenuContainer
               className="absolute p-1 z-[60]"
               hasShadow
               rounded="s"
@@ -95,7 +95,7 @@ const TokenAvatar: FC<TokenAvatarProps> = ({
               }}
             >
               {content}
-            </Card>
+            </MenuContainer>
           </Portal>
         )
       )}

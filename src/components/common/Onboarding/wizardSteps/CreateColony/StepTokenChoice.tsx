@@ -6,11 +6,10 @@ import { useFormContext } from 'react-hook-form';
 import Icon from '~shared/Icon';
 import { WizardStepProps } from '~shared/Wizard';
 import { Form } from '~shared/Fields';
-import Card from '~v5/shared/Card';
 import { formatText } from '~utils/intl';
+import MenuContainer from '~v5/shared/MenuContainer';
 
 import { ButtonRow, HeaderRow } from '../shared';
-
 import { FormValues, Step2 } from './types';
 
 const displayName = 'common.CreateColonyWizard.StepTokenChoice';
@@ -70,9 +69,9 @@ const TokenSelector = ({
 
   return (
     <label htmlFor={`id-${name}`}>
-      <Card
+      <MenuContainer
         className={clsx(
-          'flex flex-col items-center cursor-pointer text-center h-full md:hover:shadow-default md:hover:border-blue-200',
+          'items-center cursor-pointer text-center h-full md:hover:shadow-default md:hover:border-blue-200',
           {
             'border-blue-400': checked,
             'border-gray-200': !checked,
@@ -89,7 +88,7 @@ const TokenSelector = ({
         {icon}
         <span className="text-1 pt-4">{formatText(title)}</span>
         <span className="description-1 pt-1">{formatText(description)}</span>
-      </Card>
+      </MenuContainer>
     </label>
   );
 };

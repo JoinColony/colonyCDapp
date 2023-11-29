@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 
 import clsx from 'clsx';
 import { RevealStepProps } from './types';
-import CardWithStatusText from '~v5/shared/CardWithStatusText';
+import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
 import ProgressBar from '~v5/shared/ProgressBar';
 import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button';
@@ -48,7 +48,7 @@ const RevealStep: FC<RevealStepProps> = ({
   const { decimals, symbol } = nativeToken || {};
 
   return (
-    <CardWithStatusText
+    <MenuWithStatusText
       statusTextSectionProps={{
         status: 'info',
         children: formatText({ id: 'motion.revealStep.statusText' }),

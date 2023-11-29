@@ -5,7 +5,7 @@ import useToggle from '~hooks/useToggle';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
-import CardWithStatusText from '~v5/shared/CardWithStatusText';
+import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
 import StatusText from '~v5/shared/StatusText';
 import UserInfoSectionList from '~v5/shared/UserInfoSectionList';
 import { useMotionContext } from '../../partials/MotionProvider/hooks';
@@ -65,7 +65,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
     <SpinnerLoader />
   ) : (
     <div className={className}>
-      <CardWithStatusText
+      <MenuWithStatusText
         statusTextSectionProps={{
           textClassName: 'text-4 text-gray-900',
           children: formatText(

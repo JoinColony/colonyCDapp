@@ -1,18 +1,17 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 
-import useToggle from '~hooks/useToggle';
+import { useRelativePortalElement, useToggle } from '~hooks';
 import Icon from '~shared/Icon';
-import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
 import { formatText } from '~utils/intl';
 import Portal from '~v5/shared/Portal';
 
-import Card from '../Card';
+import MenuContainer from '../MenuContainer';
 import { MeatBallMenuProps } from './types';
 import HoverWidthWrapper from '../HoverWidthWrapper';
 import { DEFAULT_ITEM_WRAPPER_RENDERER } from './utils';
 
-const displayName = 'v5.MeatBallMenu';
+const displayName = 'v5.shared.MeatBallMenu';
 
 const MeatBallMenu: FC<MeatBallMenuProps> = ({
   items,
@@ -56,7 +55,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
       </button>
       {isMenuOpen && (
         <Portal>
-          <Card
+          <MenuContainer
             className="px-2.5 py-4 absolute z-[60] overflow-y-auto w-auto"
             hasShadow
             rounded="s"
@@ -119,7 +118,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
                 ),
               )}
             </ul>
-          </Card>
+          </MenuContainer>
         </Portal>
       )}
     </div>

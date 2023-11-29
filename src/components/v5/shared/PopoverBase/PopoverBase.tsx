@@ -1,7 +1,7 @@
 import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
 
-import Card from '~v5/shared/Card';
+import MenuContainer from '~v5/shared/MenuContainer';
 
 import { PopoverBaseProps } from './types';
 
@@ -25,13 +25,13 @@ const PopoverBase: FC<PropsWithChildren<PopoverBaseProps>> = ({
     })}
   >
     {cardProps ? (
-      <Card
+      <MenuContainer
         className="w-full"
         {...cardProps}
         withPadding={isTopSectionWithBackground}
       >
         {children}
-      </Card>
+      </MenuContainer>
     ) : (
       children
     )}
