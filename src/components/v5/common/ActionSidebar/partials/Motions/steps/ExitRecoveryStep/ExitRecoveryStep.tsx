@@ -8,7 +8,7 @@ import { ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
 import MemberSignatureList from '~v5/common/MemberSignatureList';
 import { membersList } from './consts';
-import NotificationBanner from '~common/Extensions/NotificationBanner';
+import NotificationBanner from '~v5/shared/NotificationBanner';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
 
 const displayName =

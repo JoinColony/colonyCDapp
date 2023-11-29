@@ -8,7 +8,7 @@ import {
   ACTION_TYPE_NOTIFICATION,
 } from '../../../consts';
 import { formatText } from '~utils/intl';
-import NotificationBanner from '~common/Extensions/NotificationBanner';
+import NotificationBanner from '~v5/shared/NotificationBanner';
 
 export const SidebarBanner: FC = () => {
   const { formState } = useFormContext();

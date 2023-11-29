@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { useController } from 'react-hook-form';
 import { utils } from 'ethers';
 
-import NotificationBanner from '~common/Extensions/NotificationBanner';
+import NotificationBanner from '~v5/shared/NotificationBanner';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { useRelativePortalElement, useUserByAddress, useToggle } from '~hooks';
 import { formatText } from '~utils/intl';

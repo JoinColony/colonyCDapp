@@ -2,7 +2,7 @@ import { useApolloClient } from '@apollo/client';
 import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
-import NotificationBanner from '~common/Extensions/NotificationBanner';
+import NotificationBanner from '~v5/shared/NotificationBanner';
 import { SearchActionsDocument } from '~gql';
 import { ActionForm } from '~shared/Fields';
 import { formatText } from '~utils/intl';

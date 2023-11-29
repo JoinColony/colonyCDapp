@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import NotificationBanner from '~common/Extensions/NotificationBanner/NotificationBanner';
+import NotificationBanner from '~v5/shared/NotificationBanner';
 
 const displayName = 'frame.Extensions.PermissionsNeededBanner';
 
@@ -8,7 +8,7 @@ const PermissionsNeededBanner = () => {
   // @TODO: Change extension missing permissions functionality
   const [isPermissionEnabled, setIsPermissionEnabled] = useState(false);
 
-  function getBanner() {
+  const getBanner = () => {
     if (isPermissionEnabled) {
       return (
         <NotificationBanner
@@ -48,7 +48,7 @@ const PermissionsNeededBanner = () => {
         <FormattedMessage id="extension.notification.permissions.missing" />
       </NotificationBanner>
     );
-  }
+  };
 
   return <div className="mb-6">{getBanner()}</div>;
 };
