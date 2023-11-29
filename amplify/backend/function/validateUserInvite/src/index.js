@@ -120,7 +120,8 @@ exports.handler = async (event) => {
   );
 
   if (contributorExistenceCheckQuery?.data) {
-    throw new Error('Colony contributor already exists!');
+    // contributor already exists no need to create one
+    return true;
   }
 
   const colonyContributorMutation = await graphqlRequest(
