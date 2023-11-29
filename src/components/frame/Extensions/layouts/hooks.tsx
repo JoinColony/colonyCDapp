@@ -1,11 +1,13 @@
 import React, { useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import clsx from 'clsx';
 import { ColonyFragment } from '~gql';
 import {
   useAppContext,
   useColonyContext,
   useColonyContractVersion,
+  useMobile,
   useTransformer,
 } from '~hooks';
 import { getAllUserRoles } from '~transformers';
@@ -29,6 +31,9 @@ import {
 } from './consts';
 import { checkIfIsActive } from './utils';
 import DashboardContent from './partials/DashboardContent';
+import { TransactionGroupStates, useUserTransactionContext } from '~context';
+import { TxButton } from '~v5/shared/Button';
+import Icon from '~shared/Icon';
 
 export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
   const { colony } = useColonyContext();
@@ -339,4 +344,54 @@ export const useMainMenuItems = () => {
   ];
 
   return mainMenuItems;
+};
+
+export const useGetTxButtons = () => {
+  const { groupState } = useUserTransactionContext();
+  const isMobile = useMobile();
+
+  const txButtons = [
+    groupState === TransactionGroupStates.SomePending && (
+      <TxButton
+        text={isMobile ? undefined : { id: 'button.pending' }}
+        className={clsx({
+          '!min-w-0': isMobile,
+        })}
+        icon={
+          <span
+            className={clsx('flex shrink-0', {
+              'ml-1.5': !isMobile,
+            })}
+          >
+            <Icon
+              name="spinner-gap"
+              className="animate-spin"
+              appearance={{ size: 'tiny' }}
+            />
+          </span>
+        }
+        data-openhubifclicked // see UserReputation for usage
+      />
+    ),
+    groupState === TransactionGroupStates.AllCompleted && (
+      <TxButton
+        text={isMobile ? undefined : { id: 'button.completed' }}
+        className={clsx({
+          '!min-w-0': isMobile,
+        })}
+        icon={
+          <span
+            className={clsx('flex shrink-0', {
+              'ml-1.5': !isMobile,
+            })}
+          >
+            <Icon name="white-tick" appearance={{ size: 'tiny' }} />
+          </span>
+        }
+        data-openhubifclicked // see UserReputation for usage
+      />
+    ),
+  ];
+
+  return txButtons;
 };

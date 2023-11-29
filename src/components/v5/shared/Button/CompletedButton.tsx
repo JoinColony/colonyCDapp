@@ -1,26 +1,31 @@
 import React, { FC, PropsWithChildren } from 'react';
 
-import { IconButtonProps } from './types';
+import clsx from 'clsx';
 
 import Icon from '~shared/Icon';
-import IconButton from './IconButton';
 import { useMobile } from '~hooks';
+import IconButton from './IconButton';
+import { IconButtonProps } from './types';
 
 const displayName = 'v5.Button.CompleteButton';
 
-const CompletedButton: FC<PropsWithChildren<Omit<IconButtonProps, 'icon'>>> = (
-  props,
-) => {
+const CompletedButton: FC<PropsWithChildren<Omit<IconButtonProps, 'icon'>>> = ({
+  text,
+  ...rest
+}) => {
   const isMobile = useMobile();
   return (
     <IconButton
-      {...props}
       title={{ id: 'button.completed' }}
-      text={{ id: 'button.completed' }}
+      text={text}
       ariaLabel={{ id: 'button.completed' }}
       isFullSize={isMobile}
       icon={
-        <span className="flex shrink-0 ml-1.5">
+        <span
+          className={clsx('flex shrink-0', {
+            'ml-1.5': !!text,
+          })}
+        >
           <Icon
             name="white-tick"
             className="w-[0.8125rem] h-[0.8125rem]"
@@ -28,6 +33,7 @@ const CompletedButton: FC<PropsWithChildren<Omit<IconButtonProps, 'icon'>>> = (
           />
         </span>
       }
+      {...rest}
     />
   );
 };

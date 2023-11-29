@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 import { IconButtonProps } from './types';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
-import styles from './PendingButton.module.css';
+import styles from './TxButton.module.css';
 import { formatText } from '~utils/intl';
 
 const displayName = 'v5.Button.IconButton';

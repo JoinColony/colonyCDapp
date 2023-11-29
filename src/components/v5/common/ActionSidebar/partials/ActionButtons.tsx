@@ -2,11 +2,12 @@ import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { useMobile } from '~hooks';
-import Button, { PendingButton } from '~v5/shared/Button';
+import Button, { TxButton } from '~v5/shared/Button';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { ActionButtonsProps } from '../types';
 import { useSubmitButtonText } from './hooks';
 import { useCloseSidebarClick } from '../hooks';
+import Icon from '~shared/Icon';
 
 const displayName = 'v5.common.ActionSidebar.partials.ActionButtons';
 
@@ -44,7 +45,20 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
         isFullSize={isMobile}
       />
       {isSubmitting ? (
-        <PendingButton rounded="s" isFullSize={isMobile} />
+        <TxButton
+          rounded="s"
+          isFullSize={isMobile}
+          text={{ id: 'button.pending' }}
+          icon={
+            <span className="flex shrink-0 ml-1.5">
+              <Icon
+                name="spinner-gap"
+                className="animate-spin"
+                appearance={{ size: 'tiny' }}
+              />
+            </span>
+          }
+        />
       ) : (
         <Button
           mode="primarySolid"

@@ -1,9 +1,14 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import clsx from 'clsx';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import UserHub from '~common/Extensions/UserHub';
-import { useAppContext, useColonyContext, useMobile } from '~hooks';
+import {
+  useAppContext,
+  useColonyContext,
+  useDetectClickOutside,
+  useMobile,
+} from '~hooks';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
 import Button from '~v5/shared/Button';
@@ -23,6 +28,7 @@ const UserHubButton: FC<UserHubButtonProps> = ({
   const isMobile = useMobile();
   const { colony } = useColonyContext();
   const { wallet, user } = useAppContext();
+  const [isUserHubOpen, setIsUserHubOpen] = useState(false);
 
   const walletAddress = wallet?.address;
 
@@ -31,6 +37,17 @@ const UserHubButton: FC<UserHubButtonProps> = ({
   const [, { toggleOff }] = mobileMenuToggle;
 
   const popperTooltipOffset = isMobile ? [0, 1] : [0, 8];
+
+  const ref = useDetectClickOutside({
+    onTriggered: (e) => {
+      // This stops the hub closing when clicking the pending button (which is outside)
+      if (!(e.target as HTMLElement)?.getAttribute('data-openhubifclicked')) {
+        setIsUserHubOpen(false);
+      } else {
+        setIsUserHubOpen(true);
+      }
+    },
+  });
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip(
@@ -58,7 +75,7 @@ const UserHubButton: FC<UserHubButtonProps> = ({
   useDisableBodyScroll(visible && isMobile);
 
   return (
-    <div>
+    <div ref={ref}>
       <Button
         mode="tertiary"
         size="large"
@@ -90,7 +107,7 @@ const UserHubButton: FC<UserHubButtonProps> = ({
           ) : null}
         </div>
       </Button>
-      {visible && (
+      {(visible || isUserHubOpen) && (
         <PopoverBase
           setTooltipRef={setTooltipRef}
           tooltipProps={getTooltipProps}

@@ -14,7 +14,12 @@ import { TokensModalType } from '~v5/common/TokensModal/types';
 export const TokensModalContext = createContext<{
   toggleOnTokensModal: () => void;
   setTokensModalType: React.Dispatch<React.SetStateAction<TokensModalType>>;
-}>({ toggleOnTokensModal: noop, setTokensModalType: noop });
+  isTokensModalOpen: boolean;
+}>({
+  toggleOnTokensModal: noop,
+  setTokensModalType: noop,
+  isTokensModalOpen: false,
+});
 
 export const TokensModalContextProvider: FC<PropsWithChildren> = ({
   children,
@@ -30,8 +35,9 @@ export const TokensModalContextProvider: FC<PropsWithChildren> = ({
     () => ({
       toggleOnTokensModal,
       setTokensModalType,
+      isTokensModalOpen,
     }),
-    [toggleOnTokensModal, setTokensModalType],
+    [toggleOnTokensModal, setTokensModalType, isTokensModalOpen],
   );
 
   return (

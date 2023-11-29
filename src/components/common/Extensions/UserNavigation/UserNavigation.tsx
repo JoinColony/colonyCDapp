@@ -53,6 +53,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
 
   return (
     <div className="flex gap-1 md:relative">
+      {txButtons}
       {isWalletConnected ? (
         <div className="flex gap-1">
           {nativeToken && <Token nativeToken={nativeToken} />}
@@ -86,7 +87,6 @@ const UserNavigation: FC<UserNavigationProps> = ({
           nativeToken={nativeToken}
         />
       )}
-      {!isMobile && txButtons}
       {extra}
     </div>
   );

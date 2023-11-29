@@ -6,6 +6,11 @@ import Button, { CloseButton } from '~v5/shared/Button';
 import Icon from '~shared/Icon';
 import { ModalProps } from './types';
 import ModalBase from './ModalBase';
+import { useGetTxButtons } from '~frame/Extensions/layouts/hooks';
+import { useMobile } from '~hooks';
+import { UserNavigationWrapper } from '~frame/Extensions/layouts';
+import UserHubButton from '~common/Extensions/UserHubButton';
+import JoinButton from '../Button/JoinButton';
 
 const displayName = 'v5.Modal';
 
@@ -23,9 +28,12 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
   disabled,
   buttonMode = 'secondarySolid',
   isTopSectionWithBackground,
+  shouldShowHeader = false,
   ...props
 }) => {
   const { formatMessage } = useIntl();
+  const txButtons = useGetTxButtons();
+  const isMobile = useMobile();
 
   return (
     <ModalBase
@@ -51,6 +59,17 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
         onClick={onClose}
         className="text-gray-400 hover:text-gray-600 absolute top-4 right-4"
       />
+      {!isMobile && shouldShowHeader && (
+        <div className="fixed top-9 right-4 z-10">
+          <div className="relative">
+            <UserNavigationWrapper
+              txButtons={txButtons}
+              userHub={<UserHubButton />}
+              extra={<JoinButton />}
+            />
+          </div>
+        </div>
+      )}
       <div
         className={clsx(
           'flex flex-col w-full flex-grow [-webkit-overflow-scrolling:touch]',

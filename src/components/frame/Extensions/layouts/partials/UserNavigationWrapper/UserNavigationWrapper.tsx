@@ -57,7 +57,6 @@ const UserNavigationWrapper: FC<UserNavigationWrapperProps> = ({
         </AnimatePresence>
         {!isActionSidebarOpen && userNavigation}
       </div>
-      {txButtons}
     </div>
   );
 };
