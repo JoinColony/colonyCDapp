@@ -23,7 +23,7 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
 
   const { data: totalActionData } = useGetTotalColonyActionsQuery({
     variables: {
-      colonyId: colonyAddress ?? '',
+      colonyId: colonyAddress,
       since: null,
     },
   });
@@ -32,7 +32,7 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
 
   const { data: recentActionData } = useGetTotalColonyActionsQuery({
     variables: {
-      colonyId: colonyAddress ?? '',
+      colonyId: colonyAddress,
       since: getThirtyDaysAgoIso(),
     },
   });
@@ -41,7 +41,7 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
 
   const { data: domainData } = useGetTotalColonyDomainActionsQuery({
     variables: {
-      colonyId: colonyAddress ?? '',
+      colonyId: colonyAddress,
     },
   });
 
