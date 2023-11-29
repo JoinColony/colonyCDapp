@@ -1,12 +1,11 @@
 import React, { useCallback, useId, useMemo, useState } from 'react';
 import clsx from 'clsx';
 
-import useToggle from '~hooks/useToggle';
-import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
+import { useRelativePortalElement, useToggle } from '~hooks';
 import { formatText } from '~utils/intl';
-import Portal from '~v5/shared/Portal';
-import Card from '~v5/shared/Card';
 import HoverWidthWrapper from '~v5/shared/HoverWidthWrapper';
+import MenuContainer from '~v5/shared/MenuContainer';
+import Portal from '~v5/shared/Portal';
 
 import { FIELD_STATE } from '../consts';
 import { isFlatOptions } from './utils';
@@ -133,7 +132,7 @@ function CardSelect<TValue = string>({
           </button>
           {isSelectVisible && (
             <Portal>
-              <Card
+              <MenuContainer
                 ref={(ref) => {
                   registerContainerRef(ref);
                   portalElementRef.current = ref;
@@ -189,7 +188,7 @@ function CardSelect<TValue = string>({
                     </li>
                   )}
                 </ul>
-              </Card>
+              </MenuContainer>
             </Portal>
           )}
         </>

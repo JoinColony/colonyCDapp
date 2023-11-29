@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { SubMenuProps } from './types';
 import LearnMore from '~shared/Extensions/LearnMore';
 import { LEARN_MORE_PAYMENTS } from '~constants';
-import Card from '~v5/shared/Card';
+import MenuContainer from '~v5/shared/MenuContainer';
 import Button from '~v5/shared/Button';
 import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import { useMobile } from '~hooks';
@@ -18,7 +18,7 @@ const displayName = 'common.Extensions.MainNavigation.partials.SubMenu';
 const SubMenu: FC<SubMenuProps> = ({ items }) => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
-  const Wrapper = isMobile ? 'div' : Card;
+  const Wrapper = isMobile ? 'div' : MenuContainer;
   const {
     actionSidebarToggle: [, { toggle: toggleActionSideBar }],
   } = useActionSidebarContext();

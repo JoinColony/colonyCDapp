@@ -2,8 +2,7 @@ import React, { FC, useState } from 'react';
 import clsx from 'clsx';
 import { useController, useFormContext, useWatch } from 'react-hook-form';
 
-import useToggle from '~hooks/useToggle';
-import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
+import { useRelativePortalElement, useToggle } from '~hooks';
 import { formatText } from '~utils/intl';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import SearchSelect from '~v5/shared/SearchSelect';

@@ -1,11 +1,11 @@
 import React from 'react';
-import CardWithSections from '../CardWithSections/CardWithSections';
+import MenuWithSections from '../MenuWithSections';
 import StatusText from '../StatusText/StatusText';
-import { CardWithStatusTextProps } from './types';
+import { MenuWithStatusTextProps } from './types';
 
-const displayName = 'v5.CardWithStatusText';
+const displayName = 'v5.shared.MenuWithStatusText';
 
-const CardWithStatusText: React.FC<CardWithStatusTextProps> = ({
+const MenuWithStatusText: React.FC<MenuWithStatusTextProps> = ({
   statusTextSectionProps,
   sections,
   footer,
@@ -28,7 +28,7 @@ const CardWithStatusText: React.FC<CardWithStatusTextProps> = ({
   ];
 
   return (
-    <CardWithSections
+    <MenuWithSections
       sections={sectionsWithStatusText}
       footer={footer}
       footerClassName={footerClassName}
@@ -36,6 +36,6 @@ const CardWithStatusText: React.FC<CardWithStatusTextProps> = ({
   );
 };
 
-CardWithStatusText.displayName = displayName;
+MenuWithStatusText.displayName = displayName;
 
-export default CardWithStatusText;
+export default MenuWithStatusText;

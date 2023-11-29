@@ -1,12 +1,13 @@
 import React, { FC } from 'react';
-import { formatText } from '~utils/intl';
 
-import CardWithSections from '~v5/shared/CardWithSections';
-import { OutcomeStepProps } from './types';
+import { formatText } from '~utils/intl';
+import { MotionState } from '~utils/colonyMotions';
+import MenuWithSections from '~v5/shared/MenuWithSections';
+import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
+
 import { useOutcomeStep } from './hooks';
 import VoteStatuses from './partials/VoteStatuses';
-import { MotionState } from '~utils/colonyMotions';
-import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
+import { OutcomeStepProps } from './types';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.Motion.steps.OutcomeStep';
@@ -22,7 +23,7 @@ const OutcomeStep: FC<OutcomeStepProps> = ({ motionData, motionState }) => {
     })) || [];
 
   return (
-    <CardWithSections
+    <MenuWithSections
       sections={[
         {
           key: '1',

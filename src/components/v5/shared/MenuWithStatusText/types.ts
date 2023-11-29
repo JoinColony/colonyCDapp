@@ -1,8 +1,8 @@
 import { PropsWithChildren } from 'react';
-import { CardWithSectionsProps } from '../CardWithSections/types';
+import { MenuWithSectionsProps } from '../MenuWithSections';
 import { StatusTextProps } from '../StatusText/types';
 
-export interface CardWithStatusTextProps extends CardWithSectionsProps {
+export interface MenuWithStatusTextProps extends MenuWithSectionsProps {
   statusTextSectionProps: PropsWithChildren<StatusTextProps> & {
     content?: React.ReactNode;
   };

@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import CardWithStatusText from '~v5/shared/CardWithStatusText';
+import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
 
-const cardWithStatusTextMeta: Meta<typeof CardWithStatusText> = {
+const cardWithStatusTextMeta: Meta<typeof MenuWithStatusText> = {
   title: 'Shared/Card/With Status Text',
-  component: CardWithStatusText,
+  component: MenuWithStatusText,
   args: {
     statusTextSectionProps: {
       status: 'info',
@@ -26,4 +26,4 @@ const cardWithStatusTextMeta: Meta<typeof CardWithStatusText> = {
 
 export default cardWithStatusTextMeta;
 
-export const Base: StoryObj<typeof CardWithStatusText> = {};
+export const Base: StoryObj<typeof MenuWithStatusText> = {};

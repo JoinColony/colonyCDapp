@@ -4,22 +4,21 @@ import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 import { useController, useFormContext } from 'react-hook-form';
 
-import { useAmountField } from './hooks';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import { useColonyContext, useRelativePortalElement, useToggle } from '~hooks';
+import Numeral from '~shared/Numeral';
 import TokenIcon from '~shared/TokenIcon';
 import {
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
 import { formatText } from '~utils/intl';
-import Card from '~v5/shared/Card';
-import Numeral from '~shared/Numeral';
-import { useColonyContext } from '~hooks';
-import useToggle from '~hooks/useToggle';
-import { AmountFieldProps, CleaveChangeEvent } from './types';
-import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
-import Portal from '~v5/shared/Portal';
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import HoverWidthWrapper from '~v5/shared/HoverWidthWrapper';
+import MenuContainer from '~v5/shared/MenuContainer';
+import Portal from '~v5/shared/Portal';
+
+import { useAmountField } from './hooks';
+import { AmountFieldProps, CleaveChangeEvent } from './types';
 
 const displayName = 'v5.common.ActionsContent.partials.AmountField';
 
@@ -133,7 +132,7 @@ const AmountField: FC<AmountFieldProps> = ({
           </button>
           {isTokenSelectVisible && (
             <Portal>
-              <Card
+              <MenuContainer
                 className="absolute z-[60] px-2 py-6 w-full max-w-[calc(100%-2.25rem)] sm:w-auto sm:max-w-none"
                 hasShadow
                 rounded="s"
@@ -202,7 +201,7 @@ const AmountField: FC<AmountFieldProps> = ({
                     );
                   })}
                 </ul>
-              </Card>
+              </MenuContainer>
             </Portal>
           )}
         </div>

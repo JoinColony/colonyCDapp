@@ -1,17 +1,17 @@
 import React from 'react';
 import clsx from 'clsx';
-import Card from '../Card';
-import { CardWithSectionsProps } from './types';
+import MenuContainer from '../MenuContainer';
+import { MenuWithSectionsProps } from './types';
 
-const displayName = 'v5.CardWithSections';
+const displayName = 'v5.shared.MenuWithSections';
 
-const CardWithSections: React.FC<CardWithSectionsProps> = ({
+const MenuWithSections: React.FC<MenuWithSectionsProps> = ({
   sections,
   footer,
   footerClassName,
 }) =>
   sections.length ? (
-    <Card className="w-full overflow-hidden" withPadding={false}>
+    <MenuContainer className="w-full overflow-hidden" withPadding={false}>
       {sections.map(({ key, content, className }) => (
         <div
           key={key}
@@ -26,9 +26,9 @@ const CardWithSections: React.FC<CardWithSectionsProps> = ({
       {footer && (
         <div className={clsx(footerClassName, 'p-[1.125rem]')}>{footer}</div>
       )}
-    </Card>
+    </MenuContainer>
   ) : null;
 
-CardWithSections.displayName = displayName;
+MenuWithSections.displayName = displayName;
 
-export default CardWithSections;
+export default MenuWithSections;

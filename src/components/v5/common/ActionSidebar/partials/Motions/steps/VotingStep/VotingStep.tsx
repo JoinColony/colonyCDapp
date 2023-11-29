@@ -1,18 +1,19 @@
 import React, { FC } from 'react';
-import { formatText } from '~utils/intl';
-import Button from '~v5/shared/Button';
 
-import CardWithStatusText from '~v5/shared/CardWithStatusText';
-import ProgressBar from '~v5/shared/ProgressBar';
 import FormButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/FormButtonRadioButtons';
-import { ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
-import DescriptionList from './partials/DescriptionList';
-import { VotingStepProps } from './types';
 import { MotionVote } from '~utils/colonyMotions';
-import { renderVoteRadioButtons } from './utils';
-import { useVotingStep } from './hooks';
+import { formatText } from '~utils/intl';
+import { ActionForm } from '~shared/Fields';
+import Button from '~v5/shared/Button';
+import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
+import ProgressBar from '~v5/shared/ProgressBar';
+
 import MotionBadge from '../../partials/MotionBadge/MotionBadge';
+import { useVotingStep } from './hooks';
+import DescriptionList from './partials/DescriptionList';
+import { renderVoteRadioButtons } from './utils';
+import { VotingStepProps } from './types';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.VotingStep';
@@ -42,7 +43,7 @@ const VotingStep: FC<VotingStepProps> = ({
   const isSupportVote = currentUserVote === MotionVote.Yay;
 
   return (
-    <CardWithStatusText
+    <MenuWithStatusText
       statusTextSectionProps={{
         status: 'info',
         children: formatText(

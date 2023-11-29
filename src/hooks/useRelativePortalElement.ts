@@ -1,9 +1,6 @@
 import { useLayoutEffect, useRef } from 'react';
 
-export const useRelativePortalElement = <
-  T extends HTMLElement,
-  S extends HTMLElement,
->(
+const useRelativePortalElement = <T extends HTMLElement, S extends HTMLElement>(
   deps: React.DependencyList = [],
   {
     bottomWindowPadding = 20,
@@ -51,3 +48,5 @@ export const useRelativePortalElement = <
 
   return { relativeElementRef, portalElementRef };
 };
+
+export default useRelativePortalElement;

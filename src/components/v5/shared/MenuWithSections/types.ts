@@ -1,11 +1,11 @@
-export interface CardWithSectionItem {
+export interface MenuWithSectionsItem {
   key: string;
   className?: string;
   content: React.ReactNode;
 }
 
-export interface CardWithSectionsProps {
-  sections: CardWithSectionItem[];
+export interface MenuWithSectionsProps {
+  sections: MenuWithSectionsItem[];
   footer?: React.ReactNode;
   footerClassName?: string;
 }

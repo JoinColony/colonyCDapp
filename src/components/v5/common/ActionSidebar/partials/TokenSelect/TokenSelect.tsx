@@ -3,8 +3,7 @@ import { useController } from 'react-hook-form';
 import { isAddress } from 'ethers/lib/utils';
 import clsx from 'clsx';
 
-import useToggle from '~hooks/useToggle';
-import { useRelativePortalElement } from '~hooks/useRelativePortalElement';
+import { useRelativePortalElement, useToggle } from '~hooks';
 import { formatText } from '~utils/intl';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
