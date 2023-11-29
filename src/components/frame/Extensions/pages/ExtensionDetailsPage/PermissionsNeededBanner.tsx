@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { ActionTypes } from '~redux';
 import NotificationBanner from '~common/Extensions/NotificationBanner/NotificationBanner';
@@ -7,7 +7,24 @@ import { getFormAction } from '~utils/actions';
 import { useAsyncFunction, useColonyContext } from '~hooks';
 import { AnyExtensionData } from '~types';
 
-const displayName = 'frame.Extensions.PermissionsNeededBanner';
+const displayName =
+  'frame.Extensions.ExtensionDetailsPage.PermissionsNeededBanner';
+
+const MSG = defineMessages({
+  updatedPermission: {
+    id: `${displayName}.updatedPermission`,
+    defaultMessage: 'The required permissions have been updated.',
+  },
+  missingPermission: {
+    id: `${displayName}.missingPermission`,
+    defaultMessage:
+      'This extension is missing some or all of the permissions it needs to work.',
+  },
+  enablePermission: {
+    id: `${displayName}.enablePermission`,
+    defaultMessage: 'Enable permissions',
+  },
+});
 
 interface Props {
   extensionData: AnyExtensionData;
@@ -42,23 +59,21 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
       <NotificationBanner
         title={
           <FormattedMessage
-            id={
-              isPermissionEnabled
-                ? 'extension.notification.permissions.updated'
-                : 'extension.notification.permissions.missing'
-            }
+            {...(isPermissionEnabled
+              ? MSG.updatedPermission
+              : MSG.missingPermission)}
           />
         }
         status={isPermissionEnabled ? 'success' : 'warning'}
-        action={{
-          type: 'call-to-action',
-          actionText: isPermissionEnabled ? (
-            <FormattedMessage id="extension.notification.permissions.enabled" />
-          ) : (
-            <FormattedMessage id="extension.notification.permissions.enable" />
-          ),
-          onClick,
-        }}
+        action={
+          !isPermissionEnabled
+            ? {
+                type: 'call-to-action',
+                actionText: <FormattedMessage {...MSG.enablePermission} />,
+                onClick,
+              }
+            : undefined
+        }
       />
     </div>
   );
