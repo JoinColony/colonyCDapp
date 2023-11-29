@@ -1,5 +1,5 @@
 import { Address } from '~types';
-import { NetworkInfo } from '~constants';
+import { NetworkInfo, DEFAULT_NETWORK_INFO } from '~constants';
 import apolloClient from '~context/apolloClient';
 import {
   GetTokenFromEverywhereDocument,
@@ -36,4 +36,21 @@ export const fetchTokenFromDatabase = async (
   }
 
   return null;
+};
+
+/*
+ * Method to be used when setting a query polling interval or manually starting
+ * or stopping polling.
+ *
+ * It syncs polling with the current chain's block time, so that we don't make
+ * unnecessary requests.
+ *
+ * @return time in milliseconds
+ */
+export const getSafePollingInterval = (): number => {
+  const { blockTime } = DEFAULT_NETWORK_INFO;
+  if (!blockTime) {
+    return 1 * 1000; // fall back to 1 second
+  }
+  return (blockTime - 1) * 1000; // one second less than the actual block time
 };

@@ -43,6 +43,7 @@ export type NetworkInfo = {
   safeTxService?: string;
   apiUri?: string;
   nativeToken?: TokenInfo;
+  blockTime?: number;
 };
 
 export const DEFAULT_NETWORK = process.env.NETWORK || Network.Ganache;
@@ -89,6 +90,7 @@ export const GNOSIS_NETWORK: NetworkInfo = {
   tokenExplorerLink: 'https://gnosis.blockscout.com/tokens',
   contractAddressLink: 'https://gnosis.blockscout.com/address',
   iconName: 'gnosis',
+  blockTime: 5,
 };
 
 export const ETHEREUM_NETWORK: NetworkInfo = {
@@ -105,6 +107,7 @@ export const ETHEREUM_NETWORK: NetworkInfo = {
   rpcUrl: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
   apiUri: 'https://api.etherscan.io/api',
   nativeToken: ETHER_TOKEN,
+  blockTime: 12,
 };
 
 export const GOERLI_NETWORK: NetworkInfo = {
@@ -117,6 +120,7 @@ export const GOERLI_NETWORK: NetworkInfo = {
   tokenExplorerLink: 'https://goerli.etherscan.io/tokens',
   contractAddressLink: 'https://goerli.etherscan.io/address',
   nativeToken: GOERLI_TOKEN,
+  blockTime: 5,
 };
 
 export const GANACHE_NETWORK: NetworkInfo = {
@@ -130,6 +134,7 @@ export const GANACHE_NETWORK: NetworkInfo = {
   contractAddressLink: 'http://localhost',
   iconName: 'ganache',
   nativeToken: ETHER_TOKEN,
+  blockTime: 5,
 };
 
 export const BINANCE_NETWORK: NetworkInfo = {
@@ -141,6 +146,7 @@ export const BINANCE_NETWORK: NetworkInfo = {
   rpcUrl: 'https://bsc-dataseed.binance.org/',
   apiUri: 'https://api.bscscan.com/api',
   nativeToken: BINANCE_TOKEN,
+  blockTime: 3,
 };
 
 export const NETWORK_DATA: { [key: string]: NetworkInfo } = {
