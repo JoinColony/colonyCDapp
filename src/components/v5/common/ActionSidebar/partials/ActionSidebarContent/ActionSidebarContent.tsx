@@ -51,9 +51,9 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           `}
           message={false}
         />
-        <p className="text-gray-900 text-md flex gap-1">
+        <div className="text-gray-900 text-md flex gap-1">
           {descriptionMetadata}
-        </p>
+        </div>
 
         <ActionTypeSelect className="mt-7 mb-3 min-h-[1.875rem] flex flex-col justify-center" />
 
