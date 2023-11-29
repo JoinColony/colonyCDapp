@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import Icon from '~shared/Icon';
 import { NotificationBannerProps } from './types';
 
-const displayName = 'common.Extensions.NotificationBanner';
+const displayName = 'v5.NotificationBanner';
 
 const NotificationBanner: FC<NotificationBannerProps> = ({
   className,
