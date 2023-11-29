@@ -49,7 +49,6 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const networkMotionStateEnum = getEnumValueFromKey(
     NetworkMotionState,
     motionState,
-    undefined,
   );
 
   const [activeStepKey, setActiveStepKey] = useState<Steps>(
@@ -153,7 +152,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                 motionStakes={motionStakes}
                 refetchMotionState={refetchMotionState}
               />
-            ) : undefined,
+            ) : null,
         },
       },
       {
@@ -176,7 +175,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                 motionStakes={motionStakes}
                 refetchMotionState={refetchMotionState}
               />
-            ) : undefined,
+            ) : null,
         },
         isOptional: !isFullyStaked,
         isHidden: motionStakedAndFinalizable,
@@ -201,7 +200,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                 motionStakes={motionStakes}
                 refetchMotionState={refetchMotionState}
               />
-            ) : undefined,
+            ) : null,
         },
         isHidden: motionStakedAndFinalizable,
       },
@@ -279,7 +278,6 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         ),
         heading: {
           label: formatText({ id: 'motion.finalize.label' }) || '',
-          decor: undefined,
         },
         isSkipped: !canInteract,
       },
