@@ -106,22 +106,12 @@ export const useTransferFunds = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
-        mapPayload((payload: TransferFundsFormValues) => {
-          const values = {
-            amount: payload.amount.amount,
-            motionDomainId: payload.createdIn,
-            fromDomainId: payload.from,
-            toDomainId: payload.to,
-            tokenAddress: payload.amount.tokenAddress,
-            decisionMethod: payload.decisionMethod,
-            annotation: payload.description,
-          };
-
-          if (colony) {
-            return getTransferFundsDialogPayload(colony, values);
+        mapPayload((values: TransferFundsFormValues) => {
+          if (!colony) {
+            return null;
           }
 
-          return null;
+          return getTransferFundsDialogPayload(colony, values);
         }),
       ),
       [colony],

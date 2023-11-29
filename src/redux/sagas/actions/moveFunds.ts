@@ -39,22 +39,22 @@ function* createMoveFundsAction({
      */
     if (!fromDomain) {
       throw new Error(
-        'Source domain not set for oveFundsBetweenPots transaction',
+        'Source domain not set for moveFundsBetweenPots transaction',
       );
     }
     if (!toDomain) {
       throw new Error(
-        'Recipient domain not set for MoveFundsBetweenPots transaction',
+        'Recipient domain not set for moveFundsBetweenPots transaction',
       );
     }
     if (!amount) {
       throw new Error(
-        'Payment amount not set for MoveFundsBetweenPots transaction',
+        'Payment amount not set for moveFundsBetweenPots transaction',
       );
     }
     if (!tokenAddress) {
       throw new Error(
-        'Payment token not set for MoveFundsBetweenPots transaction',
+        'Payment token not set for moveFundsBetweenPots transaction',
       );
     }
 
