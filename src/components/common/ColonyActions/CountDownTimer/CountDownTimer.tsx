@@ -7,7 +7,7 @@ import TimerValue from '~shared/TimerValue';
 import { MotionStakes } from '~types';
 
 import { RefetchMotionState } from '../ActionDetailsPage';
-import { useMotionCountdown } from './helpers';
+import { useMotionCountdown } from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer';
 
 import styles from './CountDownTimer.css';
 
@@ -45,14 +45,14 @@ const CountDownTimer = ({
   refetchMotionState,
   motionStakes,
 }: Props) => {
-  const { countdown, loadingCountdown } = useMotionCountdown(
+  const { countdown, isLoading } = useMotionCountdown(
     motionState,
     motionId,
     refetchMotionState,
     motionStakes,
   );
 
-  if (loadingCountdown) {
+  if (isLoading) {
     return (
       <MiniSpinnerLoader
         loadingText={MSG.loadingText}
