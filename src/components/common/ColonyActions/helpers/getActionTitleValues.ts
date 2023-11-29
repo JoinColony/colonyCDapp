@@ -116,7 +116,6 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
 const getActionTitleValues = (
   actionData: ColonyAction,
   colony: Colony,
-  networkInverseFee: string | undefined,
   keyFallbackValues?: Partial<Record<ActionTitleMessageKeys, React.ReactNode>>,
 ) => {
   const { isMotion, pendingColonyMetadata } = actionData;
@@ -124,7 +123,6 @@ const getActionTitleValues = (
   const updatedItem = mapColonyActionToExpectedFormat(
     actionData,
     colony,
-    networkInverseFee,
     keyFallbackValues,
   );
   const actionType = getExtendedActionType(

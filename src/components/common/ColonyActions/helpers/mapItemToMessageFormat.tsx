@@ -53,7 +53,6 @@ import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
 
 import styles from './itemStyles.css';
 import { ActionTitleMessageKeys } from './getActionTitleValues';
-import { getAmountLessFee } from '~utils/networkFee';
 
 const { formatMessage } = intl({
   unknownDomain: 'UnknownDomain',
@@ -224,20 +223,12 @@ const getRemovedSafesString = (actionData: ColonyAction) => {
 export const mapColonyActionToExpectedFormat = (
   actionData: ColonyAction,
   colony: Colony,
-  networkInverseFee: string | undefined,
   keyFallbackValues: Partial<
     Record<ActionTitleMessageKeys, React.ReactNode>
   > = {},
 ) => {
-  const displayActionData: ColonyAction = {
-    ...actionData,
-    amount:
-      notMaybe(actionData.amount) && networkInverseFee
-        ? getAmountLessFee(actionData.amount, networkInverseFee).toString()
-        : actionData.amount,
-  };
   //  // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
-  const formattedRolesTitle = formatRolesTitle(displayActionData.roles);
+  const formattedRolesTitle = formatRolesTitle(actionData.roles);
 
   const getFormattedValueWithFallback = (
     value: React.ReactNode,
@@ -252,94 +243,90 @@ export const mapColonyActionToExpectedFormat = (
   };
 
   return {
-    ...displayActionData,
+    ...actionData,
     [ActionTitleMessageKeys.Amount]: getFormattedValueWithFallback(
       <Numeral
-        value={displayActionData?.amount || 0} // @TODO: getAmount(item.actionType, item.amount)
-        decimals={getTokenDecimalsWithFallback(
-          displayActionData.token?.decimals,
-        )}
+        value={actionData.amount ?? 0} // @TODO: getAmount(item.actionType, item.amount)
+        decimals={getTokenDecimalsWithFallback(actionData.token?.decimals)}
       />,
       ActionTitleMessageKeys.Amount,
-      notMaybe(displayActionData?.amount),
+      notMaybe(actionData?.amount),
     ),
     [ActionTitleMessageKeys.Direction]: formattedRolesTitle.direction,
     [ActionTitleMessageKeys.FromDomain]: getFormattedValueWithFallback(
       getDomainNameFromChangelog(
-        displayActionData.transactionHash,
-        displayActionData.fromDomain?.metadata ||
-          displayActionData.pendingDomainMetadata,
+        actionData.transactionHash,
+        actionData.fromDomain?.metadata || actionData.pendingDomainMetadata,
       ) ?? formatMessage({ id: 'unknownDomain' }),
       ActionTitleMessageKeys.FromDomain,
       notMaybe(
-        displayActionData.fromDomain?.metadata ||
-          displayActionData.pendingDomainMetadata,
+        actionData.fromDomain?.metadata || actionData.pendingDomainMetadata,
       ),
     ),
     [ActionTitleMessageKeys.Initiator]: getFormattedValueWithFallback(
-      getInitiator(displayActionData),
+      getInitiator(actionData),
       ActionTitleMessageKeys.Initiator,
-      notMaybe(getInitiatorData(displayActionData)),
+      notMaybe(getInitiatorData(actionData)),
     ),
     [ActionTitleMessageKeys.Recipient]: getFormattedValueWithFallback(
-      getRecipient(displayActionData),
+      getRecipient(actionData),
       ActionTitleMessageKeys.Recipient,
-      notMaybe(getRecipientData(displayActionData)),
+      notMaybe(getRecipientData(actionData)),
     ),
     [ActionTitleMessageKeys.ToDomain]: getFormattedValueWithFallback(
-      displayActionData.toDomain?.metadata?.name ??
+      actionData.toDomain?.metadata?.name ??
         formatMessage({ id: 'unknownDomain' }),
       ActionTitleMessageKeys.ToDomain,
-      notMaybe(displayActionData.toDomain?.metadata?.name),
+      notMaybe(actionData.toDomain?.metadata?.name),
     ),
     [ActionTitleMessageKeys.TokenSymbol]: getFormattedValueWithFallback(
-      displayActionData.token?.symbol,
+      actionData.token?.symbol,
       ActionTitleMessageKeys.TokenSymbol,
-      notMaybe(displayActionData.token?.symbol),
+      notMaybe(actionData.token?.symbol),
     ),
     [ActionTitleMessageKeys.ReputationChangeNumeral]:
       getFormattedValueWithFallback(
-        displayActionData.amount && (
+        actionData.amount && (
           <Numeral
-            value={new Decimal(displayActionData.amount).abs()}
+            value={new Decimal(actionData.amount).abs()}
             decimals={getTokenDecimalsWithFallback(
               colony?.nativeToken.decimals,
             )}
           />
         ),
         ActionTitleMessageKeys.ReputationChangeNumeral,
-        notMaybe(displayActionData.amount),
+        notMaybe(actionData.amount),
       ),
     [ActionTitleMessageKeys.ReputationChange]: getFormattedValueWithFallback(
-      displayActionData.amount &&
+      actionData.amount &&
         formatReputationChange(
-          displayActionData.amount,
+          actionData.amount,
           getTokenDecimalsWithFallback(colony?.nativeToken.decimals),
         ),
       ActionTitleMessageKeys.ReputationChange,
-      notMaybe(displayActionData.amount),
+      !!actionData.amount,
     ),
     [ActionTitleMessageKeys.RolesChanged]: formattedRolesTitle.roleTitle,
     [ActionTitleMessageKeys.NewVersion]: getFormattedValueWithFallback(
-      displayActionData.newColonyVersion,
+      actionData.newColonyVersion,
       ActionTitleMessageKeys.NewVersion,
-      notMaybe(displayActionData.newColonyVersion),
+      notMaybe(actionData.newColonyVersion),
     ),
     [ActionTitleMessageKeys.Version]: getFormattedValueWithFallback(
-      (displayActionData.newColonyVersion ?? 1) - 1,
+      (actionData.newColonyVersion ?? 1) - 1,
       ActionTitleMessageKeys.Version,
-      notMaybe(displayActionData.newColonyVersion),
+      notMaybe(actionData.newColonyVersion),
     ),
     [ActionTitleMessageKeys.ChainName]: getFormattedValueWithFallback(
-      getAddedSafeChainName(displayActionData),
+      getAddedSafeChainName(actionData),
       ActionTitleMessageKeys.ChainName,
-      getAddedSafeChainName(displayActionData),
+      getAddedSafeChainName(actionData),
     ),
     [ActionTitleMessageKeys.SafeTransactionTitle]:
       getFormattedValueWithFallback(
-        displayActionData.metadata?.customTitle,
+        actionData.metadata?.customTitle,
         ActionTitleMessageKeys.SafeTransactionTitle,
-        notMaybe(displayActionData.metadata?.customTitle),
+        notMaybe(actionData.metadata?.customTitle),
       ),
   };
 };

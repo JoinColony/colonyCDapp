@@ -95,7 +95,6 @@ export const useActionDescriptionMetadata = () => {
                 getActionTitleValues(
                   merge({}, commonActionData, action),
                   colony,
-                  '0',
                   keyFallbackValues,
                 ),
             },

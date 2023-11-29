@@ -13,7 +13,6 @@ import {
   SafeMSGs,
   useSafeTransactionStatus,
   useShouldDisplayMotionCountdownTime,
-  useNetworkInverseFee,
 } from '~hooks';
 import { MotionState } from '~utils/colonyMotions';
 import { formatText } from '~utils/intl';
@@ -84,7 +83,6 @@ const ActionsListItem = ({
   item,
 }: Props) => {
   const { colony } = useColonyContext();
-  const { networkInverseFee } = useNetworkInverseFee();
   const navigate = useNavigate();
 
   const handleActionRedirect = () =>
@@ -164,7 +162,7 @@ const ActionsListItem = ({
       status={status}
       tag={ActionListItemTags}
       title={{ id: 'action.title' }}
-      titleValues={getActionTitleValues(item, colony, networkInverseFee)}
+      titleValues={getActionTitleValues(item, colony)}
     />
   );
 };
