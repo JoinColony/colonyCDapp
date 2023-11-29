@@ -26,6 +26,8 @@ exports.handler = async (event) => {
   const { colonyAddress, inviteCode, userAddress } =
     event.arguments?.input || {};
 
+  console.log(event.arguments);
+
   try {
     await setEnvVariables();
   } catch (e) {
@@ -48,7 +50,7 @@ exports.handler = async (event) => {
 
   const getColonyMemberInviteDetails = await graphqlRequest(
     getColonyMemberInvite,
-    { id: colonyAddress },
+    { colonyAddress },
     graphqlURL,
     apiKey,
   );
@@ -112,7 +114,7 @@ exports.handler = async (event) => {
 
   const contributorExistenceCheckQuery = await graphqlRequest(
     getColonyContributor,
-    { id: getColonyContributorId(colonyAddress) },
+    { id: getColonyContributorId(colonyAddress, userAddress) },
     graphqlURL,
     apiKey,
   );
