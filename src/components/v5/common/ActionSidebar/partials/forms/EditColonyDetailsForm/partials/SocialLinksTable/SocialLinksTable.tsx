@@ -10,6 +10,7 @@ import Button from '~v5/shared/Button/Button';
 import { useGetTableMenuProps, useSocialLinksTableColumns } from './hooks';
 import SocialLinkModal from './partials/SocialLinkModal';
 import { SocialLinksTableModel, SocialLinksTableProps } from './types';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 
 const displayName = 'v5.common.ActionsContent.partials.SocialLinksTable';
 
@@ -23,6 +24,7 @@ const SocialLinksTable: FC<SocialLinksTableProps> = ({ name }) => {
     fieldArrayMethods,
     setSocialLinkIndex,
   );
+  const { readonly } = useAdditionalFormOptionsContext();
   const columns = useSocialLinksTableColumns();
   const data: SocialLinksTableModel[] = fieldArrayMethods.fields.map(
     ({ id }, index) => ({
@@ -51,50 +53,54 @@ const SocialLinksTable: FC<SocialLinksTableProps> = ({ name }) => {
           />
         </>
       )}
-      <Button
-        mode="primaryOutline"
-        iconName="plus"
-        size="small"
-        className="mt-6"
-        isFullSize={isMobile}
-        onClick={() => setSocialLinkIndex(-1)}
-      >
-        {formatText({ id: 'button.addSocialLinks' })}
-      </Button>
-      <SocialLinkModal
-        key={socialLinkIndex}
-        isOpen={socialLinkIndex !== undefined}
-        onClose={() => setSocialLinkIndex(undefined)}
-        defaultValues={data}
-        initialLinkType={
-          socialLinkIndex !== undefined
-            ? data[socialLinkIndex]?.name
-            : undefined
-        }
-        onSubmit={({ name: linkName, link }) => {
-          if (socialLinkIndex === undefined) {
-            return;
-          }
+      {!readonly && (
+        <>
+          <Button
+            mode="primaryOutline"
+            iconName="plus"
+            size="small"
+            className="mt-6"
+            isFullSize={isMobile}
+            onClick={() => setSocialLinkIndex(-1)}
+          >
+            {formatText({ id: 'button.addSocialLinks' })}
+          </Button>
+          <SocialLinkModal
+            key={socialLinkIndex}
+            isOpen={socialLinkIndex !== undefined}
+            onClose={() => setSocialLinkIndex(undefined)}
+            defaultValues={data}
+            initialLinkType={
+              socialLinkIndex !== undefined
+                ? data[socialLinkIndex]?.name
+                : undefined
+            }
+            onSubmit={({ name: linkName, link }) => {
+              if (socialLinkIndex === undefined) {
+                return;
+              }
 
-          const existingSocialLinkIndex = data.findIndex(
-            (socialLink) => socialLink.name === linkName,
-          );
+              const existingSocialLinkIndex = data.findIndex(
+                (socialLink) => socialLink.name === linkName,
+              );
 
-          if (existingSocialLinkIndex === -1) {
-            fieldArrayMethods.append({
-              name: linkName,
-              link,
-            });
-          } else {
-            fieldArrayMethods.update(existingSocialLinkIndex, {
-              name: linkName,
-              link,
-            });
-          }
+              if (existingSocialLinkIndex === -1) {
+                fieldArrayMethods.append({
+                  name: linkName,
+                  link,
+                });
+              } else {
+                fieldArrayMethods.update(existingSocialLinkIndex, {
+                  name: linkName,
+                  link,
+                });
+              }
 
-          setSocialLinkIndex(undefined);
-        }}
-      />
+              setSocialLinkIndex(undefined);
+            }}
+          />
+        </>
+      )}
     </>
   );
 };

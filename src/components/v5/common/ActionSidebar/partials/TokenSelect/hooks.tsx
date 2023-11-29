@@ -2,6 +2,7 @@ import { isAddress } from '@ethersproject/address';
 import React, { useMemo } from 'react';
 
 import getTokenList from '~common/Dialogs/TokenManagementDialog/TokenManagementDialogForm/getTokenList';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { useGetTokenFromEverywhereQuery } from '~gql';
 import { useColonyContext } from '~hooks';
 import { useGetAllTokens } from '~hooks/useGetAllTokens';
@@ -15,6 +16,7 @@ import TokenStatus from './partials/TokenStatus/TokenStatus';
 export const useTokenSelect = (inputValue: string) => {
   const predefinedTokens = getTokenList();
   const allTokens = useGetAllTokens();
+  const { readonly } = useAdditionalFormOptionsContext();
   const { colony } = useColonyContext();
   const colonyTokens = colony?.tokens?.items || [];
   const isNativeToken = colonyTokens.some(
@@ -61,7 +63,7 @@ export const useTokenSelect = (inputValue: string) => {
       return (
         <div className="flex items-center gap-2">
           {selectedToken && <TokenIcon token={selectedToken} size="xxs" />}
-          {selectedToken?.name}
+          {selectedToken?.name || inputValue}
         </div>
       );
     }
@@ -70,7 +72,18 @@ export const useTokenSelect = (inputValue: string) => {
       return <SpinnerLoader appearance={{ size: 'small' }} />;
     }
 
-    return tokenData ? (
+    if (readonly && tokenData?.getTokenFromEverywhere) {
+      const selectedToken = tokenData.getTokenFromEverywhere.items?.[0];
+
+      return (
+        <div className="flex items-center gap-2">
+          {selectedToken && <TokenIcon token={selectedToken} size="xxs" />}
+          {selectedToken?.name || inputValue}
+        </div>
+      );
+    }
+
+    return tokenData?.getTokenFromEverywhere ? (
       <TokenStatus status="success">
         {tokenData.getTokenFromEverywhere?.items?.[0]?.name}
       </TokenStatus>

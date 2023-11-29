@@ -54,7 +54,7 @@ const ManageTokensForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         }}
         title={formatText({ id: 'actionSidebar.createdIn' })}
       >
-        <TeamsSelect name="createdIn" />
+        <TeamsSelect readonly name="createdIn" />
       </ActionFormRow>
       <DescriptionRow />
       <TokensTable

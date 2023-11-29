@@ -139,20 +139,33 @@ export const useGetActionData = (transactionId: string | undefined) => {
         };
       case ColonyActionType.ColonyEdit:
       case ColonyActionType.ColonyEditMotion: {
-        const modifiedTokens =
-          action.pendingColonyMetadata?.modifiedTokenAddresses?.added?.map(
-            (addedToken) => ({
-              token: addedToken,
-            }),
-          );
+        const changelog = action.colony.metadata?.changelog?.find(
+          ({ transactionHash }) => transactionHash === action.transactionHash,
+        );
+        const { haveTokensChanged } = changelog || {};
+        const modifiedTokens = isMotion
+          ? action.pendingColonyMetadata?.modifiedTokenAddresses
+          : action.colony.metadata?.modifiedTokenAddresses;
+        const newTokens = modifiedTokens?.added?.map((addedToken) => ({
+          token: addedToken,
+          isNew: true,
+        }));
+        const removedTokens = modifiedTokens?.removed?.map((removedToken) => ({
+          token: removedToken,
+          isRemoved: true,
+        }));
         const colonyTokens = action.colony.tokens?.items?.map(
           (colonyToken) => ({
             token: colonyToken?.token?.tokenAddress,
           }),
         );
-        const allTokens = [...(colonyTokens || []), ...(modifiedTokens || [])];
+        const allTokens = [
+          ...(colonyTokens || []),
+          ...(newTokens || []),
+          ...(removedTokens || []),
+        ];
 
-        if (modifiedTokens && modifiedTokens?.length > 0) {
+        if (haveTokensChanged) {
           return {
             [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_TOKENS,
             selectedTokenAddresses: allTokens,

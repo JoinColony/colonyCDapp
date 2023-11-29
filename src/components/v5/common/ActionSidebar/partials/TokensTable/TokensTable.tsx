@@ -8,7 +8,11 @@ import { formatText } from '~utils/intl';
 import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
 import Button from '~v5/shared/Button';
 
-import { useGetTableMenuProps, useTokensTableColumns } from './hooks';
+import {
+  useGetTableMenuProps,
+  useRenderCell,
+  useTokensTableColumns,
+} from './hooks';
 import { TokensTableModel, TokensTableProps } from './types';
 
 const displayName = 'v5.common.ActionsContent.partials.TokensTable';
@@ -34,6 +38,7 @@ const TokensTable: FC<TokensTableProps> = ({
     shouldShowMenu,
   );
   const { readonly } = useAdditionalFormOptionsContext();
+  const renderCell = useRenderCell();
 
   return (
     <div>
@@ -42,13 +47,18 @@ const TokensTable: FC<TokensTableProps> = ({
       </h5>
       {!!data.length && (
         <TableWithMeatballMenu<TokensTableModel>
-          className={clsx('mb-6', {
-            '!border-negative-400': !!fieldState.error,
-          })}
+          className={clsx(
+            'mb-6 [&_th]:align-top [&_td]:py-2 [&_tr:nth-child(2)_th]:pt-2 [&_tr:nth-child(2)_td]:pt-0 sm:[&_td]:py-0 sm:[&_th]:align-middle sm:[&_td>div]:py-4',
+            {
+              '!border-negative-400': !!fieldState.error,
+            },
+          )}
           getRowId={({ key }) => key}
           columns={columns}
           data={data}
           getMenuProps={getMenuProps}
+          renderCellWrapper={renderCell}
+          meatBallMenuSize={42}
         />
       )}
       {!readonly && (
@@ -58,7 +68,9 @@ const TokensTable: FC<TokensTableProps> = ({
           size="small"
           isFullSize={isMobile}
           onClick={() => {
-            fieldArrayMethods.append({});
+            fieldArrayMethods.append({
+              isNew: true,
+            });
           }}
         >
           {formatText({ id: 'button.addToken' })}

@@ -84,14 +84,14 @@ const Table = <T,>({
                 key={row.id}
                 className={clsx(
                   getRowClassName(row),
-                  '[&:not(:last-child)>tr:last-child>th]:border-b [&:not(:last-child)>tr:last-child>td]:border-b',
+                  '[&:not(:last-child)>tr:last-child>th]:border-b [&:last-child>tr:last-child>td]:border-0',
                 )}
               >
                 {headerGroups.map((headerGroup) =>
                   headerGroup.headers.map((header, index) => (
                     <tr
                       key={row.id + headerGroup.id + header.id}
-                      className="[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100"
+                      className="[&:last-child>td]:border-b"
                     >
                       <th
                         className={`
