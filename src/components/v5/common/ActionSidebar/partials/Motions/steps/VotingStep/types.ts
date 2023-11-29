@@ -10,3 +10,7 @@ export interface VotingStepProps
 export interface VotingFormValues {
   vote: number;
 }
+
+export enum VotingStepSections {
+  Vote = 'vote',
+}
