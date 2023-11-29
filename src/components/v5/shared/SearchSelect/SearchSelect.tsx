@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import debounce from 'lodash/debounce';
 import clsx from 'clsx';
@@ -193,7 +193,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
     return (
       <Portal>
         <Card
-          className="py-6 px-2.5 w-full max-w-[calc(100%-2.25rem)] sm:max-w-[20.375rem] z-[60] absolute max-h-[37.5rem]"
+          className="py-6 px-2.5 w-full bg-base-white max-w-[calc(100%-2.25rem)] sm:max-w-[20.375rem] z-[60] absolute max-h-[37.5rem]"
           hasShadow
           rounded="s"
           ref={ref}
@@ -205,4 +205,6 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
   },
 );
 
-export default Object.assign(SearchSelect, { displayName });
+(SearchSelect as FC).displayName = displayName;
+
+export default SearchSelect;

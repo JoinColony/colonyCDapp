@@ -20,6 +20,7 @@ import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
 import PermissionsPage from '~frame/Extensions/pages/PermissionsPage';
 import { ExtensionsContextProvider } from '~context/ExtensionsContext';
 import MembersPage from '~frame/v5/pages/MembersPage';
+import ColonyPreviewPage from '~frame/v5/pages/ColonyPreviewPage';
 import ColonyUsersPage from '~frame/v5/pages/ColonyUsersPage';
 import VerifiedPage from '~frame/v5/pages/VerifiedPage';
 import BalancePage from '~frame/v5/pages/BalancePage';
@@ -45,7 +46,6 @@ import {
   COLONY_MEMBERS_ROUTE,
   COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
   CREATE_COLONY_ROUTE,
-  CREATE_USER_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
   USER_ROUTE,
   NOT_FOUND_ROUTE,
@@ -53,6 +53,7 @@ import {
   COLONY_DECISIONS_PREVIEW_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
   COLONY_EXTENSION_DETAILS_ROUTE,
+  USER_INVITE_ROUTE,
   COLONY_REPUTATION_ROUTE,
   COLONY_DETAILS_ROUTE,
   COLONY_PERMISSIONS_ROUTE,
@@ -71,6 +72,11 @@ import {
   COLONY_EXPENDITURES_DETAILS_ROUTE,
   OLD_ACTIONS_PAGE_ROUTE,
   COLONY_INCOMING_ROUTE,
+  COLONY_SPLASH_ROUTE,
+  CREATE_PROFILE_ROUTE,
+  // ACTIONS_PAGE_ROUTE,
+  // UNWRAP_TOKEN_ROUTE,
+  // CLAIM_TOKEN_ROUTE,
 } from './routeConstants';
 
 import RootRoute from './RootRoute';
@@ -96,6 +102,8 @@ const Routes = () => {
 
         {/* Main routes */}
         <Route element={<MainRoute />}>
+          <Route path={USER_INVITE_ROUTE} element={<ColonyPreviewPage />} />
+          <Route path={COLONY_SPLASH_ROUTE} element={<ColonyPreviewPage />} />
           <Route
             path={USER_ROUTE}
             element={
@@ -120,7 +128,7 @@ const Routes = () => {
         </Route>
 
         <Route
-          path={CREATE_USER_ROUTE}
+          path={CREATE_PROFILE_ROUTE}
           element={<OnboardingPage flow="user" />}
         />
 

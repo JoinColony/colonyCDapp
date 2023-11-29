@@ -1,5 +1,7 @@
-import React, { FC, PropsWithChildren, useEffect } from 'react';
+import React, { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
+import { defineMessages } from 'react-intl';
+import { PaperPlaneTilt } from 'phosphor-react';
 
 import UserHubButton from '~common/Extensions/UserHubButton';
 import {
@@ -8,25 +10,41 @@ import {
   useUserTransactionContext,
   TransactionGroupStates,
   useColonyCreatedModalContext,
+  useActionSidebarContext,
 } from '~context';
 import { useMobile, useColonyContext } from '~hooks';
 import { NOT_FOUND_ROUTE } from '~routes';
 import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
-import PageLayout from '~v5/frame/PageLayout';
-import { CompletedButton, PendingButton } from '~v5/shared/Button';
-import CalamityBanner from '~v5/shared/CalamityBanner';
 import ColonyCreatedModal from '~v5/common/Modals/ColonyCreatedModal';
-
-import UserNavigationWrapper from './partials/UserNavigationWrapper';
-import { useCalamityBannerInfo } from './hooks';
+import { InviteMembersModal } from '~v5/common/Modals';
+import PageLayout from '~v5/frame/PageLayout';
+import Button, { CompletedButton, PendingButton } from '~v5/shared/Button';
+import CalamityBanner from '~v5/shared/CalamityBanner';
+import JoinButton from '~v5/shared/Button/JoinButton';
 
 import ColonySidebar from './ColonySidebar';
+import { useCalamityBannerInfo } from './hooks';
+import UserNavigationWrapper from './partials/UserNavigationWrapper';
 
 const displayName = 'frame.Extensions.layouts.ColonyLayout';
+
+const MSG = defineMessages({
+  joinButtonText: {
+    id: `${displayName}.joinButtonText`,
+    defaultMessage: 'Join',
+  },
+  inviteMembers: {
+    id: `${displayName}.inviteMembers`,
+    defaultMessage: 'Invite members',
+  },
+});
 
 const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const { colony, loading } = useColonyContext();
   const { title: pageHeadingTitle, breadcrumbs = [] } = usePageHeadingContext();
+  // @TODO: Eventually we want the action sidebar context to be better intergrated in the layout (maybe only used here and not in UserNavigation(Wrapper))
+  const { actionSidebarToggle } = useActionSidebarContext();
+  const [isActionSidebarOpen] = actionSidebarToggle;
   const isMobile = useMobile();
 
   const {
@@ -37,6 +55,8 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
 
   const { isColonyCreatedModalOpen, setIsColonyCreatedModalOpen } =
     useColonyCreatedModalContext();
+  const [isInviteMembersModalOpen, setIsInviteMembersModalOpen] =
+    useState(false);
 
   const { calamityBannerItems, canUpgrade } = useCalamityBannerInfo();
 
@@ -98,7 +118,25 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
               }
             : undefined,
           userNavigation: (
-            <UserNavigationWrapper txButtons={txButtons} userHub={userHub} />
+            <UserNavigationWrapper
+              txButtons={txButtons}
+              userHub={userHub}
+              extra={
+                <>
+                  <JoinButton />
+                  {!isActionSidebarOpen ? (
+                    <Button
+                      className="ml-1"
+                      text={MSG.inviteMembers}
+                      mode="quinary"
+                      iconName={<PaperPlaneTilt />}
+                      size="small"
+                      onClick={() => setIsInviteMembersModalOpen(true)}
+                    />
+                  ) : null}
+                </>
+              }
+            />
           ),
         }}
         sidebar={<ColonySidebar userHub={userHub} txButtons={txButtons} />}
@@ -113,6 +151,10 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
       <ColonyCreatedModal
         isOpen={isColonyCreatedModalOpen}
         onClose={() => setIsColonyCreatedModalOpen(false)}
+      />
+      <InviteMembersModal
+        isOpen={isInviteMembersModalOpen}
+        onClose={() => setIsInviteMembersModalOpen(false)}
       />
     </>
   );

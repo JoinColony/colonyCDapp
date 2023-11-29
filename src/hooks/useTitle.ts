@@ -12,7 +12,6 @@ import { defineMessages, useIntl, MessageDescriptor } from 'react-intl';
 import {
   CREATE_COLONY_ROUTE,
   CREATE_PROFILE_ROUTE,
-  CREATE_USER_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
   NOT_FOUND_ROUTE,
   COLONY_HOME_ROUTE,
@@ -243,7 +242,6 @@ const routeMessages: Record<string, MessageDescriptor> = {
   [NOT_FOUND_ROUTE]: MSG.notFound,
   [CREATE_COLONY_ROUTE]: MSG.createColony,
   [CREATE_PROFILE_ROUTE]: MSG.createProfile,
-  [CREATE_USER_ROUTE]: MSG.createUser,
 };
 
 const allRoutes = Object.keys(routeMessages);

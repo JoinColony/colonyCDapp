@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react';
+import React, { HTMLAttributes, ReactNode } from 'react';
 import { MessageDescriptor } from 'react-intl';
 
 import { SimpleMessageValues } from '~types';
@@ -22,6 +22,7 @@ export type IconSize =
   | 'small'
   | 'normal'
   | 'mediumSmall'
+  | 'mediumSmallMediumLargeSmallTinyBigMediumLargeSmall'
   | 'medium'
   | 'big'
   | 'extraBig'
@@ -45,7 +46,7 @@ export interface IconProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   className?: string;
 
   /** Name of icon sprite */
-  name: string;
+  name: ReactNode;
 
   /** Html title for the icon element */
   title?: string | MessageDescriptor;
@@ -76,12 +77,25 @@ const Icon = ({
   titleValues,
   ...props
 }: IconProps) => {
-  // Remove the theme if it's a multiColor icon
-  const multiColorAppearance = multiColorIcons[name]
-    ? { size: appearance.size || 'normal' }
-    : null;
-  const icon = icons[name] || multiColorIcons[name];
-  const iconHref = typeof icon === 'object' ? `#${icon.default.id}` : icon;
+  let iconElement: ReactNode = null;
+  let multiColorAppearance: { size: IconSize } | null = null;
+
+  if (typeof name == 'string') {
+    // Remove the theme if it's a multiColor icon
+    multiColorAppearance = multiColorIcons[name]
+      ? { size: appearance.size || 'normal' }
+      : null;
+    const icon = icons[name] || multiColorIcons[name];
+    const iconHref = typeof icon === 'object' ? `#${icon.default.id}` : icon;
+    iconElement = (
+      <svg viewBox={viewBoxOverride}>
+        <use xlinkHref={iconHref} />
+      </svg>
+    );
+  } else {
+    iconElement = name;
+  }
+
   const iconTitle = title ? formatText(title, titleValues) : undefined;
   return (
     <i
@@ -92,9 +106,7 @@ const Icon = ({
       )} ${className || ''}`}
       {...props}
     >
-      <svg viewBox={viewBoxOverride}>
-        <use xlinkHref={iconHref} />
-      </svg>
+      {iconElement}
     </i>
   );
 };

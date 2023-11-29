@@ -50,14 +50,23 @@ fragment Colony on Colony {
   reputation
   expendituresGlobalClaimDelay
   private
+  colonyMemberInvite {
+    id
+    invitesRemaining
+    valid
+  }
 }
 
-fragment ColonyDisplay on Colony {
+fragment PublicColony on Colony {
   colonyAddress: id
   name
   metadata {
-    displayName
     avatar
+    displayName
+    externalLinks {
+      link
+      name
+    }
     thumbnail
   }
 }

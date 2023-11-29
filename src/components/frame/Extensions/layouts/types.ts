@@ -15,3 +15,8 @@ export interface MainLayoutProps {
   sidebar?: ReactNode;
   hasWideSidebar?: boolean;
 }
+
+export type ColonyLayoutProps = Omit<
+  MainLayoutProps,
+  'calamityBannerItems' | 'header' | 'sidebar'
+>;

@@ -94,7 +94,7 @@ import {
 
 function* usernameCreate({
   meta,
-  meta: { navigate, updateUser },
+  meta: { navigate, updateUser, colonyName },
   payload: { username, emailAddress },
 }: Action<ActionTypes.USERNAME_CREATE>) {
   const wallet = getContext(ContextModule.Wallet);
@@ -151,7 +151,7 @@ function* usernameCreate({
     }
 
     if (navigate) {
-      navigate(LANDING_PAGE_ROUTE);
+      navigate(colonyName ? `/${colonyName}` : LANDING_PAGE_ROUTE);
     }
   } catch (error) {
     return yield putError(ActionTypes.USERNAME_CREATE_ERROR, error, meta);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import clsx from 'clsx';
 
 import { CardProps } from './types';
@@ -7,28 +7,16 @@ const displayName = 'v5.Card';
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   (
-    {
-      hasShadow,
-      rounded = 's',
-      children,
-      className,
-      withPadding = true,
-      checked = false,
-    },
+    { hasShadow, rounded = 's', children, className, withPadding = true },
     ref,
   ) => (
     <div
-      className={clsx(
-        className,
-        'bg-base-white border flex flex-col',
-        checked ? 'border-blue-400' : 'border-gray-200',
-        {
-          'rounded-lg': rounded === 's',
-          'rounded-xl': rounded === 'm',
-          'shadow-default': hasShadow,
-          'p-6': withPadding,
-        },
-      )}
+      className={clsx(className, 'border', {
+        'rounded-lg': rounded === 's',
+        'rounded-xl': rounded === 'm',
+        'shadow-default': hasShadow,
+        'px-6 py-4': withPadding,
+      })}
       ref={ref}
     >
       {children}
@@ -36,4 +24,6 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ),
 );
 
-export default Object.assign(Card, { displayName });
+(Card as FC).displayName = displayName;
+
+export default Card;

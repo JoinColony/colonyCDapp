@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes } from 'react';
+import React, { ButtonHTMLAttributes, ReactNode } from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { ActionTypes } from '~redux';
 import { SimpleMessageValues } from '~types';
@@ -26,7 +26,7 @@ export type ButtonSize = 'default' | 'extraSmall' | 'small' | 'large';
 export type TextButtonMode = 'default' | 'medium' | 'underlined';
 
 export interface ButtonContentProps {
-  iconName?: string;
+  iconName?: ReactNode;
   iconSize?: IconSize;
   mode?: ButtonMode;
   isIconRight?: boolean;

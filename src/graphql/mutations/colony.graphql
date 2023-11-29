@@ -27,3 +27,7 @@ mutation DeleteWatchedColonies($input: DeleteWatchedColoniesInput!) {
     id
   }
 }
+
+mutation ValidateUserInvite($input: ValidateUserInviteInput!) {
+  validateUserInvite(input: $input)
+}

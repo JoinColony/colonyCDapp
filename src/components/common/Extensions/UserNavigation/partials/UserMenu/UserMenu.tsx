@@ -23,13 +23,10 @@ const displayName = 'common.Extensions.UserNavigation.partials.UserMenu';
 const UserMenu: FC<UserMenuProps> = ({
   tooltipProps,
   setTooltipRef,
-  isWalletConnected,
-  user,
   isVerified,
-  walletAddress,
 }) => {
   const isTablet = useTablet();
-  const { connectWallet, disconnectWallet } = useAppContext();
+  const { connectWallet, disconnectWallet, user, wallet } = useAppContext();
   const { profile } = user || {};
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 
@@ -54,7 +51,7 @@ const UserMenu: FC<UserMenuProps> = ({
           '-translate-x-[100vw] absolute': activeSubmenu,
         })}
       >
-        {walletAddress ? (
+        {wallet ? (
           <div className="px-6">
             <WalletConnectedTopMenu
               userName={
@@ -62,7 +59,7 @@ const UserMenu: FC<UserMenuProps> = ({
                 splitWalletAddress(user?.walletAddress ?? '')
               }
               isVerified={isVerified}
-              walletAddress={walletAddress}
+              walletAddress={wallet.address}
               avatar={profile?.thumbnail || profile?.avatar || ''}
             />
           </div>
@@ -125,7 +122,7 @@ const UserMenu: FC<UserMenuProps> = ({
           </ul>
         </div>
         <div className="px-6">
-          {isWalletConnected && (
+          {wallet && (
             <div className="w-full mb-4 sm:mb-3">
               <TitleLabel text={formatText({ id: 'userMenu.other' })} />
               <div className="navigation-link">
