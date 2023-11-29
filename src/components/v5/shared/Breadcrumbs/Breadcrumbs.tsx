@@ -27,7 +27,7 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ items, className }) => {
                   <Link
                     to={href}
                     className={clsx({
-                      'flex items-center w-full gap-2 px-4 py-2 transition-none duration-0 sm:hover:!text-gray-900':
+                      'flex items-center w-full gap-2 px-4 py-2 transition-none sm:hover:!text-gray-900':
                         !!color,
                     })}
                   >

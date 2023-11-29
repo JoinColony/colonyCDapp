@@ -16,6 +16,7 @@ function RadioButtonsBase<TValue = string>({
   disabled,
   keyExtractor = (item): string => String(item),
   valueComparator = isEqual,
+  allowUnselect = false,
   className,
 }: RadioButtonsBaseProps<TValue>): JSX.Element {
   return (
@@ -38,7 +39,7 @@ function RadioButtonsBase<TValue = string>({
 
                 onChange(target.checked ? itemValue : undefined);
               }}
-              disabled={disabled || itemDisabled || checked}
+              disabled={disabled || itemDisabled || (!allowUnselect && checked)}
             />
           </li>
         );

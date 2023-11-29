@@ -62,7 +62,7 @@ export const useEditTeam = (
       pipe(
         mapPayload((payload: EditTeamFormValues) => {
           const values = {
-            domainId: payload.team,
+            domainId: parseFloat(payload.team),
             domainName: payload.teamName,
             domainPurpose: payload.domainPurpose,
             domainColor: payload.domainColor,
