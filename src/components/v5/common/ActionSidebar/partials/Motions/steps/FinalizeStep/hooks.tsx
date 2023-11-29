@@ -15,6 +15,7 @@ import { formatText } from '~utils/intl';
 import { getBalanceForTokenAndDomain } from '~utils/tokens';
 import { getSafePollingInterval } from '~utils/queries';
 import { MotionAction } from '~types/motions';
+import { InstalledExtensionData } from '~types';
 
 import { DescriptionListItem } from '../VotingStep/partials/DescriptionList/types';
 
@@ -85,10 +86,12 @@ export const useClaimConfig = (
   } = actionData;
   const { user } = useAppContext();
   const { colony } = useColonyContext();
-  const { extensionData } = useExtensionData(Extension.VotingReputation);
+  const extension = useExtensionData(Extension.VotingReputation);
   const { pollLockedTokenBalance } = useUserTokenBalanceContext();
 
   const [isClaimed, setIsClaimed] = useState(false);
+
+  const extensionData = extension?.extensionData as InstalledExtensionData;
 
   const userAddress = user?.walletAddress;
   const colonyAddress = colony?.colonyAddress;
@@ -165,8 +168,7 @@ export const useClaimConfig = (
       userAddress: userAddress || '',
       colonyAddress: colonyAddress || '',
       transactionHash: transactionHash || '',
-      // @ts-ignore It exists, TS is just being a little bitch
-      extensionAddress: extensionData?.address || '',
+      extensionAddress: extensionData.address,
     }),
   );
 
