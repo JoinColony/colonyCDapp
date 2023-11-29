@@ -23,8 +23,15 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
 
   const { data: totalActionData } = useGetTotalColonyActionsQuery({
     variables: {
-      colonyId: colonyAddress,
-      since: null,
+      filter: {
+        colonyId: { eq: colonyAddress },
+        showInActionsList: {
+          eq: true,
+        },
+        colonyDecisionId: {
+          exists: false,
+        },
+      },
     },
   });
 
@@ -32,8 +39,16 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
 
   const { data: recentActionData } = useGetTotalColonyActionsQuery({
     variables: {
-      colonyId: colonyAddress,
-      since: getThirtyDaysAgoIso(),
+      filter: {
+        colonyId: { eq: colonyAddress },
+        showInActionsList: {
+          eq: true,
+        },
+        colonyDecisionId: {
+          exists: false,
+        },
+        createdAt: { gte: getThirtyDaysAgoIso() },
+      },
     },
   });
 

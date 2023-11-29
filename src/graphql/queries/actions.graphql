@@ -43,11 +43,8 @@ query GetSafeTransactionStatus($input: GetSafeTransactionStatusInput!) {
   getSafeTransactionStatus(input: $input)
 }
 
-# Since should be null in order to get a total count
-query GetTotalColonyActions($colonyId: ID!, $since: String) {
-  searchColonyActions(
-    filter: { colonyId: { eq: $colonyId }, createdAt: { gte: $since } }
-  ) {
+query GetTotalColonyActions($filter: SearchableColonyActionFilterInput) {
+  searchColonyActions(filter: $filter) {
     total
   }
 }

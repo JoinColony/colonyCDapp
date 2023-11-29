@@ -78,7 +78,7 @@ export const useGetAllColonyMembers = (
 
 export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
   const { colony } = useColonyContext();
-  const { domains, colonyAddress, nativeToken, balances } = colony || {};
+  const { domains, colonyAddress = '', nativeToken, balances } = colony || {};
   const [hoveredSegment, setHoveredSegment] = useState<
     ChartData | undefined | null
   >();
@@ -91,14 +91,21 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
     ) || 0;
 
   const { colonyMembers, loading: membersLoading } = useGetAllColonyMembers(
-    colonyAddress || '',
+    colonyAddress,
     team,
   );
 
   const { data: totalActionData } = useGetTotalColonyActionsQuery({
     variables: {
-      colonyId: colonyAddress ?? '',
-      since: null,
+      filter: {
+        colonyId: { eq: colonyAddress },
+        showInActionsList: {
+          eq: true,
+        },
+        colonyDecisionId: {
+          exists: false,
+        },
+      },
     },
   });
 
