@@ -1,16 +1,19 @@
 import React, { FC, useEffect, useState } from 'react';
 import { ActionTypes } from '~redux';
 
-import { formatText } from '~utils/intl';
 import Button, { PendingButton } from '~v5/shared/Button';
+import PillsBase from '~v5/common/Pills';
 import { ActionForm } from '~shared/Fields';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
-import DescriptionList from '../VotingStep/partials/DescriptionList';
-import { useClaimConfig, useFinalizeStep } from './hooks';
-import { FinalizeStepProps, FinalizeStepSections } from './types';
-import PillsBase from '~v5/common/Pills';
-import { useAppContext, useColonyContext } from '~hooks';
 // import Icon from '~shared/Icon';
+
+import { useAppContext, useColonyContext } from '~hooks';
+import { formatText } from '~utils/intl';
+import { getSafePollingInterval } from '~utils/queries';
+
+import { FinalizeStepProps, FinalizeStepSections } from './types';
+import { useClaimConfig, useFinalizeStep } from './hooks';
+import DescriptionList from '../VotingStep/partials/DescriptionList';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.FinalizeStep';
@@ -37,7 +40,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   } = useClaimConfig(actionData, startPollingAction, refetchAction);
 
   const handleSuccess = () => {
-    startPollingAction(1000);
+    startPollingAction(getSafePollingInterval());
     setIsPolling(true);
   };
 

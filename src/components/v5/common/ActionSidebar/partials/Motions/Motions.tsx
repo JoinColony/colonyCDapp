@@ -11,6 +11,7 @@ import { StepperItem } from '~v5/shared/Stepper/types';
 import { getMotionState, MotionState, MotionVote } from '~utils/colonyMotions';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
+import { getSafePollingInterval } from '~utils/queries';
 import { useAppContext } from '~hooks';
 import { MotionAction } from '~types/motions';
 
@@ -57,7 +58,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   );
 
   useEffect(() => {
-    startPollingForAction(1000);
+    startPollingForAction(getSafePollingInterval());
     setActiveStepKey(networkMotionStateEnum);
     return () => stopPollingForAction();
   }, [networkMotionStateEnum, startPollingForAction, stopPollingForAction]);
