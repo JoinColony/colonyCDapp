@@ -40,9 +40,9 @@ const UserMenu: FC<UserMenuProps> = ({
       tooltipProps={tooltipProps}
       withTooltipStyles={!isTablet}
       classNames={clsx(
-        'w-full p-6 bg-base-white md:rounded-lg md:border md:border-gray-100 md:w-80 md:shadow-default',
+        'w-full p-6 bg-base-white md:rounded-lg md:border md:border-gray-100 md:w-80 md:shadow-default overflow-hidden',
         {
-          '!translate-y-0 !top-full h-[calc(100dvh-var(--top-content-height))] overflow-auto':
+          '!translate-y-0 !top-full h-[calc(100dvh-var(--top-content-height))]':
             isTablet,
         },
       )}
@@ -142,7 +142,7 @@ const UserMenu: FC<UserMenuProps> = ({
         })}
       >
         {activeSubmenu && (
-          <div className="px-6">
+          <>
             <button
               type="button"
               aria-label={formatText({ id: 'ariaLabel.backToMainMenu' })}
@@ -157,7 +157,7 @@ const UserMenu: FC<UserMenuProps> = ({
               />
             </button>
             <UserSubmenu submenuId={activeSubmenu} />
-          </div>
+          </>
         )}
       </div>
     </PopoverBase>
