@@ -37,6 +37,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     stopPollingForAction,
     refetchAction,
   } = useGetColonyAction(transactionId);
+
   const { motionData } = action || {};
   const {
     motionId = '',
@@ -58,7 +59,8 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   useEffect(() => {
     startPollingForAction(1000);
     setActiveStepKey(networkMotionStateEnum);
-  }, [networkMotionStateEnum, startPollingForAction]);
+    return () => stopPollingForAction();
+  }, [networkMotionStateEnum, startPollingForAction, stopPollingForAction]);
 
   const { percentage } = motionStakes || {};
   const { nay, yay } = percentage || {};
