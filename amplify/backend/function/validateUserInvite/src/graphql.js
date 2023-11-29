@@ -35,16 +35,10 @@ module.exports = {
     }
   `,
   getUser: /* GraphQL */ `
-    query GetUser($id: ID!, $name: String!) {
+    query GetUser($id: ID!) {
       getProfile(id: $id) {
         id
         displayName
-      }
-      getProfileByUsername(displayName: $name) {
-        items {
-          id
-          displayName
-        }
       }
     }
   `,
