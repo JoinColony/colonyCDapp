@@ -103,7 +103,7 @@ export const initialExtensionContent = [
         textItem: (
           <ContentTypeText
             title="Voter Reward"
-            subTitle="In a dispute, what percentage of the losing side\'s stake should be awarded to the voters?"
+            subTitle="In a dispute, what percentage of the losing side's stake should be awarded to the voters?"
           />
         ),
         inputData: {
