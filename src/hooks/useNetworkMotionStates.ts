@@ -6,6 +6,8 @@ import useEnabledExtensions from './useEnabledExtensions';
 
 export type MotionStatesMap = Map<string, MotionState | null>;
 
+export type RefetchMotionStates = (motionIdsToRefetch?: string[]) => void;
+
 /**
  * Hook that accepts an array of motion IDs and returns a map of motion IDs to their states
  * Make sure to memoize the array of motion IDs to avoid infinite loops
@@ -73,12 +75,26 @@ const useNetworkMotionStates = (nativeMotionIds: string[], skip?: boolean) => {
     fetchMotionStates();
   }, [motionStatesMap, nativeMotionIds, skip, votingReputationAddress, wallet]);
 
+  const refetch: RefetchMotionStates = (motionIdsToRefetch) => {
+    if (!motionIdsToRefetch?.length) {
+      setMotionStatesMap(new Map());
+    } else {
+      setMotionStatesMap((prevMotionStatesMap) => {
+        const newMotionStatesMap = new Map(prevMotionStatesMap);
+
+        motionIdsToRefetch.forEach((motionId) =>
+          newMotionStatesMap.delete(motionId),
+        );
+
+        return newMotionStatesMap;
+      });
+    }
+  };
+
   return {
     motionStatesMap,
     loading,
-    refetch: () => {
-      setMotionStatesMap(new Map());
-    },
+    refetch,
   };
 };
 

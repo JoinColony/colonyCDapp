@@ -21,11 +21,7 @@ const DonutChart: FC<DonutChartProps> = ({
   } = useDonutChart(data, hoveredSegment, setHoveredSegment);
 
   return (
-    <div
-      ref={chartRef}
-      className="relative w-full h-full"
-      style={{ maxWidth: '100%' }}
-    >
+    <div ref={chartRef} className="relative w-full h-full max-w-full">
       <svg width="100%" height="100%" viewBox={`0 0 ${size} ${size}`}>
         {data.length === 1 || summedChartValues < 1
           ? renderSingleSegment()

@@ -66,6 +66,7 @@ export const LANDING_PAGE_ROUTE = '/';
 // export const CLAIM_TOKEN_ROUTE = `${COLONY_HOME_ROUTE}/claim-tokens`;
 
 export const TX_SEARCH_PARAM = 'tx';
+export const TEAM_SEARCH_PARAM = 'team';
 
 export const HOST = window.location.host;
 

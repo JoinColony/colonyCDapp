@@ -16,3 +16,4 @@ export { default as isArray } from 'lodash/isArray';
 export { default as omit } from 'lodash/omit';
 export { default as fill } from 'lodash/fill';
 export { default as range } from 'lodash/range';
+export { default as merge } from 'lodash/merge';

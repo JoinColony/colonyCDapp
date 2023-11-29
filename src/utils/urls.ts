@@ -18,13 +18,14 @@ export const removeQueryParamFromUrl = (
 export const setQueryParamOnUrl = (
   url: string,
   param: string,
-  value: string,
+  value: string | undefined,
 ) => {
-  const urlObject = new URL(url, 'https://fake.domain');
+  const [pathname, search] = url.split('?');
+  const searchParams = new URLSearchParams(search);
 
-  urlObject.searchParams.set(param, value);
+  if (value) {
+    searchParams.set(param, value);
+  }
 
-  const [, pathname] = urlObject.toString().split(urlObject.origin);
-
-  return pathname;
+  return [pathname, searchParams.toString()].join('?');
 };

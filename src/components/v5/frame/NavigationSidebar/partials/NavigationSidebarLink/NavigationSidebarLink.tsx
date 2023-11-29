@@ -13,6 +13,7 @@ const NavigationSidebarLink: FC<
   PropsWithChildren<NavigationSidebarLinkProps>
 > = ({ iconName, tagProps, children, className, disabled, ...rest }) => (
   <NavLink
+    end
     {...rest}
     className={({ isActive }) =>
       clsx(

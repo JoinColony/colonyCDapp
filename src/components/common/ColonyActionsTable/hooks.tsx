@@ -14,7 +14,6 @@ import {
 } from '~gql';
 import { useActivityFeed, useColonyContext, useMobile } from '~hooks';
 import { ActivityFeedColonyAction } from '~hooks/useActivityFeed/types';
-import { ColonyAction } from '~types';
 import { MotionState } from '~utils/colonyMotions';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
@@ -28,15 +27,18 @@ import { RenderCellWrapper } from '~v5/common/Table/types';
 import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/TableWithMeatballMenu/consts';
 import TransactionLink from '~shared/TransactionLink';
 import { DEFAULT_NETWORK_INFO } from '~constants';
+import { RefetchMotionStates } from '~hooks/useNetworkMotionStates';
 
 import { makeLoadingRows } from './utils';
 import ActionDescription from './partials/ActionDescription';
 import MeatballMenuCopyItem from './partials/MeatballMenuCopyItem';
+import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
+import { setQueryParamOnUrl } from '~utils/urls';
 
 export const useColonyActionsTableColumns = (
   loading: boolean,
   loadingMotionStates: boolean,
-  refetchMotionState: VoidFunction,
+  refetchMotionStates: RefetchMotionStates,
 ) => {
   const isMobile = useMobile();
 
@@ -57,7 +59,7 @@ export const useColonyActionsTableColumns = (
           <ActionDescription
             action={original}
             loading={loading}
-            refetchMotionState={refetchMotionState}
+            refetchMotionStates={refetchMotionStates}
           />
         ),
       }),
@@ -82,7 +84,7 @@ export const useColonyActionsTableColumns = (
                 skeleton: loading,
               })}
               textClassName="line-clamp-1 break-all"
-              teamName={team?.name || '-------'}
+              teamName={team?.name || ''.padEnd(6, '-')}
             />
           ) : null;
         },
@@ -127,14 +129,16 @@ export const useColonyActionsTableColumns = (
         },
       }),
     ];
-  }, [isMobile, loading, loadingMotionStates, refetchMotionState]);
+  }, [isMobile, loading, loadingMotionStates, refetchMotionStates]);
 };
 
 export const useGetColonyActionsTableMenuProps = (loading: boolean) => {
   const navigate = useNavigate();
   const colonyName = useColonyContext().colony?.name || '';
 
-  return useCallback<TableWithMeatballMenuProps<ColonyAction>['getMenuProps']>(
+  return useCallback<
+    TableWithMeatballMenuProps<ActivityFeedColonyAction>['getMenuProps']
+  >(
     ({ original: { transactionHash } }) => ({
       disabled: loading,
       items: [
@@ -188,6 +192,7 @@ export const useGetColonyActionsTableMenuProps = (loading: boolean) => {
 };
 
 export const useActionsTableData = (pageSize: number) => {
+  const selectedTeam = useGetSelectedTeamFilter();
   const [sorting, setSorting] = useState<SortingState>([
     {
       id: 'createdAt',
@@ -206,7 +211,12 @@ export const useActionsTableData = (pageSize: number) => {
     loadingMotionStates,
     refetchMotionStates,
   } = useActivityFeed(
-    useMemo(() => ({}), []),
+    useMemo(
+      () => ({
+        teamId: selectedTeam?.id || undefined,
+      }),
+      [selectedTeam?.id],
+    ),
     useMemo(() => {
       const validSortValues = sorting?.reduce<
         SearchableColonyActionSortInput[]
@@ -258,17 +268,22 @@ export const useActionsTableData = (pageSize: number) => {
   };
 };
 
-export const useRenderRowLink =
-  (): RenderCellWrapper<ActivityFeedColonyAction> => {
-    return (className, content, { cell, row, renderDefault }) =>
-      cell.column.columnDef.id === MEATBALL_MENU_COLUMN_ID ? (
-        renderDefault()
-      ) : (
-        <Link
-          className={clsx(className, '!py-[.5625rem]')}
-          to={`?${TX_SEARCH_PARAM}=${row.original.transactionHash}`}
-        >
-          {content}
-        </Link>
-      );
-  };
+export const useRenderRowLink = (
+  loading: boolean,
+): RenderCellWrapper<ActivityFeedColonyAction> => {
+  return (className, content, { cell, row, renderDefault }) =>
+    cell.column.columnDef.id === MEATBALL_MENU_COLUMN_ID || loading ? (
+      renderDefault()
+    ) : (
+      <Link
+        className={clsx(className, '!py-[.5625rem]')}
+        to={setQueryParamOnUrl(
+          window.location.search,
+          TX_SEARCH_PARAM,
+          row.original.transactionHash,
+        )}
+      >
+        {content}
+      </Link>
+    );
+};

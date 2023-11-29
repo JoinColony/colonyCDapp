@@ -15,22 +15,20 @@ const TeamReputationSummaryRow: FC<TeamPointsRowProps> = ({
 
   return (
     <>
-      <span className="flex items-center flex-grow">
-        <span
+      <div className="flex items-center flex-grow">
+        <div
           className={`flex rounded-full w-[0.625rem] h-[0.625rem] mr-2 ${setTeamColor(
             color,
           )}`}
         />
-        <span className="truncate max-w-[6.25rem] sm:max-w-[9.375rem]">
-          {name}
-        </span>
-      </span>
-      <span className="font-medium">
+        <p className="truncate max-w-[6.25rem] sm:max-w-[9.375rem]">{name}</p>
+      </div>
+      <div className="font-medium">
         <Numeral
           value={Number(reputationPercentage).toFixed(1)}
           suffix={suffix}
         />
-      </span>
+      </div>
     </>
   );
 };

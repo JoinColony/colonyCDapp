@@ -5,11 +5,18 @@ import { WidgetBoxListProps } from './types';
 
 const displayName = 'v5.common.WidgetBoxList';
 
-const WidgetBoxList: FC<WidgetBoxListProps> = ({ items, className }) => (
+const WidgetBoxList: FC<WidgetBoxListProps> = ({
+  items,
+  className,
+  isVertical,
+}) => (
   <ul
     className={clsx(
       className,
-      'flex sm:flex-row flex-col items-center gap-[1.125rem] w-full',
+      'flex flex-col items-center gap-[1.125rem] w-full',
+      {
+        'sm:flex-row': !isVertical,
+      },
     )}
   >
     {items.map(({ key, ...item }) => (

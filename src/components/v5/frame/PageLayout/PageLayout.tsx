@@ -87,7 +87,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
           ) : (
             <div className="w-full md:h-[calc(100vh-var(--top-content-height))] md:pl-4 md:pt-4 md:flex md:gap-8">
               <div
-                className={clsx('relative z-[61]', {
+                className={clsx('relative z-[61] md:flex-shrink-0', {
                   'md:w-[5.125rem]': !hasWideSidebar,
                   'md:w-[17.5rem]': hasWideSidebar,
                 })}
@@ -114,12 +114,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
                   />
                 </div>
                 <div className="flex-grow overflow-auto pr-4 pb-4">
-                  <div
-                    className={clsx('w-full mx-auto', {
-                      'max-w-[79.875rem]': !isOnColonyRoute,
-                      'max-w-[85rem]': isOnColonyRoute,
-                    })}
-                  >
+                  <div className="w-full mx-auto max-w-[79.875rem]">
                     {children}
                   </div>
                 </div>

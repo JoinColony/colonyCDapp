@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { TEAM_SEARCH_PARAM } from '~routes';
 import { notMaybe } from '~utils/arrays';
 import { formatText } from '~utils/intl';
 import { setQueryParamOnUrl } from '~utils/urls';
@@ -11,7 +12,7 @@ export const useGetSelectedTeamFilter = () => {
   const { domains } = colony || {};
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const team = searchParams.get('team');
+  const team = searchParams.get(TEAM_SEARCH_PARAM);
 
   const teamId = useMemo(
     () =>
@@ -23,7 +24,7 @@ export const useGetSelectedTeamFilter = () => {
 
   useEffect(() => {
     if (team && !teamId) {
-      searchParams.delete('team');
+      searchParams.delete(TEAM_SEARCH_PARAM);
       setSearchParams(searchParams);
     }
   }, [searchParams, team, setSearchParams, teamId]);
@@ -38,7 +39,7 @@ export const useCreateTeamBreadcrumbs = () => {
   const activeItem = selectedValue
     ? setQueryParamOnUrl(
         window.location.pathname,
-        'team',
+        TEAM_SEARCH_PARAM,
         `${selectedValue.nativeId}`,
       )
     : window.location.pathname;
@@ -53,7 +54,7 @@ export const useCreateTeamBreadcrumbs = () => {
           color,
           href: setQueryParamOnUrl(
             window.location.pathname,
-            'team',
+            TEAM_SEARCH_PARAM,
             `${domain.nativeId}`,
           ),
         };
