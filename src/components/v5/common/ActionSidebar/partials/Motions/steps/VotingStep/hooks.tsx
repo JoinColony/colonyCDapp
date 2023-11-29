@@ -17,7 +17,7 @@ import { InstalledExtensionData } from '~types';
 import { MotionAction } from '~types/motions';
 import { MotionVotePayload } from '~redux/sagas/motions/voteMotion';
 
-import { VotingFormValues } from './types';
+import { VotingFormValues, VotingRewardsSections } from './types';
 import { DescriptionListItem } from './partials/DescriptionList/types';
 import { getLocalStorageVoteValue, setLocalStorageVoteValue } from './utils';
 
@@ -99,7 +99,7 @@ export const useVotingStep = (
 
   let items: DescriptionListItem[] = [
     {
-      key: '1',
+      key: VotingRewardsSections.VotingMethod,
       label: formatText({ id: 'motion.votingStep.votingMethod' }),
       value: formatText({ id: 'motion.votingStep.method' }),
     },
@@ -109,7 +109,7 @@ export const useVotingStep = (
     items = [
       ...items,
       {
-        key: '2',
+        key: VotingRewardsSections.TeamReputation,
         label: formatText({ id: 'motion.votingStep.teamReputation' }),
         value: (
           <MemberReputation
@@ -122,7 +122,7 @@ export const useVotingStep = (
         ),
       },
       {
-        key: '3',
+        key: VotingRewardsSections.RewardRange,
         label: formatText({ id: 'motion.votingStep.rewardRange' }),
         value: (
           <div>
