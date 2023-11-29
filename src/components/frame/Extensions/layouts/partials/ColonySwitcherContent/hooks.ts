@@ -1,13 +1,12 @@
 import { useMemo, useCallback, useState } from 'react';
 import debounce from 'lodash/debounce';
+
 import { useAppContext } from '~hooks';
 import { notNull } from '~utils/arrays';
+import { useGetContributorsByAddressQuery } from '~gql';
 
 import { getChainIconName } from '../../utils';
 import { ColonySwitcherListItem } from '../ColonySwitcherList/types';
-
-import { sortByDate } from './utils';
-import { UseColonySwitcherContentReturnType } from './types';
 
 export const useColonySwitcherContent = (
   colony,
@@ -15,10 +14,16 @@ export const useColonySwitcherContent = (
   const { userLoading, user } = useAppContext();
   const [searchValue, setSearchValue] = useState('');
 
-  const userColonies = useMemo(
-    () => (user?.watchlist?.items.filter(notNull) || []).sort(sortByDate),
-    [user],
-  );
+  const { data } = useGetContributorsByAddressQuery({
+    variables: { contributorAddress: user?.walletAddress || '' },
+    skip: !user?.walletAddress,
+  });
+
+  const userColonies = (
+    data?.getContributorsByAddress?.items.filter(
+      (contributor) => notNull(contributor) && contributor?.colony,
+    ) || []
+  ).sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
   const { chainMetadata, colonyAddress, name } = colony || {};
   const { chainId } = chainMetadata || {};

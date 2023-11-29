@@ -42,3 +42,26 @@ query GetVerifiedMembers($colonyAddress: ID!) {
     }
   }
 }
+
+query GetContributorsByAddress(
+  $contributorAddress: ID!
+  $sortDirection: ModelSortDirection = ASC
+  $limit: Int
+  $nextToken: String
+) {
+  getContributorsByAddress(
+    contributorAddress: $contributorAddress
+    sortDirection: $sortDirection
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      colony {
+        ...Colony
+      }
+    }
+    nextToken
+  }
+}

@@ -1169,7 +1169,7 @@ type ColonyContributor @model {
   contributorAddress: ID!
     @index(
       name: "byAddress"
-      queryField: "getContributorByAddress"
+      queryField: "getContributorsByAddress"
       sortKeyFields: ["colonyReputationPercentage"]
     )
 
@@ -1222,6 +1222,11 @@ type ColonyContributor @model {
       queryField: "getContributorsByColony"
       sortKeyFields: ["colonyReputationPercentage"]
     )
+
+  """
+  Associated colony
+  """
+  colony: Colony @hasOne(fields: ["colonyAddress"])
 
   """
   A list of roles associated with the contributor
