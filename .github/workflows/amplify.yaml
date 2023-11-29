@@ -6,6 +6,8 @@ on:
     types: [cdapp-amplify]
 
   push:
+    branches:
+      - master
     paths:
       - 'amplify/**'
 
