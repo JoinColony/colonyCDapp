@@ -37,7 +37,7 @@
           "Fn::Sub": "/amplify/cdapp/${env}/chain_rpc_endpoint"
         },
         "Type": "String",
-        "Value": "http://qa-cdapp.colony.io/rpc/",
+        "Value": "https://qa-cdapp.colony.io/rpc/",
         "Description": "Xdai chain RPC endpoint"
       }
     },
