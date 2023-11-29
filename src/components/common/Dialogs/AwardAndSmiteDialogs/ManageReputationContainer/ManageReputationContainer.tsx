@@ -8,7 +8,8 @@ import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 import { getVerifiedUsers } from '~utils/verifiedUsers';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { useSelectedUser, useGetColonyMembers } from '~hooks';
+import { useSelectedUser } from '~hooks';
+import { useMemberContext } from '~context/MemberContext';
 
 import DialogForm from '../ManageReputationDialogForm';
 import { AwardAndSmiteDialogProps } from '../types';
@@ -37,9 +38,7 @@ const ManageReputationContainer = ({
   const [isForce, setIsForce] = useState(false);
   const [schemaUserReputation, setSchemaUserReputation] = useState(0);
   const navigate = useNavigate();
-  const { allMembers: allColonyMembers } = useGetColonyMembers(
-    colony.colonyAddress,
-  );
+  const { members: allColonyMembers } = useMemberContext();
 
   const verifiedUsers = getVerifiedUsers(
     colony.metadata?.whitelistedAddresses ?? [],

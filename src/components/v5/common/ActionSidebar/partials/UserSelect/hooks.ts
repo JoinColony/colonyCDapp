@@ -1,16 +1,18 @@
 import { useMemo } from 'react';
+
 import { useColonyContext } from '~hooks';
-import { useGetColonyMembers } from '~v5/shared/MembersSelect/hooks';
-import { UserSelectHookProps } from './types';
 import { SearchSelectOption } from '~v5/shared/SearchSelect/types';
 import { unionOfArraysToArrayOfUnions } from '~utils/arrays';
 import { getVerifiedUsers, isUserVerified } from '~utils/verifiedUsers';
 import { Address } from '~types';
+import { useMemberContext } from '~context/MemberContext';
+
+import { UserSelectHookProps } from './types';
 
 export const useUserSelect = (): UserSelectHookProps => {
   const { colony } = useColonyContext();
-  const { colonyAddress = '', metadata } = colony ?? {};
-  const { members, loading } = useGetColonyMembers(colonyAddress);
+  const { metadata } = colony ?? {};
+  const { members, loadingContributors: loading } = useMemberContext();
   const isWhitelistActivated = metadata?.isWhitelistActivated;
   const options = useMemo(
     () =>

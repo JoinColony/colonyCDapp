@@ -1,11 +1,13 @@
-import { Address, MemberUser } from '~types';
+import { Address, ColonyContributor } from '~types';
 
 export const getVerifiedUsers = (
   verifiedAddresses: Address[],
-  colonyMembers: MemberUser[],
+  colonyMembers: ColonyContributor[],
 ) => {
   const verified = new Set(verifiedAddresses);
-  return colonyMembers.filter((member) => verified.has(member.walletAddress));
+  return colonyMembers.filter((member) =>
+    verified.has(member.contributorAddress),
+  );
 };
 
 export const isUserVerified = (

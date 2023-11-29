@@ -1,11 +1,10 @@
 import React, { FC, useCallback, useState } from 'react';
 import { Props as ReactSelectProps, SingleValue } from 'react-select';
 
-import { useColonyContext } from '~hooks';
+import { useMemberContext } from '~context/MemberContext';
 import { formatText } from '~utils/intl';
 import { DropdownIndicator, SelectBase } from '~v5/common/Fields/Select';
 
-import { useGetColonyMembers } from './hooks';
 import CustomOption from './partials/CustomOption';
 import { MemberSelectProps, MembersSelectOption } from './types';
 import styles from './MembersSelect.module.css';
@@ -19,8 +18,7 @@ const MembersSelect: FC<MemberSelectProps> = ({
   defaultValue,
   ...rest
 }) => {
-  const { colony } = useColonyContext();
-  const { members, loading } = useGetColonyMembers(colony?.colonyAddress);
+  const { members, loadingContributors: loading } = useMemberContext();
   const [selectedMember, setSelectedMember] = useState<
     MembersSelectOption['value'] | undefined
   >(defaultValue || undefined);
