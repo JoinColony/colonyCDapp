@@ -56,11 +56,24 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     networkMotionStateEnum,
   );
 
+  const motionFinished =
+    motionState === NetworkMotionState.Finalizable ||
+    motionState === NetworkMotionState.Finalized ||
+    motionState === NetworkMotionState.Failed;
+
   useEffect(() => {
     startPollingForAction(getSafePollingInterval());
     setActiveStepKey(networkMotionStateEnum);
+    if (motionFinished) {
+      setActiveStepKey(CustomStep.Finalize);
+    }
     return () => stopPollingForAction();
-  }, [networkMotionStateEnum, startPollingForAction, stopPollingForAction]);
+  }, [
+    motionFinished,
+    networkMotionStateEnum,
+    startPollingForAction,
+    stopPollingForAction,
+  ]);
 
   const { percentage } = motionStakes || {};
   const { nay, yay } = percentage || {};
@@ -111,9 +124,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const hasMotionFaild = motionStateEnum === MotionState.Failed;
 
   const motionStakedAndFinalizable =
-    (motionState === NetworkMotionState.Finalizable ||
-      motionState === NetworkMotionState.Finalized ||
-      motionState === NetworkMotionState.Failed) &&
+    motionFinished &&
     motionData?.remainingStakes
       .reduce((totalStakes, stake) => totalStakes.add(stake), BigNumber.from(0))
       .gt(0);
@@ -256,7 +267,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         isHidden: motionStakedAndFinalizable,
       },
       {
-        key: networkMotionStateEnum,
+        key: CustomStep.Finalize,
         content: (
           <FinalizeStep
             actionData={action as MotionAction}
@@ -292,7 +303,6 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     hasMotionPassed,
     hasMotionFaild,
     votesHaveBeenRevealed,
-    networkMotionStateEnum,
     refetchAction,
     canInteract,
   ]);
