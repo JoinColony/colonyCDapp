@@ -100,13 +100,10 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
                         },
                         <>
                           {typeof icon === 'string' ? (
-                            <>
-                              {icon}
-                              <Icon
-                                name={icon}
-                                appearance={{ size: 'extraSmall' }}
-                              />
-                            </>
+                            <Icon
+                              name={icon}
+                              appearance={{ size: 'extraSmall' }}
+                            />
                           ) : (
                             icon
                           )}
