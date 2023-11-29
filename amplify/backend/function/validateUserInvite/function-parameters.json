@@ -1,8 +1,11 @@
 {
   "lambdaLayers": [
     {
-      "type": "ExternalLayer",
-      "arn": "arn:aws:lambda:eu-west-2:204031746016:layer:colonycdappSSMAccess-qa:204"
+      "type": "ProjectLayer",
+      "resourceName": "colonycdappSSMAccess",
+      "env": "qa",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true
     },
     {
       "type": "ExternalLayer",
