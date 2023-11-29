@@ -7,6 +7,7 @@ import ColonyAvatar from '~v5/shared/ColonyAvatar';
 import HamburgerButton from '~v5/shared/HamburgerButton';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
 import FeedbackButton from '~shared/FeedbackButton';
+import ColonyLogo from '~images/logo-new.svg';
 
 import NavigationSidebarSecondLevel from './partials/NavigationSidebarSecondLevel';
 import NavigationSidebarThirdLevel from './partials/NavigationSidebarThirdLevel';
@@ -24,7 +25,6 @@ const displayName = 'v5.frame.NavigationSidebarContent';
 
 const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
   className,
-  logo,
   mainMenuItems,
   colonySwitcherProps,
   additionalMobileContent,
@@ -90,7 +90,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
     >
       <div
         className={clsx('md:h-full md:p-4 md:pb-6 w-full md:w-[5.125rem]', {
-          'flex flex-col items-center gap-4 justify-between': logo && !isTablet,
+          'flex flex-col items-center gap-4 justify-between': !isTablet,
           'inner h-full': isTablet,
         })}
       >
@@ -189,7 +189,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                 }}
               />
             </div>
-            {logo ?? logo}
+            <ColonyLogo />
           </>
         )}
       </div>

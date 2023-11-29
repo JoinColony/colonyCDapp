@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { CREATE_COLONY_ROUTE } from '~routes';
-import Logo from '~images/logo-new.svg';
 import { formatText } from '~utils/intl';
 
 import UserNavigationWrapper from './partials/UserNavigationWrapper';
@@ -12,7 +11,6 @@ const displayName = 'frame.Extensions.layouts.MainLayout.MainSidebar';
 
 const MainSidebar = () => (
   <NavigationSidebar
-    logo={<Logo />}
     additionalMobileContent={<UserNavigationWrapper />}
     colonySwitcherProps={{
       avatarProps: {},
