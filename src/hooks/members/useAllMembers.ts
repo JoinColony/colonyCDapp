@@ -1,6 +1,9 @@
 import { useMemo, useState } from 'react';
 
-import { useGetColonyContributorsQuery } from '~gql';
+import {
+  useGetColonyContributorsQuery,
+  useGetContributorCountQuery,
+} from '~gql';
 import { notNull } from '~utils/arrays';
 import { range } from '~utils/lodash';
 import {
@@ -104,6 +107,23 @@ const useAllMembers = ({
     [filteredMembers],
   );
 
+  const { data: totalData } = useGetContributorCountQuery({
+    variables: {
+      filter: {
+        colonyAddress: { eq: colonyAddress },
+        or: [
+          { isVerified: { eq: true } },
+          { isWatching: { eq: true } },
+          { hasPermissions: { eq: false } },
+          { hasReputation: { eq: false } },
+        ],
+      },
+    },
+    skip: !colonyAddress,
+  });
+
+  const totalMemberCount = totalData?.searchColonyContributors?.total || 0;
+
   return {
     members: filteredMembers.slice(0, visibleItems),
     verifiedMembers,
@@ -112,6 +132,7 @@ const useAllMembers = ({
       setPage((prevPage) => prevPage + 1);
     },
     loading,
+    totalMemberCount,
   };
 };
 

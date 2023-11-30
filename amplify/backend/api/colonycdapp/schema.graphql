@@ -396,21 +396,6 @@ input GetMotionTimeoutPeriodsInput {
 }
 
 """
-The type of input of the getTotalMemberCount lambda
-"""
-input GetTotalMemberCountInput {
-  colonyAddress: ID!
-}
-
-"""
-The return type of the getTotalMemberCount lambda
-"""
-type GetTotalMemberCountReturn {
-  contributorCount: Int!
-  memberCount: Int!
-}
-
-"""
 A type representing a user's reputation within a domain
 """
 type UserDomainReputation {
@@ -884,9 +869,6 @@ type Query {
   ): GetMotionTimeoutPeriodsReturn
     @function(name: "fetchMotionTimeoutPeriods-${env}")
 
-  getTotalMemberCount(
-    input: GetTotalMemberCountInput!
-  ): GetTotalMemberCountReturn! @function(name: "getTotalMemberCount-${env}")
   getSafeTransactionStatus(input: GetSafeTransactionStatusInput): [String!]
     @function(name: "getSafeTransactionStatus-${env}")
 }
@@ -1156,7 +1138,7 @@ type ContributorReputation @model {
 """
 The ColonyContributor model represents a contributor to the Colony.
 """
-type ColonyContributor @model {
+type ColonyContributor @model @searchable {
   """
   Unique identifier
   Format: <colonyAddress>_<contributorAddress>

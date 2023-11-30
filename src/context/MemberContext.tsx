@@ -28,7 +28,6 @@ import {
   VERIFIED_MEMBERS_LIST_LIMIT,
 } from '~constants';
 import { ColonyContributor } from '~types';
-import { useGetContributorCountQuery } from '~gql';
 import { COLONY_VERIFIED_ROUTE } from '~routes';
 
 const MemberContext = createContext<
@@ -53,7 +52,7 @@ const MemberContext = createContext<
 const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const { domainId, colonyName } = useParams();
   const { colony } = useColonyContext();
-  const { domains, colonyAddress = '' } = colony ?? {};
+  const { domains } = colony ?? {};
   const isMobile = useMobile();
   const isVerifiedPage = useMatch(`${colonyName}/${COLONY_VERIFIED_ROUTE}`);
 
@@ -145,6 +144,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     canLoadMore: moreContributors,
     loadMore: loadMoreContributors,
     loading: loadingContributors,
+    totalContributorCount,
   } = useColonyContributors({
     contributorTypes,
     filterPermissions: permissions,
@@ -160,6 +160,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     canLoadMore: moreMembers,
     loadMore: loadMoreMembers,
     loading: loadingMembers,
+    totalMemberCount,
   } = useAllMembers({
     contributorTypes,
     filterPermissions: permissions,
@@ -178,17 +179,6 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     },
   });
 
-  const { data: { getTotalMemberCount } = {}, loading: memberCountLoading } =
-    useGetContributorCountQuery({
-      variables: { input: { colonyAddress } },
-      skip: !colonyAddress,
-    });
-
-  const {
-    contributorCount: totalContributorCount = 0,
-    memberCount: totalMemberCount = 0,
-  } = getTotalMemberCount ?? {};
-
   const value = useMemo(
     () => ({
       members,
@@ -196,7 +186,6 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       totalMemberCount,
       contributors,
       totalContributorCount,
-      memberCountLoading,
       moreContributors,
       moreMembers,
       loadMoreContributors,
@@ -211,7 +200,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       totalMemberCount,
       contributors,
       totalContributorCount,
-      memberCountLoading,
+      pageSize,
       moreContributors,
       moreMembers,
       loadMoreContributors,

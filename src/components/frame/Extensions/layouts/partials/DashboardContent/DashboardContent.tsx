@@ -1,49 +1,41 @@
 import React, { FC } from 'react';
 import { useMemberContext } from '~context/MemberContext';
 
-import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
 import NavigationSidebarLinksList from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLinksList';
 
 import { dashboardMainMenu, dashboardMenu } from '../../consts';
 
 const DashboardContent: FC = () => {
-  const { totalContributorCount, totalMemberCount, memberCountLoading } =
-    useMemberContext();
+  const { totalContributorCount, totalMemberCount } = useMemberContext();
 
   return (
     <div className="w-full pt-2 md:pt-4">
       <div className="w-full flex items-center gap-4 mb-4 md:mb-7 text-sm text-gray-900 px-2 md:px-0">
-        {memberCountLoading ? (
-          <SpinnerLoader />
-        ) : (
-          <>
-            <p className="flex-1">
-              {formatText(
-                { id: 'navigation.dashboard.contributors' },
-                {
-                  count: (
-                    <strong className="font-semibold">
-                      {Intl.NumberFormat().format(totalContributorCount)}
-                    </strong>
-                  ),
-                },
-              )}
-            </p>
-            <p className="flex-1">
-              {formatText(
-                { id: 'navigation.dashboard.members' },
-                {
-                  count: (
-                    <strong className="font-semibold">
-                      {Intl.NumberFormat().format(totalMemberCount)}
-                    </strong>
-                  ),
-                },
-              )}
-            </p>
-          </>
-        )}
+        <p className="flex-1">
+          {formatText(
+            { id: 'navigation.dashboard.contributors' },
+            {
+              count: (
+                <strong className="font-semibold">
+                  {Intl.NumberFormat().format(totalContributorCount)}
+                </strong>
+              ),
+            },
+          )}
+        </p>
+        <p className="flex-1">
+          {formatText(
+            { id: 'navigation.dashboard.members' },
+            {
+              count: (
+                <strong className="font-semibold">
+                  {Intl.NumberFormat().format(totalMemberCount)}
+                </strong>
+              ),
+            },
+          )}
+        </p>
       </div>
       <NavigationSidebarLinksList
         className="md:-mx-2.5 md:w-[calc(100%+1.25rem)]"

@@ -23,12 +23,12 @@ export const useUserSelect = (): UserSelectHookProps => {
               members,
             )
           : members,
-      ).reduce<SearchSelectOption[]>((result, user) => {
-        if (!user) {
+      ).reduce<SearchSelectOption[]>((result, member) => {
+        if (!member) {
           return result;
         }
 
-        const { walletAddress, profile } = user;
+        const { walletAddress, profile } = member?.user || {};
 
         return [
           ...result,

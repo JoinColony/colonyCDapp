@@ -23,10 +23,9 @@ query GetColonyContributors(
   }
 }
 
-query GetContributorCount($input: GetTotalMemberCountInput!) {
-  getTotalMemberCount(input: $input) {
-    contributorCount
-    memberCount
+query GetContributorCount($filter: SearchableColonyContributorFilterInput) {
+  searchColonyContributors(filter: $filter) {
+    total
   }
 }
 

@@ -1,6 +1,9 @@
 import { useMemo, useState } from 'react';
 
-import { useGetColonyContributorsQuery } from '~gql';
+import {
+  useGetColonyContributorsQuery,
+  useGetContributorCountQuery,
+} from '~gql';
 import { useColonyContext } from '~hooks';
 import { SortDirection } from '~types';
 import { notNull } from '~utils/arrays';
@@ -90,6 +93,18 @@ const useColonyContributors = ({
     });
   }
 
+  const { data: totalData } = useGetContributorCountQuery({
+    variables: {
+      filter: {
+        colonyAddress: { eq: colonyAddress },
+        or: [{ hasPermissions: { eq: true } }, { hasReputation: { eq: true } }],
+      },
+    },
+    skip: !colonyAddress,
+  });
+
+  const totalContributorCount = totalData?.searchColonyContributors?.total || 0;
+
   return {
     contributors: filteredContributors.slice(0, visibleItems),
     canLoadMore: filteredContributors.length > visibleItems || !!nextToken,
@@ -97,6 +112,7 @@ const useColonyContributors = ({
       setPage((prevPage) => prevPage + 1);
     },
     loading,
+    totalContributorCount,
   };
 };
 

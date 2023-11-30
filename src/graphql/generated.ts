@@ -2067,18 +2067,6 @@ export type GetSafeTransactionStatusInput = {
   transactionHash: Scalars['String'];
 };
 
-/** The type of input of the getTotalMemberCount lambda */
-export type GetTotalMemberCountInput = {
-  colonyAddress: Scalars['ID'];
-};
-
-/** The return type of the getTotalMemberCount lambda */
-export type GetTotalMemberCountReturn = {
-  __typename?: 'GetTotalMemberCountReturn';
-  contributorCount: Scalars['Int'];
-  memberCount: Scalars['Int'];
-};
-
 /**
  * Input data for a user's reputation within a Domain in a Colony. If no `domainId` is passed, the Root Domain is used
  * A `rootHash` can be provided, to get reputation at a certain point in the past
@@ -5412,7 +5400,6 @@ export type Query = {
   /** Fetch a token's information. Tries to get the data from the DB first, if that fails, resolves to get data from chain */
   getTokenFromEverywhere?: Maybe<TokenFromEverywhereReturn>;
   getTokensByType?: Maybe<ModelTokenConnection>;
-  getTotalMemberCount: GetTotalMemberCountReturn;
   getTransaction?: Maybe<Transaction>;
   getTransactionsByUser?: Maybe<ModelTransactionConnection>;
   getTransactionsByUserAndGroup?: Maybe<ModelTransactionConnection>;
@@ -5467,6 +5454,7 @@ export type Query = {
   listUserTokens?: Maybe<ModelUserTokensConnection>;
   listUsers?: Maybe<ModelUserConnection>;
   searchColonyActions?: Maybe<SearchableColonyActionConnection>;
+  searchColonyContributors?: Maybe<SearchableColonyContributorConnection>;
 };
 
 
@@ -5977,12 +5965,6 @@ export type QueryGetTokensByTypeArgs = {
 
 
 /** Root query type */
-export type QueryGetTotalMemberCountArgs = {
-  input: GetTotalMemberCountInput;
-};
-
-
-/** Root query type */
 export type QueryGetTransactionArgs = {
   id: Scalars['ID'];
 };
@@ -6392,6 +6374,17 @@ export type QuerySearchColonyActionsArgs = {
   sort?: InputMaybe<Array<InputMaybe<SearchableColonyActionSortInput>>>;
 };
 
+
+/** Root query type */
+export type QuerySearchColonyContributorsArgs = {
+  aggregates?: InputMaybe<Array<InputMaybe<SearchableColonyContributorAggregationInput>>>;
+  filter?: InputMaybe<SearchableColonyContributorFilterInput>;
+  from?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableColonyContributorSortInput>>>;
+};
+
 export type ReputationMiningCycleMetadata = {
   __typename?: 'ReputationMiningCycleMetadata';
   createdAt: Scalars['AWSDateTime'];
@@ -6601,6 +6594,69 @@ export enum SearchableColonyActionSortableFields {
   ShowInActionsList = 'showInActionsList',
   ToDomainId = 'toDomainId',
   TokenAddress = 'tokenAddress',
+  UpdatedAt = 'updatedAt'
+}
+
+export enum SearchableColonyContributorAggregateField {
+  ColonyAddress = 'colonyAddress',
+  ColonyReputationPercentage = 'colonyReputationPercentage',
+  ContributorAddress = 'contributorAddress',
+  CreatedAt = 'createdAt',
+  HasPermissions = 'hasPermissions',
+  HasReputation = 'hasReputation',
+  Id = 'id',
+  IsVerified = 'isVerified',
+  IsWatching = 'isWatching',
+  Type = 'type',
+  UpdatedAt = 'updatedAt'
+}
+
+export type SearchableColonyContributorAggregationInput = {
+  field: SearchableColonyContributorAggregateField;
+  name: Scalars['String'];
+  type: SearchableAggregateType;
+};
+
+export type SearchableColonyContributorConnection = {
+  __typename?: 'SearchableColonyContributorConnection';
+  aggregateItems: Array<Maybe<SearchableAggregateResult>>;
+  items: Array<Maybe<ColonyContributor>>;
+  nextToken?: Maybe<Scalars['String']>;
+  total?: Maybe<Scalars['Int']>;
+};
+
+export type SearchableColonyContributorFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<SearchableColonyContributorFilterInput>>>;
+  colonyAddress?: InputMaybe<SearchableIdFilterInput>;
+  colonyReputationPercentage?: InputMaybe<SearchableFloatFilterInput>;
+  contributorAddress?: InputMaybe<SearchableIdFilterInput>;
+  createdAt?: InputMaybe<SearchableStringFilterInput>;
+  hasPermissions?: InputMaybe<SearchableBooleanFilterInput>;
+  hasReputation?: InputMaybe<SearchableBooleanFilterInput>;
+  id?: InputMaybe<SearchableIdFilterInput>;
+  isVerified?: InputMaybe<SearchableBooleanFilterInput>;
+  isWatching?: InputMaybe<SearchableBooleanFilterInput>;
+  not?: InputMaybe<SearchableColonyContributorFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<SearchableColonyContributorFilterInput>>>;
+  type?: InputMaybe<SearchableStringFilterInput>;
+  updatedAt?: InputMaybe<SearchableStringFilterInput>;
+};
+
+export type SearchableColonyContributorSortInput = {
+  direction?: InputMaybe<SearchableSortDirection>;
+  field?: InputMaybe<SearchableColonyContributorSortableFields>;
+};
+
+export enum SearchableColonyContributorSortableFields {
+  ColonyAddress = 'colonyAddress',
+  ColonyReputationPercentage = 'colonyReputationPercentage',
+  ContributorAddress = 'contributorAddress',
+  CreatedAt = 'createdAt',
+  HasPermissions = 'hasPermissions',
+  HasReputation = 'hasReputation',
+  Id = 'id',
+  IsVerified = 'isVerified',
+  IsWatching = 'isWatching',
   UpdatedAt = 'updatedAt'
 }
 
@@ -8720,11 +8776,11 @@ export type GetColonyContributorsQueryVariables = Exact<{
 export type GetColonyContributorsQuery = { __typename?: 'Query', getContributorsByColony?: { __typename?: 'ModelColonyContributorConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', contributorAddress: string, isVerified: boolean, hasPermissions?: boolean | null, hasReputation?: boolean | null, isWatching?: boolean | null, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null } | null> } | null };
 
 export type GetContributorCountQueryVariables = Exact<{
-  input: GetTotalMemberCountInput;
+  filter?: InputMaybe<SearchableColonyContributorFilterInput>;
 }>;
 
 
-export type GetContributorCountQuery = { __typename?: 'Query', getTotalMemberCount: { __typename?: 'GetTotalMemberCountReturn', contributorCount: number, memberCount: number } };
+export type GetContributorCountQuery = { __typename?: 'Query', searchColonyContributors?: { __typename?: 'SearchableColonyContributorConnection', total?: number | null } | null };
 
 export type GetVerifiedMembersQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -11403,10 +11459,9 @@ export type GetColonyContributorsQueryHookResult = ReturnType<typeof useGetColon
 export type GetColonyContributorsLazyQueryHookResult = ReturnType<typeof useGetColonyContributorsLazyQuery>;
 export type GetColonyContributorsQueryResult = Apollo.QueryResult<GetColonyContributorsQuery, GetColonyContributorsQueryVariables>;
 export const GetContributorCountDocument = gql`
-    query GetContributorCount($input: GetTotalMemberCountInput!) {
-  getTotalMemberCount(input: $input) {
-    contributorCount
-    memberCount
+    query GetContributorCount($filter: SearchableColonyContributorFilterInput) {
+  searchColonyContributors(filter: $filter) {
+    total
   }
 }
     `;
@@ -11423,11 +11478,11 @@ export const GetContributorCountDocument = gql`
  * @example
  * const { data, loading, error } = useGetContributorCountQuery({
  *   variables: {
- *      input: // value for 'input'
+ *      filter: // value for 'filter'
  *   },
  * });
  */
-export function useGetContributorCountQuery(baseOptions: Apollo.QueryHookOptions<GetContributorCountQuery, GetContributorCountQueryVariables>) {
+export function useGetContributorCountQuery(baseOptions?: Apollo.QueryHookOptions<GetContributorCountQuery, GetContributorCountQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetContributorCountQuery, GetContributorCountQueryVariables>(GetContributorCountDocument, options);
       }
