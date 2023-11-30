@@ -147,7 +147,7 @@ export const dashboardMainMenu: NavigationSidebarLinksListProps['items'] = [
   {
     key: '1',
     label: formatText({ id: 'navigation.dashboard.dashboard' }) || '',
-    to: 'dashboard',
+    to: '',
     iconName: 'layout',
   },
 ];

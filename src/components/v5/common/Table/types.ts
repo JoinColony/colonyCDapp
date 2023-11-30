@@ -27,4 +27,6 @@ export interface TableProps<T>
   showTotalPagesNumber?: boolean;
   paginationDisabled?: boolean;
   renderCellWrapper?: RenderCellWrapper<T>;
+  additionalPaginationButtonsContent?: React.ReactNode;
+  emptyContent?: React.ReactNode;
 }

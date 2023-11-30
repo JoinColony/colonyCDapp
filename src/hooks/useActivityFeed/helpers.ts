@@ -51,6 +51,12 @@ export const getSearchActionsFilterVariable = (
     colonyDecisionId: {
       exists: false,
     },
+    fromDomainId:
+      filters?.teamId !== undefined
+        ? {
+            eq: filters.teamId,
+          }
+        : undefined,
     or: filters?.actionTypes?.length
       ? filters.actionTypes.map((actionType) => ({
           type: { eq: actionType },

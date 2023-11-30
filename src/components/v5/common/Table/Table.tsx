@@ -29,11 +29,15 @@ const Table = <T,>({
   showTotalPagesNumber = true,
   paginationDisabled,
   renderCellWrapper = getDefaultRenderCellWrapper<T>(),
+  additionalPaginationButtonsContent,
+  emptyContent,
+  data,
   ...rest
 }: TableProps<T>) => {
   const isMobile = useMobile();
   const table = useReactTable<T>({
     getCoreRowModel: getCoreRowModel || libGetCoreRowModel<T>(),
+    data,
     ...rest,
   });
   const { rows } = table.getRowModel();
@@ -52,6 +56,8 @@ const Table = <T,>({
     canPreviousPage === undefined
       ? table.getCanPreviousPage()
       : canPreviousPage;
+  const totalColumnsCount = table.getVisibleFlatColumns().length;
+  const shouldShowEmptyContent = emptyContent && data.length === 0;
 
   return (
     <div
@@ -61,16 +67,13 @@ const Table = <T,>({
       )}
     >
       <table
-        className={clsx(
-          className,
-          `
-            border-separate
-            border-spacing-0
-            overflow-hidden
-            table-fixed
-            w-full
-          `,
-        )}
+        className={`
+          border-separate
+          border-spacing-0
+          overflow-hidden
+          table-fixed
+          w-full
+        `}
         cellPadding="0"
         cellSpacing="0"
       >
@@ -135,12 +138,18 @@ const Table = <T,>({
                     <th
                       key={header.id}
                       className={clsx(
-                        'text-left text-sm text-gray-600 bg-gray-50 font-normal px-[1.125rem] empty:p-0 py-[0.7rem] border-b border-b-gray-200',
+                        'text-left text-sm text-gray-600 bg-gray-50 font-normal px-[1.125rem] empty:p-0 py-2.5 border-b border-b-gray-200',
                         {
-                          'cursor-pointer': header.column.getCanSort(),
+                          'cursor-pointer':
+                            header.column.getCanSort() &&
+                            !shouldShowEmptyContent,
                         },
                       )}
-                      onClick={header.column.getToggleSortingHandler()}
+                      onClick={
+                        shouldShowEmptyContent
+                          ? undefined
+                          : header.column.getToggleSortingHandler()
+                      }
                       style={{
                         width:
                           header.column.columnDef.staticSize ||
@@ -163,11 +172,14 @@ const Table = <T,>({
                             'ml-1 mb-0.5 transition-[transform,opacity] align-middle',
                             {
                               'rotate-180':
-                                header.column.getIsSorted() === 'asc',
+                                header.column.getIsSorted() === 'asc' &&
+                                !shouldShowEmptyContent,
                               'rotate-0':
-                                header.column.getIsSorted() === 'desc',
+                                header.column.getIsSorted() === 'desc' &&
+                                !shouldShowEmptyContent,
                               'opacity-0':
-                                header.column.getIsSorted() === false,
+                                header.column.getIsSorted() === false ||
+                                shouldShowEmptyContent,
                             },
                           )}
                         />
@@ -178,36 +190,49 @@ const Table = <T,>({
               ))}
             </thead>
             <tbody className="w-full">
-              {rows.map((row) => (
-                <tr
-                  key={row.id}
-                  className={clsx(
-                    getRowClassName(row),
-                    '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100',
-                  )}
-                >
-                  {row.getVisibleCells().map((cell) => {
-                    const renderCellWrapperCommonArgs = [
-                      'text-md text-gray-500 p-[1.1rem] flex h-full flex-col justify-center items-start',
-                      flexRender(cell.column.columnDef.cell, cell.getContext()),
-                    ] as const;
-
-                    return (
-                      <td key={cell?.id} className="h-[1px]">
-                        {renderCellWrapper(...renderCellWrapperCommonArgs, {
-                          cell,
-                          row,
-                          renderDefault: () =>
-                            getDefaultRenderCellWrapper<T>()(
-                              ...renderCellWrapperCommonArgs,
-                              { cell, row, renderDefault: () => null },
-                            ),
-                        })}
-                      </td>
-                    );
-                  })}
+              {shouldShowEmptyContent ? (
+                <tr className="[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100">
+                  <td colSpan={totalColumnsCount} className="h-[1px]">
+                    <div className="text-md text-gray-500 p-[1.1rem] flex h-full flex-col justify-center items-start">
+                      {emptyContent}
+                    </div>
+                  </td>
                 </tr>
-              ))}
+              ) : (
+                rows.map((row) => (
+                  <tr
+                    key={row.id}
+                    className={clsx(
+                      getRowClassName(row),
+                      '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100',
+                    )}
+                  >
+                    {row.getVisibleCells().map((cell) => {
+                      const renderCellWrapperCommonArgs = [
+                        'text-md text-gray-500 p-[1.1rem] flex h-full flex-col justify-center items-start',
+                        flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        ),
+                      ] as const;
+
+                      return (
+                        <td key={cell?.id} className="h-[1px]">
+                          {renderCellWrapper(...renderCellWrapperCommonArgs, {
+                            cell,
+                            row,
+                            renderDefault: () =>
+                              getDefaultRenderCellWrapper<T>()(
+                                ...renderCellWrapperCommonArgs,
+                                { cell, row, renderDefault: () => null },
+                              ),
+                          })}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))
+              )}
             </tbody>
           </>
         )}
@@ -233,9 +258,38 @@ const Table = <T,>({
       </table>
       {hasPagination &&
         (showPageNumber || canGoToPreviousPage || canGoToNextPage) && (
-          <div className="flex items-center justify-end sm:justify-between pt-2 pb-6 w-full px-[1.125rem]">
+          <div
+            className={clsx(
+              'grid grid-cols-3 gap-2 items-center pt-2 pb-[1.4375rem] px-[1.125rem]',
+              {
+                'sm:grid-cols-[1fr_auto_auto]':
+                  canGoToNextPage ||
+                  (additionalPaginationButtonsContent && isMobile),
+                'sm:grid-cols-[1fr_auto]': !(
+                  canGoToNextPage ||
+                  (additionalPaginationButtonsContent && isMobile)
+                ),
+              },
+            )}
+          >
+            {(canGoToPreviousPage ||
+              (additionalPaginationButtonsContent && !isMobile)) && (
+              <div className="col-start-1 sm:col-start-2 row-start-1 flex justify-start items-center gap-3">
+                {!isMobile && additionalPaginationButtonsContent}
+                {canGoToPreviousPage && (
+                  <Button
+                    onClick={goToPreviousPage}
+                    size="small"
+                    mode="primaryOutline"
+                    disabled={paginationDisabled}
+                  >
+                    {formatText({ id: 'table.previous' })}
+                  </Button>
+                )}
+              </div>
+            )}
             {showPageNumber && (
-              <p className="text-3 text-gray-700 w-full sm:w-auto sm:text-left text-center">
+              <p className="col-start-2 text-3 text-gray-700 w-full sm:w-auto sm:text-left text-center sm:col-start-1 row-start-1">
                 {formatText(
                   {
                     id: showTotalPagesNumber
@@ -249,18 +303,10 @@ const Table = <T,>({
                 )}
               </p>
             )}
-            {(canGoToPreviousPage || canGoToNextPage || paginationDisabled) && (
-              <div className="flex items-center gap-2 ml-auto">
-                {canGoToPreviousPage && (
-                  <Button
-                    onClick={goToPreviousPage}
-                    size="small"
-                    mode="primaryOutline"
-                    disabled={paginationDisabled}
-                  >
-                    {formatText({ id: 'table.previous' })}
-                  </Button>
-                )}
+            {(canGoToNextPage ||
+              (additionalPaginationButtonsContent && isMobile)) && (
+              <div className="col-start-3 row-start-1 flex justify-end items-center gap-3">
+                {isMobile && additionalPaginationButtonsContent}
                 {canGoToNextPage && (
                   <Button
                     onClick={goToNextPage}

@@ -4,6 +4,7 @@ import {
   ColonyActionType,
   SearchableSortDirection,
 } from '~types';
+import { RefetchMotionStates } from '~hooks/useNetworkMotionStates';
 import { MotionState } from '~utils/colonyMotions';
 
 export enum ActivityDecisionMethod {
@@ -12,6 +13,7 @@ export enum ActivityDecisionMethod {
 }
 
 export interface ActivityFeedFilters {
+  teamId?: string;
   actionTypes?: ColonyActionType[];
   motionStates?: MotionState[];
   dateFrom?: Date;
@@ -39,7 +41,7 @@ export interface UseActivityFeedReturn {
   goToPreviousPage: () => void;
   pageNumber: number;
   hasPrevPage: boolean;
-  refetchMotionStates: VoidFunction;
+  refetchMotionStates: RefetchMotionStates;
 }
 
 export type SortDirectionChangeHandler = (

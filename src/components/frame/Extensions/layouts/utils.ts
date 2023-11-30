@@ -11,7 +11,7 @@ export const checkIfIsActive = (
   pathname: string | undefined,
   items: NavigationSidebarLinksListItem[],
 ): boolean => {
-  if (!pathname) {
+  if (typeof pathname !== 'string') {
     return false;
   }
 

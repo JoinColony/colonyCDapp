@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
-import { useColonyContext } from '~hooks';
 import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/hooks';
+import { useColonyContext, useMobile } from '~hooks';
 import { formatText } from '~utils/intl';
 import {
   COLONY_MEMBERS_ROUTE,
@@ -10,6 +10,7 @@ import {
   COLONY_AGREEMENTS_ROUTE,
   COLONY_ACTIVITY_ROUTE,
   COLONY_BALANCES_ROUTE,
+  TEAM_SEARCH_PARAM,
 } from '~routes';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { useActionSidebarContext } from '~context';
@@ -30,11 +31,15 @@ import {
   useCreateTeamBreadcrumbs,
   useGetSelectedTeamFilter,
 } from '~hooks/useTeamsBreadcrumbs';
+import ColonyActionsTable from '~common/ColonyActionsTable';
+import Link from '~v5/shared/Link';
+import { setQueryParamOnUrl } from '~utils/urls';
 
 // @TODO: add page components
 const displayName = 'common.ColonyHome';
 
 const ColonyHome = () => {
+  const isMobile = useMobile();
   const { colony } = useColonyContext();
   const { metadata } = colony || {};
   const { objective } = metadata || {};
@@ -121,185 +126,230 @@ const ColonyHome = () => {
           },
         ]}
       />
-
-      <WidgetBoxList
-        className="!flex-col"
-        items={[
-          {
-            key: '1',
-            title: formatText({ id: 'dashboard.objective.widget.title' }),
-            titleClassName: 'uppercase text-4 text-gray-400 mb-2',
-            value: objective ? (
-              <>
-                <span className="text-2 mb-1 transition-all line-clamp-1 w-full sm:hover:text-blue-400">
-                  {objective.title}
-                </span>
-                <p className="text-sm text-gray-600 mb-[1.8rem] line-clamp-2">
-                  {objective.description}
-                </p>
-                <ProgressBar
-                  progress={objective.progress || 0}
-                  className="ml-0"
-                  additionalText="%"
-                  isTall
-                  barClassName={selectedTeam ? teamColor : 'bg-blue-400'}
-                />
-              </>
-            ) : (
-              <EmptyWidgetState
-                title={formatText({ id: 'dashboard.objective.widget.noData' })}
-                actionTitle={formatText({
-                  id: 'dashboard.objective.widget.createObjective',
-                })}
-                className="p-[2.7rem]"
-                onClick={openSidebar}
-              />
-            ),
-            contentClassName: 'w-full',
-            className:
-              'flex-col p-6 bg-base-white h-[11.25rem] sm:cursor-pointer',
-            href: objective ? COLONY_DETAILS_ROUTE : undefined,
-            onClick: openSidebar,
-          },
-          {
-            key: '2',
-            value: (
-              <div className="flex w-full gap-6">
-                <div className="relative max-w-[9.375rem] -mt-1">
-                  <DonutChart
-                    data={chartData || []}
-                    hoveredSegment={hoveredSegment}
-                    setHoveredSegment={setHoveredSegment}
-                  />
-                </div>
-                <div className="flex flex-col gap-[0.8rem]">
-                  <div className="-mt-2">
-                    <span className="uppercase text-4 text-gray-400 mb-[0.45rem]">
-                      {formatText({ id: 'dashboard.team.widget.title' })}
+      <div className="flex flex-col md:grid md:grid-cols-[39%_1fr] gap-6 w-full">
+        <div className="w-full">
+          <WidgetBoxList
+            className="!gap-6 md:!gap-[1.125rem]"
+            isVertical
+            items={[
+              {
+                key: '1',
+                title: formatText({ id: 'dashboard.objective.widget.title' }),
+                titleClassName: 'uppercase text-4 text-gray-400 mb-2',
+                value: objective ? (
+                  <>
+                    <span className="text-2 mb-1 transition-all line-clamp-1 w-full sm:hover:text-blue-400">
+                      {objective.title}
                     </span>
-                    <h3 className="text-2">
-                      {formatText({ id: 'dashboard.team.widget.subtitle' })}
-                    </h3>
-                  </div>
-                  {allTeams?.length ? (
-                    <div className="w-full min-w-[10rem] sm:min-w-[15.438rem]">
-                      <ul
-                        className={clsx({
-                          'flex flex-col justify-center min-h-[6.25rem]':
-                            allTeams?.length < 4,
-                        })}
-                      >
-                        {allTeams.map((team, index) => {
-                          const { nativeId } = team;
-                          return (
-                            index < 3 && (
-                              <li
-                                key={nativeId}
-                                className={clsx(
-                                  'flex items-center text-sm [&:not(:last-child)]:mb-3',
-                                  {
-                                    'transition-all font-semibold':
-                                      hoveredSegment?.id === team.id,
-                                  },
-                                )}
-                              >
-                                <TeamReputationSummaryRow
-                                  team={team}
-                                  suffix="%"
-                                />
-                              </li>
-                            )
-                          );
-                        })}
-                        {!!otherTeamsReputation && (
-                          <div className="flex items-center text-sm">
-                            <span className="flex items-center flex-grow">
-                              <span className="flex rounded-full w-[0.625rem] h-[0.625rem] mr-2 bg-gray-100" />
-                              <span
-                                className={clsx({
-                                  'transition-all font-semibold':
-                                    hoveredSegment?.id === '4',
-                                })}
-                              >
-                                {formatText({
-                                  id: 'label.allOther',
-                                })}
-                              </span>
-                            </span>
-                            <span className="font-medium">
-                              <Numeral
-                                value={Number(otherTeamsReputation).toFixed(1)}
-                                suffix="%"
-                              />
-                            </span>
-                          </div>
-                        )}
-                      </ul>
-                    </div>
-                  ) : (
-                    <EmptyWidgetState
-                      title={formatText({ id: 'dashboard.team.widget.noData' })}
-                      actionTitle={formatText({
-                        id: 'dashboard.team.widget.createTeam',
-                      })}
-                      className="px-[1.8rem] py-[2.3rem]"
-                      onClick={() =>
-                        toggleActionSidebarOn({
-                          [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_NEW_TEAM,
-                        })
-                      }
+                    <p className="text-sm text-gray-600 mb-[1.6875rem] line-clamp-2 break-all w-full">
+                      {objective.description}
+                    </p>
+                    <ProgressBar
+                      progress={objective.progress || 0}
+                      className="ml-0"
+                      additionalText="%"
+                      isTall
+                      barClassName={selectedTeam ? teamColor : 'bg-blue-400'}
                     />
-                  )}
-                </div>
-              </div>
-            ),
-            className:
-              'flex-col items-start p-6 bg-base-white h-[12.5rem] sm:cursor-pointer sm:hover:text-gray-900',
-            href: allTeams?.length ? COLONY_TEAMS_ROUTE : undefined,
-          },
-          {
-            key: '3',
-            title: (
-              <TitleWithNumber
-                title={formatText({ id: 'dashboard.agreements.widget.title' })}
-                number={0}
-                className={clsx('transition-all', {
-                  'sm:hover:text-blue-400': agreements,
-                })}
-              />
-            ),
-            titleClassName: 'text-2 mb-4',
-            value: agreements ? (
-              <div className="flex flex-col gap-[0.375rem]">
-                <div className="flex items-start justify-between gap-2">
-                  <span className="text-3">{agreements}</span>
-                  <MessageNumber message={1} />
-                </div>
-                <p className="text-sm text-gray-600 line-clamp-3">
-                  {agreements}
-                </p>
-              </div>
-            ) : (
-              <EmptyWidgetState
-                title={formatText({ id: 'dashboard.agreements.widget.noData' })}
-                actionTitle={formatText({
-                  id: 'dashboard.agreements.widget.createObjective',
-                })}
-                className="px-[1.8rem] py-[1.2rem]"
-                onClick={() =>
-                  toggleActionSidebarOn({
-                    [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_DECISION,
-                  })
-                }
-              />
-            ),
-            contentClassName: 'w-full',
-            className:
-              'flex-col p-6 bg-base-white h-[11.25rem] sm:cursor-pointer',
-            href: agreements ? COLONY_AGREEMENTS_ROUTE : undefined,
-          },
-        ]}
-      />
+                  </>
+                ) : (
+                  <EmptyWidgetState
+                    title={formatText({
+                      id: 'dashboard.objective.widget.noData',
+                    })}
+                    actionTitle={formatText({
+                      id: 'dashboard.objective.widget.createObjective',
+                    })}
+                    className="p-[2.7rem]"
+                    onClick={openSidebar}
+                  />
+                ),
+                contentClassName: 'w-full',
+                className:
+                  'flex-col p-6 bg-base-white min-h-[11.25rem] sm:cursor-pointer',
+                href: objective ? COLONY_DETAILS_ROUTE : undefined,
+                onClick: openSidebar,
+              },
+              {
+                key: '2',
+                value: (
+                  <div className="grid grid-cols-[36%_1fr] w-full gap-6">
+                    <div className="relative w-full flex-shrink-0 flex justify-center items-center">
+                      <div className="w-full max-w-[9.375rem]">
+                        <DonutChart
+                          data={chartData || []}
+                          hoveredSegment={hoveredSegment}
+                          setHoveredSegment={setHoveredSegment}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-2.5 w-full">
+                      <div>
+                        <p className="uppercase text-4 text-gray-400">
+                          {formatText({ id: 'dashboard.team.widget.title' })}
+                        </p>
+                        <h3 className="text-2">
+                          {formatText({ id: 'dashboard.team.widget.subtitle' })}
+                        </h3>
+                      </div>
+                      {allTeams?.length ? (
+                        <div className="w-full">
+                          <ul className="flex flex-col justify-center gap-[.6875rem]">
+                            {allTeams.map((team, index) => {
+                              const { nativeId } = team;
+                              return (
+                                index < 3 && (
+                                  <li
+                                    key={nativeId}
+                                    className={clsx(
+                                      'flex items-center text-sm',
+                                      {
+                                        'transition-all font-semibold':
+                                          hoveredSegment?.id === team.id,
+                                      },
+                                    )}
+                                  >
+                                    <TeamReputationSummaryRow
+                                      team={team}
+                                      suffix="%"
+                                    />
+                                  </li>
+                                )
+                              );
+                            })}
+                            {!!otherTeamsReputation && (
+                              <li className="flex items-center text-sm">
+                                <div className="flex items-center flex-grow">
+                                  <div className="flex rounded-full w-[.625rem] h-[.625rem] mr-2 bg-gray-100" />
+                                  <p
+                                    className={clsx({
+                                      'transition-all font-semibold':
+                                        hoveredSegment?.id === '4',
+                                    })}
+                                  >
+                                    {formatText({
+                                      id: 'label.allOther',
+                                    })}
+                                  </p>
+                                </div>
+                                <div className="font-medium">
+                                  <Numeral
+                                    value={Number(otherTeamsReputation).toFixed(
+                                      1,
+                                    )}
+                                    suffix="%"
+                                  />
+                                </div>
+                              </li>
+                            )}
+                          </ul>
+                        </div>
+                      ) : (
+                        <EmptyWidgetState
+                          title={formatText({
+                            id: 'dashboard.team.widget.noData',
+                          })}
+                          actionTitle={formatText({
+                            id: 'dashboard.team.widget.createTeam',
+                          })}
+                          className="px-[1.8rem] py-[2.3rem]"
+                          onClick={() =>
+                            toggleActionSidebarOn({
+                              [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_NEW_TEAM,
+                            })
+                          }
+                        />
+                      )}
+                    </div>
+                  </div>
+                ),
+                className:
+                  'flex-col items-start p-6 bg-base-white min-h-[12.5rem] sm:cursor-pointer sm:hover:text-gray-900',
+                href: allTeams?.length ? COLONY_TEAMS_ROUTE : undefined,
+              },
+              {
+                key: '3',
+                title: (
+                  <TitleWithNumber
+                    title={formatText({
+                      id: 'dashboard.agreements.widget.title',
+                    })}
+                    number={0}
+                    className={clsx('transition-all', {
+                      'sm:hover:text-blue-400': agreements,
+                    })}
+                  />
+                ),
+                titleClassName: 'text-2 mb-4',
+                value: agreements ? (
+                  <div className="flex flex-col gap-[.375rem]">
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="text-3">{agreements}</span>
+                      <MessageNumber message={1} />
+                    </div>
+                    <p className="text-sm text-gray-600 line-clamp-3">
+                      {agreements}
+                    </p>
+                  </div>
+                ) : (
+                  <EmptyWidgetState
+                    title={formatText({
+                      id: 'dashboard.agreements.widget.noData',
+                    })}
+                    actionTitle={formatText({
+                      id: 'dashboard.agreements.widget.createObjective',
+                    })}
+                    className="px-[1.8rem] py-[1.2rem]"
+                    onClick={() =>
+                      toggleActionSidebarOn({
+                        [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_DECISION,
+                      })
+                    }
+                  />
+                ),
+                contentClassName: 'w-full',
+                className:
+                  'flex-col p-6 bg-base-white min-h-[11.25rem] sm:cursor-pointer',
+                href: agreements ? COLONY_AGREEMENTS_ROUTE : undefined,
+              },
+            ]}
+          />
+        </div>
+        <div className="w-full">
+          <ColonyActionsTable
+            className="w-full [&_tr:last-child_td>*]:!py-[.9375rem] [&_tr:not(last-child)_td>*]:!pt-[.9375rem] [&_tr:not(last-child)_td>*]:!pb-[.875rem]"
+            pageSize={7}
+            withHeader={false}
+            state={{
+              columnVisibility: isMobile
+                ? {
+                    description: true,
+                    motionState: true,
+                    team: false,
+                    createdAt: false,
+                  }
+                : {
+                    description: true,
+                    motionState: true,
+                    team: false,
+                    createdAt: true,
+                  },
+            }}
+            additionalPaginationButtonsContent={
+              <Link
+                className="text-sm text-gray-700 underline"
+                to={setQueryParamOnUrl(
+                  COLONY_ACTIVITY_ROUTE,
+                  TEAM_SEARCH_PARAM,
+                  selectedTeam?.nativeId.toString(),
+                )}
+              >
+                {formatText({ id: 'view.all' })}
+              </Link>
+            }
+          />
+        </div>
+      </div>
     </div>
   );
 };

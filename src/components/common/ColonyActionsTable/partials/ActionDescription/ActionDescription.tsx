@@ -16,7 +16,7 @@ import { ActionDescriptionProps } from './types';
 const ActionDescription: FC<ActionDescriptionProps> = ({
   action,
   loading,
-  refetchMotionState,
+  refetchMotionStates,
 }) => {
   const {
     initiatorUser: user,
@@ -27,6 +27,13 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
     motionState,
   } = action;
   const walletAddress = user?.walletAddress || initiatorAddress || ADDRESS_ZERO;
+  const refetchMotionState = () => {
+    if (!motionData) {
+      return;
+    }
+
+    refetchMotionStates([motionData.motionId]);
+  };
 
   const { colony } = useColonyContext();
   const shouldShowCounter = useShouldDisplayMotionCountdownTime(
@@ -39,7 +46,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
     <div className="flex gap-4 items-center w-full">
       <Avatar
         className={clsx('flex-shrink-0 flex-grow-0', {
-          'skeleton overflow-hidden rounded-full': loading,
+          'overflow-hidden rounded-full skeleton': loading,
         })}
         size="xsm"
         seed={walletAddress.toLowerCase()}
@@ -68,10 +75,12 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
                 },
               )}
             >
-              {formatText(
-                { id: 'action.title' },
-                getActionTitleValues(action, colony, networkInverseFee),
-              )}
+              {loading || loadingNetworkInverseFee
+                ? ''.padEnd(40, '-')
+                : formatText(
+                    { id: 'action.title' },
+                    getActionTitleValues(action, colony, networkInverseFee),
+                  )}
             </p>
           )}
         </div>
