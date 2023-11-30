@@ -8448,14 +8448,14 @@ export type CreateColonyContributorMutationVariables = Exact<{
 }>;
 
 
-export type CreateColonyContributorMutation = { __typename?: 'Mutation', createColonyContributor?: { __typename?: 'ColonyContributor', id: string } | null };
+export type CreateColonyContributorMutation = { __typename?: 'Mutation', createColonyContributor?: { __typename?: 'ColonyContributor', id: string, isWatching?: boolean | null } | null };
 
 export type UpdateColonyContributorMutationVariables = Exact<{
   input: UpdateColonyContributorInput;
 }>;
 
 
-export type UpdateColonyContributorMutation = { __typename?: 'Mutation', updateColonyContributor?: { __typename?: 'ColonyContributor', id: string } | null };
+export type UpdateColonyContributorMutation = { __typename?: 'Mutation', updateColonyContributor?: { __typename?: 'ColonyContributor', id: string, isWatching?: boolean | null } | null };
 
 export type CreateColonyDecisionMutationVariables = Exact<{
   input: CreateColonyDecisionInput;
@@ -10021,6 +10021,7 @@ export const CreateColonyContributorDocument = gql`
     mutation CreateColonyContributor($input: CreateColonyContributorInput!) {
   createColonyContributor(input: $input) {
     id
+    isWatching
   }
 }
     `;
@@ -10054,6 +10055,7 @@ export const UpdateColonyContributorDocument = gql`
     mutation UpdateColonyContributor($input: UpdateColonyContributorInput!) {
   updateColonyContributor(input: $input) {
     id
+    isWatching
   }
 }
     `;

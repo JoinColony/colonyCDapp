@@ -76,12 +76,11 @@ export const useCanInteractWithColony = (colony?: Colony): boolean => {
   return sameChain && canInteractWithNetwork && isWatching;
 };
 
-export const useCanJoinColony = () => {
+export const useCanJoinColony = (isWatching: boolean) => {
   const { colony } = useColonyContext();
-  const { user, wallet } = useAppContext();
+  const { wallet } = useAppContext();
   const sameChain = isUserAndColonyOnSameChain(wallet, colony);
   const canInteractWithNetwork = useCanInteractWithNetwork();
-  const isAlreadyJoined = !!getWatchedColony(colony, user?.watchlist?.items);
 
-  return sameChain && canInteractWithNetwork && !isAlreadyJoined;
+  return sameChain && canInteractWithNetwork && !isWatching;
 };
