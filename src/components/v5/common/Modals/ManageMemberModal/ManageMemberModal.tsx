@@ -4,13 +4,16 @@ import { useIntl } from 'react-intl';
 import Modal from '~v5/shared/Modal';
 import MembersSelect from '~v5/shared/MembersSelect';
 import Select from '~v5/common/Fields/Select';
-import { manageMemberActions } from './consts';
-import { ManageMemberModalProps } from './types';
 import Textarea from '~v5/common/Fields/Textarea';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
 import Switch from '~v5/common/Fields/Switch';
 import Tooltip from '~shared/Extensions/Tooltip';
+import { formatText } from '~utils/intl';
+import { SelectOption } from '~v5/common/Fields/Select/types';
+
+import { manageMemberActions } from './consts';
+import { ManageMemberModalProps } from './types';
 
 const displayName = 'v5.common.Modals.ManageMemberModal';
 
@@ -22,24 +25,20 @@ const ManageMemberModal: FC<ManageMemberModalProps> = ({
   user,
 }) => {
   const { formatMessage } = useIntl();
-  const [selectedAction, setSelectedAction] = useState<number>(-1);
-
-  const handleChange = (selectedOption: number) => {
-    setSelectedAction(selectedOption);
-  };
+  const [selectedAction, setSelectedAction] = useState<SelectOption['value']>();
 
   const isBanOptionSelected =
-    manageMemberActions[selectedAction]?.value === 'ban';
+    selectedAction && manageMemberActions[selectedAction]?.value === 'ban';
 
   const isUnbanOptionSelected =
-    manageMemberActions[selectedAction]?.value === 'unban';
+    selectedAction && manageMemberActions[selectedAction]?.value === 'unban';
 
   return (
     <Modal
       isOpen={isOpen}
       onClose={() => {
         onClose();
-        setSelectedAction(-1);
+        setSelectedAction(undefined);
       }}
       icon="folder-user"
     >
@@ -53,15 +52,14 @@ const ManageMemberModal: FC<ManageMemberModalProps> = ({
         {formatMessage({ id: 'members.modal.member' })}
       </span>
       <div className="mb-4">
-        <MembersSelect user={user} />
+        <MembersSelect defaultValue={user?.walletAddress} />
       </div>
       <Select
-        handleChange={handleChange}
-        selectedElement={selectedAction}
-        list={manageMemberActions}
-        placeholderText={{ id: 'members.modal.selectActions' }}
-        isListRelative
-        openButtonClass="selectButton"
+        onChange={(value) => setSelectedAction(value?.value)}
+        value={selectedAction}
+        defaultValue={selectedAction}
+        options={manageMemberActions}
+        placeholder={formatText({ id: 'members.modal.selectActions' })}
       />
 
       {(isBanOptionSelected || isUnbanOptionSelected) && (

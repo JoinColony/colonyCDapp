@@ -14,12 +14,15 @@ export interface MeatBallMenuItem {
   icon?: React.ReactNode;
   onClick?: () => void | boolean;
   renderItemWrapper?: RenderMeatBallItemWrapper;
+  className?: string;
 }
 
 export interface MeatBallMenuProps {
   disabled?: boolean;
   items: MeatBallMenuItem[];
   buttonClassName?: string;
+  contentWrapperClassName?: string;
   className?: string;
   renderItemWrapper?: RenderMeatBallItemWrapper;
+  withVerticalIcon?: boolean;
 }

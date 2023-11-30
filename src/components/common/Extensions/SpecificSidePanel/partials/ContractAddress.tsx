@@ -1,18 +1,17 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
+
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import Tooltip from '~shared/Extensions/Tooltip';
+import { formatText } from '~utils/intl';
+import { splitWalletAddress } from '~utils/splitWalletAddress';
+
 import styles from '../SpecificSidePanel.module.css';
 import { PanelTypeProps } from '../types';
-import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 const displayName = 'common.Extensions.partials.ContractAddress';
 
 const ContractAddress: FC<PanelTypeProps> = ({ title, description }) => {
-  const { isCopied, handleClipboardCopy } = useCopyToClipboard(
-    description || '',
-  );
-  const { formatMessage } = useIntl();
+  const { isCopied, handleClipboardCopy } = useCopyToClipboard();
 
   return (
     <div className={styles.panelRow}>
@@ -23,15 +22,15 @@ const ContractAddress: FC<PanelTypeProps> = ({ title, description }) => {
           isSuccess={isCopied}
           tooltipContent={
             <a className="block" href={description}>
-              {formatMessage({ id: isCopied ? 'copied' : 'copy.address' })}
+              {formatText({ id: isCopied ? 'copied' : 'copy.address' })}
             </a>
           }
         >
           <button
             type="button"
-            aria-label={formatMessage({ id: 'copy.address' })}
+            aria-label={formatText({ id: 'copy.address' })}
             className="font-normal text-md justify-start text-ellipsis overflow-hidden"
-            onClick={() => handleClipboardCopy()}
+            onClick={() => handleClipboardCopy(description || '')}
           >
             {splitWalletAddress(description)}
           </button>

@@ -1,13 +1,15 @@
 import React, { FC, useMemo } from 'react';
-import { useIntl } from 'react-intl';
 
 import Icon from '~shared/Icon';
-import { SubNavigationItemProps } from './types';
 import Tooltip from '~shared/Extensions/Tooltip';
-import PopoverBase from '../PopoverBase';
-import NestedOptions from './partials/NestedOptions';
-import { useMembersSubNavigation } from './hooks';
 import { useFilterContext } from '~context/FilterContext';
+import { formatText } from '~utils/intl';
+import { useMobile } from '~hooks';
+
+import PopoverBase from '../PopoverBase';
+import { useMembersSubNavigation } from './hooks';
+import { SubNavigationItemProps } from './types';
+import NestedOptions from './partials/NestedOptions';
 
 const displayName = 'v5.SubNavigationItem';
 
@@ -22,15 +24,15 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
   onClick,
   iconSize = 'extraSmall',
 }) => {
-  const { formatMessage } = useIntl();
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     useMembersSubNavigation();
   const { filterOptions: options } = useFilterContext();
+  const isMobile = useMobile();
 
   const tooltipContent = (
     <>
       <Icon name={iconName} appearance={{ size: iconSize }} />
-      <span className="ml-2">{formatMessage({ id: title })}</span>
+      <span className="ml-2">{formatText({ id: title })}</span>
     </>
   );
 
@@ -44,7 +46,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
       <li>
         <button
           type="button"
-          aria-label={formatMessage({ id: 'select.filter.menu.item' })}
+          aria-label={formatText({ id: 'select.filter.menu.item' })}
           className="subnav-button"
           ref={setTriggerRef}
           onClick={onClick}
@@ -52,13 +54,12 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
           {shouldBeTooltipVisible ? (
             <Tooltip
               tooltipContent={
-                <span className="text-3 underline w-full">
-                  {formatMessage({
-                    id: isCopyTriggered ? tooltipText[0] : tooltipText[1],
-                  })}
-                </span>
+                <span className="text-3 w-full">{tooltipText}</span>
               }
+              isOpen={isCopyTriggered}
               isSuccess={isCopyTriggered}
+              placement={isMobile ? 'auto' : 'right'}
+              className="w-full flex items-center"
             >
               {tooltipContent}
             </Tooltip>
@@ -77,7 +78,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
             hasShadow: true,
             className: 'py-4 px-2',
           }}
-          classNames="w-full sm:max-w-[17.375rem] mr-2"
+          classNames="w-full sm:max-w-[17.375rem]"
         >
           {option && nestedFilters && (
             <NestedOptions

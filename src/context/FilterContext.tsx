@@ -9,7 +9,7 @@ import React, {
   useContext,
 } from 'react';
 import { useLocation } from 'react-router-dom';
-import { USER_ROLES } from '~constants/permissions';
+import { CUSTOM_USER_ROLE, UserRole, USER_ROLES } from '~constants/permissions';
 import { ModelSortDirection } from '~gql';
 import { useFilterOptions } from '~v5/common/Filter/consts';
 import {
@@ -36,7 +36,7 @@ export const FilterContext = createContext<
       handleClearFilters: (parents?: FilterType[]) => void;
       handleFilterSelect: (event: React.ChangeEvent<HTMLInputElement>) => void;
       getSortingMethod: () => ModelSortDirection;
-      getFilterPermissions: () => number[];
+      getFilterPermissions: () => Record<UserRole, number[]>;
       getFilterStatus: () => StatusType | undefined;
       getFilterContributorType: () => ContributorTypeFilter[];
       filterOptions: ParentFilterOption[];
@@ -170,20 +170,22 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   const getFilterPermissions = useCallback(() => {
-    return [...selectedFilters[FilterTypes.Permissions].keys()].reduce(
-      (acc, permission) => {
-        const permissions = USER_ROLES.find(
-          ({ role }) => role === permission,
-        )?.permissions;
+    return [...selectedFilters[FilterTypes.Permissions].keys()].reduce<
+      Record<UserRole, number[]>
+    >((acc, permission) => {
+      const permissions = USER_ROLES.find(({ role }) => role === permission);
 
-        if (permissions) {
-          return [...acc, ...permissions];
-        }
+      if (permissions) {
+        acc[permissions.name] = permissions.permissions;
+      } else {
+        acc[CUSTOM_USER_ROLE.name] = [
+          ...(acc[CUSTOM_USER_ROLE.name] || []),
+          PermissionToNetworkIdMap[permission],
+        ];
+      }
 
-        return [...acc, PermissionToNetworkIdMap[permission]];
-      },
-      [],
-    );
+      return acc;
+    }, {} as Record<UserRole, number[]>);
   }, [selectedFilters]);
 
   const getFilterStatus = useCallback(

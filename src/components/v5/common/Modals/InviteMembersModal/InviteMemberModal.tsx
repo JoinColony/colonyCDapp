@@ -51,7 +51,7 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
   );
   const invitesUsed = 100 - (colony?.colonyMemberInvite?.invitesRemaining || 0);
 
-  const { handleClipboardCopy, isCopied } = useCopyToClipboard(inviteLink);
+  const { handleClipboardCopy, isCopied } = useCopyToClipboard();
 
   return (
     <Modal isOpen={isOpen} onClose={() => onClose()}>
@@ -80,7 +80,7 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
             text={MSG.buttonText}
             mode={isCopied ? 'completed' : 'quinary'}
             iconName={isCopied ? undefined : 'copy-simple'}
-            onClick={() => handleClipboardCopy()}
+            onClick={() => handleClipboardCopy(inviteLink)}
             size="small"
             textValues={{ isCopied }}
           />

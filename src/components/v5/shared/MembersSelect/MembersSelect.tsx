@@ -1,41 +1,96 @@
-import React, { FC, useEffect, useState } from 'react';
-import { useColonyContext } from '~hooks';
+import React, { FC, useCallback, useState } from 'react';
+import { Props as ReactSelectProps, SingleValue } from 'react-select';
 
-import Select from '~v5/common/Fields/Select';
+import { useColonyContext } from '~hooks';
+import { formatText } from '~utils/intl';
+import { DropdownIndicator, SelectBase } from '~v5/common/Fields/Select';
+
 import { useGetColonyMembers } from './hooks';
-import { MemberSelectProps } from './types';
+import CustomOption from './partials/CustomOption';
+import { MemberSelectProps, MembersSelectOption } from './types';
+import styles from './MembersSelect.module.css';
 
 const displayName = 'v5.MembersSelect';
 
-const MembersSelect: FC<MemberSelectProps> = ({ user }) => {
+const MembersSelect: FC<MemberSelectProps> = ({
+  onChange,
+  isSearchable = false,
+  options,
+  defaultValue,
+  ...rest
+}) => {
   const { colony } = useColonyContext();
   const { members, loading } = useGetColonyMembers(colony?.colonyAddress);
-  const [selectedMember, setSelectedMember] = useState<number | undefined>(
-    undefined,
+  const [selectedMember, setSelectedMember] = useState<
+    MembersSelectOption['value'] | undefined
+  >(defaultValue || undefined);
+
+  const selectOptions = members?.reduce<MembersSelectOption[]>(
+    (result, member) => {
+      if (!member) {
+        return result;
+      }
+
+      if (!member.walletAddress || !member.profile) {
+        return result;
+      }
+
+      const { walletAddress, profile } = member;
+
+      return [
+        ...result,
+        {
+          value: walletAddress || '',
+          label: profile?.displayName || walletAddress || '',
+          user: member,
+        },
+      ];
+    },
+    [],
   );
 
-  const handleChange = (selectedOption: number | undefined) => {
-    setSelectedMember(selectedOption);
-  };
+  const handleChange = useCallback<
+    Exclude<ReactSelectProps<MembersSelectOption>['onChange'], undefined>
+  >(
+    (newValue, actionMeta) => {
+      if (Array.isArray(newValue)) {
+        return;
+      }
 
-  useEffect(() => {
-    if (members && user) {
-      const index = members.findIndex(({ walletAddress }) => {
-        return walletAddress === user.walletAddress;
-      });
-      setSelectedMember(index);
-    }
-  }, [members, user]);
+      if (!onChange) {
+        setSelectedMember(
+          newValue && 'value' in newValue ? newValue.value : undefined,
+        );
+
+        return;
+      }
+
+      onChange(newValue as SingleValue<MembersSelectOption>, actionMeta);
+    },
+    [onChange],
+  );
 
   return (
-    <Select
-      handleChange={handleChange}
-      selectedElement={selectedMember}
+    <SelectBase<MembersSelectOption>
+      className={styles.wrapper}
+      classNames={{
+        menu: () => styles.menu,
+      }}
+      components={{
+        DropdownIndicator,
+        IndicatorSeparator: null,
+      }}
+      formatOptionLabel={CustomOption}
+      isSearchable={isSearchable}
+      options={options || selectOptions}
       isLoading={loading}
-      list={members}
-      placeholderText={user ? undefined : { id: 'members.modal.selectMember' }}
-      showAvatar
-      openButtonClass="selectButton"
+      menuPortalTarget={document.body}
+      name="test"
+      placeholder={formatText({ id: 'members.modal.selectMember' })}
+      onChange={handleChange}
+      value={selectedMember}
+      defaultValue={defaultValue}
+      {...rest}
     />
   );
 };

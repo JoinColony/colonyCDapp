@@ -1,34 +1,41 @@
 import React, { FC } from 'react';
 import { Id } from '@colony/colony-js';
 import Decimal from 'decimal.js';
+import clsx from 'clsx';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
-import { useColonyContext } from '~hooks';
-import { TextButton } from '~v5/shared/Button';
 import Icon from '~shared/Icon';
+import { TextButton } from '~v5/shared/Button';
+import TitleLabel from '~v5/shared/TitleLabel';
+import { useColonyContext } from '~hooks';
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import Numeral from '~shared/Numeral';
 import MenuContainer from '~v5/shared/MenuContainer';
-import TitleLabel from '~v5/shared/TitleLabel';
 import { notNull } from '~utils/arrays';
 import { formatText } from '~utils/intl';
 
 import TeamReputationSummaryRow from './partials/TeamReputationSummaryRow';
+import { TeamReputationSummaryProps } from './types';
 
 const displayName = 'v5.common.TeamReputationSummary';
 
-const TeamReputationSummary: FC = () => {
+const TeamReputationSummary: FC<TeamReputationSummaryProps> = ({
+  teams: teamsProp,
+  className,
+}) => {
   const { colony } = useColonyContext();
   const { nativeToken, domains, reputation } = colony || {};
 
   const colonyReputation = reputation ?? '0';
-  const teams = domains?.items
-    .filter(notNull)
-    .filter(({ nativeId }) => nativeId !== Id.RootDomain);
+  const teams =
+    teamsProp ||
+    domains?.items
+      .filter(notNull)
+      .filter(({ nativeId }) => nativeId !== Id.RootDomain);
 
   const showOthers = teams && teams?.length > 5;
 
   return (
-    <MenuContainer className="w-full">
+    <MenuContainer className={clsx(className, 'w-full')}>
       <span className="flex text-blue-400 mb-2">
         <Icon name="users-three" appearance={{ size: 'big' }} />
       </span>
@@ -49,21 +56,20 @@ const TeamReputationSummary: FC = () => {
         })}
       />
       {teams?.length ? (
-        <>
-          <ul>
-            {teams?.map((team, index) => {
-              const { nativeId } = team;
-              return (
-                index < 5 && (
-                  <li key={nativeId} className="flex items-center text-sm mb-3">
-                    <TeamReputationSummaryRow team={team} suffix="%" />
-                  </li>
-                )
-              );
-            })}
-          </ul>
+        <ul>
+          {teams?.slice(0, 5).map((team) => {
+            const { nativeId } = team;
+            return (
+              <li
+                key={nativeId}
+                className="flex items-center text-sm mb-3 last:mb-0"
+              >
+                <TeamReputationSummaryRow team={team} suffix="%" />
+              </li>
+            );
+          })}
           {showOthers && (
-            <div className="flex items-center text-sm">
+            <li className="flex items-center text-sm">
               <span className="flex items-center flex-grow">
                 <span className="flex rounded-full w-[0.625rem] h-[0.625rem] mr-2 bg-gray-100" />
                 <span>
@@ -74,9 +80,9 @@ const TeamReputationSummary: FC = () => {
               </span>
               {/* @TODO: Add login for this */}
               <span className="font-medium">230.32</span>
-            </div>
+            </li>
           )}
-        </>
+        </ul>
       ) : (
         <>
           <span className="block text-gray-600 text-sm mb-2">

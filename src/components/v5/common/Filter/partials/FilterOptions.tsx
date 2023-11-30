@@ -7,34 +7,41 @@ import Header from '~v5/shared/SubNavigationItem/partials/Header';
 import Accordion from './Accordion';
 import { useFilterContext } from '~context/FilterContext';
 import { followersFilterOptions } from '../consts';
+import { FilterOptionsProps } from './types';
 
 const displayName = 'v5.common.Filter.partials.FilterOptions';
 
-const FilterOptions: FC = () => {
+const FilterOptions: FC<FilterOptionsProps> = ({ excludeFilterType }) => {
   const isMobile = useMobile();
   const location = useLocation();
   const isFollowersPage = location.pathname.split('/').at(-1) === 'followers';
 
   const { filterOptions } = useFilterContext();
+
   const options = isFollowersPage ? followersFilterOptions : filterOptions;
+  const filteredOptions = excludeFilterType
+    ? options?.filter(({ filterType }) => filterType !== excludeFilterType)
+    : options;
 
   return (
     <div>
       <Header title={{ id: 'filters' }} />
       {isMobile ? (
-        <Accordion items={options} />
+        <Accordion items={filteredOptions} />
       ) : (
         <ul className="flex flex-col">
-          {options?.map(({ id, iconName, title, filterType, content }) => (
-            <SubNavigationItem
-              key={id}
-              iconName={iconName}
-              title={title}
-              option={filterType}
-              nestedFilters={content}
-              iconSize="tiny"
-            />
-          ))}
+          {filteredOptions?.map(
+            ({ id, iconName, title, filterType, content }) => (
+              <SubNavigationItem
+                key={id}
+                iconName={iconName}
+                title={title}
+                option={filterType}
+                nestedFilters={content}
+                iconSize="tiny"
+              />
+            ),
+          )}
         </ul>
       )}
     </div>

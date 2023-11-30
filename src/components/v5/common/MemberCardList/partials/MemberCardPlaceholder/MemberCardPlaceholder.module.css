@@ -1,0 +1,9 @@
+.wrapper {
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='%23E4E7EC' stroke-width='1' stroke-dasharray='8%2c 10' stroke-dashoffset='10' stroke-linecap='square'/%3e%3c/svg%3e");
+}
+
+@media screen(md) {
+  .wrapper:hover {
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='%23101828' stroke-width='1' stroke-dasharray='8%2c 10' stroke-dashoffset='10' stroke-linecap='square'/%3e%3c/svg%3e");
+  }
+}

@@ -4,19 +4,20 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useMobile } from '~hooks';
 import FilterButton from '~v5/shared/Filter/FilterButton';
-import FilterOptions from './partials/FilterOptions';
 import Modal from '~v5/shared/Modal';
 import PopoverBase from '~v5/shared/PopoverBase';
-import TableFiltering from '../TableFiltering';
-import SearchInput from './partials/SearchInput';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
 import { useFilterContext } from '~context/FilterContext';
-import { FilterButtonProps } from './types';
+
+import TableFiltering from '../TableFiltering';
+import FilterOptions from './partials/FilterOptions';
+import SearchInput from './partials/SearchInput';
+import { FilterProps } from './types';
 
 const displayName = 'v5.common.Filter';
 
-const Filter: FC<FilterButtonProps> = ({ customLabel }) => {
+const Filter: FC<FilterProps> = ({ excludeFilterType, customLabel }) => {
   const { formatMessage } = useIntl();
   const [isOpened, setOpened] = useState(false);
   const [isSearchOpened, setIsSearchOpened] = useState(false);
@@ -46,8 +47,8 @@ const Filter: FC<FilterButtonProps> = ({ customLabel }) => {
             numberSelectedFilters={selectedFilterCount}
           />
           <Button
-            mode="primaryOutline"
-            className="sm:hidden flex min-h-[2.25rem]"
+            mode="tertiary"
+            className="sm:hidden flex"
             size="small"
             aria-label={formatMessage({ id: 'ariaLabel.openSearchModal' })}
             onClick={() => setIsSearchOpened(true)}
@@ -59,7 +60,7 @@ const Filter: FC<FilterButtonProps> = ({ customLabel }) => {
             onClose={() => setOpened(false)}
             isOpen={isOpened}
           >
-            <FilterOptions />
+            <FilterOptions excludeFilterType={excludeFilterType} />
           </Modal>
           <Modal
             isFullOnMobile={false}
@@ -103,7 +104,7 @@ const Filter: FC<FilterButtonProps> = ({ customLabel }) => {
                   onSearchButtonClick={() => setIsSearchOpened(false)}
                 />
               </div>
-              <FilterOptions />
+              <FilterOptions excludeFilterType={excludeFilterType} />
             </PopoverBase>
           )}
         </>

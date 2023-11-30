@@ -60,7 +60,9 @@ const mergeDomains = (
   return Object.values(domains).sort((a, b) => a.nativeId - b.nativeId);
 };
 
-const useContributorBreakdown = (contributor?: ColonyContributor | null) => {
+export const getContributorBreakdown = (
+  contributor?: ColonyContributor | null,
+) => {
   if (!contributor) {
     return [];
   }
@@ -68,6 +70,10 @@ const useContributorBreakdown = (contributor?: ColonyContributor | null) => {
   const roles = contributor.roles?.items.filter(notNull) ?? [];
 
   return mergeDomains(rep, roles);
+};
+
+const useContributorBreakdown = (contributor?: ColonyContributor | null) => {
+  return getContributorBreakdown(contributor);
 };
 
 export default useContributorBreakdown;

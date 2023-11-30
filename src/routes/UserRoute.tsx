@@ -1,5 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import { SelectOption } from '~v5/common/Fields/Select/types';
 
 import Navigation from '~v5/common/Navigation';
 import TwoColumns from '~v5/frame/TwoColumns';
@@ -10,24 +11,21 @@ import {
   USER_PREFERENCES_ROUTE,
 } from './routeConstants';
 
-const navigationItems = [
+const navigationItems: SelectOption[] = [
   {
-    id: 0,
-    linkTo: USER_EDIT_PROFILE_ROUTE,
+    to: USER_EDIT_PROFILE_ROUTE,
     label: 'Profile',
-    value: 'profile',
+    value: 0,
   },
   {
-    id: 1,
-    linkTo: USER_PREFERENCES_ROUTE,
+    to: USER_PREFERENCES_ROUTE,
     label: 'Preferences',
-    value: 'preferences',
+    value: 1,
   },
   {
-    id: 2,
-    linkTo: USER_ADVANCED_ROUTE,
+    to: USER_ADVANCED_ROUTE,
     label: 'Advanced',
-    value: 'advanced',
+    value: 2,
   },
 ];
 

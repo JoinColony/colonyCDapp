@@ -39,7 +39,6 @@ const UserInfo: FC<UserInfoProps> = ({
       <div
         className={clsx({
           'bg-purple-100 p-6': isTopContributorType,
-          'bg-base-white': !isTopContributorType,
         })}
       >
         <div

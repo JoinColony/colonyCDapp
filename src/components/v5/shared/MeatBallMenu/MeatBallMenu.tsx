@@ -19,6 +19,8 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
   buttonClassName,
   className,
   renderItemWrapper = DEFAULT_ITEM_WRAPPER_RENDERER,
+  withVerticalIcon,
+  contentWrapperClassName,
 }) => {
   const [
     isMenuOpen,
@@ -34,7 +36,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
   }
 
   return (
-    <div className={clsx(className, 'md:relative')}>
+    <div className={clsx(className, 'md:relative')} ref={registerContainerRef}>
       <button
         type="button"
         ref={relativeElementRef}
@@ -51,12 +53,21 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
           },
         )}
       >
-        <Icon name="dots-three" appearance={{ size: 'extraTiny' }} />
+        <Icon
+          name="dots-three"
+          appearance={{ size: 'extraTiny' }}
+          className={clsx({
+            'rotate-90': withVerticalIcon,
+          })}
+        />
       </button>
       {isMenuOpen && (
         <Portal>
           <MenuContainer
-            className="px-2.5 py-4 absolute z-[60] overflow-y-auto w-auto"
+            className={clsx(
+              contentWrapperClassName,
+              'px-6 py-4 absolute z-[60] overflow-y-auto w-auto',
+            )}
             hasShadow
             rounded="s"
             ref={(ref) => {
@@ -72,13 +83,17 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
                   onClick,
                   icon,
                   renderItemWrapper: itemRenderItemWrapper,
+                  className: itemClassName,
                 }) => (
-                  <li key={key} className="flex-shrink-0">
+                  <li
+                    key={key}
+                    className={clsx(itemClassName, 'flex-shrink-0')}
+                  >
                     <HoverWidthWrapper hoverClassName="md:font-medium">
                       {(itemRenderItemWrapper || renderItemWrapper)(
                         {
                           className: `
-                            flex w-full
+                            flex
                             items-center
                             text-md
                             transition-colors
@@ -87,8 +102,10 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
                             md:hover:font-medium
                             rounded
                             py-2
-                            px-3.5
+                            px-4
                             gap-2
+                            w-[calc(100%+2rem)]
+                            -mx-4
                           `,
                           onClick: () => {
                             if (onClick?.() === false) {

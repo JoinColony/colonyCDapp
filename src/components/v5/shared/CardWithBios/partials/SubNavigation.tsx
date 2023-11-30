@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
 
 import SubNavigationItem from '~v5/shared/SubNavigationItem';
-import { SubNavigationProps } from '../types';
 import { useMembersSubNavigation } from '~v5/shared/SubNavigationItem/hooks';
 import { useMemberModalContext } from '~context/MemberModalContext';
+import { formatText } from '~utils/intl';
+
+import { SubNavigationProps } from '../types';
 
 const displayName = 'v5.CardWithBios.partials.SubNavigation';
 
@@ -50,7 +52,7 @@ const SubNavigation: FC<SubNavigationProps> = ({
           iconName="copy-simple"
           title="members.subnav.copy.wallet.address"
           shouldBeTooltipVisible
-          tooltipText={['copied', 'copy']}
+          tooltipText={formatText({ id: 'copied' })}
           isCopyTriggered={isCopyTriggered}
           onClick={handleClick}
         />
