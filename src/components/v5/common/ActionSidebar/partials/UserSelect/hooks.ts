@@ -12,7 +12,10 @@ import { UserSelectHookProps } from './types';
 export const useUserSelect = (): UserSelectHookProps => {
   const { colony } = useColonyContext();
   const { metadata } = colony ?? {};
-  const { members, loading } = useMemberContext();
+  const { allMembers, verifiedMembers, loading } = useMemberContext();
+
+  const members = verifiedMembers?.length > 0 ? verifiedMembers : allMembers;
+
   const isWhitelistActivated = metadata?.isWhitelistActivated;
   const options = useMemo(
     () =>
