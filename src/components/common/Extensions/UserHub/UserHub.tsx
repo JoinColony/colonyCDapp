@@ -33,7 +33,7 @@ const MSG = defineMessages({
 
 const UserHub: FC = () => {
   const isMobile = useMobile();
-  const [selectedTab, setSelectedTab] = useState(UserHubTabs.Balance);
+  const [selectedTab, setSelectedTab] = useState(UserHubTabs.Overview);
 
   const handleTabChange = (newTab: UserHubTabs) => {
     setSelectedTab(newTab);
@@ -53,8 +53,8 @@ const UserHub: FC = () => {
   return (
     <div
       className={clsx('flex flex-col sm:flex-row h-full sm:w-[42.625rem]', {
-        'sm:h-[27.75rem]': selectedTab !== UserHubTabs.Balance,
-        'sm:min-h-[27.75rem]': selectedTab === UserHubTabs.Balance,
+        'sm:h-[27.75rem]': selectedTab !== UserHubTabs.Overview,
+        'sm:min-h-[27.75rem]': selectedTab === UserHubTabs.Overview,
       })}
     >
       <div className="sticky top-0 left-0 right-0 bg-base-white sm:bg-transparent border-b border-b-gray-200 sm:border-b-0 sm:static sm:top-auto sm:left-auto sm:right-auto flex sm:border-r sm:border-gray-100 flex-col justify-between sm:w-[13.85rem] shrink-0 px-6 pb-6 pt-4 sm:px-6 sm:p-6">
@@ -124,7 +124,7 @@ const UserHub: FC = () => {
           'sm:pr-2': selectedTab === UserHubTabs.Transactions,
         })}
       >
-        {selectedTab === UserHubTabs.Balance && (
+        {selectedTab === UserHubTabs.Overview && (
           <ReputationTab onTabChange={handleTabChange} />
         )}
         {selectedTab === UserHubTabs.Stakes && <StakesTab />}

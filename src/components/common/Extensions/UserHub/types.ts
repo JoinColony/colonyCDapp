@@ -1,4 +1,4 @@
-import { MessageDescriptor } from "react-intl";
+import { MessageDescriptor } from 'react-intl';
 
 export type UserHubTabList = {
   id: UserHubTabs;
@@ -8,7 +8,7 @@ export type UserHubTabList = {
 }[];
 
 export enum UserHubTabs {
-  Balance = 0,
+  Overview = 0,
   Stakes = 1,
   Transactions = 2,
 }
