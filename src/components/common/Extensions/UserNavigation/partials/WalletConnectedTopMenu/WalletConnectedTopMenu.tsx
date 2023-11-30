@@ -34,7 +34,7 @@ const WalletConnectedTopMenu: FC<UserAvatarDetailsProps> = ({
       </div>
       <Link
         to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`}
-        className="navigation-link"
+        className="navigation-link hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
       >
         <Icon name="user-circle-gear" appearance={{ size: iconSize }} />
         <p className="ml-2">{formatMessage({ id: 'userMenu.menageTitle' })}</p>

@@ -15,7 +15,10 @@ const UserSubmenu: FC<UserSubmenuProps> = ({ submenuId }) => {
   return (
     <ul className="-mb-2">
       {userSubmenuItems[submenuId].map(({ id, url, icon, label }) => (
-        <li key={id} className="mb-2 last:mb-0 sm:mb-0">
+        <li
+          key={id}
+          className="mb-2 last:mb-0 sm:mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
+        >
           <NavLink to={url} className="flex items-center navigation-link">
             <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
               <Icon name={icon} appearance={{ size: iconSize }} />

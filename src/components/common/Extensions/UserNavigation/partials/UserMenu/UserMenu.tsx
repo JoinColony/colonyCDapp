@@ -85,7 +85,7 @@ const UserMenu: FC<UserMenuProps> = ({
                 {formatText({ id: 'help' })}
               </Button>
             </div>
-            <div className="w-full pb-4 mb-6 border-b border-b-gray-200 sm:pb-3 sm:mb-5">
+            <div className="w-full pb-4 mb-6 sm:pb-0">
               <Button mode="quinary" isFullSize onClick={connectWallet}>
                 {formatText({ id: 'connectWallet' })}
               </Button>
@@ -96,7 +96,10 @@ const UserMenu: FC<UserMenuProps> = ({
           <TitleLabel text={formatText({ id: 'userMenu.optionsTitle' })} />
           <ul className="text-left">
             {userMenuItems.map(({ id, link, icon, name: itemName }) => (
-              <li key={id} className="mb-2 last:mb-0 sm:mb-0">
+              <li
+                key={id}
+                className="mb-2 last:mb-0 sm:mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
+              >
                 {link ? (
                   <Link to={link} className="navigation-link">
                     <Icon name={icon} appearance={{ size: iconSize }} />
@@ -124,7 +127,7 @@ const UserMenu: FC<UserMenuProps> = ({
         {wallet && (
           <div className="w-full mb-4 sm:mb-3">
             <TitleLabel text={formatText({ id: 'userMenu.other' })} />
-            <div className="navigation-link">
+            <div className="navigation-link hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]">
               <Icon name="plugs" appearance={{ size: iconSize }} />
               <button type="button" className="ml-2" onClick={disconnectWallet}>
                 {formatText({ id: 'userMenu.disconnectWalletTitle' })}
