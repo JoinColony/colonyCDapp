@@ -7,11 +7,16 @@ export interface BreadcrumbDropdownOption
 }
 
 export type BreadcrumbsItem = { key: string } & (
-  | { label: string; href: string }
-  | { dropdownOptions: BreadcrumbDropdownOption[]; selectedValue: string }
+  | { label: string; href?: string }
+  | BreadCrumbsCardSelectItem
 );
 
 export interface BreadcrumbsProps {
   items: BreadcrumbsItem[];
   className?: string;
+}
+
+export interface BreadCrumbsCardSelectItem {
+  dropdownOptions: BreadcrumbDropdownOption[];
+  selectedValue: string;
 }

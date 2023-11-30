@@ -100,7 +100,6 @@ const LandingPage = () => {
       {
         key: 'landing-page',
         label: 'Colony App',
-        href: '/',
       },
     ]);
   }, [setBreadcrumbs]);
