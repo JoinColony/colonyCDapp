@@ -9,14 +9,14 @@ const FeesForm = () => {
     handleFeesOnChange,
     handleSubmit,
     metatransactionsValidationSchema,
-    metatransasctionsDefault,
+    metatransactionsDefault,
   } = useFeesForm();
 
   return (
     <Form
       validationSchema={metatransactionsValidationSchema}
       defaultValues={{
-        metatransactionsEnabled: !!metatransasctionsDefault,
+        metatransactionsEnabled: !!metatransactionsDefault,
       }}
       onSubmit={handleSubmit}
     >
@@ -26,7 +26,7 @@ const FeesForm = () => {
           description={{ id: 'advancedSettings.fees.description' }}
           tooltipMessage={{ id: 'advancedSettings.fees.tooltip' }}
           id="metatransactionsEnabled"
-          onChange={handleFeesOnChange}
+          handleOnChange={handleFeesOnChange}
           register={register}
         />
       )}

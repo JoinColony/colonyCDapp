@@ -74,9 +74,12 @@ exports.handler = async (event) => {
     createProfile,
     {
       input: {
-        id: checksummedWalletAddress,
         ...profile,
+        id: checksummedWalletAddress,
         displayNameChanged: new Date().toISOString(),
+        meta: {
+          metatransactionsEnabled: true,
+        },
       },
     },
     graphqlURL,

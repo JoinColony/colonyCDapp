@@ -20,7 +20,7 @@ export const useFeesForm = () => {
 
   const [editUser] = useUpdateUserProfileMutation();
 
-  const metatransasctionsDefault = metatransactionsAvailable
+  const metatransactionsDefault = metatransactionsAvailable
     ? metatransactionsEnabled
     : false;
 
@@ -56,7 +56,7 @@ export const useFeesForm = () => {
 
   return {
     metatransactionsValidationSchema,
-    metatransasctionsDefault,
+    metatransactionsDefault,
     handleSubmit,
     handleFeesOnChange,
   };

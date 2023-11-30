@@ -5,12 +5,17 @@ import Switch from './Switch';
 
 const displayName = 'v5.common.Fields.FormSwitch';
 
-const FormSwitch: FC<FormSwitchProps> = ({ name, ...rest }) => {
+const FormSwitch: FC<FormSwitchProps> = ({ name, handleOnChange, ...rest }) => {
   const {
-    field: { value, ...field },
+    field: { value, onChange: formOnChange, ...field },
   } = useController({ name });
 
-  return <Switch {...rest} {...field} checked={value} />;
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    formOnChange(event);
+    handleOnChange?.(event.target.checked);
+  };
+
+  return <Switch {...rest} {...field} checked={value} onChange={onChange} />;
 };
 
 FormSwitch.displayName = displayName;

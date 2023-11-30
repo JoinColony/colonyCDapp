@@ -20,7 +20,7 @@ const SettingsRow = <
   buttonIcon,
   buttonLabel,
   buttonMode,
-  onChange,
+  handleOnChange,
   onClick,
   id,
 }: SettingsRowProps<TFieldValues, TFieldName>) => {
@@ -45,7 +45,9 @@ const SettingsRow = <
           {formatMessage(description)}
         </p>
       </div>
-      {onChange && <FormSwitch name={id || ''} />}
+      {handleOnChange && (
+        <FormSwitch name={id || ''} handleOnChange={handleOnChange} />
+      )}
       {onClick && buttonLabel && (
         <Button
           mode={buttonMode}
