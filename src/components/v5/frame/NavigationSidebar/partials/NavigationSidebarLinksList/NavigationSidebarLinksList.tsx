@@ -1,8 +1,11 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
+import { generatePath } from 'react-router-dom';
 
 import NavigationSidebarLink from '../NavigationSidebarLink/NavigationSidebarLink';
 
+import { COLONY_HOME_ROUTE } from '~routes';
+import { useColonyContext } from '~hooks';
 import { NavigationSidebarLinksListProps } from './types';
 
 const displayName =
@@ -11,16 +14,28 @@ const displayName =
 const NavigationSidebarLinksList: FC<NavigationSidebarLinksListProps> = ({
   items,
   className,
-}) =>
-  items.length ? (
+}) => {
+  const { colony } = useColonyContext();
+  const colonyName = colony?.name || '';
+
+  const updatedItems = items.map((item) => {
+    // Check if the 'to' field needs to be modified
+    if (item.to === COLONY_HOME_ROUTE) {
+      return { ...item, to: generatePath(item.to, { colonyName }) };
+    }
+    return item;
+  });
+
+  return items.length ? (
     <ul className={clsx(className, 'flex flex-col gap-2 w-full')}>
-      {items.map(({ key, label, ...item }) => (
+      {updatedItems.map(({ key, label, ...item }) => (
         <li key={key}>
           <NavigationSidebarLink {...item}>{label}</NavigationSidebarLink>
         </li>
       ))}
     </ul>
   ) : null;
+};
 
 NavigationSidebarLinksList.displayName = displayName;
 

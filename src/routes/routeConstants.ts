@@ -151,6 +151,7 @@ export const RESERVED_ROUTES = new Set([
   '/management',
   '/marketplace',
   '/media',
+  '/meta',
   '/metacolony',
   '/metrics',
   '/news',
