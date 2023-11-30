@@ -30,6 +30,7 @@ import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import { COLONY_DETAILS_ROUTE } from '~routes/routeConstants';
 import useColonySubscription from '~hooks/useColonySubscription';
+import { createBaseActionFilter } from '~hooks/useActivityFeed/helpers';
 
 import { iconMappings, MAX_TEXT_LENGTH } from './consts';
 import { ChartData, UseGetHomeWidgetReturnType } from './types';
@@ -98,13 +99,7 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
   const { data: totalActionData } = useGetTotalColonyActionsQuery({
     variables: {
       filter: {
-        colonyId: { eq: colonyAddress },
-        showInActionsList: {
-          eq: true,
-        },
-        colonyDecisionId: {
-          exists: false,
-        },
+        ...createBaseActionFilter(colonyAddress),
       },
     },
   });

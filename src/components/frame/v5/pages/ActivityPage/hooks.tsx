@@ -10,6 +10,7 @@ import {
 import { formatText } from '~utils/intl';
 import { WidthBoxItem } from '~v5/common/WidgetBoxList/types';
 import { useColonyContext } from '~hooks';
+import { createBaseActionFilter } from '~hooks/useActivityFeed/helpers';
 
 const getThirtyDaysAgoIso = () => {
   const thirtyDaysAgo = subDays(new Date(), 30);
@@ -24,13 +25,7 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
   const { data: totalActionData } = useGetTotalColonyActionsQuery({
     variables: {
       filter: {
-        colonyId: { eq: colonyAddress },
-        showInActionsList: {
-          eq: true,
-        },
-        colonyDecisionId: {
-          exists: false,
-        },
+        ...createBaseActionFilter(colonyAddress),
       },
     },
   });
@@ -40,13 +35,7 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
   const { data: recentActionData } = useGetTotalColonyActionsQuery({
     variables: {
       filter: {
-        colonyId: { eq: colonyAddress },
-        showInActionsList: {
-          eq: true,
-        },
-        colonyDecisionId: {
-          exists: false,
-        },
+        ...createBaseActionFilter(colonyAddress),
         createdAt: { gte: getThirtyDaysAgoIso() },
       },
     },

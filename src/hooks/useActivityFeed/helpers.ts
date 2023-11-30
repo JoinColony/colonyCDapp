@@ -37,20 +37,24 @@ export const filterActionByMotionState = (
     : motionStatesFilter.includes(action.motionState);
 };
 
+export const createBaseActionFilter = (colonyAddress: string) => ({
+  colonyId: {
+    eq: colonyAddress,
+  },
+  showInActionsList: {
+    eq: true,
+  },
+  colonyDecisionId: {
+    exists: false,
+  },
+});
+
 export const getSearchActionsFilterVariable = (
   colonyAddress: string,
   filters?: ActivityFeedFilters,
 ): QuerySearchColonyActionsArgs['filter'] => {
   return {
-    colonyId: {
-      eq: colonyAddress,
-    },
-    showInActionsList: {
-      eq: true,
-    },
-    colonyDecisionId: {
-      exists: false,
-    },
+    ...createBaseActionFilter(colonyAddress),
     fromDomainId:
       filters?.teamId !== undefined
         ? {
