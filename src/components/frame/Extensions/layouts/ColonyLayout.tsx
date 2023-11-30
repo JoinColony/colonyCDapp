@@ -100,23 +100,21 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
           ) : undefined
         }
         headerProps={{
-          pageHeadingProps: pageHeadingTitle
-            ? {
-                title: pageHeadingTitle,
-                breadcrumbs: [
-                  ...(colony?.name
-                    ? [
-                        {
-                          key: '1',
-                          href: `/${colony?.name}`,
-                          label: colony?.name,
-                        },
-                      ]
-                    : []),
-                  ...breadcrumbs,
-                ],
-              }
-            : undefined,
+          pageHeadingProps: {
+            title: pageHeadingTitle,
+            breadcrumbs: [
+              ...(colony?.name
+                ? [
+                    {
+                      key: '1',
+                      href: `/${colony?.name}`,
+                      label: colony?.metadata?.displayName || '',
+                    },
+                  ]
+                : []),
+              ...breadcrumbs,
+            ],
+          },
           userNavigation: (
             <UserNavigationWrapper
               txButtons={txButtons}

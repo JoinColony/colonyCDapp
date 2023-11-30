@@ -1,7 +1,16 @@
 import { useMemo, useState } from 'react';
 import { Id } from '@colony/colony-js';
+import {
+  BellRinging,
+  Door,
+  Rocket,
+  ShareNetwork,
+  Smiley,
+} from 'phosphor-react';
+import { useLocation } from 'react-router-dom';
+
 import { useGetColonyContributorsQuery } from '~gql';
-import { useColonyContext } from '~hooks';
+import { useAppContext, useColonyContext, useMobile } from '~hooks';
 import { notNull } from '~utils/arrays';
 import { getBalanceForTokenAndDomain } from '~utils/tokens';
 import { formatText } from '~utils/intl';
@@ -10,6 +19,19 @@ import {
   setHexTeamColor,
   setTeamColor,
 } from '~v5/common/TeamReputationSummary/utils';
+import { ColonyDashboardHeaderProps } from '~v5/common/ColonyDashboardHeader/types';
+import { getCurrentToken } from '~common/ColonyTotalFunds/SelectedToken/helpers';
+import { ColonyLinksItem } from '~v5/common/ColonyDashboardHeader/partials/ColonyLinks/types';
+import {
+  DropdownMenuGroup,
+  DropdownMenuItem,
+} from '~v5/common/DropdownMenu/types';
+import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks';
+import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+import { COLONY_DETAILS_ROUTE } from '~routes/routeConstants';
+import useColonySubscription from '~hooks/useColonySubscription';
+
+import { iconMappings, MAX_TEXT_LENGTH } from './consts';
 import { ChartData, UseGetHomeWidgetReturnType } from './types';
 
 export const useGetAllColonyMembers = (
@@ -151,5 +173,178 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
     otherTeamsReputation,
     hoveredSegment,
     setHoveredSegment,
+  };
+};
+
+export const useExternalLinks = (): ColonyLinksItem[] => {
+  const { colony } = useColonyContext();
+  const { metadata } = colony || {};
+  const { externalLinks } = metadata || {};
+  const linksPriority = Object.keys(iconMappings);
+
+  const sortedLinks = [...(externalLinks || [])]?.sort(
+    (x, y) => linksPriority.indexOf(x.name) - linksPriority.indexOf(y.name),
+  );
+
+  return sortedLinks.map(({ name, link }) => ({
+    key: name,
+    icon: iconMappings[name],
+    to: link,
+  }));
+};
+
+export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
+  const { colony } = useColonyContext();
+  const { user } = useAppContext();
+  const items = useExternalLinks();
+  const { pathname } = useLocation();
+  const colonyUrl = `${window.location.host}${pathname}`;
+  const { handleClipboardCopy, isCopied } = useCopyToClipboard(colonyUrl, 5000);
+  const {
+    handleClipboardCopy: itemHandleClipboardCopy,
+    isCopied: itemIsCopied,
+  } = useCopyToClipboard(colonyUrl, 5000);
+  const isMobile = useMobile();
+  const { handleUnwatch } = useColonySubscription();
+
+  const { tokens, nativeToken } = colony || {};
+  const { tokenAddress: nativeTokenAddress } = nativeToken || {};
+  const currentToken = getCurrentToken(tokens, nativeTokenAddress ?? '');
+  const isNativeTokenUnlocked = !!colony?.status?.nativeToken?.unlocked;
+  const isUserInColony = user?.watchlist?.items.some(
+    (item) => item?.colony.name === colony?.name,
+  );
+
+  const { metadata } = colony || {};
+  const description =
+    metadata?.description || formatText({ id: 'colony.description' }) || '';
+
+  const truncatedText =
+    description.length > MAX_TEXT_LENGTH
+      ? `${description.slice(0, MAX_TEXT_LENGTH - 3)}...`
+      : description;
+
+  const menuItems: DropdownMenuGroup[] = useMemo(
+    () =>
+      [
+        {
+          key: '1',
+          items: [
+            {
+              key: '1.1',
+              label:
+                formatText({ id: 'dashboard.burgerMenu.item.aboutColony' }) ||
+                '',
+              icon: Rocket,
+              to: `/${colony?.name}/${COLONY_DETAILS_ROUTE}`,
+            },
+          ],
+        },
+        {
+          key: '2',
+          items: [
+            ...(items.length
+              ? [
+                  {
+                    key: '2.1',
+                    label:
+                      formatText({
+                        id: 'dashboard.burgerMenu.item.externalLinks',
+                      }) || '',
+                    icon: Smiley,
+                    items: items.map<DropdownMenuItem>(({ key, ...item }) => ({
+                      ...item,
+                      key,
+                      label: COLONY_LINK_CONFIG[key].label,
+                    })),
+                  },
+                ]
+              : []),
+            {
+              key: '2.2',
+              label:
+                formatText({ id: 'dashboard.burgerMenu.item.share' }) || '',
+              icon: ShareNetwork,
+              onClick: () => itemHandleClipboardCopy(),
+              tooltipProps: {
+                tooltipContent:
+                  formatText({
+                    id: 'colony.tooltip.url.copied',
+                  }) || '',
+                isOpen: itemIsCopied,
+                isSuccess: true,
+              },
+            },
+          ],
+        },
+        {
+          key: '3',
+          items: [
+            {
+              key: '3.1',
+              label:
+                formatText({
+                  id: 'dashboard.burgerMenu.item.notifications',
+                }) || '',
+              icon: BellRinging,
+              // @TODO: open Notification tab when will be ready
+              onClick: () => {},
+            },
+          ],
+        },
+        {
+          key: '4',
+          items: isUserInColony
+            ? [
+                {
+                  key: '4.1',
+                  label:
+                    formatText({
+                      id: 'dashboard.burgerMenu.item.leaveColony',
+                    }) || '',
+                  icon: Door,
+                  onClick: () => handleUnwatch(),
+                },
+              ]
+            : [],
+        },
+      ].filter((menuItem) => menuItem.items.length !== 0),
+    [
+      colony?.name,
+      handleUnwatch,
+      isUserInColony,
+      itemHandleClipboardCopy,
+      itemIsCopied,
+      items,
+    ],
+  );
+
+  return {
+    colonyName: metadata?.displayName || '',
+    description: truncatedText,
+    tokenName: currentToken?.token.symbol || '',
+    isTokenUnlocked: isNativeTokenUnlocked,
+    colonyLinksProps: {
+      items: [
+        ...items.slice(0, 3),
+        {
+          key: 'share-url',
+          icon: ShareNetwork,
+          onClick: () => handleClipboardCopy(),
+          tooltipProps: {
+            tooltipContent: formatText({
+              id: 'colony.tooltip.url.copied',
+            }),
+            isOpen: isCopied,
+            isSuccess: true,
+            placement: 'right',
+          },
+        },
+      ],
+      dropdownMenuProps: {
+        groups: menuItems,
+        showSubMenuInPopover: !isMobile,
+      },
+    },
   };
 };

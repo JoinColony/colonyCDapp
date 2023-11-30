@@ -144,7 +144,7 @@
   }
 
   .subnav-button {
-    @apply flex w-full items-center text-md transition-colors duration-normal text-gray-900 hover:bg-gray-50 hover:font-medium rounded py-2 px-3.5;
+    @apply flex w-full items-center text-md transition-colors duration-normal text-gray-900 sm:hover:bg-gray-50 sm:hover:font-medium rounded py-2 px-3.5;
   }
 
   .input-round {

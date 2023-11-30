@@ -19,10 +19,11 @@ const Link: FC<LinkProps> = ({
 }) => {
   const { formatMessage } = useIntl();
   const IS_URL_EXTERNAL = isUrlExternal(to);
+  const isUrlIncludeHttp = typeof to === 'string' && to.includes('http');
 
   const linkText =
     typeof text === 'string' ? text : text && formatMessage(text, textValues);
-  return IS_URL_EXTERNAL && typeof to === 'string' ? (
+  return (IS_URL_EXTERNAL && typeof to === 'string') || isUrlIncludeHttp ? (
     <a
       href={to}
       rel="nofollow noopener noreferrer"

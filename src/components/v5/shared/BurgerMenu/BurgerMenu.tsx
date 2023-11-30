@@ -1,18 +1,26 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
+import clsx from 'clsx';
 import Icon from '~shared/Icon';
 import { BurgerMenuProps } from './types';
 
 const displayName = 'v5.BurgerMenu';
 
-const BurgerMenu: FC<BurgerMenuProps> = ({ isVertical, setTriggerRef }) => {
+const BurgerMenu: FC<BurgerMenuProps> = ({
+  className,
+  isVertical,
+  setTriggerRef,
+}) => {
   const { formatMessage } = useIntl();
 
   return (
     <button
       type="button"
-      className="text-gray-400 hover:text-blue-400 p-[0.1875rem] transition-all duration-normal cursor-pointer"
+      className={clsx(
+        className,
+        'flex text-gray-400 sm:hover:text-blue-400 p-[0.1875rem] transition-all duration-normal cursor-pointer',
+      )}
       aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
       ref={setTriggerRef}
     >

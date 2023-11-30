@@ -232,7 +232,6 @@
     "bullets",
     "numbers",
     "quotes",
-    "rocket",
     "paint",
     "smile",
     "edit-pencil",
@@ -268,7 +267,8 @@
     "hourglass-medium",
     "transfer",
     "add",
-    "piggy-bank"
+    "piggy-bank",
+    "rocket"
   ],
   "multiColorIcons": [
     "circle-check-primary",

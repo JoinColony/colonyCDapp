@@ -2,7 +2,7 @@ import {
   DiscordLogo,
   FacebookLogo,
   GithubLogo,
-  GlobeHemisphereEast,
+  Globe,
   IconProps,
   InstagramLogo,
   Scroll,
@@ -63,7 +63,7 @@ type ColonyLink = {
 export const COLONY_LINK_CONFIG: Record<ExternalLinks, ColonyLink> = {
   [ExternalLinks.Custom]: {
     id: ExternalLinks.Custom,
-    LinkIcon: GlobeHemisphereEast,
+    LinkIcon: Globe,
     label: formatText(MSG[ExternalLinks.Custom]),
   },
   [ExternalLinks.Whitepaper]: {
