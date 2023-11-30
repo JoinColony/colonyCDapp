@@ -4,4 +4,7 @@ export enum WizardType {
   CreateUserAndColony = 'CREATE_USER_AND_COLONY',
 }
 
-export type Flow = 'user' | 'colony';
+export enum Flow {
+  User = 'user',
+  Colony = 'colony',
+}

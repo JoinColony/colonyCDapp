@@ -5,6 +5,7 @@ import ColonyHome from '~common/ColonyHome';
 import ColonyFunding from '~common/ColonyFunding';
 import FourOFour from '~frame/FourOFour';
 import UserProfile from '~common/UserProfile';
+import { Flow } from '~common/Onboarding';
 import DecisionPreview from '~common/ColonyDecisions/DecisionPreview';
 import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
 import { NavBar, UserLayout } from '~frame/RouteLayouts';
@@ -132,12 +133,12 @@ const Routes = () => {
 
         <Route
           path={CREATE_PROFILE_ROUTE}
-          element={<OnboardingPage flow="user" />}
+          element={<OnboardingPage flow={Flow.User} />}
         />
 
         <Route
           path={CREATE_COLONY_ROUTE}
-          element={<OnboardingPage flow="colony" />}
+          element={<OnboardingPage flow={Flow.Colony} />}
         />
 
         {/* Colony routes */}
