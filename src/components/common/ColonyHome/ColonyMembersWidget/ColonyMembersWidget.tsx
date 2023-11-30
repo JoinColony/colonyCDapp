@@ -5,7 +5,6 @@ import { defineMessages } from 'react-intl';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useColonyContext } from '~hooks';
-import { useGetMembersForColonyQuery } from '~gql';
 import { useColonyHomeContext } from '~context';
 
 import MembersSubsection from './MembersSubsection';
@@ -32,20 +31,11 @@ const ColonyMembersWidget = ({ maxAvatars }: Props) => {
   const { colony } = useColonyContext();
   const { domainIdFilter: currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID } =
     useColonyHomeContext();
-  const { data, loading: loadingMembers } = useGetMembersForColonyQuery({
-    skip: !colony?.colonyAddress,
-    variables: {
-      input: {
-        colonyAddress: colony?.colonyAddress ?? '',
-        domainId: currentDomainId || Id.RootDomain,
-      },
-    },
-    fetchPolicy: 'cache-and-network',
-  });
   if (!colony) return null;
 
-  const contributors = data?.getMembersForColony?.contributors;
-  const watchers = data?.getMembersForColony?.watchers;
+  const contributors = [];
+  const watchers = [];
+  const loadingMembers = false;
 
   if (loadingMembers) {
     return (

@@ -23,7 +23,9 @@ export const useColonySwitcherContent = (
     data?.getContributorsByAddress?.items.filter(
       (contributor) => notNull(contributor) && contributor?.colony,
     ) || []
-  ).sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  )
+    .filter(notNull)
+    .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
   const { chainMetadata, colonyAddress, name } = colony || {};
   const { chainId } = chainMetadata || {};

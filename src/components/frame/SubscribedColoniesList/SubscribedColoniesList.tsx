@@ -22,11 +22,11 @@ const MSG = defineMessages({
 });
 
 const SubscribedColoniesList = () => {
-  const { user, userLoading } = useAppContext();
+  const { userLoading } = useAppContext();
   const canInteractWithNetwork = useCanInteractWithNetwork();
   const isMobile = useMobile();
 
-  const { items: watchlist = [] } = user?.watchlist || {};
+  const watchlist = [];
 
   const sortByDate = (firstWatchEntry, secondWatchEntry) => {
     const firstWatchTime = new Date(firstWatchEntry?.createdAt || 1).getTime();

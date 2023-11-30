@@ -202,7 +202,6 @@ export const useExternalLinks = (): ColonyLinksItem[] => {
 
 export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
   const { colony } = useColonyContext();
-  const { user } = useAppContext();
   const items = useExternalLinks();
   const { pathname } = useLocation();
   const colonyUrl = `${window.location.host}${pathname}`;
@@ -218,9 +217,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
   const { tokenAddress: nativeTokenAddress } = nativeToken || {};
   const currentToken = getCurrentToken(tokens, nativeTokenAddress ?? '');
   const isNativeTokenUnlocked = !!colony?.status?.nativeToken?.unlocked;
-  const isUserInColony = user?.watchlist?.items.some(
-    (item) => item?.colony.name === colony?.name,
-  );
+  const isUserInColony = false;
 
   const { metadata } = colony || {};
   const description =

@@ -6,7 +6,6 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 import { useAppContext, useMobile } from '~hooks';
 import PopoverBase from '~v5/shared/PopoverBase';
 import { NETWORK_DATA } from '~constants';
-import { WatchListItem } from '~types';
 import { Network } from '~gql';
 import { notNull } from '~utils/arrays';
 
@@ -22,10 +21,7 @@ import styles from './ColonySwitcher.module.css';
 
 const displayName = 'common.Extensions.ColonySwitcher';
 
-const sortByDate = (
-  firstWatchEntry: WatchListItem,
-  secondWatchEntry: WatchListItem,
-) => {
+const sortByDate = (firstWatchEntry: any, secondWatchEntry: any) => {
   const firstWatchTime = new Date(firstWatchEntry?.createdAt || 1).getTime();
   const secondWatchTime = new Date(secondWatchEntry?.createdAt || 1).getTime();
   return firstWatchTime - secondWatchTime;

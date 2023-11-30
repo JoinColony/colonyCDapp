@@ -1,15 +1,14 @@
 import React, { ReactNode } from 'react';
 
 import ListGroup, { ListGroupAppearance } from '~shared/ListGroup';
-import { Member, MemberUser } from '~types';
 import { notNull } from '~utils/arrays';
 
 import MembersListItem from './MembersListItem';
 
 interface Props {
-  members: Member[];
+  members: any[];
   listGroupAppearance?: ListGroupAppearance;
-  extraItemContent?: (user: MemberUser) => ReactNode;
+  extraItemContent?: (user: any) => ReactNode;
   showUserInfo?: boolean;
   showUserReputation?: boolean;
 }

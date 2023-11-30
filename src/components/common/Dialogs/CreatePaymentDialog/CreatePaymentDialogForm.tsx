@@ -11,7 +11,7 @@ import {
 } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
 
-import { MemberUser, SetStateFn } from '~types';
+import { SetStateFn } from '~types';
 
 import PaymentRecipient from './PaymentRecipient';
 import DomainFundSelectorSection from '../DomainFundSelectorSection';
@@ -54,7 +54,7 @@ const MSG = defineMessages({
 });
 
 interface Props extends ActionDialogProps {
-  verifiedUsers: MemberUser[];
+  verifiedUsers: any[];
   handleIsForceChange: SetStateFn;
   isForce: boolean;
 }

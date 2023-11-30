@@ -6,7 +6,7 @@ import { isConfusing } from '@colony/unicode-confusables-noascii';
 import { DialogSection } from '~shared/Dialog';
 import SingleUserPicker from '~shared/SingleUserPicker/SingleUserPicker';
 
-import { MemberUser, User, Colony } from '~types';
+import { User, Colony } from '~types';
 import { ItemDataType } from '~shared/OmniPicker';
 import UserAvatar from '~shared/UserAvatar/UserAvatar';
 
@@ -47,7 +47,7 @@ const PaymentRecipient = ({
   disabled,
   index,
 }: {
-  verifiedUsers: MemberUser[];
+  verifiedUsers: any[];
   colony: Colony;
   disabled: boolean;
   index: number;

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { MemberType } from '~common/ColonyMembers/MembersFilter/filtersConfig';
-import { Watcher, Contributor } from '~types';
 
 import ContributorsSection from './ContributorsSection';
 import WatchersSection from './WatchersSection';
@@ -10,8 +9,8 @@ const displayName = 'common.Members.MembersContent';
 
 interface Props {
   filters: any;
-  watchers: Watcher[];
-  contributors: Contributor[];
+  watchers: any[];
+  contributors: any[];
   isRootOrAllDomains: boolean;
 }
 

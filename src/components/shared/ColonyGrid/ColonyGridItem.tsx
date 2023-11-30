@@ -4,12 +4,12 @@ import Heading from '~shared/Heading';
 import Link from '~shared/Link';
 import ColonyAvatar from '~shared/ColonyAvatar';
 
-import { Colony, WatchedColony } from '~types';
+import { Colony } from '~types';
 
 import styles from './ColonyGridItem.css';
 
 interface Props {
-  colony: WatchedColony | Colony;
+  colony: Colony;
 }
 
 const displayName = 'common.ColonyGrid.ColonyGridItem';

@@ -1,14 +1,14 @@
 import React, { useCallback, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { ColonyRole, Id } from '@colony/colony-js';
+import { ColonyRole } from '@colony/colony-js';
 import { sortBy } from '~utils/lodash';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 
 import { useColonyContext } from '~hooks';
-import { Domain, useGetMembersForColonyQuery, SortingMethod } from '~gql';
+import { Domain } from '~gql';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { User, Colony, Contributor, Watcher, DomainColor } from '~types';
+import { User, Colony, DomainColor } from '~types';
 import { FormValues } from '~common/ColonyMembers/MembersFilter';
 
 import MembersTitle from './MembersTitle';
@@ -79,19 +79,9 @@ const Members = ({
 }: Props) => {
   const { colony } = useColonyContext();
   const [searchValue, setSearchValue] = useState<string>('');
-  const sortingMethod = SortingMethod.ByHighestRep;
 
-  const { data, loading: loadingMembers } = useGetMembersForColonyQuery({
-    skip: !colony?.colonyAddress,
-    variables: {
-      input: {
-        colonyAddress: colony?.colonyAddress ?? '',
-        domainId: selectedDomain || Id.RootDomain,
-        sortingMethod,
-      },
-    },
-    fetchPolicy: 'cache-and-network',
-  });
+  const data = {};
+  const loadingMembers = false;
 
   const handleSearch = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,15 +91,15 @@ const Members = ({
     [setSearchValue],
   );
 
-  const filteredContributors = filterMembers<Contributor>(
-    data?.getMembersForColony?.contributors || [],
+  const filteredContributors = filterMembers(
+    [],
     colony?.metadata?.whitelistedAddresses ?? [],
     searchValue,
     filters,
   );
 
-  const filteredWatchers = filterMembers<Watcher>(
-    data?.getMembersForColony?.watchers || [],
+  const filteredWatchers = filterMembers(
+    [],
     colony?.metadata?.whitelistedAddresses ?? [],
     searchValue,
     filters,

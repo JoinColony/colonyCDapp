@@ -5,7 +5,6 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import MembersList from '~common/Members/MembersList';
 import LoadMoreButton from '~shared/LoadMoreButton';
 import { Props as SortingProps } from '~common/Members/MembersList/SortingRow';
-import { Watcher, MemberUser } from '~types';
 
 import styles from './MembersSection.css';
 
@@ -28,8 +27,8 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  watchers: Watcher[];
-  extraItemContent?: (user: MemberUser) => ReactNode;
+  watchers: any[];
+  extraItemContent?: (user: any) => ReactNode;
   itemsPerSection?: number;
 }
 

@@ -59,8 +59,8 @@ const isUserAndColonyOnSameChain = (
  */
 export const useCanInteractWithColony = (colony?: Colony): boolean => {
   const { wallet } = useAppContext();
-  const { address: walletAddress } = wallet || {};
-  const { colonyAddress } = colony || {};
+  const { address: walletAddress = '' } = wallet || {};
+  const { colonyAddress = '' } = colony || {};
   const canInteractWithNetwork = useCanInteractWithNetwork();
 
   const colonyContributorId = getColonyContributorId(

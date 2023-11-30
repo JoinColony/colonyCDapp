@@ -1,7 +1,6 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { useGetMembersForColonyQuery } from '~gql';
 import { DialogSection } from '~shared/Dialog';
 import { ItemDataType } from '~shared/OmniPicker';
 import { SpinnerLoader } from '~shared/Preloaders';
@@ -65,30 +64,12 @@ interface RecipientPickerProps {
 }
 
 export const RecipientPicker = ({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   colony,
   transactionIndex,
   disabledInput,
 }: RecipientPickerProps) => {
-  const { data: members } = useGetMembersForColonyQuery({
-    skip: !colony?.colonyAddress,
-    variables: {
-      input: {
-        colonyAddress: colony?.colonyAddress ?? '',
-      },
-    },
-    fetchPolicy: 'cache-and-network',
-  });
-
-  const users = [
-    ...(members?.getMembersForColony?.contributors || []),
-    ...(members?.getMembersForColony?.watchers || []),
-  ].map(({ user }) => ({
-    walletAddress: '',
-    name: '',
-    ...user,
-    // Needed to satisfy Omnipicker's key
-    id: user?.walletAddress,
-  }));
+  const users = [];
 
   return (
     <div className={styles.singleUserPickerContainer}>

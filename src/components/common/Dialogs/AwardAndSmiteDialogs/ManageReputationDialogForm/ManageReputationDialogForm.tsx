@@ -19,7 +19,7 @@ import SingleUserPicker, {
 import UserAvatar from '~shared/UserAvatar';
 import { REPUTATION_LEARN_MORE } from '~constants/externalUrls';
 
-import { MemberUser, SetStateFn, User } from '~types';
+import { SetStateFn, User } from '~types';
 
 import { useActionDialogStatus, useUserReputation } from '~hooks';
 import { sortBy } from '~utils/lodash';
@@ -81,7 +81,7 @@ const MSG = defineMessages({
 
 interface Props extends ActionDialogProps {
   nativeTokenDecimals: number;
-  users: MemberUser[];
+  users: any[];
   schemaUserReputation?: number;
   updateSchemaUserReputation?: (
     userPercentageReputation: number,

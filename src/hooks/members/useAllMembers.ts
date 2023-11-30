@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 
 import { useGetContributorCountQuery } from '~gql';
+import { ColonyContributor, SortDirection } from '~types';
 import { notNull } from '~utils/arrays';
 import { range } from '~utils/lodash';
 import {

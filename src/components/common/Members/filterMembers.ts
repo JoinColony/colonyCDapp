@@ -1,10 +1,10 @@
 import { FormValues } from '~common/ColonyMembers/MembersFilter';
 import { VerificationType } from '~common/ColonyMembers/MembersFilter/filtersConfig';
 
-import { Address, Member } from '~types';
+import { Address } from '~types';
 import { isUserVerified } from '~utils/verifiedUsers';
 
-const filterMemberBySearchTerm = (member: Member, searchTerm: string) => {
+const filterMemberBySearchTerm = (member: any, searchTerm: string) => {
   return (
     member?.user?.profile?.displayName
       ?.toLowerCase()
@@ -14,7 +14,7 @@ const filterMemberBySearchTerm = (member: Member, searchTerm: string) => {
 };
 
 const filterMemberByVerificationStatus = (
-  member: Member,
+  member: any,
   whitelistedAddresses: Address[],
   verificationType?: VerificationType,
 ) => {
@@ -31,12 +31,12 @@ const filterMemberByVerificationStatus = (
   return true;
 };
 
-export const filterMembers = <M extends Member>(
-  members: M[],
+export const filterMembers = (
+  members: any[],
   whitelistedAddresses: Address[],
   searchTerm?: string,
   filters?: FormValues,
-): M[] => {
+) => {
   let filtered = members;
 
   if (filters?.verificationType !== VerificationType.All) {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Address, Colony, WatchedColony } from '~types';
+import { Address, Colony } from '~types';
 import Avatar, { AvatarProps } from '~shared/Avatar';
 import NavLink from '~shared/NavLink';
 
@@ -13,7 +13,7 @@ export interface Props
   showLink?: boolean;
 
   /** The colony this avatar is for */
-  colony?: WatchedColony | Colony;
+  colony?: Colony;
 
   /** Use the thumbnail instead of the avatar image */
   preferThumbnail?: boolean;
