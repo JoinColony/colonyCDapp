@@ -9,16 +9,13 @@ import React, {
 } from 'react';
 import { useMatch, useParams } from 'react-router-dom';
 import { Id } from '@colony/colony-js';
-
-import { FilterContextProvider, useFilterContext } from './FilterContext';
-
+import { useGetColonyContributorsQuery } from '~gql';
 import {
   useColonyContext,
   useMobile,
   useColonyContributors,
   useAllMembers,
 } from '~hooks';
-import { SearchContextProvider } from './SearchContext';
 import { notNull } from '~utils/arrays';
 import {
   ALL_MEMBERS_LIST_LIMIT,
@@ -30,15 +27,19 @@ import {
 import { ColonyContributor } from '~types';
 import { COLONY_VERIFIED_ROUTE } from '~routes';
 
+import { SearchContextProvider } from './SearchContext';
+import { FilterContextProvider, useFilterContext } from './FilterContext';
+
 const MemberContext = createContext<
   | {
+      allMembers: ColonyContributor[];
       members: ColonyContributor[];
       verifiedMembers: ColonyContributor[];
       totalMemberCount: number;
       contributors: ColonyContributor[];
       totalContributorCount: number;
       memberCountLoading: boolean;
-      loadingContributors: boolean;
+      loading: boolean;
       loadingMembers: boolean;
       loadMoreContributors: () => void;
       loadMoreMembers: () => void;
@@ -52,7 +53,7 @@ const MemberContext = createContext<
 const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const { domainId, colonyName } = useParams();
   const { colony } = useColonyContext();
-  const { domains } = colony ?? {};
+  const { domains, colonyAddress } = colony ?? {};
   const isMobile = useMobile();
   const isVerifiedPage = useMatch(`${colonyName}/${COLONY_VERIFIED_ROUTE}`);
 
@@ -139,13 +140,55 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     [getFilterContributorType],
   );
 
+  // Make sure we fetch all members which is needed to select a member
+  // to pay etc.
+  const {
+    data: memberData,
+    loading,
+    fetchMore,
+  } = useGetColonyContributorsQuery({
+    variables: {
+      colonyAddress,
+    },
+    skip: !colonyAddress,
+    onCompleted: (receivedData) => {
+      if (receivedData?.getColonyContributors?.nextToken) {
+        // If there's more data to fetch, call fetchMore
+        fetchMore({
+          variables: {
+            nextToken: receivedData.getColonyContributors.nextToken,
+          },
+          updateQuery: (prev, { fetchMoreResult }) => {
+            if (!fetchMoreResult) return prev;
+
+            // Here, combine the previous items with the newly fetched items
+            return {
+              ...prev,
+              getColonyContributors: {
+                ...prev.getColonyContributors,
+                items: [
+                  ...prev.getColonyContributors.items,
+                  ...fetchMoreResult.getColonyContributors.items,
+                ],
+                nextToken: fetchMoreResult.getColonyContributors.nextToken,
+              },
+            };
+          },
+        });
+      }
+    },
+  });
+
+  const allMembers =
+    memberData?.getContributorsByColony?.items.filter(notNull) || [];
+
   const {
     contributors,
     canLoadMore: moreContributors,
     loadMore: loadMoreContributors,
-    loading: loadingContributors,
     totalContributorCount,
   } = useColonyContributors({
+    allMembers,
     contributorTypes,
     filterPermissions: permissions,
     filterStatus,
@@ -159,9 +202,9 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     verifiedMembers,
     canLoadMore: moreMembers,
     loadMore: loadMoreMembers,
-    loading: loadingMembers,
     totalMemberCount,
   } = useAllMembers({
+    allMembers,
     contributorTypes,
     filterPermissions: permissions,
     filterStatus,
@@ -181,6 +224,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const value = useMemo(
     () => ({
+      allMembers,
       members,
       verifiedMembers,
       totalMemberCount,
@@ -190,11 +234,10 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       moreMembers,
       loadMoreContributors,
       loadMoreMembers,
-      loadingContributors,
-      loadingMembers,
       membersLimit: getAllMembersPageSize(ALL_MEMBERS_LIST_LIMIT),
     }),
     [
+      allMembers,
       members,
       verifiedMembers,
       totalMemberCount,
@@ -204,10 +247,10 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       moreContributors,
       moreMembers,
       loadMoreContributors,
+      moreMembers,
       loadMoreMembers,
-      loadingContributors,
-      loadingMembers,
       getAllMembersPageSize,
+      loading,
     ],
   );
 

@@ -1,11 +1,8 @@
 import { useMemo, useState } from 'react';
 
-import {
-  useGetColonyContributorsQuery,
-  useGetContributorCountQuery,
-} from '~gql';
+import { useGetContributorCountQuery } from '~gql';
 import { useColonyContext } from '~hooks';
-import { SortDirection } from '~types';
+import { ColonyContributor, SortDirection } from '~types';
 import { notNull } from '~utils/arrays';
 import {
   ContributorTypeFilter,
@@ -13,10 +10,12 @@ import {
 } from '~v5/common/TableFiltering/types';
 import { UserRole } from '~constants/permissions';
 
-import { updateQuery } from './utils';
+import { sortByReputationAscending, sortByReputationDescending } from './utils';
+
 import useMemberFilters from './useMemberFilters';
 
 const useColonyContributors = ({
+  allMembers,
   filterPermissions,
   nativeDomainIds,
   filterStatus,
@@ -24,6 +23,7 @@ const useColonyContributors = ({
   sortDirection,
   pageSize,
 }: {
+  allMembers: ColonyContributor[];
   filterPermissions: Record<UserRole, number[]>;
   nativeDomainIds: number[];
   filterStatus: StatusType | undefined;
@@ -38,23 +38,6 @@ const useColonyContributors = ({
 
   const visibleItems = page * pageSize;
 
-  const { data, previousData, fetchMore, loading } =
-    useGetColonyContributorsQuery({
-      variables: {
-        colonyAddress,
-        sortDirection,
-        limit: pageSize * 3,
-      },
-      skip: !colonyAddress,
-      fetchPolicy: 'cache-and-network',
-    });
-
-  const { nextToken } = data?.getContributorsByColony || {};
-  const { items } =
-    data?.getContributorsByColony ||
-    previousData?.getContributorsByColony ||
-    {};
-
   /*
    * To be considered a contributor, you must:
    * have at least one permission or
@@ -63,14 +46,14 @@ const useColonyContributors = ({
 
   const allContributors = useMemo(() => {
     return (
-      items
+      allMembers
         ?.filter(notNull)
         .filter(
           ({ hasReputation, hasPermissions }) =>
             hasReputation || hasPermissions,
         ) ?? []
     );
-  }, [items]);
+  }, [allMembers]);
 
   const filteredContributors = useMemberFilters({
     members: allContributors,
@@ -81,17 +64,10 @@ const useColonyContributors = ({
     isContributorList: true,
   });
 
-  // We need to ensure that the user always sees the (pageSize * pageNo) number of items.
-  // Given that it's possible for our filtering to reduce the database results below this number,
-  // we fetch more data in the background whenever this happens, and then only show up to the (pageSize * pageNo)
-  // number of items.
-
-  if (filteredContributors.length < visibleItems && nextToken) {
-    fetchMore({
-      variables: { nextToken },
-      updateQuery,
-    });
-  }
+  const sortedContributors =
+    sortDirection === SortDirection.Asc
+      ? sortByReputationAscending(filteredContributors)
+      : sortByReputationDescending(filteredContributors);
 
   const { data: totalData } = useGetContributorCountQuery({
     variables: {
@@ -106,12 +82,11 @@ const useColonyContributors = ({
   const totalContributorCount = totalData?.searchColonyContributors?.total || 0;
 
   return {
-    contributors: filteredContributors.slice(0, visibleItems),
-    canLoadMore: filteredContributors.length > visibleItems || !!nextToken,
+    contributors: sortedContributors.slice(0, visibleItems),
+    canLoadMore: sortedContributors.length > visibleItems,
     loadMore() {
       setPage((prevPage) => prevPage + 1);
     },
-    loading,
     totalContributorCount,
   };
 };

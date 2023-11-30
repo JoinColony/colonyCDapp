@@ -2,6 +2,7 @@ import { ColonyRole } from '@colony/colony-js';
 
 import { CUSTOM_USER_ROLE, getRole, UserRole } from '~constants/permissions';
 import { uniqBy } from '~utils/lodash';
+import { ColonyContributor } from '~types';
 
 export const hasSomeRole = (
   roles: object,
@@ -35,21 +36,14 @@ export const hasSomeRole = (
   return includesCustomPermissions || isInFilters;
 };
 
-export const updateQuery = (prev, { fetchMoreResult }) => {
-  if (!fetchMoreResult.getContributorsByColony) return prev;
-
-  const mergedItems = uniqBy(
-    [
-      ...(prev.getContributorsByColony?.items ?? []),
-      ...(fetchMoreResult.getContributorsByColony.items ?? []),
-    ],
-    'contributorAddress',
+export const sortByReputationAscending = (items: ColonyContributor[]) => {
+  return items.sort(
+    (a, b) => a.colonyReputationPercentage - b.colonyReputationPercentage,
   );
+};
 
-  return {
-    getContributorsByColony: {
-      ...fetchMoreResult.getContributorsByColony,
-      items: mergedItems,
-    },
-  };
+export const sortByReputationDescending = (items: ColonyContributor[]) => {
+  return items.sort(
+    (a, b) => b.colonyReputationPercentage - a.colonyReputationPercentage,
+  );
 };
