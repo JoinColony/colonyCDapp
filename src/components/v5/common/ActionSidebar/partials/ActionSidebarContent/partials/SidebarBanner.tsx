@@ -66,6 +66,13 @@ export const SidebarBanner: FC = () => {
     : false;
 
   if (actionTypeNotificationTitle) {
+    if (
+      selectedAction === ACTION.SIMPLE_PAYMENT &&
+      !oneTxPaymentPermissionNeeded
+    ) {
+      return null;
+    }
+
     return (
       <div className="mt-7">
         <NotificationBanner
